@@ -1,0 +1,39 @@
+{
+  "name": "private-dao",
+  "version": "0.3.0",
+  "description": "Commit-reveal private voting for Solana DAOs — Graveyard Hackathon 2026",
+  "scripts": {
+    "build":             "anchor build",
+    "test":              "anchor test",
+    "demo":              "anchor test -- --grep 'demo'",
+    "test:full":         "anchor test -- --grep 'Full flow'",
+    "deploy":            "anchor deploy --provider.cluster devnet",
+    "setup":             "bash scripts/setup-devnet.sh",
+    "localnet":          "solana-test-validator --reset",
+    "create-dao":        "ts-node scripts/create-dao.ts",
+    "create-proposal":   "ts-node scripts/create-proposal.ts",
+    "deposit":           "ts-node scripts/deposit-treasury.ts",
+    "delegate":          "ts-node scripts/delegate-vote.ts",
+    "commit":            "ts-node scripts/commit-vote.ts",
+    "reveal":            "ts-node scripts/reveal-vote.ts",
+    "finalize":          "ts-node scripts/finalize.ts",
+    "execute":           "ts-node scripts/execute.ts",
+    "migrate":           "ts-node migrations/migrate-realms-dao.ts"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.32.0",
+    "@solana/web3.js":   "^1.98.0",
+    "@solana/spl-token": "^0.4.9",
+    "dotenv":            "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/chai":  "^4.3.0",
+    "@types/mocha": "^10.0.0",
+    "@types/node":  "^20.0.0",
+    "chai":         "^4.3.6",
+    "mocha":        "^10.2.0",
+    "ts-mocha":     "^10.0.0",
+    "typescript":   "^5.0.0",
+    "ts-node":      "^10.9.0"
+  }
+}

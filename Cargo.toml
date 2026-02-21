@@ -1,0 +1,13 @@
+[workspace]
+members = [
+    "programs/private-dao",
+]
+resolver = "2"
+
+[workspace.dependencies]
+sha2 = "0.10"
+anchor-lang = "0.32.0"
+anchor-spl  = "0.32.0"
+
+[profile.release]
+overflow-checks = true

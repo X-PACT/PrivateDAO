@@ -1,0 +1,7 @@
+node_modules/
+target/
+.env
+test-ledger/
+*.so
+migration-report-*.json
+~/.config/solana/
