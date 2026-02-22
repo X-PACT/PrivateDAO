@@ -8,6 +8,9 @@ resolver = "2"
 sha2 = "0.10"
 anchor-lang = "0.32.0"
 anchor-spl  = "0.32.0"
+[patch.crates-io]
+blake3 = { git = "https://github.com/BLAKE3-team/BLAKE3.git", tag = "1.5.5" }
 
 [profile.release]
 overflow-checks = true
+
