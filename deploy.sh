@@ -44,7 +44,7 @@ else
   warn "Using public devnet RPC — set HELIUS_API_KEY in .env for reliability"
 fi
 
-PROGRAM_ID="${PROGRAM_ID:-C5Z9tmoCMfdFBTLr2nKT2XMdqJHf1MydDdk7Ni5BASF6}"
+PROGRAM_ID="${PROGRAM_ID:-DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs}"
 
 echo ""
 echo "╔══════════════════════════════════════════════════════════╗"

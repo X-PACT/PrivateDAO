@@ -45,3 +45,11 @@ All three modes now fully independent at finalize time:
 - `ProposalCancelled { proposal, cancelled_by }`
 - `VoteDelegated { proposal, delegator, delegatee, delegated_weight }`
 - `ProposalFinalized` now includes `execution_unlocks_at`
+
+## v2.1 — Submission hardening
+
+- Added CI workflow for Anchor build/test and repository verification script.
+- Added robust devnet funding helper with retry/backoff and RPC rotation.
+- Removed hardcoded Helius API key from workflow and switched to GitHub Secrets.
+- Added contribution/security docs, PR template, CODEOWNERS, and release checklist.
+- Added hackathon submission pack material in README and demo walkthrough section in docs page.

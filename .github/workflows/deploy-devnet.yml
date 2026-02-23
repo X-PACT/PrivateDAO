@@ -1,0 +1,68 @@
+name: Deploy to Devnet
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      ANCHOR_WALLET: /home/runner/.config/solana/id.json
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.21.1'
+          cache: 'yarn'
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install Solana CLI
+        run: |
+          sh -c "$(curl -sSfL https://release.anza.xyz/v2.1.14/install)"
+          echo "$HOME/.local/share/solana/install/active_release/bin" >> "$GITHUB_PATH"
+
+      - name: Install Anchor CLI
+        run: cargo install --git https://github.com/coral-xyz/anchor avm --locked --force && avm install 0.32.1 && avm use 0.32.1
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Restore deployer wallet from secret
+        env:
+          SOLANA_PRIVATE_KEY: ${{ secrets.SOLANA_PRIVATE_KEY }}
+        run: |
+          if [ -z "$SOLANA_PRIVATE_KEY" ]; then
+            echo "SOLANA_PRIVATE_KEY secret is missing" >&2
+            exit 1
+          fi
+          mkdir -p ~/.config/solana
+          printf '%s' "$SOLANA_PRIVATE_KEY" > "$ANCHOR_WALLET"
+          chmod 600 "$ANCHOR_WALLET"
+          solana-keygen pubkey "$ANCHOR_WALLET"
+
+      - name: Configure devnet RPC
+        env:
+          HELIUS_API_KEY: ${{ secrets.HELIUS_API_KEY }}
+        run: |
+          if [ -n "$HELIUS_API_KEY" ]; then
+            solana config set --keypair "$ANCHOR_WALLET" --url "https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}"
+          else
+            solana config set --keypair "$ANCHOR_WALLET" --url "https://api.devnet.solana.com"
+          fi
+          solana config get
+          solana balance "$ANCHOR_WALLET" || true
+
+      - name: Build and deploy
+        run: |
+          anchor build
+          anchor deploy --provider.cluster devnet
+
+      - name: Show deployed program status
+        run: |
+          PROGRAM_ID=$(awk -F '"' '/^private_dao = /{print $2; exit}' Anchor.toml)
+          echo "Program ID from Anchor.toml: $PROGRAM_ID"
+          solana program show "$PROGRAM_ID" --url "https://api.devnet.solana.com" || true

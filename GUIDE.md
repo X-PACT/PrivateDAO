@@ -61,7 +61,7 @@ SOLANA_RPC_URL=https://devnet.helius-rpc.com/?api-key=your_actual_key_here
 SOLANA_WSS_URL=wss://devnet.helius-rpc.com/?api-key=your_actual_key_here
 SOLANA_CLUSTER=devnet
 ANCHOR_WALLET=~/.config/solana/id.json
-PROGRAM_ID=C5Z9tmoCMfdFBTLr2nKT2XMdqJHf1MydDdk7Ni5BASF6
+PROGRAM_ID=DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs
 ```
 
 ### Step 2 — Wallet Setup
@@ -117,7 +117,7 @@ Output:
 Deploying cluster: https://devnet.helius-rpc.com/?api-key=...
 Upgrade authority: <YOUR_WALLET>
 Deploying program "private_dao"...
-Program Id: C5Z9tmoCMfdFBTLr2nKT2XMdqJHf1MydDdk7Ni5BASF6
+Program Id: DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs
 
 Deploy success
 ```
@@ -125,7 +125,7 @@ Deploy success
 **Important:** If the Program Id shown differs from what's in `declare_id!()`, update it:
 ```bash
 NEW_ID="<actual deployed id>"
-sed -i "s/C5Z9tmoCMfdFBTLr2nKT2XMdqJHf1MydDdk7Ni5BASF6/$NEW_ID/" \
+sed -i "s/DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs/$NEW_ID/" \
   programs/private-dao/src/lib.rs
 anchor build && anchor deploy --provider.cluster devnet
 ```
@@ -134,10 +134,10 @@ anchor build && anchor deploy --provider.cluster devnet
 
 ```bash
 # Check program on-chain
-solana program show C5Z9tmoCMfdFBTLr2nKT2XMdqJHf1MydDdk7Ni5BASF6
+solana program show DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs
 
 # Or view on Solscan
-# https://solscan.io/account/C5Z9tmoCMfdFBTLr2nKT2XMdqJHf1MydDdk7Ni5BASF6?cluster=devnet
+# https://solscan.io/account/DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs?cluster=devnet
 ```
 
 ---
@@ -275,14 +275,14 @@ const connection = new Connection(
 
 // Subscribe to program account changes
 connection.onProgramAccountChange(
-  new PublicKey("C5Z9tmoCMfdFBTLr2nKT2XMdqJHf1MydDdk7Ni5BASF6"),
+  new PublicKey("DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs"),
   (info) => console.log("Account changed:", info.accountId.toBase58()),
   "confirmed",
 );
 
 // Subscribe to logs (events)
 connection.onLogs(
-  new PublicKey("C5Z9tmoCMfdFBTLr2nKT2XMdqJHf1MydDdk7Ni5BASF6"),
+  new PublicKey("DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs"),
   (logs) => console.log("Event:", logs.logs),
 );
 ```
@@ -325,10 +325,10 @@ Submit at: **https://app.superteam.fun** → Solana Graveyard Hackathon 2026
 ## Program Info
 
 ```
-Program ID:   C5Z9tmoCMfdFBTLr2nKT2XMdqJHf1MydDdk7Ni5BASF6
+Program ID:   DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs
 Network:      Solana Devnet
 Framework:    Anchor 0.32
 Language:     Rust (Solana BPF target)
 IDL:          target/idl/private_dao.json
-Explorer:     https://solscan.io/account/C5Z9tmoCMfdFBTLr2nKT2XMdqJHf1MydDdk7Ni5BASF6?cluster=devnet
+Explorer:     https://solscan.io/account/DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs?cluster=devnet
 ```

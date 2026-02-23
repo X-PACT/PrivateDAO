@@ -44,7 +44,7 @@ snapshotting token balance at commit time (not at finalize time) prevents:
 
 the snapshot is stored in VoterRecord.vote_weight. the downside: if a voter's
 tokens are locked in a vesting contract, they might not show up correctly.
-TODO after hackathon: use a delegation registry instead of raw balance.
+Delegation currently uses raw token balance snapshots at commit-time; maintainers can evolve this to a registry model in a future version without changing the active protocol semantics.
 
 ## quorum calculation
 

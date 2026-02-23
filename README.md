@@ -1,5 +1,7 @@
 # PrivateDAO 🪦→🔐
 
+![CI](https://img.shields.io/github/actions/workflow/status/eslamx-pact/PrivateDAO/ci.yml?branch=main&label=CI) ![Solana](https://img.shields.io/badge/Solana-Devnet-14F195) ![Anchor](https://img.shields.io/badge/Anchor-0.32.1-blue) ![License](https://img.shields.io/badge/license-MIT-green)
+
 > **Commit-reveal governance for Solana. Built for Solana Graveyard Hackathon 2026.**
 > Targeting: DAOs track (Realms $5K) · Migrations track (Sunrise $7K) · Overall ($15K)
 
@@ -108,9 +110,16 @@ The demo runs in ~30 seconds on localnet. Shows the full lifecycle including a c
 ### Deploy to devnet
 
 ```bash
-solana config set --url devnet
-solana airdrop 2
-anchor deploy
+# use your local wallet (same one used for deploy authority)
+export ANCHOR_WALLET=~/.config/solana/id.json
+solana config set --keypair "$ANCHOR_WALLET" --url https://api.devnet.solana.com
+
+# fund (with retries + RPC rotation)
+bash scripts/fund-devnet.sh 2
+
+# build + deploy
+anchor build
+anchor deploy --provider.cluster devnet
 
 # create a DAO
 yarn create-dao -- --name "MyDAO" --quorum 51 --mode quadratic
@@ -121,7 +130,7 @@ yarn reveal -- --proposal <PDA>
 yarn finalize -- --proposal <PDA>
 ```
 
-Free RPC: [Helius](https://dev.helius-rpc.com) — no API key needed for devnet.
+For CI deploy, use GitHub Actions workflow `Deploy to Devnet` with `SOLANA_PRIVATE_KEY` in repository secrets (optionally `HELIUS_API_KEY`).
 
 ### Migrate from Realms
 
@@ -175,3 +184,80 @@ voter_pubkey in the preimage prevents a replay attack: without it, voter B could
 ## License
 
 MIT
+
+---
+
+## Hackathon Submission Pack
+
+### What it is
+PrivateDAO is a Solana governance protocol that uses commit-reveal voting with optional quadratic weighting and dual-chamber thresholds.
+
+### Why it matters
+It reduces vote buying, whale intimidation, and treasury front-running by sealing tallies until reveal/finalization windows.
+
+### How it works
+1. Commit phase: voters submit SHA-256 commitment hashes.
+2. Reveal phase: voters (or approved keepers) reveal vote+salt proofs.
+3. Finalize/execute phase: anyone finalizes; treasury execution is timelocked.
+
+### Quickstart (Devnet)
+```bash
+yarn install
+bash scripts/fund-devnet.sh
+anchor build
+anchor deploy
+```
+
+### Security considerations
+- Commitments include voter pubkey to prevent replay.
+- Weight snapshots are taken at commit time.
+- Timelock + veto allow emergency intervention before execution.
+
+### Known limitations
+- Commit-reveal is two-step UX.
+- Quadratic mode needs Sybil-resistance policy at DAO layer.
+- Devnet faucet rate limits can delay deployment.
+
+### Demo guide
+- GitHub Pages main entry: `docs/index.html`
+- Demo walkthrough section: `#demo` on the same page.
+- Root HTML entry retained: `privatedao-frontend.html`
+
+### Judges quick checklist
+1. `anchor build` passes.
+2. `anchor test` passes locally.
+3. Non-real-code grep scan returns clean (excluding lockfiles).
+4. Devnet funding script executes with retries/RPC rotation.
+
+### Architecture diagram
+```mermaid
+flowchart LR
+  W[Voter Wallet] --> C[commit_vote]
+  C --> P[Proposal Account]
+  W --> R[reveal_vote]
+  R --> P
+  P --> F[finalize_proposal]
+  F --> T[Treasury PDA]
+  T --> E[execute_proposal CPI]
+```
+
+### Share snippets
+**X / Twitter**
+```text
+PrivateDAO brings commit-reveal governance to Solana: hidden tallies, quadratic + dual-chamber voting, keeper-assisted reveals, and timelocked treasury execution. Built for real DAO ops. #Solana #DAO #Anchor
+```
+
+**Discord**
+```text
+We shipped PrivateDAO: a production-grade commit-reveal governance protocol on Solana with timelocked execution and Realms migration support. Review the demo + tests in the repo.
+```
+
+**Solana forums**
+```text
+PrivateDAO introduces private governance primitives (commit/reveal/finalize/execute) with DualChamber voting and migration tooling for existing Realms communities.
+```
+
+**Hackathon form (short)**
+```text
+PrivateDAO is a Solana governance protocol that prevents live-tally manipulation using commit-reveal voting, supports quadratic/dual-chamber modes, integrates with Realms through voter-weight records, and enforces timelocked treasury execution.
+```

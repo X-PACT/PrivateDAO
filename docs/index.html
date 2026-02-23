@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PrivateDAO — Private Governance on Solana</title>
+<meta name="description" content="PrivateDAO is a Solana commit-reveal governance protocol with timelocked treasury execution.">
+<meta property="og:title" content="PrivateDAO — Private Governance on Solana">
+<meta property="og:description" content="Commit-reveal voting, quadratic governance, and timelocked execution for serious DAOs.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/social-preview.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PrivateDAO — Private Governance on Solana">
+<meta name="twitter:description" content="Commit-reveal voting and timelocked execution for Solana DAOs.">
+<meta name="twitter:image" content="assets/social-preview.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
@@ -1142,6 +1151,19 @@ footer {
   </div>
 </section>
 
+<section class="section" id="demo" style="padding-top:20px">
+  <div class="container">
+    <div class="section-tag reveal">DEMO</div>
+    <h2 class="section-heading reveal">Evaluator walkthrough</h2>
+    <div class="reveal" style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;line-height:1.8;color:var(--text2)">
+      <p>1) Connect Phantom to verify wallet wiring and network status.</p>
+      <p>2) Use CLI to run real flow: create proposal → commit → reveal → finalize → execute.</p>
+      <p>3) Refresh this page to inspect devnet proposal addresses and phase transitions.</p>
+      <p style="color:var(--amber)">This web page is an operational dashboard and walkthrough. Signed on-chain instructions are executed from the repository CLI scripts to keep behavior deterministic for judges.</p>
+    </div>
+  </div>
+</section>
+
 </div><!-- /page-proposals -->
 
 <!-- ══════════════════ PAGE: PROTOCOL ══════════════════ -->
@@ -1284,19 +1306,19 @@ execute() → CPI
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px">
         <div>
           <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">REALMS GOVERNANCE PUBKEY</label>
-          <input type="text" placeholder="7xKXtg2CW87d97TXJSDp..." style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:13px;outline:none;transition:border-color 0.2s" onfocus="this.style.borderColor='var(--cyan)'" onblur="this.style.borderColor='var(--border)'">
+          <input type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:13px;outline:none;transition:border-color 0.2s" onfocus="this.style.borderColor='var(--cyan)'" onblur="this.style.borderColor='var(--border)'">
         </div>
         <div>
           <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">DAO NAME</label>
-          <input type="text" placeholder="My DAO" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:13px;outline:none;transition:border-color 0.2s" onfocus="this.style.borderColor='var(--cyan)'" onblur="this.style.borderColor='var(--border)'">
+          <input type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:13px;outline:none;transition:border-color 0.2s" onfocus="this.style.borderColor='var(--cyan)'" onblur="this.style.borderColor='var(--border)'">
         </div>
         <div>
           <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">GOVERNANCE TOKEN MINT</label>
-          <input type="text" placeholder="EPjFWdd5AufqSSqeM2qN..." style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:13px;outline:none;transition:border-color 0.2s" onfocus="this.style.borderColor='var(--cyan)'" onblur="this.style.borderColor='var(--border)'">
+          <input type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:13px;outline:none;transition:border-color 0.2s" onfocus="this.style.borderColor='var(--cyan)'" onblur="this.style.borderColor='var(--border)'">
         </div>
         <div>
           <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">QUORUM (%)</label>
-          <input type="number" placeholder="51" value="51" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:13px;outline:none;transition:border-color 0.2s" onfocus="this.style.borderColor='var(--cyan)'" onblur="this.style.borderColor='var(--border)'">
+          <input type="number" value="51" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:13px;outline:none;transition:border-color 0.2s" onfocus="this.style.borderColor='var(--cyan)'" onblur="this.style.borderColor='var(--border)'">
         </div>
       </div>
       <button class="btn-primary" style="width:100%;padding:18px;font-size:16px" onclick="startMigration()">
@@ -1561,12 +1583,12 @@ function submitVote() {
     showToast('Connect your wallet first', 'error'); return;
   }
   closeModal('commitModal');
-  showToast('✓ Commitment submitted on-chain! Salt saved locally.', 'success');
+  showToast('UI guide only: submit commit using CLI script (yarn commit ...).', 'info');
 }
 
 function submitReveal() {
   closeModal('revealModal');
-  showToast('✓ Vote revealed! +0.001 SOL rebate earned.', 'success');
+  showToast('UI guide only: submit reveal using CLI script (yarn reveal ...).', 'info');
 }
 
 function vetoProposal() {
@@ -1576,7 +1598,7 @@ function vetoProposal() {
 
 function startMigration() {
   if(!wallet) { showToast('Connect your Realms authority wallet first', 'error'); return; }
-  showToast('Migration instruction ready — connect wallet to sign', 'info');
+  showToast('Migration is executed via migrations/migrate-realms-dao.ts script.', 'info');
 }
 
 // ── Toast ────────────────────────────────────────────────

@@ -7,12 +7,18 @@ on:
       wallet:
         description: 'Wallet address to fund'
         required: true
-        default: '8nsQswnA4Ba9QZFKNQDQRnXJGpjggu7E27TdEJFT7DYP'
 
 jobs:
   fund:
     runs-on: ubuntu-latest
     steps:
+      - name: Validate wallet input
+        run: |
+          if [ -z "${{ github.event.inputs.wallet }}" ]; then
+            echo "wallet input is required" >&2
+            exit 1
+          fi
+
       - name: Install Solana CLI
         run: |
           sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
@@ -34,9 +40,15 @@ jobs:
 
       - name: Try airdrop — round 3 (Helius)
         continue-on-error: true
+        env:
+          HELIUS_API_KEY: ${{ secrets.HELIUS_API_KEY }}
         run: |
+          if [ -z "$HELIUS_API_KEY" ]; then
+            echo "HELIUS_API_KEY is not configured in GitHub Secrets; skipping Helius attempt."
+            exit 0
+          fi
           solana airdrop 2 ${{ github.event.inputs.wallet }} \
-            --url https://devnet.helius-rpc.com/?api-key=08f6f820-71ba-4f05-8c95-6e10e8f6dc1b
+            --url "https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}"
           sleep 10
 
       - name: Try faucet — QuickNode
