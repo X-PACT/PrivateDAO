@@ -1,0 +1,61 @@
+# Copyright (c) 2026 X-PACT. MIT License.
+name: Fund Devnet Wallet
+
+on:
+  workflow_dispatch:
+    inputs:
+      wallet:
+        description: 'Wallet address to fund'
+        required: true
+        default: '8nsQswnA4Ba9QZFKNQDQRnXJGpjggu7E27TdEJFT7DYP'
+
+jobs:
+  fund:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Solana CLI
+        run: |
+          sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
+          echo "$HOME/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
+
+      - name: Try airdrop — round 1
+        continue-on-error: true
+        run: |
+          solana airdrop 2 ${{ github.event.inputs.wallet }} \
+            --url https://api.devnet.solana.com
+          sleep 10
+
+      - name: Try airdrop — round 2
+        continue-on-error: true
+        run: |
+          solana airdrop 2 ${{ github.event.inputs.wallet }} \
+            --url https://api.devnet.solana.com
+          sleep 10
+
+      - name: Try airdrop — round 3 (Helius)
+        continue-on-error: true
+        run: |
+          solana airdrop 2 ${{ github.event.inputs.wallet }} \
+            --url https://devnet.helius-rpc.com/?api-key=08f6f820-71ba-4f05-8c95-6e10e8f6dc1b
+          sleep 10
+
+      - name: Try faucet — QuickNode
+        continue-on-error: true
+        run: |
+          curl -s -X POST https://faucet.quicknode.com/solana/devnet \
+            -H "Content-Type: application/json" \
+            -d '{"wallet":"${{ github.event.inputs.wallet }}"}'
+
+      - name: Try faucet — solana.com
+        continue-on-error: true
+        run: |
+          curl -s -X POST https://faucet.solana.com/api/v1/fund \
+            -H "Content-Type: application/json" \
+            -d '{"wallet":"${{ github.event.inputs.wallet }}","amount":2}'
+
+      - name: Check final balance
+        run: |
+          sleep 15
+          echo "=== FINAL BALANCE ==="
+          solana balance ${{ github.event.inputs.wallet }} \
+            --url https://api.devnet.solana.com
