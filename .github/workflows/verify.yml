@@ -1,0 +1,51 @@
+<<<<<<< ours
+name: Verify
+
+on:
+  push:
+    branches: [ main, master, work ]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+=======
+name: verify
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  integrity:
+    runs-on: ubuntu-latest
+    env:
+      ANCHOR_VERSION: 0.32.1
+      SOLANA_VERSION: 2.1.11
+      NODE_VERSION: 20.18.0
+>>>>>>> theirs
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+<<<<<<< ours
+          node-version: '20.11.1'
+      - name: Verify repository integrity
+        run: bash scripts/verify.sh
+=======
+          node-version: ${{ env.NODE_VERSION }}
+          cache: yarn
+      - name: Install Solana CLI
+        run: |
+          sh -c "$(curl -sSfL https://release.anza.xyz/v${SOLANA_VERSION}/install)"
+          echo "$HOME/.local/share/solana/install/active_release/bin" >> "$GITHUB_PATH"
+      - name: Install Anchor CLI
+        run: |
+          cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
+          avm install ${ANCHOR_VERSION}
+          avm use ${ANCHOR_VERSION}
+          echo "$HOME/.avm/bin" >> "$GITHUB_PATH"
+      - name: Verify toolchain + lint checks
+        run: ./scripts/verify.sh
+>>>>>>> theirs
