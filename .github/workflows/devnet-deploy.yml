@@ -1,0 +1,99 @@
+name: Devnet Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'programs/**'
+      - 'Anchor.toml'
+      - '.github/workflows/devnet-deploy.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SOLANA_RPC_URL: https://api.devnet.solana.com
+      ANCHOR_VERSION: 0.32.1
+      SOLANA_VERSION: 1.18.18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.11.1'
+          cache: yarn
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Install Solana CLI
+        run: |
+          sh -c "$(curl -sSfL https://release.anza.xyz/v${SOLANA_VERSION}/install)"
+          echo "$HOME/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
+          solana --version
+
+      - name: Install Anchor CLI (AVM)
+        run: |
+          cargo install --git https://github.com/coral-xyz/anchor avm --locked
+          avm install ${ANCHOR_VERSION}
+          avm use ${ANCHOR_VERSION}
+          anchor --version
+
+      - name: Restore deploy keypair from secret
+        shell: bash
+        run: |
+          if [ -z "${{ secrets.DEVNET_DEPLOYER_KEYPAIR_B64 }}" ]; then
+            echo "Missing secret DEVNET_DEPLOYER_KEYPAIR_B64" >&2
+            exit 1
+          fi
+          mkdir -p ~/.config/solana
+          echo "${{ secrets.DEVNET_DEPLOYER_KEYPAIR_B64 }}" | base64 -d > ~/.config/solana/devnet-deployer.json
+          chmod 600 ~/.config/solana/devnet-deployer.json
+          solana config set --url "$SOLANA_RPC_URL" --keypair ~/.config/solana/devnet-deployer.json
+          solana address
+
+      - name: Fund deployer wallet
+        run: |
+          solana airdrop 2 || true
+          solana balance
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build and deploy program
+        env:
+          ANCHOR_WALLET: /home/runner/.config/solana/devnet-deployer.json
+          ANCHOR_PROVIDER_URL: https://api.devnet.solana.com
+        run: |
+          anchor build
+          DEPLOY_OUT=$(anchor deploy --provider.cluster devnet)
+          echo "$DEPLOY_OUT"
+          PROGRAM_ID=$(echo "$DEPLOY_OUT" | sed -n 's/^Program Id: //p' | tail -n1)
+          if [ -z "$PROGRAM_ID" ]; then
+            echo "Unable to parse Program ID from deploy output" >&2
+            exit 1
+          fi
+          echo "PROGRAM_ID=$PROGRAM_ID" >> $GITHUB_ENV
+
+      - name: Update docs/config.json with Program ID
+        run: |
+          node -e 'const fs=require("fs");const p="docs/config.json";const c=JSON.parse(fs.readFileSync(p,"utf8"));c.programId=process.env.PROGRAM_ID;c.cluster="devnet";if(!c.rpcUrl)c.rpcUrl="https://api.devnet.solana.com";fs.writeFileSync(p,JSON.stringify(c,null,2)+"\n");'
+          cat docs/config.json
+
+      - name: Commit Program ID update
+        run: |
+          if git diff --quiet docs/config.json; then
+            echo "No config changes to commit"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/config.json
+          git commit -m "chore: update devnet program id in docs config"
+          git push
+
+      - name: Output Program ID
+        run: |
+          echo "Deployed Program ID: $PROGRAM_ID"
+          echo "Explorer: https://explorer.solana.com/address/$PROGRAM_ID?cluster=devnet"
