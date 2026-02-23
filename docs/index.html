@@ -1,56 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<<<<<<< ours
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PrivateDAO | Solana Commit-Reveal Governance</title>
-  <meta name="description" content="PrivateDAO is a real Solana devnet dApp for commit-reveal DAO governance." />
-  <meta property="og:title" content="PrivateDAO | Solana Commit-Reveal Governance" />
-  <meta property="og:description" content="Connect Phantom, browse DAOs/proposals, and submit real devnet transactions." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://x-pact.github.io/PrivateDAO/" />
-  <meta property="og:image" content="https://x-pact.github.io/PrivateDAO/docs/assets/social-preview.svg" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="PrivateDAO | Solana Commit-Reveal Governance" />
-  <meta name="twitter:description" content="Real devnet dApp for private DAO voting on Solana." />
-  <meta name="twitter:image" content="https://x-pact.github.io/PrivateDAO/docs/assets/social-preview.svg" />
-  <style>
-    :root { --bg:#05080f; --card:#0d1420; --line:#1f2e45; --text:#e8f2ff; --sub:#8da5c8; --ok:#00d18f; --warn:#ffb703; --bad:#ff5d73; --accent:#33b1ff; }
-    * { box-sizing:border-box; }
-    body { margin:0; font-family: Inter, system-ui, sans-serif; background:var(--bg); color:var(--text); }
-    .container { max-width:1180px; margin:0 auto; padding:24px; }
-    .grid { display:grid; gap:16px; }
-    .g2 { grid-template-columns: 1.2fr .8fr; }
-    @media (max-width: 980px){ .g2{grid-template-columns:1fr;} }
-    .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px; }
-    h1,h2,h3{margin:0 0 10px;} h1{font-size:30px;} h2{font-size:20px;} h3{font-size:16px;}
-    p,li { color:var(--sub); line-height:1.45; }
-    input,select,textarea,button { width:100%; margin-top:8px; background:#08111b; border:1px solid var(--line); color:var(--text); border-radius:10px; padding:10px; }
-    button { cursor:pointer; background:#0c1d33; }
-    button.primary { border-color:#1968b3; background:#103258; }
-    button:disabled{opacity:.5;cursor:not-allowed;}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;} .mono{font-family: ui-monospace, Menlo, monospace; font-size:12px; word-break:break-all;}
-    .pill{display:inline-block;padding:4px 9px;border-radius:999px;border:1px solid var(--line);font-size:12px;margin-right:8px;}
-    .ok{color:var(--ok)} .warn{color:var(--warn)} .bad{color:var(--bad)}
-    .table{display:grid; gap:8px;} .item{padding:10px;border:1px solid var(--line);border-radius:10px;background:#08111b}
-    a{color:var(--accent)}
-    #status{white-space:pre-wrap}
-  </style>
-=======
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PrivateDAO — Private Governance on Solana</title>
-<meta name="description" content="PrivateDAO is a Solana commit-reveal governance protocol with timelock execution and devnet demo.">
-<meta property="og:title" content="PrivateDAO — Private Governance on Solana">
-<meta property="og:description" content="Commit-reveal voting, proposal finalization, and timelock execution on Solana devnet.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://x-pact.github.io/PrivateDAO/">
-<meta property="og:image" content="https://x-pact.github.io/PrivateDAO/docs/assets/social-preview.svg">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="PrivateDAO — Private Governance on Solana">
-<meta name="twitter:description" content="Commit-reveal voting and treasury execution on Solana devnet.">
-<meta name="twitter:image" content="https://x-pact.github.io/PrivateDAO/docs/assets/social-preview.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
@@ -943,87 +896,250 @@ footer {
   .stat-item { min-width: 45%; }
 }
 </style>
->>>>>>> theirs
 </head>
 <body>
-  <div class="container grid" style="padding-top:32px;">
-    <div class="card">
-      <h1>PrivateDAO Devnet dApp</h1>
-      <p>Real on-chain interaction for commit-reveal governance. Connect Phantom to browse DAOs/proposals and submit transactions.</p>
-      <span class="pill" id="clusterPill">cluster: loading…</span>
-      <span class="pill mono" id="programPill">program: loading…</span>
-      <span class="pill" id="deployPill">status: checking…</span>
-    </div>
 
-    <div class="grid g2">
-      <div class="grid">
-        <div class="card">
-          <h2>Wallet</h2>
-          <button class="primary" id="connectBtn">Connect Phantom</button>
-          <p id="walletLabel" class="mono">Not connected</p>
-          <p id="networkLabel">Network: devnet</p>
-        </div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
-        <div class="card">
-          <h2>DAOs</h2>
-          <button id="refreshDaos">Refresh DAOs</button>
-          <div id="daoList" class="table" style="margin-top:10px"></div>
-        </div>
+<div class="bg-scene">
+  <div class="bg-grid"></div>
+  <div class="bg-orb orb1"></div>
+  <div class="bg-orb orb2"></div>
+  <div class="bg-orb orb3"></div>
+</div>
 
-        <div class="card">
-          <h2>Proposals</h2>
-          <div class="row">
-            <div>
-              <label>DAO address</label>
-              <input id="daoForProposal" placeholder="DAO PDA" />
-            </div>
-            <div>
-              <label>Proposal PDA (optional)</label>
-              <input id="proposalManual" placeholder="Proposal PDA" />
-            </div>
-          </div>
-          <button id="refreshProposals">Refresh Proposals</button>
-          <div id="proposalList" class="table" style="margin-top:10px"></div>
+<!-- NAV -->
+<nav id="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <div class="logo-wrap">
+        <div class="logo-mark">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <rect x="3" y="8" width="14" height="10" rx="2" stroke="#00e5ff" stroke-width="1.5"/>
+            <path d="M6 8V6a4 4 0 018 0v2" stroke="#00e5ff" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="10" cy="13" r="1.5" fill="#00e5ff"/>
+          </svg>
         </div>
+        <span class="logo-name">Private<em>DAO</em></span>
       </div>
-
-      <div class="grid">
-        <div class="card">
-          <h2>Create Proposal</h2>
-          <label>DAO PDA</label><input id="createDao" placeholder="DAO PDA" />
-          <label>Title</label><input id="createTitle" maxlength="128" />
-          <label>Description</label><textarea id="createDescription" maxlength="1024"></textarea>
-          <label>Voting duration (seconds, min 3600)</label><input id="createDuration" type="number" value="3600" />
-          <button id="createProposalBtn" class="primary">Send create_proposal</button>
-        </div>
-
-        <div class="card">
-          <h2>Commit / Reveal / Finalize / Execute</h2>
-          <label>Proposal PDA</label><input id="proposalPda" placeholder="Proposal PDA" />
-          <label>DAO PDA (for finalize/execute)</label><input id="daoPda" placeholder="DAO PDA" />
-          <label>Your token account for DAO mint (for commit)</label><input id="tokenAccount" placeholder="SPL token account" />
-          <label>Vote</label><select id="voteChoice"><option value="yes">Yes</option><option value="no">No</option></select>
-          <div class="row">
-            <button id="commitBtn">commit_vote</button>
-            <button id="revealBtn">reveal_vote</button>
-          </div>
-          <div class="row">
-            <button id="finalizeBtn">finalize_proposal</button>
-            <button id="executeBtn">execute_proposal</button>
-          </div>
-          <p>Commit salt is stored locally in your browser for reveal.</p>
-        </div>
+      <div class="nav-links">
+        <button class="nav-link active" onclick="showPage('proposals',this)">Proposals</button>
+        <button class="nav-link" onclick="showPage('protocol',this)">Protocol</button>
+        <button class="nav-link" onclick="showPage('migrate',this)">Migrate from Realms</button>
+        <button class="nav-link" onclick="showPage('security',this)">Security</button>
       </div>
-    </div>
-
-    <div class="card">
-      <h2>Status</h2>
-      <div id="status" class="mono">Ready.</div>
+      <button class="wallet-btn" id="walletBtn" onclick="connectWallet()">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="walletLabel">Connect Wallet</span>
+      </button>
     </div>
   </div>
-<<<<<<< ours
-  <script type="module" src="./app.js"></script>
-=======
+</nav>
+
+<!-- ══════════════════ PAGE: PROPOSALS ══════════════════ -->
+<div class="page active" id="page-proposals">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-eyebrow">◈ SOLANA GRAVEYARD HACKATHON 2026</div>
+      <h1 class="hero-headline">
+        <span class="line1">VOTE</span>
+        <span class="line2">WITHOUT</span>
+        <span class="line3">FEAR.</span>
+      </h1>
+      <p class="hero-sub">
+        The first commit-reveal governance protocol on Solana.
+        Zero tally visibility during voting — eliminating whale intimidation,
+        vote buying, and treasury front-running forever.
+      </p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="scrollToProposals()">View Proposals</button>
+        <button class="btn-ghost" onclick="showPage('protocol', document.querySelectorAll('.nav-link')[1])">How It Works →</button>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stats-inner">
+        <div class="stat-item">
+          <span class="stat-num" id="statTally">0 / 0</span>
+          <div class="stat-label">TALLY DURING VOTING</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">SHA256</span>
+          <div class="stat-label">COMMITMENT SCHEME</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">3×</span>
+          <div class="stat-label">ATTACKS ELIMINATED</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">24H</span>
+          <div class="stat-label">EXECUTION TIMELOCK</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE PROBLEM VS SOLUTION -->
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <div class="section-tag reveal">THE PROBLEM</div>
+    <h2 class="section-heading reveal">Public voting is<br>broken by design.</h2>
+    <div class="compare-grid reveal">
+      <div class="compare-panel bad">
+        <span class="compare-tag">⚠ REALMS — PUBLIC VOTING</span>
+        <div class="compare-title">Every vote is visible in real-time</div>
+        <div class="compare-desc">Whales watch the tally live, buy votes to flip proposals, and front-run treasury transfers. Smaller holders are intimidated into conformity.</div>
+        <div class="tally-live">
+          <div class="tally-live-header">
+            <span>LIVE TALLY</span>
+            <span>● LIVE</span>
+          </div>
+          <div class="tally-row">
+            <div class="tally-row-top">
+              <span class="tally-row-label">YES</span>
+              <span id="liveYesNum" style="font-size:12px;color:var(--green)">0</span>
+            </div>
+            <div class="tally-bar"><div class="tally-fill-yes" id="liveYesBar" style="width:0%"></div></div>
+          </div>
+          <div class="tally-row">
+            <div class="tally-row-top">
+              <span class="tally-row-label">NO</span>
+              <span id="liveNoNum" style="font-size:12px;color:var(--red)">0</span>
+            </div>
+            <div class="tally-bar"><div class="tally-fill-no" id="liveNoBar" style="width:0%"></div></div>
+          </div>
+          <div class="whale-alert">
+            <span>🤖</span>
+            <span>Bot detected: whale wallet buying votes to flip proposal. Front-running treasury transfer...</span>
+          </div>
+        </div>
+      </div>
+      <div class="compare-panel good">
+        <span class="compare-tag">✓ PRIVATEDAO — COMMIT-REVEAL</span>
+        <div class="compare-title">Tally sealed until voting ends</div>
+        <div class="compare-desc">Voters submit sha256(vote‖salt‖pubkey). The hash reveals nothing. After voting ends, proofs are verified on-chain. Zero bandwagon effect.</div>
+        <div class="tally-sealed">
+          <div class="tally-sealed-header">TALLY — CRYPTOGRAPHICALLY SEALED</div>
+          <div class="sealed-display">YES: ? &nbsp;/&nbsp; NO: ?</div>
+          <div class="sealed-label">SEALED UNTIL REVEAL PHASE ENDS</div>
+          <div class="sealed-info">
+            <span>›</span> 127 commitments received<br>
+            <span>›</span> Votes: cryptographically sealed<br>
+            <span>›</span> Reveal opens in: 47:23:11
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROPOSALS LIST -->
+<section class="section" id="proposals-anchor" style="padding-top:40px">
+  <div class="container">
+    <div class="proposals-header reveal">
+      <div>
+        <div class="section-tag">ACTIVE GOVERNANCE</div>
+        <h2 class="section-heading" style="margin-bottom:0;font-size:56px">Live Proposals</h2>
+      </div>
+      <button class="btn-primary" onclick="openCommitModal(-1)">+ New Proposal</button>
+    </div>
+
+    <div class="proposals-grid reveal">
+
+      <!-- PROP-001: COMMIT PHASE -->
+      <div class="proposal-card phase-commit" onclick="openCommitModal(0)">
+        <div class="proposal-header">
+          <span class="proposal-id">PROP-001 · devnet · DnQTB3T6...</span>
+          <span class="phase-pill pill-commit">⏳ COMMIT PHASE</span>
+        </div>
+        <div class="proposal-title">Allocate 50,000 USDC for ecosystem marketing</div>
+        <div class="proposal-desc">Fund a 3-month campaign to increase DAO visibility and attract new protocol contributors from the Solana ecosystem.</div>
+        <div class="proposal-meta">
+          <div class="meta-kv"><div class="meta-k">COMMITS</div><div class="meta-v">43</div></div>
+          <div class="meta-kv"><div class="meta-k">ENDS IN</div><div class="meta-v">02d 14h 23m</div></div>
+          <div class="meta-kv"><div class="meta-k">MODE</div><div class="meta-v">DualChamber</div></div>
+          <div class="meta-kv"><div class="meta-k">QUORUM</div><div class="meta-v">51%</div></div>
+        </div>
+        <div class="tally-sealed-mini">
+          <span class="lock-glyph">⬡</span>
+          <span class="sealed-text">Tally sealed — 43 commitments on-chain</span>
+          <span class="sealed-count">YES: ? / NO: ?</span>
+        </div>
+        <div class="proposal-actions" onclick="event.stopPropagation()">
+          <button class="action-btn action-commit" onclick="openCommitModal(0)">Cast Private Vote</button>
+        </div>
+      </div>
+
+      <!-- PROP-002: REVEAL PHASE -->
+      <div class="proposal-card phase-reveal" onclick="openRevealModal()">
+        <div class="proposal-header">
+          <span class="proposal-id">PROP-002 · devnet · DnQTB3T6...</span>
+          <span class="phase-pill pill-reveal">🔓 REVEAL PHASE</span>
+        </div>
+        <div class="proposal-title">Migrate treasury from Realms to PrivateDAO</div>
+        <div class="proposal-desc">Complete migration of 1.2M governance tokens to private commit-reveal infrastructure. No token migration required — plugin-based.</div>
+        <div class="proposal-meta">
+          <div class="meta-kv"><div class="meta-k">REVEALED</div><div class="meta-v">61 / 89</div></div>
+          <div class="meta-kv"><div class="meta-k">REVEAL ENDS</div><div class="meta-v">06h 11m</div></div>
+          <div class="meta-kv"><div class="meta-k">MODE</div><div class="meta-v">Quadratic √</div></div>
+          <div class="meta-kv"><div class="meta-k">REBATE</div><div class="meta-v">0.001 SOL</div></div>
+        </div>
+        <div class="tally-revealed">
+          <div class="tally-r-row">
+            <span class="tally-r-label" style="color:var(--green)">YES</span>
+            <div class="tally-r-bar"><div class="tally-r-fill" style="width:73%;background:var(--green)"></div></div>
+            <span class="tally-r-val" style="color:var(--green)">847,203</span>
+          </div>
+          <div class="tally-r-row">
+            <span class="tally-r-label" style="color:var(--red)">NO</span>
+            <div class="tally-r-bar"><div class="tally-r-fill" style="width:27%;background:var(--red)"></div></div>
+            <span class="tally-r-val" style="color:var(--red)">313,891</span>
+          </div>
+        </div>
+        <div class="proposal-actions" onclick="event.stopPropagation()">
+          <button class="action-btn action-reveal" onclick="openRevealModal()">Reveal My Vote (+0.001 SOL)</button>
+        </div>
+      </div>
+
+      <!-- PROP-000: PASSED + TIMELOCK -->
+      <div class="proposal-card phase-passed">
+        <div class="proposal-header">
+          <span class="proposal-id">PROP-000 · devnet · DnQTB3T6...</span>
+          <span class="phase-pill pill-passed">✓ PASSED — TIMELOCK</span>
+        </div>
+        <div class="proposal-title">Integrate PrivateDAO as Realms voter weight plugin</div>
+        <div class="proposal-desc">Enable private voting for all existing Realms DAOs via the spl-governance-addin-api VoterWeightRecord interface.</div>
+        <div class="proposal-meta">
+          <div class="meta-kv"><div class="meta-k">YES</div><div class="meta-v" style="color:var(--green)">94%</div></div>
+          <div class="meta-kv"><div class="meta-k">EXECUTES IN</div><div class="meta-v" id="timelockCountdown">18h 44m</div></div>
+          <div class="meta-kv"><div class="meta-k">ACTION</div><div class="meta-v">Send 0.5 SOL</div></div>
+          <div class="meta-kv"><div class="meta-k">RECIPIENT</div><div class="meta-v">Ff5M...UtsZ</div></div>
+        </div>
+        <div class="tally-revealed">
+          <div class="tally-r-row">
+            <span class="tally-r-label" style="color:var(--green)">YES</span>
+            <div class="tally-r-bar"><div class="tally-r-fill" style="width:94%;background:var(--green)"></div></div>
+            <span class="tally-r-val" style="color:var(--green)">1,204,500</span>
+          </div>
+          <div class="tally-r-row">
+            <span class="tally-r-label" style="color:var(--red)">NO</span>
+            <div class="tally-r-bar"><div class="tally-r-fill" style="width:6%;background:var(--red)"></div></div>
+            <span class="tally-r-val" style="color:var(--red)">77,100</span>
+          </div>
+        </div>
+        <div class="proposal-actions">
+          <button class="action-btn action-execute" disabled>⏳ Execute (18h timelock)</button>
+          <button class="action-btn action-veto" style="border:1px solid" onclick="vetoProposal()">Veto</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </section>
 
 </div><!-- /page-proposals -->
@@ -1383,16 +1499,22 @@ async function connectWallet() {
     showToast('Backpack detected — connecting...', 'info'); return;
   }
 
+  // Demo mode
   if(wallet) {
     wallet = null;
     lbl.textContent = 'Connect Wallet';
     dot.className   = 'status-dot';
     btn.className   = 'wallet-btn';
     showToast('Disconnected', 'info');
-    return;
+  } else {
+    // Simulate for demo
+    const demo = 'Demo' + Math.random().toString(36).slice(2,6).toUpperCase() + '...demo';
+    wallet = 'demo';
+    lbl.textContent = demo;
+    dot.className   = 'status-dot live';
+    btn.className   = 'wallet-btn connected';
+    showToast('⚡ Demo mode — install Phantom for real transactions', 'info');
   }
-
-  showToast('Phantom wallet is required for real devnet actions', 'error');
 }
 
 // ── Modals ───────────────────────────────────────────────
@@ -1491,6 +1613,5 @@ document.addEventListener('keydown', e => {
   if(e.key==='Escape') document.querySelectorAll('.modal-overlay').forEach(o => o.classList.remove('open'));
 });
 </script>
->>>>>>> theirs
 </body>
 </html>
