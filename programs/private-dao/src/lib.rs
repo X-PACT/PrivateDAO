@@ -422,10 +422,16 @@ pub mod private_dao {
         vr.voted_yes    = vote;
         p.reveal_count  = p.reveal_count.checked_add(1).ok_or(Error::Overflow)?;
 
-        // Rebate: keep a 1.5m lamport buffer so the account stays rent-exempt
-        let lamports = p.to_account_info().lamports();
-        if lamports > REVEAL_REBATE_LAMPORTS + 1_500_000 {
-            **p.to_account_info().try_borrow_mut_lamports()? -= REVEAL_REBATE_LAMPORTS;
+        // Rebate: only transfer when proposal account remains rent-exempt.
+        let proposal_info = p.to_account_info();
+        let lamports      = proposal_info.lamports();
+        let rent_minimum  = Rent::get()?.minimum_balance(proposal_info.data_len());
+        let rebate_floor  = rent_minimum
+            .checked_add(REVEAL_REBATE_LAMPORTS)
+            .ok_or(Error::Overflow)?;
+
+        if lamports > rebate_floor {
+            **proposal_info.try_borrow_mut_lamports()? -= REVEAL_REBATE_LAMPORTS;
             **ctx.accounts.revealer.try_borrow_mut_lamports()? += REVEAL_REBATE_LAMPORTS;
         }
 

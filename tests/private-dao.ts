@@ -203,7 +203,13 @@ describe("PrivateDAO", () => {
         .rpc();
       assert.fail("Should have rejected double commit");
     } catch (err: any) {
-      assert.include(err.toString(), "AlreadyCommitted");
+      const msg = err.toString();
+      assert.isTrue(
+        msg.includes("AlreadyCommitted")
+          || msg.includes("already committed")
+          || msg.includes("0x1779"),
+        `unexpected error: ${msg}`,
+      );
       console.log("  ✓ double-commit rejected");
     }
   });
