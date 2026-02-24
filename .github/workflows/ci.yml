@@ -35,8 +35,5 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Start local validator
-        run: nohup solana-test-validator --reset > /tmp/validator.log 2>&1 &
-
       - name: Verify
         run: bash scripts/verify.sh
