@@ -82,6 +82,11 @@ solana config set \
 # Get devnet SOL (free)
 solana airdrop 2
 
+# Optional fallback: your own faucet API (for strict rate limits)
+export CUSTOM_FAUCET_URL="https://your-faucet-domain/api/airdrop"
+export CUSTOM_FAUCET_METHOD="POST"
+bash scripts/fund-devnet.sh 2
+
 # Verify
 solana balance
 # Should show: 2 SOL

@@ -121,6 +121,11 @@ solana config set --keypair "$ANCHOR_WALLET" --url https://api.devnet.solana.com
 # fund (with retries + RPC rotation)
 bash scripts/fund-devnet.sh 2
 
+# optional: use your own faucet API first, then fallback to RPC airdrops
+export CUSTOM_FAUCET_URL="https://your-faucet-domain/api/airdrop"
+export CUSTOM_FAUCET_METHOD="POST"
+bash scripts/fund-devnet.sh 2
+
 # build + deploy
 anchor build
 anchor deploy --provider.cluster devnet
@@ -135,6 +140,7 @@ yarn finalize -- --proposal <PDA>
 ```
 
 For CI deploy, use GitHub Actions workflow `Deploy to Devnet` with `SOLANA_PRIVATE_KEY` in repository secrets (optionally `HELIUS_API_KEY`).
+Never commit `SENDER_SECRET_KEY` or wallet private keys to the repository.
 
 ### Low-spec local machine
 
