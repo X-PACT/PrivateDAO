@@ -1,294 +1,213 @@
-# PrivateDAO 🪦→🔐
+# PrivateDAO
 
 <p align="center">
-  <img src="docs/assets/logo.png" alt="PrivateDAO logo 🔐" width="180" />
+  <img src="docs/assets/logo.png" alt="PrivateDAO logo" width="180" />
 </p>
 
-![CI](https://img.shields.io/github/actions/workflow/status/eslamx-pact/PrivateDAO/ci.yml?branch=main&label=CI) ![Solana](https://img.shields.io/badge/Solana-Devnet-14F195) ![Anchor](https://img.shields.io/badge/Anchor-0.32.1-blue) ![License](https://img.shields.io/badge/license-MIT-green)
+[![CI](https://img.shields.io/github/actions/workflow/status/X-PACT/PrivateDAO/ci.yml?branch=main&label=CI)](https://github.com/X-PACT/PrivateDAO/actions/workflows/ci.yml)
+[![Solana](https://img.shields.io/badge/Solana-Devnet-14F195)](https://solana.com)
+[![Anchor](https://img.shields.io/badge/Anchor-0.32.1-blue)](https://www.anchor-lang.com)
+[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
-> **Commit-reveal governance for Solana. Built for Solana Graveyard Hackathon 2026.**
-> Targeting: DAOs track (Realms $5K) · Migrations track (Sunrise $7K) · Overall ($15K)
+Production-grade private governance for Solana DAOs using commit-reveal voting, timelocked execution, and treasury safety checks.
 
----
-
-## Why DAOs ended up in the graveyard
-
-Every vote on Realms, Squads, or SPL Governance is public the moment it's cast. This created three structural problems that no one fixed:
-
-| Problem | How it plays out |
-|---------|-----------------|
-| **Vote buying** | Whale watches live tally, pays wallets to flip their vote in the final hour |
-| **Whale intimidation** | Small holders see a big wallet vote YES and flip their own vote to match |
-| **Treasury front-running** | A "buy Token X" proposal starts passing. Bots see it and buy ahead of the treasury |
-
-These aren't theoretical. They happened in Compound, MakerDAO, Uniswap. They're happening on Solana right now.
-
-**PrivateDAO fixes the root cause — public voting — not the symptoms.**
+Built for Solana Graveyard Hackathon 2026 with focus on real security controls, Realms migration, and operational readiness.
 
 ---
 
-## How it works
+## Executive Summary
 
-Three phases. Tally shows `0/0` until after voting closes.
+Most DAO stacks reveal votes and interim tally in real time. That creates three high-risk dynamics:
 
-```
-Phase 1 — COMMIT (voting open)
-  voter sends:  sha256(vote || salt || voter_pubkey)
-  chain shows:  Commits: 127  |  YES: 0  |  NO: 0
+- Vote buying during live tally swings.
+- Whale intimidation and herd behavior.
+- Treasury front-running once proposal direction is obvious.
 
-Phase 2 — REVEAL (after voting_end)
-  voter proves: (vote=true, salt=0xabc...)
-  chain checks: sha256(vote || salt || pubkey) == stored commitment ✓
-  chain shows:  Commits: 127  |  YES: 74  |  NO: 45
+PrivateDAO removes live tally visibility through commit-reveal and enforces delayed, auditable treasury execution.
 
-Phase 3 — FINALIZE (after reveal_end, permissionless)
-  anyone calls: finalize_proposal()
-  result:       PASSED ✅  |  treasury executes automatically
+---
+
+## Core Capabilities
+
+- Commit-reveal voting with hidden tally during voting phase.
+- Voting modes:
+  - Token-weighted
+  - Quadratic
+  - Dual-chamber (capital + community thresholds)
+- Keeper-authorized reveal for voter liveness protection.
+- Timelock and veto window before treasury execution.
+- Treasury action validation (`SendSol`, `SendToken`, `CustomCPI`).
+- Realms-compatible voter-weight record support.
+- Migration helper from existing Realms governance setup.
+
+---
+
+## Security Posture
+
+Key protections currently implemented:
+
+- Commitment preimage binding:
+  - `sha256(vote_byte || salt_32 || voter_pubkey_32)`
+  - prevents replay across voters.
+- Weight snapshot at commit time:
+  - reduces post-vote token movement manipulation.
+- Recipient and mint integrity checks for treasury execution:
+  - blocks recipient substitution and mint mismatch.
+- Token account ownership and authority checks before token transfers.
+- Rent-safe reveal rebate logic:
+  - rebate is transferred only if proposal account remains rent-exempt.
+- Timelocked execution with explicit veto window.
+
+---
+
+## Protocol Flow
+
+```text
+1) Commit (voting open)
+   - voters submit commitment hash only
+   - tally remains hidden (YES=0 / NO=0)
+
+2) Reveal (after voting_end)
+   - voter or approved keeper reveals (vote, salt)
+   - program verifies commitment and updates tally
+
+3) Finalize (after reveal_end)
+   - permissionless finalization computes result
+   - if passed, execution unlock timestamp is set
+
+4) Execute (after timelock)
+   - permissionless execution fires treasury action
 ```
 
 ---
 
-## What makes this different
+## Repository Layout
 
-### 🏗️ Quadratic voting (new on Solana)
-
-Standard token-weighted voting means a whale with 10,000 tokens dominates a holder with 100. PrivateDAO's quadratic mode: **weight = √(token balance)**.
-
+```text
+programs/private-dao/src/lib.rs      Core Anchor program
+tests/demo.ts                        Full lifecycle demo test
+tests/full-flow-test.ts              End-to-end integration test
+tests/private-dao.ts                 Unit/integration behavior tests
+scripts/                             Operational and devnet scripts
+migrations/migrate-realms-dao.ts     Realms migration tooling
+docs/                                GitHub Pages documentation
 ```
-10,000 tokens → weight  3,162  (10x tokens, 3.16x power)
- 1,000 tokens → weight  1,000
-   100 tokens → weight    316
-```
-
-The community can actually govern. And because the tally is hidden, the whale can't even see if their √(10,000) is winning or losing.
-
-### 🔑 Keeper-based auto-reveal
-
-The biggest UX problem with commit-reveal: "what if I forget to reveal?"
-
-At commit time, a voter sets a `voter_reveal_authority`. A keeper (any trusted wallet) can submit the reveal on their behalf if the voter doesn't. The keeper can't change the vote — only the voter holds the salt.
-
-```typescript
-// commit with keeper authorization
-await commitVote(commitment, keeper.publicKey)
-
-// if voter forgets — keeper submits the reveal
-await revealVote(vote, salt, { signer: keeper })
-```
-
-### 💸 Real treasury execution (fully wired)
-
-Proposals pass → treasury action executes inside `finalize_proposal` via CPI:
-- `SendSol` → `system_program::transfer` from treasury PDA
-- `SendToken` → `token::transfer` from treasury token account
-- `CustomCPI` → emits event for relayer (extensible)
-
-### 🔌 Realms plugin (zero migration)
-
-Implements `spl-governance-addin-api` VoterWeightRecord layout exactly. Any existing Realms DAO adds private voting as a plugin — no token migration, no proposal disruption.
-
-### 🌅 Migrate from Realms (Sunrise track)
-
-`migrate_from_realms` takes your Realms governance pubkey + governance token and creates a mirrored PrivateDAO. Everything stays. Voting becomes private.
 
 ---
 
-## Running it locally (no devnet needed)
+## Local Development
+
+### Prerequisites
+
+- Rust stable toolchain
+- Solana CLI
+- Anchor CLI `0.32.1`
+- Node.js + Yarn
+
+### Build and test on local validator
 
 ```bash
-# 1. Install dependencies
 yarn install
-
-# 2. Start local validator (in a separate terminal)
 solana-test-validator --reset
-
-# 3. Build
 anchor build
+anchor test
+```
 
-# 4. Run the full demo — shows all 3 phases + quadratic + keeper
+Run only the full demo scenario:
+
+```bash
 anchor test -- --grep "demo"
 ```
 
-The demo runs in ~30 seconds on localnet. Shows the full lifecycle including a case where quadratic voting reverses the result vs token-weighted voting.
+---
 
-### Deploy to devnet
+## Devnet Deployment
+
+### 1) Configure wallet and RPC
 
 ```bash
-# use your local wallet (same one used for deploy authority)
 export ANCHOR_WALLET=~/.config/solana/id.json
 solana config set --keypair "$ANCHOR_WALLET" --url https://api.devnet.solana.com
+```
 
-# fund (with retries + RPC rotation)
+### 2) Fund wallet (RPC rotation + retries)
+
+```bash
 bash scripts/fund-devnet.sh 2
+```
 
-# optional: use your own faucet API first, then fallback to RPC airdrops
+### 3) Optional custom faucet endpoint
+
+If you run your own faucet service, the funding script can call it first:
+
+```bash
 export CUSTOM_FAUCET_URL="https://your-faucet-domain/api/airdrop"
 export CUSTOM_FAUCET_METHOD="POST"
 bash scripts/fund-devnet.sh 2
+```
 
-# build + deploy
+### 4) Deploy
+
+```bash
 anchor build
 anchor deploy --provider.cluster devnet
-
-# create a DAO
-yarn create-dao -- --name "MyDAO" --quorum 51 --mode quadratic
-
-# full flow
-yarn commit -- --proposal <PDA> --vote yes
-yarn reveal -- --proposal <PDA>
-yarn finalize -- --proposal <PDA>
 ```
 
-For CI deploy, use GitHub Actions workflow `Deploy to Devnet` with `SOLANA_PRIVATE_KEY` in repository secrets (optionally `HELIUS_API_KEY`).
-Never commit `SENDER_SECRET_KEY` or wallet private keys to the repository.
-
-### Low-spec local machine
-
-If your local machine is resource-constrained, run heavy checks in GitHub Actions:
+### 5) Validate deployed programs or addresses
 
 ```bash
-gh workflow run CI
-gh run watch
-```
-
-The `CI` workflow now supports manual trigger (`workflow_dispatch`) in addition to push/PR.
-
-### Verify existing devnet contracts
-
-If you already have Rust contracts/programs on devnet, inspect them before wiring integration:
-
-```bash
-bash scripts/check-contracts.sh <ADDRESS_1> <ADDRESS_2>
-```
-
-This prints executable flag, owner program, lamports, data size, and Solscan links.
-
-### Migrate from Realms
-
-```bash
-yarn migrate -- \
-  --governance <REALMS_GOVERNANCE_PUBKEY> \
-  --name "MyDAO-Private" \
-  --mint <GOVERNANCE_TOKEN_MINT>
+bash scripts/check-contracts.sh DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs
 ```
 
 ---
 
-## Project structure
+## CI and Quality Gates
 
-```
-programs/private-dao/src/lib.rs      Anchor program — all logic
-tests/demo.ts                        Full demo (run with anchor test)
-tests/private-dao.ts                 Unit tests
-scripts/                             CLI scripts
-  create-dao.ts
-  create-proposal.ts
-  commit-vote.ts
-  reveal-vote.ts
-  finalize.ts
-migrations/migrate-realms-dao.ts     Sunrise migration tool
+Current CI enforces:
+
+- Toolchain verification
+- Anchor build
+- Anchor test
+- Non-real-code scan (non-production artifacts)
+
+Manual verification locally:
+
+```bash
+bash scripts/verify.sh tools
+bash scripts/verify.sh build
+bash scripts/verify.sh test
+bash scripts/verify.sh scan
 ```
 
 ---
 
-## Commitment scheme
+## Global Grant Targets (2026)
 
-```
-preimage  = vote_byte (1B) || salt (32B) || voter_pubkey (32B)  =  65 bytes
-commitment = sha256(preimage)  stored as [u8; 32] in VoterRecord
-```
+These programs are highly relevant for security-focused DAO infrastructure, privacy tooling, and open-source public goods.
 
-voter_pubkey in the preimage prevents a replay attack: without it, voter B could copy voter A's commitment and reveal with the same salt, double-counting a vote. With the pubkey, the commitment is voter-specific.
+| Program | Why it fits PrivateDAO | Official link |
+|---|---|---|
+| Solana Foundation Grants | Solana-native infra, public goods, security tooling | https://solana.org/grants |
+| Superteam Earn Grants | Regional Solana grants for shipping teams | https://earn.superteam.fun/grants |
+| Gitcoin Grants Program | Public-goods funding with strong OSS visibility | https://www.gitcoin.co/program |
+| Ethereum Foundation ESP | Grants for open-source infra, tooling, and research | https://esp.ethereum.foundation/ |
+| NLnet Funding / NGI0 | Privacy and open internet digital commons grants | https://nlnet.nl/funding.html |
+| Filecoin Foundation Grants | Open-source infra, research, and protocol-level tooling | https://fil.org/grants |
 
-32-byte salt: 2^256 possible values — brute-forcing is computationally impossible.
+Submission windows and eligibility change frequently. Verify open calls and scope before applying.
 
 ---
 
-## Honest tradeoffs
+## Documentation and Demo Assets
 
-- **Reveal friction** — voters must return after voting closes. Keeper mechanism + SOL rebate help, but it's still two steps. ZK proofs remove this (planned v2).
-- **Timing correlation** — attacker watching tx timestamps could infer patterns. Full privacy needs ZK.
-- **Quadratic Sybil risk** — splitting tokens across wallets games quadratic mode. A KYC/Sybil-resistance layer is a plugin point, not in scope.
+- Web documentation entry: `docs/index.html`
+- Logo assets: `docs/assets/logo.png`
+- Program source: `programs/private-dao/src/lib.rs`
 
 ---
 
 ## License
 
-MIT
+MIT License
 
----
-
-## Hackathon Submission Pack
-
-### What it is
-PrivateDAO is a Solana governance protocol that uses commit-reveal voting with optional quadratic weighting and dual-chamber thresholds.
-
-### Why it matters
-It reduces vote buying, whale intimidation, and treasury front-running by sealing tallies until reveal/finalization windows.
-
-### How it works
-1. Commit phase: voters submit SHA-256 commitment hashes.
-2. Reveal phase: voters (or approved keepers) reveal vote+salt proofs.
-3. Finalize/execute phase: anyone finalizes; treasury execution is timelocked.
-
-### Quickstart (Devnet)
-```bash
-yarn install
-bash scripts/fund-devnet.sh
-anchor build
-anchor deploy
-```
-
-### Security considerations
-- Commitments include voter pubkey to prevent replay.
-- Weight snapshots are taken at commit time.
-- Timelock + veto allow emergency intervention before execution.
-
-### Known limitations
-- Commit-reveal is two-step UX.
-- Quadratic mode needs Sybil-resistance policy at DAO layer.
-- Devnet faucet rate limits can delay deployment.
-
-### Demo guide
-- GitHub Pages main entry: `docs/index.html`
-- Demo walkthrough section: `#demo` on the same page.
-- Root HTML entry retained: `privatedao-frontend.html`
-
-### Judges quick checklist
-1. `anchor build` passes.
-2. `anchor test` passes locally.
-3. Non-real-code grep scan returns clean (excluding lockfiles).
-4. Devnet funding script executes with retries/RPC rotation.
-
-### Architecture diagram
-```mermaid
-flowchart LR
-  W[Voter Wallet] --> C[commit_vote]
-  C --> P[Proposal Account]
-  W --> R[reveal_vote]
-  R --> P
-  P --> F[finalize_proposal]
-  F --> T[Treasury PDA]
-  T --> E[execute_proposal CPI]
-```
-
-### Share snippets
-**X / Twitter**
-```text
-PrivateDAO brings commit-reveal governance to Solana: hidden tallies, quadratic + dual-chamber voting, keeper-assisted reveals, and timelocked treasury execution. Built for real DAO ops. #Solana #DAO #Anchor
-```
-
-**Discord**
-```text
-We shipped PrivateDAO: a production-grade commit-reveal governance protocol on Solana with timelocked execution and Realms migration support. Review the demo + tests in the repo.
-```
-
-**Solana forums**
-```text
-PrivateDAO introduces private governance primitives (commit/reveal/finalize/execute) with DualChamber voting and migration tooling for existing Realms communities.
-```
-
-**Hackathon form (short)**
-```text
-PrivateDAO is a Solana governance protocol that prevents live-tally manipulation using commit-reveal voting, supports quadratic/dual-chamber modes, integrates with Realms through voter-weight records, and enforces timelocked treasury execution.
-```
+Copyright (c) 2026 X-PACT
