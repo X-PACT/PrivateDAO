@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
+# Copyright (c) 2026 X-PACT. MIT License.
 set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=scripts/lib/solana-tools.sh
+. "$SCRIPT_DIR/lib/solana-tools.sh"
+ensure_required_tools "SOLANA_BIN:solana" "SOLANA_KEYGEN_BIN:solana-keygen"
 
 WALLET_PATH="${ANCHOR_WALLET:-$HOME/.config/solana/id.json}"
 if [[ ! -f "$WALLET_PATH" ]]; then
@@ -7,7 +13,7 @@ if [[ ! -f "$WALLET_PATH" ]]; then
   exit 1
 fi
 
-WALLET_ADDRESS="$(solana-keygen pubkey "$WALLET_PATH")"
+WALLET_ADDRESS="$("$SOLANA_KEYGEN_BIN" pubkey "$WALLET_PATH")"
 TARGET_SOL="${1:-2}"
 MAX_ROUNDS="${MAX_ROUNDS:-5}"
 
@@ -24,14 +30,23 @@ if [[ -n "${QUICKNODE_DEVNET_RPC:-}" ]]; then
   RPCS+=("${QUICKNODE_DEVNET_RPC}")
 fi
 
+if [[ -n "${EXTRA_DEVNET_RPCS:-}" ]]; then
+  IFS=',' read -r -a extra_rpcs <<< "${EXTRA_DEVNET_RPCS}"
+  for rpc in "${extra_rpcs[@]}"; do
+    if [[ -n "${rpc// }" ]]; then
+      RPCS+=("$rpc")
+    fi
+  done
+fi
+
 echo "Using wallet: ${WALLET_ADDRESS}"
-solana config set --keypair "$WALLET_PATH" --url "${RPCS[0]}" >/dev/null
+"$SOLANA_BIN" config set --keypair "$WALLET_PATH" --url "${RPCS[0]}" >/dev/null
 
 airdrop_once() {
   local rpc="$1"
   local amount="$2"
   echo "Attempting airdrop ${amount} SOL via ${rpc}"
-  if solana airdrop "$amount" "$WALLET_ADDRESS" --url "$rpc" >/tmp/fund-devnet-airdrop.log 2>&1; then
+  if "$SOLANA_BIN" airdrop "$amount" "$WALLET_ADDRESS" --url "$rpc" >/tmp/fund-devnet-airdrop.log 2>&1; then
     cat /tmp/fund-devnet-airdrop.log
     return 0
   fi
@@ -41,13 +56,13 @@ airdrop_once() {
 
 balance_sol() {
   local rpc="$1"
-  solana balance "$WALLET_ADDRESS" --url "$rpc" | awk '{print $1}'
+  "$SOLANA_BIN" balance "$WALLET_ADDRESS" --url "$rpc" | awk '{print $1}'
 }
 
 for ((round=1; round<=MAX_ROUNDS; round++)); do
   echo "\n=== Funding round ${round}/${MAX_ROUNDS} ==="
   for rpc in "${RPCS[@]}"; do
-    solana config set --url "$rpc" >/dev/null || true
+    "$SOLANA_BIN" config set --url "$rpc" >/dev/null || true
     if airdrop_once "$rpc" "$TARGET_SOL"; then
       bal="$(balance_sol "$rpc" || echo "0")"
       echo "Current balance on ${rpc}: ${bal} SOL"

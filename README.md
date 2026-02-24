@@ -1,5 +1,9 @@
 # PrivateDAO 🪦→🔐
 
+<p align="center">
+  <img src="docs/assets/logo.png" alt="PrivateDAO logo 🔐" width="180" />
+</p>
+
 ![CI](https://img.shields.io/github/actions/workflow/status/eslamx-pact/PrivateDAO/ci.yml?branch=main&label=CI) ![Solana](https://img.shields.io/badge/Solana-Devnet-14F195) ![Anchor](https://img.shields.io/badge/Anchor-0.32.1-blue) ![License](https://img.shields.io/badge/license-MIT-green)
 
 > **Commit-reveal governance for Solana. Built for Solana Graveyard Hackathon 2026.**
@@ -131,6 +135,27 @@ yarn finalize -- --proposal <PDA>
 ```
 
 For CI deploy, use GitHub Actions workflow `Deploy to Devnet` with `SOLANA_PRIVATE_KEY` in repository secrets (optionally `HELIUS_API_KEY`).
+
+### Low-spec local machine
+
+If your local machine is resource-constrained, run heavy checks in GitHub Actions:
+
+```bash
+gh workflow run CI
+gh run watch
+```
+
+The `CI` workflow now supports manual trigger (`workflow_dispatch`) in addition to push/PR.
+
+### Verify existing devnet contracts
+
+If you already have Rust contracts/programs on devnet, inspect them before wiring integration:
+
+```bash
+bash scripts/check-contracts.sh <ADDRESS_1> <ADDRESS_2>
+```
+
+This prints executable flag, owner program, lamports, data size, and Solscan links.
 
 ### Migrate from Realms
 

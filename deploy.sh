@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
+# Copyright (c) 2026 X-PACT. MIT License.
 # ─────────────────────────────────────────────────────────────────────────────
 #  PrivateDAO — Full Deploy Script
 #  Solana Graveyard Hackathon 2026
 # ─────────────────────────────────────────────────────────────────────────────
-set -e
+set -euo pipefail
 
 GREEN='\033[0;32m'; YELLOW='\033[1;33m'; RED='\033[0;31m'; CYAN='\033[0;36m'; NC='\033[0m'
 OK="${GREEN}✓${NC}"; WARN="${YELLOW}⚠${NC}"
@@ -13,14 +14,15 @@ ok()      { echo -e "  ${OK}  $1"; }
 warn()    { echo -e "  ${WARN}  $1"; }
 fail()    { echo -e "  ${RED}✗  $1${NC}"; exit 1; }
 
-# ── Fix Solana PATH ───────────────────────────────────────────────────────────
-for p in \
-  "$HOME/.local/share/solana/install/active_release/bin" \
-  "$HOME/.local/share/solana/releases/stable/bin" \
-  "/usr/local/lib/solana/active_release/bin"; do
-  [ -d "$p" ] && [[ ":$PATH:" != *":$p:"* ]] && export PATH="$p:$PATH"
-done
-[ -d "$HOME/.cargo/bin" ] && export PATH="$HOME/.cargo/bin:$PATH"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=scripts/lib/solana-tools.sh
+. "$SCRIPT_DIR/scripts/lib/solana-tools.sh"
+ensure_required_tools \
+  "SOLANA_BIN:solana" \
+  "SOLANA_KEYGEN_BIN:solana-keygen" \
+  "ANCHOR_BIN:anchor" \
+  "NODE_BIN:node" \
+  "CARGO_BIN:cargo"
 
 # ── Load .env safely (skip non KEY=VALUE lines) ───────────────────────────────
 if [ -f ".env" ]; then
@@ -36,7 +38,7 @@ else
   warn ".env not found — copy .env.example and add your Helius key"
 fi
 
-if [ -n "$HELIUS_API_KEY" ] && [ "$HELIUS_API_KEY" != "your_helius_api_key_here" ]; then
+if [ -n "${HELIUS_API_KEY:-}" ] && [ "${HELIUS_API_KEY:-}" != "your_helius_api_key_here" ]; then
   SOLANA_RPC_URL="https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}"
   ok "Using Helius devnet RPC"
 else
@@ -57,43 +59,46 @@ echo "  Program ID: $PROGRAM_ID"
 # ── 1. Prerequisites ──────────────────────────────────────────────────────────
 divider "1. Prerequisites"
 
-check_cmd() {
-  command -v "$1" &>/dev/null \
-    && ok "$1: $($1 --version 2>&1 | head -1)" \
-    || { fail "$1 not found"; }
+check_bin() {
+  local label="$1"
+  local bin_path="$2"
+  if [[ -z "$bin_path" ]]; then
+    fail "$label not found"
+  fi
+  ok "$label: $("$bin_path" --version 2>&1 | head -1)"
 }
 
-check_cmd solana
-check_cmd anchor
-check_cmd node
-check_cmd cargo
+check_bin solana "$SOLANA_BIN"
+check_bin anchor "$ANCHOR_BIN"
+check_bin node "$NODE_BIN"
+check_bin cargo "$CARGO_BIN"
 
 # ── 2. Wallet ─────────────────────────────────────────────────────────────────
 divider "2. Wallet"
 
 WALLET="${ANCHOR_WALLET:-$HOME/.config/solana/id.json}"
 if [ ! -f "$WALLET" ]; then
-  solana-keygen new --outfile "$WALLET" --no-bip39-passphrase --silent
+  "$SOLANA_KEYGEN_BIN" new --outfile "$WALLET" --no-bip39-passphrase --silent
   ok "New wallet created: $WALLET"
 fi
-PUBKEY=$(solana-keygen pubkey "$WALLET")
+PUBKEY=$("$SOLANA_KEYGEN_BIN" pubkey "$WALLET")
 ok "Wallet: $PUBKEY"
 
 # ── 3. Configure Solana CLI ───────────────────────────────────────────────────
 divider "3. Network Config"
 
-solana config set --url "$SOLANA_RPC_URL" --keypair "$WALLET" > /dev/null
+"$SOLANA_BIN" config set --url "$SOLANA_RPC_URL" --keypair "$WALLET" > /dev/null
 ok "Cluster: devnet"
 
 # ── 4. SOL Balance ────────────────────────────────────────────────────────────
 divider "4. SOL Balance"
 
-BALANCE=$(solana balance "$PUBKEY" --url "$SOLANA_RPC_URL" 2>/dev/null | awk '{print $1}' || echo "0")
+BALANCE=$("$SOLANA_BIN" balance "$PUBKEY" --url "$SOLANA_RPC_URL" 2>/dev/null | awk '{print $1}' || echo "0")
 echo "  Balance: $BALANCE SOL"
 
 if awk "BEGIN{exit !($BALANCE < 2)}"; then
   echo "  Requesting airdrop..."
-  solana airdrop 2 "$PUBKEY" --url "$SOLANA_RPC_URL" && ok "Airdrop: +2 SOL" || {
+  "$SOLANA_BIN" airdrop 2 "$PUBKEY" --url "$SOLANA_RPC_URL" && ok "Airdrop: +2 SOL" || {
     warn "Airdrop rate-limited. Visit https://faucet.solana.com"
     warn "Then re-run ./deploy.sh"
   }
@@ -102,8 +107,8 @@ fi
 # ── 5. Node dependencies ──────────────────────────────────────────────────────
 divider "5. Node Dependencies"
 
-if command -v yarn &>/dev/null; then
-  yarn install --silent 2>&1 | tail -2
+if [[ -n "${YARN_BIN:-}" ]]; then
+  "$YARN_BIN" install --silent 2>&1 | tail -2
   ok "yarn install done"
 else
   npm install --silent 2>&1 | tail -2
@@ -114,7 +119,7 @@ fi
 divider "6. Build"
 
 echo "  anchor build... (1-2 min first time)"
-anchor build 2>&1 | grep -E "^error|Compiling private_dao|Finished" || true
+"$ANCHOR_BIN" build 2>&1 | grep -E "^error|Compiling private_dao|Finished" || true
 
 [ -f "target/deploy/private_dao.so" ] \
   && ok "Built: target/deploy/private_dao.so ($(du -sh target/deploy/private_dao.so | cut -f1))" \
@@ -124,7 +129,7 @@ anchor build 2>&1 | grep -E "^error|Compiling private_dao|Finished" || true
 divider "7. Deploy"
 
 echo "  Deploying to devnet..."
-anchor deploy \
+"$ANCHOR_BIN" deploy \
   --provider.cluster "$SOLANA_RPC_URL" \
   --provider.wallet  "$WALLET" \
   2>&1 | tee /tmp/privatedao_deploy.txt
@@ -138,7 +143,7 @@ if [ -n "$DEPLOYED_ID" ]; then
     sed -i "s/$PROGRAM_ID/$DEPLOYED_ID/g" programs/private-dao/src/lib.rs Anchor.toml
     ok "Updated declare_id! → $DEPLOYED_ID"
     echo "  Rebuilding..."
-    anchor build 2>&1 | tail -3
+    "$ANCHOR_BIN" build 2>&1 | tail -3
     PROGRAM_ID="$DEPLOYED_ID"
   fi
 fi

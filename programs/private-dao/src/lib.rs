@@ -41,6 +41,8 @@ declare_id!("DTFXjbcv2dFQkEFvBhgTUj1dNDgPRgRCyBa8yeVz8wZs");
 
 pub const REVEAL_REBATE_LAMPORTS: u64 = 1_000_000; // 0.001 SOL per reveal
 pub const DEFAULT_EXECUTION_DELAY: i64 = 86_400;   // 24-hour timelock default
+pub const MIN_REVEAL_WINDOW_SECONDS: i64 = 5;
+pub const MIN_VOTING_DURATION_SECONDS: i64 = 5;
 
 #[program]
 pub mod private_dao {
@@ -59,7 +61,11 @@ pub mod private_dao {
     ) -> Result<()> {
         require!(dao_name.len() <= 64,          Error::NameTooLong);
         require!(quorum_percentage > 0 && quorum_percentage <= 100, Error::InvalidQuorum);
-        require!(reveal_window_seconds >= 3600, Error::RevealWindowTooShort);
+        require!(
+            reveal_window_seconds >= MIN_REVEAL_WINDOW_SECONDS,
+            Error::RevealWindowTooShort
+        );
+        require!(execution_delay_seconds >= 0, Error::InvalidExecutionDelay);
         validate_voting_config(&voting_config)?;
 
         let dao = &mut ctx.accounts.dao;
@@ -95,7 +101,11 @@ pub mod private_dao {
     ) -> Result<()> {
         require!(dao_name.len() <= 64,          Error::NameTooLong);
         require!(quorum_percentage > 0 && quorum_percentage <= 100, Error::InvalidQuorum);
-        require!(reveal_window_seconds >= 3600, Error::RevealWindowTooShort);
+        require!(
+            reveal_window_seconds >= MIN_REVEAL_WINDOW_SECONDS,
+            Error::RevealWindowTooShort
+        );
+        require!(execution_delay_seconds >= 0, Error::InvalidExecutionDelay);
         validate_voting_config(&voting_config)?;
 
         let dao = &mut ctx.accounts.dao;
@@ -129,7 +139,13 @@ pub mod private_dao {
     ) -> Result<()> {
         require!(title.len() <= 128,             Error::TitleTooLong);
         require!(description.len() <= 1024,      Error::DescriptionTooLong);
-        require!(voting_duration_seconds >= 3600, Error::VotingDurationTooShort);
+        require!(
+            voting_duration_seconds >= MIN_VOTING_DURATION_SECONDS,
+            Error::VotingDurationTooShort
+        );
+        if let Some(action) = &treasury_action {
+            validate_treasury_action(action)?;
+        }
 
         let now = Clock::get()?.unix_timestamp;
         let dao = &mut ctx.accounts.dao;
@@ -514,6 +530,7 @@ pub mod private_dao {
         p.is_executed = true;
 
         if let Some(ref action) = p.treasury_action.clone() {
+            validate_treasury_action(action)?;
             let dao_key = ctx.accounts.dao.key();
             let t_bump  = ctx.bumps.treasury;
             let seeds: &[&[u8]] = &[b"treasury", dao_key.as_ref(), &[t_bump]];
@@ -521,6 +538,10 @@ pub mod private_dao {
 
             match action.action_type {
                 TreasuryActionType::SendSol => {
+                    require!(
+                        ctx.accounts.treasury_recipient.key() == action.recipient,
+                        Error::TreasuryRecipientMismatch
+                    );
                     transfer(
                         CpiContext::new_with_signer(
                             ctx.accounts.system_program.to_account_info(),
@@ -539,9 +560,47 @@ pub mod private_dao {
                     });
                 }
                 TreasuryActionType::SendToken => {
-                    // treasury_token_account and recipient_token_account are
-                    // validated by the token CPI — they must be valid SPL token
-                    // accounts matching the action's token_mint.
+                    require!(
+                        ctx.accounts.treasury_recipient.key() == action.recipient,
+                        Error::TreasuryRecipientMismatch
+                    );
+                    let action_mint = action.token_mint.ok_or(Error::TokenMintRequired)?;
+                    require!(
+                        *ctx.accounts.treasury_token_account.owner == ctx.accounts.token_program.key(),
+                        Error::InvalidTokenAccount
+                    );
+                    require!(
+                        *ctx.accounts.recipient_token_account.owner == ctx.accounts.token_program.key(),
+                        Error::InvalidTokenAccount
+                    );
+                    require!(
+                        ctx.accounts.treasury_token_account.data_len() >= 72,
+                        Error::InvalidTokenAccount
+                    );
+                    require!(
+                        ctx.accounts.recipient_token_account.data_len() >= 72,
+                        Error::InvalidTokenAccount
+                    );
+                    let treasury_token_owner =
+                        token::accessor::authority(&ctx.accounts.treasury_token_account)?;
+                    let treasury_token_mint =
+                        token::accessor::mint(&ctx.accounts.treasury_token_account)?;
+                    let recipient_token_owner =
+                        token::accessor::authority(&ctx.accounts.recipient_token_account)?;
+                    let recipient_token_mint =
+                        token::accessor::mint(&ctx.accounts.recipient_token_account)?;
+
+                    require!(
+                        treasury_token_owner == ctx.accounts.treasury.key(),
+                        Error::InvalidTreasuryTokenAuthority
+                    );
+                    require!(treasury_token_mint == action_mint, Error::InvalidTokenMint);
+                    require!(recipient_token_mint == action_mint, Error::InvalidTokenMint);
+                    require!(
+                        recipient_token_owner == action.recipient,
+                        Error::RecipientOwnerMismatch
+                    );
+
                     token::transfer(
                         CpiContext::new_with_signer(
                             ctx.accounts.token_program.to_account_info(),
@@ -561,6 +620,10 @@ pub mod private_dao {
                     });
                 }
                 TreasuryActionType::CustomCPI => {
+                    require!(
+                        ctx.accounts.treasury_recipient.key() == action.recipient,
+                        Error::TreasuryRecipientMismatch
+                    );
                     // Emit event; off-chain relayer handles the custom call
                     emit!(TreasuryExecuted {
                         proposal:  p.key(),
@@ -649,6 +712,27 @@ fn validate_voting_config(cfg: &VotingConfig) -> Result<()> {
     if let VotingConfig::DualChamber { capital_threshold, community_threshold } = cfg {
         require!(*capital_threshold   > 0 && *capital_threshold   <= 100, Error::InvalidThreshold);
         require!(*community_threshold > 0 && *community_threshold <= 100, Error::InvalidThreshold);
+    }
+    Ok(())
+}
+
+fn validate_treasury_action(action: &TreasuryAction) -> Result<()> {
+    match action.action_type {
+        TreasuryActionType::SendSol => {
+            require!(action.amount_lamports > 0, Error::InvalidTreasuryAction);
+            require!(action.token_mint.is_none(), Error::InvalidTreasuryAction);
+            require!(action.recipient != Pubkey::default(), Error::InvalidTreasuryAction);
+        }
+        TreasuryActionType::SendToken => {
+            require!(action.amount_lamports > 0, Error::InvalidTreasuryAction);
+            require!(action.token_mint.is_some(), Error::TokenMintRequired);
+            require!(action.recipient != Pubkey::default(), Error::InvalidTreasuryAction);
+        }
+        TreasuryActionType::CustomCPI => {
+            require!(action.amount_lamports == 0, Error::InvalidTreasuryAction);
+            require!(action.token_mint.is_none(), Error::InvalidTreasuryAction);
+            require!(action.recipient != Pubkey::default(), Error::InvalidTreasuryAction);
+        }
     }
     Ok(())
 }
@@ -886,6 +970,9 @@ pub struct UpdateVoterWeightRecord<'info> {
     pub dao:                  Account<'info, Dao>,
     /// CHECK: Realms realm account — not owned by this program
     pub realm:                AccountInfo<'info>,
+    #[account(
+        constraint = governing_token_mint.key() == dao.governance_token @ Error::GoverningMintMismatch
+    )]
     pub governing_token_mint: Account<'info, Mint>,
     #[account(
         init_if_needed, payer = voter, space = VoterWeightRecord::LEN,
@@ -1129,8 +1216,9 @@ pub struct TreasuryExecuted { pub proposal: Pubkey, pub amount: u64, pub recipie
 pub enum Error {
     #[msg("DAO name max 64 chars")]                        NameTooLong,
     #[msg("Quorum must be 1–100")]                         InvalidQuorum,
-    #[msg("Reveal window min 1 hour")]                     RevealWindowTooShort,
-    #[msg("Voting duration min 1 hour")]                   VotingDurationTooShort,
+    #[msg("Reveal window must be at least 5 seconds")]     RevealWindowTooShort,
+    #[msg("Voting duration must be at least 5 seconds")]   VotingDurationTooShort,
+    #[msg("Execution delay must be non-negative")]         InvalidExecutionDelay,
     #[msg("Title max 128 chars")]                          TitleTooLong,
     #[msg("Description max 1024 chars")]                   DescriptionTooLong,
     #[msg("Voting is not open")]                           VotingNotOpen,
@@ -1155,4 +1243,12 @@ pub enum Error {
     #[msg("This delegation has already been used")]        DelegationAlreadyUsed,
     #[msg("Caller is not the designated delegatee")]       NotDelegatee,
     #[msg("Delegation belongs to a different proposal")]   WrongProposal,
+    #[msg("Treasury action payload is invalid")]           InvalidTreasuryAction,
+    #[msg("SendToken action requires token_mint")]         TokenMintRequired,
+    #[msg("Executor must use action recipient")]           TreasuryRecipientMismatch,
+    #[msg("Treasury token account must be treasury-owned")] InvalidTreasuryTokenAuthority,
+    #[msg("Provided token mint does not match action")]    InvalidTokenMint,
+    #[msg("Recipient token owner does not match action")]  RecipientOwnerMismatch,
+    #[msg("Token account is invalid or owned by wrong program")] InvalidTokenAccount,
+    #[msg("Governing mint must match DAO governance token")] GoverningMintMismatch,
 }

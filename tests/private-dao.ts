@@ -1,3 +1,4 @@
+// Copyright (c) 2026 X-PACT. MIT License.
 import * as anchor from "@coral-xyz/anchor";
 import { Program }  from "@coral-xyz/anchor";
 import { PublicKey, Keypair, SystemProgram } from "@solana/web3.js";
@@ -107,6 +108,45 @@ describe("PrivateDAO", () => {
     assert.equal(p.title, "Allocate 10 SOL for marketing");
     assert.equal(p.commitCount.toString(), "0");
     console.log("  ✓ Proposal created");
+  });
+
+  it("rejects invalid treasury action configuration", async () => {
+    const dao = await program.account.dao.fetch(daoPda);
+    const [invalidProposalPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), dao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    try {
+      await program.methods
+        .createProposal(
+          "Invalid token action",
+          "SendToken without token mint must fail.",
+          new anchor.BN(3600),
+          {
+            actionType: { sendToken: {} },
+            amountLamports: new anchor.BN(1),
+            recipient: authority.publicKey,
+            tokenMint: null,
+          },
+        )
+        .accounts({
+          dao: daoPda,
+          proposal: invalidProposalPda,
+          authority: authority.publicKey,
+          proposer: authority.publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("Should have rejected invalid treasury action");
+    } catch (err: any) {
+      const msg = err.toString();
+      assert.isTrue(
+        msg.includes("TokenMintRequired") || msg.includes("InvalidTreasuryAction"),
+        `unexpected error: ${msg}`,
+      );
+      console.log("  ✓ invalid treasury action rejected");
+    }
   });
 
   it("allows voters to commit — tally stays hidden", async () => {

@@ -7,15 +7,35 @@ on:
       wallet:
         description: 'Wallet address to fund'
         required: true
+      amount_sol:
+        description: 'Requested SOL amount per airdrop attempt'
+        required: false
+        default: '2'
+      min_lamports:
+        description: 'Minimum final balance required for success (lamports)'
+        required: false
+        default: '1000000000'
 
 jobs:
   fund:
     runs-on: ubuntu-latest
+    env:
+      WALLET: ${{ github.event.inputs.wallet }}
+      AMOUNT_SOL: ${{ github.event.inputs.amount_sol }}
+      MIN_LAMPORTS: ${{ github.event.inputs.min_lamports }}
     steps:
       - name: Validate wallet input
         run: |
-          if [ -z "${{ github.event.inputs.wallet }}" ]; then
+          if [ -z "${WALLET}" ]; then
             echo "wallet input is required" >&2
+            exit 1
+          fi
+          if ! [[ "${AMOUNT_SOL}" =~ ^[0-9]+([.][0-9]+)?$ ]]; then
+            echo "amount_sol must be numeric, got: ${AMOUNT_SOL}" >&2
+            exit 1
+          fi
+          if ! [[ "${MIN_LAMPORTS}" =~ ^[0-9]+$ ]]; then
+            echo "min_lamports must be an integer, got: ${MIN_LAMPORTS}" >&2
             exit 1
           fi
 
@@ -24,17 +44,27 @@ jobs:
           sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
           echo "$HOME/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
 
+      - name: Read initial balance
+        id: initial_balance
+        run: |
+          INITIAL="$(solana balance "${WALLET}" --url https://api.devnet.solana.com --lamports 2>/dev/null | awk '{print $1}' || true)"
+          if ! [[ "${INITIAL}" =~ ^[0-9]+$ ]]; then
+            INITIAL=0
+          fi
+          echo "initial_lamports=${INITIAL}" >> "${GITHUB_OUTPUT}"
+          echo "Initial balance: ${INITIAL} lamports"
+
       - name: Try airdrop — round 1
         continue-on-error: true
         run: |
-          solana airdrop 2 ${{ github.event.inputs.wallet }} \
+          solana airdrop "${AMOUNT_SOL}" "${WALLET}" \
             --url https://api.devnet.solana.com
           sleep 10
 
       - name: Try airdrop — round 2
         continue-on-error: true
         run: |
-          solana airdrop 2 ${{ github.event.inputs.wallet }} \
+          solana airdrop "${AMOUNT_SOL}" "${WALLET}" \
             --url https://api.devnet.solana.com
           sleep 10
 
@@ -47,27 +77,47 @@ jobs:
             echo "HELIUS_API_KEY is not configured in GitHub Secrets; skipping Helius attempt."
             exit 0
           fi
-          solana airdrop 2 ${{ github.event.inputs.wallet }} \
+          solana airdrop "${AMOUNT_SOL}" "${WALLET}" \
             --url "https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}"
           sleep 10
 
       - name: Try faucet — QuickNode
         continue-on-error: true
         run: |
-          curl -s -X POST https://faucet.quicknode.com/solana/devnet \
+          STATUS="$(curl -sS -o /tmp/quicknode.out -w '%{http_code}' -X POST https://faucet.quicknode.com/solana/devnet \
             -H "Content-Type: application/json" \
-            -d '{"wallet":"${{ github.event.inputs.wallet }}"}'
+            -d "{\"wallet\":\"${WALLET}\"}")"
+          echo "QuickNode HTTP status: ${STATUS}"
+          head -c 400 /tmp/quicknode.out || true
+          echo
 
       - name: Try faucet — solana.com
         continue-on-error: true
         run: |
-          curl -s -X POST https://faucet.solana.com/api/v1/fund \
+          STATUS="$(curl -sS -o /tmp/solana-faucet.out -w '%{http_code}' -X POST https://faucet.solana.com/api/v1/fund \
             -H "Content-Type: application/json" \
-            -d '{"wallet":"${{ github.event.inputs.wallet }}","amount":2}'
+            -d "{\"wallet\":\"${WALLET}\",\"amount\":${AMOUNT_SOL}}")"
+          echo "Solana faucet HTTP status: ${STATUS}"
+          head -c 400 /tmp/solana-faucet.out || true
+          echo
 
       - name: Check final balance
         run: |
           sleep 15
           echo "=== FINAL BALANCE ==="
-          solana balance ${{ github.event.inputs.wallet }} \
-            --url https://api.devnet.solana.com
+          FINAL_LAMPORTS="$(solana balance "${WALLET}" --url https://api.devnet.solana.com --lamports | awk '{print $1}')"
+          echo "Initial lamports: ${{ steps.initial_balance.outputs.initial_lamports }}"
+          echo "Final lamports: ${FINAL_LAMPORTS}"
+          solana balance "${WALLET}" --url https://api.devnet.solana.com
+
+          if ! [[ "${FINAL_LAMPORTS}" =~ ^[0-9]+$ ]]; then
+            echo "Unable to parse final lamports from Solana CLI output." >&2
+            exit 1
+          fi
+
+          if [ "${FINAL_LAMPORTS}" -lt "${MIN_LAMPORTS}" ]; then
+            echo "Funding failed: final balance ${FINAL_LAMPORTS} < required ${MIN_LAMPORTS} lamports." >&2
+            exit 1
+          fi
+
+          echo "Funding threshold met."

@@ -9,6 +9,7 @@
     "test:full":         "anchor test -- --grep 'Full flow'",
     "deploy":            "anchor deploy --provider.cluster devnet",
     "setup":             "bash scripts/setup-devnet.sh",
+    "check:contracts":   "bash scripts/check-contracts.sh",
     "localnet":          "solana-test-validator --reset",
     "create-dao":        "ts-node scripts/create-dao.ts",
     "create-proposal":   "ts-node scripts/create-proposal.ts",

@@ -1,4 +1,6 @@
 /**
+ * Copyright (c) 2026 X-PACT. MIT License.
+ *
  * full-flow-test.ts
  *
  * End-to-end test: DAO → proposal → commit (3 voters) → reveal → finalize → execute
@@ -191,6 +193,105 @@ describe("Full flow", () => {
     const pExec = await program.account.proposal.fetch(proposalPda);
     assert.isTrue(pExec.isExecuted, "isExecuted flag must be set");
     console.log(`  [execute] Treasury sent ${sent.toFixed(4)} SOL ✓`);
+
+    // 7. Security regression: executor cannot redirect treasury recipient
+    const attacker = Keypair.generate();
+    const daoAfterFirst = await program.account.dao.fetch(daoPda);
+    const [proposal2Pda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), daoAfterFirst.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal(
+        "Test: guard recipient integrity",
+        "Executor must not override proposal recipient.",
+        new anchor.BN(V_SECS),
+        {
+          actionType:     { sendSol: {} },
+          amountLamports: new anchor.BN(0.01 * LAMPORTS_PER_SOL),
+          recipient:      recipient.publicKey,
+          tokenMint:      null,
+        },
+      )
+      .accounts({
+        dao: daoPda, proposal: proposal2Pda,
+        authority: payer.publicKey, proposer: payer.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const secondSalt = rng();
+    const [aliceSecondVote] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), proposal2Pda.toBuffer(), alice.publicKey.toBuffer()],
+      program.programId,
+    );
+    await program.methods
+      .commitVote([...commitment(true, secondSalt, alice.publicKey)], null)
+      .accounts({
+        dao: daoPda, proposal: proposal2Pda,
+        voterRecord: aliceSecondVote, voterTokenAccount: aliceAta,
+        voter: alice.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID, systemProgram: SystemProgram.programId,
+      })
+      .signers([alice])
+      .rpc();
+
+    await sleep((V_SECS + 1) * 1000);
+    await program.methods
+      .revealVote(true, [...secondSalt])
+      .accounts({ proposal: proposal2Pda, voterRecord: aliceSecondVote, revealer: alice.publicKey })
+      .signers([alice])
+      .rpc();
+    await sleep((R_SECS + 1) * 1000);
+
+    await program.methods
+      .finalizeProposal()
+      .accounts({ dao: daoPda, proposal: proposal2Pda, finalizer: payer.publicKey })
+      .rpc();
+    await sleep((E_SECS + 1) * 1000);
+
+    try {
+      await program.methods
+        .executeProposal()
+        .accounts({
+          dao: daoPda, proposal: proposal2Pda,
+          treasury: treasuryPda,
+          treasuryRecipient: attacker.publicKey,
+          treasuryTokenAccount: treasuryPda,
+          recipientTokenAccount: treasuryPda,
+          executor: payer.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID, systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("execute must reject recipient substitution");
+    } catch (err: any) {
+      assert.include(err.toString(), "TreasuryRecipientMismatch");
+    }
+
+    const recipientBeforeGuarded = await provider.connection.getBalance(recipient.publicKey);
+    await program.methods
+      .executeProposal()
+      .accounts({
+        dao: daoPda, proposal: proposal2Pda,
+        treasury: treasuryPda,
+        treasuryRecipient: recipient.publicKey,
+        treasuryTokenAccount: treasuryPda,
+        recipientTokenAccount: treasuryPda,
+        executor: payer.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID, systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const recipientAfterGuarded = await provider.connection.getBalance(recipient.publicKey);
+    assert.approximately(
+      (recipientAfterGuarded - recipientBeforeGuarded) / LAMPORTS_PER_SOL,
+      0.01,
+      0.001,
+      "treasury execution should only succeed for the configured recipient",
+    );
+
+    console.log(`  [security] Recipient substitution blocked ✓`);
     console.log(`  ✅ Full flow complete`);
 
   }).timeout(120_000);

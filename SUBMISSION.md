@@ -1,5 +1,9 @@
 # PrivateDAO — Private Voting Infrastructure for Solana DAOs
 
+<p align="center">
+  <img src="docs/assets/logo.png" alt="PrivateDAO logo 🔐" width="160" />
+</p>
+
 **Solana Graveyard Hackathon 2026**
 Tracks: DAOs (Realms) · Migration (Sunrise) · Overall (Solana Foundation)
 

@@ -4,6 +4,7 @@ on:
   push:
     branches: ["**"]
   pull_request:
+  workflow_dispatch:
 
 jobs:
   verify:
@@ -16,6 +17,9 @@ jobs:
         with:
           node-version: '22.21.1'
           cache: 'yarn'
+
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable

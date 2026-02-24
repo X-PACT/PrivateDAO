@@ -1,6 +1,10 @@
 # PrivateDAO — Complete Deployment Guide
 ### Solana Graveyard Hackathon 2026
 
+<p align="center">
+  <img src="docs/assets/logo.png" alt="PrivateDAO logo 🚀" width="150" />
+</p>
+
 ---
 
 ## Prerequisites (one-time install)

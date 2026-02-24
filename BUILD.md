@@ -128,12 +128,30 @@ If the Program ID changed during deploy, the script auto-updates `lib.rs` and re
 ## Getting SOL on Devnet
 
 ```bash
-# CLI
-solana airdrop 2 --url devnet
+# preferred: retry script with RPC rotation + custom endpoints
+bash scripts/fund-devnet.sh 2
 
-# Web faucet (no rate limit)
-# https://faucet.solana.com
+# direct CLI fallback
+solana airdrop 2 --url https://api.devnet.solana.com
 ```
+
+Public devnet faucets are rate-limited and may return `429` during peak times.
+If that happens, use `https://faucet.solana.com` manually or switch network/IP.
+
+## Check existing contracts
+
+```bash
+bash scripts/check-contracts.sh <ADDRESS_1> <ADDRESS_2>
+```
+
+## Cloud build (recommended for low-end hardware)
+
+```bash
+gh workflow run CI
+gh run watch
+```
+
+This runs full build + test in GitHub Actions without local CPU/RAM pressure.
 
 ---
 
