@@ -9,6 +9,7 @@
 [![Live Frontend](https://img.shields.io/badge/Live%20Frontend-Open-00e5ff?logo=solana)](https://x-pact.github.io/PrivateDAO/)
 [![Frontend](https://img.shields.io/badge/Frontend-docs%2Findex.html-0b7285)](docs/index.html)
 [![CI](https://img.shields.io/github/actions/workflow/status/X-PACT/PrivateDAO/ci.yml?branch=main&label=CI)](https://github.com/X-PACT/PrivateDAO/actions/workflows/ci.yml)
+[![Judge Quick Links](https://img.shields.io/badge/Judges-Quick%20Links-ff4d6d)](https://github.com/X-PACT/PrivateDAO/issues/5)
 [![Solana](https://img.shields.io/badge/Solana-Devnet-14F195)](https://solana.com)
 [![Anchor](https://img.shields.io/badge/Anchor-0.32.1-blue)](https://www.anchor-lang.com)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
