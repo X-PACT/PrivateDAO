@@ -72,7 +72,7 @@ describe("Full flow", () => {
       .initializeDao(
         DAO_NAME,
         51,
-        0,
+        new BN(0),
         new BN(R_SECS),
         new BN(E_SECS),
         { tokenWeighted: {} },

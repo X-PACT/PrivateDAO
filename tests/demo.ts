@@ -145,7 +145,7 @@ describe("demo", () => {
       .initializeDao(
         daoName,
         51,                    // 51% quorum
-        0,                     // any token holder can vote
+        new BN(0),             // any token holder can vote
         new BN(8),      // 8s reveal window (short for demo)
         new BN(5),      // 5s execution timelock (short for demo)
         { dualChamber: { capitalThreshold: 50, communityThreshold: 50 } },

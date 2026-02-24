@@ -65,7 +65,7 @@ describe("PrivateDAO", () => {
       .initializeDao(
         DAO_NAME,
         51,                   // 51% quorum
-        0,                    // no minimum tokens
+        new BN(0),            // no minimum tokens
         new BN(3600),         // 1h reveal window
         new BN(86400),        // 24h execution timelock
         { tokenWeighted: {} },
