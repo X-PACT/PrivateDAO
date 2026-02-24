@@ -42,5 +42,14 @@ jobs:
             solana-keygen new --outfile "$HOME/.config/solana/id.json" --no-bip39-passphrase --silent
           fi
 
-      - name: Verify
-        run: bash scripts/verify.sh
+      - name: Verify tools
+        run: bash scripts/verify.sh tools
+
+      - name: Anchor build
+        run: bash scripts/verify.sh build
+
+      - name: Anchor test
+        run: bash scripts/verify.sh test
+
+      - name: Non-real-code scan
+        run: bash scripts/verify.sh scan
