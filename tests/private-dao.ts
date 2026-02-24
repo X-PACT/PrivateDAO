@@ -8,8 +8,7 @@ import {
 } from "@solana/spl-token";
 import * as crypto from "crypto";
 import { assert } from "chai";
-
-const BN = (anchor as any).BN ?? (anchor as any).default?.BN;
+import BN from "bn.js";
 
 // commitment = sha256(vote_byte || salt_32 || voter_pubkey_32)
 function computeCommitment(vote: boolean, salt: Buffer, voter: PublicKey): Buffer {
@@ -67,8 +66,8 @@ describe("PrivateDAO", () => {
         DAO_NAME,
         51,                   // 51% quorum
         0,                    // no minimum tokens
-        3600,                 // 1h reveal window
-        86400,                // 24h execution timelock
+        new BN(3600),         // 1h reveal window
+        new BN(86400),        // 24h execution timelock
         { tokenWeighted: {} },
       )
       .accounts({

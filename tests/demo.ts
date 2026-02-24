@@ -34,8 +34,7 @@ import {
 } from "@solana/spl-token";
 import * as crypto from "crypto";
 import { assert } from "chai";
-
-const BN = (anchor as any).BN ?? (anchor as any).default?.BN;
+import BN from "bn.js";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
