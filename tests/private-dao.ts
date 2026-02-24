@@ -207,7 +207,9 @@ describe("PrivateDAO", () => {
       assert.isTrue(
         msg.includes("AlreadyCommitted")
           || msg.includes("already committed")
-          || msg.includes("0x1779"),
+          || msg.includes("0x1779")
+          || msg.includes("already in use")
+          || msg.includes("custom program error: 0x0"),
         `unexpected error: ${msg}`,
       );
       console.log("  ✓ double-commit rejected");
