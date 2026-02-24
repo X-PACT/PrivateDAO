@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://x-pact.github.io/PrivateDAO/" target="_blank">
-    <img src="docs/assets/social-preview.svg" alt="PrivateDAO interactive frontend preview" width="900" />
+    <img src="docs/assets/frontend-hero.png" alt="PrivateDAO interactive frontend preview" width="900" />
   </a>
 </p>
 
@@ -12,6 +12,7 @@
 [![Solana](https://img.shields.io/badge/Solana-Devnet-14F195)](https://solana.com)
 [![Anchor](https://img.shields.io/badge/Anchor-0.32.1-blue)](https://www.anchor-lang.com)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+[![Submission](https://img.shields.io/badge/Colosseum-Submission%20Ready-ff9f1c)](SUBMISSION.md)
 
 <p align="center">
   <a href="https://x-pact.github.io/PrivateDAO/"><strong>Open Interactive Frontend</strong></a> ·
