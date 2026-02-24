@@ -222,3 +222,8 @@ Submission windows and eligibility change frequently. Verify open calls and scop
 MIT License
 
 Copyright (c) 2026 X-PACT
+
+## Ownership
+
+Project owner and maintainer: X-PACT.
+Primary code ownership policy is enforced via `.github/CODEOWNERS`.
