@@ -11,7 +11,7 @@
  * Run: anchor test -- --grep "Full flow"
  */
 import * as anchor from "@coral-xyz/anchor";
-import { Program, BN }  from "@coral-xyz/anchor";
+import { Program }  from "@coral-xyz/anchor";
 import { PublicKey, Keypair, SystemProgram, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import {
   createMint, createAccount, mintTo,
@@ -19,6 +19,8 @@ import {
 } from "@solana/spl-token";
 import * as crypto from "crypto";
 import { assert } from "chai";
+
+const BN = (anchor as any).BN ?? (anchor as any).default?.BN;
 
 function commitment(vote: boolean, salt: Buffer, voter: PublicKey): Buffer {
   return crypto.createHash("sha256")
