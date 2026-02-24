@@ -1,6 +1,6 @@
 // Copyright (c) 2026 X-PACT. MIT License.
 import * as anchor from "@coral-xyz/anchor";
-import { Program }  from "@coral-xyz/anchor";
+import { Program, BN }  from "@coral-xyz/anchor";
 import { PublicKey, Keypair, SystemProgram } from "@solana/web3.js";
 import {
   createMint, createAccount, mintTo,
@@ -94,7 +94,7 @@ describe("PrivateDAO", () => {
       .createProposal(
         "Allocate 10 SOL for marketing",
         "Proposal to fund community marketing for Q1 2026.",
-        new anchor.BN(3600),
+        new BN(3600),
         null,
       )
       .accounts({
@@ -122,10 +122,10 @@ describe("PrivateDAO", () => {
         .createProposal(
           "Invalid token action",
           "SendToken without token mint must fail.",
-          new anchor.BN(3600),
+          new BN(3600),
           {
             actionType: { sendToken: {} },
-            amountLamports: new anchor.BN(1),
+            amountLamports: new BN(1),
             recipient: authority.publicKey,
             tokenMint: null,
           },
@@ -237,7 +237,7 @@ describe("PrivateDAO", () => {
     );
 
     await program.methods
-      .createProposal("Cancel me", "Test cancel.", new anchor.BN(3600), null)
+      .createProposal("Cancel me", "Test cancel.", new BN(3600), null)
       .accounts({
         dao: daoPda, proposal: cancelPda,
         authority: authority.publicKey, proposer: authority.publicKey,

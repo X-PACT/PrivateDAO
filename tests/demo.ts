@@ -26,7 +26,7 @@
  */
 
 import * as anchor from "@coral-xyz/anchor";
-import { Program }  from "@coral-xyz/anchor";
+import { Program, BN }  from "@coral-xyz/anchor";
 import { PublicKey, Keypair, SystemProgram, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import {
   createMint, createAccount, mintTo,
@@ -145,8 +145,8 @@ describe("demo", () => {
         daoName,
         51,                    // 51% quorum
         0,                     // any token holder can vote
-        new anchor.BN(8),      // 8s reveal window (short for demo)
-        new anchor.BN(5),      // 5s execution timelock (short for demo)
+        new BN(8),      // 8s reveal window (short for demo)
+        new BN(5),      // 5s execution timelock (short for demo)
         { dualChamber: { capitalThreshold: 50, communityThreshold: 50 } },
       )
       .accounts({
@@ -180,10 +180,10 @@ describe("demo", () => {
       .createProposal(
         "Fund community grant — 0.05 SOL",
         "Allocate 0.05 SOL from treasury to community education fund.",
-        new anchor.BN(VOTING_SECS),
+        new BN(VOTING_SECS),
         {
           actionType:     { sendSol: {} },
-          amountLamports: new anchor.BN(0.05 * LAMPORTS_PER_SOL),
+          amountLamports: new BN(0.05 * LAMPORTS_PER_SOL),
           recipient:      recipient.publicKey,
           tokenMint:      null,
         },
@@ -396,7 +396,7 @@ describe("demo", () => {
     section("ACT 4: Cancel proposal (authority safety mechanism)");
 
     const [proposal2Pda] = PublicKey.findProgramAddressSync(
-      [Buffer.from("proposal"), daoPda.toBuffer(), new anchor.BN(1).toArrayLike(Buffer, "le", 8)],
+      [Buffer.from("proposal"), daoPda.toBuffer(), new BN(1).toArrayLike(Buffer, "le", 8)],
       program.programId,
     );
 
@@ -404,7 +404,7 @@ describe("demo", () => {
       .createProposal(
         "Proposal with a critical bug",
         "Created by mistake — authority cancels it before any votes are cast.",
-        new anchor.BN(3600),
+        new BN(3600),
         null,
       )
       .accounts({

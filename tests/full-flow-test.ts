@@ -11,7 +11,7 @@
  * Run: anchor test -- --grep "Full flow"
  */
 import * as anchor from "@coral-xyz/anchor";
-import { Program }  from "@coral-xyz/anchor";
+import { Program, BN }  from "@coral-xyz/anchor";
 import { PublicKey, Keypair, SystemProgram, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import {
   createMint, createAccount, mintTo,
@@ -72,8 +72,8 @@ describe("Full flow", () => {
         DAO_NAME,
         51,
         0,
-        new anchor.BN(R_SECS),
-        new anchor.BN(E_SECS),
+        new BN(R_SECS),
+        new BN(E_SECS),
         { tokenWeighted: {} },
       )
       .accounts({ dao: daoPda, governanceToken: mint, authority: payer.publicKey, systemProgram: SystemProgram.programId })
@@ -94,10 +94,10 @@ describe("Full flow", () => {
       .createProposal(
         "Test: fund 0.05 SOL",
         "Full flow integration test proposal.",
-        new anchor.BN(V_SECS),
+        new BN(V_SECS),
         {
           actionType:     { sendSol: {} },
-          amountLamports: new anchor.BN(0.05 * LAMPORTS_PER_SOL),
+          amountLamports: new BN(0.05 * LAMPORTS_PER_SOL),
           recipient:      recipient.publicKey,
           tokenMint:      null,
         },
@@ -206,10 +206,10 @@ describe("Full flow", () => {
       .createProposal(
         "Test: guard recipient integrity",
         "Executor must not override proposal recipient.",
-        new anchor.BN(V_SECS),
+        new BN(V_SECS),
         {
           actionType:     { sendSol: {} },
-          amountLamports: new anchor.BN(0.01 * LAMPORTS_PER_SOL),
+          amountLamports: new BN(0.01 * LAMPORTS_PER_SOL),
           recipient:      recipient.publicKey,
           tokenMint:      null,
         },
