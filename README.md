@@ -1,13 +1,22 @@
 # PrivateDAO
 
 <p align="center">
-  <img src="docs/assets/logo.png" alt="PrivateDAO logo" width="180" />
+  <a href="https://x-pact.github.io/PrivateDAO/" target="_blank">
+    <img src="docs/assets/social-preview.svg" alt="PrivateDAO interactive frontend preview" width="900" />
+  </a>
 </p>
 
+[![Live Frontend](https://img.shields.io/badge/Live%20Frontend-Open-00e5ff?logo=solana)](https://x-pact.github.io/PrivateDAO/)
+[![Frontend](https://img.shields.io/badge/Frontend-docs%2Findex.html-0b7285)](docs/index.html)
 [![CI](https://img.shields.io/github/actions/workflow/status/X-PACT/PrivateDAO/ci.yml?branch=main&label=CI)](https://github.com/X-PACT/PrivateDAO/actions/workflows/ci.yml)
 [![Solana](https://img.shields.io/badge/Solana-Devnet-14F195)](https://solana.com)
 [![Anchor](https://img.shields.io/badge/Anchor-0.32.1-blue)](https://www.anchor-lang.com)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+
+<p align="center">
+  <a href="https://x-pact.github.io/PrivateDAO/"><strong>Open Interactive Frontend</strong></a> ·
+  <a href="docs/index.html"><strong>Open Local Frontend File</strong></a>
+</p>
 
 Production-grade private governance for Solana DAOs using commit-reveal voting, timelocked execution, and treasury safety checks.
 
