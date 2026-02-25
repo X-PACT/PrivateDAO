@@ -10,3 +10,4 @@ wallets/
 .env
 *.json
 LEGAL/evidence-pack/
+.anchor/
