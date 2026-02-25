@@ -5,3 +5,4 @@ test-ledger/
 *.so
 migration-report-*.json
 ~/.config/solana/
+wallets/
