@@ -290,6 +290,13 @@ MIT License
 
 Copyright (c) 2026 Eslam Kotb (X-PACT)
 
+## Intellectual Property and Branding
+
+- Source code license: MIT (see `LICENSE`).
+- Design assets under `docs/assets/` are licensed separately (see `docs/assets/LICENSE`) and are not open for unrestricted reuse.
+- Project marks and branding are reserved (see `TRADEMARKS.md`).
+- IP policy and enforcement boundaries are documented in `IP_POLICY.md`.
+
 ## Ownership
 
 Project owner and maintainer: Eslam Kotb (X-PACT).
