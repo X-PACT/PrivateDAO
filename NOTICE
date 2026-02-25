@@ -1,5 +1,8 @@
 PrivateDAO
 Copyright (c) 2026 Eslam Kotb (X-PACT).
 
-Source code licensing: AGPL-3.0-or-later or commercial license.
-Design assets under docs/assets are licensed separately.
+Licensing model:
+- Core protocol (`programs/`): AGPL-3.0-or-later
+- SDK (`sdk/`): Apache-2.0
+- Frontend/docs (`frontend/`, `docs/`): MIT
+- Optional proprietary terms: `LICENSE-COMMERCIAL.md`

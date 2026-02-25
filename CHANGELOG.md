@@ -2,6 +2,23 @@
 
 All notable changes to this project are documented in this file.
 
+## v0.3.2 - 2026-02-25
+
+- Adopted hybrid legal configuration:
+  - core protocol (`programs/`) licensed under AGPL-3.0-or-later
+  - SDK layer (`sdk/`) licensed under Apache-2.0
+  - frontend/docs layers (`frontend/`, `docs/`) licensed under MIT
+- Added root license files:
+  - `LICENSE` (AGPL-3.0 text)
+  - `LICENSE-APACHE`
+  - `LICENSE-MIT`
+- Added per-layer license files:
+  - `sdk/LICENSE`
+  - `frontend/LICENSE`
+  - `docs/LICENSE`
+- Added initial SDK helper module in `sdk/src/index.ts` with Apache SPDX header.
+- Added AGPL SPDX header to `programs/private-dao/src/lib.rs`.
+
 ## v0.3.1 - 2026-02-25
 
 - Hardened container build environment in `Dockerfile` for Solana/Anchor development:

@@ -12,7 +12,7 @@
 [![Judge Quick Links](https://img.shields.io/badge/Judges-Quick%20Links-ff4d6d)](https://github.com/X-PACT/PrivateDAO/issues/5)
 [![Solana](https://img.shields.io/badge/Solana-Devnet-14F195)](https://solana.com)
 [![Anchor](https://img.shields.io/badge/Anchor-0.31.1-blue)](https://www.anchor-lang.com)
-[![License](https://img.shields.io/badge/License-AGPLv3%2B%20%7C%20Commercial-green)](LICENSE)
+[![License](https://img.shields.io/badge/License-AGPLv3%2B%20%7C%20Apache--2.0%20%7C%20MIT-green)](LICENSE)
 [![Submission](https://img.shields.io/badge/Colosseum-Submission%20Ready-ff9f1c)](SUBMISSION.md)
 
 <p align="center">
@@ -286,19 +286,19 @@ The following companies and organizations are relevant to PrivateDAO's stack, in
 
 ---
 
-## License
+## License Structure
 
-Dual license:
+PrivateDAO uses a hybrid licensing model:
 
-- AGPL-3.0-or-later (`LICENSE`)
-- Commercial license (`LICENSE-COMMERCIAL.md`)
+- Core protocol (`programs/`) -> AGPL-3.0-or-later (`LICENSE`)
+- SDK (`sdk/`) -> Apache-2.0 (`LICENSE-APACHE`, `sdk/LICENSE`)
+- Frontend and docs (`frontend/`, `docs/`) -> MIT (`LICENSE-MIT`, `frontend/LICENSE`, `docs/LICENSE`)
 
 Copyright (c) 2026 Eslam Kotb (X-PACT)
 
 ## Intellectual Property and Branding
 
-- Source code license: AGPL-3.0-or-later or commercial (see `LICENSE` and `LICENSE-COMMERCIAL.md`).
-- Design assets under `docs/assets/` are licensed separately (see `docs/assets/LICENSE`) and are not open for unrestricted reuse.
+- Source code and content licensing follows the hybrid model described above.
 - Project marks and branding are reserved (see `TRADEMARKS.md`).
 - IP policy and enforcement boundaries are documented in `IP_POLICY.md`.
 - Trademark filing prep pack: `LEGAL/TRADEMARK_FILING_PREP.md`
@@ -311,6 +311,12 @@ Generate legal evidence pack:
 ```bash
 bash scripts/ip/generate-evidence-pack.sh
 ```
+
+## Commercial Licensing
+
+Commercial licenses are available for proprietary integrations.
+
+Contact: fahd.kotb@tuta.io
 
 ## Ownership
 
