@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
 /**
  * migrate-realms-dao.ts
  * MIGRATION TRACK (Sunrise) — $7,000
