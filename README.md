@@ -296,6 +296,16 @@ Copyright (c) 2026 Eslam Kotb (X-PACT)
 - Design assets under `docs/assets/` are licensed separately (see `docs/assets/LICENSE`) and are not open for unrestricted reuse.
 - Project marks and branding are reserved (see `TRADEMARKS.md`).
 - IP policy and enforcement boundaries are documented in `IP_POLICY.md`.
+- Trademark filing prep pack: `LEGAL/TRADEMARK_FILING_PREP.md`
+- Patent evaluation brief: `LEGAL/PATENT_EVALUATION_BRIEF.md`
+- Private service split plan: `LEGAL/PRIVATE_SERVICE_SPLIT_PLAN.md`
+- Evidence pack generator: `scripts/ip/generate-evidence-pack.sh`
+
+Generate legal evidence pack:
+
+```bash
+bash scripts/ip/generate-evidence-pack.sh
+```
 
 ## Ownership
 

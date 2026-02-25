@@ -1,0 +1,58 @@
+name: IP Infringement Report
+description: Report unauthorized use of PrivateDAO code attribution, brand, or design assets.
+title: "[IP] "
+labels:
+  - legal
+  - ip
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form to report copyright/trademark/branding misuse.
+        Include enough evidence for fast triage.
+  - type: input
+    id: reporter_contact
+    attributes:
+      label: Reporter Contact
+      description: Email or handle for follow-up
+    validations:
+      required: true
+  - type: dropdown
+    id: violation_type
+    attributes:
+      label: Violation Type
+      options:
+        - Unauthorized branding use
+        - Missing attribution / copyright notice
+        - Unauthorized design asset use
+        - Misleading impersonation
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: violating_url
+    attributes:
+      label: Violating URL or Repository
+    validations:
+      required: true
+  - type: textarea
+    id: copied_material
+    attributes:
+      label: What Was Copied or Misused
+      description: Describe exact files/content/branding used
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Provide screenshots, archive links, and timestamps
+    validations:
+      required: true
+  - type: textarea
+    id: requested_action
+    attributes:
+      label: Requested Action
+      description: Takedown, attribution fix, rename, etc.
+    validations:
+      required: true
