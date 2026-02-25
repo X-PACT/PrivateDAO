@@ -4,7 +4,7 @@ PrivateDAO is authored by Eslam Kotb (X-PACT).
 
 ## Scope
 
-- Source code is licensed under the repository `LICENSE` file.
+- Source code is dual licensed: AGPL-3.0-or-later or commercial license (see `LICENSE` and `LICENSE-COMMERCIAL.md`).
 - Brand assets, visual identity, logos, social images, and design system assets are not covered by the source-code license.
 - The names "PrivateDAO" and "X-PACT", related marks, and branding remain reserved to the owner.
 
@@ -14,7 +14,7 @@ Copyright (c) 2026 Eslam Kotb (X-PACT).
 
 ## Commercial Use Boundary
 
-- You may use the source code according to the code license terms.
+- You may use the source code under AGPL-3.0-or-later terms, or under a separate commercial agreement.
 - You may not use project branding, logo assets, or identity materials to imply official affiliation, endorsement, or origin without explicit written permission.
 - Production/commercial deployments that use official branding should obtain written approval from the owner.
 
@@ -34,4 +34,3 @@ If you detect unauthorized branding use or attribution violations, open a report
 - infringing URL/repository
 - screenshots and timestamp
 - exact material copied
-

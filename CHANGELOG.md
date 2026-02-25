@@ -15,7 +15,7 @@ All notable changes to this project are documented in this file.
   - switched treasury seeding to payer-funded transfers
   - reduced wallet funding requirements for test wallets
 - Updated ownership metadata:
-  - MIT license copyright to `Eslam Kotb (X-PACT)`
+  - migrated source-code licensing to `AGPL-3.0-or-later + commercial`
   - added `NOTICE`
 
 ## v0.3.0 - 2026-02-24
