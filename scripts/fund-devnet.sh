@@ -19,27 +19,12 @@ MAX_ROUNDS="${MAX_ROUNDS:-5}"
 CUSTOM_FAUCET_URL="${CUSTOM_FAUCET_URL:-}"
 CUSTOM_FAUCET_METHOD="${CUSTOM_FAUCET_METHOD:-POST}"
 
-RPCS=(
-  "https://api.devnet.solana.com"
-  "https://rpc.ankr.com/solana_devnet"
-)
+mapfile -t RPCS < <(collect_devnet_rpcs)
 
-if [[ -n "${HELIUS_API_KEY:-}" ]]; then
-  RPCS+=("https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}")
-fi
-
-if [[ -n "${QUICKNODE_DEVNET_RPC:-}" ]]; then
-  RPCS+=("${QUICKNODE_DEVNET_RPC}")
-fi
-
-if [[ -n "${EXTRA_DEVNET_RPCS:-}" ]]; then
-  IFS=',' read -r -a extra_rpcs <<< "${EXTRA_DEVNET_RPCS}"
-  for rpc in "${extra_rpcs[@]}"; do
-    if [[ -n "${rpc// }" ]]; then
-      RPCS+=("$rpc")
-    fi
-  done
-fi
+echo "RPC priority order:"
+for idx in "${!RPCS[@]}"; do
+  echo "  [$((idx + 1))] ${RPCS[$idx]}"
+done
 
 echo "Using wallet: ${WALLET_ADDRESS}"
 "$SOLANA_BIN" config set --keypair "$WALLET_PATH" --url "${RPCS[0]}" >/dev/null

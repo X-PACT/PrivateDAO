@@ -1,9 +1,9 @@
 use anchor_lang::prelude::*;
 use anchor_lang::system_program::{transfer, Transfer};
-use anchor_spl::token::{self, Token, TokenAccount, Mint, Transfer as TokenTransfer};
-use sha2::{Sha256, Digest};
+use anchor_spl::token::{self, Mint, Token, TokenAccount, Transfer as TokenTransfer};
+use sha2::{Digest, Sha256};
 
-declare_id!("DTFXjbcv2dFQkEFvBhgTUj1dNDgPRgRCyBa8yeVz8wZs");
+declare_id!("62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm");
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  PrivateDAO — Commit-reveal governance for Solana
@@ -40,7 +40,7 @@ declare_id!("DTFXjbcv2dFQkEFvBhgTUj1dNDgPRgRCyBa8yeVz8wZs");
 // ─────────────────────────────────────────────────────────────────────────────
 
 pub const REVEAL_REBATE_LAMPORTS: u64 = 1_000_000; // 0.001 SOL per reveal
-pub const DEFAULT_EXECUTION_DELAY: i64 = 86_400;   // 24-hour timelock default
+pub const DEFAULT_EXECUTION_DELAY: i64 = 86_400; // 24-hour timelock default
 pub const MIN_REVEAL_WINDOW_SECONDS: i64 = 5;
 pub const MIN_VOTING_DURATION_SECONDS: i64 = 5;
 
@@ -59,8 +59,11 @@ pub mod private_dao {
         execution_delay_seconds: i64,
         voting_config: VotingConfig,
     ) -> Result<()> {
-        require!(dao_name.len() <= 64,          Error::NameTooLong);
-        require!(quorum_percentage > 0 && quorum_percentage <= 100, Error::InvalidQuorum);
+        require!(dao_name.len() <= 64, Error::NameTooLong);
+        require!(
+            quorum_percentage > 0 && quorum_percentage <= 100,
+            Error::InvalidQuorum
+        );
         require!(
             reveal_window_seconds >= MIN_REVEAL_WINDOW_SECONDS,
             Error::RevealWindowTooShort
@@ -69,19 +72,23 @@ pub mod private_dao {
         validate_voting_config(&voting_config)?;
 
         let dao = &mut ctx.accounts.dao;
-        dao.authority                 = ctx.accounts.authority.key();
-        dao.dao_name                  = dao_name.clone();
-        dao.governance_token          = ctx.accounts.governance_token.key();
-        dao.quorum_percentage         = quorum_percentage;
+        dao.authority = ctx.accounts.authority.key();
+        dao.dao_name = dao_name.clone();
+        dao.governance_token = ctx.accounts.governance_token.key();
+        dao.quorum_percentage = quorum_percentage;
         dao.governance_token_required = governance_token_required;
-        dao.reveal_window_seconds     = reveal_window_seconds;
-        dao.execution_delay_seconds   = execution_delay_seconds;
-        dao.voting_config             = voting_config;
-        dao.proposal_count            = 0;
-        dao.bump                      = ctx.bumps.dao;
-        dao.migrated_from_realms      = None;
+        dao.reveal_window_seconds = reveal_window_seconds;
+        dao.execution_delay_seconds = execution_delay_seconds;
+        dao.voting_config = voting_config;
+        dao.proposal_count = 0;
+        dao.bump = ctx.bumps.dao;
+        dao.migrated_from_realms = None;
 
-        emit!(DaoCreated { dao: dao.key(), name: dao_name, authority: dao.authority });
+        emit!(DaoCreated {
+            dao: dao.key(),
+            name: dao_name,
+            authority: dao.authority
+        });
         Ok(())
     }
 
@@ -99,8 +106,11 @@ pub mod private_dao {
         execution_delay_seconds: i64,
         voting_config: VotingConfig,
     ) -> Result<()> {
-        require!(dao_name.len() <= 64,          Error::NameTooLong);
-        require!(quorum_percentage > 0 && quorum_percentage <= 100, Error::InvalidQuorum);
+        require!(dao_name.len() <= 64, Error::NameTooLong);
+        require!(
+            quorum_percentage > 0 && quorum_percentage <= 100,
+            Error::InvalidQuorum
+        );
         require!(
             reveal_window_seconds >= MIN_REVEAL_WINDOW_SECONDS,
             Error::RevealWindowTooShort
@@ -109,21 +119,23 @@ pub mod private_dao {
         validate_voting_config(&voting_config)?;
 
         let dao = &mut ctx.accounts.dao;
-        dao.authority                 = ctx.accounts.authority.key();
-        dao.dao_name                  = dao_name.clone();
-        dao.governance_token          = ctx.accounts.governance_token.key();
-        dao.quorum_percentage         = quorum_percentage;
+        dao.authority = ctx.accounts.authority.key();
+        dao.dao_name = dao_name.clone();
+        dao.governance_token = ctx.accounts.governance_token.key();
+        dao.quorum_percentage = quorum_percentage;
         dao.governance_token_required = 0;
-        dao.reveal_window_seconds     = reveal_window_seconds;
-        dao.execution_delay_seconds   = execution_delay_seconds;
-        dao.voting_config             = voting_config;
-        dao.proposal_count            = 0;
-        dao.bump                      = ctx.bumps.dao;
-        dao.migrated_from_realms      = Some(realms_governance);
+        dao.reveal_window_seconds = reveal_window_seconds;
+        dao.execution_delay_seconds = execution_delay_seconds;
+        dao.voting_config = voting_config;
+        dao.proposal_count = 0;
+        dao.bump = ctx.bumps.dao;
+        dao.migrated_from_realms = Some(realms_governance);
 
         emit!(DaoMigratedFromRealms {
-            dao: dao.key(), name: dao_name,
-            realms_governance, governance_token: dao.governance_token,
+            dao: dao.key(),
+            name: dao_name,
+            realms_governance,
+            governance_token: dao.governance_token,
         });
         Ok(())
     }
@@ -137,8 +149,8 @@ pub mod private_dao {
         voting_duration_seconds: i64,
         treasury_action: Option<TreasuryAction>,
     ) -> Result<()> {
-        require!(title.len() <= 128,             Error::TitleTooLong);
-        require!(description.len() <= 1024,      Error::DescriptionTooLong);
+        require!(title.len() <= 128, Error::TitleTooLong);
+        require!(description.len() <= 1024, Error::DescriptionTooLong);
         require!(
             voting_duration_seconds >= MIN_VOTING_DURATION_SECONDS,
             Error::VotingDurationTooShort
@@ -149,32 +161,36 @@ pub mod private_dao {
 
         let now = Clock::get()?.unix_timestamp;
         let dao = &mut ctx.accounts.dao;
-        let p   = &mut ctx.accounts.proposal;
+        let p = &mut ctx.accounts.proposal;
 
-        p.dao                  = dao.key();
-        p.proposer             = ctx.accounts.proposer.key();
-        p.proposal_id          = dao.proposal_count;
-        p.title                = title.clone();
-        p.description          = description;
-        p.status               = ProposalStatus::Voting;
-        p.voting_end           = now + voting_duration_seconds;
-        p.reveal_end           = now + voting_duration_seconds + dao.reveal_window_seconds;
-        p.yes_capital          = 0;
-        p.no_capital           = 0;
-        p.yes_community        = 0;
-        p.no_community         = 0;
-        p.commit_count         = 0;
-        p.reveal_count         = 0;
-        p.treasury_action      = treasury_action;
+        p.dao = dao.key();
+        p.proposer = ctx.accounts.proposer.key();
+        p.proposal_id = dao.proposal_count;
+        p.title = title.clone();
+        p.description = description;
+        p.status = ProposalStatus::Voting;
+        p.voting_end = now + voting_duration_seconds;
+        p.reveal_end = now + voting_duration_seconds + dao.reveal_window_seconds;
+        p.yes_capital = 0;
+        p.no_capital = 0;
+        p.yes_community = 0;
+        p.no_community = 0;
+        p.commit_count = 0;
+        p.reveal_count = 0;
+        p.treasury_action = treasury_action;
         p.execution_unlocks_at = 0;
-        p.is_executed          = false;
-        p.bump                 = ctx.bumps.proposal;
+        p.is_executed = false;
+        p.bump = ctx.bumps.proposal;
 
         dao.proposal_count = dao.proposal_count.checked_add(1).ok_or(Error::Overflow)?;
 
         emit!(ProposalCreated {
-            dao: dao.key(), proposal: p.key(), proposal_id: p.proposal_id,
-            title, voting_end: p.voting_end, reveal_end: p.reveal_end,
+            dao: dao.key(),
+            proposal: p.key(),
+            proposal_id: p.proposal_id,
+            title,
+            voting_end: p.voting_end,
+            reveal_end: p.reveal_end,
         });
         Ok(())
     }
@@ -186,12 +202,15 @@ pub mod private_dao {
 
     pub fn cancel_proposal(ctx: Context<CancelProposal>) -> Result<()> {
         let p = &mut ctx.accounts.proposal;
-        require!(p.status == ProposalStatus::Voting, Error::ProposalNotCancellable);
+        require!(
+            p.status == ProposalStatus::Voting,
+            Error::ProposalNotCancellable
+        );
 
         p.status = ProposalStatus::Cancelled;
 
         emit!(ProposalCancelled {
-            proposal:     p.key(),
+            proposal: p.key(),
             cancelled_by: ctx.accounts.authority.key(),
         });
         Ok(())
@@ -211,17 +230,17 @@ pub mod private_dao {
 
     pub fn veto_proposal(ctx: Context<VetoProposal>) -> Result<()> {
         let now = Clock::get()?.unix_timestamp;
-        let p   = &mut ctx.accounts.proposal;
+        let p = &mut ctx.accounts.proposal;
 
         require!(p.status == ProposalStatus::Passed, Error::ProposalNotPassed);
-        require!(!p.is_executed,                     Error::AlreadyExecuted);
+        require!(!p.is_executed, Error::AlreadyExecuted);
         // Veto is only valid while still in the timelock window
-        require!(now < p.execution_unlocks_at,       Error::VetoWindowExpired);
+        require!(now < p.execution_unlocks_at, Error::VetoWindowExpired);
 
         p.status = ProposalStatus::Vetoed;
 
         emit!(ProposalVetoed {
-            proposal:  p.key(),
+            proposal: p.key(),
             vetoed_by: ctx.accounts.authority.key(),
         });
         Ok(())
@@ -245,11 +264,11 @@ pub mod private_dao {
         voter_reveal_authority: Option<Pubkey>,
     ) -> Result<()> {
         let now = Clock::get()?.unix_timestamp;
-        let p   = &mut ctx.accounts.proposal;
+        let p = &mut ctx.accounts.proposal;
         let dao = &ctx.accounts.dao;
 
         require!(p.status == ProposalStatus::Voting, Error::VotingNotOpen);
-        require!(now < p.voting_end,                 Error::VotingClosed);
+        require!(now < p.voting_end, Error::VotingClosed);
 
         if dao.governance_token_required > 0 {
             require!(
@@ -263,21 +282,23 @@ pub mod private_dao {
 
         let raw = ctx.accounts.voter_token_account.amount;
 
-        vr.capital_weight         = raw;
-        vr.community_weight       = isqrt(raw);
-        vr.voter                  = ctx.accounts.voter.key();
-        vr.proposal               = p.key();
-        vr.commitment             = commitment;
-        vr.has_committed          = true;
-        vr.has_revealed           = false;
-        vr.voted_yes              = false;
-        vr.bump                   = ctx.bumps.voter_record;
+        vr.capital_weight = raw;
+        vr.community_weight = isqrt(raw);
+        vr.voter = ctx.accounts.voter.key();
+        vr.proposal = p.key();
+        vr.commitment = commitment;
+        vr.has_committed = true;
+        vr.has_revealed = false;
+        vr.voted_yes = false;
+        vr.bump = ctx.bumps.voter_record;
         vr.voter_reveal_authority = voter_reveal_authority;
 
         p.commit_count = p.commit_count.checked_add(1).ok_or(Error::Overflow)?;
 
         emit!(VoteCommitted {
-            proposal: p.key(), voter: ctx.accounts.voter.key(), commit_count: p.commit_count,
+            proposal: p.key(),
+            voter: ctx.accounts.voter.key(),
+            commit_count: p.commit_count,
         });
         Ok(())
     }
@@ -292,31 +313,28 @@ pub mod private_dao {
     //   - Tally stays 0/0 throughout commit phase
     //   - No other Solana governance tool supports private delegation
 
-    pub fn delegate_vote(
-        ctx: Context<DelegateVote>,
-        delegatee: Pubkey,
-    ) -> Result<()> {
+    pub fn delegate_vote(ctx: Context<DelegateVote>, delegatee: Pubkey) -> Result<()> {
         let now = Clock::get()?.unix_timestamp;
-        let p   = &ctx.accounts.proposal;
+        let p = &ctx.accounts.proposal;
 
         require!(p.status == ProposalStatus::Voting, Error::VotingNotOpen);
-        require!(now < p.voting_end,                 Error::VotingClosed);
+        require!(now < p.voting_end, Error::VotingClosed);
 
         let raw = ctx.accounts.delegator_token_account.amount;
         require!(raw > 0, Error::InsufficientTokens);
 
         let del = &mut ctx.accounts.delegation;
-        del.delegator           = ctx.accounts.delegator.key();
-        del.delegatee           = delegatee;
-        del.proposal            = p.key();
-        del.delegated_capital   = raw;
+        del.delegator = ctx.accounts.delegator.key();
+        del.delegatee = delegatee;
+        del.proposal = p.key();
+        del.delegated_capital = raw;
         del.delegated_community = isqrt(raw);
-        del.is_used             = false;
-        del.bump                = ctx.bumps.delegation;
+        del.is_used = false;
+        del.bump = ctx.bumps.delegation;
 
         emit!(VoteDelegated {
-            proposal:         p.key(),
-            delegator:        ctx.accounts.delegator.key(),
+            proposal: p.key(),
+            delegator: ctx.accounts.delegator.key(),
             delegatee,
             delegated_weight: raw,
         });
@@ -335,32 +353,34 @@ pub mod private_dao {
         voter_reveal_authority: Option<Pubkey>,
     ) -> Result<()> {
         let now = Clock::get()?.unix_timestamp;
-        let p   = &mut ctx.accounts.proposal;
+        let p = &mut ctx.accounts.proposal;
         let del = &mut ctx.accounts.delegation;
 
         require!(p.status == ProposalStatus::Voting, Error::VotingNotOpen);
-        require!(now < p.voting_end,                 Error::VotingClosed);
-        require!(!del.is_used,                       Error::DelegationAlreadyUsed);
+        require!(now < p.voting_end, Error::VotingClosed);
+        require!(!del.is_used, Error::DelegationAlreadyUsed);
 
         let delegatee_raw = ctx.accounts.delegatee_token_account.amount;
 
-        let combined_capital   = delegatee_raw
-            .checked_add(del.delegated_capital).ok_or(Error::Overflow)?;
+        let combined_capital = delegatee_raw
+            .checked_add(del.delegated_capital)
+            .ok_or(Error::Overflow)?;
         let combined_community = isqrt(delegatee_raw)
-            .checked_add(del.delegated_community).ok_or(Error::Overflow)?;
+            .checked_add(del.delegated_community)
+            .ok_or(Error::Overflow)?;
 
         let vr = &mut ctx.accounts.voter_record;
         require!(!vr.has_committed, Error::AlreadyCommitted);
 
-        vr.capital_weight         = combined_capital;
-        vr.community_weight       = combined_community;
-        vr.voter                  = ctx.accounts.delegatee.key();
-        vr.proposal               = p.key();
-        vr.commitment             = commitment;
-        vr.has_committed          = true;
-        vr.has_revealed           = false;
-        vr.voted_yes              = false;
-        vr.bump                   = ctx.bumps.voter_record;
+        vr.capital_weight = combined_capital;
+        vr.community_weight = combined_community;
+        vr.voter = ctx.accounts.delegatee.key();
+        vr.proposal = p.key();
+        vr.commitment = commitment;
+        vr.has_committed = true;
+        vr.has_revealed = false;
+        vr.voted_yes = false;
+        vr.bump = ctx.bumps.voter_record;
         vr.voter_reveal_authority = voter_reveal_authority;
 
         del.is_used = true;
@@ -368,7 +388,9 @@ pub mod private_dao {
         p.commit_count = p.commit_count.checked_add(1).ok_or(Error::Overflow)?;
 
         emit!(VoteCommitted {
-            proposal: p.key(), voter: ctx.accounts.delegatee.key(), commit_count: p.commit_count,
+            proposal: p.key(),
+            voter: ctx.accounts.delegatee.key(),
+            commit_count: p.commit_count,
         });
         Ok(())
     }
@@ -379,28 +401,24 @@ pub mod private_dao {
     // Program recomputes sha256(vote_byte ‖ salt ‖ voter_pubkey) and verifies.
     // On match, both chamber tallies update. SOL rebate goes to the caller.
 
-    pub fn reveal_vote(
-        ctx: Context<RevealVote>,
-        vote: bool,
-        salt: [u8; 32],
-    ) -> Result<()> {
+    pub fn reveal_vote(ctx: Context<RevealVote>, vote: bool, salt: [u8; 32]) -> Result<()> {
         let now = Clock::get()?.unix_timestamp;
-        let p   = &mut ctx.accounts.proposal;
-        let vr  = &mut ctx.accounts.voter_record;
+        let p = &mut ctx.accounts.proposal;
+        let vr = &mut ctx.accounts.voter_record;
 
         require!(now >= p.voting_end, Error::RevealTooEarly);
-        require!(now <  p.reveal_end, Error::RevealClosed);
-        require!(vr.has_committed,    Error::NotCommitted);
-        require!(!vr.has_revealed,    Error::AlreadyRevealed);
+        require!(now < p.reveal_end, Error::RevealClosed);
+        require!(vr.has_committed, Error::NotCommitted);
+        require!(!vr.has_revealed, Error::AlreadyRevealed);
 
-        let caller    = ctx.accounts.revealer.key();
-        let is_voter  = caller == vr.voter;
-        let is_keeper = vr.voter_reveal_authority.map_or(false, |k| k == caller);
+        let caller = ctx.accounts.revealer.key();
+        let is_voter = caller == vr.voter;
+        let is_keeper = vr.voter_reveal_authority == Some(caller);
         require!(is_voter || is_keeper, Error::NotAuthorizedToReveal);
 
         // sha256(vote_byte ‖ salt ‖ voter_pubkey) must match stored commitment
         let vote_byte: u8 = if vote { 1 } else { 0 };
-        let mut preimage  = Vec::with_capacity(65);
+        let mut preimage = Vec::with_capacity(65);
         preimage.push(vote_byte);
         preimage.extend_from_slice(&salt);
         preimage.extend_from_slice(vr.voter.as_ref());
@@ -411,22 +429,22 @@ pub mod private_dao {
         let com = vr.community_weight;
 
         if vote {
-            p.yes_capital   = p.yes_capital.checked_add(cap).ok_or(Error::Overflow)?;
+            p.yes_capital = p.yes_capital.checked_add(cap).ok_or(Error::Overflow)?;
             p.yes_community = p.yes_community.checked_add(com).ok_or(Error::Overflow)?;
         } else {
-            p.no_capital   = p.no_capital.checked_add(cap).ok_or(Error::Overflow)?;
+            p.no_capital = p.no_capital.checked_add(cap).ok_or(Error::Overflow)?;
             p.no_community = p.no_community.checked_add(com).ok_or(Error::Overflow)?;
         }
 
         vr.has_revealed = true;
-        vr.voted_yes    = vote;
-        p.reveal_count  = p.reveal_count.checked_add(1).ok_or(Error::Overflow)?;
+        vr.voted_yes = vote;
+        p.reveal_count = p.reveal_count.checked_add(1).ok_or(Error::Overflow)?;
 
         // Rebate: only transfer when proposal account remains rent-exempt.
         let proposal_info = p.to_account_info();
-        let lamports      = proposal_info.lamports();
-        let rent_minimum  = Rent::get()?.minimum_balance(proposal_info.data_len());
-        let rebate_floor  = rent_minimum
+        let lamports = proposal_info.lamports();
+        let rent_minimum = Rent::get()?.minimum_balance(proposal_info.data_len());
+        let rebate_floor = rent_minimum
             .checked_add(REVEAL_REBATE_LAMPORTS)
             .ok_or(Error::Overflow)?;
 
@@ -436,7 +454,9 @@ pub mod private_dao {
         }
 
         emit!(VoteRevealed {
-            proposal: p.key(), voter: vr.voter, reveal_count: p.reveal_count,
+            proposal: p.key(),
+            voter: vr.voter,
+            reveal_count: p.reveal_count,
         });
         Ok(())
     }
@@ -456,18 +476,20 @@ pub mod private_dao {
 
     pub fn finalize_proposal(ctx: Context<FinalizeProposal>) -> Result<()> {
         let now = Clock::get()?.unix_timestamp;
-        require!(now >= ctx.accounts.proposal.reveal_end, Error::RevealStillOpen);
+        require!(
+            now >= ctx.accounts.proposal.reveal_end,
+            Error::RevealStillOpen
+        );
         require!(
             ctx.accounts.proposal.status == ProposalStatus::Voting,
             Error::AlreadyFinalized
         );
 
         let dao = &ctx.accounts.dao;
-        let p   = &mut ctx.accounts.proposal;
+        let p = &mut ctx.accounts.proposal;
 
         let quorum_met = p.commit_count > 0
-            && (p.reveal_count as u64) * 100
-                >= (p.commit_count as u64) * (dao.quorum_percentage as u64);
+            && p.reveal_count * 100 >= p.commit_count * (dao.quorum_percentage as u64);
 
         let passed = if quorum_met {
             match &dao.voting_config {
@@ -479,7 +501,10 @@ pub mod private_dao {
                     let total = p.yes_community + p.no_community;
                     total > 0 && p.yes_community > p.no_community
                 }
-                VotingConfig::DualChamber { capital_threshold, community_threshold } => {
+                VotingConfig::DualChamber {
+                    capital_threshold,
+                    community_threshold,
+                } => {
                     let cap_total = p.yes_capital + p.no_capital;
                     let capital_passes = cap_total > 0
                         && (p.yes_capital as u128) * 100
@@ -497,7 +522,11 @@ pub mod private_dao {
             false
         };
 
-        p.status = if passed { ProposalStatus::Passed } else { ProposalStatus::Failed };
+        p.status = if passed {
+            ProposalStatus::Passed
+        } else {
+            ProposalStatus::Failed
+        };
 
         if passed {
             p.execution_unlocks_at = now
@@ -507,10 +536,14 @@ pub mod private_dao {
 
         emit!(ProposalFinalized {
             proposal: p.key(),
-            yes_capital: p.yes_capital, no_capital: p.no_capital,
-            yes_community: p.yes_community, no_community: p.no_community,
-            passed, quorum_met,
-            commit_count: p.commit_count, reveal_count: p.reveal_count,
+            yes_capital: p.yes_capital,
+            no_capital: p.no_capital,
+            yes_community: p.yes_community,
+            no_community: p.no_community,
+            passed,
+            quorum_met,
+            commit_count: p.commit_count,
+            reveal_count: p.reveal_count,
             execution_unlocks_at: p.execution_unlocks_at,
         });
         Ok(())
@@ -527,20 +560,23 @@ pub mod private_dao {
 
     pub fn execute_proposal(ctx: Context<ExecuteProposal>) -> Result<()> {
         let now = Clock::get()?.unix_timestamp;
-        let p   = &mut ctx.accounts.proposal;
+        let p = &mut ctx.accounts.proposal;
 
         require!(p.status == ProposalStatus::Passed, Error::ProposalNotPassed);
-        require!(!p.is_executed,                     Error::AlreadyExecuted);
-        require!(now >= p.execution_unlocks_at,      Error::ExecutionTimelockActive);
+        require!(!p.is_executed, Error::AlreadyExecuted);
+        require!(
+            now >= p.execution_unlocks_at,
+            Error::ExecutionTimelockActive
+        );
 
         p.is_executed = true;
 
         if let Some(ref action) = p.treasury_action.clone() {
             validate_treasury_action(action)?;
             let dao_key = ctx.accounts.dao.key();
-            let t_bump  = ctx.bumps.treasury;
+            let t_bump = ctx.bumps.treasury;
             let seeds: &[&[u8]] = &[b"treasury", dao_key.as_ref(), &[t_bump]];
-            let signer  = &[seeds];
+            let signer = &[seeds];
 
             match action.action_type {
                 TreasuryActionType::SendSol => {
@@ -553,15 +589,15 @@ pub mod private_dao {
                             ctx.accounts.system_program.to_account_info(),
                             Transfer {
                                 from: ctx.accounts.treasury.to_account_info(),
-                                to:   ctx.accounts.treasury_recipient.to_account_info(),
+                                to: ctx.accounts.treasury_recipient.to_account_info(),
                             },
                             signer,
                         ),
                         action.amount_lamports,
                     )?;
                     emit!(TreasuryExecuted {
-                        proposal:  p.key(),
-                        amount:    action.amount_lamports,
+                        proposal: p.key(),
+                        amount: action.amount_lamports,
                         recipient: ctx.accounts.treasury_recipient.key(),
                     });
                 }
@@ -572,11 +608,13 @@ pub mod private_dao {
                     );
                     let action_mint = action.token_mint.ok_or(Error::TokenMintRequired)?;
                     require!(
-                        *ctx.accounts.treasury_token_account.owner == ctx.accounts.token_program.key(),
+                        *ctx.accounts.treasury_token_account.owner
+                            == ctx.accounts.token_program.key(),
                         Error::InvalidTokenAccount
                     );
                     require!(
-                        *ctx.accounts.recipient_token_account.owner == ctx.accounts.token_program.key(),
+                        *ctx.accounts.recipient_token_account.owner
+                            == ctx.accounts.token_program.key(),
                         Error::InvalidTokenAccount
                     );
                     require!(
@@ -611,8 +649,8 @@ pub mod private_dao {
                         CpiContext::new_with_signer(
                             ctx.accounts.token_program.to_account_info(),
                             TokenTransfer {
-                                from:      ctx.accounts.treasury_token_account.to_account_info(),
-                                to:        ctx.accounts.recipient_token_account.to_account_info(),
+                                from: ctx.accounts.treasury_token_account.to_account_info(),
+                                to: ctx.accounts.recipient_token_account.to_account_info(),
                                 authority: ctx.accounts.treasury.to_account_info(),
                             },
                             signer,
@@ -620,8 +658,8 @@ pub mod private_dao {
                         action.amount_lamports,
                     )?;
                     emit!(TreasuryExecuted {
-                        proposal:  p.key(),
-                        amount:    action.amount_lamports,
+                        proposal: p.key(),
+                        amount: action.amount_lamports,
                         recipient: ctx.accounts.recipient_token_account.key(),
                     });
                 }
@@ -632,8 +670,8 @@ pub mod private_dao {
                     );
                     // Emit event; off-chain relayer handles the custom call
                     emit!(TreasuryExecuted {
-                        proposal:  p.key(),
-                        amount:    0,
+                        proposal: p.key(),
+                        amount: 0,
                         recipient: ctx.accounts.treasury_recipient.key(),
                     });
                 }
@@ -650,14 +688,14 @@ pub mod private_dao {
                 ctx.accounts.system_program.to_account_info(),
                 Transfer {
                     from: ctx.accounts.depositor.to_account_info(),
-                    to:   ctx.accounts.treasury.to_account_info(),
+                    to: ctx.accounts.treasury.to_account_info(),
                 },
             ),
             amount,
         )?;
         emit!(TreasuryDeposit {
-            dao:    ctx.accounts.dao.key(),
-            from:   ctx.accounts.depositor.key(),
+            dao: ctx.accounts.dao.key(),
+            from: ctx.accounts.depositor.key(),
             amount,
         });
         Ok(())
@@ -674,19 +712,19 @@ pub mod private_dao {
         let raw = ctx.accounts.voter_token_account.amount;
 
         let weight = match &ctx.accounts.dao.voting_config {
-            VotingConfig::TokenWeighted      => raw,
-            VotingConfig::Quadratic          => isqrt(raw),
+            VotingConfig::TokenWeighted => raw,
+            VotingConfig::Quadratic => isqrt(raw),
             VotingConfig::DualChamber { .. } => isqrt(raw),
         };
 
-        vwr.realm                 = ctx.accounts.realm.key();
-        vwr.governing_token_mint  = ctx.accounts.governing_token_mint.key();
+        vwr.realm = ctx.accounts.realm.key();
+        vwr.governing_token_mint = ctx.accounts.governing_token_mint.key();
         vwr.governing_token_owner = ctx.accounts.voter.key();
-        vwr.voter_weight          = weight;
-        vwr.voter_weight_expiry   = Some(Clock::get()?.slot + 100);
-        vwr.weight_action         = None;
-        vwr.weight_action_target  = None;
-        vwr.reserved              = [0u8; 8];
+        vwr.voter_weight = weight;
+        vwr.voter_weight_expiry = Some(Clock::get()?.slot + 100);
+        vwr.weight_action = None;
+        vwr.weight_action_target = None;
+        vwr.reserved = [0u8; 8];
         Ok(())
     }
 
@@ -704,9 +742,11 @@ pub mod private_dao {
 // Integer square root — floor(√n) without floating point.
 // Newton's method. Converges in ≤ 32 iterations for u64::MAX.
 fn isqrt(n: u64) -> u64 {
-    if n == 0 { return 0; }
+    if n == 0 {
+        return 0;
+    }
     let mut x = n;
-    let mut y = (x + 1) / 2;
+    let mut y = x.div_ceil(2);
     while y < x {
         x = y;
         y = (x + n / x) / 2;
@@ -715,9 +755,19 @@ fn isqrt(n: u64) -> u64 {
 }
 
 fn validate_voting_config(cfg: &VotingConfig) -> Result<()> {
-    if let VotingConfig::DualChamber { capital_threshold, community_threshold } = cfg {
-        require!(*capital_threshold   > 0 && *capital_threshold   <= 100, Error::InvalidThreshold);
-        require!(*community_threshold > 0 && *community_threshold <= 100, Error::InvalidThreshold);
+    if let VotingConfig::DualChamber {
+        capital_threshold,
+        community_threshold,
+    } = cfg
+    {
+        require!(
+            *capital_threshold > 0 && *capital_threshold <= 100,
+            Error::InvalidThreshold
+        );
+        require!(
+            *community_threshold > 0 && *community_threshold <= 100,
+            Error::InvalidThreshold
+        );
     }
     Ok(())
 }
@@ -727,17 +777,26 @@ fn validate_treasury_action(action: &TreasuryAction) -> Result<()> {
         TreasuryActionType::SendSol => {
             require!(action.amount_lamports > 0, Error::InvalidTreasuryAction);
             require!(action.token_mint.is_none(), Error::InvalidTreasuryAction);
-            require!(action.recipient != Pubkey::default(), Error::InvalidTreasuryAction);
+            require!(
+                action.recipient != Pubkey::default(),
+                Error::InvalidTreasuryAction
+            );
         }
         TreasuryActionType::SendToken => {
             require!(action.amount_lamports > 0, Error::InvalidTreasuryAction);
             require!(action.token_mint.is_some(), Error::TokenMintRequired);
-            require!(action.recipient != Pubkey::default(), Error::InvalidTreasuryAction);
+            require!(
+                action.recipient != Pubkey::default(),
+                Error::InvalidTreasuryAction
+            );
         }
         TreasuryActionType::CustomCPI => {
             require!(action.amount_lamports == 0, Error::InvalidTreasuryAction);
             require!(action.token_mint.is_none(), Error::InvalidTreasuryAction);
-            require!(action.recipient != Pubkey::default(), Error::InvalidTreasuryAction);
+            require!(
+                action.recipient != Pubkey::default(),
+                Error::InvalidTreasuryAction
+            );
         }
     }
     Ok(())
@@ -752,11 +811,11 @@ pub struct InitializeDao<'info> {
         init, payer = authority, space = Dao::LEN,
         seeds = [b"dao", authority.key().as_ref(), dao_name.as_bytes()], bump
     )]
-    pub dao:              Account<'info, Dao>,
+    pub dao: Account<'info, Dao>,
     pub governance_token: Account<'info, Mint>,
     #[account(mut)]
-    pub authority:        Signer<'info>,
-    pub system_program:   Program<'info, System>,
+    pub authority: Signer<'info>,
+    pub system_program: Program<'info, System>,
 }
 
 #[derive(Accounts)]
@@ -766,11 +825,11 @@ pub struct MigrateFromRealms<'info> {
         init, payer = authority, space = Dao::LEN,
         seeds = [b"dao", authority.key().as_ref(), dao_name.as_bytes()], bump
     )]
-    pub dao:              Account<'info, Dao>,
+    pub dao: Account<'info, Dao>,
     pub governance_token: Account<'info, Mint>,
     #[account(mut)]
-    pub authority:        Signer<'info>,
-    pub system_program:   Program<'info, System>,
+    pub authority: Signer<'info>,
+    pub system_program: Program<'info, System>,
 }
 
 #[derive(Accounts)]
@@ -781,42 +840,42 @@ pub struct CreateProposal<'info> {
         seeds = [b"dao", dao.authority.as_ref(), dao.dao_name.as_bytes()],
         bump = dao.bump
     )]
-    pub dao:            Account<'info, Dao>,
+    pub dao: Account<'info, Dao>,
     #[account(
         init, payer = proposer, space = Proposal::LEN,
         seeds = [b"proposal", dao.key().as_ref(), dao.proposal_count.to_le_bytes().as_ref()],
         bump
     )]
-    pub proposal:       Account<'info, Proposal>,
-    pub authority:      Signer<'info>,
+    pub proposal: Account<'info, Proposal>,
+    pub authority: Signer<'info>,
     #[account(mut)]
-    pub proposer:       Signer<'info>,
+    pub proposer: Signer<'info>,
     pub system_program: Program<'info, System>,
 }
 
 #[derive(Accounts)]
 pub struct CancelProposal<'info> {
     #[account(has_one = authority)]
-    pub dao:       Account<'info, Dao>,
+    pub dao: Account<'info, Dao>,
     #[account(
         mut, has_one = dao,
         seeds = [b"proposal", dao.key().as_ref(), proposal.proposal_id.to_le_bytes().as_ref()],
         bump = proposal.bump
     )]
-    pub proposal:  Account<'info, Proposal>,
+    pub proposal: Account<'info, Proposal>,
     pub authority: Signer<'info>,
 }
 
 #[derive(Accounts)]
 pub struct VetoProposal<'info> {
     #[account(has_one = authority)]
-    pub dao:       Account<'info, Dao>,
+    pub dao: Account<'info, Dao>,
     #[account(
         mut, has_one = dao,
         seeds = [b"proposal", dao.key().as_ref(), proposal.proposal_id.to_le_bytes().as_ref()],
         bump = proposal.bump
     )]
-    pub proposal:  Account<'info, Proposal>,
+    pub proposal: Account<'info, Proposal>,
     pub authority: Signer<'info>,
 }
 
@@ -841,9 +900,9 @@ pub struct CommitVote<'info> {
     )]
     pub voter_token_account: Account<'info, TokenAccount>,
     #[account(mut)]
-    pub voter:               Signer<'info>,
-    pub token_program:       Program<'info, Token>,
-    pub system_program:      Program<'info, System>,
+    pub voter: Signer<'info>,
+    pub token_program: Program<'info, Token>,
+    pub system_program: Program<'info, System>,
 }
 
 #[derive(Accounts)]
@@ -867,8 +926,8 @@ pub struct DelegateVote<'info> {
     )]
     pub delegator_token_account: Account<'info, TokenAccount>,
     #[account(mut)]
-    pub delegator:               Signer<'info>,
-    pub system_program:          Program<'info, System>,
+    pub delegator: Signer<'info>,
+    pub system_program: Program<'info, System>,
 }
 
 #[derive(Accounts)]
@@ -899,8 +958,8 @@ pub struct CommitDelegatedVote<'info> {
     )]
     pub delegatee_token_account: Account<'info, TokenAccount>,
     #[account(mut)]
-    pub delegatee:               Signer<'info>,
-    pub system_program:          Program<'info, System>,
+    pub delegatee: Signer<'info>,
+    pub system_program: Program<'info, System>,
 }
 
 #[derive(Accounts)]
@@ -910,7 +969,7 @@ pub struct RevealVote<'info> {
         seeds = [b"proposal", proposal.dao.as_ref(), proposal.proposal_id.to_le_bytes().as_ref()],
         bump = proposal.bump
     )]
-    pub proposal:     Account<'info, Proposal>,
+    pub proposal: Account<'info, Proposal>,
     #[account(
         mut,
         seeds = [b"vote", proposal.key().as_ref(), voter_record.voter.as_ref()],
@@ -918,7 +977,7 @@ pub struct RevealVote<'info> {
     )]
     pub voter_record: Account<'info, VoterRecord>,
     #[account(mut)]
-    pub revealer:     Signer<'info>,
+    pub revealer: Signer<'info>,
 }
 
 #[derive(Accounts)]
@@ -929,7 +988,7 @@ pub struct FinalizeProposal<'info> {
         seeds = [b"proposal", dao.key().as_ref(), proposal.proposal_id.to_le_bytes().as_ref()],
         bump = proposal.bump
     )]
-    pub proposal:  Account<'info, Proposal>,
+    pub proposal: Account<'info, Proposal>,
     pub finalizer: Signer<'info>,
 }
 
@@ -956,26 +1015,26 @@ pub struct ExecuteProposal<'info> {
     ///        Pass any account (e.g. treasury PDA) for non-SendToken actions.
     #[account(mut)]
     pub recipient_token_account: AccountInfo<'info>,
-    pub executor:                Signer<'info>,
-    pub token_program:           Program<'info, Token>,
-    pub system_program:          Program<'info, System>,
+    pub executor: Signer<'info>,
+    pub token_program: Program<'info, Token>,
+    pub system_program: Program<'info, System>,
 }
 
 #[derive(Accounts)]
 pub struct DepositTreasury<'info> {
     pub dao: Account<'info, Dao>,
     #[account(mut, seeds = [b"treasury", dao.key().as_ref()], bump)]
-    pub treasury:       SystemAccount<'info>,
+    pub treasury: SystemAccount<'info>,
     #[account(mut)]
-    pub depositor:      Signer<'info>,
+    pub depositor: Signer<'info>,
     pub system_program: Program<'info, System>,
 }
 
 #[derive(Accounts)]
 pub struct UpdateVoterWeightRecord<'info> {
-    pub dao:                  Account<'info, Dao>,
+    pub dao: Account<'info, Dao>,
     /// CHECK: Realms realm account — not owned by this program
-    pub realm:                AccountInfo<'info>,
+    pub realm: AccountInfo<'info>,
     #[account(
         constraint = governing_token_mint.key() == dao.governance_token @ Error::GoverningMintMismatch
     )]
@@ -997,8 +1056,8 @@ pub struct UpdateVoterWeightRecord<'info> {
     )]
     pub voter_token_account: Account<'info, TokenAccount>,
     #[account(mut)]
-    pub voter:               Signer<'info>,
-    pub system_program:      Program<'info, System>,
+    pub voter: Signer<'info>,
+    pub system_program: Program<'info, System>,
 }
 
 #[derive(Accounts)]
@@ -1017,17 +1076,17 @@ pub struct GetVoterWeightRecord<'info> {
 
 #[account]
 pub struct Dao {
-    pub authority:                 Pubkey,       // 32
-    pub dao_name:                  String,       // 4 + 64
-    pub governance_token:          Pubkey,       // 32
-    pub quorum_percentage:         u8,           // 1
-    pub governance_token_required: u64,          // 8
-    pub reveal_window_seconds:     i64,          // 8
-    pub execution_delay_seconds:   i64,          // 8
-    pub voting_config:             VotingConfig, // 3 (DualChamber is largest variant)
-    pub proposal_count:            u64,          // 8
-    pub bump:                      u8,           // 1
-    pub migrated_from_realms:      Option<Pubkey>, // 33
+    pub authority: Pubkey,                    // 32
+    pub dao_name: String,                     // 4 + 64
+    pub governance_token: Pubkey,             // 32
+    pub quorum_percentage: u8,                // 1
+    pub governance_token_required: u64,       // 8
+    pub reveal_window_seconds: i64,           // 8
+    pub execution_delay_seconds: i64,         // 8
+    pub voting_config: VotingConfig,          // 3 (DualChamber is largest variant)
+    pub proposal_count: u64,                  // 8
+    pub bump: u8,                             // 1
+    pub migrated_from_realms: Option<Pubkey>, // 33
 }
 
 impl Dao {
@@ -1042,30 +1101,30 @@ impl Dao {
         + 3                // voting_config (DualChamber: 1 variant + 2×u8 = 3 bytes max)
         + 8                // proposal_count
         + 1                // bump
-        + 33;              // migrated_from_realms (Option<Pubkey>)
-                           // = 210
+        + 33; // migrated_from_realms (Option<Pubkey>)
+              // = 210
 }
 
 #[account]
 pub struct Proposal {
-    pub dao:                  Pubkey,                // 32
-    pub proposer:             Pubkey,                // 32
-    pub proposal_id:          u64,                   // 8
-    pub title:                String,                // 4 + 128
-    pub description:          String,                // 4 + 1024
-    pub status:               ProposalStatus,        // 1
-    pub voting_end:           i64,                   // 8
-    pub reveal_end:           i64,                   // 8
-    pub yes_capital:          u64,                   // 8
-    pub no_capital:           u64,                   // 8
-    pub yes_community:        u64,                   // 8
-    pub no_community:         u64,                   // 8
-    pub commit_count:         u64,                   // 8
-    pub reveal_count:         u64,                   // 8
-    pub treasury_action:      Option<TreasuryAction>, // 1 + 74 = 75
-    pub execution_unlocks_at: i64,                   // 8
-    pub is_executed:          bool,                  // 1
-    pub bump:                 u8,                    // 1
+    pub dao: Pubkey,                             // 32
+    pub proposer: Pubkey,                        // 32
+    pub proposal_id: u64,                        // 8
+    pub title: String,                           // 4 + 128
+    pub description: String,                     // 4 + 1024
+    pub status: ProposalStatus,                  // 1
+    pub voting_end: i64,                         // 8
+    pub reveal_end: i64,                         // 8
+    pub yes_capital: u64,                        // 8
+    pub no_capital: u64,                         // 8
+    pub yes_community: u64,                      // 8
+    pub no_community: u64,                       // 8
+    pub commit_count: u64,                       // 8
+    pub reveal_count: u64,                       // 8
+    pub treasury_action: Option<TreasuryAction>, // 1 + 74 = 75
+    pub execution_unlocks_at: i64,               // 8
+    pub is_executed: bool,                       // 1
+    pub bump: u8,                                // 1
 }
 
 impl Proposal {
@@ -1079,21 +1138,21 @@ impl Proposal {
         + 8 + 8 + 8 + 8               // yes/no capital, yes/no community
         + 8 + 8                       // commit_count, reveal_count
         + (1 + 74)                    // Option<TreasuryAction>
-        + 8 + 1 + 1;                  // execution_unlocks_at, is_executed, bump
-                                      // = 1390
+        + 8 + 1 + 1; // execution_unlocks_at, is_executed, bump
+                     // = 1390
 }
 
 #[account]
 pub struct VoterRecord {
-    pub voter:                  Pubkey,         // 32
-    pub proposal:               Pubkey,         // 32
-    pub commitment:             [u8; 32],       // 32
-    pub capital_weight:         u64,            // 8   (own + delegated)
-    pub community_weight:       u64,            // 8   (own + delegated)
-    pub has_committed:          bool,           // 1
-    pub has_revealed:           bool,           // 1
-    pub voted_yes:              bool,           // 1
-    pub bump:                   u8,             // 1
+    pub voter: Pubkey,                          // 32
+    pub proposal: Pubkey,                       // 32
+    pub commitment: [u8; 32],                   // 32
+    pub capital_weight: u64,                    // 8   (own + delegated)
+    pub community_weight: u64,                  // 8   (own + delegated)
+    pub has_committed: bool,                    // 1
+    pub has_revealed: bool,                     // 1
+    pub voted_yes: bool,                        // 1
+    pub bump: u8,                               // 1
     pub voter_reveal_authority: Option<Pubkey>, // 33
 }
 
@@ -1103,13 +1162,13 @@ impl VoterRecord {
 
 #[account]
 pub struct VoteDelegation {
-    pub delegator:           Pubkey, // 32
-    pub delegatee:           Pubkey, // 32
-    pub proposal:            Pubkey, // 32
-    pub delegated_capital:   u64,    // 8
-    pub delegated_community: u64,    // 8
-    pub is_used:             bool,   // 1
-    pub bump:                u8,     // 1
+    pub delegator: Pubkey,        // 32
+    pub delegatee: Pubkey,        // 32
+    pub proposal: Pubkey,         // 32
+    pub delegated_capital: u64,   // 8
+    pub delegated_community: u64, // 8
+    pub is_used: bool,            // 1
+    pub bump: u8,                 // 1
 }
 
 impl VoteDelegation {
@@ -1119,14 +1178,14 @@ impl VoteDelegation {
 // Matches spl-governance-addin-api VoterWeightRecord layout exactly
 #[account]
 pub struct VoterWeightRecord {
-    pub realm:                 Pubkey,         // 32
-    pub governing_token_mint:  Pubkey,         // 32
-    pub governing_token_owner: Pubkey,         // 32
-    pub voter_weight:          u64,            // 8
-    pub voter_weight_expiry:   Option<u64>,    // 9
-    pub weight_action:         Option<u8>,     // 2
-    pub weight_action_target:  Option<Pubkey>, // 33
-    pub reserved:              [u8; 8],        // 8
+    pub realm: Pubkey,                        // 32
+    pub governing_token_mint: Pubkey,         // 32
+    pub governing_token_owner: Pubkey,        // 32
+    pub voter_weight: u64,                    // 8
+    pub voter_weight_expiry: Option<u64>,     // 9
+    pub weight_action: Option<u8>,            // 2
+    pub weight_action_target: Option<Pubkey>, // 33
+    pub reserved: [u8; 8],                    // 8
 }
 
 impl VoterWeightRecord {
@@ -1140,7 +1199,7 @@ pub enum VotingConfig {
     TokenWeighted,
     Quadratic,
     DualChamber {
-        capital_threshold:   u8, // % of token-weighted YES required (1–100)
+        capital_threshold: u8,   // % of token-weighted YES required (1–100)
         community_threshold: u8, // % of quadratic YES required      (1–100)
     },
 }
@@ -1156,105 +1215,184 @@ pub enum ProposalStatus {
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone)]
 pub struct TreasuryAction {
-    pub action_type:     TreasuryActionType,
+    pub action_type: TreasuryActionType,
     pub amount_lamports: u64,
-    pub recipient:       Pubkey,
-    pub token_mint:      Option<Pubkey>,
+    pub recipient: Pubkey,
+    pub token_mint: Option<Pubkey>,
 }
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone)]
-pub enum TreasuryActionType { SendSol, SendToken, CustomCPI }
+pub enum TreasuryActionType {
+    SendSol,
+    SendToken,
+    CustomCPI,
+}
 
 // ── Events ────────────────────────────────────────────────────────────────────
 
 #[event]
-pub struct DaoCreated { pub dao: Pubkey, pub name: String, pub authority: Pubkey }
+pub struct DaoCreated {
+    pub dao: Pubkey,
+    pub name: String,
+    pub authority: Pubkey,
+}
 
 #[event]
 pub struct DaoMigratedFromRealms {
-    pub dao: Pubkey, pub name: String,
-    pub realms_governance: Pubkey, pub governance_token: Pubkey,
+    pub dao: Pubkey,
+    pub name: String,
+    pub realms_governance: Pubkey,
+    pub governance_token: Pubkey,
 }
 
 #[event]
 pub struct ProposalCreated {
-    pub dao: Pubkey, pub proposal: Pubkey, pub proposal_id: u64,
-    pub title: String, pub voting_end: i64, pub reveal_end: i64,
+    pub dao: Pubkey,
+    pub proposal: Pubkey,
+    pub proposal_id: u64,
+    pub title: String,
+    pub voting_end: i64,
+    pub reveal_end: i64,
 }
 
 #[event]
-pub struct ProposalCancelled { pub proposal: Pubkey, pub cancelled_by: Pubkey }
+pub struct ProposalCancelled {
+    pub proposal: Pubkey,
+    pub cancelled_by: Pubkey,
+}
 
 #[event]
-pub struct ProposalVetoed { pub proposal: Pubkey, pub vetoed_by: Pubkey }
+pub struct ProposalVetoed {
+    pub proposal: Pubkey,
+    pub vetoed_by: Pubkey,
+}
 
 #[event]
 pub struct VoteDelegated {
-    pub proposal: Pubkey, pub delegator: Pubkey,
-    pub delegatee: Pubkey, pub delegated_weight: u64,
+    pub proposal: Pubkey,
+    pub delegator: Pubkey,
+    pub delegatee: Pubkey,
+    pub delegated_weight: u64,
 }
 
 #[event]
-pub struct VoteCommitted { pub proposal: Pubkey, pub voter: Pubkey, pub commit_count: u64 }
+pub struct VoteCommitted {
+    pub proposal: Pubkey,
+    pub voter: Pubkey,
+    pub commit_count: u64,
+}
 
 #[event]
-pub struct VoteRevealed { pub proposal: Pubkey, pub voter: Pubkey, pub reveal_count: u64 }
+pub struct VoteRevealed {
+    pub proposal: Pubkey,
+    pub voter: Pubkey,
+    pub reveal_count: u64,
+}
 
 #[event]
 pub struct ProposalFinalized {
     pub proposal: Pubkey,
-    pub yes_capital: u64, pub no_capital: u64,
-    pub yes_community: u64, pub no_community: u64,
-    pub passed: bool, pub quorum_met: bool,
-    pub commit_count: u64, pub reveal_count: u64,
+    pub yes_capital: u64,
+    pub no_capital: u64,
+    pub yes_community: u64,
+    pub no_community: u64,
+    pub passed: bool,
+    pub quorum_met: bool,
+    pub commit_count: u64,
+    pub reveal_count: u64,
     pub execution_unlocks_at: i64,
 }
 
 #[event]
-pub struct TreasuryDeposit { pub dao: Pubkey, pub from: Pubkey, pub amount: u64 }
+pub struct TreasuryDeposit {
+    pub dao: Pubkey,
+    pub from: Pubkey,
+    pub amount: u64,
+}
 
 #[event]
-pub struct TreasuryExecuted { pub proposal: Pubkey, pub amount: u64, pub recipient: Pubkey }
+pub struct TreasuryExecuted {
+    pub proposal: Pubkey,
+    pub amount: u64,
+    pub recipient: Pubkey,
+}
 
 // ── Errors ────────────────────────────────────────────────────────────────────
 
 #[error_code]
 pub enum Error {
-    #[msg("DAO name max 64 chars")]                        NameTooLong,
-    #[msg("Quorum must be 1–100")]                         InvalidQuorum,
-    #[msg("Reveal window must be at least 5 seconds")]     RevealWindowTooShort,
-    #[msg("Voting duration must be at least 5 seconds")]   VotingDurationTooShort,
-    #[msg("Execution delay must be non-negative")]         InvalidExecutionDelay,
-    #[msg("Title max 128 chars")]                          TitleTooLong,
-    #[msg("Description max 1024 chars")]                   DescriptionTooLong,
-    #[msg("Voting is not open")]                           VotingNotOpen,
-    #[msg("Voting period has closed")]                     VotingClosed,
-    #[msg("Already committed a vote")]                     AlreadyCommitted,
-    #[msg("Reveal phase has not started yet")]             RevealTooEarly,
-    #[msg("Reveal window has closed")]                     RevealClosed,
-    #[msg("Reveal phase is still open")]                   RevealStillOpen,
-    #[msg("No commitment found for this voter")]           NotCommitted,
-    #[msg("Vote already revealed")]                        AlreadyRevealed,
-    #[msg("Commitment hash does not match")]               CommitmentMismatch,
-    #[msg("Proposal has already been finalized")]          AlreadyFinalized,
-    #[msg("Not enough governance tokens")]                 InsufficientTokens,
-    #[msg("Not authorized to reveal this vote")]           NotAuthorizedToReveal,
-    #[msg("Threshold must be 1–100")]                      InvalidThreshold,
-    #[msg("Arithmetic overflow")]                          Overflow,
-    #[msg("Can only cancel proposals that are voting")]    ProposalNotCancellable,
-    #[msg("Proposal did not pass")]                        ProposalNotPassed,
-    #[msg("Treasury action already executed")]             AlreadyExecuted,
-    #[msg("Execution timelock has not yet expired")]       ExecutionTimelockActive,
-    #[msg("Veto window has expired — timelock has passed")] VetoWindowExpired,
-    #[msg("This delegation has already been used")]        DelegationAlreadyUsed,
-    #[msg("Caller is not the designated delegatee")]       NotDelegatee,
-    #[msg("Delegation belongs to a different proposal")]   WrongProposal,
-    #[msg("Treasury action payload is invalid")]           InvalidTreasuryAction,
-    #[msg("SendToken action requires token_mint")]         TokenMintRequired,
-    #[msg("Executor must use action recipient")]           TreasuryRecipientMismatch,
-    #[msg("Treasury token account must be treasury-owned")] InvalidTreasuryTokenAuthority,
-    #[msg("Provided token mint does not match action")]    InvalidTokenMint,
-    #[msg("Recipient token owner does not match action")]  RecipientOwnerMismatch,
-    #[msg("Token account is invalid or owned by wrong program")] InvalidTokenAccount,
-    #[msg("Governing mint must match DAO governance token")] GoverningMintMismatch,
+    #[msg("DAO name max 64 chars")]
+    NameTooLong,
+    #[msg("Quorum must be 1–100")]
+    InvalidQuorum,
+    #[msg("Reveal window must be at least 5 seconds")]
+    RevealWindowTooShort,
+    #[msg("Voting duration must be at least 5 seconds")]
+    VotingDurationTooShort,
+    #[msg("Execution delay must be non-negative")]
+    InvalidExecutionDelay,
+    #[msg("Title max 128 chars")]
+    TitleTooLong,
+    #[msg("Description max 1024 chars")]
+    DescriptionTooLong,
+    #[msg("Voting is not open")]
+    VotingNotOpen,
+    #[msg("Voting period has closed")]
+    VotingClosed,
+    #[msg("Already committed a vote")]
+    AlreadyCommitted,
+    #[msg("Reveal phase has not started yet")]
+    RevealTooEarly,
+    #[msg("Reveal window has closed")]
+    RevealClosed,
+    #[msg("Reveal phase is still open")]
+    RevealStillOpen,
+    #[msg("No commitment found for this voter")]
+    NotCommitted,
+    #[msg("Vote already revealed")]
+    AlreadyRevealed,
+    #[msg("Commitment hash does not match")]
+    CommitmentMismatch,
+    #[msg("Proposal has already been finalized")]
+    AlreadyFinalized,
+    #[msg("Not enough governance tokens")]
+    InsufficientTokens,
+    #[msg("Not authorized to reveal this vote")]
+    NotAuthorizedToReveal,
+    #[msg("Threshold must be 1–100")]
+    InvalidThreshold,
+    #[msg("Arithmetic overflow")]
+    Overflow,
+    #[msg("Can only cancel proposals that are voting")]
+    ProposalNotCancellable,
+    #[msg("Proposal did not pass")]
+    ProposalNotPassed,
+    #[msg("Treasury action already executed")]
+    AlreadyExecuted,
+    #[msg("Execution timelock has not yet expired")]
+    ExecutionTimelockActive,
+    #[msg("Veto window has expired — timelock has passed")]
+    VetoWindowExpired,
+    #[msg("This delegation has already been used")]
+    DelegationAlreadyUsed,
+    #[msg("Caller is not the designated delegatee")]
+    NotDelegatee,
+    #[msg("Delegation belongs to a different proposal")]
+    WrongProposal,
+    #[msg("Treasury action payload is invalid")]
+    InvalidTreasuryAction,
+    #[msg("SendToken action requires token_mint")]
+    TokenMintRequired,
+    #[msg("Executor must use action recipient")]
+    TreasuryRecipientMismatch,
+    #[msg("Treasury token account must be treasury-owned")]
+    InvalidTreasuryTokenAuthority,
+    #[msg("Provided token mint does not match action")]
+    InvalidTokenMint,
+    #[msg("Recipient token owner does not match action")]
+    RecipientOwnerMismatch,
+    #[msg("Token account is invalid or owned by wrong program")]
+    InvalidTokenAccount,
+    #[msg("Governing mint must match DAO governance token")]
+    GoverningMintMismatch,
 }

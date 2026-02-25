@@ -6,3 +6,7 @@ test-ledger/
 migration-report-*.json
 ~/.config/solana/
 wallets/
+wallets/
+.env
+*.json
+

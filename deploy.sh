@@ -38,15 +38,16 @@ else
   warn ".env not found — copy .env.example and add your Helius key"
 fi
 
-if [ -n "${HELIUS_API_KEY:-}" ] && [ "${HELIUS_API_KEY:-}" != "your_helius_api_key_here" ]; then
-  SOLANA_RPC_URL="https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}"
+SOLANA_RPC_URL="$(select_devnet_rpc)"
+if [[ "$SOLANA_RPC_URL" == *"alchemy.com"* ]]; then
+  ok "Using Alchemy devnet RPC"
+elif [[ "$SOLANA_RPC_URL" == *"helius"* ]]; then
   ok "Using Helius devnet RPC"
 else
-  SOLANA_RPC_URL="${SOLANA_RPC_URL:-https://api.devnet.solana.com}"
-  warn "Using public devnet RPC — set HELIUS_API_KEY in .env for reliability"
+  warn "Using public devnet RPC — set ALCHEMY_API_KEY/ALCHEMY_DEVNET_RPC_URL or HELIUS_API_KEY"
 fi
 
-PROGRAM_ID="${PROGRAM_ID:-DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs}"
+PROGRAM_ID="${PROGRAM_ID:-62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm}"
 
 echo ""
 echo "╔══════════════════════════════════════════════════════════╗"

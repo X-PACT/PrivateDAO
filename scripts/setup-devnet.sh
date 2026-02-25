@@ -28,16 +28,15 @@ if [ -f ".env" ]; then
   done < .env
 fi
 
-HELIUS_KEY="${HELIUS_API_KEY:-}"
-if [ -z "$HELIUS_KEY" ] || [ "$HELIUS_KEY" = "your_helius_api_key_here" ]; then
-  echo -e "${YELLOW}⚠  HELIUS_API_KEY not set in .env${NC}"
+RPC_URL="$(select_devnet_rpc)"
+
+if [[ "$RPC_URL" == *"alchemy.com"* ]]; then
+  echo "✓ Alchemy devnet RPC configured"
+elif [[ "$RPC_URL" == *"helius"* ]]; then
+  echo "✓ Helius devnet RPC configured"
+elif [[ "$RPC_URL" == "https://api.devnet.solana.com" ]]; then
+  echo -e "${YELLOW}⚠  No premium RPC configured (Alchemy/Helius)${NC}"
   echo "   Using public devnet (rate-limited)."
-  echo "   Get free key at: https://dev.helius.xyz"
-  echo ""
-  RPC_URL="https://api.devnet.solana.com"
-else
-  RPC_URL="https://devnet.helius-rpc.com/?api-key=${HELIUS_KEY}"
-  echo "✓ Helius RPC configured"
 fi
 
 WALLET="${ANCHOR_WALLET:-$HOME/.config/solana/id.json}"

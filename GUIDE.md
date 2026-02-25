@@ -7,6 +7,17 @@
 
 ---
 
+## Current Deployment Snapshot (Devnet)
+
+- Status: Deployed
+- Program ID: `62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm`
+- Last deployed slot: `444565780`
+- Last deployed time (UTC): `2026-02-25T11:47:34Z`
+- Upgrade authority: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
+- Explorer: https://solscan.io/account/62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm?cluster=devnet
+
+---
+
 ## Prerequisites (one-time install)
 
 ```bash
@@ -65,7 +76,7 @@ SOLANA_RPC_URL=https://devnet.helius-rpc.com/?api-key=your_actual_key_here
 SOLANA_WSS_URL=wss://devnet.helius-rpc.com/?api-key=your_actual_key_here
 SOLANA_CLUSTER=devnet
 ANCHOR_WALLET=~/.config/solana/id.json
-PROGRAM_ID=DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs
+PROGRAM_ID=62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm
 ```
 
 ### Step 2 — Wallet Setup
@@ -126,7 +137,7 @@ Output:
 Deploying cluster: https://devnet.helius-rpc.com/?api-key=...
 Upgrade authority: <YOUR_WALLET>
 Deploying program "private_dao"...
-Program Id: DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs
+Program Id: 62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm
 
 Deploy success
 ```
@@ -134,7 +145,7 @@ Deploy success
 **Important:** If the Program Id shown differs from what's in `declare_id!()`, update it:
 ```bash
 NEW_ID="<actual deployed id>"
-sed -i "s/DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs/$NEW_ID/" \
+sed -i "s/62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm/$NEW_ID/" \
   programs/private-dao/src/lib.rs
 anchor build && anchor deploy --provider.cluster devnet
 ```
@@ -143,11 +154,38 @@ anchor build && anchor deploy --provider.cluster devnet
 
 ```bash
 # Check program on-chain
-solana program show DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs
+solana program show 62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm
 
 # Or view on Solscan
-# https://solscan.io/account/DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs?cluster=devnet
+# https://solscan.io/account/62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm?cluster=devnet
 ```
+
+---
+
+## Ecosystem Mentions (Relevant Companies and Organizations)
+
+This section lists ecosystem entities relevant to deployment, tooling, infrastructure, wallets, and growth. It does not imply partnership or formal endorsement.
+
+- Solana Foundation
+- Anza
+- Coral (Anchor)
+- Alchemy
+- Helius
+- QuickNode
+- Triton One
+- Dialect
+- Squads Labs
+- Phantom
+- Solflare
+- Backpack
+- Jupiter
+- Pyth Network
+- Switchboard
+- Chainlink
+- Circle
+- Wormhole Foundation
+- Superteam
+- Colosseum
 
 ---
 
@@ -284,14 +322,14 @@ const connection = new Connection(
 
 // Subscribe to program account changes
 connection.onProgramAccountChange(
-  new PublicKey("DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs"),
+  new PublicKey("62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm"),
   (info) => console.log("Account changed:", info.accountId.toBase58()),
   "confirmed",
 );
 
 // Subscribe to logs (events)
 connection.onLogs(
-  new PublicKey("DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs"),
+  new PublicKey("62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm"),
   (logs) => console.log("Event:", logs.logs),
 );
 ```
@@ -334,10 +372,10 @@ Submit at: **https://app.superteam.fun** → Solana Graveyard Hackathon 2026
 ## Program Info
 
 ```
-Program ID:   DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs
+Program ID:   62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm
 Network:      Solana Devnet
 Framework:    Anchor 0.32
 Language:     Rust (Solana BPF target)
 IDL:          target/idl/private_dao.json
-Explorer:     https://solscan.io/account/DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs?cluster=devnet
+Explorer:     https://solscan.io/account/62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm?cluster=devnet
 ```

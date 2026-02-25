@@ -27,7 +27,7 @@
 
 import * as anchor from "@coral-xyz/anchor";
 import { Program }  from "@coral-xyz/anchor";
-import { PublicKey, Keypair, SystemProgram, LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { PublicKey, Keypair, SystemProgram, Transaction, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import {
   createMint, createAccount, mintTo,
   TOKEN_PROGRAM_ID,
@@ -64,6 +64,27 @@ function sleep(ms: number): Promise<void> {
   return new Promise(r => setTimeout(r, ms));
 }
 
+async function currentUnixTimestamp(connection: anchor.web3.Connection): Promise<number> {
+  const slot = await connection.getSlot("processed");
+  const blockTime = await connection.getBlockTime(slot);
+  return blockTime ?? Math.floor(Date.now() / 1000);
+}
+
+async function waitForUnixTimestamp(
+  connection: anchor.web3.Connection,
+  targetUnixTs: number,
+  label: string,
+): Promise<void> {
+  const timeoutMs = 120_000;
+  const started = Date.now();
+  while ((Date.now() - started) < timeoutMs) {
+    const now = await currentUnixTimestamp(connection);
+    if (now >= targetUnixTs) return;
+    await sleep(400);
+  }
+  throw new Error(`Timeout waiting for ${label} at unix ${targetUnixTs}`);
+}
+
 // ── Demo ──────────────────────────────────────────────────────────────────────
 
 describe("demo", () => {
@@ -71,8 +92,20 @@ describe("demo", () => {
   anchor.setProvider(provider);
   const program = anchor.workspace.PrivateDao as Program<any>;
   const payer   = (provider.wallet as anchor.Wallet).payer;
+  const EXECUTE_LAMPORTS = 100_000;         // 0.0001 SOL
+  const TREASURY_SEED_LAMPORTS = 2_000_000; // 0.002 SOL
 
   it("Full lifecycle: DualChamber + Delegation + Keeper + Cancel + Timelock", async () => {
+    async function fundWallet(pubkey: PublicKey, sol: number): Promise<void> {
+      const tx = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: payer.publicKey,
+          toPubkey: pubkey,
+          lamports: Math.round(sol * LAMPORTS_PER_SOL),
+        }),
+      );
+      await provider.sendAndConfirm(tx, []);
+    }
 
     console.log("\n╔══════════════════════════════════════════════════════════════╗");
     console.log("║  PrivateDAO — Full Demo                                      ║");
@@ -91,8 +124,7 @@ describe("demo", () => {
     const recipient = Keypair.generate(); // receives SOL on treasury execute
 
     for (const w of [whale, alice, bob, carol, delegator, keeper]) {
-      const sig = await provider.connection.requestAirdrop(w.publicKey, 3 * LAMPORTS_PER_SOL);
-      await provider.connection.confirmTransaction(sig);
+      await fundWallet(w.publicKey, 0.005);
     }
 
     const mint = await createMint(provider.connection, payer, payer.publicKey, null, 6);
@@ -167,8 +199,16 @@ describe("demo", () => {
       [Buffer.from("treasury"), daoPda.toBuffer()],
       program.programId,
     );
-    const fundSig = await provider.connection.requestAirdrop(treasuryPda, LAMPORTS_PER_SOL);
-    await provider.connection.confirmTransaction(fundSig);
+    await provider.sendAndConfirm(
+      new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: payer.publicKey,
+          toPubkey: treasuryPda,
+          lamports: TREASURY_SEED_LAMPORTS,
+        }),
+      ),
+      [],
+    );
 
     const [proposal1Pda] = PublicKey.findProgramAddressSync(
       [Buffer.from("proposal"), daoPda.toBuffer(), Buffer.alloc(8)],
@@ -179,12 +219,12 @@ describe("demo", () => {
 
     await program.methods
       .createProposal(
-        "Fund community grant — 0.05 SOL",
-        "Allocate 0.05 SOL from treasury to community education fund.",
+        "Fund community grant — 0.0001 SOL",
+        "Allocate 0.0001 SOL from treasury to community education fund.",
         new BN(VOTING_SECS),
         {
           actionType:     { sendSol: {} },
-          amountLamports: new BN(0.05 * LAMPORTS_PER_SOL),
+          amountLamports: new BN(EXECUTE_LAMPORTS),
           recipient:      recipient.publicKey,
           tokenMint:      null,
         },
@@ -197,8 +237,8 @@ describe("demo", () => {
       .rpc();
 
     console.log(`  Proposal: ${proposal1Pda.toBase58().slice(0,16)}...`);
-    console.log(`  Treasury: send 0.05 SOL to recipient when passed + timelock expires`);
-    console.log(`  Treasury PDA: ${treasuryPda.toBase58().slice(0,16)}... (funded 1 SOL)`);
+    console.log(`  Treasury: send ${(EXECUTE_LAMPORTS / LAMPORTS_PER_SOL).toFixed(4)} SOL to recipient when passed + timelock expires`);
+    console.log(`  Treasury PDA: ${treasuryPda.toBase58().slice(0,16)}... (funded ${(TREASURY_SEED_LAMPORTS / LAMPORTS_PER_SOL).toFixed(4)} SOL)`);
 
     // ── ACT 2: Delegation delegator → alice ───────────────────────────────
     section("ACT 2: Vote delegation (delegator → alice, private)");
@@ -309,8 +349,11 @@ describe("demo", () => {
     assert.equal(pCommit.commitCount.toNumber(), 4);
     console.log(`  4 votes committed.  Tally: YES=0 / NO=0  (hidden ✓)`);
     console.log(`  — No whale watching. No bandwagon effect. —`);
-    console.log(`  Waiting ${VOTING_SECS + 1}s for voting period to end...`);
-    await sleep((VOTING_SECS + 1) * 1000);
+    await waitForUnixTimestamp(
+      provider.connection,
+      pCommit.votingEnd.toNumber(),
+      "demo_voting_end",
+    );
 
     // ── Phase 2: REVEAL ───────────────────────────────────────────────────
     section("Phase 2: REVEAL — ACT 3: keeper reveals for carol");
@@ -343,8 +386,11 @@ describe("demo", () => {
     console.log(`\n  ── Final tally ──`);
     console.log(`  Capital chamber:   YES = ${pAfterReveal.yesCapital.toNumber().toLocaleString().padStart(14)}  NO = ${pAfterReveal.noCapital.toNumber().toLocaleString().padStart(13)}`);
     console.log(`  Community chamber: YES = ${pAfterReveal.yesCommunity.toNumber().toLocaleString().padStart(14)}  NO = ${pAfterReveal.noCommunity.toNumber().toLocaleString().padStart(13)}`);
-    console.log(`  Waiting 9s for reveal window to close...`);
-    await sleep(9000);
+    await waitForUnixTimestamp(
+      provider.connection,
+      pAfterReveal.revealEnd.toNumber(),
+      "demo_reveal_end",
+    );
 
     // ── Phase 3a: FINALIZE ────────────────────────────────────────────────
     section("Phase 3a: FINALIZE — compute result + start timelock");
@@ -362,8 +408,11 @@ describe("demo", () => {
 
     const wait = Math.max(0, pFinal.executionUnlocksAt.toNumber() - Math.floor(Date.now() / 1000));
     console.log(`  Timelock: ${wait}s remaining until execution unlocks`);
-    console.log(`  Waiting 6s for timelock to expire...`);
-    await sleep(6000);
+    await waitForUnixTimestamp(
+      provider.connection,
+      pFinal.executionUnlocksAt.toNumber(),
+      "demo_execution_unlocks_at",
+    );
 
     // ── Phase 3b: EXECUTE ─────────────────────────────────────────────────
     section("Phase 3b: EXECUTE — treasury fires after timelock (ACT 5)");
@@ -387,7 +436,7 @@ describe("demo", () => {
 
     const recipientAfter  = await provider.connection.getBalance(recipient.publicKey);
     const transferred     = (recipientAfter - recipientBefore) / LAMPORTS_PER_SOL;
-    assert.approximately(transferred, 0.05, 0.001, "treasury should send 0.05 SOL");
+    assert.approximately(transferred, EXECUTE_LAMPORTS / LAMPORTS_PER_SOL, 0.00001, "treasury should send configured SOL amount");
     console.log(`  ✅ Treasury sent ${transferred.toFixed(4)} SOL to recipient`);
 
     const pExec = await program.account.proposal.fetch(proposal1Pda);
@@ -434,7 +483,7 @@ describe("demo", () => {
     console.log("║  ✓ Keeper auto-reveal — carol never came online              ║");
     console.log("║  ✓ Timelock — treasury waited 5s before executing           ║");
     console.log("║  ✓ Cancel proposal — authority killed bad proposal           ║");
-    console.log("║  ✓ Treasury executed — 0.05 SOL sent to recipient           ║");
+    console.log("║  ✓ Treasury executed — configured SOL amount sent            ║");
     console.log("║                                                              ║");
     console.log("║  No vote buying. No intimidation. No front-running.         ║");
     console.log("╚══════════════════════════════════════════════════════════════╝\n");

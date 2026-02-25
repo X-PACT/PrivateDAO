@@ -1058,95 +1058,15 @@ footer {
       <button class="btn-primary" onclick="openCommitModal(-1)">+ New Proposal</button>
     </div>
 
-    <div class="proposals-grid reveal">
-
-      <!-- PROP-001: COMMIT PHASE -->
-      <div class="proposal-card phase-commit" onclick="openCommitModal(0)">
+    <div class="proposals-grid reveal" id="proposalsList">
+      <div class="proposal-card phase-commit">
         <div class="proposal-header">
-          <span class="proposal-id">PROP-001 · devnet · DnQTB3T6...</span>
-          <span class="phase-pill pill-commit">⏳ COMMIT PHASE</span>
+          <span class="proposal-id">DEVNET · LIVE DATA</span>
+          <span class="phase-pill pill-commit">LOADING</span>
         </div>
-        <div class="proposal-title">Allocate 50,000 USDC for ecosystem marketing</div>
-        <div class="proposal-desc">Fund a 3-month campaign to increase DAO visibility and attract new protocol contributors from the Solana ecosystem.</div>
-        <div class="proposal-meta">
-          <div class="meta-kv"><div class="meta-k">COMMITS</div><div class="meta-v">43</div></div>
-          <div class="meta-kv"><div class="meta-k">ENDS IN</div><div class="meta-v">02d 14h 23m</div></div>
-          <div class="meta-kv"><div class="meta-k">MODE</div><div class="meta-v">DualChamber</div></div>
-          <div class="meta-kv"><div class="meta-k">QUORUM</div><div class="meta-v">51%</div></div>
-        </div>
-        <div class="tally-sealed-mini">
-          <span class="lock-glyph">⬡</span>
-          <span class="sealed-text">Tally sealed — 43 commitments on-chain</span>
-          <span class="sealed-count">YES: ? / NO: ?</span>
-        </div>
-        <div class="proposal-actions" onclick="event.stopPropagation()">
-          <button class="action-btn action-commit" onclick="openCommitModal(0)">Cast Private Vote</button>
-        </div>
+        <div class="proposal-title">Loading proposals from Solana devnet</div>
+        <div class="proposal-desc">The app reads real `Proposal` accounts from the configured program ID. If no proposals exist yet, this section will show an empty-state message.</div>
       </div>
-
-      <!-- PROP-002: REVEAL PHASE -->
-      <div class="proposal-card phase-reveal" onclick="openRevealModal()">
-        <div class="proposal-header">
-          <span class="proposal-id">PROP-002 · devnet · DnQTB3T6...</span>
-          <span class="phase-pill pill-reveal">🔓 REVEAL PHASE</span>
-        </div>
-        <div class="proposal-title">Migrate treasury from Realms to PrivateDAO</div>
-        <div class="proposal-desc">Complete migration of 1.2M governance tokens to private commit-reveal infrastructure. No token migration required — plugin-based.</div>
-        <div class="proposal-meta">
-          <div class="meta-kv"><div class="meta-k">REVEALED</div><div class="meta-v">61 / 89</div></div>
-          <div class="meta-kv"><div class="meta-k">REVEAL ENDS</div><div class="meta-v">06h 11m</div></div>
-          <div class="meta-kv"><div class="meta-k">MODE</div><div class="meta-v">Quadratic √</div></div>
-          <div class="meta-kv"><div class="meta-k">REBATE</div><div class="meta-v">0.001 SOL</div></div>
-        </div>
-        <div class="tally-revealed">
-          <div class="tally-r-row">
-            <span class="tally-r-label" style="color:var(--green)">YES</span>
-            <div class="tally-r-bar"><div class="tally-r-fill" style="width:73%;background:var(--green)"></div></div>
-            <span class="tally-r-val" style="color:var(--green)">847,203</span>
-          </div>
-          <div class="tally-r-row">
-            <span class="tally-r-label" style="color:var(--red)">NO</span>
-            <div class="tally-r-bar"><div class="tally-r-fill" style="width:27%;background:var(--red)"></div></div>
-            <span class="tally-r-val" style="color:var(--red)">313,891</span>
-          </div>
-        </div>
-        <div class="proposal-actions" onclick="event.stopPropagation()">
-          <button class="action-btn action-reveal" onclick="openRevealModal()">Reveal My Vote (+0.001 SOL)</button>
-        </div>
-      </div>
-
-      <!-- PROP-000: PASSED + TIMELOCK -->
-      <div class="proposal-card phase-passed">
-        <div class="proposal-header">
-          <span class="proposal-id">PROP-000 · devnet · DnQTB3T6...</span>
-          <span class="phase-pill pill-passed">✓ PASSED — TIMELOCK</span>
-        </div>
-        <div class="proposal-title">Integrate PrivateDAO as Realms voter weight plugin</div>
-        <div class="proposal-desc">Enable private voting for all existing Realms DAOs via the spl-governance-addin-api VoterWeightRecord interface.</div>
-        <div class="proposal-meta">
-          <div class="meta-kv"><div class="meta-k">YES</div><div class="meta-v" style="color:var(--green)">94%</div></div>
-          <div class="meta-kv"><div class="meta-k">EXECUTES IN</div><div class="meta-v" id="timelockCountdown">18h 44m</div></div>
-          <div class="meta-kv"><div class="meta-k">ACTION</div><div class="meta-v">Send 0.5 SOL</div></div>
-          <div class="meta-kv"><div class="meta-k">RECIPIENT</div><div class="meta-v">Ff5M...UtsZ</div></div>
-        </div>
-        <div class="tally-revealed">
-          <div class="tally-r-row">
-            <span class="tally-r-label" style="color:var(--green)">YES</span>
-            <div class="tally-r-bar"><div class="tally-r-fill" style="width:94%;background:var(--green)"></div></div>
-            <span class="tally-r-val" style="color:var(--green)">1,204,500</span>
-          </div>
-          <div class="tally-r-row">
-            <span class="tally-r-label" style="color:var(--red)">NO</span>
-            <div class="tally-r-bar"><div class="tally-r-fill" style="width:6%;background:var(--red)"></div></div>
-            <span class="tally-r-val" style="color:var(--red)">77,100</span>
-          </div>
-        </div>
-        <div class="proposal-actions">
-          <button class="action-btn action-execute" disabled>⏳ Execute (18h timelock)</button>
-          <button class="action-btn action-veto" style="border:1px solid" onclick="vetoProposal()">Veto</button>
-        </div>
-      </div>
-
     </div>
   </div>
 </section>
@@ -1367,11 +1287,11 @@ execute() → CPI
     <div class="footer-inner">
       <div class="footer-brand">Private<em>DAO</em></div>
       <div class="footer-meta">
-        Program: DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs · Solana Devnet · MIT
+        Program: 62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm · Solana Devnet · MIT
       </div>
       <div class="footer-links">
         <a href="https://github.com/X-PACT/PrivateDAO" class="footer-link" target="_blank">GitHub</a>
-        <a href="https://solscan.io/account/DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs?cluster=devnet" class="footer-link" target="_blank">Solscan</a>
+        <a href="https://solscan.io/account/62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm?cluster=devnet" class="footer-link" target="_blank">Solscan</a>
         <a href="https://x-pact.github.io/PrivateDAO/" class="footer-link" target="_blank">Live App</a>
       </div>
     </div>
@@ -1481,61 +1401,218 @@ function scrollToProposals() {
   document.getElementById('proposals-anchor').scrollIntoView({behavior:'smooth'});
 }
 
-// ── Live tally animation ─────────────────────────────────
-let yv=0, nv=0;
-const lt = setInterval(() => {
-  yv += Math.floor(Math.random()*80000+20000);
-  nv += Math.floor(Math.random()*50000+10000);
-  const t = yv+nv, yp = Math.round(yv/t*100), np = 100-yp;
-  const fmt = n => n.toLocaleString();
-  document.getElementById('liveYesNum').textContent = fmt(yv);
-  document.getElementById('liveNoNum').textContent  = fmt(nv);
-  document.getElementById('liveYesBar').style.width = yp+'%';
-  document.getElementById('liveNoBar').style.width  = np+'%';
-}, 900);
+const DEVNET_RPC = "https://solana-devnet.g.alchemy.com/v2/L4dlywEyiBJLg8Ey0bFof";
+const PROGRAM_ID = "62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm";
+const connection = new solanaWeb3.Connection(DEVNET_RPC, "confirmed");
+const programPk = new solanaWeb3.PublicKey(PROGRAM_ID);
+const statusByIdx = ["Voting", "Passed", "Failed", "Cancelled", "Vetoed"];
+
+// Stop synthetic tally. The current app only shows real on-chain values.
+document.getElementById('liveYesNum').textContent = "On-chain";
+document.getElementById('liveNoNum').textContent = "On-chain";
+document.getElementById('liveYesBar').style.width = "50%";
+document.getElementById('liveNoBar').style.width = "50%";
 
 // ── Wallet ───────────────────────────────────────────────
 let wallet = null;
-async function connectWallet() {
+let walletProvider = null;
+let currentCommitSaltHex = null;
+let currentCommitHashHex = null;
+
+function shortPk(pk) {
+  return `${pk.slice(0, 4)}...${pk.slice(-4)}`;
+}
+
+function updateWalletUi(connected) {
   const btn  = document.getElementById('walletBtn');
   const dot  = document.getElementById('statusDot');
   const lbl  = document.getElementById('walletLabel');
-
-  // Try Phantom
-  if(window.solana && window.solana.isPhantom) {
-    try {
-      const resp = await window.solana.connect();
-      const pk   = resp.publicKey.toString();
-      const short = pk.slice(0,4)+'...'+pk.slice(-4);
-      wallet = pk;
-      lbl.textContent = short;
-      dot.className   = 'status-dot live';
-      btn.className   = 'wallet-btn connected';
-      showToast('✓ Connected: ' + short, 'success');
-      return;
-    } catch(e) { showToast('Connection rejected', 'error'); return; }
-  }
-
-  // Try Backpack / generic wallet
-  if(window.xnft && window.xnft.solana) {
-    showToast('Backpack detected — connecting...', 'info'); return;
-  }
-
-  // Demo mode
-  if(wallet) {
-    wallet = null;
+  if (!connected || !wallet) {
     lbl.textContent = 'Connect Wallet';
-    dot.className   = 'status-dot';
-    btn.className   = 'wallet-btn';
+    dot.className = 'status-dot';
+    btn.className = 'wallet-btn';
+    return;
+  }
+  lbl.textContent = shortPk(wallet);
+  dot.className = 'status-dot live';
+  btn.className = 'wallet-btn connected';
+}
+
+async function connectWallet() {
+  if (wallet && walletProvider && walletProvider.disconnect) {
+    await walletProvider.disconnect();
+    wallet = null;
+    walletProvider = null;
+    updateWalletUi(false);
     showToast('Disconnected', 'info');
+    return;
+  }
+
+  if (window.solana && window.solana.isPhantom) {
+    walletProvider = window.solana;
+  } else if (window.solflare && window.solflare.isSolflare) {
+    walletProvider = window.solflare;
   } else {
-    // Simulate for demo
-    const demo = 'Demo' + Math.random().toString(36).slice(2,6).toUpperCase() + '...demo';
-    wallet = 'demo';
-    lbl.textContent = demo;
-    dot.className   = 'status-dot live';
-    btn.className   = 'wallet-btn connected';
-    showToast('⚡ Demo mode — install Phantom for real transactions', 'info');
+    showToast('Install Phantom or Solflare to sign transactions.', 'error');
+    return;
+  }
+
+  try {
+    const resp = await walletProvider.connect();
+    wallet = resp.publicKey.toString();
+    updateWalletUi(true);
+    showToast(`Connected: ${shortPk(wallet)}`, 'success');
+  } catch (e) {
+    wallet = null;
+    walletProvider = null;
+    updateWalletUi(false);
+    showToast('Wallet connection rejected.', 'error');
+  }
+}
+
+function parseU64(data, offset) {
+  const view = new DataView(data.buffer, data.byteOffset + offset, 8);
+  return Number(view.getBigUint64(0, true));
+}
+
+function parseI64(data, offset) {
+  const view = new DataView(data.buffer, data.byteOffset + offset, 8);
+  return Number(view.getBigInt64(0, true));
+}
+
+function parseString(data, offsetRef) {
+  const len = new DataView(data.buffer, data.byteOffset + offsetRef.value, 4).getUint32(0, true);
+  offsetRef.value += 4;
+  const raw = data.slice(offsetRef.value, offsetRef.value + len);
+  offsetRef.value += len;
+  return new TextDecoder().decode(raw);
+}
+
+function decodeProposalAccount(data, pubkey) {
+  const o = { value: 8 }; // skip discriminator
+  const dao = new solanaWeb3.PublicKey(data.slice(o.value, o.value + 32)).toBase58();
+  o.value += 32;
+  const proposer = new solanaWeb3.PublicKey(data.slice(o.value, o.value + 32)).toBase58();
+  o.value += 32;
+  const proposalId = parseU64(data, o.value); o.value += 8;
+  const title = parseString(data, o);
+  const description = parseString(data, o);
+  const statusIdx = data[o.value]; o.value += 1;
+  const votingEnd = parseI64(data, o.value); o.value += 8;
+  const revealEnd = parseI64(data, o.value); o.value += 8;
+  const yesCapital = parseU64(data, o.value); o.value += 8;
+  const noCapital = parseU64(data, o.value); o.value += 8;
+  const yesCommunity = parseU64(data, o.value); o.value += 8;
+  const noCommunity = parseU64(data, o.value); o.value += 8;
+  const commitCount = parseU64(data, o.value); o.value += 8;
+  const revealCount = parseU64(data, o.value); o.value += 8;
+
+  const hasAction = data[o.value]; o.value += 1;
+  if (hasAction === 1) {
+    o.value += 1; // action_type
+    o.value += 8; // amount_lamports
+    o.value += 32; // recipient
+    const hasMint = data[o.value]; o.value += 1;
+    if (hasMint === 1) o.value += 32;
+  }
+
+  const executionUnlocksAt = parseI64(data, o.value); o.value += 8;
+  const isExecuted = data[o.value] === 1;
+  return {
+    pubkey: pubkey.toBase58(),
+    dao,
+    proposer,
+    proposalId,
+    title,
+    description,
+    status: statusByIdx[statusIdx] || `Unknown(${statusIdx})`,
+    votingEnd,
+    revealEnd,
+    executionUnlocksAt,
+    isExecuted,
+    yesCapital,
+    noCapital,
+    yesCommunity,
+    noCommunity,
+    commitCount,
+    revealCount,
+  };
+}
+
+function computePhase(p, nowTs) {
+  if (p.isExecuted) return "Executed";
+  if (p.status === "Cancelled" || p.status === "Vetoed" || p.status === "Failed") return p.status;
+  if (nowTs < p.votingEnd && p.status === "Voting") return "Commit";
+  if (nowTs < p.revealEnd && p.status === "Voting") return "Reveal";
+  if (p.status === "Passed" && nowTs < p.executionUnlocksAt) return "Timelocked";
+  if (p.status === "Passed" && nowTs >= p.executionUnlocksAt) return "Executable";
+  return "Finalized";
+}
+
+function proposalCardHtml(p, nowTs) {
+  const phase = computePhase(p, nowTs);
+  const className = phase === "Commit"
+    ? "phase-commit"
+    : phase === "Reveal"
+      ? "phase-reveal"
+      : "phase-passed";
+  return `
+    <div class="proposal-card ${className}">
+      <div class="proposal-header">
+        <span class="proposal-id">PROP-${String(p.proposalId).padStart(3, '0')} · devnet · ${PROGRAM_ID.slice(0, 8)}...</span>
+        <span class="phase-pill">${phase}</span>
+      </div>
+      <div class="proposal-title">${p.title}</div>
+      <div class="proposal-desc">${p.description}</div>
+      <div class="proposal-meta">
+        <div class="meta-kv"><div class="meta-k">STATUS</div><div class="meta-v">${p.status}</div></div>
+        <div class="meta-kv"><div class="meta-k">COMMITS</div><div class="meta-v">${p.commitCount}</div></div>
+        <div class="meta-kv"><div class="meta-k">REVEALS</div><div class="meta-v">${p.revealCount}</div></div>
+        <div class="meta-kv"><div class="meta-k">YES / NO</div><div class="meta-v">${p.yesCapital} / ${p.noCapital}</div></div>
+      </div>
+      <div class="proposal-actions">
+        <button class="action-btn action-commit" onclick="openCommitModal(${p.proposalId})">Commit</button>
+        <button class="action-btn action-reveal" onclick="openRevealModal(${p.proposalId})">Reveal</button>
+      </div>
+    </div>
+  `;
+}
+
+async function loadLiveProposals() {
+  const list = document.getElementById('proposalsList');
+  try {
+    const accounts = await connection.getProgramAccounts(programPk);
+    const proposals = [];
+    for (const acc of accounts) {
+      try {
+        const p = decodeProposalAccount(acc.account.data, acc.pubkey);
+        proposals.push(p);
+      } catch (_) {}
+    }
+
+    proposals.sort((a, b) => b.proposalId - a.proposalId);
+    const nowSlot = await connection.getSlot("confirmed");
+    const nowTs = (await connection.getBlockTime(nowSlot)) || Math.floor(Date.now() / 1000);
+
+    if (proposals.length === 0) {
+      list.innerHTML = `
+        <div class="proposal-card phase-commit">
+          <div class="proposal-header"><span class="proposal-id">NO PROPOSALS FOUND</span></div>
+          <div class="proposal-title">No on-chain proposals for current program ID</div>
+          <div class="proposal-desc">Create one via CLI: \`yarn create-proposal -- --dao <DAO_PDA> ...\` then refresh.</div>
+        </div>
+      `;
+      return;
+    }
+    list.innerHTML = proposals.slice(0, 12).map(p => proposalCardHtml(p, nowTs)).join("");
+  } catch (e) {
+    list.innerHTML = `
+      <div class="proposal-card phase-commit">
+        <div class="proposal-header"><span class="proposal-id">RPC ERROR</span></div>
+        <div class="proposal-title">Could not load devnet proposal accounts</div>
+        <div class="proposal-desc">Check RPC access for ${DEVNET_RPC} and verify program ID ${PROGRAM_ID}.</div>
+      </div>
+    `;
   }
 }
 
@@ -1543,6 +1620,8 @@ async function connectWallet() {
 let selectedVote = null;
 function openCommitModal(id) {
   selectedVote = null;
+  currentCommitSaltHex = null;
+  currentCommitHashHex = null;
   document.getElementById('voteYes').classList.remove('sel');
   document.getElementById('voteNo').classList.remove('sel');
   document.getElementById('hashDisplay').textContent = 'Select YES or NO to generate your commitment hash...';
@@ -1552,43 +1631,49 @@ function openCommitModal(id) {
 function openRevealModal() { document.getElementById('revealModal').classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-// ── Vote selection + hash animation ─────────────────────
-function selectVote(v) {
+async function selectVote(v) {
   selectedVote = v;
   document.getElementById('voteYes').classList.toggle('sel', v==='yes');
   document.getElementById('voteNo').classList.toggle('sel', v==='no');
 
+  if (!wallet) {
+    showToast('Connect your wallet first to derive commitment hash.', 'error');
+    return;
+  }
+
   const el = document.getElementById('hashDisplay');
   el.classList.add('computing');
   el.textContent = 'Computing sha256...';
-
-  let i=0;
-  const chars = '0123456789abcdef';
-  const iv = setInterval(() => {
-    el.textContent = '0x' + Array.from({length:64},()=>chars[Math.floor(Math.random()*16)]).join('');
-    if(++i > 15) {
-      clearInterval(iv);
-      el.textContent = v==='yes'
-        ? '0x7f3a9c2e4b6d8f1a0e5c7b3a9f2d4e6c8b1a3f5d7e9c2b4a6f8d1e3c5b7a9f2d'
-        : '0x2b4d6f8a1c3e5b7d9f2a4c6e8b1d3f5a7c9e2b4d6f8a1c3e5b7d9f2a4c6e8b1d';
-      el.classList.remove('computing');
-      document.getElementById('submitBtn').disabled = false;
-    }
-  }, 55);
+  const voter = new solanaWeb3.PublicKey(wallet);
+  const salt = new Uint8Array(32);
+  crypto.getRandomValues(salt);
+  const preimage = new Uint8Array(65);
+  preimage[0] = v === "yes" ? 1 : 0;
+  preimage.set(salt, 1);
+  preimage.set(voter.toBytes(), 33);
+  const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", preimage));
+  currentCommitSaltHex = [...salt].map(b => b.toString(16).padStart(2, "0")).join("");
+  currentCommitHashHex = [...digest].map(b => b.toString(16).padStart(2, "0")).join("");
+  el.textContent = `0x${currentCommitHashHex}`;
+  el.classList.remove('computing');
+  document.getElementById('submitBtn').disabled = false;
 }
 
 // ── Submit ───────────────────────────────────────────────
 function submitVote() {
-  if(!wallet) {
-    showToast('Connect your wallet first', 'error'); return;
+  if(!wallet || !currentCommitHashHex || !currentCommitSaltHex) {
+    showToast('Connect wallet and generate commitment first.', 'error'); return;
   }
   closeModal('commitModal');
-  showToast('UI guide only: submit commit using CLI script (yarn commit ...).', 'info');
+  showToast(`Commit hash ready. Use scripts/commit-vote.ts with salt 0x${currentCommitSaltHex.slice(0,16)}...`, 'info');
 }
 
 function submitReveal() {
+  if(!wallet) {
+    showToast('Connect wallet first.', 'error'); return;
+  }
   closeModal('revealModal');
-  showToast('UI guide only: submit reveal using CLI script (yarn reveal ...).', 'info');
+  showToast('Use scripts/reveal-vote.ts with your original vote + salt.', 'info');
 }
 
 function vetoProposal() {
@@ -1618,14 +1703,8 @@ function observeReveal() {
 }
 observeReveal();
 
-// ── Timelock countdown ────────────────────────────────────
-let tlSec = 67440;
-setInterval(() => {
-  tlSec = Math.max(0, tlSec - 1);
-  const h = Math.floor(tlSec/3600), m = Math.floor((tlSec%3600)/60);
-  const el = document.getElementById('timelockCountdown');
-  if(el) el.textContent = h+'h '+(m+'').padStart(2,'0')+'m';
-}, 1000);
+loadLiveProposals();
+setInterval(loadLiveProposals, 30_000);
 
 // ── Close on overlay click ────────────────────────────────
 document.querySelectorAll('.modal-overlay').forEach(o => {

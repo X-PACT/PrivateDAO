@@ -11,7 +11,7 @@
 [![CI](https://img.shields.io/github/actions/workflow/status/X-PACT/PrivateDAO/ci.yml?branch=main&label=CI)](https://github.com/X-PACT/PrivateDAO/actions/workflows/ci.yml)
 [![Judge Quick Links](https://img.shields.io/badge/Judges-Quick%20Links-ff4d6d)](https://github.com/X-PACT/PrivateDAO/issues/5)
 [![Solana](https://img.shields.io/badge/Solana-Devnet-14F195)](https://solana.com)
-[![Anchor](https://img.shields.io/badge/Anchor-0.32.1-blue)](https://www.anchor-lang.com)
+[![Anchor](https://img.shields.io/badge/Anchor-0.31.1-blue)](https://www.anchor-lang.com)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 [![Submission](https://img.shields.io/badge/Colosseum-Submission%20Ready-ff9f1c)](SUBMISSION.md)
 
@@ -23,6 +23,17 @@
 Production-grade private governance for Solana DAOs using commit-reveal voting, timelocked execution, and treasury safety checks.
 
 Built for Solana Graveyard Hackathon 2026 with focus on real security controls, Realms migration, and operational readiness.
+
+---
+
+## Deployment Status (Devnet)
+
+- Status: Deployed
+- Program ID: `62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm`
+- Network: Solana Devnet
+- Last deployed slot: `444565780` (`2026-02-25T11:47:34Z`)
+- Upgrade authority: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
+- Explorer: https://solscan.io/account/62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm?cluster=devnet
 
 ---
 
@@ -112,7 +123,7 @@ docs/                                GitHub Pages documentation
 
 - Rust stable toolchain
 - Solana CLI
-- Anchor CLI `0.32.1`
+- Anchor CLI `0.31.1`
 - Node.js + Yarn
 
 ### Build and test on local validator
@@ -138,14 +149,24 @@ anchor test -- --grep "demo"
 
 ```bash
 export ANCHOR_WALLET=~/.config/solana/id.json
-solana config set --keypair "$ANCHOR_WALLET" --url https://api.devnet.solana.com
+export ALCHEMY_API_KEY="<your-alchemy-key>"
+solana config set --keypair "$ANCHOR_WALLET" --url "https://solana-devnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}"
 ```
+
+You can also set `ALCHEMY_DEVNET_RPC_URL` directly. If no Alchemy settings exist, scripts fallback to Helius (`HELIUS_API_KEY`) and then public devnet.
+
+Optional additional providers: `QUICKNODE_DEVNET_RPC`, `EXTRA_DEVNET_RPCS` (comma-separated), and `RPC_AUTH_HEADER` for header-authenticated endpoints.
 
 ### 2) Fund wallet (RPC rotation + retries)
 
 ```bash
 bash scripts/fund-devnet.sh 2
+bash scripts/check-rpc-health.sh
 ```
+
+If health checks fail with `CONNECT tunnel failed, response 403`, your network proxy is blocking outbound RPC access.
+Set `NO_PROXY` for RPC hosts or run from an unfiltered network before deploy/funding.
+For controlled CI environments, set `RPC_HEALTH_ALLOW_NETWORK_FAIL=1` to treat pure network/proxy failures as non-blocking while still printing diagnostics.
 
 ### 3) Optional custom faucet endpoint
 
@@ -155,6 +176,7 @@ If you run your own faucet service, the funding script can call it first:
 export CUSTOM_FAUCET_URL="https://your-faucet-domain/api/airdrop"
 export CUSTOM_FAUCET_METHOD="POST"
 bash scripts/fund-devnet.sh 2
+bash scripts/check-rpc-health.sh
 ```
 
 ### 4) Deploy
@@ -167,7 +189,7 @@ anchor deploy --provider.cluster devnet
 ### 5) Validate deployed programs or addresses
 
 ```bash
-bash scripts/check-contracts.sh DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs
+bash scripts/check-contracts.sh 62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm
 ```
 
 ---
@@ -185,9 +207,26 @@ Manual verification locally:
 
 ```bash
 bash scripts/verify.sh tools
+bash scripts/verify.sh fmt
+bash scripts/verify.sh lint
 bash scripts/verify.sh build
 bash scripts/verify.sh test
 bash scripts/verify.sh scan
+bash scripts/verify.sh rpc
+bash scripts/verify.sh rpc-health-unit
+bash scripts/verify.sh rpc-health
+```
+
+Containerized reproducible environment (Ubuntu 24.04 + Rust + Solana + Anchor):
+
+```bash
+docker build -t privatedao-dev .
+docker run --rm -it -v "$PWD":/workspace -w /workspace privatedao-dev bash
+yarn install --frozen-lockfile
+bash scripts/verify.sh tools
+bash scripts/verify.sh fmt
+bash scripts/verify.sh lint
+bash scripts/verify.sh build
 ```
 
 ---
@@ -209,6 +248,34 @@ Submission windows and eligibility change frequently. Verify open calls and scop
 
 ---
 
+## Ecosystem Mentions (Relevant Organizations)
+
+The following companies and organizations are relevant to PrivateDAO's stack, infra, or distribution. This is an ecosystem mention list, not a claim of partnership or endorsement.
+
+- Solana Foundation
+- Anza
+- Coral (Anchor framework)
+- Alchemy
+- Helius
+- QuickNode
+- Triton One
+- Dialect
+- Squads Labs
+- Solflare
+- Phantom
+- Backpack
+- Jupiter
+- Sanctum
+- Pyth Network
+- Switchboard
+- Chainlink
+- Circle
+- Wormhole Foundation
+- Superteam
+- Colosseum
+
+---
+
 ## Documentation and Demo Assets
 
 - Web documentation entry: `docs/index.html`
@@ -221,9 +288,9 @@ Submission windows and eligibility change frequently. Verify open calls and scop
 
 MIT License
 
-Copyright (c) 2026 X-PACT
+Copyright (c) 2026 Eslam Kotb (X-PACT)
 
 ## Ownership
 
-Project owner and maintainer: X-PACT.
+Project owner and maintainer: Eslam Kotb (X-PACT).
 Primary code ownership policy is enforced via `.github/CODEOWNERS`.

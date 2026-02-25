@@ -5,14 +5,14 @@
  *
  * End-to-end test: DAO → proposal → commit (3 voters) → reveal → finalize → execute
  *
- * Uses real time.sleep() — periods are kept short (5s voting, 8s reveal, 5s timelock)
- * so the full test runs in ~30 seconds on localnet.
+ * Uses on-chain timestamp gating against proposal phase boundaries.
+ * No fixed sleep windows are used for commit/reveal/finalize transitions.
  *
  * Run: anchor test -- --grep "Full flow"
  */
 import * as anchor from "@coral-xyz/anchor";
 import { Program }  from "@coral-xyz/anchor";
-import { PublicKey, Keypair, SystemProgram, LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { PublicKey, Keypair, SystemProgram, Transaction, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import {
   createMint, createAccount, mintTo,
   TOKEN_PROGRAM_ID,
@@ -30,6 +30,27 @@ function commitment(vote: boolean, salt: Buffer, voter: PublicKey): Buffer {
 function rng(): Buffer { return crypto.randomBytes(32); }
 function sleep(ms: number): Promise<void> { return new Promise(r => setTimeout(r, ms)); }
 
+async function currentUnixTimestamp(connection: anchor.web3.Connection): Promise<number> {
+  const slot = await connection.getSlot("processed");
+  const blockTime = await connection.getBlockTime(slot);
+  return blockTime ?? Math.floor(Date.now() / 1000);
+}
+
+async function waitForUnixTimestamp(
+  connection: anchor.web3.Connection,
+  targetUnixTs: number,
+  label: string,
+): Promise<void> {
+  const timeoutMs = 120_000;
+  const started = Date.now();
+  while ((Date.now() - started) < timeoutMs) {
+    const now = await currentUnixTimestamp(connection);
+    if (now >= targetUnixTs) return;
+    await sleep(400);
+  }
+  throw new Error(`Timeout waiting for ${label} at unix ${targetUnixTs}`);
+}
+
 describe("Full flow", () => {
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
@@ -39,14 +60,26 @@ describe("Full flow", () => {
   const V_SECS = 5;   // voting window
   const R_SECS = 8;   // reveal window
   const E_SECS = 5;   // execution timelock
+  const EXECUTE_LAMPORTS = 100_000;         // 0.0001 SOL
+  const SECOND_EXECUTE_LAMPORTS = 50_000;   // 0.00005 SOL
+  const TREASURY_SEED_LAMPORTS = 2_000_000; // 0.002 SOL
 
   it("commit → reveal → finalize → execute (TokenWeighted)", async () => {
+    async function fundWallet(pubkey: PublicKey, sol: number): Promise<void> {
+      const tx = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: payer.publicKey,
+          toPubkey: pubkey,
+          lamports: Math.round(sol * LAMPORTS_PER_SOL),
+        }),
+      );
+      await provider.sendAndConfirm(tx, []);
+    }
 
     // Setup
     const [alice, bob, carol, recipient] = Array.from({length: 4}, () => Keypair.generate());
     for (const w of [alice, bob, carol]) {
-      const s = await provider.connection.requestAirdrop(w.publicKey, 2 * LAMPORTS_PER_SOL);
-      await provider.connection.confirmTransaction(s);
+      await fundWallet(w.publicKey, 0.005);
     }
 
     const mint = await createMint(provider.connection, payer, payer.publicKey, null, 6);
@@ -88,17 +121,25 @@ describe("Full flow", () => {
     const [treasuryPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("treasury"), daoPda.toBuffer()], program.programId,
     );
-    const tSig = await provider.connection.requestAirdrop(treasuryPda, LAMPORTS_PER_SOL);
-    await provider.connection.confirmTransaction(tSig);
+    await provider.sendAndConfirm(
+      new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: payer.publicKey,
+          toPubkey: treasuryPda,
+          lamports: TREASURY_SEED_LAMPORTS,
+        }),
+      ),
+      [],
+    );
 
     await program.methods
       .createProposal(
-        "Test: fund 0.05 SOL",
+        "Test: fund 0.0001 SOL",
         "Full flow integration test proposal.",
         new BN(V_SECS),
         {
           actionType:     { sendSol: {} },
-          amountLamports: new BN(0.05 * LAMPORTS_PER_SOL),
+          amountLamports: new BN(EXECUTE_LAMPORTS),
           recipient:      recipient.publicKey,
           tokenMint:      null,
         },
@@ -135,8 +176,12 @@ describe("Full flow", () => {
     const pAfterCommit = await program.account.proposal.fetch(proposalPda);
     assert.equal(pAfterCommit.yesCapital.toNumber(), 0, "tally must be hidden during commit phase");
     assert.equal(pAfterCommit.commitCount.toNumber(), 3);
-    console.log(`  [commit] 3 votes. Tally: YES=0/NO=0 (hidden ✓)  Waiting ${V_SECS + 1}s...`);
-    await sleep((V_SECS + 1) * 1000);
+    console.log("  [commit] 3 votes. Tally: YES=0/NO=0 (hidden ✓)");
+    await waitForUnixTimestamp(
+      provider.connection,
+      pAfterCommit.votingEnd.toNumber(),
+      "voting_end",
+    );
 
     // 4. Reveal phase
     for (const [voter] of [[alice], [bob], [carol]] as [Keypair][]) {
@@ -157,8 +202,12 @@ describe("Full flow", () => {
     assert.equal(pAfterReveal.yesCapital.toNumber(), 1_500_000_000);
     assert.equal(pAfterReveal.noCapital.toNumber(),   100_000_000);
     assert.equal(pAfterReveal.revealCount.toNumber(), 3);
-    console.log(`  [reveal] YES=${pAfterReveal.yesCapital} / NO=${pAfterReveal.noCapital}  Waiting ${R_SECS + 1}s...`);
-    await sleep((R_SECS + 1) * 1000);
+    console.log(`  [reveal] YES=${pAfterReveal.yesCapital} / NO=${pAfterReveal.noCapital}`);
+    await waitForUnixTimestamp(
+      provider.connection,
+      pAfterReveal.revealEnd.toNumber(),
+      "reveal_end",
+    );
 
     // 5. Finalize
     await program.methods
@@ -168,10 +217,14 @@ describe("Full flow", () => {
 
     const pFinal = await program.account.proposal.fetch(proposalPda);
     assert.isTrue("passed" in pFinal.status, "proposal must pass: alice+bob outweigh carol");
-    console.log(`  [finalize] PASSED ✓  Timelock: ${E_SECS}s  Waiting ${E_SECS + 1}s...`);
-    await sleep((E_SECS + 1) * 1000);
+    console.log(`  [finalize] PASSED ✓  Timelock: ${E_SECS}s`);
+    await waitForUnixTimestamp(
+      provider.connection,
+      pFinal.executionUnlocksAt.toNumber(),
+      "execution_unlocks_at",
+    );
 
-    // 6. Execute — send 0.05 SOL from treasury to recipient
+    // 6. Execute — send lamports from treasury to recipient
     const balBefore = await provider.connection.getBalance(recipient.publicKey);
     await program.methods
       .executeProposal()
@@ -189,7 +242,7 @@ describe("Full flow", () => {
 
     const balAfter = await provider.connection.getBalance(recipient.publicKey);
     const sent     = (balAfter - balBefore) / LAMPORTS_PER_SOL;
-    assert.approximately(sent, 0.05, 0.001, "treasury must send 0.05 SOL");
+    assert.approximately(sent, EXECUTE_LAMPORTS / LAMPORTS_PER_SOL, 0.00001, "treasury must send configured SOL amount");
 
     const pExec = await program.account.proposal.fetch(proposalPda);
     assert.isTrue(pExec.isExecuted, "isExecuted flag must be set");
@@ -210,7 +263,7 @@ describe("Full flow", () => {
         new BN(V_SECS),
         {
           actionType:     { sendSol: {} },
-          amountLamports: new BN(0.01 * LAMPORTS_PER_SOL),
+          amountLamports: new BN(SECOND_EXECUTE_LAMPORTS),
           recipient:      recipient.publicKey,
           tokenMint:      null,
         },
@@ -238,19 +291,34 @@ describe("Full flow", () => {
       .signers([alice])
       .rpc();
 
-    await sleep((V_SECS + 1) * 1000);
+    const proposal2AfterCommit = await program.account.proposal.fetch(proposal2Pda);
+    await waitForUnixTimestamp(
+      provider.connection,
+      proposal2AfterCommit.votingEnd.toNumber(),
+      "second_voting_end",
+    );
     await program.methods
       .revealVote(true, [...secondSalt])
       .accounts({ proposal: proposal2Pda, voterRecord: aliceSecondVote, revealer: alice.publicKey })
       .signers([alice])
       .rpc();
-    await sleep((R_SECS + 1) * 1000);
+    const proposal2AfterReveal = await program.account.proposal.fetch(proposal2Pda);
+    await waitForUnixTimestamp(
+      provider.connection,
+      proposal2AfterReveal.revealEnd.toNumber(),
+      "second_reveal_end",
+    );
 
     await program.methods
       .finalizeProposal()
       .accounts({ dao: daoPda, proposal: proposal2Pda, finalizer: payer.publicKey })
       .rpc();
-    await sleep((E_SECS + 1) * 1000);
+    const proposal2AfterFinalize = await program.account.proposal.fetch(proposal2Pda);
+    await waitForUnixTimestamp(
+      provider.connection,
+      proposal2AfterFinalize.executionUnlocksAt.toNumber(),
+      "second_execution_unlocks_at",
+    );
 
     try {
       await program.methods
@@ -287,8 +355,8 @@ describe("Full flow", () => {
     const recipientAfterGuarded = await provider.connection.getBalance(recipient.publicKey);
     assert.approximately(
       (recipientAfterGuarded - recipientBeforeGuarded) / LAMPORTS_PER_SOL,
-      0.01,
-      0.001,
+      SECOND_EXECUTE_LAMPORTS / LAMPORTS_PER_SOL,
+      0.00001,
       "treasury execution should only succeed for the configured recipient",
     );
 

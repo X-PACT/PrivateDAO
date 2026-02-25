@@ -9,7 +9,7 @@ ensure_required_tools "SOLANA_BIN:solana"
 
 if [[ $# -lt 1 ]]; then
   echo "Usage: $0 <ADDRESS_1> [ADDRESS_2 ...]"
-  echo "Example: $0 DnQTB3T6xWenyi7LYRsDADfqrKwGJntAaxStaePVkzhs <SECOND_ADDRESS>"
+  echo "Example: $0 62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm <SECOND_ADDRESS>"
   exit 1
 fi
 

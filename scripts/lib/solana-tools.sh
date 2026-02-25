@@ -60,7 +60,7 @@ is_supported_yarn() {
   local version
 
   [[ -x "$yarn_bin" ]] || return 1
-  if ! version="$("$yarn_bin" --version 2>/dev/null)"; then
+  if ! version="$($yarn_bin --version 2>/dev/null)"; then
     return 1
   fi
 
@@ -133,4 +133,126 @@ ensure_required_tools() {
     return 1
   fi
   return 0
+}
+
+trim_value() {
+  local value="${1:-}"
+  value="${value#"${value%%[![:space:]]*}"}"
+  value="${value%"${value##*[![:space:]]}"}"
+  printf '%s\n' "$value"
+}
+
+is_placeholder_value() {
+  local value
+  value="$(trim_value "${1:-}")"
+  [[ -z "$value" ]] && return 0
+  [[ "$value" == *'${'* ]] && return 0
+  [[ "$value" == "your_helius_api_key_here" ]] && return 0
+  [[ "$value" == "your_alchemy_api_key_here" ]] && return 0
+  [[ "$value" == "your_rpc_url_here" ]] && return 0
+  return 1
+}
+
+is_valid_rpc_url() {
+  local value
+  value="$(trim_value "${1:-}")"
+  if is_placeholder_value "$value"; then
+    return 1
+  fi
+  [[ "$value" =~ ^https?:// ]]
+}
+
+append_unique_rpc() {
+  local rpc
+  rpc="$(trim_value "$1")"
+  [[ -n "$rpc" ]] || return 0
+
+  local item
+  for item in "${RPCS[@]:-}"; do
+    if [[ "$item" == "$rpc" ]]; then
+      return 0
+    fi
+  done
+  RPCS+=("$rpc")
+}
+
+build_devnet_alchemy_rpc() {
+  if ! is_placeholder_value "${ALCHEMY_DEVNET_RPC_URL:-}"; then
+    printf '%s\n' "$(trim_value "${ALCHEMY_DEVNET_RPC_URL}")"
+    return 0
+  fi
+
+  if ! is_placeholder_value "${ALCHEMY_API_KEY:-}"; then
+    printf 'https://solana-devnet.g.alchemy.com/v2/%s\n' "$(trim_value "${ALCHEMY_API_KEY}")"
+    return 0
+  fi
+
+  return 1
+}
+
+build_devnet_helius_rpc() {
+  if ! is_placeholder_value "${HELIUS_API_KEY:-}"; then
+    printf 'https://devnet.helius-rpc.com/?api-key=%s\n' "$(trim_value "${HELIUS_API_KEY}")"
+    return 0
+  fi
+
+  return 1
+}
+
+select_devnet_rpc() {
+  if ! is_placeholder_value "${SOLANA_RPC_URL:-}"; then
+    printf '%s\n' "$(trim_value "${SOLANA_RPC_URL}")"
+    return 0
+  fi
+
+  local candidate
+  if candidate="$(build_devnet_alchemy_rpc 2>/dev/null)"; then
+    printf '%s\n' "${candidate}"
+    return 0
+  fi
+
+  if candidate="$(build_devnet_helius_rpc 2>/dev/null)"; then
+    printf '%s\n' "${candidate}"
+    return 0
+  fi
+
+  printf '%s\n' "https://api.devnet.solana.com"
+}
+
+collect_devnet_rpcs() {
+  RPCS=()
+
+  local selected
+  selected="$(select_devnet_rpc)"
+  if is_valid_rpc_url "$selected"; then
+    append_unique_rpc "$selected"
+  fi
+
+  local alchemy_rpc
+  if alchemy_rpc="$(build_devnet_alchemy_rpc 2>/dev/null)"; then
+    append_unique_rpc "$alchemy_rpc"
+  fi
+
+  local helius_rpc
+  if helius_rpc="$(build_devnet_helius_rpc 2>/dev/null)"; then
+    append_unique_rpc "$helius_rpc"
+  fi
+
+  if is_valid_rpc_url "${QUICKNODE_DEVNET_RPC:-}"; then
+    append_unique_rpc "${QUICKNODE_DEVNET_RPC}"
+  fi
+
+  if [[ -n "${EXTRA_DEVNET_RPCS:-}" ]]; then
+    local rpc
+    IFS=',' read -r -a extra_rpcs <<< "${EXTRA_DEVNET_RPCS}"
+    for rpc in "${extra_rpcs[@]}"; do
+      if is_valid_rpc_url "$rpc"; then
+        append_unique_rpc "$rpc"
+      fi
+    done
+  fi
+
+  append_unique_rpc "https://api.devnet.solana.com"
+
+  printf '%s\n' "${RPCS[@]}"
 }

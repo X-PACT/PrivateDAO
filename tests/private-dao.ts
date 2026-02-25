@@ -1,7 +1,7 @@
 // Copyright (c) 2026 X-PACT. MIT License.
 import * as anchor from "@coral-xyz/anchor";
 import { Program }  from "@coral-xyz/anchor";
-import { PublicKey, Keypair, SystemProgram } from "@solana/web3.js";
+import { PublicKey, Keypair, SystemProgram, Transaction, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import {
   createMint, createAccount, mintTo,
   TOKEN_PROGRAM_ID,
@@ -37,9 +37,19 @@ describe("PrivateDAO", () => {
   let salt1: Buffer, salt2: Buffer, salt3: Buffer;
 
   before(async () => {
+    async function fundWallet(pubkey: PublicKey, sol: number): Promise<void> {
+      const tx = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: authority.publicKey,
+          toPubkey: pubkey,
+          lamports: Math.round(sol * LAMPORTS_PER_SOL),
+        }),
+      );
+      await provider.sendAndConfirm(tx, []);
+    }
+
     for (const v of [voter1, voter2, voter3]) {
-      const sig = await provider.connection.requestAirdrop(v.publicKey, 2 * anchor.web3.LAMPORTS_PER_SOL);
-      await provider.connection.confirmTransaction(sig);
+      await fundWallet(v.publicKey, 0.005);
     }
 
     governanceMint = await createMint(

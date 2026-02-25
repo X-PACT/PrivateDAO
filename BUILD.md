@@ -78,7 +78,7 @@ cargo build-sbf --version  # verify
 ### Error: anchor version mismatch (0.30 vs 0.32)
 
 ```bash
-yarn upgrade @coral-xyz/anchor@0.32.0
+yarn upgrade @coral-xyz/anchor@0.31.1
 ```
 
 ---
