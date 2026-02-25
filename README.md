@@ -20,6 +20,8 @@
   <a href="docs/index.html"><strong>Open Local Frontend File</strong></a>
 </p>
 
+GitHub Pages source: GitHub Actions workflow (`.github/workflows/pages.yml`) deploying from `docs/`.
+
 Production-grade private governance for Solana DAOs using commit-reveal voting, timelocked execution, and treasury safety checks.
 
 Built for Solana Graveyard Hackathon 2026 with focus on real security controls, Realms migration, and operational readiness.
