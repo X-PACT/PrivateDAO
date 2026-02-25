@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
 /**
  * utils.ts — shared helpers for PrivateDAO CLI scripts
  */

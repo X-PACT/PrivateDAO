@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
 /**
  * create-dao.ts
  * Creates a new PrivateDAO on devnet (or localnet).

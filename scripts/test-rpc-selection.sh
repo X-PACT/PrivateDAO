@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Copyright (c) 2026 X-PACT. MIT License.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (c) 2026 X-PACT. AGPL-3.0-or-later.
 set -euo pipefail
 
 assert_eq() {

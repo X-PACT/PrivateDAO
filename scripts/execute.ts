@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
 /**
  * execute.ts
  * Phase 3b: Execute a passed proposal's treasury action after timelock expires.

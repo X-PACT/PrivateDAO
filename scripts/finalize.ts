@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
 /**
  * finalize.ts
  * Phase 3a: Finalize a proposal after the reveal window closes.

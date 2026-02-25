@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
 /**
  * create-proposal.ts
  * Creates a governance proposal with optional treasury action.

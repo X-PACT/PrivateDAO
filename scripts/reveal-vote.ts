@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
 /**
  * reveal-vote.ts
  * Phase 2: Reveal your committed vote after voting ends.

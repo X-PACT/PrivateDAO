@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
 /**
  * deposit-treasury.ts
  * Deposit SOL into a DAO's on-chain treasury PDA.

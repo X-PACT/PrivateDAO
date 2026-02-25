@@ -1,4 +1,5 @@
-// Copyright (c) 2026 X-PACT. MIT License.
+// SPDX-License-Identifier: AGPL-3.0-or-later
+// Copyright (c) 2026 X-PACT. AGPL-3.0-or-later.
 import * as anchor from "@coral-xyz/anchor";
 import { Program }  from "@coral-xyz/anchor";
 import { PublicKey, Keypair, SystemProgram, Transaction, LAMPORTS_PER_SOL } from "@solana/web3.js";

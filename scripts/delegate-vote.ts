@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
 /**
  * delegate-vote.ts
  * Delegate your token weight to another address for a specific proposal.

@@ -1,5 +1,6 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
 /**
- * Copyright (c) 2026 X-PACT. MIT License.
+ * Copyright (c) 2026 X-PACT. AGPL-3.0-or-later.
  *
  * full-flow-test.ts
  *

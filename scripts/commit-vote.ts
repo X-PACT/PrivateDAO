@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
 /**
  * commit-vote.ts
  * Phase 1: Commit a private vote to a proposal.
