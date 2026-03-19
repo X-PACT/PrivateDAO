@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (c) 2026 X-PACT. AGPL-3.0-or-later.
 import * as anchor from "@coral-xyz/anchor";
-import { Program }  from "@coral-xyz/anchor";
 import { PublicKey, Keypair, SystemProgram, Transaction, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import {
   createMint, createAccount, mintTo,
@@ -24,7 +23,7 @@ function randomSalt(): Buffer { return crypto.randomBytes(32); }
 describe("PrivateDAO", () => {
   const provider  = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
-  const program   = anchor.workspace.PrivateDao as Program<any>;
+  const program   = anchor.workspace.PrivateDao as any;
   const authority = provider.wallet as anchor.Wallet;
 
   const DAO_NAME = "TestDAO";
@@ -87,7 +86,7 @@ describe("PrivateDAO", () => {
       })
       .rpc();
 
-    const dao = await program.account.dao.fetch(daoPda);
+    const dao = await program.account["dao"].fetch(daoPda);
     assert.equal(dao.daoName, DAO_NAME);
     assert.equal(dao.quorumPercentage, 51);
     assert.equal(dao.proposalCount.toString(), "0");
@@ -95,7 +94,7 @@ describe("PrivateDAO", () => {
   });
 
   it("creates a proposal", async () => {
-    const dao = await program.account.dao.fetch(daoPda);
+    const dao = await program.account["dao"].fetch(daoPda);
 
     [proposalPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("proposal"), daoPda.toBuffer(), dao.proposalCount.toArrayLike(Buffer, "le", 8)],
@@ -116,14 +115,14 @@ describe("PrivateDAO", () => {
       })
       .rpc();
 
-    const p = await program.account.proposal.fetch(proposalPda);
+    const p = await program.account["proposal"].fetch(proposalPda);
     assert.equal(p.title, "Allocate 10 SOL for marketing");
     assert.equal(p.commitCount.toString(), "0");
     console.log("  ✓ Proposal created");
   });
 
   it("rejects invalid treasury action configuration", async () => {
-    const dao = await program.account.dao.fetch(daoPda);
+    const dao = await program.account["dao"].fetch(daoPda);
     const [invalidProposalPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("proposal"), daoPda.toBuffer(), dao.proposalCount.toArrayLike(Buffer, "le", 8)],
       program.programId,
@@ -189,7 +188,7 @@ describe("PrivateDAO", () => {
         .rpc();
     }
 
-    const p = await program.account.proposal.fetch(proposalPda);
+    const p = await program.account["proposal"].fetch(proposalPda);
     assert.equal(p.commitCount.toString(), "3");
     assert.equal(p.yesCapital.toString(), "0");
     assert.equal(p.noCapital.toString(),  "0");
@@ -250,7 +249,7 @@ describe("PrivateDAO", () => {
   });
 
   it("can cancel a proposal during voting", async () => {
-    const dao = await program.account.dao.fetch(daoPda);
+    const dao = await program.account["dao"].fetch(daoPda);
     const [cancelPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("proposal"), daoPda.toBuffer(), dao.proposalCount.toArrayLike(Buffer, "le", 8)],
       program.programId,
@@ -270,13 +269,13 @@ describe("PrivateDAO", () => {
       .accounts({ dao: daoPda, proposal: cancelPda, authority: authority.publicKey })
       .rpc();
 
-    const p = await program.account.proposal.fetch(cancelPda);
+    const p = await program.account["proposal"].fetch(cancelPda);
     assert.isTrue("cancelled" in p.status, "status should be cancelled");
     console.log("  ✓ proposal cancelled successfully");
   });
 
   it("rejects self-delegation", async () => {
-    const dao = await program.account.dao.fetch(daoPda);
+    const dao = await program.account["dao"].fetch(daoPda);
     const [selfDelegateProposalPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("proposal"), daoPda.toBuffer(), dao.proposalCount.toArrayLike(Buffer, "le", 8)],
       program.programId,

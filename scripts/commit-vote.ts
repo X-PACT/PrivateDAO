@@ -53,8 +53,8 @@ async function main() {
   const program = workspaceProgram();
 
   const proposalPda = new PublicKey(proposalStr);
-  const proposal    = await program.account.proposal.fetch(proposalPda);
-  const dao         = await program.account.dao.fetch(proposal.dao);
+  const proposal    = await program.account["proposal"].fetch(proposalPda);
+  const dao         = await program.account["dao"].fetch(proposal.dao);
   const now         = Math.floor(Date.now() / 1000);
 
   if (now >= proposal.votingEnd.toNumber()) {
@@ -140,7 +140,7 @@ async function main() {
   fs.writeFileSync(canonicalSaltFile, saltPayload);
   fs.writeFileSync(legacySaltFile, saltPayload);
 
-  const updated = await program.account.proposal.fetch(proposalPda);
+  const updated = await program.account["proposal"].fetch(proposalPda);
 
   console.log(`\n✅ Vote committed!`);
   console.log(`   Transaction:  ${tx}`);

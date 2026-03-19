@@ -34,7 +34,7 @@ async function main() {
   const program = workspaceProgram();
 
   const daoPda = new PublicKey(String(daoPdaStr));
-  const dao    = await program.account.dao.fetch(daoPda);
+  const dao    = await program.account["dao"].fetch(daoPda);
 
   const [treasuryPda] = PublicKey.findProgramAddressSync(
     [Buffer.from("treasury"), daoPda.toBuffer()],

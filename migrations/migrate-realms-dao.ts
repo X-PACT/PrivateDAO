@@ -101,7 +101,7 @@ async function main() {
 
   // Check if already migrated
   try {
-    const existing = await program.account.dao.fetch(daoPda);
+    const existing = await program.account["dao"].fetch(daoPda);
     console.log(`\n⚠️  DAO already exists: ${existing.daoName}`);
     console.log(`   Migration may have already been run.`);
     console.log(`   Use a different --name to create a new DAO.`);
@@ -128,7 +128,7 @@ async function main() {
     })
     .rpc();
 
-  const dao = await program.account.dao.fetch(daoPda);
+  const dao = await program.account["dao"].fetch(daoPda);
 
   console.log(`\n${"═".repeat(60)}`);
   console.log(`  ✅ MIGRATION COMPLETE`);

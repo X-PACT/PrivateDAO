@@ -33,9 +33,9 @@ async function main() {
   const program = workspaceProgram();
 
   const proposalPda = new PublicKey(proposalStr);
-  const proposal    = await program.account.proposal.fetch(proposalPda);
+  const proposal    = await program.account["proposal"].fetch(proposalPda);
   const daoPda      = proposal.dao;
-  const dao         = await program.account.dao.fetch(daoPda);
+  const dao         = await program.account["dao"].fetch(daoPda);
   const now         = Math.floor(Date.now() / 1000);
   const status      = proposalStatusLabel(proposal.status);
 

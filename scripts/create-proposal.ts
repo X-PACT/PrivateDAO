@@ -122,7 +122,7 @@ async function main() {
     })
     .rpc();
 
-  const proposal = await program.account.proposal.fetch(proposalPda);
+  const proposal = await program.account["proposal"].fetch(proposalPda);
 
   console.log(`\n✅ Proposal created!`);
   console.log(`   Proposal address: ${proposalPda.toBase58()}`);

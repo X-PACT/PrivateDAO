@@ -66,7 +66,7 @@ async function main() {
   const { vote }  = saved;
   const salt      = Buffer.from(saved.salt, "hex");
 
-  const proposal  = await program.account.proposal.fetch(proposalPda);
+  const proposal  = await program.account["proposal"].fetch(proposalPda);
   const now       = Math.floor(Date.now() / 1000);
 
   console.log(`\n🔓 Revealing vote for: "${proposal.title}"`);
@@ -108,7 +108,7 @@ async function main() {
   const balanceAfter = await provider.connection.getBalance(provider.wallet.publicKey);
   const rebate       = (balanceAfter - balanceBefore + 5000) / 1e9; // +5000 for tx fee approx
 
-  const updated = await program.account.proposal.fetch(proposalPda);
+  const updated = await program.account["proposal"].fetch(proposalPda);
 
   console.log(`\n✅ Vote revealed!`);
   console.log(`   Transaction:   ${tx}`);

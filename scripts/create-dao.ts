@@ -78,7 +78,7 @@ async function main() {
     })
     .rpc();
 
-  const dao = await program.account.dao.fetch(daoPda);
+  const dao = await program.account["dao"].fetch(daoPda);
 
   console.log(`\n✅ DAO created!`);
   console.log(`   DAO address:      ${daoPda.toBase58()}`);

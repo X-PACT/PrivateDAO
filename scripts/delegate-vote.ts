@@ -36,8 +36,8 @@ async function main() {
 
   const proposalPda  = new PublicKey(proposalStr);
   const delegateePk  = new PublicKey(delegateeStr);
-  const proposal     = await program.account.proposal.fetch(proposalPda);
-  const dao          = await program.account.dao.fetch(proposal.dao);
+  const proposal     = await program.account["proposal"].fetch(proposalPda);
+  const dao          = await program.account["dao"].fetch(proposal.dao);
   const now          = Math.floor(Date.now() / 1000);
 
   if (now >= proposal.votingEnd.toNumber()) {
