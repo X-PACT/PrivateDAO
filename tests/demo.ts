@@ -123,7 +123,7 @@ describe("demo", () => {
     const keeper    = Keypair.generate(); // auto-reveals carol's vote
     const recipient = Keypair.generate(); // receives SOL on treasury execute
 
-    for (const w of [whale, alice, bob, carol, delegator, keeper]) {
+    for (const w of [whale, alice, bob, carol, delegator, keeper, recipient]) {
       await fundWallet(w.publicKey, 0.005);
     }
 

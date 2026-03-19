@@ -78,7 +78,7 @@ describe("Full flow", () => {
 
     // Setup
     const [alice, bob, carol, recipient] = Array.from({length: 4}, () => Keypair.generate());
-    for (const w of [alice, bob, carol]) {
+    for (const w of [alice, bob, carol, recipient]) {
       await fundWallet(w.publicKey, 0.005);
     }
 
