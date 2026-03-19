@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
 # PrivateDAO
 
 <p align="center">
@@ -9,203 +10,126 @@
 [![Live Frontend](https://img.shields.io/badge/Live%20Frontend-Open-00e5ff?logo=solana)](https://x-pact.github.io/PrivateDAO/)
 [![Frontend](https://img.shields.io/badge/Frontend-docs%2Findex.html-0b7285)](docs/index.html)
 [![CI](https://img.shields.io/github/actions/workflow/status/X-PACT/PrivateDAO/ci.yml?branch=main&label=CI)](https://github.com/X-PACT/PrivateDAO/actions/workflows/ci.yml)
-[![Judge Quick Links](https://img.shields.io/badge/Judges-Quick%20Links-ff4d6d)](https://github.com/X-PACT/PrivateDAO/issues/5)
 [![Solana](https://img.shields.io/badge/Solana-Devnet-14F195)](https://solana.com)
 [![Anchor](https://img.shields.io/badge/Anchor-0.31.1-blue)](https://www.anchor-lang.com)
 [![License](https://img.shields.io/badge/License-AGPLv3%2B%20%7C%20Apache--2.0%20%7C%20MIT-green)](LICENSE)
 [![Submission](https://img.shields.io/badge/Colosseum-Submission%20Ready-ff9f1c)](SUBMISSION.md)
 
-<p align="center">
-  <a href="https://x-pact.github.io/PrivateDAO/"><strong>Open Interactive Frontend</strong></a> ·
-  <a href="docs/index.html"><strong>Open Local Frontend File</strong></a>
-</p>
+PrivateDAO is a Solana / Anchor governance protocol for DAOs that want private voting without pretending the rest of governance disappears. Votes are committed privately, revealed later, finalized deterministically, and treasury execution stays behind an explicit timelock with recipient and mint checks.
 
-GitHub Pages source: GitHub Actions workflow (`.github/workflows/pages.yml`) deploying from `docs/`.
+The point is simple: public live tallies create whale pressure, vote buying, and treasury signaling. Commit-reveal does not solve every governance problem, but it removes one of the ugliest ones without changing the whole stack.
 
-Production-grade private governance for Solana DAOs using commit-reveal voting, timelocked execution, and treasury safety checks.
+GitHub Pages source: `docs/` via `.github/workflows/pages.yml`.
 
-Built for Solana Graveyard Hackathon 2026 with focus on real security controls, Realms migration, and operational readiness.
+## Current Status
 
----
+- Devnet program deployed at `62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm`
+- Current repo targets `Anchor 0.31.1`
+- Local tests cover commit, reveal, finalize, execute, cancellation, delegation, keeper reveal, and treasury validation paths
+- This repo is production-minded, but still devnet-first and not represented as a completed mainnet governance system
 
-## Deployment Status (Devnet)
+## What Exists Today
 
-- Status: Deployed
-- Program ID: `62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm`
-- Network: Solana Devnet
-- Last deployed slot: `444565780` (`2026-02-25T11:47:34Z`)
-- Upgrade authority: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
-- Explorer: https://solscan.io/account/62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm?cluster=devnet
-
----
-
-## Executive Summary
-
-Most DAO stacks reveal votes and interim tally in real time. That creates three high-risk dynamics:
-
-- Vote buying during live tally swings.
-- Whale intimidation and herd behavior.
-- Treasury front-running once proposal direction is obvious.
-
-PrivateDAO removes live tally visibility through commit-reveal and enforces delayed, auditable treasury execution.
-
----
-
-## Core Capabilities
-
-- Commit-reveal voting with hidden tally during voting phase.
+- Commit-reveal voting with hidden tally during the voting window
 - Voting modes:
-  - Token-weighted
-  - Quadratic
-  - Dual-chamber (capital + community thresholds)
-- Keeper-authorized reveal for voter liveness protection.
-- Timelock and veto window before treasury execution.
-- Treasury action validation (`SendSol`, `SendToken`, `CustomCPI`).
-- Realms-compatible voter-weight record support.
-- Migration helper from existing Realms governance setup.
+  - `TokenWeighted`
+  - `Quadratic`
+  - `DualChamber` with separate capital and community thresholds
+- Proposal lifecycle:
+  - create
+  - commit
+  - reveal
+  - finalize
+  - timelocked execute
+  - authority cancel during voting
+  - authority veto during timelock
+- Treasury actions:
+  - `SendSol` fully wired on-chain
+  - `SendToken` fully wired on-chain with mint, authority, and recipient-owner checks
+  - `CustomCPI` intentionally emits an execution event only; off-chain relayer handling is still the chosen pattern here
+- Optional keeper-authorized reveal
+- Proposal-scoped private delegation
+- Treasury deposit helper
+- Realms-oriented migration helper and voter-weight record account
+- Docs frontend published from `docs/index.html`
 
----
+## Safety Model
 
-## Security Posture
+Current on-chain safety properties:
 
-Key protections currently implemented:
+- Commitment binding uses `sha256(vote_byte || salt_32 || voter_pubkey_32)`
+- Vote weight is snapshotted at commit time
+- Reveal is limited to the voter or the voter-approved keeper
+- Cancelled proposals can no longer progress through reveal/finalize/execute
+- Finalization is permissionless but only after `reveal_end`
+- Execution is permissionless but only after `execution_unlocks_at`
+- Veto is only possible while the proposal is passed, unexecuted, and still inside the timelock window
+- Treasury SOL execution enforces the configured recipient
+- Treasury token execution enforces:
+  - treasury token account owned by the treasury PDA
+  - action mint matches both token accounts
+  - recipient token owner matches the configured recipient
+  - source and destination token accounts are not the same account
+- Delegation is one-shot per proposal and self-delegation is rejected
 
-- Commitment preimage binding:
-  - `sha256(vote_byte || salt_32 || voter_pubkey_32)`
-  - prevents replay across voters.
-- Weight snapshot at commit time:
-  - reduces post-vote token movement manipulation.
-- Recipient and mint integrity checks for treasury execution:
-  - blocks recipient substitution and mint mismatch.
-- Token account ownership and authority checks before token transfers.
-- Rent-safe reveal rebate logic:
-  - rebate is transferred only if proposal account remains rent-exempt.
-- Timelocked execution with explicit veto window.
-
----
-
-## Protocol Flow
-
-```text
-1) Commit (voting open)
-   - voters submit commitment hash only
-   - tally remains hidden (YES=0 / NO=0)
-
-2) Reveal (after voting_end)
-   - voter or approved keeper reveals (vote, salt)
-   - program verifies commitment and updates tally
-
-3) Finalize (after reveal_end)
-   - permissionless finalization computes result
-   - if passed, execution unlock timestamp is set
-
-4) Execute (after timelock)
-   - permissionless execution fires treasury action
-```
-
----
+This is still not a claim of audit completeness. It is a real protocol with real checks, not a claim that governance risk is solved forever.
 
 ## Repository Layout
 
 ```text
-programs/private-dao/src/lib.rs      Core Anchor program
-tests/demo.ts                        Full lifecycle demo test
-tests/full-flow-test.ts              End-to-end integration test
-tests/private-dao.ts                 Unit/integration behavior tests
-scripts/                             Operational and devnet scripts
-migrations/migrate-realms-dao.ts     Realms migration tooling
-docs/                                GitHub Pages documentation
+programs/private-dao/src/lib.rs      Anchor program
+tests/private-dao.ts                 Core behavior tests
+tests/full-flow-test.ts              End-to-end lifecycle + treasury tests
+tests/demo.ts                        Demo walkthrough test
+scripts/                             CLI helpers for local/devnet operation
+migrations/migrate-realms-dao.ts     Realms migration helper
+sdk/src/index.ts                     SDK entrypoint
+docs/                                GitHub Pages frontend and docs assets
 ```
-
----
 
 ## Local Development
 
-### Prerequisites
+Prerequisites:
 
-- Rust stable toolchain
+- Rust stable
 - Solana CLI
 - Anchor CLI `0.31.1`
-- Node.js + Yarn
+- Node.js
+- Yarn or npm
 
-### Build and test on local validator
+Install dependencies:
 
 ```bash
 yarn install
+```
+
+Start a validator in another terminal:
+
+```bash
 solana-test-validator --reset
+```
+
+Build:
+
+```bash
 anchor build
+```
+
+Run all tests:
+
+```bash
 anchor test
 ```
 
-Run only the full demo scenario:
+Run targeted suites:
 
 ```bash
+anchor test -- --grep "PrivateDAO"
+anchor test -- --grep "Full flow"
 anchor test -- --grep "demo"
 ```
 
----
-
-## Devnet Deployment
-
-### 1) Configure wallet and RPC
-
-```bash
-export ANCHOR_WALLET=~/.config/solana/id.json
-export ALCHEMY_API_KEY="<your-alchemy-key>"
-solana config set --keypair "$ANCHOR_WALLET" --url "https://solana-devnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}"
-```
-
-You can also set `ALCHEMY_DEVNET_RPC_URL` directly. If no Alchemy settings exist, scripts fallback to Helius (`HELIUS_API_KEY`) and then public devnet.
-
-Optional additional providers: `QUICKNODE_DEVNET_RPC`, `EXTRA_DEVNET_RPCS` (comma-separated), and `RPC_AUTH_HEADER` for header-authenticated endpoints.
-
-### 2) Fund wallet (RPC rotation + retries)
-
-```bash
-bash scripts/fund-devnet.sh 2
-bash scripts/check-rpc-health.sh
-```
-
-If health checks fail with `CONNECT tunnel failed, response 403`, your network proxy is blocking outbound RPC access.
-Set `NO_PROXY` for RPC hosts or run from an unfiltered network before deploy/funding.
-For controlled CI environments, set `RPC_HEALTH_ALLOW_NETWORK_FAIL=1` to treat pure network/proxy failures as non-blocking while still printing diagnostics.
-
-### 3) Optional custom faucet endpoint
-
-If you run your own faucet service, the funding script can call it first:
-
-```bash
-export CUSTOM_FAUCET_URL="https://your-faucet-domain/api/airdrop"
-export CUSTOM_FAUCET_METHOD="POST"
-bash scripts/fund-devnet.sh 2
-bash scripts/check-rpc-health.sh
-```
-
-### 4) Deploy
-
-```bash
-anchor build
-anchor deploy --provider.cluster devnet
-```
-
-### 5) Validate deployed programs or addresses
-
-```bash
-bash scripts/check-contracts.sh 62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm
-```
-
----
-
-## CI and Quality Gates
-
-Current CI enforces:
-
-- Toolchain verification
-- Anchor build
-- Anchor test
-- Non-real-code scan (non-production artifacts)
-
-Manual verification locally:
+Run verification helpers:
 
 ```bash
 bash scripts/verify.sh tools
@@ -219,106 +143,141 @@ bash scripts/verify.sh rpc-health-unit
 bash scripts/verify.sh rpc-health
 ```
 
-Containerized reproducible environment (Ubuntu 24.04 + Rust + Solana + Anchor):
+## Devnet Workflow
+
+Set wallet and RPC:
 
 ```bash
-docker build -t privatedao-dev .
-docker run --rm -it -v "$PWD":/workspace -w /workspace privatedao-dev bash
-yarn install --frozen-lockfile
-bash scripts/verify.sh tools
-bash scripts/verify.sh fmt
-bash scripts/verify.sh lint
-bash scripts/verify.sh build
+export ANCHOR_WALLET=~/.config/solana/id.json
+export ALCHEMY_API_KEY="<alchemy-key>"
+solana config set \
+  --keypair "$ANCHOR_WALLET" \
+  --url "https://solana-devnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}"
 ```
 
----
+Fallbacks already supported by the scripts:
 
-## Global Grant Targets (2026)
+- `ALCHEMY_DEVNET_RPC_URL`
+- `HELIUS_API_KEY`
+- `QUICKNODE_DEVNET_RPC`
+- `EXTRA_DEVNET_RPCS`
+- `RPC_AUTH_HEADER`
+- `CUSTOM_FAUCET_URL`
+- `CUSTOM_FAUCET_METHOD`
 
-These programs are highly relevant for security-focused DAO infrastructure, privacy tooling, and open-source public goods.
-
-| Program | Why it fits PrivateDAO | Official link |
-|---|---|---|
-| Solana Foundation Grants | Solana-native infra, public goods, security tooling | https://solana.org/grants |
-| Superteam Earn Grants | Regional Solana grants for shipping teams | https://earn.superteam.fun/grants |
-| Gitcoin Grants Program | Public-goods funding with strong OSS visibility | https://www.gitcoin.co/program |
-| Ethereum Foundation ESP | Grants for open-source infra, tooling, and research | https://esp.ethereum.foundation/ |
-| NLnet Funding / NGI0 | Privacy and open internet digital commons grants | https://nlnet.nl/funding.html |
-| Filecoin Foundation Grants | Open-source infra, research, and protocol-level tooling | https://fil.org/grants |
-
-Submission windows and eligibility change frequently. Verify open calls and scope before applying.
-
----
-
-## Ecosystem Mentions (Relevant Organizations)
-
-The following companies and organizations are relevant to PrivateDAO's stack, infra, or distribution. This is an ecosystem mention list, not a claim of partnership or endorsement.
-
-- Solana Foundation
-- Anza
-- Coral (Anchor framework)
-- Alchemy
-- Helius
-- QuickNode
-- Triton One
-- Dialect
-- Squads Labs
-- Solflare
-- Phantom
-- Backpack
-- Jupiter
-- Sanctum
-- Pyth Network
-- Switchboard
-- Chainlink
-- Circle
-- Wormhole Foundation
-- Superteam
-- Colosseum
-
----
-
-## Documentation and Demo Assets
-
-- Web documentation entry: `docs/index.html`
-- Logo assets: `docs/assets/logo.png`
-- Program source: `programs/private-dao/src/lib.rs`
-
----
-
-## License Structure
-
-PrivateDAO uses a hybrid licensing model:
-
-- Core protocol (`programs/`) -> AGPL-3.0-or-later (`LICENSE`)
-- SDK (`sdk/`) -> Apache-2.0 (`LICENSE-APACHE`, `sdk/LICENSE`)
-- Frontend and docs (`frontend/`, `docs/`) -> MIT (`LICENSE-MIT`, `frontend/LICENSE`, `docs/LICENSE`)
-
-Copyright (c) 2026 Eslam Kotb (X-PACT)
-
-## Intellectual Property and Branding
-
-- Source code and content licensing follows the hybrid model described above.
-- Project marks and branding are reserved (see `TRADEMARKS.md`).
-- IP policy and enforcement boundaries are documented in `IP_POLICY.md`.
-- Trademark filing prep pack: `LEGAL/TRADEMARK_FILING_PREP.md`
-- Patent evaluation brief: `LEGAL/PATENT_EVALUATION_BRIEF.md`
-- Private service split plan: `LEGAL/PRIVATE_SERVICE_SPLIT_PLAN.md`
-- Evidence pack generator: `scripts/ip/generate-evidence-pack.sh`
-
-Generate legal evidence pack:
+Fund and sanity-check devnet access:
 
 ```bash
-bash scripts/ip/generate-evidence-pack.sh
+bash scripts/fund-devnet.sh 2
+bash scripts/check-rpc-health.sh
 ```
 
-## Commercial Licensing
+Deploy:
 
-Commercial licenses are available for proprietary integrations.
+```bash
+anchor build
+anchor deploy --provider.cluster devnet
+```
 
-Contact: fahd.kotb@tuta.io
+Or use the repo deploy script:
 
-## Ownership
+```bash
+./deploy.sh
+```
 
-Project owner and maintainer: Eslam Kotb (X-PACT).
-Primary code ownership policy is enforced via `.github/CODEOWNERS`.
+Validate deployed addresses:
+
+```bash
+bash scripts/check-contracts.sh 62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm
+```
+
+## Scripts
+
+The CLI scripts are meant for actual local/devnet usage, not throwaway demo wrappers.
+
+- `scripts/create-dao.ts`
+- `scripts/create-proposal.ts`
+- `scripts/deposit-treasury.ts`
+- `scripts/delegate-vote.ts`
+- `scripts/commit-vote.ts`
+- `scripts/reveal-vote.ts`
+- `scripts/finalize.ts`
+- `scripts/execute.ts`
+
+Example flow:
+
+```bash
+yarn create-dao -- --name "MyDAO" --quorum 51 --mode dual
+yarn deposit -- --dao <DAO_PDA> --amount 1.0
+yarn create-proposal -- --dao <DAO_PDA> --title "Fund research: 0.1 SOL" --treasury-recipient <RECIPIENT> --treasury-amount 0.1
+yarn commit -- --proposal <PROPOSAL_PDA> --vote yes
+yarn reveal -- --proposal <PROPOSAL_PDA>
+yarn finalize -- --proposal <PROPOSAL_PDA>
+yarn execute -- --proposal <PROPOSAL_PDA>
+```
+
+Keeper reveal note:
+
+- Salt files are stored as `~/.privatedao/salts/<proposal>-<voter>.json`
+- The old `~/.privatedao/salts/<proposal>.json` path is still written as a legacy fallback
+
+## Realms Compatibility
+
+Two separate things exist here and should not be conflated:
+
+1. `update_voter_weight_record` writes a Realms-style voter weight record account.
+2. `migrate_from_realms` and `migrations/migrate-realms-dao.ts` let a DAO preserve provenance from an existing Realms governance address.
+
+What is true today:
+
+- The repo has a Realms-oriented migration path
+- The DAO stores `migrated_from_realms`
+- The voter-weight account shape is compatible with the plugin pattern
+
+What is not claimed here:
+
+- full proposal-by-proposal Realms replacement
+- automatic Realms proposal mirroring
+- a finished end-to-end Realms plugin integration across the whole governance lifecycle
+
+The migration helper is useful. It is not pretending to be a complete Realms drop-in.
+
+## Devnet vs Production Intent
+
+Implemented and exercised now:
+
+- devnet deployment
+- local validator testing
+- treasury SOL execution
+- treasury SPL token execution
+- keeper reveal
+- delegation
+- timelock and veto flow
+
+Still intentionally scoped or deferred:
+
+- `CustomCPI` remains event-only rather than arbitrary CPI from the program
+- no claim of mainnet audit readiness
+- no claim of censorship-resistant off-chain relayer infrastructure
+- no claim that commit-reveal hides metadata such as transaction timing
+- no claim that the current Realms path is a full native replacement
+
+## Limitations
+
+- Unrevealed commitments count as abstentions for outcome purposes
+- Commit-reveal hides vote choice, not participation timing
+- Treasury actions are visible when proposals are created; the hidden part is the tally, not the existence of the proposal itself
+- `CustomCPI` is intentionally conservative and does not execute arbitrary CPI on-chain
+- Proposal and DAO account layouts are treated as compatibility-sensitive; this repo avoids silent breaking changes to those structures
+
+## Supporting Docs
+
+- `BUILD.md` for toolchain and deploy troubleshooting
+- `GUIDE.md` for a longer operator walkthrough
+- `SECURITY.md` for vulnerability reporting
+- `RELEASE_CHECKLIST.md` for release hygiene
+- `SUBMISSION.md` for the hackathon-facing writeup
+
+## License
+
+See `LICENSE`, `LICENSE-APACHE`, `LICENSE-MIT`, and `LICENSE-COMMERCIAL.md`.

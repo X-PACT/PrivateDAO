@@ -6,10 +6,10 @@
  * Migrates an existing Realms DAO to use PrivateDAO for voting privacy.
  *
  * What this does:
- *   1. Reads the existing Realms governance account (on-chain)
- *   2. Creates a PrivateDAO mirroring the same governance token
+ *   1. Verifies the existing Realms governance account exists on-chain
+ *   2. Creates a PrivateDAO using the caller-supplied governance token mint
  *   3. Records the Realms governance pubkey in the DAO (for provenance)
- *   4. Outputs a migration report with config diff
+ *   4. Outputs a migration report with the new PrivateDAO address and config
  *
  * What this does NOT do (by design):
  *   - Does NOT move treasury funds (members keep control)
@@ -27,36 +27,6 @@ import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { PublicKey, SystemProgram } from "@solana/web3.js";
 import { parseArgs } from "../scripts/utils";
-
-// Realms governance account layout (simplified — reads relevant fields)
-interface RealmsGovernanceData {
-  realm: PublicKey;
-  governedAccount: PublicKey;
-  config: {
-    communityVoteThreshold: { yesVotePercentage: number } | null;
-    minCommunityTokensToCreateProposal: bigint;
-  };
-}
-
-async function fetchRealmsGovernance(
-  connection: anchor.web3.Connection,
-  governancePubkey: PublicKey,
-): Promise<{ mint: PublicKey | null; yesVotePercentage: number }> {
-  const accountInfo = await connection.getAccountInfo(governancePubkey);
-
-  if (!accountInfo) {
-    throw new Error(`Governance account not found: ${governancePubkey.toBase58()}`);
-  }
-
-  // Realms governance accounts have a well-known discriminator and layout.
-  // We parse the minimum needed: realm reference (at offset 1) and threshold.
-  // Full parsing requires spl-governance SDK — here we use heuristic offsets.
-  console.log(`  Governance account size: ${accountInfo.data.length} bytes`);
-  console.log(`  Owner program: ${accountInfo.owner.toBase58()}`);
-
-  // Return null mint if we can't parse — user can specify --mint flag
-  return { mint: null, yesVotePercentage: 51 };
-}
 
 async function main() {
   const {
@@ -180,8 +150,8 @@ async function main() {
   console.log(`  ✅ New: Commit-reveal (tally hidden until reveal)`);
   console.log(`  ❌ Old: Vote immediately counted (intimidation)`);
   console.log(`  ✅ New: No live tally — zero bandwagon effect`);
-  console.log(`  ❌ Old: Treasury action visible before execution`);
-  console.log(`  ✅ New: Treasury executes only after finalize`);
+  console.log(`  ℹ️  This helper records source governance provenance only`);
+  console.log(`  ℹ️  Realms proposal/execution wiring remains a separate integration task`);
 
   console.log(`\n  Next steps:`);
   console.log(`  ─────────────────────────────────────`);

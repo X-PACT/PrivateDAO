@@ -1,381 +1,149 @@
-# PrivateDAO — Complete Deployment Guide
-### Solana Graveyard Hackathon 2026
+<!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
+# PrivateDAO Operator Guide
 
-<p align="center">
-  <img src="docs/assets/logo.png" alt="PrivateDAO logo 🚀" width="150" />
-</p>
+This is the longer walk-through for someone actually running the repo, not a pitch deck.
 
----
+## Current deployment snapshot
 
-## Current Deployment Snapshot (Devnet)
-
-- Status: Deployed
+- Network: Solana devnet
 - Program ID: `62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm`
-- Last deployed slot: `444565780`
-- Last deployed time (UTC): `2026-02-25T11:47:34Z`
-- Upgrade authority: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - Explorer: https://solscan.io/account/62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm?cluster=devnet
 
----
+## What the protocol does
 
-## Prerequisites (one-time install)
+1. DAO authority creates a DAO with a voting mode and timelock policy.
+2. Authority creates proposals, optionally with a treasury action.
+3. Token holders commit vote hashes during the voting window.
+4. Voters or approved keepers reveal after `voting_end`.
+5. Anyone finalizes after `reveal_end`.
+6. If passed, anyone executes after the timelock unless authority vetoes first.
 
-```bash
-# 1. Solana CLI
-sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
-export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
-solana --version   # should be >= 1.18
+## Voting modes
 
-# 2. Rust (required for Anchor)
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-source $HOME/.cargo/env
+- `TokenWeighted`: raw SPL token balance
+- `Quadratic`: integer square root of token balance
+- `DualChamber`: token-weighted capital threshold and quadratic community threshold must both pass
 
-# 3. Anchor CLI
-cargo install --git https://github.com/coral-xyz/anchor anchor-cli --locked
-anchor --version   # should be >= 0.30
+## Treasury actions
 
-# 4. Node.js >= 18 — https://nodejs.org
-node --version
+- `SendSol`: fully executed on-chain
+- `SendToken`: fully executed on-chain with mint and ownership checks
+- `CustomCPI`: event-only by design in the current version
 
-# 5. Yarn
-npm install -g yarn
-```
+That last point matters. The repo does not currently expose arbitrary CPI execution from governance, and that is intentional.
 
----
-
-## Quick Start — Full Devnet Deploy
-
-```bash
-# 1. Configure Helius RPC
-cp .env.example .env
-# Edit .env and add your HELIUS_API_KEY
-# Get free key at: https://dev.helius.xyz (devnet = free, no credit card)
-
-# 2. Run the full deploy script (does everything)
-./deploy.sh
-```
-
-That's it. The script handles: wallet creation, airdrop, build, deploy, and demo test.
-
----
-
-## Step-by-Step (Manual)
-
-### Step 1 — Configure Helius RPC
-
-Get your free API key at https://dev.helius.xyz
-
-```bash
-cp .env.example .env
-```
-
-Edit `.env`:
-```
-HELIUS_API_KEY=your_actual_key_here
-SOLANA_RPC_URL=https://devnet.helius-rpc.com/?api-key=your_actual_key_here
-SOLANA_WSS_URL=wss://devnet.helius-rpc.com/?api-key=your_actual_key_here
-SOLANA_CLUSTER=devnet
-ANCHOR_WALLET=~/.config/solana/id.json
-PROGRAM_ID=62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm
-```
-
-### Step 2 — Wallet Setup
-
-```bash
-# Generate wallet if you don't have one
-solana-keygen new --outfile ~/.config/solana/id.json
-
-# Configure CLI to use devnet with Helius
-solana config set \
-  --url "https://devnet.helius-rpc.com/?api-key=YOUR_KEY" \
-  --keypair ~/.config/solana/id.json
-
-# Get devnet SOL (free)
-solana airdrop 2
-
-# Optional fallback: your own faucet API (for strict rate limits)
-export CUSTOM_FAUCET_URL="https://your-faucet-domain/api/airdrop"
-export CUSTOM_FAUCET_METHOD="POST"
-bash scripts/fund-devnet.sh 2
-
-# Verify
-solana balance
-# Should show: 2 SOL
-```
-
-Backup your wallet key:
-```
-cat ~/.config/solana/id.json  # 64-number JSON array — save this somewhere safe
-```
-
-### Step 3 — Build
+## Local run
 
 ```bash
 yarn install
+solana-test-validator --reset
 anchor build
+anchor test
 ```
 
-Build output:
-```
-target/deploy/private_dao.so        ← compiled program
-target/idl/private_dao.json         ← IDL (interface definition)
-target/types/private_dao.ts         ← TypeScript types
-```
-
-### Step 4 — Deploy
+Useful targeted runs:
 
 ```bash
-# Make sure you're on devnet with Helius RPC
-solana config get
+anchor test -- --grep "PrivateDAO"
+anchor test -- --grep "Full flow"
+anchor test -- --grep "demo"
+```
 
-# Deploy (costs ~2-3 SOL in devnet for rent)
+## Devnet run
+
+Configure wallet and RPC:
+
+```bash
+export ANCHOR_WALLET=~/.config/solana/id.json
+export ALCHEMY_API_KEY="<alchemy-key>"
+solana config set \
+  --keypair "$ANCHOR_WALLET" \
+  --url "https://solana-devnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}"
+```
+
+Fund:
+
+```bash
+bash scripts/fund-devnet.sh 2
+bash scripts/check-rpc-health.sh
+```
+
+Deploy:
+
+```bash
+anchor build
 anchor deploy --provider.cluster devnet
 ```
 
-Output:
-```
-Deploying cluster: https://devnet.helius-rpc.com/?api-key=...
-Upgrade authority: <YOUR_WALLET>
-Deploying program "private_dao"...
-Program Id: 62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm
+## Script flow
 
-Deploy success
-```
-
-**Important:** If the Program Id shown differs from what's in `declare_id!()`, update it:
-```bash
-NEW_ID="<actual deployed id>"
-sed -i "s/62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm/$NEW_ID/" \
-  programs/private-dao/src/lib.rs
-anchor build && anchor deploy --provider.cluster devnet
-```
-
-### Step 5 — Verify Deployment
+Create a DAO:
 
 ```bash
-# Check program on-chain
-solana program show 62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm
-
-# Or view on Solscan
-# https://solscan.io/account/62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm?cluster=devnet
+yarn create-dao -- --name "MyDAO" --quorum 51 --mode dual
 ```
 
----
-
-## Ecosystem Mentions (Relevant Companies and Organizations)
-
-This section lists ecosystem entities relevant to deployment, tooling, infrastructure, wallets, and growth. It does not imply partnership or formal endorsement.
-
-- Solana Foundation
-- Anza
-- Coral (Anchor)
-- Alchemy
-- Helius
-- QuickNode
-- Triton One
-- Dialect
-- Squads Labs
-- Phantom
-- Solflare
-- Backpack
-- Jupiter
-- Pyth Network
-- Switchboard
-- Chainlink
-- Circle
-- Wormhole Foundation
-- Superteam
-- Colosseum
-
----
-
-## Running a Full DAO Flow on Devnet
-
-### Create a DAO
+Deposit treasury SOL:
 
 ```bash
-# DualChamber mode (capital + community both required)
-ANCHOR_PROVIDER_URL="https://devnet.helius-rpc.com/?api-key=YOUR_KEY" \
-  yarn create-dao -- \
-    --name "MyDAO" \
-    --quorum 51 \
-    --mode dual \
-    --delay 86400
-
-# Save the output:
-# DAO_PDA=<address>
-# GOVERNANCE_MINT=<address>
+yarn deposit -- --dao <DAO_PDA> --amount 1.0
 ```
 
-### Create a Proposal
+Create a proposal:
 
 ```bash
-ANCHOR_PROVIDER_URL="..." yarn create-proposal -- \
-  --dao $DAO_PDA \
-  --title "Fund community education: 0.1 SOL" \
-  --duration 3600 \
-  --treasury-recipient <RECIPIENT_WALLET> \
+yarn create-proposal -- \
+  --dao <DAO_PDA> \
+  --title "Fund community work: 0.1 SOL" \
+  --treasury-recipient <RECIPIENT> \
   --treasury-amount 0.1
 ```
 
-### Commit Votes (from multiple wallets)
+Commit:
 
 ```bash
-# Voter 1 (simple)
-ANCHOR_PROVIDER_URL="..." yarn commit -- \
-  --proposal $PROPOSAL_PDA \
-  --vote yes
-
-# Voter 2 (with keeper — keeper will reveal if voter forgets)
-ANCHOR_PROVIDER_URL="..." yarn commit -- \
-  --proposal $PROPOSAL_PDA \
-  --vote yes \
-  --keeper <KEEPER_WALLET_PUBKEY>
-
-# Voter 3 (after delegating from another wallet)
-# First delegate:
-ANCHOR_PROVIDER_URL="..." yarn delegate -- \
-  --proposal $PROPOSAL_PDA \
-  --delegatee <VOTER3_PUBKEY>
-# Then voter3 commits with combined weight:
-ANCHOR_PROVIDER_URL="..." yarn commit -- \
-  --proposal $PROPOSAL_PDA \
-  --vote yes \
-  --delegator <DELEGATOR_PUBKEY>
+yarn commit -- --proposal <PROPOSAL_PDA> --vote yes
 ```
 
-### Reveal Votes (after voting ends)
+Delegate first, then commit as the delegatee:
 
 ```bash
-# Voter reveals their own vote
-ANCHOR_PROVIDER_URL="..." yarn reveal -- --proposal $PROPOSAL_PDA
-
-# Keeper reveals on behalf of someone
-ANCHOR_WALLET=~/.config/solana/keeper-id.json \
-ANCHOR_PROVIDER_URL="..." yarn reveal -- \
-  --proposal $PROPOSAL_PDA \
-  --voter <VOTER_WHO_AUTHORIZED_KEEPER>
+yarn delegate -- --proposal <PROPOSAL_PDA> --delegatee <DELEGATEE>
+yarn commit -- --proposal <PROPOSAL_PDA> --vote yes --delegator <DELEGATOR>
 ```
 
-### Finalize (after reveal window)
+Reveal:
 
 ```bash
-ANCHOR_PROVIDER_URL="..." yarn finalize -- --proposal $PROPOSAL_PDA
+yarn reveal -- --proposal <PROPOSAL_PDA>
 ```
 
-### Execute (after timelock expires)
+Finalize and execute:
 
 ```bash
-ANCHOR_PROVIDER_URL="..." yarn execute -- --proposal $PROPOSAL_PDA
+yarn finalize -- --proposal <PROPOSAL_PDA>
+yarn execute -- --proposal <PROPOSAL_PDA>
 ```
 
----
+## Realms note
 
-## Migrate an Existing Realms DAO
+This repo has a migration-oriented Realms path, not a claim of full Realms replacement.
 
-```bash
-ANCHOR_PROVIDER_URL="https://devnet.helius-rpc.com/?api-key=YOUR_KEY" \
-  yarn migrate -- \
-    --governance <REALMS_GOVERNANCE_PUBKEY> \
-    --name "MyDAO-Private" \
-    --mint <GOVERNANCE_TOKEN_MINT> \
-    --quorum 51 \
-    --reveal-window 86400
-```
+What exists:
 
-This creates a PrivateDAO mirroring your Realms config:
-- Same governance token
-- No treasury migration
-- No existing proposals affected
-- Records Realms governance pubkey for provenance
+- `migrate_from_realms`
+- `migrations/migrate-realms-dao.ts`
+- `Dao.migrated_from_realms`
+- a Realms-style `VoterWeightRecord`
 
----
+What still takes more work:
 
-## Local Development (no devnet needed)
+- native proposal lifecycle coupling to Realms proposals
+- automatic execution bridging between Realms and PrivateDAO
 
-```bash
-# Terminal 1
-yarn localnet         # solana-test-validator --reset
+## Operational cautions
 
-# Terminal 2
-anchor build
-anchor test           # all tests
-yarn demo             # just the demo
-```
-
----
-
-## WebSocket Usage (Helius)
-
-For real-time event monitoring in your frontend:
-
-```typescript
-import { Connection } from "@solana/web3.js";
-
-const connection = new Connection(
-  "https://devnet.helius-rpc.com/?api-key=YOUR_KEY",
-  {
-    wsEndpoint: "wss://devnet.helius-rpc.com/?api-key=YOUR_KEY",
-    commitment: "confirmed",
-  }
-);
-
-// Subscribe to program account changes
-connection.onProgramAccountChange(
-  new PublicKey("62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm"),
-  (info) => console.log("Account changed:", info.accountId.toBase58()),
-  "confirmed",
-);
-
-// Subscribe to logs (events)
-connection.onLogs(
-  new PublicKey("62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm"),
-  (logs) => console.log("Event:", logs.logs),
-);
-```
-
----
-
-## Submission Checklist
-
-Submit at: **https://app.superteam.fun** → Solana Graveyard Hackathon 2026
-**Deadline: February 28, 2026**
-
-### DAOs Track ($5,000 — Realms)
-- [ ] Program deployed on devnet
-- [ ] Demo video showing commit-reveal flow
-- [ ] Realms VoterWeightRecord plugin working
-- [ ] migrate_from_realms instruction demonstrated
-
-### Migrations Track ($7,000 — Sunrise)  
-- [ ] migrate-realms-dao.ts working on devnet
-- [ ] Migration report JSON output
-- [ ] Before/after comparison shown
-
-### Overall Track ($15,000 — Solana Foundation)
-- [ ] GitHub repo with clean README
-- [ ] Deployed program ID on devnet
-- [ ] Demo video (recommended: 3-5 min Loom)
-- [ ] Highlights: DualChamber, Private Delegation, Timelock
-
-### Demo Video Script (suggested)
-1. (0:00) Problem: show a public Realms vote being front-run
-2. (0:45) Solution: show commit phase with YES: 0 NO: 0
-3. (1:30) Reveal phase — tally unlocks after voting ends  
-4. (2:00) DualChamber — whale can't pass without community
-5. (2:45) Private delegation — weight combined secretly
-6. (3:15) Timelock — treasury waits 24h before executing
-7. (3:45) Keeper auto-reveal — voter doesn't need to return
-
----
-
-## Program Info
-
-```
-Program ID:   62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm
-Network:      Solana Devnet
-Framework:    Anchor 0.32
-Language:     Rust (Solana BPF target)
-IDL:          target/idl/private_dao.json
-Explorer:     https://solscan.io/account/62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm?cluster=devnet
-```
+- Commit-reveal hides the vote, not the fact that a wallet participated
+- Unrevealed votes do not count
+- The reveal rebate helps but does not remove liveness risk entirely
+- Devnet behavior is useful for iteration, not proof of mainnet readiness

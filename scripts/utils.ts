@@ -4,6 +4,8 @@
  */
 import * as path from "path";
 import * as fs from "fs";
+import * as os from "os";
+import { PublicKey } from "@solana/web3.js";
 
 // Load .env from project root if it exists
 const envPath = path.join(__dirname, "..", ".env");
@@ -48,4 +50,19 @@ export function formatSol(lamports: number | bigint): string {
 
 export function formatTimestamp(unix: number): string {
   return new Date(unix * 1000).toISOString().replace("T", " ").slice(0, 19) + " UTC";
+}
+
+export function legacySaltPath(proposal: string): string {
+  return path.join(os.homedir(), ".privatedao", "salts", `${proposal}.json`);
+}
+
+export function saltPath(proposal: string, voter: PublicKey | string): string {
+  const voterStr = typeof voter === "string" ? voter : voter.toBase58();
+  return path.join(os.homedir(), ".privatedao", "salts", `${proposal}-${voterStr}.json`);
+}
+
+export function ensureSaltDir(): string {
+  const dir = path.join(os.homedir(), ".privatedao", "salts");
+  fs.mkdirSync(dir, { recursive: true });
+  return dir;
 }

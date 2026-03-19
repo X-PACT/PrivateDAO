@@ -3,7 +3,7 @@
  * reveal-vote.ts
  * Phase 2: Reveal your committed vote after voting ends.
  *
- * Reads your saved salt from ~/.privatedao/salts/<proposal>.json,
+ * Reads your saved salt from ~/.privatedao/salts/<proposal>-<voter>.json,
  * recomputes the commitment, and proves it to the chain.
  * You receive 0.001 SOL rebate for revealing.
  *
@@ -18,9 +18,7 @@ import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
 import * as fs from "fs";
-import * as path from "path";
-import * as os from "os";
-import { parseArgs, formatTimestamp } from "./utils";
+import { parseArgs, formatTimestamp, legacySaltPath, saltPath } from "./utils";
 
 async function main() {
   const { proposal: proposalStr, voter: voterStr } = parseArgs();
@@ -42,18 +40,30 @@ async function main() {
     ? new PublicKey(voterStr)
     : provider.wallet.publicKey;
 
-  const saltFile = path.join(
-    os.homedir(), ".privatedao", "salts", `${proposalStr}.json`
-  );
+  const canonicalSaltFile = saltPath(proposalStr, voterPubkey);
+  const fallbackSaltFile = legacySaltPath(proposalStr);
+  const selectedSaltFile = fs.existsSync(canonicalSaltFile)
+    ? canonicalSaltFile
+    : fallbackSaltFile;
 
-  if (!fs.existsSync(saltFile)) {
-    console.error(`\n❌ Salt file not found: ${saltFile}`);
+  if (!fs.existsSync(selectedSaltFile)) {
+    console.error(`\n❌ Salt file not found: ${canonicalSaltFile}`);
+    if (canonicalSaltFile !== fallbackSaltFile) {
+      console.error(`   Legacy fallback checked: ${fallbackSaltFile}`);
+    }
     console.error(`   This file is saved automatically when you commit a vote.`);
     console.error(`   If you are a keeper, you need the voter's salt to reveal for them.`);
     process.exit(1);
   }
 
-  const saved     = JSON.parse(fs.readFileSync(saltFile, "utf-8"));
+  const saved = JSON.parse(fs.readFileSync(selectedSaltFile, "utf-8"));
+  if (saved.voter && saved.voter !== voterPubkey.toBase58()) {
+    console.error(`\n❌ Salt file voter mismatch.`);
+    console.error(`   Expected voter: ${voterPubkey.toBase58()}`);
+    console.error(`   Salt file has:  ${saved.voter}`);
+    console.error(`   Use the voter-specific salt file or recommit from the intended wallet.`);
+    process.exit(1);
+  }
   const { vote }  = saved;
   const salt      = Buffer.from(saved.salt, "hex");
 
@@ -103,6 +113,7 @@ async function main() {
 
   console.log(`\n✅ Vote revealed!`);
   console.log(`   Transaction:   ${tx}`);
+  console.log(`   Salt file:     ${selectedSaltFile}`);
   console.log(`   SOL rebate:    +0.001 SOL (paid to you as revealer)`);
   console.log(`   Reveals so far: ${updated.revealCount} / ${updated.commitCount}`);
   console.log(`   Capital  YES/NO: ${updated.yesCapital} / ${updated.noCapital}`);

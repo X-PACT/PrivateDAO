@@ -20,7 +20,7 @@ This creates three attack vectors that kill legitimate governance:
 
 **2. Whale intimidation** — Small holders see a major token holder vote YES. They flip their own vote to match — not because they agree, but because they assume the whale knows something. The final tally looks like consensus. It wasn't.
 
-**3. Treasury front-running** — A proposal to buy Token X starts passing. Bots see it and buy ahead of the treasury. The DAO pays a worse price. MEV extracts value from every treasury action.
+**3. Treasury front-running** — A proposal starts trending toward passage, traders react before execution, and the DAO gets a worse fill. Commit-reveal helps by removing live tally signaling, but it does not hide the proposal itself.
 
 **None of this is fixable with better UI.** The root cause is architectural: public voting.
 
@@ -52,9 +52,9 @@ sha256(vote_byte || salt || voter_pubkey) == stored_commitment
 ```
 If it matches, the vote is counted. Any mismatch is rejected. The 32-byte salt makes brute-force impossible (2^256 combinations).
 
-**Phase 3 — Finalize + Execute (anyone calls after reveal window)**
+**Phase 3 — Finalize + Execute (permissionless after reveal + timelock)**
 
-Final tally is published. Treasury action executes automatically via CPI after the timelock expires.
+Final tally is published. Anyone can finalize once reveal is over. If the proposal passes, anyone can execute after the timelock expires.
 
 ### Security Properties
 
@@ -63,7 +63,7 @@ Final tally is published. Treasury action executes automatically via CPI after t
 | Real-time tally tracking | ✅ Trivial | ❌ Impossible during commit |
 | Vote buying by watching tally | ✅ Common | ❌ No tally to watch |
 | Whale intimidation | ✅ Systemic | ❌ No visible pressure |
-| Treasury MEV / front-running | ✅ Rampant | ❌ Action hidden until finalize |
+| Treasury pressure from live tally signaling | ✅ Common | ✅ Reduced, not eliminated |
 | Replay commitment to another proposal | ✅ Possible | ❌ Voter pubkey in preimage |
 | Vote-weight manipulation after commit | ✅ Common | ❌ Weight snapshotted at commit |
 
@@ -182,13 +182,12 @@ pub struct VoterWeightRecord {
 }
 ```
 
-Any existing Realms DAO can add PrivateDAO as a voter weight plugin. The `update_voter_weight_record` instruction returns the correct weight (token-weighted, quadratic, or quadratic for DualChamber) with a 100-slot expiry.
+The repo includes a Realms-style voter weight record path. The `update_voter_weight_record` instruction returns the correct weight (token-weighted, quadratic, or quadratic for DualChamber) with a 100-slot expiry.
 
-**Integration steps for an existing Realms DAO:**
-1. Add PrivateDAO program as a VoterWeight plugin in Realms settings
-2. Members call `update_voter_weight_record` before each proposal
-3. Private commit-reveal voting proceeds through PrivateDAO
-4. Results are recorded in the VoterWeightRecord that Realms reads
+What this proves today:
+1. PrivateDAO can expose Realms-style voter weight data
+2. A DAO can preserve source-governance provenance during migration
+3. Full proposal lifecycle coupling to native Realms proposals is still separate work
 
 ---
 

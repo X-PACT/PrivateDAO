@@ -275,6 +275,53 @@ describe("PrivateDAO", () => {
     console.log("  ✓ proposal cancelled successfully");
   });
 
+  it("rejects self-delegation", async () => {
+    const dao = await program.account.dao.fetch(daoPda);
+    const [selfDelegateProposalPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), dao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal("Self delegation", "Delegators must not be able to double-count themselves.", new BN(3600), null)
+      .accounts({
+        dao: daoPda,
+        proposal: selfDelegateProposalPda,
+        authority: authority.publicKey,
+        proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [delegationPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("delegation"), selfDelegateProposalPda.toBuffer(), voter1.publicKey.toBuffer()],
+      program.programId,
+    );
+
+    try {
+      await program.methods
+        .delegateVote(voter1.publicKey)
+        .accounts({
+          dao: daoPda,
+          proposal: selfDelegateProposalPda,
+          delegation: delegationPda,
+          delegatorTokenAccount: v1Ata,
+          delegator: voter1.publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .signers([voter1])
+        .rpc();
+      assert.fail("Should have rejected self-delegation");
+    } catch (err: any) {
+      const msg = err.toString();
+      assert.isTrue(
+        msg.includes("SelfDelegationNotAllowed") || msg.includes("InvalidDelegatee"),
+        `unexpected error: ${msg}`,
+      );
+      console.log("  ✓ self-delegation rejected");
+    }
+  });
+
   it("verifies commitment math — deterministic + vote/salt sensitive", () => {
     const vote = true;
     const salt = Buffer.from("a".repeat(32));

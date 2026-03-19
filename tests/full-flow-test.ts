@@ -198,6 +198,20 @@ describe("Full flow", () => {
         .rpc();
     }
 
+    try {
+      await program.methods
+        .revealVote(votes.alice, [...salts.alice])
+        .accounts({ proposal: proposalPda, voterRecord: PublicKey.findProgramAddressSync(
+          [Buffer.from("vote"), proposalPda.toBuffer(), alice.publicKey.toBuffer()],
+          program.programId,
+        )[0], revealer: alice.publicKey })
+        .signers([alice])
+        .rpc();
+      assert.fail("double reveal must be rejected");
+    } catch (err: any) {
+      assert.include(err.toString(), "AlreadyRevealed");
+    }
+
     const pAfterReveal = await program.account.proposal.fetch(proposalPda);
     // alice 1000 + bob 500 YES, carol 100 NO (all × 1e6 decimals)
     assert.equal(pAfterReveal.yesCapital.toNumber(), 1_500_000_000);
@@ -248,6 +262,24 @@ describe("Full flow", () => {
     const pExec = await program.account.proposal.fetch(proposalPda);
     assert.isTrue(pExec.isExecuted, "isExecuted flag must be set");
     console.log(`  [execute] Treasury sent ${sent.toFixed(4)} SOL ✓`);
+
+    try {
+      await program.methods
+        .executeProposal()
+        .accounts({
+          dao: daoPda, proposal: proposalPda,
+          treasury: treasuryPda,
+          treasuryRecipient: recipient.publicKey,
+          treasuryTokenAccount: treasuryPda,
+          recipientTokenAccount: treasuryPda,
+          executor: payer.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID, systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("execute must reject a second execution");
+    } catch (err: any) {
+      assert.include(err.toString(), "AlreadyExecuted");
+    }
 
     // 7. Security regression: executor cannot redirect treasury recipient
     const attacker = Keypair.generate();
@@ -364,5 +396,186 @@ describe("Full flow", () => {
     console.log(`  [security] Recipient substitution blocked ✓`);
     console.log(`  ✅ Full flow complete`);
 
+  }).timeout(120_000);
+
+  it("rejects unsafe SendToken execution account wiring", async () => {
+    async function fundWallet(pubkey: PublicKey, sol: number): Promise<void> {
+      const tx = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: payer.publicKey,
+          toPubkey: pubkey,
+          lamports: Math.round(sol * LAMPORTS_PER_SOL),
+        }),
+      );
+      await provider.sendAndConfirm(tx, []);
+    }
+
+    const voter = Keypair.generate();
+    const recipient = Keypair.generate();
+    const attacker = Keypair.generate();
+    await fundWallet(voter.publicKey, 0.01);
+
+    const mint = await createMint(provider.connection, payer, payer.publicKey, null, 6);
+    const voterAta = await createAccount(provider.connection, payer, mint, voter.publicKey);
+    await mintTo(provider.connection, payer, mint, voterAta, payer, 1_000_000_000n);
+
+    const daoName = `TokenGuard-${Date.now()}`;
+    const [daoPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("dao"), payer.publicKey.toBuffer(), Buffer.from(daoName)],
+      program.programId,
+    );
+
+    await program.methods
+      .initializeDao(
+        daoName,
+        51,
+        new BN(0),
+        new BN(5),
+        new BN(1),
+        { tokenWeighted: {} },
+      )
+      .accounts({
+        dao: daoPda,
+        governanceToken: mint,
+        authority: payer.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [proposalPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), Buffer.alloc(8)],
+      program.programId,
+    );
+    const [treasuryPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("treasury"), daoPda.toBuffer()],
+      program.programId,
+    );
+    const treasuryTokenAccount = await createAccount(provider.connection, payer, mint, treasuryPda, undefined, undefined, TOKEN_PROGRAM_ID);
+    const recipientTokenAccount = await createAccount(provider.connection, payer, mint, recipient.publicKey);
+    const attackerTokenAccount = await createAccount(provider.connection, payer, mint, attacker.publicKey);
+    await mintTo(provider.connection, payer, mint, treasuryTokenAccount, payer, 500_000_000n);
+
+    await program.methods
+      .createProposal(
+        "Send governance token",
+        "Token execution should reject mismatched recipient accounts.",
+        new BN(5),
+        {
+          actionType: { sendToken: {} },
+          amountLamports: new BN(100_000_000),
+          recipient: recipient.publicKey,
+          tokenMint: mint,
+        },
+      )
+      .accounts({
+        dao: daoPda,
+        proposal: proposalPda,
+        authority: payer.publicKey,
+        proposer: payer.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const voteSalt = rng();
+    const [votePda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), proposalPda.toBuffer(), voter.publicKey.toBuffer()],
+      program.programId,
+    );
+    await program.methods
+      .commitVote([...commitment(true, voteSalt, voter.publicKey)], null)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalPda,
+        voterRecord: votePda,
+        voterTokenAccount: voterAta,
+        voter: voter.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([voter])
+      .rpc();
+
+    const afterCommit = await program.account.proposal.fetch(proposalPda);
+    await waitForUnixTimestamp(provider.connection, afterCommit.votingEnd.toNumber(), "token_guard_voting_end");
+
+    await program.methods
+      .revealVote(true, [...voteSalt])
+      .accounts({ proposal: proposalPda, voterRecord: votePda, revealer: voter.publicKey })
+      .signers([voter])
+      .rpc();
+
+    const afterReveal = await program.account.proposal.fetch(proposalPda);
+    await waitForUnixTimestamp(provider.connection, afterReveal.revealEnd.toNumber(), "token_guard_reveal_end");
+
+    await program.methods
+      .finalizeProposal()
+      .accounts({ dao: daoPda, proposal: proposalPda, finalizer: payer.publicKey })
+      .rpc();
+
+    const finalized = await program.account.proposal.fetch(proposalPda);
+    await waitForUnixTimestamp(provider.connection, finalized.executionUnlocksAt.toNumber(), "token_guard_execute_at");
+
+    try {
+      await program.methods
+        .executeProposal()
+        .accounts({
+          dao: daoPda,
+          proposal: proposalPda,
+          treasury: treasuryPda,
+          treasuryRecipient: recipient.publicKey,
+          treasuryTokenAccount,
+          recipientTokenAccount: attackerTokenAccount,
+          executor: payer.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("execute must reject recipient token owner mismatch");
+    } catch (err: any) {
+      assert.include(err.toString(), "RecipientOwnerMismatch");
+    }
+
+    try {
+      await program.methods
+        .executeProposal()
+        .accounts({
+          dao: daoPda,
+          proposal: proposalPda,
+          treasury: treasuryPda,
+          treasuryRecipient: recipient.publicKey,
+          treasuryTokenAccount,
+          recipientTokenAccount: treasuryTokenAccount,
+          executor: payer.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("execute must reject duplicate token accounts");
+    } catch (err: any) {
+      assert.include(err.toString(), "DuplicateTokenAccounts");
+    }
+
+    const recipientBefore = await provider.connection.getTokenAccountBalance(recipientTokenAccount);
+    await program.methods
+      .executeProposal()
+      .accounts({
+        dao: daoPda,
+        proposal: proposalPda,
+        treasury: treasuryPda,
+        treasuryRecipient: recipient.publicKey,
+        treasuryTokenAccount,
+        recipientTokenAccount,
+        executor: payer.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const recipientAfter = await provider.connection.getTokenAccountBalance(recipientTokenAccount);
+    assert.equal(
+      Number(recipientAfter.value.amount) - Number(recipientBefore.value.amount),
+      100_000_000,
+      "token treasury execution should succeed only with the configured recipient token account",
+    );
   }).timeout(120_000);
 });
