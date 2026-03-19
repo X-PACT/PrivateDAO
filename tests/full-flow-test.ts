@@ -14,7 +14,7 @@
 import * as anchor from "@coral-xyz/anchor";
 import { PublicKey, Keypair, SystemProgram, Transaction, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import {
-  createMint, createAccount, mintTo,
+  createMint, createAccount, createAssociatedTokenAccountInstruction, getAssociatedTokenAddressSync, mintTo,
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 import * as crypto from "crypto";
@@ -62,7 +62,7 @@ describe("Full flow", () => {
   const E_SECS = 5;   // execution timelock
   const EXECUTE_LAMPORTS = 100_000;         // 0.0001 SOL
   const SECOND_EXECUTE_LAMPORTS = 50_000;   // 0.00005 SOL
-  const TREASURY_SEED_LAMPORTS = 2_000_000; // 0.002 SOL
+  const TREASURY_SEED_LAMPORTS = 5_000_000; // 0.005 SOL
 
   it("commit → reveal → finalize → execute (TokenWeighted)", async () => {
     async function fundWallet(pubkey: PublicKey, sol: number): Promise<void> {
@@ -449,7 +449,22 @@ describe("Full flow", () => {
       [Buffer.from("treasury"), daoPda.toBuffer()],
       program.programId,
     );
-    const treasuryTokenAccount = await createAccount(provider.connection, payer, mint, treasuryPda, undefined, undefined, TOKEN_PROGRAM_ID);
+    const treasuryTokenAccount = getAssociatedTokenAddressSync(
+      mint,
+      treasuryPda,
+      true,
+    );
+    await provider.sendAndConfirm(
+      new Transaction().add(
+        createAssociatedTokenAccountInstruction(
+          payer.publicKey,
+          treasuryTokenAccount,
+          treasuryPda,
+          mint,
+        ),
+      ),
+      [],
+    );
     const recipientTokenAccount = await createAccount(provider.connection, payer, mint, recipient.publicKey);
     const attackerTokenAccount = await createAccount(provider.connection, payer, mint, attacker.publicKey);
     await mintTo(provider.connection, payer, mint, treasuryTokenAccount, payer, 500_000_000n);

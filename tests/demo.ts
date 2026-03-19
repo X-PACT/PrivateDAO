@@ -93,7 +93,7 @@ describe("demo", () => {
   const program = anchor.workspace.PrivateDao as any;
   const payer   = (provider.wallet as anchor.Wallet).payer;
   const EXECUTE_LAMPORTS = 100_000;         // 0.0001 SOL
-  const TREASURY_SEED_LAMPORTS = 2_000_000; // 0.002 SOL
+  const TREASURY_SEED_LAMPORTS = 5_000_000; // 0.005 SOL
 
   it("Full lifecycle: DualChamber + Delegation + Keeper + Cancel + Timelock", async () => {
     async function fundWallet(pubkey: PublicKey, sol: number): Promise<void> {
