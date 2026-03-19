@@ -16,12 +16,72 @@
 [![Submission](https://img.shields.io/badge/Colosseum-Submission%20Ready-ff9f1c)](SUBMISSION.md)
 [![Pitch Assets](https://img.shields.io/badge/Pitch-Ready-ff6b6b)](SUBMISSION_FINAL.md)
 [![Demo Reel](https://img.shields.io/badge/Demo-Reel-14b8a6)](docs/assets/demo-reel.gif)
+[![Program](https://img.shields.io/badge/Program-Devnet%20Live-14F195)](https://solscan.io/account/62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm?cluster=devnet)
 
-PrivateDAO is a Solana / Anchor governance protocol for DAOs that want private voting without pretending the rest of governance disappears. Votes are committed privately, revealed later, finalized deterministically, and treasury execution stays behind an explicit timelock with recipient and mint checks.
+PrivateDAO is a Solana governance protocol for DAOs that want private voting without giving up execution safety. Votes are committed privately, revealed later, finalized deterministically, and treasury execution stays behind an explicit timelock with recipient and mint checks.
 
-The point is simple: public live tallies create whale pressure, vote buying, and treasury signaling. Commit-reveal does not solve every governance problem, but it removes one of the ugliest ones without changing the whole stack.
+The problem statement is simple and easy for judges to verify: public live tallies create whale pressure, vote buying, and treasury signaling. PrivateDAO removes live vote visibility while keeping the rest of the governance lifecycle inspectable, testable, and compatible with how Solana teams actually operate.
 
 GitHub Pages source: `docs/` via `.github/workflows/pages.yml`.
+
+## One-Line Pitch
+
+PrivateDAO brings commit-reveal voting, proposal-scoped private delegation, keeper-assisted reveal, and timelocked treasury execution to Solana DAOs in one working stack.
+
+## Why Judges Should Care
+
+This repo is not just a contract or just a landing page. It is already packaged the way Solana competition reviewers usually want to see it:
+
+- live devnet program
+- working docs frontend on GitHub Pages
+- end-to-end Anchor tests covering the governance lifecycle
+- operator scripts for create, vote, reveal, finalize, execute, and migrate
+- explicit safety checks around treasury execution
+- Realms-oriented migration and voter-weight compatibility path
+
+In other words: there is a product story, a protocol story, and a verification story in the same repository.
+
+## What Makes It Competition-Ready
+
+- Clear problem: public governance leaks intent too early.
+- Clear technical differentiation: commit-reveal plus private delegation and keeper reveal.
+- Clear Solana fit: Anchor program, devnet deployment, wallet + RPC tooling, Realms-oriented migration path.
+- Clear demoability: one README, one docs frontend, one devnet program, one test suite.
+- Clear business relevance: DAO treasury safety, governance participation quality, and migration usability.
+
+## Quick Judge Review
+
+If a reviewer has only two to five minutes, these are the fastest proof points:
+
+1. Open the live frontend: `https://x-pact.github.io/PrivateDAO/`
+2. Confirm the devnet program exists: `62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm`
+3. Review the core on-chain logic in `programs/private-dao/src/lib.rs`
+4. Review the end-to-end flows in `tests/full-flow-test.ts` and `tests/demo.ts`
+5. Review the operator scripts in `scripts/`
+6. Review the submission package in `SUBMISSION.md` and `SUBMISSION_FINAL.md`
+
+## Why Solana Specifically
+
+PrivateDAO is not blockchain-agnostic theater. Its current implementation is intentionally Solana-native:
+
+- written in Anchor for Solana account and instruction semantics
+- deployed on Solana devnet
+- uses Solana wallet, RPC, and token account flows directly
+- targets DAO and Realms-adjacent governance workflows that already exist in the Solana ecosystem
+- ships devnet and local-validator tooling instead of abstract pseudo-integration
+
+That matters in competitions: the project is not a generic privacy-governance idea looking for a chain. It is already built around Solana workflows.
+
+## Review Links
+
+- Live frontend: `https://x-pact.github.io/PrivateDAO/`
+- Devnet program: `62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm`
+- Demo reel: `docs/assets/demo-reel.gif`
+- Demo script: `DEMO_SCRIPT_90S.md`
+- Main submission: `SUBMISSION.md`
+- Final-form submission: `SUBMISSION_FINAL.md`
+- Colosseum forum post draft: `COLOSSEUM_FORUM_POST.md`
+- Superteam application assets: `SUPERTEAM_INSTAGRANT.md`, `SUPERTEAM_POST.md`
 
 ## Demo Reel
 
@@ -56,6 +116,21 @@ The repo now includes a ready-to-use package for judges, reviewers, and public s
 - `SOCIAL_THREAD.md` for tweet/thread copy
 - `DEMO_SCRIPT_90S.md` for a 60 to 90 second judge demo
 - `OUTREACH_MESSAGE.md` for sponsor, reviewer, and ecosystem outreach
+
+## Evaluation Map
+
+For Solana competitions, the repository now maps cleanly to the usual evaluation questions:
+
+- Innovation:
+  private voting plus private delegation and keeper reveal in one governance lifecycle
+- Technical execution:
+  live Anchor program, reproducible build, CI, end-to-end tests, and operator scripts
+- Ecosystem fit:
+  devnet deployment, Solana RPC tooling, SPL token handling, and Realms-oriented compatibility
+- User story:
+  docs frontend, demo assets, and CLI workflow are aligned with the same product flow
+- Credibility:
+  the repo is explicit about what is implemented, what is devnet-only, and what is not yet claimed
 
 ## Hackathon Context
 
