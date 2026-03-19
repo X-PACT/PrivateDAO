@@ -14,12 +14,23 @@
 [![Anchor](https://img.shields.io/badge/Anchor-0.31.1-blue)](https://www.anchor-lang.com)
 [![License](https://img.shields.io/badge/License-AGPLv3%2B%20%7C%20Apache--2.0%20%7C%20MIT-green)](LICENSE)
 [![Submission](https://img.shields.io/badge/Colosseum-Submission%20Ready-ff9f1c)](SUBMISSION.md)
+[![Pitch Assets](https://img.shields.io/badge/Pitch-Ready-ff6b6b)](SUBMISSION_FINAL.md)
 
 PrivateDAO is a Solana / Anchor governance protocol for DAOs that want private voting without pretending the rest of governance disappears. Votes are committed privately, revealed later, finalized deterministically, and treasury execution stays behind an explicit timelock with recipient and mint checks.
 
 The point is simple: public live tallies create whale pressure, vote buying, and treasury signaling. Commit-reveal does not solve every governance problem, but it removes one of the ugliest ones without changing the whole stack.
 
 GitHub Pages source: `docs/` via `.github/workflows/pages.yml`.
+
+## Submission Assets
+
+The repo now includes a ready-to-use package for judges, reviewers, and public sharing:
+
+- `SUBMISSION.md` for the main project submission
+- `SUBMISSION_FINAL.md` for a stronger final-form submission draft
+- `COLOSSEUM_FORUM_POST.md` for the Colosseum public forum
+- `SOCIAL_THREAD.md` for tweet/thread copy
+- `DEMO_SCRIPT_90S.md` for a 60 to 90 second judge demo
 
 ## Hackathon Context
 
