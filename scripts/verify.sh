@@ -40,7 +40,7 @@ verify_lint() {
 
 verify_test() {
   echo "[verify] anchor test"
-  "$ANCHOR_BIN" test --skip-build --skip-deploy
+  "$ANCHOR_BIN" test --skip-build
 }
 
 verify_typecheck() {
