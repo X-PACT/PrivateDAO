@@ -117,6 +117,28 @@ This repository already has a deployed devnet program and published references t
 
 If you intentionally deploy a fresh program for your own environment, treat that as an environment-specific override, not as a silent documentation update.
 
+## What Deployment Means Here
+
+"Deploying to Solana" in this repository means deploying the Anchor program binary to a Solana cluster such as devnet.
+
+It does not mean:
+
+- uploading the whole GitHub repository on-chain
+- storing the docs frontend on-chain
+- moving your scripts, SDK, or markdown files into Solana accounts
+
+What stays off-chain:
+
+- the repository and source history
+- the docs/frontend hosting
+- the CLI scripts and migration helpers
+- operator workflows and CI
+
+What goes on-chain:
+
+- the compiled program
+- the accounts created and managed by the program during DAO operation
+
 ## Helpful checks
 
 ```bash

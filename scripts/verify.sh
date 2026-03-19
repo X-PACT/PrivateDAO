@@ -43,6 +43,16 @@ verify_test() {
   "$ANCHOR_BIN" test --skip-build --skip-deploy
 }
 
+verify_typecheck() {
+  echo "[verify] typescript typecheck"
+  if [[ -x "./node_modules/.bin/tsc" ]]; then
+    ./node_modules/.bin/tsc --noEmit
+  else
+    echo "[verify] missing local TypeScript compiler. Run npm install or yarn install first." >&2
+    return 1
+  fi
+}
+
 verify_scan() {
   echo "[verify] non-real-code scan"
   local pattern
@@ -96,6 +106,9 @@ case "$mode" in
   scan)
     verify_scan
     ;;
+  typecheck)
+    verify_typecheck
+    ;;
   rpc)
     verify_rpc
     verify_rpc_health_unit
@@ -109,6 +122,7 @@ case "$mode" in
   all)
     ensure_required_tools "NODE_BIN:node" "ANCHOR_BIN:anchor" "SOLANA_BIN:solana" "CARGO_BIN:cargo"
     verify_tools
+    verify_typecheck
     verify_fmt
     verify_lint
     verify_build
@@ -119,7 +133,7 @@ case "$mode" in
     verify_rpc_health
     ;;
   *)
-    echo "Usage: $0 [all|tools|fmt|lint|build|test|scan|rpc|rpc-health|rpc-health-unit]" >&2
+    echo "Usage: $0 [all|tools|typecheck|fmt|lint|build|test|scan|rpc|rpc-health|rpc-health-unit]" >&2
     exit 2
     ;;
 esac

@@ -54,6 +54,20 @@ That context matters for positioning, but this repo does not claim prize results
 - Local tests cover commit, reveal, finalize, execute, cancellation, delegation, keeper reveal, and treasury validation paths
 - This repo is production-minded, but still devnet-first and not represented as a completed mainnet governance system
 
+## What Goes On Solana
+
+For this kind of project, you do not upload the whole repository to Solana.
+
+- The on-chain program is what gets deployed to the Solana network
+- The repository stays in GitHub as the source of truth for code, scripts, SDK, docs, and frontend assets
+- The docs frontend can be hosted separately, such as GitHub Pages
+- Operators and users interact with the deployed program through RPC, wallets, scripts, SDK calls, or the frontend
+
+So if the question is "does the project need to be on Solana?", the practical answer is:
+
+- yes, the program should be deployed on Solana if you want a real working product
+- no, the rest of the project is not stored on-chain and should not be treated as something you "upload to Solana"
+
 ## What Exists Today
 
 - Commit-reveal voting with hidden tally during the voting window
