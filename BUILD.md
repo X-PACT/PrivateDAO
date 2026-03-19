@@ -11,6 +11,22 @@ This file is for the boring failures that waste time.
 - Node.js + Yarn
 - Program ID in this repo: `62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm`
 
+Official Solana references:
+
+- RPC methods and commitment behavior: https://solana.com/docs/rpc
+
+For this repository in particular, the practical RPC surface is small and explicit:
+
+- `getVersion` for RPC health checks
+- `getAccountInfo` for contract/account inspection
+- `getProgramAccounts` for proposal discovery
+- `getSlot` and `getBlockTime` for phase timing in the docs frontend and devnet operator views
+
+Commitment guidance worth following from the Solana docs:
+
+- `confirmed` is the default operational sweet spot when the app is tracking progress
+- `finalized` is the safer read when you care more about rollback resistance than speed
+
 ## Clean local build
 
 ```bash
@@ -66,6 +82,13 @@ bash scripts/check-rpc-health.sh
 ```
 
 If your network is proxying RPC traffic badly, set `NO_PROXY` for the RPC hosts or switch networks.
+
+If `solana` CLI is not installed, some repository tooling still works:
+
+- `bash scripts/check-rpc-health.sh` uses direct JSON-RPC over HTTP
+- `bash scripts/check-contracts.sh <ADDRESS>` now falls back to JSON-RPC account inspection instead of requiring `solana account`
+
+If you do need the full Solana toolchain, install the CLI before debugging Anchor-specific failures. This repo still assumes the CLI is present for local validator, deploy, and several shell workflows.
 
 ### Build passes, deploy fails
 

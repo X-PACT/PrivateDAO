@@ -134,6 +134,20 @@ Prerequisites:
 - Node.js
 - Yarn or npm
 
+Official Solana references used by this repo:
+
+- RPC reference: https://solana.com/docs/rpc
+- The project relies directly on standard JSON-RPC methods such as `getVersion`, `getAccountInfo`, `getProgramAccounts`, `getSlot`, and `getBlockTime`
+- Commitment guidance from the Solana docs matters here:
+  - use `confirmed` when tracking progress for dependent actions
+  - use `finalized` when you need the safest read semantics
+
+Current tool expectations for this repository:
+
+- `solana` CLI is still expected for full local validator, deploy, and some shell workflows
+- `@solana/web3.js` is what the current scripts, SDK, and docs frontend use today
+- RPC-only fallbacks now exist for some checks, so not every operational script requires the Solana CLI just to inspect devnet state
+
 Install dependencies:
 
 ```bash
@@ -202,6 +216,12 @@ Fallbacks already supported by the scripts:
 - `RPC_AUTH_HEADER`
 - `CUSTOM_FAUCET_URL`
 - `CUSTOM_FAUCET_METHOD`
+
+RPC behavior note:
+
+- `scripts/check-rpc-health.sh` validates RPC availability with `getVersion`
+- the docs frontend and `yarn list-proposals` rely on account reads such as `getProgramAccounts`, `getSlot`, and `getBlockTime`
+- `scripts/check-contracts.sh` now supports JSON-RPC fallback account inspection when `solana` CLI is not installed
 
 Fund and sanity-check devnet access:
 
