@@ -89,3 +89,10 @@ PrivateDAO is not trying to claim that governance risk disappears forever.
 
 It is making one critical part of DAO governance meaningfully better on Solana:
 voting privacy with real execution discipline and real operator tooling.
+
+## Direct Contact
+
+- Email: [fahd.kotb@tuta.io](mailto:fahd.kotb@tuta.io)
+- Email: [i.kotb@proton.me](mailto:i.kotb@proton.me)
+- Email: [eslamkotb.fmt@gmail.com](mailto:eslamkotb.fmt@gmail.com)
+- WhatsApp: [Direct chat](https://wa.me/201124030209)

@@ -34,6 +34,15 @@ Quick review links:
 - Demo talk track: `DEMO_SCRIPT_90S.md`
 - Outreach copy: `OUTREACH_MESSAGE.md`
 
+## Contact
+
+- Email: [fahd.kotb@tuta.io](mailto:fahd.kotb@tuta.io)
+- Email: [i.kotb@proton.me](mailto:i.kotb@proton.me)
+- Email: [eslamkotb.fmt@gmail.com](mailto:eslamkotb.fmt@gmail.com)
+- WhatsApp: [Direct chat](https://wa.me/201124030209)
+
+Discord direct link can be added as soon as a valid Discord invite link, username, or user ID is available.
+
 ## Submission Assets
 
 The repo now includes a ready-to-use package for judges, reviewers, and public sharing:

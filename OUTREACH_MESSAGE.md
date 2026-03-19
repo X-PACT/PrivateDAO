@@ -48,3 +48,12 @@ Links:
 - Current PR: https://github.com/X-PACT/PrivateDAO/pull/6
 
 This should be described honestly as a serious devnet beta product today, not as an audited mainnet governance system.
+
+## Direct Contact Links
+
+- Email: [fahd.kotb@tuta.io](mailto:fahd.kotb@tuta.io)
+- Email: [i.kotb@proton.me](mailto:i.kotb@proton.me)
+- Email: [eslamkotb.fmt@gmail.com](mailto:eslamkotb.fmt@gmail.com)
+- WhatsApp: https://wa.me/201124030209
+
+Discord direct link requires a valid Discord invite, username, or numeric user ID.
