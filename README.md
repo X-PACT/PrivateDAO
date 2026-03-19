@@ -15,12 +15,24 @@
 [![License](https://img.shields.io/badge/License-AGPLv3%2B%20%7C%20Apache--2.0%20%7C%20MIT-green)](LICENSE)
 [![Submission](https://img.shields.io/badge/Colosseum-Submission%20Ready-ff9f1c)](SUBMISSION.md)
 [![Pitch Assets](https://img.shields.io/badge/Pitch-Ready-ff6b6b)](SUBMISSION_FINAL.md)
+[![Demo Reel](https://img.shields.io/badge/Demo-Reel-14b8a6)](docs/assets/demo-reel.gif)
 
 PrivateDAO is a Solana / Anchor governance protocol for DAOs that want private voting without pretending the rest of governance disappears. Votes are committed privately, revealed later, finalized deterministically, and treasury execution stays behind an explicit timelock with recipient and mint checks.
 
 The point is simple: public live tallies create whale pressure, vote buying, and treasury signaling. Commit-reveal does not solve every governance problem, but it removes one of the ugliest ones without changing the whole stack.
 
 GitHub Pages source: `docs/` via `.github/workflows/pages.yml`.
+
+## Demo Reel
+
+![PrivateDAO demo reel](docs/assets/demo-reel.gif)
+
+Quick review links:
+
+- Demo reel asset: `docs/assets/demo-reel.gif`
+- Demo poster: `docs/assets/demo-reel-poster.png`
+- Demo talk track: `DEMO_SCRIPT_90S.md`
+- Outreach copy: `OUTREACH_MESSAGE.md`
 
 ## Submission Assets
 
@@ -33,6 +45,7 @@ The repo now includes a ready-to-use package for judges, reviewers, and public s
 - `SUPERTEAM_INSTAGRANT.md` for a Superteam Instagrant-style application draft
 - `SOCIAL_THREAD.md` for tweet/thread copy
 - `DEMO_SCRIPT_90S.md` for a 60 to 90 second judge demo
+- `OUTREACH_MESSAGE.md` for sponsor, reviewer, and ecosystem outreach
 
 ## Hackathon Context
 
