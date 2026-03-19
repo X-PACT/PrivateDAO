@@ -15,10 +15,9 @@
  *   yarn ts-node scripts/reveal-vote.ts --proposal <PDA> --voter <VOTER_PUBKEY>
  */
 import * as anchor from "@coral-xyz/anchor";
-import { Program } from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
 import * as fs from "fs";
-import { parseArgs, formatTimestamp, legacySaltPath, saltPath } from "./utils";
+import { formatDuration, parseArgs, formatTimestamp, legacySaltPath, saltPath, solscanTxUrl, workspaceProgram } from "./utils";
 
 async function main() {
   const { proposal: proposalStr, voter: voterStr } = parseArgs();
@@ -30,7 +29,7 @@ async function main() {
 
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
-  const program = anchor.workspace.PrivateDao as Program<any>;
+  const program = workspaceProgram();
 
   const proposalPda = new PublicKey(proposalStr);
 
@@ -77,7 +76,7 @@ async function main() {
 
   if (now < proposal.votingEnd.toNumber()) {
     const rem = proposal.votingEnd.toNumber() - now;
-    console.error(`\n❌ Voting still open. Reveal starts in ${Math.floor(rem/3600)}h ${Math.floor((rem%3600)/60)}m`);
+    console.error(`\n❌ Voting still open. Reveal starts in ${formatDuration(rem)}`);
     process.exit(1);
   }
 
@@ -87,7 +86,7 @@ async function main() {
   }
 
   const revealRem = proposal.revealEnd.toNumber() - now;
-  console.log(`\n   Reveal window closes in: ${Math.floor(revealRem/3600)}h ${Math.floor((revealRem%3600)/60)}m`);
+  console.log(`\n   Reveal window closes in: ${formatDuration(revealRem)}`);
   console.log(`   (${formatTimestamp(proposal.revealEnd.toNumber())})`);
 
   const [voterRecordPda] = PublicKey.findProgramAddressSync(
@@ -113,8 +112,9 @@ async function main() {
 
   console.log(`\n✅ Vote revealed!`);
   console.log(`   Transaction:   ${tx}`);
+  console.log(`   Tx link:       ${solscanTxUrl(tx)}`);
   console.log(`   Salt file:     ${selectedSaltFile}`);
-  console.log(`   SOL rebate:    +0.001 SOL (paid to you as revealer)`);
+  console.log(`   SOL rebate:    +0.001 SOL configured (revealer receives rebate when paid)`);
   console.log(`   Reveals so far: ${updated.revealCount} / ${updated.commitCount}`);
   console.log(`   Capital  YES/NO: ${updated.yesCapital} / ${updated.noCapital}`);
   console.log(`   Community YES/NO: ${updated.yesCommunity} / ${updated.noCommunity}`);

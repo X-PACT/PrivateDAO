@@ -13,7 +13,6 @@
  *     --delegatee <DELEGATEE_PUBKEY>
  */
 import * as anchor from "@coral-xyz/anchor";
-import { Program } from "@coral-xyz/anchor";
 import {
   PublicKey, SystemProgram,
 } from "@solana/web3.js";
@@ -21,7 +20,7 @@ import {
   getAssociatedTokenAddress,
   getAccount,
 } from "@solana/spl-token";
-import { parseArgs, formatTimestamp } from "./utils";
+import { parseArgs, formatTimestamp, solscanTxUrl, workspaceProgram } from "./utils";
 
 async function main() {
   const { proposal: proposalStr, delegatee: delegateeStr } = parseArgs();
@@ -33,7 +32,7 @@ async function main() {
 
   const provider   = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
-  const program    = anchor.workspace.PrivateDao as Program<any>;
+  const program    = workspaceProgram();
 
   const proposalPda  = new PublicKey(proposalStr);
   const delegateePk  = new PublicKey(delegateeStr);
@@ -81,6 +80,7 @@ async function main() {
   console.log(`\n✅ Delegation created!`);
   console.log(`   Delegation PDA: ${delegationPda.toBase58()}`);
   console.log(`   Transaction:    ${tx}`);
+  console.log(`   Tx link:        ${solscanTxUrl(tx)}`);
   console.log(`\n   The delegatee should now call:`);
   console.log(`   yarn ts-node scripts/commit-vote.ts --proposal ${proposalStr} --vote yes --delegator ${provider.wallet.publicKey.toBase58()}`);
 }

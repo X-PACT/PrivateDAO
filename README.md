@@ -21,6 +21,32 @@ The point is simple: public live tallies create whale pressure, vote buying, and
 
 GitHub Pages source: `docs/` via `.github/workflows/pages.yml`.
 
+## Hackathon Context
+
+PrivateDAO is being prepared as a serious Solana builder submission, but the README stays grounded in what the repo actually does today.
+
+- Main event context: Solana Graveyard Hackathon 2026
+- Submission angles already reflected in the codebase:
+  - DAOs / Realms-oriented governance tooling
+  - Sunrise-style migration path
+  - Overall Solana Foundation quality bar
+- Official ecosystem partners listed for the Graveyard hackathon include:
+  - Solana Foundation
+  - Sunrise
+  - Realms
+  - Exchange Art
+  - Tapestry
+  - MagicBlock
+  - KYD Labs
+  - Portals
+  - DRiP
+  - Torque
+  - BIO
+  - Audius
+  - OrbitFlare
+
+That context matters for positioning, but this repo does not claim prize results, grants, accelerator acceptance, or funding that have not actually happened. When we mention grants or follow-on support, we mean the broader Solana ecosystem paths this project is suitable for, not money already awarded.
+
 ## Current Status
 
 - Devnet program deployed at `62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm`
@@ -52,6 +78,17 @@ GitHub Pages source: `docs/` via `.github/workflows/pages.yml`.
 - Treasury deposit helper
 - Realms-oriented migration helper and voter-weight record account
 - Docs frontend published from `docs/index.html`
+
+## Backend And Frontend Fit
+
+This project is not a disconnected smart contract plus a decorative landing page. The pieces are meant to describe the same governance flow from different layers:
+
+- `programs/private-dao/src/lib.rs` is the source of truth for the lifecycle and treasury rules
+- `sdk/src/index.ts` exposes the same vote commitment primitive used by the on-chain program
+- `scripts/` are operator-facing flows for DAO creation, proposal creation, commit, reveal, finalize, execute, deposit, and migration
+- `docs/index.html` and the published GitHub Pages frontend explain the same flow in a way reviewers, sponsors, judges, and DAO operators can follow quickly
+
+The goal is simple: what the frontend says should match what the program enforces, and what the scripts do should match both. That alignment matters more right now than flashy UI changes, especially while the project is under hackathon review.
 
 ## Safety Model
 
@@ -101,6 +138,7 @@ Install dependencies:
 
 ```bash
 yarn install
+yarn typecheck
 ```
 
 Start a validator in another terminal:
@@ -198,6 +236,7 @@ The CLI scripts are meant for actual local/devnet usage, not throwaway demo wrap
 - `scripts/create-dao.ts`
 - `scripts/create-proposal.ts`
 - `scripts/deposit-treasury.ts`
+- `scripts/list-proposals.ts`
 - `scripts/delegate-vote.ts`
 - `scripts/commit-vote.ts`
 - `scripts/reveal-vote.ts`
@@ -210,11 +249,26 @@ Example flow:
 yarn create-dao -- --name "MyDAO" --quorum 51 --mode dual
 yarn deposit -- --dao <DAO_PDA> --amount 1.0
 yarn create-proposal -- --dao <DAO_PDA> --title "Fund research: 0.1 SOL" --treasury-recipient <RECIPIENT> --treasury-amount 0.1
+yarn list-proposals -- --dao <DAO_PDA>
 yarn commit -- --proposal <PROPOSAL_PDA> --vote yes
 yarn reveal -- --proposal <PROPOSAL_PDA>
 yarn finalize -- --proposal <PROPOSAL_PDA>
 yarn execute -- --proposal <PROPOSAL_PDA>
 ```
+
+Token treasury flow:
+
+```bash
+yarn create-proposal -- \
+  --dao <DAO_PDA> \
+  --title "Send treasury tokens" \
+  --treasury-type token \
+  --treasury-recipient <RECIPIENT_WALLET> \
+  --treasury-amount 1000000 \
+  --treasury-mint <TOKEN_MINT>
+```
+
+`--treasury-amount` for token actions is passed as raw token units.
 
 Keeper reveal note:
 
@@ -241,6 +295,21 @@ What is not claimed here:
 - a finished end-to-end Realms plugin integration across the whole governance lifecycle
 
 The migration helper is useful. It is not pretending to be a complete Realms drop-in.
+
+## Grants And Ecosystem Funding Fit
+
+PrivateDAO is naturally aligned with the kinds of ecosystem support programs that care about real infra, migration tooling, governance safety, and developer usability.
+
+- Solana Foundation:
+  overall hackathon placement and broader ecosystem grant relevance
+- Colosseum-managed Solana hackathon pipeline:
+  strong fit for continued builder review if verification and product polish keep improving
+- Realms ecosystem:
+  direct relevance because the repo includes a voter-weight record path and migration-oriented DAO tooling
+- Sunrise ecosystem:
+  direct relevance because the repo includes a migration helper instead of treating migration as a slide-only promise
+
+This section is intentionally careful: it describes strategic fit, not confirmed sponsorship, grant receipt, or accelerator admission.
 
 ## Devnet vs Production Intent
 

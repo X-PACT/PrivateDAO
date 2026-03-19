@@ -24,9 +24,8 @@
  *     --reveal-window 86400
  */
 import * as anchor from "@coral-xyz/anchor";
-import { Program } from "@coral-xyz/anchor";
 import { PublicKey, SystemProgram } from "@solana/web3.js";
-import { parseArgs } from "../scripts/utils";
+import { parseArgs, workspaceProgram } from "../scripts/utils";
 
 async function main() {
   const {
@@ -59,7 +58,7 @@ async function main() {
 
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
-  const program = anchor.workspace.PrivateDao as Program<any>;
+  const program = workspaceProgram();
 
   const governancePubkey = new PublicKey(governanceStr);
   const mintPubkey = new PublicKey(mintStr);

@@ -13,10 +13,9 @@
  * --reveal-window N  reveal window in seconds (default 3600 = 1h)
  */
 import * as anchor from "@coral-xyz/anchor";
-import { Program } from "@coral-xyz/anchor";
 import { PublicKey, SystemProgram } from "@solana/web3.js";
 import { createMint } from "@solana/spl-token";
-import { parseArgs } from "./utils";
+import { parseArgs, solscanAccountUrl, workspaceProgram } from "./utils";
 
 async function main() {
   const {
@@ -29,7 +28,7 @@ async function main() {
 
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
-  const program = anchor.workspace.PrivateDao as Program<any>;
+  const program = workspaceProgram();
 
   // Build the VotingConfig based on --mode flag
   let votingConfig: any;
@@ -85,10 +84,12 @@ async function main() {
   console.log(`   DAO address:      ${daoPda.toBase58()}`);
   console.log(`   Governance token: ${mint.toBase58()}`);
   console.log(`   Tx:               ${tx}`);
+  console.log(`   Proposal count:   ${dao.proposalCount.toString()}`);
   console.log(`\n   Save these for next steps:`);
   console.log(`   DAO_PDA=${daoPda.toBase58()}`);
   console.log(`   GOVERNANCE_MINT=${mint.toBase58()}`);
-  console.log(`\n   Explorer: https://solscan.io/account/${daoPda.toBase58()}?cluster=devnet`);
+  console.log(`\n   Explorer: ${solscanAccountUrl(daoPda.toBase58())}`);
+  console.log(`   Next: yarn create-proposal -- --dao ${daoPda.toBase58()} --title "Fund community work"`);
 }
 
 main().catch(console.error);

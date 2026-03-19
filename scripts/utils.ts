@@ -2,6 +2,8 @@
 /**
  * utils.ts — shared helpers for PrivateDAO CLI scripts
  */
+import * as anchor from "@coral-xyz/anchor";
+import { Program } from "@coral-xyz/anchor";
 import * as path from "path";
 import * as fs from "fs";
 import * as os from "os";
@@ -39,6 +41,10 @@ export function parseArgs(): Record<string, any> {
   return result;
 }
 
+export function workspaceProgram(): Program<any> & { account: any; methods: any } {
+  return anchor.workspace.PrivateDao as Program<any> & { account: any; methods: any };
+}
+
 export function shortKey(key: { toBase58(): string }): string {
   const s = key.toBase58();
   return `${s.slice(0, 6)}...${s.slice(-4)}`;
@@ -50,6 +56,51 @@ export function formatSol(lamports: number | bigint): string {
 
 export function formatTimestamp(unix: number): string {
   return new Date(unix * 1000).toISOString().replace("T", " ").slice(0, 19) + " UTC";
+}
+
+export function formatDuration(totalSeconds: number): string {
+  const seconds = Math.max(0, Math.floor(totalSeconds));
+  const days = Math.floor(seconds / 86_400);
+  const hours = Math.floor((seconds % 86_400) / 3_600);
+  const minutes = Math.floor((seconds % 3_600) / 60);
+  const secs = seconds % 60;
+  const parts: string[] = [];
+  if (days) parts.push(`${days}d`);
+  if (hours) parts.push(`${hours}h`);
+  if (minutes) parts.push(`${minutes}m`);
+  if (secs || parts.length === 0) parts.push(`${secs}s`);
+  return parts.join(" ");
+}
+
+export function proposalStatusLabel(status: any): string {
+  const raw = JSON.stringify(status);
+  if (raw.includes("Passed") || raw.includes("passed")) return "Passed";
+  if (raw.includes("Failed") || raw.includes("failed")) return "Failed";
+  if (raw.includes("Cancelled") || raw.includes("cancelled")) return "Cancelled";
+  if (raw.includes("Vetoed") || raw.includes("vetoed")) return "Vetoed";
+  if (raw.includes("Voting") || raw.includes("voting")) return "Voting";
+  return raw;
+}
+
+export function proposalPhaseLabel(proposal: any, now: number): string {
+  const status = proposalStatusLabel(proposal.status);
+  if (proposal.isExecuted) return "Executed";
+  if (status !== "Voting") {
+    if (status === "Passed" && now < proposal.executionUnlocksAt.toNumber()) return "Timelocked";
+    if (status === "Passed" && now >= proposal.executionUnlocksAt.toNumber()) return "Executable";
+    return status;
+  }
+  if (now < proposal.votingEnd.toNumber()) return "Commit";
+  if (now < proposal.revealEnd.toNumber()) return "Reveal";
+  return "ReadyToFinalize";
+}
+
+export function solscanAccountUrl(address: string): string {
+  return `https://solscan.io/account/${address}?cluster=devnet`;
+}
+
+export function solscanTxUrl(signature: string): string {
+  return `https://solscan.io/tx/${signature}?cluster=devnet`;
 }
 
 export function legacySaltPath(proposal: string): string {

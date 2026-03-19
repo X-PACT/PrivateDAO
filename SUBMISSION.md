@@ -7,6 +7,8 @@
 **Solana Graveyard Hackathon 2026**
 Tracks: DAOs (Realms) · Migration (Sunrise) · Overall (Solana Foundation)
 
+Official hackathon ecosystem partners relevant to this repo include Realms, Sunrise, Exchange Art, Tapestry, MagicBlock, KYD Labs, Portals, DRiP, Torque, BIO, Audius, and OrbitFlare. Mentioning them here reflects track context only, not prize results, sponsorship, or endorsement.
+
 ---
 
 ## The Problem We're Solving
@@ -29,6 +31,8 @@ This creates three attack vectors that kill legitimate governance:
 ## The Solution: Commit-Reveal Voting
 
 PrivateDAO implements **commit-reveal voting** — the proven cryptographic primitive for binding someone to a vote without revealing it.
+
+This submission should be read as a working devnet beta product with a real on-chain program, real scripts, real tests, and a live documentation frontend. It is not presented as an audited mainnet governance system.
 
 ### How It Works
 
@@ -104,6 +108,17 @@ programs/private-dao/src/lib.rs
 | `execute_proposal` | Anyone | Move treasury funds after timelock |
 | `deposit_treasury` | Anyone | Fund the DAO treasury |
 | `update_voter_weight_record` | Voter | Realms plugin: update weight |
+
+### Product Shape Today
+
+PrivateDAO is intentionally built as one coherent product surface rather than disconnected hackathon assets:
+
+- the Anchor program defines lifecycle, treasury, and privacy guarantees
+- the SDK exposes the same vote commitment primitive the program verifies
+- the scripts drive deterministic operator flows for create, commit, reveal, finalize, execute, and migration
+- the GitHub Pages frontend explains and visualizes the same on-chain lifecycle for reviewers and operators
+
+That backend/frontend alignment is part of the product quality, not a marketing extra.
 
 ### Commitment Scheme
 

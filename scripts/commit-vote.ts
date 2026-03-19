@@ -17,7 +17,6 @@
  *   yarn ts-node scripts/commit-vote.ts --proposal <PDA> --vote yes --delegator <DELEGATOR_PUBKEY>
  */
 import * as anchor from "@coral-xyz/anchor";
-import { Program } from "@coral-xyz/anchor";
 import { PublicKey, SystemProgram } from "@solana/web3.js";
 import {
   getAssociatedTokenAddress,
@@ -25,7 +24,7 @@ import {
 } from "@solana/spl-token";
 import * as crypto from "crypto";
 import * as fs from "fs";
-import { parseArgs, formatTimestamp, ensureSaltDir, legacySaltPath, saltPath } from "./utils";
+import { parseArgs, formatTimestamp, ensureSaltDir, legacySaltPath, saltPath, solscanTxUrl, workspaceProgram } from "./utils";
 
 function computeCommitment(vote: boolean, salt: Buffer, voter: PublicKey): Buffer {
   return crypto
@@ -51,7 +50,7 @@ async function main() {
 
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
-  const program = anchor.workspace.PrivateDao as Program<any>;
+  const program = workspaceProgram();
 
   const proposalPda = new PublicKey(proposalStr);
   const proposal    = await program.account.proposal.fetch(proposalPda);
@@ -145,6 +144,7 @@ async function main() {
 
   console.log(`\n✅ Vote committed!`);
   console.log(`   Transaction:  ${tx}`);
+  console.log(`   Tx link:      ${solscanTxUrl(tx)}`);
   console.log(`   Salt saved:   ${canonicalSaltFile}`);
   console.log(`   Total commits: ${updated.commitCount}`);
   console.log(`   Tally visible: NO — ${updated.yesCapital} YES / ${updated.noCapital} NO (all zeros until reveal ✓)`);
