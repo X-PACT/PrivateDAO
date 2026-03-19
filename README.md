@@ -29,6 +29,8 @@ The repo now includes a ready-to-use package for judges, reviewers, and public s
 - `SUBMISSION.md` for the main project submission
 - `SUBMISSION_FINAL.md` for a stronger final-form submission draft
 - `COLOSSEUM_FORUM_POST.md` for the Colosseum public forum
+- `SUPERTEAM_POST.md` for a Superteam builder post
+- `SUPERTEAM_INSTAGRANT.md` for a Superteam Instagrant-style application draft
 - `SOCIAL_THREAD.md` for tweet/thread copy
 - `DEMO_SCRIPT_90S.md` for a 60 to 90 second judge demo
 
