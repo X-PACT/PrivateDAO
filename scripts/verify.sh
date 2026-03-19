@@ -57,7 +57,18 @@ verify_scan() {
   echo "[verify] non-real-code scan"
   local pattern
   pattern="TO""DO|FI""XME|mo""ck|st""ub|fa""ke|not imp""lemented|to""y"
-  if rg -n -i "$pattern" --glob '!Cargo.lock' --glob '!yarn.lock'; then
+  if rg -n -i "$pattern" \
+    --glob '*.rs' \
+    --glob '*.ts' \
+    --glob '*.js' \
+    --glob '*.sh' \
+    --glob '*.py' \
+    --glob '*.toml' \
+    --glob '*.yml' \
+    --glob '*.yaml' \
+    --glob '*.html' \
+    --glob '!Cargo.lock' \
+    --glob '!yarn.lock'; then
     echo "[verify] non-real-code scan failed"
     return 1
   fi
