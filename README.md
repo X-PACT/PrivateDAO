@@ -34,14 +34,15 @@ Quick review links:
 - Demo talk track: `DEMO_SCRIPT_90S.md`
 - Outreach copy: `OUTREACH_MESSAGE.md`
 
-## Contact
+## Contact And Outreach
 
-- Email: [fahd.kotb@tuta.io](mailto:fahd.kotb@tuta.io)
-- Email: [i.kotb@proton.me](mailto:i.kotb@proton.me)
-- Email: [eslamkotb.fmt@gmail.com](mailto:eslamkotb.fmt@gmail.com)
+- Primary email: [fahd.kotb@tuta.io](mailto:fahd.kotb@tuta.io)
+- Secondary email: [i.kotb@proton.me](mailto:i.kotb@proton.me)
+- Backup email: [eslamkotb.fmt@gmail.com](mailto:eslamkotb.fmt@gmail.com)
 - WhatsApp: [Direct chat](https://wa.me/201124030209)
+- Outreach pack: `OUTREACH_MESSAGE.md`
 
-Discord direct link can be added as soon as a valid Discord invite link, username, or user ID is available.
+A Discord direct link can be added as soon as a valid Discord invite link, username, or user ID is available.
 
 ## Submission Assets
 

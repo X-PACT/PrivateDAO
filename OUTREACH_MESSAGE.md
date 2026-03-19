@@ -51,9 +51,9 @@ This should be described honestly as a serious devnet beta product today, not as
 
 ## Direct Contact Links
 
-- Email: [fahd.kotb@tuta.io](mailto:fahd.kotb@tuta.io)
-- Email: [i.kotb@proton.me](mailto:i.kotb@proton.me)
-- Email: [eslamkotb.fmt@gmail.com](mailto:eslamkotb.fmt@gmail.com)
-- WhatsApp: https://wa.me/201124030209
+- Primary email: [fahd.kotb@tuta.io](mailto:fahd.kotb@tuta.io)
+- Secondary email: [i.kotb@proton.me](mailto:i.kotb@proton.me)
+- Backup email: [eslamkotb.fmt@gmail.com](mailto:eslamkotb.fmt@gmail.com)
+- WhatsApp: [Direct chat](https://wa.me/201124030209)
 
 Discord direct link requires a valid Discord invite, username, or numeric user ID.
