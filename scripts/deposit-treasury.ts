@@ -11,9 +11,8 @@
  *   yarn ts-node scripts/deposit-treasury.ts --dao <DAO_PDA> --amount 0.5
  */
 import * as anchor from "@coral-xyz/anchor";
-import { Program } from "@coral-xyz/anchor";
 import { PublicKey, SystemProgram, LAMPORTS_PER_SOL } from "@solana/web3.js";
-import { parseArgs, formatSol } from "./utils";
+import { parseArgs, formatSol, solscanAccountUrl, solscanTxUrl, workspaceProgram } from "./utils";
 
 async function main() {
   const { dao: daoPdaStr, amount = 0.1 } = parseArgs();
@@ -32,10 +31,10 @@ async function main() {
 
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
-  const program = anchor.workspace.PrivateDao as Program<any>;
+  const program = workspaceProgram();
 
   const daoPda = new PublicKey(String(daoPdaStr));
-  const dao    = await program.account.dao.fetch(daoPda);
+  const dao    = await program.account["dao"].fetch(daoPda);
 
   const [treasuryPda] = PublicKey.findProgramAddressSync(
     [Buffer.from("treasury"), daoPda.toBuffer()],
@@ -65,7 +64,8 @@ async function main() {
   console.log(`\n✅ Deposit successful!`);
   console.log(`   Transaction: ${tx}`);
   console.log(`   Treasury balance after: ${formatSol(balanceAfter)}`);
-  console.log(`   Explorer: https://solscan.io/account/${treasuryPda.toBase58()}?cluster=devnet`);
+  console.log(`   Treasury: ${solscanAccountUrl(treasuryPda.toBase58())}`);
+  console.log(`   Tx link:  ${solscanTxUrl(tx)}`);
 }
 
 main().catch(console.error);

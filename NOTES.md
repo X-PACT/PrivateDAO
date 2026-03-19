@@ -1,90 +1,61 @@
-# dev notes
+<!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
+# Dev Notes
 
-## why commit-reveal and not ZK proofs?
+Short notes that explain the shape of the system as it exists now.
 
-shortest answer: ZK proofs would require a circuit for vote tallying and I
-can't build that in 8 days. commit-reveal is the proven primitive for this —
-it's what Ethereum's ENS used for name registration auctions, it works.
+## Why commit-reveal instead of ZK
 
-the reveal phase is a real tradeoff though. if a voter doesn't reveal, their
-vote doesn't count. need to think about incentives. options:
-1. SOL rebate on reveal (included in the code, needs wiring)
-2. future vote eligibility gated on revealing past votes
-3. punishment — lose governance token stake if you don't reveal
-  (too harsh for first version, skip)
+Because this version needed something shippable, inspectable, and realistic on Solana in the current repo scope. Commit-reveal is an old primitive, but it works, and the tradeoff is explicit: voters must come back to reveal or rely on a keeper.
 
-going with option 1 for now — just a comment in finalize_proposal.
+## Commitment scheme
 
-## commitment scheme choices
-
-```
-sha256(vote_byte || salt_32_bytes || voter_pubkey)
-         ^              ^                 ^
-     1 byte         32 bytes          32 bytes
+```text
+sha256(vote_byte || salt_32 || voter_pubkey_32)
 ```
 
-why include voter_pubkey? prevents an attack where the same commitment is
-replayed by a different voter. without the pubkey:
-  - voter A: commitment = sha256(YES || saltX)
-  - voter B: copies commitment = sha256(YES || saltX)
-  - both reveal with the same salt → double yes vote
+Including the voter pubkey binds the commitment to one voter and prevents replay by another voter on the same proposal.
 
-with voter_pubkey in the preimage, the commitment only works for the original voter.
+## Weight snapshot timing
 
-why 32-byte salt? brute force prevention. 1-byte salt = 256 possible values,
-attacker can guess by trying all 256 sha256 combinations. 32 bytes = 2^256.
+Vote weight is snapshotted at commit time. That is the current anti-flip protection:
 
-## the token weight snapshot issue
+- buy
+- commit
+- dump
 
-snapshotting token balance at commit time (not at finalize time) prevents:
-  - voter buys 1000 tokens to influence proposal
-  - votes
-  - sells tokens immediately after
-  - next proposal: tokens are gone but influence was exerted
+does not let a holder move weight around after the vote is sealed.
 
-the snapshot is stored in VoterRecord.vote_weight. the downside: if a voter's
-tokens are locked in a vesting contract, they might not show up correctly.
-Delegation currently uses raw token balance snapshots at commit-time; maintainers can evolve this to a registry model in a future version without changing the active protocol semantics.
+## Quorum model
 
-## quorum calculation
+Quorum is based on reveal participation among committed voters:
 
-using reveal_count / commit_count instead of reveal_count / total_holders
-because we don't track total holders on-chain (expensive).
-
-the implication: if quorum = 51% and 100 people committed, need 51 reveals
-to pass. unrevealed votes count as abstentions. this is fine and arguably
-the right behavior — if you care enough to commit, you should care enough to reveal.
-
-## Realms integration — how deep does it go?
-
-Realms has a voter weight plugin interface. you implement:
-```rust
-pub fn update_voter_weight_record(ctx: Context<UpdateVoterWeightRecord>) -> Result<()>
+```text
+reveal_count / commit_count
 ```
-and Realms calls it before counting votes on proposals.
 
-the issue: our system has proposals separate from Realms' proposals. for a
-real Realms plugin, we'd need to tie our proposal PDAs to Realms' proposal PDAs.
-that's a bigger integration than what I can do in the remaining days.
+That means unrevealed votes behave like abstentions in the final result.
 
-current approach: PrivateDAO works standalone. Realms compatibility is shown
-via the get_voter_weight_record instruction which follows the interface pattern.
-the pitch to judges is: "here's the plugin pattern, Realms can integrate this."
+## Treasury execution state
 
-## what breaks in production (honest list)
+Treasury execution is live in the current codebase.
 
-1. no treasury execution — the TreasuryAction struct is defined, finalize reads
-   the passed flag, but the actual SOL/token transfer isn't wired in. would need
-   a multisig CPI or just emit an event for frontend to handle.
+- `SendSol` executes on-chain
+- `SendToken` executes on-chain with recipient and mint checks
+- `CustomCPI` is still event-only on purpose
 
-2. no UI — pure Rust program + TypeScript tests. no frontend. for the demo
-   I'll use CLI scripts. not ideal but fine for a hackathon.
+## Realms scope
 
-3. timing attacks — even though the tally is hidden, an adversary watching
-   commit transactions could potentially infer voting patterns from timing
-   (who commits early vs late). this is a known limitation of commit-reveal.
-   real fix: ZK proofs, where no timing correlation exists.
+The repo has Realms-compatible pieces, but not a finished one-click Realms replacement.
 
-4. gas costs at scale — every voter creates a VoterRecord PDA. at 127 voters
-   that's 127 account creations. fine for typical DAO sizes (<1000 members).
-   at 10,000 members it gets expensive. pagination or compression would help.
+Current position:
+
+- migration provenance is recorded
+- voter-weight record shape exists
+- full proposal lifecycle coupling remains future integration work
+
+## What is still honestly hard
+
+1. Commit-reveal still leaks participation timing.
+2. Reveal liveness is a real operational risk even with keeper support.
+3. Large DAOs will eventually care about account count and storage costs.
+4. Any deeper Realms integration should be versioned carefully rather than forced into the current account model.

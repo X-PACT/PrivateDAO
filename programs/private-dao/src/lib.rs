@@ -317,12 +317,24 @@ pub mod private_dao {
     pub fn delegate_vote(ctx: Context<DelegateVote>, delegatee: Pubkey) -> Result<()> {
         let now = Clock::get()?.unix_timestamp;
         let p = &ctx.accounts.proposal;
+        let dao = &ctx.accounts.dao;
 
         require!(p.status == ProposalStatus::Voting, Error::VotingNotOpen);
         require!(now < p.voting_end, Error::VotingClosed);
+        require!(delegatee != Pubkey::default(), Error::InvalidDelegatee);
+        require!(
+            delegatee != ctx.accounts.delegator.key(),
+            Error::SelfDelegationNotAllowed
+        );
 
         let raw = ctx.accounts.delegator_token_account.amount;
         require!(raw > 0, Error::InsufficientTokens);
+        if dao.governance_token_required > 0 {
+            require!(
+                raw >= dao.governance_token_required,
+                Error::InsufficientTokens
+            );
+        }
 
         let del = &mut ctx.accounts.delegation;
         del.delegator = ctx.accounts.delegator.key();
@@ -356,6 +368,7 @@ pub mod private_dao {
         let now = Clock::get()?.unix_timestamp;
         let p = &mut ctx.accounts.proposal;
         let del = &mut ctx.accounts.delegation;
+        let dao = &ctx.accounts.dao;
 
         require!(p.status == ProposalStatus::Voting, Error::VotingNotOpen);
         require!(now < p.voting_end, Error::VotingClosed);
@@ -369,6 +382,12 @@ pub mod private_dao {
         let combined_community = isqrt(delegatee_raw)
             .checked_add(del.delegated_community)
             .ok_or(Error::Overflow)?;
+        if dao.governance_token_required > 0 {
+            require!(
+                combined_capital >= dao.governance_token_required,
+                Error::InsufficientTokens
+            );
+        }
 
         let vr = &mut ctx.accounts.voter_record;
         require!(!vr.has_committed, Error::AlreadyCommitted);
@@ -407,6 +426,7 @@ pub mod private_dao {
         let p = &mut ctx.accounts.proposal;
         let vr = &mut ctx.accounts.voter_record;
 
+        require!(p.status == ProposalStatus::Voting, Error::VotingNotOpen);
         require!(now >= p.voting_end, Error::RevealTooEarly);
         require!(now < p.reveal_end, Error::RevealClosed);
         require!(vr.has_committed, Error::NotCommitted);
@@ -490,7 +510,8 @@ pub mod private_dao {
         let p = &mut ctx.accounts.proposal;
 
         let quorum_met = p.commit_count > 0
-            && p.reveal_count * 100 >= p.commit_count * (dao.quorum_percentage as u64);
+            && (p.reveal_count as u128) * 100
+                >= (p.commit_count as u128) * (dao.quorum_percentage as u128);
 
         let passed = if quorum_met {
             match &dao.voting_config {
@@ -641,6 +662,11 @@ pub mod private_dao {
                     );
                     require!(treasury_token_mint == action_mint, Error::InvalidTokenMint);
                     require!(recipient_token_mint == action_mint, Error::InvalidTokenMint);
+                    require!(
+                        ctx.accounts.treasury_token_account.key()
+                            != ctx.accounts.recipient_token_account.key(),
+                        Error::DuplicateTokenAccounts
+                    );
                     require!(
                         recipient_token_owner == action.recipient,
                         Error::RecipientOwnerMismatch
@@ -1380,6 +1406,10 @@ pub enum Error {
     NotDelegatee,
     #[msg("Delegation belongs to a different proposal")]
     WrongProposal,
+    #[msg("Delegatee must be a real wallet and cannot self-delegate")]
+    InvalidDelegatee,
+    #[msg("Delegators cannot delegate to themselves")]
+    SelfDelegationNotAllowed,
     #[msg("Treasury action payload is invalid")]
     InvalidTreasuryAction,
     #[msg("SendToken action requires token_mint")]
@@ -1392,6 +1422,8 @@ pub enum Error {
     InvalidTokenMint,
     #[msg("Recipient token owner does not match action")]
     RecipientOwnerMismatch,
+    #[msg("Treasury token source and recipient token destination must differ")]
+    DuplicateTokenAccounts,
     #[msg("Token account is invalid or owned by wrong program")]
     InvalidTokenAccount,
     #[msg("Governing mint must match DAO governance token")]

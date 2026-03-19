@@ -3,7 +3,7 @@
  * reveal-vote.ts
  * Phase 2: Reveal your committed vote after voting ends.
  *
- * Reads your saved salt from ~/.privatedao/salts/<proposal>.json,
+ * Reads your saved salt from ~/.privatedao/salts/<proposal>-<voter>.json,
  * recomputes the commitment, and proves it to the chain.
  * You receive 0.001 SOL rebate for revealing.
  *
@@ -15,12 +15,9 @@
  *   yarn ts-node scripts/reveal-vote.ts --proposal <PDA> --voter <VOTER_PUBKEY>
  */
 import * as anchor from "@coral-xyz/anchor";
-import { Program } from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
 import * as fs from "fs";
-import * as path from "path";
-import * as os from "os";
-import { parseArgs, formatTimestamp } from "./utils";
+import { formatDuration, parseArgs, formatTimestamp, legacySaltPath, saltPath, solscanTxUrl, workspaceProgram } from "./utils";
 
 async function main() {
   const { proposal: proposalStr, voter: voterStr } = parseArgs();
@@ -32,7 +29,7 @@ async function main() {
 
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
-  const program = anchor.workspace.PrivateDao as Program<any>;
+  const program = workspaceProgram();
 
   const proposalPda = new PublicKey(proposalStr);
 
@@ -42,22 +39,34 @@ async function main() {
     ? new PublicKey(voterStr)
     : provider.wallet.publicKey;
 
-  const saltFile = path.join(
-    os.homedir(), ".privatedao", "salts", `${proposalStr}.json`
-  );
+  const canonicalSaltFile = saltPath(proposalStr, voterPubkey);
+  const fallbackSaltFile = legacySaltPath(proposalStr);
+  const selectedSaltFile = fs.existsSync(canonicalSaltFile)
+    ? canonicalSaltFile
+    : fallbackSaltFile;
 
-  if (!fs.existsSync(saltFile)) {
-    console.error(`\n❌ Salt file not found: ${saltFile}`);
+  if (!fs.existsSync(selectedSaltFile)) {
+    console.error(`\n❌ Salt file not found: ${canonicalSaltFile}`);
+    if (canonicalSaltFile !== fallbackSaltFile) {
+      console.error(`   Legacy fallback checked: ${fallbackSaltFile}`);
+    }
     console.error(`   This file is saved automatically when you commit a vote.`);
     console.error(`   If you are a keeper, you need the voter's salt to reveal for them.`);
     process.exit(1);
   }
 
-  const saved     = JSON.parse(fs.readFileSync(saltFile, "utf-8"));
+  const saved = JSON.parse(fs.readFileSync(selectedSaltFile, "utf-8"));
+  if (saved.voter && saved.voter !== voterPubkey.toBase58()) {
+    console.error(`\n❌ Salt file voter mismatch.`);
+    console.error(`   Expected voter: ${voterPubkey.toBase58()}`);
+    console.error(`   Salt file has:  ${saved.voter}`);
+    console.error(`   Use the voter-specific salt file or recommit from the intended wallet.`);
+    process.exit(1);
+  }
   const { vote }  = saved;
   const salt      = Buffer.from(saved.salt, "hex");
 
-  const proposal  = await program.account.proposal.fetch(proposalPda);
+  const proposal  = await program.account["proposal"].fetch(proposalPda);
   const now       = Math.floor(Date.now() / 1000);
 
   console.log(`\n🔓 Revealing vote for: "${proposal.title}"`);
@@ -67,7 +76,7 @@ async function main() {
 
   if (now < proposal.votingEnd.toNumber()) {
     const rem = proposal.votingEnd.toNumber() - now;
-    console.error(`\n❌ Voting still open. Reveal starts in ${Math.floor(rem/3600)}h ${Math.floor((rem%3600)/60)}m`);
+    console.error(`\n❌ Voting still open. Reveal starts in ${formatDuration(rem)}`);
     process.exit(1);
   }
 
@@ -77,7 +86,7 @@ async function main() {
   }
 
   const revealRem = proposal.revealEnd.toNumber() - now;
-  console.log(`\n   Reveal window closes in: ${Math.floor(revealRem/3600)}h ${Math.floor((revealRem%3600)/60)}m`);
+  console.log(`\n   Reveal window closes in: ${formatDuration(revealRem)}`);
   console.log(`   (${formatTimestamp(proposal.revealEnd.toNumber())})`);
 
   const [voterRecordPda] = PublicKey.findProgramAddressSync(
@@ -99,11 +108,13 @@ async function main() {
   const balanceAfter = await provider.connection.getBalance(provider.wallet.publicKey);
   const rebate       = (balanceAfter - balanceBefore + 5000) / 1e9; // +5000 for tx fee approx
 
-  const updated = await program.account.proposal.fetch(proposalPda);
+  const updated = await program.account["proposal"].fetch(proposalPda);
 
   console.log(`\n✅ Vote revealed!`);
   console.log(`   Transaction:   ${tx}`);
-  console.log(`   SOL rebate:    +0.001 SOL (paid to you as revealer)`);
+  console.log(`   Tx link:       ${solscanTxUrl(tx)}`);
+  console.log(`   Salt file:     ${selectedSaltFile}`);
+  console.log(`   SOL rebate:    +0.001 SOL configured (revealer receives rebate when paid)`);
   console.log(`   Reveals so far: ${updated.revealCount} / ${updated.commitCount}`);
   console.log(`   Capital  YES/NO: ${updated.yesCapital} / ${updated.noCapital}`);
   console.log(`   Community YES/NO: ${updated.yesCommunity} / ${updated.noCommunity}`);

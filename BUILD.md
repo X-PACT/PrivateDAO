@@ -1,165 +1,150 @@
 <!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
-# Build & Deploy — Troubleshooting
+# Build & Deploy Notes
 
-## Known issues and their fixes
+This file is for the boring failures that waste time.
 
----
+## Known-good baseline
 
-### Error: `cannot find 'hash' in 'solana_program'`
+- Solana CLI in your `PATH`
+- Rust stable
+- Anchor CLI `0.31.1`
+- Node.js + Yarn
+- Program ID in this repo: `62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm`
 
-**Root cause:** Anchor 0.32 pulls in `solana-program 2.x`, which removed the
-`hash::hash()` function from the public API. The fix is already applied in
-this repo: we use the `sha2` crate directly instead.
+Official Solana references:
 
-**What changed in `Cargo.toml`:**
-```toml
-# workspace Cargo.toml — [workspace.dependencies]
-sha2 = "0.10"
+- RPC methods and commitment behavior: https://solana.com/docs/rpc
 
-# programs/private-dao/Cargo.toml — [dependencies]
-sha2 = { workspace = true }
-```
+For this repository in particular, the practical RPC surface is small and explicit:
 
-**What changed in `lib.rs`:**
-```rust
-// Added at the top:
-use sha2::{Sha256, Digest};
+- `getVersion` for RPC health checks
+- `getAccountInfo` for contract/account inspection
+- `getProgramAccounts` for proposal discovery
+- `getSlot` and `getBlockTime` for phase timing in the docs frontend and devnet operator views
 
-// Replaced the broken hash::hash() call with:
-let computed: [u8; 32] = Sha256::digest(&preimage).into();
-require!(computed == vr.commitment, Error::CommitmentMismatch);
-```
+Commitment guidance worth following from the Solana docs:
 
-`sha2` compiles for the SBF target and is used in many production Solana programs.
-The SHA256 output is identical to what `solana_program::hash::hash()` produced.
+- `confirmed` is the default operational sweet spot when the app is tracking progress
+- `finalized` is the safer read when you care more about rollback resistance than speed
 
----
-
-### Error: `anchor build` fails with `edition2024 feature required`
-
-This is a Cargo version issue, not a code issue. `anchor build` uses a bundled
-Cargo that may be too old.
-
-**Fix — use `cargo build` directly:**
-```bash
-cargo build --target sbf-solana-solana
-```
-
-Or upgrade your Anchor CLI:
-```bash
-cargo install --git https://github.com/coral-xyz/anchor anchor-cli --locked --force
-```
-
----
-
-### Error: `overflow-checks is not enabled`
-
-Already fixed in `Cargo.toml`. Verify these lines exist:
-```toml
-[profile.release]
-overflow-checks = true
-```
-
----
-
-### Error: `no such command: build-sbf`
-
-The Solana CLI is installed but `cargo-build-sbf` isn't in your PATH.
+## Clean local build
 
 ```bash
-export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
-echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> ~/.bashrc
-source ~/.bashrc
-
-cargo build-sbf --version  # verify
-```
-
----
-
-### Error: anchor version mismatch (0.30 vs 0.32)
-
-```bash
-yarn upgrade @coral-xyz/anchor@0.31.1
-```
-
----
-
-## Clean Build From Scratch
-
-```bash
-# Step 0 — Fix PATH (Parrot Linux / Debian-based)
 export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 
-# Step 1 — Verify tools
-solana --version       # >= 1.18
-anchor --version       # >= 0.32
-cargo build-sbf --version
-
-# Step 2 — Install Node packages
 yarn install
-
-# Step 3 — Build the program
 anchor build
+```
 
-# Step 4 — Run tests locally (needs solana-test-validator in another terminal)
-solana-test-validator --reset &
-sleep 5
-anchor test -- --grep "demo"
+If you want the full local flow:
 
-# Step 5 — Deploy to devnet
-cp .env.example .env
-# Edit .env and add your HELIUS_API_KEY
+```bash
+solana-test-validator --reset
+anchor test
+```
+
+## Verify toolchain before digging deeper
+
+```bash
+bash scripts/verify.sh tools
+```
+
+## Common failures
+
+### `anchor build` cannot find Solana build tooling
+
+Usually your Solana install is present but not exported into `PATH`.
+
+```bash
+export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
+solana --version
+```
+
+### Anchor version drift
+
+This repo is pinned to `0.31.1`.
+
+```bash
+anchor --version
+yarn list @coral-xyz/anchor
+```
+
+If your CLI or JS package is materially newer or older, fix that first.
+
+### RPC/faucet instability on devnet
+
+Use the repo scripts instead of guessing:
+
+```bash
+bash scripts/fund-devnet.sh 2
+bash scripts/check-rpc-health.sh
+```
+
+If your network is proxying RPC traffic badly, set `NO_PROXY` for the RPC hosts or switch networks.
+
+If `solana` CLI is not installed, some repository tooling still works:
+
+- `bash scripts/check-rpc-health.sh` uses direct JSON-RPC over HTTP
+- `bash scripts/check-contracts.sh <ADDRESS>` now falls back to JSON-RPC account inspection instead of requiring `solana account`
+
+If you do need the full Solana toolchain, install the CLI before debugging Anchor-specific failures. This repo still assumes the CLI is present for local validator, deploy, and several shell workflows.
+
+### Build passes, deploy fails
+
+Check wallet and RPC explicitly:
+
+```bash
+solana config get
+anchor keys list
+```
+
+Then either:
+
+```bash
+anchor deploy --provider.cluster devnet
+```
+
+or:
+
+```bash
 ./deploy.sh
 ```
 
----
+## Program ID discipline
 
-## After deploy.sh runs
+This repository already has a deployed devnet program and published references to its address. Do not casually rotate the program ID just because a local deploy produced a new one.
 
-Your program will be live at:
-```
-https://solscan.io/account/C5Z9tmoCMfdFBTLr2nKT2XMdqJHf1MydDdk7Ni5BASF6?cluster=devnet
-```
+If you intentionally deploy a fresh program for your own environment, treat that as an environment-specific override, not as a silent documentation update.
 
-If the Program ID changed during deploy, the script auto-updates `lib.rs` and rebuilds.
+## What Deployment Means Here
 
----
+"Deploying to Solana" in this repository means deploying the Anchor program binary to a Solana cluster such as devnet.
 
-## Getting SOL on Devnet
+It does not mean:
 
-```bash
-# preferred: retry script with RPC rotation + custom endpoints
-bash scripts/fund-devnet.sh 2
+- uploading the whole GitHub repository on-chain
+- storing the docs frontend on-chain
+- moving your scripts, SDK, or markdown files into Solana accounts
 
-# direct CLI fallback
-solana airdrop 2 --url https://api.devnet.solana.com
-```
+What stays off-chain:
 
-Public devnet faucets are rate-limited and may return `429` during peak times.
-If that happens, use `https://faucet.solana.com` manually or switch network/IP.
+- the repository and source history
+- the docs/frontend hosting
+- the CLI scripts and migration helpers
+- operator workflows and CI
 
-## Check existing contracts
+What goes on-chain:
 
-```bash
-bash scripts/check-contracts.sh <ADDRESS_1> <ADDRESS_2>
-```
+- the compiled program
+- the accounts created and managed by the program during DAO operation
 
-## Cloud build (recommended for low-end hardware)
+## Helpful checks
 
 ```bash
-gh workflow run CI
-gh run watch
+bash scripts/verify.sh fmt
+bash scripts/verify.sh lint
+bash scripts/verify.sh build
+bash scripts/verify.sh test
+bash scripts/verify.sh scan
 ```
-
-This runs full build + test in GitHub Actions without local CPU/RAM pressure.
-
----
-
-## Helius RPC (free devnet)
-
-1. Go to https://dev.helius.xyz
-2. Sign up (free, no credit card)
-3. Create a project → copy the API key
-4. Add to `.env`: `HELIUS_API_KEY=your_key_here`
-5. Run `./deploy.sh` — picks it up automatically

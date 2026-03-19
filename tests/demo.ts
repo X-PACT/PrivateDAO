@@ -27,7 +27,6 @@
  */
 
 import * as anchor from "@coral-xyz/anchor";
-import { Program }  from "@coral-xyz/anchor";
 import { PublicKey, Keypair, SystemProgram, Transaction, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import {
   createMint, createAccount, mintTo,
@@ -91,7 +90,7 @@ async function waitForUnixTimestamp(
 describe("demo", () => {
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
-  const program = anchor.workspace.PrivateDao as Program<any>;
+  const program = anchor.workspace.PrivateDao as any;
   const payer   = (provider.wallet as anchor.Wallet).payer;
   const EXECUTE_LAMPORTS = 100_000;         // 0.0001 SOL
   const TREASURY_SEED_LAMPORTS = 2_000_000; // 0.002 SOL
@@ -344,7 +343,7 @@ describe("demo", () => {
       .signers([whale])
       .rpc();
 
-    const pCommit = await program.account.proposal.fetch(proposal1Pda);
+    const pCommit = await program.account["proposal"].fetch(proposal1Pda);
     assert.equal(pCommit.yesCapital.toNumber(), 0, "tally must be hidden during voting");
     assert.equal(pCommit.noCapital.toNumber(), 0,  "tally must be hidden during voting");
     assert.equal(pCommit.commitCount.toNumber(), 4);
@@ -375,7 +374,7 @@ describe("demo", () => {
         .signers([revealer])
         .rpc();
 
-      const pRev = await program.account.proposal.fetch(proposal1Pda);
+      const pRev = await program.account["proposal"].fetch(proposal1Pda);
       const revealerLabel = name === "carol" ? "KEEPER (carol offline)" : name;
       console.log(
         `  ${name.padEnd(8)} revealed by ${revealerLabel.padEnd(24)}` +
@@ -383,7 +382,7 @@ describe("demo", () => {
       );
     }
 
-    const pAfterReveal = await program.account.proposal.fetch(proposal1Pda);
+    const pAfterReveal = await program.account["proposal"].fetch(proposal1Pda);
     console.log(`\n  ── Final tally ──`);
     console.log(`  Capital chamber:   YES = ${pAfterReveal.yesCapital.toNumber().toLocaleString().padStart(14)}  NO = ${pAfterReveal.noCapital.toNumber().toLocaleString().padStart(13)}`);
     console.log(`  Community chamber: YES = ${pAfterReveal.yesCommunity.toNumber().toLocaleString().padStart(14)}  NO = ${pAfterReveal.noCommunity.toNumber().toLocaleString().padStart(13)}`);
@@ -401,7 +400,7 @@ describe("demo", () => {
       .accounts({ dao: daoPda, proposal: proposal1Pda, finalizer: payer.publicKey })
       .rpc();
 
-    const pFinal = await program.account.proposal.fetch(proposal1Pda);
+    const pFinal = await program.account["proposal"].fetch(proposal1Pda);
     const passed = "passed" in pFinal.status;
     console.log(`  Result: ${passed ? "✅ PASSED" : "❌ FAILED"}`);
 
@@ -440,7 +439,7 @@ describe("demo", () => {
     assert.approximately(transferred, EXECUTE_LAMPORTS / LAMPORTS_PER_SOL, 0.00001, "treasury should send configured SOL amount");
     console.log(`  ✅ Treasury sent ${transferred.toFixed(4)} SOL to recipient`);
 
-    const pExec = await program.account.proposal.fetch(proposal1Pda);
+    const pExec = await program.account["proposal"].fetch(proposal1Pda);
     assert.isTrue(pExec.isExecuted, "isExecuted flag must be set");
 
     // ── ACT 4: CANCEL ─────────────────────────────────────────────────────
@@ -470,7 +469,7 @@ describe("demo", () => {
       .accounts({ dao: daoPda, proposal: proposal2Pda, authority: payer.publicKey })
       .rpc();
 
-    const p2 = await program.account.proposal.fetch(proposal2Pda);
+    const p2 = await program.account["proposal"].fetch(proposal2Pda);
     assert.isTrue("cancelled" in p2.status, "proposal must be cancelled");
     console.log(`  ✅ Proposal cancelled. No votes can be cast on cancelled proposals.`);
 

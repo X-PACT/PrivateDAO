@@ -5,6 +5,7 @@
   "scripts": {
     "build":             "anchor build",
     "test":              "anchor test",
+    "typecheck":         "tsc --noEmit",
     "demo":              "anchor test -- --grep 'demo'",
     "test:full":         "anchor test -- --grep 'Full flow'",
     "deploy":            "anchor deploy --provider.cluster devnet",
@@ -14,6 +15,7 @@
     "create-dao":        "ts-node scripts/create-dao.ts",
     "create-proposal":   "ts-node scripts/create-proposal.ts",
     "deposit":           "ts-node scripts/deposit-treasury.ts",
+    "list-proposals":    "ts-node scripts/list-proposals.ts",
     "delegate":          "ts-node scripts/delegate-vote.ts",
     "commit":            "ts-node scripts/commit-vote.ts",
     "reveal":            "ts-node scripts/reveal-vote.ts",

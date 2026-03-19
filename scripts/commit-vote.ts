@@ -6,7 +6,7 @@
  * Your vote is sealed in a sha256 hash. Nobody — not validators, not
  * explorers, not the DAO admin — can see how you voted until reveal phase.
  *
- * Your salt is saved to ~/.privatedao/salts/<proposal_pda>.json
+ * Your salt is saved to ~/.privatedao/salts/<proposal_pda>-<voter_pubkey>.json
  * Keep this file safe. You need it to reveal later.
  *
  * Usage:
@@ -17,7 +17,6 @@
  *   yarn ts-node scripts/commit-vote.ts --proposal <PDA> --vote yes --delegator <DELEGATOR_PUBKEY>
  */
 import * as anchor from "@coral-xyz/anchor";
-import { Program } from "@coral-xyz/anchor";
 import { PublicKey, SystemProgram } from "@solana/web3.js";
 import {
   getAssociatedTokenAddress,
@@ -25,9 +24,7 @@ import {
 } from "@solana/spl-token";
 import * as crypto from "crypto";
 import * as fs from "fs";
-import * as path from "path";
-import * as os from "os";
-import { parseArgs, formatTimestamp } from "./utils";
+import { parseArgs, formatTimestamp, ensureSaltDir, legacySaltPath, saltPath, solscanTxUrl, workspaceProgram } from "./utils";
 
 function computeCommitment(vote: boolean, salt: Buffer, voter: PublicKey): Buffer {
   return crypto
@@ -53,11 +50,11 @@ async function main() {
 
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
-  const program = anchor.workspace.PrivateDao as Program<any>;
+  const program = workspaceProgram();
 
   const proposalPda = new PublicKey(proposalStr);
-  const proposal    = await program.account.proposal.fetch(proposalPda);
-  const dao         = await program.account.dao.fetch(proposal.dao);
+  const proposal    = await program.account["proposal"].fetch(proposalPda);
+  const dao         = await program.account["dao"].fetch(proposal.dao);
   const now         = Math.floor(Date.now() / 1000);
 
   if (now >= proposal.votingEnd.toNumber()) {
@@ -129,29 +126,32 @@ async function main() {
   }
 
   // Save salt to disk — required for reveal
-  const saltDir  = path.join(os.homedir(), ".privatedao", "salts");
-  const saltFile = path.join(saltDir, `${proposalStr}.json`);
-  fs.mkdirSync(saltDir, { recursive: true });
-  fs.writeFileSync(saltFile, JSON.stringify({
+  ensureSaltDir();
+  const canonicalSaltFile = saltPath(proposalStr, provider.wallet.publicKey);
+  const legacySaltFile = legacySaltPath(proposalStr);
+  const saltPayload = JSON.stringify({
     proposal:    proposalStr,
     voter:       provider.wallet.publicKey.toBase58(),
     vote,
     salt:        salt.toString("hex"),
     commitment:  commitment.toString("hex"),
     timestamp:   new Date().toISOString(),
-  }, null, 2));
+  }, null, 2);
+  fs.writeFileSync(canonicalSaltFile, saltPayload);
+  fs.writeFileSync(legacySaltFile, saltPayload);
 
-  const updated = await program.account.proposal.fetch(proposalPda);
+  const updated = await program.account["proposal"].fetch(proposalPda);
 
   console.log(`\n✅ Vote committed!`);
   console.log(`   Transaction:  ${tx}`);
-  console.log(`   Salt saved:   ${saltFile}`);
+  console.log(`   Tx link:      ${solscanTxUrl(tx)}`);
+  console.log(`   Salt saved:   ${canonicalSaltFile}`);
   console.log(`   Total commits: ${updated.commitCount}`);
   console.log(`   Tally visible: NO — ${updated.yesCapital} YES / ${updated.noCapital} NO (all zeros until reveal ✓)`);
   console.log(`\n   Reveal after: ${formatTimestamp(updated.votingEnd.toNumber())}`);
   console.log(`   yarn ts-node scripts/reveal-vote.ts --proposal ${proposalStr}`);
   console.log(`\n   ⚠️  Keep your salt file safe. Without it you cannot reveal!`);
-  console.log(`   Backup: ${saltFile}`);
+  console.log(`   Legacy backup: ${legacySaltFile}`);
 }
 
 main().catch(console.error);

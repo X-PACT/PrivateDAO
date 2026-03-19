@@ -15,10 +15,13 @@ private_dao = "62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "devnet"
+cluster = "localnet"
 wallet = "wallets/wallet-keypair.json"
 
 [scripts]
 test = "npx ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+
+[test]
+startup_wait = 20000
 
 [hooks]

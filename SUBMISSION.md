@@ -7,6 +7,8 @@
 **Solana Graveyard Hackathon 2026**
 Tracks: DAOs (Realms) · Migration (Sunrise) · Overall (Solana Foundation)
 
+Official hackathon ecosystem partners relevant to this repo include Realms, Sunrise, Exchange Art, Tapestry, MagicBlock, KYD Labs, Portals, DRiP, Torque, BIO, Audius, and OrbitFlare. Mentioning them here reflects track context only, not prize results, sponsorship, or endorsement.
+
 ---
 
 ## The Problem We're Solving
@@ -20,7 +22,7 @@ This creates three attack vectors that kill legitimate governance:
 
 **2. Whale intimidation** — Small holders see a major token holder vote YES. They flip their own vote to match — not because they agree, but because they assume the whale knows something. The final tally looks like consensus. It wasn't.
 
-**3. Treasury front-running** — A proposal to buy Token X starts passing. Bots see it and buy ahead of the treasury. The DAO pays a worse price. MEV extracts value from every treasury action.
+**3. Treasury front-running** — A proposal starts trending toward passage, traders react before execution, and the DAO gets a worse fill. Commit-reveal helps by removing live tally signaling, but it does not hide the proposal itself.
 
 **None of this is fixable with better UI.** The root cause is architectural: public voting.
 
@@ -29,6 +31,8 @@ This creates three attack vectors that kill legitimate governance:
 ## The Solution: Commit-Reveal Voting
 
 PrivateDAO implements **commit-reveal voting** — the proven cryptographic primitive for binding someone to a vote without revealing it.
+
+This submission should be read as a working devnet beta product with a real on-chain program, real scripts, real tests, and a live documentation frontend. It is not presented as an audited mainnet governance system.
 
 ### How It Works
 
@@ -52,9 +56,9 @@ sha256(vote_byte || salt || voter_pubkey) == stored_commitment
 ```
 If it matches, the vote is counted. Any mismatch is rejected. The 32-byte salt makes brute-force impossible (2^256 combinations).
 
-**Phase 3 — Finalize + Execute (anyone calls after reveal window)**
+**Phase 3 — Finalize + Execute (permissionless after reveal + timelock)**
 
-Final tally is published. Treasury action executes automatically via CPI after the timelock expires.
+Final tally is published. Anyone can finalize once reveal is over. If the proposal passes, anyone can execute after the timelock expires.
 
 ### Security Properties
 
@@ -63,7 +67,7 @@ Final tally is published. Treasury action executes automatically via CPI after t
 | Real-time tally tracking | ✅ Trivial | ❌ Impossible during commit |
 | Vote buying by watching tally | ✅ Common | ❌ No tally to watch |
 | Whale intimidation | ✅ Systemic | ❌ No visible pressure |
-| Treasury MEV / front-running | ✅ Rampant | ❌ Action hidden until finalize |
+| Treasury pressure from live tally signaling | ✅ Common | ✅ Reduced, not eliminated |
 | Replay commitment to another proposal | ✅ Possible | ❌ Voter pubkey in preimage |
 | Vote-weight manipulation after commit | ✅ Common | ❌ Weight snapshotted at commit |
 
@@ -104,6 +108,17 @@ programs/private-dao/src/lib.rs
 | `execute_proposal` | Anyone | Move treasury funds after timelock |
 | `deposit_treasury` | Anyone | Fund the DAO treasury |
 | `update_voter_weight_record` | Voter | Realms plugin: update weight |
+
+### Product Shape Today
+
+PrivateDAO is intentionally built as one coherent product surface rather than disconnected hackathon assets:
+
+- the Anchor program defines lifecycle, treasury, and privacy guarantees
+- the SDK exposes the same vote commitment primitive the program verifies
+- the scripts drive deterministic operator flows for create, commit, reveal, finalize, execute, and migration
+- the GitHub Pages frontend explains and visualizes the same on-chain lifecycle for reviewers and operators
+
+That backend/frontend alignment is part of the product quality, not a marketing extra.
 
 ### Commitment Scheme
 
@@ -182,13 +197,12 @@ pub struct VoterWeightRecord {
 }
 ```
 
-Any existing Realms DAO can add PrivateDAO as a voter weight plugin. The `update_voter_weight_record` instruction returns the correct weight (token-weighted, quadratic, or quadratic for DualChamber) with a 100-slot expiry.
+The repo includes a Realms-style voter weight record path. The `update_voter_weight_record` instruction returns the correct weight (token-weighted, quadratic, or quadratic for DualChamber) with a 100-slot expiry.
 
-**Integration steps for an existing Realms DAO:**
-1. Add PrivateDAO program as a VoterWeight plugin in Realms settings
-2. Members call `update_voter_weight_record` before each proposal
-3. Private commit-reveal voting proceeds through PrivateDAO
-4. Results are recorded in the VoterWeightRecord that Realms reads
+What this proves today:
+1. PrivateDAO can expose Realms-style voter weight data
+2. A DAO can preserve source-governance provenance during migration
+3. Full proposal lifecycle coupling to native Realms proposals is still separate work
 
 ---
 

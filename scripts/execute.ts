@@ -13,13 +13,12 @@
  * Usage: yarn ts-node scripts/execute.ts --proposal <PDA>
  */
 import * as anchor from "@coral-xyz/anchor";
-import { Program } from "@coral-xyz/anchor";
 import { PublicKey, SystemProgram, Keypair } from "@solana/web3.js";
 import {
   getAssociatedTokenAddress,
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
-import { parseArgs, formatSol, formatTimestamp } from "./utils";
+import { formatDuration, parseArgs, formatSol, formatTimestamp, proposalStatusLabel, solscanTxUrl, workspaceProgram } from "./utils";
 
 async function main() {
   const { proposal: proposalStr } = parseArgs();
@@ -31,20 +30,21 @@ async function main() {
 
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
-  const program = anchor.workspace.PrivateDao as Program<any>;
+  const program = workspaceProgram();
 
   const proposalPda = new PublicKey(proposalStr);
-  const proposal    = await program.account.proposal.fetch(proposalPda);
+  const proposal    = await program.account["proposal"].fetch(proposalPda);
   const daoPda      = proposal.dao;
-  const dao         = await program.account.dao.fetch(daoPda);
+  const dao         = await program.account["dao"].fetch(daoPda);
   const now         = Math.floor(Date.now() / 1000);
-  const status      = JSON.stringify(proposal.status);
+  const status      = proposalStatusLabel(proposal.status);
 
   console.log(`\n💸  Executing: "${proposal.title}"`);
   console.log(`    DAO:    ${dao.daoName}`);
   console.log(`    Status: ${status}`);
+  console.log(`    Proposal: ${proposalPda.toBase58()}`);
 
-  if (!status.includes("passed") && !status.includes("Passed")) {
+  if (status !== "Passed") {
     console.error("❌ Proposal has not passed. Cannot execute.");
     process.exit(1);
   }
@@ -59,7 +59,7 @@ async function main() {
     const wait = unlockAt - now;
     console.error(`⏳ Execution timelock active.`);
     console.error(`   Unlocks at: ${formatTimestamp(unlockAt)}`);
-    console.error(`   Wait: ${Math.floor(wait/3600)}h ${Math.floor((wait%3600)/60)}m ${wait%60}s`);
+    console.error(`   Wait: ${formatDuration(wait)}`);
     process.exit(1);
   }
 
@@ -74,8 +74,10 @@ async function main() {
   let treasuryRecipient      = dummy;
   let treasuryTokenAccount   = dummy;
   let recipientTokenAccount  = dummy;
+  let actionType = "none";
 
   if (proposal.treasuryAction) {
+    actionType = Object.keys(proposal.treasuryAction.actionType)[0];
     treasuryRecipient = proposal.treasuryAction.recipient;
     const { tokenMint } = proposal.treasuryAction;
     if (tokenMint) {
@@ -84,14 +86,18 @@ async function main() {
     }
 
     const amt = proposal.treasuryAction.amountLamports.toNumber();
-    const type = Object.keys(proposal.treasuryAction.actionType)[0];
-    console.log(`\n    Action: ${type}`);
-    if (type === "sendSol") {
+    console.log(`\n    Action: ${actionType}`);
+    if (actionType === "sendSol") {
       console.log(`    Amount: ${formatSol(amt)}`);
-    } else if (type === "sendToken") {
+    } else if (actionType === "sendToken") {
       console.log(`    Tokens: ${amt / 1e6} (raw: ${amt})`);
+      console.log(`    Treasury ATA: ${treasuryTokenAccount.toBase58()}`);
+      console.log(`    Recipient ATA: ${recipientTokenAccount.toBase58()}`);
     }
     console.log(`    To: ${treasuryRecipient.toBase58()}`);
+  } else {
+    console.log(`\n    Action: none`);
+    console.log(`    This proposal only flips on-chain execution state and emits the execution event path.`);
   }
 
   console.log(`\n    Sending transaction...`);
@@ -115,7 +121,8 @@ async function main() {
   console.log("    ✅  TREASURY ACTION EXECUTED");
   console.log(`${"═".repeat(56)}`);
   console.log(`    Transaction: ${tx}`);
-  console.log(`    Explorer:    https://solscan.io/tx/${tx}?cluster=devnet`);
+  console.log(`    Action type: ${actionType}`);
+  console.log(`    Explorer:    ${solscanTxUrl(tx)}`);
 }
 
 main().catch(console.error);
