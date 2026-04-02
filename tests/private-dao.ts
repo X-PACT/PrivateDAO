@@ -683,6 +683,93 @@ describe("PrivateDAO", () => {
     }
   });
 
+  it("rejects delegated commit with a delegation record from another proposal", async () => {
+    const dao = await program.account["dao"].fetch(daoPda);
+    const [proposalA] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), dao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal("Delegation source proposal", "Delegation must stay bound to the proposal it was created for.", new BN(3600), null)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalA,
+        proposerTokenAccount: authorityTokenAta,
+        proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const daoAfterA = await program.account["dao"].fetch(daoPda);
+    const [proposalB] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), daoAfterA.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal("Delegation target proposal", "Cross-proposal delegation substitution must fail.", new BN(3600), null)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalB,
+        proposerTokenAccount: authorityTokenAta,
+        proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [delegationForA] = PublicKey.findProgramAddressSync(
+      [Buffer.from("delegation"), proposalA.toBuffer(), voter2.publicKey.toBuffer()],
+      program.programId,
+    );
+
+    await program.methods
+      .delegateVote(voter1.publicKey)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalA,
+        delegation: delegationForA,
+        delegatorTokenAccount: v2Ata,
+        delegator: voter2.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([voter2])
+      .rpc();
+
+    const [voteRecordForB] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), proposalB.toBuffer(), voter1.publicKey.toBuffer()],
+      program.programId,
+    );
+    const delegatedSalt = randomSalt();
+
+    try {
+      await program.methods
+        .commitDelegatedVote([...computeCommitment(true, delegatedSalt, voter1.publicKey)], null)
+        .accounts({
+          dao: daoPda,
+          proposal: proposalB,
+          delegation: delegationForA,
+          voterRecord: voteRecordForB,
+          delegateeTokenAccount: v1Ata,
+          delegatee: voter1.publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .signers([voter1])
+        .rpc();
+      assert.fail("Should have rejected delegated commit using a delegation PDA from another proposal");
+    } catch (err: any) {
+      const msg = err.toString();
+      assert.isTrue(
+        msg.includes("ConstraintSeeds") || msg.includes("WrongProposal") || msg.includes("seeds constraint"),
+        `unexpected error: ${msg}`,
+      );
+    }
+
+    const delegation = await program.account["voteDelegation"].fetch(delegationForA);
+    assert.isFalse(delegation.isUsed, "failed delegated commit must not consume the delegation");
+    console.log("  ✓ delegation record stayed proposal-bound");
+  });
+
   it("verifies commitment math — deterministic + vote/salt sensitive", () => {
     const vote = true;
     const salt = Buffer.from("a".repeat(32));

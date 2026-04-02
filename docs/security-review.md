@@ -11,6 +11,7 @@ PrivateDAO now includes a reviewer-visible hardening layer focused on realistic 
 - PDA and account substitution rejection
 - treasury miswiring rejection
 - delegation misuse guards across product surfaces
+- finalize and execute account-binding rejection
 - mainnet cutover readiness checks
 
 ## Reviewer-first proof points
@@ -55,7 +56,15 @@ PrivateDAO now includes a reviewer-visible hardening layer focused on realistic 
 
 - self-delegation is rejected
 - unauthorized delegated voting is rejected
+- delegated commits cannot consume a delegation PDA from another proposal
 - operator scripts and browser-native flows now block direct-commit and delegation overlap for the same proposal without changing the deployed protocol interface
+
+### Finalize and execute binding safety
+
+- finalize rejects mismatched `dao` / `proposal` pairings
+- execute rejects treasury PDAs that belong to another DAO even when the treasury account is valid and funded
+- failed finalize and execute attempts leave proposal state unchanged
+- permissionless finalize and execute remain supported, but only when signer and account bindings are exact
 
 ## Honest current boundary
 
