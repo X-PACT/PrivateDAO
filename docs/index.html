@@ -1781,6 +1781,7 @@ body.judge-mode .judge-banner {
       </div>
       <div class="proposal-proof-links" id="proposalProofLinks"></div>
       <div class="proposal-command-grid" id="proposalCommandGrid"></div>
+      <div class="proposal-command-grid" id="proposalHistoryGrid" style="margin-top:16px"></div>
     </div>
 
     <div class="proposal-create-card reveal">
@@ -1854,6 +1855,36 @@ body.judge-mode .judge-banner {
           <code id="finalizeCommandBuilder" style="display:block;margin-top:12px;color:var(--cyan)">yarn finalize -- --proposal &lt;PROPOSAL_PUBKEY&gt;</code>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
             <button class="action-btn action-execute" style="flex:0 0 auto" onclick="copyFinalizeCommand()">Copy Finalize Command</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="proposal-create-card reveal">
+      <div class="proposal-title">Delegation console</div>
+      <div class="proposal-desc">Private delegation is proposal-scoped and on-chain. The delegator assigns weight to a delegatee, then the delegatee commits with combined weight while the vote remains hidden until reveal.</div>
+      <div class="proposal-command-grid">
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">DELEGATE VOTE</div>
+          <div style="display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px">
+            <input id="delegateProposalInput" type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Proposal PDA">
+            <input id="delegateeWalletInput" type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Delegatee wallet pubkey">
+          </div>
+          <code id="delegateVoteCommandBuilder" style="display:block;margin-top:12px;color:var(--cyan)">yarn delegate-vote -- --proposal &lt;PROPOSAL_PUBKEY&gt; --delegatee &lt;DELEGATEE_PUBKEY&gt;</code>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+            <button class="action-btn action-execute" style="flex:0 0 auto" onclick="submitDelegateVoteInWallet()">Delegate In Wallet</button>
+            <button class="action-btn action-reveal" style="flex:0 0 auto" onclick="copyDelegateVoteCommand()">Copy Delegate Command</button>
+          </div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">COMMIT DELEGATED VOTE</div>
+          <div style="display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px">
+            <input id="delegatedCommitDelegatorInput" type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Delegator wallet pubkey">
+          </div>
+          <code id="delegatedCommitCommandBuilder" style="display:block;margin-top:12px;color:var(--cyan)">yarn commit -- --proposal &lt;PROPOSAL_PUBKEY&gt; --vote yes --delegator &lt;DELEGATOR_PUBKEY&gt;</code>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+            <button class="action-btn action-execute" style="flex:0 0 auto" onclick="submitDelegatedCommitInWallet()">Commit Delegated In Wallet</button>
+            <button class="action-btn action-reveal" style="flex:0 0 auto" onclick="copyDelegatedCommitCommand()">Copy Delegated Commit</button>
           </div>
         </div>
       </div>
@@ -3304,6 +3335,151 @@ async function revealSelectedVoteInWallet(vote, saltHex) {
   return signAndBroadcastTransaction(ix, 'Reveal submitted');
 }
 
+async function submitDelegateVoteInWallet() {
+  const proposalPubkey = (document.getElementById('delegateProposalInput')?.value || '').trim();
+  const delegateePubkey = (document.getElementById('delegateeWalletInput')?.value || '').trim();
+  if (!walletProvider || !wallet) {
+    showToast('Connect your wallet first.', 'error');
+    return;
+  }
+  if (!proposalPubkey || !delegateePubkey) {
+    showToast('Set proposal and delegatee first.', 'error');
+    return;
+  }
+  try {
+    const proposal = liveProposalMap.get(proposalPubkey) || currentSelectedProposal;
+    if (!proposal || proposal.pubkey !== proposalPubkey) {
+      throw new Error('Select the target proposal from the live list first');
+    }
+    const dao = await fetchDaoDetails(proposal.dao);
+    const delegatorTokenAccount = deriveAssociatedTokenAddress(wallet, dao.governanceToken);
+    const delegatorTokenInfo = await connection.getAccountInfo(delegatorTokenAccount, 'confirmed');
+    if (!delegatorTokenInfo) {
+      throw new Error('Governance token account was not found for the connected wallet');
+    }
+    const delegationPk = deriveDelegationPda(proposalPubkey, wallet);
+    const data = concatBytes(
+      await anchorMethodDiscriminator('delegate_vote'),
+      new solanaWeb3.PublicKey(delegateePubkey).toBytes(),
+    );
+    const ix = new solanaWeb3.TransactionInstruction({
+      programId: programPk,
+      keys: [
+        { pubkey: new solanaWeb3.PublicKey(proposal.dao), isSigner: false, isWritable: false },
+        { pubkey: new solanaWeb3.PublicKey(proposalPubkey), isSigner: false, isWritable: false },
+        { pubkey: delegationPk, isSigner: false, isWritable: true },
+        { pubkey: delegatorTokenAccount, isSigner: false, isWritable: false },
+        { pubkey: new solanaWeb3.PublicKey(wallet), isSigner: true, isWritable: true },
+        { pubkey: solanaWeb3.SystemProgram.programId, isSigner: false, isWritable: false },
+      ],
+      data,
+    });
+    await signAndBroadcastTransaction(ix, 'Delegation submitted');
+  } catch (error) {
+    console.error(error);
+    showToast(error.message || 'Delegation transaction failed.', 'error');
+  }
+}
+
+async function submitDelegatedCommitInWallet() {
+  const delegatorPubkey = (document.getElementById('delegatedCommitDelegatorInput')?.value || '').trim();
+  if (!delegatorPubkey) {
+    showToast('Enter the delegator wallet pubkey first.', 'error');
+    return;
+  }
+  if (!currentSelectedProposal || !currentCommitHashHex || !wallet) {
+    showToast('Select a proposal and generate a commitment first.', 'error');
+    return;
+  }
+  try {
+    const dao = await fetchDaoDetails(currentSelectedProposal.dao);
+    const delegateeTokenAccount = deriveAssociatedTokenAddress(wallet, dao.governanceToken);
+    const delegateeTokenInfo = await connection.getAccountInfo(delegateeTokenAccount, 'confirmed');
+    if (!delegateeTokenInfo) {
+      throw new Error('Governance token account was not found for the connected wallet');
+    }
+    const delegationPk = deriveDelegationPda(currentSelectedProposal.pubkey, delegatorPubkey);
+    const voterRecordPk = deriveVoteRecordPda(currentSelectedProposal.pubkey, wallet);
+    const data = concatBytes(
+      await anchorMethodDiscriminator('commit_delegated_vote'),
+      hexToBytes(currentCommitHashHex),
+      new Uint8Array([0]),
+    );
+    const ix = new solanaWeb3.TransactionInstruction({
+      programId: programPk,
+      keys: [
+        { pubkey: new solanaWeb3.PublicKey(currentSelectedProposal.dao), isSigner: false, isWritable: false },
+        { pubkey: new solanaWeb3.PublicKey(currentSelectedProposal.pubkey), isSigner: false, isWritable: true },
+        { pubkey: delegationPk, isSigner: false, isWritable: true },
+        { pubkey: voterRecordPk, isSigner: false, isWritable: true },
+        { pubkey: delegateeTokenAccount, isSigner: false, isWritable: false },
+        { pubkey: new solanaWeb3.PublicKey(wallet), isSigner: true, isWritable: true },
+        { pubkey: solanaWeb3.SystemProgram.programId, isSigner: false, isWritable: false },
+      ],
+      data,
+    });
+    const signature = await signAndBroadcastTransaction(ix, 'Delegated commit submitted');
+    if (signature) {
+      const payload = [
+        `proposal=${currentSelectedProposal.pubkey}`,
+        `delegatee=${wallet}`,
+        `delegator=${delegatorPubkey}`,
+        `vote=${selectedVote || 'yes'}`,
+        `commitment=0x${currentCommitHashHex}`,
+        `salt=0x${currentCommitSaltHex}`,
+        `tx=${signature}`,
+      ].join('\n');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(payload).catch(() => {});
+      }
+    }
+  } catch (error) {
+    console.error(error);
+    showToast(error.message || 'Delegated commit transaction failed.', 'error');
+  }
+}
+
+async function loadProposalHistory(p) {
+  const historyGrid = document.getElementById('proposalHistoryGrid');
+  if (!historyGrid) return;
+  historyGrid.innerHTML = `
+    <div class="proposal-command-box">
+      <div class="proposal-detail-label">PROPOSAL ACTIVITY</div>
+      <div style="color:var(--text2);line-height:1.8">Loading live transaction history from Solana devnet for the selected proposal account.</div>
+    </div>
+  `;
+  try {
+    const signatures = await connection.getSignaturesForAddress(new solanaWeb3.PublicKey(p.pubkey), { limit: 10 }, 'confirmed');
+    if (!signatures.length) {
+      historyGrid.innerHTML = `
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">PROPOSAL ACTIVITY</div>
+          <div style="color:var(--text2);line-height:1.8">No transaction history was returned yet for this proposal account.</div>
+        </div>
+      `;
+      return;
+    }
+    historyGrid.innerHTML = signatures.map(sig => `
+      <div class="proposal-command-box">
+        <div class="proposal-detail-label">${sig.confirmationStatus || 'confirmed'}${sig.err ? ' · error' : ' · ok'}</div>
+        <div style="color:var(--text2);line-height:1.8">
+          ${sig.blockTime ? formatUtc(sig.blockTime) : 'Timestamp unavailable'}<br>
+          Signature: ${sig.signature}
+        </div>
+        <div style="margin-top:12px"><a class="award-link" href="https://solscan.io/tx/${sig.signature}?cluster=devnet" target="_blank">Open Transaction</a></div>
+      </div>
+    `).join('');
+  } catch (error) {
+    console.error(error);
+    historyGrid.innerHTML = `
+      <div class="proposal-command-box">
+        <div class="proposal-detail-label">PROPOSAL ACTIVITY</div>
+        <div style="color:var(--text2);line-height:1.8">Could not load proposal transaction history from the current RPC endpoint.</div>
+      </div>
+    `;
+  }
+}
+
 async function finalizeSelectedProposalInWallet() {
   if (!currentSelectedProposal) {
     showToast('Select a live proposal first.', 'error');
@@ -3580,6 +3756,61 @@ function deriveVoteRecordPda(proposalPubkey, voterPubkey) {
   return votePk;
 }
 
+function deriveDelegationPda(proposalPubkey, delegatorPubkey) {
+  const [delegationPk] = solanaWeb3.PublicKey.findProgramAddressSync(
+    [new TextEncoder().encode('delegation'), new solanaWeb3.PublicKey(proposalPubkey).toBytes(), new solanaWeb3.PublicKey(delegatorPubkey).toBytes()],
+    programPk
+  );
+  return delegationPk;
+}
+
+function buildDelegateVoteCommand() {
+  const proposal = (document.getElementById('delegateProposalInput')?.value || '').trim() || '<PROPOSAL_PUBKEY>';
+  const delegatee = (document.getElementById('delegateeWalletInput')?.value || '').trim() || '<DELEGATEE_PUBKEY>';
+  return `yarn delegate-vote -- --proposal ${proposal} --delegatee ${delegatee}`;
+}
+
+function syncDelegateVoteCommand(prefillProposal = null) {
+  const proposalInput = document.getElementById('delegateProposalInput');
+  if (proposalInput && prefillProposal && !proposalInput.value.trim()) proposalInput.value = prefillProposal;
+  const commandEl = document.getElementById('delegateVoteCommandBuilder');
+  if (commandEl) commandEl.textContent = buildDelegateVoteCommand();
+}
+
+function copyDelegateVoteCommand() {
+  const command = buildDelegateVoteCommand();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(command)
+      .then(() => showToast('Delegate command copied.', 'success'))
+      .catch(() => showToast(command, 'info'));
+    return;
+  }
+  showToast(command, 'info');
+}
+
+function buildDelegatedCommitCommand() {
+  const proposal = currentSelectedProposalPubkey || '<PROPOSAL_PUBKEY>';
+  const vote = selectedVote || 'yes';
+  const delegator = (document.getElementById('delegatedCommitDelegatorInput')?.value || '').trim() || '<DELEGATOR_PUBKEY>';
+  return `yarn commit -- --proposal ${proposal} --vote ${vote} --delegator ${delegator}`;
+}
+
+function syncDelegatedCommitCommand() {
+  const commandEl = document.getElementById('delegatedCommitCommandBuilder');
+  if (commandEl) commandEl.textContent = buildDelegatedCommitCommand();
+}
+
+function copyDelegatedCommitCommand() {
+  const command = buildDelegatedCommitCommand();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(command)
+      .then(() => showToast('Delegated commit command copied.', 'success'))
+      .catch(() => showToast(command, 'info'));
+    return;
+  }
+  showToast(command, 'info');
+}
+
 function renderProposalDetail(p, nowTs) {
   const phase = computePhase(p, nowTs);
   const treasuryPda = deriveTreasuryPda(p.dao);
@@ -3681,10 +3912,13 @@ function selectProposal(pubkey) {
   renderProposalDetail(p, Math.floor(Date.now() / 1000));
   syncCreateProposalCommand(p.dao);
   syncDepositCommand(p.dao);
+  syncDelegateVoteCommand(p.pubkey);
+  loadProposalHistory(p);
   updateCommitCommandBuilder();
   updateRevealCommandBuilder();
   updateFinalizeCommandBuilder();
   updateExecuteCommandBuilder();
+  syncDelegatedCommitCommand();
   syncUrlState();
 }
 
@@ -3858,6 +4092,7 @@ async function selectVote(v) {
   el.textContent = `0x${currentCommitHashHex}`;
   el.classList.remove('computing');
   updateCommitCommandBuilder();
+  syncDelegatedCommitCommand();
   document.getElementById('submitBtn').disabled = false;
 }
 
@@ -3995,6 +4230,21 @@ observeReveal();
   if (el) el.addEventListener('input', () => syncDepositCommand());
 });
 
+[
+  'delegateProposalInput',
+  'delegateeWalletInput',
+].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', () => syncDelegateVoteCommand());
+});
+
+[
+  'delegatedCommitDelegatorInput',
+].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', () => syncDelegatedCommitCommand());
+});
+
 const initialParams = new URLSearchParams(window.location.search);
 const initialJudge = initialParams.get('judge');
 const initialPage = initialParams.get('page');
@@ -4010,10 +4260,12 @@ if (initialJudge === '1') {
 syncCreateProposalCommand();
 syncCreateDaoCommand();
 syncDepositCommand();
+syncDelegateVoteCommand();
 updateCommitCommandBuilder();
 updateRevealCommandBuilder();
 updateFinalizeCommandBuilder();
 updateExecuteCommandBuilder();
+syncDelegatedCommitCommand();
 
 updateDeploymentSnapshot();
 loadLiveProposals();
