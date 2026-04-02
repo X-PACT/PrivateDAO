@@ -12,6 +12,7 @@ PrivateDAO now includes a reviewer-visible hardening layer focused on realistic 
 - treasury miswiring rejection
 - delegation misuse guards across product surfaces
 - finalize and execute account-binding rejection
+- timing boundary and lifecycle invariant checks
 - mainnet cutover readiness checks
 
 ## Reviewer-first proof points
@@ -65,6 +66,17 @@ PrivateDAO now includes a reviewer-visible hardening layer focused on realistic 
 - execute rejects treasury PDAs that belong to another DAO even when the treasury account is valid and funded
 - failed finalize and execute attempts leave proposal state unchanged
 - permissionless finalize and execute remain supported, but only when signer and account bindings are exact
+
+### Timing and invariant safety
+
+- commit still works immediately before voting end and is rejected once the commit window is closed
+- reveal opens exactly when the voting window ends and not before
+- finalize opens at reveal end and not before
+- execute opens at timelock unlock and not before
+- failed finalize and execute attempts do not advance proposal lifecycle fields
+- `revealed => committed` is asserted directly through voter records
+- `reveal_count <= commit_count` is asserted directly
+- successful execute is the only tested path that sets `is_executed = true`
 
 ## Honest current boundary
 
