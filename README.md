@@ -222,6 +222,8 @@ Unified verification gate:
 npm run verify:all
 ```
 
+This gate is also enforced in CI, so the reviewer-facing evidence path, live-proof references, and ops package are checked on every push and pull request.
+
 ## Threat Coverage
 
 Reviewer-visible coverage currently includes:

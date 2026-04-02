@@ -53,3 +53,6 @@ jobs:
 
       - name: Non-real-code scan
         run: bash scripts/verify.sh scan
+
+      - name: Unified review and ops verification
+        run: npm run verify:all
