@@ -29,7 +29,7 @@
 import * as anchor from "@coral-xyz/anchor";
 import { PublicKey, Keypair, SystemProgram, Transaction, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import {
-  createMint, createAccount, mintTo,
+  createMint, createAccount, createAssociatedTokenAccountInstruction, getAssociatedTokenAddressSync, mintTo,
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 import * as crypto from "crypto";
@@ -128,6 +128,19 @@ describe("demo", () => {
     }
 
     const mint = await createMint(provider.connection, payer, payer.publicKey, null, 6);
+    const payerTokenAta = getAssociatedTokenAddressSync(mint, payer.publicKey);
+    await provider.sendAndConfirm(
+      new Transaction().add(
+        createAssociatedTokenAccountInstruction(
+          payer.publicKey,
+          payerTokenAta,
+          payer.publicKey,
+          mint,
+        ),
+      ),
+      [],
+    );
+    await mintTo(provider.connection, payer, mint, payerTokenAta, payer, 1_000_000n);
 
     async function mintTokens(owner: Keypair, amount: number): Promise<PublicKey> {
       const ata = await createAccount(provider.connection, payer, mint, owner.publicKey);
@@ -231,7 +244,7 @@ describe("demo", () => {
       )
       .accounts({
         dao: daoPda, proposal: proposal1Pda,
-        authority: payer.publicKey, proposer: payer.publicKey,
+        proposerTokenAccount: payerTokenAta, proposer: payer.publicKey,
         systemProgram: SystemProgram.programId,
       })
       .rpc();
@@ -459,7 +472,7 @@ describe("demo", () => {
       )
       .accounts({
         dao: daoPda, proposal: proposal2Pda,
-        authority: payer.publicKey, proposer: payer.publicKey,
+        proposerTokenAccount: payerTokenAta, proposer: payer.publicKey,
         systemProgram: SystemProgram.programId,
       })
       .rpc();

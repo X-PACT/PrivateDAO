@@ -162,6 +162,15 @@ pub mod private_dao {
 
         let now = Clock::get()?.unix_timestamp;
         let dao = &mut ctx.accounts.dao;
+        let proposer_balance = ctx.accounts.proposer_token_account.amount;
+        require!(proposer_balance > 0, Error::InsufficientTokens);
+        if dao.governance_token_required > 0 {
+            require!(
+                proposer_balance >= dao.governance_token_required,
+                Error::InsufficientTokens
+            );
+        }
+
         let p = &mut ctx.accounts.proposal;
 
         p.dao = dao.key();
@@ -863,7 +872,7 @@ pub struct MigrateFromRealms<'info> {
 #[instruction(title: String)]
 pub struct CreateProposal<'info> {
     #[account(
-        mut, has_one = authority,
+        mut,
         seeds = [b"dao", dao.authority.as_ref(), dao.dao_name.as_bytes()],
         bump = dao.bump
     )]
@@ -874,7 +883,11 @@ pub struct CreateProposal<'info> {
         bump
     )]
     pub proposal: Account<'info, Proposal>,
-    pub authority: Signer<'info>,
+    #[account(
+        constraint = proposer_token_account.owner == proposer.key(),
+        constraint = proposer_token_account.mint == dao.governance_token,
+    )]
+    pub proposer_token_account: Account<'info, TokenAccount>,
     #[account(mut)]
     pub proposer: Signer<'info>,
     pub system_program: Program<'info, System>,

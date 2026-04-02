@@ -12,7 +12,7 @@ This is the longer walk-through for someone actually running the repo, not a pit
 ## What the protocol does
 
 1. DAO authority creates a DAO with a voting mode and timelock policy.
-2. Authority creates proposals, optionally with a treasury action.
+2. Any wallet holding the DAO governance token can create proposals, optionally with a treasury action.
 3. Token holders commit vote hashes during the voting window.
 4. Voters or approved keepers reveal after `voting_end`.
 5. Anyone finalizes after `reveal_end`.

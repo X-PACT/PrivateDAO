@@ -15,7 +15,7 @@
 import * as anchor from "@coral-xyz/anchor";
 import { PublicKey, SystemProgram } from "@solana/web3.js";
 import { createMint } from "@solana/spl-token";
-import { parseArgs, solscanAccountUrl, workspaceProgram } from "./utils";
+import { parseArgs, solscanAccountUrl, solscanTxUrl, workspaceProgram } from "./utils";
 
 async function main() {
   const {
@@ -84,11 +84,13 @@ async function main() {
   console.log(`   DAO address:      ${daoPda.toBase58()}`);
   console.log(`   Governance token: ${mint.toBase58()}`);
   console.log(`   Tx:               ${tx}`);
+  console.log(`   Tx link:          ${solscanTxUrl(tx)}`);
   console.log(`   Proposal count:   ${dao.proposalCount.toString()}`);
   console.log(`\n   Save these for next steps:`);
   console.log(`   DAO_PDA=${daoPda.toBase58()}`);
   console.log(`   GOVERNANCE_MINT=${mint.toBase58()}`);
-  console.log(`\n   Explorer: ${solscanAccountUrl(daoPda.toBase58())}`);
+  console.log(`\n   DAO explorer:  ${solscanAccountUrl(daoPda.toBase58())}`);
+  console.log(`   Mint explorer: ${solscanAccountUrl(mint.toBase58())}`);
   console.log(`   Next: yarn create-proposal -- --dao ${daoPda.toBase58()} --title "Fund community work"`);
 }
 

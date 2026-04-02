@@ -686,6 +686,28 @@ nav.scrolled {
 .action-veto { background: var(--red-dim); color: var(--red); border: 1px solid rgba(255,45,85,0.3) !important; flex: 0 0 auto; padding: 12px 20px; }
 .action-veto:hover { background: rgba(255,45,85,0.2); }
 
+.proposal-create-card {
+  margin-top: 18px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 22px 24px;
+}
+
+.proposal-create-card code {
+  display: block;
+  margin-top: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--void);
+  color: var(--cyan);
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.7;
+  overflow-x: auto;
+}
+
 /* ── HOW IT WORKS ── */
 .protocol-steps {
   display: grid;
@@ -895,6 +917,40 @@ nav.scrolled {
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 28px;
+}
+
+.investor-video-card {
+  background: linear-gradient(180deg, rgba(0, 229, 255, 0.08), rgba(12, 30, 48, 0.94));
+  border: 1px solid rgba(0, 229, 255, 0.16);
+  border-radius: 24px;
+  padding: 34px;
+  margin-top: 24px;
+}
+
+.investor-video-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.investor-video-panel {
+  background: rgba(4, 10, 15, 0.72);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px;
+}
+
+.investor-video-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.investor-video-copy {
+  font-size: 15px;
+  color: var(--text2);
+  line-height: 1.8;
 }
 
 .award-link {
@@ -1138,6 +1194,7 @@ footer {
   .award-banner-inner, .award-detail-head { flex-direction: column; }
   .award-banner-meta { width: 100%; }
   .award-grid, .award-points { grid-template-columns: 1fr; }
+  .investor-video-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -1329,6 +1386,12 @@ footer {
         <div class="proposal-desc">The app reads real `Proposal` accounts from the configured program ID. If no proposals exist yet, this section will show an empty-state message.</div>
       </div>
     </div>
+
+    <div class="proposal-create-card reveal">
+      <div class="proposal-title">Create proposal on-chain</div>
+      <div class="proposal-desc">Proposal creation is real and permissioned by governance token ownership, not mocked in the frontend. Any wallet holding the DAO governance token can submit a proposal through the repo script and receive a real transaction signature plus explorer link.</div>
+      <code>yarn create-proposal -- --dao &lt;DAO_PDA&gt; --title "Fund community work"</code>
+    </div>
   </div>
 </section>
 
@@ -1339,8 +1402,10 @@ footer {
     <div class="reveal" style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;line-height:1.8;color:var(--text2)">
       <p>1) Connect Phantom or Solflare to confirm wallet wiring and devnet connectivity.</p>
       <p>2) Use the repository scripts for the real flow: create proposal → commit → reveal → finalize → execute.</p>
-      <p>3) Refresh this page to inspect live proposal accounts, timing windows, and resulting phase transitions.</p>
-      <p style="color:var(--amber)">This page is intentionally paired with the repo scripts instead of pretending to be a full DAO admin console. The frontend explains the flow, while the backend and CLI execute the exact on-chain instructions under review.</p>
+      <p>3) Proposal creation is not authority-only. Any wallet holding the DAO governance token can submit a proposal on-chain.</p>
+      <p>4) Refresh this page to inspect live proposal accounts, timing windows, and resulting phase transitions.</p>
+      <p>5) Local proof flow: run <span style="color:var(--cyan)">npm run demo</span> to execute the repository's end-to-end demonstration.</p>
+      <p style="color:var(--amber)">This page is intentionally paired with the repo scripts instead of pretending to be a full DAO admin console. The frontend explains the flow, while the backend and CLI execute the exact on-chain instructions under review, including real transaction signatures and explorer links.</p>
     </div>
   </div>
 </section>
@@ -1635,6 +1700,31 @@ execute() → CPI
         <a class="award-link" href="awards.md" target="_blank">Markdown Note</a>
       </div>
     </div>
+
+    <div class="investor-video-card reveal">
+      <div class="section-tag" style="margin-bottom:14px">INVESTOR VIDEO PACKAGE</div>
+      <div class="investor-video-title">Pitch assets are prepared from the protocol itself.</div>
+      <p class="investor-video-copy">
+        The investor video package is being produced from the actual program logic, lifecycle tests, live frontend, and award verification so the final pitch stays aligned with what PrivateDAO really ships.
+      </p>
+      <div class="investor-video-grid">
+        <div class="investor-video-panel">
+          <div class="award-meta-card-label">VIDEO ASSETS</div>
+          <div class="investor-video-copy">
+            <div>Brief and production package: <a class="award-link" href="investor-video.md" target="_blank" style="margin-top:12px">Investor Video Brief</a></div>
+            <div style="margin-top:12px">Voiceover: <a class="award-link" href="video-voiceover.md" target="_blank">Voiceover Script</a></div>
+            <div style="margin-top:12px">Shotlist: <a class="award-link" href="video-shotlist.md" target="_blank">Shotlist</a></div>
+          </div>
+        </div>
+        <div class="investor-video-panel">
+          <div class="award-meta-card-label">GENERATION STATUS</div>
+          <div class="investor-video-copy">
+            <div>Current external task status: pending</div>
+            <div style="margin-top:10px">Generation task: <a class="award-link" href="https://manus.im/app/kMUHrujYi7Ec8nXqWDSxa9" target="_blank">Open Task</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 </div><!-- /page-awards -->
@@ -1740,6 +1830,35 @@ execute() → CPI
   </div>
 </div>
 
+<!-- EXECUTE MODAL -->
+<div class="modal-overlay" id="executeModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('executeModal')">✕</button>
+    <div class="modal-title">EXECUTE PROPOSAL</div>
+    <div class="modal-sub">Execution remains tied to the real on-chain workflow. This panel prepares the exact repo command for the selected proposal.</div>
+    <div class="network-indicator" style="margin-top:-10px">
+      <span class="net-dot"></span>
+      <span>Target proposal</span>
+      <span class="net-name" id="executeTargetLabel">Select from live list</span>
+      <span style="margin-left:auto" id="executePhaseLabel">Checking phase</span>
+    </div>
+
+    <div class="commit-preview" style="margin-bottom:20px">
+      <div class="commit-preview-label">EXECUTION STATUS</div>
+      <div class="commit-hash" id="executeProposalState">Only proposals that have passed and cleared the timelock can execute.</div>
+    </div>
+
+    <div style="background:var(--void);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px;font-family:var(--mono);font-size:11px;line-height:1.8;color:var(--text2)">
+      <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:8px">EXECUTION COMMAND</div>
+      <div id="executeCommandHint">Run the repo execute script for the selected proposal.</div>
+    </div>
+
+    <button class="submit-btn" id="executeSubmitBtn" onclick="submitExecute()">
+      Copy Execute Command
+    </button>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -1802,6 +1921,7 @@ let walletProvider = null;
 let currentCommitSaltHex = null;
 let currentCommitHashHex = null;
 let currentProposalId = null;
+let currentExecuteProposalPubkey = null;
 
 function shortPk(pk) {
   return `${pk.slice(0, 4)}...${pk.slice(-4)}`;
@@ -2016,6 +2136,11 @@ function proposalCardHtml(p, nowTs) {
     : phase === "Reveal"
       ? "phase-reveal"
       : "phase-passed";
+  const executeDisabled = phase !== "Executable";
+  const executeLabel = phase === "Timelocked" ? "Timelocked" : "Execute";
+  const executeButton = (phase === "Executable" || phase === "Timelocked")
+    ? `<button class="action-btn action-execute" ${executeDisabled ? "disabled" : ""} onclick="openExecuteModal('${p.pubkey}', ${p.proposalId}, ${executeDisabled ? "false" : "true"}, ${p.executionUnlocksAt})">${executeLabel}</button>`
+    : "";
   return `
     <div class="proposal-card ${className}">
       <div class="proposal-header">
@@ -2033,6 +2158,7 @@ function proposalCardHtml(p, nowTs) {
       <div class="proposal-actions">
         <button class="action-btn action-commit" onclick="openCommitModal(${p.proposalId})">Commit</button>
         <button class="action-btn action-reveal" onclick="openRevealModal(${p.proposalId})">Reveal</button>
+        ${executeButton}
       </div>
     </div>
   `;
@@ -2107,6 +2233,20 @@ function openRevealModal(id) {
     : `Run scripts/reveal-vote.ts for PROP-${String(currentProposalId).padStart(3, '0')} using the original vote choice and saved salt.`;
   document.getElementById('revealModal').classList.add('open');
 }
+function openExecuteModal(proposalPubkey, id, executable, unlockTs) {
+  currentExecuteProposalPubkey = proposalPubkey || null;
+  const paddedId = Number.isFinite(id) && id >= 0 ? `PROP-${String(id).padStart(3, '0')}` : 'Selected proposal';
+  document.getElementById('executeTargetLabel').textContent = paddedId;
+  document.getElementById('executePhaseLabel').textContent = executable ? 'Executable now' : 'Timelock active';
+  document.getElementById('executeProposalState').textContent = executable
+    ? `The selected proposal can execute on-chain now. The repo execute script will submit the treasury action transaction.`
+    : `The selected proposal has passed but is still timelocked. Wait until ${new Date(unlockTs * 1000).toISOString().replace('T', ' ').slice(0, 19)} UTC before executing.`;
+  document.getElementById('executeCommandHint').textContent = proposalPubkey
+    ? `yarn execute -- --proposal ${proposalPubkey}`
+    : 'Run the repo execute script for the selected proposal.';
+  document.getElementById('executeSubmitBtn').disabled = !executable;
+  document.getElementById('executeModal').classList.add('open');
+}
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
 async function selectVote(v) {
@@ -2170,6 +2310,22 @@ function submitReveal() {
     ? 'selected proposal'
     : `PROP-${String(currentProposalId).padStart(3, '0')}`;
   showToast(`Run scripts/reveal-vote.ts for ${target} with your original vote and saved salt.`, 'info');
+}
+
+function submitExecute() {
+  if (!currentExecuteProposalPubkey) {
+    showToast('Select an executable proposal first.', 'error');
+    return;
+  }
+  const command = `yarn execute -- --proposal ${currentExecuteProposalPubkey}`;
+  closeModal('executeModal');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(command)
+      .then(() => showToast('Execute command copied. Run it from the repo terminal.', 'success'))
+      .catch(() => showToast(command, 'info'));
+    return;
+  }
+  showToast(command, 'info');
 }
 
 function vetoProposal() {

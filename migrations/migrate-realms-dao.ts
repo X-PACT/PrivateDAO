@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 /**
  * migrate-realms-dao.ts
- * MIGRATION TRACK (Sunrise) — $7,000
+ * MIGRATION TRACK (Sunrise)
  *
  * Migrates an existing Realms DAO to use PrivateDAO for voting privacy.
  *
@@ -25,7 +25,7 @@
  */
 import * as anchor from "@coral-xyz/anchor";
 import { PublicKey, SystemProgram } from "@solana/web3.js";
-import { parseArgs, workspaceProgram } from "../scripts/utils";
+import { parseArgs, solscanAccountUrl, solscanTxUrl, workspaceProgram } from "../scripts/utils";
 
 async function main() {
   const {
@@ -142,6 +142,8 @@ async function main() {
   console.log(`  Reveal window:     ${dao.revealWindowSeconds}s`);
   console.log(`  Migrated from:     ${dao.migratedFromRealms?.toBase58()}`);
   console.log(`  Transaction:       ${tx}`);
+  console.log(`  Tx link:           ${solscanTxUrl(tx)}`);
+  console.log(`  DAO explorer:      ${solscanAccountUrl(daoPda.toBase58())}`);
 
   console.log(`\n  What changed vs Realms:`);
   console.log(`  ─────────────────────────────────────`);

@@ -10,7 +10,8 @@
  */
 import * as anchor from "@coral-xyz/anchor";
 import { PublicKey, SystemProgram, LAMPORTS_PER_SOL } from "@solana/web3.js";
-import { formatSol, formatTimestamp, parseArgs, solscanAccountUrl, workspaceProgram } from "./utils";
+import { getAssociatedTokenAddressSync, TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import { formatSol, formatTimestamp, parseArgs, solscanAccountUrl, solscanTxUrl, workspaceProgram } from "./utils";
 
 async function main() {
   const {
@@ -36,6 +37,12 @@ async function main() {
   const daoPda = new PublicKey(String(daoPdaStr));
   const dao    = await program.account.dao.fetch(daoPda);
   const durationSeconds = Number(duration);
+  const proposerTokenAccount = getAssociatedTokenAddressSync(
+    dao.governanceToken,
+    provider.wallet.publicKey,
+    false,
+    TOKEN_PROGRAM_ID,
+  );
 
   if (!Number.isFinite(durationSeconds) || durationSeconds <= 0) {
     console.error("Error: --duration must be a positive number of seconds");
@@ -116,7 +123,7 @@ async function main() {
     .accounts({
       dao: daoPda,
       proposal: proposalPda,
-      authority: provider.wallet.publicKey,
+      proposerTokenAccount,
       proposer: provider.wallet.publicKey,
       systemProgram: SystemProgram.programId,
     })
@@ -128,9 +135,11 @@ async function main() {
   console.log(`   Proposal address: ${proposalPda.toBase58()}`);
   console.log(`   Proposal ID:      ${proposal.proposalId.toString()}`);
   console.log(`   Transaction:      ${tx}`);
+  console.log(`   Tx link:          ${solscanTxUrl(tx)}`);
+  console.log(`   Proposer token:   ${proposerTokenAccount.toBase58()}`);
   console.log(`   Voting ends:      ${formatTimestamp(proposal.votingEnd.toNumber())}`);
   console.log(`   Reveal ends:      ${formatTimestamp(proposal.revealEnd.toNumber())}`);
-  console.log(`   Explorer:         ${solscanAccountUrl(proposalPda.toBase58())}`);
+  console.log(`   Proposal explorer:${" "}${solscanAccountUrl(proposalPda.toBase58())}`);
   console.log(`\n   Save this:`);
   console.log(`   PROPOSAL_PDA=${proposalPda.toBase58()}`);
   console.log(`   Next: yarn commit -- --proposal ${proposalPda.toBase58()} --vote yes`);

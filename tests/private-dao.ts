@@ -3,7 +3,7 @@
 import * as anchor from "@coral-xyz/anchor";
 import { PublicKey, Keypair, SystemProgram, Transaction, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import {
-  createMint, createAccount, mintTo,
+  createMint, createAccount, createAssociatedTokenAccountInstruction, getAssociatedTokenAddressSync, mintTo,
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 import * as crypto from "crypto";
@@ -31,6 +31,7 @@ describe("PrivateDAO", () => {
   let voter1 = Keypair.generate();
   let voter2 = Keypair.generate();
   let voter3 = Keypair.generate();
+  let authorityTokenAta: PublicKey;
   let v1Ata: PublicKey, v2Ata: PublicKey, v3Ata: PublicKey;
   let daoPda: PublicKey;
   let proposalPda: PublicKey;
@@ -56,6 +57,19 @@ describe("PrivateDAO", () => {
       provider.connection, authority.payer, authority.publicKey, null, 6,
     );
 
+    authorityTokenAta = getAssociatedTokenAddressSync(governanceMint, authority.publicKey);
+    await provider.sendAndConfirm(
+      new Transaction().add(
+        createAssociatedTokenAccountInstruction(
+          authority.publicKey,
+          authorityTokenAta,
+          authority.publicKey,
+          governanceMint,
+        ),
+      ),
+      [],
+    );
+
     v1Ata = await createAccount(provider.connection, authority.payer, governanceMint, voter1.publicKey);
     v2Ata = await createAccount(provider.connection, authority.payer, governanceMint, voter2.publicKey);
     v3Ata = await createAccount(provider.connection, authority.payer, governanceMint, voter3.publicKey);
@@ -63,6 +77,7 @@ describe("PrivateDAO", () => {
     await mintTo(provider.connection, authority.payer, governanceMint, v1Ata, authority.payer, 1_000_000_000n);
     await mintTo(provider.connection, authority.payer, governanceMint, v2Ata, authority.payer,   500_000_000n);
     await mintTo(provider.connection, authority.payer, governanceMint, v3Ata, authority.payer,   100_000_000n);
+    await mintTo(provider.connection, authority.payer, governanceMint, authorityTokenAta, authority.payer, 1_000_000n);
 
     [daoPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("dao"), authority.publicKey.toBuffer(), Buffer.from(DAO_NAME)],
@@ -93,7 +108,7 @@ describe("PrivateDAO", () => {
     console.log("  ✓ DAO initialized");
   });
 
-  it("creates a proposal", async () => {
+  it("allows a governance token holder to create a proposal", async () => {
     const dao = await program.account["dao"].fetch(daoPda);
 
     [proposalPda] = PublicKey.findProgramAddressSync(
@@ -110,15 +125,17 @@ describe("PrivateDAO", () => {
       )
       .accounts({
         dao: daoPda, proposal: proposalPda,
-        authority: authority.publicKey, proposer: authority.publicKey,
+        proposerTokenAccount: v1Ata, proposer: voter1.publicKey,
         systemProgram: SystemProgram.programId,
       })
+      .signers([voter1])
       .rpc();
 
     const p = await program.account["proposal"].fetch(proposalPda);
     assert.equal(p.title, "Allocate 10 SOL for marketing");
+    assert.equal(p.proposer.toBase58(), voter1.publicKey.toBase58());
     assert.equal(p.commitCount.toString(), "0");
-    console.log("  ✓ Proposal created");
+    console.log("  ✓ Token holder created proposal");
   });
 
   it("rejects invalid treasury action configuration", async () => {
@@ -144,7 +161,7 @@ describe("PrivateDAO", () => {
         .accounts({
           dao: daoPda,
           proposal: invalidProposalPda,
-          authority: authority.publicKey,
+          proposerTokenAccount: authorityTokenAta,
           proposer: authority.publicKey,
           systemProgram: SystemProgram.programId,
         })
@@ -259,7 +276,7 @@ describe("PrivateDAO", () => {
       .createProposal("Cancel me", "Test cancel.", new BN(3600), null)
       .accounts({
         dao: daoPda, proposal: cancelPda,
-        authority: authority.publicKey, proposer: authority.publicKey,
+        proposerTokenAccount: authorityTokenAta, proposer: authority.publicKey,
         systemProgram: SystemProgram.programId,
       })
       .rpc();
@@ -286,7 +303,7 @@ describe("PrivateDAO", () => {
       .accounts({
         dao: daoPda,
         proposal: selfDelegateProposalPda,
-        authority: authority.publicKey,
+        proposerTokenAccount: authorityTokenAta,
         proposer: authority.publicKey,
         systemProgram: SystemProgram.programId,
       })

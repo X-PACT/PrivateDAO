@@ -26,10 +26,19 @@ PrivateDAO is a Solana governance protocol for DAOs that want private voting wit
 
 The problem statement is simple and easy for judges to verify: public live tallies create whale pressure, vote buying, and treasury signaling. PrivateDAO removes live vote visibility while keeping the rest of the governance lifecycle inspectable, testable, and compatible with how Solana teams actually operate.
 
+What is real in the current implementation:
+
+- voting is executed on-chain through the Solana program
+- proposal accounts are read live from on-chain program state
+- any wallet holding the DAO governance token can create a proposal
+- commit, reveal, finalize, cancel, veto, and execute are implemented in the program
+- the operator scripts print real transaction signatures and Solscan links for verification
+
 Quick links:
 
 - Live frontend: `https://x-pact.github.io/PrivateDAO/`
 - Awards page: `docs/awards.md`
+- Investor video package: `docs/investor-video.md`
 - On-chain program: `programs/private-dao/src/lib.rs`
 - End-to-end lifecycle test: `tests/full-flow-test.ts`
 
@@ -67,6 +76,25 @@ GitHub Pages source: `docs/` via `.github/workflows/pages.yml`.
 ## One-Line Pitch
 
 PrivateDAO brings commit-reveal voting, proposal-scoped private delegation, keeper-assisted reveal, and timelocked treasury execution to Solana DAOs in one working stack.
+
+## 🎬 Investor Video Package
+
+The investor-facing pitch video is being generated from a repo-native package built around the actual protocol, test surface, and award verification.
+
+- Video brief and production package: `docs/investor-video.md`
+- Voiceover script: `docs/video-voiceover.md`
+- Shotlist and visual direction: `docs/video-shotlist.md`
+- Generation task: `https://manus.im/app/kMUHrujYi7Ec8nXqWDSxa9`
+
+## 🧪 Local Demo
+
+Run the repository demonstration end-to-end with:
+
+```bash
+npm run demo
+```
+
+This exercises the real lifecycle through Anchor tests, including proposal creation, commit, reveal, finalize, execute, delegation, and cancellation.
 
 ## 🧭 System Diagram
 
