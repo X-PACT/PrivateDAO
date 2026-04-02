@@ -1736,6 +1736,45 @@ footer {
       </div>
     </div>
 
+    <div class="proposal-create-card reveal">
+      <div class="proposal-title">Operator console</div>
+      <div class="proposal-desc">Build the rest of the real operator commands from the same surface. These commands stay honest to the repository flow and prefill from the selected proposal when possible.</div>
+      <div class="proposal-command-grid">
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">CREATE DAO</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:10px">
+            <input id="builderDaoName" type="text" value="PrivateDAO Live" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="DAO name">
+            <input id="builderDaoQuorum" type="number" value="51" min="1" max="100" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Quorum">
+            <input id="builderDaoReveal" type="number" value="5" min="5" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Reveal window">
+            <input id="builderDaoDelay" type="number" value="5" min="0" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Execution delay">
+          </div>
+          <code id="createDaoCommandBuilder" style="display:block;margin-top:12px;color:var(--cyan)">yarn create-dao -- --name "PrivateDAO Live" --quorum 51 --reveal-window 5 --delay 5</code>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+            <button class="action-btn action-commit" style="flex:0 0 auto" onclick="copyCreateDaoCommand()">Copy Create DAO</button>
+          </div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">DEPOSIT TREASURY</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:10px">
+            <input id="builderDepositDao" type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="DAO PDA">
+            <input id="builderDepositAmount" type="number" value="0.2" min="0" step="0.01" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Amount in SOL">
+          </div>
+          <code id="depositCommandBuilder" style="display:block;margin-top:12px;color:var(--cyan)">yarn deposit -- --dao &lt;DAO_PDA&gt; --amount 0.2</code>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+            <button class="action-btn action-reveal" style="flex:0 0 auto" onclick="copyDepositCommand()">Copy Deposit Command</button>
+          </div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">FINALIZE</div>
+          <div style="color:var(--text2);line-height:1.8;margin-top:10px">When the reveal window closes, finalize the selected proposal from the repo.</div>
+          <code id="finalizeCommandBuilder" style="display:block;margin-top:12px;color:var(--cyan)">yarn finalize -- --proposal &lt;PROPOSAL_PUBKEY&gt;</code>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+            <button class="action-btn action-execute" style="flex:0 0 auto" onclick="copyFinalizeCommand()">Copy Finalize Command</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="execute-surface-card reveal">
       <div class="section-tag">ON-CHAIN EXECUTION</div>
       <h3 style="font-size:30px;font-weight:700;letter-spacing:-0.4px">Execute button is isolated from the award surface.</h3>
@@ -2595,6 +2634,82 @@ function updateExecuteCommandBuilder() {
   if (el) el.textContent = command;
 }
 
+function buildCreateDaoCommand() {
+  const name = (document.getElementById('builderDaoName')?.value || 'PrivateDAO Live').trim() || 'PrivateDAO Live';
+  const quorum = (document.getElementById('builderDaoQuorum')?.value || '51').trim() || '51';
+  const revealWindow = (document.getElementById('builderDaoReveal')?.value || '5').trim() || '5';
+  const delay = (document.getElementById('builderDaoDelay')?.value || '5').trim() || '5';
+  const safeName = name.replace(/"/g, '\\"');
+  return `yarn create-dao -- --name "${safeName}" --quorum ${quorum} --reveal-window ${revealWindow} --delay ${delay}`;
+}
+
+function syncCreateDaoCommand() {
+  const el = document.getElementById('createDaoCommandBuilder');
+  if (el) el.textContent = buildCreateDaoCommand();
+}
+
+function copyCreateDaoCommand() {
+  const command = buildCreateDaoCommand();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(command)
+      .then(() => showToast('Create DAO command copied.', 'success'))
+      .catch(() => showToast(command, 'info'));
+    return;
+  }
+  showToast(command, 'info');
+}
+
+function buildDepositCommand() {
+  const dao = (document.getElementById('builderDepositDao')?.value || '').trim() || '<DAO_PDA>';
+  const amount = (document.getElementById('builderDepositAmount')?.value || '0.2').trim() || '0.2';
+  return `yarn deposit -- --dao ${dao} --amount ${amount}`;
+}
+
+function syncDepositCommand(prefillDao = null) {
+  const daoInput = document.getElementById('builderDepositDao');
+  if (daoInput && prefillDao && !daoInput.value.trim()) daoInput.value = prefillDao;
+  const el = document.getElementById('depositCommandBuilder');
+  if (el) el.textContent = buildDepositCommand();
+}
+
+function copyDepositCommand() {
+  const dao = (document.getElementById('builderDepositDao')?.value || '').trim();
+  if (!dao) {
+    showToast('Set DAO PDA first.', 'error');
+    return;
+  }
+  const command = buildDepositCommand();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(command)
+      .then(() => showToast('Deposit command copied.', 'success'))
+      .catch(() => showToast(command, 'info'));
+    return;
+  }
+  showToast(command, 'info');
+}
+
+function updateFinalizeCommandBuilder() {
+  const proposal = currentSelectedProposalPubkey || '<PROPOSAL_PUBKEY>';
+  const command = `yarn finalize -- --proposal ${proposal}`;
+  const el = document.getElementById('finalizeCommandBuilder');
+  if (el) el.textContent = command;
+}
+
+function copyFinalizeCommand() {
+  if (!currentSelectedProposalPubkey) {
+    showToast('Select a live proposal first.', 'error');
+    return;
+  }
+  const command = `yarn finalize -- --proposal ${currentSelectedProposalPubkey}`;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(command)
+      .then(() => showToast('Finalize command copied.', 'success'))
+      .catch(() => showToast(command, 'info'));
+    return;
+  }
+  showToast(command, 'info');
+}
+
 const DEVNET_RPC = "https://solana-devnet.g.alchemy.com/v2/L4dlywEyiBJLg8Ey0bFof";
 const PROGRAM_ID = "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx";
 const connection = new solanaWeb3.Connection(DEVNET_RPC, "confirmed");
@@ -2930,8 +3045,10 @@ function selectProposal(pubkey) {
   currentSelectedProposal = p;
   renderProposalDetail(p, Math.floor(Date.now() / 1000));
   syncCreateProposalCommand(p.dao);
+  syncDepositCommand(p.dao);
   updateCommitCommandBuilder();
   updateRevealCommandBuilder();
+  updateFinalizeCommandBuilder();
   updateExecuteCommandBuilder();
   syncUrlState();
 }
@@ -3214,6 +3331,24 @@ observeReveal();
   if (el) el.addEventListener('input', () => syncCreateProposalCommand());
 });
 
+[
+  'builderDaoName',
+  'builderDaoQuorum',
+  'builderDaoReveal',
+  'builderDaoDelay',
+].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', () => syncCreateDaoCommand());
+});
+
+[
+  'builderDepositDao',
+  'builderDepositAmount',
+].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', () => syncDepositCommand());
+});
+
 const initialParams = new URLSearchParams(window.location.search);
 const initialPage = initialParams.get('page');
 if (initialPage && document.getElementById(`page-${initialPage}`)) {
@@ -3223,8 +3358,11 @@ if (initialPage && document.getElementById(`page-${initialPage}`)) {
 }
 
 syncCreateProposalCommand();
+syncCreateDaoCommand();
+syncDepositCommand();
 updateCommitCommandBuilder();
 updateRevealCommandBuilder();
+updateFinalizeCommandBuilder();
 updateExecuteCommandBuilder();
 
 updateDeploymentSnapshot();
