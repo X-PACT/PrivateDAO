@@ -111,6 +111,8 @@ The current Android app is wired for real devnet interaction, not mock state.
 
 Implemented mobile transaction paths:
 
+- create DAO
+- deposit treasury
 - create proposal
 - commit vote
 - reveal vote
@@ -129,9 +131,8 @@ Implemented mobile read paths:
 
 These are real limitations, not hidden gaps:
 
-- the Android app currently prioritizes the main governance lifecycle over the full operator surface
-- `execute` is wired for `SendSol` and recipient-style execution paths; `SendToken` execution is not yet fully exposed in mobile because it requires a stricter token-account selection UX
-- the current mobile UI does not yet expose browser-equivalent operator flows such as DAO bootstrap and treasury deposit
+- `SendToken` execution is now wired in the Android client, but it still depends on the recipient associated token account existing on-chain for the configured mint
+- the Android app currently prioritizes the governance lifecycle and treasury/operator essentials; the broader browser-only proof center and judge-mode surfaces still live primarily in the web product
 - full local build verification was limited in this session by missing local Android SDK / Gradle execution environment in the workspace shell
 
 None of these change the protocol or on-chain behavior. They only define the current mobile surface area.

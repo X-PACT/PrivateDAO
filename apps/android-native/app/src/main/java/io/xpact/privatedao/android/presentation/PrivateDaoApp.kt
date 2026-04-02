@@ -54,9 +54,13 @@ import androidx.navigation.compose.rememberNavController
 import io.xpact.privatedao.android.config.PrivateDaoConfig
 import io.xpact.privatedao.android.model.CommitVoteForm
 import io.xpact.privatedao.android.model.CreateProposalForm
+import io.xpact.privatedao.android.model.CreateDaoForm
+import io.xpact.privatedao.android.model.DaoMode
 import io.xpact.privatedao.android.model.ProposalPhase
 import io.xpact.privatedao.android.model.ProposalSummary
 import io.xpact.privatedao.android.model.RevealVoteForm
+import io.xpact.privatedao.android.model.DepositTreasuryForm
+import io.xpact.privatedao.android.model.TreasuryActionType
 
 private enum class Destination(val route: String, val label: String) {
     Splash("splash", "Splash"),
@@ -75,10 +79,14 @@ fun PrivateDaoApp(
     onConnectWallet: () -> Unit,
     onDisconnectWallet: () -> Unit,
     onSelectProposal: (String) -> Unit,
+    onCreateDaoChange: ((CreateDaoForm) -> CreateDaoForm) -> Unit,
+    onDepositTreasuryChange: ((DepositTreasuryForm) -> DepositTreasuryForm) -> Unit,
     onCreateProposalChange: ((CreateProposalForm) -> CreateProposalForm) -> Unit,
     onCommitVoteChange: ((CommitVoteForm) -> CommitVoteForm) -> Unit,
     onRevealVoteChange: ((RevealVoteForm) -> RevealVoteForm) -> Unit,
     onSubmitCreateProposal: () -> Unit,
+    onSubmitCreateDao: () -> Unit,
+    onSubmitDepositTreasury: () -> Unit,
     onSubmitCommitVote: () -> Unit,
     onSubmitRevealVote: () -> Unit,
     onSubmitFinalize: () -> Unit,
@@ -121,9 +129,13 @@ fun PrivateDaoApp(
                 onConnectWallet = onConnectWallet,
                 onDisconnectWallet = onDisconnectWallet,
                 onSelectProposal = onSelectProposal,
+                onCreateDaoChange = onCreateDaoChange,
+                onDepositTreasuryChange = onDepositTreasuryChange,
                 onCreateProposalChange = onCreateProposalChange,
                 onCommitVoteChange = onCommitVoteChange,
                 onRevealVoteChange = onRevealVoteChange,
+                onSubmitCreateDao = onSubmitCreateDao,
+                onSubmitDepositTreasury = onSubmitDepositTreasury,
                 onSubmitCreateProposal = onSubmitCreateProposal,
                 onSubmitCommitVote = onSubmitCommitVote,
                 onSubmitRevealVote = onSubmitRevealVote,
@@ -143,10 +155,14 @@ private fun AppNavHost(
     onConnectWallet: () -> Unit,
     onDisconnectWallet: () -> Unit,
     onSelectProposal: (String) -> Unit,
+    onCreateDaoChange: ((CreateDaoForm) -> CreateDaoForm) -> Unit,
+    onDepositTreasuryChange: ((DepositTreasuryForm) -> DepositTreasuryForm) -> Unit,
     onCreateProposalChange: ((CreateProposalForm) -> CreateProposalForm) -> Unit,
     onCommitVoteChange: ((CommitVoteForm) -> CommitVoteForm) -> Unit,
     onRevealVoteChange: ((RevealVoteForm) -> RevealVoteForm) -> Unit,
     onSubmitCreateProposal: () -> Unit,
+    onSubmitCreateDao: () -> Unit,
+    onSubmitDepositTreasury: () -> Unit,
     onSubmitCommitVote: () -> Unit,
     onSubmitRevealVote: () -> Unit,
     onSubmitFinalize: () -> Unit,
@@ -196,7 +212,11 @@ private fun AppNavHost(
         composable(Destination.Create.route) {
             CreateProposalScreen(
                 uiState = uiState,
+                onCreateDaoChange = onCreateDaoChange,
+                onDepositTreasuryChange = onDepositTreasuryChange,
                 onChange = onCreateProposalChange,
+                onSubmitCreateDao = onSubmitCreateDao,
+                onSubmitDepositTreasury = onSubmitDepositTreasury,
                 onSubmit = onSubmitCreateProposal,
                 modifier = Modifier.padding(padding),
             )
@@ -377,7 +397,11 @@ private fun ProposalScreen(
 @Composable
 private fun CreateProposalScreen(
     uiState: UiState,
+    onCreateDaoChange: ((CreateDaoForm) -> CreateDaoForm) -> Unit,
+    onDepositTreasuryChange: ((DepositTreasuryForm) -> DepositTreasuryForm) -> Unit,
     onChange: ((CreateProposalForm) -> CreateProposalForm) -> Unit,
+    onSubmitCreateDao: () -> Unit,
+    onSubmitDepositTreasury: () -> Unit,
     onSubmit: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -386,6 +410,65 @@ private fun CreateProposalScreen(
         contentPadding = PaddingValues(20.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
+        item {
+            HeroCard(
+                title = "Create DAO",
+                body = "This Android-native path bootstraps the governance mint and initializes the DAO from the same wallet, matching the repo’s devnet-first bootstrap flow.",
+            )
+        }
+        item {
+            FormTextField("DAO name", uiState.createDaoForm.daoName) { value ->
+                onCreateDaoChange { it.copy(daoName = value) }
+            }
+        }
+        item {
+            FormTextField("Quorum percentage", uiState.createDaoForm.quorumPercentage.toString()) { value ->
+                onCreateDaoChange { it.copy(quorumPercentage = value.toIntOrNull() ?: it.quorumPercentage) }
+            }
+        }
+        item {
+            FormTextField("Reveal window (seconds)", uiState.createDaoForm.revealWindowSeconds.toString()) { value ->
+                onCreateDaoChange { it.copy(revealWindowSeconds = value.toLongOrNull() ?: it.revealWindowSeconds) }
+            }
+        }
+        item {
+            FormTextField("Execution delay (seconds)", uiState.createDaoForm.executionDelaySeconds.toString()) { value ->
+                onCreateDaoChange { it.copy(executionDelaySeconds = value.toLongOrNull() ?: it.executionDelaySeconds) }
+            }
+        }
+        item {
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+                OutlinedButton(onClick = { onCreateDaoChange { it.copy(mode = DaoMode.TokenWeighted) } }, modifier = Modifier.weight(1f)) { Text("Token") }
+                OutlinedButton(onClick = { onCreateDaoChange { it.copy(mode = DaoMode.Quadratic) } }, modifier = Modifier.weight(1f)) { Text("Quadratic") }
+                OutlinedButton(onClick = { onCreateDaoChange { it.copy(mode = DaoMode.DualChamber) } }, modifier = Modifier.weight(1f)) { Text("Dual") }
+            }
+        }
+        item {
+            Button(onClick = onSubmitCreateDao, enabled = uiState.wallet != null && !uiState.walletBusy, modifier = Modifier.fillMaxWidth()) {
+                Text("Create DAO in wallet")
+            }
+        }
+        item {
+            HeroCard(
+                title = "Deposit treasury",
+                body = "Treasury funding remains a separate on-chain step, exactly like the current repo scripts.",
+            )
+        }
+        item {
+            FormTextField("DAO PDA for deposit", uiState.depositTreasuryForm.daoPubkey) { value ->
+                onDepositTreasuryChange { it.copy(daoPubkey = value) }
+            }
+        }
+        item {
+            FormTextField("Deposit amount SOL", uiState.depositTreasuryForm.amountSol) { value ->
+                onDepositTreasuryChange { it.copy(amountSol = value) }
+            }
+        }
+        item {
+            Button(onClick = onSubmitDepositTreasury, enabled = uiState.wallet != null && !uiState.walletBusy && uiState.depositTreasuryForm.daoPubkey.isNotBlank(), modifier = Modifier.fillMaxWidth()) {
+                Text("Deposit treasury in wallet")
+            }
+        }
         item {
             HeroCard(
                 title = "Create proposal",
@@ -418,8 +501,19 @@ private fun CreateProposalScreen(
             }
         }
         item {
-            FormTextField("Treasury amount SOL (optional)", uiState.createProposalForm.treasuryAmountSol) { value ->
+            FormTextField("Treasury amount (SOL or raw token units)", uiState.createProposalForm.treasuryAmountSol) { value ->
                 onChange { it.copy(treasuryAmountSol = value) }
+            }
+        }
+        item {
+            FormTextField("Treasury mint (token actions only)", uiState.createProposalForm.treasuryMint) { value ->
+                onChange { it.copy(treasuryMint = value) }
+            }
+        }
+        item {
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+                OutlinedButton(onClick = { onChange { it.copy(treasuryType = TreasuryActionType.SendSol) } }, modifier = Modifier.weight(1f)) { Text("Send SOL") }
+                OutlinedButton(onClick = { onChange { it.copy(treasuryType = TreasuryActionType.SendToken) } }, modifier = Modifier.weight(1f)) { Text("Send Token") }
             }
         }
         item {

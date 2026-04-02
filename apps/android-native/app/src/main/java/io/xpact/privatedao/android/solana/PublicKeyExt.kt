@@ -1,6 +1,7 @@
 package io.xpact.privatedao.android.solana
 
 import org.bouncycastle.math.ec.rfc8032.Ed25519
+import java.security.MessageDigest
 
 data class AccountMeta(
     val publicKey: String,
@@ -35,6 +36,18 @@ object PublicKeyExt {
             listOf(toBytes(owner), toBytes(tokenProgramId), toBytes(mint)),
             associatedProgramId,
         ).first
+    }
+
+    fun createWithSeed(base: String, seed: String, ownerProgramId: String): String {
+        require(seed.toByteArray().size <= 32) { "Seed must be at most 32 bytes" }
+        val digest = MessageDigest.getInstance("SHA-256").digest(
+            Binary.concat(
+                toBytes(base),
+                seed.toByteArray(),
+                toBytes(ownerProgramId),
+            )
+        )
+        return Base58.encode(digest)
     }
 
     private fun isOnCurve(candidate: ByteArray): Boolean {

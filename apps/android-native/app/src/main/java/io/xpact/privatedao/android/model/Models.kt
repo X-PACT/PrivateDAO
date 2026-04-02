@@ -119,6 +119,27 @@ data class CreateProposalForm(
     val durationSeconds: Long = 30,
     val treasuryRecipient: String = "",
     val treasuryAmountSol: String = "0.05",
+    val treasuryType: TreasuryActionType = TreasuryActionType.SendSol,
+    val treasuryMint: String = "",
+)
+
+enum class DaoMode {
+    TokenWeighted,
+    Quadratic,
+    DualChamber,
+}
+
+data class CreateDaoForm(
+    val daoName: String = "PrivateDAO Live",
+    val quorumPercentage: Int = 51,
+    val revealWindowSeconds: Long = 3600,
+    val executionDelaySeconds: Long = 86400,
+    val mode: DaoMode = DaoMode.TokenWeighted,
+)
+
+data class DepositTreasuryForm(
+    val daoPubkey: String = "",
+    val amountSol: String = "0.2",
 )
 
 data class CommitVoteForm(

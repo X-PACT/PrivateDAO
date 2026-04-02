@@ -10,8 +10,10 @@ import io.xpact.privatedao.android.data.VoteEnvelopeStore
 import io.xpact.privatedao.android.model.AwardEntry
 import io.xpact.privatedao.android.model.CommitVoteForm
 import io.xpact.privatedao.android.model.ConnectedWallet
+import io.xpact.privatedao.android.model.CreateDaoForm
 import io.xpact.privatedao.android.model.CreateProposalForm
 import io.xpact.privatedao.android.model.DaoSummary
+import io.xpact.privatedao.android.model.DepositTreasuryForm
 import io.xpact.privatedao.android.model.ProposalActivity
 import io.xpact.privatedao.android.model.ProposalActionResult
 import io.xpact.privatedao.android.model.ProposalPhase
@@ -54,11 +56,15 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            proposals = snapshot.proposals,
-                            daos = snapshot.daos,
-                            createProposalForm = it.createProposalForm.copy(
-                                daoPubkey = it.createProposalForm.daoPubkey.ifBlank { snapshot.daos.firstOrNull()?.pubkey.orEmpty() },
-                            ),
+                        proposals = snapshot.proposals,
+                        daos = snapshot.daos,
+                        createDaoForm = it.createDaoForm,
+                        depositTreasuryForm = it.depositTreasuryForm.copy(
+                            daoPubkey = it.depositTreasuryForm.daoPubkey.ifBlank { snapshot.daos.firstOrNull()?.pubkey.orEmpty() },
+                        ),
+                        createProposalForm = it.createProposalForm.copy(
+                            daoPubkey = it.createProposalForm.daoPubkey.ifBlank { snapshot.daos.firstOrNull()?.pubkey.orEmpty() },
+                        ),
                         )
                     }
                     uiState.value.selectedProposalPubkey?.let(::selectProposal)
@@ -107,6 +113,7 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
                         selectedProposal = proposal,
                         proposalActivity = activity,
                         isLoadingActivity = false,
+                        depositTreasuryForm = it.depositTreasuryForm.copy(daoPubkey = proposal.dao),
                         createProposalForm = it.createProposalForm.copy(daoPubkey = proposal.dao),
                         revealVoteForm = saved?.let { env ->
                             it.revealVoteForm.copy(voteYes = env.voteYes, saltHex = env.saltHex, voterPubkeyOverride = "")
@@ -123,6 +130,14 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
         _uiState.update { it.copy(createProposalForm = transform(it.createProposalForm)) }
     }
 
+    fun updateCreateDaoForm(transform: (CreateDaoForm) -> CreateDaoForm) {
+        _uiState.update { it.copy(createDaoForm = transform(it.createDaoForm)) }
+    }
+
+    fun updateDepositTreasuryForm(transform: (DepositTreasuryForm) -> DepositTreasuryForm) {
+        _uiState.update { it.copy(depositTreasuryForm = transform(it.depositTreasuryForm)) }
+    }
+
     fun updateCommitVoteForm(transform: (CommitVoteForm) -> CommitVoteForm) {
         _uiState.update { it.copy(commitVoteForm = transform(it.commitVoteForm)) }
     }
@@ -137,6 +152,40 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
             runSubmission {
                 val tx = repository.buildCreateProposalTransaction(wallet.publicKeyBase58, uiState.value.createProposalForm)
                 walletManager.signAndSendSingleTransaction(launcher, wallet, tx).toResult()
+            }
+            refresh()
+        }
+    }
+
+    fun submitCreateDao(launcher: ActivityResultLauncher<MobileWalletAdapterManager.StartMobileWalletAdapterActivity.CreateParams>) {
+        val wallet = uiState.value.wallet ?: return setError("Connect a wallet first.")
+        viewModelScope.launch {
+            runSubmission {
+                val (tx, daoPda) = repository.buildCreateDaoTransaction(wallet.publicKeyBase58, uiState.value.createDaoForm)
+                val signature = walletManager.signAndSendSingleTransaction(launcher, wallet, tx)
+                _uiState.update {
+                    it.copy(
+                        bannerMessage = "DAO bootstrap submitted. Expected DAO PDA: $daoPda",
+                        depositTreasuryForm = it.depositTreasuryForm.copy(daoPubkey = daoPda),
+                        createProposalForm = it.createProposalForm.copy(daoPubkey = daoPda),
+                    )
+                }
+                signature.toResult()
+            }
+            refresh()
+        }
+    }
+
+    fun submitDepositTreasury(launcher: ActivityResultLauncher<MobileWalletAdapterManager.StartMobileWalletAdapterActivity.CreateParams>) {
+        val wallet = uiState.value.wallet ?: return setError("Connect a wallet first.")
+        viewModelScope.launch {
+            runSubmission {
+                val (tx, treasuryPda) = repository.buildDepositTreasuryTransaction(wallet.publicKeyBase58, uiState.value.depositTreasuryForm)
+                val signature = walletManager.signAndSendSingleTransaction(launcher, wallet, tx)
+                _uiState.update {
+                    it.copy(bannerMessage = "Treasury deposit submitted to $treasuryPda")
+                }
+                signature.toResult()
             }
             refresh()
         }
@@ -259,6 +308,8 @@ data class UiState(
     val selectedProposalPubkey: String? = null,
     val selectedProposal: ProposalSummary? = null,
     val proposalActivity: List<ProposalActivity> = emptyList(),
+    val createDaoForm: CreateDaoForm = CreateDaoForm(),
+    val depositTreasuryForm: DepositTreasuryForm = DepositTreasuryForm(),
     val createProposalForm: CreateProposalForm = CreateProposalForm(),
     val commitVoteForm: CommitVoteForm = CommitVoteForm(),
     val revealVoteForm: RevealVoteForm = RevealVoteForm(),

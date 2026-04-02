@@ -48,6 +48,11 @@ class SolanaRpcClient(
         return call<RpcLatestBlockhashResponse>("getLatestBlockhash", params).result.value.blockhash
     }
 
+    suspend fun getMinimumBalanceForRentExemption(space: Int): Long {
+        val params = JsonArray(listOf(JsonPrimitive(space)))
+        return call<RpcLongResponse>("getMinimumBalanceForRentExemption", params).result
+    }
+
     suspend fun getSignaturesForAddress(address: String, limit: Int = 10): List<RpcSignatureInfo> {
         val params = JsonArray(listOf(
             JsonPrimitive(address),
@@ -127,3 +132,6 @@ data class RpcSignatureInfo(
     val memo: String? = null,
     @SerialName("blockTime") val blockTime: Long? = null,
 )
+
+@Serializable
+data class RpcLongResponse(val result: Long)

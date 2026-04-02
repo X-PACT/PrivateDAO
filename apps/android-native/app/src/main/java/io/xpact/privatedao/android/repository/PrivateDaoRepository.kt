@@ -2,9 +2,12 @@ package io.xpact.privatedao.android.repository
 
 import io.xpact.privatedao.android.config.PrivateDaoConfig
 import io.xpact.privatedao.android.model.CommitVoteForm
+import io.xpact.privatedao.android.model.CreateDaoForm
 import io.xpact.privatedao.android.model.CreateProposalForm
 import io.xpact.privatedao.android.model.DaoSummary
+import io.xpact.privatedao.android.model.DaoMode
 import io.xpact.privatedao.android.model.DashboardSnapshot
+import io.xpact.privatedao.android.model.DepositTreasuryForm
 import io.xpact.privatedao.android.model.ProposalActionResult
 import io.xpact.privatedao.android.model.ProposalActivity
 import io.xpact.privatedao.android.model.ProposalPhase
@@ -22,6 +25,7 @@ import io.xpact.privatedao.android.solana.LegacyTransactionBuilder
 import io.xpact.privatedao.android.solana.PublicKeyExt
 import io.xpact.privatedao.android.solana.RpcAccount
 import io.xpact.privatedao.android.solana.SolanaRpcClient
+import io.xpact.privatedao.android.solana.SystemAndTokenInstructions
 import io.xpact.privatedao.android.solana.TransactionInstruction
 import io.xpact.privatedao.android.solana.VoteCommitment
 import java.util.Base64
@@ -81,10 +85,14 @@ class PrivateDaoRepository(
         )
         val treasuryAction = form.treasuryRecipient.takeIf { it.isNotBlank() }?.let {
             TreasuryActionView(
-                type = TreasuryActionType.SendSol,
-                amountLamports = (form.treasuryAmountSol.toDouble() * 1_000_000_000L).toLong(),
+                type = form.treasuryType,
+                amountLamports = if (form.treasuryType == TreasuryActionType.SendToken) {
+                    form.treasuryAmountSol.toLongOrNull() ?: 0L
+                } else {
+                    (form.treasuryAmountSol.toDouble() * 1_000_000_000L).toLong()
+                },
                 recipient = it,
-                tokenMint = null,
+                tokenMint = form.treasuryMint.takeIf { mint -> mint.isNotBlank() },
             )
         }
 
@@ -202,10 +210,23 @@ class PrivateDaoRepository(
         val dao = proposal.daoSummary ?: loadDao(proposal.dao)
         val treasury = dao.treasuryPda
         val action = proposal.treasuryAction
-        if (action?.type == TreasuryActionType.SendToken) {
-            error("Android native execute currently supports SendSol and CustomCPI-equivalent recipient signaling only")
-        }
         val recipient = action?.recipient ?: treasury
+        val treasuryTokenAccount = if (action?.type == TreasuryActionType.SendToken) {
+            PublicKeyExt.deriveAssociatedTokenAddress(
+                owner = treasury,
+                mint = requireNotNull(action.tokenMint),
+                tokenProgramId = PrivateDaoConfig.tokenProgramId,
+                associatedProgramId = PrivateDaoConfig.associatedTokenProgramId,
+            )
+        } else treasury
+        val recipientTokenAccount = if (action?.type == TreasuryActionType.SendToken) {
+            PublicKeyExt.deriveAssociatedTokenAddress(
+                owner = recipient,
+                mint = requireNotNull(action.tokenMint),
+                tokenProgramId = PrivateDaoConfig.tokenProgramId,
+                associatedProgramId = PrivateDaoConfig.associatedTokenProgramId,
+            )
+        } else treasury
         val data = AnchorEncoding.discriminator("execute_proposal")
         val instruction = TransactionInstruction(
             programId = PrivateDaoConfig.programId,
@@ -214,8 +235,8 @@ class PrivateDaoRepository(
                 AccountMeta(proposal.pubkey, isSigner = false, isWritable = true),
                 AccountMeta(treasury, isSigner = false, isWritable = true),
                 AccountMeta(recipient, isSigner = false, isWritable = true),
-                AccountMeta(treasury, isSigner = false, isWritable = true),
-                AccountMeta(treasury, isSigner = false, isWritable = true),
+                AccountMeta(treasuryTokenAccount, isSigner = false, isWritable = true),
+                AccountMeta(recipientTokenAccount, isSigner = false, isWritable = true),
                 AccountMeta(walletPubkey, isSigner = true, isWritable = true),
                 AccountMeta(PrivateDaoConfig.tokenProgramId, isSigner = false, isWritable = false),
                 AccountMeta(PrivateDaoConfig.systemProgramId, isSigner = false, isWritable = false),
@@ -223,6 +244,89 @@ class PrivateDaoRepository(
             data = data,
         )
         return LegacyTransactionBuilder.build(walletPubkey, rpcClient.getLatestBlockhash(), listOf(instruction))
+    }
+
+    suspend fun buildCreateDaoTransaction(
+        walletPubkey: String,
+        form: CreateDaoForm,
+    ): Pair<ByteArray, String> {
+        val mintSeed = buildMintSeed(form.daoName)
+        val mintPubkey = PublicKeyExt.createWithSeed(
+            base = walletPubkey,
+            seed = mintSeed,
+            ownerProgramId = PrivateDaoConfig.tokenProgramId,
+        )
+        val daoPda = PublicKeyExt.findProgramAddress(
+            listOf("dao".toByteArray(), PublicKeyExt.toBytes(walletPubkey), form.daoName.toByteArray()),
+            PrivateDaoConfig.programId,
+        ).first
+        val mintRent = rpcClient.getMinimumBalanceForRentExemption(82)
+        val votingConfig = when (form.mode) {
+            DaoMode.TokenWeighted -> byteArrayOf(0)
+            DaoMode.Quadratic -> byteArrayOf(1)
+            DaoMode.DualChamber -> byteArrayOf(2, 50, 50)
+        }
+
+        val initializeDaoIx = TransactionInstruction(
+            programId = PrivateDaoConfig.programId,
+            accounts = listOf(
+                AccountMeta(daoPda, isSigner = false, isWritable = true),
+                AccountMeta(mintPubkey, isSigner = false, isWritable = false),
+                AccountMeta(walletPubkey, isSigner = true, isWritable = true),
+                AccountMeta(PrivateDaoConfig.systemProgramId, isSigner = false, isWritable = false),
+            ),
+            data = Binary.concat(
+                AnchorEncoding.discriminator("initialize_dao"),
+                Binary.string(form.daoName),
+                byteArrayOf(form.quorumPercentage.toByte()),
+                Binary.u64Le(0),
+                Binary.i64Le(form.revealWindowSeconds),
+                Binary.i64Le(form.executionDelaySeconds),
+                votingConfig,
+            ),
+        )
+
+        val instructions = listOf(
+            SystemAndTokenInstructions.createAccountWithSeed(
+                payer = walletPubkey,
+                newAccount = mintPubkey,
+                base = walletPubkey,
+                seed = mintSeed,
+                lamports = mintRent,
+                ownerProgramId = PrivateDaoConfig.tokenProgramId,
+            ),
+            SystemAndTokenInstructions.initializeMint(
+                mint = mintPubkey,
+                mintAuthority = walletPubkey,
+            ),
+            initializeDaoIx,
+        )
+
+        return LegacyTransactionBuilder.build(walletPubkey, rpcClient.getLatestBlockhash(), instructions) to daoPda
+    }
+
+    suspend fun buildDepositTreasuryTransaction(
+        walletPubkey: String,
+        form: DepositTreasuryForm,
+    ): Pair<ByteArray, String> {
+        val dao = loadDao(form.daoPubkey)
+        val lamports = (form.amountSol.toDouble() * 1_000_000_000L).toLong()
+        require(lamports > 0) { "Deposit amount must be greater than zero" }
+        val data = Binary.concat(
+            AnchorEncoding.discriminator("deposit_treasury"),
+            Binary.u64Le(lamports),
+        )
+        val instruction = TransactionInstruction(
+            programId = PrivateDaoConfig.programId,
+            accounts = listOf(
+                AccountMeta(dao.pubkey, isSigner = false, isWritable = false),
+                AccountMeta(dao.treasuryPda, isSigner = false, isWritable = true),
+                AccountMeta(walletPubkey, isSigner = true, isWritable = true),
+                AccountMeta(PrivateDaoConfig.systemProgramId, isSigner = false, isWritable = false),
+            ),
+            data = data,
+        )
+        return LegacyTransactionBuilder.build(walletPubkey, rpcClient.getLatestBlockhash(), listOf(instruction)) to dao.treasuryPda
     }
 
     fun computeProposalPhase(proposal: ProposalSummary, nowSeconds: Long = System.currentTimeMillis() / 1000): ProposalPhase {
@@ -258,4 +362,11 @@ class PrivateDaoRepository(
 
     private fun decodeAccountData(data: List<String>): ByteArray =
         Base64.getDecoder().decode(data.first())
+
+    private fun buildMintSeed(daoName: String): String {
+        val normalized = daoName.lowercase().replace(Regex("[^a-z0-9]"), "")
+        val prefix = if (normalized.isBlank()) "privatedao" else normalized.take(12)
+        val suffix = Binary.hex(Binary.sha256(daoName.toByteArray())).take(12)
+        return "mint-$prefix-$suffix".take(32)
+    }
 }
