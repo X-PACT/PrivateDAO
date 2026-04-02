@@ -1470,6 +1470,69 @@ footer {
 .page { display: none; }
 .page.active { display: block; }
 
+body.judge-mode .bg-scene,
+body.judge-mode .cursor,
+body.judge-mode .cursor-ring,
+body.judge-mode #page-proposals,
+body.judge-mode #page-protocol,
+body.judge-mode #page-migrate,
+body.judge-mode #page-security,
+body.judge-mode #page-awards,
+body.judge-mode footer {
+  display: none !important;
+}
+
+body.judge-mode nav {
+  background: rgba(4, 10, 15, 0.96);
+  border-bottom-color: rgba(255, 214, 92, 0.24);
+}
+
+.judge-banner {
+  display: none;
+  position: sticky;
+  top: 86px;
+  z-index: 40;
+  margin: 18px auto 0;
+  max-width: 1360px;
+  padding: 0 32px;
+}
+
+body.judge-mode .judge-banner {
+  display: block;
+}
+
+.judge-banner-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 22px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255, 223, 117, 0.14), rgba(12, 30, 48, 0.96));
+  border: 1px solid rgba(255, 223, 117, 0.24);
+  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.28);
+}
+
+.judge-banner-title {
+  font-family: var(--display);
+  font-size: 28px;
+  line-height: 1;
+  color: #fff0a8;
+  margin-bottom: 8px;
+}
+
+.judge-banner-copy {
+  color: var(--text2);
+  line-height: 1.7;
+  max-width: 900px;
+}
+
+.judge-banner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 /* ── RESPONSIVE ── */
 @media(max-width:900px) {
   .compare-grid, .protocol-steps, .features-grid { grid-template-columns: 1fr; }
@@ -1485,6 +1548,8 @@ footer {
   .award-grid, .award-points { grid-template-columns: 1fr; }
   .investor-video-grid { grid-template-columns: 1fr; }
   .award-celebration-card { padding: 28px; }
+  .judge-banner { top: 80px; padding: 0 18px; }
+  .judge-banner-card { flex-direction: column; align-items: flex-start; }
 }
 </style>
 </head>
@@ -1517,6 +1582,7 @@ footer {
       <div class="nav-links">
         <button class="nav-link active" onclick="showPage('proposals',this)">Proposals</button>
         <button class="nav-link" onclick="showPage('proof',this)">Proof Center</button>
+        <button class="nav-link" onclick="enterJudgeMode()">Judge Mode</button>
         <button class="nav-link" onclick="showPage('protocol',this)">Protocol</button>
         <button class="nav-link" onclick="showPage('migrate',this)">Migrate from Realms</button>
         <button class="nav-link" onclick="showPage('security',this)">Security</button>
@@ -1529,6 +1595,23 @@ footer {
     </div>
   </div>
 </nav>
+
+<div class="judge-banner">
+  <div class="judge-banner-card">
+    <div>
+      <div class="judge-banner-title">Judge Mode</div>
+      <div class="judge-banner-copy">
+        This focused surface strips away non-essential sections and keeps the evaluation path tight: live program, live transaction proof, published pitch, verified 1st Place result, and the current proposal execution surface.
+      </div>
+    </div>
+    <div class="judge-banner-actions">
+      <a class="award-link" href="https://youtu.be/KVNFZXHNZTQ" target="_blank">Watch Pitch</a>
+      <a class="award-link" href="live-proof.md" target="_blank">Open Live Proof</a>
+      <button class="proposal-proof-link" type="button" onclick="copyJudgeModeLink()">Copy Judge Link</button>
+      <button class="proposal-proof-link" type="button" onclick="exitJudgeMode()">Exit Judge Mode</button>
+    </div>
+  </div>
+</div>
 
 <!-- ══════════════════ PAGE: PROPOSALS ══════════════════ -->
 <div class="page active" id="page-proposals">
@@ -2629,6 +2712,11 @@ function currentPageKey() {
 function syncUrlState() {
   const params = new URLSearchParams(window.location.search);
   params.set('page', currentPageKey());
+  if (document.body.classList.contains('judge-mode')) {
+    params.set('judge', '1');
+  } else {
+    params.delete('judge');
+  }
   if (currentSelectedProposalPubkey) {
     params.set('proposal', currentSelectedProposalPubkey);
   } else {
@@ -2652,6 +2740,41 @@ function shareCurrentProposal() {
     return;
   }
   showToast(shareUrl, 'info');
+}
+
+function setJudgeMode(enabled) {
+  document.body.classList.toggle('judge-mode', enabled);
+  if (enabled) {
+    showPage('proof');
+  } else {
+    syncUrlState();
+  }
+}
+
+function enterJudgeMode() {
+  setJudgeMode(true);
+  showToast('Judge Mode enabled.', 'success');
+}
+
+function exitJudgeMode() {
+  document.body.classList.remove('judge-mode');
+  showPage('proof');
+  showToast('Judge Mode disabled.', 'info');
+}
+
+function copyJudgeModeLink() {
+  const params = new URLSearchParams(window.location.search);
+  params.set('page', 'proof');
+  params.set('judge', '1');
+  if (currentSelectedProposalPubkey) params.set('proposal', currentSelectedProposalPubkey);
+  const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url)
+      .then(() => showToast('Judge link copied.', 'success'))
+      .catch(() => showToast(url, 'info'));
+    return;
+  }
+  showToast(url, 'info');
 }
 
 function openSelectedProposalExplorer() {
@@ -2808,6 +2931,7 @@ function copyFinalizeCommand() {
 
 const DEVNET_RPC = "https://solana-devnet.g.alchemy.com/v2/L4dlywEyiBJLg8Ey0bFof";
 const PROGRAM_ID = "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx";
+const TOKEN_PROGRAM_ID = new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
 const connection = new solanaWeb3.Connection(DEVNET_RPC, "confirmed");
 const programPk = new solanaWeb3.PublicKey(PROGRAM_ID);
 const statusByIdx = ["Voting", "Passed", "Failed", "Cancelled", "Vetoed"];
@@ -2896,6 +3020,123 @@ function parseString(data, offsetRef) {
   const raw = data.slice(offsetRef.value, offsetRef.value + len);
   offsetRef.value += len;
   return new TextDecoder().decode(raw);
+}
+
+function readPubkey(data, offsetRef) {
+  const key = new solanaWeb3.PublicKey(data.slice(offsetRef.value, offsetRef.value + 32)).toBase58();
+  offsetRef.value += 32;
+  return key;
+}
+
+function anchorMethodDiscriminator(methodName) {
+  const input = new TextEncoder().encode(`global:${methodName}`);
+  return crypto.subtle.digest('SHA-256', input).then(buf => new Uint8Array(buf).slice(0, 8));
+}
+
+async function buildAnchorInstruction(methodName, keys) {
+  const data = await anchorMethodDiscriminator(methodName);
+  return new solanaWeb3.TransactionInstruction({
+    programId: programPk,
+    keys,
+    data,
+  });
+}
+
+function actionTypeLabel(idx) {
+  if (idx === 0) return 'SendSol';
+  if (idx === 1) return 'SendToken';
+  if (idx === 2) return 'CustomCPI';
+  return `Unknown(${idx})`;
+}
+
+async function signAndBroadcastTransaction(instruction, successLabel) {
+  if (!walletProvider || !wallet) {
+    showToast('Connect your wallet first.', 'error');
+    return null;
+  }
+
+  const providerPk = walletProvider.publicKey || new solanaWeb3.PublicKey(wallet);
+  const tx = new solanaWeb3.Transaction().add(instruction);
+  tx.feePayer = providerPk;
+  const latest = await connection.getLatestBlockhash('confirmed');
+  tx.recentBlockhash = latest.blockhash;
+
+  let signature;
+  if (walletProvider.signAndSendTransaction) {
+    const result = await walletProvider.signAndSendTransaction(tx, { preflightCommitment: 'confirmed' });
+    signature = result.signature || result;
+  } else if (walletProvider.signTransaction) {
+    const signed = await walletProvider.signTransaction(tx);
+    signature = await connection.sendRawTransaction(signed.serialize(), { preflightCommitment: 'confirmed' });
+  } else {
+    throw new Error('Wallet provider does not support transaction signing');
+  }
+
+  await connection.confirmTransaction({ signature, ...latest }, 'confirmed');
+  const explorer = `https://solscan.io/tx/${signature}?cluster=devnet`;
+  showToast(`${successLabel}: ${shortPk(signature)}`, 'success');
+  setTimeout(() => window.open(explorer, '_blank', 'noopener'), 180);
+  loadLiveProposals();
+  return signature;
+}
+
+async function finalizeSelectedProposalInWallet() {
+  if (!currentSelectedProposal) {
+    showToast('Select a live proposal first.', 'error');
+    return;
+  }
+  try {
+    const daoPk = new solanaWeb3.PublicKey(currentSelectedProposal.dao);
+    const proposalPk = new solanaWeb3.PublicKey(currentSelectedProposal.pubkey);
+    const finalizerPk = new solanaWeb3.PublicKey(wallet);
+    const ix = await buildAnchorInstruction('finalize_proposal', [
+      { pubkey: daoPk, isSigner: false, isWritable: false },
+      { pubkey: proposalPk, isSigner: false, isWritable: true },
+      { pubkey: finalizerPk, isSigner: true, isWritable: false },
+    ]);
+    await signAndBroadcastTransaction(ix, 'Finalize submitted');
+  } catch (error) {
+    console.error(error);
+    showToast(error.message || 'Finalize transaction failed.', 'error');
+  }
+}
+
+async function executeSelectedProposalInWallet() {
+  if (!currentSelectedProposal) {
+    showToast('Select a live proposal first.', 'error');
+    return;
+  }
+  const action = currentSelectedProposal.treasuryAction;
+  if (!action) {
+    showToast('Selected proposal has no treasury action.', 'error');
+    return;
+  }
+  if (action.actionTypeLabel === 'SendToken') {
+    showToast('SendToken browser execution is not enabled yet. Use the repo CLI so token accounts are wired explicitly.', 'info');
+    return;
+  }
+  try {
+    const daoPk = new solanaWeb3.PublicKey(currentSelectedProposal.dao);
+    const proposalPk = new solanaWeb3.PublicKey(currentSelectedProposal.pubkey);
+    const treasuryPk = new solanaWeb3.PublicKey(deriveTreasuryPda(currentSelectedProposal.dao));
+    const recipientPk = new solanaWeb3.PublicKey(action.recipient);
+    const executorPk = new solanaWeb3.PublicKey(wallet);
+    const ix = await buildAnchorInstruction('execute_proposal', [
+      { pubkey: daoPk, isSigner: false, isWritable: false },
+      { pubkey: proposalPk, isSigner: false, isWritable: true },
+      { pubkey: treasuryPk, isSigner: false, isWritable: true },
+      { pubkey: recipientPk, isSigner: false, isWritable: true },
+      { pubkey: treasuryPk, isSigner: false, isWritable: true },
+      { pubkey: treasuryPk, isSigner: false, isWritable: true },
+      { pubkey: executorPk, isSigner: true, isWritable: false },
+      { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
+      { pubkey: solanaWeb3.SystemProgram.programId, isSigner: false, isWritable: false },
+    ]);
+    await signAndBroadcastTransaction(ix, 'Execute submitted');
+  } catch (error) {
+    console.error(error);
+    showToast(error.message || 'Execute transaction failed.', 'error');
+  }
 }
 
 function formatRemaining(targetTs, nowTs) {
@@ -2994,12 +3235,20 @@ function decodeProposalAccount(data, pubkey) {
   const revealCount = parseU64(data, o.value); o.value += 8;
 
   const hasAction = data[o.value]; o.value += 1;
+  let treasuryAction = null;
   if (hasAction === 1) {
-    o.value += 1; // action_type
-    o.value += 8; // amount_lamports
-    o.value += 32; // recipient
+    const actionType = data[o.value]; o.value += 1;
+    const amountLamports = parseU64(data, o.value); o.value += 8;
+    const recipient = readPubkey(data, o);
     const hasMint = data[o.value]; o.value += 1;
-    if (hasMint === 1) o.value += 32;
+    const tokenMint = hasMint === 1 ? readPubkey(data, o) : null;
+    treasuryAction = {
+      actionType,
+      actionTypeLabel: actionTypeLabel(actionType),
+      amountLamports,
+      recipient,
+      tokenMint,
+    };
   }
 
   const executionUnlocksAt = parseI64(data, o.value); o.value += 8;
@@ -3022,6 +3271,7 @@ function decodeProposalAccount(data, pubkey) {
     noCommunity,
     commitCount,
     revealCount,
+    treasuryAction,
   };
 }
 
@@ -3093,6 +3343,14 @@ function renderProposalDetail(p, nowTs) {
       <div class="proposal-detail-value">${executeState}</div>
     </div>
     <div class="proposal-detail-box">
+      <div class="proposal-detail-label">TREASURY ACTION</div>
+      <div class="proposal-detail-value">${
+        p.treasuryAction
+          ? `${p.treasuryAction.actionTypeLabel} · Recipient ${p.treasuryAction.recipient}<br>Amount ${p.treasuryAction.amountLamports} lamports${p.treasuryAction.tokenMint ? `<br>Mint ${p.treasuryAction.tokenMint}` : ''}`
+          : 'No treasury action attached'
+      }</div>
+    </div>
+    <div class="proposal-detail-box">
       <div class="proposal-detail-label">ADDRESSES</div>
       <div class="proposal-detail-value">Proposal: ${p.pubkey}<br>DAO: ${p.dao}<br>Treasury: ${treasuryPda}</div>
     </div>
@@ -3103,6 +3361,8 @@ function renderProposalDetail(p, nowTs) {
     <a class="proposal-proof-link" href="${solscanAccount(p.dao)}" target="_blank">DAO Explorer</a>
     <a class="proposal-proof-link" href="${solscanAccount(treasuryPda)}" target="_blank">Treasury Explorer</a>
     <a class="proposal-proof-link" href="live-proof.md" target="_blank">Live Devnet Proof</a>
+    <button class="proposal-proof-link" type="button" onclick="finalizeSelectedProposalInWallet()">Finalize in Wallet</button>
+    <button class="proposal-proof-link" type="button" onclick="executeSelectedProposalInWallet()">Execute in Wallet</button>
     <button class="proposal-proof-link" type="button" onclick="shareCurrentProposal()">Copy Share Link</button>
     <button class="proposal-proof-link" type="button" onclick="openSelectedProposalExplorer()">Open Selected Proposal</button>
   `;
@@ -3446,8 +3706,12 @@ observeReveal();
 });
 
 const initialParams = new URLSearchParams(window.location.search);
+const initialJudge = initialParams.get('judge');
 const initialPage = initialParams.get('page');
-if (initialPage && document.getElementById(`page-${initialPage}`)) {
+if (initialJudge === '1') {
+  document.body.classList.add('judge-mode');
+  showPage('proof');
+} else if (initialPage && document.getElementById(`page-${initialPage}`)) {
   showPage(initialPage);
 } else {
   syncUrlState();

@@ -39,6 +39,7 @@ Quick links:
 
 - Live frontend: `https://x-pact.github.io/PrivateDAO/`
 - Proof Center: `https://x-pact.github.io/PrivateDAO/?page=proof`
+- Judge Mode: `https://x-pact.github.io/PrivateDAO/?page=proof&judge=1`
 - Awards page: `docs/awards.md`
 - Strategy documentation: `https://us04docs.zoom.us/doc/Zd34HEaHSKyZGRxBcqxXQg`
 - Repo strategy note: `docs/strategy.md`
@@ -133,6 +134,7 @@ The win documentation is separate from governance execution.
 - The award section documents only the verified 1st Place result.
 - The `Execute` button belongs to proposal lifecycle handling and appears only when a proposal is executable on-chain after finalize plus timelock expiry.
 - The frontend maps the button to the repo execution flow instead of pretending execution is a decorative UI action.
+- The Proof Center now also exposes wallet-connected `Finalize in Wallet` and `Execute in Wallet` actions for compatible live proposals.
 - The operator command is:
 
 ```bash
