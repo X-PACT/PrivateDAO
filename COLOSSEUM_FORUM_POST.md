@@ -13,7 +13,7 @@ Core idea:
 What is live today:
 
 - deployed devnet program:
-  `62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm`
+  `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - live docs frontend:
   https://x-pact.github.io/PrivateDAO/
 - repo:

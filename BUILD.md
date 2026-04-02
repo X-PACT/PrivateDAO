@@ -9,7 +9,7 @@ This file is for the boring failures that waste time.
 - Rust stable
 - Anchor CLI `0.31.1`
 - Node.js + Yarn
-- Program ID in this repo: `62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm`
+- Program ID in this repo: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 
 Official Solana references:
 

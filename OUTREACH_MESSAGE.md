@@ -11,7 +11,7 @@ Project links:
 - repo: https://github.com/X-PACT/PrivateDAO
 - frontend: https://x-pact.github.io/PrivateDAO/
 - demo reel: https://github.com/X-PACT/PrivateDAO/blob/main/docs/assets/demo-reel.gif
-- devnet program: `62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm`
+- devnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 
 We would value feedback from Solana builders, DAO operators, and governance infrastructure reviewers.
 

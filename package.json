@@ -21,6 +21,7 @@
     "reveal":            "ts-node scripts/reveal-vote.ts",
     "finalize":          "ts-node scripts/finalize.ts",
     "execute":           "ts-node scripts/execute.ts",
+    "live-proof":        "ts-node scripts/live-devnet-proof.ts",
     "migrate":           "ts-node migrations/migrate-realms-dao.ts"
   },
   "dependencies": {

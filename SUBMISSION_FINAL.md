@@ -77,7 +77,7 @@ The repository now includes:
 ## Current Deployment
 
 - Program ID:
-  `62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm`
+  `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Repository:
   `https://github.com/X-PACT/PrivateDAO`
 - Live frontend:

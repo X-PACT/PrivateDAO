@@ -10,7 +10,7 @@ Live today:
 
 - repo: https://github.com/X-PACT/PrivateDAO
 - frontend: https://x-pact.github.io/PrivateDAO/
-- devnet program: `62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm`
+- devnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 
 We are looking for feedback from Solana builders, DAO operators, and ecosystem contributors working on governance, Realms integrations, and migration paths.
 

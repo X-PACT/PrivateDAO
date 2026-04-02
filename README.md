@@ -19,7 +19,7 @@
 [![Submission](https://img.shields.io/badge/Colosseum-Submission%20Ready-ff9f1c)](SUBMISSION.md)
 [![Pitch Assets](https://img.shields.io/badge/Pitch-Ready-ff6b6b)](SUBMISSION_FINAL.md)
 [![Demo Reel](https://img.shields.io/badge/Demo-Reel-14b8a6)](docs/assets/demo-reel.gif)
-[![Program](https://img.shields.io/badge/Program-Devnet%20Live-14F195)](https://solscan.io/account/62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm?cluster=devnet)
+[![Program](https://img.shields.io/badge/Program-Devnet%20Live-14F195)](https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet)
 
 PrivateDAO is a Solana governance protocol for DAOs that want private voting without giving up execution safety. Votes are committed privately, revealed later, finalized deterministically, and treasury execution stays behind an explicit timelock with recipient and mint checks.
 
@@ -41,6 +41,7 @@ Quick links:
 - Awards page: `docs/awards.md`
 - Strategy documentation: `https://us04docs.zoom.us/doc/Zd34HEaHSKyZGRxBcqxXQg`
 - Repo strategy note: `docs/strategy.md`
+- Live devnet proof: `docs/live-proof.md`
 - Investor video package: `docs/investor-video.md`
 - Investor video: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
 - On-chain program: `programs/private-dao/src/lib.rs`
@@ -60,6 +61,22 @@ The installer:
 - creates `.env` from `.env.example` when missing
 - installs Node dependencies
 - prints the next real steps for demo and build
+
+## Live Devnet Proof
+
+The repository now includes a captured real governance run on devnet with explorer links for:
+
+- deploy
+- create DAO
+- mint voting power
+- deposit treasury
+- create proposal
+- commit
+- reveal
+- finalize
+- execute
+
+Reference: `docs/live-proof.md`
 
 ## 🏆 Awards & Recognition
 
@@ -269,7 +286,7 @@ In other words: there is a product story, a protocol story, and a verification s
 If a reviewer has only two to five minutes, these are the fastest proof points:
 
 1. Open the live frontend: `https://x-pact.github.io/PrivateDAO/`
-2. Confirm the devnet program exists: `62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm`
+2. Confirm the devnet program exists: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 3. Review the core on-chain logic in `programs/private-dao/src/lib.rs`
 4. Review the end-to-end flows in `tests/full-flow-test.ts` and `tests/demo.ts`
 5. Review the operator scripts in `scripts/`
@@ -290,7 +307,7 @@ That matters in competitions: the project is not a generic privacy-governance id
 ## Review Links
 
 - Live frontend: `https://x-pact.github.io/PrivateDAO/`
-- Devnet program: `62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm`
+- Devnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Demo reel: `docs/assets/demo-reel.gif`
 - Demo script: `DEMO_SCRIPT_90S.md`
 - Main submission: `SUBMISSION.md`
@@ -381,7 +398,7 @@ That context matters for positioning, but this repo does not claim prize results
 
 ## Current Status
 
-- Devnet program deployed at `62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm`
+- Devnet program deployed at `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Current repo targets `Anchor 0.31.1`
 - Local tests cover commit, reveal, finalize, execute, cancellation, delegation, keeper reveal, and treasury validation paths
 - This repo is production-minded, but still devnet-first and not represented as a completed mainnet governance system
@@ -592,7 +609,7 @@ Or use the repo deploy script:
 Validate deployed addresses:
 
 ```bash
-bash scripts/check-contracts.sh 62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm
+bash scripts/check-contracts.sh 5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx
 ```
 
 ## Scripts

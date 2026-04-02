@@ -48,7 +48,7 @@ else
   warn "Using public devnet RPC — set ALCHEMY_API_KEY/ALCHEMY_DEVNET_RPC_URL or HELIUS_API_KEY"
 fi
 
-PROGRAM_ID="${PROGRAM_ID:-62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm}"
+PROGRAM_ID="${PROGRAM_ID:-5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx}"
 
 echo ""
 echo "╔══════════════════════════════════════════════════════════╗"

@@ -53,7 +53,7 @@ Live components include:
 
 - GitHub repository: https://github.com/X-PACT/PrivateDAO
 - Live frontend: https://x-pact.github.io/PrivateDAO/
-- Devnet program: `62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm`
+- Devnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Current PR: https://github.com/X-PACT/PrivateDAO/pull/6
 
 ## Why It Is A Good Fit For Superteam

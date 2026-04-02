@@ -4,7 +4,7 @@ use anchor_lang::system_program::{transfer, Transfer};
 use anchor_spl::token::{self, Mint, Token, TokenAccount, Transfer as TokenTransfer};
 use sha2::{Digest, Sha256};
 
-declare_id!("62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm");
+declare_id!("5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx");
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  PrivateDAO — Commit-reveal governance for Solana
