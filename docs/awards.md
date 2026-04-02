@@ -16,3 +16,10 @@ The work demonstrates:
 - State and permission modeling
 - Distributed workflow handling
 - Production-style architecture thinking
+
+### Verification Surface
+
+- Repository: https://github.com/X-PACT/PrivateDAO
+- Live demo: https://x-pact.github.io/PrivateDAO/
+- Program source: `programs/private-dao/src/lib.rs`
+- Full lifecycle test: `tests/full-flow-test.ts`
