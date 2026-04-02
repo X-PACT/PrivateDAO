@@ -135,6 +135,7 @@ The win documentation is separate from governance execution.
 - The `Execute` button belongs to proposal lifecycle handling and appears only when a proposal is executable on-chain after finalize plus timelock expiry.
 - The frontend maps the button to the repo execution flow instead of pretending execution is a decorative UI action.
 - The Proof Center now also exposes wallet-connected `Finalize in Wallet` and `Execute in Wallet` actions for compatible live proposals.
+- The live UI now also supports browser-native `Create Proposal`, `Commit`, and `Reveal` flows for the standard governance path, while keeping the equivalent repo commands visible for reviewers and operators.
 - The operator command is:
 
 ```bash

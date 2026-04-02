@@ -1814,6 +1814,7 @@ body.judge-mode .judge-banner {
       </div>
       <code id="createProposalCommandHint">yarn create-proposal -- --dao &lt;DAO_PDA&gt; --title "Fund community work"</code>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+        <button class="action-btn action-execute" style="flex:0 0 auto" onclick="submitCreateProposalInWallet()">Create In Wallet</button>
         <button class="action-btn action-commit" style="flex:0 0 auto" onclick="copyCreateProposalCommand()">Copy Create Command</button>
         <button class="action-btn action-reveal" style="flex:0 0 auto" onclick="syncCreateProposalCommand()">Refresh Command</button>
       </div>
@@ -2535,7 +2536,7 @@ execute() → CPI
       <span class="net-dot"></span>
       <span>Target proposal</span>
       <span class="net-name" id="commitTargetLabel">Selected when opened</span>
-      <span style="margin-left:auto">CLI-backed flow</span>
+      <span style="margin-left:auto">Wallet submit ready</span>
     </div>
 
     <div class="vote-grid">
@@ -2558,7 +2559,7 @@ execute() → CPI
 
     <div style="background:var(--void);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px;font-family:var(--mono);font-size:11px;line-height:1.8;color:var(--text2)">
       <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:8px">OPERATOR NOTE</div>
-      <div id="commitCommandHint">Generate a commitment here, then run the repo commit script against the same proposal from your terminal.</div>
+      <div id="commitCommandHint">Generate a commitment here, submit it from the connected wallet, or copy the equivalent repo command if you prefer the CLI flow.</div>
       <div style="margin-top:8px;color:var(--amber)">Save the salt securely. You will need the original vote and salt during reveal.</div>
       <div id="commitCopyHint" style="margin-top:8px;color:var(--cyan)">After generation, use the button below to copy the commitment and salt summary.</div>
     </div>
@@ -2569,7 +2570,7 @@ execute() → CPI
     </div>
 
     <button class="submit-btn" id="submitBtn" disabled onclick="submitVote()">
-      Copy Commitment Details
+      Submit Commit In Wallet
     </button>
   </div>
 </div>
@@ -2584,7 +2585,7 @@ execute() → CPI
       <span class="net-dot"></span>
       <span>Target proposal</span>
       <span class="net-name" id="revealTargetLabel">Selected when opened</span>
-      <span style="margin-left:auto">Reveal via script</span>
+      <span style="margin-left:auto">Wallet submit ready</span>
     </div>
 
     <div class="commit-preview" style="margin-bottom:20px">
@@ -2612,8 +2613,22 @@ execute() → CPI
       <code id="revealCommandBuilder" style="display:block;color:var(--cyan);font-family:var(--mono);font-size:12px;line-height:1.8;word-break:break-word">yarn reveal -- --proposal &lt;PROPOSAL_PUBKEY&gt;</code>
     </div>
 
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:20px">
+      <div>
+        <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">REVEAL VOTE</label>
+        <select id="revealVoteInput" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
+          <option value="yes">YES</option>
+          <option value="no">NO</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">SALT (HEX)</label>
+        <input id="revealSaltInput" type="text" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="32-byte salt in hex">
+      </div>
+    </div>
+
     <button class="submit-btn" style="background:var(--cyan)" onclick="submitReveal()">
-      Copy Reveal Command
+      Submit Reveal In Wallet
     </button>
   </div>
 </div>
@@ -2623,7 +2638,7 @@ execute() → CPI
   <div class="modal">
     <button class="modal-close" onclick="closeModal('executeModal')">✕</button>
     <div class="modal-title">EXECUTE PROPOSAL</div>
-    <div class="modal-sub">Execution remains tied to the real on-chain workflow. This panel prepares the exact repo command for the selected proposal.</div>
+    <div class="modal-sub">Execution remains tied to the real on-chain workflow. This panel supports real wallet execution for compatible live proposals and still shows the equivalent repo command.</div>
     <div class="network-indicator" style="margin-top:-10px">
       <span class="net-dot"></span>
       <span>Target proposal</span>
@@ -2647,7 +2662,7 @@ execute() → CPI
     </div>
 
     <button class="submit-btn" id="executeSubmitBtn" onclick="submitExecute()">
-      Copy Execute Command
+      Execute In Wallet
     </button>
   </div>
 </div>
@@ -3033,6 +3048,69 @@ function anchorMethodDiscriminator(methodName) {
   return crypto.subtle.digest('SHA-256', input).then(buf => new Uint8Array(buf).slice(0, 8));
 }
 
+function encodeU32LE(value) {
+  const out = new Uint8Array(4);
+  new DataView(out.buffer).setUint32(0, value, true);
+  return out;
+}
+
+function encodeU64LE(value) {
+  const out = new Uint8Array(8);
+  new DataView(out.buffer).setBigUint64(0, BigInt(value), true);
+  return out;
+}
+
+function encodeI64LE(value) {
+  const out = new Uint8Array(8);
+  new DataView(out.buffer).setBigInt64(0, BigInt(value), true);
+  return out;
+}
+
+function encodeAnchorString(value) {
+  const text = new TextEncoder().encode(value);
+  const out = new Uint8Array(4 + text.length);
+  out.set(encodeU32LE(text.length), 0);
+  out.set(text, 4);
+  return out;
+}
+
+function concatBytes(...parts) {
+  const size = parts.reduce((sum, part) => sum + part.length, 0);
+  const out = new Uint8Array(size);
+  let offset = 0;
+  for (const part of parts) {
+    out.set(part, offset);
+    offset += part.length;
+  }
+  return out;
+}
+
+function encodeOptionPubkey(pubkey) {
+  if (!pubkey) return new Uint8Array([0]);
+  return concatBytes(new Uint8Array([1]), new solanaWeb3.PublicKey(pubkey).toBytes());
+}
+
+function encodeOptionTreasuryAction(action) {
+  if (!action) return new Uint8Array([0]);
+  const typeByte = new Uint8Array([action.actionType]);
+  const amount = encodeU64LE(action.amountLamports);
+  const recipient = new solanaWeb3.PublicKey(action.recipient).toBytes();
+  const tokenMint = encodeOptionPubkey(action.tokenMint);
+  return concatBytes(new Uint8Array([1]), typeByte, amount, recipient, tokenMint);
+}
+
+function hexToBytes(value) {
+  const normalized = value.trim().replace(/^0x/i, '').toLowerCase();
+  if (!/^[0-9a-f]*$/.test(normalized) || normalized.length % 2 !== 0) {
+    throw new Error('Hex input must contain only 0-9 and a-f characters');
+  }
+  const out = new Uint8Array(normalized.length / 2);
+  for (let i = 0; i < normalized.length; i += 2) {
+    out[i / 2] = parseInt(normalized.slice(i, i + 2), 16);
+  }
+  return out;
+}
+
 async function buildAnchorInstruction(methodName, keys) {
   const data = await anchorMethodDiscriminator(methodName);
   return new solanaWeb3.TransactionInstruction({
@@ -3047,6 +3125,18 @@ function actionTypeLabel(idx) {
   if (idx === 1) return 'SendToken';
   if (idx === 2) return 'CustomCPI';
   return `Unknown(${idx})`;
+}
+
+function deriveAssociatedTokenAddress(owner, mint) {
+  const [ata] = solanaWeb3.PublicKey.findProgramAddressSync(
+    [
+      new solanaWeb3.PublicKey(owner).toBytes(),
+      TOKEN_PROGRAM_ID.toBytes(),
+      new solanaWeb3.PublicKey(mint).toBytes(),
+    ],
+    new solanaWeb3.PublicKey('ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL')
+  );
+  return ata;
 }
 
 async function signAndBroadcastTransaction(instruction, successLabel) {
@@ -3078,6 +3168,140 @@ async function signAndBroadcastTransaction(instruction, successLabel) {
   setTimeout(() => window.open(explorer, '_blank', 'noopener'), 180);
   loadLiveProposals();
   return signature;
+}
+
+async function submitCreateProposalInWallet() {
+  const daoPubkey = (document.getElementById('createDaoPda')?.value || '').trim();
+  const title = (document.getElementById('createProposalTitle')?.value || '').trim();
+  const description = (document.getElementById('createProposalDescription')?.value || '').trim();
+  const duration = Number((document.getElementById('createProposalDuration')?.value || '').trim());
+  const recipient = (document.getElementById('createProposalRecipient')?.value || '').trim();
+  const amountSol = (document.getElementById('createProposalAmount')?.value || '').trim();
+
+  if (!walletProvider || !wallet) {
+    showToast('Connect your wallet first.', 'error');
+    return;
+  }
+  if (!daoPubkey || !title || !Number.isFinite(duration) || duration <= 0) {
+    showToast('Set DAO, title, and duration first.', 'error');
+    return;
+  }
+
+  try {
+    const dao = await fetchDaoDetails(daoPubkey);
+    const proposalPk = deriveProposalPda(dao.pubkey, dao.proposalCount);
+    const proposerTokenAccount = deriveAssociatedTokenAddress(wallet, dao.governanceToken);
+    const proposerTokenInfo = await connection.getAccountInfo(proposerTokenAccount, 'confirmed');
+    if (!proposerTokenInfo) {
+      throw new Error('Governance token account was not found for the connected wallet');
+    }
+
+    let treasuryAction = null;
+    if (recipient || amountSol) {
+      const parsedLamports = Math.floor(Number(amountSol) * solanaWeb3.LAMPORTS_PER_SOL);
+      if (!recipient || !Number.isFinite(parsedLamports) || parsedLamports <= 0) {
+        throw new Error('Treasury recipient and positive SOL amount are required together');
+      }
+      treasuryAction = {
+        actionType: 0,
+        amountLamports: parsedLamports,
+        recipient,
+        tokenMint: null,
+      };
+    }
+
+    const data = concatBytes(
+      await anchorMethodDiscriminator('create_proposal'),
+      encodeAnchorString(title),
+      encodeAnchorString(description),
+      encodeI64LE(duration),
+      encodeOptionTreasuryAction(treasuryAction),
+    );
+
+    const ix = new solanaWeb3.TransactionInstruction({
+      programId: programPk,
+      keys: [
+        { pubkey: new solanaWeb3.PublicKey(dao.pubkey), isSigner: false, isWritable: true },
+        { pubkey: proposalPk, isSigner: false, isWritable: true },
+        { pubkey: proposerTokenAccount, isSigner: false, isWritable: false },
+        { pubkey: new solanaWeb3.PublicKey(wallet), isSigner: true, isWritable: true },
+        { pubkey: solanaWeb3.SystemProgram.programId, isSigner: false, isWritable: false },
+      ],
+      data,
+    });
+
+    const signature = await signAndBroadcastTransaction(ix, 'Create proposal submitted');
+    if (signature) {
+      currentSelectedProposalPubkey = proposalPk.toBase58();
+      syncUrlState();
+    }
+  } catch (error) {
+    console.error(error);
+    showToast(error.message || 'Create proposal transaction failed.', 'error');
+  }
+}
+
+async function commitSelectedVoteInWallet() {
+  if (!currentSelectedProposal || !currentCommitHashHex || !wallet) {
+    throw new Error('Choose a live proposal and generate a commitment first');
+  }
+  const dao = await fetchDaoDetails(currentSelectedProposal.dao);
+  const voterTokenAccount = deriveAssociatedTokenAddress(wallet, dao.governanceToken);
+  const voterTokenInfo = await connection.getAccountInfo(voterTokenAccount, 'confirmed');
+  if (!voterTokenInfo) {
+    throw new Error('Governance token account was not found for the connected wallet');
+  }
+
+  const voterRecordPk = deriveVoteRecordPda(currentSelectedProposal.pubkey, wallet);
+  const data = concatBytes(
+    await anchorMethodDiscriminator('commit_vote'),
+    hexToBytes(currentCommitHashHex),
+    new Uint8Array([0]),
+  );
+
+  const ix = new solanaWeb3.TransactionInstruction({
+    programId: programPk,
+    keys: [
+      { pubkey: new solanaWeb3.PublicKey(currentSelectedProposal.dao), isSigner: false, isWritable: false },
+      { pubkey: new solanaWeb3.PublicKey(currentSelectedProposal.pubkey), isSigner: false, isWritable: true },
+      { pubkey: voterRecordPk, isSigner: false, isWritable: true },
+      { pubkey: voterTokenAccount, isSigner: false, isWritable: false },
+      { pubkey: new solanaWeb3.PublicKey(wallet), isSigner: true, isWritable: true },
+      { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
+      { pubkey: solanaWeb3.SystemProgram.programId, isSigner: false, isWritable: false },
+    ],
+    data,
+  });
+
+  return signAndBroadcastTransaction(ix, 'Commit submitted');
+}
+
+async function revealSelectedVoteInWallet(vote, saltHex) {
+  if (!currentSelectedProposal || !wallet) {
+    throw new Error('Choose a live proposal first');
+  }
+  const saltBytes = hexToBytes(saltHex);
+  if (saltBytes.length !== 32) {
+    throw new Error('Reveal salt must be exactly 32 bytes in hex');
+  }
+  const voterRecordPk = deriveVoteRecordPda(currentSelectedProposal.pubkey, wallet);
+  const data = concatBytes(
+    await anchorMethodDiscriminator('reveal_vote'),
+    new Uint8Array([vote ? 1 : 0]),
+    saltBytes,
+  );
+
+  const ix = new solanaWeb3.TransactionInstruction({
+    programId: programPk,
+    keys: [
+      { pubkey: new solanaWeb3.PublicKey(currentSelectedProposal.pubkey), isSigner: false, isWritable: true },
+      { pubkey: voterRecordPk, isSigner: false, isWritable: true },
+      { pubkey: new solanaWeb3.PublicKey(wallet), isSigner: true, isWritable: true },
+    ],
+    data,
+  });
+
+  return signAndBroadcastTransaction(ix, 'Reveal submitted');
 }
 
 async function finalizeSelectedProposalInWallet() {
@@ -3301,6 +3525,61 @@ function deriveTreasuryPda(daoPubkey) {
   return treasuryPk.toBase58();
 }
 
+function decodeDaoAccount(data, pubkey) {
+  const o = { value: 8 };
+  const authority = readPubkey(data, o);
+  const daoName = parseString(data, o);
+  const governanceToken = readPubkey(data, o);
+  const quorumPercentage = data[o.value]; o.value += 1;
+  const governanceTokenRequired = parseU64(data, o.value); o.value += 8;
+  const revealWindowSeconds = parseI64(data, o.value); o.value += 8;
+  const executionDelaySeconds = parseI64(data, o.value); o.value += 8;
+  const votingVariant = data[o.value]; o.value += 1;
+  let votingConfig = votingVariant === 0 ? 'TokenWeighted' : votingVariant === 1 ? 'Quadratic' : 'DualChamber';
+  if (votingVariant === 2) {
+    o.value += 2;
+  }
+  const proposalCount = parseU64(data, o.value); o.value += 8;
+  const bump = data[o.value]; o.value += 1;
+  return {
+    pubkey: pubkey.toBase58(),
+    authority,
+    daoName,
+    governanceToken,
+    quorumPercentage,
+    governanceTokenRequired,
+    revealWindowSeconds,
+    executionDelaySeconds,
+    votingConfig,
+    proposalCount,
+    bump,
+  };
+}
+
+async function fetchDaoDetails(daoPubkey) {
+  const daoPk = new solanaWeb3.PublicKey(daoPubkey);
+  const info = await connection.getAccountInfo(daoPk, 'confirmed');
+  if (!info) throw new Error('DAO account not found on devnet');
+  return decodeDaoAccount(info.data, daoPk);
+}
+
+function deriveProposalPda(daoPubkey, proposalCount) {
+  const countBytes = encodeU64LE(proposalCount);
+  const [proposalPk] = solanaWeb3.PublicKey.findProgramAddressSync(
+    [new TextEncoder().encode('proposal'), new solanaWeb3.PublicKey(daoPubkey).toBytes(), countBytes],
+    programPk
+  );
+  return proposalPk;
+}
+
+function deriveVoteRecordPda(proposalPubkey, voterPubkey) {
+  const [votePk] = solanaWeb3.PublicKey.findProgramAddressSync(
+    [new TextEncoder().encode('vote'), new solanaWeb3.PublicKey(proposalPubkey).toBytes(), new solanaWeb3.PublicKey(voterPubkey).toBytes()],
+    programPk
+  );
+  return votePk;
+}
+
 function renderProposalDetail(p, nowTs) {
   const phase = computePhase(p, nowTs);
   const treasuryPda = deriveTreasuryPda(p.dao);
@@ -3510,8 +3789,8 @@ function openCommitModal(id, proposalPubkey = null) {
     ? 'Choose a live proposal'
     : `PROP-${String(currentProposalId).padStart(3, '0')}`;
   document.getElementById('commitCommandHint').textContent = currentProposalId === null
-    ? 'Generate a commitment here, then run the repo commit script against your chosen proposal from the terminal.'
-    : `After generating the hash, run scripts/commit-vote.ts for PROP-${String(currentProposalId).padStart(3, '0')} with the same wallet and saved salt.`;
+    ? 'Generate a commitment here, then either submit it from the connected wallet or use the repo commit script from the terminal.'
+    : `After generating the hash, submit it from the connected wallet or run scripts/commit-vote.ts for PROP-${String(currentProposalId).padStart(3, '0')} with the same wallet and saved salt.`;
   updateCommitCommandBuilder();
   document.getElementById('submitBtn').disabled = true;
   document.getElementById('commitModal').classList.add('open');
@@ -3526,8 +3805,12 @@ function openRevealModal(id, proposalPubkey = null) {
     ? 'Choose a live proposal'
     : `PROP-${String(currentProposalId).padStart(3, '0')}`;
   document.getElementById('revealCommandHint').textContent = currentProposalId === null
-    ? 'Use the same vote and salt originally generated at commit time when running the reveal script.'
-    : `Run scripts/reveal-vote.ts for PROP-${String(currentProposalId).padStart(3, '0')} using the original vote choice and saved salt.`;
+    ? 'Use the same vote and salt originally generated at commit time when submitting reveal from the wallet or running the reveal script.'
+    : `Submit reveal from the connected wallet or run scripts/reveal-vote.ts for PROP-${String(currentProposalId).padStart(3, '0')} using the original vote choice and saved salt.`;
+  const revealVoteInput = document.getElementById('revealVoteInput');
+  const revealSaltInput = document.getElementById('revealSaltInput');
+  if (revealVoteInput && selectedVote) revealVoteInput.value = selectedVote;
+  if (revealSaltInput && currentCommitSaltHex && !revealSaltInput.value.trim()) revealSaltInput.value = currentCommitSaltHex;
   updateRevealCommandBuilder();
   document.getElementById('revealModal').classList.add('open');
 }
@@ -3579,55 +3862,62 @@ async function selectVote(v) {
 }
 
 // ── Submit ───────────────────────────────────────────────
-function submitVote() {
+async function submitVote() {
   if(!wallet || !currentCommitHashHex || !currentCommitSaltHex) {
     showToast('Connect wallet and generate commitment first.', 'error'); return;
   }
-  closeModal('commitModal');
-  const target = currentProposalId === null
-    ? 'your target proposal'
-    : `PROP-${String(currentProposalId).padStart(3, '0')}`;
-  const payload = [
-    `proposal=${target}`,
-    `wallet=${wallet}`,
-    `commitment=0x${currentCommitHashHex}`,
-    `salt=0x${currentCommitSaltHex}`,
-  ].join('\n');
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(payload)
-      .then(() => showToast(`Commitment copied for ${target}. Save salt and use scripts/commit-vote.ts`, 'success'))
-      .catch(() => showToast(`Commitment ready for ${target}. Save salt 0x${currentCommitSaltHex.slice(0,16)}... and use scripts/commit-vote.ts`, 'info'));
-    return;
+  try {
+    const signature = await commitSelectedVoteInWallet();
+    const payload = [
+      `proposal=${currentSelectedProposalPubkey || '<PROPOSAL_PUBKEY>'}`,
+      `wallet=${wallet}`,
+      `vote=${selectedVote || 'yes'}`,
+      `commitment=0x${currentCommitHashHex}`,
+      `salt=0x${currentCommitSaltHex}`,
+      signature ? `tx=${signature}` : null,
+    ].filter(Boolean).join('\n');
+    closeModal('commitModal');
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(payload)
+        .then(() => showToast('Commit submitted. Salt summary copied.', 'success'))
+        .catch(() => showToast(`Commit submitted. Save salt 0x${currentCommitSaltHex.slice(0,16)}...`, 'info'));
+      return;
+    }
+    showToast(`Commit submitted. Save salt 0x${currentCommitSaltHex.slice(0,16)}...`, 'info');
+  } catch (error) {
+    console.error(error);
+    showToast(error.message || 'Commit transaction failed.', 'error');
   }
-  showToast(`Commitment ready for ${target}. Save salt 0x${currentCommitSaltHex.slice(0,16)}... and use scripts/commit-vote.ts`, 'info');
 }
 
-function submitReveal() {
-  const command = document.getElementById('revealCommandBuilder')?.textContent || `yarn reveal -- --proposal ${currentSelectedProposalPubkey || '<PROPOSAL_PUBKEY>'}`;
-  closeModal('revealModal');
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(command)
-      .then(() => showToast('Reveal command copied. Keep the original salt file.', 'success'))
-      .catch(() => showToast(command, 'info'));
+async function submitReveal() {
+  const revealVote = (document.getElementById('revealVoteInput')?.value || 'yes').trim().toLowerCase() === 'yes';
+  const saltHex = (document.getElementById('revealSaltInput')?.value || '').trim();
+  if (!saltHex) {
+    showToast('Enter the original commit salt in hex.', 'error');
     return;
   }
-  showToast(command, 'info');
+  try {
+    await revealSelectedVoteInWallet(revealVote, saltHex);
+    closeModal('revealModal');
+  } catch (error) {
+    console.error(error);
+    showToast(error.message || 'Reveal transaction failed.', 'error');
+  }
 }
 
-function submitExecute() {
-  const command = document.getElementById('executeCommandBuilder')?.textContent || `yarn execute -- --proposal ${currentExecuteProposalPubkey || '<PROPOSAL_PUBKEY>'}`;
+async function submitExecute() {
   if (!currentExecuteProposalPubkey) {
     showToast('Select an executable proposal first.', 'error');
     return;
   }
-  closeModal('executeModal');
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(command)
-      .then(() => showToast('Execute command copied. Run it from the repo terminal.', 'success'))
-      .catch(() => showToast(command, 'info'));
-    return;
+  try {
+    await executeSelectedProposalInWallet();
+    closeModal('executeModal');
+  } catch (error) {
+    console.error(error);
+    showToast(error.message || 'Execute transaction failed.', 'error');
   }
-  showToast(command, 'info');
 }
 
 function vetoProposal() {
