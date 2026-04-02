@@ -286,6 +286,41 @@ nav.scrolled {
   max-width: 640px;
 }
 
+.award-banner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.award-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 229, 145, 0.28);
+  background: rgba(33, 21, 0, 0.26);
+  color: #fff6d1;
+  font-family: var(--body);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.award-cta:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 229, 145, 0.48);
+  background: rgba(33, 21, 0, 0.38);
+}
+
+.award-cta.secondary {
+  background: rgba(255, 248, 220, 0.08);
+}
+
 .award-banner-meta {
   min-width: 220px;
   padding: 18px 20px;
@@ -1157,6 +1192,10 @@ footer {
         <div class="award-banner-kicker">🏆 AWARDS &amp; RECOGNITION</div>
         <div class="award-banner-title">1st Place — Superteam Earn</div>
         <p class="award-banner-subtitle">Backend Systems Engineering Challenge. Recognized for rebuilding production backend systems as on-chain Rust programs on Solana.</p>
+        <div class="award-banner-actions">
+          <button class="award-cta" onclick="showPage('awards', document.querySelectorAll('.nav-link')[4])">View Award Details</button>
+          <a class="award-cta secondary" href="awards.md" target="_blank">Open Award Note</a>
+        </div>
       </div>
       <div class="award-banner-meta">
         <div class="award-banner-meta-row">
@@ -1593,6 +1632,7 @@ execute() → CPI
         <a class="award-link" href="https://earn.superteam.fun" target="_blank">Platform</a>
         <a class="award-link" href="https://github.com/X-PACT/PrivateDAO" target="_blank">Repository</a>
         <a class="award-link" href="https://x-pact.github.io/PrivateDAO/" target="_blank">Demo</a>
+        <a class="award-link" href="awards.md" target="_blank">Markdown Note</a>
       </div>
     </div>
   </div>
@@ -1611,6 +1651,7 @@ execute() → CPI
         <a href="https://github.com/X-PACT/PrivateDAO" class="footer-link" target="_blank">GitHub</a>
         <a href="https://solscan.io/account/62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm?cluster=devnet" class="footer-link" target="_blank">Solscan</a>
         <a href="https://x-pact.github.io/PrivateDAO/" class="footer-link" target="_blank">Live App</a>
+        <a href="awards.md" class="footer-link" target="_blank">Awards Note</a>
       </div>
     </div>
   </div>

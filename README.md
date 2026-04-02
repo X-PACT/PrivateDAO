@@ -26,6 +26,13 @@ PrivateDAO is a Solana governance protocol for DAOs that want private voting wit
 
 The problem statement is simple and easy for judges to verify: public live tallies create whale pressure, vote buying, and treasury signaling. PrivateDAO removes live vote visibility while keeping the rest of the governance lifecycle inspectable, testable, and compatible with how Solana teams actually operate.
 
+Quick links:
+
+- Live frontend: `https://x-pact.github.io/PrivateDAO/`
+- Awards page: `docs/awards.md`
+- On-chain program: `programs/private-dao/src/lib.rs`
+- End-to-end lifecycle test: `tests/full-flow-test.ts`
+
 ## 🏆 Awards & Recognition
 
 PrivateDAO-related engineering work has been recognized in competitive Solana development challenges.
@@ -53,6 +60,7 @@ The system demonstrates:
 - Platform: https://earn.superteam.fun
 - Repository: https://github.com/X-PACT/PrivateDAO
 - Demo: https://x-pact.github.io/PrivateDAO/
+- Award note: `docs/awards.md`
 
 GitHub Pages source: `docs/` via `.github/workflows/pages.yml`.
 
