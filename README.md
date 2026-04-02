@@ -139,6 +139,7 @@ The win documentation is separate from governance execution.
 - The live UI now also exposes proposal-scoped delegation actions and live per-proposal transaction history from devnet RPC for the selected proposal.
 - The authority surface now also includes wallet-connected `Cancel` and `Veto` actions for the selected proposal, and proposal activity is labeled from parsed on-chain transaction logs rather than shown as raw signatures only.
 - The reveal surface now supports keeper-style reveal by targeting a voter record explicitly when the keeper was authorized at commit time.
+- The operator surface now also supports browser-native `Create DAO` and `Deposit Treasury` actions instead of leaving those steps as command-only flows.
 - The operator command is:
 
 ```bash

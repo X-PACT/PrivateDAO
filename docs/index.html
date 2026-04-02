@@ -1832,9 +1832,15 @@ body.judge-mode .judge-banner {
             <input id="builderDaoQuorum" type="number" value="51" min="1" max="100" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Quorum">
             <input id="builderDaoReveal" type="number" value="5" min="5" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Reveal window">
             <input id="builderDaoDelay" type="number" value="5" min="0" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Execution delay">
+            <select id="builderDaoMode" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
+              <option value="token">token</option>
+              <option value="quadratic">quadratic</option>
+              <option value="dual">dual</option>
+            </select>
           </div>
           <code id="createDaoCommandBuilder" style="display:block;margin-top:12px;color:var(--cyan)">yarn create-dao -- --name "PrivateDAO Live" --quorum 51 --reveal-window 5 --delay 5</code>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+            <button class="action-btn action-execute" style="flex:0 0 auto" onclick="submitCreateDaoInWallet()">Create DAO In Wallet</button>
             <button class="action-btn action-commit" style="flex:0 0 auto" onclick="copyCreateDaoCommand()">Copy Create DAO</button>
           </div>
         </div>
@@ -1846,6 +1852,7 @@ body.judge-mode .judge-banner {
           </div>
           <code id="depositCommandBuilder" style="display:block;margin-top:12px;color:var(--cyan)">yarn deposit -- --dao &lt;DAO_PDA&gt; --amount 0.2</code>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+            <button class="action-btn action-execute" style="flex:0 0 auto" onclick="submitDepositInWallet()">Deposit In Wallet</button>
             <button class="action-btn action-reveal" style="flex:0 0 auto" onclick="copyDepositCommand()">Copy Deposit Command</button>
           </div>
         </div>
@@ -2911,8 +2918,11 @@ function buildCreateDaoCommand() {
   const quorum = (document.getElementById('builderDaoQuorum')?.value || '51').trim() || '51';
   const revealWindow = (document.getElementById('builderDaoReveal')?.value || '5').trim() || '5';
   const delay = (document.getElementById('builderDaoDelay')?.value || '5').trim() || '5';
+  const mode = (document.getElementById('builderDaoMode')?.value || 'token').trim() || 'token';
   const safeName = name.replace(/"/g, '\\"');
-  return `yarn create-dao -- --name "${safeName}" --quorum ${quorum} --reveal-window ${revealWindow} --delay ${delay}`;
+  const parts = [`yarn create-dao -- --name "${safeName}" --quorum ${quorum} --reveal-window ${revealWindow} --delay ${delay}`];
+  if (mode !== 'token') parts.push(`--mode ${mode}`);
+  return parts.join(' ');
 }
 
 function syncCreateDaoCommand() {
@@ -2985,6 +2995,8 @@ function copyFinalizeCommand() {
 const DEVNET_RPC = "https://solana-devnet.g.alchemy.com/v2/L4dlywEyiBJLg8Ey0bFof";
 const PROGRAM_ID = "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx";
 const TOKEN_PROGRAM_ID = new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
+const ASSOCIATED_TOKEN_PROGRAM_ID = new solanaWeb3.PublicKey("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL");
+const SYSVAR_RENT_PUBKEY = new solanaWeb3.PublicKey("SysvarRent111111111111111111111111111111111");
 const connection = new solanaWeb3.Connection(DEVNET_RPC, "confirmed");
 const programPk = new solanaWeb3.PublicKey(PROGRAM_ID);
 const statusByIdx = ["Voting", "Passed", "Failed", "Cancelled", "Vetoed"];
@@ -3172,12 +3184,35 @@ function deriveAssociatedTokenAddress(owner, mint) {
       TOKEN_PROGRAM_ID.toBytes(),
       new solanaWeb3.PublicKey(mint).toBytes(),
     ],
-    new solanaWeb3.PublicKey('ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL')
+    ASSOCIATED_TOKEN_PROGRAM_ID
   );
   return ata;
 }
 
-async function signAndBroadcastTransaction(instruction, successLabel) {
+function encodeVotingConfig(mode) {
+  if (mode === 'quadratic') return new Uint8Array([1]);
+  if (mode === 'dual') return new Uint8Array([2, 50, 50]);
+  return new Uint8Array([0]);
+}
+
+function createInitializeMintInstruction(mintPubkey, mintAuthority, decimals = 6) {
+  const data = concatBytes(
+    new Uint8Array([0]),
+    new Uint8Array([decimals]),
+    new solanaWeb3.PublicKey(mintAuthority).toBytes(),
+    new Uint8Array([0]),
+  );
+  return new solanaWeb3.TransactionInstruction({
+    programId: TOKEN_PROGRAM_ID,
+    keys: [
+      { pubkey: mintPubkey, isSigner: false, isWritable: true },
+      { pubkey: SYSVAR_RENT_PUBKEY, isSigner: false, isWritable: false },
+    ],
+    data,
+  });
+}
+
+async function signAndBroadcastTransaction(instruction, successLabel, extraSigners = []) {
   if (!walletProvider || !wallet) {
     showToast('Connect your wallet first.', 'error');
     return null;
@@ -3188,6 +3223,9 @@ async function signAndBroadcastTransaction(instruction, successLabel) {
   tx.feePayer = providerPk;
   const latest = await connection.getLatestBlockhash('confirmed');
   tx.recentBlockhash = latest.blockhash;
+  if (extraSigners.length) {
+    tx.partialSign(...extraSigners);
+  }
 
   let signature;
   if (walletProvider.signAndSendTransaction) {
@@ -3276,6 +3314,125 @@ async function submitCreateProposalInWallet() {
   } catch (error) {
     console.error(error);
     showToast(error.message || 'Create proposal transaction failed.', 'error');
+  }
+}
+
+async function submitCreateDaoInWallet() {
+  const name = (document.getElementById('builderDaoName')?.value || '').trim() || 'PrivateDAO Live';
+  const quorum = Number((document.getElementById('builderDaoQuorum')?.value || '51').trim());
+  const revealWindow = Number((document.getElementById('builderDaoReveal')?.value || '5').trim());
+  const delay = Number((document.getElementById('builderDaoDelay')?.value || '5').trim());
+  const mode = (document.getElementById('builderDaoMode')?.value || 'token').trim();
+
+  if (!walletProvider || !wallet) {
+    showToast('Connect your wallet first.', 'error');
+    return;
+  }
+  if (!Number.isFinite(quorum) || quorum <= 0 || quorum > 100) {
+    showToast('Set a valid quorum between 1 and 100.', 'error');
+    return;
+  }
+
+  try {
+    const authorityPk = new solanaWeb3.PublicKey(wallet);
+    const mintKeypair = solanaWeb3.Keypair.generate();
+    const [daoPk] = solanaWeb3.PublicKey.findProgramAddressSync(
+      [new TextEncoder().encode('dao'), authorityPk.toBytes(), new TextEncoder().encode(name)],
+      programPk
+    );
+
+    const mintRent = await connection.getMinimumBalanceForRentExemption(82, 'confirmed');
+    const createMintIx = solanaWeb3.SystemProgram.createAccount({
+      fromPubkey: authorityPk,
+      newAccountPubkey: mintKeypair.publicKey,
+      lamports: mintRent,
+      space: 82,
+      programId: TOKEN_PROGRAM_ID,
+    });
+    const initMintIx = createInitializeMintInstruction(mintKeypair.publicKey, authorityPk, 6);
+    const daoData = concatBytes(
+      await anchorMethodDiscriminator('initialize_dao'),
+      encodeAnchorString(name),
+      new Uint8Array([quorum]),
+      encodeU64LE(0),
+      encodeI64LE(revealWindow),
+      encodeI64LE(delay),
+      encodeVotingConfig(mode),
+    );
+    const createDaoIx = new solanaWeb3.TransactionInstruction({
+      programId: programPk,
+      keys: [
+        { pubkey: daoPk, isSigner: false, isWritable: true },
+        { pubkey: mintKeypair.publicKey, isSigner: false, isWritable: false },
+        { pubkey: authorityPk, isSigner: true, isWritable: true },
+        { pubkey: solanaWeb3.SystemProgram.programId, isSigner: false, isWritable: false },
+      ],
+      data: daoData,
+    });
+
+    const combined = new solanaWeb3.Transaction().add(createMintIx, initMintIx, createDaoIx);
+    combined.feePayer = authorityPk;
+    const latest = await connection.getLatestBlockhash('confirmed');
+    combined.recentBlockhash = latest.blockhash;
+    combined.partialSign(mintKeypair);
+
+    let signature;
+    if (walletProvider.signAndSendTransaction) {
+      const result = await walletProvider.signAndSendTransaction(combined, { preflightCommitment: 'confirmed' });
+      signature = result.signature || result;
+    } else if (walletProvider.signTransaction) {
+      const signed = await walletProvider.signTransaction(combined);
+      signature = await connection.sendRawTransaction(signed.serialize(), { preflightCommitment: 'confirmed' });
+    } else {
+      throw new Error('Wallet provider does not support transaction signing');
+    }
+
+    await connection.confirmTransaction({ signature, ...latest }, 'confirmed');
+    document.getElementById('builderDepositDao').value = daoPk.toBase58();
+    const createDaoPdaInput = document.getElementById('createDaoPda');
+    if (createDaoPdaInput && !createDaoPdaInput.value.trim()) createDaoPdaInput.value = daoPk.toBase58();
+    syncDepositCommand(daoPk.toBase58());
+    syncCreateProposalCommand(daoPk.toBase58());
+    showToast(`DAO created: ${shortPk(daoPk.toBase58())}`, 'success');
+    setTimeout(() => window.open(`https://solscan.io/tx/${signature}?cluster=devnet`, '_blank', 'noopener'), 180);
+  } catch (error) {
+    console.error(error);
+    showToast(error.message || 'Create DAO transaction failed.', 'error');
+  }
+}
+
+async function submitDepositInWallet() {
+  const daoPubkey = (document.getElementById('builderDepositDao')?.value || '').trim();
+  const amountSol = Number((document.getElementById('builderDepositAmount')?.value || '0.2').trim());
+  if (!walletProvider || !wallet) {
+    showToast('Connect your wallet first.', 'error');
+    return;
+  }
+  if (!daoPubkey || !Number.isFinite(amountSol) || amountSol <= 0) {
+    showToast('Set DAO PDA and a positive SOL amount first.', 'error');
+    return;
+  }
+  try {
+    const lamports = Math.floor(amountSol * solanaWeb3.LAMPORTS_PER_SOL);
+    const treasuryPk = new solanaWeb3.PublicKey(deriveTreasuryPda(daoPubkey));
+    const data = concatBytes(
+      await anchorMethodDiscriminator('deposit_treasury'),
+      encodeU64LE(lamports),
+    );
+    const ix = new solanaWeb3.TransactionInstruction({
+      programId: programPk,
+      keys: [
+        { pubkey: new solanaWeb3.PublicKey(daoPubkey), isSigner: false, isWritable: false },
+        { pubkey: treasuryPk, isSigner: false, isWritable: true },
+        { pubkey: new solanaWeb3.PublicKey(wallet), isSigner: true, isWritable: true },
+        { pubkey: solanaWeb3.SystemProgram.programId, isSigner: false, isWritable: false },
+      ],
+      data,
+    });
+    await signAndBroadcastTransaction(ix, 'Deposit submitted');
+  } catch (error) {
+    console.error(error);
+    showToast(error.message || 'Deposit transaction failed.', 'error');
   }
 }
 
@@ -4331,6 +4488,7 @@ observeReveal();
   'builderDaoQuorum',
   'builderDaoReveal',
   'builderDaoDelay',
+  'builderDaoMode',
 ].forEach(id => {
   const el = document.getElementById(id);
   if (el) el.addEventListener('input', () => syncCreateDaoCommand());
