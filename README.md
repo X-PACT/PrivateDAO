@@ -23,6 +23,10 @@
 [![Pitch Assets](https://img.shields.io/badge/Pitch-Ready-ff6b6b)](SUBMISSION_FINAL.md)
 [![Demo Reel](https://img.shields.io/badge/Demo-Reel-14b8a6)](docs/assets/demo-reel.gif)
 [![Program](https://img.shields.io/badge/Program-Devnet%20Live-14F195)](https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet)
+[![Security Surface](https://img.shields.io/badge/Security%20Surface-Lifecycle%20%2B%20Replay%20%2B%20Treasury%20%2B%20Delegation%20Hardened-0f766e)](docs/security-review.md)
+[![Threat Model](https://img.shields.io/badge/Threat%20Model-Complete-1d4ed8)](docs/threat-model.md)
+[![Replay Analysis](https://img.shields.io/badge/Replay%20Analysis-Verified-7c3aed)](docs/replay-analysis.md)
+[![Atomicity](https://img.shields.io/badge/Atomicity-Verified-15803d)](docs/failure-modes.md)
 
 PrivateDAO is a Solana governance protocol for DAOs that want private voting without giving up execution safety. Votes are committed privately, revealed later, finalized deterministically, and treasury execution stays behind an explicit timelock with recipient and mint checks.
 
@@ -208,6 +212,8 @@ Security and review documents:
 - `docs/replay-analysis.md`
 - `docs/judge-technical-audit.md`
 - `docs/mainnet-readiness.md`
+- `docs/independent-verification.md`
+- `docs/attack-simulation-log.md`
 
 Protocol and product documents:
 
@@ -217,6 +223,26 @@ Protocol and product documents:
 - `docs/awards.md`
 - `docs/ranger-strategy-documentation.md`
 - `docs/risk-policy.md`
+
+## Independent Verification
+
+If you want to verify the system without trusting any summary, start here:
+
+- `docs/independent-verification.md`
+
+This guide is designed to let an external reviewer:
+
+- set up the environment
+- reproduce the lifecycle
+- inspect transaction hashes
+- verify treasury balance changes
+- reproduce rejection paths
+
+## Attack Simulation Log
+
+Compact reviewer-facing misuse attempts are indexed in:
+
+- `docs/attack-simulation-log.md`
 
 ## ⚡ One-Line Install
 
