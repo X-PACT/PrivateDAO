@@ -1516,6 +1516,7 @@ footer {
       </div>
       <div class="nav-links">
         <button class="nav-link active" onclick="showPage('proposals',this)">Proposals</button>
+        <button class="nav-link" onclick="showPage('proof',this)">Proof Center</button>
         <button class="nav-link" onclick="showPage('protocol',this)">Protocol</button>
         <button class="nav-link" onclick="showPage('migrate',this)">Migrate from Realms</button>
         <button class="nav-link" onclick="showPage('security',this)">Security</button>
@@ -1795,6 +1796,112 @@ footer {
 </section>
 
 </div><!-- /page-proposals -->
+
+<!-- ══════════════════ PAGE: PROOF CENTER ══════════════════ -->
+<div class="page" id="page-proof">
+<section class="section" style="padding-top:140px">
+  <div class="container">
+    <div class="section-tag reveal">PROOF CENTER</div>
+    <h2 class="section-heading reveal">Everything a judge or investor needs,<br>in one surface.</h2>
+
+    <div class="award-detail-card reveal">
+      <div class="award-detail-head">
+        <div>
+          <div class="award-detail-title">Primary Proof Links</div>
+          <p class="award-detail-copy">
+            This page consolidates the core verification surface for PrivateDAO: live product, live program, live governance proof, published pitch, and competition positioning.
+          </p>
+        </div>
+        <div class="award-pill">REVIEW READY</div>
+      </div>
+      <div class="award-links">
+        <a class="award-link" href="https://x-pact.github.io/PrivateDAO/" target="_blank">Live App</a>
+        <a class="award-link" href="https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet" target="_blank">Program on Solscan</a>
+        <a class="award-link" href="live-proof.md" target="_blank">Live Devnet Proof</a>
+        <a class="award-link" href="https://youtu.be/KVNFZXHNZTQ" target="_blank">YouTube Pitch</a>
+        <a class="award-link" href="awards.md" target="_blank">Award Note</a>
+        <a class="award-link" href="strategy.md" target="_blank">Repo Strategy</a>
+      </div>
+    </div>
+
+    <div class="award-grid reveal" style="margin-top:24px">
+      <div class="award-meta-card">
+        <div class="award-meta-card-label">AWARD</div>
+        <div class="award-meta-card-value">1st Place — Superteam Earn</div>
+      </div>
+      <div class="award-meta-card">
+        <div class="award-meta-card-label">CURRENT TRACKS</div>
+        <div class="award-meta-card-value">Ranger Main Track · Ranger Drift Side Track</div>
+      </div>
+      <div class="award-meta-card">
+        <div class="award-meta-card-label">PROGRAM ID</div>
+        <div class="award-meta-card-value" style="word-break:break-all">5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx</div>
+      </div>
+    </div>
+
+    <div class="investor-video-card reveal" style="margin-top:24px">
+      <div class="section-tag" style="margin-bottom:14px">PITCH AND REVIEW</div>
+      <div class="investor-video-title">Published pitch plus live repository proof.</div>
+      <p class="investor-video-copy">
+        The strongest PrivateDAO review flow is not a claim-only narrative. It starts with the pitch, then lands immediately on the real on-chain and repo-native proof surface.
+      </p>
+      <div class="investor-video-grid">
+        <div class="investor-video-panel">
+          <div class="award-meta-card-label">WATCH</div>
+          <div class="investor-video-copy">
+            <div>YouTube pitch: <a class="award-link" href="https://youtu.be/KVNFZXHNZTQ" target="_blank">KVNFZXHNZTQ</a></div>
+            <div style="margin-top:12px">Repo-native MP4: <a class="award-link" href="assets/private-dao-investor-pitch.mp4" target="_blank">Direct asset</a></div>
+            <div style="margin-top:12px">Poster: <a class="award-link" href="assets/private-dao-investor-pitch-poster.png" target="_blank">Preview image</a></div>
+          </div>
+        </div>
+        <div class="investor-video-panel">
+          <div class="award-meta-card-label">READ</div>
+          <div class="investor-video-copy">
+            <div>Submission draft: <a class="award-link" href="../SUBMISSION_FINAL.md" target="_blank">Submission Final</a></div>
+            <div style="margin-top:12px">Competition roadmap: <a class="award-link" href="competition-roadmap.md" target="_blank">Roadmap</a></div>
+            <div style="margin-top:12px">Main Track memo: <a class="award-link" href="ranger-main-track.md" target="_blank">Main Track</a></div>
+            <div style="margin-top:12px">Drift Track memo: <a class="award-link" href="ranger-drift-track.md" target="_blank">Drift Track</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="award-detail-card reveal" style="margin-top:24px">
+      <div class="award-detail-head">
+        <div>
+          <div class="award-detail-title">Operational Proof Paths</div>
+          <p class="award-detail-copy">
+            These links and commands tie the presentation layer to the real repository behavior without hiding behind mock actions.
+          </p>
+        </div>
+        <div class="award-pill">ON-CHAIN VERIFIED</div>
+      </div>
+      <div class="proposal-command-grid">
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">END-TO-END LIVE FLOW</div>
+          <div style="color:var(--text2);line-height:1.8">Runs a real devnet lifecycle and prints transaction hashes plus explorer links.</div>
+          <code>npm run live-proof</code>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">LOCAL DEMO</div>
+          <div style="color:var(--text2);line-height:1.8">Runs the repository demo through the test harness.</div>
+          <code>npm run demo</code>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">CREATE PROPOSAL</div>
+          <div style="color:var(--text2);line-height:1.8">Governance-token holder creates a proposal on-chain.</div>
+          <code>yarn create-proposal -- --dao &lt;DAO_PDA&gt; --title "Fund community work"</code>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">EXECUTE</div>
+          <div style="color:var(--text2);line-height:1.8">Treasury execution remains behind finalize plus timelock.</div>
+          <code>yarn execute -- --proposal &lt;PROPOSAL_PUBKEY&gt;</code>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div><!-- /page-proof -->
 
 <!-- ══════════════════ PAGE: PROTOCOL ══════════════════ -->
 <div class="page" id="page-protocol">
@@ -2160,6 +2267,7 @@ execute() → CPI
         <a href="https://github.com/X-PACT/PrivateDAO" class="footer-link" target="_blank">GitHub</a>
         <a href="https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet" class="footer-link" target="_blank">Solscan</a>
         <a href="https://x-pact.github.io/PrivateDAO/" class="footer-link" target="_blank">Live App</a>
+        <a href="?page=proof" class="footer-link">Proof Center</a>
         <a href="awards.md" class="footer-link" target="_blank">Awards Note</a>
         <a href="mailto:fahd.kotb@tuta.io" class="footer-link">Owner Email</a>
         <a href="https://t.me/Fahdkotb" class="footer-link" target="_blank">Telegram</a>
