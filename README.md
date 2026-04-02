@@ -320,77 +320,36 @@ Initialize DAO
   -> if not passed: failed / cancelled / vetoed terminal states
 ```
 
-## Why Judges Should Care
+## Why This Stands Out
 
-This repo is not just a contract or just a landing page. It is already packaged the way Solana competition reviewers usually want to see it:
+- The protocol is live on Solana devnet, not simulated.
+- The governance lifecycle is complete: create, commit, reveal, finalize, veto, cancel, and execute.
+- The repository contains the product surface, protocol surface, and proof surface in one place.
+- The project now has both a live web surface and an Android-native mobile surface.
+- The problem is easy for judges to understand: public tallies leak intent too early.
 
-- live devnet program
-- working docs frontend on GitHub Pages
-- end-to-end Anchor tests covering the governance lifecycle
-- operator scripts for create, vote, reveal, finalize, execute, and migrate
-- explicit safety checks around treasury execution
-- Realms-oriented migration and voter-weight compatibility path
+## Current Product Surface
 
-In other words: there is a product story, a protocol story, and a verification story in the same repository.
+- Live devnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- GitHub Pages frontend: `docs/index.html`
+- Android-native app: `apps/android-native/`
+- End-to-end lifecycle tests: `tests/full-flow-test.ts`, `tests/demo.ts`
+- Operator scripts: `scripts/`
+- Live proof note: `docs/live-proof.md`
 
-## What Makes It Competition-Ready
-
-- Clear problem: public governance leaks intent too early.
-- Clear technical differentiation: commit-reveal plus private delegation and keeper reveal.
-- Clear Solana fit: Anchor program, devnet deployment, wallet + RPC tooling, Realms-oriented migration path.
-- Clear demoability: one README, one docs frontend, one devnet program, one test suite.
-- Clear business relevance: DAO treasury safety, governance participation quality, and migration usability.
-
-## Quick Judge Review
-
-If a reviewer has only two to five minutes, these are the fastest proof points:
-
-1. Open the live frontend: `https://x-pact.github.io/PrivateDAO/`
-2. Confirm the devnet program exists: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
-3. Review the core on-chain logic in `programs/private-dao/src/lib.rs`
-4. Review the end-to-end flows in `tests/full-flow-test.ts` and `tests/demo.ts`
-5. Review the operator scripts in `scripts/`
-6. Review the submission package in `SUBMISSION.md` and `SUBMISSION_FINAL.md`
-
-## Why Solana Specifically
-
-PrivateDAO is not blockchain-agnostic theater. Its current implementation is intentionally Solana-native:
-
-- written in Anchor for Solana account and instruction semantics
-- deployed on Solana devnet
-- uses Solana wallet, RPC, and token account flows directly
-- targets DAO and Realms-adjacent governance workflows that already exist in the Solana ecosystem
-- ships devnet and local-validator tooling instead of abstract pseudo-integration
-
-That matters in competitions: the project is not a generic privacy-governance idea looking for a chain. It is already built around Solana workflows.
-
-## Review Links
+## Quick Review Pack
 
 - Live frontend: `https://x-pact.github.io/PrivateDAO/`
-- Devnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
-- Demo reel: `docs/assets/demo-reel.gif`
-- Demo script: `DEMO_SCRIPT_90S.md`
+- Judge Mode: `https://x-pact.github.io/PrivateDAO/?page=proof&judge=1`
+- Proof Center: `https://x-pact.github.io/PrivateDAO/?page=proof`
+- Android-native guide: `docs/android-native.md`
 - Main submission: `SUBMISSION.md`
 - Final-form submission: `SUBMISSION_FINAL.md`
-- Colosseum forum post draft: `COLOSSEUM_FORUM_POST.md`
-- Superteam application assets: `SUPERTEAM_INSTAGRANT.md`, `SUPERTEAM_POST.md`
-
-## Demo Reel
-
-![PrivateDAO demo reel](docs/assets/demo-reel.gif)
-
-Quick review links:
-
-- Demo reel asset: `docs/assets/demo-reel.gif`
-- Demo poster: `docs/assets/demo-reel-poster.png`
-- Demo talk track: `DEMO_SCRIPT_90S.md`
-- Outreach copy: `OUTREACH_MESSAGE.md`
+- Demo script: `DEMO_SCRIPT_90S.md`
 
 ## Ownership And Contact
 
 PrivateDAO is independently built and maintained by **Fahd Kotb**.
-
-Professional contact channels:
 
 - Primary email: [fahd.kotb@tuta.io](mailto:fahd.kotb@tuta.io)
 - Secondary email: [i.kotb@proton.me](mailto:i.kotb@proton.me)
@@ -400,82 +359,6 @@ Professional contact channels:
 - WhatsApp backup: [+20 107 000 4967](https://wa.me/201070004967)
 - X: [@FahdX369](https://x.com/FahdX369)
 - Telegram: [@Fahdkotb](https://t.me/Fahdkotb)
-- Outreach pack: `OUTREACH_MESSAGE.md`
-
-## Submission Assets
-
-The repo now includes a ready-to-use package for judges, reviewers, and public sharing:
-
-- `SUBMISSION.md` for the main project submission
-- `SUBMISSION_FINAL.md` for a stronger final-form submission draft
-- `COLOSSEUM_FORUM_POST.md` for the Colosseum public forum
-- `SUPERTEAM_POST.md` for a Superteam builder post
-- `SUPERTEAM_INSTAGRANT.md` for a Superteam Instagrant-style application draft
-- `SOCIAL_THREAD.md` for tweet/thread copy
-- `DEMO_SCRIPT_90S.md` for a 60 to 90 second judge demo
-- `OUTREACH_MESSAGE.md` for sponsor, reviewer, and ecosystem outreach
-
-## Evaluation Map
-
-For Solana competitions, the repository now maps cleanly to the usual evaluation questions:
-
-- Innovation:
-  private voting plus private delegation and keeper reveal in one governance lifecycle
-- Technical execution:
-  live Anchor program, reproducible build, CI, end-to-end tests, and operator scripts
-- Ecosystem fit:
-  devnet deployment, Solana RPC tooling, SPL token handling, and Realms-oriented compatibility
-- User story:
-  docs frontend, demo assets, and CLI workflow are aligned with the same product flow
-- Credibility:
-  the repo is explicit about what is implemented, what is devnet-only, and what is not yet claimed
-
-## Hackathon Context
-
-PrivateDAO is being prepared as a serious Solana builder submission, but the README stays grounded in what the repo actually does today.
-
-- Main event context: Solana Graveyard Hackathon 2026
-- Submission angles already reflected in the codebase:
-  - DAOs / Realms-oriented governance tooling
-  - Sunrise-style migration path
-  - Overall Solana Foundation quality bar
-- Official ecosystem partners listed for the Graveyard hackathon include:
-  - Solana Foundation
-  - Sunrise
-  - Realms
-  - Exchange Art
-  - Tapestry
-  - MagicBlock
-  - KYD Labs
-  - Portals
-  - DRiP
-  - Torque
-  - BIO
-  - Audius
-  - OrbitFlare
-
-That context matters for positioning, but this repo does not claim prize results, grants, accelerator acceptance, or funding that have not actually happened. When we mention grants or follow-on support, we mean the broader Solana ecosystem paths this project is suitable for, not money already awarded.
-
-## Current Status
-
-- Devnet program deployed at `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
-- Current repo targets `Anchor 0.31.1`
-- Local tests cover commit, reveal, finalize, execute, cancellation, delegation, keeper reveal, and treasury validation paths
-- This repo is production-minded, but still devnet-first and not represented as a completed mainnet governance system
-
-## What Goes On Solana
-
-For this kind of project, you do not upload the whole repository to Solana.
-
-- The on-chain program is what gets deployed to the Solana network
-- The repository stays in GitHub as the source of truth for code, scripts, SDK, docs, and frontend assets
-- The docs frontend can be hosted separately, such as GitHub Pages
-- Operators and users interact with the deployed program through RPC, wallets, scripts, SDK calls, or the frontend
-
-So if the question is "does the project need to be on Solana?", the practical answer is:
-
-- yes, the program should be deployed on Solana if you want a real working product
-- no, the rest of the project is not stored on-chain and should not be treated as something you "upload to Solana"
 
 ## What Exists Today
 
@@ -483,35 +366,16 @@ So if the question is "does the project need to be on Solana?", the practical an
 - Voting modes:
   - `TokenWeighted`
   - `Quadratic`
-  - `DualChamber` with separate capital and community thresholds
-- Proposal lifecycle:
-  - create
-  - commit
-  - reveal
-  - finalize
-  - timelocked execute
-  - authority cancel during voting
-  - authority veto during timelock
+  - `DualChamber`
 - Treasury actions:
-  - `SendSol` fully wired on-chain
-  - `SendToken` fully wired on-chain with mint, authority, and recipient-owner checks
-  - `CustomCPI` intentionally emits an execution event only; off-chain relayer handling is still the chosen pattern here
-- Optional keeper-authorized reveal
+  - `SendSol`
+  - `SendToken`
+  - `CustomCPI` event-only relay path
 - Proposal-scoped private delegation
-- Treasury deposit helper
-- Realms-oriented migration helper and voter-weight record account
-- Docs frontend published from `docs/index.html`
-
-## Backend And Frontend Fit
-
-This project is not a disconnected smart contract plus a decorative landing page. The pieces are meant to describe the same governance flow from different layers:
-
-- `programs/private-dao/src/lib.rs` is the source of truth for the lifecycle and treasury rules
-- `sdk/src/index.ts` exposes the same vote commitment primitive used by the on-chain program
-- `scripts/` are operator-facing flows for DAO creation, proposal creation, commit, reveal, finalize, execute, deposit, and migration
-- `docs/index.html` and the published GitHub Pages frontend explain the same flow in a way reviewers, sponsors, judges, and DAO operators can follow quickly
-
-The goal is simple: what the frontend says should match what the program enforces, and what the scripts do should match both. That alignment matters more right now than flashy UI changes, especially while the project is under hackathon review.
+- Keeper-authorized reveal
+- Timelock and veto model
+- Realms-oriented migration and voter-weight compatibility path
+- Android-native mobile app using Kotlin + Solana Mobile Wallet Adapter
 
 ## Safety Model
 

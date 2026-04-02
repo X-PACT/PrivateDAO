@@ -147,6 +147,8 @@ This means the Android app is designed to work with compatible Android wallets s
 - home dashboard
 - proposal list
 - proposal detail surface
+- create DAO
+- deposit treasury
 - create proposal
 - commit vote
 - reveal vote
@@ -167,7 +169,7 @@ Implemented mobile transaction paths:
 - commit vote
 - reveal vote
 - finalize proposal
-- execute proposal
+- execute proposal for SOL and token treasury paths
 
 Implemented mobile read paths:
 
