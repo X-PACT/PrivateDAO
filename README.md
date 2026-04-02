@@ -47,6 +47,10 @@ Quick links:
 - Awards page: `docs/awards.md`
 - Strategy documentation: `https://us04docs.zoom.us/doc/Zd34HEaHSKyZGRxBcqxXQg`
 - Repo strategy note: `docs/strategy.md`
+- Ranger strategy documentation: `docs/ranger-strategy-documentation.md`
+- Ranger eligibility checklist: `docs/ranger-submission-checklist.md`
+- Ranger strategy config sample: `docs/ranger-strategy-config.sample.json`
+- Judge technical audit note: `docs/judge-technical-audit.md`
 - Competition roadmap: `docs/competition-roadmap.md`
 - Ranger Main Track memo: `docs/ranger-main-track.md`
 - Ranger Drift Track memo: `docs/ranger-drift-track.md`
@@ -64,8 +68,37 @@ If a judge only has 2-3 minutes, the strongest review order is:
 1. Open `https://x-pact.github.io/PrivateDAO/?page=proof&judge=1`
 2. Watch the pitch: `https://youtu.be/KVNFZXHNZTQ`
 3. Open the live proof note: `docs/live-proof.md`
-4. Inspect the live program on Solscan
-5. Open the selected proposal surface and verify the current on-chain lifecycle
+4. Open `docs/judge-technical-audit.md`
+5. Inspect the live program on Solscan
+6. Open the selected proposal surface and verify the current on-chain lifecycle
+
+## Ranger / Drift Fit
+
+PrivateDAO is strongest for Ranger and Drift when it is framed honestly:
+
+- not as a complete seeded vault strategy by itself
+- but as the private governance and risk-control layer for a real USDC strategy stack
+
+That is the differentiated value in these competitions:
+
+- hidden committee approvals
+- timelocked execution discipline
+- treasury and execution checks
+- real on-chain proof for governance-sensitive actions
+
+Submission references for this angle:
+
+- `docs/ranger-strategy-documentation.md`
+- `docs/ranger-submission-checklist.md`
+- `docs/ranger-main-track.md`
+- `docs/ranger-drift-track.md`
+- `docs/judge-technical-audit.md`
+
+Eligibility command:
+
+```bash
+npm run validate:ranger-strategy -- docs/ranger-strategy-config.sample.json
+```
 
 ## ⚡ One-Line Install
 

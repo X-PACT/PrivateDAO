@@ -22,6 +22,7 @@
     "finalize":          "ts-node scripts/finalize.ts",
     "execute":           "ts-node scripts/execute.ts",
     "live-proof":        "ts-node scripts/live-devnet-proof.ts",
+    "validate:ranger-strategy": "ts-node scripts/validate-ranger-strategy.ts",
     "migrate":           "ts-node migrations/migrate-realms-dao.ts"
   },
   "dependencies": {
