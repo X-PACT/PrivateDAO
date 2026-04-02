@@ -2345,6 +2345,11 @@ execute() → CPI
       <div id="commitCopyHint" style="margin-top:8px;color:var(--cyan)">After generation, use the button below to copy the commitment and salt summary.</div>
     </div>
 
+    <div style="background:var(--void);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px">
+      <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:8px;font-family:var(--mono)">COMMIT COMMAND</div>
+      <code id="commitCommandBuilder" style="display:block;color:var(--cyan);font-family:var(--mono);font-size:12px;line-height:1.8;word-break:break-word">yarn commit -- --proposal &lt;PROPOSAL_PUBKEY&gt; --vote yes</code>
+    </div>
+
     <button class="submit-btn" id="submitBtn" disabled onclick="submitVote()">
       Copy Commitment Details
     </button>
@@ -2384,8 +2389,13 @@ execute() → CPI
       <div id="revealCommandHint">Use the same vote and salt originally generated at commit time when running the reveal script.</div>
     </div>
 
+    <div style="background:var(--void);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px">
+      <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:8px;font-family:var(--mono)">REVEAL COMMAND</div>
+      <code id="revealCommandBuilder" style="display:block;color:var(--cyan);font-family:var(--mono);font-size:12px;line-height:1.8;word-break:break-word">yarn reveal -- --proposal &lt;PROPOSAL_PUBKEY&gt;</code>
+    </div>
+
     <button class="submit-btn" style="background:var(--cyan)" onclick="submitReveal()">
-      Submit Reveal Proof On-Chain
+      Copy Reveal Command
     </button>
   </div>
 </div>
@@ -2411,6 +2421,11 @@ execute() → CPI
     <div style="background:var(--void);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px;font-family:var(--mono);font-size:11px;line-height:1.8;color:var(--text2)">
       <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:8px">EXECUTION COMMAND</div>
       <div id="executeCommandHint">Run the repo execute script for the selected proposal.</div>
+    </div>
+
+    <div style="background:var(--void);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px">
+      <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:8px;font-family:var(--mono)">EXECUTE COMMAND</div>
+      <code id="executeCommandBuilder" style="display:block;color:var(--cyan);font-family:var(--mono);font-size:12px;line-height:1.8;word-break:break-word">yarn execute -- --proposal &lt;PROPOSAL_PUBKEY&gt;</code>
     </div>
 
     <button class="submit-btn" id="executeSubmitBtn" onclick="submitExecute()">
@@ -2556,6 +2571,28 @@ function copyCreateProposalCommand() {
     return;
   }
   showToast(command, 'info');
+}
+
+function updateCommitCommandBuilder() {
+  const proposal = currentSelectedProposalPubkey || '<PROPOSAL_PUBKEY>';
+  const vote = selectedVote || 'yes';
+  const command = `yarn commit -- --proposal ${proposal} --vote ${vote}`;
+  const el = document.getElementById('commitCommandBuilder');
+  if (el) el.textContent = command;
+}
+
+function updateRevealCommandBuilder() {
+  const proposal = currentSelectedProposalPubkey || '<PROPOSAL_PUBKEY>';
+  const command = `yarn reveal -- --proposal ${proposal}`;
+  const el = document.getElementById('revealCommandBuilder');
+  if (el) el.textContent = command;
+}
+
+function updateExecuteCommandBuilder() {
+  const proposal = currentExecuteProposalPubkey || currentSelectedProposalPubkey || '<PROPOSAL_PUBKEY>';
+  const command = `yarn execute -- --proposal ${proposal}`;
+  const el = document.getElementById('executeCommandBuilder');
+  if (el) el.textContent = command;
 }
 
 const DEVNET_RPC = "https://solana-devnet.g.alchemy.com/v2/L4dlywEyiBJLg8Ey0bFof";
@@ -2893,6 +2930,9 @@ function selectProposal(pubkey) {
   currentSelectedProposal = p;
   renderProposalDetail(p, Math.floor(Date.now() / 1000));
   syncCreateProposalCommand(p.dao);
+  updateCommitCommandBuilder();
+  updateRevealCommandBuilder();
+  updateExecuteCommandBuilder();
   syncUrlState();
 }
 
@@ -2999,6 +3039,7 @@ function openCommitModal(id, proposalPubkey = null) {
   document.getElementById('commitCommandHint').textContent = currentProposalId === null
     ? 'Generate a commitment here, then run the repo commit script against your chosen proposal from the terminal.'
     : `After generating the hash, run scripts/commit-vote.ts for PROP-${String(currentProposalId).padStart(3, '0')} with the same wallet and saved salt.`;
+  updateCommitCommandBuilder();
   document.getElementById('submitBtn').disabled = true;
   document.getElementById('commitModal').classList.add('open');
 }
@@ -3014,6 +3055,7 @@ function openRevealModal(id, proposalPubkey = null) {
   document.getElementById('revealCommandHint').textContent = currentProposalId === null
     ? 'Use the same vote and salt originally generated at commit time when running the reveal script.'
     : `Run scripts/reveal-vote.ts for PROP-${String(currentProposalId).padStart(3, '0')} using the original vote choice and saved salt.`;
+  updateRevealCommandBuilder();
   document.getElementById('revealModal').classList.add('open');
 }
 function openExecuteModal(proposalPubkey, id, executable, unlockTs) {
@@ -3028,6 +3070,7 @@ function openExecuteModal(proposalPubkey, id, executable, unlockTs) {
   document.getElementById('executeCommandHint').textContent = proposalPubkey
     ? `yarn execute -- --proposal ${proposalPubkey}`
     : 'Run the repo execute script for the selected proposal.';
+  updateExecuteCommandBuilder();
   document.getElementById('executeSubmitBtn').disabled = !executable;
   document.getElementById('executeModal').classList.add('open');
 }
@@ -3058,6 +3101,7 @@ async function selectVote(v) {
   currentCommitHashHex = [...digest].map(b => b.toString(16).padStart(2, "0")).join("");
   el.textContent = `0x${currentCommitHashHex}`;
   el.classList.remove('computing');
+  updateCommitCommandBuilder();
   document.getElementById('submitBtn').disabled = false;
 }
 
@@ -3086,22 +3130,23 @@ function submitVote() {
 }
 
 function submitReveal() {
-  if(!wallet) {
-    showToast('Connect wallet first.', 'error'); return;
-  }
+  const command = document.getElementById('revealCommandBuilder')?.textContent || `yarn reveal -- --proposal ${currentSelectedProposalPubkey || '<PROPOSAL_PUBKEY>'}`;
   closeModal('revealModal');
-  const target = currentProposalId === null
-    ? 'selected proposal'
-    : `PROP-${String(currentProposalId).padStart(3, '0')}`;
-  showToast(`Run scripts/reveal-vote.ts for ${target} with your original vote and saved salt.`, 'info');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(command)
+      .then(() => showToast('Reveal command copied. Keep the original salt file.', 'success'))
+      .catch(() => showToast(command, 'info'));
+    return;
+  }
+  showToast(command, 'info');
 }
 
 function submitExecute() {
+  const command = document.getElementById('executeCommandBuilder')?.textContent || `yarn execute -- --proposal ${currentExecuteProposalPubkey || '<PROPOSAL_PUBKEY>'}`;
   if (!currentExecuteProposalPubkey) {
     showToast('Select an executable proposal first.', 'error');
     return;
   }
-  const command = `yarn execute -- --proposal ${currentExecuteProposalPubkey}`;
   closeModal('executeModal');
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(command)
@@ -3178,6 +3223,9 @@ if (initialPage && document.getElementById(`page-${initialPage}`)) {
 }
 
 syncCreateProposalCommand();
+updateCommitCommandBuilder();
+updateRevealCommandBuilder();
+updateExecuteCommandBuilder();
 
 updateDeploymentSnapshot();
 loadLiveProposals();
