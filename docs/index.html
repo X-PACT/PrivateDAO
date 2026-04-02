@@ -711,6 +711,108 @@ nav.scrolled {
   padding: 22px 24px;
 }
 
+.proposal-card.selected {
+  border-color: rgba(0,229,255,0.45);
+  box-shadow: 0 0 0 1px rgba(0,229,255,0.18), 0 18px 40px rgba(0,0,0,0.28);
+}
+
+.proposal-detail-card {
+  margin-top: 18px;
+  background: linear-gradient(180deg, rgba(9,20,31,0.98), rgba(7,15,24,0.98));
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 26px 28px;
+}
+
+.proposal-detail-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+
+.proposal-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.proposal-detail-box {
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--void);
+}
+
+.proposal-detail-label {
+  color: var(--text3);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.proposal-detail-value {
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.7;
+  word-break: break-word;
+}
+
+.proposal-proof-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.proposal-proof-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,229,255,0.18);
+  background: rgba(0,229,255,0.06);
+  color: var(--cyan);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.proposal-proof-link:hover {
+  border-color: rgba(0,229,255,0.4);
+  background: rgba(0,229,255,0.1);
+}
+
+.proposal-command-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.proposal-command-box {
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--void);
+}
+
+.proposal-command-box code {
+  display: block;
+  margin-top: 10px;
+  white-space: normal;
+  word-break: break-word;
+  color: var(--cyan);
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
 .proposal-create-card code {
   display: block;
   margin-top: 12px;
@@ -1574,6 +1676,27 @@ footer {
       </div>
     </div>
 
+    <div class="proposal-detail-card reveal" id="proposalDetailCard">
+      <div class="proposal-detail-head">
+        <div>
+          <div class="section-tag">PROPOSAL PROOF PANEL</div>
+          <h3 style="font-size:30px;font-weight:700;letter-spacing:-0.4px;margin-top:6px">Select a proposal to inspect its live proof surface.</h3>
+          <p style="margin-top:10px;color:var(--text2);line-height:1.8;max-width:920px" id="proposalDetailIntro">
+            This panel turns the selected proposal into a reviewer-friendly proof bundle: status, phase, timing windows, Explorer links, and the exact repo commands for the current lifecycle.
+          </p>
+        </div>
+        <div class="award-pill" id="proposalDetailPhase">Awaiting selection</div>
+      </div>
+      <div class="proposal-detail-grid" id="proposalDetailGrid">
+        <div class="proposal-detail-box">
+          <div class="proposal-detail-label">STATUS</div>
+          <div class="proposal-detail-value">Click any live proposal card below to populate this panel.</div>
+        </div>
+      </div>
+      <div class="proposal-proof-links" id="proposalProofLinks"></div>
+      <div class="proposal-command-grid" id="proposalCommandGrid"></div>
+    </div>
+
     <div class="proposal-create-card reveal">
       <div class="proposal-title">Create proposal on-chain</div>
       <div class="proposal-desc">Proposal creation is real and permissioned by governance token ownership, not mocked in the frontend. Any wallet holding the DAO governance token can submit a proposal through the repo script and receive a real transaction signature plus explorer link.</div>
@@ -2063,7 +2186,7 @@ execute() → CPI
       <span class="net-dot"></span>
       <span>Connected to</span>
       <span class="net-name">Solana Devnet</span>
-      <span style="margin-left:auto">Program: 62qdrtJG...</span>
+      <span style="margin-left:auto">Program: 5AhUsbQ4...</span>
     </div>
 
     <div class="commit-preview">
@@ -2216,6 +2339,8 @@ let currentCommitSaltHex = null;
 let currentCommitHashHex = null;
 let currentProposalId = null;
 let currentExecuteProposalPubkey = null;
+let liveProposalMap = new Map();
+let currentSelectedProposalPubkey = null;
 
 function shortPk(pk) {
   return `${pk.slice(0, 4)}...${pk.slice(-4)}`;
@@ -2423,6 +2548,110 @@ function computePhase(p, nowTs) {
   return "Finalized";
 }
 
+function solscanAccount(address) {
+  return `https://solscan.io/account/${address}?cluster=devnet`;
+}
+
+function formatUtc(ts) {
+  return new Date(ts * 1000).toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
+}
+
+function deriveTreasuryPda(daoPubkey) {
+  const [treasuryPk] = solanaWeb3.PublicKey.findProgramAddressSync(
+    [new TextEncoder().encode("treasury"), new solanaWeb3.PublicKey(daoPubkey).toBytes()],
+    programPk
+  );
+  return treasuryPk.toBase58();
+}
+
+function renderProposalDetail(p, nowTs) {
+  const phase = computePhase(p, nowTs);
+  const treasuryPda = deriveTreasuryPda(p.dao);
+  const detailGrid = document.getElementById('proposalDetailGrid');
+  const proofLinks = document.getElementById('proposalProofLinks');
+  const commandGrid = document.getElementById('proposalCommandGrid');
+  const phaseEl = document.getElementById('proposalDetailPhase');
+  const introEl = document.getElementById('proposalDetailIntro');
+  const paddedId = `PROP-${String(p.proposalId).padStart(3, '0')}`;
+  const executeState = phase === "Executable"
+    ? "Executable now"
+    : phase === "Timelocked"
+      ? `Timelocked until ${formatUtc(p.executionUnlocksAt)}`
+      : phase === "Executed"
+        ? "Already executed on-chain"
+        : "Execution not yet available";
+
+  phaseEl.textContent = `${paddedId} · ${phase}`;
+  introEl.textContent = `The selected proposal is live on devnet. This panel maps the current on-chain state to the exact repo actions and verification links a reviewer needs.`;
+
+  detailGrid.innerHTML = `
+    <div class="proposal-detail-box">
+      <div class="proposal-detail-label">TITLE</div>
+      <div class="proposal-detail-value">${p.title}</div>
+    </div>
+    <div class="proposal-detail-box">
+      <div class="proposal-detail-label">STATUS</div>
+      <div class="proposal-detail-value">${p.status} · ${phase}</div>
+    </div>
+    <div class="proposal-detail-box">
+      <div class="proposal-detail-label">VOTES</div>
+      <div class="proposal-detail-value">YES ${p.yesCapital} · NO ${p.noCapital}<br>Reveals ${p.revealCount} / Commits ${p.commitCount}</div>
+    </div>
+    <div class="proposal-detail-box">
+      <div class="proposal-detail-label">TIMING</div>
+      <div class="proposal-detail-value">Voting end: ${formatUtc(p.votingEnd)}<br>Reveal end: ${formatUtc(p.revealEnd)}</div>
+    </div>
+    <div class="proposal-detail-box">
+      <div class="proposal-detail-label">EXECUTION</div>
+      <div class="proposal-detail-value">${executeState}</div>
+    </div>
+    <div class="proposal-detail-box">
+      <div class="proposal-detail-label">ADDRESSES</div>
+      <div class="proposal-detail-value">Proposal: ${p.pubkey}<br>DAO: ${p.dao}<br>Treasury: ${treasuryPda}</div>
+    </div>
+  `;
+
+  proofLinks.innerHTML = `
+    <a class="proposal-proof-link" href="${solscanAccount(p.pubkey)}" target="_blank">Proposal Explorer</a>
+    <a class="proposal-proof-link" href="${solscanAccount(p.dao)}" target="_blank">DAO Explorer</a>
+    <a class="proposal-proof-link" href="${solscanAccount(treasuryPda)}" target="_blank">Treasury Explorer</a>
+    <a class="proposal-proof-link" href="live-proof.md" target="_blank">Live Devnet Proof</a>
+  `;
+
+  commandGrid.innerHTML = `
+    <div class="proposal-command-box">
+      <div class="proposal-detail-label">COMMIT</div>
+      <div style="color:var(--text2);line-height:1.8">Commit a hidden vote from a governance-token wallet.</div>
+      <code>yarn commit -- --proposal ${p.pubkey} --vote yes</code>
+    </div>
+    <div class="proposal-command-box">
+      <div class="proposal-detail-label">REVEAL</div>
+      <div style="color:var(--text2);line-height:1.8">Reveal the original vote and salt after the voting window closes.</div>
+      <code>yarn reveal -- --proposal ${p.pubkey}</code>
+    </div>
+    <div class="proposal-command-box">
+      <div class="proposal-detail-label">FINALIZE</div>
+      <div style="color:var(--text2);line-height:1.8">Finalize the proposal once the reveal window has ended.</div>
+      <code>yarn finalize -- --proposal ${p.pubkey}</code>
+    </div>
+    <div class="proposal-command-box">
+      <div class="proposal-detail-label">EXECUTE</div>
+      <div style="color:var(--text2);line-height:1.8">Execute only after the proposal passes and clears timelock.</div>
+      <code>yarn execute -- --proposal ${p.pubkey}</code>
+    </div>
+  `;
+}
+
+function selectProposal(pubkey) {
+  currentSelectedProposalPubkey = pubkey;
+  document.querySelectorAll('.proposal-card[data-proposal-pubkey]').forEach(card => {
+    card.classList.toggle('selected', card.dataset.proposalPubkey === pubkey);
+  });
+  const p = liveProposalMap.get(pubkey);
+  if (!p) return;
+  renderProposalDetail(p, Math.floor(Date.now() / 1000));
+}
+
 function proposalCardHtml(p, nowTs) {
   const phase = computePhase(p, nowTs);
   const className = phase === "Commit"
@@ -2433,10 +2662,10 @@ function proposalCardHtml(p, nowTs) {
   const executeDisabled = phase !== "Executable";
   const executeLabel = phase === "Timelocked" ? "Timelocked" : "Execute";
   const executeButton = (phase === "Executable" || phase === "Timelocked")
-    ? `<button class="action-btn action-execute" ${executeDisabled ? "disabled" : ""} onclick="openExecuteModal('${p.pubkey}', ${p.proposalId}, ${executeDisabled ? "false" : "true"}, ${p.executionUnlocksAt})">${executeLabel}</button>`
+    ? `<button class="action-btn action-execute" ${executeDisabled ? "disabled" : ""} onclick="event.stopPropagation(); openExecuteModal('${p.pubkey}', ${p.proposalId}, ${executeDisabled ? "false" : "true"}, ${p.executionUnlocksAt})">${executeLabel}</button>`
     : "";
   return `
-    <div class="proposal-card ${className}">
+    <div class="proposal-card ${className}" data-proposal-pubkey="${p.pubkey}" onclick="selectProposal('${p.pubkey}')">
       <div class="proposal-header">
         <span class="proposal-id">PROP-${String(p.proposalId).padStart(3, '0')} · devnet · ${PROGRAM_ID.slice(0, 8)}...</span>
         <span class="phase-pill">${phase}</span>
@@ -2450,8 +2679,8 @@ function proposalCardHtml(p, nowTs) {
         <div class="meta-kv"><div class="meta-k">YES / NO</div><div class="meta-v">${p.yesCapital} / ${p.noCapital}</div></div>
       </div>
       <div class="proposal-actions">
-        <button class="action-btn action-commit" onclick="openCommitModal(${p.proposalId})">Commit</button>
-        <button class="action-btn action-reveal" onclick="openRevealModal(${p.proposalId})">Reveal</button>
+        <button class="action-btn action-commit" onclick="event.stopPropagation(); openCommitModal(${p.proposalId}, '${p.pubkey}')">Commit</button>
+        <button class="action-btn action-reveal" onclick="event.stopPropagation(); openRevealModal(${p.proposalId}, '${p.pubkey}')">Reveal</button>
         ${executeButton}
       </div>
     </div>
@@ -2471,6 +2700,7 @@ async function loadLiveProposals() {
     }
 
     proposals.sort((a, b) => b.proposalId - a.proposalId);
+    liveProposalMap = new Map(proposals.map(p => [p.pubkey, p]));
     const nowSlot = await connection.getSlot("confirmed");
     const nowTs = (await connection.getBlockTime(nowSlot)) || Math.floor(Date.now() / 1000);
     updateHeroStats(proposals, nowTs);
@@ -2486,6 +2716,10 @@ async function loadLiveProposals() {
       return;
     }
     list.innerHTML = proposals.slice(0, 12).map(p => proposalCardHtml(p, nowTs)).join("");
+    const preferred = currentSelectedProposalPubkey && liveProposalMap.has(currentSelectedProposalPubkey)
+      ? currentSelectedProposalPubkey
+      : proposals[0].pubkey;
+    selectProposal(preferred);
   } catch (e) {
     updateHeroStats([], Math.floor(Date.now() / 1000));
     list.innerHTML = `
@@ -2500,8 +2734,9 @@ async function loadLiveProposals() {
 
 // ── Modals ───────────────────────────────────────────────
 let selectedVote = null;
-function openCommitModal(id) {
+function openCommitModal(id, proposalPubkey = null) {
   currentProposalId = Number.isFinite(id) && id >= 0 ? id : null;
+  if (proposalPubkey) currentSelectedProposalPubkey = proposalPubkey;
   selectedVote = null;
   currentCommitSaltHex = null;
   currentCommitHashHex = null;
@@ -2517,8 +2752,9 @@ function openCommitModal(id) {
   document.getElementById('submitBtn').disabled = true;
   document.getElementById('commitModal').classList.add('open');
 }
-function openRevealModal(id) {
+function openRevealModal(id, proposalPubkey = null) {
   currentProposalId = Number.isFinite(id) && id >= 0 ? id : null;
+  if (proposalPubkey) currentSelectedProposalPubkey = proposalPubkey;
   document.getElementById('revealTargetLabel').textContent = currentProposalId === null
     ? 'Select from live list'
     : `PROP-${String(currentProposalId).padStart(3, '0')}`;
@@ -2529,6 +2765,7 @@ function openRevealModal(id) {
 }
 function openExecuteModal(proposalPubkey, id, executable, unlockTs) {
   currentExecuteProposalPubkey = proposalPubkey || null;
+  if (proposalPubkey) currentSelectedProposalPubkey = proposalPubkey;
   const paddedId = Number.isFinite(id) && id >= 0 ? `PROP-${String(id).padStart(3, '0')}` : 'Selected proposal';
   document.getElementById('executeTargetLabel').textContent = paddedId;
   document.getElementById('executePhaseLabel').textContent = executable ? 'Executable now' : 'Timelock active';
