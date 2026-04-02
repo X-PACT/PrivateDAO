@@ -76,6 +76,56 @@ High-level layers:
   - awards
   - settings
 
+## Android System Diagram
+
+```text
+Android user
+  -> Jetpack Compose screens
+     - splash
+     - wallet connect
+     - dashboard
+     - proposal list / detail
+     - create DAO / deposit / create proposal
+     - commit / reveal / finalize / execute
+     - awards / settings
+
+Compose + ViewModel layer
+  -> PrivateDaoViewModel
+     - wallet session state
+     - live DAO / proposal state
+     - proposal phase decisions
+     - transaction submission state
+     - locally stored vote salt for reveal
+
+Domain / repository layer
+  -> PrivateDaoRepository
+     - devnet RPC reads
+     - DAO / proposal decoding
+     - PDA derivation
+     - instruction payload building
+     - explorer link generation
+
+Wallet layer
+  -> MobileWalletAdapterManager
+     - local association flow
+     - authorize / reauthorize / deauthorize
+     - signAndSendTransactions
+     - auth token persistence
+
+Solana layer
+  -> live PrivateDAO program on devnet
+  -> DAO PDA
+  -> Proposal PDA
+  -> VoteRecord PDA
+  -> Treasury PDA
+  -> SPL token accounts
+
+Verification surface
+  -> tx signature returned to app
+  -> Solscan devnet link
+  -> same lifecycle and terminology as the current web product
+```
+
 ## Mobile Wallet Adapter Integration
 
 The app uses the official Solana Mobile Wallet Adapter Android-native path:
