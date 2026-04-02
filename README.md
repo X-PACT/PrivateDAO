@@ -38,6 +38,7 @@ Quick links:
 
 - Live frontend: `https://x-pact.github.io/PrivateDAO/`
 - Awards page: `docs/awards.md`
+- Strategy documentation: `https://us04docs.zoom.us/doc/S56vUFmURMqiWkUVdfSulQ`
 - Investor video package: `docs/investor-video.md`
 - On-chain program: `programs/private-dao/src/lib.rs`
 - End-to-end lifecycle test: `tests/full-flow-test.ts`
@@ -109,6 +110,7 @@ PrivateDAO brings commit-reveal voting, proposal-scoped private delegation, keep
 
 The investor-facing pitch video is being generated from a repo-native package built around the actual protocol, test surface, and award verification.
 
+- Strategy documentation for judges, partners, and investors: `https://us04docs.zoom.us/doc/S56vUFmURMqiWkUVdfSulQ`
 - Video brief and production package: `docs/investor-video.md`
 - Voiceover script: `docs/video-voiceover.md`
 - Shotlist and visual direction: `docs/video-shotlist.md`
