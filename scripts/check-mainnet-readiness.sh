@@ -34,6 +34,7 @@ npm run build:ranger-submission -- docs/ranger-strategy-config.devnet.json docs/
 
 echo "[mainnet] verifying live proof and review surface"
 npm run verify:live-proof >/dev/null
+npm run verify:release-manifest >/dev/null
 npm run verify:review-surface >/dev/null
 
 echo "[mainnet] required docs"

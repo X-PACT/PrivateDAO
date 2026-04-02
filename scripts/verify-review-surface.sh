@@ -17,6 +17,7 @@ required_files=(
   "docs/independent-verification.md"
   "docs/attack-simulation-log.md"
   "docs/live-proof.md"
+  "docs/devnet-release-manifest.md"
   "docs/mainnet-readiness.md"
   "docs/ranger-strategy-documentation.md"
   "docs/ranger-submission-bundle.generated.md"
@@ -65,5 +66,8 @@ node -e '
 
 echo "[review-surface] checking live-proof consistency"
 npx ts-node scripts/verify-live-proof.ts >/dev/null
+
+echo "[review-surface] checking release manifest consistency"
+npx ts-node scripts/verify-release-manifest.ts >/dev/null
 
 echo "[review-surface] PASS"

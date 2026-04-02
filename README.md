@@ -119,6 +119,7 @@ Quick links:
 - Ranger Main Track memo: `docs/ranger-main-track.md`
 - Ranger Drift Track memo: `docs/ranger-drift-track.md`
 - Live devnet proof: `docs/live-proof.md`
+- Devnet release manifest: `docs/devnet-release-manifest.md`
 - Investor video package: `docs/investor-video.md`
 - YouTube pitch video: `https://youtu.be/KVNFZXHNZTQ`
 - Repo-native video asset: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
@@ -191,6 +192,12 @@ Live-proof gate:
 npm run verify:live-proof
 ```
 
+Release-manifest gate:
+
+```bash
+npm run verify:release-manifest
+```
+
 ## Threat Coverage
 
 Reviewer-visible coverage currently includes:
@@ -239,6 +246,7 @@ Security and review documents:
 - `docs/incident-response.md`
 - `docs/independent-verification.md`
 - `docs/attack-simulation-log.md`
+- `docs/devnet-release-manifest.md`
 
 Protocol and product documents:
 
