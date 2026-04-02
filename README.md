@@ -53,6 +53,16 @@ Quick links:
 - On-chain program: `programs/private-dao/src/lib.rs`
 - End-to-end lifecycle test: `tests/full-flow-test.ts`
 
+## Judge Fast Path
+
+If a judge only has 2-3 minutes, the strongest review order is:
+
+1. Open `https://x-pact.github.io/PrivateDAO/?page=proof&judge=1`
+2. Watch the pitch: `https://youtu.be/KVNFZXHNZTQ`
+3. Open the live proof note: `docs/live-proof.md`
+4. Inspect the live program on Solscan
+5. Open the selected proposal surface and verify the current on-chain lifecycle
+
 ## ⚡ One-Line Install
 
 Bootstrap the repository with a single command:
