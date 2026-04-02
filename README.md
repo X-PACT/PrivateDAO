@@ -1,8 +1,4 @@
 <!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
-![Award](https://img.shields.io/badge/Award-1st%20Place%20Superteam%20Earn-gold)
-![Solana](https://img.shields.io/badge/Built%20on-Solana-purple)
-![Category](https://img.shields.io/badge/Category-Backend%20Systems-blue)
-
 # PrivateDAO
 
 <p align="center">
@@ -12,6 +8,9 @@
 </p>
 
 [![Live Frontend](https://img.shields.io/badge/Live%20Frontend-Open-00e5ff?logo=solana)](https://x-pact.github.io/PrivateDAO/)
+[![Award](https://img.shields.io/badge/Award-1st%20Place%20Superteam%20Earn-gold)](docs/awards.md)
+[![Built on](https://img.shields.io/badge/Built%20on-Solana-purple)](https://solana.com)
+[![Category](https://img.shields.io/badge/Category-Backend%20Systems-blue)](docs/awards.md)
 [![Frontend](https://img.shields.io/badge/Frontend-docs%2Findex.html-0b7285)](docs/index.html)
 [![CI](https://img.shields.io/github/actions/workflow/status/X-PACT/PrivateDAO/ci.yml?branch=main&label=CI)](https://github.com/X-PACT/PrivateDAO/actions/workflows/ci.yml)
 [![Solana](https://img.shields.io/badge/Solana-Devnet-14F195)](https://solana.com)
@@ -40,9 +39,9 @@ Quick links:
 
 - Live frontend: `https://x-pact.github.io/PrivateDAO/`
 - Awards page: `docs/awards.md`
-- Strategy documentation: `https://us04docs.zoom.us/doc/24LVGzqDT-K_pqCmS3nqsg`
+- Strategy documentation: `https://us04docs.zoom.us/doc/7qeRHdTRRfy7q3QOAur3OA`
 - Investor video package: `docs/investor-video.md`
-- Repo-native investor video: `docs/assets/private-dao-investor-pitch.mp4`
+- Investor video: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
 - On-chain program: `programs/private-dao/src/lib.rs`
 - End-to-end lifecycle test: `tests/full-flow-test.ts`
 
@@ -60,6 +59,7 @@ The installer:
 - creates `.env` from `.env.example` when missing
 - installs Node dependencies
 - prints the next real steps for demo and build
+
 ## 🏆 Awards & Recognition
 
 PrivateDAO-related engineering work has been recognized in competitive Solana development challenges.
@@ -89,6 +89,15 @@ The system demonstrates:
 - Demo: https://x-pact.github.io/PrivateDAO/
 - Award note: `docs/awards.md`
 
+## 🎯 Current Hackathon Submissions
+
+PrivateDAO is currently being presented in the following live competitive tracks:
+
+- `Ranger Build-A-Bear Hackathon` Main Track
+- `Ranger Build-A-Bear Hackathon` Drift Side Track
+
+These are active submissions, not award claims. They are listed separately from the verified 1st Place Superteam Earn result above.
+
 ## On-Chain Execute Surface
 
 The win documentation is separate from governance execution.
@@ -110,19 +119,18 @@ PrivateDAO brings commit-reveal voting, proposal-scoped private delegation, keep
 
 ## 🎬 Investor Video Package
 
-The investor-facing pitch video package is now designed to ship in two forms:
+<p align="center">
+  <a href="https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4" target="_blank">
+    <img src="docs/assets/private-dao-investor-pitch-poster.png" alt="PrivateDAO investor pitch video poster" width="900" />
+  </a>
+</p>
 
-- a reproducible repo-native MP4 render committed under `docs/assets/`
-- an external cinematic render task for a higher-fidelity cut when the service completes
-
-- Strategy documentation for judges, partners, and investors: `https://us04docs.zoom.us/doc/24LVGzqDT-K_pqCmS3nqsg`
+- Strategy documentation for judges, partners, and investors: `https://us04docs.zoom.us/doc/7qeRHdTRRfy7q3QOAur3OA`
+- Watch the investor pitch video: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
 - Video brief and production package: `docs/investor-video.md`
 - Voiceover script: `docs/video-voiceover.md`
 - Shotlist and visual direction: `docs/video-shotlist.md`
-- Local render script: `scripts/render-investor-video.sh`
-- Repo-native rendered asset: `docs/assets/private-dao-investor-pitch.mp4`
-- Repo-native poster: `docs/assets/private-dao-investor-pitch-poster.png`
-- External generation tasks: `https://manus.im/app/kMUHrujYi7Ec8nXqWDSxa9`, `https://manus.im/app/WNFD2RAUyWN5X83jtYdywy`
+- Poster asset: `docs/assets/private-dao-investor-pitch-poster.png`
 
 ## 🧪 Local Demo
 

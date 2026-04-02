@@ -338,6 +338,73 @@ describe("PrivateDAO", () => {
     }
   });
 
+  it("rejects delegated commit from a non-delegatee", async () => {
+    const dao = await program.account["dao"].fetch(daoPda);
+    const [delegatedProposalPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), dao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal("Delegation guard", "Only the declared delegatee may consume delegated voting power.", new BN(3600), null)
+      .accounts({
+        dao: daoPda,
+        proposal: delegatedProposalPda,
+        proposerTokenAccount: authorityTokenAta,
+        proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [delegationPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("delegation"), delegatedProposalPda.toBuffer(), voter2.publicKey.toBuffer()],
+      program.programId,
+    );
+
+    await program.methods
+      .delegateVote(voter1.publicKey)
+      .accounts({
+        dao: daoPda,
+        proposal: delegatedProposalPda,
+        delegation: delegationPda,
+        delegatorTokenAccount: v2Ata,
+        delegator: voter2.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([voter2])
+      .rpc();
+
+    const wrongSalt = randomSalt();
+    const [wrongDelegateVotePda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), delegatedProposalPda.toBuffer(), voter3.publicKey.toBuffer()],
+      program.programId,
+    );
+
+    try {
+      await program.methods
+        .commitDelegatedVote([...computeCommitment(true, wrongSalt, voter3.publicKey)], null)
+        .accounts({
+          dao: daoPda,
+          proposal: delegatedProposalPda,
+          delegation: delegationPda,
+          voterRecord: wrongDelegateVotePda,
+          delegateeTokenAccount: v3Ata,
+          delegatee: voter3.publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .signers([voter3])
+        .rpc();
+      assert.fail("Should have rejected delegated commit from a non-delegatee");
+    } catch (err: any) {
+      const msg = err.toString();
+      assert.isTrue(
+        msg.includes("NotDelegatee") || msg.includes("ConstraintRaw"),
+        `unexpected error: ${msg}`,
+      );
+      console.log("  ✓ delegated vote misuse rejected for non-delegatee");
+    }
+  });
+
   it("verifies commitment math — deterministic + vote/salt sensitive", () => {
     const vote = true;
     const salt = Buffer.from("a".repeat(32));
