@@ -25,6 +25,12 @@ required_files=(
   "docs/ranger-strategy-config.devnet.json"
   "docs/strategy-operations.md"
   "docs/production-operations.md"
+  "docs/monitoring-alerts.md"
+  "docs/incident-response.md"
+  "docs/mainnet-cutover-runbook.md"
+  "docs/operator-checklist.md"
+  "docs/risk-register.md"
+  "docs/audit-handoff.md"
 )
 
 for file in "${required_files[@]}"; do

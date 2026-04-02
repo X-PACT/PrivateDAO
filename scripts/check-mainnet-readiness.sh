@@ -36,6 +36,7 @@ echo "[mainnet] verifying live proof and review surface"
 npm run verify:live-proof >/dev/null
 npm run verify:release-manifest >/dev/null
 npm run verify:review-links >/dev/null
+npm run verify:ops-surface >/dev/null
 npm run verify:review-surface >/dev/null
 
 echo "[mainnet] required docs"

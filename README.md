@@ -115,6 +115,10 @@ Quick links:
 - Production operations: `docs/production-operations.md`
 - Monitoring and alerts: `docs/monitoring-alerts.md`
 - Incident response: `docs/incident-response.md`
+- Mainnet cutover runbook: `docs/mainnet-cutover-runbook.md`
+- Operator checklist: `docs/operator-checklist.md`
+- Risk register: `docs/risk-register.md`
+- Audit handoff: `docs/audit-handoff.md`
 - Reviewer surface map: `docs/reviewer-surface-map.md`
 - Competition roadmap: `docs/competition-roadmap.md`
 - Ranger Main Track memo: `docs/ranger-main-track.md`
@@ -206,6 +210,12 @@ Review-link gate:
 npm run verify:review-links
 ```
 
+Ops-surface gate:
+
+```bash
+npm run verify:ops-surface
+```
+
 ## Threat Coverage
 
 Reviewer-visible coverage currently includes:
@@ -252,6 +262,10 @@ Security and review documents:
 - `docs/production-operations.md`
 - `docs/monitoring-alerts.md`
 - `docs/incident-response.md`
+- `docs/mainnet-cutover-runbook.md`
+- `docs/operator-checklist.md`
+- `docs/risk-register.md`
+- `docs/audit-handoff.md`
 - `docs/reviewer-surface-map.md`
 - `docs/independent-verification.md`
 - `docs/attack-simulation-log.md`
