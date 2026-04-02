@@ -113,6 +113,8 @@ Quick links:
 - Ranger risk policy: `docs/risk-policy.md`
 - Performance evidence: `docs/performance-evidence.md`
 - Submission dossier: `docs/submission-dossier.md`
+- Submission registry: `docs/submission-registry.json`
+- Competition readiness: `docs/competition-readiness.md`
 - Judge technical audit note: `docs/judge-technical-audit.md`
 - Security review surface: `docs/security-review.md`
 - Mainnet readiness note: `docs/mainnet-readiness.md`
@@ -226,6 +228,12 @@ Strategy-surface gate:
 npm run verify:strategy-surface
 ```
 
+Submission-registry gate:
+
+```bash
+npm run verify:submission-registry
+```
+
 Unified verification gate:
 
 ```bash
@@ -303,6 +311,8 @@ Protocol and product documents:
 - `docs/risk-policy.md`
 - `docs/performance-evidence.md`
 - `docs/submission-dossier.md`
+- `docs/submission-registry.json`
+- `docs/competition-readiness.md`
 - `docs/use-cases.md`
 - `docs/economic-model.md`
 

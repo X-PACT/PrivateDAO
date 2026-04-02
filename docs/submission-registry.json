@@ -1,0 +1,65 @@
+{
+  "project": "PrivateDAO",
+  "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+  "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+  "frontend": "https://x-pact.github.io/PrivateDAO/",
+  "proofCenter": "https://x-pact.github.io/PrivateDAO/?page=proof",
+  "judgeMode": "https://x-pact.github.io/PrivateDAO/?page=proof&judge=1",
+  "securityPage": "https://x-pact.github.io/PrivateDAO/?page=security",
+  "youtubePitch": "https://youtu.be/KVNFZXHNZTQ",
+  "androidGuide": "docs/android-native.md",
+  "awardNote": "docs/awards.md",
+  "packages": {
+    "strategy": [
+      "docs/ranger-strategy-documentation.md",
+      "docs/strategy-blueprint.md",
+      "docs/strategy-adaptor-interface.md",
+      "docs/strategy-operations.md",
+      "docs/risk-policy.md",
+      "docs/performance-evidence.md"
+    ],
+    "security": [
+      "docs/security-review.md",
+      "docs/threat-model.md",
+      "docs/security-coverage-map.md",
+      "docs/failure-modes.md",
+      "docs/replay-analysis.md"
+    ],
+    "proof": [
+      "docs/live-proof.md",
+      "docs/devnet-release-manifest.md",
+      "docs/proof-registry.json",
+      "docs/independent-verification.md"
+    ],
+    "operations": [
+      "docs/mainnet-readiness.md",
+      "docs/production-operations.md",
+      "docs/monitoring-alerts.md",
+      "docs/incident-response.md",
+      "docs/mainnet-cutover-runbook.md",
+      "docs/operator-checklist.md",
+      "docs/risk-register.md",
+      "docs/audit-handoff.md"
+    ]
+  },
+  "gates": [
+    "npm run validate:ranger-strategy -- docs/ranger-strategy-config.devnet.json",
+    "npm run verify:strategy-surface",
+    "npm run verify:live-proof",
+    "npm run verify:release-manifest",
+    "npm run verify:review-links",
+    "npm run verify:ops-surface",
+    "npm run verify:review-surface",
+    "npm run verify:all"
+  ],
+  "status": {
+    "governanceLifecycle": "verified",
+    "securityReasoning": "verified",
+    "reviewerSurface": "verified",
+    "operationsSurface": "verified",
+    "strategyEngine": "not-in-repo",
+    "livePerformance": "not-in-repo",
+    "externalAudit": "pending",
+    "mainnetRollout": "pending"
+  }
+}
