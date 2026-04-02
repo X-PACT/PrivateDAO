@@ -104,11 +104,15 @@ Quick links:
 - Strategy documentation: `https://us04docs.zoom.us/doc/Zd34HEaHSKyZGRxBcqxXQg`
 - Repo strategy note: `docs/strategy.md`
 - Ranger strategy documentation: `docs/ranger-strategy-documentation.md`
+- Strategy blueprint: `docs/strategy-blueprint.md`
+- Strategy adaptor interface: `docs/strategy-adaptor-interface.md`
 - Strategy operations: `docs/strategy-operations.md`
 - Ranger eligibility checklist: `docs/ranger-submission-checklist.md`
 - Ranger strategy config: `docs/ranger-strategy-config.devnet.json`
 - Ranger strategy template: `docs/ranger-strategy-config.sample.json`
 - Ranger risk policy: `docs/risk-policy.md`
+- Performance evidence: `docs/performance-evidence.md`
+- Submission dossier: `docs/submission-dossier.md`
 - Judge technical audit note: `docs/judge-technical-audit.md`
 - Security review surface: `docs/security-review.md`
 - Mainnet readiness note: `docs/mainnet-readiness.md`
@@ -216,6 +220,12 @@ Ops-surface gate:
 npm run verify:ops-surface
 ```
 
+Strategy-surface gate:
+
+```bash
+npm run verify:strategy-surface
+```
+
 Unified verification gate:
 
 ```bash
@@ -287,8 +297,12 @@ Protocol and product documents:
 - `docs/android-native.md`
 - `docs/awards.md`
 - `docs/ranger-strategy-documentation.md`
+- `docs/strategy-blueprint.md`
+- `docs/strategy-adaptor-interface.md`
 - `docs/strategy-operations.md`
 - `docs/risk-policy.md`
+- `docs/performance-evidence.md`
+- `docs/submission-dossier.md`
 - `docs/use-cases.md`
 - `docs/economic-model.md`
 

@@ -25,6 +25,7 @@
     "live-proof":        "ts-node scripts/live-devnet-proof.ts",
     "validate:ranger-strategy": "ts-node scripts/validate-ranger-strategy.ts",
     "build:ranger-submission": "ts-node scripts/build-ranger-submission.ts",
+    "verify:strategy-surface": "bash scripts/verify-strategy-surface.sh",
     "verify:live-proof": "ts-node scripts/verify-live-proof.ts",
     "verify:release-manifest": "ts-node scripts/verify-release-manifest.ts",
     "verify:review-links": "ts-node scripts/verify-review-links.ts",
