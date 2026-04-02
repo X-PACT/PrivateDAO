@@ -39,7 +39,8 @@ Quick links:
 
 - Live frontend: `https://x-pact.github.io/PrivateDAO/`
 - Awards page: `docs/awards.md`
-- Strategy documentation: `https://us04docs.zoom.us/doc/7qeRHdTRRfy7q3QOAur3OA`
+- Strategy documentation: `https://us04docs.zoom.us/doc/Zd34HEaHSKyZGRxBcqxXQg`
+- Repo strategy note: `docs/strategy.md`
 - Investor video package: `docs/investor-video.md`
 - Investor video: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
 - On-chain program: `programs/private-dao/src/lib.rs`
@@ -125,7 +126,7 @@ PrivateDAO brings commit-reveal voting, proposal-scoped private delegation, keep
   </a>
 </p>
 
-- Strategy documentation for judges, partners, and investors: `https://us04docs.zoom.us/doc/7qeRHdTRRfy7q3QOAur3OA`
+- Strategy documentation for judges, partners, and investors: `https://us04docs.zoom.us/doc/Zd34HEaHSKyZGRxBcqxXQg`
 - Watch the investor pitch video: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
 - Video brief and production package: `docs/investor-video.md`
 - Voiceover script: `docs/video-voiceover.md`

@@ -65,7 +65,7 @@ async function main() {
     .initializeDao(
       String(name),
       Number(quorum),
-      0,
+      new anchor.BN(0),
       new anchor.BN(Number(revealWindow)),
       new anchor.BN(Number(delay)),
       votingConfig,
