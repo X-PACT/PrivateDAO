@@ -38,6 +38,7 @@ The current stack is already structured for immediate **mainnet transition**. Th
 Quick links:
 
 - Live frontend: `https://x-pact.github.io/PrivateDAO/`
+- Proof Center: `https://x-pact.github.io/PrivateDAO/?page=proof`
 - Awards page: `docs/awards.md`
 - Strategy documentation: `https://us04docs.zoom.us/doc/Zd34HEaHSKyZGRxBcqxXQg`
 - Repo strategy note: `docs/strategy.md`

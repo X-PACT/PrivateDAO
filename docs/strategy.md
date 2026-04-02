@@ -28,6 +28,17 @@ The next objective is clear:
 
 This is not framed as vanity positioning. It is tied directly to engineering rigor, protocol hardening, production readiness, and external validation from technically demanding review environments.
 
+## Victory Standard
+
+PrivateDAO should be developed and presented with a simple standard:
+
+- every major submission should look like a 1st Place submission before judging begins
+- every important claim should be backed by a repository artifact, an on-chain proof, or a live product surface
+- every demo should end in a verifiable execution outcome, not just a UI walkthrough
+- every new feature should increase reviewer confidence, operator usability, or mainnet readiness
+
+The competitive goal is not just to participate in top-tier Solana tracks. The goal is to keep earning top placements by making the proof surface denser, cleaner, and harder to dispute.
+
 ## Competitive Execution Priorities
 
 The next wave of work should concentrate on the smallest set of upgrades that most increase the probability of winning:
@@ -67,6 +78,15 @@ The strategic proof surface for PrivateDAO is built around:
 ## Mainnet Direction
 
 The current repository structure already supports a credible path toward mainnet transition. The remaining work is operational hardening, deployment discipline, and environment alignment rather than a redesign of the underlying governance model.
+
+Mainnet transition should be treated as a release program with four practical workstreams:
+
+- audit and threat-model depth
+- production deployment and key-management ceremony
+- monitored RPC and operator reliability
+- frontend transaction submission with the same proof discipline already present in the CLI flows
+
+This framing matters strategically. It means the repository is already demonstrating the right product architecture; the remaining path is about shipping quality and trust, not discovering the protocol.
 
 ## Ownership
 
