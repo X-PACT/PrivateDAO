@@ -16,6 +16,12 @@ npm run verify:strategy-surface >/dev/null
 echo "[verify-all] checking submission registry"
 npm run verify:submission-registry >/dev/null
 
+echo "[verify-all] checking registry consistency"
+npm run verify:registry-consistency >/dev/null
+
+echo "[verify-all] rebuilding audit packet"
+npm run build:audit-packet >/dev/null
+
 echo "[verify-all] checking release manifest"
 npm run verify:release-manifest >/dev/null
 

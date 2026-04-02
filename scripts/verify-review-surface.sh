@@ -27,6 +27,7 @@ required_files=(
   "docs/submission-dossier.md"
   "docs/submission-registry.json"
   "docs/competition-readiness.md"
+  "docs/audit-packet.generated.md"
   "docs/ranger-submission-bundle.generated.md"
   "docs/ranger-strategy-config.devnet.json"
   "docs/strategy-operations.md"

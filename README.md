@@ -115,6 +115,7 @@ Quick links:
 - Submission dossier: `docs/submission-dossier.md`
 - Submission registry: `docs/submission-registry.json`
 - Competition readiness: `docs/competition-readiness.md`
+- Audit packet: `docs/audit-packet.generated.md`
 - Judge technical audit note: `docs/judge-technical-audit.md`
 - Security review surface: `docs/security-review.md`
 - Mainnet readiness note: `docs/mainnet-readiness.md`
@@ -234,6 +235,12 @@ Submission-registry gate:
 npm run verify:submission-registry
 ```
 
+Registry-consistency gate:
+
+```bash
+npm run verify:registry-consistency
+```
+
 Unified verification gate:
 
 ```bash
@@ -313,6 +320,7 @@ Protocol and product documents:
 - `docs/submission-dossier.md`
 - `docs/submission-registry.json`
 - `docs/competition-readiness.md`
+- `docs/audit-packet.generated.md`
 - `docs/use-cases.md`
 - `docs/economic-model.md`
 
