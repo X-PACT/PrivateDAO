@@ -22,6 +22,12 @@ npm run verify:registry-consistency >/dev/null
 echo "[verify-all] rebuilding audit packet"
 npm run build:audit-packet >/dev/null
 
+echo "[verify-all] rebuilding review attestation"
+npm run build:review-attestation >/dev/null
+
+echo "[verify-all] checking generated artifacts"
+npm run verify:generated-artifacts >/dev/null
+
 echo "[verify-all] checking release manifest"
 npm run verify:release-manifest >/dev/null
 

@@ -28,6 +28,7 @@ required_files=(
   "docs/submission-registry.json"
   "docs/competition-readiness.md"
   "docs/audit-packet.generated.md"
+  "docs/review-attestation.generated.json"
   "docs/ranger-submission-bundle.generated.md"
   "docs/ranger-strategy-config.devnet.json"
   "docs/strategy-operations.md"
