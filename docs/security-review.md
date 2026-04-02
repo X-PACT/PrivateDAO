@@ -95,3 +95,58 @@ The repository is stronger and safer than before, but it is still honest about t
 - Android runtime verification still requires a real Android SDK/device environment
 
 This note exists so reviewers can verify that the hardening work is concrete, visible, and bounded by what the current protocol actually supports.
+
+## Formal Security Reasoning Layer
+
+The repository now includes a formal audit-simulation layer:
+
+- Threat model: `docs/threat-model.md`
+- Security coverage map: `docs/security-coverage-map.md`
+- Failure modes: `docs/failure-modes.md`
+- Replay analysis: `docs/replay-analysis.md`
+
+## Failure Mode Summary
+
+The failure-mode review focuses on realistic misuse:
+
+- mismatched treasury execution
+- wrong DAO context for finalize
+- wrong voter or keeper reveal
+- cross-proposal delegation misuse
+- malformed but valid-looking token accounts
+- invalid PDA substitution
+- partial execution attempts
+
+The expected safe outcome in each case is rejection without unintended state advancement or duplicate treasury effects.
+
+## Replay Summary
+
+Replay analysis now documents:
+
+- repeated commit attempts
+- repeated reveal attempts
+- repeated finalize attempts
+- repeated execute attempts
+- reordered-account replay attempts
+- altered-signer replay attempts
+- cross-proposal state reuse
+
+Current reasoning supports that no replay path in tested behavior produces duplicate execution effects.
+
+## Remaining Real-World Risks
+
+The audit-simulation layer does not hide residual realities:
+
+- direct-commit versus delegation mutual exclusion remains operationally guarded rather than fully enforced on-chain
+- off-chain timing metadata is not hidden by commit-reveal
+- local validator startup remains environment-sensitive in this shell
+- external audit completeness is still not claimed
+- `CustomCPI` remains intentionally event-only rather than arbitrary on-chain execution
+
+## Confidence Level
+
+Current confidence level: **high for tested lifecycle and treasury safety on the implemented protocol surface**, with the remaining limits concentrated in:
+
+- operational enforcement boundaries
+- environment-dependent integration execution
+- external review depth beyond repository-contained reasoning and tests
