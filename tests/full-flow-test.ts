@@ -1048,6 +1048,9 @@ describe("Full flow", () => {
       assert.include(err.toString(), "RecipientOwnerMismatch");
     }
 
+    const proposalAfterOwnerFailure = await program.account["proposal"].fetch(proposalPda);
+    assert.isFalse(proposalAfterOwnerFailure.isExecuted, "failed token execution must not set isExecuted");
+
     try {
       await program.methods
         .executeProposal()
@@ -1066,6 +1069,77 @@ describe("Full flow", () => {
       assert.fail("execute must reject duplicate token accounts");
     } catch (err: any) {
       assert.include(err.toString(), "DuplicateTokenAccounts");
+    }
+
+    const proposalAfterDuplicateFailure = await program.account["proposal"].fetch(proposalPda);
+    assert.isFalse(proposalAfterDuplicateFailure.isExecuted, "duplicate-account failure must leave proposal unexecuted");
+
+    const wrongMint = await createMint(provider.connection, payer, payer.publicKey, null, 6);
+    const wrongMintRecipientTokenAccount = await createAccount(provider.connection, payer, wrongMint, recipient.publicKey);
+
+    try {
+      await program.methods
+        .executeProposal()
+        .accounts({
+          dao: daoPda,
+          proposal: proposalPda,
+          treasury: treasuryPda,
+          treasuryRecipient: recipient.publicKey,
+          treasuryTokenAccount,
+          recipientTokenAccount: wrongMintRecipientTokenAccount,
+          executor: payer.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("execute must reject recipient token mint mismatch");
+    } catch (err: any) {
+      assert.include(err.toString(), "InvalidTokenMint");
+    }
+
+    const wrongTreasuryMintAccount = await createAccount(provider.connection, payer, wrongMint, treasuryPda, true);
+
+    try {
+      await program.methods
+        .executeProposal()
+        .accounts({
+          dao: daoPda,
+          proposal: proposalPda,
+          treasury: treasuryPda,
+          treasuryRecipient: recipient.publicKey,
+          treasuryTokenAccount: wrongTreasuryMintAccount,
+          recipientTokenAccount,
+          executor: payer.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("execute must reject treasury token mint mismatch");
+    } catch (err: any) {
+      assert.include(err.toString(), "InvalidTokenMint");
+    }
+
+    const payerOwnedSourceToken = await createAccount(provider.connection, payer, mint, payer.publicKey);
+    await mintTo(provider.connection, payer, mint, payerOwnedSourceToken, payer, 100_000_000n);
+
+    try {
+      await program.methods
+        .executeProposal()
+        .accounts({
+          dao: daoPda,
+          proposal: proposalPda,
+          treasury: treasuryPda,
+          treasuryRecipient: recipient.publicKey,
+          treasuryTokenAccount: payerOwnedSourceToken,
+          recipientTokenAccount,
+          executor: payer.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("execute must reject a treasury token source not owned by the treasury PDA");
+    } catch (err: any) {
+      assert.include(err.toString(), "InvalidTreasuryTokenAuthority");
     }
 
     const recipientBefore = await provider.connection.getTokenAccountBalance(recipientTokenAccount);

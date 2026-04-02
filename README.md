@@ -52,6 +52,7 @@ Quick links:
 - Ranger strategy config sample: `docs/ranger-strategy-config.sample.json`
 - Ranger risk policy: `docs/risk-policy.md`
 - Judge technical audit note: `docs/judge-technical-audit.md`
+- Security review surface: `docs/security-review.md`
 - Mainnet readiness note: `docs/mainnet-readiness.md`
 - Competition roadmap: `docs/competition-roadmap.md`
 - Ranger Main Track memo: `docs/ranger-main-track.md`
@@ -71,8 +72,9 @@ If a judge only has 2-3 minutes, the strongest review order is:
 2. Watch the pitch: `https://youtu.be/KVNFZXHNZTQ`
 3. Open the live proof note: `docs/live-proof.md`
 4. Open `docs/judge-technical-audit.md`
-5. Inspect the live program on Solscan
-6. Open the selected proposal surface and verify the current on-chain lifecycle
+5. Open `docs/security-review.md`
+6. Inspect the live program on Solscan
+7. Open the selected proposal surface and verify the current on-chain lifecycle
 
 ## Ranger / Drift Fit
 
@@ -95,6 +97,7 @@ Submission references for this angle:
 - `docs/ranger-main-track.md`
 - `docs/ranger-drift-track.md`
 - `docs/judge-technical-audit.md`
+- `docs/security-review.md`
 
 Eligibility command:
 
