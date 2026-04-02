@@ -26,6 +26,7 @@
     "validate:ranger-strategy": "ts-node scripts/validate-ranger-strategy.ts",
     "build:ranger-submission": "ts-node scripts/build-ranger-submission.ts",
     "check:mainnet":     "bash scripts/check-mainnet-readiness.sh",
+    "verify:review-surface": "bash scripts/verify-review-surface.sh",
     "migrate":           "ts-node migrations/migrate-realms-dao.ts"
   },
   "dependencies": {

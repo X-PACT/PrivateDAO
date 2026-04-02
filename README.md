@@ -104,6 +104,7 @@ Quick links:
 - Strategy documentation: `https://us04docs.zoom.us/doc/Zd34HEaHSKyZGRxBcqxXQg`
 - Repo strategy note: `docs/strategy.md`
 - Ranger strategy documentation: `docs/ranger-strategy-documentation.md`
+- Strategy operations: `docs/strategy-operations.md`
 - Ranger eligibility checklist: `docs/ranger-submission-checklist.md`
 - Ranger strategy config: `docs/ranger-strategy-config.devnet.json`
 - Ranger strategy template: `docs/ranger-strategy-config.sample.json`
@@ -111,6 +112,7 @@ Quick links:
 - Judge technical audit note: `docs/judge-technical-audit.md`
 - Security review surface: `docs/security-review.md`
 - Mainnet readiness note: `docs/mainnet-readiness.md`
+- Production operations: `docs/production-operations.md`
 - Competition roadmap: `docs/competition-roadmap.md`
 - Ranger Main Track memo: `docs/ranger-main-track.md`
 - Ranger Drift Track memo: `docs/ranger-drift-track.md`
@@ -150,6 +152,7 @@ That is the differentiated value in these competitions:
 Submission references for this angle:
 
 - `docs/ranger-strategy-documentation.md`
+- `docs/strategy-operations.md`
 - `docs/ranger-submission-checklist.md`
 - `docs/ranger-main-track.md`
 - `docs/ranger-drift-track.md`
@@ -172,6 +175,12 @@ Mainnet gate:
 
 ```bash
 npm run check:mainnet
+```
+
+Review-surface gate:
+
+```bash
+npm run verify:review-surface
 ```
 
 ## Threat Coverage
@@ -217,6 +226,7 @@ Security and review documents:
 - `docs/protocol-maturity.md`
 - `docs/judge-technical-audit.md`
 - `docs/mainnet-readiness.md`
+- `docs/production-operations.md`
 - `docs/independent-verification.md`
 - `docs/attack-simulation-log.md`
 
@@ -227,6 +237,7 @@ Protocol and product documents:
 - `docs/android-native.md`
 - `docs/awards.md`
 - `docs/ranger-strategy-documentation.md`
+- `docs/strategy-operations.md`
 - `docs/risk-policy.md`
 - `docs/use-cases.md`
 - `docs/economic-model.md`
