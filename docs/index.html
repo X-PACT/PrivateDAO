@@ -781,6 +781,8 @@ nav.scrolled {
   text-decoration: none;
   font-size: 13px;
   font-weight: 600;
+  cursor: pointer;
+  appearance: none;
 }
 
 .proposal-proof-link:hover {
@@ -2313,7 +2315,15 @@ function showPage(page, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
   document.getElementById('page-' + page).classList.add('active');
-  if(btn) btn.classList.add('active');
+  if(btn) {
+    btn.classList.add('active');
+  } else {
+    const targetBtn = Array.from(document.querySelectorAll('.nav-link')).find(link => (
+      link.getAttribute('onclick') || ''
+    ).includes(`'${page}'`));
+    if (targetBtn) targetBtn.classList.add('active');
+  }
+  syncUrlState();
   window.scrollTo({top:0, behavior:'smooth'});
   setTimeout(observeReveal, 100);
 }
@@ -2321,6 +2331,47 @@ function showPage(page, btn) {
 // ── Scroll to proposals ─────────────────────────────────
 function scrollToProposals() {
   document.getElementById('proposals-anchor').scrollIntoView({behavior:'smooth'});
+}
+
+function currentPageKey() {
+  const active = document.querySelector('.page.active');
+  return active ? active.id.replace('page-', '') : 'proposals';
+}
+
+function syncUrlState() {
+  const params = new URLSearchParams(window.location.search);
+  params.set('page', currentPageKey());
+  if (currentSelectedProposalPubkey) {
+    params.set('proposal', currentSelectedProposalPubkey);
+  } else {
+    params.delete('proposal');
+  }
+  const next = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
+  window.history.replaceState({}, '', next);
+}
+
+function shareCurrentProposal() {
+  if (!currentSelectedProposalPubkey) {
+    showToast('Select a proposal first.', 'error');
+    return;
+  }
+  syncUrlState();
+  const shareUrl = window.location.href;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(shareUrl)
+      .then(() => showToast('Sharable proposal proof link copied.', 'success'))
+      .catch(() => showToast(shareUrl, 'info'));
+    return;
+  }
+  showToast(shareUrl, 'info');
+}
+
+function openSelectedProposalExplorer() {
+  if (!currentSelectedProposalPubkey) {
+    showToast('Select a proposal first.', 'error');
+    return;
+  }
+  window.open(solscanAccount(currentSelectedProposalPubkey), '_blank', 'noopener,noreferrer');
 }
 
 const DEVNET_RPC = "https://solana-devnet.g.alchemy.com/v2/L4dlywEyiBJLg8Ey0bFof";
@@ -2619,6 +2670,8 @@ function renderProposalDetail(p, nowTs) {
     <a class="proposal-proof-link" href="${solscanAccount(p.dao)}" target="_blank">DAO Explorer</a>
     <a class="proposal-proof-link" href="${solscanAccount(treasuryPda)}" target="_blank">Treasury Explorer</a>
     <a class="proposal-proof-link" href="live-proof.md" target="_blank">Live Devnet Proof</a>
+    <button class="proposal-proof-link" type="button" onclick="shareCurrentProposal()">Copy Share Link</button>
+    <button class="proposal-proof-link" type="button" onclick="openSelectedProposalExplorer()">Open Selected Proposal</button>
   `;
 
   commandGrid.innerHTML = `
@@ -2653,6 +2706,7 @@ function selectProposal(pubkey) {
   const p = liveProposalMap.get(pubkey);
   if (!p) return;
   renderProposalDetail(p, Math.floor(Date.now() / 1000));
+  syncUrlState();
 }
 
 function proposalCardHtml(p, nowTs) {
@@ -2719,7 +2773,10 @@ async function loadLiveProposals() {
       return;
     }
     list.innerHTML = proposals.slice(0, 12).map(p => proposalCardHtml(p, nowTs)).join("");
-    const preferred = currentSelectedProposalPubkey && liveProposalMap.has(currentSelectedProposalPubkey)
+    const requestedProposal = new URLSearchParams(window.location.search).get('proposal');
+    const preferred = requestedProposal && liveProposalMap.has(requestedProposal)
+      ? requestedProposal
+      : currentSelectedProposalPubkey && liveProposalMap.has(currentSelectedProposalPubkey)
       ? currentSelectedProposalPubkey
       : proposals[0].pubkey;
     selectProposal(preferred);
@@ -2906,6 +2963,14 @@ function observeReveal() {
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 }
 observeReveal();
+
+const initialParams = new URLSearchParams(window.location.search);
+const initialPage = initialParams.get('page');
+if (initialPage && document.getElementById(`page-${initialPage}`)) {
+  showPage(initialPage);
+} else {
+  syncUrlState();
+}
 
 updateDeploymentSnapshot();
 loadLiveProposals();
