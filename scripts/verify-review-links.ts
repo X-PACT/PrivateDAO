@@ -12,6 +12,7 @@ const requiredReadmeRefs = [
   "docs/replay-analysis.md",
   "docs/live-proof.md",
   "docs/devnet-release-manifest.md",
+  "docs/verification-gates.md",
   "docs/mainnet-readiness.md",
   "docs/production-operations.md",
   "docs/strategy-operations.md",
@@ -26,6 +27,7 @@ const requiredFrontendRefs = [
   "replay-analysis.md",
   "live-proof.md",
   "devnet-release-manifest.md",
+  "verification-gates.md",
   "production-operations.md",
   "strategy-operations.md",
 ];

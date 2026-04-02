@@ -19,6 +19,7 @@ required_files=(
   "docs/live-proof.md"
   "docs/devnet-release-manifest.md"
   "docs/proof-registry.json"
+  "docs/verification-gates.md"
   "docs/mainnet-readiness.md"
   "docs/ranger-strategy-documentation.md"
   "docs/strategy-blueprint.md"
