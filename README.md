@@ -28,6 +28,27 @@ PrivateDAO is a Solana governance protocol for DAOs that want private voting wit
 
 The problem statement is simple and easy for judges to verify: public live tallies create whale pressure, vote buying, and treasury signaling. PrivateDAO removes live vote visibility while keeping the rest of the governance lifecycle inspectable, testable, and compatible with how Solana teams actually operate.
 
+## Why PrivateDAO Exists
+
+Public governance leaks intent too early.
+
+That creates predictable failure modes:
+
+- whale pressure
+- vote buying
+- treasury signaling
+- execution manipulation around visible intent
+
+PrivateDAO exists to resist those failure modes with:
+
+- commit-reveal voting
+- state-machine governance
+- timelocked execution
+- strict treasury validation
+- replay-resistant lifecycle checks
+
+## What Is Implemented
+
 What is real in the current implementation:
 
 - voting is executed on-chain through the Solana program
@@ -37,6 +58,37 @@ What is real in the current implementation:
 - the operator scripts print real transaction signatures and Solscan links for verification
 
 The current stack is already structured for immediate **mainnet transition**. The lifecycle, permissions, execution checks, and operator flows are live on-chain today; moving from devnet to mainnet is an operational deployment step, not a product redesign.
+
+## Security At A Glance
+
+PrivateDAO is designed around one core requirement: preventing governance manipulation without sacrificing execution safety.
+
+Current security hardening covers:
+
+- lifecycle bypass resistance
+- commit-reveal integrity
+- signer and authority validation
+- proposal and account binding correctness
+- treasury miswiring rejection
+- duplicate execution prevention
+- failed-path state preservation
+- replay-oriented reasoning and coverage mapping
+
+See:
+
+- `docs/security-review.md`
+- `docs/threat-model.md`
+- `docs/security-coverage-map.md`
+- `docs/failure-modes.md`
+- `docs/replay-analysis.md`
+
+## Why Security Is Core
+
+PrivateDAO is not trying to make governance merely private. It is trying to make private governance defensible.
+
+A private voting system that can be replayed, misbound, bypassed, or mis-executed would fail the exact problem it claims to solve.
+
+That is why PrivateDAO treats lifecycle enforcement, signer correctness, account binding, replay resistance, and treasury safety as core protocol guarantees.
 
 Quick links:
 
@@ -64,17 +116,17 @@ Quick links:
 - On-chain program: `programs/private-dao/src/lib.rs`
 - End-to-end lifecycle test: `tests/full-flow-test.ts`
 
-## Judge Fast Path
+## Reviewer Fast Path
 
 If a judge only has 2-3 minutes, the strongest review order is:
 
-1. Open `https://x-pact.github.io/PrivateDAO/?page=proof&judge=1`
-2. Watch the pitch: `https://youtu.be/KVNFZXHNZTQ`
-3. Open the live proof note: `docs/live-proof.md`
-4. Open `docs/judge-technical-audit.md`
-5. Open `docs/security-review.md`
-6. Inspect the live program on Solscan
-7. Open the selected proposal surface and verify the current on-chain lifecycle
+1. Open `https://x-pact.github.io/PrivateDAO/?page=security`
+2. Open `docs/threat-model.md`
+3. Open `docs/security-review.md`
+4. Open `tests/private-dao.ts`
+5. Open `tests/full-flow-test.ts`
+6. Open `docs/security-coverage-map.md`
+7. Open the live proof note and devnet explorer references
 
 ## Ranger / Drift Fit
 
@@ -116,6 +168,55 @@ Mainnet gate:
 ```bash
 npm run check:mainnet
 ```
+
+## Threat Coverage
+
+Reviewer-visible coverage currently includes:
+
+- lifecycle bypass
+- replay and duplicate execution
+- signer misuse
+- PDA and account substitution
+- treasury miswiring
+- invalid reveal and commitment mismatch
+- timing boundary misuse
+- delegation misuse
+- execution invariants
+- failed-path atomicity
+
+The formal mapping lives in `docs/security-coverage-map.md`.
+
+## Known Limitations
+
+PrivateDAO is explicit about what remains limited:
+
+- the project is devnet-first
+- direct-commit versus delegation overlap is still guarded operationally in product surfaces rather than fully enforced on-chain
+- commit-reveal hides vote content, not transaction timing metadata
+- `CustomCPI` remains intentionally event-only
+- local validator startup is environment-sensitive in this shell
+- mainnet audit completeness is not claimed
+
+## Documentation Index
+
+Security and review documents:
+
+- `docs/security-review.md`
+- `docs/threat-model.md`
+- `docs/security-coverage-map.md`
+- `docs/failure-modes.md`
+- `docs/replay-analysis.md`
+- `docs/judge-technical-audit.md`
+- `docs/mainnet-readiness.md`
+
+Protocol and product documents:
+
+- `docs/live-proof.md`
+- `docs/strategy.md`
+- `docs/android-native.md`
+- `docs/awards.md`
+- `docs/ranger-strategy-documentation.md`
+- `docs/risk-policy.md`
 
 ## ⚡ One-Line Install
 
