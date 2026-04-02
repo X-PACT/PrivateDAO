@@ -50,6 +50,7 @@ Quick links:
 - Ranger strategy documentation: `docs/ranger-strategy-documentation.md`
 - Ranger eligibility checklist: `docs/ranger-submission-checklist.md`
 - Ranger strategy config sample: `docs/ranger-strategy-config.sample.json`
+- Ranger risk policy: `docs/risk-policy.md`
 - Judge technical audit note: `docs/judge-technical-audit.md`
 - Competition roadmap: `docs/competition-roadmap.md`
 - Ranger Main Track memo: `docs/ranger-main-track.md`
@@ -98,6 +99,12 @@ Eligibility command:
 
 ```bash
 npm run validate:ranger-strategy -- docs/ranger-strategy-config.sample.json
+```
+
+Bundle generator:
+
+```bash
+npm run build:ranger-submission -- docs/ranger-strategy-config.sample.json docs/ranger-submission-bundle.generated.md
 ```
 
 ## ⚡ One-Line Install
