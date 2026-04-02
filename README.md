@@ -227,6 +227,8 @@ Protocol and product documents:
 - `docs/awards.md`
 - `docs/ranger-strategy-documentation.md`
 - `docs/risk-policy.md`
+- `docs/use-cases.md`
+- `docs/economic-model.md`
 
 ## Independent Verification
 

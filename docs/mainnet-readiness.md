@@ -35,6 +35,57 @@ PrivateDAO already has:
 - treasury operator path reviewed
 - incident response documented
 
+## Mainnet readiness checklist
+
+### Audit and review
+
+- external program audit required
+- independent external security review recommended
+- specification and threat-model review completed internally
+- failure-mode and replay analysis reviewed
+
+### Authority and upgrade strategy
+
+- upgrade authority strategy defined
+- authority key custody policy defined
+- authority rotation plan defined
+- post-mainnet upgrade discipline defined
+
+### Emergency controls
+
+- veto path reviewed
+- cancel path reviewed
+- emergency governance procedure documented
+- incident-response owner identified
+
+### Treasury protection
+
+- treasury recovery strategy documented
+- treasury operator runbook documented
+- recipient validation reviewed
+- token mint and token ownership checks reviewed
+
+### Monitoring and operations
+
+- transaction monitoring integrated
+- proposal/execution alerting integrated
+- RPC redundancy configured
+- explorer verification path documented
+
+### Deployment discipline
+
+- build reproducibility checked
+- release checklist completed
+- program ID and environment mapping reviewed
+- deploy logs and verification records stored
+
+### Infrastructure assumptions
+
+- reliable RPC providers selected
+- signer environment reviewed
+- wallet security reviewed
+- backup operational access defined
+
 ## Readiness command
 
 ```bash
