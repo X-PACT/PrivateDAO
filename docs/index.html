@@ -3335,6 +3335,54 @@ async function revealSelectedVoteInWallet(vote, saltHex) {
   return signAndBroadcastTransaction(ix, 'Reveal submitted');
 }
 
+async function cancelSelectedProposalInWallet() {
+  if (!currentSelectedProposal || !wallet) {
+    showToast('Select a live proposal and connect the authority wallet first.', 'error');
+    return;
+  }
+  try {
+    const dao = await fetchDaoDetails(currentSelectedProposal.dao);
+    const data = await anchorMethodDiscriminator('cancel_proposal');
+    const ix = new solanaWeb3.TransactionInstruction({
+      programId: programPk,
+      keys: [
+        { pubkey: new solanaWeb3.PublicKey(dao.pubkey), isSigner: false, isWritable: false },
+        { pubkey: new solanaWeb3.PublicKey(currentSelectedProposal.pubkey), isSigner: false, isWritable: true },
+        { pubkey: new solanaWeb3.PublicKey(wallet), isSigner: true, isWritable: false },
+      ],
+      data,
+    });
+    await signAndBroadcastTransaction(ix, 'Cancel submitted');
+  } catch (error) {
+    console.error(error);
+    showToast(error.message || 'Cancel transaction failed.', 'error');
+  }
+}
+
+async function vetoSelectedProposalInWallet() {
+  if (!currentSelectedProposal || !wallet) {
+    showToast('Select a live proposal and connect the authority wallet first.', 'error');
+    return;
+  }
+  try {
+    const dao = await fetchDaoDetails(currentSelectedProposal.dao);
+    const data = await anchorMethodDiscriminator('veto_proposal');
+    const ix = new solanaWeb3.TransactionInstruction({
+      programId: programPk,
+      keys: [
+        { pubkey: new solanaWeb3.PublicKey(dao.pubkey), isSigner: false, isWritable: false },
+        { pubkey: new solanaWeb3.PublicKey(currentSelectedProposal.pubkey), isSigner: false, isWritable: true },
+        { pubkey: new solanaWeb3.PublicKey(wallet), isSigner: true, isWritable: false },
+      ],
+      data,
+    });
+    await signAndBroadcastTransaction(ix, 'Veto submitted');
+  } catch (error) {
+    console.error(error);
+    showToast(error.message || 'Veto transaction failed.', 'error');
+  }
+}
+
 async function submitDelegateVoteInWallet() {
   const proposalPubkey = (document.getElementById('delegateProposalInput')?.value || '').trim();
   const delegateePubkey = (document.getElementById('delegateeWalletInput')?.value || '').trim();
@@ -3459,16 +3507,44 @@ async function loadProposalHistory(p) {
       `;
       return;
     }
-    historyGrid.innerHTML = signatures.map(sig => `
+    const parsedTransactions = await connection.getParsedTransactions(
+      signatures.map(sig => sig.signature),
+      { maxSupportedTransactionVersion: 0, commitment: 'confirmed' }
+    );
+
+    function inferActionLabel(parsed, sigInfo) {
+      const logs = parsed?.meta?.logMessages || [];
+      const joined = logs.join('\n');
+      if (joined.includes('Instruction: CreateProposal') || joined.includes('Instruction: create_proposal')) return 'Create Proposal';
+      if (joined.includes('Instruction: CommitVote') || joined.includes('Instruction: commit_vote')) return 'Commit Vote';
+      if (joined.includes('Instruction: CommitDelegatedVote') || joined.includes('Instruction: commit_delegated_vote')) return 'Commit Delegated Vote';
+      if (joined.includes('Instruction: DelegateVote') || joined.includes('Instruction: delegate_vote')) return 'Delegate Vote';
+      if (joined.includes('Instruction: RevealVote') || joined.includes('Instruction: reveal_vote')) return 'Reveal Vote';
+      if (joined.includes('Instruction: FinalizeProposal') || joined.includes('Instruction: finalize_proposal')) return 'Finalize Proposal';
+      if (joined.includes('Instruction: ExecuteProposal') || joined.includes('Instruction: execute_proposal')) return 'Execute Proposal';
+      if (joined.includes('Instruction: CancelProposal') || joined.includes('Instruction: cancel_proposal')) return 'Cancel Proposal';
+      if (joined.includes('Instruction: VetoProposal') || joined.includes('Instruction: veto_proposal')) return 'Veto Proposal';
+      return sigInfo.err ? 'Failed Transaction' : 'Proposal Activity';
+    }
+
+    historyGrid.innerHTML = signatures.map((sig, idx) => {
+      const parsed = parsedTransactions[idx];
+      const actionLabel = inferActionLabel(parsed, sig);
+      const fee = parsed?.meta?.fee;
+      const status = sig.err ? 'error' : (sig.confirmationStatus || 'confirmed');
+      return `
       <div class="proposal-command-box">
-        <div class="proposal-detail-label">${sig.confirmationStatus || 'confirmed'}${sig.err ? ' · error' : ' · ok'}</div>
+        <div class="proposal-detail-label">${actionLabel}</div>
         <div style="color:var(--text2);line-height:1.8">
           ${sig.blockTime ? formatUtc(sig.blockTime) : 'Timestamp unavailable'}<br>
+          Status: ${status}<br>
+          ${fee !== undefined ? `Fee: ${fee} lamports<br>` : ''}
           Signature: ${sig.signature}
         </div>
         <div style="margin-top:12px"><a class="award-link" href="https://solscan.io/tx/${sig.signature}?cluster=devnet" target="_blank">Open Transaction</a></div>
       </div>
-    `).join('');
+    `;
+    }).join('');
   } catch (error) {
     console.error(error);
     historyGrid.innerHTML = `
@@ -3871,6 +3947,8 @@ function renderProposalDetail(p, nowTs) {
     <a class="proposal-proof-link" href="${solscanAccount(p.dao)}" target="_blank">DAO Explorer</a>
     <a class="proposal-proof-link" href="${solscanAccount(treasuryPda)}" target="_blank">Treasury Explorer</a>
     <a class="proposal-proof-link" href="live-proof.md" target="_blank">Live Devnet Proof</a>
+    <button class="proposal-proof-link" type="button" onclick="cancelSelectedProposalInWallet()">Cancel in Wallet</button>
+    <button class="proposal-proof-link" type="button" onclick="vetoSelectedProposalInWallet()">Veto in Wallet</button>
     <button class="proposal-proof-link" type="button" onclick="finalizeSelectedProposalInWallet()">Finalize in Wallet</button>
     <button class="proposal-proof-link" type="button" onclick="executeSelectedProposalInWallet()">Execute in Wallet</button>
     <button class="proposal-proof-link" type="button" onclick="shareCurrentProposal()">Copy Share Link</button>

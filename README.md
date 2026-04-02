@@ -137,6 +137,7 @@ The win documentation is separate from governance execution.
 - The Proof Center now also exposes wallet-connected `Finalize in Wallet` and `Execute in Wallet` actions for compatible live proposals.
 - The live UI now also supports browser-native `Create Proposal`, `Commit`, and `Reveal` flows for the standard governance path, while keeping the equivalent repo commands visible for reviewers and operators.
 - The live UI now also exposes proposal-scoped delegation actions and live per-proposal transaction history from devnet RPC for the selected proposal.
+- The authority surface now also includes wallet-connected `Cancel` and `Veto` actions for the selected proposal, and proposal activity is labeled from parsed on-chain transaction logs rather than shown as raw signatures only.
 - The operator command is:
 
 ```bash
