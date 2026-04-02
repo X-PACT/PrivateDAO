@@ -237,11 +237,26 @@ nav.scrolled {
   margin-bottom: 28px;
   padding: 24px 28px;
   border-radius: 24px;
-  border: 1px solid rgba(255, 211, 102, 0.35);
+  border: 1px solid rgba(255, 217, 92, 0.48);
   background:
-    linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(193, 130, 0, 0.26)),
-    linear-gradient(180deg, rgba(255, 248, 220, 0.06), rgba(24, 16, 2, 0.24));
-  box-shadow: 0 24px 80px rgba(193, 130, 0, 0.18);
+    radial-gradient(circle at top left, rgba(255, 244, 181, 0.24), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(255, 181, 40, 0.18), transparent 28%),
+    linear-gradient(135deg, rgba(255, 215, 0, 0.32), rgba(193, 130, 0, 0.3)),
+    linear-gradient(180deg, rgba(255, 248, 220, 0.08), rgba(24, 16, 2, 0.24));
+  box-shadow: 0 24px 80px rgba(193, 130, 0, 0.24), inset 0 1px 0 rgba(255, 246, 207, 0.26);
+  position: relative;
+  overflow: hidden;
+}
+
+.award-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(110deg, transparent 0%, rgba(255, 250, 223, 0.04) 42%, rgba(255, 250, 223, 0.22) 50%, rgba(255, 250, 223, 0.04) 58%, transparent 100%);
+  transform: translateX(-120%);
+  animation: awardSweep 7s linear infinite;
+  pointer-events: none;
 }
 
 .award-banner-inner {
@@ -275,7 +290,8 @@ nav.scrolled {
   font-size: clamp(42px, 6vw, 70px);
   letter-spacing: 1px;
   line-height: 0.95;
-  color: #fff2b8;
+  color: #fff4b0;
+  text-shadow: 0 0 18px rgba(255, 214, 92, 0.22);
   margin-bottom: 12px;
 }
 
@@ -325,8 +341,9 @@ nav.scrolled {
   min-width: 220px;
   padding: 18px 20px;
   border-radius: 18px;
-  background: rgba(26, 17, 0, 0.38);
-  border: 1px solid rgba(255, 229, 145, 0.18);
+  background: linear-gradient(180deg, rgba(46, 27, 0, 0.34), rgba(26, 17, 0, 0.56));
+  border: 1px solid rgba(255, 229, 145, 0.26);
+  box-shadow: inset 0 1px 0 rgba(255, 244, 210, 0.12);
 }
 
 .award-banner-meta-row + .award-banner-meta-row {
@@ -686,6 +703,28 @@ nav.scrolled {
 .action-veto { background: var(--red-dim); color: var(--red); border: 1px solid rgba(255,45,85,0.3) !important; flex: 0 0 auto; padding: 12px 20px; }
 .action-veto:hover { background: rgba(255,45,85,0.2); }
 
+.proposal-create-card {
+  margin-top: 18px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 22px 24px;
+}
+
+.proposal-create-card code {
+  display: block;
+  margin-top: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--void);
+  color: var(--cyan);
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.7;
+  overflow-x: auto;
+}
+
 /* ── HOW IT WORKS ── */
 .protocol-steps {
   display: grid;
@@ -800,12 +839,137 @@ nav.scrolled {
 .sec-table .fail { color: var(--red); font-size: 16px; }
 .sec-table .mono-sm { font-family: var(--mono); font-size: 11px; color: var(--text3); }
 
+.award-stage {
+  position: relative;
+  overflow: hidden;
+}
+
+.award-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 12% 10%, rgba(255, 240, 176, 0.16), transparent 22%),
+    radial-gradient(circle at 88% 18%, rgba(255, 183, 42, 0.14), transparent 20%),
+    radial-gradient(circle at 50% 82%, rgba(255, 214, 92, 0.12), transparent 28%);
+  pointer-events: none;
+}
+
+.award-celebration-card {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top center, rgba(255, 245, 192, 0.18), transparent 28%),
+    linear-gradient(180deg, rgba(255, 215, 0, 0.16), rgba(12, 30, 48, 0.96));
+  border: 1px solid rgba(255, 221, 111, 0.34);
+  border-radius: 28px;
+  padding: 44px;
+  box-shadow: 0 28px 90px rgba(193, 130, 0, 0.2);
+}
+
+.award-celebration-card::before {
+  content: "";
+  position: absolute;
+  inset: -20% auto auto -10%;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(255, 247, 204, 0.18), transparent 70%);
+  pointer-events: none;
+}
+
+.award-celebration-card::after {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -10%;
+  width: 45%;
+  height: 180%;
+  background: linear-gradient(115deg, transparent 0%, rgba(255, 249, 226, 0.02) 38%, rgba(255, 249, 226, 0.18) 50%, rgba(255, 249, 226, 0.02) 62%, transparent 100%);
+  transform: translateX(-120%);
+  animation: awardSweep 8s linear infinite;
+  pointer-events: none;
+}
+
+.award-celebration-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.award-crown {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  margin-bottom: 18px;
+  border-radius: 999px;
+  background: rgba(59, 35, 0, 0.34);
+  border: 1px solid rgba(255, 225, 122, 0.34);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #ffe792;
+}
+
+.award-glory-title {
+  font-family: var(--display);
+  font-size: clamp(54px, 7vw, 96px);
+  line-height: 0.92;
+  letter-spacing: 1px;
+  color: #fff2a3;
+  text-shadow: 0 0 24px rgba(255, 214, 92, 0.22);
+  margin-bottom: 18px;
+}
+
+.award-glory-copy {
+  max-width: 760px;
+  font-size: 18px;
+  line-height: 1.85;
+  color: rgba(255, 245, 217, 0.9);
+}
+
+.award-glory-copy strong {
+  color: #ffe792;
+}
+
+.award-proof-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.award-proof-card {
+  background: rgba(14, 12, 6, 0.42);
+  border: 1px solid rgba(255, 223, 117, 0.18);
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.award-proof-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: rgba(255, 234, 159, 0.66);
+  margin-bottom: 8px;
+}
+
+.award-proof-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff6d1;
+  line-height: 1.5;
+}
+
 .award-detail-card {
-  background: linear-gradient(180deg, rgba(255, 215, 0, 0.1), rgba(12, 30, 48, 0.94));
-  border: 1px solid rgba(255, 211, 102, 0.28);
+  background:
+    linear-gradient(180deg, rgba(255, 224, 109, 0.12), rgba(12, 30, 48, 0.94)),
+    radial-gradient(circle at top right, rgba(255, 247, 204, 0.08), transparent 24%);
+  border: 1px solid rgba(255, 211, 102, 0.32);
   border-radius: 24px;
   padding: 40px;
-  box-shadow: 0 20px 60px rgba(193, 130, 0, 0.14);
+  box-shadow: 0 20px 60px rgba(193, 130, 0, 0.16), inset 0 1px 0 rgba(255, 248, 220, 0.08);
 }
 
 .award-detail-head {
@@ -822,6 +986,7 @@ nav.scrolled {
   line-height: 0.95;
   letter-spacing: 1px;
   color: #fff0a8;
+  text-shadow: 0 0 18px rgba(255, 214, 92, 0.18);
   margin-bottom: 12px;
 }
 
@@ -852,8 +1017,8 @@ nav.scrolled {
 }
 
 .award-meta-card {
-  background: rgba(4, 10, 15, 0.7);
-  border: 1px solid rgba(255, 229, 145, 0.16);
+  background: linear-gradient(180deg, rgba(24, 17, 8, 0.48), rgba(4, 10, 15, 0.72));
+  border: 1px solid rgba(255, 229, 145, 0.18);
   border-radius: 18px;
   padding: 20px;
 }
@@ -881,8 +1046,8 @@ nav.scrolled {
 }
 
 .award-point {
-  background: rgba(4, 10, 15, 0.7);
-  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(20, 15, 8, 0.52), rgba(4, 10, 15, 0.72));
+  border: 1px solid rgba(255, 229, 145, 0.14);
   border-radius: 16px;
   padding: 18px 20px;
   font-size: 15px;
@@ -890,11 +1055,86 @@ nav.scrolled {
   line-height: 1.7;
 }
 
+.execute-surface-card {
+  background: linear-gradient(180deg, rgba(0, 229, 255, 0.08), rgba(12, 30, 48, 0.92));
+  border: 1px solid rgba(0, 229, 255, 0.18);
+  border-radius: 24px;
+  padding: 30px;
+  margin-top: 22px;
+}
+
+.execute-surface-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.execute-surface-panel {
+  background: rgba(4, 10, 15, 0.76);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px;
+}
+
+.execute-surface-panel code {
+  display: block;
+  margin-top: 14px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--void);
+  border: 1px solid var(--border);
+  color: var(--cyan);
+  font-size: 12px;
+  line-height: 1.7;
+  white-space: normal;
+  word-break: break-word;
+}
+
+@keyframes awardSweep {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(240%); }
+}
+
 .award-links {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 28px;
+}
+
+.investor-video-card {
+  background: linear-gradient(180deg, rgba(0, 229, 255, 0.08), rgba(12, 30, 48, 0.94));
+  border: 1px solid rgba(0, 229, 255, 0.16);
+  border-radius: 24px;
+  padding: 34px;
+  margin-top: 24px;
+}
+
+.investor-video-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.investor-video-panel {
+  background: rgba(4, 10, 15, 0.72);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px;
+}
+
+.investor-video-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.investor-video-copy {
+  font-size: 15px;
+  color: var(--text2);
+  line-height: 1.8;
 }
 
 .award-link {
@@ -1137,7 +1377,10 @@ footer {
   .award-banner { margin-top: 108px; }
   .award-banner-inner, .award-detail-head { flex-direction: column; }
   .award-banner-meta { width: 100%; }
+  .award-celebration-grid, .award-proof-strip, .execute-surface-grid { grid-template-columns: 1fr; }
   .award-grid, .award-points { grid-template-columns: 1fr; }
+  .investor-video-grid { grid-template-columns: 1fr; }
+  .award-celebration-card { padding: 28px; }
 }
 </style>
 </head>
@@ -1191,7 +1434,8 @@ footer {
       <div class="award-banner-copy">
         <div class="award-banner-kicker">🏆 AWARDS &amp; RECOGNITION</div>
         <div class="award-banner-title">1st Place — Superteam Earn</div>
-        <p class="award-banner-subtitle">Backend Systems Engineering Challenge. Recognized for rebuilding production backend systems as on-chain Rust programs on Solana.</p>
+        <p class="award-banner-subtitle">1st Place in the Superteam Poland challenge: Rebuild production backend systems as on-chain Rust programs.</p>
+        <p class="award-banner-subtitle">1st Place in the Superteam Poland challenge: Rebuild production backend systems as on-chain Rust programs.</p>
         <div class="award-banner-actions">
           <button class="award-cta" onclick="showPage('awards', document.querySelectorAll('.nav-link')[4])">View Award Details</button>
           <a class="award-cta secondary" href="awards.md" target="_blank">Open Award Note</a>
@@ -1329,6 +1573,41 @@ footer {
         <div class="proposal-desc">The app reads real `Proposal` accounts from the configured program ID. If no proposals exist yet, this section will show an empty-state message.</div>
       </div>
     </div>
+
+    <div class="proposal-create-card reveal">
+      <div class="proposal-title">Create proposal on-chain</div>
+      <div class="proposal-desc">Proposal creation is real and permissioned by governance token ownership, not mocked in the frontend. Any wallet holding the DAO governance token can submit a proposal through the repo script and receive a real transaction signature plus explorer link.</div>
+      <code>yarn create-proposal -- --dao &lt;DAO_PDA&gt; --title "Fund community work"</code>
+    </div>
+
+    <div class="execute-surface-card reveal">
+      <div class="section-tag">ON-CHAIN EXECUTION</div>
+      <h3 style="font-size:30px;font-weight:700;letter-spacing:-0.4px">Execute button is isolated from the award surface.</h3>
+      <p style="margin-top:10px;color:var(--text2);line-height:1.8;max-width:900px">
+        The `Execute` button belongs to the governance lifecycle only. It appears on a proposal card only after the proposal has passed and the timelock has expired, and it maps directly to the on-chain treasury execution flow.
+      </p>
+      <div class="execute-surface-grid">
+        <div class="execute-surface-panel">
+          <div class="award-meta-card-label">WHEN EXECUTE APPEARS</div>
+          <div style="color:var(--text2);line-height:1.8">
+            <div>1. Proposal is finalized on-chain as passed.</div>
+            <div>2. Timelock remains active until `executionUnlocksAt`.</div>
+            <div>3. The button becomes enabled only in the `Executable` phase.</div>
+            <div>4. The modal copies the real repo command for the selected proposal.</div>
+          </div>
+        </div>
+        <div class="execute-surface-panel">
+          <div class="award-meta-card-label">EXECUTE COMMAND</div>
+          <div style="color:var(--text2);line-height:1.8">
+            Run the exact repo command after the proposal clears timelock:
+          </div>
+          <code>yarn execute -- --proposal &lt;PROPOSAL_PUBKEY&gt;</code>
+          <div style="margin-top:12px;color:var(--text3);font-size:13px;line-height:1.7">
+            After submission, the operator flow prints the transaction signature and explorer link for verification.
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1339,8 +1618,10 @@ footer {
     <div class="reveal" style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;line-height:1.8;color:var(--text2)">
       <p>1) Connect Phantom or Solflare to confirm wallet wiring and devnet connectivity.</p>
       <p>2) Use the repository scripts for the real flow: create proposal → commit → reveal → finalize → execute.</p>
-      <p>3) Refresh this page to inspect live proposal accounts, timing windows, and resulting phase transitions.</p>
-      <p style="color:var(--amber)">This page is intentionally paired with the repo scripts instead of pretending to be a full DAO admin console. The frontend explains the flow, while the backend and CLI execute the exact on-chain instructions under review.</p>
+      <p>3) Proposal creation is not authority-only. Any wallet holding the DAO governance token can submit a proposal on-chain.</p>
+      <p>4) Refresh this page to inspect live proposal accounts, timing windows, and resulting phase transitions.</p>
+      <p>5) Local proof flow: run <span style="color:var(--cyan)">npm run demo</span> to execute the repository's end-to-end demonstration.</p>
+      <p style="color:var(--amber)">This page is intentionally paired with the repo scripts instead of pretending to be a full DAO admin console. The frontend explains the flow, while the backend and CLI execute the exact on-chain instructions under review, including real transaction signatures and explorer links.</p>
     </div>
   </div>
 </section>
@@ -1591,16 +1872,56 @@ execute() → CPI
 
 <!-- ══════════════════ PAGE: AWARDS ══════════════════ -->
 <div class="page" id="page-awards">
-<section class="section" style="padding-top:140px">
+<section class="section award-stage" style="padding-top:140px">
   <div class="container">
     <div class="section-tag reveal">AWARDS &amp; RECOGNITION</div>
     <h2 class="section-heading reveal">PrivateDAO Awards<br>&amp; Recognition</h2>
+    <div class="award-celebration-card reveal">
+      <div class="award-celebration-grid">
+        <div>
+          <div class="award-crown">🏆 VERIFIED 1ST PLACE ACHIEVEMENT</div>
+          <div class="award-glory-title">1st Place<br>Superteam Earn</div>
+          <p class="award-glory-copy">
+            This page documents the win itself, separately from governance execution. PrivateDAO achieved <strong>1st Place</strong> in the Superteam Poland challenge <strong>"Rebuild production backend systems as on-chain Rust programs"</strong>, and the presentation below is dedicated only to that achievement.
+          </p>
+        </div>
+        <div class="award-banner-meta" style="min-width:0">
+          <div class="award-banner-meta-row">
+            <div class="award-banner-meta-label">WINNER</div>
+            <div class="award-banner-meta-value">Fahd Kotb</div>
+          </div>
+          <div class="award-banner-meta-row">
+            <div class="award-banner-meta-label">PLATFORM</div>
+            <div class="award-banner-meta-value">Superteam Poland</div>
+          </div>
+          <div class="award-banner-meta-row">
+            <div class="award-banner-meta-label">DATE</div>
+            <div class="award-banner-meta-value">March 2026</div>
+          </div>
+        </div>
+      </div>
+      <div class="award-proof-strip">
+        <div class="award-proof-card">
+          <div class="award-proof-label">CHALLENGE TITLE</div>
+          <div class="award-proof-value">Rebuild production backend systems as on-chain Rust programs</div>
+        </div>
+        <div class="award-proof-card">
+          <div class="award-proof-label">PLACEMENT</div>
+          <div class="award-proof-value">1st Place</div>
+        </div>
+        <div class="award-proof-card">
+          <div class="award-proof-label">VERIFICATION</div>
+          <div class="award-proof-value">Repository, live demo, and on-chain program surface all available for review.</div>
+        </div>
+      </div>
+    </div>
+
     <div class="award-detail-card reveal">
       <div class="award-detail-head">
         <div>
           <div class="award-detail-title">🥇 1st Place — Superteam Earn</div>
           <p class="award-detail-copy">
-            PrivateDAO engineering work achieved 1st Place in a competitive backend systems challenge focused on implementing production-grade logic using Solana Rust programs.
+            PrivateDAO engineering work achieved 1st Place in the Superteam Poland challenge "Rebuild production backend systems as on-chain Rust programs."
           </p>
         </div>
         <div class="award-pill">VERIFIED ENGINEERING ACHIEVEMENT</div>
@@ -1635,6 +1956,66 @@ execute() → CPI
         <a class="award-link" href="awards.md" target="_blank">Markdown Note</a>
       </div>
     </div>
+
+    <div class="investor-video-card reveal">
+      <div class="section-tag" style="margin-bottom:14px">INVESTOR VIDEO PACKAGE</div>
+      <div class="investor-video-title">Pitch assets are prepared from the protocol itself.</div>
+      <p class="investor-video-copy">
+        The investor video package is being produced from the actual program logic, lifecycle tests, live frontend, and award verification so the final pitch stays aligned with what PrivateDAO really ships.
+      </p>
+      <div class="investor-video-grid">
+        <div class="investor-video-panel">
+          <div class="award-meta-card-label">VIDEO ASSETS</div>
+          <div class="investor-video-copy">
+            <div>Brief and production package: <a class="award-link" href="investor-video.md" target="_blank" style="margin-top:12px">Investor Video Brief</a></div>
+            <div style="margin-top:12px">Voiceover: <a class="award-link" href="video-voiceover.md" target="_blank">Voiceover Script</a></div>
+            <div style="margin-top:12px">Shotlist: <a class="award-link" href="video-shotlist.md" target="_blank">Shotlist</a></div>
+          </div>
+        </div>
+        <div class="investor-video-panel">
+          <div class="award-meta-card-label">GENERATION STATUS</div>
+          <div class="investor-video-copy">
+            <div>Current external task status: pending</div>
+            <div style="margin-top:10px">Generation task: <a class="award-link" href="https://manus.im/app/kMUHrujYi7Ec8nXqWDSxa9" target="_blank">Open Task</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="award-detail-card reveal" style="margin-top:28px">
+      <div class="award-detail-head">
+        <div>
+          <div class="award-detail-title">Ownership And Contact</div>
+          <p class="award-detail-copy">
+            PrivateDAO is independently built and maintained by Fahd Kotb. The channels below are the direct project ownership and contact endpoints for investor, ecosystem, and partnership outreach.
+          </p>
+        </div>
+        <div class="award-pill">DIRECT OWNER CONTACT</div>
+      </div>
+
+      <div class="award-grid">
+        <div class="award-meta-card">
+          <div class="award-meta-card-label">OWNER</div>
+          <div class="award-meta-card-value">Fahd Kotb</div>
+        </div>
+        <div class="award-meta-card">
+          <div class="award-meta-card-label">X</div>
+          <div class="award-meta-card-value"><a class="award-link" href="https://x.com/FahdX369" target="_blank">@FahdX369</a></div>
+        </div>
+        <div class="award-meta-card">
+          <div class="award-meta-card-label">TELEGRAM</div>
+          <div class="award-meta-card-value"><a class="award-link" href="https://t.me/Fahdkotb" target="_blank">@Fahdkotb</a></div>
+        </div>
+      </div>
+
+      <div class="award-points">
+        <div class="award-point">Primary email: <a class="award-link" href="mailto:fahd.kotb@tuta.io">fahd.kotb@tuta.io</a></div>
+        <div class="award-point">Secondary email: <a class="award-link" href="mailto:i.kotb@proton.me">i.kotb@proton.me</a></div>
+        <div class="award-point">Operations email: <a class="award-link" href="mailto:eslamkotb.fmt@gmail.com">eslamkotb.fmt@gmail.com</a></div>
+        <div class="award-point">Additional contact: <a class="award-link" href="mailto:eslamkotb.369@gmail.com">eslamkotb.369@gmail.com</a></div>
+        <div class="award-point">WhatsApp: <a class="award-link" href="https://wa.me/201124030209" target="_blank">+20 112 403 0209</a> · Backup: <a class="award-link" href="https://wa.me/201070004967" target="_blank">+20 107 000 4967</a></div>
+      </div>
+    </div>
   </div>
 </section>
 </div><!-- /page-awards -->
@@ -1652,6 +2033,9 @@ execute() → CPI
         <a href="https://solscan.io/account/62qdrtJGP23PwmvAn5c5B9xT1LSgdnq4p1sQsHnKVFhm?cluster=devnet" class="footer-link" target="_blank">Solscan</a>
         <a href="https://x-pact.github.io/PrivateDAO/" class="footer-link" target="_blank">Live App</a>
         <a href="awards.md" class="footer-link" target="_blank">Awards Note</a>
+        <a href="mailto:fahd.kotb@tuta.io" class="footer-link">Owner Email</a>
+        <a href="https://t.me/Fahdkotb" class="footer-link" target="_blank">Telegram</a>
+        <a href="https://x.com/FahdX369" class="footer-link" target="_blank">X</a>
       </div>
     </div>
   </div>
@@ -1740,6 +2124,35 @@ execute() → CPI
   </div>
 </div>
 
+<!-- EXECUTE MODAL -->
+<div class="modal-overlay" id="executeModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('executeModal')">✕</button>
+    <div class="modal-title">EXECUTE PROPOSAL</div>
+    <div class="modal-sub">Execution remains tied to the real on-chain workflow. This panel prepares the exact repo command for the selected proposal.</div>
+    <div class="network-indicator" style="margin-top:-10px">
+      <span class="net-dot"></span>
+      <span>Target proposal</span>
+      <span class="net-name" id="executeTargetLabel">Select from live list</span>
+      <span style="margin-left:auto" id="executePhaseLabel">Checking phase</span>
+    </div>
+
+    <div class="commit-preview" style="margin-bottom:20px">
+      <div class="commit-preview-label">EXECUTION STATUS</div>
+      <div class="commit-hash" id="executeProposalState">Only proposals that have passed and cleared the timelock can execute.</div>
+    </div>
+
+    <div style="background:var(--void);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px;font-family:var(--mono);font-size:11px;line-height:1.8;color:var(--text2)">
+      <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:8px">EXECUTION COMMAND</div>
+      <div id="executeCommandHint">Run the repo execute script for the selected proposal.</div>
+    </div>
+
+    <button class="submit-btn" id="executeSubmitBtn" onclick="submitExecute()">
+      Copy Execute Command
+    </button>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -1802,6 +2215,7 @@ let walletProvider = null;
 let currentCommitSaltHex = null;
 let currentCommitHashHex = null;
 let currentProposalId = null;
+let currentExecuteProposalPubkey = null;
 
 function shortPk(pk) {
   return `${pk.slice(0, 4)}...${pk.slice(-4)}`;
@@ -2016,6 +2430,11 @@ function proposalCardHtml(p, nowTs) {
     : phase === "Reveal"
       ? "phase-reveal"
       : "phase-passed";
+  const executeDisabled = phase !== "Executable";
+  const executeLabel = phase === "Timelocked" ? "Timelocked" : "Execute";
+  const executeButton = (phase === "Executable" || phase === "Timelocked")
+    ? `<button class="action-btn action-execute" ${executeDisabled ? "disabled" : ""} onclick="openExecuteModal('${p.pubkey}', ${p.proposalId}, ${executeDisabled ? "false" : "true"}, ${p.executionUnlocksAt})">${executeLabel}</button>`
+    : "";
   return `
     <div class="proposal-card ${className}">
       <div class="proposal-header">
@@ -2033,6 +2452,7 @@ function proposalCardHtml(p, nowTs) {
       <div class="proposal-actions">
         <button class="action-btn action-commit" onclick="openCommitModal(${p.proposalId})">Commit</button>
         <button class="action-btn action-reveal" onclick="openRevealModal(${p.proposalId})">Reveal</button>
+        ${executeButton}
       </div>
     </div>
   `;
@@ -2107,6 +2527,20 @@ function openRevealModal(id) {
     : `Run scripts/reveal-vote.ts for PROP-${String(currentProposalId).padStart(3, '0')} using the original vote choice and saved salt.`;
   document.getElementById('revealModal').classList.add('open');
 }
+function openExecuteModal(proposalPubkey, id, executable, unlockTs) {
+  currentExecuteProposalPubkey = proposalPubkey || null;
+  const paddedId = Number.isFinite(id) && id >= 0 ? `PROP-${String(id).padStart(3, '0')}` : 'Selected proposal';
+  document.getElementById('executeTargetLabel').textContent = paddedId;
+  document.getElementById('executePhaseLabel').textContent = executable ? 'Executable now' : 'Timelock active';
+  document.getElementById('executeProposalState').textContent = executable
+    ? `The selected proposal can execute on-chain now. The repo execute script will submit the treasury action transaction.`
+    : `The selected proposal has passed but is still timelocked. Wait until ${new Date(unlockTs * 1000).toISOString().replace('T', ' ').slice(0, 19)} UTC before executing.`;
+  document.getElementById('executeCommandHint').textContent = proposalPubkey
+    ? `yarn execute -- --proposal ${proposalPubkey}`
+    : 'Run the repo execute script for the selected proposal.';
+  document.getElementById('executeSubmitBtn').disabled = !executable;
+  document.getElementById('executeModal').classList.add('open');
+}
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
 async function selectVote(v) {
@@ -2170,6 +2604,22 @@ function submitReveal() {
     ? 'selected proposal'
     : `PROP-${String(currentProposalId).padStart(3, '0')}`;
   showToast(`Run scripts/reveal-vote.ts for ${target} with your original vote and saved salt.`, 'info');
+}
+
+function submitExecute() {
+  if (!currentExecuteProposalPubkey) {
+    showToast('Select an executable proposal first.', 'error');
+    return;
+  }
+  const command = `yarn execute -- --proposal ${currentExecuteProposalPubkey}`;
+  closeModal('executeModal');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(command)
+      .then(() => showToast('Execute command copied. Run it from the repo terminal.', 'success'))
+      .catch(() => showToast(command, 'info'));
+    return;
+  }
+  showToast(command, 'info');
 }
 
 function vetoProposal() {

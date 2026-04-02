@@ -26,13 +26,36 @@ PrivateDAO is a Solana governance protocol for DAOs that want private voting wit
 
 The problem statement is simple and easy for judges to verify: public live tallies create whale pressure, vote buying, and treasury signaling. PrivateDAO removes live vote visibility while keeping the rest of the governance lifecycle inspectable, testable, and compatible with how Solana teams actually operate.
 
+What is real in the current implementation:
+
+- voting is executed on-chain through the Solana program
+- proposal accounts are read live from on-chain program state
+- any wallet holding the DAO governance token can create a proposal
+- commit, reveal, finalize, cancel, veto, and execute are implemented in the program
+- the operator scripts print real transaction signatures and Solscan links for verification
 Quick links:
 
 - Live frontend: `https://x-pact.github.io/PrivateDAO/`
 - Awards page: `docs/awards.md`
+- Strategy documentation: `https://us04docs.zoom.us/doc/S56vUFmURMqiWkUVdfSulQ`
+- Investor video package: `docs/investor-video.md`
 - On-chain program: `programs/private-dao/src/lib.rs`
 - End-to-end lifecycle test: `tests/full-flow-test.ts`
 
+## ⚡ One-Line Install
+
+Bootstrap the repository with a single command:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/X-PACT/PrivateDAO/main/scripts/install.sh | bash
+```
+
+The installer:
+
+- checks required tools
+- creates `.env` from `.env.example` when missing
+- installs Node dependencies
+- prints the next real steps for demo and build
 ## 🏆 Awards & Recognition
 
 PrivateDAO-related engineering work has been recognized in competitive Solana development challenges.
@@ -46,7 +69,7 @@ PrivateDAO-related engineering work has been recognized in competitive Solana de
 
 **Summary:**
 
-This achievement recognizes the successful implementation of production-grade backend architecture using Solana Rust programs.
+This achievement recognizes 1st Place in the challenge **"Rebuild production backend systems as on-chain Rust programs"** on Superteam Poland.
 
 The system demonstrates:
 
@@ -62,11 +85,44 @@ The system demonstrates:
 - Demo: https://x-pact.github.io/PrivateDAO/
 - Award note: `docs/awards.md`
 
+## On-Chain Execute Surface
+
+The win documentation is separate from governance execution.
+
+- The award section documents only the verified 1st Place result.
+- The `Execute` button belongs to proposal lifecycle handling and appears only when a proposal is executable on-chain after finalize plus timelock expiry.
+- The frontend maps the button to the repo execution flow instead of pretending execution is a decorative UI action.
+- The operator command is:
+
+```bash
+yarn execute -- --proposal <PROPOSAL_PUBKEY>
+```
+
 GitHub Pages source: `docs/` via `.github/workflows/pages.yml`.
 
 ## One-Line Pitch
 
 PrivateDAO brings commit-reveal voting, proposal-scoped private delegation, keeper-assisted reveal, and timelocked treasury execution to Solana DAOs in one working stack.
+
+## 🎬 Investor Video Package
+
+The investor-facing pitch video is being generated from a repo-native package built around the actual protocol, test surface, and award verification.
+
+- Strategy documentation for judges, partners, and investors: `https://us04docs.zoom.us/doc/S56vUFmURMqiWkUVdfSulQ`
+- Video brief and production package: `docs/investor-video.md`
+- Voiceover script: `docs/video-voiceover.md`
+- Shotlist and visual direction: `docs/video-shotlist.md`
+- Generation task: `https://manus.im/app/kMUHrujYi7Ec8nXqWDSxa9`
+
+## 🧪 Local Demo
+
+Run the repository demonstration end-to-end with:
+
+```bash
+npm run demo
+```
+
+This exercises the real lifecycle through Anchor tests, including proposal creation, commit, reveal, finalize, execute, delegation, and cancellation.
 
 ## 🧭 System Diagram
 
@@ -175,15 +231,21 @@ Quick review links:
 - Demo talk track: `DEMO_SCRIPT_90S.md`
 - Outreach copy: `OUTREACH_MESSAGE.md`
 
-## Contact And Outreach
+## Ownership And Contact
+
+PrivateDAO is independently built and maintained by **Fahd Kotb**.
+
+Professional contact channels:
 
 - Primary email: [fahd.kotb@tuta.io](mailto:fahd.kotb@tuta.io)
 - Secondary email: [i.kotb@proton.me](mailto:i.kotb@proton.me)
-- Backup email: [eslamkotb.fmt@gmail.com](mailto:eslamkotb.fmt@gmail.com)
-- WhatsApp: [Direct chat](https://wa.me/201124030209)
+- Operations email: [eslamkotb.fmt@gmail.com](mailto:eslamkotb.fmt@gmail.com)
+- Additional contact: [eslamkotb.369@gmail.com](mailto:eslamkotb.369@gmail.com)
+- WhatsApp: [+20 112 403 0209](https://wa.me/201124030209)
+- WhatsApp backup: [+20 107 000 4967](https://wa.me/201070004967)
+- X: [@FahdX369](https://x.com/FahdX369)
+- Telegram: [@Fahdkotb](https://t.me/Fahdkotb)
 - Outreach pack: `OUTREACH_MESSAGE.md`
-
-A Discord direct link can be added as soon as a valid Discord invite link, username, or user ID is available.
 
 ## Submission Assets
 

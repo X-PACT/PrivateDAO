@@ -83,6 +83,19 @@ describe("Full flow", () => {
     }
 
     const mint = await createMint(provider.connection, payer, payer.publicKey, null, 6);
+    const payerTokenAta = getAssociatedTokenAddressSync(mint, payer.publicKey);
+    await provider.sendAndConfirm(
+      new Transaction().add(
+        createAssociatedTokenAccountInstruction(
+          payer.publicKey,
+          payerTokenAta,
+          payer.publicKey,
+          mint,
+        ),
+      ),
+      [],
+    );
+    await mintTo(provider.connection, payer, mint, payerTokenAta, payer, 1_000_000n);
 
     async function fund(owner: Keypair, tokens: number) {
       const ata = await createAccount(provider.connection, payer, mint, owner.publicKey);
@@ -146,7 +159,8 @@ describe("Full flow", () => {
       )
       .accounts({
         dao: daoPda, proposal: proposalPda,
-        authority: payer.publicKey, proposer: payer.publicKey,
+        proposerTokenAccount: payerTokenAta,
+        proposer: payer.publicKey,
         systemProgram: SystemProgram.programId,
       })
       .rpc();
@@ -302,7 +316,8 @@ describe("Full flow", () => {
       )
       .accounts({
         dao: daoPda, proposal: proposal2Pda,
-        authority: payer.publicKey, proposer: payer.publicKey,
+        proposerTokenAccount: payerTokenAta,
+        proposer: payer.publicKey,
         systemProgram: SystemProgram.programId,
       })
       .rpc();
@@ -415,6 +430,19 @@ describe("Full flow", () => {
     await fundWallet(voter.publicKey, 0.01);
 
     const mint = await createMint(provider.connection, payer, payer.publicKey, null, 6);
+    const payerTokenAta = getAssociatedTokenAddressSync(mint, payer.publicKey);
+    await provider.sendAndConfirm(
+      new Transaction().add(
+        createAssociatedTokenAccountInstruction(
+          payer.publicKey,
+          payerTokenAta,
+          payer.publicKey,
+          mint,
+        ),
+      ),
+      [],
+    );
+    await mintTo(provider.connection, payer, mint, payerTokenAta, payer, 1_000_000n);
     const voterAta = await createAccount(provider.connection, payer, mint, voter.publicKey);
     await mintTo(provider.connection, payer, mint, voterAta, payer, 1_000_000_000n);
 
@@ -484,7 +512,7 @@ describe("Full flow", () => {
       .accounts({
         dao: daoPda,
         proposal: proposalPda,
-        authority: payer.publicKey,
+        proposerTokenAccount: payerTokenAta,
         proposer: payer.publicKey,
         systemProgram: SystemProgram.programId,
       })
