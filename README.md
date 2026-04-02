@@ -47,6 +47,7 @@ Quick links:
 - Ranger Main Track memo: `docs/ranger-main-track.md`
 - Ranger Drift Track memo: `docs/ranger-drift-track.md`
 - Live devnet proof: `docs/live-proof.md`
+- Android native app guide: `docs/android-native.md`
 - Investor video package: `docs/investor-video.md`
 - YouTube pitch video: `https://youtu.be/KVNFZXHNZTQ`
 - Repo-native video asset: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
@@ -77,6 +78,46 @@ The installer:
 - creates `.env` from `.env.example` when missing
 - installs Node dependencies
 - prints the next real steps for demo and build
+
+## Android Native App
+
+PrivateDAO now includes a real Android-native app under `apps/android-native/`.
+
+This mobile app is built as an Android-first counterpart of the current project because Solana Mobile Wallet Adapter is the official mobile dApp path for Android today. The stack is:
+
+- Kotlin native
+- Jetpack Compose
+- Solana Mobile Wallet Adapter
+- Devnet by default
+
+What the Android app mirrors from the current product:
+
+- same devnet program ID
+- same proposal phases and lifecycle
+- same PDA derivations
+- same commit-reveal semantics
+- same governance terminology
+- same proof-first positioning for judges and reviewers
+
+Current Android-native mobile support:
+
+- create DAO
+- deposit treasury
+- connect wallet through MWA
+- load DAOs and proposals from devnet
+- inspect proposal details and phase
+- create proposal
+- commit vote
+- reveal vote
+- finalize proposal
+- execute proposal for SOL and token treasury paths
+- view tx signatures and explorer links
+- view awards / credibility surface
+
+Reference:
+
+- Native app root: `apps/android-native/`
+- Android guide: `docs/android-native.md`
 
 ## Live Devnet Proof
 
@@ -190,67 +231,48 @@ This exercises the real lifecycle through Anchor tests, including proposal creat
 
 ## 🧭 System Diagram
 
-```mermaid
-flowchart LR
-  subgraph Users
-    U1[DAO authority]
-    U2[Governance token holder]
-    U3[Operator / evaluator]
-  end
-  subgraph ClientSurface
-    F1[docs/index.html live frontend]
-    F2[scripts/*.ts operator flows]
-    F3[sdk/src/index.ts commitment helpers]
-  end
-  subgraph Program
-    P[programs/private-dao/src/lib.rs]
-  end
-  subgraph Accounts
-    A1[DAO PDA]
-    A2[Proposal PDA]
-    A3[VoteRecord PDA]
-    A4[Treasury PDA]
-    A5[VoterWeightRecord]
-  end
-  subgraph Verification
-    V1[tests/full-flow-test.ts]
-    V2[tests/demo.ts]
-    V3[Solscan tx and account links]
-  end
-  U1 --> F2
-  U2 --> F1
-  U2 --> F2
-  U3 --> F1
-  F1 --> F3
-  F2 --> P
-  F3 --> P
-  P --> A1
-  P --> A2
-  P --> A3
-  P --> A4
-  P --> A5
-  V1 --> P
-  V2 --> P
-  F2 --> V3
+```text
+Users
+  DAO authority
+  Governance token holder
+  Operator / evaluator
+
+Client surface
+  docs/index.html live frontend
+  scripts/*.ts operator flows
+  sdk/src/index.ts commitment helpers
+
+On-chain core
+  programs/private-dao/src/lib.rs
+
+Accounts
+  DAO PDA
+  Proposal PDA
+  VoteRecord PDA
+  Treasury PDA
+  VoterWeightRecord
+
+Verification
+  tests/full-flow-test.ts
+  tests/demo.ts
+  Solscan tx and account links
 ```
 
 ## 🏛️ Account And Execution Diagram
 
-```mermaid
-flowchart TD
-  A[Initialize DAO] --> B[DAO PDA stores authority, mint, quorum, reveal window, execution delay]
-  B --> C[Token holder creates proposal]
-  C --> D[Proposal PDA stores title, status, voting_end, reveal_end, treasury_action]
-  D --> E[commit_vote]
-  E --> F[VoteRecord PDA stores commitment, weight snapshot, keeper, delegation]
-  F --> G[reveal_vote]
-  G --> H[Proposal tallies update on-chain]
-  H --> I[finalize_proposal]
-  I --> J{Passed}
-  J -- No --> K[Failed / Cancelled / Vetoed]
-  J -- Yes --> L[execution_unlocks_at set]
-  L --> M[execute_proposal]
-  M --> N[Treasury action executes with recipient and mint checks]
+```text
+Initialize DAO
+  -> DAO PDA stores authority, governance mint, quorum, reveal window, and execution delay
+  -> token holder creates proposal
+  -> Proposal PDA stores title, status, voting_end, reveal_end, and treasury_action
+  -> commit_vote
+  -> VoteRecord PDA stores commitment, weight snapshot, keeper, and delegation context
+  -> reveal_vote
+  -> proposal tallies update on-chain
+  -> finalize_proposal
+  -> if passed, execution_unlocks_at is set
+  -> execute_proposal
+  -> treasury action executes with recipient and mint checks
 ```
 
 ## 🚀 Mainnet Transition Readiness
@@ -276,16 +298,14 @@ In practical terms, the project is ready for mainnet transition as soon as the o
 
 ## 🔁 Lifecycle Diagram
 
-```mermaid
-flowchart TD
-  A[Initialize DAO] --> B[Create Proposal]
-  B --> C[Commit Vote Hashes]
-  C --> D[Reveal Vote and Salt]
-  D --> E[Finalize Outcome]
-  E --> F{Passed?}
-  F -- No --> G[Failed or Cancelled]
-  F -- Yes --> H[Timelock Window]
-  H --> I[Veto or Execute]
+```text
+Initialize DAO
+  -> Create Proposal
+  -> Commit vote hashes
+  -> Reveal vote and salt
+  -> Finalize outcome
+  -> if passed: timelock window -> veto or execute
+  -> if not passed: failed / cancelled / vetoed terminal states
 ```
 
 ## Why Judges Should Care
