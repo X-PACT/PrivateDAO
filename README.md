@@ -33,12 +33,16 @@ What is real in the current implementation:
 - any wallet holding the DAO governance token can create a proposal
 - commit, reveal, finalize, cancel, veto, and execute are implemented in the program
 - the operator scripts print real transaction signatures and Solscan links for verification
+
+The current stack is already structured for immediate **mainnet transition**. The lifecycle, permissions, execution checks, and operator flows are live on-chain today; moving from devnet to mainnet is an operational deployment step, not a product redesign.
+
 Quick links:
 
 - Live frontend: `https://x-pact.github.io/PrivateDAO/`
 - Awards page: `docs/awards.md`
-- Strategy documentation: `https://us04docs.zoom.us/doc/S56vUFmURMqiWkUVdfSulQ`
+- Strategy documentation: `https://us04docs.zoom.us/doc/24LVGzqDT-K_pqCmS3nqsg`
 - Investor video package: `docs/investor-video.md`
+- Repo-native investor video: `docs/assets/private-dao-investor-pitch.mp4`
 - On-chain program: `programs/private-dao/src/lib.rs`
 - End-to-end lifecycle test: `tests/full-flow-test.ts`
 
@@ -106,13 +110,19 @@ PrivateDAO brings commit-reveal voting, proposal-scoped private delegation, keep
 
 ## 🎬 Investor Video Package
 
-The investor-facing pitch video is being generated from a repo-native package built around the actual protocol, test surface, and award verification.
+The investor-facing pitch video package is now designed to ship in two forms:
 
-- Strategy documentation for judges, partners, and investors: `https://us04docs.zoom.us/doc/S56vUFmURMqiWkUVdfSulQ`
+- a reproducible repo-native MP4 render committed under `docs/assets/`
+- an external cinematic render task for a higher-fidelity cut when the service completes
+
+- Strategy documentation for judges, partners, and investors: `https://us04docs.zoom.us/doc/24LVGzqDT-K_pqCmS3nqsg`
 - Video brief and production package: `docs/investor-video.md`
 - Voiceover script: `docs/video-voiceover.md`
 - Shotlist and visual direction: `docs/video-shotlist.md`
-- Generation task: `https://manus.im/app/kMUHrujYi7Ec8nXqWDSxa9`
+- Local render script: `scripts/render-investor-video.sh`
+- Repo-native rendered asset: `docs/assets/private-dao-investor-pitch.mp4`
+- Repo-native poster: `docs/assets/private-dao-investor-pitch-poster.png`
+- External generation tasks: `https://manus.im/app/kMUHrujYi7Ec8nXqWDSxa9`, `https://manus.im/app/WNFD2RAUyWN5X83jtYdywy`
 
 ## 🧪 Local Demo
 
@@ -128,19 +138,78 @@ This exercises the real lifecycle through Anchor tests, including proposal creat
 
 ```mermaid
 flowchart LR
-  A[DAO Operators] --> B[Scripts and CLI]
-  U[Token Holders] --> C[Docs Frontend]
-  C --> D[SDK Commitment Helpers]
-  B --> E[Anchor Program<br/>programs/private-dao/src/lib.rs]
-  D --> E
-  E --> F[DAO PDA]
-  E --> G[Proposal PDA]
-  E --> H[Vote Record PDA]
-  E --> I[Treasury PDA]
-  E --> J[VoterWeightRecord]
-  K[Realms Migration Helper] --> E
-  L[Test Suites] --> E
+  subgraph Users
+    U1[DAO authority]
+    U2[Governance token holder]
+    U3[Operator / evaluator]
+  end
+  subgraph ClientSurface
+    F1[docs/index.html live frontend]
+    F2[scripts/*.ts operator flows]
+    F3[sdk/src/index.ts commitment helpers]
+  end
+  subgraph Program
+    P[programs/private-dao/src/lib.rs]
+  end
+  subgraph Accounts
+    A1[DAO PDA]
+    A2[Proposal PDA]
+    A3[VoteRecord PDA]
+    A4[Treasury PDA]
+    A5[VoterWeightRecord]
+  end
+  subgraph Verification
+    V1[tests/full-flow-test.ts]
+    V2[tests/demo.ts]
+    V3[Solscan tx and account links]
+  end
+  U1 --> F2
+  U2 --> F1
+  U2 --> F2
+  U3 --> F1
+  F1 --> F3
+  F2 --> P
+  F3 --> P
+  P --> A1
+  P --> A2
+  P --> A3
+  P --> A4
+  P --> A5
+  V1 --> P
+  V2 --> P
+  F2 --> V3
 ```
+
+## 🏛️ Account And Execution Diagram
+
+```mermaid
+flowchart TD
+  A[Initialize DAO] --> B[DAO PDA stores authority, mint, quorum, reveal window, execution delay]
+  B --> C[Token holder creates proposal]
+  C --> D[Proposal PDA stores title, status, voting_end, reveal_end, treasury_action]
+  D --> E[commit_vote]
+  E --> F[VoteRecord PDA stores commitment, weight snapshot, keeper, delegation]
+  F --> G[reveal_vote]
+  G --> H[Proposal tallies update on-chain]
+  H --> I[finalize_proposal]
+  I --> J{Passed}
+  J -- No --> K[Failed / Cancelled / Vetoed]
+  J -- Yes --> L[execution_unlocks_at set]
+  L --> M[execute_proposal]
+  M --> N[Treasury action executes with recipient and mint checks]
+```
+
+## 🚀 Mainnet Transition Readiness
+
+PrivateDAO is already built around a real on-chain lifecycle, which means the mainnet move is straightforward in architecture terms:
+
+- the program logic is not mocked and already enforces commit, reveal, finalize, veto, and execute
+- proposal creation is already permissioned by real governance token ownership
+- execution is already timelocked and checked on-chain
+- the frontend and scripts already read and operate against real program state
+- the repository already contains the proof surface expected before a mainnet cutover: tests, docs, scripts, and explorer-oriented outputs
+
+In practical terms, the project is ready for mainnet transition as soon as the operator chooses the production deployment path and standard release controls.
 
 ## 🧩 Project Surface Map
 
