@@ -33,7 +33,6 @@ What is real in the current implementation:
 - any wallet holding the DAO governance token can create a proposal
 - commit, reveal, finalize, cancel, veto, and execute are implemented in the program
 - the operator scripts print real transaction signatures and Solscan links for verification
-
 Quick links:
 
 - Live frontend: `https://x-pact.github.io/PrivateDAO/`
@@ -57,7 +56,6 @@ The installer:
 - creates `.env` from `.env.example` when missing
 - installs Node dependencies
 - prints the next real steps for demo and build
-
 ## 🏆 Awards & Recognition
 
 PrivateDAO-related engineering work has been recognized in competitive Solana development challenges.
