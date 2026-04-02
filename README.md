@@ -117,6 +117,7 @@ Quick links:
 - Competition readiness: `docs/competition-readiness.md`
 - Audit packet: `docs/audit-packet.generated.md`
 - Review attestation: `docs/review-attestation.generated.json`
+- Verification gates: `docs/verification-gates.md`
 - Judge technical audit note: `docs/judge-technical-audit.md`
 - Security review surface: `docs/security-review.md`
 - Mainnet readiness note: `docs/mainnet-readiness.md`
@@ -329,6 +330,7 @@ Protocol and product documents:
 - `docs/competition-readiness.md`
 - `docs/audit-packet.generated.md`
 - `docs/review-attestation.generated.json`
+- `docs/verification-gates.md`
 - `docs/use-cases.md`
 - `docs/economic-model.md`
 

@@ -61,6 +61,9 @@ function main() {
     "npm run verify:release-manifest",
     "npm run verify:review-links",
     "npm run verify:ops-surface",
+    "npm run verify:submission-registry",
+    "npm run verify:registry-consistency",
+    "npm run verify:generated-artifacts",
     "npm run verify:review-surface",
     "npm run verify:all",
   ];

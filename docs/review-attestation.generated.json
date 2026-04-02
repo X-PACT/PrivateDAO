@@ -23,9 +23,9 @@
     "strategy": 6,
     "security": 5,
     "proof": 4,
-    "operations": 8
+    "operations": 9
   },
-  "gateCount": 8,
+  "gateCount": 11,
   "statuses": {
     "governanceLifecycle": "verified",
     "securityReasoning": "verified",

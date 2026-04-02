@@ -36,6 +36,7 @@
       "docs/production-operations.md",
       "docs/monitoring-alerts.md",
       "docs/incident-response.md",
+      "docs/verification-gates.md",
       "docs/mainnet-cutover-runbook.md",
       "docs/operator-checklist.md",
       "docs/risk-register.md",
@@ -49,6 +50,9 @@
     "npm run verify:release-manifest",
     "npm run verify:review-links",
     "npm run verify:ops-surface",
+    "npm run verify:submission-registry",
+    "npm run verify:registry-consistency",
+    "npm run verify:generated-artifacts",
     "npm run verify:review-surface",
     "npm run verify:all"
   ],
