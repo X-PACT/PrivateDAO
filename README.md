@@ -1,4 +1,8 @@
 <!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
+![Award](https://img.shields.io/badge/Award-1st%20Place%20Superteam%20Earn-gold)
+![Solana](https://img.shields.io/badge/Built%20on-Solana-purple)
+![Category](https://img.shields.io/badge/Category-Backend%20Systems-blue)
+
 # PrivateDAO
 
 <p align="center">
@@ -22,11 +26,80 @@ PrivateDAO is a Solana governance protocol for DAOs that want private voting wit
 
 The problem statement is simple and easy for judges to verify: public live tallies create whale pressure, vote buying, and treasury signaling. PrivateDAO removes live vote visibility while keeping the rest of the governance lifecycle inspectable, testable, and compatible with how Solana teams actually operate.
 
+## 🏆 Awards & Recognition
+
+PrivateDAO-related engineering work has been recognized in competitive Solana development challenges.
+
+### 🥇 1st Place — Superteam Earn
+
+- **Challenge:** Rebuild production backend systems as on-chain Rust programs
+- **Position:** 1st Place
+- **Platform:** Superteam Poland
+- **Date:** March 2026
+
+**Summary:**
+
+This achievement recognizes the successful implementation of production-grade backend architecture using Solana Rust programs.
+
+The system demonstrates:
+
+- State-based architecture modeling
+- Permission and execution logic
+- Distributed system design patterns
+- Real-world backend workflow translation
+
+#### 🔗 Reference
+
+- Platform: https://earn.superteam.fun
+- Repository: https://github.com/X-PACT/PrivateDAO
+- Demo: https://x-pact.github.io/PrivateDAO/
+
 GitHub Pages source: `docs/` via `.github/workflows/pages.yml`.
 
 ## One-Line Pitch
 
 PrivateDAO brings commit-reveal voting, proposal-scoped private delegation, keeper-assisted reveal, and timelocked treasury execution to Solana DAOs in one working stack.
+
+## 🧭 System Diagram
+
+```mermaid
+flowchart LR
+  A[DAO Operators] --> B[Scripts and CLI]
+  U[Token Holders] --> C[Docs Frontend]
+  C --> D[SDK Commitment Helpers]
+  B --> E[Anchor Program<br/>programs/private-dao/src/lib.rs]
+  D --> E
+  E --> F[DAO PDA]
+  E --> G[Proposal PDA]
+  E --> H[Vote Record PDA]
+  E --> I[Treasury PDA]
+  E --> J[VoterWeightRecord]
+  K[Realms Migration Helper] --> E
+  L[Test Suites] --> E
+```
+
+## 🧩 Project Surface Map
+
+- 🦀 `programs/private-dao/src/lib.rs`: the on-chain source of truth for DAO initialization, proposal lifecycle, commit-reveal voting, timelock, veto, treasury execution, delegation, keeper reveal, and Realms-oriented migration.
+- 📦 `sdk/src/index.ts`: shared commitment utilities for generating salts, encoding vote envelopes, and matching the on-chain `sha256(vote || salt || pubkey)` flow.
+- 🛠️ `scripts/`: operator workflows for DAO creation, proposal creation, deposit, delegation, commit, reveal, finalize, execute, and migration.
+- 🧪 `tests/private-dao.ts`, `tests/full-flow-test.ts`, `tests/demo.ts`: behavioral coverage for the governance lifecycle, treasury execution, and walkthrough-grade demonstrations.
+- 🌐 `docs/index.html`: the live GitHub Pages frontend that explains the protocol, surfaces proposal state, and now exposes awards and recognition content.
+- 🔄 `migrations/migrate-realms-dao.ts`: migration entry point for DAOs preserving Realms provenance while moving into PrivateDAO.
+
+## 🔁 Lifecycle Diagram
+
+```mermaid
+flowchart TD
+  A[Initialize DAO] --> B[Create Proposal]
+  B --> C[Commit Vote Hashes]
+  C --> D[Reveal Vote and Salt]
+  D --> E[Finalize Outcome]
+  E --> F{Passed?}
+  F -- No --> G[Failed or Cancelled]
+  F -- Yes --> H[Timelock Window]
+  H --> I[Veto or Execute]
+```
 
 ## Why Judges Should Care
 
