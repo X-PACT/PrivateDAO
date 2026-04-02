@@ -42,6 +42,21 @@ Quick links:
 - On-chain program: `programs/private-dao/src/lib.rs`
 - End-to-end lifecycle test: `tests/full-flow-test.ts`
 
+## ⚡ One-Line Install
+
+Bootstrap the repository with a single command:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/X-PACT/PrivateDAO/main/scripts/install.sh | bash
+```
+
+The installer:
+
+- checks required tools
+- creates `.env` from `.env.example` when missing
+- installs Node dependencies
+- prints the next real steps for demo and build
+
 ## 🏆 Awards & Recognition
 
 PrivateDAO-related engineering work has been recognized in competitive Solana development challenges.
@@ -55,7 +70,7 @@ PrivateDAO-related engineering work has been recognized in competitive Solana de
 
 **Summary:**
 
-This achievement recognizes the successful implementation of production-grade backend architecture using Solana Rust programs.
+This achievement recognizes 1st Place in the challenge **"Rebuild production backend systems as on-chain Rust programs"** on Superteam Poland.
 
 The system demonstrates:
 
@@ -70,6 +85,19 @@ The system demonstrates:
 - Repository: https://github.com/X-PACT/PrivateDAO
 - Demo: https://x-pact.github.io/PrivateDAO/
 - Award note: `docs/awards.md`
+
+## On-Chain Execute Surface
+
+The win documentation is separate from governance execution.
+
+- The award section documents only the verified 1st Place result.
+- The `Execute` button belongs to proposal lifecycle handling and appears only when a proposal is executable on-chain after finalize plus timelock expiry.
+- The frontend maps the button to the repo execution flow instead of pretending execution is a decorative UI action.
+- The operator command is:
+
+```bash
+yarn execute -- --proposal <PROPOSAL_PUBKEY>
+```
 
 GitHub Pages source: `docs/` via `.github/workflows/pages.yml`.
 
@@ -203,15 +231,21 @@ Quick review links:
 - Demo talk track: `DEMO_SCRIPT_90S.md`
 - Outreach copy: `OUTREACH_MESSAGE.md`
 
-## Contact And Outreach
+## Ownership And Contact
+
+PrivateDAO is independently built and maintained by **Fahd Kotb**.
+
+Professional contact channels:
 
 - Primary email: [fahd.kotb@tuta.io](mailto:fahd.kotb@tuta.io)
 - Secondary email: [i.kotb@proton.me](mailto:i.kotb@proton.me)
-- Backup email: [eslamkotb.fmt@gmail.com](mailto:eslamkotb.fmt@gmail.com)
-- WhatsApp: [Direct chat](https://wa.me/201124030209)
+- Operations email: [eslamkotb.fmt@gmail.com](mailto:eslamkotb.fmt@gmail.com)
+- Additional contact: [eslamkotb.369@gmail.com](mailto:eslamkotb.369@gmail.com)
+- WhatsApp: [+20 112 403 0209](https://wa.me/201124030209)
+- WhatsApp backup: [+20 107 000 4967](https://wa.me/201070004967)
+- X: [@FahdX369](https://x.com/FahdX369)
+- Telegram: [@Fahdkotb](https://t.me/Fahdkotb)
 - Outreach pack: `OUTREACH_MESSAGE.md`
-
-A Discord direct link can be added as soon as a valid Discord invite link, username, or user ID is available.
 
 ## Submission Assets
 

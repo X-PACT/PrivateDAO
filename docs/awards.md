@@ -8,7 +8,7 @@
 
 ### Overview
 
-This recognition highlights strong backend engineering principles implemented using Solana Rust programs.
+This recognition documents 1st Place in the challenge **"Rebuild production backend systems as on-chain Rust programs"** on Superteam Poland.
 
 The work demonstrates:
 
@@ -23,3 +23,16 @@ The work demonstrates:
 - Live demo: https://x-pact.github.io/PrivateDAO/
 - Program source: `programs/private-dao/src/lib.rs`
 - Full lifecycle test: `tests/full-flow-test.ts`
+
+## Ownership And Contact
+
+PrivateDAO is independently built and maintained by **Fahd Kotb**.
+
+- Primary email: [fahd.kotb@tuta.io](mailto:fahd.kotb@tuta.io)
+- Secondary email: [i.kotb@proton.me](mailto:i.kotb@proton.me)
+- Operations email: [eslamkotb.fmt@gmail.com](mailto:eslamkotb.fmt@gmail.com)
+- Additional contact: [eslamkotb.369@gmail.com](mailto:eslamkotb.369@gmail.com)
+- WhatsApp: [+20 112 403 0209](https://wa.me/201124030209)
+- WhatsApp backup: [+20 107 000 4967](https://wa.me/201070004967)
+- X: [@FahdX369](https://x.com/FahdX369)
+- Telegram: [@Fahdkotb](https://t.me/Fahdkotb)
