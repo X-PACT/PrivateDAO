@@ -114,6 +114,18 @@ Current Android-native mobile support:
 - view tx signatures and explorer links
 - view awards / credibility surface
 
+Android-native system diagram:
+
+```text
+Android wallet user
+  -> Compose UI
+  -> PrivateDaoViewModel
+  -> PrivateDaoRepository
+  -> Mobile Wallet Adapter
+  -> Solana devnet RPC + PrivateDAO program
+  -> tx signature + explorer link back to the app
+```
+
 Reference:
 
 - Native app root: `apps/android-native/`
