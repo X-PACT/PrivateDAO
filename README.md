@@ -47,6 +47,7 @@ Quick links:
 - Ranger Main Track memo: `docs/ranger-main-track.md`
 - Ranger Drift Track memo: `docs/ranger-drift-track.md`
 - Live devnet proof: `docs/live-proof.md`
+- Android native app guide: `docs/android-native.md`
 - Investor video package: `docs/investor-video.md`
 - YouTube pitch video: `https://youtu.be/KVNFZXHNZTQ`
 - Repo-native video asset: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
@@ -77,6 +78,44 @@ The installer:
 - creates `.env` from `.env.example` when missing
 - installs Node dependencies
 - prints the next real steps for demo and build
+
+## Android Native App
+
+PrivateDAO now includes a real Android-native app under `apps/android-native/`.
+
+This mobile app is built as an Android-first counterpart of the current project because Solana Mobile Wallet Adapter is the official mobile dApp path for Android today. The stack is:
+
+- Kotlin native
+- Jetpack Compose
+- Solana Mobile Wallet Adapter
+- Devnet by default
+
+What the Android app mirrors from the current product:
+
+- same devnet program ID
+- same proposal phases and lifecycle
+- same PDA derivations
+- same commit-reveal semantics
+- same governance terminology
+- same proof-first positioning for judges and reviewers
+
+Current Android-native mobile support:
+
+- connect wallet through MWA
+- load DAOs and proposals from devnet
+- inspect proposal details and phase
+- create proposal
+- commit vote
+- reveal vote
+- finalize proposal
+- execute proposal for supported treasury paths
+- view tx signatures and explorer links
+- view awards / credibility surface
+
+Reference:
+
+- Native app root: `apps/android-native/`
+- Android guide: `docs/android-native.md`
 
 ## Live Devnet Proof
 
