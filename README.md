@@ -115,6 +115,7 @@ Quick links:
 - Production operations: `docs/production-operations.md`
 - Monitoring and alerts: `docs/monitoring-alerts.md`
 - Incident response: `docs/incident-response.md`
+- Reviewer surface map: `docs/reviewer-surface-map.md`
 - Competition roadmap: `docs/competition-roadmap.md`
 - Ranger Main Track memo: `docs/ranger-main-track.md`
 - Ranger Drift Track memo: `docs/ranger-drift-track.md`
@@ -198,6 +199,12 @@ Release-manifest gate:
 npm run verify:release-manifest
 ```
 
+Review-link gate:
+
+```bash
+npm run verify:review-links
+```
+
 ## Threat Coverage
 
 Reviewer-visible coverage currently includes:
@@ -244,6 +251,7 @@ Security and review documents:
 - `docs/production-operations.md`
 - `docs/monitoring-alerts.md`
 - `docs/incident-response.md`
+- `docs/reviewer-surface-map.md`
 - `docs/independent-verification.md`
 - `docs/attack-simulation-log.md`
 - `docs/devnet-release-manifest.md`

@@ -70,4 +70,7 @@ npx ts-node scripts/verify-live-proof.ts >/dev/null
 echo "[review-surface] checking release manifest consistency"
 npx ts-node scripts/verify-release-manifest.ts >/dev/null
 
+echo "[review-surface] checking review-link consistency"
+npx ts-node scripts/verify-review-links.ts >/dev/null
+
 echo "[review-surface] PASS"
