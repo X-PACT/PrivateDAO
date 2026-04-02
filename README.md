@@ -52,6 +52,7 @@ Quick links:
 - Ranger strategy config sample: `docs/ranger-strategy-config.sample.json`
 - Ranger risk policy: `docs/risk-policy.md`
 - Judge technical audit note: `docs/judge-technical-audit.md`
+- Mainnet readiness note: `docs/mainnet-readiness.md`
 - Competition roadmap: `docs/competition-roadmap.md`
 - Ranger Main Track memo: `docs/ranger-main-track.md`
 - Ranger Drift Track memo: `docs/ranger-drift-track.md`
@@ -105,6 +106,12 @@ Bundle generator:
 
 ```bash
 npm run build:ranger-submission -- docs/ranger-strategy-config.sample.json docs/ranger-submission-bundle.generated.md
+```
+
+Mainnet gate:
+
+```bash
+npm run check:mainnet
 ```
 
 ## ⚡ One-Line Install

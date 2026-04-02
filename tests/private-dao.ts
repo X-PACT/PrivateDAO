@@ -212,6 +212,45 @@ describe("PrivateDAO", () => {
     console.log("  ✓ 3 votes committed — tally: YES=0 / NO=0 (hidden)");
   });
 
+  it("rejects commit from a zero-balance governance account", async () => {
+    const zeroVoter = Keypair.generate();
+    const tx = new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: authority.publicKey,
+        toPubkey: zeroVoter.publicKey,
+        lamports: Math.round(0.005 * LAMPORTS_PER_SOL),
+      }),
+    );
+    await provider.sendAndConfirm(tx, []);
+
+    const zeroAta = await createAccount(provider.connection, authority.payer, governanceMint, zeroVoter.publicKey);
+    const [zeroVotePda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), proposalPda.toBuffer(), zeroVoter.publicKey.toBuffer()],
+      program.programId,
+    );
+
+    try {
+      await program.methods
+        .commitVote([...computeCommitment(true, randomSalt(), zeroVoter.publicKey)], null)
+        .accounts({
+          dao: daoPda,
+          proposal: proposalPda,
+          voterRecord: zeroVotePda,
+          voterTokenAccount: zeroAta,
+          voter: zeroVoter.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .signers([zeroVoter])
+        .rpc();
+      assert.fail("Should have rejected zero-balance commit");
+    } catch (err: any) {
+      const msg = err.toString();
+      assert.include(msg, "InsufficientTokens");
+      console.log("  ✓ zero-balance commit rejected");
+    }
+  });
+
   it("rejects double-commit", async () => {
     const [vrPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("vote"), proposalPda.toBuffer(), voter1.publicKey.toBuffer()],
@@ -289,6 +328,33 @@ describe("PrivateDAO", () => {
     const p = await program.account["proposal"].fetch(cancelPda);
     assert.isTrue("cancelled" in p.status, "status should be cancelled");
     console.log("  ✓ proposal cancelled successfully");
+  });
+
+  it("rejects zero-value treasury deposit", async () => {
+    const [treasuryPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("treasury"), daoPda.toBuffer()],
+      program.programId,
+    );
+
+    try {
+      await program.methods
+        .depositTreasury(new BN(0))
+        .accounts({
+          dao: daoPda,
+          treasury: treasuryPda,
+          depositor: authority.publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("Should have rejected zero-value deposit");
+    } catch (err: any) {
+      const msg = err.toString();
+      assert.isTrue(
+        msg.includes("InvalidTreasuryAction") || msg.includes("custom program error"),
+        `unexpected error: ${msg}`,
+      );
+      console.log("  ✓ zero-value treasury deposit rejected");
+    }
   });
 
   it("rejects self-delegation", async () => {
