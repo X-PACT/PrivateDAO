@@ -2653,6 +2653,10 @@ execute() → CPI
         </select>
       </div>
       <div>
+        <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">VOTER TARGET</label>
+        <input id="revealVoterInput" type="text" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Leave empty to reveal for connected wallet">
+      </div>
+      <div>
         <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">SALT (HEX)</label>
         <input id="revealSaltInput" type="text" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="32-byte salt in hex">
       </div>
@@ -2887,7 +2891,10 @@ function updateCommitCommandBuilder() {
 
 function updateRevealCommandBuilder() {
   const proposal = currentSelectedProposalPubkey || '<PROPOSAL_PUBKEY>';
-  const command = `yarn reveal -- --proposal ${proposal}`;
+  const voter = (document.getElementById('revealVoterInput')?.value || '').trim();
+  const command = voter
+    ? `yarn reveal -- --proposal ${proposal} --voter ${voter}`
+    : `yarn reveal -- --proposal ${proposal}`;
   const el = document.getElementById('revealCommandBuilder');
   if (el) el.textContent = command;
 }
@@ -3307,7 +3314,7 @@ async function commitSelectedVoteInWallet() {
   return signAndBroadcastTransaction(ix, 'Commit submitted');
 }
 
-async function revealSelectedVoteInWallet(vote, saltHex) {
+async function revealSelectedVoteInWallet(vote, saltHex, voterTarget = null) {
   if (!currentSelectedProposal || !wallet) {
     throw new Error('Choose a live proposal first');
   }
@@ -3315,7 +3322,8 @@ async function revealSelectedVoteInWallet(vote, saltHex) {
   if (saltBytes.length !== 32) {
     throw new Error('Reveal salt must be exactly 32 bytes in hex');
   }
-  const voterRecordPk = deriveVoteRecordPda(currentSelectedProposal.pubkey, wallet);
+  const targetVoter = voterTarget ? new solanaWeb3.PublicKey(voterTarget).toBase58() : wallet;
+  const voterRecordPk = deriveVoteRecordPda(currentSelectedProposal.pubkey, targetVoter);
   const data = concatBytes(
     await anchorMethodDiscriminator('reveal_vote'),
     new Uint8Array([vote ? 1 : 0]),
@@ -3527,9 +3535,33 @@ async function loadProposalHistory(p) {
       return sigInfo.err ? 'Failed Transaction' : 'Proposal Activity';
     }
 
+    function inferActionDetails(parsed, actionLabel) {
+      const keys = parsed?.transaction?.message?.accountKeys || [];
+      const signerKeys = keys.filter(k => k.signer).map(k => k.pubkey.toBase58 ? k.pubkey.toBase58() : String(k.pubkey));
+      const writableKeys = keys.filter(k => k.writable).map(k => k.pubkey.toBase58 ? k.pubkey.toBase58() : String(k.pubkey));
+      const actor = signerKeys[0] || 'unknown';
+      const pieces = [`Actor: ${actor}`];
+
+      if (actionLabel === 'Execute Proposal' && p.treasuryAction) {
+        pieces.push(`Recipient: ${p.treasuryAction.recipient}`);
+        pieces.push(`Amount: ${p.treasuryAction.amountLamports} lamports`);
+      } else if (actionLabel === 'Create Proposal') {
+        pieces.push(`Proposer: ${p.proposer}`);
+      } else if (actionLabel === 'Delegate Vote') {
+        const delegatee = writableKeys.find(key => key !== p.pubkey && key !== p.dao);
+        if (delegatee) pieces.push(`Touched account: ${delegatee}`);
+      }
+
+      if (writableKeys.length) {
+        pieces.push(`Writable: ${writableKeys.slice(0, 3).join(' · ')}`);
+      }
+      return pieces.join('<br>');
+    }
+
     historyGrid.innerHTML = signatures.map((sig, idx) => {
       const parsed = parsedTransactions[idx];
       const actionLabel = inferActionLabel(parsed, sig);
+      const detailLines = inferActionDetails(parsed, actionLabel);
       const fee = parsed?.meta?.fee;
       const status = sig.err ? 'error' : (sig.confirmationStatus || 'confirmed');
       return `
@@ -3539,6 +3571,7 @@ async function loadProposalHistory(p) {
           ${sig.blockTime ? formatUtc(sig.blockTime) : 'Timestamp unavailable'}<br>
           Status: ${status}<br>
           ${fee !== undefined ? `Fee: ${fee} lamports<br>` : ''}
+          ${detailLines}<br>
           Signature: ${sig.signature}
         </div>
         <div style="margin-top:12px"><a class="award-link" href="https://solscan.io/tx/${sig.signature}?cluster=devnet" target="_blank">Open Transaction</a></div>
@@ -4117,11 +4150,13 @@ function openRevealModal(id, proposalPubkey = null) {
     ? 'Choose a live proposal'
     : `PROP-${String(currentProposalId).padStart(3, '0')}`;
   document.getElementById('revealCommandHint').textContent = currentProposalId === null
-    ? 'Use the same vote and salt originally generated at commit time when submitting reveal from the wallet or running the reveal script.'
-    : `Submit reveal from the connected wallet or run scripts/reveal-vote.ts for PROP-${String(currentProposalId).padStart(3, '0')} using the original vote choice and saved salt.`;
+    ? 'Use the same vote and salt originally generated at commit time when submitting reveal from the wallet or running the reveal script. Keepers can set a different voter target below.'
+    : `Submit reveal from the connected wallet or run scripts/reveal-vote.ts for PROP-${String(currentProposalId).padStart(3, '0')} using the original vote choice and saved salt. Keepers can target another voter record when authorized.`;
   const revealVoteInput = document.getElementById('revealVoteInput');
+  const revealVoterInput = document.getElementById('revealVoterInput');
   const revealSaltInput = document.getElementById('revealSaltInput');
   if (revealVoteInput && selectedVote) revealVoteInput.value = selectedVote;
+  if (revealVoterInput && !revealVoterInput.value.trim() && wallet) revealVoterInput.value = wallet;
   if (revealSaltInput && currentCommitSaltHex && !revealSaltInput.value.trim()) revealSaltInput.value = currentCommitSaltHex;
   updateRevealCommandBuilder();
   document.getElementById('revealModal').classList.add('open');
@@ -4205,13 +4240,14 @@ async function submitVote() {
 
 async function submitReveal() {
   const revealVote = (document.getElementById('revealVoteInput')?.value || 'yes').trim().toLowerCase() === 'yes';
+  const revealVoter = (document.getElementById('revealVoterInput')?.value || '').trim();
   const saltHex = (document.getElementById('revealSaltInput')?.value || '').trim();
   if (!saltHex) {
     showToast('Enter the original commit salt in hex.', 'error');
     return;
   }
   try {
-    await revealSelectedVoteInWallet(revealVote, saltHex);
+    await revealSelectedVoteInWallet(revealVote, saltHex, revealVoter || null);
     closeModal('revealModal');
   } catch (error) {
     console.error(error);
