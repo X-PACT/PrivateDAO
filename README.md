@@ -8,10 +8,13 @@
 </p>
 
 [![Live Frontend](https://img.shields.io/badge/Live%20Frontend-Open-00e5ff?logo=solana)](https://x-pact.github.io/PrivateDAO/)
+[![Web Surface](https://img.shields.io/badge/Web-Live%20Governance%20Surface-0ea5e9)](https://x-pact.github.io/PrivateDAO/)
+[![Android Native](https://img.shields.io/badge/Android-Kotlin%20Native-7c3aed)](docs/android-native.md)
+[![Mobile Wallet](https://img.shields.io/badge/Mobile-MWA%20Ready-22c55e)](docs/android-native.md)
 [![Award](https://img.shields.io/badge/Award-1st%20Place%20Superteam%20Earn-gold)](docs/awards.md)
 [![Built on](https://img.shields.io/badge/Built%20on-Solana-purple)](https://solana.com)
 [![Category](https://img.shields.io/badge/Category-Backend%20Systems-blue)](docs/awards.md)
-[![Frontend](https://img.shields.io/badge/Frontend-docs%2Findex.html-0b7285)](docs/index.html)
+[![Frontend](https://img.shields.io/badge/Web%20Frontend-docs%2Findex.html-0b7285)](docs/index.html)
 [![CI](https://img.shields.io/github/actions/workflow/status/X-PACT/PrivateDAO/ci.yml?branch=main&label=CI)](https://github.com/X-PACT/PrivateDAO/actions/workflows/ci.yml)
 [![Solana](https://img.shields.io/badge/Solana-Devnet-14F195)](https://solana.com)
 [![Anchor](https://img.shields.io/badge/Anchor-0.31.1-blue)](https://www.anchor-lang.com)
@@ -40,6 +43,7 @@ Quick links:
 - Live frontend: `https://x-pact.github.io/PrivateDAO/`
 - Proof Center: `https://x-pact.github.io/PrivateDAO/?page=proof`
 - Judge Mode: `https://x-pact.github.io/PrivateDAO/?page=proof&judge=1`
+- Android native guide: `docs/android-native.md`
 - Awards page: `docs/awards.md`
 - Strategy documentation: `https://us04docs.zoom.us/doc/Zd34HEaHSKyZGRxBcqxXQg`
 - Repo strategy note: `docs/strategy.md`
@@ -47,7 +51,6 @@ Quick links:
 - Ranger Main Track memo: `docs/ranger-main-track.md`
 - Ranger Drift Track memo: `docs/ranger-drift-track.md`
 - Live devnet proof: `docs/live-proof.md`
-- Android native app guide: `docs/android-native.md`
 - Investor video package: `docs/investor-video.md`
 - YouTube pitch video: `https://youtu.be/KVNFZXHNZTQ`
 - Repo-native video asset: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
