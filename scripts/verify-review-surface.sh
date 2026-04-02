@@ -18,6 +18,7 @@ required_files=(
   "docs/attack-simulation-log.md"
   "docs/live-proof.md"
   "docs/devnet-release-manifest.md"
+  "docs/proof-registry.json"
   "docs/mainnet-readiness.md"
   "docs/ranger-strategy-documentation.md"
   "docs/ranger-submission-bundle.generated.md"

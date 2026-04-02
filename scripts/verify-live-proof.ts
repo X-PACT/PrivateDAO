@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { loadProofRegistry } from "./lib/proof-registry";
 
 const LIVE_PROOF = path.resolve("docs/live-proof.md");
 const DEVNET_CONFIG = path.resolve("docs/ranger-strategy-config.devnet.json");
@@ -15,13 +16,15 @@ type StrategyConfig = {
 function main() {
   const liveProof = fs.readFileSync(LIVE_PROOF, "utf8");
   const config = JSON.parse(fs.readFileSync(DEVNET_CONFIG, "utf8")) as StrategyConfig;
+  const registry = loadProofRegistry();
 
-  assertContains(liveProof, "Program ID: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`", "missing live program id");
-  assertContains(liveProof, "- DAO: `Gj7NgKm1MtB2CDs11pPJDcLExrkHf1styKdge1Lgx7V4`", "missing live DAO address");
-  assertContains(liveProof, "- Treasury PDA: `S2J1gNCbE8E21pL3VEX4fhz2duxidSwRd7yaV9nriFW`", "missing live treasury PDA");
-  assertContains(liveProof, "- Proposal PDA: `8JLRaAnwZc3BXfHKEKdiaK82MyjR1VhgGRKMydqmHxd1`", "missing live proposal PDA");
+  assertContains(liveProof, `Program ID: \`${registry.programId}\``, "missing live program id");
+  assertContains(liveProof, `- DAO: \`${registry.dao}\``, "missing live DAO address");
+  assertContains(liveProof, `- Governance mint: \`${registry.governanceMint}\``, "missing live governance mint");
+  assertContains(liveProof, `- Treasury PDA: \`${registry.treasury}\``, "missing live treasury PDA");
+  assertContains(liveProof, `- Proposal PDA: \`${registry.proposal}\``, "missing live proposal PDA");
 
-  for (const label of ["create-dao", "mint-voting", "deposit", "create-proposal", "commit", "reveal", "finalize", "execute"]) {
+  for (const label of Object.keys(registry.transactions)) {
     assertContains(liveProof, `- \`${label}\``, `missing transaction label: ${label}`);
   }
 
@@ -33,7 +36,7 @@ function main() {
     throw new Error("devnet strategy config is missing the verification address");
   }
 
-  if (verificationAddress !== "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD") {
+  if (verificationAddress !== registry.verificationWallet) {
     throw new Error(`unexpected verification address in devnet config: ${verificationAddress}`);
   }
 

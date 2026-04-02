@@ -121,6 +121,7 @@ Quick links:
 - Ranger Drift Track memo: `docs/ranger-drift-track.md`
 - Live devnet proof: `docs/live-proof.md`
 - Devnet release manifest: `docs/devnet-release-manifest.md`
+- Proof registry: `docs/proof-registry.json`
 - Investor video package: `docs/investor-video.md`
 - YouTube pitch video: `https://youtu.be/KVNFZXHNZTQ`
 - Repo-native video asset: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
@@ -255,6 +256,7 @@ Security and review documents:
 - `docs/independent-verification.md`
 - `docs/attack-simulation-log.md`
 - `docs/devnet-release-manifest.md`
+- `docs/proof-registry.json`
 
 Protocol and product documents:
 
