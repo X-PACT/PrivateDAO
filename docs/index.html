@@ -3494,6 +3494,11 @@ async function commitSelectedVoteInWallet() {
   if (!voterTokenInfo) {
     throw new Error('Governance token account was not found for the connected wallet');
   }
+  const delegationPk = deriveDelegationPda(currentSelectedProposal.pubkey, wallet);
+  const existingDelegation = await connection.getAccountInfo(delegationPk, 'confirmed');
+  if (existingDelegation) {
+    throw new Error('This wallet already delegated voting weight for the selected proposal. Direct commit is blocked to avoid overlap.');
+  }
 
   const voterRecordPk = deriveVoteRecordPda(currentSelectedProposal.pubkey, wallet);
   const data = concatBytes(
@@ -3618,6 +3623,11 @@ async function submitDelegateVoteInWallet() {
     if (!delegatorTokenInfo) {
       throw new Error('Governance token account was not found for the connected wallet');
     }
+    const directVoteRecordPk = deriveVoteRecordPda(proposalPubkey, wallet);
+    const directVoteRecord = await connection.getAccountInfo(directVoteRecordPk, 'confirmed');
+    if (directVoteRecord) {
+      throw new Error('This wallet already has a direct vote record for the selected proposal. Delegation is blocked to avoid overlap.');
+    }
     const delegationPk = deriveDelegationPda(proposalPubkey, wallet);
     const data = concatBytes(
       await anchorMethodDiscriminator('delegate_vote'),
@@ -3658,6 +3668,11 @@ async function submitDelegatedCommitInWallet() {
     const delegateeTokenInfo = await connection.getAccountInfo(delegateeTokenAccount, 'confirmed');
     if (!delegateeTokenInfo) {
       throw new Error('Governance token account was not found for the connected wallet');
+    }
+    const delegatorDirectVoteRecordPk = deriveVoteRecordPda(currentSelectedProposal.pubkey, delegatorPubkey);
+    const delegatorDirectVoteRecord = await connection.getAccountInfo(delegatorDirectVoteRecordPk, 'confirmed');
+    if (delegatorDirectVoteRecord) {
+      throw new Error('The delegator already has a direct vote record for the selected proposal. Delegated commit is blocked to avoid overlap.');
     }
     const delegationPk = deriveDelegationPda(currentSelectedProposal.pubkey, delegatorPubkey);
     const voterRecordPk = deriveVoteRecordPda(currentSelectedProposal.pubkey, wallet);

@@ -18,6 +18,7 @@ PrivateDAO already has:
 - no zero-value treasury deposit noise
 - invalid treasury wiring rejected
 - timelock and veto behavior validated
+- operator and frontend surfaces block direct-commit/delegation overlap for the same proposal
 
 ### Release discipline
 

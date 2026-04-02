@@ -39,6 +39,7 @@
 - vote weight is snapshotted at commit time
 - reveal must match the stored commitment
 - delegated paths are proposal-scoped, not generic
+- operator-facing surfaces now block direct-commit/delegation overlap for the same proposal
 
 ### Product proof surface
 
