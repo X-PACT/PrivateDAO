@@ -113,6 +113,8 @@ Quick links:
 - Security review surface: `docs/security-review.md`
 - Mainnet readiness note: `docs/mainnet-readiness.md`
 - Production operations: `docs/production-operations.md`
+- Monitoring and alerts: `docs/monitoring-alerts.md`
+- Incident response: `docs/incident-response.md`
 - Competition roadmap: `docs/competition-roadmap.md`
 - Ranger Main Track memo: `docs/ranger-main-track.md`
 - Ranger Drift Track memo: `docs/ranger-drift-track.md`
@@ -183,6 +185,12 @@ Review-surface gate:
 npm run verify:review-surface
 ```
 
+Live-proof gate:
+
+```bash
+npm run verify:live-proof
+```
+
 ## Threat Coverage
 
 Reviewer-visible coverage currently includes:
@@ -227,6 +235,8 @@ Security and review documents:
 - `docs/judge-technical-audit.md`
 - `docs/mainnet-readiness.md`
 - `docs/production-operations.md`
+- `docs/monitoring-alerts.md`
+- `docs/incident-response.md`
 - `docs/independent-verification.md`
 - `docs/attack-simulation-log.md`
 

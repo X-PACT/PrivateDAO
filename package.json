@@ -25,6 +25,7 @@
     "live-proof":        "ts-node scripts/live-devnet-proof.ts",
     "validate:ranger-strategy": "ts-node scripts/validate-ranger-strategy.ts",
     "build:ranger-submission": "ts-node scripts/build-ranger-submission.ts",
+    "verify:live-proof": "ts-node scripts/verify-live-proof.ts",
     "check:mainnet":     "bash scripts/check-mainnet-readiness.sh",
     "verify:review-surface": "bash scripts/verify-review-surface.sh",
     "migrate":           "ts-node migrations/migrate-realms-dao.ts"

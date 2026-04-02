@@ -63,4 +63,7 @@ node -e '
   }
 '
 
+echo "[review-surface] checking live-proof consistency"
+npx ts-node scripts/verify-live-proof.ts >/dev/null
+
 echo "[review-surface] PASS"

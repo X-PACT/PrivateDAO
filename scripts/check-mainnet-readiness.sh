@@ -32,6 +32,10 @@ npm run validate:ranger-strategy -- docs/ranger-strategy-config.devnet.json >/de
 echo "[mainnet] generating Ranger submission bundle"
 npm run build:ranger-submission -- docs/ranger-strategy-config.devnet.json docs/ranger-submission-bundle.generated.md >/dev/null
 
+echo "[mainnet] verifying live proof and review surface"
+npm run verify:live-proof >/dev/null
+npm run verify:review-surface >/dev/null
+
 echo "[mainnet] required docs"
 test -f README.md
 test -f docs/live-proof.md
