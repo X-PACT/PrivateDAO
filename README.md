@@ -210,6 +210,10 @@ Security and review documents:
 - `docs/security-coverage-map.md`
 - `docs/failure-modes.md`
 - `docs/replay-analysis.md`
+- `docs/protocol-spec.md`
+- `docs/security-architecture.md`
+- `docs/security-guarantees.md`
+- `docs/protocol-maturity.md`
 - `docs/judge-technical-audit.md`
 - `docs/mainnet-readiness.md`
 - `docs/independent-verification.md`
