@@ -216,6 +216,12 @@ Ops-surface gate:
 npm run verify:ops-surface
 ```
 
+Unified verification gate:
+
+```bash
+npm run verify:all
+```
+
 ## Threat Coverage
 
 Reviewer-visible coverage currently includes:

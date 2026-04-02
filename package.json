@@ -29,6 +29,7 @@
     "verify:release-manifest": "ts-node scripts/verify-release-manifest.ts",
     "verify:review-links": "ts-node scripts/verify-review-links.ts",
     "verify:ops-surface": "bash scripts/verify-ops-surface.sh",
+    "verify:all":        "bash scripts/verify-all.sh",
     "check:mainnet":     "bash scripts/check-mainnet-readiness.sh",
     "verify:review-surface": "bash scripts/verify-review-surface.sh",
     "migrate":           "ts-node migrations/migrate-realms-dao.ts"
