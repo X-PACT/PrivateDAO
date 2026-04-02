@@ -68,7 +68,7 @@ The video should not imply a completed external audit or claim production adopti
 
 ## Repo Release Plan
 
-The repository should carry a usable investor-facing video artifact even while external rendering is still pending.
+The repository carries a usable investor-facing video artifact directly in the repo, with YouTube as the public watch surface and the MP4 retained as a repo-native fallback asset.
 
 - Primary repo video target: `docs/assets/private-dao-investor-pitch.mp4`
 - Primary public watch target: `https://youtu.be/KVNFZXHNZTQ`

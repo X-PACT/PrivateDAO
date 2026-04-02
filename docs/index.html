@@ -1665,7 +1665,7 @@ footer {
         <div class="section-tag">ACTIVE GOVERNANCE</div>
         <h2 class="section-heading" style="margin-bottom:0;font-size:56px">Live Proposals</h2>
       </div>
-      <button class="btn-primary" onclick="openCommitModal(-1)">Preview Vote Commit</button>
+      <button class="btn-primary" onclick="openCommitModal(-1)">Open Commit Builder</button>
     </div>
 
     <div class="proposals-grid reveal" id="proposalsList">
@@ -1702,8 +1702,38 @@ footer {
 
     <div class="proposal-create-card reveal">
       <div class="proposal-title">Create proposal on-chain</div>
-      <div class="proposal-desc">Proposal creation is real and permissioned by governance token ownership, not mocked in the frontend. Any wallet holding the DAO governance token can submit a proposal through the repo script and receive a real transaction signature plus explorer link.</div>
-      <code>yarn create-proposal -- --dao &lt;DAO_PDA&gt; --title "Fund community work"</code>
+      <div class="proposal-desc">Proposal creation is real and permissioned by governance token ownership. Build the exact repo command below, copy it, and run it from the repository with a wallet that holds the governance token for the selected DAO.</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:16px">
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">DAO PDA</label>
+          <input id="createDaoPda" type="text" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Paste DAO PDA or select a live proposal">
+        </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">TITLE</label>
+          <input id="createProposalTitle" type="text" value="Fund community work" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
+        </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">DURATION (SECONDS)</label>
+          <input id="createProposalDuration" type="number" value="30" min="5" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
+        </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">TREASURY RECIPIENT</label>
+          <input id="createProposalRecipient" type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Recipient wallet address">
+        </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">TREASURY AMOUNT (SOL)</label>
+          <input id="createProposalAmount" type="number" value="0.05" step="0.01" min="0" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
+        </div>
+      </div>
+      <div style="margin-top:12px">
+        <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">DESCRIPTION</label>
+        <textarea id="createProposalDescription" style="width:100%;min-height:120px;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;resize:vertical">Proposal to allocate treasury funds through the live PrivateDAO governance flow.</textarea>
+      </div>
+      <code id="createProposalCommandHint">yarn create-proposal -- --dao &lt;DAO_PDA&gt; --title "Fund community work"</code>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+        <button class="action-btn action-commit" style="flex:0 0 auto" onclick="copyCreateProposalCommand()">Copy Create Command</button>
+        <button class="action-btn action-reveal" style="flex:0 0 auto" onclick="syncCreateProposalCommand()">Refresh Command</button>
+      </div>
     </div>
 
     <div class="execute-surface-card reveal">
@@ -2286,7 +2316,7 @@ execute() → CPI
     <div class="network-indicator" style="margin-top:-10px">
       <span class="net-dot"></span>
       <span>Target proposal</span>
-      <span class="net-name" id="commitTargetLabel">Preview only</span>
+      <span class="net-name" id="commitTargetLabel">Selected when opened</span>
       <span style="margin-left:auto">CLI-backed flow</span>
     </div>
 
@@ -2330,7 +2360,7 @@ execute() → CPI
     <div class="network-indicator" style="margin-top:-10px">
       <span class="net-dot"></span>
       <span>Target proposal</span>
-      <span class="net-name" id="revealTargetLabel">Select from live list</span>
+      <span class="net-name" id="revealTargetLabel">Selected when opened</span>
       <span style="margin-left:auto">Reveal via script</span>
     </div>
 
@@ -2369,7 +2399,7 @@ execute() → CPI
     <div class="network-indicator" style="margin-top:-10px">
       <span class="net-dot"></span>
       <span>Target proposal</span>
-      <span class="net-name" id="executeTargetLabel">Select from live list</span>
+      <span class="net-name" id="executeTargetLabel">Selected when opened</span>
       <span style="margin-left:auto" id="executePhaseLabel">Checking phase</span>
     </div>
 
@@ -2482,6 +2512,52 @@ function openSelectedProposalExplorer() {
   window.open(solscanAccount(currentSelectedProposalPubkey), '_blank', 'noopener,noreferrer');
 }
 
+function buildCreateProposalCommand() {
+  const dao = (document.getElementById('createDaoPda')?.value || '').trim();
+  const title = (document.getElementById('createProposalTitle')?.value || 'Fund community work').trim();
+  const description = (document.getElementById('createProposalDescription')?.value || '').trim();
+  const duration = (document.getElementById('createProposalDuration')?.value || '30').trim();
+  const recipient = (document.getElementById('createProposalRecipient')?.value || '').trim();
+  const amount = (document.getElementById('createProposalAmount')?.value || '').trim();
+
+  const parts = ['yarn create-proposal --'];
+  parts.push(`--dao ${dao || '<DAO_PDA>'}`);
+  parts.push(`--title "${title.replace(/"/g, '\\"')}"`);
+  if (description) parts.push(`--description "${description.replace(/"/g, '\\"')}"`);
+  if (duration) parts.push(`--duration ${duration}`);
+  if (recipient && amount) {
+    parts.push(`--treasury-recipient ${recipient}`);
+    parts.push(`--treasury-amount ${amount}`);
+    parts.push(`--treasury-type sol`);
+  }
+  return parts.join(' ');
+}
+
+function syncCreateProposalCommand(prefillDao = null) {
+  const daoInput = document.getElementById('createDaoPda');
+  const recipientInput = document.getElementById('createProposalRecipient');
+  if (daoInput && prefillDao && !daoInput.value.trim()) daoInput.value = prefillDao;
+  if (recipientInput && wallet && !recipientInput.value.trim()) recipientInput.value = wallet;
+  const hint = document.getElementById('createProposalCommandHint');
+  if (hint) hint.textContent = buildCreateProposalCommand();
+}
+
+function copyCreateProposalCommand() {
+  const dao = (document.getElementById('createDaoPda')?.value || '').trim();
+  if (!dao) {
+    showToast('Set DAO PDA first.', 'error');
+    return;
+  }
+  const command = buildCreateProposalCommand();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(command)
+      .then(() => showToast('Create proposal command copied.', 'success'))
+      .catch(() => showToast(command, 'info'));
+    return;
+  }
+  showToast(command, 'info');
+}
+
 const DEVNET_RPC = "https://solana-devnet.g.alchemy.com/v2/L4dlywEyiBJLg8Ey0bFof";
 const PROGRAM_ID = "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx";
 const connection = new solanaWeb3.Connection(DEVNET_RPC, "confirmed");
@@ -2503,6 +2579,7 @@ let currentProposalId = null;
 let currentExecuteProposalPubkey = null;
 let liveProposalMap = new Map();
 let currentSelectedProposalPubkey = null;
+let currentSelectedProposal = null;
 
 function shortPk(pk) {
   return `${pk.slice(0, 4)}...${pk.slice(-4)}`;
@@ -2813,7 +2890,9 @@ function selectProposal(pubkey) {
   });
   const p = liveProposalMap.get(pubkey);
   if (!p) return;
+  currentSelectedProposal = p;
   renderProposalDetail(p, Math.floor(Date.now() / 1000));
+  syncCreateProposalCommand(p.dao);
   syncUrlState();
 }
 
@@ -2903,7 +2982,10 @@ async function loadLiveProposals() {
 // ── Modals ───────────────────────────────────────────────
 let selectedVote = null;
 function openCommitModal(id, proposalPubkey = null) {
-  currentProposalId = Number.isFinite(id) && id >= 0 ? id : null;
+  const selected = proposalPubkey ? liveProposalMap.get(proposalPubkey) : currentSelectedProposal;
+  currentProposalId = Number.isFinite(id) && id >= 0
+    ? id
+    : selected ? selected.proposalId : null;
   if (proposalPubkey) currentSelectedProposalPubkey = proposalPubkey;
   selectedVote = null;
   currentCommitSaltHex = null;
@@ -2912,7 +2994,7 @@ function openCommitModal(id, proposalPubkey = null) {
   document.getElementById('voteNo').classList.remove('sel');
   document.getElementById('hashDisplay').textContent = 'Select YES or NO to generate your commitment hash...';
   document.getElementById('commitTargetLabel').textContent = currentProposalId === null
-    ? 'Preview only'
+    ? 'Choose a live proposal'
     : `PROP-${String(currentProposalId).padStart(3, '0')}`;
   document.getElementById('commitCommandHint').textContent = currentProposalId === null
     ? 'Generate a commitment here, then run the repo commit script against your chosen proposal from the terminal.'
@@ -2921,10 +3003,13 @@ function openCommitModal(id, proposalPubkey = null) {
   document.getElementById('commitModal').classList.add('open');
 }
 function openRevealModal(id, proposalPubkey = null) {
-  currentProposalId = Number.isFinite(id) && id >= 0 ? id : null;
+  const selected = proposalPubkey ? liveProposalMap.get(proposalPubkey) : currentSelectedProposal;
+  currentProposalId = Number.isFinite(id) && id >= 0
+    ? id
+    : selected ? selected.proposalId : null;
   if (proposalPubkey) currentSelectedProposalPubkey = proposalPubkey;
   document.getElementById('revealTargetLabel').textContent = currentProposalId === null
-    ? 'Select from live list'
+    ? 'Choose a live proposal'
     : `PROP-${String(currentProposalId).padStart(3, '0')}`;
   document.getElementById('revealCommandHint').textContent = currentProposalId === null
     ? 'Use the same vote and salt originally generated at commit time when running the reveal script.'
@@ -3072,6 +3157,18 @@ function observeReveal() {
 }
 observeReveal();
 
+[
+  'createDaoPda',
+  'createProposalTitle',
+  'createProposalDescription',
+  'createProposalDuration',
+  'createProposalRecipient',
+  'createProposalAmount',
+].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', () => syncCreateProposalCommand());
+});
+
 const initialParams = new URLSearchParams(window.location.search);
 const initialPage = initialParams.get('page');
 if (initialPage && document.getElementById(`page-${initialPage}`)) {
@@ -3079,6 +3176,8 @@ if (initialPage && document.getElementById(`page-${initialPage}`)) {
 } else {
   syncUrlState();
 }
+
+syncCreateProposalCommand();
 
 updateDeploymentSnapshot();
 loadLiveProposals();
