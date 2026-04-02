@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ASSETS_DIR="$ROOT_DIR/docs/assets"
+FONT_BOLD="/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+FONT_REG="/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
+
+SCENE1="$ASSETS_DIR/scene-01-intro.png"
+SCENE2="$ASSETS_DIR/scene-02-problem.png"
+SCENE3="$ASSETS_DIR/scene-03-onchain.png"
+SCENE4="$ASSETS_DIR/scene-04-award.png"
+SCENE5="$ASSETS_DIR/scene-05-mainnet.png"
+POSTER="$ASSETS_DIR/private-dao-investor-pitch-poster.png"
+OUTPUT="$ASSETS_DIR/private-dao-investor-pitch.mp4"
+
+ffmpeg -y -i "$ASSETS_DIR/frontend-hero.png" \
+  -vf "scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720,boxblur=4:1,eq=brightness=-0.18:saturation=1.15,drawbox=x=0:y=0:w=1280:h=720:color=0x07111D@0.54:t=fill,drawbox=x=70:y=74:w=670:h=170:color=0x040A12@0.38:t=fill,drawbox=x=70:y=430:w=380:h=120:color=0x00E5FF@0.10:t=fill,drawbox=x=860:y=70:w=320:h=112:color=0xFFD86C@0.12:t=fill,drawtext=fontfile=$FONT_BOLD:text='PrivateDAO':fontsize=54:fontcolor=white:x=72:y=92,drawtext=fontfile=$FONT_BOLD:text='Private voting.':fontsize=66:fontcolor=0xFFF1B0:x=72:y=190,drawtext=fontfile=$FONT_BOLD:text='Real execution.':fontsize=66:fontcolor=0x00E5FF:x=72:y=270,drawtext=fontfile=$FONT_REG:text='Solana-native governance with commit-reveal privacy, on-chain finalization, and timelocked treasury execution.':fontsize=28:fontcolor=0xDCE8F6:x=74:y=356:box=0,drawtext=fontfile=$FONT_BOLD:text='ON-CHAIN LIFECYCLE':fontsize=24:fontcolor=0xA9F5FF:x=92:y=462,drawtext=fontfile=$FONT_REG:text='create  ->  commit  ->  reveal  ->  finalize  ->  execute':fontsize=24:fontcolor=white:x=92:y=505,drawtext=fontfile=$FONT_BOLD:text='1st Place - Superteam Earn':fontsize=28:fontcolor=0xFFE48A:x=884:y=106" \
+  -frames:v 1 -update 1 "$SCENE1"
+
+ffmpeg -y -f lavfi -i "color=c=#070D15:s=1280x720" \
+  -vf "drawbox=x=0:y=0:w=1280:h=720:color=0x09111A:t=fill,drawbox=x=70:y=90:w=1140:h=540:color=0x101720@0.88:t=fill,drawbox=x=86:y=110:w=350:h=44:color=0x431018@0.92:t=fill,drawbox=x=86:y=230:w=430:h=76:color=0x1C0D12@0.96:t=fill,drawbox=x=86:y=330:w=430:h=76:color=0x1C0D12@0.96:t=fill,drawbox=x=86:y=430:w=430:h=76:color=0x1C0D12@0.96:t=fill,drawbox=x=680:y=210:w=430:h=26:color=0x00E5FF@0.15:t=fill,drawbox=x=680:y=280:w=360:h=26:color=0xFF4D6D@0.30:t=fill,drawbox=x=680:y=350:w=510:h=26:color=0xFFB84D@0.24:t=fill,drawbox=x=680:y=420:w=310:h=26:color=0x00E5FF@0.20:t=fill,drawtext=fontfile=$FONT_BOLD:text='Why public DAO voting breaks':fontsize=52:fontcolor=white:x=84:y=122,drawtext=fontfile=$FONT_REG:text='Visible tallies create pressure before the decision window closes.':fontsize=26:fontcolor=0xCAD7E5:x=86:y=182,drawtext=fontfile=$FONT_BOLD:text='Whale pressure':fontsize=32:fontcolor=0xFFD9DE:x=110:y=250,drawtext=fontfile=$FONT_BOLD:text='Vote buying':fontsize=32:fontcolor=0xFFD9DE:x=110:y=350,drawtext=fontfile=$FONT_BOLD:text='Treasury signaling':fontsize=32:fontcolor=0xFFD9DE:x=110:y=450,drawtext=fontfile=$FONT_BOLD:text='LIVE TALLY':fontsize=26:fontcolor=0x99F6FF:x=680:y=166,drawtext=fontfile=$FONT_REG:text='YES   62\\%':fontsize=24:fontcolor=0xCDEFFC:x=680:y=244,drawtext=fontfile=$FONT_REG:text='NO    38\\%':fontsize=24:fontcolor=0xFFD6DC:x=680:y=314,drawtext=fontfile=$FONT_REG:text='Treasury action signaled early':fontsize=24:fontcolor=0xFFE8C5:x=680:y=384,drawtext=fontfile=$FONT_BOLD:text='PrivateDAO seals the tally until reveal.':fontsize=30:fontcolor=0xFFE48A:x=680:y=454" \
+  -frames:v 1 -update 1 "$SCENE2"
+
+ffmpeg -y -i "$ASSETS_DIR/frontend-hero.png" \
+  -vf "scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720,eq=brightness=-0.20:saturation=1.08,drawbox=x=0:y=0:w=1280:h=720:color=0x06111A@0.68:t=fill,drawbox=x=74:y=84:w=1132:h=160:color=0x0A1722@0.72:t=fill,drawbox=x=74:y=280:w=1132:h=300:color=0x091520@0.84:t=fill,drawbox=x=100:y=430:w=1080:h=2:color=0x00E5FF@0.35:t=fill,drawtext=fontfile=$FONT_BOLD:text='On-chain proof surface':fontsize=54:fontcolor=white:x=96:y=108,drawtext=fontfile=$FONT_REG:text='Proposal creation, commit, reveal, finalize, and execute are already wired to the real Solana program surface.':fontsize=28:fontcolor=0xDDEAF7:x=98:y=180,drawtext=fontfile=$FONT_BOLD:text='npm run demo':fontsize=34:fontcolor=0x00E5FF:x=108:y=328,drawtext=fontfile=$FONT_REG:text='Exercises the lifecycle end-to-end through the repository demo flow.':fontsize=24:fontcolor=white:x=108:y=372,drawtext=fontfile=$FONT_BOLD:text='yarn execute -- --proposal <PUBKEY>':fontsize=30:fontcolor=0xA9F5FF:x=108:y=470,drawtext=fontfile=$FONT_REG:text='Operator commands print transaction signatures and explorer links for verification.':fontsize=24:fontcolor=0xDCE8F6:x=108:y=514,drawtext=fontfile=$FONT_BOLD:text='Same on-chain lifecycle. Different deployment target.':fontsize=26:fontcolor=0xFFE48A:x=108:y=610" \
+  -frames:v 1 -update 1 "$SCENE3"
+
+ffmpeg -y -f lavfi -i "color=c=#120C02:s=1280x720" \
+  -vf "drawbox=x=0:y=0:w=1280:h=720:color=0x120C02:t=fill,drawbox=x=50:y=48:w=1180:h=624:color=0x2A1A03@0.55:t=fill,drawbox=x=68:y=66:w=1144:h=588:color=0xFFD86C@0.06:t=fill,drawbox=x=92:y=98:w=390:h=44:color=0x433108@0.88:t=fill,drawbox=x=92:y=455:w=510:h=130:color=0x2A1A03@0.76:t=fill,drawtext=fontfile=$FONT_BOLD:text='VERIFIED 1ST PLACE ACHIEVEMENT':fontsize=24:fontcolor=0xFFE48A:x=112:y=106,drawtext=fontfile=$FONT_BOLD:text='1st Place':fontsize=92:fontcolor=0xFFF0AF:x=104:y=205,drawtext=fontfile=$FONT_BOLD:text='Superteam Earn':fontsize=82:fontcolor=0xFFD86C:x=104:y=298,drawtext=fontfile=$FONT_REG:text='Challenge: Rebuild production backend systems as on-chain Rust programs':fontsize=28:fontcolor=white:x=106:y=388,drawtext=fontfile=$FONT_BOLD:text='Superteam Poland  ·  March 2026':fontsize=30:fontcolor=0xFFF0AF:x=106:y=492,drawtext=fontfile=$FONT_REG:text='A recognized engineering result backed by a live repo, on-chain program surface, and public demo.':fontsize=24:fontcolor=0xF8EED5:x=106:y=548" \
+  -frames:v 1 -update 1 "$SCENE4"
+
+ffmpeg -y -f lavfi -i "color=c=#06111A:s=1280x720" -i "$ASSETS_DIR/logo.png" \
+  -filter_complex "[1:v]scale=220:220[logo];[0:v]drawbox=x=0:y=0:w=1280:h=720:color=0x06111A:t=fill,drawbox=x=68:y=86:w=1144:h=548:color=0x0B1722@0.90:t=fill,drawbox=x=92:y=108:w=430:h=44:color=0x0E2733@0.96:t=fill,drawtext=fontfile=$FONT_BOLD:text='MAINNET TRANSITION READY':fontsize=24:fontcolor=0xA9F5FF:x=112:y=116,drawtext=fontfile=$FONT_BOLD:text='PrivateDAO':fontsize=78:fontcolor=white:x=104:y=216,drawtext=fontfile=$FONT_REG:text='The current implementation already proves the full governance lifecycle on-chain.':fontsize=28:fontcolor=0xDCE8F6:x=106:y=286,drawtext=fontfile=$FONT_REG:text='Moving from devnet to mainnet is a deployment and operations step, not a protocol rewrite.':fontsize=28:fontcolor=0xDCE8F6:x=106:y=332,drawtext=fontfile=$FONT_BOLD:text='Ready surface:':fontsize=30:fontcolor=0xFFE48A:x=106:y=420,drawtext=fontfile=$FONT_REG:text='- proposal creation by token holders':fontsize=26:fontcolor=white:x=132:y=470,drawtext=fontfile=$FONT_REG:text='- commit  ->  reveal  ->  finalize  ->  execute':fontsize=26:fontcolor=white:x=132:y=512,drawtext=fontfile=$FONT_REG:text='- timelock, veto, and treasury safety checks':fontsize=26:fontcolor=white:x=132:y=554,drawtext=fontfile=$FONT_REG:text='x-pact.github.io/PrivateDAO   ·   github.com/X-PACT/PrivateDAO':fontsize=24:fontcolor=0xA9F5FF:x=106:y=618[base];[base][logo]overlay=960:120" \
+  -frames:v 1 -update 1 "$SCENE5"
+
+ffmpeg -y \
+  -loop 1 -t 7 -i "$SCENE1" \
+  -loop 1 -t 7 -i "$SCENE2" \
+  -loop 1 -t 8 -i "$SCENE3" \
+  -loop 1 -t 8 -i "$SCENE4" \
+  -loop 1 -t 8 -i "$SCENE5" \
+  -filter_complex "[0:v]fps=30,format=yuv420p[v0];[1:v]fps=30,format=yuv420p[v1];[2:v]fps=30,format=yuv420p[v2];[3:v]fps=30,format=yuv420p[v3];[4:v]fps=30,format=yuv420p[v4];[v0][v1]xfade=transition=fade:duration=1:offset=6[x1];[x1][v2]xfade=transition=fade:duration=1:offset=12[x2];[x2][v3]xfade=transition=fade:duration=1:offset=19[x3];[x3][v4]xfade=transition=fade:duration=1:offset=26,fade=t=in:st=0:d=0.4,fade=t=out:st=32.6:d=0.4[v]" \
+  -map "[v]" -c:v libx264 -pix_fmt yuv420p -movflags +faststart "$OUTPUT"
+
+cp "$SCENE5" "$POSTER"
+rm -f "$SCENE1" "$SCENE2" "$SCENE3" "$SCENE4" "$SCENE5"
+
+echo "Rendered investor pitch video:"
+echo "  $OUTPUT"
+echo "Poster:"
+echo "  $POSTER"
