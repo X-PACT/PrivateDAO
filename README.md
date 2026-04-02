@@ -41,6 +41,9 @@ Quick links:
 - Awards page: `docs/awards.md`
 - Strategy documentation: `https://us04docs.zoom.us/doc/Zd34HEaHSKyZGRxBcqxXQg`
 - Repo strategy note: `docs/strategy.md`
+- Competition roadmap: `docs/competition-roadmap.md`
+- Ranger Main Track memo: `docs/ranger-main-track.md`
+- Ranger Drift Track memo: `docs/ranger-drift-track.md`
 - Live devnet proof: `docs/live-proof.md`
 - Investor video package: `docs/investor-video.md`
 - Investor video: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
@@ -115,6 +118,11 @@ PrivateDAO is currently being presented in the following live competitive tracks
 - `Ranger Build-A-Bear Hackathon` Drift Side Track
 
 These are active submissions, not award claims. They are listed separately from the verified 1st Place Superteam Earn result above.
+
+Track-specific submission notes:
+
+- `docs/ranger-main-track.md`
+- `docs/ranger-drift-track.md`
 
 ## On-Chain Execute Surface
 
