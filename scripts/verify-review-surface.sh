@@ -16,6 +16,7 @@ required_files=(
   "docs/protocol-spec.md"
   "docs/independent-verification.md"
   "docs/attack-simulation-log.md"
+  "docs/reviewer-fast-path.md"
   "docs/live-proof.md"
   "docs/devnet-release-manifest.md"
   "docs/proof-registry.json"

@@ -16,6 +16,7 @@ const requiredReadmeRefs = [
   "docs/mainnet-readiness.md",
   "docs/production-operations.md",
   "docs/strategy-operations.md",
+  "docs/reviewer-fast-path.md",
   "docs/reviewer-surface-map.md",
 ];
 
@@ -29,6 +30,7 @@ const requiredFrontendRefs = [
   "devnet-release-manifest.md",
   "verification-gates.md",
   "production-operations.md",
+  "reviewer-fast-path.md",
   "strategy-operations.md",
 ];
 

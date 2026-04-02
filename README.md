@@ -118,6 +118,7 @@ Quick links:
 - Audit packet: `docs/audit-packet.generated.md`
 - Review attestation: `docs/review-attestation.generated.json`
 - Verification gates: `docs/verification-gates.md`
+- Reviewer fast path: `docs/reviewer-fast-path.md`
 - Judge technical audit note: `docs/judge-technical-audit.md`
 - Security review surface: `docs/security-review.md`
 - Mainnet readiness note: `docs/mainnet-readiness.md`
@@ -153,6 +154,10 @@ If a judge only has 2-3 minutes, the strongest review order is:
 6. Open `docs/security-coverage-map.md`
 7. Open the live proof note and devnet explorer references
 
+Condensed reviewer handoff:
+
+- `docs/reviewer-fast-path.md`
+
 ## Ranger / Drift Fit
 
 PrivateDAO is strongest for Ranger and Drift when it is framed honestly:
@@ -177,85 +182,23 @@ Submission references for this angle:
 - `docs/judge-technical-audit.md`
 - `docs/security-review.md`
 
-Eligibility command:
-
-```bash
-npm run validate:ranger-strategy -- docs/ranger-strategy-config.devnet.json
-```
-
-Bundle generator:
-
-```bash
-npm run build:ranger-submission -- docs/ranger-strategy-config.devnet.json docs/ranger-submission-bundle.generated.md
-```
-
-Mainnet gate:
-
-```bash
-npm run check:mainnet
-```
-
-Review-surface gate:
-
-```bash
-npm run verify:review-surface
-```
-
-Live-proof gate:
-
-```bash
-npm run verify:live-proof
-```
-
-Release-manifest gate:
-
-```bash
-npm run verify:release-manifest
-```
-
-Review-link gate:
-
-```bash
-npm run verify:review-links
-```
-
-Ops-surface gate:
-
-```bash
-npm run verify:ops-surface
-```
-
-Strategy-surface gate:
-
-```bash
-npm run verify:strategy-surface
-```
-
-Submission-registry gate:
-
-```bash
-npm run verify:submission-registry
-```
-
-Registry-consistency gate:
-
-```bash
-npm run verify:registry-consistency
-```
-
-Generated-artifacts gate:
-
-```bash
-npm run verify:generated-artifacts
-```
-
-Unified verification gate:
+Core review commands:
 
 ```bash
 npm run verify:all
 ```
 
-This gate is also enforced in CI, so the reviewer-facing evidence path, live-proof references, and ops package are checked on every push and pull request.
+Packaged review handoff:
+
+```bash
+npm run build:review-bundle
+```
+
+Full gate breakdown:
+
+- `docs/verification-gates.md`
+
+This verification layer is also enforced in CI, so the reviewer-facing evidence path, live-proof references, and ops package are checked on every push and pull request.
 
 ## Threat Coverage
 
@@ -331,6 +274,7 @@ Protocol and product documents:
 - `docs/audit-packet.generated.md`
 - `docs/review-attestation.generated.json`
 - `docs/verification-gates.md`
+- `docs/reviewer-fast-path.md`
 - `docs/use-cases.md`
 - `docs/economic-model.md`
 
