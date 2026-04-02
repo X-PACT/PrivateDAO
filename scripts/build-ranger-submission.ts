@@ -34,7 +34,7 @@ type StrategyConfig = {
 
 function main() {
   const [configArg, outArg] = process.argv.slice(2);
-  const configPath = path.resolve(configArg || "docs/ranger-strategy-config.sample.json");
+  const configPath = path.resolve(configArg || "docs/ranger-strategy-config.devnet.json");
   const outPath = path.resolve(outArg || "docs/ranger-submission-bundle.generated.md");
 
   const config = JSON.parse(fs.readFileSync(configPath, "utf8")) as StrategyConfig;
@@ -45,7 +45,11 @@ function main() {
 }
 
 function render(config: StrategyConfig, configName: string): string {
-  const verificationAddress = config.onChainVerification.vaultAddress || config.onChainVerification.walletAddress || "REPLACE_ME";
+  const verificationAddress = config.onChainVerification.vaultAddress || config.onChainVerification.walletAddress;
+
+  if (!verificationAddress) {
+    throw new Error("Ranger submission bundle requires a real walletAddress or vaultAddress for on-chain verification.");
+  }
 
   return `# Ranger Submission Bundle
 

@@ -38,7 +38,7 @@
 Validate the strategy package:
 
 ```bash
-npm run validate:ranger-strategy -- docs/ranger-strategy-config.sample.json
+npm run validate:ranger-strategy -- docs/ranger-strategy-config.devnet.json
 ```
 
 Open the governance proof:

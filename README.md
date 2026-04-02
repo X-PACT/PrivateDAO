@@ -105,7 +105,8 @@ Quick links:
 - Repo strategy note: `docs/strategy.md`
 - Ranger strategy documentation: `docs/ranger-strategy-documentation.md`
 - Ranger eligibility checklist: `docs/ranger-submission-checklist.md`
-- Ranger strategy config sample: `docs/ranger-strategy-config.sample.json`
+- Ranger strategy config: `docs/ranger-strategy-config.devnet.json`
+- Ranger strategy template: `docs/ranger-strategy-config.sample.json`
 - Ranger risk policy: `docs/risk-policy.md`
 - Judge technical audit note: `docs/judge-technical-audit.md`
 - Security review surface: `docs/security-review.md`
@@ -158,13 +159,13 @@ Submission references for this angle:
 Eligibility command:
 
 ```bash
-npm run validate:ranger-strategy -- docs/ranger-strategy-config.sample.json
+npm run validate:ranger-strategy -- docs/ranger-strategy-config.devnet.json
 ```
 
 Bundle generator:
 
 ```bash
-npm run build:ranger-submission -- docs/ranger-strategy-config.sample.json docs/ranger-submission-bundle.generated.md
+npm run build:ranger-submission -- docs/ranger-strategy-config.devnet.json docs/ranger-submission-bundle.generated.md
 ```
 
 Mainnet gate:

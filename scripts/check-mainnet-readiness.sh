@@ -27,10 +27,10 @@ echo "[mainnet] running Rust unit tests"
 cargo test -p private-dao --lib -- --nocapture >/dev/null
 
 echo "[mainnet] validating Ranger submission package"
-npm run validate:ranger-strategy -- docs/ranger-strategy-config.sample.json >/dev/null
+npm run validate:ranger-strategy -- docs/ranger-strategy-config.devnet.json >/dev/null
 
 echo "[mainnet] generating Ranger submission bundle"
-npm run build:ranger-submission -- docs/ranger-strategy-config.sample.json docs/ranger-submission-bundle.generated.md >/dev/null
+npm run build:ranger-submission -- docs/ranger-strategy-config.devnet.json docs/ranger-submission-bundle.generated.md >/dev/null
 
 echo "[mainnet] required docs"
 test -f README.md

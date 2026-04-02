@@ -38,15 +38,15 @@ PrivateDAO provides the governance and risk-control layer for this strategy:
 
 ## On-chain Verification
 
-- Verification address: REPLACE_WITH_REAL_HACKATHON_WALLET
-- Build-window verified: no
+- Verification address: 4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD
+- Build-window verified: yes
 - Live governance proof: docs/live-proof.md
 - Program: https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet
 - Live app: https://x-pact.github.io/PrivateDAO/
 
 ## Supporting Docs
 
-- Config source: ranger-strategy-config.sample.json
+- Config source: ranger-strategy-config.devnet.json
 - Ranger strategy documentation: docs/ranger-strategy-documentation.md
 - Ranger checklist: docs/ranger-submission-checklist.md
 - Judge audit note: docs/judge-technical-audit.md

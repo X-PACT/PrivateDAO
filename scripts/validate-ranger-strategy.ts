@@ -77,7 +77,7 @@ function getConfigPath(args: string[]): string {
   const explicit = args.find((arg) => !arg.startsWith("--"));
   return explicit
     ? path.resolve(explicit)
-    : path.resolve("docs/ranger-strategy-config.sample.json");
+    : path.resolve("docs/ranger-strategy-config.devnet.json");
 }
 
 function validate(config: StrategyConfig): Finding[] {

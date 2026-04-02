@@ -278,7 +278,7 @@ describe("Full flow", () => {
         dao: daoPda, proposal: proposalPda,
         treasury: treasuryPda,
         treasuryRecipient: recipient.publicKey,
-        // For SendSol actions, pass treasury as dummy for the two token accounts
+        // For SendSol actions, these two token account slots are unused. Reuse treasury.
         treasuryTokenAccount:  treasuryPda,
         recipientTokenAccount: treasuryPda,
         executor: payer.publicKey,
