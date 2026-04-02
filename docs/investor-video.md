@@ -45,9 +45,10 @@ The video must communicate:
 
 ## Production Status
 
+- Published YouTube pitch: `https://youtu.be/KVNFZXHNZTQ`
 - External generation task: https://manus.im/app/kMUHrujYi7Ec8nXqWDSxa9
 - External generation task v2: https://manus.im/app/WNFD2RAUyWN5X83jtYdywy
-- Current known status: pending
+- Current known status: repo-native render completed and YouTube version published
 - Repo-native render script: `scripts/render-investor-video.sh`
 - Repo-native rendered asset: `docs/assets/private-dao-investor-pitch.mp4`
 - Repo-native poster: `docs/assets/private-dao-investor-pitch-poster.png`
@@ -70,9 +71,10 @@ The video should not imply a completed external audit or claim production adopti
 The repository should carry a usable investor-facing video artifact even while external rendering is still pending.
 
 - Primary repo video target: `docs/assets/private-dao-investor-pitch.mp4`
+- Primary public watch target: `https://youtu.be/KVNFZXHNZTQ`
 - Poster target: `docs/assets/private-dao-investor-pitch-poster.png`
 - Render source: `scripts/render-investor-video.sh`
-- README should link directly to the MP4 once rendered
+- README should link to YouTube first and keep the repo-native MP4 as a direct asset fallback
 
 ## Packaging Notes
 

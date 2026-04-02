@@ -82,6 +82,8 @@ The repository now includes:
   `https://github.com/X-PACT/PrivateDAO`
 - Live frontend:
   `https://x-pact.github.io/PrivateDAO/`
+- Pitch video:
+  `https://youtu.be/KVNFZXHNZTQ`
 
 ## Closing
 

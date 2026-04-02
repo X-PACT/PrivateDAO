@@ -46,7 +46,8 @@ Quick links:
 - Ranger Drift Track memo: `docs/ranger-drift-track.md`
 - Live devnet proof: `docs/live-proof.md`
 - Investor video package: `docs/investor-video.md`
-- Investor video: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
+- YouTube pitch video: `https://youtu.be/KVNFZXHNZTQ`
+- Repo-native video asset: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
 - On-chain program: `programs/private-dao/src/lib.rs`
 - End-to-end lifecycle test: `tests/full-flow-test.ts`
 
@@ -146,13 +147,14 @@ PrivateDAO brings commit-reveal voting, proposal-scoped private delegation, keep
 ## 🎬 Investor Video Package
 
 <p align="center">
-  <a href="https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4" target="_blank">
+  <a href="https://youtu.be/KVNFZXHNZTQ" target="_blank">
     <img src="docs/assets/private-dao-investor-pitch-poster.png" alt="PrivateDAO investor pitch video poster" width="900" />
   </a>
 </p>
 
 - Strategy documentation for judges, partners, and investors: `https://us04docs.zoom.us/doc/Zd34HEaHSKyZGRxBcqxXQg`
-- Watch the investor pitch video: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
+- Watch the YouTube pitch video: `https://youtu.be/KVNFZXHNZTQ`
+- Repo-native video asset: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
 - Video brief and production package: `docs/investor-video.md`
 - Voiceover script: `docs/video-voiceover.md`
 - Shotlist and visual direction: `docs/video-shotlist.md`
