@@ -21,6 +21,12 @@ function main() {
     "cryptographic-integrity.md",
     "cryptographic-manifest.generated.json",
     "verify:cryptographic-manifest",
+    "SUPPORTED DEVNET WALLETS",
+    "Phantom",
+    "Solflare",
+    "Backpack",
+    "Glow",
+    "toggleWalletPanel",
     "Security Evidence",
   ];
 

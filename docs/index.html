@@ -1584,6 +1584,20 @@ body.judge-mode .judge-banner {
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
+.surface-pill-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  line-height: 1;
+  color: var(--text);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.04) inset;
+}
 
 .surface-pill strong {
   color: var(--text);
@@ -1646,6 +1660,180 @@ body.judge-mode .judge-banner {
   color: var(--text2);
   line-height: 1.55;
 }
+.wallet-stack {
+  position: relative;
+}
+.wallet-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.wallet-btn-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.wallet-caret {
+  font-size: 11px;
+  color: var(--text3);
+}
+.wallet-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 12px);
+  width: min(360px, calc(100vw - 32px));
+  background: rgba(7, 11, 18, 0.96);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 18px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.36);
+  padding: 16px;
+  z-index: 50;
+  display: none;
+}
+.wallet-panel.open {
+  display: block;
+}
+.wallet-panel-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.wallet-panel-title {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--text3);
+  font-family: var(--mono);
+}
+.wallet-panel-copy {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.6;
+}
+.wallet-panel-close {
+  border: 0;
+  background: transparent;
+  color: var(--text3);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+.wallet-provider-list {
+  display: grid;
+  gap: 10px;
+}
+.wallet-provider-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  color: var(--text);
+  cursor: pointer;
+  transition: transform .18s ease, border-color .18s ease, background .18s ease;
+}
+.wallet-provider-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(0,229,255,0.24);
+  background: rgba(0,229,255,0.06);
+}
+.wallet-provider-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.wallet-provider-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(0,229,255,0.18), rgba(255,255,255,0.04));
+  border: 1px solid rgba(0,229,255,0.16);
+  font-size: 16px;
+}
+.wallet-provider-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+.wallet-provider-meta strong {
+  font-size: 13px;
+}
+.wallet-provider-meta span {
+  font-size: 11px;
+  color: var(--text3);
+}
+.wallet-provider-state {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1.6px;
+  color: var(--text3);
+}
+.wallet-provider-state.live {
+  color: var(--green);
+}
+.wallet-panel-note {
+  margin-top: 12px;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--text3);
+}
+.integrity-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(16,185,129,0.18);
+  background:
+    linear-gradient(135deg, rgba(16,185,129,0.12), rgba(0,229,255,0.05)),
+    rgba(8, 14, 22, 0.82);
+  color: var(--text);
+  text-decoration: none;
+  max-width: 430px;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.24);
+}
+.integrity-mark-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  background: radial-gradient(circle at 30% 30%, rgba(16,185,129,0.28), rgba(0,229,255,0.12));
+  border: 1px solid rgba(16,185,129,0.24);
+}
+.integrity-mark-icon::before {
+  content: '▣';
+  font-size: 22px;
+  color: #34d399;
+  text-shadow: 0 0 16px rgba(52,211,153,0.35);
+}
+.integrity-mark-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.integrity-mark-copy strong {
+  font-size: 13px;
+  letter-spacing: 0.6px;
+}
+.integrity-mark-copy span {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.55;
+}
 </style>
 </head>
 <body>
@@ -1684,10 +1872,77 @@ body.judge-mode .judge-banner {
         <button class="nav-link" onclick="showPage('awards',this)">Awards</button>
         <a class="nav-link" href="android-native.md" target="_blank" style="text-decoration:none">Android Native</a>
       </div>
-      <button class="wallet-btn" id="walletBtn" onclick="connectWallet()">
-        <span class="status-dot" id="statusDot"></span>
-        <span id="walletLabel">Connect Wallet</span>
-      </button>
+      <div class="wallet-stack">
+        <button class="wallet-btn" id="walletBtn" onclick="toggleWalletPanel(event)">
+          <span class="status-dot" id="statusDot"></span>
+          <span class="wallet-btn-copy">
+            <span id="walletLabel">Connect Wallet</span>
+            <span class="wallet-caret">▾</span>
+          </span>
+        </button>
+        <div class="wallet-panel" id="walletPanel" onclick="event.stopPropagation()">
+          <div class="wallet-panel-head">
+            <div>
+              <div class="wallet-panel-title">SUPPORTED DEVNET WALLETS</div>
+              <div class="wallet-panel-copy">Choose the wallet you want to connect. PrivateDAO now detects Phantom, Solflare, Backpack, Glow, and compatible injected Solana wallets.</div>
+            </div>
+            <button class="wallet-panel-close" type="button" onclick="closeWalletPanel()">×</button>
+          </div>
+          <div class="wallet-provider-list">
+            <button class="wallet-provider-btn" type="button" onclick="connectWallet('auto')">
+              <span class="wallet-provider-main">
+                <span class="wallet-provider-icon">◎</span>
+                <span class="wallet-provider-meta">
+                  <strong>Auto Detect</strong>
+                  <span>Best available installed Solana wallet</span>
+                </span>
+              </span>
+              <span class="wallet-provider-state" id="walletStateAuto">READY</span>
+            </button>
+            <button class="wallet-provider-btn" type="button" onclick="connectWallet('phantom')">
+              <span class="wallet-provider-main">
+                <span class="wallet-provider-icon">P</span>
+                <span class="wallet-provider-meta">
+                  <strong>Phantom</strong>
+                  <span>Browser extension or in-app browser</span>
+                </span>
+              </span>
+              <span class="wallet-provider-state" id="walletStatePhantom">CHECKING</span>
+            </button>
+            <button class="wallet-provider-btn" type="button" onclick="connectWallet('solflare')">
+              <span class="wallet-provider-main">
+                <span class="wallet-provider-icon">S</span>
+                <span class="wallet-provider-meta">
+                  <strong>Solflare</strong>
+                  <span>Browser extension or in-app browser</span>
+                </span>
+              </span>
+              <span class="wallet-provider-state" id="walletStateSolflare">CHECKING</span>
+            </button>
+            <button class="wallet-provider-btn" type="button" onclick="connectWallet('backpack')">
+              <span class="wallet-provider-main">
+                <span class="wallet-provider-icon">B</span>
+                <span class="wallet-provider-meta">
+                  <strong>Backpack</strong>
+                  <span>Injected Solana wallet provider</span>
+                </span>
+              </span>
+              <span class="wallet-provider-state" id="walletStateBackpack">CHECKING</span>
+            </button>
+            <button class="wallet-provider-btn" type="button" onclick="connectWallet('glow')">
+              <span class="wallet-provider-main">
+                <span class="wallet-provider-icon">G</span>
+                <span class="wallet-provider-meta">
+                  <strong>Glow</strong>
+                  <span>Compatible injected Solana provider</span>
+                </span>
+              </span>
+              <span class="wallet-provider-state" id="walletStateGlow">CHECKING</span>
+            </button>
+          </div>
+          <div class="wallet-panel-note">If a provider is not installed, the button still explains the supported route. If one is already connected, PrivateDAO rehydrates the session automatically.</div>
+        </div>
+      </div>
     </div>
   </div>
 </nav>
@@ -1753,17 +2008,24 @@ body.judge-mode .judge-banner {
         The tally stays hidden during voting, execution stays timelocked, and treasury actions get explicit recipient and mint checks.
       </p>
       <div class="surface-strip">
-        <div class="surface-pill"><strong>Web</strong><span>Live governance surface</span></div>
-        <div class="surface-pill"><strong>Android</strong><span>Kotlin native + MWA</span></div>
-        <div class="surface-pill"><strong>On-chain</strong><span>Devnet program live</span></div>
-        <div class="surface-pill zk-live"><strong>ZK</strong><span>Real Groth16 overlay live</span></div>
-        <div class="surface-pill"><strong>Integrity</strong><span>SHA256 artifact manifest live</span></div>
+        <div class="surface-pill"><span class="surface-pill-icon">◉</span><strong>Web</strong><span>Live governance surface</span></div>
+        <div class="surface-pill"><span class="surface-pill-icon">◌</span><strong>Android</strong><span>Kotlin native + MWA</span></div>
+        <div class="surface-pill"><span class="surface-pill-icon">◎</span><strong>On-chain</strong><span>Devnet program live</span></div>
+        <div class="surface-pill zk-live"><span class="surface-pill-icon">⟡</span><strong>ZK</strong><span>Real Groth16 overlay live</span></div>
+        <div class="surface-pill"><span class="surface-pill-icon">▣</span><strong>Integrity</strong><span>SHA256 artifact manifest live</span></div>
       </div>
       <a class="zk-mark" href="zk-layer.md" target="_blank">
         <span class="zk-mark-icon"></span>
         <span class="zk-mark-copy">
           <strong>Zero-Knowledge Layer Live</strong>
           <span>PrivateDAO now includes a real non-breaking Groth16 overlay for proof-backed vote validity and eligibility.</span>
+        </span>
+      </a>
+      <a class="integrity-mark" href="cryptographic-integrity.md" target="_blank">
+        <span class="integrity-mark-icon"></span>
+        <span class="integrity-mark-copy">
+          <strong>Artifact Integrity Layer Live</strong>
+          <span>Canonical zk and proof artifacts now ship with a published sha256 manifest for tamper-evident review.</span>
         </span>
       </a>
       <div class="hero-actions">
@@ -3418,6 +3680,24 @@ let liveProposalMap = new Map();
 let currentSelectedProposalPubkey = null;
 let currentSelectedProposal = null;
 let walletProviderListenersBound = false;
+const SUPPORTED_WALLET_TARGETS = [
+  { id: 'auto', label: 'Auto Detect' },
+  { id: 'phantom', label: 'Phantom' },
+  { id: 'solflare', label: 'Solflare' },
+  { id: 'backpack', label: 'Backpack' },
+  { id: 'glow', label: 'Glow' },
+];
+
+function walletStateElementId(targetId) {
+  switch (targetId) {
+    case 'auto': return 'walletStateAuto';
+    case 'phantom': return 'walletStatePhantom';
+    case 'solflare': return 'walletStateSolflare';
+    case 'backpack': return 'walletStateBackpack';
+    case 'glow': return 'walletStateGlow';
+    default: return '';
+  }
+}
 
 function shortPk(pk) {
   return `${pk.slice(0, 4)}...${pk.slice(-4)}`;
@@ -3438,7 +3718,7 @@ function updateWalletUi(connected) {
   btn.className = 'wallet-btn connected';
 }
 
-function resolveWalletProvider() {
+function resolveWalletProvider(preferredId = 'auto') {
   const rawCandidates = [
     window.phantom?.solana || null,
     window.backpack?.solana || null,
@@ -3466,6 +3746,12 @@ function resolveWalletProvider() {
     return canConnect && canSign;
   });
 
+  const preferred = preferredId && preferredId !== 'auto'
+    ? candidates.find((provider) => walletProviderId(provider) === preferredId)
+    : null;
+
+  if (preferred) return preferred;
+
   return (
     candidates.find((provider) => provider.isPhantom) ||
     candidates.find((provider) => provider.isBackpack) ||
@@ -3475,12 +3761,64 @@ function resolveWalletProvider() {
   );
 }
 
+function walletProviderId(provider) {
+  if (!provider) return 'unknown';
+  if (provider.isPhantom) return 'phantom';
+  if (provider.isBackpack) return 'backpack';
+  if (provider.isSolflare) return 'solflare';
+  if (provider === window.glowSolana || provider.name === 'Glow') return 'glow';
+  return 'auto';
+}
+
 function walletProviderName(provider) {
   if (!provider) return 'wallet';
   if (provider.isPhantom) return 'Phantom';
   if (provider.isBackpack) return 'Backpack';
   if (provider.isSolflare) return 'Solflare';
   return provider.name || provider.walletName || 'wallet';
+}
+
+function refreshWalletProviderStates() {
+  const providerStates = new Map();
+  for (const target of SUPPORTED_WALLET_TARGETS) {
+    if (target.id === 'auto') {
+      providerStates.set(target.id, resolveWalletProvider('auto') ? 'AVAILABLE' : 'NO WALLET');
+      continue;
+    }
+    providerStates.set(target.id, resolveWalletProvider(target.id) ? 'INSTALLED' : 'NOT FOUND');
+  }
+
+  for (const target of SUPPORTED_WALLET_TARGETS) {
+    const el = document.getElementById(walletStateElementId(target.id));
+    if (!el) continue;
+    const value = providerStates.get(target.id) || 'UNKNOWN';
+    el.textContent = value;
+    el.className = `wallet-provider-state${value === 'INSTALLED' || value === 'AVAILABLE' ? ' live' : ''}`;
+  }
+}
+
+function openWalletPanel() {
+  const panel = document.getElementById('walletPanel');
+  if (!panel) return;
+  refreshWalletProviderStates();
+  panel.classList.add('open');
+}
+
+function closeWalletPanel() {
+  const panel = document.getElementById('walletPanel');
+  if (!panel) return;
+  panel.classList.remove('open');
+}
+
+function toggleWalletPanel(event) {
+  if (event) event.stopPropagation();
+  const panel = document.getElementById('walletPanel');
+  if (!panel) return;
+  if (panel.classList.contains('open')) {
+    closeWalletPanel();
+    return;
+  }
+  openWalletPanel();
 }
 
 function isUserRejectedWalletError(error) {
@@ -3515,6 +3853,7 @@ function bindWalletProviderEvents(provider) {
     walletProvider = null;
     walletProviderListenersBound = false;
     updateWalletUi(false);
+    refreshWalletProviderStates();
     showToast('Disconnected', 'info');
   });
 
@@ -3525,9 +3864,11 @@ function bindWalletProviderEvents(provider) {
     if (!wallet) {
       walletProvider = null;
       walletProviderListenersBound = false;
+      refreshWalletProviderStates();
       showToast('Wallet disconnected.', 'info');
       return;
     }
+    refreshWalletProviderStates();
     showToast(`Wallet changed: ${shortPk(wallet)}`, 'info');
     syncCreateProposalCommand();
     updateRevealCommandBuilder();
@@ -3551,6 +3892,7 @@ async function hydrateWalletSession() {
     syncCreateProposalCommand();
     updateRevealCommandBuilder();
   }
+  refreshWalletProviderStates();
 }
 
 async function connectResolvedWalletProvider(provider) {
@@ -3598,10 +3940,11 @@ function describeWalletConnectionError(error) {
   return message ? `Wallet connection failed: ${message}` : 'Wallet connection failed.';
 }
 
-async function connectWallet() {
-  const resolvedProvider = resolveWalletProvider();
+async function connectWallet(preferredId = 'auto') {
+  const resolvedProvider = resolveWalletProvider(preferredId);
   if (!resolvedProvider) {
-    showToast('Install a Solana wallet such as Phantom, Solflare, or Backpack.', 'error');
+    showToast('No compatible Solana wallet was found. Try Phantom, Solflare, Backpack, or Glow on Devnet.', 'error');
+    openWalletPanel();
     return;
   }
   if (walletProvider !== resolvedProvider) {
@@ -3626,12 +3969,15 @@ async function connectWallet() {
     updateWalletUi(true);
     syncCreateProposalCommand();
     updateRevealCommandBuilder();
+    refreshWalletProviderStates();
+    closeWalletPanel();
     showToast(`Connected ${walletProviderName(walletProvider)}: ${shortPk(wallet)}`, 'success');
   } catch (e) {
     wallet = null;
     walletProvider = null;
     walletProviderListenersBound = false;
     updateWalletUi(false);
+    refreshWalletProviderStates();
     showToast(describeWalletConnectionError(e), 'error');
   }
 }
@@ -5226,6 +5572,8 @@ loadLiveProposals();
 setInterval(updateDeploymentSnapshot, 30_000);
 setInterval(loadLiveProposals, 30_000);
 hydrateWalletSession().catch(() => {});
+document.addEventListener('click', () => closeWalletPanel());
+refreshWalletProviderStates();
 
 // ── Close on overlay click ────────────────────────────────
 document.querySelectorAll('.modal-overlay').forEach(o => {
