@@ -46,8 +46,17 @@ Off-chain boundaries:
 - Android-native client
 - RPC availability
 - wallet signing
+- zk witness generation
+- zk proving
+- zk verification artifacts
 
 The protocol is on-chain for state transition and treasury safety. Operator surfaces are off-chain wrappers around that protocol.
+
+The current zk layer is additive:
+
+- it does not change the deployed on-chain lifecycle
+- it adds a real off-chain proof path
+- it introduces new proof-system assumptions that must be reviewed separately
 
 ## 2. Actor Model
 
@@ -121,6 +130,14 @@ Capabilities:
 - front-runs or back-runs around timing windows
 - cannot forge signatures, but can exploit timing or account assumptions if they exist
 
+### ZK artifact attacker
+
+Capabilities:
+
+- attempts to substitute public signals
+- attempts to rely on reviewer confusion between current on-chain logic and future zk integration
+- attempts to exploit incorrect setup, verification key, or proof-handling assumptions
+
 ## 3. Asset Model
 
 ### Treasury balances
@@ -150,6 +167,10 @@ Execution must move the intended asset to the intended recipient only after the 
 ### Proposal status invariants
 
 `Voting`, `Passed`, `Failed`, `Cancelled`, and `Vetoed` statuses must remain consistent with the lifecycle and must not be entered through partial or confused paths.
+
+### ZK proof integrity
+
+Proof artifacts, verification keys, and public signals must correspond to the intended circuit semantics. Otherwise the zk layer would create false assurance rather than stronger privacy guarantees.
 
 ## 4. Attack Surfaces
 
@@ -239,6 +260,15 @@ Misuse risks:
 - premature finalization
 - premature execution
 
+### ZK overlay path
+
+Misuse risks:
+
+- treating zk as if it already changes the deployed protocol when it does not
+- mismatching proof public signals with the intended DAO or proposal context
+- stale proof artifact reuse in review or verification flows
+- verification-key confusion
+
 ## 5. Threat Classes
 
 ### Lifecycle bypass
@@ -300,6 +330,10 @@ Attempting to push a proposal back into an earlier state or create impossible st
 ### Semantic account confusion
 
 Supplying initialized, owner-correct, or funded accounts that still do not belong to the exact intended governance relationship.
+
+### ZK proof confusion
+
+Treating a valid proof as if it were sufficient for a different DAO, proposal, or verifier context than the one encoded in its public signals.
 
 ## 6. Mitigations
 
@@ -475,10 +509,34 @@ Tests:
 
 - `tests/full-flow-test.ts`
 
+### ZK overlay integrity
+
+Mitigation:
+
+- public signals bind proof semantics to DAO and proposal context
+- proof verification is exposed through repository commands rather than vague claims
+- reviewer-facing docs explain the difference between current commit-reveal and zk-augmented governance
+- zk artifacts are gated through `verify-zk-surface.sh`
+
+Protocol and repository enforcement:
+
+- `zk/circuits/private_dao_vote_overlay.circom`
+- `scripts/zk/build-zk.sh`
+- `scripts/zk/prove-sample.sh`
+- `scripts/zk/verify-sample.sh`
+- `scripts/verify-zk-surface.sh`
+
+Tests / verification references:
+
+- `docs/zk-layer.md`
+- `docs/zk-upgrade.md`
+- `docs/zk-evidence.md`
+
 ## 7. Residual Risks
 
 - direct-commit versus delegation mutual exclusion is still enforced operationally in CLI/frontend surfaces rather than directly on-chain
 - commit-reveal hides vote content, not transaction timing or participation timing
+- the zk layer is off-chain today and is not yet an on-chain verifier integration
 - `CustomCPI` is event-only and depends on off-chain execution patterns if used operationally
 - external RPC availability and local validator behavior affect verification environments
 - no external audit is claimed
@@ -493,6 +551,9 @@ Trusted or assumed components:
 - SPL Token program correctness
 - honest wallet signature semantics
 - RPC responses are sufficiently correct for off-chain observation
+- Circom circuit correctness for the current overlay
+- Groth16 setup artifact integrity
+- verification key integrity for the committed zk artifacts
 
 Timing assumptions:
 

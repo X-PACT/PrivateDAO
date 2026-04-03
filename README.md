@@ -108,6 +108,10 @@ Quick links:
 - Strategy blueprint: `docs/strategy-blueprint.md`
 - Strategy adaptor interface: `docs/strategy-adaptor-interface.md`
 - Strategy operations: `docs/strategy-operations.md`
+- ZK upgrade path: `docs/zk-upgrade.md`
+- ZK layer: `docs/zk-layer.md`
+- ZK architecture: `docs/zk-architecture.md`
+- ZK evidence: `docs/zk-evidence.md`
 - Ranger eligibility checklist: `docs/ranger-submission-checklist.md`
 - Ranger strategy config: `docs/ranger-strategy-config.devnet.json`
 - Ranger strategy template: `docs/ranger-strategy-config.sample.json`
@@ -290,6 +294,7 @@ Security and review documents:
 - `docs/attack-simulation-log.md`
 - `docs/devnet-release-manifest.md`
 - `docs/proof-registry.json`
+- `docs/zk-layer.md`
 - `docs/zk-upgrade.md`
 - `docs/zk-architecture.md`
 - `docs/zk-evidence.md`

@@ -16,6 +16,9 @@ required_files=(
   "docs/protocol-spec.md"
   "docs/independent-verification.md"
   "docs/attack-simulation-log.md"
+  "docs/zk-upgrade.md"
+  "docs/zk-architecture.md"
+  "docs/zk-evidence.md"
   "docs/reviewer-fast-path.md"
   "docs/live-proof.md"
   "docs/devnet-release-manifest.md"
@@ -58,6 +61,9 @@ if rg -n "REPLACE_WITH|REPLACE_ME|TODO|TBD|coming soon|not implemented" \
   docs/security-coverage-map.md \
   docs/failure-modes.md \
   docs/replay-analysis.md \
+  docs/zk-upgrade.md \
+  docs/zk-architecture.md \
+  docs/zk-evidence.md \
   docs/protocol-spec.md \
   docs/independent-verification.md \
   docs/attack-simulation-log.md \
@@ -83,6 +89,9 @@ node -e '
 
 echo "[review-surface] checking live-proof consistency"
 npx ts-node scripts/verify-live-proof.ts >/dev/null
+
+echo "[review-surface] checking zk surface consistency"
+bash scripts/verify-zk-surface.sh >/dev/null
 
 echo "[review-surface] checking release manifest consistency"
 npx ts-node scripts/verify-release-manifest.ts >/dev/null

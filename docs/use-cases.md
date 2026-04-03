@@ -201,7 +201,46 @@ That is the practical niche of the system:
 - without giving up treasury validation
 - without turning the product into opaque off-chain theater
 
-## 6. Real-World Relevance Summary
+## 6. ZK-Augmented Private Governance
+
+The zk layer strengthens the same use cases rather than replacing them with a different product.
+
+### Stronger privacy-preserving voting
+
+With zk-augmented governance, PrivateDAO can evolve from:
+
+- hidden tally during voting
+
+to:
+
+- hidden tally plus stronger proof that the vote tuple and eligibility claims are valid
+
+Impact:
+
+- reduces unnecessary witness disclosure
+- improves privacy positioning for more demanding governance environments
+- increases novelty for grants, investors, and larger protocol evaluations
+
+### Higher-assurance security councils
+
+Security-sensitive groups benefit when correctness can be proven without exposing more than necessary during the decision flow.
+
+Impact:
+
+- stronger confidentiality story for high-sensitivity committees
+- better positioning for governance flows where eligibility proofs matter as much as tally privacy
+
+### Infrastructure-grade governance systems
+
+The zk layer makes PrivateDAO more credible as infrastructure rather than just a privacy-themed governance app.
+
+Impact:
+
+- stronger differentiation
+- stronger long-term protocol value
+- better fit for serious protocol review and ecosystem funding
+
+## 7. Real-World Relevance Summary
 
 PrivateDAO is most useful in environments where:
 

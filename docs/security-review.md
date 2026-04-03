@@ -14,6 +14,7 @@ PrivateDAO now includes a reviewer-visible hardening layer focused on realistic 
 - finalize and execute account-binding rejection
 - timing boundary and lifecycle invariant checks
 - mainnet cutover readiness checks
+- non-breaking zk overlay proof generation and verification
 
 ## Reviewer-first proof points
 
@@ -133,12 +134,33 @@ Replay analysis now documents:
 
 Current reasoning supports that no replay path in tested behavior produces duplicate execution effects.
 
+## ZK Overlay Summary
+
+The repository now includes a real zero-knowledge companion layer that does not change the deployed protocol surface:
+
+- Circom circuit: `zk/circuits/private_dao_vote_overlay.circom`
+- Groth16 setup and verification path
+- sample witness generation
+- proof generation
+- proof verification through `npm run zk:all`
+- explicit zk layer framing: `docs/zk-layer.md`
+
+The current zk layer proves:
+
+- vote form validity
+- minimum-weight eligibility
+- proposal-scoped commitment binding
+- proposal-scoped nullifier binding
+
+This is intentionally additive. It strengthens the protocol's future privacy path without changing current instruction interfaces or deployed assumptions.
+
 ## Remaining Real-World Risks
 
 The audit-simulation layer does not hide residual realities:
 
 - direct-commit versus delegation mutual exclusion remains operationally guarded rather than fully enforced on-chain
 - off-chain timing metadata is not hidden by commit-reveal
+- the zk overlay is off-chain today and is not yet an on-chain verifier integration
 - local validator startup remains environment-sensitive in this shell
 - external audit completeness is still not claimed
 - `CustomCPI` remains intentionally event-only rather than arbitrary on-chain execution

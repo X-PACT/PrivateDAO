@@ -7,6 +7,8 @@ This document defines the intended protocol behavior of PrivateDAO as implemente
 It is not a proposal for redesign.
 It is a structured description of the implemented governance lifecycle, commit-reveal semantics, execution rules, and core invariants.
 
+The repository also includes a non-breaking zk overlay. That overlay is not part of the currently deployed instruction interface and is described explicitly so reviewers do not confuse additive zk work with the live protocol surface.
+
 ## 2. System Roles
 
 - `DAO authority`
@@ -168,6 +170,38 @@ Replay resistance is provided by:
 - delegation `is_used`
 - lifecycle timing gates
 
+### 5.5 ZK-Augmented Commit-Reveal Overlay
+
+The repository now includes an additive zero-knowledge layer that does not change the deployed protocol semantics.
+
+Current live protocol:
+
+- commit uses `sha256(vote_byte || salt_32 || voter_pubkey_32)`
+- reveal checks the committed preimage
+
+Current zk overlay:
+
+- proves boolean vote form
+- proves minimum-weight eligibility
+- proves commitment binding to:
+  - `vote`
+  - `salt`
+  - `voterKey`
+  - `proposalId`
+  - `daoKey`
+- proves nullifier binding to:
+  - `voterKey`
+  - `proposalId`
+  - `daoKey`
+
+This overlay is currently:
+
+- off-chain
+- verifier-backed through Groth16
+- intentionally non-breaking
+
+It is an upgrade path, not a claim that the deployed program already verifies zk proofs on-chain.
+
 ## 6. Finalization Rules
 
 ### 6.1 Preconditions
@@ -304,6 +338,14 @@ The current implementation is intentionally event-oriented rather than arbitrary
 - treasury belongs to exactly one DAO
 - execution accounts must be exact, not approximate or merely initialized
 
+### ZK Overlay Invariants
+
+- proof public signals are proposal-bound
+- proof public signals are DAO-bound
+- nullifier is scoped to voter, proposal, and DAO
+- eligibility proof is scoped to voter, weight, and DAO
+- proof verification alone does not advance on-chain lifecycle state
+
 ## 10. On-Chain vs Off-Chain Boundaries
 
 ### On-Chain
@@ -322,10 +364,14 @@ The current implementation is intentionally event-oriented rather than arbitrary
 - explorer linking
 - devnet/local validator setup
 - operational guardrails for direct/delegated overlap
+- zk witness generation
+- zk proving
+- zk proof verification
 
 ## 11. Known Limits of the Current Specification
 
 - this specification reflects the current repository behavior, not an aspirational redesign
 - direct-commit versus delegation overlap is still operationally guarded at product surfaces rather than fully enforced by the public on-chain interface
 - commit-reveal hides vote content, not timing metadata
+- the zk layer is off-chain today and is not yet an on-chain verifier integration
 - no external audit is claimed by this document

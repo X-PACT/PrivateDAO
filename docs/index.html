@@ -1688,10 +1688,12 @@ body.judge-mode .judge-banner {
         <div class="surface-pill"><strong>Web</strong><span>Live governance surface</span></div>
         <div class="surface-pill"><strong>Android</strong><span>Kotlin native + MWA</span></div>
         <div class="surface-pill"><strong>On-chain</strong><span>Devnet program live</span></div>
+        <div class="surface-pill"><strong>ZK</strong><span>Real Groth16 overlay live</span></div>
       </div>
       <div class="hero-actions">
         <button class="btn-primary" onclick="scrollToProposals()">View Live Proposals</button>
         <button class="btn-ghost" onclick="showPage('protocol', findNavButton('protocol'))">How It Works →</button>
+        <a class="btn-ghost" href="zk-upgrade.md" target="_blank" style="text-decoration:none">ZK Overlay ↗</a>
         <a class="btn-ghost" href="android-native.md" target="_blank" style="text-decoration:none">Android Native ↗</a>
       </div>
     </div>
@@ -2485,6 +2487,40 @@ execute() → CPI
     <div class="award-detail-card reveal" style="margin-top:24px">
       <div class="award-detail-head">
         <div>
+          <div class="award-detail-title">ZK Overlay Available</div>
+          <p class="award-detail-copy">
+            PrivateDAO now includes a real zero-knowledge companion layer built with Circom and Groth16. It does not replace the deployed governance lifecycle yet; it proves vote-form correctness, threshold eligibility, commitment binding, and proposal-scoped nullifier binding as a non-breaking overlay for the current system.
+          </p>
+        </div>
+        <div class="award-pill">REAL ZK</div>
+      </div>
+      <div class="proposal-command-grid">
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">WHAT IS LIVE</div>
+          <div style="color:var(--text2);line-height:1.8">Real circuit compilation, witness generation, proof generation, and proof verification are now part of the repository.</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">CURRENT VS ZK-AUGMENTED</div>
+          <div style="color:var(--text2);line-height:1.8">Current PrivateDAO still runs the deployed commit-reveal lifecycle. The zk path augments it with proof-backed validity and eligibility checks without changing the live protocol surface.</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">WHY IT IS SAFE</div>
+          <div style="color:var(--text2);line-height:1.8">The zk layer is additive. It does not change contracts, instruction interfaces, PDA derivations, or the current browser governance flow.</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">WHAT IT PROVES</div>
+          <div style="color:var(--text2);line-height:1.8">Boolean vote form, minimum-weight eligibility, proposal-scoped commitment binding, and proposal-scoped nullifier binding.</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">HOW TO VERIFY</div>
+          <div style="color:var(--text2);line-height:1.8"><code>npm run zk:all</code> rebuilds and verifies the full zk sample flow from this repository.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="award-detail-card reveal" style="margin-top:24px">
+      <div class="award-detail-head">
+        <div>
           <div class="award-detail-title">Security Evidence</div>
           <p class="award-detail-copy">
             Read the formal reasoning artifacts directly. These documents map real threats to real mitigations and real repository coverage.
@@ -2498,6 +2534,10 @@ execute() → CPI
         <a class="award-link" href="security-coverage-map.md" target="_blank">Coverage Map</a>
         <a class="award-link" href="failure-modes.md" target="_blank">Failure Modes</a>
         <a class="award-link" href="replay-analysis.md" target="_blank">Replay Analysis</a>
+        <a class="award-link" href="zk-upgrade.md" target="_blank">ZK Upgrade</a>
+        <a class="award-link" href="zk-layer.md" target="_blank">ZK Layer</a>
+        <a class="award-link" href="zk-architecture.md" target="_blank">ZK Architecture</a>
+        <a class="award-link" href="zk-evidence.md" target="_blank">ZK Evidence</a>
         <a class="award-link" href="production-operations.md" target="_blank">Production Ops</a>
         <a class="award-link" href="monitoring-alerts.md" target="_blank">Monitoring</a>
         <a class="award-link" href="incident-response.md" target="_blank">Incident Response</a>
