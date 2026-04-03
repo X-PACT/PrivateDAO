@@ -8,10 +8,13 @@
 </p>
 
 [![Live Frontend](https://img.shields.io/badge/Live%20Frontend-Open-00e5ff?logo=solana)](https://x-pact.github.io/PrivateDAO/)
+[![Web Surface](https://img.shields.io/badge/Web-Live%20Governance%20Surface-0ea5e9)](https://x-pact.github.io/PrivateDAO/)
+[![Android Native](https://img.shields.io/badge/Android-Kotlin%20Native-7c3aed)](docs/android-native.md)
+[![Mobile Wallet](https://img.shields.io/badge/Mobile-MWA%20Ready-22c55e)](docs/android-native.md)
 [![Award](https://img.shields.io/badge/Award-1st%20Place%20Superteam%20Earn-gold)](docs/awards.md)
 [![Built on](https://img.shields.io/badge/Built%20on-Solana-purple)](https://solana.com)
 [![Category](https://img.shields.io/badge/Category-Backend%20Systems-blue)](docs/awards.md)
-[![Frontend](https://img.shields.io/badge/Frontend-docs%2Findex.html-0b7285)](docs/index.html)
+[![Frontend](https://img.shields.io/badge/Web%20Frontend-docs%2Findex.html-0b7285)](docs/index.html)
 [![CI](https://img.shields.io/github/actions/workflow/status/X-PACT/PrivateDAO/ci.yml?branch=main&label=CI)](https://github.com/X-PACT/PrivateDAO/actions/workflows/ci.yml)
 [![Solana](https://img.shields.io/badge/Solana-Devnet-14F195)](https://solana.com)
 [![Anchor](https://img.shields.io/badge/Anchor-0.31.1-blue)](https://www.anchor-lang.com)
@@ -20,10 +23,35 @@
 [![Pitch Assets](https://img.shields.io/badge/Pitch-Ready-ff6b6b)](SUBMISSION_FINAL.md)
 [![Demo Reel](https://img.shields.io/badge/Demo-Reel-14b8a6)](docs/assets/demo-reel.gif)
 [![Program](https://img.shields.io/badge/Program-Devnet%20Live-14F195)](https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet)
+[![Security Surface](https://img.shields.io/badge/Security%20Surface-Lifecycle%20%2B%20Replay%20%2B%20Treasury%20%2B%20Delegation%20Hardened-0f766e)](docs/security-review.md)
+[![Threat Model](https://img.shields.io/badge/Threat%20Model-Complete-1d4ed8)](docs/threat-model.md)
+[![Replay Analysis](https://img.shields.io/badge/Replay%20Analysis-Verified-7c3aed)](docs/replay-analysis.md)
+[![Atomicity](https://img.shields.io/badge/Atomicity-Verified-15803d)](docs/failure-modes.md)
 
 PrivateDAO is a Solana governance protocol for DAOs that want private voting without giving up execution safety. Votes are committed privately, revealed later, finalized deterministically, and treasury execution stays behind an explicit timelock with recipient and mint checks.
 
 The problem statement is simple and easy for judges to verify: public live tallies create whale pressure, vote buying, and treasury signaling. PrivateDAO removes live vote visibility while keeping the rest of the governance lifecycle inspectable, testable, and compatible with how Solana teams actually operate.
+
+## Why PrivateDAO Exists
+
+Public governance leaks intent too early.
+
+That creates predictable failure modes:
+
+- whale pressure
+- vote buying
+- treasury signaling
+- execution manipulation around visible intent
+
+PrivateDAO exists to resist those failure modes with:
+
+- commit-reveal voting
+- state-machine governance
+- timelocked execution
+- strict treasury validation
+- replay-resistant lifecycle checks
+
+## What Is Implemented
 
 What is real in the current implementation:
 
@@ -35,34 +63,240 @@ What is real in the current implementation:
 
 The current stack is already structured for immediate **mainnet transition**. The lifecycle, permissions, execution checks, and operator flows are live on-chain today; moving from devnet to mainnet is an operational deployment step, not a product redesign.
 
+## Security At A Glance
+
+PrivateDAO is designed around one core requirement: preventing governance manipulation without sacrificing execution safety.
+
+Current security hardening covers:
+
+- lifecycle bypass resistance
+- commit-reveal integrity
+- signer and authority validation
+- proposal and account binding correctness
+- treasury miswiring rejection
+- duplicate execution prevention
+- failed-path state preservation
+- replay-oriented reasoning and coverage mapping
+
+See:
+
+- `docs/security-review.md`
+- `docs/threat-model.md`
+- `docs/security-coverage-map.md`
+- `docs/failure-modes.md`
+- `docs/replay-analysis.md`
+
+## Why Security Is Core
+
+PrivateDAO is not trying to make governance merely private. It is trying to make private governance defensible.
+
+A private voting system that can be replayed, misbound, bypassed, or mis-executed would fail the exact problem it claims to solve.
+
+That is why PrivateDAO treats lifecycle enforcement, signer correctness, account binding, replay resistance, and treasury safety as core protocol guarantees.
+
 Quick links:
 
 - Live frontend: `https://x-pact.github.io/PrivateDAO/`
 - Proof Center: `https://x-pact.github.io/PrivateDAO/?page=proof`
 - Judge Mode: `https://x-pact.github.io/PrivateDAO/?page=proof&judge=1`
+- Android native guide: `docs/android-native.md`
 - Awards page: `docs/awards.md`
 - Strategy documentation: `https://us04docs.zoom.us/doc/Zd34HEaHSKyZGRxBcqxXQg`
 - Repo strategy note: `docs/strategy.md`
+- Ranger strategy documentation: `docs/ranger-strategy-documentation.md`
+- Strategy blueprint: `docs/strategy-blueprint.md`
+- Strategy adaptor interface: `docs/strategy-adaptor-interface.md`
+- Strategy operations: `docs/strategy-operations.md`
+- Ranger eligibility checklist: `docs/ranger-submission-checklist.md`
+- Ranger strategy config: `docs/ranger-strategy-config.devnet.json`
+- Ranger strategy template: `docs/ranger-strategy-config.sample.json`
+- Ranger risk policy: `docs/risk-policy.md`
+- Performance evidence: `docs/performance-evidence.md`
+- Submission dossier: `docs/submission-dossier.md`
+- Submission registry: `docs/submission-registry.json`
+- Competition readiness: `docs/competition-readiness.md`
+- Audit packet: `docs/audit-packet.generated.md`
+- Review attestation: `docs/review-attestation.generated.json`
+- Verification gates: `docs/verification-gates.md`
+- Reviewer fast path: `docs/reviewer-fast-path.md`
+- Judge technical audit note: `docs/judge-technical-audit.md`
+- Security review surface: `docs/security-review.md`
+- Mainnet readiness note: `docs/mainnet-readiness.md`
+- Production operations: `docs/production-operations.md`
+- Monitoring and alerts: `docs/monitoring-alerts.md`
+- Incident response: `docs/incident-response.md`
+- Mainnet cutover runbook: `docs/mainnet-cutover-runbook.md`
+- Operator checklist: `docs/operator-checklist.md`
+- Risk register: `docs/risk-register.md`
+- Audit handoff: `docs/audit-handoff.md`
+- Reviewer surface map: `docs/reviewer-surface-map.md`
 - Competition roadmap: `docs/competition-roadmap.md`
 - Ranger Main Track memo: `docs/ranger-main-track.md`
 - Ranger Drift Track memo: `docs/ranger-drift-track.md`
 - Live devnet proof: `docs/live-proof.md`
-- Android native app guide: `docs/android-native.md`
+- Devnet release manifest: `docs/devnet-release-manifest.md`
+- Proof registry: `docs/proof-registry.json`
 - Investor video package: `docs/investor-video.md`
 - YouTube pitch video: `https://youtu.be/KVNFZXHNZTQ`
 - Repo-native video asset: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
 - On-chain program: `programs/private-dao/src/lib.rs`
 - End-to-end lifecycle test: `tests/full-flow-test.ts`
 
-## Judge Fast Path
+## Reviewer Fast Path
 
 If a judge only has 2-3 minutes, the strongest review order is:
 
-1. Open `https://x-pact.github.io/PrivateDAO/?page=proof&judge=1`
-2. Watch the pitch: `https://youtu.be/KVNFZXHNZTQ`
-3. Open the live proof note: `docs/live-proof.md`
-4. Inspect the live program on Solscan
-5. Open the selected proposal surface and verify the current on-chain lifecycle
+1. Open `https://x-pact.github.io/PrivateDAO/?page=security`
+2. Open `docs/threat-model.md`
+3. Open `docs/security-review.md`
+4. Open `tests/private-dao.ts`
+5. Open `tests/full-flow-test.ts`
+6. Open `docs/security-coverage-map.md`
+7. Open the live proof note and devnet explorer references
+
+Condensed reviewer handoff:
+
+- `docs/reviewer-fast-path.md`
+
+## Ranger / Drift Fit
+
+PrivateDAO is strongest for Ranger and Drift when it is framed honestly:
+
+- not as a complete seeded vault strategy by itself
+- but as the private governance and risk-control layer for a real USDC strategy stack
+
+That is the differentiated value in these competitions:
+
+- hidden committee approvals
+- timelocked execution discipline
+- treasury and execution checks
+- real on-chain proof for governance-sensitive actions
+
+Submission references for this angle:
+
+- `docs/ranger-strategy-documentation.md`
+- `docs/strategy-operations.md`
+- `docs/ranger-submission-checklist.md`
+- `docs/ranger-main-track.md`
+- `docs/ranger-drift-track.md`
+- `docs/judge-technical-audit.md`
+- `docs/security-review.md`
+
+Core review commands:
+
+```bash
+npm run verify:all
+```
+
+Packaged review handoff:
+
+```bash
+npm run build:review-bundle
+```
+
+Full gate breakdown:
+
+- `docs/verification-gates.md`
+
+This verification layer is also enforced in CI, so the reviewer-facing evidence path, live-proof references, and ops package are checked on every push and pull request.
+
+## Threat Coverage
+
+Reviewer-visible coverage currently includes:
+
+- lifecycle bypass
+- replay and duplicate execution
+- signer misuse
+- PDA and account substitution
+- treasury miswiring
+- invalid reveal and commitment mismatch
+- timing boundary misuse
+- delegation misuse
+- execution invariants
+- failed-path atomicity
+
+The formal mapping lives in `docs/security-coverage-map.md`.
+
+## Known Limitations
+
+PrivateDAO is explicit about what remains limited:
+
+- the project is devnet-first
+- direct-commit versus delegation overlap is still guarded operationally in product surfaces rather than fully enforced on-chain
+- commit-reveal hides vote content, not transaction timing metadata
+- `CustomCPI` remains intentionally event-only
+- local validator startup is environment-sensitive in this shell
+- mainnet audit completeness is not claimed
+
+## Documentation Index
+
+Security and review documents:
+
+- `docs/security-review.md`
+- `docs/threat-model.md`
+- `docs/security-coverage-map.md`
+- `docs/failure-modes.md`
+- `docs/replay-analysis.md`
+- `docs/protocol-spec.md`
+- `docs/security-architecture.md`
+- `docs/security-guarantees.md`
+- `docs/protocol-maturity.md`
+- `docs/judge-technical-audit.md`
+- `docs/mainnet-readiness.md`
+- `docs/production-operations.md`
+- `docs/monitoring-alerts.md`
+- `docs/incident-response.md`
+- `docs/mainnet-cutover-runbook.md`
+- `docs/operator-checklist.md`
+- `docs/risk-register.md`
+- `docs/audit-handoff.md`
+- `docs/reviewer-surface-map.md`
+- `docs/independent-verification.md`
+- `docs/attack-simulation-log.md`
+- `docs/devnet-release-manifest.md`
+- `docs/proof-registry.json`
+
+Protocol and product documents:
+
+- `docs/live-proof.md`
+- `docs/strategy.md`
+- `docs/android-native.md`
+- `docs/awards.md`
+- `docs/ranger-strategy-documentation.md`
+- `docs/strategy-blueprint.md`
+- `docs/strategy-adaptor-interface.md`
+- `docs/strategy-operations.md`
+- `docs/risk-policy.md`
+- `docs/performance-evidence.md`
+- `docs/submission-dossier.md`
+- `docs/submission-registry.json`
+- `docs/competition-readiness.md`
+- `docs/audit-packet.generated.md`
+- `docs/review-attestation.generated.json`
+- `docs/verification-gates.md`
+- `docs/reviewer-fast-path.md`
+- `docs/use-cases.md`
+- `docs/economic-model.md`
+
+## Independent Verification
+
+If you want to verify the system without trusting any summary, start here:
+
+- `docs/independent-verification.md`
+
+This guide is designed to let an external reviewer:
+
+- set up the environment
+- reproduce the lifecycle
+- inspect transaction hashes
+- verify treasury balance changes
+- reproduce rejection paths
+
+## Attack Simulation Log
+
+Compact reviewer-facing misuse attempts are indexed in:
+
+- `docs/attack-simulation-log.md`
 
 ## ⚡ One-Line Install
 
@@ -320,77 +554,36 @@ Initialize DAO
   -> if not passed: failed / cancelled / vetoed terminal states
 ```
 
-## Why Judges Should Care
+## Why This Stands Out
 
-This repo is not just a contract or just a landing page. It is already packaged the way Solana competition reviewers usually want to see it:
+- The protocol is live on Solana devnet, not simulated.
+- The governance lifecycle is complete: create, commit, reveal, finalize, veto, cancel, and execute.
+- The repository contains the product surface, protocol surface, and proof surface in one place.
+- The project now has both a live web surface and an Android-native mobile surface.
+- The problem is easy for judges to understand: public tallies leak intent too early.
 
-- live devnet program
-- working docs frontend on GitHub Pages
-- end-to-end Anchor tests covering the governance lifecycle
-- operator scripts for create, vote, reveal, finalize, execute, and migrate
-- explicit safety checks around treasury execution
-- Realms-oriented migration and voter-weight compatibility path
+## Current Product Surface
 
-In other words: there is a product story, a protocol story, and a verification story in the same repository.
+- Live devnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- GitHub Pages frontend: `docs/index.html`
+- Android-native app: `apps/android-native/`
+- End-to-end lifecycle tests: `tests/full-flow-test.ts`, `tests/demo.ts`
+- Operator scripts: `scripts/`
+- Live proof note: `docs/live-proof.md`
 
-## What Makes It Competition-Ready
-
-- Clear problem: public governance leaks intent too early.
-- Clear technical differentiation: commit-reveal plus private delegation and keeper reveal.
-- Clear Solana fit: Anchor program, devnet deployment, wallet + RPC tooling, Realms-oriented migration path.
-- Clear demoability: one README, one docs frontend, one devnet program, one test suite.
-- Clear business relevance: DAO treasury safety, governance participation quality, and migration usability.
-
-## Quick Judge Review
-
-If a reviewer has only two to five minutes, these are the fastest proof points:
-
-1. Open the live frontend: `https://x-pact.github.io/PrivateDAO/`
-2. Confirm the devnet program exists: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
-3. Review the core on-chain logic in `programs/private-dao/src/lib.rs`
-4. Review the end-to-end flows in `tests/full-flow-test.ts` and `tests/demo.ts`
-5. Review the operator scripts in `scripts/`
-6. Review the submission package in `SUBMISSION.md` and `SUBMISSION_FINAL.md`
-
-## Why Solana Specifically
-
-PrivateDAO is not blockchain-agnostic theater. Its current implementation is intentionally Solana-native:
-
-- written in Anchor for Solana account and instruction semantics
-- deployed on Solana devnet
-- uses Solana wallet, RPC, and token account flows directly
-- targets DAO and Realms-adjacent governance workflows that already exist in the Solana ecosystem
-- ships devnet and local-validator tooling instead of abstract pseudo-integration
-
-That matters in competitions: the project is not a generic privacy-governance idea looking for a chain. It is already built around Solana workflows.
-
-## Review Links
+## Quick Review Pack
 
 - Live frontend: `https://x-pact.github.io/PrivateDAO/`
-- Devnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
-- Demo reel: `docs/assets/demo-reel.gif`
-- Demo script: `DEMO_SCRIPT_90S.md`
+- Judge Mode: `https://x-pact.github.io/PrivateDAO/?page=proof&judge=1`
+- Proof Center: `https://x-pact.github.io/PrivateDAO/?page=proof`
+- Android-native guide: `docs/android-native.md`
 - Main submission: `SUBMISSION.md`
 - Final-form submission: `SUBMISSION_FINAL.md`
-- Colosseum forum post draft: `COLOSSEUM_FORUM_POST.md`
-- Superteam application assets: `SUPERTEAM_INSTAGRANT.md`, `SUPERTEAM_POST.md`
-
-## Demo Reel
-
-![PrivateDAO demo reel](docs/assets/demo-reel.gif)
-
-Quick review links:
-
-- Demo reel asset: `docs/assets/demo-reel.gif`
-- Demo poster: `docs/assets/demo-reel-poster.png`
-- Demo talk track: `DEMO_SCRIPT_90S.md`
-- Outreach copy: `OUTREACH_MESSAGE.md`
+- Demo script: `DEMO_SCRIPT_90S.md`
 
 ## Ownership And Contact
 
 PrivateDAO is independently built and maintained by **Fahd Kotb**.
-
-Professional contact channels:
 
 - Primary email: [fahd.kotb@tuta.io](mailto:fahd.kotb@tuta.io)
 - Secondary email: [i.kotb@proton.me](mailto:i.kotb@proton.me)
@@ -400,82 +593,6 @@ Professional contact channels:
 - WhatsApp backup: [+20 107 000 4967](https://wa.me/201070004967)
 - X: [@FahdX369](https://x.com/FahdX369)
 - Telegram: [@Fahdkotb](https://t.me/Fahdkotb)
-- Outreach pack: `OUTREACH_MESSAGE.md`
-
-## Submission Assets
-
-The repo now includes a ready-to-use package for judges, reviewers, and public sharing:
-
-- `SUBMISSION.md` for the main project submission
-- `SUBMISSION_FINAL.md` for a stronger final-form submission draft
-- `COLOSSEUM_FORUM_POST.md` for the Colosseum public forum
-- `SUPERTEAM_POST.md` for a Superteam builder post
-- `SUPERTEAM_INSTAGRANT.md` for a Superteam Instagrant-style application draft
-- `SOCIAL_THREAD.md` for tweet/thread copy
-- `DEMO_SCRIPT_90S.md` for a 60 to 90 second judge demo
-- `OUTREACH_MESSAGE.md` for sponsor, reviewer, and ecosystem outreach
-
-## Evaluation Map
-
-For Solana competitions, the repository now maps cleanly to the usual evaluation questions:
-
-- Innovation:
-  private voting plus private delegation and keeper reveal in one governance lifecycle
-- Technical execution:
-  live Anchor program, reproducible build, CI, end-to-end tests, and operator scripts
-- Ecosystem fit:
-  devnet deployment, Solana RPC tooling, SPL token handling, and Realms-oriented compatibility
-- User story:
-  docs frontend, demo assets, and CLI workflow are aligned with the same product flow
-- Credibility:
-  the repo is explicit about what is implemented, what is devnet-only, and what is not yet claimed
-
-## Hackathon Context
-
-PrivateDAO is being prepared as a serious Solana builder submission, but the README stays grounded in what the repo actually does today.
-
-- Main event context: Solana Graveyard Hackathon 2026
-- Submission angles already reflected in the codebase:
-  - DAOs / Realms-oriented governance tooling
-  - Sunrise-style migration path
-  - Overall Solana Foundation quality bar
-- Official ecosystem partners listed for the Graveyard hackathon include:
-  - Solana Foundation
-  - Sunrise
-  - Realms
-  - Exchange Art
-  - Tapestry
-  - MagicBlock
-  - KYD Labs
-  - Portals
-  - DRiP
-  - Torque
-  - BIO
-  - Audius
-  - OrbitFlare
-
-That context matters for positioning, but this repo does not claim prize results, grants, accelerator acceptance, or funding that have not actually happened. When we mention grants or follow-on support, we mean the broader Solana ecosystem paths this project is suitable for, not money already awarded.
-
-## Current Status
-
-- Devnet program deployed at `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
-- Current repo targets `Anchor 0.31.1`
-- Local tests cover commit, reveal, finalize, execute, cancellation, delegation, keeper reveal, and treasury validation paths
-- This repo is production-minded, but still devnet-first and not represented as a completed mainnet governance system
-
-## What Goes On Solana
-
-For this kind of project, you do not upload the whole repository to Solana.
-
-- The on-chain program is what gets deployed to the Solana network
-- The repository stays in GitHub as the source of truth for code, scripts, SDK, docs, and frontend assets
-- The docs frontend can be hosted separately, such as GitHub Pages
-- Operators and users interact with the deployed program through RPC, wallets, scripts, SDK calls, or the frontend
-
-So if the question is "does the project need to be on Solana?", the practical answer is:
-
-- yes, the program should be deployed on Solana if you want a real working product
-- no, the rest of the project is not stored on-chain and should not be treated as something you "upload to Solana"
 
 ## What Exists Today
 
@@ -483,35 +600,16 @@ So if the question is "does the project need to be on Solana?", the practical an
 - Voting modes:
   - `TokenWeighted`
   - `Quadratic`
-  - `DualChamber` with separate capital and community thresholds
-- Proposal lifecycle:
-  - create
-  - commit
-  - reveal
-  - finalize
-  - timelocked execute
-  - authority cancel during voting
-  - authority veto during timelock
+  - `DualChamber`
 - Treasury actions:
-  - `SendSol` fully wired on-chain
-  - `SendToken` fully wired on-chain with mint, authority, and recipient-owner checks
-  - `CustomCPI` intentionally emits an execution event only; off-chain relayer handling is still the chosen pattern here
-- Optional keeper-authorized reveal
+  - `SendSol`
+  - `SendToken`
+  - `CustomCPI` event-only relay path
 - Proposal-scoped private delegation
-- Treasury deposit helper
-- Realms-oriented migration helper and voter-weight record account
-- Docs frontend published from `docs/index.html`
-
-## Backend And Frontend Fit
-
-This project is not a disconnected smart contract plus a decorative landing page. The pieces are meant to describe the same governance flow from different layers:
-
-- `programs/private-dao/src/lib.rs` is the source of truth for the lifecycle and treasury rules
-- `sdk/src/index.ts` exposes the same vote commitment primitive used by the on-chain program
-- `scripts/` are operator-facing flows for DAO creation, proposal creation, commit, reveal, finalize, execute, deposit, and migration
-- `docs/index.html` and the published GitHub Pages frontend explain the same flow in a way reviewers, sponsors, judges, and DAO operators can follow quickly
-
-The goal is simple: what the frontend says should match what the program enforces, and what the scripts do should match both. That alignment matters more right now than flashy UI changes, especially while the project is under hackathon review.
+- Keeper-authorized reveal
+- Timelock and veto model
+- Realms-oriented migration and voter-weight compatibility path
+- Android-native mobile app using Kotlin + Solana Mobile Wallet Adapter
 
 ## Safety Model
 

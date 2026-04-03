@@ -212,6 +212,45 @@ describe("PrivateDAO", () => {
     console.log("  ✓ 3 votes committed — tally: YES=0 / NO=0 (hidden)");
   });
 
+  it("rejects commit from a zero-balance governance account", async () => {
+    const zeroVoter = Keypair.generate();
+    const tx = new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: authority.publicKey,
+        toPubkey: zeroVoter.publicKey,
+        lamports: Math.round(0.005 * LAMPORTS_PER_SOL),
+      }),
+    );
+    await provider.sendAndConfirm(tx, []);
+
+    const zeroAta = await createAccount(provider.connection, authority.payer, governanceMint, zeroVoter.publicKey);
+    const [zeroVotePda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), proposalPda.toBuffer(), zeroVoter.publicKey.toBuffer()],
+      program.programId,
+    );
+
+    try {
+      await program.methods
+        .commitVote([...computeCommitment(true, randomSalt(), zeroVoter.publicKey)], null)
+        .accounts({
+          dao: daoPda,
+          proposal: proposalPda,
+          voterRecord: zeroVotePda,
+          voterTokenAccount: zeroAta,
+          voter: zeroVoter.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .signers([zeroVoter])
+        .rpc();
+      assert.fail("Should have rejected zero-balance commit");
+    } catch (err: any) {
+      const msg = err.toString();
+      assert.include(msg, "InsufficientTokens");
+      console.log("  ✓ zero-balance commit rejected");
+    }
+  });
+
   it("rejects double-commit", async () => {
     const [vrPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("vote"), proposalPda.toBuffer(), voter1.publicKey.toBuffer()],
@@ -265,6 +304,218 @@ describe("PrivateDAO", () => {
     }
   });
 
+  it("rejects reveal with mismatched vote payload", async () => {
+    const payloadVoter = Keypair.generate();
+    const tx = new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: authority.publicKey,
+        toPubkey: payloadVoter.publicKey,
+        lamports: Math.round(0.005 * LAMPORTS_PER_SOL),
+      }),
+    );
+    await provider.sendAndConfirm(tx, []);
+
+    const payloadAta = await createAccount(provider.connection, authority.payer, governanceMint, payloadVoter.publicKey);
+    await mintTo(provider.connection, authority.payer, governanceMint, payloadAta, authority.payer, 250_000_000n);
+
+    const dao = await program.account["dao"].fetch(daoPda);
+    const [payloadProposalPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), dao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal("Reveal payload guard", "Wrong vote payload must fail commitment verification.", new BN(5), null)
+      .accounts({
+        dao: daoPda,
+        proposal: payloadProposalPda,
+        proposerTokenAccount: authorityTokenAta,
+        proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const salt = randomSalt();
+    const [payloadVotePda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), payloadProposalPda.toBuffer(), payloadVoter.publicKey.toBuffer()],
+      program.programId,
+    );
+
+    await program.methods
+      .commitVote([...computeCommitment(true, salt, payloadVoter.publicKey)], null)
+      .accounts({
+        dao: daoPda,
+        proposal: payloadProposalPda,
+        voterRecord: payloadVotePda,
+        voterTokenAccount: payloadAta,
+        voter: payloadVoter.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([payloadVoter])
+      .rpc();
+
+    const created = await program.account["proposal"].fetch(payloadProposalPda);
+    await new Promise((resolve) => setTimeout(resolve, Math.max(created.votingEnd.toNumber() - Math.floor(Date.now() / 1000), 0) * 1000 + 1200));
+
+    try {
+      await program.methods
+        .revealVote(false, [...salt])
+        .accounts({ proposal: payloadProposalPda, voterRecord: payloadVotePda, revealer: payloadVoter.publicKey })
+        .signers([payloadVoter])
+        .rpc();
+      assert.fail("Should have rejected reveal with mismatched vote payload");
+    } catch (err: any) {
+      assert.include(err.toString(), "CommitmentMismatch");
+      console.log("  ✓ mismatched reveal payload rejected");
+    }
+  });
+
+  it("rejects reveal by an unauthorized signer", async () => {
+    const voter = Keypair.generate();
+    const attacker = Keypair.generate();
+    for (const wallet of [voter, attacker]) {
+      const tx = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: authority.publicKey,
+          toPubkey: wallet.publicKey,
+          lamports: Math.round(0.005 * LAMPORTS_PER_SOL),
+        }),
+      );
+      await provider.sendAndConfirm(tx, []);
+    }
+
+    const voterAta = await createAccount(provider.connection, authority.payer, governanceMint, voter.publicKey);
+    await mintTo(provider.connection, authority.payer, governanceMint, voterAta, authority.payer, 250_000_000n);
+
+    const dao = await program.account["dao"].fetch(daoPda);
+    const [proposalForAuthPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), dao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal("Unauthorized reveal", "Only voter or keeper should reveal.", new BN(5), null)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalForAuthPda,
+        proposerTokenAccount: authorityTokenAta,
+        proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const salt = randomSalt();
+    const [voteRecordPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), proposalForAuthPda.toBuffer(), voter.publicKey.toBuffer()],
+      program.programId,
+    );
+    await program.methods
+      .commitVote([...computeCommitment(true, salt, voter.publicKey)], null)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalForAuthPda,
+        voterRecord: voteRecordPda,
+        voterTokenAccount: voterAta,
+        voter: voter.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([voter])
+      .rpc();
+
+    const created = await program.account["proposal"].fetch(proposalForAuthPda);
+    await new Promise((resolve) => setTimeout(resolve, Math.max(created.votingEnd.toNumber() - Math.floor(Date.now() / 1000), 0) * 1000 + 1200));
+
+    try {
+      await program.methods
+        .revealVote(true, [...salt])
+        .accounts({ proposal: proposalForAuthPda, voterRecord: voteRecordPda, revealer: attacker.publicKey })
+        .signers([attacker])
+        .rpc();
+      assert.fail("Should have rejected reveal by unauthorized signer");
+    } catch (err: any) {
+      assert.include(err.toString(), "NotAuthorizedToReveal");
+      console.log("  ✓ unauthorized reveal rejected");
+    }
+  });
+
+  it("rejects voter-record reuse across proposals", async () => {
+    const reuseVoter = Keypair.generate();
+    const tx = new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: authority.publicKey,
+        toPubkey: reuseVoter.publicKey,
+        lamports: Math.round(0.005 * LAMPORTS_PER_SOL),
+      }),
+    );
+    await provider.sendAndConfirm(tx, []);
+
+    const reuseAta = await createAccount(provider.connection, authority.payer, governanceMint, reuseVoter.publicKey);
+    await mintTo(provider.connection, authority.payer, governanceMint, reuseAta, authority.payer, 250_000_000n);
+
+    const dao = await program.account["dao"].fetch(daoPda);
+    const [proposalA] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), dao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+    await program.methods
+      .createProposal("Proposal A", "Voter record belongs only to this proposal.", new BN(3600), null)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalA,
+        proposerTokenAccount: authorityTokenAta,
+        proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const daoAfterA = await program.account["dao"].fetch(daoPda);
+    const [proposalB] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), daoAfterA.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+    await program.methods
+      .createProposal("Proposal B", "Cross-proposal voter-record substitution must fail.", new BN(3600), null)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalB,
+        proposerTokenAccount: authorityTokenAta,
+        proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [voteRecordForA] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), proposalA.toBuffer(), reuseVoter.publicKey.toBuffer()],
+      program.programId,
+    );
+
+    try {
+      await program.methods
+        .commitVote([...computeCommitment(true, randomSalt(), reuseVoter.publicKey)], null)
+        .accounts({
+          dao: daoPda,
+          proposal: proposalB,
+          voterRecord: voteRecordForA,
+          voterTokenAccount: reuseAta,
+          voter: reuseVoter.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .signers([reuseVoter])
+        .rpc();
+      assert.fail("Should have rejected voter-record reuse across proposals");
+    } catch (err: any) {
+      const msg = err.toString();
+      assert.isTrue(
+        msg.includes("ConstraintSeeds") || msg.includes("seeds constraint"),
+        `unexpected error: ${msg}`,
+      );
+      console.log("  ✓ voter-record reuse across proposals rejected");
+    }
+  });
+
   it("can cancel a proposal during voting", async () => {
     const dao = await program.account["dao"].fetch(daoPda);
     const [cancelPda] = PublicKey.findProgramAddressSync(
@@ -289,6 +540,33 @@ describe("PrivateDAO", () => {
     const p = await program.account["proposal"].fetch(cancelPda);
     assert.isTrue("cancelled" in p.status, "status should be cancelled");
     console.log("  ✓ proposal cancelled successfully");
+  });
+
+  it("rejects zero-value treasury deposit", async () => {
+    const [treasuryPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("treasury"), daoPda.toBuffer()],
+      program.programId,
+    );
+
+    try {
+      await program.methods
+        .depositTreasury(new BN(0))
+        .accounts({
+          dao: daoPda,
+          treasury: treasuryPda,
+          depositor: authority.publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("Should have rejected zero-value deposit");
+    } catch (err: any) {
+      const msg = err.toString();
+      assert.isTrue(
+        msg.includes("InvalidTreasuryAction") || msg.includes("custom program error"),
+        `unexpected error: ${msg}`,
+      );
+      console.log("  ✓ zero-value treasury deposit rejected");
+    }
   });
 
   it("rejects self-delegation", async () => {
@@ -403,6 +681,93 @@ describe("PrivateDAO", () => {
       );
       console.log("  ✓ delegated vote misuse rejected for non-delegatee");
     }
+  });
+
+  it("rejects delegated commit with a delegation record from another proposal", async () => {
+    const dao = await program.account["dao"].fetch(daoPda);
+    const [proposalA] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), dao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal("Delegation source proposal", "Delegation must stay bound to the proposal it was created for.", new BN(3600), null)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalA,
+        proposerTokenAccount: authorityTokenAta,
+        proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const daoAfterA = await program.account["dao"].fetch(daoPda);
+    const [proposalB] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), daoAfterA.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal("Delegation target proposal", "Cross-proposal delegation substitution must fail.", new BN(3600), null)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalB,
+        proposerTokenAccount: authorityTokenAta,
+        proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [delegationForA] = PublicKey.findProgramAddressSync(
+      [Buffer.from("delegation"), proposalA.toBuffer(), voter2.publicKey.toBuffer()],
+      program.programId,
+    );
+
+    await program.methods
+      .delegateVote(voter1.publicKey)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalA,
+        delegation: delegationForA,
+        delegatorTokenAccount: v2Ata,
+        delegator: voter2.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([voter2])
+      .rpc();
+
+    const [voteRecordForB] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), proposalB.toBuffer(), voter1.publicKey.toBuffer()],
+      program.programId,
+    );
+    const delegatedSalt = randomSalt();
+
+    try {
+      await program.methods
+        .commitDelegatedVote([...computeCommitment(true, delegatedSalt, voter1.publicKey)], null)
+        .accounts({
+          dao: daoPda,
+          proposal: proposalB,
+          delegation: delegationForA,
+          voterRecord: voteRecordForB,
+          delegateeTokenAccount: v1Ata,
+          delegatee: voter1.publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .signers([voter1])
+        .rpc();
+      assert.fail("Should have rejected delegated commit using a delegation PDA from another proposal");
+    } catch (err: any) {
+      const msg = err.toString();
+      assert.isTrue(
+        msg.includes("ConstraintSeeds") || msg.includes("WrongProposal") || msg.includes("seeds constraint"),
+        `unexpected error: ${msg}`,
+      );
+    }
+
+    const delegation = await program.account["voteDelegation"].fetch(delegationForA);
+    assert.isFalse(delegation.isUsed, "failed delegated commit must not consume the delegation");
+    console.log("  ✓ delegation record stayed proposal-bound");
   });
 
   it("verifies commitment math — deterministic + vote/salt sensitive", () => {

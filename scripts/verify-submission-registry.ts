@@ -1,0 +1,80 @@
+import fs from "fs";
+import path from "path";
+
+type SubmissionRegistry = {
+  project: string;
+  programId: string;
+  verificationWallet: string;
+  frontend: string;
+  proofCenter: string;
+  judgeMode: string;
+  securityPage: string;
+  youtubePitch: string;
+  androidGuide: string;
+  awardNote: string;
+  packages: Record<string, string[]>;
+  gates: string[];
+  status: Record<string, string>;
+};
+
+function main() {
+  const registryPath = path.resolve("docs/submission-registry.json");
+  const registry = JSON.parse(fs.readFileSync(registryPath, "utf8")) as SubmissionRegistry;
+
+  if (registry.project !== "PrivateDAO") {
+    throw new Error("submission registry project name mismatch");
+  }
+
+  if (!registry.frontend.startsWith("https://x-pact.github.io/PrivateDAO/")) {
+    throw new Error("submission registry frontend URL is unexpected");
+  }
+
+  if (!registry.judgeMode.includes("?page=proof&judge=1")) {
+    throw new Error("submission registry judge mode URL is unexpected");
+  }
+
+  if (registry.programId !== "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx") {
+    throw new Error("submission registry program id mismatch");
+  }
+
+  if (registry.verificationWallet !== "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD") {
+    throw new Error("submission registry verification wallet mismatch");
+  }
+
+  const requiredPackages = ["strategy", "security", "proof", "operations"];
+  for (const pkg of requiredPackages) {
+    const entries = registry.packages[pkg];
+    if (!entries || entries.length === 0) {
+      throw new Error(`submission registry missing package entries for ${pkg}`);
+    }
+    for (const entry of entries) {
+      if (!fs.existsSync(path.resolve(entry))) {
+        throw new Error(`submission registry references missing file: ${entry}`);
+      }
+    }
+  }
+
+  const requiredGates = [
+    "npm run validate:ranger-strategy -- docs/ranger-strategy-config.devnet.json",
+    "npm run verify:strategy-surface",
+    "npm run verify:live-proof",
+    "npm run verify:release-manifest",
+    "npm run verify:review-links",
+    "npm run verify:ops-surface",
+    "npm run verify:submission-registry",
+    "npm run verify:registry-consistency",
+    "npm run verify:generated-artifacts",
+    "npm run verify:review-surface",
+    "npm run verify:all",
+  ];
+
+  for (const gate of requiredGates) {
+    if (!registry.gates.includes(gate)) {
+      throw new Error(`submission registry missing gate: ${gate}`);
+    }
+  }
+
+  console.log("Submission registry verification: PASS");
+}
+
+main();

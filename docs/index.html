@@ -1549,7 +1549,34 @@ body.judge-mode .judge-banner {
   .investor-video-grid { grid-template-columns: 1fr; }
   .award-celebration-card { padding: 28px; }
   .judge-banner { top: 80px; padding: 0 18px; }
-  .judge-banner-card { flex-direction: column; align-items: flex-start; }
+.judge-banner-card { flex-direction: column; align-items: flex-start; }
+}
+
+.surface-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.surface-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px;
+  background: rgba(7, 11, 18, 0.78);
+  color: var(--text2);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.surface-pill strong {
+  color: var(--text);
+  font-size: 12px;
+  letter-spacing: 0.1em;
 }
 </style>
 </head>
@@ -1587,6 +1614,7 @@ body.judge-mode .judge-banner {
         <button class="nav-link" onclick="showPage('migrate',this)">Migrate from Realms</button>
         <button class="nav-link" onclick="showPage('security',this)">Security</button>
         <button class="nav-link" onclick="showPage('awards',this)">Awards</button>
+        <a class="nav-link" href="android-native.md" target="_blank" style="text-decoration:none">Android Native</a>
       </div>
       <button class="wallet-btn" id="walletBtn" onclick="connectWallet()">
         <span class="status-dot" id="statusDot"></span>
@@ -1624,7 +1652,7 @@ body.judge-mode .judge-banner {
         <div class="award-banner-title">1st Place — Superteam Earn</div>
         <p class="award-banner-subtitle">1st Place in the Superteam Poland challenge: Rebuild production backend systems as on-chain Rust programs.</p>
         <div class="award-banner-actions">
-          <button class="award-cta" onclick="showPage('awards', document.querySelectorAll('.nav-link')[4])">View Award Details</button>
+          <button class="award-cta" onclick="showPage('awards', findNavButton('awards'))">View Award Details</button>
           <a class="award-cta secondary" href="awards.md" target="_blank">Open Award Note</a>
         </div>
       </div>
@@ -1656,9 +1684,15 @@ body.judge-mode .judge-banner {
         A working Solana governance product built around commit-reveal voting.
         The tally stays hidden during voting, execution stays timelocked, and treasury actions get explicit recipient and mint checks.
       </p>
+      <div class="surface-strip">
+        <div class="surface-pill"><strong>Web</strong><span>Live governance surface</span></div>
+        <div class="surface-pill"><strong>Android</strong><span>Kotlin native + MWA</span></div>
+        <div class="surface-pill"><strong>On-chain</strong><span>Devnet program live</span></div>
+      </div>
       <div class="hero-actions">
         <button class="btn-primary" onclick="scrollToProposals()">View Live Proposals</button>
-        <button class="btn-ghost" onclick="showPage('protocol', document.querySelectorAll('.nav-link')[1])">How It Works →</button>
+        <button class="btn-ghost" onclick="showPage('protocol', findNavButton('protocol'))">How It Works →</button>
+        <a class="btn-ghost" href="android-native.md" target="_blank" style="text-decoration:none">Android Native ↗</a>
       </div>
     </div>
 
@@ -2009,9 +2043,32 @@ body.judge-mode .judge-banner {
         <a class="award-link" href="?page=proof&judge=1" target="_blank">Judge Mode</a>
         <a class="award-link" href="https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet" target="_blank">Program on Solscan</a>
         <a class="award-link" href="live-proof.md" target="_blank">Live Devnet Proof</a>
+        <a class="award-link" href="devnet-release-manifest.md" target="_blank">Release Manifest</a>
         <a class="award-link" href="https://youtu.be/KVNFZXHNZTQ" target="_blank">YouTube Pitch</a>
         <a class="award-link" href="awards.md" target="_blank">Award Note</a>
         <a class="award-link" href="strategy.md" target="_blank">Repo Strategy</a>
+        <a class="award-link" href="ranger-strategy-documentation.md" target="_blank">Ranger Strategy</a>
+        <a class="award-link" href="strategy-blueprint.md" target="_blank">Strategy Blueprint</a>
+        <a class="award-link" href="strategy-adaptor-interface.md" target="_blank">Adaptor Interface</a>
+        <a class="award-link" href="strategy-operations.md" target="_blank">Strategy Ops</a>
+        <a class="award-link" href="ranger-submission-checklist.md" target="_blank">Ranger Checklist</a>
+        <a class="award-link" href="risk-policy.md" target="_blank">Risk Policy</a>
+        <a class="award-link" href="performance-evidence.md" target="_blank">Performance Evidence</a>
+        <a class="award-link" href="submission-dossier.md" target="_blank">Submission Dossier</a>
+        <a class="award-link" href="submission-registry.json" target="_blank">Submission Registry</a>
+        <a class="award-link" href="competition-readiness.md" target="_blank">Competition Readiness</a>
+        <a class="award-link" href="audit-packet.generated.md" target="_blank">Audit Packet</a>
+        <a class="award-link" href="review-attestation.generated.json" target="_blank">Review Attestation</a>
+        <a class="award-link" href="production-operations.md" target="_blank">Production Ops</a>
+        <a class="award-link" href="monitoring-alerts.md" target="_blank">Monitoring</a>
+        <a class="award-link" href="incident-response.md" target="_blank">Incident Response</a>
+        <a class="award-link" href="mainnet-cutover-runbook.md" target="_blank">Cutover Runbook</a>
+        <a class="award-link" href="operator-checklist.md" target="_blank">Operator Checklist</a>
+        <a class="award-link" href="risk-register.md" target="_blank">Risk Register</a>
+        <a class="award-link" href="audit-handoff.md" target="_blank">Audit Handoff</a>
+        <a class="award-link" href="reviewer-surface-map.md" target="_blank">Reviewer Map</a>
+        <a class="award-link" href="judge-technical-audit.md" target="_blank">Judge Audit</a>
+        <a class="award-link" href="security-review.md" target="_blank">Security Review</a>
       </div>
     </div>
 
@@ -2146,6 +2203,10 @@ body.judge-mode .judge-banner {
           <div class="investor-video-copy">
             <div>Submission draft: <a class="award-link" href="../SUBMISSION_FINAL.md" target="_blank">Submission Final</a></div>
             <div style="margin-top:12px">Competition roadmap: <a class="award-link" href="competition-roadmap.md" target="_blank">Roadmap</a></div>
+            <div style="margin-top:12px">Ranger strategy doc: <a class="award-link" href="ranger-strategy-documentation.md" target="_blank">Strategy Documentation</a></div>
+            <div style="margin-top:12px">Ranger checklist: <a class="award-link" href="ranger-submission-checklist.md" target="_blank">Submission Checklist</a></div>
+            <div style="margin-top:12px">Risk policy: <a class="award-link" href="risk-policy.md" target="_blank">Risk Policy</a></div>
+            <div style="margin-top:12px">Judge audit note: <a class="award-link" href="judge-technical-audit.md" target="_blank">Technical Audit</a></div>
             <div style="margin-top:12px">Main Track memo: <a class="award-link" href="ranger-main-track.md" target="_blank">Main Track</a></div>
             <div style="margin-top:12px">Drift Track memo: <a class="award-link" href="ranger-drift-track.md" target="_blank">Drift Track</a></div>
           </div>
@@ -2361,7 +2422,190 @@ execute() → CPI
 <div class="page" id="page-security">
 <section class="section" style="padding-top:140px">
   <div class="container">
-    <div class="section-tag reveal">THREAT MODEL</div>
+    <div class="section-tag reveal">SECURITY</div>
+    <h2 class="section-heading reveal">Make private governance<br>defensible, not cosmetic.</h2>
+
+    <div class="award-detail-card reveal">
+      <div class="award-detail-head">
+        <div>
+          <div class="award-detail-title">Why PrivateDAO Exists</div>
+          <p class="award-detail-copy">
+            Public governance leaks intent too early. That creates whale pressure, vote buying, treasury signaling, and execution manipulation around visible live tallies. PrivateDAO exists to resist those failure modes through commit-reveal voting, state-machine governance, timelocked execution, strict treasury validation, and replay-resistant lifecycle checks.
+          </p>
+        </div>
+        <div class="award-pill">SECURITY FIRST</div>
+      </div>
+    </div>
+
+    <div class="award-grid reveal" style="margin-top:24px">
+      <div class="award-meta-card">
+        <div class="award-meta-card-label">CORE REQUIREMENT</div>
+        <div class="award-meta-card-value">Exploit resistance is part of the product, not optional hardening.</div>
+      </div>
+      <div class="award-meta-card">
+        <div class="award-meta-card-label">WHY IT MATTERS</div>
+        <div class="award-meta-card-value">If lifecycle, signer binding, or treasury execution can be manipulated, privacy becomes cosmetic rather than protective.</div>
+      </div>
+      <div class="award-meta-card">
+        <div class="award-meta-card-label">REVIEWER PATH</div>
+        <div class="award-meta-card-value">Two minutes from this page. Five minutes from the repository.</div>
+      </div>
+    </div>
+
+    <div class="award-detail-card reveal" style="margin-top:24px">
+      <div class="award-detail-head">
+        <div>
+          <div class="award-detail-title">Verified Protections</div>
+          <p class="award-detail-copy">
+            These are not abstract claims. They are protocol-level protections tied to tests, bindings, and failure-path assertions already present in the repository.
+          </p>
+        </div>
+        <div class="award-pill">TESTED</div>
+      </div>
+      <div class="proposal-command-grid">
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">LIFECYCLE SAFETY</div>
+          <div style="color:var(--text2);line-height:1.8">No reveal before commit. No finalize before reveal end. No execute before timelock. No duplicate execute.</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">TREASURY SAFETY</div>
+          <div style="color:var(--text2);line-height:1.8">Recipient, mint, ownership, and treasury source wiring are validated. Miswired token paths are rejected.</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">COMMIT-REVEAL INTEGRITY</div>
+          <div style="color:var(--text2);line-height:1.8">Invalid reveal payloads, mismatched salts, wrong signers, and cross-proposal vote-record misuse are rejected.</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">ACCOUNT BINDING</div>
+          <div style="color:var(--text2);line-height:1.8">DAO/proposal/delegation/treasury bindings are exact. Valid-looking but semantically wrong accounts are rejected.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="award-detail-card reveal" style="margin-top:24px">
+      <div class="award-detail-head">
+        <div>
+          <div class="award-detail-title">Security Evidence</div>
+          <p class="award-detail-copy">
+            Read the formal reasoning artifacts directly. These documents map real threats to real mitigations and real repository coverage.
+          </p>
+        </div>
+        <div class="award-pill">FORMAL DOCS</div>
+      </div>
+      <div class="award-links">
+        <a class="award-link" href="security-review.md" target="_blank">Read Security Review</a>
+        <a class="award-link" href="threat-model.md" target="_blank">Threat Model</a>
+        <a class="award-link" href="security-coverage-map.md" target="_blank">Coverage Map</a>
+        <a class="award-link" href="failure-modes.md" target="_blank">Failure Modes</a>
+        <a class="award-link" href="replay-analysis.md" target="_blank">Replay Analysis</a>
+        <a class="award-link" href="production-operations.md" target="_blank">Production Ops</a>
+        <a class="award-link" href="monitoring-alerts.md" target="_blank">Monitoring</a>
+        <a class="award-link" href="incident-response.md" target="_blank">Incident Response</a>
+        <a class="award-link" href="devnet-release-manifest.md" target="_blank">Release Manifest</a>
+        <a class="award-link" href="submission-dossier.md" target="_blank">Submission Dossier</a>
+        <a class="award-link" href="submission-registry.json" target="_blank">Submission Registry</a>
+        <a class="award-link" href="competition-readiness.md" target="_blank">Competition Readiness</a>
+        <a class="award-link" href="audit-packet.generated.md" target="_blank">Audit Packet</a>
+        <a class="award-link" href="review-attestation.generated.json" target="_blank">Review Attestation</a>
+        <a class="award-link" href="verification-gates.md" target="_blank">Verification Gates</a>
+        <a class="award-link" href="reviewer-fast-path.md" target="_blank">Reviewer Fast Path</a>
+        <a class="award-link" href="independent-verification.md" target="_blank">Independent Verification</a>
+        <a class="award-link" href="mainnet-cutover-runbook.md" target="_blank">Cutover Runbook</a>
+        <a class="award-link" href="operator-checklist.md" target="_blank">Operator Checklist</a>
+        <a class="award-link" href="risk-register.md" target="_blank">Risk Register</a>
+        <a class="award-link" href="audit-handoff.md" target="_blank">Audit Handoff</a>
+        <a class="award-link" href="reviewer-surface-map.md" target="_blank">Reviewer Map</a>
+      </div>
+    </div>
+
+    <div class="award-detail-card reveal" style="margin-top:24px">
+      <div class="award-detail-head">
+        <div>
+          <div class="award-detail-title">Verified Protection Checklist</div>
+          <p class="award-detail-copy">
+            This is the shortest path for a reviewer to understand what the protocol actively rejects today.
+          </p>
+        </div>
+        <div class="award-pill">CHECKLIST</div>
+      </div>
+      <div class="award-grid" style="margin-top:18px">
+        <div class="award-meta-card"><div class="award-meta-card-value">✅ Rejects reveal before commit</div></div>
+        <div class="award-meta-card"><div class="award-meta-card-value">✅ Rejects invalid reveal payload</div></div>
+        <div class="award-meta-card"><div class="award-meta-card-value">✅ Rejects signer misuse</div></div>
+        <div class="award-meta-card"><div class="award-meta-card-value">✅ Rejects treasury miswiring</div></div>
+        <div class="award-meta-card"><div class="award-meta-card-value">✅ Rejects cross-proposal delegation misuse</div></div>
+        <div class="award-meta-card"><div class="award-meta-card-value">✅ Rejects duplicate execution</div></div>
+        <div class="award-meta-card"><div class="award-meta-card-value">✅ Preserves state on failed finalize and execute</div></div>
+        <div class="award-meta-card"><div class="award-meta-card-value">✅ Enforces exact proposal, DAO, delegation, and treasury bindings</div></div>
+      </div>
+    </div>
+
+    <div class="award-detail-card reveal" style="margin-top:24px">
+      <div class="award-detail-head">
+        <div>
+          <div class="award-detail-title">Architecture And Trust Model</div>
+          <p class="award-detail-copy">
+            The protocol is not a decorative frontend. Security depends on the on-chain state machine, wallet signatures, exact account binding, and treasury PDA enforcement.
+          </p>
+        </div>
+        <div class="award-pill">ON-CHAIN</div>
+      </div>
+      <div class="proposal-command-grid">
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">LIFECYCLE</div>
+          <code>Create Proposal
+→ Commit
+→ Reveal
+→ Finalize
+→ Timelocked Execute</code>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">TRUST SURFACE</div>
+          <code>Wallet signer
+→ Proposal accounts
+→ Voter records
+→ Delegation records
+→ Treasury PDA
+→ On-chain program</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="award-detail-card reveal" style="margin-top:24px">
+      <div class="award-detail-head">
+        <div>
+          <div class="award-detail-title">Known Limitations</div>
+          <p class="award-detail-copy">
+            Reviewer confidence increases when limits are explicit. These are current boundaries, not hidden assumptions.
+          </p>
+        </div>
+        <div class="award-pill">HONEST LIMITS</div>
+      </div>
+      <div class="proposal-command-grid">
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">CURRENT BOUNDARIES</div>
+          <div style="color:var(--text2);line-height:1.8">
+            Devnet-first deployment.<br>
+            Direct-commit versus delegation overlap is still guarded operationally in product surfaces.<br>
+            Commit-reveal hides vote content, not transaction timing metadata.<br>
+            `CustomCPI` remains event-only.<br>
+            Mainnet audit completeness is not claimed.
+          </div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">REVIEW FILES</div>
+          <div style="color:var(--text2);line-height:1.8">
+            `docs/security-review.md`<br>
+            `docs/threat-model.md`<br>
+            `docs/security-coverage-map.md`<br>
+            `docs/failure-modes.md`<br>
+            `docs/replay-analysis.md`
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-tag reveal" style="margin-top:60px">THREAT MODEL</div>
     <h2 class="section-heading reveal">Threats reduced by<br>specific on-chain checks.</h2>
     <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden" class="reveal">
       <table class="sec-table">
@@ -2555,6 +2799,7 @@ execute() → CPI
         <a href="https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet" class="footer-link" target="_blank">Solscan</a>
         <a href="https://x-pact.github.io/PrivateDAO/" class="footer-link" target="_blank">Live App</a>
         <a href="?page=proof" class="footer-link">Proof Center</a>
+        <a href="?page=security" class="footer-link">Security</a>
         <a href="awards.md" class="footer-link" target="_blank">Awards Note</a>
         <a href="mailto:fahd.kotb@tuta.io" class="footer-link">Owner Email</a>
         <a href="https://t.me/Fahdkotb" class="footer-link" target="_blank">Telegram</a>
@@ -2754,6 +2999,12 @@ function showPage(page, btn) {
   syncUrlState();
   window.scrollTo({top:0, behavior:'smooth'});
   setTimeout(observeReveal, 100);
+}
+
+function findNavButton(page) {
+  return Array.from(document.querySelectorAll('.nav-link')).find(link => (
+    link.tagName === 'BUTTON' && link.getAttribute('onclick') && link.getAttribute('onclick').includes(`showPage('${page}'`)
+  )) || null;
 }
 
 // ── Scroll to proposals ─────────────────────────────────
@@ -3446,6 +3697,11 @@ async function commitSelectedVoteInWallet() {
   if (!voterTokenInfo) {
     throw new Error('Governance token account was not found for the connected wallet');
   }
+  const delegationPk = deriveDelegationPda(currentSelectedProposal.pubkey, wallet);
+  const existingDelegation = await connection.getAccountInfo(delegationPk, 'confirmed');
+  if (existingDelegation) {
+    throw new Error('This wallet already delegated voting weight for the selected proposal. Direct commit is blocked to avoid overlap.');
+  }
 
   const voterRecordPk = deriveVoteRecordPda(currentSelectedProposal.pubkey, wallet);
   const data = concatBytes(
@@ -3570,6 +3826,11 @@ async function submitDelegateVoteInWallet() {
     if (!delegatorTokenInfo) {
       throw new Error('Governance token account was not found for the connected wallet');
     }
+    const directVoteRecordPk = deriveVoteRecordPda(proposalPubkey, wallet);
+    const directVoteRecord = await connection.getAccountInfo(directVoteRecordPk, 'confirmed');
+    if (directVoteRecord) {
+      throw new Error('This wallet already has a direct vote record for the selected proposal. Delegation is blocked to avoid overlap.');
+    }
     const delegationPk = deriveDelegationPda(proposalPubkey, wallet);
     const data = concatBytes(
       await anchorMethodDiscriminator('delegate_vote'),
@@ -3610,6 +3871,11 @@ async function submitDelegatedCommitInWallet() {
     const delegateeTokenInfo = await connection.getAccountInfo(delegateeTokenAccount, 'confirmed');
     if (!delegateeTokenInfo) {
       throw new Error('Governance token account was not found for the connected wallet');
+    }
+    const delegatorDirectVoteRecordPk = deriveVoteRecordPda(currentSelectedProposal.pubkey, delegatorPubkey);
+    const delegatorDirectVoteRecord = await connection.getAccountInfo(delegatorDirectVoteRecordPk, 'confirmed');
+    if (delegatorDirectVoteRecord) {
+      throw new Error('The delegator already has a direct vote record for the selected proposal. Delegated commit is blocked to avoid overlap.');
     }
     const delegationPk = deriveDelegationPda(currentSelectedProposal.pubkey, delegatorPubkey);
     const voterRecordPk = deriveVoteRecordPda(currentSelectedProposal.pubkey, wallet);

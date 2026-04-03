@@ -13,6 +13,25 @@ The next competitive objective is not vague visibility. It is to keep targeting 
 
 These are the highest-leverage improvements for future 1st Place submissions.
 
+### 0. Strategy-track fit before polish
+
+For Ranger-style competitions, the biggest risk is not weak UI. It is weak track fit.
+
+The project must be presented as:
+
+- a governance and risk-control layer for a real strategy
+
+not as:
+
+- a generic private DAO product hoping to be interpreted as a vault strategy
+
+That distinction directly affects score on:
+
+- strategy quality
+- production viability
+- novelty
+- risk management
+
 ### 1. Wallet-connected proposal lifecycle in the live frontend
 
 The docs surface should not stop at reading proposals. It should let a reviewer:
@@ -142,5 +161,6 @@ For future top-tier submissions, every package should include:
 5. 60 to 90 second video
 6. short security note
 7. track-specific narrative
+8. explicit statement of what is implemented now versus what belongs to the strategy layer
 
 That is the minimum surface for consistently competing for 1st Place instead of simply being shortlisted.

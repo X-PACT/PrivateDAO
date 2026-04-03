@@ -13,7 +13,7 @@
  * Usage: yarn ts-node scripts/execute.ts --proposal <PDA>
  */
 import * as anchor from "@coral-xyz/anchor";
-import { PublicKey, SystemProgram, Keypair } from "@solana/web3.js";
+import { PublicKey, SystemProgram } from "@solana/web3.js";
 import {
   getAssociatedTokenAddress,
   TOKEN_PROGRAM_ID,
@@ -70,10 +70,9 @@ async function main() {
   );
 
   // Figure out account values for the treasury action
-  const dummy = Keypair.generate().publicKey;
-  let treasuryRecipient      = dummy;
-  let treasuryTokenAccount   = dummy;
-  let recipientTokenAccount  = dummy;
+  let treasuryRecipient      = treasuryPda;
+  let treasuryTokenAccount   = treasuryPda;
+  let recipientTokenAccount  = treasuryPda;
   let actionType = "none";
 
   if (proposal.treasuryAction) {

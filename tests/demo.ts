@@ -438,7 +438,7 @@ describe("demo", () => {
         dao: daoPda, proposal: proposal1Pda,
         treasury: treasuryPda,
         treasuryRecipient: recipient.publicKey,
-        // For SendSol actions, these token accounts are unused — pass treasury as dummy
+        // For SendSol actions, these token account slots are unused — pass treasury.
         treasuryTokenAccount: treasuryPda,
         recipientTokenAccount: treasuryPda,
         executor: payer.publicKey,

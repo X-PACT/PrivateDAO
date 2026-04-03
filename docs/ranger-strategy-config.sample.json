@@ -1,0 +1,30 @@
+{
+  "name": "PrivateDAO Governance-Controlled USDC Strategy",
+  "trackTargets": ["main-track", "drift-side-track"],
+  "baseAsset": "USDC",
+  "targetApyPercent": 12,
+  "tenorMonths": 3,
+  "rollingTenor": true,
+  "yieldSources": ["basis", "delta_neutral", "funding_rate"],
+  "leverageHealthRateFloor": 1.1,
+  "driftIntegrated": true,
+  "onChainVerification": {
+    "walletAddress": "REPLACE_WITH_REAL_HACKATHON_WALLET",
+    "vaultAddress": "",
+    "buildWindowVerified": false
+  },
+  "riskManagement": {
+    "maxDrawdownPercent": 8,
+    "maxPositionPercent": 25,
+    "maxVenueExposurePercent": 45,
+    "rebalanceCadence": "daily-with-emergency-override",
+    "emergencyStop": true
+  },
+  "evidence": {
+    "livePerformanceProvided": false,
+    "backtestProvided": true,
+    "strategyDocumentationProvided": true,
+    "pitchVideoProvided": true,
+    "codeRepositoryProvided": true
+  }
+}

@@ -278,7 +278,7 @@ describe("Full flow", () => {
         dao: daoPda, proposal: proposalPda,
         treasury: treasuryPda,
         treasuryRecipient: recipient.publicKey,
-        // For SendSol actions, pass treasury as dummy for the two token accounts
+        // For SendSol actions, these two token account slots are unused. Reuse treasury.
         treasuryTokenAccount:  treasuryPda,
         recipientTokenAccount: treasuryPda,
         executor: payer.publicKey,
@@ -1048,6 +1048,9 @@ describe("Full flow", () => {
       assert.include(err.toString(), "RecipientOwnerMismatch");
     }
 
+    const proposalAfterOwnerFailure = await program.account["proposal"].fetch(proposalPda);
+    assert.isFalse(proposalAfterOwnerFailure.isExecuted, "failed token execution must not set isExecuted");
+
     try {
       await program.methods
         .executeProposal()
@@ -1066,6 +1069,77 @@ describe("Full flow", () => {
       assert.fail("execute must reject duplicate token accounts");
     } catch (err: any) {
       assert.include(err.toString(), "DuplicateTokenAccounts");
+    }
+
+    const proposalAfterDuplicateFailure = await program.account["proposal"].fetch(proposalPda);
+    assert.isFalse(proposalAfterDuplicateFailure.isExecuted, "duplicate-account failure must leave proposal unexecuted");
+
+    const wrongMint = await createMint(provider.connection, payer, payer.publicKey, null, 6);
+    const wrongMintRecipientTokenAccount = await createAccount(provider.connection, payer, wrongMint, recipient.publicKey);
+
+    try {
+      await program.methods
+        .executeProposal()
+        .accounts({
+          dao: daoPda,
+          proposal: proposalPda,
+          treasury: treasuryPda,
+          treasuryRecipient: recipient.publicKey,
+          treasuryTokenAccount,
+          recipientTokenAccount: wrongMintRecipientTokenAccount,
+          executor: payer.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("execute must reject recipient token mint mismatch");
+    } catch (err: any) {
+      assert.include(err.toString(), "InvalidTokenMint");
+    }
+
+    const wrongTreasuryMintAccount = await createAccount(provider.connection, payer, wrongMint, treasuryPda, true);
+
+    try {
+      await program.methods
+        .executeProposal()
+        .accounts({
+          dao: daoPda,
+          proposal: proposalPda,
+          treasury: treasuryPda,
+          treasuryRecipient: recipient.publicKey,
+          treasuryTokenAccount: wrongTreasuryMintAccount,
+          recipientTokenAccount,
+          executor: payer.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("execute must reject treasury token mint mismatch");
+    } catch (err: any) {
+      assert.include(err.toString(), "InvalidTokenMint");
+    }
+
+    const payerOwnedSourceToken = await createAccount(provider.connection, payer, mint, payer.publicKey);
+    await mintTo(provider.connection, payer, mint, payerOwnedSourceToken, payer, 100_000_000n);
+
+    try {
+      await program.methods
+        .executeProposal()
+        .accounts({
+          dao: daoPda,
+          proposal: proposalPda,
+          treasury: treasuryPda,
+          treasuryRecipient: recipient.publicKey,
+          treasuryTokenAccount: payerOwnedSourceToken,
+          recipientTokenAccount,
+          executor: payer.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("execute must reject a treasury token source not owned by the treasury PDA");
+    } catch (err: any) {
+      assert.include(err.toString(), "InvalidTreasuryTokenAuthority");
     }
 
     const recipientBefore = await provider.connection.getTokenAccountBalance(recipientTokenAccount);
@@ -1090,5 +1164,1008 @@ describe("Full flow", () => {
       100_000_000,
       "token treasury execution should succeed only with the configured recipient token account",
     );
+  }).timeout(120_000);
+
+  it("rejects finalize with a mismatched dao context and preserves proposal state", async () => {
+    async function fundWallet(pubkey: PublicKey, sol: number): Promise<void> {
+      const tx = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: payer.publicKey,
+          toPubkey: pubkey,
+          lamports: Math.round(sol * LAMPORTS_PER_SOL),
+        }),
+      );
+      await provider.sendAndConfirm(tx, []);
+    }
+
+    const voter = Keypair.generate();
+    await fundWallet(voter.publicKey, 0.01);
+
+    const mint = await createMint(provider.connection, payer, payer.publicKey, null, 6);
+    const payerTokenAta = getAssociatedTokenAddressSync(mint, payer.publicKey);
+    await provider.sendAndConfirm(
+      new Transaction().add(
+        createAssociatedTokenAccountInstruction(
+          payer.publicKey,
+          payerTokenAta,
+          payer.publicKey,
+          mint,
+        ),
+      ),
+      [],
+    );
+    await mintTo(provider.connection, payer, mint, payerTokenAta, payer, 1_000_000n);
+    const voterAta = await createAccount(provider.connection, payer, mint, voter.publicKey);
+    await mintTo(provider.connection, payer, mint, voterAta, payer, 1_000_000_000n);
+
+    const primaryDaoName = `FinalizeBinding-${Date.now()}`;
+    const secondaryDaoName = `${primaryDaoName}-other`;
+    const [daoPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("dao"), payer.publicKey.toBuffer(), Buffer.from(primaryDaoName)],
+      program.programId,
+    );
+    const [wrongDaoPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("dao"), payer.publicKey.toBuffer(), Buffer.from(secondaryDaoName)],
+      program.programId,
+    );
+
+    for (const daoName of [primaryDaoName, secondaryDaoName]) {
+      const [dao] = PublicKey.findProgramAddressSync(
+        [Buffer.from("dao"), payer.publicKey.toBuffer(), Buffer.from(daoName)],
+        program.programId,
+      );
+      await program.methods
+        .initializeDao(
+          daoName,
+          51,
+          new BN(0),
+          new BN(3),
+          new BN(1),
+          { tokenWeighted: {} },
+        )
+        .accounts({
+          dao,
+          governanceToken: mint,
+          authority: payer.publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+    }
+
+    const [proposalPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), Buffer.alloc(8)],
+      program.programId,
+    );
+    await program.methods
+      .createProposal(
+        "Finalize binding guard",
+        "Finalize should reject mismatched DAO context.",
+        new BN(3),
+        null,
+      )
+      .accounts({
+        dao: daoPda,
+        proposal: proposalPda,
+        proposerTokenAccount: payerTokenAta,
+        proposer: payer.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const voteSalt = rng();
+    const [votePda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), proposalPda.toBuffer(), voter.publicKey.toBuffer()],
+      program.programId,
+    );
+    await program.methods
+      .commitVote([...commitment(true, voteSalt, voter.publicKey)], null)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalPda,
+        voterRecord: votePda,
+        voterTokenAccount: voterAta,
+        voter: voter.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([voter])
+      .rpc();
+
+    const afterCommit = await program.account["proposal"].fetch(proposalPda);
+    await waitForUnixTimestamp(provider.connection, afterCommit.votingEnd.toNumber(), "finalize_binding_voting_end");
+
+    await program.methods
+      .revealVote(true, [...voteSalt])
+      .accounts({ proposal: proposalPda, voterRecord: votePda, revealer: voter.publicKey })
+      .signers([voter])
+      .rpc();
+
+    const afterReveal = await program.account["proposal"].fetch(proposalPda);
+    await waitForUnixTimestamp(provider.connection, afterReveal.revealEnd.toNumber(), "finalize_binding_reveal_end");
+
+    try {
+      await program.methods
+        .finalizeProposal()
+        .accounts({ dao: wrongDaoPda, proposal: proposalPda, finalizer: voter.publicKey })
+        .signers([voter])
+        .rpc();
+      assert.fail("finalize must reject mismatched dao/proposal pairing");
+    } catch (err: any) {
+      const msg = err.toString();
+      assert.isTrue(
+        msg.includes("ConstraintSeeds") || msg.includes("ConstraintHasOne") || msg.includes("has one constraint"),
+        `unexpected error: ${msg}`,
+      );
+    }
+
+    const proposalAfterFailedFinalize = await program.account["proposal"].fetch(proposalPda);
+    assert.isTrue("voting" in proposalAfterFailedFinalize.status, "failed finalize must leave proposal in voting state");
+    assert.equal(proposalAfterFailedFinalize.executionUnlocksAt.toNumber(), 0, "failed finalize must not set execute unlock");
+
+    await program.methods
+      .finalizeProposal()
+      .accounts({ dao: daoPda, proposal: proposalPda, finalizer: voter.publicKey })
+      .signers([voter])
+      .rpc();
+
+    const finalized = await program.account["proposal"].fetch(proposalPda);
+    assert.isTrue("passed" in finalized.status, "proposal should finalize once the correct dao context is supplied");
+  }).timeout(120_000);
+
+  it("rejects execute with a treasury PDA from another dao and leaves execution state unchanged", async () => {
+    async function fundWallet(pubkey: PublicKey, sol: number): Promise<void> {
+      const tx = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: payer.publicKey,
+          toPubkey: pubkey,
+          lamports: Math.round(sol * LAMPORTS_PER_SOL),
+        }),
+      );
+      await provider.sendAndConfirm(tx, []);
+    }
+
+    const voter = Keypair.generate();
+    const recipient = Keypair.generate();
+    await fundWallet(voter.publicKey, 0.01);
+    await fundWallet(recipient.publicKey, 0.01);
+
+    const mint = await createMint(provider.connection, payer, payer.publicKey, null, 6);
+    const payerTokenAta = getAssociatedTokenAddressSync(mint, payer.publicKey);
+    await provider.sendAndConfirm(
+      new Transaction().add(
+        createAssociatedTokenAccountInstruction(
+          payer.publicKey,
+          payerTokenAta,
+          payer.publicKey,
+          mint,
+        ),
+      ),
+      [],
+    );
+    await mintTo(provider.connection, payer, mint, payerTokenAta, payer, 1_000_000n);
+    const voterAta = await createAccount(provider.connection, payer, mint, voter.publicKey);
+    await mintTo(provider.connection, payer, mint, voterAta, payer, 1_000_000_000n);
+
+    const primaryDaoName = `ExecuteBinding-${Date.now()}`;
+    const secondaryDaoName = `${primaryDaoName}-other`;
+    const [daoPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("dao"), payer.publicKey.toBuffer(), Buffer.from(primaryDaoName)],
+      program.programId,
+    );
+    const [wrongDaoPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("dao"), payer.publicKey.toBuffer(), Buffer.from(secondaryDaoName)],
+      program.programId,
+    );
+
+    await program.methods
+      .initializeDao(
+        primaryDaoName,
+        51,
+        new BN(0),
+        new BN(3),
+        new BN(1),
+        { tokenWeighted: {} },
+      )
+      .accounts({
+        dao: daoPda,
+        governanceToken: mint,
+        authority: payer.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    await program.methods
+      .initializeDao(
+        secondaryDaoName,
+        51,
+        new BN(0),
+        new BN(3),
+        new BN(1),
+        { tokenWeighted: {} },
+      )
+      .accounts({
+        dao: wrongDaoPda,
+        governanceToken: mint,
+        authority: payer.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [treasuryPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("treasury"), daoPda.toBuffer()],
+      program.programId,
+    );
+    const [wrongTreasuryPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("treasury"), wrongDaoPda.toBuffer()],
+      program.programId,
+    );
+
+    await provider.sendAndConfirm(
+      new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: payer.publicKey,
+          toPubkey: treasuryPda,
+          lamports: TREASURY_SEED_LAMPORTS,
+        }),
+      ),
+      [],
+    );
+    await provider.sendAndConfirm(
+      new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: payer.publicKey,
+          toPubkey: wrongTreasuryPda,
+          lamports: TREASURY_SEED_LAMPORTS,
+        }),
+      ),
+      [],
+    );
+
+    const [proposalPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), Buffer.alloc(8)],
+      program.programId,
+    );
+    await program.methods
+      .createProposal(
+        "Execute treasury binding guard",
+        "Treasury PDA must belong to the same DAO as the proposal.",
+        new BN(3),
+        {
+          actionType: { sendSol: {} },
+          amountLamports: new BN(EXECUTE_LAMPORTS),
+          recipient: recipient.publicKey,
+          tokenMint: null,
+        },
+      )
+      .accounts({
+        dao: daoPda,
+        proposal: proposalPda,
+        proposerTokenAccount: payerTokenAta,
+        proposer: payer.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const voteSalt = rng();
+    const [votePda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), proposalPda.toBuffer(), voter.publicKey.toBuffer()],
+      program.programId,
+    );
+    await program.methods
+      .commitVote([...commitment(true, voteSalt, voter.publicKey)], null)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalPda,
+        voterRecord: votePda,
+        voterTokenAccount: voterAta,
+        voter: voter.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([voter])
+      .rpc();
+
+    const afterCommit = await program.account["proposal"].fetch(proposalPda);
+    await waitForUnixTimestamp(provider.connection, afterCommit.votingEnd.toNumber(), "execute_binding_voting_end");
+
+    await program.methods
+      .revealVote(true, [...voteSalt])
+      .accounts({ proposal: proposalPda, voterRecord: votePda, revealer: voter.publicKey })
+      .signers([voter])
+      .rpc();
+
+    const afterReveal = await program.account["proposal"].fetch(proposalPda);
+    await waitForUnixTimestamp(provider.connection, afterReveal.revealEnd.toNumber(), "execute_binding_reveal_end");
+
+    await program.methods
+      .finalizeProposal()
+      .accounts({ dao: daoPda, proposal: proposalPda, finalizer: voter.publicKey })
+      .signers([voter])
+      .rpc();
+
+    const finalized = await program.account["proposal"].fetch(proposalPda);
+    await waitForUnixTimestamp(provider.connection, finalized.executionUnlocksAt.toNumber(), "execute_binding_unlock");
+
+    try {
+      await program.methods
+        .executeProposal()
+        .accounts({
+          dao: daoPda,
+          proposal: proposalPda,
+          treasury: wrongTreasuryPda,
+          treasuryRecipient: recipient.publicKey,
+          treasuryTokenAccount: wrongTreasuryPda,
+          recipientTokenAccount: wrongTreasuryPda,
+          executor: recipient.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .signers([recipient])
+        .rpc();
+      assert.fail("execute must reject a treasury PDA that belongs to another dao");
+    } catch (err: any) {
+      assert.include(err.toString(), "ConstraintSeeds");
+    }
+
+    const proposalAfterFailedExecute = await program.account["proposal"].fetch(proposalPda);
+    assert.isFalse(proposalAfterFailedExecute.isExecuted, "failed execute must not set isExecuted");
+    assert.isTrue("passed" in proposalAfterFailedExecute.status, "failed execute must not mutate passed status");
+
+    const treasuryBefore = await provider.connection.getBalance(treasuryPda);
+    const recipientBefore = await provider.connection.getBalance(recipient.publicKey);
+
+    await program.methods
+      .executeProposal()
+      .accounts({
+        dao: daoPda,
+        proposal: proposalPda,
+        treasury: treasuryPda,
+        treasuryRecipient: recipient.publicKey,
+        treasuryTokenAccount: treasuryPda,
+        recipientTokenAccount: treasuryPda,
+        executor: recipient.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([recipient])
+      .rpc();
+
+    const proposalAfterSuccess = await program.account["proposal"].fetch(proposalPda);
+    const treasuryAfter = await provider.connection.getBalance(treasuryPda);
+    const recipientAfter = await provider.connection.getBalance(recipient.publicKey);
+
+    assert.isTrue(proposalAfterSuccess.isExecuted, "correct treasury binding should allow execution");
+    assert.equal(treasuryBefore - treasuryAfter, EXECUTE_LAMPORTS, "treasury delta must match executed SOL amount");
+    assert.isAtLeast(recipientAfter - recipientBefore, EXECUTE_LAMPORTS, "recipient must receive the executed SOL amount");
+  }).timeout(120_000);
+
+  it("enforces exact before/after phase boundaries for commit, reveal, finalize, and execute", async () => {
+    async function fundWallet(pubkey: PublicKey, sol: number): Promise<void> {
+      const tx = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: payer.publicKey,
+          toPubkey: pubkey,
+          lamports: Math.round(sol * LAMPORTS_PER_SOL),
+        }),
+      );
+      await provider.sendAndConfirm(tx, []);
+    }
+
+    const [alice, bob, recipient] = Array.from({ length: 3 }, () => Keypair.generate());
+    for (const wallet of [alice, bob, recipient]) {
+      await fundWallet(wallet.publicKey, 0.01);
+    }
+
+    const mint = await createMint(provider.connection, payer, payer.publicKey, null, 6);
+    const payerTokenAta = getAssociatedTokenAddressSync(mint, payer.publicKey);
+    await provider.sendAndConfirm(
+      new Transaction().add(
+        createAssociatedTokenAccountInstruction(
+          payer.publicKey,
+          payerTokenAta,
+          payer.publicKey,
+          mint,
+        ),
+      ),
+      [],
+    );
+    await mintTo(provider.connection, payer, mint, payerTokenAta, payer, 1_000_000n);
+    const aliceAta = await createAccount(provider.connection, payer, mint, alice.publicKey);
+    const bobAta = await createAccount(provider.connection, payer, mint, bob.publicKey);
+    await mintTo(provider.connection, payer, mint, aliceAta, payer, 1_000_000_000n);
+    await mintTo(provider.connection, payer, mint, bobAta, payer, 1_000_000_000n);
+
+    const daoName = `Boundary-${Date.now()}`;
+    const [daoPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("dao"), payer.publicKey.toBuffer(), Buffer.from(daoName)],
+      program.programId,
+    );
+    const [treasuryPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("treasury"), daoPda.toBuffer()],
+      program.programId,
+    );
+    await program.methods
+      .initializeDao(
+        daoName,
+        51,
+        new BN(0),
+        new BN(3),
+        new BN(2),
+        { tokenWeighted: {} },
+      )
+      .accounts({
+        dao: daoPda,
+        governanceToken: mint,
+        authority: payer.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+    await provider.sendAndConfirm(
+      new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: payer.publicKey,
+          toPubkey: treasuryPda,
+          lamports: TREASURY_SEED_LAMPORTS,
+        }),
+      ),
+      [],
+    );
+
+    const [proposalPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), Buffer.alloc(8)],
+      program.programId,
+    );
+    await program.methods
+      .createProposal(
+        "Boundary guard",
+        "Phase edges should behave exactly as intended.",
+        new BN(4),
+        {
+          actionType: { sendSol: {} },
+          amountLamports: new BN(EXECUTE_LAMPORTS),
+          recipient: recipient.publicKey,
+          tokenMint: null,
+        },
+      )
+      .accounts({
+        dao: daoPda,
+        proposal: proposalPda,
+        proposerTokenAccount: payerTokenAta,
+        proposer: payer.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const saltAlice = rng();
+    const saltBob = rng();
+    const [aliceVotePda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), proposalPda.toBuffer(), alice.publicKey.toBuffer()],
+      program.programId,
+    );
+    const [bobVotePda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), proposalPda.toBuffer(), bob.publicKey.toBuffer()],
+      program.programId,
+    );
+
+    await program.methods
+      .commitVote([...commitment(true, saltAlice, alice.publicKey)], null)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalPda,
+        voterRecord: aliceVotePda,
+        voterTokenAccount: aliceAta,
+        voter: alice.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([alice])
+      .rpc();
+
+    const created = await program.account["proposal"].fetch(proposalPda);
+    await waitForUnixTimestamp(provider.connection, created.votingEnd.toNumber() - 1, "boundary_commit_last_second");
+
+    await program.methods
+      .commitVote([...commitment(true, saltBob, bob.publicKey)], null)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalPda,
+        voterRecord: bobVotePda,
+        voterTokenAccount: bobAta,
+        voter: bob.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([bob])
+      .rpc();
+
+    const afterLastSecondCommit = await program.account["proposal"].fetch(proposalPda);
+    assert.equal(afterLastSecondCommit.commitCount.toNumber(), 2, "commit should still work immediately before voting end");
+
+    try {
+      await program.methods
+        .revealVote(true, [...saltAlice])
+        .accounts({ proposal: proposalPda, voterRecord: aliceVotePda, revealer: alice.publicKey })
+        .signers([alice])
+        .rpc();
+      assert.fail("reveal before voting end must be rejected");
+    } catch (err: any) {
+      assert.include(err.toString(), "RevealTooEarly");
+    }
+
+    await waitForUnixTimestamp(provider.connection, created.votingEnd.toNumber(), "boundary_reveal_open");
+
+    try {
+      await program.methods
+        .commitVote([...commitment(false, rng(), bob.publicKey)], null)
+        .accounts({
+          dao: daoPda,
+          proposal: proposalPda,
+          voterRecord: bobVotePda,
+          voterTokenAccount: bobAta,
+          voter: bob.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .signers([bob])
+        .rpc();
+      assert.fail("commit at/after voting end must be rejected");
+    } catch (err: any) {
+      assert.include(err.toString(), "VotingClosed");
+    }
+
+    await program.methods
+      .revealVote(true, [...saltAlice])
+      .accounts({ proposal: proposalPda, voterRecord: aliceVotePda, revealer: alice.publicKey })
+      .signers([alice])
+      .rpc();
+
+    await program.methods
+      .revealVote(true, [...saltBob])
+      .accounts({ proposal: proposalPda, voterRecord: bobVotePda, revealer: bob.publicKey })
+      .signers([bob])
+      .rpc();
+
+    const afterReveal = await program.account["proposal"].fetch(proposalPda);
+    assert.equal(afterReveal.revealCount.toNumber(), 2, "reveal should open exactly at voting end");
+
+    try {
+      await program.methods
+        .finalizeProposal()
+        .accounts({ dao: daoPda, proposal: proposalPda, finalizer: recipient.publicKey })
+        .signers([recipient])
+        .rpc();
+      assert.fail("finalize before reveal end must be rejected");
+    } catch (err: any) {
+      assert.include(err.toString(), "RevealStillOpen");
+    }
+
+    await waitForUnixTimestamp(provider.connection, afterReveal.revealEnd.toNumber(), "boundary_finalize_open");
+
+    await program.methods
+      .finalizeProposal()
+      .accounts({ dao: daoPda, proposal: proposalPda, finalizer: recipient.publicKey })
+      .signers([recipient])
+      .rpc();
+
+    const finalized = await program.account["proposal"].fetch(proposalPda);
+    assert.isTrue("passed" in finalized.status, "finalize should open exactly at reveal end");
+
+    try {
+      await program.methods
+        .executeProposal()
+        .accounts({
+          dao: daoPda,
+          proposal: proposalPda,
+          treasury: treasuryPda,
+          treasuryRecipient: recipient.publicKey,
+          treasuryTokenAccount: treasuryPda,
+          recipientTokenAccount: treasuryPda,
+          executor: recipient.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .signers([recipient])
+        .rpc();
+      assert.fail("execute before unlock must be rejected");
+    } catch (err: any) {
+      assert.include(err.toString(), "ExecutionTimelockActive");
+    }
+
+    await waitForUnixTimestamp(provider.connection, finalized.executionUnlocksAt.toNumber(), "boundary_execute_open");
+
+    await program.methods
+      .executeProposal()
+      .accounts({
+        dao: daoPda,
+        proposal: proposalPda,
+        treasury: treasuryPda,
+        treasuryRecipient: recipient.publicKey,
+        treasuryTokenAccount: treasuryPda,
+        recipientTokenAccount: treasuryPda,
+        executor: recipient.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([recipient])
+      .rpc();
+
+    const executed = await program.account["proposal"].fetch(proposalPda);
+    assert.isTrue(executed.isExecuted, "execute should open exactly at unlock boundary");
+  }).timeout(120_000);
+
+  it("preserves lifecycle invariants and atomicity across failed and successful transitions", async () => {
+    async function fundWallet(pubkey: PublicKey, sol: number): Promise<void> {
+      const tx = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: payer.publicKey,
+          toPubkey: pubkey,
+          lamports: Math.round(sol * LAMPORTS_PER_SOL),
+        }),
+      );
+      await provider.sendAndConfirm(tx, []);
+    }
+
+    const [alice, bob, recipient] = Array.from({ length: 3 }, () => Keypair.generate());
+    for (const wallet of [alice, bob, recipient]) {
+      await fundWallet(wallet.publicKey, 0.01);
+    }
+
+    const mint = await createMint(provider.connection, payer, payer.publicKey, null, 6);
+    const payerTokenAta = getAssociatedTokenAddressSync(mint, payer.publicKey);
+    await provider.sendAndConfirm(
+      new Transaction().add(
+        createAssociatedTokenAccountInstruction(
+          payer.publicKey,
+          payerTokenAta,
+          payer.publicKey,
+          mint,
+        ),
+      ),
+      [],
+    );
+    await mintTo(provider.connection, payer, mint, payerTokenAta, payer, 1_000_000n);
+    const aliceAta = await createAccount(provider.connection, payer, mint, alice.publicKey);
+    const bobAta = await createAccount(provider.connection, payer, mint, bob.publicKey);
+    await mintTo(provider.connection, payer, mint, aliceAta, payer, 1_000_000_000n);
+    await mintTo(provider.connection, payer, mint, bobAta, payer, 1_000_000_000n);
+
+    const daoName = `Invariant-${Date.now()}`;
+    const [daoPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("dao"), payer.publicKey.toBuffer(), Buffer.from(daoName)],
+      program.programId,
+    );
+    const [treasuryPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("treasury"), daoPda.toBuffer()],
+      program.programId,
+    );
+    const [wrongDaoPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("dao"), payer.publicKey.toBuffer(), Buffer.from(`${daoName}-other`)],
+      program.programId,
+    );
+    const [wrongTreasuryPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("treasury"), wrongDaoPda.toBuffer()],
+      program.programId,
+    );
+
+    await program.methods
+      .initializeDao(
+        daoName,
+        51,
+        new BN(0),
+        new BN(3),
+        new BN(2),
+        { tokenWeighted: {} },
+      )
+      .accounts({
+        dao: daoPda,
+        governanceToken: mint,
+        authority: payer.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+    await program.methods
+      .initializeDao(
+        `${daoName}-other`,
+        51,
+        new BN(0),
+        new BN(3),
+        new BN(2),
+        { tokenWeighted: {} },
+      )
+      .accounts({
+        dao: wrongDaoPda,
+        governanceToken: mint,
+        authority: payer.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    await provider.sendAndConfirm(
+      new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: payer.publicKey,
+          toPubkey: treasuryPda,
+          lamports: TREASURY_SEED_LAMPORTS,
+        }),
+      ),
+      [],
+    );
+    await provider.sendAndConfirm(
+      new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: payer.publicKey,
+          toPubkey: wrongTreasuryPda,
+          lamports: TREASURY_SEED_LAMPORTS,
+        }),
+      ),
+      [],
+    );
+
+    const [proposalPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), Buffer.alloc(8)],
+      program.programId,
+    );
+    await program.methods
+      .createProposal(
+        "Invariant guard",
+        "Failed paths must never advance the lifecycle.",
+        new BN(4),
+        {
+          actionType: { sendSol: {} },
+          amountLamports: new BN(EXECUTE_LAMPORTS),
+          recipient: recipient.publicKey,
+          tokenMint: null,
+        },
+      )
+      .accounts({
+        dao: daoPda,
+        proposal: proposalPda,
+        proposerTokenAccount: payerTokenAta,
+        proposer: payer.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const saltAlice = rng();
+    const saltBob = rng();
+    const [aliceVotePda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), proposalPda.toBuffer(), alice.publicKey.toBuffer()],
+      program.programId,
+    );
+    const [bobVotePda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), proposalPda.toBuffer(), bob.publicKey.toBuffer()],
+      program.programId,
+    );
+
+    await program.methods
+      .commitVote([...commitment(true, saltAlice, alice.publicKey)], null)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalPda,
+        voterRecord: aliceVotePda,
+        voterTokenAccount: aliceAta,
+        voter: alice.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([alice])
+      .rpc();
+    await program.methods
+      .commitVote([...commitment(false, saltBob, bob.publicKey)], null)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalPda,
+        voterRecord: bobVotePda,
+        voterTokenAccount: bobAta,
+        voter: bob.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([bob])
+      .rpc();
+
+    const afterCommit = await program.account["proposal"].fetch(proposalPda);
+    const beforeFailedFinalize = {
+      statusVoting: "voting" in afterCommit.status,
+      commitCount: afterCommit.commitCount.toNumber(),
+      revealCount: afterCommit.revealCount.toNumber(),
+      unlock: afterCommit.executionUnlocksAt.toNumber(),
+      yesCapital: afterCommit.yesCapital.toString(),
+      noCapital: afterCommit.noCapital.toString(),
+      isExecuted: afterCommit.isExecuted,
+    };
+
+    try {
+      await program.methods
+        .finalizeProposal()
+        .accounts({ dao: daoPda, proposal: proposalPda, finalizer: recipient.publicKey })
+        .signers([recipient])
+        .rpc();
+      assert.fail("finalize before reveal end must fail");
+    } catch (err: any) {
+      assert.include(err.toString(), "RevealStillOpen");
+    }
+
+    const afterFailedFinalize = await program.account["proposal"].fetch(proposalPda);
+    assert.equal("voting" in afterFailedFinalize.status, beforeFailedFinalize.statusVoting);
+    assert.equal(afterFailedFinalize.commitCount.toNumber(), beforeFailedFinalize.commitCount);
+    assert.equal(afterFailedFinalize.revealCount.toNumber(), beforeFailedFinalize.revealCount);
+    assert.equal(afterFailedFinalize.executionUnlocksAt.toNumber(), beforeFailedFinalize.unlock);
+    assert.equal(afterFailedFinalize.yesCapital.toString(), beforeFailedFinalize.yesCapital);
+    assert.equal(afterFailedFinalize.noCapital.toString(), beforeFailedFinalize.noCapital);
+    assert.equal(afterFailedFinalize.isExecuted, beforeFailedFinalize.isExecuted);
+
+    await waitForUnixTimestamp(provider.connection, afterCommit.votingEnd.toNumber(), "invariant_reveal_open");
+    await program.methods
+      .revealVote(true, [...saltAlice])
+      .accounts({ proposal: proposalPda, voterRecord: aliceVotePda, revealer: alice.publicKey })
+      .signers([alice])
+      .rpc();
+    await program.methods
+      .revealVote(false, [...saltBob])
+      .accounts({ proposal: proposalPda, voterRecord: bobVotePda, revealer: bob.publicKey })
+      .signers([bob])
+      .rpc();
+
+    const afterReveals = await program.account["proposal"].fetch(proposalPda);
+    const aliceVoteRecord = await program.account["voterRecord"].fetch(aliceVotePda);
+    const bobVoteRecord = await program.account["voterRecord"].fetch(bobVotePda);
+    assert.isTrue(aliceVoteRecord.hasCommitted && aliceVoteRecord.hasRevealed, "revealed implies committed for alice");
+    assert.isTrue(bobVoteRecord.hasCommitted && bobVoteRecord.hasRevealed, "revealed implies committed for bob");
+    assert.isAtMost(afterReveals.revealCount.toNumber(), afterReveals.commitCount.toNumber(), "reveals must not exceed commits");
+
+    await waitForUnixTimestamp(provider.connection, afterReveals.revealEnd.toNumber(), "invariant_finalize_open");
+    await program.methods
+      .finalizeProposal()
+      .accounts({ dao: daoPda, proposal: proposalPda, finalizer: recipient.publicKey })
+      .signers([recipient])
+      .rpc();
+
+    const finalized = await program.account["proposal"].fetch(proposalPda);
+    assert.isFalse(finalized.isExecuted, "successful finalize alone must not set isExecuted");
+    assert.isTrue("failed" in finalized.status, "tied vote should finalize to failed");
+
+    try {
+      await program.methods
+        .executeProposal()
+        .accounts({
+          dao: daoPda,
+          proposal: proposalPda,
+          treasury: treasuryPda,
+          treasuryRecipient: recipient.publicKey,
+          treasuryTokenAccount: treasuryPda,
+          recipientTokenAccount: treasuryPda,
+          executor: recipient.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .signers([recipient])
+        .rpc();
+      assert.fail("failed proposal must never execute");
+    } catch (err: any) {
+      assert.include(err.toString(), "ProposalNotPassed");
+    }
+
+    const failedProposal = await program.account["proposal"].fetch(proposalPda);
+    assert.isFalse(failedProposal.isExecuted, "failed execute path must not set isExecuted");
+    assert.isTrue("failed" in failedProposal.status, "failed proposal must not regress to an earlier state");
+
+    const [successProposalPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), new BN(1).toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+    await program.methods
+      .createProposal(
+        "Invariant success path",
+        "Only successful execute may set isExecuted.",
+        new BN(4),
+        {
+          actionType: { sendSol: {} },
+          amountLamports: new BN(EXECUTE_LAMPORTS),
+          recipient: recipient.publicKey,
+          tokenMint: null,
+        },
+      )
+      .accounts({
+        dao: daoPda,
+        proposal: successProposalPda,
+        proposerTokenAccount: payerTokenAta,
+        proposer: payer.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const successSalt = rng();
+    const [successVotePda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), successProposalPda.toBuffer(), alice.publicKey.toBuffer()],
+      program.programId,
+    );
+    await program.methods
+      .commitVote([...commitment(true, successSalt, alice.publicKey)], null)
+      .accounts({
+        dao: daoPda,
+        proposal: successProposalPda,
+        voterRecord: successVotePda,
+        voterTokenAccount: aliceAta,
+        voter: alice.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([alice])
+      .rpc();
+
+    const successAfterCommit = await program.account["proposal"].fetch(successProposalPda);
+    await waitForUnixTimestamp(provider.connection, successAfterCommit.votingEnd.toNumber(), "invariant_success_reveal_open");
+    await program.methods
+      .revealVote(true, [...successSalt])
+      .accounts({ proposal: successProposalPda, voterRecord: successVotePda, revealer: alice.publicKey })
+      .signers([alice])
+      .rpc();
+
+    const successAfterReveal = await program.account["proposal"].fetch(successProposalPda);
+    await waitForUnixTimestamp(provider.connection, successAfterReveal.revealEnd.toNumber(), "invariant_success_finalize_open");
+    await program.methods
+      .finalizeProposal()
+      .accounts({ dao: daoPda, proposal: successProposalPda, finalizer: recipient.publicKey })
+      .signers([recipient])
+      .rpc();
+
+    const successFinalized = await program.account["proposal"].fetch(successProposalPda);
+    assert.isTrue("passed" in successFinalized.status, "single yes vote should pass");
+    assert.isFalse(successFinalized.isExecuted, "passed proposal must still be unexecuted before execute");
+
+    try {
+      await program.methods
+        .executeProposal()
+        .accounts({
+          dao: daoPda,
+          proposal: successProposalPda,
+          treasury: wrongTreasuryPda,
+          treasuryRecipient: recipient.publicKey,
+          treasuryTokenAccount: wrongTreasuryPda,
+          recipientTokenAccount: wrongTreasuryPda,
+          executor: recipient.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .signers([recipient])
+        .rpc();
+      assert.fail("miswired execute must fail");
+    } catch (err: any) {
+      assert.include(err.toString(), "ConstraintSeeds");
+    }
+
+    const afterFailedSuccessExecute = await program.account["proposal"].fetch(successProposalPda);
+    assert.isFalse(afterFailedSuccessExecute.isExecuted, "failed execute must not advance lifecycle");
+    assert.isTrue("passed" in afterFailedSuccessExecute.status, "failed execute must preserve passed status");
+    assert.equal(afterFailedSuccessExecute.executionUnlocksAt.toNumber(), successFinalized.executionUnlocksAt.toNumber(), "failed execute must preserve unlock timestamp");
+
+    const treasuryBefore = await provider.connection.getBalance(treasuryPda);
+    const recipientBefore = await provider.connection.getBalance(recipient.publicKey);
+
+    await waitForUnixTimestamp(provider.connection, successFinalized.executionUnlocksAt.toNumber(), "invariant_success_execute_open");
+    await program.methods
+      .executeProposal()
+      .accounts({
+        dao: daoPda,
+        proposal: successProposalPda,
+        treasury: treasuryPda,
+        treasuryRecipient: recipient.publicKey,
+        treasuryTokenAccount: treasuryPda,
+        recipientTokenAccount: treasuryPda,
+        executor: recipient.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([recipient])
+      .rpc();
+
+    const successExecuted = await program.account["proposal"].fetch(successProposalPda);
+    const treasuryAfter = await provider.connection.getBalance(treasuryPda);
+    const recipientAfter = await provider.connection.getBalance(recipient.publicKey);
+    assert.isTrue(successExecuted.isExecuted, "successful execute is the only path that sets isExecuted");
+    assert.isTrue("passed" in successExecuted.status, "executed proposal remains finalized, not regressed");
+    assert.equal(treasuryBefore - treasuryAfter, EXECUTE_LAMPORTS, "successful execute must move exactly the intended amount");
+    assert.isAtLeast(recipientAfter - recipientBefore, EXECUTE_LAMPORTS, "recipient balance must increase only on successful execute");
   }).timeout(120_000);
 });

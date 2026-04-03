@@ -64,6 +64,16 @@ async function main() {
     [Buffer.from("delegation"), proposalPda.toBuffer(), provider.wallet.publicKey.toBuffer()],
     program.programId,
   );
+  const [directVoteRecordPda] = PublicKey.findProgramAddressSync(
+    [Buffer.from("vote"), proposalPda.toBuffer(), provider.wallet.publicKey.toBuffer()],
+    program.programId,
+  );
+
+  const directVoteRecord = await provider.connection.getAccountInfo(directVoteRecordPda, "confirmed");
+  if (directVoteRecord) {
+    console.error("❌ This wallet already has a direct vote record for the proposal. Refusing delegation to avoid double-counting risk.");
+    process.exit(1);
+  }
 
   const tx = await program.methods
     .delegateVote(delegateePk)

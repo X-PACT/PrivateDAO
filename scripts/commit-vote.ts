@@ -96,6 +96,15 @@ async function main() {
       [Buffer.from("delegation"), proposalPda.toBuffer(), delegatorPk.toBuffer()],
       program.programId,
     );
+    const [delegatorDirectVoteRecordPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), proposalPda.toBuffer(), delegatorPk.toBuffer()],
+      program.programId,
+    );
+    const delegatorDirectVoteRecord = await provider.connection.getAccountInfo(delegatorDirectVoteRecordPda, "confirmed");
+    if (delegatorDirectVoteRecord) {
+      console.error("❌ The delegator already has a direct vote record for this proposal. Refusing delegated commit to avoid double-counting risk.");
+      process.exit(1);
+    }
 
     tx = await program.methods
       .commitDelegatedVote([...commitment], keeperPk)
@@ -110,6 +119,16 @@ async function main() {
       })
       .rpc();
   } else {
+    const [delegationPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("delegation"), proposalPda.toBuffer(), provider.wallet.publicKey.toBuffer()],
+      program.programId,
+    );
+    const delegationAccount = await provider.connection.getAccountInfo(delegationPda, "confirmed");
+    if (delegationAccount) {
+      console.error("❌ This wallet already delegated its voting weight for this proposal. Refusing direct commit to avoid double-counting risk.");
+      process.exit(1);
+    }
+
     // Standard commit
     tx = await program.methods
       .commitVote([...commitment], keeperPk)

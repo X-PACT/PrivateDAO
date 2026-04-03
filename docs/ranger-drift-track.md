@@ -2,7 +2,7 @@
 
 ## Thesis
 
-PrivateDAO is private decision infrastructure for trading groups, treasury committees, and strategy operators that need Solana-native execution after hidden consensus formation.
+PrivateDAO is private decision infrastructure for trading groups, treasury committees, and strategy operators who need to approve high-impact actions without leaking conviction before execution.
 
 ## Why this fits Drift Side Track
 
@@ -14,6 +14,7 @@ PrivateDAO addresses that directly:
 - deterministic reveal and finalize phases
 - execution only after explicit timelock
 - treasury action validation on-chain
+- real product surfaces for web and Android-native review
 
 ## Drift-relevant use cases
 
@@ -34,3 +35,8 @@ Lead with the signaling problem:
 - public vote visibility leaks intent
 - leaked intent can distort execution context
 - PrivateDAO preserves decision privacy until reveal while keeping execution auditable
+
+Then make the limitation explicit:
+
+- the repository is the control plane, not the full Drift strategy engine
+- that is a strength when presented honestly, because it shows exactly where the protocol adds differentiated value

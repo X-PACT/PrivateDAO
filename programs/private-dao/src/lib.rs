@@ -280,17 +280,18 @@ pub mod private_dao {
         require!(p.status == ProposalStatus::Voting, Error::VotingNotOpen);
         require!(now < p.voting_end, Error::VotingClosed);
 
+        let raw = ctx.accounts.voter_token_account.amount;
+        require!(raw > 0, Error::InsufficientTokens);
+
         if dao.governance_token_required > 0 {
             require!(
-                ctx.accounts.voter_token_account.amount >= dao.governance_token_required,
+                raw >= dao.governance_token_required,
                 Error::InsufficientTokens
             );
         }
 
         let vr = &mut ctx.accounts.voter_record;
         require!(!vr.has_committed, Error::AlreadyCommitted);
-
-        let raw = ctx.accounts.voter_token_account.amount;
 
         vr.capital_weight = raw;
         vr.community_weight = isqrt(raw);
@@ -719,6 +720,7 @@ pub mod private_dao {
     // ── Fund treasury ─────────────────────────────────────────────────────────
 
     pub fn deposit_treasury(ctx: Context<DepositTreasury>, amount: u64) -> Result<()> {
+        require!(amount > 0, Error::InvalidTreasuryAction);
         transfer(
             CpiContext::new(
                 ctx.accounts.system_program.to_account_info(),
