@@ -33,6 +33,14 @@
 - `finalize`: `6394A1ith6ZEXD3N2nFUWDigytPPm9Pucw45y1SweLZZKXYHwxi6GpsaejpdkZyX5mgLRECUgqRSFSm9P6Uo64j`
 - `execute`: `Xkoeqbe8g8jcosTQNsrMGCBevfzBtZwwyS2QjVfW9jrupczuj25LyAW3B7noQfPbsveT6eAggUBL3nLJBEASeri`
 
+## Artifact Integrity
+
+- Integrity note: `docs/cryptographic-integrity.md`
+- Cryptographic manifest: `docs/cryptographic-manifest.generated.json`
+- Algorithm: `sha256`
+- Manifest entries: `12`
+- Aggregate sha256: `c951ed4d362d48790804c68fc9322890366781dbc953d0553aeaac2d43b68034`
+
 ## Strategy Package
 
 - `docs/ranger-strategy-documentation.md`
@@ -49,6 +57,7 @@
 - `docs/security-coverage-map.md`
 - `docs/failure-modes.md`
 - `docs/replay-analysis.md`
+- `docs/cryptographic-integrity.md`
 
 ## Proof Package
 
@@ -56,6 +65,7 @@
 - `docs/devnet-release-manifest.md`
 - `docs/proof-registry.json`
 - `docs/independent-verification.md`
+- `docs/cryptographic-manifest.generated.json`
 
 ## Operations Package
 
@@ -80,6 +90,7 @@
 - `npm run verify:submission-registry`
 - `npm run verify:registry-consistency`
 - `npm run verify:generated-artifacts`
+- `npm run verify:cryptographic-manifest`
 - `npm run verify:review-surface`
 - `npm run verify:all`
 

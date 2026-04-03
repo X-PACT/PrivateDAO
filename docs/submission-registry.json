@@ -23,13 +23,15 @@
       "docs/threat-model.md",
       "docs/security-coverage-map.md",
       "docs/failure-modes.md",
-      "docs/replay-analysis.md"
+      "docs/replay-analysis.md",
+      "docs/cryptographic-integrity.md"
     ],
     "proof": [
       "docs/live-proof.md",
       "docs/devnet-release-manifest.md",
       "docs/proof-registry.json",
-      "docs/independent-verification.md"
+      "docs/independent-verification.md",
+      "docs/cryptographic-manifest.generated.json"
     ],
     "operations": [
       "docs/mainnet-readiness.md",
@@ -53,6 +55,7 @@
     "npm run verify:submission-registry",
     "npm run verify:registry-consistency",
     "npm run verify:generated-artifacts",
+    "npm run verify:cryptographic-manifest",
     "npm run verify:review-surface",
     "npm run verify:all"
   ],

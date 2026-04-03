@@ -1,0 +1,69 @@
+{
+  "project": "PrivateDAO",
+  "generatedAt": "2026-04-03T10:51:39.663Z",
+  "algorithm": "sha256",
+  "entryCount": 12,
+  "aggregateSha256": "c951ed4d362d48790804c68fc9322890366781dbc953d0553aeaac2d43b68034",
+  "files": [
+    {
+      "path": "zk/circuits/private_dao_vote_overlay.circom",
+      "sha256": "10894814dbd80792f331313330a9e2b560c4c1d6dddfcefd5fd00af16c8290d0",
+      "bytes": 1510
+    },
+    {
+      "path": "zk/setup/private_dao_vote_overlay_vkey.json",
+      "sha256": "b48321ed01bc503f90ca84ab39822c7293c873b8d4b33b78542092db4c647ccc",
+      "bytes": 3844
+    },
+    {
+      "path": "zk/proofs/private_dao_vote_overlay.proof.json",
+      "sha256": "dc1d1fafe90ad3a1d55713c220fd8323e32a2f488ecd35daabff1648e545cb6e",
+      "bytes": 804
+    },
+    {
+      "path": "zk/proofs/private_dao_vote_overlay.public.json",
+      "sha256": "274280bc7d44e7dd52969cc806ba16236af08a18aefffc0b9000ac6648377a83",
+      "bytes": 287
+    },
+    {
+      "path": "docs/proof-registry.json",
+      "sha256": "5aabdc6731714b77b0fbe56e10d9ab0bd4a81fcf263b6c5a825c356d81f79344",
+      "bytes": 1381
+    },
+    {
+      "path": "docs/devnet-release-manifest.md",
+      "sha256": "dae336c1cc9e0256b4823ce611dc074002afd62d2a6a409ce4e1b831631843f3",
+      "bytes": 2713
+    },
+    {
+      "path": "docs/live-proof.md",
+      "sha256": "efe7cfd3f21bd5a082dd56da46c6c693ccecdf5cf55887d744bb28fa8ba270fe",
+      "bytes": 3636
+    },
+    {
+      "path": "docs/submission-registry.json",
+      "sha256": "2e53a3c22eebd844ea19e459e7bb78f88907c58636ace554d8ba232eb5195228",
+      "bytes": 2450
+    },
+    {
+      "path": "docs/independent-verification.md",
+      "sha256": "d836d75ac3a1856e0dafccd8cf581bea1f34e1cf5f8801c6aff2c3170d685ff7",
+      "bytes": 7337
+    },
+    {
+      "path": "docs/security-review.md",
+      "sha256": "3f693ac2deb0299cbf9230df8be471d088632921116c4c371b3a7aa331ad08e2",
+      "bytes": 7660
+    },
+    {
+      "path": "docs/zk-layer.md",
+      "sha256": "93692b3fd0eaf8897b0d112e68f1aa0ecf0bcc5fd1db4107860e6184d4159857",
+      "bytes": 2357
+    },
+    {
+      "path": "docs/verification-gates.md",
+      "sha256": "21be3832f0f8576171b7e06cd41b6f5bbbc4ae24a236295ee772e8680bdf793d",
+      "bytes": 2393
+    }
+  ]
+}

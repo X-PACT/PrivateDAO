@@ -28,9 +28,16 @@ type ProofRegistry = {
   transactions: Record<string, string>;
 };
 
+type CryptographicManifest = {
+  algorithm: string;
+  entryCount: number;
+  aggregateSha256: string;
+};
+
 function main() {
   const submission = readJson<SubmissionRegistry>("docs/submission-registry.json");
   const proof = readJson<ProofRegistry>("docs/proof-registry.json");
+  const cryptographicManifest = readJson<CryptographicManifest>("docs/cryptographic-manifest.generated.json");
   const outPath = path.resolve("docs/audit-packet.generated.md");
 
   const markdown = `# Audit Packet
@@ -62,6 +69,14 @@ function main() {
 ${Object.entries(proof.transactions)
   .map(([label, tx]) => `- \`${label}\`: \`${tx}\``)
   .join("\n")}
+
+## Artifact Integrity
+
+- Integrity note: \`docs/cryptographic-integrity.md\`
+- Cryptographic manifest: \`docs/cryptographic-manifest.generated.json\`
+- Algorithm: \`${cryptographicManifest.algorithm}\`
+- Manifest entries: \`${cryptographicManifest.entryCount}\`
+- Aggregate sha256: \`${cryptographicManifest.aggregateSha256}\`
 
 ## Strategy Package
 

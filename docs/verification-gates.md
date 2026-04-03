@@ -38,6 +38,14 @@ npm run verify:generated-artifacts
 
 Checks that generated reviewer artifacts such as the audit packet and review attestation exist and remain structurally valid.
 
+### Cryptographic Integrity
+
+```bash
+npm run verify:cryptographic-manifest
+```
+
+Checks that the sha256 manifest covering zk artifacts, live-proof anchors, and generated review materials still matches the canonical files on disk.
+
 ### Live Proof
 
 ```bash

@@ -1757,6 +1757,7 @@ body.judge-mode .judge-banner {
         <div class="surface-pill"><strong>Android</strong><span>Kotlin native + MWA</span></div>
         <div class="surface-pill"><strong>On-chain</strong><span>Devnet program live</span></div>
         <div class="surface-pill zk-live"><strong>ZK</strong><span>Real Groth16 overlay live</span></div>
+        <div class="surface-pill"><strong>Integrity</strong><span>SHA256 artifact manifest live</span></div>
       </div>
       <a class="zk-mark" href="zk-layer.md" target="_blank">
         <span class="zk-mark-icon"></span>
@@ -1769,6 +1770,7 @@ body.judge-mode .judge-banner {
         <button class="btn-primary" onclick="scrollToProposals()">View Live Proposals</button>
         <button class="btn-ghost" onclick="showPage('protocol', findNavButton('protocol'))">How It Works →</button>
         <a class="btn-ghost" href="zk-upgrade.md" target="_blank" style="text-decoration:none">ZK Overlay ↗</a>
+        <a class="btn-ghost" href="cryptographic-integrity.md" target="_blank" style="text-decoration:none">Artifact Integrity ↗</a>
         <a class="btn-ghost" href="android-native.md" target="_blank" style="text-decoration:none">Android Native ↗</a>
       </div>
     </div>
@@ -2564,6 +2566,10 @@ execute() → CPI
           <div class="proposal-detail-label">HOW TO VERIFY</div>
           <div style="color:var(--text2);line-height:1.8"><code>npm run zk:all</code> rebuilds and verifies the full zk sample flow from this repository.</div>
         </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">ARTIFACT INTEGRITY</div>
+          <div style="color:var(--text2);line-height:1.8"><code>npm run verify:cryptographic-manifest</code> verifies the sha256 manifest covering zk artifacts, live-proof anchors, and canonical proof materials.</div>
+        </div>
       </div>
     </div>
 
@@ -2587,6 +2593,8 @@ execute() → CPI
         <a class="award-link" href="zk-layer.md" target="_blank">ZK Layer</a>
         <a class="award-link" href="zk-architecture.md" target="_blank">ZK Architecture</a>
         <a class="award-link" href="zk-evidence.md" target="_blank">ZK Evidence</a>
+        <a class="award-link" href="cryptographic-integrity.md" target="_blank">Artifact Integrity</a>
+        <a class="award-link" href="cryptographic-manifest.generated.json" target="_blank">Cryptographic Manifest</a>
         <a class="award-link" href="production-operations.md" target="_blank">Production Ops</a>
         <a class="award-link" href="monitoring-alerts.md" target="_blank">Monitoring</a>
         <a class="award-link" href="incident-response.md" target="_blank">Incident Response</a>

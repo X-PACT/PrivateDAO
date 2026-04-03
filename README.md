@@ -29,6 +29,7 @@
 [![Atomicity](https://img.shields.io/badge/Atomicity-Verified-15803d)](docs/failure-modes.md)
 [![ZK Overlay](https://img.shields.io/badge/ZK-Real%20Groth16%20Overlay-111827)](docs/zk-upgrade.md)
 [![Zero Knowledge](https://img.shields.io/badge/ZK%20%E2%9F%A1-Live%20Proof%20Layer-06b6d4)](docs/zk-layer.md)
+[![Artifact Integrity](https://img.shields.io/badge/Artifact%20Integrity-SHA256%20Manifest-0f766e)](docs/cryptographic-integrity.md)
 
 PrivateDAO is a Solana governance protocol for DAOs that want private voting without giving up execution safety. Votes are committed privately, revealed later, finalized deterministically, and treasury execution stays behind an explicit timelock with recipient and mint checks.
 
@@ -52,6 +53,7 @@ PrivateDAO exists to resist those failure modes with:
 - timelocked execution
 - strict treasury validation
 - replay-resistant lifecycle checks
+- tamper-evident proof artifacts
 
 ## What Is Implemented
 
@@ -79,6 +81,7 @@ Current security hardening covers:
 - duplicate execution prevention
 - failed-path state preservation
 - replay-oriented reasoning and coverage mapping
+- sha256-based artifact integrity across critical proof materials
 
 See:
 
@@ -87,6 +90,8 @@ See:
 - `docs/security-coverage-map.md`
 - `docs/failure-modes.md`
 - `docs/replay-analysis.md`
+- `docs/cryptographic-integrity.md`
+- `docs/cryptographic-manifest.generated.json`
 
 ## Why Security Is Core
 
@@ -95,6 +100,8 @@ PrivateDAO is not trying to make governance merely private. It is trying to make
 A private voting system that can be replayed, misbound, bypassed, or mis-executed would fail the exact problem it claims to solve.
 
 That is why PrivateDAO treats lifecycle enforcement, signer correctness, account binding, replay resistance, and treasury safety as core protocol guarantees.
+
+The same rule now applies to the review surface itself: zk artifacts, live-proof anchors, and the canonical proof documents are tied together through a sha256 manifest so reviewers can verify artifact integrity instead of trusting static presentation.
 
 Quick links:
 
@@ -113,6 +120,8 @@ Quick links:
 - ZK layer: `docs/zk-layer.md`
 - ZK architecture: `docs/zk-architecture.md`
 - ZK evidence: `docs/zk-evidence.md`
+- Cryptographic integrity: `docs/cryptographic-integrity.md`
+- Cryptographic manifest: `docs/cryptographic-manifest.generated.json`
 - Ranger eligibility checklist: `docs/ranger-submission-checklist.md`
 - Ranger strategy config: `docs/ranger-strategy-config.devnet.json`
 - Ranger strategy template: `docs/ranger-strategy-config.sample.json`
@@ -251,6 +260,22 @@ Primary references:
 - `docs/zk-evidence.md`
 - `zk/circuits/private_dao_vote_overlay.circom`
 
+## Artifact Integrity
+
+PrivateDAO now adds a non-breaking cryptographic integrity layer on top of the zk and review surfaces.
+
+What exists today:
+
+- sha256 hashes for critical zk artifacts
+- sha256 hashes for critical live-proof and canonical proof artifacts
+- a generated manifest in `docs/cryptographic-manifest.generated.json`
+- automated verification through `npm run verify:cryptographic-manifest`
+
+Primary references:
+
+- `docs/cryptographic-integrity.md`
+- `docs/cryptographic-manifest.generated.json`
+
 Core command:
 
 ```bash
@@ -295,6 +320,8 @@ Security and review documents:
 - `docs/attack-simulation-log.md`
 - `docs/devnet-release-manifest.md`
 - `docs/proof-registry.json`
+- `docs/cryptographic-integrity.md`
+- `docs/cryptographic-manifest.generated.json`
 - `docs/zk-layer.md`
 - `docs/zk-upgrade.md`
 - `docs/zk-architecture.md`

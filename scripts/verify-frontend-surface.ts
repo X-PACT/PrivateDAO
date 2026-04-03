@@ -17,6 +17,10 @@ function main() {
     "requestAnimationFrame(renderCursor)",
     "verify:all",
     "zk-layer.md",
+    "Artifact Integrity",
+    "cryptographic-integrity.md",
+    "cryptographic-manifest.generated.json",
+    "verify:cryptographic-manifest",
     "Security Evidence",
   ];
 

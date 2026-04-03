@@ -154,6 +154,27 @@ The current zk layer proves:
 
 This is intentionally additive. It strengthens the protocol's future privacy path without changing current instruction interfaces or deployed assumptions.
 
+## Cryptographic Integrity Summary
+
+The repository now also includes a sha256-based artifact integrity layer over the highest-signal zk and review artifacts:
+
+- generated manifest: `docs/cryptographic-manifest.generated.json`
+- integrity note: `docs/cryptographic-integrity.md`
+- build command: `npm run build:cryptographic-manifest`
+- verification command: `npm run verify:cryptographic-manifest`
+
+The current integrity manifest covers:
+
+- zk circuit source
+- zk verification key
+- zk sample proof and public inputs
+- proof registry
+- devnet release manifest
+- live proof note
+- submission registry
+
+This does not replace protocol security. It reduces silent drift and makes reviewer-facing evidence tamper-evident.
+
 ## Remaining Real-World Risks
 
 The audit-simulation layer does not hide residual realities:

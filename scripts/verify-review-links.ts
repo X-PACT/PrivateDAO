@@ -18,6 +18,8 @@ const requiredReadmeRefs = [
   "docs/strategy-operations.md",
   "docs/reviewer-fast-path.md",
   "docs/reviewer-surface-map.md",
+  "docs/cryptographic-integrity.md",
+  "docs/cryptographic-manifest.generated.json",
 ];
 
 const requiredFrontendRefs = [
@@ -32,6 +34,8 @@ const requiredFrontendRefs = [
   "production-operations.md",
   "reviewer-fast-path.md",
   "strategy-operations.md",
+  "cryptographic-integrity.md",
+  "cryptographic-manifest.generated.json",
 ];
 
 function main() {

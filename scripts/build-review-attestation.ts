@@ -19,9 +19,16 @@ type ProofRegistry = {
   transactions: Record<string, string>;
 };
 
+type CryptographicManifest = {
+  algorithm: string;
+  entryCount: number;
+  aggregateSha256: string;
+};
+
 function main() {
   const submission = readJson<SubmissionRegistry>("docs/submission-registry.json");
   const proof = readJson<ProofRegistry>("docs/proof-registry.json");
+  const cryptographicManifest = readJson<CryptographicManifest>("docs/cryptographic-manifest.generated.json");
 
   const attestation = {
     project: submission.project,
@@ -40,6 +47,11 @@ function main() {
       security: submission.packages.security.length,
       proof: submission.packages.proof.length,
       operations: submission.packages.operations.length,
+    },
+    cryptographicIntegrity: {
+      algorithm: cryptographicManifest.algorithm,
+      entryCount: cryptographicManifest.entryCount,
+      aggregateSha256: cryptographicManifest.aggregateSha256,
     },
     gateCount: submission.gates.length,
     statuses: submission.status,

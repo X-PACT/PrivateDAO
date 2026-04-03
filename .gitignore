@@ -9,5 +9,9 @@ wallets/
 wallets/
 .env
 *.json
+!docs/proof-registry.json
+!docs/submission-registry.json
+!docs/review-attestation.generated.json
+!docs/cryptographic-manifest.generated.json
 LEGAL/evidence-pack/
 .anchor/

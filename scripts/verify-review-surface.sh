@@ -34,6 +34,8 @@ required_files=(
   "docs/competition-readiness.md"
   "docs/audit-packet.generated.md"
   "docs/review-attestation.generated.json"
+  "docs/cryptographic-integrity.md"
+  "docs/cryptographic-manifest.generated.json"
   "docs/ranger-submission-bundle.generated.md"
   "docs/ranger-strategy-config.devnet.json"
   "docs/strategy-operations.md"
@@ -92,6 +94,9 @@ npx ts-node scripts/verify-live-proof.ts >/dev/null
 
 echo "[review-surface] checking zk surface consistency"
 bash scripts/verify-zk-surface.sh >/dev/null
+
+echo "[review-surface] checking cryptographic integrity"
+npx ts-node scripts/verify-cryptographic-manifest.ts >/dev/null
 
 echo "[review-surface] checking release manifest consistency"
 npx ts-node scripts/verify-release-manifest.ts >/dev/null
