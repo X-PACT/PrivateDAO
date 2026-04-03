@@ -22,6 +22,22 @@
 - Treasury PDA: `S2J1gNCbE8E21pL3VEX4fhz2duxidSwRd7yaV9nriFW`
 - Proposal PDA: `8JLRaAnwZc3BXfHKEKdiaK82MyjR1VhgGRKMydqmHxd1`
 
+## PDAO Token Surface
+
+- PDAO mint: `AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt`
+- PDAO program: `TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb`
+- PDAO token account: `F4q77ZMJdC7eoEUw3CCR7DbKGTggyExjuMGKBEiM2ct4`
+- PDAO metadata URI: `https://x-pact.github.io/PrivateDAO/assets/pdao-token.json`
+- PDAO decimals: `9`
+- PDAO initial supply: `1000000`
+
+### PDAO Token Transactions
+
+- `create-token`: `5zGeSePpx2q3dFTNBi8Vmn8ucd9B3jEW6MKqrCUWtQQa3FipwDPFVKRrAoWQhJagBVqKMfUcWxVfpA6Q2vymanA6`
+- `create-account`: `45gM6Jo3SSbwxzqyGRSMhTmz47r8wsaAMikdkbSQ2AyoXMEA3JAJM9X6eufjwnKY5QYU6QCFTjAfR9cVExKu2rhn`
+- `initialize-metadata`: `4kgVoRGATdVAWVoYAYGqWnJBpDHiiRmFyQ3rgRz2uWEGdsx3Hosg5Ro7JGY7xSygD1vUUsGCduseCMWYx4MbXgur`
+- `mint-initial-supply`: `7LF3U3kooWfnRwaziceyRzKrHKhFQ6q6hfYeR6vU5gudjTPKYbw6kmXCxvvfurnQBnCBTCWH54rabcDqx1TBbLA`
+
 ## Lifecycle Transactions
 
 - `create-dao`: `5RnLdHsdFTNSeqB2yFgKrRDDJmsAHXUoWm8h1LgazDqHQr2ebHzRd1mmCHWnFFBcR7QdYQZKfdrE7JWYFz8oRHj1`
@@ -38,8 +54,8 @@
 - Integrity note: `docs/cryptographic-integrity.md`
 - Cryptographic manifest: `docs/cryptographic-manifest.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `25`
-- Aggregate sha256: `9fe335e79b34ba18004e48c06dfb829a5b3cdf84f0e51ed290b0a2a91b383fa0`
+- Manifest entries: `28`
+- Aggregate sha256: `c7d89047e1f9c3676013e715256b0079dc2bfbeee4aa40cc97e5779289e1772d`
 
 ## ZK Package
 
@@ -47,6 +63,7 @@
 - ZK stack note: `docs/zk-stack.md`
 - ZK threat extension: `docs/zk-threat-extension.md`
 - ZK assumption matrix: `docs/zk-assumption-matrix.md`
+- ZK capability matrix: `docs/zk-capability-matrix.md`
 - ZK verification flow: `docs/zk-verification-flow.md`
 - ZK registry: `docs/zk-registry.generated.json`
 - ZK stack version: `1`
@@ -92,6 +109,7 @@
 - `docs/zk-evidence.md`
 - `docs/zk-threat-extension.md`
 - `docs/zk-assumption-matrix.md`
+- `docs/zk-capability-matrix.md`
 - `docs/zk-verification-flow.md`
 - `docs/zk-registry.generated.json`
 
@@ -102,6 +120,8 @@
 - `docs/proof-registry.json`
 - `docs/independent-verification.md`
 - `docs/cryptographic-manifest.generated.json`
+- `docs/token.md`
+- `docs/pdao-token.md`
 
 ## Operations Package
 

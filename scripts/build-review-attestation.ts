@@ -16,6 +16,15 @@ type ProofRegistry = {
   governanceMint: string;
   treasury: string;
   proposal: string;
+  pdaoToken?: {
+    mint: string;
+    programId: string;
+    tokenAccount: string;
+    metadataUri: string;
+    decimals: number;
+    supplyUi: string;
+    transactions: Record<string, string>;
+  };
   transactions: Record<string, string>;
 };
 
@@ -52,6 +61,17 @@ function main() {
       treasury: proof.treasury,
       proposal: proof.proposal,
     },
+    pdaoToken: proof.pdaoToken
+      ? {
+          mint: proof.pdaoToken.mint,
+          programId: proof.pdaoToken.programId,
+          tokenAccount: proof.pdaoToken.tokenAccount,
+          metadataUri: proof.pdaoToken.metadataUri,
+          decimals: proof.pdaoToken.decimals,
+          supplyUi: proof.pdaoToken.supplyUi,
+          transactionLabels: Object.keys(proof.pdaoToken.transactions),
+        }
+      : undefined,
     transactionLabels: Object.keys(proof.transactions),
     packageCounts: {
       strategy: submission.packages.strategy.length,
@@ -66,6 +86,7 @@ function main() {
       verificationDocs: [
         "docs/zk-threat-extension.md",
         "docs/zk-assumption-matrix.md",
+        "docs/zk-capability-matrix.md",
         "docs/zk-verification-flow.md",
       ],
       layers: zkRegistry.entries.map((entry) => ({

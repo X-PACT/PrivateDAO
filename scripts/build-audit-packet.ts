@@ -25,6 +25,15 @@ type ProofRegistry = {
   governanceMint: string;
   treasury: string;
   proposal: string;
+  pdaoToken?: {
+    mint: string;
+    programId: string;
+    tokenAccount: string;
+    metadataUri: string;
+    decimals: number;
+    supplyUi: string;
+    transactions: Record<string, string>;
+  };
   transactions: Record<string, string>;
 };
 
@@ -80,6 +89,23 @@ function main() {
 - Treasury PDA: \`${proof.treasury}\`
 - Proposal PDA: \`${proof.proposal}\`
 
+${proof.pdaoToken
+  ? `## PDAO Token Surface
+
+- PDAO mint: \`${proof.pdaoToken.mint}\`
+- PDAO program: \`${proof.pdaoToken.programId}\`
+- PDAO token account: \`${proof.pdaoToken.tokenAccount}\`
+- PDAO metadata URI: \`${proof.pdaoToken.metadataUri}\`
+- PDAO decimals: \`${proof.pdaoToken.decimals}\`
+- PDAO initial supply: \`${proof.pdaoToken.supplyUi}\`
+
+### PDAO Token Transactions
+
+${Object.entries(proof.pdaoToken.transactions)
+  .map(([label, tx]) => `- \`${label}\`: \`${tx}\``)
+  .join("\n")}`
+  : ""}
+
 ## Lifecycle Transactions
 
 ${Object.entries(proof.transactions)
@@ -100,6 +126,7 @@ ${Object.entries(proof.transactions)
 - ZK stack note: \`docs/zk-stack.md\`
 - ZK threat extension: \`docs/zk-threat-extension.md\`
 - ZK assumption matrix: \`docs/zk-assumption-matrix.md\`
+- ZK capability matrix: \`docs/zk-capability-matrix.md\`
 - ZK verification flow: \`docs/zk-verification-flow.md\`
 - ZK registry: \`docs/zk-registry.generated.json\`
 - ZK stack version: \`${zkRegistry.zkStackVersion}\`

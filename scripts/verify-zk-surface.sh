@@ -12,6 +12,7 @@ required_files=(
   "docs/zk-stack.md"
   "docs/zk-threat-extension.md"
   "docs/zk-assumption-matrix.md"
+  "docs/zk-capability-matrix.md"
   "docs/zk-verification-flow.md"
   "docs/zk-registry.generated.json"
   "docs/zk-architecture.md"
@@ -50,6 +51,7 @@ if rg -n "REPLACE_WITH|REPLACE_ME|TODO|TBD|coming soon|not implemented" \
   docs/zk-stack.md \
   docs/zk-threat-extension.md \
   docs/zk-assumption-matrix.md \
+  docs/zk-capability-matrix.md \
   docs/zk-verification-flow.md \
   docs/zk-architecture.md \
   docs/zk-evidence.md; then

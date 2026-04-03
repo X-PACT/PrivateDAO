@@ -6,6 +6,7 @@ Formal zk threat reasoning:
 
 - `docs/zk-threat-extension.md`
 - `docs/zk-assumption-matrix.md`
+- `docs/zk-capability-matrix.md`
 - `docs/zk-verification-flow.md`
 
 ## Circuits

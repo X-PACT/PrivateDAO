@@ -23,6 +23,22 @@ Wallet Signer
   -> Transaction signature + explorer proof
 ```
 
+## 2A. Governance Access Layer
+
+```text
+User
+  -> Token Ownership
+  -> Proposal Eligibility
+  -> Governance Lifecycle
+```
+
+The token operates as the governance access layer:
+
+- token ownership gates structured participation
+- proposal eligibility becomes accountable instead of open-ended
+- lifecycle access stays aligned with governance identity
+- treasury outcomes remain tied to governed participation
+
 ## 3. Account Binding Map
 
 ```text

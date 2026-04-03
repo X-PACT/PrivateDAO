@@ -9,6 +9,15 @@ export type ProofRegistry = {
   governanceMint: string;
   treasury: string;
   proposal: string;
+  pdaoToken?: {
+    mint: string;
+    programId: string;
+    tokenAccount: string;
+    metadataUri: string;
+    decimals: number;
+    supplyUi: string;
+    transactions: Record<string, string>;
+  };
   transactions: Record<string, string>;
 };
 

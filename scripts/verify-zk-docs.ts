@@ -8,6 +8,7 @@ const REQUIRED_DOCS = [
   "docs/zk-evidence.md",
   "docs/zk-threat-extension.md",
   "docs/zk-assumption-matrix.md",
+  "docs/zk-capability-matrix.md",
   "docs/zk-verification-flow.md",
   "docs/zk-registry.generated.json",
 ];
@@ -24,6 +25,7 @@ function main() {
   const evidence = read("docs/zk-evidence.md");
   const threat = read("docs/zk-threat-extension.md");
   const matrix = read("docs/zk-assumption-matrix.md");
+  const capability = read("docs/zk-capability-matrix.md");
   const flow = read("docs/zk-verification-flow.md");
 
   for (const circuit of [
@@ -41,6 +43,16 @@ function main() {
     "nullifierAccumulator",
   ]) {
     assertContains(matrix, token, "zk assumption matrix");
+  }
+
+  for (const token of [
+    "Vote validity proof",
+    "Delegation authorization proof",
+    "Tally integrity proof",
+    "On-chain verifier integration",
+    "Not implemented",
+  ]) {
+    assertContains(capability, token, "zk capability matrix");
   }
 
   for (const token of [

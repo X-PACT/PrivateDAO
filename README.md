@@ -31,10 +31,36 @@
 [![ZK Threat Extension](https://img.shields.io/badge/ZK%20Threats-Extended-1d4ed8)](docs/zk-threat-extension.md)
 [![Zero Knowledge](https://img.shields.io/badge/ZK%20%E2%9F%A1-Live%20Proof%20Layer-06b6d4)](docs/zk-layer.md)
 [![Artifact Integrity](https://img.shields.io/badge/Artifact%20Integrity-SHA256%20Manifest-0f766e)](docs/cryptographic-integrity.md)
+[![PDAO Token](https://img.shields.io/badge/PDAO-Devnet%20Governance%20Token-14b8a6)](docs/pdao-token.md)
 
 PrivateDAO is a Solana governance protocol for DAOs that want private voting without giving up execution safety. Votes are committed privately, revealed later, finalized deterministically, and treasury execution stays behind an explicit timelock with recipient and mint checks.
 
 The problem statement is simple and easy for judges to verify: public live tallies create whale pressure, vote buying, and treasury signaling. PrivateDAO removes live vote visibility while keeping the rest of the governance lifecycle inspectable, testable, and compatible with how Solana teams actually operate.
+
+## Token Surface
+
+PrivateDAO now documents a designated Devnet governance voting token profile:
+
+- Token: `PDAO`
+- Network: `Devnet`
+- Utility: `Governance Voting Token`
+- Platform: `DeAura`
+- Mint: `AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt`
+- Program: `Token-2022`
+- Initial supply: `1,000,000 PDAO`
+
+This is a product-facing governance token surface, not a protocol rewrite. The deployed contracts still use DAO-configured governance mint semantics on-chain.
+
+## Governance Token Model
+
+The PrivateDAO governance token provides a structured participation layer for proposal creation, voting, and treasury-facing governance decisions.
+
+It exists to make governance more accountable, reduce spam, and reinforce lifecycle safety through an identifiable governance-access surface rather than open-ended participation.
+
+See:
+
+- `docs/token.md`
+- `docs/pdao-token.md`
 
 ## Why PrivateDAO Exists
 
@@ -111,6 +137,7 @@ Quick links:
 - Proof Center: `https://x-pact.github.io/PrivateDAO/?page=proof`
 - Judge Mode: `https://x-pact.github.io/PrivateDAO/?page=proof&judge=1`
 - Android native guide: `docs/android-native.md`
+- PDAO token surface: `docs/pdao-token.md`
 - Awards page: `docs/awards.md`
 - Strategy documentation: `https://us04docs.zoom.us/doc/Zd34HEaHSKyZGRxBcqxXQg`
 - Repo strategy note: `docs/strategy.md`
@@ -123,6 +150,7 @@ Quick links:
 - ZK stack: `docs/zk-stack.md`
 - ZK threat extension: `docs/zk-threat-extension.md`
 - ZK assumption matrix: `docs/zk-assumption-matrix.md`
+- ZK capability matrix: `docs/zk-capability-matrix.md`
 - ZK verification flow: `docs/zk-verification-flow.md`
 - ZK registry: `docs/zk-registry.generated.json`
 - ZK architecture: `docs/zk-architecture.md`

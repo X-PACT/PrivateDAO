@@ -2044,6 +2044,7 @@ body.judge-mode .judge-banner {
         <div class="surface-pill"><span class="surface-pill-icon">◎</span><strong>On-chain</strong><span>Devnet program live</span></div>
         <div class="surface-pill zk-live"><span class="surface-pill-icon">⟡</span><strong>ZK</strong><span>Real Groth16 overlay live</span></div>
         <div class="surface-pill"><span class="surface-pill-icon">▣</span><strong>Integrity</strong><span>SHA256 artifact manifest live</span></div>
+        <div class="surface-pill"><span class="surface-pill-icon">◇</span><strong>PDAO</strong><span>Devnet governance token · DeAura</span></div>
       </div>
       <a class="zk-mark" href="zk-layer.md" target="_blank">
         <span class="zk-mark-icon"></span>
@@ -2872,6 +2873,80 @@ execute() → CPI
           <div class="proposal-detail-label">ARTIFACT INTEGRITY</div>
           <div style="color:var(--text2);line-height:1.8"><code>npm run verify:cryptographic-manifest</code> verifies the sha256 manifest covering zk artifacts, live-proof anchors, and canonical proof materials.</div>
         </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">CAPABILITY MATRIX</div>
+          <div style="color:var(--text2);line-height:1.8"><a class="award-link" href="zk-capability-matrix.md" target="_blank">Open the capability matrix</a> to see what is live now, what is verified, and what is intentionally not claimed.</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">PER-LAYER REVIEW PATH</div>
+          <div style="color:var(--text2);line-height:1.8"><code>npm run verify:zk-docs</code><br><code>npm run verify:zk-consistency</code><br><code>npm run verify:zk-negative</code></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="award-detail-card reveal" style="margin-top:24px">
+      <div class="award-detail-head">
+        <div>
+          <div class="award-detail-title">PrivateDAO Governance Token (PDAO)</div>
+          <p class="award-detail-copy">
+            The PrivateDAO Governance Token enables structured participation, protects governance lifecycle integrity, and supports accountable decision-making.
+          </p>
+        </div>
+        <div class="award-pill">GOVERNANCE TOKEN</div>
+      </div>
+      <div style="margin-bottom:20px;color:var(--text2);line-height:1.8">
+        <strong style="color:var(--text)">Core roles:</strong>
+        <div style="margin-top:10px">• Enables proposal participation</div>
+        <div>• Supports voting authority</div>
+        <div>• Aligns treasury governance</div>
+        <div>• Prevents governance spam</div>
+        <div>• Anchors long-term ecosystem participation</div>
+      </div>
+      <div class="proposal-command-grid">
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">NAME</div>
+          <div style="color:var(--text2);line-height:1.8"><strong style="color:var(--text)">PDAO</strong></div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">NETWORK</div>
+          <div style="color:var(--text2);line-height:1.8">Devnet</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">UTILITY</div>
+          <div style="color:var(--text2);line-height:1.8">Governance Voting Token</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">PLATFORM</div>
+          <div style="color:var(--text2);line-height:1.8">DeAura</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">MINT</div>
+          <div style="color:var(--text2);line-height:1.8"><code>AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt</code></div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">PROGRAM</div>
+          <div style="color:var(--text2);line-height:1.8"><code>Token-2022</code></div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">INITIAL SUPPLY</div>
+          <div style="color:var(--text2);line-height:1.8">1,000,000 PDAO</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">TOKEN ACCOUNT</div>
+          <div style="color:var(--text2);line-height:1.8"><code>F4q77ZMJdC7eoEUw3CCR7DbKGTggyExjuMGKBEiM2ct4</code></div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">VERIFIED TXS</div>
+          <div style="color:var(--text2);line-height:1.8"><code>create-token</code>, <code>create-account</code>, <code>initialize-metadata</code>, <code>mint-initial-supply</code></div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">BOUNDARY</div>
+          <div style="color:var(--text2);line-height:1.8">This is a product-facing Devnet token surface. The deployed protocol still enforces DAO-configured governance mints on-chain.</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">TOKEN NOTE</div>
+          <div style="color:var(--text2);line-height:1.8"><a class="award-link" href="token.md" target="_blank">Open the token architecture note</a> for the governance model, then <a class="award-link" href="pdao-token.md" target="_blank">open the live PDAO token note</a> for the final Devnet mint details and signatures.</div>
+        </div>
       </div>
     </div>
 
@@ -2926,12 +3001,14 @@ execute() → CPI
         <a class="award-link" href="zk-stack.md" target="_blank">ZK Stack</a>
         <a class="award-link" href="zk-threat-extension.md" target="_blank">ZK Threat Extension</a>
         <a class="award-link" href="zk-assumption-matrix.md" target="_blank">ZK Assumption Matrix</a>
+        <a class="award-link" href="zk-capability-matrix.md" target="_blank">ZK Capability Matrix</a>
         <a class="award-link" href="zk-verification-flow.md" target="_blank">ZK Verification Flow</a>
         <a class="award-link" href="zk-registry.generated.json" target="_blank">ZK Registry</a>
         <a class="award-link" href="zk-architecture.md" target="_blank">ZK Architecture</a>
         <a class="award-link" href="zk-evidence.md" target="_blank">ZK Evidence</a>
         <a class="award-link" href="cryptographic-integrity.md" target="_blank">Artifact Integrity</a>
         <a class="award-link" href="cryptographic-manifest.generated.json" target="_blank">Cryptographic Manifest</a>
+        <a class="award-link" href="pdao-token.md" target="_blank">PDAO Token Surface</a>
         <a class="award-link" href="production-operations.md" target="_blank">Production Ops</a>
         <a class="award-link" href="monitoring-alerts.md" target="_blank">Monitoring</a>
         <a class="award-link" href="incident-response.md" target="_blank">Incident Response</a>

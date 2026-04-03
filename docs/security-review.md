@@ -29,6 +29,19 @@ PrivateDAO now includes a reviewer-visible hardening layer focused on realistic 
 
 ## Hardening highlights
 
+## Token Role in Governance Security
+
+The governance token is part of the protocol's security posture, not a detached branding layer.
+
+Its role in governance security is to:
+
+- reduce proposal spam by tying participation to a governance-access surface
+- increase accountability by linking proposal and voting activity to token-governed participation
+- reinforce proposal validity by making lifecycle entry more structured
+- support lifecycle correctness by narrowing governance actions to economically aligned participants
+
+This does not replace lifecycle checks, signer validation, replay protection, or account-binding enforcement. It complements them by making the governance surface less noisy and more accountable before proposals ever reach finalize or execute.
+
 ### Lifecycle and replay safety
 
 - proposals cannot execute before finalize
@@ -150,6 +163,7 @@ The repository now includes a real zero-knowledge companion stack that does not 
 - layered zk stack note: `docs/zk-stack.md`
 - zk threat extension: `docs/zk-threat-extension.md`
 - zk assumption matrix: `docs/zk-assumption-matrix.md`
+- zk capability matrix: `docs/zk-capability-matrix.md`
 - zk verification flow: `docs/zk-verification-flow.md`
 
 The current zk stack proves:
@@ -181,6 +195,7 @@ The current integrity manifest covers:
 - devnet release manifest
 - live proof note
 - submission registry
+- PDAO token surface
 
 This does not replace protocol security. It reduces silent drift and makes reviewer-facing evidence tamper-evident.
 

@@ -62,6 +62,12 @@ npm run verify:zk-docs
 ```
 
 Checks that the zk reviewer docs stay aligned on layer names, replay boundaries, and verification commands.
+This includes:
+
+- threat extension
+- assumption matrix
+- capability matrix
+- verification flow
 
 ### ZK Consistency And Tamper Rejection
 
@@ -79,6 +85,22 @@ npm run verify:live-proof
 ```
 
 Checks that the live-proof document stays aligned with the canonical proof registry and expected devnet evidence.
+
+The wider review surface also tracks the documented Devnet governance-token profile:
+
+- `docs/pdao-token.md`
+- `docs/token.md`
+
+### Token Presence Gate
+
+The token presence gate confirms that governance identity and structured participation are visible in the reviewer surface.
+
+This means the repository should make clear:
+
+- why the governance token exists
+- how it supports proposal participation
+- how it reinforces lifecycle accountability
+- how it fits inside the wider governance security model
 
 ### Release Manifest
 

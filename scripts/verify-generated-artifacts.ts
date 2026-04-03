@@ -25,6 +25,15 @@ function main() {
     project: string;
     programId: string;
     verificationWallet: string;
+    pdaoToken?: {
+      mint: string;
+      programId: string;
+      tokenAccount: string;
+      metadataUri: string;
+      decimals: number;
+      supplyUi: string;
+      transactionLabels: string[];
+    };
     gateCount: number;
     packageCounts: Record<string, number>;
     zk?: {
@@ -65,6 +74,22 @@ function main() {
     throw new Error("generated attestation verification wallet mismatch");
   }
 
+  if (!attestation.pdaoToken) {
+    throw new Error("generated attestation is missing the PDAO token summary");
+  }
+
+  if (attestation.pdaoToken.mint !== "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt") {
+    throw new Error("generated attestation PDAO mint mismatch");
+  }
+
+  if (attestation.pdaoToken.programId !== "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb") {
+    throw new Error("generated attestation PDAO program mismatch");
+  }
+
+  if (attestation.pdaoToken.transactionLabels.length < 4) {
+    throw new Error("generated attestation PDAO transaction labels are incomplete");
+  }
+
   if (attestation.gateCount < 8) {
     throw new Error("generated attestation gate count is unexpectedly low");
   }
@@ -97,7 +122,7 @@ function main() {
     throw new Error("generated attestation zk summary is unexpectedly weak");
   }
 
-  if (!attestation.zk.verificationDocs || attestation.zk.verificationDocs.length < 3) {
+  if (!attestation.zk.verificationDocs || attestation.zk.verificationDocs.length < 4) {
     throw new Error("generated attestation zk verification docs are missing");
   }
 
@@ -143,6 +168,10 @@ function main() {
 
   if (!auditPacket.includes("## ZK Package")) {
     throw new Error("generated audit packet is missing the ZK package section");
+  }
+
+  if (!auditPacket.includes("## PDAO Token Surface")) {
+    throw new Error("generated audit packet is missing the PDAO token section");
   }
 
   if (!auditPacket.includes("### ZK Review Commands")) {

@@ -34,6 +34,7 @@
       "docs/zk-evidence.md",
       "docs/zk-threat-extension.md",
       "docs/zk-assumption-matrix.md",
+      "docs/zk-capability-matrix.md",
       "docs/zk-verification-flow.md",
       "docs/zk-registry.generated.json"
     ],
@@ -42,7 +43,9 @@
       "docs/devnet-release-manifest.md",
       "docs/proof-registry.json",
       "docs/independent-verification.md",
-      "docs/cryptographic-manifest.generated.json"
+      "docs/cryptographic-manifest.generated.json",
+      "docs/token.md",
+      "docs/pdao-token.md"
     ],
     "operations": [
       "docs/mainnet-readiness.md",

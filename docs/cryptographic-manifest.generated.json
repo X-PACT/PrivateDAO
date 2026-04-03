@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-03T15:28:04.727Z",
+  "generatedAt": "2026-04-03T15:59:14.456Z",
   "algorithm": "sha256",
-  "entryCount": 25,
-  "aggregateSha256": "9fe335e79b34ba18004e48c06dfb829a5b3cdf84f0e51ed290b0a2a91b383fa0",
+  "entryCount": 28,
+  "aggregateSha256": "c7d89047e1f9c3676013e715256b0079dc2bfbeee4aa40cc97e5779289e1772d",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -67,13 +67,13 @@
     },
     {
       "path": "docs/proof-registry.json",
-      "sha256": "5aabdc6731714b77b0fbe56e10d9ab0bd4a81fcf263b6c5a825c356d81f79344",
-      "bytes": 1381
+      "sha256": "5d23604f1a09076c92814bc1f82a60bc62ae160dc9a7ecab6edb5e0227d5e9cd",
+      "bytes": 2220
     },
     {
       "path": "docs/devnet-release-manifest.md",
-      "sha256": "dae336c1cc9e0256b4823ce611dc074002afd62d2a6a409ce4e1b831631843f3",
-      "bytes": 2713
+      "sha256": "5694bf173b8609e882aca8ef4227c710b6e126ffb28e0ae7ec83d070e67b08ac",
+      "bytes": 3578
     },
     {
       "path": "docs/live-proof.md",
@@ -82,8 +82,8 @@
     },
     {
       "path": "docs/submission-registry.json",
-      "sha256": "99551c438a43a3e082bd70b677cfd241acc0a4a139ca1233e7c0b309b46a79a4",
-      "bytes": 2968
+      "sha256": "40dbf9c43fb52962ed8ec85ed04a4385eedc8980dd7f42a589bf4a12ad7b0482",
+      "bytes": 3057
     },
     {
       "path": "docs/independent-verification.md",
@@ -91,9 +91,19 @@
       "bytes": 7337
     },
     {
+      "path": "docs/token.md",
+      "sha256": "18e350802a40a50cc96dde12461cef22f1edbf2310cbcae906799a8cebf3ca8d",
+      "bytes": 3902
+    },
+    {
+      "path": "docs/pdao-token.md",
+      "sha256": "1583ad8f42197844b1beb39eebf27e40a0f584b3758006bb5d2a3668b6130b44",
+      "bytes": 3403
+    },
+    {
       "path": "docs/security-review.md",
-      "sha256": "c141270d3f2fdd23a3f94baffa31150ac2347735d24a5d66fda8cb6e588e696d",
-      "bytes": 8318
+      "sha256": "fe5a80602457fbb50f00f813dec7c4344681b27289189634a353810e06e83cf2",
+      "bytes": 9163
     },
     {
       "path": "docs/zk-layer.md",
@@ -116,6 +126,11 @@
       "bytes": 2920
     },
     {
+      "path": "docs/zk-capability-matrix.md",
+      "sha256": "700b992cce82e5e9c119c16bfab5f34b71754b5cd47962f41e8a6b809282ec29",
+      "bytes": 2396
+    },
+    {
       "path": "docs/zk-verification-flow.md",
       "sha256": "04b1c2f6be7ec2db5f6388db83dc6255c355ce2cd06e5d757f5d7d5624ca87af",
       "bytes": 2173
@@ -127,8 +142,8 @@
     },
     {
       "path": "docs/verification-gates.md",
-      "sha256": "fbc23418098c8dca6d81016cbc777164b51d733bae57fa9a9414527e9f662a70",
-      "bytes": 3035
+      "sha256": "face82373f92e8f3e97f4b3727f72aca355345e5e73a9d28e78d8e315a719fc4",
+      "bytes": 3632
     }
   ]
 }

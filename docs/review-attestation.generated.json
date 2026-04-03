@@ -9,6 +9,20 @@
     "treasury": "S2J1gNCbE8E21pL3VEX4fhz2duxidSwRd7yaV9nriFW",
     "proposal": "8JLRaAnwZc3BXfHKEKdiaK82MyjR1VhgGRKMydqmHxd1"
   },
+  "pdaoToken": {
+    "mint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
+    "programId": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+    "tokenAccount": "F4q77ZMJdC7eoEUw3CCR7DbKGTggyExjuMGKBEiM2ct4",
+    "metadataUri": "https://x-pact.github.io/PrivateDAO/assets/pdao-token.json",
+    "decimals": 9,
+    "supplyUi": "1000000",
+    "transactionLabels": [
+      "create-token",
+      "create-account",
+      "initialize-metadata",
+      "mint-initial-supply"
+    ]
+  },
   "transactionLabels": [
     "create-dao",
     "mint-voting",
@@ -22,8 +36,8 @@
   "packageCounts": {
     "strategy": 6,
     "security": 6,
-    "zk": 9,
-    "proof": 5,
+    "zk": 10,
+    "proof": 7,
     "operations": 9
   },
   "zk": {
@@ -32,6 +46,7 @@
     "verificationDocs": [
       "docs/zk-threat-extension.md",
       "docs/zk-assumption-matrix.md",
+      "docs/zk-capability-matrix.md",
       "docs/zk-verification-flow.md"
     ],
     "layers": [
@@ -54,8 +69,8 @@
   },
   "cryptographicIntegrity": {
     "algorithm": "sha256",
-    "entryCount": 25,
-    "aggregateSha256": "9fe335e79b34ba18004e48c06dfb829a5b3cdf84f0e51ed290b0a2a91b383fa0"
+    "entryCount": 28,
+    "aggregateSha256": "c7d89047e1f9c3676013e715256b0079dc2bfbeee4aa40cc97e5779289e1772d"
   },
   "gateCount": 17,
   "statuses": {
