@@ -31,6 +31,9 @@ npm run verify:registry-consistency >/dev/null
 echo "[verify-all] rebuilding mainnet readiness report"
 npm run build:mainnet-readiness-report >/dev/null
 
+echo "[verify-all] rebuilding deployment attestation"
+npm run build:deployment-attestation >/dev/null
+
 echo "[verify-all] rebuilding cryptographic manifest"
 npm run build:cryptographic-manifest >/dev/null
 
@@ -51,6 +54,9 @@ npm run verify:release-manifest >/dev/null
 
 echo "[verify-all] checking mainnet readiness report"
 npm run verify:mainnet-readiness-report >/dev/null
+
+echo "[verify-all] checking deployment attestation"
+npm run verify:deployment-attestation >/dev/null
 
 echo "[verify-all] checking review links"
 npm run verify:review-links >/dev/null

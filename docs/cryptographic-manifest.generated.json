@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-03T19:05:40.938Z",
+  "generatedAt": "2026-04-03T19:40:13.099Z",
   "algorithm": "sha256",
-  "entryCount": 32,
-  "aggregateSha256": "7cb8ac068da0d6be2fc5aaed3ea856c7dac232b9f305dacd8955ff7ab1db5cf7",
+  "entryCount": 35,
+  "aggregateSha256": "e55d6095c5ab211241546543e5258ff8a0450b54b05eb8d7b8fc16f603d535a1",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -82,8 +82,8 @@
     },
     {
       "path": "docs/submission-registry.json",
-      "sha256": "863a53c64fe4ddac54ce989056d6d88689636aba72c733100174c155978dbb22",
-      "bytes": 3338
+      "sha256": "79ebec117bc100eb70da77fb97acae7af3d6505875fb2e32aff4c2e330fd14c5",
+      "bytes": 3496
     },
     {
       "path": "docs/independent-verification.md",
@@ -101,14 +101,29 @@
       "bytes": 3403
     },
     {
+      "path": "docs/fair-voting.md",
+      "sha256": "5d861764f83516eea34ddbe98fdcfd60048b55a1067c9f5340e22cecafeed0d0",
+      "bytes": 2827
+    },
+    {
+      "path": "docs/wallet-runtime.md",
+      "sha256": "b25d2b05668d235fa3e6b3f90218823978f434a5c0c4d63433fb36035ceddf7e",
+      "bytes": 1887
+    },
+    {
       "path": "docs/security-review.md",
       "sha256": "fe5a80602457fbb50f00f813dec7c4344681b27289189634a353810e06e83cf2",
       "bytes": 9163
     },
     {
       "path": "docs/mainnet-readiness.generated.md",
-      "sha256": "b19fa38dee4aea2f2d05cbdbfb440bc190a5d5b0058367cf7c4922c0d11375e7",
-      "bytes": 2861
+      "sha256": "672946bf28e874d7a36567e6481ba1ee9a1c79f8b8b63456a0b154750ba95188",
+      "bytes": 2937
+    },
+    {
+      "path": "docs/deployment-attestation.generated.json",
+      "sha256": "9cbf288223efd61f41f16527969751e97cb45987f70e2c4d0660f61b5bd18b6a",
+      "bytes": 2398
     },
     {
       "path": "docs/zk-layer.md",
@@ -162,8 +177,8 @@
     },
     {
       "path": "docs/verification-gates.md",
-      "sha256": "315d73c466ae9b714646f36a21964f58c74de47f8f2d3cb5a60f80a57bf938ac",
-      "bytes": 4464
+      "sha256": "837493a2ec9c7a928e5c5e693132616cb373667caf758e102284b2e356b8c29b",
+      "bytes": 4779
     }
   ]
 }

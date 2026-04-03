@@ -11,7 +11,9 @@ type SubmissionRegistry = {
 };
 
 type ProofRegistry = {
+  programId: string;
   deployTx: string;
+  verificationWallet: string;
   dao: string;
   governanceMint: string;
   treasury: string;
@@ -20,42 +22,27 @@ type ProofRegistry = {
     mint: string;
     programId: string;
     tokenAccount: string;
-    metadataUri: string;
-    decimals: number;
     supplyUi: string;
-    transactions: Record<string, string>;
+    metadataUri: string;
   };
-  transactions: Record<string, string>;
-};
-
-type CryptographicManifest = {
-  algorithm: string;
-  entryCount: number;
-  aggregateSha256: string;
 };
 
 type ZkRegistry = {
   zkStackVersion: number;
   entryCount: number;
-  entries: Array<{
-    circuit: string;
-    layer: string;
-    publicSignalCount: number;
-  }>;
 };
 
 function main() {
   const submission = readJson<SubmissionRegistry>("docs/submission-registry.json");
   const proof = readJson<ProofRegistry>("docs/proof-registry.json");
-  const cryptographicManifest = readJson<CryptographicManifest>("docs/cryptographic-manifest.generated.json");
-  const zkRegistry = readJson<ZkRegistry>("docs/zk-registry.generated.json");
+  const zk = readJson<ZkRegistry>("docs/zk-registry.generated.json");
 
   const attestation = {
     project: submission.project,
     programId: submission.programId,
     verificationWallet: submission.verificationWallet,
     deployTx: proof.deployTx,
-    anchors: {
+    governanceAnchors: {
       dao: proof.dao,
       governanceMint: proof.governanceMint,
       treasury: proof.treasury,
@@ -66,13 +53,13 @@ function main() {
           mint: proof.pdaoToken.mint,
           programId: proof.pdaoToken.programId,
           tokenAccount: proof.pdaoToken.tokenAccount,
-          metadataUri: proof.pdaoToken.metadataUri,
-          decimals: proof.pdaoToken.decimals,
           supplyUi: proof.pdaoToken.supplyUi,
-          transactionLabels: Object.keys(proof.pdaoToken.transactions),
+          metadataUri: proof.pdaoToken.metadataUri,
         }
       : undefined,
-    transactionLabels: Object.keys(proof.transactions),
+    readiness: submission.status,
+    verificationGates: submission.gates,
+    gateCount: submission.gates.length,
     packageCounts: {
       strategy: submission.packages.strategy.length,
       security: submission.packages.security.length,
@@ -81,41 +68,19 @@ function main() {
       operations: submission.packages.operations.length,
     },
     zk: {
-      stackVersion: zkRegistry.zkStackVersion,
-      entryCount: zkRegistry.entryCount,
-      verificationDocs: [
-        "docs/zk-threat-extension.md",
-        "docs/zk-assumption-matrix.md",
-        "docs/zk-capability-matrix.md",
-        "docs/zk-provenance.md",
-        "docs/zk-verification-flow.md",
-        "docs/zk-transcript.generated.md",
-        "docs/zk-attestation.generated.json",
-      ],
-      layers: zkRegistry.entries.map((entry) => ({
-        layer: entry.layer,
-        circuit: entry.circuit,
-        publicSignalCount: entry.publicSignalCount,
-      })),
-    },
-    cryptographicIntegrity: {
-      algorithm: cryptographicManifest.algorithm,
-      entryCount: cryptographicManifest.entryCount,
-      aggregateSha256: cryptographicManifest.aggregateSha256,
+      stackVersion: zk.zkStackVersion,
+      entryCount: zk.entryCount,
     },
     runtimeDocs: [
-      "docs/fair-voting.md",
       "docs/wallet-runtime.md",
+      "docs/fair-voting.md",
       "docs/mainnet-readiness.generated.md",
-      "docs/deployment-attestation.generated.json",
     ],
-    gateCount: submission.gates.length,
-    statuses: submission.status,
   };
 
-  const outPath = path.resolve("docs/review-attestation.generated.json");
+  const outPath = path.resolve("docs/deployment-attestation.generated.json");
   fs.writeFileSync(outPath, JSON.stringify(attestation, null, 2) + "\n");
-  console.log(`Wrote review attestation: ${path.relative(process.cwd(), outPath)}`);
+  console.log(`Wrote deployment attestation: ${path.relative(process.cwd(), outPath)}`);
 }
 
 function readJson<T>(relativePath: string): T {

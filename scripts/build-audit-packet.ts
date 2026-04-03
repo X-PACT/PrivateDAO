@@ -117,6 +117,7 @@ ${Object.entries(proof.transactions)
 - Integrity note: \`docs/cryptographic-integrity.md\`
 - Cryptographic manifest: \`docs/cryptographic-manifest.generated.json\`
 - Mainnet readiness report: \`docs/mainnet-readiness.generated.md\`
+- Deployment attestation: \`docs/deployment-attestation.generated.json\`
 - Algorithm: \`${cryptographicManifest.algorithm}\`
 - Manifest entries: \`${cryptographicManifest.entryCount}\`
 - Aggregate sha256: \`${cryptographicManifest.aggregateSha256}\`
@@ -171,6 +172,13 @@ ${submission.packages.zk.map((entry) => `- \`${entry}\``).join("\n")}
 ## Proof Package
 
 ${submission.packages.proof.map((entry) => `- \`${entry}\``).join("\n")}
+
+## Runtime Package
+
+- \`docs/fair-voting.md\`
+- \`docs/wallet-runtime.md\`
+- \`docs/mainnet-readiness.generated.md\`
+- \`docs/deployment-attestation.generated.json\`
 
 ## Operations Package
 

@@ -1,0 +1,56 @@
+# Wallet Runtime Compatibility
+
+PrivateDAO is prepared for real wallet-based review and operator use on Devnet, but wallet compatibility is treated as a runtime property that must be observable rather than assumed.
+
+## Supported Runtime Surface
+
+The current browser surface detects and works with injected Solana wallet providers such as:
+
+- Phantom
+- Solflare
+- Backpack
+- Glow
+- compatible injected providers exposed through `window.solana`
+
+## Why This Matters
+
+For a governance product, wallet behavior is part of the security surface.
+
+If provider detection, signing, or transaction broadcast paths are brittle, reviewers will correctly treat the product as operationally weak even if the protocol logic is solid.
+
+## Current Browser-Side Protections
+
+The current frontend hardening includes:
+
+- provider-specific detection and fallback resolution
+- connection-path fallback across `connect`, `request`, and `enable`
+- wallet public-key extraction across multiple provider response shapes
+- transaction-path fallback across:
+  - `sendTransaction`
+  - `signAndSendTransaction`
+  - `signTransaction`
+- runtime session rehydration
+- disconnect and account-change handling
+- interactive diagnostics for provider and RPC visibility
+
+## Diagnostics Entry Point
+
+Use the live diagnostics page:
+
+- `https://x-pact.github.io/PrivateDAO/?page=diagnostics`
+
+This surface exposes:
+
+- connected provider identity
+- connected public key
+- detected provider states
+- runtime wallet capabilities
+- browser capability flags
+- current RPC health
+- canonical program and PDAO anchors
+
+## Honest Boundary
+
+The repository can harden wallet logic and diagnostics, but it cannot claim universal compatibility for every wallet release on every platform without real runtime testing.
+
+That is why the browser surface now exposes diagnostics directly instead of hiding wallet assumptions behind static text.

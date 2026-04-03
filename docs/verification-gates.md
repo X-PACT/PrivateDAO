@@ -55,6 +55,15 @@ npm run verify:mainnet-readiness-report
 
 Builds and verifies the generated readiness report that summarizes what is already verified inside the repository and what still remains external before any production cutover should be claimed.
 
+### Deployment Attestation
+
+```bash
+npm run build:deployment-attestation
+npm run verify:deployment-attestation
+```
+
+Builds and verifies a machine-readable deployment attestation that binds the canonical program, governance anchors, token surface, readiness status, and verification gates into one review artifact.
+
 ### ZK Registry
 
 ```bash

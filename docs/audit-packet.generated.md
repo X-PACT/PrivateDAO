@@ -54,9 +54,10 @@
 - Integrity note: `docs/cryptographic-integrity.md`
 - Cryptographic manifest: `docs/cryptographic-manifest.generated.json`
 - Mainnet readiness report: `docs/mainnet-readiness.generated.md`
+- Deployment attestation: `docs/deployment-attestation.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `32`
-- Aggregate sha256: `7cb8ac068da0d6be2fc5aaed3ea856c7dac232b9f305dacd8955ff7ab1db5cf7`
+- Manifest entries: `35`
+- Aggregate sha256: `e55d6095c5ab211241546543e5258ff8a0450b54b05eb8d7b8fc16f603d535a1`
 
 ## ZK Package
 
@@ -133,6 +134,16 @@
 - `docs/cryptographic-manifest.generated.json`
 - `docs/token.md`
 - `docs/pdao-token.md`
+- `docs/fair-voting.md`
+- `docs/wallet-runtime.md`
+- `docs/deployment-attestation.generated.json`
+
+## Runtime Package
+
+- `docs/fair-voting.md`
+- `docs/wallet-runtime.md`
+- `docs/mainnet-readiness.generated.md`
+- `docs/deployment-attestation.generated.json`
 
 ## Operations Package
 
@@ -160,6 +171,7 @@
 - `npm run verify:generated-artifacts`
 - `npm run verify:cryptographic-manifest`
 - `npm run verify:mainnet-readiness-report`
+- `npm run verify:deployment-attestation`
 - `npm run verify:zk-surface`
 - `npm run verify:zk-registry`
 - `npm run verify:zk-transcript`

@@ -39,7 +39,9 @@ function main() {
     "external audit",
     "runtime wallet QA",
     "npm run build:mainnet-readiness-report",
+    "npm run build:deployment-attestation",
     "npm run verify:mainnet-readiness-report",
+    "npm run verify:deployment-attestation",
     "npm run verify:all",
     "bash scripts/check-mainnet-readiness.sh",
   ]) {

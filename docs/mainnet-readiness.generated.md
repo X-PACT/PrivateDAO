@@ -34,18 +34,18 @@ This report is generated from the canonical PrivateDAO registries and reviewer a
 
 ## Reviewer Artifact Summary
 
-- Verification gates tracked: `20`
-- Gate count in review attestation: `20`
+- Verification gates tracked: `21`
+- Gate count in review attestation: `21`
 - Strategy package count: `6`
 - Security package count: `6`
 - ZK package count: `13`
-- Proof package count: `7`
+- Proof package count: `10`
 - Operations package count: `10`
 - ZK stack version: `1`
 - ZK layer count: `3`
 - Integrity algorithm: `sha256`
-- Integrity entries: `32`
-- Integrity aggregate sha256: `1e639d8c9c8f3f8f39b73806af0e493792bd17ac31b1ef88a4e99de3f49335f8`
+- Integrity entries: `35`
+- Integrity aggregate sha256: `fd838721d7320346767c645ee4b2087f8f4c98065f33baa8bc6de2067f11a980`
 
 ## Mainnet Conclusion
 
@@ -68,7 +68,9 @@ What still requires real-world completion before mainnet should be claimed:
 
 ```bash
 npm run build:mainnet-readiness-report
+npm run build:deployment-attestation
 npm run verify:mainnet-readiness-report
+npm run verify:deployment-attestation
 npm run verify:all
 bash scripts/check-mainnet-readiness.sh
 ```

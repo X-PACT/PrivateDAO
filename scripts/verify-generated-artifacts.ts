@@ -9,6 +9,7 @@ function main() {
   const zkTranscriptPath = path.resolve("docs/zk-transcript.generated.md");
   const zkAttestationPath = path.resolve("docs/zk-attestation.generated.json");
   const mainnetReadinessReportPath = path.resolve("docs/mainnet-readiness.generated.md");
+  const deploymentAttestationPath = path.resolve("docs/deployment-attestation.generated.json");
 
   if (!fs.existsSync(auditPacketPath)) {
     throw new Error("missing generated audit packet");
@@ -30,6 +31,9 @@ function main() {
   }
   if (!fs.existsSync(mainnetReadinessReportPath)) {
     throw new Error("missing generated mainnet readiness report");
+  }
+  if (!fs.existsSync(deploymentAttestationPath)) {
+    throw new Error("missing generated deployment attestation");
   }
 
   const auditPacket = fs.readFileSync(auditPacketPath, "utf8");
@@ -54,6 +58,7 @@ function main() {
       verificationDocs?: string[];
       layers: Array<{ layer: string; circuit: string; publicSignalCount: number }>;
     };
+    runtimeDocs?: string[];
     cryptographicIntegrity?: {
       algorithm: string;
       entryCount: number;
@@ -75,6 +80,13 @@ function main() {
   };
   const zkTranscript = fs.readFileSync(zkTranscriptPath, "utf8");
   const mainnetReadinessReport = fs.readFileSync(mainnetReadinessReportPath, "utf8");
+  const deploymentAttestation = JSON.parse(fs.readFileSync(deploymentAttestationPath, "utf8")) as {
+    project: string;
+    programId: string;
+    verificationWallet: string;
+    gateCount: number;
+    runtimeDocs: string[];
+  };
   const zkAttestation = JSON.parse(fs.readFileSync(zkAttestationPath, "utf8")) as {
     project: string;
     zkStackVersion: number;
@@ -151,6 +163,10 @@ function main() {
     throw new Error("generated attestation is missing the zk attestation doc");
   }
 
+  if (!attestation.runtimeDocs || !attestation.runtimeDocs.includes("docs/wallet-runtime.md")) {
+    throw new Error("generated attestation runtime docs are missing");
+  }
+
   if (zkRegistry.project !== "PrivateDAO") {
     throw new Error("generated zk registry project mismatch");
   }
@@ -215,6 +231,22 @@ function main() {
     throw new Error("generated mainnet readiness report content is invalid");
   }
 
+  if (deploymentAttestation.project !== "PrivateDAO") {
+    throw new Error("generated deployment attestation project mismatch");
+  }
+
+  if (deploymentAttestation.programId !== "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx") {
+    throw new Error("generated deployment attestation program mismatch");
+  }
+
+  if (deploymentAttestation.verificationWallet !== "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD") {
+    throw new Error("generated deployment attestation verification wallet mismatch");
+  }
+
+  if (!deploymentAttestation.runtimeDocs.includes("docs/wallet-runtime.md")) {
+    throw new Error("generated deployment attestation is missing wallet runtime docs");
+  }
+
   if (zkAttestation.project !== "PrivateDAO") {
     throw new Error("generated zk attestation project mismatch");
   }
@@ -241,6 +273,10 @@ function main() {
 
   if (!cryptographicManifest.files.some((entry) => entry.path === "docs/mainnet-readiness.generated.md")) {
     throw new Error("generated cryptographic manifest is missing the mainnet readiness report");
+  }
+
+  if (!cryptographicManifest.files.some((entry) => entry.path === "docs/deployment-attestation.generated.json")) {
+    throw new Error("generated cryptographic manifest is missing the deployment attestation");
   }
 
   console.log("Generated artifact verification: PASS");
