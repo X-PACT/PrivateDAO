@@ -3268,6 +3268,7 @@ let currentExecuteProposalPubkey = null;
 let liveProposalMap = new Map();
 let currentSelectedProposalPubkey = null;
 let currentSelectedProposal = null;
+let walletProviderListenersBound = false;
 
 function shortPk(pk) {
   return `${pk.slice(0, 4)}...${pk.slice(-4)}`;
@@ -3304,6 +3305,12 @@ function resolveWalletProvider() {
   return null;
 }
 
+function isUserRejectedWalletError(error) {
+  const message = String(error?.message || '').toLowerCase();
+  const code = error?.code;
+  return code === 4001 || message.includes('rejected') || message.includes('denied') || message.includes('cancel');
+}
+
 function extractWalletPublicKey(connectResponse, provider) {
   const candidate =
     connectResponse?.publicKey ||
@@ -3317,6 +3324,57 @@ function extractWalletPublicKey(connectResponse, provider) {
   if (typeof candidate.toBase58 === 'function') return candidate.toBase58();
   if (typeof candidate.toString === 'function') return candidate.toString();
   return null;
+}
+
+function bindWalletProviderEvents(provider) {
+  if (!provider || walletProviderListenersBound || typeof provider.on !== 'function') return;
+
+  provider.on('disconnect', () => {
+    wallet = null;
+    updateWalletUi(false);
+    showToast('Disconnected', 'info');
+  });
+
+  provider.on('accountChanged', (nextPk) => {
+    const resolved = extractWalletPublicKey({ publicKey: nextPk }, provider);
+    wallet = resolved;
+    updateWalletUi(Boolean(wallet));
+    if (wallet) {
+      showToast(`Wallet changed: ${shortPk(wallet)}`, 'info');
+      syncCreateProposalCommand();
+      updateRevealCommandBuilder();
+    }
+  });
+
+  walletProviderListenersBound = true;
+}
+
+async function connectResolvedWalletProvider(provider) {
+  let response = null;
+
+  if (typeof provider.connect === 'function') {
+    try {
+      response = await provider.connect({ onlyIfTrusted: false });
+    } catch (error) {
+      if (isUserRejectedWalletError(error)) throw error;
+      response = await provider.connect();
+    }
+  }
+
+  if (!response && typeof provider.request === 'function') {
+    response = await provider.request({ method: 'connect' });
+  }
+
+  if (!response && typeof provider.enable === 'function') {
+    response = await provider.enable();
+  }
+
+  await new Promise((resolve) => setTimeout(resolve, 120));
+  const connectedPk = extractWalletPublicKey(response, provider);
+  if (!connectedPk) {
+    throw new Error('wallet public key was not returned');
+  }
+  return connectedPk;
 }
 
 function describeWalletConnectionError(error) {
@@ -3351,19 +3409,19 @@ async function connectWallet() {
     showToast('Install Phantom or Solflare to sign transactions.', 'error');
     return;
   }
+  bindWalletProviderEvents(walletProvider);
 
   try {
-    const resp = await walletProvider.connect();
-    const connectedPk = extractWalletPublicKey(resp, walletProvider);
-    if (!connectedPk) {
-      throw new Error('wallet public key was not returned');
-    }
+    const connectedPk = await connectResolvedWalletProvider(walletProvider);
     wallet = connectedPk;
     updateWalletUi(true);
+    syncCreateProposalCommand();
+    updateRevealCommandBuilder();
     showToast(`Connected: ${shortPk(wallet)}`, 'success');
   } catch (e) {
     wallet = null;
     walletProvider = null;
+    walletProviderListenersBound = false;
     updateWalletUi(false);
     showToast(describeWalletConnectionError(e), 'error');
   }
