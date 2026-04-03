@@ -28,9 +28,6 @@ npm run verify:program-id-consistency >/dev/null
 echo "[verify-all] checking PDAO token surface"
 npm run verify:pdao-surface >/dev/null
 
-echo "[verify-all] checking runtime surface"
-npm run verify:runtime-surface >/dev/null
-
 echo "[verify-all] checking submission registry"
 npm run verify:submission-registry >/dev/null
 
@@ -78,6 +75,9 @@ npm run verify:deployment-attestation >/dev/null
 
 echo "[verify-all] checking runtime attestation"
 npm run verify:runtime-attestation >/dev/null
+
+echo "[verify-all] checking runtime surface"
+npm run verify:runtime-surface >/dev/null
 
 echo "[verify-all] checking PDAO attestation"
 npm run verify:pdao-attestation >/dev/null
