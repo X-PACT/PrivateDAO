@@ -497,7 +497,7 @@ describe("Full flow", () => {
         daoName,
         51,
         new BN(0),
-        new BN(4),
+        new BN(5),
         new BN(4),
         { tokenWeighted: {} },
       )
@@ -530,7 +530,7 @@ describe("Full flow", () => {
       .createProposal(
         "Lifecycle guard proposal",
         "Reject invalid phase transitions.",
-        new BN(4),
+        new BN(5),
         {
           actionType: { sendSol: {} },
           amountLamports: new BN(EXECUTE_LAMPORTS),
@@ -772,7 +772,7 @@ describe("Full flow", () => {
         daoName,
         51,
         new BN(0),
-        new BN(3),
+        new BN(5),
         new BN(2),
         { tokenWeighted: {} },
       )
@@ -803,7 +803,7 @@ describe("Full flow", () => {
       .createProposal(
         "Late reveal should fail",
         "Proposal should fail if no valid reveals arrive before reveal_end.",
-        new BN(3),
+        new BN(5),
         {
           actionType: { sendSol: {} },
           amountLamports: new BN(EXECUTE_LAMPORTS),
@@ -1097,7 +1097,18 @@ describe("Full flow", () => {
       assert.include(err.toString(), "InvalidTokenMint");
     }
 
-    const wrongTreasuryMintAccount = await createAccount(provider.connection, payer, wrongMint, treasuryPda, true);
+    const wrongTreasuryMintAccount = getAssociatedTokenAddressSync(wrongMint, treasuryPda, true);
+    await provider.sendAndConfirm(
+      new Transaction().add(
+        createAssociatedTokenAccountInstruction(
+          payer.publicKey,
+          wrongTreasuryMintAccount,
+          treasuryPda,
+          wrongMint,
+        ),
+      ),
+      [],
+    );
 
     try {
       await program.methods
@@ -1119,8 +1130,7 @@ describe("Full flow", () => {
       assert.include(err.toString(), "InvalidTokenMint");
     }
 
-    const payerOwnedSourceToken = await createAccount(provider.connection, payer, mint, payer.publicKey);
-    await mintTo(provider.connection, payer, mint, payerOwnedSourceToken, payer, 100_000_000n);
+    await mintTo(provider.connection, payer, mint, attackerTokenAccount, payer, 100_000_000n);
 
     try {
       await program.methods
@@ -1130,7 +1140,7 @@ describe("Full flow", () => {
           proposal: proposalPda,
           treasury: treasuryPda,
           treasuryRecipient: recipient.publicKey,
-          treasuryTokenAccount: payerOwnedSourceToken,
+          treasuryTokenAccount: attackerTokenAccount,
           recipientTokenAccount,
           executor: payer.publicKey,
           tokenProgram: TOKEN_PROGRAM_ID,
@@ -1198,8 +1208,8 @@ describe("Full flow", () => {
     const voterAta = await createAccount(provider.connection, payer, mint, voter.publicKey);
     await mintTo(provider.connection, payer, mint, voterAta, payer, 1_000_000_000n);
 
-    const primaryDaoName = `FinalizeBinding-${Date.now()}`;
-    const secondaryDaoName = `${primaryDaoName}-other`;
+    const primaryDaoName = `FB-${Date.now()}`;
+    const secondaryDaoName = `FB2-${Date.now()}`;
     const [daoPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("dao"), payer.publicKey.toBuffer(), Buffer.from(primaryDaoName)],
       program.programId,
@@ -1219,7 +1229,7 @@ describe("Full flow", () => {
           daoName,
           51,
           new BN(0),
-          new BN(3),
+          new BN(5),
           new BN(1),
           { tokenWeighted: {} },
         )
@@ -1240,7 +1250,7 @@ describe("Full flow", () => {
       .createProposal(
         "Finalize binding guard",
         "Finalize should reject mismatched DAO context.",
-        new BN(3),
+        new BN(5),
         null,
       )
       .accounts({
@@ -1346,8 +1356,8 @@ describe("Full flow", () => {
     const voterAta = await createAccount(provider.connection, payer, mint, voter.publicKey);
     await mintTo(provider.connection, payer, mint, voterAta, payer, 1_000_000_000n);
 
-    const primaryDaoName = `ExecuteBinding-${Date.now()}`;
-    const secondaryDaoName = `${primaryDaoName}-other`;
+    const primaryDaoName = `EB-${Date.now()}`;
+    const secondaryDaoName = `EB2-${Date.now()}`;
     const [daoPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("dao"), payer.publicKey.toBuffer(), Buffer.from(primaryDaoName)],
       program.programId,
@@ -1362,7 +1372,7 @@ describe("Full flow", () => {
         primaryDaoName,
         51,
         new BN(0),
-        new BN(3),
+        new BN(5),
         new BN(1),
         { tokenWeighted: {} },
       )
@@ -1379,7 +1389,7 @@ describe("Full flow", () => {
         secondaryDaoName,
         51,
         new BN(0),
-        new BN(3),
+        new BN(5),
         new BN(1),
         { tokenWeighted: {} },
       )
@@ -1429,7 +1439,7 @@ describe("Full flow", () => {
       .createProposal(
         "Execute treasury binding guard",
         "Treasury PDA must belong to the same DAO as the proposal.",
-        new BN(3),
+        new BN(5),
         {
           actionType: { sendSol: {} },
           amountLamports: new BN(EXECUTE_LAMPORTS),
@@ -1551,8 +1561,8 @@ describe("Full flow", () => {
       await provider.sendAndConfirm(tx, []);
     }
 
-    const [alice, bob, recipient] = Array.from({ length: 3 }, () => Keypair.generate());
-    for (const wallet of [alice, bob, recipient]) {
+    const [alice, bob, lateVoter, recipient] = Array.from({ length: 4 }, () => Keypair.generate());
+    for (const wallet of [alice, bob, lateVoter, recipient]) {
       await fundWallet(wallet.publicKey, 0.01);
     }
 
@@ -1572,8 +1582,10 @@ describe("Full flow", () => {
     await mintTo(provider.connection, payer, mint, payerTokenAta, payer, 1_000_000n);
     const aliceAta = await createAccount(provider.connection, payer, mint, alice.publicKey);
     const bobAta = await createAccount(provider.connection, payer, mint, bob.publicKey);
+    const lateVoterAta = await createAccount(provider.connection, payer, mint, lateVoter.publicKey);
     await mintTo(provider.connection, payer, mint, aliceAta, payer, 1_000_000_000n);
     await mintTo(provider.connection, payer, mint, bobAta, payer, 1_000_000_000n);
+    await mintTo(provider.connection, payer, mint, lateVoterAta, payer, 1_000_000_000n);
 
     const daoName = `Boundary-${Date.now()}`;
     const [daoPda] = PublicKey.findProgramAddressSync(
@@ -1589,7 +1601,7 @@ describe("Full flow", () => {
         daoName,
         51,
         new BN(0),
-        new BN(3),
+        new BN(5),
         new BN(2),
         { tokenWeighted: {} },
       )
@@ -1619,7 +1631,7 @@ describe("Full flow", () => {
       .createProposal(
         "Boundary guard",
         "Phase edges should behave exactly as intended.",
-        new BN(4),
+        new BN(5),
         {
           actionType: { sendSol: {} },
           amountLamports: new BN(EXECUTE_LAMPORTS),
@@ -1696,17 +1708,20 @@ describe("Full flow", () => {
 
     try {
       await program.methods
-        .commitVote([...commitment(false, rng(), bob.publicKey)], null)
+        .commitVote([...commitment(false, rng(), lateVoter.publicKey)], null)
         .accounts({
           dao: daoPda,
           proposal: proposalPda,
-          voterRecord: bobVotePda,
-          voterTokenAccount: bobAta,
-          voter: bob.publicKey,
+          voterRecord: PublicKey.findProgramAddressSync(
+            [Buffer.from("vote"), proposalPda.toBuffer(), lateVoter.publicKey.toBuffer()],
+            program.programId,
+          )[0],
+          voterTokenAccount: lateVoterAta,
+          voter: lateVoter.publicKey,
           tokenProgram: TOKEN_PROGRAM_ID,
           systemProgram: SystemProgram.programId,
         })
-        .signers([bob])
+        .signers([lateVoter])
         .rpc();
       assert.fail("commit at/after voting end must be rejected");
     } catch (err: any) {
@@ -1852,7 +1867,7 @@ describe("Full flow", () => {
         daoName,
         51,
         new BN(0),
-        new BN(3),
+        new BN(5),
         new BN(2),
         { tokenWeighted: {} },
       )
@@ -1868,7 +1883,7 @@ describe("Full flow", () => {
         `${daoName}-other`,
         51,
         new BN(0),
-        new BN(3),
+        new BN(5),
         new BN(2),
         { tokenWeighted: {} },
       )
@@ -1909,7 +1924,7 @@ describe("Full flow", () => {
       .createProposal(
         "Invariant guard",
         "Failed paths must never advance the lifecycle.",
-        new BN(4),
+        new BN(5),
         {
           actionType: { sendSol: {} },
           amountLamports: new BN(EXECUTE_LAMPORTS),
@@ -2058,7 +2073,7 @@ describe("Full flow", () => {
       .createProposal(
         "Invariant success path",
         "Only successful execute may set isExecuted.",
-        new BN(4),
+        new BN(5),
         {
           actionType: { sendSol: {} },
           amountLamports: new BN(EXECUTE_LAMPORTS),
