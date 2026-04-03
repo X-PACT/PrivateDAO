@@ -51,29 +51,41 @@ body {
   font-family: var(--body);
   min-height: 100vh;
   overflow-x: hidden;
-  cursor: none;
+  cursor: auto;
+}
+
+@media (pointer:fine) {
+  body.custom-cursor-enabled {
+    cursor: none;
+  }
 }
 
 /* Custom cursor */
 .cursor {
   position: fixed;
-  width: 12px; height: 12px;
-  background: var(--cyan);
-  border-radius: 50%;
+  width: 24px; height: 24px;
   pointer-events: none;
   z-index: 9999;
-  transition: transform 0.1s, opacity 0.2s;
-  mix-blend-mode: difference;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 8px rgba(0,229,255,0.28));
+  transform: translate3d(-9999px, -9999px, 0);
+  will-change: transform;
 }
 .cursor-ring {
   position: fixed;
-  width: 40px; height: 40px;
+  width: 28px; height: 28px;
   border: 1px solid var(--cyan);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9998;
-  transition: all 0.15s ease;
-  opacity: 0.4;
+  transition: transform 0.12s ease, opacity 0.12s ease;
+  opacity: 0.24;
+  transform: translate3d(-9999px, -9999px, 0) scale(1);
+  will-change: transform;
 }
 
 /* Scanline overlay */
@@ -1578,11 +1590,67 @@ body.judge-mode .judge-banner {
   font-size: 12px;
   letter-spacing: 0.1em;
 }
+.surface-pill.zk-live {
+  border-color: rgba(0,229,255,0.35);
+  box-shadow: 0 0 0 1px rgba(0,229,255,0.06) inset;
+}
+.surface-pill.zk-live strong {
+  color: var(--cyan);
+}
+.zk-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(0,229,255,0.18);
+  background:
+    linear-gradient(135deg, rgba(0,229,255,0.12), rgba(110,0,255,0.06)),
+    rgba(8, 14, 22, 0.82);
+  color: var(--text);
+  text-decoration: none;
+  max-width: 430px;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.24);
+}
+.zk-mark-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  background: radial-gradient(circle at 30% 30%, rgba(0,229,255,0.28), rgba(110,0,255,0.12));
+  border: 1px solid rgba(0,229,255,0.28);
+  position: relative;
+  overflow: hidden;
+}
+.zk-mark-icon::before {
+  content: '⟡';
+  font-size: 24px;
+  color: var(--cyan);
+  text-shadow: 0 0 16px rgba(0,229,255,0.4);
+}
+.zk-mark-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.zk-mark-copy strong {
+  font-size: 13px;
+  letter-spacing: 0.6px;
+}
+.zk-mark-copy span {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.55;
+}
 </style>
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
+<div class="cursor" id="cursor">🔒</div>
 <div class="cursor-ring" id="cursorRing"></div>
 
 <div class="bg-scene">
@@ -1688,8 +1756,15 @@ body.judge-mode .judge-banner {
         <div class="surface-pill"><strong>Web</strong><span>Live governance surface</span></div>
         <div class="surface-pill"><strong>Android</strong><span>Kotlin native + MWA</span></div>
         <div class="surface-pill"><strong>On-chain</strong><span>Devnet program live</span></div>
-        <div class="surface-pill"><strong>ZK</strong><span>Real Groth16 overlay live</span></div>
+        <div class="surface-pill zk-live"><strong>ZK</strong><span>Real Groth16 overlay live</span></div>
       </div>
+      <a class="zk-mark" href="zk-layer.md" target="_blank">
+        <span class="zk-mark-icon"></span>
+        <span class="zk-mark-copy">
+          <strong>Zero-Knowledge Layer Live</strong>
+          <span>PrivateDAO now includes a real non-breaking Groth16 overlay for proof-backed vote validity and eligibility.</span>
+        </span>
+      </a>
       <div class="hero-actions">
         <button class="btn-primary" onclick="scrollToProposals()">View Live Proposals</button>
         <button class="btn-ghost" onclick="showPage('protocol', findNavButton('protocol'))">How It Works →</button>
@@ -1965,15 +2040,15 @@ body.judge-mode .judge-banner {
 
 <section class="section" id="demo" style="padding-top:20px">
   <div class="container">
-    <div class="section-tag reveal">DEMO</div>
-    <h2 class="section-heading reveal">Evaluator walkthrough</h2>
+    <div class="section-tag reveal">VERIFICATION FLOW</div>
+    <h2 class="section-heading reveal">Fast path to reproduce<br>the real governance cycle.</h2>
     <div class="reveal" style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;line-height:1.8;color:var(--text2)">
-      <p>1) Connect Phantom or Solflare to confirm wallet wiring and devnet connectivity.</p>
-      <p>2) Use the repository scripts for the real flow: create proposal → commit → reveal → finalize → execute.</p>
-      <p>3) Proposal creation is not authority-only. Any wallet holding the DAO governance token can submit a proposal on-chain.</p>
-      <p>4) Refresh this page to inspect live proposal accounts, timing windows, and resulting phase transitions.</p>
-      <p>5) Local proof flow: run <span style="color:var(--cyan)">npm run demo</span> to execute the repository's end-to-end demonstration.</p>
-      <p style="color:var(--amber)">This page is intentionally paired with the repo scripts instead of pretending to be a full DAO admin console. The frontend explains the flow, while the backend and CLI execute the exact on-chain instructions under review, including real transaction signatures and explorer links.</p>
+      <p>1) Connect a Solana wallet such as Phantom, Solflare, or Backpack on Devnet.</p>
+      <p>2) Review the selected proposal and its current on-chain phase from this surface.</p>
+      <p>3) Reproduce the lifecycle with the repo or wallet-native paths: create proposal → commit → reveal → finalize → execute.</p>
+      <p>4) Verify phase transitions, treasury effects, and transaction hashes against Solscan.</p>
+      <p>5) Run <span style="color:var(--cyan)">npm run demo</span> for the repository walkthrough and <span style="color:var(--cyan)">npm run verify:all</span> for the full review gate.</p>
+      <p style="color:var(--text3)">The product surface and the repository are intentionally aligned: the frontend explains and signs, while the protocol, scripts, proofs, and verification gates provide the hard evidence.</p>
     </div>
   </div>
 </section>
@@ -1990,32 +2065,6 @@ body.judge-mode .judge-banner {
         <div style="padding:14px;border:1px solid var(--border);border-radius:12px;background:var(--void)"><span style="color:var(--text3)">Current slot</span><br><span id="deploySlot">Loading...</span></div>
         <div style="padding:14px;border:1px solid var(--border);border-radius:12px;background:var(--void)"><span style="color:var(--text3)">Program owner</span><br><span style="word-break:break-all" id="deployOwner">Loading...</span></div>
         <div style="padding:14px;border:1px solid var(--border);border-radius:12px;background:var(--void)"><span style="color:var(--text3)">Explorer</span><br><a href="https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet" target="_blank" style="color:var(--cyan);text-decoration:none">View on Solscan</a></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="ecosystem-mentions" style="padding-top:20px">
-  <div class="container">
-    <div class="section-tag reveal">HACKATHON CONTEXT</div>
-    <h2 class="section-heading reveal">Tracks, sponsors,<br>and ecosystem fit.</h2>
-    <div class="reveal" style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px">
-      <p style="color:var(--text2);margin-bottom:16px">These are the official Graveyard hackathon tracks and ecosystem partners most relevant to this project. Listing them here does not imply prize results, grants, partnership, or endorsement.</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;font-family:var(--mono);font-size:12px">
-        <div style="padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--void)">Solana Foundation</div>
-        <div style="padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--void)">Realms</div>
-        <div style="padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--void)">Sunrise</div>
-        <div style="padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--void)">Exchange Art</div>
-        <div style="padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--void)">Tapestry</div>
-        <div style="padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--void)">MagicBlock</div>
-        <div style="padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--void)">KYD Labs</div>
-        <div style="padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--void)">Portals</div>
-        <div style="padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--void)">DRiP</div>
-        <div style="padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--void)">Torque</div>
-        <div style="padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--void)">BIO</div>
-        <div style="padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--void)">Audius</div>
-        <div style="padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--void)">OrbitFlare</div>
-        <div style="padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--void)">Colosseum pipeline fit</div>
       </div>
     </div>
   </div>
@@ -3002,21 +3051,43 @@ execute() → CPI
 const cursor = document.getElementById('cursor');
 const ring   = document.getElementById('cursorRing');
 let mx=0, my=0, rx=0, ry=0;
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  cursor.style.left = mx - 6 + 'px';
-  cursor.style.top  = my - 6 + 'px';
-});
-setInterval(() => {
-  rx += (mx - rx) * 0.12;
-  ry += (my - ry) * 0.12;
-  ring.style.left = rx - 20 + 'px';
-  ring.style.top  = ry - 20 + 'px';
-}, 16);
-document.querySelectorAll('button, a, .proposal-card, .vote-opt').forEach(el => {
-  el.addEventListener('mouseenter', () => { ring.style.transform = 'scale(1.8)'; ring.style.opacity = '0.7'; });
-  el.addEventListener('mouseleave', () => { ring.style.transform = 'scale(1)'; ring.style.opacity = '0.4'; });
-});
+let cursorFrame = null;
+let cursorHover = false;
+const hasFinePointer = window.matchMedia && window.matchMedia('(pointer:fine)').matches;
+if (hasFinePointer) {
+  document.body.classList.add('custom-cursor-enabled');
+}
+function renderCursor() {
+  rx += (mx - rx) * 0.22;
+  ry += (my - ry) * 0.22;
+  cursor.style.transform = `translate3d(${mx - 12}px, ${my - 12}px, 0) scale(${cursorHover ? 1.08 : 1})`;
+  ring.style.transform = `translate3d(${rx - 14}px, ${ry - 14}px, 0) scale(${cursorHover ? 1.22 : 1})`;
+  ring.style.opacity = cursorHover ? '0.48' : '0.24';
+  if (Math.abs(mx - rx) > 0.1 || Math.abs(my - ry) > 0.1) {
+    cursorFrame = requestAnimationFrame(renderCursor);
+  } else {
+    cursorFrame = null;
+  }
+}
+if (hasFinePointer) {
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX;
+    my = e.clientY;
+    if (!cursorFrame) cursorFrame = requestAnimationFrame(renderCursor);
+  }, { passive: true });
+  document.querySelectorAll('button, a, .proposal-card, .vote-opt').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursorHover = true;
+      cursor.textContent = '⚡';
+      if (!cursorFrame) cursorFrame = requestAnimationFrame(renderCursor);
+    });
+    el.addEventListener('mouseleave', () => {
+      cursorHover = false;
+      cursor.textContent = '🔒';
+      if (!cursorFrame) cursorFrame = requestAnimationFrame(renderCursor);
+    });
+  });
+}
 
 // ── Nav scroll ──────────────────────────────────────────
 window.addEventListener('scroll', () => {
@@ -3330,19 +3401,48 @@ function updateWalletUi(connected) {
 }
 
 function resolveWalletProvider() {
-  if (window.phantom && window.phantom.solana && window.phantom.solana.isPhantom) {
-    return window.phantom.solana;
-  }
-  if (window.solana && window.solana.isPhantom) {
-    return window.solana;
-  }
-  if (window.solflare && window.solflare.isSolflare) {
-    return window.solflare;
-  }
-  if (window.solflare && window.solflare.solflare && window.solflare.solflare.isSolflare) {
-    return window.solflare.solflare;
-  }
-  return null;
+  const rawCandidates = [
+    window.phantom?.solana || null,
+    window.backpack?.solana || null,
+    window.solflare?.solflare || null,
+    window.solflare || null,
+    window.glowSolana || null,
+    window.xnft?.solana || null,
+    ...(Array.isArray(window.solana?.providers) ? window.solana.providers : []),
+    window.solana || null,
+  ];
+
+  const seen = new Set();
+  const candidates = rawCandidates.filter((provider) => {
+    if (!provider || typeof provider !== 'object') return false;
+    if (seen.has(provider)) return false;
+    seen.add(provider);
+    const canConnect =
+      typeof provider.connect === 'function' ||
+      typeof provider.request === 'function' ||
+      typeof provider.enable === 'function';
+    const canSign =
+      typeof provider.sendTransaction === 'function' ||
+      typeof provider.signAndSendTransaction === 'function' ||
+      typeof provider.signTransaction === 'function';
+    return canConnect && canSign;
+  });
+
+  return (
+    candidates.find((provider) => provider.isPhantom) ||
+    candidates.find((provider) => provider.isBackpack) ||
+    candidates.find((provider) => provider.isSolflare) ||
+    candidates[0] ||
+    null
+  );
+}
+
+function walletProviderName(provider) {
+  if (!provider) return 'wallet';
+  if (provider.isPhantom) return 'Phantom';
+  if (provider.isBackpack) return 'Backpack';
+  if (provider.isSolflare) return 'Solflare';
+  return provider.name || provider.walletName || 'wallet';
 }
 
 function isUserRejectedWalletError(error) {
@@ -3374,6 +3474,8 @@ function bindWalletProviderEvents(provider) {
 
   provider.on('disconnect', () => {
     wallet = null;
+    walletProvider = null;
+    walletProviderListenersBound = false;
     updateWalletUi(false);
     showToast('Disconnected', 'info');
   });
@@ -3382,11 +3484,15 @@ function bindWalletProviderEvents(provider) {
     const resolved = extractWalletPublicKey({ publicKey: nextPk }, provider);
     wallet = resolved;
     updateWalletUi(Boolean(wallet));
-    if (wallet) {
-      showToast(`Wallet changed: ${shortPk(wallet)}`, 'info');
-      syncCreateProposalCommand();
-      updateRevealCommandBuilder();
+    if (!wallet) {
+      walletProvider = null;
+      walletProviderListenersBound = false;
+      showToast('Wallet disconnected.', 'info');
+      return;
     }
+    showToast(`Wallet changed: ${shortPk(wallet)}`, 'info');
+    syncCreateProposalCommand();
+    updateRevealCommandBuilder();
   });
 
   walletProviderListenersBound = true;
@@ -3438,29 +3544,34 @@ function describeWalletConnectionError(error) {
 }
 
 async function connectWallet() {
-  if (wallet && walletProvider && walletProvider.disconnect) {
-    await walletProvider.disconnect();
-    wallet = null;
-    walletProvider = null;
-    updateWalletUi(false);
-    showToast('Disconnected', 'info');
+  const resolvedProvider = resolveWalletProvider();
+  if (!resolvedProvider) {
+    showToast('Install a Solana wallet such as Phantom, Solflare, or Backpack.', 'error');
     return;
   }
-
-  walletProvider = resolveWalletProvider();
-  if (!walletProvider) {
-    showToast('Install Phantom or Solflare to sign transactions.', 'error');
-    return;
+  if (walletProvider !== resolvedProvider) {
+    walletProvider = resolvedProvider;
+    walletProviderListenersBound = false;
   }
   bindWalletProviderEvents(walletProvider);
 
   try {
+    const existingPk = extractWalletPublicKey(null, walletProvider);
+    if (walletProvider.isConnected && existingPk) {
+      wallet = existingPk;
+      updateWalletUi(true);
+      syncCreateProposalCommand();
+      updateRevealCommandBuilder();
+      showToast(`Connected ${walletProviderName(walletProvider)}: ${shortPk(wallet)}`, 'success');
+      return;
+    }
+
     const connectedPk = await connectResolvedWalletProvider(walletProvider);
     wallet = connectedPk;
     updateWalletUi(true);
     syncCreateProposalCommand();
     updateRevealCommandBuilder();
-    showToast(`Connected: ${shortPk(wallet)}`, 'success');
+    showToast(`Connected ${walletProviderName(walletProvider)}: ${shortPk(wallet)}`, 'success');
   } catch (e) {
     wallet = null;
     walletProvider = null;

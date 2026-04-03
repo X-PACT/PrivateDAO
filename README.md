@@ -28,6 +28,7 @@
 [![Replay Analysis](https://img.shields.io/badge/Replay%20Analysis-Verified-7c3aed)](docs/replay-analysis.md)
 [![Atomicity](https://img.shields.io/badge/Atomicity-Verified-15803d)](docs/failure-modes.md)
 [![ZK Overlay](https://img.shields.io/badge/ZK-Real%20Groth16%20Overlay-111827)](docs/zk-upgrade.md)
+[![Zero Knowledge](https://img.shields.io/badge/ZK%20%E2%9F%A1-Live%20Proof%20Layer-06b6d4)](docs/zk-layer.md)
 
 PrivateDAO is a Solana governance protocol for DAOs that want private voting without giving up execution safety. Votes are committed privately, revealed later, finalized deterministically, and treasury execution stays behind an explicit timelock with recipient and mint checks.
 
