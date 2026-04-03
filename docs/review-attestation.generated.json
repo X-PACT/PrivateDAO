@@ -14,6 +14,7 @@
     "programId": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
     "tokenAccount": "F4q77ZMJdC7eoEUw3CCR7DbKGTggyExjuMGKBEiM2ct4",
     "metadataUri": "https://x-pact.github.io/PrivateDAO/assets/pdao-token.json",
+    "metadataAssetPath": "docs/assets/pdao-token.json",
     "decimals": 9,
     "supplyUi": "1000000",
     "transactionLabels": [
@@ -37,7 +38,7 @@
     "strategy": 6,
     "security": 6,
     "zk": 13,
-    "proof": 12,
+    "proof": 14,
     "operations": 12
   },
   "zk": {
@@ -72,12 +73,13 @@
   },
   "cryptographicIntegrity": {
     "algorithm": "sha256",
-    "entryCount": 38,
-    "aggregateSha256": "4c1b91e8e017adb87cf7c41b1c4361e309aea28a343fdd7306f84cb0baacc137"
+    "entryCount": 40,
+    "aggregateSha256": "b1db7871c5a3e122e80adce8f4a2667ae6f0565e231c98ad2b8f1d8b6377ba9f"
   },
   "runtimeDocs": [
     "docs/fair-voting.md",
     "docs/wallet-runtime.md",
+    "docs/pdao-attestation.generated.json",
     "docs/mainnet-readiness.generated.md",
     "docs/deployment-attestation.generated.json",
     "docs/go-live-criteria.md",
@@ -85,7 +87,7 @@
     "docs/runtime-attestation.generated.json",
     "docs/go-live-attestation.generated.json"
   ],
-  "gateCount": 24,
+  "gateCount": 28,
   "statuses": {
     "governanceLifecycle": "verified",
     "securityReasoning": "verified",

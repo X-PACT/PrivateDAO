@@ -22,6 +22,12 @@ npm run verify:zk-surface >/dev/null
 echo "[verify-all] checking frontend surface"
 npm run verify:frontend-surface >/dev/null
 
+echo "[verify-all] checking program id consistency"
+npm run verify:program-id-consistency >/dev/null
+
+echo "[verify-all] checking PDAO token surface"
+npm run verify:pdao-surface >/dev/null
+
 echo "[verify-all] checking runtime surface"
 npm run verify:runtime-surface >/dev/null
 
@@ -39,6 +45,9 @@ npm run build:runtime-attestation >/dev/null
 
 echo "[verify-all] rebuilding go-live attestation"
 npm run build:go-live-attestation >/dev/null
+
+echo "[verify-all] rebuilding PDAO attestation"
+npm run build:pdao-attestation >/dev/null
 
 echo "[verify-all] rebuilding cryptographic manifest"
 npm run build:cryptographic-manifest >/dev/null
@@ -69,6 +78,9 @@ npm run verify:deployment-attestation >/dev/null
 
 echo "[verify-all] checking runtime attestation"
 npm run verify:runtime-attestation >/dev/null
+
+echo "[verify-all] checking PDAO attestation"
+npm run verify:pdao-attestation >/dev/null
 
 echo "[verify-all] checking go-live attestation"
 npm run verify:go-live-attestation >/dev/null

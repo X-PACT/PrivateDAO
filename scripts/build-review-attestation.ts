@@ -67,6 +67,7 @@ function main() {
           programId: proof.pdaoToken.programId,
           tokenAccount: proof.pdaoToken.tokenAccount,
           metadataUri: proof.pdaoToken.metadataUri,
+          metadataAssetPath: "docs/assets/pdao-token.json",
           decimals: proof.pdaoToken.decimals,
           supplyUi: proof.pdaoToken.supplyUi,
           transactionLabels: Object.keys(proof.pdaoToken.transactions),
@@ -106,6 +107,7 @@ function main() {
     runtimeDocs: [
       "docs/fair-voting.md",
       "docs/wallet-runtime.md",
+      "docs/pdao-attestation.generated.json",
       "docs/mainnet-readiness.generated.md",
       "docs/deployment-attestation.generated.json",
       "docs/go-live-criteria.md",

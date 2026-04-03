@@ -18,6 +18,8 @@ required_files=(
   "docs/attack-simulation-log.md"
   "docs/token.md"
   "docs/pdao-token.md"
+  "docs/pdao-attestation.generated.json"
+  "docs/assets/pdao-token.json"
   "docs/fair-voting.md"
   "docs/wallet-runtime.md"
   "docs/zk-upgrade.md"
@@ -125,6 +127,12 @@ node -e '
 echo "[review-surface] checking live-proof consistency"
 npx ts-node scripts/verify-live-proof.ts >/dev/null
 
+echo "[review-surface] checking canonical program id consistency"
+npx ts-node scripts/verify-program-id-consistency.ts >/dev/null
+
+echo "[review-surface] checking PDAO token surface"
+npx ts-node scripts/verify-pdao-token-surface.ts >/dev/null
+
 echo "[review-surface] checking zk surface consistency"
 bash scripts/verify-zk-surface.sh >/dev/null
 
@@ -151,6 +159,9 @@ npx ts-node scripts/verify-deployment-attestation.ts >/dev/null
 
 echo "[review-surface] checking runtime attestation"
 npx ts-node scripts/verify-runtime-attestation.ts >/dev/null
+
+echo "[review-surface] checking PDAO attestation"
+npx ts-node scripts/verify-pdao-attestation.ts >/dev/null
 
 echo "[review-surface] checking runtime surface"
 npx ts-node scripts/verify-runtime-surface.ts >/dev/null

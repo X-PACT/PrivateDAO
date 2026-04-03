@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-03T20:51:48.030Z",
+  "generatedAt": "2026-04-03T21:25:02.688Z",
   "algorithm": "sha256",
-  "entryCount": 38,
-  "aggregateSha256": "4c1b91e8e017adb87cf7c41b1c4361e309aea28a343fdd7306f84cb0baacc137",
+  "entryCount": 40,
+  "aggregateSha256": "b1db7871c5a3e122e80adce8f4a2667ae6f0565e231c98ad2b8f1d8b6377ba9f",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -72,8 +72,8 @@
     },
     {
       "path": "docs/devnet-release-manifest.md",
-      "sha256": "5694bf173b8609e882aca8ef4227c710b6e126ffb28e0ae7ec83d070e67b08ac",
-      "bytes": 3578
+      "sha256": "ca3f27e9006c7d44fa7b5d7e8dbb0b490320dd0096f5e1c967511121b6fbc3f7",
+      "bytes": 3906
     },
     {
       "path": "docs/live-proof.md",
@@ -82,8 +82,8 @@
     },
     {
       "path": "docs/submission-registry.json",
-      "sha256": "73912d67d51d3144189a05175f1caa23ea29e46ea0bf2a53924d8382970897c1",
-      "bytes": 3789
+      "sha256": "12494dd99e7668294661e164f957de5e00affc82a8f211263a7c34c96eadbe44",
+      "bytes": 4023
     },
     {
       "path": "docs/independent-verification.md",
@@ -92,13 +92,23 @@
     },
     {
       "path": "docs/token.md",
-      "sha256": "18e350802a40a50cc96dde12461cef22f1edbf2310cbcae906799a8cebf3ca8d",
-      "bytes": 3902
+      "sha256": "f96eabc936a8e8c98c5292997304d7b781c37599328096a557a1ec9f26a64d62",
+      "bytes": 4048
     },
     {
       "path": "docs/pdao-token.md",
-      "sha256": "1583ad8f42197844b1beb39eebf27e40a0f584b3758006bb5d2a3668b6130b44",
-      "bytes": 3403
+      "sha256": "d16aaf6dc13674e0ba9ceb9b637bf7a062b3afcb1c16f18896166032ea66e86a",
+      "bytes": 4081
+    },
+    {
+      "path": "docs/pdao-attestation.generated.json",
+      "sha256": "c00714b03b8fcd8b7c41c414defd4e725f1faaf668a70c62cc70e6eca8024080",
+      "bytes": 1590
+    },
+    {
+      "path": "docs/assets/pdao-token.json",
+      "sha256": "76e64d33e9924ce17d9c20565c6666476332b7674223d399522df3d020f432cb",
+      "bytes": 1182
     },
     {
       "path": "docs/fair-voting.md",
@@ -127,17 +137,17 @@
     },
     {
       "path": "docs/security-review.md",
-      "sha256": "fe5a80602457fbb50f00f813dec7c4344681b27289189634a353810e06e83cf2",
-      "bytes": 9163
+      "sha256": "b2a04dad906a08203ffc2009334903ca445a3e14ad435ed47d5c8bd32633976b",
+      "bytes": 9507
     },
     {
       "path": "docs/deployment-attestation.generated.json",
-      "sha256": "16f21076a979605b9f997a55333e7085db9c8b696da0f37d3164b2ea844cead1",
-      "bytes": 2589
+      "sha256": "cfceb53a28a8f35fd0c84e9f90fab52da0fdf6e499b3fc967ab17c6be8cce800",
+      "bytes": 2740
     },
     {
       "path": "docs/go-live-attestation.generated.json",
-      "sha256": "432409baa3b458920fbb43d8f42d7d0ca9b12ffb903bee49efd99bb150d1e5ca",
+      "sha256": "dadd9f242148fc4ecf1a2e01de4b2944fe2682069541a988dab617da0f798d13",
       "bytes": 1651
     },
     {
@@ -192,8 +202,8 @@
     },
     {
       "path": "docs/verification-gates.md",
-      "sha256": "21e3605617d37c4f9dd362cc62202693fe0be29a52aaf5b9fc4141bf875b1f39",
-      "bytes": 5529
+      "sha256": "f74422b8bcd9b2e70f4a330a03a8858e44c7d3d12f8a0403483bf5a923f78d42",
+      "bytes": 6114
     }
   ]
 }

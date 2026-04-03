@@ -98,6 +98,13 @@ ${proof.pdaoToken
 - PDAO metadata URI: \`${proof.pdaoToken.metadataUri}\`
 - PDAO decimals: \`${proof.pdaoToken.decimals}\`
 - PDAO initial supply: \`${proof.pdaoToken.supplyUi}\`
+- PDAO attestation: \`docs/pdao-attestation.generated.json\`
+
+### Program Boundary
+
+- PrivateDAO governance program: \`${proof.programId}\`
+- PDAO token program: \`${proof.pdaoToken.programId}\`
+- Boundary note: the Token-2022 program id belongs to the PDAO mint surface and does not indicate a second PrivateDAO governance program.
 
 ### PDAO Token Transactions
 
@@ -119,6 +126,7 @@ ${Object.entries(proof.transactions)
 - Mainnet readiness report: \`docs/mainnet-readiness.generated.md\`
 - Deployment attestation: \`docs/deployment-attestation.generated.json\`
 - Go-live attestation: \`docs/go-live-attestation.generated.json\`
+- PDAO attestation: \`docs/pdao-attestation.generated.json\`
 - Algorithm: \`${cryptographicManifest.algorithm}\`
 - Manifest entries: \`${cryptographicManifest.entryCount}\`
 - Aggregate sha256: \`${cryptographicManifest.aggregateSha256}\`

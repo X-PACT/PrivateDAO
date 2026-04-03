@@ -35,6 +35,8 @@ npm run build:ranger-submission -- docs/ranger-strategy-config.devnet.json docs/
 echo "[mainnet] verifying live proof and review surface"
 npm run verify:live-proof >/dev/null
 npm run verify:release-manifest >/dev/null
+npm run verify:program-id-consistency >/dev/null
+npm run verify:pdao-surface >/dev/null
 npm run build:deployment-attestation >/dev/null
 npm run verify:deployment-attestation >/dev/null
 npm run build:runtime-attestation >/dev/null
@@ -42,8 +44,11 @@ npm run verify:runtime-attestation >/dev/null
 npm run verify:runtime-surface >/dev/null
 npm run build:go-live-attestation >/dev/null
 npm run verify:go-live-attestation >/dev/null
+npm run build:pdao-attestation >/dev/null
+npm run verify:pdao-attestation >/dev/null
 npm run build:mainnet-readiness-report >/dev/null
 npm run verify:mainnet-readiness-report >/dev/null
+npm run verify:pdao-live >/dev/null
 npm run verify:review-links >/dev/null
 npm run verify:ops-surface >/dev/null
 npm run verify:review-surface >/dev/null
@@ -58,6 +63,8 @@ test -f docs/go-live-criteria.md
 test -f docs/operational-drillbook.md
 test -f docs/runtime-attestation.generated.json
 test -f docs/go-live-attestation.generated.json
+test -f docs/pdao-attestation.generated.json
+test -f docs/assets/pdao-token.json
 test -f docs/judge-technical-audit.md
 
 echo "[mainnet] PASS"

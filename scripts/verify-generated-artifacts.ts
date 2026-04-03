@@ -12,6 +12,7 @@ function main() {
   const deploymentAttestationPath = path.resolve("docs/deployment-attestation.generated.json");
   const goLiveAttestationPath = path.resolve("docs/go-live-attestation.generated.json");
   const runtimeAttestationPath = path.resolve("docs/runtime-attestation.generated.json");
+  const pdaoAttestationPath = path.resolve("docs/pdao-attestation.generated.json");
 
   if (!fs.existsSync(auditPacketPath)) {
     throw new Error("missing generated audit packet");
@@ -42,6 +43,9 @@ function main() {
   }
   if (!fs.existsSync(runtimeAttestationPath)) {
     throw new Error("missing generated runtime attestation");
+  }
+  if (!fs.existsSync(pdaoAttestationPath)) {
+    throw new Error("missing generated PDAO attestation");
   }
 
   const auditPacket = fs.readFileSync(auditPacketPath, "utf8");
@@ -111,6 +115,28 @@ function main() {
     diagnosticsPage: string;
     runtimeDocs: string[];
     supportedWallets: Array<{ id: string; label: string }>;
+  };
+  const pdaoAttestation = JSON.parse(fs.readFileSync(pdaoAttestationPath, "utf8")) as {
+    project: string;
+    privateDaoProgramId: string;
+    verificationWallet: string;
+    pdaoToken: {
+      name: string;
+      symbol: string;
+      platform: string;
+      mint: string;
+      tokenProgramId: string;
+      metadataAssetPath: string;
+      metadataUri: string;
+      supplyUi: string;
+      transactionLabels: string[];
+    };
+    programBoundary: {
+      privateDaoProgramId: string;
+      tokenProgramId: string;
+      explanation: string;
+    };
+    verificationDocs: string[];
   };
   const zkAttestation = JSON.parse(fs.readFileSync(zkAttestationPath, "utf8")) as {
     project: string;
@@ -197,6 +223,9 @@ function main() {
   if (!attestation.runtimeDocs.includes("docs/runtime-attestation.generated.json")) {
     throw new Error("generated attestation is missing the runtime attestation doc");
   }
+  if (!attestation.runtimeDocs.includes("docs/pdao-attestation.generated.json")) {
+    throw new Error("generated attestation is missing the PDAO attestation doc");
+  }
 
   if (zkRegistry.project !== "PrivateDAO") {
     throw new Error("generated zk registry project mismatch");
@@ -255,6 +284,9 @@ function main() {
 
   if (!auditPacket.includes("## PDAO Token Surface")) {
     throw new Error("generated audit packet is missing the PDAO token section");
+  }
+  if (!auditPacket.includes("docs/pdao-attestation.generated.json")) {
+    throw new Error("generated audit packet is missing the PDAO attestation reference");
   }
 
   if (!auditPacket.includes("### ZK Review Commands")) {
@@ -343,6 +375,58 @@ function main() {
     throw new Error("generated runtime attestation is missing Phantom support");
   }
 
+  if (pdaoAttestation.project !== "PrivateDAO") {
+    throw new Error("generated PDAO attestation project mismatch");
+  }
+
+  if (pdaoAttestation.privateDaoProgramId !== "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx") {
+    throw new Error("generated PDAO attestation governance program mismatch");
+  }
+
+  if (pdaoAttestation.verificationWallet !== "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD") {
+    throw new Error("generated PDAO attestation verification wallet mismatch");
+  }
+
+  if (pdaoAttestation.pdaoToken.name !== "PDAO" || pdaoAttestation.pdaoToken.symbol !== "PDAO") {
+    throw new Error("generated PDAO attestation token identity mismatch");
+  }
+
+  if (pdaoAttestation.pdaoToken.platform !== "DeAura") {
+    throw new Error("generated PDAO attestation platform mismatch");
+  }
+
+  if (pdaoAttestation.pdaoToken.mint !== "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt") {
+    throw new Error("generated PDAO attestation mint mismatch");
+  }
+
+  if (pdaoAttestation.pdaoToken.tokenProgramId !== "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb") {
+    throw new Error("generated PDAO attestation token program mismatch");
+  }
+
+  if (pdaoAttestation.pdaoToken.metadataAssetPath !== "docs/assets/pdao-token.json") {
+    throw new Error("generated PDAO attestation metadata asset path mismatch");
+  }
+
+  if (pdaoAttestation.pdaoToken.metadataUri !== "https://x-pact.github.io/PrivateDAO/assets/pdao-token.json") {
+    throw new Error("generated PDAO attestation metadata URI mismatch");
+  }
+
+  if (pdaoAttestation.pdaoToken.supplyUi !== "1000000" || pdaoAttestation.pdaoToken.transactionLabels.length < 4) {
+    throw new Error("generated PDAO attestation supply summary is incomplete");
+  }
+
+  if (pdaoAttestation.programBoundary.privateDaoProgramId !== pdaoAttestation.privateDaoProgramId) {
+    throw new Error("generated PDAO attestation boundary governance mismatch");
+  }
+
+  if (!pdaoAttestation.programBoundary.explanation.includes("Token-2022")) {
+    throw new Error("generated PDAO attestation boundary explanation is incomplete");
+  }
+
+  if (!pdaoAttestation.verificationDocs.includes("docs/assets/pdao-token.json")) {
+    throw new Error("generated PDAO attestation is missing the metadata asset reference");
+  }
+
   if (zkAttestation.project !== "PrivateDAO") {
     throw new Error("generated zk attestation project mismatch");
   }
@@ -369,6 +453,12 @@ function main() {
 
   if (!cryptographicManifest.files.some((entry) => entry.path === "docs/deployment-attestation.generated.json")) {
     throw new Error("generated cryptographic manifest is missing the deployment attestation");
+  }
+  if (!cryptographicManifest.files.some((entry) => entry.path === "docs/pdao-attestation.generated.json")) {
+    throw new Error("generated cryptographic manifest is missing the PDAO attestation");
+  }
+  if (!cryptographicManifest.files.some((entry) => entry.path === "docs/assets/pdao-token.json")) {
+    throw new Error("generated cryptographic manifest is missing the PDAO metadata asset");
   }
 
   console.log("Generated artifact verification: PASS");

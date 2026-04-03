@@ -32,6 +32,7 @@
 [![Zero Knowledge](https://img.shields.io/badge/ZK%20%E2%9F%A1-Live%20Proof%20Layer-06b6d4)](docs/zk-layer.md)
 [![Artifact Integrity](https://img.shields.io/badge/Artifact%20Integrity-SHA256%20Manifest-0f766e)](docs/cryptographic-integrity.md)
 [![PDAO Token](https://img.shields.io/badge/PDAO-Devnet%20Governance%20Token-14b8a6)](docs/pdao-token.md)
+[![PDAO Attestation](https://img.shields.io/badge/PDAO-Attested-0f766e)](docs/pdao-attestation.generated.json)
 
 PrivateDAO is a Solana governance protocol for DAOs that want private voting without giving up execution safety. Votes are committed privately, revealed later, finalized deterministically, and treasury execution stays behind an explicit timelock with recipient and mint checks.
 
@@ -50,6 +51,12 @@ PrivateDAO now documents a designated Devnet governance voting token profile:
 - Initial supply: `1,000,000 PDAO`
 
 This is a product-facing governance token surface, not a protocol rewrite. The deployed contracts still use DAO-configured governance mint semantics on-chain.
+
+There is only one canonical PrivateDAO governance program id:
+
+- `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+
+The separate `Token-2022` program id shown for `PDAO` belongs to the token mint surface and is expected. It is not a second PrivateDAO governance program.
 
 ## Governance Token Model
 
@@ -140,6 +147,7 @@ Quick links:
 - Wallet diagnostics: `https://x-pact.github.io/PrivateDAO/?page=diagnostics`
 - Android native guide: `docs/android-native.md`
 - PDAO token surface: `docs/pdao-token.md`
+- PDAO attestation: `docs/pdao-attestation.generated.json`
 - Fair voting model: `docs/fair-voting.md`
 - Wallet runtime compatibility: `docs/wallet-runtime.md`
 - Runtime attestation: `docs/runtime-attestation.generated.json`

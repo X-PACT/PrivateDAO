@@ -42,6 +42,13 @@ Its role in governance security is to:
 
 This does not replace lifecycle checks, signer validation, replay protection, or account-binding enforcement. It complements them by making the governance surface less noisy and more accountable before proposals ever reach finalize or execute.
 
+The live token surface also has an explicit program boundary:
+
+- PrivateDAO governance program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- PDAO token program id: `TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb`
+
+This is expected. The second id belongs to the Token-2022 mint surface, not to a duplicate PrivateDAO governance deployment.
+
 ### Lifecycle and replay safety
 
 - proposals cannot execute before finalize

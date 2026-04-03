@@ -74,6 +74,11 @@ That does not require speculative tokenomics. It simply means the token is part 
 
 The initial Devnet launch is intentional. It allows the token surface, metadata, verification path, and governance documentation to be exercised in a live Solana environment before any future production cutover.
 
+For the live Devnet token identity and generated machine-readable surface, see:
+
+- `docs/pdao-token.md`
+- `docs/pdao-attestation.generated.json`
+
 ## Security Considerations
 
 Token misuse risks are reduced through the same governance safety model already documented elsewhere in the repository:

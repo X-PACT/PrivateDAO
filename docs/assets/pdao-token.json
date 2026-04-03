@@ -1,0 +1,42 @@
+{
+  "name": "PDAO",
+  "symbol": "PDAO",
+  "description": "PDAO is the Devnet governance voting token profile for PrivateDAO. It represents structured governance participation across proposal creation, commit-reveal voting, and treasury-sensitive decision flows without changing the deployed protocol interfaces.",
+  "image": "https://x-pact.github.io/PrivateDAO/assets/logo.png",
+  "external_url": "https://x-pact.github.io/PrivateDAO/?page=security",
+  "attributes": [
+    {
+      "trait_type": "Network",
+      "value": "Devnet"
+    },
+    {
+      "trait_type": "Utility",
+      "value": "Governance Voting Token"
+    },
+    {
+      "trait_type": "Platform",
+      "value": "DeAura"
+    },
+    {
+      "trait_type": "Token Standard",
+      "value": "Token-2022"
+    },
+    {
+      "trait_type": "PrivateDAO Program ID",
+      "value": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx"
+    },
+    {
+      "trait_type": "Mint",
+      "value": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt"
+    }
+  ],
+  "properties": {
+    "category": "image",
+    "files": [
+      {
+        "uri": "https://x-pact.github.io/PrivateDAO/assets/logo.png",
+        "type": "image/png"
+      }
+    ]
+  }
+}

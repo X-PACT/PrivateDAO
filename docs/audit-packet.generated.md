@@ -30,6 +30,13 @@
 - PDAO metadata URI: `https://x-pact.github.io/PrivateDAO/assets/pdao-token.json`
 - PDAO decimals: `9`
 - PDAO initial supply: `1000000`
+- PDAO attestation: `docs/pdao-attestation.generated.json`
+
+### Program Boundary
+
+- PrivateDAO governance program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- PDAO token program: `TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb`
+- Boundary note: the Token-2022 program id belongs to the PDAO mint surface and does not indicate a second PrivateDAO governance program.
 
 ### PDAO Token Transactions
 
@@ -56,9 +63,10 @@
 - Mainnet readiness report: `docs/mainnet-readiness.generated.md`
 - Deployment attestation: `docs/deployment-attestation.generated.json`
 - Go-live attestation: `docs/go-live-attestation.generated.json`
+- PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `38`
-- Aggregate sha256: `4c1b91e8e017adb87cf7c41b1c4361e309aea28a343fdd7306f84cb0baacc137`
+- Manifest entries: `40`
+- Aggregate sha256: `b1db7871c5a3e122e80adce8f4a2667ae6f0565e231c98ad2b8f1d8b6377ba9f`
 
 ## ZK Package
 
@@ -135,6 +143,8 @@
 - `docs/cryptographic-manifest.generated.json`
 - `docs/token.md`
 - `docs/pdao-token.md`
+- `docs/pdao-attestation.generated.json`
+- `docs/assets/pdao-token.json`
 - `docs/fair-voting.md`
 - `docs/wallet-runtime.md`
 - `docs/deployment-attestation.generated.json`
@@ -173,6 +183,10 @@
 - `npm run verify:strategy-surface`
 - `npm run verify:live-proof`
 - `npm run verify:release-manifest`
+- `npm run verify:program-id-consistency`
+- `npm run verify:pdao-surface`
+- `npm run verify:pdao-attestation`
+- `npm run verify:pdao-live`
 - `npm run verify:review-links`
 - `npm run verify:ops-surface`
 - `npm run verify:submission-registry`

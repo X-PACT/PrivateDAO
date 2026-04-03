@@ -1,0 +1,40 @@
+{
+  "project": "PrivateDAO",
+  "privateDaoProgramId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+  "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+  "pdaoToken": {
+    "name": "PDAO",
+    "symbol": "PDAO",
+    "network": "Devnet",
+    "utility": "Governance Voting Token",
+    "platform": "DeAura",
+    "mint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
+    "tokenProgramId": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+    "tokenAccount": "F4q77ZMJdC7eoEUw3CCR7DbKGTggyExjuMGKBEiM2ct4",
+    "decimals": 9,
+    "supplyUi": "1000000",
+    "metadataUri": "https://x-pact.github.io/PrivateDAO/assets/pdao-token.json",
+    "metadataAssetPath": "docs/assets/pdao-token.json",
+    "metadataSha256": "76e64d33e9924ce17d9c20565c6666476332b7674223d399522df3d020f432cb",
+    "image": "https://x-pact.github.io/PrivateDAO/assets/logo.png",
+    "externalUrl": "https://x-pact.github.io/PrivateDAO/?page=security",
+    "transactionLabels": [
+      "create-token",
+      "create-account",
+      "initialize-metadata",
+      "mint-initial-supply"
+    ]
+  },
+  "programBoundary": {
+    "privateDaoProgramId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+    "tokenProgramId": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+    "explanation": "PrivateDAO has one canonical governance program id. The separate Token-2022 program id belongs to the PDAO mint surface and is expected."
+  },
+  "verificationDocs": [
+    "docs/token.md",
+    "docs/pdao-token.md",
+    "docs/assets/pdao-token.json",
+    "docs/devnet-release-manifest.md",
+    "docs/proof-registry.json"
+  ]
+}

@@ -172,6 +172,25 @@ npm run verify:release-manifest
 
 Checks that the release manifest, proof registry, README references, and generated handoff surfaces remain consistent.
 
+### Program ID Consistency
+
+```bash
+npm run verify:program-id-consistency
+```
+
+Checks that the canonical PrivateDAO program id stays aligned across `Anchor.toml`, `declare_id!`, reviewer docs, the frontend constant, and supporting tooling.
+
+### PDAO Token Surface
+
+```bash
+npm run build:pdao-attestation
+npm run verify:pdao-surface
+npm run verify:pdao-attestation
+npm run verify:pdao-live
+```
+
+Checks that the published PDAO token docs, local metadata asset, generated attestation, reviewer-facing surfaces, and live Devnet token state stay aligned with the canonical proof registry.
+
 ### Review Links
 
 ```bash

@@ -28,6 +28,8 @@ const MANIFEST_FILES = [
   "docs/independent-verification.md",
   "docs/token.md",
   "docs/pdao-token.md",
+  "docs/pdao-attestation.generated.json",
+  "docs/assets/pdao-token.json",
   "docs/fair-voting.md",
   "docs/wallet-runtime.md",
   "docs/go-live-criteria.md",

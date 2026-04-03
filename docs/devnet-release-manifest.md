@@ -32,6 +32,13 @@ It exists to reduce ambiguity between:
 - PDAO metadata URI: `https://x-pact.github.io/PrivateDAO/assets/pdao-token.json`
 - PDAO initial supply: `1,000,000 PDAO`
 
+## Program Boundary Note
+
+- PrivateDAO governance program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- PDAO token program: `TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb`
+
+These are intentionally different. The Token-2022 id belongs to the PDAO mint surface and does not represent a second PrivateDAO governance deployment.
+
 ## Live PDAO Token Transactions
 
 - `pdao-create-token`: `5zGeSePpx2q3dFTNBi8Vmn8ucd9B3jEW6MKqrCUWtQQa3FipwDPFVKRrAoWQhJagBVqKMfUcWxVfpA6Q2vymanA6`
