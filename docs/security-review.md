@@ -149,6 +149,8 @@ The repository now includes a real zero-knowledge companion stack that does not 
 - explicit zk layer framing: `docs/zk-layer.md`
 - layered zk stack note: `docs/zk-stack.md`
 - zk threat extension: `docs/zk-threat-extension.md`
+- zk assumption matrix: `docs/zk-assumption-matrix.md`
+- zk verification flow: `docs/zk-verification-flow.md`
 
 The current zk stack proves:
 

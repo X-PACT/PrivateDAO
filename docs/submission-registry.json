@@ -33,6 +33,8 @@
       "docs/zk-architecture.md",
       "docs/zk-evidence.md",
       "docs/zk-threat-extension.md",
+      "docs/zk-assumption-matrix.md",
+      "docs/zk-verification-flow.md",
       "docs/zk-registry.generated.json"
     ],
     "proof": [
@@ -67,6 +69,7 @@
     "npm run verify:cryptographic-manifest",
     "npm run verify:zk-surface",
     "npm run verify:zk-registry",
+    "npm run verify:zk-docs",
     "npm run verify:zk-consistency",
     "npm run verify:zk-negative",
     "npm run verify:review-surface",

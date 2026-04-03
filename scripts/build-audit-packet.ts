@@ -99,6 +99,8 @@ ${Object.entries(proof.transactions)
 - ZK layer note: \`docs/zk-layer.md\`
 - ZK stack note: \`docs/zk-stack.md\`
 - ZK threat extension: \`docs/zk-threat-extension.md\`
+- ZK assumption matrix: \`docs/zk-assumption-matrix.md\`
+- ZK verification flow: \`docs/zk-verification-flow.md\`
 - ZK registry: \`docs/zk-registry.generated.json\`
 - ZK stack version: \`${zkRegistry.zkStackVersion}\`
 - ZK registry entries: \`${zkRegistry.entryCount}\`
@@ -109,6 +111,15 @@ ${zkRegistry.entries
       `- \`${entry.layer}\` -> \`${entry.circuit}\` | public signals: \`${entry.publicSignalCount}\` | build: \`${entry.commands.build}\` | verify: \`${entry.commands.verify}\``,
   )
   .join("\n")}
+
+### ZK Review Commands
+
+- \`npm run build:zk-registry\`
+- \`npm run verify:zk-registry\`
+- \`npm run verify:zk-docs\`
+- \`npm run verify:zk-consistency\`
+- \`npm run verify:zk-negative\`
+- \`npm run zk:all\`
 
 ## Strategy Package
 

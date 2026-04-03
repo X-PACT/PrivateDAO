@@ -10,6 +10,9 @@ required_files=(
   "docs/zk-layer.md"
   "docs/zk-upgrade.md"
   "docs/zk-stack.md"
+  "docs/zk-threat-extension.md"
+  "docs/zk-assumption-matrix.md"
+  "docs/zk-verification-flow.md"
   "docs/zk-registry.generated.json"
   "docs/zk-architecture.md"
   "docs/zk-evidence.md"
@@ -45,6 +48,9 @@ if rg -n "REPLACE_WITH|REPLACE_ME|TODO|TBD|coming soon|not implemented" \
   docs/zk-layer.md \
   docs/zk-upgrade.md \
   docs/zk-stack.md \
+  docs/zk-threat-extension.md \
+  docs/zk-assumption-matrix.md \
+  docs/zk-verification-flow.md \
   docs/zk-architecture.md \
   docs/zk-evidence.md; then
   echo "[verify-zk-surface] placeholder text detected" >&2
@@ -59,6 +65,9 @@ npm run zk:verify:sample >/dev/null
 
 echo "[verify-zk-surface] checking public signal consistency"
 npm run verify:zk-consistency >/dev/null
+
+echo "[verify-zk-surface] checking zk doc coherence"
+npm run verify:zk-docs >/dev/null
 
 echo "[verify-zk-surface] checking tamper rejection"
 npm run verify:zk-negative >/dev/null

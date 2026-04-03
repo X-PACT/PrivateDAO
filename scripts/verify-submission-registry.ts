@@ -66,6 +66,7 @@ function main() {
     "npm run verify:generated-artifacts",
     "npm run verify:zk-surface",
     "npm run verify:zk-registry",
+    "npm run verify:zk-docs",
     "npm run verify:zk-consistency",
     "npm run verify:zk-negative",
     "npm run verify:review-surface",

@@ -38,6 +38,7 @@
     "verify:generated-artifacts": "ts-node scripts/verify-generated-artifacts.ts",
     "verify:cryptographic-manifest": "ts-node scripts/verify-cryptographic-manifest.ts",
     "verify:zk-registry": "ts-node scripts/verify-zk-registry.ts",
+    "verify:zk-docs": "ts-node scripts/verify-zk-docs.ts",
     "verify:zk-consistency": "ts-node scripts/verify-zk-consistency.ts",
     "verify:zk-negative": "ts-node scripts/verify-zk-negative.ts",
     "zk:build": "bash scripts/zk/build-zk.sh",

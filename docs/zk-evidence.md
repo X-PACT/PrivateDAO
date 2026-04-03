@@ -5,6 +5,8 @@ This repository now includes a real multi-circuit zk proving flow for the Privat
 Formal zk threat reasoning:
 
 - `docs/zk-threat-extension.md`
+- `docs/zk-assumption-matrix.md`
+- `docs/zk-verification-flow.md`
 
 ## Circuits
 

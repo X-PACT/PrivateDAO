@@ -63,6 +63,11 @@ function main() {
     zk: {
       stackVersion: zkRegistry.zkStackVersion,
       entryCount: zkRegistry.entryCount,
+      verificationDocs: [
+        "docs/zk-threat-extension.md",
+        "docs/zk-assumption-matrix.md",
+        "docs/zk-verification-flow.md",
+      ],
       layers: zkRegistry.entries.map((entry) => ({
         layer: entry.layer,
         circuit: entry.circuit,

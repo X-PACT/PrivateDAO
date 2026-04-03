@@ -122,6 +122,8 @@ Quick links:
 - ZK layer: `docs/zk-layer.md`
 - ZK stack: `docs/zk-stack.md`
 - ZK threat extension: `docs/zk-threat-extension.md`
+- ZK assumption matrix: `docs/zk-assumption-matrix.md`
+- ZK verification flow: `docs/zk-verification-flow.md`
 - ZK registry: `docs/zk-registry.generated.json`
 - ZK architecture: `docs/zk-architecture.md`
 - ZK evidence: `docs/zk-evidence.md`

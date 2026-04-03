@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-03T14:44:56.593Z",
+  "generatedAt": "2026-04-03T15:28:04.727Z",
   "algorithm": "sha256",
-  "entryCount": 23,
-  "aggregateSha256": "32c4cc277421471b469fbeaa8c10125b693e0fe1568083fa7661e6c202004b28",
+  "entryCount": 25,
+  "aggregateSha256": "9fe335e79b34ba18004e48c06dfb829a5b3cdf84f0e51ed290b0a2a91b383fa0",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -82,8 +82,8 @@
     },
     {
       "path": "docs/submission-registry.json",
-      "sha256": "0e3a5f9f8d0fb169cacf9b5bb2725ff1d7bf199f0b6c341d15a33217f9d3f68f",
-      "bytes": 2862
+      "sha256": "99551c438a43a3e082bd70b677cfd241acc0a4a139ca1233e7c0b309b46a79a4",
+      "bytes": 2968
     },
     {
       "path": "docs/independent-verification.md",
@@ -92,8 +92,8 @@
     },
     {
       "path": "docs/security-review.md",
-      "sha256": "f3f38f67778a45d49c29ba617b1ad7c1f61087217d5ae646af865be4ba010276",
-      "bytes": 8208
+      "sha256": "c141270d3f2fdd23a3f94baffa31150ac2347735d24a5d66fda8cb6e588e696d",
+      "bytes": 8318
     },
     {
       "path": "docs/zk-layer.md",
@@ -111,14 +111,24 @@
       "bytes": 3397
     },
     {
+      "path": "docs/zk-assumption-matrix.md",
+      "sha256": "67f5f331e7baa57f71028b4bf8e20eae36161b22d727e05b32ed153d65d2a27e",
+      "bytes": 2920
+    },
+    {
+      "path": "docs/zk-verification-flow.md",
+      "sha256": "04b1c2f6be7ec2db5f6388db83dc6255c355ce2cd06e5d757f5d7d5624ca87af",
+      "bytes": 2173
+    },
+    {
       "path": "docs/zk-registry.generated.json",
       "sha256": "d765dc20e95d20aebe73f94ea6e2d4772e3428f8ff6c41c2dda4b7cc42298c6e",
       "bytes": 2827
     },
     {
       "path": "docs/verification-gates.md",
-      "sha256": "81cbfdd846913dbbca965ab6bfa81e2a92a38b4fe908fe3bfa36c5e5efdb62c9",
-      "bytes": 2877
+      "sha256": "fbc23418098c8dca6d81016cbc777164b51d733bae57fa9a9414527e9f662a70",
+      "bytes": 3035
     }
   ]
 }

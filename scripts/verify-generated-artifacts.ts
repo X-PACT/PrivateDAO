@@ -30,6 +30,7 @@ function main() {
     zk?: {
       stackVersion: number;
       entryCount: number;
+      verificationDocs?: string[];
       layers: Array<{ layer: string; circuit: string; publicSignalCount: number }>;
     };
     cryptographicIntegrity?: {
@@ -96,6 +97,10 @@ function main() {
     throw new Error("generated attestation zk summary is unexpectedly weak");
   }
 
+  if (!attestation.zk.verificationDocs || attestation.zk.verificationDocs.length < 3) {
+    throw new Error("generated attestation zk verification docs are missing");
+  }
+
   if (zkRegistry.project !== "PrivateDAO") {
     throw new Error("generated zk registry project mismatch");
   }
@@ -138,6 +143,10 @@ function main() {
 
   if (!auditPacket.includes("## ZK Package")) {
     throw new Error("generated audit packet is missing the ZK package section");
+  }
+
+  if (!auditPacket.includes("### ZK Review Commands")) {
+    throw new Error("generated audit packet is missing the ZK review command section");
   }
 
   if (!cryptographicManifest.files.some((entry) => entry.path === "docs/zk-registry.generated.json")) {

@@ -38,14 +38,16 @@
 - Integrity note: `docs/cryptographic-integrity.md`
 - Cryptographic manifest: `docs/cryptographic-manifest.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `23`
-- Aggregate sha256: `32c4cc277421471b469fbeaa8c10125b693e0fe1568083fa7661e6c202004b28`
+- Manifest entries: `25`
+- Aggregate sha256: `9fe335e79b34ba18004e48c06dfb829a5b3cdf84f0e51ed290b0a2a91b383fa0`
 
 ## ZK Package
 
 - ZK layer note: `docs/zk-layer.md`
 - ZK stack note: `docs/zk-stack.md`
 - ZK threat extension: `docs/zk-threat-extension.md`
+- ZK assumption matrix: `docs/zk-assumption-matrix.md`
+- ZK verification flow: `docs/zk-verification-flow.md`
 - ZK registry: `docs/zk-registry.generated.json`
 - ZK stack version: `1`
 - ZK registry entries: `3`
@@ -53,6 +55,15 @@
 - `vote` -> `private_dao_vote_overlay` | public signals: `6` | build: `npm run zk:build:vote` | verify: `npm run zk:verify:vote`
 - `delegation` -> `private_dao_delegation_overlay` | public signals: `7` | build: `npm run zk:build:delegation` | verify: `npm run zk:verify:delegation`
 - `tally` -> `private_dao_tally_overlay` | public signals: `7` | build: `npm run zk:build:tally` | verify: `npm run zk:verify:tally`
+
+### ZK Review Commands
+
+- `npm run build:zk-registry`
+- `npm run verify:zk-registry`
+- `npm run verify:zk-docs`
+- `npm run verify:zk-consistency`
+- `npm run verify:zk-negative`
+- `npm run zk:all`
 
 ## Strategy Package
 
@@ -80,6 +91,8 @@
 - `docs/zk-architecture.md`
 - `docs/zk-evidence.md`
 - `docs/zk-threat-extension.md`
+- `docs/zk-assumption-matrix.md`
+- `docs/zk-verification-flow.md`
 - `docs/zk-registry.generated.json`
 
 ## Proof Package
@@ -116,6 +129,7 @@
 - `npm run verify:cryptographic-manifest`
 - `npm run verify:zk-surface`
 - `npm run verify:zk-registry`
+- `npm run verify:zk-docs`
 - `npm run verify:zk-consistency`
 - `npm run verify:zk-negative`
 - `npm run verify:review-surface`
