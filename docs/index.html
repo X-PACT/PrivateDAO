@@ -3288,6 +3288,54 @@ function updateWalletUi(connected) {
   btn.className = 'wallet-btn connected';
 }
 
+function resolveWalletProvider() {
+  if (window.phantom && window.phantom.solana && window.phantom.solana.isPhantom) {
+    return window.phantom.solana;
+  }
+  if (window.solana && window.solana.isPhantom) {
+    return window.solana;
+  }
+  if (window.solflare && window.solflare.isSolflare) {
+    return window.solflare;
+  }
+  if (window.solflare && window.solflare.solflare && window.solflare.solflare.isSolflare) {
+    return window.solflare.solflare;
+  }
+  return null;
+}
+
+function extractWalletPublicKey(connectResponse, provider) {
+  const candidate =
+    connectResponse?.publicKey ||
+    provider?.publicKey ||
+    provider?._publicKey ||
+    provider?.account?.publicKey ||
+    null;
+
+  if (!candidate) return null;
+  if (typeof candidate === 'string') return candidate;
+  if (typeof candidate.toBase58 === 'function') return candidate.toBase58();
+  if (typeof candidate.toString === 'function') return candidate.toString();
+  return null;
+}
+
+function describeWalletConnectionError(error) {
+  const message = error?.message || '';
+  const code = error?.code;
+  const lower = String(message).toLowerCase();
+
+  if (code === 4001 || lower.includes('rejected') || lower.includes('denied') || lower.includes('cancel')) {
+    return 'Wallet connection rejected.';
+  }
+  if (lower.includes('timeout')) {
+    return 'Wallet connection timed out. Reopen the wallet approval prompt and try again.';
+  }
+  if (lower.includes('not found') || lower.includes('undefined')) {
+    return 'Wallet provider did not return a public key. Try Phantom or Solflare on Devnet.';
+  }
+  return message ? `Wallet connection failed: ${message}` : 'Wallet connection failed.';
+}
+
 async function connectWallet() {
   if (wallet && walletProvider && walletProvider.disconnect) {
     await walletProvider.disconnect();
@@ -3298,25 +3346,26 @@ async function connectWallet() {
     return;
   }
 
-  if (window.solana && window.solana.isPhantom) {
-    walletProvider = window.solana;
-  } else if (window.solflare && window.solflare.isSolflare) {
-    walletProvider = window.solflare;
-  } else {
+  walletProvider = resolveWalletProvider();
+  if (!walletProvider) {
     showToast('Install Phantom or Solflare to sign transactions.', 'error');
     return;
   }
 
   try {
     const resp = await walletProvider.connect();
-    wallet = resp.publicKey.toString();
+    const connectedPk = extractWalletPublicKey(resp, walletProvider);
+    if (!connectedPk) {
+      throw new Error('wallet public key was not returned');
+    }
+    wallet = connectedPk;
     updateWalletUi(true);
     showToast(`Connected: ${shortPk(wallet)}`, 'success');
   } catch (e) {
     wallet = null;
     walletProvider = null;
     updateWalletUi(false);
-    showToast('Wallet connection rejected.', 'error');
+    showToast(describeWalletConnectionError(e), 'error');
   }
 }
 
