@@ -87,7 +87,9 @@ function main() {
         "docs/zk-threat-extension.md",
         "docs/zk-assumption-matrix.md",
         "docs/zk-capability-matrix.md",
+        "docs/zk-provenance.md",
         "docs/zk-verification-flow.md",
+        "docs/zk-transcript.generated.md",
       ],
       layers: zkRegistry.entries.map((entry) => ({
         layer: entry.layer,

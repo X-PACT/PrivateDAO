@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 
@@ -24,6 +25,21 @@ type ZkRegistryEntry = {
     prove: string;
     verify: string;
   };
+  artifacts: Record<
+    | "source"
+    | "sampleInput"
+    | "proof"
+    | "publicSignals"
+    | "verificationKey"
+    | "provingKey"
+    | "r1cs"
+    | "wasm"
+    | "witness",
+    {
+      sha256: string;
+      bytes: number;
+    }
+  >;
 };
 
 const ENTRIES: Array<{ circuit: ZkCircuitName; layer: string }> = [
@@ -36,6 +52,8 @@ function main() {
   const registry = {
     project: "PrivateDAO",
     zkStackVersion: 1,
+    provingSystem: "groth16",
+    ptau: buildArtifact("zk/setup/pot12_final.ptau"),
     entryCount: ENTRIES.length,
     entries: ENTRIES.map(buildEntry),
   };
@@ -48,25 +66,54 @@ function main() {
 function buildEntry({ circuit, layer }: { circuit: ZkCircuitName; layer: string }): ZkRegistryEntry {
   const publicSignalsPath = `zk/proofs/${circuit}.public.json`;
   const publicSignals = JSON.parse(fs.readFileSync(path.resolve(publicSignalsPath), "utf8")) as string[];
+  const source = `zk/circuits/${circuit}.circom`;
+  const sampleInput = `zk/inputs/${circuit}.sample.json`;
+  const proof = `zk/proofs/${circuit}.proof.json`;
+  const verificationKey = `zk/setup/${circuit}_vkey.json`;
+  const provingKey = `zk/setup/${circuit}_final.zkey`;
+  const r1cs = `zk/build/${circuit}.r1cs`;
+  const wasm = `zk/build/${circuit}_js/${circuit}.wasm`;
+  const witness = `zk/proofs/${circuit}.wtns`;
 
   return {
     circuit,
     layer,
-    source: `zk/circuits/${circuit}.circom`,
-    sampleInput: `zk/inputs/${circuit}.sample.json`,
-    proof: `zk/proofs/${circuit}.proof.json`,
+    source,
+    sampleInput,
+    proof,
     publicSignals: publicSignalsPath,
-    verificationKey: `zk/setup/${circuit}_vkey.json`,
-    provingKey: `zk/setup/${circuit}_final.zkey`,
-    r1cs: `zk/build/${circuit}.r1cs`,
-    wasm: `zk/build/${circuit}_js/${circuit}.wasm`,
-    witness: `zk/proofs/${circuit}.wtns`,
+    verificationKey,
+    provingKey,
+    r1cs,
+    wasm,
+    witness,
     publicSignalCount: publicSignals.length,
     commands: {
       build: `npm run zk:build:${layer}`,
       prove: `npm run zk:prove:${layer}`,
       verify: `npm run zk:verify:${layer}`,
     },
+    artifacts: {
+      source: buildArtifact(source),
+      sampleInput: buildArtifact(sampleInput),
+      proof: buildArtifact(proof),
+      publicSignals: buildArtifact(publicSignalsPath),
+      verificationKey: buildArtifact(verificationKey),
+      provingKey: buildArtifact(provingKey),
+      r1cs: buildArtifact(r1cs),
+      wasm: buildArtifact(wasm),
+      witness: buildArtifact(witness),
+    },
+  };
+}
+
+function buildArtifact(relativePath: string) {
+  const absolutePath = path.resolve(relativePath);
+  const body = fs.readFileSync(absolutePath);
+  return {
+    path: relativePath,
+    sha256: crypto.createHash("sha256").update(body).digest("hex"),
+    bytes: body.byteLength,
   };
 }
 

@@ -1,0 +1,211 @@
+{
+  "project": "PrivateDAO",
+  "zkStackVersion": 1,
+  "provingSystem": "groth16",
+  "ptau": {
+    "path": "zk/setup/pot12_final.ptau",
+    "sha256": "ed4298dfb57be7831b9def92e6caa5d584d2c7a1bcf984fb8a9ace6250ed94d8",
+    "bytes": 4720054
+  },
+  "entryCount": 3,
+  "entries": [
+    {
+      "circuit": "private_dao_vote_overlay",
+      "layer": "vote",
+      "source": "zk/circuits/private_dao_vote_overlay.circom",
+      "sampleInput": "zk/inputs/private_dao_vote_overlay.sample.json",
+      "proof": "zk/proofs/private_dao_vote_overlay.proof.json",
+      "publicSignals": "zk/proofs/private_dao_vote_overlay.public.json",
+      "verificationKey": "zk/setup/private_dao_vote_overlay_vkey.json",
+      "provingKey": "zk/setup/private_dao_vote_overlay_final.zkey",
+      "r1cs": "zk/build/private_dao_vote_overlay.r1cs",
+      "wasm": "zk/build/private_dao_vote_overlay_js/private_dao_vote_overlay.wasm",
+      "witness": "zk/proofs/private_dao_vote_overlay.wtns",
+      "publicSignalCount": 6,
+      "commands": {
+        "build": "npm run zk:build:vote",
+        "prove": "npm run zk:prove:vote",
+        "verify": "npm run zk:verify:vote"
+      },
+      "artifacts": {
+        "source": {
+          "path": "zk/circuits/private_dao_vote_overlay.circom",
+          "sha256": "10894814dbd80792f331313330a9e2b560c4c1d6dddfcefd5fd00af16c8290d0",
+          "bytes": 1510
+        },
+        "sampleInput": {
+          "path": "zk/inputs/private_dao_vote_overlay.sample.json",
+          "sha256": "fda2fceecc017bb179639a955d54809ebb35941b985e6a928098c0feb7740485",
+          "bytes": 480
+        },
+        "proof": {
+          "path": "zk/proofs/private_dao_vote_overlay.proof.json",
+          "sha256": "8b006e248fe3cc9532d6e351ff15e6a1c962668ff51e00112919ff01f1dc8410",
+          "bytes": 803
+        },
+        "publicSignals": {
+          "path": "zk/proofs/private_dao_vote_overlay.public.json",
+          "sha256": "274280bc7d44e7dd52969cc806ba16236af08a18aefffc0b9000ac6648377a83",
+          "bytes": 287
+        },
+        "verificationKey": {
+          "path": "zk/setup/private_dao_vote_overlay_vkey.json",
+          "sha256": "d4973d720f547cbebc64affc52ab678d0bc7135f03bb8f6b221df1ebd49d2469",
+          "bytes": 3844
+        },
+        "provingKey": {
+          "path": "zk/setup/private_dao_vote_overlay_final.zkey",
+          "sha256": "479699baf7005dd1081a047a5fccd6704f4dedb5908bb6bf4be88fa8fb71ccd9",
+          "bytes": 1025847
+        },
+        "r1cs": {
+          "path": "zk/build/private_dao_vote_overlay.r1cs",
+          "sha256": "ca6bc6eccf007559963ded14e2bc528b97c7a03e839884996c71f06a11b1b5c0",
+          "bytes": 300068
+        },
+        "wasm": {
+          "path": "zk/build/private_dao_vote_overlay_js/private_dao_vote_overlay.wasm",
+          "sha256": "de36974ba8461c2c27e89ed172266bad4cbf18d961e5074658a84e5621e9921f",
+          "bytes": 2537818
+        },
+        "witness": {
+          "path": "zk/proofs/private_dao_vote_overlay.wtns",
+          "sha256": "24a9b5d55a8934bb02eaba520b8f87f2cf8f4df8dafe66c2785763a7fc7c827b",
+          "bytes": 67916
+        }
+      }
+    },
+    {
+      "circuit": "private_dao_delegation_overlay",
+      "layer": "delegation",
+      "source": "zk/circuits/private_dao_delegation_overlay.circom",
+      "sampleInput": "zk/inputs/private_dao_delegation_overlay.sample.json",
+      "proof": "zk/proofs/private_dao_delegation_overlay.proof.json",
+      "publicSignals": "zk/proofs/private_dao_delegation_overlay.public.json",
+      "verificationKey": "zk/setup/private_dao_delegation_overlay_vkey.json",
+      "provingKey": "zk/setup/private_dao_delegation_overlay_final.zkey",
+      "r1cs": "zk/build/private_dao_delegation_overlay.r1cs",
+      "wasm": "zk/build/private_dao_delegation_overlay_js/private_dao_delegation_overlay.wasm",
+      "witness": "zk/proofs/private_dao_delegation_overlay.wtns",
+      "publicSignalCount": 7,
+      "commands": {
+        "build": "npm run zk:build:delegation",
+        "prove": "npm run zk:prove:delegation",
+        "verify": "npm run zk:verify:delegation"
+      },
+      "artifacts": {
+        "source": {
+          "path": "zk/circuits/private_dao_delegation_overlay.circom",
+          "sha256": "b9a63f53fd942f675ca9ffc1a765f17f4bfe87a7bba77244bec582fe6f02fea0",
+          "bytes": 1908
+        },
+        "sampleInput": {
+          "path": "zk/inputs/private_dao_delegation_overlay.sample.json",
+          "sha256": "ed558bdd30408483f4f9b2fd442ca7d53ddb2d76dd652fae68468ab0e1d75b96",
+          "bytes": 656
+        },
+        "proof": {
+          "path": "zk/proofs/private_dao_delegation_overlay.proof.json",
+          "sha256": "c94d61f9201271edf6e86f4970611d59bfea461afa97b605e007ad1a1bbf7294",
+          "bytes": 806
+        },
+        "publicSignals": {
+          "path": "zk/proofs/private_dao_delegation_overlay.public.json",
+          "sha256": "715fae38b0d06dd66b637e1c59f30cd38428bc75146b1ed1524a6565ea439c6f",
+          "bytes": 367
+        },
+        "verificationKey": {
+          "path": "zk/setup/private_dao_delegation_overlay_vkey.json",
+          "sha256": "bb1fa1187507cd88b428bc4d8120290999907560a3761253ff6a68c2985eaf9b",
+          "bytes": 4023
+        },
+        "provingKey": {
+          "path": "zk/setup/private_dao_delegation_overlay_final.zkey",
+          "sha256": "e382cc1d03d20316a332a8f21f67a25c2b75e4b33348d362f1300c41dec4b202",
+          "bytes": 1242597
+        },
+        "r1cs": {
+          "path": "zk/build/private_dao_delegation_overlay.r1cs",
+          "sha256": "41c5db4f837208142be9ee099b7784666a3ba1195b262cc07127306bfe53627e",
+          "bytes": 383472
+        },
+        "wasm": {
+          "path": "zk/build/private_dao_delegation_overlay_js/private_dao_delegation_overlay.wasm",
+          "sha256": "908acca6d51866bde376844f00a99049257c28aa25330a0906b5edec15978674",
+          "bytes": 2541693
+        },
+        "witness": {
+          "path": "zk/proofs/private_dao_delegation_overlay.wtns",
+          "sha256": "8fe660ce20c09d3c524916d3cb6c15a3af1156b5e338ae9520dd00f8e10dc9e0",
+          "bytes": 87276
+        }
+      }
+    },
+    {
+      "circuit": "private_dao_tally_overlay",
+      "layer": "tally",
+      "source": "zk/circuits/private_dao_tally_overlay.circom",
+      "sampleInput": "zk/inputs/private_dao_tally_overlay.sample.json",
+      "proof": "zk/proofs/private_dao_tally_overlay.proof.json",
+      "publicSignals": "zk/proofs/private_dao_tally_overlay.public.json",
+      "verificationKey": "zk/setup/private_dao_tally_overlay_vkey.json",
+      "provingKey": "zk/setup/private_dao_tally_overlay_final.zkey",
+      "r1cs": "zk/build/private_dao_tally_overlay.r1cs",
+      "wasm": "zk/build/private_dao_tally_overlay_js/private_dao_tally_overlay.wasm",
+      "witness": "zk/proofs/private_dao_tally_overlay.wtns",
+      "publicSignalCount": 7,
+      "commands": {
+        "build": "npm run zk:build:tally",
+        "prove": "npm run zk:prove:tally",
+        "verify": "npm run zk:verify:tally"
+      },
+      "artifacts": {
+        "source": {
+          "path": "zk/circuits/private_dao_tally_overlay.circom",
+          "sha256": "9cb2cd4b9537bcebc0f6b2414c1937288c085fba6688fb6825db34a6a76ac3ad",
+          "bytes": 2352
+        },
+        "sampleInput": {
+          "path": "zk/inputs/private_dao_tally_overlay.sample.json",
+          "sha256": "2e6296ad1107b4228114e4bb07f3aa351f83286199256aa335b220c41ba98e26",
+          "bytes": 606
+        },
+        "proof": {
+          "path": "zk/proofs/private_dao_tally_overlay.proof.json",
+          "sha256": "d60a9cb872c925ce142d78ffebee443471de12e3026cceb59a183b6e4717739d",
+          "bytes": 807
+        },
+        "publicSignals": {
+          "path": "zk/proofs/private_dao_tally_overlay.public.json",
+          "sha256": "f4a395063aa902dc6c943b8941fec71310342cd246d151d9d994e3e85d5046ee",
+          "bytes": 294
+        },
+        "verificationKey": {
+          "path": "zk/setup/private_dao_tally_overlay_vkey.json",
+          "sha256": "9e8aad21b0a5aa74cb169f8856643b9d90f5231016f14b648e03a3d87a649ce6",
+          "bytes": 4024
+        },
+        "provingKey": {
+          "path": "zk/setup/private_dao_tally_overlay_final.zkey",
+          "sha256": "e0d3a7df3cb6cde5cb3934c8a3f268f0887444c97e77452d209aa4aaf63f10a7",
+          "bytes": 1481860
+        },
+        "r1cs": {
+          "path": "zk/build/private_dao_tally_overlay.r1cs",
+          "sha256": "2e8d0e3c1ef40f76b9df0404e6ddd223e3b75213e699fd81d29a81b60b5d2883",
+          "bytes": 480664
+        },
+        "wasm": {
+          "path": "zk/build/private_dao_tally_overlay_js/private_dao_tally_overlay.wasm",
+          "sha256": "eb6dc0cf3078fa6514a3303aa21714f8c5848d8013ea140b0eec3ba72f22cdd0",
+          "bytes": 2869377
+        },
+        "witness": {
+          "path": "zk/proofs/private_dao_tally_overlay.wtns",
+          "sha256": "fe876091a42cff1a172cff96e3cec5546cea6ada02e4ea2e4d50d5b2260948d2",
+          "bytes": 109324
+        }
+      }
+    }
+  ]
+}

@@ -55,6 +55,15 @@ npm run verify:zk-registry
 
 Builds and verifies the machine-readable registry for the live Circom and Groth16 stack, including artifact paths, public signal counts, and per-layer commands.
 
+### ZK Transcript
+
+```bash
+npm run build:zk-transcript
+npm run verify:zk-transcript
+```
+
+Builds and verifies the reviewer-readable zk transcript that carries the proving system, ptau reference, per-layer commands, and tracked artifact hashes.
+
 ### ZK Docs
 
 ```bash

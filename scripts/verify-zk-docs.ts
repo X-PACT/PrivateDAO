@@ -9,8 +9,10 @@ const REQUIRED_DOCS = [
   "docs/zk-threat-extension.md",
   "docs/zk-assumption-matrix.md",
   "docs/zk-capability-matrix.md",
+  "docs/zk-provenance.md",
   "docs/zk-verification-flow.md",
   "docs/zk-registry.generated.json",
+  "docs/zk-transcript.generated.md",
 ];
 
 function main() {
@@ -26,7 +28,9 @@ function main() {
   const threat = read("docs/zk-threat-extension.md");
   const matrix = read("docs/zk-assumption-matrix.md");
   const capability = read("docs/zk-capability-matrix.md");
+  const provenance = read("docs/zk-provenance.md");
   const flow = read("docs/zk-verification-flow.md");
+  const transcript = read("docs/zk-transcript.generated.md");
 
   for (const circuit of [
     "private_dao_vote_overlay",
@@ -56,8 +60,19 @@ function main() {
   }
 
   for (const token of [
+    "docs/zk-registry.generated.json",
+    "docs/zk-transcript.generated.md",
+    "trusted setup",
+    "Groth16",
+  ]) {
+    assertContains(provenance, token, "zk provenance");
+  }
+
+  for (const token of [
     "npm run build:zk-registry",
+    "npm run build:zk-transcript",
     "npm run verify:zk-registry",
+    "npm run verify:zk-transcript",
     "npm run verify:zk-docs",
     "npm run verify:zk-consistency",
     "npm run verify:zk-negative",
@@ -66,6 +81,15 @@ function main() {
     "npm run verify:all",
   ]) {
     assertContains(flow, token, "zk verification flow");
+  }
+
+  for (const token of [
+    "# ZK Transcript",
+    "Proving system",
+    "PTau artifact",
+    "Artifact hashes",
+  ]) {
+    assertContains(transcript, token, "zk transcript");
   }
 
   for (const token of [

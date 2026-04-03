@@ -127,8 +127,10 @@ ${Object.entries(proof.transactions)
 - ZK threat extension: \`docs/zk-threat-extension.md\`
 - ZK assumption matrix: \`docs/zk-assumption-matrix.md\`
 - ZK capability matrix: \`docs/zk-capability-matrix.md\`
+- ZK provenance: \`docs/zk-provenance.md\`
 - ZK verification flow: \`docs/zk-verification-flow.md\`
 - ZK registry: \`docs/zk-registry.generated.json\`
+- ZK transcript: \`docs/zk-transcript.generated.md\`
 - ZK stack version: \`${zkRegistry.zkStackVersion}\`
 - ZK registry entries: \`${zkRegistry.entryCount}\`
 
@@ -142,7 +144,9 @@ ${zkRegistry.entries
 ### ZK Review Commands
 
 - \`npm run build:zk-registry\`
+- \`npm run build:zk-transcript\`
 - \`npm run verify:zk-registry\`
+- \`npm run verify:zk-transcript\`
 - \`npm run verify:zk-docs\`
 - \`npm run verify:zk-consistency\`
 - \`npm run verify:zk-negative\`

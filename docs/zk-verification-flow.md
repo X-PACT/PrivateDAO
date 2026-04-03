@@ -24,8 +24,32 @@ Expected outcome:
 - every registry path exists
 - each layer has a non-zero public signal count
 - per-layer commands align with the registry entries
+- tracked artifact hashes match the live files on disk
 
-## 3. Verify The ZK Docs
+## 3. Build The Transcript
+
+```bash
+npm run build:zk-transcript
+```
+
+Expected outcome:
+
+- `docs/zk-transcript.generated.md` exists
+- each layer is summarized in reviewer-readable form
+- artifact hashes and replay commands are carried into a published transcript
+
+## 4. Verify The Transcript
+
+```bash
+npm run verify:zk-transcript
+```
+
+Expected outcome:
+
+- transcript content matches the current registry
+- ptau and per-layer hashes are present
+- reviewer replay commands remain aligned
+## 5. Verify The ZK Docs
 
 ```bash
 npm run verify:zk-docs
@@ -38,8 +62,9 @@ Expected outcome:
   - replay boundaries
   - verification commands
   - tracked circuit references
+  - provenance and transcript references
 
-## 4. Recompute Public Signals
+## 6. Recompute Public Signals
 
 ```bash
 npm run verify:zk-consistency
@@ -52,7 +77,7 @@ Expected outcome:
   - delegation
   - tally
 
-## 5. Check Tamper Rejection
+## 7. Check Tamper Rejection
 
 ```bash
 npm run verify:zk-negative
@@ -63,7 +88,7 @@ Expected outcome:
 - modified public signals are rejected
 - modified proof objects are rejected
 
-## 6. Replay The Full Proof Path
+## 8. Replay The Full Proof Path
 
 ```bash
 npm run zk:all
@@ -76,7 +101,7 @@ Expected outcome:
 - proofs are generated
 - proofs verify against the tracked verification keys
 
-## 7. Verify The ZK Surface
+## 9. Verify The ZK Surface
 
 ```bash
 npm run verify:zk-surface
@@ -89,7 +114,7 @@ Expected outcome:
 - consistency and tamper checks pass
 - reviewer-facing zk references stay coherent
 
-## 8. Verify The Full Review Surface
+## 10. Verify The Full Review Surface
 
 ```bash
 npm run verify:all

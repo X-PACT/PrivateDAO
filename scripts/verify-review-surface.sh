@@ -22,9 +22,11 @@ required_files=(
   "docs/zk-threat-extension.md"
   "docs/zk-assumption-matrix.md"
   "docs/zk-capability-matrix.md"
+  "docs/zk-provenance.md"
   "docs/zk-verification-flow.md"
   "docs/zk-stack.md"
   "docs/zk-registry.generated.json"
+  "docs/zk-transcript.generated.md"
   "docs/zk-architecture.md"
   "docs/zk-evidence.md"
   "docs/reviewer-fast-path.md"
@@ -75,8 +77,10 @@ if rg -n "REPLACE_WITH|REPLACE_ME|TODO|TBD|coming soon|not implemented" \
   docs/zk-threat-extension.md \
   docs/zk-assumption-matrix.md \
   docs/zk-capability-matrix.md \
+  docs/zk-provenance.md \
   docs/zk-verification-flow.md \
   docs/zk-stack.md \
+  docs/zk-transcript.generated.md \
   docs/zk-architecture.md \
   docs/zk-evidence.md \
   docs/cryptographic-integrity.md \
@@ -113,6 +117,9 @@ bash scripts/verify-zk-surface.sh >/dev/null
 
 echo "[review-surface] checking zk registry consistency"
 npx ts-node scripts/verify-zk-registry.ts >/dev/null
+
+echo "[review-surface] checking zk transcript consistency"
+npx ts-node scripts/verify-zk-transcript.ts >/dev/null
 
 echo "[review-surface] checking cryptographic integrity"
 npx ts-node scripts/verify-cryptographic-manifest.ts >/dev/null

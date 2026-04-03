@@ -36,7 +36,7 @@
   "packageCounts": {
     "strategy": 6,
     "security": 6,
-    "zk": 10,
+    "zk": 12,
     "proof": 7,
     "operations": 9
   },
@@ -47,7 +47,9 @@
       "docs/zk-threat-extension.md",
       "docs/zk-assumption-matrix.md",
       "docs/zk-capability-matrix.md",
-      "docs/zk-verification-flow.md"
+      "docs/zk-provenance.md",
+      "docs/zk-verification-flow.md",
+      "docs/zk-transcript.generated.md"
     ],
     "layers": [
       {
@@ -69,10 +71,10 @@
   },
   "cryptographicIntegrity": {
     "algorithm": "sha256",
-    "entryCount": 28,
-    "aggregateSha256": "c7d89047e1f9c3676013e715256b0079dc2bfbeee4aa40cc97e5779289e1772d"
+    "entryCount": 30,
+    "aggregateSha256": "281d1917db608e4cc7a5fc453dd58071923cf4cb67baac9d23b85ea387c7d108"
   },
-  "gateCount": 17,
+  "gateCount": 18,
   "statuses": {
     "governanceLifecycle": "verified",
     "securityReasoning": "verified",

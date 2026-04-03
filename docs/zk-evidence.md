@@ -7,7 +7,9 @@ Formal zk threat reasoning:
 - `docs/zk-threat-extension.md`
 - `docs/zk-assumption-matrix.md`
 - `docs/zk-capability-matrix.md`
+- `docs/zk-provenance.md`
 - `docs/zk-verification-flow.md`
+- `docs/zk-transcript.generated.md`
 
 ## Circuits
 
@@ -47,7 +49,9 @@ npm run zk:build
 npm run zk:prove:sample
 npm run zk:verify:sample
 npm run build:zk-registry
+npm run build:zk-transcript
 npm run verify:zk-registry
+npm run verify:zk-transcript
 npm run verify:zk-consistency
 npm run verify:zk-negative
 ```
@@ -105,6 +109,7 @@ The zk stack is only considered valid when:
 - every proof is generated successfully
 - every proof verifies against its exported verification key
 - the generated zk registry matches the real artifact tree
+- the generated zk transcript matches the real artifact tree
 - recomputed public signals match the stored public outputs
 - tampered public signals fail verification
 - tampered proof objects fail verification

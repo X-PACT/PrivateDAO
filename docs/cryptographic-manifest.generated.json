@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-03T15:59:14.456Z",
+  "generatedAt": "2026-04-03T16:37:31.697Z",
   "algorithm": "sha256",
-  "entryCount": 28,
-  "aggregateSha256": "c7d89047e1f9c3676013e715256b0079dc2bfbeee4aa40cc97e5779289e1772d",
+  "entryCount": 30,
+  "aggregateSha256": "281d1917db608e4cc7a5fc453dd58071923cf4cb67baac9d23b85ea387c7d108",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -82,8 +82,8 @@
     },
     {
       "path": "docs/submission-registry.json",
-      "sha256": "40dbf9c43fb52962ed8ec85ed04a4385eedc8980dd7f42a589bf4a12ad7b0482",
-      "bytes": 3057
+      "sha256": "4ea4aa6eb17f33e93df7534bfa0b1120a8e82078b26b0068b9c2cc51a5735ef5",
+      "bytes": 3165
     },
     {
       "path": "docs/independent-verification.md",
@@ -127,23 +127,33 @@
     },
     {
       "path": "docs/zk-capability-matrix.md",
-      "sha256": "700b992cce82e5e9c119c16bfab5f34b71754b5cd47962f41e8a6b809282ec29",
-      "bytes": 2396
+      "sha256": "7fff827bbb0d1a2aa6cd99979b750ead40189548abe5d58e1e3ac7f10dd0eab4",
+      "bytes": 2574
+    },
+    {
+      "path": "docs/zk-provenance.md",
+      "sha256": "e6eca7d9732070c2f8f73dcf68fa4cbffda8228d677360c5abac89985109ba8d",
+      "bytes": 1843
     },
     {
       "path": "docs/zk-verification-flow.md",
-      "sha256": "04b1c2f6be7ec2db5f6388db83dc6255c355ce2cd06e5d757f5d7d5624ca87af",
-      "bytes": 2173
+      "sha256": "5dd45a6e72c6f9e46a360fc3331397a60951107106d337949e83e36bfb4ceddf",
+      "bytes": 2755
     },
     {
       "path": "docs/zk-registry.generated.json",
-      "sha256": "d765dc20e95d20aebe73f94ea6e2d4772e3428f8ff6c41c2dda4b7cc42298c6e",
-      "bytes": 2827
+      "sha256": "4f613d791c2fedc6a2da1a21d7fdd9df6125a47e31084991dcaee59ef633fbf8",
+      "bytes": 8942
+    },
+    {
+      "path": "docs/zk-transcript.generated.md",
+      "sha256": "700d3ec226510a105a80d0ef6ffc9f72a9194e7ac6a75529619cd5046f29f57a",
+      "bytes": 6002
     },
     {
       "path": "docs/verification-gates.md",
-      "sha256": "face82373f92e8f3e97f4b3727f72aca355345e5e73a9d28e78d8e315a719fc4",
-      "bytes": 3632
+      "sha256": "a5b00c79983b6aca3b71da7d1d5d0f04299e4ddf847f64c2e702c395ee871525",
+      "bytes": 3876
     }
   ]
 }

@@ -151,8 +151,10 @@ Quick links:
 - ZK threat extension: `docs/zk-threat-extension.md`
 - ZK assumption matrix: `docs/zk-assumption-matrix.md`
 - ZK capability matrix: `docs/zk-capability-matrix.md`
+- ZK provenance: `docs/zk-provenance.md`
 - ZK verification flow: `docs/zk-verification-flow.md`
 - ZK registry: `docs/zk-registry.generated.json`
+- ZK transcript: `docs/zk-transcript.generated.md`
 - ZK architecture: `docs/zk-architecture.md`
 - ZK evidence: `docs/zk-evidence.md`
 - Cryptographic integrity: `docs/cryptographic-integrity.md`

@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 
@@ -19,6 +20,7 @@ type ZkRegistryEntry = {
     prove: string;
     verify: string;
   };
+  artifacts: Record<string, { sha256: string; bytes: number }>;
 };
 
 function main() {
@@ -30,6 +32,8 @@ function main() {
   const registry = JSON.parse(fs.readFileSync(registryPath, "utf8")) as {
     project: string;
     zkStackVersion: number;
+    provingSystem?: string;
+    ptau?: { path: string; sha256: string; bytes: number };
     entryCount: number;
     entries: ZkRegistryEntry[];
   };
@@ -41,6 +45,16 @@ function main() {
   if (registry.zkStackVersion < 1) {
     throw new Error("zk registry version is invalid");
   }
+
+  if (registry.provingSystem !== "groth16") {
+    throw new Error("zk registry proving system mismatch");
+  }
+
+  if (!registry.ptau) {
+    throw new Error("zk registry ptau is missing");
+  }
+
+  verifyArtifact(registry.ptau.path, registry.ptau.sha256, registry.ptau.bytes, "ptau");
 
   if (registry.entryCount !== registry.entries.length || registry.entries.length < 3) {
     throw new Error("zk registry entry count mismatch");
@@ -85,6 +99,25 @@ function verifyEntry(entry: ZkRegistryEntry) {
   const publicSignals = JSON.parse(fs.readFileSync(path.resolve(entry.publicSignals), "utf8")) as string[];
   if (publicSignals.length !== entry.publicSignalCount || entry.publicSignalCount <= 0) {
     throw new Error(`zk registry public signal count mismatch: ${entry.circuit}`);
+  }
+
+  for (const [key, artifact] of Object.entries(entry.artifacts)) {
+    const target = entry[key as keyof ZkRegistryEntry];
+    if (typeof target !== "string") {
+      throw new Error(`zk registry artifact mapping mismatch: ${entry.circuit}:${key}`);
+    }
+    verifyArtifact(target, artifact.sha256, artifact.bytes, `${entry.circuit}:${key}`);
+  }
+}
+
+function verifyArtifact(relativePath: string, expectedSha256: string, expectedBytes: number, label: string) {
+  const body = fs.readFileSync(path.resolve(relativePath));
+  const sha256 = crypto.createHash("sha256").update(body).digest("hex");
+  if (sha256 !== expectedSha256) {
+    throw new Error(`zk registry artifact sha256 mismatch: ${label}`);
+  }
+  if (body.byteLength !== expectedBytes || expectedBytes <= 0) {
+    throw new Error(`zk registry artifact byte-size mismatch: ${label}`);
   }
 }
 

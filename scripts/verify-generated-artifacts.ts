@@ -6,6 +6,7 @@ function main() {
   const attestationPath = path.resolve("docs/review-attestation.generated.json");
   const cryptographicManifestPath = path.resolve("docs/cryptographic-manifest.generated.json");
   const zkRegistryPath = path.resolve("docs/zk-registry.generated.json");
+  const zkTranscriptPath = path.resolve("docs/zk-transcript.generated.md");
 
   if (!fs.existsSync(auditPacketPath)) {
     throw new Error("missing generated audit packet");
@@ -18,6 +19,9 @@ function main() {
   }
   if (!fs.existsSync(zkRegistryPath)) {
     throw new Error("missing generated zk registry");
+  }
+  if (!fs.existsSync(zkTranscriptPath)) {
+    throw new Error("missing generated zk transcript");
   }
 
   const auditPacket = fs.readFileSync(auditPacketPath, "utf8");
@@ -61,6 +65,7 @@ function main() {
     entryCount: number;
     entries: Array<{ circuit: string; layer: string; publicSignalCount: number }>;
   };
+  const zkTranscript = fs.readFileSync(zkTranscriptPath, "utf8");
 
   if (attestation.project !== "PrivateDAO") {
     throw new Error("generated attestation project mismatch");
@@ -178,8 +183,16 @@ function main() {
     throw new Error("generated audit packet is missing the ZK review command section");
   }
 
+  if (!zkTranscript.includes("# ZK Transcript")) {
+    throw new Error("generated zk transcript content is invalid");
+  }
+
   if (!cryptographicManifest.files.some((entry) => entry.path === "docs/zk-registry.generated.json")) {
     throw new Error("generated cryptographic manifest is missing the zk registry");
+  }
+
+  if (!cryptographicManifest.files.some((entry) => entry.path === "docs/zk-transcript.generated.md")) {
+    throw new Error("generated cryptographic manifest is missing the zk transcript");
   }
 
   console.log("Generated artifact verification: PASS");

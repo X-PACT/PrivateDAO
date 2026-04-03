@@ -13,8 +13,10 @@ required_files=(
   "docs/zk-threat-extension.md"
   "docs/zk-assumption-matrix.md"
   "docs/zk-capability-matrix.md"
+  "docs/zk-provenance.md"
   "docs/zk-verification-flow.md"
   "docs/zk-registry.generated.json"
+  "docs/zk-transcript.generated.md"
   "docs/zk-architecture.md"
   "docs/zk-evidence.md"
   "zk/circuits/private_dao_vote_overlay.circom"
@@ -52,6 +54,7 @@ if rg -n "REPLACE_WITH|REPLACE_ME|TODO|TBD|coming soon|not implemented" \
   docs/zk-threat-extension.md \
   docs/zk-assumption-matrix.md \
   docs/zk-capability-matrix.md \
+  docs/zk-provenance.md \
   docs/zk-verification-flow.md \
   docs/zk-architecture.md \
   docs/zk-evidence.md; then
@@ -61,6 +64,9 @@ fi
 
 echo "[verify-zk-surface] rebuilding zk registry"
 npm run build:zk-registry >/dev/null
+
+echo "[verify-zk-surface] rebuilding zk transcript"
+npm run build:zk-transcript >/dev/null
 
 echo "[verify-zk-surface] verifying sample proof"
 npm run zk:verify:sample >/dev/null
@@ -76,5 +82,8 @@ npm run verify:zk-negative >/dev/null
 
 echo "[verify-zk-surface] checking zk registry"
 npm run verify:zk-registry >/dev/null
+
+echo "[verify-zk-surface] checking zk transcript"
+npm run verify:zk-transcript >/dev/null
 
 echo "[verify-zk-surface] PASS"
