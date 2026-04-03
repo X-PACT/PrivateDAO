@@ -497,7 +497,7 @@ describe("Full flow", () => {
         daoName,
         51,
         new BN(0),
-        new BN(4),
+        new BN(5),
         new BN(4),
         { tokenWeighted: {} },
       )
@@ -530,7 +530,7 @@ describe("Full flow", () => {
       .createProposal(
         "Lifecycle guard proposal",
         "Reject invalid phase transitions.",
-        new BN(4),
+        new BN(5),
         {
           actionType: { sendSol: {} },
           amountLamports: new BN(EXECUTE_LAMPORTS),
@@ -772,7 +772,7 @@ describe("Full flow", () => {
         daoName,
         51,
         new BN(0),
-        new BN(3),
+        new BN(5),
         new BN(2),
         { tokenWeighted: {} },
       )
@@ -803,7 +803,7 @@ describe("Full flow", () => {
       .createProposal(
         "Late reveal should fail",
         "Proposal should fail if no valid reveals arrive before reveal_end.",
-        new BN(3),
+        new BN(5),
         {
           actionType: { sendSol: {} },
           amountLamports: new BN(EXECUTE_LAMPORTS),
@@ -1097,7 +1097,18 @@ describe("Full flow", () => {
       assert.include(err.toString(), "InvalidTokenMint");
     }
 
-    const wrongTreasuryMintAccount = await createAccount(provider.connection, payer, wrongMint, treasuryPda, true);
+    const wrongTreasuryMintAccount = getAssociatedTokenAddressSync(wrongMint, treasuryPda, true);
+    await provider.sendAndConfirm(
+      new Transaction().add(
+        createAssociatedTokenAccountInstruction(
+          payer.publicKey,
+          wrongTreasuryMintAccount,
+          treasuryPda,
+          wrongMint,
+        ),
+      ),
+      [],
+    );
 
     try {
       await program.methods
@@ -1198,8 +1209,8 @@ describe("Full flow", () => {
     const voterAta = await createAccount(provider.connection, payer, mint, voter.publicKey);
     await mintTo(provider.connection, payer, mint, voterAta, payer, 1_000_000_000n);
 
-    const primaryDaoName = `FinalizeBinding-${Date.now()}`;
-    const secondaryDaoName = `${primaryDaoName}-other`;
+    const primaryDaoName = `FB-${Date.now()}`;
+    const secondaryDaoName = `FB2-${Date.now()}`;
     const [daoPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("dao"), payer.publicKey.toBuffer(), Buffer.from(primaryDaoName)],
       program.programId,
@@ -1219,7 +1230,7 @@ describe("Full flow", () => {
           daoName,
           51,
           new BN(0),
-          new BN(3),
+          new BN(5),
           new BN(1),
           { tokenWeighted: {} },
         )
@@ -1240,7 +1251,7 @@ describe("Full flow", () => {
       .createProposal(
         "Finalize binding guard",
         "Finalize should reject mismatched DAO context.",
-        new BN(3),
+        new BN(5),
         null,
       )
       .accounts({
@@ -1346,8 +1357,8 @@ describe("Full flow", () => {
     const voterAta = await createAccount(provider.connection, payer, mint, voter.publicKey);
     await mintTo(provider.connection, payer, mint, voterAta, payer, 1_000_000_000n);
 
-    const primaryDaoName = `ExecuteBinding-${Date.now()}`;
-    const secondaryDaoName = `${primaryDaoName}-other`;
+    const primaryDaoName = `EB-${Date.now()}`;
+    const secondaryDaoName = `EB2-${Date.now()}`;
     const [daoPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("dao"), payer.publicKey.toBuffer(), Buffer.from(primaryDaoName)],
       program.programId,
@@ -1362,7 +1373,7 @@ describe("Full flow", () => {
         primaryDaoName,
         51,
         new BN(0),
-        new BN(3),
+        new BN(5),
         new BN(1),
         { tokenWeighted: {} },
       )
@@ -1379,7 +1390,7 @@ describe("Full flow", () => {
         secondaryDaoName,
         51,
         new BN(0),
-        new BN(3),
+        new BN(5),
         new BN(1),
         { tokenWeighted: {} },
       )
@@ -1429,7 +1440,7 @@ describe("Full flow", () => {
       .createProposal(
         "Execute treasury binding guard",
         "Treasury PDA must belong to the same DAO as the proposal.",
-        new BN(3),
+        new BN(5),
         {
           actionType: { sendSol: {} },
           amountLamports: new BN(EXECUTE_LAMPORTS),
@@ -1589,7 +1600,7 @@ describe("Full flow", () => {
         daoName,
         51,
         new BN(0),
-        new BN(3),
+        new BN(5),
         new BN(2),
         { tokenWeighted: {} },
       )
@@ -1619,7 +1630,7 @@ describe("Full flow", () => {
       .createProposal(
         "Boundary guard",
         "Phase edges should behave exactly as intended.",
-        new BN(4),
+        new BN(5),
         {
           actionType: { sendSol: {} },
           amountLamports: new BN(EXECUTE_LAMPORTS),
@@ -1852,7 +1863,7 @@ describe("Full flow", () => {
         daoName,
         51,
         new BN(0),
-        new BN(3),
+        new BN(5),
         new BN(2),
         { tokenWeighted: {} },
       )
@@ -1868,7 +1879,7 @@ describe("Full flow", () => {
         `${daoName}-other`,
         51,
         new BN(0),
-        new BN(3),
+        new BN(5),
         new BN(2),
         { tokenWeighted: {} },
       )
@@ -1909,7 +1920,7 @@ describe("Full flow", () => {
       .createProposal(
         "Invariant guard",
         "Failed paths must never advance the lifecycle.",
-        new BN(4),
+        new BN(5),
         {
           actionType: { sendSol: {} },
           amountLamports: new BN(EXECUTE_LAMPORTS),
@@ -2058,7 +2069,7 @@ describe("Full flow", () => {
       .createProposal(
         "Invariant success path",
         "Only successful execute may set isExecuted.",
-        new BN(4),
+        new BN(5),
         {
           actionType: { sendSol: {} },
           amountLamports: new BN(EXECUTE_LAMPORTS),

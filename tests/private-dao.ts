@@ -50,7 +50,7 @@ describe("PrivateDAO", () => {
     }
 
     for (const v of [voter1, voter2, voter3]) {
-      await fundWallet(v.publicKey, 0.005);
+      await fundWallet(v.publicKey, 0.02);
     }
 
     governanceMint = await createMint(
