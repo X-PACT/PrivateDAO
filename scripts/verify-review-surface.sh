@@ -27,6 +27,7 @@ required_files=(
   "docs/zk-stack.md"
   "docs/zk-registry.generated.json"
   "docs/zk-transcript.generated.md"
+  "docs/zk-attestation.generated.json"
   "docs/zk-architecture.md"
   "docs/zk-evidence.md"
   "docs/reviewer-fast-path.md"
@@ -120,6 +121,9 @@ npx ts-node scripts/verify-zk-registry.ts >/dev/null
 
 echo "[review-surface] checking zk transcript consistency"
 npx ts-node scripts/verify-zk-transcript.ts >/dev/null
+
+echo "[review-surface] checking zk attestation consistency"
+npx ts-node scripts/verify-zk-attestation.ts >/dev/null
 
 echo "[review-surface] checking cryptographic integrity"
 npx ts-node scripts/verify-cryptographic-manifest.ts >/dev/null

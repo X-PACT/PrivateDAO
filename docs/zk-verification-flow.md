@@ -49,7 +49,21 @@ Expected outcome:
 - transcript content matches the current registry
 - ptau and per-layer hashes are present
 - reviewer replay commands remain aligned
-## 5. Verify The ZK Docs
+
+## 5. Build And Verify The Attestation
+
+```bash
+npm run build:zk-attestation
+npm run verify:zk-attestation
+```
+
+Expected outcome:
+
+- `docs/zk-attestation.generated.json` exists
+- the attestation binds the registry, transcript, proving system, ptau, and per-layer proof summaries
+- machine-readable reviewer state stays aligned with the canonical zk artifact tree
+
+## 6. Verify The ZK Docs
 
 ```bash
 npm run verify:zk-docs
@@ -59,12 +73,12 @@ Expected outcome:
 
 - the zk reviewer docs stay aligned on:
   - layer names
-  - replay boundaries
-  - verification commands
-  - tracked circuit references
-  - provenance and transcript references
+- replay boundaries
+- verification commands
+- tracked circuit references
+- provenance, transcript, and attestation references
 
-## 6. Recompute Public Signals
+## 7. Recompute Public Signals
 
 ```bash
 npm run verify:zk-consistency
@@ -77,7 +91,7 @@ Expected outcome:
   - delegation
   - tally
 
-## 7. Check Tamper Rejection
+## 8. Check Tamper Rejection
 
 ```bash
 npm run verify:zk-negative
@@ -88,7 +102,7 @@ Expected outcome:
 - modified public signals are rejected
 - modified proof objects are rejected
 
-## 8. Replay The Full Proof Path
+## 9. Replay The Full Proof Path
 
 ```bash
 npm run zk:all
@@ -101,7 +115,7 @@ Expected outcome:
 - proofs are generated
 - proofs verify against the tracked verification keys
 
-## 9. Verify The ZK Surface
+## 10. Verify The ZK Surface
 
 ```bash
 npm run verify:zk-surface
@@ -114,7 +128,7 @@ Expected outcome:
 - consistency and tamper checks pass
 - reviewer-facing zk references stay coherent
 
-## 10. Verify The Full Review Surface
+## 11. Verify The Full Review Surface
 
 ```bash
 npm run verify:all

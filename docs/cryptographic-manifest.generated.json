@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-03T16:37:31.697Z",
+  "generatedAt": "2026-04-03T17:21:19.299Z",
   "algorithm": "sha256",
-  "entryCount": 30,
-  "aggregateSha256": "281d1917db608e4cc7a5fc453dd58071923cf4cb67baac9d23b85ea387c7d108",
+  "entryCount": 31,
+  "aggregateSha256": "2db14e12714d6f82842170fbc71bc2e70e957bd2868962a7dd13d2c1db51852d",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -82,8 +82,8 @@
     },
     {
       "path": "docs/submission-registry.json",
-      "sha256": "4ea4aa6eb17f33e93df7534bfa0b1120a8e82078b26b0068b9c2cc51a5735ef5",
-      "bytes": 3165
+      "sha256": "87f8361a2c643e90adbbe3ce99fc54633a3754a328483e1282ddde6fb27dc7a5",
+      "bytes": 3246
     },
     {
       "path": "docs/independent-verification.md",
@@ -127,18 +127,18 @@
     },
     {
       "path": "docs/zk-capability-matrix.md",
-      "sha256": "7fff827bbb0d1a2aa6cd99979b750ead40189548abe5d58e1e3ac7f10dd0eab4",
-      "bytes": 2574
+      "sha256": "a4c4d64f2a93da15cae9e36d59937c987c459de0713e3c14c6960743c440ba24",
+      "bytes": 2754
     },
     {
       "path": "docs/zk-provenance.md",
-      "sha256": "e6eca7d9732070c2f8f73dcf68fa4cbffda8228d677360c5abac89985109ba8d",
-      "bytes": 1843
+      "sha256": "29322cec4ff23d1937927664e504458263a70f26e97332604e3794eaa251f673",
+      "bytes": 1941
     },
     {
       "path": "docs/zk-verification-flow.md",
-      "sha256": "5dd45a6e72c6f9e46a360fc3331397a60951107106d337949e83e36bfb4ceddf",
-      "bytes": 2755
+      "sha256": "3941aa5f2a2b59c1f9b90f90faba3a08e1d4e7908e159ea11acf4c43234e7a81",
+      "bytes": 3127
     },
     {
       "path": "docs/zk-registry.generated.json",
@@ -147,13 +147,18 @@
     },
     {
       "path": "docs/zk-transcript.generated.md",
-      "sha256": "700d3ec226510a105a80d0ef6ffc9f72a9194e7ac6a75529619cd5046f29f57a",
-      "bytes": 6002
+      "sha256": "557a41261e00a6eee8aa86b048bd8b026bc8db6bcd39312a2e88654452912746",
+      "bytes": 6122
+    },
+    {
+      "path": "docs/zk-attestation.generated.json",
+      "sha256": "d16db0209e71deb03d2a2be40b23775f375bd1b1b820686ea317476e6ec7e9dc",
+      "bytes": 3093
     },
     {
       "path": "docs/verification-gates.md",
-      "sha256": "a5b00c79983b6aca3b71da7d1d5d0f04299e4ddf847f64c2e702c395ee871525",
-      "bytes": 3876
+      "sha256": "d98fc4b3a80897d60a9f52c45fdd53bb33bdb1b2ee2f93b04e683f7c7ba12f5a",
+      "bytes": 4146
     }
   ]
 }

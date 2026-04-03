@@ -30,6 +30,7 @@ That is why the zk package now includes:
 
 - `docs/zk-registry.generated.json`
 - `docs/zk-transcript.generated.md`
+- `docs/zk-attestation.generated.json`
 
 ## Current Provenance Model
 
@@ -45,8 +46,10 @@ The current stack is built around:
 ```bash
 npm run build:zk-registry
 npm run build:zk-transcript
+npm run build:zk-attestation
 npm run verify:zk-registry
 npm run verify:zk-transcript
+npm run verify:zk-attestation
 npm run verify:zk-docs
 npm run verify:zk-consistency
 npm run verify:zk-negative

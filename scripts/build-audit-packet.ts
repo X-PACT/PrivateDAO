@@ -131,6 +131,7 @@ ${Object.entries(proof.transactions)
 - ZK verification flow: \`docs/zk-verification-flow.md\`
 - ZK registry: \`docs/zk-registry.generated.json\`
 - ZK transcript: \`docs/zk-transcript.generated.md\`
+- ZK attestation: \`docs/zk-attestation.generated.json\`
 - ZK stack version: \`${zkRegistry.zkStackVersion}\`
 - ZK registry entries: \`${zkRegistry.entryCount}\`
 
@@ -145,8 +146,10 @@ ${zkRegistry.entries
 
 - \`npm run build:zk-registry\`
 - \`npm run build:zk-transcript\`
+- \`npm run build:zk-attestation\`
 - \`npm run verify:zk-registry\`
 - \`npm run verify:zk-transcript\`
+- \`npm run verify:zk-attestation\`
 - \`npm run verify:zk-docs\`
 - \`npm run verify:zk-consistency\`
 - \`npm run verify:zk-negative\`

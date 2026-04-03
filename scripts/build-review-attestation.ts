@@ -90,6 +90,7 @@ function main() {
         "docs/zk-provenance.md",
         "docs/zk-verification-flow.md",
         "docs/zk-transcript.generated.md",
+        "docs/zk-attestation.generated.json",
       ],
       layers: zkRegistry.entries.map((entry) => ({
         layer: entry.layer,

@@ -54,8 +54,8 @@
 - Integrity note: `docs/cryptographic-integrity.md`
 - Cryptographic manifest: `docs/cryptographic-manifest.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `28`
-- Aggregate sha256: `c7d89047e1f9c3676013e715256b0079dc2bfbeee4aa40cc97e5779289e1772d`
+- Manifest entries: `31`
+- Aggregate sha256: `2db14e12714d6f82842170fbc71bc2e70e957bd2868962a7dd13d2c1db51852d`
 
 ## ZK Package
 
@@ -68,6 +68,7 @@
 - ZK verification flow: `docs/zk-verification-flow.md`
 - ZK registry: `docs/zk-registry.generated.json`
 - ZK transcript: `docs/zk-transcript.generated.md`
+- ZK attestation: `docs/zk-attestation.generated.json`
 - ZK stack version: `1`
 - ZK registry entries: `3`
 
@@ -79,8 +80,10 @@
 
 - `npm run build:zk-registry`
 - `npm run build:zk-transcript`
+- `npm run build:zk-attestation`
 - `npm run verify:zk-registry`
 - `npm run verify:zk-transcript`
+- `npm run verify:zk-attestation`
 - `npm run verify:zk-docs`
 - `npm run verify:zk-consistency`
 - `npm run verify:zk-negative`
@@ -118,6 +121,7 @@
 - `docs/zk-verification-flow.md`
 - `docs/zk-registry.generated.json`
 - `docs/zk-transcript.generated.md`
+- `docs/zk-attestation.generated.json`
 
 ## Proof Package
 
@@ -156,6 +160,7 @@
 - `npm run verify:zk-surface`
 - `npm run verify:zk-registry`
 - `npm run verify:zk-transcript`
+- `npm run verify:zk-attestation`
 - `npm run verify:zk-docs`
 - `npm run verify:zk-consistency`
 - `npm run verify:zk-negative`

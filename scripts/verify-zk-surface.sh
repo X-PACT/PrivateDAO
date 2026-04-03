@@ -17,6 +17,7 @@ required_files=(
   "docs/zk-verification-flow.md"
   "docs/zk-registry.generated.json"
   "docs/zk-transcript.generated.md"
+  "docs/zk-attestation.generated.json"
   "docs/zk-architecture.md"
   "docs/zk-evidence.md"
   "zk/circuits/private_dao_vote_overlay.circom"
@@ -68,6 +69,9 @@ npm run build:zk-registry >/dev/null
 echo "[verify-zk-surface] rebuilding zk transcript"
 npm run build:zk-transcript >/dev/null
 
+echo "[verify-zk-surface] rebuilding zk attestation"
+npm run build:zk-attestation >/dev/null
+
 echo "[verify-zk-surface] verifying sample proof"
 npm run zk:verify:sample >/dev/null
 
@@ -85,5 +89,8 @@ npm run verify:zk-registry >/dev/null
 
 echo "[verify-zk-surface] checking zk transcript"
 npm run verify:zk-transcript >/dev/null
+
+echo "[verify-zk-surface] checking zk attestation"
+npm run verify:zk-attestation >/dev/null
 
 echo "[verify-zk-surface] PASS"

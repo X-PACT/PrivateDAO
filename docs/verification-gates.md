@@ -64,6 +64,15 @@ npm run verify:zk-transcript
 
 Builds and verifies the reviewer-readable zk transcript that carries the proving system, ptau reference, per-layer commands, and tracked artifact hashes.
 
+### ZK Attestation
+
+```bash
+npm run build:zk-attestation
+npm run verify:zk-attestation
+```
+
+Builds and verifies a machine-readable zk attestation that binds the registry, transcript, proving system, ptau, and per-layer proof artifacts into one reviewer-facing summary.
+
 ### ZK Docs
 
 ```bash

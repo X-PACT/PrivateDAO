@@ -58,6 +58,7 @@ It is intended to answer:
 - PTau artifact: \`${registry.ptau.path}\`
 - PTau sha256: \`${registry.ptau.sha256}\`
 - PTau bytes: \`${registry.ptau.bytes}\`
+- Attestation artifact: \`docs/zk-attestation.generated.json\`
 
 ## Layer Transcript
 
@@ -98,8 +99,10 @@ Artifact hashes:
 \`\`\`bash
 npm run build:zk-registry
 npm run build:zk-transcript
+npm run build:zk-attestation
 npm run verify:zk-registry
 npm run verify:zk-transcript
+npm run verify:zk-attestation
 npm run verify:zk-docs
 npm run verify:zk-consistency
 npm run verify:zk-negative

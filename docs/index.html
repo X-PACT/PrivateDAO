@@ -1938,6 +1938,121 @@ body.judge-mode .judge-banner {
   color: var(--text2);
   line-height: 1.55;
 }
+.doc-viewer-shell {
+  padding: 148px 0 84px;
+}
+.doc-viewer-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+.doc-viewer-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.doc-viewer-content {
+  margin-top: 24px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: rgba(5, 11, 18, 0.9);
+  padding: 28px;
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.22);
+}
+.doc-viewer-empty {
+  color: var(--text2);
+  line-height: 1.8;
+}
+.doc-rendered h1,
+.doc-rendered h2,
+.doc-rendered h3,
+.doc-rendered h4 {
+  font-family: var(--display);
+  letter-spacing: 1px;
+  color: var(--text);
+  margin-top: 22px;
+  margin-bottom: 12px;
+}
+.doc-rendered h1 { font-size: 42px; }
+.doc-rendered h2 { font-size: 30px; }
+.doc-rendered h3 { font-size: 24px; }
+.doc-rendered h4 { font-size: 20px; }
+.doc-rendered p {
+  color: var(--text2);
+  line-height: 1.85;
+  margin: 0 0 14px;
+}
+.doc-rendered ul,
+.doc-rendered ol {
+  margin: 0 0 16px 22px;
+  color: var(--text2);
+  line-height: 1.85;
+}
+.doc-rendered li {
+  margin-bottom: 8px;
+}
+.doc-rendered code {
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 3px 6px;
+  border-radius: 8px;
+  color: var(--cyan);
+  background: rgba(0, 229, 255, 0.08);
+}
+.doc-rendered pre {
+  overflow-x: auto;
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: rgba(2, 8, 14, 0.96);
+  color: #cbe9ff;
+  margin: 0 0 18px;
+  line-height: 1.7;
+}
+.doc-rendered pre code {
+  padding: 0;
+  background: transparent;
+  color: inherit;
+}
+.doc-rendered a {
+  color: var(--cyan);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0, 229, 255, 0.24);
+}
+.doc-rendered a:hover {
+  color: #7ff3ff;
+  border-bottom-color: rgba(127, 243, 255, 0.48);
+}
+.doc-rendered table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 18px;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+}
+.doc-rendered th,
+.doc-rendered td {
+  padding: 14px 16px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid rgba(17, 40, 64, 0.9);
+  color: var(--text2);
+  line-height: 1.7;
+}
+.doc-rendered th {
+  color: var(--text);
+  background: rgba(9, 24, 38, 0.95);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.4px;
+}
+.doc-rendered tr:last-child td {
+  border-bottom: none;
+}
 </style>
 </head>
 <body>
@@ -1973,9 +2088,9 @@ body.judge-mode .judge-banner {
         <button class="nav-link" onclick="showPage('protocol',this)">Protocol</button>
         <button class="nav-link" onclick="showPage('migrate',this)">Migrate from Realms</button>
         <button class="nav-link" onclick="showPage('security',this)">Security</button>
-        <a class="nav-link" href="zk-layer.md" target="_blank" style="text-decoration:none">ZK Layer</a>
+        <button class="nav-link" onclick="openDocument('zk-layer.md','ZK Layer',this)">ZK Layer</button>
         <button class="nav-link" onclick="showPage('awards',this)">Awards</button>
-        <a class="nav-link" href="android-native.md" target="_blank" style="text-decoration:none">Android Native</a>
+        <button class="nav-link" onclick="openDocument('android-native.md','Android Native',this)">Android Native</button>
       </div>
       <div class="wallet-stack">
         <button class="wallet-btn" id="walletBtn" onclick="toggleWalletPanel(event)">
@@ -2998,8 +3113,12 @@ execute() → CPI
           <div style="color:var(--text2);line-height:1.8"><a class="award-link" href="zk-provenance.md" target="_blank">Open zk provenance</a> for the proving-system, ptau, and artifact-traceability layer.</div>
         </div>
         <div class="proposal-command-box">
+          <div class="proposal-detail-label">ATTESTATION</div>
+          <div style="color:var(--text2);line-height:1.8"><a class="award-link" href="zk-attestation.generated.json" target="_blank">Open zk attestation</a> for the machine-readable registry and transcript summary bound to the live proof stack.</div>
+        </div>
+        <div class="proposal-command-box">
           <div class="proposal-detail-label">PER-LAYER REVIEW PATH</div>
-          <div style="color:var(--text2);line-height:1.8"><code>npm run build:zk-transcript</code><br><code>npm run verify:zk-transcript</code><br><code>npm run verify:zk-docs</code><br><code>npm run verify:zk-consistency</code><br><code>npm run verify:zk-negative</code></div>
+          <div style="color:var(--text2);line-height:1.8"><code>npm run build:zk-transcript</code><br><code>npm run build:zk-attestation</code><br><code>npm run verify:zk-transcript</code><br><code>npm run verify:zk-attestation</code><br><code>npm run verify:zk-docs</code><br><code>npm run verify:zk-consistency</code><br><code>npm run verify:zk-negative</code></div>
         </div>
       </div>
     </div>
@@ -3133,6 +3252,7 @@ execute() → CPI
         <a class="award-link" href="zk-verification-flow.md" target="_blank">ZK Verification Flow</a>
         <a class="award-link" href="zk-registry.generated.json" target="_blank">ZK Registry</a>
         <a class="award-link" href="zk-transcript.generated.md" target="_blank">ZK Transcript</a>
+        <a class="award-link" href="zk-attestation.generated.json" target="_blank">ZK Attestation</a>
         <a class="award-link" href="zk-architecture.md" target="_blank">ZK Architecture</a>
         <a class="award-link" href="zk-evidence.md" target="_blank">ZK Evidence</a>
         <a class="award-link" href="cryptographic-integrity.md" target="_blank">Artifact Integrity</a>
@@ -3272,6 +3392,53 @@ execute() → CPI
   </div>
 </section>
 </div><!-- /page-security -->
+
+<!-- ══════════════════ PAGE: DOCS ══════════════════ -->
+<div class="page" id="page-docs">
+  <section class="container doc-viewer-shell">
+    <div class="award-detail-card reveal">
+      <div class="award-detail-head">
+        <div>
+          <div class="award-detail-title" id="docViewerTitle">Interactive Review Document</div>
+          <p class="award-detail-copy" id="docViewerSummary">
+            Open PrivateDAO review documents inside the product surface instead of falling into raw markdown or JSON pages.
+          </p>
+        </div>
+        <div class="award-pill">DOC VIEWER</div>
+      </div>
+
+      <div class="proposal-command-grid">
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">DOCUMENT</div>
+          <div style="color:var(--text2);line-height:1.8"><code id="docViewerPath">reviewer-fast-path.md</code></div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">FORMAT</div>
+          <div style="color:var(--text2);line-height:1.8" id="docViewerFormat">Markdown</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">STATUS</div>
+          <div style="color:var(--text2);line-height:1.8" id="docViewerStatus">Ready</div>
+        </div>
+      </div>
+
+      <div class="doc-viewer-toolbar">
+        <div class="doc-viewer-actions">
+          <a class="award-link" id="docViewerRawLink" href="reviewer-fast-path.md" target="_blank" data-bypass-doc-viewer="1">Open Raw File</a>
+          <button class="proposal-proof-link" type="button" onclick="copyDocViewerLink()">Copy Viewer Link</button>
+          <button class="proposal-proof-link" type="button" onclick="showPage('security', findNavButton('security'))">Back To Security</button>
+        </div>
+        <div style="color:var(--text3);font-family:var(--mono);font-size:12px" id="docViewerLoadedAt">Interactive render active</div>
+      </div>
+
+      <div class="doc-viewer-content reveal">
+        <div class="doc-rendered" id="docViewerContent">
+          <div class="doc-viewer-empty">Select a repository document from the main UI. Local markdown and JSON review artifacts open here automatically.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
 
 <!-- ══════════════════ PAGE: AWARDS ══════════════════ -->
 <div class="page" id="page-awards">
@@ -3640,6 +3807,9 @@ window.addEventListener('scroll', () => {
 });
 
 // ── Page navigation ─────────────────────────────────────
+let currentDocPath = null;
+let currentDocLabel = null;
+
 function showPage(page, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
@@ -3663,6 +3833,240 @@ function findNavButton(page) {
   )) || null;
 }
 
+function normalizeDocPath(docPath) {
+  return String(docPath || '').replace(/^docs\//, '');
+}
+
+function deriveDocLabel(docPath) {
+  return normalizeDocPath(docPath)
+    .replace(/\.(md|json)$/i, '')
+    .replace(/[-_.]+/g, ' ')
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function isInteractiveDocLink(href) {
+  if (!href) return false;
+  if (href.startsWith('http://') || href.startsWith('https://') || href.startsWith('mailto:') || href.startsWith('#') || href.startsWith('?')) {
+    return false;
+  }
+  return /\.(md|json)(?:[#?].*)?$/i.test(href);
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function formatInlineMarkdown(value) {
+  let html = escapeHtml(value);
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, href) => {
+    const safeLabel = escapeHtml(label);
+    const safeHref = escapeHtml(href);
+    const docAttr = isInteractiveDocLink(href) ? ' data-doc-link="1"' : '';
+    const targetAttr = /^https?:\/\//i.test(href) ? ' target="_blank" rel="noopener"' : '';
+    return `<a href="${safeHref}"${docAttr}${targetAttr}>${safeLabel}</a>`;
+  });
+  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+  return html;
+}
+
+function renderTableBlock(lines) {
+  if (lines.length < 2 || !/^\|\s*[-:]/.test(lines[1].trim())) {
+    return `<pre><code>${escapeHtml(lines.join('\n'))}</code></pre>`;
+  }
+  const rows = lines
+    .filter((line, index) => index !== 1)
+    .map((line) => line.trim().replace(/^\||\|$/g, '').split('|').map((cell) => cell.trim()));
+  const header = rows.shift() || [];
+  const headHtml = `<tr>${header.map((cell) => `<th>${formatInlineMarkdown(cell)}</th>`).join('')}</tr>`;
+  const bodyHtml = rows
+    .map((row) => `<tr>${row.map((cell) => `<td>${formatInlineMarkdown(cell)}</td>`).join('')}</tr>`)
+    .join('');
+  return `<table><thead>${headHtml}</thead><tbody>${bodyHtml}</tbody></table>`;
+}
+
+function renderMarkdownDocument(markdown) {
+  const lines = markdown.replace(/\r\n/g, '\n').split('\n');
+  const html = [];
+  let inCode = false;
+  let codeLines = [];
+  let listType = null;
+  let tableLines = [];
+
+  function closeList() {
+    if (listType) {
+      html.push(`</${listType}>`);
+      listType = null;
+    }
+  }
+
+  function closeTable() {
+    if (tableLines.length) {
+      closeList();
+      html.push(renderTableBlock(tableLines));
+      tableLines = [];
+    }
+  }
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+
+    if (trimmed.startsWith('```')) {
+      closeTable();
+      closeList();
+      if (inCode) {
+        html.push(`<pre><code>${escapeHtml(codeLines.join('\n'))}</code></pre>`);
+        inCode = false;
+        codeLines = [];
+      } else {
+        inCode = true;
+      }
+      continue;
+    }
+
+    if (inCode) {
+      codeLines.push(line);
+      continue;
+    }
+
+    if (!trimmed) {
+      closeTable();
+      closeList();
+      continue;
+    }
+
+    if (/^\|.*\|$/.test(trimmed)) {
+      tableLines.push(trimmed);
+      continue;
+    }
+
+    closeTable();
+
+    if (/^####\s+/.test(trimmed)) {
+      closeList();
+      html.push(`<h4>${formatInlineMarkdown(trimmed.replace(/^####\s+/, ''))}</h4>`);
+      continue;
+    }
+    if (/^###\s+/.test(trimmed)) {
+      closeList();
+      html.push(`<h3>${formatInlineMarkdown(trimmed.replace(/^###\s+/, ''))}</h3>`);
+      continue;
+    }
+    if (/^##\s+/.test(trimmed)) {
+      closeList();
+      html.push(`<h2>${formatInlineMarkdown(trimmed.replace(/^##\s+/, ''))}</h2>`);
+      continue;
+    }
+    if (/^#\s+/.test(trimmed)) {
+      closeList();
+      html.push(`<h1>${formatInlineMarkdown(trimmed.replace(/^#\s+/, ''))}</h1>`);
+      continue;
+    }
+
+    const unorderedMatch = /^[-*]\s+(.+)$/.exec(trimmed);
+    if (unorderedMatch) {
+      if (listType !== 'ul') {
+        closeList();
+        html.push('<ul>');
+        listType = 'ul';
+      }
+      html.push(`<li>${formatInlineMarkdown(unorderedMatch[1])}</li>`);
+      continue;
+    }
+
+    const orderedMatch = /^\d+\.\s+(.+)$/.exec(trimmed);
+    if (orderedMatch) {
+      if (listType !== 'ol') {
+        closeList();
+        html.push('<ol>');
+        listType = 'ol';
+      }
+      html.push(`<li>${formatInlineMarkdown(orderedMatch[1])}</li>`);
+      continue;
+    }
+
+    closeList();
+    html.push(`<p>${formatInlineMarkdown(trimmed)}</p>`);
+  }
+
+  closeTable();
+  closeList();
+  if (inCode) {
+    html.push(`<pre><code>${escapeHtml(codeLines.join('\n'))}</code></pre>`);
+  }
+  return html.join('\n');
+}
+
+function renderJsonDocument(raw) {
+  const parsed = JSON.parse(raw);
+  return `<pre><code>${escapeHtml(JSON.stringify(parsed, null, 2))}</code></pre>`;
+}
+
+async function openDocument(docPath, label = null, btn = null) {
+  const normalized = normalizeDocPath(docPath);
+  const viewerTitle = document.getElementById('docViewerTitle');
+  const viewerSummary = document.getElementById('docViewerSummary');
+  const viewerPath = document.getElementById('docViewerPath');
+  const viewerFormat = document.getElementById('docViewerFormat');
+  const viewerStatus = document.getElementById('docViewerStatus');
+  const viewerLoadedAt = document.getElementById('docViewerLoadedAt');
+  const viewerContent = document.getElementById('docViewerContent');
+  const viewerRawLink = document.getElementById('docViewerRawLink');
+
+  currentDocPath = normalized;
+  currentDocLabel = label || deriveDocLabel(normalized);
+
+  if (viewerTitle) viewerTitle.textContent = currentDocLabel;
+  if (viewerSummary) viewerSummary.textContent = 'Interactive render of a canonical PrivateDAO repository document. Use the raw-file action only when you need the exact source artifact.';
+  if (viewerPath) viewerPath.textContent = normalized;
+  if (viewerFormat) viewerFormat.textContent = normalized.endsWith('.json') ? 'JSON' : 'Markdown';
+  if (viewerStatus) viewerStatus.textContent = 'Loading';
+  if (viewerLoadedAt) viewerLoadedAt.textContent = 'Fetching live repository artifact...';
+  if (viewerRawLink) viewerRawLink.href = normalized;
+  if (viewerContent) viewerContent.innerHTML = '<div class="doc-viewer-empty">Loading document...</div>';
+
+  showPage('docs', btn);
+
+  try {
+    const response = await fetch(normalized, { cache: 'no-cache' });
+    if (!response.ok) {
+      throw new Error(`Document request failed with ${response.status}`);
+    }
+    const raw = await response.text();
+    const rendered = normalized.endsWith('.json') ? renderJsonDocument(raw) : renderMarkdownDocument(raw);
+    if (viewerContent) viewerContent.innerHTML = rendered;
+    if (viewerStatus) viewerStatus.textContent = 'Loaded';
+    if (viewerLoadedAt) viewerLoadedAt.textContent = `Loaded ${new Date().toISOString().replace('T', ' ').slice(0, 19)} UTC`;
+    syncUrlState();
+  } catch (error) {
+    console.error(error);
+    if (viewerContent) {
+      viewerContent.innerHTML = `<div class="doc-viewer-empty">Unable to load <code>${escapeHtml(normalized)}</code> from the published docs surface.</div>`;
+    }
+    if (viewerStatus) viewerStatus.textContent = 'Error';
+    if (viewerLoadedAt) viewerLoadedAt.textContent = 'Document load failed';
+    showToast(error.message || 'Document load failed.', 'error');
+  }
+}
+
+function copyDocViewerLink() {
+  const params = new URLSearchParams(window.location.search);
+  params.set('page', 'docs');
+  if (currentDocPath) params.set('doc', currentDocPath);
+  const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url)
+      .then(() => showToast('Document viewer link copied.', 'success'))
+      .catch(() => showToast(url, 'info'));
+    return;
+  }
+  showToast(url, 'info');
+}
+
 // ── Scroll to proposals ─────────────────────────────────
 function scrollToProposals() {
   document.getElementById('proposals-anchor').scrollIntoView({behavior:'smooth'});
@@ -3676,6 +4080,11 @@ function currentPageKey() {
 function syncUrlState() {
   const params = new URLSearchParams(window.location.search);
   params.set('page', currentPageKey());
+  if (currentPageKey() === 'docs' && currentDocPath) {
+    params.set('doc', currentDocPath);
+  } else {
+    params.delete('doc');
+  }
   if (document.body.classList.contains('judge-mode')) {
     params.set('judge', '1');
   } else {
@@ -5793,9 +6202,12 @@ observeReveal();
 const initialParams = new URLSearchParams(window.location.search);
 const initialJudge = initialParams.get('judge');
 const initialPage = initialParams.get('page');
+const initialDoc = initialParams.get('doc');
 if (initialJudge === '1') {
   document.body.classList.add('judge-mode');
   showPage('proof');
+} else if (initialPage === 'docs') {
+  openDocument(initialDoc || 'reviewer-fast-path.md');
 } else if (initialPage && document.getElementById(`page-${initialPage}`)) {
   showPage(initialPage);
 } else {
@@ -5819,6 +6231,16 @@ setInterval(loadLiveProposals, 30_000);
 hydrateWalletSession().catch(() => {});
 document.addEventListener('click', () => closeWalletPanel());
 refreshWalletProviderStates();
+document.addEventListener('click', (event) => {
+  const link = event.target.closest('a[href]');
+  if (!link) return;
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  if (link.dataset.bypassDocViewer === '1') return;
+  const href = link.getAttribute('href');
+  if (!isInteractiveDocLink(href)) return;
+  event.preventDefault();
+  openDocument(href, link.textContent.trim() || null);
+});
 
 // ── Close on overlay click ────────────────────────────────
 document.querySelectorAll('.modal-overlay').forEach(o => {

@@ -32,7 +32,9 @@ function main() {
     "verify:zk-docs",
     "zk-provenance.md",
     "zk-transcript.generated.md",
+    "zk-attestation.generated.json",
     "verify:zk-transcript",
+    "verify:zk-attestation",
     "verify:zk-consistency",
     "verify:zk-negative",
     "Artifact Integrity",
@@ -60,6 +62,18 @@ function main() {
     "Glow",
     "toggleWalletPanel",
     "Security Evidence",
+    "ATTESTATION",
+    "Open zk attestation",
+    "page-docs",
+    "Interactive Review Document",
+    "docViewerContent",
+    "copyDocViewerLink",
+    "renderMarkdownDocument",
+    "renderJsonDocument",
+    "isInteractiveDocLink",
+    "Open Raw File",
+    "openDocument('zk-layer.md','ZK Layer',this)",
+    "openDocument('android-native.md','Android Native',this)",
   ];
 
   for (const fragment of requiredFragments) {

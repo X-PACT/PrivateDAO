@@ -7,6 +7,7 @@ function main() {
   const cryptographicManifestPath = path.resolve("docs/cryptographic-manifest.generated.json");
   const zkRegistryPath = path.resolve("docs/zk-registry.generated.json");
   const zkTranscriptPath = path.resolve("docs/zk-transcript.generated.md");
+  const zkAttestationPath = path.resolve("docs/zk-attestation.generated.json");
 
   if (!fs.existsSync(auditPacketPath)) {
     throw new Error("missing generated audit packet");
@@ -22,6 +23,9 @@ function main() {
   }
   if (!fs.existsSync(zkTranscriptPath)) {
     throw new Error("missing generated zk transcript");
+  }
+  if (!fs.existsSync(zkAttestationPath)) {
+    throw new Error("missing generated zk attestation");
   }
 
   const auditPacket = fs.readFileSync(auditPacketPath, "utf8");
@@ -66,6 +70,13 @@ function main() {
     entries: Array<{ circuit: string; layer: string; publicSignalCount: number }>;
   };
   const zkTranscript = fs.readFileSync(zkTranscriptPath, "utf8");
+  const zkAttestation = JSON.parse(fs.readFileSync(zkAttestationPath, "utf8")) as {
+    project: string;
+    zkStackVersion: number;
+    provingSystem: string;
+    layerCount: number;
+    layers: Array<{ layer: string; circuit: string; publicSignalCount: number }>;
+  };
 
   if (attestation.project !== "PrivateDAO") {
     throw new Error("generated attestation project mismatch");
@@ -131,6 +142,10 @@ function main() {
     throw new Error("generated attestation zk verification docs are missing");
   }
 
+  if (!attestation.zk.verificationDocs.includes("docs/zk-attestation.generated.json")) {
+    throw new Error("generated attestation is missing the zk attestation doc");
+  }
+
   if (zkRegistry.project !== "PrivateDAO") {
     throw new Error("generated zk registry project mismatch");
   }
@@ -187,12 +202,28 @@ function main() {
     throw new Error("generated zk transcript content is invalid");
   }
 
+  if (zkAttestation.project !== "PrivateDAO") {
+    throw new Error("generated zk attestation project mismatch");
+  }
+
+  if (zkAttestation.zkStackVersion !== zkRegistry.zkStackVersion || zkAttestation.layerCount !== zkRegistry.entryCount) {
+    throw new Error("generated zk attestation summary mismatch");
+  }
+
+  if (zkAttestation.provingSystem !== "groth16" || zkAttestation.layers.length < 3) {
+    throw new Error("generated zk attestation proving summary is unexpectedly weak");
+  }
+
   if (!cryptographicManifest.files.some((entry) => entry.path === "docs/zk-registry.generated.json")) {
     throw new Error("generated cryptographic manifest is missing the zk registry");
   }
 
   if (!cryptographicManifest.files.some((entry) => entry.path === "docs/zk-transcript.generated.md")) {
     throw new Error("generated cryptographic manifest is missing the zk transcript");
+  }
+
+  if (!cryptographicManifest.files.some((entry) => entry.path === "docs/zk-attestation.generated.json")) {
+    throw new Error("generated cryptographic manifest is missing the zk attestation");
   }
 
   console.log("Generated artifact verification: PASS");

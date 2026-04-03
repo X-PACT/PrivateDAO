@@ -110,6 +110,7 @@ Current security hardening covers:
 - failed-path state preservation
 - replay-oriented reasoning and coverage mapping
 - sha256-based artifact integrity across critical proof materials
+- machine-readable zk attestation across registry and transcript layers
 
 See:
 
@@ -155,6 +156,7 @@ Quick links:
 - ZK verification flow: `docs/zk-verification-flow.md`
 - ZK registry: `docs/zk-registry.generated.json`
 - ZK transcript: `docs/zk-transcript.generated.md`
+- ZK attestation: `docs/zk-attestation.generated.json`
 - ZK architecture: `docs/zk-architecture.md`
 - ZK evidence: `docs/zk-evidence.md`
 - Cryptographic integrity: `docs/cryptographic-integrity.md`

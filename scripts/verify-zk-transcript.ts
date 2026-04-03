@@ -32,6 +32,7 @@ function main() {
   assertContains(transcript, `Proving system: \`${registry.provingSystem}\``);
   assertContains(transcript, registry.ptau.path);
   assertContains(transcript, registry.ptau.sha256);
+  assertContains(transcript, "docs/zk-attestation.generated.json");
 
   for (const entry of registry.entries) {
     assertContains(transcript, `### ${entry.layer.toUpperCase()} — \`${entry.circuit}\``);
@@ -46,8 +47,10 @@ function main() {
   for (const command of [
     "npm run build:zk-registry",
     "npm run build:zk-transcript",
+    "npm run build:zk-attestation",
     "npm run verify:zk-registry",
     "npm run verify:zk-transcript",
+    "npm run verify:zk-attestation",
     "npm run verify:zk-docs",
     "npm run verify:zk-consistency",
     "npm run verify:zk-negative",

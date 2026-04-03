@@ -38,7 +38,8 @@
       "docs/zk-provenance.md",
       "docs/zk-verification-flow.md",
       "docs/zk-registry.generated.json",
-      "docs/zk-transcript.generated.md"
+      "docs/zk-transcript.generated.md",
+      "docs/zk-attestation.generated.json"
     ],
     "proof": [
       "docs/live-proof.md",
@@ -75,6 +76,7 @@
     "npm run verify:zk-surface",
     "npm run verify:zk-registry",
     "npm run verify:zk-transcript",
+    "npm run verify:zk-attestation",
     "npm run verify:zk-docs",
     "npm run verify:zk-consistency",
     "npm run verify:zk-negative",

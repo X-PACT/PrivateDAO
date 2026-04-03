@@ -38,6 +38,7 @@ const MANIFEST_FILES = [
   "docs/zk-verification-flow.md",
   "docs/zk-registry.generated.json",
   "docs/zk-transcript.generated.md",
+  "docs/zk-attestation.generated.json",
   "docs/verification-gates.md",
 ];
 

@@ -20,6 +20,7 @@ It is intended to answer:
 - PTau artifact: `zk/setup/pot12_final.ptau`
 - PTau sha256: `ed4298dfb57be7831b9def92e6caa5d584d2c7a1bcf984fb8a9ace6250ed94d8`
 - PTau bytes: `4720054`
+- Attestation artifact: `docs/zk-attestation.generated.json`
 
 ## Layer Transcript
 
@@ -112,8 +113,10 @@ Artifact hashes:
 ```bash
 npm run build:zk-registry
 npm run build:zk-transcript
+npm run build:zk-attestation
 npm run verify:zk-registry
 npm run verify:zk-transcript
+npm run verify:zk-attestation
 npm run verify:zk-docs
 npm run verify:zk-consistency
 npm run verify:zk-negative
