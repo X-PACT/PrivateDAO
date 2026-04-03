@@ -82,6 +82,14 @@ npm run verify:runtime-attestation
 
 Builds and verifies a machine-readable runtime summary for supported Devnet wallets, the diagnostics page, and the reviewer-visible wallet runtime surface.
 
+### Runtime Surface
+
+```bash
+npm run verify:runtime-surface
+```
+
+Checks that the live diagnostics page, supported wallet labels, runtime attestation, and PDAO/runtime anchors stay aligned in the frontend itself.
+
 ### ZK Registry
 
 ```bash

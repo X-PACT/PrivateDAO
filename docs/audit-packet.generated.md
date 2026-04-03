@@ -58,7 +58,7 @@
 - Go-live attestation: `docs/go-live-attestation.generated.json`
 - Algorithm: `sha256`
 - Manifest entries: `38`
-- Aggregate sha256: `f992d19d2cfdf9fc0ebfb3a866a234f388faa8aced10a5a9db60004b1943ec83`
+- Aggregate sha256: `4c1b91e8e017adb87cf7c41b1c4361e309aea28a343fdd7306f84cb0baacc137`
 
 ## ZK Package
 
@@ -182,6 +182,7 @@
 - `npm run verify:mainnet-readiness-report`
 - `npm run verify:deployment-attestation`
 - `npm run verify:runtime-attestation`
+- `npm run verify:runtime-surface`
 - `npm run verify:go-live-attestation`
 - `npm run verify:zk-surface`
 - `npm run verify:zk-registry`

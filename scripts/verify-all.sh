@@ -22,6 +22,9 @@ npm run verify:zk-surface >/dev/null
 echo "[verify-all] checking frontend surface"
 npm run verify:frontend-surface >/dev/null
 
+echo "[verify-all] checking runtime surface"
+npm run verify:runtime-surface >/dev/null
+
 echo "[verify-all] checking submission registry"
 npm run verify:submission-registry >/dev/null
 

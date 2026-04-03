@@ -68,6 +68,7 @@ function main() {
     "npm run verify:mainnet-readiness-report",
     "npm run verify:deployment-attestation",
     "npm run verify:runtime-attestation",
+    "npm run verify:runtime-surface",
     "npm run verify:go-live-attestation",
     "npm run verify:zk-surface",
     "npm run verify:zk-registry",

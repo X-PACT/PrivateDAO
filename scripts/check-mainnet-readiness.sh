@@ -39,6 +39,7 @@ npm run build:deployment-attestation >/dev/null
 npm run verify:deployment-attestation >/dev/null
 npm run build:runtime-attestation >/dev/null
 npm run verify:runtime-attestation >/dev/null
+npm run verify:runtime-surface >/dev/null
 npm run build:go-live-attestation >/dev/null
 npm run verify:go-live-attestation >/dev/null
 npm run build:mainnet-readiness-report >/dev/null

@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-03T20:36:07.156Z",
+  "generatedAt": "2026-04-03T20:51:48.030Z",
   "algorithm": "sha256",
   "entryCount": 38,
-  "aggregateSha256": "f992d19d2cfdf9fc0ebfb3a866a234f388faa8aced10a5a9db60004b1943ec83",
+  "aggregateSha256": "4c1b91e8e017adb87cf7c41b1c4361e309aea28a343fdd7306f84cb0baacc137",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -82,8 +82,8 @@
     },
     {
       "path": "docs/submission-registry.json",
-      "sha256": "e6f9d257b8379d58d1c5fede7a88699688ea47e8cd93aa72854da79a7c10ae05",
-      "bytes": 3751
+      "sha256": "73912d67d51d3144189a05175f1caa23ea29e46ea0bf2a53924d8382970897c1",
+      "bytes": 3789
     },
     {
       "path": "docs/independent-verification.md",
@@ -132,12 +132,12 @@
     },
     {
       "path": "docs/deployment-attestation.generated.json",
-      "sha256": "4ca944b91a509e711476b4e3b34ead547acd6cf93c1372af9be27158fcf771c8",
-      "bytes": 2551
+      "sha256": "16f21076a979605b9f997a55333e7085db9c8b696da0f37d3164b2ea844cead1",
+      "bytes": 2589
     },
     {
       "path": "docs/go-live-attestation.generated.json",
-      "sha256": "3ceb0b65848b5c34a5bc4e3e3eb6c3c6f8fc572040597973ecd58135d05eac33",
+      "sha256": "432409baa3b458920fbb43d8f42d7d0ca9b12ffb903bee49efd99bb150d1e5ca",
       "bytes": 1651
     },
     {
@@ -192,8 +192,8 @@
     },
     {
       "path": "docs/verification-gates.md",
-      "sha256": "d8274630316681e6e73349f45e1d0969127d5e1d3a046dd4b1e850fff01f962a",
-      "bytes": 5316
+      "sha256": "21e3605617d37c4f9dd362cc62202693fe0be29a52aaf5b9fc4141bf875b1f39",
+      "bytes": 5529
     }
   ]
 }

@@ -51,6 +51,7 @@
     "verify:deployment-attestation": "ts-node scripts/verify-deployment-attestation.ts",
     "verify:go-live-attestation": "ts-node scripts/verify-go-live-attestation.ts",
     "verify:runtime-attestation": "ts-node scripts/verify-runtime-attestation.ts",
+    "verify:runtime-surface": "ts-node scripts/verify-runtime-surface.ts",
     "verify:zk-consistency": "ts-node scripts/verify-zk-consistency.ts",
     "verify:zk-negative": "ts-node scripts/verify-zk-negative.ts",
     "zk:build": "bash scripts/zk/build-zk.sh",

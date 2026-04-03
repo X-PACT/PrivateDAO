@@ -73,7 +73,7 @@
   "cryptographicIntegrity": {
     "algorithm": "sha256",
     "entryCount": 38,
-    "aggregateSha256": "f992d19d2cfdf9fc0ebfb3a866a234f388faa8aced10a5a9db60004b1943ec83"
+    "aggregateSha256": "4c1b91e8e017adb87cf7c41b1c4361e309aea28a343fdd7306f84cb0baacc137"
   },
   "runtimeDocs": [
     "docs/fair-voting.md",
@@ -85,7 +85,7 @@
     "docs/runtime-attestation.generated.json",
     "docs/go-live-attestation.generated.json"
   ],
-  "gateCount": 23,
+  "gateCount": 24,
   "statuses": {
     "governanceLifecycle": "verified",
     "securityReasoning": "verified",

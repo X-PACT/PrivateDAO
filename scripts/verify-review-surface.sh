@@ -152,6 +152,9 @@ npx ts-node scripts/verify-deployment-attestation.ts >/dev/null
 echo "[review-surface] checking runtime attestation"
 npx ts-node scripts/verify-runtime-attestation.ts >/dev/null
 
+echo "[review-surface] checking runtime surface"
+npx ts-node scripts/verify-runtime-surface.ts >/dev/null
+
 echo "[review-surface] checking go-live attestation"
 npx ts-node scripts/verify-go-live-attestation.ts >/dev/null
 
