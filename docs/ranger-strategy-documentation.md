@@ -4,6 +4,8 @@
 
 PrivateDAO is the private governance and risk-control layer for a USDC-based Solana vault strategy, designed to let operators approve rebalances, risk parameter changes, and emergency actions without leaking live decision intent before execution.
 
+PrivateDAO now combines protocol hardening, zero-knowledge proof surfaces, and a published cryptographic artifact integrity layer so reviewers can validate not only the protocol logic, but also the integrity of the evidence package itself.
+
 ## Why this fits Ranger
 
 Ranger is looking for production-ready vault strategies with:

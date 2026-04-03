@@ -2576,6 +2576,36 @@ execute() → CPI
     <div class="award-detail-card reveal" style="margin-top:24px">
       <div class="award-detail-head">
         <div>
+          <div class="award-detail-title">Cryptographic Integrity</div>
+          <p class="award-detail-copy">
+            ZK proves validity. Cryptographic integrity proves the review artifacts themselves have not been altered. PrivateDAO publishes a reviewer-visible sha256 manifest for the canonical zk and proof surfaces.
+          </p>
+        </div>
+        <div class="award-pill">SHA256</div>
+      </div>
+      <div class="proposal-command-grid">
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">WHAT IS HASHED</div>
+          <div style="color:var(--text2);line-height:1.8">The published manifest covers the zk circuit, verification key, sample proof, public inputs, proof registry, devnet release manifest, live proof, submission registry, and the canonical review notes.</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">WHY IT MATTERS</div>
+          <div style="color:var(--text2);line-height:1.8">Reviewer-facing artifacts become tamper-evident. The same surface used for judging can be verified directly instead of being trusted as static prose.</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">REVIEWER-VISIBLE MANIFEST</div>
+          <div style="color:var(--text2);line-height:1.8"><a class="award-link" href="cryptographic-manifest.generated.json" target="_blank">Open the published manifest</a> and inspect the sha256 fingerprints directly.</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">HOW TO VERIFY</div>
+          <div style="color:var(--text2);line-height:1.8"><code>npm run build:cryptographic-manifest</code><br><code>npm run verify:cryptographic-manifest</code><br><code>npm run verify:all</code></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="award-detail-card reveal" style="margin-top:24px">
+      <div class="award-detail-head">
+        <div>
           <div class="award-detail-title">Security Evidence</div>
           <p class="award-detail-copy">
             Read the formal reasoning artifacts directly. These documents map real threats to real mitigations and real repository coverage.

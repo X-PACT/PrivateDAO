@@ -262,7 +262,9 @@ Primary references:
 
 ## Artifact Integrity
 
-PrivateDAO now adds a non-breaking cryptographic integrity layer on top of the zk and review surfaces.
+PrivateDAO now adds a non-breaking **Cryptographic Integrity Layer** on top of the zk and review surfaces.
+
+ZK proves validity. Cryptographic integrity proves the review artifacts themselves have not been altered.
 
 What exists today:
 
@@ -271,16 +273,24 @@ What exists today:
 - a generated manifest in `docs/cryptographic-manifest.generated.json`
 - automated verification through `npm run verify:cryptographic-manifest`
 
+Why it matters:
+
+- reviewer-facing proof becomes tamper-evident
+- zk evidence can be verified as artifacts, not only described in prose
+- the evidence package is held to a cryptographic integrity standard, not just a documentation standard
+
+How to verify:
+
+```bash
+npm run build:cryptographic-manifest
+npm run verify:cryptographic-manifest
+npm run verify:all
+```
+
 Primary references:
 
 - `docs/cryptographic-integrity.md`
 - `docs/cryptographic-manifest.generated.json`
-
-Core command:
-
-```bash
-npm run zk:all
-```
 
 ## Known Limitations
 

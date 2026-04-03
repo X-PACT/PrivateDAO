@@ -14,6 +14,7 @@ The video must communicate:
 - PrivateDAO is serious Solana governance infrastructure
 - The backend logic is implemented as on-chain Rust programs
 - The system solves real governance leakage problems
+- The project now combines protocol hardening, zero-knowledge proof surfaces, and a published cryptographic artifact integrity layer
 - The project has third-party validation through a verified 1st Place achievement
 
 ## Core Claims To Preserve
