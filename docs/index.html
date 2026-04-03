@@ -82,7 +82,7 @@ body {
   border-radius: 50%;
   pointer-events: none;
   z-index: 9998;
-  transition: transform 0.12s ease, opacity 0.12s ease;
+  transition: opacity 0.08s ease, border-color 0.08s ease;
   opacity: 0.24;
   transform: translate3d(-9999px, -9999px, 0) scale(1);
   will-change: transform;
@@ -3472,7 +3472,7 @@ execute() → CPI
 // ── Cursor ──────────────────────────────────────────────
 const cursor = document.getElementById('cursor');
 const ring   = document.getElementById('cursorRing');
-let mx=0, my=0, rx=0, ry=0;
+let mx=0, my=0;
 let cursorFrame = null;
 let cursorHover = false;
 const hasFinePointer = window.matchMedia && window.matchMedia('(pointer:fine)').matches;
@@ -3480,19 +3480,13 @@ if (hasFinePointer) {
   document.body.classList.add('custom-cursor-enabled');
 }
 function renderCursor() {
-  rx += (mx - rx) * 0.22;
-  ry += (my - ry) * 0.22;
   cursor.style.transform = `translate3d(${mx - 12}px, ${my - 12}px, 0) scale(${cursorHover ? 1.08 : 1})`;
-  ring.style.transform = `translate3d(${rx - 14}px, ${ry - 14}px, 0) scale(${cursorHover ? 1.22 : 1})`;
+  ring.style.transform = `translate3d(${mx - 14}px, ${my - 14}px, 0) scale(${cursorHover ? 1.14 : 1})`;
   ring.style.opacity = cursorHover ? '0.48' : '0.24';
-  if (Math.abs(mx - rx) > 0.1 || Math.abs(my - ry) > 0.1) {
-    cursorFrame = requestAnimationFrame(renderCursor);
-  } else {
-    cursorFrame = null;
-  }
+  cursorFrame = null;
 }
 if (hasFinePointer) {
-  document.addEventListener('mousemove', e => {
+  document.addEventListener('pointermove', e => {
     mx = e.clientX;
     my = e.clientY;
     if (!cursorFrame) cursorFrame = requestAnimationFrame(renderCursor);
