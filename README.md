@@ -27,6 +27,7 @@
 [![Threat Model](https://img.shields.io/badge/Threat%20Model-Complete-1d4ed8)](docs/threat-model.md)
 [![Replay Analysis](https://img.shields.io/badge/Replay%20Analysis-Verified-7c3aed)](docs/replay-analysis.md)
 [![Atomicity](https://img.shields.io/badge/Atomicity-Verified-15803d)](docs/failure-modes.md)
+[![ZK Overlay](https://img.shields.io/badge/ZK-Real%20Groth16%20Overlay-111827)](docs/zk-upgrade.md)
 
 PrivateDAO is a Solana governance protocol for DAOs that want private voting without giving up execution safety. Votes are committed privately, revealed later, finalized deterministically, and treasury execution stays behind an explicit timelock with recipient and mint checks.
 
@@ -217,6 +218,40 @@ Reviewer-visible coverage currently includes:
 
 The formal mapping lives in `docs/security-coverage-map.md`.
 
+## ZK Overlay
+
+PrivateDAO now includes a real zero-knowledge companion layer without changing the deployed contracts or the current frontend lifecycle.
+
+What exists today:
+
+- a real Circom circuit
+- Groth16 setup artifacts
+- witness generation
+- proof generation
+- proof verification
+
+What it proves today:
+
+- boolean vote form
+- minimum-weight eligibility
+- proposal and DAO scoped commitment binding
+- proposal-scoped nullifier binding
+
+This is an additive zk layer for the current system, not a hidden protocol rewrite.
+
+Primary references:
+
+- `docs/zk-upgrade.md`
+- `docs/zk-architecture.md`
+- `docs/zk-evidence.md`
+- `zk/circuits/private_dao_vote_overlay.circom`
+
+Core command:
+
+```bash
+npm run zk:all
+```
+
 ## Known Limitations
 
 PrivateDAO is explicit about what remains limited:
@@ -255,6 +290,9 @@ Security and review documents:
 - `docs/attack-simulation-log.md`
 - `docs/devnet-release-manifest.md`
 - `docs/proof-registry.json`
+- `docs/zk-upgrade.md`
+- `docs/zk-architecture.md`
+- `docs/zk-evidence.md`
 
 Protocol and product documents:
 
@@ -277,6 +315,7 @@ Protocol and product documents:
 - `docs/reviewer-fast-path.md`
 - `docs/use-cases.md`
 - `docs/economic-model.md`
+- `zk/circuits/private_dao_vote_overlay.circom`
 
 ## Independent Verification
 
