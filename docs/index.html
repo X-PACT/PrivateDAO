@@ -243,6 +243,7 @@ nav.scrolled {
   padding: 120px 0 80px;
   position: relative;
 }
+.hero .container { position: relative; }
 
 .award-banner {
   margin-top: 128px;
@@ -378,6 +379,15 @@ nav.scrolled {
 
 .hero-content { max-width: 760px; }
 
+.hero-badge-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+  animation: fadeUp 0.8s ease both;
+}
+
 .hero-eyebrow {
   display: inline-flex; align-items:center; gap:10px;
   padding: 7px 16px;
@@ -388,8 +398,24 @@ nav.scrolled {
   font-size: 11px;
   color: var(--cyan);
   letter-spacing: 2px;
-  margin-bottom: 40px;
+  margin-bottom: 0;
   animation: fadeUp 0.8s ease both;
+}
+
+.hero-zk-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.24), rgba(24, 164, 138, 0.38));
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  color: #f3fdff;
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  box-shadow: 0 10px 24px rgba(0, 229, 255, 0.12);
 }
 
 .hero-headline {
@@ -417,6 +443,32 @@ nav.scrolled {
   max-width: 540px;
   margin-bottom: 48px;
   animation: fadeUp 0.8s ease 0.2s both;
+}
+
+.hero-feature-line {
+  margin-top: -18px;
+  margin-bottom: 28px;
+  color: var(--text3);
+  font-size: 14px;
+  line-height: 1.8;
+  letter-spacing: 0.2px;
+  animation: fadeUp 0.8s ease 0.18s both;
+}
+
+.hero-zk-shield {
+  position: absolute;
+  top: 132px;
+  right: 12px;
+  width: 120px;
+  height: 120px;
+  opacity: 0.5;
+  pointer-events: none;
+  filter: drop-shadow(0 10px 30px rgba(0,229,255,0.12));
+}
+
+.hero-zk-shield svg {
+  width: 100%;
+  height: 100%;
 }
 
 .hero-actions {
@@ -458,6 +510,52 @@ nav.scrolled {
   position: absolute;
   bottom: 60px; left: 0; right: 0;
   animation: fadeUp 0.8s ease 0.5s both;
+}
+
+.zk-mini-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 229, 255, 0.24);
+  background: rgba(0, 229, 255, 0.1);
+  color: #effcff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.section-heading-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.zk-footnote-box {
+  max-width: 520px;
+  margin-top: 24px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  border: 1px solid rgba(0, 229, 255, 0.18);
+  background: linear-gradient(180deg, rgba(9, 21, 31, 0.92), rgba(7, 17, 27, 0.96));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.zk-footnote-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.zk-footnote-copy {
+  color: var(--text2);
+  line-height: 1.7;
+  font-size: 14px;
 }
 .stats-inner {
   display: flex; gap: 0;
@@ -1551,6 +1649,8 @@ body.judge-mode .judge-banner {
   .migration-card { grid-template-columns: 1fr; }
   .nav-links { display: none; }
   .hero-headline { font-size: 72px; }
+  .hero-zk-shield { width: 84px; height: 84px; top: 142px; right: 8px; opacity: 0.42; }
+  .hero-feature-line { margin-top: -10px; }
   .stats-inner { flex-wrap: wrap; }
   .stat-item { min-width: 45%; }
   .award-banner { margin-top: 108px; }
@@ -1873,6 +1973,7 @@ body.judge-mode .judge-banner {
         <button class="nav-link" onclick="showPage('protocol',this)">Protocol</button>
         <button class="nav-link" onclick="showPage('migrate',this)">Migrate from Realms</button>
         <button class="nav-link" onclick="showPage('security',this)">Security</button>
+        <a class="nav-link" href="zk-layer.md" target="_blank" style="text-decoration:none">ZK Layer</a>
         <button class="nav-link" onclick="showPage('awards',this)">Awards</button>
         <a class="nav-link" href="android-native.md" target="_blank" style="text-decoration:none">Android Native</a>
       </div>
@@ -2027,8 +2128,18 @@ body.judge-mode .judge-banner {
 <!-- HERO -->
 <section class="hero">
   <div class="container">
+    <div class="hero-zk-shield" aria-hidden="true">
+      <svg viewBox="0 0 120 120" fill="none">
+        <path d="M60 14 90 24v28c0 23-12.5 42.3-30 53-17.5-10.7-30-30-30-53V24l30-10Z" stroke="#00e5ff" stroke-width="4" fill="rgba(0,229,255,0.06)"/>
+        <rect x="45" y="49" width="30" height="23" rx="6" stroke="#00e5ff" stroke-width="4"/>
+        <path d="M51 49v-6c0-5 4-9 9-9s9 4 9 9v6" stroke="#00e5ff" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+    </div>
     <div class="hero-content">
-      <div class="hero-eyebrow">◈ SOLANA GRAVEYARD HACKATHON 2026</div>
+      <div class="hero-badge-row">
+        <div class="hero-eyebrow">◈ SOLANA GRAVEYARD HACKATHON 2026</div>
+        <div class="hero-zk-badge">🔒 ZK Secured</div>
+      </div>
       <h1 class="hero-headline">
         <span class="line1">VOTE</span>
         <span class="line2">WITHOUT</span>
@@ -2038,6 +2149,7 @@ body.judge-mode .judge-banner {
         A working Solana governance product built around commit-reveal voting.
         The tally stays hidden during voting, execution stays timelocked, and treasury actions get explicit recipient and mint checks.
       </p>
+      <div class="hero-feature-line">Quadratic voting · Timelocked treasury execution · Realms migration · Zero-Knowledge Proof Verified</div>
       <div class="surface-strip">
         <div class="surface-pill"><span class="surface-pill-icon">◉</span><strong>Web</strong><span>Live governance surface</span></div>
         <div class="surface-pill"><span class="surface-pill-icon">◌</span><strong>Android</strong><span>Kotlin native + MWA</span></div>
@@ -2176,6 +2288,7 @@ body.judge-mode .judge-banner {
           <p style="margin-top:10px;color:var(--text2);line-height:1.8;max-width:920px" id="proposalDetailIntro">
             This panel turns the selected proposal into a reviewer-friendly proof bundle: status, phase, timing windows, Explorer links, and the exact repo commands for the current lifecycle.
           </p>
+          <div class="zk-mini-badge" style="margin-top:14px">🔒 ZK Verified</div>
         </div>
         <div class="award-pill" id="proposalDetailPhase">Awaiting selection</div>
       </div>
@@ -2373,7 +2486,10 @@ body.judge-mode .judge-banner {
 <section class="section" style="padding-top:140px">
   <div class="container">
     <div class="section-tag reveal">PROOF CENTER</div>
-    <h2 class="section-heading reveal">Everything a judge or reviewer needs,<br>in one surface.</h2>
+    <div class="section-heading-row reveal">
+      <h2 class="section-heading" style="margin-bottom:0">Everything a judge or reviewer needs,<br>in one surface.</h2>
+      <div class="zk-mini-badge">🔒 ZK Verified</div>
+    </div>
 
     <div class="award-detail-card reveal">
       <div class="award-detail-head">
@@ -2881,6 +2997,13 @@ execute() → CPI
           <div class="proposal-detail-label">PER-LAYER REVIEW PATH</div>
           <div style="color:var(--text2);line-height:1.8"><code>npm run verify:zk-docs</code><br><code>npm run verify:zk-consistency</code><br><code>npm run verify:zk-negative</code></div>
         </div>
+      </div>
+    </div>
+
+    <div class="zk-footnote-box reveal">
+      <div class="zk-footnote-title">Zero-Knowledge Protection</div>
+      <div class="zk-footnote-copy">
+        PrivateDAO uses Groth16 zk-SNARK proofs to validate governance actions without exposing sensitive inputs.
       </div>
     </div>
 
