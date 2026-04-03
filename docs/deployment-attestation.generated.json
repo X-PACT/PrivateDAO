@@ -1,0 +1,79 @@
+{
+  "project": "PrivateDAO",
+  "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+  "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+  "deployTx": "5wGTXjAhp4jBvU4Uu6FbMVziZkrxN7B9boh98XGfueSLTtZVsAvFtiNzPLfZsKpggJUkCgu1yAXjR4bd4T2w9aU1",
+  "governanceAnchors": {
+    "dao": "Gj7NgKm1MtB2CDs11pPJDcLExrkHf1styKdge1Lgx7V4",
+    "governanceMint": "JDu2NmGsNrNTHEm7zepCwYRpD6KZ7CtiSkdCg1KFHyn1",
+    "treasury": "S2J1gNCbE8E21pL3VEX4fhz2duxidSwRd7yaV9nriFW",
+    "proposal": "8JLRaAnwZc3BXfHKEKdiaK82MyjR1VhgGRKMydqmHxd1"
+  },
+  "pdaoToken": {
+    "mint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
+    "programId": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+    "tokenAccount": "F4q77ZMJdC7eoEUw3CCR7DbKGTggyExjuMGKBEiM2ct4",
+    "supplyUi": "1000000",
+    "metadataUri": "https://x-pact.github.io/PrivateDAO/assets/pdao-token.json"
+  },
+  "readiness": {
+    "governanceLifecycle": "verified",
+    "securityReasoning": "verified",
+    "zkCompanionStack": "verified",
+    "reviewerSurface": "verified",
+    "operationsSurface": "verified",
+    "strategyEngine": "not-in-repo",
+    "livePerformance": "not-in-repo",
+    "externalAudit": "pending",
+    "mainnetRollout": "pending"
+  },
+  "verificationGates": [
+    "npm run validate:ranger-strategy -- docs/ranger-strategy-config.devnet.json",
+    "npm run verify:strategy-surface",
+    "npm run verify:live-proof",
+    "npm run verify:release-manifest",
+    "npm run verify:program-id-consistency",
+    "npm run verify:pdao-surface",
+    "npm run verify:pdao-attestation",
+    "npm run verify:pdao-live",
+    "npm run verify:review-links",
+    "npm run verify:ops-surface",
+    "npm run verify:submission-registry",
+    "npm run verify:registry-consistency",
+    "npm run verify:generated-artifacts",
+    "npm run verify:cryptographic-manifest",
+    "npm run verify:mainnet-readiness-report",
+    "npm run verify:deployment-attestation",
+    "npm run verify:runtime-attestation",
+    "npm run verify:runtime-surface",
+    "npm run verify:go-live-attestation",
+    "npm run verify:zk-surface",
+    "npm run verify:zk-registry",
+    "npm run verify:zk-transcript",
+    "npm run verify:zk-attestation",
+    "npm run verify:zk-docs",
+    "npm run verify:zk-consistency",
+    "npm run verify:zk-negative",
+    "npm run verify:review-surface",
+    "npm run verify:all"
+  ],
+  "gateCount": 28,
+  "packageCounts": {
+    "strategy": 6,
+    "security": 6,
+    "zk": 13,
+    "proof": 14,
+    "operations": 12
+  },
+  "zk": {
+    "stackVersion": 1,
+    "entryCount": 3
+  },
+  "runtimeDocs": [
+    "docs/wallet-runtime.md",
+    "docs/fair-voting.md",
+    "docs/mainnet-readiness.generated.md",
+    "docs/go-live-criteria.md",
+    "docs/operational-drillbook.md"
+  ]
+}

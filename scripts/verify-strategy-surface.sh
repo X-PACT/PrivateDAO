@@ -4,6 +4,16 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
+search_placeholders() {
+  local pattern="$1"
+  shift
+  if command -v rg >/dev/null 2>&1; then
+    rg -n "$pattern" "$@"
+  else
+    grep -nE "$pattern" "$@"
+  fi
+}
+
 echo "[strategy-surface] verifying strategy package"
 
 required_files=(
@@ -25,7 +35,7 @@ for file in "${required_files[@]}"; do
   }
 done
 
-if rg -n "REPLACE_WITH|REPLACE_ME|TODO|TBD|coming soon|not implemented" \
+if search_placeholders "REPLACE_WITH|REPLACE_ME|TODO|TBD|coming soon|not implemented" \
   docs/ranger-strategy-documentation.md \
   docs/strategy-blueprint.md \
   docs/strategy-adaptor-interface.md \

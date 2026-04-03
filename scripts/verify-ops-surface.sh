@@ -4,6 +4,16 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
+search_placeholders() {
+  local pattern="$1"
+  shift
+  if command -v rg >/dev/null 2>&1; then
+    rg -n "$pattern" "$@"
+  else
+    grep -nE "$pattern" "$@"
+  fi
+}
+
 echo "[ops-surface] verifying production and audit surfaces"
 
 required_files=(
@@ -24,7 +34,7 @@ for file in "${required_files[@]}"; do
   }
 done
 
-if rg -n "REPLACE_WITH|REPLACE_ME|TODO|TBD|coming soon|not implemented" \
+if search_placeholders "REPLACE_WITH|REPLACE_ME|TODO|TBD|coming soon|not implemented" \
   docs/mainnet-readiness.md \
   docs/production-operations.md \
   docs/monitoring-alerts.md \

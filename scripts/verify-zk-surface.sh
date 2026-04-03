@@ -4,6 +4,16 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
+search_placeholders() {
+  local pattern="$1"
+  shift
+  if command -v rg >/dev/null 2>&1; then
+    rg -n "$pattern" "$@"
+  else
+    grep -nE "$pattern" "$@"
+  fi
+}
+
 echo "[verify-zk-surface] checking zk docs and artifacts"
 
 required_files=(
@@ -48,7 +58,7 @@ for file in "${required_files[@]}"; do
 done
 
 echo "[verify-zk-surface] checking placeholder text"
-if rg -n "REPLACE_WITH|REPLACE_ME|TODO|TBD|coming soon|not implemented" \
+if search_placeholders "REPLACE_WITH|REPLACE_ME|TODO|TBD|coming soon|not implemented" \
   docs/zk-layer.md \
   docs/zk-upgrade.md \
   docs/zk-stack.md \

@@ -1,0 +1,59 @@
+{
+  "project": "PrivateDAO",
+  "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+  "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+  "deployTx": "5wGTXjAhp4jBvU4Uu6FbMVziZkrxN7B9boh98XGfueSLTtZVsAvFtiNzPLfZsKpggJUkCgu1yAXjR4bd4T2w9aU1",
+  "decision": "blocked-pending-external-steps",
+  "verifiedInsideRepo": [
+    "governanceLifecycle",
+    "securityReasoning",
+    "zkCompanionStack",
+    "reviewerSurface",
+    "operationsSurface"
+  ],
+  "blockers": [
+    {
+      "name": "strategyEngine",
+      "status": "not-in-repo"
+    },
+    {
+      "name": "livePerformance",
+      "status": "not-in-repo"
+    },
+    {
+      "name": "externalAudit",
+      "status": "pending"
+    },
+    {
+      "name": "mainnetRollout",
+      "status": "pending"
+    }
+  ],
+  "mandatoryGates": [
+    "npm run verify:all",
+    "npm run verify:mainnet-readiness-report",
+    "npm run verify:deployment-attestation",
+    "npm run verify:go-live-attestation"
+  ],
+  "criteriaDocs": [
+    "docs/go-live-criteria.md",
+    "docs/operational-drillbook.md",
+    "docs/mainnet-readiness.md",
+    "docs/mainnet-readiness.generated.md",
+    "docs/deployment-attestation.generated.json"
+  ],
+  "runtimeDocs": [
+    "docs/wallet-runtime.md",
+    "docs/fair-voting.md",
+    "docs/mainnet-readiness.generated.md",
+    "docs/go-live-criteria.md",
+    "docs/operational-drillbook.md"
+  ],
+  "deploymentGateCount": 28,
+  "pdaoToken": {
+    "mint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
+    "programId": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+    "tokenAccount": "F4q77ZMJdC7eoEUw3CCR7DbKGTggyExjuMGKBEiM2ct4",
+    "supplyUi": "1000000"
+  }
+}

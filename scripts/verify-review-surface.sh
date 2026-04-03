@@ -4,6 +4,16 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
+search_placeholders() {
+  local pattern="$1"
+  shift
+  if command -v rg >/dev/null 2>&1; then
+    rg -n "$pattern" "$@"
+  else
+    grep -nE "$pattern" "$@"
+  fi
+}
+
 echo "[review-surface] verifying reviewer-facing evidence"
 
 required_files=(
@@ -77,7 +87,7 @@ for file in "${required_files[@]}"; do
 done
 
 echo "[review-surface] checking for reviewer-facing placeholder strings"
-if rg -n "REPLACE_WITH|REPLACE_ME|TODO|TBD|coming soon|not implemented" \
+if search_placeholders "REPLACE_WITH|REPLACE_ME|TODO|TBD|coming soon|not implemented" \
   README.md \
   docs/security-review.md \
   docs/threat-model.md \

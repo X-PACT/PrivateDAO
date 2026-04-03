@@ -28,12 +28,6 @@ npm run verify:program-id-consistency >/dev/null
 echo "[verify-all] checking PDAO token surface"
 npm run verify:pdao-surface >/dev/null
 
-echo "[verify-all] checking submission registry"
-npm run verify:submission-registry >/dev/null
-
-echo "[verify-all] checking registry consistency"
-npm run verify:registry-consistency >/dev/null
-
 echo "[verify-all] rebuilding deployment attestation"
 npm run build:deployment-attestation >/dev/null
 
@@ -57,6 +51,12 @@ npm run build:review-attestation >/dev/null
 
 echo "[verify-all] rebuilding mainnet readiness report"
 npm run build:mainnet-readiness-report >/dev/null
+
+echo "[verify-all] checking submission registry"
+npm run verify:submission-registry >/dev/null
+
+echo "[verify-all] checking registry consistency"
+npm run verify:registry-consistency >/dev/null
 
 echo "[verify-all] checking generated artifacts"
 npm run verify:generated-artifacts >/dev/null

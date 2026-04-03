@@ -14,6 +14,9 @@ wallets/
 !docs/review-attestation.generated.json
 !docs/cryptographic-manifest.generated.json
 !docs/pdao-attestation.generated.json
+!docs/deployment-attestation.generated.json
+!docs/runtime-attestation.generated.json
+!docs/go-live-attestation.generated.json
 !docs/assets/pdao-token.json
 !zk/inputs/*.json
 !zk/proofs/*.json
