@@ -51,6 +51,9 @@ required_files=(
   "docs/cryptographic-manifest.generated.json"
   "docs/mainnet-readiness.generated.md"
   "docs/deployment-attestation.generated.json"
+  "docs/go-live-criteria.md"
+  "docs/operational-drillbook.md"
+  "docs/go-live-attestation.generated.json"
   "docs/ranger-submission-bundle.generated.md"
   "docs/ranger-strategy-config.devnet.json"
   "docs/strategy-operations.md"
@@ -96,6 +99,8 @@ if rg -n "REPLACE_WITH|REPLACE_ME|TODO|TBD|coming soon|not implemented" \
   docs/pdao-token.md \
   docs/fair-voting.md \
   docs/wallet-runtime.md \
+  docs/go-live-criteria.md \
+  docs/operational-drillbook.md \
   docs/live-proof.md \
   docs/mainnet-readiness.md \
   docs/ranger-strategy-documentation.md \
@@ -142,6 +147,9 @@ npx ts-node scripts/verify-mainnet-readiness-report.ts >/dev/null
 
 echo "[review-surface] checking deployment attestation"
 npx ts-node scripts/verify-deployment-attestation.ts >/dev/null
+
+echo "[review-surface] checking go-live attestation"
+npx ts-node scripts/verify-go-live-attestation.ts >/dev/null
 
 echo "[review-surface] checking review-link consistency"
 npx ts-node scripts/verify-review-links.ts >/dev/null

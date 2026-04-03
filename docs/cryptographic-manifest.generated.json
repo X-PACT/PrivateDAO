@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-03T19:40:13.099Z",
+  "generatedAt": "2026-04-03T20:18:20.860Z",
   "algorithm": "sha256",
-  "entryCount": 35,
-  "aggregateSha256": "e55d6095c5ab211241546543e5258ff8a0450b54b05eb8d7b8fc16f603d535a1",
+  "entryCount": 37,
+  "aggregateSha256": "6770a8c5fa576bc52afa5a6d4d44ae9a17df2f4b250e2553899f9f73279f27e3",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -82,8 +82,8 @@
     },
     {
       "path": "docs/submission-registry.json",
-      "sha256": "79ebec117bc100eb70da77fb97acae7af3d6505875fb2e32aff4c2e330fd14c5",
-      "bytes": 3496
+      "sha256": "0523ac2af3247fe6ffe50403b58bc5a73dc274804b93849ec16a12c4cfa45e25",
+      "bytes": 3660
     },
     {
       "path": "docs/independent-verification.md",
@@ -111,19 +111,29 @@
       "bytes": 1887
     },
     {
+      "path": "docs/go-live-criteria.md",
+      "sha256": "c0ef53e4a9ffd2b2d8eeebff49f74188d0a7d069853d24e1f3ad442a0601d26a",
+      "bytes": 2267
+    },
+    {
+      "path": "docs/operational-drillbook.md",
+      "sha256": "fe4e5a5724a9d1259ca09af897ec9a9bed774521a828f5c94564df993c3a4588",
+      "bytes": 2452
+    },
+    {
       "path": "docs/security-review.md",
       "sha256": "fe5a80602457fbb50f00f813dec7c4344681b27289189634a353810e06e83cf2",
       "bytes": 9163
     },
     {
-      "path": "docs/mainnet-readiness.generated.md",
-      "sha256": "672946bf28e874d7a36567e6481ba1ee9a1c79f8b8b63456a0b154750ba95188",
-      "bytes": 2937
+      "path": "docs/deployment-attestation.generated.json",
+      "sha256": "da4fc386e8fbe9d55231e7c454eb074aaee1357df3e35072f3aba1ac8dc7b5d9",
+      "bytes": 2509
     },
     {
-      "path": "docs/deployment-attestation.generated.json",
-      "sha256": "9cbf288223efd61f41f16527969751e97cb45987f70e2c4d0660f61b5bd18b6a",
-      "bytes": 2398
+      "path": "docs/go-live-attestation.generated.json",
+      "sha256": "a94643f3cad85260d4eafa390b86675b038b3ac67aa9bac141b5969a15c3b678",
+      "bytes": 1651
     },
     {
       "path": "docs/zk-layer.md",
@@ -177,8 +187,8 @@
     },
     {
       "path": "docs/verification-gates.md",
-      "sha256": "837493a2ec9c7a928e5c5e693132616cb373667caf758e102284b2e356b8c29b",
-      "bytes": 4779
+      "sha256": "3dc26d51b95932d50fac0a8ffc21b0052f6c3998218a529571d677a8958b0ba9",
+      "bytes": 5052
     }
   ]
 }

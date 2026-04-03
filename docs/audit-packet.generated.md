@@ -55,9 +55,10 @@
 - Cryptographic manifest: `docs/cryptographic-manifest.generated.json`
 - Mainnet readiness report: `docs/mainnet-readiness.generated.md`
 - Deployment attestation: `docs/deployment-attestation.generated.json`
+- Go-live attestation: `docs/go-live-attestation.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `35`
-- Aggregate sha256: `e55d6095c5ab211241546543e5258ff8a0450b54b05eb8d7b8fc16f603d535a1`
+- Manifest entries: `37`
+- Aggregate sha256: `6770a8c5fa576bc52afa5a6d4d44ae9a17df2f4b250e2553899f9f73279f27e3`
 
 ## ZK Package
 
@@ -137,6 +138,7 @@
 - `docs/fair-voting.md`
 - `docs/wallet-runtime.md`
 - `docs/deployment-attestation.generated.json`
+- `docs/go-live-attestation.generated.json`
 
 ## Runtime Package
 
@@ -144,11 +146,16 @@
 - `docs/wallet-runtime.md`
 - `docs/mainnet-readiness.generated.md`
 - `docs/deployment-attestation.generated.json`
+- `docs/go-live-criteria.md`
+- `docs/operational-drillbook.md`
+- `docs/go-live-attestation.generated.json`
 
 ## Operations Package
 
 - `docs/mainnet-readiness.md`
 - `docs/mainnet-readiness.generated.md`
+- `docs/go-live-criteria.md`
+- `docs/operational-drillbook.md`
 - `docs/production-operations.md`
 - `docs/monitoring-alerts.md`
 - `docs/incident-response.md`
@@ -172,6 +179,7 @@
 - `npm run verify:cryptographic-manifest`
 - `npm run verify:mainnet-readiness-report`
 - `npm run verify:deployment-attestation`
+- `npm run verify:go-live-attestation`
 - `npm run verify:zk-surface`
 - `npm run verify:zk-registry`
 - `npm run verify:zk-transcript`

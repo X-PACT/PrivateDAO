@@ -82,6 +82,9 @@ ${pending.map((item) => `- \`${item.name}\` -> \`${item.status}\``).join("\n")}
 - ZK package count: \`${attestation.packageCounts.zk}\`
 - Proof package count: \`${attestation.packageCounts.proof}\`
 - Operations package count: \`${attestation.packageCounts.operations}\`
+- Go-live criteria: \`docs/go-live-criteria.md\`
+- Operational drillbook: \`docs/operational-drillbook.md\`
+- Go-live attestation: \`docs/go-live-attestation.generated.json\`
 ${attestation.zk ? `- ZK stack version: \`${attestation.zk.stackVersion}\`\n- ZK layer count: \`${attestation.zk.entryCount}\`` : ""}
 ${attestation.cryptographicIntegrity ? `- Integrity algorithm: \`${attestation.cryptographicIntegrity.algorithm}\`\n- Integrity entries: \`${attestation.cryptographicIntegrity.entryCount}\`\n- Integrity aggregate sha256: \`${attestation.cryptographicIntegrity.aggregateSha256}\`` : ""}
 
@@ -107,8 +110,10 @@ What still requires real-world completion before mainnet should be claimed:
 \`\`\`bash
 npm run build:mainnet-readiness-report
 npm run build:deployment-attestation
+npm run build:go-live-attestation
 npm run verify:mainnet-readiness-report
 npm run verify:deployment-attestation
+npm run verify:go-live-attestation
 npm run verify:all
 bash scripts/check-mainnet-readiness.sh
 \`\`\`

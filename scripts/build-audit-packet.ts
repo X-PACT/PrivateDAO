@@ -118,6 +118,7 @@ ${Object.entries(proof.transactions)
 - Cryptographic manifest: \`docs/cryptographic-manifest.generated.json\`
 - Mainnet readiness report: \`docs/mainnet-readiness.generated.md\`
 - Deployment attestation: \`docs/deployment-attestation.generated.json\`
+- Go-live attestation: \`docs/go-live-attestation.generated.json\`
 - Algorithm: \`${cryptographicManifest.algorithm}\`
 - Manifest entries: \`${cryptographicManifest.entryCount}\`
 - Aggregate sha256: \`${cryptographicManifest.aggregateSha256}\`
@@ -179,6 +180,9 @@ ${submission.packages.proof.map((entry) => `- \`${entry}\``).join("\n")}
 - \`docs/wallet-runtime.md\`
 - \`docs/mainnet-readiness.generated.md\`
 - \`docs/deployment-attestation.generated.json\`
+- \`docs/go-live-criteria.md\`
+- \`docs/operational-drillbook.md\`
+- \`docs/go-live-attestation.generated.json\`
 
 ## Operations Package
 

@@ -82,6 +82,8 @@ function main() {
     "docs/wallet-runtime.md",
     "docs/fair-voting.md",
     "docs/mainnet-readiness.generated.md",
+    "docs/go-live-criteria.md",
+    "docs/operational-drillbook.md",
   ]) {
     assert(attestation.runtimeDocs.includes(doc), `deployment attestation is missing runtime doc: ${doc}`);
   }

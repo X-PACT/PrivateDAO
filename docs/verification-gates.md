@@ -64,6 +64,15 @@ npm run verify:deployment-attestation
 
 Builds and verifies a machine-readable deployment attestation that binds the canonical program, governance anchors, token surface, readiness status, and verification gates into one review artifact.
 
+### Go-Live Attestation
+
+```bash
+npm run build:go-live-attestation
+npm run verify:go-live-attestation
+```
+
+Builds and verifies a machine-readable go-live decision artifact that makes the current mainnet block conditions explicit instead of leaving them implicit in prose.
+
 ### ZK Registry
 
 ```bash

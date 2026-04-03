@@ -142,6 +142,8 @@ Quick links:
 - PDAO token surface: `docs/pdao-token.md`
 - Fair voting model: `docs/fair-voting.md`
 - Wallet runtime compatibility: `docs/wallet-runtime.md`
+- Go-live criteria: `docs/go-live-criteria.md`
+- Operational drillbook: `docs/operational-drillbook.md`
 - Awards page: `docs/awards.md`
 - Strategy documentation: `https://us04docs.zoom.us/doc/Zd34HEaHSKyZGRxBcqxXQg`
 - Repo strategy note: `docs/strategy.md`
@@ -181,6 +183,7 @@ Quick links:
 - Mainnet readiness note: `docs/mainnet-readiness.md`
 - Mainnet readiness report: `docs/mainnet-readiness.generated.md`
 - Deployment attestation: `docs/deployment-attestation.generated.json`
+- Go-live attestation: `docs/go-live-attestation.generated.json`
 - Production operations: `docs/production-operations.md`
 - Monitoring and alerts: `docs/monitoring-alerts.md`
 - Incident response: `docs/incident-response.md`

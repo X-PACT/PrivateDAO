@@ -28,11 +28,11 @@ npm run verify:submission-registry >/dev/null
 echo "[verify-all] checking registry consistency"
 npm run verify:registry-consistency >/dev/null
 
-echo "[verify-all] rebuilding mainnet readiness report"
-npm run build:mainnet-readiness-report >/dev/null
-
 echo "[verify-all] rebuilding deployment attestation"
 npm run build:deployment-attestation >/dev/null
+
+echo "[verify-all] rebuilding go-live attestation"
+npm run build:go-live-attestation >/dev/null
 
 echo "[verify-all] rebuilding cryptographic manifest"
 npm run build:cryptographic-manifest >/dev/null
@@ -42,6 +42,9 @@ npm run build:audit-packet >/dev/null
 
 echo "[verify-all] rebuilding review attestation"
 npm run build:review-attestation >/dev/null
+
+echo "[verify-all] rebuilding mainnet readiness report"
+npm run build:mainnet-readiness-report >/dev/null
 
 echo "[verify-all] checking generated artifacts"
 npm run verify:generated-artifacts >/dev/null
@@ -57,6 +60,9 @@ npm run verify:mainnet-readiness-report >/dev/null
 
 echo "[verify-all] checking deployment attestation"
 npm run verify:deployment-attestation >/dev/null
+
+echo "[verify-all] checking go-live attestation"
+npm run verify:go-live-attestation >/dev/null
 
 echo "[verify-all] checking review links"
 npm run verify:review-links >/dev/null

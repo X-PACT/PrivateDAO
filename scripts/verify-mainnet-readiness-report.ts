@@ -40,8 +40,13 @@ function main() {
     "runtime wallet QA",
     "npm run build:mainnet-readiness-report",
     "npm run build:deployment-attestation",
+    "npm run build:go-live-attestation",
     "npm run verify:mainnet-readiness-report",
     "npm run verify:deployment-attestation",
+    "npm run verify:go-live-attestation",
+    "docs/go-live-criteria.md",
+    "docs/operational-drillbook.md",
+    "docs/go-live-attestation.generated.json",
     "npm run verify:all",
     "bash scripts/check-mainnet-readiness.sh",
   ]) {

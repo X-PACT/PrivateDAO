@@ -37,8 +37,8 @@
     "strategy": 6,
     "security": 6,
     "zk": 13,
-    "proof": 10,
-    "operations": 10
+    "proof": 11,
+    "operations": 12
   },
   "zk": {
     "stackVersion": 1,
@@ -72,16 +72,19 @@
   },
   "cryptographicIntegrity": {
     "algorithm": "sha256",
-    "entryCount": 35,
-    "aggregateSha256": "e55d6095c5ab211241546543e5258ff8a0450b54b05eb8d7b8fc16f603d535a1"
+    "entryCount": 37,
+    "aggregateSha256": "6770a8c5fa576bc52afa5a6d4d44ae9a17df2f4b250e2553899f9f73279f27e3"
   },
   "runtimeDocs": [
     "docs/fair-voting.md",
     "docs/wallet-runtime.md",
     "docs/mainnet-readiness.generated.md",
-    "docs/deployment-attestation.generated.json"
+    "docs/deployment-attestation.generated.json",
+    "docs/go-live-criteria.md",
+    "docs/operational-drillbook.md",
+    "docs/go-live-attestation.generated.json"
   ],
-  "gateCount": 21,
+  "gateCount": 22,
   "statuses": {
     "governanceLifecycle": "verified",
     "securityReasoning": "verified",

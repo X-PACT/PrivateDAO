@@ -10,6 +10,7 @@ function main() {
   const zkAttestationPath = path.resolve("docs/zk-attestation.generated.json");
   const mainnetReadinessReportPath = path.resolve("docs/mainnet-readiness.generated.md");
   const deploymentAttestationPath = path.resolve("docs/deployment-attestation.generated.json");
+  const goLiveAttestationPath = path.resolve("docs/go-live-attestation.generated.json");
 
   if (!fs.existsSync(auditPacketPath)) {
     throw new Error("missing generated audit packet");
@@ -34,6 +35,9 @@ function main() {
   }
   if (!fs.existsSync(deploymentAttestationPath)) {
     throw new Error("missing generated deployment attestation");
+  }
+  if (!fs.existsSync(goLiveAttestationPath)) {
+    throw new Error("missing generated go-live attestation");
   }
 
   const auditPacket = fs.readFileSync(auditPacketPath, "utf8");
@@ -86,6 +90,15 @@ function main() {
     verificationWallet: string;
     gateCount: number;
     runtimeDocs: string[];
+  };
+  const goLiveAttestation = JSON.parse(fs.readFileSync(goLiveAttestationPath, "utf8")) as {
+    project: string;
+    programId: string;
+    verificationWallet: string;
+    decision: string;
+    criteriaDocs: string[];
+    runtimeDocs: string[];
+    blockers: Array<{ name: string; status: string }>;
   };
   const zkAttestation = JSON.parse(fs.readFileSync(zkAttestationPath, "utf8")) as {
     project: string;
@@ -166,6 +179,9 @@ function main() {
   if (!attestation.runtimeDocs || !attestation.runtimeDocs.includes("docs/wallet-runtime.md")) {
     throw new Error("generated attestation runtime docs are missing");
   }
+  if (!attestation.runtimeDocs.includes("docs/go-live-attestation.generated.json")) {
+    throw new Error("generated attestation is missing the go-live attestation doc");
+  }
 
   if (zkRegistry.project !== "PrivateDAO") {
     throw new Error("generated zk registry project mismatch");
@@ -197,6 +213,16 @@ function main() {
     throw new Error("generated attestation cryptographic aggregate mismatch");
   }
 
+  for (const manifestFile of [
+    "docs/go-live-criteria.md",
+    "docs/operational-drillbook.md",
+    "docs/go-live-attestation.generated.json",
+  ]) {
+    if (!cryptographicManifest.files.some((entry) => entry.path === manifestFile)) {
+      throw new Error(`generated cryptographic manifest is missing ${manifestFile}`);
+    }
+  }
+
   for (const [pkg, count] of Object.entries(attestation.packageCounts)) {
     if (count <= 0) {
       throw new Error(`generated attestation package count is invalid for ${pkg}`);
@@ -222,6 +248,9 @@ function main() {
   if (!auditPacket.includes("docs/mainnet-readiness.generated.md")) {
     throw new Error("generated audit packet is missing the mainnet readiness report reference");
   }
+  if (!auditPacket.includes("docs/go-live-attestation.generated.json")) {
+    throw new Error("generated audit packet is missing the go-live attestation reference");
+  }
 
   if (!zkTranscript.includes("# ZK Transcript")) {
     throw new Error("generated zk transcript content is invalid");
@@ -246,6 +275,37 @@ function main() {
   if (!deploymentAttestation.runtimeDocs.includes("docs/wallet-runtime.md")) {
     throw new Error("generated deployment attestation is missing wallet runtime docs");
   }
+  if (!deploymentAttestation.runtimeDocs.includes("docs/go-live-criteria.md")) {
+    throw new Error("generated deployment attestation is missing go-live criteria docs");
+  }
+
+  if (goLiveAttestation.project !== "PrivateDAO") {
+    throw new Error("generated go-live attestation project mismatch");
+  }
+
+  if (goLiveAttestation.programId !== "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx") {
+    throw new Error("generated go-live attestation program mismatch");
+  }
+
+  if (goLiveAttestation.verificationWallet !== "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD") {
+    throw new Error("generated go-live attestation verification wallet mismatch");
+  }
+
+  if (goLiveAttestation.decision !== "blocked-pending-external-steps") {
+    throw new Error("generated go-live attestation decision is unexpectedly weak");
+  }
+
+  if (!goLiveAttestation.criteriaDocs.includes("docs/go-live-criteria.md")) {
+    throw new Error("generated go-live attestation is missing go-live criteria docs");
+  }
+
+  if (!goLiveAttestation.runtimeDocs.includes("docs/wallet-runtime.md")) {
+    throw new Error("generated go-live attestation is missing wallet runtime docs");
+  }
+
+  if (!goLiveAttestation.blockers.some((entry) => entry.name === "externalAudit" && entry.status === "pending")) {
+    throw new Error("generated go-live attestation is missing the external-audit blocker");
+  }
 
   if (zkAttestation.project !== "PrivateDAO") {
     throw new Error("generated zk attestation project mismatch");
@@ -269,10 +329,6 @@ function main() {
 
   if (!cryptographicManifest.files.some((entry) => entry.path === "docs/zk-attestation.generated.json")) {
     throw new Error("generated cryptographic manifest is missing the zk attestation");
-  }
-
-  if (!cryptographicManifest.files.some((entry) => entry.path === "docs/mainnet-readiness.generated.md")) {
-    throw new Error("generated cryptographic manifest is missing the mainnet readiness report");
   }
 
   if (!cryptographicManifest.files.some((entry) => entry.path === "docs/deployment-attestation.generated.json")) {
