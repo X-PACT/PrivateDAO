@@ -28,6 +28,9 @@ npm run verify:submission-registry >/dev/null
 echo "[verify-all] checking registry consistency"
 npm run verify:registry-consistency >/dev/null
 
+echo "[verify-all] rebuilding mainnet readiness report"
+npm run build:mainnet-readiness-report >/dev/null
+
 echo "[verify-all] rebuilding cryptographic manifest"
 npm run build:cryptographic-manifest >/dev/null
 
@@ -45,6 +48,9 @@ npm run verify:cryptographic-manifest >/dev/null
 
 echo "[verify-all] checking release manifest"
 npm run verify:release-manifest >/dev/null
+
+echo "[verify-all] checking mainnet readiness report"
+npm run verify:mainnet-readiness-report >/dev/null
 
 echo "[verify-all] checking review links"
 npm run verify:review-links >/dev/null

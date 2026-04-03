@@ -53,9 +53,10 @@
 
 - Integrity note: `docs/cryptographic-integrity.md`
 - Cryptographic manifest: `docs/cryptographic-manifest.generated.json`
+- Mainnet readiness report: `docs/mainnet-readiness.generated.md`
 - Algorithm: `sha256`
-- Manifest entries: `31`
-- Aggregate sha256: `2db14e12714d6f82842170fbc71bc2e70e957bd2868962a7dd13d2c1db51852d`
+- Manifest entries: `32`
+- Aggregate sha256: `7cb8ac068da0d6be2fc5aaed3ea856c7dac232b9f305dacd8955ff7ab1db5cf7`
 
 ## ZK Package
 
@@ -136,6 +137,7 @@
 ## Operations Package
 
 - `docs/mainnet-readiness.md`
+- `docs/mainnet-readiness.generated.md`
 - `docs/production-operations.md`
 - `docs/monitoring-alerts.md`
 - `docs/incident-response.md`
@@ -157,6 +159,7 @@
 - `npm run verify:registry-consistency`
 - `npm run verify:generated-artifacts`
 - `npm run verify:cryptographic-manifest`
+- `npm run verify:mainnet-readiness-report`
 - `npm run verify:zk-surface`
 - `npm run verify:zk-registry`
 - `npm run verify:zk-transcript`

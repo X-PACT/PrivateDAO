@@ -29,6 +29,7 @@ const MANIFEST_FILES = [
   "docs/token.md",
   "docs/pdao-token.md",
   "docs/security-review.md",
+  "docs/mainnet-readiness.generated.md",
   "docs/zk-layer.md",
   "docs/zk-stack.md",
   "docs/zk-threat-extension.md",

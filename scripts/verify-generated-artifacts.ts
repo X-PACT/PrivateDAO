@@ -8,6 +8,7 @@ function main() {
   const zkRegistryPath = path.resolve("docs/zk-registry.generated.json");
   const zkTranscriptPath = path.resolve("docs/zk-transcript.generated.md");
   const zkAttestationPath = path.resolve("docs/zk-attestation.generated.json");
+  const mainnetReadinessReportPath = path.resolve("docs/mainnet-readiness.generated.md");
 
   if (!fs.existsSync(auditPacketPath)) {
     throw new Error("missing generated audit packet");
@@ -26,6 +27,9 @@ function main() {
   }
   if (!fs.existsSync(zkAttestationPath)) {
     throw new Error("missing generated zk attestation");
+  }
+  if (!fs.existsSync(mainnetReadinessReportPath)) {
+    throw new Error("missing generated mainnet readiness report");
   }
 
   const auditPacket = fs.readFileSync(auditPacketPath, "utf8");
@@ -70,6 +74,7 @@ function main() {
     entries: Array<{ circuit: string; layer: string; publicSignalCount: number }>;
   };
   const zkTranscript = fs.readFileSync(zkTranscriptPath, "utf8");
+  const mainnetReadinessReport = fs.readFileSync(mainnetReadinessReportPath, "utf8");
   const zkAttestation = JSON.parse(fs.readFileSync(zkAttestationPath, "utf8")) as {
     project: string;
     zkStackVersion: number;
@@ -198,8 +203,16 @@ function main() {
     throw new Error("generated audit packet is missing the ZK review command section");
   }
 
+  if (!auditPacket.includes("docs/mainnet-readiness.generated.md")) {
+    throw new Error("generated audit packet is missing the mainnet readiness report reference");
+  }
+
   if (!zkTranscript.includes("# ZK Transcript")) {
     throw new Error("generated zk transcript content is invalid");
+  }
+
+  if (!mainnetReadinessReport.includes("# Mainnet Readiness Report")) {
+    throw new Error("generated mainnet readiness report content is invalid");
   }
 
   if (zkAttestation.project !== "PrivateDAO") {
@@ -224,6 +237,10 @@ function main() {
 
   if (!cryptographicManifest.files.some((entry) => entry.path === "docs/zk-attestation.generated.json")) {
     throw new Error("generated cryptographic manifest is missing the zk attestation");
+  }
+
+  if (!cryptographicManifest.files.some((entry) => entry.path === "docs/mainnet-readiness.generated.md")) {
+    throw new Error("generated cryptographic manifest is missing the mainnet readiness report");
   }
 
   console.log("Generated artifact verification: PASS");

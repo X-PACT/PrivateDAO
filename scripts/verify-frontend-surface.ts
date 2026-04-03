@@ -74,6 +74,16 @@ function main() {
     "Open Raw File",
     "openDocument('zk-layer.md','ZK Layer',this)",
     "openDocument('android-native.md','Android Native',this)",
+    "page-diagnostics",
+    "Wallet Diagnostics",
+    "updateDiagnostics()",
+    "copyDiagnosticsSnapshot",
+    "diagSnapshotOutput",
+    "mainnet-readiness.generated.md",
+    "RPC HEALTH",
+    "SUPPORTED PROVIDERS",
+    "BROWSER CAPABILITIES",
+    "LIVE RUNTIME",
   ];
 
   for (const fragment of requiredFragments) {

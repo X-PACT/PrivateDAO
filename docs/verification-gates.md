@@ -46,6 +46,15 @@ npm run verify:cryptographic-manifest
 
 Checks that the sha256 manifest covering zk artifacts, live-proof anchors, and generated review materials still matches the canonical files on disk.
 
+### Mainnet Readiness Report
+
+```bash
+npm run build:mainnet-readiness-report
+npm run verify:mainnet-readiness-report
+```
+
+Builds and verifies the generated readiness report that summarizes what is already verified inside the repository and what still remains external before any production cutover should be claimed.
+
 ### ZK Registry
 
 ```bash

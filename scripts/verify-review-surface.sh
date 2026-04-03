@@ -47,6 +47,7 @@ required_files=(
   "docs/review-attestation.generated.json"
   "docs/cryptographic-integrity.md"
   "docs/cryptographic-manifest.generated.json"
+  "docs/mainnet-readiness.generated.md"
   "docs/ranger-submission-bundle.generated.md"
   "docs/ranger-strategy-config.devnet.json"
   "docs/strategy-operations.md"
@@ -130,6 +131,9 @@ npx ts-node scripts/verify-cryptographic-manifest.ts >/dev/null
 
 echo "[review-surface] checking release manifest consistency"
 npx ts-node scripts/verify-release-manifest.ts >/dev/null
+
+echo "[review-surface] checking mainnet readiness report"
+npx ts-node scripts/verify-mainnet-readiness-report.ts >/dev/null
 
 echo "[review-surface] checking review-link consistency"
 npx ts-node scripts/verify-review-links.ts >/dev/null

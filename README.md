@@ -137,6 +137,7 @@ Quick links:
 - Live frontend: `https://x-pact.github.io/PrivateDAO/`
 - Proof Center: `https://x-pact.github.io/PrivateDAO/?page=proof`
 - Judge Mode: `https://x-pact.github.io/PrivateDAO/?page=proof&judge=1`
+- Wallet diagnostics: `https://x-pact.github.io/PrivateDAO/?page=diagnostics`
 - Android native guide: `docs/android-native.md`
 - PDAO token surface: `docs/pdao-token.md`
 - Awards page: `docs/awards.md`
@@ -176,6 +177,7 @@ Quick links:
 - Judge technical audit note: `docs/judge-technical-audit.md`
 - Security review surface: `docs/security-review.md`
 - Mainnet readiness note: `docs/mainnet-readiness.md`
+- Mainnet readiness report: `docs/mainnet-readiness.generated.md`
 - Production operations: `docs/production-operations.md`
 - Monitoring and alerts: `docs/monitoring-alerts.md`
 - Incident response: `docs/incident-response.md`

@@ -2053,6 +2053,25 @@ body.judge-mode .judge-banner {
 .doc-rendered tr:last-child td {
   border-bottom: none;
 }
+.diagnostic-value {
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.8;
+}
+.diagnostic-json {
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: rgba(2, 8, 14, 0.96);
+  color: #cbe9ff;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
 </style>
 </head>
 <body>
@@ -2088,6 +2107,7 @@ body.judge-mode .judge-banner {
         <button class="nav-link" onclick="showPage('protocol',this)">Protocol</button>
         <button class="nav-link" onclick="showPage('migrate',this)">Migrate from Realms</button>
         <button class="nav-link" onclick="showPage('security',this)">Security</button>
+        <button class="nav-link" onclick="showPage('diagnostics',this); updateDiagnostics()">Diagnostics</button>
         <button class="nav-link" onclick="openDocument('zk-layer.md','ZK Layer',this)">ZK Layer</button>
         <button class="nav-link" onclick="showPage('awards',this)">Awards</button>
         <button class="nav-link" onclick="openDocument('android-native.md','Android Native',this)">Android Native</button>
@@ -2637,9 +2657,11 @@ body.judge-mode .judge-banner {
         <a class="award-link" href="competition-readiness.md" target="_blank">Competition Readiness</a>
         <a class="award-link" href="audit-packet.generated.md" target="_blank">Audit Packet</a>
         <a class="award-link" href="review-attestation.generated.json" target="_blank">Review Attestation</a>
+        <a class="award-link" href="mainnet-readiness.generated.md" target="_blank">Mainnet Readiness Report</a>
         <a class="award-link" href="production-operations.md" target="_blank">Production Ops</a>
         <a class="award-link" href="monitoring-alerts.md" target="_blank">Monitoring</a>
         <a class="award-link" href="incident-response.md" target="_blank">Incident Response</a>
+        <a class="award-link" href="?page=diagnostics" target="_blank" data-bypass-doc-viewer="1">Wallet Diagnostics</a>
         <a class="award-link" href="mainnet-cutover-runbook.md" target="_blank">Cutover Runbook</a>
         <a class="award-link" href="operator-checklist.md" target="_blank">Operator Checklist</a>
         <a class="award-link" href="risk-register.md" target="_blank">Risk Register</a>
@@ -3257,10 +3279,12 @@ execute() → CPI
         <a class="award-link" href="zk-evidence.md" target="_blank">ZK Evidence</a>
         <a class="award-link" href="cryptographic-integrity.md" target="_blank">Artifact Integrity</a>
         <a class="award-link" href="cryptographic-manifest.generated.json" target="_blank">Cryptographic Manifest</a>
+        <a class="award-link" href="mainnet-readiness.generated.md" target="_blank">Mainnet Readiness Report</a>
         <a class="award-link" href="pdao-token.md" target="_blank">PDAO Token Surface</a>
         <a class="award-link" href="production-operations.md" target="_blank">Production Ops</a>
         <a class="award-link" href="monitoring-alerts.md" target="_blank">Monitoring</a>
         <a class="award-link" href="incident-response.md" target="_blank">Incident Response</a>
+        <a class="award-link" href="?page=diagnostics" target="_blank" data-bypass-doc-viewer="1">Wallet Diagnostics</a>
         <a class="award-link" href="devnet-release-manifest.md" target="_blank">Release Manifest</a>
         <a class="award-link" href="submission-dossier.md" target="_blank">Submission Dossier</a>
         <a class="award-link" href="submission-registry.json" target="_blank">Submission Registry</a>
@@ -3392,6 +3416,76 @@ execute() → CPI
   </div>
 </section>
 </div><!-- /page-security -->
+
+<!-- ══════════════════ PAGE: DIAGNOSTICS ══════════════════ -->
+<div class="page" id="page-diagnostics">
+  <section class="container doc-viewer-shell">
+    <div class="award-detail-card reveal">
+      <div class="award-detail-head">
+        <div>
+          <div class="award-detail-title">Wallet Diagnostics</div>
+          <p class="award-detail-copy">
+            Live runtime checks for supported Solana wallets, browser capabilities, RPC reachability, and current PrivateDAO anchors. This is a real browser-side diagnostic surface, not a static note.
+          </p>
+        </div>
+        <div class="award-pill">LIVE RUNTIME</div>
+      </div>
+
+      <div class="proposal-command-grid">
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">CONNECTED PROVIDER</div>
+          <div class="diagnostic-value" id="diagConnectedProvider">Not connected</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">CONNECTED WALLET</div>
+          <div class="diagnostic-value" id="diagConnectedWallet">Not connected</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">RPC HEALTH</div>
+          <div class="diagnostic-value" id="diagRpcHealth">Pending refresh</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">PROGRAM ID</div>
+          <div class="diagnostic-value"><code>5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx</code></div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">PDAO MINT</div>
+          <div class="diagnostic-value"><code>AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt</code></div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">READINESS REPORT</div>
+          <div style="color:var(--text2);line-height:1.8"><a class="award-link" href="mainnet-readiness.generated.md" target="_blank">Open generated readiness report</a></div>
+        </div>
+      </div>
+
+      <div class="doc-viewer-toolbar">
+        <div class="doc-viewer-actions">
+          <button class="proposal-proof-link" type="button" onclick="updateDiagnostics()">Refresh Diagnostics</button>
+          <button class="proposal-proof-link" type="button" onclick="copyDiagnosticsSnapshot()">Copy Snapshot</button>
+          <button class="proposal-proof-link" type="button" onclick="openDocument('mainnet-readiness.generated.md','Mainnet Readiness Report')">Open Readiness Report</button>
+        </div>
+        <div style="color:var(--text3);font-family:var(--mono);font-size:12px" id="diagLastUpdated">No diagnostic run yet</div>
+      </div>
+
+      <div class="proposal-command-grid">
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">SUPPORTED PROVIDERS</div>
+          <div id="diagSupportedProviders" style="color:var(--text2);line-height:1.8">Run diagnostics to inspect provider detection and runtime capabilities.</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">BROWSER CAPABILITIES</div>
+          <div id="diagBrowserCapabilities" style="color:var(--text2);line-height:1.8">Run diagnostics to inspect browser crypto and clipboard support.</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">RPC DETAILS</div>
+          <div id="diagRpcDetails" style="color:var(--text2);line-height:1.8">Run diagnostics to confirm Devnet access and latest blockhash retrieval.</div>
+        </div>
+      </div>
+
+      <div class="diagnostic-json" id="diagSnapshotOutput">Diagnostic snapshot will appear here.</div>
+    </div>
+  </section>
+</div>
 
 <!-- ══════════════════ PAGE: DOCS ══════════════════ -->
 <div class="page" id="page-docs">
@@ -3809,6 +3903,7 @@ window.addEventListener('scroll', () => {
 // ── Page navigation ─────────────────────────────────────
 let currentDocPath = null;
 let currentDocLabel = null;
+let lastDiagnosticsSnapshot = null;
 
 function showPage(page, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -3825,6 +3920,9 @@ function showPage(page, btn) {
   syncUrlState();
   window.scrollTo({top:0, behavior:'smooth'});
   setTimeout(observeReveal, 100);
+  if (page === 'diagnostics') {
+    updateDiagnostics();
+  }
 }
 
 function findNavButton(page) {
@@ -4065,6 +4163,119 @@ function copyDocViewerLink() {
     return;
   }
   showToast(url, 'info');
+}
+
+function providerStateLabel(provider) {
+  if (!provider) return 'NOT FOUND';
+  if (provider.isConnected) return 'CONNECTED';
+  return 'AVAILABLE';
+}
+
+function providerCapabilitySummary(provider) {
+  return {
+    connect: typeof provider?.connect === 'function',
+    request: typeof provider?.request === 'function',
+    enable: typeof provider?.enable === 'function',
+    sendTransaction: typeof provider?.sendTransaction === 'function',
+    signAndSendTransaction: typeof provider?.signAndSendTransaction === 'function',
+    signTransaction: typeof provider?.signTransaction === 'function',
+  };
+}
+
+function formatCapabilityFlags(flags) {
+  return Object.entries(flags)
+    .map(([key, value]) => `${key}:${value ? 'yes' : 'no'}`)
+    .join(' · ');
+}
+
+async function updateDiagnostics() {
+  const supportedProviders = [
+    { id: 'phantom', label: 'Phantom' },
+    { id: 'solflare', label: 'Solflare' },
+    { id: 'backpack', label: 'Backpack' },
+    { id: 'glow', label: 'Glow' },
+    { id: 'auto', label: 'Auto Detect' },
+  ];
+
+  const providerLines = supportedProviders.map(({ id, label }) => {
+    const provider = resolveWalletProvider(id);
+    const caps = providerCapabilitySummary(provider);
+    return `• ${label}: ${providerStateLabel(provider)} · ${formatCapabilityFlags(caps)}`;
+  });
+
+  const browserCapabilities = {
+    cryptoSubtle: Boolean(window.crypto?.subtle),
+    fetch: typeof window.fetch === 'function',
+    clipboard: Boolean(navigator.clipboard?.writeText),
+    bigInt: typeof BigInt === 'function',
+    injectedSolana: Boolean(window.solana || window.phantom?.solana || window.backpack?.solana || window.glowSolana),
+  };
+
+  let rpcHealth = 'Checking';
+  let rpcDetails = 'Running RPC reachability checks...';
+  try {
+    const version = await connection.getVersion();
+    const latest = await connection.getLatestBlockhash('confirmed');
+    rpcHealth = 'Healthy';
+    rpcDetails = [
+      `endpoint=${connection.rpcEndpoint}`,
+      `solana-core=${version['solana-core'] || 'unknown'}`,
+      `feature-set=${version['feature-set'] || 'unknown'}`,
+      `blockhash=${latest.blockhash}`,
+      `lastValidBlockHeight=${latest.lastValidBlockHeight}`,
+    ].join('\n');
+  } catch (error) {
+    rpcHealth = 'Unavailable';
+    rpcDetails = error?.message || 'RPC health check failed.';
+  }
+
+  const connectedProviderName = walletProvider ? walletProviderName(walletProvider) : 'Not connected';
+  const connectedWalletValue = wallet ? wallet : 'Not connected';
+  const snapshot = {
+    generatedAt: new Date().toISOString(),
+    connectedProvider: connectedProviderName,
+    connectedWallet: connectedWalletValue,
+    rpcHealth,
+    rpcEndpoint: connection.rpcEndpoint,
+    browserCapabilities,
+    supportedProviders: supportedProviders.map(({ id, label }) => {
+      const provider = resolveWalletProvider(id);
+      return {
+        id,
+        label,
+        state: providerStateLabel(provider),
+        capabilities: providerCapabilitySummary(provider),
+      };
+    }),
+    anchors: {
+      programId: '5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx',
+      pdaoMint: 'AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt',
+    },
+  };
+
+  lastDiagnosticsSnapshot = snapshot;
+
+  document.getElementById('diagConnectedProvider').textContent = connectedProviderName;
+  document.getElementById('diagConnectedWallet').textContent = connectedWalletValue;
+  document.getElementById('diagRpcHealth').textContent = rpcHealth;
+  document.getElementById('diagSupportedProviders').textContent = providerLines.join('\n');
+  document.getElementById('diagSupportedProviders').style.whiteSpace = 'pre-wrap';
+  document.getElementById('diagBrowserCapabilities').textContent = formatCapabilityFlags(browserCapabilities);
+  document.getElementById('diagRpcDetails').textContent = rpcDetails;
+  document.getElementById('diagRpcDetails').style.whiteSpace = 'pre-wrap';
+  document.getElementById('diagSnapshotOutput').textContent = JSON.stringify(snapshot, null, 2);
+  document.getElementById('diagLastUpdated').textContent = `Updated ${snapshot.generatedAt.replace('T', ' ').slice(0, 19)} UTC`;
+}
+
+function copyDiagnosticsSnapshot() {
+  const snapshot = lastDiagnosticsSnapshot ? JSON.stringify(lastDiagnosticsSnapshot, null, 2) : 'No diagnostics have been generated yet.';
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(snapshot)
+      .then(() => showToast('Diagnostics snapshot copied.', 'success'))
+      .catch(() => showToast(snapshot, 'info'));
+    return;
+  }
+  showToast(snapshot, 'info');
 }
 
 // ── Scroll to proposals ─────────────────────────────────
@@ -4508,6 +4719,7 @@ function bindWalletProviderEvents(provider) {
     walletProviderListenersBound = false;
     updateWalletUi(false);
     refreshWalletProviderStates();
+    if (currentPageKey() === 'diagnostics') updateDiagnostics();
     showToast('Disconnected', 'info');
   });
 
@@ -4523,6 +4735,7 @@ function bindWalletProviderEvents(provider) {
       return;
     }
     refreshWalletProviderStates();
+    if (currentPageKey() === 'diagnostics') updateDiagnostics();
     showToast(`Wallet changed: ${shortPk(wallet)}`, 'info');
     syncCreateProposalCommand();
     updateRevealCommandBuilder();
@@ -4547,6 +4760,7 @@ async function hydrateWalletSession() {
     updateRevealCommandBuilder();
   }
   refreshWalletProviderStates();
+  if (currentPageKey() === 'diagnostics') updateDiagnostics();
 }
 
 async function connectResolvedWalletProvider(provider) {
@@ -4625,6 +4839,7 @@ async function connectWallet(preferredId = 'auto') {
     updateRevealCommandBuilder();
     refreshWalletProviderStates();
     closeWalletPanel();
+    if (currentPageKey() === 'diagnostics') updateDiagnostics();
     showToast(`Connected ${walletProviderName(walletProvider)}: ${shortPk(wallet)}`, 'success');
   } catch (e) {
     wallet = null;
@@ -4632,6 +4847,7 @@ async function connectWallet(preferredId = 'auto') {
     walletProviderListenersBound = false;
     updateWalletUi(false);
     refreshWalletProviderStates();
+    if (currentPageKey() === 'diagnostics') updateDiagnostics();
     showToast(describeWalletConnectionError(e), 'error');
   }
 }
@@ -6228,6 +6444,11 @@ updateDeploymentSnapshot();
 loadLiveProposals();
 setInterval(updateDeploymentSnapshot, 30_000);
 setInterval(loadLiveProposals, 30_000);
+setInterval(() => {
+  if (currentPageKey() === 'diagnostics') {
+    updateDiagnostics();
+  }
+}, 30_000);
 hydrateWalletSession().catch(() => {});
 document.addEventListener('click', () => closeWalletPanel());
 refreshWalletProviderStates();

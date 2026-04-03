@@ -116,6 +116,7 @@ ${Object.entries(proof.transactions)
 
 - Integrity note: \`docs/cryptographic-integrity.md\`
 - Cryptographic manifest: \`docs/cryptographic-manifest.generated.json\`
+- Mainnet readiness report: \`docs/mainnet-readiness.generated.md\`
 - Algorithm: \`${cryptographicManifest.algorithm}\`
 - Manifest entries: \`${cryptographicManifest.entryCount}\`
 - Aggregate sha256: \`${cryptographicManifest.aggregateSha256}\`

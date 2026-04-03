@@ -52,6 +52,7 @@
     ],
     "operations": [
       "docs/mainnet-readiness.md",
+      "docs/mainnet-readiness.generated.md",
       "docs/production-operations.md",
       "docs/monitoring-alerts.md",
       "docs/incident-response.md",
@@ -73,6 +74,7 @@
     "npm run verify:registry-consistency",
     "npm run verify:generated-artifacts",
     "npm run verify:cryptographic-manifest",
+    "npm run verify:mainnet-readiness-report",
     "npm run verify:zk-surface",
     "npm run verify:zk-registry",
     "npm run verify:zk-transcript",

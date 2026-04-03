@@ -14,6 +14,7 @@ const requiredReadmeRefs = [
   "docs/devnet-release-manifest.md",
   "docs/verification-gates.md",
   "docs/mainnet-readiness.md",
+  "docs/mainnet-readiness.generated.md",
   "docs/production-operations.md",
   "docs/strategy-operations.md",
   "docs/reviewer-fast-path.md",
@@ -31,6 +32,7 @@ const requiredFrontendRefs = [
   "live-proof.md",
   "devnet-release-manifest.md",
   "verification-gates.md",
+  "mainnet-readiness.generated.md",
   "production-operations.md",
   "reviewer-fast-path.md",
   "strategy-operations.md",
@@ -51,9 +53,11 @@ function main() {
   }
 
   assertContains(readme, "https://x-pact.github.io/PrivateDAO/?page=proof&judge=1", "README is missing Judge Mode entry point");
+  assertContains(readme, "https://x-pact.github.io/PrivateDAO/?page=diagnostics", "README is missing Wallet Diagnostics entry point");
   assertContains(frontend, "Judge Mode", "frontend is missing Judge Mode surface");
   assertContains(frontend, "Proof Center", "frontend is missing Proof Center surface");
   assertContains(frontend, "Security Evidence", "frontend is missing Security Evidence section");
+  assertContains(frontend, "Wallet Diagnostics", "frontend is missing Wallet Diagnostics surface");
 
   console.log("Review link verification: PASS");
 }
