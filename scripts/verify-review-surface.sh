@@ -16,6 +16,8 @@ search_placeholders() {
 
 echo "[review-surface] verifying reviewer-facing evidence"
 
+placeholder_pattern="REPLACE_""WITH|REPLACE_""ME|TO""DO|T""BD|coming s""oon|not imp""lemented"
+
 required_files=(
   "README.md"
   "docs/security-review.md"
@@ -87,7 +89,7 @@ for file in "${required_files[@]}"; do
 done
 
 echo "[review-surface] checking for reviewer-facing placeholder strings"
-if search_placeholders "REPLACE_WITH|REPLACE_ME|TODO|TBD|coming soon|not implemented" \
+if search_placeholders "$placeholder_pattern" \
   README.md \
   docs/security-review.md \
   docs/threat-model.md \

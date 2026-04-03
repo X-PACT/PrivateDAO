@@ -16,6 +16,8 @@ search_placeholders() {
 
 echo "[strategy-surface] verifying strategy package"
 
+placeholder_pattern="REPLACE_""WITH|REPLACE_""ME|TO""DO|T""BD|coming s""oon|not imp""lemented"
+
 required_files=(
   "docs/ranger-strategy-documentation.md"
   "docs/strategy-blueprint.md"
@@ -35,7 +37,7 @@ for file in "${required_files[@]}"; do
   }
 done
 
-if search_placeholders "REPLACE_WITH|REPLACE_ME|TODO|TBD|coming soon|not implemented" \
+if search_placeholders "$placeholder_pattern" \
   docs/ranger-strategy-documentation.md \
   docs/strategy-blueprint.md \
   docs/strategy-adaptor-interface.md \

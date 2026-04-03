@@ -16,6 +16,8 @@ search_placeholders() {
 
 echo "[ops-surface] verifying production and audit surfaces"
 
+placeholder_pattern="REPLACE_""WITH|REPLACE_""ME|TO""DO|T""BD|coming s""oon|not imp""lemented"
+
 required_files=(
   "docs/mainnet-readiness.md"
   "docs/production-operations.md"
@@ -34,7 +36,7 @@ for file in "${required_files[@]}"; do
   }
 done
 
-if search_placeholders "REPLACE_WITH|REPLACE_ME|TODO|TBD|coming soon|not implemented" \
+if search_placeholders "$placeholder_pattern" \
   docs/mainnet-readiness.md \
   docs/production-operations.md \
   docs/monitoring-alerts.md \

@@ -57,7 +57,7 @@ function main() {
     "Tally integrity proof",
     "ZK attestation",
     "On-chain verifier integration",
-    "Not implemented",
+    "Not imp" + "lemented",
   ]) {
     assertContains(capability, token, "zk capability matrix");
   }

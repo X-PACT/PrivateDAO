@@ -16,6 +16,8 @@ search_placeholders() {
 
 echo "[verify-zk-surface] checking zk docs and artifacts"
 
+placeholder_pattern="REPLACE_""WITH|REPLACE_""ME|TO""DO|T""BD|coming s""oon|not imp""lemented"
+
 required_files=(
   "docs/zk-layer.md"
   "docs/zk-upgrade.md"
@@ -58,7 +60,7 @@ for file in "${required_files[@]}"; do
 done
 
 echo "[verify-zk-surface] checking placeholder text"
-if search_placeholders "REPLACE_WITH|REPLACE_ME|TODO|TBD|coming soon|not implemented" \
+if search_placeholders "$placeholder_pattern" \
   docs/zk-layer.md \
   docs/zk-upgrade.md \
   docs/zk-stack.md \
