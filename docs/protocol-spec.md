@@ -7,7 +7,7 @@ This document defines the intended protocol behavior of PrivateDAO as implemente
 It is not a proposal for redesign.
 It is a structured description of the implemented governance lifecycle, commit-reveal semantics, execution rules, and core invariants.
 
-The repository also includes a non-breaking zk overlay. That overlay is not part of the currently deployed instruction interface and is described explicitly so reviewers do not confuse additive zk work with the live protocol surface.
+The repository also includes a non-breaking zk stack. That stack is not part of the currently deployed instruction interface and is described explicitly so reviewers do not confuse additive zk work with the live protocol surface.
 
 ## 2. System Roles
 
@@ -170,7 +170,7 @@ Replay resistance is provided by:
 - delegation `is_used`
 - lifecycle timing gates
 
-### 5.5 ZK-Augmented Commit-Reveal Overlay
+### 5.5 ZK-Augmented Commit-Reveal Stack
 
 The repository now includes an additive zero-knowledge layer that does not change the deployed protocol semantics.
 
@@ -179,22 +179,14 @@ Current live protocol:
 - commit uses `sha256(vote_byte || salt_32 || voter_pubkey_32)`
 - reveal checks the committed preimage
 
-Current zk overlay:
+Current zk stack:
 
-- proves boolean vote form
-- proves minimum-weight eligibility
-- proves commitment binding to:
-  - `vote`
-  - `salt`
-  - `voterKey`
-  - `proposalId`
-  - `daoKey`
-- proves nullifier binding to:
-  - `voterKey`
-  - `proposalId`
-  - `daoKey`
+- proves boolean vote form and minimum-weight eligibility
+- proves delegation activation and delegatee binding
+- proves weighted tally integrity over a commitment-consistent reveal sample
+- proves proposal-scoped nullifier bindings across vote, delegation, and tally layers
 
-This overlay is currently:
+This stack is currently:
 
 - off-chain
 - verifier-backed through Groth16

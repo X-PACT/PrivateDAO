@@ -1,6 +1,6 @@
 # ZK Upgrade Path
 
-PrivateDAO now includes a real zero-knowledge companion layer that starts from the current protocol without changing the deployed program, PDA seeds, account layouts, or browser flows.
+PrivateDAO now includes a real zero-knowledge companion stack that starts from the current protocol without changing the deployed program, PDA seeds, account layouts, or browser flows.
 
 This layer is intentionally additive:
 
@@ -12,14 +12,17 @@ This layer is intentionally additive:
 ## What Exists Today
 
 - a real Circom circuit at `zk/circuits/private_dao_vote_overlay.circom`
+- a real Circom circuit at `zk/circuits/private_dao_delegation_overlay.circom`
+- a real Circom circuit at `zk/circuits/private_dao_tally_overlay.circom`
 - Groth16 setup and verification scripts
-- a sample witness path that produces a real proof
+- sample witness paths that produce real proofs
 - proof artifacts under `zk/proofs/`
 - setup artifacts under `zk/setup/`
+- a layered ZK stack note at `docs/zk-stack.md`
 
-## What The Proof Asserts
+## What The Proofs Assert
 
-The current zk overlay proves all of the following at once:
+The current vote overlay proves all of the following at once:
 
 - the vote is boolean
 - the voter weight is at least the configured threshold
@@ -38,6 +41,24 @@ The current zk overlay proves all of the following at once:
   - `weight`
   - `daoKey`
 
+The delegation overlay proves:
+
+- delegated voting is active
+- delegated weight meets the configured threshold
+- delegation is bound to:
+  - `delegatorKey`
+  - `delegateeKey`
+  - `proposalId`
+  - `daoKey`
+  - `salt`
+- proposal-scoped delegation nullifier binding
+
+The tally overlay proves:
+
+- two revealed vote tuples are boolean and commitment-consistent
+- weighted yes and no totals are deterministic
+- a nullifier accumulator binds the revealed sample to proposal-scoped replay boundaries
+
 ## Why This Is Non-Breaking
 
 The live program still uses the existing commit-reveal flow. The zk layer does not replace current instructions and does not change any runtime assumptions for existing users or scripts.
@@ -46,6 +67,8 @@ Instead, it establishes a real proof system that can later support:
 
 - zk voter eligibility
 - zk commitment binding
+- zk delegation authorization
+- zk tally integrity
 - zk nullifier-style replay protection
 - future verifier integration
 
@@ -55,4 +78,12 @@ Instead, it establishes a real proof system that can later support:
 npm run zk:build
 npm run zk:prove:sample
 npm run zk:verify:sample
+```
+
+Per-layer proof replay:
+
+```bash
+npm run zk:prove:vote
+npm run zk:prove:delegation
+npm run zk:prove:tally
 ```

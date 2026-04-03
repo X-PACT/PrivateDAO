@@ -14,9 +14,9 @@ The goal is simple: reviewer-facing evidence should be tamper-evident, not just 
 
 The manifest currently records `sha256` digests for the highest-signal artifacts:
 
-- zk circuit source
-- zk verification key
-- zk sample proof
+- zk circuit sources
+- zk verification keys
+- zk sample proofs
 - zk public inputs
 - proof registry
 - devnet release manifest
@@ -25,6 +25,7 @@ The manifest currently records `sha256` digests for the highest-signal artifacts
 - independent verification guide
 - security review
 - zk layer note
+- zk stack note
 - verification-gates note
 
 ## Why This Matters

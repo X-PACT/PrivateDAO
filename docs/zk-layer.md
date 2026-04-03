@@ -2,7 +2,7 @@
 
 PrivateDAO's current deployed protocol remains the same commit-reveal governance system described in the core specification.
 
-The zk layer is an additive companion, not a silent protocol rewrite.
+The zk layer is now a layered additive companion stack, not a silent protocol rewrite.
 
 ## Current Live Flow
 
@@ -26,22 +26,24 @@ Current limitation:
 
 ## What The ZK Layer Adds
 
-The zk layer introduces a real proof system that validates a private vote tuple without changing the deployed contracts or current frontend lifecycle.
+The zk layer introduces real Circom and Groth16 proof systems that validate private governance data without changing the deployed contracts or current frontend lifecycle.
 
-Current overlay proof:
+Current live stack:
 
-- proves vote form validity
-- proves minimum-weight eligibility
-- proves commitment binding to:
-  - `vote`
-  - `salt`
-  - `voterKey`
-  - `proposalId`
-  - `daoKey`
-- proves nullifier binding to:
-  - `voterKey`
-  - `proposalId`
-  - `daoKey`
+- `private_dao_vote_overlay`
+  - vote form validity
+  - threshold eligibility
+  - proposal-scoped commitment binding
+  - proposal-scoped nullifier binding
+- `private_dao_delegation_overlay`
+  - delegation activation
+  - delegatee binding
+  - delegated weight commitment
+  - proposal-scoped delegation nullifier binding
+- `private_dao_tally_overlay`
+  - deterministic weighted tally proof
+  - commitment-consistent reveal sample
+  - nullifier accumulator over the revealed sample
 
 ## Current Commit-Reveal vs ZK-Augmented Governance
 
@@ -54,8 +56,8 @@ Current overlay proof:
 
 ### ZK-augmented governance
 
-- proof system validates a richer private witness
-- eligibility and binding can be proven with less direct witness disclosure
+- proof systems validate richer private witnesses across vote, delegation, and tally layers
+- eligibility, delegation, and deterministic tally logic can be proven with less direct witness disclosure
 - future verifier integration becomes possible without redesigning the current governance product
 
 ## What The ZK Layer Does Not Claim Yet
@@ -84,10 +86,18 @@ npm run zk:all
 
 This command:
 
-- compiles the circuit
-- generates setup artifacts
-- builds a witness from the sample input
-- generates a proof
-- verifies the proof
+- compiles every live zk circuit
+- generates or refreshes setup artifacts
+- builds witnesses from circuit-specific sample inputs
+- generates real proofs
+- verifies all proofs against their exported verification keys
 
 That is why the zk layer is evidence-backed rather than aspirational.
+
+Per-layer commands:
+
+```bash
+npm run zk:prove:vote
+npm run zk:prove:delegation
+npm run zk:prove:tally
+```

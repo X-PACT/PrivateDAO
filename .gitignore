@@ -13,5 +13,8 @@ wallets/
 !docs/submission-registry.json
 !docs/review-attestation.generated.json
 !docs/cryptographic-manifest.generated.json
+!zk/inputs/*.json
+!zk/proofs/*.json
+!zk/setup/*_vkey.json
 LEGAL/evidence-pack/
 .anchor/

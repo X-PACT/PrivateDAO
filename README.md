@@ -27,6 +27,7 @@
 [![Replay Analysis](https://img.shields.io/badge/Replay%20Analysis-Verified-7c3aed)](docs/replay-analysis.md)
 [![Atomicity](https://img.shields.io/badge/Atomicity-Verified-15803d)](docs/failure-modes.md)
 [![ZK Overlay](https://img.shields.io/badge/ZK-Real%20Groth16%20Overlay-111827)](docs/zk-upgrade.md)
+[![ZK Stack](https://img.shields.io/badge/ZK%20Stack-Vote%20%2B%20Delegation%20%2B%20Tally-0f766e)](docs/zk-stack.md)
 [![Zero Knowledge](https://img.shields.io/badge/ZK%20%E2%9F%A1-Live%20Proof%20Layer-06b6d4)](docs/zk-layer.md)
 [![Artifact Integrity](https://img.shields.io/badge/Artifact%20Integrity-SHA256%20Manifest-0f766e)](docs/cryptographic-integrity.md)
 
@@ -53,6 +54,7 @@ PrivateDAO exists to resist those failure modes with:
 - strict treasury validation
 - replay-resistant lifecycle checks
 - tamper-evident proof artifacts
+- layered Groth16 proof surfaces for vote, delegation, and tally integrity
 
 ## What Is Implemented
 
@@ -117,6 +119,7 @@ Quick links:
 - Strategy operations: `docs/strategy-operations.md`
 - ZK upgrade path: `docs/zk-upgrade.md`
 - ZK layer: `docs/zk-layer.md`
+- ZK stack: `docs/zk-stack.md`
 - ZK architecture: `docs/zk-architecture.md`
 - ZK evidence: `docs/zk-evidence.md`
 - Cryptographic integrity: `docs/cryptographic-integrity.md`
@@ -233,7 +236,7 @@ The formal mapping lives in `docs/security-coverage-map.md`.
 
 ## ZK Overlay
 
-PrivateDAO now includes a real zero-knowledge companion layer without changing the deployed contracts or the current frontend lifecycle.
+PrivateDAO now includes a real zero-knowledge companion stack without changing the deployed contracts or the current frontend lifecycle.
 
 What exists today:
 

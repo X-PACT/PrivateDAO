@@ -9,6 +9,10 @@ function main() {
   const requiredFragments = [
     "Zero-Knowledge Layer Live",
     "Real Groth16 overlay live",
+    "vote-validity, delegation-authorization, and tally-integrity proof layers",
+    "DELEGATION LAYER",
+    "TALLY LAYER",
+    "zk-stack.md",
     "Connect a Solana wallet such as Phantom, Solflare, or Backpack on Devnet.",
     "window.backpack?.solana",
     "window.solflare?.solflare",

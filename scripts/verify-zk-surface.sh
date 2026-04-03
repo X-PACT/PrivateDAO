@@ -9,14 +9,27 @@ echo "[verify-zk-surface] checking zk docs and artifacts"
 required_files=(
   "docs/zk-layer.md"
   "docs/zk-upgrade.md"
+  "docs/zk-stack.md"
   "docs/zk-architecture.md"
   "docs/zk-evidence.md"
   "zk/circuits/private_dao_vote_overlay.circom"
+  "zk/circuits/private_dao_delegation_overlay.circom"
+  "zk/circuits/private_dao_tally_overlay.circom"
   "zk/inputs/private_dao_vote_overlay.sample.json"
+  "zk/inputs/private_dao_delegation_overlay.sample.json"
+  "zk/inputs/private_dao_tally_overlay.sample.json"
   "zk/proofs/private_dao_vote_overlay.proof.json"
   "zk/proofs/private_dao_vote_overlay.public.json"
+  "zk/proofs/private_dao_delegation_overlay.proof.json"
+  "zk/proofs/private_dao_delegation_overlay.public.json"
+  "zk/proofs/private_dao_tally_overlay.proof.json"
+  "zk/proofs/private_dao_tally_overlay.public.json"
   "zk/setup/private_dao_vote_overlay_final.zkey"
   "zk/setup/private_dao_vote_overlay_vkey.json"
+  "zk/setup/private_dao_delegation_overlay_final.zkey"
+  "zk/setup/private_dao_delegation_overlay_vkey.json"
+  "zk/setup/private_dao_tally_overlay_final.zkey"
+  "zk/setup/private_dao_tally_overlay_vkey.json"
 )
 
 for file in "${required_files[@]}"; do
@@ -30,6 +43,7 @@ echo "[verify-zk-surface] checking placeholder text"
 if rg -n "REPLACE_WITH|REPLACE_ME|TODO|TBD|coming soon|not implemented" \
   docs/zk-layer.md \
   docs/zk-upgrade.md \
+  docs/zk-stack.md \
   docs/zk-architecture.md \
   docs/zk-evidence.md; then
   echo "[verify-zk-surface] placeholder text detected" >&2

@@ -2834,7 +2834,7 @@ execute() → CPI
         <div>
           <div class="award-detail-title">ZK Overlay Available</div>
           <p class="award-detail-copy">
-            PrivateDAO now includes a real zero-knowledge companion layer built with Circom and Groth16. It does not replace the deployed governance lifecycle yet; it proves vote-form correctness, threshold eligibility, commitment binding, and proposal-scoped nullifier binding as a non-breaking overlay for the current system.
+            PrivateDAO now includes a real zero-knowledge companion stack built with Circom and Groth16. It does not replace the deployed governance lifecycle; it adds vote-validity, delegation-authorization, and tally-integrity proof layers as a non-breaking overlay for the current system.
           </p>
         </div>
         <div class="award-pill">REAL ZK</div>
@@ -2842,7 +2842,7 @@ execute() → CPI
       <div class="proposal-command-grid">
         <div class="proposal-command-box">
           <div class="proposal-detail-label">WHAT IS LIVE</div>
-          <div style="color:var(--text2);line-height:1.8">Real circuit compilation, witness generation, proof generation, and proof verification are now part of the repository.</div>
+          <div style="color:var(--text2);line-height:1.8">Real circuit compilation, witness generation, proof generation, and proof verification are now part of the repository across multiple zk layers.</div>
         </div>
         <div class="proposal-command-box">
           <div class="proposal-detail-label">CURRENT VS ZK-AUGMENTED</div>
@@ -2853,8 +2853,16 @@ execute() → CPI
           <div style="color:var(--text2);line-height:1.8">The zk layer is additive. It does not change contracts, instruction interfaces, PDA derivations, or the current browser governance flow.</div>
         </div>
         <div class="proposal-command-box">
-          <div class="proposal-detail-label">WHAT IT PROVES</div>
+          <div class="proposal-detail-label">VOTE LAYER</div>
           <div style="color:var(--text2);line-height:1.8">Boolean vote form, minimum-weight eligibility, proposal-scoped commitment binding, and proposal-scoped nullifier binding.</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">DELEGATION LAYER</div>
+          <div style="color:var(--text2);line-height:1.8">Delegation activation, delegatee binding, delegated-weight commitment, and proposal-scoped delegation nullifier binding.</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">TALLY LAYER</div>
+          <div style="color:var(--text2);line-height:1.8">Deterministic weighted yes/no tally proofs over a commitment-consistent reveal sample plus a public nullifier accumulator.</div>
         </div>
         <div class="proposal-command-box">
           <div class="proposal-detail-label">HOW TO VERIFY</div>
@@ -2915,6 +2923,7 @@ execute() → CPI
         <a class="award-link" href="replay-analysis.md" target="_blank">Replay Analysis</a>
         <a class="award-link" href="zk-upgrade.md" target="_blank">ZK Upgrade</a>
         <a class="award-link" href="zk-layer.md" target="_blank">ZK Layer</a>
+        <a class="award-link" href="zk-stack.md" target="_blank">ZK Stack</a>
         <a class="award-link" href="zk-architecture.md" target="_blank">ZK Architecture</a>
         <a class="award-link" href="zk-evidence.md" target="_blank">ZK Evidence</a>
         <a class="award-link" href="cryptographic-integrity.md" target="_blank">Artifact Integrity</a>

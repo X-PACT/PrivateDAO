@@ -10,9 +10,17 @@ type ManifestEntry = {
 
 const MANIFEST_FILES = [
   "zk/circuits/private_dao_vote_overlay.circom",
+  "zk/circuits/private_dao_delegation_overlay.circom",
+  "zk/circuits/private_dao_tally_overlay.circom",
   "zk/setup/private_dao_vote_overlay_vkey.json",
+  "zk/setup/private_dao_delegation_overlay_vkey.json",
+  "zk/setup/private_dao_tally_overlay_vkey.json",
   "zk/proofs/private_dao_vote_overlay.proof.json",
   "zk/proofs/private_dao_vote_overlay.public.json",
+  "zk/proofs/private_dao_delegation_overlay.proof.json",
+  "zk/proofs/private_dao_delegation_overlay.public.json",
+  "zk/proofs/private_dao_tally_overlay.proof.json",
+  "zk/proofs/private_dao_tally_overlay.public.json",
   "docs/proof-registry.json",
   "docs/devnet-release-manifest.md",
   "docs/live-proof.md",
@@ -20,6 +28,7 @@ const MANIFEST_FILES = [
   "docs/independent-verification.md",
   "docs/security-review.md",
   "docs/zk-layer.md",
+  "docs/zk-stack.md",
   "docs/verification-gates.md",
 ];
 
