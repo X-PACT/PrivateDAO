@@ -1130,8 +1130,7 @@ describe("Full flow", () => {
       assert.include(err.toString(), "InvalidTokenMint");
     }
 
-    const payerOwnedSourceToken = await createAccount(provider.connection, payer, mint, payer.publicKey);
-    await mintTo(provider.connection, payer, mint, payerOwnedSourceToken, payer, 100_000_000n);
+    await mintTo(provider.connection, payer, mint, attackerTokenAccount, payer, 100_000_000n);
 
     try {
       await program.methods
@@ -1141,7 +1140,7 @@ describe("Full flow", () => {
           proposal: proposalPda,
           treasury: treasuryPda,
           treasuryRecipient: recipient.publicKey,
-          treasuryTokenAccount: payerOwnedSourceToken,
+          treasuryTokenAccount: attackerTokenAccount,
           recipientTokenAccount,
           executor: payer.publicKey,
           tokenProgram: TOKEN_PROGRAM_ID,
@@ -1562,8 +1561,8 @@ describe("Full flow", () => {
       await provider.sendAndConfirm(tx, []);
     }
 
-    const [alice, bob, recipient] = Array.from({ length: 3 }, () => Keypair.generate());
-    for (const wallet of [alice, bob, recipient]) {
+    const [alice, bob, lateVoter, recipient] = Array.from({ length: 4 }, () => Keypair.generate());
+    for (const wallet of [alice, bob, lateVoter, recipient]) {
       await fundWallet(wallet.publicKey, 0.01);
     }
 
@@ -1583,8 +1582,10 @@ describe("Full flow", () => {
     await mintTo(provider.connection, payer, mint, payerTokenAta, payer, 1_000_000n);
     const aliceAta = await createAccount(provider.connection, payer, mint, alice.publicKey);
     const bobAta = await createAccount(provider.connection, payer, mint, bob.publicKey);
+    const lateVoterAta = await createAccount(provider.connection, payer, mint, lateVoter.publicKey);
     await mintTo(provider.connection, payer, mint, aliceAta, payer, 1_000_000_000n);
     await mintTo(provider.connection, payer, mint, bobAta, payer, 1_000_000_000n);
+    await mintTo(provider.connection, payer, mint, lateVoterAta, payer, 1_000_000_000n);
 
     const daoName = `Boundary-${Date.now()}`;
     const [daoPda] = PublicKey.findProgramAddressSync(
@@ -1707,17 +1708,20 @@ describe("Full flow", () => {
 
     try {
       await program.methods
-        .commitVote([...commitment(false, rng(), bob.publicKey)], null)
+        .commitVote([...commitment(false, rng(), lateVoter.publicKey)], null)
         .accounts({
           dao: daoPda,
           proposal: proposalPda,
-          voterRecord: bobVotePda,
-          voterTokenAccount: bobAta,
-          voter: bob.publicKey,
+          voterRecord: PublicKey.findProgramAddressSync(
+            [Buffer.from("vote"), proposalPda.toBuffer(), lateVoter.publicKey.toBuffer()],
+            program.programId,
+          )[0],
+          voterTokenAccount: lateVoterAta,
+          voter: lateVoter.publicKey,
           tokenProgram: TOKEN_PROGRAM_ID,
           systemProgram: SystemProgram.programId,
         })
-        .signers([bob])
+        .signers([lateVoter])
         .rpc();
       assert.fail("commit at/after voting end must be rejected");
     } catch (err: any) {
