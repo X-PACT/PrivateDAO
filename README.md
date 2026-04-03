@@ -142,6 +142,7 @@ Quick links:
 - PDAO token surface: `docs/pdao-token.md`
 - Fair voting model: `docs/fair-voting.md`
 - Wallet runtime compatibility: `docs/wallet-runtime.md`
+- Runtime attestation: `docs/runtime-attestation.generated.json`
 - Go-live criteria: `docs/go-live-criteria.md`
 - Operational drillbook: `docs/operational-drillbook.md`
 - Awards page: `docs/awards.md`

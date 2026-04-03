@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-03T20:18:20.860Z",
+  "generatedAt": "2026-04-03T20:36:07.156Z",
   "algorithm": "sha256",
-  "entryCount": 37,
-  "aggregateSha256": "6770a8c5fa576bc52afa5a6d4d44ae9a17df2f4b250e2553899f9f73279f27e3",
+  "entryCount": 38,
+  "aggregateSha256": "f992d19d2cfdf9fc0ebfb3a866a234f388faa8aced10a5a9db60004b1943ec83",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -82,8 +82,8 @@
     },
     {
       "path": "docs/submission-registry.json",
-      "sha256": "0523ac2af3247fe6ffe50403b58bc5a73dc274804b93849ec16a12c4cfa45e25",
-      "bytes": 3660
+      "sha256": "e6f9d257b8379d58d1c5fede7a88699688ea47e8cd93aa72854da79a7c10ae05",
+      "bytes": 3751
     },
     {
       "path": "docs/independent-verification.md",
@@ -121,18 +121,23 @@
       "bytes": 2452
     },
     {
+      "path": "docs/runtime-attestation.generated.json",
+      "sha256": "1ef974c7c0546c0f05ef4efdd759a9ff5f53f912d153d7b983e56afc325e767f",
+      "bytes": 1204
+    },
+    {
       "path": "docs/security-review.md",
       "sha256": "fe5a80602457fbb50f00f813dec7c4344681b27289189634a353810e06e83cf2",
       "bytes": 9163
     },
     {
       "path": "docs/deployment-attestation.generated.json",
-      "sha256": "da4fc386e8fbe9d55231e7c454eb074aaee1357df3e35072f3aba1ac8dc7b5d9",
-      "bytes": 2509
+      "sha256": "4ca944b91a509e711476b4e3b34ead547acd6cf93c1372af9be27158fcf771c8",
+      "bytes": 2551
     },
     {
       "path": "docs/go-live-attestation.generated.json",
-      "sha256": "a94643f3cad85260d4eafa390b86675b038b3ac67aa9bac141b5969a15c3b678",
+      "sha256": "3ceb0b65848b5c34a5bc4e3e3eb6c3c6f8fc572040597973ecd58135d05eac33",
       "bytes": 1651
     },
     {
@@ -187,8 +192,8 @@
     },
     {
       "path": "docs/verification-gates.md",
-      "sha256": "3dc26d51b95932d50fac0a8ffc21b0052f6c3998218a529571d677a8958b0ba9",
-      "bytes": 5052
+      "sha256": "d8274630316681e6e73349f45e1d0969127d5e1d3a046dd4b1e850fff01f962a",
+      "bytes": 5316
     }
   ]
 }

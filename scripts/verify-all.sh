@@ -31,6 +31,9 @@ npm run verify:registry-consistency >/dev/null
 echo "[verify-all] rebuilding deployment attestation"
 npm run build:deployment-attestation >/dev/null
 
+echo "[verify-all] rebuilding runtime attestation"
+npm run build:runtime-attestation >/dev/null
+
 echo "[verify-all] rebuilding go-live attestation"
 npm run build:go-live-attestation >/dev/null
 
@@ -60,6 +63,9 @@ npm run verify:mainnet-readiness-report >/dev/null
 
 echo "[verify-all] checking deployment attestation"
 npm run verify:deployment-attestation >/dev/null
+
+echo "[verify-all] checking runtime attestation"
+npm run verify:runtime-attestation >/dev/null
 
 echo "[verify-all] checking go-live attestation"
 npm run verify:go-live-attestation >/dev/null

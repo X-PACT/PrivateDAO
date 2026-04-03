@@ -34,21 +34,22 @@ This report is generated from the canonical PrivateDAO registries and reviewer a
 
 ## Reviewer Artifact Summary
 
-- Verification gates tracked: `22`
-- Gate count in review attestation: `22`
+- Verification gates tracked: `23`
+- Gate count in review attestation: `23`
 - Strategy package count: `6`
 - Security package count: `6`
 - ZK package count: `13`
-- Proof package count: `11`
+- Proof package count: `12`
 - Operations package count: `12`
+- Runtime attestation: `docs/runtime-attestation.generated.json`
 - Go-live criteria: `docs/go-live-criteria.md`
 - Operational drillbook: `docs/operational-drillbook.md`
 - Go-live attestation: `docs/go-live-attestation.generated.json`
 - ZK stack version: `1`
 - ZK layer count: `3`
 - Integrity algorithm: `sha256`
-- Integrity entries: `37`
-- Integrity aggregate sha256: `6770a8c5fa576bc52afa5a6d4d44ae9a17df2f4b250e2553899f9f73279f27e3`
+- Integrity entries: `38`
+- Integrity aggregate sha256: `f992d19d2cfdf9fc0ebfb3a866a234f388faa8aced10a5a9db60004b1943ec83`
 
 ## Mainnet Conclusion
 
@@ -72,9 +73,11 @@ What still requires real-world completion before mainnet should be claimed:
 ```bash
 npm run build:mainnet-readiness-report
 npm run build:deployment-attestation
+npm run build:runtime-attestation
 npm run build:go-live-attestation
 npm run verify:mainnet-readiness-report
 npm run verify:deployment-attestation
+npm run verify:runtime-attestation
 npm run verify:go-live-attestation
 npm run verify:all
 bash scripts/check-mainnet-readiness.sh

@@ -53,6 +53,7 @@ required_files=(
   "docs/deployment-attestation.generated.json"
   "docs/go-live-criteria.md"
   "docs/operational-drillbook.md"
+  "docs/runtime-attestation.generated.json"
   "docs/go-live-attestation.generated.json"
   "docs/ranger-submission-bundle.generated.md"
   "docs/ranger-strategy-config.devnet.json"
@@ -147,6 +148,9 @@ npx ts-node scripts/verify-mainnet-readiness-report.ts >/dev/null
 
 echo "[review-surface] checking deployment attestation"
 npx ts-node scripts/verify-deployment-attestation.ts >/dev/null
+
+echo "[review-surface] checking runtime attestation"
+npx ts-node scripts/verify-runtime-attestation.ts >/dev/null
 
 echo "[review-surface] checking go-live attestation"
 npx ts-node scripts/verify-go-live-attestation.ts >/dev/null

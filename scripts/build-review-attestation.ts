@@ -110,6 +110,7 @@ function main() {
       "docs/deployment-attestation.generated.json",
       "docs/go-live-criteria.md",
       "docs/operational-drillbook.md",
+      "docs/runtime-attestation.generated.json",
       "docs/go-live-attestation.generated.json",
     ],
     gateCount: submission.gates.length,

@@ -73,6 +73,15 @@ npm run verify:go-live-attestation
 
 Builds and verifies a machine-readable go-live decision artifact that makes the current mainnet block conditions explicit instead of leaving them implicit in prose.
 
+### Runtime Attestation
+
+```bash
+npm run build:runtime-attestation
+npm run verify:runtime-attestation
+```
+
+Builds and verifies a machine-readable runtime summary for supported Devnet wallets, the diagnostics page, and the reviewer-visible wallet runtime surface.
+
 ### ZK Registry
 
 ```bash

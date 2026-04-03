@@ -32,6 +32,7 @@ const MANIFEST_FILES = [
   "docs/wallet-runtime.md",
   "docs/go-live-criteria.md",
   "docs/operational-drillbook.md",
+  "docs/runtime-attestation.generated.json",
   "docs/security-review.md",
   "docs/deployment-attestation.generated.json",
   "docs/go-live-attestation.generated.json",

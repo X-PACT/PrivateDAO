@@ -37,7 +37,7 @@
     "strategy": 6,
     "security": 6,
     "zk": 13,
-    "proof": 11,
+    "proof": 12,
     "operations": 12
   },
   "zk": {
@@ -72,8 +72,8 @@
   },
   "cryptographicIntegrity": {
     "algorithm": "sha256",
-    "entryCount": 37,
-    "aggregateSha256": "6770a8c5fa576bc52afa5a6d4d44ae9a17df2f4b250e2553899f9f73279f27e3"
+    "entryCount": 38,
+    "aggregateSha256": "f992d19d2cfdf9fc0ebfb3a866a234f388faa8aced10a5a9db60004b1943ec83"
   },
   "runtimeDocs": [
     "docs/fair-voting.md",
@@ -82,9 +82,10 @@
     "docs/deployment-attestation.generated.json",
     "docs/go-live-criteria.md",
     "docs/operational-drillbook.md",
+    "docs/runtime-attestation.generated.json",
     "docs/go-live-attestation.generated.json"
   ],
-  "gateCount": 22,
+  "gateCount": 23,
   "statuses": {
     "governanceLifecycle": "verified",
     "securityReasoning": "verified",

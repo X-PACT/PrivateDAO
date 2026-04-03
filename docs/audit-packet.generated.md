@@ -57,8 +57,8 @@
 - Deployment attestation: `docs/deployment-attestation.generated.json`
 - Go-live attestation: `docs/go-live-attestation.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `37`
-- Aggregate sha256: `6770a8c5fa576bc52afa5a6d4d44ae9a17df2f4b250e2553899f9f73279f27e3`
+- Manifest entries: `38`
+- Aggregate sha256: `f992d19d2cfdf9fc0ebfb3a866a234f388faa8aced10a5a9db60004b1943ec83`
 
 ## ZK Package
 
@@ -138,6 +138,7 @@
 - `docs/fair-voting.md`
 - `docs/wallet-runtime.md`
 - `docs/deployment-attestation.generated.json`
+- `docs/runtime-attestation.generated.json`
 - `docs/go-live-attestation.generated.json`
 
 ## Runtime Package
@@ -148,6 +149,7 @@
 - `docs/deployment-attestation.generated.json`
 - `docs/go-live-criteria.md`
 - `docs/operational-drillbook.md`
+- `docs/runtime-attestation.generated.json`
 - `docs/go-live-attestation.generated.json`
 
 ## Operations Package
@@ -179,6 +181,7 @@
 - `npm run verify:cryptographic-manifest`
 - `npm run verify:mainnet-readiness-report`
 - `npm run verify:deployment-attestation`
+- `npm run verify:runtime-attestation`
 - `npm run verify:go-live-attestation`
 - `npm run verify:zk-surface`
 - `npm run verify:zk-registry`

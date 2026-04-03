@@ -67,6 +67,7 @@ function main() {
     "npm run verify:cryptographic-manifest",
     "npm run verify:mainnet-readiness-report",
     "npm run verify:deployment-attestation",
+    "npm run verify:runtime-attestation",
     "npm run verify:go-live-attestation",
     "npm run verify:zk-surface",
     "npm run verify:zk-registry",
