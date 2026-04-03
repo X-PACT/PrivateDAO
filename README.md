@@ -19,7 +19,6 @@
 [![Solana](https://img.shields.io/badge/Solana-Devnet-14F195)](https://solana.com)
 [![Anchor](https://img.shields.io/badge/Anchor-0.31.1-blue)](https://www.anchor-lang.com)
 [![License](https://img.shields.io/badge/License-AGPLv3%2B%20%7C%20Apache--2.0%20%7C%20MIT-green)](LICENSE)
-[![Submission](https://img.shields.io/badge/Colosseum-Submission%20Ready-ff9f1c)](SUBMISSION.md)
 [![Pitch Assets](https://img.shields.io/badge/Pitch-Ready-ff6b6b)](SUBMISSION_FINAL.md)
 [![Demo Reel](https://img.shields.io/badge/Demo-Reel-14b8a6)](docs/assets/demo-reel.gif)
 [![Program](https://img.shields.io/badge/Program-Devnet%20Live-14F195)](https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet)
@@ -933,8 +932,6 @@ PrivateDAO is naturally aligned with the kinds of ecosystem support programs tha
 
 - Solana Foundation:
   overall hackathon placement and broader ecosystem grant relevance
-- Colosseum-managed Solana hackathon pipeline:
-  strong fit for continued builder review if verification and product polish keep improving
 - Realms ecosystem:
   direct relevance because the repo includes a voter-weight record path and migration-oriented DAO tooling
 - Sunrise ecosystem:
