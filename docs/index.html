@@ -1757,7 +1757,11 @@ body.judge-mode .judge-banner {
   justify-content: center;
   background: linear-gradient(135deg, rgba(0,229,255,0.18), rgba(255,255,255,0.04));
   border: 1px solid rgba(0,229,255,0.16);
-  font-size: 16px;
+}
+.wallet-provider-icon svg {
+  width: 18px;
+  height: 18px;
+  display: block;
 }
 .wallet-provider-meta {
   display: flex;
@@ -1891,7 +1895,12 @@ body.judge-mode .judge-banner {
           <div class="wallet-provider-list">
             <button class="wallet-provider-btn" type="button" onclick="connectWallet('auto')">
               <span class="wallet-provider-main">
-                <span class="wallet-provider-icon">◎</span>
+                <span class="wallet-provider-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="7.5" stroke="#00e5ff" stroke-width="1.8"/>
+                    <circle cx="12" cy="12" r="2.8" fill="#00e5ff"/>
+                  </svg>
+                </span>
                 <span class="wallet-provider-meta">
                   <strong>Auto Detect</strong>
                   <span>Best available installed Solana wallet</span>
@@ -1901,7 +1910,12 @@ body.judge-mode .judge-banner {
             </button>
             <button class="wallet-provider-btn" type="button" onclick="connectWallet('phantom')">
               <span class="wallet-provider-main">
-                <span class="wallet-provider-icon">P</span>
+                <span class="wallet-provider-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M6 18V6h6.4c3.1 0 5.1 1.8 5.1 4.6 0 2.9-2 4.7-5.1 4.7H9.4V18H6Z" stroke="#ab9cff" stroke-width="1.8" stroke-linejoin="round"/>
+                    <path d="M9.4 8.2v5h2.7c1.7 0 2.7-.9 2.7-2.5 0-1.6-1-2.5-2.7-2.5H9.4Z" fill="#ab9cff"/>
+                  </svg>
+                </span>
                 <span class="wallet-provider-meta">
                   <strong>Phantom</strong>
                   <span>Browser extension or in-app browser</span>
@@ -1911,7 +1925,13 @@ body.judge-mode .judge-banner {
             </button>
             <button class="wallet-provider-btn" type="button" onclick="connectWallet('solflare')">
               <span class="wallet-provider-main">
-                <span class="wallet-provider-icon">S</span>
+                <span class="wallet-provider-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M17.5 6.5c-1.6-1.5-3.5-2.2-5.8-2.2-2.2 0-4 .6-5.4 1.9-1.5 1.2-2.2 2.8-2.2 4.7 0 2 .7 3.7 2.2 5 1.5 1.2 3.3 1.9 5.6 1.9 2.6 0 4.8-.8 6.5-2.5" stroke="#ff9f43" stroke-width="1.8" stroke-linecap="round"/>
+                    <path d="M7.2 13.2h9.6" stroke="#ff9f43" stroke-width="1.8" stroke-linecap="round"/>
+                    <path d="M9 9.7h7.3" stroke="#ff9f43" stroke-width="1.8" stroke-linecap="round" opacity=".7"/>
+                  </svg>
+                </span>
                 <span class="wallet-provider-meta">
                   <strong>Solflare</strong>
                   <span>Browser extension or in-app browser</span>
@@ -1921,7 +1941,13 @@ body.judge-mode .judge-banner {
             </button>
             <button class="wallet-provider-btn" type="button" onclick="connectWallet('backpack')">
               <span class="wallet-provider-main">
-                <span class="wallet-provider-icon">B</span>
+                <span class="wallet-provider-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <rect x="6.2" y="7.2" width="11.6" height="11" rx="3" stroke="#00d4aa" stroke-width="1.8"/>
+                    <path d="M9 7.2V6.4c0-1.7 1.4-3 3-3s3 1.3 3 3v.8" stroke="#00d4aa" stroke-width="1.8" stroke-linecap="round"/>
+                    <path d="M9.5 12h5" stroke="#00d4aa" stroke-width="1.8" stroke-linecap="round"/>
+                  </svg>
+                </span>
                 <span class="wallet-provider-meta">
                   <strong>Backpack</strong>
                   <span>Injected Solana wallet provider</span>
@@ -1931,7 +1957,12 @@ body.judge-mode .judge-banner {
             </button>
             <button class="wallet-provider-btn" type="button" onclick="connectWallet('glow')">
               <span class="wallet-provider-main">
-                <span class="wallet-provider-icon">G</span>
+                <span class="wallet-provider-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 4.8c4 0 7.2 3.2 7.2 7.2S16 19.2 12 19.2 4.8 16 4.8 12 8 4.8 12 4.8Z" stroke="#ffe066" stroke-width="1.8"/>
+                    <path d="M12 7.2v4.8l3.2 1.9" stroke="#ffe066" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
                 <span class="wallet-provider-meta">
                   <strong>Glow</strong>
                   <span>Compatible injected Solana provider</span>
@@ -2341,7 +2372,7 @@ body.judge-mode .judge-banner {
 <section class="section" style="padding-top:140px">
   <div class="container">
     <div class="section-tag reveal">PROOF CENTER</div>
-    <h2 class="section-heading reveal">Everything a judge or investor needs,<br>in one surface.</h2>
+    <h2 class="section-heading reveal">Everything a judge or reviewer needs,<br>in one surface.</h2>
 
     <div class="award-detail-card reveal">
       <div class="award-detail-head">
@@ -2499,16 +2530,16 @@ body.judge-mode .judge-banner {
     </div>
 
     <div class="investor-video-card reveal" style="margin-top:24px">
-      <div class="section-tag" style="margin-bottom:14px">PITCH AND REVIEW</div>
-      <div class="investor-video-title">Published pitch plus live repository proof.</div>
+      <div class="section-tag" style="margin-bottom:14px">EXPLAINER AND REVIEW</div>
+      <div class="investor-video-title">Published technical explainer plus live repository proof.</div>
       <p class="investor-video-copy">
-        The strongest PrivateDAO review flow is not a claim-only narrative. It starts with the pitch, then lands immediately on the real on-chain and repo-native proof surface.
+        The strongest PrivateDAO review flow is not a claim-only narrative. It starts with the technical explainer, then lands immediately on the real on-chain and repo-native proof surface.
       </p>
       <div class="investor-video-grid">
         <div class="investor-video-panel">
           <div class="award-meta-card-label">WATCH</div>
           <div class="investor-video-copy">
-            <div>YouTube pitch: <a class="award-link" href="https://youtu.be/KVNFZXHNZTQ" target="_blank">KVNFZXHNZTQ</a></div>
+            <div>YouTube explainer: <a class="award-link" href="https://youtu.be/KVNFZXHNZTQ" target="_blank">KVNFZXHNZTQ</a></div>
             <div style="margin-top:12px">Repo-native MP4: <a class="award-link" href="assets/private-dao-investor-pitch.mp4" target="_blank">Direct asset</a></div>
             <div style="margin-top:12px">Poster: <a class="award-link" href="assets/private-dao-investor-pitch-poster.png" target="_blank">Preview image</a></div>
           </div>
@@ -2522,6 +2553,7 @@ body.judge-mode .judge-banner {
             <div style="margin-top:12px">Ranger checklist: <a class="award-link" href="ranger-submission-checklist.md" target="_blank">Submission Checklist</a></div>
             <div style="margin-top:12px">Risk policy: <a class="award-link" href="risk-policy.md" target="_blank">Risk Policy</a></div>
             <div style="margin-top:12px">Judge audit note: <a class="award-link" href="judge-technical-audit.md" target="_blank">Technical Audit</a></div>
+            <div style="margin-top:12px">Security architecture: <a class="award-link" href="security-architecture.md" target="_blank">Architecture Diagram</a></div>
             <div style="margin-top:12px">Main Track memo: <a class="award-link" href="ranger-main-track.md" target="_blank">Main Track</a></div>
             <div style="margin-top:12px">Drift Track memo: <a class="award-link" href="ranger-drift-track.md" target="_blank">Drift Track</a></div>
           </div>
@@ -3110,18 +3142,18 @@ execute() → CPI
     </div>
 
     <div class="investor-video-card reveal">
-      <div class="section-tag" style="margin-bottom:14px">INVESTOR VIDEO PACKAGE</div>
-      <div class="investor-video-title">Pitch assets are prepared from the protocol itself.</div>
+      <div class="section-tag" style="margin-bottom:14px">TECHNICAL EXPLAINER PACKAGE</div>
+      <div class="investor-video-title">Explainer assets are prepared from the protocol itself.</div>
       <p class="investor-video-copy">
-        The investor video package is being produced from the actual program logic, lifecycle tests, live frontend, and award verification so the final pitch stays aligned with what PrivateDAO really ships.
+        The explainer video package is being produced from the actual program logic, lifecycle tests, live frontend, the zk layer, the cryptographic integrity layer, and award verification so the final video stays aligned with what PrivateDAO really ships.
       </p>
       <div class="investor-video-grid">
         <div class="investor-video-panel">
           <div class="award-meta-card-label">VIDEO ASSETS</div>
           <div class="investor-video-copy">
-            <div>Watch on YouTube: <a class="award-link" href="https://youtu.be/KVNFZXHNZTQ" target="_blank" style="margin-top:12px">Investor Pitch</a></div>
+            <div>Watch on YouTube: <a class="award-link" href="https://youtu.be/KVNFZXHNZTQ" target="_blank" style="margin-top:12px">Technical Explainer</a></div>
             <div style="margin-top:12px">Repo-native asset: <a class="award-link" href="assets/private-dao-investor-pitch.mp4" target="_blank">MP4 Asset</a></div>
-            <div>Brief and production package: <a class="award-link" href="investor-video.md" target="_blank" style="margin-top:12px">Investor Video Brief</a></div>
+            <div>Brief and production package: <a class="award-link" href="investor-video.md" target="_blank" style="margin-top:12px">Explainer Video Brief</a></div>
             <div style="margin-top:12px">Voiceover: <a class="award-link" href="video-voiceover.md" target="_blank">Voiceover Script</a></div>
             <div style="margin-top:12px">Shotlist: <a class="award-link" href="video-shotlist.md" target="_blank">Shotlist</a></div>
           </div>
@@ -3129,7 +3161,7 @@ execute() → CPI
         <div class="investor-video-panel">
           <div class="award-meta-card-label">PUBLISH STATUS</div>
           <div class="investor-video-copy">
-            <div>YouTube version is published and ready for judges and investors.</div>
+            <div>YouTube version is published and ready for judges, auditors, grant reviewers, and technical evaluators.</div>
             <div style="margin-top:10px">Watch now: <a class="award-link" href="https://youtu.be/KVNFZXHNZTQ" target="_blank">YouTube</a></div>
             <div style="margin-top:10px">Repo fallback: <a class="award-link" href="assets/private-dao-investor-pitch.mp4" target="_blank">MP4 asset</a></div>
           </div>

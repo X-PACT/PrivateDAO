@@ -131,6 +131,20 @@ Execute
 - failed finalize/execute should not advance lifecycle
 - failed execution paths should not partially transfer funds
 
+### Layer 6 — Zero-Knowledge Overlay
+
+- Circom circuit for vote-form validity
+- Groth16 proof generation and verification
+- minimum-weight eligibility proof
+- proposal-scoped commitment and nullifier binding
+
+### Layer 7 — Cryptographic Artifact Integrity
+
+- sha256 manifest over canonical zk artifacts
+- sha256 manifest over canonical proof artifacts
+- published fingerprints for reviewer-visible verification
+- automated integrity checks through repo verification gates
+
 ## 8. Reviewer Reading Order
 
 If a reviewer wants the fastest architecture-level understanding:

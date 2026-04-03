@@ -1,13 +1,13 @@
-# PrivateDAO Investor Video Package
+# PrivateDAO Technical Explainer Video Package
 
 ## Objective
 
-Create a premium 45 to 60 second investor-facing pitch video for PrivateDAO that is suitable for:
+Create a premium 60 to 75 second technical explainer video for PrivateDAO that is suitable for:
 
-- Solana ecosystem investors
 - Hackathon judges
 - Grant reviewers
 - Technical partners
+- Solana ecosystem reviewers
 
 The video must communicate:
 
@@ -16,6 +16,7 @@ The video must communicate:
 - The system solves real governance leakage problems
 - The project now combines protocol hardening, zero-knowledge proof surfaces, and a published cryptographic artifact integrity layer
 - The project has third-party validation through a verified 1st Place achievement
+- The final output is the official project explainer, not an investor pitch
 
 ## Core Claims To Preserve
 
@@ -44,9 +45,9 @@ The video must communicate:
 - Live frontend: `docs/index.html`
 - Awards note: `docs/awards.md`
 
-## Production Status
+## Current Explainer Status
 
-- Published YouTube pitch: `https://youtu.be/KVNFZXHNZTQ`
+- Published YouTube explainer: `https://youtu.be/KVNFZXHNZTQ`
 - External generation task: https://manus.im/app/kMUHrujYi7Ec8nXqWDSxa9
 - External generation task v2: https://manus.im/app/WNFD2RAUyWN5X83jtYdywy
 - Current known status: repo-native render completed and YouTube version published
@@ -69,7 +70,7 @@ The video should not imply a completed external audit or claim production adopti
 
 ## Repo Release Plan
 
-The repository carries a usable investor-facing video artifact directly in the repo, with YouTube as the public watch surface and the MP4 retained as a repo-native fallback asset.
+The repository carries a usable project explainer artifact directly in the repo, with YouTube as the public watch surface and the MP4 retained as a repo-native fallback asset.
 
 - Primary repo video target: `docs/assets/private-dao-investor-pitch.mp4`
 - Primary public watch target: `https://youtu.be/KVNFZXHNZTQ`
@@ -82,4 +83,4 @@ The repository carries a usable investor-facing video artifact directly in the r
 - Do not mention any prize amount
 - Keep claims bounded to what the repository and award note support
 - Use premium technical styling rather than generic startup hype
-- Keep the ending concise and investor-friendly
+- Keep the ending concise, technical, and reviewer-friendly

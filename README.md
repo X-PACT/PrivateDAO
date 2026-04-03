@@ -151,9 +151,9 @@ Quick links:
 - Live devnet proof: `docs/live-proof.md`
 - Devnet release manifest: `docs/devnet-release-manifest.md`
 - Proof registry: `docs/proof-registry.json`
-- Investor video package: `docs/investor-video.md`
-- YouTube pitch video: `https://youtu.be/KVNFZXHNZTQ`
-- Repo-native video asset: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
+- Technical explainer package: `docs/investor-video.md`
+- YouTube technical explainer: `https://youtu.be/KVNFZXHNZTQ`
+- Repo-native explainer asset: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
 - On-chain program: `programs/private-dao/src/lib.rs`
 - End-to-end lifecycle test: `tests/full-flow-test.ts`
 
@@ -531,21 +531,29 @@ GitHub Pages source: `docs/` via `.github/workflows/pages.yml`.
 
 PrivateDAO brings commit-reveal voting, proposal-scoped private delegation, keeper-assisted reveal, and timelocked treasury execution to Solana DAOs in one working stack.
 
-## 🎬 Investor Video Package
+## 🎬 Technical Explainer Package
 
 <p align="center">
   <a href="https://youtu.be/KVNFZXHNZTQ" target="_blank">
-    <img src="docs/assets/private-dao-investor-pitch-poster.png" alt="PrivateDAO investor pitch video poster" width="900" />
+    <img src="docs/assets/private-dao-investor-pitch-poster.png" alt="PrivateDAO technical explainer video poster" width="900" />
   </a>
 </p>
 
-- Strategy documentation for judges, partners, and investors: `https://us04docs.zoom.us/doc/Zd34HEaHSKyZGRxBcqxXQg`
-- Watch the YouTube pitch video: `https://youtu.be/KVNFZXHNZTQ`
-- Repo-native video asset: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
+- Strategy documentation for judges, partners, and technical reviewers: `https://us04docs.zoom.us/doc/Zd34HEaHSKyZGRxBcqxXQg`
+- Watch the YouTube technical explainer: `https://youtu.be/KVNFZXHNZTQ`
+- Repo-native explainer asset: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
 - Video brief and production package: `docs/investor-video.md`
 - Voiceover script: `docs/video-voiceover.md`
 - Shotlist and visual direction: `docs/video-shotlist.md`
 - Poster asset: `docs/assets/private-dao-investor-pitch-poster.png`
+
+The explainer now reflects the current system state directly:
+
+- protocol hardening
+- zero-knowledge overlay
+- cryptographic artifact integrity
+- web and Android-native review surfaces
+- live devnet proof and reviewer verification paths
 
 ## 🧪 Local Demo
 
