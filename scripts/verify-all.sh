@@ -13,6 +13,9 @@ npm run verify:live-proof >/dev/null
 echo "[verify-all] checking strategy surface"
 npm run verify:strategy-surface >/dev/null
 
+echo "[verify-all] rebuilding zk registry"
+npm run build:zk-registry >/dev/null
+
 echo "[verify-all] checking zk surface"
 npm run verify:zk-surface >/dev/null
 

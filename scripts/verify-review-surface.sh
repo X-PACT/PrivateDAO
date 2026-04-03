@@ -17,6 +17,8 @@ required_files=(
   "docs/independent-verification.md"
   "docs/attack-simulation-log.md"
   "docs/zk-upgrade.md"
+  "docs/zk-stack.md"
+  "docs/zk-registry.generated.json"
   "docs/zk-architecture.md"
   "docs/zk-evidence.md"
   "docs/reviewer-fast-path.md"
@@ -64,8 +66,10 @@ if rg -n "REPLACE_WITH|REPLACE_ME|TODO|TBD|coming soon|not implemented" \
   docs/failure-modes.md \
   docs/replay-analysis.md \
   docs/zk-upgrade.md \
+  docs/zk-stack.md \
   docs/zk-architecture.md \
   docs/zk-evidence.md \
+  docs/cryptographic-integrity.md \
   docs/protocol-spec.md \
   docs/independent-verification.md \
   docs/attack-simulation-log.md \
@@ -94,6 +98,9 @@ npx ts-node scripts/verify-live-proof.ts >/dev/null
 
 echo "[review-surface] checking zk surface consistency"
 bash scripts/verify-zk-surface.sh >/dev/null
+
+echo "[review-surface] checking zk registry consistency"
+npx ts-node scripts/verify-zk-registry.ts >/dev/null
 
 echo "[review-surface] checking cryptographic integrity"
 npx ts-node scripts/verify-cryptographic-manifest.ts >/dev/null

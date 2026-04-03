@@ -39,6 +39,8 @@ This repository now includes a real multi-circuit zk proving flow for the Privat
 npm run zk:build
 npm run zk:prove:sample
 npm run zk:verify:sample
+npm run build:zk-registry
+npm run verify:zk-registry
 npm run verify:zk-consistency
 npm run verify:zk-negative
 ```
@@ -95,8 +97,10 @@ The zk stack is only considered valid when:
 - each witness is generated from its circuit-specific sample input
 - every proof is generated successfully
 - every proof verifies against its exported verification key
+- the generated zk registry matches the real artifact tree
 - recomputed public signals match the stored public outputs
 - tampered public signals fail verification
+- tampered proof objects fail verification
 
 This is intended to be a real proving path, not a placeholder research note.
 

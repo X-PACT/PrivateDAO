@@ -10,6 +10,7 @@ required_files=(
   "docs/zk-layer.md"
   "docs/zk-upgrade.md"
   "docs/zk-stack.md"
+  "docs/zk-registry.generated.json"
   "docs/zk-architecture.md"
   "docs/zk-evidence.md"
   "zk/circuits/private_dao_vote_overlay.circom"
@@ -50,6 +51,9 @@ if rg -n "REPLACE_WITH|REPLACE_ME|TODO|TBD|coming soon|not implemented" \
   exit 1
 fi
 
+echo "[verify-zk-surface] rebuilding zk registry"
+npm run build:zk-registry >/dev/null
+
 echo "[verify-zk-surface] verifying sample proof"
 npm run zk:verify:sample >/dev/null
 
@@ -58,5 +62,8 @@ npm run verify:zk-consistency >/dev/null
 
 echo "[verify-zk-surface] checking tamper rejection"
 npm run verify:zk-negative >/dev/null
+
+echo "[verify-zk-surface] checking zk registry"
+npm run verify:zk-registry >/dev/null
 
 echo "[verify-zk-surface] PASS"

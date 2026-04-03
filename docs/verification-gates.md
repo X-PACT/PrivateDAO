@@ -46,6 +46,15 @@ npm run verify:cryptographic-manifest
 
 Checks that the sha256 manifest covering zk artifacts, live-proof anchors, and generated review materials still matches the canonical files on disk.
 
+### ZK Registry
+
+```bash
+npm run build:zk-registry
+npm run verify:zk-registry
+```
+
+Builds and verifies the machine-readable registry for the live Circom and Groth16 stack, including artifact paths, public signal counts, and per-layer commands.
+
 ### Live Proof
 
 ```bash

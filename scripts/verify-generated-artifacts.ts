@@ -5,6 +5,7 @@ function main() {
   const auditPacketPath = path.resolve("docs/audit-packet.generated.md");
   const attestationPath = path.resolve("docs/review-attestation.generated.json");
   const cryptographicManifestPath = path.resolve("docs/cryptographic-manifest.generated.json");
+  const zkRegistryPath = path.resolve("docs/zk-registry.generated.json");
 
   if (!fs.existsSync(auditPacketPath)) {
     throw new Error("missing generated audit packet");
@@ -14,6 +15,9 @@ function main() {
   }
   if (!fs.existsSync(cryptographicManifestPath)) {
     throw new Error("missing generated cryptographic manifest");
+  }
+  if (!fs.existsSync(zkRegistryPath)) {
+    throw new Error("missing generated zk registry");
   }
 
   const auditPacket = fs.readFileSync(auditPacketPath, "utf8");
@@ -35,6 +39,12 @@ function main() {
     entryCount: number;
     aggregateSha256: string;
     files: Array<{ path: string; sha256: string }>;
+  };
+  const zkRegistry = JSON.parse(fs.readFileSync(zkRegistryPath, "utf8")) as {
+    project: string;
+    zkStackVersion: number;
+    entryCount: number;
+    entries: Array<{ circuit: string; layer: string; publicSignalCount: number }>;
   };
 
   if (attestation.project !== "PrivateDAO") {
@@ -69,6 +79,24 @@ function main() {
     throw new Error("generated attestation is missing cryptographic integrity summary");
   }
 
+  if (zkRegistry.project !== "PrivateDAO") {
+    throw new Error("generated zk registry project mismatch");
+  }
+
+  if (zkRegistry.zkStackVersion < 1) {
+    throw new Error("generated zk registry version mismatch");
+  }
+
+  if (zkRegistry.entryCount !== zkRegistry.entries.length || zkRegistry.entries.length < 3) {
+    throw new Error("generated zk registry entry count mismatch");
+  }
+
+  for (const entry of zkRegistry.entries) {
+    if (!entry.circuit || !entry.layer || entry.publicSignalCount <= 0) {
+      throw new Error(`generated zk registry entry is invalid for ${entry.circuit || "unknown-circuit"}`);
+    }
+  }
+
   if (attestation.cryptographicIntegrity.algorithm !== cryptographicManifest.algorithm) {
     throw new Error("generated attestation cryptographic algorithm mismatch");
   }
@@ -89,6 +117,10 @@ function main() {
 
   if (!auditPacket.includes("# Audit Packet")) {
     throw new Error("generated audit packet content is invalid");
+  }
+
+  if (!cryptographicManifest.files.some((entry) => entry.path === "docs/zk-registry.generated.json")) {
+    throw new Error("generated cryptographic manifest is missing the zk registry");
   }
 
   console.log("Generated artifact verification: PASS");

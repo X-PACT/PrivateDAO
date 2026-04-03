@@ -27,8 +27,8 @@
   },
   "cryptographicIntegrity": {
     "algorithm": "sha256",
-    "entryCount": 21,
-    "aggregateSha256": "b83c3e554830c4b38662c1ec96531cfaa301e2c3eba70128811fb0e9721ec8cf"
+    "entryCount": 22,
+    "aggregateSha256": "7b4938ee04d730bdc90f743a2bd4e60c08ffaac20b5c49c4b0e664d70277d6cd"
   },
   "gateCount": 12,
   "statuses": {

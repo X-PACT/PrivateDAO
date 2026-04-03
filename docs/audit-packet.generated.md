@@ -38,8 +38,8 @@
 - Integrity note: `docs/cryptographic-integrity.md`
 - Cryptographic manifest: `docs/cryptographic-manifest.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `21`
-- Aggregate sha256: `b83c3e554830c4b38662c1ec96531cfaa301e2c3eba70128811fb0e9721ec8cf`
+- Manifest entries: `22`
+- Aggregate sha256: `7b4938ee04d730bdc90f743a2bd4e60c08ffaac20b5c49c4b0e664d70277d6cd`
 
 ## Strategy Package
 

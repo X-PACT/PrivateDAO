@@ -120,6 +120,7 @@ Quick links:
 - ZK upgrade path: `docs/zk-upgrade.md`
 - ZK layer: `docs/zk-layer.md`
 - ZK stack: `docs/zk-stack.md`
+- ZK registry: `docs/zk-registry.generated.json`
 - ZK architecture: `docs/zk-architecture.md`
 - ZK evidence: `docs/zk-evidence.md`
 - Cryptographic integrity: `docs/cryptographic-integrity.md`
