@@ -3498,6 +3498,23 @@ function bindWalletProviderEvents(provider) {
   walletProviderListenersBound = true;
 }
 
+async function hydrateWalletSession() {
+  const provider = resolveWalletProvider();
+  if (!provider) return;
+  if (walletProvider !== provider) {
+    walletProvider = provider;
+    walletProviderListenersBound = false;
+  }
+  bindWalletProviderEvents(walletProvider);
+  const existingPk = extractWalletPublicKey(null, walletProvider);
+  if (walletProvider.isConnected && existingPk) {
+    wallet = existingPk;
+    updateWalletUi(true);
+    syncCreateProposalCommand();
+    updateRevealCommandBuilder();
+  }
+}
+
 async function connectResolvedWalletProvider(provider) {
   let response = null;
 
@@ -5170,6 +5187,7 @@ updateDeploymentSnapshot();
 loadLiveProposals();
 setInterval(updateDeploymentSnapshot, 30_000);
 setInterval(loadLiveProposals, 30_000);
+hydrateWalletSession().catch(() => {});
 
 // ── Close on overlay click ────────────────────────────────
 document.querySelectorAll('.modal-overlay').forEach(o => {

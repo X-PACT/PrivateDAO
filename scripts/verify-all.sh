@@ -16,6 +16,9 @@ npm run verify:strategy-surface >/dev/null
 echo "[verify-all] checking zk surface"
 npm run verify:zk-surface >/dev/null
 
+echo "[verify-all] checking frontend surface"
+npm run verify:frontend-surface >/dev/null
+
 echo "[verify-all] checking submission registry"
 npm run verify:submission-registry >/dev/null
 
