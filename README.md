@@ -28,6 +28,7 @@
 [![Atomicity](https://img.shields.io/badge/Atomicity-Verified-15803d)](docs/failure-modes.md)
 [![ZK Overlay](https://img.shields.io/badge/ZK-Real%20Groth16%20Overlay-111827)](docs/zk-upgrade.md)
 [![ZK Stack](https://img.shields.io/badge/ZK%20Stack-Vote%20%2B%20Delegation%20%2B%20Tally-0f766e)](docs/zk-stack.md)
+[![ZK Threat Extension](https://img.shields.io/badge/ZK%20Threats-Extended-1d4ed8)](docs/zk-threat-extension.md)
 [![Zero Knowledge](https://img.shields.io/badge/ZK%20%E2%9F%A1-Live%20Proof%20Layer-06b6d4)](docs/zk-layer.md)
 [![Artifact Integrity](https://img.shields.io/badge/Artifact%20Integrity-SHA256%20Manifest-0f766e)](docs/cryptographic-integrity.md)
 
@@ -120,6 +121,7 @@ Quick links:
 - ZK upgrade path: `docs/zk-upgrade.md`
 - ZK layer: `docs/zk-layer.md`
 - ZK stack: `docs/zk-stack.md`
+- ZK threat extension: `docs/zk-threat-extension.md`
 - ZK registry: `docs/zk-registry.generated.json`
 - ZK architecture: `docs/zk-architecture.md`
 - ZK evidence: `docs/zk-evidence.md`

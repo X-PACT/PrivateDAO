@@ -38,8 +38,21 @@
 - Integrity note: `docs/cryptographic-integrity.md`
 - Cryptographic manifest: `docs/cryptographic-manifest.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `22`
-- Aggregate sha256: `7b4938ee04d730bdc90f743a2bd4e60c08ffaac20b5c49c4b0e664d70277d6cd`
+- Manifest entries: `23`
+- Aggregate sha256: `32c4cc277421471b469fbeaa8c10125b693e0fe1568083fa7661e6c202004b28`
+
+## ZK Package
+
+- ZK layer note: `docs/zk-layer.md`
+- ZK stack note: `docs/zk-stack.md`
+- ZK threat extension: `docs/zk-threat-extension.md`
+- ZK registry: `docs/zk-registry.generated.json`
+- ZK stack version: `1`
+- ZK registry entries: `3`
+
+- `vote` -> `private_dao_vote_overlay` | public signals: `6` | build: `npm run zk:build:vote` | verify: `npm run zk:verify:vote`
+- `delegation` -> `private_dao_delegation_overlay` | public signals: `7` | build: `npm run zk:build:delegation` | verify: `npm run zk:verify:delegation`
+- `tally` -> `private_dao_tally_overlay` | public signals: `7` | build: `npm run zk:build:tally` | verify: `npm run zk:verify:tally`
 
 ## Strategy Package
 
@@ -58,6 +71,16 @@
 - `docs/failure-modes.md`
 - `docs/replay-analysis.md`
 - `docs/cryptographic-integrity.md`
+
+## ZK Review Package
+
+- `docs/zk-layer.md`
+- `docs/zk-stack.md`
+- `docs/zk-upgrade.md`
+- `docs/zk-architecture.md`
+- `docs/zk-evidence.md`
+- `docs/zk-threat-extension.md`
+- `docs/zk-registry.generated.json`
 
 ## Proof Package
 
@@ -91,6 +114,10 @@
 - `npm run verify:registry-consistency`
 - `npm run verify:generated-artifacts`
 - `npm run verify:cryptographic-manifest`
+- `npm run verify:zk-surface`
+- `npm run verify:zk-registry`
+- `npm run verify:zk-consistency`
+- `npm run verify:zk-negative`
 - `npm run verify:review-surface`
 - `npm run verify:all`
 
@@ -98,6 +125,7 @@
 
 - governanceLifecycle: `verified`
 - securityReasoning: `verified`
+- zkCompanionStack: `verified`
 - reviewerSurface: `verified`
 - operationsSurface: `verified`
 - strategyEngine: `not-in-repo`

@@ -2,6 +2,10 @@
 
 This repository now includes a real multi-circuit zk proving flow for the PrivateDAO companion stack.
 
+Formal zk threat reasoning:
+
+- `docs/zk-threat-extension.md`
+
 ## Circuits
 
 - `zk/circuits/private_dao_vote_overlay.circom`

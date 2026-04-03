@@ -41,7 +41,7 @@ function main() {
     throw new Error("submission registry verification wallet mismatch");
   }
 
-  const requiredPackages = ["strategy", "security", "proof", "operations"];
+  const requiredPackages = ["strategy", "security", "zk", "proof", "operations"];
   for (const pkg of requiredPackages) {
     const entries = registry.packages[pkg];
     if (!entries || entries.length === 0) {
@@ -64,6 +64,10 @@ function main() {
     "npm run verify:submission-registry",
     "npm run verify:registry-consistency",
     "npm run verify:generated-artifacts",
+    "npm run verify:zk-surface",
+    "npm run verify:zk-registry",
+    "npm run verify:zk-consistency",
+    "npm run verify:zk-negative",
     "npm run verify:review-surface",
     "npm run verify:all",
   ];

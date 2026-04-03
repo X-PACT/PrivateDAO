@@ -55,6 +55,15 @@ npm run verify:zk-registry
 
 Builds and verifies the machine-readable registry for the live Circom and Groth16 stack, including artifact paths, public signal counts, and per-layer commands.
 
+### ZK Consistency And Tamper Rejection
+
+```bash
+npm run verify:zk-consistency
+npm run verify:zk-negative
+```
+
+Checks that recomputed public signals match the stored outputs and that tampered public signals or proof objects are rejected.
+
 ### Live Proof
 
 ```bash

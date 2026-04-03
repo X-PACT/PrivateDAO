@@ -25,10 +25,21 @@ type CryptographicManifest = {
   aggregateSha256: string;
 };
 
+type ZkRegistry = {
+  zkStackVersion: number;
+  entryCount: number;
+  entries: Array<{
+    circuit: string;
+    layer: string;
+    publicSignalCount: number;
+  }>;
+};
+
 function main() {
   const submission = readJson<SubmissionRegistry>("docs/submission-registry.json");
   const proof = readJson<ProofRegistry>("docs/proof-registry.json");
   const cryptographicManifest = readJson<CryptographicManifest>("docs/cryptographic-manifest.generated.json");
+  const zkRegistry = readJson<ZkRegistry>("docs/zk-registry.generated.json");
 
   const attestation = {
     project: submission.project,
@@ -45,8 +56,18 @@ function main() {
     packageCounts: {
       strategy: submission.packages.strategy.length,
       security: submission.packages.security.length,
+      zk: submission.packages.zk.length,
       proof: submission.packages.proof.length,
       operations: submission.packages.operations.length,
+    },
+    zk: {
+      stackVersion: zkRegistry.zkStackVersion,
+      entryCount: zkRegistry.entryCount,
+      layers: zkRegistry.entries.map((entry) => ({
+        layer: entry.layer,
+        circuit: entry.circuit,
+        publicSignalCount: entry.publicSignalCount,
+      })),
     },
     cryptographicIntegrity: {
       algorithm: cryptographicManifest.algorithm,

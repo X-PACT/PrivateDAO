@@ -22,18 +22,41 @@
   "packageCounts": {
     "strategy": 6,
     "security": 6,
+    "zk": 7,
     "proof": 5,
     "operations": 9
   },
+  "zk": {
+    "stackVersion": 1,
+    "entryCount": 3,
+    "layers": [
+      {
+        "layer": "vote",
+        "circuit": "private_dao_vote_overlay",
+        "publicSignalCount": 6
+      },
+      {
+        "layer": "delegation",
+        "circuit": "private_dao_delegation_overlay",
+        "publicSignalCount": 7
+      },
+      {
+        "layer": "tally",
+        "circuit": "private_dao_tally_overlay",
+        "publicSignalCount": 7
+      }
+    ]
+  },
   "cryptographicIntegrity": {
     "algorithm": "sha256",
-    "entryCount": 22,
-    "aggregateSha256": "7b4938ee04d730bdc90f743a2bd4e60c08ffaac20b5c49c4b0e664d70277d6cd"
+    "entryCount": 23,
+    "aggregateSha256": "32c4cc277421471b469fbeaa8c10125b693e0fe1568083fa7661e6c202004b28"
   },
-  "gateCount": 12,
+  "gateCount": 16,
   "statuses": {
     "governanceLifecycle": "verified",
     "securityReasoning": "verified",
+    "zkCompanionStack": "verified",
     "reviewerSurface": "verified",
     "operationsSurface": "verified",
     "strategyEngine": "not-in-repo",

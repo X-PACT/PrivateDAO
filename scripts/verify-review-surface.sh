@@ -17,6 +17,7 @@ required_files=(
   "docs/independent-verification.md"
   "docs/attack-simulation-log.md"
   "docs/zk-upgrade.md"
+  "docs/zk-threat-extension.md"
   "docs/zk-stack.md"
   "docs/zk-registry.generated.json"
   "docs/zk-architecture.md"
@@ -66,6 +67,7 @@ if rg -n "REPLACE_WITH|REPLACE_ME|TODO|TBD|coming soon|not implemented" \
   docs/failure-modes.md \
   docs/replay-analysis.md \
   docs/zk-upgrade.md \
+  docs/zk-threat-extension.md \
   docs/zk-stack.md \
   docs/zk-architecture.md \
   docs/zk-evidence.md \

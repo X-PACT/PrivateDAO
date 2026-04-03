@@ -29,6 +29,7 @@ const MANIFEST_FILES = [
   "docs/security-review.md",
   "docs/zk-layer.md",
   "docs/zk-stack.md",
+  "docs/zk-threat-extension.md",
   "docs/zk-registry.generated.json",
   "docs/verification-gates.md",
 ];

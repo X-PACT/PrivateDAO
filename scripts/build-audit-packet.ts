@@ -34,10 +34,26 @@ type CryptographicManifest = {
   aggregateSha256: string;
 };
 
+type ZkRegistry = {
+  zkStackVersion: number;
+  entryCount: number;
+  entries: Array<{
+    circuit: string;
+    layer: string;
+    publicSignalCount: number;
+    commands: {
+      build: string;
+      prove: string;
+      verify: string;
+    };
+  }>;
+};
+
 function main() {
   const submission = readJson<SubmissionRegistry>("docs/submission-registry.json");
   const proof = readJson<ProofRegistry>("docs/proof-registry.json");
   const cryptographicManifest = readJson<CryptographicManifest>("docs/cryptographic-manifest.generated.json");
+  const zkRegistry = readJson<ZkRegistry>("docs/zk-registry.generated.json");
   const outPath = path.resolve("docs/audit-packet.generated.md");
 
   const markdown = `# Audit Packet
@@ -78,6 +94,22 @@ ${Object.entries(proof.transactions)
 - Manifest entries: \`${cryptographicManifest.entryCount}\`
 - Aggregate sha256: \`${cryptographicManifest.aggregateSha256}\`
 
+## ZK Package
+
+- ZK layer note: \`docs/zk-layer.md\`
+- ZK stack note: \`docs/zk-stack.md\`
+- ZK threat extension: \`docs/zk-threat-extension.md\`
+- ZK registry: \`docs/zk-registry.generated.json\`
+- ZK stack version: \`${zkRegistry.zkStackVersion}\`
+- ZK registry entries: \`${zkRegistry.entryCount}\`
+
+${zkRegistry.entries
+  .map(
+    (entry) =>
+      `- \`${entry.layer}\` -> \`${entry.circuit}\` | public signals: \`${entry.publicSignalCount}\` | build: \`${entry.commands.build}\` | verify: \`${entry.commands.verify}\``,
+  )
+  .join("\n")}
+
 ## Strategy Package
 
 ${submission.packages.strategy.map((entry) => `- \`${entry}\``).join("\n")}
@@ -85,6 +117,10 @@ ${submission.packages.strategy.map((entry) => `- \`${entry}\``).join("\n")}
 ## Security Package
 
 ${submission.packages.security.map((entry) => `- \`${entry}\``).join("\n")}
+
+## ZK Review Package
+
+${submission.packages.zk.map((entry) => `- \`${entry}\``).join("\n")}
 
 ## Proof Package
 

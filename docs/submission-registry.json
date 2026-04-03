@@ -26,6 +26,15 @@
       "docs/replay-analysis.md",
       "docs/cryptographic-integrity.md"
     ],
+    "zk": [
+      "docs/zk-layer.md",
+      "docs/zk-stack.md",
+      "docs/zk-upgrade.md",
+      "docs/zk-architecture.md",
+      "docs/zk-evidence.md",
+      "docs/zk-threat-extension.md",
+      "docs/zk-registry.generated.json"
+    ],
     "proof": [
       "docs/live-proof.md",
       "docs/devnet-release-manifest.md",
@@ -56,12 +65,17 @@
     "npm run verify:registry-consistency",
     "npm run verify:generated-artifacts",
     "npm run verify:cryptographic-manifest",
+    "npm run verify:zk-surface",
+    "npm run verify:zk-registry",
+    "npm run verify:zk-consistency",
+    "npm run verify:zk-negative",
     "npm run verify:review-surface",
     "npm run verify:all"
   ],
   "status": {
     "governanceLifecycle": "verified",
     "securityReasoning": "verified",
+    "zkCompanionStack": "verified",
     "reviewerSurface": "verified",
     "operationsSurface": "verified",
     "strategyEngine": "not-in-repo",

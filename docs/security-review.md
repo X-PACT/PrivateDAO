@@ -15,6 +15,7 @@ PrivateDAO now includes a reviewer-visible hardening layer focused on realistic 
 - timing boundary and lifecycle invariant checks
 - mainnet cutover readiness checks
 - non-breaking zk stack proof generation and verification
+- zk threat-extension reasoning and registry-backed review integrity
 
 ## Reviewer-first proof points
 
@@ -147,6 +148,7 @@ The repository now includes a real zero-knowledge companion stack that does not 
 - proof verification through `npm run zk:all`
 - explicit zk layer framing: `docs/zk-layer.md`
 - layered zk stack note: `docs/zk-stack.md`
+- zk threat extension: `docs/zk-threat-extension.md`
 
 The current zk stack proves:
 
@@ -156,6 +158,8 @@ The current zk stack proves:
 - proposal-scoped nullifier bindings across the live proof layers
 
 This is intentionally additive. It strengthens the protocol's future privacy path without changing current instruction interfaces or deployed assumptions.
+
+The review surface also now includes a zk-specific threat extension so auditors can inspect the additive proof layer with the same discipline used for the live protocol surface.
 
 ## Cryptographic Integrity Summary
 
