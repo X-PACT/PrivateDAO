@@ -53,4 +53,10 @@ fi
 echo "[verify-zk-surface] verifying sample proof"
 npm run zk:verify:sample >/dev/null
 
+echo "[verify-zk-surface] checking public signal consistency"
+npm run verify:zk-consistency >/dev/null
+
+echo "[verify-zk-surface] checking tamper rejection"
+npm run verify:zk-negative >/dev/null
+
 echo "[verify-zk-surface] PASS"

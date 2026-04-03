@@ -36,6 +36,8 @@
     "verify:registry-consistency": "ts-node scripts/verify-registry-consistency.ts",
     "verify:generated-artifacts": "ts-node scripts/verify-generated-artifacts.ts",
     "verify:cryptographic-manifest": "ts-node scripts/verify-cryptographic-manifest.ts",
+    "verify:zk-consistency": "ts-node scripts/verify-zk-consistency.ts",
+    "verify:zk-negative": "ts-node scripts/verify-zk-negative.ts",
     "zk:build": "bash scripts/zk/build-zk.sh",
     "zk:build:vote": "bash scripts/zk/build-zk.sh private_dao_vote_overlay",
     "zk:build:delegation": "bash scripts/zk/build-zk.sh private_dao_delegation_overlay",
