@@ -251,6 +251,13 @@ This layer turns the release-ceremony surface into a repository-contained drill 
 - which stages are simulated rather than live production events
 - which repository commands and reviewer artifacts appear in the simulated execution trace
 
+The repository now also exposes:
+
+- `docs/mainnet-acceptance-matrix.generated.md`
+- `docs/mainnet-proof-package.generated.md`
+
+These separate repository-accepted surfaces from external blockers so mainnet-readiness discussion stays explicit and reviewer-friendly.
+
 ## Replay Summary
 
 Replay analysis now documents:

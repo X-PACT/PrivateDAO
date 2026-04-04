@@ -65,6 +65,8 @@
 - Supply-chain attestation: `docs/supply-chain-attestation.generated.json`
 - Cryptographic manifest: `docs/cryptographic-manifest.generated.json`
 - Mainnet readiness report: `docs/mainnet-readiness.generated.md`
+- Mainnet acceptance matrix: `docs/mainnet-acceptance-matrix.generated.md`
+- Mainnet proof package: `docs/mainnet-proof-package.generated.md`
 - Deployment attestation: `docs/deployment-attestation.generated.json`
 - Go-live attestation: `docs/go-live-attestation.generated.json`
 - Release ceremony note: `docs/release-ceremony.md`
@@ -72,8 +74,8 @@
 - Release drill: `docs/release-drill.generated.json`
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `68`
-- Aggregate sha256: `33ba1513ddd3f6d3b7373bc90c17b004165a79cb838b60379f76a168b1428c24`
+- Manifest entries: `73`
+- Aggregate sha256: `c4e1240487d467d7bf4425aa8287342f3ad19f59daa23a7d9912f4312e313547`
 
 ## ZK Package
 
@@ -178,6 +180,11 @@
 - `docs/wallet-runtime.md`
 - `docs/runtime-evidence.generated.md`
 - `docs/runtime-evidence.generated.json`
+- `docs/mainnet-acceptance-matrix.generated.md`
+- `docs/mainnet-acceptance-matrix.generated.json`
+- `docs/mainnet-proof-package.generated.md`
+- `docs/mainnet-proof-package.generated.json`
+- `docs/external-readiness-intake.md`
 - `docs/wallet-compatibility-matrix.generated.md`
 - `docs/wallet-compatibility-matrix.generated.json`
 - `docs/devnet-canary.generated.md`
@@ -196,6 +203,11 @@
 - `docs/wallet-compatibility-matrix.generated.json`
 - `docs/devnet-canary.generated.md`
 - `docs/devnet-canary.generated.json`
+- `docs/mainnet-acceptance-matrix.generated.md`
+- `docs/mainnet-acceptance-matrix.generated.json`
+- `docs/mainnet-proof-package.generated.md`
+- `docs/mainnet-proof-package.generated.json`
+- `docs/external-readiness-intake.md`
 - `docs/mainnet-readiness.generated.md`
 - `docs/release-ceremony.md`
 - `docs/release-ceremony-attestation.generated.md`
@@ -287,6 +299,8 @@
 - `npm run ops:canary`
 - `npm run verify:cryptographic-manifest`
 - `npm run verify:mainnet-readiness-report`
+- `npm run verify:mainnet-acceptance-matrix`
+- `npm run verify:mainnet-proof-package`
 - `npm run verify:deployment-attestation`
 - `npm run verify:runtime-attestation`
 - `npm run verify:runtime-surface`

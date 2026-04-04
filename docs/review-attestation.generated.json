@@ -39,7 +39,7 @@
     "strategy": 9,
     "security": 11,
     "zk": 13,
-    "proof": 34,
+    "proof": 39,
     "operations": 18
   },
   "zk": {
@@ -74,8 +74,8 @@
   },
   "cryptographicIntegrity": {
     "algorithm": "sha256",
-    "entryCount": 68,
-    "aggregateSha256": "33ba1513ddd3f6d3b7373bc90c17b004165a79cb838b60379f76a168b1428c24"
+    "entryCount": 73,
+    "aggregateSha256": "c4e1240487d467d7bf4425aa8287342f3ad19f59daa23a7d9912f4312e313547"
   },
   "runtimeDocs": [
     "docs/fair-voting.md",
@@ -86,6 +86,11 @@
     "docs/wallet-compatibility-matrix.generated.json",
     "docs/devnet-canary.generated.md",
     "docs/devnet-canary.generated.json",
+    "docs/mainnet-acceptance-matrix.generated.md",
+    "docs/mainnet-acceptance-matrix.generated.json",
+    "docs/mainnet-proof-package.generated.md",
+    "docs/mainnet-proof-package.generated.json",
+    "docs/external-readiness-intake.md",
     "docs/pdao-attestation.generated.json",
     "docs/mainnet-readiness.generated.md",
     "docs/deployment-attestation.generated.json",
@@ -111,7 +116,7 @@
     "docs/supply-chain-attestation.generated.md",
     "docs/supply-chain-attestation.generated.json"
   ],
-  "gateCount": 53,
+  "gateCount": 55,
   "statuses": {
     "governanceLifecycle": "verified",
     "securityReasoning": "verified",

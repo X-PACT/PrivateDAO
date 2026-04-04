@@ -218,6 +218,17 @@ npm run verify:release-drill
 Builds and verifies a repository-simulated release drill that makes the pre-cutover and blocked-external stages explicit rather than leaving them implied.
 The generated trace now also records which repository commands and reviewer-visible artifacts participated in the simulated release path.
 
+### Mainnet Acceptance Package
+
+```bash
+npm run build:mainnet-acceptance-matrix
+npm run verify:mainnet-acceptance-matrix
+npm run build:mainnet-proof-package
+npm run verify:mainnet-proof-package
+```
+
+Builds and verifies the reviewer-facing acceptance matrix and proof package that separate repository-accepted surfaces from external blockers such as audit, real-device QA, and live rollout.
+
 ### Artifact Freshness
 
 ```bash

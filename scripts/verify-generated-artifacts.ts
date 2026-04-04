@@ -16,6 +16,10 @@ function main() {
   const runtimeAttestationPath = path.resolve("docs/runtime-attestation.generated.json");
   const runtimeEvidenceJsonPath = path.resolve("docs/runtime-evidence.generated.json");
   const runtimeEvidenceMdPath = path.resolve("docs/runtime-evidence.generated.md");
+  const mainnetAcceptanceJsonPath = path.resolve("docs/mainnet-acceptance-matrix.generated.json");
+  const mainnetAcceptanceMdPath = path.resolve("docs/mainnet-acceptance-matrix.generated.md");
+  const mainnetProofPackageJsonPath = path.resolve("docs/mainnet-proof-package.generated.json");
+  const mainnetProofPackageMdPath = path.resolve("docs/mainnet-proof-package.generated.md");
   const releaseDrillJsonPath = path.resolve("docs/release-drill.generated.json");
   const releaseDrillMdPath = path.resolve("docs/release-drill.generated.md");
   const pdaoAttestationPath = path.resolve("docs/pdao-attestation.generated.json");
@@ -74,6 +78,12 @@ function main() {
   }
   if (!fs.existsSync(runtimeEvidenceJsonPath) || !fs.existsSync(runtimeEvidenceMdPath)) {
     throw new Error("missing generated runtime evidence artifacts");
+  }
+  if (!fs.existsSync(mainnetAcceptanceJsonPath) || !fs.existsSync(mainnetAcceptanceMdPath)) {
+    throw new Error("missing mainnet acceptance matrix artifacts");
+  }
+  if (!fs.existsSync(mainnetProofPackageJsonPath) || !fs.existsSync(mainnetProofPackageMdPath)) {
+    throw new Error("missing mainnet proof package artifacts");
   }
   if (!fs.existsSync(releaseDrillJsonPath) || !fs.existsSync(releaseDrillMdPath)) {
     throw new Error("missing generated release drill artifacts");
@@ -214,6 +224,24 @@ function main() {
     commands: string[];
   };
   const runtimeEvidenceMd = fs.readFileSync(runtimeEvidenceMdPath, "utf8");
+  const mainnetAcceptance = JSON.parse(fs.readFileSync(mainnetAcceptanceJsonPath, "utf8")) as {
+    project: string;
+    programId: string;
+    verificationWallet: string;
+    acceptanceDecision: string;
+    summary: { acceptedInRepo: number; pendingExternal: number; notInRepo: number; runtimeWalletCount: number };
+    rows: Array<{ layer: string; status: string; evidence: string[]; rationale: string }>;
+  };
+  const mainnetAcceptanceMd = fs.readFileSync(mainnetAcceptanceMdPath, "utf8");
+  const mainnetProofPackage = JSON.parse(fs.readFileSync(mainnetProofPackageJsonPath, "utf8")) as {
+    project: string;
+    packageDecision: string;
+    coreArtifacts: string[];
+    summary: { acceptedInRepo: number; pendingExternal: number; notInRepo: number };
+    readinessAnchor: { project: string; programId: string; verificationWallet: string };
+    commands: string[];
+  };
+  const mainnetProofPackageMd = fs.readFileSync(mainnetProofPackageMdPath, "utf8");
   const releaseDrill = JSON.parse(fs.readFileSync(releaseDrillJsonPath, "utf8")) as {
     project: string;
     mode: string;
@@ -781,6 +809,64 @@ function main() {
 
   if (!mainnetReadinessReport.includes("# Mainnet Readiness Report")) {
     throw new Error("generated mainnet readiness report content is invalid");
+  }
+
+  if (mainnetAcceptance.project !== "PrivateDAO") {
+    throw new Error("generated mainnet acceptance matrix project mismatch");
+  }
+  if (mainnetAcceptance.programId !== attestation.programId) {
+    throw new Error("generated mainnet acceptance matrix program mismatch");
+  }
+  if (mainnetAcceptance.verificationWallet !== attestation.verificationWallet) {
+    throw new Error("generated mainnet acceptance matrix verification wallet mismatch");
+  }
+  if (mainnetAcceptance.summary.acceptedInRepo < 5 || mainnetAcceptance.summary.pendingExternal < 2) {
+    throw new Error("generated mainnet acceptance matrix summary is unexpectedly weak");
+  }
+  if (!mainnetAcceptance.rows.some((row) => row.layer === "governance-lifecycle" && row.status === "accepted-in-repo")) {
+    throw new Error("generated mainnet acceptance matrix is missing the governance lifecycle row");
+  }
+  if (!mainnetAcceptance.rows.some((row) => row.layer === "real-device-wallet-qa" && row.status === "pending-external")) {
+    throw new Error("generated mainnet acceptance matrix is missing the real-device-wallet-qa row");
+  }
+  if (!mainnetAcceptance.rows.some((row) => row.layer === "external-audit" && row.status === "pending-external")) {
+    throw new Error("generated mainnet acceptance matrix is missing the external-audit row");
+  }
+  if (!mainnetAcceptance.rows.some((row) => row.layer === "strategy-engine-and-live-performance" && row.status === "not-in-repo")) {
+    throw new Error("generated mainnet acceptance matrix is missing the strategy boundary row");
+  }
+  if (
+    !mainnetAcceptanceMd.includes("# Mainnet Acceptance Matrix") ||
+    !mainnetAcceptanceMd.includes("docs/external-readiness-intake.md") ||
+    !mainnetAcceptanceMd.includes("real-device-wallet-qa")
+  ) {
+    throw new Error("generated mainnet acceptance matrix markdown is invalid");
+  }
+
+  if (mainnetProofPackage.project !== "PrivateDAO") {
+    throw new Error("generated mainnet proof package project mismatch");
+  }
+  if (mainnetProofPackage.readinessAnchor.programId !== attestation.programId) {
+    throw new Error("generated mainnet proof package program mismatch");
+  }
+  if (mainnetProofPackage.readinessAnchor.verificationWallet !== attestation.verificationWallet) {
+    throw new Error("generated mainnet proof package verification wallet mismatch");
+  }
+  if (!mainnetProofPackage.coreArtifacts.includes("docs/mainnet-acceptance-matrix.generated.md")) {
+    throw new Error("generated mainnet proof package is missing the acceptance matrix");
+  }
+  if (!mainnetProofPackage.coreArtifacts.includes("docs/external-readiness-intake.md")) {
+    throw new Error("generated mainnet proof package is missing the external readiness intake");
+  }
+  if (!mainnetProofPackage.commands.includes("npm run verify:mainnet-proof-package")) {
+    throw new Error("generated mainnet proof package is missing its verification command");
+  }
+  if (
+    !mainnetProofPackageMd.includes("# Mainnet Proof Package") ||
+    !mainnetProofPackageMd.includes("docs/mainnet-acceptance-matrix.generated.md") ||
+    !mainnetProofPackageMd.includes("docs/runtime-evidence.generated.md")
+  ) {
+    throw new Error("generated mainnet proof package markdown is invalid");
   }
 
   if (deploymentAttestation.project !== "PrivateDAO") {

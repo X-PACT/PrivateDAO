@@ -1,0 +1,38 @@
+# Mainnet Proof Package
+
+## Overview
+
+- project: `PrivateDAO`
+- generated at: `2026-04-04T23:44:31.028Z`
+- package decision: `repository-strong-but-external-blockers-remain`
+- program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
+- accepted in repo: `8`
+- pending external: `2`
+- not in repo: `1`
+
+## Core Artifacts
+
+- `docs/mainnet-readiness.generated.md`
+- `docs/mainnet-acceptance-matrix.generated.md`
+- `docs/release-ceremony-attestation.generated.md`
+- `docs/release-drill.generated.md`
+- `docs/runtime-evidence.generated.md`
+- `docs/deployment-attestation.generated.json`
+- `docs/go-live-attestation.generated.json`
+- `docs/external-readiness-intake.md`
+
+## Canonical Commands
+
+- `npm run build:mainnet-readiness-report`
+- `npm run build:mainnet-acceptance-matrix`
+- `npm run build:mainnet-proof-package`
+- `npm run verify:mainnet-readiness-report`
+- `npm run verify:mainnet-acceptance-matrix`
+- `npm run verify:mainnet-proof-package`
+- `npm run verify:all`
+- `bash scripts/check-mainnet-readiness.sh`
+
+## Purpose
+
+This package is the shortest reviewer-facing path for mainnet readiness discussions. It binds the readiness report, acceptance matrix, runtime package, release discipline, and honest external-intake boundary into one compact surface.

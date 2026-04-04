@@ -246,11 +246,14 @@ Quick links:
 - Security review surface: `docs/security-review.md`
 - Mainnet readiness note: `docs/mainnet-readiness.md`
 - Mainnet readiness report: `docs/mainnet-readiness.generated.md`
+- Mainnet acceptance matrix: `docs/mainnet-acceptance-matrix.generated.md`
+- Mainnet proof package: `docs/mainnet-proof-package.generated.md`
 - Deployment attestation: `docs/deployment-attestation.generated.json`
 - Go-live attestation: `docs/go-live-attestation.generated.json`
 - Release ceremony: `docs/release-ceremony.md`
 - Release ceremony attestation: `docs/release-ceremony-attestation.generated.json`
 - Release drill evidence: `docs/release-drill.generated.json`
+- External readiness intake: `docs/external-readiness-intake.md`
 - Production operations: `docs/production-operations.md`
 - Monitoring and alerts: `docs/monitoring-alerts.md`
 - Incident response: `docs/incident-response.md`

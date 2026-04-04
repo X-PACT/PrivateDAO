@@ -1,0 +1,136 @@
+{
+  "project": "PrivateDAO",
+  "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+  "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+  "generatedAt": "2026-04-04T23:44:20.011Z",
+  "acceptanceDecision": "repository-strong-but-external-blockers-remain",
+  "summary": {
+    "acceptedInRepo": 8,
+    "pendingExternal": 2,
+    "notInRepo": 1,
+    "runtimeWalletCount": 5,
+    "declaredSubmissionStatuses": {
+      "governanceLifecycle": "verified",
+      "securityReasoning": "verified",
+      "supplyChainSurface": "verified",
+      "releaseCeremonySurface": "verified",
+      "runtimeEvidenceSurface": "verified",
+      "releaseDrillSurface": "verified",
+      "artifactFreshness": "verified",
+      "zkCompanionStack": "verified",
+      "reviewerSurface": "verified",
+      "operationsSurface": "verified",
+      "strategyEngine": "not-in-repo",
+      "livePerformance": "not-in-repo",
+      "externalAudit": "pending",
+      "mainnetRollout": "pending"
+    }
+  },
+  "rows": [
+    {
+      "layer": "governance-lifecycle",
+      "status": "accepted-in-repo",
+      "evidence": [
+        "docs/live-proof.md",
+        "docs/load-test-report.md",
+        "tests/full-flow-test.ts"
+      ],
+      "rationale": "The lifecycle is live on Devnet and is covered by deterministic tests and published proof surfaces."
+    },
+    {
+      "layer": "security-reasoning",
+      "status": "accepted-in-repo",
+      "evidence": [
+        "docs/security-review.md",
+        "docs/threat-model.md",
+        "docs/replay-analysis.md"
+      ],
+      "rationale": "Threats, replay, and failure behavior are documented and tied to tests and gates."
+    },
+    {
+      "layer": "cryptographic-integrity",
+      "status": "accepted-in-repo",
+      "evidence": [
+        "docs/cryptographic-manifest.generated.json",
+        "docs/supply-chain-attestation.generated.json"
+      ],
+      "rationale": "Reviewer artifacts and top-level dependency manifests are sha256-bound and drift-checked."
+    },
+    {
+      "layer": "zk-companion-stack",
+      "status": "accepted-in-repo",
+      "evidence": [
+        "docs/zk-attestation.generated.json",
+        "docs/zk-transcript.generated.md",
+        "docs/zk-registry.generated.json"
+      ],
+      "rationale": "Groth16 companion proofs are generated, verified, transcript-backed, and explicitly bounded as off-chain."
+    },
+    {
+      "layer": "token-surface",
+      "status": "accepted-in-repo",
+      "evidence": [
+        "docs/pdao-token.md",
+        "docs/pdao-attestation.generated.json",
+        "docs/assets/pdao-token.json"
+      ],
+      "rationale": "The PDAO token surface is attested, metadata-backed, and aligned with the canonical Devnet proof package."
+    },
+    {
+      "layer": "runtime-and-resilience",
+      "status": "accepted-in-repo",
+      "evidence": [
+        "docs/runtime-evidence.generated.md",
+        "docs/devnet-canary.generated.md",
+        "docs/devnet-resilience-report.md"
+      ],
+      "rationale": "The repository proves runtime diagnostics, RPC fallback, and stale-blockhash recovery on Devnet."
+    },
+    {
+      "layer": "release-discipline",
+      "status": "accepted-in-repo",
+      "evidence": [
+        "docs/release-ceremony-attestation.generated.md",
+        "docs/release-drill.generated.md",
+        "docs/review-automation.md"
+      ],
+      "rationale": "Release gating, artifact freshness, and simulated cutover traces are all reviewer-visible and automated."
+    },
+    {
+      "layer": "real-device-wallet-qa",
+      "status": "pending-external",
+      "evidence": [
+        "docs/wallet-compatibility-matrix.generated.md",
+        "docs/external-readiness-intake.md"
+      ],
+      "rationale": "Support surfaces are documented, but live device/browser evidence still has to be collected externally."
+    },
+    {
+      "layer": "external-audit",
+      "status": "pending-external",
+      "evidence": [
+        "docs/mainnet-readiness.generated.md",
+        "docs/external-readiness-intake.md"
+      ],
+      "rationale": "The repository cannot fabricate an external audit outcome."
+    },
+    {
+      "layer": "mainnet-rollout",
+      "status": "accepted-in-repo",
+      "evidence": [
+        "docs/go-live-attestation.generated.json",
+        "docs/mainnet-cutover-runbook.md",
+        "docs/operator-checklist.md"
+      ],
+      "rationale": "Mainnet execution remains intentionally blocked until external prerequisites are resolved."
+    },
+    {
+      "layer": "strategy-engine-and-live-performance",
+      "status": "not-in-repo",
+      "evidence": [
+        "docs/mainnet-readiness.generated.md"
+      ],
+      "rationale": "The repository does not claim a production strategy engine or live performance layer."
+    }
+  ]
+}

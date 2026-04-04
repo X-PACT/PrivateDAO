@@ -127,6 +127,8 @@ ${Object.entries(proof.transactions)
 - Supply-chain attestation: \`docs/supply-chain-attestation.generated.json\`
 - Cryptographic manifest: \`docs/cryptographic-manifest.generated.json\`
 - Mainnet readiness report: \`docs/mainnet-readiness.generated.md\`
+- Mainnet acceptance matrix: \`docs/mainnet-acceptance-matrix.generated.md\`
+- Mainnet proof package: \`docs/mainnet-proof-package.generated.md\`
 - Deployment attestation: \`docs/deployment-attestation.generated.json\`
 - Go-live attestation: \`docs/go-live-attestation.generated.json\`
 - Release ceremony note: \`docs/release-ceremony.md\`
@@ -198,6 +200,11 @@ ${submission.packages.proof.map((entry) => `- \`${entry}\``).join("\n")}
 - \`docs/wallet-compatibility-matrix.generated.json\`
 - \`docs/devnet-canary.generated.md\`
 - \`docs/devnet-canary.generated.json\`
+- \`docs/mainnet-acceptance-matrix.generated.md\`
+- \`docs/mainnet-acceptance-matrix.generated.json\`
+- \`docs/mainnet-proof-package.generated.md\`
+- \`docs/mainnet-proof-package.generated.json\`
+- \`docs/external-readiness-intake.md\`
 - \`docs/mainnet-readiness.generated.md\`
 - \`docs/release-ceremony.md\`
 - \`docs/release-ceremony-attestation.generated.md\`
