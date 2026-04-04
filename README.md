@@ -264,6 +264,7 @@ Quick links:
 - Ranger Drift Track memo: `docs/ranger-drift-track.md`
 - Live devnet proof: `docs/live-proof.md`
 - 50-wallet load report: `docs/load-test-report.md`
+- Devnet scale profiles: `docs/devnet-scale-profiles.md`
 - Multi-proposal isolation report: `docs/devnet-multi-proposal-report.md`
 - Race and collision report: `docs/devnet-race-report.md`
 - RPC and stale-blockhash resilience report: `docs/devnet-resilience-report.md`
@@ -1162,3 +1163,11 @@ Still intentionally scoped or deferred:
 ## License
 
 See `LICENSE`, `LICENSE-APACHE`, `LICENSE-MIT`, and `LICENSE-COMMERCIAL.md`.
+Extended Devnet scale profiles:
+
+```bash
+npm run test:devnet:100
+npm run test:devnet:500
+```
+
+The canonical reviewer package remains the 50-wallet run, while larger profiles write to profile-specific artifacts so explorer-visible baseline evidence stays stable.

@@ -33,6 +33,7 @@ import {
 } from "../utils";
 
 type WalletRole = "voter" | "adversarial" | "zk-tester";
+export type LoadProfileName = "50" | "100" | "500";
 type RevealMode = "valid" | "late";
 type CommitScenario =
   | "valid"
@@ -182,12 +183,33 @@ type MetricsState = {
   failureCount: number;
 };
 
+type HarnessProfile = {
+  name: LoadProfileName;
+  walletCount: number;
+  waveSize: number;
+  fundingWaveSize: number;
+  targetPdaoUi: number;
+};
+
+type HarnessPaths = {
+  walletsDir: string;
+  statePath: string;
+  docsWalletRegistry: string;
+  docsBootstrap: string;
+  docsTxRegistry: string;
+  docsAdversarial: string;
+  docsZkRegistry: string;
+  docsPerformance: string;
+  docsLoadReport: string;
+};
+
 export type HarnessState = {
-  version: 1;
+  version: 2;
   runLabel: string;
   network: "devnet";
   programId: string;
   pdaoMint: string;
+  profile: HarnessProfile;
   coordinator: {
     walletPath: string;
     publicKey: string;
@@ -211,15 +233,16 @@ const PROGRAM_ID = new PublicKey("5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx")
 const PDAO_MINT = new PublicKey("AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt");
 const DEFAULT_COORDINATOR_WALLET = "/home/x-pact/Desktop/wallet-keypair.json";
 const DEFAULT_DEVNET_RPC = process.env.ANCHOR_PROVIDER_URL || process.env.SOLANA_URL || "https://api.devnet.solana.com";
-const WALLET_COUNT = 50;
-const WAVE_SIZE = 10;
-const FUNDING_WAVE_SIZE = 5;
+const DEFAULT_PROFILE: LoadProfileName = "50";
+const LOAD_PROFILES: Record<LoadProfileName, HarnessProfile> = {
+  "50": { name: "50", walletCount: 50, waveSize: 10, fundingWaveSize: 5, targetPdaoUi: 100 },
+  "100": { name: "100", walletCount: 100, waveSize: 20, fundingWaveSize: 10, targetPdaoUi: 100 },
+  "500": { name: "500", walletCount: 500, waveSize: 25, fundingWaveSize: 10, targetPdaoUi: 100 },
+};
 const WAVE_DELAY_MS = 5000;
 const TX_DELAY_MS = 1200;
 const FUNDING_DELAY_MS = 900;
 const TARGET_SOL_LAMPORTS = Math.floor(0.08 * LAMPORTS_PER_SOL);
-const TARGET_PDAO_UI = 100;
-const TARGET_PDAO_RAW = BigInt(TARGET_PDAO_UI) * 1_000_000_000n;
 const COORDINATOR_MIN_BALANCE_LAMPORTS = Math.floor(8 * LAMPORTS_PER_SOL);
 const DAO_QUORUM_PERCENT = 60;
 const PROPOSAL_DURATION_SECONDS = 240;
@@ -230,16 +253,7 @@ const TREASURY_TRANSFER_LAMPORTS = Math.floor(0.05 * LAMPORTS_PER_SOL);
 const SNARK_FIELD = BigInt("21888242871839275222246405745257275088548364400416034343698204186575808495617");
 
 const REPO_ROOT = path.resolve(__dirname, "..", "..");
-const WALLETS_DIR = path.join(REPO_ROOT, "scripts", "generated-wallets");
-const STATE_PATH = path.join(WALLETS_DIR, "load-test-state.json");
 const IDL_PATH = path.join(REPO_ROOT, "target", "idl", "private_dao.json");
-const DOCS_WALLET_REGISTRY = path.join(REPO_ROOT, "docs", "devnet-wallet-registry.json");
-const DOCS_BOOTSTRAP = path.join(REPO_ROOT, "docs", "devnet-bootstrap.json");
-const DOCS_TX_REGISTRY = path.join(REPO_ROOT, "docs", "devnet-tx-registry.json");
-const DOCS_ADVERSARIAL = path.join(REPO_ROOT, "docs", "adversarial-report.json");
-const DOCS_ZK_REGISTRY = path.join(REPO_ROOT, "docs", "zk-proof-registry.json");
-const DOCS_PERFORMANCE = path.join(REPO_ROOT, "docs", "performance-metrics.json");
-const DOCS_LOAD_REPORT = path.join(REPO_ROOT, "docs", "load-test-report.md");
 const ZK_DEVNET_DIR = path.join(REPO_ROOT, "zk", "devnet-load");
 
 function nowIso(): string {
@@ -288,54 +302,98 @@ function saveKeypair(filePath: string, keypair: Keypair) {
   fs.writeFileSync(filePath, JSON.stringify(Array.from(keypair.secretKey)) + "\n", "utf8");
 }
 
-function walletPathForIndex(index: number): string {
-  return path.join(WALLETS_DIR, `wallet-${String(index).padStart(2, "0")}.json`);
+export function resolveLoadProfile(input?: string | null): HarnessProfile {
+  const normalized = (input || process.env.PRIVATE_DAO_LOAD_PROFILE || DEFAULT_PROFILE) as LoadProfileName;
+  const profile = LOAD_PROFILES[normalized];
+  if (!profile) {
+    throw new Error(`unsupported devnet load profile: ${String(input ?? process.env.PRIVATE_DAO_LOAD_PROFILE ?? DEFAULT_PROFILE)}`);
+  }
+  return profile;
 }
 
-function walletRoleForIndex(index: number): WalletRole {
-  const slot = index % WAVE_SIZE;
-  if (slot < 7) return "voter";
-  if (slot < 9) return "adversarial";
+function profileTargetPdaoRaw(profile: HarnessProfile): bigint {
+  return BigInt(profile.targetPdaoUi) * 1_000_000_000n;
+}
+
+function profileArtifactSuffix(profile: HarnessProfile): string {
+  return profile.name === DEFAULT_PROFILE ? "" : `.profile-${profile.name}`;
+}
+
+function resolveHarnessPaths(profile: HarnessProfile): HarnessPaths {
+  const suffix = profileArtifactSuffix(profile);
+  const walletsDir =
+    profile.name === DEFAULT_PROFILE
+      ? path.join(REPO_ROOT, "scripts", "generated-wallets")
+      : path.join(REPO_ROOT, "scripts", "generated-wallets", `profile-${profile.name}`);
+  return {
+    walletsDir,
+    statePath:
+      profile.name === DEFAULT_PROFILE
+        ? path.join(walletsDir, "load-test-state.json")
+        : path.join(walletsDir, `load-test-state.profile-${profile.name}.json`),
+    docsWalletRegistry: path.join(REPO_ROOT, "docs", `devnet-wallet-registry${suffix}.json`),
+    docsBootstrap: path.join(REPO_ROOT, "docs", `devnet-bootstrap${suffix}.json`),
+    docsTxRegistry: path.join(REPO_ROOT, "docs", `devnet-tx-registry${suffix}.json`),
+    docsAdversarial: path.join(REPO_ROOT, "docs", `adversarial-report${suffix}.json`),
+    docsZkRegistry: path.join(REPO_ROOT, "docs", `zk-proof-registry${suffix}.json`),
+    docsPerformance: path.join(REPO_ROOT, "docs", `performance-metrics${suffix}.json`),
+    docsLoadReport: path.join(REPO_ROOT, "docs", `load-test-report${suffix}.md`),
+  };
+}
+
+function walletPathForIndex(index: number, profile: HarnessProfile): string {
+  const width = Math.max(2, String(profile.walletCount).length);
+  return path.join(resolveHarnessPaths(profile).walletsDir, `wallet-${String(index).padStart(width, "0")}.json`);
+}
+
+function walletRoleForIndex(index: number, profile: HarnessProfile): WalletRole {
+  const slot = index % profile.waveSize;
+  const voterSlots = Math.max(1, Math.floor(profile.waveSize * 0.7));
+  const adversarialSlots = Math.max(1, Math.floor(profile.waveSize * 0.2));
+  if (slot < voterSlots) return "voter";
+  if (slot < voterSlots + adversarialSlots) return "adversarial";
   return "zk-tester";
 }
 
-function walletPlanForIndex(index: number, role: WalletRole): WalletPlan {
-  const slot = index % WAVE_SIZE;
+function walletPlanForIndex(index: number, role: WalletRole, profile: HarnessProfile): WalletPlan {
+  const slot = index % profile.waveSize;
   if (role === "adversarial") {
     const alternating: CommitScenario[] =
-      slot === 7
+      slot < Math.max(1, Math.floor(profile.waveSize * 0.8))
         ? ["wrong-voter-record", "wrong-token-account", "wrong-voter-record", "wrong-token-account", "wrong-voter-record"]
         : ["wrong-delegation-marker", "delegate-then-direct-overlap", "wrong-delegation-marker", "delegate-then-direct-overlap", "wrong-delegation-marker"];
     return {
       vote: false,
       revealMode: "valid",
-      commitScenario: alternating[Math.floor(index / WAVE_SIZE)] ?? "wrong-voter-record",
+      commitScenario: alternating[Math.floor(index / profile.waveSize)] ?? "wrong-voter-record",
     };
   }
   if (role === "zk-tester") {
     return { vote: true, revealMode: "valid", commitScenario: "valid" };
   }
-  if (slot === 6) {
+  const lateRevealSlot = Math.max(1, Math.floor(profile.waveSize * 0.6));
+  const noVoteSlot = Math.max(1, Math.floor(profile.waveSize * 0.5));
+  if (slot === lateRevealSlot) {
     return { vote: true, revealMode: "late", commitScenario: "valid" };
   }
-  if (slot === 5) {
+  if (slot === noVoteSlot) {
     return { vote: false, revealMode: "valid", commitScenario: "valid" };
   }
   return { vote: true, revealMode: "valid", commitScenario: "valid" };
 }
 
-function createEmptyWalletState(index: number, keypairPath: string, publicKey: string): WalletState {
-  const role = walletRoleForIndex(index);
+function createEmptyWalletState(index: number, keypairPath: string, publicKey: string, profile: HarnessProfile): WalletState {
+  const role = walletRoleForIndex(index, profile);
   return {
     walletIndex: index + 1,
     publicKey,
     role,
     keypairPath,
-    plan: walletPlanForIndex(index, role),
+    plan: walletPlanForIndex(index, role, profile),
     funding: {
       solTargetLamports: TARGET_SOL_LAMPORTS,
       solBalanceLamports: 0,
-      pdaoTargetRaw: TARGET_PDAO_RAW.toString(),
+      pdaoTargetRaw: profileTargetPdaoRaw(profile).toString(),
       pdaoBalanceRaw: "0",
       success: false,
       retries: 0,
@@ -364,37 +422,44 @@ function getCoordinatorWalletPath(): string {
   return process.env.DEVNET_COORDINATOR_WALLET || process.env.ANCHOR_WALLET || DEFAULT_COORDINATOR_WALLET;
 }
 
-export async function loadOrInitializeState(connection: Connection): Promise<HarnessState> {
-  ensureDir(WALLETS_DIR);
+export async function loadOrInitializeState(connection: Connection, profileInput?: string | null): Promise<HarnessState> {
+  const profile = resolveLoadProfile(profileInput);
+  const paths = resolveHarnessPaths(profile);
+  ensureDir(paths.walletsDir);
   ensureDir(ZK_DEVNET_DIR);
 
   const coordinatorKeypair = loadKeypair(getCoordinatorWalletPath());
   const initialBalanceLamports = await connection.getBalance(coordinatorKeypair.publicKey, COMMITMENT);
-  const existing = readJsonIfExists<HarnessState>(STATE_PATH);
+  const existing = readJsonIfExists<HarnessState & { profile?: HarnessProfile }>(paths.statePath);
 
   if (existing) {
+    existing.profile ||= profile;
+    if (existing.profile.name !== profile.name) {
+      throw new Error(`existing harness state is for profile ${existing.profile.name}, requested ${profile.name}`);
+    }
     existing.coordinator.walletPath = getCoordinatorWalletPath();
     existing.coordinator.publicKey = coordinatorKeypair.publicKey.toBase58();
     existing.coordinator.initialBalanceLamports ||= initialBalanceLamports;
-    return existing;
+    return existing as HarnessState;
   }
 
   const wallets: WalletState[] = [];
-  for (let index = 0; index < WALLET_COUNT; index += 1) {
-    const keypairPath = walletPathForIndex(index + 1);
+  for (let index = 0; index < profile.walletCount; index += 1) {
+    const keypairPath = walletPathForIndex(index + 1, profile);
     const keypair = fs.existsSync(keypairPath) ? loadKeypair(keypairPath) : Keypair.generate();
     if (!fs.existsSync(keypairPath)) {
       saveKeypair(keypairPath, keypair);
     }
-    wallets.push(createEmptyWalletState(index, keypairPath, keypair.publicKey.toBase58()));
+    wallets.push(createEmptyWalletState(index, keypairPath, keypair.publicKey.toBase58(), profile));
   }
 
   const state: HarnessState = {
-    version: 1,
+    version: 2,
     runLabel: runLabel(),
     network: "devnet",
     programId: PROGRAM_ID.toBase58(),
     pdaoMint: PDAO_MINT.toBase58(),
+    profile,
     coordinator: {
       walletPath: getCoordinatorWalletPath(),
       publicKey: coordinatorKeypair.publicKey.toBase58(),
@@ -422,7 +487,7 @@ export async function loadOrInitializeState(connection: Connection): Promise<Har
 }
 
 export function persistState(state: HarnessState) {
-  writeJson(STATE_PATH, state);
+  writeJson(resolveHarnessPaths(state.profile).statePath, state);
 }
 
 function phaseTiming(state: HarnessState, phase: string): PhaseTiming {
@@ -619,8 +684,9 @@ async function ensureWalletFunding(
   const currentRaw = recipientAccount.amount;
   wallet.funding.pdaoBalanceRaw = currentRaw.toString();
 
-  if (currentRaw < TARGET_PDAO_RAW) {
-    const diff = TARGET_PDAO_RAW - currentRaw;
+  const targetPdaoRaw = profileTargetPdaoRaw(state.profile);
+  if (currentRaw < targetPdaoRaw) {
+    const diff = targetPdaoRaw - currentRaw;
     const tx = new Transaction().add(
       createTransferCheckedInstruction(
         sourceAta,
@@ -657,13 +723,13 @@ async function ensureWalletFunding(
   wallet.funding.pdaoBalanceRaw = (await getAccount(connection, recipientAta.address, COMMITMENT, TOKEN_2022_PROGRAM_ID)).amount.toString();
   wallet.funding.success =
     wallet.funding.solBalanceLamports >= wallet.funding.solTargetLamports &&
-    BigInt(wallet.funding.pdaoBalanceRaw) >= TARGET_PDAO_RAW;
+    BigInt(wallet.funding.pdaoBalanceRaw) >= targetPdaoRaw;
   wallet.funding.fundedAt = nowIso();
   wallet.funding.lastError = null;
 }
 
-export async function runWalletGeneration(connection: Connection): Promise<HarnessState> {
-  const state = await loadOrInitializeState(connection);
+export async function runWalletGeneration(connection: Connection, profileInput?: string | null): Promise<HarnessState> {
+  const state = await loadOrInitializeState(connection, profileInput);
   phaseTiming(state, "wallets");
   publishArtifacts(state);
   completePhase(state, "wallets");
@@ -672,10 +738,10 @@ export async function runWalletGeneration(connection: Connection): Promise<Harne
   return state;
 }
 
-export async function runFundingPhase(connection: Connection): Promise<HarnessState> {
-  const state = await loadOrInitializeState(connection);
+export async function runFundingPhase(connection: Connection, profileInput?: string | null): Promise<HarnessState> {
+  const state = await loadOrInitializeState(connection, profileInput);
   phaseTiming(state, "fund");
-  if (state.wallets.length === WALLET_COUNT && state.wallets.every((wallet) => wallet.funding.success)) {
+  if (state.wallets.length === state.profile.walletCount && state.wallets.every((wallet) => wallet.funding.success)) {
     completePhase(state, "fund");
     persistState(state);
     publishArtifacts(state);
@@ -683,8 +749,8 @@ export async function runFundingPhase(connection: Connection): Promise<HarnessSt
   }
   await ensureCoordinatorFunding(state, connection);
 
-  for (let i = 0; i < state.wallets.length; i += FUNDING_WAVE_SIZE) {
-    const wave = state.wallets.slice(i, i + FUNDING_WAVE_SIZE);
+  for (let i = 0; i < state.wallets.length; i += state.profile.fundingWaveSize) {
+    const wave = state.wallets.slice(i, i + state.profile.fundingWaveSize);
     for (const wallet of wave) {
       try {
         const { retries } = await withRetry(state, `fund-wallet-${wallet.walletIndex}`, async () =>
@@ -701,7 +767,7 @@ export async function runFundingPhase(connection: Connection): Promise<HarnessSt
         throw error;
       }
     }
-    if (i + FUNDING_WAVE_SIZE < state.wallets.length) {
+    if (i + state.profile.fundingWaveSize < state.wallets.length) {
       await sleep(WAVE_DELAY_MS);
     }
   }
@@ -719,8 +785,8 @@ async function fetchProposalAndDao(connection: Connection, wallet: Keypair, prop
   return { program, proposal, dao };
 }
 
-export async function runBootstrapPhase(connection: Connection): Promise<HarnessState> {
-  const state = await loadOrInitializeState(connection);
+export async function runBootstrapPhase(connection: Connection, profileInput?: string | null): Promise<HarnessState> {
+  const state = await loadOrInitializeState(connection, profileInput);
   phaseTiming(state, "bootstrap");
 
   if (state.bootstrap) {
@@ -1135,18 +1201,19 @@ async function expectCommitFailure(
   }
 }
 
-export async function runCommitPhase(connection: Connection): Promise<HarnessState> {
-  const state = await loadOrInitializeState(connection);
+export async function runCommitPhase(connection: Connection, profileInput?: string | null): Promise<HarnessState> {
+  const state = await loadOrInitializeState(connection, profileInput);
   ensureBootstrap(state);
   phaseTiming(state, "commit");
-  if (state.wallets.length === WALLET_COUNT && state.wallets.every((wallet) => wallet.commit?.status)) {
+  if (state.wallets.length === state.profile.walletCount && state.wallets.every((wallet) => wallet.commit?.status)) {
     completePhase(state, "commit");
     persistState(state);
     publishArtifacts(state);
     return state;
   }
 
-  for (const [waveIndex, wave] of chunk(state.wallets, WAVE_SIZE).entries()) {
+  const commitWaves = chunk(state.wallets, state.profile.waveSize);
+  for (const [waveIndex, wave] of commitWaves.entries()) {
     for (const wallet of wave) {
       if (wallet.role === "adversarial") {
         await expectCommitFailure(state, connection, wallet, waveIndex + 1);
@@ -1157,7 +1224,7 @@ export async function runCommitPhase(connection: Connection): Promise<HarnessSta
       publishArtifacts(state);
       await sleep(TX_DELAY_MS);
     }
-    if (waveIndex < chunk(state.wallets, WAVE_SIZE).length - 1) {
+    if (waveIndex < commitWaves.length - 1) {
       await sleep(WAVE_DELAY_MS);
     }
   }
@@ -1295,8 +1362,8 @@ async function recordValidReveal(
   });
 }
 
-export async function runRevealPhase(connection: Connection): Promise<HarnessState> {
-  const state = await loadOrInitializeState(connection);
+export async function runRevealPhase(connection: Connection, profileInput?: string | null): Promise<HarnessState> {
+  const state = await loadOrInitializeState(connection, profileInput);
   const bootstrap = ensureBootstrap(state);
   phaseTiming(state, "reveal");
   const validRevealComplete = state.wallets
@@ -1318,12 +1385,12 @@ export async function runRevealPhase(connection: Connection): Promise<HarnessSta
   await waitUntil(proposal.votingEnd.toNumber() + 1, "reveal window");
 
   const revealable = state.wallets.filter((wallet) => wallet.role !== "adversarial" && wallet.plan.revealMode === "valid");
-  const waves = chunk(revealable, WAVE_SIZE);
+  const waves = chunk(revealable, state.profile.waveSize);
 
   for (const [waveIndex, wave] of waves.entries()) {
     const firstTarget = wave[0];
     const waveAdversary = state.wallets.find(
-      (wallet) => Math.floor((wallet.walletIndex - 1) / WAVE_SIZE) === waveIndex && wallet.role === "adversarial",
+      (wallet) => Math.floor((wallet.walletIndex - 1) / state.profile.waveSize) === waveIndex && wallet.role === "adversarial",
     );
     if (waveAdversary && firstTarget) {
       await expectRevealFailure(state, connection, waveAdversary, firstTarget, "wrong-revealer");
@@ -1405,8 +1472,8 @@ export async function runRevealPhase(connection: Connection): Promise<HarnessSta
   return state;
 }
 
-export async function runExecutePhase(connection: Connection): Promise<HarnessState> {
-  const state = await loadOrInitializeState(connection);
+export async function runExecutePhase(connection: Connection, profileInput?: string | null): Promise<HarnessState> {
+  const state = await loadOrInitializeState(connection, profileInput);
   const bootstrap = ensureBootstrap(state);
   phaseTiming(state, "execute");
 
@@ -1799,7 +1866,7 @@ async function generateTallyProof(state: HarnessState, wallets: WalletState[]): 
   const votes = entries.map((wallet) => (wallet.plan.vote ? 1n : 0n));
   const salts = entries.map((wallet) => BigInt(`0x${wallet.internal?.saltHex || "0"}`));
   const voterKeys = entries.map((wallet) => fieldId(wallet.publicKey));
-  const weights = entries.map((wallet) => BigInt(wallet.funding.pdaoBalanceRaw || TARGET_PDAO_RAW.toString()));
+  const weights = entries.map((wallet) => BigInt(wallet.funding.pdaoBalanceRaw || profileTargetPdaoRaw(state.profile).toString()));
   const commitments = await Promise.all(
     votes.map((vote, index) => poseidonHash(vote, salts[index], voterKeys[index], proposalId, daoKey)),
   );
@@ -1859,7 +1926,7 @@ async function generateDelegationProof(state: HarnessState, wallet: WalletState)
   const delegatorKey = fieldId(wallet.publicKey);
   const delegateeKey = fieldId(state.coordinator.publicKey);
   const salt = BigInt(`0x${crypto.randomBytes(32).toString("hex")}`);
-  const delegatedWeight = BigInt(wallet.funding.pdaoBalanceRaw || TARGET_PDAO_RAW.toString());
+  const delegatedWeight = BigInt(wallet.funding.pdaoBalanceRaw || profileTargetPdaoRaw(state.profile).toString());
 
   const delegationCommitment = await poseidonHash(delegatorKey, delegateeKey, proposalId, daoKey, salt);
   const delegationNullifier = await poseidonHash(delegatorKey, proposalId, daoKey);
@@ -1907,8 +1974,8 @@ async function generateDelegationProof(state: HarnessState, wallet: WalletState)
   };
 }
 
-export async function runZkPhase(connection: Connection): Promise<HarnessState> {
-  const state = await loadOrInitializeState(connection);
+export async function runZkPhase(connection: Connection, profileInput?: string | null): Promise<HarnessState> {
+  const state = await loadOrInitializeState(connection, profileInput);
   ensureBootstrap(state);
   phaseTiming(state, "zk");
   if (state.zkProofs.length >= 7) {
@@ -1921,7 +1988,7 @@ export async function runZkPhase(connection: Connection): Promise<HarnessState> 
   const zkWallets = state.wallets.filter((wallet) => wallet.role === "zk-tester");
   const entries: ZkProofEntry[] = [];
   for (const wallet of zkWallets) {
-    const entry = await generateVoteProof(state, wallet, BigInt(wallet.funding.pdaoBalanceRaw || TARGET_PDAO_RAW.toString()));
+    const entry = await generateVoteProof(state, wallet, BigInt(wallet.funding.pdaoBalanceRaw || profileTargetPdaoRaw(state.profile).toString()));
     entries.push(entry);
   }
   const tally = await generateTallyProof(state, zkWallets);
@@ -1957,8 +2024,8 @@ export async function runZkPhase(connection: Connection): Promise<HarnessState> 
   return state;
 }
 
-export async function runAdversarialPhase(connection: Connection): Promise<HarnessState> {
-  const state = await loadOrInitializeState(connection);
+export async function runAdversarialPhase(connection: Connection, profileInput?: string | null): Promise<HarnessState> {
+  const state = await loadOrInitializeState(connection, profileInput);
   phaseTiming(state, "adversarial");
   publishArtifacts(state);
   completePhase(state, "adversarial");
@@ -1979,6 +2046,7 @@ function buildPerformanceMetrics(state: HarnessState) {
     generatedAt: nowIso(),
     runLabel: state.runLabel,
     network: state.network,
+    profile: state.profile,
     walletCount: state.wallets.length,
     totalTxCount: state.txRegistry.length,
     totalAttemptCount: state.metrics.attemptCount,
@@ -2000,6 +2068,7 @@ function buildWalletRegistryDoc(state: HarnessState) {
     generatedAt: nowIso(),
     runLabel: state.runLabel,
     network: state.network,
+    profile: state.profile,
     coordinatorWallet: state.coordinator.publicKey,
     governanceMint: state.pdaoMint,
     wallets: state.wallets.map((wallet) => ({
@@ -2028,6 +2097,7 @@ function buildBootstrapDoc(state: HarnessState) {
     generatedAt: nowIso(),
     runLabel: state.runLabel,
     network: state.network,
+    profile: state.profile,
     program_id: state.programId,
     verification_wallet: state.coordinator.publicKey,
     dao_name: state.bootstrap.daoName,
@@ -2051,6 +2121,7 @@ function buildTxRegistryDoc(state: HarnessState) {
     generatedAt: nowIso(),
     runLabel: state.runLabel,
     network: state.network,
+    profile: state.profile,
     entries: state.txRegistry.map((entry) => ({
       wallet_pubkey: entry.walletPubkey,
       role: entry.role,
@@ -2070,6 +2141,7 @@ function buildAdversarialDoc(state: HarnessState) {
     generatedAt: nowIso(),
     runLabel: state.runLabel,
     network: state.network,
+    profile: state.profile,
     total_scenarios: state.adversarial.length,
     rejected: state.adversarial.filter((entry) => entry.outcome === "rejected").length,
     unexpected_successes: state.adversarial.filter((entry) => entry.outcome === "unexpected-success").length,
@@ -2082,6 +2154,7 @@ function buildZkRegistryDoc(state: HarnessState) {
     generatedAt: nowIso(),
     runLabel: state.runLabel,
     network: state.network,
+    profile: state.profile,
     program_id: state.programId,
     governance_mint: state.pdaoMint,
     proposal_public_key: state.bootstrap?.proposalPublicKey ?? null,
@@ -2116,7 +2189,8 @@ function buildLoadTestReport(state: HarnessState, metrics: ReturnType<typeof bui
 
 ## Overview
 
-- number of wallets: 50
+- profile: ${state.profile.name}-wallet
+- number of wallets: ${state.profile.walletCount}
 - network: devnet
 - program id: \`${state.programId}\`
 - governance mint: \`${state.pdaoMint}\`
@@ -2137,7 +2211,7 @@ function buildLoadTestReport(state: HarnessState, metrics: ReturnType<typeof bui
 - total commit-capable wallets: ${validCommitters.length}
 - successful commits: ${state.wallets.filter((wallet) => wallet.commit?.status === "success").length}
 - adversarial commit rejections: ${state.adversarial.filter((entry) => entry.phase === "commit" && entry.outcome === "rejected").length}
-- wave size: ${WAVE_SIZE}
+- wave size: ${state.profile.waveSize}
 
 ## Reveal Results
 
@@ -2181,28 +2255,29 @@ function buildLoadTestReport(state: HarnessState, metrics: ReturnType<typeof bui
 
 ## Interpretation
 
-This run demonstrates that PrivateDAO can execute a full Devnet governance lifecycle with 50 persistent wallets under wave-based submission, while preserving deterministic reviewer artifacts and explorer-verifiable transaction evidence. The successful commit, reveal, finalize, and execute paths remained reproducible, and the negative-path scenarios were rejected without advancing proposal lifecycle state or bypassing treasury controls.
+This run demonstrates that PrivateDAO can execute a full Devnet governance lifecycle with ${state.profile.walletCount} persistent wallets under wave-based submission, while preserving deterministic reviewer artifacts and explorer-verifiable transaction evidence. The successful commit, reveal, finalize, and execute paths remained reproducible, and the negative-path scenarios were rejected without advancing proposal lifecycle state or bypassing treasury controls.
 `;
 }
 
 export function publishArtifacts(state: HarnessState) {
+  const paths = resolveHarnessPaths(state.profile);
   const metrics = buildPerformanceMetrics(state);
-  writeJson(DOCS_WALLET_REGISTRY, buildWalletRegistryDoc(state));
+  writeJson(paths.docsWalletRegistry, buildWalletRegistryDoc(state));
   const bootstrapDoc = buildBootstrapDoc(state);
   if (bootstrapDoc) {
-    writeJson(DOCS_BOOTSTRAP, bootstrapDoc);
+    writeJson(paths.docsBootstrap, bootstrapDoc);
   }
-  writeJson(DOCS_TX_REGISTRY, buildTxRegistryDoc(state));
-  writeJson(DOCS_ADVERSARIAL, buildAdversarialDoc(state));
-  writeJson(DOCS_ZK_REGISTRY, buildZkRegistryDoc(state));
-  writeJson(DOCS_PERFORMANCE, metrics);
+  writeJson(paths.docsTxRegistry, buildTxRegistryDoc(state));
+  writeJson(paths.docsAdversarial, buildAdversarialDoc(state));
+  writeJson(paths.docsZkRegistry, buildZkRegistryDoc(state));
+  writeJson(paths.docsPerformance, metrics);
   if (state.bootstrap) {
-    fs.writeFileSync(DOCS_LOAD_REPORT, buildLoadTestReport(state, metrics), "utf8");
+    fs.writeFileSync(paths.docsLoadReport, buildLoadTestReport(state, metrics), "utf8");
   }
 }
 
-export async function runReportPhase(connection: Connection): Promise<HarnessState> {
-  const state = await loadOrInitializeState(connection);
+export async function runReportPhase(connection: Connection, profileInput?: string | null): Promise<HarnessState> {
+  const state = await loadOrInitializeState(connection, profileInput);
   phaseTiming(state, "report");
   publishArtifacts(state);
   completePhase(state, "report");
@@ -2211,14 +2286,14 @@ export async function runReportPhase(connection: Connection): Promise<HarnessSta
   return state;
 }
 
-export async function runAllPhases(connection: Connection): Promise<HarnessState> {
-  await runWalletGeneration(connection);
-  await runFundingPhase(connection);
-  await runBootstrapPhase(connection);
-  await runCommitPhase(connection);
-  await runRevealPhase(connection);
-  await runExecutePhase(connection);
-  await runZkPhase(connection);
-  await runAdversarialPhase(connection);
-  return runReportPhase(connection);
+export async function runAllPhases(connection: Connection, profileInput?: string | null): Promise<HarnessState> {
+  await runWalletGeneration(connection, profileInput);
+  await runFundingPhase(connection, profileInput);
+  await runBootstrapPhase(connection, profileInput);
+  await runCommitPhase(connection, profileInput);
+  await runRevealPhase(connection, profileInput);
+  await runExecutePhase(connection, profileInput);
+  await runZkPhase(connection, profileInput);
+  await runAdversarialPhase(connection, profileInput);
+  return runReportPhase(connection, profileInput);
 }

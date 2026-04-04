@@ -12,6 +12,20 @@ type ReleaseDrill = {
   stages: Array<{ stage: string; status: string }>;
   mandatoryGates: string[];
   unresolvedBlockers: Array<{ name: string; status: string }>;
+  executionSummary: {
+    executedSteps: number;
+    blockedExternalSteps: number;
+    reviewerArtifactsObserved: number;
+  };
+  executionTrace: Array<{
+    step: string;
+    category: "repository-gate" | "artifact-build" | "operator-check" | "external-blocker";
+    status: "simulated-pass" | "blocked-external-step";
+    command?: string;
+    artifact?: string;
+    evidence?: string;
+    note?: string;
+  }>;
   drillDocs: string[];
   notes: string[];
 };
@@ -35,6 +49,34 @@ function main() {
   assert(drill.stages.some((entry) => entry.stage === "commit-freeze" && entry.status === "simulated-pass"), "release drill is missing commit-freeze stage");
   assert(drill.stages.some((entry) => entry.stage === "mainnet-cutover" && entry.status === "blocked-external-step"), "release drill is missing mainnet-cutover blocker");
   assert(drill.unresolvedBlockers.some((entry) => entry.name === "externalAudit"), "release drill missing externalAudit blocker");
+  assert(drill.executionSummary.executedSteps >= 5, "release drill summary is missing executed steps");
+  assert(drill.executionSummary.blockedExternalSteps >= 2, "release drill summary is missing blocked external steps");
+  assert(drill.executionSummary.reviewerArtifactsObserved >= 3, "release drill summary is missing reviewer artifact count");
+  assert(drill.executionTrace.length >= 8, "release drill trace is unexpectedly short");
+  assert(
+    drill.executionTrace.some(
+      (entry) => entry.step === "release-drill-generation" && entry.command === "npm run build:release-drill",
+    ),
+    "release drill trace is missing generation step",
+  );
+  assert(
+    drill.executionTrace.some(
+      (entry) => entry.step === "runtime-evidence-verification" && entry.command === "npm run verify:runtime-evidence",
+    ),
+    "release drill trace is missing runtime verification step",
+  );
+  assert(
+    drill.executionTrace.some(
+      (entry) => entry.step === "unified-release-gate" && entry.command === "npm run verify:all",
+    ),
+    "release drill trace is missing unified gate step",
+  );
+  assert(
+    drill.executionTrace.some(
+      (entry) => entry.category === "external-blocker" && entry.status === "blocked-external-step",
+    ),
+    "release drill trace is missing blocked external steps",
+  );
 
   for (const gate of [
     "npm run verify:live-proof",
@@ -60,6 +102,8 @@ function main() {
   assert(markdown.includes("# Release Drill Evidence"), "release drill markdown missing title");
   assert(markdown.includes("repository-simulated-drill"), "release drill markdown missing mode");
   assert(markdown.includes("Unresolved Blockers"), "release drill markdown missing blockers");
+  assert(markdown.includes("Simulated Execution Trace"), "release drill markdown is missing execution trace");
+  assert(markdown.includes("npm run verify:all"), "release drill markdown is missing unified gate command");
 
   console.log("Release drill verification: PASS");
 }

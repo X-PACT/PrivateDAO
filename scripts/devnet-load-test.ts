@@ -1,5 +1,6 @@
 import {
   createConnection,
+  resolveLoadProfile,
   runAdversarialPhase,
   runAllPhases,
   runBootstrapPhase,
@@ -14,44 +15,46 @@ import {
 
 async function main() {
   const phase = (process.argv[2] || "all").toLowerCase();
+  const profileName = process.argv[3] || process.env.PRIVATE_DAO_LOAD_PROFILE || "50";
+  const profile = resolveLoadProfile(profileName);
   const connection = createConnection();
 
   switch (phase) {
     case "wallets":
-      await runWalletGeneration(connection);
+      await runWalletGeneration(connection, profile.name);
       break;
     case "fund":
-      await runFundingPhase(connection);
+      await runFundingPhase(connection, profile.name);
       break;
     case "bootstrap":
-      await runBootstrapPhase(connection);
+      await runBootstrapPhase(connection, profile.name);
       break;
     case "commit":
-      await runCommitPhase(connection);
+      await runCommitPhase(connection, profile.name);
       break;
     case "reveal":
-      await runRevealPhase(connection);
+      await runRevealPhase(connection, profile.name);
       break;
     case "execute":
-      await runExecutePhase(connection);
+      await runExecutePhase(connection, profile.name);
       break;
     case "zk":
-      await runZkPhase(connection);
+      await runZkPhase(connection, profile.name);
       break;
     case "adversarial":
-      await runAdversarialPhase(connection);
+      await runAdversarialPhase(connection, profile.name);
       break;
     case "report":
-      await runReportPhase(connection);
+      await runReportPhase(connection, profile.name);
       break;
     case "all":
-      await runAllPhases(connection);
+      await runAllPhases(connection, profile.name);
       break;
     default:
       throw new Error(`Unsupported devnet stress phase: ${phase}`);
   }
 
-  console.log(`[devnet-load] ${phase} complete`);
+  console.log(`[devnet-load] ${phase} complete for profile ${profile.name}`);
 }
 
 main().catch((error) => {
@@ -59,4 +62,3 @@ main().catch((error) => {
   console.error(error);
   process.exit(1);
 });
-

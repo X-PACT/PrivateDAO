@@ -249,6 +249,7 @@ This layer turns the release-ceremony surface into a repository-contained drill 
 - what already passes inside the repository
 - what remains blocked by external audit and custody requirements
 - which stages are simulated rather than live production events
+- which repository commands and reviewer artifacts appear in the simulated execution trace
 
 ## Replay Summary
 

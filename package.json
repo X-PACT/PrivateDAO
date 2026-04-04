@@ -32,6 +32,8 @@
     "test:devnet:zk": "ts-node scripts/devnet-load-test.ts zk",
     "test:devnet:adversarial": "ts-node scripts/devnet-load-test.ts adversarial",
     "test:devnet:report": "ts-node scripts/devnet-load-test.ts report",
+    "test:devnet:100": "PRIVATE_DAO_LOAD_PROFILE=100 ts-node scripts/devnet-load-test.ts all 100",
+    "test:devnet:500": "PRIVATE_DAO_LOAD_PROFILE=500 ts-node scripts/devnet-load-test.ts all 500",
     "test:devnet:multi": "ts-node scripts/devnet-extended-test.ts multi",
     "test:devnet:race": "ts-node scripts/devnet-extended-test.ts race",
     "test:devnet:extended": "ts-node scripts/devnet-extended-test.ts all",

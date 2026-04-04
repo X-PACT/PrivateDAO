@@ -157,6 +157,15 @@ npm run verify:runtime-evidence
 
 Builds and verifies a generated runtime-evidence package that consolidates runtime attestation, wallet compatibility, Devnet canary, and resilience behavior into one reviewer-facing summary.
 
+### Extended Devnet Profiles
+
+```bash
+npm run test:devnet:100
+npm run test:devnet:500
+```
+
+Runs the same Devnet stress harness at larger wallet counts while writing to profile-specific artifacts so the canonical 50-wallet reviewer package remains stable and explorer-visible.
+
 ### Wallet Compatibility Matrix
 
 ```bash
@@ -207,6 +216,7 @@ npm run verify:release-drill
 ```
 
 Builds and verifies a repository-simulated release drill that makes the pre-cutover and blocked-external stages explicit rather than leaving them implied.
+The generated trace now also records which repository commands and reviewer-visible artifacts participated in the simulated release path.
 
 ### Artifact Freshness
 
