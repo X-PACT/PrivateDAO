@@ -73,7 +73,7 @@
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
 - Manifest entries: `68`
-- Aggregate sha256: `feb41a5b2904d5a5818ea40a5a6f013abc04a3700c720e77c3814b887f08ae06`
+- Aggregate sha256: `33ba1513ddd3f6d3b7373bc90c17b004165a79cb838b60379f76a168b1428c24`
 
 ## ZK Package
 
@@ -161,6 +161,7 @@
 - `docs/zk-proof-registry.json`
 - `docs/performance-metrics.json`
 - `docs/load-test-report.md`
+- `docs/devnet-scale-profiles.md`
 - `docs/devnet-multi-proposal-report.json`
 - `docs/devnet-multi-proposal-report.md`
 - `docs/devnet-race-report.json`
@@ -263,6 +264,8 @@
 - `npm run test:devnet:zk`
 - `npm run test:devnet:adversarial`
 - `npm run test:devnet:report`
+- `npm run test:devnet:100`
+- `npm run test:devnet:500`
 - `npm run test:devnet:multi`
 - `npm run test:devnet:race`
 - `npm run test:devnet:extended`

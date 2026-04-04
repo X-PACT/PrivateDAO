@@ -39,7 +39,7 @@
     "strategy": 9,
     "security": 11,
     "zk": 13,
-    "proof": 33,
+    "proof": 34,
     "operations": 18
   },
   "zk": {
@@ -75,7 +75,7 @@
   "cryptographicIntegrity": {
     "algorithm": "sha256",
     "entryCount": 68,
-    "aggregateSha256": "feb41a5b2904d5a5818ea40a5a6f013abc04a3700c720e77c3814b887f08ae06"
+    "aggregateSha256": "33ba1513ddd3f6d3b7373bc90c17b004165a79cb838b60379f76a168b1428c24"
   },
   "runtimeDocs": [
     "docs/fair-voting.md",
@@ -111,7 +111,7 @@
     "docs/supply-chain-attestation.generated.md",
     "docs/supply-chain-attestation.generated.json"
   ],
-  "gateCount": 51,
+  "gateCount": 53,
   "statuses": {
     "governanceLifecycle": "verified",
     "securityReasoning": "verified",

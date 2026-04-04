@@ -2,9 +2,9 @@
 
 ## Overview
 
-- Generated at: `2026-04-04T23:01:21+02:00`
+- Generated at: `2026-04-05T00:54:12+02:00`
 - Mode: `repository-simulated-drill`
-- Release commit: `4d8d93504862bb7c6bc94e7510eca16bb8b4f771`
+- Release commit: `5c342b1d2e17fe564b34182daa6a7d4c3dfe7d23`
 - Release branch: `main`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
@@ -32,6 +32,82 @@
 - livePerformance: `not-in-repo`
 - externalAudit: `pending`
 - mainnetRollout: `pending`
+
+## Simulated Execution Trace
+
+- repository-executed steps: 9
+- blocked external steps: 3
+- reviewer artifacts observed: 7
+
+- reviewed-commit-freeze: `simulated-pass`
+  category: `operator-check`
+  evidence: `5c342b1d2e17fe564b34182daa6a7d4c3dfe7d23`
+  note: The reviewed repository commit becomes the release anchor before any cutover activity.
+
+- release-ceremony-attestation: `simulated-pass`
+  category: `artifact-build`
+  command: `npm run build:release-ceremony-attestation`
+  artifact: `docs/release-ceremony-attestation.generated.json`
+  evidence: `docs/release-ceremony-attestation.generated.md`
+
+- runtime-evidence-package: `simulated-pass`
+  category: `artifact-build`
+  command: `npm run build:runtime-evidence`
+  artifact: `docs/runtime-evidence.generated.json`
+  evidence: `docs/runtime-evidence.generated.md`
+
+- release-drill-generation: `simulated-pass`
+  category: `artifact-build`
+  command: `npm run build:release-drill`
+  artifact: `docs/release-drill.generated.json`
+  evidence: `docs/release-drill.generated.md`
+
+- artifact-freshness-gate: `simulated-pass`
+  category: `repository-gate`
+  command: `npm run verify:artifact-freshness`
+  evidence: `docs/artifact-freshness.md`
+  note: Deterministic reviewer artifacts are rebuilt and compared against committed outputs.
+
+- runtime-evidence-verification: `simulated-pass`
+  category: `repository-gate`
+  command: `npm run verify:runtime-evidence`
+  artifact: `docs/runtime-evidence.generated.json`
+
+- release-drill-verification: `simulated-pass`
+  category: `repository-gate`
+  command: `npm run verify:release-drill`
+  artifact: `docs/release-drill.generated.json`
+
+- review-surface-verification: `simulated-pass`
+  category: `repository-gate`
+  command: `npm run verify:review-surface`
+  evidence: `docs/review-attestation.generated.json`
+
+- unified-release-gate: `simulated-pass`
+  category: `repository-gate`
+  command: `npm run verify:all`
+  evidence: `docs/cryptographic-manifest.generated.json`
+  note: The repository-level release path is considered ready only after the unified gate passes.
+
+- operator-cutover-checklist-review: `simulated-pass`
+  category: `operator-check`
+  evidence: `docs/operator-checklist.md`
+  note: The cutover runbook and incident materials are inspectable before any live release.
+
+- external-audit-completion: `blocked-external-step`
+  category: `external-blocker`
+  evidence: `docs/mainnet-readiness.generated.md`
+  note: External audit sign-off remains outside repository control.
+
+- custody-and-signing-ceremony: `blocked-external-step`
+  category: `external-blocker`
+  evidence: `docs/release-ceremony.md`
+  note: Production custody and signing approvals cannot be simulated as a live release inside the repository.
+
+- live-mainnet-cutover-and-post-deploy-checks: `blocked-external-step`
+  category: `external-blocker`
+  evidence: `docs/mainnet-cutover-runbook.md`
+  note: Mainnet cutover, explorer confirmation, and live rollback validation remain intentionally blocked until real deployment.
 
 ## Drill Documents
 

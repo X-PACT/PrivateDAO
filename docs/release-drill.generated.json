@@ -1,8 +1,8 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-04T23:01:21+02:00",
+  "generatedAt": "2026-04-05T00:54:12+02:00",
   "mode": "repository-simulated-drill",
-  "releaseCommit": "4d8d93504862bb7c6bc94e7510eca16bb8b4f771",
+  "releaseCommit": "5c342b1d2e17fe564b34182daa6a7d4c3dfe7d23",
   "releaseBranch": "main",
   "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
   "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
@@ -52,6 +52,109 @@
     {
       "name": "mainnetRollout",
       "status": "pending"
+    }
+  ],
+  "executionSummary": {
+    "executedSteps": 9,
+    "blockedExternalSteps": 3,
+    "reviewerArtifactsObserved": 7
+  },
+  "executionTrace": [
+    {
+      "step": "reviewed-commit-freeze",
+      "category": "operator-check",
+      "status": "simulated-pass",
+      "evidence": "5c342b1d2e17fe564b34182daa6a7d4c3dfe7d23",
+      "note": "The reviewed repository commit becomes the release anchor before any cutover activity."
+    },
+    {
+      "step": "release-ceremony-attestation",
+      "category": "artifact-build",
+      "status": "simulated-pass",
+      "command": "npm run build:release-ceremony-attestation",
+      "artifact": "docs/release-ceremony-attestation.generated.json",
+      "evidence": "docs/release-ceremony-attestation.generated.md"
+    },
+    {
+      "step": "runtime-evidence-package",
+      "category": "artifact-build",
+      "status": "simulated-pass",
+      "command": "npm run build:runtime-evidence",
+      "artifact": "docs/runtime-evidence.generated.json",
+      "evidence": "docs/runtime-evidence.generated.md"
+    },
+    {
+      "step": "release-drill-generation",
+      "category": "artifact-build",
+      "status": "simulated-pass",
+      "command": "npm run build:release-drill",
+      "artifact": "docs/release-drill.generated.json",
+      "evidence": "docs/release-drill.generated.md"
+    },
+    {
+      "step": "artifact-freshness-gate",
+      "category": "repository-gate",
+      "status": "simulated-pass",
+      "command": "npm run verify:artifact-freshness",
+      "evidence": "docs/artifact-freshness.md",
+      "note": "Deterministic reviewer artifacts are rebuilt and compared against committed outputs."
+    },
+    {
+      "step": "runtime-evidence-verification",
+      "category": "repository-gate",
+      "status": "simulated-pass",
+      "command": "npm run verify:runtime-evidence",
+      "artifact": "docs/runtime-evidence.generated.json"
+    },
+    {
+      "step": "release-drill-verification",
+      "category": "repository-gate",
+      "status": "simulated-pass",
+      "command": "npm run verify:release-drill",
+      "artifact": "docs/release-drill.generated.json"
+    },
+    {
+      "step": "review-surface-verification",
+      "category": "repository-gate",
+      "status": "simulated-pass",
+      "command": "npm run verify:review-surface",
+      "evidence": "docs/review-attestation.generated.json"
+    },
+    {
+      "step": "unified-release-gate",
+      "category": "repository-gate",
+      "status": "simulated-pass",
+      "command": "npm run verify:all",
+      "evidence": "docs/cryptographic-manifest.generated.json",
+      "note": "The repository-level release path is considered ready only after the unified gate passes."
+    },
+    {
+      "step": "operator-cutover-checklist-review",
+      "category": "operator-check",
+      "status": "simulated-pass",
+      "evidence": "docs/operator-checklist.md",
+      "note": "The cutover runbook and incident materials are inspectable before any live release."
+    },
+    {
+      "step": "external-audit-completion",
+      "category": "external-blocker",
+      "status": "blocked-external-step",
+      "evidence": "docs/mainnet-readiness.generated.md",
+      "note": "External audit sign-off remains outside repository control."
+    },
+    {
+      "step": "custody-and-signing-ceremony",
+      "category": "external-blocker",
+      "status": "blocked-external-step",
+      "evidence": "docs/release-ceremony.md",
+      "note": "Production custody and signing approvals cannot be simulated as a live release inside the repository."
+    },
+    {
+      "step": "live-mainnet-cutover-and-post-deploy-checks",
+      "category": "external-blocker",
+      "status": "blocked-external-step",
+      "evidence": "docs/mainnet-cutover-runbook.md",
+      "note": "Mainnet cutover, explorer confirmation, and live rollback validation remain intentionally blocked until real deployment."
     }
   ],
   "drillDocs": [
