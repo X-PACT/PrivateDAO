@@ -1,0 +1,94 @@
+{
+  "generatedAt": "2026-04-04T15:01:49.552Z",
+  "runLabel": "20260404144532",
+  "network": "devnet",
+  "sourceWalletRunLabel": "20260404110609",
+  "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+  "governanceMint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
+  "daoPublicKey": "FfLcDByf3Y2C3WrXC5q6aboEXUh7ddeSMhiawDdh5rFA",
+  "treasuryPda": "HVC2YLDpuYV4etbSqUaUMPR8ma8pzLKXTHXK9YsPtnMG",
+  "proposalPublicKey": "7YKm4zFcD8fzRuQAa8w9SDTrVaW8TSSddA7nhDm9TAK7",
+  "proposalId": "2",
+  "createDaoTx": "",
+  "depositTx": "z7Zj4icpnAXzeS1LGCUa4mCg71K4xpRuspi1AzbZBVJgDoXBBcKSofH3VTcpF4dFD2jp3M6kyTv9ovDpigTfQTq",
+  "createProposalTx": "2hRh3BZioPi1YN9HLx2tqfvuP8FxZuriUUPdFn2af2KHUFtVusKstoS7iyHF8M7S9Hjw5iVwNZxvBXxue7Wd3NV5",
+  "commitTxs": [
+    "3tpkYeaVZ9jBUqWsUtzpi5uo3myF1QsnUSTiwNzYvcnqowjFjgpUdGEvVGf4cKezLBBeVZVbDRfmPpKTuM6jdYKq",
+    "5pYZfqnNByiyxvNkh5ssi3GxSY5iJrvUPoEgakfgq5ufTCQTtTK9Buyb6fqeHigpC2g5P62181BkpBp6sDkMp3Kw",
+    "57uR944vh8DRMUBdGjdNqNuZif1VuHVYehbktVWzUD5oi29v6n3xCSkK29KxmCYnKWnrSbcSRq6nmFksaYGYBNkq"
+  ],
+  "revealTxs": [
+    "3nGhzQsCgxWKAqLbgpUCtv2q1GfCYCCYChVugtQ2a98G2x4bxLNwH2eMzK7pveZwg3QH6LL3pmd3EppeBmZoBgPY",
+    "fyS6fu1idAj2UHxFsmUpjfodaV7fAw6PWuciQUAuegkz9Ho3PcDcdYk8UzX97y8kNgGa5QjGgFFaPb1kP4Pz5ZB",
+    "4XX31tnzRZ7jwD9X2zZf8q6kwHGM9g82hwaTJDhBRS5s8fvGcCSSm4tvAfBEo6sK5iyQ2MfwEMQLteRJLxHpTVyo"
+  ],
+  "finalizeRace": {
+    "attempts": [
+      {
+        "walletPubkey": "3eEyUhgXwq5Prner9LhhHqp366esdcXUoJYYT7AimmYf",
+        "status": "rejected",
+        "error": "Finalize collision rejected after another finalizer committed state first."
+      },
+      {
+        "walletPubkey": "2EzXQvxJj5rXCfj3wPzv2QZ9B6oNtnsY1zkUasygCXMy",
+        "status": "rejected",
+        "error": "Finalize collision rejected after another finalizer committed state first."
+      },
+      {
+        "walletPubkey": "gmcmFsRBMuXNmhwh2h47TNsXSJPLxcJxBwkiFy46MTk",
+        "status": "rejected",
+        "error": "Finalize collision rejected after another finalizer committed state first."
+      },
+      {
+        "walletPubkey": "AeE8B4WTMWGRbwuwQxVCDuYnLGCB2tgTNj1x1HhZ3PD8",
+        "txSignature": "5kxfvvYmNtc5xJRHBkTmm8jW73YqD9eR8UZJKWoSsJtV8UcsJrFS2K9Xv4hwj8uNY1cznbgtoKyPuP9xH8yXRKvS",
+        "explorerUrl": "https://solscan.io/tx/5kxfvvYmNtc5xJRHBkTmm8jW73YqD9eR8UZJKWoSsJtV8UcsJrFS2K9Xv4hwj8uNY1cznbgtoKyPuP9xH8yXRKvS?cluster=devnet",
+        "status": "success"
+      },
+      {
+        "walletPubkey": "BiC3vnnw9rUs7B5JECFwdmm3LYLSnhSiAUxZqQrVyV55",
+        "status": "rejected",
+        "error": "Finalize collision rejected after another finalizer committed state first."
+      }
+    ],
+    "successCount": 1,
+    "rejectedCount": 4
+  },
+  "executeRace": {
+    "attempts": [
+      {
+        "walletPubkey": "3eEyUhgXwq5Prner9LhhHqp366esdcXUoJYYT7AimmYf",
+        "status": "rejected",
+        "error": "AnchorError thrown in programs/private-dao/src/lib.rs:614. Error Code: AlreadyExecuted. Error Number: 6023. Error Message: Treasury action already executed."
+      },
+      {
+        "walletPubkey": "2EzXQvxJj5rXCfj3wPzv2QZ9B6oNtnsY1zkUasygCXMy",
+        "status": "rejected",
+        "error": "AnchorError thrown in programs/private-dao/src/lib.rs:614. Error Code: AlreadyExecuted. Error Number: 6023. Error Message: Treasury action already executed."
+      },
+      {
+        "walletPubkey": "gmcmFsRBMuXNmhwh2h47TNsXSJPLxcJxBwkiFy46MTk",
+        "status": "rejected",
+        "error": "AnchorError thrown in programs/private-dao/src/lib.rs:614. Error Code: AlreadyExecuted. Error Number: 6023. Error Message: Treasury action already executed."
+      },
+      {
+        "walletPubkey": "AeE8B4WTMWGRbwuwQxVCDuYnLGCB2tgTNj1x1HhZ3PD8",
+        "txSignature": "mJ7rdw12ANd1BMjmHxANSVPJU4fVGP8sg5eyuyjYEiZKgSQVECDjSV86o4SxEVEdePhRZti8GjBYbbVQCUxfXFV",
+        "explorerUrl": "https://solscan.io/tx/mJ7rdw12ANd1BMjmHxANSVPJU4fVGP8sg5eyuyjYEiZKgSQVECDjSV86o4SxEVEdePhRZti8GjBYbbVQCUxfXFV?cluster=devnet",
+        "status": "success"
+      },
+      {
+        "walletPubkey": "BiC3vnnw9rUs7B5JECFwdmm3LYLSnhSiAUxZqQrVyV55",
+        "status": "rejected",
+        "error": "AnchorError thrown in programs/private-dao/src/lib.rs:614. Error Code: AlreadyExecuted. Error Number: 6023. Error Message: Treasury action already executed."
+      }
+    ],
+    "successCount": 1,
+    "rejectedCount": 4
+  },
+  "summary": {
+    "finalizeSingleWinner": true,
+    "executeSingleWinner": true,
+    "unexpectedSuccesses": 0
+  }
+}

@@ -202,6 +202,10 @@ ${submission.packages.proof.map((entry) => `- \`${entry}\``).join("\n")}
 - \`docs/zk-proof-registry.json\`
 - \`docs/performance-metrics.json\`
 - \`docs/load-test-report.md\`
+- \`docs/devnet-multi-proposal-report.json\`
+- \`docs/devnet-multi-proposal-report.md\`
+- \`docs/devnet-race-report.json\`
+- \`docs/devnet-race-report.md\`
 
 ## Operations Package
 

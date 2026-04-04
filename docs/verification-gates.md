@@ -56,6 +56,28 @@ Runs the full 50-wallet Devnet harness, then rebuilds and verifies the reviewer 
 
 This is the canonical reproducible multi-wallet execution command for the live Devnet package.
 
+### Devnet Extended Isolation And Race Harness
+
+```bash
+npm run test:devnet:multi
+npm run test:devnet:race
+npm run test:devnet:extended
+```
+
+These commands extend the canonical 50-wallet run with:
+
+- three live proposals executed in one DAO to prove proposal isolation
+- cross-proposal voter-record and delegation-marker rejection evidence
+- concurrent finalize races with one valid winner
+- concurrent execute races with one valid winner
+
+The generated reviewer-facing artifacts are:
+
+- `docs/devnet-multi-proposal-report.json`
+- `docs/devnet-multi-proposal-report.md`
+- `docs/devnet-race-report.json`
+- `docs/devnet-race-report.md`
+
 ### Cryptographic Integrity
 
 ```bash

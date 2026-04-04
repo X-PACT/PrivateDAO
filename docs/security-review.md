@@ -17,6 +17,8 @@ PrivateDAO now includes a reviewer-visible hardening layer focused on realistic 
 - non-breaking zk stack proof generation and verification
 - zk threat-extension reasoning and registry-backed review integrity
 - 50-wallet Devnet stress and adversarial execution evidence
+- multi-proposal isolation evidence
+- finalize and execute collision-race evidence
 
 ## Reviewer-first proof points
 
@@ -25,6 +27,8 @@ PrivateDAO now includes a reviewer-visible hardening layer focused on realistic 
 - End-to-end lifecycle and treasury tests: `tests/full-flow-test.ts`
 - Demo walkthrough: `tests/demo.ts`
 - 50-wallet load report: `docs/load-test-report.md`
+- multi-proposal isolation report: `docs/devnet-multi-proposal-report.md`
+- race report: `docs/devnet-race-report.md`
 - Devnet transaction registry: `docs/devnet-tx-registry.json`
 - Adversarial report: `docs/adversarial-report.json`
 - ZK proof registry: `docs/zk-proof-registry.json`
@@ -179,6 +183,15 @@ The generated artifacts bind:
 - off-chain Groth16 proof generation for the zk tester slice
 
 This does not replace the instruction-level tests. It complements them with live multi-wallet evidence on Devnet and explorer-verifiable transaction traces.
+
+## Isolation And Collision Evidence
+
+The repository now also includes extended Devnet reports that target adversarial surfaces not covered by a single-proposal wave run alone:
+
+- `docs/devnet-multi-proposal-report.md` shows three live proposals inside one DAO, all executed successfully, while cross-proposal voter-record reuse, delegation-marker reuse, and mismatched reveal material are rejected.
+- `docs/devnet-race-report.md` shows concurrent finalize and execute attempts against one live proposal, with exactly one winning finalize and one winning execute while the remaining attempts are rejected without partial execution drift.
+
+These artifacts make proposal isolation and permissionless collision safety reviewer-visible with public Devnet transaction evidence, not only local integration tests.
 
 ## Replay Summary
 

@@ -217,6 +217,8 @@ Quick links:
 - Ranger Drift Track memo: `docs/ranger-drift-track.md`
 - Live devnet proof: `docs/live-proof.md`
 - 50-wallet load report: `docs/load-test-report.md`
+- Multi-proposal isolation report: `docs/devnet-multi-proposal-report.md`
+- Race and collision report: `docs/devnet-race-report.md`
 - Devnet wallet registry: `docs/devnet-wallet-registry.json`
 - Devnet bootstrap record: `docs/devnet-bootstrap.json`
 - Devnet transaction registry: `docs/devnet-tx-registry.json`
@@ -543,13 +545,22 @@ The repository now includes a full wave-based Devnet stress and adversarial simu
 - 35 voter wallets
 - 10 adversarial wallets
 - 5 zk tester wallets
-- 182 public Devnet transactions
-- 33 adversarial scenarios
+- 223 public Devnet transaction entries
+- 50 adversarial scenarios
 - 7 Groth16 proof artifacts
+
+It also now includes reviewer-facing extended Devnet evidence for:
+
+- multi-proposal isolation across three live proposals in the same DAO
+- cross-proposal voter-record and delegation-marker rejection
+- permissionless finalize collision races
+- permissionless execute collision races
 
 Reviewer-facing artifacts:
 
 - `docs/load-test-report.md`
+- `docs/devnet-multi-proposal-report.md`
+- `docs/devnet-race-report.md`
 - `docs/devnet-wallet-registry.json`
 - `docs/devnet-bootstrap.json`
 - `docs/devnet-tx-registry.json`

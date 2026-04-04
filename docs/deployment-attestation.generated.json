@@ -45,6 +45,9 @@
     "npm run test:devnet:zk",
     "npm run test:devnet:adversarial",
     "npm run test:devnet:report",
+    "npm run test:devnet:multi",
+    "npm run test:devnet:race",
+    "npm run test:devnet:extended",
     "npm run test:devnet:all",
     "npm run verify:review-links",
     "npm run verify:ops-surface",
@@ -67,12 +70,12 @@
     "npm run verify:review-surface",
     "npm run verify:all"
   ],
-  "gateCount": 38,
+  "gateCount": 41,
   "packageCounts": {
     "strategy": 6,
     "security": 6,
     "zk": 13,
-    "proof": 21,
+    "proof": 25,
     "operations": 12
   },
   "zk": {

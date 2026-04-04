@@ -20,6 +20,10 @@ function main() {
   const zkProofRegistryPath = path.resolve("docs/zk-proof-registry.json");
   const performanceMetricsPath = path.resolve("docs/performance-metrics.json");
   const loadTestReportPath = path.resolve("docs/load-test-report.md");
+  const devnetMultiProposalReportJsonPath = path.resolve("docs/devnet-multi-proposal-report.json");
+  const devnetMultiProposalReportMdPath = path.resolve("docs/devnet-multi-proposal-report.md");
+  const devnetRaceReportJsonPath = path.resolve("docs/devnet-race-report.json");
+  const devnetRaceReportMdPath = path.resolve("docs/devnet-race-report.md");
 
   if (!fs.existsSync(auditPacketPath)) {
     throw new Error("missing generated audit packet");
@@ -74,6 +78,18 @@ function main() {
   }
   if (!fs.existsSync(loadTestReportPath)) {
     throw new Error("missing load test report");
+  }
+  if (!fs.existsSync(devnetMultiProposalReportJsonPath)) {
+    throw new Error("missing devnet multi-proposal report");
+  }
+  if (!fs.existsSync(devnetMultiProposalReportMdPath)) {
+    throw new Error("missing devnet multi-proposal markdown report");
+  }
+  if (!fs.existsSync(devnetRaceReportJsonPath)) {
+    throw new Error("missing devnet race report");
+  }
+  if (!fs.existsSync(devnetRaceReportMdPath)) {
+    throw new Error("missing devnet race markdown report");
   }
 
   const auditPacket = fs.readFileSync(auditPacketPath, "utf8");
@@ -197,6 +213,32 @@ function main() {
     totalAttemptCount: number;
   };
   const loadTestReport = fs.readFileSync(loadTestReportPath, "utf8");
+  const devnetMultiProposalReport = JSON.parse(fs.readFileSync(devnetMultiProposalReportJsonPath, "utf8")) as {
+    network: string;
+    programId: string;
+    governanceMint: string;
+    proposals: Array<{ proposalPublicKey: string; executeTx: string }>;
+    summary: {
+      proposalCount: number;
+      executedCount: number;
+      crossProposalRejections: number;
+      unexpectedSuccesses: number;
+    };
+  };
+  const devnetMultiProposalReportMd = fs.readFileSync(devnetMultiProposalReportMdPath, "utf8");
+  const devnetRaceReport = JSON.parse(fs.readFileSync(devnetRaceReportJsonPath, "utf8")) as {
+    network: string;
+    programId: string;
+    governanceMint: string;
+    finalizeRace: { successCount: number; rejectedCount: number };
+    executeRace: { successCount: number; rejectedCount: number };
+    summary: {
+      finalizeSingleWinner: boolean;
+      executeSingleWinner: boolean;
+      unexpectedSuccesses: number;
+    };
+  };
+  const devnetRaceReportMd = fs.readFileSync(devnetRaceReportMdPath, "utf8");
   const zkAttestation = JSON.parse(fs.readFileSync(zkAttestationPath, "utf8")) as {
     project: string;
     zkStackVersion: number;
@@ -271,6 +313,62 @@ function main() {
 
   if (!loadTestReport.includes("# Devnet Load Test Report") || !loadTestReport.includes("number of wallets: 50")) {
     throw new Error("load test report is missing the expected overview");
+  }
+
+  if (devnetMultiProposalReport.network !== "devnet" || devnetMultiProposalReport.programId !== attestation.programId) {
+    throw new Error("devnet multi-proposal report does not match canonical program state");
+  }
+
+  if (devnetMultiProposalReport.governanceMint !== attestation.pdaoToken.mint) {
+    throw new Error("devnet multi-proposal report governance mint does not match PDAO mint");
+  }
+
+  if (devnetMultiProposalReport.summary.proposalCount < 3 || devnetMultiProposalReport.summary.executedCount < 3) {
+    throw new Error("devnet multi-proposal report is unexpectedly weak");
+  }
+
+  if (devnetMultiProposalReport.summary.crossProposalRejections < 3 || devnetMultiProposalReport.summary.unexpectedSuccesses !== 0) {
+    throw new Error("devnet multi-proposal report is missing cross-proposal rejection coverage");
+  }
+
+  if (!devnetMultiProposalReport.proposals.every((proposal) => proposal.proposalPublicKey && proposal.executeTx)) {
+    throw new Error("devnet multi-proposal report contains incomplete proposal execution evidence");
+  }
+
+  if (!devnetMultiProposalReportMd.includes("# Devnet Multi-Proposal Report") || !devnetMultiProposalReportMd.includes("cross-proposal rejections")) {
+    throw new Error("devnet multi-proposal markdown report is missing reviewer-facing summary text");
+  }
+
+  if (devnetRaceReport.network !== "devnet" || devnetRaceReport.programId !== attestation.programId) {
+    throw new Error("devnet race report does not match canonical program state");
+  }
+
+  if (devnetRaceReport.governanceMint !== attestation.pdaoToken.mint) {
+    throw new Error("devnet race report governance mint does not match PDAO mint");
+  }
+
+  if (!devnetRaceReport.summary.finalizeSingleWinner || !devnetRaceReport.summary.executeSingleWinner) {
+    throw new Error("devnet race report does not prove single-winner collision behavior");
+  }
+
+  if (devnetRaceReport.summary.unexpectedSuccesses !== 0) {
+    throw new Error("devnet race report contains unexpected successes");
+  }
+
+  if (devnetRaceReport.finalizeRace.successCount !== 1 || devnetRaceReport.executeRace.successCount !== 1) {
+    throw new Error("devnet race report winning counts are invalid");
+  }
+
+  if (devnetRaceReport.finalizeRace.rejectedCount < 1 || devnetRaceReport.executeRace.rejectedCount < 1) {
+    throw new Error("devnet race report is missing rejected collision attempts");
+  }
+
+  if (
+    !devnetRaceReportMd.includes("# Devnet Race Report") ||
+    !devnetRaceReportMd.includes("one winning finalize") ||
+    !devnetRaceReportMd.includes("one winning execute")
+  ) {
+    throw new Error("devnet race markdown report is missing reviewer-facing collision wording");
   }
 
   if (attestation.gateCount < 8) {
@@ -397,6 +495,12 @@ function main() {
   }
   if (!auditPacket.includes("docs/go-live-attestation.generated.json")) {
     throw new Error("generated audit packet is missing the go-live attestation reference");
+  }
+  if (!auditPacket.includes("docs/devnet-multi-proposal-report.json")) {
+    throw new Error("generated audit packet is missing the devnet multi-proposal reference");
+  }
+  if (!auditPacket.includes("docs/devnet-race-report.json")) {
+    throw new Error("generated audit packet is missing the devnet race reference");
   }
 
   if (!zkTranscript.includes("# ZK Transcript")) {
@@ -558,6 +662,12 @@ function main() {
   }
   if (!cryptographicManifest.files.some((entry) => entry.path === "docs/assets/pdao-token.json")) {
     throw new Error("generated cryptographic manifest is missing the PDAO metadata asset");
+  }
+  if (!cryptographicManifest.files.some((entry) => entry.path === "docs/devnet-multi-proposal-report.json")) {
+    throw new Error("generated cryptographic manifest is missing the multi-proposal report");
+  }
+  if (!cryptographicManifest.files.some((entry) => entry.path === "docs/devnet-race-report.json")) {
+    throw new Error("generated cryptographic manifest is missing the race report");
   }
 
   console.log("Generated artifact verification: PASS");

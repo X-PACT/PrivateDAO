@@ -66,8 +66,8 @@
 - Go-live attestation: `docs/go-live-attestation.generated.json`
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `47`
-- Aggregate sha256: `5f5b747074b0474236f4a5793c81ff064e02f2884ddcfd9ea9bdfc42ee9dc65c`
+- Manifest entries: `51`
+- Aggregate sha256: `451989da6d91fe6f75b5fe0fb9d54946ed1fb6a376c33e7d8066f1062d54be96`
 
 ## ZK Package
 
@@ -147,6 +147,10 @@
 - `docs/zk-proof-registry.json`
 - `docs/performance-metrics.json`
 - `docs/load-test-report.md`
+- `docs/devnet-multi-proposal-report.json`
+- `docs/devnet-multi-proposal-report.md`
+- `docs/devnet-race-report.json`
+- `docs/devnet-race-report.md`
 - `docs/independent-verification.md`
 - `docs/cryptographic-manifest.generated.json`
 - `docs/token.md`
@@ -179,6 +183,10 @@
 - `docs/zk-proof-registry.json`
 - `docs/performance-metrics.json`
 - `docs/load-test-report.md`
+- `docs/devnet-multi-proposal-report.json`
+- `docs/devnet-multi-proposal-report.md`
+- `docs/devnet-race-report.json`
+- `docs/devnet-race-report.md`
 
 ## Operations Package
 
@@ -214,6 +222,9 @@
 - `npm run test:devnet:zk`
 - `npm run test:devnet:adversarial`
 - `npm run test:devnet:report`
+- `npm run test:devnet:multi`
+- `npm run test:devnet:race`
+- `npm run test:devnet:extended`
 - `npm run test:devnet:all`
 - `npm run verify:review-links`
 - `npm run verify:ops-surface`

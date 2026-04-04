@@ -23,6 +23,8 @@ wallets/
 !docs/adversarial-report.json
 !docs/devnet-tx-registry.json
 !docs/performance-metrics.json
+!docs/devnet-multi-proposal-report.json
+!docs/devnet-race-report.json
 !docs/assets/pdao-token.json
 !zk/inputs/*.json
 !zk/proofs/*.json
