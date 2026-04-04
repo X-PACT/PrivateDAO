@@ -29,7 +29,7 @@ wallets/
 !zk/setup/*_vkey.json
 LEGAL/evidence-pack/
 .anchor/
-scripts/generated-wallets/*.json
+scripts/generated-wallets/*
 !scripts/generated-wallets/.gitkeep
-zk/devnet-load/*.json
+zk/devnet-load/*
 !zk/devnet-load/.gitkeep
