@@ -107,7 +107,7 @@ Reference:
 
 ### Remaining Risk
 
-Direct/delegated overlap remains operationally guarded rather than fully enforced on-chain.
+Direct/delegated overlap is now rejected on-chain through proposal-bound vote and delegation marker accounts. Product surfaces still mirror that same check for clearer operator feedback.
 
 ## 5. Replay execution attempt
 

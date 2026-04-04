@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 use anchor_lang::prelude::*;
 use anchor_lang::system_program::{transfer, Transfer};
-use anchor_spl::token::{self, Mint, Token, TokenAccount, Transfer as TokenTransfer};
+use anchor_spl::token_interface::{
+    self as token_interface, Mint, TokenAccount, TokenInterface, Transfer as TokenTransfer,
+};
 use sha2::{Digest, Sha256};
 
 declare_id!("5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx");
@@ -262,7 +264,7 @@ pub mod private_dao {
 
     // ── Phase 1 — Commit ──────────────────────────────────────────────────────
     //
-    // commitment = sha256(vote_byte ‖ salt_32 ‖ voter_pubkey_32)
+    // commitment = sha256(vote_byte ‖ salt_32 ‖ proposal_pubkey_32 ‖ voter_pubkey_32)
     //
     // Both chamber weights are snapshotted at commit time to prevent:
     //   "buy tokens → vote → dump tokens immediately"
@@ -293,6 +295,10 @@ pub mod private_dao {
                 Error::InsufficientTokens
             );
         }
+        require!(
+            !account_exists(&ctx.accounts.delegation_marker.to_account_info()),
+            Error::DelegationOverlap
+        );
 
         let vr = &mut ctx.accounts.voter_record;
         require!(!vr.has_committed, Error::AlreadyCommitted);
@@ -349,6 +355,10 @@ pub mod private_dao {
                 Error::InsufficientTokens
             );
         }
+        require!(
+            !account_exists(&ctx.accounts.direct_vote_marker.to_account_info()),
+            Error::DirectVoteAlreadyCommitted
+        );
 
         let del = &mut ctx.accounts.delegation;
         del.delegator = ctx.accounts.delegator.key();
@@ -387,6 +397,10 @@ pub mod private_dao {
         require!(p.status == ProposalStatus::Voting, Error::VotingNotOpen);
         require!(now < p.voting_end, Error::VotingClosed);
         require!(!del.is_used, Error::DelegationAlreadyUsed);
+        require!(
+            !account_exists(&ctx.accounts.delegator_vote_marker.to_account_info()),
+            Error::DirectVoteAlreadyCommitted
+        );
 
         let delegatee_raw = ctx.accounts.delegatee_token_account.amount;
 
@@ -432,7 +446,8 @@ pub mod private_dao {
     // ── Phase 2 — Reveal ──────────────────────────────────────────────────────
     //
     // Voter or authorized keeper submits (vote, salt).
-    // Program recomputes sha256(vote_byte ‖ salt ‖ voter_pubkey) and verifies.
+    // Program recomputes sha256(vote_byte ‖ salt ‖ proposal_pubkey ‖ voter_pubkey)
+    // and verifies.
     // Replay stays proposal-scoped through the VoteRecord PDA and lifecycle
     // flags. On match, both chamber tallies update. The rebate comes from the
     // proposal account only when it remains rent-safe.
@@ -453,13 +468,7 @@ pub mod private_dao {
         let is_keeper = vr.voter_reveal_authority == Some(caller);
         require!(is_voter || is_keeper, Error::NotAuthorizedToReveal);
 
-        // sha256(vote_byte ‖ salt ‖ voter_pubkey) must match stored commitment
-        let vote_byte: u8 = if vote { 1 } else { 0 };
-        let mut preimage = Vec::with_capacity(65);
-        preimage.push(vote_byte);
-        preimage.extend_from_slice(&salt);
-        preimage.extend_from_slice(vr.voter.as_ref());
-        let computed: [u8; 32] = Sha256::digest(&preimage).into();
+        let computed = compute_vote_commitment(&p.key(), &vr.voter, vote, &salt);
         require!(computed == vr.commitment, Error::CommitmentMismatch);
 
         let cap = vr.capital_weight;
@@ -608,8 +617,6 @@ pub mod private_dao {
             Error::ExecutionTimelockActive
         );
 
-        p.is_executed = true;
-
         if let Some(ref action) = p.treasury_action.clone() {
             validate_treasury_action(action)?;
             let dao_key = ctx.accounts.dao.key();
@@ -649,47 +656,40 @@ pub mod private_dao {
                     require!(
                         *ctx.accounts.treasury_token_account.owner
                             == ctx.accounts.token_program.key(),
-                        Error::InvalidTokenAccount
+                        Error::InvalidTokenProgram
                     );
                     require!(
                         *ctx.accounts.recipient_token_account.owner
                             == ctx.accounts.token_program.key(),
-                        Error::InvalidTokenAccount
+                        Error::InvalidTokenProgram
                     );
-                    require!(
-                        ctx.accounts.treasury_token_account.data_len() >= 72,
-                        Error::InvalidTokenAccount
-                    );
-                    require!(
-                        ctx.accounts.recipient_token_account.data_len() >= 72,
-                        Error::InvalidTokenAccount
-                    );
-                    let treasury_token_owner =
-                        token::accessor::authority(&ctx.accounts.treasury_token_account)?;
-                    let treasury_token_mint =
-                        token::accessor::mint(&ctx.accounts.treasury_token_account)?;
-                    let recipient_token_owner =
-                        token::accessor::authority(&ctx.accounts.recipient_token_account)?;
-                    let recipient_token_mint =
-                        token::accessor::mint(&ctx.accounts.recipient_token_account)?;
+                    let treasury_token_account = parse_token_account(
+                        &ctx.accounts.treasury_token_account,
+                        &ctx.accounts.token_program.key(),
+                    )?;
+                    let recipient_token_account = parse_token_account(
+                        &ctx.accounts.recipient_token_account,
+                        &ctx.accounts.token_program.key(),
+                    )?;
 
                     require!(
-                        treasury_token_owner == ctx.accounts.treasury.key(),
+                        treasury_token_account.owner == ctx.accounts.treasury.key(),
                         Error::InvalidTreasuryTokenAuthority
                     );
-                    require!(treasury_token_mint == action_mint, Error::InvalidTokenMint);
-                    require!(recipient_token_mint == action_mint, Error::InvalidTokenMint);
+                    require!(treasury_token_account.mint == action_mint, Error::InvalidTokenMint);
+                    require!(recipient_token_account.mint == action_mint, Error::InvalidTokenMint);
                     require!(
                         ctx.accounts.treasury_token_account.key()
                             != ctx.accounts.recipient_token_account.key(),
                         Error::DuplicateTokenAccounts
                     );
                     require!(
-                        recipient_token_owner == action.recipient,
+                        recipient_token_account.owner == action.recipient,
                         Error::RecipientOwnerMismatch
                     );
 
-                    token::transfer(
+                    #[allow(deprecated)]
+                    token_interface::transfer(
                         CpiContext::new_with_signer(
                             ctx.accounts.token_program.to_account_info(),
                             TokenTransfer {
@@ -708,19 +708,11 @@ pub mod private_dao {
                     });
                 }
                 TreasuryActionType::CustomCPI => {
-                    require!(
-                        ctx.accounts.treasury_recipient.key() == action.recipient,
-                        Error::TreasuryRecipientMismatch
-                    );
-                    // Emit event; off-chain relayer handles the custom call
-                    emit!(TreasuryExecuted {
-                        proposal: p.key(),
-                        amount: 0,
-                        recipient: ctx.accounts.treasury_recipient.key(),
-                    });
+                    return err!(Error::UnsupportedTreasuryAction);
                 }
             }
         }
+        p.is_executed = true;
         Ok(())
     }
 
@@ -799,6 +791,31 @@ fn isqrt(n: u64) -> u64 {
     x
 }
 
+fn compute_vote_commitment(
+    proposal: &Pubkey,
+    voter: &Pubkey,
+    vote: bool,
+    salt: &[u8; 32],
+) -> [u8; 32] {
+    let vote_byte: u8 = if vote { 1 } else { 0 };
+    let mut preimage = Vec::with_capacity(97);
+    preimage.push(vote_byte);
+    preimage.extend_from_slice(salt);
+    preimage.extend_from_slice(proposal.as_ref());
+    preimage.extend_from_slice(voter.as_ref());
+    Sha256::digest(&preimage).into()
+}
+
+fn account_exists(info: &AccountInfo) -> bool {
+    info.lamports() > 0
+}
+
+fn parse_token_account(info: &AccountInfo, expected_program: &Pubkey) -> Result<TokenAccount> {
+    require!(*info.owner == *expected_program, Error::InvalidTokenProgram);
+    let mut data: &[u8] = &info.try_borrow_data()?;
+    TokenAccount::try_deserialize_unchecked(&mut data).map_err(Into::into)
+}
+
 fn validate_voting_config(cfg: &VotingConfig) -> Result<()> {
     if let VotingConfig::DualChamber {
         capital_threshold,
@@ -836,12 +853,7 @@ fn validate_treasury_action(action: &TreasuryAction) -> Result<()> {
             );
         }
         TreasuryActionType::CustomCPI => {
-            require!(action.amount_lamports == 0, Error::InvalidTreasuryAction);
-            require!(action.token_mint.is_none(), Error::InvalidTreasuryAction);
-            require!(
-                action.recipient != Pubkey::default(),
-                Error::InvalidTreasuryAction
-            );
+            return err!(Error::UnsupportedTreasuryAction);
         }
     }
     Ok(())
@@ -857,7 +869,7 @@ pub struct InitializeDao<'info> {
         seeds = [b"dao", authority.key().as_ref(), dao_name.as_bytes()], bump
     )]
     pub dao: Account<'info, Dao>,
-    pub governance_token: Account<'info, Mint>,
+    pub governance_token: InterfaceAccount<'info, Mint>,
     #[account(mut)]
     pub authority: Signer<'info>,
     pub system_program: Program<'info, System>,
@@ -871,7 +883,7 @@ pub struct MigrateFromRealms<'info> {
         seeds = [b"dao", authority.key().as_ref(), dao_name.as_bytes()], bump
     )]
     pub dao: Account<'info, Dao>,
-    pub governance_token: Account<'info, Mint>,
+    pub governance_token: InterfaceAccount<'info, Mint>,
     #[account(mut)]
     pub authority: Signer<'info>,
     pub system_program: Program<'info, System>,
@@ -896,7 +908,7 @@ pub struct CreateProposal<'info> {
         constraint = proposer_token_account.owner == proposer.key(),
         constraint = proposer_token_account.mint == dao.governance_token,
     )]
-    pub proposer_token_account: Account<'info, TokenAccount>,
+    pub proposer_token_account: InterfaceAccount<'info, TokenAccount>,
     #[account(mut)]
     pub proposer: Signer<'info>,
     pub system_program: Program<'info, System>,
@@ -942,15 +954,22 @@ pub struct CommitVote<'info> {
         seeds = [b"vote", proposal.key().as_ref(), voter.key().as_ref()], bump
     )]
     pub voter_record: Account<'info, VoterRecord>,
+    /// CHECK: proposal-scoped delegation marker for this voter. PDA may be
+    /// uninitialized; only its existence matters.
+    #[account(
+        seeds = [b"delegation", proposal.key().as_ref(), voter.key().as_ref()],
+        bump
+    )]
+    pub delegation_marker: UncheckedAccount<'info>,
     // Verify token account belongs to the voter and uses the DAO's governance mint
     #[account(
         constraint = voter_token_account.owner == voter.key(),
         constraint = voter_token_account.mint  == dao.governance_token,
     )]
-    pub voter_token_account: Account<'info, TokenAccount>,
+    pub voter_token_account: InterfaceAccount<'info, TokenAccount>,
     #[account(mut)]
     pub voter: Signer<'info>,
-    pub token_program: Program<'info, Token>,
+    pub token_program: Interface<'info, TokenInterface>,
     pub system_program: Program<'info, System>,
 }
 
@@ -968,12 +987,19 @@ pub struct DelegateVote<'info> {
         seeds = [b"delegation", proposal.key().as_ref(), delegator.key().as_ref()], bump
     )]
     pub delegation: Account<'info, VoteDelegation>,
+    /// CHECK: proposal-scoped direct vote marker for this delegator. PDA may
+    /// be uninitialized; only its existence matters.
+    #[account(
+        seeds = [b"vote", proposal.key().as_ref(), delegator.key().as_ref()],
+        bump
+    )]
+    pub direct_vote_marker: UncheckedAccount<'info>,
     // Verify token account belongs to the delegator and uses the DAO's governance mint
     #[account(
         constraint = delegator_token_account.owner == delegator.key(),
         constraint = delegator_token_account.mint  == dao.governance_token,
     )]
-    pub delegator_token_account: Account<'info, TokenAccount>,
+    pub delegator_token_account: InterfaceAccount<'info, TokenAccount>,
     #[account(mut)]
     pub delegator: Signer<'info>,
     pub system_program: Program<'info, System>,
@@ -996,6 +1022,13 @@ pub struct CommitDelegatedVote<'info> {
         constraint = delegation.proposal  == proposal.key()  @ Error::WrongProposal,
     )]
     pub delegation: Account<'info, VoteDelegation>,
+    /// CHECK: proposal-scoped direct vote marker for the delegator. PDA may
+    /// be uninitialized; only its existence matters.
+    #[account(
+        seeds = [b"vote", proposal.key().as_ref(), delegation.delegator.as_ref()],
+        bump
+    )]
+    pub delegator_vote_marker: UncheckedAccount<'info>,
     #[account(
         init, payer = delegatee, space = VoterRecord::LEN,
         seeds = [b"vote", proposal.key().as_ref(), delegatee.key().as_ref()], bump
@@ -1005,7 +1038,7 @@ pub struct CommitDelegatedVote<'info> {
         constraint = delegatee_token_account.owner == delegatee.key(),
         constraint = delegatee_token_account.mint  == dao.governance_token,
     )]
-    pub delegatee_token_account: Account<'info, TokenAccount>,
+    pub delegatee_token_account: InterfaceAccount<'info, TokenAccount>,
     #[account(mut)]
     pub delegatee: Signer<'info>,
     pub system_program: Program<'info, System>,
@@ -1065,7 +1098,7 @@ pub struct ExecuteProposal<'info> {
     #[account(mut)]
     pub recipient_token_account: AccountInfo<'info>,
     pub executor: Signer<'info>,
-    pub token_program: Program<'info, Token>,
+    pub token_program: Interface<'info, TokenInterface>,
     pub system_program: Program<'info, System>,
 }
 
@@ -1087,7 +1120,7 @@ pub struct UpdateVoterWeightRecord<'info> {
     #[account(
         constraint = governing_token_mint.key() == dao.governance_token @ Error::GoverningMintMismatch
     )]
-    pub governing_token_mint: Account<'info, Mint>,
+    pub governing_token_mint: InterfaceAccount<'info, Mint>,
     #[account(
         init_if_needed, payer = voter, space = VoterWeightRecord::LEN,
         seeds = [
@@ -1103,7 +1136,7 @@ pub struct UpdateVoterWeightRecord<'info> {
         constraint = voter_token_account.owner == voter.key(),
         constraint = voter_token_account.mint  == dao.governance_token,
     )]
-    pub voter_token_account: Account<'info, TokenAccount>,
+    pub voter_token_account: InterfaceAccount<'info, TokenAccount>,
     #[account(mut)]
     pub voter: Signer<'info>,
     pub system_program: Program<'info, System>,
@@ -1442,6 +1475,8 @@ pub enum Error {
     InvalidTreasuryTokenAuthority,
     #[msg("Provided token mint does not match action")]
     InvalidTokenMint,
+    #[msg("Token program account does not match the supplied mint/accounts")]
+    InvalidTokenProgram,
     #[msg("Recipient token owner does not match action")]
     RecipientOwnerMismatch,
     #[msg("Treasury token source and recipient token destination must differ")]
@@ -1450,4 +1485,10 @@ pub enum Error {
     InvalidTokenAccount,
     #[msg("Governing mint must match DAO governance token")]
     GoverningMintMismatch,
+    #[msg("Direct voting and delegation cannot overlap for the same proposal")]
+    DelegationOverlap,
+    #[msg("Delegation is blocked because this wallet already committed directly")]
+    DirectVoteAlreadyCommitted,
+    #[msg("CustomCPI actions are reserved and not executable in the current release")]
+    UnsupportedTreasuryAction,
 }

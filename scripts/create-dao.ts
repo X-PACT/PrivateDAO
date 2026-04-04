@@ -15,7 +15,7 @@
 import * as anchor from "@coral-xyz/anchor";
 import { PublicKey, SystemProgram } from "@solana/web3.js";
 import { createMint } from "@solana/spl-token";
-import { parseArgs, solscanAccountUrl, solscanTxUrl, workspaceProgram } from "./utils";
+import { parseArgs, resolveTokenProgramForMint, solscanAccountUrl, solscanTxUrl, workspaceProgram } from "./utils";
 
 async function main() {
   const {
@@ -24,6 +24,7 @@ async function main() {
     revealWindow = 3600,
     mode = "token",
     delay = 86400,
+    governanceMint: governanceMintArg,
   } = parseArgs();
 
   const provider = anchor.AnchorProvider.env();
@@ -47,14 +48,18 @@ async function main() {
   console.log(`   Exec delay:    ${delay}s (${(Number(delay) / 3600).toFixed(1)}h timelock)`);
   console.log(`   Authority:     ${provider.wallet.publicKey.toBase58()}`);
 
-  const mint = await createMint(
-    provider.connection,
-    (provider.wallet as anchor.Wallet).payer,
-    provider.wallet.publicKey,
-    null,
-    6,
-  );
+  const mint = governanceMintArg
+    ? new PublicKey(String(governanceMintArg))
+    : await createMint(
+        provider.connection,
+        (provider.wallet as anchor.Wallet).payer,
+        provider.wallet.publicKey,
+        null,
+        6,
+      );
+  const tokenProgram = await resolveTokenProgramForMint(provider.connection, mint);
   console.log(`\n   Governance token: ${mint.toBase58()}`);
+  console.log(`   Token program:    ${tokenProgram.toBase58()}`);
 
   const [daoPda] = PublicKey.findProgramAddressSync(
     [Buffer.from("dao"), provider.wallet.publicKey.toBuffer(), Buffer.from(String(name))],

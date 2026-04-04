@@ -54,7 +54,7 @@ This is expected. The second id belongs to the Token-2022 mint surface, not to a
 These clarifications are included because partial repo scans often overstate or misread a few boundaries:
 
 - Browser-native commit flows generate salts in memory and require the voter to save or export them. The review surface does not persist salts in `localStorage` or `sessionStorage`.
-- Raw commitment preimages do not include `proposal_id`, but replay remains proposal-scoped through the `VoteRecord` PDA, reveal account binding, and `has_committed` / `has_revealed` lifecycle flags.
+- Raw commitment preimages are proposal-bound as `sha256(vote_byte || salt_32 || proposal_pubkey_32 || voter_pubkey_32)`, and replay remains proposal-scoped through the `VoteRecord` PDA, reveal account binding, and `has_committed` / `has_revealed` lifecycle flags.
 - Keeper reveal authority is proposal-scoped and optional. It can only submit the exact reveal for that stored commitment, and successful reveal clears the stored keeper authority from the record.
 - Reveal rebate is paid from the proposal account only when the proposal account stays rent-safe. The DAO treasury is not the rebate source.
 - The current zk stack is an additive Groth16 companion layer. It improves reviewer-visible proof surfaces today, but the deployed on-chain program remains the enforcement boundary.
@@ -75,7 +75,7 @@ These clarifications are included because partial repo scans often overstate or 
 - reveal outside the allowed window is rejected
 - successful reveal clears any stored keeper authority from that voter record
 - voter records remain proposal-bound and cannot be reused across proposals
-- cross-proposal replay is stopped by proposal-bound voter records and lifecycle flags even though the raw hash preimage binds only vote, salt, and voter key
+- cross-proposal replay is stopped by proposal-bound commitments, proposal-bound voter records, and lifecycle flags
 
 ### Treasury and account wiring safety
 
@@ -85,6 +85,7 @@ These clarifications are included because partial repo scans often overstate or 
   - treasury token source owned by the treasury PDA
   - destination owner matches the configured recipient
   - source and destination are not duplicated
+- unsupported `CustomCPI` actions are rejected rather than marked executed
 - failed treasury execution attempts do not partially mark proposals as executed
 
 ### Signer and delegation safety
@@ -92,7 +93,7 @@ These clarifications are included because partial repo scans often overstate or 
 - self-delegation is rejected
 - unauthorized delegated voting is rejected
 - delegated commits cannot consume a delegation PDA from another proposal
-- operator scripts and browser-native flows now block direct-commit and delegation overlap for the same proposal without changing the deployed protocol interface
+- on-chain marker accounts reject direct-commit and delegation overlap for the same proposal
 
 ### Finalize and execute binding safety
 
@@ -116,10 +117,8 @@ These clarifications are included because partial repo scans often overstate or 
 
 One protocol-level boundary remains intentionally documented instead of hidden:
 
-- direct-commit versus delegation mutual exclusion is guarded at the operator and frontend layer today
-- enforcing that relationship on-chain without widening instruction accounts would require a public interface change, which this hardening pass intentionally avoids while the project is under live review
 - quadratic weighting still assumes an external sybil-resistance policy; the on-chain program does not claim to solve identity on its own
-- `CustomCPI` remains an event relay path rather than arbitrary on-chain CPI execution
+- `CustomCPI` remains outside the live treasury execution surface and is rejected when attempted
 
 ## Mainnet transition stance
 
@@ -224,17 +223,15 @@ This does not replace protocol security. It reduces silent drift and makes revie
 
 The audit-simulation layer does not hide residual realities:
 
-- direct-commit versus delegation mutual exclusion remains operationally guarded rather than fully enforced on-chain
 - off-chain timing metadata is not hidden by commit-reveal
 - the zk stack is off-chain today and is not yet an on-chain verifier integration
 - local validator startup remains environment-sensitive in this shell
 - external audit completeness is still not claimed
-- `CustomCPI` remains intentionally event-only rather than arbitrary on-chain execution
+- `CustomCPI` remains intentionally unsupported rather than arbitrary on-chain execution
 
 ## Confidence Level
 
 Current confidence level: **high for tested lifecycle and treasury safety on the implemented protocol surface**, with the remaining limits concentrated in:
 
-- operational enforcement boundaries
 - environment-dependent integration execution
 - external review depth beyond repository-contained reasoning and tests

@@ -49,7 +49,7 @@ Current live stack:
 
 ### Current commit-reveal
 
-- commitment format is `sha256(vote || salt || voter_pubkey)`
+- commitment format is `sha256(vote || salt || proposal_pubkey || voter_pubkey)`
 - reveal checks the exact preimage
 - no zk verifier is required
 - privacy is strongest before reveal

@@ -21,14 +21,20 @@ import * as crypto from "crypto";
 import { assert } from "chai";
 import BN from "bn.js";
 
-function commitment(vote: boolean, salt: Buffer, voter: PublicKey): Buffer {
+function commitment(vote: boolean, salt: Buffer, voter: PublicKey, proposal: PublicKey): Buffer {
   return crypto.createHash("sha256")
-    .update(Buffer.concat([Buffer.from([vote ? 1 : 0]), salt, voter.toBuffer()]))
+    .update(Buffer.concat([Buffer.from([vote ? 1 : 0]), salt, proposal.toBuffer(), voter.toBuffer()]))
     .digest();
 }
 
 function rng(): Buffer { return crypto.randomBytes(32); }
 function sleep(ms: number): Promise<void> { return new Promise(r => setTimeout(r, ms)); }
+function delegationMarkerPda(proposal: PublicKey, voter: PublicKey, programId: PublicKey): PublicKey {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("delegation"), proposal.toBuffer(), voter.toBuffer()],
+    programId,
+  )[0];
+}
 function txExplorer(signature: string, rpcEndpoint: string): string {
   return rpcEndpoint.includes("devnet")
     ? `https://solscan.io/tx/${signature}?cluster=devnet`
@@ -190,10 +196,12 @@ describe("Full flow", () => {
         program.programId,
       );
       const commitSig = await program.methods
-        .commitVote([...commitment(votes[name], salts[name], voter.publicKey)], null)
+        .commitVote([...commitment(votes[name], salts[name], voter.publicKey, proposalPda)], null)
         .accounts({
           dao: daoPda, proposal: proposalPda,
-          voterRecord: vrPda, voterTokenAccount: ata,
+          voterRecord: vrPda,
+          delegationMarker: delegationMarkerPda(proposalPda, voter.publicKey, program.programId),
+          voterTokenAccount: ata,
           voter: voter.publicKey,
           tokenProgram: TOKEN_PROGRAM_ID, systemProgram: SystemProgram.programId,
         })
@@ -359,10 +367,12 @@ describe("Full flow", () => {
       program.programId,
     );
     await program.methods
-      .commitVote([...commitment(true, secondSalt, alice.publicKey)], null)
+      .commitVote([...commitment(true, secondSalt, alice.publicKey, proposal2Pda)], null)
       .accounts({
         dao: daoPda, proposal: proposal2Pda,
-        voterRecord: aliceSecondVote, voterTokenAccount: aliceAta,
+        voterRecord: aliceSecondVote,
+        delegationMarker: delegationMarkerPda(proposal2Pda, alice.publicKey, program.programId),
+        voterTokenAccount: aliceAta,
         voter: alice.publicKey,
         tokenProgram: TOKEN_PROGRAM_ID, systemProgram: SystemProgram.programId,
       })
@@ -589,11 +599,12 @@ describe("Full flow", () => {
 
     const commitSalt = rng();
     await program.methods
-      .commitVote([...commitment(true, commitSalt, voter.publicKey)], null)
+      .commitVote([...commitment(true, commitSalt, voter.publicKey, proposalPda)], null)
       .accounts({
         dao: daoPda,
         proposal: proposalPda,
         voterRecord: voterRecordPda,
+        delegationMarker: delegationMarkerPda(proposalPda, voter.publicKey, program.programId),
         voterTokenAccount: voterAta,
         voter: voter.publicKey,
         tokenProgram: TOKEN_PROGRAM_ID,
@@ -632,11 +643,12 @@ describe("Full flow", () => {
     );
     try {
       await program.methods
-        .commitVote([...commitment(true, rng(), lateVoter.publicKey)], null)
+        .commitVote([...commitment(true, rng(), lateVoter.publicKey, proposalPda)], null)
         .accounts({
           dao: daoPda,
           proposal: proposalPda,
           voterRecord: lateVotePda,
+          delegationMarker: delegationMarkerPda(proposalPda, lateVoter.publicKey, program.programId),
           voterTokenAccount: lateVoterAta,
           voter: lateVoter.publicKey,
           tokenProgram: TOKEN_PROGRAM_ID,
@@ -826,11 +838,12 @@ describe("Full flow", () => {
       program.programId,
     );
     await program.methods
-      .commitVote([...commitment(true, salt, voter.publicKey)], null)
+      .commitVote([...commitment(true, salt, voter.publicKey, proposalPda)], null)
       .accounts({
         dao: daoPda,
         proposal: proposalPda,
         voterRecord: votePda,
+        delegationMarker: delegationMarkerPda(proposalPda, voter.publicKey, program.programId),
         voterTokenAccount: voterAta,
         voter: voter.publicKey,
         tokenProgram: TOKEN_PROGRAM_ID,
@@ -995,11 +1008,12 @@ describe("Full flow", () => {
       program.programId,
     );
     await program.methods
-      .commitVote([...commitment(true, voteSalt, voter.publicKey)], null)
+      .commitVote([...commitment(true, voteSalt, voter.publicKey, proposalPda)], null)
       .accounts({
         dao: daoPda,
         proposal: proposalPda,
         voterRecord: votePda,
+        delegationMarker: delegationMarkerPda(proposalPda, voter.publicKey, program.programId),
         voterTokenAccount: voterAta,
         voter: voter.publicKey,
         tokenProgram: TOKEN_PROGRAM_ID,
@@ -1268,11 +1282,12 @@ describe("Full flow", () => {
       program.programId,
     );
     await program.methods
-      .commitVote([...commitment(true, voteSalt, voter.publicKey)], null)
+      .commitVote([...commitment(true, voteSalt, voter.publicKey, proposalPda)], null)
       .accounts({
         dao: daoPda,
         proposal: proposalPda,
         voterRecord: votePda,
+        delegationMarker: delegationMarkerPda(proposalPda, voter.publicKey, program.programId),
         voterTokenAccount: voterAta,
         voter: voter.publicKey,
         tokenProgram: TOKEN_PROGRAM_ID,
@@ -1462,11 +1477,12 @@ describe("Full flow", () => {
       program.programId,
     );
     await program.methods
-      .commitVote([...commitment(true, voteSalt, voter.publicKey)], null)
+      .commitVote([...commitment(true, voteSalt, voter.publicKey, proposalPda)], null)
       .accounts({
         dao: daoPda,
         proposal: proposalPda,
         voterRecord: votePda,
+        delegationMarker: delegationMarkerPda(proposalPda, voter.publicKey, program.programId),
         voterTokenAccount: voterAta,
         voter: voter.publicKey,
         tokenProgram: TOKEN_PROGRAM_ID,
@@ -1660,11 +1676,12 @@ describe("Full flow", () => {
     );
 
     await program.methods
-      .commitVote([...commitment(true, saltAlice, alice.publicKey)], null)
+      .commitVote([...commitment(true, saltAlice, alice.publicKey, proposalPda)], null)
       .accounts({
         dao: daoPda,
         proposal: proposalPda,
         voterRecord: aliceVotePda,
+        delegationMarker: delegationMarkerPda(proposalPda, alice.publicKey, program.programId),
         voterTokenAccount: aliceAta,
         voter: alice.publicKey,
         tokenProgram: TOKEN_PROGRAM_ID,
@@ -1677,11 +1694,12 @@ describe("Full flow", () => {
     await waitForUnixTimestamp(provider.connection, created.votingEnd.toNumber() - 1, "boundary_commit_last_second");
 
     await program.methods
-      .commitVote([...commitment(true, saltBob, bob.publicKey)], null)
+      .commitVote([...commitment(true, saltBob, bob.publicKey, proposalPda)], null)
       .accounts({
         dao: daoPda,
         proposal: proposalPda,
         voterRecord: bobVotePda,
+        delegationMarker: delegationMarkerPda(proposalPda, bob.publicKey, program.programId),
         voterTokenAccount: bobAta,
         voter: bob.publicKey,
         tokenProgram: TOKEN_PROGRAM_ID,
@@ -1708,7 +1726,7 @@ describe("Full flow", () => {
 
     try {
       await program.methods
-        .commitVote([...commitment(false, rng(), lateVoter.publicKey)], null)
+        .commitVote([...commitment(false, rng(), lateVoter.publicKey, proposalPda)], null)
         .accounts({
           dao: daoPda,
           proposal: proposalPda,
@@ -1716,6 +1734,7 @@ describe("Full flow", () => {
             [Buffer.from("vote"), proposalPda.toBuffer(), lateVoter.publicKey.toBuffer()],
             program.programId,
           )[0],
+          delegationMarker: delegationMarkerPda(proposalPda, lateVoter.publicKey, program.programId),
           voterTokenAccount: lateVoterAta,
           voter: lateVoter.publicKey,
           tokenProgram: TOKEN_PROGRAM_ID,
@@ -1953,11 +1972,12 @@ describe("Full flow", () => {
     );
 
     await program.methods
-      .commitVote([...commitment(true, saltAlice, alice.publicKey)], null)
+      .commitVote([...commitment(true, saltAlice, alice.publicKey, proposalPda)], null)
       .accounts({
         dao: daoPda,
         proposal: proposalPda,
         voterRecord: aliceVotePda,
+        delegationMarker: delegationMarkerPda(proposalPda, alice.publicKey, program.programId),
         voterTokenAccount: aliceAta,
         voter: alice.publicKey,
         tokenProgram: TOKEN_PROGRAM_ID,
@@ -1966,11 +1986,12 @@ describe("Full flow", () => {
       .signers([alice])
       .rpc();
     await program.methods
-      .commitVote([...commitment(false, saltBob, bob.publicKey)], null)
+      .commitVote([...commitment(false, saltBob, bob.publicKey, proposalPda)], null)
       .accounts({
         dao: daoPda,
         proposal: proposalPda,
         voterRecord: bobVotePda,
+        delegationMarker: delegationMarkerPda(proposalPda, bob.publicKey, program.programId),
         voterTokenAccount: bobAta,
         voter: bob.publicKey,
         tokenProgram: TOKEN_PROGRAM_ID,
@@ -2096,11 +2117,12 @@ describe("Full flow", () => {
       program.programId,
     );
     await program.methods
-      .commitVote([...commitment(true, successSalt, alice.publicKey)], null)
+      .commitVote([...commitment(true, successSalt, alice.publicKey, successProposalPda)], null)
       .accounts({
         dao: daoPda,
         proposal: successProposalPda,
         voterRecord: successVotePda,
+        delegationMarker: delegationMarkerPda(successProposalPda, alice.publicKey, program.programId),
         voterTokenAccount: aliceAta,
         voter: alice.publicKey,
         tokenProgram: TOKEN_PROGRAM_ID,

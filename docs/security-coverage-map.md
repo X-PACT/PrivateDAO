@@ -17,5 +17,5 @@
 | Partial state mutation | failed finalize/execute preserve critical fields and lifecycle status | `tests/full-flow-test.ts` | Covered |
 | State regression | failed paths do not regress passed/failed proposals into earlier states | `tests/full-flow-test.ts` | Covered |
 | Commit-reveal binding | voter record binds commitment to voter and proposal | `tests/private-dao.ts`, `tests/full-flow-test.ts` | Covered |
-| Direct/delegated overlap | blocked operationally in scripts/frontend, not enforced directly in on-chain instruction interface | `scripts/commit-vote.ts`, `scripts/delegate-vote.ts`, `docs/index.html`, `tests/private-dao.ts` | Residual Risk |
+| Direct/delegated overlap | proposal-bound vote/delegation marker accounts reject overlap on-chain; scripts/frontend still mirror the same guardrails | `tests/private-dao.ts`, `scripts/commit-vote.ts`, `scripts/delegate-vote.ts`, `docs/index.html` | Covered |
 | External validator environment | local validator startup is environment-dependent and currently flaky in this shell | `npm run test:core`, `npm run test:full`, `npm run demo` operational evidence | Residual Risk |

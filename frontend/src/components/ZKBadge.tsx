@@ -2,7 +2,7 @@ type ZKBadgeProps = {
   label?: string;
 };
 
-export function ZKBadge({ label = "🔒 Zero-Knowledge Verified" }: ZKBadgeProps) {
+export function ZKBadge({ label = "⟡ Groth16 Companion Layer" }: ZKBadgeProps) {
   return (
     <span
       style={{

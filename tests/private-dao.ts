@@ -4,17 +4,18 @@ import * as anchor from "@coral-xyz/anchor";
 import { PublicKey, Keypair, SystemProgram, Transaction, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import {
   createMint, createAccount, createAssociatedTokenAccountInstruction, getAssociatedTokenAddressSync, mintTo,
+  TOKEN_2022_PROGRAM_ID,
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 import * as crypto from "crypto";
 import { assert } from "chai";
 import BN from "bn.js";
 
-// commitment = sha256(vote_byte || salt_32 || voter_pubkey_32)
-function computeCommitment(vote: boolean, salt: Buffer, voter: PublicKey): Buffer {
+// commitment = sha256(vote_byte || salt_32 || proposal_pubkey_32 || voter_pubkey_32)
+function computeCommitment(vote: boolean, salt: Buffer, voter: PublicKey, proposal: PublicKey): Buffer {
   return crypto
     .createHash("sha256")
-    .update(Buffer.concat([Buffer.from([vote ? 1 : 0]), salt, voter.toBuffer()]))
+    .update(Buffer.concat([Buffer.from([vote ? 1 : 0]), salt, proposal.toBuffer(), voter.toBuffer()]))
     .digest();
 }
 
@@ -177,12 +178,47 @@ describe("PrivateDAO", () => {
     }
   });
 
+  it("rejects unsupported CustomCPI treasury actions at proposal creation", async () => {
+    const dao = await program.account["dao"].fetch(daoPda);
+    const [customCpiProposalPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), dao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    try {
+      await program.methods
+        .createProposal(
+          "Unsupported CustomCPI",
+          "CustomCPI should remain reserved rather than pretending to execute on-chain.",
+          new BN(3600),
+          {
+            actionType: { customCpi: {} },
+            amountLamports: new BN(0),
+            recipient: authority.publicKey,
+            tokenMint: null,
+          },
+        )
+        .accounts({
+          dao: daoPda,
+          proposal: customCpiProposalPda,
+          proposerTokenAccount: authorityTokenAta,
+          proposer: authority.publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("Should have rejected unsupported CustomCPI action");
+    } catch (err: any) {
+      assert.include(err.toString(), "UnsupportedTreasuryAction");
+      console.log("  ✓ unsupported CustomCPI action rejected");
+    }
+  });
+
   it("allows voters to commit — tally stays hidden", async () => {
     salt1 = randomSalt(); salt2 = randomSalt(); salt3 = randomSalt();
 
-    const commitment1 = computeCommitment(true,  salt1, voter1.publicKey);
-    const commitment2 = computeCommitment(true,  salt2, voter2.publicKey);
-    const commitment3 = computeCommitment(false, salt3, voter3.publicKey);
+    const commitment1 = computeCommitment(true,  salt1, voter1.publicKey, proposalPda);
+    const commitment2 = computeCommitment(true,  salt2, voter2.publicKey, proposalPda);
+    const commitment3 = computeCommitment(false, salt3, voter3.publicKey, proposalPda);
 
     for (const [voter, ata, commitment] of [
       [voter1, v1Ata, commitment1],
@@ -193,11 +229,15 @@ describe("PrivateDAO", () => {
         [Buffer.from("vote"), proposalPda.toBuffer(), voter.publicKey.toBuffer()],
         program.programId,
       );
+      const [delegationMarkerPda] = PublicKey.findProgramAddressSync(
+        [Buffer.from("delegation"), proposalPda.toBuffer(), voter.publicKey.toBuffer()],
+        program.programId,
+      );
       await program.methods
         .commitVote([...commitment], null)
         .accounts({
           dao: daoPda, proposal: proposalPda,
-          voterRecord: vrPda, voterTokenAccount: ata,
+          voterRecord: vrPda, delegationMarker: delegationMarkerPda, voterTokenAccount: ata,
           voter: voter.publicKey,
           tokenProgram: TOKEN_PROGRAM_ID, systemProgram: SystemProgram.programId,
         })
@@ -228,14 +268,19 @@ describe("PrivateDAO", () => {
       [Buffer.from("vote"), proposalPda.toBuffer(), zeroVoter.publicKey.toBuffer()],
       program.programId,
     );
+    const [zeroDelegationMarkerPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("delegation"), proposalPda.toBuffer(), zeroVoter.publicKey.toBuffer()],
+      program.programId,
+    );
 
     try {
       await program.methods
-        .commitVote([...computeCommitment(true, randomSalt(), zeroVoter.publicKey)], null)
+        .commitVote([...computeCommitment(true, randomSalt(), zeroVoter.publicKey, proposalPda)], null)
         .accounts({
           dao: daoPda,
           proposal: proposalPda,
           voterRecord: zeroVotePda,
+          delegationMarker: zeroDelegationMarkerPda,
           voterTokenAccount: zeroAta,
           voter: zeroVoter.publicKey,
           tokenProgram: TOKEN_PROGRAM_ID,
@@ -261,7 +306,12 @@ describe("PrivateDAO", () => {
         .commitVote([...randomSalt()], null)
         .accounts({
           dao: daoPda, proposal: proposalPda,
-          voterRecord: vrPda, voterTokenAccount: v1Ata,
+          voterRecord: vrPda,
+          delegationMarker: PublicKey.findProgramAddressSync(
+            [Buffer.from("delegation"), proposalPda.toBuffer(), voter1.publicKey.toBuffer()],
+            program.programId,
+          )[0],
+          voterTokenAccount: v1Ata,
           voter: voter1.publicKey,
           tokenProgram: TOKEN_PROGRAM_ID, systemProgram: SystemProgram.programId,
         })
@@ -342,11 +392,15 @@ describe("PrivateDAO", () => {
     );
 
     await program.methods
-      .commitVote([...computeCommitment(true, salt, payloadVoter.publicKey)], null)
+      .commitVote([...computeCommitment(true, salt, payloadVoter.publicKey, payloadProposalPda)], null)
       .accounts({
         dao: daoPda,
         proposal: payloadProposalPda,
         voterRecord: payloadVotePda,
+        delegationMarker: PublicKey.findProgramAddressSync(
+          [Buffer.from("delegation"), payloadProposalPda.toBuffer(), payloadVoter.publicKey.toBuffer()],
+          program.programId,
+        )[0],
         voterTokenAccount: payloadAta,
         voter: payloadVoter.publicKey,
         tokenProgram: TOKEN_PROGRAM_ID,
@@ -411,11 +465,15 @@ describe("PrivateDAO", () => {
       program.programId,
     );
     await program.methods
-      .commitVote([...computeCommitment(true, salt, voter.publicKey)], null)
+      .commitVote([...computeCommitment(true, salt, voter.publicKey, proposalForAuthPda)], null)
       .accounts({
         dao: daoPda,
         proposal: proposalForAuthPda,
         voterRecord: voteRecordPda,
+        delegationMarker: PublicKey.findProgramAddressSync(
+          [Buffer.from("delegation"), proposalForAuthPda.toBuffer(), voter.publicKey.toBuffer()],
+          program.programId,
+        )[0],
         voterTokenAccount: voterAta,
         voter: voter.publicKey,
         tokenProgram: TOKEN_PROGRAM_ID,
@@ -481,11 +539,15 @@ describe("PrivateDAO", () => {
     );
 
     await program.methods
-      .commitVote([...computeCommitment(true, salt, voter.publicKey)], keeper.publicKey)
+      .commitVote([...computeCommitment(true, salt, voter.publicKey, proposalForKeeperPda)], keeper.publicKey)
       .accounts({
         dao: daoPda,
         proposal: proposalForKeeperPda,
         voterRecord: voteRecordPda,
+        delegationMarker: PublicKey.findProgramAddressSync(
+          [Buffer.from("delegation"), proposalForKeeperPda.toBuffer(), voter.publicKey.toBuffer()],
+          program.programId,
+        )[0],
         voterTokenAccount: voterAta,
         voter: voter.publicKey,
         tokenProgram: TOKEN_PROGRAM_ID,
@@ -565,11 +627,15 @@ describe("PrivateDAO", () => {
 
     try {
       await program.methods
-        .commitVote([...computeCommitment(true, randomSalt(), reuseVoter.publicKey)], null)
+        .commitVote([...computeCommitment(true, randomSalt(), reuseVoter.publicKey, proposalB)], null)
         .accounts({
           dao: daoPda,
           proposal: proposalB,
           voterRecord: voteRecordForA,
+          delegationMarker: PublicKey.findProgramAddressSync(
+            [Buffer.from("delegation"), proposalB.toBuffer(), reuseVoter.publicKey.toBuffer()],
+            program.programId,
+          )[0],
           voterTokenAccount: reuseAta,
           voter: reuseVoter.publicKey,
           tokenProgram: TOKEN_PROGRAM_ID,
@@ -671,6 +737,10 @@ describe("PrivateDAO", () => {
           dao: daoPda,
           proposal: selfDelegateProposalPda,
           delegation: delegationPda,
+          directVoteMarker: PublicKey.findProgramAddressSync(
+            [Buffer.from("vote"), selfDelegateProposalPda.toBuffer(), voter1.publicKey.toBuffer()],
+            program.programId,
+          )[0],
           delegatorTokenAccount: v1Ata,
           delegator: voter1.publicKey,
           systemProgram: SystemProgram.programId,
@@ -685,6 +755,74 @@ describe("PrivateDAO", () => {
         `unexpected error: ${msg}`,
       );
       console.log("  ✓ self-delegation rejected");
+    }
+  });
+
+  it("rejects delegation after the same wallet already committed directly", async () => {
+    const dao = await program.account["dao"].fetch(daoPda);
+    const [proposalForOverlapPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), dao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal("Direct vote first", "Delegation must fail once a direct vote record exists.", new BN(3600), null)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalForOverlapPda,
+        proposerTokenAccount: authorityTokenAta,
+        proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const overlapSalt = randomSalt();
+    const [overlapVotePda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), proposalForOverlapPda.toBuffer(), voter1.publicKey.toBuffer()],
+      program.programId,
+    );
+    const [overlapDelegationMarker] = PublicKey.findProgramAddressSync(
+      [Buffer.from("delegation"), proposalForOverlapPda.toBuffer(), voter1.publicKey.toBuffer()],
+      program.programId,
+    );
+    const [overlapDelegationPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("delegation"), proposalForOverlapPda.toBuffer(), voter1.publicKey.toBuffer()],
+      program.programId,
+    );
+
+    await program.methods
+      .commitVote([...computeCommitment(true, overlapSalt, voter1.publicKey, proposalForOverlapPda)], null)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalForOverlapPda,
+        voterRecord: overlapVotePda,
+        delegationMarker: overlapDelegationMarker,
+        voterTokenAccount: v1Ata,
+        voter: voter1.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([voter1])
+      .rpc();
+
+    try {
+      await program.methods
+        .delegateVote(voter2.publicKey)
+        .accounts({
+          dao: daoPda,
+          proposal: proposalForOverlapPda,
+          delegation: overlapDelegationPda,
+          directVoteMarker: overlapVotePda,
+          delegatorTokenAccount: v1Ata,
+          delegator: voter1.publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .signers([voter1])
+        .rpc();
+      assert.fail("Should have rejected delegation after direct commit");
+    } catch (err: any) {
+      assert.include(err.toString(), "DirectVoteAlreadyCommitted");
+      console.log("  ✓ delegation rejected after direct commit");
     }
   });
 
@@ -717,6 +855,7 @@ describe("PrivateDAO", () => {
         dao: daoPda,
         proposal: delegatedProposalPda,
         delegation: delegationPda,
+        directVoteMarker: directVoteRecordPda,
         delegatorTokenAccount: v2Ata,
         delegator: voter2.publicKey,
         systemProgram: SystemProgram.programId,
@@ -732,11 +871,12 @@ describe("PrivateDAO", () => {
 
     try {
       await program.methods
-        .commitDelegatedVote([...computeCommitment(true, wrongSalt, voter3.publicKey)], null)
+        .commitDelegatedVote([...computeCommitment(true, wrongSalt, voter3.publicKey, delegatedProposalPda)], null)
         .accounts({
           dao: daoPda,
           proposal: delegatedProposalPda,
           delegation: delegationPda,
+          delegatorVoteMarker: directVoteRecordPda,
           voterRecord: wrongDelegateVotePda,
           delegateeTokenAccount: v3Ata,
           delegatee: voter3.publicKey,
@@ -801,6 +941,10 @@ describe("PrivateDAO", () => {
         dao: daoPda,
         proposal: proposalA,
         delegation: delegationForA,
+        directVoteMarker: PublicKey.findProgramAddressSync(
+          [Buffer.from("vote"), proposalA.toBuffer(), voter2.publicKey.toBuffer()],
+          program.programId,
+        )[0],
         delegatorTokenAccount: v2Ata,
         delegator: voter2.publicKey,
         systemProgram: SystemProgram.programId,
@@ -816,11 +960,15 @@ describe("PrivateDAO", () => {
 
     try {
       await program.methods
-        .commitDelegatedVote([...computeCommitment(true, delegatedSalt, voter1.publicKey)], null)
+        .commitDelegatedVote([...computeCommitment(true, delegatedSalt, voter1.publicKey, proposalB)], null)
         .accounts({
           dao: daoPda,
           proposal: proposalB,
           delegation: delegationForA,
+          delegatorVoteMarker: PublicKey.findProgramAddressSync(
+            [Buffer.from("vote"), proposalB.toBuffer(), voter2.publicKey.toBuffer()],
+            program.programId,
+          )[0],
           voterRecord: voteRecordForB,
           delegateeTokenAccount: v1Ata,
           delegatee: voter1.publicKey,
@@ -842,19 +990,241 @@ describe("PrivateDAO", () => {
     console.log("  ✓ delegation record stayed proposal-bound");
   });
 
+  it("rejects direct commit when the same wallet already delegated for the proposal", async () => {
+    const dao = await program.account["dao"].fetch(daoPda);
+    const [proposalForDelegationConflictPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), dao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal("Delegation first", "Direct commit must fail while a delegation marker exists.", new BN(3600), null)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalForDelegationConflictPda,
+        proposerTokenAccount: authorityTokenAta,
+        proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [delegationConflictPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("delegation"), proposalForDelegationConflictPda.toBuffer(), voter2.publicKey.toBuffer()],
+      program.programId,
+    );
+    const [delegationConflictVotePda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), proposalForDelegationConflictPda.toBuffer(), voter2.publicKey.toBuffer()],
+      program.programId,
+    );
+
+    await program.methods
+      .delegateVote(voter1.publicKey)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalForDelegationConflictPda,
+        delegation: delegationConflictPda,
+        directVoteMarker: delegationConflictVotePda,
+        delegatorTokenAccount: v2Ata,
+        delegator: voter2.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([voter2])
+      .rpc();
+
+    try {
+      await program.methods
+        .commitVote(
+          [...computeCommitment(true, randomSalt(), voter2.publicKey, proposalForDelegationConflictPda)],
+          null,
+        )
+        .accounts({
+          dao: daoPda,
+          proposal: proposalForDelegationConflictPda,
+          voterRecord: delegationConflictVotePda,
+          delegationMarker: delegationConflictPda,
+          voterTokenAccount: v2Ata,
+          voter: voter2.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .signers([voter2])
+        .rpc();
+      assert.fail("Should have rejected direct commit after delegation");
+    } catch (err: any) {
+      assert.include(err.toString(), "DelegationOverlap");
+      console.log("  ✓ direct commit rejected after delegation");
+    }
+  });
+
+  it("accepts a Token-2022 governance mint for DAO creation and commit flow", async () => {
+    const token2022Name = `PDAO2022-${Date.now()}`;
+    const governanceMint2022 = await createMint(
+      provider.connection,
+      authority.payer,
+      authority.publicKey,
+      null,
+      6,
+      undefined,
+      undefined,
+      TOKEN_2022_PROGRAM_ID,
+    );
+
+    const authority2022Ata = getAssociatedTokenAddressSync(
+      governanceMint2022,
+      authority.publicKey,
+      false,
+      TOKEN_2022_PROGRAM_ID,
+    );
+    await provider.sendAndConfirm(
+      new Transaction().add(
+        createAssociatedTokenAccountInstruction(
+          authority.publicKey,
+          authority2022Ata,
+          authority.publicKey,
+          governanceMint2022,
+          TOKEN_2022_PROGRAM_ID,
+        ),
+      ),
+      [],
+    );
+    await mintTo(
+      provider.connection,
+      authority.payer,
+      governanceMint2022,
+      authority2022Ata,
+      authority.payer,
+      1_000_000n,
+      [],
+      undefined,
+      TOKEN_2022_PROGRAM_ID,
+    );
+
+    const voter2022 = Keypair.generate();
+    const fundTx = new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: authority.publicKey,
+        toPubkey: voter2022.publicKey,
+        lamports: Math.round(0.01 * LAMPORTS_PER_SOL),
+      }),
+    );
+    await provider.sendAndConfirm(fundTx, []);
+
+    const voter2022Ata = getAssociatedTokenAddressSync(
+      governanceMint2022,
+      voter2022.publicKey,
+      false,
+      TOKEN_2022_PROGRAM_ID,
+    );
+    await provider.sendAndConfirm(
+      new Transaction().add(
+        createAssociatedTokenAccountInstruction(
+          authority.publicKey,
+          voter2022Ata,
+          voter2022.publicKey,
+          governanceMint2022,
+          TOKEN_2022_PROGRAM_ID,
+        ),
+      ),
+      [],
+    );
+    await mintTo(
+      provider.connection,
+      authority.payer,
+      governanceMint2022,
+      voter2022Ata,
+      authority.payer,
+      500_000_000n,
+      [],
+      undefined,
+      TOKEN_2022_PROGRAM_ID,
+    );
+
+    const [dao2022Pda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("dao"), authority.publicKey.toBuffer(), Buffer.from(token2022Name)],
+      program.programId,
+    );
+
+    await program.methods
+      .initializeDao(
+        token2022Name,
+        51,
+        new BN(0),
+        new BN(3600),
+        new BN(10),
+        { tokenWeighted: {} },
+      )
+      .accounts({
+        dao: dao2022Pda,
+        governanceToken: governanceMint2022,
+        authority: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const dao2022 = await program.account["dao"].fetch(dao2022Pda);
+    const [proposal2022Pda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), dao2022Pda.toBuffer(), dao2022.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal("Token-2022 proposal", "Token-2022 governance accounts should work end-to-end.", new BN(3600), null)
+      .accounts({
+        dao: dao2022Pda,
+        proposal: proposal2022Pda,
+        proposerTokenAccount: voter2022Ata,
+        proposer: voter2022.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([voter2022])
+      .rpc();
+
+    const [vote2022Pda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), proposal2022Pda.toBuffer(), voter2022.publicKey.toBuffer()],
+      program.programId,
+    );
+    const [delegation2022Marker] = PublicKey.findProgramAddressSync(
+      [Buffer.from("delegation"), proposal2022Pda.toBuffer(), voter2022.publicKey.toBuffer()],
+      program.programId,
+    );
+
+    await program.methods
+      .commitVote([...computeCommitment(true, randomSalt(), voter2022.publicKey, proposal2022Pda)], null)
+      .accounts({
+        dao: dao2022Pda,
+        proposal: proposal2022Pda,
+        voterRecord: vote2022Pda,
+        delegationMarker: delegation2022Marker,
+        voterTokenAccount: voter2022Ata,
+        voter: voter2022.publicKey,
+        tokenProgram: TOKEN_2022_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([voter2022])
+      .rpc();
+
+    const committed = await program.account["proposal"].fetch(proposal2022Pda);
+    assert.equal(committed.commitCount.toString(), "1");
+    console.log("  ✓ Token-2022 governance mint accepted by DAO and commit flow");
+  });
+
   it("verifies commitment math — deterministic + vote/salt sensitive", () => {
     const vote = true;
     const salt = Buffer.from("a".repeat(32));
     const key  = Keypair.generate().publicKey;
 
-    const c1 = computeCommitment(vote, salt, key);
-    const c2 = computeCommitment(vote, salt, key);
-    const c3 = computeCommitment(false, salt, key);
-    const c4 = computeCommitment(vote, Buffer.from("b".repeat(32)), key);
+    const proposal = Keypair.generate().publicKey;
+    const otherProposal = Keypair.generate().publicKey;
+    const c1 = computeCommitment(vote, salt, key, proposal);
+    const c2 = computeCommitment(vote, salt, key, proposal);
+    const c3 = computeCommitment(false, salt, key, proposal);
+    const c4 = computeCommitment(vote, Buffer.from("b".repeat(32)), key, proposal);
+    const c5 = computeCommitment(vote, salt, key, otherProposal);
 
     assert.deepEqual(c1, c2,    "same inputs → same commitment");
     assert.notDeepEqual(c1, c3, "different vote → different commitment");
     assert.notDeepEqual(c1, c4, "different salt → different commitment");
+    assert.notDeepEqual(c1, c5, "different proposal → different commitment");
     console.log("  ✓ commitment: deterministic, vote-sensitive, salt-sensitive");
   });
 });

@@ -174,5 +174,5 @@ If a reviewer wants the fastest architecture-level understanding:
 ## 9. Honest Boundaries
 
 - this architecture is devnet-first
-- direct/delegated overlap still relies on operational guardrails in addition to protocol behavior
+- direct/delegated overlap is rejected on-chain through proposal-bound marker accounts
 - `CustomCPI` is intentionally not arbitrary on-chain execution

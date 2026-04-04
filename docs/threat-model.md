@@ -14,7 +14,7 @@ The core lifecycle is:
 
 The commit-reveal flow is intentional:
 
-- votes are committed as `sha256(vote_byte || salt_32 || voter_pubkey_32)`
+- votes are committed as `sha256(vote_byte || salt_32 || proposal_pubkey_32 || voter_pubkey_32)`
 - the proposal tally remains hidden during the commit phase
 - tally updates only after valid reveal
 - execution is separated from finalization by a timelock
@@ -23,7 +23,7 @@ Treasury execution supports:
 
 - `SendSol`
 - `SendToken`
-- `CustomCPI` as an event-only pattern rather than arbitrary on-chain CPI execution
+- `CustomCPI` as a reserved action type that is rejected rather than exposed as arbitrary on-chain CPI execution
 
 Delegation is proposal-scoped:
 
@@ -441,7 +441,7 @@ Tests:
 
 Mitigation:
 
-- reveal recomputes `sha256(vote || salt || voter_pubkey)`
+- reveal recomputes `sha256(vote || salt || proposal_pubkey || voter_pubkey)`
 - reveal requires committed state
 - reveal rejects wrong signer and wrong timing
 
@@ -481,7 +481,7 @@ Mitigation:
 - delegation tied to one proposal
 - delegated commit checks delegatee equality
 - `is_used` blocks reuse after successful delegated commit
-- product surfaces block direct/delegated overlap operationally
+- direct and delegated paths reject overlap on-chain through proposal-bound marker accounts
 
 Protocol enforcement:
 
@@ -534,10 +534,9 @@ Tests / verification references:
 
 ## 7. Residual Risks
 
-- direct-commit versus delegation mutual exclusion is still enforced operationally in CLI/frontend surfaces rather than directly on-chain
 - commit-reveal hides vote content, not transaction timing or participation timing
 - the zk layer is off-chain today and is not yet an on-chain verifier integration
-- `CustomCPI` is event-only and depends on off-chain execution patterns if used operationally
+- `CustomCPI` is intentionally unsupported as a live execution path
 - external RPC availability and local validator behavior affect verification environments
 - no external audit is claimed
 - mainnet release operations still require release discipline, monitoring, and wallet hygiene outside the program itself

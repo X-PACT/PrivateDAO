@@ -372,7 +372,6 @@ An independent reviewer should be able to confirm all of the following:
 
 - local validator startup may depend on the host environment
 - devnet verification depends on RPC availability
-- direct-commit versus delegation overlap is still operationally guarded in product surfaces
 - external audit completeness is not claimed here
 
 This guide exists to reduce trust assumptions and make the repository independently verifiable.

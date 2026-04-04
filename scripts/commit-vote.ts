@@ -18,20 +18,19 @@
  */
 import * as anchor from "@coral-xyz/anchor";
 import { PublicKey, SystemProgram } from "@solana/web3.js";
-import {
-  getAssociatedTokenAddress,
-  TOKEN_PROGRAM_ID,
-} from "@solana/spl-token";
 import * as crypto from "crypto";
 import * as fs from "fs";
-import { parseArgs, formatTimestamp, ensureSaltDir, legacySaltPath, saltPath, solscanTxUrl, workspaceProgram } from "./utils";
-
-function computeCommitment(vote: boolean, salt: Buffer, voter: PublicKey): Buffer {
-  return crypto
-    .createHash("sha256")
-    .update(Buffer.concat([Buffer.from([vote ? 1 : 0]), salt, voter.toBuffer()]))
-    .digest();
-}
+import {
+  associatedTokenAddressForMint,
+  computeProposalCommitment,
+  ensureSaltDir,
+  formatTimestamp,
+  legacySaltPath,
+  parseArgs,
+  saltPath,
+  solscanTxUrl,
+  workspaceProgram,
+} from "./utils";
 
 async function main() {
   const {
@@ -66,14 +65,15 @@ async function main() {
   const delegatorPk = delegatorStr ? new PublicKey(delegatorStr) : null;
 
   // Get voter's token account
-  const voterAta = await getAssociatedTokenAddress(
+  const { address: voterAta, tokenProgram } = await associatedTokenAddressForMint(
+    provider.connection,
     dao.governanceToken,
     provider.wallet.publicKey,
   );
 
   // Generate random salt
   const salt       = crypto.randomBytes(32);
-  const commitment = computeCommitment(vote, salt, provider.wallet.publicKey);
+  const commitment = computeProposalCommitment(vote, salt, provider.wallet.publicKey, proposalPda);
 
   console.log(`\n🔐 Committing private vote`);
   console.log(`   Proposal: "${proposal.title}"`);
@@ -112,6 +112,7 @@ async function main() {
         dao:                    proposal.dao,
         proposal:               proposalPda,
         delegation:             delegationPda,
+        delegatorVoteMarker:    delegatorDirectVoteRecordPda,
         voterRecord:            voterRecordPda,
         delegateeTokenAccount:  voterAta,
         delegatee:              provider.wallet.publicKey,
@@ -136,9 +137,10 @@ async function main() {
         dao:                proposal.dao,
         proposal:           proposalPda,
         voterRecord:        voterRecordPda,
+        delegationMarker:   delegationPda,
         voterTokenAccount:  voterAta,
         voter:              provider.wallet.publicKey,
-        tokenProgram:       TOKEN_PROGRAM_ID,
+        tokenProgram,
         systemProgram:      SystemProgram.programId,
       })
       .rpc();

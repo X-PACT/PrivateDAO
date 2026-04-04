@@ -9,28 +9,24 @@ import * as anchor from "@coral-xyz/anchor";
 import { BN } from "@coral-xyz/anchor";
 import { LAMPORTS_PER_SOL, PublicKey, SystemProgram } from "@solana/web3.js";
 import {
-  TOKEN_PROGRAM_ID,
   createMint,
+  getAccount,
   getOrCreateAssociatedTokenAccount,
   mintTo,
 } from "@solana/spl-token";
-import * as crypto from "crypto";
 import {
+  associatedTokenAddressForMint,
+  computeProposalCommitment,
   formatSol,
   formatTimestamp,
   parseArgs,
   proposalStatusLabel,
+  resolveTokenProgramForMint,
   solscanAccountUrl,
   solscanTxUrl,
   workspaceProgram,
 } from "./utils";
-
-function computeCommitment(vote: boolean, salt: Buffer, voter: PublicKey): Buffer {
-  return crypto
-    .createHash("sha256")
-    .update(Buffer.concat([Buffer.from([vote ? 1 : 0]), salt, voter.toBuffer()]))
-    .digest();
-}
+import * as crypto from "crypto";
 
 async function waitUntil(targetUnix: number, label: string) {
   for (;;) {
@@ -56,6 +52,7 @@ async function main() {
     vote: voteArg = "yes",
     mintAmount = 1000,
     recipient,
+    governanceMint: governanceMintArg,
   } = parseArgs();
 
   const vote = String(voteArg).toLowerCase() !== "no";
@@ -71,13 +68,16 @@ async function main() {
   console.log(`Program:   ${program.programId.toBase58()}`);
   console.log(`Recipient: ${recipientPk.toBase58()}`);
 
-  const mint = await createMint(
-    provider.connection,
-    payer,
-    walletPk,
-    null,
-    6,
-  );
+  const mint = governanceMintArg
+    ? new PublicKey(String(governanceMintArg))
+    : await createMint(
+        provider.connection,
+        payer,
+        walletPk,
+        null,
+        6,
+      );
+  const tokenProgram = await resolveTokenProgramForMint(provider.connection, mint);
 
   const [daoPda] = PublicKey.findProgramAddressSync(
     [Buffer.from("dao"), walletPk.toBuffer(), Buffer.from(String(name))],
@@ -100,20 +100,39 @@ async function main() {
     })
     .rpc();
 
-  const voterAta = await getOrCreateAssociatedTokenAccount(
-    provider.connection,
-    payer,
-    mint,
-    walletPk,
-  );
-  const mintTx = await mintTo(
-    provider.connection,
-    payer,
-    mint,
-    voterAta.address,
-    payer,
-    BigInt(Number(mintAmount)) * 1_000_000n,
-  );
+  let voterTokenAccountAddress: PublicKey;
+  let mintTx = "reused-existing-governance-balance";
+  if (governanceMintArg) {
+    const { address } = await associatedTokenAddressForMint(provider.connection, mint, walletPk);
+    const voterTokenAccount = await getAccount(provider.connection, address, "confirmed", tokenProgram);
+    if (Number(voterTokenAccount.amount) === 0) {
+      throw new Error(`Existing governance mint ${mint.toBase58()} has no balance for ${walletPk.toBase58()}`);
+    }
+    voterTokenAccountAddress = address;
+  } else {
+    const voterAta = await getOrCreateAssociatedTokenAccount(
+      provider.connection,
+      payer,
+      mint,
+      walletPk,
+      false,
+      "confirmed",
+      undefined,
+      tokenProgram,
+    );
+    voterTokenAccountAddress = voterAta.address;
+    mintTx = await mintTo(
+      provider.connection,
+      payer,
+      mint,
+      voterAta.address,
+      payer,
+      BigInt(Number(mintAmount)) * 1_000_000n,
+      [],
+      undefined,
+      tokenProgram,
+    );
+  }
 
   const [treasuryPda] = PublicKey.findProgramAddressSync(
     [Buffer.from("treasury"), daoPda.toBuffer()],
@@ -155,16 +174,20 @@ async function main() {
     .accounts({
       dao: daoPda,
       proposal: proposalPda,
-      proposerTokenAccount: voterAta.address,
+      proposerTokenAccount: voterTokenAccountAddress,
       proposer: walletPk,
       systemProgram: SystemProgram.programId,
     })
     .rpc();
 
   const salt = crypto.randomBytes(32);
-  const commitment = computeCommitment(vote, salt, walletPk);
+  const commitment = computeProposalCommitment(vote, salt, walletPk, proposalPda);
   const [voterRecordPda] = PublicKey.findProgramAddressSync(
     [Buffer.from("vote"), proposalPda.toBuffer(), walletPk.toBuffer()],
+    program.programId,
+  );
+  const [delegationMarkerPda] = PublicKey.findProgramAddressSync(
+    [Buffer.from("delegation"), proposalPda.toBuffer(), walletPk.toBuffer()],
     program.programId,
   );
   const commitTx = await program.methods
@@ -173,9 +196,10 @@ async function main() {
       dao: daoPda,
       proposal: proposalPda,
       voterRecord: voterRecordPda,
-      voterTokenAccount: voterAta.address,
+      delegationMarker: delegationMarkerPda,
+      voterTokenAccount: voterTokenAccountAddress,
       voter: walletPk,
-      tokenProgram: TOKEN_PROGRAM_ID,
+      tokenProgram,
       systemProgram: SystemProgram.programId,
     })
     .rpc();
@@ -219,7 +243,7 @@ async function main() {
       treasuryTokenAccount: walletPk,
       recipientTokenAccount: walletPk,
       executor: walletPk,
-      tokenProgram: TOKEN_PROGRAM_ID,
+      tokenProgram,
       systemProgram: SystemProgram.programId,
     })
     .rpc();

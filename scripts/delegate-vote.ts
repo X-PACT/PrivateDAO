@@ -20,7 +20,7 @@ import {
   getAssociatedTokenAddress,
   getAccount,
 } from "@solana/spl-token";
-import { parseArgs, formatTimestamp, solscanTxUrl, workspaceProgram } from "./utils";
+import { parseArgs, formatTimestamp, resolveTokenProgramForMint, solscanTxUrl, workspaceProgram } from "./utils";
 
 async function main() {
   const { proposal: proposalStr, delegatee: delegateeStr } = parseArgs();
@@ -46,11 +46,14 @@ async function main() {
   }
 
   // Get delegator's token account
+  const tokenProgram = await resolveTokenProgramForMint(provider.connection, dao.governanceToken);
   const delegatorAta = await getAssociatedTokenAddress(
     dao.governanceToken,
     provider.wallet.publicKey,
+    false,
+    tokenProgram,
   );
-  const ataInfo = await getAccount(provider.connection, delegatorAta);
+  const ataInfo = await getAccount(provider.connection, delegatorAta, "confirmed", tokenProgram);
   const balance = Number(ataInfo.amount) / 1_000_000;
 
   console.log(`\n🤝 Delegating vote`);
@@ -81,6 +84,7 @@ async function main() {
       dao:                   proposal.dao,
       proposal:              proposalPda,
       delegation:            delegationPda,
+      directVoteMarker:      directVoteRecordPda,
       delegatorTokenAccount: delegatorAta,
       delegator:             provider.wallet.publicKey,
       systemProgram:         SystemProgram.programId,

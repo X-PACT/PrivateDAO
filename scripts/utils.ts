@@ -7,7 +7,13 @@ import { Program } from "@coral-xyz/anchor";
 import * as path from "path";
 import * as fs from "fs";
 import * as os from "os";
-import { PublicKey } from "@solana/web3.js";
+import * as crypto from "crypto";
+import { Connection, PublicKey } from "@solana/web3.js";
+import {
+  getAssociatedTokenAddressSync,
+  TOKEN_2022_PROGRAM_ID,
+  TOKEN_PROGRAM_ID,
+} from "@solana/spl-token";
 
 // Load .env from project root if it exists
 const envPath = path.join(__dirname, "..", ".env");
@@ -43,6 +49,18 @@ export function parseArgs(): Record<string, any> {
 
 export function workspaceProgram(): Program<any> & { account: any; methods: any } {
   return anchor.workspace.PrivateDao as Program<any> & { account: any; methods: any };
+}
+
+export function computeProposalCommitment(
+  vote: boolean,
+  salt: Buffer,
+  voter: PublicKey,
+  proposal: PublicKey,
+): Buffer {
+  return crypto
+    .createHash("sha256")
+    .update(Buffer.concat([Buffer.from([vote ? 1 : 0]), salt, proposal.toBuffer(), voter.toBuffer()]))
+    .digest();
 }
 
 export function shortKey(key: { toBase58(): string }): string {
@@ -101,6 +119,33 @@ export function solscanAccountUrl(address: string): string {
 
 export function solscanTxUrl(signature: string): string {
   return `https://solscan.io/tx/${signature}?cluster=devnet`;
+}
+
+export async function resolveTokenProgramForMint(
+  connection: Connection,
+  mint: PublicKey,
+): Promise<PublicKey> {
+  const info = await connection.getAccountInfo(mint, "confirmed");
+  if (!info) {
+    throw new Error(`Mint account not found: ${mint.toBase58()}`);
+  }
+  if (!info.owner.equals(TOKEN_PROGRAM_ID) && !info.owner.equals(TOKEN_2022_PROGRAM_ID)) {
+    throw new Error(`Unsupported token program for mint ${mint.toBase58()}: ${info.owner.toBase58()}`);
+  }
+  return info.owner;
+}
+
+export async function associatedTokenAddressForMint(
+  connection: Connection,
+  mint: PublicKey,
+  owner: PublicKey,
+  allowOwnerOffCurve = false,
+): Promise<{ address: PublicKey; tokenProgram: PublicKey }> {
+  const tokenProgram = await resolveTokenProgramForMint(connection, mint);
+  return {
+    address: getAssociatedTokenAddressSync(mint, owner, allowOwnerOffCurve, tokenProgram),
+    tokenProgram,
+  };
 }
 
 export function legacySaltPath(proposal: string): string {

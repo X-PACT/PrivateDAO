@@ -69,7 +69,7 @@ function main() {
     "ATTESTATION",
     "Open zk attestation",
     "TRUTH-ALIGNED",
-    "The raw commitment hash binds vote, salt, and voter key.",
+    "The raw commitment hash binds vote, salt, proposal key, and voter key.",
     "proposal account stays rent-safe",
     "Save the salt yourself; the browser does not persist it.",
     "page-docs",

@@ -66,7 +66,7 @@ export default function HomePage() {
             <span style={{ fontSize: "0.8rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "#7dd3fc" }}>
               Commit-Reveal Governance on Solana
             </span>
-            <ZKBadge label="🔒 ZK Secured" />
+            <ZKBadge label="⟡ Groth16 Companion Layer" />
           </div>
           <h1 style={{ marginTop: 0, fontSize: "clamp(2.4rem, 6vw, 4.5rem)", lineHeight: 1 }}>
             Vote without fear.
@@ -75,7 +75,7 @@ export default function HomePage() {
             PrivateDAO is a Solana governance framework built around commit-reveal voting, timelocked execution, and treasury safety checks.
           </p>
           <div style={{ marginTop: "14px", color: "#8aa4bf", fontSize: "0.95rem", lineHeight: 1.8 }}>
-            Quadratic voting · Timelocked treasury execution · Realms migration · Zero-Knowledge Proof Verified
+            Quadratic voting · Timelocked treasury execution · Realms migration · Groth16 companion proofs published
           </div>
         </section>
       </div>

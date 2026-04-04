@@ -10,8 +10,15 @@
  */
 import * as anchor from "@coral-xyz/anchor";
 import { PublicKey, SystemProgram, LAMPORTS_PER_SOL } from "@solana/web3.js";
-import { getAssociatedTokenAddressSync, TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { formatSol, formatTimestamp, parseArgs, solscanAccountUrl, solscanTxUrl, workspaceProgram } from "./utils";
+import {
+  associatedTokenAddressForMint,
+  formatSol,
+  formatTimestamp,
+  parseArgs,
+  solscanAccountUrl,
+  solscanTxUrl,
+  workspaceProgram,
+} from "./utils";
 
 async function main() {
   const {
@@ -37,11 +44,10 @@ async function main() {
   const daoPda = new PublicKey(String(daoPdaStr));
   const dao    = await program.account.dao.fetch(daoPda);
   const durationSeconds = Number(duration);
-  const proposerTokenAccount = getAssociatedTokenAddressSync(
+  const { address: proposerTokenAccount } = await associatedTokenAddressForMint(
+    provider.connection,
     dao.governanceToken,
     provider.wallet.publicKey,
-    false,
-    TOKEN_PROGRAM_ID,
   );
 
   if (!Number.isFinite(durationSeconds) || durationSeconds <= 0) {

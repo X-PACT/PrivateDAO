@@ -2377,7 +2377,7 @@ body.judge-mode .judge-banner {
       <div class="compare-panel good">
         <span class="compare-tag">✓ PRIVATEDAO — COMMIT-REVEAL</span>
         <div class="compare-title">Tally sealed until voting ends</div>
-        <div class="compare-desc">Voters submit sha256(vote‖salt‖pubkey). The hash reveals nothing. After voting ends, proofs are verified on-chain. Zero bandwagon effect.</div>
+        <div class="compare-desc">Voters submit sha256(vote‖salt‖proposal‖pubkey). The hash reveals nothing. After voting ends, the on-chain program verifies the exact preimage. Zero bandwagon effect.</div>
         <div class="tally-sealed">
           <div class="tally-sealed-header">TALLY — CRYPTOGRAPHICALLY SEALED</div>
           <div class="sealed-display" id="sealedDisplay">YES: ? &nbsp;/&nbsp; NO: ?</div>
@@ -2873,7 +2873,7 @@ body.judge-mode .judge-banner {
         <div class="step-title">COMMIT</div>
         <div class="step-desc">During voting, every voter submits a cryptographic hash. The chain stores commitments — not votes. Tally shows 0/0 to everyone.</div>
         <div class="step-code">
-<span class="comment">// Commitment = sha256(vote‖salt‖pubkey)</span>
+<span class="comment">// Commitment = sha256(vote‖salt‖proposal‖pubkey)</span>
 commitment[32] = sha256(
   vote_byte, &nbsp;&nbsp;<span class="comment">// YES=1 NO=0</span>
   salt[32], &nbsp;&nbsp;&nbsp;<span class="comment">// random, kept private</span>
@@ -2890,7 +2890,7 @@ commitment[32] = sha256(
         <div class="step-desc">After voting ends, voters prove (vote, salt). The program recomputes the hash on-chain. Match means the vote is counted, and the revealer can receive the configured rebate if the proposal account stays rent-safe.</div>
         <div class="step-code">
 <span class="comment">// On-chain verification</span>
-sha256(vote‖salt‖pubkey)
+sha256(vote‖salt‖proposal‖pubkey)
   == stored_commitment
     → vote counted ✓
     → rebate: +0.001 SOL (proposal account only)
@@ -3082,7 +3082,7 @@ execute() → treasury action
         </div>
         <div class="proposal-command-box">
           <div class="proposal-detail-label">REPLAY SCOPING</div>
-          <div style="color:var(--text2);line-height:1.8">The raw commitment hash binds vote, salt, and voter key. Cross-proposal replay is still rejected because <code>VoteRecord</code> accounts, reveal bindings, and lifecycle flags are proposal-scoped.</div>
+          <div style="color:var(--text2);line-height:1.8">The raw commitment hash binds vote, salt, proposal key, and voter key. Cross-proposal replay is rejected both cryptographically and through proposal-scoped <code>VoteRecord</code> accounts, reveal bindings, and lifecycle flags.</div>
         </div>
         <div class="proposal-command-box">
           <div class="proposal-detail-label">REBATE SOURCE</div>
@@ -3424,10 +3424,10 @@ execute() → treasury action
           <div class="proposal-detail-label">CURRENT BOUNDARIES</div>
           <div style="color:var(--text2);line-height:1.8">
             Devnet-first deployment.<br>
-            Direct-commit versus delegation overlap is still guarded operationally in product surfaces.<br>
+            Direct-commit versus delegation overlap is rejected on-chain through proposal-bound marker accounts.<br>
             Quadratic weighting still assumes an external sybil-resistance policy.<br>
             Commit-reveal hides vote content, not transaction timing metadata.<br>
-            `CustomCPI` remains an event relay path rather than arbitrary on-chain CPI.<br>
+            `CustomCPI` remains intentionally unsupported rather than arbitrary on-chain CPI.<br>
             The current Groth16 proof stack is additive and off-chain today.<br>
             Mainnet audit completeness is not claimed.
           </div>
@@ -3462,7 +3462,7 @@ execute() → treasury action
           <tr><td><strong>Vote buying via tally watching</strong></td><td><span class="fail">✗ Common</span></td><td><span class="check">✓ No tally to watch</span></td><td><span class="mono-sm">0/0 during voting</span></td></tr>
           <tr><td><strong>Whale intimidation</strong></td><td><span class="fail">✗ Systemic</span></td><td><span class="check">✓ No visible pressure</span></td><td><span class="mono-sm">DualChamber + hidden tally</span></td></tr>
           <tr><td><strong>Treasury MEV / front-running</strong></td><td><span class="fail">✗ Common</span></td><td><span class="check">✓ Reduced, not eliminated</span></td><td><span class="mono-sm">Hidden tally + timelock</span></td></tr>
-          <tr><td><strong>Commitment replay attack</strong></td><td><span class="fail">✗ N/A</span></td><td><span class="check">✓ Pubkey in preimage</span></td><td><span class="mono-sm">sha256(v‖s‖pubkey)</span></td></tr>
+          <tr><td><strong>Commitment replay attack</strong></td><td><span class="fail">✗ N/A</span></td><td><span class="check">✓ Proposal + pubkey bound</span></td><td><span class="mono-sm">sha256(v‖s‖proposal‖pubkey)</span></td></tr>
           <tr><td><strong>Flash loan manipulation</strong></td><td><span class="fail">✗ Common</span></td><td><span class="check">✓ Weight at commit time</span></td><td><span class="mono-sm">Snapshotted on commit</span></td></tr>
           <tr><td><strong>Malicious proposal execution</strong></td><td><span class="fail">✗ Instant</span></td><td><span class="check">✓ 24h veto window</span></td><td><span class="mono-sm">Timelock + authority veto</span></td></tr>
           <tr><td><strong>Brute-force commitment</strong></td><td>N/A</td><td><span class="check">✓ 2²⁵⁶ combinations</span></td><td><span class="mono-sm">32-byte random salt</span></td></tr>
@@ -3803,7 +3803,7 @@ execute() → treasury action
 
     <div class="commit-preview">
       <div class="commit-preview-label">COMMITMENT — GENERATED CLIENT-SIDE</div>
-      <div class="commit-formula">sha256( vote_byte ‖ salt[32] ‖ voter_pubkey )</div>
+      <div class="commit-formula">sha256( vote_byte ‖ salt[32] ‖ proposal_pubkey ‖ voter_pubkey )</div>
       <div class="commit-hash" id="hashDisplay">Select YES or NO to generate your commitment hash...</div>
     </div>
 
@@ -3847,8 +3847,9 @@ execute() → treasury action
       <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:14px">PROOF VERIFICATION</div>
       <div><span style="color:var(--cyan)">vote:&nbsp;&nbsp;&nbsp;</span><span style="color:var(--amber)">your original YES or NO</span></div>
       <div><span style="color:var(--cyan)">salt:&nbsp;&nbsp;&nbsp;</span><span style="color:var(--text2)">the 32-byte secret saved at commit time</span></div>
+      <div><span style="color:var(--cyan)">proposal:</span><span style="color:var(--text2)">the same proposal public key used at commit time</span></div>
       <div><span style="color:var(--cyan)">pubkey:&nbsp;</span><span style="color:var(--text2)">the same wallet that created the commitment</span></div>
-      <div style="margin-top:12px;color:var(--green)">The on-chain program recomputes sha256(vote || salt || pubkey) and only accepts an exact match.</div>
+      <div style="margin-top:12px;color:var(--green)">The on-chain program recomputes sha256(vote || salt || proposal || pubkey) and only accepts an exact match.</div>
     </div>
 
     <div class="rebate-note">💰 You may receive a 0.001 SOL rebate if the proposal account remains rent-safe</div>
@@ -4588,6 +4589,7 @@ function copyFinalizeCommand() {
 const DEVNET_RPC = "https://solana-devnet.g.alchemy.com/v2/L4dlywEyiBJLg8Ey0bFof";
 const PROGRAM_ID = "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx";
 const TOKEN_PROGRAM_ID = new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
+const TOKEN_2022_PROGRAM_ID = new solanaWeb3.PublicKey("TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb");
 const ASSOCIATED_TOKEN_PROGRAM_ID = new solanaWeb3.PublicKey("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL");
 const SYSVAR_RENT_PUBKEY = new solanaWeb3.PublicKey("SysvarRent111111111111111111111111111111111");
 const connection = new solanaWeb3.Connection(DEVNET_RPC, "confirmed");
@@ -5026,16 +5028,31 @@ function actionTypeLabel(idx) {
   return `Unknown(${idx})`;
 }
 
-function deriveAssociatedTokenAddress(owner, mint) {
+async function resolveTokenProgramForMint(mint) {
+  const mintPk = new solanaWeb3.PublicKey(mint);
+  const info = await connection.getAccountInfo(mintPk, 'confirmed');
+  if (!info) {
+    throw new Error(`Mint account not found: ${mintPk.toBase58()}`);
+  }
+  if (!info.owner.equals(TOKEN_PROGRAM_ID) && !info.owner.equals(TOKEN_2022_PROGRAM_ID)) {
+    throw new Error(`Unsupported token program for mint ${mintPk.toBase58()}: ${info.owner.toBase58()}`);
+  }
+  return info.owner;
+}
+
+async function deriveAssociatedTokenAddress(owner, mint, allowOwnerOffCurve = false, tokenProgramOverride = null) {
+  const ownerPk = new solanaWeb3.PublicKey(owner);
+  const mintPk = new solanaWeb3.PublicKey(mint);
+  const tokenProgram = tokenProgramOverride || await resolveTokenProgramForMint(mintPk);
   const [ata] = solanaWeb3.PublicKey.findProgramAddressSync(
     [
-      new solanaWeb3.PublicKey(owner).toBytes(),
-      TOKEN_PROGRAM_ID.toBytes(),
-      new solanaWeb3.PublicKey(mint).toBytes(),
+      ownerPk.toBytes(),
+      tokenProgram.toBytes(),
+      mintPk.toBytes(),
     ],
     ASSOCIATED_TOKEN_PROGRAM_ID
   );
-  return ata;
+  return { address: ata, tokenProgram };
 }
 
 function encodeVotingConfig(mode) {
@@ -5061,7 +5078,7 @@ function createInitializeMintInstruction(mintPubkey, mintAuthority, decimals = 6
   });
 }
 
-function createAssociatedTokenAccountInstruction(payer, owner, mint, ata) {
+function createAssociatedTokenAccountInstruction(payer, owner, mint, ata, tokenProgram = TOKEN_PROGRAM_ID) {
   return new solanaWeb3.TransactionInstruction({
     programId: ASSOCIATED_TOKEN_PROGRAM_ID,
     keys: [
@@ -5070,7 +5087,7 @@ function createAssociatedTokenAccountInstruction(payer, owner, mint, ata) {
       { pubkey: new solanaWeb3.PublicKey(owner), isSigner: false, isWritable: false },
       { pubkey: new solanaWeb3.PublicKey(mint), isSigner: false, isWritable: false },
       { pubkey: solanaWeb3.SystemProgram.programId, isSigner: false, isWritable: false },
-      { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
+      { pubkey: tokenProgram, isSigner: false, isWritable: false },
       { pubkey: SYSVAR_RENT_PUBKEY, isSigner: false, isWritable: false },
     ],
     data: new Uint8Array([]),
@@ -5206,7 +5223,7 @@ async function submitCreateProposalInWallet() {
   try {
     const dao = await fetchDaoDetails(daoPubkey);
     const proposalPk = deriveProposalPda(dao.pubkey, dao.proposalCount);
-    const proposerTokenAccount = deriveAssociatedTokenAddress(wallet, dao.governanceToken);
+    const { address: proposerTokenAccount } = await deriveAssociatedTokenAddress(wallet, dao.governanceToken);
     const proposerTokenInfo = await connection.getAccountInfo(proposerTokenAccount, 'confirmed');
     if (!proposerTokenInfo) {
       throw new Error('Governance token account was not found for the connected wallet');
@@ -5365,7 +5382,7 @@ async function commitSelectedVoteInWallet() {
     throw new Error('Choose a live proposal and generate a commitment first');
   }
   const dao = await fetchDaoDetails(currentSelectedProposal.dao);
-  const voterTokenAccount = deriveAssociatedTokenAddress(wallet, dao.governanceToken);
+  const { address: voterTokenAccount, tokenProgram } = await deriveAssociatedTokenAddress(wallet, dao.governanceToken);
   const voterTokenInfo = await connection.getAccountInfo(voterTokenAccount, 'confirmed');
   if (!voterTokenInfo) {
     throw new Error('Governance token account was not found for the connected wallet');
@@ -5377,6 +5394,7 @@ async function commitSelectedVoteInWallet() {
   }
 
   const voterRecordPk = deriveVoteRecordPda(currentSelectedProposal.pubkey, wallet);
+  const delegationMarkerPk = deriveDelegationPda(currentSelectedProposal.pubkey, wallet);
   const data = concatBytes(
     await anchorMethodDiscriminator('commit_vote'),
     hexToBytes(currentCommitHashHex),
@@ -5389,9 +5407,10 @@ async function commitSelectedVoteInWallet() {
       { pubkey: new solanaWeb3.PublicKey(currentSelectedProposal.dao), isSigner: false, isWritable: false },
       { pubkey: new solanaWeb3.PublicKey(currentSelectedProposal.pubkey), isSigner: false, isWritable: true },
       { pubkey: voterRecordPk, isSigner: false, isWritable: true },
+      { pubkey: delegationMarkerPk, isSigner: false, isWritable: false },
       { pubkey: voterTokenAccount, isSigner: false, isWritable: false },
       { pubkey: new solanaWeb3.PublicKey(wallet), isSigner: true, isWritable: true },
-      { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
+      { pubkey: tokenProgram, isSigner: false, isWritable: false },
       { pubkey: solanaWeb3.SystemProgram.programId, isSigner: false, isWritable: false },
     ],
     data,
@@ -5494,7 +5513,7 @@ async function submitDelegateVoteInWallet() {
       throw new Error('Select the target proposal from the live list first');
     }
     const dao = await fetchDaoDetails(proposal.dao);
-    const delegatorTokenAccount = deriveAssociatedTokenAddress(wallet, dao.governanceToken);
+    const { address: delegatorTokenAccount } = await deriveAssociatedTokenAddress(wallet, dao.governanceToken);
     const delegatorTokenInfo = await connection.getAccountInfo(delegatorTokenAccount, 'confirmed');
     if (!delegatorTokenInfo) {
       throw new Error('Governance token account was not found for the connected wallet');
@@ -5515,6 +5534,7 @@ async function submitDelegateVoteInWallet() {
         { pubkey: new solanaWeb3.PublicKey(proposal.dao), isSigner: false, isWritable: false },
         { pubkey: new solanaWeb3.PublicKey(proposalPubkey), isSigner: false, isWritable: false },
         { pubkey: delegationPk, isSigner: false, isWritable: true },
+        { pubkey: directVoteRecordPk, isSigner: false, isWritable: false },
         { pubkey: delegatorTokenAccount, isSigner: false, isWritable: false },
         { pubkey: new solanaWeb3.PublicKey(wallet), isSigner: true, isWritable: true },
         { pubkey: solanaWeb3.SystemProgram.programId, isSigner: false, isWritable: false },
@@ -5540,7 +5560,7 @@ async function submitDelegatedCommitInWallet() {
   }
   try {
     const dao = await fetchDaoDetails(currentSelectedProposal.dao);
-    const delegateeTokenAccount = deriveAssociatedTokenAddress(wallet, dao.governanceToken);
+    const { address: delegateeTokenAccount } = await deriveAssociatedTokenAddress(wallet, dao.governanceToken);
     const delegateeTokenInfo = await connection.getAccountInfo(delegateeTokenAccount, 'confirmed');
     if (!delegateeTokenInfo) {
       throw new Error('Governance token account was not found for the connected wallet');
@@ -5563,6 +5583,7 @@ async function submitDelegatedCommitInWallet() {
         { pubkey: new solanaWeb3.PublicKey(currentSelectedProposal.dao), isSigner: false, isWritable: false },
         { pubkey: new solanaWeb3.PublicKey(currentSelectedProposal.pubkey), isSigner: false, isWritable: true },
         { pubkey: delegationPk, isSigner: false, isWritable: true },
+        { pubkey: delegatorDirectVoteRecordPk, isSigner: false, isWritable: false },
         { pubkey: voterRecordPk, isSigner: false, isWritable: true },
         { pubkey: delegateeTokenAccount, isSigner: false, isWritable: false },
         { pubkey: new solanaWeb3.PublicKey(wallet), isSigner: true, isWritable: true },
@@ -5726,12 +5747,14 @@ async function executeSelectedProposalInWallet() {
 
     let treasuryTokenPk = treasuryPk;
     let recipientTokenPk = treasuryPk;
+    let executeTokenProgram = TOKEN_PROGRAM_ID;
     if (action.actionTypeLabel === 'SendToken') {
       if (!action.tokenMint) {
         throw new Error('Selected SendToken action is missing token mint.');
       }
-      treasuryTokenPk = deriveAssociatedTokenAddress(treasuryPk.toBase58(), action.tokenMint);
-      recipientTokenPk = deriveAssociatedTokenAddress(recipientPk.toBase58(), action.tokenMint);
+      const tokenProgram = await resolveTokenProgramForMint(action.tokenMint);
+      treasuryTokenPk = (await deriveAssociatedTokenAddress(treasuryPk.toBase58(), action.tokenMint, true, tokenProgram)).address;
+      recipientTokenPk = (await deriveAssociatedTokenAddress(recipientPk.toBase58(), action.tokenMint, false, tokenProgram)).address;
       const recipientTokenInfo = await connection.getAccountInfo(recipientTokenPk, 'confirmed');
       if (!recipientTokenInfo) {
         tx.add(
@@ -5740,9 +5763,11 @@ async function executeSelectedProposalInWallet() {
             recipientPk.toBase58(),
             action.tokenMint,
             recipientTokenPk,
+            tokenProgram,
           )
         );
       }
+      executeTokenProgram = tokenProgram;
     }
 
     const ix = await buildAnchorInstruction('execute_proposal', [
@@ -5753,7 +5778,7 @@ async function executeSelectedProposalInWallet() {
       { pubkey: treasuryTokenPk, isSigner: false, isWritable: true },
       { pubkey: recipientTokenPk, isSigner: false, isWritable: true },
       { pubkey: executorPk, isSigner: true, isWritable: false },
-      { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
+      { pubkey: executeTokenProgram, isSigner: false, isWritable: false },
       { pubkey: solanaWeb3.SystemProgram.programId, isSigner: false, isWritable: false },
     ]);
     tx.add(ix);
@@ -6309,17 +6334,23 @@ async function selectVote(v) {
     showToast('Connect your wallet first to derive commitment hash.', 'error');
     return;
   }
+  if (!currentSelectedProposal) {
+    showToast('Select a live proposal first so the commitment can bind to its proposal key.', 'error');
+    return;
+  }
 
   const el = document.getElementById('hashDisplay');
   el.classList.add('computing');
   el.textContent = 'Computing sha256...';
   const voter = new solanaWeb3.PublicKey(wallet);
+  const proposal = new solanaWeb3.PublicKey(currentSelectedProposal.pubkey);
   const salt = new Uint8Array(32);
   crypto.getRandomValues(salt);
-  const preimage = new Uint8Array(65);
+  const preimage = new Uint8Array(97);
   preimage[0] = v === "yes" ? 1 : 0;
   preimage.set(salt, 1);
-  preimage.set(voter.toBytes(), 33);
+  preimage.set(proposal.toBytes(), 33);
+  preimage.set(voter.toBytes(), 65);
   const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", preimage));
   currentCommitSaltHex = [...salt].map(b => b.toString(16).padStart(2, "0")).join("");
   currentCommitHashHex = [...digest].map(b => b.toString(16).padStart(2, "0")).join("");

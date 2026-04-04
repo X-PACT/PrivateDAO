@@ -76,7 +76,7 @@ The current review surface is intentionally explicit about a few points that are
 - The canonical PrivateDAO governance program id is `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`.
 - The separate `Token-2022` id shown for `PDAO` belongs to the token mint surface only and is not a second governance deployment.
 - Browser-native commit flows generate salts in memory and ask the voter to save or export them. They are not persisted in `localStorage` or `sessionStorage`.
-- Replay protection is proposal-scoped through the `VoteRecord` PDA, reveal account binding, and lifecycle flags even though the raw commitment preimage is `sha256(vote_byte || salt_32 || voter_pubkey_32)`.
+- Replay protection is proposal-scoped through proposal-bound commitments, `VoteRecord` PDA binding, reveal account binding, and lifecycle flags. The current commitment preimage is `sha256(vote_byte || salt_32 || proposal_pubkey_32 || voter_pubkey_32)`.
 - Reveal rebate comes from the proposal account only when that account remains rent-safe. The treasury is not the rebate source.
 - The current Groth16 proof stack is additive and off-chain today. The deployed on-chain program remains the enforcement boundary.
 
@@ -364,9 +364,8 @@ Primary references:
 PrivateDAO is explicit about what remains limited:
 
 - the project is devnet-first
-- direct-commit versus delegation overlap is still guarded operationally in product surfaces rather than fully enforced on-chain
 - commit-reveal hides vote content, not transaction timing metadata
-- `CustomCPI` remains intentionally event-only
+- `CustomCPI` remains intentionally unsupported in the live execution surface
 - local validator startup is environment-sensitive in this shell
 - mainnet audit completeness is not claimed
 
@@ -693,7 +692,7 @@ In practical terms, architecture readiness alone is not the last mile. Mainnet c
 ## 🧩 Project Surface Map
 
 - 🦀 `programs/private-dao/src/lib.rs`: the on-chain source of truth for DAO initialization, proposal lifecycle, commit-reveal voting, timelock, veto, treasury execution, delegation, keeper reveal, and Realms-oriented migration.
-- 📦 `sdk/src/index.ts`: shared commitment utilities for generating salts, encoding vote envelopes, and matching the on-chain `sha256(vote || salt || pubkey)` flow.
+- 📦 `sdk/src/index.ts`: shared commitment utilities for generating salts, encoding vote envelopes, and matching the on-chain `sha256(vote || salt || proposal || pubkey)` flow.
 - 🛠️ `scripts/`: operator workflows for DAO creation, proposal creation, deposit, delegation, commit, reveal, finalize, execute, and migration.
 - 🧪 `tests/private-dao.ts`, `tests/full-flow-test.ts`, `tests/demo.ts`: behavioral coverage for the governance lifecycle, treasury execution, and walkthrough-grade demonstrations.
 - 🌐 `docs/index.html`: the live GitHub Pages frontend that explains the protocol, surfaces proposal state, and now exposes awards and recognition content.
@@ -761,7 +760,7 @@ PrivateDAO is independently built and maintained by **Fahd Kotb**.
 - Treasury actions:
   - `SendSol`
   - `SendToken`
-  - `CustomCPI` event-only relay path
+  - `CustomCPI` reserved / rejected
 - Proposal-scoped private delegation
 - Optional proposal-scoped keeper reveal
 - Timelock and veto model
@@ -772,11 +771,12 @@ PrivateDAO is independently built and maintained by **Fahd Kotb**.
 
 Current on-chain safety properties:
 
-- Commitment binding uses `sha256(vote_byte || salt_32 || voter_pubkey_32)`
-- Cross-proposal replay resistance is enforced through proposal-bound `VoteRecord` PDAs plus commit/reveal lifecycle flags
+- Commitment binding uses `sha256(vote_byte || salt_32 || proposal_pubkey_32 || voter_pubkey_32)`
+- Cross-proposal replay resistance is enforced through proposal-bound commitments, proposal-bound `VoteRecord` PDAs, and commit/reveal lifecycle flags
 - Vote weight is snapshotted at commit time
 - Browser-native commit flows generate salts in memory only and do not persist them in `localStorage` or `sessionStorage`
 - Reveal is limited to the voter or the voter-approved proposal-scoped keeper, and successful reveal clears that keeper authority from the stored record
+- Direct commit and proposal-scoped delegation are now mutually exclusive on-chain through proposal-bound marker accounts
 - Cancelled proposals can no longer progress through reveal/finalize/execute
 - Finalization is permissionless but only after `reveal_end`
 - Execution is permissionless but only after `execution_unlocks_at`
@@ -787,9 +787,10 @@ Current on-chain safety properties:
   - action mint matches both token accounts
   - recipient token owner matches the configured recipient
   - source and destination token accounts are not the same account
+- Unsupported `CustomCPI` actions are rejected rather than marked executed as an event-only success path
 - Reveal rebate is paid from the proposal account only when it remains rent-safe
 - Delegation is one-shot per proposal and self-delegation is rejected
-- `CustomCPI` is intentionally event-only and does not claim arbitrary on-chain CPI execution
+- `CustomCPI` is intentionally unsupported and does not claim arbitrary on-chain CPI execution
 
 This is still not a claim of audit completeness. It is a real protocol with real checks, not a claim that governance risk is solved forever.
 
@@ -1025,7 +1026,7 @@ Implemented and exercised now:
 
 Still intentionally scoped or deferred:
 
-- `CustomCPI` remains event-only rather than arbitrary CPI from the program
+- `CustomCPI` remains outside the live execution surface rather than arbitrary CPI from the program
 - no claim of mainnet audit readiness
 - no claim of censorship-resistant off-chain relayer infrastructure
 - no claim that commit-reveal hides metadata such as transaction timing

@@ -14,11 +14,8 @@
  */
 import * as anchor from "@coral-xyz/anchor";
 import { PublicKey, SystemProgram } from "@solana/web3.js";
-import {
-  getAssociatedTokenAddress,
-  TOKEN_PROGRAM_ID,
-} from "@solana/spl-token";
-import { formatDuration, parseArgs, formatSol, formatTimestamp, proposalStatusLabel, solscanTxUrl, workspaceProgram } from "./utils";
+import { getAssociatedTokenAddress } from "@solana/spl-token";
+import { formatDuration, parseArgs, formatSol, formatTimestamp, proposalStatusLabel, resolveTokenProgramForMint, solscanTxUrl, workspaceProgram } from "./utils";
 
 async function main() {
   const { proposal: proposalStr } = parseArgs();
@@ -36,6 +33,7 @@ async function main() {
   const proposal    = await program.account["proposal"].fetch(proposalPda);
   const daoPda      = proposal.dao;
   const dao         = await program.account["dao"].fetch(daoPda);
+  const governanceTokenProgram = await resolveTokenProgramForMint(provider.connection, dao.governanceToken);
   const now         = Math.floor(Date.now() / 1000);
   const status      = proposalStatusLabel(proposal.status);
 
@@ -73,6 +71,7 @@ async function main() {
   let treasuryRecipient      = treasuryPda;
   let treasuryTokenAccount   = treasuryPda;
   let recipientTokenAccount  = treasuryPda;
+  let tokenProgram           = governanceTokenProgram;
   let actionType = "none";
 
   if (proposal.treasuryAction) {
@@ -80,8 +79,9 @@ async function main() {
     treasuryRecipient = proposal.treasuryAction.recipient;
     const { tokenMint } = proposal.treasuryAction;
     if (tokenMint) {
-      treasuryTokenAccount  = await getAssociatedTokenAddress(tokenMint, treasuryPda, true);
-      recipientTokenAccount = await getAssociatedTokenAddress(tokenMint, treasuryRecipient);
+      tokenProgram = await resolveTokenProgramForMint(provider.connection, tokenMint);
+      treasuryTokenAccount = await getAssociatedTokenAddress(tokenMint, treasuryPda, true, tokenProgram);
+      recipientTokenAccount = await getAssociatedTokenAddress(tokenMint, treasuryRecipient, false, tokenProgram);
     }
 
     const amt = proposal.treasuryAction.amountLamports.toNumber();
@@ -111,7 +111,7 @@ async function main() {
       treasuryTokenAccount,
       recipientTokenAccount,
       executor:               provider.wallet.publicKey,
-      tokenProgram:           TOKEN_PROGRAM_ID,
+      tokenProgram,
       systemProgram:          SystemProgram.programId,
     })
     .rpc();

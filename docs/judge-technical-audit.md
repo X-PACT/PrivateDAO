@@ -35,11 +35,11 @@
 
 ### Voting integrity
 
-- commit binding uses `sha256(vote || salt || voter_pubkey)`
+- commit binding uses `sha256(vote || salt || proposal_pubkey || voter_pubkey)`
 - vote weight is snapshotted at commit time
 - reveal must match the stored commitment
 - delegated paths are proposal-scoped, not generic
-- operator-facing surfaces now block direct-commit/delegation overlap for the same proposal
+- direct/delegated overlap is rejected on-chain and mirrored in operator-facing surfaces
 
 ### Product proof surface
 

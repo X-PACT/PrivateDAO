@@ -119,13 +119,14 @@ Additional operational phases derived from state plus timestamps:
 Commitment preimage:
 
 ```text
-sha256(vote_byte || salt_32 || voter_pubkey_32)
+sha256(vote_byte || salt_32 || proposal_pubkey_32 || voter_pubkey_32)
 ```
 
 Where:
 
 - `vote_byte` is `1` for yes and `0` for no
 - `salt_32` is a 32-byte random secret
+- `proposal_pubkey_32` is the target proposal public key
 - `voter_pubkey_32` is the revealing voter identity
 
 ### 5.2 Commit Requirements
@@ -139,6 +140,7 @@ For direct commit:
 - voter token balance must be positive
 - if `governance_token_required > 0`, balance must satisfy that threshold
 - voter record must not already be committed
+- delegation marker for the same proposal/voter must not already exist
 
 For delegated commit:
 
@@ -146,6 +148,7 @@ For delegated commit:
 - delegation must be bound to the same proposal
 - delegation delegatee must equal signer
 - delegation must not already be used
+- direct-vote marker for the delegator must not already exist
 
 ### 5.3 Reveal Requirements
 
@@ -166,15 +169,15 @@ Replay resistance is provided by:
 - one voter record per proposal/voter pair
 - `has_committed`
 - `has_revealed`
-- commitment bound to voter public key
+- commitment bound to proposal public key and voter public key
 - delegation `is_used`
 - lifecycle timing gates
 
 The current raw commitment preimage is:
 
-- `sha256(vote_byte || salt_32 || voter_pubkey_32)`
+- `sha256(vote_byte || salt_32 || proposal_pubkey_32 || voter_pubkey_32)`
 
-`proposal_id` is not embedded in that hash preimage. Proposal scoping is enforced through the proposal-bound `VoteRecord` PDA, reveal account binding, and lifecycle flags on the stored voter record.
+Proposal scoping is therefore enforced both cryptographically and through the proposal-bound `VoteRecord` PDA, reveal account binding, and lifecycle flags on the stored voter record.
 
 ### 5.5 ZK-Augmented Commit-Reveal Stack
 
@@ -182,7 +185,7 @@ The repository now includes an additive zero-knowledge layer that does not chang
 
 Current live protocol:
 
-- commit uses `sha256(vote_byte || salt_32 || voter_pubkey_32)`
+- commit uses `sha256(vote_byte || salt_32 || proposal_pubkey_32 || voter_pubkey_32)`
 - reveal checks the committed preimage
 
 Current zk stack:
@@ -279,13 +282,13 @@ Effect:
 
 #### CustomCPI
 
-The current implementation is intentionally event-oriented rather than arbitrary CPI execution.
+The current implementation intentionally rejects `CustomCPI` rather than exposing an event-only success path or arbitrary CPI execution.
 
 Effect:
 
-- marks the approved event relay path as executed
-- emits the execution event for an off-chain relay or operator surface
-- does not claim arbitrary funds movement or arbitrary CPI execution inside the PrivateDAO program
+- proposal creation or execution that attempts `CustomCPI` is rejected
+- no treasury movement or execution flag mutation occurs
+- the live protocol does not claim arbitrary CPI execution inside the PrivateDAO program
 
 ## 8. Authority Rules
 
@@ -333,7 +336,7 @@ Keeper note:
 - reveal count never exceeds commit count
 - invalid reveal does not mutate tally
 - revealed tally only comes from valid commitments
-- proposal-scoped replay protection is enforced through voter-record PDA binding even though the raw commitment hash omits `proposal_id`
+- proposal-scoped replay protection is enforced both by proposal-bound commitments and by voter-record PDA binding
 
 ### Execution Invariants
 
@@ -376,7 +379,6 @@ Keeper note:
 - salt storage
 - explorer linking
 - devnet/local validator setup
-- operational guardrails for direct/delegated overlap
 - zk witness generation
 - zk proving
 - zk proof verification
@@ -384,7 +386,6 @@ Keeper note:
 ## 11. Known Limits of the Current Specification
 
 - this specification reflects the current repository behavior, not an aspirational redesign
-- direct-commit versus delegation overlap is still operationally guarded at product surfaces rather than fully enforced by the public on-chain interface
 - commit-reveal hides vote content, not timing metadata
 - the zk layer is off-chain today and is not yet an on-chain verifier integration
 - no external audit is claimed by this document
