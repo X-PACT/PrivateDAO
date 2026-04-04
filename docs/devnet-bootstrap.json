@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-04-04T12:22:37.374Z",
+  "runLabel": "20260404110609",
+  "network": "devnet",
+  "program_id": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+  "verification_wallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+  "dao_name": "PDAOStress04110609",
+  "governance_mint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
+  "dao_public_key": "DZvgwbANngbvDViiF3DtexaVM7V3vkWxHwR4GMdd9Paj",
+  "treasury_pda": "7cnFuUj1B1qCx9Soy2n4KLyABF6qaq5rvxgt7b4396bw",
+  "proposal_public_key": "EkxgKFqH2uewTEsEU4LfV8bvdX5WUX5SwsS1p186Vrtn",
+  "proposal_id": "0",
+  "proposal_title": "50-wallet devnet stress run",
+  "proposal_recipient": "HR4XjJ1VLJU3YVc2CxQxcZH2h5SB2frpDUzTNPr3NEXm",
+  "transactions": {
+    "create_dao": "2aHnkaEqiWok2qmcXAsXTDPPGpbUNMMCiY1rMf5Jvt1v2ZnPzpRDNUU63qGHeub9QuYFsnZnmKaVh8nZZtujR1Bc",
+    "deposit_treasury": "63HQMgXiMd4h2EwFitCxNv4c4fJWGagjyo8TUvPX6rmPXUpJD7TpGUUXNsgGsMhXeik2dagwdaem1SmXSHq1K42Q",
+    "create_proposal": "188wGF4ZKepivu3j41MHzgMKzs5Gmh3soJEjPtb7RB5GuJAJ4ww34mJZ8mJ5zBeZtz6D9R5BjLNgJq2m64Vsfgp"
+  }
+}

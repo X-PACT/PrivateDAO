@@ -16,6 +16,7 @@ PrivateDAO now includes a reviewer-visible hardening layer focused on realistic 
 - mainnet cutover readiness checks
 - non-breaking zk stack proof generation and verification
 - zk threat-extension reasoning and registry-backed review integrity
+- 50-wallet Devnet stress and adversarial execution evidence
 
 ## Reviewer-first proof points
 
@@ -23,6 +24,10 @@ PrivateDAO now includes a reviewer-visible hardening layer focused on realistic 
 - Core behavior tests: `tests/private-dao.ts`
 - End-to-end lifecycle and treasury tests: `tests/full-flow-test.ts`
 - Demo walkthrough: `tests/demo.ts`
+- 50-wallet load report: `docs/load-test-report.md`
+- Devnet transaction registry: `docs/devnet-tx-registry.json`
+- Adversarial report: `docs/adversarial-report.json`
+- ZK proof registry: `docs/zk-proof-registry.json`
 - Mainnet gate: `scripts/check-mainnet-readiness.sh`
 - Judge audit note: `docs/judge-technical-audit.md`
 - Mainnet readiness note: `docs/mainnet-readiness.md`
@@ -153,6 +158,27 @@ The failure-mode review focuses on realistic misuse:
 - partial execution attempts
 
 The expected safe outcome in each case is rejection without unintended state advancement or duplicate treasury effects.
+
+## Multi-Wallet Devnet Evidence
+
+The repository now also includes a wave-based Devnet stress harness that exercises the live protocol with:
+
+- 50 persistent wallets
+- 35 voter wallets
+- 10 adversarial wallets
+- 5 zk tester wallets
+- public Devnet transaction evidence
+
+The generated artifacts bind:
+
+- wallet funding and role assignment
+- DAO bootstrap and proposal anchors
+- wave-based commit and reveal execution
+- finalize and execute timing checks
+- replay, signer, delegation, and treasury miswiring rejections
+- off-chain Groth16 proof generation for the zk tester slice
+
+This does not replace the instruction-level tests. It complements them with live multi-wallet evidence on Devnet and explorer-verifiable transaction traces.
 
 ## Replay Summary
 

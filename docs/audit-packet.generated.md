@@ -66,8 +66,8 @@
 - Go-live attestation: `docs/go-live-attestation.generated.json`
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `40`
-- Aggregate sha256: `92e5114da515482fba642c7addaa21d948a260f617b8925f14db4811d499fc46`
+- Manifest entries: `47`
+- Aggregate sha256: `5f5b747074b0474236f4a5793c81ff064e02f2884ddcfd9ea9bdfc42ee9dc65c`
 
 ## ZK Package
 
@@ -140,6 +140,13 @@
 - `docs/live-proof.md`
 - `docs/devnet-release-manifest.md`
 - `docs/proof-registry.json`
+- `docs/devnet-wallet-registry.json`
+- `docs/devnet-bootstrap.json`
+- `docs/devnet-tx-registry.json`
+- `docs/adversarial-report.json`
+- `docs/zk-proof-registry.json`
+- `docs/performance-metrics.json`
+- `docs/load-test-report.md`
 - `docs/independent-verification.md`
 - `docs/cryptographic-manifest.generated.json`
 - `docs/token.md`
@@ -162,6 +169,16 @@
 - `docs/operational-drillbook.md`
 - `docs/runtime-attestation.generated.json`
 - `docs/go-live-attestation.generated.json`
+
+## Devnet Stress Package
+
+- `docs/devnet-wallet-registry.json`
+- `docs/devnet-bootstrap.json`
+- `docs/devnet-tx-registry.json`
+- `docs/adversarial-report.json`
+- `docs/zk-proof-registry.json`
+- `docs/performance-metrics.json`
+- `docs/load-test-report.md`
 
 ## Operations Package
 
@@ -188,6 +205,16 @@
 - `npm run verify:pdao-surface`
 - `npm run verify:pdao-attestation`
 - `npm run verify:pdao-live`
+- `npm run test:devnet:wallets`
+- `npm run test:devnet:fund`
+- `npm run test:devnet:bootstrap`
+- `npm run test:devnet:commit`
+- `npm run test:devnet:reveal`
+- `npm run test:devnet:execute`
+- `npm run test:devnet:zk`
+- `npm run test:devnet:adversarial`
+- `npm run test:devnet:report`
+- `npm run test:devnet:all`
 - `npm run verify:review-links`
 - `npm run verify:ops-surface`
 - `npm run verify:submission-registry`

@@ -216,6 +216,13 @@ Quick links:
 - Ranger Main Track memo: `docs/ranger-main-track.md`
 - Ranger Drift Track memo: `docs/ranger-drift-track.md`
 - Live devnet proof: `docs/live-proof.md`
+- 50-wallet load report: `docs/load-test-report.md`
+- Devnet wallet registry: `docs/devnet-wallet-registry.json`
+- Devnet bootstrap record: `docs/devnet-bootstrap.json`
+- Devnet transaction registry: `docs/devnet-tx-registry.json`
+- Adversarial report: `docs/adversarial-report.json`
+- ZK proof registry: `docs/zk-proof-registry.json`
+- Performance metrics: `docs/performance-metrics.json`
 - Devnet release manifest: `docs/devnet-release-manifest.md`
 - Proof registry: `docs/proof-registry.json`
 - Technical explainer package: `docs/investor-video.md`
@@ -528,6 +535,31 @@ The repository now includes a captured real governance run on devnet with explor
 - execute
 
 Reference: `docs/live-proof.md`
+
+## Devnet Stress Harness
+
+The repository now includes a full wave-based Devnet stress and adversarial simulation package using 50 persistent wallets:
+
+- 35 voter wallets
+- 10 adversarial wallets
+- 5 zk tester wallets
+- 182 public Devnet transactions
+- 33 adversarial scenarios
+- 7 Groth16 proof artifacts
+
+Reviewer-facing artifacts:
+
+- `docs/load-test-report.md`
+- `docs/devnet-wallet-registry.json`
+- `docs/devnet-bootstrap.json`
+- `docs/devnet-tx-registry.json`
+- `docs/adversarial-report.json`
+- `docs/zk-proof-registry.json`
+- `docs/performance-metrics.json`
+
+Unified reproducible command:
+
+- `npm run test:devnet:all`
 
 ## 🏆 Awards & Recognition
 

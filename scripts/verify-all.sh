@@ -28,29 +28,8 @@ npm run verify:program-id-consistency >/dev/null
 echo "[verify-all] checking PDAO token surface"
 npm run verify:pdao-surface >/dev/null
 
-echo "[verify-all] rebuilding deployment attestation"
-npm run build:deployment-attestation >/dev/null
-
-echo "[verify-all] rebuilding runtime attestation"
-npm run build:runtime-attestation >/dev/null
-
-echo "[verify-all] rebuilding go-live attestation"
-npm run build:go-live-attestation >/dev/null
-
-echo "[verify-all] rebuilding PDAO attestation"
-npm run build:pdao-attestation >/dev/null
-
-echo "[verify-all] rebuilding cryptographic manifest"
-npm run build:cryptographic-manifest >/dev/null
-
-echo "[verify-all] rebuilding audit packet"
-npm run build:audit-packet >/dev/null
-
-echo "[verify-all] rebuilding review attestation"
-npm run build:review-attestation >/dev/null
-
-echo "[verify-all] rebuilding mainnet readiness report"
-npm run build:mainnet-readiness-report >/dev/null
+echo "[verify-all] rebuilding reviewer artifacts"
+npm run build:devnet:review-artifacts >/dev/null
 
 echo "[verify-all] checking submission registry"
 npm run verify:submission-registry >/dev/null

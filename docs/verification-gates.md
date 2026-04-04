@@ -38,6 +38,24 @@ npm run verify:generated-artifacts
 
 Checks that generated reviewer artifacts such as the audit packet and review attestation exist and remain structurally valid.
 
+### Devnet Stress Harness
+
+```bash
+npm run test:devnet:all
+```
+
+Runs the full 50-wallet Devnet harness, then rebuilds and verifies the reviewer artifacts that bind:
+
+- wallet registry
+- DAO bootstrap record
+- explorer transaction registry
+- adversarial rejection report
+- zk proof registry
+- performance metrics
+- load-test report
+
+This is the canonical reproducible multi-wallet execution command for the live Devnet package.
+
 ### Cryptographic Integrity
 
 ```bash

@@ -13,6 +13,13 @@ function main() {
   const goLiveAttestationPath = path.resolve("docs/go-live-attestation.generated.json");
   const runtimeAttestationPath = path.resolve("docs/runtime-attestation.generated.json");
   const pdaoAttestationPath = path.resolve("docs/pdao-attestation.generated.json");
+  const devnetWalletRegistryPath = path.resolve("docs/devnet-wallet-registry.json");
+  const devnetBootstrapPath = path.resolve("docs/devnet-bootstrap.json");
+  const devnetTxRegistryPath = path.resolve("docs/devnet-tx-registry.json");
+  const adversarialReportPath = path.resolve("docs/adversarial-report.json");
+  const zkProofRegistryPath = path.resolve("docs/zk-proof-registry.json");
+  const performanceMetricsPath = path.resolve("docs/performance-metrics.json");
+  const loadTestReportPath = path.resolve("docs/load-test-report.md");
 
   if (!fs.existsSync(auditPacketPath)) {
     throw new Error("missing generated audit packet");
@@ -46,6 +53,27 @@ function main() {
   }
   if (!fs.existsSync(pdaoAttestationPath)) {
     throw new Error("missing generated PDAO attestation");
+  }
+  if (!fs.existsSync(devnetWalletRegistryPath)) {
+    throw new Error("missing devnet wallet registry");
+  }
+  if (!fs.existsSync(devnetBootstrapPath)) {
+    throw new Error("missing devnet bootstrap report");
+  }
+  if (!fs.existsSync(devnetTxRegistryPath)) {
+    throw new Error("missing devnet tx registry");
+  }
+  if (!fs.existsSync(adversarialReportPath)) {
+    throw new Error("missing adversarial report");
+  }
+  if (!fs.existsSync(zkProofRegistryPath)) {
+    throw new Error("missing zk proof registry");
+  }
+  if (!fs.existsSync(performanceMetricsPath)) {
+    throw new Error("missing performance metrics report");
+  }
+  if (!fs.existsSync(loadTestReportPath)) {
+    throw new Error("missing load test report");
   }
 
   const auditPacket = fs.readFileSync(auditPacketPath, "utf8");
@@ -138,6 +166,37 @@ function main() {
     };
     verificationDocs: string[];
   };
+  const devnetWalletRegistry = JSON.parse(fs.readFileSync(devnetWalletRegistryPath, "utf8")) as {
+    network: string;
+    wallets: Array<{ wallet_index: number; public_key: string; role: string; funding: { success: boolean } }>;
+  };
+  const devnetBootstrap = JSON.parse(fs.readFileSync(devnetBootstrapPath, "utf8")) as {
+    network: string;
+    program_id: string;
+    governance_mint: string;
+    dao_public_key: string;
+    proposal_public_key: string;
+    transactions: Record<string, string>;
+  };
+  const devnetTxRegistry = JSON.parse(fs.readFileSync(devnetTxRegistryPath, "utf8")) as {
+    network: string;
+    entries: Array<{ tx_signature: string; action: string }>;
+  };
+  const adversarialReport = JSON.parse(fs.readFileSync(adversarialReportPath, "utf8")) as {
+    total_scenarios: number;
+    rejected: number;
+    scenarios: Array<{ outcome: string; scenario: string }>;
+  };
+  const zkProofRegistry = JSON.parse(fs.readFileSync(zkProofRegistryPath, "utf8")) as {
+    verification_mode: string;
+    entries: Array<{ layer: string; proof_hash: string; public_inputs_hash: string }>;
+  };
+  const performanceMetrics = JSON.parse(fs.readFileSync(performanceMetricsPath, "utf8")) as {
+    walletCount: number;
+    totalTxCount: number;
+    totalAttemptCount: number;
+  };
+  const loadTestReport = fs.readFileSync(loadTestReportPath, "utf8");
   const zkAttestation = JSON.parse(fs.readFileSync(zkAttestationPath, "utf8")) as {
     project: string;
     zkStackVersion: number;
@@ -172,6 +231,46 @@ function main() {
 
   if (attestation.pdaoToken.transactionLabels.length < 4) {
     throw new Error("generated attestation PDAO transaction labels are incomplete");
+  }
+
+  if (devnetWalletRegistry.network !== "devnet" || devnetWalletRegistry.wallets.length !== 50) {
+    throw new Error("devnet wallet registry is incomplete");
+  }
+
+  if (!devnetWalletRegistry.wallets.every((wallet) => wallet.funding.success)) {
+    throw new Error("devnet wallet registry contains unfunded wallets");
+  }
+
+  if (devnetBootstrap.network !== "devnet" || devnetBootstrap.program_id !== attestation.programId) {
+    throw new Error("devnet bootstrap report does not match canonical program state");
+  }
+
+  if (devnetBootstrap.governance_mint !== attestation.pdaoToken.mint) {
+    throw new Error("devnet bootstrap governance mint does not match PDAO mint");
+  }
+
+  if (devnetTxRegistry.network !== "devnet" || devnetTxRegistry.entries.length < 40) {
+    throw new Error("devnet tx registry is unexpectedly weak");
+  }
+
+  if (adversarialReport.total_scenarios <= 0 || adversarialReport.rejected <= 0) {
+    throw new Error("adversarial report is missing rejection evidence");
+  }
+
+  if (zkProofRegistry.verification_mode !== "offchain-groth16" || zkProofRegistry.entries.length < 5) {
+    throw new Error("zk proof registry is unexpectedly weak");
+  }
+
+  if (!zkProofRegistry.entries.every((entry) => entry.proof_hash && entry.public_inputs_hash)) {
+    throw new Error("zk proof registry entries are incomplete");
+  }
+
+  if (performanceMetrics.walletCount !== 50 || performanceMetrics.totalTxCount < 40 || performanceMetrics.totalAttemptCount < 50) {
+    throw new Error("performance metrics are unexpectedly weak");
+  }
+
+  if (!loadTestReport.includes("# Devnet Load Test Report") || !loadTestReport.includes("number of wallets: 50")) {
+    throw new Error("load test report is missing the expected overview");
   }
 
   if (attestation.gateCount < 8) {

@@ -1,0 +1,64 @@
+{
+  "generatedAt": "2026-04-04T12:22:37.369Z",
+  "runLabel": "20260404110609",
+  "network": "devnet",
+  "walletCount": 50,
+  "totalTxCount": 223,
+  "totalAttemptCount": 287,
+  "successCount": 221,
+  "failureCount": 67,
+  "retryCount": 2,
+  "totalExecutionTimeMs": 4588011,
+  "averageTxLatencyMs": 1660.6905829596412,
+  "maxTxLatencyMs": 6924,
+  "minTxLatencyMs": 755,
+  "failureRate": 0.23344947735191637,
+  "retryRate": 0.006968641114982578,
+  "phaseTimings": {
+    "wallets": {
+      "startedAt": "2026-04-04T11:06:09.374Z",
+      "completedAt": "2026-04-04T12:22:34.095Z",
+      "durationMs": 4584721
+    },
+    "fund": {
+      "startedAt": "2026-04-04T11:06:51.515Z",
+      "completedAt": "2026-04-04T12:22:34.348Z",
+      "durationMs": 4542833
+    },
+    "bootstrap": {
+      "startedAt": "2026-04-04T11:23:08.938Z",
+      "completedAt": "2026-04-04T12:22:35.232Z",
+      "durationMs": 3566294
+    },
+    "commit": {
+      "startedAt": "2026-04-04T11:23:57.214Z",
+      "completedAt": "2026-04-04T12:22:35.552Z",
+      "durationMs": 3518338
+    },
+    "reveal": {
+      "startedAt": "2026-04-04T11:27:30.253Z",
+      "completedAt": "2026-04-04T12:22:35.861Z",
+      "durationMs": 3305608
+    },
+    "execute": {
+      "startedAt": "2026-04-04T11:31:05.277Z",
+      "completedAt": "2026-04-04T12:22:36.529Z",
+      "durationMs": 3091252
+    },
+    "zk": {
+      "startedAt": "2026-04-04T11:32:10.735Z",
+      "completedAt": "2026-04-04T12:22:36.795Z",
+      "durationMs": 3026060
+    },
+    "adversarial": {
+      "startedAt": "2026-04-04T11:35:51.871Z",
+      "completedAt": "2026-04-04T12:22:37.070Z",
+      "durationMs": 2805199
+    },
+    "report": {
+      "startedAt": "2026-04-04T11:36:30.624Z",
+      "completedAt": "2026-04-04T12:22:37.354Z",
+      "durationMs": 2766730
+    }
+  }
+}

@@ -36,6 +36,16 @@
     "npm run verify:pdao-surface",
     "npm run verify:pdao-attestation",
     "npm run verify:pdao-live",
+    "npm run test:devnet:wallets",
+    "npm run test:devnet:fund",
+    "npm run test:devnet:bootstrap",
+    "npm run test:devnet:commit",
+    "npm run test:devnet:reveal",
+    "npm run test:devnet:execute",
+    "npm run test:devnet:zk",
+    "npm run test:devnet:adversarial",
+    "npm run test:devnet:report",
+    "npm run test:devnet:all",
     "npm run verify:review-links",
     "npm run verify:ops-surface",
     "npm run verify:submission-registry",
@@ -57,12 +67,12 @@
     "npm run verify:review-surface",
     "npm run verify:all"
   ],
-  "gateCount": 28,
+  "gateCount": 38,
   "packageCounts": {
     "strategy": 6,
     "security": 6,
     "zk": 13,
-    "proof": 14,
+    "proof": 21,
     "operations": 12
   },
   "zk": {

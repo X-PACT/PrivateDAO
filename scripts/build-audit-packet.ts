@@ -193,6 +193,16 @@ ${submission.packages.proof.map((entry) => `- \`${entry}\``).join("\n")}
 - \`docs/runtime-attestation.generated.json\`
 - \`docs/go-live-attestation.generated.json\`
 
+## Devnet Stress Package
+
+- \`docs/devnet-wallet-registry.json\`
+- \`docs/devnet-bootstrap.json\`
+- \`docs/devnet-tx-registry.json\`
+- \`docs/adversarial-report.json\`
+- \`docs/zk-proof-registry.json\`
+- \`docs/performance-metrics.json\`
+- \`docs/load-test-report.md\`
+
 ## Operations Package
 
 ${submission.packages.operations.map((entry) => `- \`${entry}\``).join("\n")}
