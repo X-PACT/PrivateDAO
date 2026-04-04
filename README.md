@@ -219,6 +219,7 @@ Quick links:
 - 50-wallet load report: `docs/load-test-report.md`
 - Multi-proposal isolation report: `docs/devnet-multi-proposal-report.md`
 - Race and collision report: `docs/devnet-race-report.md`
+- RPC and stale-blockhash resilience report: `docs/devnet-resilience-report.md`
 - Devnet wallet registry: `docs/devnet-wallet-registry.json`
 - Devnet bootstrap record: `docs/devnet-bootstrap.json`
 - Devnet transaction registry: `docs/devnet-tx-registry.json`
@@ -555,12 +556,15 @@ It also now includes reviewer-facing extended Devnet evidence for:
 - cross-proposal voter-record and delegation-marker rejection
 - permissionless finalize collision races
 - permissionless execute collision races
+- dead-end RPC failover recovery
+- stale blockhash rejection and rebuilt transaction recovery
 
 Reviewer-facing artifacts:
 
 - `docs/load-test-report.md`
 - `docs/devnet-multi-proposal-report.md`
 - `docs/devnet-race-report.md`
+- `docs/devnet-resilience-report.md`
 - `docs/devnet-wallet-registry.json`
 - `docs/devnet-bootstrap.json`
 - `docs/devnet-tx-registry.json`

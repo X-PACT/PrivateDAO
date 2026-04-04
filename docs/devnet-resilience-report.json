@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "runLabel": "20260404154859",
+  "network": "devnet",
+  "sourceWalletRunLabel": "20260404110609",
+  "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+  "governanceMint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
+  "primaryRpc": "https://api.devnet.solana.com",
+  "fallbackRpc": "https://api.devnet.solana.com",
+  "invalidRpc": "http://127.0.0.1:65535",
+  "probeWalletPath": "scripts/generated-wallets/wallet-50.json",
+  "probeWalletPublicKey": "Bog4dEsJk1wJstwoLwkSdvsCy16sbHhzZ1yFeqP3xv1D",
+  "rpcMatrix": [
+    {
+      "label": "primary",
+      "url": "https://api.devnet.solana.com",
+      "version": "3.1.10",
+      "blockhash": "A1JvqpXHncVNN1TSz1znbjAb9vtpznNSMEbF4siUNGCp",
+      "lastValidBlockHeight": 441114144,
+      "versionLatencyMs": 1379,
+      "blockhashLatencyMs": 266,
+      "status": "healthy"
+    },
+    {
+      "label": "fallback",
+      "url": "https://api.devnet.solana.com",
+      "version": "3.1.10",
+      "blockhash": "FxaTsvWDrmCihMMrDJPEgtF9bXhaXgZUPVg1bVfLyc6T",
+      "lastValidBlockHeight": 441114143,
+      "versionLatencyMs": 1153,
+      "blockhashLatencyMs": 302,
+      "status": "healthy"
+    }
+  ],
+  "failover": {
+    "attemptedAt": "2026-04-04T15:48:56.635Z",
+    "invalidRpcUrl": "http://127.0.0.1:65535",
+    "invalidRpcError": "fetch failed",
+    "fallbackRpcUrl": "https://api.devnet.solana.com",
+    "fallbackBlockhash": "3gxUoQwrB8f2g9gLPuyZ9qZHRKdR8d2fTXD5p26BiPEu",
+    "fallbackLastValidBlockHeight": 441114145,
+    "fallbackLatencyMs": 325,
+    "recovered": true
+  },
+  "staleBlockhashRecovery": {
+    "attemptedAt": "2026-04-04T15:48:59.838Z",
+    "staleBlockhash": "11111111111111111111111111111111",
+    "rejectedAsExpected": true,
+    "staleError": "Simulation failed. \nMessage: Transaction simulation failed: Blockhash not found. \nLogs: \n[]. \nCatch the `SendTransactionError` and call `getLogs()` on it for full details.",
+    "freshBlockhash": "4p2awMRKUbwz4xGgbfddqYQr8vrPwu8ydyifCFby83Rg",
+    "recoveredTx": "5mGQHRwULFrHC6Y1Avt7eRWivvcKG7wauppjEHuXn1vxnpuANG1aXwTCM1CP1dnvPqWjfFGW7EickQKgAsPxUUkT",
+    "recoveredExplorerUrl": "https://solscan.io/tx/5mGQHRwULFrHC6Y1Avt7eRWivvcKG7wauppjEHuXn1vxnpuANG1aXwTCM1CP1dnvPqWjfFGW7EickQKgAsPxUUkT?cluster=devnet",
+    "probeWallet": "Bog4dEsJk1wJstwoLwkSdvsCy16sbHhzZ1yFeqP3xv1D",
+    "probeBalanceBeforeLamports": 80000000,
+    "probeBalanceAfterLamports": 80000001,
+    "probeBalanceDeltaLamports": 1
+  },
+  "summary": {
+    "primaryHealthy": true,
+    "fallbackHealthy": true,
+    "failoverRecovered": true,
+    "staleBlockhashRejected": true,
+    "staleBlockhashRecovered": true,
+    "unexpectedSuccesses": 0
+  }
+}

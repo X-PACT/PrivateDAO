@@ -206,6 +206,8 @@ ${submission.packages.proof.map((entry) => `- \`${entry}\``).join("\n")}
 - \`docs/devnet-multi-proposal-report.md\`
 - \`docs/devnet-race-report.json\`
 - \`docs/devnet-race-report.md\`
+- \`docs/devnet-resilience-report.json\`
+- \`docs/devnet-resilience-report.md\`
 
 ## Operations Package
 

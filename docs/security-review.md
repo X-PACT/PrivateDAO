@@ -19,6 +19,7 @@ PrivateDAO now includes a reviewer-visible hardening layer focused on realistic 
 - 50-wallet Devnet stress and adversarial execution evidence
 - multi-proposal isolation evidence
 - finalize and execute collision-race evidence
+- rpc failover and stale-blockhash recovery evidence
 
 ## Reviewer-first proof points
 
@@ -29,6 +30,7 @@ PrivateDAO now includes a reviewer-visible hardening layer focused on realistic 
 - 50-wallet load report: `docs/load-test-report.md`
 - multi-proposal isolation report: `docs/devnet-multi-proposal-report.md`
 - race report: `docs/devnet-race-report.md`
+- resilience report: `docs/devnet-resilience-report.md`
 - Devnet transaction registry: `docs/devnet-tx-registry.json`
 - Adversarial report: `docs/adversarial-report.json`
 - ZK proof registry: `docs/zk-proof-registry.json`
@@ -192,6 +194,15 @@ The repository now also includes extended Devnet reports that target adversarial
 - `docs/devnet-race-report.md` shows concurrent finalize and execute attempts against one live proposal, with exactly one winning finalize and one winning execute while the remaining attempts are rejected without partial execution drift.
 
 These artifacts make proposal isolation and permissionless collision safety reviewer-visible with public Devnet transaction evidence, not only local integration tests.
+
+## Runtime And RPC Resilience Evidence
+
+The repository now also includes a Devnet resilience report focused on operator-grade recovery paths:
+
+- `docs/devnet-resilience-report.md` shows fallback from an intentionally dead-end RPC endpoint to a healthy Devnet RPC.
+- The same report also shows stale blockhash rejection followed by one rebuilt transaction on a fresh blockhash with a confirmed explorer-visible recovery transaction.
+
+This does not change protocol logic. It proves that the surrounding execution tooling can recover from common Solana operator failure modes without ambiguous retries or silent drift in the reviewer-facing evidence package.
 
 ## Replay Summary
 

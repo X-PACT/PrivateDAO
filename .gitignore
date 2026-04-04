@@ -25,6 +25,7 @@ wallets/
 !docs/performance-metrics.json
 !docs/devnet-multi-proposal-report.json
 !docs/devnet-race-report.json
+!docs/devnet-resilience-report.json
 !docs/assets/pdao-token.json
 !zk/inputs/*.json
 !zk/proofs/*.json

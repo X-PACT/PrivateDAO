@@ -16,8 +16,11 @@ npm run verify:strategy-surface >/dev/null
 echo "[verify-all] rebuilding zk registry"
 npm run build:zk-registry >/dev/null
 
-echo "[verify-all] checking zk surface"
-npm run verify:zk-surface >/dev/null
+echo "[verify-all] rebuilding zk transcript"
+npm run build:zk-transcript >/dev/null
+
+echo "[verify-all] rebuilding zk attestation"
+npm run build:zk-attestation >/dev/null
 
 echo "[verify-all] checking frontend surface"
 npm run verify:frontend-surface >/dev/null

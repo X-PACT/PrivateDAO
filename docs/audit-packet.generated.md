@@ -66,8 +66,8 @@
 - Go-live attestation: `docs/go-live-attestation.generated.json`
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `51`
-- Aggregate sha256: `451989da6d91fe6f75b5fe0fb9d54946ed1fb6a376c33e7d8066f1062d54be96`
+- Manifest entries: `53`
+- Aggregate sha256: `0a61171f4feebe0083da517977e6d5c98a20839e18bf5d22d064a27e3b5faf9b`
 
 ## ZK Package
 
@@ -151,6 +151,8 @@
 - `docs/devnet-multi-proposal-report.md`
 - `docs/devnet-race-report.json`
 - `docs/devnet-race-report.md`
+- `docs/devnet-resilience-report.json`
+- `docs/devnet-resilience-report.md`
 - `docs/independent-verification.md`
 - `docs/cryptographic-manifest.generated.json`
 - `docs/token.md`
@@ -187,6 +189,8 @@
 - `docs/devnet-multi-proposal-report.md`
 - `docs/devnet-race-report.json`
 - `docs/devnet-race-report.md`
+- `docs/devnet-resilience-report.json`
+- `docs/devnet-resilience-report.md`
 
 ## Operations Package
 
@@ -225,12 +229,14 @@
 - `npm run test:devnet:multi`
 - `npm run test:devnet:race`
 - `npm run test:devnet:extended`
+- `npm run test:devnet:resilience`
 - `npm run test:devnet:all`
 - `npm run verify:review-links`
 - `npm run verify:ops-surface`
 - `npm run verify:submission-registry`
 - `npm run verify:registry-consistency`
 - `npm run verify:generated-artifacts`
+- `npm run verify:devnet:resilience-report`
 - `npm run verify:cryptographic-manifest`
 - `npm run verify:mainnet-readiness-report`
 - `npm run verify:deployment-attestation`

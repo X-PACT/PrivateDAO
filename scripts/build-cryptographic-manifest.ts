@@ -33,6 +33,8 @@ const MANIFEST_FILES = [
   "docs/devnet-multi-proposal-report.md",
   "docs/devnet-race-report.json",
   "docs/devnet-race-report.md",
+  "docs/devnet-resilience-report.json",
+  "docs/devnet-resilience-report.md",
   "docs/devnet-release-manifest.md",
   "docs/live-proof.md",
   "docs/submission-registry.json",

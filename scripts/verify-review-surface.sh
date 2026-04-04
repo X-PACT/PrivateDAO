@@ -48,6 +48,7 @@ required_files=(
   "docs/zk-evidence.md"
   "docs/reviewer-fast-path.md"
   "docs/live-proof.md"
+  "docs/devnet-resilience-report.md"
   "docs/devnet-release-manifest.md"
   "docs/proof-registry.json"
   "docs/verification-gates.md"
@@ -117,6 +118,7 @@ if search_placeholders "$placeholder_pattern" \
   docs/go-live-criteria.md \
   docs/operational-drillbook.md \
   docs/live-proof.md \
+  docs/devnet-resilience-report.md \
   docs/mainnet-readiness.md \
   docs/ranger-strategy-documentation.md \
   docs/ranger-submission-bundle.generated.md \
@@ -145,8 +147,14 @@ npx ts-node scripts/verify-program-id-consistency.ts >/dev/null
 echo "[review-surface] checking PDAO token surface"
 npx ts-node scripts/verify-pdao-token-surface.ts >/dev/null
 
-echo "[review-surface] checking zk surface consistency"
-bash scripts/verify-zk-surface.sh >/dev/null
+echo "[review-surface] checking zk doc coherence"
+npx ts-node scripts/verify-zk-docs.ts >/dev/null
+
+echo "[review-surface] checking zk public signal consistency"
+npx ts-node scripts/verify-zk-consistency.ts >/dev/null
+
+echo "[review-surface] checking zk tamper rejection"
+npx ts-node scripts/verify-zk-negative.ts >/dev/null
 
 echo "[review-surface] checking zk registry consistency"
 npx ts-node scripts/verify-zk-registry.ts >/dev/null
@@ -174,6 +182,9 @@ npx ts-node scripts/verify-runtime-attestation.ts >/dev/null
 
 echo "[review-surface] checking PDAO attestation"
 npx ts-node scripts/verify-pdao-attestation.ts >/dev/null
+
+echo "[review-surface] checking devnet resilience report"
+npx ts-node scripts/verify-devnet-resilience-report.ts >/dev/null
 
 echo "[review-surface] checking runtime surface"
 npx ts-node scripts/verify-runtime-surface.ts >/dev/null

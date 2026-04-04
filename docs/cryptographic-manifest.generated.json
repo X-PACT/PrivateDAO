@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-04T15:23:52.834Z",
+  "generatedAt": "2026-04-04T16:33:32.740Z",
   "algorithm": "sha256",
-  "entryCount": 51,
-  "aggregateSha256": "451989da6d91fe6f75b5fe0fb9d54946ed1fb6a376c33e7d8066f1062d54be96",
+  "entryCount": 53,
+  "aggregateSha256": "0a61171f4feebe0083da517977e6d5c98a20839e18bf5d22d064a27e3b5faf9b",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -126,6 +126,16 @@
       "bytes": 500
     },
     {
+      "path": "docs/devnet-resilience-report.json",
+      "sha256": "a0f10c790735c1799c77589d983fbea5d559a783cc9a7222aeb13f88a434f259",
+      "bytes": 2660
+    },
+    {
+      "path": "docs/devnet-resilience-report.md",
+      "sha256": "042e3ea14d909e40938fc50b11c6b63f19153469655f594f258c77be2e9d9b46",
+      "bytes": 2092
+    },
+    {
       "path": "docs/devnet-release-manifest.md",
       "sha256": "c0c40fc3bb15bb94f178d7c25965163044e5aac4e5b0a93a23c9b6fd2e56bdaa",
       "bytes": 4140
@@ -137,8 +147,8 @@
     },
     {
       "path": "docs/submission-registry.json",
-      "sha256": "7573d93ebcd3e1435e05a41a8cb877ae7110ed6ab0f886b60838602f4b2a72bf",
-      "bytes": 4881
+      "sha256": "2bde7927aa2402696ca187a6d0c507daba400645898e8c0287d016e952839a33",
+      "bytes": 5062
     },
     {
       "path": "docs/independent-verification.md",
@@ -192,17 +202,17 @@
     },
     {
       "path": "docs/security-review.md",
-      "sha256": "101f1bd526433e2e5ca517e90bd851a0db9be19af95f73c1b9792c34a76a3b92",
-      "bytes": 12614
+      "sha256": "2c4b61771ed74c7b4a4821122d5c9f76f891d7b6965acba763cf102d51092cdf",
+      "bytes": 13380
     },
     {
       "path": "docs/deployment-attestation.generated.json",
-      "sha256": "bddd45968b9673eb61b2d52c2abca10b6b61fb84e094ea91b904e9077ad3c954",
-      "bytes": 3183
+      "sha256": "2184968c702116e1ab3bf252760b6e017af1f3a461da9343447ada2102b2e7f8",
+      "bytes": 3268
     },
     {
       "path": "docs/go-live-attestation.generated.json",
-      "sha256": "13a8f062b4a2669be93099fda4dad07e19f8e6a32fcbb19db7a604413f3b02c9",
+      "sha256": "c19a918e6fe08be98691aa956767943c90b58d6d42bbe4f0adb21d587ead88fa",
       "bytes": 1651
     },
     {
@@ -257,8 +267,8 @@
     },
     {
       "path": "docs/verification-gates.md",
-      "sha256": "5fa4bc2b1493d07401b3146bd9d04e0392f39c651e1dc8140723a96747a64186",
-      "bytes": 7177
+      "sha256": "c5c8b17d6f64463e0101ab8be19da1fad47e1b4dd6e1330b59e5551a380d6fc6",
+      "bytes": 7603
     }
   ]
 }

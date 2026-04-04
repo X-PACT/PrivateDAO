@@ -78,6 +78,24 @@ The generated reviewer-facing artifacts are:
 - `docs/devnet-race-report.json`
 - `docs/devnet-race-report.md`
 
+### Devnet Resilience Harness
+
+```bash
+npm run test:devnet:resilience
+npm run verify:devnet:resilience-report
+```
+
+This command adds operator-grade recovery evidence on Devnet for:
+
+- fallback from a dead-end RPC endpoint
+- stale blockhash rejection
+- rebuilt transaction recovery on a fresh blockhash
+
+The generated reviewer-facing artifacts are:
+
+- `docs/devnet-resilience-report.json`
+- `docs/devnet-resilience-report.md`
+
 ### Cryptographic Integrity
 
 ```bash

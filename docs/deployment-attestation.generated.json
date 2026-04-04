@@ -48,12 +48,14 @@
     "npm run test:devnet:multi",
     "npm run test:devnet:race",
     "npm run test:devnet:extended",
+    "npm run test:devnet:resilience",
     "npm run test:devnet:all",
     "npm run verify:review-links",
     "npm run verify:ops-surface",
     "npm run verify:submission-registry",
     "npm run verify:registry-consistency",
     "npm run verify:generated-artifacts",
+    "npm run verify:devnet:resilience-report",
     "npm run verify:cryptographic-manifest",
     "npm run verify:mainnet-readiness-report",
     "npm run verify:deployment-attestation",
@@ -70,12 +72,12 @@
     "npm run verify:review-surface",
     "npm run verify:all"
   ],
-  "gateCount": 41,
+  "gateCount": 43,
   "packageCounts": {
     "strategy": 6,
     "security": 6,
     "zk": 13,
-    "proof": 25,
+    "proof": 27,
     "operations": 12
   },
   "zk": {

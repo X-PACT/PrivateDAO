@@ -24,6 +24,8 @@ function main() {
   const devnetMultiProposalReportMdPath = path.resolve("docs/devnet-multi-proposal-report.md");
   const devnetRaceReportJsonPath = path.resolve("docs/devnet-race-report.json");
   const devnetRaceReportMdPath = path.resolve("docs/devnet-race-report.md");
+  const devnetResilienceReportJsonPath = path.resolve("docs/devnet-resilience-report.json");
+  const devnetResilienceReportMdPath = path.resolve("docs/devnet-resilience-report.md");
 
   if (!fs.existsSync(auditPacketPath)) {
     throw new Error("missing generated audit packet");
@@ -90,6 +92,12 @@ function main() {
   }
   if (!fs.existsSync(devnetRaceReportMdPath)) {
     throw new Error("missing devnet race markdown report");
+  }
+  if (!fs.existsSync(devnetResilienceReportJsonPath)) {
+    throw new Error("missing devnet resilience report");
+  }
+  if (!fs.existsSync(devnetResilienceReportMdPath)) {
+    throw new Error("missing devnet resilience markdown report");
   }
 
   const auditPacket = fs.readFileSync(auditPacketPath, "utf8");
@@ -239,6 +247,30 @@ function main() {
     };
   };
   const devnetRaceReportMd = fs.readFileSync(devnetRaceReportMdPath, "utf8");
+  const devnetResilienceReport = JSON.parse(fs.readFileSync(devnetResilienceReportJsonPath, "utf8")) as {
+    network: string;
+    programId: string;
+    governanceMint: string;
+    primaryRpc: string;
+    fallbackRpc: string;
+    rpcMatrix: Array<{ label: string; status: string; blockhash: string }>;
+    failover: { recovered: boolean; invalidRpcError: string; fallbackBlockhash: string };
+    staleBlockhashRecovery: {
+      rejectedAsExpected: boolean;
+      staleError: string;
+      recoveredTx: string;
+      probeBalanceDeltaLamports: number;
+    };
+    summary: {
+      primaryHealthy: boolean;
+      fallbackHealthy: boolean;
+      failoverRecovered: boolean;
+      staleBlockhashRejected: boolean;
+      staleBlockhashRecovered: boolean;
+      unexpectedSuccesses: number;
+    };
+  };
+  const devnetResilienceReportMd = fs.readFileSync(devnetResilienceReportMdPath, "utf8");
   const zkAttestation = JSON.parse(fs.readFileSync(zkAttestationPath, "utf8")) as {
     project: string;
     zkStackVersion: number;
@@ -371,6 +403,50 @@ function main() {
     throw new Error("devnet race markdown report is missing reviewer-facing collision wording");
   }
 
+  if (devnetResilienceReport.network !== "devnet" || devnetResilienceReport.programId !== attestation.programId) {
+    throw new Error("devnet resilience report does not match canonical program state");
+  }
+
+  if (devnetResilienceReport.governanceMint !== attestation.pdaoToken.mint) {
+    throw new Error("devnet resilience report governance mint does not match PDAO mint");
+  }
+
+  if (!devnetResilienceReport.summary.primaryHealthy || !devnetResilienceReport.summary.fallbackHealthy) {
+    throw new Error("devnet resilience report is missing healthy RPC evidence");
+  }
+
+  if (!devnetResilienceReport.summary.failoverRecovered || !devnetResilienceReport.failover.recovered) {
+    throw new Error("devnet resilience report is missing failover recovery evidence");
+  }
+
+  if (!devnetResilienceReport.failover.invalidRpcError || !devnetResilienceReport.failover.fallbackBlockhash) {
+    throw new Error("devnet resilience report failover details are incomplete");
+  }
+
+  if (!devnetResilienceReport.summary.staleBlockhashRejected || !devnetResilienceReport.staleBlockhashRecovery.rejectedAsExpected) {
+    throw new Error("devnet resilience report is missing stale blockhash rejection evidence");
+  }
+
+  if (!devnetResilienceReport.summary.staleBlockhashRecovered || !devnetResilienceReport.staleBlockhashRecovery.recoveredTx) {
+    throw new Error("devnet resilience report is missing stale blockhash recovery evidence");
+  }
+
+  if (devnetResilienceReport.staleBlockhashRecovery.probeBalanceDeltaLamports !== 1) {
+    throw new Error("devnet resilience report probe balance delta is unexpected");
+  }
+
+  if (devnetResilienceReport.summary.unexpectedSuccesses !== 0 || devnetResilienceReport.rpcMatrix.length < 2) {
+    throw new Error("devnet resilience report is unexpectedly weak");
+  }
+
+  if (
+    !devnetResilienceReportMd.includes("# Devnet Resilience Report") ||
+    !devnetResilienceReportMd.includes("Failover Recovery") ||
+    !devnetResilienceReportMd.includes("Stale Blockhash Recovery")
+  ) {
+    throw new Error("devnet resilience markdown report is missing reviewer-facing resilience wording");
+  }
+
   if (attestation.gateCount < 8) {
     throw new Error("generated attestation gate count is unexpectedly low");
   }
@@ -501,6 +577,9 @@ function main() {
   }
   if (!auditPacket.includes("docs/devnet-race-report.json")) {
     throw new Error("generated audit packet is missing the devnet race reference");
+  }
+  if (!auditPacket.includes("docs/devnet-resilience-report.json")) {
+    throw new Error("generated audit packet is missing the devnet resilience reference");
   }
 
   if (!zkTranscript.includes("# ZK Transcript")) {
@@ -668,6 +747,9 @@ function main() {
   }
   if (!cryptographicManifest.files.some((entry) => entry.path === "docs/devnet-race-report.json")) {
     throw new Error("generated cryptographic manifest is missing the race report");
+  }
+  if (!cryptographicManifest.files.some((entry) => entry.path === "docs/devnet-resilience-report.json")) {
+    throw new Error("generated cryptographic manifest is missing the resilience report");
   }
 
   console.log("Generated artifact verification: PASS");
