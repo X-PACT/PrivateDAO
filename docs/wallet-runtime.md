@@ -49,6 +49,24 @@ This surface exposes:
 - current RPC health
 - canonical program and PDAO anchors
 
+## Compatibility Matrix
+
+The repository now also publishes a generated wallet compatibility matrix:
+
+- `docs/wallet-compatibility-matrix.generated.md`
+- `docs/wallet-compatibility-matrix.generated.json`
+
+This makes the supported wallet surface reviewer-visible in a structured way instead of leaving it implied by scattered UI text.
+
+## Sustained Runtime Signal
+
+The repository also publishes a read-only Devnet operational canary:
+
+- `docs/devnet-canary.generated.md`
+- `docs/devnet-canary.generated.json`
+
+This canary is intentionally lighter than the multi-wallet stress harness. It exists to provide a sustainable operational signal for RPC health and canonical Devnet anchor visibility between heavier stress runs.
+
 ## Honest Boundary
 
 The repository can harden wallet logic and diagnostics, but it cannot claim universal compatibility for every wallet release on every platform without real runtime testing.

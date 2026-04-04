@@ -55,7 +55,10 @@
     "npm run verify:submission-registry",
     "npm run verify:registry-consistency",
     "npm run verify:generated-artifacts",
+    "npm run verify:wallet-matrix",
+    "npm run verify:devnet-canary",
     "npm run verify:devnet:resilience-report",
+    "npm run ops:canary",
     "npm run verify:cryptographic-manifest",
     "npm run verify:mainnet-readiness-report",
     "npm run verify:deployment-attestation",
@@ -72,12 +75,12 @@
     "npm run verify:review-surface",
     "npm run verify:all"
   ],
-  "gateCount": 43,
+  "gateCount": 46,
   "packageCounts": {
     "strategy": 6,
     "security": 6,
     "zk": 13,
-    "proof": 27,
+    "proof": 31,
     "operations": 12
   },
   "zk": {

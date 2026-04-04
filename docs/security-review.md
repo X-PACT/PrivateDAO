@@ -20,6 +20,8 @@ PrivateDAO now includes a reviewer-visible hardening layer focused on realistic 
 - multi-proposal isolation evidence
 - finalize and execute collision-race evidence
 - rpc failover and stale-blockhash recovery evidence
+- wallet compatibility matrix evidence
+- read-only devnet canary evidence
 
 ## Reviewer-first proof points
 
@@ -31,6 +33,8 @@ PrivateDAO now includes a reviewer-visible hardening layer focused on realistic 
 - multi-proposal isolation report: `docs/devnet-multi-proposal-report.md`
 - race report: `docs/devnet-race-report.md`
 - resilience report: `docs/devnet-resilience-report.md`
+- wallet compatibility matrix: `docs/wallet-compatibility-matrix.generated.md`
+- devnet canary: `docs/devnet-canary.generated.md`
 - Devnet transaction registry: `docs/devnet-tx-registry.json`
 - Adversarial report: `docs/adversarial-report.json`
 - ZK proof registry: `docs/zk-proof-registry.json`
@@ -203,6 +207,15 @@ The repository now also includes a Devnet resilience report focused on operator-
 - The same report also shows stale blockhash rejection followed by one rebuilt transaction on a fresh blockhash with a confirmed explorer-visible recovery transaction.
 
 This does not change protocol logic. It proves that the surrounding execution tooling can recover from common Solana operator failure modes without ambiguous retries or silent drift in the reviewer-facing evidence package.
+
+## Sustainable Operational Evidence
+
+The repository now also includes lighter-weight runtime artifacts for sustained operator confidence:
+
+- `docs/wallet-compatibility-matrix.generated.md` makes supported wallet classes and runtime fallback behavior explicit.
+- `docs/devnet-canary.generated.md` provides a read-only Devnet signal for RPC health, canonical anchor visibility, and governance-mint supply visibility between heavier stress runs.
+
+These artifacts do not replace the multi-wallet stress package. They reduce blind spots between heavy runs and make the browser/runtime side of the system more reviewable.
 
 ## Replay Summary
 

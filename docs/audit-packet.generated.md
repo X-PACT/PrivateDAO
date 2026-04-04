@@ -66,8 +66,8 @@
 - Go-live attestation: `docs/go-live-attestation.generated.json`
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `53`
-- Aggregate sha256: `0a61171f4feebe0083da517977e6d5c98a20839e18bf5d22d064a27e3b5faf9b`
+- Manifest entries: `57`
+- Aggregate sha256: `c888731814dae0c7a896a9ff58591f3d1b7a13336684e2d0f5568c4e81473a4b`
 
 ## ZK Package
 
@@ -161,6 +161,10 @@
 - `docs/assets/pdao-token.json`
 - `docs/fair-voting.md`
 - `docs/wallet-runtime.md`
+- `docs/wallet-compatibility-matrix.generated.md`
+- `docs/wallet-compatibility-matrix.generated.json`
+- `docs/devnet-canary.generated.md`
+- `docs/devnet-canary.generated.json`
 - `docs/deployment-attestation.generated.json`
 - `docs/runtime-attestation.generated.json`
 - `docs/go-live-attestation.generated.json`
@@ -169,6 +173,10 @@
 
 - `docs/fair-voting.md`
 - `docs/wallet-runtime.md`
+- `docs/wallet-compatibility-matrix.generated.md`
+- `docs/wallet-compatibility-matrix.generated.json`
+- `docs/devnet-canary.generated.md`
+- `docs/devnet-canary.generated.json`
 - `docs/mainnet-readiness.generated.md`
 - `docs/deployment-attestation.generated.json`
 - `docs/go-live-criteria.md`
@@ -236,7 +244,10 @@
 - `npm run verify:submission-registry`
 - `npm run verify:registry-consistency`
 - `npm run verify:generated-artifacts`
+- `npm run verify:wallet-matrix`
+- `npm run verify:devnet-canary`
 - `npm run verify:devnet:resilience-report`
+- `npm run ops:canary`
 - `npm run verify:cryptographic-manifest`
 - `npm run verify:mainnet-readiness-report`
 - `npm run verify:deployment-attestation`

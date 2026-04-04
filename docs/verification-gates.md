@@ -148,6 +148,30 @@ npm run verify:runtime-surface
 
 Checks that the live diagnostics page, supported wallet labels, runtime attestation, and PDAO/runtime anchors stay aligned in the frontend itself.
 
+### Wallet Compatibility Matrix
+
+```bash
+npm run build:wallet-matrix
+npm run verify:wallet-matrix
+```
+
+Builds and verifies a generated wallet compatibility matrix that documents the detected providers, connection fallback, transaction fallback, diagnostics visibility, and honest runtime-QA boundary for each supported wallet class.
+
+### Devnet Canary
+
+```bash
+npm run build:devnet-canary
+npm run verify:devnet-canary
+npm run ops:canary
+```
+
+Builds and verifies a lightweight read-only Devnet canary that checks:
+
+- primary and fallback RPC health
+- canonical PrivateDAO anchor accounts
+- governance mint supply visibility
+- sustainable operational readiness between heavier stress runs
+
 ### ZK Registry
 
 ```bash

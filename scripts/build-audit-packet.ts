@@ -186,6 +186,10 @@ ${submission.packages.proof.map((entry) => `- \`${entry}\``).join("\n")}
 
 - \`docs/fair-voting.md\`
 - \`docs/wallet-runtime.md\`
+- \`docs/wallet-compatibility-matrix.generated.md\`
+- \`docs/wallet-compatibility-matrix.generated.json\`
+- \`docs/devnet-canary.generated.md\`
+- \`docs/devnet-canary.generated.json\`
 - \`docs/mainnet-readiness.generated.md\`
 - \`docs/deployment-attestation.generated.json\`
 - \`docs/go-live-criteria.md\`

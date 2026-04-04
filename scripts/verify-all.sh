@@ -61,6 +61,12 @@ npm run verify:runtime-attestation >/dev/null
 echo "[verify-all] checking runtime surface"
 npm run verify:runtime-surface >/dev/null
 
+echo "[verify-all] checking wallet compatibility matrix"
+npm run verify:wallet-matrix >/dev/null
+
+echo "[verify-all] checking devnet canary"
+npm run verify:devnet-canary >/dev/null
+
 echo "[verify-all] checking PDAO attestation"
 npm run verify:pdao-attestation >/dev/null
 

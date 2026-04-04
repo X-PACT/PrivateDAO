@@ -34,6 +34,10 @@ required_files=(
   "docs/assets/pdao-token.json"
   "docs/fair-voting.md"
   "docs/wallet-runtime.md"
+  "docs/wallet-compatibility-matrix.generated.md"
+  "docs/wallet-compatibility-matrix.generated.json"
+  "docs/devnet-canary.generated.md"
+  "docs/devnet-canary.generated.json"
   "docs/zk-upgrade.md"
   "docs/zk-threat-extension.md"
   "docs/zk-assumption-matrix.md"
@@ -115,6 +119,8 @@ if search_placeholders "$placeholder_pattern" \
   docs/pdao-token.md \
   docs/fair-voting.md \
   docs/wallet-runtime.md \
+  docs/wallet-compatibility-matrix.generated.md \
+  docs/devnet-canary.generated.md \
   docs/go-live-criteria.md \
   docs/operational-drillbook.md \
   docs/live-proof.md \
@@ -182,6 +188,12 @@ npx ts-node scripts/verify-runtime-attestation.ts >/dev/null
 
 echo "[review-surface] checking PDAO attestation"
 npx ts-node scripts/verify-pdao-attestation.ts >/dev/null
+
+echo "[review-surface] checking wallet compatibility matrix"
+npx ts-node scripts/verify-wallet-compatibility-matrix.ts >/dev/null
+
+echo "[review-surface] checking devnet canary"
+npx ts-node scripts/verify-devnet-canary.ts >/dev/null
 
 echo "[review-surface] checking devnet resilience report"
 npx ts-node scripts/verify-devnet-resilience-report.ts >/dev/null

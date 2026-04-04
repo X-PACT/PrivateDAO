@@ -1,0 +1,63 @@
+{
+  "project": "PrivateDAO",
+  "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+  "diagnosticsPage": "https://x-pact.github.io/PrivateDAO/?page=diagnostics",
+  "generatedAt": "2026-04-04T17:32:02.642Z",
+  "entries": [
+    {
+      "id": "auto-detect",
+      "label": "Auto Detect",
+      "detection": "Auto resolution across Phantom, Solflare, Backpack, Glow, and compatible injected providers.",
+      "connectPath": "connect -> request({ method: 'connect' }) -> enable fallback",
+      "transactionPath": "sendTransaction -> signAndSendTransaction -> signTransaction fallback",
+      "diagnosticsVisible": true,
+      "selectorVisible": true,
+      "status": "devnet-review-ready",
+      "note": "Acts as the default browser path when reviewers connect without choosing a wallet explicitly."
+    },
+    {
+      "id": "phantom",
+      "label": "Phantom",
+      "detection": "window.phantom?.solana and compatible window.solana fallbacks",
+      "connectPath": "Direct provider connect with request and enable fallback",
+      "transactionPath": "sendTransaction preferred, then signAndSendTransaction, then signTransaction",
+      "diagnosticsVisible": true,
+      "selectorVisible": true,
+      "status": "devnet-review-ready",
+      "note": "Primary reviewer path on desktop browser; still requires live wallet QA before any mainnet cutover claim."
+    },
+    {
+      "id": "solflare",
+      "label": "Solflare",
+      "detection": "window.solflare and window.solflare?.solflare resolution",
+      "connectPath": "Provider connect with request/enable fallback",
+      "transactionPath": "sendTransaction and signAndSendTransaction fallback path",
+      "diagnosticsVisible": true,
+      "selectorVisible": true,
+      "status": "devnet-review-ready",
+      "note": "Explicit selector path is present in the wallet panel and diagnostics surface."
+    },
+    {
+      "id": "backpack",
+      "label": "Backpack",
+      "detection": "window.backpack?.solana resolution",
+      "connectPath": "Provider connect with explicit provider selection from wallet panel",
+      "transactionPath": "sendTransaction with normalized signature handling",
+      "diagnosticsVisible": true,
+      "selectorVisible": true,
+      "status": "devnet-review-ready",
+      "note": "Included as a first-class selector option rather than relying on generic injected-provider handling."
+    },
+    {
+      "id": "glow",
+      "label": "Glow",
+      "detection": "Compatible injected provider path through wallet selector and fallback provider discovery",
+      "connectPath": "Provider connect with generic request/enable fallback",
+      "transactionPath": "Normalized transaction path through generic injected-provider compatibility layer",
+      "diagnosticsVisible": true,
+      "selectorVisible": true,
+      "status": "manual-runtime-qa-required",
+      "note": "Frontend support is explicit, but live release QA remains a real-browser runtime task."
+    }
+  ]
+}

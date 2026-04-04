@@ -162,6 +162,8 @@ Quick links:
 - Fair voting model: `docs/fair-voting.md`
 - Wallet runtime compatibility: `docs/wallet-runtime.md`
 - Runtime attestation: `docs/runtime-attestation.generated.json`
+- Wallet compatibility matrix: `docs/wallet-compatibility-matrix.generated.md`
+- Devnet canary: `docs/devnet-canary.generated.md`
 - Go-live criteria: `docs/go-live-criteria.md`
 - Operational drillbook: `docs/operational-drillbook.md`
 - Awards page: `docs/awards.md`
@@ -220,6 +222,8 @@ Quick links:
 - Multi-proposal isolation report: `docs/devnet-multi-proposal-report.md`
 - Race and collision report: `docs/devnet-race-report.md`
 - RPC and stale-blockhash resilience report: `docs/devnet-resilience-report.md`
+- Wallet compatibility matrix: `docs/wallet-compatibility-matrix.generated.md`
+- Devnet canary: `docs/devnet-canary.generated.md`
 - Devnet wallet registry: `docs/devnet-wallet-registry.json`
 - Devnet bootstrap record: `docs/devnet-bootstrap.json`
 - Devnet transaction registry: `docs/devnet-tx-registry.json`
@@ -575,6 +579,10 @@ Reviewer-facing artifacts:
 Unified reproducible command:
 
 - `npm run test:devnet:all`
+
+Sustained operational command:
+
+- `npm run ops:canary`
 
 ## 🏆 Awards & Recognition
 

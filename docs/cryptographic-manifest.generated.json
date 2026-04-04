@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-04T16:33:32.740Z",
+  "generatedAt": "2026-04-04T17:33:20.377Z",
   "algorithm": "sha256",
-  "entryCount": 53,
-  "aggregateSha256": "0a61171f4feebe0083da517977e6d5c98a20839e18bf5d22d064a27e3b5faf9b",
+  "entryCount": 57,
+  "aggregateSha256": "c888731814dae0c7a896a9ff58591f3d1b7a13336684e2d0f5568c4e81473a4b",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -147,8 +147,8 @@
     },
     {
       "path": "docs/submission-registry.json",
-      "sha256": "2bde7927aa2402696ca187a6d0c507daba400645898e8c0287d016e952839a33",
-      "bytes": 5062
+      "sha256": "5f3ce1dc0f2c8e4a1f5237a1a3a0253a384e73eedfc64dc48dca68e1129d448b",
+      "bytes": 5356
     },
     {
       "path": "docs/independent-verification.md",
@@ -182,8 +182,28 @@
     },
     {
       "path": "docs/wallet-runtime.md",
-      "sha256": "b25d2b05668d235fa3e6b3f90218823978f434a5c0c4d63433fb36035ceddf7e",
-      "bytes": 1887
+      "sha256": "ea0698cd7b3d3a06b694d97beadbfa08781934b00082536b15660e8ae1d6b593",
+      "bytes": 2608
+    },
+    {
+      "path": "docs/wallet-compatibility-matrix.generated.md",
+      "sha256": "08d72b6be6a502692aea27794a4a56c0648eaab0eeebe829905590d1cbfc7301",
+      "bytes": 2695
+    },
+    {
+      "path": "docs/wallet-compatibility-matrix.generated.json",
+      "sha256": "f85d88a2aa1cbdfe8252995d608dfe241094f5e968dde127f51dcf2fb76dce03",
+      "bytes": 2955
+    },
+    {
+      "path": "docs/devnet-canary.generated.md",
+      "sha256": "f36a2591157c3cc1c202e96c0153c2b9901e513b98def3d24f80c3f24a678422",
+      "bytes": 2200
+    },
+    {
+      "path": "docs/devnet-canary.generated.json",
+      "sha256": "9672e7bb0f59cf648c040be5ba62029c182cfd7b46745a1a50e15c323eea33ac",
+      "bytes": 2970
     },
     {
       "path": "docs/go-live-criteria.md",
@@ -197,22 +217,22 @@
     },
     {
       "path": "docs/runtime-attestation.generated.json",
-      "sha256": "1ef974c7c0546c0f05ef4efdd759a9ff5f53f912d153d7b983e56afc325e767f",
-      "bytes": 1204
+      "sha256": "aebe77d3fb6a9ffc660a904230a83c2f91199e02b637b9f8030503d477d23910",
+      "bytes": 1585
     },
     {
       "path": "docs/security-review.md",
-      "sha256": "2c4b61771ed74c7b4a4821122d5c9f76f891d7b6965acba763cf102d51092cdf",
-      "bytes": 13380
+      "sha256": "241630adcbfd86593d609fda46111f989fe2d44bac1a471b77f00649f8d6dde7",
+      "bytes": 14201
     },
     {
       "path": "docs/deployment-attestation.generated.json",
-      "sha256": "2184968c702116e1ab3bf252760b6e017af1f3a461da9343447ada2102b2e7f8",
-      "bytes": 3268
+      "sha256": "8c66f0542790df1e86f98ded87514f4e52815112e3e0576172f3cf9b73a3c403",
+      "bytes": 3366
     },
     {
       "path": "docs/go-live-attestation.generated.json",
-      "sha256": "c19a918e6fe08be98691aa956767943c90b58d6d42bbe4f0adb21d587ead88fa",
+      "sha256": "c395cf012e3997547ed74e9238fbea6bd229a8d1741f3f029bb84b207b7a250f",
       "bytes": 1651
     },
     {
@@ -267,8 +287,8 @@
     },
     {
       "path": "docs/verification-gates.md",
-      "sha256": "c5c8b17d6f64463e0101ab8be19da1fad47e1b4dd6e1330b59e5551a380d6fc6",
-      "bytes": 7603
+      "sha256": "0203ada28322811f466275771ebc4e7a834fe878823c5439c811a5964c27a52a",
+      "bytes": 8291
     }
   ]
 }

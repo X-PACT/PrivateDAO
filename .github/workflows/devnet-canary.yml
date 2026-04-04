@@ -1,0 +1,45 @@
+name: Devnet Canary
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  canary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.21.1"
+          cache: "yarn"
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build wallet compatibility matrix
+        run: npm run build:wallet-matrix
+
+      - name: Build Devnet canary
+        run: npm run build:devnet-canary
+
+      - name: Verify runtime canary artifacts
+        run: |
+          npm run verify:wallet-matrix
+          npm run verify:devnet-canary
+
+      - name: Upload canary artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: devnet-canary-artifacts
+          path: |
+            docs/wallet-compatibility-matrix.generated.md
+            docs/wallet-compatibility-matrix.generated.json
+            docs/devnet-canary.generated.md
+            docs/devnet-canary.generated.json

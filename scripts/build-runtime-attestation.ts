@@ -27,7 +27,11 @@ function main() {
     diagnosticsPage: `${submission.frontend}?page=diagnostics`,
     runtimeDocs: [
       "docs/wallet-runtime.md",
+      "docs/wallet-compatibility-matrix.generated.md",
+      "docs/wallet-compatibility-matrix.generated.json",
       "docs/fair-voting.md",
+      "docs/devnet-canary.generated.md",
+      "docs/devnet-canary.generated.json",
       "docs/go-live-criteria.md",
       "docs/operational-drillbook.md",
     ],
@@ -41,6 +45,8 @@ function main() {
     runtimeNotes: [
       "Browser-side wallet diagnostics are exposed through the live frontend.",
       "Provider detection and capability reporting are reviewer-visible.",
+      "A generated wallet compatibility matrix makes per-wallet support surfaces explicit.",
+      "A read-only Devnet canary provides a lightweight operational signal between heavy stress runs.",
       "Real client-side wallet QA remains required before any mainnet cutover claim.",
     ],
     pdaoToken: proof.pdaoToken

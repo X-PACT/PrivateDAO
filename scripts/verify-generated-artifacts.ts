@@ -13,6 +13,10 @@ function main() {
   const goLiveAttestationPath = path.resolve("docs/go-live-attestation.generated.json");
   const runtimeAttestationPath = path.resolve("docs/runtime-attestation.generated.json");
   const pdaoAttestationPath = path.resolve("docs/pdao-attestation.generated.json");
+  const walletMatrixJsonPath = path.resolve("docs/wallet-compatibility-matrix.generated.json");
+  const walletMatrixMdPath = path.resolve("docs/wallet-compatibility-matrix.generated.md");
+  const devnetCanaryJsonPath = path.resolve("docs/devnet-canary.generated.json");
+  const devnetCanaryMdPath = path.resolve("docs/devnet-canary.generated.md");
   const devnetWalletRegistryPath = path.resolve("docs/devnet-wallet-registry.json");
   const devnetBootstrapPath = path.resolve("docs/devnet-bootstrap.json");
   const devnetTxRegistryPath = path.resolve("docs/devnet-tx-registry.json");
@@ -59,6 +63,12 @@ function main() {
   }
   if (!fs.existsSync(pdaoAttestationPath)) {
     throw new Error("missing generated PDAO attestation");
+  }
+  if (!fs.existsSync(walletMatrixJsonPath) || !fs.existsSync(walletMatrixMdPath)) {
+    throw new Error("missing wallet compatibility matrix artifacts");
+  }
+  if (!fs.existsSync(devnetCanaryJsonPath) || !fs.existsSync(devnetCanaryMdPath)) {
+    throw new Error("missing devnet canary artifacts");
   }
   if (!fs.existsSync(devnetWalletRegistryPath)) {
     throw new Error("missing devnet wallet registry");
@@ -190,6 +200,27 @@ function main() {
     };
     verificationDocs: string[];
   };
+  const walletMatrix = JSON.parse(fs.readFileSync(walletMatrixJsonPath, "utf8")) as {
+    programId: string;
+    diagnosticsPage: string;
+    entries: Array<{ id: string; label: string; diagnosticsVisible: boolean; selectorVisible: boolean }>;
+  };
+  const walletMatrixMd = fs.readFileSync(walletMatrixMdPath, "utf8");
+  const devnetCanary = JSON.parse(fs.readFileSync(devnetCanaryJsonPath, "utf8")) as {
+    network: string;
+    programId: string;
+    primaryRpc: { label: string; blockhash: string; slot: number };
+    fallbackRpc: { label: string; blockhash: string; slot: number };
+    anchors: Array<{ label: string; exists: boolean }>;
+    tokenSupply: { mint: string };
+    summary: {
+      primaryHealthy: boolean;
+      fallbackHealthy: boolean;
+      anchorAccountsPresent: boolean;
+      unexpectedFailures: number;
+    };
+  };
+  const devnetCanaryMd = fs.readFileSync(devnetCanaryMdPath, "utf8");
   const devnetWalletRegistry = JSON.parse(fs.readFileSync(devnetWalletRegistryPath, "utf8")) as {
     network: string;
     wallets: Array<{ wallet_index: number; public_key: string; role: string; funding: { success: boolean } }>;
@@ -347,6 +378,42 @@ function main() {
     throw new Error("load test report is missing the expected overview");
   }
 
+  if (walletMatrix.programId !== attestation.programId || !walletMatrix.diagnosticsPage.endsWith("?page=diagnostics")) {
+    throw new Error("wallet compatibility matrix does not match canonical runtime state");
+  }
+
+  if (walletMatrix.entries.length < 5 || walletMatrix.entries.some((entry) => !entry.diagnosticsVisible || !entry.selectorVisible)) {
+    throw new Error("wallet compatibility matrix is unexpectedly weak");
+  }
+
+  if (!walletMatrixMd.includes("# Wallet Compatibility Matrix")) {
+    throw new Error("wallet compatibility matrix markdown is invalid");
+  }
+
+  if (devnetCanary.network !== "devnet" || devnetCanary.programId !== attestation.programId) {
+    throw new Error("devnet canary does not match canonical program state");
+  }
+
+  if (!devnetCanary.summary.primaryHealthy || !devnetCanary.summary.fallbackHealthy || !devnetCanary.summary.anchorAccountsPresent) {
+    throw new Error("devnet canary is missing healthy runtime evidence");
+  }
+
+  if (devnetCanary.summary.unexpectedFailures !== 0 || devnetCanary.anchors.length < 6) {
+    throw new Error("devnet canary is unexpectedly weak");
+  }
+
+  if (!devnetCanary.primaryRpc.blockhash || !devnetCanary.fallbackRpc.blockhash || devnetCanary.primaryRpc.slot <= 0 || devnetCanary.fallbackRpc.slot <= 0) {
+    throw new Error("devnet canary rpc health is incomplete");
+  }
+
+  if (devnetCanary.tokenSupply.mint !== attestation.pdaoToken.mint) {
+    throw new Error("devnet canary governance mint does not match PDAO mint");
+  }
+
+  if (!devnetCanaryMd.includes("# Devnet Canary Report")) {
+    throw new Error("devnet canary markdown report is invalid");
+  }
+
   if (devnetMultiProposalReport.network !== "devnet" || devnetMultiProposalReport.programId !== attestation.programId) {
     throw new Error("devnet multi-proposal report does not match canonical program state");
   }
@@ -490,6 +557,12 @@ function main() {
   if (!attestation.runtimeDocs || !attestation.runtimeDocs.includes("docs/wallet-runtime.md")) {
     throw new Error("generated attestation runtime docs are missing");
   }
+  if (!attestation.runtimeDocs.includes("docs/wallet-compatibility-matrix.generated.md")) {
+    throw new Error("generated attestation is missing the wallet matrix doc");
+  }
+  if (!attestation.runtimeDocs.includes("docs/devnet-canary.generated.md")) {
+    throw new Error("generated attestation is missing the devnet canary doc");
+  }
   if (!attestation.runtimeDocs.includes("docs/go-live-attestation.generated.json")) {
     throw new Error("generated attestation is missing the go-live attestation doc");
   }
@@ -580,6 +653,12 @@ function main() {
   }
   if (!auditPacket.includes("docs/devnet-resilience-report.json")) {
     throw new Error("generated audit packet is missing the devnet resilience reference");
+  }
+  if (!auditPacket.includes("docs/wallet-compatibility-matrix.generated.json")) {
+    throw new Error("generated audit packet is missing the wallet matrix reference");
+  }
+  if (!auditPacket.includes("docs/devnet-canary.generated.json")) {
+    throw new Error("generated audit packet is missing the devnet canary reference");
   }
 
   if (!zkTranscript.includes("# ZK Transcript")) {
@@ -750,6 +829,12 @@ function main() {
   }
   if (!cryptographicManifest.files.some((entry) => entry.path === "docs/devnet-resilience-report.json")) {
     throw new Error("generated cryptographic manifest is missing the resilience report");
+  }
+  if (!cryptographicManifest.files.some((entry) => entry.path === "docs/wallet-compatibility-matrix.generated.json")) {
+    throw new Error("generated cryptographic manifest is missing the wallet matrix");
+  }
+  if (!cryptographicManifest.files.some((entry) => entry.path === "docs/devnet-canary.generated.json")) {
+    throw new Error("generated cryptographic manifest is missing the devnet canary");
   }
 
   console.log("Generated artifact verification: PASS");

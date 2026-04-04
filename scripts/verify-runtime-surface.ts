@@ -4,6 +4,7 @@ import path from "path";
 type RuntimeAttestation = {
   diagnosticsPage: string;
   supportedWallets: Array<{ id: string; label: string }>;
+  runtimeDocs?: string[];
   pdaoToken?: {
     mint: string;
   };
@@ -25,12 +26,18 @@ function main() {
   for (const fragment of [
     "page-diagnostics",
     "Wallet Diagnostics",
+    "Wallet Compatibility Matrix",
+    "Devnet Canary",
     "SUPPORTED PROVIDERS",
     "SUPPORTED DEVNET WALLETS",
     "updateDiagnostics()",
     "copyDiagnosticsSnapshot()",
+    "Open Wallet Matrix",
+    "Open Devnet Canary",
     "Open Runtime Attestation",
     "Open Go-Live Attestation",
+    "wallet-compatibility-matrix.generated.md",
+    "devnet-canary.generated.md",
     "runtime-attestation.generated.json",
     "go-live-attestation.generated.json",
     "mainnet-readiness.generated.md",
@@ -43,6 +50,9 @@ function main() {
   }
 
   assert(runtime.diagnosticsPage.endsWith("?page=diagnostics"), "runtime attestation diagnostics URL is unexpected");
+
+  assert(Boolean(runtime.runtimeDocs?.includes?.("docs/wallet-compatibility-matrix.generated.md")), "runtime attestation is missing wallet matrix docs");
+  assert(Boolean(runtime.runtimeDocs?.includes?.("docs/devnet-canary.generated.md")), "runtime attestation is missing devnet canary docs");
 
   if (runtime.pdaoToken?.mint) {
     assert(frontend.includes(runtime.pdaoToken.mint), "runtime surface is missing the PDAO mint");

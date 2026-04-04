@@ -107,6 +107,10 @@ function main() {
     runtimeDocs: [
       "docs/fair-voting.md",
       "docs/wallet-runtime.md",
+      "docs/wallet-compatibility-matrix.generated.md",
+      "docs/wallet-compatibility-matrix.generated.json",
+      "docs/devnet-canary.generated.md",
+      "docs/devnet-canary.generated.json",
       "docs/pdao-attestation.generated.json",
       "docs/mainnet-readiness.generated.md",
       "docs/deployment-attestation.generated.json",
