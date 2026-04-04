@@ -78,8 +78,23 @@ function main() {
     "Token-2022 program:",
     "Program Identity Boundary",
     "docs/assets/pdao-token.json",
+    "Mint authority: `disabled`",
   ]) {
     assert(pdaoDoc.includes(fragment), `docs/pdao-token.md is missing token surface fragment: ${fragment}`);
+  }
+
+  if (proof.pdaoToken.canonicalGovernanceDao) {
+    assert(
+      pdaoDoc.includes(proof.pdaoToken.canonicalGovernanceDao),
+      "docs/pdao-token.md is missing canonical governance DAO reference",
+    );
+  }
+
+  if (proof.pdaoToken.mintAuthorityStatus) {
+    assert(
+      proof.pdaoToken.mintAuthorityStatus === "disabled",
+      "proof registry must report disabled PDAO mint authority",
+    );
   }
 
   for (const fragment of [

@@ -339,13 +339,13 @@ The repository already includes real devnet proof in:
 
 Example transaction hashes:
 
-- deploy: `5wGTXjAhp4jBvU4Uu6FbMVziZkrxN7B9boh98XGfueSLTtZVsAvFtiNzPLfZsKpggJUkCgu1yAXjR4bd4T2w9aU1`
-- create-dao: `5RnLdHsdFTNSeqB2yFgKrRDDJmsAHXUoWm8h1LgazDqHQr2ebHzRd1mmCHWnFFBcR7QdYQZKfdrE7JWYFz8oRHj1`
-- create-proposal: `KaZBBExcKxbnHg6Qm8VsbFZhJqcmDiw3q8GkktCyVEc8sPDMLf1bW6bP3yqSJXaz45kom5eCPMh6rdEWgBSYgam`
-- commit: `dVhZLy67oWtXPmi9UjirQ7Ndmrg9j3QMBWhsrsKFBa7CnbotV2zXfnCLtDYHbjkepTT5GECi12Umj5NCSXbiS36`
-- reveal: `3ALcXd4UZam1RVhuTV7ZtpmUVytWmAZKuK8KMK5XtpxgqMZYwMXbo5pKgjoJY5nt269jFT9uAMWCAuM2GM7dKCUB`
-- finalize: `6394A1ith6ZEXD3N2nFUWDigytPPm9Pucw45y1SweLZZKXYHwxi6GpsaejpdkZyX5mgLRECUgqRSFSm9P6Uo64j`
-- execute: `Xkoeqbe8g8jcosTQNsrMGCBevfzBtZwwyS2QjVfW9jrupczuj25LyAW3B7noQfPbsveT6eAggUBL3nLJBEASeri`
+- deploy: `2FTRdNt2e1AXqPBwYReDiaNHjRZF2N7VtQeF17Ue56S7UoJPqZQxZ5gi32fRvAgE7ToE636EaDkanEoZvvcin9pD`
+- create-dao: `5mcyVi3SbZo4hvpVMjH2eZH8FYeywdbbPz4ArmE5wHXH5X9EnP6gSq76ogBWYWVkVUwzrCchPnSdhGV1mFb48s5Q`
+- create-proposal: `E93ikMXVJbtvz8ewAHA2BasZPVKYyUXe3Jy88h3b3AQubm7PSYFMNtDveBkRts7uYodwzb8cGZSVDoneKF16X2L`
+- commit: `3RMbrcYGx297hgcTrov9PqtUqM97ZFg6A21qxmepTboLQAoXov6toY2QTa8yU1i8zmQPvjR3ArNGpvR3jat79uTP`
+- reveal: `5L3cxZZgwMRnJTxNXLQCyjQMXSAi6bwoskFoKsfaQ7JycYUPuGCkWAkr7qA18WkddfNdSPB5qHt3FVSiHq2eDGh5`
+- finalize: `4JSPRJQuSY5es74TcChBTzuGMMCr4RknHkmr6vFmtmbav4TRABDAnapmtgipYioEZzh4wmKfg2PMzZHCfJ7UruLG`
+- execute: `x1vhP6H3Regi6WHYx6LUGbeo4CCbJxWwtUVucPVjonnymyccpM8mpb7t3UpQpqksXBU7PYGPd86cPnZLYwRzBn9`
 
 Use the explorer links in `docs/live-proof.md` to independently inspect:
 

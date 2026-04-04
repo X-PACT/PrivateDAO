@@ -28,6 +28,14 @@
     {
       "trait_type": "Mint",
       "value": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt"
+    },
+    {
+      "trait_type": "Mint Authority",
+      "value": "Disabled"
+    },
+    {
+      "trait_type": "Canonical Governance DAO",
+      "value": "FZV9KmpeY1B31XvszQypp5T6nQN5C44JDLM4QWBEDvhx"
     }
   ],
   "properties": {

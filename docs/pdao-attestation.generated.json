@@ -13,16 +13,19 @@
     "tokenAccount": "F4q77ZMJdC7eoEUw3CCR7DbKGTggyExjuMGKBEiM2ct4",
     "decimals": 9,
     "supplyUi": "1000000",
+    "mintAuthorityStatus": "disabled",
+    "canonicalGovernanceDao": "FZV9KmpeY1B31XvszQypp5T6nQN5C44JDLM4QWBEDvhx",
     "metadataUri": "https://x-pact.github.io/PrivateDAO/assets/pdao-token.json",
     "metadataAssetPath": "docs/assets/pdao-token.json",
-    "metadataSha256": "76e64d33e9924ce17d9c20565c6666476332b7674223d399522df3d020f432cb",
+    "metadataSha256": "11f012d0c0ac9548bc1248b85bfd4f223ec80703bf5ad8af3379dca83571bf0a",
     "image": "https://x-pact.github.io/PrivateDAO/assets/logo.png",
     "externalUrl": "https://x-pact.github.io/PrivateDAO/?page=security",
     "transactionLabels": [
       "create-token",
       "create-account",
       "initialize-metadata",
-      "mint-initial-supply"
+      "mint-initial-supply",
+      "disable-mint-authority"
     ]
   },
   "programBoundary": {

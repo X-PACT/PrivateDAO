@@ -8,6 +8,8 @@ MINT="$(node -e 'const proof=require("./docs/proof-registry.json"); process.stdo
 TOKEN_PROGRAM="$(node -e 'const proof=require("./docs/proof-registry.json"); process.stdout.write(proof.pdaoToken.programId)')"
 TOKEN_ACCOUNT="$(node -e 'const proof=require("./docs/proof-registry.json"); process.stdout.write(proof.pdaoToken.tokenAccount)')"
 METADATA_URI="$(node -e 'const proof=require("./docs/proof-registry.json"); process.stdout.write(proof.pdaoToken.metadataUri)')"
+MINT_AUTHORITY_STATUS="$(node -e 'const proof=require("./docs/proof-registry.json"); process.stdout.write(proof.pdaoToken.mintAuthorityStatus || "")')"
+DISABLE_MINT_AUTHORITY_TX="$(node -e 'const proof=require("./docs/proof-registry.json"); process.stdout.write(proof.pdaoToken.transactions["disable-mint-authority"] || "")')"
 
 echo "[pdao-live] checking live mint account"
 solana account "$MINT" --output json >/dev/null
@@ -30,11 +32,12 @@ node -e '
   if (body.programId !== process.argv[2]) throw new Error("live PDAO token program mismatch");
   if (body.address !== process.argv[3]) throw new Error("live PDAO mint mismatch");
   if (String(body.decimals) !== "9") throw new Error("live PDAO decimals mismatch");
+  if (process.argv[5] === "disabled" && body.mintAuthority !== null) throw new Error("live PDAO mint authority should be disabled");
   if (tokenMetadata.name !== "PDAO") throw new Error("live PDAO name mismatch");
   if (tokenMetadata.symbol !== "PDAO") throw new Error("live PDAO symbol mismatch");
   if (tokenMetadata.uri !== process.argv[4]) throw new Error("live PDAO metadata URI mismatch");
   if (String(body.supply) !== "1000000000000000") throw new Error("live PDAO raw supply mismatch");
-' "$TMP_JSON" "$TOKEN_PROGRAM" "$MINT" "$METADATA_URI"
+' "$TMP_JSON" "$TOKEN_PROGRAM" "$MINT" "$METADATA_URI" "$MINT_AUTHORITY_STATUS"
 rm -f "$TMP_JSON"
 
 echo "[pdao-live] checking published metadata asset"
@@ -45,5 +48,8 @@ solana confirm --url devnet 5zGeSePpx2q3dFTNBi8Vmn8ucd9B3jEW6MKqrCUWtQQa3FipwDPF
 solana confirm --url devnet 45gM6Jo3SSbwxzqyGRSMhTmz47r8wsaAMikdkbSQ2AyoXMEA3JAJM9X6eufjwnKY5QYU6QCFTjAfR9cVExKu2rhn >/dev/null
 solana confirm --url devnet 4kgVoRGATdVAWVoYAYGqWnJBpDHiiRmFyQ3rgRz2uWEGdsx3Hosg5Ro7JGY7xSygD1vUUsGCduseCMWYx4MbXgur >/dev/null
 solana confirm --url devnet 7LF3U3kooWfnRwaziceyRzKrHKhFQ6q6hfYeR6vU5gudjTPKYbw6kmXCxvvfurnQBnCBTCWH54rabcDqx1TBbLA >/dev/null
+if [[ -n "$DISABLE_MINT_AUTHORITY_TX" ]]; then
+  solana confirm --url devnet "$DISABLE_MINT_AUTHORITY_TX" >/dev/null
+fi
 
 echo "[pdao-live] PASS"

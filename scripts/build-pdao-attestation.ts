@@ -46,6 +46,8 @@ function main() {
       tokenAccount: proof.pdaoToken.tokenAccount,
       decimals: proof.pdaoToken.decimals,
       supplyUi: proof.pdaoToken.supplyUi,
+      mintAuthorityStatus: proof.pdaoToken.mintAuthorityStatus ?? "unknown",
+      canonicalGovernanceDao: proof.pdaoToken.canonicalGovernanceDao ?? null,
       metadataUri: proof.pdaoToken.metadataUri,
       metadataAssetPath: "docs/assets/pdao-token.json",
       metadataSha256: sha256Hex(metadataBody),

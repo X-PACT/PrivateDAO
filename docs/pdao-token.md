@@ -15,10 +15,13 @@ PrivateDAO now documents and publishes a live Devnet governance voting token pro
 - Program: `TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb` (`Token-2022`)
 - Decimals: `9`
 - Metadata URI: `https://x-pact.github.io/PrivateDAO/assets/pdao-token.json`
-- Verification wallet / mint authority / update authority: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
+- Verification wallet / metadata update authority: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
+- Mint authority: `disabled`
+- Mint-authority disable transaction: `dnv2vXPkFRM5fd42vgA4Cjkx85UCDTvFssYcS97ArZFQNGRVDd3DRzAUuvUVX1QFUAYcTpayJhbnomLCgjp2jj2`
 - Associated token account: `F4q77ZMJdC7eoEUw3CCR7DbKGTggyExjuMGKBEiM2ct4`
 - Current initial supply: `1,000,000 PDAO`
 - Published metadata asset: `docs/assets/pdao-token.json`
+- Canonical live governance DAO: `FZV9KmpeY1B31XvszQypp5T6nQN5C44JDLM4QWBEDvhx`
 
 ## Program Identity Boundary
 
@@ -38,6 +41,7 @@ The presence of both ids does not indicate a duplicate PrivateDAO deployment.
 - `create-account`: `45gM6Jo3SSbwxzqyGRSMhTmz47r8wsaAMikdkbSQ2AyoXMEA3JAJM9X6eufjwnKY5QYU6QCFTjAfR9cVExKu2rhn`
 - `initialize-metadata`: `4kgVoRGATdVAWVoYAYGqWnJBpDHiiRmFyQ3rgRz2uWEGdsx3Hosg5Ro7JGY7xSygD1vUUsGCduseCMWYx4MbXgur`
 - `mint-initial-supply`: `7LF3U3kooWfnRwaziceyRzKrHKhFQ6q6hfYeR6vU5gudjTPKYbw6kmXCxvvfurnQBnCBTCWH54rabcDqx1TBbLA`
+- `disable-mint-authority`: `dnv2vXPkFRM5fd42vgA4Cjkx85UCDTvFssYcS97ArZFQNGRVDd3DRzAUuvUVX1QFUAYcTpayJhbnomLCgjp2jj2`
 
 ## Generated Attestation
 
@@ -47,7 +51,7 @@ These transactions are finalized on Solana Devnet and were executed from the ver
 
 ## Intended Role In PrivateDAO
 
-`PDAO` is the designated governance voting token profile for the current Devnet-facing PrivateDAO surface.
+`PDAO` is the live governance voting token for the current Devnet-facing reviewer DAO and the canonical token identity for the product surface.
 
 It is intended to represent:
 
@@ -58,20 +62,21 @@ It is intended to represent:
 
 ## What This Does Not Change
 
-This token note does not change the deployed protocol surface:
+This token note does not change the protocol's generalized DAO-configured governance-mint semantics:
 
 - no contract interfaces are changed
 - no PDA derivations are changed
 - no account layouts are changed
 - DAO-level governance mint logic remains the on-chain source of truth
 
-PrivateDAO still supports DAO-configured governance mints at the protocol level. `PDAO` is the designated Devnet governance token profile shown in the current product and reviewer surface.
+PrivateDAO still supports DAO-configured governance mints at the protocol level. The current canonical Devnet DAO now uses `PDAO` itself as that live governance mint.
 
 ## Reviewer Interpretation
 
 Reviewers should read this note as:
 
 - a formal token identity for the Devnet governance surface
+- the actual live governance mint for the current canonical Devnet DAO
 - not a claim of a protocol-native fee token
 - not a claim of speculative tokenomics
 - not a replacement for DAO-specific governance-mint enforcement on-chain
@@ -97,4 +102,5 @@ solana confirm --url devnet 5zGeSePpx2q3dFTNBi8Vmn8ucd9B3jEW6MKqrCUWtQQa3FipwDPF
 solana confirm --url devnet 45gM6Jo3SSbwxzqyGRSMhTmz47r8wsaAMikdkbSQ2AyoXMEA3JAJM9X6eufjwnKY5QYU6QCFTjAfR9cVExKu2rhn
 solana confirm --url devnet 4kgVoRGATdVAWVoYAYGqWnJBpDHiiRmFyQ3rgRz2uWEGdsx3Hosg5Ro7JGY7xSygD1vUUsGCduseCMWYx4MbXgur
 solana confirm --url devnet 7LF3U3kooWfnRwaziceyRzKrHKhFQ6q6hfYeR6vU5gudjTPKYbw6kmXCxvvfurnQBnCBTCWH54rabcDqx1TBbLA
+solana confirm --url devnet dnv2vXPkFRM5fd42vgA4Cjkx85UCDTvFssYcS97ArZFQNGRVDd3DRzAUuvUVX1QFUAYcTpayJhbnomLCgjp2jj2
 ```

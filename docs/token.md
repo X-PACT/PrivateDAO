@@ -74,6 +74,8 @@ That does not require speculative tokenomics. It simply means the token is part 
 
 The initial Devnet launch is intentional. It allows the token surface, metadata, verification path, and governance documentation to be exercised in a live Solana environment before any future production cutover.
 
+The current canonical Devnet DAO also uses `PDAO` as its actual live governance mint. This means the token is not only documented as a governance surface; it now participates directly in the reviewer-facing on-chain lifecycle.
+
 For the live Devnet token identity and generated machine-readable surface, see:
 
 - `docs/pdao-token.md`

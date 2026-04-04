@@ -16,6 +16,8 @@ export type ProofRegistry = {
     metadataUri: string;
     decimals: number;
     supplyUi: string;
+    mintAuthorityStatus?: string;
+    canonicalGovernanceDao?: string;
     transactions: Record<string, string>;
   };
   transactions: Record<string, string>;

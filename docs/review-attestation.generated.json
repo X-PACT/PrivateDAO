@@ -2,12 +2,12 @@
   "project": "PrivateDAO",
   "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
   "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
-  "deployTx": "5wGTXjAhp4jBvU4Uu6FbMVziZkrxN7B9boh98XGfueSLTtZVsAvFtiNzPLfZsKpggJUkCgu1yAXjR4bd4T2w9aU1",
+  "deployTx": "2FTRdNt2e1AXqPBwYReDiaNHjRZF2N7VtQeF17Ue56S7UoJPqZQxZ5gi32fRvAgE7ToE636EaDkanEoZvvcin9pD",
   "anchors": {
-    "dao": "Gj7NgKm1MtB2CDs11pPJDcLExrkHf1styKdge1Lgx7V4",
-    "governanceMint": "JDu2NmGsNrNTHEm7zepCwYRpD6KZ7CtiSkdCg1KFHyn1",
-    "treasury": "S2J1gNCbE8E21pL3VEX4fhz2duxidSwRd7yaV9nriFW",
-    "proposal": "8JLRaAnwZc3BXfHKEKdiaK82MyjR1VhgGRKMydqmHxd1"
+    "dao": "FZV9KmpeY1B31XvszQypp5T6nQN5C44JDLM4QWBEDvhx",
+    "governanceMint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
+    "treasury": "AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c",
+    "proposal": "AegjmwkX1FknBJMDyH5yM6BMhyHsiUreNtz3d8iz3QrP"
   },
   "pdaoToken": {
     "mint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
@@ -21,7 +21,8 @@
       "create-token",
       "create-account",
       "initialize-metadata",
-      "mint-initial-supply"
+      "mint-initial-supply",
+      "disable-mint-authority"
     ]
   },
   "transactionLabels": [
@@ -74,7 +75,7 @@
   "cryptographicIntegrity": {
     "algorithm": "sha256",
     "entryCount": 40,
-    "aggregateSha256": "9a8cad807f438aa570893d09e519e505d6a9078da36283d609c5c007e7b3fbfd"
+    "aggregateSha256": "92e5114da515482fba642c7addaa21d948a260f617b8925f14db4811d499fc46"
   },
   "runtimeDocs": [
     "docs/fair-voting.md",

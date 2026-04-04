@@ -40,7 +40,7 @@ The problem statement is simple and easy for judges to verify: public live talli
 
 ## Token Surface
 
-PrivateDAO now documents a designated Devnet governance voting token profile:
+PrivateDAO now publishes a live Devnet governance voting token surface that is also the canonical governance mint for the current reviewer-facing DAO:
 
 - Token: `PDAO`
 - Network: `Devnet`
@@ -50,7 +50,7 @@ PrivateDAO now documents a designated Devnet governance voting token profile:
 - Program: `Token-2022`
 - Initial supply: `1,000,000 PDAO`
 
-This is a product-facing governance token surface, not a protocol rewrite. The deployed contracts still use DAO-configured governance mint semantics on-chain.
+The protocol still supports DAO-configured governance mints on-chain. The current canonical Devnet DAO now uses `PDAO` itself as that live governance mint.
 
 There is only one canonical PrivateDAO governance program id:
 
