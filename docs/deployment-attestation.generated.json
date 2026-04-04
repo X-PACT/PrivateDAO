@@ -21,6 +21,9 @@
     "securityReasoning": "verified",
     "supplyChainSurface": "verified",
     "releaseCeremonySurface": "verified",
+    "runtimeEvidenceSurface": "verified",
+    "releaseDrillSurface": "verified",
+    "artifactFreshness": "verified",
     "zkCompanionStack": "verified",
     "reviewerSurface": "verified",
     "operationsSurface": "verified",
@@ -59,6 +62,9 @@
     "npm run verify:generated-artifacts",
     "npm run verify:supply-chain-attestation",
     "npm run verify:release-ceremony-attestation",
+    "npm run verify:runtime-evidence",
+    "npm run verify:release-drill",
+    "npm run verify:artifact-freshness",
     "npm run verify:wallet-matrix",
     "npm run verify:devnet-canary",
     "npm run verify:devnet:resilience-report",
@@ -79,13 +85,13 @@
     "npm run verify:review-surface",
     "npm run verify:all"
   ],
-  "gateCount": 48,
+  "gateCount": 51,
   "packageCounts": {
     "strategy": 6,
-    "security": 10,
+    "security": 11,
     "zk": 13,
-    "proof": 31,
-    "operations": 15
+    "proof": 33,
+    "operations": 18
   },
   "zk": {
     "stackVersion": 1,

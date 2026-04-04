@@ -148,6 +148,15 @@ npm run verify:runtime-surface
 
 Checks that the live diagnostics page, supported wallet labels, runtime attestation, and PDAO/runtime anchors stay aligned in the frontend itself.
 
+### Runtime Evidence
+
+```bash
+npm run build:runtime-evidence
+npm run verify:runtime-evidence
+```
+
+Builds and verifies a generated runtime-evidence package that consolidates runtime attestation, wallet compatibility, Devnet canary, and resilience behavior into one reviewer-facing summary.
+
 ### Wallet Compatibility Matrix
 
 ```bash
@@ -189,6 +198,23 @@ npm run verify:release-ceremony-attestation
 ```
 
 Builds and verifies a generated release-ceremony attestation that ties reviewed commit identity, required release gates, operator-facing cutover docs, and unresolved external blockers into one reviewer-visible artifact.
+
+### Release Drill Evidence
+
+```bash
+npm run build:release-drill
+npm run verify:release-drill
+```
+
+Builds and verifies a repository-simulated release drill that makes the pre-cutover and blocked-external stages explicit rather than leaving them implied.
+
+### Artifact Freshness
+
+```bash
+npm run verify:artifact-freshness
+```
+
+Rebuilds the deterministic generated reviewer artifacts and packaged review bundle, then rejects drift between committed outputs and the current builders.
 
 ### ZK Registry
 

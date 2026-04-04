@@ -166,10 +166,14 @@ Quick links:
 - Fair voting model: `docs/fair-voting.md`
 - Wallet runtime compatibility: `docs/wallet-runtime.md`
 - Runtime attestation: `docs/runtime-attestation.generated.json`
+- Runtime evidence package: `docs/runtime-evidence.generated.md`
 - Wallet compatibility matrix: `docs/wallet-compatibility-matrix.generated.md`
 - Devnet canary: `docs/devnet-canary.generated.md`
+- Artifact freshness: `docs/artifact-freshness.md`
 - Release ceremony: `docs/release-ceremony.md`
 - Release ceremony attestation: `docs/release-ceremony-attestation.generated.md`
+- Release drill evidence: `docs/release-drill.generated.md`
+- Review automation: `docs/review-automation.md`
 - Go-live criteria: `docs/go-live-criteria.md`
 - Operational drillbook: `docs/operational-drillbook.md`
 - Awards page: `docs/awards.md`
@@ -217,6 +221,7 @@ Quick links:
 - Go-live attestation: `docs/go-live-attestation.generated.json`
 - Release ceremony: `docs/release-ceremony.md`
 - Release ceremony attestation: `docs/release-ceremony-attestation.generated.json`
+- Release drill evidence: `docs/release-drill.generated.json`
 - Production operations: `docs/production-operations.md`
 - Monitoring and alerts: `docs/monitoring-alerts.md`
 - Incident response: `docs/incident-response.md`
@@ -299,6 +304,12 @@ Packaged review handoff:
 
 ```bash
 npm run build:review-bundle
+```
+
+Artifact freshness gate for deterministic reviewer artifacts:
+
+```bash
+npm run verify:artifact-freshness
 ```
 
 Full gate breakdown:
@@ -423,6 +434,7 @@ Security and review documents:
 - `docs/proof-registry.json`
 - `docs/cryptographic-integrity.md`
 - `docs/cryptographic-manifest.generated.json`
+- `docs/artifact-freshness.md`
 - `docs/zk-layer.md`
 - `docs/zk-upgrade.md`
 - `docs/zk-architecture.md`
@@ -446,6 +458,7 @@ Protocol and product documents:
 - `docs/audit-packet.generated.md`
 - `docs/review-attestation.generated.json`
 - `docs/verification-gates.md`
+- `docs/review-automation.md`
 - `docs/reviewer-fast-path.md`
 - `docs/use-cases.md`
 - `docs/economic-model.md`

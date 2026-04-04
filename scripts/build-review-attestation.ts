@@ -107,6 +107,8 @@ function main() {
     runtimeDocs: [
       "docs/fair-voting.md",
       "docs/wallet-runtime.md",
+      "docs/runtime-evidence.generated.md",
+      "docs/runtime-evidence.generated.json",
       "docs/wallet-compatibility-matrix.generated.md",
       "docs/wallet-compatibility-matrix.generated.json",
       "docs/devnet-canary.generated.md",
@@ -123,6 +125,8 @@ function main() {
       "docs/release-ceremony.md",
       "docs/release-ceremony-attestation.generated.md",
       "docs/release-ceremony-attestation.generated.json",
+      "docs/release-drill.generated.md",
+      "docs/release-drill.generated.json",
       "docs/mainnet-cutover-runbook.md",
       "docs/operator-checklist.md",
     ],

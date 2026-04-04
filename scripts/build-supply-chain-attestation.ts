@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import fs from "fs";
 import path from "path";
+import { execSync } from "child_process";
 
 type HashEntry = {
   path: string;
@@ -41,7 +42,7 @@ function main() {
 
   const attestation = {
     project: "PrivateDAO",
-    generatedAt: new Date().toISOString(),
+    generatedAt: deterministicGeneratedAt(),
     algorithm: "sha256",
     packageManager: packageJson.packageManager ?? "npm+yarn",
     topLevel: {
@@ -171,6 +172,19 @@ function sha256(input: crypto.BinaryLike) {
 
 function readJson<T>(relativePath: string): T {
   return JSON.parse(fs.readFileSync(path.resolve(relativePath), "utf8")) as T;
+}
+
+function deterministicGeneratedAt() {
+  const explicit = process.env.PRIVATE_DAO_BUILD_TIMESTAMP;
+  if (explicit) {
+    return explicit;
+  }
+  return execSync("git log -1 --format=%cI", {
+    cwd: process.cwd(),
+    stdio: ["ignore", "pipe", "ignore"],
+  })
+    .toString()
+    .trim();
 }
 
 main();

@@ -56,3 +56,6 @@ jobs:
 
       - name: Unified review and ops verification
         run: npm run verify:all
+
+      - name: Artifact freshness
+        run: npm run verify:artifact-freshness

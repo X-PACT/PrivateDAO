@@ -69,10 +69,11 @@
 - Go-live attestation: `docs/go-live-attestation.generated.json`
 - Release ceremony note: `docs/release-ceremony.md`
 - Release ceremony attestation: `docs/release-ceremony-attestation.generated.json`
+- Release drill: `docs/release-drill.generated.json`
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `64`
-- Aggregate sha256: `99a6f2d4e5b2e0ec0ca826a63b88bca3e896271b410aba302c21b1a7b35d66db`
+- Manifest entries: `68`
+- Aggregate sha256: `11c6e982d7fe49643704913632059626f89396e6bcdc6cc7e696afb0c110c3cd`
 
 ## ZK Package
 
@@ -124,6 +125,7 @@
 - `docs/replay-analysis.md`
 - `docs/cryptographic-integrity.md`
 - `docs/cryptographic-posture.md`
+- `docs/artifact-freshness.md`
 - `docs/supply-chain-security.md`
 - `docs/supply-chain-attestation.generated.md`
 - `docs/supply-chain-attestation.generated.json`
@@ -170,6 +172,8 @@
 - `docs/assets/pdao-token.json`
 - `docs/fair-voting.md`
 - `docs/wallet-runtime.md`
+- `docs/runtime-evidence.generated.md`
+- `docs/runtime-evidence.generated.json`
 - `docs/wallet-compatibility-matrix.generated.md`
 - `docs/wallet-compatibility-matrix.generated.json`
 - `docs/devnet-canary.generated.md`
@@ -182,6 +186,8 @@
 
 - `docs/fair-voting.md`
 - `docs/wallet-runtime.md`
+- `docs/runtime-evidence.generated.md`
+- `docs/runtime-evidence.generated.json`
 - `docs/wallet-compatibility-matrix.generated.md`
 - `docs/wallet-compatibility-matrix.generated.json`
 - `docs/devnet-canary.generated.md`
@@ -190,6 +196,8 @@
 - `docs/release-ceremony.md`
 - `docs/release-ceremony-attestation.generated.md`
 - `docs/release-ceremony-attestation.generated.json`
+- `docs/release-drill.generated.md`
+- `docs/release-drill.generated.json`
 - `docs/deployment-attestation.generated.json`
 - `docs/go-live-criteria.md`
 - `docs/operational-drillbook.md`
@@ -219,6 +227,9 @@
 - `docs/release-ceremony.md`
 - `docs/release-ceremony-attestation.generated.md`
 - `docs/release-ceremony-attestation.generated.json`
+- `docs/release-drill.generated.md`
+- `docs/release-drill.generated.json`
+- `docs/review-automation.md`
 - `docs/go-live-criteria.md`
 - `docs/operational-drillbook.md`
 - `docs/production-operations.md`
@@ -261,6 +272,9 @@
 - `npm run verify:generated-artifacts`
 - `npm run verify:supply-chain-attestation`
 - `npm run verify:release-ceremony-attestation`
+- `npm run verify:runtime-evidence`
+- `npm run verify:release-drill`
+- `npm run verify:artifact-freshness`
 - `npm run verify:wallet-matrix`
 - `npm run verify:devnet-canary`
 - `npm run verify:devnet:resilience-report`
@@ -287,6 +301,9 @@
 - securityReasoning: `verified`
 - supplyChainSurface: `verified`
 - releaseCeremonySurface: `verified`
+- runtimeEvidenceSurface: `verified`
+- releaseDrillSurface: `verified`
+- artifactFreshness: `verified`
 - zkCompanionStack: `verified`
 - reviewerSurface: `verified`
 - operationsSurface: `verified`

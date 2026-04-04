@@ -33,8 +33,12 @@ required_files=(
   "docs/pdao-token.md"
   "docs/pdao-attestation.generated.json"
   "docs/assets/pdao-token.json"
+  "docs/artifact-freshness.md"
+  "docs/review-automation.md"
   "docs/fair-voting.md"
   "docs/wallet-runtime.md"
+  "docs/runtime-evidence.generated.md"
+  "docs/runtime-evidence.generated.json"
   "docs/wallet-compatibility-matrix.generated.md"
   "docs/wallet-compatibility-matrix.generated.json"
   "docs/devnet-canary.generated.md"
@@ -42,6 +46,8 @@ required_files=(
   "docs/release-ceremony.md"
   "docs/release-ceremony-attestation.generated.md"
   "docs/release-ceremony-attestation.generated.json"
+  "docs/release-drill.generated.md"
+  "docs/release-drill.generated.json"
   "docs/cryptographic-posture.md"
   "docs/supply-chain-security.md"
   "docs/supply-chain-attestation.generated.md"
@@ -125,12 +131,16 @@ if search_placeholders "$placeholder_pattern" \
   docs/attack-simulation-log.md \
   docs/token.md \
   docs/pdao-token.md \
+  docs/artifact-freshness.md \
+  docs/review-automation.md \
   docs/fair-voting.md \
   docs/wallet-runtime.md \
+  docs/runtime-evidence.generated.md \
   docs/wallet-compatibility-matrix.generated.md \
   docs/devnet-canary.generated.md \
   docs/release-ceremony.md \
   docs/release-ceremony-attestation.generated.md \
+  docs/release-drill.generated.md \
   docs/cryptographic-posture.md \
   docs/supply-chain-security.md \
   docs/supply-chain-attestation.generated.md \
@@ -207,6 +217,9 @@ npx ts-node scripts/verify-deployment-attestation.ts >/dev/null
 echo "[review-surface] checking runtime attestation"
 npx ts-node scripts/verify-runtime-attestation.ts >/dev/null
 
+echo "[review-surface] checking runtime evidence"
+npx ts-node scripts/verify-runtime-evidence.ts >/dev/null
+
 echo "[review-surface] checking PDAO attestation"
 npx ts-node scripts/verify-pdao-attestation.ts >/dev/null
 
@@ -221,6 +234,9 @@ npx ts-node scripts/verify-supply-chain-attestation.ts >/dev/null
 
 echo "[review-surface] checking release ceremony attestation"
 npx ts-node scripts/verify-release-ceremony-attestation.ts >/dev/null
+
+echo "[review-surface] checking release drill evidence"
+npx ts-node scripts/verify-release-drill.ts >/dev/null
 
 echo "[review-surface] checking devnet resilience report"
 npx ts-node scripts/verify-devnet-resilience-report.ts >/dev/null

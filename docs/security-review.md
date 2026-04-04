@@ -214,6 +214,7 @@ The repository now also includes lighter-weight runtime artifacts for sustained 
 
 - `docs/wallet-compatibility-matrix.generated.md` makes supported wallet classes and runtime fallback behavior explicit.
 - `docs/devnet-canary.generated.md` provides a read-only Devnet signal for RPC health, canonical anchor visibility, and governance-mint supply visibility between heavier stress runs.
+- `docs/runtime-evidence.generated.md` consolidates runtime attestation, wallet compatibility, Devnet canary, and resilience evidence into one reviewer-facing runtime package.
 
 These artifacts do not replace the multi-wallet stress package. They reduce blind spots between heavy runs and make the browser/runtime side of the system more reviewable.
 
@@ -234,6 +235,20 @@ This layer turns release discipline into inspectable evidence by binding:
 - unresolved external blockers
 
 It does not claim that mainnet release has happened. It makes the discipline around any future release auditable before that release exists.
+
+## Release Drill Evidence
+
+The repository now also includes a release-drill layer:
+
+- `docs/release-drill.generated.md`
+- `docs/release-drill.generated.json`
+- `docs/review-automation.md`
+
+This layer turns the release-ceremony surface into a repository-contained drill artifact that distinguishes:
+
+- what already passes inside the repository
+- what remains blocked by external audit and custody requirements
+- which stages are simulated rather than live production events
 
 ## Replay Summary
 
@@ -305,6 +320,7 @@ This does not replace protocol security. It reduces silent drift and makes revie
 The repository now also exposes a reviewer-visible dependency and manifest surface:
 
 - `docs/cryptographic-posture.md`
+- `docs/artifact-freshness.md`
 - `docs/supply-chain-security.md`
 - `docs/supply-chain-attestation.generated.md`
 - `docs/supply-chain-attestation.generated.json`
@@ -319,6 +335,20 @@ The generated supply-chain attestation binds:
 - `yarn.lock`
 
 This does not replace external dependency auditing or registry trust review. It does make lockfile drift, manifest tampering, and reviewer-package inconsistency materially easier to detect inside the repository itself.
+
+## Sustainable Review Automation
+
+The repository now also exposes the operational automation that keeps the reviewer surface coherent:
+
+- `docs/review-automation.md`
+- `docs/artifact-freshness.md`
+
+This layer makes two things explicit:
+
+- the reviewer surface is rebuilt deterministically from repository builders
+- generated reviewer artifacts and the packaged review bundle must remain fresh relative to their builders
+
+This does not claim that operational discipline replaces external audit. It does make repository-contained review evidence harder to let drift silently between changes.
 
 ## Remaining Real-World Risks
 

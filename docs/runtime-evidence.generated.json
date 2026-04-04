@@ -1,0 +1,88 @@
+{
+  "project": "PrivateDAO",
+  "generatedAt": "2026-04-04T20:53:51.066Z",
+  "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+  "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+  "diagnosticsPage": "https://x-pact.github.io/PrivateDAO/?page=diagnostics",
+  "walletCount": 5,
+  "walletLabels": [
+    "Auto Detect",
+    "Phantom",
+    "Solflare",
+    "Backpack",
+    "Glow"
+  ],
+  "matrixStatuses": [
+    {
+      "id": "auto-detect",
+      "label": "Auto Detect",
+      "status": "devnet-review-ready",
+      "diagnosticsVisible": true,
+      "selectorVisible": true
+    },
+    {
+      "id": "phantom",
+      "label": "Phantom",
+      "status": "devnet-review-ready",
+      "diagnosticsVisible": true,
+      "selectorVisible": true
+    },
+    {
+      "id": "solflare",
+      "label": "Solflare",
+      "status": "devnet-review-ready",
+      "diagnosticsVisible": true,
+      "selectorVisible": true
+    },
+    {
+      "id": "backpack",
+      "label": "Backpack",
+      "status": "devnet-review-ready",
+      "diagnosticsVisible": true,
+      "selectorVisible": true
+    },
+    {
+      "id": "glow",
+      "label": "Glow",
+      "status": "manual-runtime-qa-required",
+      "diagnosticsVisible": true,
+      "selectorVisible": true
+    }
+  ],
+  "devnetCanary": {
+    "network": "devnet",
+    "primaryHealthy": true,
+    "fallbackHealthy": true,
+    "anchorAccountsPresent": true,
+    "unexpectedFailures": 0
+  },
+  "resilience": {
+    "fallbackRecovered": true,
+    "staleBlockhashRecovered": true,
+    "staleBlockhashRejected": true,
+    "unexpectedFailures": 0
+  },
+  "docs": [
+    "docs/wallet-runtime.md",
+    "docs/runtime-attestation.generated.json",
+    "docs/wallet-compatibility-matrix.generated.md",
+    "docs/devnet-canary.generated.md",
+    "docs/devnet-resilience-report.md",
+    "docs/fair-voting.md"
+  ],
+  "commands": [
+    "npm run build:wallet-matrix",
+    "npm run verify:wallet-matrix",
+    "npm run build:devnet-canary",
+    "npm run verify:devnet-canary",
+    "npm run test:devnet:resilience",
+    "npm run verify:devnet:resilience-report",
+    "npm run verify:runtime-surface",
+    "npm run verify:all"
+  ],
+  "notes": [
+    "This runtime evidence package is Devnet-focused and reviewer-visible.",
+    "It does not replace real device QA across every wallet release and browser combination.",
+    "It binds browser/runtime behavior to diagnostics, wallet matrix, canary, and resilience evidence in one summary."
+  ]
+}

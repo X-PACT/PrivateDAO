@@ -49,6 +49,9 @@ npm run verify:supply-chain-attestation >/dev/null
 echo "[verify-all] checking release ceremony attestation"
 npm run verify:release-ceremony-attestation >/dev/null
 
+echo "[verify-all] checking release drill evidence"
+npm run verify:release-drill >/dev/null
+
 echo "[verify-all] checking cryptographic integrity"
 npm run verify:cryptographic-manifest >/dev/null
 
@@ -63,6 +66,9 @@ npm run verify:deployment-attestation >/dev/null
 
 echo "[verify-all] checking runtime attestation"
 npm run verify:runtime-attestation >/dev/null
+
+echo "[verify-all] checking runtime evidence"
+npm run verify:runtime-evidence >/dev/null
 
 echo "[verify-all] checking runtime surface"
 npm run verify:runtime-surface >/dev/null

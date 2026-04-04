@@ -50,7 +50,7 @@ function main() {
 
   const attestation = {
     project: submission.project,
-    generatedAt: new Date().toISOString(),
+    generatedAt: deterministicGeneratedAt(),
     releaseCommit: commit,
     releaseBranch: branch,
     programId: submission.programId,
@@ -153,6 +153,14 @@ function readJson<T>(relativePath: string): T {
 
 function safeGit(command: string) {
   return execSync(command, { cwd: process.cwd(), stdio: ["ignore", "pipe", "ignore"] }).toString().trim();
+}
+
+function deterministicGeneratedAt() {
+  const explicit = process.env.PRIVATE_DAO_BUILD_TIMESTAMP;
+  if (explicit) {
+    return explicit;
+  }
+  return safeGit("git log -1 --format=%cI");
 }
 
 main();

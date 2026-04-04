@@ -37,10 +37,10 @@
   ],
   "packageCounts": {
     "strategy": 6,
-    "security": 10,
+    "security": 11,
     "zk": 13,
-    "proof": 31,
-    "operations": 15
+    "proof": 33,
+    "operations": 18
   },
   "zk": {
     "stackVersion": 1,
@@ -74,12 +74,14 @@
   },
   "cryptographicIntegrity": {
     "algorithm": "sha256",
-    "entryCount": 64,
-    "aggregateSha256": "99a6f2d4e5b2e0ec0ca826a63b88bca3e896271b410aba302c21b1a7b35d66db"
+    "entryCount": 68,
+    "aggregateSha256": "11c6e982d7fe49643704913632059626f89396e6bcdc6cc7e696afb0c110c3cd"
   },
   "runtimeDocs": [
     "docs/fair-voting.md",
     "docs/wallet-runtime.md",
+    "docs/runtime-evidence.generated.md",
+    "docs/runtime-evidence.generated.json",
     "docs/wallet-compatibility-matrix.generated.md",
     "docs/wallet-compatibility-matrix.generated.json",
     "docs/devnet-canary.generated.md",
@@ -96,6 +98,8 @@
     "docs/release-ceremony.md",
     "docs/release-ceremony-attestation.generated.md",
     "docs/release-ceremony-attestation.generated.json",
+    "docs/release-drill.generated.md",
+    "docs/release-drill.generated.json",
     "docs/mainnet-cutover-runbook.md",
     "docs/operator-checklist.md"
   ],
@@ -107,12 +111,15 @@
     "docs/supply-chain-attestation.generated.md",
     "docs/supply-chain-attestation.generated.json"
   ],
-  "gateCount": 48,
+  "gateCount": 51,
   "statuses": {
     "governanceLifecycle": "verified",
     "securityReasoning": "verified",
     "supplyChainSurface": "verified",
     "releaseCeremonySurface": "verified",
+    "runtimeEvidenceSurface": "verified",
+    "releaseDrillSurface": "verified",
+    "artifactFreshness": "verified",
     "zkCompanionStack": "verified",
     "reviewerSurface": "verified",
     "operationsSurface": "verified",

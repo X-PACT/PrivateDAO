@@ -131,6 +131,7 @@ ${Object.entries(proof.transactions)
 - Go-live attestation: \`docs/go-live-attestation.generated.json\`
 - Release ceremony note: \`docs/release-ceremony.md\`
 - Release ceremony attestation: \`docs/release-ceremony-attestation.generated.json\`
+- Release drill: \`docs/release-drill.generated.json\`
 - PDAO attestation: \`docs/pdao-attestation.generated.json\`
 - Algorithm: \`${cryptographicManifest.algorithm}\`
 - Manifest entries: \`${cryptographicManifest.entryCount}\`
@@ -191,6 +192,8 @@ ${submission.packages.proof.map((entry) => `- \`${entry}\``).join("\n")}
 
 - \`docs/fair-voting.md\`
 - \`docs/wallet-runtime.md\`
+- \`docs/runtime-evidence.generated.md\`
+- \`docs/runtime-evidence.generated.json\`
 - \`docs/wallet-compatibility-matrix.generated.md\`
 - \`docs/wallet-compatibility-matrix.generated.json\`
 - \`docs/devnet-canary.generated.md\`
@@ -199,6 +202,8 @@ ${submission.packages.proof.map((entry) => `- \`${entry}\``).join("\n")}
 - \`docs/release-ceremony.md\`
 - \`docs/release-ceremony-attestation.generated.md\`
 - \`docs/release-ceremony-attestation.generated.json\`
+- \`docs/release-drill.generated.md\`
+- \`docs/release-drill.generated.json\`
 - \`docs/deployment-attestation.generated.json\`
 - \`docs/go-live-criteria.md\`
 - \`docs/operational-drillbook.md\`

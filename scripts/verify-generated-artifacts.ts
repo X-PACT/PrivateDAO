@@ -14,6 +14,10 @@ function main() {
   const releaseCeremonyJsonPath = path.resolve("docs/release-ceremony-attestation.generated.json");
   const releaseCeremonyMdPath = path.resolve("docs/release-ceremony-attestation.generated.md");
   const runtimeAttestationPath = path.resolve("docs/runtime-attestation.generated.json");
+  const runtimeEvidenceJsonPath = path.resolve("docs/runtime-evidence.generated.json");
+  const runtimeEvidenceMdPath = path.resolve("docs/runtime-evidence.generated.md");
+  const releaseDrillJsonPath = path.resolve("docs/release-drill.generated.json");
+  const releaseDrillMdPath = path.resolve("docs/release-drill.generated.md");
   const pdaoAttestationPath = path.resolve("docs/pdao-attestation.generated.json");
   const walletMatrixJsonPath = path.resolve("docs/wallet-compatibility-matrix.generated.json");
   const walletMatrixMdPath = path.resolve("docs/wallet-compatibility-matrix.generated.md");
@@ -67,6 +71,12 @@ function main() {
   }
   if (!fs.existsSync(runtimeAttestationPath)) {
     throw new Error("missing generated runtime attestation");
+  }
+  if (!fs.existsSync(runtimeEvidenceJsonPath) || !fs.existsSync(runtimeEvidenceMdPath)) {
+    throw new Error("missing generated runtime evidence artifacts");
+  }
+  if (!fs.existsSync(releaseDrillJsonPath) || !fs.existsSync(releaseDrillMdPath)) {
+    throw new Error("missing generated release drill artifacts");
   }
   if (!fs.existsSync(pdaoAttestationPath)) {
     throw new Error("missing generated PDAO attestation");
@@ -190,6 +200,34 @@ function main() {
     runtimeDocs: string[];
     supportedWallets: Array<{ id: string; label: string }>;
   };
+  const runtimeEvidence = JSON.parse(fs.readFileSync(runtimeEvidenceJsonPath, "utf8")) as {
+    project: string;
+    programId: string;
+    verificationWallet: string;
+    diagnosticsPage: string;
+    walletCount: number;
+    walletLabels: string[];
+    matrixStatuses: Array<{ id: string; label: string; status: string; diagnosticsVisible: boolean; selectorVisible: boolean }>;
+    devnetCanary: { network: string; primaryHealthy: boolean; fallbackHealthy: boolean; anchorAccountsPresent: boolean; unexpectedFailures: number };
+    resilience: { fallbackRecovered: boolean; staleBlockhashRecovered: boolean; staleBlockhashRejected: boolean; unexpectedFailures: number };
+    docs: string[];
+    commands: string[];
+  };
+  const runtimeEvidenceMd = fs.readFileSync(runtimeEvidenceMdPath, "utf8");
+  const releaseDrill = JSON.parse(fs.readFileSync(releaseDrillJsonPath, "utf8")) as {
+    project: string;
+    mode: string;
+    releaseCommit: string;
+    releaseBranch: string;
+    programId: string;
+    verificationWallet: string;
+    deployTx: string;
+    stages: Array<{ stage: string; status: string }>;
+    mandatoryGates: string[];
+    unresolvedBlockers: Array<{ name: string; status: string }>;
+    drillDocs: string[];
+  };
+  const releaseDrillMd = fs.readFileSync(releaseDrillMdPath, "utf8");
   const releaseCeremony = JSON.parse(fs.readFileSync(releaseCeremonyJsonPath, "utf8")) as {
     project: string;
     releaseCommit: string;
@@ -597,6 +635,9 @@ function main() {
   if (!attestation.runtimeDocs || !attestation.runtimeDocs.includes("docs/wallet-runtime.md")) {
     throw new Error("generated attestation runtime docs are missing");
   }
+  if (!attestation.runtimeDocs.includes("docs/runtime-evidence.generated.md")) {
+    throw new Error("generated attestation is missing the runtime evidence doc");
+  }
   if (!attestation.runtimeDocs.includes("docs/wallet-compatibility-matrix.generated.md")) {
     throw new Error("generated attestation is missing the wallet matrix doc");
   }
@@ -617,6 +658,9 @@ function main() {
   }
   if (!attestation.operationsDocs.includes("docs/release-ceremony-attestation.generated.md")) {
     throw new Error("generated attestation is missing the release ceremony attestation doc");
+  }
+  if (!attestation.operationsDocs.includes("docs/release-drill.generated.md")) {
+    throw new Error("generated attestation is missing the release drill doc");
   }
   if (!attestation.securityDocs || !attestation.securityDocs.includes("docs/cryptographic-posture.md")) {
     throw new Error("generated attestation is missing the cryptographic posture doc");
@@ -724,6 +768,12 @@ function main() {
   if (!auditPacket.includes("docs/release-ceremony-attestation.generated.json")) {
     throw new Error("generated audit packet is missing the release ceremony attestation reference");
   }
+  if (!auditPacket.includes("docs/runtime-evidence.generated.json")) {
+    throw new Error("generated audit packet is missing the runtime evidence reference");
+  }
+  if (!auditPacket.includes("docs/release-drill.generated.json")) {
+    throw new Error("generated audit packet is missing the release drill reference");
+  }
 
   if (!zkTranscript.includes("# ZK Transcript")) {
     throw new Error("generated zk transcript content is invalid");
@@ -798,6 +848,87 @@ function main() {
 
   if (!runtimeAttestation.supportedWallets.some((entry) => entry.id === "phantom")) {
     throw new Error("generated runtime attestation is missing Phantom support");
+  }
+
+  if (runtimeEvidence.project !== "PrivateDAO") {
+    throw new Error("generated runtime evidence project mismatch");
+  }
+
+  if (runtimeEvidence.programId !== runtimeAttestation.programId) {
+    throw new Error("generated runtime evidence program mismatch");
+  }
+
+  if (runtimeEvidence.verificationWallet !== runtimeAttestation.verificationWallet) {
+    throw new Error("generated runtime evidence verification wallet mismatch");
+  }
+
+  if (runtimeEvidence.diagnosticsPage !== runtimeAttestation.diagnosticsPage) {
+    throw new Error("generated runtime evidence diagnostics page mismatch");
+  }
+
+  if (runtimeEvidence.walletCount !== runtimeAttestation.supportedWallets.length) {
+    throw new Error("generated runtime evidence wallet count mismatch");
+  }
+
+  if (runtimeEvidence.walletLabels.length !== runtimeEvidence.walletCount) {
+    throw new Error("generated runtime evidence wallet labels are incomplete");
+  }
+
+  if (!runtimeEvidence.walletLabels.includes("Phantom") || !runtimeEvidence.walletLabels.includes("Solflare")) {
+    throw new Error("generated runtime evidence is missing key wallet labels");
+  }
+
+  if (runtimeEvidence.matrixStatuses.length < runtimeEvidence.walletCount) {
+    throw new Error("generated runtime evidence matrix summary is incomplete");
+  }
+
+  if (runtimeEvidence.devnetCanary.network !== "devnet" || runtimeEvidence.devnetCanary.unexpectedFailures !== 0) {
+    throw new Error("generated runtime evidence canary summary is invalid");
+  }
+
+  if (
+    !runtimeEvidence.resilience.fallbackRecovered ||
+    !runtimeEvidence.resilience.staleBlockhashRejected ||
+    !runtimeEvidence.resilience.staleBlockhashRecovered ||
+    runtimeEvidence.resilience.unexpectedFailures !== 0
+  ) {
+    throw new Error("generated runtime evidence resilience summary is invalid");
+  }
+
+  for (const doc of [
+    "docs/wallet-runtime.md",
+    "docs/runtime-attestation.generated.json",
+    "docs/wallet-compatibility-matrix.generated.md",
+    "docs/devnet-canary.generated.md",
+    "docs/devnet-resilience-report.md",
+    "docs/fair-voting.md",
+  ]) {
+    if (!runtimeEvidence.docs.includes(doc)) {
+      throw new Error(`generated runtime evidence is missing ${doc}`);
+    }
+  }
+
+  for (const command of [
+    "npm run build:wallet-matrix",
+    "npm run verify:wallet-matrix",
+    "npm run build:devnet-canary",
+    "npm run verify:devnet-canary",
+    "npm run test:devnet:resilience",
+    "npm run verify:devnet:resilience-report",
+    "npm run verify:runtime-surface",
+    "npm run verify:all",
+  ]) {
+    if (!runtimeEvidence.commands.includes(command)) {
+      throw new Error(`generated runtime evidence is missing ${command}`);
+    }
+  }
+
+  if (
+    !runtimeEvidenceMd.includes("# Runtime Evidence Package") ||
+    !runtimeEvidenceMd.includes("Devnet Canary Summary") ||
+    !runtimeEvidenceMd.includes("Resilience Summary")
+  ) {
+    throw new Error("generated runtime evidence markdown is invalid");
   }
 
   if (pdaoAttestation.project !== "PrivateDAO") {
@@ -973,6 +1104,72 @@ function main() {
   }
   if (!releaseCeremonyMd.includes("# Release Ceremony Attestation")) {
     throw new Error("generated release ceremony markdown is invalid");
+  }
+
+  if (releaseDrill.project !== "PrivateDAO") {
+    throw new Error("generated release drill project mismatch");
+  }
+  if (releaseDrill.mode !== "repository-simulated-drill") {
+    throw new Error("generated release drill mode mismatch");
+  }
+  if (releaseDrill.programId !== releaseCeremony.programId) {
+    throw new Error("generated release drill program mismatch");
+  }
+  if (releaseDrill.verificationWallet !== releaseCeremony.verificationWallet) {
+    throw new Error("generated release drill verification wallet mismatch");
+  }
+  if (releaseDrill.releaseCommit !== releaseCeremony.releaseCommit || releaseDrill.releaseBranch !== releaseCeremony.releaseBranch) {
+    throw new Error("generated release drill git summary mismatch");
+  }
+  if (!releaseDrill.stages.some((entry) => entry.stage === "commit-freeze" && entry.status === "simulated-pass")) {
+    throw new Error("generated release drill is missing commit-freeze stage");
+  }
+  if (!releaseDrill.stages.some((entry) => entry.stage === "mainnet-cutover" && entry.status === "blocked-external-step")) {
+    throw new Error("generated release drill is missing mainnet-cutover blocked stage");
+  }
+  if (!releaseDrill.unresolvedBlockers.some((entry) => entry.name === "externalAudit")) {
+    throw new Error("generated release drill is missing the externalAudit blocker");
+  }
+  for (const gate of [
+    "npm run verify:live-proof",
+    "npm run verify:release-manifest",
+    "npm run verify:review-links",
+    "npm run verify:review-surface",
+    "npm run check:mainnet",
+  ]) {
+    if (!releaseDrill.mandatoryGates.includes(gate)) {
+      throw new Error(`generated release drill is missing ${gate}`);
+    }
+  }
+  for (const doc of [
+    "docs/release-ceremony.md",
+    "docs/release-ceremony-attestation.generated.md",
+    "docs/mainnet-cutover-runbook.md",
+    "docs/operator-checklist.md",
+    "docs/go-live-criteria.md",
+    "docs/mainnet-readiness.generated.md",
+  ]) {
+    if (!releaseDrill.drillDocs.includes(doc)) {
+      throw new Error(`generated release drill is missing ${doc}`);
+    }
+  }
+  if (
+    !releaseDrillMd.includes("# Release Drill Evidence") ||
+    !releaseDrillMd.includes("repository-simulated-drill") ||
+    !releaseDrillMd.includes("Unresolved Blockers")
+  ) {
+    throw new Error("generated release drill markdown is invalid");
+  }
+
+  for (const manifestFile of [
+    "docs/runtime-evidence.generated.json",
+    "docs/runtime-evidence.generated.md",
+    "docs/release-drill.generated.json",
+    "docs/release-drill.generated.md",
+  ]) {
+    if (!cryptographicManifest.files.some((entry) => entry.path === manifestFile)) {
+      throw new Error(`generated cryptographic manifest is missing ${manifestFile}`);
+    }
   }
 
   console.log("Generated artifact verification: PASS");

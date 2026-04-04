@@ -1,0 +1,48 @@
+name: Review Automation
+
+on:
+  schedule:
+    - cron: "23 4 * * *"
+  workflow_dispatch:
+
+jobs:
+  review-surface:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.21.1"
+          cache: "yarn"
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Rebuild reviewer artifacts
+        run: npm run build:devnet:review-artifacts
+
+      - name: Verify reviewer artifacts
+        run: |
+          npm run verify:generated-artifacts
+          npm run verify:artifact-freshness
+
+      - name: Build reviewer bundle
+        run: npm run build:review-bundle
+
+      - name: Upload reviewer automation bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-automation-bundle
+          path: |
+            dist/reviewer-bundle.tar.gz
+            docs/runtime-evidence.generated.md
+            docs/runtime-evidence.generated.json
+            docs/release-drill.generated.md
+            docs/release-drill.generated.json
+            docs/cryptographic-manifest.generated.json
+            docs/review-attestation.generated.json
