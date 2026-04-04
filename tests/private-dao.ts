@@ -440,6 +440,78 @@ describe("PrivateDAO", () => {
     }
   });
 
+  it("clears keeper reveal authority after a successful keeper reveal", async () => {
+    const voter = Keypair.generate();
+    const keeper = Keypair.generate();
+    for (const wallet of [voter, keeper]) {
+      const tx = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: authority.publicKey,
+          toPubkey: wallet.publicKey,
+          lamports: Math.round(0.005 * LAMPORTS_PER_SOL),
+        }),
+      );
+      await provider.sendAndConfirm(tx, []);
+    }
+
+    const voterAta = await createAccount(provider.connection, authority.payer, governanceMint, voter.publicKey);
+    await mintTo(provider.connection, authority.payer, governanceMint, voterAta, authority.payer, 250_000_000n);
+
+    const dao = await program.account["dao"].fetch(daoPda);
+    const [proposalForKeeperPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), dao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal("Keeper reveal cleanup", "Successful keeper reveal should clear stored keeper authority.", new BN(5), null)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalForKeeperPda,
+        proposerTokenAccount: authorityTokenAta,
+        proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const salt = randomSalt();
+    const [voteRecordPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), proposalForKeeperPda.toBuffer(), voter.publicKey.toBuffer()],
+      program.programId,
+    );
+
+    await program.methods
+      .commitVote([...computeCommitment(true, salt, voter.publicKey)], keeper.publicKey)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalForKeeperPda,
+        voterRecord: voteRecordPda,
+        voterTokenAccount: voterAta,
+        voter: voter.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([voter])
+      .rpc();
+
+    const beforeReveal = await program.account["voterRecord"].fetch(voteRecordPda);
+    assert.equal(beforeReveal.voterRevealAuthority.toBase58(), keeper.publicKey.toBase58());
+
+    const created = await program.account["proposal"].fetch(proposalForKeeperPda);
+    await new Promise((resolve) => setTimeout(resolve, Math.max(created.votingEnd.toNumber() - Math.floor(Date.now() / 1000), 0) * 1000 + 1200));
+
+    await program.methods
+      .revealVote(true, [...salt])
+      .accounts({ proposal: proposalForKeeperPda, voterRecord: voteRecordPda, revealer: keeper.publicKey })
+      .signers([keeper])
+      .rpc();
+
+    const afterReveal = await program.account["voterRecord"].fetch(voteRecordPda);
+    assert.isTrue(afterReveal.hasRevealed);
+    assert.isNull(afterReveal.voterRevealAuthority);
+    console.log("  ✓ keeper authority cleared after successful keeper reveal");
+  });
+
   it("rejects voter-record reuse across proposals", async () => {
     const reuseVoter = Keypair.generate();
     const tx = new Transaction().add(

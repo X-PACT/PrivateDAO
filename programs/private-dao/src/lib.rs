@@ -21,7 +21,9 @@ declare_id!("5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx");
 //
 //  Voting modes:
 //    TokenWeighted → weight = raw token balance
-//    Quadratic     → weight = √(token balance)   anti-whale, fair
+//    Quadratic     → weight = √(token balance)
+//                    Reduces concentration within a single-identity model;
+//                    Sybil resistance still depends on DAO policy.
 //    DualChamber   → capital chamber (token-weighted) AND community chamber
 //                    (quadratic) both must clear their threshold independently.
 //                    Whales need community support. Community needs capital buy-in.
@@ -29,8 +31,10 @@ declare_id!("5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx");
 //  Original features not found on any other Solana DAO tool:
 //    Private delegation  — delegator grants weight to delegatee for one proposal.
 //                          The vote stays hidden; even the delegatee chooses it.
-//    Keeper auto-reveal  — voter authorizes a keeper at commit time.
-//                          Keeper submits reveal if voter forgets.
+//    Keeper auto-reveal  — voter authorizes a proposal-scoped keeper at
+//                          commit time.
+//                          Keeper can only submit the exact reveal if the
+//                          voter forgets.
 //                          Keeper earns the SOL rebate. Vote unchanged.
 //    Timelock + veto     — passed proposals wait execution_delay_seconds.
 //                          DAO authority can veto during the veto window.
@@ -429,7 +433,9 @@ pub mod private_dao {
     //
     // Voter or authorized keeper submits (vote, salt).
     // Program recomputes sha256(vote_byte ‖ salt ‖ voter_pubkey) and verifies.
-    // On match, both chamber tallies update. SOL rebate goes to the caller.
+    // Replay stays proposal-scoped through the VoteRecord PDA and lifecycle
+    // flags. On match, both chamber tallies update. The rebate comes from the
+    // proposal account only when it remains rent-safe.
 
     pub fn reveal_vote(ctx: Context<RevealVote>, vote: bool, salt: [u8; 32]) -> Result<()> {
         let now = Clock::get()?.unix_timestamp;
@@ -469,6 +475,7 @@ pub mod private_dao {
 
         vr.has_revealed = true;
         vr.voted_yes = vote;
+        vr.voter_reveal_authority = None;
         p.reveal_count = p.reveal_count.checked_add(1).ok_or(Error::Overflow)?;
 
         // Rebate: only transfer when proposal account remains rent-exempt.

@@ -260,7 +260,7 @@ Misuse risks:
 - premature finalization
 - premature execution
 
-### ZK overlay path
+### ZK companion-proof path
 
 Misuse risks:
 
@@ -509,7 +509,7 @@ Tests:
 
 - `tests/full-flow-test.ts`
 
-### ZK overlay integrity
+### ZK companion-proof integrity
 
 Mitigation:
 
@@ -551,7 +551,7 @@ Trusted or assumed components:
 - SPL Token program correctness
 - honest wallet signature semantics
 - RPC responses are sufficiently correct for off-chain observation
-- Circom circuit correctness for the current overlay
+- Circom circuit correctness for the current companion stack
 - Groth16 setup artifact integrity
 - verification key integrity for the committed zk artifacts
 

@@ -2273,7 +2273,7 @@ body.judge-mode .judge-banner {
     <div class="hero-content">
       <div class="hero-badge-row">
         <div class="hero-eyebrow">◈ SOLANA GRAVEYARD HACKATHON 2026</div>
-        <div class="hero-zk-badge">🔒 ZK Secured</div>
+        <div class="hero-zk-badge">🔒 ZK Companion Layer</div>
       </div>
       <h1 class="hero-headline">
         <span class="line1">VOTE</span>
@@ -2284,12 +2284,12 @@ body.judge-mode .judge-banner {
         A working Solana governance product built around commit-reveal voting.
         The tally stays hidden during voting, execution stays timelocked, and treasury actions get explicit recipient and mint checks.
       </p>
-      <div class="hero-feature-line">Quadratic voting · Timelocked treasury execution · Realms migration · Zero-Knowledge Proof Verified</div>
+      <div class="hero-feature-line">Quadratic community weighting · Timelocked treasury execution · Realms migration · Groth16 companion proof layer</div>
       <div class="surface-strip">
         <div class="surface-pill"><span class="surface-pill-icon">◉</span><strong>Web</strong><span>Live governance surface</span></div>
         <div class="surface-pill"><span class="surface-pill-icon">◌</span><strong>Android</strong><span>Kotlin native + MWA</span></div>
         <div class="surface-pill"><span class="surface-pill-icon">◎</span><strong>On-chain</strong><span>Devnet program live</span></div>
-        <div class="surface-pill zk-live"><span class="surface-pill-icon">⟡</span><strong>ZK</strong><span>Real Groth16 overlay live</span></div>
+        <div class="surface-pill zk-live"><span class="surface-pill-icon">⟡</span><strong>ZK</strong><span>Groth16 companion proofs live</span></div>
         <div class="surface-pill"><span class="surface-pill-icon">▣</span><strong>Integrity</strong><span>SHA256 artifact manifest live</span></div>
         <div class="surface-pill"><span class="surface-pill-icon">◇</span><strong>PDAO</strong><span>Devnet governance token · DeAura</span></div>
       </div>
@@ -2297,7 +2297,7 @@ body.judge-mode .judge-banner {
         <span class="zk-mark-icon"></span>
         <span class="zk-mark-copy">
           <strong>Zero-Knowledge Layer Live</strong>
-          <span>PrivateDAO now includes a real non-breaking Groth16 overlay for proof-backed vote validity and eligibility.</span>
+          <span>PrivateDAO now includes a real non-breaking Groth16 companion layer for proof-backed vote validity and eligibility.</span>
         </span>
       </a>
       <a class="integrity-mark" href="cryptographic-integrity.md" target="_blank">
@@ -2423,7 +2423,7 @@ body.judge-mode .judge-banner {
           <p style="margin-top:10px;color:var(--text2);line-height:1.8;max-width:920px" id="proposalDetailIntro">
             This panel turns the selected proposal into a reviewer-friendly proof bundle: status, phase, timing windows, Explorer links, and the exact repo commands for the current lifecycle.
           </p>
-          <div class="zk-mini-badge" style="margin-top:14px">🔒 ZK Verified</div>
+          <div class="zk-mini-badge" style="margin-top:14px">🔒 ZK Companion</div>
         </div>
         <div class="award-pill" id="proposalDetailPhase">Awaiting selection</div>
       </div>
@@ -2623,7 +2623,7 @@ body.judge-mode .judge-banner {
     <div class="section-tag reveal">PROOF CENTER</div>
     <div class="section-heading-row reveal">
       <h2 class="section-heading" style="margin-bottom:0">Everything a judge or reviewer needs,<br>in one surface.</h2>
-      <div class="zk-mini-badge">🔒 ZK Verified</div>
+      <div class="zk-mini-badge">🔒 ZK Companion</div>
     </div>
 
     <div class="award-detail-card reveal">
@@ -2880,21 +2880,22 @@ commitment[32] = sha256(
   pubkey[32] &nbsp;&nbsp;<span class="comment">// prevents replay</span>
 )
 <span class="comment">// Stored on-chain. Vote is hidden.</span>
+<span class="comment">// Proposal scoping is enforced by the VoteRecord PDA.</span>
         </div>
       </div>
       <div class="protocol-step" style="border-left:1px solid var(--border);border-right:1px solid var(--border)">
         <span class="step-num">02</span>
         <span class="step-icon">🔓</span>
         <div class="step-title">REVEAL</div>
-        <div class="step-desc">After voting ends, voters prove (vote, salt). The program recomputes the hash on-chain. Match means the vote is counted, and the revealer can receive the configured rebate.</div>
+        <div class="step-desc">After voting ends, voters prove (vote, salt). The program recomputes the hash on-chain. Match means the vote is counted, and the revealer can receive the configured rebate if the proposal account stays rent-safe.</div>
         <div class="step-code">
 <span class="comment">// On-chain verification</span>
 sha256(vote‖salt‖pubkey)
   == stored_commitment
     → vote counted ✓
-    → rebate: +0.001 SOL
+    → rebate: +0.001 SOL (proposal account only)
 
-<span class="comment">// Keeper can reveal if you forget</span>
+<span class="comment">// Authorized proposal-scoped keeper can reveal if you forget</span>
         </div>
       </div>
       <div class="protocol-step">
@@ -2907,9 +2908,9 @@ finalize() → PASSED | FAILED
   ↓
 timelock: 86400s (24h)
   ↓
-execute() → CPI
+execute() → treasury action
   SendSol | SendToken
-  | CustomCPI
+  | CustomCPI(event relay)
         </div>
       </div>
     </div>
@@ -2933,13 +2934,13 @@ execute() → CPI
       <div class="feature-card">
         <div class="feature-icon-wrap">🤖</div>
         <div class="feature-title">Keeper Auto-Reveal</div>
-        <div class="feature-desc">Authorize a keeper address at commit time. If you forget to reveal, the keeper submits your proof and earns the rebate. Your vote is never changed — only you hold the salt.</div>
+        <div class="feature-desc">Authorize a proposal-scoped keeper address at commit time. If you forget to reveal, the keeper can submit your exact proof during the reveal window and earn the rebate. Browser flows generate salts in memory and require you to save them yourself.</div>
         <span class="feature-badge">UX INNOVATION</span>
       </div>
       <div class="feature-card">
         <div class="feature-icon-wrap">🔌</div>
         <div class="feature-title">Three Voting Modes</div>
-        <div class="feature-desc">TokenWeighted (raw balance), Quadratic (√balance anti-whale), or DualChamber (both must pass). DAOs choose their governance model at creation, not after.</div>
+        <div class="feature-desc">TokenWeighted (raw balance), Quadratic (√balance under an external sybil-resistance policy), or DualChamber (both must pass). DAOs choose their governance model at creation, not after.</div>
         <span class="feature-badge">CONFIGURABLE</span>
       </div>
     </div>
@@ -3063,6 +3064,36 @@ execute() → CPI
     <div class="award-detail-card reveal" style="margin-top:24px">
       <div class="award-detail-head">
         <div>
+          <div class="award-detail-title">Reviewer Clarifications</div>
+          <p class="award-detail-copy">
+            A few boundaries are easier to verify directly than to infer from partial scans. This card keeps those points explicit.
+          </p>
+        </div>
+        <div class="award-pill">TRUTH-ALIGNED</div>
+      </div>
+      <div class="proposal-command-grid">
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">PROGRAM ID</div>
+          <div style="color:var(--text2);line-height:1.8">PrivateDAO keeps one canonical governance program id: <code>5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx</code>. The separate <code>Token-2022</code> id belongs to the live PDAO mint surface only.</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">BROWSER SALTS</div>
+          <div style="color:var(--text2);line-height:1.8">Browser-native commit flows generate salts in memory and ask the voter to save or export them. This surface does not persist salts in <code>localStorage</code> or <code>sessionStorage</code>.</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">REPLAY SCOPING</div>
+          <div style="color:var(--text2);line-height:1.8">The raw commitment hash binds vote, salt, and voter key. Cross-proposal replay is still rejected because <code>VoteRecord</code> accounts, reveal bindings, and lifecycle flags are proposal-scoped.</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">REBATE SOURCE</div>
+          <div style="color:var(--text2);line-height:1.8">Reveal rebate is paid from the proposal account only when that account remains rent-safe. The DAO treasury is not the rebate source.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="award-detail-card reveal" style="margin-top:24px">
+      <div class="award-detail-head">
+        <div>
           <div class="award-detail-title">Verified Protections</div>
           <p class="award-detail-copy">
             These are not abstract claims. They are protocol-level protections tied to tests, bindings, and failure-path assertions already present in the repository.
@@ -3093,9 +3124,9 @@ execute() → CPI
     <div class="award-detail-card reveal" style="margin-top:24px">
       <div class="award-detail-head">
         <div>
-          <div class="award-detail-title">ZK Overlay Available</div>
+          <div class="award-detail-title">ZK Companion Layer Available</div>
           <p class="award-detail-copy">
-            PrivateDAO now includes a real zero-knowledge companion stack built with Circom and Groth16. It does not replace the deployed governance lifecycle; it adds vote-validity, delegation-authorization, and tally-integrity proof layers as a non-breaking overlay for the current system.
+            PrivateDAO now includes a real zero-knowledge companion stack built with Circom and Groth16. It does not replace the deployed governance lifecycle; it adds vote-validity, delegation-authorization, and tally-integrity proof layers as a non-breaking companion path for the current system.
           </p>
         </div>
         <div class="award-pill">REAL ZK</div>
@@ -3155,7 +3186,7 @@ execute() → CPI
     <div class="zk-footnote-box reveal">
       <div class="zk-footnote-title">Zero-Knowledge Protection</div>
       <div class="zk-footnote-copy">
-        PrivateDAO uses Groth16 zk-SNARK proofs to validate governance actions without exposing sensitive inputs.
+        PrivateDAO publishes Groth16 zk-SNARK companion proofs for vote, delegation, and tally review. The current proof layer is additive and off-chain; the deployed on-chain lifecycle remains the enforcement boundary.
       </div>
     </div>
 
@@ -3394,8 +3425,10 @@ execute() → CPI
           <div style="color:var(--text2);line-height:1.8">
             Devnet-first deployment.<br>
             Direct-commit versus delegation overlap is still guarded operationally in product surfaces.<br>
+            Quadratic weighting still assumes an external sybil-resistance policy.<br>
             Commit-reveal hides vote content, not transaction timing metadata.<br>
-            `CustomCPI` remains event-only.<br>
+            `CustomCPI` remains an event relay path rather than arbitrary on-chain CPI.<br>
+            The current Groth16 proof stack is additive and off-chain today.<br>
             Mainnet audit completeness is not claimed.
           </div>
         </div>
@@ -3778,7 +3811,7 @@ execute() → CPI
       <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:8px">OPERATOR NOTE</div>
       <div id="commitCommandHint">Generate a commitment here, submit it from the connected wallet, or copy the equivalent repo command if you prefer the CLI flow.</div>
       <div style="margin-top:8px;color:var(--amber)">Save the salt securely. You will need the original vote and salt during reveal.</div>
-      <div id="commitCopyHint" style="margin-top:8px;color:var(--cyan)">After generation, use the button below to copy the commitment and salt summary.</div>
+      <div id="commitCopyHint" style="margin-top:8px;color:var(--cyan)">After generation, use the button below to copy the commitment and salt summary. Browser flows do not store salts for you.</div>
     </div>
 
     <div style="background:var(--void);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px">
@@ -3818,11 +3851,11 @@ execute() → CPI
       <div style="margin-top:12px;color:var(--green)">The on-chain program recomputes sha256(vote || salt || pubkey) and only accepts an exact match.</div>
     </div>
 
-    <div class="rebate-note">💰 You will receive 0.001 SOL rebate for revealing</div>
+    <div class="rebate-note">💰 You may receive a 0.001 SOL rebate if the proposal account remains rent-safe</div>
 
     <div style="background:var(--void);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px;font-family:var(--mono);font-size:11px;line-height:1.8;color:var(--text2)">
       <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:8px">REVEAL NOTE</div>
-      <div id="revealCommandHint">Use the same vote and salt originally generated at commit time when running the reveal script.</div>
+      <div id="revealCommandHint">Use the same vote and salt originally generated at commit time when running the reveal script. Keepers can only submit the exact stored reveal for an authorized voter record.</div>
     </div>
 
     <div style="background:var(--void);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px">
@@ -6222,8 +6255,8 @@ function openCommitModal(id, proposalPubkey = null) {
     ? 'Choose a live proposal'
     : `PROP-${String(currentProposalId).padStart(3, '0')}`;
   document.getElementById('commitCommandHint').textContent = currentProposalId === null
-    ? 'Generate a commitment here, then either submit it from the connected wallet or use the repo commit script from the terminal.'
-    : `After generating the hash, submit it from the connected wallet or run scripts/commit-vote.ts for PROP-${String(currentProposalId).padStart(3, '0')} with the same wallet and saved salt.`;
+    ? 'Generate a commitment here, then either submit it from the connected wallet or use the repo commit script from the terminal. Save the salt yourself; the browser does not persist it.'
+    : `After generating the hash, submit it from the connected wallet or run scripts/commit-vote.ts for PROP-${String(currentProposalId).padStart(3, '0')} with the same wallet and saved salt. Save the salt yourself; the browser does not persist it.`;
   updateCommitCommandBuilder();
   document.getElementById('submitBtn').disabled = true;
   document.getElementById('commitModal').classList.add('open');
@@ -6238,8 +6271,8 @@ function openRevealModal(id, proposalPubkey = null) {
     ? 'Choose a live proposal'
     : `PROP-${String(currentProposalId).padStart(3, '0')}`;
   document.getElementById('revealCommandHint').textContent = currentProposalId === null
-    ? 'Use the same vote and salt originally generated at commit time when submitting reveal from the wallet or running the reveal script. Keepers can set a different voter target below.'
-    : `Submit reveal from the connected wallet or run scripts/reveal-vote.ts for PROP-${String(currentProposalId).padStart(3, '0')} using the original vote choice and saved salt. Keepers can target another voter record when authorized.`;
+    ? 'Use the same vote and salt originally generated at commit time when submitting reveal from the wallet or running the reveal script. Keepers can set a different voter target below, but only for an authorized voter record.'
+    : `Submit reveal from the connected wallet or run scripts/reveal-vote.ts for PROP-${String(currentProposalId).padStart(3, '0')} using the original vote choice and saved salt. Keepers can target another voter record only when that proposal authorized them.`;
   const revealVoteInput = document.getElementById('revealVoteInput');
   const revealVoterInput = document.getElementById('revealVoterInput');
   const revealSaltInput = document.getElementById('revealSaltInput');

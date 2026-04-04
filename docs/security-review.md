@@ -49,6 +49,16 @@ The live token surface also has an explicit program boundary:
 
 This is expected. The second id belongs to the Token-2022 mint surface, not to a duplicate PrivateDAO governance deployment.
 
+## Reviewer Clarification Points
+
+These clarifications are included because partial repo scans often overstate or misread a few boundaries:
+
+- Browser-native commit flows generate salts in memory and require the voter to save or export them. The review surface does not persist salts in `localStorage` or `sessionStorage`.
+- Raw commitment preimages do not include `proposal_id`, but replay remains proposal-scoped through the `VoteRecord` PDA, reveal account binding, and `has_committed` / `has_revealed` lifecycle flags.
+- Keeper reveal authority is proposal-scoped and optional. It can only submit the exact reveal for that stored commitment, and successful reveal clears the stored keeper authority from the record.
+- Reveal rebate is paid from the proposal account only when the proposal account stays rent-safe. The DAO treasury is not the rebate source.
+- The current zk stack is an additive Groth16 companion layer. It improves reviewer-visible proof surfaces today, but the deployed on-chain program remains the enforcement boundary.
+
 ### Lifecycle and replay safety
 
 - proposals cannot execute before finalize
@@ -63,7 +73,9 @@ This is expected. The second id belongs to the Token-2022 mint surface, not to a
 - reveal with mismatched salt or mismatched vote payload is rejected
 - reveal by the wrong signer is rejected
 - reveal outside the allowed window is rejected
+- successful reveal clears any stored keeper authority from that voter record
 - voter records remain proposal-bound and cannot be reused across proposals
+- cross-proposal replay is stopped by proposal-bound voter records and lifecycle flags even though the raw hash preimage binds only vote, salt, and voter key
 
 ### Treasury and account wiring safety
 
@@ -106,6 +118,8 @@ One protocol-level boundary remains intentionally documented instead of hidden:
 
 - direct-commit versus delegation mutual exclusion is guarded at the operator and frontend layer today
 - enforcing that relationship on-chain without widening instruction accounts would require a public interface change, which this hardening pass intentionally avoids while the project is under live review
+- quadratic weighting still assumes an external sybil-resistance policy; the on-chain program does not claim to solve identity on its own
+- `CustomCPI` remains an event relay path rather than arbitrary on-chain CPI execution
 
 ## Mainnet transition stance
 

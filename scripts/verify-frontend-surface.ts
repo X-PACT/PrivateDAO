@@ -8,7 +8,7 @@ function main() {
 
   const requiredFragments = [
     "Zero-Knowledge Layer Live",
-    "Real Groth16 overlay live",
+    "Groth16 companion proofs live",
     "vote-validity, delegation-authorization, and tally-integrity proof layers",
     "DELEGATION LAYER",
     "TALLY LAYER",
@@ -24,11 +24,12 @@ function main() {
     "zk-capability-matrix.md",
     "CAPABILITY MATRIX",
     "PER-LAYER REVIEW PATH",
-    "🔒 ZK Secured",
+    "🔒 ZK Companion Layer",
     "Zero-Knowledge Protection",
-    "Groth16 zk-SNARK proofs",
+    "Groth16 zk-SNARK companion proofs",
     "ZK Layer",
-    "Zero-Knowledge Proof Verified",
+    "Groth16 companion proof layer",
+    "The current proof layer is additive and off-chain",
     "verify:zk-docs",
     "zk-provenance.md",
     "zk-transcript.generated.md",
@@ -67,6 +68,10 @@ function main() {
     "Security Evidence",
     "ATTESTATION",
     "Open zk attestation",
+    "TRUTH-ALIGNED",
+    "The raw commitment hash binds vote, salt, and voter key.",
+    "proposal account stays rent-safe",
+    "Save the salt yourself; the browser does not persist it.",
     "page-docs",
     "Interactive Review Document",
     "docViewerContent",
@@ -107,6 +112,10 @@ function main() {
   assertNotContains(body, "setInterval(() => {\n  rx +=", "frontend still uses the old interval-based cursor loop");
   assertNotContains(body, "Tracks, sponsors,<br>and ecosystem fit.", "low-signal hackathon context section still exists on the main surface");
   assertNotContains(body, "Install Phantom or Solflare to sign transactions.", "frontend still shows the outdated wallet-install guidance");
+  assertNotContains(body, "localStorage.setItem", "frontend must not persist sensitive governance state in localStorage");
+  assertNotContains(body, "localStorage.getItem", "frontend must not read persisted localStorage vote secrets");
+  assertNotContains(body, "sessionStorage.setItem", "frontend must not persist sensitive governance state in sessionStorage");
+  assertNotContains(body, "sessionStorage.getItem", "frontend must not read persisted sessionStorage vote secrets");
 
   console.log("Frontend surface verification: PASS");
 }

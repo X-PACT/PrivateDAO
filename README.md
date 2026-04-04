@@ -26,10 +26,10 @@
 [![Threat Model](https://img.shields.io/badge/Threat%20Model-Complete-1d4ed8)](docs/threat-model.md)
 [![Replay Analysis](https://img.shields.io/badge/Replay%20Analysis-Verified-7c3aed)](docs/replay-analysis.md)
 [![Atomicity](https://img.shields.io/badge/Atomicity-Verified-15803d)](docs/failure-modes.md)
-[![ZK Overlay](https://img.shields.io/badge/ZK-Real%20Groth16%20Overlay-111827)](docs/zk-upgrade.md)
+[![ZK Layer](https://img.shields.io/badge/ZK-Groth16%20Companion%20Layer-111827)](docs/zk-upgrade.md)
 [![ZK Stack](https://img.shields.io/badge/ZK%20Stack-Vote%20%2B%20Delegation%20%2B%20Tally-0f766e)](docs/zk-stack.md)
 [![ZK Threat Extension](https://img.shields.io/badge/ZK%20Threats-Extended-1d4ed8)](docs/zk-threat-extension.md)
-[![Zero Knowledge](https://img.shields.io/badge/ZK%20%E2%9F%A1-Live%20Proof%20Layer-06b6d4)](docs/zk-layer.md)
+[![Zero Knowledge](https://img.shields.io/badge/ZK%20%E2%9F%A1-Companion%20Proof%20Layer-06b6d4)](docs/zk-layer.md)
 [![Artifact Integrity](https://img.shields.io/badge/Artifact%20Integrity-SHA256%20Manifest-0f766e)](docs/cryptographic-integrity.md)
 [![PDAO Token](https://img.shields.io/badge/PDAO-Devnet%20Governance%20Token-14b8a6)](docs/pdao-token.md)
 [![PDAO Attestation](https://img.shields.io/badge/PDAO-Attested-0f766e)](docs/pdao-attestation.generated.json)
@@ -68,6 +68,17 @@ See:
 
 - `docs/token.md`
 - `docs/pdao-token.md`
+
+## Reviewer Clarifications
+
+The current review surface is intentionally explicit about a few points that are easy to misread from partial scans:
+
+- The canonical PrivateDAO governance program id is `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`.
+- The separate `Token-2022` id shown for `PDAO` belongs to the token mint surface only and is not a second governance deployment.
+- Browser-native commit flows generate salts in memory and ask the voter to save or export them. They are not persisted in `localStorage` or `sessionStorage`.
+- Replay protection is proposal-scoped through the `VoteRecord` PDA, reveal account binding, and lifecycle flags even though the raw commitment preimage is `sha256(vote_byte || salt_32 || voter_pubkey_32)`.
+- Reveal rebate comes from the proposal account only when that account remains rent-safe. The treasury is not the rebate source.
+- The current Groth16 proof stack is additive and off-chain today. The deployed on-chain program remains the enforcement boundary.
 
 ## Why PrivateDAO Exists
 
@@ -606,7 +617,7 @@ PrivateDAO brings commit-reveal voting, proposal-scoped private delegation, keep
 The explainer now reflects the current system state directly:
 
 - protocol hardening
-- zero-knowledge overlay
+- zero-knowledge companion layer
 - cryptographic artifact integrity
 - web and Android-native review surfaces
 - live devnet proof and reviewer verification paths
@@ -669,7 +680,7 @@ Initialize DAO
 
 ## 🚀 Mainnet Transition Readiness
 
-PrivateDAO is already built around a real on-chain lifecycle, which means the mainnet move is straightforward in architecture terms:
+PrivateDAO is already built around a real on-chain lifecycle, which makes the mainnet move straightforward in architecture terms:
 
 - the program logic is not mocked and already enforces commit, reveal, finalize, veto, and execute
 - proposal creation is already permissioned by real governance token ownership
@@ -677,7 +688,7 @@ PrivateDAO is already built around a real on-chain lifecycle, which means the ma
 - the frontend and scripts already read and operate against real program state
 - the repository already contains the proof surface expected before a mainnet cutover: tests, docs, scripts, and explorer-oriented outputs
 
-In practical terms, the project is ready for mainnet transition as soon as the operator chooses the production deployment path and standard release controls.
+In practical terms, architecture readiness alone is not the last mile. Mainnet cutover still depends on external audit coverage, runtime QA across supported wallets and devices, production custody controls, monitoring, and release discipline.
 
 ## 🧩 Project Surface Map
 
@@ -745,14 +756,14 @@ PrivateDAO is independently built and maintained by **Fahd Kotb**.
 - Commit-reveal voting with hidden tally during the voting window
 - Voting modes:
   - `TokenWeighted`
-  - `Quadratic`
+  - `Quadratic` under an external sybil-resistance / identity policy
   - `DualChamber`
 - Treasury actions:
   - `SendSol`
   - `SendToken`
   - `CustomCPI` event-only relay path
 - Proposal-scoped private delegation
-- Keeper-authorized reveal
+- Optional proposal-scoped keeper reveal
 - Timelock and veto model
 - Realms-oriented migration and voter-weight compatibility path
 - Android-native mobile app using Kotlin + Solana Mobile Wallet Adapter
@@ -762,8 +773,10 @@ PrivateDAO is independently built and maintained by **Fahd Kotb**.
 Current on-chain safety properties:
 
 - Commitment binding uses `sha256(vote_byte || salt_32 || voter_pubkey_32)`
+- Cross-proposal replay resistance is enforced through proposal-bound `VoteRecord` PDAs plus commit/reveal lifecycle flags
 - Vote weight is snapshotted at commit time
-- Reveal is limited to the voter or the voter-approved keeper
+- Browser-native commit flows generate salts in memory only and do not persist them in `localStorage` or `sessionStorage`
+- Reveal is limited to the voter or the voter-approved proposal-scoped keeper, and successful reveal clears that keeper authority from the stored record
 - Cancelled proposals can no longer progress through reveal/finalize/execute
 - Finalization is permissionless but only after `reveal_end`
 - Execution is permissionless but only after `execution_unlocks_at`
@@ -774,7 +787,9 @@ Current on-chain safety properties:
   - action mint matches both token accounts
   - recipient token owner matches the configured recipient
   - source and destination token accounts are not the same account
+- Reveal rebate is paid from the proposal account only when it remains rent-safe
 - Delegation is one-shot per proposal and self-delegation is rejected
+- `CustomCPI` is intentionally event-only and does not claim arbitrary on-chain CPI execution
 
 This is still not a claim of audit completeness. It is a real protocol with real checks, not a claim that governance risk is solved forever.
 

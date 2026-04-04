@@ -170,6 +170,12 @@ Replay resistance is provided by:
 - delegation `is_used`
 - lifecycle timing gates
 
+The current raw commitment preimage is:
+
+- `sha256(vote_byte || salt_32 || voter_pubkey_32)`
+
+`proposal_id` is not embedded in that hash preimage. Proposal scoping is enforced through the proposal-bound `VoteRecord` PDA, reveal account binding, and lifecycle flags on the stored voter record.
+
 ### 5.5 ZK-Augmented Commit-Reveal Stack
 
 The repository now includes an additive zero-knowledge layer that does not change the deployed protocol semantics.
@@ -215,6 +221,7 @@ Voting mode conditions:
   - `yes_capital > no_capital`
 - `Quadratic`
   - `yes_community > no_community`
+  - assumes an external sybil-resistance or identity policy
 - `DualChamber`
   - both capital and community thresholds must be satisfied
 
@@ -274,6 +281,12 @@ Effect:
 
 The current implementation is intentionally event-oriented rather than arbitrary CPI execution.
 
+Effect:
+
+- marks the approved event relay path as executed
+- emits the execution event for an off-chain relay or operator surface
+- does not claim arbitrary funds movement or arbitrary CPI execution inside the PrivateDAO program
+
 ## 8. Authority Rules
 
 - `initialize_dao`
@@ -297,6 +310,12 @@ The current implementation is intentionally event-oriented rather than arbitrary
 - `execute_proposal`
   - permissionless
 
+Keeper note:
+
+- keeper authority is optional and proposal-scoped
+- keeper can only submit the exact reveal for the stored commitment
+- successful reveal clears stored keeper authority from the voter record
+
 ## 9. Formal Invariants
 
 ### Lifecycle Invariants
@@ -314,6 +333,7 @@ The current implementation is intentionally event-oriented rather than arbitrary
 - reveal count never exceeds commit count
 - invalid reveal does not mutate tally
 - revealed tally only comes from valid commitments
+- proposal-scoped replay protection is enforced through voter-record PDA binding even though the raw commitment hash omits `proposal_id`
 
 ### Execution Invariants
 
@@ -321,6 +341,7 @@ The current implementation is intentionally event-oriented rather than arbitrary
 - failed execute does not set `is_executed`
 - duplicate execute does not create duplicate treasury effects
 - treasury balance delta must equal intended action amount on successful execute
+- reveal rebate is only paid when the proposal account remains rent-safe; it is not a treasury payout
 
 ### Binding Invariants
 
