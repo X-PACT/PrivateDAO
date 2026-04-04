@@ -217,6 +217,24 @@ The repository now also includes lighter-weight runtime artifacts for sustained 
 
 These artifacts do not replace the multi-wallet stress package. They reduce blind spots between heavy runs and make the browser/runtime side of the system more reviewable.
 
+## Release Ceremony Evidence
+
+The repository now also includes a reviewer-visible release-ceremony layer:
+
+- `docs/release-ceremony.md`
+- `docs/release-ceremony-attestation.generated.md`
+- `docs/release-ceremony-attestation.generated.json`
+
+This layer turns release discipline into inspectable evidence by binding:
+
+- reviewed commit identity
+- required release gates
+- deployment and go-live attestations
+- operator-facing cutover documents
+- unresolved external blockers
+
+It does not claim that mainnet release has happened. It makes the discipline around any future release auditable before that release exists.
+
 ## Replay Summary
 
 Replay analysis now documents:

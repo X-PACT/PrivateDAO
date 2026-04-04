@@ -11,6 +11,8 @@ function main() {
   const mainnetReadinessReportPath = path.resolve("docs/mainnet-readiness.generated.md");
   const deploymentAttestationPath = path.resolve("docs/deployment-attestation.generated.json");
   const goLiveAttestationPath = path.resolve("docs/go-live-attestation.generated.json");
+  const releaseCeremonyJsonPath = path.resolve("docs/release-ceremony-attestation.generated.json");
+  const releaseCeremonyMdPath = path.resolve("docs/release-ceremony-attestation.generated.md");
   const runtimeAttestationPath = path.resolve("docs/runtime-attestation.generated.json");
   const pdaoAttestationPath = path.resolve("docs/pdao-attestation.generated.json");
   const walletMatrixJsonPath = path.resolve("docs/wallet-compatibility-matrix.generated.json");
@@ -59,6 +61,9 @@ function main() {
   }
   if (!fs.existsSync(goLiveAttestationPath)) {
     throw new Error("missing generated go-live attestation");
+  }
+  if (!fs.existsSync(releaseCeremonyJsonPath) || !fs.existsSync(releaseCeremonyMdPath)) {
+    throw new Error("missing release ceremony attestation artifacts");
   }
   if (!fs.existsSync(runtimeAttestationPath)) {
     throw new Error("missing generated runtime attestation");
@@ -139,6 +144,7 @@ function main() {
     };
     runtimeDocs?: string[];
     securityDocs?: string[];
+    operationsDocs?: string[];
     cryptographicIntegrity?: {
       algorithm: string;
       entryCount: number;
@@ -184,6 +190,21 @@ function main() {
     runtimeDocs: string[];
     supportedWallets: Array<{ id: string; label: string }>;
   };
+  const releaseCeremony = JSON.parse(fs.readFileSync(releaseCeremonyJsonPath, "utf8")) as {
+    project: string;
+    releaseCommit: string;
+    releaseBranch: string;
+    programId: string;
+    verificationWallet: string;
+    deployTx: string;
+    ceremonyDocs: string[];
+    mandatoryGates: string[];
+    observedGateCount: number;
+    deploymentGateCount: number;
+    goLiveDecision: string;
+    unresolvedBlockers: Array<{ name: string; status: string }>;
+  };
+  const releaseCeremonyMd = fs.readFileSync(releaseCeremonyMdPath, "utf8");
   const pdaoAttestation = JSON.parse(fs.readFileSync(pdaoAttestationPath, "utf8")) as {
     project: string;
     privateDaoProgramId: string;
@@ -591,6 +612,12 @@ function main() {
   if (!attestation.runtimeDocs.includes("docs/pdao-attestation.generated.json")) {
     throw new Error("generated attestation is missing the PDAO attestation doc");
   }
+  if (!attestation.operationsDocs || !attestation.operationsDocs.includes("docs/release-ceremony.md")) {
+    throw new Error("generated attestation is missing the release ceremony doc");
+  }
+  if (!attestation.operationsDocs.includes("docs/release-ceremony-attestation.generated.md")) {
+    throw new Error("generated attestation is missing the release ceremony attestation doc");
+  }
   if (!attestation.securityDocs || !attestation.securityDocs.includes("docs/cryptographic-posture.md")) {
     throw new Error("generated attestation is missing the cryptographic posture doc");
   }
@@ -693,6 +720,9 @@ function main() {
   }
   if (!auditPacket.includes("docs/cryptographic-posture.md")) {
     throw new Error("generated audit packet is missing the cryptographic posture reference");
+  }
+  if (!auditPacket.includes("docs/release-ceremony-attestation.generated.json")) {
+    throw new Error("generated audit packet is missing the release ceremony attestation reference");
   }
 
   if (!zkTranscript.includes("# ZK Transcript")) {
@@ -876,6 +906,9 @@ function main() {
   if (!cryptographicManifest.files.some((entry) => entry.path === "docs/supply-chain-attestation.generated.json")) {
     throw new Error("generated cryptographic manifest is missing the supply-chain attestation");
   }
+  if (!cryptographicManifest.files.some((entry) => entry.path === "docs/release-ceremony-attestation.generated.json")) {
+    throw new Error("generated cryptographic manifest is missing the release ceremony attestation");
+  }
 
   if (supplyChain.project !== "PrivateDAO" || supplyChain.algorithm !== "sha256") {
     throw new Error("generated supply-chain attestation summary mismatch");
@@ -909,6 +942,37 @@ function main() {
   }
   if (!supplyChainMd.includes("Aggregate sha256")) {
     throw new Error("generated supply-chain attestation markdown is missing aggregate sha256");
+  }
+
+  if (releaseCeremony.project !== "PrivateDAO") {
+    throw new Error("generated release ceremony attestation project mismatch");
+  }
+  if (releaseCeremony.programId !== "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx") {
+    throw new Error("generated release ceremony attestation program mismatch");
+  }
+  if (releaseCeremony.verificationWallet !== "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD") {
+    throw new Error("generated release ceremony attestation verification wallet mismatch");
+  }
+  if (releaseCeremony.releaseCommit.length < 7 || releaseCeremony.releaseBranch.length < 1) {
+    throw new Error("generated release ceremony attestation git summary is incomplete");
+  }
+  if (!releaseCeremony.ceremonyDocs.includes("docs/release-ceremony.md")) {
+    throw new Error("generated release ceremony attestation is missing release-ceremony.md");
+  }
+  if (!releaseCeremony.ceremonyDocs.includes("docs/mainnet-cutover-runbook.md")) {
+    throw new Error("generated release ceremony attestation is missing the cutover runbook");
+  }
+  if (!releaseCeremony.mandatoryGates.includes("npm run check:mainnet")) {
+    throw new Error("generated release ceremony attestation is missing check:mainnet");
+  }
+  if (releaseCeremony.goLiveDecision !== "blocked-pending-external-steps") {
+    throw new Error("generated release ceremony go-live decision mismatch");
+  }
+  if (!releaseCeremony.unresolvedBlockers.some((entry) => entry.name === "externalAudit")) {
+    throw new Error("generated release ceremony attestation is missing the externalAudit blocker");
+  }
+  if (!releaseCeremonyMd.includes("# Release Ceremony Attestation")) {
+    throw new Error("generated release ceremony markdown is invalid");
   }
 
   console.log("Generated artifact verification: PASS");

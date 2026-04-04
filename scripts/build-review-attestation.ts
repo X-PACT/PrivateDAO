@@ -119,6 +119,13 @@ function main() {
       "docs/runtime-attestation.generated.json",
       "docs/go-live-attestation.generated.json",
     ],
+    operationsDocs: [
+      "docs/release-ceremony.md",
+      "docs/release-ceremony-attestation.generated.md",
+      "docs/release-ceremony-attestation.generated.json",
+      "docs/mainnet-cutover-runbook.md",
+      "docs/operator-checklist.md",
+    ],
     securityDocs: [
       "docs/security-review.md",
       "docs/cryptographic-integrity.md",

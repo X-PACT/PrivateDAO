@@ -20,6 +20,7 @@
     "governanceLifecycle": "verified",
     "securityReasoning": "verified",
     "supplyChainSurface": "verified",
+    "releaseCeremonySurface": "verified",
     "zkCompanionStack": "verified",
     "reviewerSurface": "verified",
     "operationsSurface": "verified",
@@ -57,6 +58,7 @@
     "npm run verify:registry-consistency",
     "npm run verify:generated-artifacts",
     "npm run verify:supply-chain-attestation",
+    "npm run verify:release-ceremony-attestation",
     "npm run verify:wallet-matrix",
     "npm run verify:devnet-canary",
     "npm run verify:devnet:resilience-report",
@@ -77,13 +79,13 @@
     "npm run verify:review-surface",
     "npm run verify:all"
   ],
-  "gateCount": 47,
+  "gateCount": 48,
   "packageCounts": {
     "strategy": 6,
     "security": 10,
     "zk": 13,
     "proof": 31,
-    "operations": 12
+    "operations": 15
   },
   "zk": {
     "stackVersion": 1,

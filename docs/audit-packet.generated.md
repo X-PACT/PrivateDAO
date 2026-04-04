@@ -67,10 +67,12 @@
 - Mainnet readiness report: `docs/mainnet-readiness.generated.md`
 - Deployment attestation: `docs/deployment-attestation.generated.json`
 - Go-live attestation: `docs/go-live-attestation.generated.json`
+- Release ceremony note: `docs/release-ceremony.md`
+- Release ceremony attestation: `docs/release-ceremony-attestation.generated.json`
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `61`
-- Aggregate sha256: `f561375d9149d36fc2ed01256c67f7acd356ebf23ec72c7514bdbc3f48dae1aa`
+- Manifest entries: `64`
+- Aggregate sha256: `99a6f2d4e5b2e0ec0ca826a63b88bca3e896271b410aba302c21b1a7b35d66db`
 
 ## ZK Package
 
@@ -185,6 +187,9 @@
 - `docs/devnet-canary.generated.md`
 - `docs/devnet-canary.generated.json`
 - `docs/mainnet-readiness.generated.md`
+- `docs/release-ceremony.md`
+- `docs/release-ceremony-attestation.generated.md`
+- `docs/release-ceremony-attestation.generated.json`
 - `docs/deployment-attestation.generated.json`
 - `docs/go-live-criteria.md`
 - `docs/operational-drillbook.md`
@@ -211,6 +216,9 @@
 
 - `docs/mainnet-readiness.md`
 - `docs/mainnet-readiness.generated.md`
+- `docs/release-ceremony.md`
+- `docs/release-ceremony-attestation.generated.md`
+- `docs/release-ceremony-attestation.generated.json`
 - `docs/go-live-criteria.md`
 - `docs/operational-drillbook.md`
 - `docs/production-operations.md`
@@ -252,6 +260,7 @@
 - `npm run verify:registry-consistency`
 - `npm run verify:generated-artifacts`
 - `npm run verify:supply-chain-attestation`
+- `npm run verify:release-ceremony-attestation`
 - `npm run verify:wallet-matrix`
 - `npm run verify:devnet-canary`
 - `npm run verify:devnet:resilience-report`
@@ -277,6 +286,7 @@
 - governanceLifecycle: `verified`
 - securityReasoning: `verified`
 - supplyChainSurface: `verified`
+- releaseCeremonySurface: `verified`
 - zkCompanionStack: `verified`
 - reviewerSurface: `verified`
 - operationsSurface: `verified`

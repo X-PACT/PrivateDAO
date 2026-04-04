@@ -129,6 +129,8 @@ ${Object.entries(proof.transactions)
 - Mainnet readiness report: \`docs/mainnet-readiness.generated.md\`
 - Deployment attestation: \`docs/deployment-attestation.generated.json\`
 - Go-live attestation: \`docs/go-live-attestation.generated.json\`
+- Release ceremony note: \`docs/release-ceremony.md\`
+- Release ceremony attestation: \`docs/release-ceremony-attestation.generated.json\`
 - PDAO attestation: \`docs/pdao-attestation.generated.json\`
 - Algorithm: \`${cryptographicManifest.algorithm}\`
 - Manifest entries: \`${cryptographicManifest.entryCount}\`
@@ -194,6 +196,9 @@ ${submission.packages.proof.map((entry) => `- \`${entry}\``).join("\n")}
 - \`docs/devnet-canary.generated.md\`
 - \`docs/devnet-canary.generated.json\`
 - \`docs/mainnet-readiness.generated.md\`
+- \`docs/release-ceremony.md\`
+- \`docs/release-ceremony-attestation.generated.md\`
+- \`docs/release-ceremony-attestation.generated.json\`
 - \`docs/deployment-attestation.generated.json\`
 - \`docs/go-live-criteria.md\`
 - \`docs/operational-drillbook.md\`

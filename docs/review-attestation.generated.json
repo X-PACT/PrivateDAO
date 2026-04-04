@@ -40,7 +40,7 @@
     "security": 10,
     "zk": 13,
     "proof": 31,
-    "operations": 12
+    "operations": 15
   },
   "zk": {
     "stackVersion": 1,
@@ -74,8 +74,8 @@
   },
   "cryptographicIntegrity": {
     "algorithm": "sha256",
-    "entryCount": 61,
-    "aggregateSha256": "f561375d9149d36fc2ed01256c67f7acd356ebf23ec72c7514bdbc3f48dae1aa"
+    "entryCount": 64,
+    "aggregateSha256": "99a6f2d4e5b2e0ec0ca826a63b88bca3e896271b410aba302c21b1a7b35d66db"
   },
   "runtimeDocs": [
     "docs/fair-voting.md",
@@ -92,6 +92,13 @@
     "docs/runtime-attestation.generated.json",
     "docs/go-live-attestation.generated.json"
   ],
+  "operationsDocs": [
+    "docs/release-ceremony.md",
+    "docs/release-ceremony-attestation.generated.md",
+    "docs/release-ceremony-attestation.generated.json",
+    "docs/mainnet-cutover-runbook.md",
+    "docs/operator-checklist.md"
+  ],
   "securityDocs": [
     "docs/security-review.md",
     "docs/cryptographic-integrity.md",
@@ -100,11 +107,12 @@
     "docs/supply-chain-attestation.generated.md",
     "docs/supply-chain-attestation.generated.json"
   ],
-  "gateCount": 47,
+  "gateCount": 48,
   "statuses": {
     "governanceLifecycle": "verified",
     "securityReasoning": "verified",
     "supplyChainSurface": "verified",
+    "releaseCeremonySurface": "verified",
     "zkCompanionStack": "verified",
     "reviewerSurface": "verified",
     "operationsSurface": "verified",

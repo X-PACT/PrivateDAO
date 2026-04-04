@@ -29,6 +29,7 @@ wallets/
 !docs/wallet-compatibility-matrix.generated.json
 !docs/devnet-canary.generated.json
 !docs/supply-chain-attestation.generated.json
+!docs/release-ceremony-attestation.generated.json
 !docs/assets/pdao-token.json
 !zk/inputs/*.json
 !zk/proofs/*.json

@@ -168,6 +168,8 @@ Quick links:
 - Runtime attestation: `docs/runtime-attestation.generated.json`
 - Wallet compatibility matrix: `docs/wallet-compatibility-matrix.generated.md`
 - Devnet canary: `docs/devnet-canary.generated.md`
+- Release ceremony: `docs/release-ceremony.md`
+- Release ceremony attestation: `docs/release-ceremony-attestation.generated.md`
 - Go-live criteria: `docs/go-live-criteria.md`
 - Operational drillbook: `docs/operational-drillbook.md`
 - Awards page: `docs/awards.md`
@@ -213,6 +215,8 @@ Quick links:
 - Mainnet readiness report: `docs/mainnet-readiness.generated.md`
 - Deployment attestation: `docs/deployment-attestation.generated.json`
 - Go-live attestation: `docs/go-live-attestation.generated.json`
+- Release ceremony: `docs/release-ceremony.md`
+- Release ceremony attestation: `docs/release-ceremony-attestation.generated.json`
 - Production operations: `docs/production-operations.md`
 - Monitoring and alerts: `docs/monitoring-alerts.md`
 - Incident response: `docs/incident-response.md`

@@ -39,6 +39,9 @@ required_files=(
   "docs/wallet-compatibility-matrix.generated.json"
   "docs/devnet-canary.generated.md"
   "docs/devnet-canary.generated.json"
+  "docs/release-ceremony.md"
+  "docs/release-ceremony-attestation.generated.md"
+  "docs/release-ceremony-attestation.generated.json"
   "docs/cryptographic-posture.md"
   "docs/supply-chain-security.md"
   "docs/supply-chain-attestation.generated.md"
@@ -126,6 +129,8 @@ if search_placeholders "$placeholder_pattern" \
   docs/wallet-runtime.md \
   docs/wallet-compatibility-matrix.generated.md \
   docs/devnet-canary.generated.md \
+  docs/release-ceremony.md \
+  docs/release-ceremony-attestation.generated.md \
   docs/cryptographic-posture.md \
   docs/supply-chain-security.md \
   docs/supply-chain-attestation.generated.md \
@@ -213,6 +218,9 @@ npx ts-node scripts/verify-devnet-canary.ts >/dev/null
 
 echo "[review-surface] checking supply-chain attestation"
 npx ts-node scripts/verify-supply-chain-attestation.ts >/dev/null
+
+echo "[review-surface] checking release ceremony attestation"
+npx ts-node scripts/verify-release-ceremony-attestation.ts >/dev/null
 
 echo "[review-surface] checking devnet resilience report"
 npx ts-node scripts/verify-devnet-resilience-report.ts >/dev/null

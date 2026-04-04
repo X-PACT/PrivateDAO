@@ -181,6 +181,15 @@ npm run verify:supply-chain-attestation
 
 Builds and verifies a generated supply-chain attestation that binds the top-level Cargo, Anchor, npm, and Yarn manifests and lockfiles into the reviewer-visible integrity surface.
 
+### Release Ceremony Attestation
+
+```bash
+npm run build:release-ceremony-attestation
+npm run verify:release-ceremony-attestation
+```
+
+Builds and verifies a generated release-ceremony attestation that ties reviewed commit identity, required release gates, operator-facing cutover docs, and unresolved external blockers into one reviewer-visible artifact.
+
 ### ZK Registry
 
 ```bash

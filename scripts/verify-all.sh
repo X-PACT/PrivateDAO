@@ -46,6 +46,9 @@ npm run verify:generated-artifacts >/dev/null
 echo "[verify-all] checking supply-chain attestation"
 npm run verify:supply-chain-attestation >/dev/null
 
+echo "[verify-all] checking release ceremony attestation"
+npm run verify:release-ceremony-attestation >/dev/null
+
 echo "[verify-all] checking cryptographic integrity"
 npm run verify:cryptographic-manifest >/dev/null
 
