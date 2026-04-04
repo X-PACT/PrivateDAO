@@ -116,3 +116,13 @@ This flow clarifies the role of the token:
 - participation enters the lifecycle
 - lifecycle discipline protects execution
 - execution remains accountable to token-governed process
+
+## Consumer Utility Layer
+
+In consumer-facing product terms, the token also serves as:
+
+- a membership-access signal
+- a participation gate for community treasury decisions
+- a lightweight identity layer for recurring governance actions
+
+This makes the token useful in visible product flows rather than only in protocol documentation.

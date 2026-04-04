@@ -31,6 +31,9 @@ required_files=(
   "docs/attack-simulation-log.md"
   "docs/token.md"
   "docs/pdao-token.md"
+  "docs/consumer-readiness.md"
+  "docs/consumer-user-flows.md"
+  "docs/launch-growth-plan.md"
   "docs/pdao-attestation.generated.json"
   "docs/assets/pdao-token.json"
   "docs/artifact-freshness.md"
@@ -131,6 +134,9 @@ if search_placeholders "$placeholder_pattern" \
   docs/attack-simulation-log.md \
   docs/token.md \
   docs/pdao-token.md \
+  docs/consumer-readiness.md \
+  docs/consumer-user-flows.md \
+  docs/launch-growth-plan.md \
   docs/artifact-freshness.md \
   docs/review-automation.md \
   docs/fair-voting.md \

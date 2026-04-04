@@ -93,6 +93,37 @@ That keeps the token surface aligned with what PrivateDAO actually does today:
 - governance execution control
 - private governance coordination
 
+## Consumer Utility Interpretation
+
+For community-facing product surfaces, `PDAO` should be read as:
+
+- the community participation key
+- the proposal-access token
+- the voting-rights token
+- the token that makes treasury decisions accountable to actual members
+
+That framing is stronger than treating the token as a decorative badge, because it ties the user experience directly to:
+
+- who can propose
+- who can vote
+- who can influence community treasury outcomes
+
+## Launch Surface
+
+What is already true today:
+
+- the token is live on Devnet
+- it is published through the DeAura launch path
+- its metadata and attestation surfaces are reviewer-visible
+- its mint authority is disabled
+
+What remains external to repository code:
+
+- any public distribution page outside the repository itself
+- market traction and trading-volume milestones
+
+Those should be attached as operational launch evidence rather than fabricated inside repository docs.
+
 ## Verification Commands
 
 ```bash

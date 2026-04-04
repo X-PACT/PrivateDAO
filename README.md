@@ -69,6 +69,32 @@ See:
 - `docs/token.md`
 - `docs/pdao-token.md`
 
+## Consumer Product Surface
+
+PrivateDAO can be understood not only as a governance protocol, but as a community-facing product for treasuries that need private voting without losing execution safety.
+
+The strongest product framing is:
+
+- a wallet-connected governance app for community treasuries
+- a token-gated participation surface for members
+- a mobile-accessible voting flow for creator groups, clubs, and gaming communities
+
+The current repository already supports that framing through:
+
+- a live web app
+- an Android-native path
+- a live DeAura-launched governance token surface
+- token-gated proposal participation
+- explicit user-facing proposal, vote, and execution flows
+
+See:
+
+- `docs/consumer-readiness.md`
+- `docs/consumer-user-flows.md`
+- `docs/launch-growth-plan.md`
+- `docs/use-cases.md`
+- `docs/economic-model.md`
+
 ## Reviewer Clarifications
 
 The current review surface is intentionally explicit about a few points that are easy to misread from partial scans:
@@ -167,6 +193,9 @@ Quick links:
 - Wallet runtime compatibility: `docs/wallet-runtime.md`
 - Runtime attestation: `docs/runtime-attestation.generated.json`
 - Runtime evidence package: `docs/runtime-evidence.generated.md`
+- Consumer readiness: `docs/consumer-readiness.md`
+- Consumer user flows: `docs/consumer-user-flows.md`
+- Launch and growth plan: `docs/launch-growth-plan.md`
 - Wallet compatibility matrix: `docs/wallet-compatibility-matrix.generated.md`
 - Devnet canary: `docs/devnet-canary.generated.md`
 - Artifact freshness: `docs/artifact-freshness.md`
@@ -462,6 +491,9 @@ Protocol and product documents:
 - `docs/reviewer-fast-path.md`
 - `docs/use-cases.md`
 - `docs/economic-model.md`
+- `docs/consumer-readiness.md`
+- `docs/consumer-user-flows.md`
+- `docs/launch-growth-plan.md`
 - `zk/circuits/private_dao_vote_overlay.circom`
 
 ## Independent Verification

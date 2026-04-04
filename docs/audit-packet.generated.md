@@ -73,7 +73,7 @@
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
 - Manifest entries: `68`
-- Aggregate sha256: `11c6e982d7fe49643704913632059626f89396e6bcdc6cc7e696afb0c110c3cd`
+- Aggregate sha256: `feb41a5b2904d5a5818ea40a5a6f013abc04a3700c720e77c3814b887f08ae06`
 
 ## ZK Package
 
@@ -113,6 +113,9 @@
 - `docs/strategy-blueprint.md`
 - `docs/strategy-adaptor-interface.md`
 - `docs/strategy-operations.md`
+- `docs/consumer-readiness.md`
+- `docs/consumer-user-flows.md`
+- `docs/launch-growth-plan.md`
 - `docs/risk-policy.md`
 - `docs/performance-evidence.md`
 

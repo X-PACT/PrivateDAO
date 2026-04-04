@@ -36,7 +36,7 @@
     "execute"
   ],
   "packageCounts": {
-    "strategy": 6,
+    "strategy": 9,
     "security": 11,
     "zk": 13,
     "proof": 33,
@@ -75,7 +75,7 @@
   "cryptographicIntegrity": {
     "algorithm": "sha256",
     "entryCount": 68,
-    "aggregateSha256": "11c6e982d7fe49643704913632059626f89396e6bcdc6cc7e696afb0c110c3cd"
+    "aggregateSha256": "feb41a5b2904d5a5818ea40a5a6f013abc04a3700c720e77c3814b887f08ae06"
   },
   "runtimeDocs": [
     "docs/fair-voting.md",

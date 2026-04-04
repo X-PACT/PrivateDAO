@@ -186,7 +186,58 @@ Impact:
 - improves confidentiality during alignment
 - preserves deterministic final execution
 
-## 5. Why This Matters Beyond The Contract
+## 5. Consumer Community Governance
+
+### Creator communities
+
+Communities built around creators often need to approve budgets, collaborations, grants, or campaign spending without turning every active vote into a public pressure contest.
+
+PrivateDAO is relevant for:
+
+- creator treasury approvals
+- collaboration budgets
+- community-funded campaigns
+- member-controlled work allocations
+
+Impact:
+
+- makes token-holder participation feel useful
+- keeps governance attached to visible community outcomes
+- supports a cleaner member experience than off-chain polls plus manual treasury execution
+
+### Gaming guilds and clubs
+
+Guilds and community clubs often need lightweight decision tooling that still controls real assets.
+
+PrivateDAO is relevant for:
+
+- event funding
+- tournament budgets
+- guild rewards approvals
+- contributor reimbursements
+
+Impact:
+
+- gives communities a product-shaped voting flow instead of ad hoc coordination
+- makes treasury actions feel structured and inspectable
+- preserves privacy where early public tallies would distort behavior
+
+### Mobile-first member groups
+
+Many consumer communities coordinate on mobile before desktop.
+
+PrivateDAO is relevant because it already exposes:
+
+- a live wallet-connected web surface
+- an Android-native path
+- token-gated participation
+
+Impact:
+
+- governance can feel like a usable app flow rather than a technical admin panel
+- the product can be positioned around member participation, not only protocol review
+
+## 6. Why This Matters Beyond The Contract
 
 PrivateDAO becomes valuable where three conditions exist together:
 
@@ -201,7 +252,7 @@ That is the practical niche of the system:
 - without giving up treasury validation
 - without turning the product into opaque off-chain theater
 
-## 6. ZK-Augmented Private Governance
+## 7. ZK-Augmented Private Governance
 
 The zk layer strengthens the same use cases rather than replacing them with a different product.
 

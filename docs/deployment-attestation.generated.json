@@ -87,7 +87,7 @@
   ],
   "gateCount": 51,
   "packageCounts": {
-    "strategy": 6,
+    "strategy": 9,
     "security": 11,
     "zk": 13,
     "proof": 33,
