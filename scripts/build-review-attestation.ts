@@ -119,6 +119,14 @@ function main() {
       "docs/runtime-attestation.generated.json",
       "docs/go-live-attestation.generated.json",
     ],
+    securityDocs: [
+      "docs/security-review.md",
+      "docs/cryptographic-integrity.md",
+      "docs/cryptographic-posture.md",
+      "docs/supply-chain-security.md",
+      "docs/supply-chain-attestation.generated.md",
+      "docs/supply-chain-attestation.generated.json",
+    ],
     gateCount: submission.gates.length,
     statuses: submission.status,
   };

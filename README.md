@@ -129,6 +129,7 @@ Current security hardening covers:
 - replay-oriented reasoning and coverage mapping
 - sha256-based artifact integrity across critical proof materials
 - machine-readable zk attestation across registry and transcript layers
+- lockfile and manifest attestation across Cargo, npm, and Yarn surfaces
 
 See:
 
@@ -138,6 +139,9 @@ See:
 - `docs/failure-modes.md`
 - `docs/replay-analysis.md`
 - `docs/cryptographic-integrity.md`
+- `docs/cryptographic-posture.md`
+- `docs/supply-chain-security.md`
+- `docs/supply-chain-attestation.generated.json`
 - `docs/cryptographic-manifest.generated.json`
 
 ## Why Security Is Core
@@ -187,6 +191,9 @@ Quick links:
 - ZK architecture: `docs/zk-architecture.md`
 - ZK evidence: `docs/zk-evidence.md`
 - Cryptographic integrity: `docs/cryptographic-integrity.md`
+- Cryptographic posture: `docs/cryptographic-posture.md`
+- Supply-chain security: `docs/supply-chain-security.md`
+- Supply-chain attestation: `docs/supply-chain-attestation.generated.md`
 - Cryptographic manifest: `docs/cryptographic-manifest.generated.json`
 - Ranger eligibility checklist: `docs/ranger-submission-checklist.md`
 - Ranger strategy config: `docs/ranger-strategy-config.devnet.json`

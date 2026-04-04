@@ -17,6 +17,8 @@ function main() {
   const walletMatrixMdPath = path.resolve("docs/wallet-compatibility-matrix.generated.md");
   const devnetCanaryJsonPath = path.resolve("docs/devnet-canary.generated.json");
   const devnetCanaryMdPath = path.resolve("docs/devnet-canary.generated.md");
+  const supplyChainJsonPath = path.resolve("docs/supply-chain-attestation.generated.json");
+  const supplyChainMdPath = path.resolve("docs/supply-chain-attestation.generated.md");
   const devnetWalletRegistryPath = path.resolve("docs/devnet-wallet-registry.json");
   const devnetBootstrapPath = path.resolve("docs/devnet-bootstrap.json");
   const devnetTxRegistryPath = path.resolve("docs/devnet-tx-registry.json");
@@ -69,6 +71,9 @@ function main() {
   }
   if (!fs.existsSync(devnetCanaryJsonPath) || !fs.existsSync(devnetCanaryMdPath)) {
     throw new Error("missing devnet canary artifacts");
+  }
+  if (!fs.existsSync(supplyChainJsonPath) || !fs.existsSync(supplyChainMdPath)) {
+    throw new Error("missing supply-chain attestation artifacts");
   }
   if (!fs.existsSync(devnetWalletRegistryPath)) {
     throw new Error("missing devnet wallet registry");
@@ -133,6 +138,7 @@ function main() {
       layers: Array<{ layer: string; circuit: string; publicSignalCount: number }>;
     };
     runtimeDocs?: string[];
+    securityDocs?: string[];
     cryptographicIntegrity?: {
       algorithm: string;
       entryCount: number;
@@ -206,6 +212,19 @@ function main() {
     entries: Array<{ id: string; label: string; diagnosticsVisible: boolean; selectorVisible: boolean }>;
   };
   const walletMatrixMd = fs.readFileSync(walletMatrixMdPath, "utf8");
+  const supplyChain = JSON.parse(fs.readFileSync(supplyChainJsonPath, "utf8")) as {
+    project: string;
+    algorithm: string;
+    topLevel: { name: string; dependencies: number; devDependencies: number; scripts: number };
+    lockfiles: {
+      cargo: { path: string; packageCount: number };
+      npm: { path: string; lockfileVersion: number; packageCount: number };
+      yarn: { path: string; entryCount: number };
+    };
+    files: Array<{ path: string; sha256: string; bytes: number }>;
+    reviewCommands: string[];
+  };
+  const supplyChainMd = fs.readFileSync(supplyChainMdPath, "utf8");
   const devnetCanary = JSON.parse(fs.readFileSync(devnetCanaryJsonPath, "utf8")) as {
     network: string;
     programId: string;
@@ -572,6 +591,15 @@ function main() {
   if (!attestation.runtimeDocs.includes("docs/pdao-attestation.generated.json")) {
     throw new Error("generated attestation is missing the PDAO attestation doc");
   }
+  if (!attestation.securityDocs || !attestation.securityDocs.includes("docs/cryptographic-posture.md")) {
+    throw new Error("generated attestation is missing the cryptographic posture doc");
+  }
+  if (!attestation.securityDocs.includes("docs/supply-chain-security.md")) {
+    throw new Error("generated attestation is missing the supply-chain security doc");
+  }
+  if (!attestation.securityDocs.includes("docs/supply-chain-attestation.generated.md")) {
+    throw new Error("generated attestation is missing the supply-chain attestation doc");
+  }
 
   if (zkRegistry.project !== "PrivateDAO") {
     throw new Error("generated zk registry project mismatch");
@@ -659,6 +687,12 @@ function main() {
   }
   if (!auditPacket.includes("docs/devnet-canary.generated.json")) {
     throw new Error("generated audit packet is missing the devnet canary reference");
+  }
+  if (!auditPacket.includes("docs/supply-chain-attestation.generated.json")) {
+    throw new Error("generated audit packet is missing the supply-chain attestation reference");
+  }
+  if (!auditPacket.includes("docs/cryptographic-posture.md")) {
+    throw new Error("generated audit packet is missing the cryptographic posture reference");
   }
 
   if (!zkTranscript.includes("# ZK Transcript")) {
@@ -835,6 +869,46 @@ function main() {
   }
   if (!cryptographicManifest.files.some((entry) => entry.path === "docs/devnet-canary.generated.json")) {
     throw new Error("generated cryptographic manifest is missing the devnet canary");
+  }
+  if (!cryptographicManifest.files.some((entry) => entry.path === "docs/cryptographic-posture.md")) {
+    throw new Error("generated cryptographic manifest is missing the cryptographic posture note");
+  }
+  if (!cryptographicManifest.files.some((entry) => entry.path === "docs/supply-chain-attestation.generated.json")) {
+    throw new Error("generated cryptographic manifest is missing the supply-chain attestation");
+  }
+
+  if (supplyChain.project !== "PrivateDAO" || supplyChain.algorithm !== "sha256") {
+    throw new Error("generated supply-chain attestation summary mismatch");
+  }
+  if (supplyChain.topLevel.name !== "private-dao" || supplyChain.topLevel.dependencies <= 0) {
+    throw new Error("generated supply-chain attestation top-level package summary is incomplete");
+  }
+  if (supplyChain.lockfiles.cargo.path !== "Cargo.lock" || supplyChain.lockfiles.cargo.packageCount <= 0) {
+    throw new Error("generated supply-chain attestation cargo summary is incomplete");
+  }
+  if (supplyChain.lockfiles.npm.path !== "package-lock.json" || supplyChain.lockfiles.npm.packageCount <= 0) {
+    throw new Error("generated supply-chain attestation npm summary is incomplete");
+  }
+  if (supplyChain.lockfiles.yarn.path !== "yarn.lock" || supplyChain.lockfiles.yarn.entryCount <= 0) {
+    throw new Error("generated supply-chain attestation yarn summary is incomplete");
+  }
+  if (!supplyChain.files.some((entry) => entry.path === "Cargo.lock")) {
+    throw new Error("generated supply-chain attestation is missing Cargo.lock");
+  }
+  if (!supplyChain.files.some((entry) => entry.path === "package-lock.json")) {
+    throw new Error("generated supply-chain attestation is missing package-lock.json");
+  }
+  if (!supplyChain.files.some((entry) => entry.path === "yarn.lock")) {
+    throw new Error("generated supply-chain attestation is missing yarn.lock");
+  }
+  if (!supplyChain.reviewCommands.includes("npm run verify:supply-chain-attestation")) {
+    throw new Error("generated supply-chain attestation is missing its verification command");
+  }
+  if (!supplyChainMd.includes("# Supply-Chain Attestation")) {
+    throw new Error("generated supply-chain attestation markdown is invalid");
+  }
+  if (!supplyChainMd.includes("Aggregate sha256")) {
+    throw new Error("generated supply-chain attestation markdown is missing aggregate sha256");
   }
 
   console.log("Generated artifact verification: PASS");

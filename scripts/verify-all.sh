@@ -43,6 +43,9 @@ npm run verify:registry-consistency >/dev/null
 echo "[verify-all] checking generated artifacts"
 npm run verify:generated-artifacts >/dev/null
 
+echo "[verify-all] checking supply-chain attestation"
+npm run verify:supply-chain-attestation >/dev/null
+
 echo "[verify-all] checking cryptographic integrity"
 npm run verify:cryptographic-manifest >/dev/null
 
@@ -80,6 +83,6 @@ echo "[verify-all] checking ops surface"
 npm run verify:ops-surface >/dev/null
 
 echo "[verify-all] checking reviewer surface"
-npm run verify:review-surface >/dev/null
+VERIFY_REVIEW_SURFACE_MODE=fast npm run verify:review-surface >/dev/null
 
 echo "[verify-all] PASS"

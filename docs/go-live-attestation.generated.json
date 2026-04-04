@@ -7,6 +7,7 @@
   "verifiedInsideRepo": [
     "governanceLifecycle",
     "securityReasoning",
+    "supplyChainSurface",
     "zkCompanionStack",
     "reviewerSurface",
     "operationsSurface"
@@ -49,7 +50,7 @@
     "docs/go-live-criteria.md",
     "docs/operational-drillbook.md"
   ],
-  "deploymentGateCount": 46,
+  "deploymentGateCount": 47,
   "pdaoToken": {
     "mint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
     "programId": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",

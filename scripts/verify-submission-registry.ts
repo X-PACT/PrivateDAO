@@ -82,6 +82,7 @@ function main() {
     "npm run verify:submission-registry",
     "npm run verify:registry-consistency",
     "npm run verify:generated-artifacts",
+    "npm run verify:supply-chain-attestation",
     "npm run verify:wallet-matrix",
     "npm run verify:devnet-canary",
     "npm run verify:devnet:resilience-report",

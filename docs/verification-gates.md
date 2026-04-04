@@ -172,6 +172,15 @@ Builds and verifies a lightweight read-only Devnet canary that checks:
 - governance mint supply visibility
 - sustainable operational readiness between heavier stress runs
 
+### Supply-Chain Attestation
+
+```bash
+npm run build:supply-chain-attestation
+npm run verify:supply-chain-attestation
+```
+
+Builds and verifies a generated supply-chain attestation that binds the top-level Cargo, Anchor, npm, and Yarn manifests and lockfiles into the reviewer-visible integrity surface.
+
 ### ZK Registry
 
 ```bash

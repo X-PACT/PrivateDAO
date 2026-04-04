@@ -60,14 +60,17 @@
 ## Artifact Integrity
 
 - Integrity note: `docs/cryptographic-integrity.md`
+- Cryptographic posture: `docs/cryptographic-posture.md`
+- Supply-chain security note: `docs/supply-chain-security.md`
+- Supply-chain attestation: `docs/supply-chain-attestation.generated.json`
 - Cryptographic manifest: `docs/cryptographic-manifest.generated.json`
 - Mainnet readiness report: `docs/mainnet-readiness.generated.md`
 - Deployment attestation: `docs/deployment-attestation.generated.json`
 - Go-live attestation: `docs/go-live-attestation.generated.json`
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `57`
-- Aggregate sha256: `c888731814dae0c7a896a9ff58591f3d1b7a13336684e2d0f5568c4e81473a4b`
+- Manifest entries: `61`
+- Aggregate sha256: `f561375d9149d36fc2ed01256c67f7acd356ebf23ec72c7514bdbc3f48dae1aa`
 
 ## ZK Package
 
@@ -118,6 +121,10 @@
 - `docs/failure-modes.md`
 - `docs/replay-analysis.md`
 - `docs/cryptographic-integrity.md`
+- `docs/cryptographic-posture.md`
+- `docs/supply-chain-security.md`
+- `docs/supply-chain-attestation.generated.md`
+- `docs/supply-chain-attestation.generated.json`
 
 ## ZK Review Package
 
@@ -244,6 +251,7 @@
 - `npm run verify:submission-registry`
 - `npm run verify:registry-consistency`
 - `npm run verify:generated-artifacts`
+- `npm run verify:supply-chain-attestation`
 - `npm run verify:wallet-matrix`
 - `npm run verify:devnet-canary`
 - `npm run verify:devnet:resilience-report`
@@ -268,6 +276,7 @@
 
 - governanceLifecycle: `verified`
 - securityReasoning: `verified`
+- supplyChainSurface: `verified`
 - zkCompanionStack: `verified`
 - reviewerSurface: `verified`
 - operationsSurface: `verified`

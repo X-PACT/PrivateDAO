@@ -282,6 +282,26 @@ The current integrity manifest covers:
 
 This does not replace protocol security. It reduces silent drift and makes reviewer-facing evidence tamper-evident.
 
+## Supply-Chain And Cryptographic Posture
+
+The repository now also exposes a reviewer-visible dependency and manifest surface:
+
+- `docs/cryptographic-posture.md`
+- `docs/supply-chain-security.md`
+- `docs/supply-chain-attestation.generated.md`
+- `docs/supply-chain-attestation.generated.json`
+
+The generated supply-chain attestation binds:
+
+- `Cargo.toml`
+- `Cargo.lock`
+- `Anchor.toml`
+- `package.json`
+- `package-lock.json`
+- `yarn.lock`
+
+This does not replace external dependency auditing or registry trust review. It does make lockfile drift, manifest tampering, and reviewer-package inconsistency materially easier to detect inside the repository itself.
+
 ## Remaining Real-World Risks
 
 The audit-simulation layer does not hide residual realities:

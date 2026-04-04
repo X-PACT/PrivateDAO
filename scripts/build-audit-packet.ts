@@ -122,6 +122,9 @@ ${Object.entries(proof.transactions)
 ## Artifact Integrity
 
 - Integrity note: \`docs/cryptographic-integrity.md\`
+- Cryptographic posture: \`docs/cryptographic-posture.md\`
+- Supply-chain security note: \`docs/supply-chain-security.md\`
+- Supply-chain attestation: \`docs/supply-chain-attestation.generated.json\`
 - Cryptographic manifest: \`docs/cryptographic-manifest.generated.json\`
 - Mainnet readiness report: \`docs/mainnet-readiness.generated.md\`
 - Deployment attestation: \`docs/deployment-attestation.generated.json\`

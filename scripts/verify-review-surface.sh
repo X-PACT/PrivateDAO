@@ -3,6 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
+FAST_MODE="${VERIFY_REVIEW_SURFACE_MODE:-full}"
 
 search_placeholders() {
   local pattern="$1"
@@ -38,6 +39,10 @@ required_files=(
   "docs/wallet-compatibility-matrix.generated.json"
   "docs/devnet-canary.generated.md"
   "docs/devnet-canary.generated.json"
+  "docs/cryptographic-posture.md"
+  "docs/supply-chain-security.md"
+  "docs/supply-chain-attestation.generated.md"
+  "docs/supply-chain-attestation.generated.json"
   "docs/zk-upgrade.md"
   "docs/zk-threat-extension.md"
   "docs/zk-assumption-matrix.md"
@@ -121,6 +126,9 @@ if search_placeholders "$placeholder_pattern" \
   docs/wallet-runtime.md \
   docs/wallet-compatibility-matrix.generated.md \
   docs/devnet-canary.generated.md \
+  docs/cryptographic-posture.md \
+  docs/supply-chain-security.md \
+  docs/supply-chain-attestation.generated.md \
   docs/go-live-criteria.md \
   docs/operational-drillbook.md \
   docs/live-proof.md \
@@ -146,6 +154,14 @@ node -e '
 
 echo "[review-surface] checking live-proof consistency"
 npx ts-node scripts/verify-live-proof.ts >/dev/null
+
+if [[ "$FAST_MODE" == "fast" ]]; then
+  echo "[review-surface] fast mode: reusing explicit checks already run by verify-all"
+  echo "[review-surface] checking review-link consistency"
+  npx ts-node scripts/verify-review-links.ts >/dev/null
+  echo "[review-surface] PASS"
+  exit 0
+fi
 
 echo "[review-surface] checking canonical program id consistency"
 npx ts-node scripts/verify-program-id-consistency.ts >/dev/null
@@ -194,6 +210,9 @@ npx ts-node scripts/verify-wallet-compatibility-matrix.ts >/dev/null
 
 echo "[review-surface] checking devnet canary"
 npx ts-node scripts/verify-devnet-canary.ts >/dev/null
+
+echo "[review-surface] checking supply-chain attestation"
+npx ts-node scripts/verify-supply-chain-attestation.ts >/dev/null
 
 echo "[review-surface] checking devnet resilience report"
 npx ts-node scripts/verify-devnet-resilience-report.ts >/dev/null

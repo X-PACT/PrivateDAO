@@ -37,7 +37,7 @@
   ],
   "packageCounts": {
     "strategy": 6,
-    "security": 6,
+    "security": 10,
     "zk": 13,
     "proof": 31,
     "operations": 12
@@ -74,8 +74,8 @@
   },
   "cryptographicIntegrity": {
     "algorithm": "sha256",
-    "entryCount": 57,
-    "aggregateSha256": "c888731814dae0c7a896a9ff58591f3d1b7a13336684e2d0f5568c4e81473a4b"
+    "entryCount": 61,
+    "aggregateSha256": "f561375d9149d36fc2ed01256c67f7acd356ebf23ec72c7514bdbc3f48dae1aa"
   },
   "runtimeDocs": [
     "docs/fair-voting.md",
@@ -92,10 +92,19 @@
     "docs/runtime-attestation.generated.json",
     "docs/go-live-attestation.generated.json"
   ],
-  "gateCount": 46,
+  "securityDocs": [
+    "docs/security-review.md",
+    "docs/cryptographic-integrity.md",
+    "docs/cryptographic-posture.md",
+    "docs/supply-chain-security.md",
+    "docs/supply-chain-attestation.generated.md",
+    "docs/supply-chain-attestation.generated.json"
+  ],
+  "gateCount": 47,
   "statuses": {
     "governanceLifecycle": "verified",
     "securityReasoning": "verified",
+    "supplyChainSurface": "verified",
     "zkCompanionStack": "verified",
     "reviewerSurface": "verified",
     "operationsSurface": "verified",

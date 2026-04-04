@@ -24,7 +24,11 @@
       "docs/security-coverage-map.md",
       "docs/failure-modes.md",
       "docs/replay-analysis.md",
-      "docs/cryptographic-integrity.md"
+      "docs/cryptographic-integrity.md",
+      "docs/cryptographic-posture.md",
+      "docs/supply-chain-security.md",
+      "docs/supply-chain-attestation.generated.md",
+      "docs/supply-chain-attestation.generated.json"
     ],
     "zk": [
       "docs/zk-layer.md",
@@ -117,6 +121,7 @@
     "npm run verify:submission-registry",
     "npm run verify:registry-consistency",
     "npm run verify:generated-artifacts",
+    "npm run verify:supply-chain-attestation",
     "npm run verify:wallet-matrix",
     "npm run verify:devnet-canary",
     "npm run verify:devnet:resilience-report",
@@ -140,6 +145,7 @@
   "status": {
     "governanceLifecycle": "verified",
     "securityReasoning": "verified",
+    "supplyChainSurface": "verified",
     "zkCompanionStack": "verified",
     "reviewerSurface": "verified",
     "operationsSurface": "verified",
