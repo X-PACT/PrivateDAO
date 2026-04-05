@@ -3118,6 +3118,7 @@ body.judge-mode .judge-banner {
           </div>
           <code id="createDaoCommandBuilder" style="display:block;margin-top:12px;color:var(--cyan)">yarn create-dao -- --name "PrivateDAO Live" --quorum 51 --reveal-window 5 --delay 5</code>
           <div style="margin-top:10px;color:var(--text2);line-height:1.7">This flow creates the governance mint, creates your associated token account, and mints the initial governance allocation to the connected wallet automatically.</div>
+          <div style="margin-top:8px;color:var(--text3);line-height:1.7">If this fails, the usual next step is simple: change the DAO name first, then retry from the same wallet.</div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
             <button class="action-btn action-execute" style="flex:0 0 auto" onclick="submitCreateDaoInWallet()">Create DAO In Wallet</button>
             <button class="action-btn action-commit" style="flex:0 0 auto" onclick="copyCreateDaoCommand()">Copy Create DAO</button>
@@ -3130,6 +3131,7 @@ body.judge-mode .judge-banner {
             <input id="builderDepositAmount" type="number" value="0.2" min="0" step="0.01" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Amount in SOL">
           </div>
           <code id="depositCommandBuilder" style="display:block;margin-top:12px;color:var(--cyan)">yarn deposit -- --dao &lt;DAO_PDA&gt; --amount 0.2</code>
+          <div style="margin-top:8px;color:var(--text3);line-height:1.7">Use the DAO selector above or paste a DAO PDA directly. This keeps treasury funding scoped to the DAO you actually intend to operate.</div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
             <button class="action-btn action-execute" style="flex:0 0 auto" onclick="submitDepositInWallet()">Deposit In Wallet</button>
             <button class="action-btn action-reveal" style="flex:0 0 auto" onclick="copyDepositCommand()">Copy Deposit Command</button>
@@ -3176,6 +3178,7 @@ body.judge-mode .judge-banner {
         <textarea id="createProposalDescription" style="width:100%;min-height:120px;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;resize:vertical">Proposal to allocate treasury funds through the live PrivateDAO governance flow.</textarea>
       </div>
       <code id="createProposalCommandHint">yarn create-proposal -- --dao &lt;DAO_PDA&gt; --title "Fund community work"</code>
+      <div style="margin-top:8px;color:var(--text3);line-height:1.7">Best practice for multi-DAO operation: choose the DAO from the filter above, confirm the DAO PDA field matches that DAO, then create the proposal from a wallet that holds that DAO governance token.</div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
         <button class="action-btn action-execute" style="flex:0 0 auto" onclick="submitCreateProposalInWallet()">Create In Wallet</button>
         <button class="action-btn action-commit" style="flex:0 0 auto" onclick="copyCreateProposalCommand()">Copy Create Command</button>
@@ -6277,39 +6280,39 @@ function describeOperationError(error, context = 'operation') {
   const combined = `${lower}\n${logs}`;
 
   if (combined.includes('governance token account was not found')) {
-    return 'This wallet does not hold the governance token account for the selected DAO. Create a new DAO with this wallet or switch to a wallet that already holds the DAO governance token.';
+    return 'This wallet does not hold the governance token account for the selected DAO. Next step: either create a DAO from this wallet first, or switch to a wallet that already holds the selected DAO governance token.';
   }
   if (combined.includes('already exists for the connected wallet') || combined.includes('already in use')) {
     return context === 'create-dao'
-      ? 'This DAO name is already used by the connected wallet. Change the DAO name and try again.'
-      : 'The target account already exists on-chain. Refresh the page and use a new value before retrying.';
+      ? 'This DAO name is already used by the connected wallet. Next step: change the DAO name, then retry the same create flow.'
+      : 'The target account already exists on-chain. Next step: refresh the page, confirm the DAO/proposal you want, and use a new value before retrying.';
   }
   if (combined.includes('block height exceeded')) {
-    return 'The wallet approval took too long and the transaction blockhash expired. Reopen the action and approve it again promptly.';
+    return 'The wallet approval took too long and the transaction blockhash expired. Next step: reopen the action and approve it again promptly.';
   }
   if (combined.includes('too many requests') || combined.includes('429')) {
-    return 'The current Devnet RPC route is rate-limited. Pause briefly, then retry from the same step.';
+    return 'The current Devnet RPC route is rate-limited. Next step: pause briefly, keep the same inputs, then retry from the same step.';
   }
   if (combined.includes('custom program error: 0x0')) {
     if (context === 'create-dao') {
-      return 'DAO creation failed because one of the derived accounts already exists or the chosen DAO name conflicts with an existing on-chain account. Change the DAO name and retry.';
+      return 'DAO creation failed because one of the derived accounts already exists or the chosen DAO name conflicts with an existing on-chain account. Next step: change the DAO name and retry.';
     }
-    return 'The program rejected this transaction at the current lifecycle state. Refresh the proposal state and retry only if the next action is valid.';
+    return 'The program rejected this transaction at the current lifecycle state. Next step: refresh the proposal state and retry only if the next action is valid.';
   }
   if (combined.includes('timelock')) {
-    return 'This proposal is still timelocked. Wait until the unlock time shown in the selected proposal panel before executing.';
+    return 'This proposal is still timelocked. Next step: wait until the unlock time shown in the selected proposal panel before executing.';
   }
   if (combined.includes('reveal') && combined.includes('before')) {
-    return 'Reveal is not available yet. Wait until the commit window closes, then reveal the original vote and salt.';
+    return 'Reveal is not available yet. Next step: wait until the commit window closes, then reveal the original vote and salt.';
   }
   if (combined.includes('finalize')) {
-    return 'Finalize is not available yet or this proposal is already finalized. Refresh the proposal and confirm the current phase first.';
+    return 'Finalize is not available yet or this proposal is already finalized. Next step: refresh the proposal and confirm the current phase first.';
   }
   if (combined.includes('direct vote record') || combined.includes('delegation is blocked to avoid overlap')) {
-    return 'This wallet already used the overlapping governance path for the selected proposal. Use either direct voting or delegation, not both.';
+    return 'This wallet already used the overlapping governance path for the selected proposal. Next step: use either direct voting or delegation, not both.';
   }
   if (combined.includes('wallet provider did not return a transaction signature')) {
-    return 'The wallet approved the request but did not return a usable signature. Reopen the wallet prompt and try once more.';
+    return 'The wallet approved the request but did not return a usable signature. Next step: reopen the wallet prompt and try once more.';
   }
   return message || 'The requested operation failed.';
 }
