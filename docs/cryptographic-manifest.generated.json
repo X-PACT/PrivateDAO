@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-05T17:50:16.427Z",
+  "generatedAt": "2026-04-05T23:47:51.540Z",
   "algorithm": "sha256",
-  "entryCount": 79,
-  "aggregateSha256": "5230035733d4ef6a0f0c14098b5812f513f3cc9cd6cbd42def72feb551648513",
+  "entryCount": 84,
+  "aggregateSha256": "33807c3dae3c1f81fe8c07854230f8387550f82e798a70bfcc8df43f85d389dd",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -147,8 +147,8 @@
     },
     {
       "path": "docs/submission-registry.json",
-      "sha256": "9fb2ea017c1cf81e312332267c05fd5ec253461a0beb36dd177a313d96b9a024",
-      "bytes": 7351
+      "sha256": "afb7ed9a0ce73296f29ce3a2aa6d76086d140c15b11ebe71e2c6c39808cb230d",
+      "bytes": 7937
     },
     {
       "path": "docs/independent-verification.md",
@@ -197,22 +197,47 @@
     },
     {
       "path": "docs/real-device-runtime.generated.md",
-      "sha256": "3a5c157e5f83377d427eeddd62311e3420616b70401e37c38e40d0d494367bc2",
+      "sha256": "f137f7b269277eb5f2752ec5596f58ab483737542eb0eeeab54de61abb5bbbf7",
       "bytes": 1627
     },
     {
       "path": "docs/real-device-runtime.generated.json",
-      "sha256": "4d21c7b2b9a07903fdeaf2b58b6be7c2d890a348819602b9ed4c2dac4d4b82bc",
+      "sha256": "ee72de58dd42df92e6cf04c20fd21725130f4c2683bafb8ff26c6038c7a1c359",
       "bytes": 1629
     },
     {
+      "path": "docs/zk-enforced-runtime-evidence.md",
+      "sha256": "996582d2b790d8dd7bbf630c7598854c775e5998a83adadf95369bd5333d3451",
+      "bytes": 1582
+    },
+    {
+      "path": "docs/zk-enforced-runtime-captures.json",
+      "sha256": "fed267bfc746923ecd7c39806cd1ab47badcb72684fb628c5eaad0cc94a61a3b",
+      "bytes": 981
+    },
+    {
+      "path": "docs/zk-enforced-runtime.generated.md",
+      "sha256": "7723931912cc0c6e84c642e7cbb3c762f2fb1825c484cc990b15cb0c150b1987",
+      "bytes": 1890
+    },
+    {
+      "path": "docs/zk-enforced-runtime.generated.json",
+      "sha256": "253f5453b788da9be28c5d042540222b4c43f283f02631739f99d8d129740468",
+      "bytes": 1852
+    },
+    {
+      "path": "docs/zk-enforced-operator-flow.md",
+      "sha256": "d7276ceb9577e73878d42ce21cccf5f2b09a2ed4a4f3773e9d971d099ab0b57c",
+      "bytes": 2304
+    },
+    {
       "path": "docs/operational-evidence.generated.md",
-      "sha256": "777e54d9cd21c5734bd4e587da446826445a3cb2c20648876afbb5781e9394ae",
+      "sha256": "a8baa8935973ddc307e9181bd60e6beb4bde3f9cdd66e970c9b8545696c26c00",
       "bytes": 3149
     },
     {
       "path": "docs/operational-evidence.generated.json",
-      "sha256": "366f95d8c2224c44235c916ffcc4eb32838c83d71d479ebfb9448c8b42b84dac",
+      "sha256": "c611a5b8d9539f8e121120db6d8dae0ff3c98acc55f2a88fd2929875284bb6ee",
       "bytes": 2959
     },
     {
@@ -237,12 +262,12 @@
     },
     {
       "path": "docs/supply-chain-attestation.generated.md",
-      "sha256": "1f04ddcf0eabad3c19cb0235e6557f7ed639e8316bd0e81f983d4497ff715c36",
+      "sha256": "d8fac9d8674089ec0f415d9af39935ea271297966f888fdeb64212de0c26d2e2",
       "bytes": 1694
     },
     {
       "path": "docs/supply-chain-attestation.generated.json",
-      "sha256": "2a936131d29529ac5c11827b67dccfac21fe3cb34602713f8781aaa820a0739c",
+      "sha256": "d03bc5362d73cf44e1a0bfc4f02dadce740a3e4b01e31f5d1ca73289dfa7439a",
       "bytes": 2020
     },
     {
@@ -252,17 +277,17 @@
     },
     {
       "path": "docs/wallet-compatibility-matrix.generated.json",
-      "sha256": "9082a6375cd41bc16c07e4e3c03248b4af5a4ea615ada4f805d11970e5236fe6",
+      "sha256": "02a218dd950094adecb5ec6cdeff855a4b3ec41a6026356e19c6cb43e947da83",
       "bytes": 2955
     },
     {
       "path": "docs/devnet-canary.generated.md",
-      "sha256": "bbcd04f4feaf8f993b83a9c4245e98d2cf3600630e42361c9c41d48214aa3833",
+      "sha256": "265edbc84e5448960859efc35f95467655e54a27d3169030a70edbe19aef1bd3",
       "bytes": 2200
     },
     {
       "path": "docs/devnet-canary.generated.json",
-      "sha256": "be2344f58349e9552aa750149e4b09f5647bb26c1750f989750fe3efad6f908b",
+      "sha256": "6814be965c23ff3c7692b8ea25e3df0b10848e518517e514b3066d2aae843c96",
       "bytes": 2970
     },
     {
@@ -307,8 +332,8 @@
     },
     {
       "path": "docs/security-review.md",
-      "sha256": "f9ee22e34775e0ebe3d19be857c26335d8b65ba9f158ef6b455e4d482d55eb42",
-      "bytes": 17216
+      "sha256": "60baaaf8f212cf0868b135033c1336a2ab56938fafa8ca08f7f5456655e58a4d",
+      "bytes": 17252
     },
     {
       "path": "docs/deployment-attestation.generated.json",
@@ -347,8 +372,8 @@
     },
     {
       "path": "docs/zk-layer.md",
-      "sha256": "c8ee485eb8670859da4c920be096e6d13ec082b6fa1c54cb50a1124d8b0bfbfb",
-      "bytes": 2913
+      "sha256": "6aa3435c3257ac440b1304c14159e124fc27df9e66f63a901fb5202d944db0ab",
+      "bytes": 3756
     },
     {
       "path": "docs/zk-stack.md",
@@ -397,8 +422,8 @@
     },
     {
       "path": "docs/verification-gates.md",
-      "sha256": "bb2832f0fa05090334b785143b1f33b6ba15cd63d4c5a25bfe879ccfca70bc1c",
-      "bytes": 11414
+      "sha256": "0e1a3871f2ab8cf490199b399b0f4ec0035316ec0ae010b16594dc2bf9b8e846",
+      "bytes": 12203
     }
   ]
 }

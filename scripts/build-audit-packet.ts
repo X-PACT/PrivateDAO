@@ -198,6 +198,11 @@ ${submission.packages.proof.map((entry) => `- \`${entry}\``).join("\n")}
 - \`docs/real-device-runtime-captures.json\`
 - \`docs/real-device-runtime.generated.md\`
 - \`docs/real-device-runtime.generated.json\`
+- \`docs/zk-enforced-runtime-evidence.md\`
+- \`docs/zk-enforced-runtime-captures.json\`
+- \`docs/zk-enforced-runtime.generated.md\`
+- \`docs/zk-enforced-runtime.generated.json\`
+- \`docs/zk-enforced-operator-flow.md\`
 - \`docs/operational-evidence.generated.md\`
 - \`docs/operational-evidence.generated.json\`
 - \`docs/runtime-evidence.generated.md\`

@@ -38,9 +38,9 @@
   "packageCounts": {
     "strategy": 9,
     "security": 11,
-    "zk": 13,
-    "proof": 45,
-    "operations": 18
+    "zk": 21,
+    "proof": 47,
+    "operations": 21
   },
   "zk": {
     "stackVersion": 1,
@@ -74,8 +74,8 @@
   },
   "cryptographicIntegrity": {
     "algorithm": "sha256",
-    "entryCount": 79,
-    "aggregateSha256": "5230035733d4ef6a0f0c14098b5812f513f3cc9cd6cbd42def72feb551648513"
+    "entryCount": 84,
+    "aggregateSha256": "33807c3dae3c1f81fe8c07854230f8387550f82e798a70bfcc8df43f85d389dd"
   },
   "runtimeDocs": [
     "docs/fair-voting.md",
@@ -84,6 +84,11 @@
     "docs/real-device-runtime-captures.json",
     "docs/real-device-runtime.generated.md",
     "docs/real-device-runtime.generated.json",
+    "docs/zk-enforced-runtime-evidence.md",
+    "docs/zk-enforced-runtime-captures.json",
+    "docs/zk-enforced-runtime.generated.md",
+    "docs/zk-enforced-runtime.generated.json",
+    "docs/zk-enforced-operator-flow.md",
     "docs/operational-evidence.generated.md",
     "docs/operational-evidence.generated.json",
     "docs/runtime-evidence.generated.md",
@@ -122,7 +127,7 @@
     "docs/supply-chain-attestation.generated.md",
     "docs/supply-chain-attestation.generated.json"
   ],
-  "gateCount": 57,
+  "gateCount": 58,
   "statuses": {
     "governanceLifecycle": "verified",
     "securityReasoning": "verified",

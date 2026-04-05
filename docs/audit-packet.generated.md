@@ -138,6 +138,14 @@
 ## ZK Review Package
 
 - `docs/zk-layer.md`
+- `docs/phase-c-hardening.md`
+- `docs/zk-verifier-strategy.md`
+- `docs/zk-enforced-threat-review.md`
+- `docs/zk-enforced-runtime-evidence.md`
+- `docs/zk-enforced-runtime-captures.json`
+- `docs/zk-enforced-runtime.generated.json`
+- `docs/zk-enforced-runtime.generated.md`
+- `docs/zk-enforced-operator-flow.md`
 - `docs/zk-stack.md`
 - `docs/zk-upgrade.md`
 - `docs/zk-architecture.md`
@@ -190,6 +198,8 @@
 - `docs/mainnet-acceptance-matrix.generated.json`
 - `docs/mainnet-proof-package.generated.md`
 - `docs/mainnet-proof-package.generated.json`
+- `docs/authority-hardening.md`
+- `docs/mainnet-go-live-checklist.md`
 - `docs/external-readiness-intake.md`
 - `docs/wallet-compatibility-matrix.generated.md`
 - `docs/wallet-compatibility-matrix.generated.json`
@@ -207,6 +217,11 @@
 - `docs/real-device-runtime-captures.json`
 - `docs/real-device-runtime.generated.md`
 - `docs/real-device-runtime.generated.json`
+- `docs/zk-enforced-runtime-evidence.md`
+- `docs/zk-enforced-runtime-captures.json`
+- `docs/zk-enforced-runtime.generated.md`
+- `docs/zk-enforced-runtime.generated.json`
+- `docs/zk-enforced-operator-flow.md`
 - `docs/operational-evidence.generated.md`
 - `docs/operational-evidence.generated.json`
 - `docs/runtime-evidence.generated.md`
@@ -251,6 +266,9 @@
 ## Operations Package
 
 - `docs/mainnet-readiness.md`
+- `docs/authority-hardening.md`
+- `docs/phase-c-hardening.md`
+- `docs/mainnet-go-live-checklist.md`
 - `docs/mainnet-readiness.generated.md`
 - `docs/release-ceremony.md`
 - `docs/release-ceremony-attestation.generated.md`
@@ -304,6 +322,7 @@
 - `npm run verify:release-ceremony-attestation`
 - `npm run verify:operational-evidence`
 - `npm run verify:real-device-runtime`
+- `npm run verify:zk-enforced-runtime`
 - `npm run verify:runtime-evidence`
 - `npm run verify:release-drill`
 - `npm run verify:artifact-freshness`
