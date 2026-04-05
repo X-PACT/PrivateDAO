@@ -59,6 +59,42 @@ The generated reviewer-facing outputs are:
 - `docs/real-device-runtime.generated.json`
 - `docs/real-device-runtime.generated.md`
 
+## Fast Capture Workflow
+
+1. Run the wallet flow on Devnet in a real client.
+2. Save a small JSON payload for the target.
+3. Record it with:
+
+```bash
+npm run record:real-device-runtime -- /path/to/capture.json
+npm run build:real-device-runtime
+npm run verify:real-device-runtime
+```
+
+## Minimal Capture Payload Example
+
+```json
+{
+  "id": "phantom-desktop",
+  "walletLabel": "Phantom",
+  "walletVersion": "example-version",
+  "environmentType": "desktop-browser",
+  "os": "macOS 15",
+  "browserOrClient": "Chrome 135",
+  "network": "devnet",
+  "connectResult": "success",
+  "signingResult": "success",
+  "submissionResult": "success",
+  "diagnosticsSnapshotCaptured": true,
+  "txSignature": "example-devnet-signature-from-wallet-run",
+  "errorMessage": null,
+  "evidenceRefs": [
+    "screenshots/phantom-desktop-connect.png"
+  ],
+  "capturedAt": "2026-04-05T00:00:00.000Z"
+}
+```
+
 ## Honest Boundary
 
 The repository now provides a formal intake, builder, verifier, and reviewer surface for real-device wallet QA.

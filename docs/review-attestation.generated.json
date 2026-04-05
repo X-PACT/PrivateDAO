@@ -75,7 +75,7 @@
   "cryptographicIntegrity": {
     "algorithm": "sha256",
     "entryCount": 79,
-    "aggregateSha256": "b5cc295d7c7ef9d92588aa7eea6806b14302089cba74f0107ae1e087a8e2f29b"
+    "aggregateSha256": "ce9b1dd795c292b988e2881306f2ea1a16fca9953b9d3ee2087ab2292686f488"
   },
   "runtimeDocs": [
     "docs/fair-voting.md",
