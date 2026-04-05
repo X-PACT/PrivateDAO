@@ -2832,6 +2832,28 @@ body.judge-mode .judge-banner {
         </div>
       </div>
     </div>
+    <div class="proposal-control-strip" style="margin-top:18px" id="heroActionStrip">
+      <div class="proposal-control-chip">
+        <div class="proposal-control-kicker">CREATE</div>
+        <div class="proposal-control-title" id="heroCreateReady">CHECKING</div>
+        <div class="proposal-control-copy">Proposal creation requires a connected wallet with the governance token for the active DAO.</div>
+      </div>
+      <div class="proposal-control-chip">
+        <div class="proposal-control-kicker">COMMIT</div>
+        <div class="proposal-control-title" id="heroCommitReady">CHECKING</div>
+        <div class="proposal-control-copy">Commit is available only during the commit phase and remains proposal-bound.</div>
+      </div>
+      <div class="proposal-control-chip">
+        <div class="proposal-control-kicker">REVEAL</div>
+        <div class="proposal-control-title" id="heroRevealReady">CHECKING</div>
+        <div class="proposal-control-copy">Reveal opens only after voting closes and requires the original vote plus salt.</div>
+      </div>
+      <div class="proposal-control-chip">
+        <div class="proposal-control-kicker">EXECUTE</div>
+        <div class="proposal-control-title" id="heroExecuteReady">CHECKING</div>
+        <div class="proposal-control-copy">Execution remains blocked until finalize succeeds and timelock clears.</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -5486,6 +5508,7 @@ let walletProviderListenersBound = false;
 let currentHeroDaoPubkey = null;
 let currentHeroGovernanceMint = null;
 let heroWalletReadinessRequest = 0;
+let currentHeroPhase = 'IDLE';
 const proposalHistoryCache = new Map();
 const proposalHistoryInFlight = new Set();
 const SUPPORTED_WALLET_TARGETS = [
@@ -7005,8 +7028,10 @@ function updateHeroStats(proposals, nowTs) {
     govTokenEl.textContent = wallet ? "NO DAO" : "CONNECT";
     currentHeroDaoPubkey = null;
     currentHeroGovernanceMint = null;
+    currentHeroPhase = 'IDLE';
     sealedDisplay.innerHTML = "YES: ? &nbsp;/&nbsp; NO: ?";
     sealedInfo.innerHTML = "<span>›</span> No proposals found for this program ID<br><span>›</span> Create one from the repository CLI<br><span>›</span> The page will refresh automatically";
+    updateHeroActionReadiness();
     return;
   }
 
@@ -7025,6 +7050,7 @@ function updateHeroStats(proposals, nowTs) {
       : phase === "Executed"
         ? "DONE"
         : "WAIT";
+  currentHeroPhase = phase;
   walletStatusEl.textContent = wallet ? "CONNECTED" : "DISCONNECTED";
   currentHeroDaoPubkey = heroProposal.dao;
   currentHeroGovernanceMint = null;
@@ -7037,6 +7063,7 @@ function updateHeroStats(proposals, nowTs) {
       currentHeroGovernanceMint = null;
       updateHeroWalletReadiness();
     });
+  updateHeroActionReadiness();
 
   if (phase === "Commit") {
     tallyEl.textContent = "sealed";
@@ -7507,6 +7534,7 @@ async function updateHeroWalletReadiness() {
   if (!wallet) {
     walletStatusEl.textContent = 'DISCONNECTED';
     govTokenEl.textContent = currentHeroDaoPubkey ? 'CONNECT' : 'IDLE';
+    updateHeroActionReadiness();
     return;
   }
 
@@ -7514,6 +7542,7 @@ async function updateHeroWalletReadiness() {
 
   if (!currentHeroDaoPubkey || !currentHeroGovernanceMint) {
     govTokenEl.textContent = 'NO DAO';
+    updateHeroActionReadiness();
     return;
   }
 
@@ -7537,12 +7566,48 @@ async function updateHeroWalletReadiness() {
     }, 0);
 
     govTokenEl.textContent = balance > 0 ? 'READY' : 'NO TOKEN';
+    updateHeroActionReadiness();
   } catch (_) {
     if (requestId !== heroWalletReadinessRequest) {
       return;
     }
     govTokenEl.textContent = 'RPC';
+    updateHeroActionReadiness();
   }
+}
+
+function updateHeroActionReadiness() {
+  const createEl = document.getElementById('heroCreateReady');
+  const commitEl = document.getElementById('heroCommitReady');
+  const revealEl = document.getElementById('heroRevealReady');
+  const executeEl = document.getElementById('heroExecuteReady');
+  const govTokenState = document.getElementById('statGovToken')?.textContent || 'UNKNOWN';
+  const connected = Boolean(wallet);
+
+  const createState = !connected ? 'CONNECT'
+    : govTokenState === 'READY' ? 'READY'
+    : govTokenState === 'CHECKING' ? 'CHECKING'
+    : currentHeroDaoPubkey ? 'NEED TOKEN' : 'NO DAO';
+
+  const commitState = !connected ? 'CONNECT'
+    : govTokenState !== 'READY' ? (govTokenState === 'CHECKING' ? 'CHECKING' : 'LOCKED')
+    : currentHeroPhase === 'Commit' ? 'READY'
+    : 'WAIT';
+
+  const revealState = !connected ? 'CONNECT'
+    : currentHeroPhase === 'Reveal' ? 'READY'
+    : 'WAIT';
+
+  const executeState = !connected ? 'CONNECT'
+    : currentHeroPhase === 'Executable' ? 'READY'
+    : currentHeroPhase === 'Timelocked' ? 'TIMELOCK'
+    : currentHeroPhase === 'Executed' ? 'DONE'
+    : 'WAIT';
+
+  createEl.textContent = createState;
+  commitEl.textContent = commitState;
+  revealEl.textContent = revealState;
+  executeEl.textContent = executeState;
 }
 
 function selectProposal(pubkey) {
