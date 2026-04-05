@@ -2596,60 +2596,18 @@ body.judge-mode .judge-banner {
   </div>
 </section>
 
-<section class="section" id="consumer-readiness" style="padding-top:20px">
+<section class="section" id="operational-context" style="padding-top:20px">
   <div class="container">
-    <div class="section-tag reveal">CONSUMER READINESS</div>
-    <h2 class="section-heading reveal">Community product fit,<br>without losing protocol discipline.</h2>
-    <div class="award-grid reveal">
-      <div class="award-detail-card">
-        <div class="award-detail-title">Member Experience</div>
-        <div class="award-detail-copy">
-          PrivateDAO already exposes a wallet-connected web flow and Android-native path so community members can discover proposals, commit privately, reveal later, and verify treasury outcomes from one product surface.
-        </div>
-        <div class="award-links">
-          <a class="award-link" href="consumer-user-flows.md" target="_blank">Consumer User Flows</a>
-          <a class="award-link" href="wallet-runtime.md" target="_blank">Wallet Runtime</a>
-          <a class="award-link" href="?page=diagnostics" target="_blank" data-bypass-doc-viewer="1">Wallet Diagnostics</a>
-        </div>
-      </div>
-      <div class="award-detail-card">
-        <div class="award-detail-title">Token Utility</div>
-        <div class="award-detail-copy">
-          `PDAO` is already live on Devnet via DeAura and acts as the governance-access token for the canonical reviewer-facing DAO, tying proposal eligibility and voting participation to an actual community token surface.
-        </div>
-        <div class="award-links">
-          <a class="award-link" href="pdao-token.md" target="_blank">PDAO Token Surface</a>
-          <a class="award-link" href="token.md" target="_blank">Token Architecture</a>
-          <a class="award-link" href="consumer-readiness.md" target="_blank">Consumer Readiness</a>
-        </div>
-      </div>
-      <div class="award-detail-card">
-        <div class="award-detail-title">Launch Discipline</div>
-        <div class="award-detail-copy">
-          The repository now separates what is already product-ready from what remains external, so launch and growth planning stay honest: real product flows and token utility are documented, while live traction and market-volume milestones remain non-fabricated external steps.
-        </div>
-        <div class="award-links">
-          <a class="award-link" href="launch-growth-plan.md" target="_blank">Launch And Growth Plan</a>
-          <a class="award-link" href="use-cases.md" target="_blank">Use Cases</a>
-          <a class="award-link" href="economic-model.md" target="_blank">Economic Model</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="deployment-snapshot" style="padding-top:20px">
-  <div class="container">
-    <div class="section-tag reveal">DEPLOYMENT SNAPSHOT</div>
-    <h2 class="section-heading reveal">Devnet status<br>is live and verifiable.</h2>
-    <div class="reveal" style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px">
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;font-family:var(--mono);font-size:12px">
-        <div style="padding:14px;border:1px solid var(--border);border-radius:12px;background:var(--void)"><span style="color:var(--text3)">Status</span><br><span style="color:var(--green)" id="deployStatus">Checking RPC...</span></div>
-        <div style="padding:14px;border:1px solid var(--border);border-radius:12px;background:var(--void)"><span style="color:var(--text3)">Program ID</span><br><span style="word-break:break-all">5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx</span></div>
-        <div style="padding:14px;border:1px solid var(--border);border-radius:12px;background:var(--void)"><span style="color:var(--text3)">Network</span><br>Solana Devnet</div>
-        <div style="padding:14px;border:1px solid var(--border);border-radius:12px;background:var(--void)"><span style="color:var(--text3)">Current slot</span><br><span id="deploySlot">Loading...</span></div>
-        <div style="padding:14px;border:1px solid var(--border);border-radius:12px;background:var(--void)"><span style="color:var(--text3)">Program owner</span><br><span style="word-break:break-all" id="deployOwner">Loading...</span></div>
-        <div style="padding:14px;border:1px solid var(--border);border-radius:12px;background:var(--void)"><span style="color:var(--text3)">Explorer</span><br><a href="https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet" target="_blank" style="color:var(--cyan);text-decoration:none">View on Solscan</a></div>
+    <div class="section-tag reveal">OPERATIONAL CONTEXT</div>
+    <h2 class="section-heading reveal">Keep action here,<br>move evidence there.</h2>
+    <div class="reveal" style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;line-height:1.8;color:var(--text2)">
+      <p>This page is now reserved for the active governance workflow: bootstrap, proposal creation, commit, reveal, finalize, execute, and advanced delegation.</p>
+      <p>Reviewer-heavy material such as consumer positioning, deployment readiness, operational evidence, and mainnet packaging belongs in <span style="color:var(--cyan)">Proof Center</span> and <span style="color:var(--cyan)">Security</span>.</p>
+      <div class="award-links" style="margin-top:16px">
+        <button class="proposal-proof-link" type="button" onclick="showPage('proof', findNavButton('proof'))">Open Proof Center</button>
+        <button class="proposal-proof-link" type="button" onclick="showPage('security', findNavButton('security'))">Open Security</button>
+        <a class="award-link" href="?page=diagnostics" target="_blank" data-bypass-doc-viewer="1">Wallet Diagnostics</a>
+        <a class="award-link" href="mainnet-proof-package.generated.md" target="_blank">Mainnet Proof Package</a>
       </div>
     </div>
   </div>
