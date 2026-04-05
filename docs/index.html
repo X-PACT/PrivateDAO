@@ -2109,7 +2109,6 @@ body.judge-mode .judge-banner {
         <button class="nav-link" onclick="showPage('security',this)">Security</button>
         <button class="nav-link" onclick="showPage('diagnostics',this); updateDiagnostics()">Diagnostics</button>
         <button class="nav-link" onclick="openDocument('zk-layer.md','ZK Layer',this)">ZK Layer</button>
-        <button class="nav-link" onclick="showPage('awards',this)">Awards</button>
         <button class="nav-link" onclick="openDocument('android-native.md','Android Native',this)">Android Native</button>
       </div>
       <div class="wallet-stack">
@@ -2223,7 +2222,7 @@ body.judge-mode .judge-banner {
       </div>
     </div>
     <div class="judge-banner-actions">
-      <a class="award-link" href="https://youtu.be/KVNFZXHNZTQ" target="_blank">Watch Pitch</a>
+      <button class="proposal-proof-link" type="button" onclick="openDocument('investor-video.md','Technical Explainer Brief')">Open Explainer Brief</button>
       <a class="award-link" href="live-proof.md" target="_blank">Open Live Proof</a>
       <button class="proposal-proof-link" type="button" onclick="copyJudgeModeLink()">Copy Judge Link</button>
       <button class="proposal-proof-link" type="button" onclick="exitJudgeMode()">Exit Judge Mode</button>
@@ -2238,12 +2237,12 @@ body.judge-mode .judge-banner {
   <div class="award-banner reveal">
     <div class="award-banner-inner">
       <div class="award-banner-copy">
-        <div class="award-banner-kicker">🏆 AWARDS &amp; RECOGNITION</div>
-        <div class="award-banner-title">1st Place — Superteam Earn</div>
-        <p class="award-banner-subtitle">1st Place in the Superteam Poland challenge: Rebuild production backend systems as on-chain Rust programs.</p>
+        <div class="award-banner-kicker">LIVE GOVERNANCE SURFACE</div>
+        <div class="award-banner-title">Production-minded Devnet execution</div>
+        <p class="award-banner-subtitle">The live frontend focuses on DAO creation, proposal flow, commit-reveal voting, zk companion evidence, and Devnet-verifiable execution.</p>
         <div class="award-banner-actions">
-          <button class="award-cta" onclick="showPage('awards', findNavButton('awards'))">View Award Details</button>
-          <a class="award-cta secondary" href="awards.md" target="_blank">Open Award Note</a>
+          <a class="award-cta secondary" href="live-proof.md" target="_blank">Open Live Proof</a>
+          <a class="award-cta secondary" href="mainnet-proof-package.generated.md" target="_blank">Open Mainnet Proof Package</a>
         </div>
       </div>
       <div class="award-banner-meta">
@@ -3824,9 +3823,8 @@ execute() → treasury action
       </div>
 
       <div class="award-links">
-        <a class="award-link" href="https://earn.superteam.fun" target="_blank">Platform</a>
-        <a class="award-link" href="https://github.com/X-PACT/PrivateDAO" target="_blank">Repository</a>
-        <a class="award-link" href="https://x-pact.github.io/PrivateDAO/" target="_blank">Demo</a>
+        <a class="award-link" href="reviewer-fast-path.md" target="_blank">Reviewer Fast Path</a>
+        <a class="award-link" href="reviewer-surface-map.md" target="_blank">Reviewer Surface Map</a>
         <a class="award-link" href="awards.md" target="_blank">Markdown Note</a>
       </div>
     </div>
@@ -3841,7 +3839,7 @@ execute() → treasury action
         <div class="investor-video-panel">
           <div class="award-meta-card-label">VIDEO ASSETS</div>
           <div class="investor-video-copy">
-            <div>Watch on YouTube: <a class="award-link" href="https://youtu.be/KVNFZXHNZTQ" target="_blank" style="margin-top:12px">Technical Explainer</a></div>
+            <div>Explainer brief: <a class="award-link" href="investor-video.md" target="_blank" style="margin-top:12px">Technical Explainer Brief</a></div>
             <div style="margin-top:12px">Repo-native asset: <a class="award-link" href="assets/private-dao-investor-pitch.mp4" target="_blank">MP4 Asset</a></div>
             <div>Brief and production package: <a class="award-link" href="investor-video.md" target="_blank" style="margin-top:12px">Explainer Video Brief</a></div>
             <div style="margin-top:12px">Voiceover: <a class="award-link" href="video-voiceover.md" target="_blank">Voiceover Script</a></div>
@@ -3851,9 +3849,9 @@ execute() → treasury action
         <div class="investor-video-panel">
           <div class="award-meta-card-label">PUBLISH STATUS</div>
           <div class="investor-video-copy">
-            <div>YouTube version is published and ready for judges, auditors, grant reviewers, and technical evaluators.</div>
-            <div style="margin-top:10px">Watch now: <a class="award-link" href="https://youtu.be/KVNFZXHNZTQ" target="_blank">YouTube</a></div>
-            <div style="margin-top:10px">Repo fallback: <a class="award-link" href="assets/private-dao-investor-pitch.mp4" target="_blank">MP4 asset</a></div>
+            <div>The explainer package stays repo-native and aligned with the shipped protocol surface.</div>
+            <div style="margin-top:10px">Primary asset: <a class="award-link" href="assets/private-dao-investor-pitch.mp4" target="_blank">MP4 asset</a></div>
+            <div style="margin-top:10px">Supporting brief: <a class="award-link" href="video-shotlist.md" target="_blank">Shotlist</a></div>
           </div>
         </div>
       </div>
@@ -3862,12 +3860,12 @@ execute() → treasury action
     <div class="award-detail-card reveal" style="margin-top:28px">
       <div class="award-detail-head">
         <div>
-          <div class="award-detail-title">Ownership And Contact</div>
+          <div class="award-detail-title">Operational Ownership</div>
           <p class="award-detail-copy">
-            PrivateDAO is independently built and maintained by Fahd Kotb. The channels below are the direct project ownership and contact endpoints for investor, ecosystem, and partnership outreach.
+            PrivateDAO is independently maintained. The surface below keeps only operational owner and email channels needed for review and incident coordination.
           </p>
         </div>
-        <div class="award-pill">DIRECT OWNER CONTACT</div>
+        <div class="award-pill">OWNER CONTACT</div>
       </div>
 
       <div class="award-grid">
@@ -3876,21 +3874,15 @@ execute() → treasury action
           <div class="award-meta-card-value">Fahd Kotb</div>
         </div>
         <div class="award-meta-card">
-          <div class="award-meta-card-label">X</div>
-          <div class="award-meta-card-value"><a class="award-link" href="https://x.com/FahdX369" target="_blank">@FahdX369</a></div>
-        </div>
-        <div class="award-meta-card">
-          <div class="award-meta-card-label">TELEGRAM</div>
-          <div class="award-meta-card-value"><a class="award-link" href="https://t.me/Fahdkotb" target="_blank">@Fahdkotb</a></div>
+          <div class="award-meta-card-label">PRIMARY EMAIL</div>
+          <div class="award-meta-card-value"><a class="award-link" href="mailto:fahd.kotb@tuta.io">fahd.kotb@tuta.io</a></div>
         </div>
       </div>
 
       <div class="award-points">
-        <div class="award-point">Primary email: <a class="award-link" href="mailto:fahd.kotb@tuta.io">fahd.kotb@tuta.io</a></div>
         <div class="award-point">Secondary email: <a class="award-link" href="mailto:i.kotb@proton.me">i.kotb@proton.me</a></div>
         <div class="award-point">Operations email: <a class="award-link" href="mailto:eslamkotb.fmt@gmail.com">eslamkotb.fmt@gmail.com</a></div>
         <div class="award-point">Additional contact: <a class="award-link" href="mailto:eslamkotb.369@gmail.com">eslamkotb.369@gmail.com</a></div>
-        <div class="award-point">WhatsApp: <a class="award-link" href="https://wa.me/201124030209" target="_blank">+20 112 403 0209</a> · Backup: <a class="award-link" href="https://wa.me/201070004967" target="_blank">+20 107 000 4967</a></div>
       </div>
     </div>
   </div>
@@ -3906,15 +3898,11 @@ execute() → treasury action
         Program: 5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx · Core AGPLv3+ · SDK Apache-2.0 · Docs MIT
       </div>
       <div class="footer-links">
-        <a href="https://github.com/X-PACT/PrivateDAO" class="footer-link" target="_blank">GitHub</a>
         <a href="https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet" class="footer-link" target="_blank">Solscan</a>
-        <a href="https://x-pact.github.io/PrivateDAO/" class="footer-link" target="_blank">Live App</a>
         <a href="?page=proof" class="footer-link">Proof Center</a>
         <a href="?page=security" class="footer-link">Security</a>
         <a href="awards.md" class="footer-link" target="_blank">Awards Note</a>
         <a href="mailto:fahd.kotb@tuta.io" class="footer-link">Owner Email</a>
-        <a href="https://t.me/Fahdkotb" class="footer-link" target="_blank">Telegram</a>
-        <a href="https://x.com/FahdX369" class="footer-link" target="_blank">X</a>
       </div>
     </div>
   </div>
@@ -4427,11 +4415,11 @@ async function updateDiagnostics() {
   let rpcHealth = 'Checking';
   let rpcDetails = 'Running RPC reachability checks...';
   try {
-    const version = await connection.getVersion();
-    const latest = await connection.getLatestBlockhash('confirmed');
+    const version = await withRpcFallback((activeConnection) => activeConnection.getVersion());
+    const latest = await withRpcFallback((activeConnection) => activeConnection.getLatestBlockhash('confirmed'));
     rpcHealth = 'Healthy';
     rpcDetails = [
-      `endpoint=${connection.rpcEndpoint}`,
+      `endpoint=${currentRpcEndpoint()}`,
       `solana-core=${version['solana-core'] || 'unknown'}`,
       `feature-set=${version['feature-set'] || 'unknown'}`,
       `blockhash=${latest.blockhash}`,
@@ -4449,7 +4437,7 @@ async function updateDiagnostics() {
     connectedProvider: connectedProviderName,
     connectedWallet: connectedWalletValue,
     rpcHealth,
-    rpcEndpoint: connection.rpcEndpoint,
+    rpcEndpoint: currentRpcEndpoint(),
     browserCapabilities,
     supportedProviders: supportedProviders.map(({ id, label }) => {
       const provider = resolveWalletProvider(id);
@@ -4732,15 +4720,62 @@ function copyFinalizeCommand() {
   showToast(command, 'info');
 }
 
-const DEVNET_RPC = "https://solana-devnet.g.alchemy.com/v2/L4dlywEyiBJLg8Ey0bFof";
+const DEVNET_RPC_ENDPOINTS = [
+  solanaWeb3.clusterApiUrl('devnet'),
+  "https://api.devnet.solana.com",
+  "https://solana-devnet.g.alchemy.com/v2/L4dlywEyiBJLg8Ey0bFof",
+];
 const PROGRAM_ID = "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx";
 const TOKEN_PROGRAM_ID = new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
 const TOKEN_2022_PROGRAM_ID = new solanaWeb3.PublicKey("TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb");
 const ASSOCIATED_TOKEN_PROGRAM_ID = new solanaWeb3.PublicKey("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL");
 const SYSVAR_RENT_PUBKEY = new solanaWeb3.PublicKey("SysvarRent111111111111111111111111111111111");
-const connection = new solanaWeb3.Connection(DEVNET_RPC, "confirmed");
+let currentRpcIndex = 0;
+let connection = new solanaWeb3.Connection(DEVNET_RPC_ENDPOINTS[currentRpcIndex], "confirmed");
 const programPk = new solanaWeb3.PublicKey(PROGRAM_ID);
 const statusByIdx = ["Voting", "Passed", "Failed", "Cancelled", "Vetoed"];
+
+function currentRpcEndpoint() {
+  return DEVNET_RPC_ENDPOINTS[currentRpcIndex];
+}
+
+function rotateRpcEndpoint() {
+  currentRpcIndex = (currentRpcIndex + 1) % DEVNET_RPC_ENDPOINTS.length;
+  connection = new solanaWeb3.Connection(currentRpcEndpoint(), "confirmed");
+  return currentRpcEndpoint();
+}
+
+function isRecoverableRpcError(error) {
+  const message = String(error?.message || '').toLowerCase();
+  return (
+    message.includes('400') ||
+    message.includes('fetch failed') ||
+    message.includes('network') ||
+    message.includes('blockhash not found') ||
+    message.includes('failed to get recent blockhash') ||
+    message.includes('node is behind') ||
+    message.includes('service worker') ||
+    message.includes('disconnected port')
+  );
+}
+
+async function withRpcFallback(operation, { attempts = DEVNET_RPC_ENDPOINTS.length } = {}) {
+  let lastError = null;
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    try {
+      return await operation(connection);
+    } catch (error) {
+      lastError = error;
+      if (!isRecoverableRpcError(error) || attempt === attempts - 1) {
+        throw error;
+      }
+      const nextEndpoint = rotateRpcEndpoint();
+      showToast(`Switching RPC endpoint: ${nextEndpoint}`, 'info');
+      await new Promise((resolve) => setTimeout(resolve, 250));
+    }
+  }
+  throw lastError || new Error('RPC operation failed.');
+}
 
 // Stop synthetic tally. The current app only shows real on-chain values.
 document.getElementById('liveYesNum').textContent = "On-chain";
@@ -5371,7 +5406,7 @@ function actionTypeLabel(idx) {
 
 async function resolveTokenProgramForMint(mint) {
   const mintPk = new solanaWeb3.PublicKey(mint);
-  const info = await connection.getAccountInfo(mintPk, 'confirmed');
+  const info = await withRpcFallback((activeConnection) => activeConnection.getAccountInfo(mintPk, 'confirmed'));
   if (!info) {
     throw new Error(`Mint account not found: ${mintPk.toBase58()}`);
   }
@@ -5498,7 +5533,7 @@ async function sendPreparedTransaction(tx, extraSigners = []) {
 
   const providerPk = resolveConnectedWalletPublicKey();
   tx.feePayer = providerPk;
-  const latest = await connection.getLatestBlockhash('confirmed');
+  const latest = await withRpcFallback((activeConnection) => activeConnection.getLatestBlockhash('confirmed'));
   tx.recentBlockhash = latest.blockhash;
   if (extraSigners.length) {
     tx.partialSign(...extraSigners);
@@ -5518,14 +5553,14 @@ async function sendPreparedTransaction(tx, extraSigners = []) {
 
   if (!signature && typeof walletProvider.signTransaction === 'function') {
     const signed = await walletProvider.signTransaction(tx);
-    signature = await connection.sendRawTransaction(signed.serialize(), { preflightCommitment: 'confirmed' });
+    signature = await withRpcFallback((activeConnection) => activeConnection.sendRawTransaction(signed.serialize(), { preflightCommitment: 'confirmed' }));
   }
 
   if (!signature) {
     throw new Error('Wallet provider did not return a transaction signature.');
   }
 
-  await connection.confirmTransaction({ signature, ...latest }, 'confirmed');
+  await withRpcFallback((activeConnection) => activeConnection.confirmTransaction({ signature, ...latest }, 'confirmed'));
   return signature;
 }
 
@@ -5565,7 +5600,7 @@ async function submitCreateProposalInWallet() {
     const dao = await fetchDaoDetails(daoPubkey);
     const proposalPk = deriveProposalPda(dao.pubkey, dao.proposalCount);
     const { address: proposerTokenAccount } = await deriveAssociatedTokenAddress(wallet, dao.governanceToken);
-    const proposerTokenInfo = await connection.getAccountInfo(proposerTokenAccount, 'confirmed');
+    const proposerTokenInfo = await withRpcFallback((activeConnection) => activeConnection.getAccountInfo(proposerTokenAccount, 'confirmed'));
     if (!proposerTokenInfo) {
       throw new Error('Governance token account was not found for the connected wallet');
     }
@@ -5639,7 +5674,7 @@ async function submitCreateDaoInWallet() {
       programPk
     );
 
-    const mintRent = await connection.getMinimumBalanceForRentExemption(82, 'confirmed');
+    const mintRent = await withRpcFallback((activeConnection) => activeConnection.getMinimumBalanceForRentExemption(82, 'confirmed'));
     const createMintIx = solanaWeb3.SystemProgram.createAccount({
       fromPubkey: authorityPk,
       newAccountPubkey: mintKeypair.publicKey,
@@ -6597,7 +6632,7 @@ async function loadLiveProposals() {
       <div class="proposal-card phase-commit">
         <div class="proposal-header"><span class="proposal-id">RPC ERROR</span></div>
         <div class="proposal-title">Could not load devnet proposal accounts</div>
-        <div class="proposal-desc">Check RPC access for ${DEVNET_RPC} and verify program ID ${PROGRAM_ID}.</div>
+        <div class="proposal-desc">Check RPC access for the active Devnet endpoint and verify program ID ${PROGRAM_ID}.</div>
       </div>
     `;
   }
