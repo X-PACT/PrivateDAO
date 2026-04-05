@@ -5,7 +5,7 @@
 - project: `PrivateDAO`
 - program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
-- generated at: `2026-04-04T23:44:20.011Z`
+- generated at: `2026-04-04T23:57:00.436Z`
 - acceptance decision: `repository-strong-but-external-blockers-remain`
 - accepted in repo: `8`
 - pending external: `2`
