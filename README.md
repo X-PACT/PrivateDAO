@@ -38,6 +38,57 @@ PrivateDAO is a Solana governance protocol for DAOs that want private voting wit
 
 The problem statement is simple and easy for judges to verify: public live tallies create whale pressure, vote buying, and treasury signaling. PrivateDAO removes live vote visibility while keeping the rest of the governance lifecycle inspectable, testable, and compatible with how Solana teams actually operate.
 
+## Repo Map
+
+If you want to understand the repository quickly, use this map first:
+
+- `programs/private-dao/src/lib.rs`
+  - the on-chain governance program
+- `docs/index.html`
+  - the live web governance surface
+- `tests/private-dao.ts`
+  - end-to-end behavior and lifecycle coverage
+- `scripts/`
+  - build, verification, attestation, Devnet, and reviewer automation
+- `docs/live-proof.md`
+  - canonical Devnet proof path
+- `docs/security-review.md`
+  - security reasoning and enforced boundaries
+- `docs/zk-layer.md`
+  - current Groth16 companion proof model
+- `docs/pdao-token.md`
+  - live governance token surface
+
+## What This Repo Contains
+
+PrivateDAO is not only a program repo. It contains four layers that fit together:
+
+1. Protocol layer
+   - commit, reveal, finalize, execute, veto, cancel, delegation, treasury controls
+2. Product layer
+   - wallet-connected web app
+   - Android-native path
+   - live proposal and treasury operations
+3. Cryptographic layer
+   - sha256 commitment scheme
+   - Groth16 companion proof stack
+   - on-chain proof anchors for the canonical Devnet proof path
+4. Review and operations layer
+   - generated attestations
+   - Devnet evidence
+   - runtime diagnostics
+   - release and readiness artifacts
+
+## Fast Path
+
+For the fastest useful read:
+
+1. Open the live app: `https://x-pact.github.io/PrivateDAO/`
+2. Read `docs/live-proof.md`
+3. Read `docs/security-review.md`
+4. Read `docs/zk-layer.md`
+5. Read `docs/pdao-token.md`
+
 ## Token Surface
 
 PrivateDAO now publishes a live Devnet governance voting token surface that is also the canonical governance mint for the current reviewer-facing DAO:

@@ -3031,7 +3031,12 @@ body.judge-mode .judge-banner {
         <div class="section-tag">ACTIVE GOVERNANCE</div>
         <h2 class="section-heading" style="margin-bottom:0;font-size:56px">Live Proposals</h2>
       </div>
-      <button class="btn-primary" onclick="openCommitModal(-1)">Open Commit Builder</button>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <select id="daoFilterSelect" onchange="applyDaoFilter()" style="min-width:240px;background:var(--void);border:1px solid var(--border);border-radius:999px;padding:12px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
+          <option value="all">All DAOs</option>
+        </select>
+        <button class="btn-primary" onclick="openCommitModal(-1)">Open Commit Builder</button>
+      </div>
     </div>
 
     <div class="proposals-grid reveal" id="proposalsList">
@@ -5501,6 +5506,7 @@ let currentCommitHashHex = null;
 let currentProposalId = null;
 let currentExecuteProposalPubkey = null;
 let liveProposalMap = new Map();
+let lastLoadedProposals = [];
 let daoCache = new Map();
 let currentSelectedProposalPubkey = null;
 let currentSelectedProposal = null;
@@ -5509,6 +5515,9 @@ let currentHeroDaoPubkey = null;
 let currentHeroGovernanceMint = null;
 let heroWalletReadinessRequest = 0;
 let currentHeroPhase = 'IDLE';
+let currentDaoFilter = 'all';
+let liveProposalRefreshInFlight = false;
+let liveProposalPollHandle = null;
 const proposalHistoryCache = new Map();
 const proposalHistoryInFlight = new Set();
 const SUPPORTED_WALLET_TARGETS = [
@@ -7610,6 +7619,32 @@ function updateHeroActionReadiness() {
   executeEl.textContent = executeState;
 }
 
+function shortDaoLabel(daoPubkey) {
+  return `${daoPubkey.slice(0, 4)}...${daoPubkey.slice(-4)}`;
+}
+
+function refreshDaoFilterOptions(proposals) {
+  const select = document.getElementById('daoFilterSelect');
+  if (!select) return;
+  const uniqueDaos = [...new Set(proposals.map((proposal) => proposal.dao))].sort();
+  const previous = currentDaoFilter;
+  select.innerHTML = '<option value="all">All DAOs</option>' + uniqueDaos
+    .map((dao) => `<option value="${dao}">${shortDaoLabel(dao)} · ${dao}</option>`)
+    .join('');
+  if (previous !== 'all' && uniqueDaos.includes(previous)) {
+    select.value = previous;
+  } else {
+    select.value = 'all';
+    currentDaoFilter = 'all';
+  }
+}
+
+function applyDaoFilter() {
+  const select = document.getElementById('daoFilterSelect');
+  currentDaoFilter = select?.value || 'all';
+  renderProposalList(lastLoadedProposals);
+}
+
 function selectProposal(pubkey) {
   currentSelectedProposalPubkey = pubkey;
   document.querySelectorAll('.proposal-card[data-proposal-pubkey]').forEach(card => {
@@ -7694,7 +7729,59 @@ function proposalCardHtml(p, nowTs) {
   `;
 }
 
+function renderProposalList(proposals) {
+  const list = document.getElementById('proposalsList');
+  const nowTs = Math.floor(Date.now() / 1000);
+  updateHeroStats(proposals, nowTs);
+
+  if (proposals.length === 0) {
+    list.innerHTML = `
+      <div class="proposal-card proposal-state-card phase-commit">
+        <div class="proposal-header"><span class="proposal-id">NO PROPOSALS FOUND</span></div>
+        <div class="proposal-title">No live proposals yet</div>
+        <div class="proposal-desc">Bootstrap a DAO, fund its treasury, then create the first proposal from a wallet that holds governance tokens.</div>
+        <div class="proposal-phase-copy">
+          <strong>Suggested path</strong>
+          <span>Create DAO → Deposit Treasury → Create Proposal</span>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  const filtered = currentDaoFilter === 'all'
+    ? proposals
+    : proposals.filter((proposal) => proposal.dao === currentDaoFilter);
+
+  if (filtered.length === 0) {
+    updateHeroStats([], Math.floor(Date.now() / 1000));
+    list.innerHTML = `
+      <div class="proposal-card proposal-state-card phase-commit">
+        <div class="proposal-header"><span class="proposal-id">DAO FILTER ACTIVE</span></div>
+        <div class="proposal-title">No live proposals for the selected DAO</div>
+        <div class="proposal-desc">The current DAO filter does not match any live proposal accounts. Switch back to <strong>All DAOs</strong> or pick a different DAO.</div>
+        <div class="proposal-phase-copy">
+          <strong>Current filter</strong>
+          <span>${currentDaoFilter === 'all' ? 'All DAOs' : currentDaoFilter}</span>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  list.innerHTML = filtered.slice(0, 12).map((proposal) => proposalCardHtml(proposal, nowTs)).join("");
+  const requestedProposal = new URLSearchParams(window.location.search).get('proposal');
+  const preferred = requestedProposal && liveProposalMap.has(requestedProposal) && filtered.some((proposal) => proposal.pubkey === requestedProposal)
+    ? requestedProposal
+    : currentSelectedProposalPubkey && liveProposalMap.has(currentSelectedProposalPubkey) && filtered.some((proposal) => proposal.pubkey === currentSelectedProposalPubkey)
+      ? currentSelectedProposalPubkey
+      : filtered[0].pubkey;
+  selectProposal(preferred);
+}
+
 async function loadLiveProposals() {
+  if (liveProposalRefreshInFlight) return;
+  liveProposalRefreshInFlight = true;
   const list = document.getElementById('proposalsList');
   try {
     const accounts = await withRpcFallback((activeConnection) => activeConnection.getProgramAccounts(programPk));
@@ -7707,33 +7794,10 @@ async function loadLiveProposals() {
     }
 
     proposals.sort((a, b) => b.proposalId - a.proposalId);
-    liveProposalMap = new Map(proposals.map(p => [p.pubkey, p]));
-    const nowSlot = await withRpcFallback((activeConnection) => activeConnection.getSlot("confirmed"));
-    const nowTs = (await withRpcFallback((activeConnection) => activeConnection.getBlockTime(nowSlot))) || Math.floor(Date.now() / 1000);
-    updateHeroStats(proposals, nowTs);
-
-    if (proposals.length === 0) {
-      list.innerHTML = `
-        <div class="proposal-card proposal-state-card phase-commit">
-          <div class="proposal-header"><span class="proposal-id">NO PROPOSALS FOUND</span></div>
-          <div class="proposal-title">No live proposals yet</div>
-          <div class="proposal-desc">Bootstrap a DAO, fund its treasury, then create the first proposal from a wallet that holds governance tokens.</div>
-          <div class="proposal-phase-copy">
-            <strong>Suggested path</strong>
-            <span>Create DAO → Deposit Treasury → Create Proposal</span>
-          </div>
-        </div>
-      `;
-      return;
-    }
-    list.innerHTML = proposals.slice(0, 12).map(p => proposalCardHtml(p, nowTs)).join("");
-    const requestedProposal = new URLSearchParams(window.location.search).get('proposal');
-    const preferred = requestedProposal && liveProposalMap.has(requestedProposal)
-      ? requestedProposal
-      : currentSelectedProposalPubkey && liveProposalMap.has(currentSelectedProposalPubkey)
-      ? currentSelectedProposalPubkey
-      : proposals[0].pubkey;
-    selectProposal(preferred);
+    liveProposalMap = new Map(proposals.map((proposal) => [proposal.pubkey, proposal]));
+    lastLoadedProposals = proposals;
+    refreshDaoFilterOptions(proposals);
+    renderProposalList(proposals);
   } catch (e) {
     updateHeroStats([], Math.floor(Date.now() / 1000));
     list.innerHTML = `
@@ -7747,6 +7811,8 @@ async function loadLiveProposals() {
         </div>
       </div>
     `;
+  } finally {
+    liveProposalRefreshInFlight = false;
   }
 }
 
@@ -8039,13 +8105,33 @@ syncDelegatedCommitCommand();
 
 updateDeploymentSnapshot();
 loadLiveProposals();
-setInterval(updateDeploymentSnapshot, 30_000);
-setInterval(loadLiveProposals, 30_000);
+setInterval(updateDeploymentSnapshot, 60_000);
+
+function scheduleLiveProposalPolling() {
+  if (liveProposalPollHandle) clearInterval(liveProposalPollHandle);
+  const intervalMs = document.visibilityState === 'visible' ? 45_000 : 120_000;
+  liveProposalPollHandle = setInterval(() => {
+    if (document.visibilityState !== 'visible' && currentPageKey() !== 'proposals') return;
+    loadLiveProposals();
+  }, intervalMs);
+}
+
+scheduleLiveProposalPolling();
+document.addEventListener('visibilitychange', () => {
+  scheduleLiveProposalPolling();
+  if (document.visibilityState === 'visible') {
+    loadLiveProposals();
+    if (currentPageKey() === 'diagnostics') {
+      updateDiagnostics();
+    }
+  }
+});
+
 setInterval(() => {
-  if (currentPageKey() === 'diagnostics') {
+  if (currentPageKey() === 'diagnostics' && document.visibilityState === 'visible') {
     updateDiagnostics();
   }
-}, 30_000);
+}, 60_000);
 hydrateWalletSession().catch(() => {});
 document.addEventListener('click', () => closeWalletPanel());
 refreshWalletProviderStates();
