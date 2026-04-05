@@ -1,11 +1,34 @@
 {
   "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
-  "deployTx": "2FTRdNt2e1AXqPBwYReDiaNHjRZF2N7VtQeF17Ue56S7UoJPqZQxZ5gi32fRvAgE7ToE636EaDkanEoZvvcin9pD",
+  "deployTx": "2CMEujY1CKnC8rH8BuLy4GvwYk3zfqMfAKaUjybcAvRhS1dnzg3Zd3GeMttBp4vkUbu69GkQtr3TWgbmBqGY8cyC",
   "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
   "dao": "FZV9KmpeY1B31XvszQypp5T6nQN5C44JDLM4QWBEDvhx",
   "governanceMint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
   "treasury": "AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c",
   "proposal": "AegjmwkX1FknBJMDyH5yM6BMhyHsiUreNtz3d8iz3QrP",
+  "zkProofAnchors": {
+    "proposal": "AegjmwkX1FknBJMDyH5yM6BMhyHsiUreNtz3d8iz3QrP",
+    "entries": [
+      {
+        "layer": "vote",
+        "anchorPda": "8EgyYXAmwfSUyDPVJYZCykXQrLx84BhGAyKUSSzEapah",
+        "txSignature": "3L6SHDNuziEXQiiAWjega4UbjURkWpzYVG5kRKr4YWAekp1AdTvriMqNAtyRchNpzKstEPMp6cmDidFLRx8XDgfP",
+        "explorerUrl": "https://explorer.solana.com/tx/3L6SHDNuziEXQiiAWjega4UbjURkWpzYVG5kRKr4YWAekp1AdTvriMqNAtyRchNpzKstEPMp6cmDidFLRx8XDgfP?cluster=devnet"
+      },
+      {
+        "layer": "delegation",
+        "anchorPda": "GjSFBi3ic7iMxEmMjX3SKrMW1fuZASsJoFSJedxbMmN5",
+        "txSignature": "4nYrBo57V6fCueyu44Jm9XeSA15ti9G6n1ZQXG9AbsdT4e5JJa9vFdmdjpK6Snd27eJNwUSaNaCWWWt3bndTca3X",
+        "explorerUrl": "https://explorer.solana.com/tx/4nYrBo57V6fCueyu44Jm9XeSA15ti9G6n1ZQXG9AbsdT4e5JJa9vFdmdjpK6Snd27eJNwUSaNaCWWWt3bndTca3X?cluster=devnet"
+      },
+      {
+        "layer": "tally",
+        "anchorPda": "D7dCMXF7sfHnGVjnJHdataUFMZ1C9eF778uxthvtguuj",
+        "txSignature": "WTt8i2v1FWitQG2yye28CVCVWVeKvMA7c3D9wm4Upkbf2keK8ae8FXaGK95FaDjnmfJB3L7evBCMtoJrfC3EUrV",
+        "explorerUrl": "https://explorer.solana.com/tx/WTt8i2v1FWitQG2yye28CVCVWVeKvMA7c3D9wm4Upkbf2keK8ae8FXaGK95FaDjnmfJB3L7evBCMtoJrfC3EUrV?cluster=devnet"
+      }
+    ]
+  },
   "pdaoToken": {
     "mint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
     "programId": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",

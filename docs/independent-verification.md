@@ -339,7 +339,7 @@ The repository already includes real devnet proof in:
 
 Example transaction hashes:
 
-- deploy: `2FTRdNt2e1AXqPBwYReDiaNHjRZF2N7VtQeF17Ue56S7UoJPqZQxZ5gi32fRvAgE7ToE636EaDkanEoZvvcin9pD`
+- deploy: `2CMEujY1CKnC8rH8BuLy4GvwYk3zfqMfAKaUjybcAvRhS1dnzg3Zd3GeMttBp4vkUbu69GkQtr3TWgbmBqGY8cyC`
 - create-dao: `5mcyVi3SbZo4hvpVMjH2eZH8FYeywdbbPz4ArmE5wHXH5X9EnP6gSq76ogBWYWVkVUwzrCchPnSdhGV1mFb48s5Q`
 - create-proposal: `E93ikMXVJbtvz8ewAHA2BasZPVKYyUXe3Jy88h3b3AQubm7PSYFMNtDveBkRts7uYodwzb8cGZSVDoneKF16X2L`
 - commit: `3RMbrcYGx297hgcTrov9PqtUqM97ZFg6A21qxmepTboLQAoXov6toY2QTa8yU1i8zmQPvjR3ArNGpvR3jat79uTP`

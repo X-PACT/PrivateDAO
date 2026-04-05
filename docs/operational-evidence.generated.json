@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-05T13:23:44.359Z",
+  "generatedAt": "2026-04-05T17:47:21.135Z",
   "network": "devnet",
   "runLabels": {
     "canonical": "20260404110609",
@@ -43,6 +43,8 @@
   "zk": {
     "verificationMode": "offchain-groth16",
     "onchainVerifier": false,
+    "onchainAnchorCount": 3,
+    "onchainAnchorProposal": "AegjmwkX1FknBJMDyH5yM6BMhyHsiUreNtz3d8iz3QrP",
     "proofCount": 7,
     "verifiedProofCount": 7,
     "layerCounts": {

@@ -139,6 +139,47 @@ describe("PrivateDAO", () => {
     console.log("  ✓ Token holder created proposal");
   });
 
+  it("anchors proposal-bound zk proof material on-chain", async () => {
+    const [zkAnchorPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("zk-proof"), proposalPda.toBuffer(), Buffer.from([1])],
+      program.programId,
+    );
+
+    const proofHash = [...crypto.randomBytes(32)];
+    const publicInputsHash = [...crypto.randomBytes(32)];
+    const verificationKeyHash = [...crypto.randomBytes(32)];
+    const bundleHash = [...crypto.randomBytes(32)];
+
+    await program.methods
+      .anchorZkProof(
+        { vote: {} },
+        { groth16: {} },
+        proofHash,
+        publicInputsHash,
+        verificationKeyHash,
+        bundleHash,
+      )
+      .accounts({
+        dao: daoPda,
+        proposal: proposalPda,
+        zkProofAnchor: zkAnchorPda,
+        recorder: voter1.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([voter1])
+      .rpc();
+
+    const anchorAccount = await program.account["zkProofAnchor"].fetch(zkAnchorPda);
+    assert.equal(anchorAccount.dao.toBase58(), daoPda.toBase58());
+    assert.equal(anchorAccount.proposal.toBase58(), proposalPda.toBase58());
+    assert.equal(anchorAccount.recordedBy.toBase58(), voter1.publicKey.toBase58());
+    assert.deepEqual(anchorAccount.proofHash, proofHash);
+    assert.deepEqual(anchorAccount.publicInputsHash, publicInputsHash);
+    assert.deepEqual(anchorAccount.verificationKeyHash, verificationKeyHash);
+    assert.deepEqual(anchorAccount.bundleHash, bundleHash);
+    console.log("  ✓ zk proof anchor recorded on-chain");
+  });
+
   it("rejects invalid treasury action configuration", async () => {
     const dao = await program.account["dao"].fetch(daoPda);
     const [invalidProposalPda] = PublicKey.findProgramAddressSync(

@@ -250,7 +250,12 @@ function main() {
     network: string;
     transactionSummary: { walletCount: number; totalTxCount: number };
     voting: { fullLifecycleReport: string; txRegistry: string };
-    zk: { verificationMode: string; proofCount: number };
+    zk: {
+      verificationMode: string;
+      proofCount: number;
+      onchainAnchorCount: number;
+      onchainAnchorProposal: string | null;
+    };
     adversarial: { totalScenarios: number; unexpectedSuccesses: number };
     resilience: { failoverRecovered: boolean; staleBlockhashRecovered: boolean };
     collisions: { finalizeSingleWinner: boolean; executeSingleWinner: boolean };
@@ -386,6 +391,15 @@ function main() {
   const zkProofRegistry = JSON.parse(fs.readFileSync(zkProofRegistryPath, "utf8")) as {
     verification_mode: string;
     entries: Array<{ layer: string; proof_hash: string; public_inputs_hash: string }>;
+    onchain_proof_anchors?: {
+      proposal_public_key: string;
+      entries: Array<{
+        layer: string;
+        anchor_pda: string;
+        tx_signature: string;
+        explorer_url: string;
+      }>;
+    };
   };
   const performanceMetrics = JSON.parse(fs.readFileSync(performanceMetricsPath, "utf8")) as {
     walletCount: number;
@@ -509,6 +523,16 @@ function main() {
 
   if (!zkProofRegistry.entries.every((entry) => entry.proof_hash && entry.public_inputs_hash)) {
     throw new Error("zk proof registry entries are incomplete");
+  }
+
+  if (
+    !zkProofRegistry.onchain_proof_anchors ||
+    zkProofRegistry.onchain_proof_anchors.entries.length < 3 ||
+    !zkProofRegistry.onchain_proof_anchors.entries.every(
+      (entry: { tx_signature: string; anchor_pda: string }) => entry.tx_signature && entry.anchor_pda
+    )
+  ) {
+    throw new Error("zk proof registry is missing on-chain proof anchors");
   }
 
   if (performanceMetrics.walletCount !== 50 || performanceMetrics.totalTxCount < 40 || performanceMetrics.totalAttemptCount < 50) {
@@ -1106,7 +1130,11 @@ function main() {
     throw new Error("generated operational evidence voting references are invalid");
   }
 
-  if (operationalEvidence.zk.verificationMode !== "offchain-groth16" || operationalEvidence.zk.proofCount < 1) {
+  if (
+    operationalEvidence.zk.verificationMode !== "offchain-groth16" ||
+    operationalEvidence.zk.proofCount < 1 ||
+    operationalEvidence.zk.onchainAnchorCount < 3
+  ) {
     throw new Error("generated operational evidence zk summary is invalid");
   }
 

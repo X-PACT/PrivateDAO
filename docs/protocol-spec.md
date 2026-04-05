@@ -387,5 +387,5 @@ Keeper note:
 
 - this specification reflects the current repository behavior, not an aspirational redesign
 - commit-reveal hides vote content, not timing metadata
-- the zk layer is off-chain today and is not yet an on-chain verifier integration
+- Groth16 proof generation and verification remain off-chain today, while proposal-bound zk proof anchors are now written on-chain for the canonical Devnet path; this is still not an on-chain verifier integration
 - no external audit is claimed by this document

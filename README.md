@@ -116,7 +116,7 @@ The current review surface is intentionally explicit about a few points that are
 - Browser-native commit flows generate salts in memory and ask the voter to save or export them. They are not persisted in `localStorage` or `sessionStorage`.
 - Replay protection is proposal-scoped through proposal-bound commitments, `VoteRecord` PDA binding, reveal account binding, and lifecycle flags. The current commitment preimage is `sha256(vote_byte || salt_32 || proposal_pubkey_32 || voter_pubkey_32)`.
 - Reveal rebate comes from the proposal account only when that account remains rent-safe. The treasury is not the rebate source.
-- The current Groth16 proof stack is additive and off-chain today. The deployed on-chain program remains the enforcement boundary.
+- The current Groth16 proof stack still generates and verifies proofs off-chain, while proposal-bound zk proof anchors are now recorded on-chain for the canonical Devnet governance flow. The deployed on-chain program remains the enforcement boundary.
 
 ## Why PrivateDAO Exists
 

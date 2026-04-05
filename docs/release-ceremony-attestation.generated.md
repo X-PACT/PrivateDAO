@@ -2,12 +2,12 @@
 
 ## Overview
 
-- Generated at: `2026-04-05T15:14:33+02:00`
-- Release commit: `063cec134027894456ef75f73f80c2c9f7feee2e`
+- Generated at: `2026-04-05T18:51:11+02:00`
+- Release commit: `796128f7deb8fe3a4a70e261dc5833bfee7ef752`
 - Release branch: `main`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
-- Deploy transaction: `2FTRdNt2e1AXqPBwYReDiaNHjRZF2N7VtQeF17Ue56S7UoJPqZQxZ5gi32fRvAgE7ToE636EaDkanEoZvvcin9pD`
+- Deploy transaction: `2CMEujY1CKnC8rH8BuLy4GvwYk3zfqMfAKaUjybcAvRhS1dnzg3Zd3GeMttBp4vkUbu69GkQtr3TWgbmBqGY8cyC`
 
 ## Anchors
 

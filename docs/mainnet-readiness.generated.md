@@ -7,7 +7,7 @@ This report is generated from the canonical PrivateDAO registries and reviewer a
 - Project: `PrivateDAO`
 - Program ID: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
-- Deploy transaction: `2FTRdNt2e1AXqPBwYReDiaNHjRZF2N7VtQeF17Ue56S7UoJPqZQxZ5gi32fRvAgE7ToE636EaDkanEoZvvcin9pD`
+- Deploy transaction: `2CMEujY1CKnC8rH8BuLy4GvwYk3zfqMfAKaUjybcAvRhS1dnzg3Zd3GeMttBp4vkUbu69GkQtr3TWgbmBqGY8cyC`
 - DAO PDA: `FZV9KmpeY1B31XvszQypp5T6nQN5C44JDLM4QWBEDvhx`
 - Governance mint: `AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt`
 - Treasury PDA: `AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c`
@@ -57,7 +57,7 @@ This report is generated from the canonical PrivateDAO registries and reviewer a
 - ZK layer count: `3`
 - Integrity algorithm: `sha256`
 - Integrity entries: `79`
-- Integrity aggregate sha256: `0f13c3ca24f083341ed816db50a67e7e0060530a27e217af09cd5847cdc991de`
+- Integrity aggregate sha256: `b0c0d9ba0e0d37033dd3c02b86f925d9a3a7fc8cd0ee688eac9ba7a346dce931`
 
 ## Mainnet Conclusion
 

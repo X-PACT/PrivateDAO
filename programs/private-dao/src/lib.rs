@@ -676,8 +676,14 @@ pub mod private_dao {
                         treasury_token_account.owner == ctx.accounts.treasury.key(),
                         Error::InvalidTreasuryTokenAuthority
                     );
-                    require!(treasury_token_account.mint == action_mint, Error::InvalidTokenMint);
-                    require!(recipient_token_account.mint == action_mint, Error::InvalidTokenMint);
+                    require!(
+                        treasury_token_account.mint == action_mint,
+                        Error::InvalidTokenMint
+                    );
+                    require!(
+                        recipient_token_account.mint == action_mint,
+                        Error::InvalidTokenMint
+                    );
                     require!(
                         ctx.accounts.treasury_token_account.key()
                             != ctx.accounts.recipient_token_account.key(),
@@ -772,6 +778,65 @@ pub mod private_dao {
             0
         })
     }
+
+    // ── ZK proof anchor ──────────────────────────────────────────────────────
+    //
+    // Records a proposal-bound zk proof anchor on-chain without changing the
+    // live governance lifecycle semantics. This makes the proof surface
+    // visible on Solscan and binds proof/public/vkey/bundle hashes to a real
+    // DAO proposal.
+
+    pub fn anchor_zk_proof(
+        ctx: Context<AnchorZkProof>,
+        layer: ZkProofLayer,
+        proof_system: ZkProofSystem,
+        proof_hash: [u8; 32],
+        public_inputs_hash: [u8; 32],
+        verification_key_hash: [u8; 32],
+        bundle_hash: [u8; 32],
+    ) -> Result<()> {
+        let recorder = ctx.accounts.recorder.key();
+        require!(
+            recorder == ctx.accounts.dao.authority || recorder == ctx.accounts.proposal.proposer,
+            Error::UnauthorizedZkAnchor
+        );
+        require!(!is_zero_hash(&proof_hash), Error::InvalidZkArtifactHash);
+        require!(
+            !is_zero_hash(&public_inputs_hash),
+            Error::InvalidZkArtifactHash
+        );
+        require!(
+            !is_zero_hash(&verification_key_hash),
+            Error::InvalidZkArtifactHash
+        );
+        require!(!is_zero_hash(&bundle_hash), Error::InvalidZkArtifactHash);
+
+        let anchor = &mut ctx.accounts.zk_proof_anchor;
+        anchor.dao = ctx.accounts.dao.key();
+        anchor.proposal = ctx.accounts.proposal.key();
+        anchor.recorded_by = recorder;
+        anchor.layer = layer.clone();
+        anchor.proof_system = proof_system.clone();
+        anchor.proof_hash = proof_hash;
+        anchor.public_inputs_hash = public_inputs_hash;
+        anchor.verification_key_hash = verification_key_hash;
+        anchor.bundle_hash = bundle_hash;
+        anchor.recorded_at = Clock::get()?.unix_timestamp;
+        anchor.bump = ctx.bumps.zk_proof_anchor;
+
+        emit!(ZkProofAnchored {
+            dao: anchor.dao,
+            proposal: anchor.proposal,
+            recorded_by: anchor.recorded_by,
+            layer,
+            proof_system,
+            proof_hash,
+            public_inputs_hash,
+            verification_key_hash,
+            bundle_hash,
+        });
+        Ok(())
+    }
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -808,6 +873,10 @@ fn compute_vote_commitment(
 
 fn account_exists(info: &AccountInfo) -> bool {
     info.lamports() > 0
+}
+
+fn is_zero_hash(hash: &[u8; 32]) -> bool {
+    hash.iter().all(|byte| *byte == 0)
 }
 
 fn parse_token_account(info: &AccountInfo, expected_program: &Pubkey) -> Result<TokenAccount> {
@@ -1154,6 +1223,29 @@ pub struct GetVoterWeightRecord<'info> {
     pub voter: AccountInfo<'info>,
 }
 
+#[derive(Accounts)]
+#[instruction(layer: ZkProofLayer)]
+pub struct AnchorZkProof<'info> {
+    pub dao: Account<'info, Dao>,
+    #[account(
+        has_one = dao,
+        seeds = [b"proposal", dao.key().as_ref(), proposal.proposal_id.to_le_bytes().as_ref()],
+        bump = proposal.bump
+    )]
+    pub proposal: Account<'info, Proposal>,
+    #[account(
+        init,
+        payer = recorder,
+        space = ZkProofAnchor::LEN,
+        seeds = [b"zk-proof", proposal.key().as_ref(), &[layer.seed_byte()]],
+        bump
+    )]
+    pub zk_proof_anchor: Account<'info, ZkProofAnchor>,
+    #[account(mut)]
+    pub recorder: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
 // ── State ─────────────────────────────────────────────────────────────────────
 
 #[account]
@@ -1274,6 +1366,25 @@ impl VoterWeightRecord {
     pub const LEN: usize = 8 + 32 + 32 + 32 + 8 + 9 + 2 + 33 + 8; // = 164
 }
 
+#[account]
+pub struct ZkProofAnchor {
+    pub dao: Pubkey,                     // 32
+    pub proposal: Pubkey,                // 32
+    pub recorded_by: Pubkey,             // 32
+    pub layer: ZkProofLayer,             // 1
+    pub proof_system: ZkProofSystem,     // 1
+    pub proof_hash: [u8; 32],            // 32
+    pub public_inputs_hash: [u8; 32],    // 32
+    pub verification_key_hash: [u8; 32], // 32
+    pub bundle_hash: [u8; 32],           // 32
+    pub recorded_at: i64,                // 8
+    pub bump: u8,                        // 1
+}
+
+impl ZkProofAnchor {
+    pub const LEN: usize = 8 + 32 + 32 + 32 + 1 + 1 + 32 + 32 + 32 + 32 + 8 + 1; // 243
+}
+
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
@@ -1308,6 +1419,28 @@ pub enum TreasuryActionType {
     SendSol,
     SendToken,
     CustomCPI,
+}
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
+pub enum ZkProofLayer {
+    Vote,
+    Delegation,
+    Tally,
+}
+
+impl ZkProofLayer {
+    pub fn seed_byte(&self) -> u8 {
+        match self {
+            Self::Vote => 1,
+            Self::Delegation => 2,
+            Self::Tally => 3,
+        }
+    }
+}
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
+pub enum ZkProofSystem {
+    Groth16,
 }
 
 // ── Events ────────────────────────────────────────────────────────────────────
@@ -1397,6 +1530,19 @@ pub struct TreasuryExecuted {
     pub proposal: Pubkey,
     pub amount: u64,
     pub recipient: Pubkey,
+}
+
+#[event]
+pub struct ZkProofAnchored {
+    pub dao: Pubkey,
+    pub proposal: Pubkey,
+    pub recorded_by: Pubkey,
+    pub layer: ZkProofLayer,
+    pub proof_system: ZkProofSystem,
+    pub proof_hash: [u8; 32],
+    pub public_inputs_hash: [u8; 32],
+    pub verification_key_hash: [u8; 32],
+    pub bundle_hash: [u8; 32],
 }
 
 // ── Errors ────────────────────────────────────────────────────────────────────
@@ -1491,4 +1637,8 @@ pub enum Error {
     DirectVoteAlreadyCommitted,
     #[msg("CustomCPI actions are reserved and not executable in the current release")]
     UnsupportedTreasuryAction,
+    #[msg("Only the DAO authority or proposal proposer may anchor zk proof material")]
+    UnauthorizedZkAnchor,
+    #[msg("ZK proof anchor hashes must be non-zero")]
+    InvalidZkArtifactHash,
 }

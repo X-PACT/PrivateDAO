@@ -5,8 +5,8 @@ This note captures a real end-to-end governance run executed on Solana devnet fr
 ## Program Deployment
 
 - Program ID: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
-- Deploy transaction: `2FTRdNt2e1AXqPBwYReDiaNHjRZF2N7VtQeF17Ue56S7UoJPqZQxZ5gi32fRvAgE7ToE636EaDkanEoZvvcin9pD`
-- Deploy explorer: `https://solscan.io/tx/2FTRdNt2e1AXqPBwYReDiaNHjRZF2N7VtQeF17Ue56S7UoJPqZQxZ5gi32fRvAgE7ToE636EaDkanEoZvvcin9pD?cluster=devnet`
+- Deploy transaction: `2CMEujY1CKnC8rH8BuLy4GvwYk3zfqMfAKaUjybcAvRhS1dnzg3Zd3GeMttBp4vkUbu69GkQtr3TWgbmBqGY8cyC`
+- Deploy explorer: `https://solscan.io/tx/2CMEujY1CKnC8rH8BuLy4GvwYk3zfqMfAKaUjybcAvRhS1dnzg3Zd3GeMttBp4vkUbu69GkQtr3TWgbmBqGY8cyC?cluster=devnet`
 
 ## Live Governance Cycle
 
@@ -43,6 +43,17 @@ The canonical reviewer-facing Devnet DAO now uses `PDAO` itself as the actual on
 - Explorer: `https://solscan.io/tx/4JSPRJQuSY5es74TcChBTzuGMMCr4RknHkmr6vFmtmbav4TRABDAnapmtgipYioEZzh4wmKfg2PMzZHCfJ7UruLG?cluster=devnet`
 - `execute`: `x1vhP6H3Regi6WHYx6LUGbeo4CCbJxWwtUVucPVjonnymyccpM8mpb7t3UpQpqksXBU7PYGPd86cPnZLYwRzBn9`
 - Explorer: `https://solscan.io/tx/x1vhP6H3Regi6WHYx6LUGbeo4CCbJxWwtUVucPVjonnymyccpM8mpb7t3UpQpqksXBU7PYGPd86cPnZLYwRzBn9?cluster=devnet`
+
+## ZK Proof Anchors On Devnet
+
+The current Groth16 stack still generates and verifies proofs off-chain, but the proof material is now also anchored on-chain against the canonical governance proposal. Solscan can therefore show real proposal-bound zk proof transactions on Devnet today.
+
+- `zk-anchor-vote`: `3L6SHDNuziEXQiiAWjega4UbjURkWpzYVG5kRKr4YWAekp1AdTvriMqNAtyRchNpzKstEPMp6cmDidFLRx8XDgfP`
+- Explorer: `https://explorer.solana.com/tx/3L6SHDNuziEXQiiAWjega4UbjURkWpzYVG5kRKr4YWAekp1AdTvriMqNAtyRchNpzKstEPMp6cmDidFLRx8XDgfP?cluster=devnet`
+- `zk-anchor-delegation`: `4nYrBo57V6fCueyu44Jm9XeSA15ti9G6n1ZQXG9AbsdT4e5JJa9vFdmdjpK6Snd27eJNwUSaNaCWWWt3bndTca3X`
+- Explorer: `https://explorer.solana.com/tx/4nYrBo57V6fCueyu44Jm9XeSA15ti9G6n1ZQXG9AbsdT4e5JJa9vFdmdjpK6Snd27eJNwUSaNaCWWWt3bndTca3X?cluster=devnet`
+- `zk-anchor-tally`: `WTt8i2v1FWitQG2yye28CVCVWVeKvMA7c3D9wm4Upkbf2keK8ae8FXaGK95FaDjnmfJB3L7evBCMtoJrfC3EUrV`
+- Explorer: `https://explorer.solana.com/tx/WTt8i2v1FWitQG2yye28CVCVWVeKvMA7c3D9wm4Upkbf2keK8ae8FXaGK95FaDjnmfJB3L7evBCMtoJrfC3EUrV?cluster=devnet`
 
 ## Observed Invariants
 

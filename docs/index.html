@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PrivateDAO — Private Governance on Solana</title>
-<meta name="description" content="PrivateDAO is a production-minded Solana governance system with commit-reveal voting, Devnet proof, and hardened reviewer-visible security surfaces.">
+<meta name="description" content="PrivateDAO is a production-minded Solana governance product with commit-reveal voting, Devnet execution, and layered runtime and security depth.">
 <meta property="og:title" content="PrivateDAO — Private Governance on Solana">
-<meta property="og:description" content="PrivateDAO is a production-minded Solana governance system with commit-reveal voting, Devnet proof, and hardened reviewer-visible security surfaces.">
+<meta property="og:description" content="PrivateDAO is a production-minded Solana governance product with commit-reveal voting, Devnet execution, and layered runtime and security depth.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="assets/social-preview.svg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="PrivateDAO — Private Governance on Solana">
-<meta name="twitter:description" content="PrivateDAO is a production-minded Solana governance system with commit-reveal voting, Devnet proof, and hardened reviewer-visible security surfaces.">
+<meta name="twitter:description" content="PrivateDAO is a production-minded Solana governance product with commit-reveal voting, Devnet execution, and layered runtime and security depth.">
 <meta name="twitter:image" content="assets/social-preview.svg">
 <script src="assets/vendor/solana-web3.iife.min.js"></script>
 <style>
@@ -2569,12 +2569,12 @@ body.judge-mode .judge-banner {
       </div>
       <div class="nav-links">
         <button class="nav-link active" onclick="showPage('proposals',this)">Proposals</button>
-        <button class="nav-link" onclick="showPage('proof',this)">Proof Center</button>
+        <button class="nav-link" onclick="showPage('proof',this)">Trust Layer</button>
         <button class="nav-link" onclick="enterJudgeMode()">Review Mode</button>
         <button class="nav-link" onclick="showPage('protocol',this)">Protocol</button>
         <button class="nav-link" onclick="showPage('migrate',this)">Migrate from Realms</button>
         <button class="nav-link" onclick="showPage('security',this)">Security</button>
-        <button class="nav-link" onclick="showPage('diagnostics',this); updateDiagnostics()">Diagnostics</button>
+        <button class="nav-link" onclick="showPage('diagnostics',this); updateDiagnostics()">Runtime Panel</button>
         <button class="nav-link" onclick="openDocument('zk-layer.md','ZK Layer',this)">ZK Layer</button>
         <button class="nav-link" onclick="openDocument('android-native.md','Android Native',this)">Android Native</button>
       </div>
@@ -2685,11 +2685,11 @@ body.judge-mode .judge-banner {
     <div>
       <div class="judge-banner-title">Review Mode</div>
       <div class="judge-banner-copy">
-        This focused surface keeps the path tight: live program, live proof, runtime evidence, and the current governance execution flow.
+        This focused surface keeps the path tight: live program, live execution, runtime depth, and the current governance workflow.
       </div>
     </div>
     <div class="judge-banner-actions">
-      <button class="proposal-proof-link" type="button" onclick="showPage('proof', findNavButton('proof'))">Open Proof Center</button>
+      <button class="proposal-proof-link" type="button" onclick="showPage('proof', findNavButton('proof'))">Open Trust Layer</button>
       <a class="award-link" href="live-proof.md" target="_blank">Open Live Proof</a>
       <button class="proposal-proof-link" type="button" onclick="copyJudgeModeLink()">Copy Judge Link</button>
       <button class="proposal-proof-link" type="button" onclick="exitJudgeMode()">Exit Review Mode</button>
@@ -3184,12 +3184,12 @@ body.judge-mode .judge-banner {
         <div class="execute-surface-panel">
           <div class="award-meta-card-label">VERIFY ELSEWHERE</div>
           <div style="color:var(--text2);line-height:1.8">
-            Keep reviewer evidence and operational diagnostics in their own surfaces so the core product flow stays fast, readable, and safe to operate.
+            Keep runtime depth and security evidence in their own surfaces so the core product flow stays fast, readable, and safe to operate.
           </div>
           <div class="award-links" style="margin-top:14px">
-            <button class="proposal-proof-link" type="button" onclick="showPage('proof', findNavButton('proof'))">Proof Center</button>
+            <button class="proposal-proof-link" type="button" onclick="showPage('proof', findNavButton('proof'))">Trust Layer</button>
             <button class="proposal-proof-link" type="button" onclick="showPage('security', findNavButton('security'))">Security</button>
-            <a class="award-link" href="?page=diagnostics" target="_blank" data-bypass-doc-viewer="1">Diagnostics</a>
+            <a class="award-link" href="?page=diagnostics" target="_blank" data-bypass-doc-viewer="1">Runtime Panel</a>
           </div>
         </div>
       </div>
@@ -3218,9 +3218,9 @@ body.judge-mode .judge-banner {
 <div class="page" id="page-proof">
 <section class="section" style="padding-top:140px">
   <div class="container">
-    <div class="section-tag reveal">PROOF CENTER</div>
+    <div class="section-tag reveal">TRUST LAYER</div>
     <div class="section-heading-row reveal">
-      <h2 class="section-heading" style="margin-bottom:0">Operational proof, security reasoning,<br>and release evidence.</h2>
+      <h2 class="section-heading" style="margin-bottom:0">Runtime depth, security reasoning,<br>and release evidence.</h2>
       <div class="zk-mini-badge">🔒 ZK Companion</div>
     </div>
 
@@ -3247,7 +3247,7 @@ body.judge-mode .judge-banner {
         <div>
           <div class="award-detail-title">Depth without losing the product path</div>
           <p class="award-detail-copy">
-            Proof Center is the second layer of the product. Use it when you need runtime evidence, trust reasoning, and release depth without pushing that density back into the main governance workspace.
+            Trust Layer is the second layer of the product. Use it when you need runtime evidence, trust reasoning, and release depth without pushing that density back into the main governance workspace.
           </p>
         </div>
         <div class="award-pill">PRODUCT DEPTH</div>
@@ -3262,7 +3262,7 @@ body.judge-mode .judge-banner {
             <a class="award-link" href="?page=proof&judge=1" target="_blank">Review Surface</a>
             <a class="award-link" href="https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet" target="_blank">Program on Solscan</a>
             <a class="award-link" href="live-proof.md" target="_blank">Live Devnet Proof</a>
-            <a class="award-link" href="?page=diagnostics" target="_blank" data-bypass-doc-viewer="1">Wallet Diagnostics</a>
+            <a class="award-link" href="?page=diagnostics" target="_blank" data-bypass-doc-viewer="1">Runtime Panel</a>
             <a class="award-link" href="devnet-release-manifest.md" target="_blank">Release Manifest</a>
           </div>
         </div>
@@ -3386,8 +3386,8 @@ body.judge-mode .judge-banner {
         <div class="proposal-command-box">
           <div class="proposal-detail-label">DEPLOY</div>
           <div style="color:var(--text2);line-height:1.8">Program deployment on Solana devnet.</div>
-          <code>2FTRdNt2e1AXqPBwYReDiaNHjRZF2N7VtQeF17Ue56S7UoJPqZQxZ5gi32fRvAgE7ToE636EaDkanEoZvvcin9pD</code>
-          <div style="margin-top:14px"><a class="award-link" href="https://solscan.io/tx/2FTRdNt2e1AXqPBwYReDiaNHjRZF2N7VtQeF17Ue56S7UoJPqZQxZ5gi32fRvAgE7ToE636EaDkanEoZvvcin9pD?cluster=devnet" target="_blank">Open Deploy TX</a></div>
+          <code>2CMEujY1CKnC8rH8BuLy4GvwYk3zfqMfAKaUjybcAvRhS1dnzg3Zd3GeMttBp4vkUbu69GkQtr3TWgbmBqGY8cyC</code>
+          <div style="margin-top:14px"><a class="award-link" href="https://explorer.solana.com/tx/2CMEujY1CKnC8rH8BuLy4GvwYk3zfqMfAKaUjybcAvRhS1dnzg3Zd3GeMttBp4vkUbu69GkQtr3TWgbmBqGY8cyC?cluster=devnet" target="_blank">Open Deploy TX</a></div>
         </div>
         <div class="proposal-command-box">
           <div class="proposal-detail-label">CREATE DAO</div>
@@ -3425,6 +3425,18 @@ body.judge-mode .judge-banner {
           <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px">
             <a class="award-link" href="https://solscan.io/tx/4JSPRJQuSY5es74TcChBTzuGMMCr4RknHkmr6vFmtmbav4TRABDAnapmtgipYioEZzh4wmKfg2PMzZHCfJ7UruLG?cluster=devnet" target="_blank">Open Finalize TX</a>
             <a class="award-link" href="https://solscan.io/tx/x1vhP6H3Regi6WHYx6LUGbeo4CCbJxWwtUVucPVjonnymyccpM8mpb7t3UpQpqksXBU7PYGPd86cPnZLYwRzBn9?cluster=devnet" target="_blank">Open Execute TX</a>
+          </div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">ZK PROOF ANCHORS</div>
+          <div style="color:var(--text2);line-height:1.8">Proposal-bound proof anchors now land on-chain. Solscan can show vote, delegation, and tally zk material as real Devnet transactions.</div>
+          <code>3L6SHDNuziEXQiiAWjega4UbjURkWpzYVG5kRKr4YWAekp1AdTvriMqNAtyRchNpzKstEPMp6cmDidFLRx8XDgfP</code>
+          <code style="margin-top:10px">4nYrBo57V6fCueyu44Jm9XeSA15ti9G6n1ZQXG9AbsdT4e5JJa9vFdmdjpK6Snd27eJNwUSaNaCWWWt3bndTca3X</code>
+          <code style="margin-top:10px">WTt8i2v1FWitQG2yye28CVCVWVeKvMA7c3D9wm4Upkbf2keK8ae8FXaGK95FaDjnmfJB3L7evBCMtoJrfC3EUrV</code>
+          <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px">
+            <a class="award-link" href="https://explorer.solana.com/tx/3L6SHDNuziEXQiiAWjega4UbjURkWpzYVG5kRKr4YWAekp1AdTvriMqNAtyRchNpzKstEPMp6cmDidFLRx8XDgfP?cluster=devnet" target="_blank">Open Vote Anchor</a>
+            <a class="award-link" href="https://explorer.solana.com/tx/4nYrBo57V6fCueyu44Jm9XeSA15ti9G6n1ZQXG9AbsdT4e5JJa9vFdmdjpK6Snd27eJNwUSaNaCWWWt3bndTca3X?cluster=devnet" target="_blank">Open Delegation Anchor</a>
+            <a class="award-link" href="https://explorer.solana.com/tx/WTt8i2v1FWitQG2yye28CVCVWVeKvMA7c3D9wm4Upkbf2keK8ae8FXaGK95FaDjnmfJB3L7evBCMtoJrfC3EUrV?cluster=devnet" target="_blank">Open Tally Anchor</a>
           </div>
         </div>
         <div class="proposal-command-box">
@@ -3907,7 +3919,7 @@ execute() → treasury action
     <div class="zk-footnote-box reveal">
       <div class="zk-footnote-title">Zero-Knowledge Protection</div>
       <div class="zk-footnote-copy">
-        PrivateDAO publishes Groth16 zk-SNARK companion proofs for vote, delegation, and tally review. The current proof layer is additive and off-chain; the deployed on-chain lifecycle remains the enforcement boundary.
+        PrivateDAO publishes Groth16 zk-SNARK companion proofs for vote, delegation, and tally review. Proof generation and verification remain additive and off-chain, while proposal-bound proof anchors are now recorded on-chain for the canonical Devnet path.
       </div>
     </div>
 
@@ -4180,7 +4192,7 @@ execute() → treasury action
             Quadratic weighting still assumes an external sybil-resistance policy.<br>
             Commit-reveal hides vote content, not transaction timing metadata.<br>
             `CustomCPI` remains intentionally unsupported rather than arbitrary on-chain CPI.<br>
-            The current Groth16 proof stack is additive and off-chain today.<br>
+            The current Groth16 proof stack still verifies off-chain, while proposal-bound on-chain proof anchors are now live on Devnet.<br>
             Mainnet audit completeness is not claimed.
           </div>
         </div>

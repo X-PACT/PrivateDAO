@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-05T13:25:01.493Z",
+  "generatedAt": "2026-04-05T17:49:29.386Z",
   "packageDecision": "repository-strong-but-external-blockers-remain",
   "coreArtifacts": [
     "docs/mainnet-readiness.generated.md",

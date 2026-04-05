@@ -7,6 +7,29 @@
   "proposal_public_key": "EkxgKFqH2uewTEsEU4LfV8bvdX5WUX5SwsS1p186Vrtn",
   "verification_mode": "offchain-groth16",
   "onchain_verifier": false,
+  "onchain_proof_anchors": {
+    "proposal_public_key": "AegjmwkX1FknBJMDyH5yM6BMhyHsiUreNtz3d8iz3QrP",
+    "entries": [
+      {
+        "layer": "vote",
+        "anchor_pda": "8EgyYXAmwfSUyDPVJYZCykXQrLx84BhGAyKUSSzEapah",
+        "tx_signature": "3L6SHDNuziEXQiiAWjega4UbjURkWpzYVG5kRKr4YWAekp1AdTvriMqNAtyRchNpzKstEPMp6cmDidFLRx8XDgfP",
+        "explorer_url": "https://explorer.solana.com/tx/3L6SHDNuziEXQiiAWjega4UbjURkWpzYVG5kRKr4YWAekp1AdTvriMqNAtyRchNpzKstEPMp6cmDidFLRx8XDgfP?cluster=devnet"
+      },
+      {
+        "layer": "delegation",
+        "anchor_pda": "GjSFBi3ic7iMxEmMjX3SKrMW1fuZASsJoFSJedxbMmN5",
+        "tx_signature": "4nYrBo57V6fCueyu44Jm9XeSA15ti9G6n1ZQXG9AbsdT4e5JJa9vFdmdjpK6Snd27eJNwUSaNaCWWWt3bndTca3X",
+        "explorer_url": "https://explorer.solana.com/tx/4nYrBo57V6fCueyu44Jm9XeSA15ti9G6n1ZQXG9AbsdT4e5JJa9vFdmdjpK6Snd27eJNwUSaNaCWWWt3bndTca3X?cluster=devnet"
+      },
+      {
+        "layer": "tally",
+        "anchor_pda": "D7dCMXF7sfHnGVjnJHdataUFMZ1C9eF778uxthvtguuj",
+        "tx_signature": "WTt8i2v1FWitQG2yye28CVCVWVeKvMA7c3D9wm4Upkbf2keK8ae8FXaGK95FaDjnmfJB3L7evBCMtoJrfC3EUrV",
+        "explorer_url": "https://explorer.solana.com/tx/WTt8i2v1FWitQG2yye28CVCVWVeKvMA7c3D9wm4Upkbf2keK8ae8FXaGK95FaDjnmfJB3L7evBCMtoJrfC3EUrV?cluster=devnet"
+      }
+    ]
+  },
   "entries": [
     {
       "wallet_pubkey": "Eortb2c2fGNNPD2XDFNZxCknwqHTJwGPaTbzBJ6vSMjF",

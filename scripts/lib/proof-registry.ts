@@ -9,6 +9,15 @@ export type ProofRegistry = {
   governanceMint: string;
   treasury: string;
   proposal: string;
+  zkProofAnchors?: {
+    proposal: string;
+    entries: Array<{
+      layer: string;
+      anchorPda: string;
+      txSignature: string;
+      explorerUrl: string;
+    }>;
+  };
   pdaoToken?: {
     mint: string;
     programId: string;

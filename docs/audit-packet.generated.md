@@ -4,7 +4,7 @@
 
 - Project: PrivateDAO
 - Program ID: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
-- Deploy transaction: `2FTRdNt2e1AXqPBwYReDiaNHjRZF2N7VtQeF17Ue56S7UoJPqZQxZ5gi32fRvAgE7ToE636EaDkanEoZvvcin9pD`
+- Deploy transaction: `2CMEujY1CKnC8rH8BuLy4GvwYk3zfqMfAKaUjybcAvRhS1dnzg3Zd3GeMttBp4vkUbu69GkQtr3TWgbmBqGY8cyC`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 
 ## Reviewer Entry Points
@@ -75,7 +75,7 @@
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
 - Manifest entries: `79`
-- Aggregate sha256: `71bad55d70bae2f845c0ea11381f8f12e63b3ed66954b6b22500418560e6bf49`
+- Aggregate sha256: `5230035733d4ef6a0f0c14098b5812f513f3cc9cd6cbd42def72feb551648513`
 
 ## ZK Package
 

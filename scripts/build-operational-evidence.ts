@@ -47,6 +47,15 @@ type ZkProofRegistry = {
   runLabel: string;
   verification_mode: string;
   onchain_verifier: boolean;
+  onchain_proof_anchors?: {
+    proposal_public_key: string;
+    entries: Array<{
+      layer: string;
+      anchor_pda: string;
+      tx_signature: string;
+      explorer_url: string;
+    }>;
+  };
   entries: Array<{
     layer: string;
     circuit: string;
@@ -143,6 +152,8 @@ function main() {
     zk: {
       verificationMode: zk.verification_mode,
       onchainVerifier: zk.onchain_verifier,
+      onchainAnchorCount: zk.onchain_proof_anchors?.entries.length ?? 0,
+      onchainAnchorProposal: zk.onchain_proof_anchors?.proposal_public_key ?? null,
       proofCount: zk.entries.length,
       verifiedProofCount: verifiedZk,
       layerCounts,

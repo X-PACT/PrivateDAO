@@ -28,6 +28,8 @@ type OperationalEvidence = {
   zk: {
     verificationMode: string;
     onchainVerifier: boolean;
+    onchainAnchorCount: number;
+    onchainAnchorProposal: string | null;
     proofCount: number;
     verifiedProofCount: number;
     layerCounts: Record<string, number>;
@@ -102,6 +104,9 @@ function main() {
   }
   if (evidence.zk.verificationMode !== "offchain-groth16") {
     throw new Error("operational evidence zk verification mode mismatch");
+  }
+  if (evidence.zk.onchainAnchorCount < 3 || !evidence.zk.onchainAnchorProposal) {
+    throw new Error("operational evidence is missing on-chain zk anchors");
   }
   if (evidence.zk.proofCount < 1 || evidence.zk.verifiedProofCount < 1) {
     throw new Error("operational evidence is missing verified zk proofs");

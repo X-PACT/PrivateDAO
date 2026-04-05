@@ -99,7 +99,7 @@ function main() {
 
   for (const fragment of [
     proof.pdaoToken.mint,
-    "PDAO Token Surface",
+    "PrivateDAO Governance Token (PDAO)",
     "pdao-attestation.generated.json",
     "assets/pdao-token.json",
     "PROGRAM BOUNDARY",
