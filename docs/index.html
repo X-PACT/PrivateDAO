@@ -4356,6 +4356,33 @@ execute() → treasury action
         </div>
       </div>
 
+      <div class="proposal-proof-panel" style="margin-top:20px">
+        <div class="proposal-detail-label">GO-LIVE SNAPSHOT</div>
+        <div style="color:var(--text2);line-height:1.8;margin-top:10px">This panel compresses the current mainnet decision boundary into one operator-facing view. It distinguishes what is already strong inside the repository from what still remains external before any real cutover.</div>
+        <div class="proposal-command-grid" style="margin-top:14px">
+          <div class="proposal-command-box">
+            <div class="proposal-detail-label">REPOSITORY GATES</div>
+            <div class="diagnostic-value" style="color:var(--green)">INTERNAL PASS</div>
+            <div style="color:var(--text3);line-height:1.7;margin-top:8px">Frontend, submission registry, generated artifacts, review surfaces, cryptographic manifest, and operational evidence are already bound into the repo surface.</div>
+          </div>
+          <div class="proposal-command-box">
+            <div class="proposal-detail-label">REAL-DEVICE WALLET QA</div>
+            <div class="diagnostic-value" style="color:var(--amber)">EXTERNAL BLOCKER</div>
+            <div style="color:var(--text3);line-height:1.7;margin-top:8px">Mainnet language should stay conservative until Phantom, Solflare, Backpack, Glow, and Android captures are recorded as real signer evidence.</div>
+          </div>
+          <div class="proposal-command-box">
+            <div class="proposal-detail-label">AUTHORITY HARDENING</div>
+            <div class="diagnostic-value" style="color:var(--amber)">MULTISIG REQUIRED</div>
+            <div style="color:var(--text3);line-height:1.7;margin-top:8px">Upgrade authority, treasury operations, and token administration still need their final production custody path before any cutover should be called acceptable.</div>
+          </div>
+          <div class="proposal-command-box">
+            <div class="proposal-detail-label">EXTERNAL AUDIT</div>
+            <div class="diagnostic-value" style="color:var(--amber)">PENDING</div>
+            <div style="color:var(--text3);line-height:1.7;margin-top:8px">The repository is hardened and reviewable, but it should not be presented as mainnet-cleared until external audit work is completed and findings are closed.</div>
+          </div>
+        </div>
+      </div>
+
       <div class="doc-viewer-toolbar">
         <div class="doc-viewer-actions">
           <button class="proposal-proof-link" type="button" onclick="updateDiagnostics()">Refresh Diagnostics</button>
