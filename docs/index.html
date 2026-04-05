@@ -974,6 +974,43 @@ nav.scrolled {
 .meta-k { color: var(--text3); margin-bottom: 3px; }
 .meta-v { font-family: var(--mono); color: var(--text); font-size: 13px; }
 
+.proposal-phase-copy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--void);
+}
+
+.proposal-phase-copy strong {
+  color: var(--text);
+  font-size: 13px;
+}
+
+.proposal-phase-copy span {
+  color: var(--text2);
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: right;
+}
+
+.proposal-state-card {
+  cursor: default;
+}
+
+.proposal-state-card:hover {
+  transform: none;
+  border-color: var(--border);
+}
+
+.proposal-state-card:hover::after {
+  transform: scaleY(0);
+}
+
 .tally-sealed-mini {
   display: flex; align-items:center; gap:12px;
   padding: 14px 18px;
@@ -2769,13 +2806,17 @@ body.judge-mode .judge-banner {
     </div>
 
     <div class="proposals-grid reveal" id="proposalsList">
-      <div class="proposal-card phase-commit">
+      <div class="proposal-card proposal-state-card phase-commit">
         <div class="proposal-header">
           <span class="proposal-id">DEVNET · LIVE DATA</span>
           <span class="phase-pill pill-commit">LOADING</span>
         </div>
-        <div class="proposal-title">Loading proposals from Solana devnet</div>
-        <div class="proposal-desc">The app reads real `Proposal` accounts from the configured program ID. If no proposals exist yet, this section will show an empty-state message.</div>
+        <div class="proposal-title">Loading live proposals from Solana Devnet</div>
+        <div class="proposal-desc">The app is reading real on-chain proposal accounts from the configured program. If nothing is live yet, this panel will switch to the bootstrap guidance state.</div>
+        <div class="proposal-phase-copy">
+          <strong>Current task</strong>
+          <span>Fetch proposal accounts and derive the leading phase</span>
+        </div>
       </div>
     </div>
 
@@ -7044,6 +7085,17 @@ function proposalCardHtml(p, nowTs) {
     : phase === "Reveal"
       ? "phase-reveal"
       : "phase-passed";
+  const nextStep = phase === "Commit"
+    ? "Commit a hidden vote"
+    : phase === "Reveal"
+      ? "Reveal the original vote"
+      : phase === "Timelocked"
+        ? `Wait for timelock until ${formatUtc(p.executionUnlocksAt)}`
+        : phase === "Executable"
+          ? "Execute the treasury action"
+          : phase === "Executed"
+            ? "Verify execution on chain"
+            : "Review the finalized outcome";
   const executeDisabled = phase !== "Executable";
   const executeLabel = phase === "Timelocked" ? "Timelocked" : "Execute";
   const executeButton = (phase === "Executable" || phase === "Timelocked")
@@ -7057,6 +7109,10 @@ function proposalCardHtml(p, nowTs) {
       </div>
       <div class="proposal-title">${p.title}</div>
       <div class="proposal-desc">${p.description}</div>
+      <div class="proposal-phase-copy">
+        <strong>Next step</strong>
+        <span>${nextStep}</span>
+      </div>
       <div class="proposal-meta">
         <div class="meta-kv"><div class="meta-k">STATUS</div><div class="meta-v">${p.status}</div></div>
         <div class="meta-kv"><div class="meta-k">COMMITS</div><div class="meta-v">${p.commitCount}</div></div>
@@ -7092,10 +7148,14 @@ async function loadLiveProposals() {
 
     if (proposals.length === 0) {
       list.innerHTML = `
-        <div class="proposal-card phase-commit">
+        <div class="proposal-card proposal-state-card phase-commit">
           <div class="proposal-header"><span class="proposal-id">NO PROPOSALS FOUND</span></div>
-          <div class="proposal-title">No on-chain proposals for current program ID</div>
-          <div class="proposal-desc">Create one via CLI: \`yarn create-proposal -- --dao <DAO_PDA> ...\` then refresh.</div>
+          <div class="proposal-title">No live proposals yet</div>
+          <div class="proposal-desc">Bootstrap a DAO, fund its treasury, then create the first proposal from a wallet that holds governance tokens.</div>
+          <div class="proposal-phase-copy">
+            <strong>Suggested path</strong>
+            <span>Create DAO → Deposit Treasury → Create Proposal</span>
+          </div>
         </div>
       `;
       return;
@@ -7111,10 +7171,14 @@ async function loadLiveProposals() {
   } catch (e) {
     updateHeroStats([], Math.floor(Date.now() / 1000));
     list.innerHTML = `
-      <div class="proposal-card phase-commit">
+      <div class="proposal-card proposal-state-card phase-commit">
         <div class="proposal-header"><span class="proposal-id">RPC ERROR</span></div>
-        <div class="proposal-title">Could not load devnet proposal accounts</div>
-        <div class="proposal-desc">Check RPC access for the active Devnet endpoint and verify program ID ${PROGRAM_ID}.</div>
+        <div class="proposal-title">Could not load live proposal state</div>
+        <div class="proposal-desc">The governance surface could not read proposal accounts from the active Devnet RPC route. Refresh, reconnect, or retry after the endpoint recovers.</div>
+        <div class="proposal-phase-copy">
+          <strong>Check</strong>
+          <span>Wallet connection · Devnet RPC health · Program ID ${PROGRAM_ID.slice(0, 8)}...</span>
+        </div>
       </div>
     `;
   }
