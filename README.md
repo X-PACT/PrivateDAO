@@ -95,6 +95,18 @@ See:
 - `docs/use-cases.md`
 - `docs/economic-model.md`
 
+## Domain Mirror Strategy
+
+The current review surface stays stable at:
+
+- `https://x-pact.github.io/PrivateDAO/`
+
+If a `.xyz` domain is introduced, the safe rollout path is to deploy it as a parallel mirror first rather than replacing the current review URL during active review.
+
+See:
+
+- `docs/domain-mirror.md`
+
 ## Reviewer Clarifications
 
 The current review surface is intentionally explicit about a few points that are easy to misread from partial scans:
