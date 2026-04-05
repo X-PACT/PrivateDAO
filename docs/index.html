@@ -7423,6 +7423,21 @@ function getZkAnchorInfo(proposalPubkey) {
   };
 }
 
+function getProposalZkCardState(proposalPubkey) {
+  const canonicalProposal = 'AegjmwkX1FknBJMDyH5yM6BMhyHsiUreNtz3d8iz3QrP';
+  if (proposalPubkey === canonicalProposal) {
+    return {
+      pill: 'ZK Anchored',
+      copy: 'Vote, delegation, and tally anchors are live on-chain for this canonical Devnet proof path.',
+    };
+  }
+
+  return {
+    pill: 'ZK Review Path',
+    copy: 'This proposal follows the same private lifecycle. Published on-chain anchors remain tied to the canonical Devnet proof path.',
+  };
+}
+
 function selectProposal(pubkey) {
   currentSelectedProposalPubkey = pubkey;
   document.querySelectorAll('.proposal-card[data-proposal-pubkey]').forEach(card => {
@@ -7454,6 +7469,7 @@ function selectProposal(pubkey) {
 
 function proposalCardHtml(p, nowTs) {
   const phase = computePhase(p, nowTs);
+  const zkCardState = getProposalZkCardState(p.pubkey);
   const className = phase === "Commit"
     ? "phase-commit"
     : phase === "Reveal"
@@ -7486,6 +7502,10 @@ function proposalCardHtml(p, nowTs) {
       <div class="proposal-phase-copy">
         <strong>Next step</strong>
         <span>${nextStep}</span>
+      </div>
+      <div class="proposal-phase-copy" style="margin-top:10px;background:rgba(33,211,194,0.08);border-color:rgba(33,211,194,0.18)">
+        <strong>${zkCardState.pill}</strong>
+        <span>${zkCardState.copy}</span>
       </div>
       <div class="proposal-meta">
         <div class="meta-kv"><div class="meta-k">STATUS</div><div class="meta-v">${p.status}</div></div>
