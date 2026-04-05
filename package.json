@@ -1,7 +1,7 @@
 {
   "name": "private-dao",
   "version": "0.3.0",
-  "description": "Commit-reveal private voting for Solana DAOs — Graveyard Hackathon 2026",
+  "description": "Solana private governance system with commit-reveal voting, timelocked execution, Groth16 companion proofs, and reviewer-visible security evidence",
   "scripts": {
     "build": "anchor build",
     "test": "anchor test",

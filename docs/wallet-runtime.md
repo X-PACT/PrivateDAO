@@ -25,6 +25,7 @@ The current frontend hardening includes:
 - provider-specific detection and fallback resolution
 - connection-path fallback across `connect`, `request`, and `enable`
 - wallet public-key extraction across multiple provider response shapes
+- delayed public-key readiness polling after connection so injected providers have time to expose the selected account
 - transaction-path fallback across:
   - `sendTransaction`
   - `signAndSendTransaction`

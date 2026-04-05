@@ -4381,6 +4381,8 @@ function providerCapabilitySummary(provider) {
     sendTransaction: typeof provider?.sendTransaction === 'function',
     signAndSendTransaction: typeof provider?.signAndSendTransaction === 'function',
     signTransaction: typeof provider?.signTransaction === 'function',
+    selectedAddress: Boolean(provider?.selectedAddress),
+    accountsArray: Array.isArray(provider?.accounts) && provider.accounts.length > 0,
   };
 }
 
@@ -4811,7 +4813,7 @@ function resolveWalletProvider(preferredId = 'auto') {
       typeof provider.sendTransaction === 'function' ||
       typeof provider.signAndSendTransaction === 'function' ||
       typeof provider.signTransaction === 'function';
-    return canConnect && canSign;
+    return canConnect || canSign;
   });
 
   const preferred = preferredId && preferredId !== 'auto'
@@ -4898,8 +4900,16 @@ function isUserRejectedWalletError(error) {
 function extractWalletPublicKey(connectResponse, provider) {
   const candidate =
     connectResponse?.publicKey ||
+    connectResponse?.result?.publicKey ||
+    connectResponse?.address ||
+    connectResponse?.selectedAddress ||
+    connectResponse?.accounts?.[0]?.publicKey ||
+    connectResponse?.accounts?.[0] ||
     provider?.publicKey ||
     provider?._publicKey ||
+    provider?.selectedAddress ||
+    provider?.accounts?.[0]?.publicKey ||
+    provider?.accounts?.[0] ||
     provider?.account?.publicKey ||
     null;
 
@@ -4908,8 +4918,12 @@ function extractWalletPublicKey(connectResponse, provider) {
   if (candidate instanceof Uint8Array || Array.isArray(candidate)) {
     return new solanaWeb3.PublicKey(candidate).toBase58();
   }
+  if (candidate?.address && typeof candidate.address === 'string') return candidate.address;
   if (typeof candidate.toBase58 === 'function') return candidate.toBase58();
-  if (typeof candidate.toString === 'function') return candidate.toString();
+  if (typeof candidate.toString === 'function') {
+    const value = candidate.toString();
+    if (value && value !== '[object Object]') return value;
+  }
   return null;
 }
 
@@ -4966,6 +4980,21 @@ async function hydrateWalletSession() {
   if (currentPageKey() === 'diagnostics') updateDiagnostics();
 }
 
+async function waitForWalletPublicKey(provider, initialResponse = null, timeoutMs = 3000) {
+  const started = Date.now();
+  let response = initialResponse;
+  for (;;) {
+    const connectedPk = extractWalletPublicKey(response, provider);
+    if (connectedPk) return connectedPk;
+    if (Date.now() - started >= timeoutMs) {
+      break;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 120));
+    response = null;
+  }
+  return null;
+}
+
 async function connectResolvedWalletProvider(provider) {
   let response = null;
 
@@ -4974,20 +5003,32 @@ async function connectResolvedWalletProvider(provider) {
       response = await provider.connect({ onlyIfTrusted: false });
     } catch (error) {
       if (isUserRejectedWalletError(error)) throw error;
-      response = await provider.connect();
+      try {
+        response = await provider.connect();
+      } catch (secondError) {
+        if (isUserRejectedWalletError(secondError)) throw secondError;
+      }
     }
   }
 
   if (!response && typeof provider.request === 'function') {
-    response = await provider.request({ method: 'connect' });
+    try {
+      response = await provider.request({ method: 'connect' });
+    } catch (error) {
+      if (isUserRejectedWalletError(error)) throw error;
+      try {
+        response = await provider.request({ method: 'connect', params: { onlyIfTrusted: false } });
+      } catch (secondError) {
+        if (isUserRejectedWalletError(secondError)) throw secondError;
+      }
+    }
   }
 
   if (!response && typeof provider.enable === 'function') {
     response = await provider.enable();
   }
 
-  await new Promise((resolve) => setTimeout(resolve, 120));
-  const connectedPk = extractWalletPublicKey(response, provider);
+  const connectedPk = await waitForWalletPublicKey(provider, response, 3000);
   if (!connectedPk) {
     throw new Error('wallet public key was not returned');
   }
@@ -5007,6 +5048,12 @@ function describeWalletConnectionError(error) {
   }
   if (lower.includes('not found') || lower.includes('undefined')) {
     return 'Wallet provider did not return a public key. Try Phantom or Solflare on Devnet.';
+  }
+  if (lower.includes('public key was not returned')) {
+    return 'Wallet connected but did not expose a public key in time. Reopen the wallet and try again.';
+  }
+  if (lower.includes('legacy transaction')) {
+    return 'Wallet connected, but this provider did not expose a compatible transaction signing path.';
   }
   return message ? `Wallet connection failed: ${message}` : 'Wallet connection failed.';
 }
@@ -5043,7 +5090,13 @@ async function connectWallet(preferredId = 'auto') {
     refreshWalletProviderStates();
     closeWalletPanel();
     if (currentPageKey() === 'diagnostics') updateDiagnostics();
-    showToast(`Connected ${walletProviderName(walletProvider)}: ${shortPk(wallet)}`, 'success');
+    const signingReady = isLegacyTransactionSupportedByProvider(walletProvider);
+    showToast(
+      signingReady
+        ? `Connected ${walletProviderName(walletProvider)}: ${shortPk(wallet)}`
+        : `Connected ${walletProviderName(walletProvider)} but transaction signing is not fully available.`,
+      signingReady ? 'success' : 'info'
+    );
   } catch (e) {
     wallet = null;
     walletProvider = null;

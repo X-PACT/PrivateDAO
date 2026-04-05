@@ -17,6 +17,9 @@ function main() {
     "window.backpack?.solana",
     "window.solflare?.solflare",
     "walletProviderName",
+    "waitForWalletPublicKey",
+    "selectedAddress",
+    "accountsArray",
     "custom-cursor-enabled",
     "requestAnimationFrame(renderCursor)",
     "verify:all",
@@ -143,6 +146,7 @@ function main() {
     "SUPPORTED PROVIDERS",
     "BROWSER CAPABILITIES",
     "LIVE RUNTIME",
+    "Wallet connected but did not expose a public key in time.",
   ];
 
   for (const fragment of requiredFragments) {
