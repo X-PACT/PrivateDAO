@@ -796,9 +796,13 @@ pub mod private_dao {
             Error::UnauthorizedZkVerifier
         );
         require!(
-            verification_mode == ZkVerificationMode::Parallel,
+            verification_mode == ZkVerificationMode::Parallel
+                || verification_mode == ZkVerificationMode::ZkEnforced,
             Error::InvalidZkVerificationMode
         );
+        if verification_mode == ZkVerificationMode::ZkEnforced {
+            require!(verifier_program.is_some(), Error::ZkVerifierProgramRequired);
+        }
 
         let anchor = &ctx.accounts.zk_proof_anchor;
         require!(
@@ -808,6 +812,19 @@ pub mod private_dao {
         require!(anchor.layer == layer, Error::ZkProofAnchorMismatch);
 
         let receipt = &mut ctx.accounts.zk_verification_receipt;
+        if receipt.proposal != Pubkey::default() {
+            require!(
+                receipt.dao == ctx.accounts.dao.key()
+                    && receipt.proposal == ctx.accounts.proposal.key()
+                    && receipt.layer == layer,
+                Error::ZkVerificationReceiptMismatch
+            );
+            require!(
+                !(receipt.verification_mode == ZkVerificationMode::ZkEnforced
+                    && verification_mode == ZkVerificationMode::Parallel),
+                Error::InsufficientZkVerificationMode
+            );
+        }
         receipt.dao = ctx.accounts.dao.key();
         receipt.proposal = ctx.accounts.proposal.key();
         receipt.verified_by = verifier;
@@ -875,18 +892,21 @@ pub mod private_dao {
                     &ctx.accounts.proposal,
                     &ctx.accounts.vote_zk_receipt,
                     ZkProofLayer::Vote,
+                    Some(ZkVerificationMode::ZkEnforced),
                 )?;
                 validate_zk_receipt(
                     &ctx.accounts.dao,
                     &ctx.accounts.proposal,
                     &ctx.accounts.delegation_zk_receipt,
                     ZkProofLayer::Delegation,
+                    Some(ZkVerificationMode::ZkEnforced),
                 )?;
                 validate_zk_receipt(
                     &ctx.accounts.dao,
                     &ctx.accounts.proposal,
                     &ctx.accounts.tally_zk_receipt,
                     ZkProofLayer::Tally,
+                    Some(ZkVerificationMode::ZkEnforced),
                 )?;
                 ProposalZkPolicy::ALL_LAYERS_MASK
             }
@@ -978,6 +998,7 @@ fn validate_zk_receipt(
     proposal: &Account<Proposal>,
     receipt_info: &UncheckedAccount,
     expected_layer: ZkProofLayer,
+    required_mode: Option<ZkVerificationMode>,
 ) -> Result<()> {
     let (expected_receipt, _) = Pubkey::find_program_address(
         &[
@@ -1009,6 +1030,12 @@ fn validate_zk_receipt(
             || receipt.verification_mode == ZkVerificationMode::ZkEnforced,
         Error::ZkVerificationReceiptMismatch
     );
+    if let Some(mode) = required_mode {
+        require!(
+            receipt.verification_mode == mode,
+            Error::InsufficientZkVerificationMode
+        );
+    }
     Ok(())
 }
 
@@ -1458,7 +1485,7 @@ pub struct VerifyZkProofOnChain<'info> {
     )]
     pub zk_proof_anchor: Account<'info, ZkProofAnchor>,
     #[account(
-        init,
+        init_if_needed,
         payer = verifier,
         space = ZkVerificationReceipt::LEN,
         seeds = [b"zk-verify", proposal.key().as_ref(), &[layer.seed_byte()]],
@@ -2005,4 +2032,8 @@ pub enum Error {
     ProposalNotZkEnforced,
     #[msg("Once a proposal is locked to zk_enforced mode it cannot be downgraded or reconfigured")]
     ProposalZkModeImmutable,
+    #[msg("This proposal requires zk_enforced verification receipts, not only parallel receipts")]
+    InsufficientZkVerificationMode,
+    #[msg("zk_enforced receipts must identify the verifier program boundary")]
+    ZkVerifierProgramRequired,
 }

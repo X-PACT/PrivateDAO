@@ -9,6 +9,7 @@ Each successful capture should prove:
 1. wallet connects on Devnet
 2. proposal is selected
 3. receipts exist for vote, delegation, and tally
+   - and those receipts are recorded in `zk_enforced` mode
 4. `Enable ZK-Enforced` succeeds
 5. proposal finalizes through the `zk_enforced` path
 6. explorer links and proposal state reflect the upgraded path

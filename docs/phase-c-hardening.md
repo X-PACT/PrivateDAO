@@ -12,9 +12,11 @@ The repository is now at:
 
 - `commit-reveal` remains the canonical live governance path
 - `verify_zk_proof_on_chain` records proposal-bound verification receipts on chain
+- verification receipts can now be upgraded from `parallel` to `zk_enforced`
 - `configure_proposal_zk_mode` can lock a proposal into `zk_enforced`
 - `finalize_zk_enforced_proposal` is available and surfaced in the frontend and CLI
 - once a proposal is locked to `zk_enforced`, the policy cannot be downgraded
+- `zk_enforced` proposals require the stronger receipt mode, not only Phase A parallel receipts
 
 ## What Still Blocks Phase C
 

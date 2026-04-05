@@ -6366,10 +6366,13 @@ function describeOperationError(error, context = 'operation') {
     return 'ZK mode can only be configured before any commit or reveal starts. Next step: enable ZK-enforced mode immediately after proposal creation, before voting begins.';
   }
   if (combined.includes('zkverificationreceiptmissing')) {
-    return 'This proposal is missing one or more parallel ZK verification receipts. Next step: anchor and verify vote, delegation, and tally proof layers before enabling zk_enforced mode.';
+    return 'This proposal is missing one or more zk_enforced verification receipts. Next step: record vote, delegation, and tally receipts in zk_enforced mode before enabling zk_enforced for this proposal.';
   }
   if (combined.includes('zkverificationreceiptmismatch')) {
     return 'The supplied ZK verification receipts do not match this proposal-bound proof path. Next step: refresh the selected proposal and use the matching Devnet receipt set for this proposal only.';
+  }
+  if (combined.includes('insufficientzkverificationmode')) {
+    return 'This proposal only has weaker parallel receipts right now. Next step: upgrade the vote, delegation, and tally receipts to zk_enforced mode before enabling the stronger finalize path.';
   }
   if (combined.includes('proposalnotzkenforced')) {
     return 'This proposal is not locked to the zk_enforced finalize path yet. Next step: enable ZK-enforced mode first, then finalize again.';
@@ -7672,7 +7675,7 @@ function renderProposalDetail(p, nowTs) {
     </div>
     <div class="proposal-command-box">
       <div class="proposal-detail-label">ZK MODE</div>
-      <div style="color:var(--text2);line-height:1.8">${p.zkMode === 'ZkEnforced' ? 'This proposal is already locked to the stronger finalize path.' : 'Enable zk_enforced only after vote, delegation, and tally receipts exist for this proposal.'}</div>
+      <div style="color:var(--text2);line-height:1.8">${p.zkMode === 'ZkEnforced' ? 'This proposal is already locked to the stronger finalize path.' : 'Enable zk_enforced only after vote, delegation, and tally receipts exist in zk_enforced mode for this proposal.'}</div>
       <code>npm run configure:zk-mode -- --proposal ${p.pubkey} --mode zk_enforced</code>
     </div>
     <div class="proposal-command-box">

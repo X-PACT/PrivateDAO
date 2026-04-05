@@ -179,6 +179,7 @@ The current review surface is intentionally explicit about a few points that are
 - The current Groth16 proof stack still generates and verifies proofs off-chain, while proposal-bound zk proof anchors are now recorded on-chain for the canonical Devnet governance flow. The deployed on-chain program remains the enforcement boundary.
 - Phase A is live: on-chain proof anchors plus on-chain parallel verification receipts.
 - Phase B is now live in parallel: proposals can be configured into `zk_enforced` mode once vote, delegation, and tally verification receipts exist on chain. The frontend surfaces this mode directly and switches finalize to the `zk_enforced` path for those proposals.
+- The stronger path is now stricter than the original Phase A receipts: `zk_enforced` proposals require vote, delegation, and tally receipts recorded in `zk_enforced` mode, not only `parallel` mode.
 - Phase C is not yet promoted. `zk_enforced` is live and usable, but it is still in hardening mode until additional runtime evidence, external review, and operator confidence are closed.
 
 ## ZK Rollout Status
@@ -191,6 +192,7 @@ The current zk roadmap is additive and non-breaking:
   - parallel verification receipts are on chain
 - Phase B
   - proposals can opt into `zk_enforced`
+  - `zk_enforced` now requires stronger receipt mode than the original Phase A parallel-only path
   - the frontend exposes ZK mode, policy state, and the alternate finalize path
   - the CLI finalize path auto-detects policy PDAs and uses the correct instruction
 - Phase C

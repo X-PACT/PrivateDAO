@@ -217,6 +217,32 @@ describe("PrivateDAO", () => {
   });
 
   it("configures a proposal-level zk_enforced mode from parallel receipts", async () => {
+    const [voteAnchorPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("zk-proof"), proposalPda.toBuffer(), Buffer.from([1])],
+      program.programId,
+    );
+    const [voteReceiptPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("zk-verify"), proposalPda.toBuffer(), Buffer.from([1])],
+      program.programId,
+    );
+
+    await program.methods
+      .verifyZkProofOnChain(
+        { vote: {} },
+        { zkEnforced: {} },
+        voter1.publicKey,
+      )
+      .accounts({
+        dao: daoPda,
+        proposal: proposalPda,
+        zkProofAnchor: voteAnchorPda,
+        zkVerificationReceipt: voteReceiptPda,
+        verifier: voter1.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([voter1])
+      .rpc();
+
     const layerSpecs = [
       { key: { delegation: {} }, seed: 2 },
       { key: { tally: {} }, seed: 3 },
@@ -258,7 +284,7 @@ describe("PrivateDAO", () => {
       await program.methods
         .verifyZkProofOnChain(
           layer.key,
-          { parallel: {} },
+          { zkEnforced: {} },
           voter1.publicKey,
         )
         .accounts({
@@ -275,10 +301,6 @@ describe("PrivateDAO", () => {
 
     const [proposalZkPolicyPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("zk-policy"), proposalPda.toBuffer()],
-      program.programId,
-    );
-    const [voteReceiptPda] = PublicKey.findProgramAddressSync(
-      [Buffer.from("zk-verify"), proposalPda.toBuffer(), Buffer.from([1])],
       program.programId,
     );
     const [delegationReceiptPda] = PublicKey.findProgramAddressSync(
@@ -311,7 +333,7 @@ describe("PrivateDAO", () => {
     assert.equal(policy.configuredBy.toBase58(), voter1.publicKey.toBase58());
     assert.deepEqual(policy.mode, { zkEnforced: {} });
     assert.equal(policy.requiredLayersMask, 7);
-    console.log("  ✓ proposal-level zk_enforced mode configured from parallel receipts");
+    console.log("  ✓ proposal-level zk_enforced mode configured from zk_enforced receipts");
   });
 
   it("rejects zk_enforced mode when required receipts are missing", async () => {

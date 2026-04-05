@@ -13,6 +13,7 @@ The current model is:
 - off-chain verification workflow
 - on-chain proof anchors
 - on-chain parallel verification receipts
+- on-chain receipt upgrades into `zk_enforced` mode
 - proposal-level `zk_enforced` policy once the required receipts exist
 
 This is intentionally stronger than a pure proof-of-concept, but still not the same as a final production-grade verifier architecture.

@@ -68,6 +68,7 @@ async function verifyLayer(
   dao: PublicKey,
   proposal: PublicKey,
   layer: LayerName,
+  mode: "parallel" | "zk_enforced",
 ) {
   const config = LAYER_CONFIG[layer];
   const [zkProofAnchor] = PublicKey.findProgramAddressSync(
@@ -92,7 +93,11 @@ async function verifyLayer(
   }
 
   const transaction = await (program.methods as any)
-    .verifyZkProofOnChain(config.layerArg, { parallel: {} }, verifier.publicKey)
+    .verifyZkProofOnChain(
+      config.layerArg,
+      mode === "zk_enforced" ? { zkEnforced: {} } : { parallel: {} },
+      mode === "zk_enforced" ? verifier.publicKey : null,
+    )
     .accounts({
       dao,
       proposal,
@@ -126,6 +131,10 @@ async function verifyLayer(
 
 async function main() {
   const requested = (process.argv[2] ?? "all").toLowerCase();
+  const requestedMode = (process.argv[3] ?? "parallel").toLowerCase();
+  if (requestedMode !== "parallel" && requestedMode !== "zk_enforced") {
+    throw new Error(`unsupported verification mode: ${requestedMode}`);
+  }
   const layers: LayerName[] =
     requested === "all"
       ? ["vote", "delegation", "tally"]
@@ -169,7 +178,7 @@ async function main() {
   console.log(`Proposal: ${proposal.toBase58()}`);
 
   for (const layer of layers) {
-    const result = await verifyLayer(program, verifier, dao, proposal, layer);
+    const result = await verifyLayer(program, verifier, dao, proposal, layer, requestedMode as "parallel" | "zk_enforced");
     console.log(JSON.stringify(result, null, 2));
   }
 }
