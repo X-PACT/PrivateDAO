@@ -74,6 +74,7 @@ PrivateDAO is not only a program repo. It contains four layers that fit together
    - Groth16 companion proof stack
    - on-chain proof anchors for the canonical Devnet proof path
    - on-chain parallel verification receipts for the Phase A verifier path
+   - proposal-level `zk_enforced` mode for the Phase B finalize path
 4. Review and operations layer
    - generated attestations
    - Devnet evidence
@@ -174,6 +175,23 @@ The current review surface is intentionally explicit about a few points that are
 - Replay protection is proposal-scoped through proposal-bound commitments, `VoteRecord` PDA binding, reveal account binding, and lifecycle flags. The current commitment preimage is `sha256(vote_byte || salt_32 || proposal_pubkey_32 || voter_pubkey_32)`.
 - Reveal rebate comes from the proposal account only when that account remains rent-safe. The treasury is not the rebate source.
 - The current Groth16 proof stack still generates and verifies proofs off-chain, while proposal-bound zk proof anchors are now recorded on-chain for the canonical Devnet governance flow. The deployed on-chain program remains the enforcement boundary.
+- Phase A is live: on-chain proof anchors plus on-chain parallel verification receipts.
+- Phase B is now live in parallel: proposals can be configured into `zk_enforced` mode once vote, delegation, and tally verification receipts exist on chain. The frontend surfaces this mode directly and switches finalize to the `zk_enforced` path for those proposals.
+
+## ZK Rollout Status
+
+The current zk roadmap is additive and non-breaking:
+
+- Phase A
+  - commit-reveal remains canonical
+  - proposal-bound proof anchors are on chain
+  - parallel verification receipts are on chain
+- Phase B
+  - proposals can opt into `zk_enforced`
+  - the frontend exposes ZK mode, policy state, and the alternate finalize path
+  - the CLI finalize path auto-detects policy PDAs and uses the correct instruction
+- Phase C
+  - after operational stability and additional testing, `zk_enforced` can become the stronger production-grade path
 
 ## Why PrivateDAO Exists
 

@@ -5497,6 +5497,7 @@ let currentRpcIndex = 0;
 let connection = new solanaWeb3.Connection(DEVNET_RPC_ENDPOINTS[currentRpcIndex], "confirmed");
 const programPk = new solanaWeb3.PublicKey(PROGRAM_ID);
 const statusByIdx = ["Voting", "Passed", "Failed", "Cancelled", "Vetoed"];
+const proposalZkModeByIdx = ["Companion", "Parallel", "ZkEnforced"];
 
 function currentRpcEndpoint() {
   return DEVNET_RPC_ENDPOINTS[currentRpcIndex];
@@ -6338,6 +6339,18 @@ function describeOperationError(error, context = 'operation') {
   if (combined.includes('too many requests') || combined.includes('429')) {
     return 'The current Devnet RPC route is rate-limited. Next step: pause briefly, keep the same inputs, then retry from the same step.';
   }
+  if (combined.includes('proposalzkmodelocked')) {
+    return 'ZK mode can only be configured before any commit or reveal starts. Next step: enable ZK-enforced mode immediately after proposal creation, before voting begins.';
+  }
+  if (combined.includes('zkverificationreceiptmissing')) {
+    return 'This proposal is missing one or more parallel ZK verification receipts. Next step: anchor and verify vote, delegation, and tally proof layers before enabling zk_enforced mode.';
+  }
+  if (combined.includes('zkverificationreceiptmismatch')) {
+    return 'The supplied ZK verification receipts do not match this proposal-bound proof path. Next step: refresh the selected proposal and use the matching Devnet receipt set for this proposal only.';
+  }
+  if (combined.includes('proposalnotzkenforced')) {
+    return 'This proposal is not locked to the zk_enforced finalize path yet. Next step: enable ZK-enforced mode first, then finalize again.';
+  }
   if (combined.includes('custom program error: 0x0')) {
     if (context === 'create-dao') {
       return 'DAO creation failed because one of the derived accounts already exists or the chosen DAO name conflicts with an existing on-chain account. Next step: change the DAO name and retry.';
@@ -6981,17 +6994,62 @@ async function finalizeSelectedProposalInWallet() {
     const daoPk = new solanaWeb3.PublicKey(currentSelectedProposal.dao);
     const proposalPk = new solanaWeb3.PublicKey(currentSelectedProposal.pubkey);
     const finalizerPk = new solanaWeb3.PublicKey(wallet);
-    const ix = await buildAnchorInstruction('finalize_proposal', [
-      { pubkey: daoPk, isSigner: false, isWritable: false },
-      { pubkey: proposalPk, isSigner: false, isWritable: true },
-      { pubkey: finalizerPk, isSigner: true, isWritable: false },
-    ]);
+    const zkEnforced = currentSelectedProposal.zkMode === 'ZkEnforced';
+    const ix = await buildAnchorInstruction(
+      zkEnforced ? 'finalize_zk_enforced_proposal' : 'finalize_proposal',
+      zkEnforced
+        ? [
+            { pubkey: daoPk, isSigner: false, isWritable: false },
+            { pubkey: proposalPk, isSigner: false, isWritable: true },
+            { pubkey: new solanaWeb3.PublicKey(currentSelectedProposal.zkPolicyPda), isSigner: false, isWritable: false },
+            { pubkey: finalizerPk, isSigner: true, isWritable: false },
+          ]
+        : [
+            { pubkey: daoPk, isSigner: false, isWritable: false },
+            { pubkey: proposalPk, isSigner: false, isWritable: true },
+            { pubkey: finalizerPk, isSigner: true, isWritable: false },
+          ]
+    );
     const signature = await signAndBroadcastTransaction(ix, 'Finalize submitted');
     showToast(`Proposal finalized: ${shortPk(currentSelectedProposal.pubkey)}`, 'success');
     setTimeout(() => window.open(solscanTx(signature), '_blank', 'noopener'), 180);
   } catch (error) {
     console.error(error);
     showToast(describeOperationError(error, 'finalize'), 'error');
+  }
+}
+
+async function configureSelectedProposalZkModeInWallet() {
+  if (!currentSelectedProposal || !wallet) {
+    showToast('Select a live proposal and connect your wallet first.', 'error');
+    return;
+  }
+  try {
+    const daoPk = new solanaWeb3.PublicKey(currentSelectedProposal.dao);
+    const proposalPk = new solanaWeb3.PublicKey(currentSelectedProposal.pubkey);
+    const operatorPk = new solanaWeb3.PublicKey(wallet);
+    const policyPk = new solanaWeb3.PublicKey(deriveProposalZkPolicyPda(currentSelectedProposal.pubkey));
+    const ix = new solanaWeb3.TransactionInstruction({
+      programId: programPk,
+      keys: [
+        { pubkey: daoPk, isSigner: false, isWritable: false },
+        { pubkey: proposalPk, isSigner: false, isWritable: true },
+        { pubkey: policyPk, isSigner: false, isWritable: true },
+        { pubkey: new solanaWeb3.PublicKey(deriveZkReceiptPda(currentSelectedProposal.pubkey, 1)), isSigner: false, isWritable: false },
+        { pubkey: new solanaWeb3.PublicKey(deriveZkReceiptPda(currentSelectedProposal.pubkey, 2)), isSigner: false, isWritable: false },
+        { pubkey: new solanaWeb3.PublicKey(deriveZkReceiptPda(currentSelectedProposal.pubkey, 3)), isSigner: false, isWritable: false },
+        { pubkey: operatorPk, isSigner: true, isWritable: true },
+        { pubkey: solanaWeb3.SystemProgram.programId, isSigner: false, isWritable: false },
+      ],
+      data: concatBytes(await anchorMethodDiscriminator('configure_proposal_zk_mode'), new Uint8Array([2])),
+    });
+    const signature = await signAndBroadcastTransaction(ix, 'ZK mode update submitted');
+    showToast(`ZK-enforced mode enabled: ${shortPk(currentSelectedProposal.pubkey)}`, 'success');
+    setTimeout(() => window.open(solscanTx(signature), '_blank', 'noopener'), 180);
+    await loadLiveProposals();
+  } catch (error) {
+    console.error(error);
+    showToast(describeOperationError(error, 'configure-zk-mode'), 'error');
   }
 }
 
@@ -7104,7 +7162,7 @@ function updateHeroStats(proposals, nowTs) {
     ? liveProposalMap.get(currentSelectedProposalPubkey)
     : lead;
   const phase = computePhase(lead, nowTs);
-  const zkCardState = getProposalZkCardState(heroProposal.pubkey);
+  const zkCardState = getProposalZkCardState(heroProposal);
   phaseEl.textContent = phase.toUpperCase();
   zkPathEl.textContent = heroProposal.pubkey === 'AegjmwkX1FknBJMDyH5yM6BMhyHsiUreNtz3d8iz3QrP' ? "ANCHORED" : "REVIEW";
   executionEl.textContent = phase === "Executable"
@@ -7236,6 +7294,27 @@ function decodeProposalAccount(data, pubkey) {
   };
 }
 
+function decodeProposalZkPolicyAccount(data, pubkey) {
+  const o = { value: 8 };
+  const dao = readPubkey(data, o);
+  const proposal = readPubkey(data, o);
+  const configuredBy = readPubkey(data, o);
+  const modeIdx = data[o.value]; o.value += 1;
+  const requiredLayersMask = data[o.value]; o.value += 1;
+  const configuredAt = parseI64(data, o.value); o.value += 8;
+  const bump = data[o.value];
+  return {
+    pubkey: pubkey.toBase58(),
+    dao,
+    proposal,
+    configuredBy,
+    mode: proposalZkModeByIdx[modeIdx] || `Unknown(${modeIdx})`,
+    requiredLayersMask,
+    configuredAt,
+    bump,
+  };
+}
+
 function computePhase(p, nowTs) {
   if (p.isExecuted) return "Executed";
   if (p.status === "Cancelled" || p.status === "Vetoed" || p.status === "Failed") return p.status;
@@ -7310,6 +7389,22 @@ function deriveTreasuryPda(daoPubkey) {
     programPk
   );
   return treasuryPk.toBase58();
+}
+
+function deriveProposalZkPolicyPda(proposalPubkey) {
+  const [policyPk] = solanaWeb3.PublicKey.findProgramAddressSync(
+    [new TextEncoder().encode('zk-policy'), new solanaWeb3.PublicKey(proposalPubkey).toBytes()],
+    programPk
+  );
+  return policyPk.toBase58();
+}
+
+function deriveZkReceiptPda(proposalPubkey, layerSeedByte) {
+  const [receiptPk] = solanaWeb3.PublicKey.findProgramAddressSync(
+    [new TextEncoder().encode('zk-verify'), new solanaWeb3.PublicKey(proposalPubkey).toBytes(), Uint8Array.from([layerSeedByte])],
+    programPk
+  );
+  return receiptPk.toBase58();
 }
 
 function decodeDaoAccount(data, pubkey) {
@@ -7431,6 +7526,7 @@ function renderProposalDetail(p, nowTs) {
   const phase = computePhase(p, nowTs);
   const treasuryPda = deriveTreasuryPda(p.dao);
   const zkAnchorInfo = getZkAnchorInfo(p.pubkey);
+  const zkCardState = getProposalZkCardState(p);
   const detailGrid = document.getElementById('proposalDetailGrid');
   const proofLinks = document.getElementById('proposalProofLinks');
   const commandGrid = document.getElementById('proposalCommandGrid');
@@ -7510,6 +7606,10 @@ function renderProposalDetail(p, nowTs) {
       <div class="proposal-detail-label">ZK REVIEW PATH</div>
       <div class="proposal-detail-value">${zkAnchorInfo.reviewPath}</div>
     </div>
+    <div class="proposal-detail-box">
+      <div class="proposal-detail-label">ZK MODE</div>
+      <div class="proposal-detail-value">${p.zkMode || 'Companion'} · ${zkCardState.pill}${p.zkPolicyPda ? `<br>Policy: ${p.zkPolicyPda}` : ''}</div>
+    </div>
   `;
 
   proofLinks.innerHTML = `
@@ -7521,6 +7621,7 @@ function renderProposalDetail(p, nowTs) {
     <button class="proposal-proof-link" type="button" onclick="vetoSelectedProposalInWallet()">Veto in Wallet</button>
     <button class="proposal-proof-link" type="button" onclick="finalizeSelectedProposalInWallet()">Finalize in Wallet</button>
     <button class="proposal-proof-link" type="button" onclick="executeSelectedProposalInWallet()">Execute in Wallet</button>
+    ${p.zkMode !== 'ZkEnforced' ? `<button class="proposal-proof-link" type="button" onclick="configureSelectedProposalZkModeInWallet()">Enable ZK-Enforced</button>` : ''}
     <button class="proposal-proof-link" type="button" onclick="loadProposalHistory(currentSelectedProposal)">Load History</button>
     <button class="proposal-proof-link" type="button" onclick="shareCurrentProposal()">Copy Share Link</button>
     <button class="proposal-proof-link" type="button" onclick="openSelectedProposalExplorer()">Open Selected Proposal</button>
@@ -7540,7 +7641,7 @@ function renderProposalDetail(p, nowTs) {
     </div>
     <div class="proposal-command-box">
       <div class="proposal-detail-label">FINALIZE</div>
-      <div style="color:var(--text2);line-height:1.8">Finalize the proposal once the reveal window has ended.</div>
+      <div style="color:var(--text2);line-height:1.8">${p.zkMode === 'ZkEnforced' ? 'Finalize through the zk-enforced path once the reveal window has ended and receipts are locked on-chain.' : 'Finalize the proposal once the reveal window has ended.'}</div>
       <code>yarn finalize -- --proposal ${p.pubkey}</code>
     </div>
     <div class="proposal-command-box">
@@ -7575,9 +7676,23 @@ function getZkAnchorInfo(proposalPubkey) {
   };
 }
 
-function getProposalZkCardState(proposalPubkey) {
+function getProposalZkCardState(proposal) {
   const canonicalProposal = 'AegjmwkX1FknBJMDyH5yM6BMhyHsiUreNtz3d8iz3QrP';
-  if (proposalPubkey === canonicalProposal) {
+  if (proposal?.zkMode === 'ZkEnforced') {
+    return {
+      pill: 'ZK Enforced',
+      copy: 'Parallel verification receipts are locked on-chain for this proposal and the zk-enforced finalize path is active.',
+    };
+  }
+
+  if (proposal?.zkMode === 'Parallel') {
+    return {
+      pill: 'ZK Parallel',
+      copy: 'This proposal keeps commit-reveal live while parallel on-chain verification receipts are available for the review path.',
+    };
+  }
+
+  if (proposal?.pubkey === canonicalProposal) {
     return {
       pill: 'ZK Anchored',
       copy: 'Vote, delegation, and tally anchors are live on-chain for this canonical Devnet proof path.',
@@ -7731,7 +7846,7 @@ function selectProposal(pubkey) {
 
 function proposalCardHtml(p, nowTs) {
   const phase = computePhase(p, nowTs);
-  const zkCardState = getProposalZkCardState(p.pubkey);
+  const zkCardState = getProposalZkCardState(p);
   const className = phase === "Commit"
     ? "phase-commit"
     : phase === "Reveal"
@@ -7847,6 +7962,25 @@ async function loadLiveProposals() {
         proposals.push(p);
       } catch (_) {}
     }
+
+    const policyPdas = proposals.map((proposal) => new solanaWeb3.PublicKey(deriveProposalZkPolicyPda(proposal.pubkey)));
+    const policyInfos = policyPdas.length
+      ? await withRpcFallback((activeConnection) => activeConnection.getMultipleAccountsInfo(policyPdas, 'confirmed'))
+      : [];
+
+    proposals.forEach((proposal, index) => {
+      const policyInfo = policyInfos[index];
+      if (!policyInfo) {
+        proposal.zkMode = 'Companion';
+        proposal.zkRequiredLayersMask = 0;
+        proposal.zkPolicyPda = null;
+        return;
+      }
+      const decoded = decodeProposalZkPolicyAccount(policyInfo.data, policyPdas[index]);
+      proposal.zkMode = decoded.mode;
+      proposal.zkRequiredLayersMask = decoded.requiredLayersMask;
+      proposal.zkPolicyPda = decoded.pubkey;
+    });
 
     proposals.sort((a, b) => b.proposalId - a.proposalId);
     liveProposalMap = new Map(proposals.map((proposal) => [proposal.pubkey, proposal]));

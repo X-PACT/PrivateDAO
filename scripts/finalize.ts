@@ -31,6 +31,11 @@ async function main() {
   const proposal    = await program.account["proposal"].fetch(proposalPda);
   const daoPda      = proposal.dao;
   const dao         = await program.account["dao"].fetch(daoPda);
+  const [proposalZkPolicyPda] = PublicKey.findProgramAddressSync(
+    [Buffer.from("zk-policy"), proposalPda.toBuffer()],
+    program.programId,
+  );
+  const proposalZkPolicyInfo = await provider.connection.getAccountInfo(proposalZkPolicyPda, "confirmed");
   const now         = Math.floor(Date.now() / 1000);
 
   console.log(`\n⚖️  Finalizing: "${proposal.title}"`);
@@ -43,14 +48,24 @@ async function main() {
     process.exit(1);
   }
 
-  const tx = await program.methods
-    .finalizeProposal()
-    .accounts({
-      dao:       daoPda,
-      proposal:  proposalPda,
-      finalizer: provider.wallet.publicKey,
-    })
-    .rpc();
+  const tx = proposalZkPolicyInfo
+    ? await program.methods
+        .finalizeZkEnforcedProposal()
+        .accounts({
+          dao: daoPda,
+          proposal: proposalPda,
+          proposalZkPolicy: proposalZkPolicyPda,
+          finalizer: provider.wallet.publicKey,
+        })
+        .rpc()
+    : await program.methods
+        .finalizeProposal()
+        .accounts({
+          dao: daoPda,
+          proposal: proposalPda,
+          finalizer: provider.wallet.publicKey,
+        })
+        .rpc();
 
   const final   = await program.account.proposal.fetch(proposalPda);
   const status  = proposalStatusLabel(final.status);
@@ -67,6 +82,9 @@ async function main() {
   console.log(`   Reveal rate: ${quorumPct}% (${final.revealCount}/${final.commitCount})`);
   console.log(`   Transaction: ${tx}`);
   console.log(`   Tx link: ${solscanTxUrl(tx)}`);
+  if (proposalZkPolicyInfo) {
+    console.log(`   ZK mode: zk_enforced (${proposalZkPolicyPda.toBase58()})`);
+  }
 
   if (passed) {
     const unlockAt = final.executionUnlocksAt.toNumber();

@@ -531,70 +531,7 @@ pub mod private_dao {
             ctx.accounts.proposal.status == ProposalStatus::Voting,
             Error::AlreadyFinalized
         );
-
-        let dao = &ctx.accounts.dao;
-        let p = &mut ctx.accounts.proposal;
-
-        let quorum_met = p.commit_count > 0
-            && (p.reveal_count as u128) * 100
-                >= (p.commit_count as u128) * (dao.quorum_percentage as u128);
-
-        let passed = if quorum_met {
-            match &dao.voting_config {
-                VotingConfig::TokenWeighted => {
-                    let total = p.yes_capital + p.no_capital;
-                    total > 0 && p.yes_capital > p.no_capital
-                }
-                VotingConfig::Quadratic => {
-                    let total = p.yes_community + p.no_community;
-                    total > 0 && p.yes_community > p.no_community
-                }
-                VotingConfig::DualChamber {
-                    capital_threshold,
-                    community_threshold,
-                } => {
-                    let cap_total = p.yes_capital + p.no_capital;
-                    let capital_passes = cap_total > 0
-                        && (p.yes_capital as u128) * 100
-                            >= (cap_total as u128) * (*capital_threshold as u128);
-
-                    let com_total = p.yes_community + p.no_community;
-                    let community_passes = com_total > 0
-                        && (p.yes_community as u128) * 100
-                            >= (com_total as u128) * (*community_threshold as u128);
-
-                    capital_passes && community_passes
-                }
-            }
-        } else {
-            false
-        };
-
-        p.status = if passed {
-            ProposalStatus::Passed
-        } else {
-            ProposalStatus::Failed
-        };
-
-        if passed {
-            p.execution_unlocks_at = now
-                .checked_add(dao.execution_delay_seconds)
-                .ok_or(Error::Overflow)?;
-        }
-
-        emit!(ProposalFinalized {
-            proposal: p.key(),
-            yes_capital: p.yes_capital,
-            no_capital: p.no_capital,
-            yes_community: p.yes_community,
-            no_community: p.no_community,
-            passed,
-            quorum_met,
-            commit_count: p.commit_count,
-            reveal_count: p.reveal_count,
-            execution_unlocks_at: p.execution_unlocks_at,
-        });
-        Ok(())
+        finalize_proposal_state(&ctx.accounts.dao, &mut ctx.accounts.proposal, now)
     }
 
     // ── Phase 3b — Execute ────────────────────────────────────────────────────
@@ -900,6 +837,88 @@ pub mod private_dao {
         });
         Ok(())
     }
+
+    pub fn configure_proposal_zk_mode(
+        ctx: Context<ConfigureProposalZkMode>,
+        mode: ProposalZkMode,
+    ) -> Result<()> {
+        let operator = ctx.accounts.operator.key();
+        require!(
+            operator == ctx.accounts.dao.authority || operator == ctx.accounts.proposal.proposer,
+            Error::UnauthorizedZkModeConfig
+        );
+        require!(
+            ctx.accounts.proposal.status == ProposalStatus::Voting
+                && ctx.accounts.proposal.commit_count == 0
+                && ctx.accounts.proposal.reveal_count == 0,
+            Error::ProposalZkModeLocked
+        );
+
+        let required_layers_mask = match mode {
+            ProposalZkMode::Companion | ProposalZkMode::Parallel => 0,
+            ProposalZkMode::ZkEnforced => {
+                validate_zk_receipt(
+                    &ctx.accounts.dao,
+                    &ctx.accounts.proposal,
+                    &ctx.accounts.vote_zk_receipt,
+                    ZkProofLayer::Vote,
+                )?;
+                validate_zk_receipt(
+                    &ctx.accounts.dao,
+                    &ctx.accounts.proposal,
+                    &ctx.accounts.delegation_zk_receipt,
+                    ZkProofLayer::Delegation,
+                )?;
+                validate_zk_receipt(
+                    &ctx.accounts.dao,
+                    &ctx.accounts.proposal,
+                    &ctx.accounts.tally_zk_receipt,
+                    ZkProofLayer::Tally,
+                )?;
+                ProposalZkPolicy::ALL_LAYERS_MASK
+            }
+        };
+
+        let policy = &mut ctx.accounts.proposal_zk_policy;
+        policy.dao = ctx.accounts.dao.key();
+        policy.proposal = ctx.accounts.proposal.key();
+        policy.configured_by = operator;
+        policy.mode = mode.clone();
+        policy.required_layers_mask = required_layers_mask;
+        policy.configured_at = Clock::get()?.unix_timestamp;
+        policy.bump = ctx.bumps.proposal_zk_policy;
+
+        emit!(ProposalZkModeConfigured {
+            dao: policy.dao,
+            proposal: policy.proposal,
+            configured_by: policy.configured_by,
+            mode,
+            required_layers_mask,
+        });
+        Ok(())
+    }
+
+    pub fn finalize_zk_enforced_proposal(ctx: Context<FinalizeZkEnforcedProposal>) -> Result<()> {
+        let now = Clock::get()?.unix_timestamp;
+        require!(
+            now >= ctx.accounts.proposal.reveal_end,
+            Error::RevealStillOpen
+        );
+        require!(
+            ctx.accounts.proposal.status == ProposalStatus::Voting,
+            Error::AlreadyFinalized
+        );
+        require!(
+            ctx.accounts.proposal_zk_policy.mode == ProposalZkMode::ZkEnforced,
+            Error::ProposalNotZkEnforced
+        );
+        require!(
+            ctx.accounts.proposal_zk_policy.required_layers_mask == ProposalZkPolicy::ALL_LAYERS_MASK,
+            Error::ZkVerificationReceiptMissing
+        );
+
+        finalize_proposal_state(&ctx.accounts.dao, &mut ctx.accounts.proposal, now)
+    }
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -940,6 +959,108 @@ fn account_exists(info: &AccountInfo) -> bool {
 
 fn is_zero_hash(hash: &[u8; 32]) -> bool {
     hash.iter().all(|byte| *byte == 0)
+}
+
+fn validate_zk_receipt(
+    dao: &Account<Dao>,
+    proposal: &Account<Proposal>,
+    receipt_info: &UncheckedAccount,
+    expected_layer: ZkProofLayer,
+) -> Result<()> {
+    let (expected_receipt, _) = Pubkey::find_program_address(
+        &[
+            b"zk-verify",
+            proposal.key().as_ref(),
+            &[expected_layer.seed_byte()],
+        ],
+        &crate::ID,
+    );
+    require!(
+        receipt_info.key() == expected_receipt,
+        Error::ZkVerificationReceiptMismatch
+    );
+    require!(
+        account_exists(&receipt_info.to_account_info()),
+        Error::ZkVerificationReceiptMissing
+    );
+    let mut data: &[u8] = &receipt_info.data.borrow();
+    let receipt = ZkVerificationReceipt::try_deserialize(&mut data)
+        .map_err(|_| error!(Error::ZkVerificationReceiptMismatch))?;
+    require!(
+        receipt.dao == dao.key()
+            && receipt.proposal == proposal.key()
+            && receipt.layer == expected_layer,
+        Error::ZkVerificationReceiptMismatch
+    );
+    require!(
+        receipt.verification_mode == ZkVerificationMode::Parallel
+            || receipt.verification_mode == ZkVerificationMode::ZkEnforced,
+        Error::ZkVerificationReceiptMismatch
+    );
+    Ok(())
+}
+
+fn finalize_proposal_state(dao: &Account<Dao>, p: &mut Account<Proposal>, now: i64) -> Result<()> {
+    let quorum_met = p.commit_count > 0
+        && (p.reveal_count as u128) * 100
+            >= (p.commit_count as u128) * (dao.quorum_percentage as u128);
+
+    let passed = if quorum_met {
+        match &dao.voting_config {
+            VotingConfig::TokenWeighted => {
+                let total = p.yes_capital + p.no_capital;
+                total > 0 && p.yes_capital > p.no_capital
+            }
+            VotingConfig::Quadratic => {
+                let total = p.yes_community + p.no_community;
+                total > 0 && p.yes_community > p.no_community
+            }
+            VotingConfig::DualChamber {
+                capital_threshold,
+                community_threshold,
+            } => {
+                let cap_total = p.yes_capital + p.no_capital;
+                let capital_passes = cap_total > 0
+                    && (p.yes_capital as u128) * 100
+                        >= (cap_total as u128) * (*capital_threshold as u128);
+
+                let com_total = p.yes_community + p.no_community;
+                let community_passes = com_total > 0
+                    && (p.yes_community as u128) * 100
+                        >= (com_total as u128) * (*community_threshold as u128);
+
+                capital_passes && community_passes
+            }
+        }
+    } else {
+        false
+    };
+
+    p.status = if passed {
+        ProposalStatus::Passed
+    } else {
+        ProposalStatus::Failed
+    };
+
+    if passed {
+        p.execution_unlocks_at = now
+            .checked_add(dao.execution_delay_seconds)
+            .ok_or(Error::Overflow)?;
+    }
+
+    emit!(ProposalFinalized {
+        proposal: p.key(),
+        yes_capital: p.yes_capital,
+        no_capital: p.no_capital,
+        yes_community: p.yes_community,
+        no_community: p.no_community,
+        passed,
+        quorum_met,
+        commit_count: p.commit_count,
+        reveal_count: p.reveal_count,
+        execution_unlocks_at: p.execution_unlocks_at,
+    });
+    Ok(())
 }
 
 fn parse_token_account(info: &AccountInfo, expected_program: &Pubkey) -> Result<TokenAccount> {
@@ -1337,6 +1458,53 @@ pub struct VerifyZkProofOnChain<'info> {
     pub system_program: Program<'info, System>,
 }
 
+#[derive(Accounts)]
+pub struct ConfigureProposalZkMode<'info> {
+    pub dao: Account<'info, Dao>,
+    #[account(
+        mut,
+        has_one = dao,
+        seeds = [b"proposal", dao.key().as_ref(), proposal.proposal_id.to_le_bytes().as_ref()],
+        bump = proposal.bump
+    )]
+    pub proposal: Account<'info, Proposal>,
+    #[account(
+        init_if_needed,
+        payer = operator,
+        space = ProposalZkPolicy::LEN,
+        seeds = [b"zk-policy", proposal.key().as_ref()],
+        bump
+    )]
+    pub proposal_zk_policy: Account<'info, ProposalZkPolicy>,
+    /// CHECK: validated by validate_zk_receipt
+    pub vote_zk_receipt: UncheckedAccount<'info>,
+    /// CHECK: validated by validate_zk_receipt
+    pub delegation_zk_receipt: UncheckedAccount<'info>,
+    /// CHECK: validated by validate_zk_receipt
+    pub tally_zk_receipt: UncheckedAccount<'info>,
+    #[account(mut)]
+    pub operator: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct FinalizeZkEnforcedProposal<'info> {
+    pub dao: Account<'info, Dao>,
+    #[account(
+        mut,
+        has_one = dao,
+        seeds = [b"proposal", dao.key().as_ref(), proposal.proposal_id.to_le_bytes().as_ref()],
+        bump = proposal.bump
+    )]
+    pub proposal: Account<'info, Proposal>,
+    #[account(
+        seeds = [b"zk-policy", proposal.key().as_ref()],
+        bump = proposal_zk_policy.bump
+    )]
+    pub proposal_zk_policy: Account<'info, ProposalZkPolicy>,
+    pub finalizer: Signer<'info>,
+}
+
 // ── State ─────────────────────────────────────────────────────────────────────
 
 #[account]
@@ -1497,6 +1665,22 @@ impl ZkVerificationReceipt {
     pub const LEN: usize = 8 + 32 + 32 + 32 + 1 + 1 + 1 + 33 + 32 + 32 + 32 + 32 + 8 + 1; // 277
 }
 
+#[account]
+pub struct ProposalZkPolicy {
+    pub dao: Pubkey,               // 32
+    pub proposal: Pubkey,          // 32
+    pub configured_by: Pubkey,     // 32
+    pub mode: ProposalZkMode,      // 1
+    pub required_layers_mask: u8,  // 1
+    pub configured_at: i64,        // 8
+    pub bump: u8,                  // 1
+}
+
+impl ProposalZkPolicy {
+    pub const ALL_LAYERS_MASK: u8 = 0b0000_0111;
+    pub const LEN: usize = 8 + 32 + 32 + 32 + 1 + 1 + 8 + 1; // 115
+}
+
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
@@ -1557,6 +1741,13 @@ pub enum ZkProofSystem {
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
 pub enum ZkVerificationMode {
+    Companion,
+    Parallel,
+    ZkEnforced,
+}
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
+pub enum ProposalZkMode {
     Companion,
     Parallel,
     ZkEnforced,
@@ -1679,6 +1870,15 @@ pub struct ZkProofVerified {
     pub bundle_hash: [u8; 32],
 }
 
+#[event]
+pub struct ProposalZkModeConfigured {
+    pub dao: Pubkey,
+    pub proposal: Pubkey,
+    pub configured_by: Pubkey,
+    pub mode: ProposalZkMode,
+    pub required_layers_mask: u8,
+}
+
 // ── Errors ────────────────────────────────────────────────────────────────────
 
 #[error_code]
@@ -1781,4 +1981,14 @@ pub enum Error {
     InvalidZkVerificationMode,
     #[msg("The provided zk proof anchor does not match the expected proposal-bound layer")]
     ZkProofAnchorMismatch,
+    #[msg("Only the DAO authority or proposal proposer may configure proposal zk mode")]
+    UnauthorizedZkModeConfig,
+    #[msg("Proposal zk mode can only be configured before commits or reveals begin")]
+    ProposalZkModeLocked,
+    #[msg("Required zk verification receipt is missing")]
+    ZkVerificationReceiptMissing,
+    #[msg("Provided zk verification receipt does not match the expected proposal-bound layer")]
+    ZkVerificationReceiptMismatch,
+    #[msg("Selected proposal is not configured for zk_enforced finalization")]
+    ProposalNotZkEnforced,
 }

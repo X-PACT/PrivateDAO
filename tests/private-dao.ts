@@ -216,6 +216,104 @@ describe("PrivateDAO", () => {
     console.log("  ✓ parallel on-chain zk verification receipt recorded");
   });
 
+  it("configures a proposal-level zk_enforced mode from parallel receipts", async () => {
+    const layerSpecs = [
+      { key: { delegation: {} }, seed: 2 },
+      { key: { tally: {} }, seed: 3 },
+    ];
+
+    for (const layer of layerSpecs) {
+      const [zkAnchorPda] = PublicKey.findProgramAddressSync(
+        [Buffer.from("zk-proof"), proposalPda.toBuffer(), Buffer.from([layer.seed])],
+        program.programId,
+      );
+      const [zkReceiptPda] = PublicKey.findProgramAddressSync(
+        [Buffer.from("zk-verify"), proposalPda.toBuffer(), Buffer.from([layer.seed])],
+        program.programId,
+      );
+      const proofHash = [...crypto.randomBytes(32)];
+      const publicInputsHash = [...crypto.randomBytes(32)];
+      const verificationKeyHash = [...crypto.randomBytes(32)];
+      const bundleHash = [...crypto.randomBytes(32)];
+
+      await program.methods
+        .anchorZkProof(
+          layer.key,
+          { groth16: {} },
+          proofHash,
+          publicInputsHash,
+          verificationKeyHash,
+          bundleHash,
+        )
+        .accounts({
+          dao: daoPda,
+          proposal: proposalPda,
+          zkProofAnchor: zkAnchorPda,
+          recorder: voter1.publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .signers([voter1])
+        .rpc();
+
+      await program.methods
+        .verifyZkProofOnChain(
+          layer.key,
+          { parallel: {} },
+          voter1.publicKey,
+        )
+        .accounts({
+          dao: daoPda,
+          proposal: proposalPda,
+          zkProofAnchor: zkAnchorPda,
+          zkVerificationReceipt: zkReceiptPda,
+          verifier: voter1.publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .signers([voter1])
+        .rpc();
+    }
+
+    const [proposalZkPolicyPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("zk-policy"), proposalPda.toBuffer()],
+      program.programId,
+    );
+    const [voteReceiptPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("zk-verify"), proposalPda.toBuffer(), Buffer.from([1])],
+      program.programId,
+    );
+    const [delegationReceiptPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("zk-verify"), proposalPda.toBuffer(), Buffer.from([2])],
+      program.programId,
+    );
+    const [tallyReceiptPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("zk-verify"), proposalPda.toBuffer(), Buffer.from([3])],
+      program.programId,
+    );
+
+    await program.methods
+      .configureProposalZkMode({ zkEnforced: {} })
+      .accounts({
+        dao: daoPda,
+        proposal: proposalPda,
+        proposalZkPolicy: proposalZkPolicyPda,
+        voteZkReceipt: voteReceiptPda,
+        delegationZkReceipt: delegationReceiptPda,
+        tallyZkReceipt: tallyReceiptPda,
+        operator: voter1.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([voter1])
+      .rpc();
+
+    const policy = await program.account["proposalZkPolicy"].fetch(proposalZkPolicyPda);
+    assert.equal(policy.dao.toBase58(), daoPda.toBase58());
+    assert.equal(policy.proposal.toBase58(), proposalPda.toBase58());
+    assert.equal(policy.configuredBy.toBase58(), voter1.publicKey.toBase58());
+    assert.deepEqual(policy.mode, { zkEnforced: {} });
+    assert.equal(policy.requiredLayersMask, 7);
+    console.log("  ✓ proposal-level zk_enforced mode configured from parallel receipts");
+  });
+
   it("rejects invalid treasury action configuration", async () => {
     const dao = await program.account["dao"].fetch(daoPda);
     const [invalidProposalPda] = PublicKey.findProgramAddressSync(
