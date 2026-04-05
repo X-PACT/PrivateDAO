@@ -7586,6 +7586,7 @@ function renderProposalDetail(p, nowTs) {
   const treasuryPda = deriveTreasuryPda(p.dao);
   const zkAnchorInfo = getZkAnchorInfo(p.pubkey);
   const zkCardState = getProposalZkCardState(p);
+  const zkReadiness = summarizeZkEnforcedReadiness(p);
   const detailGrid = document.getElementById('proposalDetailGrid');
   const proofLinks = document.getElementById('proposalProofLinks');
   const commandGrid = document.getElementById('proposalCommandGrid');
@@ -7676,6 +7677,10 @@ function renderProposalDetail(p, nowTs) {
       <div class="proposal-detail-label">ZK RECEIPTS</div>
       <div class="proposal-detail-value">${receiptSummary}</div>
     </div>
+    <div class="proposal-detail-box">
+      <div class="proposal-detail-label">ZK ENFORCED READINESS</div>
+      <div class="proposal-detail-value">${zkReadiness.status}<br>${zkReadiness.copy}<br>${zkReadiness.nextStep}</div>
+    </div>
   `;
 
   proofLinks.innerHTML = `
@@ -7683,6 +7688,7 @@ function renderProposalDetail(p, nowTs) {
     <a class="proposal-proof-link" href="${solscanAccount(p.dao)}" target="_blank">DAO Explorer</a>
     <a class="proposal-proof-link" href="${solscanAccount(treasuryPda)}" target="_blank">Treasury Explorer</a>
     <a class="proposal-proof-link" href="live-proof.md" target="_blank">Live Devnet Proof</a>
+    <a class="proposal-proof-link" href="zk-enforced-operator-flow.md" target="_blank">ZK Operator Flow</a>
     <button class="proposal-proof-link" type="button" onclick="cancelSelectedProposalInWallet()">Cancel in Wallet</button>
     <button class="proposal-proof-link" type="button" onclick="vetoSelectedProposalInWallet()">Veto in Wallet</button>
     <button class="proposal-proof-link" type="button" onclick="finalizeSelectedProposalInWallet()">Finalize in Wallet</button>
@@ -7714,6 +7720,11 @@ function renderProposalDetail(p, nowTs) {
       <div class="proposal-detail-label">ZK MODE</div>
       <div style="color:var(--text2);line-height:1.8">${p.zkMode === 'ZkEnforced' ? 'This proposal is already locked to the stronger finalize path.' : 'Enable zk_enforced only after vote, delegation, and tally receipts exist in zk_enforced mode for this proposal.'}</div>
       <code>npm run configure:zk-mode -- --proposal ${p.pubkey} --mode zk_enforced</code>
+    </div>
+    <div class="proposal-command-box">
+      <div class="proposal-detail-label">ZK OPERATOR FLOW</div>
+      <div style="color:var(--text2);line-height:1.8">${zkReadiness.copy} ${zkReadiness.nextStep}</div>
+      <code>npm run inspect:zk-proposal -- --proposal ${p.pubkey}</code>
     </div>
     <div class="proposal-command-box">
       <div class="proposal-detail-label">EXECUTE</div>
@@ -7773,6 +7784,53 @@ function getProposalZkCardState(proposal) {
   return {
     pill: 'ZK Review Path',
     copy: 'This proposal follows the same private lifecycle. Published on-chain anchors remain tied to the canonical Devnet proof path.',
+  };
+}
+
+function summarizeZkEnforcedReadiness(proposal) {
+  const receipts = Array.isArray(proposal?.zkReceiptSummary) ? proposal.zkReceiptSummary : [];
+  const missing = receipts.filter((receipt) => !receipt || receipt.verificationMode === 'Missing');
+  const weaker = receipts.filter((receipt) => receipt?.verificationMode === 'Parallel');
+  const stronger = receipts.filter((receipt) => receipt?.verificationMode === 'ZkEnforced');
+
+  if (proposal?.zkMode === 'ZkEnforced') {
+    return {
+      status: 'Active',
+      copy: stronger.length === 3
+        ? 'This proposal is already locked to zk_enforced mode with the full stronger receipt set recorded on-chain.'
+        : 'This proposal is locked to zk_enforced mode. Refresh the receipt set and keep using the stronger finalize path.',
+      nextStep: 'Finalize through the zk_enforced path after reveal closes and the proposal enters a valid finalize state.',
+    };
+  }
+
+  if (missing.length > 0) {
+    return {
+      status: 'Blocked',
+      copy: `Missing ${missing.map((receipt) => receipt.layer.toLowerCase()).join(', ')} zk_enforced receipt${missing.length > 1 ? 's' : ''}.`,
+      nextStep: 'Record vote, delegation, and tally receipts in zk_enforced mode before enabling the stronger policy.',
+    };
+  }
+
+  if (weaker.length > 0) {
+    return {
+      status: 'Upgrade Required',
+      copy: `All receipts exist, but ${weaker.map((receipt) => receipt.layer.toLowerCase()).join(', ')} remain in weaker parallel mode.`,
+      nextStep: 'Upgrade the weaker receipts to zk_enforced mode, inspect the proposal again, then enable zk_enforced.',
+    };
+  }
+
+  if (stronger.length === 3) {
+    return {
+      status: 'Ready',
+      copy: 'All three stronger receipts are present on-chain and this proposal can be promoted to zk_enforced mode.',
+      nextStep: 'Run configure:zk-mode for this proposal, then use the zk_enforced finalize path when the reveal window closes.',
+    };
+  }
+
+  return {
+    status: 'Pending',
+    copy: 'Receipt hydration has not finished yet for this proposal.',
+    nextStep: 'Refresh the selected proposal or inspect it through the CLI before enabling zk_enforced.',
   };
 }
 
