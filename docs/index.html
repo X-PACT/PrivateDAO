@@ -1062,6 +1062,41 @@ nav.scrolled {
   background: var(--void);
 }
 
+.proposal-control-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin: 18px 0 16px;
+}
+
+.proposal-control-chip {
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(8,17,27,0.98), rgba(6,13,21,0.98));
+}
+
+.proposal-control-kicker {
+  color: var(--text3);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.proposal-control-title {
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.proposal-control-copy {
+  color: var(--text2);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
 .proposal-detail-label {
   color: var(--text3);
   font-family: var(--mono);
@@ -2428,10 +2463,10 @@ body.judge-mode .judge-banner {
       </div>
     </div>
     <div class="judge-banner-actions">
-      <button class="proposal-proof-link" type="button" onclick="openDocument('investor-video.md','Technical Explainer Brief')">Open Explainer Brief</button>
+      <button class="proposal-proof-link" type="button" onclick="showPage('proof', findNavButton('proof'))">Open Proof Center</button>
       <a class="award-link" href="live-proof.md" target="_blank">Open Live Proof</a>
       <button class="proposal-proof-link" type="button" onclick="copyJudgeModeLink()">Copy Judge Link</button>
-      <button class="proposal-proof-link" type="button" onclick="exitJudgeMode()">Exit Judge Mode</button>
+      <button class="proposal-proof-link" type="button" onclick="exitJudgeMode()">Exit Review Mode</button>
     </div>
   </div>
 </div>
@@ -2747,14 +2782,31 @@ body.judge-mode .judge-banner {
     <div class="proposal-detail-card reveal" id="proposalDetailCard">
       <div class="proposal-detail-head">
         <div>
-          <div class="section-tag">PROPOSAL PROOF PANEL</div>
-          <h3 style="font-size:30px;font-weight:700;letter-spacing:-0.4px;margin-top:6px">Select a proposal to inspect its live proof surface.</h3>
+          <div class="section-tag">SELECTED PROPOSAL</div>
+          <h3 style="font-size:30px;font-weight:700;letter-spacing:-0.4px;margin-top:6px">Inspect state, choose the next action, and verify execution.</h3>
           <p style="margin-top:10px;color:var(--text2);line-height:1.8;max-width:920px" id="proposalDetailIntro">
-            This panel turns the selected proposal into a reviewer-friendly proof bundle: status, phase, timing windows, Explorer links, and the exact repo commands for the current lifecycle.
+            This panel maps the selected proposal into a product control surface: current phase, next valid action, verification links, and exact repo commands for the live lifecycle.
           </p>
           <div class="zk-mini-badge" style="margin-top:14px">🔒 ZK Companion</div>
         </div>
         <div class="award-pill" id="proposalDetailPhase">Awaiting selection</div>
+      </div>
+      <div class="proposal-control-strip">
+        <div class="proposal-control-chip">
+          <div class="proposal-control-kicker">OPERATE</div>
+          <div class="proposal-control-title">Use the valid next step only</div>
+          <div class="proposal-control-copy">Commit during voting, reveal after voting closes, finalize after reveal closes, then execute only after timelock expiry.</div>
+        </div>
+        <div class="proposal-control-chip">
+          <div class="proposal-control-kicker">VERIFY</div>
+          <div class="proposal-control-title">Keep every action tied to chain state</div>
+          <div class="proposal-control-copy">Explorer links, history, and command builders stay attached to the selected proposal instead of floating as disconnected review notes.</div>
+        </div>
+        <div class="proposal-control-chip">
+          <div class="proposal-control-kicker">GUARDRAILS</div>
+          <div class="proposal-control-title">Safety stays protocol-bound</div>
+          <div class="proposal-control-copy">Treasury movement, replay rejection, signer checks, and timing windows remain enforced by the deployed program rather than page state alone.</div>
+        </div>
       </div>
       <div class="proposal-detail-grid" id="proposalDetailGrid">
         <div class="proposal-detail-box">
@@ -2882,29 +2934,30 @@ body.judge-mode .judge-banner {
     </div>
 
     <div class="execute-surface-card reveal">
-      <div class="section-tag">ON-CHAIN EXECUTION</div>
-      <h3 style="font-size:30px;font-weight:700;letter-spacing:-0.4px">Execute button is isolated from the award surface.</h3>
+      <div class="section-tag">OPERATOR NOTES</div>
+      <h3 style="font-size:30px;font-weight:700;letter-spacing:-0.4px">Keep operation, verification, and escalation separate.</h3>
       <p style="margin-top:10px;color:var(--text2);line-height:1.8;max-width:900px">
-        The `Execute` button belongs to the governance lifecycle only. It appears on a proposal card only after the proposal has passed and the timelock has expired, and it maps directly to the on-chain treasury execution flow.
+        This page is for running the governance lifecycle. Proof Center, Security, and Diagnostics stay available for verification without taking over the main operating workspace.
       </p>
       <div class="execute-surface-grid">
         <div class="execute-surface-panel">
-          <div class="award-meta-card-label">WHEN EXECUTE APPEARS</div>
+          <div class="award-meta-card-label">OPERATE HERE</div>
           <div style="color:var(--text2);line-height:1.8">
-            <div>1. Proposal is finalized on-chain as passed.</div>
-            <div>2. Timelock remains active until `executionUnlocksAt`.</div>
-            <div>3. The button becomes enabled only in the `Executable` phase.</div>
-            <div>4. The modal copies the real repo command for the selected proposal.</div>
+            <div>1. Bootstrap the DAO and treasury.</div>
+            <div>2. Create a proposal from a wallet that holds governance tokens.</div>
+            <div>3. Commit, reveal, finalize, and execute only in the valid phase.</div>
+            <div>4. Use advanced delegation only when the base path is already clear.</div>
           </div>
         </div>
         <div class="execute-surface-panel">
-          <div class="award-meta-card-label">EXECUTE COMMAND</div>
+          <div class="award-meta-card-label">VERIFY ELSEWHERE</div>
           <div style="color:var(--text2);line-height:1.8">
-            Run the exact repo command after the proposal clears timelock:
+            Keep reviewer evidence and operational diagnostics in their own surfaces so the core product flow stays fast, readable, and safe to operate.
           </div>
-          <code>yarn execute -- --proposal &lt;PROPOSAL_PUBKEY&gt;</code>
-          <div style="margin-top:12px;color:var(--text3);font-size:13px;line-height:1.7">
-            After submission, the operator flow prints the transaction signature and explorer link for verification.
+          <div class="award-links" style="margin-top:14px">
+            <button class="proposal-proof-link" type="button" onclick="showPage('proof', findNavButton('proof'))">Proof Center</button>
+            <button class="proposal-proof-link" type="button" onclick="showPage('security', findNavButton('security'))">Security</button>
+            <a class="award-link" href="?page=diagnostics" target="_blank" data-bypass-doc-viewer="1">Diagnostics</a>
           </div>
         </div>
       </div>
@@ -2923,23 +2976,6 @@ body.judge-mode .judge-banner {
       <p>4) Verify phase transitions, treasury effects, and transaction hashes against Solscan.</p>
       <p>5) Run <span style="color:var(--cyan)">npm run demo</span> for the repository walkthrough and <span style="color:var(--cyan)">npm run verify:all</span> for the full review gate.</p>
       <p style="color:var(--text3)">The product surface and the repository are intentionally aligned: the frontend explains and signs, while the protocol, scripts, proofs, and verification gates provide the hard evidence.</p>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="operational-context" style="padding-top:20px">
-  <div class="container">
-    <div class="section-tag reveal">OPERATIONAL CONTEXT</div>
-    <h2 class="section-heading reveal">Keep action here,<br>move evidence there.</h2>
-    <div class="reveal" style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;line-height:1.8;color:var(--text2)">
-      <p>This page is now reserved for the active governance workflow: bootstrap, proposal creation, commit, reveal, finalize, execute, and advanced delegation.</p>
-      <p>Reviewer-heavy material such as consumer positioning, deployment readiness, operational evidence, and mainnet packaging belongs in <span style="color:var(--cyan)">Proof Center</span> and <span style="color:var(--cyan)">Security</span>.</p>
-      <div class="award-links" style="margin-top:16px">
-        <button class="proposal-proof-link" type="button" onclick="showPage('proof', findNavButton('proof'))">Open Proof Center</button>
-        <button class="proposal-proof-link" type="button" onclick="showPage('security', findNavButton('security'))">Open Security</button>
-        <a class="award-link" href="?page=diagnostics" target="_blank" data-bypass-doc-viewer="1">Wallet Diagnostics</a>
-        <a class="award-link" href="mainnet-proof-package.generated.md" target="_blank">Mainnet Proof Package</a>
-      </div>
     </div>
   </div>
 </section>
@@ -2973,7 +3009,7 @@ body.judge-mode .judge-banner {
           <div class="curation-copy">Start from the live app, inspect the program on Solscan, and use the Devnet lifecycle proof as the canonical operational path.</div>
           <div class="curation-links">
             <a class="award-link" href="https://x-pact.github.io/PrivateDAO/" target="_blank">Live App</a>
-            <a class="award-link" href="?page=proof&judge=1" target="_blank">Judge Mode</a>
+            <a class="award-link" href="?page=proof&judge=1" target="_blank">Review Surface</a>
             <a class="award-link" href="https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet" target="_blank">Program on Solscan</a>
             <a class="award-link" href="live-proof.md" target="_blank">Live Devnet Proof</a>
             <a class="award-link" href="?page=diagnostics" target="_blank" data-bypass-doc-viewer="1">Wallet Diagnostics</a>
@@ -3040,8 +3076,8 @@ body.judge-mode .judge-banner {
         <div class="award-meta-card-value">1st Place — Superteam Poland</div>
       </div>
       <div class="award-meta-card">
-        <div class="award-meta-card-label">CURRENT TRACKS</div>
-        <div class="award-meta-card-value">Ranger Main Track · Ranger Drift Side Track</div>
+        <div class="award-meta-card-label">PRODUCT FOCUS</div>
+        <div class="award-meta-card-value">Private voting · treasury execution · runtime assurance</div>
       </div>
       <div class="award-meta-card">
         <div class="award-meta-card-label">PROGRAM ID</div>
@@ -4887,13 +4923,13 @@ function setJudgeMode(enabled) {
 
 function enterJudgeMode() {
   setJudgeMode(true);
-  showToast('Judge Mode enabled.', 'success');
+  showToast('Review Mode enabled.', 'success');
 }
 
 function exitJudgeMode() {
   document.body.classList.remove('judge-mode');
   showPage('proof');
-  showToast('Judge Mode disabled.', 'info');
+  showToast('Review Mode disabled.', 'info');
 }
 
 function copyJudgeModeLink() {
@@ -6874,9 +6910,22 @@ function renderProposalDetail(p, nowTs) {
       : phase === "Executed"
         ? "Already executed on-chain"
         : "Execution not yet available";
+  const nextAction = phase === "Commit"
+    ? "Commit a hidden vote"
+    : phase === "Reveal"
+      ? "Reveal the original vote and salt"
+      : phase === "Timelocked"
+        ? `Wait until ${formatUtc(p.executionUnlocksAt)}`
+        : phase === "Executable"
+          ? "Execute the treasury action"
+          : phase === "Passed" || phase === "VotingClosed"
+            ? "Finalize the proposal"
+            : phase === "Executed"
+              ? "Verify the treasury movement"
+              : "Review the proposal state";
 
   phaseEl.textContent = `${paddedId} · ${phase}`;
-  introEl.textContent = `The selected proposal is live on devnet. This panel maps the current on-chain state to the exact repo actions and verification links a reviewer needs.`;
+  introEl.textContent = `The selected proposal is live on devnet. Use this surface to understand the current phase, take the valid next step, and verify the resulting state on chain.`;
 
   detailGrid.innerHTML = `
     <div class="proposal-detail-box">
@@ -6896,6 +6945,10 @@ function renderProposalDetail(p, nowTs) {
       <div class="proposal-detail-value">Voting end: ${formatUtc(p.votingEnd)}<br>Reveal end: ${formatUtc(p.revealEnd)}</div>
     </div>
     <div class="proposal-detail-box">
+      <div class="proposal-detail-label">NEXT ACTION</div>
+      <div class="proposal-detail-value">${nextAction}</div>
+    </div>
+    <div class="proposal-detail-box">
       <div class="proposal-detail-label">EXECUTION</div>
       <div class="proposal-detail-value">${executeState}</div>
     </div>
@@ -6910,6 +6963,10 @@ function renderProposalDetail(p, nowTs) {
     <div class="proposal-detail-box">
       <div class="proposal-detail-label">ADDRESSES</div>
       <div class="proposal-detail-value">Proposal: ${p.pubkey}<br>DAO: ${p.dao}<br>Treasury: ${treasuryPda}</div>
+    </div>
+    <div class="proposal-detail-box">
+      <div class="proposal-detail-label">VERIFICATION PATH</div>
+      <div class="proposal-detail-value">Explorer links, proposal history, and repo-native commands below stay scoped to this selected on-chain proposal.</div>
     </div>
   `;
 
