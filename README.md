@@ -243,43 +243,45 @@ That is why PrivateDAO treats lifecycle enforcement, signer correctness, account
 
 The same rule now applies to the review surface itself: zk artifacts, live-proof anchors, and the canonical proof documents are tied together through a sha256 manifest so reviewers can verify artifact integrity instead of trusting static presentation.
 
-Quick links:
+## Essential Links
 
 - Live frontend: `https://x-pact.github.io/PrivateDAO/`
 - Proof Center: `https://x-pact.github.io/PrivateDAO/?page=proof`
-- Judge Mode: `https://x-pact.github.io/PrivateDAO/?page=proof&judge=1`
 - Wallet diagnostics: `https://x-pact.github.io/PrivateDAO/?page=diagnostics`
-- Android native guide: `docs/android-native.md`
+- Live devnet proof: `docs/live-proof.md`
+- Security review: `docs/security-review.md`
 - PDAO token surface: `docs/pdao-token.md`
-- PDAO attestation: `docs/pdao-attestation.generated.json`
-- Fair voting model: `docs/fair-voting.md`
-- Wallet runtime compatibility: `docs/wallet-runtime.md`
-- Real-device runtime intake: `docs/real-device-runtime.md`
-- Real-device runtime evidence: `docs/real-device-runtime.generated.md`
-- Runtime attestation: `docs/runtime-attestation.generated.json`
-- Operational evidence package: `docs/operational-evidence.generated.md`
-- Runtime evidence package: `docs/runtime-evidence.generated.md`
+- ZK layer: `docs/zk-layer.md`
+- Audit packet: `docs/audit-packet.generated.md`
+- Review attestation: `docs/review-attestation.generated.json`
+- Verification gates: `docs/verification-gates.md`
+
+## Product And Runtime Docs
+
+- Android native guide: `docs/android-native.md`
 - Consumer readiness: `docs/consumer-readiness.md`
 - Consumer user flows: `docs/consumer-user-flows.md`
 - Launch and growth plan: `docs/launch-growth-plan.md`
+- Wallet runtime compatibility: `docs/wallet-runtime.md`
+- Real-device runtime intake: `docs/real-device-runtime.md`
+- Real-device runtime evidence: `docs/real-device-runtime.generated.md`
+- Runtime evidence package: `docs/runtime-evidence.generated.md`
+- Operational evidence package: `docs/operational-evidence.generated.md`
 - Wallet compatibility matrix: `docs/wallet-compatibility-matrix.generated.md`
 - Devnet canary: `docs/devnet-canary.generated.md`
-- Artifact freshness: `docs/artifact-freshness.md`
-- Release ceremony: `docs/release-ceremony.md`
-- Release ceremony attestation: `docs/release-ceremony-attestation.generated.md`
-- Release drill evidence: `docs/release-drill.generated.md`
-- Review automation: `docs/review-automation.md`
-- Go-live criteria: `docs/go-live-criteria.md`
-- Operational drillbook: `docs/operational-drillbook.md`
-- Awards page: `docs/awards.md`
-- Strategy documentation: `https://us04docs.zoom.us/doc/Zd34HEaHSKyZGRxBcqxXQg`
-- Repo strategy note: `docs/strategy.md`
-- Ranger strategy documentation: `docs/ranger-strategy-documentation.md`
-- Strategy blueprint: `docs/strategy-blueprint.md`
-- Strategy adaptor interface: `docs/strategy-adaptor-interface.md`
-- Strategy operations: `docs/strategy-operations.md`
+- 50-wallet load report: `docs/load-test-report.md`
+- Devnet scale profiles: `docs/devnet-scale-profiles.md`
+- Multi-proposal isolation report: `docs/devnet-multi-proposal-report.md`
+- Race and collision report: `docs/devnet-race-report.md`
+- RPC and stale-blockhash resilience report: `docs/devnet-resilience-report.md`
+
+## Security And Cryptography Docs
+
+- Threat model: `docs/threat-model.md`
+- Security coverage map: `docs/security-coverage-map.md`
+- Failure modes: `docs/failure-modes.md`
+- Replay analysis: `docs/replay-analysis.md`
 - ZK upgrade path: `docs/zk-upgrade.md`
-- ZK layer: `docs/zk-layer.md`
 - ZK stack: `docs/zk-stack.md`
 - ZK threat extension: `docs/zk-threat-extension.md`
 - ZK assumption matrix: `docs/zk-assumption-matrix.md`
@@ -289,55 +291,27 @@ Quick links:
 - ZK registry: `docs/zk-registry.generated.json`
 - ZK transcript: `docs/zk-transcript.generated.md`
 - ZK attestation: `docs/zk-attestation.generated.json`
-- ZK architecture: `docs/zk-architecture.md`
 - ZK evidence: `docs/zk-evidence.md`
 - Cryptographic integrity: `docs/cryptographic-integrity.md`
 - Cryptographic posture: `docs/cryptographic-posture.md`
 - Supply-chain security: `docs/supply-chain-security.md`
 - Supply-chain attestation: `docs/supply-chain-attestation.generated.md`
 - Cryptographic manifest: `docs/cryptographic-manifest.generated.json`
-- Ranger eligibility checklist: `docs/ranger-submission-checklist.md`
-- Ranger strategy config: `docs/ranger-strategy-config.devnet.json`
-- Ranger strategy template: `docs/ranger-strategy-config.sample.json`
-- Ranger risk policy: `docs/risk-policy.md`
-- Performance evidence: `docs/performance-evidence.md`
-- Submission dossier: `docs/submission-dossier.md`
-- Submission registry: `docs/submission-registry.json`
-- Competition readiness: `docs/competition-readiness.md`
-- Audit packet: `docs/audit-packet.generated.md`
-- Review attestation: `docs/review-attestation.generated.json`
-- Verification gates: `docs/verification-gates.md`
-- Reviewer fast path: `docs/reviewer-fast-path.md`
-- Judge technical audit note: `docs/judge-technical-audit.md`
-- Security review surface: `docs/security-review.md`
-- Mainnet readiness note: `docs/mainnet-readiness.md`
+
+## Release And Mainnet Docs
+
 - Mainnet readiness report: `docs/mainnet-readiness.generated.md`
 - Mainnet acceptance matrix: `docs/mainnet-acceptance-matrix.generated.md`
 - Mainnet proof package: `docs/mainnet-proof-package.generated.md`
 - Deployment attestation: `docs/deployment-attestation.generated.json`
 - Go-live attestation: `docs/go-live-attestation.generated.json`
 - Release ceremony: `docs/release-ceremony.md`
-- Release ceremony attestation: `docs/release-ceremony-attestation.generated.json`
-- Release drill evidence: `docs/release-drill.generated.json`
+- Release drill evidence: `docs/release-drill.generated.md`
+- Artifact freshness: `docs/artifact-freshness.md`
+- Review automation: `docs/review-automation.md`
+- Go-live criteria: `docs/go-live-criteria.md`
+- Operational drillbook: `docs/operational-drillbook.md`
 - External readiness intake: `docs/external-readiness-intake.md`
-- Production operations: `docs/production-operations.md`
-- Monitoring and alerts: `docs/monitoring-alerts.md`
-- Incident response: `docs/incident-response.md`
-- Mainnet cutover runbook: `docs/mainnet-cutover-runbook.md`
-- Operator checklist: `docs/operator-checklist.md`
-- Risk register: `docs/risk-register.md`
-- Audit handoff: `docs/audit-handoff.md`
-- Reviewer surface map: `docs/reviewer-surface-map.md`
-- Competition roadmap: `docs/competition-roadmap.md`
-- Ranger Main Track memo: `docs/ranger-main-track.md`
-- Ranger Drift Track memo: `docs/ranger-drift-track.md`
-- Live devnet proof: `docs/live-proof.md`
-- 50-wallet load report: `docs/load-test-report.md`
-- Operational evidence package: `docs/operational-evidence.generated.md`
-- Devnet scale profiles: `docs/devnet-scale-profiles.md`
-- Multi-proposal isolation report: `docs/devnet-multi-proposal-report.md`
-- Race and collision report: `docs/devnet-race-report.md`
-- RPC and stale-blockhash resilience report: `docs/devnet-resilience-report.md`
 - Wallet compatibility matrix: `docs/wallet-compatibility-matrix.generated.md`
 - Devnet canary: `docs/devnet-canary.generated.md`
 - Devnet wallet registry: `docs/devnet-wallet-registry.json`

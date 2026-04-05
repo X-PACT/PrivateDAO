@@ -6449,6 +6449,9 @@ async function submitCreateProposalInWallet() {
     const signature = await signAndBroadcastTransaction(ix, 'Create proposal submitted');
     if (signature) {
       currentSelectedProposalPubkey = proposalPk.toBase58();
+      loadLiveProposals();
+      showToast(`Proposal created: ${shortPk(proposalPk.toBase58())}`, 'success');
+      setTimeout(() => window.open(solscanTx(signature), '_blank', 'noopener'), 180);
       syncUrlState();
     }
   } catch (error) {
@@ -6566,7 +6569,9 @@ async function submitDepositInWallet() {
       ],
       data,
     });
-    await signAndBroadcastTransaction(ix, 'Deposit submitted');
+    const signature = await signAndBroadcastTransaction(ix, 'Deposit submitted');
+    showToast(`Treasury funded: ${amountSol} SOL`, 'success');
+    setTimeout(() => window.open(solscanTx(signature), '_blank', 'noopener'), 180);
   } catch (error) {
     console.error(error);
     showToast(describeOperationError(error, 'deposit'), 'error');
@@ -6933,7 +6938,9 @@ async function finalizeSelectedProposalInWallet() {
       { pubkey: proposalPk, isSigner: false, isWritable: true },
       { pubkey: finalizerPk, isSigner: true, isWritable: false },
     ]);
-    await signAndBroadcastTransaction(ix, 'Finalize submitted');
+    const signature = await signAndBroadcastTransaction(ix, 'Finalize submitted');
+    showToast(`Proposal finalized: ${shortPk(currentSelectedProposal.pubkey)}`, 'success');
+    setTimeout(() => window.open(solscanTx(signature), '_blank', 'noopener'), 180);
   } catch (error) {
     console.error(error);
     showToast(describeOperationError(error, 'finalize'), 'error');
