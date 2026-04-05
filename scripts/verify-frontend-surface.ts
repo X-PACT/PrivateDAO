@@ -28,7 +28,7 @@ function main() {
     "CAPABILITY MATRIX",
     "PER-LAYER REVIEW PATH",
     "🔒 ZK Companion Layer",
-    "Gold Medal · 1st Place",
+    "1st Place · Superteam Poland",
     "Zero-Knowledge Protection",
     "Groth16 zk-SNARK companion proofs",
     "ZK Layer",
