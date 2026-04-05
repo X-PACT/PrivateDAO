@@ -180,6 +180,9 @@ The current review surface is intentionally explicit about a few points that are
 - Phase A is live: on-chain proof anchors plus on-chain parallel verification receipts.
 - Phase B is now live in parallel: proposals can be configured into `zk_enforced` mode once vote, delegation, and tally verification receipts exist on chain. The frontend surfaces this mode directly and switches finalize to the `zk_enforced` path for those proposals.
 - The stronger path is now stricter than the original Phase A receipts: `zk_enforced` proposals require vote, delegation, and tally receipts recorded in `zk_enforced` mode, not only `parallel` mode.
+- The web surface now shows per-layer receipt strength for the selected proposal, and the CLI now exposes:
+  - `npm run anchor:zk-verify:enforced`
+  - `npm run inspect:zk-proposal -- --proposal <PDA>`
 - Phase C is not yet promoted. `zk_enforced` is live and usable, but it is still in hardening mode until additional runtime evidence, external review, and operator confidence are closed.
 
 ## ZK Rollout Status

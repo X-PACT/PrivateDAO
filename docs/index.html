@@ -7344,6 +7344,36 @@ function decodeProposalZkPolicyAccount(data, pubkey) {
   };
 }
 
+function decodeZkVerificationReceiptAccount(data, pubkey) {
+  const o = { value: 8 };
+  const dao = readPubkey(data, o);
+  const proposal = readPubkey(data, o);
+  const verifiedBy = readPubkey(data, o);
+  const layerIdx = data[o.value]; o.value += 1;
+  const proofSystemIdx = data[o.value]; o.value += 1;
+  const verificationModeIdx = data[o.value]; o.value += 1;
+  const hasVerifierProgram = data[o.value]; o.value += 1;
+  const verifierProgram = hasVerifierProgram === 1 ? readPubkey(data, o) : null;
+  o.value += 32; // proof hash
+  o.value += 32; // public inputs hash
+  o.value += 32; // verification key hash
+  o.value += 32; // bundle hash
+  const verifiedAt = parseI64(data, o.value); o.value += 8;
+  const bump = data[o.value];
+  return {
+    pubkey: pubkey.toBase58(),
+    dao,
+    proposal,
+    verifiedBy,
+    layer: ['Vote', 'Delegation', 'Tally'][layerIdx] || `Unknown(${layerIdx})`,
+    proofSystem: ['Groth16'][proofSystemIdx] || `Unknown(${proofSystemIdx})`,
+    verificationMode: ['Companion', 'Parallel', 'ZkEnforced'][verificationModeIdx] || `Unknown(${verificationModeIdx})`,
+    verifierProgram,
+    verifiedAt,
+    bump,
+  };
+}
+
 function computePhase(p, nowTs) {
   if (p.isExecuted) return "Executed";
   if (p.status === "Cancelled" || p.status === "Vetoed" || p.status === "Failed") return p.status;
@@ -7562,6 +7592,9 @@ function renderProposalDetail(p, nowTs) {
   const phaseEl = document.getElementById('proposalDetailPhase');
   const introEl = document.getElementById('proposalDetailIntro');
   const paddedId = `PROP-${String(p.proposalId).padStart(3, '0')}`;
+  const receiptSummary = Array.isArray(p.zkReceiptSummary)
+    ? p.zkReceiptSummary.map((receipt) => `${receipt.layer}: ${receipt.verificationMode}${receipt.verifierProgram ? ` · ${shortPk(receipt.verifierProgram)}` : ''}`).join('<br>')
+    : 'Receipt status loads on demand for the selected proposal.';
   const executeState = phase === "Executable"
     ? "Executable now"
     : phase === "Timelocked"
@@ -7639,6 +7672,10 @@ function renderProposalDetail(p, nowTs) {
       <div class="proposal-detail-label">ZK MODE</div>
       <div class="proposal-detail-value">${p.zkMode || 'Companion'} · ${zkCardState.pill}${p.zkPolicyPda ? `<br>Policy: ${p.zkPolicyPda}` : ''}</div>
     </div>
+    <div class="proposal-detail-box">
+      <div class="proposal-detail-label">ZK RECEIPTS</div>
+      <div class="proposal-detail-value">${receiptSummary}</div>
+    </div>
   `;
 
   proofLinks.innerHTML = `
@@ -7715,7 +7752,7 @@ function getProposalZkCardState(proposal) {
   if (proposal?.zkMode === 'ZkEnforced') {
     return {
       pill: 'ZK Enforced',
-      copy: 'Parallel verification receipts are locked on-chain for this proposal and the zk-enforced finalize path is active.',
+      copy: 'Stronger zk_enforced receipts are locked on-chain for this proposal and the zk-enforced finalize path is active.',
     };
   }
 
@@ -7737,6 +7774,29 @@ function getProposalZkCardState(proposal) {
     pill: 'ZK Review Path',
     copy: 'This proposal follows the same private lifecycle. Published on-chain anchors remain tied to the canonical Devnet proof path.',
   };
+}
+
+async function hydrateSelectedProposalZkReceipts(proposalPubkey) {
+  const proposal = liveProposalMap.get(proposalPubkey);
+  if (!proposal) return;
+
+  const receiptPdas = [1, 2, 3].map((seed) => new solanaWeb3.PublicKey(deriveZkReceiptPda(proposalPubkey, seed)));
+  const infos = await withRpcFallback((activeConnection) => activeConnection.getMultipleAccountsInfo(receiptPdas, 'confirmed'));
+  proposal.zkReceiptSummary = infos.map((info, index) => {
+    if (!info) {
+      return {
+        layer: ['Vote', 'Delegation', 'Tally'][index],
+        verificationMode: 'Missing',
+        verifierProgram: null,
+      };
+    }
+    return decodeZkVerificationReceiptAccount(info.data, receiptPdas[index]);
+  });
+
+  if (currentSelectedProposalPubkey === proposalPubkey) {
+    currentSelectedProposal = proposal;
+    renderProposalDetail(proposal, Math.floor(Date.now() / 1000));
+  }
 }
 
 async function updateHeroWalletReadiness() {
@@ -7876,6 +7936,7 @@ function selectProposal(pubkey) {
   updateExecuteCommandBuilder();
   syncDelegatedCommitCommand();
   syncUrlState();
+  hydrateSelectedProposalZkReceipts(pubkey).catch(() => {});
 }
 
 function proposalCardHtml(p, nowTs) {

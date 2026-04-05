@@ -22,6 +22,7 @@
     "reveal": "ts-node scripts/reveal-vote.ts",
     "finalize": "ts-node scripts/finalize.ts",
     "configure:zk-mode": "ts-node scripts/configure-zk-proposal-mode.ts",
+    "inspect:zk-proposal": "ts-node scripts/inspect-zk-proposal.ts",
     "execute": "ts-node scripts/execute.ts",
     "live-proof": "ts-node scripts/live-devnet-proof.ts",
     "test:devnet:wallets": "ts-node scripts/devnet-load-test.ts wallets",
