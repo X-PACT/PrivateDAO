@@ -37,6 +37,9 @@
     "zk": [
       "docs/zk-layer.md",
       "docs/phase-c-hardening.md",
+      "docs/zk-verifier-strategy.md",
+      "docs/zk-enforced-threat-review.md",
+      "docs/zk-enforced-runtime-evidence.md",
       "docs/zk-stack.md",
       "docs/zk-upgrade.md",
       "docs/zk-architecture.md",

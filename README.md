@@ -91,6 +91,7 @@ For the fastest useful read:
 4. Read `docs/zk-layer.md`
 5. Read `docs/pdao-token.md`
 6. Read `docs/phase-c-hardening.md`
+7. Read `docs/zk-verifier-strategy.md`
 
 ## Shared Proposal Doc
 
@@ -198,6 +199,9 @@ The current zk roadmap is additive and non-breaking:
 For the exact blockers and execution path, read:
 
 - `docs/phase-c-hardening.md`
+- `docs/zk-verifier-strategy.md`
+- `docs/zk-enforced-threat-review.md`
+- `docs/zk-enforced-runtime-evidence.md`
 
 ## Why PrivateDAO Exists
 

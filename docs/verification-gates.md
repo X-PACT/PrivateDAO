@@ -132,6 +132,12 @@ This document makes the current boundary explicit:
 - `zk_enforced` is usable
 - `zk_enforced` is not yet promoted as the strongest production path
 
+Related review docs:
+
+- `docs/zk-verifier-strategy.md`
+- `docs/zk-enforced-threat-review.md`
+- `docs/zk-enforced-runtime-evidence.md`
+
 This checklist is the shortest go or no-go surface for production cutover. It does not replace the generated proof package; it compresses the final blockers into one operator-facing checklist.
 
 ### Deployment Attestation

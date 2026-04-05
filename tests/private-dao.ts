@@ -314,6 +314,169 @@ describe("PrivateDAO", () => {
     console.log("  ✓ proposal-level zk_enforced mode configured from parallel receipts");
   });
 
+  it("rejects zk_enforced mode when required receipts are missing", async () => {
+    const dao = await program.account["dao"].fetch(daoPda);
+    const [missingReceiptProposalPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), dao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal(
+        "Missing ZK receipts",
+        "zk_enforced must not activate without vote, delegation, and tally verification receipts.",
+        new BN(3600),
+        null,
+      )
+      .accounts({
+        dao: daoPda,
+        proposal: missingReceiptProposalPda,
+        proposerTokenAccount: v1Ata,
+        proposer: voter1.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([voter1])
+      .rpc();
+
+    const [proposalZkPolicyPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("zk-policy"), missingReceiptProposalPda.toBuffer()],
+      program.programId,
+    );
+
+    try {
+      await program.methods
+        .configureProposalZkMode({ zkEnforced: {} })
+        .accounts({
+          dao: daoPda,
+          proposal: missingReceiptProposalPda,
+          proposalZkPolicy: proposalZkPolicyPda,
+          voteZkReceipt: PublicKey.findProgramAddressSync(
+            [Buffer.from("zk-verify"), missingReceiptProposalPda.toBuffer(), Buffer.from([1])],
+            program.programId,
+          )[0],
+          delegationZkReceipt: PublicKey.findProgramAddressSync(
+            [Buffer.from("zk-verify"), missingReceiptProposalPda.toBuffer(), Buffer.from([2])],
+            program.programId,
+          )[0],
+          tallyZkReceipt: PublicKey.findProgramAddressSync(
+            [Buffer.from("zk-verify"), missingReceiptProposalPda.toBuffer(), Buffer.from([3])],
+            program.programId,
+          )[0],
+          operator: voter1.publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .signers([voter1])
+        .rpc();
+      assert.fail("Should have rejected zk_enforced mode without receipts");
+    } catch (err: any) {
+      assert.include(err.toString(), "ZkVerificationReceiptMissing");
+      console.log("  ✓ zk_enforced activation rejected when receipts are missing");
+    }
+  });
+
+  it("rejects zk_enforced mode when receipts belong to another proposal", async () => {
+    const dao = await program.account["dao"].fetch(daoPda);
+    const [wrongReceiptProposalPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), dao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal(
+        "Wrong receipt binding",
+        "zk_enforced must stay proposal-bound and reject receipts from another proposal.",
+        new BN(3600),
+        null,
+      )
+      .accounts({
+        dao: daoPda,
+        proposal: wrongReceiptProposalPda,
+        proposerTokenAccount: v1Ata,
+        proposer: voter1.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([voter1])
+      .rpc();
+
+    const [proposalZkPolicyPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("zk-policy"), wrongReceiptProposalPda.toBuffer()],
+      program.programId,
+    );
+    const [voteReceiptPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("zk-verify"), proposalPda.toBuffer(), Buffer.from([1])],
+      program.programId,
+    );
+    const [delegationReceiptPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("zk-verify"), proposalPda.toBuffer(), Buffer.from([2])],
+      program.programId,
+    );
+    const [tallyReceiptPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("zk-verify"), proposalPda.toBuffer(), Buffer.from([3])],
+      program.programId,
+    );
+
+    try {
+      await program.methods
+        .configureProposalZkMode({ zkEnforced: {} })
+        .accounts({
+          dao: daoPda,
+          proposal: wrongReceiptProposalPda,
+          proposalZkPolicy: proposalZkPolicyPda,
+          voteZkReceipt: voteReceiptPda,
+          delegationZkReceipt: delegationReceiptPda,
+          tallyZkReceipt: tallyReceiptPda,
+          operator: voter1.publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .signers([voter1])
+        .rpc();
+      assert.fail("Should have rejected zk_enforced mode with receipts from another proposal");
+    } catch (err: any) {
+      assert.include(err.toString(), "ZkVerificationReceiptMismatch");
+      console.log("  ✓ zk_enforced activation rejected for cross-proposal receipts");
+    }
+  });
+
+  it("rejects zk mode downgrade after zk_enforced is locked", async () => {
+    const [proposalZkPolicyPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("zk-policy"), proposalPda.toBuffer()],
+      program.programId,
+    );
+    const [voteReceiptPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("zk-verify"), proposalPda.toBuffer(), Buffer.from([1])],
+      program.programId,
+    );
+    const [delegationReceiptPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("zk-verify"), proposalPda.toBuffer(), Buffer.from([2])],
+      program.programId,
+    );
+    const [tallyReceiptPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("zk-verify"), proposalPda.toBuffer(), Buffer.from([3])],
+      program.programId,
+    );
+
+    try {
+      await program.methods
+        .configureProposalZkMode({ companion: {} })
+        .accounts({
+          dao: daoPda,
+          proposal: proposalPda,
+          proposalZkPolicy: proposalZkPolicyPda,
+          voteZkReceipt: voteReceiptPda,
+          delegationZkReceipt: delegationReceiptPda,
+          tallyZkReceipt: tallyReceiptPda,
+          operator: voter1.publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .signers([voter1])
+        .rpc();
+      assert.fail("Should have rejected zk mode downgrade after zk_enforced lock");
+    } catch (err: any) {
+      assert.include(err.toString(), "ProposalZkModeImmutable");
+      console.log("  ✓ zk_enforced policy cannot be downgraded once locked");
+    }
+  });
+
   it("rejects invalid treasury action configuration", async () => {
     const dao = await program.account["dao"].fetch(daoPda);
     const [invalidProposalPda] = PublicKey.findProgramAddressSync(

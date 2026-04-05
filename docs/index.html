@@ -4363,6 +4363,10 @@ execute() → treasury action
           <div class="proposal-detail-label">PHASE C HARDENING</div>
           <div style="color:var(--text2);line-height:1.8"><a class="award-link" href="phase-c-hardening.md" target="_blank">Open zk enforcement hardening path</a></div>
         </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">VERIFIER STRATEGY</div>
+          <div style="color:var(--text2);line-height:1.8"><a class="award-link" href="zk-verifier-strategy.md" target="_blank">Open verifier strategy</a></div>
+        </div>
       </div>
 
       <div class="proposal-proof-panel" style="margin-top:20px">
@@ -4394,6 +4398,11 @@ execute() → treasury action
             <div class="diagnostic-value" style="color:var(--amber)">HARDENING REQUIRED</div>
             <div style="color:var(--text3);line-height:1.7;margin-top:8px">`zk_enforced` is live in parallel, but it is not yet promoted as the dominant production path. See <a class="award-link" href="phase-c-hardening.md" target="_blank">Phase C Hardening</a>.</div>
           </div>
+          <div class="proposal-command-box">
+            <div class="proposal-detail-label">VERIFIER STRATEGY</div>
+            <div class="diagnostic-value" style="color:var(--amber)">DECISION REQUIRED</div>
+            <div style="color:var(--text3);line-height:1.7;margin-top:8px">The repo now records anchors, receipts, and proposal policies, but the final production verifier boundary still needs to be frozen. See <a class="award-link" href="zk-verifier-strategy.md" target="_blank">ZK Verifier Strategy</a>.</div>
+          </div>
         </div>
       </div>
 
@@ -4408,6 +4417,9 @@ execute() → treasury action
           <button class="proposal-proof-link" type="button" onclick="openDocument('mainnet-proof-package.generated.md','Mainnet Proof Package')">Open Mainnet Proof Package</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('runtime-attestation.generated.json','Runtime Attestation')">Open Runtime Attestation</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('phase-c-hardening.md','Phase C Hardening')">Open Phase C Hardening</button>
+          <button class="proposal-proof-link" type="button" onclick="openDocument('zk-verifier-strategy.md','ZK Verifier Strategy')">Open Verifier Strategy</button>
+          <button class="proposal-proof-link" type="button" onclick="openDocument('zk-enforced-threat-review.md','ZK-Enforced Threat Review')">Open Threat Review</button>
+          <button class="proposal-proof-link" type="button" onclick="openDocument('zk-enforced-runtime-evidence.md','ZK-Enforced Runtime Evidence')">Open Runtime Evidence Path</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('operational-evidence.generated.md','Operational Evidence')">Open Operational Evidence</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('runtime-evidence.generated.md','Runtime Evidence')">Open Runtime Evidence</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('real-device-runtime.generated.md','Real-Device Runtime')">Open Real-Device Runtime</button>
@@ -5224,6 +5236,7 @@ async function updateDiagnostics() {
       authorityHardening: 'multisig-required',
       realDeviceWalletQa: 'external-blocker',
       externalAudit: 'pending',
+      zkPhaseC: 'hardening-required',
     },
   };
 
@@ -7656,6 +7669,11 @@ function renderProposalDetail(p, nowTs) {
       <div class="proposal-detail-label">FINALIZE</div>
       <div style="color:var(--text2);line-height:1.8">${p.zkMode === 'ZkEnforced' ? 'Finalize through the zk-enforced path once the reveal window has ended and receipts are locked on-chain.' : 'Finalize the proposal once the reveal window has ended.'}</div>
       <code>yarn finalize -- --proposal ${p.pubkey}</code>
+    </div>
+    <div class="proposal-command-box">
+      <div class="proposal-detail-label">ZK MODE</div>
+      <div style="color:var(--text2);line-height:1.8">${p.zkMode === 'ZkEnforced' ? 'This proposal is already locked to the stronger finalize path.' : 'Enable zk_enforced only after vote, delegation, and tally receipts exist for this proposal.'}</div>
+      <code>npm run configure:zk-mode -- --proposal ${p.pubkey} --mode zk_enforced</code>
     </div>
     <div class="proposal-command-box">
       <div class="proposal-detail-label">EXECUTE</div>
