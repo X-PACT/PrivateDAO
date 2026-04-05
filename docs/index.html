@@ -604,6 +604,55 @@ nav.scrolled {
   margin-top: 18px;
 }
 
+.value-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.value-card {
+  padding: 24px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(9, 19, 28, 0.96), rgba(7, 14, 21, 0.98));
+  min-height: 220px;
+}
+
+.value-card-kicker {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text3);
+  margin-bottom: 12px;
+}
+
+.value-card-title {
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.value-card-copy {
+  color: var(--text2);
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.value-card-list {
+  margin-top: 14px;
+  display: grid;
+  gap: 8px;
+  color: var(--text2);
+  font-size: 13px;
+}
+
+.value-card-list div::before {
+  content: "•";
+  color: var(--cyan);
+  margin-right: 8px;
+}
+
 .section-heading-row {
   display: flex;
   align-items: flex-start;
@@ -2421,6 +2470,61 @@ body.judge-mode .judge-banner {
         <div class="stat-item">
           <span class="stat-num" id="statPhase">SYNCING</span>
           <div class="stat-label">CURRENT LEADING PHASE</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:32px">
+  <div class="container">
+    <div class="value-cards reveal">
+      <div class="value-card">
+        <div class="value-card-kicker">WHAT IT IS</div>
+        <div class="value-card-title">A live governance workspace</div>
+        <div class="value-card-copy">
+          PrivateDAO is a wallet-connected governance product for community treasuries. It combines DAO bootstrap, proposal creation, private voting, reveal, finalize, and treasury execution in one surface.
+        </div>
+        <div class="value-card-list">
+          <div>Create DAO and treasury</div>
+          <div>Create and inspect proposals</div>
+          <div>Run commit, reveal, finalize, and execute</div>
+        </div>
+      </div>
+      <div class="value-card">
+        <div class="value-card-kicker">WHAT IT DELIVERS</div>
+        <div class="value-card-title">Private voting with visible operations</div>
+        <div class="value-card-copy">
+          The voting intent stays hidden during the active commit window, but the governance lifecycle remains transparent and reviewable through signed Devnet transactions and reproducible repo flows.
+        </div>
+        <div class="value-card-list">
+          <div>Hidden tally during voting</div>
+          <div>Explicit proposal lifecycle</div>
+          <div>Explorer-verifiable execution evidence</div>
+        </div>
+      </div>
+      <div class="value-card">
+        <div class="value-card-kicker">CRYPTOGRAPHY</div>
+        <div class="value-card-title">Commit-reveal plus Groth16 companion proofs</div>
+        <div class="value-card-copy">
+          PrivateDAO uses sha256 commitments for proposal-scoped private voting and a non-breaking Groth16 companion layer for vote validity, delegation authorization, and tally integrity.
+        </div>
+        <div class="value-card-list">
+          <div>Proposal-scoped commitment binding</div>
+          <div>ZK companion proofs live in the repo</div>
+          <div>Published transcript and attestation artifacts</div>
+        </div>
+      </div>
+      <div class="value-card">
+        <div class="value-card-kicker">SAFETY GUARANTEES</div>
+        <div class="value-card-title">Lifecycle safety, treasury safety, replay resistance</div>
+        <div class="value-card-copy">
+          The product surface is backed by the on-chain state machine, signer checks, treasury recipient and mint validation, proposal-scoped replay rejection, and published operational evidence.
+        </div>
+        <div class="value-card-list">
+          <div>Timelocked execution</div>
+          <div>Exact account and signer binding</div>
+          <div>Runtime, adversarial, and stress evidence</div>
         </div>
       </div>
     </div>
