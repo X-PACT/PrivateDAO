@@ -154,6 +154,7 @@ function main() {
     "BROWSER CAPABILITIES",
     "LIVE RUNTIME",
     "Wallet connected but did not expose a public key in time.",
+    "assets/vendor/solana-web3.iife.min.js",
   ];
 
   for (const fragment of requiredFragments) {
@@ -163,6 +164,8 @@ function main() {
   assertNotContains(body, "setInterval(() => {\n  rx +=", "frontend still uses the old interval-based cursor loop");
   assertNotContains(body, "Tracks, sponsors,<br>and ecosystem fit.", "low-signal hackathon context section still exists on the main surface");
   assertNotContains(body, "Install Phantom or Solflare to sign transactions.", "frontend still shows the outdated wallet-install guidance");
+  assertNotContains(body, "https://unpkg.com/@solana/web3.js", "frontend must not depend on the unpkg-hosted Solana web3 bundle");
+  assertNotContains(body, "https://fonts.googleapis.com", "frontend must not depend on Google Fonts");
   assertNotContains(body, "localStorage.setItem", "frontend must not persist sensitive governance state in localStorage");
   assertNotContains(body, "localStorage.getItem", "frontend must not read persisted localStorage vote secrets");
   assertNotContains(body, "sessionStorage.setItem", "frontend must not persist sensitive governance state in sessionStorage");
