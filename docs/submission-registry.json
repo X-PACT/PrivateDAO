@@ -36,6 +36,7 @@
     ],
     "zk": [
       "docs/zk-layer.md",
+      "docs/phase-c-hardening.md",
       "docs/zk-stack.md",
       "docs/zk-upgrade.md",
       "docs/zk-architecture.md",
@@ -101,6 +102,7 @@
     "operations": [
       "docs/mainnet-readiness.md",
       "docs/authority-hardening.md",
+      "docs/phase-c-hardening.md",
       "docs/mainnet-go-live-checklist.md",
       "docs/mainnet-readiness.generated.md",
       "docs/release-ceremony.md",

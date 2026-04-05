@@ -77,7 +77,9 @@ Current boundary:
 - off-chain witness generation and proving
 - on-chain proof anchoring
 - on-chain parallel verification receipts
+- proposal-level `zk_enforced` mode is now available in parallel
 - canonical lifecycle enforcement still handled by the current governance program path
+- `zk_enforced` is not yet promoted as the dominant production path; see `docs/phase-c-hardening.md`
 
 ## New Trust Assumptions
 

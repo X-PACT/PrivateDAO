@@ -4359,6 +4359,10 @@ execute() → treasury action
           <div class="proposal-detail-label">RUNTIME ATTESTATION</div>
           <div style="color:var(--text2);line-height:1.8"><a class="award-link" href="runtime-attestation.generated.json" target="_blank">Open runtime attestation</a></div>
         </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">PHASE C HARDENING</div>
+          <div style="color:var(--text2);line-height:1.8"><a class="award-link" href="phase-c-hardening.md" target="_blank">Open zk enforcement hardening path</a></div>
+        </div>
       </div>
 
       <div class="proposal-proof-panel" style="margin-top:20px">
@@ -4385,6 +4389,11 @@ execute() → treasury action
             <div class="diagnostic-value" style="color:var(--amber)">PENDING</div>
             <div style="color:var(--text3);line-height:1.7;margin-top:8px">The repository is hardened and reviewable, but it should not be presented as mainnet-cleared until external audit work is completed and findings are closed.</div>
           </div>
+          <div class="proposal-command-box">
+            <div class="proposal-detail-label">ZK PHASE C</div>
+            <div class="diagnostic-value" style="color:var(--amber)">HARDENING REQUIRED</div>
+            <div style="color:var(--text3);line-height:1.7;margin-top:8px">`zk_enforced` is live in parallel, but it is not yet promoted as the dominant production path. See <a class="award-link" href="phase-c-hardening.md" target="_blank">Phase C Hardening</a>.</div>
+          </div>
         </div>
       </div>
 
@@ -4398,6 +4407,7 @@ execute() → treasury action
           <button class="proposal-proof-link" type="button" onclick="openDocument('mainnet-acceptance-matrix.generated.md','Mainnet Acceptance Matrix')">Open Acceptance Matrix</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('mainnet-proof-package.generated.md','Mainnet Proof Package')">Open Mainnet Proof Package</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('runtime-attestation.generated.json','Runtime Attestation')">Open Runtime Attestation</button>
+          <button class="proposal-proof-link" type="button" onclick="openDocument('phase-c-hardening.md','Phase C Hardening')">Open Phase C Hardening</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('operational-evidence.generated.md','Operational Evidence')">Open Operational Evidence</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('runtime-evidence.generated.md','Runtime Evidence')">Open Runtime Evidence</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('real-device-runtime.generated.md','Real-Device Runtime')">Open Real-Device Runtime</button>
@@ -6350,6 +6360,9 @@ function describeOperationError(error, context = 'operation') {
   }
   if (combined.includes('proposalnotzkenforced')) {
     return 'This proposal is not locked to the zk_enforced finalize path yet. Next step: enable ZK-enforced mode first, then finalize again.';
+  }
+  if (combined.includes('proposalzkmodeimmutable')) {
+    return 'This proposal is already locked to zk_enforced mode and cannot be downgraded. Next step: keep using the zk-enforced finalize path for this proposal.';
   }
   if (combined.includes('custom program error: 0x0')) {
     if (context === 'create-dao') {

@@ -90,6 +90,7 @@ For the fastest useful read:
 3. Read `docs/security-review.md`
 4. Read `docs/zk-layer.md`
 5. Read `docs/pdao-token.md`
+6. Read `docs/phase-c-hardening.md`
 
 ## Shared Proposal Doc
 
@@ -177,6 +178,7 @@ The current review surface is intentionally explicit about a few points that are
 - The current Groth16 proof stack still generates and verifies proofs off-chain, while proposal-bound zk proof anchors are now recorded on-chain for the canonical Devnet governance flow. The deployed on-chain program remains the enforcement boundary.
 - Phase A is live: on-chain proof anchors plus on-chain parallel verification receipts.
 - Phase B is now live in parallel: proposals can be configured into `zk_enforced` mode once vote, delegation, and tally verification receipts exist on chain. The frontend surfaces this mode directly and switches finalize to the `zk_enforced` path for those proposals.
+- Phase C is not yet promoted. `zk_enforced` is live and usable, but it is still in hardening mode until additional runtime evidence, external review, and operator confidence are closed.
 
 ## ZK Rollout Status
 
@@ -192,6 +194,10 @@ The current zk roadmap is additive and non-breaking:
   - the CLI finalize path auto-detects policy PDAs and uses the correct instruction
 - Phase C
   - after operational stability and additional testing, `zk_enforced` can become the stronger production-grade path
+
+For the exact blockers and execution path, read:
+
+- `docs/phase-c-hardening.md`
 
 ## Why PrivateDAO Exists
 

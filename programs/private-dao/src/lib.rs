@@ -854,6 +854,19 @@ pub mod private_dao {
             Error::ProposalZkModeLocked
         );
 
+        let policy = &mut ctx.accounts.proposal_zk_policy;
+        let policy_initialized = policy.proposal != Pubkey::default();
+        if policy_initialized {
+            require!(
+                policy.dao == ctx.accounts.dao.key() && policy.proposal == ctx.accounts.proposal.key(),
+                Error::ZkVerificationReceiptMismatch
+            );
+            require!(
+                policy.mode != ProposalZkMode::ZkEnforced,
+                Error::ProposalZkModeImmutable
+            );
+        }
+
         let required_layers_mask = match mode {
             ProposalZkMode::Companion | ProposalZkMode::Parallel => 0,
             ProposalZkMode::ZkEnforced => {
@@ -879,7 +892,6 @@ pub mod private_dao {
             }
         };
 
-        let policy = &mut ctx.accounts.proposal_zk_policy;
         policy.dao = ctx.accounts.dao.key();
         policy.proposal = ctx.accounts.proposal.key();
         policy.configured_by = operator;
@@ -1991,4 +2003,6 @@ pub enum Error {
     ZkVerificationReceiptMismatch,
     #[msg("Selected proposal is not configured for zk_enforced finalization")]
     ProposalNotZkEnforced,
+    #[msg("Once a proposal is locked to zk_enforced mode it cannot be downgraded or reconfigured")]
+    ProposalZkModeImmutable,
 }

@@ -119,6 +119,19 @@ Review:
 
 - `docs/mainnet-go-live-checklist.md`
 
+### ZK Phase C Hardening
+
+Review:
+
+- `docs/phase-c-hardening.md`
+
+This document makes the current boundary explicit:
+
+- Phase A is live
+- Phase B is live
+- `zk_enforced` is usable
+- `zk_enforced` is not yet promoted as the strongest production path
+
 This checklist is the shortest go or no-go surface for production cutover. It does not replace the generated proof package; it compresses the final blockers into one operator-facing checklist.
 
 ### Deployment Attestation
