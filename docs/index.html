@@ -240,8 +240,25 @@ nav.scrolled {
   display: flex; align-items: center;
   padding: 120px 0 80px;
   position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(0, 229, 255, 0.12), transparent 26%),
+    radial-gradient(circle at 78% 24%, rgba(93, 92, 255, 0.14), transparent 24%),
+    radial-gradient(circle at 62% 78%, rgba(0, 255, 136, 0.08), transparent 22%);
 }
-.hero .container { position: relative; }
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(4, 9, 14, 0.02), rgba(4, 9, 14, 0.34)),
+    linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.03) 48%, transparent 58%);
+  pointer-events: none;
+}
+.hero .container {
+  position: relative;
+  z-index: 1;
+}
 
 .award-banner {
   margin-top: 128px;
@@ -481,6 +498,7 @@ nav.scrolled {
   line-height: 1.8;
   letter-spacing: 0.2px;
   animation: fadeUp 0.8s ease 0.18s both;
+  max-width: 680px;
 }
 
 .hero-zk-shield {
@@ -565,8 +583,9 @@ nav.scrolled {
 .curation-card {
   padding: 22px;
   border-radius: 20px;
-  border: 1px solid var(--border);
-  background: linear-gradient(180deg, rgba(8, 16, 24, 0.96), rgba(7, 14, 21, 0.98));
+  border: 1px solid rgba(255,255,255,0.06);
+  background: linear-gradient(180deg, rgba(8, 16, 24, 0.72), rgba(7, 14, 21, 0.9));
+  box-shadow: 0 20px 50px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.03);
 }
 
 .curation-kicker {
@@ -613,8 +632,9 @@ nav.scrolled {
 .value-card {
   padding: 24px;
   border-radius: 20px;
-  border: 1px solid var(--border);
-  background: linear-gradient(180deg, rgba(9, 19, 28, 0.96), rgba(7, 14, 21, 0.98));
+  border: 1px solid rgba(255,255,255,0.05);
+  background: linear-gradient(180deg, rgba(9, 19, 28, 0.68), rgba(7, 14, 21, 0.9));
+  box-shadow: 0 18px 48px rgba(0,0,0,0.16), inset 0 1px 0 rgba(255,255,255,0.03);
   min-height: 220px;
 }
 
@@ -662,9 +682,9 @@ nav.scrolled {
 .pillar-card {
   padding: 24px;
   border-radius: 22px;
-  border: 1px solid var(--border);
-  background: linear-gradient(180deg, rgba(7, 15, 23, 0.98), rgba(6, 12, 18, 0.98));
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255,255,255,0.05);
+  background: linear-gradient(180deg, rgba(7, 15, 23, 0.72), rgba(6, 12, 18, 0.92));
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255,255,255,0.03);
 }
 
 .pillar-kicker {
@@ -716,8 +736,9 @@ nav.scrolled {
 .explain-card {
   padding: 22px;
   border-radius: 20px;
-  border: 1px solid var(--border);
-  background: linear-gradient(180deg, rgba(8, 16, 24, 0.96), rgba(7, 14, 21, 0.98));
+  border: 1px solid rgba(255,255,255,0.05);
+  background: linear-gradient(180deg, rgba(8, 16, 24, 0.68), rgba(7, 14, 21, 0.88));
+  box-shadow: 0 16px 40px rgba(0,0,0,0.16), inset 0 1px 0 rgba(255,255,255,0.03);
 }
 
 .explain-card-title {
@@ -4338,8 +4359,8 @@ execute() → treasury action
 <div class="modal-overlay" id="commitModal">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('commitModal')">✕</button>
-    <div class="modal-title">CAST VOTE</div>
-    <div class="modal-sub">Your vote is sealed with SHA256. Nobody sees it until the reveal phase ends.</div>
+    <div class="modal-title">COMMIT VOTE</div>
+    <div class="modal-sub">Seal a private voting intent for the selected proposal. The chain stores the commitment, not the visible vote.</div>
     <div class="network-indicator" style="margin-top:-10px">
       <span class="net-dot"></span>
       <span>Target proposal</span>
@@ -4366,10 +4387,10 @@ execute() → treasury action
     </div>
 
     <div style="background:var(--void);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px;font-family:var(--mono);font-size:11px;line-height:1.8;color:var(--text2)">
-      <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:8px">OPERATOR NOTE</div>
+      <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:8px">BEFORE YOU SUBMIT</div>
       <div id="commitCommandHint">Generate a commitment here, submit it from the connected wallet, or copy the equivalent repo command if you prefer the CLI flow.</div>
-      <div style="margin-top:8px;color:var(--amber)">Save the salt securely. You will need the original vote and salt during reveal.</div>
-      <div id="commitCopyHint" style="margin-top:8px;color:var(--cyan)">After generation, use the button below to copy the commitment and salt summary. Browser flows do not store salts for you.</div>
+      <div style="margin-top:8px;color:var(--amber)">Save the salt securely. You will need the same vote and salt during reveal.</div>
+      <div id="commitCopyHint" style="margin-top:8px;color:var(--cyan)">After generation, copy the commitment and salt summary. Browser flows do not persist voting secrets for you.</div>
     </div>
 
     <div style="background:var(--void);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px">
@@ -4388,7 +4409,7 @@ execute() → treasury action
   <div class="modal">
     <button class="modal-close" onclick="closeModal('revealModal')">✕</button>
     <div class="modal-title">REVEAL VOTE</div>
-    <div class="modal-sub">Submit your (vote, salt) proof. The program recomputes and verifies on-chain.</div>
+    <div class="modal-sub">Open the sealed vote after the commit window closes. The program recomputes the exact commitment on-chain and rejects mismatches.</div>
     <div class="network-indicator" style="margin-top:-10px">
       <span class="net-dot"></span>
       <span>Target proposal</span>
@@ -4402,7 +4423,7 @@ execute() → treasury action
     </div>
 
     <div style="background:var(--void);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:20px;font-family:var(--mono);font-size:12px;line-height:1.9">
-      <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:14px">PROOF VERIFICATION</div>
+      <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:14px">WHAT MUST MATCH</div>
       <div><span style="color:var(--cyan)">vote:&nbsp;&nbsp;&nbsp;</span><span style="color:var(--amber)">your original YES or NO</span></div>
       <div><span style="color:var(--cyan)">salt:&nbsp;&nbsp;&nbsp;</span><span style="color:var(--text2)">the 32-byte secret saved at commit time</span></div>
       <div><span style="color:var(--cyan)">proposal:</span><span style="color:var(--text2)">the same proposal public key used at commit time</span></div>
@@ -4413,7 +4434,7 @@ execute() → treasury action
     <div class="rebate-note">💰 You may receive a 0.001 SOL rebate if the proposal account remains rent-safe</div>
 
     <div style="background:var(--void);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px;font-family:var(--mono);font-size:11px;line-height:1.8;color:var(--text2)">
-      <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:8px">REVEAL NOTE</div>
+      <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:8px">BEFORE YOU SUBMIT</div>
       <div id="revealCommandHint">Use the same vote and salt originally generated at commit time when running the reveal script. Keepers can only submit the exact stored reveal for an authorized voter record.</div>
     </div>
 
@@ -4451,7 +4472,7 @@ execute() → treasury action
   <div class="modal">
     <button class="modal-close" onclick="closeModal('executeModal')">✕</button>
     <div class="modal-title">EXECUTE PROPOSAL</div>
-    <div class="modal-sub">Execution remains tied to the real on-chain workflow. This panel supports real wallet execution for compatible live proposals and still shows the equivalent repo command.</div>
+    <div class="modal-sub">Move treasury state only after the proposal passes and clears its timelock. This action stays tied to the live on-chain execution path.</div>
     <div class="network-indicator" style="margin-top:-10px">
       <span class="net-dot"></span>
       <span>Target proposal</span>
@@ -4465,7 +4486,7 @@ execute() → treasury action
     </div>
 
     <div style="background:var(--void);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px;font-family:var(--mono);font-size:11px;line-height:1.8;color:var(--text2)">
-      <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:8px">EXECUTION COMMAND</div>
+      <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:8px">WHEN THIS IS AVAILABLE</div>
       <div id="executeCommandHint">Run the repo execute script for the selected proposal.</div>
     </div>
 
