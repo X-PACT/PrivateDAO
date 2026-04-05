@@ -3039,6 +3039,11 @@ body.judge-mode .judge-banner {
           <div class="proposal-control-title">Safety stays protocol-bound</div>
           <div class="proposal-control-copy">Treasury movement, replay rejection, signer checks, and timing windows remain enforced by the deployed program rather than page state alone.</div>
         </div>
+        <div class="proposal-control-chip">
+          <div class="proposal-control-kicker">ZK STATUS</div>
+          <div class="proposal-control-title">Anchors appear here when they are live</div>
+          <div class="proposal-control-copy">The canonical Devnet proof path carries on-chain proof anchors. Other proposals keep the same lifecycle and can still open the Proof Center review path.</div>
+        </div>
       </div>
       <div class="proposal-detail-grid" id="proposalDetailGrid">
         <div class="proposal-detail-box">
@@ -7203,6 +7208,7 @@ function copyDelegatedCommitCommand() {
 function renderProposalDetail(p, nowTs) {
   const phase = computePhase(p, nowTs);
   const treasuryPda = deriveTreasuryPda(p.dao);
+  const zkAnchorInfo = getZkAnchorInfo(p.pubkey);
   const detailGrid = document.getElementById('proposalDetailGrid');
   const proofLinks = document.getElementById('proposalProofLinks');
   const commandGrid = document.getElementById('proposalCommandGrid');
@@ -7274,6 +7280,14 @@ function renderProposalDetail(p, nowTs) {
       <div class="proposal-detail-label">VERIFICATION PATH</div>
       <div class="proposal-detail-value">Explorer links, proposal history, and repo-native commands below stay scoped to this selected on-chain proposal.</div>
     </div>
+    <div class="proposal-detail-box">
+      <div class="proposal-detail-label">ZK ANCHOR STATUS</div>
+      <div class="proposal-detail-value">${zkAnchorInfo.status}</div>
+    </div>
+    <div class="proposal-detail-box">
+      <div class="proposal-detail-label">ZK REVIEW PATH</div>
+      <div class="proposal-detail-value">${zkAnchorInfo.reviewPath}</div>
+    </div>
   `;
 
   proofLinks.innerHTML = `
@@ -7288,6 +7302,7 @@ function renderProposalDetail(p, nowTs) {
     <button class="proposal-proof-link" type="button" onclick="loadProposalHistory(currentSelectedProposal)">Load History</button>
     <button class="proposal-proof-link" type="button" onclick="shareCurrentProposal()">Copy Share Link</button>
     <button class="proposal-proof-link" type="button" onclick="openSelectedProposalExplorer()">Open Selected Proposal</button>
+    ${zkAnchorInfo.links}
   `;
 
   commandGrid.innerHTML = `
@@ -7312,6 +7327,30 @@ function renderProposalDetail(p, nowTs) {
       <code>yarn execute -- --proposal ${p.pubkey}</code>
     </div>
   `;
+}
+
+function getZkAnchorInfo(proposalPubkey) {
+  const canonicalProposal = 'AegjmwkX1FknBJMDyH5yM6BMhyHsiUreNtz3d8iz3QrP';
+  if (proposalPubkey === canonicalProposal) {
+    return {
+      status: 'Canonical Devnet proof path with three on-chain anchors: vote, delegation, and tally. The proof hashes are proposal-bound and visible on Solana Explorer.',
+      reviewPath: 'Open the three ZK anchor transactions below, then compare them with zk-proof-registry.json and live-proof.md. Groth16 generation and verification remain off-chain, but the anchor trail is now on-chain for this proposal.',
+      links: `
+        <a class="proposal-proof-link" href="https://explorer.solana.com/tx/3L6SHDNuziEXQiiAWjega4UbjURkWpzYVG5kRKr4YWAekp1AdTvriMqNAtyRchNpzKstEPMp6cmDidFLRx8XDgfP?cluster=devnet" target="_blank">Vote ZK Anchor</a>
+        <a class="proposal-proof-link" href="https://explorer.solana.com/tx/4nYrBo57V6fCueyu44Jm9XeSA15ti9G6n1ZQXG9AbsdT4e5JJa9vFdmdjpK6Snd27eJNwUSaNaCWWWt3bndTca3X?cluster=devnet" target="_blank">Delegation ZK Anchor</a>
+        <a class="proposal-proof-link" href="https://explorer.solana.com/tx/WTt8i2v1FWitQG2yye28CVCVWVeKvMA7c3D9wm4Upkbf2keK8ae8FXaGK95FaDjnmfJB3L7evBCMtoJrfC3EUrV?cluster=devnet" target="_blank">Tally ZK Anchor</a>
+      `,
+    };
+  }
+
+  return {
+    status: 'This proposal follows the same commit-reveal and replay-safe lifecycle, but the published on-chain anchor set is currently reserved for the canonical Devnet proof path.',
+    reviewPath: 'Use the ZK Proof Registry and the canonical live proof package to inspect the current Groth16 companion layers and their proposal-bound anchor pattern.',
+    links: `
+      <a class="proposal-proof-link" href="zk-proof-registry.json" target="_blank">ZK Proof Registry</a>
+      <a class="proposal-proof-link" href="live-proof.md" target="_blank">Canonical Proof Path</a>
+    `,
+  };
 }
 
 function selectProposal(pubkey) {
