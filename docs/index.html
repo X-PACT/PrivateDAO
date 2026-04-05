@@ -2814,6 +2814,14 @@ body.judge-mode .judge-banner {
           <span class="stat-num" id="statPhase">SYNCING</span>
           <div class="stat-label">CURRENT LEADING PHASE</div>
         </div>
+        <div class="stat-item">
+          <span class="stat-num" id="statZkPath">REVIEW</span>
+          <div class="stat-label">ZK PATH STATUS</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num" id="statExecution">WAITING</span>
+          <div class="stat-label">EXECUTION READINESS</div>
+        </div>
       </div>
     </div>
   </div>
@@ -6966,6 +6974,8 @@ function updateHeroStats(proposals, nowTs) {
   const tallyEl = document.getElementById('statTally');
   const activeEl = document.getElementById('statActive');
   const phaseEl = document.getElementById('statPhase');
+  const zkPathEl = document.getElementById('statZkPath');
+  const executionEl = document.getElementById('statExecution');
   const sealedDisplay = document.getElementById('sealedDisplay');
   const sealedInfo = document.getElementById('sealedInfo');
 
@@ -6973,6 +6983,8 @@ function updateHeroStats(proposals, nowTs) {
   if (proposals.length === 0) {
     tallyEl.textContent = "No data";
     phaseEl.textContent = "IDLE";
+    zkPathEl.textContent = "IDLE";
+    executionEl.textContent = "IDLE";
     sealedDisplay.innerHTML = "YES: ? &nbsp;/&nbsp; NO: ?";
     sealedInfo.innerHTML = "<span>›</span> No proposals found for this program ID<br><span>›</span> Create one from the repository CLI<br><span>›</span> The page will refresh automatically";
     return;
@@ -6980,12 +6992,21 @@ function updateHeroStats(proposals, nowTs) {
 
   const lead = proposals[0];
   const phase = computePhase(lead, nowTs);
+  const zkCardState = getProposalZkCardState(lead.pubkey);
   phaseEl.textContent = phase.toUpperCase();
+  zkPathEl.textContent = lead.pubkey === 'AegjmwkX1FknBJMDyH5yM6BMhyHsiUreNtz3d8iz3QrP' ? "ANCHORED" : "REVIEW";
+  executionEl.textContent = phase === "Executable"
+    ? "READY"
+    : phase === "Timelocked"
+      ? "TIMELOCK"
+      : phase === "Executed"
+        ? "DONE"
+        : "WAIT";
 
   if (phase === "Commit") {
     tallyEl.textContent = "sealed";
     sealedDisplay.innerHTML = "YES: ? &nbsp;/&nbsp; NO: ?";
-    sealedInfo.innerHTML = `<span>›</span> ${lead.commitCount} commitments recorded on-chain<br><span>›</span> Voting tally stays hidden during commit<br><span>›</span> Reveal opens in: ${formatRemaining(lead.votingEnd, nowTs)}`;
+    sealedInfo.innerHTML = `<span>›</span> ${lead.commitCount} commitments recorded on-chain<br><span>›</span> Voting tally stays hidden during commit<br><span>›</span> ${zkCardState.pill}: ${zkCardState.copy}<br><span>›</span> Reveal opens in: ${formatRemaining(lead.votingEnd, nowTs)}`;
     return;
   }
 
@@ -6996,7 +7017,7 @@ function updateHeroStats(proposals, nowTs) {
     : lead.status === "Passed"
       ? `Execution unlock: ${lead.executionUnlocksAt > nowTs ? formatRemaining(lead.executionUnlocksAt, nowTs) : "ready"}`
       : `Proposal status: ${lead.status}`;
-  sealedInfo.innerHTML = `<span>›</span> ${lead.revealCount} reveals verified on-chain<br><span>›</span> Live tally shown after commit phase ends<br><span>›</span> ${revealLine}`;
+  sealedInfo.innerHTML = `<span>›</span> ${lead.revealCount} reveals verified on-chain<br><span>›</span> ${zkCardState.pill}: ${zkCardState.copy}<br><span>›</span> ${revealLine}`;
 }
 
 async function updateDeploymentSnapshot() {
