@@ -5970,6 +5970,50 @@ function isLegacyTransactionSupportedByProvider(provider) {
     || typeof provider?.sendTransaction === 'function';
 }
 
+function describeOperationError(error, context = 'operation') {
+  const message = String(error?.message || '');
+  const lower = message.toLowerCase();
+  const logs = Array.isArray(error?.logs) ? error.logs.join('\n').toLowerCase() : '';
+  const combined = `${lower}\n${logs}`;
+
+  if (combined.includes('governance token account was not found')) {
+    return 'This wallet does not hold the governance token account for the selected DAO. Create a new DAO with this wallet or switch to a wallet that already holds the DAO governance token.';
+  }
+  if (combined.includes('already exists for the connected wallet') || combined.includes('already in use')) {
+    return context === 'create-dao'
+      ? 'This DAO name is already used by the connected wallet. Change the DAO name and try again.'
+      : 'The target account already exists on-chain. Refresh the page and use a new value before retrying.';
+  }
+  if (combined.includes('block height exceeded')) {
+    return 'The wallet approval took too long and the transaction blockhash expired. Reopen the action and approve it again promptly.';
+  }
+  if (combined.includes('too many requests') || combined.includes('429')) {
+    return 'The current Devnet RPC route is rate-limited. Pause briefly, then retry from the same step.';
+  }
+  if (combined.includes('custom program error: 0x0')) {
+    if (context === 'create-dao') {
+      return 'DAO creation failed because one of the derived accounts already exists or the chosen DAO name conflicts with an existing on-chain account. Change the DAO name and retry.';
+    }
+    return 'The program rejected this transaction at the current lifecycle state. Refresh the proposal state and retry only if the next action is valid.';
+  }
+  if (combined.includes('timelock')) {
+    return 'This proposal is still timelocked. Wait until the unlock time shown in the selected proposal panel before executing.';
+  }
+  if (combined.includes('reveal') && combined.includes('before')) {
+    return 'Reveal is not available yet. Wait until the commit window closes, then reveal the original vote and salt.';
+  }
+  if (combined.includes('finalize')) {
+    return 'Finalize is not available yet or this proposal is already finalized. Refresh the proposal and confirm the current phase first.';
+  }
+  if (combined.includes('direct vote record') || combined.includes('delegation is blocked to avoid overlap')) {
+    return 'This wallet already used the overlapping governance path for the selected proposal. Use either direct voting or delegation, not both.';
+  }
+  if (combined.includes('wallet provider did not return a transaction signature')) {
+    return 'The wallet approved the request but did not return a usable signature. Reopen the wallet prompt and try once more.';
+  }
+  return message || 'The requested operation failed.';
+}
+
 async function sendPreparedTransaction(tx, extraSigners = []) {
   if (!walletProvider || !wallet) {
     throw new Error('Connect your wallet first.');
@@ -6109,7 +6153,7 @@ async function submitCreateProposalInWallet() {
     }
   } catch (error) {
     console.error(error);
-    showToast(error.message || 'Create proposal transaction failed.', 'error');
+    showToast(describeOperationError(error, 'create-proposal'), 'error');
   }
 }
 
@@ -6190,7 +6234,7 @@ async function submitCreateDaoInWallet() {
     setTimeout(() => window.open(`https://solscan.io/tx/${signature}?cluster=devnet`, '_blank', 'noopener'), 180);
   } catch (error) {
     console.error(error);
-    showToast(error.message || 'Create DAO transaction failed.', 'error');
+    showToast(describeOperationError(error, 'create-dao'), 'error');
   }
 }
 
@@ -6225,7 +6269,7 @@ async function submitDepositInWallet() {
     await signAndBroadcastTransaction(ix, 'Deposit submitted');
   } catch (error) {
     console.error(error);
-    showToast(error.message || 'Deposit transaction failed.', 'error');
+    showToast(describeOperationError(error, 'deposit'), 'error');
   }
 }
 
@@ -6320,7 +6364,7 @@ async function cancelSelectedProposalInWallet() {
     await signAndBroadcastTransaction(ix, 'Cancel submitted');
   } catch (error) {
     console.error(error);
-    showToast(error.message || 'Cancel transaction failed.', 'error');
+    showToast(describeOperationError(error, 'cancel'), 'error');
   }
 }
 
@@ -6344,7 +6388,7 @@ async function vetoSelectedProposalInWallet() {
     await signAndBroadcastTransaction(ix, 'Veto submitted');
   } catch (error) {
     console.error(error);
-    showToast(error.message || 'Veto transaction failed.', 'error');
+    showToast(describeOperationError(error, 'veto'), 'error');
   }
 }
 
@@ -6396,7 +6440,7 @@ async function submitDelegateVoteInWallet() {
     await signAndBroadcastTransaction(ix, 'Delegation submitted');
   } catch (error) {
     console.error(error);
-    showToast(error.message || 'Delegation transaction failed.', 'error');
+    showToast(describeOperationError(error, 'delegate'), 'error');
   }
 }
 
@@ -6460,7 +6504,7 @@ async function submitDelegatedCommitInWallet() {
     }
   } catch (error) {
     console.error(error);
-    showToast(error.message || 'Delegated commit transaction failed.', 'error');
+    showToast(describeOperationError(error, 'delegated-commit'), 'error');
   }
 }
 
@@ -6592,7 +6636,7 @@ async function finalizeSelectedProposalInWallet() {
     await signAndBroadcastTransaction(ix, 'Finalize submitted');
   } catch (error) {
     console.error(error);
-    showToast(error.message || 'Finalize transaction failed.', 'error');
+    showToast(describeOperationError(error, 'finalize'), 'error');
   }
 }
 
@@ -6659,7 +6703,7 @@ async function executeSelectedProposalInWallet() {
     loadLiveProposals();
   } catch (error) {
     console.error(error);
-    showToast(error.message || 'Execute transaction failed.', 'error');
+    showToast(describeOperationError(error, 'execute'), 'error');
   }
 }
 
@@ -7308,7 +7352,7 @@ async function submitVote() {
     showToast(`Commit submitted. Save salt 0x${currentCommitSaltHex.slice(0,16)}...`, 'info');
   } catch (error) {
     console.error(error);
-    showToast(error.message || 'Commit transaction failed.', 'error');
+    showToast(describeOperationError(error, 'commit'), 'error');
   }
 }
 
@@ -7325,7 +7369,7 @@ async function submitReveal() {
     closeModal('revealModal');
   } catch (error) {
     console.error(error);
-    showToast(error.message || 'Reveal transaction failed.', 'error');
+    showToast(describeOperationError(error, 'reveal'), 'error');
   }
 }
 
@@ -7339,7 +7383,7 @@ async function submitExecute() {
     closeModal('executeModal');
   } catch (error) {
     console.error(error);
-    showToast(error.message || 'Execute transaction failed.', 'error');
+    showToast(describeOperationError(error, 'execute'), 'error');
   }
 }
 
