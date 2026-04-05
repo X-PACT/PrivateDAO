@@ -4794,6 +4794,8 @@ let liveProposalMap = new Map();
 let currentSelectedProposalPubkey = null;
 let currentSelectedProposal = null;
 let walletProviderListenersBound = false;
+const proposalHistoryCache = new Map();
+const proposalHistoryInFlight = new Set();
 const SUPPORTED_WALLET_TARGETS = [
   { id: 'auto', label: 'Auto Detect' },
   { id: 'phantom', label: 'Phantom' },
@@ -5991,26 +5993,38 @@ async function submitDelegatedCommitInWallet() {
 async function loadProposalHistory(p) {
   const historyGrid = document.getElementById('proposalHistoryGrid');
   if (!historyGrid) return;
+  if (proposalHistoryInFlight.has(p.pubkey)) return;
+  if (proposalHistoryCache.has(p.pubkey)) {
+    historyGrid.innerHTML = proposalHistoryCache.get(p.pubkey);
+    return;
+  }
+  proposalHistoryInFlight.add(p.pubkey);
   historyGrid.innerHTML = `
     <div class="proposal-command-box">
       <div class="proposal-detail-label">PROPOSAL ACTIVITY</div>
-      <div style="color:var(--text2);line-height:1.8">Loading live transaction history from Solana devnet for the selected proposal account.</div>
+      <div style="color:var(--text2);line-height:1.8">Loading bounded live transaction history from Solana devnet for the selected proposal account.</div>
     </div>
   `;
   try {
-    const signatures = await connection.getSignaturesForAddress(new solanaWeb3.PublicKey(p.pubkey), { limit: 10 }, 'confirmed');
+    const signatures = await withRpcFallback((activeConnection) =>
+      activeConnection.getSignaturesForAddress(new solanaWeb3.PublicKey(p.pubkey), { limit: 5 }, 'confirmed')
+    );
     if (!signatures.length) {
-      historyGrid.innerHTML = `
+      const emptyHtml = `
         <div class="proposal-command-box">
           <div class="proposal-detail-label">PROPOSAL ACTIVITY</div>
           <div style="color:var(--text2);line-height:1.8">No transaction history was returned yet for this proposal account.</div>
         </div>
       `;
+      proposalHistoryCache.set(p.pubkey, emptyHtml);
+      historyGrid.innerHTML = emptyHtml;
       return;
     }
-    const parsedTransactions = await connection.getParsedTransactions(
-      signatures.map(sig => sig.signature),
-      { maxSupportedTransactionVersion: 0, commitment: 'confirmed' }
+    const parsedTransactions = await withRpcFallback((activeConnection) =>
+      activeConnection.getParsedTransactions(
+        signatures.map(sig => sig.signature),
+        { maxSupportedTransactionVersion: 0, commitment: 'confirmed' }
+      )
     );
 
     function inferActionLabel(parsed, sigInfo) {
@@ -6051,7 +6065,7 @@ async function loadProposalHistory(p) {
       return pieces.join('<br>');
     }
 
-    historyGrid.innerHTML = signatures.map((sig, idx) => {
+    const html = signatures.map((sig, idx) => {
       const parsed = parsedTransactions[idx];
       const actionLabel = inferActionLabel(parsed, sig);
       const detailLines = inferActionDetails(parsed, actionLabel);
@@ -6071,14 +6085,19 @@ async function loadProposalHistory(p) {
       </div>
     `;
     }).join('');
+    proposalHistoryCache.set(p.pubkey, html);
+    historyGrid.innerHTML = html;
   } catch (error) {
     console.error(error);
     historyGrid.innerHTML = `
       <div class="proposal-command-box">
         <div class="proposal-detail-label">PROPOSAL ACTIVITY</div>
-        <div style="color:var(--text2);line-height:1.8">Could not load proposal transaction history from the current RPC endpoint.</div>
+        <div style="color:var(--text2);line-height:1.8">Could not load proposal transaction history from the current RPC endpoint. Retry manually after a short pause.</div>
+        <button class="proposal-proof-link" type="button" style="margin-top:12px" onclick="loadProposalHistory(currentSelectedProposal)">Retry History</button>
       </div>
     `;
+  } finally {
+    proposalHistoryInFlight.delete(p.pubkey);
   }
 }
 
@@ -6506,6 +6525,7 @@ function renderProposalDetail(p, nowTs) {
     <button class="proposal-proof-link" type="button" onclick="vetoSelectedProposalInWallet()">Veto in Wallet</button>
     <button class="proposal-proof-link" type="button" onclick="finalizeSelectedProposalInWallet()">Finalize in Wallet</button>
     <button class="proposal-proof-link" type="button" onclick="executeSelectedProposalInWallet()">Execute in Wallet</button>
+    <button class="proposal-proof-link" type="button" onclick="loadProposalHistory(currentSelectedProposal)">Load History</button>
     <button class="proposal-proof-link" type="button" onclick="shareCurrentProposal()">Copy Share Link</button>
     <button class="proposal-proof-link" type="button" onclick="openSelectedProposalExplorer()">Open Selected Proposal</button>
   `;
@@ -6546,7 +6566,15 @@ function selectProposal(pubkey) {
   syncCreateProposalCommand(p.dao);
   syncDepositCommand(p.dao);
   syncDelegateVoteCommand(p.pubkey);
-  loadProposalHistory(p);
+  const historyGrid = document.getElementById('proposalHistoryGrid');
+  if (historyGrid) {
+    historyGrid.innerHTML = proposalHistoryCache.get(p.pubkey) || `
+      <div class="proposal-command-box">
+        <div class="proposal-detail-label">PROPOSAL ACTIVITY</div>
+        <div style="color:var(--text2);line-height:1.8">History loading is manual to avoid RPC rate limits. Use <strong>Load History</strong> when needed.</div>
+      </div>
+    `;
+  }
   updateCommitCommandBuilder();
   updateRevealCommandBuilder();
   updateFinalizeCommandBuilder();
@@ -6593,7 +6621,7 @@ function proposalCardHtml(p, nowTs) {
 async function loadLiveProposals() {
   const list = document.getElementById('proposalsList');
   try {
-    const accounts = await connection.getProgramAccounts(programPk);
+    const accounts = await withRpcFallback((activeConnection) => activeConnection.getProgramAccounts(programPk));
     const proposals = [];
     for (const acc of accounts) {
       try {
@@ -6604,8 +6632,8 @@ async function loadLiveProposals() {
 
     proposals.sort((a, b) => b.proposalId - a.proposalId);
     liveProposalMap = new Map(proposals.map(p => [p.pubkey, p]));
-    const nowSlot = await connection.getSlot("confirmed");
-    const nowTs = (await connection.getBlockTime(nowSlot)) || Math.floor(Date.now() / 1000);
+    const nowSlot = await withRpcFallback((activeConnection) => activeConnection.getSlot("confirmed"));
+    const nowTs = (await withRpcFallback((activeConnection) => activeConnection.getBlockTime(nowSlot))) || Math.floor(Date.now() / 1000);
     updateHeroStats(proposals, nowTs);
 
     if (proposals.length === 0) {
