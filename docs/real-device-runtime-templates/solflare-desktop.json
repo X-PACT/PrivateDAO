@@ -1,0 +1,19 @@
+{
+  "id": "solflare-desktop",
+  "walletLabel": "Solflare",
+  "walletVersion": "fill-with-real-version",
+  "environmentType": "desktop-browser",
+  "os": "fill-with-real-os",
+  "browserOrClient": "fill-with-real-browser",
+  "network": "devnet",
+  "connectResult": "success",
+  "signingResult": "success",
+  "submissionResult": "success",
+  "diagnosticsSnapshotCaptured": true,
+  "txSignature": "fill-with-real-devnet-signature",
+  "errorMessage": null,
+  "evidenceRefs": [
+    "screenshots/solflare-desktop-connect.png"
+  ],
+  "capturedAt": "2026-04-05T00:00:00.000Z"
+}

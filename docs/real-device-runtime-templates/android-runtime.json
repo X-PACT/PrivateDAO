@@ -1,0 +1,19 @@
+{
+  "id": "android-runtime",
+  "walletLabel": "Android Native / Mobile",
+  "walletVersion": "fill-with-real-version",
+  "environmentType": "android-or-mobile",
+  "os": "fill-with-real-os",
+  "browserOrClient": "fill-with-real-client",
+  "network": "devnet",
+  "connectResult": "success",
+  "signingResult": "success",
+  "submissionResult": "success",
+  "diagnosticsSnapshotCaptured": true,
+  "txSignature": "fill-with-real-devnet-signature",
+  "errorMessage": null,
+  "evidenceRefs": [
+    "screenshots/android-runtime-connect.png"
+  ],
+  "capturedAt": "2026-04-05T00:00:00.000Z"
+}

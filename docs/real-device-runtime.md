@@ -54,6 +54,14 @@ The source registry for these captures is:
 
 - `docs/real-device-runtime-captures.json`
 
+Starter templates are available in:
+
+- `docs/real-device-runtime-templates/phantom-desktop.json`
+- `docs/real-device-runtime-templates/solflare-desktop.json`
+- `docs/real-device-runtime-templates/backpack-desktop.json`
+- `docs/real-device-runtime-templates/glow-desktop.json`
+- `docs/real-device-runtime-templates/android-runtime.json`
+
 The generated reviewer-facing outputs are:
 
 - `docs/real-device-runtime.generated.json`

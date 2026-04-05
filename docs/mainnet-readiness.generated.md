@@ -57,7 +57,7 @@ This report is generated from the canonical PrivateDAO registries and reviewer a
 - ZK layer count: `3`
 - Integrity algorithm: `sha256`
 - Integrity entries: `79`
-- Integrity aggregate sha256: `89c50ce3ac1434ada4264d1cc30d61c038abdffe05fed5a6c9cc6cbad8f03289`
+- Integrity aggregate sha256: `34cb38557cad1f2ffdc13d43dc9d701ad10f21c2efd7145e8d0b6207d84005d6`
 
 ## Mainnet Conclusion
 
