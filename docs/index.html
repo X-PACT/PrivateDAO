@@ -7103,6 +7103,56 @@ function solscanAccount(address) {
   return `https://solscan.io/account/${address}?cluster=devnet`;
 }
 
+function solscanTx(signature) {
+  return `https://solscan.io/tx/${signature}?cluster=devnet`;
+}
+
+function updateLifecycleActionFeedback(kind, signature, proposalPubkey) {
+  const isCanonicalProofPath = proposalPubkey === 'AegjmwkX1FknBJMDyH5yM6BMhyHsiUreNtz3d8iz3QrP';
+  const explorerLink = `<a href="${solscanTx(signature)}" target="_blank" style="color:var(--cyan)">Open ${kind} TX</a>`;
+
+  if (kind === 'Commit') {
+    const commandHint = document.getElementById('commitCommandHint');
+    const zkHint = document.getElementById('commitZkHint');
+    if (commandHint) {
+      commandHint.innerHTML = `${explorerLink}. Commitment landed on-chain for the selected proposal.`;
+    }
+    if (zkHint) {
+      zkHint.textContent = isCanonicalProofPath
+        ? 'This canonical Devnet proposal remains eligible for the published on-chain ZK review path after commit, reveal, and tally progression.'
+        : 'This proposal now has an on-chain commitment record. The published ZK anchor set remains reserved for the canonical Devnet proof path.';
+    }
+    return;
+  }
+
+  if (kind === 'Reveal') {
+    const commandHint = document.getElementById('revealCommandHint');
+    const zkHint = document.getElementById('revealZkHint');
+    if (commandHint) {
+      commandHint.innerHTML = `${explorerLink}. Reveal landed on-chain and the program validated the original commitment inputs.`;
+    }
+    if (zkHint) {
+      zkHint.textContent = isCanonicalProofPath
+        ? 'This canonical Devnet proposal can now be inspected together with the published on-chain ZK anchor path in the selected proposal panel.'
+        : 'Reveal validity is now on-chain for this proposal. The published ZK anchor set remains attached to the canonical Devnet proof path.';
+    }
+    return;
+  }
+
+  if (kind === 'Execute') {
+    const commandHint = document.getElementById('executeCommandHint');
+    const zkHint = document.getElementById('executeZkHint');
+    if (commandHint) {
+      commandHint.innerHTML = `${explorerLink}. Treasury execution landed on-chain for the selected proposal.`;
+    }
+    if (zkHint) {
+      zkHint.textContent = isCanonicalProofPath
+        ? 'Execution is now visible on-chain beside the three published ZK anchor transactions for the canonical Devnet proof path.'
+        : 'Execution is now visible on-chain for this proposal. The current published ZK anchor set remains tied to the canonical Devnet proof path.';
+    }
+  }
+}
+
 function formatUtc(ts) {
   return new Date(ts * 1000).toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
 }
@@ -7623,6 +7673,7 @@ async function submitVote() {
   }
   try {
     const signature = await commitSelectedVoteInWallet();
+    updateLifecycleActionFeedback('Commit', signature, currentSelectedProposalPubkey || currentSelectedProposal?.pubkey || null);
     const payload = [
       `proposal=${currentSelectedProposalPubkey || '<PROPOSAL_PUBKEY>'}`,
       `wallet=${wallet}`,
@@ -7654,7 +7705,8 @@ async function submitReveal() {
     return;
   }
   try {
-    await revealSelectedVoteInWallet(revealVote, saltHex, revealVoter || null);
+    const signature = await revealSelectedVoteInWallet(revealVote, saltHex, revealVoter || null);
+    updateLifecycleActionFeedback('Reveal', signature, currentSelectedProposalPubkey || currentSelectedProposal?.pubkey || null);
     closeModal('revealModal');
   } catch (error) {
     console.error(error);
@@ -7668,7 +7720,8 @@ async function submitExecute() {
     return;
   }
   try {
-    await executeSelectedProposalInWallet();
+    const signature = await executeSelectedProposalInWallet();
+    updateLifecycleActionFeedback('Execute', signature, currentExecuteProposalPubkey || currentSelectedProposalPubkey || null);
     closeModal('executeModal');
   } catch (error) {
     console.error(error);
