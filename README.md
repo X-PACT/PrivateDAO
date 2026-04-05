@@ -833,6 +833,13 @@ PrivateDAO is already built around a real on-chain lifecycle, which makes the ma
 
 In practical terms, architecture readiness alone is not the last mile. Mainnet cutover still depends on external audit coverage, runtime QA across supported wallets and devices, production custody controls, monitoring, and release discipline.
 
+Mainnet blockers still outside the repository are:
+
+- external audit completion
+- multisig-based authority hardening
+- real-device wallet captures
+- production RPC and monitoring operations
+
 ## 🧩 Project Surface Map
 
 - 🦀 `programs/private-dao/src/lib.rs`: the on-chain source of truth for DAO initialization, proposal lifecycle, commit-reveal voting, timelock, veto, treasury execution, delegation, keeper reveal, and Realms-oriented migration.
