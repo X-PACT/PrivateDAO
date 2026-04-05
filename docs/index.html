@@ -4819,8 +4819,11 @@ function normalizedWalletProviderCandidates(candidate, seen = new Set()) {
   if (candidate.solana && candidate.solana !== candidate) nestedCandidates.push(candidate.solana);
   if (candidate.provider && candidate.provider !== candidate) nestedCandidates.push(candidate.provider);
   if (candidate.wallet && candidate.wallet !== candidate) nestedCandidates.push(candidate.wallet);
+  if (candidate.extension && candidate.extension !== candidate) nestedCandidates.push(candidate.extension);
+  if (candidate.injected && candidate.injected !== candidate) nestedCandidates.push(candidate.injected);
   if (candidate.standard && candidate.standard !== candidate) nestedCandidates.push(candidate.standard);
   if (Array.isArray(candidate.providers)) nestedCandidates.push(...candidate.providers);
+  if (Array.isArray(candidate.wallets)) nestedCandidates.push(...candidate.wallets);
 
   for (const nested of nestedCandidates) {
     normalized.push(...normalizedWalletProviderCandidates(nested, seen));
@@ -4833,10 +4836,13 @@ function collectInjectedWalletProviders() {
   const rawCandidates = [
     window.phantom || null,
     window.phantom?.solana || null,
+    ...(Array.isArray(window.phantom?.solana?.providers) ? window.phantom.solana.providers : []),
     window.backpack || null,
     window.backpack?.solana || null,
+    ...(Array.isArray(window.backpack?.solana?.providers) ? window.backpack.solana.providers : []),
     window.solflare || null,
     window.solflare?.solflare || null,
+    window.SolflareApp || null,
     window.glow || null,
     window.glowSolana || null,
     window.xnft || null,
@@ -4849,12 +4855,67 @@ function collectInjectedWalletProviders() {
   const candidates = [];
   for (const raw of rawCandidates) {
     for (const candidate of normalizedWalletProviderCandidates(raw, seen)) {
-      if (!candidate || typeof candidate !== 'object') continue;
+      if (!candidate || (typeof candidate !== 'object' && typeof candidate !== 'function')) continue;
       if (candidates.includes(candidate)) continue;
       candidates.push(candidate);
     }
   }
+
+  const walletLikeWindowKeys = Object.keys(window).filter((key) => {
+    const lower = key.toLowerCase();
+    return lower.includes('solana') || lower.includes('phantom') || lower.includes('backpack') || lower.includes('solflare') || lower.includes('glow');
+  });
+
+  for (const key of walletLikeWindowKeys) {
+    try {
+      const raw = window[key];
+      for (const candidate of normalizedWalletProviderCandidates(raw, seen)) {
+        if (!candidate || (typeof candidate !== 'object' && typeof candidate !== 'function')) continue;
+        if (candidates.includes(candidate)) continue;
+        candidates.push(candidate);
+      }
+    } catch (error) {
+      // Ignore inaccessible globals injected by browser extensions.
+    }
+  }
+
   return candidates;
+}
+
+function fallbackProviderCandidateForId(preferredId) {
+  switch (preferredId) {
+    case 'phantom':
+      return (
+        window.phantom?.solana ||
+        window.phantom ||
+        collectInjectedWalletProviders().find((provider) => provider.isPhantom) ||
+        null
+      );
+    case 'solflare':
+      return (
+        window.solflare?.solflare ||
+        window.solflare ||
+        window.SolflareApp ||
+        collectInjectedWalletProviders().find((provider) => provider.isSolflare) ||
+        null
+      );
+    case 'backpack':
+      return (
+        window.backpack?.solana ||
+        window.backpack ||
+        collectInjectedWalletProviders().find((provider) => provider.isBackpack) ||
+        null
+      );
+    case 'glow':
+      return (
+        window.glowSolana ||
+        window.glow ||
+        collectInjectedWalletProviders().find((provider) => provider.isGlow || provider.name === 'Glow') ||
+        null
+      );
+    default:
+      return null;
+  }
 }
 
 function resolveWalletProvider(preferredId = 'auto') {
@@ -4875,6 +4936,15 @@ function resolveWalletProvider(preferredId = 'auto') {
     : null;
 
   if (preferred) return preferred;
+  if (preferredId && preferredId !== 'auto') {
+    const fallback = fallbackProviderCandidateForId(preferredId);
+    if (fallback) {
+      const normalized = normalizedWalletProviderCandidates(fallback);
+      const directMatch = normalized.find((provider) => walletProviderId(provider) === preferredId);
+      if (directMatch) return directMatch;
+      if (normalized[0]) return normalized[0];
+    }
+  }
 
   return (
     candidates.find((provider) => provider.isPhantom) ||
