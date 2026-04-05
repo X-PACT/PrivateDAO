@@ -4598,6 +4598,13 @@ execute() → treasury action
       <div id="commitCopyHint" style="margin-top:8px;color:var(--cyan)">After generation, copy the commitment and salt summary. Browser flows do not persist voting secrets for you.</div>
     </div>
 
+    <div style="background:rgba(33,211,194,0.08);border:1px solid rgba(33,211,194,0.22);border-radius:12px;padding:16px;margin-bottom:20px;font-family:var(--mono);font-size:11px;line-height:1.8;color:var(--text2)">
+      <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:8px">ZK BOUNDARY</div>
+      <div>On-chain now: the commitment record and lifecycle state.</div>
+      <div>Off-chain today: Groth16 proof generation and verification.</div>
+      <div id="commitZkHint" style="margin-top:8px;color:var(--cyan)">Canonical proof-path proposals can later expose proposal-bound ZK anchor transactions for vote, delegation, and tally review.</div>
+    </div>
+
     <div style="background:var(--void);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px">
       <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:8px;font-family:var(--mono)">COMMIT COMMAND</div>
       <code id="commitCommandBuilder" style="display:block;color:var(--cyan);font-family:var(--mono);font-size:12px;line-height:1.8;word-break:break-word">yarn commit -- --proposal &lt;PROPOSAL_PUBKEY&gt; --vote yes</code>
@@ -4641,6 +4648,13 @@ execute() → treasury action
     <div style="background:var(--void);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px;font-family:var(--mono);font-size:11px;line-height:1.8;color:var(--text2)">
       <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:8px">BEFORE YOU SUBMIT</div>
       <div id="revealCommandHint">Use the same vote and salt originally generated at commit time when running the reveal script. Keepers can only submit the exact stored reveal for an authorized voter record.</div>
+    </div>
+
+    <div style="background:rgba(33,211,194,0.08);border:1px solid rgba(33,211,194,0.22);border-radius:12px;padding:16px;margin-bottom:20px;font-family:var(--mono);font-size:11px;line-height:1.8;color:var(--text2)">
+      <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:8px">ZK BOUNDARY</div>
+      <div>On-chain now: reveal validity, tally inputs, and proposal lifecycle progression.</div>
+      <div>Off-chain today: Groth16 proof verification itself.</div>
+      <div id="revealZkHint" style="margin-top:8px;color:var(--cyan)">For the canonical Devnet proof path, proposal-bound ZK anchor transactions can be inspected directly on Solana Explorer after the anchored flow is published.</div>
     </div>
 
     <div style="background:var(--void);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px">
@@ -4693,6 +4707,12 @@ execute() → treasury action
     <div style="background:var(--void);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px;font-family:var(--mono);font-size:11px;line-height:1.8;color:var(--text2)">
       <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:8px">WHEN THIS IS AVAILABLE</div>
       <div id="executeCommandHint">Run the repo execute script for the selected proposal.</div>
+    </div>
+
+    <div style="background:rgba(33,211,194,0.08);border:1px solid rgba(33,211,194,0.22);border-radius:12px;padding:16px;margin-bottom:20px;font-family:var(--mono);font-size:11px;line-height:1.8;color:var(--text2)">
+      <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:8px">CHAIN VISIBILITY</div>
+      <div>Execution always lands on-chain as the treasury action itself.</div>
+      <div id="executeZkHint" style="margin-top:8px;color:var(--cyan)">If this proposal is the canonical proof path, the selected proposal panel will also expose the three on-chain ZK anchor transactions alongside execution evidence.</div>
     </div>
 
     <div style="background:var(--void);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px">
@@ -7508,6 +7528,9 @@ function openCommitModal(id, proposalPubkey = null) {
   document.getElementById('commitCommandHint').textContent = currentProposalId === null
     ? 'Generate a commitment here, then either submit it from the connected wallet or use the repo commit script from the terminal. Save the salt yourself; the browser does not persist it.'
     : `After generating the hash, submit it from the connected wallet or run scripts/commit-vote.ts for PROP-${String(currentProposalId).padStart(3, '0')} with the same wallet and saved salt. Save the salt yourself; the browser does not persist it.`;
+  document.getElementById('commitZkHint').textContent = selected && selected.pubkey === 'AegjmwkX1FknBJMDyH5yM6BMhyHsiUreNtz3d8iz3QrP'
+    ? 'This canonical Devnet proposal is the anchored proof path. After the full flow, the selected proposal panel exposes on-chain vote, delegation, and tally ZK anchor transactions.'
+    : 'This proposal still follows the same private commit-reveal lifecycle. On-chain ZK anchor publication is currently reserved for the canonical Devnet proof path.';
   updateCommitCommandBuilder();
   document.getElementById('submitBtn').disabled = true;
   document.getElementById('commitModal').classList.add('open');
@@ -7524,6 +7547,9 @@ function openRevealModal(id, proposalPubkey = null) {
   document.getElementById('revealCommandHint').textContent = currentProposalId === null
     ? 'Use the same vote and salt originally generated at commit time when submitting reveal from the wallet or running the reveal script. Keepers can set a different voter target below, but only for an authorized voter record.'
     : `Submit reveal from the connected wallet or run scripts/reveal-vote.ts for PROP-${String(currentProposalId).padStart(3, '0')} using the original vote choice and saved salt. Keepers can target another voter record only when that proposal authorized them.`;
+  document.getElementById('revealZkHint').textContent = selected && selected.pubkey === 'AegjmwkX1FknBJMDyH5yM6BMhyHsiUreNtz3d8iz3QrP'
+    ? 'This canonical Devnet proposal has published on-chain ZK anchors after reveal and tally progression. Use the selected proposal panel to open the anchor transactions directly.'
+    : 'Reveal remains fully lifecycle-bound on-chain here. The published ZK anchor set remains tied to the canonical Devnet proof path rather than every proposal.';
   const revealVoteInput = document.getElementById('revealVoteInput');
   const revealVoterInput = document.getElementById('revealVoterInput');
   const revealSaltInput = document.getElementById('revealSaltInput');
@@ -7545,6 +7571,9 @@ function openExecuteModal(proposalPubkey, id, executable, unlockTs) {
   document.getElementById('executeCommandHint').textContent = proposalPubkey
     ? `yarn execute -- --proposal ${proposalPubkey}`
     : 'Run the repo execute script for the selected proposal.';
+  document.getElementById('executeZkHint').textContent = proposalPubkey === 'AegjmwkX1FknBJMDyH5yM6BMhyHsiUreNtz3d8iz3QrP'
+    ? 'This canonical Devnet proposal already exposes on-chain ZK proof anchors in the selected proposal panel together with the execution path.'
+    : 'Execution evidence lands on-chain for every proposal. The currently published ZK anchor set remains attached to the canonical Devnet proof path.';
   updateExecuteCommandBuilder();
   document.getElementById('executeSubmitBtn').disabled = !executable;
   document.getElementById('executeModal').classList.add('open');
