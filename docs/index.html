@@ -4797,23 +4797,68 @@ function updateWalletUi(connected) {
   btn.className = 'wallet-btn connected';
 }
 
-function resolveWalletProvider(preferredId = 'auto') {
+function normalizedWalletProviderCandidates(candidate, seen = new Set()) {
+  if (!candidate || (typeof candidate !== 'object' && typeof candidate !== 'function')) return [];
+  if (seen.has(candidate)) return [];
+  seen.add(candidate);
+
+  const normalized = [];
+  const nestedCandidates = [];
+
+  if (
+    typeof candidate.connect === 'function' ||
+    typeof candidate.request === 'function' ||
+    typeof candidate.enable === 'function' ||
+    typeof candidate.sendTransaction === 'function' ||
+    typeof candidate.signAndSendTransaction === 'function' ||
+    typeof candidate.signTransaction === 'function'
+  ) {
+    normalized.push(candidate);
+  }
+
+  if (candidate.solana && candidate.solana !== candidate) nestedCandidates.push(candidate.solana);
+  if (candidate.provider && candidate.provider !== candidate) nestedCandidates.push(candidate.provider);
+  if (candidate.wallet && candidate.wallet !== candidate) nestedCandidates.push(candidate.wallet);
+  if (candidate.standard && candidate.standard !== candidate) nestedCandidates.push(candidate.standard);
+  if (Array.isArray(candidate.providers)) nestedCandidates.push(...candidate.providers);
+
+  for (const nested of nestedCandidates) {
+    normalized.push(...normalizedWalletProviderCandidates(nested, seen));
+  }
+
+  return normalized;
+}
+
+function collectInjectedWalletProviders() {
   const rawCandidates = [
+    window.phantom || null,
     window.phantom?.solana || null,
+    window.backpack || null,
     window.backpack?.solana || null,
-    window.solflare?.solflare || null,
     window.solflare || null,
+    window.solflare?.solflare || null,
+    window.glow || null,
     window.glowSolana || null,
+    window.xnft || null,
     window.xnft?.solana || null,
-    ...(Array.isArray(window.solana?.providers) ? window.solana.providers : []),
     window.solana || null,
+    ...(Array.isArray(window.solana?.providers) ? window.solana.providers : []),
   ];
 
   const seen = new Set();
-  const candidates = rawCandidates.filter((provider) => {
-    if (!provider || typeof provider !== 'object') return false;
-    if (seen.has(provider)) return false;
-    seen.add(provider);
+  const candidates = [];
+  for (const raw of rawCandidates) {
+    for (const candidate of normalizedWalletProviderCandidates(raw, seen)) {
+      if (!candidate || typeof candidate !== 'object') continue;
+      if (candidates.includes(candidate)) continue;
+      candidates.push(candidate);
+    }
+  }
+  return candidates;
+}
+
+function resolveWalletProvider(preferredId = 'auto') {
+  const candidates = collectInjectedWalletProviders().filter((provider) => {
     const canConnect =
       typeof provider.connect === 'function' ||
       typeof provider.request === 'function' ||
@@ -4845,7 +4890,12 @@ function walletProviderId(provider) {
   if (provider.isPhantom) return 'phantom';
   if (provider.isBackpack) return 'backpack';
   if (provider.isSolflare) return 'solflare';
-  if (provider === window.glowSolana || provider.name === 'Glow') return 'glow';
+  if (
+    provider === window.glowSolana ||
+    provider === window.glow ||
+    provider.name === 'Glow' ||
+    provider.isGlow
+  ) return 'glow';
   return 'auto';
 }
 
@@ -4910,16 +4960,22 @@ function extractWalletPublicKey(connectResponse, provider) {
   const candidate =
     connectResponse?.publicKey ||
     connectResponse?.result?.publicKey ||
+    connectResponse?.result?.accounts?.[0]?.publicKey ||
+    connectResponse?.result?.accounts?.[0]?.address ||
     connectResponse?.address ||
     connectResponse?.selectedAddress ||
     connectResponse?.accounts?.[0]?.publicKey ||
+    connectResponse?.accounts?.[0]?.address ||
     connectResponse?.accounts?.[0] ||
     provider?.publicKey ||
     provider?._publicKey ||
     provider?.selectedAddress ||
     provider?.accounts?.[0]?.publicKey ||
+    provider?.accounts?.[0]?.address ||
     provider?.accounts?.[0] ||
     provider?.account?.publicKey ||
+    provider?.wallet?.accounts?.[0]?.address ||
+    provider?.wallet?.accounts?.[0]?.publicKey ||
     null;
 
   if (!candidate) return null;
@@ -5034,10 +5090,22 @@ async function connectResolvedWalletProvider(provider) {
   }
 
   if (!response && typeof provider.enable === 'function') {
-    response = await provider.enable();
+    try {
+      response = await provider.enable();
+    } catch (error) {
+      if (isUserRejectedWalletError(error)) throw error;
+    }
   }
 
-  const connectedPk = await waitForWalletPublicKey(provider, response, 3000);
+  if (!response && typeof provider.request === 'function') {
+    try {
+      response = await provider.request({ method: 'solana_connect' });
+    } catch (error) {
+      if (isUserRejectedWalletError(error)) throw error;
+    }
+  }
+
+  const connectedPk = await waitForWalletPublicKey(provider, response, 6000);
   if (!connectedPk) {
     throw new Error('wallet public key was not returned');
   }
@@ -5051,6 +5119,12 @@ function describeWalletConnectionError(error) {
 
   if (code === 4001 || lower.includes('rejected') || lower.includes('denied') || lower.includes('cancel')) {
     return 'Wallet connection rejected.';
+  }
+  if (lower.includes('already processing') || lower.includes('resource unavailable')) {
+    return 'Wallet approval is already open. Approve or close the existing wallet prompt, then try again.';
+  }
+  if (lower.includes('unsupported method') || lower.includes('method not found')) {
+    return 'Wallet provider was detected, but its connect method is not exposed in this browser context.';
   }
   if (lower.includes('timeout')) {
     return 'Wallet connection timed out. Reopen the wallet approval prompt and try again.';
