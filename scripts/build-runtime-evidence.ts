@@ -72,12 +72,25 @@ type OperationalEvidence = {
   };
 };
 
+type RealDeviceRuntimeEvidence = {
+  status: string;
+  summary: {
+    targetCount: number;
+    completedTargetCount: number;
+    successfulConnectCount: number;
+    successfulSubmissionCount: number;
+    diagnosticsCaptureCount: number;
+    pendingTargets: string[];
+  };
+};
+
 function main() {
   const runtime = readJson<RuntimeAttestation>("docs/runtime-attestation.generated.json");
   const walletMatrix = readJson<WalletMatrix>("docs/wallet-compatibility-matrix.generated.json");
   const canary = readJson<DevnetCanary>("docs/devnet-canary.generated.json");
   const resilience = readJson<DevnetResilience>("docs/devnet-resilience-report.json");
   const operational = readJson<OperationalEvidence>("docs/operational-evidence.generated.json");
+  const realDevice = readJson<RealDeviceRuntimeEvidence>("docs/real-device-runtime.generated.json");
 
   const runtimeEvidence = {
     project: runtime.project,
@@ -107,6 +120,15 @@ function main() {
       staleBlockhashRejected: resilience.staleBlockhashRecovery.rejectedAsExpected && resilience.summary.staleBlockhashRejected,
       unexpectedFailures: resilience.summary.unexpectedFailures ?? 0,
     },
+    realDevice: {
+      status: realDevice.status,
+      targetCount: realDevice.summary.targetCount,
+      completedTargetCount: realDevice.summary.completedTargetCount,
+      successfulConnectCount: realDevice.summary.successfulConnectCount,
+      successfulSubmissionCount: realDevice.summary.successfulSubmissionCount,
+      diagnosticsCaptureCount: realDevice.summary.diagnosticsCaptureCount,
+      pendingTargets: realDevice.summary.pendingTargets,
+    },
     operational: {
       walletCount: operational.transactionSummary.walletCount,
       totalTxCount: operational.transactionSummary.totalTxCount,
@@ -120,6 +142,10 @@ function main() {
     },
     docs: [
       "docs/wallet-runtime.md",
+      "docs/real-device-runtime.md",
+      "docs/real-device-runtime-captures.json",
+      "docs/real-device-runtime.generated.md",
+      "docs/real-device-runtime.generated.json",
       "docs/runtime-attestation.generated.json",
       "docs/operational-evidence.generated.md",
       "docs/operational-evidence.generated.json",
@@ -133,6 +159,8 @@ function main() {
       "npm run verify:operational-evidence",
       "npm run build:wallet-matrix",
       "npm run verify:wallet-matrix",
+      "npm run build:real-device-runtime",
+      "npm run verify:real-device-runtime",
       "npm run build:devnet-canary",
       "npm run verify:devnet-canary",
       "npm run test:devnet:resilience",
@@ -143,7 +171,7 @@ function main() {
     notes: [
       "This runtime evidence package is Devnet-focused and reviewer-visible.",
       "It does not replace real device QA across every wallet release and browser combination.",
-      "It binds browser/runtime behavior to diagnostics, wallet matrix, canary, and resilience evidence in one summary.",
+      "It binds browser/runtime behavior to diagnostics, wallet matrix, canary, resilience evidence, and real-device capture intake in one summary.",
     ],
   };
 
@@ -164,6 +192,15 @@ function buildMarkdown(evidence: {
   matrixStatuses: Array<{ id: string; label: string; status: string; diagnosticsVisible: boolean; selectorVisible: boolean }>;
   devnetCanary: { network: string; primaryHealthy: boolean; fallbackHealthy: boolean; anchorAccountsPresent: boolean; unexpectedFailures: number };
   resilience: { fallbackRecovered: boolean; staleBlockhashRecovered: boolean; staleBlockhashRejected: boolean; unexpectedFailures: number };
+  realDevice: {
+    status: string;
+    targetCount: number;
+    completedTargetCount: number;
+    successfulConnectCount: number;
+    successfulSubmissionCount: number;
+    diagnosticsCaptureCount: number;
+    pendingTargets: string[];
+  };
   operational: {
     walletCount: number;
     totalTxCount: number;
@@ -212,6 +249,16 @@ ${evidence.matrixStatuses
 - Stale blockhash rejected: \`${evidence.resilience.staleBlockhashRejected}\`
 - Stale blockhash recovered: \`${evidence.resilience.staleBlockhashRecovered}\`
 - Unexpected failures: \`${evidence.resilience.unexpectedFailures}\`
+
+## Real-Device Runtime Intake
+
+- Status: \`${evidence.realDevice.status}\`
+- Target count: \`${evidence.realDevice.targetCount}\`
+- Completed target count: \`${evidence.realDevice.completedTargetCount}\`
+- Successful connect count: \`${evidence.realDevice.successfulConnectCount}\`
+- Successful submission count: \`${evidence.realDevice.successfulSubmissionCount}\`
+- Diagnostics capture count: \`${evidence.realDevice.diagnosticsCaptureCount}\`
+- Pending targets: \`${evidence.realDevice.pendingTargets.join(", ") || "none"}\`
 
 ## Operational Summary
 

@@ -11,6 +11,15 @@ type RuntimeEvidence = {
   matrixStatuses: Array<{ id: string; label: string; status: string; diagnosticsVisible: boolean; selectorVisible: boolean }>;
   devnetCanary: { network: string; primaryHealthy: boolean; fallbackHealthy: boolean; anchorAccountsPresent: boolean; unexpectedFailures: number };
   resilience: { fallbackRecovered: boolean; staleBlockhashRecovered: boolean; staleBlockhashRejected: boolean; unexpectedFailures: number };
+  realDevice: {
+    status: string;
+    targetCount: number;
+    completedTargetCount: number;
+    successfulConnectCount: number;
+    successfulSubmissionCount: number;
+    diagnosticsCaptureCount: number;
+    pendingTargets: string[];
+  };
   operational: {
     walletCount: number;
     totalTxCount: number;
@@ -49,6 +58,8 @@ function main() {
   assert(evidence.resilience.fallbackRecovered, "runtime evidence missing fallback recovery");
   assert(evidence.resilience.staleBlockhashRejected, "runtime evidence missing stale blockhash rejection");
   assert(evidence.resilience.staleBlockhashRecovered, "runtime evidence missing stale blockhash recovery");
+  assert(evidence.realDevice.targetCount >= 5, "runtime evidence real-device target count is unexpectedly low");
+  assert(evidence.realDevice.pendingTargets.length >= 1, "runtime evidence real-device boundary should remain honest until captures exist");
   assert(evidence.operational.walletCount >= 50, "runtime evidence operational wallet count is unexpectedly low");
   assert(evidence.operational.totalTxCount >= 200, "runtime evidence operational tx count is unexpectedly low");
   assert(evidence.operational.zkProofCount >= 1, "runtime evidence operational zk proof count is unexpectedly low");
@@ -59,6 +70,10 @@ function main() {
 
   for (const doc of [
     "docs/wallet-runtime.md",
+    "docs/real-device-runtime.md",
+    "docs/real-device-runtime-captures.json",
+    "docs/real-device-runtime.generated.md",
+    "docs/real-device-runtime.generated.json",
     "docs/runtime-attestation.generated.json",
     "docs/operational-evidence.generated.md",
     "docs/operational-evidence.generated.json",
@@ -73,6 +88,8 @@ function main() {
   for (const command of [
     "npm run build:wallet-matrix",
     "npm run verify:wallet-matrix",
+    "npm run build:real-device-runtime",
+    "npm run verify:real-device-runtime",
     "npm run build:devnet-canary",
     "npm run verify:devnet-canary",
     "npm run test:devnet:resilience",
@@ -86,6 +103,7 @@ function main() {
   assert(markdown.includes("# Runtime Evidence Package"), "runtime evidence markdown missing title");
   assert(markdown.includes("Devnet Canary Summary"), "runtime evidence markdown missing canary summary");
   assert(markdown.includes("Resilience Summary"), "runtime evidence markdown missing resilience summary");
+  assert(markdown.includes("Real-Device Runtime Intake"), "runtime evidence markdown missing real-device summary");
   assert(markdown.includes("Operational Summary"), "runtime evidence markdown missing operational summary");
 
   console.log("Runtime evidence verification: PASS");

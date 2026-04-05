@@ -85,6 +85,7 @@ function main() {
     "npm run verify:supply-chain-attestation",
     "npm run verify:release-ceremony-attestation",
     "npm run verify:operational-evidence",
+    "npm run verify:real-device-runtime",
     "npm run verify:runtime-evidence",
     "npm run verify:release-drill",
     "npm run verify:artifact-freshness",

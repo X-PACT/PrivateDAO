@@ -1,0 +1,65 @@
+{
+  "project": "PrivateDAO",
+  "generatedAt": "2026-04-05T11:57:17.031Z",
+  "network": "devnet",
+  "summary": {
+    "targetCount": 5,
+    "completedTargetCount": 0,
+    "successfulConnectCount": 0,
+    "successfulSubmissionCount": 0,
+    "diagnosticsCaptureCount": 0,
+    "pendingTargets": [
+      "Phantom",
+      "Solflare",
+      "Backpack",
+      "Glow",
+      "Android Native / Mobile"
+    ]
+  },
+  "targets": [
+    {
+      "id": "phantom-desktop",
+      "walletLabel": "Phantom",
+      "environmentType": "desktop-browser",
+      "status": "pending-capture"
+    },
+    {
+      "id": "solflare-desktop",
+      "walletLabel": "Solflare",
+      "environmentType": "desktop-browser",
+      "status": "pending-capture"
+    },
+    {
+      "id": "backpack-desktop",
+      "walletLabel": "Backpack",
+      "environmentType": "desktop-browser",
+      "status": "pending-capture"
+    },
+    {
+      "id": "glow-desktop",
+      "walletLabel": "Glow",
+      "environmentType": "desktop-browser",
+      "status": "pending-capture"
+    },
+    {
+      "id": "android-runtime",
+      "walletLabel": "Android Native / Mobile",
+      "environmentType": "android-or-mobile",
+      "status": "pending-capture"
+    }
+  ],
+  "captures": [],
+  "requiredDocs": [
+    "docs/real-device-runtime.md",
+    "docs/real-device-runtime-captures.json",
+    "docs/runtime-attestation.generated.json",
+    "docs/external-readiness-intake.md"
+  ],
+  "commands": [
+    "npm run build:real-device-runtime",
+    "npm run verify:real-device-runtime",
+    "npm run verify:runtime-surface",
+    "npm run verify:all"
+  ],
+  "status": "pending-real-device-capture"
+}

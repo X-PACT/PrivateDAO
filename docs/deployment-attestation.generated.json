@@ -22,6 +22,7 @@
     "supplyChainSurface": "verified",
     "releaseCeremonySurface": "verified",
     "runtimeEvidenceSurface": "verified",
+    "realDeviceRuntimeIntake": "verified",
     "operationalEvidenceSurface": "verified",
     "releaseDrillSurface": "verified",
     "artifactFreshness": "verified",
@@ -66,6 +67,7 @@
     "npm run verify:supply-chain-attestation",
     "npm run verify:release-ceremony-attestation",
     "npm run verify:operational-evidence",
+    "npm run verify:real-device-runtime",
     "npm run verify:runtime-evidence",
     "npm run verify:release-drill",
     "npm run verify:artifact-freshness",
@@ -91,12 +93,12 @@
     "npm run verify:review-surface",
     "npm run verify:all"
   ],
-  "gateCount": 56,
+  "gateCount": 57,
   "packageCounts": {
     "strategy": 9,
     "security": 11,
     "zk": 13,
-    "proof": 41,
+    "proof": 45,
     "operations": 18
   },
   "zk": {

@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-05T11:21:05.828Z",
+  "generatedAt": "2026-04-05T11:59:03.404Z",
   "packageDecision": "repository-strong-but-external-blockers-remain",
   "coreArtifacts": [
     "docs/mainnet-readiness.generated.md",
@@ -9,6 +9,7 @@
     "docs/release-drill.generated.md",
     "docs/operational-evidence.generated.md",
     "docs/runtime-evidence.generated.md",
+    "docs/real-device-runtime.generated.md",
     "docs/deployment-attestation.generated.json",
     "docs/go-live-attestation.generated.json",
     "docs/external-readiness-intake.md"
@@ -24,6 +25,7 @@
       "supplyChainSurface": "verified",
       "releaseCeremonySurface": "verified",
       "runtimeEvidenceSurface": "verified",
+      "realDeviceRuntimeIntake": "verified",
       "operationalEvidenceSurface": "verified",
       "releaseDrillSurface": "verified",
       "artifactFreshness": "verified",

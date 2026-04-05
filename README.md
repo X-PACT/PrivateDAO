@@ -191,6 +191,8 @@ Quick links:
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Fair voting model: `docs/fair-voting.md`
 - Wallet runtime compatibility: `docs/wallet-runtime.md`
+- Real-device runtime intake: `docs/real-device-runtime.md`
+- Real-device runtime evidence: `docs/real-device-runtime.generated.md`
 - Runtime attestation: `docs/runtime-attestation.generated.json`
 - Operational evidence package: `docs/operational-evidence.generated.md`
 - Runtime evidence package: `docs/runtime-evidence.generated.md`

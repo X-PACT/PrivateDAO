@@ -95,8 +95,8 @@ function main() {
     {
       layer: "real-device-wallet-qa",
       status: "pending-external",
-      evidence: ["docs/wallet-compatibility-matrix.generated.md", "docs/external-readiness-intake.md"],
-      rationale: "Support surfaces are documented, but live device/browser evidence still has to be collected externally.",
+      evidence: ["docs/real-device-runtime.md", "docs/real-device-runtime.generated.md", "docs/wallet-compatibility-matrix.generated.md", "docs/external-readiness-intake.md"],
+      rationale: "Support surfaces are documented and the real-device capture intake is enforced, but live device/browser evidence still has to be collected externally.",
     },
     {
       layer: "external-audit",

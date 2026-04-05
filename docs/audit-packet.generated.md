@@ -74,8 +74,8 @@
 - Release drill: `docs/release-drill.generated.json`
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `75`
-- Aggregate sha256: `0f252e16fce49988d930e5620cd71082797394480ca1a810e09ea253a9f5b362`
+- Manifest entries: `79`
+- Aggregate sha256: `b5cc295d7c7ef9d92588aa7eea6806b14302089cba74f0107ae1e087a8e2f29b`
 
 ## ZK Package
 
@@ -178,6 +178,10 @@
 - `docs/assets/pdao-token.json`
 - `docs/fair-voting.md`
 - `docs/wallet-runtime.md`
+- `docs/real-device-runtime.md`
+- `docs/real-device-runtime-captures.json`
+- `docs/real-device-runtime.generated.md`
+- `docs/real-device-runtime.generated.json`
 - `docs/operational-evidence.generated.md`
 - `docs/operational-evidence.generated.json`
 - `docs/runtime-evidence.generated.md`
@@ -199,6 +203,10 @@
 
 - `docs/fair-voting.md`
 - `docs/wallet-runtime.md`
+- `docs/real-device-runtime.md`
+- `docs/real-device-runtime-captures.json`
+- `docs/real-device-runtime.generated.md`
+- `docs/real-device-runtime.generated.json`
 - `docs/operational-evidence.generated.md`
 - `docs/operational-evidence.generated.json`
 - `docs/runtime-evidence.generated.md`
@@ -295,6 +303,7 @@
 - `npm run verify:supply-chain-attestation`
 - `npm run verify:release-ceremony-attestation`
 - `npm run verify:operational-evidence`
+- `npm run verify:real-device-runtime`
 - `npm run verify:runtime-evidence`
 - `npm run verify:release-drill`
 - `npm run verify:artifact-freshness`
@@ -327,6 +336,7 @@
 - supplyChainSurface: `verified`
 - releaseCeremonySurface: `verified`
 - runtimeEvidenceSurface: `verified`
+- realDeviceRuntimeIntake: `verified`
 - operationalEvidenceSurface: `verified`
 - releaseDrillSurface: `verified`
 - artifactFreshness: `verified`

@@ -48,6 +48,10 @@ function main() {
 
   for (const doc of [
     "docs/wallet-runtime.md",
+    "docs/real-device-runtime.md",
+    "docs/real-device-runtime-captures.json",
+    "docs/real-device-runtime.generated.md",
+    "docs/real-device-runtime.generated.json",
     "docs/fair-voting.md",
     "docs/go-live-criteria.md",
     "docs/operational-drillbook.md",

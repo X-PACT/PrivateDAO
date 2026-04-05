@@ -31,6 +31,7 @@ function main() {
       "docs/release-drill.generated.md",
       "docs/operational-evidence.generated.md",
       "docs/runtime-evidence.generated.md",
+      "docs/real-device-runtime.generated.md",
       "docs/deployment-attestation.generated.json",
       "docs/go-live-attestation.generated.json",
       "docs/external-readiness-intake.md",

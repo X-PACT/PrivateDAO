@@ -59,6 +59,19 @@ The repository now also publishes a generated wallet compatibility matrix:
 
 This makes the supported wallet surface reviewer-visible in a structured way instead of leaving it implied by scattered UI text.
 
+## Real-Device Runtime Intake
+
+Repository-side diagnostics are no longer the only runtime-facing proof surface.
+
+PrivateDAO now publishes a real-device runtime intake package:
+
+- `docs/real-device-runtime.md`
+- `docs/real-device-runtime-captures.json`
+- `docs/real-device-runtime.generated.md`
+- `docs/real-device-runtime.generated.json`
+
+This keeps desktop and mobile wallet QA tied to a canonical capture registry instead of leaving that work as an informal future note.
+
 ## Sustained Runtime Signal
 
 The repository also publishes a read-only Devnet operational canary:

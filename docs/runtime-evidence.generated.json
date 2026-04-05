@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-05T11:19:52.107Z",
+  "generatedAt": "2026-04-05T11:57:42.841Z",
   "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
   "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
   "diagnosticsPage": "https://x-pact.github.io/PrivateDAO/?page=diagnostics",
@@ -62,6 +62,21 @@
     "staleBlockhashRejected": true,
     "unexpectedFailures": 0
   },
+  "realDevice": {
+    "status": "pending-real-device-capture",
+    "targetCount": 5,
+    "completedTargetCount": 0,
+    "successfulConnectCount": 0,
+    "successfulSubmissionCount": 0,
+    "diagnosticsCaptureCount": 0,
+    "pendingTargets": [
+      "Phantom",
+      "Solflare",
+      "Backpack",
+      "Glow",
+      "Android Native / Mobile"
+    ]
+  },
   "operational": {
     "walletCount": 50,
     "totalTxCount": 223,
@@ -75,6 +90,10 @@
   },
   "docs": [
     "docs/wallet-runtime.md",
+    "docs/real-device-runtime.md",
+    "docs/real-device-runtime-captures.json",
+    "docs/real-device-runtime.generated.md",
+    "docs/real-device-runtime.generated.json",
     "docs/runtime-attestation.generated.json",
     "docs/operational-evidence.generated.md",
     "docs/operational-evidence.generated.json",
@@ -88,6 +107,8 @@
     "npm run verify:operational-evidence",
     "npm run build:wallet-matrix",
     "npm run verify:wallet-matrix",
+    "npm run build:real-device-runtime",
+    "npm run verify:real-device-runtime",
     "npm run build:devnet-canary",
     "npm run verify:devnet-canary",
     "npm run test:devnet:resilience",
@@ -98,6 +119,6 @@
   "notes": [
     "This runtime evidence package is Devnet-focused and reviewer-visible.",
     "It does not replace real device QA across every wallet release and browser combination.",
-    "It binds browser/runtime behavior to diagnostics, wallet matrix, canary, and resilience evidence in one summary."
+    "It binds browser/runtime behavior to diagnostics, wallet matrix, canary, resilience evidence, and real-device capture intake in one summary."
   ]
 }

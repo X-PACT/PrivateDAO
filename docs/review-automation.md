@@ -8,6 +8,7 @@ PrivateDAO treats its reviewer surface as an operational system, not a static fo
 - Devnet canary runs on a schedule and verifies runtime anchors
 - reviewer artifacts are rebuilt deterministically from repository builders
 - artifact freshness checks ensure the deterministic generated files match current builders
+- real-device runtime intake is rebuilt and verified from a canonical capture registry
 - packaged review bundles can be rebuilt for handoff without manual curation
 
 ## Core Commands

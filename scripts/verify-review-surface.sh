@@ -40,6 +40,10 @@ required_files=(
   "docs/review-automation.md"
   "docs/fair-voting.md"
   "docs/wallet-runtime.md"
+  "docs/real-device-runtime.md"
+  "docs/real-device-runtime-captures.json"
+  "docs/real-device-runtime.generated.md"
+  "docs/real-device-runtime.generated.json"
   "docs/operational-evidence.generated.md"
   "docs/operational-evidence.generated.json"
   "docs/runtime-evidence.generated.md"
@@ -143,6 +147,8 @@ if search_placeholders "$placeholder_pattern" \
   docs/review-automation.md \
   docs/fair-voting.md \
   docs/wallet-runtime.md \
+  docs/real-device-runtime.md \
+  docs/real-device-runtime.generated.md \
   docs/operational-evidence.generated.md \
   docs/runtime-evidence.generated.md \
   docs/wallet-compatibility-matrix.generated.md \
@@ -225,6 +231,9 @@ npx ts-node scripts/verify-deployment-attestation.ts >/dev/null
 
 echo "[review-surface] checking runtime attestation"
 npx ts-node scripts/verify-runtime-attestation.ts >/dev/null
+
+echo "[review-surface] checking real-device runtime evidence"
+npx ts-node scripts/verify-real-device-runtime-evidence.ts >/dev/null
 
 echo "[review-surface] checking runtime evidence"
 npx ts-node scripts/verify-runtime-evidence.ts >/dev/null

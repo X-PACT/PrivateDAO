@@ -27,6 +27,10 @@ function main() {
     diagnosticsPage: `${submission.frontend}?page=diagnostics`,
     runtimeDocs: [
       "docs/wallet-runtime.md",
+      "docs/real-device-runtime.md",
+      "docs/real-device-runtime-captures.json",
+      "docs/real-device-runtime.generated.md",
+      "docs/real-device-runtime.generated.json",
       "docs/wallet-compatibility-matrix.generated.md",
       "docs/wallet-compatibility-matrix.generated.json",
       "docs/fair-voting.md",
@@ -47,6 +51,7 @@ function main() {
       "Provider detection and capability reporting are reviewer-visible.",
       "A generated wallet compatibility matrix makes per-wallet support surfaces explicit.",
       "A read-only Devnet canary provides a lightweight operational signal between heavy stress runs.",
+      "Real-device runtime capture intake is tracked separately so mobile and desktop wallet runs can be added without rewriting reviewer docs.",
       "Real client-side wallet QA remains required before any mainnet cutover claim.",
     ],
     pdaoToken: proof.pdaoToken

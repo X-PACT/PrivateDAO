@@ -157,6 +157,15 @@ npm run verify:runtime-evidence
 
 Builds and verifies a generated runtime-evidence package that consolidates runtime attestation, wallet compatibility, Devnet canary, and resilience behavior into one reviewer-facing summary.
 
+### Real-Device Runtime Intake
+
+```bash
+npm run build:real-device-runtime
+npm run verify:real-device-runtime
+```
+
+Builds and verifies the reviewer-facing intake package for real desktop and mobile wallet captures. This package keeps the boundary honest: diagnostics and wallet matrices are useful, but real-device evidence is tracked separately until actual captures are committed.
+
 ### Operational Evidence
 
 ```bash

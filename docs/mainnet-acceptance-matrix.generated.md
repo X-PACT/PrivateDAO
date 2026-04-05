@@ -5,7 +5,7 @@
 - project: `PrivateDAO`
 - program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
-- generated at: `2026-04-05T11:20:53.467Z`
+- generated at: `2026-04-05T11:58:47.550Z`
 - acceptance decision: `repository-strong-but-external-blockers-remain`
 - accepted in repo: `8`
 - pending external: `2`
@@ -80,8 +80,10 @@
 ### real-device-wallet-qa
 
 - status: `pending-external`
-- rationale: Support surfaces are documented, but live device/browser evidence still has to be collected externally.
+- rationale: Support surfaces are documented and the real-device capture intake is enforced, but live device/browser evidence still has to be collected externally.
 - evidence:
+  - `docs/real-device-runtime.md`
+  - `docs/real-device-runtime.generated.md`
   - `docs/wallet-compatibility-matrix.generated.md`
   - `docs/external-readiness-intake.md`
 

@@ -2,7 +2,7 @@
 
 ## Overview
 
-- Generated at: `2026-04-05T11:19:52.107Z`
+- Generated at: `2026-04-05T11:57:42.841Z`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - Diagnostics page: `https://x-pact.github.io/PrivateDAO/?page=diagnostics`
@@ -31,6 +31,16 @@
 - Stale blockhash recovered: `true`
 - Unexpected failures: `0`
 
+## Real-Device Runtime Intake
+
+- Status: `pending-real-device-capture`
+- Target count: `5`
+- Completed target count: `0`
+- Successful connect count: `0`
+- Successful submission count: `0`
+- Diagnostics capture count: `0`
+- Pending targets: `Phantom, Solflare, Backpack, Glow, Android Native / Mobile`
+
 ## Operational Summary
 
 - Canonical wallet count: `50`
@@ -46,6 +56,10 @@
 ## Runtime Documents
 
 - `docs/wallet-runtime.md`
+- `docs/real-device-runtime.md`
+- `docs/real-device-runtime-captures.json`
+- `docs/real-device-runtime.generated.md`
+- `docs/real-device-runtime.generated.json`
 - `docs/runtime-attestation.generated.json`
 - `docs/operational-evidence.generated.md`
 - `docs/operational-evidence.generated.json`
@@ -60,6 +74,8 @@
 - `npm run verify:operational-evidence`
 - `npm run build:wallet-matrix`
 - `npm run verify:wallet-matrix`
+- `npm run build:real-device-runtime`
+- `npm run verify:real-device-runtime`
 - `npm run build:devnet-canary`
 - `npm run verify:devnet-canary`
 - `npm run test:devnet:resilience`
@@ -71,4 +87,4 @@
 
 - This runtime evidence package is Devnet-focused and reviewer-visible.
 - It does not replace real device QA across every wallet release and browser combination.
-- It binds browser/runtime behavior to diagnostics, wallet matrix, canary, and resilience evidence in one summary.
+- It binds browser/runtime behavior to diagnostics, wallet matrix, canary, resilience evidence, and real-device capture intake in one summary.

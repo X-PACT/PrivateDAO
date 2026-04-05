@@ -26,6 +26,7 @@ function main() {
   assert(pkg.coreArtifacts.includes("docs/mainnet-acceptance-matrix.generated.md"), "mainnet proof package missing acceptance matrix");
   assert(pkg.coreArtifacts.includes("docs/external-readiness-intake.md"), "mainnet proof package missing external readiness intake");
   assert(pkg.coreArtifacts.includes("docs/operational-evidence.generated.md"), "mainnet proof package missing operational evidence");
+  assert(pkg.coreArtifacts.includes("docs/real-device-runtime.generated.md"), "mainnet proof package missing real-device runtime evidence");
   assert(pkg.commands.includes("npm run verify:mainnet-proof-package"), "mainnet proof package missing self verification command");
   assert(pkg.summary.acceptedInRepo >= 5, "mainnet proof package accepted count is unexpectedly low");
 
@@ -36,6 +37,7 @@ function main() {
     "docs/release-drill.generated.md",
     "docs/operational-evidence.generated.md",
     "docs/runtime-evidence.generated.md",
+    "docs/real-device-runtime.generated.md",
     "docs/external-readiness-intake.md",
     "npm run verify:mainnet-proof-package",
   ]) {

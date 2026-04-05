@@ -194,6 +194,10 @@ ${submission.packages.proof.map((entry) => `- \`${entry}\``).join("\n")}
 
 - \`docs/fair-voting.md\`
 - \`docs/wallet-runtime.md\`
+- \`docs/real-device-runtime.md\`
+- \`docs/real-device-runtime-captures.json\`
+- \`docs/real-device-runtime.generated.md\`
+- \`docs/real-device-runtime.generated.json\`
 - \`docs/operational-evidence.generated.md\`
 - \`docs/operational-evidence.generated.json\`
 - \`docs/runtime-evidence.generated.md\`

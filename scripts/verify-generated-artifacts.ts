@@ -14,6 +14,9 @@ function main() {
   const releaseCeremonyJsonPath = path.resolve("docs/release-ceremony-attestation.generated.json");
   const releaseCeremonyMdPath = path.resolve("docs/release-ceremony-attestation.generated.md");
   const runtimeAttestationPath = path.resolve("docs/runtime-attestation.generated.json");
+  const realDeviceRuntimeSourcePath = path.resolve("docs/real-device-runtime-captures.json");
+  const realDeviceRuntimeJsonPath = path.resolve("docs/real-device-runtime.generated.json");
+  const realDeviceRuntimeMdPath = path.resolve("docs/real-device-runtime.generated.md");
   const runtimeEvidenceJsonPath = path.resolve("docs/runtime-evidence.generated.json");
   const runtimeEvidenceMdPath = path.resolve("docs/runtime-evidence.generated.md");
   const operationalEvidenceJsonPath = path.resolve("docs/operational-evidence.generated.json");
@@ -77,6 +80,9 @@ function main() {
   }
   if (!fs.existsSync(runtimeAttestationPath)) {
     throw new Error("missing generated runtime attestation");
+  }
+  if (!fs.existsSync(realDeviceRuntimeSourcePath) || !fs.existsSync(realDeviceRuntimeJsonPath) || !fs.existsSync(realDeviceRuntimeMdPath)) {
+    throw new Error("missing real-device runtime artifacts");
   }
   if (!fs.existsSync(runtimeEvidenceJsonPath) || !fs.existsSync(runtimeEvidenceMdPath)) {
     throw new Error("missing generated runtime evidence artifacts");
@@ -695,6 +701,9 @@ function main() {
   if (!attestation.runtimeDocs.includes("docs/runtime-evidence.generated.md")) {
     throw new Error("generated attestation is missing the runtime evidence doc");
   }
+  if (!attestation.runtimeDocs.includes("docs/real-device-runtime.generated.md")) {
+    throw new Error("generated attestation is missing the real-device runtime doc");
+  }
   if (!attestation.runtimeDocs.includes("docs/operational-evidence.generated.md")) {
     throw new Error("generated attestation is missing the operational evidence doc");
   }
@@ -833,6 +842,9 @@ function main() {
   if (!auditPacket.includes("docs/runtime-evidence.generated.json")) {
     throw new Error("generated audit packet is missing the runtime evidence reference");
   }
+  if (!auditPacket.includes("docs/real-device-runtime.generated.json")) {
+    throw new Error("generated audit packet is missing the real-device runtime reference");
+  }
   if (!auditPacket.includes("docs/operational-evidence.generated.json")) {
     throw new Error("generated audit packet is missing the operational evidence reference");
   }
@@ -875,6 +887,7 @@ function main() {
   if (
     !mainnetAcceptanceMd.includes("# Mainnet Acceptance Matrix") ||
     !mainnetAcceptanceMd.includes("docs/external-readiness-intake.md") ||
+    !mainnetAcceptanceMd.includes("docs/real-device-runtime.generated.md") ||
     !mainnetAcceptanceMd.includes("real-device-wallet-qa")
   ) {
     throw new Error("generated mainnet acceptance matrix markdown is invalid");
@@ -901,7 +914,8 @@ function main() {
   if (
     !mainnetProofPackageMd.includes("# Mainnet Proof Package") ||
     !mainnetProofPackageMd.includes("docs/mainnet-acceptance-matrix.generated.md") ||
-    !mainnetProofPackageMd.includes("docs/runtime-evidence.generated.md")
+    !mainnetProofPackageMd.includes("docs/runtime-evidence.generated.md") ||
+    !mainnetProofPackageMd.includes("docs/real-device-runtime.generated.md")
   ) {
     throw new Error("generated mainnet proof package markdown is invalid");
   }
@@ -1032,6 +1046,10 @@ function main() {
 
   for (const doc of [
     "docs/wallet-runtime.md",
+    "docs/real-device-runtime.md",
+    "docs/real-device-runtime-captures.json",
+    "docs/real-device-runtime.generated.md",
+    "docs/real-device-runtime.generated.json",
     "docs/runtime-attestation.generated.json",
     "docs/operational-evidence.generated.md",
     "docs/operational-evidence.generated.json",
@@ -1048,6 +1066,8 @@ function main() {
   for (const command of [
     "npm run build:wallet-matrix",
     "npm run verify:wallet-matrix",
+    "npm run build:real-device-runtime",
+    "npm run verify:real-device-runtime",
     "npm run build:devnet-canary",
     "npm run verify:devnet-canary",
     "npm run test:devnet:resilience",
@@ -1063,6 +1083,7 @@ function main() {
   if (
     !runtimeEvidenceMd.includes("# Runtime Evidence Package") ||
     !runtimeEvidenceMd.includes("Devnet Canary Summary") ||
+    !runtimeEvidenceMd.includes("Real-Device Runtime Intake") ||
     !runtimeEvidenceMd.includes("Resilience Summary") ||
     !runtimeEvidenceMd.includes("Operational Summary")
   ) {
@@ -1239,6 +1260,9 @@ function main() {
   }
   if (!cryptographicManifest.files.some((entry) => entry.path === "docs/devnet-canary.generated.json")) {
     throw new Error("generated cryptographic manifest is missing the devnet canary");
+  }
+  if (!cryptographicManifest.files.some((entry) => entry.path === "docs/real-device-runtime.generated.json")) {
+    throw new Error("generated cryptographic manifest is missing the real-device runtime evidence");
   }
   if (!cryptographicManifest.files.some((entry) => entry.path === "docs/cryptographic-posture.md")) {
     throw new Error("generated cryptographic manifest is missing the cryptographic posture note");
