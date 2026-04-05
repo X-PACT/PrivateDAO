@@ -68,6 +68,7 @@
     "npm run verify:release-ceremony-attestation",
     "npm run verify:operational-evidence",
     "npm run verify:real-device-runtime",
+    "npm run verify:zk-enforced-runtime",
     "npm run verify:runtime-evidence",
     "npm run verify:release-drill",
     "npm run verify:artifact-freshness",
@@ -93,13 +94,13 @@
     "npm run verify:review-surface",
     "npm run verify:all"
   ],
-  "gateCount": 57,
+  "gateCount": 58,
   "packageCounts": {
     "strategy": 9,
     "security": 11,
-    "zk": 13,
-    "proof": 45,
-    "operations": 18
+    "zk": 21,
+    "proof": 47,
+    "operations": 21
   },
   "zk": {
     "stackVersion": 1,
@@ -108,6 +109,9 @@
   "runtimeDocs": [
     "docs/wallet-runtime.md",
     "docs/fair-voting.md",
+    "docs/zk-enforced-runtime-evidence.md",
+    "docs/zk-enforced-runtime.generated.md",
+    "docs/zk-enforced-operator-flow.md",
     "docs/mainnet-readiness.generated.md",
     "docs/go-live-criteria.md",
     "docs/operational-drillbook.md"

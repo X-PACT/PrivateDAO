@@ -74,6 +74,9 @@ function main() {
     runtimeDocs: [
       "docs/wallet-runtime.md",
       "docs/fair-voting.md",
+      "docs/zk-enforced-runtime-evidence.md",
+      "docs/zk-enforced-runtime.generated.md",
+      "docs/zk-enforced-operator-flow.md",
       "docs/mainnet-readiness.generated.md",
       "docs/go-live-criteria.md",
       "docs/operational-drillbook.md",

@@ -2,7 +2,7 @@
 
 ## Overview
 
-- Generated at: `2026-04-05T17:47:38.160Z`
+- Generated at: `2026-04-05T23:54:22.627Z`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - Diagnostics page: `https://x-pact.github.io/PrivateDAO/?page=diagnostics`
@@ -41,6 +41,16 @@
 - Diagnostics capture count: `0`
 - Pending targets: `Phantom, Solflare, Backpack, Glow, Android Native / Mobile`
 
+## ZK-Enforced Runtime Intake
+
+- Status: `pending-zk-enforced-capture`
+- Target count: `5`
+- Completed target count: `0`
+- Mode activation success count: `0`
+- Finalize success count: `0`
+- Diagnostics capture count: `0`
+- Pending targets: `Phantom, Solflare, Backpack, Glow, Android Native / Mobile`
+
 ## Operational Summary
 
 - Canonical wallet count: `50`
@@ -60,6 +70,11 @@
 - `docs/real-device-runtime-captures.json`
 - `docs/real-device-runtime.generated.md`
 - `docs/real-device-runtime.generated.json`
+- `docs/zk-enforced-runtime-evidence.md`
+- `docs/zk-enforced-runtime-captures.json`
+- `docs/zk-enforced-runtime.generated.md`
+- `docs/zk-enforced-runtime.generated.json`
+- `docs/zk-enforced-operator-flow.md`
 - `docs/runtime-attestation.generated.json`
 - `docs/operational-evidence.generated.md`
 - `docs/operational-evidence.generated.json`
@@ -76,6 +91,8 @@
 - `npm run verify:wallet-matrix`
 - `npm run build:real-device-runtime`
 - `npm run verify:real-device-runtime`
+- `npm run build:zk-enforced-runtime`
+- `npm run verify:zk-enforced-runtime`
 - `npm run build:devnet-canary`
 - `npm run verify:devnet-canary`
 - `npm run test:devnet:resilience`
@@ -88,3 +105,4 @@
 - This runtime evidence package is Devnet-focused and reviewer-visible.
 - It does not replace real device QA across every wallet release and browser combination.
 - It binds browser/runtime behavior to diagnostics, wallet matrix, canary, resilience evidence, and real-device capture intake in one summary.
+- It exposes the stronger zk_enforced runtime blocker as a first-class evidence track instead of leaving it implicit in prose.

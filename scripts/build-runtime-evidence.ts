@@ -84,6 +84,18 @@ type RealDeviceRuntimeEvidence = {
   };
 };
 
+type ZkEnforcedRuntimeEvidence = {
+  status: string;
+  summary: {
+    targetCount: number;
+    completedTargetCount: number;
+    modeActivationSuccessCount: number;
+    finalizeSuccessCount: number;
+    diagnosticsCaptureCount: number;
+    pendingTargets: string[];
+  };
+};
+
 function main() {
   const runtime = readJson<RuntimeAttestation>("docs/runtime-attestation.generated.json");
   const walletMatrix = readJson<WalletMatrix>("docs/wallet-compatibility-matrix.generated.json");
@@ -91,6 +103,7 @@ function main() {
   const resilience = readJson<DevnetResilience>("docs/devnet-resilience-report.json");
   const operational = readJson<OperationalEvidence>("docs/operational-evidence.generated.json");
   const realDevice = readJson<RealDeviceRuntimeEvidence>("docs/real-device-runtime.generated.json");
+  const zkEnforced = readJson<ZkEnforcedRuntimeEvidence>("docs/zk-enforced-runtime.generated.json");
 
   const runtimeEvidence = {
     project: runtime.project,
@@ -129,6 +142,15 @@ function main() {
       diagnosticsCaptureCount: realDevice.summary.diagnosticsCaptureCount,
       pendingTargets: realDevice.summary.pendingTargets,
     },
+    zkEnforced: {
+      status: zkEnforced.status,
+      targetCount: zkEnforced.summary.targetCount,
+      completedTargetCount: zkEnforced.summary.completedTargetCount,
+      modeActivationSuccessCount: zkEnforced.summary.modeActivationSuccessCount,
+      finalizeSuccessCount: zkEnforced.summary.finalizeSuccessCount,
+      diagnosticsCaptureCount: zkEnforced.summary.diagnosticsCaptureCount,
+      pendingTargets: zkEnforced.summary.pendingTargets,
+    },
     operational: {
       walletCount: operational.transactionSummary.walletCount,
       totalTxCount: operational.transactionSummary.totalTxCount,
@@ -146,6 +168,11 @@ function main() {
       "docs/real-device-runtime-captures.json",
       "docs/real-device-runtime.generated.md",
       "docs/real-device-runtime.generated.json",
+      "docs/zk-enforced-runtime-evidence.md",
+      "docs/zk-enforced-runtime-captures.json",
+      "docs/zk-enforced-runtime.generated.md",
+      "docs/zk-enforced-runtime.generated.json",
+      "docs/zk-enforced-operator-flow.md",
       "docs/runtime-attestation.generated.json",
       "docs/operational-evidence.generated.md",
       "docs/operational-evidence.generated.json",
@@ -161,6 +188,8 @@ function main() {
       "npm run verify:wallet-matrix",
       "npm run build:real-device-runtime",
       "npm run verify:real-device-runtime",
+      "npm run build:zk-enforced-runtime",
+      "npm run verify:zk-enforced-runtime",
       "npm run build:devnet-canary",
       "npm run verify:devnet-canary",
       "npm run test:devnet:resilience",
@@ -172,6 +201,7 @@ function main() {
       "This runtime evidence package is Devnet-focused and reviewer-visible.",
       "It does not replace real device QA across every wallet release and browser combination.",
       "It binds browser/runtime behavior to diagnostics, wallet matrix, canary, resilience evidence, and real-device capture intake in one summary.",
+      "It exposes the stronger zk_enforced runtime blocker as a first-class evidence track instead of leaving it implicit in prose.",
     ],
   };
 
@@ -198,6 +228,15 @@ function buildMarkdown(evidence: {
     completedTargetCount: number;
     successfulConnectCount: number;
     successfulSubmissionCount: number;
+    diagnosticsCaptureCount: number;
+    pendingTargets: string[];
+  };
+  zkEnforced: {
+    status: string;
+    targetCount: number;
+    completedTargetCount: number;
+    modeActivationSuccessCount: number;
+    finalizeSuccessCount: number;
     diagnosticsCaptureCount: number;
     pendingTargets: string[];
   };
@@ -259,6 +298,16 @@ ${evidence.matrixStatuses
 - Successful submission count: \`${evidence.realDevice.successfulSubmissionCount}\`
 - Diagnostics capture count: \`${evidence.realDevice.diagnosticsCaptureCount}\`
 - Pending targets: \`${evidence.realDevice.pendingTargets.join(", ") || "none"}\`
+
+## ZK-Enforced Runtime Intake
+
+- Status: \`${evidence.zkEnforced.status}\`
+- Target count: \`${evidence.zkEnforced.targetCount}\`
+- Completed target count: \`${evidence.zkEnforced.completedTargetCount}\`
+- Mode activation success count: \`${evidence.zkEnforced.modeActivationSuccessCount}\`
+- Finalize success count: \`${evidence.zkEnforced.finalizeSuccessCount}\`
+- Diagnostics capture count: \`${evidence.zkEnforced.diagnosticsCaptureCount}\`
+- Pending targets: \`${evidence.zkEnforced.pendingTargets.join(", ") || "none"}\`
 
 ## Operational Summary
 

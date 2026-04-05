@@ -47,16 +47,22 @@
     "docs/operational-drillbook.md",
     "docs/mainnet-readiness.md",
     "docs/mainnet-readiness.generated.md",
-    "docs/deployment-attestation.generated.json"
+    "docs/deployment-attestation.generated.json",
+    "docs/zk-enforced-runtime-evidence.md",
+    "docs/zk-enforced-runtime.generated.md",
+    "docs/zk-enforced-operator-flow.md"
   ],
   "runtimeDocs": [
     "docs/wallet-runtime.md",
     "docs/fair-voting.md",
+    "docs/zk-enforced-runtime-evidence.md",
+    "docs/zk-enforced-runtime.generated.md",
+    "docs/zk-enforced-operator-flow.md",
     "docs/mainnet-readiness.generated.md",
     "docs/go-live-criteria.md",
     "docs/operational-drillbook.md"
   ],
-  "deploymentGateCount": 57,
+  "deploymentGateCount": 58,
   "pdaoToken": {
     "mint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
     "programId": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",

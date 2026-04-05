@@ -883,6 +883,7 @@ Mainnet blockers still outside the repository are:
 - external audit completion
 - multisig-based authority hardening
 - real-device wallet captures
+- zk_enforced runtime captures for enable-mode and finalize
 - production RPC and monitoring operations
 
 ## 🧩 Project Surface Map

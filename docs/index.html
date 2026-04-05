@@ -4401,6 +4401,11 @@ execute() → treasury action
             <div style="color:var(--text3);line-height:1.7;margin-top:8px">`zk_enforced` is live in parallel, but it is not yet promoted as the dominant production path. See <a class="award-link" href="phase-c-hardening.md" target="_blank">Phase C Hardening</a>.</div>
           </div>
           <div class="proposal-command-box">
+            <div class="proposal-detail-label">ZK RUNTIME EVIDENCE</div>
+            <div class="diagnostic-value" style="color:var(--amber)">CAPTURE REQUIRED</div>
+            <div style="color:var(--text3);line-height:1.7;margin-top:8px">The stronger path now has a dedicated runtime registry and generated package, but actual wallet captures for enable-mode and finalize still need to be recorded. See <a class="award-link" href="zk-enforced-runtime.generated.md" target="_blank">ZK-Enforced Runtime Evidence</a>.</div>
+          </div>
+          <div class="proposal-command-box">
             <div class="proposal-detail-label">VERIFIER STRATEGY</div>
             <div class="diagnostic-value" style="color:var(--amber)">DECISION REQUIRED</div>
             <div style="color:var(--text3);line-height:1.7;margin-top:8px">The repo now records anchors, receipts, and proposal policies, but the final production verifier boundary still needs to be frozen. See <a class="award-link" href="zk-verifier-strategy.md" target="_blank">ZK Verifier Strategy</a>.</div>
@@ -5238,6 +5243,7 @@ async function updateDiagnostics() {
       repositoryGates: 'internal-pass',
       authorityHardening: 'multisig-required',
       realDeviceWalletQa: 'external-blocker',
+      zkEnforcedRuntime: 'capture-required',
       externalAudit: 'pending',
       zkPhaseC: 'hardening-required',
     },
