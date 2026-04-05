@@ -2437,43 +2437,6 @@ body.judge-mode .judge-banner {
     </div>
 
     <div class="proposal-create-card reveal">
-      <div class="proposal-title">Step 3 — Create proposal on-chain</div>
-      <div class="proposal-desc">Proposal creation is real and permissioned by governance token ownership. Run this after DAO creation and treasury funding. The connected wallet must hold the governance token for the selected DAO.</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:16px">
-        <div>
-          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">DAO PDA</label>
-          <input id="createDaoPda" type="text" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Paste DAO PDA or select a live proposal">
-        </div>
-        <div>
-          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">TITLE</label>
-          <input id="createProposalTitle" type="text" value="Fund community work" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
-        </div>
-        <div>
-          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">DURATION (SECONDS)</label>
-          <input id="createProposalDuration" type="number" value="30" min="5" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
-        </div>
-        <div>
-          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">TREASURY RECIPIENT</label>
-          <input id="createProposalRecipient" type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Recipient wallet address">
-        </div>
-        <div>
-          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">TREASURY AMOUNT (SOL)</label>
-          <input id="createProposalAmount" type="number" value="0.05" step="0.01" min="0" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
-        </div>
-      </div>
-      <div style="margin-top:12px">
-        <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">DESCRIPTION</label>
-        <textarea id="createProposalDescription" style="width:100%;min-height:120px;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;resize:vertical">Proposal to allocate treasury funds through the live PrivateDAO governance flow.</textarea>
-      </div>
-      <code id="createProposalCommandHint">yarn create-proposal -- --dao &lt;DAO_PDA&gt; --title "Fund community work"</code>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
-        <button class="action-btn action-execute" style="flex:0 0 auto" onclick="submitCreateProposalInWallet()">Create In Wallet</button>
-        <button class="action-btn action-commit" style="flex:0 0 auto" onclick="copyCreateProposalCommand()">Copy Create Command</button>
-        <button class="action-btn action-reveal" style="flex:0 0 auto" onclick="syncCreateProposalCommand()">Refresh Command</button>
-      </div>
-    </div>
-
-    <div class="proposal-create-card reveal">
       <div class="proposal-title">Step 1 / 2 — DAO bootstrap console</div>
       <div class="proposal-desc">Use this console in order: create the DAO, receive the initial governance token allocation automatically, then fund the treasury before opening proposals.</div>
       <div class="proposal-command-grid">
@@ -2521,11 +2484,48 @@ body.judge-mode .judge-banner {
     </div>
 
     <div class="proposal-create-card reveal">
-      <div class="proposal-title">Delegation console</div>
-      <div class="proposal-desc">Private delegation is proposal-scoped and on-chain. The delegator assigns weight to a delegatee, then the delegatee commits with combined weight while the vote remains hidden until reveal.</div>
+      <div class="proposal-title">Step 3 — Create proposal on-chain</div>
+      <div class="proposal-desc">Proposal creation is real and permissioned by governance token ownership. Run this after DAO creation and treasury funding. The connected wallet must hold the governance token for the selected DAO.</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:16px">
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">DAO PDA</label>
+          <input id="createDaoPda" type="text" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Paste DAO PDA or select a live proposal">
+        </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">TITLE</label>
+          <input id="createProposalTitle" type="text" value="Fund community work" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
+        </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">DURATION (SECONDS)</label>
+          <input id="createProposalDuration" type="number" value="30" min="5" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
+        </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">TREASURY RECIPIENT</label>
+          <input id="createProposalRecipient" type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Recipient wallet address">
+        </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">TREASURY AMOUNT (SOL)</label>
+          <input id="createProposalAmount" type="number" value="0.05" step="0.01" min="0" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
+        </div>
+      </div>
+      <div style="margin-top:12px">
+        <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">DESCRIPTION</label>
+        <textarea id="createProposalDescription" style="width:100%;min-height:120px;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;resize:vertical">Proposal to allocate treasury funds through the live PrivateDAO governance flow.</textarea>
+      </div>
+      <code id="createProposalCommandHint">yarn create-proposal -- --dao &lt;DAO_PDA&gt; --title "Fund community work"</code>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+        <button class="action-btn action-execute" style="flex:0 0 auto" onclick="submitCreateProposalInWallet()">Create In Wallet</button>
+        <button class="action-btn action-commit" style="flex:0 0 auto" onclick="copyCreateProposalCommand()">Copy Create Command</button>
+        <button class="action-btn action-reveal" style="flex:0 0 auto" onclick="syncCreateProposalCommand()">Refresh Command</button>
+      </div>
+    </div>
+
+    <div class="proposal-create-card reveal">
+      <div class="proposal-title">Advanced governance console</div>
+      <div class="proposal-desc">Delegation and combined-weight commit stay available as advanced proposal-scoped flows. They are grouped separately so the main DAO path remains clear.</div>
       <div class="proposal-command-grid">
         <div class="proposal-command-box">
-          <div class="proposal-detail-label">DELEGATE VOTE</div>
+          <div class="proposal-detail-label">ADVANCED — DELEGATE VOTE</div>
           <div style="display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px">
             <input id="delegateProposalInput" type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Proposal PDA">
             <input id="delegateeWalletInput" type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Delegatee wallet pubkey">
@@ -2537,7 +2537,7 @@ body.judge-mode .judge-banner {
           </div>
         </div>
         <div class="proposal-command-box">
-          <div class="proposal-detail-label">COMMIT DELEGATED VOTE</div>
+          <div class="proposal-detail-label">ADVANCED — COMMIT DELEGATED VOTE</div>
           <div style="display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px">
             <input id="delegatedCommitDelegatorInput" type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Delegator wallet pubkey">
           </div>
