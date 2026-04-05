@@ -913,19 +913,21 @@ nav.scrolled {
 .compare-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2px;
-  border-radius: 20px;
-  overflow: hidden;
+  gap: 18px;
+  border-radius: 24px;
 }
 
 .compare-panel {
-  background: var(--card);
+  background: linear-gradient(180deg, rgba(8, 15, 23, 0.7), rgba(7, 13, 20, 0.92));
   padding: 48px;
   position: relative;
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.03);
 }
 
-.compare-panel.bad { border-top: 3px solid var(--red); }
-.compare-panel.good { border-top: 3px solid var(--cyan); }
+.compare-panel.bad { box-shadow: 0 24px 60px rgba(0,0,0,0.18), inset 0 3px 0 rgba(255,45,85,0.78), inset 0 1px 0 rgba(255,255,255,0.03); }
+.compare-panel.good { box-shadow: 0 24px 60px rgba(0,0,0,0.18), inset 0 3px 0 rgba(0,229,255,0.78), inset 0 1px 0 rgba(255,255,255,0.03); }
 
 .compare-tag {
   font-family: var(--mono);
@@ -940,12 +942,12 @@ nav.scrolled {
 .compare-panel.good .compare-tag { background: var(--cyan-dim); color: var(--cyan); }
 
 .compare-title {
-  font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 14px;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 12px;
   letter-spacing: -0.3px;
 }
-.compare-desc { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 28px; }
+.compare-desc { font-size: 14px; color: var(--text2); line-height: 1.75; margin-bottom: 24px; max-width: 520px; }
 
 /* Live tally simulation */
 .tally-live {
@@ -2849,9 +2851,9 @@ body.judge-mode .judge-banner {
     <h2 class="section-heading reveal">Hide voting intent.<br>Keep execution accountable.</h2>
     <div class="compare-grid reveal">
       <div class="compare-panel bad">
-        <span class="compare-tag">⚠ REALMS — PUBLIC VOTING</span>
-        <div class="compare-title">Every vote is visible in real-time</div>
-        <div class="compare-desc">Whales watch the tally live, buy votes to flip proposals, and front-run treasury transfers. Smaller holders are intimidated into conformity.</div>
+        <span class="compare-tag">PUBLIC GOVERNANCE</span>
+        <div class="compare-title">Intent leaks before the decision is final</div>
+        <div class="compare-desc">Open tally pressure changes behavior mid-vote. Capital can react early, narratives shift around the live count, and treasury expectations start moving before governance is finished.</div>
         <div class="tally-live">
           <div class="tally-live-header">
             <span>LIVE TALLY</span>
@@ -2878,9 +2880,9 @@ body.judge-mode .judge-banner {
         </div>
       </div>
       <div class="compare-panel good">
-        <span class="compare-tag">✓ PRIVATEDAO — COMMIT-REVEAL</span>
-        <div class="compare-title">Tally sealed until voting ends</div>
-        <div class="compare-desc">Voters submit sha256(vote‖salt‖proposal‖pubkey). The hash reveals nothing. After voting ends, the on-chain program verifies the exact preimage. Zero bandwagon effect.</div>
+        <span class="compare-tag">PRIVATEDAO FLOW</span>
+        <div class="compare-title">Intent stays sealed until reveal opens</div>
+        <div class="compare-desc">Commit-reveal keeps the vote hidden while the proposal is still active. The chain records the commitment first, then verifies the original reveal payload only in the correct phase.</div>
         <div class="tally-sealed">
           <div class="tally-sealed-header">TALLY — CRYPTOGRAPHICALLY SEALED</div>
           <div class="sealed-display" id="sealedDisplay">YES: ? &nbsp;/&nbsp; NO: ?</div>
@@ -3156,12 +3158,12 @@ body.judge-mode .judge-banner {
     <div class="award-detail-card reveal">
       <div class="award-detail-head">
         <div>
-          <div class="award-detail-title">Curated review paths</div>
+          <div class="award-detail-title">Depth without losing the product path</div>
           <p class="award-detail-copy">
-            Product first, evidence second. This page keeps the review surface dense, but arranged into clear paths instead of one long wall of links.
+            Proof Center is the second layer of the product. Use it when you need runtime evidence, trust reasoning, and release depth without pushing that density back into the main governance workspace.
           </p>
         </div>
-        <div class="award-pill">REVIEW READY</div>
+        <div class="award-pill">PRODUCT DEPTH</div>
       </div>
       <div class="curation-grid">
         <div class="curation-card">
