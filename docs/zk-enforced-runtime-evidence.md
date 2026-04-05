@@ -36,6 +36,18 @@ Each successful runtime record should include:
 - tx signature for finalize
 - explorer links
 
+The intake registry and generated reviewer package now live in:
+
+- `docs/zk-enforced-runtime-captures.json`
+- `docs/zk-enforced-runtime.generated.json`
+- `docs/zk-enforced-runtime.generated.md`
+
+Commands:
+
+- `npm run build:zk-enforced-runtime`
+- `npm run verify:zk-enforced-runtime`
+- `npm run record:zk-enforced-runtime -- <capture-json-path>`
+
 ## Current Boundary
 
 The repository already has:
@@ -45,4 +57,4 @@ The repository already has:
 - runtime evidence
 - real-device capture intake
 
-What still remains is the actual `zk_enforced` runtime capture set, not more speculative documentation.
+What still remains is the actual `zk_enforced` runtime capture set, not more speculative documentation. The registry and generated package now make that blocker machine-visible and reviewer-ready.

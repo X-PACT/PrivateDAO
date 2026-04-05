@@ -17,6 +17,9 @@ function main() {
   const realDeviceRuntimeSourcePath = path.resolve("docs/real-device-runtime-captures.json");
   const realDeviceRuntimeJsonPath = path.resolve("docs/real-device-runtime.generated.json");
   const realDeviceRuntimeMdPath = path.resolve("docs/real-device-runtime.generated.md");
+  const zkEnforcedRuntimeSourcePath = path.resolve("docs/zk-enforced-runtime-captures.json");
+  const zkEnforcedRuntimeJsonPath = path.resolve("docs/zk-enforced-runtime.generated.json");
+  const zkEnforcedRuntimeMdPath = path.resolve("docs/zk-enforced-runtime.generated.md");
   const runtimeEvidenceJsonPath = path.resolve("docs/runtime-evidence.generated.json");
   const runtimeEvidenceMdPath = path.resolve("docs/runtime-evidence.generated.md");
   const operationalEvidenceJsonPath = path.resolve("docs/operational-evidence.generated.json");
@@ -83,6 +86,9 @@ function main() {
   }
   if (!fs.existsSync(realDeviceRuntimeSourcePath) || !fs.existsSync(realDeviceRuntimeJsonPath) || !fs.existsSync(realDeviceRuntimeMdPath)) {
     throw new Error("missing real-device runtime artifacts");
+  }
+  if (!fs.existsSync(zkEnforcedRuntimeSourcePath) || !fs.existsSync(zkEnforcedRuntimeJsonPath) || !fs.existsSync(zkEnforcedRuntimeMdPath)) {
+    throw new Error("missing zk-enforced runtime artifacts");
   }
   if (!fs.existsSync(runtimeEvidenceJsonPath) || !fs.existsSync(runtimeEvidenceMdPath)) {
     throw new Error("missing generated runtime evidence artifacts");
@@ -245,6 +251,37 @@ function main() {
     docs: string[];
     commands: string[];
   };
+  const zkEnforcedRuntime = JSON.parse(fs.readFileSync(zkEnforcedRuntimeJsonPath, "utf8")) as {
+    project: string;
+    network: string;
+    summary: {
+      targetCount: number;
+      completedTargetCount: number;
+      modeActivationSuccessCount: number;
+      finalizeSuccessCount: number;
+      diagnosticsCaptureCount: number;
+      pendingTargets: string[];
+    };
+    targets: Array<{ id: string; walletLabel: string; environmentType: string; status: string }>;
+    captures: Array<{
+      walletLabel: string;
+      environmentType: string;
+      network: string;
+      proposalPublicKey: string;
+      receiptModes: { vote: string; delegation: string; tally: string };
+      modeActivationResult: string;
+      finalizeResult: string;
+      diagnosticsSnapshotCaptured: boolean;
+      enableModeTxSignature?: string | null;
+      finalizeTxSignature?: string | null;
+      explorerUrls?: { enableMode?: string | null; finalize?: string | null };
+      capturedAt: string;
+    }>;
+    requiredDocs: string[];
+    commands: string[];
+    status: string;
+  };
+  const zkEnforcedRuntimeMd = fs.readFileSync(zkEnforcedRuntimeMdPath, "utf8");
   const operationalEvidence = JSON.parse(fs.readFileSync(operationalEvidenceJsonPath, "utf8")) as {
     project: string;
     network: string;
@@ -1112,6 +1149,67 @@ function main() {
     !runtimeEvidenceMd.includes("Operational Summary")
   ) {
     throw new Error("generated runtime evidence markdown is invalid");
+  }
+
+  if (zkEnforcedRuntime.project !== "PrivateDAO" || zkEnforcedRuntime.network !== "devnet") {
+    throw new Error("generated zk-enforced runtime evidence header mismatch");
+  }
+
+  if (zkEnforcedRuntime.summary.targetCount < 5) {
+    throw new Error("generated zk-enforced runtime evidence target count is unexpectedly low");
+  }
+
+  for (const doc of [
+    "docs/zk-enforced-runtime-evidence.md",
+    "docs/zk-enforced-runtime-captures.json",
+    "docs/zk-enforced-operator-flow.md",
+    "docs/phase-c-hardening.md",
+  ]) {
+    if (!zkEnforcedRuntime.requiredDocs.includes(doc)) {
+      throw new Error(`generated zk-enforced runtime evidence is missing ${doc}`);
+    }
+  }
+
+  for (const command of [
+    "npm run build:zk-enforced-runtime",
+    "npm run verify:zk-enforced-runtime",
+    "npm run record:zk-enforced-runtime -- <capture-json-path>",
+    "npm run configure:zk-mode -- --proposal <PDA> --mode zk_enforced",
+    "npm run anchor:zk-verify:enforced",
+  ]) {
+    if (!zkEnforcedRuntime.commands.includes(command)) {
+      throw new Error(`generated zk-enforced runtime evidence is missing ${command}`);
+    }
+  }
+
+  for (const capture of zkEnforcedRuntime.captures) {
+    if (capture.network !== "devnet") {
+      throw new Error("generated zk-enforced runtime capture must remain devnet-scoped");
+    }
+    if (!capture.proposalPublicKey) {
+      throw new Error("generated zk-enforced runtime capture missing proposal public key");
+    }
+    if (capture.modeActivationResult === "success") {
+      if (capture.receiptModes.vote !== "zk_enforced" || capture.receiptModes.delegation !== "zk_enforced" || capture.receiptModes.tally !== "zk_enforced") {
+        throw new Error("successful zk-enforced runtime activation must carry stronger receipts");
+      }
+      if (!capture.enableModeTxSignature || !capture.explorerUrls?.enableMode?.includes("devnet")) {
+        throw new Error("successful zk-enforced runtime activation missing explorer evidence");
+      }
+    }
+    if (capture.finalizeResult === "success") {
+      if (!capture.finalizeTxSignature || !capture.explorerUrls?.finalize?.includes("devnet")) {
+        throw new Error("successful zk-enforced runtime finalize missing explorer evidence");
+      }
+    }
+  }
+
+  if (
+    !zkEnforcedRuntimeMd.includes("# ZK-Enforced Runtime Evidence") ||
+    !zkEnforcedRuntimeMd.includes("Target Matrix") ||
+    !zkEnforcedRuntimeMd.includes("Honest Boundary")
+  ) {
+    throw new Error("generated zk-enforced runtime markdown is invalid");
   }
 
   if (operationalEvidence.project !== "PrivateDAO") {

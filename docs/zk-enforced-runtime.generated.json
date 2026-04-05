@@ -1,0 +1,67 @@
+{
+  "project": "PrivateDAO",
+  "generatedAt": "2026-04-05T23:44:06.870Z",
+  "network": "devnet",
+  "summary": {
+    "targetCount": 5,
+    "completedTargetCount": 0,
+    "modeActivationSuccessCount": 0,
+    "finalizeSuccessCount": 0,
+    "diagnosticsCaptureCount": 0,
+    "pendingTargets": [
+      "Phantom",
+      "Solflare",
+      "Backpack",
+      "Glow",
+      "Android Native / Mobile"
+    ]
+  },
+  "targets": [
+    {
+      "id": "phantom-desktop-zk-enforced",
+      "walletLabel": "Phantom",
+      "environmentType": "desktop-browser",
+      "status": "pending-capture"
+    },
+    {
+      "id": "solflare-desktop-zk-enforced",
+      "walletLabel": "Solflare",
+      "environmentType": "desktop-browser",
+      "status": "pending-capture"
+    },
+    {
+      "id": "backpack-desktop-zk-enforced",
+      "walletLabel": "Backpack",
+      "environmentType": "desktop-browser",
+      "status": "pending-capture"
+    },
+    {
+      "id": "glow-desktop-zk-enforced",
+      "walletLabel": "Glow",
+      "environmentType": "desktop-browser",
+      "status": "pending-capture"
+    },
+    {
+      "id": "android-runtime-zk-enforced",
+      "walletLabel": "Android Native / Mobile",
+      "environmentType": "android-or-mobile",
+      "status": "pending-capture"
+    }
+  ],
+  "captures": [],
+  "requiredDocs": [
+    "docs/zk-enforced-runtime-evidence.md",
+    "docs/zk-enforced-runtime-captures.json",
+    "docs/zk-enforced-operator-flow.md",
+    "docs/phase-c-hardening.md"
+  ],
+  "commands": [
+    "npm run build:zk-enforced-runtime",
+    "npm run verify:zk-enforced-runtime",
+    "npm run record:zk-enforced-runtime -- <capture-json-path>",
+    "npm run inspect:zk-proposal -- --proposal <PDA>",
+    "npm run configure:zk-mode -- --proposal <PDA> --mode zk_enforced",
+    "npm run anchor:zk-verify:enforced"
+  ],
+  "status": "pending-zk-enforced-capture"
+}

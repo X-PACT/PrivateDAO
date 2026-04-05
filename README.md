@@ -185,6 +185,7 @@ The current review surface is intentionally explicit about a few points that are
   - `npm run anchor:zk-verify:enforced`
   - `npm run inspect:zk-proposal -- --proposal <PDA>`
 - The selected proposal panel now shows `zk_enforced` readiness directly, including whether receipts are missing, still parallel, or already strong enough for promotion.
+- The repo now includes a dedicated `zk_enforced` runtime capture registry and generated review package so stronger-path wallet runs can be added without changing the reviewer surface.
 - Phase C is not yet promoted. `zk_enforced` is live and usable, but it is still in hardening mode until additional runtime evidence, external review, and operator confidence are closed.
 
 ## ZK Rollout Status
@@ -210,6 +211,7 @@ For the exact blockers and execution path, read:
 - `docs/zk-enforced-threat-review.md`
 - `docs/zk-enforced-runtime-evidence.md`
 - `docs/zk-enforced-operator-flow.md`
+- `docs/zk-enforced-runtime.generated.md`
 
 ## Why PrivateDAO Exists
 

@@ -137,6 +137,14 @@ Related review docs:
 - `docs/zk-verifier-strategy.md`
 - `docs/zk-enforced-threat-review.md`
 - `docs/zk-enforced-runtime-evidence.md`
+- `docs/zk-enforced-operator-flow.md`
+
+Commands:
+
+```bash
+npm run build:zk-enforced-runtime
+npm run verify:zk-enforced-runtime
+```
 
 This checklist is the shortest go or no-go surface for production cutover. It does not replace the generated proof package; it compresses the final blockers into one operator-facing checklist.
 
