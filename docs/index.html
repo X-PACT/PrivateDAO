@@ -890,7 +890,7 @@ nav.scrolled {
 .stat-label { font-size: 12px; color: var(--text3); letter-spacing: 0.5px; }
 
 /* ── PROBLEM SECTION ── */
-.section { padding: 120px 0; }
+.section { padding: 108px 0; }
 
 .section-tag {
   font-family: var(--mono);
@@ -906,7 +906,7 @@ nav.scrolled {
   font-size: clamp(48px, 6vw, 80px);
   letter-spacing: 1px;
   line-height: 0.95;
-  margin-bottom: 60px;
+  margin-bottom: 48px;
 }
 
 /* Compare grid */
@@ -2042,6 +2042,93 @@ body.judge-mode .judge-banner {
   .award-celebration-card { padding: 28px; }
   .judge-banner { top: 80px; padding: 0 18px; }
 .judge-banner-card { flex-direction: column; align-items: flex-start; }
+}
+
+@media(max-width:1100px) {
+  .compare-grid { grid-template-columns: 1fr; }
+  .hero-stats {
+    position: static;
+    margin-top: 26px;
+  }
+  .hero {
+    min-height: auto;
+    padding: 112px 0 56px;
+  }
+}
+
+@media(max-width:760px) {
+  .container { padding: 0 20px; }
+  .section { padding: 84px 0; }
+  .section-heading {
+    margin-bottom: 34px;
+    line-height: 0.98;
+  }
+  .award-banner {
+    margin-top: 98px;
+    padding: 16px 18px;
+    border-radius: 18px;
+  }
+  .award-banner-actions {
+    gap: 10px;
+  }
+  .hero-badge-row {
+    margin-bottom: 24px;
+  }
+  .hero-headline {
+    font-size: 58px;
+    margin-bottom: 22px;
+  }
+  .hero-sub {
+    font-size: 16px;
+    margin-bottom: 24px;
+  }
+  .surface-strip {
+    gap: 8px;
+  }
+  .surface-pill {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .hero-actions {
+    gap: 10px;
+  }
+  .hero-actions .btn-primary,
+  .hero-actions .btn-ghost {
+    width: 100%;
+    justify-content: center;
+  }
+  .hero-links {
+    gap: 8px;
+  }
+  .hero-link {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .stats-inner {
+    flex-direction: column;
+    max-width: none;
+  }
+  .stat-item {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 18px 20px;
+  }
+  .stat-item:last-child {
+    border-bottom: none;
+  }
+  .value-cards,
+  .pillar-grid,
+  .curation-grid,
+  .proof-path-strip,
+  .explain-grid,
+  .proposal-detail-grid,
+  .proposal-control-strip,
+  .proposal-command-grid {
+    grid-template-columns: 1fr;
+  }
+  .compare-panel {
+    padding: 28px 22px;
+  }
 }
 
 .surface-strip {
