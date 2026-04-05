@@ -2437,8 +2437,8 @@ body.judge-mode .judge-banner {
     </div>
 
     <div class="proposal-create-card reveal">
-      <div class="proposal-title">Create proposal on-chain</div>
-      <div class="proposal-desc">Proposal creation is real and permissioned by governance token ownership. Build the exact repo command below, copy it, and run it from the repository with a wallet that holds the governance token for the selected DAO.</div>
+      <div class="proposal-title">Step 3 — Create proposal on-chain</div>
+      <div class="proposal-desc">Proposal creation is real and permissioned by governance token ownership. Run this after DAO creation and treasury funding. The connected wallet must hold the governance token for the selected DAO.</div>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:16px">
         <div>
           <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">DAO PDA</label>
@@ -2474,11 +2474,11 @@ body.judge-mode .judge-banner {
     </div>
 
     <div class="proposal-create-card reveal">
-      <div class="proposal-title">Operator console</div>
-      <div class="proposal-desc">Build the rest of the real operator commands from the same surface. These commands stay honest to the repository flow and prefill from the selected proposal when possible.</div>
+      <div class="proposal-title">Step 1 / 2 — DAO bootstrap console</div>
+      <div class="proposal-desc">Use this console in order: create the DAO, receive the initial governance token allocation automatically, then fund the treasury before opening proposals.</div>
       <div class="proposal-command-grid">
         <div class="proposal-command-box">
-          <div class="proposal-detail-label">CREATE DAO</div>
+          <div class="proposal-detail-label">STEP 1 — CREATE DAO</div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:10px">
             <input id="builderDaoName" type="text" value="PrivateDAO Live" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="DAO name">
             <input id="builderDaoQuorum" type="number" value="51" min="1" max="100" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Quorum">
@@ -2491,13 +2491,14 @@ body.judge-mode .judge-banner {
             </select>
           </div>
           <code id="createDaoCommandBuilder" style="display:block;margin-top:12px;color:var(--cyan)">yarn create-dao -- --name "PrivateDAO Live" --quorum 51 --reveal-window 5 --delay 5</code>
+          <div style="margin-top:10px;color:var(--text2);line-height:1.7">This flow creates the governance mint, creates your associated token account, and mints the initial governance allocation to the connected wallet automatically.</div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
             <button class="action-btn action-execute" style="flex:0 0 auto" onclick="submitCreateDaoInWallet()">Create DAO In Wallet</button>
             <button class="action-btn action-commit" style="flex:0 0 auto" onclick="copyCreateDaoCommand()">Copy Create DAO</button>
           </div>
         </div>
         <div class="proposal-command-box">
-          <div class="proposal-detail-label">DEPOSIT TREASURY</div>
+          <div class="proposal-detail-label">STEP 2 — DEPOSIT TREASURY</div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:10px">
             <input id="builderDepositDao" type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="DAO PDA">
             <input id="builderDepositAmount" type="number" value="0.2" min="0" step="0.01" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Amount in SOL">
@@ -5454,6 +5455,25 @@ function createInitializeMintInstruction(mintPubkey, mintAuthority, decimals = 6
   });
 }
 
+function createMintToInstruction(mintPubkey, destination, authority, amount) {
+  const amountBigInt = typeof amount === 'bigint' ? amount : BigInt(amount);
+  const amountBytes = new Uint8Array(8);
+  new DataView(amountBytes.buffer).setBigUint64(0, amountBigInt, true);
+  const data = concatBytes(
+    new Uint8Array([7]),
+    amountBytes,
+  );
+  return new solanaWeb3.TransactionInstruction({
+    programId: TOKEN_PROGRAM_ID,
+    keys: [
+      { pubkey: new solanaWeb3.PublicKey(mintPubkey), isSigner: false, isWritable: true },
+      { pubkey: new solanaWeb3.PublicKey(destination), isSigner: false, isWritable: true },
+      { pubkey: new solanaWeb3.PublicKey(authority), isSigner: true, isWritable: false },
+    ],
+    data,
+  });
+}
+
 function createAssociatedTokenAccountInstruction(payer, owner, mint, ata, tokenProgram = TOKEN_PROGRAM_ID) {
   return new solanaWeb3.TransactionInstruction({
     programId: ASSOCIATED_TOKEN_PROGRAM_ID,
@@ -5532,36 +5552,52 @@ async function sendPreparedTransaction(tx, extraSigners = []) {
   }
 
   const providerPk = resolveConnectedWalletPublicKey();
-  tx.feePayer = providerPk;
-  const latest = await withRpcFallback((activeConnection) => activeConnection.getLatestBlockhash('confirmed'));
-  tx.recentBlockhash = latest.blockhash;
-  if (extraSigners.length) {
-    tx.partialSign(...extraSigners);
+  let lastError = null;
+
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    tx.feePayer = providerPk;
+    const latest = await withRpcFallback((activeConnection) => activeConnection.getLatestBlockhash('confirmed'));
+    tx.recentBlockhash = latest.blockhash;
+    if (extraSigners.length) {
+      tx.partialSign(...extraSigners);
+    }
+
+    let signature = null;
+
+    try {
+      if (typeof walletProvider.sendTransaction === 'function' && !extraSigners.length) {
+        const result = await walletProvider.sendTransaction(tx, connection, { preflightCommitment: 'confirmed' });
+        signature = normalizeTransactionSignature(result);
+      }
+
+      if (!signature && typeof walletProvider.signAndSendTransaction === 'function' && !extraSigners.length) {
+        const result = await walletProvider.signAndSendTransaction(tx, { preflightCommitment: 'confirmed' });
+        signature = normalizeTransactionSignature(result);
+      }
+
+      if (!signature && typeof walletProvider.signTransaction === 'function') {
+        const signed = await walletProvider.signTransaction(tx);
+        signature = await withRpcFallback((activeConnection) => activeConnection.sendRawTransaction(signed.serialize(), { preflightCommitment: 'confirmed' }));
+      }
+
+      if (!signature) {
+        throw new Error('Wallet provider did not return a transaction signature.');
+      }
+
+      await withRpcFallback((activeConnection) => activeConnection.confirmTransaction({ signature, ...latest }, 'confirmed'));
+      return signature;
+    } catch (error) {
+      lastError = error;
+      const expired = String(error?.message || '').toLowerCase().includes('block height exceeded');
+      if (!expired || attempt === 1) {
+        throw error;
+      }
+      showToast('Transaction blockhash expired during signing. Retrying with a fresh blockhash...', 'info');
+      await new Promise((resolve) => setTimeout(resolve, 250));
+    }
   }
 
-  let signature = null;
-
-  if (typeof walletProvider.sendTransaction === 'function' && !extraSigners.length) {
-    const result = await walletProvider.sendTransaction(tx, connection, { preflightCommitment: 'confirmed' });
-    signature = normalizeTransactionSignature(result);
-  }
-
-  if (!signature && typeof walletProvider.signAndSendTransaction === 'function' && !extraSigners.length) {
-    const result = await walletProvider.signAndSendTransaction(tx, { preflightCommitment: 'confirmed' });
-    signature = normalizeTransactionSignature(result);
-  }
-
-  if (!signature && typeof walletProvider.signTransaction === 'function') {
-    const signed = await walletProvider.signTransaction(tx);
-    signature = await withRpcFallback((activeConnection) => activeConnection.sendRawTransaction(signed.serialize(), { preflightCommitment: 'confirmed' }));
-  }
-
-  if (!signature) {
-    throw new Error('Wallet provider did not return a transaction signature.');
-  }
-
-  await withRpcFallback((activeConnection) => activeConnection.confirmTransaction({ signature, ...latest }, 'confirmed'));
-  return signature;
+  throw lastError || new Error('Transaction failed before confirmation.');
 }
 
 async function signAndBroadcastTransaction(instruction, successLabel, extraSigners = []) {
@@ -5651,7 +5687,7 @@ async function submitCreateProposalInWallet() {
 }
 
 async function submitCreateDaoInWallet() {
-  const name = (document.getElementById('builderDaoName')?.value || '').trim() || 'PrivateDAO Live';
+  const name = (document.getElementById('builderDaoName')?.value || '').trim() || `PrivateDAO ${new Date().toISOString().slice(0, 16)}`;
   const quorum = Number((document.getElementById('builderDaoQuorum')?.value || '51').trim());
   const revealWindow = Number((document.getElementById('builderDaoReveal')?.value || '5').trim());
   const delay = Number((document.getElementById('builderDaoDelay')?.value || '5').trim());
@@ -5673,8 +5709,14 @@ async function submitCreateDaoInWallet() {
       [new TextEncoder().encode('dao'), authorityPk.toBytes(), new TextEncoder().encode(name)],
       programPk
     );
+    const existingDao = await withRpcFallback((activeConnection) => activeConnection.getAccountInfo(daoPk, 'confirmed'));
+    if (existingDao) {
+      throw new Error('A DAO with this name already exists for the connected wallet. Change the DAO name and try again.');
+    }
 
     const mintRent = await withRpcFallback((activeConnection) => activeConnection.getMinimumBalanceForRentExemption(82, 'confirmed'));
+    const { address: authorityAta } = await deriveAssociatedTokenAddress(authorityPk, mintKeypair.publicKey, false, TOKEN_PROGRAM_ID);
+    const authorityAtaInfo = await withRpcFallback((activeConnection) => activeConnection.getAccountInfo(authorityAta, 'confirmed'));
     const createMintIx = solanaWeb3.SystemProgram.createAccount({
       fromPubkey: authorityPk,
       newAccountPubkey: mintKeypair.publicKey,
@@ -5683,6 +5725,10 @@ async function submitCreateDaoInWallet() {
       programId: TOKEN_PROGRAM_ID,
     });
     const initMintIx = createInitializeMintInstruction(mintKeypair.publicKey, authorityPk, 6);
+    const createAuthorityAtaIx = authorityAtaInfo
+      ? null
+      : createAssociatedTokenAccountInstruction(authorityPk, authorityPk, mintKeypair.publicKey, authorityAta, TOKEN_PROGRAM_ID);
+    const mintInitialSupplyIx = createMintToInstruction(mintKeypair.publicKey, authorityAta, authorityPk, 1_000_000_000n);
     const daoData = concatBytes(
       await anchorMethodDiscriminator('initialize_dao'),
       encodeAnchorString(name),
@@ -5703,14 +5749,17 @@ async function submitCreateDaoInWallet() {
       data: daoData,
     });
 
-    const combined = new solanaWeb3.Transaction().add(createMintIx, initMintIx, createDaoIx);
+    const combined = new solanaWeb3.Transaction()
+      .add(createMintIx, initMintIx);
+    if (createAuthorityAtaIx) combined.add(createAuthorityAtaIx);
+    combined.add(mintInitialSupplyIx, createDaoIx);
     const signature = await sendPreparedTransaction(combined, [mintKeypair]);
     document.getElementById('builderDepositDao').value = daoPk.toBase58();
     const createDaoPdaInput = document.getElementById('createDaoPda');
     if (createDaoPdaInput && !createDaoPdaInput.value.trim()) createDaoPdaInput.value = daoPk.toBase58();
     syncDepositCommand(daoPk.toBase58());
     syncCreateProposalCommand(daoPk.toBase58());
-    showToast(`DAO created: ${shortPk(daoPk.toBase58())}`, 'success');
+    showToast(`DAO created and funded with governance tokens: ${shortPk(daoPk.toBase58())}`, 'success');
     setTimeout(() => window.open(`https://solscan.io/tx/${signature}?cluster=devnet`, '_blank', 'noopener'), 180);
   } catch (error) {
     console.error(error);
