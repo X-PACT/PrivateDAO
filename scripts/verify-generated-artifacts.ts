@@ -16,6 +16,8 @@ function main() {
   const runtimeAttestationPath = path.resolve("docs/runtime-attestation.generated.json");
   const runtimeEvidenceJsonPath = path.resolve("docs/runtime-evidence.generated.json");
   const runtimeEvidenceMdPath = path.resolve("docs/runtime-evidence.generated.md");
+  const operationalEvidenceJsonPath = path.resolve("docs/operational-evidence.generated.json");
+  const operationalEvidenceMdPath = path.resolve("docs/operational-evidence.generated.md");
   const mainnetAcceptanceJsonPath = path.resolve("docs/mainnet-acceptance-matrix.generated.json");
   const mainnetAcceptanceMdPath = path.resolve("docs/mainnet-acceptance-matrix.generated.md");
   const mainnetProofPackageJsonPath = path.resolve("docs/mainnet-proof-package.generated.json");
@@ -78,6 +80,9 @@ function main() {
   }
   if (!fs.existsSync(runtimeEvidenceJsonPath) || !fs.existsSync(runtimeEvidenceMdPath)) {
     throw new Error("missing generated runtime evidence artifacts");
+  }
+  if (!fs.existsSync(operationalEvidenceJsonPath) || !fs.existsSync(operationalEvidenceMdPath)) {
+    throw new Error("missing generated operational evidence artifacts");
   }
   if (!fs.existsSync(mainnetAcceptanceJsonPath) || !fs.existsSync(mainnetAcceptanceMdPath)) {
     throw new Error("missing mainnet acceptance matrix artifacts");
@@ -220,10 +225,34 @@ function main() {
     matrixStatuses: Array<{ id: string; label: string; status: string; diagnosticsVisible: boolean; selectorVisible: boolean }>;
     devnetCanary: { network: string; primaryHealthy: boolean; fallbackHealthy: boolean; anchorAccountsPresent: boolean; unexpectedFailures: number };
     resilience: { fallbackRecovered: boolean; staleBlockhashRecovered: boolean; staleBlockhashRejected: boolean; unexpectedFailures: number };
+    operational: {
+      walletCount: number;
+      totalTxCount: number;
+      zkProofCount: number;
+      adversarialScenarioCount: number;
+      unexpectedAdversarialSuccesses: number;
+      finalizeSingleWinner: boolean;
+      executeSingleWinner: boolean;
+      failoverRecovered: boolean;
+      staleBlockhashRecovered: boolean;
+    };
+    docs: string[];
+    commands: string[];
+  };
+  const operationalEvidence = JSON.parse(fs.readFileSync(operationalEvidenceJsonPath, "utf8")) as {
+    project: string;
+    network: string;
+    transactionSummary: { walletCount: number; totalTxCount: number };
+    voting: { fullLifecycleReport: string; txRegistry: string };
+    zk: { verificationMode: string; proofCount: number };
+    adversarial: { totalScenarios: number; unexpectedSuccesses: number };
+    resilience: { failoverRecovered: boolean; staleBlockhashRecovered: boolean };
+    collisions: { finalizeSingleWinner: boolean; executeSingleWinner: boolean };
     docs: string[];
     commands: string[];
   };
   const runtimeEvidenceMd = fs.readFileSync(runtimeEvidenceMdPath, "utf8");
+  const operationalEvidenceMd = fs.readFileSync(operationalEvidenceMdPath, "utf8");
   const mainnetAcceptance = JSON.parse(fs.readFileSync(mainnetAcceptanceJsonPath, "utf8")) as {
     project: string;
     programId: string;
@@ -666,6 +695,9 @@ function main() {
   if (!attestation.runtimeDocs.includes("docs/runtime-evidence.generated.md")) {
     throw new Error("generated attestation is missing the runtime evidence doc");
   }
+  if (!attestation.runtimeDocs.includes("docs/operational-evidence.generated.md")) {
+    throw new Error("generated attestation is missing the operational evidence doc");
+  }
   if (!attestation.runtimeDocs.includes("docs/wallet-compatibility-matrix.generated.md")) {
     throw new Error("generated attestation is missing the wallet matrix doc");
   }
@@ -733,6 +765,8 @@ function main() {
   for (const manifestFile of [
     "docs/go-live-criteria.md",
     "docs/operational-drillbook.md",
+    "docs/operational-evidence.generated.md",
+    "docs/operational-evidence.generated.json",
     "docs/runtime-attestation.generated.json",
     "docs/go-live-attestation.generated.json",
   ]) {
@@ -798,6 +832,9 @@ function main() {
   }
   if (!auditPacket.includes("docs/runtime-evidence.generated.json")) {
     throw new Error("generated audit packet is missing the runtime evidence reference");
+  }
+  if (!auditPacket.includes("docs/operational-evidence.generated.json")) {
+    throw new Error("generated audit packet is missing the operational evidence reference");
   }
   if (!auditPacket.includes("docs/release-drill.generated.json")) {
     throw new Error("generated audit packet is missing the release drill reference");
@@ -981,9 +1018,23 @@ function main() {
     throw new Error("generated runtime evidence resilience summary is invalid");
   }
 
+  if (
+    runtimeEvidence.operational.walletCount < 50 ||
+    runtimeEvidence.operational.totalTxCount < 200 ||
+    runtimeEvidence.operational.zkProofCount < 1 ||
+    runtimeEvidence.operational.adversarialScenarioCount < 1 ||
+    runtimeEvidence.operational.unexpectedAdversarialSuccesses !== 0 ||
+    !runtimeEvidence.operational.finalizeSingleWinner ||
+    !runtimeEvidence.operational.executeSingleWinner
+  ) {
+    throw new Error("generated runtime evidence operational summary is invalid");
+  }
+
   for (const doc of [
     "docs/wallet-runtime.md",
     "docs/runtime-attestation.generated.json",
+    "docs/operational-evidence.generated.md",
+    "docs/operational-evidence.generated.json",
     "docs/wallet-compatibility-matrix.generated.md",
     "docs/devnet-canary.generated.md",
     "docs/devnet-resilience-report.md",
@@ -1012,9 +1063,81 @@ function main() {
   if (
     !runtimeEvidenceMd.includes("# Runtime Evidence Package") ||
     !runtimeEvidenceMd.includes("Devnet Canary Summary") ||
-    !runtimeEvidenceMd.includes("Resilience Summary")
+    !runtimeEvidenceMd.includes("Resilience Summary") ||
+    !runtimeEvidenceMd.includes("Operational Summary")
   ) {
     throw new Error("generated runtime evidence markdown is invalid");
+  }
+
+  if (operationalEvidence.project !== "PrivateDAO") {
+    throw new Error("generated operational evidence project mismatch");
+  }
+
+  if (operationalEvidence.network !== "devnet") {
+    throw new Error("generated operational evidence network mismatch");
+  }
+
+  if (operationalEvidence.transactionSummary.walletCount < 50 || operationalEvidence.transactionSummary.totalTxCount < 200) {
+    throw new Error("generated operational evidence transaction summary is invalid");
+  }
+
+  if (operationalEvidence.voting.fullLifecycleReport !== "docs/load-test-report.md" || operationalEvidence.voting.txRegistry !== "docs/devnet-tx-registry.json") {
+    throw new Error("generated operational evidence voting references are invalid");
+  }
+
+  if (operationalEvidence.zk.verificationMode !== "offchain-groth16" || operationalEvidence.zk.proofCount < 1) {
+    throw new Error("generated operational evidence zk summary is invalid");
+  }
+
+  if (operationalEvidence.adversarial.unexpectedSuccesses !== 0) {
+    throw new Error("generated operational evidence adversarial summary is invalid");
+  }
+
+  if (!operationalEvidence.resilience.failoverRecovered || !operationalEvidence.resilience.staleBlockhashRecovered) {
+    throw new Error("generated operational evidence resilience summary is invalid");
+  }
+
+  if (!operationalEvidence.collisions.finalizeSingleWinner || !operationalEvidence.collisions.executeSingleWinner) {
+    throw new Error("generated operational evidence collision summary is invalid");
+  }
+
+  for (const doc of [
+    "docs/load-test-report.md",
+    "docs/devnet-bootstrap.json",
+    "docs/devnet-tx-registry.json",
+    "docs/performance-metrics.json",
+    "docs/adversarial-report.json",
+    "docs/zk-proof-registry.json",
+    "docs/devnet-multi-proposal-report.md",
+    "docs/devnet-race-report.md",
+    "docs/devnet-resilience-report.md",
+  ]) {
+    if (!operationalEvidence.docs.includes(doc)) {
+      throw new Error(`generated operational evidence is missing ${doc}`);
+    }
+  }
+
+  for (const command of [
+    "npm run test:devnet:all",
+    "npm run test:devnet:multi",
+    "npm run test:devnet:race",
+    "npm run test:devnet:resilience",
+    "npm run build:operational-evidence",
+    "npm run verify:operational-evidence",
+  ]) {
+    if (!operationalEvidence.commands.includes(command)) {
+      throw new Error(`generated operational evidence is missing ${command}`);
+    }
+  }
+
+  if (
+    !operationalEvidenceMd.includes("# Operational Evidence Package") ||
+    !operationalEvidenceMd.includes("Voting And Lifecycle Evidence") ||
+    !operationalEvidenceMd.includes("ZK Companion Evidence") ||
+    !operationalEvidenceMd.includes("Resilience Evidence") ||
+    !operationalEvidenceMd.includes("Collision Evidence")
+  ) {
+    throw new Error("generated operational evidence markdown is invalid");
   }
 
   if (pdaoAttestation.project !== "PrivateDAO") {

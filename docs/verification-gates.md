@@ -157,6 +157,24 @@ npm run verify:runtime-evidence
 
 Builds and verifies a generated runtime-evidence package that consolidates runtime attestation, wallet compatibility, Devnet canary, and resilience behavior into one reviewer-facing summary.
 
+### Operational Evidence
+
+```bash
+npm run build:operational-evidence
+npm run verify:operational-evidence
+```
+
+Builds and verifies a generated operational-evidence package that consolidates:
+
+- full 50-wallet lifecycle execution
+- zk companion proof activity
+- adversarial rejection coverage
+- multi-proposal isolation
+- finalize and execute race behavior
+- RPC interruption and stale-blockhash recovery
+
+This package is the shortest reviewer-facing path for the project's live Devnet execution evidence.
+
 ### Extended Devnet Profiles
 
 ```bash

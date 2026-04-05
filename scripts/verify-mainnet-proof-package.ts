@@ -25,6 +25,7 @@ function main() {
   assert(pkg.readinessAnchor.verificationWallet === "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD", "mainnet proof package verification wallet mismatch");
   assert(pkg.coreArtifacts.includes("docs/mainnet-acceptance-matrix.generated.md"), "mainnet proof package missing acceptance matrix");
   assert(pkg.coreArtifacts.includes("docs/external-readiness-intake.md"), "mainnet proof package missing external readiness intake");
+  assert(pkg.coreArtifacts.includes("docs/operational-evidence.generated.md"), "mainnet proof package missing operational evidence");
   assert(pkg.commands.includes("npm run verify:mainnet-proof-package"), "mainnet proof package missing self verification command");
   assert(pkg.summary.acceptedInRepo >= 5, "mainnet proof package accepted count is unexpectedly low");
 
@@ -33,6 +34,7 @@ function main() {
     "docs/mainnet-readiness.generated.md",
     "docs/mainnet-acceptance-matrix.generated.md",
     "docs/release-drill.generated.md",
+    "docs/operational-evidence.generated.md",
     "docs/runtime-evidence.generated.md",
     "docs/external-readiness-intake.md",
     "npm run verify:mainnet-proof-package",

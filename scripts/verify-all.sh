@@ -70,6 +70,9 @@ npm run verify:runtime-attestation >/dev/null
 echo "[verify-all] checking runtime evidence"
 npm run verify:runtime-evidence >/dev/null
 
+echo "[verify-all] checking operational evidence"
+npm run verify:operational-evidence >/dev/null
+
 echo "[verify-all] checking runtime surface"
 npm run verify:runtime-surface >/dev/null
 

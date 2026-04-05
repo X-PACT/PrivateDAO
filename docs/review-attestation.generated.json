@@ -39,7 +39,7 @@
     "strategy": 9,
     "security": 11,
     "zk": 13,
-    "proof": 39,
+    "proof": 41,
     "operations": 18
   },
   "zk": {
@@ -74,12 +74,14 @@
   },
   "cryptographicIntegrity": {
     "algorithm": "sha256",
-    "entryCount": 73,
-    "aggregateSha256": "dd1db7b1372efb55c2a9ab4994364128b43757ad57647108e3d66e6f0ab79e2e"
+    "entryCount": 75,
+    "aggregateSha256": "0f252e16fce49988d930e5620cd71082797394480ca1a810e09ea253a9f5b362"
   },
   "runtimeDocs": [
     "docs/fair-voting.md",
     "docs/wallet-runtime.md",
+    "docs/operational-evidence.generated.md",
+    "docs/operational-evidence.generated.json",
     "docs/runtime-evidence.generated.md",
     "docs/runtime-evidence.generated.json",
     "docs/wallet-compatibility-matrix.generated.md",
@@ -116,13 +118,14 @@
     "docs/supply-chain-attestation.generated.md",
     "docs/supply-chain-attestation.generated.json"
   ],
-  "gateCount": 55,
+  "gateCount": 56,
   "statuses": {
     "governanceLifecycle": "verified",
     "securityReasoning": "verified",
     "supplyChainSurface": "verified",
     "releaseCeremonySurface": "verified",
     "runtimeEvidenceSurface": "verified",
+    "operationalEvidenceSurface": "verified",
     "releaseDrillSurface": "verified",
     "artifactFreshness": "verified",
     "zkCompanionStack": "verified",

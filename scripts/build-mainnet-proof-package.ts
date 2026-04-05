@@ -29,6 +29,7 @@ function main() {
       "docs/mainnet-acceptance-matrix.generated.md",
       "docs/release-ceremony-attestation.generated.md",
       "docs/release-drill.generated.md",
+      "docs/operational-evidence.generated.md",
       "docs/runtime-evidence.generated.md",
       "docs/deployment-attestation.generated.json",
       "docs/go-live-attestation.generated.json",

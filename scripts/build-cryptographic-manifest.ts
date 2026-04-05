@@ -45,6 +45,8 @@ const MANIFEST_FILES = [
   "docs/assets/pdao-token.json",
   "docs/fair-voting.md",
   "docs/wallet-runtime.md",
+  "docs/operational-evidence.generated.md",
+  "docs/operational-evidence.generated.json",
   "docs/runtime-evidence.generated.md",
   "docs/runtime-evidence.generated.json",
   "docs/cryptographic-posture.md",

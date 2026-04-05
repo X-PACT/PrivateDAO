@@ -2,7 +2,7 @@
 
 ## Overview
 
-- Generated at: `2026-04-05T00:23:32.051Z`
+- Generated at: `2026-04-05T11:19:52.107Z`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - Diagnostics page: `https://x-pact.github.io/PrivateDAO/?page=diagnostics`
@@ -31,10 +31,24 @@
 - Stale blockhash recovered: `true`
 - Unexpected failures: `0`
 
+## Operational Summary
+
+- Canonical wallet count: `50`
+- Canonical tx count: `223`
+- ZK proof count: `7`
+- Adversarial scenarios: `50`
+- Unexpected adversarial successes: `0`
+- Finalize single-winner: `true`
+- Execute single-winner: `true`
+- Failover recovered: `true`
+- Stale blockhash recovered: `true`
+
 ## Runtime Documents
 
 - `docs/wallet-runtime.md`
 - `docs/runtime-attestation.generated.json`
+- `docs/operational-evidence.generated.md`
+- `docs/operational-evidence.generated.json`
 - `docs/wallet-compatibility-matrix.generated.md`
 - `docs/devnet-canary.generated.md`
 - `docs/devnet-resilience-report.md`
@@ -42,6 +56,8 @@
 
 ## Commands
 
+- `npm run build:operational-evidence`
+- `npm run verify:operational-evidence`
 - `npm run build:wallet-matrix`
 - `npm run verify:wallet-matrix`
 - `npm run build:devnet-canary`

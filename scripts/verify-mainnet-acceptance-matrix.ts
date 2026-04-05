@@ -47,6 +47,7 @@ function main() {
     "external-audit",
     "real-device-wallet-qa",
     "docs/external-readiness-intake.md",
+    "docs/operational-evidence.generated.md",
     "docs/runtime-evidence.generated.md",
     "docs/release-drill.generated.md",
   ]) {

@@ -11,6 +11,17 @@ type RuntimeEvidence = {
   matrixStatuses: Array<{ id: string; label: string; status: string; diagnosticsVisible: boolean; selectorVisible: boolean }>;
   devnetCanary: { network: string; primaryHealthy: boolean; fallbackHealthy: boolean; anchorAccountsPresent: boolean; unexpectedFailures: number };
   resilience: { fallbackRecovered: boolean; staleBlockhashRecovered: boolean; staleBlockhashRejected: boolean; unexpectedFailures: number };
+  operational: {
+    walletCount: number;
+    totalTxCount: number;
+    zkProofCount: number;
+    adversarialScenarioCount: number;
+    unexpectedAdversarialSuccesses: number;
+    finalizeSingleWinner: boolean;
+    executeSingleWinner: boolean;
+    failoverRecovered: boolean;
+    staleBlockhashRecovered: boolean;
+  };
   docs: string[];
   commands: string[];
   notes: string[];
@@ -38,10 +49,19 @@ function main() {
   assert(evidence.resilience.fallbackRecovered, "runtime evidence missing fallback recovery");
   assert(evidence.resilience.staleBlockhashRejected, "runtime evidence missing stale blockhash rejection");
   assert(evidence.resilience.staleBlockhashRecovered, "runtime evidence missing stale blockhash recovery");
+  assert(evidence.operational.walletCount >= 50, "runtime evidence operational wallet count is unexpectedly low");
+  assert(evidence.operational.totalTxCount >= 200, "runtime evidence operational tx count is unexpectedly low");
+  assert(evidence.operational.zkProofCount >= 1, "runtime evidence operational zk proof count is unexpectedly low");
+  assert(evidence.operational.adversarialScenarioCount >= 1, "runtime evidence operational adversarial coverage is unexpectedly low");
+  assert(evidence.operational.unexpectedAdversarialSuccesses === 0, "runtime evidence operational adversarial summary is invalid");
+  assert(evidence.operational.finalizeSingleWinner, "runtime evidence operational finalize race summary is invalid");
+  assert(evidence.operational.executeSingleWinner, "runtime evidence operational execute race summary is invalid");
 
   for (const doc of [
     "docs/wallet-runtime.md",
     "docs/runtime-attestation.generated.json",
+    "docs/operational-evidence.generated.md",
+    "docs/operational-evidence.generated.json",
     "docs/wallet-compatibility-matrix.generated.md",
     "docs/devnet-canary.generated.md",
     "docs/devnet-resilience-report.md",
@@ -66,6 +86,7 @@ function main() {
   assert(markdown.includes("# Runtime Evidence Package"), "runtime evidence markdown missing title");
   assert(markdown.includes("Devnet Canary Summary"), "runtime evidence markdown missing canary summary");
   assert(markdown.includes("Resilience Summary"), "runtime evidence markdown missing resilience summary");
+  assert(markdown.includes("Operational Summary"), "runtime evidence markdown missing operational summary");
 
   console.log("Runtime evidence verification: PASS");
 }

@@ -83,8 +83,8 @@ function main() {
         runtimeEvidence.resilience.unexpectedFailures === 0
           ? "accepted-in-repo"
           : "pending-external",
-      evidence: ["docs/runtime-evidence.generated.md", "docs/devnet-canary.generated.md", "docs/devnet-resilience-report.md"],
-      rationale: "The repository proves runtime diagnostics, RPC fallback, and stale-blockhash recovery on Devnet.",
+      evidence: ["docs/operational-evidence.generated.md", "docs/runtime-evidence.generated.md", "docs/devnet-canary.generated.md", "docs/devnet-resilience-report.md"],
+      rationale: "The repository proves runtime diagnostics, full lifecycle execution, RPC fallback, stale-blockhash recovery, and collision handling on Devnet.",
     },
     {
       layer: "release-discipline",

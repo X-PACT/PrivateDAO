@@ -192,6 +192,7 @@ Quick links:
 - Fair voting model: `docs/fair-voting.md`
 - Wallet runtime compatibility: `docs/wallet-runtime.md`
 - Runtime attestation: `docs/runtime-attestation.generated.json`
+- Operational evidence package: `docs/operational-evidence.generated.md`
 - Runtime evidence package: `docs/runtime-evidence.generated.md`
 - Consumer readiness: `docs/consumer-readiness.md`
 - Consumer user flows: `docs/consumer-user-flows.md`
@@ -267,6 +268,7 @@ Quick links:
 - Ranger Drift Track memo: `docs/ranger-drift-track.md`
 - Live devnet proof: `docs/live-proof.md`
 - 50-wallet load report: `docs/load-test-report.md`
+- Operational evidence package: `docs/operational-evidence.generated.md`
 - Devnet scale profiles: `docs/devnet-scale-profiles.md`
 - Multi-proposal isolation report: `docs/devnet-multi-proposal-report.md`
 - Race and collision report: `docs/devnet-race-report.md`
@@ -626,6 +628,7 @@ It also now includes reviewer-facing extended Devnet evidence for:
 Reviewer-facing artifacts:
 
 - `docs/load-test-report.md`
+- `docs/operational-evidence.generated.md`
 - `docs/devnet-multi-proposal-report.md`
 - `docs/devnet-race-report.md`
 - `docs/devnet-resilience-report.md`
@@ -672,20 +675,6 @@ The system demonstrates:
 - Repository: https://github.com/X-PACT/PrivateDAO
 - Demo: https://x-pact.github.io/PrivateDAO/
 - Award note: `docs/awards.md`
-
-## 🎯 Current Hackathon Submissions
-
-PrivateDAO is currently being presented in the following live competitive tracks:
-
-- `Ranger Build-A-Bear Hackathon` Main Track
-- `Ranger Build-A-Bear Hackathon` Drift Side Track
-
-These are active submissions, not award claims. They are listed separately from the verified 1st Place Superteam Earn result above.
-
-Track-specific submission notes:
-
-- `docs/ranger-main-track.md`
-- `docs/ranger-drift-track.md`
 
 ## On-Chain Execute Surface
 

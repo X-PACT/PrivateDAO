@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-05T00:24:43.185Z`
+- generated at: `2026-04-05T11:21:05.828Z`
 - package decision: `repository-strong-but-external-blockers-remain`
 - program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
@@ -17,6 +17,7 @@
 - `docs/mainnet-acceptance-matrix.generated.md`
 - `docs/release-ceremony-attestation.generated.md`
 - `docs/release-drill.generated.md`
+- `docs/operational-evidence.generated.md`
 - `docs/runtime-evidence.generated.md`
 - `docs/deployment-attestation.generated.json`
 - `docs/go-live-attestation.generated.json`

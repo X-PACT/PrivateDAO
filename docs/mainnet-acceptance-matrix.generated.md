@@ -5,7 +5,7 @@
 - project: `PrivateDAO`
 - program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
-- generated at: `2026-04-05T00:24:31.999Z`
+- generated at: `2026-04-05T11:20:53.467Z`
 - acceptance decision: `repository-strong-but-external-blockers-remain`
 - accepted in repo: `8`
 - pending external: `2`
@@ -61,8 +61,9 @@
 ### runtime-and-resilience
 
 - status: `accepted-in-repo`
-- rationale: The repository proves runtime diagnostics, RPC fallback, and stale-blockhash recovery on Devnet.
+- rationale: The repository proves runtime diagnostics, full lifecycle execution, RPC fallback, stale-blockhash recovery, and collision handling on Devnet.
 - evidence:
+  - `docs/operational-evidence.generated.md`
   - `docs/runtime-evidence.generated.md`
   - `docs/devnet-canary.generated.md`
   - `docs/devnet-resilience-report.md`

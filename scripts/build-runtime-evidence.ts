@@ -49,11 +49,35 @@ type DevnetResilience = {
   };
 };
 
+type OperationalEvidence = {
+  docs: string[];
+  transactionSummary: {
+    walletCount: number;
+    totalTxCount: number;
+  };
+  zk: {
+    proofCount: number;
+  };
+  adversarial: {
+    totalScenarios: number;
+    unexpectedSuccesses: number;
+  };
+  collisions: {
+    finalizeSingleWinner: boolean;
+    executeSingleWinner: boolean;
+  };
+  resilience: {
+    failoverRecovered: boolean;
+    staleBlockhashRecovered: boolean;
+  };
+};
+
 function main() {
   const runtime = readJson<RuntimeAttestation>("docs/runtime-attestation.generated.json");
   const walletMatrix = readJson<WalletMatrix>("docs/wallet-compatibility-matrix.generated.json");
   const canary = readJson<DevnetCanary>("docs/devnet-canary.generated.json");
   const resilience = readJson<DevnetResilience>("docs/devnet-resilience-report.json");
+  const operational = readJson<OperationalEvidence>("docs/operational-evidence.generated.json");
 
   const runtimeEvidence = {
     project: runtime.project,
@@ -83,15 +107,30 @@ function main() {
       staleBlockhashRejected: resilience.staleBlockhashRecovery.rejectedAsExpected && resilience.summary.staleBlockhashRejected,
       unexpectedFailures: resilience.summary.unexpectedFailures ?? 0,
     },
+    operational: {
+      walletCount: operational.transactionSummary.walletCount,
+      totalTxCount: operational.transactionSummary.totalTxCount,
+      zkProofCount: operational.zk.proofCount,
+      adversarialScenarioCount: operational.adversarial.totalScenarios,
+      unexpectedAdversarialSuccesses: operational.adversarial.unexpectedSuccesses,
+      finalizeSingleWinner: operational.collisions.finalizeSingleWinner,
+      executeSingleWinner: operational.collisions.executeSingleWinner,
+      failoverRecovered: operational.resilience.failoverRecovered,
+      staleBlockhashRecovered: operational.resilience.staleBlockhashRecovered,
+    },
     docs: [
       "docs/wallet-runtime.md",
       "docs/runtime-attestation.generated.json",
+      "docs/operational-evidence.generated.md",
+      "docs/operational-evidence.generated.json",
       "docs/wallet-compatibility-matrix.generated.md",
       "docs/devnet-canary.generated.md",
       "docs/devnet-resilience-report.md",
       "docs/fair-voting.md",
     ],
     commands: [
+      "npm run build:operational-evidence",
+      "npm run verify:operational-evidence",
       "npm run build:wallet-matrix",
       "npm run verify:wallet-matrix",
       "npm run build:devnet-canary",
@@ -125,6 +164,17 @@ function buildMarkdown(evidence: {
   matrixStatuses: Array<{ id: string; label: string; status: string; diagnosticsVisible: boolean; selectorVisible: boolean }>;
   devnetCanary: { network: string; primaryHealthy: boolean; fallbackHealthy: boolean; anchorAccountsPresent: boolean; unexpectedFailures: number };
   resilience: { fallbackRecovered: boolean; staleBlockhashRecovered: boolean; staleBlockhashRejected: boolean; unexpectedFailures: number };
+  operational: {
+    walletCount: number;
+    totalTxCount: number;
+    zkProofCount: number;
+    adversarialScenarioCount: number;
+    unexpectedAdversarialSuccesses: number;
+    finalizeSingleWinner: boolean;
+    executeSingleWinner: boolean;
+    failoverRecovered: boolean;
+    staleBlockhashRecovered: boolean;
+  };
   docs: string[];
   commands: string[];
   notes: string[];
@@ -162,6 +212,18 @@ ${evidence.matrixStatuses
 - Stale blockhash rejected: \`${evidence.resilience.staleBlockhashRejected}\`
 - Stale blockhash recovered: \`${evidence.resilience.staleBlockhashRecovered}\`
 - Unexpected failures: \`${evidence.resilience.unexpectedFailures}\`
+
+## Operational Summary
+
+- Canonical wallet count: \`${evidence.operational.walletCount}\`
+- Canonical tx count: \`${evidence.operational.totalTxCount}\`
+- ZK proof count: \`${evidence.operational.zkProofCount}\`
+- Adversarial scenarios: \`${evidence.operational.adversarialScenarioCount}\`
+- Unexpected adversarial successes: \`${evidence.operational.unexpectedAdversarialSuccesses}\`
+- Finalize single-winner: \`${evidence.operational.finalizeSingleWinner}\`
+- Execute single-winner: \`${evidence.operational.executeSingleWinner}\`
+- Failover recovered: \`${evidence.operational.failoverRecovered}\`
+- Stale blockhash recovered: \`${evidence.operational.staleBlockhashRecovered}\`
 
 ## Runtime Documents
 

@@ -107,6 +107,8 @@ function main() {
     runtimeDocs: [
       "docs/fair-voting.md",
       "docs/wallet-runtime.md",
+      "docs/operational-evidence.generated.md",
+      "docs/operational-evidence.generated.json",
       "docs/runtime-evidence.generated.md",
       "docs/runtime-evidence.generated.json",
       "docs/wallet-compatibility-matrix.generated.md",
