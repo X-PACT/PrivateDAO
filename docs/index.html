@@ -2822,6 +2822,14 @@ body.judge-mode .judge-banner {
           <span class="stat-num" id="statExecution">WAITING</span>
           <div class="stat-label">EXECUTION READINESS</div>
         </div>
+        <div class="stat-item">
+          <span class="stat-num" id="statWalletReady">DISCONNECTED</span>
+          <div class="stat-label">WALLET STATUS</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num" id="statGovToken">UNKNOWN</span>
+          <div class="stat-label">GOV TOKEN READINESS</div>
+        </div>
       </div>
     </div>
   </div>
@@ -5471,9 +5479,13 @@ let currentCommitHashHex = null;
 let currentProposalId = null;
 let currentExecuteProposalPubkey = null;
 let liveProposalMap = new Map();
+let daoCache = new Map();
 let currentSelectedProposalPubkey = null;
 let currentSelectedProposal = null;
 let walletProviderListenersBound = false;
+let currentHeroDaoPubkey = null;
+let currentHeroGovernanceMint = null;
+let heroWalletReadinessRequest = 0;
 const proposalHistoryCache = new Map();
 const proposalHistoryInFlight = new Set();
 const SUPPORTED_WALLET_TARGETS = [
@@ -5507,11 +5519,13 @@ function updateWalletUi(connected) {
     lbl.textContent = 'Connect Wallet';
     dot.className = 'status-dot';
     btn.className = 'wallet-btn';
+    updateHeroWalletReadiness();
     return;
   }
   lbl.textContent = shortPk(wallet);
   dot.className = 'status-dot live';
   btn.className = 'wallet-btn connected';
+  updateHeroWalletReadiness();
 }
 
 function normalizedWalletProviderCandidates(candidate, seen = new Set()) {
@@ -6976,6 +6990,8 @@ function updateHeroStats(proposals, nowTs) {
   const phaseEl = document.getElementById('statPhase');
   const zkPathEl = document.getElementById('statZkPath');
   const executionEl = document.getElementById('statExecution');
+  const walletStatusEl = document.getElementById('statWalletReady');
+  const govTokenEl = document.getElementById('statGovToken');
   const sealedDisplay = document.getElementById('sealedDisplay');
   const sealedInfo = document.getElementById('sealedInfo');
 
@@ -6985,16 +7001,23 @@ function updateHeroStats(proposals, nowTs) {
     phaseEl.textContent = "IDLE";
     zkPathEl.textContent = "IDLE";
     executionEl.textContent = "IDLE";
+    walletStatusEl.textContent = wallet ? "CONNECTED" : "DISCONNECTED";
+    govTokenEl.textContent = wallet ? "NO DAO" : "CONNECT";
+    currentHeroDaoPubkey = null;
+    currentHeroGovernanceMint = null;
     sealedDisplay.innerHTML = "YES: ? &nbsp;/&nbsp; NO: ?";
     sealedInfo.innerHTML = "<span>›</span> No proposals found for this program ID<br><span>›</span> Create one from the repository CLI<br><span>›</span> The page will refresh automatically";
     return;
   }
 
   const lead = proposals[0];
+  const heroProposal = currentSelectedProposalPubkey && liveProposalMap.has(currentSelectedProposalPubkey)
+    ? liveProposalMap.get(currentSelectedProposalPubkey)
+    : lead;
   const phase = computePhase(lead, nowTs);
-  const zkCardState = getProposalZkCardState(lead.pubkey);
+  const zkCardState = getProposalZkCardState(heroProposal.pubkey);
   phaseEl.textContent = phase.toUpperCase();
-  zkPathEl.textContent = lead.pubkey === 'AegjmwkX1FknBJMDyH5yM6BMhyHsiUreNtz3d8iz3QrP' ? "ANCHORED" : "REVIEW";
+  zkPathEl.textContent = heroProposal.pubkey === 'AegjmwkX1FknBJMDyH5yM6BMhyHsiUreNtz3d8iz3QrP' ? "ANCHORED" : "REVIEW";
   executionEl.textContent = phase === "Executable"
     ? "READY"
     : phase === "Timelocked"
@@ -7002,6 +7025,18 @@ function updateHeroStats(proposals, nowTs) {
       : phase === "Executed"
         ? "DONE"
         : "WAIT";
+  walletStatusEl.textContent = wallet ? "CONNECTED" : "DISCONNECTED";
+  currentHeroDaoPubkey = heroProposal.dao;
+  currentHeroGovernanceMint = null;
+  fetchDaoDetails(heroProposal.dao)
+    .then((dao) => {
+      currentHeroGovernanceMint = dao.governanceToken;
+      updateHeroWalletReadiness();
+    })
+    .catch(() => {
+      currentHeroGovernanceMint = null;
+      updateHeroWalletReadiness();
+    });
 
   if (phase === "Commit") {
     tallyEl.textContent = "sealed";
@@ -7218,10 +7253,15 @@ function decodeDaoAccount(data, pubkey) {
 }
 
 async function fetchDaoDetails(daoPubkey) {
+  if (daoCache.has(daoPubkey)) {
+    return daoCache.get(daoPubkey);
+  }
   const daoPk = new solanaWeb3.PublicKey(daoPubkey);
-  const info = await connection.getAccountInfo(daoPk, 'confirmed');
+  const info = await withRpcFallback((activeConnection) => activeConnection.getAccountInfo(daoPk, 'confirmed'));
   if (!info) throw new Error('DAO account not found on devnet');
-  return decodeDaoAccount(info.data, daoPk);
+  const decoded = decodeDaoAccount(info.data, daoPk);
+  daoCache.set(daoPubkey, decoded);
+  return decoded;
 }
 
 function deriveProposalPda(daoPubkey, proposalCount) {
@@ -7457,6 +7497,52 @@ function getProposalZkCardState(proposalPubkey) {
     pill: 'ZK Review Path',
     copy: 'This proposal follows the same private lifecycle. Published on-chain anchors remain tied to the canonical Devnet proof path.',
   };
+}
+
+async function updateHeroWalletReadiness() {
+  const walletStatusEl = document.getElementById('statWalletReady');
+  const govTokenEl = document.getElementById('statGovToken');
+  const requestId = ++heroWalletReadinessRequest;
+
+  if (!wallet) {
+    walletStatusEl.textContent = 'DISCONNECTED';
+    govTokenEl.textContent = currentHeroDaoPubkey ? 'CONNECT' : 'IDLE';
+    return;
+  }
+
+  walletStatusEl.textContent = 'CONNECTED';
+
+  if (!currentHeroDaoPubkey || !currentHeroGovernanceMint) {
+    govTokenEl.textContent = 'NO DAO';
+    return;
+  }
+
+  govTokenEl.textContent = 'CHECKING';
+
+  try {
+    const ownerPk = new solanaWeb3.PublicKey(wallet);
+    const mintPk = new solanaWeb3.PublicKey(currentHeroGovernanceMint);
+    const parsed = await withRpcFallback((activeConnection) =>
+      activeConnection.getParsedTokenAccountsByOwner(ownerPk, { mint: mintPk }, 'confirmed')
+    );
+
+    if (requestId !== heroWalletReadinessRequest) {
+      return;
+    }
+
+    const balance = parsed.value.reduce((sum, accountInfo) => {
+      const tokenAmount = accountInfo.account.data?.parsed?.info?.tokenAmount;
+      const uiAmount = Number(tokenAmount?.uiAmount || 0);
+      return sum + (Number.isFinite(uiAmount) ? uiAmount : 0);
+    }, 0);
+
+    govTokenEl.textContent = balance > 0 ? 'READY' : 'NO TOKEN';
+  } catch (_) {
+    if (requestId !== heroWalletReadinessRequest) {
+      return;
+    }
+    govTokenEl.textContent = 'RPC';
+  }
 }
 
 function selectProposal(pubkey) {
