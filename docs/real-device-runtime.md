@@ -61,6 +61,7 @@ Starter templates are available in:
 - `docs/real-device-runtime-templates/backpack-desktop.json`
 - `docs/real-device-runtime-templates/glow-desktop.json`
 - `docs/real-device-runtime-templates/android-runtime.json`
+- `docs/real-device-runtime-templates/README.md`
 
 The generated reviewer-facing outputs are:
 
@@ -77,6 +78,12 @@ The generated reviewer-facing outputs are:
 npm run record:real-device-runtime -- /path/to/capture.json
 npm run build:real-device-runtime
 npm run verify:real-device-runtime
+```
+
+Or use the one-shot helper:
+
+```bash
+bash scripts/real-device-capture.sh phantom-desktop --tx "<REAL_DEVNET_SIGNATURE>"
 ```
 
 ## Minimal Capture Payload Example

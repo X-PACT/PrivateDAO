@@ -53,6 +53,7 @@
     "build:runtime-evidence": "ts-node scripts/build-runtime-evidence.ts",
     "build:real-device-runtime": "ts-node scripts/build-real-device-runtime-evidence.ts",
     "record:real-device-runtime": "ts-node scripts/record-real-device-runtime-capture.ts",
+    "capture:real-device-runtime": "bash scripts/real-device-capture.sh",
     "build:operational-evidence": "ts-node scripts/build-operational-evidence.ts",
     "build:release-drill": "ts-node scripts/build-release-drill.ts",
     "build:wallet-matrix": "ts-node scripts/build-wallet-compatibility-matrix.ts",
