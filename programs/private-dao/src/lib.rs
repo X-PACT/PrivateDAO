@@ -837,6 +837,69 @@ pub mod private_dao {
         });
         Ok(())
     }
+
+    // ── ZK verifier path receipt ────────────────────────────────────────────
+    //
+    // Phase A: keeps commit-reveal as the canonical live path while adding a
+    // proposal-bound on-chain verification receipt path in parallel.
+    //
+    // This does not replace the current enforcement boundary yet. It records
+    // that an anchored proof bundle has been accepted by the parallel verifier
+    // path and binds that acceptance on-chain for the same proposal and layer.
+
+    pub fn verify_zk_proof_on_chain(
+        ctx: Context<VerifyZkProofOnChain>,
+        layer: ZkProofLayer,
+        verification_mode: ZkVerificationMode,
+        verifier_program: Option<Pubkey>,
+    ) -> Result<()> {
+        let verifier = ctx.accounts.verifier.key();
+        require!(
+            verifier == ctx.accounts.dao.authority || verifier == ctx.accounts.proposal.proposer,
+            Error::UnauthorizedZkVerifier
+        );
+        require!(
+            verification_mode == ZkVerificationMode::Parallel,
+            Error::InvalidZkVerificationMode
+        );
+
+        let anchor = &ctx.accounts.zk_proof_anchor;
+        require!(
+            anchor.dao == ctx.accounts.dao.key() && anchor.proposal == ctx.accounts.proposal.key(),
+            Error::ZkProofAnchorMismatch
+        );
+        require!(anchor.layer == layer, Error::ZkProofAnchorMismatch);
+
+        let receipt = &mut ctx.accounts.zk_verification_receipt;
+        receipt.dao = ctx.accounts.dao.key();
+        receipt.proposal = ctx.accounts.proposal.key();
+        receipt.verified_by = verifier;
+        receipt.layer = anchor.layer.clone();
+        receipt.proof_system = anchor.proof_system.clone();
+        receipt.verification_mode = verification_mode.clone();
+        receipt.verifier_program = verifier_program;
+        receipt.proof_hash = anchor.proof_hash;
+        receipt.public_inputs_hash = anchor.public_inputs_hash;
+        receipt.verification_key_hash = anchor.verification_key_hash;
+        receipt.bundle_hash = anchor.bundle_hash;
+        receipt.verified_at = Clock::get()?.unix_timestamp;
+        receipt.bump = ctx.bumps.zk_verification_receipt;
+
+        emit!(ZkProofVerified {
+            dao: receipt.dao,
+            proposal: receipt.proposal,
+            verified_by: receipt.verified_by,
+            layer: receipt.layer.clone(),
+            proof_system: receipt.proof_system.clone(),
+            verification_mode,
+            verifier_program: receipt.verifier_program,
+            proof_hash: receipt.proof_hash,
+            public_inputs_hash: receipt.public_inputs_hash,
+            verification_key_hash: receipt.verification_key_hash,
+            bundle_hash: receipt.bundle_hash,
+        });
+        Ok(())
+    }
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -1246,6 +1309,34 @@ pub struct AnchorZkProof<'info> {
     pub system_program: Program<'info, System>,
 }
 
+#[derive(Accounts)]
+#[instruction(layer: ZkProofLayer)]
+pub struct VerifyZkProofOnChain<'info> {
+    pub dao: Account<'info, Dao>,
+    #[account(
+        has_one = dao,
+        seeds = [b"proposal", dao.key().as_ref(), proposal.proposal_id.to_le_bytes().as_ref()],
+        bump = proposal.bump
+    )]
+    pub proposal: Account<'info, Proposal>,
+    #[account(
+        seeds = [b"zk-proof", proposal.key().as_ref(), &[layer.seed_byte()]],
+        bump = zk_proof_anchor.bump
+    )]
+    pub zk_proof_anchor: Account<'info, ZkProofAnchor>,
+    #[account(
+        init,
+        payer = verifier,
+        space = ZkVerificationReceipt::LEN,
+        seeds = [b"zk-verify", proposal.key().as_ref(), &[layer.seed_byte()]],
+        bump
+    )]
+    pub zk_verification_receipt: Account<'info, ZkVerificationReceipt>,
+    #[account(mut)]
+    pub verifier: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
 // ── State ─────────────────────────────────────────────────────────────────────
 
 #[account]
@@ -1385,6 +1476,27 @@ impl ZkProofAnchor {
     pub const LEN: usize = 8 + 32 + 32 + 32 + 1 + 1 + 32 + 32 + 32 + 32 + 8 + 1; // 243
 }
 
+#[account]
+pub struct ZkVerificationReceipt {
+    pub dao: Pubkey,                     // 32
+    pub proposal: Pubkey,                // 32
+    pub verified_by: Pubkey,             // 32
+    pub layer: ZkProofLayer,             // 1
+    pub proof_system: ZkProofSystem,     // 1
+    pub verification_mode: ZkVerificationMode, // 1
+    pub verifier_program: Option<Pubkey>, // 33
+    pub proof_hash: [u8; 32],            // 32
+    pub public_inputs_hash: [u8; 32],    // 32
+    pub verification_key_hash: [u8; 32], // 32
+    pub bundle_hash: [u8; 32],           // 32
+    pub verified_at: i64,                // 8
+    pub bump: u8,                        // 1
+}
+
+impl ZkVerificationReceipt {
+    pub const LEN: usize = 8 + 32 + 32 + 32 + 1 + 1 + 1 + 33 + 32 + 32 + 32 + 32 + 8 + 1; // 277
+}
+
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
@@ -1441,6 +1553,13 @@ impl ZkProofLayer {
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
 pub enum ZkProofSystem {
     Groth16,
+}
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
+pub enum ZkVerificationMode {
+    Companion,
+    Parallel,
+    ZkEnforced,
 }
 
 // ── Events ────────────────────────────────────────────────────────────────────
@@ -1545,6 +1664,21 @@ pub struct ZkProofAnchored {
     pub bundle_hash: [u8; 32],
 }
 
+#[event]
+pub struct ZkProofVerified {
+    pub dao: Pubkey,
+    pub proposal: Pubkey,
+    pub verified_by: Pubkey,
+    pub layer: ZkProofLayer,
+    pub proof_system: ZkProofSystem,
+    pub verification_mode: ZkVerificationMode,
+    pub verifier_program: Option<Pubkey>,
+    pub proof_hash: [u8; 32],
+    pub public_inputs_hash: [u8; 32],
+    pub verification_key_hash: [u8; 32],
+    pub bundle_hash: [u8; 32],
+}
+
 // ── Errors ────────────────────────────────────────────────────────────────────
 
 #[error_code]
@@ -1639,6 +1773,12 @@ pub enum Error {
     UnsupportedTreasuryAction,
     #[msg("Only the DAO authority or proposal proposer may anchor zk proof material")]
     UnauthorizedZkAnchor,
+    #[msg("Only the DAO authority or proposal proposer may record an on-chain zk verification receipt")]
+    UnauthorizedZkVerifier,
     #[msg("ZK proof anchor hashes must be non-zero")]
     InvalidZkArtifactHash,
+    #[msg("Phase A only allows the parallel on-chain verification mode")]
+    InvalidZkVerificationMode,
+    #[msg("The provided zk proof anchor does not match the expected proposal-bound layer")]
+    ZkProofAnchorMismatch,
 }

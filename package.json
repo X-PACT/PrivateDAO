@@ -114,6 +114,7 @@
     "zk:verify:tally": "bash scripts/zk/verify-sample.sh private_dao_tally_overlay",
     "zk:all": "npm run zk:build && npm run zk:prove:sample && npm run zk:verify:sample",
     "anchor:zk-proof": "ts-node scripts/anchor-zk-proof.ts",
+    "anchor:zk-verify": "ts-node scripts/verify-zk-proof-on-chain.ts",
     "verify:live-proof": "ts-node scripts/verify-live-proof.ts",
     "verify:release-manifest": "ts-node scripts/verify-release-manifest.ts",
     "verify:review-links": "ts-node scripts/verify-review-links.ts",

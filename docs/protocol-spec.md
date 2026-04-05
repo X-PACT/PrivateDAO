@@ -381,11 +381,11 @@ Keeper note:
 - devnet/local validator setup
 - zk witness generation
 - zk proving
-- zk proof verification
+- primary Groth16 proof verification workflow
 
 ## 11. Known Limits of the Current Specification
 
 - this specification reflects the current repository behavior, not an aspirational redesign
 - commit-reveal hides vote content, not timing metadata
-- Groth16 proof generation and verification remain off-chain today, while proposal-bound zk proof anchors are now written on-chain for the canonical Devnet path; this is still not an on-chain verifier integration
+- Groth16 witness generation and proving remain off-chain; the current repository now includes proposal-bound zk proof anchors on-chain plus a Phase A parallel on-chain verification-receipt path, but the deployed governance lifecycle is still the canonical enforcement boundary until a later `zk_enforced` mode is introduced
 - no external audit is claimed by this document

@@ -73,6 +73,7 @@ PrivateDAO is not only a program repo. It contains four layers that fit together
    - sha256 commitment scheme
    - Groth16 companion proof stack
    - on-chain proof anchors for the canonical Devnet proof path
+   - on-chain parallel verification receipts for the Phase A verifier path
 4. Review and operations layer
    - generated attestations
    - Devnet evidence

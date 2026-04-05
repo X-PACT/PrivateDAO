@@ -363,7 +363,7 @@ This does not claim that operational discipline replaces external audit. It does
 The audit-simulation layer does not hide residual realities:
 
 - off-chain timing metadata is not hidden by commit-reveal
-- Groth16 proof generation and verification remain off-chain today; the live program now records proposal-bound zk proof anchors on-chain, but it is still not an on-chain verifier integration
+- Groth16 witness generation and proving remain off-chain; the live program now records proposal-bound zk proof anchors and parallel on-chain verification receipts, but commit-reveal remains the canonical enforcement path today
 - local validator startup remains environment-sensitive in this shell
 - external audit completeness is still not claimed
 - `CustomCPI` remains intentionally unsupported rather than arbitrary on-chain execution

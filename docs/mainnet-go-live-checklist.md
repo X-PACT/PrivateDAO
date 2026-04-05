@@ -96,18 +96,19 @@ Blocking condition:
 
 ## 7. ZK Boundary Decision
 
-The current stack anchors proposal-bound proof material on-chain and keeps Groth16 generation and verification off-chain.
+The current stack anchors proposal-bound proof material on-chain, records parallel on-chain verification receipts in Phase A, and keeps Groth16 witness generation and proving off-chain.
 
 Before mainnet, be explicit about what is and is not claimed.
 
 - on-chain proof anchors are verified
-- off-chain proof generation and verification flow are reviewed
+- on-chain parallel verification receipts are reviewed
+- off-chain proof generation and proving flow are reviewed
 - explorer-visible anchor path is documented
 - operator messaging does not overstate the enforcement boundary
 
 Required outcome:
 
-- the team can state clearly that the current system provides on-chain proof anchoring plus off-chain proof verification, unless and until an on-chain verifier path is added
+- the team can state clearly that the current system provides on-chain proof anchoring plus a Phase A parallel on-chain verification-receipt path, while commit-reveal still remains the canonical enforcement boundary until later `zk_enforced` work is finished
 
 ## 8. Release Ceremony
 

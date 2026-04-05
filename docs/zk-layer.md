@@ -28,6 +28,8 @@ Current limitation:
 
 The zk layer introduces real Circom and Groth16 proof systems that validate private governance data without changing the deployed contracts or current frontend lifecycle.
 
+Phase A now also adds a parallel on-chain verification receipt path for proposal-bound proof bundles. This means the repository no longer stops at on-chain proof anchoring alone; it can now bind a proposal-scoped verification receipt on-chain without replacing the existing commit-reveal lifecycle.
+
 Current live stack:
 
 - `private_dao_vote_overlay`
@@ -58,15 +60,24 @@ Current live stack:
 
 - proof systems validate richer private witnesses across vote, delegation, and tally layers
 - eligibility, delegation, and deterministic tally logic can be proven with less direct witness disclosure
-- future verifier integration becomes possible without redesigning the current governance product
+- proposal-bound proof anchors can be written on-chain
+- proposal-bound parallel verification receipts can now be written on-chain in Phase A
+- future `zk_enforced` governance becomes possible without redesigning the current governance product
 
 ## What The ZK Layer Does Not Claim Yet
 
-- it does not replace the deployed on-chain verifier path
+- it does not replace the deployed commit-reveal enforcement path yet
 - it does not change current instruction interfaces
 - it does not make treasury execution private
 - it does not remove all metadata leakage
 - it does not claim anonymous final execution
+
+Current boundary:
+
+- off-chain witness generation and proving
+- on-chain proof anchoring
+- on-chain parallel verification receipts
+- canonical lifecycle enforcement still handled by the current governance program path
 
 ## New Trust Assumptions
 

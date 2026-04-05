@@ -180,6 +180,42 @@ describe("PrivateDAO", () => {
     console.log("  ✓ zk proof anchor recorded on-chain");
   });
 
+  it("records a parallel on-chain zk verification receipt", async () => {
+    const [zkAnchorPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("zk-proof"), proposalPda.toBuffer(), Buffer.from([1])],
+      program.programId,
+    );
+    const [zkReceiptPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("zk-verify"), proposalPda.toBuffer(), Buffer.from([1])],
+      program.programId,
+    );
+
+    await program.methods
+      .verifyZkProofOnChain(
+        { vote: {} },
+        { parallel: {} },
+        voter1.publicKey,
+      )
+      .accounts({
+        dao: daoPda,
+        proposal: proposalPda,
+        zkProofAnchor: zkAnchorPda,
+        zkVerificationReceipt: zkReceiptPda,
+        verifier: voter1.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([voter1])
+      .rpc();
+
+    const receipt = await program.account["zkVerificationReceipt"].fetch(zkReceiptPda);
+    assert.equal(receipt.dao.toBase58(), daoPda.toBase58());
+    assert.equal(receipt.proposal.toBase58(), proposalPda.toBase58());
+    assert.equal(receipt.verifiedBy.toBase58(), voter1.publicKey.toBase58());
+    assert.deepEqual(receipt.verificationMode, { parallel: {} });
+    assert.equal(receipt.verifierProgram.toBase58(), voter1.publicKey.toBase58());
+    console.log("  ✓ parallel on-chain zk verification receipt recorded");
+  });
+
   it("rejects invalid treasury action configuration", async () => {
     const dao = await program.account["dao"].fetch(daoPda);
     const [invalidProposalPda] = PublicKey.findProgramAddressSync(
