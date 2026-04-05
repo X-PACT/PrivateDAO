@@ -113,6 +113,14 @@ npm run verify:mainnet-readiness-report
 
 Builds and verifies the generated readiness report that summarizes what is already verified inside the repository and what still remains external before any production cutover should be claimed.
 
+### Mainnet Go-Live Checklist
+
+Review:
+
+- `docs/mainnet-go-live-checklist.md`
+
+This checklist is the shortest go or no-go surface for production cutover. It does not replace the generated proof package; it compresses the final blockers into one operator-facing checklist.
+
 ### Deployment Attestation
 
 ```bash

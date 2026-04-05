@@ -87,6 +87,7 @@
       "docs/mainnet-acceptance-matrix.generated.json",
       "docs/mainnet-proof-package.generated.md",
       "docs/mainnet-proof-package.generated.json",
+      "docs/mainnet-go-live-checklist.md",
       "docs/external-readiness-intake.md",
       "docs/wallet-compatibility-matrix.generated.md",
       "docs/wallet-compatibility-matrix.generated.json",
@@ -98,6 +99,7 @@
     ],
     "operations": [
       "docs/mainnet-readiness.md",
+      "docs/mainnet-go-live-checklist.md",
       "docs/mainnet-readiness.generated.md",
       "docs/release-ceremony.md",
       "docs/release-ceremony-attestation.generated.md",

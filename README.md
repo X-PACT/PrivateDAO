@@ -300,6 +300,7 @@ The same rule now applies to the review surface itself: zk artifacts, live-proof
 
 ## Release And Mainnet Docs
 
+- Mainnet go-live checklist: `docs/mainnet-go-live-checklist.md`
 - Mainnet readiness report: `docs/mainnet-readiness.generated.md`
 - Mainnet acceptance matrix: `docs/mainnet-acceptance-matrix.generated.md`
 - Mainnet proof package: `docs/mainnet-proof-package.generated.md`
