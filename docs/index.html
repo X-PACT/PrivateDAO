@@ -261,9 +261,9 @@ nav.scrolled {
 }
 
 .award-banner {
-  margin-top: 128px;
-  margin-bottom: 28px;
-  padding: 24px 28px;
+  margin-top: 124px;
+  margin-bottom: 18px;
+  padding: 18px 22px;
   border-radius: 24px;
   border: 1px solid rgba(255, 217, 92, 0.48);
   background:
@@ -314,20 +314,20 @@ nav.scrolled {
 }
 
 .award-banner-title {
-  font-family: var(--display);
-  font-size: clamp(42px, 6vw, 70px);
-  letter-spacing: 1px;
-  line-height: 0.95;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  line-height: 1.05;
   color: #fff4b0;
-  text-shadow: 0 0 18px rgba(255, 214, 92, 0.22);
-  margin-bottom: 12px;
+  text-shadow: 0 0 14px rgba(255, 214, 92, 0.18);
+  margin-bottom: 8px;
 }
 
 .award-banner-subtitle {
-  font-size: 17px;
-  line-height: 1.65;
+  font-size: 14px;
+  line-height: 1.6;
   color: rgba(255, 244, 210, 0.88);
-  max-width: 640px;
+  max-width: 560px;
 }
 
 .award-banner-actions {
@@ -366,9 +366,9 @@ nav.scrolled {
 }
 
 .award-banner-meta {
-  min-width: 220px;
-  padding: 18px 20px;
-  border-radius: 18px;
+  min-width: 210px;
+  padding: 14px 16px;
+  border-radius: 16px;
   background: linear-gradient(180deg, rgba(46, 27, 0, 0.34), rgba(26, 17, 0, 0.56));
   border: 1px solid rgba(255, 229, 145, 0.26);
   box-shadow: inset 0 1px 0 rgba(255, 244, 210, 0.12);
@@ -485,8 +485,8 @@ nav.scrolled {
   font-size: 18px;
   color: var(--text2);
   line-height: 1.7;
-  max-width: 540px;
-  margin-bottom: 48px;
+  max-width: 580px;
+  margin-bottom: 34px;
   animation: fadeUp 0.8s ease 0.2s both;
 }
 
@@ -518,7 +518,7 @@ nav.scrolled {
 }
 
 .hero-actions {
-  display: flex; gap: 16px; flex-wrap: wrap;
+  display: flex; gap: 14px; flex-wrap: wrap;
   animation: fadeUp 0.8s ease 0.3s both;
 }
 
@@ -550,6 +550,36 @@ nav.scrolled {
   transition: all 0.25s;
 }
 .btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-dim); }
+
+.hero-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+  animation: fadeUp 0.8s ease 0.36s both;
+}
+
+.hero-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(9, 15, 22, 0.6);
+  color: var(--text2);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.hero-link:hover {
+  color: var(--cyan);
+  border-color: rgba(0,229,255,0.26);
+  background: rgba(0,229,255,0.08);
+}
 
 /* Hero stats ticker */
 .hero-stats {
@@ -786,10 +816,11 @@ nav.scrolled {
 }
 .stats-inner {
   display: flex; gap: 0;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 16px;
   overflow: hidden;
-  background: var(--card);
+  background: linear-gradient(180deg, rgba(8, 14, 22, 0.78), rgba(7, 12, 19, 0.94));
+  box-shadow: 0 22px 60px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.03);
   max-width: 680px;
 }
 .stat-item {
@@ -2619,10 +2650,12 @@ body.judge-mode .judge-banner {
       <div class="hero-actions">
         <button class="btn-primary" onclick="scrollToProposals()">View Live Proposals</button>
         <button class="btn-ghost" onclick="showPage('protocol', findNavButton('protocol'))">How It Works →</button>
-        <a class="btn-ghost" href="zk-upgrade.md" target="_blank" style="text-decoration:none">ZK Overlay ↗</a>
-        <a class="btn-ghost" href="cryptographic-integrity.md" target="_blank" style="text-decoration:none">Artifact Integrity ↗</a>
-        <a class="btn-ghost" href="domain-mirror.md" target="_blank" style="text-decoration:none">Mirror Deployment ↗</a>
-        <a class="btn-ghost" href="android-native.md" target="_blank" style="text-decoration:none">Android Native ↗</a>
+      </div>
+      <div class="hero-links">
+        <a class="hero-link" href="zk-upgrade.md" target="_blank">ZK Overlay ↗</a>
+        <a class="hero-link" href="cryptographic-integrity.md" target="_blank">Artifact Integrity ↗</a>
+        <a class="hero-link" href="android-native.md" target="_blank">Android Native ↗</a>
+        <a class="hero-link" href="domain-mirror.md" target="_blank">Mirror Deployment ↗</a>
       </div>
     </div>
 
