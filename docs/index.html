@@ -653,6 +653,33 @@ nav.scrolled {
   margin-right: 8px;
 }
 
+.explain-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.explain-card {
+  padding: 22px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(8, 16, 24, 0.96), rgba(7, 14, 21, 0.98));
+}
+
+.explain-card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.explain-card-copy {
+  color: var(--text2);
+  font-size: 14px;
+  line-height: 1.75;
+}
+
 .section-heading-row {
   display: flex;
   align-items: flex-start;
@@ -3117,7 +3144,22 @@ body.judge-mode .judge-banner {
 <section class="section" style="padding-top:140px">
   <div class="container">
     <div class="section-tag reveal">THE PROTOCOL</div>
-    <h2 class="section-heading reveal">Three phases.<br>Zero leakage.</h2>
+    <h2 class="section-heading reveal">How PrivateDAO works<br>in one operating flow.</h2>
+
+    <div class="explain-grid reveal">
+      <div class="explain-card">
+        <div class="explain-card-title">1. Commit privately</div>
+        <div class="explain-card-copy">Voters submit a sha256 commitment bound to vote, salt, proposal, and wallet. The chain stores proof of intent, not the visible vote itself.</div>
+      </div>
+      <div class="explain-card">
+        <div class="explain-card-title">2. Reveal deterministically</div>
+        <div class="explain-card-copy">After the commit window ends, the on-chain program recomputes the commitment from the reveal payload and counts only valid proposal-scoped reveals.</div>
+      </div>
+      <div class="explain-card">
+        <div class="explain-card-title">3. Execute safely</div>
+        <div class="explain-card-copy">A passed proposal still cannot move treasury funds until finalize succeeds and the timelock expires. Execution remains explicit, not implicit.</div>
+      </div>
+    </div>
 
     <div class="protocol-steps reveal">
       <div class="protocol-step">
@@ -3168,33 +3210,33 @@ execute() → treasury action
       </div>
     </div>
 
-    <div class="section-tag reveal" style="margin-top:80px">FEATURES</div>
-    <h2 class="section-heading reveal">Built for real DAOs.</h2>
+    <div class="section-tag reveal" style="margin-top:80px">OPERATING CAPABILITIES</div>
+    <h2 class="section-heading reveal">Governance features that stay tied<br>to the live product.</h2>
 
     <div class="features-grid reveal">
       <div class="feature-card">
         <div class="feature-icon-wrap">⚖️</div>
         <div class="feature-title">DualChamber Voting</div>
         <div class="feature-desc">Both capital chamber (token-weighted) AND community chamber (quadratic √balance) must independently pass. Whales need genuine community support to push proposals through.</div>
-        <span class="feature-badge">NOVEL ON SOLANA</span>
+        <span class="feature-badge">GOVERNANCE MODE</span>
       </div>
       <div class="feature-card">
         <div class="feature-icon-wrap">🤝</div>
         <div class="feature-title">Private Delegation</div>
         <div class="feature-desc">Delegate your voting weight to any address for a specific proposal. The delegatee commits the combined weight. The vote remains hidden during voting, and the delegation is single-use per proposal.</div>
-        <span class="feature-badge">FIRST OF ITS KIND</span>
+        <span class="feature-badge">PROPOSAL-SCOPED</span>
       </div>
       <div class="feature-card">
         <div class="feature-icon-wrap">🤖</div>
         <div class="feature-title">Keeper Auto-Reveal</div>
         <div class="feature-desc">Authorize a proposal-scoped keeper address at commit time. If you forget to reveal, the keeper can submit your exact proof during the reveal window and earn the rebate. Browser flows generate salts in memory and require you to save them yourself.</div>
-        <span class="feature-badge">UX INNOVATION</span>
+        <span class="feature-badge">OPTIONAL FLOW</span>
       </div>
       <div class="feature-card">
         <div class="feature-icon-wrap">🔌</div>
         <div class="feature-title">Three Voting Modes</div>
         <div class="feature-desc">TokenWeighted (raw balance), Quadratic (√balance under an external sybil-resistance policy), or DualChamber (both must pass). DAOs choose their governance model at creation, not after.</div>
-        <span class="feature-badge">CONFIGURABLE</span>
+        <span class="feature-badge">DAO POLICY</span>
       </div>
     </div>
   </div>
@@ -3286,6 +3328,21 @@ execute() → treasury action
   <div class="container">
     <div class="section-tag reveal">SECURITY</div>
     <h2 class="section-heading reveal">Make private governance<br>defensible, not cosmetic.</h2>
+
+    <div class="explain-grid reveal">
+      <div class="explain-card">
+        <div class="explain-card-title">Lifecycle enforcement</div>
+        <div class="explain-card-copy">PrivateDAO rejects out-of-order lifecycle actions. Reveal, finalize, and execute remain bound to the correct phase and proposal state.</div>
+      </div>
+      <div class="explain-card">
+        <div class="explain-card-title">Treasury execution safety</div>
+        <div class="explain-card-copy">Recipient, mint, signer, PDA, and treasury wiring checks prevent governance success from turning into unsafe treasury mutation.</div>
+      </div>
+      <div class="explain-card">
+        <div class="explain-card-title">ZK and integrity layers</div>
+        <div class="explain-card-copy">Groth16 companion proofs and the published sha256 artifact manifest add verification depth without replacing the deployed on-chain enforcement boundary.</div>
+      </div>
+    </div>
 
     <div class="award-detail-card reveal">
       <div class="award-detail-head">
@@ -3556,79 +3613,87 @@ execute() → treasury action
         <div>
           <div class="award-detail-title">Security Evidence</div>
           <p class="award-detail-copy">
-            Read the formal reasoning artifacts directly. These documents map real threats to real mitigations and real repository coverage.
+            These curated review paths keep the reasoning artifacts grouped by purpose so the security surface reads like an audit path, not a document dump.
           </p>
         </div>
         <div class="award-pill">FORMAL DOCS</div>
       </div>
-      <div class="award-links">
-        <a class="award-link" href="security-review.md" target="_blank">Read Security Review</a>
-        <a class="award-link" href="threat-model.md" target="_blank">Threat Model</a>
-        <a class="award-link" href="security-coverage-map.md" target="_blank">Coverage Map</a>
-        <a class="award-link" href="failure-modes.md" target="_blank">Failure Modes</a>
-        <a class="award-link" href="replay-analysis.md" target="_blank">Replay Analysis</a>
-        <a class="award-link" href="zk-upgrade.md" target="_blank">ZK Upgrade</a>
-        <a class="award-link" href="zk-layer.md" target="_blank">ZK Layer</a>
-        <a class="award-link" href="zk-stack.md" target="_blank">ZK Stack</a>
-        <a class="award-link" href="zk-threat-extension.md" target="_blank">ZK Threat Extension</a>
-        <a class="award-link" href="zk-assumption-matrix.md" target="_blank">ZK Assumption Matrix</a>
-        <a class="award-link" href="zk-capability-matrix.md" target="_blank">ZK Capability Matrix</a>
-        <a class="award-link" href="zk-provenance.md" target="_blank">ZK Provenance</a>
-        <a class="award-link" href="zk-verification-flow.md" target="_blank">ZK Verification Flow</a>
-        <a class="award-link" href="zk-registry.generated.json" target="_blank">ZK Registry</a>
-        <a class="award-link" href="zk-transcript.generated.md" target="_blank">ZK Transcript</a>
-        <a class="award-link" href="zk-attestation.generated.json" target="_blank">ZK Attestation</a>
-        <a class="award-link" href="zk-architecture.md" target="_blank">ZK Architecture</a>
-        <a class="award-link" href="zk-evidence.md" target="_blank">ZK Evidence</a>
-        <a class="award-link" href="cryptographic-integrity.md" target="_blank">Artifact Integrity</a>
-        <a class="award-link" href="cryptographic-manifest.generated.json" target="_blank">Cryptographic Manifest</a>
-        <a class="award-link" href="deployment-attestation.generated.json" target="_blank">Deployment Attestation</a>
-        <a class="award-link" href="mainnet-readiness.generated.md" target="_blank">Mainnet Readiness Report</a>
-        <a class="award-link" href="mainnet-acceptance-matrix.generated.md" target="_blank">Mainnet Acceptance Matrix</a>
-        <a class="award-link" href="mainnet-proof-package.generated.md" target="_blank">Mainnet Proof Package</a>
-        <a class="award-link" href="fair-voting.md" target="_blank">Fair Voting Model</a>
-        <a class="award-link" href="wallet-runtime.md" target="_blank">Wallet Runtime</a>
-        <a class="award-link" href="real-device-runtime.md" target="_blank">Real-Device Runtime QA</a>
-        <a class="award-link" href="operational-evidence.generated.md" target="_blank">Operational Evidence</a>
-        <a class="award-link" href="runtime-evidence.generated.md" target="_blank">Runtime Evidence</a>
-        <a class="award-link" href="real-device-runtime.generated.md" target="_blank">Real-Device Runtime Evidence</a>
-        <a class="award-link" href="devnet-scale-profiles.md" target="_blank">Devnet Scale Profiles</a>
-        <a class="award-link" href="consumer-readiness.md" target="_blank">Consumer Readiness</a>
-        <a class="award-link" href="consumer-user-flows.md" target="_blank">Consumer User Flows</a>
-        <a class="award-link" href="launch-growth-plan.md" target="_blank">Launch And Growth Plan</a>
-        <a class="award-link" href="wallet-compatibility-matrix.generated.md" target="_blank">Wallet Compatibility Matrix</a>
-        <a class="award-link" href="devnet-canary.generated.md" target="_blank">Devnet Canary</a>
-        <a class="award-link" href="cryptographic-posture.md" target="_blank">Cryptographic Posture</a>
-        <a class="award-link" href="artifact-freshness.md" target="_blank">Artifact Freshness</a>
-        <a class="award-link" href="supply-chain-attestation.generated.md" target="_blank">Supply-Chain Attestation</a>
-        <a class="award-link" href="release-ceremony-attestation.generated.md" target="_blank">Release Ceremony</a>
-        <a class="award-link" href="release-drill.generated.md" target="_blank">Release Drill Trace</a>
-        <a class="award-link" href="review-automation.md" target="_blank">Review Automation</a>
-        <a class="award-link" href="runtime-attestation.generated.json" target="_blank">Runtime Attestation</a>
-        <a class="award-link" href="go-live-criteria.md" target="_blank">Go-Live Criteria</a>
-        <a class="award-link" href="operational-drillbook.md" target="_blank">Operational Drillbook</a>
-        <a class="award-link" href="external-readiness-intake.md" target="_blank">External Readiness Intake</a>
-        <a class="award-link" href="go-live-attestation.generated.json" target="_blank">Go-Live Attestation</a>
-        <a class="award-link" href="pdao-token.md" target="_blank">PDAO Token Surface</a>
-        <a class="award-link" href="pdao-attestation.generated.json" target="_blank">PDAO Attestation</a>
-        <a class="award-link" href="production-operations.md" target="_blank">Production Ops</a>
-        <a class="award-link" href="monitoring-alerts.md" target="_blank">Monitoring</a>
-        <a class="award-link" href="incident-response.md" target="_blank">Incident Response</a>
-        <a class="award-link" href="?page=diagnostics" target="_blank" data-bypass-doc-viewer="1">Wallet Diagnostics</a>
-        <a class="award-link" href="devnet-release-manifest.md" target="_blank">Release Manifest</a>
-        <a class="award-link" href="submission-dossier.md" target="_blank">Submission Dossier</a>
-        <a class="award-link" href="submission-registry.json" target="_blank">Submission Registry</a>
-        <a class="award-link" href="competition-readiness.md" target="_blank">Competition Readiness</a>
-        <a class="award-link" href="audit-packet.generated.md" target="_blank">Audit Packet</a>
-        <a class="award-link" href="review-attestation.generated.json" target="_blank">Review Attestation</a>
-        <a class="award-link" href="verification-gates.md" target="_blank">Verification Gates</a>
-        <a class="award-link" href="reviewer-fast-path.md" target="_blank">Reviewer Fast Path</a>
-        <a class="award-link" href="independent-verification.md" target="_blank">Independent Verification</a>
-        <a class="award-link" href="mainnet-cutover-runbook.md" target="_blank">Cutover Runbook</a>
-        <a class="award-link" href="operator-checklist.md" target="_blank">Operator Checklist</a>
-        <a class="award-link" href="risk-register.md" target="_blank">Risk Register</a>
-        <a class="award-link" href="audit-handoff.md" target="_blank">Audit Handoff</a>
-        <a class="award-link" href="reviewer-surface-map.md" target="_blank">Reviewer Map</a>
+      <div class="curation-grid">
+        <div class="curation-card">
+          <div class="curation-kicker">CORE SECURITY</div>
+          <div class="curation-title">Review protocol reasoning</div>
+          <div class="curation-copy">Start here for the main trust model, lifecycle boundaries, replay rejection, and failure-path coverage.</div>
+          <div class="curation-links">
+            <a class="award-link" href="security-review.md" target="_blank">Security Review</a>
+            <a class="award-link" href="threat-model.md" target="_blank">Threat Model</a>
+            <a class="award-link" href="security-coverage-map.md" target="_blank">Coverage Map</a>
+            <a class="award-link" href="failure-modes.md" target="_blank">Failure Modes</a>
+            <a class="award-link" href="replay-analysis.md" target="_blank">Replay Analysis</a>
+            <a class="award-link" href="fair-voting.md" target="_blank">Fair Voting Model</a>
+          </div>
+        </div>
+        <div class="curation-card">
+          <div class="curation-kicker">ZK AND INTEGRITY</div>
+          <div class="curation-title">Inspect the companion proof stack</div>
+          <div class="curation-copy">These links cover the additive Groth16 layers, their assumptions, provenance, transcript, and artifact-integrity binding.</div>
+          <div class="curation-links">
+            <a class="award-link" href="zk-layer.md" target="_blank">ZK Layer</a>
+            <a class="award-link" href="zk-stack.md" target="_blank">ZK Stack</a>
+            <a class="award-link" href="zk-capability-matrix.md" target="_blank">Capability Matrix</a>
+            <a class="award-link" href="zk-verification-flow.md" target="_blank">Verification Flow</a>
+            <a class="award-link" href="zk-provenance.md" target="_blank">Provenance</a>
+            <a class="award-link" href="zk-registry.generated.json" target="_blank">ZK Registry</a>
+            <a class="award-link" href="zk-transcript.generated.md" target="_blank">ZK Transcript</a>
+            <a class="award-link" href="zk-attestation.generated.json" target="_blank">ZK Attestation</a>
+            <a class="award-link" href="zk-architecture.md" target="_blank">ZK Architecture</a>
+            <a class="award-link" href="zk-evidence.md" target="_blank">ZK Evidence</a>
+            <a class="award-link" href="cryptographic-integrity.md" target="_blank">Artifact Integrity</a>
+            <a class="award-link" href="cryptographic-manifest.generated.json" target="_blank">Manifest</a>
+          </div>
+        </div>
+        <div class="curation-card">
+          <div class="curation-kicker">RUNTIME AND OPERATIONS</div>
+          <div class="curation-title">Review how the product behaves</div>
+          <div class="curation-copy">Runtime evidence, wallet diagnostics, operational traces, and release discipline remain accessible here without flooding the main product flow.</div>
+          <div class="curation-links">
+            <a class="award-link" href="?page=diagnostics" target="_blank" data-bypass-doc-viewer="1">Wallet Diagnostics</a>
+            <a class="award-link" href="wallet-runtime.md" target="_blank">Wallet Runtime</a>
+            <a class="award-link" href="real-device-runtime.md" target="_blank">Real-Device Runtime QA</a>
+            <a class="award-link" href="real-device-runtime.generated.md" target="_blank">Real-Device Runtime Evidence</a>
+            <a class="award-link" href="runtime-evidence.generated.md" target="_blank">Runtime Evidence</a>
+            <a class="award-link" href="operational-evidence.generated.md" target="_blank">Operational Evidence</a>
+            <a class="award-link" href="wallet-compatibility-matrix.generated.md" target="_blank">Wallet Compatibility Matrix</a>
+            <a class="award-link" href="devnet-canary.generated.md" target="_blank">Devnet Canary</a>
+            <a class="award-link" href="devnet-scale-profiles.md" target="_blank">Devnet Scale Profiles</a>
+            <a class="award-link" href="production-operations.md" target="_blank">Production Ops</a>
+            <a class="award-link" href="monitoring-alerts.md" target="_blank">Monitoring</a>
+            <a class="award-link" href="incident-response.md" target="_blank">Incident Response</a>
+            <a class="award-link" href="review-automation.md" target="_blank">Review Automation</a>
+          </div>
+        </div>
+        <div class="curation-card">
+          <div class="curation-kicker">MAINNET TRANSITION</div>
+          <div class="curation-title">Track the production path</div>
+          <div class="curation-copy">These artifacts show what is ready in-repo, what is operationally pending, and how PrivateDAO moves from Devnet proof to production launch discipline.</div>
+          <div class="curation-links">
+            <a class="award-link" href="mainnet-readiness.generated.md" target="_blank">Mainnet Readiness</a>
+            <a class="award-link" href="mainnet-acceptance-matrix.generated.md" target="_blank">Acceptance Matrix</a>
+            <a class="award-link" href="mainnet-proof-package.generated.md" target="_blank">Proof Package</a>
+            <a class="award-link" href="deployment-attestation.generated.json" target="_blank">Deployment Attestation</a>
+            <a class="award-link" href="runtime-attestation.generated.json" target="_blank">Runtime Attestation</a>
+            <a class="award-link" href="go-live-attestation.generated.json" target="_blank">Go-Live Attestation</a>
+            <a class="award-link" href="consumer-readiness.md" target="_blank">Consumer Readiness</a>
+            <a class="award-link" href="consumer-user-flows.md" target="_blank">Consumer User Flows</a>
+            <a class="award-link" href="launch-growth-plan.md" target="_blank">Launch And Growth Plan</a>
+            <a class="award-link" href="cryptographic-posture.md" target="_blank">Cryptographic Posture</a>
+            <a class="award-link" href="artifact-freshness.md" target="_blank">Artifact Freshness</a>
+            <a class="award-link" href="supply-chain-attestation.generated.md" target="_blank">Supply-Chain Attestation</a>
+            <a class="award-link" href="go-live-criteria.md" target="_blank">Go-Live Criteria</a>
+            <a class="award-link" href="release-ceremony-attestation.generated.md" target="_blank">Release Ceremony</a>
+            <a class="award-link" href="release-drill.generated.md" target="_blank">Release Drill</a>
+            <a class="award-link" href="external-readiness-intake.md" target="_blank">External Readiness Intake</a>
+          </div>
+        </div>
       </div>
     </div>
 
