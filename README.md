@@ -89,6 +89,11 @@ For the fastest useful read:
 4. Read `docs/zk-layer.md`
 5. Read `docs/pdao-token.md`
 
+## Shared Proposal Doc
+
+- Google Doc URL: `ADD_SHARED_GOOGLE_DOC_URL_HERE`
+- Local draft for copy/paste: `docs/developer-tooling-proposal.md`
+
 ## Token Surface
 
 PrivateDAO now publishes a live Devnet governance voting token surface that is also the canonical governance mint for the current reviewer-facing DAO:
