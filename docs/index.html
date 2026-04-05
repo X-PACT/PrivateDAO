@@ -179,9 +179,17 @@ nav.scrolled {
 }
 .logo-name em { color: var(--cyan); font-style: normal; }
 
-.nav-links { display:flex; gap:8px; }
+.nav-links {
+  display:flex;
+  gap:6px;
+  padding: 6px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.05);
+  background: rgba(8, 13, 19, 0.58);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+}
 .nav-link {
-  padding: 8px 18px;
+  padding: 9px 16px;
   font-size: 13px;
   font-weight: 500;
   color: var(--text2);
@@ -193,7 +201,11 @@ nav.scrolled {
   font-family: var(--body);
   letter-spacing: 0.5px;
 }
-.nav-link:hover, .nav-link.active { color: var(--cyan); background: var(--cyan-dim); }
+.nav-link:hover, .nav-link.active {
+  color: var(--cyan);
+  background: rgba(0,229,255,0.08);
+  box-shadow: inset 0 0 0 1px rgba(0,229,255,0.12);
+}
 
 .wallet-btn {
   display: flex; align-items:center; gap:10px;
@@ -608,6 +620,42 @@ nav.scrolled {
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 18px;
   margin-top: 18px;
+}
+
+.proof-path-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.proof-path-chip {
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: linear-gradient(180deg, rgba(8, 15, 23, 0.72), rgba(7, 13, 20, 0.9));
+  box-shadow: 0 16px 40px rgba(0,0,0,0.16), inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.proof-path-kicker {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text3);
+  margin-bottom: 8px;
+}
+
+.proof-path-title {
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.proof-path-copy {
+  color: var(--text2);
+  font-size: 13px;
+  line-height: 1.65;
 }
 
 .curation-card {
@@ -3085,6 +3133,24 @@ body.judge-mode .judge-banner {
     <div class="section-heading-row reveal">
       <h2 class="section-heading" style="margin-bottom:0">Operational proof, security reasoning,<br>and release evidence.</h2>
       <div class="zk-mini-badge">🔒 ZK Companion</div>
+    </div>
+
+    <div class="proof-path-strip reveal">
+      <div class="proof-path-chip">
+        <div class="proof-path-kicker">START HERE</div>
+        <div class="proof-path-title">Operate the live product</div>
+        <div class="proof-path-copy">Use the live app, inspect the selected proposal flow, and confirm the deployed program path before diving into evidence depth.</div>
+      </div>
+      <div class="proof-path-chip">
+        <div class="proof-path-kicker">THEN VERIFY</div>
+        <div class="proof-path-title">Read runtime and security evidence</div>
+        <div class="proof-path-copy">Move from operational state to stress, adversarial, replay, integrity, and ZK review paths without leaving the curated proof surface.</div>
+      </div>
+      <div class="proof-path-chip">
+        <div class="proof-path-kicker">END WITH RELEASE</div>
+        <div class="proof-path-title">Review readiness and transition</div>
+        <div class="proof-path-copy">Mainnet readiness, release ceremony, canary, and production-boundary artifacts stay grouped here instead of competing with daily product use.</div>
+      </div>
     </div>
 
     <div class="award-detail-card reveal">
