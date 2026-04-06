@@ -4473,6 +4473,10 @@ execute() → treasury action
           <div class="diagnostic-value" id="diagWave350">Pending refresh</div>
         </div>
         <div class="proposal-command-box">
+          <div class="proposal-detail-label">READ NODE METRICS</div>
+          <div class="diagnostic-value" id="diagReadNodeMetrics">Pending refresh</div>
+        </div>
+        <div class="proposal-command-box">
           <div class="proposal-detail-label">PROGRAM ID</div>
           <div class="diagnostic-value"><code>5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx</code></div>
         </div>
@@ -4515,6 +4519,10 @@ execute() → treasury action
         <div class="proposal-command-box">
           <div class="proposal-detail-label">READ NODE SNAPSHOT</div>
           <div style="color:var(--text2);line-height:1.8"><a class="award-link" href="read-node-snapshot.generated.md" target="_blank">Open generated read-node snapshot</a></div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">SAME-DOMAIN DEPLOY</div>
+          <div style="color:var(--text2);line-height:1.8"><a class="award-link" href="read-node-same-domain-deploy.md" target="_blank">Open same-domain deploy path</a></div>
         </div>
       </div>
 
@@ -4589,6 +4597,7 @@ execute() → treasury action
           <button class="proposal-proof-link" type="button" onclick="openDocument('zk-verifier-strategy.md','ZK Verifier Strategy')">Open Verifier Strategy</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('read-node-indexer.md','Read Node And Indexer')">Open Read Node</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('read-node-snapshot.generated.md','Read Node Snapshot')">Open Read Node Snapshot</button>
+          <button class="proposal-proof-link" type="button" onclick="openDocument('read-node-same-domain-deploy.md','Same-Domain Deploy')">Open Same-Domain Deploy</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('rpc-architecture.md','RPC Architecture')">Open RPC Architecture</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('backend-operator-flow.md','Backend Operator Flow')">Open Backend Operator Flow</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('zk-enforced-threat-review.md','ZK-Enforced Threat Review')">Open Threat Review</button>
@@ -5368,12 +5377,14 @@ async function updateDiagnostics() {
   let rpcDetails = 'Running RPC reachability checks...';
   let backendOverview = null;
   let wave350Profile = DEVNET_LOAD_PROFILES.find((profile) => profile.name === '350') || null;
+  let readNodeMetrics = null;
   try {
     if (READ_API_BASE) {
-      const [runtime, overviewResponse, profilesResponse] = await Promise.all([
+      const [runtime, overviewResponse, profilesResponse, metricsResponse] = await Promise.all([
         fetchReadApi('/runtime', { silent: true }),
         fetchReadApi('/ops/overview', { silent: true }),
         fetchReadApi('/devnet/profiles', { silent: true }),
+        fetchReadApi('/metrics', { silent: true }),
       ]);
       rpcHealth = 'Healthy';
       rpcDetails = [
@@ -5388,6 +5399,7 @@ async function updateDiagnostics() {
       if (Array.isArray(profilesResponse?.profiles)) {
         wave350Profile = profilesResponse.profiles.find((profile) => profile.name === '350') || wave350Profile;
       }
+      readNodeMetrics = metricsResponse?.metrics || null;
       currentReadPath = 'Backend Indexer';
     } else {
       const version = await withRpcFallback((activeConnection) => activeConnection.getVersion());
@@ -5415,6 +5427,11 @@ async function updateDiagnostics() {
   const wave350Summary = wave350Profile
     ? `${wave350Profile.walletCount} wallets · ${wave350Profile.waveCount} waves · ${wave350Profile.negativeScenarios.length} negative paths`
     : '350-wave profile unavailable';
+  const readNodeMetricsSummary = readNodeMetrics
+    ? `${readNodeMetrics.requestsTotal} req · ${readNodeMetrics.requestsFailed} fail · ${readNodeMetrics.rateLimited} rate-limited`
+    : READ_API_BASE
+      ? 'Metrics unavailable'
+      : 'Backend read node not active';
 
   const connectedProviderName = walletProvider ? walletProviderName(walletProvider) : 'Not connected';
   const connectedWalletValue = wallet ? wallet : 'Not connected';
@@ -5454,6 +5471,7 @@ async function updateDiagnostics() {
     },
     backendOverview,
     wave350Profile,
+    readNodeMetrics,
   };
 
   lastDiagnosticsSnapshot = snapshot;
@@ -5464,6 +5482,7 @@ async function updateDiagnostics() {
   document.getElementById('diagReadPath').textContent = currentReadPath;
   document.getElementById('diagRefheCoverage').textContent = refheSummary;
   document.getElementById('diagWave350').textContent = wave350Summary;
+  document.getElementById('diagReadNodeMetrics').textContent = readNodeMetricsSummary;
   document.getElementById('diagSupportedProviders').textContent = providerLines.join('\n');
   document.getElementById('diagSupportedProviders').style.whiteSpace = 'pre-wrap';
   document.getElementById('diagBrowserCapabilities').textContent = formatCapabilityFlags(browserCapabilities);

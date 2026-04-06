@@ -303,6 +303,7 @@ npm run verify:read-node-snapshot
 Primary backend docs:
 
 - `docs/read-node-indexer.md`
+- `docs/read-node-same-domain-deploy.md`
 - `docs/rpc-architecture.md`
 - `docs/backend-operator-flow.md`
 - `docs/read-node-snapshot.generated.md`

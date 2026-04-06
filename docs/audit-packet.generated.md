@@ -89,7 +89,7 @@
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
 - Manifest entries: `115`
-- Aggregate sha256: `8a6da666e8458022187aef4b3743d6aa332e519001f459c473f222fee3c1ed02`
+- Aggregate sha256: `7604a2cb96dbfb30150edf6312a70b4eea142a021a5805b503f647f8bc115e72`
 
 ## ZK Package
 
@@ -315,6 +315,7 @@
 ## Operations Package
 
 - `docs/read-node-indexer.md`
+- `docs/read-node-same-domain-deploy.md`
 - `docs/rpc-architecture.md`
 - `docs/backend-operator-flow.md`
 - `docs/read-node-snapshot.generated.md`

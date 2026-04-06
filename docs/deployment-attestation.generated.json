@@ -104,7 +104,7 @@
     "security": 14,
     "zk": 28,
     "proof": 65,
-    "operations": 26
+    "operations": 27
   },
   "zk": {
     "stackVersion": 1,
