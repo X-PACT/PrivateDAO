@@ -941,7 +941,7 @@ The win documentation is separate from governance execution.
 - The operator command is:
 
 ```bash
-yarn execute -- --proposal <PROPOSAL_PUBKEY>
+PROPOSAL_PUBKEY="$PROPOSAL_PUBKEY" yarn execute -- --proposal "$PROPOSAL_PUBKEY"
 ```
 
 GitHub Pages source: `docs/` via `.github/workflows/pages.yml`.
@@ -1312,25 +1312,30 @@ Example flow:
 
 ```bash
 yarn create-dao -- --name "MyDAO" --quorum 51 --mode dual
-yarn deposit -- --dao <DAO_PDA> --amount 1.0
-yarn create-proposal -- --dao <DAO_PDA> --title "Fund research: 0.1 SOL" --treasury-recipient <RECIPIENT> --treasury-amount 0.1
-yarn list-proposals -- --dao <DAO_PDA>
-yarn commit -- --proposal <PROPOSAL_PDA> --vote yes
-yarn reveal -- --proposal <PROPOSAL_PDA>
-yarn finalize -- --proposal <PROPOSAL_PDA>
-yarn execute -- --proposal <PROPOSAL_PDA>
+DAO_PDA="$DAO_PDA" RECIPIENT_WALLET="$RECIPIENT_WALLET" PROPOSAL_PDA="$PROPOSAL_PDA"
+yarn deposit -- --dao "$DAO_PDA" --amount 1.0
+yarn create-proposal -- --dao "$DAO_PDA" --title "Fund research: 0.1 SOL" --treasury-recipient "$RECIPIENT_WALLET" --treasury-amount 0.1
+yarn list-proposals -- --dao "$DAO_PDA"
+yarn commit -- --proposal "$PROPOSAL_PDA" --vote yes
+yarn reveal -- --proposal "$PROPOSAL_PDA"
+yarn finalize -- --proposal "$PROPOSAL_PDA"
+yarn execute -- --proposal "$PROPOSAL_PDA"
 ```
 
 Token treasury flow:
 
 ```bash
+DAO_PDA="$DAO_PDA"
+RECIPIENT_WALLET="$RECIPIENT_WALLET"
+TOKEN_MINT="$TOKEN_MINT"
+
 yarn create-proposal -- \
-  --dao <DAO_PDA> \
+  --dao "$DAO_PDA" \
   --title "Send treasury tokens" \
   --treasury-type token \
-  --treasury-recipient <RECIPIENT_WALLET> \
+  --treasury-recipient "$RECIPIENT_WALLET" \
   --treasury-amount 1000000 \
-  --treasury-mint <TOKEN_MINT>
+  --treasury-mint "$TOKEN_MINT"
 ```
 
 `--treasury-amount` for token actions is passed as raw token units.

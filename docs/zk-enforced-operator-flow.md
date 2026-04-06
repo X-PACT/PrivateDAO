@@ -17,13 +17,13 @@ PrivateDAO still keeps commit-reveal as the canonical governance boundary.
    - delegation
    - tally
 3. Inspect the proposal receipt state:
-   - `npm run inspect:zk-proposal -- --proposal <PROPOSAL_PDA>`
+   - `PROPOSAL_PDA="$PROPOSAL_PDA" npm run inspect:zk-proposal -- --proposal "$PROPOSAL_PDA"`
 4. Lock the proposal into `zk_enforced`:
-   - `npm run configure:zk-mode -- --proposal <PROPOSAL_PDA> --mode zk_enforced`
+   - `PROPOSAL_PDA="$PROPOSAL_PDA" npm run configure:zk-mode -- --proposal "$PROPOSAL_PDA" --mode zk_enforced`
 5. Finalize through the correct path:
-   - `yarn finalize -- --proposal <PROPOSAL_PDA>`
+   - `PROPOSAL_PDA="$PROPOSAL_PDA" yarn finalize -- --proposal "$PROPOSAL_PDA"`
 6. Execute only after normal lifecycle success and timelock clearance:
-   - `yarn execute -- --proposal <PROPOSAL_PDA>`
+   - `PROPOSAL_PDA="$PROPOSAL_PDA" yarn execute -- --proposal "$PROPOSAL_PDA"`
 
 ## Receipt Strength Rule
 

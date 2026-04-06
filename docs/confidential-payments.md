@@ -57,25 +57,31 @@ This is a governed encrypted payout system, not a fully private money rail.
 ## Commands
 
 ```bash
+DAO_PDA="$DAO_PDA"
+PROPOSAL_PDA="$PROPOSAL_PDA"
+SETTLEMENT_WALLET="$SETTLEMENT_WALLET"
+MANIFEST_HASH="$MANIFEST_HASH"
+CIPHERTEXT_HASH="$CIPHERTEXT_HASH"
+
 npm run configure:confidential-payout -- \
-  --dao <DAO_PDA> \
-  --proposal <PROPOSAL_PDA> \
+  --dao "$DAO_PDA" \
+  --proposal "$PROPOSAL_PDA" \
   --payout-type salary \
   --asset-type sol \
-  --settlement-recipient <SETTLEMENT_WALLET> \
+  --settlement-recipient "$SETTLEMENT_WALLET" \
   --payout-total 12.5 \
   --recipient-count 8 \
   --manifest-uri "box://privatedao/payroll/epoch-7" \
-  --manifest-hash <HEX32> \
-  --ciphertext-hash <HEX32>
+  --manifest-hash "$MANIFEST_HASH" \
+  --ciphertext-hash "$CIPHERTEXT_HASH"
 ```
 
 ```bash
-npm run inspect:confidential-payout -- --proposal <PROPOSAL_PDA>
+PROPOSAL_PDA="$PROPOSAL_PDA" npm run inspect:confidential-payout -- --proposal "$PROPOSAL_PDA"
 ```
 
 ```bash
-yarn execute -- --proposal <PROPOSAL_PDA>
+PROPOSAL_PDA="$PROPOSAL_PDA" yarn execute -- --proposal "$PROPOSAL_PDA"
 ```
 
 ## UI Surface

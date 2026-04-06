@@ -267,14 +267,15 @@ anchor deploy
 yarn create-dao -- --name "MyDAO" --quorum 51 --mode dual
 
 # Fund treasury
-yarn deposit -- --dao <DAO_PDA> --amount 1.0
+DAO_PDA="$DAO_PDA" yarn deposit -- --dao "$DAO_PDA" --amount 1.0
 
 # Full governance flow
-yarn create-proposal -- --dao <DAO_PDA> --title "Allocate 0.1 SOL for marketing"
-yarn commit -- --proposal <PROPOSAL_PDA> --vote yes
-yarn reveal -- --proposal <PROPOSAL_PDA>
-yarn finalize -- --proposal <PROPOSAL_PDA>
-yarn execute -- --proposal <PROPOSAL_PDA>
+DAO_PDA="$DAO_PDA" PROPOSAL_PDA="$PROPOSAL_PDA"
+yarn create-proposal -- --dao "$DAO_PDA" --title "Allocate 0.1 SOL for marketing"
+yarn commit -- --proposal "$PROPOSAL_PDA" --vote yes
+yarn reveal -- --proposal "$PROPOSAL_PDA"
+yarn finalize -- --proposal "$PROPOSAL_PDA"
+yarn execute -- --proposal "$PROPOSAL_PDA"
 ```
 
 ---

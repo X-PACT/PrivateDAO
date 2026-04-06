@@ -156,7 +156,7 @@ Expected output:
 ### Deposit treasury
 
 ```bash
-yarn deposit -- --dao <DAO_PDA> --amount 1.0
+DAO_PDA="$DAO_PDA" yarn deposit -- --dao "$DAO_PDA" --amount 1.0
 ```
 
 Expected output:
@@ -167,10 +167,13 @@ Expected output:
 ### Create proposal
 
 ```bash
+DAO_PDA="$DAO_PDA"
+RECIPIENT_PUBKEY="$RECIPIENT_PUBKEY"
+
 yarn create-proposal -- \
-  --dao <DAO_PDA> \
+  --dao "$DAO_PDA" \
   --title "Fund ops: 0.1 SOL" \
-  --treasury-recipient <RECIPIENT_PUBKEY> \
+  --treasury-recipient "$RECIPIENT_PUBKEY" \
   --treasury-amount 0.1
 ```
 
@@ -182,7 +185,7 @@ Expected output:
 ### Commit vote
 
 ```bash
-yarn commit -- --proposal <PROPOSAL_PDA> --vote yes
+PROPOSAL_PDA="$PROPOSAL_PDA" yarn commit -- --proposal "$PROPOSAL_PDA" --vote yes
 ```
 
 Expected output:
@@ -193,7 +196,7 @@ Expected output:
 ### Reveal vote
 
 ```bash
-yarn reveal -- --proposal <PROPOSAL_PDA>
+PROPOSAL_PDA="$PROPOSAL_PDA" yarn reveal -- --proposal "$PROPOSAL_PDA"
 ```
 
 Expected output:
@@ -204,7 +207,7 @@ Expected output:
 ### Finalize
 
 ```bash
-yarn finalize -- --proposal <PROPOSAL_PDA>
+PROPOSAL_PDA="$PROPOSAL_PDA" yarn finalize -- --proposal "$PROPOSAL_PDA"
 ```
 
 Expected output:
@@ -215,7 +218,7 @@ Expected output:
 ### Execute
 
 ```bash
-yarn execute -- --proposal <PROPOSAL_PDA>
+PROPOSAL_PDA="$PROPOSAL_PDA" yarn execute -- --proposal "$PROPOSAL_PDA"
 ```
 
 Expected output:
@@ -231,15 +234,17 @@ Expected output:
 Before execute:
 
 ```bash
-solana account <TREASURY_PDA>
-solana account <RECIPIENT_PUBKEY>
+TREASURY_PDA="$TREASURY_PDA" RECIPIENT_PUBKEY="$RECIPIENT_PUBKEY"
+solana account "$TREASURY_PDA"
+solana account "$RECIPIENT_PUBKEY"
 ```
 
 After execute:
 
 ```bash
-solana account <TREASURY_PDA>
-solana account <RECIPIENT_PUBKEY>
+TREASURY_PDA="$TREASURY_PDA" RECIPIENT_PUBKEY="$RECIPIENT_PUBKEY"
+solana account "$TREASURY_PDA"
+solana account "$RECIPIENT_PUBKEY"
 ```
 
 Expected result:
@@ -271,8 +276,9 @@ These are the minimum negative checks an independent reviewer should try.
 Attempt:
 
 ```bash
-yarn execute -- --proposal <PROPOSAL_PDA>
-yarn execute -- --proposal <PROPOSAL_PDA>
+PROPOSAL_PDA="$PROPOSAL_PDA"
+yarn execute -- --proposal "$PROPOSAL_PDA"
+yarn execute -- --proposal "$PROPOSAL_PDA"
 ```
 
 Expected result:

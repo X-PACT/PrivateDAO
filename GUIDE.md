@@ -86,43 +86,48 @@ yarn create-dao -- --name "MyDAO" --quorum 51 --mode dual
 Deposit treasury SOL:
 
 ```bash
-yarn deposit -- --dao <DAO_PDA> --amount 1.0
+DAO_PDA="$DAO_PDA" yarn deposit -- --dao "$DAO_PDA" --amount 1.0
 ```
 
 Create a proposal:
 
 ```bash
+DAO_PDA="$DAO_PDA"
+RECIPIENT_WALLET="$RECIPIENT_WALLET"
+
 yarn create-proposal -- \
-  --dao <DAO_PDA> \
+  --dao "$DAO_PDA" \
   --title "Fund community work: 0.1 SOL" \
-  --treasury-recipient <RECIPIENT> \
+  --treasury-recipient "$RECIPIENT_WALLET" \
   --treasury-amount 0.1
 ```
 
 Commit:
 
 ```bash
-yarn commit -- --proposal <PROPOSAL_PDA> --vote yes
+PROPOSAL_PDA="$PROPOSAL_PDA" yarn commit -- --proposal "$PROPOSAL_PDA" --vote yes
 ```
 
 Delegate first, then commit as the delegatee:
 
 ```bash
-yarn delegate -- --proposal <PROPOSAL_PDA> --delegatee <DELEGATEE>
-yarn commit -- --proposal <PROPOSAL_PDA> --vote yes --delegator <DELEGATOR>
+PROPOSAL_PDA="$PROPOSAL_PDA" DELEGATEE="$DELEGATEE" DELEGATOR="$DELEGATOR"
+yarn delegate -- --proposal "$PROPOSAL_PDA" --delegatee "$DELEGATEE"
+yarn commit -- --proposal "$PROPOSAL_PDA" --vote yes --delegator "$DELEGATOR"
 ```
 
 Reveal:
 
 ```bash
-yarn reveal -- --proposal <PROPOSAL_PDA>
+PROPOSAL_PDA="$PROPOSAL_PDA" yarn reveal -- --proposal "$PROPOSAL_PDA"
 ```
 
 Finalize and execute:
 
 ```bash
-yarn finalize -- --proposal <PROPOSAL_PDA>
-yarn execute -- --proposal <PROPOSAL_PDA>
+PROPOSAL_PDA="$PROPOSAL_PDA"
+yarn finalize -- --proposal "$PROPOSAL_PDA"
+yarn execute -- --proposal "$PROPOSAL_PDA"
 ```
 
 ## Realms note
