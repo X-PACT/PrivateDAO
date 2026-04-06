@@ -1261,6 +1261,7 @@ Initialize DAO
 - Android-native guide: `docs/android-native.md`
 - Main submission: `SUBMISSION.md`
 - Final-form submission: `SUBMISSION_FINAL.md`
+- Manual submission answers: `docs/colosseum-submission-answers.md`
 - Demo script: `DEMO_SCRIPT_90S.md`
 
 ## Ownership And Contact
