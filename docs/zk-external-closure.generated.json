@@ -1,0 +1,78 @@
+{
+  "project": "PrivateDAO",
+  "path": "zk_enforced_external_closure",
+  "status": "pending-external-execution",
+  "generatedAt": "2026-04-06T00:12:58.461Z",
+  "pendingBlockingCount": 3,
+  "runtimeCaptureSummary": {
+    "status": "pending-zk-enforced-capture",
+    "targetCount": 5,
+    "completedTargetCount": 0,
+    "modeActivationSuccessCount": 0,
+    "finalizeSuccessCount": 0,
+    "diagnosticsCaptureCount": 0,
+    "pendingTargets": [
+      "Phantom",
+      "Solflare",
+      "Backpack",
+      "Glow",
+      "Android Native / Mobile"
+    ]
+  },
+  "stages": [
+    {
+      "id": "zk_enforced_runtime_captures",
+      "label": "ZK-Enforced Runtime Captures",
+      "status": "capture-required",
+      "owner": "operators",
+      "blocking": true,
+      "notes": [
+        "Record real wallet runs for enable-mode and finalize.",
+        "Do not mark complete until Devnet explorer signatures exist for successful captures."
+      ]
+    },
+    {
+      "id": "external_audit_handoff",
+      "label": "External Audit Handoff",
+      "status": "ready-for-external-review",
+      "owner": "core-team",
+      "blocking": true,
+      "notes": [
+        "The repository now includes an audit handoff package and explicit zk_enforced scope.",
+        "External findings and closure still need to happen outside the repository."
+      ]
+    },
+    {
+      "id": "canonical_verifier_boundary_freeze",
+      "label": "Canonical Verifier Boundary Freeze",
+      "status": "decision-pending",
+      "owner": "core-team",
+      "blocking": true,
+      "notes": [
+        "Freeze whether receipt boundary or verifier-program boundary becomes canonical.",
+        "Do not claim final dominance until the written decision is signed off."
+      ]
+    }
+  ],
+  "requiredDocs": [
+    "docs/zk-external-closure.json",
+    "docs/zk-enforced-runtime-evidence.md",
+    "docs/zk-enforced-runtime.generated.md",
+    "docs/zk-enforced-operator-flow.md",
+    "docs/zk-external-audit-scope.md",
+    "docs/canonical-verifier-boundary-decision.md",
+    "docs/audit-handoff.md"
+  ],
+  "commands": [
+    "npm run build:zk-enforced-runtime",
+    "npm run verify:zk-enforced-runtime",
+    "npm run capture:zk-enforced-runtime -- <target> --template-only",
+    "npm run record:zk-enforced-runtime -- <capture-json-path>",
+    "npm run build:zk-external-closure",
+    "npm run verify:zk-external-closure"
+  ],
+  "notes": [
+    "This package closes the remaining external path into one machine-readable tracker.",
+    "It does not invent captures, audit findings, or a frozen verifier decision before they exist."
+  ]
+}

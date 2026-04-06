@@ -140,12 +140,15 @@ Related review docs:
 - `docs/zk-enforced-operator-flow.md`
 - `docs/zk-external-audit-scope.md`
 - `docs/canonical-verifier-boundary-decision.md`
+- `docs/zk-external-closure.generated.md`
 
 Commands:
 
 ```bash
 npm run build:zk-enforced-runtime
 npm run verify:zk-enforced-runtime
+npm run build:zk-external-closure
+npm run verify:zk-external-closure
 ```
 
 This checklist is the shortest go or no-go surface for production cutover. It does not replace the generated proof package; it compresses the final blockers into one operator-facing checklist.

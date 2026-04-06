@@ -94,6 +94,7 @@ For the fastest useful read:
 7. Read `docs/zk-verifier-strategy.md`
 8. Read `docs/zk-enforced-operator-flow.md`
 9. Read `docs/canonical-verifier-boundary-decision.md`
+10. Read `docs/zk-external-closure.generated.md`
 
 ## Shared Proposal Doc
 
@@ -216,6 +217,7 @@ For the exact blockers and execution path, read:
 - `docs/zk-enforced-runtime.generated.md`
 - `docs/zk-external-audit-scope.md`
 - `docs/canonical-verifier-boundary-decision.md`
+- `docs/zk-external-closure.generated.md`
 
 ## Why PrivateDAO Exists
 

@@ -20,6 +20,9 @@ function main() {
   const zkEnforcedRuntimeSourcePath = path.resolve("docs/zk-enforced-runtime-captures.json");
   const zkEnforcedRuntimeJsonPath = path.resolve("docs/zk-enforced-runtime.generated.json");
   const zkEnforcedRuntimeMdPath = path.resolve("docs/zk-enforced-runtime.generated.md");
+  const zkExternalClosureSourcePath = path.resolve("docs/zk-external-closure.json");
+  const zkExternalClosureJsonPath = path.resolve("docs/zk-external-closure.generated.json");
+  const zkExternalClosureMdPath = path.resolve("docs/zk-external-closure.generated.md");
   const runtimeEvidenceJsonPath = path.resolve("docs/runtime-evidence.generated.json");
   const runtimeEvidenceMdPath = path.resolve("docs/runtime-evidence.generated.md");
   const operationalEvidenceJsonPath = path.resolve("docs/operational-evidence.generated.json");
@@ -89,6 +92,9 @@ function main() {
   }
   if (!fs.existsSync(zkEnforcedRuntimeSourcePath) || !fs.existsSync(zkEnforcedRuntimeJsonPath) || !fs.existsSync(zkEnforcedRuntimeMdPath)) {
     throw new Error("missing zk-enforced runtime artifacts");
+  }
+  if (!fs.existsSync(zkExternalClosureSourcePath) || !fs.existsSync(zkExternalClosureJsonPath) || !fs.existsSync(zkExternalClosureMdPath)) {
+    throw new Error("missing zk external closure artifacts");
   }
   if (!fs.existsSync(runtimeEvidenceJsonPath) || !fs.existsSync(runtimeEvidenceMdPath)) {
     throw new Error("missing generated runtime evidence artifacts");

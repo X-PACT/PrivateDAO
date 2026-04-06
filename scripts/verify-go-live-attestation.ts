@@ -68,6 +68,9 @@ function main() {
     "docs/operational-drillbook.md",
     "docs/mainnet-readiness.generated.md",
     "docs/deployment-attestation.generated.json",
+    "docs/zk-external-closure.generated.md",
+    "docs/zk-external-audit-scope.md",
+    "docs/canonical-verifier-boundary-decision.md",
   ]) {
     assert(attestation.criteriaDocs.includes(doc), `go-live attestation is missing criteria doc: ${doc}`);
   }

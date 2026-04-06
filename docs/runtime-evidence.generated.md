@@ -2,7 +2,7 @@
 
 ## Overview
 
-- Generated at: `2026-04-05T23:54:22.627Z`
+- Generated at: `2026-04-06T00:12:59.460Z`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - Diagnostics page: `https://x-pact.github.io/PrivateDAO/?page=diagnostics`
@@ -51,6 +51,14 @@
 - Diagnostics capture count: `0`
 - Pending targets: `Phantom, Solflare, Backpack, Glow, Android Native / Mobile`
 
+## ZK External Closure
+
+- Status: `pending-external-execution`
+- Pending blocking stages: `3`
+- ZK-Enforced Runtime Captures: `capture-required` (operators)
+- External Audit Handoff: `ready-for-external-review` (core-team)
+- Canonical Verifier Boundary Freeze: `decision-pending` (core-team)
+
 ## Operational Summary
 
 - Canonical wallet count: `50`
@@ -75,6 +83,9 @@
 - `docs/zk-enforced-runtime.generated.md`
 - `docs/zk-enforced-runtime.generated.json`
 - `docs/zk-enforced-operator-flow.md`
+- `docs/zk-external-closure.json`
+- `docs/zk-external-closure.generated.md`
+- `docs/zk-external-closure.generated.json`
 - `docs/runtime-attestation.generated.json`
 - `docs/operational-evidence.generated.md`
 - `docs/operational-evidence.generated.json`
@@ -93,6 +104,8 @@
 - `npm run verify:real-device-runtime`
 - `npm run build:zk-enforced-runtime`
 - `npm run verify:zk-enforced-runtime`
+- `npm run build:zk-external-closure`
+- `npm run verify:zk-external-closure`
 - `npm run build:devnet-canary`
 - `npm run verify:devnet-canary`
 - `npm run test:devnet:resilience`
@@ -106,3 +119,4 @@
 - It does not replace real device QA across every wallet release and browser combination.
 - It binds browser/runtime behavior to diagnostics, wallet matrix, canary, resilience evidence, and real-device capture intake in one summary.
 - It exposes the stronger zk_enforced runtime blocker as a first-class evidence track instead of leaving it implicit in prose.
+- It tracks the remaining external closure path: runtime captures, external audit, and the canonical verifier-boundary freeze.

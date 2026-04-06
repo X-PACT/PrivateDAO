@@ -36,6 +36,9 @@ function main() {
       "docs/zk-enforced-runtime.generated.md",
       "docs/zk-enforced-runtime.generated.json",
       "docs/zk-enforced-operator-flow.md",
+      "docs/zk-external-closure.json",
+      "docs/zk-external-closure.generated.md",
+      "docs/zk-external-closure.generated.json",
       "docs/wallet-compatibility-matrix.generated.md",
       "docs/wallet-compatibility-matrix.generated.json",
       "docs/fair-voting.md",
@@ -58,6 +61,7 @@ function main() {
       "A read-only Devnet canary provides a lightweight operational signal between heavy stress runs.",
       "Real-device runtime capture intake is tracked separately so mobile and desktop wallet runs can be added without rewriting reviewer docs.",
       "A separate zk_enforced runtime capture path tracks stronger-path wallet evidence without overstating production readiness.",
+      "A separate zk external closure package tracks the remaining external execution path: captures, audit, and verifier-boundary freeze.",
       "Real client-side wallet QA remains required before any mainnet cutover claim.",
     ],
     pdaoToken: proof.pdaoToken

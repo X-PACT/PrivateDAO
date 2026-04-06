@@ -38,7 +38,7 @@
   "packageCounts": {
     "strategy": 9,
     "security": 11,
-    "zk": 23,
+    "zk": 26,
     "proof": 47,
     "operations": 21
   },
@@ -74,8 +74,8 @@
   },
   "cryptographicIntegrity": {
     "algorithm": "sha256",
-    "entryCount": 92,
-    "aggregateSha256": "0f08a8dc3e446be6993b1a3107f1ac5396cb3f47ad324a829750dbd1bf7a423a"
+    "entryCount": 95,
+    "aggregateSha256": "da348cc69673f125cba21328f5233ddca7c84d952e2bdb1e07d052d7b441776f"
   },
   "runtimeDocs": [
     "docs/fair-voting.md",
@@ -89,6 +89,9 @@
     "docs/zk-enforced-runtime.generated.md",
     "docs/zk-enforced-runtime.generated.json",
     "docs/zk-enforced-operator-flow.md",
+    "docs/zk-external-closure.json",
+    "docs/zk-external-closure.generated.md",
+    "docs/zk-external-closure.generated.json",
     "docs/operational-evidence.generated.md",
     "docs/operational-evidence.generated.json",
     "docs/runtime-evidence.generated.md",

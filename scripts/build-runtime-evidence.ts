@@ -96,6 +96,12 @@ type ZkEnforcedRuntimeEvidence = {
   };
 };
 
+type ZkExternalClosure = {
+  status: string;
+  pendingBlockingCount: number;
+  stages: Array<{ id: string; label: string; status: string; owner: string; blocking: boolean }>;
+};
+
 function main() {
   const runtime = readJson<RuntimeAttestation>("docs/runtime-attestation.generated.json");
   const walletMatrix = readJson<WalletMatrix>("docs/wallet-compatibility-matrix.generated.json");
@@ -104,6 +110,7 @@ function main() {
   const operational = readJson<OperationalEvidence>("docs/operational-evidence.generated.json");
   const realDevice = readJson<RealDeviceRuntimeEvidence>("docs/real-device-runtime.generated.json");
   const zkEnforced = readJson<ZkEnforcedRuntimeEvidence>("docs/zk-enforced-runtime.generated.json");
+  const zkExternalClosure = readJson<ZkExternalClosure>("docs/zk-external-closure.generated.json");
 
   const runtimeEvidence = {
     project: runtime.project,
@@ -151,6 +158,17 @@ function main() {
       diagnosticsCaptureCount: zkEnforced.summary.diagnosticsCaptureCount,
       pendingTargets: zkEnforced.summary.pendingTargets,
     },
+    zkExternalClosure: {
+      status: zkExternalClosure.status,
+      pendingBlockingCount: zkExternalClosure.pendingBlockingCount,
+      stages: zkExternalClosure.stages.map((stage) => ({
+        id: stage.id,
+        label: stage.label,
+        status: stage.status,
+        owner: stage.owner,
+        blocking: stage.blocking,
+      })),
+    },
     operational: {
       walletCount: operational.transactionSummary.walletCount,
       totalTxCount: operational.transactionSummary.totalTxCount,
@@ -173,6 +191,9 @@ function main() {
       "docs/zk-enforced-runtime.generated.md",
       "docs/zk-enforced-runtime.generated.json",
       "docs/zk-enforced-operator-flow.md",
+      "docs/zk-external-closure.json",
+      "docs/zk-external-closure.generated.md",
+      "docs/zk-external-closure.generated.json",
       "docs/runtime-attestation.generated.json",
       "docs/operational-evidence.generated.md",
       "docs/operational-evidence.generated.json",
@@ -190,6 +211,8 @@ function main() {
       "npm run verify:real-device-runtime",
       "npm run build:zk-enforced-runtime",
       "npm run verify:zk-enforced-runtime",
+      "npm run build:zk-external-closure",
+      "npm run verify:zk-external-closure",
       "npm run build:devnet-canary",
       "npm run verify:devnet-canary",
       "npm run test:devnet:resilience",
@@ -202,6 +225,7 @@ function main() {
       "It does not replace real device QA across every wallet release and browser combination.",
       "It binds browser/runtime behavior to diagnostics, wallet matrix, canary, resilience evidence, and real-device capture intake in one summary.",
       "It exposes the stronger zk_enforced runtime blocker as a first-class evidence track instead of leaving it implicit in prose.",
+      "It tracks the remaining external closure path: runtime captures, external audit, and the canonical verifier-boundary freeze.",
     ],
   };
 
@@ -239,6 +263,11 @@ function buildMarkdown(evidence: {
     finalizeSuccessCount: number;
     diagnosticsCaptureCount: number;
     pendingTargets: string[];
+  };
+  zkExternalClosure: {
+    status: string;
+    pendingBlockingCount: number;
+    stages: Array<{ id: string; label: string; status: string; owner: string; blocking: boolean }>;
   };
   operational: {
     walletCount: number;
@@ -308,6 +337,12 @@ ${evidence.matrixStatuses
 - Finalize success count: \`${evidence.zkEnforced.finalizeSuccessCount}\`
 - Diagnostics capture count: \`${evidence.zkEnforced.diagnosticsCaptureCount}\`
 - Pending targets: \`${evidence.zkEnforced.pendingTargets.join(", ") || "none"}\`
+
+## ZK External Closure
+
+- Status: \`${evidence.zkExternalClosure.status}\`
+- Pending blocking stages: \`${evidence.zkExternalClosure.pendingBlockingCount}\`
+${evidence.zkExternalClosure.stages.map((stage) => `- ${stage.label}: \`${stage.status}\` (${stage.owner})`).join("\n")}
 
 ## Operational Summary
 
