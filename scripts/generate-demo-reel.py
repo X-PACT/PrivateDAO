@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Generate an animated demo reel for PrivateDAO using repo assets."""
+"""Generate the legacy GIF demo reel for archival use.
+
+The canonical product video is rendered by `scripts/render-investor-video.sh`
+to `docs/assets/private-dao-investor-pitch.mp4`.
+"""
 
 from pathlib import Path
 

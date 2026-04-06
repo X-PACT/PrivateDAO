@@ -10,7 +10,7 @@ Project links:
 
 - repo: https://github.com/X-PACT/PrivateDAO
 - frontend: https://x-pact.github.io/PrivateDAO/
-- demo reel: https://github.com/X-PACT/PrivateDAO/blob/main/docs/assets/demo-reel.gif
+- investor reel: https://github.com/X-PACT/PrivateDAO/blob/main/docs/assets/private-dao-investor-pitch.mp4
 - devnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 
 We would value feedback from Solana builders, DAO operators, and governance infrastructure reviewers.
@@ -38,13 +38,13 @@ What is live today:
 - SDK helpers
 - proposal-listing and RPC health tooling
 - migration-oriented support for Realms-style DAO workflows
-- animated demo reel in the repository
+- a repo-native investor reel in the repository
 
 Links:
 
 - GitHub: https://github.com/X-PACT/PrivateDAO
 - Frontend: https://x-pact.github.io/PrivateDAO/
-- Demo reel: https://github.com/X-PACT/PrivateDAO/blob/main/docs/assets/demo-reel.gif
+- Investor reel: https://github.com/X-PACT/PrivateDAO/blob/main/docs/assets/private-dao-investor-pitch.mp4
 - Current PR: https://github.com/X-PACT/PrivateDAO/pull/6
 
 This should be described honestly as a serious devnet beta product today, not as an audited mainnet governance system.

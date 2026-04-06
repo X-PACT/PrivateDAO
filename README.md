@@ -20,7 +20,7 @@
 [![Anchor](https://img.shields.io/badge/Anchor-0.31.1-blue)](https://www.anchor-lang.com)
 [![License](https://img.shields.io/badge/License-AGPLv3%2B%20%7C%20Apache--2.0%20%7C%20MIT-green)](LICENSE)
 [![Pitch Assets](https://img.shields.io/badge/Pitch-Ready-ff6b6b)](SUBMISSION_FINAL.md)
-[![Demo Reel](https://img.shields.io/badge/Demo-Reel-14b8a6)](docs/assets/demo-reel.gif)
+[![Investor Reel](https://img.shields.io/badge/Investor-Reel-14b8a6)](docs/assets/private-dao-investor-pitch.mp4)
 [![Program](https://img.shields.io/badge/Program-Devnet%20Live-14F195)](https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet)
 [![Security Surface](https://img.shields.io/badge/Security%20Surface-Lifecycle%20%2B%20Replay%20%2B%20Treasury%20%2B%20Delegation%20Hardened-0f766e)](docs/security-review.md)
 [![Threat Model](https://img.shields.io/badge/Threat%20Model-Complete-1d4ed8)](docs/threat-model.md)
