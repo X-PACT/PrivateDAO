@@ -134,6 +134,32 @@ For the fastest high-signal review:
 
 - Local draft for copy/paste into a shared Google Doc: `docs/developer-tooling-proposal.md`
 
+## Weekly Hackathon Video Updates
+
+PrivateDAO now includes three upload-ready weekly update videos aligned to the standard hackathon weekly update format.
+
+- `Week 2`
+  - `docs/assets/weekly-updates/private-dao-week-2-update.mp4`
+  - focus: live governance product, commit-reveal, `zk_enforced`, runtime and backend read path
+- `Week 3`
+  - `docs/assets/weekly-updates/private-dao-week-3-update.mp4`
+  - focus: confidential payroll and bonus approvals, REFHE settlement, backend metrics, audit-scale readiness
+- `Week 4`
+  - `docs/assets/weekly-updates/private-dao-week-4-update.mp4`
+  - focus: 350-wallet wave plan, evidence surfaces, go-live blockers, mainnet direction
+
+All three updates are:
+
+- 16:9 landscape
+- 36 seconds each
+- silent by default
+- ready for YouTube, Loom, or Vimeo upload
+
+See:
+
+- `docs/weekly-video-updates.md`
+- `/home/x-pact/Desktop/PrivateDAO-Weekly-Updates`
+
 ## Token Surface
 
 PrivateDAO now publishes a live Devnet governance voting token surface that is also the canonical governance mint for the current reviewer-facing DAO:
