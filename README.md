@@ -144,10 +144,11 @@ For the fastest high-signal review:
 10. Read `docs/magicblock-runtime-evidence.md`
 11. Read `docs/read-node-indexer.md`
 12. Read `docs/read-node-same-domain-deploy.md`
-13. Read `docs/phase-c-hardening.md`
-14. Read `docs/zk-verifier-strategy.md`
-15. Read `docs/canonical-verifier-boundary-decision.md`
-16. Read `docs/zk-external-closure.generated.md`
+13. Read `docs/colosseum-competitive-analysis.generated.md`
+14. Read `docs/phase-c-hardening.md`
+15. Read `docs/zk-verifier-strategy.md`
+16. Read `docs/canonical-verifier-boundary-decision.md`
+17. Read `docs/zk-external-closure.generated.md`
 
 ## Proposal Draft
 
@@ -187,6 +188,20 @@ Automation:
 
 - `npm run render:weekly-updates`
 - `npm run verify:weekly-updates`
+
+## Competitive Positioning
+
+PrivateDAO now carries a Copilot-backed competitive positioning surface so the repo does not rely on unsupported market claims.
+
+- `docs/colosseum-competitive-source.json`
+- `docs/colosseum-competitive-analysis.generated.md`
+- `docs/colosseum-competitive-analysis.generated.json`
+
+Automation:
+
+- `npm run refresh:colosseum-competitive`
+- `npm run build:colosseum-competitive`
+- `npm run verify:colosseum-competitive`
 
 ## Token Surface
 

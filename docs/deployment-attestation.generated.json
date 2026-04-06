@@ -33,6 +33,7 @@
     "zkCompanionStack": "verified",
     "reviewerSurface": "verified",
     "operationsSurface": "verified",
+    "competitivePositioningSurface": "verified",
     "strategyEngine": "not-in-repo",
     "livePerformance": "not-in-repo",
     "externalAudit": "pending",
@@ -69,6 +70,7 @@
     "npm run verify:submission-registry",
     "npm run verify:registry-consistency",
     "npm run verify:generated-artifacts",
+    "npm run verify:colosseum-competitive",
     "npm run verify:supply-chain-attestation",
     "npm run verify:release-ceremony-attestation",
     "npm run verify:operational-evidence",
@@ -100,12 +102,12 @@
     "npm run verify:review-surface",
     "npm run verify:all"
   ],
-  "gateCount": 60,
+  "gateCount": 61,
   "packageCounts": {
-    "strategy": 9,
+    "strategy": 12,
     "security": 15,
     "zk": 28,
-    "proof": 74,
+    "proof": 76,
     "operations": 29
   },
   "zk": {

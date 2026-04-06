@@ -1,0 +1,1344 @@
+{
+  "project": "PrivateDAO",
+  "generatedAt": "2026-04-06T18:39:29.693Z",
+  "apiBase": "https://copilot.colosseum.com/api/v1",
+  "queries": {
+    "generalProjects": "private governance dao privacy confidential payroll treasury",
+    "acceleratorProjects": "private governance dao privacy confidential payroll treasury",
+    "winnerProjects": "private governance dao privacy confidential payroll treasury",
+    "archives": "private governance confidential payments dao treasury privacy"
+  },
+  "filters": {
+    "hackathons": [
+      {
+        "slug": "renaissance",
+        "name": "Renaissance",
+        "startDate": "2024-03-04",
+        "projectCount": 1076,
+        "winnerCount": 85
+      },
+      {
+        "slug": "radar",
+        "name": "Radar",
+        "startDate": "2024-09-02",
+        "projectCount": 1360,
+        "winnerCount": 58
+      },
+      {
+        "slug": "breakout",
+        "name": "Breakout",
+        "startDate": "2025-04-14",
+        "projectCount": 1416,
+        "winnerCount": 85
+      },
+      {
+        "slug": "cypherpunk",
+        "name": "Cypherpunk",
+        "startDate": "2025-09-25",
+        "projectCount": 1576,
+        "winnerCount": 65
+      }
+    ]
+  },
+  "generalProjects": [
+    {
+      "slug": "privment",
+      "name": "Privment",
+      "oneLiner": "A platform for generating private invoices and executing confidential payments on-chain.",
+      "similarity": 0.08093795093795093,
+      "hackathon": {
+        "name": "Breakout",
+        "slug": "breakout",
+        "startDate": "2025-04-14"
+      },
+      "tracks": [
+        {
+          "name": "Consumer Apps",
+          "key": "breakout/consumer-apps"
+        },
+        {
+          "name": "DeFi",
+          "key": "breakout/defi"
+        },
+        {
+          "name": "Infrastructure",
+          "key": "breakout/infrastructure"
+        }
+      ],
+      "links": {
+        "github": "https://github.com/BHEEEET/privment",
+        "demo": null,
+        "presentation": "https://www.loom.com/share/75246f9563cf4c2cbccb783e5492769b?sid=4b5fa89e-70fd-4cec-8c6a-f53a56d826d1 ",
+        "technicalDemo": "https://www.loom.com/share/a7abd5fe8d7145f9a59131fefa9e2bd5?sid=b35020d5-20b8-41b4-81d4-a6b838438821 ",
+        "twitter": "https://twitter.com/limitdao",
+        "colosseum": "https://arena.colosseum.org/projects/explore/privment"
+      },
+      "evidence": [
+        "Private invoices and confidential payments",
+        "A platform for generating private invoices and executing confidential payments on-chain."
+      ],
+      "prize": null,
+      "accelerator": null,
+      "metrics": {
+        "updatesCount": 0
+      },
+      "team": {
+        "count": 1
+      },
+      "tags": {
+        "problemTags": [
+          "public transaction history",
+          "lack of financial privacy",
+          "exposed business relationships",
+          "vulnerable invoice data"
+        ],
+        "solutionTags": [
+          "zero-knowledge proofs",
+          "private payment rails",
+          "stealth addresses",
+          "encrypted data storage"
+        ],
+        "primitives": [
+          "zk-proof",
+          "stealth-address",
+          "stablecoin",
+          "payments"
+        ],
+        "techStack": [
+          "solana",
+          "rust",
+          "zkp"
+        ],
+        "targetUsers": [
+          "freelancers",
+          "b2b companies",
+          "privacy-conscious users",
+          "dao contributors"
+        ]
+      },
+      "crowdedness": 260,
+      "cluster": {
+        "key": "v1-c13",
+        "label": "Solana Privacy and Identity Management"
+      }
+    },
+    {
+      "slug": "privatevote-dao",
+      "name": "PrivateVote - 基于零知识证明的匿名DAO投票系统",
+      "oneLiner": "A zero-knowledge proof-based anonymous voting system for DAO governance on Solana.",
+      "similarity": 0.05705645161290322,
+      "hackathon": {
+        "name": "Cypherpunk",
+        "slug": "cypherpunk",
+        "startDate": "2025-09-25"
+      },
+      "tracks": [
+        {
+          "name": "DeFi",
+          "key": "cypherpunk/defi"
+        },
+        {
+          "name": "Infrastructure",
+          "key": "cypherpunk/infrastructure"
+        },
+        {
+          "name": "Undefined",
+          "key": "cypherpunk/undefined"
+        }
+      ],
+      "links": {
+        "github": "https://github.com/feng001-8/privatevote",
+        "demo": null,
+        "presentation": "https://www.loom.com/share/5f3fe083949744359accd9ac2c16cd6e",
+        "technicalDemo": "https://www.loom.com/share/5f3fe083949744359accd9ac2c16cd6e",
+        "twitter": null,
+        "colosseum": "https://arena.colosseum.org/projects/explore/privatevote-dao"
+      },
+      "evidence": [
+        "PrivateVote 是一个建立在 Solana 区块链上的创新性匿名投票解决方案，旨在解决当前 DAO 治理 中",
+        "A zero-knowledge proof-based anonymous voting system for DAO governance on Solana."
+      ],
+      "prize": null,
+      "accelerator": null,
+      "metrics": {
+        "updatesCount": 0
+      },
+      "team": {
+        "count": 1
+      },
+      "tags": {
+        "problemTags": [
+          "voter intimidation",
+          "governance transparency paradox",
+          "lack of privacy in dao voting",
+          "vote coercion"
+        ],
+        "solutionTags": [
+          "zero-knowledge proofs",
+          "encrypted vote choices",
+          "on-chain verification",
+          "anonymous tallying"
+        ],
+        "primitives": [
+          "zk-proof",
+          "dao",
+          "governance",
+          "voting"
+        ],
+        "techStack": [
+          "solana",
+          "rust",
+          "zero-knowledge proofs"
+        ],
+        "targetUsers": [
+          "dao members",
+          "governance participants",
+          "protocol contributors"
+        ]
+      },
+      "crowdedness": 130,
+      "cluster": {
+        "key": "v1-c2",
+        "label": "Solana-based Decentralized Voting Systems"
+      }
+    },
+    {
+      "slug": "fairvote-1",
+      "name": "FairVote",
+      "oneLiner": "A privacy-focused voting platform designed to simplify group decision-making and reduce decision fatigue.",
+      "similarity": 0.05202020202020202,
+      "hackathon": {
+        "name": "Cypherpunk",
+        "slug": "cypherpunk",
+        "startDate": "2025-09-25"
+      },
+      "tracks": [
+        {
+          "name": "Consumer Apps",
+          "key": "cypherpunk/consumer-apps"
+        }
+      ],
+      "links": {
+        "github": "https://github.com/taturuben/Solana_Project_Fairvote",
+        "demo": null,
+        "presentation": "https://youtu.be/XT9g-lVKGIY?start=6734&end=6985",
+        "technicalDemo": "https://youtu.be/XT9g-lVKGIY?start=7004&end=7268",
+        "twitter": null,
+        "colosseum": "https://arena.colosseum.org/projects/explore/fairvote-1"
+      },
+      "evidence": [
+        "easy-to-use, privacy focused voting platform to stop your decision fatigue once",
+        "A privacy-focused voting platform designed to simplify group decision-making and reduce decision fatigue."
+      ],
+      "prize": null,
+      "accelerator": null,
+      "metrics": {
+        "updatesCount": 0
+      },
+      "team": {
+        "count": 2
+      },
+      "tags": {
+        "problemTags": [
+          "decision fatigue",
+          "voter privacy concerns",
+          "centralized voting bias"
+        ],
+        "solutionTags": [
+          "anonymous voting",
+          "decentralized governance",
+          "user-friendly interface"
+        ],
+        "primitives": [
+          "voting",
+          "zk-proof",
+          "dao"
+        ],
+        "techStack": [
+          "solana",
+          "react",
+          "anchor"
+        ],
+        "targetUsers": [
+          "dao members",
+          "community organizers",
+          "social groups"
+        ]
+      },
+      "crowdedness": 130,
+      "cluster": {
+        "key": "v1-c2",
+        "label": "Solana-based Decentralized Voting Systems"
+      }
+    },
+    {
+      "slug": "privapoll",
+      "name": "Privapoll",
+      "oneLiner": "Private, anti-collusion voting platform using WorldCoin for sybil resistance and MACI on Scroll.",
+      "similarity": 0.04285714285714286,
+      "hackathon": {
+        "name": "Radar",
+        "slug": "radar",
+        "startDate": "2024-09-02"
+      },
+      "tracks": [
+        {
+          "name": "Infrastructure",
+          "key": "radar/infrastructure"
+        }
+      ],
+      "links": {
+        "github": "https://github.com/LingSiewWin/Privapoll",
+        "demo": null,
+        "presentation": "https://drive.google.com/file/d/16GTqJfWo490JZDUrvJoTiMm1Jp3uMLG_/view?usp=sharing",
+        "technicalDemo": null,
+        "twitter": null,
+        "colosseum": "https://arena.colosseum.org/projects/explore/privapoll"
+      },
+      "evidence": [
+        "project to keep voting humane and private. Built on WorldCoin and Scroll, powered by MACI (Minimal Anti Collusion Infrastructure) to ensure a fair voting process that is sybril resistance. While ensuring a diverse experience",
+        "Private, anti-collusion voting platform using WorldCoin for sybil resistance and MACI on Scroll."
+      ],
+      "prize": null,
+      "accelerator": null,
+      "metrics": {
+        "updatesCount": 0
+      },
+      "team": {
+        "count": 1
+      },
+      "tags": {
+        "problemTags": [
+          "voter collusion",
+          "sybil attacks",
+          "lack of privacy in governance",
+          "centralized voting systems"
+        ],
+        "solutionTags": [
+          "minimal anti-collusion infrastructure",
+          "biometric identity verification",
+          "zero-knowledge proofs",
+          "layer 2 scaling"
+        ],
+        "primitives": [
+          "maci",
+          "zk-proof",
+          "identity",
+          "governance",
+          "sybil-resistance"
+        ],
+        "techStack": [
+          "scroll",
+          "worldcoin",
+          "solidity",
+          "nextjs",
+          "ethers",
+          "typescript"
+        ],
+        "targetUsers": [
+          "daos",
+          "governance participants",
+          "decentralized communities",
+          "voters"
+        ]
+      },
+      "crowdedness": 130,
+      "cluster": {
+        "key": "v1-c2",
+        "label": "Solana-based Decentralized Voting Systems"
+      }
+    },
+    {
+      "slug": "openair-dao",
+      "name": "OpenAir DAO",
+      "oneLiner": "Decentralized community-owned air quality monitoring network using DePIN principles.",
+      "similarity": 0.03125,
+      "hackathon": {
+        "name": "Breakout",
+        "slug": "breakout",
+        "startDate": "2025-04-14"
+      },
+      "tracks": [
+        {
+          "name": "DePIN",
+          "key": "breakout/depin"
+        }
+      ],
+      "links": {
+        "github": "https://github.com/openairdao/OpenAirDAO",
+        "demo": null,
+        "presentation": "https://www.loom.com/share/5d4dc695f3fb41b9848c7abc18b9a308?sid=02e3196b-f668-49db-a18d-af13d8c9ec01",
+        "technicalDemo": "https://www.youtube.com/watch?v=63QM8IcVDJA",
+        "twitter": "https://twitter.com/OpenAirDAO",
+        "colosseum": "https://arena.colosseum.org/projects/explore/openair-dao"
+      },
+      "evidence": [
+        "OpenAir DAO is a decentralized and community-owned air quality monitoring network",
+        "Decentralized community-owned air quality monitoring network using DePIN principles."
+      ],
+      "prize": null,
+      "accelerator": null,
+      "metrics": {
+        "updatesCount": 0
+      },
+      "team": {
+        "count": 1
+      },
+      "tags": {
+        "problemTags": [
+          "lack of localized air quality data",
+          "centralized environmental reporting",
+          "high cost of monitoring stations",
+          "data transparency issues"
+        ],
+        "solutionTags": [
+          "decentralized physical infrastructure network",
+          "crowdsourced sensor data",
+          "tokenized incentives for hardware hosts",
+          "dao governance"
+        ],
+        "primitives": [
+          "dao",
+          "depin",
+          "token incentives",
+          "iot"
+        ],
+        "techStack": [
+          "solana",
+          "iot sensors"
+        ],
+        "targetUsers": [
+          "environmental researchers",
+          "local communities",
+          "iot device hosts",
+          "urban planners"
+        ]
+      },
+      "crowdedness": 189,
+      "cluster": {
+        "key": "v1-c10",
+        "label": "Solana DePIN Infrastructure Networks"
+      }
+    }
+  ],
+  "acceleratorProjects": [
+    {
+      "slug": "cloak-or-solana-privacy-layer",
+      "name": "Cloak | Solana Privacy Layer",
+      "oneLiner": "A privacy layer for Solana enabling anonymous payments through decentralized pools and miner-driven anonymity sets.",
+      "similarity": 0.08875855327468231,
+      "hackathon": {
+        "name": "Cypherpunk",
+        "slug": "cypherpunk",
+        "startDate": "2025-09-25"
+      },
+      "tracks": [
+        {
+          "name": "Consumer Apps",
+          "key": "cypherpunk/consumer-apps"
+        },
+        {
+          "name": "DeFi",
+          "key": "cypherpunk/defi"
+        },
+        {
+          "name": "Infrastructure",
+          "key": "cypherpunk/infrastructure"
+        }
+      ],
+      "links": {
+        "github": "https://github.com/Machine-Labz/cloak",
+        "demo": null,
+        "presentation": "https://www.loom.com/share/d46a6ee19449467d815ab719e4ee6ccc",
+        "technicalDemo": "https://youtu.be/csxQMtTNtuk",
+        "twitter": "https://twitter.com/cloaklabz",
+        "colosseum": "https://arena.colosseum.org/projects/explore/cloak-or-solana-privacy-layer"
+      },
+      "evidence": [
+        "only sees “pool → recipient,” never “sender → recipient,” while every new deposit and mined withdrawal expands the overall anonymity set. Cloak keeps the system running smoothly and decentralized — users transact privately, miners earn rewa",
+        "A privacy layer for Solana enabling anonymous payments through decentralized pools and miner-driven anonymity sets."
+      ],
+      "prize": {
+        "type": "TRACK_PRIZE",
+        "name": "3rd Place - Stablecoins",
+        "placement": 3,
+        "amount": 15000,
+        "trackName": "Stablecoins"
+      },
+      "accelerator": {
+        "companySlug": "cloak",
+        "companyName": "Cloak",
+        "batchKey": "accelerator/c4",
+        "batchName": "C4"
+      },
+      "metrics": {
+        "updatesCount": 0
+      },
+      "team": {
+        "count": 2
+      },
+      "tags": {
+        "problemTags": [
+          "transaction traceability",
+          "public ledger exposure",
+          "lack of financial privacy"
+        ],
+        "solutionTags": [
+          "privacy pool",
+          "transaction mixing",
+          "miner-generated volume"
+        ],
+        "primitives": [
+          "privacy pool",
+          "token-mixing",
+          "incentivized mining"
+        ],
+        "techStack": [
+          "solana",
+          "rust",
+          "anchor",
+          "react"
+        ],
+        "targetUsers": [
+          "privacy-conscious users",
+          "defi traders",
+          "crypto miners"
+        ]
+      },
+      "crowdedness": 260,
+      "cluster": {
+        "key": "v1-c13",
+        "label": "Solana Privacy and Identity Management"
+      }
+    },
+    {
+      "slug": "blackpool",
+      "name": "Blackpool",
+      "oneLiner": "A privacy-preserving, MEV-resistant decentralized exchange on Solana using zero-knowledge proofs.",
+      "similarity": 0.08735948191593353,
+      "hackathon": {
+        "name": "Radar",
+        "slug": "radar",
+        "startDate": "2024-09-02"
+      },
+      "tracks": [
+        {
+          "name": "DeFi",
+          "key": "radar/defi"
+        }
+      ],
+      "links": {
+        "github": "https://github.com/vitorpy/cyklon",
+        "demo": null,
+        "presentation": "https://drive.proton.me/urls/6CMM1YVN8C#O7MWVtEGNi8Y",
+        "technicalDemo": null,
+        "twitter": "https://twitter.com/https://x.com/blackpooldao",
+        "colosseum": "https://arena.colosseum.org/projects/explore/blackpool"
+      },
+      "evidence": [
+        "with lightning-fast, private, and MEV-resistant trades. Our secret weapon? Privacy-preserving execution powered by zero-knowledge proofs. This cutting-edge technology shields your trades from prying eyes while maintaining transparency. Say ",
+        "A privacy-preserving, MEV-resistant decentralized exchange on Solana using zero-knowledge proofs."
+      ],
+      "prize": {
+        "type": "TRACK_PRIZE",
+        "name": "2nd Place - DeFi",
+        "placement": 2,
+        "amount": 20000,
+        "trackName": "DeFi"
+      },
+      "accelerator": {
+        "companySlug": "darklake-1",
+        "companyName": "DARKLAKE",
+        "batchKey": "accelerator/c2",
+        "batchName": "C2"
+      },
+      "metrics": {
+        "updatesCount": 0
+      },
+      "team": {
+        "count": 1
+      },
+      "tags": {
+        "problemTags": [
+          "front-running",
+          "mev exploitation",
+          "lack of trade privacy",
+          "inefficient execution"
+        ],
+        "solutionTags": [
+          "zk-proof execution",
+          "private order matching",
+          "mev-resistant dex",
+          "shielded transactions"
+        ],
+        "primitives": [
+          "dex",
+          "zk-proof",
+          "mev-protection",
+          "privacy"
+        ],
+        "techStack": [
+          "solana",
+          "rust",
+          "zero-knowledge proofs"
+        ],
+        "targetUsers": [
+          "defi traders",
+          "institutional investors",
+          "privacy-conscious users"
+        ]
+      },
+      "crowdedness": 323,
+      "cluster": {
+        "key": "v1-c9",
+        "label": "Solana DEX and Trading Infrastructure"
+      }
+    },
+    {
+      "slug": "degen-cash",
+      "name": "Degen Cash",
+      "oneLiner": "Gamified, privacy-preserving stablecoin on Solana using Arcium for confidential transfers and randomized mint/burns.",
+      "similarity": 0.08113416988416988,
+      "hackathon": {
+        "name": "Cypherpunk",
+        "slug": "cypherpunk",
+        "startDate": "2025-09-25"
+      },
+      "tracks": [
+        {
+          "name": "Consumer Apps",
+          "key": "cypherpunk/consumer-apps"
+        },
+        {
+          "name": "DeFi",
+          "key": "cypherpunk/defi"
+        },
+        {
+          "name": "Stablecoins",
+          "key": "cypherpunk/stablecoins"
+        }
+      ],
+      "links": {
+        "github": "https://github.com/spacemandev-git/degen-cash",
+        "demo": null,
+        "presentation": "https://youtu.be/p_Rw6clWL8Q",
+        "technicalDemo": "https://youtu.be/NBl9qXKu_ck",
+        "twitter": "https://twitter.com/spacemandev",
+        "colosseum": "https://arena.colosseum.org/projects/explore/degen-cash"
+      },
+      "evidence": [
+        "Degen Cash is a new fun financial primitive",
+        "Gamified, privacy-preserving stablecoin on Solana using Arcium for confidential transfers and randomized mint/burns."
+      ],
+      "prize": null,
+      "accelerator": {
+        "companySlug": "spaceman-gaming",
+        "companyName": "Spaceman Gaming",
+        "batchKey": "accelerator/c1",
+        "batchName": "C1"
+      },
+      "metrics": {
+        "updatesCount": 0
+      },
+      "team": {
+        "count": 1
+      },
+      "tags": {
+        "problemTags": [
+          "public transaction history",
+          "predictable payment fees",
+          "lack of privacy in defi"
+        ],
+        "solutionTags": [
+          "confidential computing",
+          "multi-party computation",
+          "randomized mint and burn",
+          "encrypted state"
+        ],
+        "primitives": [
+          "stablecoin",
+          "mpc",
+          "confidential computing",
+          "privacy",
+          "burn-and-mint"
+        ],
+        "techStack": [
+          "solana",
+          "arcium",
+          "usdc"
+        ],
+        "targetUsers": [
+          "defi traders",
+          "privacy-conscious users",
+          "crypto gamers"
+        ]
+      },
+      "crowdedness": 163,
+      "cluster": {
+        "key": "v1-c6",
+        "label": "Gamified Crypto Trading and Competition"
+      }
+    },
+    {
+      "slug": "unruggable-2",
+      "name": "Unruggable",
+      "oneLiner": "Solana-exclusive hardware wallet combining hot wallet UX with hardware security and transaction introspection.",
+      "similarity": 0.07925696594427245,
+      "hackathon": {
+        "name": "Breakout",
+        "slug": "breakout",
+        "startDate": "2025-04-14"
+      },
+      "tracks": [
+        {
+          "name": "Consumer Apps",
+          "key": "breakout/consumer-apps"
+        },
+        {
+          "name": "Infrastructure",
+          "key": "breakout/infrastructure"
+        }
+      ],
+      "links": {
+        "github": "https://github.com/hogyzen12/unruggable-app",
+        "demo": null,
+        "presentation": "https://youtu.be/dHU004ymhA0",
+        "technicalDemo": "https://www.youtube.com/watch?v=Kc5-X0dr1kk",
+        "twitter": "https://twitter.com/unruggable_io",
+        "colosseum": "https://arena.colosseum.org/projects/explore/unruggable-2"
+      },
+      "evidence": [
+        "Unruggable is the first hardware wallet designed exclusively",
+        "Solana-exclusive hardware wallet combining hot wallet UX with hardware security and transaction introspection."
+      ],
+      "prize": {
+        "type": "TRACK_PRIZE",
+        "name": "3rd Place - Infrastructure",
+        "placement": 3,
+        "amount": 15000,
+        "trackName": "Infrastructure"
+      },
+      "accelerator": {
+        "companySlug": "unruggable",
+        "companyName": "Unruggable",
+        "batchKey": "accelerator/c4",
+        "batchName": "C4"
+      },
+      "metrics": {
+        "updatesCount": 0
+      },
+      "team": {
+        "count": 3
+      },
+      "tags": {
+        "problemTags": [
+          "hardware wallet complexity",
+          "blind signing",
+          "lack of transaction transparency",
+          "vulnerability to rug pulls"
+        ],
+        "solutionTags": [
+          "custom esp32 firmware",
+          "transaction introspection",
+          "multisig wallet integration",
+          "confidential stablecoins"
+        ],
+        "primitives": [
+          "hardware wallet",
+          "multisig",
+          "confidential transfers",
+          "stablecoin",
+          "ed25519"
+        ],
+        "techStack": [
+          "solana",
+          "rust",
+          "esp32",
+          "go",
+          "squads",
+          "el gamal"
+        ],
+        "targetUsers": [
+          "solana users",
+          "security-conscious traders",
+          "dao operators",
+          "privacy-focused users"
+        ]
+      },
+      "crowdedness": 260,
+      "cluster": {
+        "key": "v1-c13",
+        "label": "Solana Privacy and Identity Management"
+      }
+    },
+    {
+      "slug": "alphafc",
+      "name": "AlphaFC",
+      "oneLiner": "Empowering football fans with real-world club governance and fractional ownership through tokenized shares.",
+      "similarity": 0.053571428571428575,
+      "hackathon": {
+        "name": "Radar",
+        "slug": "radar",
+        "startDate": "2024-09-02"
+      },
+      "tracks": [
+        {
+          "name": "Consumer",
+          "key": "radar/consumer"
+        },
+        {
+          "name": "DAOs & Network States",
+          "key": "radar/daos--network-states"
+        },
+        {
+          "name": "Gaming",
+          "key": "radar/gaming"
+        }
+      ],
+      "links": {
+        "github": "https://github.com/AlphaFC-XYZ/AFC-Platform",
+        "demo": null,
+        "presentation": "https://drive.google.com/file/d/12QhaYRtqevncd32qX0dNo1bYH1GO7_4o/view?usp=sharing",
+        "technicalDemo": null,
+        "twitter": "https://twitter.com/https://x.com/alphafcxyz",
+        "colosseum": "https://arena.colosseum.org/projects/explore/alphafc"
+      },
+      "evidence": [
+        "football fans real decision-making power and financial stake through Club Shares—tokens that allow fans to vote on key decisions like scouting, trades, and team management. Features include a MyTeam page for managing rosters",
+        "Empowering football fans with real-world club governance and fractional ownership through tokenized shares."
+      ],
+      "prize": {
+        "type": "TRACK_PRIZE",
+        "name": "1st Place - DAOs & Network States",
+        "placement": 1,
+        "amount": 25000,
+        "trackName": "DAOs & Network States"
+      },
+      "accelerator": {
+        "companySlug": "alphafc",
+        "companyName": "AlphaFC",
+        "batchKey": "accelerator/c2",
+        "batchName": "C2"
+      },
+      "metrics": {
+        "updatesCount": 0
+      },
+      "team": {
+        "count": 2
+      },
+      "tags": {
+        "problemTags": [
+          "lack of fan influence",
+          "centralized sports management",
+          "high barriers to sports ownership"
+        ],
+        "solutionTags": [
+          "tokenized club shares",
+          "decentralized voting",
+          "sports management saas"
+        ],
+        "primitives": [
+          "dao",
+          "governance tokens",
+          "token-gating",
+          "airdrop"
+        ],
+        "techStack": [
+          "solana",
+          "anchor",
+          "react"
+        ],
+        "targetUsers": [
+          "football fans",
+          "sports enthusiasts",
+          "dao operators"
+        ]
+      },
+      "crowdedness": 192,
+      "cluster": {
+        "key": "v1-c12",
+        "label": "Blockchain Music and Royalty Platforms"
+      }
+    }
+  ],
+  "winnerProjects": [
+    {
+      "slug": "cloak-or-solana-privacy-layer",
+      "name": "Cloak | Solana Privacy Layer",
+      "oneLiner": "A privacy layer for Solana enabling anonymous payments through decentralized pools and miner-driven anonymity sets.",
+      "similarity": 0.08418271644078096,
+      "hackathon": {
+        "name": "Cypherpunk",
+        "slug": "cypherpunk",
+        "startDate": "2025-09-25"
+      },
+      "tracks": [
+        {
+          "name": "Consumer Apps",
+          "key": "cypherpunk/consumer-apps"
+        },
+        {
+          "name": "DeFi",
+          "key": "cypherpunk/defi"
+        },
+        {
+          "name": "Infrastructure",
+          "key": "cypherpunk/infrastructure"
+        }
+      ],
+      "links": {
+        "github": "https://github.com/Machine-Labz/cloak",
+        "demo": null,
+        "presentation": "https://www.loom.com/share/d46a6ee19449467d815ab719e4ee6ccc",
+        "technicalDemo": "https://youtu.be/csxQMtTNtuk",
+        "twitter": "https://twitter.com/cloaklabz",
+        "colosseum": "https://arena.colosseum.org/projects/explore/cloak-or-solana-privacy-layer"
+      },
+      "evidence": [
+        "only sees “pool → recipient,” never “sender → recipient,” while every new deposit and mined withdrawal expands the overall anonymity set. Cloak keeps the system running smoothly and decentralized — users transact privately, miners earn rewa",
+        "A privacy layer for Solana enabling anonymous payments through decentralized pools and miner-driven anonymity sets."
+      ],
+      "prize": {
+        "type": "TRACK_PRIZE",
+        "name": "3rd Place - Stablecoins",
+        "placement": 3,
+        "amount": 15000,
+        "trackName": "Stablecoins"
+      },
+      "accelerator": {
+        "companySlug": "cloak",
+        "companyName": "Cloak",
+        "batchKey": "accelerator/c4",
+        "batchName": "C4"
+      },
+      "metrics": {
+        "updatesCount": 0
+      },
+      "team": {
+        "count": 2
+      },
+      "tags": {
+        "problemTags": [
+          "transaction traceability",
+          "public ledger exposure",
+          "lack of financial privacy"
+        ],
+        "solutionTags": [
+          "privacy pool",
+          "transaction mixing",
+          "miner-generated volume"
+        ],
+        "primitives": [
+          "privacy pool",
+          "token-mixing",
+          "incentivized mining"
+        ],
+        "techStack": [
+          "solana",
+          "rust",
+          "anchor",
+          "react"
+        ],
+        "targetUsers": [
+          "privacy-conscious users",
+          "defi traders",
+          "crypto miners"
+        ]
+      },
+      "crowdedness": 260,
+      "cluster": {
+        "key": "v1-c13",
+        "label": "Solana Privacy and Identity Management"
+      }
+    },
+    {
+      "slug": "syncvote",
+      "name": "Syncvote",
+      "oneLiner": "Automate and execute complex DAO governance workflows on Solana by extending the SPL Governance program.",
+      "similarity": 0.07879728666510728,
+      "hackathon": {
+        "name": "Renaissance",
+        "slug": "renaissance",
+        "startDate": "2024-03-04"
+      },
+      "tracks": [
+        {
+          "name": "DAOs & Communities",
+          "key": "renaissance/daos--communities"
+        },
+        {
+          "name": "Infrastructure",
+          "key": "renaissance/infrastructure"
+        }
+      ],
+      "links": {
+        "github": "https://github.com/cattermelon-xyz/dash; https://github.com/cattermelon-xyz/syncvote",
+        "demo": null,
+        "presentation": "https://www.loom.com/share/1065e6aa9c7542079d680681ff49625a?sid=42f5abc8-771e-4713-8d2c-c0001a093292",
+        "technicalDemo": null,
+        "twitter": null,
+        "colosseum": "https://arena.colosseum.org/projects/explore/syncvote"
+      },
+      "evidence": [
+        "Syncvote gives DAOs the ability to publish and",
+        "Automate and execute complex DAO governance workflows on Solana by extending the SPL Governance program."
+      ],
+      "prize": {
+        "type": "HONORABLE_MENTION",
+        "name": "Honorable Mention - DAOs & Communities",
+        "placement": null,
+        "amount": null,
+        "trackName": "DAOs & Communities"
+      },
+      "accelerator": null,
+      "metrics": {
+        "updatesCount": 0
+      },
+      "team": {
+        "count": 3
+      },
+      "tags": {
+        "problemTags": [
+          "rigid governance structures",
+          "manual proposal execution",
+          "fragmented dao tooling",
+          "limited spl governance flexibility"
+        ],
+        "solutionTags": [
+          "governance automation",
+          "workflow engine",
+          "on-chain program extension",
+          "interoperable governance"
+        ],
+        "primitives": [
+          "dao",
+          "governance",
+          "smart contracts",
+          "workflow automation"
+        ],
+        "techStack": [
+          "solana",
+          "spl governance",
+          "rust",
+          "dash program"
+        ],
+        "targetUsers": [
+          "dao operators",
+          "governance participants",
+          "web3 communities"
+        ]
+      },
+      "crowdedness": 130,
+      "cluster": {
+        "key": "v1-c2",
+        "label": "Solana-based Decentralized Voting Systems"
+      }
+    },
+    {
+      "slug": "quadratus-protocol",
+      "name": "Quadratus Protocol",
+      "oneLiner": "Fully on-chain DAO governance protocol implementing quadratic voting and automated proposal execution.",
+      "similarity": 0.07774436090225563,
+      "hackathon": {
+        "name": "Renaissance",
+        "slug": "renaissance",
+        "startDate": "2024-03-04"
+      },
+      "tracks": [
+        {
+          "name": "DAOs & Communities",
+          "key": "renaissance/daos--communities"
+        },
+        {
+          "name": "Infrastructure",
+          "key": "renaissance/infrastructure"
+        }
+      ],
+      "links": {
+        "github": "https://github.com/orgs/QuadratusDAO/repositories",
+        "demo": null,
+        "presentation": "https://docsend.com/view/chxk6bgyxday2rcc",
+        "technicalDemo": null,
+        "twitter": "https://twitter.com/https://twitter.com/QuadratusDAO",
+        "colosseum": "https://arena.colosseum.org/projects/explore/quadratus-protocol"
+      },
+      "evidence": [
+        "Quadratus Protocol is a novel fully on-chain DAO Governance model, designed to ensure truly fair proposal outcomes. The protocol implements a Quadratic Voting mechanism, which aims to mitigate the influence of large token holders",
+        "Fully on-chain DAO governance protocol implementing quadratic voting and automated proposal execution."
+      ],
+      "prize": {
+        "type": "TRACK_PRIZE",
+        "name": "5th Place - DAOs & Communities",
+        "placement": 5,
+        "amount": 5000,
+        "trackName": "DAOs & Communities"
+      },
+      "accelerator": null,
+      "metrics": {
+        "updatesCount": 0
+      },
+      "team": {
+        "count": 1
+      },
+      "tags": {
+        "problemTags": [
+          "whale dominance in governance",
+          "centralized proposal execution",
+          "unfair voting power distribution"
+        ],
+        "solutionTags": [
+          "quadratic voting",
+          "on-chain automation",
+          "decentralized governance"
+        ],
+        "primitives": [
+          "dao",
+          "governance",
+          "quadratic voting",
+          "token burning",
+          "smart contract automation"
+        ],
+        "techStack": [
+          "solana",
+          "anchor",
+          "rust"
+        ],
+        "targetUsers": [
+          "dao operators",
+          "token holders",
+          "governance participants"
+        ]
+      },
+      "crowdedness": 130,
+      "cluster": {
+        "key": "v1-c2",
+        "label": "Solana-based Decentralized Voting Systems"
+      }
+    },
+    {
+      "slug": "encifher",
+      "name": "Encifher",
+      "oneLiner": "A privacy layer for Solana DeFi enabling encrypted on-chain actions and strategy execution without revealing alpha.",
+      "similarity": 0.07610542192585536,
+      "hackathon": {
+        "name": "Breakout",
+        "slug": "breakout",
+        "startDate": "2025-04-14"
+      },
+      "tracks": [
+        {
+          "name": "DeFi",
+          "key": "breakout/defi"
+        },
+        {
+          "name": "Infrastructure",
+          "key": "breakout/infrastructure"
+        },
+        {
+          "name": "Stablecoins",
+          "key": "breakout/stablecoins"
+        }
+      ],
+      "links": {
+        "github": "https://github.com/RizeLabs/encifher-vaults",
+        "demo": null,
+        "presentation": "https://youtu.be/bR2cwWmASy0",
+        "technicalDemo": "https://youtu.be/1LHF4lHOzbo",
+        "twitter": null,
+        "colosseum": "https://arena.colosseum.org/projects/explore/encifher"
+      },
+      "evidence": [
+        "Encifher enable private DeFi on Solana The core",
+        "A privacy layer for Solana DeFi enabling encrypted on-chain actions and strategy execution without revealing alpha."
+      ],
+      "prize": {
+        "type": "TRACK_PRIZE",
+        "name": "3rd Place - DeFi",
+        "placement": 3,
+        "amount": 15000,
+        "trackName": "DeFi"
+      },
+      "accelerator": null,
+      "metrics": {
+        "updatesCount": 0
+      },
+      "team": {
+        "count": 5
+      },
+      "tags": {
+        "problemTags": [
+          "alpha leakage",
+          "public transaction history",
+          "lack of privacy on solana",
+          "forced bridging for privacy"
+        ],
+        "solutionTags": [
+          "encrypted on-chain actions",
+          "private defi layer",
+          "confidential transactions",
+          "compliant privacy"
+        ],
+        "primitives": [
+          "zk-proofs",
+          "encryption",
+          "confidential transfers",
+          "defi"
+        ],
+        "techStack": [
+          "solana",
+          "rust"
+        ],
+        "targetUsers": [
+          "defi traders",
+          "institutional investors",
+          "strategy developers"
+        ]
+      },
+      "crowdedness": 260,
+      "cluster": {
+        "key": "v1-c13",
+        "label": "Solana Privacy and Identity Management"
+      }
+    },
+    {
+      "slug": "blackpool",
+      "name": "Blackpool",
+      "oneLiner": "A privacy-preserving, MEV-resistant decentralized exchange on Solana using zero-knowledge proofs.",
+      "similarity": 0.07519669551534225,
+      "hackathon": {
+        "name": "Radar",
+        "slug": "radar",
+        "startDate": "2024-09-02"
+      },
+      "tracks": [
+        {
+          "name": "DeFi",
+          "key": "radar/defi"
+        }
+      ],
+      "links": {
+        "github": "https://github.com/vitorpy/cyklon",
+        "demo": null,
+        "presentation": "https://drive.proton.me/urls/6CMM1YVN8C#O7MWVtEGNi8Y",
+        "technicalDemo": null,
+        "twitter": "https://twitter.com/https://x.com/blackpooldao",
+        "colosseum": "https://arena.colosseum.org/projects/explore/blackpool"
+      },
+      "evidence": [
+        "with lightning-fast, private, and MEV-resistant trades. Our secret weapon? Privacy-preserving execution powered by zero-knowledge proofs. This cutting-edge technology shields your trades from prying eyes while maintaining transparency. Say ",
+        "A privacy-preserving, MEV-resistant decentralized exchange on Solana using zero-knowledge proofs."
+      ],
+      "prize": {
+        "type": "TRACK_PRIZE",
+        "name": "2nd Place - DeFi",
+        "placement": 2,
+        "amount": 20000,
+        "trackName": "DeFi"
+      },
+      "accelerator": {
+        "companySlug": "darklake-1",
+        "companyName": "DARKLAKE",
+        "batchKey": "accelerator/c2",
+        "batchName": "C2"
+      },
+      "metrics": {
+        "updatesCount": 0
+      },
+      "team": {
+        "count": 1
+      },
+      "tags": {
+        "problemTags": [
+          "front-running",
+          "mev exploitation",
+          "lack of trade privacy",
+          "inefficient execution"
+        ],
+        "solutionTags": [
+          "zk-proof execution",
+          "private order matching",
+          "mev-resistant dex",
+          "shielded transactions"
+        ],
+        "primitives": [
+          "dex",
+          "zk-proof",
+          "mev-protection",
+          "privacy"
+        ],
+        "techStack": [
+          "solana",
+          "rust",
+          "zero-knowledge proofs"
+        ],
+        "targetUsers": [
+          "defi traders",
+          "institutional investors",
+          "privacy-conscious users"
+        ]
+      },
+      "crowdedness": 323,
+      "cluster": {
+        "key": "v1-c9",
+        "label": "Solana DEX and Trading Infrastructure"
+      }
+    }
+  ],
+  "archives": [
+    {
+      "documentId": "9199fa2c-0044-44a9-a240-d6f09e626af2",
+      "title": "spl-governance | Realmshashtagarrow-up-rightarrow-up-rightarrow-up-righthashtagcircle-infoarrow-up-rightarrow-up-rightarrow-up-rightarrow-up-rightarrow-up-rightcircle-infoarrow-up-rightarrow-up-rightarrow-up-rightcircle-infoarrow-up-rightarrow-up-righthashtagarrow-up-rightarrow-up-rightarrow-up-righthashtaghashtagarrow-up-righthashtagarrow-up-rightarrow-up-rightcircle-infoarrow-up-righthashtaghashtagarrow-up-rightarrow-up-rightarrow-up-rightarrow-up-rightarrow-up-rightcircle-exclamationarrow-up-rightarrow-up-rightcircle-infoarrow-up-rightarrow-up-rightarrow-up-rightarrow-up-righthashtagarrow-up-rightarrow-up-rightarrow-up-righthashtaghashtagarrow-up-rightarrow-up-rightarrow-up-rightarrow-up-rightarrow-up-rightcircle-infoarrow-up-rightarrow-up-righthashtagarrow-up-rightarrow-up-rightarrow-up-rightarrow-up-rightarrow-up-rightarrow-up-rightarrow-up-rightarrow-up-rightarrow-up-rightarrow-up-rightarrow-up-righthashtagarrow-up-rightarrow-up-rightarrow-up-rightarrow-up-rightarrow-up-rightarrow-up-righthashtagarrow-up-righthashtagarrow-up-rightarrow-up-rightarrow-up-rightarrow-up-rightarrow-up-rightarrow-up-righthashtagarrow-up-rightcircle-infoarrow-up-rightarrow-up-rightarrow-up-rightarrow-up-righthashtagarrow-up-rightarrow-up-rightarrow-up-rightchevron-left",
+      "author": null,
+      "source": "realms_docs",
+      "url": "https://docs.realms.today/developer-resources/spl-governance",
+      "publishedAt": "2025-10-01",
+      "similarity": 0.6492664456263868,
+      "snippet": "th the term native treasury. Any transaction executed on behalf of a particular Realm falls under one particular governance where the DAO wallet address (native treasury) may be used as a fee payer.The UI differentiates between governanc...",
+      "chunkIndex": 5
+    },
+    {
+      "documentId": "334ced7c-e263-4bb9-99bd-8a3a28353bfc",
+      "title": "6 myths about privacy on blockchains",
+      "author": "David Sverdlov, Aiden Slavin",
+      "source": "a16z_crypto",
+      "url": "https://a16zcrypto.com/posts/article/6-myths-privacy-blockchains",
+      "publishedAt": "2025-08-19",
+      "similarity": 0.6394858358632347,
+      "snippet": "Voting: In decentralized autonomous organizations, there is a strong desire for private onchain voting to avoid the repercussions that could arise from voting for an unpopular measure, or the group-think that could result from mirroring ...",
+      "chunkIndex": 11
+    },
+    {
+      "documentId": "3d8941cb-fbc3-4170-b990-4c7821b6ca62",
+      "title": "ZKPs, FHE, MPC: Managing Private State in Blockchains",
+      "author": null,
+      "source": "alliance_essays",
+      "url": "https://alliance.xyz/essays/zkps-fhe-mpc-managing-private-state-in-blockchains",
+      "publishedAt": "2024-08-08",
+      "similarity": 0.568523946978887,
+      "snippet": "teralized DeFi lending, on-chain KYC, or geographical gating. ZK is suitable for these use cases because it allows the existence of specialized viewing keys for parts of the private state that can be used in specific circumstances, e.g.,...",
+      "chunkIndex": 5
+    },
+    {
+      "documentId": "6ccdd8e1-b384-4dca-98e0-ec7d34cbf0ae",
+      "title": "Primer on Solana’s Token Extensions",
+      "author": "Yash Agarwal",
+      "source": "superteam_blog",
+      "url": "https://blog.superteam.fun/p/primer-on-solanas-token-extensions",
+      "publishedAt": "2024-02-26",
+      "similarity": 0.5607517456848484,
+      "snippet": "prefer to keep the amounts of its grants private.Confidential transfers enable transactions without disclosing the amounts transferred. It should be noted that the tokens transferred, as well as the sender and receiver addresses, remain ...",
+      "chunkIndex": 5
+    },
+    {
+      "documentId": "0fc33ddc-4e85-48ef-a614-7f73c04b3dcb",
+      "title": "Token Extensions Enable Native Support for Enterprise-Grade Use Cases",
+      "author": "Solana Foundation",
+      "source": "solana_news",
+      "url": "https://solana.com/news/token-extensions-on-solana",
+      "publishedAt": "2024-01-24",
+      "similarity": 0.5577517672417474,
+      "snippet": "-------------- | | Confidential transfers | Protects the confidentiality of users balances within a transfer, as well as hiding transaction amounts | Onchain payroll, B2B payments, treasury management | | Transfer hooks | Gives the token...",
+      "chunkIndex": 1
+    }
+  ]
+}

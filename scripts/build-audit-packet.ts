@@ -125,6 +125,7 @@ ${Object.entries(proof.transactions)
 - RPC architecture: \`docs/rpc-architecture.md\`
 - Backend operator flow: \`docs/backend-operator-flow.md\`
 - Read-node snapshot: \`docs/read-node-snapshot.generated.md\`
+- Colosseum competitive analysis: \`docs/colosseum-competitive-analysis.generated.md\`
 - Read-node architecture diagram: \`docs/assets/read-node-architecture.svg\`
 - Confidential payouts note: \`docs/confidential-payments.md\`
 - Confidential payroll flow: \`docs/confidential-payroll-flow.md\`

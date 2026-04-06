@@ -63,6 +63,7 @@
 - RPC architecture: `docs/rpc-architecture.md`
 - Backend operator flow: `docs/backend-operator-flow.md`
 - Read-node snapshot: `docs/read-node-snapshot.generated.md`
+- Colosseum competitive analysis: `docs/colosseum-competitive-analysis.generated.md`
 - Read-node architecture diagram: `docs/assets/read-node-architecture.svg`
 - Confidential payouts note: `docs/confidential-payments.md`
 - Confidential payroll flow: `docs/confidential-payroll-flow.md`
@@ -88,8 +89,8 @@
 - Release drill: `docs/release-drill.generated.json`
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `127`
-- Aggregate sha256: `a028a9931cf3b9fdb773d20b8a0c5553f03bbaaf695dd18adb1cb3dac52944af`
+- Manifest entries: `130`
+- Aggregate sha256: `39053aece7a2368463efb60805a95cfe9d1c85c75194a2f790ed5864278ebcf3`
 
 ## ZK Package
 
@@ -134,6 +135,9 @@
 - `docs/launch-growth-plan.md`
 - `docs/risk-policy.md`
 - `docs/performance-evidence.md`
+- `docs/colosseum-competitive-source.json`
+- `docs/colosseum-competitive-analysis.generated.md`
+- `docs/colosseum-competitive-analysis.generated.json`
 
 ## Security Package
 
@@ -194,6 +198,8 @@
 - `docs/read-node-snapshot.generated.json`
 - `docs/read-node-ops.generated.md`
 - `docs/read-node-ops.generated.json`
+- `docs/colosseum-competitive-analysis.generated.md`
+- `docs/colosseum-competitive-analysis.generated.json`
 - `docs/assets/read-node-architecture.svg`
 - `docs/confidential-payments.md`
 - `docs/confidential-payroll-flow.md`
@@ -386,6 +392,7 @@
 - `npm run verify:submission-registry`
 - `npm run verify:registry-consistency`
 - `npm run verify:generated-artifacts`
+- `npm run verify:colosseum-competitive`
 - `npm run verify:supply-chain-attestation`
 - `npm run verify:release-ceremony-attestation`
 - `npm run verify:operational-evidence`
@@ -435,6 +442,7 @@
 - zkCompanionStack: `verified`
 - reviewerSurface: `verified`
 - operationsSurface: `verified`
+- competitivePositioningSurface: `verified`
 - strategyEngine: `not-in-repo`
 - livePerformance: `not-in-repo`
 - externalAudit: `pending`

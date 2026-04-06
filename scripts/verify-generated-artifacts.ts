@@ -16,6 +16,9 @@ function main() {
   const runtimeAttestationPath = path.resolve("docs/runtime-attestation.generated.json");
   const readNodeSnapshotJsonPath = path.resolve("docs/read-node-snapshot.generated.json");
   const readNodeSnapshotMdPath = path.resolve("docs/read-node-snapshot.generated.md");
+  const colosseumCompetitiveSourcePath = path.resolve("docs/colosseum-competitive-source.json");
+  const colosseumCompetitiveJsonPath = path.resolve("docs/colosseum-competitive-analysis.generated.json");
+  const colosseumCompetitiveMdPath = path.resolve("docs/colosseum-competitive-analysis.generated.md");
   const realDeviceRuntimeSourcePath = path.resolve("docs/real-device-runtime-captures.json");
   const realDeviceRuntimeJsonPath = path.resolve("docs/real-device-runtime.generated.json");
   const realDeviceRuntimeMdPath = path.resolve("docs/real-device-runtime.generated.md");
@@ -94,6 +97,9 @@ function main() {
   }
   if (!fs.existsSync(readNodeSnapshotJsonPath) || !fs.existsSync(readNodeSnapshotMdPath)) {
     throw new Error("missing read-node snapshot artifacts");
+  }
+  if (!fs.existsSync(colosseumCompetitiveSourcePath) || !fs.existsSync(colosseumCompetitiveJsonPath) || !fs.existsSync(colosseumCompetitiveMdPath)) {
+    throw new Error("missing Colosseum competitive analysis artifacts");
   }
   if (!fs.existsSync(realDeviceRuntimeSourcePath) || !fs.existsSync(realDeviceRuntimeJsonPath) || !fs.existsSync(realDeviceRuntimeMdPath)) {
     throw new Error("missing real-device runtime artifacts");

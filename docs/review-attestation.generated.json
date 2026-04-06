@@ -36,10 +36,10 @@
     "execute"
   ],
   "packageCounts": {
-    "strategy": 9,
+    "strategy": 12,
     "security": 15,
     "zk": 28,
-    "proof": 74,
+    "proof": 76,
     "operations": 29
   },
   "zk": {
@@ -74,8 +74,8 @@
   },
   "cryptographicIntegrity": {
     "algorithm": "sha256",
-    "entryCount": 127,
-    "aggregateSha256": "a028a9931cf3b9fdb773d20b8a0c5553f03bbaaf695dd18adb1cb3dac52944af"
+    "entryCount": 130,
+    "aggregateSha256": "39053aece7a2368463efb60805a95cfe9d1c85c75194a2f790ed5864278ebcf3"
   },
   "runtimeDocs": [
     "docs/read-node-indexer.md",
@@ -83,6 +83,8 @@
     "docs/backend-operator-flow.md",
     "docs/read-node-snapshot.generated.md",
     "docs/read-node-snapshot.generated.json",
+    "docs/colosseum-competitive-analysis.generated.md",
+    "docs/colosseum-competitive-analysis.generated.json",
     "docs/confidential-payments.md",
     "docs/confidential-payroll-flow.md",
     "docs/confidential-payments-diagram.md",
@@ -141,6 +143,8 @@
     "docs/backend-operator-flow.md",
     "docs/read-node-snapshot.generated.md",
     "docs/read-node-snapshot.generated.json",
+    "docs/colosseum-competitive-analysis.generated.md",
+    "docs/colosseum-competitive-analysis.generated.json",
     "docs/release-ceremony.md",
     "docs/release-ceremony-attestation.generated.md",
     "docs/release-ceremony-attestation.generated.json",
@@ -163,7 +167,7 @@
     "docs/supply-chain-attestation.generated.md",
     "docs/supply-chain-attestation.generated.json"
   ],
-  "gateCount": 60,
+  "gateCount": 61,
   "statuses": {
     "governanceLifecycle": "verified",
     "confidentialPayoutSurface": "verified",
@@ -181,6 +185,7 @@
     "zkCompanionStack": "verified",
     "reviewerSurface": "verified",
     "operationsSurface": "verified",
+    "competitivePositioningSurface": "verified",
     "strategyEngine": "not-in-repo",
     "livePerformance": "not-in-repo",
     "externalAudit": "pending",

@@ -36,6 +36,10 @@ wallets/
 !docs/release-ceremony-attestation.generated.json
 !docs/runtime-evidence.generated.json
 !docs/release-drill.generated.json
+!docs/colosseum-competitive-source.json
+!docs/colosseum-competitive-analysis.generated.json
+!docs/read-node-snapshot.generated.json
+!docs/read-node-ops.generated.json
 !docs/assets/pdao-token.json
 !docs/magicblock-runtime-templates/*.json
 !zk/inputs/*.json

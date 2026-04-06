@@ -35,6 +35,7 @@ This report is generated from the canonical PrivateDAO registries and reviewer a
 - `zkCompanionStack`
 - `reviewerSurface`
 - `operationsSurface`
+- `competitivePositioningSurface`
 
 ## Pending Or External Dependencies
 
@@ -45,12 +46,12 @@ This report is generated from the canonical PrivateDAO registries and reviewer a
 
 ## Reviewer Artifact Summary
 
-- Verification gates tracked: `60`
-- Gate count in review attestation: `60`
-- Strategy package count: `9`
+- Verification gates tracked: `61`
+- Gate count in review attestation: `61`
+- Strategy package count: `12`
 - Security package count: `15`
 - ZK package count: `28`
-- Proof package count: `74`
+- Proof package count: `76`
 - Operations package count: `29`
 - Runtime attestation: `docs/runtime-attestation.generated.json`
 - PDAO attestation: `docs/pdao-attestation.generated.json`
@@ -60,8 +61,8 @@ This report is generated from the canonical PrivateDAO registries and reviewer a
 - ZK stack version: `1`
 - ZK layer count: `3`
 - Integrity algorithm: `sha256`
-- Integrity entries: `127`
-- Integrity aggregate sha256: `94ca5e24ee02d97040a433a6518a01190c712b0da5479f07da552a46c165109e`
+- Integrity entries: `130`
+- Integrity aggregate sha256: `874234b99cae46041a73e095761a15be2d72dafb36e3875f3f64ca90f3313d03`
 
 ## Mainnet Conclusion
 

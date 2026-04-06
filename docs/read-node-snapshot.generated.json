@@ -1,0 +1,148 @@
+{
+  "generatedAt": "2026-04-06T19:32:31.826Z",
+  "readPath": "backend-indexer",
+  "runtime": {
+    "generatedAt": "2026-04-06T19:32:29.321Z",
+    "readPath": "backend-indexer",
+    "rpcEndpoint": "https://api.devnet.solana.com",
+    "rpcPoolSize": 1,
+    "commitment": "confirmed",
+    "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+    "slot": 453726976,
+    "solanaCore": "3.1.10",
+    "featureSet": 1620780344,
+    "latestBlockhash": "HYZ75h3gxCWAyGY1H5uByZJFTM98aNArAmth1fBocpfc",
+    "lastValidBlockHeight": 441605293,
+    "programExecutable": true,
+    "programOwner": "BPFLoaderUpgradeab1e11111111111111111111111",
+    "cacheTtlMs": 15000
+  },
+  "cache": {
+    "entryCount": 2,
+    "ttlMs": 15000
+  },
+  "counts": {
+    "proposals": 20,
+    "executed": 10,
+    "executable": 1,
+    "timelocked": 0,
+    "zkEnforced": 0,
+    "confidentialPayouts": 0,
+    "uniqueDaos": 9
+  },
+  "overview": {
+    "generatedAt": "2026-04-06T19:32:31.824Z",
+    "proposals": 20,
+    "uniqueDaos": 9,
+    "zkEnforced": 0,
+    "confidentialPayouts": 0,
+    "magicblockConfigured": 0,
+    "magicblockSettled": 0,
+    "refheConfigured": 0,
+    "refheSettled": 0,
+    "refheWithVerifier": 0,
+    "executableConfidential": 0
+  },
+  "profiles": [
+    {
+      "name": "50",
+      "walletCount": 50,
+      "waveSize": 10,
+      "fundingWaveSize": 5,
+      "targetPdaoUi": 100,
+      "waveCount": 5,
+      "negativeScenarios": [
+        "wrong-voter-record",
+        "wrong-delegation-marker",
+        "wrong-token-account"
+      ]
+    },
+    {
+      "name": "100",
+      "walletCount": 100,
+      "waveSize": 20,
+      "fundingWaveSize": 10,
+      "targetPdaoUi": 100,
+      "waveCount": 5,
+      "negativeScenarios": [
+        "wrong-voter-record",
+        "wrong-delegation-marker",
+        "wrong-token-account",
+        "late-reveal"
+      ]
+    },
+    {
+      "name": "350",
+      "walletCount": 350,
+      "waveSize": 50,
+      "fundingWaveSize": 25,
+      "targetPdaoUi": 100,
+      "waveCount": 7,
+      "negativeScenarios": [
+        "invalid-reveal",
+        "late-reveal",
+        "execute-replay",
+        "wrong-vault",
+        "wrong-authority",
+        "payout-replay"
+      ]
+    },
+    {
+      "name": "500",
+      "walletCount": 500,
+      "waveSize": 25,
+      "fundingWaveSize": 10,
+      "targetPdaoUi": 100,
+      "waveCount": 20,
+      "negativeScenarios": [
+        "invalid-reveal",
+        "late-reveal",
+        "execute-replay",
+        "wrong-authority",
+        "payout-replay"
+      ]
+    }
+  ],
+  "sample": [
+    {
+      "pubkey": "BfGfk31hvvvR2fDbZBmpV49uhe396KZvFq2hhmK5YXa6",
+      "title": "Multi proposal C",
+      "phase": "Executed",
+      "zkMode": "Companion",
+      "confidentialPayout": false,
+      "dao": "F39tJ5oxo4xx9xuoWm3ucUUhYkRMqX8vsJXQEVMMLTUo"
+    },
+    {
+      "pubkey": "7YKm4zFcD8fzRuQAa8w9SDTrVaW8TSSddA7nhDm9TAK7",
+      "title": "Concurrent finalize and execute race",
+      "phase": "Executed",
+      "zkMode": "Companion",
+      "confidentialPayout": false,
+      "dao": "FfLcDByf3Y2C3WrXC5q6aboEXUh7ddeSMhiawDdh5rFA"
+    },
+    {
+      "pubkey": "3TndutFkVunp1GhpjdVwsVGDWuS9afUU69JxW8Rrmk3H",
+      "title": "Multi proposal C",
+      "phase": "Finalized",
+      "zkMode": "Companion",
+      "confidentialPayout": false,
+      "dao": "59gAWXr9XLSzVN3nATfbBmbGvmJ7FNt7SoNVaR79LSok"
+    },
+    {
+      "pubkey": "GpVLxHfD1A5gLEKByjLcTSXK2X5CgfQu7Vi8QQFdx5mu",
+      "title": "Multi proposal C",
+      "phase": "Finalized",
+      "zkMode": "Companion",
+      "confidentialPayout": false,
+      "dao": "7D3fmZ3CE8NjSLaetNvPaQ5Wd79XeUVEbNj7oqchkfFy"
+    },
+    {
+      "pubkey": "HTNx7Gbrv324yecCoc9cJPTU6yFg4aS7sUcSUZMahHzx",
+      "title": "Multi proposal C",
+      "phase": "Executable",
+      "zkMode": "Companion",
+      "confidentialPayout": false,
+      "dao": "Egk9wQorcubWPedsimsxeFuxFeP6YrX9P5pWfdqmq2v2"
+    }
+  ]
+}

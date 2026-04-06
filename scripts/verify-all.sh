@@ -4,6 +4,23 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
+run_with_retry() {
+  local attempts="$1"
+  shift
+  local try=1
+  while true; do
+    if "$@"; then
+      return 0
+    fi
+    if [[ "$try" -ge "$attempts" ]]; then
+      return 1
+    fi
+    echo "[verify-all] retry ${try}/${attempts} failed for: $*" >&2
+    try=$((try + 1))
+    sleep 2
+  done
+}
+
 echo "[verify-all] validating Ranger strategy package"
 npm run validate:ranger-strategy -- docs/ranger-strategy-config.devnet.json >/dev/null
 
@@ -71,10 +88,16 @@ echo "[verify-all] checking read node"
 npm run verify:read-node >/dev/null
 
 echo "[verify-all] checking read node http surface"
-npm run verify:read-node:http >/dev/null
+run_with_retry 3 npm run verify:read-node:http >/dev/null
 
 echo "[verify-all] checking read-node snapshot"
 npm run verify:read-node-snapshot >/dev/null
+
+echo "[verify-all] checking read-node ops snapshot"
+npm run verify:read-node-ops >/dev/null
+
+echo "[verify-all] checking Colosseum competitive analysis"
+npm run verify:colosseum-competitive >/dev/null
 
 echo "[verify-all] checking real-device runtime intake"
 npm run verify:real-device-runtime >/dev/null

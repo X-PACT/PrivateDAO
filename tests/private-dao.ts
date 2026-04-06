@@ -2090,6 +2090,472 @@ describe("PrivateDAO", () => {
     console.log("  ✓ confidential token batch configured and executed through MagicBlock-settled corridor");
   });
 
+  it("enforces MagicBlock operator authority and settlement signature validation", async () => {
+    const payoutDaoName = `MagicBlockGuardDAO-${Date.now()}`;
+    const [payoutDaoPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("dao"), authority.publicKey.toBuffer(), Buffer.from(payoutDaoName)],
+      program.programId,
+    );
+
+    await program.methods
+      .initializeDao(
+        payoutDaoName,
+        51,
+        new BN(0),
+        new BN(5),
+        new BN(0),
+        { tokenWeighted: {} },
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        governanceToken: governanceMint,
+        authority: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const payoutDao = await program.account["dao"].fetch(payoutDaoPda);
+    const [payoutProposalPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), payoutDaoPda.toBuffer(), payoutDao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal(
+        "MagicBlock operator guard",
+        "Reject untrusted MagicBlock operators and malformed settlement evidence before a confidential payout can execute.",
+        new BN(5),
+        null,
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        proposerTokenAccount: authorityTokenAta,
+        proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [payoutPlanPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("payout-plan"), payoutProposalPda.toBuffer()],
+      program.programId,
+    );
+    const [magicBlockCorridorPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("magicblock-corridor"), payoutProposalPda.toBuffer()],
+      program.programId,
+    );
+    const settlementRecipient = Keypair.generate();
+    const rogueOperator = Keypair.generate();
+    await provider.sendAndConfirm(new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: authority.publicKey,
+        toPubkey: settlementRecipient.publicKey,
+        lamports: Math.round(0.005 * LAMPORTS_PER_SOL),
+      }),
+      SystemProgram.transfer({
+        fromPubkey: authority.publicKey,
+        toPubkey: rogueOperator.publicKey,
+        lamports: Math.round(0.01 * LAMPORTS_PER_SOL),
+      }),
+    ), []);
+
+    await program.methods
+      .configureConfidentialPayoutPlan(
+        { payroll: {} },
+        { token: {} },
+        settlementRecipient.publicKey,
+        governanceMint,
+        3,
+        new BN(180_000_000),
+        "box://privatedao/payroll/guard-epoch-1",
+        [...crypto.randomBytes(32)],
+        [...crypto.randomBytes(32)],
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        confidentialPayoutPlan: payoutPlanPda,
+        operator: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const routeHash = [...crypto.randomBytes(32)];
+    try {
+      await program.methods
+        .configureMagicblockPrivatePaymentCorridor(
+          "https://per.devnet.magicblock.gg",
+          "devnet",
+          rogueOperator.publicKey,
+          null,
+          routeHash,
+          new BN(180_000_000),
+          new BN(180_000_000),
+          new BN(180_000_000),
+        )
+        .accounts({
+          dao: payoutDaoPda,
+          proposal: payoutProposalPda,
+          confidentialPayoutPlan: payoutPlanPda,
+          magicblockPrivatePaymentCorridor: magicBlockCorridorPda,
+          operator: rogueOperator.publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .signers([rogueOperator])
+        .rpc();
+      assert.fail("Untrusted operators must not configure MagicBlock corridors");
+    } catch (err: any) {
+      assert.include(err.toString(), "UnauthorizedMagicBlockOperator");
+    }
+
+    await program.methods
+      .configureMagicblockPrivatePaymentCorridor(
+        "https://per.devnet.magicblock.gg",
+        "devnet",
+        authority.publicKey,
+        null,
+        routeHash,
+        new BN(180_000_000),
+        new BN(180_000_000),
+        new BN(180_000_000),
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        confidentialPayoutPlan: payoutPlanPda,
+        magicblockPrivatePaymentCorridor: magicBlockCorridorPda,
+        operator: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    try {
+      await program.methods
+        .settleMagicblockPrivatePaymentCorridor(
+          authority.publicKey,
+          Keypair.generate().publicKey,
+          "short",
+          "still-too-short",
+          "another-bad-signature",
+        )
+        .accounts({
+          dao: payoutDaoPda,
+          proposal: payoutProposalPda,
+          confidentialPayoutPlan: payoutPlanPda,
+          magicblockPrivatePaymentCorridor: magicBlockCorridorPda,
+          operator: authority.publicKey,
+        })
+        .rpc();
+      assert.fail("Malformed MagicBlock settlement signatures must be rejected");
+    } catch (err: any) {
+      assert.include(err.toString(), "InvalidMagicBlockCorridor");
+    }
+
+    try {
+      await program.methods
+        .settleMagicblockPrivatePaymentCorridor(
+          authority.publicKey,
+          Keypair.generate().publicKey,
+          "4J3YVTFs2Y5zZp5x6b7mQk2u1oD9c8N7e6w5r4t3s2q1p0LmNoPkJiHgFeDcBa987654321111111111",
+          "2qwYfTQ3h1x5b8c6d7e9fLmNoPkJiHgFeDcBa987654321111111111111111111111111111111111111",
+          "5mN9vB6xC3zA1sD2fG4hJ6kL8qW0eR2tY4uI6oP8aS0dF2gH4jK6lN8mQ0rT2yU4iO6pA8sD0fG2hJ4kL",
+        )
+        .accounts({
+          dao: payoutDaoPda,
+          proposal: payoutProposalPda,
+          confidentialPayoutPlan: payoutPlanPda,
+          magicblockPrivatePaymentCorridor: magicBlockCorridorPda,
+          operator: rogueOperator.publicKey,
+        })
+        .signers([rogueOperator])
+        .rpc();
+      assert.fail("Untrusted operators must not settle MagicBlock corridors");
+    } catch (err: any) {
+      assert.include(err.toString(), "UnauthorizedMagicBlockOperator");
+    }
+
+    await program.methods
+      .settleMagicblockPrivatePaymentCorridor(
+        authority.publicKey,
+        Keypair.generate().publicKey,
+        "4J3YVTFs2Y5zZp5x6b7mQk2u1oD9c8N7e6w5r4t3s2q1p0LmNoPkJiHgFeDcBa987654321111111111",
+        "2qwYfTQ3h1x5b8c6d7e9fLmNoPkJiHgFeDcBa987654321111111111111111111111111111111111111",
+        "5mN9vB6xC3zA1sD2fG4hJ6kL8qW0eR2tY4uI6oP8aS0dF2gH4jK6lN8mQ0rT2yU4iO6pA8sD0fG2hJ4kL",
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        confidentialPayoutPlan: payoutPlanPda,
+        magicblockPrivatePaymentCorridor: magicBlockCorridorPda,
+        operator: authority.publicKey,
+      })
+      .rpc();
+
+    const settledCorridor = await program.account["magicBlockPrivatePaymentCorridor"].fetch(magicBlockCorridorPda);
+    assert.deepEqual(settledCorridor.status, { settled: {} });
+    assert.equal(settledCorridor.settledBy.toBase58(), authority.publicKey.toBase58());
+    console.log("  ✓ MagicBlock corridor rejects rogue operators and malformed settlement evidence");
+  });
+
+  it("rejects confidential payout replay after MagicBlock-settled execution", async () => {
+    const payoutDaoName = `MagicBlockReplayDAO-${Date.now()}`;
+    const [payoutDaoPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("dao"), authority.publicKey.toBuffer(), Buffer.from(payoutDaoName)],
+      program.programId,
+    );
+
+    await program.methods
+      .initializeDao(
+        payoutDaoName,
+        51,
+        new BN(0),
+        new BN(5),
+        new BN(0),
+        { tokenWeighted: {} },
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        governanceToken: governanceMint,
+        authority: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const payoutDao = await program.account["dao"].fetch(payoutDaoPda);
+    const [payoutProposalPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), payoutDaoPda.toBuffer(), payoutDao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal(
+        "Confidential payroll replay guard",
+        "Reject replay execution after a MagicBlock-settled confidential token payout succeeds.",
+        new BN(5),
+        null,
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        proposerTokenAccount: authorityTokenAta,
+        proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [payoutPlanPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("payout-plan"), payoutProposalPda.toBuffer()],
+      program.programId,
+    );
+    const [refheEnvelopePda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("refhe-envelope"), payoutProposalPda.toBuffer()],
+      program.programId,
+    );
+    const [magicBlockCorridorPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("magicblock-corridor"), payoutProposalPda.toBuffer()],
+      program.programId,
+    );
+    const settlementRecipient = Keypair.generate();
+    const wrongSettlementRecipient = Keypair.generate();
+    await provider.sendAndConfirm(new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: authority.publicKey,
+        toPubkey: settlementRecipient.publicKey,
+        lamports: Math.round(0.005 * LAMPORTS_PER_SOL),
+      }),
+      SystemProgram.transfer({
+        fromPubkey: authority.publicKey,
+        toPubkey: wrongSettlementRecipient.publicKey,
+        lamports: Math.round(0.005 * LAMPORTS_PER_SOL),
+      }),
+    ), []);
+
+    await program.methods
+      .configureConfidentialPayoutPlan(
+        { payroll: {} },
+        { token: {} },
+        settlementRecipient.publicKey,
+        governanceMint,
+        2,
+        new BN(220_000_000),
+        "box://privatedao/payroll/replay-epoch-1",
+        [...crypto.randomBytes(32)],
+        [...crypto.randomBytes(32)],
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        confidentialPayoutPlan: payoutPlanPda,
+        operator: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    await program.methods
+      .configureMagicblockPrivatePaymentCorridor(
+        "https://per.devnet.magicblock.gg",
+        "devnet",
+        authority.publicKey,
+        null,
+        [...crypto.randomBytes(32)],
+        new BN(220_000_000),
+        new BN(220_000_000),
+        new BN(220_000_000),
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        confidentialPayoutPlan: payoutPlanPda,
+        magicblockPrivatePaymentCorridor: magicBlockCorridorPda,
+        operator: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [treasuryPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("treasury"), payoutDaoPda.toBuffer()],
+      program.programId,
+    );
+    const treasuryAta = getAssociatedTokenAddressSync(governanceMint, treasuryPda, true);
+    const recipientAta = getAssociatedTokenAddressSync(governanceMint, settlementRecipient.publicKey);
+    const wrongRecipientAta = getAssociatedTokenAddressSync(governanceMint, wrongSettlementRecipient.publicKey);
+    await provider.sendAndConfirm(new Transaction().add(
+      createAssociatedTokenAccountInstruction(authority.publicKey, treasuryAta, treasuryPda, governanceMint),
+      createAssociatedTokenAccountInstruction(authority.publicKey, recipientAta, settlementRecipient.publicKey, governanceMint),
+      createAssociatedTokenAccountInstruction(authority.publicKey, wrongRecipientAta, wrongSettlementRecipient.publicKey, governanceMint),
+    ), []);
+    await mintTo(provider.connection, authority.payer, governanceMint, treasuryAta, authority.payer, 260_000_000n);
+
+    const [votePda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), payoutProposalPda.toBuffer(), authority.publicKey.toBuffer()],
+      program.programId,
+    );
+    const [delegationMarkerPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("delegation"), payoutProposalPda.toBuffer(), authority.publicKey.toBuffer()],
+      program.programId,
+    );
+    const salarySalt = randomSalt();
+
+    await program.methods
+      .commitVote([...computeCommitment(true, salarySalt, authority.publicKey, payoutProposalPda)], null)
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        voterRecord: votePda,
+        delegationMarker: delegationMarkerPda,
+        voterTokenAccount: authorityTokenAta,
+        voter: authority.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    await new Promise((resolve) => setTimeout(resolve, 6_000));
+
+    await program.methods
+      .revealVote(true, [...salarySalt])
+      .accounts({
+        proposal: payoutProposalPda,
+        voterRecord: votePda,
+        revealer: authority.publicKey,
+      })
+      .rpc();
+
+    await new Promise((resolve) => setTimeout(resolve, 6_000));
+
+    await program.methods
+      .finalizeProposal()
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        finalizer: authority.publicKey,
+      })
+      .rpc();
+
+    await program.methods
+      .settleMagicblockPrivatePaymentCorridor(
+        authority.publicKey,
+        Keypair.generate().publicKey,
+        "4J3YVTFs2Y5zZp5x6b7mQk2u1oD9c8N7e6w5r4t3s2q1p0LmNoPkJiHgFeDcBa987654321111111111",
+        "2qwYfTQ3h1x5b8c6d7e9fLmNoPkJiHgFeDcBa987654321111111111111111111111111111111111111",
+        "5mN9vB6xC3zA1sD2fG4hJ6kL8qW0eR2tY4uI6oP8aS0dF2gH4jK6lN8mQ0rT2yU4iO6pA8sD0fG2hJ4kL",
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        confidentialPayoutPlan: payoutPlanPda,
+        magicblockPrivatePaymentCorridor: magicBlockCorridorPda,
+        operator: authority.publicKey,
+      })
+      .rpc();
+
+    try {
+      await program.methods
+        .executeConfidentialPayoutPlan()
+        .accounts({
+          dao: payoutDaoPda,
+          proposal: payoutProposalPda,
+          confidentialPayoutPlan: payoutPlanPda,
+          treasury: treasuryPda,
+          settlementRecipient: wrongSettlementRecipient.publicKey,
+          treasuryTokenAccount: treasuryAta,
+          recipientTokenAccount: wrongRecipientAta,
+          refheEnvelope: refheEnvelopePda,
+          magicblockPrivatePaymentCorridor: magicBlockCorridorPda,
+          executor: authority.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("Execution must reject the wrong settlement recipient");
+    } catch (err: any) {
+      assert.include(err.toString(), "TreasuryRecipientMismatch");
+    }
+
+    await program.methods
+      .executeConfidentialPayoutPlan()
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        confidentialPayoutPlan: payoutPlanPda,
+        treasury: treasuryPda,
+        settlementRecipient: settlementRecipient.publicKey,
+        treasuryTokenAccount: treasuryAta,
+        recipientTokenAccount: recipientAta,
+        refheEnvelope: refheEnvelopePda,
+        magicblockPrivatePaymentCorridor: magicBlockCorridorPda,
+        executor: authority.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    try {
+      await program.methods
+        .executeConfidentialPayoutPlan()
+        .accounts({
+          dao: payoutDaoPda,
+          proposal: payoutProposalPda,
+          confidentialPayoutPlan: payoutPlanPda,
+          treasury: treasuryPda,
+          settlementRecipient: settlementRecipient.publicKey,
+          treasuryTokenAccount: treasuryAta,
+          recipientTokenAccount: recipientAta,
+          refheEnvelope: refheEnvelopePda,
+          magicblockPrivatePaymentCorridor: magicBlockCorridorPda,
+          executor: authority.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("A funded confidential payout must not execute twice");
+    } catch (err: any) {
+      assert.include(err.toString(), "AlreadyExecuted");
+    }
+
+    console.log("  ✓ MagicBlock-bound confidential payout rejects wrong settlement recipients and replay execution");
+  });
+
   it("verifies commitment math — deterministic + vote/salt sensitive", () => {
     const vote = true;
     const salt = Buffer.from("a".repeat(32));

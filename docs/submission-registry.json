@@ -19,7 +19,10 @@
       "docs/consumer-user-flows.md",
       "docs/launch-growth-plan.md",
       "docs/risk-policy.md",
-      "docs/performance-evidence.md"
+      "docs/performance-evidence.md",
+      "docs/colosseum-competitive-source.json",
+      "docs/colosseum-competitive-analysis.generated.md",
+      "docs/colosseum-competitive-analysis.generated.json"
     ],
     "security": [
       "docs/security-review.md",
@@ -77,6 +80,8 @@
       "docs/read-node-snapshot.generated.json",
       "docs/read-node-ops.generated.md",
       "docs/read-node-ops.generated.json",
+      "docs/colosseum-competitive-analysis.generated.md",
+      "docs/colosseum-competitive-analysis.generated.json",
       "docs/assets/read-node-architecture.svg",
       "docs/confidential-payments.md",
       "docs/confidential-payroll-flow.md",
@@ -207,6 +212,7 @@
     "npm run verify:submission-registry",
     "npm run verify:registry-consistency",
     "npm run verify:generated-artifacts",
+    "npm run verify:colosseum-competitive",
     "npm run verify:supply-chain-attestation",
     "npm run verify:release-ceremony-attestation",
     "npm run verify:operational-evidence",
@@ -255,6 +261,7 @@
     "zkCompanionStack": "verified",
     "reviewerSurface": "verified",
     "operationsSurface": "verified",
+    "competitivePositioningSurface": "verified",
     "strategyEngine": "not-in-repo",
     "livePerformance": "not-in-repo",
     "externalAudit": "pending",

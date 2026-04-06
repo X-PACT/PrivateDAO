@@ -20,7 +20,8 @@
     "artifactFreshness",
     "zkCompanionStack",
     "reviewerSurface",
-    "operationsSurface"
+    "operationsSurface",
+    "competitivePositioningSurface"
   ],
   "blockers": [
     {
@@ -73,7 +74,7 @@
     "docs/go-live-criteria.md",
     "docs/operational-drillbook.md"
   ],
-  "deploymentGateCount": 60,
+  "deploymentGateCount": 61,
   "pdaoToken": {
     "mint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
     "programId": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",

@@ -4645,6 +4645,7 @@ execute() → treasury action
           <button class="proposal-proof-link" type="button" onclick="openDocument('read-node-indexer.md','Read Node And Indexer')">Open Read Node</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('read-node-snapshot.generated.md','Read Node Snapshot')">Open Read Node Snapshot</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('read-node-ops.generated.md','Read Node Ops Snapshot')">Open Ops Snapshot</button>
+          <button class="proposal-proof-link" type="button" onclick="openDocument('colosseum-competitive-analysis.generated.md','Colosseum Competitive Analysis')">Open Competitive Analysis</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('read-node-same-domain-deploy.md','Same-Domain Deploy')">Open Same-Domain Deploy</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('rpc-architecture.md','RPC Architecture')">Open RPC Architecture</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('backend-operator-flow.md','Backend Operator Flow')">Open Backend Operator Flow</button>
@@ -8450,6 +8451,54 @@ function solscanTx(signature) {
   return `https://solscan.io/tx/${signature}?cluster=devnet`;
 }
 
+function formatExplorerTxLink(signature, label) {
+  if (!signature) return `${label}: pending`;
+  return `${label}: <a href="${solscanTx(signature)}" target="_blank" style="color:var(--cyan)">${shortSig(signature)}</a>`;
+}
+
+function shortSig(signature) {
+  if (!signature || typeof signature !== 'string') return 'unset';
+  return signature.length > 16 ? `${signature.slice(0, 8)}…${signature.slice(-8)}` : signature;
+}
+
+function summarizeMagicBlockSettlementEvidence(corridor) {
+  if (!corridor) {
+    return 'No MagicBlock corridor evidence attached to this proposal yet.';
+  }
+  return [
+    formatExplorerTxLink(corridor.depositTxSignature, 'Deposit'),
+    formatExplorerTxLink(corridor.transferTxSignature, 'Private transfer'),
+    formatExplorerTxLink(corridor.withdrawTxSignature, 'Withdraw'),
+  ].join('<br>');
+}
+
+function summarizeConfidentialExecutionBoundary(plan, refheEnvelope, magicBlockCorridor) {
+  if (!plan) {
+    return 'Standard proposal execution path. No confidential payroll or bonus batch is attached.';
+  }
+  if (magicBlockCorridor) {
+    return 'Confidential token batch with a proposal-bound MagicBlock corridor. Execution stays blocked until settlement evidence, validator binding, and queue binding are locked on-chain.';
+  }
+  if (refheEnvelope) {
+    return 'Confidential batch with a proposal-bound REFHE envelope. Execution stays blocked until the encrypted result bundle is settled with a verifier binding.';
+  }
+  return 'Confidential batch with aggregate on-chain release only. The encrypted manifest remains off-chain and the settlement wallet receives the final aggregate transfer.';
+}
+
+function summarizeAnchorEvents(plan, refheEnvelope, magicBlockCorridor) {
+  if (!plan) {
+    return 'Standard governance events only: commit, reveal, finalize, execute, veto, cancel.';
+  }
+  const events = ['ConfidentialPayoutConfigured', 'ConfidentialPayoutExecuted'];
+  if (refheEnvelope) {
+    events.splice(1, 0, 'RefheEnvelopeConfigured', 'RefheEnvelopeSettled');
+  }
+  if (magicBlockCorridor) {
+    events.splice(1, 0, 'MagicBlockPrivatePaymentCorridorConfigured', 'MagicBlockPrivatePaymentCorridorSettled');
+  }
+  return events.join(' · ');
+}
+
 function updateLifecycleActionFeedback(kind, signature, proposalPubkey) {
   const isCanonicalProofPath = proposalPubkey === 'AegjmwkX1FknBJMDyH5yM6BMhyHsiUreNtz3d8iz3QrP';
   const explorerLink = `<a href="${solscanTx(signature)}" target="_blank" style="color:var(--cyan)">Open ${kind} TX</a>`;
@@ -8689,6 +8738,9 @@ function renderProposalDetail(p, nowTs) {
   const magicBlockCorridor = p.magicblockCorridor || null;
   const refheReadiness = summarizeRefheReadiness(p);
   const magicBlockReadiness = summarizeMagicBlockReadiness(p);
+  const settlementEvidence = summarizeMagicBlockSettlementEvidence(magicBlockCorridor);
+  const confidentialExecutionBoundary = summarizeConfidentialExecutionBoundary(confidentialPlan, refheEnvelope, magicBlockCorridor);
+  const anchorEventSummary = summarizeAnchorEvents(confidentialPlan, refheEnvelope, magicBlockCorridor);
   const detailGrid = document.getElementById('proposalDetailGrid');
   const proofLinks = document.getElementById('proposalProofLinks');
   const commandGrid = document.getElementById('proposalCommandGrid');
@@ -8725,7 +8777,7 @@ function renderProposalDetail(p, nowTs) {
     ? `${refheEnvelope.status} · ${refheEnvelope.modelUri}<br>Verifier ${refheEnvelope.verifierProgram ? shortPk(refheEnvelope.verifierProgram) : 'unset'}<br>Policy ${shortPk(refheEnvelope.policyHash)} · Input ${shortPk(refheEnvelope.inputCiphertextHash)}`
     : 'No REFHE envelope attached';
   const magicBlockSummary = magicBlockCorridor
-    ? `${magicBlockCorridor.status} · ${magicBlockCorridor.cluster}<br>Queue ${magicBlockCorridor.transferQueue ? shortPk(magicBlockCorridor.transferQueue) : 'unset'} · Validator ${magicBlockCorridor.validator ? shortPk(magicBlockCorridor.validator) : 'unset'}<br>API ${magicBlockCorridor.apiBaseUrl}`
+    ? `${magicBlockCorridor.status} · ${magicBlockCorridor.cluster}<br>Queue ${magicBlockCorridor.transferQueue ? shortPk(magicBlockCorridor.transferQueue) : 'unset'} · Validator ${magicBlockCorridor.validator ? shortPk(magicBlockCorridor.validator) : 'unset'}<br>API ${magicBlockCorridor.apiBaseUrl}<br>${settlementEvidence}`
     : 'No MagicBlock corridor attached';
 
   phaseEl.textContent = `${paddedId} · ${phase}`;
@@ -8777,6 +8829,14 @@ function renderProposalDetail(p, nowTs) {
       <div class="proposal-detail-value">${magicBlockSummary}</div>
     </div>
     <div class="proposal-detail-box">
+      <div class="proposal-detail-label">SETTLEMENT EVIDENCE</div>
+      <div class="proposal-detail-value">${settlementEvidence}</div>
+    </div>
+    <div class="proposal-detail-box">
+      <div class="proposal-detail-label">ANCHOR EVENTS</div>
+      <div class="proposal-detail-value">${anchorEventSummary}</div>
+    </div>
+    <div class="proposal-detail-box">
       <div class="proposal-detail-label">ADDRESSES</div>
       <div class="proposal-detail-value">Proposal: ${p.pubkey}<br>DAO: ${p.dao}<br>Treasury: ${treasuryPda}</div>
     </div>
@@ -8812,6 +8872,10 @@ function renderProposalDetail(p, nowTs) {
       <div class="proposal-detail-label">MAGICBLOCK READINESS</div>
       <div class="proposal-detail-value">${magicBlockReadiness.status}<br>${magicBlockReadiness.copy}<br>${magicBlockReadiness.nextStep}</div>
     </div>
+    <div class="proposal-detail-box">
+      <div class="proposal-detail-label">CONFIDENTIAL EXECUTION BOUNDARY</div>
+      <div class="proposal-detail-value">${confidentialExecutionBoundary}</div>
+    </div>
   `;
 
   proofLinks.innerHTML = `
@@ -8827,6 +8891,10 @@ function renderProposalDetail(p, nowTs) {
     ${confidentialPlan ? `<a class="proposal-proof-link" href="${solscanAccount(confidentialPlan.pubkey)}" target="_blank">Payout Plan PDA</a>` : ''}
     ${refheEnvelope ? `<a class="proposal-proof-link" href="${solscanAccount(refheEnvelope.pubkey)}" target="_blank">REFHE Envelope PDA</a>` : ''}
     ${magicBlockCorridor ? `<a class="proposal-proof-link" href="${solscanAccount(magicBlockCorridor.pubkey)}" target="_blank">MagicBlock Corridor PDA</a>` : ''}
+    ${magicBlockCorridor?.depositTxSignature ? `<a class="proposal-proof-link" href="${solscanTx(magicBlockCorridor.depositTxSignature)}" target="_blank">MagicBlock Deposit TX</a>` : ''}
+    ${magicBlockCorridor?.transferTxSignature ? `<a class="proposal-proof-link" href="${solscanTx(magicBlockCorridor.transferTxSignature)}" target="_blank">MagicBlock Transfer TX</a>` : ''}
+    ${magicBlockCorridor?.withdrawTxSignature ? `<a class="proposal-proof-link" href="${solscanTx(magicBlockCorridor.withdrawTxSignature)}" target="_blank">MagicBlock Withdraw TX</a>` : ''}
+    <a class="proposal-proof-link" href="colosseum-competitive-analysis.generated.md" target="_blank">Competitive Position</a>
     <button class="proposal-proof-link" type="button" onclick="cancelSelectedProposalInWallet()">Cancel in Wallet</button>
     <button class="proposal-proof-link" type="button" onclick="vetoSelectedProposalInWallet()">Veto in Wallet</button>
     <button class="proposal-proof-link" type="button" onclick="finalizeSelectedProposalInWallet()">Finalize in Wallet</button>
@@ -8879,6 +8947,11 @@ function renderProposalDetail(p, nowTs) {
       <div class="proposal-detail-label">MAGICBLOCK PRIVATE PAYMENTS</div>
       <div style="color:var(--text2);line-height:1.8">${magicBlockReadiness.copy} ${magicBlockReadiness.nextStep}</div>
       <code>${magicBlockCorridor ? `npm run inspect:magicblock -- --proposal ${p.pubkey}` : confidentialPlan && confidentialPlan.assetType === 'Token' && confidentialPlan.tokenMint ? `npm run configure:magicblock -- --dao ${p.dao} --proposal ${p.pubkey} --owner-wallet ${p.proposer} --settlement-wallet ${confidentialPlan.settlementRecipient} --payout-mint ${confidentialPlan.tokenMint} --deposit-amount ${confidentialPlan.totalAmount} --private-transfer-amount ${confidentialPlan.totalAmount} --withdrawal-amount ${confidentialPlan.totalAmount}` : `Configure a confidential token payout for ${p.pubkey}, then bind a MagicBlock corridor to the same proposal.`}</code>
+    </div>
+    <div class="proposal-command-box">
+      <div class="proposal-detail-label">COMPETITIVE POSITION</div>
+      <div style="color:var(--text2);line-height:1.8">Open the Copilot-backed competitive analysis to review the closest privacy, DAO, and treasury references, then map this proposal to the strongest track narrative before judge mode or submissions.</div>
+      <code>npm run build:colosseum-competitive && npm run verify:colosseum-competitive</code>
     </div>
     <div class="proposal-command-box">
       <div class="proposal-detail-label">EXECUTE</div>
