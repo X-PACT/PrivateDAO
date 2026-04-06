@@ -105,6 +105,9 @@ function main() {
       aggregateSha256: cryptographicManifest.aggregateSha256,
     },
     runtimeDocs: [
+      "docs/read-node-indexer.md",
+      "docs/rpc-architecture.md",
+      "docs/backend-operator-flow.md",
       "docs/confidential-payments.md",
       "docs/confidential-payroll-flow.md",
       "docs/confidential-payments-diagram.md",
@@ -144,6 +147,9 @@ function main() {
       "docs/go-live-attestation.generated.json",
     ],
     operationsDocs: [
+      "docs/read-node-indexer.md",
+      "docs/rpc-architecture.md",
+      "docs/backend-operator-flow.md",
       "docs/release-ceremony.md",
       "docs/release-ceremony-attestation.generated.md",
       "docs/release-ceremony-attestation.generated.json",

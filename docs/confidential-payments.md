@@ -86,6 +86,13 @@ The live frontend now exposes confidential payouts in three places:
 - live proposal cards
 - selected proposal detail and execution panel
 
+## Anchor Event Logs
+
+The confidential payout path also emits on-chain Anchor events so Devnet and later mainnet operators can trace the batch lifecycle cleanly:
+
+- `ConfidentialPayoutConfigured`
+- `ConfidentialPayoutExecuted`
+
 ## Related Notes
 
 - [confidential-payroll-flow.md](confidential-payroll-flow.md)

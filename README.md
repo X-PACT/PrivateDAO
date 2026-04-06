@@ -51,6 +51,8 @@ If you want to understand the repository quickly, use this map first:
   - end-to-end behavior and lifecycle coverage
 - `scripts/`
   - build, verification, attestation, Devnet, and reviewer automation
+- `scripts/run-read-node.ts`
+  - backend read node and indexer for pooled RPC reads
 - `docs/live-proof.md`
   - canonical Devnet proof path
 - `docs/security-review.md`
@@ -81,6 +83,7 @@ PrivateDAO is not only a program repo. It contains four layers that fit together
    - generated attestations
    - Devnet evidence
    - runtime diagnostics
+   - backend read node and RPC pooling
    - release and readiness artifacts
 
 ## Fast Path
@@ -97,13 +100,15 @@ For the fastest useful read:
 8. Read `docs/zk-enforced-operator-flow.md`
 9. Read `docs/confidential-payments.md`
 10. Read `docs/confidential-payroll-flow.md`
-11. Read `docs/canonical-verifier-boundary-decision.md`
-12. Read `docs/zk-external-closure.generated.md`
+11. Read `docs/read-node-indexer.md`
+12. Read `docs/rpc-architecture.md`
+13. Read `docs/backend-operator-flow.md`
+14. Read `docs/canonical-verifier-boundary-decision.md`
+15. Read `docs/zk-external-closure.generated.md`
 
-## Shared Proposal Doc
+## Proposal Draft
 
-- Google Doc URL: `ADD_SHARED_GOOGLE_DOC_URL_HERE`
-- Local draft for copy/paste: `docs/developer-tooling-proposal.md`
+- Local draft for copy/paste into a shared Google Doc: `docs/developer-tooling-proposal.md`
 
 ## Token Surface
 
@@ -190,6 +195,45 @@ Use these notes first:
 - `docs/confidential-payments-diagram.md`
 - `docs/confidential-payments-audit-scope.md`
 
+## Backend Read Node And RPC Pool
+
+PrivateDAO no longer needs to behave like a browser-only RPC client for heavy reads.
+
+The repository now includes a real backend read path:
+
+- pooled Devnet RPC endpoints
+- cached proposal and DAO inspection
+- wallet-readiness inspection per DAO
+- runtime health responses
+- rate limiting and bounded CORS
+- read-only HTTP endpoints designed for same-domain deployment behind a reverse proxy
+
+This keeps the trust model intact:
+
+- writes still stay wallet-signed in the frontend
+- treasury authority does not move to the backend
+- the backend serves as a resilient read and indexing layer
+
+Start locally:
+
+```bash
+cd /home/x-pact/PrivateDAO
+npm run start:read-node
+```
+
+Verify:
+
+```bash
+cd /home/x-pact/PrivateDAO
+npm run verify:read-node
+```
+
+Primary backend docs:
+
+- `docs/read-node-indexer.md`
+- `docs/rpc-architecture.md`
+- `docs/backend-operator-flow.md`
+
 ## Domain Mirror Strategy
 
 The current review surface stays stable at:
@@ -218,6 +262,10 @@ The current review surface is intentionally explicit about a few points that are
 - The web surface now shows per-layer receipt strength for the selected proposal, and the CLI now exposes:
   - `npm run anchor:zk-verify:enforced`
   - `npm run inspect:zk-proposal -- --proposal <PDA>`
+- Confidential payout plans already emit Anchor events on-chain:
+  - `ConfidentialPayoutConfigured`
+  - `ConfidentialPayoutExecuted`
+- The frontend now supports a real backend read path through the read node and falls back to direct RPC only when the backend is unavailable.
 - The selected proposal panel now shows `zk_enforced` readiness directly, including whether receipts are missing, still parallel, or already strong enough for promotion.
 - The repo now includes a dedicated `zk_enforced` runtime capture registry and generated review package so stronger-path wallet runs can be added without changing the reviewer surface.
 - The repo now also includes explicit `zk_enforced` capture templates, an external audit scope, and a canonical verifier-boundary decision document so the remaining external work is structured instead of implied.
@@ -929,6 +977,7 @@ Mainnet blockers still outside the repository are:
 - real-device wallet captures
 - zk_enforced runtime captures for enable-mode and finalize
 - production RPC and monitoring operations
+- same-domain backend read node deployment is strongly recommended before mainnet, even though the browser still retains direct RPC fallback
 
 ## 🧩 Project Surface Map
 

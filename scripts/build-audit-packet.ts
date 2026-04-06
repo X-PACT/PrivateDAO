@@ -121,6 +121,10 @@ ${Object.entries(proof.transactions)
 
 ## Artifact Integrity
 
+- Read node and indexer: \`docs/read-node-indexer.md\`
+- RPC architecture: \`docs/rpc-architecture.md\`
+- Backend operator flow: \`docs/backend-operator-flow.md\`
+- Read-node architecture diagram: \`docs/assets/read-node-architecture.svg\`
 - Confidential payouts note: \`docs/confidential-payments.md\`
 - Confidential payroll flow: \`docs/confidential-payroll-flow.md\`
 - Confidential payouts diagram: \`docs/confidential-payments-diagram.md\`
@@ -196,6 +200,9 @@ ${submission.packages.proof.map((entry) => `- \`${entry}\``).join("\n")}
 
 ## Runtime Package
 
+- \`docs/read-node-indexer.md\`
+- \`docs/rpc-architecture.md\`
+- \`docs/backend-operator-flow.md\`
 - \`docs/fair-voting.md\`
 - \`docs/wallet-runtime.md\`
 - \`docs/real-device-runtime.md\`

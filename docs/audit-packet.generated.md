@@ -59,6 +59,10 @@
 
 ## Artifact Integrity
 
+- Read node and indexer: `docs/read-node-indexer.md`
+- RPC architecture: `docs/rpc-architecture.md`
+- Backend operator flow: `docs/backend-operator-flow.md`
+- Read-node architecture diagram: `docs/assets/read-node-architecture.svg`
 - Confidential payouts note: `docs/confidential-payments.md`
 - Confidential payroll flow: `docs/confidential-payroll-flow.md`
 - Confidential payouts diagram: `docs/confidential-payments-diagram.md`
@@ -78,8 +82,8 @@
 - Release drill: `docs/release-drill.generated.json`
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `101`
-- Aggregate sha256: `4e68ac817d9d8c3cdf8bb90f1b518b666ac29f3f4f05fc6b5a9d131bde2b1bce`
+- Manifest entries: `105`
+- Aggregate sha256: `9515d8ab30f7b46782c2be8bbe625e42ac6db04cd6161d6c575ce4034f1ac06b`
 
 ## ZK Package
 
@@ -171,6 +175,10 @@
 
 ## Proof Package
 
+- `docs/read-node-indexer.md`
+- `docs/rpc-architecture.md`
+- `docs/backend-operator-flow.md`
+- `docs/assets/read-node-architecture.svg`
 - `docs/confidential-payments.md`
 - `docs/confidential-payroll-flow.md`
 - `docs/confidential-payments-diagram.md`
@@ -226,6 +234,9 @@
 
 ## Runtime Package
 
+- `docs/read-node-indexer.md`
+- `docs/rpc-architecture.md`
+- `docs/backend-operator-flow.md`
 - `docs/fair-voting.md`
 - `docs/wallet-runtime.md`
 - `docs/real-device-runtime.md`
@@ -280,6 +291,9 @@
 
 ## Operations Package
 
+- `docs/read-node-indexer.md`
+- `docs/rpc-architecture.md`
+- `docs/backend-operator-flow.md`
 - `docs/mainnet-readiness.md`
 - `docs/authority-hardening.md`
 - `docs/phase-c-hardening.md`
@@ -367,6 +381,7 @@
 
 - governanceLifecycle: `verified`
 - confidentialPayoutSurface: `verified`
+- backendReadNodeSurface: `verified`
 - securityReasoning: `verified`
 - supplyChainSurface: `verified`
 - releaseCeremonySurface: `verified`

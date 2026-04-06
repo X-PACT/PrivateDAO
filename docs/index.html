@@ -2882,6 +2882,7 @@ body.judge-mode .judge-banner {
           <div>Hidden tally during voting</div>
           <div>Explicit proposal lifecycle</div>
           <div>Encrypted payroll and bonus approvals</div>
+          <div>Backend-indexed proposal reads with RPC fallback</div>
           <div>Explorer-verifiable execution evidence</div>
         </div>
       </div>
@@ -2946,12 +2947,12 @@ body.judge-mode .judge-banner {
         <div class="pillar-kicker">RUNTIME ASSURANCE</div>
         <div class="pillar-title">Evidence under stress, not claims</div>
         <div class="pillar-copy">
-          The repository contains multi-wallet, adversarial, RPC-failover, race-condition, runtime, and release-drill evidence so the system can be reviewed as an operating product.
+          The repository contains multi-wallet, adversarial, RPC-failover, race-condition, runtime, release-drill, and pooled read-node evidence so the system can be reviewed as an operating product.
         </div>
         <div class="pillar-points">
           <div class="pillar-point">50-wallet Devnet execution with adversarial and zk participants</div>
           <div class="pillar-point">Proposal isolation, finalize races, execute races, and stale blockhash recovery</div>
-          <div class="pillar-point">Runtime diagnostics, wallet matrix, canary, and real-device intake paths</div>
+          <div class="pillar-point">Runtime diagnostics, wallet matrix, canary, real-device intake paths, and backend-indexed read flow</div>
         </div>
       </div>
       <div class="pillar-card">
@@ -4403,7 +4404,7 @@ execute() → treasury action
     <div class="explain-grid reveal" style="margin-top:140px">
       <div class="explain-card">
         <div class="explain-card-title">What this panel checks</div>
-        <div class="explain-card-copy">Diagnostics inspects wallet connection state, provider detection, browser capabilities, RPC health, and the live PrivateDAO anchors that matter for runtime trust.</div>
+        <div class="explain-card-copy">Diagnostics inspects wallet connection state, provider detection, browser capabilities, backend read-path availability, RPC health, and the live PrivateDAO anchors that matter for runtime trust.</div>
       </div>
       <div class="explain-card">
         <div class="explain-card-title">When to use it</div>
@@ -4437,6 +4438,10 @@ execute() → treasury action
         <div class="proposal-command-box">
           <div class="proposal-detail-label">RPC HEALTH</div>
           <div class="diagnostic-value" id="diagRpcHealth">Pending refresh</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">READ PATH</div>
+          <div class="diagnostic-value" id="diagReadPath">Direct RPC</div>
         </div>
         <div class="proposal-command-box">
           <div class="proposal-detail-label">PROGRAM ID</div>
@@ -4473,6 +4478,10 @@ execute() → treasury action
         <div class="proposal-command-box">
           <div class="proposal-detail-label">VERIFIER STRATEGY</div>
           <div style="color:var(--text2);line-height:1.8"><a class="award-link" href="zk-verifier-strategy.md" target="_blank">Open verifier strategy</a></div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">READ NODE</div>
+          <div style="color:var(--text2);line-height:1.8"><a class="award-link" href="read-node-indexer.md" target="_blank">Open read-node and indexer path</a></div>
         </div>
       </div>
 
@@ -4520,6 +4529,11 @@ execute() → treasury action
             <div class="diagnostic-value" style="color:var(--amber)">DECISION REQUIRED</div>
             <div style="color:var(--text3);line-height:1.7;margin-top:8px">The repo now records anchors, receipts, and proposal policies, but the final production verifier boundary still needs to be frozen. See <a class="award-link" href="zk-verifier-strategy.md" target="_blank">ZK Verifier Strategy</a>.</div>
           </div>
+          <div class="proposal-command-box">
+            <div class="proposal-detail-label">READ NODE / INDEXER</div>
+            <div class="diagnostic-value" style="color:var(--amber)">DEPLOY RECOMMENDED</div>
+            <div style="color:var(--text3);line-height:1.7;margin-top:8px">Mainnet readiness improves when proposal reads, DAO inspection, and runtime health move behind a pooled RPC read node instead of relying on browser RPC alone. See <a class="award-link" href="read-node-indexer.md" target="_blank">Read Node and Indexer</a>.</div>
+          </div>
         </div>
       </div>
 
@@ -4535,6 +4549,9 @@ execute() → treasury action
           <button class="proposal-proof-link" type="button" onclick="openDocument('runtime-attestation.generated.json','Runtime Attestation')">Open Runtime Attestation</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('phase-c-hardening.md','Phase C Hardening')">Open Phase C Hardening</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('zk-verifier-strategy.md','ZK Verifier Strategy')">Open Verifier Strategy</button>
+          <button class="proposal-proof-link" type="button" onclick="openDocument('read-node-indexer.md','Read Node And Indexer')">Open Read Node</button>
+          <button class="proposal-proof-link" type="button" onclick="openDocument('rpc-architecture.md','RPC Architecture')">Open RPC Architecture</button>
+          <button class="proposal-proof-link" type="button" onclick="openDocument('backend-operator-flow.md','Backend Operator Flow')">Open Backend Operator Flow</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('zk-enforced-threat-review.md','ZK-Enforced Threat Review')">Open Threat Review</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('zk-enforced-runtime-evidence.md','ZK-Enforced Runtime Evidence')">Open Runtime Evidence Path</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('zk-enforced-runtime.generated.md','ZK-Enforced Runtime Package')">Open Runtime Evidence Package</button>
@@ -5311,16 +5328,31 @@ async function updateDiagnostics() {
   let rpcHealth = 'Checking';
   let rpcDetails = 'Running RPC reachability checks...';
   try {
-    const version = await withRpcFallback((activeConnection) => activeConnection.getVersion());
-    const latest = await withRpcFallback((activeConnection) => activeConnection.getLatestBlockhash('confirmed'));
-    rpcHealth = 'Healthy';
-    rpcDetails = [
-      `endpoint=${currentRpcEndpoint()}`,
-      `solana-core=${version['solana-core'] || 'unknown'}`,
-      `feature-set=${version['feature-set'] || 'unknown'}`,
-      `blockhash=${latest.blockhash}`,
-      `lastValidBlockHeight=${latest.lastValidBlockHeight}`,
-    ].join('\n');
+    if (READ_API_BASE) {
+      const runtime = await fetchReadApi('/runtime', { silent: true });
+      rpcHealth = 'Healthy';
+      rpcDetails = [
+        `endpoint=${runtime.runtime.rpcEndpoint}`,
+        `solana-core=${runtime.runtime.solanaCore || 'unknown'}`,
+        `feature-set=${runtime.runtime.featureSet || 'unknown'}`,
+        `blockhash=${runtime.runtime.latestBlockhash}`,
+        `lastValidBlockHeight=${runtime.runtime.lastValidBlockHeight}`,
+        `cacheTtlMs=${runtime.runtime.cacheTtlMs}`,
+      ].join('\n');
+      currentReadPath = 'Backend Indexer';
+    } else {
+      const version = await withRpcFallback((activeConnection) => activeConnection.getVersion());
+      const latest = await withRpcFallback((activeConnection) => activeConnection.getLatestBlockhash('confirmed'));
+      rpcHealth = 'Healthy';
+      rpcDetails = [
+        `endpoint=${currentRpcEndpoint()}`,
+        `solana-core=${version['solana-core'] || 'unknown'}`,
+        `feature-set=${version['feature-set'] || 'unknown'}`,
+        `blockhash=${latest.blockhash}`,
+        `lastValidBlockHeight=${latest.lastValidBlockHeight}`,
+      ].join('\n');
+      currentReadPath = 'Direct RPC';
+    }
   } catch (error) {
     rpcHealth = 'Unavailable';
     rpcDetails = error?.message || 'RPC health check failed.';
@@ -5333,7 +5365,9 @@ async function updateDiagnostics() {
     connectedProvider: connectedProviderName,
     connectedWallet: connectedWalletValue,
     rpcHealth,
-    rpcEndpoint: currentRpcEndpoint(),
+    readPath: currentReadPath,
+    readApiBase: READ_API_BASE || null,
+    rpcEndpoint: currentReadPath === 'Backend Indexer' ? `${READ_API_BASE} -> managed RPC pool` : currentRpcEndpoint(),
     browserCapabilities,
     supportedProviders: supportedProviders.map(({ id, label }) => {
       const provider = resolveWalletProvider(id);
@@ -5351,6 +5385,7 @@ async function updateDiagnostics() {
     goLive: {
       repositoryGates: 'internal-pass',
       authorityHardening: 'multisig-required',
+      backendReadPath: 'deploy-recommended',
       realDeviceWalletQa: 'external-blocker',
       zkEnforcedRuntime: 'capture-required',
       zkExternalClosure: 'pending-external-execution',
@@ -5364,6 +5399,7 @@ async function updateDiagnostics() {
   document.getElementById('diagConnectedProvider').textContent = connectedProviderName;
   document.getElementById('diagConnectedWallet').textContent = connectedWalletValue;
   document.getElementById('diagRpcHealth').textContent = rpcHealth;
+  document.getElementById('diagReadPath').textContent = currentReadPath;
   document.getElementById('diagSupportedProviders').textContent = providerLines.join('\n');
   document.getElementById('diagSupportedProviders').style.whiteSpace = 'pre-wrap';
   document.getElementById('diagBrowserCapabilities').textContent = formatCapabilityFlags(browserCapabilities);
@@ -5652,6 +5688,18 @@ const DEVNET_RPC_ENDPOINTS = [
   "https://api.devnet.solana.com",
   "https://solana-devnet.g.alchemy.com/v2/L4dlywEyiBJLg8Ey0bFof",
 ];
+const READ_API_BASE = (() => {
+  const query = new URLSearchParams(window.location.search).get('readApi');
+  const injected = typeof window.PRIVATE_DAO_READ_API === 'string' ? window.PRIVATE_DAO_READ_API : '';
+  const candidate = (query || injected || '').trim();
+  if (candidate) {
+    return candidate.replace(/\/+$/, '');
+  }
+  if (!window.location.hostname.includes('github.io')) {
+    return `${window.location.origin}/api/v1`;
+  }
+  return '';
+})();
 const PROGRAM_ID = "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx";
 const TOKEN_PROGRAM_ID = new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
 const TOKEN_2022_PROGRAM_ID = new solanaWeb3.PublicKey("TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb");
@@ -5659,6 +5707,8 @@ const ASSOCIATED_TOKEN_PROGRAM_ID = new solanaWeb3.PublicKey("ATokenGPvbdGVxr1b2
 const SYSVAR_RENT_PUBKEY = new solanaWeb3.PublicKey("SysvarRent111111111111111111111111111111111");
 let currentRpcIndex = 0;
 let connection = new solanaWeb3.Connection(DEVNET_RPC_ENDPOINTS[currentRpcIndex], "confirmed");
+let currentReadPath = READ_API_BASE ? 'Backend Indexer' : 'Direct RPC';
+let readApiFailureNotified = false;
 const programPk = new solanaWeb3.PublicKey(PROGRAM_ID);
 const statusByIdx = ["Voting", "Passed", "Failed", "Cancelled", "Vetoed"];
 const proposalZkModeByIdx = ["Companion", "Parallel", "ZkEnforced"];
@@ -5668,6 +5718,30 @@ const confidentialPayoutStatusByIdx = ["Configured", "Funded"];
 
 function currentRpcEndpoint() {
   return DEVNET_RPC_ENDPOINTS[currentRpcIndex];
+}
+
+async function fetchReadApi(path, { silent = false } = {}) {
+  if (!READ_API_BASE) {
+    throw new Error('Read API is not configured for this frontend surface.');
+  }
+
+  const normalized = `${READ_API_BASE}${path.startsWith('/') ? path : `/${path}`}`;
+  try {
+    const response = await fetch(normalized, { cache: 'no-cache' });
+    if (!response.ok) {
+      throw new Error(`Read API ${response.status}`);
+    }
+    const json = await response.json();
+    currentReadPath = 'Backend Indexer';
+    return json;
+  } catch (error) {
+    currentReadPath = READ_API_BASE ? 'Direct RPC Fallback' : 'Direct RPC';
+    if (!silent && !readApiFailureNotified) {
+      readApiFailureNotified = true;
+      showToast('Backend read node unavailable. Falling back to direct RPC.', 'info');
+    }
+    throw error;
+  }
 }
 
 function rotateRpcEndpoint() {
@@ -7505,10 +7579,23 @@ async function updateDeploymentSnapshot() {
   const ownerEl = document.getElementById('deployOwner');
 
   try {
-    const [slot, info] = await Promise.all([
-      connection.getSlot("confirmed"),
-      connection.getAccountInfo(programPk, "confirmed"),
-    ]);
+    let slot;
+    let info;
+    if (READ_API_BASE) {
+      const runtime = await fetchReadApi('/runtime', { silent: true });
+      slot = runtime.runtime.slot;
+      info = {
+        executable: runtime.runtime.programExecutable,
+        owner: { toBase58: () => runtime.runtime.programOwner },
+      };
+      currentReadPath = 'Backend Indexer';
+    } else {
+      [slot, info] = await Promise.all([
+        connection.getSlot("confirmed"),
+        connection.getAccountInfo(programPk, "confirmed"),
+      ]);
+      currentReadPath = 'Direct RPC';
+    }
 
     slotEl.textContent = String(slot);
     if (!info) {
@@ -7815,11 +7902,22 @@ async function fetchDaoDetails(daoPubkey) {
   if (daoCache.has(daoPubkey)) {
     return daoCache.get(daoPubkey);
   }
+  if (READ_API_BASE) {
+    try {
+      const response = await fetchReadApi(`/daos/${daoPubkey}`, { silent: true });
+      if (response?.dao) {
+        daoCache.set(daoPubkey, response.dao);
+        currentReadPath = 'Backend Indexer';
+        return response.dao;
+      }
+    } catch (_) {}
+  }
   const daoPk = new solanaWeb3.PublicKey(daoPubkey);
   const info = await withRpcFallback((activeConnection) => activeConnection.getAccountInfo(daoPk, 'confirmed'));
   if (!info) throw new Error('DAO account not found on devnet');
   const decoded = decodeDaoAccount(info.data, daoPk);
   daoCache.set(daoPubkey, decoded);
+  currentReadPath = READ_API_BASE ? 'Direct RPC Fallback' : 'Direct RPC';
   return decoded;
 }
 
@@ -8166,6 +8264,21 @@ async function hydrateSelectedProposalZkReceipts(proposalPubkey) {
   const proposal = liveProposalMap.get(proposalPubkey);
   if (!proposal) return;
 
+  if (READ_API_BASE) {
+    try {
+      const response = await fetchReadApi(`/proposals/${proposalPubkey}`, { silent: true });
+      if (response?.proposal) {
+        liveProposalMap.set(proposalPubkey, response.proposal);
+        if (currentSelectedProposalPubkey === proposalPubkey) {
+          currentSelectedProposal = response.proposal;
+          renderProposalDetail(response.proposal, Math.floor(Date.now() / 1000));
+        }
+        currentReadPath = 'Backend Indexer';
+        return;
+      }
+    } catch (_) {}
+  }
+
   const receiptPdas = [1, 2, 3].map((seed) => new solanaWeb3.PublicKey(deriveZkReceiptPda(proposalPubkey, seed)));
   const infos = await withRpcFallback((activeConnection) => activeConnection.getMultipleAccountsInfo(receiptPdas, 'confirmed'));
   proposal.zkReceiptSummary = infos.map((info, index) => {
@@ -8208,23 +8321,35 @@ async function updateHeroWalletReadiness() {
   govTokenEl.textContent = 'CHECKING';
 
   try {
-    const ownerPk = new solanaWeb3.PublicKey(wallet);
-    const mintPk = new solanaWeb3.PublicKey(currentHeroGovernanceMint);
-    const parsed = await withRpcFallback((activeConnection) =>
-      activeConnection.getParsedTokenAccountsByOwner(ownerPk, { mint: mintPk }, 'confirmed')
-    );
+    let readiness;
+    if (READ_API_BASE) {
+      const response = await fetchReadApi(`/daos/${currentHeroDaoPubkey}/wallets/${wallet}/readiness`, { silent: true });
+      readiness = response?.readiness || null;
+      currentReadPath = 'Backend Indexer';
+    }
+
+    if (!readiness) {
+      const ownerPk = new solanaWeb3.PublicKey(wallet);
+      const mintPk = new solanaWeb3.PublicKey(currentHeroGovernanceMint);
+      const parsed = await withRpcFallback((activeConnection) =>
+        activeConnection.getParsedTokenAccountsByOwner(ownerPk, { mint: mintPk }, 'confirmed')
+      );
+
+      readiness = {
+        balanceUi: parsed.value.reduce((sum, accountInfo) => {
+          const tokenAmount = accountInfo.account.data?.parsed?.info?.tokenAmount;
+          const uiAmount = Number(tokenAmount?.uiAmount || 0);
+          return sum + (Number.isFinite(uiAmount) ? uiAmount : 0);
+        }, 0),
+      };
+      currentReadPath = READ_API_BASE ? 'Direct RPC Fallback' : 'Direct RPC';
+    }
 
     if (requestId !== heroWalletReadinessRequest) {
       return;
     }
 
-    const balance = parsed.value.reduce((sum, accountInfo) => {
-      const tokenAmount = accountInfo.account.data?.parsed?.info?.tokenAmount;
-      const uiAmount = Number(tokenAmount?.uiAmount || 0);
-      return sum + (Number.isFinite(uiAmount) ? uiAmount : 0);
-    }, 0);
-
-    govTokenEl.textContent = balance > 0 ? 'READY' : 'NO TOKEN';
+    govTokenEl.textContent = Number(readiness.balanceUi || 0) > 0 ? 'READY' : 'NO TOKEN';
     updateHeroActionReadiness();
   } catch (_) {
     if (requestId !== heroWalletReadinessRequest) {
@@ -8437,42 +8562,56 @@ async function loadLiveProposals() {
   liveProposalRefreshInFlight = true;
   const list = document.getElementById('proposalsList');
   try {
-    const accounts = await withRpcFallback((activeConnection) => activeConnection.getProgramAccounts(programPk));
-    const proposals = [];
-    for (const acc of accounts) {
+    let proposals = null;
+    if (READ_API_BASE) {
       try {
-        const p = decodeProposalAccount(acc.account.data, acc.pubkey);
-        proposals.push(p);
+        const response = await fetchReadApi('/proposals', { silent: true });
+        if (response?.proposals && Array.isArray(response.proposals)) {
+          proposals = response.proposals;
+          currentReadPath = 'Backend Indexer';
+        }
       } catch (_) {}
     }
 
-    const policyPdas = proposals.map((proposal) => new solanaWeb3.PublicKey(deriveProposalZkPolicyPda(proposal.pubkey)));
-    const payoutPlanPdas = proposals.map((proposal) => new solanaWeb3.PublicKey(deriveConfidentialPayoutPlanPda(proposal.pubkey)));
-    const policyInfos = policyPdas.length
-      ? await withRpcFallback((activeConnection) => activeConnection.getMultipleAccountsInfo(policyPdas, 'confirmed'))
-      : [];
-    const payoutInfos = payoutPlanPdas.length
-      ? await withRpcFallback((activeConnection) => activeConnection.getMultipleAccountsInfo(payoutPlanPdas, 'confirmed'))
-      : [];
-
-    proposals.forEach((proposal, index) => {
-      const policyInfo = policyInfos[index];
-      if (!policyInfo) {
-        proposal.zkMode = 'Companion';
-        proposal.zkRequiredLayersMask = 0;
-        proposal.zkPolicyPda = null;
-      } else {
-        const decoded = decodeProposalZkPolicyAccount(policyInfo.data, policyPdas[index]);
-        proposal.zkMode = decoded.mode;
-        proposal.zkRequiredLayersMask = decoded.requiredLayersMask;
-        proposal.zkPolicyPda = decoded.pubkey;
+    if (!proposals) {
+      const accounts = await withRpcFallback((activeConnection) => activeConnection.getProgramAccounts(programPk));
+      proposals = [];
+      for (const acc of accounts) {
+        try {
+          const p = decodeProposalAccount(acc.account.data, acc.pubkey);
+          proposals.push(p);
+        } catch (_) {}
       }
 
-      const payoutInfo = payoutInfos[index];
-      proposal.confidentialPayoutPlan = payoutInfo
-        ? decodeConfidentialPayoutPlanAccount(payoutInfo.data, payoutPlanPdas[index])
-        : null;
-    });
+      const policyPdas = proposals.map((proposal) => new solanaWeb3.PublicKey(deriveProposalZkPolicyPda(proposal.pubkey)));
+      const payoutPlanPdas = proposals.map((proposal) => new solanaWeb3.PublicKey(deriveConfidentialPayoutPlanPda(proposal.pubkey)));
+      const policyInfos = policyPdas.length
+        ? await withRpcFallback((activeConnection) => activeConnection.getMultipleAccountsInfo(policyPdas, 'confirmed'))
+        : [];
+      const payoutInfos = payoutPlanPdas.length
+        ? await withRpcFallback((activeConnection) => activeConnection.getMultipleAccountsInfo(payoutPlanPdas, 'confirmed'))
+        : [];
+
+      proposals.forEach((proposal, index) => {
+        const policyInfo = policyInfos[index];
+        if (!policyInfo) {
+          proposal.zkMode = 'Companion';
+          proposal.zkRequiredLayersMask = 0;
+          proposal.zkPolicyPda = null;
+        } else {
+          const decoded = decodeProposalZkPolicyAccount(policyInfo.data, policyPdas[index]);
+          proposal.zkMode = decoded.mode;
+          proposal.zkRequiredLayersMask = decoded.requiredLayersMask;
+          proposal.zkPolicyPda = decoded.pubkey;
+        }
+
+        const payoutInfo = payoutInfos[index];
+        proposal.confidentialPayoutPlan = payoutInfo
+          ? decodeConfidentialPayoutPlanAccount(payoutInfo.data, payoutPlanPdas[index])
+          : null;
+      });
+      currentReadPath = READ_API_BASE ? 'Direct RPC Fallback' : 'Direct RPC';
+    }
 
     proposals.sort((a, b) => b.proposalId - a.proposalId);
     liveProposalMap = new Map(proposals.map((proposal) => [proposal.pubkey, proposal]));

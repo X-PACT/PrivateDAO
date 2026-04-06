@@ -64,6 +64,10 @@
       "docs/zk-attestation.generated.json"
     ],
     "proof": [
+      "docs/read-node-indexer.md",
+      "docs/rpc-architecture.md",
+      "docs/backend-operator-flow.md",
+      "docs/assets/read-node-architecture.svg",
       "docs/confidential-payments.md",
       "docs/confidential-payroll-flow.md",
       "docs/confidential-payments-diagram.md",
@@ -118,6 +122,9 @@
       "docs/go-live-attestation.generated.json"
     ],
     "operations": [
+      "docs/read-node-indexer.md",
+      "docs/rpc-architecture.md",
+      "docs/backend-operator-flow.md",
       "docs/mainnet-readiness.md",
       "docs/authority-hardening.md",
       "docs/phase-c-hardening.md",
@@ -204,6 +211,7 @@
   "status": {
     "governanceLifecycle": "verified",
     "confidentialPayoutSurface": "verified",
+    "backendReadNodeSurface": "verified",
     "securityReasoning": "verified",
     "supplyChainSurface": "verified",
     "releaseCeremonySurface": "verified",

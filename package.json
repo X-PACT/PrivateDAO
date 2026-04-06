@@ -4,6 +4,7 @@
   "description": "Solana private governance system with commit-reveal voting, confidential payroll and bonus batches, timelocked execution, Groth16 companion proofs, and reviewer-visible security evidence",
   "scripts": {
     "build": "anchor build",
+    "start:read-node": "ts-node scripts/run-read-node.ts",
     "test": "anchor test",
     "typecheck": "tsc --noEmit",
     "demo": "anchor test --run tests/demo.ts",
@@ -77,6 +78,7 @@
     "verify:strategy-surface": "bash scripts/verify-strategy-surface.sh",
     "verify:zk-surface": "bash scripts/verify-zk-surface.sh",
     "verify:frontend-surface": "ts-node scripts/verify-frontend-surface.ts",
+    "verify:read-node": "ts-node scripts/verify-read-node.ts",
     "verify:submission-registry": "ts-node scripts/verify-submission-registry.ts",
     "verify:registry-consistency": "ts-node scripts/verify-registry-consistency.ts",
     "verify:generated-artifacts": "ts-node scripts/verify-generated-artifacts.ts",

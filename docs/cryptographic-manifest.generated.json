@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-06T00:58:57.517Z",
+  "generatedAt": "2026-04-06T01:23:52.355Z",
   "algorithm": "sha256",
-  "entryCount": 101,
-  "aggregateSha256": "4e68ac817d9d8c3cdf8bb90f1b518b666ac29f3f4f05fc6b5a9d131bde2b1bce",
+  "entryCount": 105,
+  "aggregateSha256": "9515d8ab30f7b46782c2be8bbe625e42ac6db04cd6161d6c575ce4034f1ac06b",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -146,9 +146,29 @@
       "bytes": 5001
     },
     {
+      "path": "docs/read-node-indexer.md",
+      "sha256": "e9bc4e5b7cdf4b663b5f5df7785ad651533247d5c58745ad340ffafb09388cff",
+      "bytes": 1709
+    },
+    {
+      "path": "docs/rpc-architecture.md",
+      "sha256": "6fbe9f8afb8b95b56a98ce404378c57e3be77524fb1ef96ff4e962dc164e15f1",
+      "bytes": 1435
+    },
+    {
+      "path": "docs/backend-operator-flow.md",
+      "sha256": "70a9cac740af175b0201b24d2ce201f8602e07416eb2e9436ae7546b4fe14d87",
+      "bytes": 1146
+    },
+    {
+      "path": "docs/assets/read-node-architecture.svg",
+      "sha256": "2801648c5b6450ac7ab1b7947172549a98cbe47ecae0892df30f5c7257197df0",
+      "bytes": 4658
+    },
+    {
       "path": "docs/confidential-payments.md",
-      "sha256": "20e73c92e6d23493363924f91daa297065006a46a21eff8a1b202a408faeaf76",
-      "bytes": 2795
+      "sha256": "271263994e65839bc23c3cd29172dc095ac7ec916704d4ac65038652d932cd2e",
+      "bytes": 3023
     },
     {
       "path": "docs/confidential-payroll-flow.md",
@@ -177,8 +197,8 @@
     },
     {
       "path": "docs/submission-registry.json",
-      "sha256": "25a4f1ae733d6f2ab0d51298659d90d4cc54ba40b6c11eddabaf095fcdbbf114",
-      "bytes": 8496
+      "sha256": "753272bb2a83fe0282bedc6152045cdbb8fc3a827e594e6b99406fd78a1f929d",
+      "bytes": 8802
     },
     {
       "path": "docs/independent-verification.md",
