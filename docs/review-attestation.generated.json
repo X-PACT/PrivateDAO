@@ -37,10 +37,10 @@
   ],
   "packageCounts": {
     "strategy": 9,
-    "security": 14,
+    "security": 15,
     "zk": 28,
-    "proof": 68,
-    "operations": 27
+    "proof": 74,
+    "operations": 29
   },
   "zk": {
     "stackVersion": 1,
@@ -74,8 +74,8 @@
   },
   "cryptographicIntegrity": {
     "algorithm": "sha256",
-    "entryCount": 115,
-    "aggregateSha256": "651ea49f67418e0f9c5384cc22ed8279fbf847248d91f9da193603dc36025c3c"
+    "entryCount": 127,
+    "aggregateSha256": "08fc893f88b89a5c2b6f289281c493f4d483a4ee63d195bb16c1fba27790ddd5"
   },
   "runtimeDocs": [
     "docs/read-node-indexer.md",
@@ -98,6 +98,12 @@
     "docs/real-device-runtime-captures.json",
     "docs/real-device-runtime.generated.md",
     "docs/real-device-runtime.generated.json",
+    "docs/magicblock-private-payments.md",
+    "docs/magicblock-operator-flow.md",
+    "docs/magicblock-runtime-evidence.md",
+    "docs/magicblock-runtime-captures.json",
+    "docs/magicblock-runtime.generated.md",
+    "docs/magicblock-runtime.generated.json",
     "docs/zk-enforced-runtime-evidence.md",
     "docs/zk-enforced-runtime-captures.json",
     "docs/zk-enforced-runtime.generated.md",
@@ -146,6 +152,7 @@
   "securityDocs": [
     "docs/security-review.md",
     "docs/confidential-payments-audit-scope.md",
+    "docs/magicblock-private-payments.md",
     "docs/refhe-security-model.md",
     "docs/refhe-audit-scope.md",
     "docs/cryptographic-integrity.md",
@@ -156,7 +163,7 @@
     "docs/supply-chain-attestation.generated.md",
     "docs/supply-chain-attestation.generated.json"
   ],
-  "gateCount": 59,
+  "gateCount": 60,
   "statuses": {
     "governanceLifecycle": "verified",
     "confidentialPayoutSurface": "verified",
@@ -168,6 +175,7 @@
     "runtimeEvidenceSurface": "verified",
     "realDeviceRuntimeIntake": "verified",
     "operationalEvidenceSurface": "verified",
+    "magicblockRuntimeSurface": "verified",
     "releaseDrillSurface": "verified",
     "artifactFreshness": "verified",
     "zkCompanionStack": "verified",

@@ -99,6 +99,12 @@ function main() {
       rationale: "Support surfaces are documented and the real-device capture intake is enforced, but live device/browser evidence still has to be collected externally.",
     },
     {
+      layer: "magicblock-runtime-corridor",
+      status: "pending-external",
+      evidence: ["docs/magicblock-private-payments.md", "docs/magicblock-runtime-evidence.md", "docs/magicblock-runtime.generated.md"],
+      rationale: "The MagicBlock corridor is wired into the program and frontend, but real wallet/runtime captures across environments still need to be collected externally.",
+    },
+    {
       layer: "external-audit",
       status: "pending-external",
       evidence: ["docs/mainnet-readiness.generated.md", "docs/external-readiness-intake.md"],

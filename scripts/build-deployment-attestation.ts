@@ -74,6 +74,10 @@ function main() {
     runtimeDocs: [
       "docs/wallet-runtime.md",
       "docs/fair-voting.md",
+      "docs/magicblock-private-payments.md",
+      "docs/magicblock-operator-flow.md",
+      "docs/magicblock-runtime-evidence.md",
+      "docs/magicblock-runtime.generated.md",
       "docs/zk-enforced-runtime-evidence.md",
       "docs/zk-enforced-runtime.generated.md",
       "docs/zk-enforced-operator-flow.md",

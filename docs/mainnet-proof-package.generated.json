@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-06T15:10:35.599Z",
+  "generatedAt": "2026-04-06T15:49:01.143Z",
   "packageDecision": "repository-strong-but-external-blockers-remain",
   "coreArtifacts": [
     "docs/mainnet-readiness.generated.md",
@@ -16,7 +16,7 @@
   ],
   "summary": {
     "acceptedInRepo": 8,
-    "pendingExternal": 2,
+    "pendingExternal": 3,
     "notInRepo": 1,
     "runtimeWalletCount": 5,
     "declaredSubmissionStatuses": {
@@ -30,6 +30,7 @@
       "runtimeEvidenceSurface": "verified",
       "realDeviceRuntimeIntake": "verified",
       "operationalEvidenceSurface": "verified",
+      "magicblockRuntimeSurface": "verified",
       "releaseDrillSurface": "verified",
       "artifactFreshness": "verified",
       "zkCompanionStack": "verified",

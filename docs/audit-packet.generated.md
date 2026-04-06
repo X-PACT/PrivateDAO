@@ -88,8 +88,8 @@
 - Release drill: `docs/release-drill.generated.json`
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `115`
-- Aggregate sha256: `651ea49f67418e0f9c5384cc22ed8279fbf847248d91f9da193603dc36025c3c`
+- Manifest entries: `127`
+- Aggregate sha256: `08fc893f88b89a5c2b6f289281c493f4d483a4ee63d195bb16c1fba27790ddd5`
 
 ## ZK Package
 
@@ -141,6 +141,7 @@
 - `docs/threat-model.md`
 - `docs/security-coverage-map.md`
 - `docs/confidential-payments-audit-scope.md`
+- `docs/magicblock-private-payments.md`
 - `docs/refhe-security-model.md`
 - `docs/refhe-audit-scope.md`
 - `docs/failure-modes.md`
@@ -197,6 +198,12 @@
 - `docs/confidential-payments.md`
 - `docs/confidential-payroll-flow.md`
 - `docs/confidential-payments-diagram.md`
+- `docs/magicblock-private-payments.md`
+- `docs/magicblock-operator-flow.md`
+- `docs/magicblock-runtime-evidence.md`
+- `docs/magicblock-runtime-captures.json`
+- `docs/magicblock-runtime.generated.md`
+- `docs/magicblock-runtime.generated.json`
 - `docs/refhe-protocol.md`
 - `docs/refhe-operator-flow.md`
 - `docs/refhe-security-model.md`
@@ -323,6 +330,8 @@
 - `docs/backend-operator-flow.md`
 - `docs/read-node-snapshot.generated.md`
 - `docs/read-node-snapshot.generated.json`
+- `docs/magicblock-runtime-evidence.md`
+- `docs/magicblock-runtime.generated.md`
 - `docs/mainnet-readiness.md`
 - `docs/authority-hardening.md`
 - `docs/phase-c-hardening.md`
@@ -381,6 +390,7 @@
 - `npm run verify:release-ceremony-attestation`
 - `npm run verify:operational-evidence`
 - `npm run verify:real-device-runtime`
+- `npm run verify:magicblock-runtime`
 - `npm run verify:zk-enforced-runtime`
 - `npm run verify:runtime-evidence`
 - `npm run verify:release-drill`
@@ -419,6 +429,7 @@
 - runtimeEvidenceSurface: `verified`
 - realDeviceRuntimeIntake: `verified`
 - operationalEvidenceSurface: `verified`
+- magicblockRuntimeSurface: `verified`
 - releaseDrillSurface: `verified`
 - artifactFreshness: `verified`
 - zkCompanionStack: `verified`

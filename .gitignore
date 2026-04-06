@@ -18,6 +18,8 @@ wallets/
 !docs/runtime-attestation.generated.json
 !docs/real-device-runtime-captures.json
 !docs/real-device-runtime.generated.json
+!docs/magicblock-runtime-captures.json
+!docs/magicblock-runtime.generated.json
 !docs/go-live-attestation.generated.json
 !docs/devnet-wallet-registry.json
 !docs/devnet-bootstrap.json
@@ -35,6 +37,7 @@ wallets/
 !docs/runtime-evidence.generated.json
 !docs/release-drill.generated.json
 !docs/assets/pdao-token.json
+!docs/magicblock-runtime-templates/*.json
 !zk/inputs/*.json
 !zk/proofs/*.json
 !zk/setup/*_vkey.json

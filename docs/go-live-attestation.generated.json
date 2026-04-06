@@ -15,6 +15,7 @@
     "runtimeEvidenceSurface",
     "realDeviceRuntimeIntake",
     "operationalEvidenceSurface",
+    "magicblockRuntimeSurface",
     "releaseDrillSurface",
     "artifactFreshness",
     "zkCompanionStack",
@@ -61,6 +62,10 @@
   "runtimeDocs": [
     "docs/wallet-runtime.md",
     "docs/fair-voting.md",
+    "docs/magicblock-private-payments.md",
+    "docs/magicblock-operator-flow.md",
+    "docs/magicblock-runtime-evidence.md",
+    "docs/magicblock-runtime.generated.md",
     "docs/zk-enforced-runtime-evidence.md",
     "docs/zk-enforced-runtime.generated.md",
     "docs/zk-enforced-operator-flow.md",
@@ -68,7 +73,7 @@
     "docs/go-live-criteria.md",
     "docs/operational-drillbook.md"
   ],
-  "deploymentGateCount": 59,
+  "deploymentGateCount": 60,
   "pdaoToken": {
     "mint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
     "programId": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",

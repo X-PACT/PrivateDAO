@@ -3483,6 +3483,7 @@ body.judge-mode .judge-banner {
             <a class="award-link" href="operational-evidence.generated.md" target="_blank">Operational Evidence</a>
             <a class="award-link" href="runtime-evidence.generated.md" target="_blank">Runtime Evidence</a>
             <a class="award-link" href="real-device-runtime.generated.md" target="_blank">Real-Device Runtime Evidence</a>
+            <a class="award-link" href="magicblock-runtime.generated.md" target="_blank">MagicBlock Runtime Evidence</a>
             <a class="award-link" href="zk-enforced-runtime.generated.md" target="_blank">ZK-Enforced Runtime Evidence</a>
             <a class="award-link" href="devnet-tx-registry.json" target="_blank">TX Registry</a>
             <a class="award-link" href="adversarial-report.json" target="_blank">Adversarial Report</a>
@@ -4292,6 +4293,7 @@ execute() → treasury action
             <a class="award-link" href="wallet-runtime.md" target="_blank">Wallet Runtime</a>
             <a class="award-link" href="real-device-runtime.md" target="_blank">Real-Device Runtime QA</a>
             <a class="award-link" href="real-device-runtime.generated.md" target="_blank">Real-Device Runtime Evidence</a>
+            <a class="award-link" href="magicblock-runtime.generated.md" target="_blank">MagicBlock Runtime Evidence</a>
             <a class="award-link" href="zk-enforced-runtime.generated.md" target="_blank">ZK-Enforced Runtime Evidence</a>
             <a class="award-link" href="runtime-evidence.generated.md" target="_blank">Runtime Evidence</a>
             <a class="award-link" href="operational-evidence.generated.md" target="_blank">Operational Evidence</a>
@@ -4599,6 +4601,11 @@ execute() → treasury action
             <div style="color:var(--text3);line-height:1.7;margin-top:8px">The stronger path now has a dedicated runtime registry and generated package, but actual wallet captures for enable-mode and finalize still need to be recorded. See <a class="award-link" href="zk-enforced-runtime.generated.md" target="_blank">ZK-Enforced Runtime Evidence</a>.</div>
           </div>
           <div class="proposal-command-box">
+            <div class="proposal-detail-label">MAGICBLOCK RUNTIME</div>
+            <div class="diagnostic-value" style="color:var(--amber)">CAPTURE REQUIRED</div>
+            <div style="color:var(--text3);line-height:1.7;margin-top:8px">The MagicBlock confidential payout corridor now has a dedicated runtime registry and generated package, but wallet-side deposit, private transfer, settlement, and execute captures still need to be recorded. See <a class="award-link" href="magicblock-runtime.generated.md" target="_blank">MagicBlock Runtime Evidence</a>.</div>
+          </div>
+          <div class="proposal-command-box">
             <div class="proposal-detail-label">ZK EXTERNAL CLOSURE</div>
             <div class="diagnostic-value" style="color:var(--amber)">PENDING EXTERNAL EXECUTION</div>
             <div style="color:var(--text3);line-height:1.7;margin-top:8px">The remaining stronger-path work is now flattened into one package: runtime captures, external audit handoff, and canonical verifier-boundary freeze. See <a class="award-link" href="zk-external-closure.generated.md" target="_blank">ZK External Closure</a>.</div>
@@ -4642,6 +4649,8 @@ execute() → treasury action
           <button class="proposal-proof-link" type="button" onclick="openDocument('zk-enforced-threat-review.md','ZK-Enforced Threat Review')">Open Threat Review</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('zk-enforced-runtime-evidence.md','ZK-Enforced Runtime Evidence')">Open Runtime Evidence Path</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('zk-enforced-runtime.generated.md','ZK-Enforced Runtime Package')">Open Runtime Evidence Package</button>
+          <button class="proposal-proof-link" type="button" onclick="openDocument('magicblock-runtime-evidence.md','MagicBlock Runtime Evidence')">Open MagicBlock Runtime Path</button>
+          <button class="proposal-proof-link" type="button" onclick="openDocument('magicblock-runtime.generated.md','MagicBlock Runtime Package')">Open MagicBlock Runtime Package</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('operational-evidence.generated.md','Operational Evidence')">Open Operational Evidence</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('runtime-evidence.generated.md','Runtime Evidence')">Open Runtime Evidence</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('real-device-runtime.generated.md','Real-Device Runtime')">Open Real-Device Runtime</button>

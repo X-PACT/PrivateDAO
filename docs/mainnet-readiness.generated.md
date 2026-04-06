@@ -29,6 +29,7 @@ This report is generated from the canonical PrivateDAO registries and reviewer a
 - `runtimeEvidenceSurface`
 - `realDeviceRuntimeIntake`
 - `operationalEvidenceSurface`
+- `magicblockRuntimeSurface`
 - `releaseDrillSurface`
 - `artifactFreshness`
 - `zkCompanionStack`
@@ -44,13 +45,13 @@ This report is generated from the canonical PrivateDAO registries and reviewer a
 
 ## Reviewer Artifact Summary
 
-- Verification gates tracked: `59`
-- Gate count in review attestation: `59`
+- Verification gates tracked: `60`
+- Gate count in review attestation: `60`
 - Strategy package count: `9`
-- Security package count: `14`
+- Security package count: `15`
 - ZK package count: `28`
-- Proof package count: `68`
-- Operations package count: `27`
+- Proof package count: `74`
+- Operations package count: `29`
 - Runtime attestation: `docs/runtime-attestation.generated.json`
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Go-live criteria: `docs/go-live-criteria.md`
@@ -59,8 +60,8 @@ This report is generated from the canonical PrivateDAO registries and reviewer a
 - ZK stack version: `1`
 - ZK layer count: `3`
 - Integrity algorithm: `sha256`
-- Integrity entries: `115`
-- Integrity aggregate sha256: `6b03b00e8c9babd7c0524b0d67ad8736afcbfd34ef0a07ddf023018a1ed2d19b`
+- Integrity entries: `127`
+- Integrity aggregate sha256: `3138b69aef714d94391ddcb0090983087fa36f2341d3cc394aed4cb10d4444b2`
 
 ## Mainnet Conclusion
 

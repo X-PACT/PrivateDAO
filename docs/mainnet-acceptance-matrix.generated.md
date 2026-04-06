@@ -5,10 +5,10 @@
 - project: `PrivateDAO`
 - program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
-- generated at: `2026-04-06T15:10:21.755Z`
+- generated at: `2026-04-06T15:48:50.410Z`
 - acceptance decision: `repository-strong-but-external-blockers-remain`
 - accepted in repo: `8`
-- pending external: `2`
+- pending external: `3`
 - not in repo: `1`
 - runtime wallet count in evidence package: `5`
 
@@ -86,6 +86,15 @@
   - `docs/real-device-runtime.generated.md`
   - `docs/wallet-compatibility-matrix.generated.md`
   - `docs/external-readiness-intake.md`
+
+### magicblock-runtime-corridor
+
+- status: `pending-external`
+- rationale: The MagicBlock corridor is wired into the program and frontend, but real wallet/runtime captures across environments still need to be collected externally.
+- evidence:
+  - `docs/magicblock-private-payments.md`
+  - `docs/magicblock-runtime-evidence.md`
+  - `docs/magicblock-runtime.generated.md`
 
 ### external-audit
 

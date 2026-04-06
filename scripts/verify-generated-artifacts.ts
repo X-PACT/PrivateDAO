@@ -19,6 +19,9 @@ function main() {
   const realDeviceRuntimeSourcePath = path.resolve("docs/real-device-runtime-captures.json");
   const realDeviceRuntimeJsonPath = path.resolve("docs/real-device-runtime.generated.json");
   const realDeviceRuntimeMdPath = path.resolve("docs/real-device-runtime.generated.md");
+  const magicBlockRuntimeSourcePath = path.resolve("docs/magicblock-runtime-captures.json");
+  const magicBlockRuntimeJsonPath = path.resolve("docs/magicblock-runtime.generated.json");
+  const magicBlockRuntimeMdPath = path.resolve("docs/magicblock-runtime.generated.md");
   const zkEnforcedRuntimeSourcePath = path.resolve("docs/zk-enforced-runtime-captures.json");
   const zkEnforcedRuntimeJsonPath = path.resolve("docs/zk-enforced-runtime.generated.json");
   const zkEnforcedRuntimeMdPath = path.resolve("docs/zk-enforced-runtime.generated.md");
@@ -94,6 +97,9 @@ function main() {
   }
   if (!fs.existsSync(realDeviceRuntimeSourcePath) || !fs.existsSync(realDeviceRuntimeJsonPath) || !fs.existsSync(realDeviceRuntimeMdPath)) {
     throw new Error("missing real-device runtime artifacts");
+  }
+  if (!fs.existsSync(magicBlockRuntimeSourcePath) || !fs.existsSync(magicBlockRuntimeJsonPath) || !fs.existsSync(magicBlockRuntimeMdPath)) {
+    throw new Error("missing MagicBlock runtime artifacts");
   }
   if (!fs.existsSync(zkEnforcedRuntimeSourcePath) || !fs.existsSync(zkEnforcedRuntimeJsonPath) || !fs.existsSync(zkEnforcedRuntimeMdPath)) {
     throw new Error("missing zk-enforced runtime artifacts");
@@ -782,6 +788,9 @@ function main() {
   if (!attestation.runtimeDocs.includes("docs/real-device-runtime.generated.md")) {
     throw new Error("generated attestation is missing the real-device runtime doc");
   }
+  if (!attestation.runtimeDocs.includes("docs/magicblock-runtime.generated.md")) {
+    throw new Error("generated attestation is missing the MagicBlock runtime doc");
+  }
   if (!attestation.runtimeDocs.includes("docs/operational-evidence.generated.md")) {
     throw new Error("generated attestation is missing the operational evidence doc");
   }
@@ -1149,6 +1158,11 @@ function main() {
     "docs/real-device-runtime-captures.json",
     "docs/real-device-runtime.generated.md",
     "docs/real-device-runtime.generated.json",
+    "docs/magicblock-private-payments.md",
+    "docs/magicblock-runtime-evidence.md",
+    "docs/magicblock-runtime-captures.json",
+    "docs/magicblock-runtime.generated.md",
+    "docs/magicblock-runtime.generated.json",
     "docs/runtime-attestation.generated.json",
     "docs/operational-evidence.generated.md",
     "docs/operational-evidence.generated.json",
@@ -1167,6 +1181,8 @@ function main() {
     "npm run verify:wallet-matrix",
     "npm run build:real-device-runtime",
     "npm run verify:real-device-runtime",
+    "npm run build:magicblock-runtime",
+    "npm run verify:magicblock-runtime",
     "npm run build:devnet-canary",
     "npm run verify:devnet-canary",
     "npm run test:devnet:resilience",
@@ -1183,10 +1199,101 @@ function main() {
     !runtimeEvidenceMd.includes("# Runtime Evidence Package") ||
     !runtimeEvidenceMd.includes("Devnet Canary Summary") ||
     !runtimeEvidenceMd.includes("Real-Device Runtime Intake") ||
+    !runtimeEvidenceMd.includes("MagicBlock Runtime Intake") ||
     !runtimeEvidenceMd.includes("Resilience Summary") ||
     !runtimeEvidenceMd.includes("Operational Summary")
   ) {
     throw new Error("generated runtime evidence markdown is invalid");
+  }
+
+  const magicBlockRuntime = JSON.parse(fs.readFileSync(magicBlockRuntimeJsonPath, "utf8")) as {
+    project: string;
+    network: string;
+    summary: {
+      targetCount: number;
+      executeSuccessCount: number;
+    };
+    requiredDocs: string[];
+    commands: string[];
+    captures: Array<{
+      network: string;
+      proposalPublicKey: string;
+      corridorPda: string;
+      settlementWallet: string;
+      depositResult: string;
+      privateTransferResult: string;
+      settleResult: string;
+      executeResult: string;
+      depositTxSignature?: string | null;
+      transferTxSignature?: string | null;
+      settleTxSignature?: string | null;
+      executeTxSignature?: string | null;
+      validator?: string | null;
+      transferQueue?: string | null;
+      explorerUrls?: {
+        deposit?: string | null;
+        transfer?: string | null;
+        settle?: string | null;
+        execute?: string | null;
+      };
+    }>;
+  };
+
+  if (magicBlockRuntime.project !== "PrivateDAO" || magicBlockRuntime.network !== "devnet") {
+    throw new Error("generated MagicBlock runtime evidence header mismatch");
+  }
+
+  if (magicBlockRuntime.summary.targetCount < 5) {
+    throw new Error("generated MagicBlock runtime evidence target count is unexpectedly low");
+  }
+
+  for (const doc of [
+    "docs/magicblock-private-payments.md",
+    "docs/magicblock-operator-flow.md",
+    "docs/magicblock-runtime-evidence.md",
+    "docs/magicblock-runtime-captures.json",
+  ]) {
+    if (!magicBlockRuntime.requiredDocs.includes(doc)) {
+      throw new Error(`generated MagicBlock runtime evidence is missing ${doc}`);
+    }
+  }
+
+  for (const command of [
+    "npm run build:magicblock-runtime",
+    "npm run verify:magicblock-runtime",
+    "npm run record:magicblock-runtime -- <capture-json-path>",
+    "npm run configure:magicblock",
+    "npm run settle:magicblock",
+  ]) {
+    if (!magicBlockRuntime.commands.includes(command)) {
+      throw new Error(`generated MagicBlock runtime evidence is missing ${command}`);
+    }
+  }
+
+  for (const capture of magicBlockRuntime.captures) {
+    if (capture.network !== "devnet") {
+      throw new Error("generated MagicBlock runtime capture must remain devnet-scoped");
+    }
+    if (!capture.proposalPublicKey || !capture.corridorPda || !capture.settlementWallet) {
+      throw new Error("generated MagicBlock runtime capture is missing core corridor metadata");
+    }
+    if (capture.depositResult === "success" && (!capture.depositTxSignature || !capture.explorerUrls?.deposit?.includes("devnet"))) {
+      throw new Error("successful MagicBlock deposit missing explorer evidence");
+    }
+    if (capture.privateTransferResult === "success" && (!capture.transferTxSignature || !capture.explorerUrls?.transfer?.includes("devnet"))) {
+      throw new Error("successful MagicBlock transfer missing explorer evidence");
+    }
+    if (capture.settleResult === "success") {
+      if (!capture.settleTxSignature || !capture.explorerUrls?.settle?.includes("devnet")) {
+        throw new Error("successful MagicBlock settlement missing explorer evidence");
+      }
+      if (!capture.validator || !capture.transferQueue) {
+        throw new Error("successful MagicBlock settlement missing validator or queue binding");
+      }
+    }
+    if (capture.executeResult === "success" && (!capture.executeTxSignature || !capture.explorerUrls?.execute?.includes("devnet"))) {
+      throw new Error("successful MagicBlock execution missing explorer evidence");
+    }
   }
 
   if (zkEnforcedRuntime.project !== "PrivateDAO" || zkEnforcedRuntime.network !== "devnet") {
@@ -1427,6 +1534,9 @@ function main() {
   }
   if (!cryptographicManifest.files.some((entry) => entry.path === "docs/real-device-runtime.generated.json")) {
     throw new Error("generated cryptographic manifest is missing the real-device runtime evidence");
+  }
+  if (!cryptographicManifest.files.some((entry) => entry.path === "docs/magicblock-runtime.generated.json")) {
+    throw new Error("generated cryptographic manifest is missing the MagicBlock runtime evidence");
   }
   if (!cryptographicManifest.files.some((entry) => entry.path === "docs/cryptographic-posture.md")) {
     throw new Error("generated cryptographic manifest is missing the cryptographic posture note");

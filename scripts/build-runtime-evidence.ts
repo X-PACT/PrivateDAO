@@ -96,6 +96,20 @@ type ZkEnforcedRuntimeEvidence = {
   };
 };
 
+type MagicBlockRuntimeEvidence = {
+  status: string;
+  summary: {
+    targetCount: number;
+    completedTargetCount: number;
+    depositSuccessCount: number;
+    privateTransferSuccessCount: number;
+    settleSuccessCount: number;
+    executeSuccessCount: number;
+    diagnosticsCaptureCount: number;
+    pendingTargets: string[];
+  };
+};
+
 type ZkExternalClosure = {
   status: string;
   pendingBlockingCount: number;
@@ -109,6 +123,7 @@ function main() {
   const resilience = readJson<DevnetResilience>("docs/devnet-resilience-report.json");
   const operational = readJson<OperationalEvidence>("docs/operational-evidence.generated.json");
   const realDevice = readJson<RealDeviceRuntimeEvidence>("docs/real-device-runtime.generated.json");
+  const magicBlock = readJson<MagicBlockRuntimeEvidence>("docs/magicblock-runtime.generated.json");
   const zkEnforced = readJson<ZkEnforcedRuntimeEvidence>("docs/zk-enforced-runtime.generated.json");
   const zkExternalClosure = readJson<ZkExternalClosure>("docs/zk-external-closure.generated.json");
 
@@ -149,6 +164,17 @@ function main() {
       diagnosticsCaptureCount: realDevice.summary.diagnosticsCaptureCount,
       pendingTargets: realDevice.summary.pendingTargets,
     },
+    magicBlock: {
+      status: magicBlock.status,
+      targetCount: magicBlock.summary.targetCount,
+      completedTargetCount: magicBlock.summary.completedTargetCount,
+      depositSuccessCount: magicBlock.summary.depositSuccessCount,
+      privateTransferSuccessCount: magicBlock.summary.privateTransferSuccessCount,
+      settleSuccessCount: magicBlock.summary.settleSuccessCount,
+      executeSuccessCount: magicBlock.summary.executeSuccessCount,
+      diagnosticsCaptureCount: magicBlock.summary.diagnosticsCaptureCount,
+      pendingTargets: magicBlock.summary.pendingTargets,
+    },
     zkEnforced: {
       status: zkEnforced.status,
       targetCount: zkEnforced.summary.targetCount,
@@ -186,6 +212,12 @@ function main() {
       "docs/real-device-runtime-captures.json",
       "docs/real-device-runtime.generated.md",
       "docs/real-device-runtime.generated.json",
+      "docs/magicblock-private-payments.md",
+      "docs/magicblock-operator-flow.md",
+      "docs/magicblock-runtime-evidence.md",
+      "docs/magicblock-runtime-captures.json",
+      "docs/magicblock-runtime.generated.md",
+      "docs/magicblock-runtime.generated.json",
       "docs/zk-enforced-runtime-evidence.md",
       "docs/zk-enforced-runtime-captures.json",
       "docs/zk-enforced-runtime.generated.md",
@@ -209,6 +241,8 @@ function main() {
       "npm run verify:wallet-matrix",
       "npm run build:real-device-runtime",
       "npm run verify:real-device-runtime",
+      "npm run build:magicblock-runtime",
+      "npm run verify:magicblock-runtime",
       "npm run build:zk-enforced-runtime",
       "npm run verify:zk-enforced-runtime",
       "npm run build:zk-external-closure",
@@ -224,6 +258,7 @@ function main() {
       "This runtime evidence package is Devnet-focused and reviewer-visible.",
       "It does not replace real device QA across every wallet release and browser combination.",
       "It binds browser/runtime behavior to diagnostics, wallet matrix, canary, resilience evidence, and real-device capture intake in one summary.",
+      "It exposes the MagicBlock confidential payout corridor as a separate runtime track instead of burying it inside generic payout claims.",
       "It exposes the stronger zk_enforced runtime blocker as a first-class evidence track instead of leaving it implicit in prose.",
       "It tracks the remaining external closure path: runtime captures, external audit, and the canonical verifier-boundary freeze.",
     ],
@@ -252,6 +287,17 @@ function buildMarkdown(evidence: {
     completedTargetCount: number;
     successfulConnectCount: number;
     successfulSubmissionCount: number;
+    diagnosticsCaptureCount: number;
+    pendingTargets: string[];
+  };
+  magicBlock: {
+    status: string;
+    targetCount: number;
+    completedTargetCount: number;
+    depositSuccessCount: number;
+    privateTransferSuccessCount: number;
+    settleSuccessCount: number;
+    executeSuccessCount: number;
     diagnosticsCaptureCount: number;
     pendingTargets: string[];
   };
@@ -327,6 +373,18 @@ ${evidence.matrixStatuses
 - Successful submission count: \`${evidence.realDevice.successfulSubmissionCount}\`
 - Diagnostics capture count: \`${evidence.realDevice.diagnosticsCaptureCount}\`
 - Pending targets: \`${evidence.realDevice.pendingTargets.join(", ") || "none"}\`
+
+## MagicBlock Runtime Intake
+
+- Status: \`${evidence.magicBlock.status}\`
+- Target count: \`${evidence.magicBlock.targetCount}\`
+- Completed target count: \`${evidence.magicBlock.completedTargetCount}\`
+- Deposit success count: \`${evidence.magicBlock.depositSuccessCount}\`
+- Private transfer success count: \`${evidence.magicBlock.privateTransferSuccessCount}\`
+- Settle success count: \`${evidence.magicBlock.settleSuccessCount}\`
+- Execute success count: \`${evidence.magicBlock.executeSuccessCount}\`
+- Diagnostics capture count: \`${evidence.magicBlock.diagnosticsCaptureCount}\`
+- Pending targets: \`${evidence.magicBlock.pendingTargets.join(", ") || "none"}\`
 
 ## ZK-Enforced Runtime Intake
 

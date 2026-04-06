@@ -27,6 +27,7 @@
     "runtimeEvidenceSurface": "verified",
     "realDeviceRuntimeIntake": "verified",
     "operationalEvidenceSurface": "verified",
+    "magicblockRuntimeSurface": "verified",
     "releaseDrillSurface": "verified",
     "artifactFreshness": "verified",
     "zkCompanionStack": "verified",
@@ -72,6 +73,7 @@
     "npm run verify:release-ceremony-attestation",
     "npm run verify:operational-evidence",
     "npm run verify:real-device-runtime",
+    "npm run verify:magicblock-runtime",
     "npm run verify:zk-enforced-runtime",
     "npm run verify:runtime-evidence",
     "npm run verify:release-drill",
@@ -98,13 +100,13 @@
     "npm run verify:review-surface",
     "npm run verify:all"
   ],
-  "gateCount": 59,
+  "gateCount": 60,
   "packageCounts": {
     "strategy": 9,
-    "security": 14,
+    "security": 15,
     "zk": 28,
-    "proof": 68,
-    "operations": 27
+    "proof": 74,
+    "operations": 29
   },
   "zk": {
     "stackVersion": 1,
@@ -113,6 +115,10 @@
   "runtimeDocs": [
     "docs/wallet-runtime.md",
     "docs/fair-voting.md",
+    "docs/magicblock-private-payments.md",
+    "docs/magicblock-operator-flow.md",
+    "docs/magicblock-runtime-evidence.md",
+    "docs/magicblock-runtime.generated.md",
     "docs/zk-enforced-runtime-evidence.md",
     "docs/zk-enforced-runtime.generated.md",
     "docs/zk-enforced-operator-flow.md",

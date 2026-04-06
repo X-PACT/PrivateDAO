@@ -134,12 +134,13 @@ For the fastest high-signal review:
 6. Read `docs/refhe-protocol.md`
 7. Read `docs/magicblock-private-payments.md`
 8. Read `docs/magicblock-operator-flow.md`
-9. Read `docs/read-node-indexer.md`
-10. Read `docs/read-node-same-domain-deploy.md`
-11. Read `docs/phase-c-hardening.md`
-12. Read `docs/zk-verifier-strategy.md`
-13. Read `docs/canonical-verifier-boundary-decision.md`
-14. Read `docs/zk-external-closure.generated.md`
+9. Read `docs/magicblock-runtime-evidence.md`
+10. Read `docs/read-node-indexer.md`
+11. Read `docs/read-node-same-domain-deploy.md`
+12. Read `docs/phase-c-hardening.md`
+13. Read `docs/zk-verifier-strategy.md`
+14. Read `docs/canonical-verifier-boundary-decision.md`
+15. Read `docs/zk-external-closure.generated.md`
 
 ## Proposal Draft
 
@@ -273,7 +274,27 @@ Use these notes first:
 
 - `docs/magicblock-private-payments.md`
 - `docs/magicblock-operator-flow.md`
+- `docs/magicblock-runtime-evidence.md`
+- `docs/magicblock-runtime.generated.md`
 - `docs/rpc-architecture.md`
+
+## MagicBlock Runtime Evidence
+
+PrivateDAO now carries a dedicated runtime evidence track for MagicBlock-bound confidential token payouts.
+
+This makes the runtime path reviewer-visible instead of leaving it buried in feature docs:
+
+- wallet-side deposit, private transfer, withdraw, settlement, and execute can be captured consistently
+- the review package stays stable while real wallet runs are added
+- the MagicBlock track becomes competitive for privacy-focused judging instead of remaining a surface-only integration
+
+Use these notes first:
+
+- `docs/magicblock-runtime-evidence.md`
+- `docs/magicblock-runtime-captures.json`
+- `docs/magicblock-runtime.generated.md`
+- `docs/magicblock-runtime.generated.json`
+- `docs/magicblock-runtime-templates/README.md`
 
 ## Read Node And RPC Fast Path
 

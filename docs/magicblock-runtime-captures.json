@@ -1,0 +1,38 @@
+{
+  "project": "PrivateDAO",
+  "network": "devnet",
+  "generatedAt": "2026-04-06T00:00:00.000Z",
+  "targets": [
+    {
+      "id": "phantom-desktop-magicblock",
+      "walletLabel": "Phantom",
+      "environmentType": "desktop-browser",
+      "status": "pending-capture"
+    },
+    {
+      "id": "solflare-desktop-magicblock",
+      "walletLabel": "Solflare",
+      "environmentType": "desktop-browser",
+      "status": "pending-capture"
+    },
+    {
+      "id": "backpack-desktop-magicblock",
+      "walletLabel": "Backpack",
+      "environmentType": "desktop-browser",
+      "status": "pending-capture"
+    },
+    {
+      "id": "glow-desktop-magicblock",
+      "walletLabel": "Glow",
+      "environmentType": "desktop-browser",
+      "status": "pending-capture"
+    },
+    {
+      "id": "android-runtime-magicblock",
+      "walletLabel": "Android Native / Mobile",
+      "environmentType": "android-or-mobile",
+      "status": "pending-capture"
+    }
+  ],
+  "captures": []
+}
