@@ -72,47 +72,66 @@ This makes REFHE a real execution gate, not a UI-only tag.
 Configure the payout batch:
 
 ```bash
+DAO_PDA="$DAO_PDA"
+PROPOSAL_PDA="$PROPOSAL_PDA"
+SETTLEMENT_WALLET="$SETTLEMENT_WALLET"
+MANIFEST_HASH="$MANIFEST_HASH"
+CIPHERTEXT_HASH="$CIPHERTEXT_HASH"
+
 npm run configure:confidential-payout -- \
-  --dao <DAO_PDA> \
-  --proposal <PROPOSAL_PDA> \
+  --dao "$DAO_PDA" \
+  --proposal "$PROPOSAL_PDA" \
   --confidential-type salary \
-  --settlement-recipient <SETTLEMENT_WALLET> \
+  --settlement-recipient "$SETTLEMENT_WALLET" \
   --payout-asset sol \
   --payout-total 2.5 \
   --recipient-count 6 \
   --manifest-uri "box://privatedao/payroll/epoch-7" \
-  --manifest-hash <HEX32> \
-  --ciphertext-hash <HEX32>
+  --manifest-hash "$MANIFEST_HASH" \
+  --ciphertext-hash "$CIPHERTEXT_HASH"
 ```
 
 Configure REFHE:
 
 ```bash
+DAO_PDA="$DAO_PDA"
+PROPOSAL_PDA="$PROPOSAL_PDA"
+REFHE_POLICY_HASH="$REFHE_POLICY_HASH"
+REFHE_INPUT_HASH="$REFHE_INPUT_HASH"
+REFHE_EVALUATION_KEY_HASH="$REFHE_EVALUATION_KEY_HASH"
+
 npm run configure:refhe -- \
-  --dao <DAO_PDA> \
-  --proposal <PROPOSAL_PDA> \
+  --dao "$DAO_PDA" \
+  --proposal "$PROPOSAL_PDA" \
   --model-uri "box://privatedao/refhe/payroll-eval-epoch-7" \
-  --policy-hash <HEX32> \
-  --input-ciphertext-hash <HEX32> \
-  --evaluation-key-hash <HEX32>
+  --policy-hash "$REFHE_POLICY_HASH" \
+  --input-ciphertext-hash "$REFHE_INPUT_HASH" \
+  --evaluation-key-hash "$REFHE_EVALUATION_KEY_HASH"
 ```
 
 Settle REFHE:
 
 ```bash
+DAO_PDA="$DAO_PDA"
+PROPOSAL_PDA="$PROPOSAL_PDA"
+REFHE_RESULT_CIPHERTEXT_HASH="$REFHE_RESULT_CIPHERTEXT_HASH"
+REFHE_RESULT_COMMITMENT_HASH="$REFHE_RESULT_COMMITMENT_HASH"
+REFHE_PROOF_BUNDLE_HASH="$REFHE_PROOF_BUNDLE_HASH"
+REFHE_VERIFIER_PROGRAM="$REFHE_VERIFIER_PROGRAM"
+
 npm run settle:refhe -- \
-  --dao <DAO_PDA> \
-  --proposal <PROPOSAL_PDA> \
-  --result-ciphertext-hash <HEX32> \
-  --result-commitment-hash <HEX32> \
-  --proof-bundle-hash <HEX32> \
-  --verifier-program <PROGRAM_ID>
+  --dao "$DAO_PDA" \
+  --proposal "$PROPOSAL_PDA" \
+  --result-ciphertext-hash "$REFHE_RESULT_CIPHERTEXT_HASH" \
+  --result-commitment-hash "$REFHE_RESULT_COMMITMENT_HASH" \
+  --proof-bundle-hash "$REFHE_PROOF_BUNDLE_HASH" \
+  --verifier-program "$REFHE_VERIFIER_PROGRAM"
 ```
 
 Inspect:
 
 ```bash
-npm run inspect:refhe -- --proposal <PROPOSAL_PDA>
+PROPOSAL_PDA="$PROPOSAL_PDA" npm run inspect:refhe -- --proposal "$PROPOSAL_PDA"
 ```
 
 ## Review Path

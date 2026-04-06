@@ -5563,8 +5563,9 @@ function buildCreateProposalCommand() {
   const refheInputCiphertextHash = (document.getElementById('createProposalRefheInputCiphertextHash')?.value || '').trim();
   const refheEvaluationKeyHash = (document.getElementById('createProposalRefheEvaluationKeyHash')?.value || '').trim();
 
+  if (!dao) return 'Select or paste a DAO PDA to build the create-proposal command.';
   const parts = ['yarn create-proposal --'];
-  parts.push(`--dao ${dao || '<DAO_PDA>'}`);
+  parts.push(`--dao ${dao}`);
   parts.push(`--title "${title.replace(/"/g, '\\"')}"`);
   if (description) parts.push(`--description "${description.replace(/"/g, '\\"')}"`);
   if (duration) parts.push(`--duration ${duration}`);
@@ -5575,9 +5576,11 @@ function buildCreateProposalCommand() {
   }
   if (confidentialType) {
     parts.push(`--confidential-type ${confidentialType}`);
-    parts.push(`--settlement-recipient ${settlementRecipient || wallet || '<SETTLEMENT_WALLET>'}`);
+    if (!settlementRecipient && !wallet) return 'Connect a wallet or set a settlement recipient to build the confidential payout command.';
+    parts.push(`--settlement-recipient ${settlementRecipient || wallet}`);
     parts.push(`--payout-asset ${payoutAsset}`);
-    parts.push(`--payout-total ${payoutTotal || '<TOTAL>'}`);
+    if (!payoutTotal) return 'Set the payout total to build the confidential payout command.';
+    parts.push(`--payout-total ${payoutTotal}`);
     parts.push(`--recipient-count ${recipientCount || 1}`);
     if (payoutAsset === 'token' && payoutMint) parts.push(`--payout-mint ${payoutMint}`);
     if (manifestUri) parts.push(`--manifest-uri "${manifestUri.replace(/"/g, '\\"')}"`);
@@ -5621,26 +5624,32 @@ function copyCreateProposalCommand() {
 }
 
 function updateCommitCommandBuilder() {
-  const proposal = currentSelectedProposalPubkey || '<PROPOSAL_PUBKEY>';
+  const proposal = currentSelectedProposalPubkey || currentSelectedProposal?.pubkey || null;
   const vote = selectedVote || 'yes';
-  const command = `yarn commit -- --proposal ${proposal} --vote ${vote}`;
+  const command = proposal
+    ? `yarn commit -- --proposal ${proposal} --vote ${vote}`
+    : 'Select a live proposal to build the commit command.';
   const el = document.getElementById('commitCommandBuilder');
   if (el) el.textContent = command;
 }
 
 function updateRevealCommandBuilder() {
-  const proposal = currentSelectedProposalPubkey || '<PROPOSAL_PUBKEY>';
+  const proposal = currentSelectedProposalPubkey || currentSelectedProposal?.pubkey || null;
   const voter = (document.getElementById('revealVoterInput')?.value || '').trim();
-  const command = voter
-    ? `yarn reveal -- --proposal ${proposal} --voter ${voter}`
-    : `yarn reveal -- --proposal ${proposal}`;
+  const command = !proposal
+    ? 'Select a live proposal to build the reveal command.'
+    : voter
+      ? `yarn reveal -- --proposal ${proposal} --voter ${voter}`
+      : `yarn reveal -- --proposal ${proposal}`;
   const el = document.getElementById('revealCommandBuilder');
   if (el) el.textContent = command;
 }
 
 function updateExecuteCommandBuilder() {
-  const proposal = currentExecuteProposalPubkey || currentSelectedProposalPubkey || '<PROPOSAL_PUBKEY>';
-  const command = `yarn execute -- --proposal ${proposal}`;
+  const proposal = currentExecuteProposalPubkey || currentSelectedProposalPubkey || currentSelectedProposal?.pubkey || null;
+  const command = proposal
+    ? `yarn execute -- --proposal ${proposal}`
+    : 'Select a live proposal to build the execute command.';
   const el = document.getElementById('executeCommandBuilder');
   if (el) el.textContent = command;
 }
@@ -5674,8 +5683,9 @@ function copyCreateDaoCommand() {
 }
 
 function buildDepositCommand() {
-  const dao = (document.getElementById('builderDepositDao')?.value || '').trim() || '<DAO_PDA>';
+  const dao = (document.getElementById('builderDepositDao')?.value || '').trim();
   const amount = (document.getElementById('builderDepositAmount')?.value || '0.2').trim() || '0.2';
+  if (!dao) return 'Select or paste a DAO PDA to build the deposit command.';
   return `yarn deposit -- --dao ${dao} --amount ${amount}`;
 }
 
@@ -5703,8 +5713,10 @@ function copyDepositCommand() {
 }
 
 function updateFinalizeCommandBuilder() {
-  const proposal = currentSelectedProposalPubkey || '<PROPOSAL_PUBKEY>';
-  const command = `yarn finalize -- --proposal ${proposal}`;
+  const proposal = currentSelectedProposalPubkey || currentSelectedProposal?.pubkey || null;
+  const command = proposal
+    ? `yarn finalize -- --proposal ${proposal}`
+    : 'Select a live proposal to build the finalize command.';
   const el = document.getElementById('finalizeCommandBuilder');
   if (el) el.textContent = command;
 }
@@ -8107,8 +8119,10 @@ function deriveDelegationPda(proposalPubkey, delegatorPubkey) {
 }
 
 function buildDelegateVoteCommand() {
-  const proposal = (document.getElementById('delegateProposalInput')?.value || '').trim() || '<PROPOSAL_PUBKEY>';
-  const delegatee = (document.getElementById('delegateeWalletInput')?.value || '').trim() || '<DELEGATEE_PUBKEY>';
+  const proposal = (document.getElementById('delegateProposalInput')?.value || '').trim();
+  const delegatee = (document.getElementById('delegateeWalletInput')?.value || '').trim();
+  if (!proposal) return 'Select a live proposal to build the delegate command.';
+  if (!delegatee) return 'Set a delegatee wallet to build the delegate command.';
   return `yarn delegate-vote -- --proposal ${proposal} --delegatee ${delegatee}`;
 }
 
@@ -8131,9 +8145,11 @@ function copyDelegateVoteCommand() {
 }
 
 function buildDelegatedCommitCommand() {
-  const proposal = currentSelectedProposalPubkey || '<PROPOSAL_PUBKEY>';
+  const proposal = currentSelectedProposalPubkey || currentSelectedProposal?.pubkey || null;
   const vote = selectedVote || 'yes';
-  const delegator = (document.getElementById('delegatedCommitDelegatorInput')?.value || '').trim() || '<DELEGATOR_PUBKEY>';
+  const delegator = (document.getElementById('delegatedCommitDelegatorInput')?.value || '').trim();
+  if (!proposal) return 'Select a live proposal to build the delegated commit command.';
+  if (!delegator) return 'Set a delegator wallet to build the delegated commit command.';
   return `yarn commit -- --proposal ${proposal} --vote ${vote} --delegator ${delegator}`;
 }
 
@@ -8988,7 +9004,9 @@ async function submitVote() {
     const signature = await commitSelectedVoteInWallet();
     updateLifecycleActionFeedback('Commit', signature, currentSelectedProposalPubkey || currentSelectedProposal?.pubkey || null);
     const payload = [
-      `proposal=${currentSelectedProposalPubkey || '<PROPOSAL_PUBKEY>'}`,
+      currentSelectedProposalPubkey || currentSelectedProposal?.pubkey
+        ? `proposal=${currentSelectedProposalPubkey || currentSelectedProposal?.pubkey}`
+        : null,
       `wallet=${wallet}`,
       `vote=${selectedVote || 'yes'}`,
       `commitment=0x${currentCommitHashHex}`,

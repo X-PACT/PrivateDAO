@@ -36,10 +36,15 @@ In the web app:
 
 ```bash
 npm run create-proposal -- ...
-npm run inspect:confidential-payout -- --proposal <PROPOSAL_PDA>
-npm run inspect:refhe -- --proposal <PROPOSAL_PDA>
-npm run settle:refhe -- --dao <DAO_PDA> --proposal <PROPOSAL_PDA> --result-ciphertext-hash <HEX32> --result-commitment-hash <HEX32> --proof-bundle-hash <HEX32> --verifier-program <PROGRAM_ID>
-npm run execute -- --proposal <PROPOSAL_PDA>
+PROPOSAL_PDA="$PROPOSAL_PDA" npm run inspect:confidential-payout -- --proposal "$PROPOSAL_PDA"
+PROPOSAL_PDA="$PROPOSAL_PDA" npm run inspect:refhe -- --proposal "$PROPOSAL_PDA"
+DAO_PDA="$DAO_PDA" PROPOSAL_PDA="$PROPOSAL_PDA" \
+REFHE_RESULT_CIPHERTEXT_HASH="$REFHE_RESULT_CIPHERTEXT_HASH" \
+REFHE_RESULT_COMMITMENT_HASH="$REFHE_RESULT_COMMITMENT_HASH" \
+REFHE_PROOF_BUNDLE_HASH="$REFHE_PROOF_BUNDLE_HASH" \
+REFHE_VERIFIER_PROGRAM="$REFHE_VERIFIER_PROGRAM" \
+npm run settle:refhe -- --dao "$DAO_PDA" --proposal "$PROPOSAL_PDA" --result-ciphertext-hash "$REFHE_RESULT_CIPHERTEXT_HASH" --result-commitment-hash "$REFHE_RESULT_COMMITMENT_HASH" --proof-bundle-hash "$REFHE_PROOF_BUNDLE_HASH" --verifier-program "$REFHE_VERIFIER_PROGRAM"
+PROPOSAL_PDA="$PROPOSAL_PDA" npm run execute -- --proposal "$PROPOSAL_PDA"
 ```
 
 ## Required Checks

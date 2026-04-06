@@ -233,9 +233,21 @@ Primary references:
 Primary commands:
 
 ```bash
-npm run configure:refhe -- --dao <DAO_PDA> --proposal <PROPOSAL_PDA> --model-uri "<URI>" --policy-hash <HEX32> --input-ciphertext-hash <HEX32> --evaluation-key-hash <HEX32>
-npm run settle:refhe -- --dao <DAO_PDA> --proposal <PROPOSAL_PDA> --result-ciphertext-hash <HEX32> --result-commitment-hash <HEX32> --proof-bundle-hash <HEX32> --verifier-program <PROGRAM_ID>
-npm run inspect:refhe -- --proposal <PROPOSAL_PDA>
+DAO_PDA="$DAO_PDA" PROPOSAL_PDA="$PROPOSAL_PDA" \
+REFHE_MODEL_URI="box://privatedao/refhe/payroll-eval-epoch-7" \
+REFHE_POLICY_HASH="$REFHE_POLICY_HASH" \
+REFHE_INPUT_HASH="$REFHE_INPUT_HASH" \
+REFHE_EVALUATION_KEY_HASH="$REFHE_EVALUATION_KEY_HASH" \
+npm run configure:refhe -- --dao "$DAO_PDA" --proposal "$PROPOSAL_PDA" --model-uri "$REFHE_MODEL_URI" --policy-hash "$REFHE_POLICY_HASH" --input-ciphertext-hash "$REFHE_INPUT_HASH" --evaluation-key-hash "$REFHE_EVALUATION_KEY_HASH"
+
+DAO_PDA="$DAO_PDA" PROPOSAL_PDA="$PROPOSAL_PDA" \
+REFHE_RESULT_CIPHERTEXT_HASH="$REFHE_RESULT_CIPHERTEXT_HASH" \
+REFHE_RESULT_COMMITMENT_HASH="$REFHE_RESULT_COMMITMENT_HASH" \
+REFHE_PROOF_BUNDLE_HASH="$REFHE_PROOF_BUNDLE_HASH" \
+REFHE_VERIFIER_PROGRAM="$REFHE_VERIFIER_PROGRAM" \
+npm run settle:refhe -- --dao "$DAO_PDA" --proposal "$PROPOSAL_PDA" --result-ciphertext-hash "$REFHE_RESULT_CIPHERTEXT_HASH" --result-commitment-hash "$REFHE_RESULT_COMMITMENT_HASH" --proof-bundle-hash "$REFHE_PROOF_BUNDLE_HASH" --verifier-program "$REFHE_VERIFIER_PROGRAM"
+
+PROPOSAL_PDA="$PROPOSAL_PDA" npm run inspect:refhe -- --proposal "$PROPOSAL_PDA"
 ```
 
 ## Backend Read Node And RPC Pool
