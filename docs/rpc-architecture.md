@@ -47,6 +47,7 @@ For mainnet readiness, use:
    - stale blockhash incidents
    - slot lag
    - request latency
+   - read-node route metrics
 
 ## Not in scope
 

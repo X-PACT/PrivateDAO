@@ -228,11 +228,20 @@ cd /home/x-pact/PrivateDAO
 npm run verify:read-node
 ```
 
+Generate a reviewer-facing backend snapshot:
+
+```bash
+cd /home/x-pact/PrivateDAO
+npm run build:read-node-snapshot
+npm run verify:read-node-snapshot
+```
+
 Primary backend docs:
 
 - `docs/read-node-indexer.md`
 - `docs/rpc-architecture.md`
 - `docs/backend-operator-flow.md`
+- `docs/read-node-snapshot.generated.md`
 
 ## Domain Mirror Strategy
 
@@ -386,6 +395,7 @@ The same rule now applies to the review surface itself: zk artifacts, live-proof
 - ZK layer: `docs/zk-layer.md`
 - Audit packet: `docs/audit-packet.generated.md`
 - Review attestation: `docs/review-attestation.generated.json`
+- Runtime attestation: `docs/runtime-attestation.generated.json`
 - Verification gates: `docs/verification-gates.md`
 
 ## Product And Runtime Docs
@@ -394,9 +404,15 @@ The same rule now applies to the review surface itself: zk artifacts, live-proof
 - Consumer readiness: `docs/consumer-readiness.md`
 - Consumer user flows: `docs/consumer-user-flows.md`
 - Launch and growth plan: `docs/launch-growth-plan.md`
+- Read node and indexer: `docs/read-node-indexer.md`
+- RPC architecture: `docs/rpc-architecture.md`
+- Backend operator flow: `docs/backend-operator-flow.md`
+- Read-node snapshot: `docs/read-node-snapshot.generated.md`
+- Fair-voting flow: `docs/fair-voting.md`
 - Wallet runtime compatibility: `docs/wallet-runtime.md`
 - Real-device runtime intake: `docs/real-device-runtime.md`
 - Real-device runtime evidence: `docs/real-device-runtime.generated.md`
+- Runtime attestation: `docs/runtime-attestation.generated.json`
 - Runtime evidence package: `docs/runtime-evidence.generated.md`
 - Operational evidence package: `docs/operational-evidence.generated.md`
 - Wallet compatibility matrix: `docs/wallet-compatibility-matrix.generated.md`

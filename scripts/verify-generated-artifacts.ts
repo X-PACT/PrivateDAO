@@ -14,6 +14,8 @@ function main() {
   const releaseCeremonyJsonPath = path.resolve("docs/release-ceremony-attestation.generated.json");
   const releaseCeremonyMdPath = path.resolve("docs/release-ceremony-attestation.generated.md");
   const runtimeAttestationPath = path.resolve("docs/runtime-attestation.generated.json");
+  const readNodeSnapshotJsonPath = path.resolve("docs/read-node-snapshot.generated.json");
+  const readNodeSnapshotMdPath = path.resolve("docs/read-node-snapshot.generated.md");
   const realDeviceRuntimeSourcePath = path.resolve("docs/real-device-runtime-captures.json");
   const realDeviceRuntimeJsonPath = path.resolve("docs/real-device-runtime.generated.json");
   const realDeviceRuntimeMdPath = path.resolve("docs/real-device-runtime.generated.md");
@@ -86,6 +88,9 @@ function main() {
   }
   if (!fs.existsSync(runtimeAttestationPath)) {
     throw new Error("missing generated runtime attestation");
+  }
+  if (!fs.existsSync(readNodeSnapshotJsonPath) || !fs.existsSync(readNodeSnapshotMdPath)) {
+    throw new Error("missing read-node snapshot artifacts");
   }
   if (!fs.existsSync(realDeviceRuntimeSourcePath) || !fs.existsSync(realDeviceRuntimeJsonPath) || !fs.existsSync(realDeviceRuntimeMdPath)) {
     throw new Error("missing real-device runtime artifacts");
@@ -233,6 +238,12 @@ function main() {
     runtimeDocs: string[];
     supportedWallets: Array<{ id: string; label: string }>;
   };
+  const readNodeSnapshot = JSON.parse(fs.readFileSync(readNodeSnapshotJsonPath, "utf8")) as {
+    readPath: string;
+    runtime?: { programId?: string };
+    counts?: { proposals?: number; confidentialPayouts?: number };
+  };
+  const readNodeSnapshotMd = fs.readFileSync(readNodeSnapshotMdPath, "utf8");
   const runtimeEvidence = JSON.parse(fs.readFileSync(runtimeEvidenceJsonPath, "utf8")) as {
     project: string;
     programId: string;
@@ -1052,6 +1063,27 @@ function main() {
 
   if (!runtimeAttestation.supportedWallets.some((entry) => entry.id === "phantom")) {
     throw new Error("generated runtime attestation is missing Phantom support");
+  }
+  if (!runtimeAttestation.runtimeDocs.includes("docs/read-node-snapshot.generated.md")) {
+    throw new Error("generated runtime attestation is missing the read-node snapshot doc");
+  }
+  if (readNodeSnapshot.readPath !== "backend-indexer") {
+    throw new Error("read-node snapshot read path mismatch");
+  }
+  if (!readNodeSnapshot.runtime?.programId) {
+    throw new Error("read-node snapshot is missing the runtime program id");
+  }
+  if (typeof readNodeSnapshot.counts?.proposals !== "number") {
+    throw new Error("read-node snapshot is missing proposal counts");
+  }
+  if (typeof readNodeSnapshot.counts?.confidentialPayouts !== "number") {
+    throw new Error("read-node snapshot is missing confidential payout counts");
+  }
+  if (!readNodeSnapshotMd.includes("# Read Node Snapshot")) {
+    throw new Error("read-node snapshot markdown heading mismatch");
+  }
+  if (!readNodeSnapshotMd.includes("Confidential payout proposals")) {
+    throw new Error("read-node snapshot markdown is missing confidential payout coverage");
   }
 
   if (runtimeEvidence.project !== "PrivateDAO") {

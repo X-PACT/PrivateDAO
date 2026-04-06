@@ -11,6 +11,13 @@ const rateLimit = Number(process.env.PRIVATE_DAO_READ_RATE_LIMIT || 180);
 const readNode = new PrivateDaoReadNode();
 
 const rateMap = new Map<string, { count: number; resetAt: number }>();
+const serverStartedAt = new Date().toISOString();
+const metrics = {
+  requestsTotal: 0,
+  requestsFailed: 0,
+  rateLimited: 0,
+  routeHits: new Map<string, number>(),
+};
 
 function writeJson(res: http.ServerResponse, statusCode: number, payload: unknown) {
   res.writeHead(statusCode, {
@@ -26,6 +33,11 @@ function writeJson(res: http.ServerResponse, statusCode: number, payload: unknow
 function normalizeIp(req: http.IncomingMessage): string {
   const forwarded = String(req.headers["x-forwarded-for"] || "").split(",")[0].trim();
   return forwarded || req.socket.remoteAddress || "unknown";
+}
+
+function markRoute(pathname: string) {
+  metrics.requestsTotal += 1;
+  metrics.routeHits.set(pathname, (metrics.routeHits.get(pathname) || 0) + 1);
 }
 
 function enforceRateLimit(req: http.IncomingMessage): string | null {
@@ -60,12 +72,14 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
 
   const limitedIp = enforceRateLimit(req);
   if (limitedIp) {
+    metrics.rateLimited += 1;
     writeJson(res, 429, { ok: false, error: `Rate limit exceeded for ${limitedIp}` });
     return;
   }
 
   const url = new URL(req.url || "/", `http://${req.headers.host || `${host}:${port}`}`);
   const pathname = url.pathname.replace(/\/+$/, "") || "/";
+  markRoute(pathname);
 
   try {
     if (pathname === "/healthz") {
@@ -91,6 +105,23 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           programId: readNode.programId.toBase58(),
           rpcEndpoints: readNode.rpcEndpoints,
           cacheTtlMs: readNode.cacheTtlMs,
+        },
+      });
+      return;
+    }
+
+    if (pathname === "/api/v1/metrics") {
+      writeJson(res, 200, {
+        ok: true,
+        metrics: {
+          startedAt: serverStartedAt,
+          requestsTotal: metrics.requestsTotal,
+          requestsFailed: metrics.requestsFailed,
+          rateLimited: metrics.rateLimited,
+          routeHits: Object.fromEntries(metrics.routeHits.entries()),
+          rpcPoolSize: readNode.rpcEndpoints.length,
+          cache: readNode.cacheStats(),
+          programId: readNode.programId.toBase58(),
         },
       });
       return;
@@ -134,6 +165,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
 
     routeNotFound(res, pathname);
   } catch (error) {
+    metrics.requestsFailed += 1;
     writeJson(res, 500, {
       ok: false,
       error: String((error as Error)?.message || error || "Unhandled read node error"),

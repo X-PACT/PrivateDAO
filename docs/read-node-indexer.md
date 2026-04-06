@@ -28,6 +28,7 @@ PrivateDAO now includes a backend read path so proposal discovery, DAO inspectio
 - `GET /healthz`
 - `GET /api/v1/config`
 - `GET /api/v1/runtime`
+- `GET /api/v1/metrics`
 - `GET /api/v1/proposals`
 - `GET /api/v1/proposals/:proposal`
 - `GET /api/v1/daos/:dao`
@@ -56,6 +57,18 @@ https://x-pact.github.io/PrivateDAO/?readApi=http://127.0.0.1:8787/api/v1
 - in-memory rate limiting
 - bounded CORS
 - cache TTL configurable by environment
+- request counters and route-hit metrics
+- deployable behind a same-domain reverse proxy
+
+## Snapshot Evidence
+
+The repository can also generate a reviewer-facing backend snapshot:
+
+```bash
+cd /home/x-pact/PrivateDAO
+npm run build:read-node-snapshot
+npm run verify:read-node-snapshot
+```
 
 ## Mainnet direction
 

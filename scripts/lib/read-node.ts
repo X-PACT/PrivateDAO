@@ -128,6 +128,11 @@ export type WalletReadinessView = {
   readiness: "READY" | "NO TOKEN";
 };
 
+export type ReadNodeCacheStats = {
+  entryCount: number;
+  ttlMs: number;
+};
+
 const envPath = path.join(__dirname, "..", "..", ".env");
 if (fs.existsSync(envPath)) {
   const lines = fs.readFileSync(envPath, "utf-8").split("\n");
@@ -442,6 +447,18 @@ export class PrivateDaoReadNode {
 
   currentRpcEndpoint() {
     return this.rpcEndpoints[this.currentRpcIndex];
+  }
+
+  cacheStats(): ReadNodeCacheStats {
+    for (const [key, value] of this.caches.entries()) {
+      if (value.expiresAt < Date.now()) {
+        this.caches.delete(key);
+      }
+    }
+    return {
+      entryCount: this.caches.size,
+      ttlMs: this.cacheTtlMs,
+    };
   }
 
   rotateRpcEndpoint() {

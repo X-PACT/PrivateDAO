@@ -2,8 +2,8 @@
 
 ## Overview
 
-- Generated at: `2026-04-05T18:51:11+02:00`
-- Release commit: `796128f7deb8fe3a4a70e261dc5833bfee7ef752`
+- Generated at: `2026-04-06T03:25:49+02:00`
+- Release commit: `f58fed585fc40581e279d59a0dc91c3c0f9506f9`
 - Release branch: `main`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
@@ -35,8 +35,8 @@
 
 ## Ceremony Status
 
-- Observed gate count: `57`
-- Deployment gate count: `57`
+- Observed gate count: `58`
+- Deployment gate count: `58`
 - Go-live decision: `blocked-pending-external-steps`
 
 ## Unresolved Blockers

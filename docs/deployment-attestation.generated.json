@@ -18,6 +18,8 @@
   },
   "readiness": {
     "governanceLifecycle": "verified",
+    "confidentialPayoutSurface": "verified",
+    "backendReadNodeSurface": "verified",
     "securityReasoning": "verified",
     "supplyChainSurface": "verified",
     "releaseCeremonySurface": "verified",
@@ -97,10 +99,10 @@
   "gateCount": 58,
   "packageCounts": {
     "strategy": 9,
-    "security": 11,
-    "zk": 21,
-    "proof": 47,
-    "operations": 21
+    "security": 12,
+    "zk": 26,
+    "proof": 58,
+    "operations": 26
   },
   "zk": {
     "stackVersion": 1,

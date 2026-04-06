@@ -33,6 +33,7 @@ Verify the read node:
 cd /home/x-pact/PrivateDAO
 npm run verify:read-node
 curl http://127.0.0.1:8787/healthz
+curl http://127.0.0.1:8787/api/v1/metrics
 ```
 
 ## Step 4

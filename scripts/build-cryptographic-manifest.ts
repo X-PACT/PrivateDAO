@@ -40,6 +40,8 @@ const MANIFEST_FILES = [
   "docs/read-node-indexer.md",
   "docs/rpc-architecture.md",
   "docs/backend-operator-flow.md",
+  "docs/read-node-snapshot.generated.md",
+  "docs/read-node-snapshot.generated.json",
   "docs/assets/read-node-architecture.svg",
   "docs/confidential-payments.md",
   "docs/confidential-payroll-flow.md",

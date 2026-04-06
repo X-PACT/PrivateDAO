@@ -67,6 +67,12 @@ npm run verify:deployment-attestation >/dev/null
 echo "[verify-all] checking runtime attestation"
 npm run verify:runtime-attestation >/dev/null
 
+echo "[verify-all] checking read node"
+npm run verify:read-node >/dev/null
+
+echo "[verify-all] checking read-node snapshot"
+npm run verify:read-node-snapshot >/dev/null
+
 echo "[verify-all] checking real-device runtime intake"
 npm run verify:real-device-runtime >/dev/null
 

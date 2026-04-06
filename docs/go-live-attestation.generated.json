@@ -6,6 +6,8 @@
   "decision": "blocked-pending-external-steps",
   "verifiedInsideRepo": [
     "governanceLifecycle",
+    "confidentialPayoutSurface",
+    "backendReadNodeSurface",
     "securityReasoning",
     "supplyChainSurface",
     "releaseCeremonySurface",
