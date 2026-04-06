@@ -141,6 +141,16 @@ export function deriveRefheEnvelopePda(
   )[0];
 }
 
+export function deriveMagicBlockPrivatePaymentCorridorPda(
+  proposal: PublicKey,
+  programId: PublicKey,
+): PublicKey {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("magicblock-corridor"), proposal.toBuffer()],
+    programId,
+  )[0];
+}
+
 export async function resolveTokenProgramForMint(
   connection: Connection,
   mint: PublicKey,

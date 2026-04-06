@@ -13,6 +13,7 @@ PrivateDAO now includes a backend read path so proposal discovery, DAO inspectio
   - single proposal inspection
   - DAO inspection
   - governance-token readiness per wallet
+  - MagicBlock health, mint-status, and balance inspection
 
 ## Why it matters
 
@@ -32,6 +33,9 @@ PrivateDAO now includes a backend read path so proposal discovery, DAO inspectio
 - `GET /api/v1/ops/overview`
 - `GET /api/v1/ops/snapshot`
 - `GET /api/v1/devnet/profiles`
+- `GET /api/v1/magicblock/health`
+- `GET /api/v1/magicblock/mints/:mint/status`
+- `GET /api/v1/magicblock/balances/:address?mint=<MINT>`
 - `GET /api/v1/proposals`
 - `GET /api/v1/proposals/:proposal`
 - `GET /api/v1/daos/:dao`

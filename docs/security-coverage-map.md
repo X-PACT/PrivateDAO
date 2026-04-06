@@ -18,4 +18,4 @@
 | State regression | failed paths do not regress passed/failed proposals into earlier states | `tests/full-flow-test.ts` | Covered |
 | Commit-reveal binding | voter record binds commitment to voter and proposal | `tests/private-dao.ts`, `tests/full-flow-test.ts` | Covered |
 | Direct/delegated overlap | proposal-bound vote/delegation marker accounts reject overlap on-chain; scripts/frontend still mirror the same guardrails | `tests/private-dao.ts`, `scripts/commit-vote.ts`, `scripts/delegate-vote.ts`, `docs/index.html` | Covered |
-| External validator environment | local validator startup is environment-dependent and currently flaky in this shell | `npm run test:core`, `npm run test:full`, `npm run demo` operational evidence | Residual Risk |
+| External validator environment | this host does not expose AVX2, so local-validator Anchor suites must run on an AVX2-capable machine; portable core checks remain green here | `npm run verify:local-validator`, `npm run test:core`, `npm run test:core:anchor`, `npm run test:full:anchor`, `npm run demo` operational evidence | Residual Risk |

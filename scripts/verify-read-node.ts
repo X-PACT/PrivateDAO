@@ -3,11 +3,12 @@ import { PrivateDaoReadNode } from "./lib/read-node";
 
 async function main() {
   const readNode = new PrivateDaoReadNode();
-  const [runtime, proposals, overview, profiles] = await Promise.all([
+  const [runtime, proposals, overview, profiles, magicblock] = await Promise.all([
     readNode.getRuntimeSnapshot(),
     readNode.fetchProposals(),
     readNode.getOpsOverview(),
     Promise.resolve(readNode.getLoadProfiles()),
+    readNode.getMagicBlockRuntime(),
   ]);
 
   if (runtime.readPath !== "backend-indexer") {
@@ -16,6 +17,10 @@ async function main() {
 
   if (!runtime.programId) {
     throw new Error("Read node runtime is missing program id");
+  }
+
+  if (!magicblock.apiBase) {
+    throw new Error("Read node MagicBlock runtime is missing API base");
   }
 
   if (!Array.isArray(proposals)) {
@@ -31,7 +36,7 @@ async function main() {
     throw new Error("Read node load profiles missing expected 350-wave plan");
   }
 
-  console.log(`Read node verification: PASS (proposals=${proposals.length}, endpoint=${runtime.rpcEndpoint}, refhe=${overview.refheConfigured})`);
+  console.log(`Read node verification: PASS (proposals=${proposals.length}, endpoint=${runtime.rpcEndpoint}, refhe=${overview.refheConfigured}, magicblock=${magicblock.health})`);
 }
 
 main().catch((error) => {

@@ -53,9 +53,15 @@ solana config set --keypair "$ANCHOR_WALLET" --url "$ANCHOR_PROVIDER_URL"
 anchor build
 ```
 
+### Check local validator capability
+
+```bash
+npm run verify:local-validator
+```
+
 ### Start a local validator
 
-In a separate terminal:
+In a separate terminal on an AVX2-capable host:
 
 ```bash
 solana-test-validator --reset

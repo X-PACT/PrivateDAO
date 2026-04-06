@@ -364,7 +364,7 @@ The audit-simulation layer does not hide residual realities:
 
 - off-chain timing metadata is not hidden by commit-reveal
 - Groth16 witness generation and proving remain off-chain; the live program now records proposal-bound zk proof anchors and parallel on-chain verification receipts, but commit-reveal remains the canonical enforcement path today
-- local validator startup remains environment-sensitive in this shell
+- this shell host does not expose AVX2, so local-validator Anchor suites must run on an AVX2-capable machine while the portable core suite remains the canonical green check here
 - external audit completeness is still not claimed
 - `CustomCPI` remains intentionally unsupported rather than arbitrary on-chain execution
 

@@ -13,6 +13,7 @@ import { PublicKey, SystemProgram, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import {
   associatedTokenAddressForMint,
   deriveConfidentialPayoutPlanPda,
+  deriveMagicBlockPrivatePaymentCorridorPda,
   deriveRefheEnvelopePda,
   formatSol,
   formatTimestamp,
@@ -21,6 +22,7 @@ import {
   solscanTxUrl,
   workspaceProgram,
 } from "./utils";
+import { magicBlockApiBase, magicBlockCluster, magicBlockRouteHash } from "./lib/magicblock-payments";
 
 async function main() {
   const {
@@ -45,6 +47,9 @@ async function main() {
     refhePolicyHash,
     refheInputCiphertextHash,
     refheEvaluationKeyHash,
+    magicblock,
+    magicblockOwnerWallet,
+    magicblockApiBase,
   } = parseArgs();
 
   if (!daoPdaStr) {
@@ -164,6 +169,17 @@ async function main() {
     inputCiphertextHash: number[];
     evaluationKeyHash: number[];
   } = null;
+  let magicBlockPayload: null | {
+    apiBase: string;
+    cluster: string;
+    ownerWallet: PublicKey;
+    settlementWallet: PublicKey;
+    tokenMint: PublicKey;
+    depositAmount: any;
+    privateTransferAmount: any;
+    withdrawalAmount: any;
+    routeHash: number[];
+  } = null;
 
   if (confidentialEnabled) {
     const payoutTypeNormalized = String(confidentialType || "salary").toLowerCase();
@@ -268,6 +284,41 @@ async function main() {
       };
       console.log(`   REFHE model URI: ${refhePayload.modelUri}`);
     }
+
+    const magicBlockEnabled = String(magicblock || "").trim().toLowerCase() === "enabled";
+    if (magicBlockEnabled) {
+      if (assetTypeNormalized !== "token" || !tokenMintPk) {
+        console.error("Error: --magicblock enabled requires --payout-asset token and --payout-mint");
+        process.exit(1);
+      }
+      const ownerWallet = magicblockOwnerWallet
+        ? new PublicKey(String(magicblockOwnerWallet))
+        : provider.wallet.publicKey;
+      const apiBase = String(magicblockApiBase || magicBlockApiBase()).trim();
+      const cluster = magicBlockCluster();
+      magicBlockPayload = {
+        apiBase,
+        cluster,
+        ownerWallet,
+        settlementWallet: settlementRecipientPk,
+        tokenMint: tokenMintPk,
+        depositAmount: totalAmount,
+        privateTransferAmount: totalAmount,
+        withdrawalAmount: totalAmount,
+        routeHash: magicBlockRouteHash([
+          daoPda,
+          proposalPda,
+          ownerWallet,
+          settlementRecipientPk,
+          tokenMintPk,
+          totalAmount.toString(),
+          apiBase,
+          cluster,
+        ]),
+      };
+      console.log(`   MagicBlock API base: ${apiBase}`);
+      console.log(`   MagicBlock owner wallet: ${ownerWallet.toBase58()}`);
+    }
   }
 
   const tx = await program.methods
@@ -308,6 +359,35 @@ async function main() {
     console.log(`   Confidential payout plan: ${payoutPlanPda.toBase58()}`);
     console.log(`   Payout config tx:        ${confidentialTx}`);
     console.log(`   Payout config link:      ${solscanTxUrl(confidentialTx!)}`);
+
+    if (magicBlockPayload) {
+      const corridorPda = deriveMagicBlockPrivatePaymentCorridorPda(proposalPda, program.programId);
+      const magicBlockTx = await program.methods
+        .configureMagicblockPrivatePaymentCorridor(
+          magicBlockPayload.apiBase,
+          magicBlockPayload.cluster,
+          magicBlockPayload.ownerWallet,
+          magicBlockPayload.settlementWallet,
+          magicBlockPayload.tokenMint,
+          magicBlockPayload.depositAmount,
+          magicBlockPayload.privateTransferAmount,
+          magicBlockPayload.withdrawalAmount,
+          magicBlockPayload.routeHash,
+        )
+        .accounts({
+          dao: daoPda,
+          proposal: proposalPda,
+          confidentialPayoutPlan: payoutPlanPda,
+          magicblockPrivatePaymentCorridor: corridorPda,
+          operator: provider.wallet.publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+
+      console.log(`   MagicBlock corridor:     ${corridorPda.toBase58()}`);
+      console.log(`   MagicBlock config tx:    ${magicBlockTx}`);
+      console.log(`   MagicBlock config link:  ${solscanTxUrl(magicBlockTx)}`);
+    }
 
     if (refhePayload) {
       const refheEnvelopePda = deriveRefheEnvelopePda(proposalPda, program.programId);

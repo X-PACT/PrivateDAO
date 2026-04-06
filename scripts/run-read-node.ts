@@ -94,6 +94,39 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
       return;
     }
 
+    if (pathname === "/api/v1/magicblock/health") {
+      const magicblock = await readNode.getMagicBlockRuntime(url.searchParams.get("refresh") === "1");
+      writeJson(res, 200, { ok: true, source: "backend-indexer", magicblock });
+      return;
+    }
+
+    const magicBlockMintMatch = pathname.match(/^\/api\/v1\/magicblock\/mints\/([^/]+)\/status$/);
+    if (magicBlockMintMatch) {
+      const status = await readNode.getMagicBlockMintStatus(
+        magicBlockMintMatch[1],
+        url.searchParams.get("validator") || undefined,
+        url.searchParams.get("refresh") === "1",
+      );
+      writeJson(res, 200, { ok: true, source: "backend-indexer", status });
+      return;
+    }
+
+    const magicBlockBalanceMatch = pathname.match(/^\/api\/v1\/magicblock\/balances\/([^/]+)$/);
+    if (magicBlockBalanceMatch) {
+      const mint = url.searchParams.get("mint");
+      if (!mint) {
+        writeJson(res, 400, { ok: false, error: "Missing required mint query parameter", source: "backend-indexer" });
+        return;
+      }
+      const balances = await readNode.getMagicBlockBalances(
+        magicBlockBalanceMatch[1],
+        mint,
+        url.searchParams.get("refresh") === "1",
+      );
+      writeJson(res, 200, { ok: true, source: "backend-indexer", balances });
+      return;
+    }
+
     if (pathname === "/api/v1/config") {
       writeJson(res, 200, {
         ok: true,
@@ -123,6 +156,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
         readNode.getOpsOverview(force),
       ]);
       const profiles = readNode.getLoadProfiles();
+      const magicblock = await readNode.getMagicBlockRuntime(force);
       writeJson(res, 200, {
         ok: true,
         source: "backend-indexer",
@@ -130,6 +164,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           generatedAt: new Date().toISOString(),
           runtime,
           overview,
+          magicblock,
           profiles,
           metrics: {
             startedAt: serverStartedAt,

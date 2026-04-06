@@ -3,6 +3,14 @@ import * as fs from "fs";
 import * as path from "path";
 import * as anchor from "@coral-xyz/anchor";
 import { clusterApiUrl, Commitment, Connection, PublicKey } from "@solana/web3.js";
+import {
+  getMagicBlockBalance,
+  getMagicBlockHealth,
+  getMagicBlockMintInitializationStatus,
+  getMagicBlockPrivateBalance,
+  magicBlockApiBase,
+  magicBlockCluster,
+} from "./magicblock-payments";
 
 type CachedValue<T> = {
   expiresAt: number;
@@ -83,6 +91,33 @@ export type RefheEnvelopeView = {
   bump: number;
 };
 
+export type MagicBlockPrivatePaymentCorridorView = {
+  pubkey: string;
+  dao: string;
+  proposal: string;
+  payoutPlan: string;
+  configuredBy: string;
+  settledBy: string | null;
+  apiBaseUrl: string;
+  cluster: string;
+  ownerWallet: string;
+  settlementWallet: string;
+  tokenMint: string;
+  validator: string | null;
+  transferQueue: string | null;
+  routeHash: string;
+  depositAmount: number;
+  privateTransferAmount: number;
+  withdrawalAmount: number;
+  depositTxSignature: string;
+  transferTxSignature: string;
+  withdrawTxSignature: string;
+  status: string;
+  configuredAt: number;
+  settledAt: number;
+  bump: number;
+};
+
 export type ZkReceiptView = {
   pubkey: string;
   dao: string;
@@ -121,6 +156,7 @@ export type ProposalView = {
   zkPolicyPda: string | null;
   confidentialPayoutPlan: ConfidentialPayoutPlanView | null;
   refheEnvelope: RefheEnvelopeView | null;
+  magicblockCorridor: MagicBlockPrivatePaymentCorridorView | null;
   zkReceiptSummary: ZkReceiptView[];
   daoDetails: DaoView | null;
 };
@@ -166,10 +202,18 @@ export type OpsOverview = {
   uniqueDaos: number;
   zkEnforced: number;
   confidentialPayouts: number;
+  magicblockConfigured: number;
+  magicblockSettled: number;
   refheConfigured: number;
   refheSettled: number;
   refheWithVerifier: number;
   executableConfidential: number;
+};
+
+export type MagicBlockRuntimeView = {
+  apiBase: string;
+  cluster: string;
+  health: string;
 };
 
 export type ReadNodeCacheStats = {
@@ -213,6 +257,11 @@ function isValidRpcUrl(value?: string): boolean {
   return !isPlaceholderValue(normalized) && /^https?:\/\//.test(normalized);
 }
 
+function rpcTimeoutMs(): number {
+  const parsed = Number(process.env.PRIVATE_DAO_RPC_TIMEOUT_MS || 8000);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 8000;
+}
+
 function buildAlchemyDevnetRpc(): string | null {
   if (isValidRpcUrl(process.env.ALCHEMY_DEVNET_RPC_URL)) {
     return trimValue(process.env.ALCHEMY_DEVNET_RPC_URL);
@@ -242,6 +291,7 @@ export function resolveDevnetRpcEndpoints(): string[] {
   add(process.env.SOLANA_RPC_URL);
   add(buildAlchemyDevnetRpc());
   add(buildHeliusDevnetRpc());
+  add(process.env.RPC_FAST_DEVNET_RPC);
   add(process.env.QUICKNODE_DEVNET_RPC);
   const extra = trimValue(process.env.EXTRA_DEVNET_RPCS);
   if (extra) {
@@ -370,6 +420,13 @@ function deriveRefheEnvelopePda(proposalPubkey: string, programId: PublicKey): s
   )[0].toBase58();
 }
 
+function deriveMagicBlockPrivatePaymentCorridorPda(proposalPubkey: string, programId: PublicKey): string {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("magicblock-corridor"), new PublicKey(proposalPubkey).toBuffer()],
+    programId,
+  )[0].toBase58();
+}
+
 function deriveZkReceiptPda(proposalPubkey: string, layerSeedByte: number, programId: PublicKey): string {
   return PublicKey.findProgramAddressSync(
     [Buffer.from("zk-verify"), new PublicKey(proposalPubkey).toBuffer(), Buffer.from([layerSeedByte])],
@@ -429,6 +486,7 @@ function mapProposalAccount(pubkey: PublicKey, decoded: any): ProposalView {
     zkPolicyPda: null,
     confidentialPayoutPlan: null,
     refheEnvelope: null,
+    magicblockCorridor: null,
     zkReceiptSummary: [],
     daoDetails: null,
   };
@@ -487,6 +545,35 @@ function mapRefheEnvelope(pubkey: PublicKey, decoded: any): RefheEnvelopeView {
     resultCommitmentHash: Buffer.from(decoded.result_commitment_hash).toString("hex"),
     proofBundleHash: Buffer.from(decoded.proof_bundle_hash).toString("hex"),
     verifierProgram: decoded.verifier_program ? asPublicKey(decoded.verifier_program) : null,
+    status: enumName(decoded.status),
+    configuredAt: asNumber(decoded.configured_at),
+    settledAt: asNumber(decoded.settled_at),
+    bump: decoded.bump,
+  };
+}
+
+function mapMagicBlockCorridor(pubkey: PublicKey, decoded: any): MagicBlockPrivatePaymentCorridorView {
+  return {
+    pubkey: pubkey.toBase58(),
+    dao: asPublicKey(decoded.dao),
+    proposal: asPublicKey(decoded.proposal),
+    payoutPlan: asPublicKey(decoded.payout_plan),
+    configuredBy: asPublicKey(decoded.configured_by),
+    settledBy: decoded.settled_by ? asPublicKey(decoded.settled_by) : null,
+    apiBaseUrl: decoded.api_base_url,
+    cluster: decoded.cluster,
+    ownerWallet: asPublicKey(decoded.owner_wallet),
+    settlementWallet: asPublicKey(decoded.settlement_wallet),
+    tokenMint: asPublicKey(decoded.token_mint),
+    validator: decoded.validator ? asPublicKey(decoded.validator) : null,
+    transferQueue: decoded.transfer_queue ? asPublicKey(decoded.transfer_queue) : null,
+    routeHash: Buffer.from(decoded.route_hash).toString("hex"),
+    depositAmount: asNumber(decoded.deposit_amount),
+    privateTransferAmount: asNumber(decoded.private_transfer_amount),
+    withdrawalAmount: asNumber(decoded.withdrawal_amount),
+    depositTxSignature: decoded.deposit_tx_signature,
+    transferTxSignature: decoded.transfer_tx_signature,
+    withdrawTxSignature: decoded.withdraw_tx_signature,
     status: enumName(decoded.status),
     configuredAt: asNumber(decoded.configured_at),
     settledAt: asNumber(decoded.settled_at),
@@ -607,7 +694,12 @@ export class PrivateDaoReadNode {
     let lastError: unknown = null;
     for (let attempt = 0; attempt < attempts; attempt += 1) {
       try {
-        return await operation(this.connection);
+        return await Promise.race<T>([
+          operation(this.connection),
+          new Promise<T>((_, reject) =>
+            setTimeout(() => reject(new Error(`RPC request timed out after ${rpcTimeoutMs()}ms`)), rpcTimeoutMs()),
+          ),
+        ]);
       } catch (error) {
         lastError = error;
         if (!this.isRecoverableRpcError(error) || attempt === attempts - 1) {
@@ -714,13 +806,15 @@ export class PrivateDaoReadNode {
     const policyKeys = filtered.map((proposal) => new PublicKey(deriveProposalZkPolicyPda(proposal.pubkey, this.programId)));
     const payoutKeys = filtered.map((proposal) => new PublicKey(deriveConfidentialPayoutPlanPda(proposal.pubkey, this.programId)));
     const refheKeys = filtered.map((proposal) => new PublicKey(deriveRefheEnvelopePda(proposal.pubkey, this.programId)));
+    const magicBlockKeys = filtered.map((proposal) => new PublicKey(deriveMagicBlockPrivatePaymentCorridorPda(proposal.pubkey, this.programId)));
     const receiptKeys = filtered.flatMap((proposal) => [1, 2, 3].map((seed) => new PublicKey(deriveZkReceiptPda(proposal.pubkey, seed, this.programId))));
 
-    const [daoInfos, policyInfos, payoutInfos, refheInfos, receiptInfos] = await Promise.all([
+    const [daoInfos, policyInfos, payoutInfos, refheInfos, magicBlockInfos, receiptInfos] = await Promise.all([
       daoKeys.length ? this.withRpcFallback((connection) => fetchMany(connection, daoKeys, this.commitment)) : Promise.resolve([]),
       policyKeys.length ? this.withRpcFallback((connection) => fetchMany(connection, policyKeys, this.commitment)) : Promise.resolve([]),
       payoutKeys.length ? this.withRpcFallback((connection) => fetchMany(connection, payoutKeys, this.commitment)) : Promise.resolve([]),
       refheKeys.length ? this.withRpcFallback((connection) => fetchMany(connection, refheKeys, this.commitment)) : Promise.resolve([]),
+      magicBlockKeys.length ? this.withRpcFallback((connection) => fetchMany(connection, magicBlockKeys, this.commitment)) : Promise.resolve([]),
       receiptKeys.length ? this.withRpcFallback((connection) => fetchMany(connection, receiptKeys, this.commitment)) : Promise.resolve([]),
     ]);
 
@@ -754,6 +848,12 @@ export class PrivateDaoReadNode {
       if (refheInfo) {
         const decoded = coder.accounts.decode("RefheEnvelope", refheInfo.data);
         proposal.refheEnvelope = mapRefheEnvelope(refheKeys[index], decoded);
+      }
+
+      const magicBlockInfo = magicBlockInfos[index];
+      if (magicBlockInfo) {
+        const decoded = coder.accounts.decode("MagicBlockPrivatePaymentCorridor", magicBlockInfo.data);
+        proposal.magicblockCorridor = mapMagicBlockCorridor(magicBlockKeys[index], decoded);
       }
 
       const offset = index * 3;
@@ -805,6 +905,8 @@ export class PrivateDaoReadNode {
       uniqueDaos: new Set(proposals.map((proposal) => proposal.dao)).size,
       zkEnforced: proposals.filter((proposal) => proposal.zkMode === "ZkEnforced").length,
       confidentialPayouts: proposals.filter((proposal) => Boolean(proposal.confidentialPayoutPlan)).length,
+      magicblockConfigured: proposals.filter((proposal) => Boolean(proposal.magicblockCorridor)).length,
+      magicblockSettled: proposals.filter((proposal) => proposal.magicblockCorridor?.status === "Settled").length,
       refheConfigured: proposals.filter((proposal) => Boolean(proposal.refheEnvelope)).length,
       refheSettled: proposals.filter((proposal) => proposal.refheEnvelope?.status === "Settled").length,
       refheWithVerifier: proposals.filter((proposal) => Boolean(proposal.refheEnvelope?.verifierProgram)).length,
@@ -814,5 +916,56 @@ export class PrivateDaoReadNode {
     };
     this.setCached(key, overview);
     return overview;
+  }
+
+  async getMagicBlockRuntime(force = false): Promise<MagicBlockRuntimeView> {
+    const key = this.cacheKey("magicblock-runtime", "global");
+    if (!force) {
+      const cached = this.getCached<MagicBlockRuntimeView>(key);
+      if (cached) return cached;
+    }
+    let health = "unavailable";
+    try {
+      health = (await getMagicBlockHealth(magicBlockApiBase())).status;
+    } catch {
+      health = "unavailable";
+    }
+    const runtime: MagicBlockRuntimeView = {
+      apiBase: magicBlockApiBase(),
+      cluster: magicBlockCluster(),
+      health,
+    };
+    this.setCached(key, runtime);
+    return runtime;
+  }
+
+  async getMagicBlockMintStatus(mint: string, validator?: string, force = false) {
+    const key = this.cacheKey("magicblock-mint", `${mint}:${validator || "default"}`);
+    if (!force) {
+      const cached = this.getCached<any>(key);
+      if (cached) return cached;
+    }
+    const status = await getMagicBlockMintInitializationStatus({
+      mint,
+      cluster: magicBlockCluster(),
+      validator,
+    }, magicBlockApiBase());
+    this.setCached(key, status);
+    return status;
+  }
+
+  async getMagicBlockBalances(address: string, mint: string, force = false) {
+    const key = this.cacheKey("magicblock-balances", `${address}:${mint}`);
+    if (!force) {
+      const cached = this.getCached<any>(key);
+      if (cached) return cached;
+    }
+    const [baseBalance, privateBalance] = await Promise.all([
+      getMagicBlockBalance({ address, mint, cluster: magicBlockCluster() }, magicBlockApiBase()),
+      getMagicBlockPrivateBalance({ address, mint, cluster: magicBlockCluster() }, magicBlockApiBase()),
+    ]);
+    const balances = { baseBalance, privateBalance };
+    this.setCached(key, balances);
+    return balances;
   }
 }

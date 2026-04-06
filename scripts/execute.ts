@@ -15,7 +15,19 @@
 import * as anchor from "@coral-xyz/anchor";
 import { PublicKey, SystemProgram } from "@solana/web3.js";
 import { getAssociatedTokenAddress } from "@solana/spl-token";
-import { deriveConfidentialPayoutPlanPda, deriveRefheEnvelopePda, formatDuration, parseArgs, formatSol, formatTimestamp, proposalStatusLabel, resolveTokenProgramForMint, solscanTxUrl, workspaceProgram } from "./utils";
+import {
+  deriveConfidentialPayoutPlanPda,
+  deriveMagicBlockPrivatePaymentCorridorPda,
+  deriveRefheEnvelopePda,
+  formatDuration,
+  parseArgs,
+  formatSol,
+  formatTimestamp,
+  proposalStatusLabel,
+  resolveTokenProgramForMint,
+  solscanTxUrl,
+  workspaceProgram,
+} from "./utils";
 
 async function main() {
   const { proposal: proposalStr } = parseArgs();
@@ -68,6 +80,7 @@ async function main() {
   );
   const confidentialPayoutPlanPda = deriveConfidentialPayoutPlanPda(proposalPda, program.programId);
   const refheEnvelopePda = deriveRefheEnvelopePda(proposalPda, program.programId);
+  const magicBlockCorridorPda = deriveMagicBlockPrivatePaymentCorridorPda(proposalPda, program.programId);
   const confidentialPlanInfo = await provider.connection.getAccountInfo(confidentialPayoutPlanPda, "confirmed");
   const confidentialPlan = confidentialPlanInfo
     ? await program.account["confidentialPayoutPlan"].fetch(confidentialPayoutPlanPda)
@@ -75,6 +88,10 @@ async function main() {
   const refheEnvelopeInfo = await provider.connection.getAccountInfo(refheEnvelopePda, "confirmed");
   const refheEnvelope = refheEnvelopeInfo
     ? await program.account["refheEnvelope"].fetch(refheEnvelopePda)
+    : null;
+  const magicBlockCorridorInfo = await provider.connection.getAccountInfo(magicBlockCorridorPda, "confirmed");
+  const magicBlockCorridor = magicBlockCorridorInfo
+    ? await program.account["magicBlockPrivatePaymentCorridor"].fetch(magicBlockCorridorPda)
     : null;
 
   // Figure out account values for the treasury action
@@ -101,6 +118,12 @@ async function main() {
     if (refheEnvelope) {
       console.log(`    REFHE: ${Object.keys(refheEnvelope.status)[0]} via ${refheEnvelope.modelUri}`);
       console.log(`    REFHE envelope: ${refheEnvelopePda.toBase58()}`);
+    }
+    if (magicBlockCorridor) {
+      console.log(`    MagicBlock corridor: ${Object.keys(magicBlockCorridor.status)[0]} via ${magicBlockCorridor.apiBaseUrl}`);
+      console.log(`    MagicBlock corridor PDA: ${magicBlockCorridorPda.toBase58()}`);
+      console.log(`    Validator: ${magicBlockCorridor.validator ? magicBlockCorridor.validator.toBase58() : "unset"}`);
+      console.log(`    Transfer queue: ${magicBlockCorridor.transferQueue ? magicBlockCorridor.transferQueue.toBase58() : "unset"}`);
     }
   } else if (proposal.treasuryAction) {
     actionType = Object.keys(proposal.treasuryAction.actionType)[0];
@@ -141,6 +164,7 @@ async function main() {
         treasuryTokenAccount,
         recipientTokenAccount,
         refheEnvelope: refheEnvelopePda,
+        magicblockPrivatePaymentCorridor: magicBlockCorridorPda,
         executor: provider.wallet.publicKey,
         tokenProgram,
         systemProgram: SystemProgram.programId,

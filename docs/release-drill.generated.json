@@ -1,8 +1,8 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-06T14:04:54+02:00",
+  "generatedAt": "2026-04-06T15:12:47+02:00",
   "mode": "repository-simulated-drill",
-  "releaseCommit": "001496de7ed593b1b82b0c0de7b194c413cc1df9",
+  "releaseCommit": "e1cbba198b440c72a30e84287f7240648221e4fc",
   "releaseBranch": "main",
   "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
   "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
@@ -64,7 +64,7 @@
       "step": "reviewed-commit-freeze",
       "category": "operator-check",
       "status": "simulated-pass",
-      "evidence": "001496de7ed593b1b82b0c0de7b194c413cc1df9",
+      "evidence": "e1cbba198b440c72a30e84287f7240648221e4fc",
       "note": "The reviewed repository commit becomes the release anchor before any cutover activity."
     },
     {

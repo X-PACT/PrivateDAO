@@ -442,6 +442,183 @@ pub mod private_dao {
         Ok(())
     }
 
+    pub fn configure_magicblock_private_payment_corridor(
+        ctx: Context<ConfigureMagicBlockPrivatePaymentCorridor>,
+        api_base_url: String,
+        cluster: String,
+        owner_wallet: Pubkey,
+        validator: Option<Pubkey>,
+        route_hash: [u8; 32],
+        deposit_amount: u64,
+        private_transfer_amount: u64,
+        withdrawal_amount: u64,
+    ) -> Result<()> {
+        let operator = ctx.accounts.operator.key();
+        require!(
+            operator == ctx.accounts.dao.authority || operator == ctx.accounts.proposal.proposer,
+            Error::UnauthorizedMagicBlockOperator
+        );
+        require!(
+            ctx.accounts.proposal.status == ProposalStatus::Voting
+                && ctx.accounts.proposal.commit_count == 0
+                && ctx.accounts.proposal.reveal_count == 0,
+            Error::MagicBlockCorridorLocked
+        );
+
+        let payout_plan = &ctx.accounts.confidential_payout_plan;
+        require!(
+            payout_plan.dao == ctx.accounts.dao.key()
+                && payout_plan.proposal == ctx.accounts.proposal.key(),
+            Error::MagicBlockCorridorMismatch
+        );
+        require!(
+            payout_plan.status == ConfidentialPayoutStatus::Configured,
+            Error::MagicBlockCorridorLocked
+        );
+        require!(
+            payout_plan.asset_type == ConfidentialAssetType::Token,
+            Error::MagicBlockTokenMintRequired
+        );
+
+        validate_magicblock_corridor(
+            &api_base_url,
+            &cluster,
+            owner_wallet,
+            payout_plan.settlement_recipient,
+            payout_plan.token_mint,
+            &route_hash,
+            deposit_amount,
+            private_transfer_amount,
+            withdrawal_amount,
+        )?;
+
+        let corridor = &mut ctx.accounts.magicblock_private_payment_corridor;
+        if corridor.proposal != Pubkey::default() {
+            require!(
+                corridor.dao == ctx.accounts.dao.key()
+                    && corridor.proposal == ctx.accounts.proposal.key()
+                    && corridor.payout_plan == payout_plan.key(),
+                Error::MagicBlockCorridorMismatch
+            );
+            require!(
+                corridor.status != MagicBlockSettlementStatus::Settled,
+                Error::MagicBlockCorridorLocked
+            );
+        }
+
+        corridor.dao = ctx.accounts.dao.key();
+        corridor.proposal = ctx.accounts.proposal.key();
+        corridor.payout_plan = payout_plan.key();
+        corridor.configured_by = operator;
+        corridor.settled_by = None;
+        corridor.api_base_url = api_base_url.clone();
+        corridor.cluster = cluster.clone();
+        corridor.owner_wallet = owner_wallet;
+        corridor.settlement_wallet = payout_plan.settlement_recipient;
+        corridor.token_mint = payout_plan
+            .token_mint
+            .ok_or(Error::MagicBlockTokenMintRequired)?;
+        corridor.validator = validator;
+        corridor.transfer_queue = None;
+        corridor.route_hash = route_hash;
+        corridor.deposit_amount = deposit_amount;
+        corridor.private_transfer_amount = private_transfer_amount;
+        corridor.withdrawal_amount = withdrawal_amount;
+        corridor.deposit_tx_signature = String::new();
+        corridor.transfer_tx_signature = String::new();
+        corridor.withdraw_tx_signature = String::new();
+        corridor.status = MagicBlockSettlementStatus::Configured;
+        corridor.configured_at = Clock::get()?.unix_timestamp;
+        corridor.settled_at = 0;
+        corridor.bump = ctx.bumps.magicblock_private_payment_corridor;
+
+        emit!(MagicBlockPrivatePaymentCorridorConfigured {
+            dao: corridor.dao,
+            proposal: corridor.proposal,
+            payout_plan: corridor.payout_plan,
+            configured_by: corridor.configured_by,
+            api_base_url,
+            cluster,
+            owner_wallet: corridor.owner_wallet,
+            settlement_wallet: corridor.settlement_wallet,
+            token_mint: corridor.token_mint,
+            validator: corridor.validator,
+            route_hash: corridor.route_hash,
+            deposit_amount: corridor.deposit_amount,
+            private_transfer_amount: corridor.private_transfer_amount,
+            withdrawal_amount: corridor.withdrawal_amount,
+        });
+        Ok(())
+    }
+
+    pub fn settle_magicblock_private_payment_corridor(
+        ctx: Context<SettleMagicBlockPrivatePaymentCorridor>,
+        validator: Pubkey,
+        transfer_queue: Pubkey,
+        deposit_tx_signature: String,
+        transfer_tx_signature: String,
+        withdraw_tx_signature: String,
+    ) -> Result<()> {
+        let operator = ctx.accounts.operator.key();
+        require!(
+            operator == ctx.accounts.dao.authority || operator == ctx.accounts.proposal.proposer,
+            Error::UnauthorizedMagicBlockOperator
+        );
+        require!(
+            validator != Pubkey::default() && transfer_queue != Pubkey::default(),
+            Error::InvalidMagicBlockCorridor
+        );
+
+        validate_magicblock_tx_signature(&deposit_tx_signature, true)?;
+        validate_magicblock_tx_signature(&transfer_tx_signature, false)?;
+        validate_magicblock_tx_signature(&withdraw_tx_signature, true)?;
+
+        let payout_plan = &ctx.accounts.confidential_payout_plan;
+        let corridor = &mut ctx.accounts.magicblock_private_payment_corridor;
+        require!(
+            corridor.dao == ctx.accounts.dao.key()
+                && corridor.proposal == ctx.accounts.proposal.key()
+                && corridor.payout_plan == payout_plan.key(),
+            Error::MagicBlockCorridorMismatch
+        );
+        require!(
+            payout_plan.dao == ctx.accounts.dao.key()
+                && payout_plan.proposal == ctx.accounts.proposal.key(),
+            Error::MagicBlockCorridorMismatch
+        );
+        require!(
+            payout_plan.status == ConfidentialPayoutStatus::Configured,
+            Error::MagicBlockCorridorLocked
+        );
+        require!(
+            corridor.status == MagicBlockSettlementStatus::Configured,
+            Error::MagicBlockCorridorLocked
+        );
+
+        corridor.validator = Some(validator);
+        corridor.transfer_queue = Some(transfer_queue);
+        corridor.deposit_tx_signature = deposit_tx_signature.clone();
+        corridor.transfer_tx_signature = transfer_tx_signature.clone();
+        corridor.withdraw_tx_signature = withdraw_tx_signature.clone();
+        corridor.status = MagicBlockSettlementStatus::Settled;
+        corridor.settled_by = Some(operator);
+        corridor.settled_at = Clock::get()?.unix_timestamp;
+
+        emit!(MagicBlockPrivatePaymentCorridorSettled {
+            dao: corridor.dao,
+            proposal: corridor.proposal,
+            payout_plan: corridor.payout_plan,
+            settled_by: operator,
+            validator,
+            transfer_queue,
+            deposit_tx_signature,
+            transfer_tx_signature,
+            withdraw_tx_signature,
+            settled_at: corridor.settled_at,
+        });
+        Ok(())
+    }
+
     // ── Cancel proposal ───────────────────────────────────────────────────────
     //
     // Authority-only. Can only cancel while status == Voting.
@@ -937,6 +1114,36 @@ pub mod private_dao {
             require!(
                 envelope.verifier_program.is_some(),
                 Error::RefheVerifierProgramRequired
+            );
+        }
+        if account_exists(&ctx.accounts.magicblock_private_payment_corridor) {
+            let mut data: &[u8] = &ctx.accounts.magicblock_private_payment_corridor.data.borrow();
+            let corridor = MagicBlockPrivatePaymentCorridor::try_deserialize(&mut data)
+                .map_err(|_| error!(Error::MagicBlockCorridorMismatch))?;
+            require!(
+                corridor.dao == ctx.accounts.dao.key()
+                    && corridor.proposal == p.key()
+                    && corridor.payout_plan == plan.key(),
+                Error::MagicBlockCorridorMismatch
+            );
+            require!(
+                corridor.status == MagicBlockSettlementStatus::Settled,
+                Error::MagicBlockSettlementRequired
+            );
+            require!(
+                corridor.token_mint
+                    == plan
+                        .token_mint
+                        .ok_or(Error::MagicBlockTokenMintRequired)?,
+                Error::MagicBlockCorridorMismatch
+            );
+            require!(
+                corridor.settlement_wallet == plan.settlement_recipient,
+                Error::MagicBlockCorridorMismatch
+            );
+            require!(
+                corridor.validator.is_some() && corridor.transfer_queue.is_some(),
+                Error::InvalidMagicBlockCorridor
             );
         }
 
@@ -1598,6 +1805,62 @@ fn validate_refhe_envelope(
     Ok(())
 }
 
+fn validate_magicblock_corridor(
+    api_base_url: &str,
+    cluster: &str,
+    owner_wallet: Pubkey,
+    settlement_wallet: Pubkey,
+    token_mint: Option<Pubkey>,
+    route_hash: &[u8; 32],
+    deposit_amount: u64,
+    private_transfer_amount: u64,
+    withdrawal_amount: u64,
+) -> Result<()> {
+    require!(
+        !api_base_url.trim().is_empty()
+            && api_base_url.len() <= MagicBlockPrivatePaymentCorridor::MAX_API_BASE_LEN,
+        Error::MagicBlockApiBaseUrlTooLong
+    );
+    require!(
+        !cluster.trim().is_empty()
+            && cluster.len() <= MagicBlockPrivatePaymentCorridor::MAX_CLUSTER_LEN,
+        Error::MagicBlockClusterTooLong
+    );
+    require!(
+        owner_wallet != Pubkey::default() && settlement_wallet != Pubkey::default(),
+        Error::InvalidMagicBlockCorridor
+    );
+    require!(
+        token_mint.is_some(),
+        Error::MagicBlockTokenMintRequired
+    );
+    require!(
+        !is_zero_hash(route_hash),
+        Error::InvalidMagicBlockCorridor
+    );
+    require!(
+        private_transfer_amount > 0,
+        Error::InvalidMagicBlockCorridor
+    );
+    require!(
+        deposit_amount > 0 || withdrawal_amount > 0 || private_transfer_amount > 0,
+        Error::InvalidMagicBlockCorridor
+    );
+    Ok(())
+}
+
+fn validate_magicblock_tx_signature(signature: &str, allow_empty: bool) -> Result<()> {
+    if allow_empty && signature.trim().is_empty() {
+        return Ok(());
+    }
+    require!(
+        !signature.trim().is_empty()
+            && signature.len() <= MagicBlockPrivatePaymentCorridor::MAX_SIGNATURE_LEN,
+        Error::InvalidMagicBlockCorridor
+    );
+    Ok(())
+}
+
 // ── Account contexts ──────────────────────────────────────────────────────────
 
 #[derive(Accounts)]
@@ -1903,6 +2166,12 @@ pub struct ExecuteConfidentialPayoutPlan<'info> {
         bump
     )]
     pub refhe_envelope: UncheckedAccount<'info>,
+    /// CHECK: optional MagicBlock private payments corridor for token settlement hardening
+    #[account(
+        seeds = [b"magicblock-corridor", proposal.key().as_ref()],
+        bump
+    )]
+    pub magicblock_private_payment_corridor: UncheckedAccount<'info>,
     pub executor: Signer<'info>,
     pub token_program: Interface<'info, TokenInterface>,
     pub system_program: Program<'info, System>,
@@ -1955,6 +2224,57 @@ pub struct SettleRefheEnvelope<'info> {
         bump = refhe_envelope.bump
     )]
     pub refhe_envelope: Account<'info, RefheEnvelope>,
+    #[account(mut)]
+    pub operator: Signer<'info>,
+}
+
+#[derive(Accounts)]
+pub struct ConfigureMagicBlockPrivatePaymentCorridor<'info> {
+    pub dao: Account<'info, Dao>,
+    #[account(
+        has_one = dao,
+        seeds = [b"proposal", dao.key().as_ref(), proposal.proposal_id.to_le_bytes().as_ref()],
+        bump = proposal.bump
+    )]
+    pub proposal: Account<'info, Proposal>,
+    #[account(
+        seeds = [b"payout-plan", proposal.key().as_ref()],
+        bump = confidential_payout_plan.bump
+    )]
+    pub confidential_payout_plan: Account<'info, ConfidentialPayoutPlan>,
+    #[account(
+        init_if_needed,
+        payer = operator,
+        space = MagicBlockPrivatePaymentCorridor::LEN,
+        seeds = [b"magicblock-corridor", proposal.key().as_ref()],
+        bump
+    )]
+    pub magicblock_private_payment_corridor: Account<'info, MagicBlockPrivatePaymentCorridor>,
+    #[account(mut)]
+    pub operator: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct SettleMagicBlockPrivatePaymentCorridor<'info> {
+    pub dao: Account<'info, Dao>,
+    #[account(
+        has_one = dao,
+        seeds = [b"proposal", dao.key().as_ref(), proposal.proposal_id.to_le_bytes().as_ref()],
+        bump = proposal.bump
+    )]
+    pub proposal: Account<'info, Proposal>,
+    #[account(
+        seeds = [b"payout-plan", proposal.key().as_ref()],
+        bump = confidential_payout_plan.bump
+    )]
+    pub confidential_payout_plan: Account<'info, ConfidentialPayoutPlan>,
+    #[account(
+        mut,
+        seeds = [b"magicblock-corridor", proposal.key().as_ref()],
+        bump = magicblock_private_payment_corridor.bump
+    )]
+    pub magicblock_private_payment_corridor: Account<'info, MagicBlockPrivatePaymentCorridor>,
     #[account(mut)]
     pub operator: Signer<'info>,
 }
@@ -2337,6 +2657,42 @@ impl RefheEnvelope {
         8 + 32 + 32 + 32 + 32 + 33 + (4 + 256) + 32 + 32 + 32 + 32 + 32 + 32 + 33 + 1 + 8 + 8 + 1; // 673
 }
 
+#[account]
+pub struct MagicBlockPrivatePaymentCorridor {
+    pub dao: Pubkey,                         // 32
+    pub proposal: Pubkey,                    // 32
+    pub payout_plan: Pubkey,                 // 32
+    pub configured_by: Pubkey,               // 32
+    pub settled_by: Option<Pubkey>,          // 33
+    pub api_base_url: String,                // 4 + 128
+    pub cluster: String,                     // 4 + 64
+    pub owner_wallet: Pubkey,                // 32
+    pub settlement_wallet: Pubkey,           // 32
+    pub token_mint: Pubkey,                  // 32
+    pub validator: Option<Pubkey>,           // 33
+    pub transfer_queue: Option<Pubkey>,      // 33
+    pub route_hash: [u8; 32],                // 32
+    pub deposit_amount: u64,                 // 8
+    pub private_transfer_amount: u64,        // 8
+    pub withdrawal_amount: u64,              // 8
+    pub deposit_tx_signature: String,        // 4 + 128
+    pub transfer_tx_signature: String,       // 4 + 128
+    pub withdraw_tx_signature: String,       // 4 + 128
+    pub status: MagicBlockSettlementStatus,  // 1
+    pub configured_at: i64,                  // 8
+    pub settled_at: i64,                     // 8
+    pub bump: u8,                            // 1
+}
+
+impl MagicBlockPrivatePaymentCorridor {
+    pub const MAX_API_BASE_LEN: usize = 128;
+    pub const MAX_CLUSTER_LEN: usize = 64;
+    pub const MAX_SIGNATURE_LEN: usize = 128;
+    pub const LEN: usize =
+        8 + 32 + 32 + 32 + 32 + 33 + (4 + 128) + (4 + 64) + 32 + 32 + 32 + 33 + 33 + 32 + 8 + 8 + 8
+        + (4 + 128) + (4 + 128) + (4 + 128) + 1 + 8 + 8 + 1; // 1001
+}
+
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
@@ -2429,6 +2785,12 @@ pub enum ConfidentialPayoutStatus {
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
 pub enum RefheEnvelopeStatus {
+    Configured,
+    Settled,
+}
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
+pub enum MagicBlockSettlementStatus {
     Configured,
     Settled,
 }
@@ -2611,6 +2973,38 @@ pub struct RefheEnvelopeSettled {
     pub settled_at: i64,
 }
 
+#[event]
+pub struct MagicBlockPrivatePaymentCorridorConfigured {
+    pub dao: Pubkey,
+    pub proposal: Pubkey,
+    pub payout_plan: Pubkey,
+    pub configured_by: Pubkey,
+    pub api_base_url: String,
+    pub cluster: String,
+    pub owner_wallet: Pubkey,
+    pub settlement_wallet: Pubkey,
+    pub token_mint: Pubkey,
+    pub validator: Option<Pubkey>,
+    pub route_hash: [u8; 32],
+    pub deposit_amount: u64,
+    pub private_transfer_amount: u64,
+    pub withdrawal_amount: u64,
+}
+
+#[event]
+pub struct MagicBlockPrivatePaymentCorridorSettled {
+    pub dao: Pubkey,
+    pub proposal: Pubkey,
+    pub payout_plan: Pubkey,
+    pub settled_by: Pubkey,
+    pub validator: Pubkey,
+    pub transfer_queue: Pubkey,
+    pub deposit_tx_signature: String,
+    pub transfer_tx_signature: String,
+    pub withdraw_tx_signature: String,
+    pub settled_at: i64,
+}
+
 // ── Errors ────────────────────────────────────────────────────────────────────
 
 #[error_code]
@@ -2759,4 +3153,20 @@ pub enum Error {
     RefheSettlementRequired,
     #[msg("REFHE settlement must identify the verifier program boundary")]
     RefheVerifierProgramRequired,
+    #[msg("Only the DAO authority or proposal proposer may configure or settle MagicBlock private payment corridors")]
+    UnauthorizedMagicBlockOperator,
+    #[msg("MagicBlock private payment corridor is invalid")]
+    InvalidMagicBlockCorridor,
+    #[msg("MagicBlock private payment corridors are locked in the current lifecycle state")]
+    MagicBlockCorridorLocked,
+    #[msg("MagicBlock private payment corridor does not match the expected proposal-bound payout plan")]
+    MagicBlockCorridorMismatch,
+    #[msg("MagicBlock private payment corridor requires a token payout mint")]
+    MagicBlockTokenMintRequired,
+    #[msg("MagicBlock private payment corridor settlement is required before executing this confidential payout plan")]
+    MagicBlockSettlementRequired,
+    #[msg("MagicBlock API base URL must be non-empty and at most 128 characters")]
+    MagicBlockApiBaseUrlTooLong,
+    #[msg("MagicBlock cluster selector must be non-empty and at most 64 characters")]
+    MagicBlockClusterTooLong,
 }

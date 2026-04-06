@@ -3003,10 +3003,24 @@ body.judge-mode .judge-banner {
         <div class="curation-card">
           <div class="curation-kicker">OPERATOR FLOW</div>
           <div class="curation-title">Proposal-bound payroll and bonus batches</div>
-          <div class="curation-copy">Create a proposal, attach the encrypted batch hashes, pass the proposal through commit-reveal or `zk_enforced`, then execute the aggregate payout after timelock.</div>
+          <div class="curation-copy">Create a proposal, attach the encrypted batch hashes, pass the proposal through commit-reveal or `zk_enforced`, then execute the aggregate payout after timelock. Token batches can now bind to a MagicBlock private payment corridor before execution.</div>
           <div class="curation-links">
             <a class="award-link" href="confidential-payroll-flow.md" target="_blank">Flow Note</a>
             <a class="award-link" href="assets/confidential-payments-flow.svg" target="_blank">Flow SVG</a>
+          </div>
+        </div>
+        <div class="curation-card">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+            <img src="assets/icons/magicblock-private-payments.svg" alt="MagicBlock private payments icon" style="width:56px;height:56px;flex:0 0 auto">
+            <div>
+              <div class="curation-kicker">MAGICBLOCK</div>
+              <div class="curation-title">Private payment corridor for token payouts</div>
+            </div>
+          </div>
+          <div class="curation-copy">For confidential token payouts, PrivateDAO can now bind a MagicBlock corridor to the proposal itself. The treasury path remains blocked until the corridor is settled on-chain with validator, queue, and transaction evidence.</div>
+          <div class="curation-links">
+            <a class="award-link" href="magicblock-private-payments.md" target="_blank">Feature Note</a>
+            <a class="award-link" href="magicblock-operator-flow.md" target="_blank">Operator Flow</a>
           </div>
         </div>
         <div class="curation-card">
@@ -3257,6 +3271,17 @@ body.judge-mode .judge-banner {
           <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">PAYOUT TOKEN MINT</label>
           <input id="createProposalPayoutTokenMint" type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Only required for token batches">
         </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">MAGICBLOCK PRIVATE PAYMENTS</label>
+          <select id="createProposalMagicBlockEnabled" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
+            <option value="">Disabled</option>
+            <option value="enabled">Enable for token payouts</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">MAGICBLOCK OWNER WALLET</label>
+          <input id="createProposalMagicBlockOwnerWallet" type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Defaults to connected wallet">
+        </div>
       </div>
       <div style="margin-top:12px">
         <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">DESCRIPTION</label>
@@ -3291,6 +3316,10 @@ body.judge-mode .judge-banner {
           <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">REFHE EVALUATION KEY HASH (32-BYTE HEX)</label>
           <input id="createProposalRefheEvaluationKeyHash" type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="64 hex chars">
         </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">MAGICBLOCK API BASE</label>
+          <input id="createProposalMagicBlockApiBase" type="text" value="https://per.devnet.magicblock.gg" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="MagicBlock PER API base">
+        </div>
       </div>
       <code id="createProposalCommandHint">yarn create-proposal -- --dao &lt;DAO_PDA&gt; --title "Fund community work"</code>
       <div style="margin-top:8px;color:var(--text3);line-height:1.7">Best practice for multi-DAO operation: choose the DAO from the filter above, confirm the DAO PDA field matches that DAO, then create the proposal from a wallet that holds that DAO governance token. Confidential payout batches are configured immediately after proposal creation, using only the encrypted batch manifest, hashes, settlement account, and aggregate amount. Add REFHE inputs only when this proposal must bind encrypted payroll or bonus evaluation to a proposal-scoped on-chain envelope before execution.</div>
@@ -3298,6 +3327,7 @@ body.judge-mode .judge-banner {
         <a class="proposal-proof-link" href="confidential-payments.md" target="_blank">Confidential Payouts</a>
         <a class="proposal-proof-link" href="confidential-payroll-flow.md" target="_blank">Payroll Flow</a>
         <a class="proposal-proof-link" href="confidential-payments-diagram.md" target="_blank">Diagram</a>
+        <a class="proposal-proof-link" href="magicblock-private-payments.md" target="_blank">MagicBlock Private Payments</a>
         <a class="proposal-proof-link" href="refhe-protocol.md" target="_blank">REFHE Protocol</a>
         <a class="proposal-proof-link" href="refhe-operator-flow.md" target="_blank">REFHE Operator Flow</a>
       </div>
@@ -4469,6 +4499,10 @@ execute() → treasury action
           <div class="diagnostic-value" id="diagRefheCoverage">Pending refresh</div>
         </div>
         <div class="proposal-command-box">
+          <div class="proposal-detail-label">MAGICBLOCK</div>
+          <div class="diagnostic-value" id="diagMagicBlockRuntime">Pending refresh</div>
+        </div>
+        <div class="proposal-command-box">
           <div class="proposal-detail-label">350-WALLET PROFILE</div>
           <div class="diagnostic-value" id="diagWave350">Pending refresh</div>
         </div>
@@ -5383,13 +5417,15 @@ async function updateDiagnostics() {
   let backendOverview = null;
   let wave350Profile = DEVNET_LOAD_PROFILES.find((profile) => profile.name === '350') || null;
   let readNodeMetrics = null;
+  let magicBlockRuntime = null;
   try {
     if (READ_API_BASE) {
-      const [runtime, overviewResponse, profilesResponse, metricsResponse] = await Promise.all([
+      const [runtime, overviewResponse, profilesResponse, metricsResponse, magicBlockResponse] = await Promise.all([
         fetchReadApi('/runtime', { silent: true }),
         fetchReadApi('/ops/overview', { silent: true }),
         fetchReadApi('/devnet/profiles', { silent: true }),
         fetchReadApi('/metrics', { silent: true }),
+        fetchReadApi('/magicblock/health', { silent: true }),
       ]);
       rpcHealth = 'Healthy';
       rpcDetails = [
@@ -5405,6 +5441,7 @@ async function updateDiagnostics() {
         wave350Profile = profilesResponse.profiles.find((profile) => profile.name === '350') || wave350Profile;
       }
       readNodeMetrics = metricsResponse?.metrics || null;
+      magicBlockRuntime = magicBlockResponse?.magicblock || null;
       currentReadPath = 'Backend Indexer';
     } else {
       const version = await withRpcFallback((activeConnection) => activeConnection.getVersion());
@@ -5418,12 +5455,22 @@ async function updateDiagnostics() {
         `lastValidBlockHeight=${latest.lastValidBlockHeight}`,
       ].join('\n');
       backendOverview = buildOpsOverview(lastLoadedProposals);
+      magicBlockRuntime = {
+        apiBase: normalizeMagicBlockApiBase(),
+        cluster: 'devnet',
+        health: 'Direct',
+      };
       currentReadPath = 'Direct RPC';
     }
   } catch (error) {
     rpcHealth = 'Unavailable';
     rpcDetails = error?.message || 'RPC health check failed.';
     backendOverview = buildOpsOverview(lastLoadedProposals);
+    magicBlockRuntime = {
+      apiBase: normalizeMagicBlockApiBase(),
+      cluster: 'devnet',
+      health: 'Unavailable',
+    };
   }
 
   const refheSummary = backendOverview
@@ -5437,6 +5484,9 @@ async function updateDiagnostics() {
     : READ_API_BASE
       ? 'Metrics unavailable'
       : 'Backend read node not active';
+  const magicBlockSummary = magicBlockRuntime
+    ? `${magicBlockRuntime.health} · ${magicBlockRuntime.cluster} · ${magicBlockRuntime.apiBase}`
+    : 'MagicBlock runtime unavailable';
 
   const connectedProviderName = walletProvider ? walletProviderName(walletProvider) : 'Not connected';
   const connectedWalletValue = wallet ? wallet : 'Not connected';
@@ -5466,6 +5516,7 @@ async function updateDiagnostics() {
       repositoryGates: 'internal-pass',
       authorityHardening: 'multisig-required',
       backendReadPath: 'deploy-recommended',
+      magicBlockReadiness: magicBlockRuntime?.health === 'ok' || magicBlockRuntime?.health === 'Direct' ? 'live' : 'degraded',
       refheBackend: backendOverview ? 'visible-in-runtime' : 'pending-runtime-load',
       wave350Profile: wave350Profile ? 'staged-for-saturation' : 'missing',
       realDeviceWalletQa: 'external-blocker',
@@ -5475,6 +5526,7 @@ async function updateDiagnostics() {
       zkPhaseC: 'hardening-required',
     },
     backendOverview,
+    magicBlockRuntime,
     wave350Profile,
     readNodeMetrics,
   };
@@ -5486,6 +5538,7 @@ async function updateDiagnostics() {
   document.getElementById('diagRpcHealth').textContent = rpcHealth;
   document.getElementById('diagReadPath').textContent = currentReadPath;
   document.getElementById('diagRefheCoverage').textContent = refheSummary;
+  document.getElementById('diagMagicBlockRuntime').textContent = magicBlockSummary;
   document.getElementById('diagWave350').textContent = wave350Summary;
   document.getElementById('diagReadNodeMetrics').textContent = readNodeMetricsSummary;
   document.getElementById('diagSupportedProviders').textContent = providerLines.join('\n');
@@ -5619,6 +5672,9 @@ function buildCreateProposalCommand() {
   const refhePolicyHash = (document.getElementById('createProposalRefhePolicyHash')?.value || '').trim();
   const refheInputCiphertextHash = (document.getElementById('createProposalRefheInputCiphertextHash')?.value || '').trim();
   const refheEvaluationKeyHash = (document.getElementById('createProposalRefheEvaluationKeyHash')?.value || '').trim();
+  const magicBlockEnabled = (document.getElementById('createProposalMagicBlockEnabled')?.value || '').trim() === 'enabled';
+  const magicBlockOwnerWallet = (document.getElementById('createProposalMagicBlockOwnerWallet')?.value || '').trim();
+  const magicBlockApiBase = (document.getElementById('createProposalMagicBlockApiBase')?.value || '').trim();
 
   if (!dao) return 'Select or paste a DAO PDA to build the create-proposal command.';
   const parts = ['yarn create-proposal --'];
@@ -5649,6 +5705,12 @@ function buildCreateProposalCommand() {
       parts.push(`--refhe-input-ciphertext-hash ${refheInputCiphertextHash}`);
       parts.push(`--refhe-evaluation-key-hash ${refheEvaluationKeyHash}`);
     }
+    if (magicBlockEnabled) {
+      if (payoutAsset !== 'token') return 'MagicBlock private payments require a token payout asset.';
+      parts.push(`--magicblock enabled`);
+      parts.push(`--magicblock-owner-wallet ${magicBlockOwnerWallet || wallet}`);
+      parts.push(`--magicblock-api-base "${normalizeMagicBlockApiBase(magicBlockApiBase)}"`);
+    }
   }
   return parts.join(' ');
 }
@@ -5657,9 +5719,11 @@ function syncCreateProposalCommand(prefillDao = null) {
   const daoInput = document.getElementById('createDaoPda');
   const recipientInput = document.getElementById('createProposalRecipient');
   const settlementRecipientInput = document.getElementById('createProposalSettlementRecipient');
+  const magicBlockOwnerInput = document.getElementById('createProposalMagicBlockOwnerWallet');
   if (daoInput && prefillDao && !daoInput.value.trim()) daoInput.value = prefillDao;
   if (recipientInput && wallet && !recipientInput.value.trim()) recipientInput.value = wallet;
   if (settlementRecipientInput && wallet && !settlementRecipientInput.value.trim()) settlementRecipientInput.value = wallet;
+  if (magicBlockOwnerInput && wallet && !magicBlockOwnerInput.value.trim()) magicBlockOwnerInput.value = wallet;
   const hint = document.getElementById('createProposalCommandHint');
   if (hint) hint.textContent = buildCreateProposalCommand();
 }
@@ -5825,6 +5889,7 @@ const proposalZkModeByIdx = ["Companion", "Parallel", "ZkEnforced"];
 const confidentialPayoutTypeByIdx = ["Salary", "Bonus"];
 const confidentialAssetTypeByIdx = ["Sol", "Token"];
 const confidentialPayoutStatusByIdx = ["Configured", "Funded"];
+const magicBlockSettlementStatusByIdx = ["Configured", "Settled"];
 
 function currentRpcEndpoint() {
   return DEVNET_RPC_ENDPOINTS[currentRpcIndex];
@@ -5956,6 +6021,8 @@ function buildOpsOverview(proposals) {
     uniqueDaos: new Set(items.map((proposal) => proposal.dao)).size,
     zkEnforced: items.filter((proposal) => proposal.zkMode === 'ZkEnforced').length,
     confidentialPayouts: items.filter((proposal) => Boolean(proposal.confidentialPayoutPlan)).length,
+    magicblockConfigured: items.filter((proposal) => Boolean(proposal.magicblockCorridor)).length,
+    magicblockSettled: items.filter((proposal) => proposal.magicblockCorridor?.status === 'Settled').length,
     refheConfigured: items.filter((proposal) => Boolean(proposal.refheEnvelope)).length,
     refheSettled: items.filter((proposal) => proposal.refheEnvelope?.status === 'Settled').length,
     refheWithVerifier: items.filter((proposal) => Boolean(proposal.refheEnvelope?.verifierProgram)).length,
@@ -6572,6 +6639,78 @@ function refheBuilderEnabled() {
   return Boolean(config.modelUri || config.policyHash || config.inputCiphertextHash || config.evaluationKeyHash);
 }
 
+function selectedMagicBlockConfig() {
+  return {
+    enabled: (document.getElementById('createProposalMagicBlockEnabled')?.value || '').trim() === 'enabled',
+    apiBase: (document.getElementById('createProposalMagicBlockApiBase')?.value || '').trim(),
+    ownerWallet: (document.getElementById('createProposalMagicBlockOwnerWallet')?.value || '').trim(),
+  };
+}
+
+function magicBlockBuilderEnabled() {
+  return selectedMagicBlockConfig().enabled;
+}
+
+async function sha256Bytes(value) {
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value));
+  return Array.from(new Uint8Array(digest));
+}
+
+function normalizeMagicBlockApiBase(value) {
+  return (value || 'https://per.devnet.magicblock.gg').trim().replace(/\/+$/, '');
+}
+
+async function magicBlockFetch(path, { method = 'GET', query = null, body = null, apiBase = null } = {}) {
+  const url = new URL(`${normalizeMagicBlockApiBase(apiBase)}${path}`);
+  if (query) {
+    Object.entries(query).forEach(([key, value]) => {
+      if (value === undefined || value === null || value === '') return;
+      url.searchParams.set(key, String(value));
+    });
+  }
+  const response = await fetch(url.toString(), {
+    method,
+    headers: body ? { 'Content-Type': 'application/json' } : undefined,
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  const payload = await response.json().catch(() => null);
+  if (!response.ok) {
+    throw new Error(payload?.error || payload?.message || `MagicBlock request failed: ${response.status} ${response.statusText}`);
+  }
+  return payload;
+}
+
+async function submitMagicBlockUnsignedTransactionInWallet(unsignedTx) {
+  if (!walletProvider || !wallet) {
+    throw new Error('Connect your wallet first.');
+  }
+  const raw = Uint8Array.from(atob(unsignedTx.transactionBase64), (char) => char.charCodeAt(0));
+  const version = String(unsignedTx.version || '').toLowerCase();
+  if (version.includes('legacy')) {
+    const tx = solanaWeb3.Transaction.from(raw);
+    tx.feePayer = new solanaWeb3.PublicKey(wallet);
+    const latest = await withRpcFallback((activeConnection) => activeConnection.getLatestBlockhash('confirmed'));
+    tx.recentBlockhash = unsignedTx.recentBlockhash || latest.blockhash;
+    const signed = await walletProvider.signTransaction(tx);
+    const signature = await withRpcFallback((activeConnection) => activeConnection.sendRawTransaction(signed.serialize(), { preflightCommitment: 'confirmed' }));
+    await withRpcFallback((activeConnection) => activeConnection.confirmTransaction({
+      signature,
+      blockhash: tx.recentBlockhash,
+      lastValidBlockHeight: unsignedTx.lastValidBlockHeight || latest.lastValidBlockHeight,
+    }, 'confirmed'));
+    return signature;
+  }
+  if (!isLegacyTransactionSupportedByProvider(walletProvider)) {
+    throw new Error('Wallet provider does not support MagicBlock unsigned transaction signing.');
+  }
+  const tx = solanaWeb3.VersionedTransaction.deserialize(raw);
+  const signed = await walletProvider.signTransaction(tx);
+  const signature = await withRpcFallback((activeConnection) => activeConnection.sendRawTransaction(signed.serialize(), { preflightCommitment: 'confirmed' }));
+  const latest = await withRpcFallback((activeConnection) => activeConnection.getLatestBlockhash('confirmed'));
+  await withRpcFallback((activeConnection) => activeConnection.confirmTransaction({ signature, ...latest }, 'confirmed'));
+  return signature;
+}
+
 async function buildAnchorInstruction(methodName, keys) {
   const data = await anchorMethodDiscriminator(methodName);
   return new solanaWeb3.TransactionInstruction({
@@ -6764,6 +6903,18 @@ function describeOperationError(error, context = 'operation') {
   if (combined.includes('proposalzkmodeimmutable')) {
     return 'This proposal is already locked to zk_enforced mode and cannot be downgraded. Next step: keep using the zk-enforced finalize path for this proposal.';
   }
+  if (combined.includes('magicblocksettlementrequired')) {
+    return 'This confidential token payout now requires a settled MagicBlock private payment corridor. Next step: run the MagicBlock corridor flow, settle the on-chain corridor, then execute the payout again.';
+  }
+  if (combined.includes('magicblockcorridormismatch') || combined.includes('invalidmagicblockcorridor')) {
+    return 'The MagicBlock corridor does not match this proposal or payout plan. Next step: refresh the selected proposal and reconfigure the corridor for this proposal-bound token payout only.';
+  }
+  if (combined.includes('magicblocktokenmintrequired')) {
+    return 'MagicBlock private payment corridors only apply to confidential token payouts. Next step: switch the payout asset to token and supply a valid mint before enabling the corridor.';
+  }
+  if (combined.includes('unauthorizedmagicblockoperator')) {
+    return 'Only the DAO authority or proposal proposer can configure or settle this MagicBlock corridor. Next step: switch to the authorized wallet and retry.';
+  }
   if (combined.includes('custom program error: 0x0')) {
     if (context === 'create-dao') {
       return 'DAO creation failed because one of the derived accounts already exists or the chosen DAO name conflicts with an existing on-chain account. Next step: change the DAO name and retry.';
@@ -6898,6 +7049,7 @@ async function submitCreateProposalInWallet() {
   const manifestHash = (document.getElementById('createProposalManifestHash')?.value || '').trim();
   const ciphertextHash = (document.getElementById('createProposalCiphertextHash')?.value || '').trim();
   const refheConfig = selectedRefheConfig();
+  const magicBlockConfig = selectedMagicBlockConfig();
 
   if (!walletProvider || !wallet) {
     showToast('Connect your wallet first.', 'error');
@@ -6936,6 +7088,9 @@ async function submitCreateProposalInWallet() {
     if (refheBuilderEnabled() && !confidentialPayoutBuilderEnabled()) {
       throw new Error('REFHE envelopes require a confidential payout proposal');
     }
+    if (magicBlockBuilderEnabled() && !confidentialPayoutBuilderEnabled()) {
+      throw new Error('MagicBlock private payments require a confidential payout proposal');
+    }
 
     const data = concatBytes(
       await anchorMethodDiscriminator('create_proposal'),
@@ -6960,6 +7115,7 @@ async function submitCreateProposalInWallet() {
     const signature = await signAndBroadcastTransaction(ix, 'Create proposal submitted');
     if (signature) {
       let payoutSignature = null;
+      let magicBlockSignature = null;
       if (confidentialPayoutBuilderEnabled()) {
         const parsedTotal = Number(payoutTotal);
         if (!settlementRecipient || !Number.isFinite(parsedTotal) || parsedTotal <= 0 || !Number.isInteger(recipientCount) || recipientCount <= 0 || !manifestUri) {
@@ -7000,6 +7156,47 @@ async function submitCreateProposalInWallet() {
         });
         payoutSignature = await signAndBroadcastTransaction(payoutIx, 'Confidential payout plan submitted');
 
+        if (magicBlockBuilderEnabled()) {
+          if (payoutAssetType !== 'token') {
+            throw new Error('MagicBlock private payments only support confidential token payout batches.');
+          }
+          const corridorPk = new solanaWeb3.PublicKey(deriveMagicBlockCorridorPda(proposalPk.toBase58()));
+          const ownerWallet = new solanaWeb3.PublicKey(magicBlockConfig.ownerWallet || wallet);
+          const routeHash = await sha256Bytes([
+            proposalPk.toBase58(),
+            ownerWallet.toBase58(),
+            settlementRecipient,
+            payoutTokenMint,
+            parsedTotal,
+            normalizeMagicBlockApiBase(magicBlockConfig.apiBase),
+          ].join('|'));
+          const corridorData = concatBytes(
+            await anchorMethodDiscriminator('configure_magicblock_private_payment_corridor'),
+            encodeAnchorString(normalizeMagicBlockApiBase(magicBlockConfig.apiBase)),
+            encodeAnchorString('devnet'),
+            ownerWallet.toBytes(),
+            new solanaWeb3.PublicKey(settlementRecipient).toBytes(),
+            new solanaWeb3.PublicKey(payoutTokenMint).toBytes(),
+            encodeU64LE(parsedTotal),
+            encodeU64LE(parsedTotal),
+            encodeU64LE(parsedTotal),
+            new Uint8Array(routeHash),
+          );
+          const corridorIx = new solanaWeb3.TransactionInstruction({
+            programId: programPk,
+            keys: [
+              { pubkey: new solanaWeb3.PublicKey(dao.pubkey), isSigner: false, isWritable: false },
+              { pubkey: proposalPk, isSigner: false, isWritable: true },
+              { pubkey: payoutPlanPk, isSigner: false, isWritable: false },
+              { pubkey: corridorPk, isSigner: false, isWritable: true },
+              { pubkey: new solanaWeb3.PublicKey(wallet), isSigner: true, isWritable: true },
+              { pubkey: solanaWeb3.SystemProgram.programId, isSigner: false, isWritable: false },
+            ],
+            data: corridorData,
+          });
+          magicBlockSignature = await signAndBroadcastTransaction(corridorIx, 'MagicBlock corridor submitted');
+        }
+
         if (refheBuilderEnabled()) {
           if (!refheConfig.modelUri || !refheConfig.policyHash || !refheConfig.inputCiphertextHash || !refheConfig.evaluationKeyHash) {
             throw new Error('REFHE requires model URI, policy hash, input ciphertext hash, and evaluation key hash');
@@ -7039,6 +7236,9 @@ async function submitCreateProposalInWallet() {
       setTimeout(() => window.open(solscanTx(signature), '_blank', 'noopener'), 180);
       if (payoutSignature) {
         setTimeout(() => window.open(solscanTx(payoutSignature), '_blank', 'noopener'), 360);
+      }
+      if (magicBlockSignature) {
+        setTimeout(() => window.open(solscanTx(magicBlockSignature), '_blank', 'noopener'), 540);
       }
       await loadLiveProposals();
       syncUrlState();
@@ -7581,6 +7781,161 @@ async function configureSelectedProposalZkModeInWallet() {
   }
 }
 
+async function runMagicBlockCorridorInWallet() {
+  if (!currentSelectedProposal) {
+    showToast('Select a live proposal first.', 'error');
+    return;
+  }
+  const confidentialPlan = currentSelectedProposal.confidentialPayoutPlan || null;
+  const corridor = currentSelectedProposal.magicblockCorridor || null;
+  if (!confidentialPlan || confidentialPlan.assetType !== 'Token') {
+    showToast('MagicBlock corridor requires a confidential token payout proposal.', 'error');
+    return;
+  }
+  if (!corridor) {
+    showToast('Configure the MagicBlock corridor first.', 'error');
+    return;
+  }
+  if (!walletProvider || !wallet) {
+    showToast('Connect your wallet first.', 'error');
+    return;
+  }
+  if (wallet !== corridor.ownerWallet || wallet !== corridor.settlementWallet) {
+    showToast('For the in-wallet MagicBlock flow, connect the corridor owner/settlement wallet.', 'error');
+    return;
+  }
+
+  try {
+    const apiBase = corridor.apiBaseUrl || normalizeMagicBlockApiBase();
+    let mintStatus = null;
+    if (READ_API_BASE) {
+      try {
+        const response = await fetchReadApi(`/magicblock/mints/${corridor.tokenMint}/status?validator=${encodeURIComponent(corridor.validator || '')}`, { silent: true });
+        mintStatus = response?.status || null;
+      } catch (_) {}
+    }
+    if (!mintStatus) {
+      mintStatus = await magicBlockFetch('/v1/spl/is-mint-initialized', {
+        query: {
+          mint: corridor.tokenMint,
+          cluster: corridor.cluster || 'devnet',
+          validator: corridor.validator || undefined,
+        },
+        apiBase,
+      });
+    }
+
+    let transferQueue = mintStatus.transferQueue || null;
+    let validator = mintStatus.validator || corridor.validator || null;
+    const signatures = { deposit: '', transfer: '', withdraw: '' };
+
+    if (!mintStatus.initialized) {
+      const initTx = await magicBlockFetch('/v1/spl/initialize-mint', {
+        method: 'POST',
+        body: {
+          payer: wallet,
+          mint: corridor.tokenMint,
+          cluster: corridor.cluster || 'devnet',
+          validator: corridor.validator || undefined,
+        },
+        apiBase,
+      });
+      const initSignature = await submitMagicBlockUnsignedTransactionInWallet(initTx);
+      transferQueue = initTx.transferQueue || transferQueue;
+      validator = initTx.validator || validator;
+      setTimeout(() => window.open(solscanTx(initSignature), '_blank', 'noopener'), 180);
+    }
+
+    const depositTx = await magicBlockFetch('/v1/spl/deposit', {
+      method: 'POST',
+      body: {
+        owner: wallet,
+        mint: corridor.tokenMint,
+        amount: String(corridor.depositAmount),
+        cluster: corridor.cluster || 'devnet',
+        validator: validator || undefined,
+        initIfMissing: true,
+        initVaultIfMissing: true,
+        initAtasIfMissing: true,
+        idempotent: true,
+      },
+      apiBase,
+    });
+    signatures.deposit = await submitMagicBlockUnsignedTransactionInWallet(depositTx);
+
+    const transferTx = await magicBlockFetch('/v1/spl/transfer', {
+      method: 'POST',
+      body: {
+        from: wallet,
+        to: wallet,
+        mint: corridor.tokenMint,
+        amount: String(corridor.privateTransferAmount),
+        visibility: 'private',
+        fromBalance: 'base',
+        toBalance: 'ephemeral',
+        cluster: corridor.cluster || 'devnet',
+        validator: validator || undefined,
+        initIfMissing: true,
+        initAtasIfMissing: true,
+        initVaultIfMissing: true,
+        memo: `PrivateDAO proposal ${currentSelectedProposal.pubkey}`,
+      },
+      apiBase,
+    });
+    signatures.transfer = await submitMagicBlockUnsignedTransactionInWallet(transferTx);
+    transferQueue = transferQueue || transferTx.transferQueue || null;
+    validator = validator || transferTx.validator || null;
+
+    const withdrawTx = await magicBlockFetch('/v1/spl/withdraw', {
+      method: 'POST',
+      body: {
+        owner: wallet,
+        mint: corridor.tokenMint,
+        amount: String(corridor.withdrawalAmount),
+        cluster: corridor.cluster || 'devnet',
+        validator: validator || undefined,
+        initIfMissing: true,
+        initAtasIfMissing: true,
+        idempotent: true,
+      },
+      apiBase,
+    });
+    signatures.withdraw = await submitMagicBlockUnsignedTransactionInWallet(withdrawTx);
+
+    if (!validator || !transferQueue) {
+      throw new Error('MagicBlock did not return validator and transfer queue information required for on-chain settlement.');
+    }
+
+    const settleIx = new solanaWeb3.TransactionInstruction({
+      programId: programPk,
+      keys: [
+        { pubkey: new solanaWeb3.PublicKey(currentSelectedProposal.dao), isSigner: false, isWritable: false },
+        { pubkey: new solanaWeb3.PublicKey(currentSelectedProposal.pubkey), isSigner: false, isWritable: true },
+        { pubkey: new solanaWeb3.PublicKey(confidentialPlan.pubkey), isSigner: false, isWritable: false },
+        { pubkey: new solanaWeb3.PublicKey(corridor.pubkey), isSigner: false, isWritable: true },
+        { pubkey: new solanaWeb3.PublicKey(wallet), isSigner: true, isWritable: false },
+      ],
+      data: concatBytes(
+        await anchorMethodDiscriminator('settle_magicblock_private_payment_corridor'),
+        new solanaWeb3.PublicKey(validator).toBytes(),
+        new solanaWeb3.PublicKey(transferQueue).toBytes(),
+        encodeAnchorString(signatures.deposit),
+        encodeAnchorString(signatures.transfer),
+        encodeAnchorString(signatures.withdraw),
+      ),
+    });
+    const settleSignature = await signAndBroadcastTransaction(settleIx, 'MagicBlock corridor settled');
+    showToast(`MagicBlock corridor settled: ${shortPk(settleSignature)}`, 'success');
+    [signatures.deposit, signatures.transfer, signatures.withdraw, settleSignature].forEach((sig, index) => {
+      setTimeout(() => window.open(solscanTx(sig), '_blank', 'noopener'), 180 + (index * 180));
+    });
+    await loadLiveProposals();
+  } catch (error) {
+    console.error(error);
+    showToast(describeOperationError(error, 'magicblock'), 'error');
+  }
+}
+
 async function executeSelectedProposalInWallet() {
   if (!currentSelectedProposal) {
     showToast('Select a live proposal first.', 'error');
@@ -7588,6 +7943,7 @@ async function executeSelectedProposalInWallet() {
   }
   const confidentialPlan = currentSelectedProposal.confidentialPayoutPlan || null;
   const refheEnvelope = currentSelectedProposal.refheEnvelope || null;
+  const magicBlockCorridor = currentSelectedProposal.magicblockCorridor || null;
   const action = currentSelectedProposal.treasuryAction;
   if (!action && !confidentialPlan) {
     showToast('Selected proposal has no treasury action.', 'error');
@@ -7658,6 +8014,7 @@ async function executeSelectedProposalInWallet() {
           { pubkey: treasuryTokenPk, isSigner: false, isWritable: true },
           { pubkey: recipientTokenPk, isSigner: false, isWritable: true },
           { pubkey: new solanaWeb3.PublicKey(refheEnvelope ? refheEnvelope.pubkey : deriveRefheEnvelopePda(currentSelectedProposal.pubkey)), isSigner: false, isWritable: false },
+          { pubkey: new solanaWeb3.PublicKey(magicBlockCorridor ? magicBlockCorridor.pubkey : deriveMagicBlockCorridorPda(currentSelectedProposal.pubkey)), isSigner: false, isWritable: false },
           { pubkey: executorPk, isSigner: true, isWritable: false },
           { pubkey: executeTokenProgram, isSigner: false, isWritable: false },
           { pubkey: solanaWeb3.SystemProgram.programId, isSigner: false, isWritable: false },
@@ -7978,6 +8335,62 @@ function decodeRefheEnvelopeAccount(data, pubkey) {
   };
 }
 
+function decodeMagicBlockCorridorAccount(data, pubkey) {
+  const o = { value: 8 };
+  const dao = readPubkey(data, o);
+  const proposal = readPubkey(data, o);
+  const payoutPlan = readPubkey(data, o);
+  const configuredBy = readPubkey(data, o);
+  const hasSettledBy = data[o.value]; o.value += 1;
+  const settledBy = hasSettledBy === 1 ? readPubkey(data, o) : null;
+  const apiBaseUrl = parseString(data, o);
+  const cluster = parseString(data, o);
+  const ownerWallet = readPubkey(data, o);
+  const settlementWallet = readPubkey(data, o);
+  const tokenMint = readPubkey(data, o);
+  const hasValidator = data[o.value]; o.value += 1;
+  const validator = hasValidator === 1 ? readPubkey(data, o) : null;
+  const hasTransferQueue = data[o.value]; o.value += 1;
+  const transferQueue = hasTransferQueue === 1 ? readPubkey(data, o) : null;
+  const routeHash = Array.from(data.slice(o.value, o.value + 32)).map((byte) => byte.toString(16).padStart(2, '0')).join(''); o.value += 32;
+  const depositAmount = parseU64(data, o.value); o.value += 8;
+  const privateTransferAmount = parseU64(data, o.value); o.value += 8;
+  const withdrawalAmount = parseU64(data, o.value); o.value += 8;
+  const depositTxSignature = parseString(data, o);
+  const transferTxSignature = parseString(data, o);
+  const withdrawTxSignature = parseString(data, o);
+  const statusIdx = data[o.value]; o.value += 1;
+  const configuredAt = parseI64(data, o.value); o.value += 8;
+  const settledAt = parseI64(data, o.value); o.value += 8;
+  const bump = data[o.value];
+  return {
+    pubkey: pubkey.toBase58(),
+    dao,
+    proposal,
+    payoutPlan,
+    configuredBy,
+    settledBy,
+    apiBaseUrl,
+    cluster,
+    ownerWallet,
+    settlementWallet,
+    tokenMint,
+    validator,
+    transferQueue,
+    routeHash,
+    depositAmount,
+    privateTransferAmount,
+    withdrawalAmount,
+    depositTxSignature,
+    transferTxSignature,
+    withdrawTxSignature,
+    status: magicBlockSettlementStatusByIdx[statusIdx] || `Unknown(${statusIdx})`,
+    configuredAt,
+    settledAt,
+    bump,
+  };
+}
+
 function decodeZkVerificationReceiptAccount(data, pubkey) {
   const o = { value: 8 };
   const dao = readPubkey(data, o);
@@ -8106,6 +8519,14 @@ function deriveRefheEnvelopePda(proposalPubkey) {
     programPk
   );
   return envelopePk.toBase58();
+}
+
+function deriveMagicBlockCorridorPda(proposalPubkey) {
+  const [corridorPk] = solanaWeb3.PublicKey.findProgramAddressSync(
+    [new TextEncoder().encode('magicblock-corridor'), new solanaWeb3.PublicKey(proposalPubkey).toBytes()],
+    programPk
+  );
+  return corridorPk.toBase58();
 }
 
 function deriveZkReceiptPda(proposalPubkey, layerSeedByte) {
@@ -8254,7 +8675,9 @@ function renderProposalDetail(p, nowTs) {
   const zkReadiness = summarizeZkEnforcedReadiness(p);
   const confidentialPlan = p.confidentialPayoutPlan || null;
   const refheEnvelope = p.refheEnvelope || null;
+  const magicBlockCorridor = p.magicblockCorridor || null;
   const refheReadiness = summarizeRefheReadiness(p);
+  const magicBlockReadiness = summarizeMagicBlockReadiness(p);
   const detailGrid = document.getElementById('proposalDetailGrid');
   const proofLinks = document.getElementById('proposalProofLinks');
   const commandGrid = document.getElementById('proposalCommandGrid');
@@ -8290,6 +8713,9 @@ function renderProposalDetail(p, nowTs) {
   const refheSummary = refheEnvelope
     ? `${refheEnvelope.status} · ${refheEnvelope.modelUri}<br>Verifier ${refheEnvelope.verifierProgram ? shortPk(refheEnvelope.verifierProgram) : 'unset'}<br>Policy ${shortPk(refheEnvelope.policyHash)} · Input ${shortPk(refheEnvelope.inputCiphertextHash)}`
     : 'No REFHE envelope attached';
+  const magicBlockSummary = magicBlockCorridor
+    ? `${magicBlockCorridor.status} · ${magicBlockCorridor.cluster}<br>Queue ${magicBlockCorridor.transferQueue ? shortPk(magicBlockCorridor.transferQueue) : 'unset'} · Validator ${magicBlockCorridor.validator ? shortPk(magicBlockCorridor.validator) : 'unset'}<br>API ${magicBlockCorridor.apiBaseUrl}`
+    : 'No MagicBlock corridor attached';
 
   phaseEl.textContent = `${paddedId} · ${phase}`;
   introEl.textContent = `The selected proposal is live on devnet. Use this surface to understand the current phase, take the valid next step, and verify the resulting state on chain.`;
@@ -8336,6 +8762,10 @@ function renderProposalDetail(p, nowTs) {
       <div class="proposal-detail-value">${refheSummary}</div>
     </div>
     <div class="proposal-detail-box">
+      <div class="proposal-detail-label">MAGICBLOCK CORRIDOR</div>
+      <div class="proposal-detail-value">${magicBlockSummary}</div>
+    </div>
+    <div class="proposal-detail-box">
       <div class="proposal-detail-label">ADDRESSES</div>
       <div class="proposal-detail-value">Proposal: ${p.pubkey}<br>DAO: ${p.dao}<br>Treasury: ${treasuryPda}</div>
     </div>
@@ -8367,6 +8797,10 @@ function renderProposalDetail(p, nowTs) {
       <div class="proposal-detail-label">REFHE READINESS</div>
       <div class="proposal-detail-value">${refheReadiness.status}<br>${refheReadiness.copy}<br>${refheReadiness.nextStep}</div>
     </div>
+    <div class="proposal-detail-box">
+      <div class="proposal-detail-label">MAGICBLOCK READINESS</div>
+      <div class="proposal-detail-value">${magicBlockReadiness.status}<br>${magicBlockReadiness.copy}<br>${magicBlockReadiness.nextStep}</div>
+    </div>
   `;
 
   proofLinks.innerHTML = `
@@ -8377,12 +8811,16 @@ function renderProposalDetail(p, nowTs) {
     <a class="proposal-proof-link" href="zk-enforced-operator-flow.md" target="_blank">ZK Operator Flow</a>
     <a class="proposal-proof-link" href="refhe-protocol.md" target="_blank">REFHE Protocol</a>
     <a class="proposal-proof-link" href="refhe-operator-flow.md" target="_blank">REFHE Operator Flow</a>
+    <a class="proposal-proof-link" href="magicblock-private-payments.md" target="_blank">MagicBlock Private Payments</a>
+    <a class="proposal-proof-link" href="magicblock-operator-flow.md" target="_blank">MagicBlock Operator Flow</a>
     ${confidentialPlan ? `<a class="proposal-proof-link" href="${solscanAccount(confidentialPlan.pubkey)}" target="_blank">Payout Plan PDA</a>` : ''}
     ${refheEnvelope ? `<a class="proposal-proof-link" href="${solscanAccount(refheEnvelope.pubkey)}" target="_blank">REFHE Envelope PDA</a>` : ''}
+    ${magicBlockCorridor ? `<a class="proposal-proof-link" href="${solscanAccount(magicBlockCorridor.pubkey)}" target="_blank">MagicBlock Corridor PDA</a>` : ''}
     <button class="proposal-proof-link" type="button" onclick="cancelSelectedProposalInWallet()">Cancel in Wallet</button>
     <button class="proposal-proof-link" type="button" onclick="vetoSelectedProposalInWallet()">Veto in Wallet</button>
     <button class="proposal-proof-link" type="button" onclick="finalizeSelectedProposalInWallet()">Finalize in Wallet</button>
     <button class="proposal-proof-link" type="button" onclick="executeSelectedProposalInWallet()">Execute in Wallet</button>
+    ${magicBlockCorridor ? `<button class="proposal-proof-link" type="button" onclick="runMagicBlockCorridorInWallet()">Run MagicBlock Corridor</button>` : ''}
     ${p.zkMode !== 'ZkEnforced' ? `<button class="proposal-proof-link" type="button" onclick="configureSelectedProposalZkModeInWallet()">Enable ZK-Enforced</button>` : ''}
     <button class="proposal-proof-link" type="button" onclick="loadProposalHistory(currentSelectedProposal)">Load History</button>
     <button class="proposal-proof-link" type="button" onclick="shareCurrentProposal()">Copy Share Link</button>
@@ -8427,8 +8865,13 @@ function renderProposalDetail(p, nowTs) {
       <code>${refheEnvelope ? `npm run inspect:refhe -- --proposal ${p.pubkey}` : `Create the REFHE envelope from the proposal builder above, then inspect it with: npm run inspect:refhe -- --proposal ${p.pubkey}`}</code>
     </div>
     <div class="proposal-command-box">
+      <div class="proposal-detail-label">MAGICBLOCK PRIVATE PAYMENTS</div>
+      <div style="color:var(--text2);line-height:1.8">${magicBlockReadiness.copy} ${magicBlockReadiness.nextStep}</div>
+      <code>${magicBlockCorridor ? `npm run inspect:magicblock -- --proposal ${p.pubkey}` : confidentialPlan && confidentialPlan.assetType === 'Token' && confidentialPlan.tokenMint ? `npm run configure:magicblock -- --dao ${p.dao} --proposal ${p.pubkey} --owner-wallet ${p.proposer} --settlement-wallet ${confidentialPlan.settlementRecipient} --payout-mint ${confidentialPlan.tokenMint} --deposit-amount ${confidentialPlan.totalAmount} --private-transfer-amount ${confidentialPlan.totalAmount} --withdrawal-amount ${confidentialPlan.totalAmount}` : `Configure a confidential token payout for ${p.pubkey}, then bind a MagicBlock corridor to the same proposal.`}</code>
+    </div>
+    <div class="proposal-command-box">
       <div class="proposal-detail-label">EXECUTE</div>
-      <div style="color:var(--text2);line-height:1.8">${confidentialPlan ? (refheEnvelope ? 'Execute the confidential payout path only after the proposal passes, clears timelock, and the REFHE envelope is settled with a verifier binding. The treasury releases the aggregate batch to the settlement recipient while the encrypted manifest stays off-chain.' : 'Execute the confidential payout path only after the proposal passes and clears timelock. The treasury releases the aggregate batch to the settlement recipient, while the encrypted manifest remains off-chain.') : 'Execute only after the proposal passes and clears timelock.'}</div>
+      <div style="color:var(--text2);line-height:1.8">${confidentialPlan ? (magicBlockCorridor ? 'Execute the confidential payout path only after the proposal passes, clears timelock, and the MagicBlock corridor is settled on-chain. The treasury releases the aggregate batch to the settlement recipient while the encrypted manifest stays off-chain.' : refheEnvelope ? 'Execute the confidential payout path only after the proposal passes, clears timelock, and the REFHE envelope is settled with a verifier binding. The treasury releases the aggregate batch to the settlement recipient while the encrypted manifest stays off-chain.' : 'Execute the confidential payout path only after the proposal passes and clears timelock. The treasury releases the aggregate batch to the settlement recipient, while the encrypted manifest remains off-chain.') : 'Execute only after the proposal passes and clears timelock.'}</div>
       <code>yarn execute -- --proposal ${p.pubkey}</code>
     </div>
   `;
@@ -8574,6 +9017,44 @@ function summarizeRefheReadiness(proposal) {
     status: 'Ready',
     copy: `REFHE is settled and bound to verifier ${shortPk(envelope.verifierProgram)} for this proposal-bound confidential payout path.`,
     nextStep: 'If the proposal has passed and timelock is cleared, execute the confidential payout through the REFHE-gated path.',
+  };
+}
+
+function summarizeMagicBlockReadiness(proposal) {
+  const plan = proposal?.confidentialPayoutPlan || null;
+  const corridor = proposal?.magicblockCorridor || null;
+  if (!plan || plan.assetType !== 'Token') {
+    return {
+      status: 'Not Enabled',
+      copy: 'MagicBlock private payments only activate for confidential token payout plans.',
+      nextStep: 'Switch the confidential payout asset to token, then configure a MagicBlock corridor for this proposal.',
+    };
+  }
+  if (!corridor) {
+    return {
+      status: 'Configure Corridor',
+      copy: 'No MagicBlock corridor is bound to this confidential token payout yet.',
+      nextStep: 'Configure the proposal-bound MagicBlock corridor, then run the private payment route before execution.',
+    };
+  }
+  if (corridor.status !== 'Settled') {
+    return {
+      status: 'Settlement Required',
+      copy: `MagicBlock corridor is configured against ${corridor.apiBaseUrl}, but on-chain settlement evidence has not been locked yet.`,
+      nextStep: 'Run the MagicBlock corridor in wallet or settle it from the CLI, then execute the confidential payout.',
+    };
+  }
+  if (!corridor.validator || !corridor.transferQueue) {
+    return {
+      status: 'Queue Required',
+      copy: 'MagicBlock settlement is missing validator or transfer queue binding.',
+      nextStep: 'Re-settle the corridor with the transfer queue and validator returned by MagicBlock before execution.',
+    };
+  }
+  return {
+    status: 'Ready',
+    copy: `MagicBlock corridor is settled via ${shortPk(corridor.validator)} and queue ${shortPk(corridor.transferQueue)} for this payout.`,
+    nextStep: 'If the proposal has passed and timelock is cleared, execute the confidential payout through the MagicBlock-bound path.',
   };
 }
 
@@ -8905,6 +9386,7 @@ async function loadLiveProposals() {
       const policyPdas = proposals.map((proposal) => new solanaWeb3.PublicKey(deriveProposalZkPolicyPda(proposal.pubkey)));
       const payoutPlanPdas = proposals.map((proposal) => new solanaWeb3.PublicKey(deriveConfidentialPayoutPlanPda(proposal.pubkey)));
       const refheEnvelopePdas = proposals.map((proposal) => new solanaWeb3.PublicKey(deriveRefheEnvelopePda(proposal.pubkey)));
+      const magicBlockCorridorPdas = proposals.map((proposal) => new solanaWeb3.PublicKey(deriveMagicBlockCorridorPda(proposal.pubkey)));
       const policyInfos = policyPdas.length
         ? await withRpcFallback((activeConnection) => activeConnection.getMultipleAccountsInfo(policyPdas, 'confirmed'))
         : [];
@@ -8913,6 +9395,9 @@ async function loadLiveProposals() {
         : [];
       const refheInfos = refheEnvelopePdas.length
         ? await withRpcFallback((activeConnection) => activeConnection.getMultipleAccountsInfo(refheEnvelopePdas, 'confirmed'))
+        : [];
+      const magicBlockInfos = magicBlockCorridorPdas.length
+        ? await withRpcFallback((activeConnection) => activeConnection.getMultipleAccountsInfo(magicBlockCorridorPdas, 'confirmed'))
         : [];
 
       proposals.forEach((proposal, index) => {
@@ -8936,6 +9421,11 @@ async function loadLiveProposals() {
         const refheInfo = refheInfos[index];
         proposal.refheEnvelope = refheInfo
           ? decodeRefheEnvelopeAccount(refheInfo.data, refheEnvelopePdas[index])
+          : null;
+
+        const magicBlockInfo = magicBlockInfos[index];
+        proposal.magicblockCorridor = magicBlockInfo
+          ? decodeMagicBlockCorridorAccount(magicBlockInfo.data, magicBlockCorridorPdas[index])
           : null;
       });
       currentReadPath = READ_API_BASE ? 'Direct RPC Fallback' : 'Direct RPC';
@@ -9202,6 +9692,9 @@ observeReveal();
   'createProposalRefhePolicyHash',
   'createProposalRefheInputCiphertextHash',
   'createProposalRefheEvaluationKeyHash',
+  'createProposalMagicBlockEnabled',
+  'createProposalMagicBlockOwnerWallet',
+  'createProposalMagicBlockApiBase',
 ].forEach(id => {
   const el = document.getElementById(id);
   if (el) el.addEventListener('input', () => syncCreateProposalCommand());

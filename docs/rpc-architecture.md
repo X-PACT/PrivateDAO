@@ -25,6 +25,7 @@ The read node resolves a Devnet pool from:
 - `SOLANA_RPC_URL`
 - `ALCHEMY_DEVNET_RPC_URL` or `ALCHEMY_API_KEY`
 - `HELIUS_API_KEY`
+- `RPC_FAST_DEVNET_RPC`
 - `QUICKNODE_DEVNET_RPC`
 - `EXTRA_DEVNET_RPCS`
 - public Devnet RPC
@@ -34,6 +35,7 @@ The read node resolves a Devnet pool from:
 - proposal lists are heavier than individual wallet-signed writes
 - runtime panels and reviewer surfaces create repeated reads
 - wallet UX should stay focused on signing, not on carrying all indexing pressure
+- MagicBlock and reviewer surfaces can query runtime state without routing every heavy read through the browser
 
 ## Mainnet recommendation
 

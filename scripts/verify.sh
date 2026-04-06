@@ -39,8 +39,8 @@ verify_lint() {
 }
 
 verify_test() {
-  echo "[verify] anchor test"
-  "$ANCHOR_BIN" test --skip-build
+  echo "[verify] local anchor suite"
+  bash "$SCRIPT_DIR/run-local-anchor-suite.sh" all
 }
 
 verify_typecheck() {

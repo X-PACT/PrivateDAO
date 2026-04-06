@@ -34,6 +34,8 @@
 [![PDAO Token](https://img.shields.io/badge/PDAO-Devnet%20Governance%20Token-14b8a6)](docs/pdao-token.md)
 [![PDAO Attestation](https://img.shields.io/badge/PDAO-Attested-0f766e)](docs/pdao-attestation.generated.json)
 [![Confidential Payouts](https://img.shields.io/badge/Confidential%20Payouts-Salary%20%2B%20Bonus-7e57ff)](docs/confidential-payments.md)
+[![MagicBlock](https://img.shields.io/badge/MagicBlock-Private%20Payments-06b6d4)](docs/magicblock-private-payments.md)
+[![RPC Fast Ready](https://img.shields.io/badge/RPC%20Fast-Read%20Node%20Ready-f97316)](docs/rpc-architecture.md)
 
 PrivateDAO is a Solana governance protocol for DAOs that want private voting without giving up execution safety. Votes are committed privately, revealed later, finalized deterministically, and treasury execution stays behind an explicit timelock with recipient and mint checks.
 
@@ -68,6 +70,7 @@ PrivateDAO currently ships five integrated layers:
    - encrypted payroll and bonus manifests
    - aggregate settlement execution
    - REFHE proposal-bound encrypted evaluation envelopes
+   - MagicBlock private payment corridors for confidential token payouts
 5. Operations and review layer
    - backend read node and pooled RPC reads
    - runtime diagnostics
@@ -100,10 +103,16 @@ Use this map first if you want to orient quickly:
   - build, verification, Devnet, runtime, and review automation
 - `scripts/run-read-node.ts`
   - read-only backend node for pooled RPC reads and operator metrics
+- `scripts/lib/magicblock-payments.ts`
+  - MagicBlock private payments API helpers and unsigned-transaction submission flow
 - `scripts/configure-refhe-envelope.ts`
   - proposal-bound REFHE envelope configuration
 - `scripts/settle-refhe-envelope.ts`
   - REFHE settlement before confidential payout execution
+- `scripts/configure-magicblock-corridor.ts`
+  - proposal-bound MagicBlock corridor configuration
+- `scripts/settle-magicblock-corridor.ts`
+  - on-chain settlement lock for MagicBlock private payment evidence
 - `docs/live-proof.md`
   - canonical Devnet proof path
 - `docs/security-review.md`
@@ -123,12 +132,14 @@ For the fastest high-signal review:
 4. Read `docs/zk-layer.md`
 5. Read `docs/confidential-payments.md`
 6. Read `docs/refhe-protocol.md`
-7. Read `docs/read-node-indexer.md`
-8. Read `docs/read-node-same-domain-deploy.md`
-9. Read `docs/phase-c-hardening.md`
-10. Read `docs/zk-verifier-strategy.md`
-11. Read `docs/canonical-verifier-boundary-decision.md`
-12. Read `docs/zk-external-closure.generated.md`
+7. Read `docs/magicblock-private-payments.md`
+8. Read `docs/magicblock-operator-flow.md`
+9. Read `docs/read-node-indexer.md`
+10. Read `docs/read-node-same-domain-deploy.md`
+11. Read `docs/phase-c-hardening.md`
+12. Read `docs/zk-verifier-strategy.md`
+13. Read `docs/canonical-verifier-boundary-decision.md`
+14. Read `docs/zk-external-closure.generated.md`
 
 ## Proposal Draft
 
@@ -244,6 +255,45 @@ Use these notes first:
 - `docs/confidential-payroll-flow.md`
 - `docs/confidential-payments-diagram.md`
 - `docs/confidential-payments-audit-scope.md`
+
+## MagicBlock Private Payments
+
+PrivateDAO now adds a proposal-bound MagicBlock corridor for confidential token payouts.
+
+This is not a cosmetic integration. The corridor is stored on-chain and execution is blocked until MagicBlock settlement evidence is locked to the same proposal and payout plan.
+
+What is now live in the repo:
+
+- `MagicBlockPrivatePaymentCorridor` PDA in the program
+- CLI configuration, settlement, inspection, and private-payment scripts
+- frontend readiness and in-wallet corridor flow
+- backend read-node visibility for MagicBlock runtime, balances, and mint status
+
+Use these notes first:
+
+- `docs/magicblock-private-payments.md`
+- `docs/magicblock-operator-flow.md`
+- `docs/rpc-architecture.md`
+
+## Read Node And RPC Fast Path
+
+PrivateDAO no longer depends only on browser RPC reads for product quality.
+
+The repository now ships a read-only backend read node with:
+
+- pooled RPC failover
+- operator metrics
+- proposal, DAO, and readiness APIs
+- MagicBlock runtime and mint-status inspection
+- same-domain deployment guidance
+
+This architecture is also the right path for infrastructure-oriented tracks such as RPC Fast because low-latency reads, resilience, and visibility are now part of the product surface itself.
+
+Use these notes first:
+
+- `docs/read-node-indexer.md`
+- `docs/read-node-same-domain-deploy.md`
+- `docs/rpc-architecture.md`
 
 ## REFHE Protocol
 
@@ -743,7 +793,7 @@ PrivateDAO is explicit about what remains limited:
 - the project is devnet-first
 - commit-reveal hides vote content, not transaction timing metadata
 - `CustomCPI` remains intentionally unsupported in the live execution surface
-- local validator startup is environment-sensitive in this shell
+- the current shell host does not expose AVX2, so local-validator Anchor suites must run on an AVX2-capable machine; the portable core suite remains green here
 - mainnet audit completeness is not claimed
 
 ## Documentation Index
@@ -1257,7 +1307,13 @@ yarn install
 yarn typecheck
 ```
 
-Start a validator in another terminal:
+Check local validator capability first:
+
+```bash
+npm run verify:local-validator
+```
+
+Start a validator in another terminal on an AVX2-capable host:
 
 ```bash
 solana-test-validator --reset
@@ -1269,18 +1325,18 @@ Build:
 anchor build
 ```
 
-Run all tests:
+Run the portable core suite:
 
 ```bash
-anchor test
+npm run test:core
 ```
 
-Run targeted suites:
+Run the local-validator integration suites on an AVX2-capable host:
 
 ```bash
-anchor test -- --grep "PrivateDAO"
-anchor test -- --grep "Full flow"
-anchor test -- --grep "demo"
+npm run test:core:anchor
+npm run test:full:anchor
+npm run demo
 ```
 
 Run verification helpers:
