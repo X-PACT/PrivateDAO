@@ -42,28 +42,48 @@
 ### 4. Confidential Operations
 
 - Show an encrypted payroll or bonus manifest
-- Then show proposal-bound approval and aggregate settlement
+- Then show proposal-bound approval, REFHE envelope settlement, and aggregate payout execution
 - Labels:
   - encrypted manifest
   - proposal-bound payout plan
+  - REFHE envelope
   - aggregate settlement
 - Goal: communicate that PrivateDAO now covers confidential treasury operations, not only private voting
 
-### 5. System Architecture
+### 5. ZK And Runtime Hardening
+
+- Show proposal state shifting from `parallel` to `zk_enforced`
+- Show receipt ladder:
+  - vote receipt
+  - delegation receipt
+  - tally receipt
+- Show operator metrics and runtime snapshot overlays
+- Labels:
+  - stronger receipt set
+  - proposal-scoped enforcement
+  - backend read node
+  - runtime evidence
+- Goal: show that the cryptographic and operational path is part of the product, not decorative review material
+
+### 6. System Architecture
 
 - Layered motion graphic:
   - Solana Rust program
   - SDK
   - operator scripts
+  - backend read node
+  - Android-native wallet path
   - lifecycle tests
   - live docs frontend
 - Add short labels:
   - state modeling
   - permission logic
+  - indexed read path
+  - reviewer-grade evidence
   - distributed workflows
   - production-grade backend thinking
 
-### 6. Award Moment
+### 7. Award Moment
 
 - Gold-accent title:
   - `1st Place — Superteam Earn`
@@ -71,10 +91,10 @@
   - `Superteam Poland · March 2026`
 - Goal: present recognition as verified external validation
 
-### 7. Closing Frame
+### 8. Closing Frame
 
 - Positioning line:
-  - `Private governance, confidential operations, production-grade execution.`
+  - `Private governance, confidential operations, and production-grade execution on Solana.`
 - References:
   - `github.com/X-PACT/PrivateDAO`
   - `x-pact.github.io/PrivateDAO`

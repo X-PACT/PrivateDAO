@@ -19,9 +19,11 @@ PrivateDAO fixes that with a production-style commit-reveal model implemented as
 
 Votes are committed privately, revealed later, finalized deterministically, and treasury execution stays behind an explicit timelock with recipient and mint checks.
 
-The system is not just a contract. It includes the on-chain program, SDK helpers, operator scripts, lifecycle tests, and a live frontend for review.
+The system is not just a contract. It includes the on-chain program, SDK helpers, operator scripts, a backend read node, lifecycle tests, runtime evidence, Android support, and a live frontend for review.
 
-And now, PrivateDAO extends that same discipline to confidential payroll and bonus approvals. Teams can govern encrypted payout batches on-chain while keeping the full recipient sheet private off-chain.
+And now, PrivateDAO extends that same discipline to confidential payroll and bonus approvals. Teams can govern encrypted payout batches on-chain, settle them through REFHE-gated flows, and keep the full recipient sheet private off-chain.
+
+For higher-assurance proposals, PrivateDAO also introduces proposal-level zk enforcement. Stronger receipt sets move a proposal from review mode toward a tighter execution boundary.
 
 This engineering approach earned 1st Place in Superteam Earn, through Superteam Poland, in March 2026, for rebuilding production backend systems as on-chain Rust programs.
 

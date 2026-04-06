@@ -14,7 +14,7 @@ The video must communicate:
 - PrivateDAO is serious Solana governance infrastructure
 - The backend logic is implemented as on-chain Rust programs
 - The system solves real governance leakage problems
-- The project now combines protocol hardening, zero-knowledge proof surfaces, confidential payroll and bonus approvals, and a published cryptographic artifact integrity layer
+- The project now combines protocol hardening, proposal-level `zk_enforced` paths, confidential payroll and bonus approvals, REFHE-gated settlement, a backend read node, Android support, and published cryptographic artifact integrity
 - The project has third-party validation through a verified 1st Place achievement
 - The final output is a short investor explainer with a clear infrastructure thesis
 
@@ -47,8 +47,7 @@ The video must communicate:
 
 ## Current Explainer Status
 
-- Published YouTube explainer: `https://youtu.be/KVNFZXHNZTQ`
-- Current known status: repo-native render is the editable source of truth in this repo
+- Current known status: the repo-native render is the canonical source of truth in this repo
 - Repo-native render script: `scripts/render-investor-video.sh`
 - Repo-native rendered asset: `docs/assets/private-dao-investor-pitch.mp4`
 - Repo-native poster: `docs/assets/private-dao-investor-pitch-poster.png`
@@ -68,24 +67,27 @@ The video should not imply a completed external audit or claim production adopti
 
 ## New Angle
 
-The current render should communicate that PrivateDAO is growing from private voting into confidential organizational operations.
+The current render should communicate that PrivateDAO is growing from private voting into confidential organizational operations and production-grade governance infrastructure.
 
 That means the video should now show:
 
 - private voting
-- zk hardening
+- proposal-level `zk_enforced` hardening
 - confidential payroll and bonus approvals
+- REFHE-gated confidential settlement
+- backend read node and runtime operator surfaces
+- Android-native access path
+- mainnet transition readiness
 - a credible path toward investable governance infrastructure
 
 ## Repo Release Plan
 
-The repository carries a usable project explainer artifact directly in the repo, with YouTube as the public watch surface and the MP4 retained as a repo-native fallback asset.
+The repository carries a usable project explainer artifact directly in the repo, with the MP4 as the canonical public watch surface.
 
 - Primary repo video target: `docs/assets/private-dao-investor-pitch.mp4`
-- Primary public watch target: `https://youtu.be/KVNFZXHNZTQ`
 - Poster target: `docs/assets/private-dao-investor-pitch-poster.png`
 - Render source: `scripts/render-investor-video.sh`
-- README should link to YouTube first and keep the repo-native MP4 as a direct asset fallback
+- README should link to the repo-native MP4 directly
 
 ## Packaging Notes
 

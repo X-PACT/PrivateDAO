@@ -565,7 +565,6 @@ The same rule now applies to the review surface itself: zk artifacts, live-proof
 - Proof registry: `docs/proof-registry.json`
 - Technical explainer package: `docs/investor-video.md`
 - Repo-native investor reel: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
-- YouTube explainer reference: `https://youtu.be/KVNFZXHNZTQ`
 - On-chain program: `programs/private-dao/src/lib.rs`
 - End-to-end lifecycle test: `tests/full-flow-test.ts`
 
@@ -984,14 +983,13 @@ PrivateDAO brings commit-reveal voting, proposal-scoped private delegation, keep
 ## 🎬 Technical Explainer Package
 
 <p align="center">
-  <a href="https://youtu.be/KVNFZXHNZTQ" target="_blank">
+  <a href="https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4" target="_blank">
     <img src="docs/assets/private-dao-investor-pitch-poster.png" alt="PrivateDAO investor reel poster" width="900" />
   </a>
 </p>
 
 - Strategy documentation for judges, partners, and technical reviewers: `https://us04docs.zoom.us/doc/Zd34HEaHSKyZGRxBcqxXQg`
 - Watch the repo-native investor reel: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
-- YouTube explainer reference: `https://youtu.be/KVNFZXHNZTQ`
 - Investor video brief and production package: `docs/investor-video.md`
 - Voiceover script: `docs/video-voiceover.md`
 - Shotlist and visual direction: `docs/video-shotlist.md`
