@@ -62,6 +62,27 @@ export type ConfidentialPayoutPlanView = {
   bump: number;
 };
 
+export type RefheEnvelopeView = {
+  pubkey: string;
+  dao: string;
+  proposal: string;
+  payoutPlan: string;
+  configuredBy: string;
+  settledBy: string | null;
+  modelUri: string;
+  policyHash: string;
+  inputCiphertextHash: string;
+  evaluationKeyHash: string;
+  resultCiphertextHash: string;
+  resultCommitmentHash: string;
+  proofBundleHash: string;
+  verifierProgram: string | null;
+  status: string;
+  configuredAt: number;
+  settledAt: number;
+  bump: number;
+};
+
 export type ZkReceiptView = {
   pubkey: string;
   dao: string;
@@ -99,6 +120,7 @@ export type ProposalView = {
   zkRequiredLayersMask: number;
   zkPolicyPda: string | null;
   confidentialPayoutPlan: ConfidentialPayoutPlanView | null;
+  refheEnvelope: RefheEnvelopeView | null;
   zkReceiptSummary: ZkReceiptView[];
   daoDetails: DaoView | null;
 };
@@ -271,6 +293,13 @@ function deriveConfidentialPayoutPlanPda(proposalPubkey: string, programId: Publ
   )[0].toBase58();
 }
 
+function deriveRefheEnvelopePda(proposalPubkey: string, programId: PublicKey): string {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("refhe-envelope"), new PublicKey(proposalPubkey).toBuffer()],
+    programId,
+  )[0].toBase58();
+}
+
 function deriveZkReceiptPda(proposalPubkey: string, layerSeedByte: number, programId: PublicKey): string {
   return PublicKey.findProgramAddressSync(
     [Buffer.from("zk-verify"), new PublicKey(proposalPubkey).toBuffer(), Buffer.from([layerSeedByte])],
@@ -329,6 +358,7 @@ function mapProposalAccount(pubkey: PublicKey, decoded: any): ProposalView {
     zkRequiredLayersMask: 0,
     zkPolicyPda: null,
     confidentialPayoutPlan: null,
+    refheEnvelope: null,
     zkReceiptSummary: [],
     daoDetails: null,
   };
@@ -367,6 +397,29 @@ function mapConfidentialPayoutPlan(pubkey: PublicKey, decoded: any): Confidentia
     status: enumName(decoded.status),
     configuredAt: asNumber(decoded.configured_at),
     fundedAt: asNumber(decoded.funded_at),
+    bump: decoded.bump,
+  };
+}
+
+function mapRefheEnvelope(pubkey: PublicKey, decoded: any): RefheEnvelopeView {
+  return {
+    pubkey: pubkey.toBase58(),
+    dao: asPublicKey(decoded.dao),
+    proposal: asPublicKey(decoded.proposal),
+    payoutPlan: asPublicKey(decoded.payout_plan),
+    configuredBy: asPublicKey(decoded.configured_by),
+    settledBy: decoded.settled_by ? asPublicKey(decoded.settled_by) : null,
+    modelUri: decoded.model_uri,
+    policyHash: Buffer.from(decoded.policy_hash).toString("hex"),
+    inputCiphertextHash: Buffer.from(decoded.input_ciphertext_hash).toString("hex"),
+    evaluationKeyHash: Buffer.from(decoded.evaluation_key_hash).toString("hex"),
+    resultCiphertextHash: Buffer.from(decoded.result_ciphertext_hash).toString("hex"),
+    resultCommitmentHash: Buffer.from(decoded.result_commitment_hash).toString("hex"),
+    proofBundleHash: Buffer.from(decoded.proof_bundle_hash).toString("hex"),
+    verifierProgram: decoded.verifier_program ? asPublicKey(decoded.verifier_program) : null,
+    status: enumName(decoded.status),
+    configuredAt: asNumber(decoded.configured_at),
+    settledAt: asNumber(decoded.settled_at),
     bump: decoded.bump,
   };
 }
@@ -586,12 +639,14 @@ export class PrivateDaoReadNode {
     const daoKeys = [...new Set(filtered.map((proposal) => proposal.dao))].map((item) => new PublicKey(item));
     const policyKeys = filtered.map((proposal) => new PublicKey(deriveProposalZkPolicyPda(proposal.pubkey, this.programId)));
     const payoutKeys = filtered.map((proposal) => new PublicKey(deriveConfidentialPayoutPlanPda(proposal.pubkey, this.programId)));
+    const refheKeys = filtered.map((proposal) => new PublicKey(deriveRefheEnvelopePda(proposal.pubkey, this.programId)));
     const receiptKeys = filtered.flatMap((proposal) => [1, 2, 3].map((seed) => new PublicKey(deriveZkReceiptPda(proposal.pubkey, seed, this.programId))));
 
-    const [daoInfos, policyInfos, payoutInfos, receiptInfos] = await Promise.all([
+    const [daoInfos, policyInfos, payoutInfos, refheInfos, receiptInfos] = await Promise.all([
       daoKeys.length ? this.withRpcFallback((connection) => fetchMany(connection, daoKeys, this.commitment)) : Promise.resolve([]),
       policyKeys.length ? this.withRpcFallback((connection) => fetchMany(connection, policyKeys, this.commitment)) : Promise.resolve([]),
       payoutKeys.length ? this.withRpcFallback((connection) => fetchMany(connection, payoutKeys, this.commitment)) : Promise.resolve([]),
+      refheKeys.length ? this.withRpcFallback((connection) => fetchMany(connection, refheKeys, this.commitment)) : Promise.resolve([]),
       receiptKeys.length ? this.withRpcFallback((connection) => fetchMany(connection, receiptKeys, this.commitment)) : Promise.resolve([]),
     ]);
 
@@ -619,6 +674,12 @@ export class PrivateDaoReadNode {
       if (payoutInfo) {
         const decoded = coder.accounts.decode("ConfidentialPayoutPlan", payoutInfo.data);
         proposal.confidentialPayoutPlan = mapConfidentialPayoutPlan(payoutKeys[index], decoded);
+      }
+
+      const refheInfo = refheInfos[index];
+      if (refheInfo) {
+        const decoded = coder.accounts.decode("RefheEnvelope", refheInfo.data);
+        proposal.refheEnvelope = mapRefheEnvelope(refheKeys[index], decoded);
       }
 
       const offset = index * 3;

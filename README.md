@@ -53,6 +53,10 @@ If you want to understand the repository quickly, use this map first:
   - build, verification, attestation, Devnet, and reviewer automation
 - `scripts/run-read-node.ts`
   - backend read node and indexer for pooled RPC reads
+- `scripts/configure-refhe-envelope.ts`
+  - configure the proposal-bound REFHE encrypted-computation envelope
+- `scripts/settle-refhe-envelope.ts`
+  - settle REFHE results before confidential payout execution
 - `docs/live-proof.md`
   - canonical Devnet proof path
 - `docs/security-review.md`
@@ -79,6 +83,7 @@ PrivateDAO is not only a program repo. It contains four layers that fit together
    - on-chain parallel verification receipts for the Phase A verifier path
    - proposal-level `zk_enforced` mode for the Phase B finalize path
    - confidential payroll and bonus batches with immutable manifest and ciphertext hashes
+   - REFHE protocol for proposal-bound encrypted payroll and bonus evaluation
 4. Review and operations layer
    - generated attestations
    - Devnet evidence
@@ -100,11 +105,14 @@ For the fastest useful read:
 8. Read `docs/zk-enforced-operator-flow.md`
 9. Read `docs/confidential-payments.md`
 10. Read `docs/confidential-payroll-flow.md`
-11. Read `docs/read-node-indexer.md`
-12. Read `docs/rpc-architecture.md`
-13. Read `docs/backend-operator-flow.md`
-14. Read `docs/canonical-verifier-boundary-decision.md`
-15. Read `docs/zk-external-closure.generated.md`
+11. Read `docs/refhe-protocol.md`
+12. Read `docs/refhe-operator-flow.md`
+13. Read `docs/refhe-security-model.md`
+14. Read `docs/read-node-indexer.md`
+15. Read `docs/rpc-architecture.md`
+16. Read `docs/backend-operator-flow.md`
+17. Read `docs/canonical-verifier-boundary-decision.md`
+18. Read `docs/zk-external-closure.generated.md`
 
 ## Proposal Draft
 
@@ -194,6 +202,41 @@ Use these notes first:
 - `docs/confidential-payroll-flow.md`
 - `docs/confidential-payments-diagram.md`
 - `docs/confidential-payments-audit-scope.md`
+
+## REFHE Protocol
+
+PrivateDAO now includes a real REFHE protocol layer for confidential treasury operations.
+
+REFHE is not marketed as fully homomorphic execution on-chain. The implemented model is stronger and more honest:
+
+- encrypted payroll and bonus inputs remain off-chain
+- the proposal stores immutable hashes and aggregate payout metadata
+- a proposal-bound `RefheEnvelope` PDA binds:
+  - model URI
+  - policy hash
+  - input ciphertext hash
+  - evaluation key hash
+  - result ciphertext hash
+  - result commitment hash
+  - proof bundle hash
+  - verifier program
+- if the REFHE envelope exists, confidential payout execution is blocked until the envelope is settled on-chain
+
+Primary references:
+
+- `docs/refhe-protocol.md`
+- `docs/refhe-operator-flow.md`
+- `docs/refhe-security-model.md`
+- `docs/refhe-audit-scope.md`
+- `docs/assets/refhe-flow.svg`
+
+Primary commands:
+
+```bash
+npm run configure:refhe -- --dao <DAO_PDA> --proposal <PROPOSAL_PDA> --model-uri "<URI>" --policy-hash <HEX32> --input-ciphertext-hash <HEX32> --evaluation-key-hash <HEX32>
+npm run settle:refhe -- --dao <DAO_PDA> --proposal <PROPOSAL_PDA> --result-ciphertext-hash <HEX32> --result-commitment-hash <HEX32> --proof-bundle-hash <HEX32> --verifier-program <PROGRAM_ID>
+npm run inspect:refhe -- --proposal <PROPOSAL_PDA>
+```
 
 ## Backend Read Node And RPC Pool
 
@@ -419,6 +462,7 @@ The same rule now applies to the review surface itself: zk artifacts, live-proof
 - Devnet canary: `docs/devnet-canary.generated.md`
 - 50-wallet load report: `docs/load-test-report.md`
 - Devnet scale profiles: `docs/devnet-scale-profiles.md`
+- 350-wallet wave plan: `docs/devnet-350-wave-plan.md`
 - Multi-proposal isolation report: `docs/devnet-multi-proposal-report.md`
 - Race and collision report: `docs/devnet-race-report.md`
 - RPC and stale-blockhash resilience report: `docs/devnet-resilience-report.md`
@@ -1361,7 +1405,8 @@ Extended Devnet scale profiles:
 
 ```bash
 npm run test:devnet:100
+npm run test:devnet:350
 npm run test:devnet:500
 ```
 
-The canonical reviewer package remains the 50-wallet run, while larger profiles write to profile-specific artifacts so explorer-visible baseline evidence stays stable.
+The canonical reviewer package remains the 50-wallet run, while larger profiles write to profile-specific artifacts so explorer-visible baseline evidence stays stable. The `350` profile is the strongest wave-based saturation profile inside the current harness: `50` wallets x `7` waves, pre-funded, retry-bounded, and mixed with negative-path coverage rather than pure happy-path traffic.

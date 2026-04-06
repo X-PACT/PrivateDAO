@@ -297,6 +297,151 @@ pub mod private_dao {
         Ok(())
     }
 
+    pub fn configure_refhe_envelope(
+        ctx: Context<ConfigureRefheEnvelope>,
+        model_uri: String,
+        policy_hash: [u8; 32],
+        input_ciphertext_hash: [u8; 32],
+        evaluation_key_hash: [u8; 32],
+    ) -> Result<()> {
+        let operator = ctx.accounts.operator.key();
+        require!(
+            operator == ctx.accounts.dao.authority || operator == ctx.accounts.proposal.proposer,
+            Error::UnauthorizedRefheOperator
+        );
+        require!(
+            ctx.accounts.proposal.status == ProposalStatus::Voting
+                && ctx.accounts.proposal.commit_count == 0
+                && ctx.accounts.proposal.reveal_count == 0,
+            Error::RefheEnvelopeLocked
+        );
+
+        let payout_plan = &ctx.accounts.confidential_payout_plan;
+        require!(
+            payout_plan.dao == ctx.accounts.dao.key() && payout_plan.proposal == ctx.accounts.proposal.key(),
+            Error::RefheEnvelopeMismatch
+        );
+        require!(
+            payout_plan.status == ConfidentialPayoutStatus::Configured,
+            Error::RefheEnvelopeLocked
+        );
+        require!(
+            input_ciphertext_hash == payout_plan.ciphertext_hash,
+            Error::RefheEnvelopeMismatch
+        );
+        validate_refhe_envelope(&model_uri, &policy_hash, &input_ciphertext_hash, &evaluation_key_hash)?;
+
+        let envelope = &mut ctx.accounts.refhe_envelope;
+        if envelope.proposal != Pubkey::default() {
+            require!(
+                envelope.dao == ctx.accounts.dao.key()
+                    && envelope.proposal == ctx.accounts.proposal.key()
+                    && envelope.payout_plan == ctx.accounts.confidential_payout_plan.key(),
+                Error::RefheEnvelopeMismatch
+            );
+            require!(
+                envelope.status != RefheEnvelopeStatus::Settled,
+                Error::RefheEnvelopeLocked
+            );
+        }
+
+        envelope.dao = ctx.accounts.dao.key();
+        envelope.proposal = ctx.accounts.proposal.key();
+        envelope.payout_plan = ctx.accounts.confidential_payout_plan.key();
+        envelope.configured_by = operator;
+        envelope.settled_by = None;
+        envelope.model_uri = model_uri.clone();
+        envelope.policy_hash = policy_hash;
+        envelope.input_ciphertext_hash = input_ciphertext_hash;
+        envelope.evaluation_key_hash = evaluation_key_hash;
+        envelope.result_ciphertext_hash = [0u8; 32];
+        envelope.result_commitment_hash = [0u8; 32];
+        envelope.proof_bundle_hash = [0u8; 32];
+        envelope.verifier_program = None;
+        envelope.status = RefheEnvelopeStatus::Configured;
+        envelope.configured_at = Clock::get()?.unix_timestamp;
+        envelope.settled_at = 0;
+        envelope.bump = ctx.bumps.refhe_envelope;
+
+        emit!(RefheEnvelopeConfigured {
+            dao: envelope.dao,
+            proposal: envelope.proposal,
+            payout_plan: envelope.payout_plan,
+            configured_by: envelope.configured_by,
+            model_uri,
+            policy_hash: envelope.policy_hash,
+            input_ciphertext_hash: envelope.input_ciphertext_hash,
+            evaluation_key_hash: envelope.evaluation_key_hash,
+        });
+        Ok(())
+    }
+
+    pub fn settle_refhe_envelope(
+        ctx: Context<SettleRefheEnvelope>,
+        result_ciphertext_hash: [u8; 32],
+        result_commitment_hash: [u8; 32],
+        proof_bundle_hash: [u8; 32],
+        verifier_program: Pubkey,
+    ) -> Result<()> {
+        let operator = ctx.accounts.operator.key();
+        require!(
+            operator == ctx.accounts.dao.authority || operator == ctx.accounts.proposal.proposer,
+            Error::UnauthorizedRefheOperator
+        );
+        require!(
+            verifier_program != Pubkey::default(),
+            Error::RefheVerifierProgramRequired
+        );
+        require!(
+            !is_zero_hash(&result_ciphertext_hash)
+                && !is_zero_hash(&result_commitment_hash)
+                && !is_zero_hash(&proof_bundle_hash),
+            Error::InvalidRefheEnvelope
+        );
+
+        let payout_plan = &ctx.accounts.confidential_payout_plan;
+        let envelope = &mut ctx.accounts.refhe_envelope;
+        require!(
+            envelope.dao == ctx.accounts.dao.key()
+                && envelope.proposal == ctx.accounts.proposal.key()
+                && envelope.payout_plan == payout_plan.key(),
+            Error::RefheEnvelopeMismatch
+        );
+        require!(
+            payout_plan.dao == ctx.accounts.dao.key() && payout_plan.proposal == ctx.accounts.proposal.key(),
+            Error::RefheEnvelopeMismatch
+        );
+        require!(
+            payout_plan.status == ConfidentialPayoutStatus::Configured,
+            Error::RefheEnvelopeLocked
+        );
+        require!(
+            envelope.status == RefheEnvelopeStatus::Configured,
+            Error::RefheEnvelopeLocked
+        );
+
+        envelope.result_ciphertext_hash = result_ciphertext_hash;
+        envelope.result_commitment_hash = result_commitment_hash;
+        envelope.proof_bundle_hash = proof_bundle_hash;
+        envelope.verifier_program = Some(verifier_program);
+        envelope.status = RefheEnvelopeStatus::Settled;
+        envelope.settled_by = Some(operator);
+        envelope.settled_at = Clock::get()?.unix_timestamp;
+
+        emit!(RefheEnvelopeSettled {
+            dao: envelope.dao,
+            proposal: envelope.proposal,
+            payout_plan: envelope.payout_plan,
+            settled_by: operator,
+            verifier_program,
+            result_ciphertext_hash: envelope.result_ciphertext_hash,
+            result_commitment_hash: envelope.result_commitment_hash,
+            proof_bundle_hash: envelope.proof_bundle_hash,
+            settled_at: envelope.settled_at,
+        });
+        Ok(())
+    }
+
     // ── Cancel proposal ───────────────────────────────────────────────────────
     //
     // Authority-only. Can only cancel while status == Voting.
@@ -775,6 +920,25 @@ pub mod private_dao {
             plan.status == ConfidentialPayoutStatus::Configured,
             Error::ConfidentialPayoutAlreadyFunded
         );
+        if account_exists(&ctx.accounts.refhe_envelope) {
+            let mut data: &[u8] = &ctx.accounts.refhe_envelope.data.borrow();
+            let envelope = RefheEnvelope::try_deserialize(&mut data)
+                .map_err(|_| error!(Error::RefheEnvelopeMismatch))?;
+            require!(
+                envelope.dao == ctx.accounts.dao.key()
+                    && envelope.proposal == p.key()
+                    && envelope.payout_plan == plan.key(),
+                Error::RefheEnvelopeMismatch
+            );
+            require!(
+                envelope.status == RefheEnvelopeStatus::Settled,
+                Error::RefheSettlementRequired
+            );
+            require!(
+                envelope.verifier_program.is_some(),
+                Error::RefheVerifierProgramRequired
+            );
+        }
 
         let dao_key = ctx.accounts.dao.key();
         let t_bump = ctx.bumps.treasury;
@@ -1415,6 +1579,25 @@ fn validate_confidential_payout_plan(
     Ok(())
 }
 
+fn validate_refhe_envelope(
+    model_uri: &String,
+    policy_hash: &[u8; 32],
+    input_ciphertext_hash: &[u8; 32],
+    evaluation_key_hash: &[u8; 32],
+) -> Result<()> {
+    require!(
+        !model_uri.trim().is_empty() && model_uri.len() <= RefheEnvelope::MAX_URI_LEN,
+        Error::InvalidRefheEnvelope
+    );
+    require!(
+        !is_zero_hash(policy_hash)
+            && !is_zero_hash(input_ciphertext_hash)
+            && !is_zero_hash(evaluation_key_hash),
+        Error::InvalidRefheEnvelope
+    );
+    Ok(())
+}
+
 // ── Account contexts ──────────────────────────────────────────────────────────
 
 #[derive(Accounts)]
@@ -1714,9 +1897,66 @@ pub struct ExecuteConfidentialPayoutPlan<'info> {
     /// CHECK: destination token ATA for token payout batches; ignored for SOL payout batches
     #[account(mut)]
     pub recipient_token_account: AccountInfo<'info>,
+    /// CHECK: optional REFHE envelope for proposal-bound confidential execution
+    #[account(
+        seeds = [b"refhe-envelope", proposal.key().as_ref()],
+        bump
+    )]
+    pub refhe_envelope: UncheckedAccount<'info>,
     pub executor: Signer<'info>,
     pub token_program: Interface<'info, TokenInterface>,
     pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct ConfigureRefheEnvelope<'info> {
+    pub dao: Account<'info, Dao>,
+    #[account(
+        has_one = dao,
+        seeds = [b"proposal", dao.key().as_ref(), proposal.proposal_id.to_le_bytes().as_ref()],
+        bump = proposal.bump
+    )]
+    pub proposal: Account<'info, Proposal>,
+    #[account(
+        seeds = [b"payout-plan", proposal.key().as_ref()],
+        bump = confidential_payout_plan.bump
+    )]
+    pub confidential_payout_plan: Account<'info, ConfidentialPayoutPlan>,
+    #[account(
+        init_if_needed,
+        payer = operator,
+        space = RefheEnvelope::LEN,
+        seeds = [b"refhe-envelope", proposal.key().as_ref()],
+        bump
+    )]
+    pub refhe_envelope: Account<'info, RefheEnvelope>,
+    #[account(mut)]
+    pub operator: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct SettleRefheEnvelope<'info> {
+    pub dao: Account<'info, Dao>,
+    #[account(
+        has_one = dao,
+        seeds = [b"proposal", dao.key().as_ref(), proposal.proposal_id.to_le_bytes().as_ref()],
+        bump = proposal.bump
+    )]
+    pub proposal: Account<'info, Proposal>,
+    #[account(
+        seeds = [b"payout-plan", proposal.key().as_ref()],
+        bump = confidential_payout_plan.bump
+    )]
+    pub confidential_payout_plan: Account<'info, ConfidentialPayoutPlan>,
+    #[account(
+        mut,
+        seeds = [b"refhe-envelope", proposal.key().as_ref()],
+        bump = refhe_envelope.bump
+    )]
+    pub refhe_envelope: Account<'info, RefheEnvelope>,
+    #[account(mut)]
+    pub operator: Signer<'info>,
 }
 
 #[derive(Accounts)]
@@ -2070,6 +2310,33 @@ impl ConfidentialPayoutPlan {
     pub const LEN: usize = 8 + 32 + 32 + 32 + 1 + 1 + 32 + 33 + 2 + 8 + (4 + 256) + 32 + 32 + 1 + 8 + 8 + 1; // 523
 }
 
+#[account]
+pub struct RefheEnvelope {
+    pub dao: Pubkey,                      // 32
+    pub proposal: Pubkey,                 // 32
+    pub payout_plan: Pubkey,              // 32
+    pub configured_by: Pubkey,            // 32
+    pub settled_by: Option<Pubkey>,       // 33
+    pub model_uri: String,                // 4 + 256
+    pub policy_hash: [u8; 32],            // 32
+    pub input_ciphertext_hash: [u8; 32],  // 32
+    pub evaluation_key_hash: [u8; 32],    // 32
+    pub result_ciphertext_hash: [u8; 32], // 32
+    pub result_commitment_hash: [u8; 32], // 32
+    pub proof_bundle_hash: [u8; 32],      // 32
+    pub verifier_program: Option<Pubkey>, // 33
+    pub status: RefheEnvelopeStatus,      // 1
+    pub configured_at: i64,               // 8
+    pub settled_at: i64,                  // 8
+    pub bump: u8,                         // 1
+}
+
+impl RefheEnvelope {
+    pub const MAX_URI_LEN: usize = 256;
+    pub const LEN: usize =
+        8 + 32 + 32 + 32 + 32 + 33 + (4 + 256) + 32 + 32 + 32 + 32 + 32 + 32 + 33 + 1 + 8 + 8 + 1; // 673
+}
+
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
@@ -2158,6 +2425,12 @@ pub enum ConfidentialAssetType {
 pub enum ConfidentialPayoutStatus {
     Configured,
     Funded,
+}
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
+pub enum RefheEnvelopeStatus {
+    Configured,
+    Settled,
 }
 
 // ── Events ────────────────────────────────────────────────────────────────────
@@ -2313,6 +2586,31 @@ pub struct ConfidentialPayoutExecuted {
     pub funded_at: i64,
 }
 
+#[event]
+pub struct RefheEnvelopeConfigured {
+    pub dao: Pubkey,
+    pub proposal: Pubkey,
+    pub payout_plan: Pubkey,
+    pub configured_by: Pubkey,
+    pub model_uri: String,
+    pub policy_hash: [u8; 32],
+    pub input_ciphertext_hash: [u8; 32],
+    pub evaluation_key_hash: [u8; 32],
+}
+
+#[event]
+pub struct RefheEnvelopeSettled {
+    pub dao: Pubkey,
+    pub proposal: Pubkey,
+    pub payout_plan: Pubkey,
+    pub settled_by: Pubkey,
+    pub verifier_program: Pubkey,
+    pub result_ciphertext_hash: [u8; 32],
+    pub result_commitment_hash: [u8; 32],
+    pub proof_bundle_hash: [u8; 32],
+    pub settled_at: i64,
+}
+
 // ── Errors ────────────────────────────────────────────────────────────────────
 
 #[error_code]
@@ -2449,4 +2747,16 @@ pub enum Error {
     ConfidentialPayoutConflictsWithTreasuryAction,
     #[msg("This proposal must execute through the confidential payout path rather than the standard treasury execution path")]
     UseConfidentialPayoutExecution,
+    #[msg("Only the DAO authority or proposal proposer may configure or settle REFHE envelopes")]
+    UnauthorizedRefheOperator,
+    #[msg("REFHE envelope is invalid")]
+    InvalidRefheEnvelope,
+    #[msg("REFHE envelope does not match the expected proposal-bound payout plan")]
+    RefheEnvelopeMismatch,
+    #[msg("REFHE envelope is locked and cannot be changed in the current lifecycle state")]
+    RefheEnvelopeLocked,
+    #[msg("REFHE settlement is required before executing this confidential payout plan")]
+    RefheSettlementRequired,
+    #[msg("REFHE settlement must identify the verifier program boundary")]
+    RefheVerifierProgramRequired,
 }

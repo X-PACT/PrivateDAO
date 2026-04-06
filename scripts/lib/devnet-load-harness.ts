@@ -33,7 +33,7 @@ import {
 } from "../utils";
 
 type WalletRole = "voter" | "adversarial" | "zk-tester";
-export type LoadProfileName = "50" | "100" | "500";
+export type LoadProfileName = "50" | "100" | "350" | "500";
 type RevealMode = "valid" | "late";
 type CommitScenario =
   | "valid"
@@ -237,6 +237,7 @@ const DEFAULT_PROFILE: LoadProfileName = "50";
 const LOAD_PROFILES: Record<LoadProfileName, HarnessProfile> = {
   "50": { name: "50", walletCount: 50, waveSize: 10, fundingWaveSize: 5, targetPdaoUi: 100 },
   "100": { name: "100", walletCount: 100, waveSize: 20, fundingWaveSize: 10, targetPdaoUi: 100 },
+  "350": { name: "350", walletCount: 350, waveSize: 50, fundingWaveSize: 25, targetPdaoUi: 100 },
   "500": { name: "500", walletCount: 500, waveSize: 25, fundingWaveSize: 10, targetPdaoUi: 100 },
 };
 const WAVE_DELAY_MS = 5000;
@@ -2184,6 +2185,50 @@ function buildLoadTestReport(state: HarnessState, metrics: ReturnType<typeof bui
   const validReveals = state.wallets.filter((wallet) => wallet.reveal?.status === "success");
   const lateWallets = state.wallets.filter((wallet) => wallet.plan.revealMode === "late");
   const zkEntries = state.zkProofs.length;
+  const invalidRevealRejections = state.adversarial.filter(
+    (entry) => entry.phase === "reveal" && entry.outcome === "rejected",
+  ).length;
+  const finalizeSuccess = state.txRegistry.filter((entry) => entry.action === "finalize-proposal").length;
+  const executeSuccess = state.txRegistry.filter((entry) => entry.action === "execute-proposal").length;
+  const confidentialPayoutSuccess = state.txRegistry.filter(
+    (entry) => entry.action === "execute-confidential-payout-plan",
+  ).length;
+  const replayRejections = state.adversarial.filter(
+    (entry) =>
+      entry.outcome === "rejected" &&
+      (entry.scenario === "replay" || entry.scenario === "duplicate-execute" || entry.scenario === "duplicate-finalize"),
+  ).length;
+  const authorityMismatchRejections = state.adversarial.filter(
+    (entry) =>
+      entry.outcome === "rejected" &&
+      (entry.scenario === "treasury-miswiring" ||
+        entry.scenario === "wrong-voter-record" ||
+        entry.scenario === "wrong-delegation-marker" ||
+        entry.scenario === "wrong-token-account"),
+  ).length;
+  const keyExplorerLinks = [
+    bootstrap.proposalExplorer,
+    explorerUrl(bootstrap.createDaoTx),
+    explorerUrl(bootstrap.depositTx),
+    explorerUrl(bootstrap.createProposalTx),
+    ...state.txRegistry
+      .filter((entry) =>
+        ["finalize-proposal", "execute-proposal", "execute-confidential-payout-plan"].includes(entry.action),
+      )
+      .map((entry) => entry.explorerUrl),
+  ].filter((value, index, array) => array.indexOf(value) === index);
+  const failureCauseCounts = new Map<string, number>();
+  for (const entry of state.adversarial) {
+    if (entry.outcome !== "rejected" || !entry.error) continue;
+    const normalized = entry.error.split("\n")[0].slice(0, 120);
+    failureCauseCounts.set(normalized, (failureCauseCounts.get(normalized) ?? 0) + 1);
+  }
+  const failureCauseLines =
+    Array.from(failureCauseCounts.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 8)
+      .map(([cause, count]) => `- ${count} × ${cause}`)
+      .join("\n") || "- None";
 
   return `# Devnet Load Test Report
 
@@ -2195,7 +2240,22 @@ function buildLoadTestReport(state: HarnessState, metrics: ReturnType<typeof bui
 - program id: \`${state.programId}\`
 - governance mint: \`${state.pdaoMint}\`
 - total tx count: ${state.txRegistry.length}
+- average latency ms: ${metrics.averageTxLatencyMs.toFixed(2)}
 - zk participation summary: ${state.wallets.filter((wallet) => wallet.role === "zk-tester").length} zk tester wallets, ${zkEntries} zk proof artifacts
+
+## Summary Snapshot
+
+- total wallets: ${state.profile.walletCount}
+- successful commits: ${state.wallets.filter((wallet) => wallet.commit?.status === "success").length}
+- successful reveals: ${validReveals.length}
+- rejected invalid reveals: ${invalidRevealRejections}
+- finalize success: ${finalizeSuccess}
+- execute success: ${executeSuccess}
+- confidential payout success: ${confidentialPayoutSuccess}
+- replay rejections: ${replayRejections}
+- authority mismatch rejections: ${authorityMismatchRejections}
+- total tx count: ${state.txRegistry.length}
+- average latency ms: ${metrics.averageTxLatencyMs.toFixed(2)}
 
 ## DAO Bootstrap Results
 
@@ -2252,6 +2312,14 @@ function buildLoadTestReport(state: HarnessState, metrics: ReturnType<typeof bui
 - average tx latency ms: ${metrics.averageTxLatencyMs.toFixed(2)}
 - failure rate: ${(metrics.failureRate * 100).toFixed(2)}%
 - retry rate: ${(metrics.retryRate * 100).toFixed(2)}%
+
+## Explorer Links
+
+${keyExplorerLinks.map((link) => `- ${link}`).join("\n")}
+
+## Failure Causes
+
+${failureCauseLines}
 
 ## Interpretation
 

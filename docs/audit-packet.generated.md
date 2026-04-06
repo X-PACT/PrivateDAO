@@ -68,6 +68,11 @@
 - Confidential payroll flow: `docs/confidential-payroll-flow.md`
 - Confidential payouts diagram: `docs/confidential-payments-diagram.md`
 - Confidential payouts audit scope: `docs/confidential-payments-audit-scope.md`
+- REFHE protocol: `docs/refhe-protocol.md`
+- REFHE operator flow: `docs/refhe-operator-flow.md`
+- REFHE security model: `docs/refhe-security-model.md`
+- REFHE audit scope: `docs/refhe-audit-scope.md`
+- REFHE flow diagram: `docs/assets/refhe-flow.svg`
 - Integrity note: `docs/cryptographic-integrity.md`
 - Cryptographic posture: `docs/cryptographic-posture.md`
 - Supply-chain security note: `docs/supply-chain-security.md`
@@ -83,8 +88,8 @@
 - Release drill: `docs/release-drill.generated.json`
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `107`
-- Aggregate sha256: `287a7a1526679d88777f73563c1ffd5e1d897fd4d7c97ec8879f0fd242d435af`
+- Manifest entries: `115`
+- Aggregate sha256: `b77e0ff53bd29e658c2be0da2119a4f68984e6118a561fd12dc39cc8219fa9eb`
 
 ## ZK Package
 
@@ -136,6 +141,8 @@
 - `docs/threat-model.md`
 - `docs/security-coverage-map.md`
 - `docs/confidential-payments-audit-scope.md`
+- `docs/refhe-security-model.md`
+- `docs/refhe-audit-scope.md`
 - `docs/failure-modes.md`
 - `docs/replay-analysis.md`
 - `docs/cryptographic-integrity.md`
@@ -148,6 +155,8 @@
 ## ZK Review Package
 
 - `docs/zk-layer.md`
+- `docs/refhe-protocol.md`
+- `docs/refhe-operator-flow.md`
 - `docs/phase-c-hardening.md`
 - `docs/zk-verifier-strategy.md`
 - `docs/zk-enforced-threat-review.md`
@@ -185,8 +194,14 @@
 - `docs/confidential-payments.md`
 - `docs/confidential-payroll-flow.md`
 - `docs/confidential-payments-diagram.md`
+- `docs/refhe-protocol.md`
+- `docs/refhe-operator-flow.md`
+- `docs/refhe-security-model.md`
+- `docs/refhe-audit-scope.md`
 - `docs/assets/icons/confidential-payroll.svg`
 - `docs/assets/confidential-payments-flow.svg`
+- `docs/assets/icons/refhe-protocol.svg`
+- `docs/assets/refhe-flow.svg`
 - `docs/live-proof.md`
 - `docs/devnet-release-manifest.md`
 - `docs/proof-registry.json`
@@ -198,6 +213,7 @@
 - `docs/performance-metrics.json`
 - `docs/load-test-report.md`
 - `docs/devnet-scale-profiles.md`
+- `docs/devnet-350-wave-plan.md`
 - `docs/devnet-multi-proposal-report.json`
 - `docs/devnet-multi-proposal-report.md`
 - `docs/devnet-race-report.json`
@@ -287,6 +303,8 @@
 - `docs/zk-proof-registry.json`
 - `docs/performance-metrics.json`
 - `docs/load-test-report.md`
+- `docs/devnet-scale-profiles.md`
+- `docs/devnet-350-wave-plan.md`
 - `docs/devnet-multi-proposal-report.json`
 - `docs/devnet-multi-proposal-report.md`
 - `docs/devnet-race-report.json`
@@ -343,6 +361,7 @@
 - `npm run test:devnet:adversarial`
 - `npm run test:devnet:report`
 - `npm run test:devnet:100`
+- `npm run test:devnet:350`
 - `npm run test:devnet:500`
 - `npm run test:devnet:multi`
 - `npm run test:devnet:race`
@@ -388,6 +407,7 @@
 
 - governanceLifecycle: `verified`
 - confidentialPayoutSurface: `verified`
+- refheProtocolSurface: `verified`
 - backendReadNodeSurface: `verified`
 - securityReasoning: `verified`
 - supplyChainSurface: `verified`

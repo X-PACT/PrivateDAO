@@ -19,6 +19,7 @@
   "readiness": {
     "governanceLifecycle": "verified",
     "confidentialPayoutSurface": "verified",
+    "refheProtocolSurface": "verified",
     "backendReadNodeSurface": "verified",
     "securityReasoning": "verified",
     "supplyChainSurface": "verified",
@@ -55,6 +56,7 @@
     "npm run test:devnet:adversarial",
     "npm run test:devnet:report",
     "npm run test:devnet:100",
+    "npm run test:devnet:350",
     "npm run test:devnet:500",
     "npm run test:devnet:multi",
     "npm run test:devnet:race",
@@ -96,12 +98,12 @@
     "npm run verify:review-surface",
     "npm run verify:all"
   ],
-  "gateCount": 58,
+  "gateCount": 59,
   "packageCounts": {
     "strategy": 9,
-    "security": 12,
-    "zk": 26,
-    "proof": 58,
+    "security": 14,
+    "zk": 28,
+    "proof": 65,
     "operations": 26
   },
   "zk": {

@@ -15,7 +15,7 @@
 import * as anchor from "@coral-xyz/anchor";
 import { PublicKey, SystemProgram } from "@solana/web3.js";
 import { getAssociatedTokenAddress } from "@solana/spl-token";
-import { deriveConfidentialPayoutPlanPda, formatDuration, parseArgs, formatSol, formatTimestamp, proposalStatusLabel, resolveTokenProgramForMint, solscanTxUrl, workspaceProgram } from "./utils";
+import { deriveConfidentialPayoutPlanPda, deriveRefheEnvelopePda, formatDuration, parseArgs, formatSol, formatTimestamp, proposalStatusLabel, resolveTokenProgramForMint, solscanTxUrl, workspaceProgram } from "./utils";
 
 async function main() {
   const { proposal: proposalStr } = parseArgs();
@@ -67,9 +67,14 @@ async function main() {
     program.programId,
   );
   const confidentialPayoutPlanPda = deriveConfidentialPayoutPlanPda(proposalPda, program.programId);
+  const refheEnvelopePda = deriveRefheEnvelopePda(proposalPda, program.programId);
   const confidentialPlanInfo = await provider.connection.getAccountInfo(confidentialPayoutPlanPda, "confirmed");
   const confidentialPlan = confidentialPlanInfo
     ? await program.account["confidentialPayoutPlan"].fetch(confidentialPayoutPlanPda)
+    : null;
+  const refheEnvelopeInfo = await provider.connection.getAccountInfo(refheEnvelopePda, "confirmed");
+  const refheEnvelope = refheEnvelopeInfo
+    ? await program.account["refheEnvelope"].fetch(refheEnvelopePda)
     : null;
 
   // Figure out account values for the treasury action
@@ -93,6 +98,10 @@ async function main() {
     console.log(`    Total: ${confidentialPlan.tokenMint ? confidentialPlan.totalAmount.toString() + " raw units" : formatSol(confidentialPlan.totalAmount.toNumber())}`);
     console.log(`    Settlement recipient: ${treasuryRecipient.toBase58()}`);
     console.log(`    Manifest URI: ${confidentialPlan.encryptedManifestUri}`);
+    if (refheEnvelope) {
+      console.log(`    REFHE: ${Object.keys(refheEnvelope.status)[0]} via ${refheEnvelope.modelUri}`);
+      console.log(`    REFHE envelope: ${refheEnvelopePda.toBase58()}`);
+    }
   } else if (proposal.treasuryAction) {
     actionType = Object.keys(proposal.treasuryAction.actionType)[0];
     treasuryRecipient = proposal.treasuryAction.recipient;
@@ -131,6 +140,7 @@ async function main() {
         settlementRecipient: treasuryRecipient,
         treasuryTokenAccount,
         recipientTokenAccount,
+        refheEnvelope: refheEnvelopePda,
         executor: provider.wallet.publicKey,
         tokenProgram,
         systemProgram: SystemProgram.programId,

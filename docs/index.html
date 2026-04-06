@@ -3265,23 +3265,41 @@ body.judge-mode .judge-banner {
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px">
         <div>
           <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">ENCRYPTED MANIFEST URI</label>
-          <input id="createProposalManifestUri" type="text" value="box://privatedao/payroll/epoch-1" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="box:// or https:// encrypted manifest path">
+          <input id="createProposalManifestUri" type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="box:// or https:// encrypted manifest path">
         </div>
         <div>
           <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">MANIFEST HASH (32-BYTE HEX)</label>
-          <input id="createProposalManifestHash" type="text" value="1111111111111111111111111111111111111111111111111111111111111111" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="64 hex chars">
+          <input id="createProposalManifestHash" type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="64 hex chars">
         </div>
         <div>
           <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">CIPHERTEXT HASH (32-BYTE HEX)</label>
-          <input id="createProposalCiphertextHash" type="text" value="2222222222222222222222222222222222222222222222222222222222222222" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="64 hex chars">
+          <input id="createProposalCiphertextHash" type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="64 hex chars">
+        </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">REFHE MODEL URI</label>
+          <input id="createProposalRefheModelUri" type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="box:// or https:// encrypted evaluation model">
+        </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">REFHE POLICY HASH (32-BYTE HEX)</label>
+          <input id="createProposalRefhePolicyHash" type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="64 hex chars">
+        </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">REFHE INPUT HASH (32-BYTE HEX)</label>
+          <input id="createProposalRefheInputCiphertextHash" type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Must match payout ciphertext hash">
+        </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">REFHE EVALUATION KEY HASH (32-BYTE HEX)</label>
+          <input id="createProposalRefheEvaluationKeyHash" type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="64 hex chars">
         </div>
       </div>
       <code id="createProposalCommandHint">yarn create-proposal -- --dao &lt;DAO_PDA&gt; --title "Fund community work"</code>
-      <div style="margin-top:8px;color:var(--text3);line-height:1.7">Best practice for multi-DAO operation: choose the DAO from the filter above, confirm the DAO PDA field matches that DAO, then create the proposal from a wallet that holds that DAO governance token. Confidential payout batches are configured immediately after proposal creation, using only the encrypted batch manifest, hashes, settlement account, and aggregate amount.</div>
+      <div style="margin-top:8px;color:var(--text3);line-height:1.7">Best practice for multi-DAO operation: choose the DAO from the filter above, confirm the DAO PDA field matches that DAO, then create the proposal from a wallet that holds that DAO governance token. Confidential payout batches are configured immediately after proposal creation, using only the encrypted batch manifest, hashes, settlement account, and aggregate amount. Add REFHE inputs only when this proposal must bind encrypted payroll or bonus evaluation to a proposal-scoped on-chain envelope before execution.</div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
         <a class="proposal-proof-link" href="confidential-payments.md" target="_blank">Confidential Payouts</a>
         <a class="proposal-proof-link" href="confidential-payroll-flow.md" target="_blank">Payroll Flow</a>
         <a class="proposal-proof-link" href="confidential-payments-diagram.md" target="_blank">Diagram</a>
+        <a class="proposal-proof-link" href="refhe-protocol.md" target="_blank">REFHE Protocol</a>
+        <a class="proposal-proof-link" href="refhe-operator-flow.md" target="_blank">REFHE Operator Flow</a>
       </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
         <button class="action-btn action-execute" style="flex:0 0 auto" onclick="submitCreateProposalInWallet()">Create In Wallet</button>
@@ -5540,6 +5558,10 @@ function buildCreateProposalCommand() {
   const manifestUri = (document.getElementById('createProposalManifestUri')?.value || '').trim();
   const manifestHash = (document.getElementById('createProposalManifestHash')?.value || '').trim();
   const ciphertextHash = (document.getElementById('createProposalCiphertextHash')?.value || '').trim();
+  const refheModelUri = (document.getElementById('createProposalRefheModelUri')?.value || '').trim();
+  const refhePolicyHash = (document.getElementById('createProposalRefhePolicyHash')?.value || '').trim();
+  const refheInputCiphertextHash = (document.getElementById('createProposalRefheInputCiphertextHash')?.value || '').trim();
+  const refheEvaluationKeyHash = (document.getElementById('createProposalRefheEvaluationKeyHash')?.value || '').trim();
 
   const parts = ['yarn create-proposal --'];
   parts.push(`--dao ${dao || '<DAO_PDA>'}`);
@@ -5561,6 +5583,12 @@ function buildCreateProposalCommand() {
     if (manifestUri) parts.push(`--manifest-uri "${manifestUri.replace(/"/g, '\\"')}"`);
     if (manifestHash) parts.push(`--manifest-hash ${manifestHash}`);
     if (ciphertextHash) parts.push(`--ciphertext-hash ${ciphertextHash}`);
+    if (refheModelUri && refhePolicyHash && refheInputCiphertextHash && refheEvaluationKeyHash) {
+      parts.push(`--refhe-model-uri "${refheModelUri.replace(/"/g, '\\"')}"`);
+      parts.push(`--refhe-policy-hash ${refhePolicyHash}`);
+      parts.push(`--refhe-input-ciphertext-hash ${refheInputCiphertextHash}`);
+      parts.push(`--refhe-evaluation-key-hash ${refheEvaluationKeyHash}`);
+    }
   }
   return parts.join(' ');
 }
@@ -6441,6 +6469,20 @@ function confidentialPayoutBuilderEnabled() {
   return Boolean(selectedConfidentialPayoutType());
 }
 
+function selectedRefheConfig() {
+  return {
+    modelUri: (document.getElementById('createProposalRefheModelUri')?.value || '').trim(),
+    policyHash: (document.getElementById('createProposalRefhePolicyHash')?.value || '').trim(),
+    inputCiphertextHash: (document.getElementById('createProposalRefheInputCiphertextHash')?.value || '').trim(),
+    evaluationKeyHash: (document.getElementById('createProposalRefheEvaluationKeyHash')?.value || '').trim(),
+  };
+}
+
+function refheBuilderEnabled() {
+  const config = selectedRefheConfig();
+  return Boolean(config.modelUri || config.policyHash || config.inputCiphertextHash || config.evaluationKeyHash);
+}
+
 async function buildAnchorInstruction(methodName, keys) {
   const data = await anchorMethodDiscriminator(methodName);
   return new solanaWeb3.TransactionInstruction({
@@ -6660,6 +6702,21 @@ function describeOperationError(error, context = 'operation') {
   if (combined.includes('useconfidentialpayoutexecution')) {
     return 'This proposal carries an encrypted payroll or bonus batch. Next step: execute it through the confidential payout path, not the standard treasury action path.';
   }
+  if (combined.includes('refhesettlementrequired')) {
+    return 'This confidential payout is bound to a REFHE envelope that is not settled yet. Next step: settle the REFHE result bundle first, then execute the payout.';
+  }
+  if (combined.includes('refheverifierprogramrequired')) {
+    return 'The REFHE envelope is missing its verifier program binding. Next step: settle the envelope again with a real verifier program before execution.';
+  }
+  if (combined.includes('refheenvelopemismatch')) {
+    return 'The REFHE envelope does not match the selected proposal or payout plan. Next step: inspect the proposal and use the proposal-bound REFHE PDA only.';
+  }
+  if (combined.includes('invalidrefheenvelope')) {
+    return 'The REFHE envelope payload is incomplete or malformed. Next step: reconfigure it with a valid model URI and real 32-byte hashes.';
+  }
+  if (combined.includes('unauthorizedrefheoperator')) {
+    return 'Only the DAO authority or the proposal proposer can configure or settle this REFHE envelope. Next step: switch to an authorized wallet.';
+  }
   return message || 'The requested operation failed.';
 }
 
@@ -6751,6 +6808,7 @@ async function submitCreateProposalInWallet() {
   const manifestUri = (document.getElementById('createProposalManifestUri')?.value || '').trim();
   const manifestHash = (document.getElementById('createProposalManifestHash')?.value || '').trim();
   const ciphertextHash = (document.getElementById('createProposalCiphertextHash')?.value || '').trim();
+  const refheConfig = selectedRefheConfig();
 
   if (!walletProvider || !wallet) {
     showToast('Connect your wallet first.', 'error');
@@ -6785,6 +6843,9 @@ async function submitCreateProposalInWallet() {
     }
     if (confidentialPayoutBuilderEnabled() && treasuryAction) {
       throw new Error('Confidential payout plans cannot be combined with direct treasury actions on the same proposal');
+    }
+    if (refheBuilderEnabled() && !confidentialPayoutBuilderEnabled()) {
+      throw new Error('REFHE envelopes require a confidential payout proposal');
     }
 
     const data = concatBytes(
@@ -6849,6 +6910,39 @@ async function submitCreateProposalInWallet() {
           data: payoutData,
         });
         payoutSignature = await signAndBroadcastTransaction(payoutIx, 'Confidential payout plan submitted');
+
+        if (refheBuilderEnabled()) {
+          if (!refheConfig.modelUri || !refheConfig.policyHash || !refheConfig.inputCiphertextHash || !refheConfig.evaluationKeyHash) {
+            throw new Error('REFHE requires model URI, policy hash, input ciphertext hash, and evaluation key hash');
+          }
+          if (refheConfig.inputCiphertextHash.replace(/^0x/i, '').toLowerCase() !== ciphertextHash.replace(/^0x/i, '').toLowerCase()) {
+            throw new Error('REFHE input ciphertext hash must match the confidential payout ciphertext hash');
+          }
+          const refheEnvelopePk = new solanaWeb3.PublicKey(deriveRefheEnvelopePda(proposalPk.toBase58()));
+          const refheData = concatBytes(
+            await anchorMethodDiscriminator('configure_refhe_envelope'),
+            encodeAnchorString(refheConfig.modelUri),
+            new Uint8Array(parseRequiredHashHex(refheConfig.policyHash, 'REFHE policy hash')),
+            new Uint8Array(parseRequiredHashHex(refheConfig.inputCiphertextHash, 'REFHE input ciphertext hash')),
+            new Uint8Array(parseRequiredHashHex(refheConfig.evaluationKeyHash, 'REFHE evaluation key hash')),
+          );
+          const refheIx = new solanaWeb3.TransactionInstruction({
+            programId: programPk,
+            keys: [
+              { pubkey: new solanaWeb3.PublicKey(dao.pubkey), isSigner: false, isWritable: false },
+              { pubkey: proposalPk, isSigner: false, isWritable: true },
+              { pubkey: payoutPlanPk, isSigner: false, isWritable: false },
+              { pubkey: refheEnvelopePk, isSigner: false, isWritable: true },
+              { pubkey: new solanaWeb3.PublicKey(wallet), isSigner: true, isWritable: true },
+              { pubkey: solanaWeb3.SystemProgram.programId, isSigner: false, isWritable: false },
+            ],
+            data: refheData,
+          });
+          const refheSignature = await signAndBroadcastTransaction(refheIx, 'REFHE envelope submitted');
+          if (refheSignature) {
+            setTimeout(() => window.open(solscanTx(refheSignature), '_blank', 'noopener'), 540);
+          }
+        }
       }
 
       currentSelectedProposalPubkey = proposalPk.toBase58();
@@ -7404,6 +7498,7 @@ async function executeSelectedProposalInWallet() {
     return;
   }
   const confidentialPlan = currentSelectedProposal.confidentialPayoutPlan || null;
+  const refheEnvelope = currentSelectedProposal.refheEnvelope || null;
   const action = currentSelectedProposal.treasuryAction;
   if (!action && !confidentialPlan) {
     showToast('Selected proposal has no treasury action.', 'error');
@@ -7473,6 +7568,7 @@ async function executeSelectedProposalInWallet() {
           { pubkey: recipientPk, isSigner: false, isWritable: true },
           { pubkey: treasuryTokenPk, isSigner: false, isWritable: true },
           { pubkey: recipientTokenPk, isSigner: false, isWritable: true },
+          { pubkey: new solanaWeb3.PublicKey(refheEnvelope ? refheEnvelope.pubkey : deriveRefheEnvelopePda(currentSelectedProposal.pubkey)), isSigner: false, isWritable: false },
           { pubkey: executorPk, isSigner: true, isWritable: false },
           { pubkey: executeTokenProgram, isSigner: false, isWritable: false },
           { pubkey: solanaWeb3.SystemProgram.programId, isSigner: false, isWritable: false },
@@ -7750,6 +7846,49 @@ function decodeConfidentialPayoutPlanAccount(data, pubkey) {
   };
 }
 
+function decodeRefheEnvelopeAccount(data, pubkey) {
+  const o = { value: 8 };
+  const dao = readPubkey(data, o);
+  const proposal = readPubkey(data, o);
+  const payoutPlan = readPubkey(data, o);
+  const configuredBy = readPubkey(data, o);
+  const hasSettledBy = data[o.value]; o.value += 1;
+  const settledBy = hasSettledBy === 1 ? readPubkey(data, o) : null;
+  const modelUri = parseString(data, o);
+  const policyHash = Array.from(data.slice(o.value, o.value + 32)).map((byte) => byte.toString(16).padStart(2, '0')).join(''); o.value += 32;
+  const inputCiphertextHash = Array.from(data.slice(o.value, o.value + 32)).map((byte) => byte.toString(16).padStart(2, '0')).join(''); o.value += 32;
+  const evaluationKeyHash = Array.from(data.slice(o.value, o.value + 32)).map((byte) => byte.toString(16).padStart(2, '0')).join(''); o.value += 32;
+  const resultCiphertextHash = Array.from(data.slice(o.value, o.value + 32)).map((byte) => byte.toString(16).padStart(2, '0')).join(''); o.value += 32;
+  const resultCommitmentHash = Array.from(data.slice(o.value, o.value + 32)).map((byte) => byte.toString(16).padStart(2, '0')).join(''); o.value += 32;
+  const proofBundleHash = Array.from(data.slice(o.value, o.value + 32)).map((byte) => byte.toString(16).padStart(2, '0')).join(''); o.value += 32;
+  const hasVerifierProgram = data[o.value]; o.value += 1;
+  const verifierProgram = hasVerifierProgram === 1 ? readPubkey(data, o) : null;
+  const statusIdx = data[o.value]; o.value += 1;
+  const configuredAt = parseI64(data, o.value); o.value += 8;
+  const settledAt = parseI64(data, o.value); o.value += 8;
+  const bump = data[o.value];
+  return {
+    pubkey: pubkey.toBase58(),
+    dao,
+    proposal,
+    payoutPlan,
+    configuredBy,
+    settledBy,
+    modelUri,
+    policyHash,
+    inputCiphertextHash,
+    evaluationKeyHash,
+    resultCiphertextHash,
+    resultCommitmentHash,
+    proofBundleHash,
+    verifierProgram,
+    status: ['Configured', 'Settled'][statusIdx] || `Unknown(${statusIdx})`,
+    configuredAt,
+    settledAt,
+    bump,
+  };
+}
+
 function decodeZkVerificationReceiptAccount(data, pubkey) {
   const o = { value: 8 };
   const dao = readPubkey(data, o);
@@ -7870,6 +8009,14 @@ function deriveConfidentialPayoutPlanPda(proposalPubkey) {
     programPk
   );
   return planPk.toBase58();
+}
+
+function deriveRefheEnvelopePda(proposalPubkey) {
+  const [envelopePk] = solanaWeb3.PublicKey.findProgramAddressSync(
+    [new TextEncoder().encode('refhe-envelope'), new solanaWeb3.PublicKey(proposalPubkey).toBytes()],
+    programPk
+  );
+  return envelopePk.toBase58();
 }
 
 function deriveZkReceiptPda(proposalPubkey, layerSeedByte) {
@@ -8013,6 +8160,8 @@ function renderProposalDetail(p, nowTs) {
   const zkCardState = getProposalZkCardState(p);
   const zkReadiness = summarizeZkEnforcedReadiness(p);
   const confidentialPlan = p.confidentialPayoutPlan || null;
+  const refheEnvelope = p.refheEnvelope || null;
+  const refheReadiness = summarizeRefheReadiness(p);
   const detailGrid = document.getElementById('proposalDetailGrid');
   const proofLinks = document.getElementById('proposalProofLinks');
   const commandGrid = document.getElementById('proposalCommandGrid');
@@ -8045,6 +8194,9 @@ function renderProposalDetail(p, nowTs) {
   const payoutSummary = confidentialPlan
     ? `${confidentialPlan.payoutType} · ${confidentialPlan.assetType}<br>${confidentialPlan.recipientCount} recipients · ${confidentialPlan.totalAmount} ${confidentialPlan.assetType === 'Sol' ? 'lamports' : 'raw units'}<br>Settlement ${confidentialPlan.settlementRecipient}<br>Status ${confidentialPlan.status}`
     : 'No confidential payout plan attached';
+  const refheSummary = refheEnvelope
+    ? `${refheEnvelope.status} · ${refheEnvelope.modelUri}<br>Verifier ${refheEnvelope.verifierProgram ? shortPk(refheEnvelope.verifierProgram) : 'unset'}<br>Policy ${shortPk(refheEnvelope.policyHash)} · Input ${shortPk(refheEnvelope.inputCiphertextHash)}`
+    : 'No REFHE envelope attached';
 
   phaseEl.textContent = `${paddedId} · ${phase}`;
   introEl.textContent = `The selected proposal is live on devnet. Use this surface to understand the current phase, take the valid next step, and verify the resulting state on chain.`;
@@ -8087,6 +8239,10 @@ function renderProposalDetail(p, nowTs) {
       <div class="proposal-detail-value">${payoutSummary}</div>
     </div>
     <div class="proposal-detail-box">
+      <div class="proposal-detail-label">REFHE ENVELOPE</div>
+      <div class="proposal-detail-value">${refheSummary}</div>
+    </div>
+    <div class="proposal-detail-box">
       <div class="proposal-detail-label">ADDRESSES</div>
       <div class="proposal-detail-value">Proposal: ${p.pubkey}<br>DAO: ${p.dao}<br>Treasury: ${treasuryPda}</div>
     </div>
@@ -8114,6 +8270,10 @@ function renderProposalDetail(p, nowTs) {
       <div class="proposal-detail-label">ZK ENFORCED READINESS</div>
       <div class="proposal-detail-value">${zkReadiness.status}<br>${zkReadiness.copy}<br>${zkReadiness.nextStep}</div>
     </div>
+    <div class="proposal-detail-box">
+      <div class="proposal-detail-label">REFHE READINESS</div>
+      <div class="proposal-detail-value">${refheReadiness.status}<br>${refheReadiness.copy}<br>${refheReadiness.nextStep}</div>
+    </div>
   `;
 
   proofLinks.innerHTML = `
@@ -8122,7 +8282,10 @@ function renderProposalDetail(p, nowTs) {
     <a class="proposal-proof-link" href="${solscanAccount(treasuryPda)}" target="_blank">Treasury Explorer</a>
     <a class="proposal-proof-link" href="live-proof.md" target="_blank">Live Devnet Proof</a>
     <a class="proposal-proof-link" href="zk-enforced-operator-flow.md" target="_blank">ZK Operator Flow</a>
+    <a class="proposal-proof-link" href="refhe-protocol.md" target="_blank">REFHE Protocol</a>
+    <a class="proposal-proof-link" href="refhe-operator-flow.md" target="_blank">REFHE Operator Flow</a>
     ${confidentialPlan ? `<a class="proposal-proof-link" href="${solscanAccount(confidentialPlan.pubkey)}" target="_blank">Payout Plan PDA</a>` : ''}
+    ${refheEnvelope ? `<a class="proposal-proof-link" href="${solscanAccount(refheEnvelope.pubkey)}" target="_blank">REFHE Envelope PDA</a>` : ''}
     <button class="proposal-proof-link" type="button" onclick="cancelSelectedProposalInWallet()">Cancel in Wallet</button>
     <button class="proposal-proof-link" type="button" onclick="vetoSelectedProposalInWallet()">Veto in Wallet</button>
     <button class="proposal-proof-link" type="button" onclick="finalizeSelectedProposalInWallet()">Finalize in Wallet</button>
@@ -8166,8 +8329,13 @@ function renderProposalDetail(p, nowTs) {
       <code>${confidentialPlan ? `npm run inspect:confidential-payout -- --proposal ${p.pubkey}` : `npm run configure:confidential-payout -- --dao ${p.dao} --proposal ${p.pubkey} --manifest-uri "box://privatedao/payroll/epoch-1"`}</code>
     </div>
     <div class="proposal-command-box">
+      <div class="proposal-detail-label">REFHE PROTOCOL</div>
+      <div style="color:var(--text2);line-height:1.8">${refheReadiness.copy} ${refheReadiness.nextStep}</div>
+      <code>${refheEnvelope ? `npm run inspect:refhe -- --proposal ${p.pubkey}` : `Create the REFHE envelope from the proposal builder above, then inspect it with: npm run inspect:refhe -- --proposal ${p.pubkey}`}</code>
+    </div>
+    <div class="proposal-command-box">
       <div class="proposal-detail-label">EXECUTE</div>
-      <div style="color:var(--text2);line-height:1.8">${confidentialPlan ? 'Execute the confidential payout path only after the proposal passes and clears timelock. The treasury releases the aggregate batch to the settlement recipient, while the encrypted manifest remains off-chain.' : 'Execute only after the proposal passes and clears timelock.'}</div>
+      <div style="color:var(--text2);line-height:1.8">${confidentialPlan ? (refheEnvelope ? 'Execute the confidential payout path only after the proposal passes, clears timelock, and the REFHE envelope is settled with a verifier binding. The treasury releases the aggregate batch to the settlement recipient while the encrypted manifest stays off-chain.' : 'Execute the confidential payout path only after the proposal passes and clears timelock. The treasury releases the aggregate batch to the settlement recipient, while the encrypted manifest remains off-chain.') : 'Execute only after the proposal passes and clears timelock.'}</div>
       <code>yarn execute -- --proposal ${p.pubkey}</code>
     </div>
   `;
@@ -8270,6 +8438,49 @@ function summarizeZkEnforcedReadiness(proposal) {
     status: 'Pending',
     copy: 'Receipt hydration has not finished yet for this proposal.',
     nextStep: 'Refresh the selected proposal or inspect it through the CLI before enabling zk_enforced.',
+  };
+}
+
+function summarizeRefheReadiness(proposal) {
+  const confidentialPlan = proposal?.confidentialPayoutPlan || null;
+  const envelope = proposal?.refheEnvelope || null;
+
+  if (!confidentialPlan) {
+    return {
+      status: 'Not Required',
+      copy: 'This proposal does not use a confidential payroll or bonus batch, so REFHE enforcement is not part of its execution boundary.',
+      nextStep: 'Use REFHE only for encrypted payroll, bonus, or grant batches that need proposal-bound encrypted evaluation.',
+    };
+  }
+
+  if (!envelope) {
+    return {
+      status: 'Configure',
+      copy: 'The confidential payout batch exists, but no REFHE envelope is bound to this proposal yet.',
+      nextStep: 'Configure the REFHE envelope immediately after the payout plan when encrypted evaluation must gate execution.',
+    };
+  }
+
+  if (envelope.status !== 'Settled') {
+    return {
+      status: 'Settlement Required',
+      copy: `REFHE is configured for ${envelope.modelUri}, but the result bundle has not been settled on-chain yet.`,
+      nextStep: 'Run settle:refhe with the result ciphertext hash, result commitment hash, proof bundle hash, and verifier program before execution.',
+    };
+  }
+
+  if (!envelope.verifierProgram) {
+    return {
+      status: 'Verifier Required',
+      copy: 'The REFHE envelope is settled but does not expose a verifier program binding.',
+      nextStep: 'Re-settle the REFHE envelope with a real verifier program before executing the confidential payout.',
+    };
+  }
+
+  return {
+    status: 'Ready',
+    copy: `REFHE is settled and bound to verifier ${shortPk(envelope.verifierProgram)} for this proposal-bound confidential payout path.`,
+    nextStep: 'If the proposal has passed and timelock is cleared, execute the confidential payout through the REFHE-gated path.',
   };
 }
 
@@ -8467,6 +8678,7 @@ function proposalCardHtml(p, nowTs) {
   const phase = computePhase(p, nowTs);
   const zkCardState = getProposalZkCardState(p);
   const confidentialPlan = p.confidentialPayoutPlan || null;
+  const refheEnvelope = p.refheEnvelope || null;
   const className = phase === "Commit"
     ? "phase-commit"
     : phase === "Reveal"
@@ -8505,6 +8717,7 @@ function proposalCardHtml(p, nowTs) {
         <span>${zkCardState.copy}</span>
       </div>
       ${confidentialPlan ? `<div class="proposal-phase-copy" style="margin-top:10px;background:rgba(126,87,255,0.08);border-color:rgba(126,87,255,0.18)"><strong>Confidential ${confidentialPlan.payoutType}</strong><span>${confidentialPlan.recipientCount} encrypted recipients · settlement ${shortPk(confidentialPlan.settlementRecipient)}</span></div>` : ''}
+      ${refheEnvelope ? `<div class="proposal-phase-copy" style="margin-top:10px;background:rgba(57,204,255,0.08);border-color:rgba(57,204,255,0.18)"><strong>REFHE ${refheEnvelope.status}</strong><span>${refheEnvelope.modelUri} · ${refheEnvelope.verifierProgram ? shortPk(refheEnvelope.verifierProgram) : 'verifier pending'}</span></div>` : ''}
       <div class="proposal-meta">
         <div class="meta-kv"><div class="meta-k">STATUS</div><div class="meta-v">${p.status}</div></div>
         <div class="meta-kv"><div class="meta-k">COMMITS</div><div class="meta-v">${p.commitCount}</div></div>
@@ -8598,11 +8811,15 @@ async function loadLiveProposals() {
 
       const policyPdas = proposals.map((proposal) => new solanaWeb3.PublicKey(deriveProposalZkPolicyPda(proposal.pubkey)));
       const payoutPlanPdas = proposals.map((proposal) => new solanaWeb3.PublicKey(deriveConfidentialPayoutPlanPda(proposal.pubkey)));
+      const refheEnvelopePdas = proposals.map((proposal) => new solanaWeb3.PublicKey(deriveRefheEnvelopePda(proposal.pubkey)));
       const policyInfos = policyPdas.length
         ? await withRpcFallback((activeConnection) => activeConnection.getMultipleAccountsInfo(policyPdas, 'confirmed'))
         : [];
       const payoutInfos = payoutPlanPdas.length
         ? await withRpcFallback((activeConnection) => activeConnection.getMultipleAccountsInfo(payoutPlanPdas, 'confirmed'))
+        : [];
+      const refheInfos = refheEnvelopePdas.length
+        ? await withRpcFallback((activeConnection) => activeConnection.getMultipleAccountsInfo(refheEnvelopePdas, 'confirmed'))
         : [];
 
       proposals.forEach((proposal, index) => {
@@ -8621,6 +8838,11 @@ async function loadLiveProposals() {
         const payoutInfo = payoutInfos[index];
         proposal.confidentialPayoutPlan = payoutInfo
           ? decodeConfidentialPayoutPlanAccount(payoutInfo.data, payoutPlanPdas[index])
+          : null;
+
+        const refheInfo = refheInfos[index];
+        proposal.refheEnvelope = refheInfo
+          ? decodeRefheEnvelopeAccount(refheInfo.data, refheEnvelopePdas[index])
           : null;
       });
       currentReadPath = READ_API_BASE ? 'Direct RPC Fallback' : 'Direct RPC';
@@ -8881,6 +9103,10 @@ observeReveal();
   'createProposalManifestUri',
   'createProposalManifestHash',
   'createProposalCiphertextHash',
+  'createProposalRefheModelUri',
+  'createProposalRefhePolicyHash',
+  'createProposalRefheInputCiphertextHash',
+  'createProposalRefheEvaluationKeyHash',
 ].forEach(id => {
   const el = document.getElementById(id);
   if (el) el.addEventListener('input', () => syncCreateProposalCommand());

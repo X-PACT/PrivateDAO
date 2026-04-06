@@ -1618,6 +1618,10 @@ describe("PrivateDAO", () => {
       [Buffer.from("payout-plan"), payoutProposalPda.toBuffer()],
       program.programId,
     );
+    const [refheEnvelopePda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("refhe-envelope"), payoutProposalPda.toBuffer()],
+      program.programId,
+    );
     const settlementRecipient = Keypair.generate();
     const fundSettlementRecipient = new Transaction().add(
       SystemProgram.transfer({
@@ -1628,6 +1632,7 @@ describe("PrivateDAO", () => {
     );
     await provider.sendAndConfirm(fundSettlementRecipient, []);
 
+    const payoutCiphertextHash = [...crypto.randomBytes(32)];
     await program.methods
       .configureConfidentialPayoutPlan(
         { salary: {} },
@@ -1638,7 +1643,7 @@ describe("PrivateDAO", () => {
         new BN(50_000_000),
         "box://privatedao/payroll/epoch-1",
         [...crypto.randomBytes(32)],
-        [...crypto.randomBytes(32)],
+        payoutCiphertextHash,
       )
       .accounts({
         dao: payoutDaoPda,
@@ -1654,6 +1659,27 @@ describe("PrivateDAO", () => {
     assert.deepEqual(plan.assetType, { sol: {} });
     assert.equal(plan.recipientCount, 3);
     assert.equal(plan.totalAmount.toString(), "50000000");
+
+    await program.methods
+      .configureRefheEnvelope(
+        "box://privatedao/refhe/payroll-eval-epoch-1",
+        [...crypto.randomBytes(32)],
+        payoutCiphertextHash,
+        [...crypto.randomBytes(32)],
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        confidentialPayoutPlan: payoutPlanPda,
+        refheEnvelope: refheEnvelopePda,
+        operator: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const refheEnvelope = await program.account["refheEnvelope"].fetch(refheEnvelopePda);
+    assert.equal(refheEnvelope.modelUri, "box://privatedao/refhe/payroll-eval-epoch-1");
+    assert.deepEqual(refheEnvelope.status, { configured: {} });
 
     const [treasuryPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("treasury"), payoutDaoPda.toBuffer()],
@@ -1742,6 +1768,44 @@ describe("PrivateDAO", () => {
       assert.include(err.toString(), "UseConfidentialPayoutExecution");
     }
 
+    try {
+      await program.methods
+        .executeConfidentialPayoutPlan()
+        .accounts({
+          dao: payoutDaoPda,
+          proposal: payoutProposalPda,
+          confidentialPayoutPlan: payoutPlanPda,
+          treasury: treasuryPda,
+          settlementRecipient: settlementRecipient.publicKey,
+          treasuryTokenAccount: treasuryPda,
+          recipientTokenAccount: treasuryPda,
+          refheEnvelope: refheEnvelopePda,
+          executor: authority.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("REFHE-bound payout should require a settled envelope");
+    } catch (err: any) {
+      assert.include(err.toString(), "RefheSettlementRequired");
+    }
+
+    await program.methods
+      .settleRefheEnvelope(
+        [...crypto.randomBytes(32)],
+        [...crypto.randomBytes(32)],
+        [...crypto.randomBytes(32)],
+        program.programId,
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        confidentialPayoutPlan: payoutPlanPda,
+        refheEnvelope: refheEnvelopePda,
+        operator: authority.publicKey,
+      })
+      .rpc();
+
     await program.methods
       .executeConfidentialPayoutPlan()
       .accounts({
@@ -1752,6 +1816,7 @@ describe("PrivateDAO", () => {
         settlementRecipient: settlementRecipient.publicKey,
         treasuryTokenAccount: treasuryPda,
         recipientTokenAccount: treasuryPda,
+        refheEnvelope: refheEnvelopePda,
         executor: authority.publicKey,
         tokenProgram: TOKEN_PROGRAM_ID,
         systemProgram: SystemProgram.programId,
@@ -1761,12 +1826,14 @@ describe("PrivateDAO", () => {
     const treasuryAfter = await provider.connection.getBalance(treasuryPda);
     const recipientAfter = await provider.connection.getBalance(settlementRecipient.publicKey);
     const executedPlan = await program.account["confidentialPayoutPlan"].fetch(payoutPlanPda);
+    const settledRefheEnvelope = await program.account["refheEnvelope"].fetch(refheEnvelopePda);
     const executedProposal = await program.account["proposal"].fetch(payoutProposalPda);
     assert.equal(treasuryBefore - treasuryAfter, 50_000_000);
     assert.equal(recipientAfter - recipientBefore, 50_000_000);
     assert.deepEqual(executedPlan.status, { funded: {} });
+    assert.deepEqual(settledRefheEnvelope.status, { settled: {} });
     assert.isTrue(executedProposal.isExecuted);
-    console.log("  ✓ confidential salary batch configured and executed through the dedicated path");
+    console.log("  ✓ confidential salary batch configured and executed through REFHE-gated settlement");
   });
 
   it("verifies commitment math — deterministic + vote/salt sensitive", () => {

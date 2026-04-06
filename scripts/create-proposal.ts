@@ -13,6 +13,7 @@ import { PublicKey, SystemProgram, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import {
   associatedTokenAddressForMint,
   deriveConfidentialPayoutPlanPda,
+  deriveRefheEnvelopePda,
   formatSol,
   formatTimestamp,
   parseArgs,
@@ -40,6 +41,10 @@ async function main() {
     manifestUri,
     manifestHash,
     ciphertextHash,
+    refheModelUri,
+    refhePolicyHash,
+    refheInputCiphertextHash,
+    refheEvaluationKeyHash,
   } = parseArgs();
 
   if (!daoPdaStr) {
@@ -153,6 +158,12 @@ async function main() {
     manifestHash: number[];
     ciphertextHash: number[];
   } = null;
+  let refhePayload: null | {
+    modelUri: string;
+    policyHash: number[];
+    inputCiphertextHash: number[];
+    evaluationKeyHash: number[];
+  } = null;
 
   if (confidentialEnabled) {
     const payoutTypeNormalized = String(confidentialType || "salary").toLowerCase();
@@ -228,6 +239,35 @@ async function main() {
     console.log(`   Settlement recipient: ${settlementRecipientPk.toBase58()}`);
     console.log(`   Recipient count: ${count}`);
     console.log(`   Manifest URI: ${uri}`);
+
+    const refheEnabled = Boolean(refheModelUri || refhePolicyHash || refheInputCiphertextHash || refheEvaluationKeyHash);
+    if (refheEnabled) {
+      if (!refheModelUri || !refhePolicyHash || !refheInputCiphertextHash || !refheEvaluationKeyHash) {
+        console.error("Error: REFHE envelope requires --refhe-model-uri, --refhe-policy-hash, --refhe-input-ciphertext-hash, and --refhe-evaluation-key-hash");
+        process.exit(1);
+      }
+      const parseHashHex = (value: string | number | boolean | undefined, label: string) => {
+        const buffer = Buffer.from(String(value || "").trim().replace(/^0x/i, ""), "hex");
+        if (buffer.length !== 32) {
+          console.error(`Error: ${label} must be a 32-byte hex value`);
+          process.exit(1);
+        }
+        return [...buffer];
+      };
+      const refheInput = String(refheInputCiphertextHash).replace(/^0x/i, "").toLowerCase();
+      const payoutCiphertext = String(ciphertextHash).replace(/^0x/i, "").toLowerCase();
+      if (refheInput !== payoutCiphertext) {
+        console.error("Error: --refhe-input-ciphertext-hash must match the confidential payout --ciphertext-hash");
+        process.exit(1);
+      }
+      refhePayload = {
+        modelUri: String(refheModelUri).trim(),
+        policyHash: parseHashHex(refhePolicyHash, "REFHE policy hash"),
+        inputCiphertextHash: parseHashHex(refheInputCiphertextHash, "REFHE input ciphertext hash"),
+        evaluationKeyHash: parseHashHex(refheEvaluationKeyHash, "REFHE evaluation key hash"),
+      };
+      console.log(`   REFHE model URI: ${refhePayload.modelUri}`);
+    }
   }
 
   const tx = await program.methods
@@ -268,6 +308,30 @@ async function main() {
     console.log(`   Confidential payout plan: ${payoutPlanPda.toBase58()}`);
     console.log(`   Payout config tx:        ${confidentialTx}`);
     console.log(`   Payout config link:      ${solscanTxUrl(confidentialTx!)}`);
+
+    if (refhePayload) {
+      const refheEnvelopePda = deriveRefheEnvelopePda(proposalPda, program.programId);
+      const refheTx = await program.methods
+        .configureRefheEnvelope(
+          refhePayload.modelUri,
+          refhePayload.policyHash,
+          refhePayload.inputCiphertextHash,
+          refhePayload.evaluationKeyHash,
+        )
+        .accounts({
+          dao: daoPda,
+          proposal: proposalPda,
+          confidentialPayoutPlan: payoutPlanPda,
+          refheEnvelope: refheEnvelopePda,
+          operator: provider.wallet.publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+
+      console.log(`   REFHE envelope:         ${refheEnvelopePda.toBase58()}`);
+      console.log(`   REFHE config tx:        ${refheTx}`);
+      console.log(`   REFHE config link:      ${solscanTxUrl(refheTx)}`);
+    }
   }
 
   const proposal = await program.account["proposal"].fetch(proposalPda);

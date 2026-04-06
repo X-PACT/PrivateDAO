@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-06T02:00:43.444Z",
+  "generatedAt": "2026-04-06T02:56:06.404Z",
   "packageDecision": "repository-strong-but-external-blockers-remain",
   "coreArtifacts": [
     "docs/mainnet-readiness.generated.md",
@@ -22,6 +22,7 @@
     "declaredSubmissionStatuses": {
       "governanceLifecycle": "verified",
       "confidentialPayoutSurface": "verified",
+      "refheProtocolSurface": "verified",
       "backendReadNodeSurface": "verified",
       "securityReasoning": "verified",
       "supplyChainSurface": "verified",

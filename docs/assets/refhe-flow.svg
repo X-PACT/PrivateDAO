@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" fill="none">
+  <rect width="1280" height="720" fill="#07111F"/>
+  <text x="80" y="92" fill="#E8FBFF" font-family="Arial, sans-serif" font-size="34" font-weight="700">PrivateDAO REFHE Protocol</text>
+  <text x="80" y="128" fill="#82A6B8" font-family="Arial, sans-serif" font-size="18">Proposal-bound encrypted payroll and bonus settlement with on-chain gating.</text>
+
+  <g>
+    <rect x="80" y="190" width="230" height="120" rx="24" fill="#0E1B2A" stroke="#2AD4FF" stroke-opacity=".35"/>
+    <text x="108" y="236" fill="#9FDFFF" font-family="Arial, sans-serif" font-size="16" font-weight="700">1. Confidential Payout Plan</text>
+    <text x="108" y="268" fill="#E8FBFF" font-family="Arial, sans-serif" font-size="15">Manifest URI</text>
+    <text x="108" y="292" fill="#E8FBFF" font-family="Arial, sans-serif" font-size="15">Ciphertext hash</text>
+  </g>
+
+  <g>
+    <rect x="360" y="190" width="250" height="120" rx="24" fill="#111D31" stroke="#3FD8FF" stroke-opacity=".42"/>
+    <text x="388" y="236" fill="#9FDFFF" font-family="Arial, sans-serif" font-size="16" font-weight="700">2. REFHE Envelope</text>
+    <text x="388" y="268" fill="#E8FBFF" font-family="Arial, sans-serif" font-size="15">Model URI + policy hash</text>
+    <text x="388" y="292" fill="#E8FBFF" font-family="Arial, sans-serif" font-size="15">Evaluation key + input hash</text>
+  </g>
+
+  <g>
+    <rect x="660" y="190" width="250" height="120" rx="24" fill="#131D30" stroke="#46E1B7" stroke-opacity=".4"/>
+    <text x="688" y="236" fill="#A2FFE1" font-family="Arial, sans-serif" font-size="16" font-weight="700">3. Encrypted Evaluation</text>
+    <text x="688" y="268" fill="#E8FBFF" font-family="Arial, sans-serif" font-size="15">Off-chain encrypted compute</text>
+    <text x="688" y="292" fill="#E8FBFF" font-family="Arial, sans-serif" font-size="15">Result bundle prepared</text>
+  </g>
+
+  <g>
+    <rect x="960" y="190" width="240" height="120" rx="24" fill="#1A162A" stroke="#B46FFF" stroke-opacity=".45"/>
+    <text x="988" y="236" fill="#D9B5FF" font-family="Arial, sans-serif" font-size="16" font-weight="700">4. Settled On-Chain</text>
+    <text x="988" y="268" fill="#E8FBFF" font-family="Arial, sans-serif" font-size="15">Result hash + proof bundle</text>
+    <text x="988" y="292" fill="#E8FBFF" font-family="Arial, sans-serif" font-size="15">Verifier program bound</text>
+  </g>
+
+  <path d="M310 250h42" stroke="#2AD4FF" stroke-width="4" stroke-linecap="round"/>
+  <path d="M610 250h42" stroke="#46E1B7" stroke-width="4" stroke-linecap="round"/>
+  <path d="M910 250h42" stroke="#B46FFF" stroke-width="4" stroke-linecap="round"/>
+
+  <g>
+    <rect x="260" y="430" width="760" height="164" rx="28" fill="#091423" stroke="#FFFFFF" stroke-opacity=".08"/>
+    <text x="300" y="484" fill="#E8FBFF" font-family="Arial, sans-serif" font-size="22" font-weight="700">Execution Gate</text>
+    <text x="300" y="526" fill="#9BC2D2" font-family="Arial, sans-serif" font-size="18">If the REFHE envelope exists, PrivateDAO rejects confidential payout execution until:</text>
+    <text x="330" y="562" fill="#E8FBFF" font-family="Arial, sans-serif" font-size="18">• envelope status = Settled</text>
+    <text x="330" y="592" fill="#E8FBFF" font-family="Arial, sans-serif" font-size="18">• verifier program is present</text>
+    <text x="330" y="622" fill="#E8FBFF" font-family="Arial, sans-serif" font-size="18">• proposal, DAO, and payout plan all match</text>
+  </g>
+</svg>

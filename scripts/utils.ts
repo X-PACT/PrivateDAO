@@ -131,6 +131,16 @@ export function deriveConfidentialPayoutPlanPda(
   )[0];
 }
 
+export function deriveRefheEnvelopePda(
+  proposal: PublicKey,
+  programId: PublicKey,
+): PublicKey {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("refhe-envelope"), proposal.toBuffer()],
+    programId,
+  )[0];
+}
+
 export async function resolveTokenProgramForMint(
   connection: Connection,
   mint: PublicKey,

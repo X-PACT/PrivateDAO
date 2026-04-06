@@ -2,7 +2,7 @@
   "project": "PrivateDAO",
   "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
   "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
-  "generatedAt": "2026-04-06T02:00:31.419Z",
+  "generatedAt": "2026-04-06T02:55:54.346Z",
   "acceptanceDecision": "repository-strong-but-external-blockers-remain",
   "summary": {
     "acceptedInRepo": 8,
@@ -12,6 +12,7 @@
     "declaredSubmissionStatuses": {
       "governanceLifecycle": "verified",
       "confidentialPayoutSurface": "verified",
+      "refheProtocolSurface": "verified",
       "backendReadNodeSurface": "verified",
       "securityReasoning": "verified",
       "supplyChainSurface": "verified",

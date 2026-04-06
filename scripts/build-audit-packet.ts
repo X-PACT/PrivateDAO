@@ -130,6 +130,11 @@ ${Object.entries(proof.transactions)
 - Confidential payroll flow: \`docs/confidential-payroll-flow.md\`
 - Confidential payouts diagram: \`docs/confidential-payments-diagram.md\`
 - Confidential payouts audit scope: \`docs/confidential-payments-audit-scope.md\`
+- REFHE protocol: \`docs/refhe-protocol.md\`
+- REFHE operator flow: \`docs/refhe-operator-flow.md\`
+- REFHE security model: \`docs/refhe-security-model.md\`
+- REFHE audit scope: \`docs/refhe-audit-scope.md\`
+- REFHE flow diagram: \`docs/assets/refhe-flow.svg\`
 - Integrity note: \`docs/cryptographic-integrity.md\`
 - Cryptographic posture: \`docs/cryptographic-posture.md\`
 - Supply-chain security note: \`docs/supply-chain-security.md\`
@@ -251,6 +256,8 @@ ${submission.packages.proof.map((entry) => `- \`${entry}\``).join("\n")}
 - \`docs/zk-proof-registry.json\`
 - \`docs/performance-metrics.json\`
 - \`docs/load-test-report.md\`
+- \`docs/devnet-scale-profiles.md\`
+- \`docs/devnet-350-wave-plan.md\`
 - \`docs/devnet-multi-proposal-report.json\`
 - \`docs/devnet-multi-proposal-report.md\`
 - \`docs/devnet-race-report.json\`
