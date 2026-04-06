@@ -34,6 +34,7 @@ cd /home/x-pact/PrivateDAO
 npm run verify:read-node
 curl http://127.0.0.1:8787/healthz
 curl http://127.0.0.1:8787/api/v1/metrics
+curl http://127.0.0.1:8787/api/v1/ops/snapshot
 ```
 
 ## Step 4
@@ -56,6 +57,9 @@ Confirm in `Diagnostics`:
 
 - `READ PATH = Backend Indexer`
 - `RPC HEALTH = Healthy`
+- `READ NODE METRICS` shows live request counters
+- `REFHE BACKEND` shows backend coverage
+- `350-WALLET PROFILE` shows the staged saturation plan
 - proposal loading works without repeated browser-side RPC strain
 
 ## Production notes

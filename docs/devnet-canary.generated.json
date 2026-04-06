@@ -1,27 +1,27 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-06T11:12:09.557Z",
+  "generatedAt": "2026-04-06T11:30:42.601Z",
   "network": "devnet",
   "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
   "primaryRpc": {
     "label": "primary",
     "url": "https://api.devnet.solana.com",
     "version": "3.1.10",
-    "slot": 453647672,
-    "blockhash": "7ih9wJwBWYhX35p26tUDZ6eEtjYSGgPQ3JXYnNjFaavY",
-    "lastValidBlockHeight": 441526083,
-    "versionLatencyMs": 1409,
-    "blockhashLatencyMs": 240
+    "slot": 453650616,
+    "blockhash": "EQTgdaiL7FKaFMQhrzE5F2zzcumNih8yGftsTt96BjBT",
+    "lastValidBlockHeight": 441529024,
+    "versionLatencyMs": 1182,
+    "blockhashLatencyMs": 225
   },
   "fallbackRpc": {
     "label": "fallback",
     "url": "https://api.devnet.solana.com",
     "version": "3.1.10",
-    "slot": 453647673,
-    "blockhash": "7ih9wJwBWYhX35p26tUDZ6eEtjYSGgPQ3JXYnNjFaavY",
-    "lastValidBlockHeight": 441526083,
-    "versionLatencyMs": 1273,
-    "blockhashLatencyMs": 223
+    "slot": 453650615,
+    "blockhash": "EQTgdaiL7FKaFMQhrzE5F2zzcumNih8yGftsTt96BjBT",
+    "lastValidBlockHeight": 441529024,
+    "versionLatencyMs": 1009,
+    "blockhashLatencyMs": 221
   },
   "anchors": [
     {

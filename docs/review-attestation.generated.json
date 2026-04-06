@@ -39,7 +39,7 @@
     "strategy": 9,
     "security": 14,
     "zk": 28,
-    "proof": 65,
+    "proof": 68,
     "operations": 27
   },
   "zk": {
@@ -75,7 +75,7 @@
   "cryptographicIntegrity": {
     "algorithm": "sha256",
     "entryCount": 115,
-    "aggregateSha256": "7604a2cb96dbfb30150edf6312a70b4eea142a021a5805b503f647f8bc115e72"
+    "aggregateSha256": "497ace35bfed1ae1c8ddfd0c4634a6a4d7544446a94361ba98849b1ee679a3bb"
   },
   "runtimeDocs": [
     "docs/read-node-indexer.md",

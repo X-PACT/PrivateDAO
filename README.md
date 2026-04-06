@@ -39,80 +39,96 @@ PrivateDAO is a Solana governance protocol for DAOs that want private voting wit
 
 The problem statement is simple and easy for judges to verify: public live tallies create whale pressure, vote buying, and treasury signaling. PrivateDAO removes live vote visibility while keeping the rest of the governance lifecycle inspectable, testable, and compatible with how Solana teams actually operate.
 
-## Repo Map
+## About This Repository
 
-If you want to understand the repository quickly, use this map first:
+PrivateDAO is both:
+
+- a live Solana governance product
+- and a full engineering repository for private voting, treasury safety, confidential compensation, and reviewer-visible operational evidence
+
+This repository is not a thin smart-contract demo. It includes the program, product surface, Devnet runtime flows, backend read path, cryptographic review layer, and operational artifacts needed to inspect how the system behaves under real governance conditions.
+
+## What PrivateDAO Ships
+
+PrivateDAO currently ships five integrated layers:
+
+1. Governance protocol
+   - commit, reveal, finalize, execute, veto, cancel, delegation, treasury controls
+2. Product surface
+   - wallet-connected web app
+   - Android-native path
+   - live proposal, treasury, confidential payout, and REFHE flows
+3. Cryptographic layer
+   - SHA-256 vote commitments
+   - Groth16 companion proof stack
+   - on-chain proof anchors
+   - on-chain verification receipts
+   - proposal-level `zk_enforced` mode
+4. Confidential treasury layer
+   - encrypted payroll and bonus manifests
+   - aggregate settlement execution
+   - REFHE proposal-bound encrypted evaluation envelopes
+5. Operations and review layer
+   - backend read node and pooled RPC reads
+   - runtime diagnostics
+   - generated attestations and manifests
+   - Devnet evidence and readiness artifacts
+
+## About The Architecture
+
+PrivateDAO is designed as a product-first governance stack with explicit boundaries:
+
+- writes stay wallet-signed in the client
+- treasury authority does not move to the backend
+- backend infrastructure is read-only
+- cryptographic evidence is visible without pretending that every path is already full on-chain verifier enforcement
+- operational readiness is tracked in generated artifacts, not left as prose claims
+
+This is why the repository contains both live UX and reviewer-facing evidence: the product and the trust model are meant to reinforce each other.
+
+## Repository Map
+
+Use this map first if you want to orient quickly:
 
 - `programs/private-dao/src/lib.rs`
-  - the on-chain governance program
+  - the on-chain governance, confidential payout, zk, and REFHE program logic
 - `docs/index.html`
-  - the live web governance surface
+  - the live product surface and runtime panel
 - `tests/private-dao.ts`
-  - end-to-end behavior and lifecycle coverage
+  - end-to-end lifecycle coverage
 - `scripts/`
-  - build, verification, attestation, Devnet, and reviewer automation
+  - build, verification, Devnet, runtime, and review automation
 - `scripts/run-read-node.ts`
-  - backend read node and indexer for pooled RPC reads
+  - read-only backend node for pooled RPC reads and operator metrics
 - `scripts/configure-refhe-envelope.ts`
-  - configure the proposal-bound REFHE encrypted-computation envelope
+  - proposal-bound REFHE envelope configuration
 - `scripts/settle-refhe-envelope.ts`
-  - settle REFHE results before confidential payout execution
+  - REFHE settlement before confidential payout execution
 - `docs/live-proof.md`
   - canonical Devnet proof path
 - `docs/security-review.md`
-  - security reasoning and enforced boundaries
+  - enforced security boundaries and reasoning
 - `docs/zk-layer.md`
-  - current Groth16 companion proof model
+  - current zk architecture and limits
 - `docs/pdao-token.md`
   - live governance token surface
 
-## What This Repo Contains
+## Fast Review Path
 
-PrivateDAO is not only a program repo. It contains four layers that fit together:
-
-1. Protocol layer
-   - commit, reveal, finalize, execute, veto, cancel, delegation, treasury controls
-2. Product layer
-   - wallet-connected web app
-   - Android-native path
-   - live proposal and treasury operations
-3. Cryptographic layer
-   - sha256 commitment scheme
-   - Groth16 companion proof stack
-   - on-chain proof anchors for the canonical Devnet proof path
-   - on-chain parallel verification receipts for the Phase A verifier path
-   - proposal-level `zk_enforced` mode for the Phase B finalize path
-   - confidential payroll and bonus batches with immutable manifest and ciphertext hashes
-   - REFHE protocol for proposal-bound encrypted payroll and bonus evaluation
-4. Review and operations layer
-   - generated attestations
-   - Devnet evidence
-   - runtime diagnostics
-   - backend read node and RPC pooling
-   - release and readiness artifacts
-
-## Fast Path
-
-For the fastest useful read:
+For the fastest high-signal review:
 
 1. Open the live app: `https://x-pact.github.io/PrivateDAO/`
 2. Read `docs/live-proof.md`
 3. Read `docs/security-review.md`
 4. Read `docs/zk-layer.md`
-5. Read `docs/pdao-token.md`
-6. Read `docs/phase-c-hardening.md`
-7. Read `docs/zk-verifier-strategy.md`
-8. Read `docs/zk-enforced-operator-flow.md`
-9. Read `docs/confidential-payments.md`
-10. Read `docs/confidential-payroll-flow.md`
-11. Read `docs/refhe-protocol.md`
-12. Read `docs/refhe-operator-flow.md`
-13. Read `docs/refhe-security-model.md`
-14. Read `docs/read-node-indexer.md`
-15. Read `docs/rpc-architecture.md`
-16. Read `docs/backend-operator-flow.md`
-17. Read `docs/canonical-verifier-boundary-decision.md`
-18. Read `docs/zk-external-closure.generated.md`
+5. Read `docs/confidential-payments.md`
+6. Read `docs/refhe-protocol.md`
+7. Read `docs/read-node-indexer.md`
+8. Read `docs/read-node-same-domain-deploy.md`
+9. Read `docs/phase-c-hardening.md`
+10. Read `docs/zk-verifier-strategy.md`
+11. Read `docs/canonical-verifier-boundary-decision.md`
+12. Read `docs/zk-external-closure.generated.md`
 
 ## Proposal Draft
 
@@ -287,6 +303,8 @@ Backend surfaces now expose:
 
 - `/api/v1/ops/overview`
   - proposal, ZK, confidential payout, and REFHE coverage
+- `/api/v1/ops/snapshot`
+  - runtime, backend coverage, deployment guidance, and operator checks in one payload
 - `/api/v1/devnet/profiles`
   - staged load-test profiles including the 350-wallet seven-wave saturation plan
 
@@ -298,6 +316,8 @@ Generate a reviewer-facing backend snapshot:
 cd /home/x-pact/PrivateDAO
 npm run build:read-node-snapshot
 npm run verify:read-node-snapshot
+npm run build:read-node-ops
+npm run verify:read-node-ops
 ```
 
 Primary backend docs:
@@ -307,6 +327,7 @@ Primary backend docs:
 - `docs/rpc-architecture.md`
 - `docs/backend-operator-flow.md`
 - `docs/read-node-snapshot.generated.md`
+- `docs/read-node-ops.generated.md`
 
 ## Domain Mirror Strategy
 

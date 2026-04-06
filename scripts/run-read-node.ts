@@ -116,6 +116,38 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
       return;
     }
 
+    if (pathname === "/api/v1/ops/snapshot") {
+      const force = url.searchParams.get("refresh") === "1";
+      const [runtime, overview] = await Promise.all([
+        readNode.getRuntimeSnapshot(force),
+        readNode.getOpsOverview(force),
+      ]);
+      const profiles = readNode.getLoadProfiles();
+      writeJson(res, 200, {
+        ok: true,
+        source: "backend-indexer",
+        snapshot: {
+          generatedAt: new Date().toISOString(),
+          runtime,
+          overview,
+          profiles,
+          metrics: {
+            startedAt: serverStartedAt,
+            requestsTotal: metrics.requestsTotal,
+            requestsFailed: metrics.requestsFailed,
+            rateLimited: metrics.rateLimited,
+            routeHits: Object.fromEntries(metrics.routeHits.entries()),
+          },
+          deployment: {
+            sameDomainRecommended: true,
+            sameDomainGuide: "docs/read-node-same-domain-deploy.md",
+            readApiPath: "/api/v1",
+          },
+        },
+      });
+      return;
+    }
+
     if (pathname === "/api/v1/devnet/profiles") {
       const profiles = readNode.getLoadProfiles();
       writeJson(res, 200, { ok: true, source: "backend-indexer", profiles });

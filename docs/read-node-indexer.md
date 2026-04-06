@@ -29,6 +29,9 @@ PrivateDAO now includes a backend read path so proposal discovery, DAO inspectio
 - `GET /api/v1/config`
 - `GET /api/v1/runtime`
 - `GET /api/v1/metrics`
+- `GET /api/v1/ops/overview`
+- `GET /api/v1/ops/snapshot`
+- `GET /api/v1/devnet/profiles`
 - `GET /api/v1/proposals`
 - `GET /api/v1/proposals/:proposal`
 - `GET /api/v1/daos/:dao`

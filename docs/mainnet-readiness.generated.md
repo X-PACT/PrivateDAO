@@ -49,7 +49,7 @@ This report is generated from the canonical PrivateDAO registries and reviewer a
 - Strategy package count: `9`
 - Security package count: `14`
 - ZK package count: `28`
-- Proof package count: `65`
+- Proof package count: `68`
 - Operations package count: `27`
 - Runtime attestation: `docs/runtime-attestation.generated.json`
 - PDAO attestation: `docs/pdao-attestation.generated.json`
@@ -60,7 +60,7 @@ This report is generated from the canonical PrivateDAO registries and reviewer a
 - ZK layer count: `3`
 - Integrity algorithm: `sha256`
 - Integrity entries: `115`
-- Integrity aggregate sha256: `8a6da666e8458022187aef4b3743d6aa332e519001f459c473f222fee3c1ed02`
+- Integrity aggregate sha256: `371531176955158188827f3ad56935829d29a4f83d88586a295a08ff81ef32e9`
 
 ## Mainnet Conclusion
 
