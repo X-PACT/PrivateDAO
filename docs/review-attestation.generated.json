@@ -37,9 +37,9 @@
   ],
   "packageCounts": {
     "strategy": 9,
-    "security": 11,
+    "security": 12,
     "zk": 26,
-    "proof": 47,
+    "proof": 52,
     "operations": 21
   },
   "zk": {
@@ -74,10 +74,13 @@
   },
   "cryptographicIntegrity": {
     "algorithm": "sha256",
-    "entryCount": 95,
-    "aggregateSha256": "da348cc69673f125cba21328f5233ddca7c84d952e2bdb1e07d052d7b441776f"
+    "entryCount": 101,
+    "aggregateSha256": "4e68ac817d9d8c3cdf8bb90f1b518b666ac29f3f4f05fc6b5a9d131bde2b1bce"
   },
   "runtimeDocs": [
+    "docs/confidential-payments.md",
+    "docs/confidential-payroll-flow.md",
+    "docs/confidential-payments-diagram.md",
     "docs/fair-voting.md",
     "docs/wallet-runtime.md",
     "docs/real-device-runtime.md",
@@ -124,6 +127,7 @@
   ],
   "securityDocs": [
     "docs/security-review.md",
+    "docs/confidential-payments-audit-scope.md",
     "docs/cryptographic-integrity.md",
     "docs/cryptographic-posture.md",
     "docs/zk-external-audit-scope.md",
@@ -135,6 +139,7 @@
   "gateCount": 58,
   "statuses": {
     "governanceLifecycle": "verified",
+    "confidentialPayoutSurface": "verified",
     "securityReasoning": "verified",
     "supplyChainSurface": "verified",
     "releaseCeremonySurface": "verified",

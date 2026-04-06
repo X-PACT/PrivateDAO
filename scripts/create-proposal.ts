@@ -12,6 +12,7 @@ import * as anchor from "@coral-xyz/anchor";
 import { PublicKey, SystemProgram, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import {
   associatedTokenAddressForMint,
+  deriveConfidentialPayoutPlanPda,
   formatSol,
   formatTimestamp,
   parseArgs,
@@ -30,6 +31,15 @@ async function main() {
     treasuryRecipient,
     treasuryAmount,
     treasuryMint,
+    confidentialType,
+    payoutAsset = "sol",
+    settlementRecipient,
+    payoutTotal,
+    payoutMint,
+    recipientCount,
+    manifestUri,
+    manifestHash,
+    ciphertextHash,
   } = parseArgs();
 
   if (!daoPdaStr) {
@@ -124,6 +134,102 @@ async function main() {
     }
   }
 
+  const confidentialEnabled = Boolean(
+    confidentialType || settlementRecipient || payoutTotal || payoutMint || recipientCount || manifestUri || manifestHash || ciphertextHash,
+  );
+  if (confidentialEnabled && treasuryAction) {
+    console.error("Error: confidential payout plans cannot be combined with direct treasury actions on the same proposal");
+    process.exit(1);
+  }
+
+  let confidentialPayload: null | {
+    payoutType: any;
+    assetType: any;
+    settlementRecipient: PublicKey;
+    tokenMint: PublicKey | null;
+    recipientCount: number;
+    totalAmount: any;
+    encryptedManifestUri: string;
+    manifestHash: number[];
+    ciphertextHash: number[];
+  } = null;
+
+  if (confidentialEnabled) {
+    const payoutTypeNormalized = String(confidentialType || "salary").toLowerCase();
+    const assetTypeNormalized = String(payoutAsset || "sol").toLowerCase();
+    const settlementRecipientPk = settlementRecipient
+      ? new PublicKey(String(settlementRecipient))
+      : provider.wallet.publicKey;
+    const count = Number(recipientCount || 1);
+    const uri = String(manifestUri || "").trim();
+    const rawTotal = Number(payoutTotal);
+
+    if (!Number.isFinite(rawTotal) || rawTotal <= 0) {
+      console.error("Error: confidential payout plans require --payout-total > 0");
+      process.exit(1);
+    }
+    if (!Number.isInteger(count) || count <= 0) {
+      console.error("Error: confidential payout plans require --recipient-count >= 1");
+      process.exit(1);
+    }
+    if (!uri) {
+      console.error("Error: confidential payout plans require --manifest-uri");
+      process.exit(1);
+    }
+    if (!manifestHash || !ciphertextHash) {
+      console.error("Error: confidential payout plans require both --manifest-hash and --ciphertext-hash");
+      process.exit(1);
+    }
+
+    const manifestHashBytes = Buffer.from(String(manifestHash).replace(/^0x/i, ""), "hex");
+    const ciphertextHashBytes = Buffer.from(String(ciphertextHash).replace(/^0x/i, ""), "hex");
+    if (manifestHashBytes.length !== 32 || ciphertextHashBytes.length !== 32) {
+      console.error("Error: --manifest-hash and --ciphertext-hash must both be 32-byte hex values");
+      process.exit(1);
+    }
+
+    let tokenMintPk: PublicKey | null = null;
+    let assetType: any = { sol: {} };
+    let totalAmount = new anchor.BN(rawTotal);
+
+    if (assetTypeNormalized === "token") {
+      if (!payoutMint) {
+        console.error("Error: token payout batches require --payout-mint <TOKEN_MINT>");
+        process.exit(1);
+      }
+      tokenMintPk = new PublicKey(String(payoutMint));
+      assetType = { token: {} };
+    } else if (assetTypeNormalized === "sol") {
+      const lamports = Math.floor(rawTotal * LAMPORTS_PER_SOL);
+      if (lamports <= 0) {
+        console.error("Error: SOL payout total must be large enough to convert to lamports");
+        process.exit(1);
+      }
+      totalAmount = new anchor.BN(lamports);
+    } else {
+      console.error("Error: --payout-asset must be either 'sol' or 'token'");
+      process.exit(1);
+    }
+
+    confidentialPayload = {
+      payoutType: payoutTypeNormalized === "bonus" ? { bonus: {} } : { salary: {} },
+      assetType,
+      settlementRecipient: settlementRecipientPk,
+      tokenMint: tokenMintPk,
+      recipientCount: count,
+      totalAmount,
+      encryptedManifestUri: uri,
+      manifestHash: [...manifestHashBytes],
+      ciphertextHash: [...ciphertextHashBytes],
+    };
+
+    console.log(`\n   🔐 Confidential payout batch: ${payoutTypeNormalized}`);
+    console.log(`   Asset type: ${assetTypeNormalized}`);
+    console.log(`   Settlement recipient: ${settlementRecipientPk.toBase58()}`);
+    console.log(`   Recipient count: ${count}`);
+    console.log(`   Manifest URI: ${uri}`);
+  }
+
   const tx = await program.methods
     .createProposal(String(title), String(description), new anchor.BN(durationSeconds), treasuryAction)
     .accounts({
@@ -134,6 +240,35 @@ async function main() {
       systemProgram: SystemProgram.programId,
     })
     .rpc();
+
+  let confidentialTx: string | null = null;
+  if (confidentialPayload) {
+    const payoutPlanPda = deriveConfidentialPayoutPlanPda(proposalPda, program.programId);
+    confidentialTx = await program.methods
+      .configureConfidentialPayoutPlan(
+        confidentialPayload.payoutType,
+        confidentialPayload.assetType,
+        confidentialPayload.settlementRecipient,
+        confidentialPayload.tokenMint,
+        confidentialPayload.recipientCount,
+        confidentialPayload.totalAmount,
+        confidentialPayload.encryptedManifestUri,
+        confidentialPayload.manifestHash,
+        confidentialPayload.ciphertextHash,
+      )
+      .accounts({
+        dao: daoPda,
+        proposal: proposalPda,
+        confidentialPayoutPlan: payoutPlanPda,
+        operator: provider.wallet.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    console.log(`   Confidential payout plan: ${payoutPlanPda.toBase58()}`);
+    console.log(`   Payout config tx:        ${confidentialTx}`);
+    console.log(`   Payout config link:      ${solscanTxUrl(confidentialTx!)}`);
+  }
 
   const proposal = await program.account["proposal"].fetch(proposalPda);
 
@@ -146,6 +281,9 @@ async function main() {
   console.log(`   Voting ends:      ${formatTimestamp(proposal.votingEnd.toNumber())}`);
   console.log(`   Reveal ends:      ${formatTimestamp(proposal.revealEnd.toNumber())}`);
   console.log(`   Proposal explorer:${" "}${solscanAccountUrl(proposalPda.toBase58())}`);
+  if (confidentialTx !== null) {
+    console.log(`   Confidential flow: proposal-bound encrypted payout plan configured`);
+  }
   console.log(`\n   Save this:`);
   console.log(`   PROPOSAL_PDA=${proposalPda.toBase58()}`);
   console.log(`   Next: yarn commit -- --proposal ${proposalPda.toBase58()} --vote yes`);

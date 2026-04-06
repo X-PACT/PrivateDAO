@@ -59,6 +59,10 @@
 
 ## Artifact Integrity
 
+- Confidential payouts note: `docs/confidential-payments.md`
+- Confidential payroll flow: `docs/confidential-payroll-flow.md`
+- Confidential payouts diagram: `docs/confidential-payments-diagram.md`
+- Confidential payouts audit scope: `docs/confidential-payments-audit-scope.md`
 - Integrity note: `docs/cryptographic-integrity.md`
 - Cryptographic posture: `docs/cryptographic-posture.md`
 - Supply-chain security note: `docs/supply-chain-security.md`
@@ -74,8 +78,8 @@
 - Release drill: `docs/release-drill.generated.json`
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `92`
-- Aggregate sha256: `0f08a8dc3e446be6993b1a3107f1ac5396cb3f47ad324a829750dbd1bf7a423a`
+- Manifest entries: `101`
+- Aggregate sha256: `4e68ac817d9d8c3cdf8bb90f1b518b666ac29f3f4f05fc6b5a9d131bde2b1bce`
 
 ## ZK Package
 
@@ -126,6 +130,7 @@
 - `docs/security-review.md`
 - `docs/threat-model.md`
 - `docs/security-coverage-map.md`
+- `docs/confidential-payments-audit-scope.md`
 - `docs/failure-modes.md`
 - `docs/replay-analysis.md`
 - `docs/cryptographic-integrity.md`
@@ -148,6 +153,9 @@
 - `docs/zk-enforced-operator-flow.md`
 - `docs/zk-external-audit-scope.md`
 - `docs/canonical-verifier-boundary-decision.md`
+- `docs/zk-external-closure.json`
+- `docs/zk-external-closure.generated.json`
+- `docs/zk-external-closure.generated.md`
 - `docs/zk-stack.md`
 - `docs/zk-upgrade.md`
 - `docs/zk-architecture.md`
@@ -163,6 +171,11 @@
 
 ## Proof Package
 
+- `docs/confidential-payments.md`
+- `docs/confidential-payroll-flow.md`
+- `docs/confidential-payments-diagram.md`
+- `docs/assets/icons/confidential-payroll.svg`
+- `docs/assets/confidential-payments-flow.svg`
 - `docs/live-proof.md`
 - `docs/devnet-release-manifest.md`
 - `docs/proof-registry.json`
@@ -353,6 +366,7 @@
 ## Current Status
 
 - governanceLifecycle: `verified`
+- confidentialPayoutSurface: `verified`
 - securityReasoning: `verified`
 - supplyChainSurface: `verified`
 - releaseCeremonySurface: `verified`

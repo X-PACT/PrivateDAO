@@ -1,4 +1,4 @@
-# PrivateDAO Video Shotlist
+# PrivateDAO Investor Shotlist
 
 ## Visual Direction
 
@@ -39,7 +39,17 @@
 - Show sealed tally during voting, then verified reveal
 - Goal: make the product mechanics instantly understandable
 
-### 4. System Architecture
+### 4. Confidential Operations
+
+- Show an encrypted payroll or bonus manifest
+- Then show proposal-bound approval and aggregate settlement
+- Labels:
+  - encrypted manifest
+  - proposal-bound payout plan
+  - aggregate settlement
+- Goal: communicate that PrivateDAO now covers confidential treasury operations, not only private voting
+
+### 5. System Architecture
 
 - Layered motion graphic:
   - Solana Rust program
@@ -53,7 +63,7 @@
   - distributed workflows
   - production-grade backend thinking
 
-### 5. Award Moment
+### 6. Award Moment
 
 - Gold-accent title:
   - `1st Place — Superteam Earn`
@@ -61,11 +71,13 @@
   - `Superteam Poland · March 2026`
 - Goal: present recognition as verified external validation
 
-### 6. Closing Frame
+### 7. Closing Frame
 
 - Positioning line:
-  - `Private governance, production-grade execution.`
+  - `Private governance, confidential operations, production-grade execution.`
 - References:
   - `github.com/X-PACT/PrivateDAO`
   - `x-pact.github.io/PrivateDAO`
-- Goal: leave the viewer with a clean infrastructure thesis
+- CTA:
+  - `Back this future of private organizational infrastructure on Solana.`
+- Goal: leave the viewer with a clean infrastructure thesis and investment invitation

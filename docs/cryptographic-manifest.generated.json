@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-06T00:12:59.189Z",
+  "generatedAt": "2026-04-06T00:58:57.517Z",
   "algorithm": "sha256",
-  "entryCount": 95,
-  "aggregateSha256": "da348cc69673f125cba21328f5233ddca7c84d952e2bdb1e07d052d7b441776f",
+  "entryCount": 101,
+  "aggregateSha256": "4e68ac817d9d8c3cdf8bb90f1b518b666ac29f3f4f05fc6b5a9d131bde2b1bce",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -146,9 +146,39 @@
       "bytes": 5001
     },
     {
+      "path": "docs/confidential-payments.md",
+      "sha256": "20e73c92e6d23493363924f91daa297065006a46a21eff8a1b202a408faeaf76",
+      "bytes": 2795
+    },
+    {
+      "path": "docs/confidential-payroll-flow.md",
+      "sha256": "db243b74db19c73598055774ae5d146f789edcf7c9ef7881561e95bd6c6cb3ca",
+      "bytes": 1943
+    },
+    {
+      "path": "docs/confidential-payments-diagram.md",
+      "sha256": "6058be003ebe6f225f4409b279a1b23bcd14fd7aade2366d71e1a83726c0d72f",
+      "bytes": 1016
+    },
+    {
+      "path": "docs/confidential-payments-audit-scope.md",
+      "sha256": "45ea6fd2e5b6625a69684f2613c78c8581c803758342e7f8d67dbd04169c3bd8",
+      "bytes": 1519
+    },
+    {
+      "path": "docs/assets/icons/confidential-payroll.svg",
+      "sha256": "85bfe4f16cad53505322cd019604aca7d7d515e109894d990e97db622b80aef9",
+      "bytes": 990
+    },
+    {
+      "path": "docs/assets/confidential-payments-flow.svg",
+      "sha256": "c309b8b582f5fb6eaab9989cfd61285abd27d0a621638b9eb94d7cd7bb9e243b",
+      "bytes": 4832
+    },
+    {
       "path": "docs/submission-registry.json",
-      "sha256": "9b0dbf5482e41a1fd8beb13461018ac495bddc361da4843ca0b1bef9e2679199",
-      "bytes": 8167
+      "sha256": "25a4f1ae733d6f2ab0d51298659d90d4cc54ba40b6c11eddabaf095fcdbbf114",
+      "bytes": 8496
     },
     {
       "path": "docs/independent-verification.md",
@@ -297,13 +327,13 @@
     },
     {
       "path": "docs/runtime-evidence.generated.md",
-      "sha256": "d285c380a33e58e3dfdf72a1c231ced721f3a1a1aea6501d45aa7cfa31913c8a",
-      "bytes": 3711
+      "sha256": "a97517501194f40997922fefbd299d81d39eee7bb477d83fd906ef15999ade53",
+      "bytes": 4328
     },
     {
       "path": "docs/runtime-evidence.generated.json",
-      "sha256": "5e5abfdfd5e93942c4bac963da5bb32313c71eb9e6c20cbdb4c8f42d95374a89",
-      "bytes": 4383
+      "sha256": "d246a443475b9cd63f368b6958ecbcea7374fdb5e83004dcd74ed2ae3e38d777",
+      "bytes": 5477
     },
     {
       "path": "docs/cryptographic-posture.md",
@@ -382,8 +412,8 @@
     },
     {
       "path": "docs/runtime-attestation.generated.json",
-      "sha256": "1d9af82ae9b6af538729f94fe0708058be46b6291baf0e79a282971dcda2d864",
-      "bytes": 2255
+      "sha256": "72266ec6df753cd8c66bd77b1ded1d72c27712ce63c68ccb3726d3a068858c36",
+      "bytes": 2523
     },
     {
       "path": "docs/security-review.md",
@@ -397,8 +427,8 @@
     },
     {
       "path": "docs/go-live-attestation.generated.json",
-      "sha256": "fd0c79784b5c69242cb79c2e2083a888d4e2660d6b2b51aed504554576586d34",
-      "bytes": 2114
+      "sha256": "0ac005a4b5d7edbfe040a2fdd69b72134ed7e3df39bc0c5363d0f9af7f3b23e5",
+      "bytes": 2250
     },
     {
       "path": "docs/release-ceremony.md",

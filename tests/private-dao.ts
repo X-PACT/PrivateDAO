@@ -1568,6 +1568,207 @@ describe("PrivateDAO", () => {
     console.log("  ✓ Token-2022 governance mint accepted by DAO and commit flow");
   });
 
+  it("configures and executes a confidential salary payout plan", async () => {
+    const payoutDaoName = `PayrollDAO-${Date.now()}`;
+    const [payoutDaoPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("dao"), authority.publicKey.toBuffer(), Buffer.from(payoutDaoName)],
+      program.programId,
+    );
+
+    await program.methods
+      .initializeDao(
+        payoutDaoName,
+        51,
+        new BN(0),
+        new BN(5),
+        new BN(0),
+        { tokenWeighted: {} },
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        governanceToken: governanceMint,
+        authority: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const payoutDao = await program.account["dao"].fetch(payoutDaoPda);
+    const [payoutProposalPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), payoutDaoPda.toBuffer(), payoutDao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal(
+        "Confidential salary batch",
+        "Approve an encrypted salary batch without exposing the employee mapping on-chain.",
+        new BN(5),
+        null,
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        proposerTokenAccount: authorityTokenAta,
+        proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [payoutPlanPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("payout-plan"), payoutProposalPda.toBuffer()],
+      program.programId,
+    );
+    const settlementRecipient = Keypair.generate();
+    const fundSettlementRecipient = new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: authority.publicKey,
+        toPubkey: settlementRecipient.publicKey,
+        lamports: Math.round(0.005 * LAMPORTS_PER_SOL),
+      }),
+    );
+    await provider.sendAndConfirm(fundSettlementRecipient, []);
+
+    await program.methods
+      .configureConfidentialPayoutPlan(
+        { salary: {} },
+        { sol: {} },
+        settlementRecipient.publicKey,
+        null,
+        3,
+        new BN(50_000_000),
+        "box://privatedao/payroll/epoch-1",
+        [...crypto.randomBytes(32)],
+        [...crypto.randomBytes(32)],
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        confidentialPayoutPlan: payoutPlanPda,
+        operator: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const plan = await program.account["confidentialPayoutPlan"].fetch(payoutPlanPda);
+    assert.deepEqual(plan.payoutType, { salary: {} });
+    assert.deepEqual(plan.assetType, { sol: {} });
+    assert.equal(plan.recipientCount, 3);
+    assert.equal(plan.totalAmount.toString(), "50000000");
+
+    const [treasuryPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("treasury"), payoutDaoPda.toBuffer()],
+      program.programId,
+    );
+    await program.methods
+      .depositTreasury(new BN(100_000_000))
+      .accounts({
+        dao: payoutDaoPda,
+        treasury: treasuryPda,
+        depositor: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [votePda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), payoutProposalPda.toBuffer(), authority.publicKey.toBuffer()],
+      program.programId,
+    );
+    const [delegationMarkerPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("delegation"), payoutProposalPda.toBuffer(), authority.publicKey.toBuffer()],
+      program.programId,
+    );
+    const salarySalt = randomSalt();
+
+    await program.methods
+      .commitVote([...computeCommitment(true, salarySalt, authority.publicKey, payoutProposalPda)], null)
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        voterRecord: votePda,
+        delegationMarker: delegationMarkerPda,
+        voterTokenAccount: authorityTokenAta,
+        voter: authority.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    await new Promise((resolve) => setTimeout(resolve, 6_000));
+
+    await program.methods
+      .revealVote(true, [...salarySalt])
+      .accounts({
+        proposal: payoutProposalPda,
+        voterRecord: votePda,
+        revealer: authority.publicKey,
+      })
+      .rpc();
+
+    await new Promise((resolve) => setTimeout(resolve, 6_000));
+
+    await program.methods
+      .finalizeProposal()
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        finalizer: authority.publicKey,
+      })
+      .rpc();
+
+    const passedProposal = await program.account["proposal"].fetch(payoutProposalPda);
+    assert.deepEqual(passedProposal.status, { passed: {} });
+
+    const treasuryBefore = await provider.connection.getBalance(treasuryPda);
+    const recipientBefore = await provider.connection.getBalance(settlementRecipient.publicKey);
+
+    try {
+      await program.methods
+        .executeProposal()
+        .accounts({
+          dao: payoutDaoPda,
+          proposal: payoutProposalPda,
+          treasury: treasuryPda,
+          treasuryRecipient: settlementRecipient.publicKey,
+          treasuryTokenAccount: treasuryPda,
+          recipientTokenAccount: treasuryPda,
+          confidentialPayoutPlan: payoutPlanPda,
+          executor: authority.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("Standard execute path should reject confidential payout proposals");
+    } catch (err: any) {
+      assert.include(err.toString(), "UseConfidentialPayoutExecution");
+    }
+
+    await program.methods
+      .executeConfidentialPayoutPlan()
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        confidentialPayoutPlan: payoutPlanPda,
+        treasury: treasuryPda,
+        settlementRecipient: settlementRecipient.publicKey,
+        treasuryTokenAccount: treasuryPda,
+        recipientTokenAccount: treasuryPda,
+        executor: authority.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const treasuryAfter = await provider.connection.getBalance(treasuryPda);
+    const recipientAfter = await provider.connection.getBalance(settlementRecipient.publicKey);
+    const executedPlan = await program.account["confidentialPayoutPlan"].fetch(payoutPlanPda);
+    const executedProposal = await program.account["proposal"].fetch(payoutProposalPda);
+    assert.equal(treasuryBefore - treasuryAfter, 50_000_000);
+    assert.equal(recipientAfter - recipientBefore, 50_000_000);
+    assert.deepEqual(executedPlan.status, { funded: {} });
+    assert.isTrue(executedProposal.isExecuted);
+    console.log("  ✓ confidential salary batch configured and executed through the dedicated path");
+  });
+
   it("verifies commitment math — deterministic + vote/salt sensitive", () => {
     const vote = true;
     const salt = Buffer.from("a".repeat(32));

@@ -105,6 +105,9 @@ function main() {
       aggregateSha256: cryptographicManifest.aggregateSha256,
     },
     runtimeDocs: [
+      "docs/confidential-payments.md",
+      "docs/confidential-payroll-flow.md",
+      "docs/confidential-payments-diagram.md",
       "docs/fair-voting.md",
       "docs/wallet-runtime.md",
       "docs/real-device-runtime.md",
@@ -151,6 +154,7 @@ function main() {
     ],
     securityDocs: [
       "docs/security-review.md",
+      "docs/confidential-payments-audit-scope.md",
       "docs/cryptographic-integrity.md",
       "docs/cryptographic-posture.md",
       "docs/zk-external-audit-scope.md",

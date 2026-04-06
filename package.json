@@ -1,7 +1,7 @@
 {
   "name": "private-dao",
   "version": "0.3.0",
-  "description": "Solana private governance system with commit-reveal voting, timelocked execution, Groth16 companion proofs, and reviewer-visible security evidence",
+  "description": "Solana private governance system with commit-reveal voting, confidential payroll and bonus batches, timelocked execution, Groth16 companion proofs, and reviewer-visible security evidence",
   "scripts": {
     "build": "anchor build",
     "test": "anchor test",
@@ -15,6 +15,8 @@
     "localnet": "solana-test-validator --reset",
     "create-dao": "ts-node scripts/create-dao.ts",
     "create-proposal": "ts-node scripts/create-proposal.ts",
+    "configure:confidential-payout": "ts-node scripts/configure-confidential-payout.ts",
+    "inspect:confidential-payout": "ts-node scripts/inspect-confidential-payout.ts",
     "deposit": "ts-node scripts/deposit-treasury.ts",
     "list-proposals": "ts-node scripts/list-proposals.ts",
     "delegate": "ts-node scripts/delegate-vote.ts",

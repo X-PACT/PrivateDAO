@@ -121,6 +121,10 @@ ${Object.entries(proof.transactions)
 
 ## Artifact Integrity
 
+- Confidential payouts note: \`docs/confidential-payments.md\`
+- Confidential payroll flow: \`docs/confidential-payroll-flow.md\`
+- Confidential payouts diagram: \`docs/confidential-payments-diagram.md\`
+- Confidential payouts audit scope: \`docs/confidential-payments-audit-scope.md\`
 - Integrity note: \`docs/cryptographic-integrity.md\`
 - Cryptographic posture: \`docs/cryptographic-posture.md\`
 - Supply-chain security note: \`docs/supply-chain-security.md\`

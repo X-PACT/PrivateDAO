@@ -15,7 +15,7 @@
 import * as anchor from "@coral-xyz/anchor";
 import { PublicKey, SystemProgram } from "@solana/web3.js";
 import { getAssociatedTokenAddress } from "@solana/spl-token";
-import { formatDuration, parseArgs, formatSol, formatTimestamp, proposalStatusLabel, resolveTokenProgramForMint, solscanTxUrl, workspaceProgram } from "./utils";
+import { deriveConfidentialPayoutPlanPda, formatDuration, parseArgs, formatSol, formatTimestamp, proposalStatusLabel, resolveTokenProgramForMint, solscanTxUrl, workspaceProgram } from "./utils";
 
 async function main() {
   const { proposal: proposalStr } = parseArgs();
@@ -66,6 +66,11 @@ async function main() {
     [Buffer.from("treasury"), daoPda.toBuffer()],
     program.programId,
   );
+  const confidentialPayoutPlanPda = deriveConfidentialPayoutPlanPda(proposalPda, program.programId);
+  const confidentialPlanInfo = await provider.connection.getAccountInfo(confidentialPayoutPlanPda, "confirmed");
+  const confidentialPlan = confidentialPlanInfo
+    ? await program.account["confidentialPayoutPlan"].fetch(confidentialPayoutPlanPda)
+    : null;
 
   // Figure out account values for the treasury action
   let treasuryRecipient      = treasuryPda;
@@ -74,7 +79,21 @@ async function main() {
   let tokenProgram           = governanceTokenProgram;
   let actionType = "none";
 
-  if (proposal.treasuryAction) {
+  if (confidentialPlan) {
+    actionType = `confidential-${Object.keys(confidentialPlan.payoutType)[0]}`;
+    treasuryRecipient = confidentialPlan.settlementRecipient;
+    if (confidentialPlan.tokenMint) {
+      tokenProgram = await resolveTokenProgramForMint(provider.connection, confidentialPlan.tokenMint);
+      treasuryTokenAccount = await getAssociatedTokenAddress(confidentialPlan.tokenMint, treasuryPda, true, tokenProgram);
+      recipientTokenAccount = await getAssociatedTokenAddress(confidentialPlan.tokenMint, treasuryRecipient, false, tokenProgram);
+    }
+
+    console.log(`\n    Action: ${actionType}`);
+    console.log(`    Confidential recipients: ${confidentialPlan.recipientCount}`);
+    console.log(`    Total: ${confidentialPlan.tokenMint ? confidentialPlan.totalAmount.toString() + " raw units" : formatSol(confidentialPlan.totalAmount.toNumber())}`);
+    console.log(`    Settlement recipient: ${treasuryRecipient.toBase58()}`);
+    console.log(`    Manifest URI: ${confidentialPlan.encryptedManifestUri}`);
+  } else if (proposal.treasuryAction) {
     actionType = Object.keys(proposal.treasuryAction.actionType)[0];
     treasuryRecipient = proposal.treasuryAction.recipient;
     const { tokenMint } = proposal.treasuryAction;
@@ -101,20 +120,37 @@ async function main() {
 
   console.log(`\n    Sending transaction...`);
 
-  const tx = await program.methods
-    .executeProposal()
-    .accounts({
-      dao:                    daoPda,
-      proposal:               proposalPda,
-      treasury:               treasuryPda,
-      treasuryRecipient,
-      treasuryTokenAccount,
-      recipientTokenAccount,
-      executor:               provider.wallet.publicKey,
-      tokenProgram,
-      systemProgram:          SystemProgram.programId,
-    })
-    .rpc();
+  const tx = confidentialPlan
+    ? await program.methods
+      .executeConfidentialPayoutPlan()
+      .accounts({
+        dao: daoPda,
+        proposal: proposalPda,
+        confidentialPayoutPlan: confidentialPayoutPlanPda,
+        treasury: treasuryPda,
+        settlementRecipient: treasuryRecipient,
+        treasuryTokenAccount,
+        recipientTokenAccount,
+        executor: provider.wallet.publicKey,
+        tokenProgram,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc()
+    : await program.methods
+      .executeProposal()
+      .accounts({
+        dao: daoPda,
+        proposal: proposalPda,
+        treasury: treasuryPda,
+        treasuryRecipient,
+        treasuryTokenAccount,
+        recipientTokenAccount,
+        confidentialPayoutPlan: confidentialPayoutPlanPda,
+        executor: provider.wallet.publicKey,
+        tokenProgram,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
 
   console.log(`\n${"═".repeat(56)}`);
   console.log("    ✅  TREASURY ACTION EXECUTED");

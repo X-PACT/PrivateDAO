@@ -1,22 +1,22 @@
-# PrivateDAO Technical Explainer Video Package
+# PrivateDAO Investor Video Package
 
 ## Objective
 
-Create a premium 60 to 75 second technical explainer video for PrivateDAO that is suitable for:
+Create a premium 45 to 60 second investor-facing explainer video for PrivateDAO that is suitable for:
 
-- Hackathon judges
-- Grant reviewers
-- Technical partners
-- Solana ecosystem reviewers
+- grant reviewers
+- technical partners
+- ecosystem investors
+- infrastructure operators
 
 The video must communicate:
 
 - PrivateDAO is serious Solana governance infrastructure
 - The backend logic is implemented as on-chain Rust programs
 - The system solves real governance leakage problems
-- The project now combines protocol hardening, zero-knowledge proof surfaces, and a published cryptographic artifact integrity layer
+- The project now combines protocol hardening, zero-knowledge proof surfaces, confidential payroll and bonus approvals, and a published cryptographic artifact integrity layer
 - The project has third-party validation through a verified 1st Place achievement
-- The final output is the official project explainer, not an investor pitch
+- The final output is a short investor explainer with a clear infrastructure thesis
 
 ## Core Claims To Preserve
 
@@ -48,9 +48,7 @@ The video must communicate:
 ## Current Explainer Status
 
 - Published YouTube explainer: `https://youtu.be/KVNFZXHNZTQ`
-- External generation task: https://manus.im/app/kMUHrujYi7Ec8nXqWDSxa9
-- External generation task v2: https://manus.im/app/WNFD2RAUyWN5X83jtYdywy
-- Current known status: repo-native render completed and YouTube version published
+- Current known status: repo-native render is the editable source of truth in this repo
 - Repo-native render script: `scripts/render-investor-video.sh`
 - Repo-native rendered asset: `docs/assets/private-dao-investor-pitch.mp4`
 - Repo-native poster: `docs/assets/private-dao-investor-pitch-poster.png`
@@ -68,6 +66,17 @@ That means the video may say:
 
 The video should not imply a completed external audit or claim production adoption that is not documented.
 
+## New Angle
+
+The current render should communicate that PrivateDAO is growing from private voting into confidential organizational operations.
+
+That means the video should now show:
+
+- private voting
+- zk hardening
+- confidential payroll and bonus approvals
+- a credible path toward investable governance infrastructure
+
 ## Repo Release Plan
 
 The repository carries a usable project explainer artifact directly in the repo, with YouTube as the public watch surface and the MP4 retained as a repo-native fallback asset.
@@ -83,4 +92,4 @@ The repository carries a usable project explainer artifact directly in the repo,
 - Do not mention any prize amount
 - Keep claims bounded to what the repository and award note support
 - Use premium technical styling rather than generic startup hype
-- Keep the ending concise, technical, and reviewer-friendly
+- Keep the ending concise, technical, and investable

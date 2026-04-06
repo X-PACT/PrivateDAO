@@ -121,6 +121,16 @@ export function solscanTxUrl(signature: string): string {
   return `https://solscan.io/tx/${signature}?cluster=devnet`;
 }
 
+export function deriveConfidentialPayoutPlanPda(
+  proposal: PublicKey,
+  programId: PublicKey,
+): PublicKey {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("payout-plan"), proposal.toBuffer()],
+    programId,
+  )[0];
+}
+
 export async function resolveTokenProgramForMint(
   connection: Connection,
   mint: PublicKey,

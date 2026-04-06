@@ -2876,11 +2876,12 @@ body.judge-mode .judge-banner {
         <div class="value-card-kicker">WHAT IT DELIVERS</div>
         <div class="value-card-title">Private voting with visible operations</div>
         <div class="value-card-copy">
-          The voting intent stays hidden during the active commit window, but the governance lifecycle remains transparent and reviewable through signed Devnet transactions and reproducible repo flows.
+          The voting intent stays hidden during the active commit window, while the governance lifecycle and confidential treasury operations remain transparent and reviewable through signed Devnet transactions and reproducible repo flows.
         </div>
         <div class="value-card-list">
           <div>Hidden tally during voting</div>
           <div>Explicit proposal lifecycle</div>
+          <div>Encrypted payroll and bonus approvals</div>
           <div>Explorer-verifiable execution evidence</div>
         </div>
       </div>
@@ -2962,7 +2963,58 @@ body.judge-mode .judge-banner {
         <div class="pillar-points">
           <div class="pillar-point">PDAO governance token on Devnet through DeAura</div>
           <div class="pillar-point">Web governance surface plus Android-native path with MWA</div>
+          <div class="pillar-point">Encrypted salary and bonus batch approvals with proposal-bound settlement</div>
           <div class="pillar-point">Proof Center, Security, Diagnostics, and mainnet transition package</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:8px">
+  <div class="container">
+    <div class="award-detail-card reveal">
+      <div class="award-detail-head">
+        <div>
+          <div class="award-detail-title">Confidential Treasury Operations</div>
+          <p class="award-detail-copy">
+            PrivateDAO now ships encrypted payroll and bonus approvals as a real product surface. The detailed recipient sheet stays off-chain, while governance approves and executes the aggregate batch on chain through a proposal-bound payout plan.
+          </p>
+        </div>
+        <div class="award-pill">PAYROLL + BONUS</div>
+      </div>
+      <div class="curation-grid" style="margin-top:8px">
+        <div class="curation-card">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+            <img src="assets/icons/confidential-payroll.svg" alt="Confidential payroll icon" style="width:56px;height:56px;flex:0 0 auto">
+            <div>
+              <div class="curation-kicker">WHAT IS PUBLIC</div>
+              <div class="curation-title">Aggregate settlement only</div>
+            </div>
+          </div>
+          <div class="curation-copy">The chain exposes only payout type, asset type, settlement recipient, recipient count, total amount, and immutable hashes for the encrypted manifest.</div>
+          <div class="curation-links">
+            <a class="award-link" href="confidential-payments.md" target="_blank">Feature Note</a>
+            <a class="award-link" href="confidential-payments-diagram.md" target="_blank">Diagram</a>
+          </div>
+        </div>
+        <div class="curation-card">
+          <div class="curation-kicker">OPERATOR FLOW</div>
+          <div class="curation-title">Proposal-bound payroll and bonus batches</div>
+          <div class="curation-copy">Create a proposal, attach the encrypted batch hashes, pass the proposal through commit-reveal or `zk_enforced`, then execute the aggregate payout after timelock.</div>
+          <div class="curation-links">
+            <a class="award-link" href="confidential-payroll-flow.md" target="_blank">Flow Note</a>
+            <a class="award-link" href="assets/confidential-payments-flow.svg" target="_blank">Flow SVG</a>
+          </div>
+        </div>
+        <div class="curation-card">
+          <div class="curation-kicker">REVIEW BOUNDARY</div>
+          <div class="curation-title">Auditable without leaking the full sheet</div>
+          <div class="curation-copy">Auditors and reviewers can reason about plan binding, treasury safety, and immutable hashes without requiring the full payroll manifest to be on chain.</div>
+          <div class="curation-links">
+            <a class="award-link" href="confidential-payments-audit-scope.md" target="_blank">Audit Scope</a>
+            <a class="award-link" href="audit-packet.generated.md" target="_blank">Audit Packet</a>
+          </div>
         </div>
       </div>
     </div>
@@ -3150,7 +3202,7 @@ body.judge-mode .judge-banner {
 
     <div class="proposal-create-card reveal">
       <div class="proposal-title">Step 3 — Create proposal on-chain</div>
-      <div class="proposal-desc">Proposal creation is real and permissioned by governance token ownership. Run this after DAO creation and treasury funding. The connected wallet must hold the governance token for the selected DAO.</div>
+      <div class="proposal-desc">Proposal creation is real and permissioned by governance token ownership. Run this after DAO creation and treasury funding. The connected wallet must hold the governance token for the selected DAO. Use direct treasury actions for simple transfers, or switch on a confidential salary or bonus batch when the recipient sheet must stay encrypted.</div>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:16px">
         <div>
           <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">DAO PDA</label>
@@ -3172,13 +3224,63 @@ body.judge-mode .judge-banner {
           <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">TREASURY AMOUNT (SOL)</label>
           <input id="createProposalAmount" type="number" value="0.05" step="0.01" min="0" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
         </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">CONFIDENTIAL PAYOUT TYPE</label>
+          <select id="createProposalConfidentialType" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
+            <option value="">None</option>
+            <option value="salary">Salary Batch</option>
+            <option value="bonus">Bonus Batch</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">SETTLEMENT RECIPIENT</label>
+          <input id="createProposalSettlementRecipient" type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Payroll vault or settlement wallet">
+        </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">PAYOUT ASSET</label>
+          <select id="createProposalPayoutAssetType" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
+            <option value="sol">SOL</option>
+            <option value="token">Token</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">PAYOUT TOTAL</label>
+          <input id="createProposalPayoutTotal" type="number" value="0.25" step="0.01" min="0" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="SOL or raw token units">
+        </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">RECIPIENT COUNT</label>
+          <input id="createProposalRecipientCount" type="number" value="4" min="1" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
+        </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">PAYOUT TOKEN MINT</label>
+          <input id="createProposalPayoutTokenMint" type="text" value="" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Only required for token batches">
+        </div>
       </div>
       <div style="margin-top:12px">
         <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">DESCRIPTION</label>
         <textarea id="createProposalDescription" style="width:100%;min-height:120px;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;resize:vertical">Proposal to allocate treasury funds through the live PrivateDAO governance flow.</textarea>
       </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px">
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">ENCRYPTED MANIFEST URI</label>
+          <input id="createProposalManifestUri" type="text" value="box://privatedao/payroll/epoch-1" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="box:// or https:// encrypted manifest path">
+        </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">MANIFEST HASH (32-BYTE HEX)</label>
+          <input id="createProposalManifestHash" type="text" value="1111111111111111111111111111111111111111111111111111111111111111" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="64 hex chars">
+        </div>
+        <div>
+          <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">CIPHERTEXT HASH (32-BYTE HEX)</label>
+          <input id="createProposalCiphertextHash" type="text" value="2222222222222222222222222222222222222222222222222222222222222222" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="64 hex chars">
+        </div>
+      </div>
       <code id="createProposalCommandHint">yarn create-proposal -- --dao &lt;DAO_PDA&gt; --title "Fund community work"</code>
-      <div style="margin-top:8px;color:var(--text3);line-height:1.7">Best practice for multi-DAO operation: choose the DAO from the filter above, confirm the DAO PDA field matches that DAO, then create the proposal from a wallet that holds that DAO governance token.</div>
+      <div style="margin-top:8px;color:var(--text3);line-height:1.7">Best practice for multi-DAO operation: choose the DAO from the filter above, confirm the DAO PDA field matches that DAO, then create the proposal from a wallet that holds that DAO governance token. Confidential payout batches are configured immediately after proposal creation, using only the encrypted batch manifest, hashes, settlement account, and aggregate amount.</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+        <a class="proposal-proof-link" href="confidential-payments.md" target="_blank">Confidential Payouts</a>
+        <a class="proposal-proof-link" href="confidential-payroll-flow.md" target="_blank">Payroll Flow</a>
+        <a class="proposal-proof-link" href="confidential-payments-diagram.md" target="_blank">Diagram</a>
+      </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
         <button class="action-btn action-execute" style="flex:0 0 auto" onclick="submitCreateProposalInWallet()">Create In Wallet</button>
         <button class="action-btn action-commit" style="flex:0 0 auto" onclick="copyCreateProposalCommand()">Copy Create Command</button>
@@ -3313,6 +3415,8 @@ body.judge-mode .judge-banner {
             <a class="award-link" href="?page=proof&judge=1" target="_blank">Review Surface</a>
             <a class="award-link" href="https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet" target="_blank">Program on Solscan</a>
             <a class="award-link" href="live-proof.md" target="_blank">Live Devnet Proof</a>
+            <a class="award-link" href="confidential-payments.md" target="_blank">Confidential Payouts</a>
+            <a class="award-link" href="confidential-payroll-flow.md" target="_blank">Payroll Flow</a>
             <a class="award-link" href="?page=diagnostics" target="_blank" data-bypass-doc-viewer="1">Runtime Panel</a>
             <a class="award-link" href="devnet-release-manifest.md" target="_blank">Release Manifest</a>
           </div>
@@ -3341,6 +3445,7 @@ body.judge-mode .judge-banner {
           <div class="curation-copy">Security reasoning, replay analysis, ZK companion layers, and artifact integrity stay grouped here instead of being mixed into the product surface.</div>
           <div class="curation-links">
             <a class="award-link" href="security-review.md" target="_blank">Security Review</a>
+            <a class="award-link" href="confidential-payments-audit-scope.md" target="_blank">Payout Audit Scope</a>
             <a class="award-link" href="threat-model.md" target="_blank">Threat Model</a>
             <a class="award-link" href="failure-modes.md" target="_blank">Failure Modes</a>
             <a class="award-link" href="replay-analysis.md" target="_blank">Replay Analysis</a>
@@ -3381,7 +3486,7 @@ body.judge-mode .judge-banner {
       </div>
       <div class="award-meta-card">
         <div class="award-meta-card-label">PRODUCT FOCUS</div>
-        <div class="award-meta-card-value">Private voting · treasury execution · runtime assurance</div>
+        <div class="award-meta-card-value">Private voting · confidential payouts · runtime assurance</div>
       </div>
       <div class="award-meta-card">
         <div class="award-meta-card-label">PROGRAM ID</div>
@@ -3535,18 +3640,18 @@ body.judge-mode .judge-banner {
     </div>
 
     <div class="investor-video-card reveal" style="margin-top:24px">
-      <div class="section-tag" style="margin-bottom:14px">EXPLAINER</div>
-      <div class="investor-video-title">Technical explainer aligned to the live product surface.</div>
+      <div class="section-tag" style="margin-bottom:14px">INVESTOR REEL</div>
+      <div class="investor-video-title">A short investor-facing reel aligned to the live product surface.</div>
       <p class="investor-video-copy">
-        The strongest PrivateDAO review flow is not a claim-only narrative. It starts with the technical explainer, then lands immediately on the real on-chain and repo-native proof surface.
+        The strongest PrivateDAO review flow is not a claim-only narrative. It starts with a short investor reel, then lands immediately on the real on-chain and repo-native proof surface.
       </p>
       <div class="investor-video-grid">
         <div class="investor-video-panel">
           <div class="award-meta-card-label">WATCH</div>
           <div class="investor-video-copy">
-            <div>YouTube explainer: <a class="award-link" href="https://youtu.be/KVNFZXHNZTQ" target="_blank">KVNFZXHNZTQ</a></div>
-            <div style="margin-top:12px">Repo-native MP4: <a class="award-link" href="assets/private-dao-investor-pitch.mp4" target="_blank">Direct asset</a></div>
+            <div>Repo-native MP4: <a class="award-link" href="assets/private-dao-investor-pitch.mp4" target="_blank">Direct asset</a></div>
             <div style="margin-top:12px">Poster: <a class="award-link" href="assets/private-dao-investor-pitch-poster.png" target="_blank">Preview image</a></div>
+            <div style="margin-top:12px">YouTube reference: <a class="award-link" href="https://youtu.be/KVNFZXHNZTQ" target="_blank">KVNFZXHNZTQ</a></div>
           </div>
         </div>
         <div class="investor-video-panel">
@@ -4602,18 +4707,17 @@ execute() → treasury action
     </div>
 
     <div class="investor-video-card reveal">
-      <div class="section-tag" style="margin-bottom:14px">TECHNICAL EXPLAINER PACKAGE</div>
-      <div class="investor-video-title">Explainer assets are prepared from the protocol itself.</div>
+      <div class="section-tag" style="margin-bottom:14px">INVESTOR REEL PACKAGE</div>
+      <div class="investor-video-title">The reel is generated from the protocol and product itself.</div>
       <p class="investor-video-copy">
-        The explainer video package is being produced from the actual program logic, lifecycle tests, live frontend, the zk layer, the cryptographic integrity layer, and award verification so the final video stays aligned with what PrivateDAO really ships.
+        The investor reel is produced from the actual program logic, lifecycle tests, live frontend, zk hardening, confidential payout surface, and cryptographic integrity layer so the final asset stays aligned with what PrivateDAO really ships.
       </p>
       <div class="investor-video-grid">
         <div class="investor-video-panel">
           <div class="award-meta-card-label">VIDEO ASSETS</div>
           <div class="investor-video-copy">
-            <div>Explainer brief: <a class="award-link" href="investor-video.md" target="_blank" style="margin-top:12px">Technical Explainer Brief</a></div>
+            <div>Investor brief: <a class="award-link" href="investor-video.md" target="_blank" style="margin-top:12px">Investor Video Brief</a></div>
             <div style="margin-top:12px">Repo-native asset: <a class="award-link" href="assets/private-dao-investor-pitch.mp4" target="_blank">MP4 Asset</a></div>
-            <div>Brief and production package: <a class="award-link" href="investor-video.md" target="_blank" style="margin-top:12px">Explainer Video Brief</a></div>
             <div style="margin-top:12px">Voiceover: <a class="award-link" href="video-voiceover.md" target="_blank">Voiceover Script</a></div>
             <div style="margin-top:12px">Shotlist: <a class="award-link" href="video-shotlist.md" target="_blank">Shotlist</a></div>
           </div>
@@ -4621,7 +4725,7 @@ execute() → treasury action
         <div class="investor-video-panel">
           <div class="award-meta-card-label">PUBLISH STATUS</div>
           <div class="investor-video-copy">
-            <div>The explainer package stays repo-native and aligned with the shipped protocol surface.</div>
+            <div>The reel stays repo-native and aligned with the shipped protocol surface.</div>
             <div style="margin-top:10px">Primary asset: <a class="award-link" href="assets/private-dao-investor-pitch.mp4" target="_blank">MP4 asset</a></div>
             <div style="margin-top:10px">Supporting brief: <a class="award-link" href="video-shotlist.md" target="_blank">Shotlist</a></div>
           </div>
@@ -5378,16 +5482,36 @@ function buildCreateProposalCommand() {
   const duration = (document.getElementById('createProposalDuration')?.value || '30').trim();
   const recipient = (document.getElementById('createProposalRecipient')?.value || '').trim();
   const amount = (document.getElementById('createProposalAmount')?.value || '').trim();
+  const confidentialType = (document.getElementById('createProposalConfidentialType')?.value || '').trim();
+  const settlementRecipient = (document.getElementById('createProposalSettlementRecipient')?.value || '').trim();
+  const payoutAsset = (document.getElementById('createProposalPayoutAssetType')?.value || 'sol').trim();
+  const payoutTotal = (document.getElementById('createProposalPayoutTotal')?.value || '').trim();
+  const recipientCount = (document.getElementById('createProposalRecipientCount')?.value || '').trim();
+  const payoutMint = (document.getElementById('createProposalPayoutTokenMint')?.value || '').trim();
+  const manifestUri = (document.getElementById('createProposalManifestUri')?.value || '').trim();
+  const manifestHash = (document.getElementById('createProposalManifestHash')?.value || '').trim();
+  const ciphertextHash = (document.getElementById('createProposalCiphertextHash')?.value || '').trim();
 
   const parts = ['yarn create-proposal --'];
   parts.push(`--dao ${dao || '<DAO_PDA>'}`);
   parts.push(`--title "${title.replace(/"/g, '\\"')}"`);
   if (description) parts.push(`--description "${description.replace(/"/g, '\\"')}"`);
   if (duration) parts.push(`--duration ${duration}`);
-  if (recipient && amount) {
+  if (!confidentialType && recipient && amount) {
     parts.push(`--treasury-recipient ${recipient}`);
     parts.push(`--treasury-amount ${amount}`);
     parts.push(`--treasury-type sol`);
+  }
+  if (confidentialType) {
+    parts.push(`--confidential-type ${confidentialType}`);
+    parts.push(`--settlement-recipient ${settlementRecipient || wallet || '<SETTLEMENT_WALLET>'}`);
+    parts.push(`--payout-asset ${payoutAsset}`);
+    parts.push(`--payout-total ${payoutTotal || '<TOTAL>'}`);
+    parts.push(`--recipient-count ${recipientCount || 1}`);
+    if (payoutAsset === 'token' && payoutMint) parts.push(`--payout-mint ${payoutMint}`);
+    if (manifestUri) parts.push(`--manifest-uri "${manifestUri.replace(/"/g, '\\"')}"`);
+    if (manifestHash) parts.push(`--manifest-hash ${manifestHash}`);
+    if (ciphertextHash) parts.push(`--ciphertext-hash ${ciphertextHash}`);
   }
   return parts.join(' ');
 }
@@ -5395,8 +5519,10 @@ function buildCreateProposalCommand() {
 function syncCreateProposalCommand(prefillDao = null) {
   const daoInput = document.getElementById('createDaoPda');
   const recipientInput = document.getElementById('createProposalRecipient');
+  const settlementRecipientInput = document.getElementById('createProposalSettlementRecipient');
   if (daoInput && prefillDao && !daoInput.value.trim()) daoInput.value = prefillDao;
   if (recipientInput && wallet && !recipientInput.value.trim()) recipientInput.value = wallet;
+  if (settlementRecipientInput && wallet && !settlementRecipientInput.value.trim()) settlementRecipientInput.value = wallet;
   const hint = document.getElementById('createProposalCommandHint');
   if (hint) hint.textContent = buildCreateProposalCommand();
 }
@@ -5536,6 +5662,9 @@ let connection = new solanaWeb3.Connection(DEVNET_RPC_ENDPOINTS[currentRpcIndex]
 const programPk = new solanaWeb3.PublicKey(PROGRAM_ID);
 const statusByIdx = ["Voting", "Passed", "Failed", "Cancelled", "Vetoed"];
 const proposalZkModeByIdx = ["Companion", "Parallel", "ZkEnforced"];
+const confidentialPayoutTypeByIdx = ["Salary", "Bonus"];
+const confidentialAssetTypeByIdx = ["Sol", "Token"];
+const confidentialPayoutStatusByIdx = ["Configured", "Funded"];
 
 function currentRpcEndpoint() {
   return DEVNET_RPC_ENDPOINTS[currentRpcIndex];
@@ -6152,6 +6281,12 @@ function encodeU64LE(value) {
   return out;
 }
 
+function encodeU16LE(value) {
+  const out = new Uint8Array(2);
+  new DataView(out.buffer).setUint16(0, Number(value), true);
+  return out;
+}
+
 function encodeI64LE(value) {
   const out = new Uint8Array(8);
   new DataView(out.buffer).setBigInt64(0, BigInt(value), true);
@@ -6201,6 +6336,22 @@ function hexToBytes(value) {
     out[i / 2] = parseInt(normalized.slice(i, i + 2), 16);
   }
   return out;
+}
+
+function parseRequiredHashHex(value, label) {
+  const bytes = hexToBytes(value);
+  if (bytes.length !== 32) {
+    throw new Error(`${label} must be exactly 32 bytes of hex`);
+  }
+  return [...bytes];
+}
+
+function selectedConfidentialPayoutType() {
+  return (document.getElementById('createProposalConfidentialType')?.value || '').trim().toLowerCase();
+}
+
+function confidentialPayoutBuilderEnabled() {
+  return Boolean(selectedConfidentialPayoutType());
 }
 
 async function buildAnchorInstruction(methodName, keys) {
@@ -6416,6 +6567,12 @@ function describeOperationError(error, context = 'operation') {
   if (combined.includes('wallet provider did not return a transaction signature')) {
     return 'The wallet approved the request but did not return a usable signature. Next step: reopen the wallet prompt and try once more.';
   }
+  if (combined.includes('confidential payout')) {
+    return 'The confidential payout batch is incomplete or uses the wrong execution path. Next step: confirm the encrypted manifest hashes, recipient count, settlement wallet, and execute through the dedicated confidential payout flow.';
+  }
+  if (combined.includes('useconfidentialpayoutexecution')) {
+    return 'This proposal carries an encrypted payroll or bonus batch. Next step: execute it through the confidential payout path, not the standard treasury action path.';
+  }
   return message || 'The requested operation failed.';
 }
 
@@ -6498,6 +6655,15 @@ async function submitCreateProposalInWallet() {
   const duration = Number((document.getElementById('createProposalDuration')?.value || '').trim());
   const recipient = (document.getElementById('createProposalRecipient')?.value || '').trim();
   const amountSol = (document.getElementById('createProposalAmount')?.value || '').trim();
+  const confidentialType = selectedConfidentialPayoutType();
+  const settlementRecipient = (document.getElementById('createProposalSettlementRecipient')?.value || '').trim();
+  const payoutAssetType = (document.getElementById('createProposalPayoutAssetType')?.value || 'sol').trim();
+  const payoutTotal = (document.getElementById('createProposalPayoutTotal')?.value || '').trim();
+  const recipientCount = Number((document.getElementById('createProposalRecipientCount')?.value || '').trim() || '0');
+  const payoutTokenMint = (document.getElementById('createProposalPayoutTokenMint')?.value || '').trim();
+  const manifestUri = (document.getElementById('createProposalManifestUri')?.value || '').trim();
+  const manifestHash = (document.getElementById('createProposalManifestHash')?.value || '').trim();
+  const ciphertextHash = (document.getElementById('createProposalCiphertextHash')?.value || '').trim();
 
   if (!walletProvider || !wallet) {
     showToast('Connect your wallet first.', 'error');
@@ -6530,6 +6696,9 @@ async function submitCreateProposalInWallet() {
         tokenMint: null,
       };
     }
+    if (confidentialPayoutBuilderEnabled() && treasuryAction) {
+      throw new Error('Confidential payout plans cannot be combined with direct treasury actions on the same proposal');
+    }
 
     const data = concatBytes(
       await anchorMethodDiscriminator('create_proposal'),
@@ -6553,10 +6722,55 @@ async function submitCreateProposalInWallet() {
 
     const signature = await signAndBroadcastTransaction(ix, 'Create proposal submitted');
     if (signature) {
+      let payoutSignature = null;
+      if (confidentialPayoutBuilderEnabled()) {
+        const parsedTotal = Number(payoutTotal);
+        if (!settlementRecipient || !Number.isFinite(parsedTotal) || parsedTotal <= 0 || !Number.isInteger(recipientCount) || recipientCount <= 0 || !manifestUri) {
+          throw new Error('Confidential payout plans require settlement recipient, payout total, recipient count, and manifest URI');
+        }
+        if (payoutAssetType === 'token' && !payoutTokenMint) {
+          throw new Error('Token payout batches require a payout token mint');
+        }
+
+        const payoutPlanPk = new solanaWeb3.PublicKey(deriveConfidentialPayoutPlanPda(proposalPk.toBase58()));
+        const payoutTypeByte = confidentialType === 'bonus' ? 1 : 0;
+        const assetTypeByte = payoutAssetType === 'token' ? 1 : 0;
+        const totalAmount = payoutAssetType === 'token'
+          ? encodeU64LE(parsedTotal)
+          : encodeU64LE(Math.floor(parsedTotal * solanaWeb3.LAMPORTS_PER_SOL));
+        const payoutData = concatBytes(
+          await anchorMethodDiscriminator('configure_confidential_payout_plan'),
+          new Uint8Array([payoutTypeByte]),
+          new Uint8Array([assetTypeByte]),
+          new solanaWeb3.PublicKey(settlementRecipient).toBytes(),
+          encodeOptionPubkey(payoutAssetType === 'token' ? payoutTokenMint : null),
+          encodeU16LE(recipientCount),
+          totalAmount,
+          encodeAnchorString(manifestUri),
+          new Uint8Array(parseRequiredHashHex(manifestHash, 'Manifest hash')),
+          new Uint8Array(parseRequiredHashHex(ciphertextHash, 'Ciphertext hash')),
+        );
+        const payoutIx = new solanaWeb3.TransactionInstruction({
+          programId: programPk,
+          keys: [
+            { pubkey: new solanaWeb3.PublicKey(dao.pubkey), isSigner: false, isWritable: false },
+            { pubkey: proposalPk, isSigner: false, isWritable: true },
+            { pubkey: payoutPlanPk, isSigner: false, isWritable: true },
+            { pubkey: new solanaWeb3.PublicKey(wallet), isSigner: true, isWritable: true },
+            { pubkey: solanaWeb3.SystemProgram.programId, isSigner: false, isWritable: false },
+          ],
+          data: payoutData,
+        });
+        payoutSignature = await signAndBroadcastTransaction(payoutIx, 'Confidential payout plan submitted');
+      }
+
       currentSelectedProposalPubkey = proposalPk.toBase58();
-      loadLiveProposals();
       showToast(`Proposal created: ${shortPk(proposalPk.toBase58())}`, 'success');
       setTimeout(() => window.open(solscanTx(signature), '_blank', 'noopener'), 180);
+      if (payoutSignature) {
+        setTimeout(() => window.open(solscanTx(payoutSignature), '_blank', 'noopener'), 360);
+      }
+      await loadLiveProposals();
       syncUrlState();
     }
   } catch (error) {
@@ -7102,8 +7316,9 @@ async function executeSelectedProposalInWallet() {
     showToast('Select a live proposal first.', 'error');
     return;
   }
+  const confidentialPlan = currentSelectedProposal.confidentialPayoutPlan || null;
   const action = currentSelectedProposal.treasuryAction;
-  if (!action) {
+  if (!action && !confidentialPlan) {
     showToast('Selected proposal has no treasury action.', 'error');
     return;
   }
@@ -7111,14 +7326,36 @@ async function executeSelectedProposalInWallet() {
     const daoPk = new solanaWeb3.PublicKey(currentSelectedProposal.dao);
     const proposalPk = new solanaWeb3.PublicKey(currentSelectedProposal.pubkey);
     const treasuryPk = new solanaWeb3.PublicKey(deriveTreasuryPda(currentSelectedProposal.dao));
-    const recipientPk = new solanaWeb3.PublicKey(action.recipient);
     const executorPk = new solanaWeb3.PublicKey(wallet);
     const tx = new solanaWeb3.Transaction();
 
     let treasuryTokenPk = treasuryPk;
     let recipientTokenPk = treasuryPk;
     let executeTokenProgram = TOKEN_PROGRAM_ID;
-    if (action.actionTypeLabel === 'SendToken') {
+    const recipientPk = new solanaWeb3.PublicKey(
+      confidentialPlan ? confidentialPlan.settlementRecipient : action.recipient
+    );
+    if (confidentialPlan && confidentialPlan.assetType === 'Token') {
+      if (!confidentialPlan.tokenMint) {
+        throw new Error('Selected confidential payout plan is missing token mint.');
+      }
+      const tokenProgram = await resolveTokenProgramForMint(confidentialPlan.tokenMint);
+      treasuryTokenPk = (await deriveAssociatedTokenAddress(treasuryPk.toBase58(), confidentialPlan.tokenMint, true, tokenProgram)).address;
+      recipientTokenPk = (await deriveAssociatedTokenAddress(recipientPk.toBase58(), confidentialPlan.tokenMint, false, tokenProgram)).address;
+      const recipientTokenInfo = await connection.getAccountInfo(recipientTokenPk, 'confirmed');
+      if (!recipientTokenInfo) {
+        tx.add(
+          createAssociatedTokenAccountInstruction(
+            wallet,
+            recipientPk.toBase58(),
+            confidentialPlan.tokenMint,
+            recipientTokenPk,
+            tokenProgram,
+          )
+        );
+      }
+      executeTokenProgram = tokenProgram;
+    } else if (action && action.actionTypeLabel === 'SendToken') {
       if (!action.tokenMint) {
         throw new Error('Selected SendToken action is missing token mint.');
       }
@@ -7140,17 +7377,31 @@ async function executeSelectedProposalInWallet() {
       executeTokenProgram = tokenProgram;
     }
 
-    const ix = await buildAnchorInstruction('execute_proposal', [
-      { pubkey: daoPk, isSigner: false, isWritable: false },
-      { pubkey: proposalPk, isSigner: false, isWritable: true },
-      { pubkey: treasuryPk, isSigner: false, isWritable: true },
-      { pubkey: recipientPk, isSigner: false, isWritable: true },
-      { pubkey: treasuryTokenPk, isSigner: false, isWritable: true },
-      { pubkey: recipientTokenPk, isSigner: false, isWritable: true },
-      { pubkey: executorPk, isSigner: true, isWritable: false },
-      { pubkey: executeTokenProgram, isSigner: false, isWritable: false },
-      { pubkey: solanaWeb3.SystemProgram.programId, isSigner: false, isWritable: false },
-    ]);
+    const ix = confidentialPlan
+      ? await buildAnchorInstruction('execute_confidential_payout_plan', [
+          { pubkey: daoPk, isSigner: false, isWritable: false },
+          { pubkey: proposalPk, isSigner: false, isWritable: true },
+          { pubkey: new solanaWeb3.PublicKey(confidentialPlan.pubkey), isSigner: false, isWritable: true },
+          { pubkey: treasuryPk, isSigner: false, isWritable: true },
+          { pubkey: recipientPk, isSigner: false, isWritable: true },
+          { pubkey: treasuryTokenPk, isSigner: false, isWritable: true },
+          { pubkey: recipientTokenPk, isSigner: false, isWritable: true },
+          { pubkey: executorPk, isSigner: true, isWritable: false },
+          { pubkey: executeTokenProgram, isSigner: false, isWritable: false },
+          { pubkey: solanaWeb3.SystemProgram.programId, isSigner: false, isWritable: false },
+        ])
+      : await buildAnchorInstruction('execute_proposal', [
+          { pubkey: daoPk, isSigner: false, isWritable: false },
+          { pubkey: proposalPk, isSigner: false, isWritable: true },
+          { pubkey: treasuryPk, isSigner: false, isWritable: true },
+          { pubkey: recipientPk, isSigner: false, isWritable: true },
+          { pubkey: treasuryTokenPk, isSigner: false, isWritable: true },
+          { pubkey: recipientTokenPk, isSigner: false, isWritable: true },
+          { pubkey: new solanaWeb3.PublicKey(deriveConfidentialPayoutPlanPda(currentSelectedProposal.pubkey)), isSigner: false, isWritable: false },
+          { pubkey: executorPk, isSigner: true, isWritable: false },
+          { pubkey: executeTokenProgram, isSigner: false, isWritable: false },
+          { pubkey: solanaWeb3.SystemProgram.programId, isSigner: false, isWritable: false },
+        ]);
     tx.add(ix);
 
     const signature = await sendPreparedTransaction(tx);
@@ -7359,6 +7610,46 @@ function decodeProposalZkPolicyAccount(data, pubkey) {
   };
 }
 
+function decodeConfidentialPayoutPlanAccount(data, pubkey) {
+  const o = { value: 8 };
+  const dao = readPubkey(data, o);
+  const proposal = readPubkey(data, o);
+  const configuredBy = readPubkey(data, o);
+  const payoutTypeIdx = data[o.value]; o.value += 1;
+  const assetTypeIdx = data[o.value]; o.value += 1;
+  const settlementRecipient = readPubkey(data, o);
+  const hasMint = data[o.value]; o.value += 1;
+  const tokenMint = hasMint === 1 ? readPubkey(data, o) : null;
+  const recipientCount = data[o.value] | (data[o.value + 1] << 8); o.value += 2;
+  const totalAmount = parseU64(data, o.value); o.value += 8;
+  const encryptedManifestUri = parseString(data, o);
+  const manifestHash = Array.from(data.slice(o.value, o.value + 32)).map((byte) => byte.toString(16).padStart(2, '0')).join(''); o.value += 32;
+  const ciphertextHash = Array.from(data.slice(o.value, o.value + 32)).map((byte) => byte.toString(16).padStart(2, '0')).join(''); o.value += 32;
+  const statusIdx = data[o.value]; o.value += 1;
+  const configuredAt = parseI64(data, o.value); o.value += 8;
+  const fundedAt = parseI64(data, o.value); o.value += 8;
+  const bump = data[o.value];
+  return {
+    pubkey: pubkey.toBase58(),
+    dao,
+    proposal,
+    configuredBy,
+    payoutType: confidentialPayoutTypeByIdx[payoutTypeIdx] || `Unknown(${payoutTypeIdx})`,
+    assetType: confidentialAssetTypeByIdx[assetTypeIdx] || `Unknown(${assetTypeIdx})`,
+    settlementRecipient,
+    tokenMint,
+    recipientCount,
+    totalAmount,
+    encryptedManifestUri,
+    manifestHash,
+    ciphertextHash,
+    status: confidentialPayoutStatusByIdx[statusIdx] || `Unknown(${statusIdx})`,
+    configuredAt,
+    fundedAt,
+    bump,
+  };
+}
+
 function decodeZkVerificationReceiptAccount(data, pubkey) {
   const o = { value: 8 };
   const dao = readPubkey(data, o);
@@ -7471,6 +7762,14 @@ function deriveProposalZkPolicyPda(proposalPubkey) {
     programPk
   );
   return policyPk.toBase58();
+}
+
+function deriveConfidentialPayoutPlanPda(proposalPubkey) {
+  const [planPk] = solanaWeb3.PublicKey.findProgramAddressSync(
+    [new TextEncoder().encode('payout-plan'), new solanaWeb3.PublicKey(proposalPubkey).toBytes()],
+    programPk
+  );
+  return planPk.toBase58();
 }
 
 function deriveZkReceiptPda(proposalPubkey, layerSeedByte) {
@@ -7602,6 +7901,7 @@ function renderProposalDetail(p, nowTs) {
   const zkAnchorInfo = getZkAnchorInfo(p.pubkey);
   const zkCardState = getProposalZkCardState(p);
   const zkReadiness = summarizeZkEnforcedReadiness(p);
+  const confidentialPlan = p.confidentialPayoutPlan || null;
   const detailGrid = document.getElementById('proposalDetailGrid');
   const proofLinks = document.getElementById('proposalProofLinks');
   const commandGrid = document.getElementById('proposalCommandGrid');
@@ -7629,8 +7929,11 @@ function renderProposalDetail(p, nowTs) {
           : phase === "Passed" || phase === "VotingClosed"
             ? "Finalize the proposal"
             : phase === "Executed"
-              ? "Verify the treasury movement"
+            ? "Verify the treasury movement"
               : "Review the proposal state";
+  const payoutSummary = confidentialPlan
+    ? `${confidentialPlan.payoutType} · ${confidentialPlan.assetType}<br>${confidentialPlan.recipientCount} recipients · ${confidentialPlan.totalAmount} ${confidentialPlan.assetType === 'Sol' ? 'lamports' : 'raw units'}<br>Settlement ${confidentialPlan.settlementRecipient}<br>Status ${confidentialPlan.status}`
+    : 'No confidential payout plan attached';
 
   phaseEl.textContent = `${paddedId} · ${phase}`;
   introEl.textContent = `The selected proposal is live on devnet. Use this surface to understand the current phase, take the valid next step, and verify the resulting state on chain.`;
@@ -7669,6 +7972,10 @@ function renderProposalDetail(p, nowTs) {
       }</div>
     </div>
     <div class="proposal-detail-box">
+      <div class="proposal-detail-label">CONFIDENTIAL PAYOUT</div>
+      <div class="proposal-detail-value">${payoutSummary}</div>
+    </div>
+    <div class="proposal-detail-box">
       <div class="proposal-detail-label">ADDRESSES</div>
       <div class="proposal-detail-value">Proposal: ${p.pubkey}<br>DAO: ${p.dao}<br>Treasury: ${treasuryPda}</div>
     </div>
@@ -7704,6 +8011,7 @@ function renderProposalDetail(p, nowTs) {
     <a class="proposal-proof-link" href="${solscanAccount(treasuryPda)}" target="_blank">Treasury Explorer</a>
     <a class="proposal-proof-link" href="live-proof.md" target="_blank">Live Devnet Proof</a>
     <a class="proposal-proof-link" href="zk-enforced-operator-flow.md" target="_blank">ZK Operator Flow</a>
+    ${confidentialPlan ? `<a class="proposal-proof-link" href="${solscanAccount(confidentialPlan.pubkey)}" target="_blank">Payout Plan PDA</a>` : ''}
     <button class="proposal-proof-link" type="button" onclick="cancelSelectedProposalInWallet()">Cancel in Wallet</button>
     <button class="proposal-proof-link" type="button" onclick="vetoSelectedProposalInWallet()">Veto in Wallet</button>
     <button class="proposal-proof-link" type="button" onclick="finalizeSelectedProposalInWallet()">Finalize in Wallet</button>
@@ -7742,8 +8050,13 @@ function renderProposalDetail(p, nowTs) {
       <code>npm run inspect:zk-proposal -- --proposal ${p.pubkey}</code>
     </div>
     <div class="proposal-command-box">
+      <div class="proposal-detail-label">CONFIDENTIAL PAYOUT FLOW</div>
+      <div style="color:var(--text2);line-height:1.8">${confidentialPlan ? 'This proposal releases an encrypted salary or bonus batch. On-chain state exposes only the aggregate amount, settlement recipient, recipient count, and immutable hashes for the encrypted manifest.' : 'Use this path when you need salary, bonus, or grant routing without exposing the employee-level manifest directly on-chain.'}</div>
+      <code>${confidentialPlan ? `npm run inspect:confidential-payout -- --proposal ${p.pubkey}` : `npm run configure:confidential-payout -- --dao ${p.dao} --proposal ${p.pubkey} --manifest-uri "box://privatedao/payroll/epoch-1"`}</code>
+    </div>
+    <div class="proposal-command-box">
       <div class="proposal-detail-label">EXECUTE</div>
-      <div style="color:var(--text2);line-height:1.8">Execute only after the proposal passes and clears timelock.</div>
+      <div style="color:var(--text2);line-height:1.8">${confidentialPlan ? 'Execute the confidential payout path only after the proposal passes and clears timelock. The treasury releases the aggregate batch to the settlement recipient, while the encrypted manifest remains off-chain.' : 'Execute only after the proposal passes and clears timelock.'}</div>
       <code>yarn execute -- --proposal ${p.pubkey}</code>
     </div>
   `;
@@ -8015,6 +8328,7 @@ function selectProposal(pubkey) {
 function proposalCardHtml(p, nowTs) {
   const phase = computePhase(p, nowTs);
   const zkCardState = getProposalZkCardState(p);
+  const confidentialPlan = p.confidentialPayoutPlan || null;
   const className = phase === "Commit"
     ? "phase-commit"
     : phase === "Reveal"
@@ -8052,6 +8366,7 @@ function proposalCardHtml(p, nowTs) {
         <strong>${zkCardState.pill}</strong>
         <span>${zkCardState.copy}</span>
       </div>
+      ${confidentialPlan ? `<div class="proposal-phase-copy" style="margin-top:10px;background:rgba(126,87,255,0.08);border-color:rgba(126,87,255,0.18)"><strong>Confidential ${confidentialPlan.payoutType}</strong><span>${confidentialPlan.recipientCount} encrypted recipients · settlement ${shortPk(confidentialPlan.settlementRecipient)}</span></div>` : ''}
       <div class="proposal-meta">
         <div class="meta-kv"><div class="meta-k">STATUS</div><div class="meta-v">${p.status}</div></div>
         <div class="meta-kv"><div class="meta-k">COMMITS</div><div class="meta-v">${p.commitCount}</div></div>
@@ -8132,8 +8447,12 @@ async function loadLiveProposals() {
     }
 
     const policyPdas = proposals.map((proposal) => new solanaWeb3.PublicKey(deriveProposalZkPolicyPda(proposal.pubkey)));
+    const payoutPlanPdas = proposals.map((proposal) => new solanaWeb3.PublicKey(deriveConfidentialPayoutPlanPda(proposal.pubkey)));
     const policyInfos = policyPdas.length
       ? await withRpcFallback((activeConnection) => activeConnection.getMultipleAccountsInfo(policyPdas, 'confirmed'))
+      : [];
+    const payoutInfos = payoutPlanPdas.length
+      ? await withRpcFallback((activeConnection) => activeConnection.getMultipleAccountsInfo(payoutPlanPdas, 'confirmed'))
       : [];
 
     proposals.forEach((proposal, index) => {
@@ -8142,12 +8461,17 @@ async function loadLiveProposals() {
         proposal.zkMode = 'Companion';
         proposal.zkRequiredLayersMask = 0;
         proposal.zkPolicyPda = null;
-        return;
+      } else {
+        const decoded = decodeProposalZkPolicyAccount(policyInfo.data, policyPdas[index]);
+        proposal.zkMode = decoded.mode;
+        proposal.zkRequiredLayersMask = decoded.requiredLayersMask;
+        proposal.zkPolicyPda = decoded.pubkey;
       }
-      const decoded = decodeProposalZkPolicyAccount(policyInfo.data, policyPdas[index]);
-      proposal.zkMode = decoded.mode;
-      proposal.zkRequiredLayersMask = decoded.requiredLayersMask;
-      proposal.zkPolicyPda = decoded.pubkey;
+
+      const payoutInfo = payoutInfos[index];
+      proposal.confidentialPayoutPlan = payoutInfo
+        ? decodeConfidentialPayoutPlanAccount(payoutInfo.data, payoutPlanPdas[index])
+        : null;
     });
 
     proposals.sort((a, b) => b.proposalId - a.proposalId);
@@ -8396,6 +8720,15 @@ observeReveal();
   'createProposalDuration',
   'createProposalRecipient',
   'createProposalAmount',
+  'createProposalConfidentialType',
+  'createProposalSettlementRecipient',
+  'createProposalPayoutAssetType',
+  'createProposalPayoutTotal',
+  'createProposalRecipientCount',
+  'createProposalPayoutTokenMint',
+  'createProposalManifestUri',
+  'createProposalManifestHash',
+  'createProposalCiphertextHash',
 ].forEach(id => {
   const el = document.getElementById(id);
   if (el) el.addEventListener('input', () => syncCreateProposalCommand());

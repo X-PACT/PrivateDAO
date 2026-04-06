@@ -25,6 +25,7 @@
       "docs/security-review.md",
       "docs/threat-model.md",
       "docs/security-coverage-map.md",
+      "docs/confidential-payments-audit-scope.md",
       "docs/failure-modes.md",
       "docs/replay-analysis.md",
       "docs/cryptographic-integrity.md",
@@ -63,6 +64,11 @@
       "docs/zk-attestation.generated.json"
     ],
     "proof": [
+      "docs/confidential-payments.md",
+      "docs/confidential-payroll-flow.md",
+      "docs/confidential-payments-diagram.md",
+      "docs/assets/icons/confidential-payroll.svg",
+      "docs/assets/confidential-payments-flow.svg",
       "docs/live-proof.md",
       "docs/devnet-release-manifest.md",
       "docs/proof-registry.json",
@@ -197,6 +203,7 @@
   ],
   "status": {
     "governanceLifecycle": "verified",
+    "confidentialPayoutSurface": "verified",
     "securityReasoning": "verified",
     "supplyChainSurface": "verified",
     "releaseCeremonySurface": "verified",

@@ -33,6 +33,7 @@
 [![Artifact Integrity](https://img.shields.io/badge/Artifact%20Integrity-SHA256%20Manifest-0f766e)](docs/cryptographic-integrity.md)
 [![PDAO Token](https://img.shields.io/badge/PDAO-Devnet%20Governance%20Token-14b8a6)](docs/pdao-token.md)
 [![PDAO Attestation](https://img.shields.io/badge/PDAO-Attested-0f766e)](docs/pdao-attestation.generated.json)
+[![Confidential Payouts](https://img.shields.io/badge/Confidential%20Payouts-Salary%20%2B%20Bonus-7e57ff)](docs/confidential-payments.md)
 
 PrivateDAO is a Solana governance protocol for DAOs that want private voting without giving up execution safety. Votes are committed privately, revealed later, finalized deterministically, and treasury execution stays behind an explicit timelock with recipient and mint checks.
 
@@ -75,6 +76,7 @@ PrivateDAO is not only a program repo. It contains four layers that fit together
    - on-chain proof anchors for the canonical Devnet proof path
    - on-chain parallel verification receipts for the Phase A verifier path
    - proposal-level `zk_enforced` mode for the Phase B finalize path
+   - confidential payroll and bonus batches with immutable manifest and ciphertext hashes
 4. Review and operations layer
    - generated attestations
    - Devnet evidence
@@ -93,8 +95,10 @@ For the fastest useful read:
 6. Read `docs/phase-c-hardening.md`
 7. Read `docs/zk-verifier-strategy.md`
 8. Read `docs/zk-enforced-operator-flow.md`
-9. Read `docs/canonical-verifier-boundary-decision.md`
-10. Read `docs/zk-external-closure.generated.md`
+9. Read `docs/confidential-payments.md`
+10. Read `docs/confidential-payroll-flow.md`
+11. Read `docs/canonical-verifier-boundary-decision.md`
+12. Read `docs/zk-external-closure.generated.md`
 
 ## Shared Proposal Doc
 
@@ -149,6 +153,7 @@ The current repository already supports that framing through:
 - a live DeAura-launched governance token surface
 - token-gated proposal participation
 - explicit user-facing proposal, vote, and execution flows
+- encrypted salary and bonus batch approvals with aggregate on-chain settlement
 
 See:
 
@@ -157,6 +162,33 @@ See:
 - `docs/launch-growth-plan.md`
 - `docs/use-cases.md`
 - `docs/economic-model.md`
+- `docs/confidential-payments.md`
+- `docs/confidential-payroll-flow.md`
+
+## Confidential Payroll And Bonus
+
+PrivateDAO now supports confidential payout plans as a first-class governance feature.
+
+This adds a controlled compensation path for:
+
+- payroll epochs
+- contributor bonuses
+- grant rounds
+- committee-approved payout batches
+
+The current model is intentionally strict and honest:
+
+- the full payroll or bonus manifest stays encrypted off-chain
+- the proposal stores only immutable hashes plus aggregate settlement metadata
+- execution remains proposal-bound, timelocked, and treasury-safe
+- the live frontend exposes the feature directly during proposal creation and execution
+
+Use these notes first:
+
+- `docs/confidential-payments.md`
+- `docs/confidential-payroll-flow.md`
+- `docs/confidential-payments-diagram.md`
+- `docs/confidential-payments-audit-scope.md`
 
 ## Domain Mirror Strategy
 
@@ -189,6 +221,7 @@ The current review surface is intentionally explicit about a few points that are
 - The selected proposal panel now shows `zk_enforced` readiness directly, including whether receipts are missing, still parallel, or already strong enough for promotion.
 - The repo now includes a dedicated `zk_enforced` runtime capture registry and generated review package so stronger-path wallet runs can be added without changing the reviewer surface.
 - The repo now also includes explicit `zk_enforced` capture templates, an external audit scope, and a canonical verifier-boundary decision document so the remaining external work is structured instead of implied.
+- Confidential payroll and bonus batches are now proposal-bound sidecar accounts. The chain exposes only aggregate settlement metadata and immutable hashes for the encrypted manifest, while the detailed recipient sheet remains off-chain.
 - Phase C is not yet promoted. `zk_enforced` is live and usable, but it is still in hardening mode until additional runtime evidence, external review, and operator confidence are closed.
 
 ## ZK Rollout Status
@@ -248,6 +281,7 @@ What is real in the current implementation:
 - proposal accounts are read live from on-chain program state
 - any wallet holding the DAO governance token can create a proposal
 - commit, reveal, finalize, cancel, veto, and execute are implemented in the program
+- confidential salary and bonus batches can be configured and executed through proposal-bound payout plan PDAs
 - the operator scripts print real transaction signatures and Solscan links for verification
 
 The current stack is already structured for immediate **mainnet transition**. The lifecycle, permissions, execution checks, and operator flows are live on-chain today; moving from devnet to mainnet is an operational deployment step, not a product redesign.
@@ -327,6 +361,10 @@ The same rule now applies to the review surface itself: zk artifacts, live-proof
 
 ## Security And Cryptography Docs
 
+- Confidential payouts note: `docs/confidential-payments.md`
+- Confidential payroll flow: `docs/confidential-payroll-flow.md`
+- Confidential payouts diagram: `docs/confidential-payments-diagram.md`
+- Confidential payouts audit scope: `docs/confidential-payments-audit-scope.md`
 - Threat model: `docs/threat-model.md`
 - Security coverage map: `docs/security-coverage-map.md`
 - Failure modes: `docs/failure-modes.md`
@@ -375,8 +413,8 @@ The same rule now applies to the review surface itself: zk artifacts, live-proof
 - Devnet release manifest: `docs/devnet-release-manifest.md`
 - Proof registry: `docs/proof-registry.json`
 - Technical explainer package: `docs/investor-video.md`
-- YouTube technical explainer: `https://youtu.be/KVNFZXHNZTQ`
-- Repo-native explainer asset: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
+- Repo-native investor reel: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
+- YouTube explainer reference: `https://youtu.be/KVNFZXHNZTQ`
 - On-chain program: `programs/private-dao/src/lib.rs`
 - End-to-end lifecycle test: `tests/full-flow-test.ts`
 
@@ -796,14 +834,14 @@ PrivateDAO brings commit-reveal voting, proposal-scoped private delegation, keep
 
 <p align="center">
   <a href="https://youtu.be/KVNFZXHNZTQ" target="_blank">
-    <img src="docs/assets/private-dao-investor-pitch-poster.png" alt="PrivateDAO technical explainer video poster" width="900" />
+    <img src="docs/assets/private-dao-investor-pitch-poster.png" alt="PrivateDAO investor reel poster" width="900" />
   </a>
 </p>
 
 - Strategy documentation for judges, partners, and technical reviewers: `https://us04docs.zoom.us/doc/Zd34HEaHSKyZGRxBcqxXQg`
-- Watch the YouTube technical explainer: `https://youtu.be/KVNFZXHNZTQ`
-- Repo-native explainer asset: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
-- Video brief and production package: `docs/investor-video.md`
+- Watch the repo-native investor reel: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
+- YouTube explainer reference: `https://youtu.be/KVNFZXHNZTQ`
+- Investor video brief and production package: `docs/investor-video.md`
 - Voiceover script: `docs/video-voiceover.md`
 - Shotlist and visual direction: `docs/video-shotlist.md`
 - Poster asset: `docs/assets/private-dao-investor-pitch-poster.png`

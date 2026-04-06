@@ -211,6 +211,92 @@ pub mod private_dao {
         Ok(())
     }
 
+    pub fn configure_confidential_payout_plan(
+        ctx: Context<ConfigureConfidentialPayoutPlan>,
+        payout_type: ConfidentialPayoutType,
+        asset_type: ConfidentialAssetType,
+        settlement_recipient: Pubkey,
+        token_mint: Option<Pubkey>,
+        recipient_count: u16,
+        total_amount: u64,
+        encrypted_manifest_uri: String,
+        manifest_hash: [u8; 32],
+        ciphertext_hash: [u8; 32],
+    ) -> Result<()> {
+        let operator = ctx.accounts.operator.key();
+        require!(
+            operator == ctx.accounts.dao.authority || operator == ctx.accounts.proposal.proposer,
+            Error::UnauthorizedConfidentialPayoutOperator
+        );
+        require!(
+            ctx.accounts.proposal.status == ProposalStatus::Voting
+                && ctx.accounts.proposal.commit_count == 0
+                && ctx.accounts.proposal.reveal_count == 0,
+            Error::ConfidentialPayoutPlanLocked
+        );
+        require!(
+            ctx.accounts.proposal.treasury_action.is_none(),
+            Error::ConfidentialPayoutConflictsWithTreasuryAction
+        );
+
+        validate_confidential_payout_plan(
+            &asset_type,
+            settlement_recipient,
+            &token_mint,
+            recipient_count,
+            total_amount,
+            &encrypted_manifest_uri,
+            &manifest_hash,
+            &ciphertext_hash,
+        )?;
+
+        let plan = &mut ctx.accounts.confidential_payout_plan;
+        if plan.proposal != Pubkey::default() {
+            require!(
+                plan.dao == ctx.accounts.dao.key()
+                    && plan.proposal == ctx.accounts.proposal.key(),
+                Error::ConfidentialPayoutPlanMismatch
+            );
+            require!(
+                plan.status != ConfidentialPayoutStatus::Funded,
+                Error::ConfidentialPayoutAlreadyFunded
+            );
+        }
+
+        plan.dao = ctx.accounts.dao.key();
+        plan.proposal = ctx.accounts.proposal.key();
+        plan.configured_by = operator;
+        plan.payout_type = payout_type.clone();
+        plan.asset_type = asset_type.clone();
+        plan.settlement_recipient = settlement_recipient;
+        plan.token_mint = token_mint;
+        plan.recipient_count = recipient_count;
+        plan.total_amount = total_amount;
+        plan.encrypted_manifest_uri = encrypted_manifest_uri.clone();
+        plan.manifest_hash = manifest_hash;
+        plan.ciphertext_hash = ciphertext_hash;
+        plan.status = ConfidentialPayoutStatus::Configured;
+        plan.configured_at = Clock::get()?.unix_timestamp;
+        plan.funded_at = 0;
+        plan.bump = ctx.bumps.confidential_payout_plan;
+
+        emit!(ConfidentialPayoutConfigured {
+            dao: plan.dao,
+            proposal: plan.proposal,
+            configured_by: plan.configured_by,
+            payout_type,
+            asset_type,
+            settlement_recipient: plan.settlement_recipient,
+            token_mint: plan.token_mint,
+            recipient_count: plan.recipient_count,
+            total_amount: plan.total_amount,
+            encrypted_manifest_uri,
+            manifest_hash: plan.manifest_hash,
+            ciphertext_hash: plan.ciphertext_hash,
+        });
+        Ok(())
+    }
+
     // ── Cancel proposal ───────────────────────────────────────────────────────
     //
     // Authority-only. Can only cancel while status == Voting.
@@ -553,6 +639,10 @@ pub mod private_dao {
             now >= p.execution_unlocks_at,
             Error::ExecutionTimelockActive
         );
+        require!(
+            !account_exists(&ctx.accounts.confidential_payout_plan),
+            Error::UseConfidentialPayoutExecution
+        );
 
         if let Some(ref action) = p.treasury_action.clone() {
             validate_treasury_action(action)?;
@@ -656,6 +746,136 @@ pub mod private_dao {
             }
         }
         p.is_executed = true;
+        Ok(())
+    }
+
+    pub fn execute_confidential_payout_plan(
+        ctx: Context<ExecuteConfidentialPayoutPlan>,
+    ) -> Result<()> {
+        let now = Clock::get()?.unix_timestamp;
+        let p = &mut ctx.accounts.proposal;
+
+        require!(p.status == ProposalStatus::Passed, Error::ProposalNotPassed);
+        require!(!p.is_executed, Error::AlreadyExecuted);
+        require!(
+            now >= p.execution_unlocks_at,
+            Error::ExecutionTimelockActive
+        );
+        require!(
+            p.treasury_action.is_none(),
+            Error::ConfidentialPayoutConflictsWithTreasuryAction
+        );
+
+        let plan = &mut ctx.accounts.confidential_payout_plan;
+        require!(
+            plan.dao == ctx.accounts.dao.key() && plan.proposal == p.key(),
+            Error::ConfidentialPayoutPlanMismatch
+        );
+        require!(
+            plan.status == ConfidentialPayoutStatus::Configured,
+            Error::ConfidentialPayoutAlreadyFunded
+        );
+
+        let dao_key = ctx.accounts.dao.key();
+        let t_bump = ctx.bumps.treasury;
+        let seeds: &[&[u8]] = &[b"treasury", dao_key.as_ref(), &[t_bump]];
+        let signer = &[seeds];
+
+        match plan.asset_type {
+            ConfidentialAssetType::Sol => {
+                require!(
+                    ctx.accounts.settlement_recipient.key() == plan.settlement_recipient,
+                    Error::TreasuryRecipientMismatch
+                );
+                transfer(
+                    CpiContext::new_with_signer(
+                        ctx.accounts.system_program.to_account_info(),
+                        Transfer {
+                            from: ctx.accounts.treasury.to_account_info(),
+                            to: ctx.accounts.settlement_recipient.to_account_info(),
+                        },
+                        signer,
+                    ),
+                    plan.total_amount,
+                )?;
+            }
+            ConfidentialAssetType::Token => {
+                let action_mint = plan
+                    .token_mint
+                    .ok_or(Error::ConfidentialPayoutTokenMintRequired)?;
+                require!(
+                    ctx.accounts.settlement_recipient.key() == plan.settlement_recipient,
+                    Error::TreasuryRecipientMismatch
+                );
+                require!(
+                    *ctx.accounts.treasury_token_account.owner == ctx.accounts.token_program.key(),
+                    Error::InvalidTokenProgram
+                );
+                require!(
+                    *ctx.accounts.recipient_token_account.owner == ctx.accounts.token_program.key(),
+                    Error::InvalidTokenProgram
+                );
+
+                let treasury_token_account = parse_token_account(
+                    &ctx.accounts.treasury_token_account,
+                    &ctx.accounts.token_program.key(),
+                )?;
+                let recipient_token_account = parse_token_account(
+                    &ctx.accounts.recipient_token_account,
+                    &ctx.accounts.token_program.key(),
+                )?;
+
+                require!(
+                    treasury_token_account.owner == ctx.accounts.treasury.key(),
+                    Error::InvalidTreasuryTokenAuthority
+                );
+                require!(
+                    treasury_token_account.mint == action_mint,
+                    Error::InvalidTokenMint
+                );
+                require!(
+                    recipient_token_account.mint == action_mint,
+                    Error::InvalidTokenMint
+                );
+                require!(
+                    ctx.accounts.treasury_token_account.key()
+                        != ctx.accounts.recipient_token_account.key(),
+                    Error::DuplicateTokenAccounts
+                );
+                require!(
+                    recipient_token_account.owner == plan.settlement_recipient,
+                    Error::RecipientOwnerMismatch
+                );
+
+                #[allow(deprecated)]
+                token_interface::transfer(
+                    CpiContext::new_with_signer(
+                        ctx.accounts.token_program.to_account_info(),
+                        TokenTransfer {
+                            from: ctx.accounts.treasury_token_account.to_account_info(),
+                            to: ctx.accounts.recipient_token_account.to_account_info(),
+                            authority: ctx.accounts.treasury.to_account_info(),
+                        },
+                        signer,
+                    ),
+                    plan.total_amount,
+                )?;
+            }
+        }
+
+        plan.status = ConfidentialPayoutStatus::Funded;
+        plan.funded_at = now;
+        p.is_executed = true;
+
+        emit!(ConfidentialPayoutExecuted {
+            proposal: p.key(),
+            settlement_recipient: plan.settlement_recipient,
+            asset_type: plan.asset_type.clone(),
+            token_mint: plan.token_mint,
+            recipient_count: plan.recipient_count,
+            total_amount: plan.total_amount,
+            funded_at: plan.funded_at,
+        });
         Ok(())
     }
 
@@ -1151,6 +1371,50 @@ fn validate_treasury_action(action: &TreasuryAction) -> Result<()> {
     Ok(())
 }
 
+fn validate_confidential_payout_plan(
+    asset_type: &ConfidentialAssetType,
+    settlement_recipient: Pubkey,
+    token_mint: &Option<Pubkey>,
+    recipient_count: u16,
+    total_amount: u64,
+    encrypted_manifest_uri: &str,
+    manifest_hash: &[u8; 32],
+    ciphertext_hash: &[u8; 32],
+) -> Result<()> {
+    require!(
+        settlement_recipient != Pubkey::default(),
+        Error::InvalidConfidentialPayoutPlan
+    );
+    require!(recipient_count > 0, Error::InvalidConfidentialPayoutPlan);
+    require!(total_amount > 0, Error::InvalidConfidentialPayoutPlan);
+    require!(
+        !encrypted_manifest_uri.trim().is_empty()
+            && encrypted_manifest_uri.len() <= ConfidentialPayoutPlan::MAX_URI_LEN,
+        Error::ConfidentialManifestUriTooLong
+    );
+    require!(
+        !is_zero_hash(manifest_hash) && !is_zero_hash(ciphertext_hash),
+        Error::InvalidZkArtifactHash
+    );
+
+    match asset_type {
+        ConfidentialAssetType::Sol => {
+            require!(
+                token_mint.is_none(),
+                Error::InvalidConfidentialPayoutPlan
+            );
+        }
+        ConfidentialAssetType::Token => {
+            require!(
+                token_mint.is_some(),
+                Error::ConfidentialPayoutTokenMintRequired
+            );
+        }
+    }
+
+    Ok(())
+}
+
 // ── Account contexts ──────────────────────────────────────────────────────────
 
 #[derive(Accounts)]
@@ -1387,6 +1651,67 @@ pub struct ExecuteProposal<'info> {
     pub treasury_token_account: AccountInfo<'info>,
     /// CHECK: destination token account for SendToken actions — validated by token CPI at runtime.
     ///        Pass any account (e.g. treasury PDA) for non-SendToken actions.
+    #[account(mut)]
+    pub recipient_token_account: AccountInfo<'info>,
+    /// CHECK: if a confidential payout plan exists for this proposal, the standard execute path must reject.
+    #[account(
+        seeds = [b"payout-plan", proposal.key().as_ref()],
+        bump
+    )]
+    pub confidential_payout_plan: UncheckedAccount<'info>,
+    pub executor: Signer<'info>,
+    pub token_program: Interface<'info, TokenInterface>,
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct ConfigureConfidentialPayoutPlan<'info> {
+    pub dao: Account<'info, Dao>,
+    #[account(
+        mut,
+        has_one = dao,
+        seeds = [b"proposal", dao.key().as_ref(), proposal.proposal_id.to_le_bytes().as_ref()],
+        bump = proposal.bump
+    )]
+    pub proposal: Account<'info, Proposal>,
+    #[account(
+        init_if_needed,
+        payer = operator,
+        space = ConfidentialPayoutPlan::LEN,
+        seeds = [b"payout-plan", proposal.key().as_ref()],
+        bump
+    )]
+    pub confidential_payout_plan: Account<'info, ConfidentialPayoutPlan>,
+    #[account(mut)]
+    pub operator: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct ExecuteConfidentialPayoutPlan<'info> {
+    pub dao: Account<'info, Dao>,
+    #[account(
+        mut,
+        has_one = dao,
+        seeds = [b"proposal", dao.key().as_ref(), proposal.proposal_id.to_le_bytes().as_ref()],
+        bump = proposal.bump
+    )]
+    pub proposal: Account<'info, Proposal>,
+    #[account(
+        mut,
+        seeds = [b"payout-plan", proposal.key().as_ref()],
+        bump = confidential_payout_plan.bump
+    )]
+    pub confidential_payout_plan: Account<'info, ConfidentialPayoutPlan>,
+    #[account(mut, seeds = [b"treasury", dao.key().as_ref()], bump)]
+    pub treasury: SystemAccount<'info>,
+    /// CHECK: settlement wallet for the encrypted payout batch
+    #[account(mut)]
+    pub settlement_recipient: AccountInfo<'info>,
+    /// CHECK: source token ATA for token payout batches; ignored for SOL payout batches
+    #[account(mut)]
+    pub treasury_token_account: AccountInfo<'info>,
+    /// CHECK: destination token ATA for token payout batches; ignored for SOL payout batches
     #[account(mut)]
     pub recipient_token_account: AccountInfo<'info>,
     pub executor: Signer<'info>,
@@ -1720,6 +2045,31 @@ impl ProposalZkPolicy {
     pub const LEN: usize = 8 + 32 + 32 + 32 + 1 + 1 + 8 + 1; // 115
 }
 
+#[account]
+pub struct ConfidentialPayoutPlan {
+    pub dao: Pubkey,                    // 32
+    pub proposal: Pubkey,               // 32
+    pub configured_by: Pubkey,          // 32
+    pub payout_type: ConfidentialPayoutType, // 1
+    pub asset_type: ConfidentialAssetType, // 1
+    pub settlement_recipient: Pubkey,   // 32
+    pub token_mint: Option<Pubkey>,     // 33
+    pub recipient_count: u16,           // 2
+    pub total_amount: u64,              // 8
+    pub encrypted_manifest_uri: String, // 4 + 256
+    pub manifest_hash: [u8; 32],        // 32
+    pub ciphertext_hash: [u8; 32],      // 32
+    pub status: ConfidentialPayoutStatus, // 1
+    pub configured_at: i64,             // 8
+    pub funded_at: i64,                 // 8
+    pub bump: u8,                       // 1
+}
+
+impl ConfidentialPayoutPlan {
+    pub const MAX_URI_LEN: usize = 256;
+    pub const LEN: usize = 8 + 32 + 32 + 32 + 1 + 1 + 32 + 33 + 2 + 8 + (4 + 256) + 32 + 32 + 1 + 8 + 8 + 1; // 523
+}
+
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
@@ -1790,6 +2140,24 @@ pub enum ProposalZkMode {
     Companion,
     Parallel,
     ZkEnforced,
+}
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
+pub enum ConfidentialPayoutType {
+    Salary,
+    Bonus,
+}
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
+pub enum ConfidentialAssetType {
+    Sol,
+    Token,
+}
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
+pub enum ConfidentialPayoutStatus {
+    Configured,
+    Funded,
 }
 
 // ── Events ────────────────────────────────────────────────────────────────────
@@ -1918,6 +2286,33 @@ pub struct ProposalZkModeConfigured {
     pub required_layers_mask: u8,
 }
 
+#[event]
+pub struct ConfidentialPayoutConfigured {
+    pub dao: Pubkey,
+    pub proposal: Pubkey,
+    pub configured_by: Pubkey,
+    pub payout_type: ConfidentialPayoutType,
+    pub asset_type: ConfidentialAssetType,
+    pub settlement_recipient: Pubkey,
+    pub token_mint: Option<Pubkey>,
+    pub recipient_count: u16,
+    pub total_amount: u64,
+    pub encrypted_manifest_uri: String,
+    pub manifest_hash: [u8; 32],
+    pub ciphertext_hash: [u8; 32],
+}
+
+#[event]
+pub struct ConfidentialPayoutExecuted {
+    pub proposal: Pubkey,
+    pub settlement_recipient: Pubkey,
+    pub asset_type: ConfidentialAssetType,
+    pub token_mint: Option<Pubkey>,
+    pub recipient_count: u16,
+    pub total_amount: u64,
+    pub funded_at: i64,
+}
+
 // ── Errors ────────────────────────────────────────────────────────────────────
 
 #[error_code]
@@ -2036,4 +2431,22 @@ pub enum Error {
     InsufficientZkVerificationMode,
     #[msg("zk_enforced receipts must identify the verifier program boundary")]
     ZkVerifierProgramRequired,
+    #[msg("Only the DAO authority or proposal proposer may configure confidential payout plans")]
+    UnauthorizedConfidentialPayoutOperator,
+    #[msg("Confidential payout plans can only be configured before commits or reveals begin")]
+    ConfidentialPayoutPlanLocked,
+    #[msg("Confidential payout plan does not match the expected proposal-bound PDA")]
+    ConfidentialPayoutPlanMismatch,
+    #[msg("Confidential payout plan is invalid")]
+    InvalidConfidentialPayoutPlan,
+    #[msg("Confidential payout encrypted manifest URI must be non-empty and at most 256 characters")]
+    ConfidentialManifestUriTooLong,
+    #[msg("This proposal already executed its confidential payout batch")]
+    ConfidentialPayoutAlreadyFunded,
+    #[msg("Token payout batches require a token mint")]
+    ConfidentialPayoutTokenMintRequired,
+    #[msg("Confidential payout plans cannot coexist with a direct treasury action on the same proposal")]
+    ConfidentialPayoutConflictsWithTreasuryAction,
+    #[msg("This proposal must execute through the confidential payout path rather than the standard treasury execution path")]
+    UseConfidentialPayoutExecution,
 }
