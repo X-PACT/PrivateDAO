@@ -2,9 +2,9 @@
 
 ## Short Outreach Message
 
-PrivateDAO is a Solana devnet governance product built for private voting.
+PrivateDAO is a Solana Devnet governance and treasury product built for private voting, confidential payroll and bonus approvals, and execution-safe treasury operations.
 
-It replaces public live tallies with a commit-reveal flow, keeps treasury execution behind a timelock, and adds recipient and mint validation for treasury actions.
+It replaces public live tallies with a commit-reveal flow, adds `zk_enforced` hardening, keeps treasury execution behind a timelock, and supports REFHE- and MagicBlock-bound confidential payout paths without moving signing authority away from the wallet.
 
 Project links:
 
@@ -17,28 +17,32 @@ We would value feedback from Solana builders, DAO operators, and governance infr
 
 ## Longer Outreach Message
 
-PrivateDAO is a working Solana devnet governance product focused on one practical governance problem: public live voting.
+PrivateDAO is a working Solana Devnet governance and treasury product focused on a practical operational problem: public live voting and exposed treasury intent.
 
 Most DAO votes are visible while voting is still in progress. That creates whale pressure, vote buying, and treasury signaling before the vote is final.
 
-PrivateDAO uses a commit-reveal governance lifecycle instead:
+PrivateDAO uses a commit-reveal governance lifecycle and extends it into confidential treasury operations:
 
 - hidden vote commitment during the voting window
 - reveal after voting closes
 - finalization only after the reveal window
 - execution only after a treasury timelock
+- confidential payroll and bonus plans with encrypted manifests
+- proposal-level `zk_enforced` and reviewer-visible proof surfaces
+- REFHE and MagicBlock settlement gates for sensitive payout execution
 
-The treasury path is also hardened with recipient validation for `SendSol` and mint plus account checks for `SendToken`.
+The treasury path is hardened with recipient validation for `SendSol`, mint plus account checks for `SendToken`, and a read-only backend indexing layer for responsive runtime diagnostics and proposal inspection.
 
 What is live today:
 
-- deployed devnet program
-- docs/frontend
+- deployed Devnet program
+- live frontend product surface
+- backend read node
 - operator CLI flows
-- SDK helpers
-- proposal-listing and RPC health tooling
+- confidential payout and MagicBlock corridor tooling
+- runtime diagnostics and reviewer artifacts
 - migration-oriented support for Realms-style DAO workflows
-- a repo-native investor reel in the repository
+- a repo-native investor reel and weekly updates
 
 Links:
 
@@ -47,7 +51,7 @@ Links:
 - Investor reel: https://youtu.be/cwsPpNLiwbo
 - Current PR: https://github.com/X-PACT/PrivateDAO/pull/6
 
-This should be described honestly as a serious devnet beta product today, not as an audited mainnet governance system.
+This should be described honestly as a serious Devnet beta product with reviewer-visible operational depth today, not as an audited mainnet governance system.
 
 ## Direct Contact Links
 

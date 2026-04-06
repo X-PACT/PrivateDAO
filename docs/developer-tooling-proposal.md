@@ -2,16 +2,16 @@
 
 ## Project Summary
 
-PrivateDAO is a Solana governance system that combines commit-reveal voting, treasury execution safeguards, proposal-bound proof anchoring, and reviewer-visible operational evidence into one reusable governance stack.
+PrivateDAO is a Solana governance and treasury system that combines commit-reveal voting, treasury execution safeguards, confidential payroll and bonus operations, proposal-bound proof anchoring, MagicBlock and REFHE payout gates, and reviewer-visible operational evidence into one reusable governance stack.
 
 The core problem it addresses is not only private voting. It is the lack of production-grade tooling for teams that want private governance without losing operational clarity, treasury safety, or auditability.
 
 PrivateDAO turns that problem into a developer tooling surface by providing:
 
 - an on-chain governance program with explicit lifecycle enforcement
-- a wallet-connected operating surface for DAO creation, treasury funding, proposal creation, commit, reveal, finalize, and execute
-- a cryptographic companion layer for proposal-bound proof generation and on-chain proof anchoring
-- a review and operations layer with reproducible Devnet evidence, runtime diagnostics, stress harnesses, and generated attestations
+- a wallet-connected operating surface for DAO creation, treasury funding, proposal creation, commit, reveal, finalize, execute, and confidential payout orchestration
+- a cryptographic companion layer for proposal-bound proof generation, on-chain proof anchoring, and stronger `zk_enforced` runtime surfaces
+- a review and operations layer with reproducible Devnet evidence, runtime diagnostics, MagicBlock runtime capture intake, stress harnesses, and generated attestations
 
 ## Problem Statement
 
@@ -72,8 +72,10 @@ PrivateDAO already includes:
 
 - a live Devnet deployment
 - a live web interface
+- a backend read node and pooled RPC read path
 - a Devnet governance token surface
 - on-chain proposal lifecycle execution
+- confidential payroll and bonus flows with MagicBlock and REFHE operator paths
 - proof registries and explorer-visible transaction evidence
 - generated readiness, runtime, and release artifacts
 - adversarial and stress-testing harnesses

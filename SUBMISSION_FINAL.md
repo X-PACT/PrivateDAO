@@ -2,7 +2,7 @@
 
 ## One-line Summary
 
-PrivateDAO is a Solana governance protocol that replaces public live voting with commit-reveal privacy, timelocked execution, and treasury safety checks while staying migration-friendly for DAO operators.
+PrivateDAO is a Solana governance and treasury product that combines private voting, `zk_enforced` hardening, confidential payroll and bonus approvals, and execution-safe treasury operations in one live Devnet system.
 
 ## The Problem
 
@@ -16,7 +16,7 @@ This is not just a UX problem. It is a protocol problem.
 
 ## The Solution
 
-PrivateDAO uses a three-phase governance flow:
+PrivateDAO uses a governed operating flow:
 
 1. `commit`
    voters submit `sha256(vote || salt || voter_pubkey)` so the vote is binding but hidden
@@ -24,6 +24,8 @@ PrivateDAO uses a three-phase governance flow:
    voters or authorized keepers reveal `(vote, salt)` after voting closes
 3. `finalize + execute`
    result is finalized after reveal, and treasury execution is delayed behind an explicit timelock
+4. `confidential operations`
+   payout proposals can attach encrypted payroll or bonus manifests, REFHE evaluation envelopes, and MagicBlock private payment corridors before aggregate settlement
 
 ## Why It Matters On Solana
 
@@ -32,29 +34,35 @@ Solana has strong DAO, wallet, and infra tooling, but governance privacy is stil
 ## What Works Today
 
 - deployed devnet program
-- commit-reveal voting
+- live wallet-connected frontend
+- commit-reveal governance
+- proposal-level `zk_enforced` mode with on-chain receipts
 - token-weighted, quadratic, and dual-chamber voting modes
 - timelocked execution
-- veto and cancellation paths
 - treasury `SendSol` execution
 - treasury `SendToken` execution with mint and ownership checks
 - private delegation per proposal
 - keeper-assisted reveal
+- confidential payroll and bonus approvals
+- REFHE proposal-bound evaluation envelopes
+- MagicBlock private payment corridors for confidential token payouts
+- backend read node / indexer path with runtime diagnostics
 - Realms-oriented migration path
-- live docs frontend
-- operator CLI flows for create, commit, reveal, finalize, execute, deposit, migration, and proposal listing
+- operator CLI flows for create, commit, reveal, finalize, execute, deposit, migration, corridor settlement, and proposal inspection
 
 ## Product Reality
 
-This is a real devnet beta product, not a slide deck and not an audited mainnet governance system.
+This is a real Devnet beta product, not a slide deck and not an audited mainnet governance system.
 
 The repository now includes:
 
 - a live on-chain program
-- a published docs/frontend surface
+- a published frontend product surface
+- backend read infrastructure
+- confidential treasury operations
 - CLI and migration tooling
-- RPC inspection and health tooling
-- TypeScript verification for scripts, migrations, and SDK on the current project setup
+- runtime diagnostics and reviewer artifacts
+- TypeScript verification and generated attestation flows on the current project setup
 
 ## Security and Safety Highlights
 
@@ -66,12 +74,16 @@ The repository now includes:
 - no delegation double-use
 - recipient validation for `SendSol`
 - mint and token-account validation for `SendToken`
+- proposal-bound confidential payout plans
+- REFHE and MagicBlock settlement gating before sensitive token payout execution
+- reviewer-visible runtime and go-live artifacts
 
 ## Why This Project Stands Out
 
-- It solves a real governance pain point instead of repackaging generic DAO tooling.
-- It is already structured like a product: program, SDK, CLI, docs, frontend, and operator workflow all line up.
-- It takes migration seriously instead of treating existing DAO state as disposable.
+- It solves a real governance and treasury operations pain point instead of repackaging generic DAO tooling.
+- It is already structured like a product: program, frontend, backend read path, CLI, docs, runtime evidence, and operator workflow all line up.
+- It extends privacy from voting into confidential compensation and treasury operations.
+- It takes migration and operational review seriously instead of treating existing DAO state as disposable.
 - It stays honest about scope, which makes the project more credible, not less.
 
 ## Current Deployment
@@ -89,8 +101,8 @@ The repository now includes:
 
 PrivateDAO is not trying to claim that governance risk disappears forever.
 
-It is making one critical part of DAO governance meaningfully better on Solana:
-voting privacy with real execution discipline and real operator tooling.
+It is making on-chain organizational operations meaningfully better on Solana:
+private voting, confidential compensation, disciplined treasury execution, and reviewer-visible runtime trust.
 
 ## Direct Contact
 

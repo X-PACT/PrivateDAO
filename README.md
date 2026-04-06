@@ -37,22 +37,22 @@
 [![MagicBlock](https://img.shields.io/badge/MagicBlock-Private%20Payments-06b6d4)](docs/magicblock-private-payments.md)
 [![RPC Fast Ready](https://img.shields.io/badge/RPC%20Fast-Read%20Node%20Ready-f97316)](docs/rpc-architecture.md)
 
-PrivateDAO is a Solana governance protocol for DAOs that want private voting without giving up execution safety. Votes are committed privately, revealed later, finalized deterministically, and treasury execution stays behind an explicit timelock with recipient and mint checks.
+PrivateDAO is a production-minded Solana governance and treasury product for organizations that need private decision-making, confidential compensation, and disciplined on-chain execution. It combines commit-reveal voting, proposal-level `zk_enforced` hardening, encrypted payroll and bonus approvals, REFHE-gated evaluation, MagicBlock private payment corridors, and a read-only backend indexing path into one reviewable operating system.
 
-The problem statement is simple and easy for judges to verify: public live tallies create whale pressure, vote buying, and treasury signaling. PrivateDAO removes live vote visibility while keeping the rest of the governance lifecycle inspectable, testable, and compatible with how Solana teams actually operate.
+The core problem is practical and measurable: public live tallies leak intent too early, treasury actions become visible before they should, and sensitive internal operations like compensation are pushed off-chain into trust-heavy workflows. PrivateDAO closes that gap without hiding the operational boundary. Votes stay sealed during commit, treasury actions stay timelocked and signer-bound, confidential payouts stay aggregate on-chain, and the repo publishes runtime, security, and go-live evidence instead of relying on prose.
 
 ## About This Repository
 
 PrivateDAO is both:
 
 - a live Solana governance product
-- and a full engineering repository for private voting, treasury safety, confidential compensation, and reviewer-visible operational evidence
+- and a full engineering repository for private voting, confidential treasury operations, backend-indexed runtime reads, cryptographic review, and reviewer-visible operational evidence
 
-This repository is not a thin smart-contract demo. It includes the program, product surface, Devnet runtime flows, backend read path, cryptographic review layer, and operational artifacts needed to inspect how the system behaves under real governance conditions.
+This repository is not a thin smart-contract demo. It includes the Anchor program, wallet-connected product surface, Devnet runtime flows, backend read node, `zk_enforced` and confidential payout operator tooling, MagicBlock and REFHE integration surfaces, and the generated artifacts needed to inspect how the system behaves under real governance conditions.
 
 ## What PrivateDAO Ships
 
-PrivateDAO currently ships five integrated layers:
+PrivateDAO currently ships six integrated layers:
 
 1. Governance protocol
    - commit, reveal, finalize, execute, veto, cancel, delegation, treasury controls
@@ -71,7 +71,12 @@ PrivateDAO currently ships five integrated layers:
    - aggregate settlement execution
    - REFHE proposal-bound encrypted evaluation envelopes
    - MagicBlock private payment corridors for confidential token payouts
-5. Operations and review layer
+5. Backend and data layer
+   - read-only backend read node and pooled RPC reads
+   - operator metrics and runtime snapshots
+   - same-domain deployment path for responsive read-heavy UX
+   - load and wave-profile visibility for Devnet operations
+6. Operations and review layer
    - backend read node and pooled RPC reads
    - runtime diagnostics
    - generated attestations and manifests
@@ -85,6 +90,7 @@ PrivateDAO is designed as a product-first governance stack with explicit boundar
 - treasury authority does not move to the backend
 - backend infrastructure is read-only
 - cryptographic evidence is visible without pretending that every path is already full on-chain verifier enforcement
+- confidential treasury execution is proposal-bound and blocked until REFHE or MagicBlock settlement conditions are satisfied
 - operational readiness is tracked in generated artifacts, not left as prose claims
 
 This is why the repository contains both live UX and reviewer-facing evidence: the product and the trust model are meant to reinforce each other.
@@ -131,16 +137,17 @@ For the fastest high-signal review:
 3. Read `docs/security-review.md`
 4. Read `docs/zk-layer.md`
 5. Read `docs/confidential-payments.md`
-6. Read `docs/refhe-protocol.md`
-7. Read `docs/magicblock-private-payments.md`
-8. Read `docs/magicblock-operator-flow.md`
-9. Read `docs/magicblock-runtime-evidence.md`
-10. Read `docs/read-node-indexer.md`
-11. Read `docs/read-node-same-domain-deploy.md`
-12. Read `docs/phase-c-hardening.md`
-13. Read `docs/zk-verifier-strategy.md`
-14. Read `docs/canonical-verifier-boundary-decision.md`
-15. Read `docs/zk-external-closure.generated.md`
+6. Read `docs/confidential-payroll-flow.md`
+7. Read `docs/refhe-protocol.md`
+8. Read `docs/magicblock-private-payments.md`
+9. Read `docs/magicblock-operator-flow.md`
+10. Read `docs/magicblock-runtime-evidence.md`
+11. Read `docs/read-node-indexer.md`
+12. Read `docs/read-node-same-domain-deploy.md`
+13. Read `docs/phase-c-hardening.md`
+14. Read `docs/zk-verifier-strategy.md`
+15. Read `docs/canonical-verifier-boundary-decision.md`
+16. Read `docs/zk-external-closure.generated.md`
 
 ## Proposal Draft
 
@@ -256,6 +263,26 @@ Use these notes first:
 - `docs/confidential-payroll-flow.md`
 - `docs/confidential-payments-diagram.md`
 - `docs/confidential-payments-audit-scope.md`
+
+## Project Profile
+
+PrivateDAO should now be understood as a full governance operating stack rather than a single privacy feature:
+
+- private voting for DAOs and treasury committees
+- confidential payroll and bonus approvals
+- REFHE-gated encrypted evaluation for proposal-bound payout logic
+- MagicBlock private payment corridors for confidential token settlement
+- `zk_enforced` proposal hardening with on-chain receipts and runtime evidence
+- backend-indexed read surfaces for operator responsiveness without moving signing authority
+- reviewer-grade manifests, attestations, and go-live blockers that stay synchronized with the codebase
+
+This makes the repository relevant across multiple Solana categories at once:
+
+- governance infrastructure
+- privacy and confidential finance
+- treasury operations
+- developer tooling
+- read-node and RPC-aware infrastructure
 
 ## MagicBlock Private Payments
 

@@ -8,7 +8,7 @@ function main() {
 
   const requiredFragments = [
     "Zero-Knowledge Layer Live",
-    "Groth16 companion proofs live",
+    "Companion proofs + zk_enforced path",
     "vote-validity, delegation-authorization, and tally-integrity proof layers",
     "DELEGATION LAYER",
     "TALLY LAYER",
@@ -32,7 +32,7 @@ function main() {
     "Zero-Knowledge Protection",
     "Groth16 zk-SNARK companion proofs",
     "ZK Layer",
-    "Groth16 companion proof layer",
+    "zk_enforced hardening",
     "proposal-bound proof anchors are now recorded on-chain",
     "Proof generation and verification remain additive and off-chain",
     "verify:zk-docs",
@@ -50,7 +50,7 @@ function main() {
     "DeAura",
     "Governance Voting Token",
     "Community treasury app",
-    "Token-gated participation",
+    "Confidential payroll and bonus plans",
     "PrivateDAO Governance Token (PDAO)",
     "Enables proposal participation",
     "Supports voting authority",
