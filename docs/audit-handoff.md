@@ -18,6 +18,7 @@ Provide the following in this order:
 6. failure modes and replay analysis
 7. live devnet proof and release manifest
 8. test files and independent verification guide
+9. zk-enforced runtime package and verifier-boundary decision docs
 
 ## Canonical Repository Artifacts
 
@@ -42,6 +43,17 @@ Provide the following in this order:
 - [private-dao.ts](/home/x-pact/PrivateDAO/tests/private-dao.ts)
 - [full-flow-test.ts](/home/x-pact/PrivateDAO/tests/full-flow-test.ts)
 - [demo.ts](/home/x-pact/PrivateDAO/tests/demo.ts)
+
+### ZK-enforced escalation package
+
+- [phase-c-hardening.md](/home/x-pact/PrivateDAO/docs/phase-c-hardening.md)
+- [zk-verifier-strategy.md](/home/x-pact/PrivateDAO/docs/zk-verifier-strategy.md)
+- [zk-enforced-threat-review.md](/home/x-pact/PrivateDAO/docs/zk-enforced-threat-review.md)
+- [zk-enforced-runtime-evidence.md](/home/x-pact/PrivateDAO/docs/zk-enforced-runtime-evidence.md)
+- [zk-enforced-runtime.generated.md](/home/x-pact/PrivateDAO/docs/zk-enforced-runtime.generated.md)
+- [zk-enforced-operator-flow.md](/home/x-pact/PrivateDAO/docs/zk-enforced-operator-flow.md)
+- [zk-external-audit-scope.md](/home/x-pact/PrivateDAO/docs/zk-external-audit-scope.md)
+- [canonical-verifier-boundary-decision.md](/home/x-pact/PrivateDAO/docs/canonical-verifier-boundary-decision.md)
 
 ### Operations and production surfaces
 

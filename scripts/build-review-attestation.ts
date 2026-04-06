@@ -150,6 +150,8 @@ function main() {
       "docs/security-review.md",
       "docs/cryptographic-integrity.md",
       "docs/cryptographic-posture.md",
+      "docs/zk-external-audit-scope.md",
+      "docs/canonical-verifier-boundary-decision.md",
       "docs/supply-chain-security.md",
       "docs/supply-chain-attestation.generated.md",
       "docs/supply-chain-attestation.generated.json",

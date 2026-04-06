@@ -74,3 +74,10 @@ Until the verifier boundary is frozen and reviewed:
 - `zk_enforced` is available
 - `zk_enforced` is useful
 - `zk_enforced` is not yet the dominant production recommendation
+
+## Decision References
+
+For the actual freeze decision, read:
+
+- `docs/canonical-verifier-boundary-decision.md`
+- `docs/zk-external-audit-scope.md`

@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-05T23:47:51.540Z",
+  "generatedAt": "2026-04-06T00:02:54.488Z",
   "algorithm": "sha256",
-  "entryCount": 84,
-  "aggregateSha256": "33807c3dae3c1f81fe8c07854230f8387550f82e798a70bfcc8df43f85d389dd",
+  "entryCount": 92,
+  "aggregateSha256": "0f08a8dc3e446be6993b1a3107f1ac5396cb3f47ad324a829750dbd1bf7a423a",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -147,8 +147,8 @@
     },
     {
       "path": "docs/submission-registry.json",
-      "sha256": "afb7ed9a0ce73296f29ce3a2aa6d76086d140c15b11ebe71e2c6c39808cb230d",
-      "bytes": 7937
+      "sha256": "01dccacf403c7fafab23b648fd953f06ffce8f7f5185c05c3e88ce8adccd554f",
+      "bytes": 8032
     },
     {
       "path": "docs/independent-verification.md",
@@ -231,6 +231,46 @@
       "bytes": 2304
     },
     {
+      "path": "docs/zk-external-audit-scope.md",
+      "sha256": "2a0205c75f246c0b33a9b2aa67c9be8dd41d0c59a476b300ff729869cfe66c09",
+      "bytes": 1382
+    },
+    {
+      "path": "docs/canonical-verifier-boundary-decision.md",
+      "sha256": "f8998f5f98880ab75c0b509f21fa58dede109f88a73ed560d3dfcde01228a4de",
+      "bytes": 1756
+    },
+    {
+      "path": "docs/zk-enforced-runtime-templates/README.md",
+      "sha256": "9bfcc234d753fb5d8a588d2328568a40f5a8ae79db155b384f607f537ac65e14",
+      "bytes": 996
+    },
+    {
+      "path": "docs/zk-enforced-runtime-templates/phantom-desktop-zk-enforced.json",
+      "sha256": "55ff527a6cb66958f1fcb3a12d45cc613544835ad735adc782eb322abe14aa3e",
+      "bytes": 657
+    },
+    {
+      "path": "docs/zk-enforced-runtime-templates/solflare-desktop-zk-enforced.json",
+      "sha256": "5b81c0615f19167bfaa4eb3c072e01049e1588831a3aee521b12603ed1127e5d",
+      "bytes": 659
+    },
+    {
+      "path": "docs/zk-enforced-runtime-templates/backpack-desktop-zk-enforced.json",
+      "sha256": "6f0544ce221b294c837677ca6776dd245dd1c874b30ab185dba7f4cb12ca4cad",
+      "bytes": 659
+    },
+    {
+      "path": "docs/zk-enforced-runtime-templates/glow-desktop-zk-enforced.json",
+      "sha256": "9bf7f8105b0a6f708b08f2c16aee1777a7b113f61709077073703b53df0e37aa",
+      "bytes": 651
+    },
+    {
+      "path": "docs/zk-enforced-runtime-templates/android-runtime-zk-enforced.json",
+      "sha256": "34d4e6c46f51661ed30b725382d033bf451ae8b2a8391e253c37c9e72382b067",
+      "bytes": 675
+    },
+    {
       "path": "docs/operational-evidence.generated.md",
       "sha256": "a8baa8935973ddc307e9181bd60e6beb4bde3f9cdd66e970c9b8545696c26c00",
       "bytes": 3149
@@ -242,13 +282,13 @@
     },
     {
       "path": "docs/runtime-evidence.generated.md",
-      "sha256": "e03b67db82cd376c49af91f1873034aa5e58fc1ccf144666b0e8712184850e61",
-      "bytes": 2997
+      "sha256": "d285c380a33e58e3dfdf72a1c231ced721f3a1a1aea6501d45aa7cfa31913c8a",
+      "bytes": 3711
     },
     {
       "path": "docs/runtime-evidence.generated.json",
-      "sha256": "c6ca510fb6198e9661d0aaa82e6ac96363cd9a201742f11eada7d896be8645f8",
-      "bytes": 3593
+      "sha256": "5e5abfdfd5e93942c4bac963da5bb32313c71eb9e6c20cbdb4c8f42d95374a89",
+      "bytes": 4383
     },
     {
       "path": "docs/cryptographic-posture.md",
@@ -327,8 +367,8 @@
     },
     {
       "path": "docs/runtime-attestation.generated.json",
-      "sha256": "18d56ad96123e19e9ede25d658e5ba870fe010a56d41daf81b75ffcfecd2c9c1",
-      "bytes": 1902
+      "sha256": "1d9af82ae9b6af538729f94fe0708058be46b6291baf0e79a282971dcda2d864",
+      "bytes": 2255
     },
     {
       "path": "docs/security-review.md",
@@ -337,13 +377,13 @@
     },
     {
       "path": "docs/deployment-attestation.generated.json",
-      "sha256": "a62cd482c995017ad04f1a939307b60c82760edda95d443ec519ebfa6198bc0f",
-      "bytes": 4107
+      "sha256": "98119bd9fc323802c184ad6c6939157ddf8cffeffc6933b9e4dd7a3dca480e88",
+      "bytes": 4279
     },
     {
       "path": "docs/go-live-attestation.generated.json",
-      "sha256": "fcd872cac3701ceffac1bac0c96d3859f1c90f3902da24e26382b7c25d59263e",
-      "bytes": 1854
+      "sha256": "fd0c79784b5c69242cb79c2e2083a888d4e2660d6b2b51aed504554576586d34",
+      "bytes": 2114
     },
     {
       "path": "docs/release-ceremony.md",
@@ -422,8 +462,8 @@
     },
     {
       "path": "docs/verification-gates.md",
-      "sha256": "0e1a3871f2ab8cf490199b399b0f4ec0035316ec0ae010b16594dc2bf9b8e846",
-      "bytes": 12203
+      "sha256": "a7a4b93511d4f2590d61a359b1b0be5f881bfdc23d0f31b2817fdafef674f6c0",
+      "bytes": 12288
     }
   ]
 }

@@ -58,6 +58,7 @@
     "build:zk-enforced-runtime": "ts-node scripts/build-zk-enforced-runtime-evidence.ts",
     "record:zk-enforced-runtime": "ts-node scripts/record-zk-enforced-runtime-capture.ts",
     "capture:real-device-runtime": "bash scripts/real-device-capture.sh",
+    "capture:zk-enforced-runtime": "bash scripts/zk-enforced-runtime-capture.sh",
     "build:operational-evidence": "ts-node scripts/build-operational-evidence.ts",
     "build:release-drill": "ts-node scripts/build-release-drill.ts",
     "build:wallet-matrix": "ts-node scripts/build-wallet-compatibility-matrix.ts",

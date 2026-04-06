@@ -74,8 +74,8 @@
 - Release drill: `docs/release-drill.generated.json`
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `79`
-- Aggregate sha256: `5230035733d4ef6a0f0c14098b5812f513f3cc9cd6cbd42def72feb551648513`
+- Manifest entries: `92`
+- Aggregate sha256: `0f08a8dc3e446be6993b1a3107f1ac5396cb3f47ad324a829750dbd1bf7a423a`
 
 ## ZK Package
 
@@ -146,6 +146,8 @@
 - `docs/zk-enforced-runtime.generated.json`
 - `docs/zk-enforced-runtime.generated.md`
 - `docs/zk-enforced-operator-flow.md`
+- `docs/zk-external-audit-scope.md`
+- `docs/canonical-verifier-boundary-decision.md`
 - `docs/zk-stack.md`
 - `docs/zk-upgrade.md`
 - `docs/zk-architecture.md`

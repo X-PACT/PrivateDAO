@@ -138,6 +138,8 @@ Related review docs:
 - `docs/zk-enforced-threat-review.md`
 - `docs/zk-enforced-runtime-evidence.md`
 - `docs/zk-enforced-operator-flow.md`
+- `docs/zk-external-audit-scope.md`
+- `docs/canonical-verifier-boundary-decision.md`
 
 Commands:
 
