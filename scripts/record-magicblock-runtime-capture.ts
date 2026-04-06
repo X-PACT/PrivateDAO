@@ -59,7 +59,7 @@ function main() {
     throw new Error("usage: npm run record:magicblock-runtime -- <capture-json-path>");
   }
 
-  const registryPath = path.resolve("docs/magicblock-runtime-captures.json");
+  const registryPath = path.resolve("docs/magicblock/runtime-captures.json");
   const registry = readJson<CaptureRegistry>(registryPath);
   const incoming = readJson<Capture>(inputPath);
 

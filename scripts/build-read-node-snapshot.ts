@@ -54,8 +54,8 @@ async function main() {
     })),
   };
 
-  const jsonPath = path.resolve("docs/read-node-snapshot.generated.json");
-  const mdPath = path.resolve("docs/read-node-snapshot.generated.md");
+  const jsonPath = path.resolve("docs/read-node/snapshot.generated.json");
+  const mdPath = path.resolve("docs/read-node/snapshot.generated.md");
 
   fs.writeFileSync(jsonPath, JSON.stringify(payload, null, 2) + "\n");
   fs.writeFileSync(

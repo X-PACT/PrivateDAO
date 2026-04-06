@@ -2,9 +2,9 @@ import fs from "fs";
 import path from "path";
 
 function main() {
-  const sourcePath = path.resolve("docs/zk-external-closure.json");
-  const jsonPath = path.resolve("docs/zk-external-closure.generated.json");
-  const mdPath = path.resolve("docs/zk-external-closure.generated.md");
+  const sourcePath = path.resolve("docs/zk/external-closure.json");
+  const jsonPath = path.resolve("docs/zk/external-closure.generated.json");
+  const mdPath = path.resolve("docs/zk/external-closure.generated.md");
 
   assert(fs.existsSync(sourcePath), "zk external closure source is missing");
   assert(fs.existsSync(jsonPath), "zk external closure json is missing");

@@ -79,7 +79,7 @@ type CompetitiveSource = {
 };
 
 const DEFAULT_API_BASE = "https://copilot.colosseum.com/api/v1";
-const SOURCE_PATH = path.resolve("docs/colosseum-competitive-source.json");
+const SOURCE_PATH = path.resolve("docs/competitive/source.json");
 
 async function main() {
   const apiBase = trimValue(process.env.COLOSSEUM_COPILOT_API_BASE || DEFAULT_API_BASE);

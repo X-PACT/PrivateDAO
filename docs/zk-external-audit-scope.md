@@ -9,9 +9,9 @@ This document defines the exact scope an external auditor should review for the 
 3. `docs/phase-c-hardening.md`
 4. `docs/zk-verifier-strategy.md`
 5. `docs/zk-enforced-threat-review.md`
-6. `docs/zk-enforced-runtime-evidence.md`
-7. `docs/zk-enforced-runtime.generated.md`
-8. `docs/zk-enforced-operator-flow.md`
+6. `docs/zk/enforced-runtime-evidence.md`
+7. `docs/zk/enforced-runtime.generated.md`
+8. `docs/zk/enforced-operator-flow.md`
 
 ## Required Questions
 

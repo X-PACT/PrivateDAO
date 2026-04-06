@@ -34,7 +34,7 @@ async function main() {
     profiles,
     deployment: {
       sameDomainRecommended: true,
-      guide: "docs/read-node-same-domain-deploy.md",
+      guide: "docs/read-node/same-domain-deploy.md",
       readApiPath: "/api/v1",
     },
     operatorChecks: [
@@ -47,8 +47,8 @@ async function main() {
     ],
   };
 
-  const jsonPath = path.resolve("docs/read-node-ops.generated.json");
-  const mdPath = path.resolve("docs/read-node-ops.generated.md");
+  const jsonPath = path.resolve("docs/read-node/ops.generated.json");
+  const mdPath = path.resolve("docs/read-node/ops.generated.md");
   fs.writeFileSync(jsonPath, JSON.stringify(payload, null, 2) + "\n");
   fs.writeFileSync(
     mdPath,

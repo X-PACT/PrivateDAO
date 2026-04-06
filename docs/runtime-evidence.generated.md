@@ -2,7 +2,7 @@
 
 ## Overview
 
-- Generated at: `2026-04-06T19:34:51.050Z`
+- Generated at: `2026-04-06T20:06:07.712Z`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - Diagnostics page: `https://x-pact.github.io/PrivateDAO/?page=diagnostics`
@@ -86,24 +86,24 @@
 ## Runtime Documents
 
 - `docs/wallet-runtime.md`
-- `docs/real-device-runtime.md`
-- `docs/real-device-runtime-captures.json`
-- `docs/real-device-runtime.generated.md`
-- `docs/real-device-runtime.generated.json`
-- `docs/magicblock-private-payments.md`
-- `docs/magicblock-operator-flow.md`
-- `docs/magicblock-runtime-evidence.md`
-- `docs/magicblock-runtime-captures.json`
-- `docs/magicblock-runtime.generated.md`
-- `docs/magicblock-runtime.generated.json`
-- `docs/zk-enforced-runtime-evidence.md`
-- `docs/zk-enforced-runtime-captures.json`
-- `docs/zk-enforced-runtime.generated.md`
-- `docs/zk-enforced-runtime.generated.json`
-- `docs/zk-enforced-operator-flow.md`
-- `docs/zk-external-closure.json`
-- `docs/zk-external-closure.generated.md`
-- `docs/zk-external-closure.generated.json`
+- `docs/runtime/real-device.md`
+- `docs/runtime/real-device-captures.json`
+- `docs/runtime/real-device.generated.md`
+- `docs/runtime/real-device.generated.json`
+- `docs/magicblock/private-payments.md`
+- `docs/magicblock/operator-flow.md`
+- `docs/magicblock/runtime-evidence.md`
+- `docs/magicblock/runtime-captures.json`
+- `docs/magicblock/runtime.generated.md`
+- `docs/magicblock/runtime.generated.json`
+- `docs/zk/enforced-runtime-evidence.md`
+- `docs/zk/enforced-runtime-captures.json`
+- `docs/zk/enforced-runtime.generated.md`
+- `docs/zk/enforced-runtime.generated.json`
+- `docs/zk/enforced-operator-flow.md`
+- `docs/zk/external-closure.json`
+- `docs/zk/external-closure.generated.md`
+- `docs/zk/external-closure.generated.json`
 - `docs/runtime-attestation.generated.json`
 - `docs/operational-evidence.generated.md`
 - `docs/operational-evidence.generated.json`

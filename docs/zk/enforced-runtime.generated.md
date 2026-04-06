@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-06T19:34:08.112Z`
+- generated at: `2026-04-06T20:05:20.060Z`
 - network: `devnet`
 - status: `pending-zk-enforced-capture`
 - target count: `5`
@@ -34,9 +34,9 @@ No zk_enforced runtime captures have been committed yet. The intake, generated r
 
 ## Required Docs
 
-- `docs/zk-enforced-runtime-evidence.md`
-- `docs/zk-enforced-runtime-captures.json`
-- `docs/zk-enforced-operator-flow.md`
+- `docs/zk/enforced-runtime-evidence.md`
+- `docs/zk/enforced-runtime-captures.json`
+- `docs/zk/enforced-operator-flow.md`
 - `docs/phase-c-hardening.md`
 
 ## Commands

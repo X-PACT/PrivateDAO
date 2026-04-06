@@ -65,10 +65,10 @@ Repository-side diagnostics are no longer the only runtime-facing proof surface.
 
 PrivateDAO now publishes a real-device runtime intake package:
 
-- `docs/real-device-runtime.md`
-- `docs/real-device-runtime-captures.json`
-- `docs/real-device-runtime.generated.md`
-- `docs/real-device-runtime.generated.json`
+- `docs/runtime/real-device.md`
+- `docs/runtime/real-device-captures.json`
+- `docs/runtime/real-device.generated.md`
+- `docs/runtime/real-device.generated.json`
 
 This keeps desktop and mobile wallet QA tied to a canonical capture registry instead of leaving that work as an informal future note.
 

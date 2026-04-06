@@ -68,7 +68,7 @@ function main() {
     "docs/operational-drillbook.md",
     "docs/mainnet-readiness.generated.md",
     "docs/deployment-attestation.generated.json",
-    "docs/zk-external-closure.generated.md",
+    "docs/zk/external-closure.generated.md",
     "docs/zk-external-audit-scope.md",
     "docs/canonical-verifier-boundary-decision.md",
   ]) {
@@ -104,8 +104,8 @@ function main() {
 
   assert(attestation.runtimeDocs.includes("docs/wallet-runtime.md"), "go-live attestation is missing wallet runtime doc");
   assert(attestation.runtimeDocs.includes("docs/fair-voting.md"), "go-live attestation is missing fair-voting doc");
-  assert(attestation.runtimeDocs.includes("docs/zk-enforced-runtime-evidence.md"), "go-live attestation is missing zk-enforced runtime doc");
-  assert(attestation.runtimeDocs.includes("docs/zk-enforced-runtime.generated.md"), "go-live attestation is missing zk-enforced runtime package");
+  assert(attestation.runtimeDocs.includes("docs/zk/enforced-runtime-evidence.md"), "go-live attestation is missing zk-enforced runtime doc");
+  assert(attestation.runtimeDocs.includes("docs/zk/enforced-runtime.generated.md"), "go-live attestation is missing zk-enforced runtime package");
   assert(attestation.deploymentGateCount >= 4, "go-live attestation deployment gate count is unexpectedly low");
 
   if (proof.pdaoToken) {

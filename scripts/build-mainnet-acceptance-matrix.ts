@@ -95,13 +95,13 @@ function main() {
     {
       layer: "real-device-wallet-qa",
       status: "pending-external",
-      evidence: ["docs/real-device-runtime.md", "docs/real-device-runtime.generated.md", "docs/wallet-compatibility-matrix.generated.md", "docs/external-readiness-intake.md"],
+      evidence: ["docs/runtime/real-device.md", "docs/runtime/real-device.generated.md", "docs/wallet-compatibility-matrix.generated.md", "docs/external-readiness-intake.md"],
       rationale: "Support surfaces are documented and the real-device capture intake is enforced, but live device/browser evidence still has to be collected externally.",
     },
     {
       layer: "magicblock-runtime-corridor",
       status: "pending-external",
-      evidence: ["docs/magicblock-private-payments.md", "docs/magicblock-runtime-evidence.md", "docs/magicblock-runtime.generated.md"],
+      evidence: ["docs/magicblock/private-payments.md", "docs/magicblock/runtime-evidence.md", "docs/magicblock/runtime.generated.md"],
       rationale: "The MagicBlock corridor is wired into the program and frontend, but real wallet/runtime captures across environments still need to be collected externally.",
     },
     {

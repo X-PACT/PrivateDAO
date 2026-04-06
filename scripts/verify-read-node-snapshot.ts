@@ -3,8 +3,8 @@ import fs from "fs";
 import path from "path";
 
 function main() {
-  const json = JSON.parse(fs.readFileSync(path.resolve("docs/read-node-snapshot.generated.json"), "utf8"));
-  const markdown = fs.readFileSync(path.resolve("docs/read-node-snapshot.generated.md"), "utf8");
+  const json = JSON.parse(fs.readFileSync(path.resolve("docs/read-node/snapshot.generated.json"), "utf8"));
+  const markdown = fs.readFileSync(path.resolve("docs/read-node/snapshot.generated.md"), "utf8");
 
   if (json.readPath !== "backend-indexer") {
     throw new Error("read-node snapshot path mismatch");

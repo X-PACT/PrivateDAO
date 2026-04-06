@@ -34,7 +34,7 @@
 [![PDAO Token](https://img.shields.io/badge/PDAO-Devnet%20Governance%20Token-14b8a6)](docs/pdao-token.md)
 [![PDAO Attestation](https://img.shields.io/badge/PDAO-Attested-0f766e)](docs/pdao-attestation.generated.json)
 [![Confidential Payouts](https://img.shields.io/badge/Confidential%20Payouts-Salary%20%2B%20Bonus-7e57ff)](docs/confidential-payments.md)
-[![MagicBlock](https://img.shields.io/badge/MagicBlock-Private%20Payments-06b6d4)](docs/magicblock-private-payments.md)
+[![MagicBlock](https://img.shields.io/badge/MagicBlock-Private%20Payments-06b6d4)](docs/magicblock/private-payments.md)
 [![RPC Fast Ready](https://img.shields.io/badge/RPC%20Fast-Read%20Node%20Ready-f97316)](docs/rpc-architecture.md)
 
 PrivateDAO is a production-minded Solana governance and treasury product for organizations that need private decision-making, confidential compensation, and disciplined on-chain execution. It combines commit-reveal voting, proposal-level `zk_enforced` hardening, encrypted payroll and bonus approvals, REFHE-gated evaluation, MagicBlock private payment corridors, and a read-only backend indexing path into one reviewable operating system.
@@ -107,6 +107,10 @@ Use this map first if you want to orient quickly:
   - end-to-end lifecycle coverage
 - `scripts/`
   - build, verification, Devnet, runtime, and review automation
+- `scripts/README.md`
+  - quick taxonomy for the large automation surface
+- `docs/README.md`
+  - quick taxonomy for grouped runtime, competitive, read-node, MagicBlock, and zk reviewer docs
 - `scripts/run-read-node.ts`
   - read-only backend node for pooled RPC reads and operator metrics
 - `scripts/lib/magicblock-payments.ts`
@@ -139,16 +143,16 @@ For the fastest high-signal review:
 5. Read `docs/confidential-payments.md`
 6. Read `docs/confidential-payroll-flow.md`
 7. Read `docs/refhe-protocol.md`
-8. Read `docs/magicblock-private-payments.md`
-9. Read `docs/magicblock-operator-flow.md`
-10. Read `docs/magicblock-runtime-evidence.md`
-11. Read `docs/read-node-indexer.md`
-12. Read `docs/read-node-same-domain-deploy.md`
-13. Read `docs/colosseum-competitive-analysis.generated.md`
+8. Read `docs/magicblock/private-payments.md`
+9. Read `docs/magicblock/operator-flow.md`
+10. Read `docs/magicblock/runtime-evidence.md`
+11. Read `docs/read-node/indexer.md`
+12. Read `docs/read-node/same-domain-deploy.md`
+13. Read `docs/competitive/analysis.generated.md`
 14. Read `docs/phase-c-hardening.md`
 15. Read `docs/zk-verifier-strategy.md`
 16. Read `docs/canonical-verifier-boundary-decision.md`
-17. Read `docs/zk-external-closure.generated.md`
+17. Read `docs/zk/external-closure.generated.md`
 
 ## Proposal Draft
 
@@ -193,9 +197,9 @@ Automation:
 
 PrivateDAO now carries a Copilot-backed competitive positioning surface so the repo does not rely on unsupported market claims.
 
-- `docs/colosseum-competitive-source.json`
-- `docs/colosseum-competitive-analysis.generated.md`
-- `docs/colosseum-competitive-analysis.generated.json`
+- `docs/competitive/source.json`
+- `docs/competitive/analysis.generated.md`
+- `docs/competitive/analysis.generated.json`
 
 Automation:
 
@@ -323,10 +327,10 @@ What is now live in the repo:
 
 Use these notes first:
 
-- `docs/magicblock-private-payments.md`
-- `docs/magicblock-operator-flow.md`
-- `docs/magicblock-runtime-evidence.md`
-- `docs/magicblock-runtime.generated.md`
+- `docs/magicblock/private-payments.md`
+- `docs/magicblock/operator-flow.md`
+- `docs/magicblock/runtime-evidence.md`
+- `docs/magicblock/runtime.generated.md`
 - `docs/rpc-architecture.md`
 
 ## MagicBlock Runtime Evidence
@@ -341,11 +345,11 @@ This makes the runtime path reviewer-visible instead of leaving it buried in fea
 
 Use these notes first:
 
-- `docs/magicblock-runtime-evidence.md`
-- `docs/magicblock-runtime-captures.json`
-- `docs/magicblock-runtime.generated.md`
-- `docs/magicblock-runtime.generated.json`
-- `docs/magicblock-runtime-templates/README.md`
+- `docs/magicblock/runtime-evidence.md`
+- `docs/magicblock/runtime-captures.json`
+- `docs/magicblock/runtime.generated.md`
+- `docs/magicblock/runtime.generated.json`
+- `docs/magicblock/templates/README.md`
 
 ## Read Node And RPC Fast Path
 
@@ -363,8 +367,8 @@ This architecture is also the right path for infrastructure-oriented tracks such
 
 Use these notes first:
 
-- `docs/read-node-indexer.md`
-- `docs/read-node-same-domain-deploy.md`
+- `docs/read-node/indexer.md`
+- `docs/read-node/same-domain-deploy.md`
 - `docs/rpc-architecture.md`
 
 ## REFHE Protocol
@@ -470,12 +474,12 @@ npm run verify:read-node-ops
 
 Primary backend docs:
 
-- `docs/read-node-indexer.md`
-- `docs/read-node-same-domain-deploy.md`
+- `docs/read-node/indexer.md`
+- `docs/read-node/same-domain-deploy.md`
 - `docs/rpc-architecture.md`
 - `docs/backend-operator-flow.md`
-- `docs/read-node-snapshot.generated.md`
-- `docs/read-node-ops.generated.md`
+- `docs/read-node/snapshot.generated.md`
+- `docs/read-node/ops.generated.md`
 
 ## Domain Mirror Strategy
 
@@ -536,12 +540,12 @@ For the exact blockers and execution path, read:
 - `docs/phase-c-hardening.md`
 - `docs/zk-verifier-strategy.md`
 - `docs/zk-enforced-threat-review.md`
-- `docs/zk-enforced-runtime-evidence.md`
-- `docs/zk-enforced-operator-flow.md`
-- `docs/zk-enforced-runtime.generated.md`
+- `docs/zk/enforced-runtime-evidence.md`
+- `docs/zk/enforced-operator-flow.md`
+- `docs/zk/enforced-runtime.generated.md`
 - `docs/zk-external-audit-scope.md`
 - `docs/canonical-verifier-boundary-decision.md`
-- `docs/zk-external-closure.generated.md`
+- `docs/zk/external-closure.generated.md`
 
 ## Why PrivateDAO Exists
 
@@ -638,14 +642,14 @@ The same rule now applies to the review surface itself: zk artifacts, live-proof
 - Consumer readiness: `docs/consumer-readiness.md`
 - Consumer user flows: `docs/consumer-user-flows.md`
 - Launch and growth plan: `docs/launch-growth-plan.md`
-- Read node and indexer: `docs/read-node-indexer.md`
+- Read node and indexer: `docs/read-node/indexer.md`
 - RPC architecture: `docs/rpc-architecture.md`
 - Backend operator flow: `docs/backend-operator-flow.md`
-- Read-node snapshot: `docs/read-node-snapshot.generated.md`
+- Read-node snapshot: `docs/read-node/snapshot.generated.md`
 - Fair-voting flow: `docs/fair-voting.md`
 - Wallet runtime compatibility: `docs/wallet-runtime.md`
-- Real-device runtime intake: `docs/real-device-runtime.md`
-- Real-device runtime evidence: `docs/real-device-runtime.generated.md`
+- Real-device runtime intake: `docs/runtime/real-device.md`
+- Real-device runtime evidence: `docs/runtime/real-device.generated.md`
 - Runtime attestation: `docs/runtime-attestation.generated.json`
 - Runtime evidence package: `docs/runtime-evidence.generated.md`
 - Operational evidence package: `docs/operational-evidence.generated.md`

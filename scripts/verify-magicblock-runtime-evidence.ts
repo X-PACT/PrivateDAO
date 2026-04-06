@@ -55,9 +55,9 @@ type Evidence = {
 };
 
 function main() {
-  const jsonPath = path.resolve("docs/magicblock-runtime.generated.json");
-  const mdPath = path.resolve("docs/magicblock-runtime.generated.md");
-  const sourcePath = path.resolve("docs/magicblock-runtime-captures.json");
+  const jsonPath = path.resolve("docs/magicblock/runtime.generated.json");
+  const mdPath = path.resolve("docs/magicblock/runtime.generated.md");
+  const sourcePath = path.resolve("docs/magicblock/runtime-captures.json");
 
   if (!fs.existsSync(jsonPath) || !fs.existsSync(mdPath) || !fs.existsSync(sourcePath)) {
     throw new Error("missing MagicBlock runtime evidence artifacts");
@@ -74,9 +74,9 @@ function main() {
   assert(evidence.targets.some((target) => target.walletLabel === "Backpack"), "MagicBlock runtime evidence missing Backpack target");
   assert(evidence.targets.some((target) => target.walletLabel === "Glow"), "MagicBlock runtime evidence missing Glow target");
   assert(evidence.targets.some((target) => target.environmentType === "android-or-mobile"), "MagicBlock runtime evidence missing mobile target");
-  assert(evidence.requiredDocs.includes("docs/magicblock-private-payments.md"), "MagicBlock runtime evidence missing feature note");
-  assert(evidence.requiredDocs.includes("docs/magicblock-operator-flow.md"), "MagicBlock runtime evidence missing operator flow");
-  assert(evidence.requiredDocs.includes("docs/magicblock-runtime-evidence.md"), "MagicBlock runtime evidence missing guide");
+  assert(evidence.requiredDocs.includes("docs/magicblock/private-payments.md"), "MagicBlock runtime evidence missing feature note");
+  assert(evidence.requiredDocs.includes("docs/magicblock/operator-flow.md"), "MagicBlock runtime evidence missing operator flow");
+  assert(evidence.requiredDocs.includes("docs/magicblock/runtime-evidence.md"), "MagicBlock runtime evidence missing guide");
   assert(evidence.commands.includes("npm run build:magicblock-runtime"), "MagicBlock runtime evidence missing build command");
   assert(evidence.commands.includes("npm run verify:magicblock-runtime"), "MagicBlock runtime evidence missing verify command");
 

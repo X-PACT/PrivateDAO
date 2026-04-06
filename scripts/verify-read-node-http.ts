@@ -60,7 +60,7 @@ async function main() {
     assert(snapshot.snapshot.runtime.rpcPoolSize >= 1, "HTTP ops snapshot missing RPC pool size");
     assert(Boolean(snapshot.snapshot.magicblock.apiBase), "HTTP ops snapshot missing MagicBlock API base");
     assert(snapshot.snapshot.deployment.readApiPath === "/api/v1", "HTTP ops snapshot readApiPath mismatch");
-    assert(snapshot.snapshot.deployment.sameDomainGuide === "docs/read-node-same-domain-deploy.md", "HTTP ops snapshot same-domain guide mismatch");
+    assert(snapshot.snapshot.deployment.sameDomainGuide === "docs/read-node/same-domain-deploy.md", "HTTP ops snapshot same-domain guide mismatch");
 
     const profile350 = profiles.profiles.find((profile) => profile.name === "350");
     assert(profile350?.waveCount === 7 && profile350.waveSize === 50, "HTTP read node is missing the 350-wallet wave profile");

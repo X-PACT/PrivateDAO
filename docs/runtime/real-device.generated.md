@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-06T19:33:40.787Z`
+- generated at: `2026-04-06T20:04:50.547Z`
 - network: `devnet`
 - status: `pending-real-device-capture`
 - target count: `5`
@@ -34,8 +34,8 @@ No real-device captures have been committed yet. The intake and verification pat
 
 ## Required Docs
 
-- `docs/real-device-runtime.md`
-- `docs/real-device-runtime-captures.json`
+- `docs/runtime/real-device.md`
+- `docs/runtime/real-device-captures.json`
 - `docs/runtime-attestation.generated.json`
 - `docs/external-readiness-intake.md`
 

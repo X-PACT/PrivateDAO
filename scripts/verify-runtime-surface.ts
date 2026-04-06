@@ -41,7 +41,7 @@ function main() {
     "Open Runtime Attestation",
     "Open Go-Live Attestation",
     "wallet-compatibility-matrix.generated.md",
-    "real-device-runtime.generated.md",
+    "runtime/real-device.generated.md",
     "devnet-canary.generated.md",
     "runtime-attestation.generated.json",
     "go-live-attestation.generated.json",
@@ -57,8 +57,8 @@ function main() {
   assert(runtime.diagnosticsPage.endsWith("?page=diagnostics"), "runtime attestation diagnostics URL is unexpected");
 
   assert(Boolean(runtime.runtimeDocs?.includes?.("docs/wallet-compatibility-matrix.generated.md")), "runtime attestation is missing wallet matrix docs");
-  assert(Boolean(runtime.runtimeDocs?.includes?.("docs/real-device-runtime.generated.md")), "runtime attestation is missing real-device runtime docs");
-  assert(Boolean(runtime.runtimeDocs?.includes?.("docs/magicblock-runtime.generated.md")), "runtime attestation is missing MagicBlock runtime docs");
+  assert(Boolean(runtime.runtimeDocs?.includes?.("docs/runtime/real-device.generated.md")), "runtime attestation is missing real-device runtime docs");
+  assert(Boolean(runtime.runtimeDocs?.includes?.("docs/magicblock/runtime.generated.md")), "runtime attestation is missing MagicBlock runtime docs");
   assert(Boolean(runtime.runtimeDocs?.includes?.("docs/devnet-canary.generated.md")), "runtime attestation is missing devnet canary docs");
 
   if (runtime.pdaoToken?.mint) {

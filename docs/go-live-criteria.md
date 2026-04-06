@@ -11,7 +11,7 @@ It is intentionally strict.
 - Production monitoring, alert routing, and incident ownership must be assigned and tested.
 - Release artifacts, proof surfaces, and generated attestations must all pass `npm run verify:all`.
 - Wallet runtime checks must be exercised against real client environments, not only repository-side verification.
-- The canonical place to track that work is `docs/real-device-runtime.generated.md`, backed by `docs/real-device-runtime-captures.json`.
+- The canonical place to track that work is `docs/runtime/real-device.generated.md`, backed by `docs/runtime/real-device-captures.json`.
 - Treasury handling, operator responsibilities, and rollback or pause procedures must be documented and rehearsed.
 
 ## Blocking Conditions

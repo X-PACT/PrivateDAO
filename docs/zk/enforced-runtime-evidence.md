@@ -38,9 +38,9 @@ Each successful runtime record should include:
 
 The intake registry and generated reviewer package now live in:
 
-- `docs/zk-enforced-runtime-captures.json`
-- `docs/zk-enforced-runtime.generated.json`
-- `docs/zk-enforced-runtime.generated.md`
+- `docs/zk/enforced-runtime-captures.json`
+- `docs/zk/enforced-runtime.generated.json`
+- `docs/zk/enforced-runtime.generated.md`
 
 Commands:
 

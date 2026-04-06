@@ -1,24 +1,24 @@
 {
-  "generatedAt": "2026-04-06T19:33:04.133Z",
+  "generatedAt": "2026-04-06T20:04:13.452Z",
   "readPath": "backend-indexer",
   "runtime": {
-    "generatedAt": "2026-04-06T19:33:00.571Z",
+    "generatedAt": "2026-04-06T20:04:10.918Z",
     "readPath": "backend-indexer",
     "rpcEndpoint": "https://api.devnet.solana.com",
     "rpcPoolSize": 1,
     "commitment": "confirmed",
     "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
-    "slot": 453727059,
+    "slot": 453732010,
     "solanaCore": "3.1.10",
     "featureSet": 1620780344,
-    "latestBlockhash": "W93GqVvrUrsgPLpzjQ3PgVPJxHtsuTFkdasHadvHMtA",
-    "lastValidBlockHeight": 441605376,
+    "latestBlockhash": "53HLQACZB2voDiztPo3Hz7qXzGzf2PMr9MZvt45JvoPs",
+    "lastValidBlockHeight": 441610323,
     "programExecutable": true,
     "programOwner": "BPFLoaderUpgradeab1e11111111111111111111111",
     "cacheTtlMs": 15000
   },
   "overview": {
-    "generatedAt": "2026-04-06T19:33:04.131Z",
+    "generatedAt": "2026-04-06T20:04:13.451Z",
     "proposals": 20,
     "uniqueDaos": 9,
     "zkEnforced": 0,
@@ -92,7 +92,7 @@
   ],
   "deployment": {
     "sameDomainRecommended": true,
-    "guide": "docs/read-node-same-domain-deploy.md",
+    "guide": "docs/read-node/same-domain-deploy.md",
     "readApiPath": "/api/v1"
   },
   "operatorChecks": [

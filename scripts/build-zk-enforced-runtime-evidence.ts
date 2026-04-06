@@ -48,7 +48,7 @@ type CaptureRegistry = {
 };
 
 function main() {
-  const source = readJson<CaptureRegistry>("docs/zk-enforced-runtime-captures.json");
+  const source = readJson<CaptureRegistry>("docs/zk/enforced-runtime-captures.json");
 
   const completedTargets = new Set(
     source.captures
@@ -75,9 +75,9 @@ function main() {
     targets: source.targets,
     captures: source.captures,
     requiredDocs: [
-      "docs/zk-enforced-runtime-evidence.md",
-      "docs/zk-enforced-runtime-captures.json",
-      "docs/zk-enforced-operator-flow.md",
+      "docs/zk/enforced-runtime-evidence.md",
+      "docs/zk/enforced-runtime-captures.json",
+      "docs/zk/enforced-operator-flow.md",
       "docs/phase-c-hardening.md",
     ],
     commands: [
@@ -94,8 +94,8 @@ function main() {
         : "pending-zk-enforced-capture",
   };
 
-  fs.writeFileSync(path.resolve("docs/zk-enforced-runtime.generated.json"), JSON.stringify(payload, null, 2) + "\n");
-  fs.writeFileSync(path.resolve("docs/zk-enforced-runtime.generated.md"), buildMarkdown(payload));
+  fs.writeFileSync(path.resolve("docs/zk/enforced-runtime.generated.json"), JSON.stringify(payload, null, 2) + "\n");
+  fs.writeFileSync(path.resolve("docs/zk/enforced-runtime.generated.md"), buildMarkdown(payload));
   console.log("Wrote zk-enforced runtime evidence package");
 }
 

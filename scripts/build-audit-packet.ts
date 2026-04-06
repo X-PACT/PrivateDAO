@@ -121,11 +121,11 @@ ${Object.entries(proof.transactions)
 
 ## Artifact Integrity
 
-- Read node and indexer: \`docs/read-node-indexer.md\`
+- Read node and indexer: \`docs/read-node/indexer.md\`
 - RPC architecture: \`docs/rpc-architecture.md\`
 - Backend operator flow: \`docs/backend-operator-flow.md\`
-- Read-node snapshot: \`docs/read-node-snapshot.generated.md\`
-- Colosseum competitive analysis: \`docs/colosseum-competitive-analysis.generated.md\`
+- Read-node snapshot: \`docs/read-node/snapshot.generated.md\`
+- Colosseum competitive analysis: \`docs/competitive/analysis.generated.md\`
 - Read-node architecture diagram: \`docs/assets/read-node-architecture.svg\`
 - Confidential payouts note: \`docs/confidential-payments.md\`
 - Confidential payroll flow: \`docs/confidential-payroll-flow.md\`
@@ -207,22 +207,22 @@ ${submission.packages.proof.map((entry) => `- \`${entry}\``).join("\n")}
 
 ## Runtime Package
 
-- \`docs/read-node-indexer.md\`
+- \`docs/read-node/indexer.md\`
 - \`docs/rpc-architecture.md\`
 - \`docs/backend-operator-flow.md\`
-- \`docs/read-node-snapshot.generated.md\`
-- \`docs/read-node-snapshot.generated.json\`
+- \`docs/read-node/snapshot.generated.md\`
+- \`docs/read-node/snapshot.generated.json\`
 - \`docs/fair-voting.md\`
 - \`docs/wallet-runtime.md\`
-- \`docs/real-device-runtime.md\`
-- \`docs/real-device-runtime-captures.json\`
-- \`docs/real-device-runtime.generated.md\`
-- \`docs/real-device-runtime.generated.json\`
-- \`docs/zk-enforced-runtime-evidence.md\`
-- \`docs/zk-enforced-runtime-captures.json\`
-- \`docs/zk-enforced-runtime.generated.md\`
-- \`docs/zk-enforced-runtime.generated.json\`
-- \`docs/zk-enforced-operator-flow.md\`
+- \`docs/runtime/real-device.md\`
+- \`docs/runtime/real-device-captures.json\`
+- \`docs/runtime/real-device.generated.md\`
+- \`docs/runtime/real-device.generated.json\`
+- \`docs/zk/enforced-runtime-evidence.md\`
+- \`docs/zk/enforced-runtime-captures.json\`
+- \`docs/zk/enforced-runtime.generated.md\`
+- \`docs/zk/enforced-runtime.generated.json\`
+- \`docs/zk/enforced-operator-flow.md\`
 - \`docs/operational-evidence.generated.md\`
 - \`docs/operational-evidence.generated.json\`
 - \`docs/runtime-evidence.generated.md\`

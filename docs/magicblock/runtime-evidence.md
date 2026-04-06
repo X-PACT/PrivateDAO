@@ -34,18 +34,18 @@ Each capture should prove the following sequence on Devnet:
 
 ## Source of truth
 
-- source registry: `docs/magicblock-runtime-captures.json`
-- generated package: `docs/magicblock-runtime.generated.json`
-- generated review note: `docs/magicblock-runtime.generated.md`
+- source registry: `docs/magicblock/runtime-captures.json`
+- generated package: `docs/magicblock/runtime.generated.json`
+- generated review note: `docs/magicblock/runtime.generated.md`
 
 ## Templates
 
-- `docs/magicblock-runtime-templates/README.md`
-- `docs/magicblock-runtime-templates/phantom-desktop-magicblock.json`
-- `docs/magicblock-runtime-templates/solflare-desktop-magicblock.json`
-- `docs/magicblock-runtime-templates/backpack-desktop-magicblock.json`
-- `docs/magicblock-runtime-templates/glow-desktop-magicblock.json`
-- `docs/magicblock-runtime-templates/android-runtime-magicblock.json`
+- `docs/magicblock/templates/README.md`
+- `docs/magicblock/templates/phantom-desktop-magicblock.json`
+- `docs/magicblock/templates/solflare-desktop-magicblock.json`
+- `docs/magicblock/templates/backpack-desktop-magicblock.json`
+- `docs/magicblock/templates/glow-desktop-magicblock.json`
+- `docs/magicblock/templates/android-runtime-magicblock.json`
 
 ## Commands
 

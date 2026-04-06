@@ -51,7 +51,7 @@ function main() {
     throw new Error("usage: npm run record:zk-enforced-runtime -- <capture-json-path>");
   }
 
-  const registryPath = path.resolve("docs/zk-enforced-runtime-captures.json");
+  const registryPath = path.resolve("docs/zk/enforced-runtime-captures.json");
   const registry = readJson<CaptureRegistry>(registryPath);
   const incoming = readJson<Capture>(inputPath);
 

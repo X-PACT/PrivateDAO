@@ -46,7 +46,7 @@ EOF
 template_path() {
   case "$1" in
     phantom-desktop|solflare-desktop|backpack-desktop|glow-desktop|android-runtime)
-      printf '%s/docs/real-device-runtime-templates/%s.json\n' "$ROOT_DIR" "$1"
+      printf '%s/docs/runtime/templates/%s.json\n' "$ROOT_DIR" "$1"
       ;;
     *)
       echo "Unknown target: $1" >&2

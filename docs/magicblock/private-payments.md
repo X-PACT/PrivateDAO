@@ -63,5 +63,5 @@ Without this corridor, confidential token payouts would still rely only on propo
 
 - `docs/confidential-payments.md`
 - `docs/refhe-protocol.md`
-- `docs/magicblock-operator-flow.md`
+- `docs/magicblock/operator-flow.md`
 - `docs/rpc-architecture.md`

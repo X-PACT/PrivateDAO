@@ -40,10 +40,10 @@ required_files=(
   "docs/review-automation.md"
   "docs/fair-voting.md"
   "docs/wallet-runtime.md"
-  "docs/real-device-runtime.md"
-  "docs/real-device-runtime-captures.json"
-  "docs/real-device-runtime.generated.md"
-  "docs/real-device-runtime.generated.json"
+  "docs/runtime/real-device.md"
+  "docs/runtime/real-device-captures.json"
+  "docs/runtime/real-device.generated.md"
+  "docs/runtime/real-device.generated.json"
   "docs/operational-evidence.generated.md"
   "docs/operational-evidence.generated.json"
   "docs/runtime-evidence.generated.md"
@@ -147,8 +147,8 @@ if search_placeholders "$placeholder_pattern" \
   docs/review-automation.md \
   docs/fair-voting.md \
   docs/wallet-runtime.md \
-  docs/real-device-runtime.md \
-  docs/real-device-runtime.generated.md \
+  docs/runtime/real-device.md \
+  docs/runtime/real-device.generated.md \
   docs/operational-evidence.generated.md \
   docs/runtime-evidence.generated.md \
   docs/wallet-compatibility-matrix.generated.md \

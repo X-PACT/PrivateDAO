@@ -60,8 +60,8 @@ Mainnet readiness requires real signer environments, not repo-only confidence.
 
 Canonical evidence:
 
-- `docs/real-device-runtime.generated.md`
-- `docs/real-device-runtime-captures.json`
+- `docs/runtime/real-device.generated.md`
+- `docs/runtime/real-device-captures.json`
 
 Blocking condition:
 

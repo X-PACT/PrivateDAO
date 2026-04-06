@@ -36,7 +36,7 @@ type CaptureRegistry = {
 };
 
 function main() {
-  const source = readJson<CaptureRegistry>("docs/real-device-runtime-captures.json");
+  const source = readJson<CaptureRegistry>("docs/runtime/real-device-captures.json");
 
   const completedTargets = new Set(
     source.captures
@@ -63,8 +63,8 @@ function main() {
     targets: source.targets,
     captures: source.captures,
     requiredDocs: [
-      "docs/real-device-runtime.md",
-      "docs/real-device-runtime-captures.json",
+      "docs/runtime/real-device.md",
+      "docs/runtime/real-device-captures.json",
       "docs/runtime-attestation.generated.json",
       "docs/external-readiness-intake.md",
     ],
@@ -80,8 +80,8 @@ function main() {
         : "pending-real-device-capture",
   };
 
-  fs.writeFileSync(path.resolve("docs/real-device-runtime.generated.json"), JSON.stringify(payload, null, 2) + "\n");
-  fs.writeFileSync(path.resolve("docs/real-device-runtime.generated.md"), buildMarkdown(payload));
+  fs.writeFileSync(path.resolve("docs/runtime/real-device.generated.json"), JSON.stringify(payload, null, 2) + "\n");
+  fs.writeFileSync(path.resolve("docs/runtime/real-device.generated.md"), buildMarkdown(payload));
   console.log("Wrote real-device runtime evidence package");
 }
 

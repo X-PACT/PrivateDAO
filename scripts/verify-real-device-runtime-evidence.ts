@@ -36,9 +36,9 @@ type Evidence = {
 };
 
 function main() {
-  const jsonPath = path.resolve("docs/real-device-runtime.generated.json");
-  const mdPath = path.resolve("docs/real-device-runtime.generated.md");
-  const sourcePath = path.resolve("docs/real-device-runtime-captures.json");
+  const jsonPath = path.resolve("docs/runtime/real-device.generated.json");
+  const mdPath = path.resolve("docs/runtime/real-device.generated.md");
+  const sourcePath = path.resolve("docs/runtime/real-device-captures.json");
 
   if (!fs.existsSync(jsonPath) || !fs.existsSync(mdPath) || !fs.existsSync(sourcePath)) {
     throw new Error("missing real-device runtime evidence artifacts");
@@ -55,8 +55,8 @@ function main() {
   assert(evidence.targets.some((target) => target.walletLabel === "Backpack"), "real-device runtime evidence missing Backpack target");
   assert(evidence.targets.some((target) => target.walletLabel === "Glow"), "real-device runtime evidence missing Glow target");
   assert(evidence.targets.some((target) => target.environmentType === "android-or-mobile"), "real-device runtime evidence missing mobile target");
-  assert(evidence.requiredDocs.includes("docs/real-device-runtime.md"), "real-device runtime evidence missing guide doc");
-  assert(evidence.requiredDocs.includes("docs/real-device-runtime-captures.json"), "real-device runtime evidence missing source registry doc");
+  assert(evidence.requiredDocs.includes("docs/runtime/real-device.md"), "real-device runtime evidence missing guide doc");
+  assert(evidence.requiredDocs.includes("docs/runtime/real-device-captures.json"), "real-device runtime evidence missing source registry doc");
   assert(evidence.commands.includes("npm run build:real-device-runtime"), "real-device runtime evidence missing build command");
   assert(evidence.commands.includes("npm run verify:real-device-runtime"), "real-device runtime evidence missing verify command");
 

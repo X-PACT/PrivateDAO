@@ -41,7 +41,7 @@ function main() {
     throw new Error("usage: npm run record:real-device-runtime -- <capture-json-path>");
   }
 
-  const registryPath = path.resolve("docs/real-device-runtime-captures.json");
+  const registryPath = path.resolve("docs/runtime/real-device-captures.json");
   const registry = readJson<CaptureRegistry>(registryPath);
   const incoming = readJson<Capture>(inputPath);
 

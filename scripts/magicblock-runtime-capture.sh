@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-TEMPLATE_DIR="$ROOT_DIR/docs/magicblock-runtime-templates"
+TEMPLATE_DIR="$ROOT_DIR/docs/magicblock/templates"
 
 target="${1:-}"
 mode="${2:-}"

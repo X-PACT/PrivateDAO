@@ -1,12 +1,14 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-06T19:34:08.112Z",
+  "generatedAt": "2026-04-06T20:05:04.704Z",
   "network": "devnet",
   "summary": {
     "targetCount": 5,
     "completedTargetCount": 0,
-    "modeActivationSuccessCount": 0,
-    "finalizeSuccessCount": 0,
+    "depositSuccessCount": 0,
+    "privateTransferSuccessCount": 0,
+    "settleSuccessCount": 0,
+    "executeSuccessCount": 0,
     "diagnosticsCaptureCount": 0,
     "pendingTargets": [
       "Phantom",
@@ -18,31 +20,31 @@
   },
   "targets": [
     {
-      "id": "phantom-desktop-zk-enforced",
+      "id": "phantom-desktop-magicblock",
       "walletLabel": "Phantom",
       "environmentType": "desktop-browser",
       "status": "pending-capture"
     },
     {
-      "id": "solflare-desktop-zk-enforced",
+      "id": "solflare-desktop-magicblock",
       "walletLabel": "Solflare",
       "environmentType": "desktop-browser",
       "status": "pending-capture"
     },
     {
-      "id": "backpack-desktop-zk-enforced",
+      "id": "backpack-desktop-magicblock",
       "walletLabel": "Backpack",
       "environmentType": "desktop-browser",
       "status": "pending-capture"
     },
     {
-      "id": "glow-desktop-zk-enforced",
+      "id": "glow-desktop-magicblock",
       "walletLabel": "Glow",
       "environmentType": "desktop-browser",
       "status": "pending-capture"
     },
     {
-      "id": "android-runtime-zk-enforced",
+      "id": "android-runtime-magicblock",
       "walletLabel": "Android Native / Mobile",
       "environmentType": "android-or-mobile",
       "status": "pending-capture"
@@ -50,18 +52,18 @@
   ],
   "captures": [],
   "requiredDocs": [
-    "docs/zk-enforced-runtime-evidence.md",
-    "docs/zk-enforced-runtime-captures.json",
-    "docs/zk-enforced-operator-flow.md",
-    "docs/phase-c-hardening.md"
+    "docs/magicblock/private-payments.md",
+    "docs/magicblock/operator-flow.md",
+    "docs/magicblock/runtime-evidence.md",
+    "docs/magicblock/runtime-captures.json"
   ],
   "commands": [
-    "npm run build:zk-enforced-runtime",
-    "npm run verify:zk-enforced-runtime",
-    "npm run record:zk-enforced-runtime -- <capture-json-path>",
-    "npm run inspect:zk-proposal -- --proposal <PDA>",
-    "npm run configure:zk-mode -- --proposal <PDA> --mode zk_enforced",
-    "npm run anchor:zk-verify:enforced"
+    "npm run build:magicblock-runtime",
+    "npm run verify:magicblock-runtime",
+    "npm run record:magicblock-runtime -- <capture-json-path>",
+    "npm run configure:magicblock",
+    "npm run settle:magicblock",
+    "npm run magicblock:payments -- transfer --from <OWNER> --to <SETTLEMENT> --mint <MINT> --amount <RAW> --visibility private --from-balance base --to-balance ephemeral"
   ],
-  "status": "pending-zk-enforced-capture"
+  "status": "pending-magicblock-capture"
 }

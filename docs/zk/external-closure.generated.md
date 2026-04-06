@@ -5,7 +5,7 @@
 - Project: PrivateDAO
 - Path: zk_enforced_external_closure
 - Status: pending-external-execution
-- Generated At: 2026-04-06T19:34:22.261Z
+- Generated At: 2026-04-06T20:05:33.771Z
 - Pending Blocking Count: 3
 
 ## Runtime Capture Summary
@@ -37,10 +37,10 @@
 
 ## Required Docs
 
-- `docs/zk-external-closure.json`
-- `docs/zk-enforced-runtime-evidence.md`
-- `docs/zk-enforced-runtime.generated.md`
-- `docs/zk-enforced-operator-flow.md`
+- `docs/zk/external-closure.json`
+- `docs/zk/enforced-runtime-evidence.md`
+- `docs/zk/enforced-runtime.generated.md`
+- `docs/zk/enforced-operator-flow.md`
 - `docs/zk-external-audit-scope.md`
 - `docs/canonical-verifier-boundary-decision.md`
 - `docs/audit-handoff.md`

@@ -52,21 +52,21 @@ Each runtime target should attempt:
 
 The source registry for these captures is:
 
-- `docs/real-device-runtime-captures.json`
+- `docs/runtime/real-device-captures.json`
 
 Starter templates are available in:
 
-- `docs/real-device-runtime-templates/phantom-desktop.json`
-- `docs/real-device-runtime-templates/solflare-desktop.json`
-- `docs/real-device-runtime-templates/backpack-desktop.json`
-- `docs/real-device-runtime-templates/glow-desktop.json`
-- `docs/real-device-runtime-templates/android-runtime.json`
-- `docs/real-device-runtime-templates/README.md`
+- `docs/runtime/templates/phantom-desktop.json`
+- `docs/runtime/templates/solflare-desktop.json`
+- `docs/runtime/templates/backpack-desktop.json`
+- `docs/runtime/templates/glow-desktop.json`
+- `docs/runtime/templates/android-runtime.json`
+- `docs/runtime/templates/README.md`
 
 The generated reviewer-facing outputs are:
 
-- `docs/real-device-runtime.generated.json`
-- `docs/real-device-runtime.generated.md`
+- `docs/runtime/real-device.generated.json`
+- `docs/runtime/real-device.generated.md`
 
 ## Fast Capture Workflow
 

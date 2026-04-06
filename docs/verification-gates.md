@@ -136,11 +136,11 @@ Related review docs:
 
 - `docs/zk-verifier-strategy.md`
 - `docs/zk-enforced-threat-review.md`
-- `docs/zk-enforced-runtime-evidence.md`
-- `docs/zk-enforced-operator-flow.md`
+- `docs/zk/enforced-runtime-evidence.md`
+- `docs/zk/enforced-operator-flow.md`
 - `docs/zk-external-audit-scope.md`
 - `docs/canonical-verifier-boundary-decision.md`
-- `docs/zk-external-closure.generated.md`
+- `docs/zk/external-closure.generated.md`
 
 Commands:
 

@@ -2,7 +2,7 @@
   "project": "PrivateDAO",
   "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
   "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
-  "generatedAt": "2026-04-06T19:35:59.410Z",
+  "generatedAt": "2026-04-06T20:07:18.752Z",
   "acceptanceDecision": "repository-strong-but-external-blockers-remain",
   "summary": {
     "acceptedInRepo": 8,
@@ -108,8 +108,8 @@
       "layer": "real-device-wallet-qa",
       "status": "pending-external",
       "evidence": [
-        "docs/real-device-runtime.md",
-        "docs/real-device-runtime.generated.md",
+        "docs/runtime/real-device.md",
+        "docs/runtime/real-device.generated.md",
         "docs/wallet-compatibility-matrix.generated.md",
         "docs/external-readiness-intake.md"
       ],
@@ -119,9 +119,9 @@
       "layer": "magicblock-runtime-corridor",
       "status": "pending-external",
       "evidence": [
-        "docs/magicblock-private-payments.md",
-        "docs/magicblock-runtime-evidence.md",
-        "docs/magicblock-runtime.generated.md"
+        "docs/magicblock/private-payments.md",
+        "docs/magicblock/runtime-evidence.md",
+        "docs/magicblock/runtime.generated.md"
       ],
       "rationale": "The MagicBlock corridor is wired into the program and frontend, but real wallet/runtime captures across environments still need to be collected externally."
     },

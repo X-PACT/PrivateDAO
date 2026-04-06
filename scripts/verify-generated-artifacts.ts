@@ -14,23 +14,23 @@ function main() {
   const releaseCeremonyJsonPath = path.resolve("docs/release-ceremony-attestation.generated.json");
   const releaseCeremonyMdPath = path.resolve("docs/release-ceremony-attestation.generated.md");
   const runtimeAttestationPath = path.resolve("docs/runtime-attestation.generated.json");
-  const readNodeSnapshotJsonPath = path.resolve("docs/read-node-snapshot.generated.json");
-  const readNodeSnapshotMdPath = path.resolve("docs/read-node-snapshot.generated.md");
-  const colosseumCompetitiveSourcePath = path.resolve("docs/colosseum-competitive-source.json");
-  const colosseumCompetitiveJsonPath = path.resolve("docs/colosseum-competitive-analysis.generated.json");
-  const colosseumCompetitiveMdPath = path.resolve("docs/colosseum-competitive-analysis.generated.md");
-  const realDeviceRuntimeSourcePath = path.resolve("docs/real-device-runtime-captures.json");
-  const realDeviceRuntimeJsonPath = path.resolve("docs/real-device-runtime.generated.json");
-  const realDeviceRuntimeMdPath = path.resolve("docs/real-device-runtime.generated.md");
-  const magicBlockRuntimeSourcePath = path.resolve("docs/magicblock-runtime-captures.json");
-  const magicBlockRuntimeJsonPath = path.resolve("docs/magicblock-runtime.generated.json");
-  const magicBlockRuntimeMdPath = path.resolve("docs/magicblock-runtime.generated.md");
-  const zkEnforcedRuntimeSourcePath = path.resolve("docs/zk-enforced-runtime-captures.json");
-  const zkEnforcedRuntimeJsonPath = path.resolve("docs/zk-enforced-runtime.generated.json");
-  const zkEnforcedRuntimeMdPath = path.resolve("docs/zk-enforced-runtime.generated.md");
-  const zkExternalClosureSourcePath = path.resolve("docs/zk-external-closure.json");
-  const zkExternalClosureJsonPath = path.resolve("docs/zk-external-closure.generated.json");
-  const zkExternalClosureMdPath = path.resolve("docs/zk-external-closure.generated.md");
+  const readNodeSnapshotJsonPath = path.resolve("docs/read-node/snapshot.generated.json");
+  const readNodeSnapshotMdPath = path.resolve("docs/read-node/snapshot.generated.md");
+  const colosseumCompetitiveSourcePath = path.resolve("docs/competitive/source.json");
+  const colosseumCompetitiveJsonPath = path.resolve("docs/competitive/analysis.generated.json");
+  const colosseumCompetitiveMdPath = path.resolve("docs/competitive/analysis.generated.md");
+  const realDeviceRuntimeSourcePath = path.resolve("docs/runtime/real-device-captures.json");
+  const realDeviceRuntimeJsonPath = path.resolve("docs/runtime/real-device.generated.json");
+  const realDeviceRuntimeMdPath = path.resolve("docs/runtime/real-device.generated.md");
+  const magicBlockRuntimeSourcePath = path.resolve("docs/magicblock/runtime-captures.json");
+  const magicBlockRuntimeJsonPath = path.resolve("docs/magicblock/runtime.generated.json");
+  const magicBlockRuntimeMdPath = path.resolve("docs/magicblock/runtime.generated.md");
+  const zkEnforcedRuntimeSourcePath = path.resolve("docs/zk/enforced-runtime-captures.json");
+  const zkEnforcedRuntimeJsonPath = path.resolve("docs/zk/enforced-runtime.generated.json");
+  const zkEnforcedRuntimeMdPath = path.resolve("docs/zk/enforced-runtime.generated.md");
+  const zkExternalClosureSourcePath = path.resolve("docs/zk/external-closure.json");
+  const zkExternalClosureJsonPath = path.resolve("docs/zk/external-closure.generated.json");
+  const zkExternalClosureMdPath = path.resolve("docs/zk/external-closure.generated.md");
   const runtimeEvidenceJsonPath = path.resolve("docs/runtime-evidence.generated.json");
   const runtimeEvidenceMdPath = path.resolve("docs/runtime-evidence.generated.md");
   const operationalEvidenceJsonPath = path.resolve("docs/operational-evidence.generated.json");
@@ -791,10 +791,10 @@ function main() {
   if (!attestation.runtimeDocs.includes("docs/runtime-evidence.generated.md")) {
     throw new Error("generated attestation is missing the runtime evidence doc");
   }
-  if (!attestation.runtimeDocs.includes("docs/real-device-runtime.generated.md")) {
+  if (!attestation.runtimeDocs.includes("docs/runtime/real-device.generated.md")) {
     throw new Error("generated attestation is missing the real-device runtime doc");
   }
-  if (!attestation.runtimeDocs.includes("docs/magicblock-runtime.generated.md")) {
+  if (!attestation.runtimeDocs.includes("docs/magicblock/runtime.generated.md")) {
     throw new Error("generated attestation is missing the MagicBlock runtime doc");
   }
   if (!attestation.runtimeDocs.includes("docs/operational-evidence.generated.md")) {
@@ -935,7 +935,7 @@ function main() {
   if (!auditPacket.includes("docs/runtime-evidence.generated.json")) {
     throw new Error("generated audit packet is missing the runtime evidence reference");
   }
-  if (!auditPacket.includes("docs/real-device-runtime.generated.json")) {
+  if (!auditPacket.includes("docs/runtime/real-device.generated.json")) {
     throw new Error("generated audit packet is missing the real-device runtime reference");
   }
   if (!auditPacket.includes("docs/operational-evidence.generated.json")) {
@@ -980,7 +980,7 @@ function main() {
   if (
     !mainnetAcceptanceMd.includes("# Mainnet Acceptance Matrix") ||
     !mainnetAcceptanceMd.includes("docs/external-readiness-intake.md") ||
-    !mainnetAcceptanceMd.includes("docs/real-device-runtime.generated.md") ||
+    !mainnetAcceptanceMd.includes("docs/runtime/real-device.generated.md") ||
     !mainnetAcceptanceMd.includes("real-device-wallet-qa")
   ) {
     throw new Error("generated mainnet acceptance matrix markdown is invalid");
@@ -1008,7 +1008,7 @@ function main() {
     !mainnetProofPackageMd.includes("# Mainnet Proof Package") ||
     !mainnetProofPackageMd.includes("docs/mainnet-acceptance-matrix.generated.md") ||
     !mainnetProofPackageMd.includes("docs/runtime-evidence.generated.md") ||
-    !mainnetProofPackageMd.includes("docs/real-device-runtime.generated.md")
+    !mainnetProofPackageMd.includes("docs/runtime/real-device.generated.md")
   ) {
     throw new Error("generated mainnet proof package markdown is invalid");
   }
@@ -1079,7 +1079,7 @@ function main() {
   if (!runtimeAttestation.supportedWallets.some((entry) => entry.id === "phantom")) {
     throw new Error("generated runtime attestation is missing Phantom support");
   }
-  if (!runtimeAttestation.runtimeDocs.includes("docs/read-node-snapshot.generated.md")) {
+  if (!runtimeAttestation.runtimeDocs.includes("docs/read-node/snapshot.generated.md")) {
     throw new Error("generated runtime attestation is missing the read-node snapshot doc");
   }
   if (readNodeSnapshot.readPath !== "backend-indexer") {
@@ -1160,15 +1160,15 @@ function main() {
 
   for (const doc of [
     "docs/wallet-runtime.md",
-    "docs/real-device-runtime.md",
-    "docs/real-device-runtime-captures.json",
-    "docs/real-device-runtime.generated.md",
-    "docs/real-device-runtime.generated.json",
-    "docs/magicblock-private-payments.md",
-    "docs/magicblock-runtime-evidence.md",
-    "docs/magicblock-runtime-captures.json",
-    "docs/magicblock-runtime.generated.md",
-    "docs/magicblock-runtime.generated.json",
+    "docs/runtime/real-device.md",
+    "docs/runtime/real-device-captures.json",
+    "docs/runtime/real-device.generated.md",
+    "docs/runtime/real-device.generated.json",
+    "docs/magicblock/private-payments.md",
+    "docs/magicblock/runtime-evidence.md",
+    "docs/magicblock/runtime-captures.json",
+    "docs/magicblock/runtime.generated.md",
+    "docs/magicblock/runtime.generated.json",
     "docs/runtime-attestation.generated.json",
     "docs/operational-evidence.generated.md",
     "docs/operational-evidence.generated.json",
@@ -1254,10 +1254,10 @@ function main() {
   }
 
   for (const doc of [
-    "docs/magicblock-private-payments.md",
-    "docs/magicblock-operator-flow.md",
-    "docs/magicblock-runtime-evidence.md",
-    "docs/magicblock-runtime-captures.json",
+    "docs/magicblock/private-payments.md",
+    "docs/magicblock/operator-flow.md",
+    "docs/magicblock/runtime-evidence.md",
+    "docs/magicblock/runtime-captures.json",
   ]) {
     if (!magicBlockRuntime.requiredDocs.includes(doc)) {
       throw new Error(`generated MagicBlock runtime evidence is missing ${doc}`);
@@ -1311,9 +1311,9 @@ function main() {
   }
 
   for (const doc of [
-    "docs/zk-enforced-runtime-evidence.md",
-    "docs/zk-enforced-runtime-captures.json",
-    "docs/zk-enforced-operator-flow.md",
+    "docs/zk/enforced-runtime-evidence.md",
+    "docs/zk/enforced-runtime-captures.json",
+    "docs/zk/enforced-operator-flow.md",
     "docs/phase-c-hardening.md",
   ]) {
     if (!zkEnforcedRuntime.requiredDocs.includes(doc)) {
@@ -1538,10 +1538,10 @@ function main() {
   if (!cryptographicManifest.files.some((entry) => entry.path === "docs/devnet-canary.generated.json")) {
     throw new Error("generated cryptographic manifest is missing the devnet canary");
   }
-  if (!cryptographicManifest.files.some((entry) => entry.path === "docs/real-device-runtime.generated.json")) {
+  if (!cryptographicManifest.files.some((entry) => entry.path === "docs/runtime/real-device.generated.json")) {
     throw new Error("generated cryptographic manifest is missing the real-device runtime evidence");
   }
-  if (!cryptographicManifest.files.some((entry) => entry.path === "docs/magicblock-runtime.generated.json")) {
+  if (!cryptographicManifest.files.some((entry) => entry.path === "docs/magicblock/runtime.generated.json")) {
     throw new Error("generated cryptographic manifest is missing the MagicBlock runtime evidence");
   }
   if (!cryptographicManifest.files.some((entry) => entry.path === "docs/cryptographic-posture.md")) {

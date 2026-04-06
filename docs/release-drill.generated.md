@@ -2,9 +2,9 @@
 
 ## Overview
 
-- Generated at: `2026-04-06T18:53:58+02:00`
+- Generated at: `2026-04-06T21:45:32+02:00`
 - Mode: `repository-simulated-drill`
-- Release commit: `c83fac4bed19e7d9cc165676755467d9d21115ad`
+- Release commit: `179aaaf8040fc51c6ec7eab55591601004ed7605`
 - Release branch: `main`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
@@ -41,7 +41,7 @@
 
 - reviewed-commit-freeze: `simulated-pass`
   category: `operator-check`
-  evidence: `c83fac4bed19e7d9cc165676755467d9d21115ad`
+  evidence: `179aaaf8040fc51c6ec7eab55591601004ed7605`
   note: The reviewed repository commit becomes the release anchor before any cutover activity.
 
 - release-ceremony-attestation: `simulated-pass`

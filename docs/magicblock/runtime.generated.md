@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-06T19:33:54.848Z`
+- generated at: `2026-04-06T20:05:04.704Z`
 - network: `devnet`
 - status: `pending-magicblock-capture`
 - target count: `5`
@@ -36,10 +36,10 @@ No MagicBlock runtime captures have been committed yet. The intake and generated
 
 ## Required Docs
 
-- `docs/magicblock-private-payments.md`
-- `docs/magicblock-operator-flow.md`
-- `docs/magicblock-runtime-evidence.md`
-- `docs/magicblock-runtime-captures.json`
+- `docs/magicblock/private-payments.md`
+- `docs/magicblock/operator-flow.md`
+- `docs/magicblock/runtime-evidence.md`
+- `docs/magicblock/runtime-captures.json`
 
 ## Commands
 

@@ -49,9 +49,9 @@ Provide the following in this order:
 - [phase-c-hardening.md](/home/x-pact/PrivateDAO/docs/phase-c-hardening.md)
 - [zk-verifier-strategy.md](/home/x-pact/PrivateDAO/docs/zk-verifier-strategy.md)
 - [zk-enforced-threat-review.md](/home/x-pact/PrivateDAO/docs/zk-enforced-threat-review.md)
-- [zk-enforced-runtime-evidence.md](/home/x-pact/PrivateDAO/docs/zk-enforced-runtime-evidence.md)
-- [zk-enforced-runtime.generated.md](/home/x-pact/PrivateDAO/docs/zk-enforced-runtime.generated.md)
-- [zk-enforced-operator-flow.md](/home/x-pact/PrivateDAO/docs/zk-enforced-operator-flow.md)
+- [zk/enforced-runtime-evidence.md](/home/x-pact/PrivateDAO/docs/zk/enforced-runtime-evidence.md)
+- [zk/enforced-runtime.generated.md](/home/x-pact/PrivateDAO/docs/zk/enforced-runtime.generated.md)
+- [zk/enforced-operator-flow.md](/home/x-pact/PrivateDAO/docs/zk/enforced-operator-flow.md)
 - [zk-external-audit-scope.md](/home/x-pact/PrivateDAO/docs/zk-external-audit-scope.md)
 - [canonical-verifier-boundary-decision.md](/home/x-pact/PrivateDAO/docs/canonical-verifier-boundary-decision.md)
 

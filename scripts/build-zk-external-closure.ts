@@ -30,8 +30,8 @@ type ZkEnforcedRuntimeEvidence = {
 };
 
 function main() {
-  const source = readJson<Source>("docs/zk-external-closure.json");
-  const runtime = readJson<ZkEnforcedRuntimeEvidence>("docs/zk-enforced-runtime.generated.json");
+  const source = readJson<Source>("docs/zk/external-closure.json");
+  const runtime = readJson<ZkEnforcedRuntimeEvidence>("docs/zk/enforced-runtime.generated.json");
   const pendingBlocking = source.stages.filter((stage) => stage.blocking && stage.status !== "complete");
 
   const payload = {
@@ -51,10 +51,10 @@ function main() {
     },
     stages: source.stages,
     requiredDocs: [
-      "docs/zk-external-closure.json",
-      "docs/zk-enforced-runtime-evidence.md",
-      "docs/zk-enforced-runtime.generated.md",
-      "docs/zk-enforced-operator-flow.md",
+      "docs/zk/external-closure.json",
+      "docs/zk/enforced-runtime-evidence.md",
+      "docs/zk/enforced-runtime.generated.md",
+      "docs/zk/enforced-operator-flow.md",
       "docs/zk-external-audit-scope.md",
       "docs/canonical-verifier-boundary-decision.md",
       "docs/audit-handoff.md"
@@ -73,8 +73,8 @@ function main() {
     ]
   };
 
-  fs.writeFileSync(path.resolve("docs/zk-external-closure.generated.json"), JSON.stringify(payload, null, 2) + "\n");
-  fs.writeFileSync(path.resolve("docs/zk-external-closure.generated.md"), buildMarkdown(payload));
+  fs.writeFileSync(path.resolve("docs/zk/external-closure.generated.json"), JSON.stringify(payload, null, 2) + "\n");
+  fs.writeFileSync(path.resolve("docs/zk/external-closure.generated.md"), buildMarkdown(payload));
   console.log("Wrote zk external closure package");
 }
 

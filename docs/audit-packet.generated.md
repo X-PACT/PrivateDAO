@@ -59,11 +59,11 @@
 
 ## Artifact Integrity
 
-- Read node and indexer: `docs/read-node-indexer.md`
+- Read node and indexer: `docs/read-node/indexer.md`
 - RPC architecture: `docs/rpc-architecture.md`
 - Backend operator flow: `docs/backend-operator-flow.md`
-- Read-node snapshot: `docs/read-node-snapshot.generated.md`
-- Colosseum competitive analysis: `docs/colosseum-competitive-analysis.generated.md`
+- Read-node snapshot: `docs/read-node/snapshot.generated.md`
+- Colosseum competitive analysis: `docs/competitive/analysis.generated.md`
 - Read-node architecture diagram: `docs/assets/read-node-architecture.svg`
 - Confidential payouts note: `docs/confidential-payments.md`
 - Confidential payroll flow: `docs/confidential-payroll-flow.md`
@@ -90,7 +90,7 @@
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
 - Manifest entries: `130`
-- Aggregate sha256: `39053aece7a2368463efb60805a95cfe9d1c85c75194a2f790ed5864278ebcf3`
+- Aggregate sha256: `09e144465bbf4b5dbe248a9f0ea1b2a5920dddff64ade03b4ed2a3087702fbfc`
 
 ## ZK Package
 
@@ -135,9 +135,9 @@
 - `docs/launch-growth-plan.md`
 - `docs/risk-policy.md`
 - `docs/performance-evidence.md`
-- `docs/colosseum-competitive-source.json`
-- `docs/colosseum-competitive-analysis.generated.md`
-- `docs/colosseum-competitive-analysis.generated.json`
+- `docs/competitive/source.json`
+- `docs/competitive/analysis.generated.md`
+- `docs/competitive/analysis.generated.json`
 
 ## Security Package
 
@@ -145,7 +145,7 @@
 - `docs/threat-model.md`
 - `docs/security-coverage-map.md`
 - `docs/confidential-payments-audit-scope.md`
-- `docs/magicblock-private-payments.md`
+- `docs/magicblock/private-payments.md`
 - `docs/refhe-security-model.md`
 - `docs/refhe-audit-scope.md`
 - `docs/failure-modes.md`
@@ -165,16 +165,16 @@
 - `docs/phase-c-hardening.md`
 - `docs/zk-verifier-strategy.md`
 - `docs/zk-enforced-threat-review.md`
-- `docs/zk-enforced-runtime-evidence.md`
-- `docs/zk-enforced-runtime-captures.json`
-- `docs/zk-enforced-runtime.generated.json`
-- `docs/zk-enforced-runtime.generated.md`
-- `docs/zk-enforced-operator-flow.md`
+- `docs/zk/enforced-runtime-evidence.md`
+- `docs/zk/enforced-runtime-captures.json`
+- `docs/zk/enforced-runtime.generated.json`
+- `docs/zk/enforced-runtime.generated.md`
+- `docs/zk/enforced-operator-flow.md`
 - `docs/zk-external-audit-scope.md`
 - `docs/canonical-verifier-boundary-decision.md`
-- `docs/zk-external-closure.json`
-- `docs/zk-external-closure.generated.json`
-- `docs/zk-external-closure.generated.md`
+- `docs/zk/external-closure.json`
+- `docs/zk/external-closure.generated.json`
+- `docs/zk/external-closure.generated.md`
 - `docs/zk-stack.md`
 - `docs/zk-upgrade.md`
 - `docs/zk-architecture.md`
@@ -190,26 +190,26 @@
 
 ## Proof Package
 
-- `docs/read-node-indexer.md`
-- `docs/read-node-same-domain-deploy.md`
+- `docs/read-node/indexer.md`
+- `docs/read-node/same-domain-deploy.md`
 - `docs/rpc-architecture.md`
 - `docs/backend-operator-flow.md`
-- `docs/read-node-snapshot.generated.md`
-- `docs/read-node-snapshot.generated.json`
-- `docs/read-node-ops.generated.md`
-- `docs/read-node-ops.generated.json`
-- `docs/colosseum-competitive-analysis.generated.md`
-- `docs/colosseum-competitive-analysis.generated.json`
+- `docs/read-node/snapshot.generated.md`
+- `docs/read-node/snapshot.generated.json`
+- `docs/read-node/ops.generated.md`
+- `docs/read-node/ops.generated.json`
+- `docs/competitive/analysis.generated.md`
+- `docs/competitive/analysis.generated.json`
 - `docs/assets/read-node-architecture.svg`
 - `docs/confidential-payments.md`
 - `docs/confidential-payroll-flow.md`
 - `docs/confidential-payments-diagram.md`
-- `docs/magicblock-private-payments.md`
-- `docs/magicblock-operator-flow.md`
-- `docs/magicblock-runtime-evidence.md`
-- `docs/magicblock-runtime-captures.json`
-- `docs/magicblock-runtime.generated.md`
-- `docs/magicblock-runtime.generated.json`
+- `docs/magicblock/private-payments.md`
+- `docs/magicblock/operator-flow.md`
+- `docs/magicblock/runtime-evidence.md`
+- `docs/magicblock/runtime-captures.json`
+- `docs/magicblock/runtime.generated.md`
+- `docs/magicblock/runtime.generated.json`
 - `docs/refhe-protocol.md`
 - `docs/refhe-operator-flow.md`
 - `docs/refhe-security-model.md`
@@ -244,10 +244,10 @@
 - `docs/assets/pdao-token.json`
 - `docs/fair-voting.md`
 - `docs/wallet-runtime.md`
-- `docs/real-device-runtime.md`
-- `docs/real-device-runtime-captures.json`
-- `docs/real-device-runtime.generated.md`
-- `docs/real-device-runtime.generated.json`
+- `docs/runtime/real-device.md`
+- `docs/runtime/real-device-captures.json`
+- `docs/runtime/real-device.generated.md`
+- `docs/runtime/real-device.generated.json`
 - `docs/operational-evidence.generated.md`
 - `docs/operational-evidence.generated.json`
 - `docs/runtime-evidence.generated.md`
@@ -269,22 +269,22 @@
 
 ## Runtime Package
 
-- `docs/read-node-indexer.md`
+- `docs/read-node/indexer.md`
 - `docs/rpc-architecture.md`
 - `docs/backend-operator-flow.md`
-- `docs/read-node-snapshot.generated.md`
-- `docs/read-node-snapshot.generated.json`
+- `docs/read-node/snapshot.generated.md`
+- `docs/read-node/snapshot.generated.json`
 - `docs/fair-voting.md`
 - `docs/wallet-runtime.md`
-- `docs/real-device-runtime.md`
-- `docs/real-device-runtime-captures.json`
-- `docs/real-device-runtime.generated.md`
-- `docs/real-device-runtime.generated.json`
-- `docs/zk-enforced-runtime-evidence.md`
-- `docs/zk-enforced-runtime-captures.json`
-- `docs/zk-enforced-runtime.generated.md`
-- `docs/zk-enforced-runtime.generated.json`
-- `docs/zk-enforced-operator-flow.md`
+- `docs/runtime/real-device.md`
+- `docs/runtime/real-device-captures.json`
+- `docs/runtime/real-device.generated.md`
+- `docs/runtime/real-device.generated.json`
+- `docs/zk/enforced-runtime-evidence.md`
+- `docs/zk/enforced-runtime-captures.json`
+- `docs/zk/enforced-runtime.generated.md`
+- `docs/zk/enforced-runtime.generated.json`
+- `docs/zk/enforced-operator-flow.md`
 - `docs/operational-evidence.generated.md`
 - `docs/operational-evidence.generated.json`
 - `docs/runtime-evidence.generated.md`
@@ -330,14 +330,14 @@
 
 ## Operations Package
 
-- `docs/read-node-indexer.md`
-- `docs/read-node-same-domain-deploy.md`
+- `docs/read-node/indexer.md`
+- `docs/read-node/same-domain-deploy.md`
 - `docs/rpc-architecture.md`
 - `docs/backend-operator-flow.md`
-- `docs/read-node-snapshot.generated.md`
-- `docs/read-node-snapshot.generated.json`
-- `docs/magicblock-runtime-evidence.md`
-- `docs/magicblock-runtime.generated.md`
+- `docs/read-node/snapshot.generated.md`
+- `docs/read-node/snapshot.generated.json`
+- `docs/magicblock/runtime-evidence.md`
+- `docs/magicblock/runtime.generated.md`
 - `docs/mainnet-readiness.md`
 - `docs/authority-hardening.md`
 - `docs/phase-c-hardening.md`

@@ -3,8 +3,8 @@ import fs from "fs";
 import path from "path";
 
 function main() {
-  const json = JSON.parse(fs.readFileSync(path.resolve("docs/read-node-ops.generated.json"), "utf8"));
-  const markdown = fs.readFileSync(path.resolve("docs/read-node-ops.generated.md"), "utf8");
+  const json = JSON.parse(fs.readFileSync(path.resolve("docs/read-node/ops.generated.json"), "utf8"));
+  const markdown = fs.readFileSync(path.resolve("docs/read-node/ops.generated.md"), "utf8");
 
   if (json.readPath !== "backend-indexer") {
     throw new Error("read-node ops snapshot path mismatch");
@@ -31,7 +31,7 @@ function main() {
     throw new Error("read-node ops markdown missing REFHE section");
   }
 
-  if (!markdown.includes("read-node-same-domain-deploy.md")) {
+  if (!markdown.includes("read-node/same-domain-deploy.md")) {
     throw new Error("read-node ops markdown missing same-domain deploy guide");
   }
 

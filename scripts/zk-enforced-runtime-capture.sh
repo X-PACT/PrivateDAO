@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-TEMPLATE_DIR="$ROOT_DIR/docs/zk-enforced-runtime-templates"
+TEMPLATE_DIR="$ROOT_DIR/docs/zk/templates"
 TMP_DIR="${TMPDIR:-/tmp}"
 
 usage() {

@@ -70,10 +70,10 @@ function main() {
 
   for (const doc of [
     "docs/wallet-runtime.md",
-    "docs/real-device-runtime.md",
-    "docs/real-device-runtime-captures.json",
-    "docs/real-device-runtime.generated.md",
-    "docs/real-device-runtime.generated.json",
+    "docs/runtime/real-device.md",
+    "docs/runtime/real-device-captures.json",
+    "docs/runtime/real-device.generated.md",
+    "docs/runtime/real-device.generated.json",
     "docs/runtime-attestation.generated.json",
     "docs/operational-evidence.generated.md",
     "docs/operational-evidence.generated.json",

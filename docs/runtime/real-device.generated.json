@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-06T19:33:40.787Z",
+  "generatedAt": "2026-04-06T20:04:50.547Z",
   "network": "devnet",
   "summary": {
     "targetCount": 5,
@@ -50,8 +50,8 @@
   ],
   "captures": [],
   "requiredDocs": [
-    "docs/real-device-runtime.md",
-    "docs/real-device-runtime-captures.json",
+    "docs/runtime/real-device.md",
+    "docs/runtime/real-device-captures.json",
     "docs/runtime-attestation.generated.json",
     "docs/external-readiness-intake.md"
   ],

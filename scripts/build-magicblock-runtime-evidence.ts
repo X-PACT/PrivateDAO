@@ -54,7 +54,7 @@ type CaptureRegistry = {
 };
 
 function main() {
-  const source = readJson<CaptureRegistry>("docs/magicblock-runtime-captures.json");
+  const source = readJson<CaptureRegistry>("docs/magicblock/runtime-captures.json");
 
   const completedTargets = new Set(
     source.captures
@@ -90,10 +90,10 @@ function main() {
     targets: source.targets,
     captures: source.captures,
     requiredDocs: [
-      "docs/magicblock-private-payments.md",
-      "docs/magicblock-operator-flow.md",
-      "docs/magicblock-runtime-evidence.md",
-      "docs/magicblock-runtime-captures.json",
+      "docs/magicblock/private-payments.md",
+      "docs/magicblock/operator-flow.md",
+      "docs/magicblock/runtime-evidence.md",
+      "docs/magicblock/runtime-captures.json",
     ],
     commands: [
       "npm run build:magicblock-runtime",
@@ -109,8 +109,8 @@ function main() {
         : "pending-magicblock-capture",
   };
 
-  fs.writeFileSync(path.resolve("docs/magicblock-runtime.generated.json"), JSON.stringify(payload, null, 2) + "\n");
-  fs.writeFileSync(path.resolve("docs/magicblock-runtime.generated.md"), buildMarkdown(payload));
+  fs.writeFileSync(path.resolve("docs/magicblock/runtime.generated.json"), JSON.stringify(payload, null, 2) + "\n");
+  fs.writeFileSync(path.resolve("docs/magicblock/runtime.generated.md"), buildMarkdown(payload));
   console.log("Wrote MagicBlock runtime evidence package");
 }
 

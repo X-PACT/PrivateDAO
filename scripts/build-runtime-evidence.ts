@@ -122,10 +122,10 @@ function main() {
   const canary = readJson<DevnetCanary>("docs/devnet-canary.generated.json");
   const resilience = readJson<DevnetResilience>("docs/devnet-resilience-report.json");
   const operational = readJson<OperationalEvidence>("docs/operational-evidence.generated.json");
-  const realDevice = readJson<RealDeviceRuntimeEvidence>("docs/real-device-runtime.generated.json");
-  const magicBlock = readJson<MagicBlockRuntimeEvidence>("docs/magicblock-runtime.generated.json");
-  const zkEnforced = readJson<ZkEnforcedRuntimeEvidence>("docs/zk-enforced-runtime.generated.json");
-  const zkExternalClosure = readJson<ZkExternalClosure>("docs/zk-external-closure.generated.json");
+  const realDevice = readJson<RealDeviceRuntimeEvidence>("docs/runtime/real-device.generated.json");
+  const magicBlock = readJson<MagicBlockRuntimeEvidence>("docs/magicblock/runtime.generated.json");
+  const zkEnforced = readJson<ZkEnforcedRuntimeEvidence>("docs/zk/enforced-runtime.generated.json");
+  const zkExternalClosure = readJson<ZkExternalClosure>("docs/zk/external-closure.generated.json");
 
   const runtimeEvidence = {
     project: runtime.project,
@@ -208,24 +208,24 @@ function main() {
     },
     docs: [
       "docs/wallet-runtime.md",
-      "docs/real-device-runtime.md",
-      "docs/real-device-runtime-captures.json",
-      "docs/real-device-runtime.generated.md",
-      "docs/real-device-runtime.generated.json",
-      "docs/magicblock-private-payments.md",
-      "docs/magicblock-operator-flow.md",
-      "docs/magicblock-runtime-evidence.md",
-      "docs/magicblock-runtime-captures.json",
-      "docs/magicblock-runtime.generated.md",
-      "docs/magicblock-runtime.generated.json",
-      "docs/zk-enforced-runtime-evidence.md",
-      "docs/zk-enforced-runtime-captures.json",
-      "docs/zk-enforced-runtime.generated.md",
-      "docs/zk-enforced-runtime.generated.json",
-      "docs/zk-enforced-operator-flow.md",
-      "docs/zk-external-closure.json",
-      "docs/zk-external-closure.generated.md",
-      "docs/zk-external-closure.generated.json",
+      "docs/runtime/real-device.md",
+      "docs/runtime/real-device-captures.json",
+      "docs/runtime/real-device.generated.md",
+      "docs/runtime/real-device.generated.json",
+      "docs/magicblock/private-payments.md",
+      "docs/magicblock/operator-flow.md",
+      "docs/magicblock/runtime-evidence.md",
+      "docs/magicblock/runtime-captures.json",
+      "docs/magicblock/runtime.generated.md",
+      "docs/magicblock/runtime.generated.json",
+      "docs/zk/enforced-runtime-evidence.md",
+      "docs/zk/enforced-runtime-captures.json",
+      "docs/zk/enforced-runtime.generated.md",
+      "docs/zk/enforced-runtime.generated.json",
+      "docs/zk/enforced-operator-flow.md",
+      "docs/zk/external-closure.json",
+      "docs/zk/external-closure.generated.md",
+      "docs/zk/external-closure.generated.json",
       "docs/runtime-attestation.generated.json",
       "docs/operational-evidence.generated.md",
       "docs/operational-evidence.generated.json",

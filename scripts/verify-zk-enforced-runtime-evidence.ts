@@ -45,9 +45,9 @@ type Evidence = {
 };
 
 function main() {
-  const jsonPath = path.resolve("docs/zk-enforced-runtime.generated.json");
-  const mdPath = path.resolve("docs/zk-enforced-runtime.generated.md");
-  const sourcePath = path.resolve("docs/zk-enforced-runtime-captures.json");
+  const jsonPath = path.resolve("docs/zk/enforced-runtime.generated.json");
+  const mdPath = path.resolve("docs/zk/enforced-runtime.generated.md");
+  const sourcePath = path.resolve("docs/zk/enforced-runtime-captures.json");
 
   if (!fs.existsSync(jsonPath) || !fs.existsSync(mdPath) || !fs.existsSync(sourcePath)) {
     throw new Error("missing zk-enforced runtime evidence artifacts");
@@ -64,9 +64,9 @@ function main() {
   assert(evidence.targets.some((target) => target.walletLabel === "Backpack"), "zk-enforced runtime evidence missing Backpack target");
   assert(evidence.targets.some((target) => target.walletLabel === "Glow"), "zk-enforced runtime evidence missing Glow target");
   assert(evidence.targets.some((target) => target.environmentType === "android-or-mobile"), "zk-enforced runtime evidence missing mobile target");
-  assert(evidence.requiredDocs.includes("docs/zk-enforced-runtime-evidence.md"), "zk-enforced runtime evidence missing guide doc");
-  assert(evidence.requiredDocs.includes("docs/zk-enforced-runtime-captures.json"), "zk-enforced runtime evidence missing source registry");
-  assert(evidence.requiredDocs.includes("docs/zk-enforced-operator-flow.md"), "zk-enforced runtime evidence missing operator flow doc");
+  assert(evidence.requiredDocs.includes("docs/zk/enforced-runtime-evidence.md"), "zk-enforced runtime evidence missing guide doc");
+  assert(evidence.requiredDocs.includes("docs/zk/enforced-runtime-captures.json"), "zk-enforced runtime evidence missing source registry");
+  assert(evidence.requiredDocs.includes("docs/zk/enforced-operator-flow.md"), "zk-enforced runtime evidence missing operator flow doc");
   assert(evidence.commands.includes("npm run build:zk-enforced-runtime"), "zk-enforced runtime evidence missing build command");
   assert(evidence.commands.includes("npm run verify:zk-enforced-runtime"), "zk-enforced runtime evidence missing verify command");
 

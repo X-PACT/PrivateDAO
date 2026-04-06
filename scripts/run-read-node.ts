@@ -175,7 +175,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           },
           deployment: {
             sameDomainRecommended: true,
-            sameDomainGuide: "docs/read-node-same-domain-deploy.md",
+            sameDomainGuide: "docs/read-node/same-domain-deploy.md",
             readApiPath: "/api/v1",
           },
         },

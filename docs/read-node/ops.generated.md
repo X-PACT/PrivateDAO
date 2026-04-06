@@ -1,6 +1,6 @@
 # Read Node Ops Snapshot
 
-- Generated at: `2026-04-06T19:33:04.133Z`
+- Generated at: `2026-04-06T20:04:13.452Z`
 - Read path: `backend-indexer`
 - RPC endpoint: `https://api.devnet.solana.com`
 - RPC pool size: `1`
@@ -37,4 +37,4 @@
 
 ## Deployment Guide
 
-- `docs/read-node-same-domain-deploy.md`
+- `docs/read-node/same-domain-deploy.md`

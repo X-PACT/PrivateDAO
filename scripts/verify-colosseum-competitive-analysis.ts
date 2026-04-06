@@ -2,9 +2,9 @@ import fs from "fs";
 import path from "path";
 
 function main() {
-  const sourcePath = path.resolve("docs/colosseum-competitive-source.json");
-  const jsonPath = path.resolve("docs/colosseum-competitive-analysis.generated.json");
-  const mdPath = path.resolve("docs/colosseum-competitive-analysis.generated.md");
+  const sourcePath = path.resolve("docs/competitive/source.json");
+  const jsonPath = path.resolve("docs/competitive/analysis.generated.json");
+  const mdPath = path.resolve("docs/competitive/analysis.generated.md");
 
   assert(fs.existsSync(sourcePath), "missing Colosseum competitive source snapshot");
   assert(fs.existsSync(jsonPath), "missing generated Colosseum competitive analysis JSON");

@@ -68,7 +68,7 @@ type CompetitiveSource = {
 };
 
 function main() {
-  const source = readJson<CompetitiveSource>("docs/colosseum-competitive-source.json");
+  const source = readJson<CompetitiveSource>("docs/competitive/source.json");
   const generatedAt = new Date().toISOString();
   const overview = buildOverview(source);
 
@@ -113,8 +113,8 @@ function main() {
     ],
   };
 
-  fs.writeFileSync(path.resolve("docs/colosseum-competitive-analysis.generated.json"), JSON.stringify(payload, null, 2) + "\n");
-  fs.writeFileSync(path.resolve("docs/colosseum-competitive-analysis.generated.md"), buildMarkdown(payload));
+  fs.writeFileSync(path.resolve("docs/competitive/analysis.generated.json"), JSON.stringify(payload, null, 2) + "\n");
+  fs.writeFileSync(path.resolve("docs/competitive/analysis.generated.md"), buildMarkdown(payload));
   console.log("Wrote Colosseum competitive analysis");
 }
 
