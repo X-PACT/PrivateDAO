@@ -4465,6 +4465,14 @@ execute() → treasury action
           <div class="diagnostic-value" id="diagReadPath">Direct RPC</div>
         </div>
         <div class="proposal-command-box">
+          <div class="proposal-detail-label">REFHE BACKEND</div>
+          <div class="diagnostic-value" id="diagRefheCoverage">Pending refresh</div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">350-WALLET PROFILE</div>
+          <div class="diagnostic-value" id="diagWave350">Pending refresh</div>
+        </div>
+        <div class="proposal-command-box">
           <div class="proposal-detail-label">PROGRAM ID</div>
           <div class="diagnostic-value"><code>5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx</code></div>
         </div>
@@ -5358,9 +5366,15 @@ async function updateDiagnostics() {
 
   let rpcHealth = 'Checking';
   let rpcDetails = 'Running RPC reachability checks...';
+  let backendOverview = null;
+  let wave350Profile = DEVNET_LOAD_PROFILES.find((profile) => profile.name === '350') || null;
   try {
     if (READ_API_BASE) {
-      const runtime = await fetchReadApi('/runtime', { silent: true });
+      const [runtime, overviewResponse, profilesResponse] = await Promise.all([
+        fetchReadApi('/runtime', { silent: true }),
+        fetchReadApi('/ops/overview', { silent: true }),
+        fetchReadApi('/devnet/profiles', { silent: true }),
+      ]);
       rpcHealth = 'Healthy';
       rpcDetails = [
         `endpoint=${runtime.runtime.rpcEndpoint}`,
@@ -5370,6 +5384,10 @@ async function updateDiagnostics() {
         `lastValidBlockHeight=${runtime.runtime.lastValidBlockHeight}`,
         `cacheTtlMs=${runtime.runtime.cacheTtlMs}`,
       ].join('\n');
+      backendOverview = overviewResponse?.overview || null;
+      if (Array.isArray(profilesResponse?.profiles)) {
+        wave350Profile = profilesResponse.profiles.find((profile) => profile.name === '350') || wave350Profile;
+      }
       currentReadPath = 'Backend Indexer';
     } else {
       const version = await withRpcFallback((activeConnection) => activeConnection.getVersion());
@@ -5382,12 +5400,21 @@ async function updateDiagnostics() {
         `blockhash=${latest.blockhash}`,
         `lastValidBlockHeight=${latest.lastValidBlockHeight}`,
       ].join('\n');
+      backendOverview = buildOpsOverview(lastLoadedProposals);
       currentReadPath = 'Direct RPC';
     }
   } catch (error) {
     rpcHealth = 'Unavailable';
     rpcDetails = error?.message || 'RPC health check failed.';
+    backendOverview = buildOpsOverview(lastLoadedProposals);
   }
+
+  const refheSummary = backendOverview
+    ? `configured ${backendOverview.refheConfigured} · settled ${backendOverview.refheSettled} · verifier ${backendOverview.refheWithVerifier}`
+    : 'No proposal state loaded yet';
+  const wave350Summary = wave350Profile
+    ? `${wave350Profile.walletCount} wallets · ${wave350Profile.waveCount} waves · ${wave350Profile.negativeScenarios.length} negative paths`
+    : '350-wave profile unavailable';
 
   const connectedProviderName = walletProvider ? walletProviderName(walletProvider) : 'Not connected';
   const connectedWalletValue = wallet ? wallet : 'Not connected';
@@ -5417,12 +5444,16 @@ async function updateDiagnostics() {
       repositoryGates: 'internal-pass',
       authorityHardening: 'multisig-required',
       backendReadPath: 'deploy-recommended',
+      refheBackend: backendOverview ? 'visible-in-runtime' : 'pending-runtime-load',
+      wave350Profile: wave350Profile ? 'staged-for-saturation' : 'missing',
       realDeviceWalletQa: 'external-blocker',
       zkEnforcedRuntime: 'capture-required',
       zkExternalClosure: 'pending-external-execution',
       externalAudit: 'pending',
       zkPhaseC: 'hardening-required',
     },
+    backendOverview,
+    wave350Profile,
   };
 
   lastDiagnosticsSnapshot = snapshot;
@@ -5431,6 +5462,8 @@ async function updateDiagnostics() {
   document.getElementById('diagConnectedWallet').textContent = connectedWalletValue;
   document.getElementById('diagRpcHealth').textContent = rpcHealth;
   document.getElementById('diagReadPath').textContent = currentReadPath;
+  document.getElementById('diagRefheCoverage').textContent = refheSummary;
+  document.getElementById('diagWave350').textContent = wave350Summary;
   document.getElementById('diagSupportedProviders').textContent = providerLines.join('\n');
   document.getElementById('diagSupportedProviders').style.whiteSpace = 'pre-wrap';
   document.getElementById('diagBrowserCapabilities').textContent = formatCapabilityFlags(browserCapabilities);
@@ -5870,6 +5903,12 @@ const SUPPORTED_WALLET_TARGETS = [
   { id: 'backpack', label: 'Backpack' },
   { id: 'glow', label: 'Glow' },
 ];
+const DEVNET_LOAD_PROFILES = [
+  { name: '50', walletCount: 50, waveSize: 10, fundingWaveSize: 5, waveCount: 5, negativeScenarios: ['wrong-voter-record', 'wrong-delegation-marker', 'wrong-token-account'] },
+  { name: '100', walletCount: 100, waveSize: 20, fundingWaveSize: 10, waveCount: 5, negativeScenarios: ['wrong-voter-record', 'wrong-delegation-marker', 'wrong-token-account', 'late-reveal'] },
+  { name: '350', walletCount: 350, waveSize: 50, fundingWaveSize: 25, waveCount: 7, negativeScenarios: ['invalid-reveal', 'late-reveal', 'execute-replay', 'wrong-vault', 'wrong-authority', 'payout-replay'] },
+  { name: '500', walletCount: 500, waveSize: 25, fundingWaveSize: 10, waveCount: 20, negativeScenarios: ['invalid-reveal', 'late-reveal', 'execute-replay', 'wrong-authority', 'payout-replay'] },
+];
 
 function walletStateElementId(targetId) {
   switch (targetId) {
@@ -5884,6 +5923,20 @@ function walletStateElementId(targetId) {
 
 function shortPk(pk) {
   return `${pk.slice(0, 4)}...${pk.slice(-4)}`;
+}
+
+function buildOpsOverview(proposals) {
+  const items = Array.isArray(proposals) ? proposals : [];
+  return {
+    proposals: items.length,
+    uniqueDaos: new Set(items.map((proposal) => proposal.dao)).size,
+    zkEnforced: items.filter((proposal) => proposal.zkMode === 'ZkEnforced').length,
+    confidentialPayouts: items.filter((proposal) => Boolean(proposal.confidentialPayoutPlan)).length,
+    refheConfigured: items.filter((proposal) => Boolean(proposal.refheEnvelope)).length,
+    refheSettled: items.filter((proposal) => proposal.refheEnvelope?.status === 'Settled').length,
+    refheWithVerifier: items.filter((proposal) => Boolean(proposal.refheEnvelope?.verifierProgram)).length,
+    executableConfidential: items.filter((proposal) => Boolean(proposal.confidentialPayoutPlan) && proposal.phase === 'Executable').length,
+  };
 }
 
 function updateWalletUi(connected) {

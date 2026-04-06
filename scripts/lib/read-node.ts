@@ -150,10 +150,34 @@ export type WalletReadinessView = {
   readiness: "READY" | "NO TOKEN";
 };
 
+export type LoadProfileSummary = {
+  name: LoadProfileName;
+  walletCount: number;
+  waveSize: number;
+  fundingWaveSize: number;
+  targetPdaoUi: number;
+  waveCount: number;
+  negativeScenarios: string[];
+};
+
+export type OpsOverview = {
+  generatedAt: string;
+  proposals: number;
+  uniqueDaos: number;
+  zkEnforced: number;
+  confidentialPayouts: number;
+  refheConfigured: number;
+  refheSettled: number;
+  refheWithVerifier: number;
+  executableConfidential: number;
+};
+
 export type ReadNodeCacheStats = {
   entryCount: number;
   ttlMs: number;
 };
+
+type LoadProfileName = "50" | "100" | "350" | "500";
 
 const envPath = path.join(__dirname, "..", "..", ".env");
 if (fs.existsSync(envPath)) {
@@ -231,6 +255,52 @@ export function resolveDevnetRpcEndpoints(): string[] {
 const IDL_PATH = path.resolve(__dirname, "..", "..", "target", "idl", "private_dao.json");
 const rawIdl = JSON.parse(fs.readFileSync(IDL_PATH, "utf8"));
 const coder = new anchor.BorshCoder(rawIdl as anchor.Idl);
+
+const LOAD_PROFILE_SUMMARIES: LoadProfileSummary[] = [
+  {
+    name: "50",
+    walletCount: 50,
+    waveSize: 10,
+    fundingWaveSize: 5,
+    targetPdaoUi: 100,
+    waveCount: 5,
+    negativeScenarios: ["wrong-voter-record", "wrong-delegation-marker", "wrong-token-account"],
+  },
+  {
+    name: "100",
+    walletCount: 100,
+    waveSize: 20,
+    fundingWaveSize: 10,
+    targetPdaoUi: 100,
+    waveCount: 5,
+    negativeScenarios: ["wrong-voter-record", "wrong-delegation-marker", "wrong-token-account", "late-reveal"],
+  },
+  {
+    name: "350",
+    walletCount: 350,
+    waveSize: 50,
+    fundingWaveSize: 25,
+    targetPdaoUi: 100,
+    waveCount: 7,
+    negativeScenarios: [
+      "invalid-reveal",
+      "late-reveal",
+      "execute-replay",
+      "wrong-vault",
+      "wrong-authority",
+      "payout-replay",
+    ],
+  },
+  {
+    name: "500",
+    walletCount: 500,
+    waveSize: 25,
+    fundingWaveSize: 10,
+    targetPdaoUi: 100,
+    waveCount: 20,
+    negativeScenarios: ["invalid-reveal", "late-reveal", "execute-replay", "wrong-authority", "payout-replay"],
+  },
+];
 
 function asPublicKey(value: PublicKey): string {
   return value.toBase58();
@@ -618,6 +688,10 @@ export class PrivateDaoReadNode {
     };
   }
 
+  getLoadProfiles(): LoadProfileSummary[] {
+    return LOAD_PROFILE_SUMMARIES.map((profile) => ({ ...profile, negativeScenarios: [...profile.negativeScenarios] }));
+  }
+
   async fetchProposals({ dao, force = false }: { dao?: string; force?: boolean } = {}): Promise<ProposalView[]> {
     const key = this.cacheKey("proposals", dao || "all");
     if (!force) {
@@ -715,5 +789,30 @@ export class PrivateDaoReadNode {
     const existing = (await this.fetchProposals()).find((proposal) => proposal.pubkey === proposalPubkey);
     if (!existing) throw new Error(`Proposal not found: ${proposalPubkey}`);
     return existing;
+  }
+
+  async getOpsOverview(force = false): Promise<OpsOverview> {
+    const key = this.cacheKey("ops-overview", "global");
+    if (!force) {
+      const cached = this.getCached<OpsOverview>(key);
+      if (cached) return cached;
+    }
+
+    const proposals = await this.fetchProposals({ force });
+    const overview: OpsOverview = {
+      generatedAt: new Date().toISOString(),
+      proposals: proposals.length,
+      uniqueDaos: new Set(proposals.map((proposal) => proposal.dao)).size,
+      zkEnforced: proposals.filter((proposal) => proposal.zkMode === "ZkEnforced").length,
+      confidentialPayouts: proposals.filter((proposal) => Boolean(proposal.confidentialPayoutPlan)).length,
+      refheConfigured: proposals.filter((proposal) => Boolean(proposal.refheEnvelope)).length,
+      refheSettled: proposals.filter((proposal) => proposal.refheEnvelope?.status === "Settled").length,
+      refheWithVerifier: proposals.filter((proposal) => Boolean(proposal.refheEnvelope?.verifierProgram)).length,
+      executableConfidential: proposals.filter(
+        (proposal) => Boolean(proposal.confidentialPayoutPlan) && proposal.phase === "Executable",
+      ).length,
+    };
+    this.setCached(key, overview);
+    return overview;
   }
 }

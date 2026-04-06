@@ -110,6 +110,18 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
       return;
     }
 
+    if (pathname === "/api/v1/ops/overview") {
+      const overview = await readNode.getOpsOverview(url.searchParams.get("refresh") === "1");
+      writeJson(res, 200, { ok: true, source: "backend-indexer", overview });
+      return;
+    }
+
+    if (pathname === "/api/v1/devnet/profiles") {
+      const profiles = readNode.getLoadProfiles();
+      writeJson(res, 200, { ok: true, source: "backend-indexer", profiles });
+      return;
+    }
+
     if (pathname === "/api/v1/metrics") {
       writeJson(res, 200, {
         ok: true,

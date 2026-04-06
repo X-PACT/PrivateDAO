@@ -2,8 +2,8 @@
 
 ## Overview
 
-- Generated at: `2026-04-06T04:57:57+02:00`
-- Release commit: `79ccf093a436ae6ccca905f164d0608d677ca4d2`
+- Generated at: `2026-04-06T05:14:02+02:00`
+- Release commit: `7d9d7669493d0ad5bb06b99e4bb0b9a53ba26eed`
 - Release branch: `main`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`

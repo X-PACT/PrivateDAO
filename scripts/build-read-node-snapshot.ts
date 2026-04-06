@@ -9,6 +9,10 @@ async function main() {
     readNode.getRuntimeSnapshot(true),
     readNode.fetchProposals({ force: true }),
   ]);
+  const [overview, profiles] = await Promise.all([
+    readNode.getOpsOverview(true),
+    Promise.resolve(readNode.getLoadProfiles()),
+  ]);
 
   const counts = {
     proposals: proposals.length,
@@ -26,6 +30,8 @@ async function main() {
     runtime,
     cache: readNode.cacheStats(),
     counts,
+    overview,
+    profiles,
     sample: proposals.slice(0, 5).map((proposal) => ({
       pubkey: proposal.pubkey,
       title: proposal.title,
@@ -64,6 +70,14 @@ async function main() {
 - Timelocked proposals: \`${counts.timelocked}\`
 - ZK-enforced proposals: \`${counts.zkEnforced}\`
 - Confidential payout proposals: \`${counts.confidentialPayouts}\`
+- REFHE-configured proposals: \`${overview.refheConfigured}\`
+- REFHE-settled proposals: \`${overview.refheSettled}\`
+- REFHE proposals with verifier binding: \`${overview.refheWithVerifier}\`
+- Executable confidential proposals: \`${overview.executableConfidential}\`
+
+## Devnet Load Profiles
+
+${profiles.map((profile) => `- \`${profile.name}\` | wallets=\`${profile.walletCount}\` | waves=\`${profile.waveCount}\` | wave-size=\`${profile.waveSize}\` | funding-wave=\`${profile.fundingWaveSize}\` | target-pdao-ui=\`${profile.targetPdaoUi}\` | negative=\`${profile.negativeScenarios.join(", ")}\``).join("\n")}
 
 ## Sample
 

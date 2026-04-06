@@ -283,6 +283,15 @@ cd /home/x-pact/PrivateDAO
 npm run verify:read-node
 ```
 
+Backend surfaces now expose:
+
+- `/api/v1/ops/overview`
+  - proposal, ZK, confidential payout, and REFHE coverage
+- `/api/v1/devnet/profiles`
+  - staged load-test profiles including the 350-wallet seven-wave saturation plan
+
+The Runtime Panel consumes these backend summaries automatically when the read node is available, so REFHE coverage and 350-wave readiness are visible without falling back to browser-only inference.
+
 Generate a reviewer-facing backend snapshot:
 
 ```bash

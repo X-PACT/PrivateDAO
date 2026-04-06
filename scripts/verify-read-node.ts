@@ -3,8 +3,12 @@ import { PrivateDaoReadNode } from "./lib/read-node";
 
 async function main() {
   const readNode = new PrivateDaoReadNode();
-  const runtime = await readNode.getRuntimeSnapshot();
-  const proposals = await readNode.fetchProposals();
+  const [runtime, proposals, overview, profiles] = await Promise.all([
+    readNode.getRuntimeSnapshot(),
+    readNode.fetchProposals(),
+    readNode.getOpsOverview(),
+    Promise.resolve(readNode.getLoadProfiles()),
+  ]);
 
   if (runtime.readPath !== "backend-indexer") {
     throw new Error("Read node runtime did not report backend-indexer mode");
@@ -18,7 +22,16 @@ async function main() {
     throw new Error("Read node proposals payload is not an array");
   }
 
-  console.log(`Read node verification: PASS (proposals=${proposals.length}, endpoint=${runtime.rpcEndpoint})`);
+  if (overview.proposals !== proposals.length) {
+    throw new Error("Ops overview proposal count does not match fetched proposals");
+  }
+
+  const profile350 = profiles.find((profile) => profile.name === "350");
+  if (!profile350 || profile350.waveCount !== 7 || profile350.waveSize !== 50) {
+    throw new Error("Read node load profiles missing expected 350-wave plan");
+  }
+
+  console.log(`Read node verification: PASS (proposals=${proposals.length}, endpoint=${runtime.rpcEndpoint}, refhe=${overview.refheConfigured})`);
 }
 
 main().catch((error) => {
