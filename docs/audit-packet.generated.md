@@ -13,7 +13,7 @@
 - Proof Center: https://x-pact.github.io/PrivateDAO/?page=proof
 - Judge Mode: https://x-pact.github.io/PrivateDAO/?page=proof&judge=1
 - Security page: https://x-pact.github.io/PrivateDAO/?page=security
-- YouTube pitch: https://youtu.be/KVNFZXHNZTQ
+- YouTube pitch: https://youtu.be/cwsPpNLiwbo
 
 ## Live Devnet Anchors
 
@@ -89,7 +89,7 @@
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
 - Manifest entries: `115`
-- Aggregate sha256: `497ace35bfed1ae1c8ddfd0c4634a6a4d7544446a94361ba98849b1ee679a3bb`
+- Aggregate sha256: `6b03b00e8c9babd7c0524b0d67ad8736afcbfd34ef0a07ddf023018a1ed2d19b`
 
 ## ZK Package
 

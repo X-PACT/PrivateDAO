@@ -20,7 +20,7 @@
 [![Anchor](https://img.shields.io/badge/Anchor-0.31.1-blue)](https://www.anchor-lang.com)
 [![License](https://img.shields.io/badge/License-AGPLv3%2B%20%7C%20Apache--2.0%20%7C%20MIT-green)](LICENSE)
 [![Pitch Assets](https://img.shields.io/badge/Pitch-Ready-ff6b6b)](SUBMISSION_FINAL.md)
-[![Investor Reel](https://img.shields.io/badge/Investor-Reel-14b8a6)](docs/assets/private-dao-investor-pitch.mp4)
+[![Investor Reel](https://img.shields.io/badge/Investor-Reel-14b8a6)](https://youtu.be/cwsPpNLiwbo)
 [![Program](https://img.shields.io/badge/Program-Devnet%20Live-14F195)](https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet)
 [![Security Surface](https://img.shields.io/badge/Security%20Surface-Lifecycle%20%2B%20Replay%20%2B%20Treasury%20%2B%20Delegation%20Hardened-0f766e)](docs/security-review.md)
 [![Threat Model](https://img.shields.io/badge/Threat%20Model-Complete-1d4ed8)](docs/threat-model.md)
@@ -564,6 +564,7 @@ The same rule now applies to the review surface itself: zk artifacts, live-proof
 - Devnet release manifest: `docs/devnet-release-manifest.md`
 - Proof registry: `docs/proof-registry.json`
 - Technical explainer package: `docs/investor-video.md`
+- Public investor reel: `https://youtu.be/cwsPpNLiwbo`
 - Repo-native investor reel: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
 - On-chain program: `programs/private-dao/src/lib.rs`
 - End-to-end lifecycle test: `tests/full-flow-test.ts`
@@ -983,13 +984,14 @@ PrivateDAO brings commit-reveal voting, proposal-scoped private delegation, keep
 ## 🎬 Technical Explainer Package
 
 <p align="center">
-  <a href="https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4" target="_blank">
+  <a href="https://youtu.be/cwsPpNLiwbo" target="_blank">
     <img src="docs/assets/private-dao-investor-pitch-poster.png" alt="PrivateDAO investor reel poster" width="900" />
   </a>
 </p>
 
 - Strategy documentation for judges, partners, and technical reviewers: `https://us04docs.zoom.us/doc/Zd34HEaHSKyZGRxBcqxXQg`
-- Watch the repo-native investor reel: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
+- Watch the public investor reel: `https://youtu.be/cwsPpNLiwbo`
+- Repo-native MP4 fallback: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
 - Investor video brief and production package: `docs/investor-video.md`
 - Voiceover script: `docs/video-voiceover.md`
 - Shotlist and visual direction: `docs/video-shotlist.md`
