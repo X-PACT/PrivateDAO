@@ -1,13 +1,13 @@
 # Read Node Snapshot
 
-- Generated at: `2026-04-06T15:45:28.967Z`
+- Generated at: `2026-04-06T16:36:40.598Z`
 - Read path: `backend-indexer`
 - RPC endpoint: `https://api.devnet.solana.com`
 - RPC pool size: `1`
-- Cache entries: `3`
+- Cache entries: `2`
 - Cache TTL ms: `15000`
 - Program ID: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
-- Slot: `453690957`
+- Slot: `453699074`
 - Solana core: `3.1.10`
 - Feature set: `1620780344`
 

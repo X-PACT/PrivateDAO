@@ -6,13 +6,10 @@ import { PrivateDaoReadNode } from "./lib/read-node";
 async function main() {
   const readNode = new PrivateDaoReadNode();
   const [runtime, proposals] = await Promise.all([
-    readNode.getRuntimeSnapshot(true),
-    readNode.fetchProposals({ force: true }),
+    readNode.getRuntimeSnapshot(false),
+    readNode.fetchProposals({ force: false }),
   ]);
-  const [overview, profiles] = await Promise.all([
-    readNode.getOpsOverview(true),
-    Promise.resolve(readNode.getLoadProfiles()),
-  ]);
+  const profiles = readNode.getLoadProfiles();
 
   const counts = {
     proposals: proposals.length,
@@ -22,6 +19,21 @@ async function main() {
     zkEnforced: proposals.filter((proposal) => proposal.zkMode === "ZkEnforced").length,
     confidentialPayouts: proposals.filter((proposal) => Boolean(proposal.confidentialPayoutPlan)).length,
     uniqueDaos: new Set(proposals.map((proposal) => proposal.dao)).size,
+  };
+  const overview = {
+    generatedAt: new Date().toISOString(),
+    proposals: proposals.length,
+    uniqueDaos: counts.uniqueDaos,
+    zkEnforced: counts.zkEnforced,
+    confidentialPayouts: counts.confidentialPayouts,
+    magicblockConfigured: proposals.filter((proposal) => Boolean(proposal.magicblockCorridor)).length,
+    magicblockSettled: proposals.filter((proposal) => proposal.magicblockCorridor?.status === "Settled").length,
+    refheConfigured: proposals.filter((proposal) => Boolean(proposal.refheEnvelope)).length,
+    refheSettled: proposals.filter((proposal) => proposal.refheEnvelope?.status === "Settled").length,
+    refheWithVerifier: proposals.filter((proposal) => Boolean(proposal.refheEnvelope?.verifierProgram)).length,
+    executableConfidential: proposals.filter(
+      (proposal) => Boolean(proposal.confidentialPayoutPlan) && proposal.phase === "Executable",
+    ).length,
   };
 
   const payload = {

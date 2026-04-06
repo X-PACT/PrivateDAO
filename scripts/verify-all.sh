@@ -70,6 +70,9 @@ npm run verify:runtime-attestation >/dev/null
 echo "[verify-all] checking read node"
 npm run verify:read-node >/dev/null
 
+echo "[verify-all] checking read node http surface"
+npm run verify:read-node:http >/dev/null
+
 echo "[verify-all] checking read-node snapshot"
 npm run verify:read-node-snapshot >/dev/null
 
@@ -99,6 +102,9 @@ npm run verify:go-live-attestation >/dev/null
 
 echo "[verify-all] checking review links"
 npm run verify:review-links >/dev/null
+
+echo "[verify-all] checking weekly update videos"
+npm run verify:weekly-updates >/dev/null
 
 echo "[verify-all] checking ops surface"
 npm run verify:ops-surface >/dev/null

@@ -19,13 +19,15 @@ These weekly videos are designed for hackathon update submissions on YouTube, Lo
   - commit-reveal lifecycle
   - `zk_enforced` hardening
   - runtime and backend read path
+  - private governance positioned as a real operating surface
 
 ## Week 3
 
 - file: `docs/assets/weekly-updates/private-dao-week-3-update.mp4`
 - focus:
   - confidential payroll and bonus approvals
-  - REFHE-gated settlement
+  - `MagicBlock` private payment corridors
+  - `REFHE`-gated settlement
   - backend read node and operator metrics
   - preparation for scale and audit-oriented review
 
@@ -37,6 +39,7 @@ These weekly videos are designed for hackathon update submissions on YouTube, Lo
   - reviewer-visible evidence surfaces
   - go-live blockers
   - mainnet direction and product maturity
+  - honest boundary between in-repo completion and external execution
 
 ## Desktop Export
 
@@ -58,4 +61,11 @@ The Desktop folder contains:
 ```bash
 cd /home/x-pact/PrivateDAO
 bash scripts/render-weekly-update-videos.sh
+```
+
+## Verification Command
+
+```bash
+cd /home/x-pact/PrivateDAO
+npm run verify:weekly-updates
 ```

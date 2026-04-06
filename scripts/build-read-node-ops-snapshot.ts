@@ -5,11 +5,26 @@ import { PrivateDaoReadNode } from "./lib/read-node";
 
 async function main() {
   const readNode = new PrivateDaoReadNode();
-  const [runtime, overview] = await Promise.all([
-    readNode.getRuntimeSnapshot(true),
-    readNode.getOpsOverview(true),
+  const [runtime, proposals] = await Promise.all([
+    readNode.getRuntimeSnapshot(false),
+    readNode.fetchProposals({ force: false }),
   ]);
   const profiles = readNode.getLoadProfiles();
+  const overview = {
+    generatedAt: new Date().toISOString(),
+    proposals: proposals.length,
+    uniqueDaos: new Set(proposals.map((proposal) => proposal.dao)).size,
+    zkEnforced: proposals.filter((proposal) => proposal.zkMode === "ZkEnforced").length,
+    confidentialPayouts: proposals.filter((proposal) => Boolean(proposal.confidentialPayoutPlan)).length,
+    magicblockConfigured: proposals.filter((proposal) => Boolean(proposal.magicblockCorridor)).length,
+    magicblockSettled: proposals.filter((proposal) => proposal.magicblockCorridor?.status === "Settled").length,
+    refheConfigured: proposals.filter((proposal) => Boolean(proposal.refheEnvelope)).length,
+    refheSettled: proposals.filter((proposal) => proposal.refheEnvelope?.status === "Settled").length,
+    refheWithVerifier: proposals.filter((proposal) => Boolean(proposal.refheEnvelope?.verifierProgram)).length,
+    executableConfidential: proposals.filter(
+      (proposal) => Boolean(proposal.confidentialPayoutPlan) && proposal.phase === "Executable",
+    ).length,
+  };
 
   const payload = {
     generatedAt: new Date().toISOString(),

@@ -173,11 +173,20 @@ All three updates are:
 - 36 seconds each
 - silent by default
 - ready for YouTube, Loom, or Vimeo upload
+- aligned to the current product scope:
+  - Week 2: governance + `zk_enforced` + backend read path
+  - Week 3: confidential payroll/bonus + `REFHE` + `MagicBlock`
+  - Week 4: `350-wallet` profile + runtime evidence + go-live honesty
 
 See:
 
 - `docs/weekly-video-updates.md`
 - `/home/x-pact/Desktop/PrivateDAO-Weekly-Updates`
+
+Automation:
+
+- `npm run render:weekly-updates`
+- `npm run verify:weekly-updates`
 
 ## Token Surface
 

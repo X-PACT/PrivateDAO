@@ -11,14 +11,14 @@
 
 ## RPC Health
 
-- primary slot: 453690858
-- primary blockhash: `CPMu44Z33Rrm8HuyaGmnGJbXZnuEgyKqXCzXsidtnpgb`
-- primary version latency: 1559 ms
-- primary blockhash latency: 241 ms
-- fallback slot: 453690858
-- fallback blockhash: `CPMu44Z33Rrm8HuyaGmnGJbXZnuEgyKqXCzXsidtnpgb`
-- fallback version latency: 1393 ms
-- fallback blockhash latency: 235 ms
+- primary slot: 453698960
+- primary blockhash: `Ermp2m7xnbnKFC7HPUHJetSTAcbdJ7vHKuSgV7xoiWnE`
+- primary version latency: 1407 ms
+- primary blockhash latency: 262 ms
+- fallback slot: 453698960
+- fallback blockhash: `Ermp2m7xnbnKFC7HPUHJetSTAcbdJ7vHKuSgV7xoiWnE`
+- fallback version latency: 1269 ms
+- fallback blockhash latency: 251 ms
 
 ## Anchor Checks
 
