@@ -58,6 +58,11 @@ body {
   }
 }
 
+body:not(.custom-cursor-enabled) .cursor,
+body:not(.custom-cursor-enabled) .cursor-ring {
+  display: none;
+}
+
 /* Custom cursor */
 .cursor {
   position: fixed;
@@ -5077,7 +5082,9 @@ let mx=0, my=0;
 let cursorFrame = null;
 let cursorHover = false;
 const hasFinePointer = window.matchMedia && window.matchMedia('(pointer:fine)').matches;
-if (hasFinePointer) {
+const experimentalCursorEnabled = false;
+const customCursorEnabled = Boolean(hasFinePointer && experimentalCursorEnabled && cursor && ring);
+if (customCursorEnabled) {
   document.body.classList.add('custom-cursor-enabled');
 }
 function renderCursor() {
@@ -5086,7 +5093,7 @@ function renderCursor() {
   ring.style.opacity = cursorHover ? '0.48' : '0.24';
   cursorFrame = null;
 }
-if (hasFinePointer) {
+if (customCursorEnabled) {
   document.addEventListener('pointermove', e => {
     mx = e.clientX;
     my = e.clientY;
