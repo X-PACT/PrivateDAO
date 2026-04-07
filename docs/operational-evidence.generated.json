@@ -1,30 +1,32 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-07T18:47:53.882Z",
+  "generatedAt": "2026-04-07T22:44:36.596Z",
   "network": "devnet",
   "runLabels": {
-    "canonical": "20260404110609",
-    "multiProposal": "20260404144532",
-    "race": "20260404144532",
-    "resilience": "20260404154859"
+    "canonical": "20260407202442",
+    "multiProposal": "20260407211024",
+    "race": "20260407211024",
+    "resilience": "20260407211358"
   },
   "transactionSummary": {
     "walletCount": 50,
-    "totalTxCount": 223,
-    "successCount": 221,
-    "failureCount": 67,
-    "retryCount": 2,
-    "averageTxLatencyMs": 1660.6906,
-    "totalExecutionTimeMs": 4588011,
-    "failureRate": 0.2334,
-    "retryRate": 0.007,
+    "totalTxCount": 185,
+    "totalAttemptCount": 212,
+    "successCount": 180,
+    "failureCount": 32,
+    "retryCount": 0,
+    "averageTxLatencyMs": 2573.7351,
+    "totalExecutionTimeMs": 5682986,
+    "failureRate": 0.1509,
+    "retryRate": 0,
     "phaseCounts": {
       "bootstrap": 3,
       "commit": 42,
       "execute": 1,
       "finalize": 1,
-      "fund": 141,
-      "reveal": 35
+      "fund": 100,
+      "reveal": 35,
+      "zk": 3
     }
   },
   "voting": {
@@ -44,7 +46,7 @@
     "verificationMode": "offchain-groth16",
     "onchainVerifier": false,
     "onchainAnchorCount": 3,
-    "onchainAnchorProposal": "AegjmwkX1FknBJMDyH5yM6BMhyHsiUreNtz3d8iz3QrP",
+    "onchainAnchorProposal": "G76rRCe9MXbroK7CPC9jia1JCbuUtcV55S2hd1GCpUzL",
     "proofCount": 7,
     "verifiedProofCount": 7,
     "layerCounts": {
@@ -55,8 +57,8 @@
     "registry": "docs/zk-proof-registry.json"
   },
   "adversarial": {
-    "totalScenarios": 50,
-    "rejected": 49,
+    "totalScenarios": 33,
+    "rejected": 32,
     "unexpectedSuccesses": 0,
     "report": "docs/adversarial-report.json"
   },

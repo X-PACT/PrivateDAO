@@ -23,6 +23,7 @@ type RuntimeEvidence = {
   operational: {
     walletCount: number;
     totalTxCount: number;
+    totalAttemptCount: number;
     zkProofCount: number;
     adversarialScenarioCount: number;
     unexpectedAdversarialSuccesses: number;
@@ -61,7 +62,7 @@ function main() {
   assert(evidence.realDevice.targetCount >= 5, "runtime evidence real-device target count is unexpectedly low");
   assert(evidence.realDevice.pendingTargets.length >= 1, "runtime evidence real-device boundary should remain honest until captures exist");
   assert(evidence.operational.walletCount >= 50, "runtime evidence operational wallet count is unexpectedly low");
-  assert(evidence.operational.totalTxCount >= 200, "runtime evidence operational tx count is unexpectedly low");
+  assert(evidence.operational.totalAttemptCount >= 200, "runtime evidence operational attempt count is unexpectedly low");
   assert(evidence.operational.zkProofCount >= 1, "runtime evidence operational zk proof count is unexpectedly low");
   assert(evidence.operational.adversarialScenarioCount >= 1, "runtime evidence operational adversarial coverage is unexpectedly low");
   assert(evidence.operational.unexpectedAdversarialSuccesses === 0, "runtime evidence operational adversarial summary is invalid");

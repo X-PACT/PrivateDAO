@@ -1,64 +1,71 @@
 {
-  "generatedAt": "2026-04-04T12:22:37.369Z",
-  "runLabel": "20260404110609",
+  "generatedAt": "2026-04-07T21:59:25.681Z",
+  "runLabel": "20260407202442",
   "network": "devnet",
+  "profile": {
+    "name": "50",
+    "walletCount": 50,
+    "waveSize": 10,
+    "fundingWaveSize": 5,
+    "targetPdaoUi": 100
+  },
   "walletCount": 50,
-  "totalTxCount": 223,
-  "totalAttemptCount": 287,
-  "successCount": 221,
-  "failureCount": 67,
-  "retryCount": 2,
-  "totalExecutionTimeMs": 4588011,
-  "averageTxLatencyMs": 1660.6905829596412,
-  "maxTxLatencyMs": 6924,
-  "minTxLatencyMs": 755,
-  "failureRate": 0.23344947735191637,
-  "retryRate": 0.006968641114982578,
+  "totalTxCount": 185,
+  "totalAttemptCount": 212,
+  "successCount": 180,
+  "failureCount": 32,
+  "retryCount": 0,
+  "totalExecutionTimeMs": 5682986,
+  "averageTxLatencyMs": 2573.7351351351354,
+  "maxTxLatencyMs": 8296,
+  "minTxLatencyMs": 0,
+  "failureRate": 0.1509433962264151,
+  "retryRate": 0,
   "phaseTimings": {
     "wallets": {
-      "startedAt": "2026-04-04T11:06:09.374Z",
-      "completedAt": "2026-04-04T12:22:34.095Z",
-      "durationMs": 4584721
+      "startedAt": "2026-04-07T20:24:42.709Z",
+      "completedAt": "2026-04-07T20:24:42.716Z",
+      "durationMs": 7
     },
     "fund": {
-      "startedAt": "2026-04-04T11:06:51.515Z",
-      "completedAt": "2026-04-04T12:22:34.348Z",
-      "durationMs": 4542833
+      "startedAt": "2026-04-07T20:24:42.977Z",
+      "completedAt": "2026-04-07T20:36:19.507Z",
+      "durationMs": 696530
     },
     "bootstrap": {
-      "startedAt": "2026-04-04T11:23:08.938Z",
-      "completedAt": "2026-04-04T12:22:35.232Z",
-      "durationMs": 3566294
+      "startedAt": "2026-04-07T20:36:19.824Z",
+      "completedAt": "2026-04-07T20:36:26.853Z",
+      "durationMs": 7029
     },
     "commit": {
-      "startedAt": "2026-04-04T11:23:57.214Z",
-      "completedAt": "2026-04-04T12:22:35.552Z",
-      "durationMs": 3518338
+      "startedAt": "2026-04-07T20:36:27.193Z",
+      "completedAt": "2026-04-07T20:40:08.182Z",
+      "durationMs": 220989
     },
     "reveal": {
-      "startedAt": "2026-04-04T11:27:30.253Z",
-      "completedAt": "2026-04-04T12:22:35.861Z",
-      "durationMs": 3305608
+      "startedAt": "2026-04-07T20:40:08.429Z",
+      "completedAt": "2026-04-07T21:06:35.441Z",
+      "durationMs": 1587012
     },
     "execute": {
-      "startedAt": "2026-04-04T11:31:05.277Z",
-      "completedAt": "2026-04-04T12:22:36.529Z",
-      "durationMs": 3091252
+      "startedAt": "2026-04-07T21:06:35.651Z",
+      "completedAt": "2026-04-07T21:07:11.994Z",
+      "durationMs": 36343
     },
     "zk": {
-      "startedAt": "2026-04-04T11:32:10.735Z",
-      "completedAt": "2026-04-04T12:22:36.795Z",
-      "durationMs": 3026060
+      "startedAt": "2026-04-07T21:07:12.254Z",
+      "completedAt": "2026-04-07T21:25:32.996Z",
+      "durationMs": 1100742
     },
     "adversarial": {
-      "startedAt": "2026-04-04T11:35:51.871Z",
-      "completedAt": "2026-04-04T12:22:37.070Z",
-      "durationMs": 2805199
+      "startedAt": "2026-04-07T21:10:04.314Z",
+      "completedAt": "2026-04-07T21:10:04.325Z",
+      "durationMs": 11
     },
     "report": {
-      "startedAt": "2026-04-04T11:36:30.624Z",
-      "completedAt": "2026-04-04T12:22:37.354Z",
-      "durationMs": 2766730
+      "startedAt": "2026-04-07T21:10:04.529Z",
+      "completedAt": "2026-04-07T21:59:25.674Z",
+      "durationMs": 2961145
     }
   }
 }

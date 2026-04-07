@@ -7,6 +7,7 @@ type PerformanceMetrics = {
   network: string;
   walletCount: number;
   totalTxCount: number;
+  totalAttemptCount: number;
   successCount: number;
   failureCount: number;
   retryCount: number;
@@ -127,6 +128,7 @@ function main() {
     transactionSummary: {
       walletCount: metrics.walletCount,
       totalTxCount: metrics.totalTxCount,
+      totalAttemptCount: metrics.totalAttemptCount,
       successCount: metrics.successCount,
       failureCount: metrics.failureCount,
       retryCount: metrics.retryCount,
@@ -221,6 +223,7 @@ function buildMarkdown(artifact: {
   transactionSummary: {
     walletCount: number;
     totalTxCount: number;
+    totalAttemptCount: number;
     successCount: number;
     failureCount: number;
     retryCount: number;
@@ -294,6 +297,7 @@ function buildMarkdown(artifact: {
 
 - Wallet count: \`${artifact.transactionSummary.walletCount}\`
 - Total transactions: \`${artifact.transactionSummary.totalTxCount}\`
+- Total attempts: \`${artifact.transactionSummary.totalAttemptCount}\`
 - Success count: \`${artifact.transactionSummary.successCount}\`
 - Failure count: \`${artifact.transactionSummary.failureCount}\`
 - Retry count: \`${artifact.transactionSummary.retryCount}\`

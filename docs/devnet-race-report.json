@@ -1,54 +1,54 @@
 {
-  "generatedAt": "2026-04-04T15:01:49.552Z",
-  "runLabel": "20260404144532",
+  "generatedAt": "2026-04-07T21:13:31.618Z",
+  "runLabel": "20260407211024",
   "network": "devnet",
-  "sourceWalletRunLabel": "20260404110609",
+  "sourceWalletRunLabel": "20260407202442",
   "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
   "governanceMint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
-  "daoPublicKey": "FfLcDByf3Y2C3WrXC5q6aboEXUh7ddeSMhiawDdh5rFA",
-  "treasuryPda": "HVC2YLDpuYV4etbSqUaUMPR8ma8pzLKXTHXK9YsPtnMG",
-  "proposalPublicKey": "7YKm4zFcD8fzRuQAa8w9SDTrVaW8TSSddA7nhDm9TAK7",
-  "proposalId": "2",
-  "createDaoTx": "",
-  "depositTx": "z7Zj4icpnAXzeS1LGCUa4mCg71K4xpRuspi1AzbZBVJgDoXBBcKSofH3VTcpF4dFD2jp3M6kyTv9ovDpigTfQTq",
-  "createProposalTx": "2hRh3BZioPi1YN9HLx2tqfvuP8FxZuriUUPdFn2af2KHUFtVusKstoS7iyHF8M7S9Hjw5iVwNZxvBXxue7Wd3NV5",
+  "daoPublicKey": "DJQG3JwWXSoacW4HcU9vS7DRY9rSgPTYP4fYn4RdYvGP",
+  "treasuryPda": "9PtCioffYDH2paV3iQ7N2yQCqXUpSYiW1AsChTt4xZqa",
+  "proposalPublicKey": "HaxTPaViqVepxSWuDbSjN8K1eX6XgMo6rKYKzmEXQKgf",
+  "proposalId": "0",
+  "createDaoTx": "3RjA8Dum4swRv4tNKyvh6z6GpbSFeGXPUJiqgd5QtoXhD4FwfqgTRMiUEwCAiQzYyWGghpNbQHeY7MoGdMqDgeE5",
+  "depositTx": "5jFKmWxaF3iiLBu5GxVX19ji82w22ncdE8xMhoJbAHnrnVrCY8JB8i1LgkFioyjGUTz1WvMVu2WmNXnpbMNpbbNY",
+  "createProposalTx": "3rPgfGtzJHeBkuJdCU2QRpDwX2cCMkC6BCSMqxd2nKYoDt4VMatoXJSnbawbHwhdnKjioWmzqYb27xdnPpe1rkoA",
   "commitTxs": [
-    "3tpkYeaVZ9jBUqWsUtzpi5uo3myF1QsnUSTiwNzYvcnqowjFjgpUdGEvVGf4cKezLBBeVZVbDRfmPpKTuM6jdYKq",
-    "5pYZfqnNByiyxvNkh5ssi3GxSY5iJrvUPoEgakfgq5ufTCQTtTK9Buyb6fqeHigpC2g5P62181BkpBp6sDkMp3Kw",
-    "57uR944vh8DRMUBdGjdNqNuZif1VuHVYehbktVWzUD5oi29v6n3xCSkK29KxmCYnKWnrSbcSRq6nmFksaYGYBNkq"
+    "WuWszqYV3KRTXw5LDyFfCwtG5oh6ZFKpXirY83eqFer8SyjRVPDnd88GaS7FFjm3gaNFd6E8WWSZRGTWY4HqRmP",
+    "2NcqdqNnjGAYCg4upNGerwwgweKi6U3uozrj9QaiCZCVgvMjZ8qR51xr6A51UymbrJAGMevrZy7NPPVXzs5AQ7j1",
+    "b4QwcNHfC4ckS12Tuw7cgnBtA7tjeDnxFAECeEbNBu7k3heYBAhV6vhhJGSQy3cWiuE34TdibqbGeEN2XL6nWMo"
   ],
   "revealTxs": [
-    "3nGhzQsCgxWKAqLbgpUCtv2q1GfCYCCYChVugtQ2a98G2x4bxLNwH2eMzK7pveZwg3QH6LL3pmd3EppeBmZoBgPY",
-    "fyS6fu1idAj2UHxFsmUpjfodaV7fAw6PWuciQUAuegkz9Ho3PcDcdYk8UzX97y8kNgGa5QjGgFFaPb1kP4Pz5ZB",
-    "4XX31tnzRZ7jwD9X2zZf8q6kwHGM9g82hwaTJDhBRS5s8fvGcCSSm4tvAfBEo6sK5iyQ2MfwEMQLteRJLxHpTVyo"
+    "5HsoT7eg99E9qarF3F21U2gQb3Xo4LcbJgnoK2xgHvA1FR9NRxBxzWpmbyEPCd4JzgKXtstVMpqg7AhLdiCGMxYP",
+    "nKRYyxtsH471wHF7qzUbjVjxHuRRd3xzQ4h7125SLSvFL7xGnKyGiuhyKrRpy2cWvBfyr8o2rn9cRsTQuxr5XnC",
+    "2hFhqJZnEjGu8BAG5xBVoWQ3Ubug2SFci7s5AguYHXRhjDWdM11FWzQMSaXfVZ5QSqDg4eWE5EeGJtSeFxp6ADLz"
   ],
   "finalizeRace": {
     "attempts": [
       {
-        "walletPubkey": "3eEyUhgXwq5Prner9LhhHqp366esdcXUoJYYT7AimmYf",
+        "walletPubkey": "7MKnL1SGkH59ZoHfrUhNcKag1ivNFD2CWXHUZgYHUbYa",
         "status": "rejected",
-        "error": "Finalize collision rejected after another finalizer committed state first."
+        "error": "{\"InstructionError\":[0,{\"Custom\":6016}]}"
       },
       {
-        "walletPubkey": "2EzXQvxJj5rXCfj3wPzv2QZ9B6oNtnsY1zkUasygCXMy",
+        "walletPubkey": "BXgZ8CQrzjTScUoVPyaYDAJcsyd4MqCZXvfPixMT7D8m",
         "status": "rejected",
-        "error": "Finalize collision rejected after another finalizer committed state first."
+        "error": "{\"InstructionError\":[0,{\"Custom\":6016}]}"
       },
       {
-        "walletPubkey": "gmcmFsRBMuXNmhwh2h47TNsXSJPLxcJxBwkiFy46MTk",
+        "walletPubkey": "5y1rnDooUceXJZvZjGzuo18ugHVuZxmK1oViKASp9YwQ",
         "status": "rejected",
-        "error": "Finalize collision rejected after another finalizer committed state first."
+        "error": "{\"InstructionError\":[0,{\"Custom\":6016}]}"
       },
       {
-        "walletPubkey": "AeE8B4WTMWGRbwuwQxVCDuYnLGCB2tgTNj1x1HhZ3PD8",
-        "txSignature": "5kxfvvYmNtc5xJRHBkTmm8jW73YqD9eR8UZJKWoSsJtV8UcsJrFS2K9Xv4hwj8uNY1cznbgtoKyPuP9xH8yXRKvS",
-        "explorerUrl": "https://solscan.io/tx/5kxfvvYmNtc5xJRHBkTmm8jW73YqD9eR8UZJKWoSsJtV8UcsJrFS2K9Xv4hwj8uNY1cznbgtoKyPuP9xH8yXRKvS?cluster=devnet",
+        "walletPubkey": "9mqWbnfT7heCdB9JRhxxu3o3aat76Y7gaYNG9pCfkheE",
+        "status": "rejected",
+        "error": "{\"InstructionError\":[0,{\"Custom\":6016}]}"
+      },
+      {
+        "walletPubkey": "F4AMQqmSiqq8zfyvFjmsjGTE3Xrv9W5A86K1Yzx2uG8V",
+        "txSignature": "4CkZQLxjytzfcyUqqNtKAYnWtjr9Kx7txQXuThg6jPPnL4H9xjKgXEsMbLnBsdN8BFCAhCzH93DwYUpGHmbhMoxv",
+        "explorerUrl": "https://solscan.io/tx/4CkZQLxjytzfcyUqqNtKAYnWtjr9Kx7txQXuThg6jPPnL4H9xjKgXEsMbLnBsdN8BFCAhCzH93DwYUpGHmbhMoxv?cluster=devnet",
         "status": "success"
-      },
-      {
-        "walletPubkey": "BiC3vnnw9rUs7B5JECFwdmm3LYLSnhSiAUxZqQrVyV55",
-        "status": "rejected",
-        "error": "Finalize collision rejected after another finalizer committed state first."
       }
     ],
     "successCount": 1,
@@ -57,30 +57,30 @@
   "executeRace": {
     "attempts": [
       {
-        "walletPubkey": "3eEyUhgXwq5Prner9LhhHqp366esdcXUoJYYT7AimmYf",
-        "status": "rejected",
-        "error": "AnchorError thrown in programs/private-dao/src/lib.rs:614. Error Code: AlreadyExecuted. Error Number: 6023. Error Message: Treasury action already executed."
-      },
-      {
-        "walletPubkey": "2EzXQvxJj5rXCfj3wPzv2QZ9B6oNtnsY1zkUasygCXMy",
-        "status": "rejected",
-        "error": "AnchorError thrown in programs/private-dao/src/lib.rs:614. Error Code: AlreadyExecuted. Error Number: 6023. Error Message: Treasury action already executed."
-      },
-      {
-        "walletPubkey": "gmcmFsRBMuXNmhwh2h47TNsXSJPLxcJxBwkiFy46MTk",
-        "status": "rejected",
-        "error": "AnchorError thrown in programs/private-dao/src/lib.rs:614. Error Code: AlreadyExecuted. Error Number: 6023. Error Message: Treasury action already executed."
-      },
-      {
-        "walletPubkey": "AeE8B4WTMWGRbwuwQxVCDuYnLGCB2tgTNj1x1HhZ3PD8",
-        "txSignature": "mJ7rdw12ANd1BMjmHxANSVPJU4fVGP8sg5eyuyjYEiZKgSQVECDjSV86o4SxEVEdePhRZti8GjBYbbVQCUxfXFV",
-        "explorerUrl": "https://solscan.io/tx/mJ7rdw12ANd1BMjmHxANSVPJU4fVGP8sg5eyuyjYEiZKgSQVECDjSV86o4SxEVEdePhRZti8GjBYbbVQCUxfXFV?cluster=devnet",
+        "walletPubkey": "7MKnL1SGkH59ZoHfrUhNcKag1ivNFD2CWXHUZgYHUbYa",
+        "txSignature": "3LZRTxAPuetoyzQysiTCJuTVxCJLtFn8ugnrC5hSgS6YEnHXxXiSURJwQhmyXhLqCBsgnJ3ifdVY4E2xAPGawy6c",
+        "explorerUrl": "https://solscan.io/tx/3LZRTxAPuetoyzQysiTCJuTVxCJLtFn8ugnrC5hSgS6YEnHXxXiSURJwQhmyXhLqCBsgnJ3ifdVY4E2xAPGawy6c?cluster=devnet",
         "status": "success"
       },
       {
-        "walletPubkey": "BiC3vnnw9rUs7B5JECFwdmm3LYLSnhSiAUxZqQrVyV55",
+        "walletPubkey": "BXgZ8CQrzjTScUoVPyaYDAJcsyd4MqCZXvfPixMT7D8m",
         "status": "rejected",
-        "error": "AnchorError thrown in programs/private-dao/src/lib.rs:614. Error Code: AlreadyExecuted. Error Number: 6023. Error Message: Treasury action already executed."
+        "error": "AnchorError thrown in programs/private-dao/src/lib.rs:959. Error Code: AlreadyExecuted. Error Number: 6023. Error Message: Treasury action already executed."
+      },
+      {
+        "walletPubkey": "5y1rnDooUceXJZvZjGzuo18ugHVuZxmK1oViKASp9YwQ",
+        "status": "rejected",
+        "error": "AnchorError thrown in programs/private-dao/src/lib.rs:959. Error Code: AlreadyExecuted. Error Number: 6023. Error Message: Treasury action already executed."
+      },
+      {
+        "walletPubkey": "9mqWbnfT7heCdB9JRhxxu3o3aat76Y7gaYNG9pCfkheE",
+        "status": "rejected",
+        "error": "AnchorError thrown in programs/private-dao/src/lib.rs:959. Error Code: AlreadyExecuted. Error Number: 6023. Error Message: Treasury action already executed."
+      },
+      {
+        "walletPubkey": "F4AMQqmSiqq8zfyvFjmsjGTE3Xrv9W5A86K1Yzx2uG8V",
+        "status": "rejected",
+        "error": "AnchorError thrown in programs/private-dao/src/lib.rs:959. Error Code: AlreadyExecuted. Error Number: 6023. Error Message: Treasury action already executed."
       }
     ],
     "successCount": 1,

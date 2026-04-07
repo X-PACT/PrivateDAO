@@ -3,8 +3,8 @@
 - network: devnet
 - program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - governance mint: `AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt`
-- DAO: `F39tJ5oxo4xx9xuoWm3ucUUhYkRMqX8vsJXQEVMMLTUo`
-- treasury: `BASXoa6KdkUU75zBJ42WaUJAam9v6VSTexqVEuXhTBGa`
+- DAO: `EyLjhct7TJwb7pa1HssjwZcTT9WMq6Vq5aAxTKsK1b8t`
+- treasury: `CgqzWTGHX3qNDe9FLJEFrmNQr3gddUXbGQuWN5r5YzM6`
 - proposals: 3
 - executed proposals: 3
 - cross-proposal rejections: 3
@@ -12,15 +12,15 @@
 
 ## Proposal Set
 
-- 3DrjnYZXfRYKyUuPT51Kw1kmhpTkzUW3FSUqHN3uWhNm · proposal id 0
-  - create: `55rzvMDamL2nMy7LkgSmH9rTmTpMoT7ANKiq5fFVQcESi6huBWLW6HrhQhFb7KWA93Bg4mec1r1rTgsqGMaP6LhB`
-  - finalize: `tdCFU46AYaMoqT5CYsATphRSEo4itj8ETGFYY4woVL9XjqbY6UHZnbhnASnByNVSpTgQCCVwk8ajgJLBcyz6X8a`
-  - execute: `4JRFrim47rEQCcxr5sW25pFTAvN5Xn6jn4X5LeHYcbvg3SBzR6KCRz4rPJqJBvBEeuJmN6TgtZj1TAck2ujxqTWS`
-- DG4btzGrrDcSdsAfZT4AbfbKSsrMJpwL9qLTukWKm2h8 · proposal id 1
-  - create: `2d9PnGwWKT4bVerbPee8DhVWStMR43BPM35B95LtAHqun3fRaaRKiw2WXSb9R2Dyp1n6r9SokB2PJ21hRUSpnHiX`
-  - finalize: `Q7G9KbzPwShahUCEku6mZTHs2USiUNpvszKrtCR7vkxzzPkL1hBmQGRQ54uPVtpSP8GQpdFKEsyNJGXWzFXTBKR`
-  - execute: `3YbbBw7DQiUgppxQfKJdMiSErJpvsyZTnGSGcbeT7MsR4bzvUdCWYPGnz8ek9jwFTCN9DFbVwPVNjzgKfCoxxseU`
-- BfGfk31hvvvR2fDbZBmpV49uhe396KZvFq2hhmK5YXa6 · proposal id 2
-  - create: `4Qebj1gubFJtqdmkier9Fsx3PgTXYtcj1n9q4S6as3UTJ14xEqmBUWbaRofe6pz2oy3bT3AiYWbWn95DAz5twGvB`
-  - finalize: `4aNaQd1V6qhKL2BNGEhqk7oaVJGY6iFbZRi7bjXbDSbVEn6abMAtMdTndSFHdFHUCyX8t3jvFkAKxf4azJLTwnPD`
-  - execute: `AgGu3QWyh4kbFJCM2fT3G9JT5mnHh91u3XNUQuGGr8psidZ6p5TEhmDtjJ2qwigm5qeNC1d9g6iv13HZsByEdS4`
+- A5Hd89vpCTVPALhuwurLQvyAkHyrNGhvZtAcJvBmuJ9U · proposal id 0
+  - create: `u7V1B5cUx91KY69pE9JSMfkAt9SFcVZbDrP9Nsv3XqatNHfr1P2jZwKkaCHCZuPyqm4WJgmH8w8SDUQoJQc938S`
+  - finalize: `2RcCc2d5e2Q7sSV5EJkCJ2JFEhSCSRRMyvPa2k1ViUwPjcVzuEq1wydKxB3bi4gUpLc6Nj3v9dtqN843juaF51ud`
+  - execute: `5FYTXGHufj6Qa2azAE8WEvWZk8wfJX3BRjxpbFaWfc9bpP9weyeNWNGopMFnjtMpWD1rboRPxhd7Q8NwcqMEuVAb`
+- 2tQGY8jNK1rLuiinQ8Rn6yqZsqfkoKGXcUSWeVXxHfwr · proposal id 1
+  - create: `2WyVybfgZhf46oXR3SyJ9Wqry6cChX2vMkPukoywSgPURg5WqBLqFzqWrq7BnaRwGFSGrqGLv9vPyWQAkKbyguSz`
+  - finalize: `2WFfxUJCVQmvrcPLdtfcPgCqXKcoaUttgebHjQ9HL7r4cpWEiL9jCjyNBCRt68jAcAF3BFLGMoaHoigWR5jynS8a`
+  - execute: `2tGMjWQRVKZKiHpADxAWjRjD6LeyLgB1PFZLbwR4HS4hrHfbzMoiv5JCUnx3zYwzRbpCz82z8WpmCnBv3kHNUMT6`
+- HYJ3L9vpRqqgcWefoDTrrqryccsuL6B8tFq39fCwrUz1 · proposal id 2
+  - create: `4imUGYMcq9qvSBB62kdv5mUTwkmqs5umcDNcRX7QozGbJFwhqdyL4U6Xjy8n1MAvrarD6zp6FNNqQudV8VFRKx4B`
+  - finalize: `GgxqTyQSd6dpjKiebUL6QxeHVn3txmBHFN5otzQKaEzKc2xaPCLqzEhCtmcg6JBgx514o4CPYfwfL9SBaED6tuj`
+  - execute: `5BJBBiEXUGotLrSRg9swqcKQDnSH5d3H6nMAiNBTV4nxm5Gb5FvZrAmyDRQWXTvD9qipTMSNP6Tstxo3pjXTGgX9`

@@ -1,112 +1,112 @@
 {
-  "generatedAt": "2026-04-04T14:47:47.810Z",
-  "runLabel": "20260404144532",
+  "generatedAt": "2026-04-07T21:12:45.787Z",
+  "runLabel": "20260407211024",
   "network": "devnet",
-  "sourceWalletRunLabel": "20260404110609",
+  "sourceWalletRunLabel": "20260407202442",
   "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
   "governanceMint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
-  "daoPublicKey": "F39tJ5oxo4xx9xuoWm3ucUUhYkRMqX8vsJXQEVMMLTUo",
-  "treasuryPda": "BASXoa6KdkUU75zBJ42WaUJAam9v6VSTexqVEuXhTBGa",
-  "createDaoTx": "5xvTNzvEzmzxDRFCrGLcQaZhpR57XPgeaV9qnoJsBGdsfmiEVBVj6q5AKVD1njjeL7AboM753AaFoutWmNJ2QzJ",
-  "depositTx": "X8uvTd29JgFY6WHAynFb6fA2nyez7QVm3a368JsRpTXADJJpd2BYHpUpUrMPdkZhvxuppEQip3oU49H63ZsCPmS",
+  "daoPublicKey": "EyLjhct7TJwb7pa1HssjwZcTT9WMq6Vq5aAxTKsK1b8t",
+  "treasuryPda": "CgqzWTGHX3qNDe9FLJEFrmNQr3gddUXbGQuWN5r5YzM6",
+  "createDaoTx": "5Eu4hzZa1VT22hugmrFdveYUoTxLJZtX65yBzF1GETY1WHCxgXqLCU2vjbN4VbvUxqvaYL8PKuX4VfhXBgmJThcZ",
+  "depositTx": "3M3gxmZVw1BRGs6VFyf7dtjzRVGUrfL3gmynaexkEXsWmD9xacaEKyvse9MCQ8UCiCpbBYVnTcR57wC7Lx55B3Q2",
   "proposals": [
     {
       "label": "proposal-0",
-      "recipient": "HR4XjJ1VLJU3YVc2CxQxcZH2h5SB2frpDUzTNPr3NEXm",
-      "proposalPublicKey": "3DrjnYZXfRYKyUuPT51Kw1kmhpTkzUW3FSUqHN3uWhNm",
+      "recipient": "AbF9Q5WkSgQRMV8R7HwHa1WgoPAytM6XxyZVzf7fFWDy",
+      "proposalPublicKey": "A5Hd89vpCTVPALhuwurLQvyAkHyrNGhvZtAcJvBmuJ9U",
       "proposalId": "0",
-      "createProposalTx": "55rzvMDamL2nMy7LkgSmH9rTmTpMoT7ANKiq5fFVQcESi6huBWLW6HrhQhFb7KWA93Bg4mec1r1rTgsqGMaP6LhB",
+      "createProposalTx": "u7V1B5cUx91KY69pE9JSMfkAt9SFcVZbDrP9Nsv3XqatNHfr1P2jZwKkaCHCZuPyqm4WJgmH8w8SDUQoJQc938S",
       "commitTxs": [
-        "5CDyrcEStWDLujan75tjwJJgftwYs6LA5Rg2PJJHKtXkkxnkWgQmdMe4mg3ddEdjEc6LCoDN7wEJ4WZ7AUcKpoP2",
-        "5wJ3bG5x2ybbo7TwX1DEhZ8Xumc5yVsDQZE7DRmNUgJnU3o8QQ6NfQFEwLzREbPGeXmC9evSiQnvmEnfA85f5ix9",
-        "r6Xrb7aTHn5Nug5PYm9w5GZjHnKXcuWEQ4EDRtoxHWBVdCb3kHNtmYNbK2gtTwLg1v8bfLQfirCvLtb7e3kQvpk",
-        "GAqvz2XVLDHznLmswcp1eV6d3oEqZh1JWibVBNhFQyMJgvJvza63EovMYYzxeRQz6G6LLbWCEfW8EWdUmjC2wDg"
+        "67fRsWN8qcndxA8Cb7navZ77BnnLwj4msbNnffcYrwfiv924LKW8vyWu31GRi7AXVfMjGuHytkt8JN5jFKNzCwoR",
+        "4pQUZc3y1yhrP2gEZ9eaKiA9ffKSNMcuCuyCx4V9BeY9egjWWTfiVCRiJjhE19otnqr8GbmnPbyyuSoTYhR5qkSK",
+        "2uAiuc4UXixiwQtDDfTev6CmV1YgcHDK6gZzbu46iH8P7Tr92PjKbQ9wKh19bUMxea3S1djDtyuAHjreNSWcNqbx",
+        "3awPbCyT6BEGcSSwFLcpSmHgSuMj2WaSRmgG47tp2wqSz3DRxCfbmsSeakhKGER2yf2SzE1R5uRczXNho5hg6eWG"
       ],
       "revealTxs": [
-        "hbu3FrAKxgiLzwvBGcNSg7c6v5zma5QKQnGTy6jRL5XEyktzhfbDmVZRfbEgkN1F1V6XakeFeVAbNdEYHpnXdGr",
-        "bj4MXhmBftyauFM25TxS2fS3RCxxG4JQ6BiR9ot8R1FvKigWwrWXVFqMK7ooY8M5FhZSGUs3ntTkSoiWw6NUWZB",
-        "2yG7Hu2MyXKasEGM5HSYbMyHAKYE4BssjcFPTXRFtcNspWcc2wibu99jQGMfJFQH1c4XoittPhLrKDUgUjFA7i1A",
-        "2DKQKSyy5VuCGAo1ceN1wB5ViqdEYCjivs5r7Hh5zYgtwtGZsv9fo9ixbRBP3M1ibVMTJvLaDtbEnZQ35gpT876v"
+        "43N2Yxf177oUtAh9NxuR5hwJiAhw1DDKkaR8mutzkwYrnrr4xX1DRpJ9QG1y8Y3vmwzM5RxASqRkNybseEWLpazQ",
+        "2unJYqWRivdUnGtaj159FFqfH9WND46d7TXCbCDP7zzBY4jWgM7emrXvRbr4PG4hcQjgocPfcJDxqnvfRDC2yjeN",
+        "76GdhsJWWX9YrAxwdHv8HcuECoZY6BrfrXP5vrPSG36Zgnm2V5ekbQJw3T1NV2L5JGXLGX5cjNhHhTfddBWjnvR",
+        "2ytCuw5Sv4ghm34iydeh8xtE55yCBFFqXGTksn5uDs4rHZK2ULNx76RH25cB1dUyTaDQDBU1gERmfHf8qMWev4q1"
       ],
-      "finalizeTx": "tdCFU46AYaMoqT5CYsATphRSEo4itj8ETGFYY4woVL9XjqbY6UHZnbhnASnByNVSpTgQCCVwk8ajgJLBcyz6X8a",
-      "executeTx": "4JRFrim47rEQCcxr5sW25pFTAvN5Xn6jn4X5LeHYcbvg3SBzR6KCRz4rPJqJBvBEeuJmN6TgtZj1TAck2ujxqTWS",
+      "finalizeTx": "2RcCc2d5e2Q7sSV5EJkCJ2JFEhSCSRRMyvPa2k1ViUwPjcVzuEq1wydKxB3bi4gUpLc6Nj3v9dtqN843juaF51ud",
+      "executeTx": "5FYTXGHufj6Qa2azAE8WEvWZk8wfJX3BRjxpbFaWfc9bpP9weyeNWNGopMFnjtMpWD1rboRPxhd7Q8NwcqMEuVAb",
       "commitWallets": [
-        "HR4XjJ1VLJU3YVc2CxQxcZH2h5SB2frpDUzTNPr3NEXm",
-        "EyUZ14AkP33ZMTETfPDnMcaHPhnW5FP73Pz8jf1xwrDb",
-        "2ghqF2X1yknwYkWtxuFgEH6SJVebJkG8KnkWY2YiaTuX",
-        "GX4AuGEXopTaYFgdgYZxRQ4jUNBuLK65fUt1EpfX63jZ"
+        "AbF9Q5WkSgQRMV8R7HwHa1WgoPAytM6XxyZVzf7fFWDy",
+        "ALhoHpXqdUQDXRQZNYxv4KJ7EBchtWLDmcBiY6ZaoSjm",
+        "63Y4poGGJSisMg1tKjJLGTou8XLU5q3aJeYFTL9nbzDp",
+        "DY8n2vPS7w13xnqZFHqGP8MXYk9BYQuEXPE9mbborhrK"
       ],
       "revealWallets": [
-        "HR4XjJ1VLJU3YVc2CxQxcZH2h5SB2frpDUzTNPr3NEXm",
-        "EyUZ14AkP33ZMTETfPDnMcaHPhnW5FP73Pz8jf1xwrDb",
-        "2ghqF2X1yknwYkWtxuFgEH6SJVebJkG8KnkWY2YiaTuX",
-        "GX4AuGEXopTaYFgdgYZxRQ4jUNBuLK65fUt1EpfX63jZ"
+        "AbF9Q5WkSgQRMV8R7HwHa1WgoPAytM6XxyZVzf7fFWDy",
+        "ALhoHpXqdUQDXRQZNYxv4KJ7EBchtWLDmcBiY6ZaoSjm",
+        "63Y4poGGJSisMg1tKjJLGTou8XLU5q3aJeYFTL9nbzDp",
+        "DY8n2vPS7w13xnqZFHqGP8MXYk9BYQuEXPE9mbborhrK"
       ]
     },
     {
       "label": "proposal-1",
-      "recipient": "EyUZ14AkP33ZMTETfPDnMcaHPhnW5FP73Pz8jf1xwrDb",
-      "proposalPublicKey": "DG4btzGrrDcSdsAfZT4AbfbKSsrMJpwL9qLTukWKm2h8",
+      "recipient": "ALhoHpXqdUQDXRQZNYxv4KJ7EBchtWLDmcBiY6ZaoSjm",
+      "proposalPublicKey": "2tQGY8jNK1rLuiinQ8Rn6yqZsqfkoKGXcUSWeVXxHfwr",
       "proposalId": "1",
-      "createProposalTx": "2d9PnGwWKT4bVerbPee8DhVWStMR43BPM35B95LtAHqun3fRaaRKiw2WXSb9R2Dyp1n6r9SokB2PJ21hRUSpnHiX",
+      "createProposalTx": "2WyVybfgZhf46oXR3SyJ9Wqry6cChX2vMkPukoywSgPURg5WqBLqFzqWrq7BnaRwGFSGrqGLv9vPyWQAkKbyguSz",
       "commitTxs": [
-        "4MKRHZzVaUGwWKZNijkdU8as737Tp4gbUQB72zji1Fj5bLWYbhd9HsYtoFGTSn3AmHb3deBMuoz4sY59KL9nuB9R",
-        "3bvkh8qKkJwmEqPKWcV9NDnhwqfcgpoNMFvLFcaaWp4ygKzjGkYbfB7V8Ai7d4NkGxDiJVWbqxig6SVA4KqYVoUZ",
-        "4Gqbd8TD5aDmLB2AAJFdQd6f5Px1jH3D3QhWjcfG56DFTharscL8EPS3G9Y5Q4T1tCnxWWq1az7cu4nXtZdXpReC",
-        "kiFXGE555DNzFT7rb7ED8AV2BJrN1WcjTtJ83aEu6i9jGyaUrM92HcdEUm3qojF7fcZVTv1Gq26QkJkvpEiD72X"
+        "5sBeCvzxDkn6Bbs2LzGDn3XAC2KyX4WA17k4xR2kgnYo7PeKLMGmo6fD3j4HJ49hdsWKkd4ctf6YRRYFSuQbvkCy",
+        "63pQW3bRuusdY49fZsXEVpPd1oSDS4oWTHxfA4Kf9X9HDfUXT7bGqb6XcZw1BEwqJP2XwnzA4oudW9UGJjDxB2Fv",
+        "3fYEtewQhvQE6H4djjt4uyFUFtBVDDJXS1tYSjR1TAJsXWkTF4JCqPez4s8PzponDgng9TxobUYaBHbbX5ney7P3",
+        "4DVzA3QtWVfCxKfPLgmnzfPieQwRnFGGcoG5wkJPPK5iSUDMWFne1xpV7jk8Jr9cvvTcaM8BCwFQLgPtrVGiwHJA"
       ],
       "revealTxs": [
-        "VXcaxvhQa7hDHVxjqjU7UeJLCxZ5kagPu6R59NFSXMRJucDkXtiW3nT9NgLS7DzjEWforpWRECT1J12KLMqjzra",
-        "2sbhmD8BG56sXFfD4XyhF587JmRx6boXW6TTZw9hhNi3SZ4KbmgaiWcprFuVDizq4TrUhTsR75v1VYFyjPa11UvU",
-        "iTQnhEgzX9iZTyS11cjffVVDov6CYtXSY8pVmsYjd97q43H7rXWrb8TX9GwjUW3eaX4Di6jps7q5NbhQbzfMvij",
-        "3fHGeu5fu1m5qBrgdqDmva13osSm8w8Vk2L5iQRkce9zFmw9UAXxfBr7iPu83ajXvyorKgLAUQdN8W3faKsr2dea"
+        "26Zk3KpWKAdkvNV7DhFWEAFV65vQfufKNGL1ss15Y5p9PaV7BxMw387coFxFfYmrNdnmLU6B4gXYFE2tJiFQnq2V",
+        "3vEGp1J1eyoYmJTwnuFARQwWrHHXU951mZZZ8zRrAfMEsf8tQq9SFgcijHceWng2WFXAZkb8YfWDqg6KELF2DuDQ",
+        "5Rc4BYNUD6WS7Q2LNWoFuzjNcoHTJTk5uTkbr2MiAuZJroB8sxGxX8FTQ94QnougbiN32FQBjNuyt8SHsmSmu4vU",
+        "3ERX32a6jKtrihihGhhntSqxVymVpcTWTUph14N66GEZDKLbsJKGxR2iSukjS9FncmEjKd1ewN4xSEuWX2C2iC4z"
       ],
-      "finalizeTx": "Q7G9KbzPwShahUCEku6mZTHs2USiUNpvszKrtCR7vkxzzPkL1hBmQGRQ54uPVtpSP8GQpdFKEsyNJGXWzFXTBKR",
-      "executeTx": "3YbbBw7DQiUgppxQfKJdMiSErJpvsyZTnGSGcbeT7MsR4bzvUdCWYPGnz8ek9jwFTCN9DFbVwPVNjzgKfCoxxseU",
+      "finalizeTx": "2WFfxUJCVQmvrcPLdtfcPgCqXKcoaUttgebHjQ9HL7r4cpWEiL9jCjyNBCRt68jAcAF3BFLGMoaHoigWR5jynS8a",
+      "executeTx": "2tGMjWQRVKZKiHpADxAWjRjD6LeyLgB1PFZLbwR4HS4hrHfbzMoiv5JCUnx3zYwzRbpCz82z8WpmCnBv3kHNUMT6",
       "commitWallets": [
-        "5EHKaWE541tdR95R2cX64F4J9wVrJQxWmUyj8chYKGpv",
-        "CU4LV1hfUbCbx1ojPpsQHqyudVffgLSxgoCdBfp8188h",
-        "C61xC2jF3okKMczEMZGSc44n4BRPs5zGE4otF7MbU1FB",
-        "GX4AuGEXopTaYFgdgYZxRQ4jUNBuLK65fUt1EpfX63jZ"
+        "77S8JYPjjmmmYxw8bhbsFctfqgHmukTWZSYdhNoXDh2u",
+        "3dVS2XSTfuP1678Znz7Kykv3a8P8UjouQv5bb5ubTSG8",
+        "CeUQpHyuSMweKa4bvZpfyggp7d75ZtNmb4D91KhAwCNG",
+        "DY8n2vPS7w13xnqZFHqGP8MXYk9BYQuEXPE9mbborhrK"
       ],
       "revealWallets": [
-        "5EHKaWE541tdR95R2cX64F4J9wVrJQxWmUyj8chYKGpv",
-        "CU4LV1hfUbCbx1ojPpsQHqyudVffgLSxgoCdBfp8188h",
-        "C61xC2jF3okKMczEMZGSc44n4BRPs5zGE4otF7MbU1FB",
-        "GX4AuGEXopTaYFgdgYZxRQ4jUNBuLK65fUt1EpfX63jZ"
+        "77S8JYPjjmmmYxw8bhbsFctfqgHmukTWZSYdhNoXDh2u",
+        "3dVS2XSTfuP1678Znz7Kykv3a8P8UjouQv5bb5ubTSG8",
+        "CeUQpHyuSMweKa4bvZpfyggp7d75ZtNmb4D91KhAwCNG",
+        "DY8n2vPS7w13xnqZFHqGP8MXYk9BYQuEXPE9mbborhrK"
       ]
     },
     {
       "label": "proposal-2",
-      "recipient": "2ghqF2X1yknwYkWtxuFgEH6SJVebJkG8KnkWY2YiaTuX",
-      "proposalPublicKey": "BfGfk31hvvvR2fDbZBmpV49uhe396KZvFq2hhmK5YXa6",
+      "recipient": "63Y4poGGJSisMg1tKjJLGTou8XLU5q3aJeYFTL9nbzDp",
+      "proposalPublicKey": "HYJ3L9vpRqqgcWefoDTrrqryccsuL6B8tFq39fCwrUz1",
       "proposalId": "2",
-      "createProposalTx": "4Qebj1gubFJtqdmkier9Fsx3PgTXYtcj1n9q4S6as3UTJ14xEqmBUWbaRofe6pz2oy3bT3AiYWbWn95DAz5twGvB",
+      "createProposalTx": "4imUGYMcq9qvSBB62kdv5mUTwkmqs5umcDNcRX7QozGbJFwhqdyL4U6Xjy8n1MAvrarD6zp6FNNqQudV8VFRKx4B",
       "commitTxs": [
-        "5csLXeLkfoVkN8rwzU1HsQZXnvBF3tkaDxaASX3eYFvvTgqbbFHgT32dnLMpXw6ChQsJ64W7c18X2FVb9AVz32Ud",
-        "th4SRMNaR7THqevvSCBpKHgtdVAYWFnMmn32qkVd2n9oLFfdVsK5iGMAQrz9HHWLKgbsZK2XuP3fmKw5myKqmvs",
-        "2A2KUbV8WZF54SZ81KqaASrVvypwczjjHN31mKfAXdVvP6dQ9Jc17D9Fwg3L7AeCW1JkHCt6huREKZX9VfEJ13Y4",
-        "AuWtgZB75qyxEbqafNKJHZmmYfc9nZtMQgHLWWmMuCfzRyon3vR9XhR189DeNFdBzsFC2ttcM2mQaxYghDUPVXk"
+        "3tJAvoQBMtL4F9F5yokNisJ79LFLWNm3oFTiUmzHXQ7o39UYSd1ZFFLtECwYKJsGyvkWWbkGu2vDeLPk9odYaqKM",
+        "47poQrsgk4P3QAsZR39cj3uFmFAnLgfhi5fUeZ6kXvxPPuSGKbhPpow6Cnk6uBkczA29oKwBRh79AWsGVbda9mVi",
+        "S77xE27nGCWBtNBA9ptHdD5w98qErPfZ5RZP5KM7neR3fDKCvWkFZ2DCMeBro8udKX7vedhjvSMKHa5P4WyTK19",
+        "3mSAXVKGGBzx9jjjivo4P8mK6TFQBbVjTtpVCbz4bVLcjgmuXG2R33Mb38dHmqfW7WhQrFomJ71USJVy8fKWpaqX"
       ],
       "revealTxs": [
-        "5nyDUtaW67QH8b84frtvfKyzbLPZLUWztBkudCknf3u75ap9goXw6kCvsb96sWiEKe6Vtqp5sB94iuABhLZm9QcP",
-        "5QTYBYDd8L7yEYHFp28RpDw7sx77suefYj2DCnxHdCKtu4KcXEMD66ZoUKDBNtYgkWvvSgUrvTha8vSqm5jiv8c7",
-        "29SRJmwxP5r1ppWJwqpjmrhrLknYoiqy7hp59boWU3PetJ7yfMomeWmp5bSZ84UR1cLoSjXfkG697bENqtmzvhwP",
-        "2BAzagq1mNtoGnhjxqM5U7myMwET3ijP5NDuwDwoLLeze3sRS5CteYuVRrUapSGkRCtctH41WGjCvzNrjqmMYjGb"
+        "2SQoqftHptuGrJKijDca5cosEetMgdQy2d32cCWY9VvRmMA9stSRe3CmXj7gkyJY1Y8YmQY4Dq1SDqZoL9xB2ijH",
+        "3vZT3ZY5bScVPM4QtjkcbRut2Yqof82oe9o42jk32QN5ZJSJ42QbvVsebAXCUro4P6uSVBEv1aAPCjq9m7XnsrKu",
+        "3qm1Poa3Up31bRz5LKQHoK3kBnyKwQuNPr8HbGhSrGvhNVxVKCKc5ZMmR28gzJ6SouPRoLf1iZjWh3hp8UussBgU",
+        "5tfC33ReUpqwgRuhu1fhf8CHCdq2SHfzjpj93LgcJuyaU95iK7Ck3tdqxqtPHyELpfHWVySA279iKpqcY6FvRgzE"
       ],
-      "finalizeTx": "4aNaQd1V6qhKL2BNGEhqk7oaVJGY6iFbZRi7bjXbDSbVEn6abMAtMdTndSFHdFHUCyX8t3jvFkAKxf4azJLTwnPD",
-      "executeTx": "AgGu3QWyh4kbFJCM2fT3G9JT5mnHh91u3XNUQuGGr8psidZ6p5TEhmDtjJ2qwigm5qeNC1d9g6iv13HZsByEdS4",
+      "finalizeTx": "GgxqTyQSd6dpjKiebUL6QxeHVn3txmBHFN5otzQKaEzKc2xaPCLqzEhCtmcg6JBgx514o4CPYfwfL9SBaED6tuj",
+      "executeTx": "5BJBBiEXUGotLrSRg9swqcKQDnSH5d3H6nMAiNBTV4nxm5Gb5FvZrAmyDRQWXTvD9qipTMSNP6Tstxo3pjXTGgX9",
       "commitWallets": [
-        "3gk4vqaqZsJZCycHHK2nenfYKjhPLQE18fgJMkuPx4P6",
-        "FgSR4Dy7hjWA253HrPKvMcLJN8VH36GkBwbh5hDAGE4w",
-        "4EgzLcmsWBJqfnkz6Ar8HNZeDDgy9yyYw1zeipdsRPsK",
-        "9q1n8abYp3anGtGuPpkhgW2X1N9ALffaywCJ7fym3EXN"
+        "2kFKo9RUX447PWC19PBmjDoBEHgJkEbQovWvR5TcNMbZ",
+        "81UQNUroLj8itZSWEFkW95V3cVwCicPUmaGzMd9LtGT8",
+        "H21V6h76aGMCMmEyVv3GpBEqEzdAoDXGfNacXUhnQESe",
+        "FQ59hFvDharbbq2bjFjZrxqNZc2ACmit8PimwLABzsbp"
       ],
       "revealWallets": [
-        "3gk4vqaqZsJZCycHHK2nenfYKjhPLQE18fgJMkuPx4P6",
-        "FgSR4Dy7hjWA253HrPKvMcLJN8VH36GkBwbh5hDAGE4w",
-        "4EgzLcmsWBJqfnkz6Ar8HNZeDDgy9yyYw1zeipdsRPsK",
-        "9q1n8abYp3anGtGuPpkhgW2X1N9ALffaywCJ7fym3EXN"
+        "2kFKo9RUX447PWC19PBmjDoBEHgJkEbQovWvR5TcNMbZ",
+        "81UQNUroLj8itZSWEFkW95V3cVwCicPUmaGzMd9LtGT8",
+        "H21V6h76aGMCMmEyVv3GpBEqEzdAoDXGfNacXUhnQESe",
+        "FQ59hFvDharbbq2bjFjZrxqNZc2ACmit8PimwLABzsbp"
       ]
     }
   ],
@@ -114,26 +114,26 @@
     {
       "id": "cross-proposal-reveal-a-into-b",
       "scenario": "reveal proposal B with proposal A salt",
-      "walletPubkey": "GX4AuGEXopTaYFgdgYZxRQ4jUNBuLK65fUt1EpfX63jZ",
-      "targetProposal": "DG4btzGrrDcSdsAfZT4AbfbKSsrMJpwL9qLTukWKm2h8",
+      "walletPubkey": "DY8n2vPS7w13xnqZFHqGP8MXYk9BYQuEXPE9mbborhrK",
+      "targetProposal": "2tQGY8jNK1rLuiinQ8Rn6yqZsqfkoKGXcUSWeVXxHfwr",
       "outcome": "rejected",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:472. Error Code: CommitmentMismatch. Error Number: 6015. Error Message: Commitment hash does not match."
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:880. Error Code: CommitmentMismatch. Error Number: 6015. Error Message: Commitment hash does not match."
     },
     {
       "id": "cross-proposal-voter-record",
       "scenario": "commit with proposal A voter record against proposal B",
-      "walletPubkey": "Gu6daJDyGcFQrjBPtW1bMJjxFcnJty97UqyK6q1XYidz",
-      "targetProposal": "DG4btzGrrDcSdsAfZT4AbfbKSsrMJpwL9qLTukWKm2h8",
+      "walletPubkey": "56SQt64rzyp8t34UETYH8F9grBCsdKaMYcCiz9uNAX4w",
+      "targetProposal": "2tQGY8jNK1rLuiinQ8Rn6yqZsqfkoKGXcUSWeVXxHfwr",
       "outcome": "rejected",
-      "error": "AnchorError caused by account: voter_record. Error Code: ConstraintSeeds. Error Number: 2006. Error Message: A seeds constraint was violated.\nProgram log: Left:\nProgram log: 7DjpWAvvqShX63qXxGSaQL97a74KnF3ha6Zrn4Hpz1uM\nProgram log: Right:\nProgram log: FeesmJjX1FEyT2GjVEQoTv3LwYbK4XTDBod7f1HmqL4i"
+      "error": "AnchorError caused by account: voter_record. Error Code: ConstraintSeeds. Error Number: 2006. Error Message: A seeds constraint was violated.\nProgram log: Left:\nProgram log: 7F8P7TbvXVwg3vUGGWGjGdEHmhMPJkPyorWrU8sQaLrz\nProgram log: Right:\nProgram log: 6RdKKp5LRDdhtWJ2VfLwzzDKAUjfMfD2ZLELfPjgtHgS"
     },
     {
       "id": "cross-proposal-delegation-marker",
       "scenario": "commit with proposal A delegation marker against proposal C",
-      "walletPubkey": "FVUD5xCgSn61BGXt67NLNuLLXVzyhGD8GTvENacj1bEK",
-      "targetProposal": "BfGfk31hvvvR2fDbZBmpV49uhe396KZvFq2hhmK5YXa6",
+      "walletPubkey": "D69ASXQbfdyJCL29EcuwdQ2pab738hUCPeu7a2xRNSFx",
+      "targetProposal": "HYJ3L9vpRqqgcWefoDTrrqryccsuL6B8tFq39fCwrUz1",
       "outcome": "rejected",
-      "error": "AnchorError caused by account: delegation_marker. Error Code: ConstraintSeeds. Error Number: 2006. Error Message: A seeds constraint was violated.\nProgram log: Left:\nProgram log: GTSkGJrraTkxSH9CaktbF7UQek88begcAXppH3NbwF7G\nProgram log: Right:\nProgram log: DqbNxRjahMsQJ55Br6FuZHdwcDfbzvQdcYtieJP1xuVg"
+      "error": "AnchorError caused by account: delegation_marker. Error Code: ConstraintSeeds. Error Number: 2006. Error Message: A seeds constraint was violated.\nProgram log: Left:\nProgram log: ARf8AKNUKKCGypDd6GH4P1nEhTSBLAJafWUyqCTxgHf7\nProgram log: Right:\nProgram log: 62Q9AKuDy89jbPNqXscuhFxp37twaMbA1XmTMQDUKGfN"
     }
   ],
   "summary": {

@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-07T18:48:04.528Z",
+  "generatedAt": "2026-04-07T22:44:47.416Z",
   "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
   "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
   "diagnosticsPage": "https://x-pact.github.io/PrivateDAO/?page=diagnostics",
@@ -138,9 +138,10 @@
   },
   "operational": {
     "walletCount": 50,
-    "totalTxCount": 223,
+    "totalTxCount": 185,
+    "totalAttemptCount": 212,
     "zkProofCount": 7,
-    "adversarialScenarioCount": 50,
+    "adversarialScenarioCount": 33,
     "unexpectedAdversarialSuccesses": 0,
     "finalizeSingleWinner": true,
     "executeSingleWinner": true,

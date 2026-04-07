@@ -2,24 +2,25 @@
 
 ## Overview
 
-- Generated at: `2026-04-07T18:47:53.882Z`
+- Generated at: `2026-04-07T22:44:36.596Z`
 - Network: `devnet`
-- Canonical run label: `20260404110609`
-- Multi-proposal run label: `20260404144532`
-- Race run label: `20260404144532`
-- Resilience run label: `20260404154859`
+- Canonical run label: `20260407202442`
+- Multi-proposal run label: `20260407211024`
+- Race run label: `20260407211024`
+- Resilience run label: `20260407211358`
 
 ## Transaction Summary
 
 - Wallet count: `50`
-- Total transactions: `223`
-- Success count: `221`
-- Failure count: `67`
-- Retry count: `2`
-- Average tx latency ms: `1660.6906`
-- Total execution time ms: `4588011`
-- Failure rate: `0.2334`
-- Retry rate: `0.007`
+- Total transactions: `185`
+- Total attempts: `212`
+- Success count: `180`
+- Failure count: `32`
+- Retry count: `0`
+- Average tx latency ms: `2573.7351`
+- Total execution time ms: `5682986`
+- Failure rate: `0.1509`
+- Retry rate: `0`
 
 ### Phase Counts
 
@@ -27,8 +28,9 @@
 - commit: `42`
 - execute: `1`
 - finalize: `1`
-- fund: `141`
+- fund: `100`
 - reveal: `35`
+- zk: `3`
 
 ## Voting And Lifecycle Evidence
 
@@ -57,8 +59,8 @@
 
 ## Adversarial Evidence
 
-- Total scenarios: `50`
-- Rejected as expected: `49`
+- Total scenarios: `33`
+- Rejected as expected: `32`
 - Unexpected successes: `0`
 - Report: `docs/adversarial-report.json`
 

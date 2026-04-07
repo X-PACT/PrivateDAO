@@ -54,6 +54,7 @@ type OperationalEvidence = {
   transactionSummary: {
     walletCount: number;
     totalTxCount: number;
+    totalAttemptCount: number;
   };
   zk: {
     proofCount: number;
@@ -198,6 +199,7 @@ function main() {
     operational: {
       walletCount: operational.transactionSummary.walletCount,
       totalTxCount: operational.transactionSummary.totalTxCount,
+      totalAttemptCount: operational.transactionSummary.totalAttemptCount,
       zkProofCount: operational.zk.proofCount,
       adversarialScenarioCount: operational.adversarial.totalScenarios,
       unexpectedAdversarialSuccesses: operational.adversarial.unexpectedSuccesses,

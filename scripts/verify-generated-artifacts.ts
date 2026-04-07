@@ -269,6 +269,7 @@ function main() {
     operational: {
       walletCount: number;
       totalTxCount: number;
+      totalAttemptCount: number;
       zkProofCount: number;
       adversarialScenarioCount: number;
       unexpectedAdversarialSuccesses: number;
@@ -314,7 +315,7 @@ function main() {
   const operationalEvidence = JSON.parse(fs.readFileSync(operationalEvidenceJsonPath, "utf8")) as {
     project: string;
     network: string;
-    transactionSummary: { walletCount: number; totalTxCount: number };
+    transactionSummary: { walletCount: number; totalTxCount: number; totalAttemptCount: number };
     voting: { fullLifecycleReport: string; txRegistry: string };
     zk: {
       verificationMode: string;
@@ -1148,7 +1149,7 @@ function main() {
 
   if (
     runtimeEvidence.operational.walletCount < 50 ||
-    runtimeEvidence.operational.totalTxCount < 200 ||
+    runtimeEvidence.operational.totalAttemptCount < 200 ||
     runtimeEvidence.operational.zkProofCount < 1 ||
     runtimeEvidence.operational.adversarialScenarioCount < 1 ||
     runtimeEvidence.operational.unexpectedAdversarialSuccesses !== 0 ||
@@ -1371,7 +1372,7 @@ function main() {
     throw new Error("generated operational evidence network mismatch");
   }
 
-  if (operationalEvidence.transactionSummary.walletCount < 50 || operationalEvidence.transactionSummary.totalTxCount < 200) {
+  if (operationalEvidence.transactionSummary.walletCount < 50 || operationalEvidence.transactionSummary.totalAttemptCount < 200) {
     throw new Error("generated operational evidence transaction summary is invalid");
   }
 

@@ -1,252 +1,259 @@
 {
-  "generatedAt": "2026-04-04T12:22:37.379Z",
-  "runLabel": "20260404110609",
+  "generatedAt": "2026-04-07T21:59:25.688Z",
+  "runLabel": "20260407202442",
   "network": "devnet",
-  "total_scenarios": 50,
-  "rejected": 49,
+  "profile": {
+    "name": "50",
+    "walletCount": 50,
+    "waveSize": 10,
+    "fundingWaveSize": 5,
+    "targetPdaoUi": 100
+  },
+  "total_scenarios": 33,
+  "rejected": 32,
   "unexpected_successes": 0,
   "scenarios": [
     {
       "id": "commit-8-wrong-voter-record",
       "phase": "commit",
-      "walletPubkey": "GLvbvi3H1JsJwKQoMMakUGsC8YwcbwgTowKNghmjbj1r",
+      "walletPubkey": "Ef7nQ4ZAwWCSkMiKKF8bhducxgAWehXMuw1YNqcLdJDb",
       "role": "adversarial",
       "scenario": "wrong-voter-record",
       "expected": "commit should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:24:22.928Z",
-      "error": "AnchorError caused by account: voter_record. Error Code: ConstraintSeeds. Error Number: 2006. Error Message: A seeds constraint was violated.\nProgram log: Left:\nProgram log: 82tTWeccaZHmhX1QkerqTwafyi1S5Gka1DPop8X77WAL\nProgram log: Right:\nProgram log: 84LuQ2NHufNPNiAaJXnDLyE25MzEVCjUyPNGmHtUzBiC"
+      "timestamp": "2026-04-07T20:36:57.858Z",
+      "error": "AnchorError caused by account: voter_record. Error Code: ConstraintSeeds. Error Number: 2006. Error Message: A seeds constraint was violated.\nProgram log: Left:\nProgram log: FURT3wXDFmP8jDe2ZPGZ4JKGznnX5jaaxQozytt7GWsr\nProgram log: Right:\nProgram log: 9LCYBRoujTk1dcP6oZFmNCzgnGZ2oUSx4ciKyCKpy32J"
     },
     {
       "id": "commit-9-wrong-delegation-marker",
       "phase": "commit",
-      "walletPubkey": "BAvXnQHyroGPXtQfT2S14zR52VeCb8MTXbT6PREnExub",
+      "walletPubkey": "6rfsEPCHAS28sStdijedChDAXUKWhsQpkdKFCZthVJFa",
       "role": "adversarial",
       "scenario": "wrong-delegation-marker",
       "expected": "commit should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:24:25.046Z",
-      "error": "AnchorError caused by account: delegation_marker. Error Code: ConstraintSeeds. Error Number: 2006. Error Message: A seeds constraint was violated.\nProgram log: Left:\nProgram log: J2QsFkQjc2dz7qhNyHnvyu1BFWa5yFP5sQUEJFMt8ybj\nProgram log: Right:\nProgram log: ECGWUj4neLRnNRDNwNNnqQ738ZHMwfso6d2B2L2MvJ2a"
+      "timestamp": "2026-04-07T20:37:00.556Z",
+      "error": "AnchorError caused by account: delegation_marker. Error Code: ConstraintSeeds. Error Number: 2006. Error Message: A seeds constraint was violated.\nProgram log: Left:\nProgram log: AhjLSjWTHg1hhKoZPrfQn1beZrdHtjQZjyWQaVBNy6Pq\nProgram log: Right:\nProgram log: 3NUBiGeZ7dGpY3pWkGhc9gxvUbc3UdFciCtc4pUw3Tqt"
     },
     {
       "id": "commit-18-wrong-token-account",
       "phase": "commit",
-      "walletPubkey": "4sMwhsPvnkUDB66TPpdDYHtehXLKHHBjcAj77JWDMfNv",
+      "walletPubkey": "8RyEygamZGLRktejpkbwZjz1S6inMpz1QA4b3ge5VYU8",
       "role": "adversarial",
       "scenario": "wrong-token-account",
       "expected": "commit should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:25:00.086Z",
+      "timestamp": "2026-04-07T20:37:53.475Z",
       "error": "AnchorError caused by account: voter_token_account. Error Code: ConstraintRaw. Error Number: 2003. Error Message: A raw constraint was violated."
     },
     {
       "id": "commit-19-delegate-then-direct-overlap",
       "phase": "commit",
-      "walletPubkey": "GX4AuGEXopTaYFgdgYZxRQ4jUNBuLK65fUt1EpfX63jZ",
+      "walletPubkey": "DY8n2vPS7w13xnqZFHqGP8MXYk9BYQuEXPE9mbborhrK",
       "role": "adversarial",
       "scenario": "delegate-then-direct-overlap",
       "expected": "commit should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:25:04.639Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:298. Error Code: DelegationOverlap. Error Number: 6041. Error Message: Direct voting and delegation cannot overlap for the same proposal."
+      "timestamp": "2026-04-07T20:38:02.792Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:706. Error Code: DelegationOverlap. Error Number: 6041. Error Message: Direct voting and delegation cannot overlap for the same proposal."
     },
     {
       "id": "commit-28-wrong-voter-record",
       "phase": "commit",
-      "walletPubkey": "FA35ab4ZEv8nyf8mctyfyCTUqZDKTwcMLS9kfS5vfvfC",
+      "walletPubkey": "5tYvooc6qyXGpK7hkaq4jnoGnz2yYMreHhD6Bcas61BZ",
       "role": "adversarial",
       "scenario": "wrong-voter-record",
       "expected": "commit should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:25:38.529Z",
-      "error": "AnchorError caused by account: voter_record. Error Code: ConstraintSeeds. Error Number: 2006. Error Message: A seeds constraint was violated.\nProgram log: Left:\nProgram log: 4aLsAK8v8s6TLXjYJM92QyRe5cuF5B6aArnRaQXtF7jk\nProgram log: Right:\nProgram log: 5eKxkB9AJapzc7vCAYdVAwVjctvUbEELviMq3hV8WBZb"
+      "timestamp": "2026-04-07T20:38:38.289Z",
+      "error": "AnchorError caused by account: voter_record. Error Code: ConstraintSeeds. Error Number: 2006. Error Message: A seeds constraint was violated.\nProgram log: Left:\nProgram log: 338ouqqGSZ2L9Jjp7pjehSLvSqC6RqEWE2BspQxyXbEZ\nProgram log: Right:\nProgram log: 6CqEUTKHm5Y5HFcHvdPwQ3QM1rUdPJpfb7sz85ygHzpW"
     },
     {
       "id": "commit-29-wrong-delegation-marker",
       "phase": "commit",
-      "walletPubkey": "BYBsULZqGDAgn6dr5DenzMpa2YTjdo8pY6hbcnsGuY9a",
+      "walletPubkey": "4AWU56eXCH1gGwR7WiTW68BJa78tFAGrz9mzUsvHsBR7",
       "role": "adversarial",
       "scenario": "wrong-delegation-marker",
       "expected": "commit should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:25:40.632Z",
-      "error": "AnchorError caused by account: delegation_marker. Error Code: ConstraintSeeds. Error Number: 2006. Error Message: A seeds constraint was violated.\nProgram log: Left:\nProgram log: GUwEE1H2HCs459qLYBxWDqwgWfK3hT1BqG2vFjVi9g9p\nProgram log: Right:\nProgram log: 3mY3ehCHV3yaX8Rxrn1arkrxwUWaxCPBTcEaohhogRxb"
+      "timestamp": "2026-04-07T20:38:40.571Z",
+      "error": "AnchorError caused by account: delegation_marker. Error Code: ConstraintSeeds. Error Number: 2006. Error Message: A seeds constraint was violated.\nProgram log: Left:\nProgram log: AkUDqWhafrabJ4yrHmG3Vp3KawhAfhBQkPpRKstgyBvk\nProgram log: Right:\nProgram log: EpFNNughDz99jEPY8X399sCGn6vtitj4eFRzUY6rJvuv"
     },
     {
       "id": "commit-38-wrong-token-account",
       "phase": "commit",
-      "walletPubkey": "5uHEEdEMY5KMZsNsaSHYtE8WpnAmrC9YQd1ma4CzfGhV",
+      "walletPubkey": "BvdCe7nEMJz5sKZGXWN64KWSEL8Xf9AnkQTR23jEdMar",
       "role": "adversarial",
       "scenario": "wrong-token-account",
       "expected": "commit should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:26:13.972Z",
+      "timestamp": "2026-04-07T20:39:16.117Z",
       "error": "AnchorError caused by account: voter_token_account. Error Code: ConstraintRaw. Error Number: 2003. Error Message: A raw constraint was violated."
     },
     {
       "id": "commit-39-delegate-then-direct-overlap",
       "phase": "commit",
-      "walletPubkey": "9PQbNpPs4mX6vF3MDHw2VYEZPoJ6xxUmsqqVKABFKVxG",
+      "walletPubkey": "49PyVehAu2YQXDKygAkGqYRtdjXS62HUvVNNRhUXEUZU",
       "role": "adversarial",
       "scenario": "delegate-then-direct-overlap",
       "expected": "commit should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:26:18.681Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:298. Error Code: DelegationOverlap. Error Number: 6041. Error Message: Direct voting and delegation cannot overlap for the same proposal."
+      "timestamp": "2026-04-07T20:39:20.682Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:706. Error Code: DelegationOverlap. Error Number: 6041. Error Message: Direct voting and delegation cannot overlap for the same proposal."
     },
     {
       "id": "commit-48-wrong-voter-record",
       "phase": "commit",
-      "walletPubkey": "Be7EJjZfKzPiwiRns7nrK7FPuxh6MDT9AZEfiJXSaZnw",
+      "walletPubkey": "8zkRWV2TEMFdecPS18MGu377aywgrxdjfiAamvjux3na",
       "role": "adversarial",
       "scenario": "wrong-voter-record",
       "expected": "commit should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:26:52.941Z",
-      "error": "AnchorError caused by account: voter_record. Error Code: ConstraintSeeds. Error Number: 2006. Error Message: A seeds constraint was violated.\nProgram log: Left:\nProgram log: 79rLq96nARKygWCMLbpnm5VPSUR5sgKxiX5ktnmAgMEf\nProgram log: Right:\nProgram log: 3wJ7Wo1jp4LMGMMmhC5gqssGhfhFRLyxmq4VKx2CKf5m"
+      "timestamp": "2026-04-07T20:40:01.400Z",
+      "error": "AnchorError caused by account: voter_record. Error Code: ConstraintSeeds. Error Number: 2006. Error Message: A seeds constraint was violated.\nProgram log: Left:\nProgram log: EJJrBBnCuKWLhGFskhdx4cEo8c86Yf4QEvTfHAajxvHD\nProgram log: Right:\nProgram log: 5X12hpGqquWECH5YXpaYXHF6736jjx6HxpDHthKsxnDe"
     },
     {
       "id": "commit-49-wrong-delegation-marker",
       "phase": "commit",
-      "walletPubkey": "5G4gkVYd3GN6W2bTa2Zk2Aqv9Cjr2ymEq1J1gu6NUDy2",
+      "walletPubkey": "4ZD7MzgZgcG5XVqJFjggiSA2ne7m75YpZQmAPF1iL3Jm",
       "role": "adversarial",
       "scenario": "wrong-delegation-marker",
       "expected": "commit should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:26:55.068Z",
-      "error": "AnchorError caused by account: delegation_marker. Error Code: ConstraintSeeds. Error Number: 2006. Error Message: A seeds constraint was violated.\nProgram log: Left:\nProgram log: B3ZLdVmSMvt8cTkVDAAbgnY6ZU5xgZnsDZm7LqXjvTFp\nProgram log: Right:\nProgram log: Dwj1KPGefgZ2rJSmxAFm5WCR7mpJddZEsEkBhsCxydmq"
+      "timestamp": "2026-04-07T20:40:03.586Z",
+      "error": "AnchorError caused by account: delegation_marker. Error Code: ConstraintSeeds. Error Number: 2006. Error Message: A seeds constraint was violated.\nProgram log: Left:\nProgram log: 3qLZwAefv7NdJeiQBRhou4vaSbFAtsCMoAkFr5GRfYRs\nProgram log: Right:\nProgram log: ABmN2CaGGfHNnrYYzMDcuauT71rMHZUZCpjtGYJErFXL"
     },
     {
       "id": "reveal-wrong-revealer-8-1",
       "phase": "reveal",
-      "walletPubkey": "GLvbvi3H1JsJwKQoMMakUGsC8YwcbwgTowKNghmjbj1r",
+      "walletPubkey": "Ef7nQ4ZAwWCSkMiKKF8bhducxgAWehXMuw1YNqcLdJDb",
       "role": "adversarial",
       "scenario": "wrong-revealer",
       "expected": "reveal should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:52:21.040Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
+      "timestamp": "2026-04-07T20:51:27.178Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:877. Error Code: NotAuthorizedToReveal. Error Number: 6018. Error Message: Not authorized to reveal this vote."
     },
     {
       "id": "reveal-wrong-salt-1-1",
       "phase": "reveal",
-      "walletPubkey": "HR4XjJ1VLJU3YVc2CxQxcZH2h5SB2frpDUzTNPr3NEXm",
+      "walletPubkey": "AbF9Q5WkSgQRMV8R7HwHa1WgoPAytM6XxyZVzf7fFWDy",
       "role": "voter",
       "scenario": "wrong-salt",
       "expected": "reveal should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:52:21.806Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
+      "timestamp": "2026-04-07T20:51:27.829Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:880. Error Code: CommitmentMismatch. Error Number: 6015. Error Message: Commitment hash does not match."
     },
     {
       "id": "reveal-replay-1-1",
       "phase": "reveal",
-      "walletPubkey": "HR4XjJ1VLJU3YVc2CxQxcZH2h5SB2frpDUzTNPr3NEXm",
+      "walletPubkey": "AbF9Q5WkSgQRMV8R7HwHa1WgoPAytM6XxyZVzf7fFWDy",
       "role": "voter",
       "scenario": "replay",
       "expected": "reveal should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:52:35.202Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
+      "timestamp": "2026-04-07T20:52:00.947Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:872. Error Code: AlreadyRevealed. Error Number: 6014. Error Message: Vote already revealed."
     },
     {
       "id": "reveal-wrong-revealer-18-14",
       "phase": "reveal",
-      "walletPubkey": "4sMwhsPvnkUDB66TPpdDYHtehXLKHHBjcAj77JWDMfNv",
+      "walletPubkey": "8RyEygamZGLRktejpkbwZjz1S6inMpz1QA4b3ge5VYU8",
       "role": "adversarial",
       "scenario": "wrong-revealer",
       "expected": "reveal should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:52:41.436Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
+      "timestamp": "2026-04-07T20:52:08.016Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:877. Error Code: NotAuthorizedToReveal. Error Number: 6018. Error Message: Not authorized to reveal this vote."
     },
     {
       "id": "reveal-wrong-salt-14-14",
       "phase": "reveal",
-      "walletPubkey": "6NDz8dDap8D2NVXjhq5yweFM9SK9TQNPbpZNBPhF3BUM",
+      "walletPubkey": "EtjGwoVCZYrLBTs4PUZM8xLPUB5mCZVMbJbeeQQuR8QQ",
       "role": "voter",
       "scenario": "wrong-salt",
       "expected": "reveal should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:52:42.055Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
+      "timestamp": "2026-04-07T20:52:08.710Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:880. Error Code: CommitmentMismatch. Error Number: 6015. Error Message: Commitment hash does not match."
     },
     {
       "id": "reveal-replay-14-14",
       "phase": "reveal",
-      "walletPubkey": "6NDz8dDap8D2NVXjhq5yweFM9SK9TQNPbpZNBPhF3BUM",
+      "walletPubkey": "EtjGwoVCZYrLBTs4PUZM8xLPUB5mCZVMbJbeeQQuR8QQ",
       "role": "voter",
       "scenario": "replay",
       "expected": "reveal should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:52:55.389Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
+      "timestamp": "2026-04-07T20:53:05.081Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:872. Error Code: AlreadyRevealed. Error Number: 6014. Error Message: Vote already revealed."
     },
     {
       "id": "reveal-wrong-revealer-28-30",
       "phase": "reveal",
-      "walletPubkey": "FA35ab4ZEv8nyf8mctyfyCTUqZDKTwcMLS9kfS5vfvfC",
+      "walletPubkey": "5tYvooc6qyXGpK7hkaq4jnoGnz2yYMreHhD6Bcas61BZ",
       "role": "adversarial",
       "scenario": "wrong-revealer",
       "expected": "reveal should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:53:01.486Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
+      "timestamp": "2026-04-07T20:53:13.198Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:877. Error Code: NotAuthorizedToReveal. Error Number: 6018. Error Message: Not authorized to reveal this vote."
     },
     {
       "id": "reveal-wrong-salt-30-30",
       "phase": "reveal",
-      "walletPubkey": "37ToGtfx8vrm1diduYAmZouCsYBX6h72gcsZobD4ytJw",
+      "walletPubkey": "C8sjAic5BsgNWJmVaR68X3mNLMMcbvwcVm58Z9TvouwP",
       "role": "zk-tester",
       "scenario": "wrong-salt",
       "expected": "reveal should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:53:02.264Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
+      "timestamp": "2026-04-07T20:53:13.902Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:880. Error Code: CommitmentMismatch. Error Number: 6015. Error Message: Commitment hash does not match."
     },
     {
       "id": "reveal-replay-30-30",
       "phase": "reveal",
-      "walletPubkey": "37ToGtfx8vrm1diduYAmZouCsYBX6h72gcsZobD4ytJw",
+      "walletPubkey": "C8sjAic5BsgNWJmVaR68X3mNLMMcbvwcVm58Z9TvouwP",
       "role": "zk-tester",
       "scenario": "replay",
       "expected": "reveal should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:53:15.824Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
+      "timestamp": "2026-04-07T20:54:01.868Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:872. Error Code: AlreadyRevealed. Error Number: 6014. Error Message: Vote already revealed."
     },
     {
       "id": "reveal-wrong-revealer-38-43",
       "phase": "reveal",
-      "walletPubkey": "5uHEEdEMY5KMZsNsaSHYtE8WpnAmrC9YQd1ma4CzfGhV",
+      "walletPubkey": "BvdCe7nEMJz5sKZGXWN64KWSEL8Xf9AnkQTR23jEdMar",
       "role": "adversarial",
       "scenario": "wrong-revealer",
       "expected": "reveal should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:53:21.971Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
+      "timestamp": "2026-04-07T20:54:08.654Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:877. Error Code: NotAuthorizedToReveal. Error Number: 6018. Error Message: Not authorized to reveal this vote."
     },
     {
       "id": "reveal-wrong-salt-43-43",
       "phase": "reveal",
-      "walletPubkey": "AmHDoHA8xv6hQwvUeL4FtVWQHVVeqAbhuGJfek7a3nE6",
+      "walletPubkey": "PbDnbfkeNGPrzrxGYg5haUqKiWyAJemsDmMP8EnbE4M",
       "role": "voter",
       "scenario": "wrong-salt",
       "expected": "reveal should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:53:22.579Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
+      "timestamp": "2026-04-07T20:54:09.450Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:880. Error Code: CommitmentMismatch. Error Number: 6015. Error Message: Commitment hash does not match."
     },
     {
       "id": "reveal-replay-43-43",
       "phase": "reveal",
-      "walletPubkey": "AmHDoHA8xv6hQwvUeL4FtVWQHVVeqAbhuGJfek7a3nE6",
+      "walletPubkey": "PbDnbfkeNGPrzrxGYg5haUqKiWyAJemsDmMP8EnbE4M",
       "role": "voter",
       "scenario": "replay",
       "expected": "reveal should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:53:30.951Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
+      "timestamp": "2026-04-07T20:54:33.733Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:872. Error Code: AlreadyRevealed. Error Number: 6014. Error Message: Vote already revealed."
     },
     {
       "id": "finalize-early",
@@ -256,63 +263,63 @@
       "scenario": "finalize-before-reveal-end",
       "expected": "finalize should be rejected before reveal end",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:29:40.112Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:526. Error Code: RevealStillOpen. Error Number: 6012. Error Message: Reveal phase is still open."
+      "timestamp": "2026-04-07T20:54:34.608Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:934. Error Code: RevealStillOpen. Error Number: 6012. Error Message: Reveal phase is still open."
     },
     {
       "id": "reveal-late-7-7",
       "phase": "reveal",
-      "walletPubkey": "5ZjHVw825QYbjGmkgnPVp5m5tqXp7iNv5iaotfeHKwXj",
+      "walletPubkey": "GvZn18wqhFDHgMsVRcJjJjERviftVt2assp8c9iwHb4t",
       "role": "voter",
       "scenario": "late",
       "expected": "reveal should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:53:32.219Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
+      "timestamp": "2026-04-07T21:06:26.483Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:870. Error Code: RevealClosed. Error Number: 6011. Error Message: Reveal window has closed."
     },
     {
       "id": "reveal-late-17-17",
       "phase": "reveal",
-      "walletPubkey": "AHLqjwxcV1WjK847jdPnWrAepCUyjaD253nvAFveeXZ",
+      "walletPubkey": "5ZcnXxntZ8TdP1EUsDzVtB5Pcz4s87rc6hyTFXSVZdvH",
       "role": "voter",
       "scenario": "late",
       "expected": "reveal should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:53:34.290Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
+      "timestamp": "2026-04-07T21:06:28.300Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:870. Error Code: RevealClosed. Error Number: 6011. Error Message: Reveal window has closed."
     },
     {
       "id": "reveal-late-27-27",
       "phase": "reveal",
-      "walletPubkey": "CvBr29UGQitDiuuH4EsmSbJerBZ2MrfjBoYSxxQcwRrX",
+      "walletPubkey": "5hPd8p9c49NJtipic73opqZQ3MZVBifGj5iyUbsJNonD",
       "role": "voter",
       "scenario": "late",
       "expected": "reveal should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:53:36.106Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
+      "timestamp": "2026-04-07T21:06:30.202Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:870. Error Code: RevealClosed. Error Number: 6011. Error Message: Reveal window has closed."
     },
     {
       "id": "reveal-late-37-37",
       "phase": "reveal",
-      "walletPubkey": "FF2F4xte7CBdsvncPiUziuQzhRUPRYDmZ6SBWDuoEpnc",
+      "walletPubkey": "2vukww4hacRK4d1rGGM6kkz62Gzj5zbnfttDeYGPnm5N",
       "role": "voter",
       "scenario": "late",
       "expected": "reveal should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:53:38.160Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
+      "timestamp": "2026-04-07T21:06:32.427Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:870. Error Code: RevealClosed. Error Number: 6011. Error Message: Reveal window has closed."
     },
     {
       "id": "reveal-late-47-47",
       "phase": "reveal",
-      "walletPubkey": "A3ja2FFinkXo92MepZ4rCVBLg3c5CU6QP8b4yeFnx5Jj",
+      "walletPubkey": "J1H4Tw6n8Aii5D8pLYjqqFHzo2GQ48scajtAxwZpXiZ5",
       "role": "voter",
       "scenario": "late",
       "expected": "reveal should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:53:41.577Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
+      "timestamp": "2026-04-07T21:06:34.223Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:870. Error Code: RevealClosed. Error Number: 6011. Error Message: Reveal window has closed."
     },
     {
       "id": "duplicate-finalize",
@@ -322,8 +329,8 @@
       "scenario": "duplicate-finalize",
       "expected": "duplicate finalize should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:31:08.910Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:530. Error Code: AlreadyFinalized. Error Number: 6016. Error Message: Proposal has already been finalized.",
+      "timestamp": "2026-04-07T21:06:38.242Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:938. Error Code: AlreadyFinalized. Error Number: 6016. Error Message: Proposal has already been finalized.",
       "invariantState": {
         "statusBefore": "Passed",
         "statusAfter": "Passed"
@@ -337,8 +344,8 @@
       "scenario": "execute-before-unlock",
       "expected": "execute should be rejected before timelock unlock",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:31:09.947Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:615. Error Code: ExecutionTimelockActive. Error Number: 6024. Error Message: Execution timelock has not yet expired.",
+      "timestamp": "2026-04-07T21:06:39.104Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:960. Error Code: ExecutionTimelockActive. Error Number: 6024. Error Message: Execution timelock has not yet expired.",
       "invariantState": {
         "isExecuted": false
       }
@@ -351,8 +358,8 @@
       "scenario": "treasury-miswiring",
       "expected": "execute should reject wrong treasury recipient binding",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:31:10.833Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:615. Error Code: ExecutionTimelockActive. Error Number: 6024. Error Message: Execution timelock has not yet expired.",
+      "timestamp": "2026-04-07T21:06:40.367Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:960. Error Code: ExecutionTimelockActive. Error Number: 6024. Error Message: Execution timelock has not yet expired.",
       "invariantState": {
         "isExecuted": false
       }
@@ -365,8 +372,8 @@
       "scenario": "duplicate-execute",
       "expected": "duplicate execute should be rejected",
       "outcome": "rejected",
-      "timestamp": "2026-04-04T11:31:39.141Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:614. Error Code: AlreadyExecuted. Error Number: 6023. Error Message: Treasury action already executed.",
+      "timestamp": "2026-04-07T21:07:11.192Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:959. Error Code: AlreadyExecuted. Error Number: 6023. Error Message: Treasury action already executed.",
       "invariantState": {
         "isExecuted": true
       }
@@ -379,200 +386,13 @@
       "scenario": "finalize-state-reference",
       "expected": "reference snapshot",
       "outcome": "skipped",
-      "timestamp": "2026-04-04T11:53:43.435Z",
+      "timestamp": "2026-04-07T21:07:11.687Z",
       "error": null,
       "invariantState": {
-        "statusBeforeFinalize": "Passed",
+        "statusBeforeFinalize": "Voting",
         "statusAfterFinalize": "Passed",
         "statusAfterExecute": "Passed"
       }
-    },
-    {
-      "id": "reveal-wrong-revealer-8-1",
-      "phase": "reveal",
-      "walletPubkey": "GLvbvi3H1JsJwKQoMMakUGsC8YwcbwgTowKNghmjbj1r",
-      "role": "adversarial",
-      "scenario": "wrong-revealer",
-      "expected": "reveal should be rejected",
-      "outcome": "rejected",
-      "timestamp": "2026-04-04T11:42:58.675Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
-    },
-    {
-      "id": "reveal-wrong-salt-1-1",
-      "phase": "reveal",
-      "walletPubkey": "HR4XjJ1VLJU3YVc2CxQxcZH2h5SB2frpDUzTNPr3NEXm",
-      "role": "voter",
-      "scenario": "wrong-salt",
-      "expected": "reveal should be rejected",
-      "outcome": "rejected",
-      "timestamp": "2026-04-04T11:42:59.515Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
-    },
-    {
-      "id": "reveal-replay-1-1",
-      "phase": "reveal",
-      "walletPubkey": "HR4XjJ1VLJU3YVc2CxQxcZH2h5SB2frpDUzTNPr3NEXm",
-      "role": "voter",
-      "scenario": "replay",
-      "expected": "reveal should be rejected",
-      "outcome": "rejected",
-      "timestamp": "2026-04-04T11:43:13.090Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
-    },
-    {
-      "id": "reveal-wrong-revealer-18-14",
-      "phase": "reveal",
-      "walletPubkey": "4sMwhsPvnkUDB66TPpdDYHtehXLKHHBjcAj77JWDMfNv",
-      "role": "adversarial",
-      "scenario": "wrong-revealer",
-      "expected": "reveal should be rejected",
-      "outcome": "rejected",
-      "timestamp": "2026-04-04T11:43:19.441Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
-    },
-    {
-      "id": "reveal-wrong-salt-14-14",
-      "phase": "reveal",
-      "walletPubkey": "6NDz8dDap8D2NVXjhq5yweFM9SK9TQNPbpZNBPhF3BUM",
-      "role": "voter",
-      "scenario": "wrong-salt",
-      "expected": "reveal should be rejected",
-      "outcome": "rejected",
-      "timestamp": "2026-04-04T11:43:20.127Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
-    },
-    {
-      "id": "reveal-replay-14-14",
-      "phase": "reveal",
-      "walletPubkey": "6NDz8dDap8D2NVXjhq5yweFM9SK9TQNPbpZNBPhF3BUM",
-      "role": "voter",
-      "scenario": "replay",
-      "expected": "reveal should be rejected",
-      "outcome": "rejected",
-      "timestamp": "2026-04-04T11:43:34.736Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
-    },
-    {
-      "id": "reveal-wrong-revealer-28-30",
-      "phase": "reveal",
-      "walletPubkey": "FA35ab4ZEv8nyf8mctyfyCTUqZDKTwcMLS9kfS5vfvfC",
-      "role": "adversarial",
-      "scenario": "wrong-revealer",
-      "expected": "reveal should be rejected",
-      "outcome": "rejected",
-      "timestamp": "2026-04-04T11:43:44.290Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
-    },
-    {
-      "id": "reveal-wrong-salt-30-30",
-      "phase": "reveal",
-      "walletPubkey": "37ToGtfx8vrm1diduYAmZouCsYBX6h72gcsZobD4ytJw",
-      "role": "zk-tester",
-      "scenario": "wrong-salt",
-      "expected": "reveal should be rejected",
-      "outcome": "rejected",
-      "timestamp": "2026-04-04T11:43:44.883Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
-    },
-    {
-      "id": "reveal-replay-30-30",
-      "phase": "reveal",
-      "walletPubkey": "37ToGtfx8vrm1diduYAmZouCsYBX6h72gcsZobD4ytJw",
-      "role": "zk-tester",
-      "scenario": "replay",
-      "expected": "reveal should be rejected",
-      "outcome": "rejected",
-      "timestamp": "2026-04-04T11:43:58.582Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
-    },
-    {
-      "id": "reveal-wrong-revealer-38-43",
-      "phase": "reveal",
-      "walletPubkey": "5uHEEdEMY5KMZsNsaSHYtE8WpnAmrC9YQd1ma4CzfGhV",
-      "role": "adversarial",
-      "scenario": "wrong-revealer",
-      "expected": "reveal should be rejected",
-      "outcome": "rejected",
-      "timestamp": "2026-04-04T11:44:04.744Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
-    },
-    {
-      "id": "reveal-wrong-salt-43-43",
-      "phase": "reveal",
-      "walletPubkey": "AmHDoHA8xv6hQwvUeL4FtVWQHVVeqAbhuGJfek7a3nE6",
-      "role": "voter",
-      "scenario": "wrong-salt",
-      "expected": "reveal should be rejected",
-      "outcome": "rejected",
-      "timestamp": "2026-04-04T11:44:05.375Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
-    },
-    {
-      "id": "reveal-replay-43-43",
-      "phase": "reveal",
-      "walletPubkey": "AmHDoHA8xv6hQwvUeL4FtVWQHVVeqAbhuGJfek7a3nE6",
-      "role": "voter",
-      "scenario": "replay",
-      "expected": "reveal should be rejected",
-      "outcome": "rejected",
-      "timestamp": "2026-04-04T11:44:14.624Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
-    },
-    {
-      "id": "reveal-late-7-7",
-      "phase": "reveal",
-      "walletPubkey": "5ZjHVw825QYbjGmkgnPVp5m5tqXp7iNv5iaotfeHKwXj",
-      "role": "voter",
-      "scenario": "late",
-      "expected": "reveal should be rejected",
-      "outcome": "rejected",
-      "timestamp": "2026-04-04T11:44:16.902Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
-    },
-    {
-      "id": "reveal-late-17-17",
-      "phase": "reveal",
-      "walletPubkey": "AHLqjwxcV1WjK847jdPnWrAepCUyjaD253nvAFveeXZ",
-      "role": "voter",
-      "scenario": "late",
-      "expected": "reveal should be rejected",
-      "outcome": "rejected",
-      "timestamp": "2026-04-04T11:44:18.798Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
-    },
-    {
-      "id": "reveal-late-27-27",
-      "phase": "reveal",
-      "walletPubkey": "CvBr29UGQitDiuuH4EsmSbJerBZ2MrfjBoYSxxQcwRrX",
-      "role": "voter",
-      "scenario": "late",
-      "expected": "reveal should be rejected",
-      "outcome": "rejected",
-      "timestamp": "2026-04-04T11:44:20.683Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
-    },
-    {
-      "id": "reveal-late-37-37",
-      "phase": "reveal",
-      "walletPubkey": "FF2F4xte7CBdsvncPiUziuQzhRUPRYDmZ6SBWDuoEpnc",
-      "role": "voter",
-      "scenario": "late",
-      "expected": "reveal should be rejected",
-      "outcome": "rejected",
-      "timestamp": "2026-04-04T11:44:22.508Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
-    },
-    {
-      "id": "reveal-late-47-47",
-      "phase": "reveal",
-      "walletPubkey": "A3ja2FFinkXo92MepZ4rCVBLg3c5CU6QP8b4yeFnx5Jj",
-      "role": "voter",
-      "scenario": "late",
-      "expected": "reveal should be rejected",
-      "outcome": "rejected",
-      "timestamp": "2026-04-04T11:44:24.305Z",
-      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:460. Error Code: VotingNotOpen. Error Number: 6007. Error Message: Voting is not open."
     }
   ]
 }

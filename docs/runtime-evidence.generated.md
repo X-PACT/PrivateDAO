@@ -2,7 +2,7 @@
 
 ## Overview
 
-- Generated at: `2026-04-07T18:48:04.528Z`
+- Generated at: `2026-04-07T22:44:47.416Z`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - Diagnostics page: `https://x-pact.github.io/PrivateDAO/?page=diagnostics`
@@ -74,9 +74,9 @@
 ## Operational Summary
 
 - Canonical wallet count: `50`
-- Canonical tx count: `223`
+- Canonical tx count: `185`
 - ZK proof count: `7`
-- Adversarial scenarios: `50`
+- Adversarial scenarios: `33`
 - Unexpected adversarial successes: `0`
 - Finalize single-winner: `true`
 - Execute single-winner: `true`

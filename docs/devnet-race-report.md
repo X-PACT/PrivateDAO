@@ -2,7 +2,7 @@
 
 - network: devnet
 - program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
-- proposal: `7YKm4zFcD8fzRuQAa8w9SDTrVaW8TSSddA7nhDm9TAK7`
+- proposal: `HaxTPaViqVepxSWuDbSjN8K1eX6XgMo6rKYKzmEXQKgf`
 - finalize winners: 1
 - finalize rejections: 4
 - execute winners: 1

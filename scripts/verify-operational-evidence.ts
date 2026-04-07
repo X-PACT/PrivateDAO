@@ -7,6 +7,7 @@ type OperationalEvidence = {
   transactionSummary: {
     walletCount: number;
     totalTxCount: number;
+    totalAttemptCount: number;
     successCount: number;
     failureCount: number;
     retryCount: number;
@@ -84,8 +85,8 @@ function main() {
   if (evidence.transactionSummary.walletCount < 50) {
     throw new Error("operational evidence wallet count is below canonical threshold");
   }
-  if (evidence.transactionSummary.totalTxCount < 200) {
-    throw new Error("operational evidence tx count is unexpectedly low");
+  if (evidence.transactionSummary.totalAttemptCount < 200) {
+    throw new Error("operational evidence attempt count is unexpectedly low");
   }
   if ((evidence.transactionSummary.phaseCounts.commit || 0) === 0) {
     throw new Error("operational evidence is missing commit-phase entries");

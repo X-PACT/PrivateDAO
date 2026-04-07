@@ -6,9 +6,9 @@ import {
   Keypair,
   LAMPORTS_PER_SOL,
   PublicKey,
-  sendAndConfirmTransaction,
   SystemProgram,
   Transaction,
+  TransactionExpiredBlockheightExceededError,
 } from "@solana/web3.js";
 import {
   createTransferCheckedInstruction,
@@ -168,6 +168,15 @@ type ZkProofEntry = {
   publicPath: string;
 };
 
+type OnchainZkProofAnchorEntry = {
+  layer: string;
+  circuit: string;
+  anchorPda: string;
+  txSignature: string;
+  explorerUrl: string;
+  anchoredAt: string;
+};
+
 type PhaseTiming = {
   startedAt: string;
   completedAt?: string;
@@ -223,6 +232,7 @@ export type HarnessState = {
   txRegistry: TxRegistryEntry[];
   adversarial: AdversarialEntry[];
   zkProofs: ZkProofEntry[];
+  onchainZkAnchors: OnchainZkProofAnchorEntry[];
   metrics: MetricsState;
 };
 
@@ -243,12 +253,14 @@ const LOAD_PROFILES: Record<LoadProfileName, HarnessProfile> = {
 const WAVE_DELAY_MS = 5000;
 const TX_DELAY_MS = 1200;
 const FUNDING_DELAY_MS = 900;
+const FUNDING_CONFIRM_TIMEOUT_MS = Number(process.env.PRIVATE_DAO_FUNDING_CONFIRM_TIMEOUT_MS || 18_000);
+const FUNDING_STATUS_POLL_MS = 1200;
 const TARGET_SOL_LAMPORTS = Math.floor(0.08 * LAMPORTS_PER_SOL);
 const COORDINATOR_MIN_BALANCE_LAMPORTS = Math.floor(8 * LAMPORTS_PER_SOL);
 const DAO_QUORUM_PERCENT = 60;
-const PROPOSAL_DURATION_SECONDS = 240;
-const REVEAL_WINDOW_SECONDS = 180;
-const EXECUTION_DELAY_SECONDS = 30;
+const PROPOSAL_DURATION_SECONDS = Number(process.env.PRIVATE_DAO_PROPOSAL_DURATION_SECONDS || 900);
+const REVEAL_WINDOW_SECONDS = Number(process.env.PRIVATE_DAO_REVEAL_WINDOW_SECONDS || 900);
+const EXECUTION_DELAY_SECONDS = Number(process.env.PRIVATE_DAO_EXECUTION_DELAY_SECONDS || 30);
 const TREASURY_DEPOSIT_LAMPORTS = Math.floor(0.3 * LAMPORTS_PER_SOL);
 const TREASURY_TRANSFER_LAMPORTS = Math.floor(0.05 * LAMPORTS_PER_SOL);
 const SNARK_FIELD = BigInt("21888242871839275222246405745257275088548364400416034343698204186575808495617");
@@ -256,6 +268,21 @@ const SNARK_FIELD = BigInt("2188824287183927522224640574525727508854836440041603
 const REPO_ROOT = path.resolve(__dirname, "..", "..");
 const IDL_PATH = path.join(REPO_ROOT, "target", "idl", "private_dao.json");
 const ZK_DEVNET_DIR = path.join(REPO_ROOT, "zk", "devnet-load");
+const ZK_LAYER_SEEDS: Record<string, number> = {
+  vote: 1,
+  delegation: 2,
+  tally: 3,
+};
+const ZK_LAYER_ARGS: Record<string, { vote?: Record<string, never>; delegation?: Record<string, never>; tally?: Record<string, never> }> = {
+  vote: { vote: {} },
+  delegation: { delegation: {} },
+  tally: { tally: {} },
+};
+const ZK_VERIFICATION_KEY_PATHS: Record<string, string> = {
+  private_dao_vote_overlay: "zk/setup/private_dao_vote_overlay_vkey.json",
+  private_dao_delegation_overlay: "zk/setup/private_dao_delegation_overlay_vkey.json",
+  private_dao_tally_overlay: "zk/setup/private_dao_tally_overlay_vkey.json",
+};
 
 function nowIso(): string {
   return new Date().toISOString();
@@ -267,6 +294,57 @@ function runLabel(): string {
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function confirmSignatureWithTimeout(connection: Connection, signature: string, timeoutMs: number): Promise<void> {
+  const startedAt = Date.now();
+  while (Date.now() - startedAt < timeoutMs) {
+    const status = (await connection.getSignatureStatuses([signature])).value[0];
+    if (status?.err) {
+      throw new Error(`transaction ${signature} failed: ${JSON.stringify(status.err)}`);
+    }
+    if (
+      status?.confirmationStatus === "confirmed" ||
+      status?.confirmationStatus === "finalized" ||
+      status?.confirmations === null
+    ) {
+      return;
+    }
+    await sleep(FUNDING_STATUS_POLL_MS);
+  }
+  throw new Error(`transaction ${signature} was not confirmed within ${timeoutMs}ms`);
+}
+
+async function sendAndConfirmFundingTransaction(
+  connection: Connection,
+  tx: Transaction,
+  signers: Keypair[],
+): Promise<string> {
+  const payer = signers[0];
+  if (!payer) throw new Error("funding transaction requires at least one signer");
+  const freshTx = new Transaction();
+  freshTx.feePayer = payer.publicKey;
+  for (const instruction of tx.instructions) {
+    freshTx.add(instruction);
+  }
+  const latestBlockhash = await connection.getLatestBlockhash(COMMITMENT);
+  freshTx.recentBlockhash = latestBlockhash.blockhash;
+  freshTx.sign(...signers);
+  const signature = await connection.sendRawTransaction(freshTx.serialize(), {
+    preflightCommitment: COMMITMENT,
+    maxRetries: 5,
+  });
+  try {
+    await connection.confirmTransaction({ signature, ...latestBlockhash }, COMMITMENT);
+    return signature;
+  } catch (error) {
+    if (!(error instanceof TransactionExpiredBlockheightExceededError)) {
+      throw error;
+    }
+    // Public Devnet RPC can miss its own confirmation stream while the transfer lands.
+    await confirmSignatureWithTimeout(connection, signature, FUNDING_CONFIRM_TIMEOUT_MS);
+    return signature;
+  }
 }
 
 function stableJson(value: unknown): string {
@@ -435,6 +513,7 @@ export async function loadOrInitializeState(connection: Connection, profileInput
 
   if (existing) {
     existing.profile ||= profile;
+    existing.onchainZkAnchors ||= [];
     if (existing.profile.name !== profile.name) {
       throw new Error(`existing harness state is for profile ${existing.profile.name}, requested ${profile.name}`);
     }
@@ -472,6 +551,7 @@ export async function loadOrInitializeState(connection: Connection, profileInput
     txRegistry: [],
     adversarial: [],
     zkProofs: [],
+    onchainZkAnchors: [],
     metrics: {
       startedAt: nowIso(),
       phaseTimings: {},
@@ -663,7 +743,7 @@ async function ensureWalletFunding(
     );
     const started = Date.now();
     const { result: signature, retries } = await withRetry(state, `fund-sol-${wallet.walletIndex}`, async () =>
-      sendAndConfirmTransaction(connection, tx, [coordinator], { commitment: COMMITMENT }),
+      sendAndConfirmFundingTransaction(connection, tx, [coordinator]),
     );
     wallet.funding.solTransferTx = signature;
     wallet.funding.retries += retries;
@@ -702,7 +782,7 @@ async function ensureWalletFunding(
     );
     const started = Date.now();
     const { result: signature, retries } = await withRetry(state, `fund-pdao-${wallet.walletIndex}`, async () =>
-      sendAndConfirmTransaction(connection, tx, [coordinator], { commitment: COMMITMENT }),
+      sendAndConfirmFundingTransaction(connection, tx, [coordinator]),
     );
     wallet.funding.pdaoTransferTx = signature;
     wallet.funding.retries += retries;
@@ -1780,6 +1860,23 @@ function fileSha256(filePath: string): string {
   return crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex");
 }
 
+function hashHexBuffers(...values: string[]): Buffer {
+  const hasher = crypto.createHash("sha256");
+  for (const value of values) {
+    hasher.update(Buffer.from(value, "hex"));
+  }
+  return hasher.digest();
+}
+
+function zkProofAnchorPdaFor(proposal: PublicKey, layer: string): PublicKey {
+  const seedByte = ZK_LAYER_SEEDS[layer];
+  if (!seedByte) throw new Error(`unsupported zk proof layer for anchor: ${layer}`);
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("zk-proof"), proposal.toBuffer(), Buffer.from([seedByte])],
+    PROGRAM_ID,
+  )[0];
+}
+
 function runLocal(command: string, args: string[], cwd: string) {
   const result = spawnSync(command, args, {
     cwd,
@@ -1975,11 +2072,94 @@ async function generateDelegationProof(state: HarnessState, wallet: WalletState)
   };
 }
 
+async function anchorZkProofEntry(
+  state: HarnessState,
+  connection: Connection,
+  program: HarnessProgram,
+  recorder: Keypair,
+  entry: ZkProofEntry,
+): Promise<OnchainZkProofAnchorEntry> {
+  const bootstrap = ensureBootstrap(state);
+  const dao = new PublicKey(bootstrap.daoPublicKey);
+  const proposal = new PublicKey(bootstrap.proposalPublicKey);
+  const anchorPda = zkProofAnchorPdaFor(proposal, entry.layer);
+  const existing = state.onchainZkAnchors.find((candidate) => candidate.layer === entry.layer);
+  if (existing) return existing;
+
+  const existingAccount = await connection.getAccountInfo(anchorPda, COMMITMENT);
+  if (existingAccount) {
+    throw new Error(
+      `zk proof anchor already exists for ${entry.layer} (${anchorPda.toBase58()}) but no tx signature is recorded in state`,
+    );
+  }
+
+  const verificationKeyPath = ZK_VERIFICATION_KEY_PATHS[entry.circuit];
+  if (!verificationKeyPath) throw new Error(`unsupported zk circuit for anchor: ${entry.circuit}`);
+  const verificationKeyHash = fileSha256(path.join(REPO_ROOT, verificationKeyPath));
+  const bundleHash = hashHexBuffers(entry.proofHash, entry.publicInputsHash, verificationKeyHash);
+  const transaction = await program.methods
+    .anchorZkProof(
+      ZK_LAYER_ARGS[entry.layer],
+      { groth16: {} },
+      [...Buffer.from(entry.proofHash, "hex")],
+      [...Buffer.from(entry.publicInputsHash, "hex")],
+      [...Buffer.from(verificationKeyHash, "hex")],
+      [...bundleHash],
+    )
+    .accounts({
+      dao,
+      proposal,
+      zkProofAnchor: anchorPda,
+      recorder: recorder.publicKey,
+      systemProgram: SystemProgram.programId,
+    })
+    .transaction();
+
+  const signature = await sendAndConfirmFundingTransaction(connection, transaction, [recorder]);
+  const anchoredAt = nowIso();
+  const anchorEntry = {
+    layer: entry.layer,
+    circuit: entry.circuit,
+    anchorPda: anchorPda.toBase58(),
+    txSignature: signature,
+    explorerUrl: explorerUrl(signature),
+    anchoredAt,
+  };
+  state.onchainZkAnchors.push(anchorEntry);
+  pushTxRecord(state, {
+    phase: "zk",
+    action: "anchor-zk-proof",
+    walletPubkey: recorder.publicKey.toBase58(),
+    role: "coordinator",
+    txSignature: signature,
+    timestamp: anchoredAt,
+    latencyMs: 0,
+  });
+  return anchorEntry;
+}
+
+async function anchorRepresentativeZkProofs(
+  state: HarnessState,
+  connection: Connection,
+  entries: ZkProofEntry[],
+): Promise<void> {
+  const recorder = coordinatorKeypair();
+  const program = createProgram(connection, recorder);
+  for (const layer of ["vote", "delegation", "tally"]) {
+    const entry = entries.find((candidate) => candidate.layer === layer);
+    if (!entry) throw new Error(`missing generated zk proof entry for ${layer}`);
+    await anchorZkProofEntry(state, connection, program, recorder, entry);
+    persistState(state);
+    publishArtifacts(state);
+    await sleep(TX_DELAY_MS);
+  }
+}
+
 export async function runZkPhase(connection: Connection, profileInput?: string | null): Promise<HarnessState> {
   const state = await loadOrInitializeState(connection, profileInput);
   ensureBootstrap(state);
   phaseTiming(state, "zk");
-  if (state.zkProofs.length >= 7) {
+  if (state.zkProofs.length >= 7 && state.onchainZkAnchors.length >= 3) {
     completePhase(state, "zk");
     persistState(state);
     publishArtifacts(state);
@@ -1987,16 +2167,18 @@ export async function runZkPhase(connection: Connection, profileInput?: string |
   }
 
   const zkWallets = state.wallets.filter((wallet) => wallet.role === "zk-tester");
-  const entries: ZkProofEntry[] = [];
-  for (const wallet of zkWallets) {
-    const entry = await generateVoteProof(state, wallet, BigInt(wallet.funding.pdaoBalanceRaw || profileTargetPdaoRaw(state.profile).toString()));
-    entries.push(entry);
-  }
-  const tally = await generateTallyProof(state, zkWallets);
-  entries.push(tally);
-  const delegationSource = state.wallets.find((wallet) => wallet.plan.commitScenario === "delegate-then-direct-overlap");
-  if (delegationSource) {
-    entries.push(await generateDelegationProof(state, delegationSource));
+  const entries: ZkProofEntry[] = state.zkProofs.length >= 7 ? state.zkProofs : [];
+  if (entries.length < 7) {
+    for (const wallet of zkWallets) {
+      const entry = await generateVoteProof(state, wallet, BigInt(wallet.funding.pdaoBalanceRaw || profileTargetPdaoRaw(state.profile).toString()));
+      entries.push(entry);
+    }
+    const tally = await generateTallyProof(state, zkWallets);
+    entries.push(tally);
+    const delegationSource = state.wallets.find((wallet) => wallet.plan.commitScenario === "delegate-then-direct-overlap");
+    if (delegationSource) {
+      entries.push(await generateDelegationProof(state, delegationSource));
+    }
   }
 
   state.zkProofs = entries;
@@ -2018,6 +2200,7 @@ export async function runZkPhase(connection: Connection, profileInput?: string |
       });
     }
   }
+  await anchorRepresentativeZkProofs(state, connection, entries);
 
   completePhase(state, "zk");
   persistState(state);
@@ -2176,6 +2359,17 @@ function buildZkRegistryDoc(state: HarnessState) {
       proof_path: entry.proofPath,
       public_path: entry.publicPath,
     })),
+    onchain_proof_anchors: {
+      proposal_public_key: state.bootstrap?.proposalPublicKey ?? null,
+      entries: state.onchainZkAnchors.map((entry) => ({
+        layer: entry.layer,
+        circuit: entry.circuit,
+        anchor_pda: entry.anchorPda,
+        tx_signature: entry.txSignature,
+        explorer_url: entry.explorerUrl,
+        anchored_at: entry.anchoredAt,
+      })),
+    },
   };
 }
 
@@ -2220,7 +2414,7 @@ function buildLoadTestReport(state: HarnessState, metrics: ReturnType<typeof bui
   const failureCauseCounts = new Map<string, number>();
   for (const entry of state.adversarial) {
     if (entry.outcome !== "rejected" || !entry.error) continue;
-    const normalized = entry.error.split("\n")[0].slice(0, 120);
+    const normalized = entry.error.split("\n")[0].slice(0, 120).trim();
     failureCauseCounts.set(normalized, (failureCauseCounts.get(normalized) ?? 0) + 1);
   }
   const failureCauseLines =

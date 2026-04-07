@@ -1,20 +1,27 @@
 {
-  "generatedAt": "2026-04-04T12:22:37.374Z",
-  "runLabel": "20260404110609",
+  "generatedAt": "2026-04-07T21:59:25.684Z",
+  "runLabel": "20260407202442",
   "network": "devnet",
+  "profile": {
+    "name": "50",
+    "walletCount": 50,
+    "waveSize": 10,
+    "fundingWaveSize": 5,
+    "targetPdaoUi": 100
+  },
   "program_id": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
   "verification_wallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
-  "dao_name": "PDAOStress04110609",
+  "dao_name": "PDAOStress07202442",
   "governance_mint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
-  "dao_public_key": "DZvgwbANngbvDViiF3DtexaVM7V3vkWxHwR4GMdd9Paj",
-  "treasury_pda": "7cnFuUj1B1qCx9Soy2n4KLyABF6qaq5rvxgt7b4396bw",
-  "proposal_public_key": "EkxgKFqH2uewTEsEU4LfV8bvdX5WUX5SwsS1p186Vrtn",
+  "dao_public_key": "CC65ZFSQmT1K3ScBFHrtq4Cxpt8y84Yqr3Sq5rGD1TYx",
+  "treasury_pda": "8XV4DUCKH1H8XxK6Kp19Arq533uZCCPEvYm6zqT9GJry",
+  "proposal_public_key": "G76rRCe9MXbroK7CPC9jia1JCbuUtcV55S2hd1GCpUzL",
   "proposal_id": "0",
   "proposal_title": "50-wallet devnet stress run",
-  "proposal_recipient": "HR4XjJ1VLJU3YVc2CxQxcZH2h5SB2frpDUzTNPr3NEXm",
+  "proposal_recipient": "AbF9Q5WkSgQRMV8R7HwHa1WgoPAytM6XxyZVzf7fFWDy",
   "transactions": {
-    "create_dao": "2aHnkaEqiWok2qmcXAsXTDPPGpbUNMMCiY1rMf5Jvt1v2ZnPzpRDNUU63qGHeub9QuYFsnZnmKaVh8nZZtujR1Bc",
-    "deposit_treasury": "63HQMgXiMd4h2EwFitCxNv4c4fJWGagjyo8TUvPX6rmPXUpJD7TpGUUXNsgGsMhXeik2dagwdaem1SmXSHq1K42Q",
-    "create_proposal": "188wGF4ZKepivu3j41MHzgMKzs5Gmh3soJEjPtb7RB5GuJAJ4ww34mJZ8mJ5zBeZtz6D9R5BjLNgJq2m64Vsfgp"
+    "create_dao": "25xJsSWU9SJY7ewEGvMqX6qjDvAk7y12sPwv8LeQgEaNpQ1bwcnQTNXwBe8hacD4fgurMMwxc1LG3Bcw1QRefw7E",
+    "deposit_treasury": "btQ8QBxszLitToztJvMiu3mTmN3cWivfK63kkNnYibKhpkDnTCZdSQSdSDYMAWi3tVeK525gaWHVKF5R99bhsWK",
+    "create_proposal": "5t5XmtvrrYjYsJPe4dG4n81NAQTNkLZyWb4tQDnhCbFL31pi1cTJNcfpbdAnebBm2bLXQdTF5Ps89dygD1FHRUy5"
   }
 }
