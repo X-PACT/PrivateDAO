@@ -181,6 +181,37 @@ pub mod private_dao {
         require!(settlement_ttl_seconds > 0, Error::InvalidSecurityPolicy);
 
         let policy = &mut ctx.accounts.dao_security_policy;
+        if policy.dao != Pubkey::default() {
+            require!(
+                policy.dao == ctx.accounts.dao.key()
+                    && policy.authority == ctx.accounts.authority.key()
+                    && policy.mode == mode
+                    && policy.zk_policy == zk_policy
+                    && policy.settlement_policy == settlement_policy
+                    && policy.cancel_policy == cancel_policy
+                    && policy.proof_attestors == proof_attestors
+                    && policy.proof_attestor_count == proof_attestor_count
+                    && policy.proof_threshold == proof_threshold
+                    && policy.settlement_attestors == settlement_attestors
+                    && policy.settlement_attestor_count == settlement_attestor_count
+                    && policy.settlement_threshold == settlement_threshold
+                    && policy.proof_ttl_seconds == proof_ttl_seconds
+                    && policy.settlement_ttl_seconds == settlement_ttl_seconds,
+                Error::SecurityPolicyAlreadyInitialized
+            );
+            emit!(DaoSecurityPolicyInitialized {
+                dao: policy.dao,
+                authority: policy.authority,
+                mode: policy.mode.clone(),
+                zk_policy: policy.zk_policy.clone(),
+                settlement_policy: policy.settlement_policy.clone(),
+                cancel_policy: policy.cancel_policy.clone(),
+                proof_threshold: policy.proof_threshold,
+                settlement_threshold: policy.settlement_threshold,
+                created_at: policy.created_at,
+            });
+            return Ok(());
+        }
         policy.dao = ctx.accounts.dao.key();
         policy.authority = ctx.accounts.authority.key();
         policy.mode = mode.clone();
@@ -210,6 +241,68 @@ pub mod private_dao {
             proof_threshold,
             settlement_threshold,
             created_at: policy.created_at,
+        });
+        Ok(())
+    }
+
+    pub fn update_dao_security_policy_v2(
+        ctx: Context<UpdateDaoSecurityPolicyV2>,
+        mode: EnforcementMode,
+        zk_policy: FeaturePolicy,
+        settlement_policy: FeaturePolicy,
+        cancel_policy: CancelPolicy,
+        proof_attestors: [Pubkey; MAX_POLICY_ATTESTORS],
+        proof_attestor_count: u8,
+        proof_threshold: u8,
+        settlement_attestors: [Pubkey; MAX_POLICY_ATTESTORS],
+        settlement_attestor_count: u8,
+        settlement_threshold: u8,
+        proof_ttl_seconds: i64,
+        settlement_ttl_seconds: i64,
+    ) -> Result<()> {
+        validate_attestor_policy(&proof_attestors, proof_attestor_count, proof_threshold)?;
+        validate_attestor_policy(
+            &settlement_attestors,
+            settlement_attestor_count,
+            settlement_threshold,
+        )?;
+        require!(proof_ttl_seconds > 0, Error::InvalidSecurityPolicy);
+        require!(settlement_ttl_seconds > 0, Error::InvalidSecurityPolicy);
+
+        let policy = &mut ctx.accounts.dao_security_policy;
+        require!(!policy.emergency_disabled, Error::SecurityPolicyDisabled);
+        require!(
+            enforcement_rank(&mode) >= enforcement_rank(&policy.mode)
+                && feature_rank(&zk_policy) >= feature_rank(&policy.zk_policy)
+                && feature_rank(&settlement_policy) >= feature_rank(&policy.settlement_policy)
+                && cancel_rank(&cancel_policy) >= cancel_rank(&policy.cancel_policy),
+            Error::PolicyRollbackNotAllowed
+        );
+
+        policy.mode = mode.clone();
+        policy.zk_policy = zk_policy.clone();
+        policy.settlement_policy = settlement_policy.clone();
+        policy.cancel_policy = cancel_policy.clone();
+        policy.proof_attestors = proof_attestors;
+        policy.proof_attestor_count = proof_attestor_count;
+        policy.proof_threshold = proof_threshold;
+        policy.settlement_attestors = settlement_attestors;
+        policy.settlement_attestor_count = settlement_attestor_count;
+        policy.settlement_threshold = settlement_threshold;
+        policy.proof_ttl_seconds = proof_ttl_seconds;
+        policy.settlement_ttl_seconds = settlement_ttl_seconds;
+        policy.updated_at = Clock::get()?.unix_timestamp;
+
+        emit!(DaoSecurityPolicyUpdatedV2 {
+            dao: policy.dao,
+            authority: policy.authority,
+            mode,
+            zk_policy,
+            settlement_policy,
+            cancel_policy,
+            proof_threshold,
+            settlement_threshold,
+            updated_at: policy.updated_at,
         });
         Ok(())
     }
@@ -320,8 +413,7 @@ pub mod private_dao {
         let plan = &mut ctx.accounts.confidential_payout_plan;
         if plan.proposal != Pubkey::default() {
             require!(
-                plan.dao == ctx.accounts.dao.key()
-                    && plan.proposal == ctx.accounts.proposal.key(),
+                plan.dao == ctx.accounts.dao.key() && plan.proposal == ctx.accounts.proposal.key(),
                 Error::ConfidentialPayoutPlanMismatch
             );
             require!(
@@ -385,7 +477,8 @@ pub mod private_dao {
 
         let payout_plan = &ctx.accounts.confidential_payout_plan;
         require!(
-            payout_plan.dao == ctx.accounts.dao.key() && payout_plan.proposal == ctx.accounts.proposal.key(),
+            payout_plan.dao == ctx.accounts.dao.key()
+                && payout_plan.proposal == ctx.accounts.proposal.key(),
             Error::RefheEnvelopeMismatch
         );
         require!(
@@ -396,7 +489,12 @@ pub mod private_dao {
             input_ciphertext_hash == payout_plan.ciphertext_hash,
             Error::RefheEnvelopeMismatch
         );
-        validate_refhe_envelope(&model_uri, &policy_hash, &input_ciphertext_hash, &evaluation_key_hash)?;
+        validate_refhe_envelope(
+            &model_uri,
+            &policy_hash,
+            &input_ciphertext_hash,
+            &evaluation_key_hash,
+        )?;
 
         let envelope = &mut ctx.accounts.refhe_envelope;
         if envelope.proposal != Pubkey::default() {
@@ -475,7 +573,8 @@ pub mod private_dao {
             Error::RefheEnvelopeMismatch
         );
         require!(
-            payout_plan.dao == ctx.accounts.dao.key() && payout_plan.proposal == ctx.accounts.proposal.key(),
+            payout_plan.dao == ctx.accounts.dao.key()
+                && payout_plan.proposal == ctx.accounts.proposal.key(),
             Error::RefheEnvelopeMismatch
         );
         require!(
@@ -694,7 +793,10 @@ pub mod private_dao {
 
     pub fn cancel_proposal(ctx: Context<CancelProposal>) -> Result<()> {
         let p = &mut ctx.accounts.proposal;
-        require!(p.status == ProposalStatus::Voting, Error::ProposalNotCancellable);
+        require!(
+            p.status == ProposalStatus::Voting,
+            Error::ProposalNotCancellable
+        );
 
         p.status = ProposalStatus::Cancelled;
 
@@ -1212,7 +1314,11 @@ pub mod private_dao {
             );
         }
         if account_exists(&ctx.accounts.magicblock_private_payment_corridor) {
-            let mut data: &[u8] = &ctx.accounts.magicblock_private_payment_corridor.data.borrow();
+            let mut data: &[u8] = &ctx
+                .accounts
+                .magicblock_private_payment_corridor
+                .data
+                .borrow();
             let corridor = MagicBlockPrivatePaymentCorridor::try_deserialize(&mut data)
                 .map_err(|_| error!(Error::MagicBlockCorridorMismatch))?;
             require!(
@@ -1226,10 +1332,7 @@ pub mod private_dao {
                 Error::MagicBlockSettlementRequired
             );
             require!(
-                corridor.token_mint
-                    == plan
-                        .token_mint
-                        .ok_or(Error::MagicBlockTokenMintRequired)?,
+                corridor.token_mint == plan.token_mint.ok_or(Error::MagicBlockTokenMintRequired)?,
                 Error::MagicBlockCorridorMismatch
             );
             require!(
@@ -1388,7 +1491,10 @@ pub mod private_dao {
         let p = &mut ctx.accounts.proposal;
         require!(p.status == ProposalStatus::Passed, Error::ProposalNotPassed);
         require!(!p.is_executed, Error::AlreadyExecuted);
-        require!(now >= p.execution_unlocks_at, Error::ExecutionTimelockActive);
+        require!(
+            now >= p.execution_unlocks_at,
+            Error::ExecutionTimelockActive
+        );
         require!(
             p.treasury_action.is_none(),
             Error::ConfidentialPayoutConflictsWithTreasuryAction
@@ -1457,8 +1563,14 @@ pub mod private_dao {
                     treasury_token_account.owner == ctx.accounts.treasury.key(),
                     Error::InvalidTreasuryTokenAuthority
                 );
-                require!(treasury_token_account.mint == action_mint, Error::InvalidTokenMint);
-                require!(recipient_token_account.mint == action_mint, Error::InvalidTokenMint);
+                require!(
+                    treasury_token_account.mint == action_mint,
+                    Error::InvalidTokenMint
+                );
+                require!(
+                    recipient_token_account.mint == action_mint,
+                    Error::InvalidTokenMint
+                );
                 require!(
                     ctx.accounts.treasury_token_account.key()
                         != ctx.accounts.recipient_token_account.key(),
@@ -1770,7 +1882,8 @@ pub mod private_dao {
         let policy_initialized = policy.proposal != Pubkey::default();
         if policy_initialized {
             require!(
-                policy.dao == ctx.accounts.dao.key() && policy.proposal == ctx.accounts.proposal.key(),
+                policy.dao == ctx.accounts.dao.key()
+                    && policy.proposal == ctx.accounts.proposal.key(),
                 Error::ZkVerificationReceiptMismatch
             );
             require!(
@@ -1840,7 +1953,8 @@ pub mod private_dao {
             Error::ProposalNotZkEnforced
         );
         require!(
-            ctx.accounts.proposal_zk_policy.required_layers_mask == ProposalZkPolicy::ALL_LAYERS_MASK,
+            ctx.accounts.proposal_zk_policy.required_layers_mask
+                == ProposalZkPolicy::ALL_LAYERS_MASK,
             Error::ZkVerificationReceiptMissing
         );
 
@@ -1852,6 +1966,28 @@ pub mod private_dao {
     ) -> Result<()> {
         let snapshot = &mut ctx.accounts.proposal_execution_policy_snapshot;
         let policy = &ctx.accounts.dao_security_policy;
+        if snapshot.proposal != Pubkey::default() {
+            require!(
+                snapshot.dao == ctx.accounts.dao.key()
+                    && snapshot.proposal == ctx.accounts.proposal.key()
+                    && snapshot.created_under_mode == policy.mode
+                    && snapshot.zk_policy == policy.zk_policy
+                    && snapshot.settlement_policy == policy.settlement_policy
+                    && snapshot.cancel_policy == policy.cancel_policy
+                    && snapshot.object_version == 2,
+                Error::PolicySnapshotAlreadyRecorded
+            );
+            emit!(ProposalExecutionPolicySnapshotted {
+                dao: snapshot.dao,
+                proposal: snapshot.proposal,
+                created_under_mode: snapshot.created_under_mode.clone(),
+                zk_policy: snapshot.zk_policy.clone(),
+                settlement_policy: snapshot.settlement_policy.clone(),
+                cancel_policy: snapshot.cancel_policy.clone(),
+                object_version: snapshot.object_version,
+            });
+            return Ok(());
+        }
         snapshot.dao = ctx.accounts.dao.key();
         snapshot.proposal = ctx.accounts.proposal.key();
         snapshot.created_under_mode = policy.mode.clone();
@@ -1901,7 +2037,8 @@ pub mod private_dao {
             Error::InvalidZkArtifactHash
         );
         require!(
-            domain_separator == proof_domain_separator(&ctx.accounts.dao.key(), &ctx.accounts.proposal.key()),
+            domain_separator
+                == proof_domain_separator(&ctx.accounts.dao.key(), &ctx.accounts.proposal.key()),
             Error::PayloadHashMismatch
         );
         require!(
@@ -1994,7 +2131,10 @@ pub mod private_dao {
             verification.status == VerificationStatus::Verified,
             Error::ProofVerificationNotVerified
         );
-        require!(now <= verification.expires_at, Error::StaleProofVerification);
+        require!(
+            now <= verification.expires_at,
+            Error::StaleProofVerification
+        );
         require!(
             verification.payload_hash
                 == canonical_proposal_payload_hash(
@@ -2005,7 +2145,10 @@ pub mod private_dao {
             Error::PayloadHashMismatch
         );
 
-        require!(now >= ctx.accounts.proposal.reveal_end, Error::RevealStillOpen);
+        require!(
+            now >= ctx.accounts.proposal.reveal_end,
+            Error::RevealStillOpen
+        );
         require!(
             ctx.accounts.proposal.status == ProposalStatus::Voting,
             Error::AlreadyFinalized
@@ -2028,8 +2171,14 @@ pub mod private_dao {
                 || policy.settlement_policy == FeaturePolicy::ThresholdAttestedRequired,
             Error::StrictPolicyRequired
         );
-        require!(!is_zero_hash(&settlement_id), Error::InvalidSettlementEvidence);
-        require!(!is_zero_hash(&evidence_hash), Error::InvalidSettlementEvidence);
+        require!(
+            !is_zero_hash(&settlement_id),
+            Error::InvalidSettlementEvidence
+        );
+        require!(
+            !is_zero_hash(&evidence_hash),
+            Error::InvalidSettlementEvidence
+        );
         require!(
             payout_fields_hash
                 == canonical_payout_fields_hash(
@@ -2158,6 +2307,29 @@ fn proof_domain_separator(dao: &Pubkey, proposal: &Pubkey) -> [u8; 32] {
     hash_bytes(&[PROOF_PAYLOAD_DOMAIN_V1, dao.as_ref(), proposal.as_ref()])
 }
 
+fn enforcement_rank(mode: &EnforcementMode) -> u8 {
+    match mode {
+        EnforcementMode::LegacyAllowed => 0,
+        EnforcementMode::CompatibilityRequired => 1,
+        EnforcementMode::StrictRequired => 2,
+    }
+}
+
+fn feature_rank(policy: &FeaturePolicy) -> u8 {
+    match policy {
+        FeaturePolicy::LegacyAllowed => 0,
+        FeaturePolicy::ThresholdAttestedRequired => 1,
+        FeaturePolicy::StrictRequired => 2,
+    }
+}
+
+fn cancel_rank(policy: &CancelPolicy) -> u8 {
+    match policy {
+        CancelPolicy::LegacyAllowed => 0,
+        CancelPolicy::NoCancelAfterParticipation => 1,
+    }
+}
+
 fn canonical_proposal_payload_hash(
     dao: &Pubkey,
     proposal: &Pubkey,
@@ -2208,11 +2380,20 @@ fn validate_attestor_policy(
         attestor_count > 0 && (attestor_count as usize) <= MAX_POLICY_ATTESTORS,
         Error::InvalidSecurityPolicy
     );
-    require!(threshold > 0 && threshold <= attestor_count, Error::InvalidSecurityPolicy);
+    require!(
+        threshold > 0 && threshold <= attestor_count,
+        Error::InvalidSecurityPolicy
+    );
     for idx in 0..attestor_count as usize {
-        require!(attestors[idx] != Pubkey::default(), Error::InvalidSecurityPolicy);
+        require!(
+            attestors[idx] != Pubkey::default(),
+            Error::InvalidSecurityPolicy
+        );
         for prior in 0..idx {
-            require!(attestors[prior] != attestors[idx], Error::InvalidSecurityPolicy);
+            require!(
+                attestors[prior] != attestors[idx],
+                Error::InvalidSecurityPolicy
+            );
         }
     }
     Ok(())
@@ -2242,7 +2423,11 @@ fn count_matching_signers(
             }
         }
     }
-    matched.iter().take(attestor_count as usize).filter(|seen| **seen).count() as u8
+    matched
+        .iter()
+        .take(attestor_count as usize)
+        .filter(|seen| **seen)
+        .count() as u8
 }
 
 fn validate_zk_receipt(
@@ -2431,10 +2616,7 @@ fn validate_confidential_payout_plan(
 
     match asset_type {
         ConfidentialAssetType::Sol => {
-            require!(
-                token_mint.is_none(),
-                Error::InvalidConfidentialPayoutPlan
-            );
+            require!(token_mint.is_none(), Error::InvalidConfidentialPayoutPlan);
         }
         ConfidentialAssetType::Token => {
             require!(
@@ -2491,14 +2673,8 @@ fn validate_magicblock_corridor(
         owner_wallet != Pubkey::default() && settlement_wallet != Pubkey::default(),
         Error::InvalidMagicBlockCorridor
     );
-    require!(
-        token_mint.is_some(),
-        Error::MagicBlockTokenMintRequired
-    );
-    require!(
-        !is_zero_hash(route_hash),
-        Error::InvalidMagicBlockCorridor
-    );
+    require!(token_mint.is_some(), Error::MagicBlockTokenMintRequired);
+    require!(!is_zero_hash(route_hash), Error::InvalidMagicBlockCorridor);
     require!(
         private_transfer_amount > 0,
         Error::InvalidMagicBlockCorridor
@@ -2567,6 +2743,21 @@ pub struct InitializeDaoSecurityPolicy<'info> {
     #[account(mut)]
     pub authority: Signer<'info>,
     pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct UpdateDaoSecurityPolicyV2<'info> {
+    #[account(has_one = authority)]
+    pub dao: Account<'info, Dao>,
+    #[account(
+        mut,
+        seeds = [b"dao-security-policy", dao.key().as_ref()],
+        bump = dao_security_policy.bump,
+        constraint = dao_security_policy.dao == dao.key() @ Error::SecurityPolicyMismatch,
+        constraint = dao_security_policy.authority == authority.key() @ Error::UnauthorizedConfidentialPayoutOperator
+    )]
+    pub dao_security_policy: Account<'info, DaoSecurityPolicy>,
+    pub authority: Signer<'info>,
 }
 
 #[derive(Accounts)]
@@ -3370,10 +3561,25 @@ pub struct DaoSecurityPolicy {
 }
 
 impl DaoSecurityPolicy {
-    pub const LEN: usize = 8 + 32 + 32 + 1 + 1 + 1 + 1
-        + (32 * MAX_POLICY_ATTESTORS) + 1 + 1
-        + (32 * MAX_POLICY_ATTESTORS) + 1 + 1
-        + 8 + 8 + 1 + 8 + 8 + 1;
+    pub const LEN: usize = 8
+        + 32
+        + 32
+        + 1
+        + 1
+        + 1
+        + 1
+        + (32 * MAX_POLICY_ATTESTORS)
+        + 1
+        + 1
+        + (32 * MAX_POLICY_ATTESTORS)
+        + 1
+        + 1
+        + 8
+        + 8
+        + 1
+        + 8
+        + 8
+        + 1;
 }
 
 #[account]
@@ -3600,19 +3806,19 @@ impl ZkProofAnchor {
 
 #[account]
 pub struct ZkVerificationReceipt {
-    pub dao: Pubkey,                     // 32
-    pub proposal: Pubkey,                // 32
-    pub verified_by: Pubkey,             // 32
-    pub layer: ZkProofLayer,             // 1
-    pub proof_system: ZkProofSystem,     // 1
+    pub dao: Pubkey,                           // 32
+    pub proposal: Pubkey,                      // 32
+    pub verified_by: Pubkey,                   // 32
+    pub layer: ZkProofLayer,                   // 1
+    pub proof_system: ZkProofSystem,           // 1
     pub verification_mode: ZkVerificationMode, // 1
-    pub verifier_program: Option<Pubkey>, // 33
-    pub proof_hash: [u8; 32],            // 32
-    pub public_inputs_hash: [u8; 32],    // 32
-    pub verification_key_hash: [u8; 32], // 32
-    pub bundle_hash: [u8; 32],           // 32
-    pub verified_at: i64,                // 8
-    pub bump: u8,                        // 1
+    pub verifier_program: Option<Pubkey>,      // 33
+    pub proof_hash: [u8; 32],                  // 32
+    pub public_inputs_hash: [u8; 32],          // 32
+    pub verification_key_hash: [u8; 32],       // 32
+    pub bundle_hash: [u8; 32],                 // 32
+    pub verified_at: i64,                      // 8
+    pub bump: u8,                              // 1
 }
 
 impl ZkVerificationReceipt {
@@ -3621,13 +3827,13 @@ impl ZkVerificationReceipt {
 
 #[account]
 pub struct ProposalZkPolicy {
-    pub dao: Pubkey,               // 32
-    pub proposal: Pubkey,          // 32
-    pub configured_by: Pubkey,     // 32
-    pub mode: ProposalZkMode,      // 1
-    pub required_layers_mask: u8,  // 1
-    pub configured_at: i64,        // 8
-    pub bump: u8,                  // 1
+    pub dao: Pubkey,              // 32
+    pub proposal: Pubkey,         // 32
+    pub configured_by: Pubkey,    // 32
+    pub mode: ProposalZkMode,     // 1
+    pub required_layers_mask: u8, // 1
+    pub configured_at: i64,       // 8
+    pub bump: u8,                 // 1
 }
 
 impl ProposalZkPolicy {
@@ -3637,27 +3843,28 @@ impl ProposalZkPolicy {
 
 #[account]
 pub struct ConfidentialPayoutPlan {
-    pub dao: Pubkey,                    // 32
-    pub proposal: Pubkey,               // 32
-    pub configured_by: Pubkey,          // 32
+    pub dao: Pubkey,                         // 32
+    pub proposal: Pubkey,                    // 32
+    pub configured_by: Pubkey,               // 32
     pub payout_type: ConfidentialPayoutType, // 1
-    pub asset_type: ConfidentialAssetType, // 1
-    pub settlement_recipient: Pubkey,   // 32
-    pub token_mint: Option<Pubkey>,     // 33
-    pub recipient_count: u16,           // 2
-    pub total_amount: u64,              // 8
-    pub encrypted_manifest_uri: String, // 4 + 256
-    pub manifest_hash: [u8; 32],        // 32
-    pub ciphertext_hash: [u8; 32],      // 32
-    pub status: ConfidentialPayoutStatus, // 1
-    pub configured_at: i64,             // 8
-    pub funded_at: i64,                 // 8
-    pub bump: u8,                       // 1
+    pub asset_type: ConfidentialAssetType,   // 1
+    pub settlement_recipient: Pubkey,        // 32
+    pub token_mint: Option<Pubkey>,          // 33
+    pub recipient_count: u16,                // 2
+    pub total_amount: u64,                   // 8
+    pub encrypted_manifest_uri: String,      // 4 + 256
+    pub manifest_hash: [u8; 32],             // 32
+    pub ciphertext_hash: [u8; 32],           // 32
+    pub status: ConfidentialPayoutStatus,    // 1
+    pub configured_at: i64,                  // 8
+    pub funded_at: i64,                      // 8
+    pub bump: u8,                            // 1
 }
 
 impl ConfidentialPayoutPlan {
     pub const MAX_URI_LEN: usize = 256;
-    pub const LEN: usize = 8 + 32 + 32 + 32 + 1 + 1 + 32 + 33 + 2 + 8 + (4 + 256) + 32 + 32 + 1 + 8 + 8 + 1; // 523
+    pub const LEN: usize =
+        8 + 32 + 32 + 32 + 1 + 1 + 32 + 33 + 2 + 8 + (4 + 256) + 32 + 32 + 1 + 8 + 8 + 1; // 523
 }
 
 #[account]
@@ -3689,38 +3896,59 @@ impl RefheEnvelope {
 
 #[account]
 pub struct MagicBlockPrivatePaymentCorridor {
-    pub dao: Pubkey,                         // 32
-    pub proposal: Pubkey,                    // 32
-    pub payout_plan: Pubkey,                 // 32
-    pub configured_by: Pubkey,               // 32
-    pub settled_by: Option<Pubkey>,          // 33
-    pub api_base_url: String,                // 4 + 128
-    pub cluster: String,                     // 4 + 64
-    pub owner_wallet: Pubkey,                // 32
-    pub settlement_wallet: Pubkey,           // 32
-    pub token_mint: Pubkey,                  // 32
-    pub validator: Option<Pubkey>,           // 33
-    pub transfer_queue: Option<Pubkey>,      // 33
-    pub route_hash: [u8; 32],                // 32
-    pub deposit_amount: u64,                 // 8
-    pub private_transfer_amount: u64,        // 8
-    pub withdrawal_amount: u64,              // 8
-    pub deposit_tx_signature: String,        // 4 + 128
-    pub transfer_tx_signature: String,       // 4 + 128
-    pub withdraw_tx_signature: String,       // 4 + 128
-    pub status: MagicBlockSettlementStatus,  // 1
-    pub configured_at: i64,                  // 8
-    pub settled_at: i64,                     // 8
-    pub bump: u8,                            // 1
+    pub dao: Pubkey,                        // 32
+    pub proposal: Pubkey,                   // 32
+    pub payout_plan: Pubkey,                // 32
+    pub configured_by: Pubkey,              // 32
+    pub settled_by: Option<Pubkey>,         // 33
+    pub api_base_url: String,               // 4 + 128
+    pub cluster: String,                    // 4 + 64
+    pub owner_wallet: Pubkey,               // 32
+    pub settlement_wallet: Pubkey,          // 32
+    pub token_mint: Pubkey,                 // 32
+    pub validator: Option<Pubkey>,          // 33
+    pub transfer_queue: Option<Pubkey>,     // 33
+    pub route_hash: [u8; 32],               // 32
+    pub deposit_amount: u64,                // 8
+    pub private_transfer_amount: u64,       // 8
+    pub withdrawal_amount: u64,             // 8
+    pub deposit_tx_signature: String,       // 4 + 128
+    pub transfer_tx_signature: String,      // 4 + 128
+    pub withdraw_tx_signature: String,      // 4 + 128
+    pub status: MagicBlockSettlementStatus, // 1
+    pub configured_at: i64,                 // 8
+    pub settled_at: i64,                    // 8
+    pub bump: u8,                           // 1
 }
 
 impl MagicBlockPrivatePaymentCorridor {
     pub const MAX_API_BASE_LEN: usize = 128;
     pub const MAX_CLUSTER_LEN: usize = 64;
     pub const MAX_SIGNATURE_LEN: usize = 128;
-    pub const LEN: usize =
-        8 + 32 + 32 + 32 + 32 + 33 + (4 + 128) + (4 + 64) + 32 + 32 + 32 + 33 + 33 + 32 + 8 + 8 + 8
-        + (4 + 128) + (4 + 128) + (4 + 128) + 1 + 8 + 8 + 1; // 1001
+    pub const LEN: usize = 8
+        + 32
+        + 32
+        + 32
+        + 32
+        + 33
+        + (4 + 128)
+        + (4 + 64)
+        + 32
+        + 32
+        + 32
+        + 33
+        + 33
+        + 32
+        + 8
+        + 8
+        + 8
+        + (4 + 128)
+        + (4 + 128)
+        + (4 + 128)
+        + 1
+        + 8
+        + 8
+        + 1; // 1001
 }
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -4139,6 +4367,19 @@ pub struct DaoSecurityPolicyInitialized {
 }
 
 #[event]
+pub struct DaoSecurityPolicyUpdatedV2 {
+    pub dao: Pubkey,
+    pub authority: Pubkey,
+    pub mode: EnforcementMode,
+    pub zk_policy: FeaturePolicy,
+    pub settlement_policy: FeaturePolicy,
+    pub cancel_policy: CancelPolicy,
+    pub proof_threshold: u8,
+    pub settlement_threshold: u8,
+    pub updated_at: i64,
+}
+
+#[event]
 pub struct ProposalExecutionPolicySnapshotted {
     pub dao: Pubkey,
     pub proposal: Pubkey,
@@ -4323,7 +4564,9 @@ pub enum Error {
     ConfidentialPayoutPlanMismatch,
     #[msg("Confidential payout plan is invalid")]
     InvalidConfidentialPayoutPlan,
-    #[msg("Confidential payout encrypted manifest URI must be non-empty and at most 256 characters")]
+    #[msg(
+        "Confidential payout encrypted manifest URI must be non-empty and at most 256 characters"
+    )]
     ConfidentialManifestUriTooLong,
     #[msg("This proposal already executed its confidential payout batch")]
     ConfidentialPayoutAlreadyFunded,
@@ -4363,6 +4606,10 @@ pub enum Error {
     MagicBlockClusterTooLong,
     #[msg("DAO security policy is invalid")]
     InvalidSecurityPolicy,
+    #[msg("DAO security policy was already initialized with a different configuration")]
+    SecurityPolicyAlreadyInitialized,
+    #[msg("DAO security policy updates cannot roll back to weaker enforcement")]
+    PolicyRollbackNotAllowed,
     #[msg("DAO security policy does not match the expected DAO")]
     SecurityPolicyMismatch,
     #[msg("DAO security policy is emergency-disabled")]
@@ -4373,6 +4620,8 @@ pub enum Error {
     AttestationThresholdNotMet,
     #[msg("Proposal policy snapshot does not match the proposal or DAO")]
     PolicySnapshotMismatch,
+    #[msg("Proposal policy snapshot was already recorded under a different policy")]
+    PolicySnapshotAlreadyRecorded,
     #[msg("Proof verification companion account does not match the proposal or DAO")]
     ProofVerificationMismatch,
     #[msg("Proof verification was already recorded with a different strict payload")]

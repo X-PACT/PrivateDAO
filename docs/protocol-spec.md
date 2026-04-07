@@ -384,7 +384,10 @@ Keeper note:
 ### Policy Transition Invariants
 
 - legacy objects remain readable after V2 policy accounts are added
+- `DaoSecurityPolicy` initialization is idempotent only for the exact same configuration
+- DAO security policy updates are monotonic and cannot roll back to weaker enforcement
 - DAO-wide future policy changes do not silently reinterpret proposals with existing `ProposalExecutionPolicySnapshot`
+- proposal policy snapshots cannot be overwritten with a different policy after recording
 - strict enforcement requires explicit companion accounts rather than implicit reinterpretation of legacy records
 
 ## 10. On-Chain vs Off-Chain Boundaries

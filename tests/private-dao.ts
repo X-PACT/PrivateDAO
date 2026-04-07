@@ -2672,6 +2672,68 @@ describe("PrivateDAO", () => {
       })
       .rpc();
 
+    await program.methods
+      .initializeDaoSecurityPolicy(
+        { strictRequired: {} },
+        { thresholdAttestedRequired: {} },
+        { thresholdAttestedRequired: {} },
+        { noCancelAfterParticipation: {} },
+        attestors,
+        1,
+        1,
+        attestors,
+        1,
+        1,
+        new BN(3600),
+        new BN(3600),
+      )
+      .accounts({
+        dao: daoPda,
+        daoSecurityPolicy: securityPolicyPda,
+        authority: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    await program.methods
+      .updateDaoSecurityPolicyV2(
+        { strictRequired: {} },
+        { strictRequired: {} },
+        { strictRequired: {} },
+        { noCancelAfterParticipation: {} },
+        attestors,
+        1,
+        1,
+        attestors,
+        1,
+        1,
+        new BN(3600),
+        new BN(3600),
+      )
+      .accounts({
+        dao: daoPda,
+        daoSecurityPolicy: securityPolicyPda,
+        authority: authority.publicKey,
+      })
+      .rpc();
+
+    try {
+      await program.methods
+        .snapshotProposalExecutionPolicy()
+        .accounts({
+          dao: daoPda,
+          daoSecurityPolicy: securityPolicyPda,
+          proposal: v2ProposalPda,
+          proposalExecutionPolicySnapshot: snapshotPda,
+          operator: authority.publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("A recorded proposal policy snapshot must not be reinterpreted after DAO policy changes");
+    } catch (err: any) {
+      assert.include(err.toString(), "PolicySnapshotAlreadyRecorded");
+    }
+
     const [proofVerificationPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("proposal-proof-verification"), v2ProposalPda.toBuffer()],
       program.programId,

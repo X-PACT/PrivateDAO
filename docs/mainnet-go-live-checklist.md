@@ -103,7 +103,9 @@ Before mainnet, be explicit about what is and is not claimed.
 - on-chain proof anchors are verified
 - on-chain parallel verification receipts are reviewed
 - V2 strict proof policy is initialized for the target DAO when strict finalization is required
+- any policy change after initialization is performed through `update_dao_security_policy_v2` and reviewed as monotonic, not a rollback
 - `ProposalExecutionPolicySnapshot` exists for proposals that will use V2 strict finalization
+- proposal policy snapshots are treated as immutable object-level records once captured
 - off-chain proof generation and proving flow are reviewed
 - explorer-visible anchor path is documented
 - operator messaging does not overstate the enforcement boundary

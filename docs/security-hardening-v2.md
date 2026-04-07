@@ -16,9 +16,11 @@ The goal is not to break legacy accounts, PDAs, or instruction interfaces. Legac
 
 - `DaoSecurityPolicy`
   Stores rollout mode, feature policies, cancel policy, proof attestors, settlement attestors, thresholds, TTLs, and emergency disable state.
+  Initialization is idempotent only for the exact same configuration. Policy evolution uses `update_dao_security_policy_v2`, which rejects rollbacks to weaker enforcement.
 
 - `ProposalExecutionPolicySnapshot`
   Stores the DAO policy mode and feature policies captured for a specific proposal at the time the strict path is selected.
+  Once populated, the snapshot is immutable except for an idempotent repeat under the exact same policy.
 
 - `ProposalProofVerification`
   Stores verified proof metadata with explicit `VerificationStatus`, canonical payload binding, domain separator, expiry, and verification kind.
@@ -138,7 +140,9 @@ New integrations can distinguish token-weighted, quadratic, capital-leg, and com
 - `LegacyAllowed` means legacy instructions remain callable and historical objects are not reinterpreted.
 - `CompatibilityRequired` means legacy state remains readable while new strict flows should snapshot object policy before using V2 finalization or V2 settlement execution.
 - `StrictRequired` means newly selected V2 paths must provide companion proof or settlement accounts.
+- `update_dao_security_policy_v2` is monotonic: it can move a DAO toward stronger enforcement, but it cannot roll policy mode, proof policy, settlement policy, or cancellation policy back to a weaker setting.
 - A future DAO-wide policy change does not silently change a proposal that already has a `ProposalExecutionPolicySnapshot`.
+- A proposal policy snapshot cannot be overwritten with a different policy after it is recorded.
 - Legacy proposals can only become strict when the necessary companion accounts are explicitly provided and pass the V2 gates.
 
 ## State Transition Diagrams
@@ -183,6 +187,9 @@ stateDiagram-v2
 ## Regression Tests Added
 
 - Policy snapshot creation.
+- Idempotent security-policy initialization without silent overwrite.
+- Monotonic DAO policy update.
+- Proposal policy snapshot overwrite rejection after DAO-wide policy changes.
 - Threshold-attested proof verification record creation.
 - Payload substitution failure for strict finalization.
 - Correct payload reaches lifecycle timing checks instead of failing proof binding.

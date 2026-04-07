@@ -34,6 +34,7 @@ function main(): void {
   const libMarkers = [
     "pub fn cancel_proposal_v2",
     "pub fn snapshot_proposal_execution_policy",
+    "pub fn update_dao_security_policy_v2",
     "pub fn record_proof_verification_v2",
     "pub fn finalize_zk_enforced_proposal_v2",
     "pub fn record_settlement_evidence_v2",
@@ -52,6 +53,12 @@ function main(): void {
     "fn canonical_proposal_payload_hash",
     "fn canonical_payout_fields_hash",
     "fn count_matching_signers",
+    "fn enforcement_rank",
+    "fn feature_rank",
+    "fn cancel_rank",
+    "SecurityPolicyAlreadyInitialized",
+    "PolicyRollbackNotAllowed",
+    "PolicySnapshotAlreadyRecorded",
     "ProofVerificationAlreadyRecorded",
     "SettlementEvidenceAlreadyRecorded",
   ];
@@ -90,21 +97,33 @@ function main(): void {
   );
   requireRegex(
     lib,
-    /domain_separator == proof_domain_separator/s,
+    /domain_separator\s*==\s*proof_domain_separator/s,
     libRel,
     "domain-separated proof verification",
   );
   requireRegex(
     lib,
-    /policy_snapshot\.zk_policy == FeaturePolicy::StrictRequired\s*\|\|\s*policy_snapshot\.zk_policy == FeaturePolicy::ThresholdAttestedRequired/s,
+    /policy_snapshot\.zk_policy\s*==\s*FeaturePolicy::StrictRequired\s*\|\|\s*policy_snapshot\.zk_policy\s*==\s*FeaturePolicy::ThresholdAttestedRequired/s,
     libRel,
     "object-level ZK policy snapshot gate",
   );
   requireRegex(
     lib,
-    /policy_snapshot\.settlement_policy == FeaturePolicy::StrictRequired\s*\|\|\s*policy_snapshot\.settlement_policy == FeaturePolicy::ThresholdAttestedRequired/s,
+    /policy_snapshot\.settlement_policy\s*==\s*FeaturePolicy::StrictRequired\s*\|\|\s*policy_snapshot\.settlement_policy\s*==\s*FeaturePolicy::ThresholdAttestedRequired/s,
     libRel,
     "object-level settlement policy snapshot gate",
+  );
+  requireRegex(
+    lib,
+    /snapshot\.proposal != Pubkey::default\(\)/s,
+    libRel,
+    "strict proposal policy snapshot no-overwrite guard",
+  );
+  requireRegex(
+    lib,
+    /enforcement_rank\(&mode\) >= enforcement_rank\(&policy\.mode\)/s,
+    libRel,
+    "monotonic DAO policy update gate",
   );
   requireRegex(
     lib,
