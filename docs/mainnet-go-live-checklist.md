@@ -96,21 +96,38 @@ Blocking condition:
 
 ## 7. ZK Boundary Decision
 
-The current stack anchors proposal-bound proof material on-chain, records parallel on-chain verification receipts in Phase A, and keeps Groth16 witness generation and proving off-chain.
+The current stack anchors proposal-bound proof material on-chain, records parallel on-chain verification receipts in the legacy path, and keeps Groth16 witness generation and proving off-chain. The V2 strict security layer adds `DaoSecurityPolicy`, `ProposalExecutionPolicySnapshot`, `ProposalProofVerification`, threshold-attested proof records, canonical payload binding, and expiry checks.
 
 Before mainnet, be explicit about what is and is not claimed.
 
 - on-chain proof anchors are verified
 - on-chain parallel verification receipts are reviewed
+- V2 strict proof policy is initialized for the target DAO when strict finalization is required
+- `ProposalExecutionPolicySnapshot` exists for proposals that will use V2 strict finalization
 - off-chain proof generation and proving flow are reviewed
 - explorer-visible anchor path is documented
 - operator messaging does not overstate the enforcement boundary
 
 Required outcome:
 
-- the team can state clearly that the current system provides on-chain proof anchoring plus a Phase A parallel on-chain verification-receipt path, while commit-reveal still remains the canonical enforcement boundary until later `zk_enforced` work is finished
+- the team can state clearly which path is active: legacy proof anchoring, threshold-attested V2 strict finalization, or future cryptographic verifier CPI. Do not describe threshold attestation as cryptographic verification.
 
-## 8. Release Ceremony
+## 8. Confidential Settlement V2 Boundary
+
+Strict confidential payout execution is only mainnet-candidate when the V2 evidence path is active.
+
+- `SettlementEvidence` exists for every strict confidential payout execution
+- `SettlementEvidence.status == Verified`
+- settlement evidence binds to the DAO, proposal, payout plan, payout fields, and source-specific evidence kind
+- `SettlementConsumptionRecord` is created exactly once per evidence account
+- evidence TTL and attestor policy are reviewed
+- REFHE and MagicBlock trust boundaries are described as attested unless a cryptographic receipt or verifier CPI is integrated
+
+Blocking condition:
+
+- do not claim cryptographic settlement verification when the active mode is threshold-attested settlement evidence
+
+## 9. Release Ceremony
 
 Mainnet cutover should be treated as an operational ceremony, not an ad hoc deploy.
 
@@ -129,7 +146,7 @@ Canonical evidence:
 - `docs/mainnet-acceptance-matrix.generated.md`
 - `docs/mainnet-proof-package.generated.md`
 
-## 9. Final Decision Rule
+## 10. Final Decision Rule
 
 PrivateDAO is ready for mainnet cutover only when all of the following are true:
 

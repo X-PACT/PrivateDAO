@@ -33,6 +33,7 @@
     "magicblock:payments": "ts-node scripts/magicblock-private-payments.ts",
     "encrypt:confidential-manifest": "ts-node scripts/build-confidential-manifest.ts",
     "verify:confidential-manifest": "ts-node scripts/verify-confidential-manifest.ts",
+    "verify:audit-readiness:v2": "ts-node scripts/verify-audit-readiness-v2.ts",
     "deposit": "ts-node scripts/deposit-treasury.ts",
     "list-proposals": "ts-node scripts/list-proposals.ts",
     "delegate": "ts-node scripts/delegate-vote.ts",

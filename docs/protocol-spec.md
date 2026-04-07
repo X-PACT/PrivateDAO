@@ -362,6 +362,29 @@ Keeper note:
 - eligibility proof is scoped to voter, weight, and DAO
 - proof verification alone does not advance on-chain lifecycle state
 
+### Strict V2 Overlay Invariants
+
+- strict ZK finalization requires `ProposalExecutionPolicySnapshot`
+- strict ZK finalization requires `ProposalProofVerification.status == Verified`
+- strict ZK proof records must be DAO-bound and proposal-bound
+- strict ZK proof records must match the canonical V2 proposal payload hash
+- strict ZK proof records must be fresh at finalization time
+- threshold-attested proof verification is an explicit on-chain trust model, not a cryptographic verifier CPI claim
+
+### Settlement V2 Invariants
+
+- strict confidential payout execution requires `SettlementEvidence.status == Verified`
+- strict settlement evidence must be DAO-bound, proposal-bound, payout-plan-bound, and canonical-payout-field-bound
+- strict settlement evidence must be fresh at execution time
+- strict settlement evidence is consumed through a single-use `SettlementConsumptionRecord` PDA
+- the same settlement evidence cannot execute two payouts
+
+### Policy Transition Invariants
+
+- legacy objects remain readable after V2 policy accounts are added
+- DAO-wide future policy changes do not silently reinterpret proposals with existing `ProposalExecutionPolicySnapshot`
+- strict enforcement requires explicit companion accounts rather than implicit reinterpretation of legacy records
+
 ## 10. On-Chain vs Off-Chain Boundaries
 
 ### On-Chain
@@ -387,5 +410,5 @@ Keeper note:
 
 - this specification reflects the current repository behavior, not an aspirational redesign
 - commit-reveal hides vote content, not timing metadata
-- Groth16 witness generation and proving remain off-chain; the current repository includes proposal-bound zk proof anchors plus on-chain receipt policy. `zk_enforced` requires DAO-authority receipts and verifier-program binding, but this is still an attested receipt boundary, not a full on-chain Groth16 verifier boundary.
+- Groth16 witness generation and proving remain off-chain. Legacy `zk_enforced` receipts are retained for compatibility, while the V2 strict path adds companion proof-verification accounts, threshold-attested verification, canonical payload binding, expiry, and object-level policy snapshots. This is stronger than legacy receipt metadata, but still an attested fallback until a cryptographic verifier CPI is integrated.
 - no external audit is claimed by this document

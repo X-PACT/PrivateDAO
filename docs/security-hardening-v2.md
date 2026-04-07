@@ -40,6 +40,21 @@ Legacy ZK receipts were anchored metadata and administrative attestations, not c
 Strict V2 objective:
 A proposal using the strict path cannot finalize unless `ProposalProofVerification` exists, has `status == Verified`, is fresh, binds to the exact proposal, and matches the canonical payload hash.
 
+Canonical payload hash:
+The strict payload hash is not a free-form label. It is derived from the V2 domain tag, DAO, proposal, and object version in the current implementation. Any later instruction-bundle verifier must extend this canonical serialization, not replace it ad hoc. The required extension set for a treasury or payout payload is:
+
+- target instruction family
+- DAO
+- proposal
+- object version
+- treasury source
+- account metas relevant to execution
+- recipient
+- mint or native-SOL marker
+- amount
+- confidential payout plan when present
+- settlement or proof domain tag
+
 Implementation:
 - `record_proof_verification_v2`
 - `finalize_zk_enforced_proposal_v2`
@@ -47,7 +62,7 @@ Implementation:
 - `ProposalExecutionPolicySnapshot`
 
 Trust model:
-The current production-safe fallback is threshold attestation. The attestors and threshold are encoded on-chain in `DaoSecurityPolicy`, and enough attestors must sign the transaction. This is an explicit trust model, not a fake verifier claim. A future verifier CPI can be added as another `VerificationKind` without breaking legacy state.
+The current production-safe fallback is threshold attestation. The attestors and threshold are encoded on-chain in `DaoSecurityPolicy`, and enough attestors must sign the transaction. This is an explicit attested fallback, not a fake cryptographic verifier claim. A future cryptographic verifier CPI can be added as another `VerificationKind` without breaking legacy state.
 
 Invariant:
 Strict V2 finalization fails if proof status is not verified, proof is stale, domain separator mismatches, or payload hash does not match the canonical proposal payload.
@@ -68,6 +83,9 @@ Implementation:
 
 Invariant:
 Strict V2 payout execution fails if evidence is stale, not verified, mismatched to another DAO/proposal/payout plan, mismatched to canonical payout fields, or already consumed.
+
+Consumption semantics:
+Settlement consumption is enforced by a single-use PDA derived from `["settlement-consumption", settlement_evidence]`. This intentionally avoids zero-value sentinel checks. If the consumption account already exists, the same evidence cannot be reused.
 
 ## Cancellation
 
@@ -109,6 +127,53 @@ New integrations can distinguish token-weighted, quadratic, capital-leg, and com
 6. Add verifier-CPI support as a new `VerificationKind` in a later additive upgrade.
 7. Recommend strict mode after tests, external review, and operational attestor setup are complete.
 
+## Policy transition invariants
+
+- `LegacyAllowed` means legacy instructions remain callable and historical objects are not reinterpreted.
+- `CompatibilityRequired` means legacy state remains readable while new strict flows should snapshot object policy before using V2 finalization or V2 settlement execution.
+- `StrictRequired` means newly selected V2 paths must provide companion proof or settlement accounts.
+- A future DAO-wide policy change does not silently change a proposal that already has a `ProposalExecutionPolicySnapshot`.
+- Legacy proposals can only become strict when the necessary companion accounts are explicitly provided and pass the V2 gates.
+
+## State Transition Diagrams
+
+Proposal lifecycle:
+
+```mermaid
+stateDiagram-v2
+  [*] --> Voting
+  Voting --> Cancelled: legacy cancel / strict cancel before participation
+  Voting --> Passed: finalize after reveal end and quorum/pass
+  Voting --> Failed: finalize after reveal end and fail
+  Passed --> Vetoed: veto during timelock
+  Passed --> Executed: execute after timelock
+  Cancelled --> [*]
+  Failed --> [*]
+  Vetoed --> [*]
+  Executed --> [*]
+```
+
+Strict proof lifecycle:
+
+```mermaid
+stateDiagram-v2
+  [*] --> NoProof
+  NoProof --> Verified: record_proof_verification_v2 with threshold attestors
+  Verified --> UsedForFinalize: finalize_zk_enforced_proposal_v2
+  Verified --> Expired: expires_at passed
+```
+
+Strict settlement lifecycle:
+
+```mermaid
+stateDiagram-v2
+  [*] --> NoEvidence
+  NoEvidence --> VerifiedEvidence: record_settlement_evidence_v2
+  VerifiedEvidence --> Consumed: execute_confidential_payout_plan_v2 creates consumption PDA
+  VerifiedEvidence --> Expired: expires_at passed
+  Consumed --> [*]
+```
+
 ## Regression Tests Added
 
 - Policy snapshot creation.
@@ -117,3 +182,12 @@ New integrations can distinguish token-weighted, quadratic, capital-leg, and com
 - Correct payload reaches lifecycle timing checks instead of failing proof binding.
 
 Further test work should add live full-path `execute_confidential_payout_plan_v2` settlement consumption checks on an AVX2-capable local validator or Devnet test account.
+
+## Audit checklist delta
+
+- Payload substitution must fail.
+- Cross-DAO proof and settlement replay must fail.
+- Cross-proposal proof and settlement replay must fail.
+- Double consumption of the same settlement evidence must fail by PDA existence.
+- Late cancellation must fail on `cancel_proposal_v2` after any commit or reveal.
+- Policy transitions must not reinterpret an already-snapshotted proposal.
