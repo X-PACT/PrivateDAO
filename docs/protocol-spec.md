@@ -387,5 +387,5 @@ Keeper note:
 
 - this specification reflects the current repository behavior, not an aspirational redesign
 - commit-reveal hides vote content, not timing metadata
-- Groth16 witness generation and proving remain off-chain; the current repository now includes proposal-bound zk proof anchors on-chain plus a Phase A parallel on-chain verification-receipt path, but the deployed governance lifecycle is still the canonical enforcement boundary until a later `zk_enforced` mode is introduced
+- Groth16 witness generation and proving remain off-chain; the current repository includes proposal-bound zk proof anchors plus on-chain receipt policy. `zk_enforced` requires DAO-authority receipts and verifier-program binding, but this is still an attested receipt boundary, not a full on-chain Groth16 verifier boundary.
 - no external audit is claimed by this document

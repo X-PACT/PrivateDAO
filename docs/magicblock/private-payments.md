@@ -34,7 +34,7 @@ This means the frontend, reviewers, and operators can all inspect whether the pr
 2. Configure the payout plan on-chain.
 3. Configure the MagicBlock corridor for that proposal.
 4. Run the MagicBlock private payment route from the wallet or CLI.
-5. Settle the corridor on-chain with the validator, transfer queue, and transaction signatures.
+5. Settle the corridor on-chain from the DAO authority wallet with the validator, transfer queue, and transaction signatures.
 6. Finalize and execute the proposal through the normal PrivateDAO lifecycle.
 
 ## Why this matters
@@ -43,8 +43,10 @@ Without this corridor, confidential token payouts would still rely only on propo
 
 - proposal-bound
 - reviewable
-- execution-gated
+- execution-gated by DAO-authority settlement evidence
 - visible in the live frontend and read node
+
+This is an authority-attested evidence gate. It does not claim that the PrivateDAO program re-verifies MagicBlock transaction contents cryptographically on chain.
 
 ## Surface area
 

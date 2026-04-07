@@ -26,12 +26,12 @@ It does not pretend to perform fully homomorphic execution on-chain. Instead, it
 
 Confidential payout plans already protect the employee-level manifest by keeping only hashes and aggregate settlement metadata on-chain.
 
-REFHE upgrades that model by adding a verifiable encrypted-evaluation step:
+REFHE upgrades that model by adding an authority-settled encrypted-evaluation step:
 
 1. a confidential payout plan is configured on-chain
 2. a REFHE envelope is configured against that payout plan
 3. encrypted evaluation runs off-chain
-4. the result bundle is settled on-chain
+4. the result bundle is settled on-chain by the DAO authority
 5. the payout becomes executable only after the REFHE boundary is satisfied
 
 ## On-Chain Boundary
@@ -44,10 +44,10 @@ Current on-chain enforcement is honest and strict:
   - execution is rejected
 - REFHE envelope is settled without a verifier program:
   - execution is rejected
-- REFHE envelope is settled with a verifier program:
+- REFHE envelope is settled by the DAO authority with a verifier program:
   - execution may proceed once the proposal is executable
 
-This makes REFHE a real execution gate, not a UI-only tag.
+This makes REFHE a real execution gate, not a UI-only tag. It does not claim that the PrivateDAO program re-executes or cryptographically verifies the REFHE computation on-chain.
 
 ## Account Model
 

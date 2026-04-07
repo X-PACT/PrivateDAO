@@ -29,7 +29,6 @@ npm run configure:magicblock -- \
   --dao "$DAO_PDA" \
   --proposal "$PROPOSAL_PDA" \
   --owner-wallet "$OWNER_WALLET" \
-  --settlement-wallet "$SETTLEMENT_WALLET" \
   --payout-mint "$TOKEN_MINT" \
   --deposit-amount 250000000 \
   --private-transfer-amount 250000000 \
@@ -41,11 +40,11 @@ npm run configure:magicblock -- \
 ```bash
 npm run magicblock:payments -- initialize-mint --mint "$TOKEN_MINT"
 npm run magicblock:payments -- deposit --owner "$OWNER_WALLET" --mint "$TOKEN_MINT" --amount 250000000
-npm run magicblock:payments -- transfer --from "$OWNER_WALLET" --to "$SETTLEMENT_WALLET" --mint "$TOKEN_MINT" --amount 250000000 --visibility private --from-balance base --to-balance ephemeral
+npm run magicblock:payments -- transfer --from "$OWNER_WALLET" --to "$SETTLEMENT_WALLET" --mint "$TOKEN_MINT" --amount 250000000 --visibility private --to-balance ephemeral
 npm run magicblock:payments -- withdraw --owner "$SETTLEMENT_WALLET" --mint "$TOKEN_MINT" --amount 250000000
 ```
 
-4. Settle the corridor on-chain:
+4. Settle the corridor on-chain from the DAO authority wallet:
 
 ```bash
 npm run settle:magicblock -- \
@@ -80,5 +79,6 @@ The live frontend now exposes the same lifecycle:
 - MagicBlock only activates for confidential token payouts
 - the corridor is proposal-bound
 - the settlement wallet must match the payout plan settlement recipient
-- execution is rejected until settlement evidence is present
+- execution is rejected until DAO-authority settlement evidence is present
+- the PrivateDAO program records and gates on MagicBlock evidence; it does not re-verify MagicBlock transaction contents cryptographically on-chain
 - backend read infrastructure stays read-only

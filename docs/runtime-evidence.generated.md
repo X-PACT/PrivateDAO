@@ -2,7 +2,7 @@
 
 ## Overview
 
-- Generated at: `2026-04-06T20:06:07.712Z`
+- Generated at: `2026-04-07T02:08:06.809Z`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - Diagnostics page: `https://x-pact.github.io/PrivateDAO/?page=diagnostics`
@@ -44,12 +44,12 @@
 ## MagicBlock Runtime Intake
 
 - Status: `pending-magicblock-capture`
-- Target count: `5`
-- Completed target count: `0`
-- Deposit success count: `0`
-- Private transfer success count: `0`
-- Settle success count: `0`
-- Execute success count: `0`
+- Target count: `6`
+- Completed target count: `1`
+- Deposit success count: `1`
+- Private transfer success count: `1`
+- Settle success count: `1`
+- Execute success count: `1`
 - Diagnostics capture count: `0`
 - Pending targets: `Phantom, Solflare, Backpack, Glow, Android Native / Mobile`
 

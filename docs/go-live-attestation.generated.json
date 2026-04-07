@@ -16,6 +16,7 @@
     "realDeviceRuntimeIntake",
     "operationalEvidenceSurface",
     "magicblockRuntimeSurface",
+    "confidentialManifestEncryption",
     "releaseDrillSurface",
     "artifactFreshness",
     "zkCompanionStack",
@@ -74,7 +75,7 @@
     "docs/go-live-criteria.md",
     "docs/operational-drillbook.md"
   ],
-  "deploymentGateCount": 61,
+  "deploymentGateCount": 62,
   "pdaoToken": {
     "mint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
     "programId": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",

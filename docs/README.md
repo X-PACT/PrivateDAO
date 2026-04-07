@@ -9,7 +9,7 @@ PrivateDAO keeps long-form review and operations material in `docs/`, but the re
 - `read-node/`
   - Read-node architecture, same-domain deployment guide, generated read snapshots, and ops snapshots.
 - `runtime/`
-  - Real-device runtime QA guide, capture registry, generated runtime evidence, and capture templates.
+  - Real-device runtime QA guide, capture registry, generated runtime evidence, encrypted confidential payout manifests, Devnet feature sweeps, and capture templates.
 - `competitive/`
   - Colosseum Copilot source snapshot and generated competitive positioning analysis.
 - `zk/`
@@ -20,3 +20,10 @@ PrivateDAO keeps long-form review and operations material in `docs/`, but the re
 ## Root-Level Docs
 
 The remaining root files are the canonical product, security, strategy, readiness, and submission documents that still need short stable URLs from the main README and the GitHub Pages surface.
+
+Important root-level security docs:
+
+- `security-review.md`
+  - baseline security review and reviewer-facing threat map.
+- `security-hardening-v2.md`
+  - additive strict-mode architecture for threshold-attested ZK proof verification, verified settlement evidence, single-use payout evidence consumption, strict cancellation, object-level policy snapshots, and explicit Realms voter-weight scopes.

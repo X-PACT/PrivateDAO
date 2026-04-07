@@ -12,7 +12,7 @@ PrivateDAO still keeps commit-reveal as the canonical governance boundary.
 ## Exact Sequence
 
 1. Create the proposal normally.
-2. Record or upgrade the three verification receipts in `zk_enforced` mode:
+2. Record or upgrade the three DAO-authority receipts in `zk_enforced` mode:
    - vote
    - delegation
    - tally
@@ -31,9 +31,9 @@ Parallel receipts are not enough for `zk_enforced`.
 
 A proposal can only move into `zk_enforced` when:
 
-- vote receipt is `zk_enforced`
-- delegation receipt is `zk_enforced`
-- tally receipt is `zk_enforced`
+- vote receipt is `zk_enforced` and recorded by the DAO authority
+- delegation receipt is `zk_enforced` and recorded by the DAO authority
+- tally receipt is `zk_enforced` and recorded by the DAO authority
 
 If even one receipt is still only `parallel`, the stronger finalize path must remain blocked.
 
@@ -45,6 +45,7 @@ Before enabling `zk_enforced`, confirm:
 - all three receipt PDAs exist
 - each receipt is proposal-bound
 - each receipt is in `zk_enforced` mode
+- each receipt was recorded by the DAO authority
 - the verifier program field is present for the stronger receipts
 
 ## What This Does Not Claim Yet
@@ -54,7 +55,7 @@ This flow does not claim that full Groth16 verifier enforcement is already the f
 What it does provide today is:
 
 - proposal-bound on-chain proof anchors
-- on-chain verification receipts
+- DAO-authority on-chain verification receipts
 - stronger receipt mode hierarchy
 - proposal-level policy locking
 - a distinct finalize path for `zk_enforced`

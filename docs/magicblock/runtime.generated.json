@@ -1,14 +1,14 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-06T20:05:04.704Z",
+  "generatedAt": "2026-04-07T02:07:21.893Z",
   "network": "devnet",
   "summary": {
-    "targetCount": 5,
-    "completedTargetCount": 0,
-    "depositSuccessCount": 0,
-    "privateTransferSuccessCount": 0,
-    "settleSuccessCount": 0,
-    "executeSuccessCount": 0,
+    "targetCount": 6,
+    "completedTargetCount": 1,
+    "depositSuccessCount": 1,
+    "privateTransferSuccessCount": 1,
+    "settleSuccessCount": 1,
+    "executeSuccessCount": 1,
     "diagnosticsCaptureCount": 0,
     "pendingTargets": [
       "Phantom",
@@ -48,9 +48,55 @@
       "walletLabel": "Android Native / Mobile",
       "environmentType": "android-or-mobile",
       "status": "pending-capture"
+    },
+    {
+      "id": "cli-devnet-magicblock",
+      "walletLabel": "CLI Devnet Test Wallet",
+      "environmentType": "cli-devnet",
+      "status": "captured-with-failures"
     }
   ],
-  "captures": [],
+  "captures": [
+    {
+      "id": "cli-devnet-magicblock",
+      "walletLabel": "CLI Devnet Test Wallet",
+      "walletVersion": "solana-cli-anchor-provider",
+      "environmentType": "cli-devnet",
+      "os": "linux",
+      "browserOrClient": "ts-node CLI",
+      "network": "devnet",
+      "proposalPublicKey": "52UpWHJodPWQzpR8u2qqpgwo3jRB7mvjgwCnf8oSJuXX",
+      "corridorPda": "8YH5f29UX363oMM1mqsXDyyBtyu4Y1b1BBuikV4xkAys",
+      "settlementWallet": "2TrX1tAJjcPcV8nc6f8LBAe97jZVi5hPG6jND3Wb1mCk",
+      "validator": "MAS1Dt9qreoRMQ14YQuhg8UTZMMzDdKhmkZMECCzk57",
+      "transferQueue": "FgUh7pocATTbVxJeorMb5iZwMQWcoVAAzy1PcCz2suZT",
+      "mintInitializationResult": "success",
+      "depositResult": "success",
+      "privateTransferResult": "success",
+      "withdrawResult": "success",
+      "settleResult": "success",
+      "executeResult": "success",
+      "diagnosticsSnapshotCaptured": false,
+      "depositTxSignature": "3FV1LENXhfzktPUQh6rK1mRhEk4aJf2snFhfMSK3nLM4au2y4n1smbEGCEWr5x8kJ7t86ZcAivB5HhsMqMWpkRJC",
+      "transferTxSignature": "662meytSDxGaCpkkkvMwqo6ZLFNvbC8jswHUw4sCaJmaYpov1995Xoik97CoWUHu6vvYigNdvfWSGBMfktzwbRr4",
+      "withdrawTxSignature": "23VxsHqP9aDWTLCdPmRep5UxRXzj9mpvR9B5HGDC8Nt9tKNrVxiwCHCpzm7BLHg8TrChdpmx4awtHyUEW1QPdEBC",
+      "settleTxSignature": "56zD3JYxYssgAkSsmxoh2zGzs11SakCXmUviMF53rdHy1HHcNQGqq72Jo9cbww2m67k7XsD5gqTB42HXMC8YEHHM",
+      "executeTxSignature": "LoNED2YKkYWxaQbFV4y8fCzqGi5YrpPSruJYppqfvcTyAJ2zU5HM92QEsPNydQb26abE7qp2kB7hCNPJFbVUUPA",
+      "errorMessage": "CLI Devnet route completed with real on-chain payout execution; browser diagnostics snapshot remains pending for wallet-specific capture.",
+      "evidenceRefs": [
+        "docs/runtime/devnet-feature-sweep-2026-04-06.md",
+        "docs/runtime/confidential-manifests/devnet-stable-magicblock-refhe.enc.json"
+      ],
+      "capturedAt": "2026-04-06T22:47:00.000Z",
+      "explorerUrls": {
+        "deposit": "https://explorer.solana.com/tx/3FV1LENXhfzktPUQh6rK1mRhEk4aJf2snFhfMSK3nLM4au2y4n1smbEGCEWr5x8kJ7t86ZcAivB5HhsMqMWpkRJC?cluster=devnet",
+        "transfer": "https://explorer.solana.com/tx/662meytSDxGaCpkkkvMwqo6ZLFNvbC8jswHUw4sCaJmaYpov1995Xoik97CoWUHu6vvYigNdvfWSGBMfktzwbRr4?cluster=devnet",
+        "withdraw": "https://explorer.solana.com/tx/23VxsHqP9aDWTLCdPmRep5UxRXzj9mpvR9B5HGDC8Nt9tKNrVxiwCHCpzm7BLHg8TrChdpmx4awtHyUEW1QPdEBC?cluster=devnet",
+        "settle": "https://explorer.solana.com/tx/56zD3JYxYssgAkSsmxoh2zGzs11SakCXmUviMF53rdHy1HHcNQGqq72Jo9cbww2m67k7XsD5gqTB42HXMC8YEHHM?cluster=devnet",
+        "execute": "https://explorer.solana.com/tx/LoNED2YKkYWxaQbFV4y8fCzqGi5YrpPSruJYppqfvcTyAJ2zU5HM92QEsPNydQb26abE7qp2kB7hCNPJFbVUUPA?cluster=devnet"
+      }
+    }
+  ],
   "requiredDocs": [
     "docs/magicblock/private-payments.md",
     "docs/magicblock/operator-flow.md",

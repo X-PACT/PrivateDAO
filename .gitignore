@@ -44,6 +44,7 @@ wallets/
 !docs/competitive/analysis.generated.json
 !docs/read-node/snapshot.generated.json
 !docs/read-node/ops.generated.json
+!docs/runtime/confidential-manifests/*.enc.json
 !docs/assets/pdao-token.json
 !docs/magicblock/templates/*.json
 !docs/runtime/templates/*.json

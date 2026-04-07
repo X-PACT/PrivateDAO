@@ -11,7 +11,7 @@ Use this when a confidential payroll, bonus, or grant proposal requires encrypte
 4. Complete voting and reveal.
 5. Finalize the proposal.
 6. Run the encrypted evaluation off-chain.
-7. Settle the REFHE envelope on-chain.
+7. Settle the REFHE envelope on-chain from the DAO authority wallet.
 8. Execute the confidential payout.
 
 ## Frontend Flow
@@ -61,7 +61,10 @@ Before execution:
 - timelock is cleared
 - payout plan status is still `Configured`
 - REFHE envelope status is `Settled`
+- REFHE envelope was settled by the DAO authority
 - verifier program is present
+
+This is an authority-settled execution gate. It does not claim that the PrivateDAO program re-executes or cryptographically verifies REFHE computation on-chain.
 
 ## Failure States
 

@@ -89,8 +89,8 @@
 - Release drill: `docs/release-drill.generated.json`
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `130`
-- Aggregate sha256: `09e144465bbf4b5dbe248a9f0ea1b2a5920dddff64ade03b4ed2a3087702fbfc`
+- Manifest entries: `132`
+- Aggregate sha256: `94b5a90ca608e6c3ca2d7b8d9d2abb3d7f4bc86694fec26c313b0f8884a0f070`
 
 ## ZK Package
 
@@ -145,6 +145,7 @@
 - `docs/threat-model.md`
 - `docs/security-coverage-map.md`
 - `docs/confidential-payments-audit-scope.md`
+- `docs/runtime/confidential-manifests/devnet-stable-magicblock-refhe.enc.json`
 - `docs/magicblock/private-payments.md`
 - `docs/refhe-security-model.md`
 - `docs/refhe-audit-scope.md`
@@ -210,6 +211,8 @@
 - `docs/magicblock/runtime-captures.json`
 - `docs/magicblock/runtime.generated.md`
 - `docs/magicblock/runtime.generated.json`
+- `docs/runtime/devnet-feature-sweep-2026-04-06.md`
+- `docs/runtime/confidential-manifests/devnet-stable-magicblock-refhe.enc.json`
 - `docs/refhe-protocol.md`
 - `docs/refhe-operator-flow.md`
 - `docs/refhe-security-model.md`
@@ -338,6 +341,8 @@
 - `docs/read-node/snapshot.generated.json`
 - `docs/magicblock/runtime-evidence.md`
 - `docs/magicblock/runtime.generated.md`
+- `docs/runtime/devnet-feature-sweep-2026-04-06.md`
+- `docs/runtime/confidential-manifests/devnet-stable-magicblock-refhe.enc.json`
 - `docs/mainnet-readiness.md`
 - `docs/authority-hardening.md`
 - `docs/phase-c-hardening.md`
@@ -398,6 +403,7 @@
 - `npm run verify:operational-evidence`
 - `npm run verify:real-device-runtime`
 - `npm run verify:magicblock-runtime`
+- `npm run verify:confidential-manifest`
 - `npm run verify:zk-enforced-runtime`
 - `npm run verify:runtime-evidence`
 - `npm run verify:release-drill`
@@ -437,6 +443,7 @@
 - realDeviceRuntimeIntake: `verified`
 - operationalEvidenceSurface: `verified`
 - magicblockRuntimeSurface: `verified`
+- confidentialManifestEncryption: `verified`
 - releaseDrillSurface: `verified`
 - artifactFreshness: `verified`
 - zkCompanionStack: `verified`

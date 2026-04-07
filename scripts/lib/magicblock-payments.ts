@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import * as anchor from "@coral-xyz/anchor";
+import { createHash } from "crypto";
 import { Connection, PublicKey, Transaction, VersionedTransaction } from "@solana/web3.js";
 
 export type MagicBlockUnsignedTransactionResponse = {
@@ -107,13 +108,34 @@ function trimValue(value?: string | null): string {
 }
 
 function normalizeApiBase(base?: string | null): string {
-  const resolved = trimValue(base || process.env.MAGICBLOCK_API_BASE || "https://per.devnet.magicblock.gg");
+  const resolved = trimValue(base || process.env.MAGICBLOCK_API_BASE || "https://payments.magicblock.app");
   return resolved.replace(/\/+$/, "");
+}
+
+function normalizeAmount(value: string | number): string | number {
+  if (typeof value === "number") return value;
+  const trimmed = value.trim();
+  const numeric = Number(trimmed);
+  return Number.isSafeInteger(numeric) && String(numeric) === trimmed ? numeric : trimmed;
 }
 
 function magicBlockTimeoutMs(): number {
   const parsed = Number(process.env.MAGICBLOCK_HTTP_TIMEOUT_MS || 3000);
   return Number.isFinite(parsed) && parsed > 0 ? parsed : 3000;
+}
+
+function magicBlockErrorMessage(payload: unknown, response: Response): string {
+  if (payload && typeof payload === "object") {
+    const record = payload as Record<string, unknown>;
+    for (const key of ["error", "message", "reason", "detail"]) {
+      const value = record[key];
+      if (typeof value === "string" && value.trim()) return value;
+      if (value && typeof value === "object") return JSON.stringify(value);
+    }
+    return JSON.stringify(record);
+  }
+  if (typeof payload === "string" && payload.trim()) return payload;
+  return `MagicBlock request failed: ${response.status} ${response.statusText}`;
 }
 
 export function magicBlockApiBase(): string {
@@ -157,11 +179,7 @@ async function magicBlockFetch<T>(
   }
   const payload = await response.json().catch(() => null);
   if (!response.ok) {
-    throw new Error(
-      payload?.error ||
-      payload?.message ||
-      `MagicBlock request failed: ${response.status} ${response.statusText}`,
-    );
+    throw new Error(magicBlockErrorMessage(payload, response));
   }
   return payload as T;
 }
@@ -250,7 +268,7 @@ export async function buildMagicBlockDeposit(
       method: "POST",
       body: {
         owner: request.owner,
-        amount: String(request.amount),
+        amount: normalizeAmount(request.amount),
         cluster: request.cluster || magicBlockCluster(),
         mint: request.mint,
         validator: request.validator,
@@ -276,7 +294,7 @@ export async function buildMagicBlockTransfer(
         from: request.from,
         to: request.to,
         mint: request.mint,
-        amount: String(request.amount),
+        amount: normalizeAmount(request.amount),
         visibility: request.visibility,
         fromBalance: request.fromBalance,
         toBalance: request.toBalance,
@@ -306,7 +324,7 @@ export async function buildMagicBlockWithdraw(
       body: {
         owner: request.owner,
         mint: request.mint,
-        amount: String(request.amount),
+        amount: normalizeAmount(request.amount),
         cluster: request.cluster || magicBlockCluster(),
         validator: request.validator,
         initIfMissing: request.initIfMissing,
@@ -398,11 +416,9 @@ export async function submitMagicBlockUnsignedTransactionWithWallet(
 }
 
 export function magicBlockRouteHash(parts: Array<string | number | PublicKey | null | undefined>): number[] {
-  const digest = anchor.utils.sha256.hash(
-    parts
-      .filter((item) => item !== null && item !== undefined)
-      .map((item) => item instanceof PublicKey ? item.toBase58() : String(item))
-      .join("|"),
-  );
-  return Array.from(Buffer.from(digest, "hex"));
+  const routeMaterial = parts
+    .filter((item) => item !== null && item !== undefined)
+    .map((item) => item instanceof PublicKey ? item.toBase58() : String(item))
+    .join("|");
+  return Array.from(createHash("sha256").update(routeMaterial, "utf8").digest());
 }

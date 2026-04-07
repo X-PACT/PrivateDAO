@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-04-06T20:03:43.264Z",
+  "generatedAt": "2026-04-07T02:06:16.938Z",
   "readPath": "backend-indexer",
   "runtime": {
-    "generatedAt": "2026-04-06T20:03:40.923Z",
+    "generatedAt": "2026-04-07T02:06:14.587Z",
     "readPath": "backend-indexer",
     "rpcEndpoint": "https://api.devnet.solana.com",
     "rpcPoolSize": 1,
     "commitment": "confirmed",
     "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
-    "slot": 453731931,
+    "slot": 453789431,
     "solanaCore": "3.1.10",
     "featureSet": 1620780344,
-    "latestBlockhash": "B6HtjwhEaNmLE8exds4h2FVjyunGkmv75gZP9CrfufyF",
-    "lastValidBlockHeight": 441610244,
+    "latestBlockhash": "c2YYznD1NCCkavRYrpJZ2WLGpxeZcRmadiUBi1A19c6",
+    "lastValidBlockHeight": 441667718,
     "programExecutable": true,
     "programOwner": "BPFLoaderUpgradeab1e11111111111111111111111",
     "cacheTtlMs": 15000
@@ -22,25 +22,25 @@
     "ttlMs": 15000
   },
   "counts": {
-    "proposals": 20,
-    "executed": 10,
+    "proposals": 29,
+    "executed": 14,
     "executable": 1,
     "timelocked": 0,
     "zkEnforced": 0,
-    "confidentialPayouts": 0,
-    "uniqueDaos": 9
+    "confidentialPayouts": 6,
+    "uniqueDaos": 11
   },
   "overview": {
-    "generatedAt": "2026-04-06T20:03:43.263Z",
-    "proposals": 20,
-    "uniqueDaos": 9,
+    "generatedAt": "2026-04-07T02:06:16.937Z",
+    "proposals": 29,
+    "uniqueDaos": 11,
     "zkEnforced": 0,
-    "confidentialPayouts": 0,
-    "magicblockConfigured": 0,
-    "magicblockSettled": 0,
-    "refheConfigured": 0,
-    "refheSettled": 0,
-    "refheWithVerifier": 0,
+    "confidentialPayouts": 6,
+    "magicblockConfigured": 4,
+    "magicblockSettled": 3,
+    "refheConfigured": 4,
+    "refheSettled": 3,
+    "refheWithVerifier": 3,
     "executableConfidential": 0
   },
   "profiles": [
@@ -105,6 +105,30 @@
   ],
   "sample": [
     {
+      "pubkey": "QwRmN5WFDL7AxXT8fjcZNhy53cgLk7UWnJ5qB2CmRaJ",
+      "title": "Devnet Confidential MagicBlock REFHE V3",
+      "phase": "Finalized",
+      "zkMode": "Companion",
+      "confidentialPayout": true,
+      "dao": "2UBuKLVfY3kJ22WAmYEZDh71bWhJp2euRpPDq2qT1S8p"
+    },
+    {
+      "pubkey": "52UpWHJodPWQzpR8u2qqpgwo3jRB7mvjgwCnf8oSJuXX",
+      "title": "Encrypted manifest bound MagicBlock bonus v2",
+      "phase": "Executed",
+      "zkMode": "Companion",
+      "confidentialPayout": true,
+      "dao": "9yi2TGLcENufbRPVbEJH3BWJWrqsGxLfG6G7qJmUS8r6"
+    },
+    {
+      "pubkey": "FNRkQNQ98eu2z9Udror2UwygxqLa3kiWo5MTri3GbADv",
+      "title": "Devnet Confidential MagicBlock REFHE V2",
+      "phase": "Finalized",
+      "zkMode": "Companion",
+      "confidentialPayout": true,
+      "dao": "2UBuKLVfY3kJ22WAmYEZDh71bWhJp2euRpPDq2qT1S8p"
+    },
+    {
       "pubkey": "BfGfk31hvvvR2fDbZBmpV49uhe396KZvFq2hhmK5YXa6",
       "title": "Multi proposal C",
       "phase": "Executed",
@@ -119,30 +143,6 @@
       "zkMode": "Companion",
       "confidentialPayout": false,
       "dao": "FfLcDByf3Y2C3WrXC5q6aboEXUh7ddeSMhiawDdh5rFA"
-    },
-    {
-      "pubkey": "3TndutFkVunp1GhpjdVwsVGDWuS9afUU69JxW8Rrmk3H",
-      "title": "Multi proposal C",
-      "phase": "Finalized",
-      "zkMode": "Companion",
-      "confidentialPayout": false,
-      "dao": "59gAWXr9XLSzVN3nATfbBmbGvmJ7FNt7SoNVaR79LSok"
-    },
-    {
-      "pubkey": "GpVLxHfD1A5gLEKByjLcTSXK2X5CgfQu7Vi8QQFdx5mu",
-      "title": "Multi proposal C",
-      "phase": "Finalized",
-      "zkMode": "Companion",
-      "confidentialPayout": false,
-      "dao": "7D3fmZ3CE8NjSLaetNvPaQ5Wd79XeUVEbNj7oqchkfFy"
-    },
-    {
-      "pubkey": "HTNx7Gbrv324yecCoc9cJPTU6yFg4aS7sUcSUZMahHzx",
-      "title": "Multi proposal C",
-      "phase": "Executable",
-      "zkMode": "Companion",
-      "confidentialPayout": false,
-      "dao": "Egk9wQorcubWPedsimsxeFuxFeP6YrX9P5pWfdqmq2v2"
     }
   ]
 }

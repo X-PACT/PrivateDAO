@@ -127,6 +127,8 @@ Use this map first if you want to orient quickly:
   - canonical Devnet proof path
 - `docs/security-review.md`
   - enforced security boundaries and reasoning
+- `docs/security-hardening-v2.md`
+  - additive strict-mode accounts and V2 enforcement paths for proof, settlement, cancellation, and voter-weight scope
 - `docs/zk-layer.md`
   - current zk architecture and limits
 - `docs/pdao-token.md`
@@ -300,7 +302,7 @@ PrivateDAO should now be understood as a full governance operating stack rather 
 - confidential payroll and bonus approvals
 - REFHE-gated encrypted evaluation for proposal-bound payout logic
 - MagicBlock private payment corridors for confidential token settlement
-- `zk_enforced` proposal hardening with on-chain receipts and runtime evidence
+- `zk_enforced` proposal hardening with authority-recorded on-chain receipts and runtime evidence
 - backend-indexed read surfaces for operator responsiveness without moving signing authority
 - reviewer-grade manifests, attestations, and go-live blockers that stay synchronized with the codebase
 
@@ -316,7 +318,7 @@ This makes the repository relevant across multiple Solana categories at once:
 
 PrivateDAO now adds a proposal-bound MagicBlock corridor for confidential token payouts.
 
-This is not a cosmetic integration. The corridor is stored on-chain and execution is blocked until MagicBlock settlement evidence is locked to the same proposal and payout plan.
+This is not a cosmetic integration. The corridor is stored on-chain and execution is blocked until DAO-authority settlement evidence is locked to the same proposal and payout plan. The current boundary is an authority-attested MagicBlock evidence gate, not an on-chain re-verification of MagicBlock transaction contents.
 
 What is now live in the repo:
 
@@ -324,6 +326,7 @@ What is now live in the repo:
 - CLI configuration, settlement, inspection, and private-payment scripts
 - frontend readiness and in-wallet corridor flow
 - backend read-node visibility for MagicBlock runtime, balances, and mint status
+- AES-256-GCM encrypted manifest tooling for confidential payout test batches
 
 Use these notes first:
 
@@ -331,6 +334,8 @@ Use these notes first:
 - `docs/magicblock/operator-flow.md`
 - `docs/magicblock/runtime-evidence.md`
 - `docs/magicblock/runtime.generated.md`
+- `docs/runtime/devnet-feature-sweep-2026-04-06.md`
+- `docs/runtime/confidential-manifests/devnet-stable-magicblock-refhe.enc.json`
 - `docs/rpc-architecture.md`
 
 ## MagicBlock Runtime Evidence
@@ -340,6 +345,7 @@ PrivateDAO now carries a dedicated runtime evidence track for MagicBlock-bound c
 This makes the runtime path reviewer-visible instead of leaving it buried in feature docs:
 
 - wallet-side deposit, private transfer, withdraw, settlement, and execute can be captured consistently
+- the current CLI Devnet capture records real MagicBlock deposit, private transfer, withdraw, settlement, and on-chain payout execution
 - the review package stays stable while real wallet runs are added
 - the MagicBlock track becomes competitive for privacy-focused judging instead of remaining a surface-only integration
 
@@ -373,9 +379,9 @@ Use these notes first:
 
 ## REFHE Protocol
 
-PrivateDAO now includes a real REFHE protocol layer for confidential treasury operations.
+PrivateDAO now includes a REFHE protocol surface for confidential treasury operations.
 
-REFHE is not marketed as fully homomorphic execution on-chain. The implemented model is stronger and more honest:
+REFHE is not marketed as fully homomorphic execution on-chain. The implemented model is deliberately scoped:
 
 - encrypted payroll and bonus inputs remain off-chain
 - the proposal stores immutable hashes and aggregate payout metadata
@@ -388,7 +394,7 @@ REFHE is not marketed as fully homomorphic execution on-chain. The implemented m
   - result commitment hash
   - proof bundle hash
   - verifier program
-- if the REFHE envelope exists, confidential payout execution is blocked until the envelope is settled on-chain
+- if the REFHE envelope exists, confidential payout execution is blocked until the DAO authority settles the envelope on-chain with the verifier-program boundary and result hashes
 
 Primary references:
 
@@ -504,8 +510,8 @@ The current review surface is intentionally explicit about a few points that are
 - Reveal rebate comes from the proposal account only when that account remains rent-safe. The treasury is not the rebate source.
 - The current Groth16 proof stack still generates and verifies proofs off-chain, while proposal-bound zk proof anchors are now recorded on-chain for the canonical Devnet governance flow. The deployed on-chain program remains the enforcement boundary.
 - Phase A is live: on-chain proof anchors plus on-chain parallel verification receipts.
-- Phase B is now live in parallel: proposals can be configured into `zk_enforced` mode once vote, delegation, and tally verification receipts exist on chain. The frontend surfaces this mode directly and switches finalize to the `zk_enforced` path for those proposals.
-- The stronger path is now stricter than the original Phase A receipts: `zk_enforced` proposals require vote, delegation, and tally receipts recorded in `zk_enforced` mode, not only `parallel` mode.
+- Phase B is now live in parallel: proposals can be configured into `zk_enforced` mode once vote, delegation, and tally receipts are recorded on chain by the DAO authority. The frontend surfaces this mode directly and switches finalize to the `zk_enforced` path for those proposals.
+- The stronger path is now stricter than the original Phase A receipts: `zk_enforced` proposals require vote, delegation, and tally receipts recorded in `zk_enforced` mode by the DAO authority, not only `parallel` mode.
 - The web surface now shows per-layer receipt strength for the selected proposal, and the CLI now exposes:
   - `npm run anchor:zk-verify:enforced`
   - `npm run inspect:zk-proposal -- --proposal <PDA>`
@@ -529,7 +535,7 @@ The current zk roadmap is additive and non-breaking:
   - parallel verification receipts are on chain
 - Phase B
   - proposals can opt into `zk_enforced`
-  - `zk_enforced` now requires stronger receipt mode than the original Phase A parallel-only path
+  - `zk_enforced` now requires DAO-authority receipts in the stronger receipt mode, not only the original Phase A parallel-only path
   - the frontend exposes ZK mode, policy state, and the alternate finalize path
   - the CLI finalize path auto-detects policy PDAs and uses the correct instruction
 - Phase C

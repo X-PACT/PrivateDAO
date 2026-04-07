@@ -7,7 +7,7 @@ REFHE adds a stronger encrypted-computation boundary to confidential payouts wit
 
 - keep employee-level or recipient-level manifests off-chain
 - bind encrypted evaluation inputs to the exact payout proposal
-- prevent payout execution if the encrypted evaluation has not been settled
+- prevent payout execution if the encrypted evaluation has not been settled by the DAO authority
 - require a verifier program binding before a REFHE-gated payout can execute
 
 ## Protected Invariants
@@ -36,6 +36,7 @@ If the REFHE envelope account exists, `execute_confidential_payout_plan` require
 
 - matching DAO / proposal / payout plan
 - `status == Settled`
+- settlement was recorded by the DAO authority
 - `verifier_program.is_some()`
 
 ### Immutable Settlement Boundary
@@ -50,6 +51,7 @@ Execution uses the settled envelope only as an enforcement gate. Treasury releas
 ## What REFHE Does Not Claim
 
 - it does not claim fully homomorphic computation on-chain
+- it does not claim the PrivateDAO program cryptographically re-verifies REFHE computation on-chain
 - it does not claim that verifier execution is the canonical governance boundary yet
 - it does not hide aggregate payout totals from on-chain execution
 

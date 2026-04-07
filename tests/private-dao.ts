@@ -20,6 +20,28 @@ function computeCommitment(vote: boolean, salt: Buffer, voter: PublicKey, propos
 }
 
 function randomSalt(): Buffer { return crypto.randomBytes(32); }
+function hashParts(parts: Buffer[]): Buffer {
+  const hash = crypto.createHash("sha256");
+  for (const part of parts) hash.update(part);
+  return hash.digest();
+}
+
+function canonicalProofDomain(dao: PublicKey, proposal: PublicKey): Buffer {
+  return hashParts([
+    Buffer.from("PrivateDAO::proof-payload:v1"),
+    dao.toBuffer(),
+    proposal.toBuffer(),
+  ]);
+}
+
+function canonicalProposalPayloadHash(dao: PublicKey, proposal: PublicKey, version = 2): Buffer {
+  return hashParts([
+    Buffer.from("PrivateDAO::proof-payload:v1"),
+    dao.toBuffer(),
+    proposal.toBuffer(),
+    Buffer.from([version]),
+  ]);
+}
 
 describe("PrivateDAO", () => {
   const provider  = anchor.AnchorProvider.env();
@@ -1928,7 +1950,7 @@ describe("PrivateDAO", () => {
     const routeHash = [...crypto.randomBytes(32)];
     await program.methods
       .configureMagicblockPrivatePaymentCorridor(
-        "https://per.devnet.magicblock.gg",
+        "https://payments.magicblock.app",
         "devnet",
         authority.publicKey,
         settlementRecipient.publicKey,
@@ -1949,7 +1971,7 @@ describe("PrivateDAO", () => {
       .rpc();
 
     const corridor = await program.account["magicBlockPrivatePaymentCorridor"].fetch(magicBlockCorridorPda);
-    assert.equal(corridor.apiBaseUrl, "https://per.devnet.magicblock.gg");
+    assert.equal(corridor.apiBaseUrl, "https://payments.magicblock.app");
     assert.deepEqual(corridor.status, { configured: {} });
 
     const [treasuryPda] = PublicKey.findProgramAddressSync(
@@ -2184,7 +2206,7 @@ describe("PrivateDAO", () => {
     try {
       await program.methods
         .configureMagicblockPrivatePaymentCorridor(
-          "https://per.devnet.magicblock.gg",
+          "https://payments.magicblock.app",
           "devnet",
           rogueOperator.publicKey,
           null,
@@ -2210,7 +2232,7 @@ describe("PrivateDAO", () => {
 
     await program.methods
       .configureMagicblockPrivatePaymentCorridor(
-        "https://per.devnet.magicblock.gg",
+        "https://payments.magicblock.app",
         "devnet",
         authority.publicKey,
         null,
@@ -2393,7 +2415,7 @@ describe("PrivateDAO", () => {
 
     await program.methods
       .configureMagicblockPrivatePaymentCorridor(
-        "https://per.devnet.magicblock.gg",
+        "https://payments.magicblock.app",
         "devnet",
         authority.publicKey,
         null,
@@ -2574,5 +2596,163 @@ describe("PrivateDAO", () => {
     assert.notDeepEqual(c1, c4, "different salt → different commitment");
     assert.notDeepEqual(c1, c5, "different proposal → different commitment");
     console.log("  ✓ commitment: deterministic, vote-sensitive, salt-sensitive");
+  });
+
+  it("enforces V2 proof policy snapshots and rejects payload substitution", async () => {
+    const [securityPolicyPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("dao-security-policy"), daoPda.toBuffer()],
+      program.programId,
+    );
+    const attestors = [
+      authority.publicKey,
+      PublicKey.default,
+      PublicKey.default,
+      PublicKey.default,
+      PublicKey.default,
+    ];
+
+    await program.methods
+      .initializeDaoSecurityPolicy(
+        { strictRequired: {} },
+        { thresholdAttestedRequired: {} },
+        { thresholdAttestedRequired: {} },
+        { noCancelAfterParticipation: {} },
+        attestors,
+        1,
+        1,
+        attestors,
+        1,
+        1,
+        new BN(3600),
+        new BN(3600),
+      )
+      .accounts({
+        dao: daoPda,
+        daoSecurityPolicy: securityPolicyPda,
+        authority: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const dao = await program.account["dao"].fetch(daoPda);
+    const [v2ProposalPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), dao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal(
+        "V2 proof substitution guard",
+        "Strict path must bind proof verification to the exact canonical payload.",
+        new BN(3600),
+        null,
+      )
+      .accounts({
+        dao: daoPda,
+        proposal: v2ProposalPda,
+        proposerTokenAccount: authorityTokenAta,
+        proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [snapshotPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal-policy-snapshot"), v2ProposalPda.toBuffer()],
+      program.programId,
+    );
+    await program.methods
+      .snapshotProposalExecutionPolicy()
+      .accounts({
+        dao: daoPda,
+        daoSecurityPolicy: securityPolicyPda,
+        proposal: v2ProposalPda,
+        proposalExecutionPolicySnapshot: snapshotPda,
+        operator: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [proofVerificationPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal-proof-verification"), v2ProposalPda.toBuffer()],
+      program.programId,
+    );
+    const wrongPayload = hashParts([
+      Buffer.from("PrivateDAO::proof-payload:v1"),
+      daoPda.toBuffer(),
+      Keypair.generate().publicKey.toBuffer(),
+      Buffer.from([2]),
+    ]);
+
+    await program.methods
+      .recordProofVerificationV2(
+        { thresholdAttestation: {} },
+        [...wrongPayload],
+        [...crypto.randomBytes(32)],
+        [...crypto.randomBytes(32)],
+        [...crypto.randomBytes(32)],
+        [...canonicalProofDomain(daoPda, v2ProposalPda)],
+      )
+      .accounts({
+        dao: daoPda,
+        daoSecurityPolicy: securityPolicyPda,
+        proposal: v2ProposalPda,
+        proposalProofVerification: proofVerificationPda,
+        recorder: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    try {
+      await program.methods
+        .finalizeZkEnforcedProposalV2()
+        .accounts({
+          dao: daoPda,
+          proposal: v2ProposalPda,
+          proposalExecutionPolicySnapshot: snapshotPda,
+          proposalProofVerification: proofVerificationPda,
+          finalizer: authority.publicKey,
+        })
+        .rpc();
+      assert.fail("V2 finalize must reject proof records bound to a different payload");
+    } catch (err: any) {
+      assert.include(err.toString(), "PayloadHashMismatch");
+    }
+
+    await program.methods
+      .recordProofVerificationV2(
+        { thresholdAttestation: {} },
+        [...canonicalProposalPayloadHash(daoPda, v2ProposalPda)],
+        [...crypto.randomBytes(32)],
+        [...crypto.randomBytes(32)],
+        [...crypto.randomBytes(32)],
+        [...canonicalProofDomain(daoPda, v2ProposalPda)],
+      )
+      .accounts({
+        dao: daoPda,
+        daoSecurityPolicy: securityPolicyPda,
+        proposal: v2ProposalPda,
+        proposalProofVerification: proofVerificationPda,
+        recorder: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    try {
+      await program.methods
+        .finalizeZkEnforcedProposalV2()
+        .accounts({
+          dao: daoPda,
+          proposal: v2ProposalPda,
+          proposalExecutionPolicySnapshot: snapshotPda,
+          proposalProofVerification: proofVerificationPda,
+          finalizer: authority.publicKey,
+        })
+        .rpc();
+      assert.fail("Correct payload should pass proof checks but still respect the reveal window");
+    } catch (err: any) {
+      assert.include(err.toString(), "RevealStillOpen");
+    }
+
+    console.log("  ✓ V2 proof path rejects payload substitution and preserves lifecycle timing");
   });
 });

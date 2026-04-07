@@ -3183,7 +3183,7 @@ body.judge-mode .judge-banner {
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:10px">
             <input id="builderDaoName" type="text" value="PrivateDAO Live" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="DAO name">
             <input id="builderDaoQuorum" type="number" value="51" min="1" max="100" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Quorum">
-            <input id="builderDaoReveal" type="number" value="5" min="5" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Reveal window">
+            <input id="builderDaoReveal" type="number" value="180" min="60" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Reveal window">
             <input id="builderDaoDelay" type="number" value="5" min="0" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="Execution delay">
             <select id="builderDaoMode" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
               <option value="token">token</option>
@@ -3191,7 +3191,7 @@ body.judge-mode .judge-banner {
               <option value="dual">dual</option>
             </select>
           </div>
-          <code id="createDaoCommandBuilder" style="display:block;margin-top:12px;color:var(--cyan)">yarn create-dao -- --name "PrivateDAO Live" --quorum 51 --reveal-window 5 --delay 5</code>
+          <code id="createDaoCommandBuilder" style="display:block;margin-top:12px;color:var(--cyan)">yarn create-dao -- --name "PrivateDAO Live" --quorum 51 --reveal-window 180 --delay 5</code>
           <div style="margin-top:10px;color:var(--text2);line-height:1.7">This flow creates the governance mint, creates your associated token account, and mints the initial governance allocation to the connected wallet automatically.</div>
           <div style="margin-top:8px;color:var(--text3);line-height:1.7">If this fails, the usual next step is simple: change the DAO name first, then retry from the same wallet.</div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
@@ -3325,7 +3325,7 @@ body.judge-mode .judge-banner {
         </div>
         <div>
           <label style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;display:block;margin-bottom:8px">MAGICBLOCK API BASE</label>
-          <input id="createProposalMagicBlockApiBase" type="text" value="https://per.devnet.magicblock.gg" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="MagicBlock PER API base">
+          <input id="createProposalMagicBlockApiBase" type="text" value="https://payments.magicblock.app" style="width:100%;background:var(--void);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none" placeholder="MagicBlock Private Payments API base">
         </div>
       </div>
       <code id="createProposalCommandHint">yarn create-proposal -- --dao &lt;DAO_PDA&gt; --title "Fund community work"</code>
@@ -5797,7 +5797,7 @@ function updateExecuteCommandBuilder() {
 function buildCreateDaoCommand() {
   const name = (document.getElementById('builderDaoName')?.value || 'PrivateDAO Live').trim() || 'PrivateDAO Live';
   const quorum = (document.getElementById('builderDaoQuorum')?.value || '51').trim() || '51';
-  const revealWindow = (document.getElementById('builderDaoReveal')?.value || '5').trim() || '5';
+  const revealWindow = (document.getElementById('builderDaoReveal')?.value || '180').trim() || '180';
   const delay = (document.getElementById('builderDaoDelay')?.value || '5').trim() || '5';
   const mode = (document.getElementById('builderDaoMode')?.value || 'token').trim() || 'token';
   const safeName = name.replace(/"/g, '\\"');
@@ -6676,7 +6676,7 @@ async function sha256Bytes(value) {
 }
 
 function normalizeMagicBlockApiBase(value) {
-  return (value || 'https://per.devnet.magicblock.gg').trim().replace(/\/+$/, '');
+  return (value || 'https://payments.magicblock.app').trim().replace(/\/+$/, '');
 }
 
 async function magicBlockFetch(path, { method = 'GET', query = null, body = null, apiBase = null } = {}) {
@@ -6932,7 +6932,7 @@ function describeOperationError(error, context = 'operation') {
     return 'MagicBlock private payment corridors only apply to confidential token payouts. Next step: switch the payout asset to token and supply a valid mint before enabling the corridor.';
   }
   if (combined.includes('unauthorizedmagicblockoperator')) {
-    return 'Only the DAO authority or proposal proposer can configure or settle this MagicBlock corridor. Next step: switch to the authorized wallet and retry.';
+    return 'MagicBlock corridors can be configured before voting by an authorized proposer, but settlement is authority-only. Next step: switch to the DAO authority wallet and retry settlement.';
   }
   if (combined.includes('custom program error: 0x0')) {
     if (context === 'create-dao') {
@@ -6974,7 +6974,7 @@ function describeOperationError(error, context = 'operation') {
     return 'The REFHE envelope payload is incomplete or malformed. Next step: reconfigure it with a valid model URI and real 32-byte hashes.';
   }
   if (combined.includes('unauthorizedrefheoperator')) {
-    return 'Only the DAO authority or the proposal proposer can configure or settle this REFHE envelope. Next step: switch to an authorized wallet.';
+    return 'REFHE envelopes can be configured before voting by an authorized proposer, but settlement is authority-only. Next step: switch to the DAO authority wallet and retry settlement.';
   }
   return message || 'The requested operation failed.';
 }
@@ -7271,7 +7271,7 @@ async function submitCreateProposalInWallet() {
 async function submitCreateDaoInWallet() {
   const name = (document.getElementById('builderDaoName')?.value || '').trim() || `PrivateDAO ${new Date().toISOString().slice(0, 16)}`;
   const quorum = Number((document.getElementById('builderDaoQuorum')?.value || '51').trim());
-  const revealWindow = Number((document.getElementById('builderDaoReveal')?.value || '5').trim());
+  const revealWindow = Number((document.getElementById('builderDaoReveal')?.value || '180').trim());
   const delay = Number((document.getElementById('builderDaoDelay')?.value || '5').trim());
   const mode = (document.getElementById('builderDaoMode')?.value || 'token').trim();
 
@@ -8997,7 +8997,7 @@ function getProposalZkCardState(proposal) {
   if (proposal?.zkMode === 'ZkEnforced') {
     return {
       pill: 'ZK Enforced',
-      copy: 'Stronger zk_enforced receipts are locked on-chain for this proposal and the zk-enforced finalize path is active.',
+      copy: 'Authority-recorded zk_enforced receipts are locked on-chain for this proposal and the zk-enforced finalize path is active.',
     };
   }
 
@@ -9056,8 +9056,8 @@ function summarizeZkEnforcedReadiness(proposal) {
   if (stronger.length === 3) {
     return {
       status: 'Ready',
-      copy: 'All three stronger receipts are present on-chain and this proposal can be promoted to zk_enforced mode.',
-      nextStep: 'Run configure:zk-mode for this proposal, then use the zk_enforced finalize path when the reveal window closes.',
+      copy: 'All three authority-recorded receipts are present on-chain and this proposal can be promoted to zk_enforced mode.',
+      nextStep: 'Run configure:zk-mode from the DAO authority wallet for this proposal, then use the zk_enforced finalize path when the reveal window closes.',
     };
   }
 

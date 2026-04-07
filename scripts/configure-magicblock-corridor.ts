@@ -15,18 +15,18 @@ async function main() {
     dao,
     proposal,
     ownerWallet,
-    settlementWallet,
     payoutMint,
     depositAmount,
     privateTransferAmount,
     withdrawalAmount,
     apiBase,
     cluster,
+    validator,
   } = parseArgs();
 
-  if (!dao || !proposal || !ownerWallet || !settlementWallet || !payoutMint || !depositAmount || !privateTransferAmount || !withdrawalAmount) {
+  if (!dao || !proposal || !ownerWallet || !payoutMint || !depositAmount || !privateTransferAmount || !withdrawalAmount) {
     console.error(
-      "Usage: yarn ts-node scripts/configure-magicblock-corridor.ts --dao <DAO_PDA> --proposal <PROPOSAL_PDA> --owner-wallet <PUBKEY> --settlement-wallet <PUBKEY> --payout-mint <MINT> --deposit-amount <RAW> --private-transfer-amount <RAW> --withdrawal-amount <RAW> [--api-base <URL>] [--cluster devnet]",
+      "Usage: yarn ts-node scripts/configure-magicblock-corridor.ts --dao <DAO_PDA> --proposal <PROPOSAL_PDA> --owner-wallet <PUBKEY> --payout-mint <MINT> --deposit-amount <RAW> --private-transfer-amount <RAW> --withdrawal-amount <RAW> [--validator <PUBKEY>] [--api-base <URL>] [--cluster devnet]",
     );
     process.exit(1);
   }
@@ -40,14 +40,13 @@ async function main() {
   const payoutPlanPk = deriveConfidentialPayoutPlanPda(proposalPk, program.programId);
   const corridorPk = deriveMagicBlockPrivatePaymentCorridorPda(proposalPk, program.programId);
   const ownerPk = new PublicKey(String(ownerWallet));
-  const settlementPk = new PublicKey(String(settlementWallet));
   const mintPk = new PublicKey(String(payoutMint));
+  const validatorPk = validator ? new PublicKey(String(validator)) : null;
   const resolvedApiBase = String(apiBase || magicBlockApiBase()).trim();
   const resolvedCluster = String(cluster || magicBlockCluster()).trim();
   const routeHash = magicBlockRouteHash([
     proposalPk,
     ownerPk,
-    settlementPk,
     mintPk,
     depositAmount,
     privateTransferAmount,
@@ -61,12 +60,11 @@ async function main() {
       resolvedApiBase,
       resolvedCluster,
       ownerPk,
-      settlementPk,
-      mintPk,
+      validatorPk,
+      routeHash,
       new anchor.BN(Number(depositAmount)),
       new anchor.BN(Number(privateTransferAmount)),
       new anchor.BN(Number(withdrawalAmount)),
-      routeHash,
     )
     .accounts({
       dao: daoPk,

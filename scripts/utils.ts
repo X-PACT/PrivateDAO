@@ -39,7 +39,11 @@ export function parseArgs(): Record<string, any> {
       const key     = args[i].slice(2);
       const camelKey = key.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
       const val     = args[i + 1] && !args[i + 1].startsWith("--") ? args[i + 1] : true;
-      result[camelKey] = typeof val === "string" && !isNaN(Number(val)) ? Number(val) : val;
+      const parsedNumber = typeof val === "string" ? Number(val) : NaN;
+      result[camelKey] =
+        typeof val === "string" && Number.isFinite(parsedNumber) && String(parsedNumber) === val.trim()
+          ? parsedNumber
+          : val;
       if (val !== true) i++;
     }
   }
@@ -149,6 +153,93 @@ export function deriveMagicBlockPrivatePaymentCorridorPda(
     [Buffer.from("magicblock-corridor"), proposal.toBuffer()],
     programId,
   )[0];
+}
+
+export function deriveDaoSecurityPolicyPda(dao: PublicKey, programId: PublicKey): PublicKey {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("dao-security-policy"), dao.toBuffer()],
+    programId,
+  )[0];
+}
+
+export function deriveProposalExecutionPolicySnapshotPda(proposal: PublicKey, programId: PublicKey): PublicKey {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("proposal-policy-snapshot"), proposal.toBuffer()],
+    programId,
+  )[0];
+}
+
+export function deriveProposalProofVerificationPda(proposal: PublicKey, programId: PublicKey): PublicKey {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("proposal-proof-verification"), proposal.toBuffer()],
+    programId,
+  )[0];
+}
+
+export function deriveSettlementEvidencePda(
+  proposal: PublicKey,
+  payoutPlan: PublicKey,
+  settlementId: Buffer,
+  programId: PublicKey,
+): PublicKey {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("settlement-evidence"), proposal.toBuffer(), payoutPlan.toBuffer(), settlementId],
+    programId,
+  )[0];
+}
+
+export function deriveSettlementConsumptionRecordPda(evidence: PublicKey, programId: PublicKey): PublicKey {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("settlement-consumption"), evidence.toBuffer()],
+    programId,
+  )[0];
+}
+
+export function proofDomainSeparator(dao: PublicKey, proposal: PublicKey): Buffer {
+  return crypto
+    .createHash("sha256")
+    .update(Buffer.from("PrivateDAO::proof-payload:v1"))
+    .update(dao.toBuffer())
+    .update(proposal.toBuffer())
+    .digest();
+}
+
+export function canonicalProposalPayloadHash(dao: PublicKey, proposal: PublicKey, version = 2): Buffer {
+  return crypto
+    .createHash("sha256")
+    .update(Buffer.from("PrivateDAO::proof-payload:v1"))
+    .update(dao.toBuffer())
+    .update(proposal.toBuffer())
+    .update(Buffer.from([version]))
+    .digest();
+}
+
+function enumSeedByte(value: any, mapping: Record<string, number>): number {
+  const key = Object.keys(value || {})[0];
+  const seed = mapping[key];
+  if (!seed) throw new Error(`Unsupported enum variant: ${JSON.stringify(value)}`);
+  return seed;
+}
+
+export function canonicalPayoutFieldsHash(dao: PublicKey, proposal: PublicKey, payoutPlan: PublicKey, plan: any): Buffer {
+  const tokenMint = plan.tokenMint ? new PublicKey(plan.tokenMint).toBuffer() : PublicKey.default.toBuffer();
+  const recipientCount = Buffer.alloc(2);
+  recipientCount.writeUInt16LE(Number(plan.recipientCount));
+  return crypto
+    .createHash("sha256")
+    .update(Buffer.from("PrivateDAO::payout-payload:v1"))
+    .update(dao.toBuffer())
+    .update(proposal.toBuffer())
+    .update(payoutPlan.toBuffer())
+    .update(Buffer.from([enumSeedByte(plan.payoutType, { salary: 1, bonus: 2 })]))
+    .update(Buffer.from([enumSeedByte(plan.assetType, { sol: 1, token: 2 })]))
+    .update(new PublicKey(plan.settlementRecipient).toBuffer())
+    .update(tokenMint)
+    .update(recipientCount)
+    .update(new anchor.BN(plan.totalAmount).toArrayLike(Buffer, "le", 8))
+    .update(Buffer.from(plan.manifestHash))
+    .update(Buffer.from(plan.ciphertextHash))
+    .digest();
 }
 
 export async function resolveTokenProgramForMint(

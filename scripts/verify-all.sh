@@ -111,6 +111,9 @@ npm run verify:operational-evidence >/dev/null
 echo "[verify-all] checking runtime surface"
 npm run verify:runtime-surface >/dev/null
 
+echo "[verify-all] checking confidential manifest encryption"
+npm run verify:confidential-manifest >/dev/null
+
 echo "[verify-all] checking wallet compatibility matrix"
 npm run verify:wallet-matrix >/dev/null
 

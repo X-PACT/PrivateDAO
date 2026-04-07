@@ -35,6 +35,8 @@ async function main() {
     recipientCount: plan.recipientCount,
     totalAmount: plan.totalAmount.toString(),
     encryptedManifestUri: plan.encryptedManifestUri,
+    manifestHash: Buffer.from(plan.manifestHash).toString("hex"),
+    ciphertextHash: Buffer.from(plan.ciphertextHash).toString("hex"),
     status: Object.keys(plan.status)[0],
     configuredAt: plan.configuredAt.toString(),
     fundedAt: plan.fundedAt.toString(),

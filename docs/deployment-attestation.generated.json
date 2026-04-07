@@ -28,6 +28,7 @@
     "realDeviceRuntimeIntake": "verified",
     "operationalEvidenceSurface": "verified",
     "magicblockRuntimeSurface": "verified",
+    "confidentialManifestEncryption": "verified",
     "releaseDrillSurface": "verified",
     "artifactFreshness": "verified",
     "zkCompanionStack": "verified",
@@ -76,6 +77,7 @@
     "npm run verify:operational-evidence",
     "npm run verify:real-device-runtime",
     "npm run verify:magicblock-runtime",
+    "npm run verify:confidential-manifest",
     "npm run verify:zk-enforced-runtime",
     "npm run verify:runtime-evidence",
     "npm run verify:release-drill",
@@ -102,13 +104,13 @@
     "npm run verify:review-surface",
     "npm run verify:all"
   ],
-  "gateCount": 61,
+  "gateCount": 62,
   "packageCounts": {
     "strategy": 12,
-    "security": 15,
+    "security": 16,
     "zk": 28,
-    "proof": 76,
-    "operations": 29
+    "proof": 78,
+    "operations": 31
   },
   "zk": {
     "stackVersion": 1,

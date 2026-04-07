@@ -173,8 +173,7 @@ async function main() {
     apiBase: string;
     cluster: string;
     ownerWallet: PublicKey;
-    settlementWallet: PublicKey;
-    tokenMint: PublicKey;
+    validator: PublicKey | null;
     depositAmount: any;
     privateTransferAmount: any;
     withdrawalAmount: any;
@@ -300,8 +299,7 @@ async function main() {
         apiBase,
         cluster,
         ownerWallet,
-        settlementWallet: settlementRecipientPk,
-        tokenMint: tokenMintPk,
+        validator: null,
         depositAmount: totalAmount,
         privateTransferAmount: totalAmount,
         withdrawalAmount: totalAmount,
@@ -367,12 +365,11 @@ async function main() {
           magicBlockPayload.apiBase,
           magicBlockPayload.cluster,
           magicBlockPayload.ownerWallet,
-          magicBlockPayload.settlementWallet,
-          magicBlockPayload.tokenMint,
+          magicBlockPayload.validator,
+          magicBlockPayload.routeHash,
           magicBlockPayload.depositAmount,
           magicBlockPayload.privateTransferAmount,
           magicBlockPayload.withdrawalAmount,
-          magicBlockPayload.routeHash,
         )
         .accounts({
           dao: daoPda,

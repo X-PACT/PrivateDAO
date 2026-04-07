@@ -72,6 +72,8 @@ const MANIFEST_FILES = [
   "docs/runtime/real-device-captures.json",
   "docs/runtime/real-device.generated.md",
   "docs/runtime/real-device.generated.json",
+  "docs/runtime/devnet-feature-sweep-2026-04-06.md",
+  "docs/runtime/confidential-manifests/devnet-stable-magicblock-refhe.enc.json",
   "docs/magicblock/private-payments.md",
   "docs/magicblock/operator-flow.md",
   "docs/magicblock/runtime-evidence.md",
