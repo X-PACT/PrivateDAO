@@ -52,6 +52,8 @@ function main(): void {
     "fn canonical_proposal_payload_hash",
     "fn canonical_payout_fields_hash",
     "fn count_matching_signers",
+    "ProofVerificationAlreadyRecorded",
+    "SettlementEvidenceAlreadyRecorded",
   ];
 
   for (const marker of libMarkers) requireIncludes(lib, marker, libRel);
@@ -70,9 +72,21 @@ function main(): void {
   );
   requireRegex(
     lib,
+    /verification\.proposal != Pubkey::default\(\)/s,
+    libRel,
+    "strict proof verification no-overwrite guard",
+  );
+  requireRegex(
+    lib,
     /evidence\.status == EvidenceStatus::Verified/s,
     libRel,
     "strict settlement status check",
+  );
+  requireRegex(
+    lib,
+    /evidence\.proposal != Pubkey::default\(\)/s,
+    libRel,
+    "strict settlement evidence no-overwrite guard",
   );
   requireRegex(
     lib,

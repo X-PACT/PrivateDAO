@@ -370,6 +370,7 @@ Keeper note:
 - strict ZK proof records must match the canonical V2 proposal payload hash
 - strict ZK proof records must be fresh at finalization time
 - threshold-attested proof verification is an explicit on-chain trust model, not a cryptographic verifier CPI claim
+- strict proof companion accounts cannot be overwritten with a different strict payload after recording
 
 ### Settlement V2 Invariants
 
@@ -377,6 +378,7 @@ Keeper note:
 - strict settlement evidence must be DAO-bound, proposal-bound, payout-plan-bound, and canonical-payout-field-bound
 - strict settlement evidence must be fresh at execution time
 - strict settlement evidence is consumed through a single-use `SettlementConsumptionRecord` PDA
+- strict settlement evidence accounts cannot be overwritten with a different evidence payload after recording
 - the same settlement evidence cannot execute two payouts
 
 ### Policy Transition Invariants

@@ -67,6 +67,9 @@ The current production-safe fallback is threshold attestation. The attestors and
 Invariant:
 Strict V2 finalization fails if proof status is not verified, proof is stale, domain separator mismatches, or payload hash does not match the canonical proposal payload.
 
+Overwrite resistance:
+Once a strict `ProposalProofVerification` PDA is populated, it cannot be rewritten with a different payload, proof hash, public-input hash, verification-key hash, kind, or domain separator. Repeating the exact same still-fresh record is idempotent; substituting a new payload requires a new proposal-bound PDA.
+
 ## REFHE and MagicBlock Settlement
 
 Root cause:
@@ -86,6 +89,9 @@ Strict V2 payout execution fails if evidence is stale, not verified, mismatched 
 
 Consumption semantics:
 Settlement consumption is enforced by a single-use PDA derived from `["settlement-consumption", settlement_evidence]`. This intentionally avoids zero-value sentinel checks. If the consumption account already exists, the same evidence cannot be reused.
+
+Overwrite resistance:
+Once a strict `SettlementEvidence` PDA is populated, it cannot be rewritten with a different evidence kind, status, settlement id, evidence hash, or payout-field hash. If a settlement needs a new receipt, it must use a distinct settlement id and therefore a distinct evidence PDA.
 
 ## Cancellation
 
@@ -186,6 +192,7 @@ Further test work should add live full-path `execute_confidential_payout_plan_v2
 ## Audit checklist delta
 
 - Payload substitution must fail.
+- Proof and settlement companion PDA overwrite with different strict data must fail.
 - Cross-DAO proof and settlement replay must fail.
 - Cross-proposal proof and settlement replay must fail.
 - Double consumption of the same settlement evidence must fail by PDA existence.

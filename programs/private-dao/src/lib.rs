@@ -1916,6 +1916,31 @@ pub mod private_dao {
 
         let now = Clock::get()?.unix_timestamp;
         let verification = &mut ctx.accounts.proposal_proof_verification;
+        if verification.proposal != Pubkey::default() {
+            require!(
+                verification.dao == ctx.accounts.dao.key()
+                    && verification.proposal == ctx.accounts.proposal.key()
+                    && verification.payload_hash == payload_hash
+                    && verification.proof_hash == proof_hash
+                    && verification.public_inputs_hash == public_inputs_hash
+                    && verification.verification_key_hash == verification_key_hash
+                    && verification.verification_kind == verification_kind
+                    && verification.status == VerificationStatus::Verified
+                    && verification.domain_separator == domain_separator
+                    && now <= verification.expires_at,
+                Error::ProofVerificationAlreadyRecorded
+            );
+            emit!(ProofVerificationRecordedV2 {
+                dao: verification.dao,
+                proposal: verification.proposal,
+                verification_kind,
+                status: verification.status.clone(),
+                payload_hash: verification.payload_hash,
+                proof_hash: verification.proof_hash,
+                expires_at: verification.expires_at,
+            });
+            return Ok(());
+        }
         verification.dao = ctx.accounts.dao.key();
         verification.proposal = ctx.accounts.proposal.key();
         verification.payload_hash = payload_hash;
@@ -2026,6 +2051,32 @@ pub mod private_dao {
 
         let now = Clock::get()?.unix_timestamp;
         let evidence = &mut ctx.accounts.settlement_evidence;
+        if evidence.proposal != Pubkey::default() {
+            require!(
+                evidence.dao == ctx.accounts.dao.key()
+                    && evidence.proposal == ctx.accounts.proposal.key()
+                    && evidence.payout_plan == ctx.accounts.confidential_payout_plan.key()
+                    && evidence.kind == kind
+                    && evidence.status == EvidenceStatus::Verified
+                    && evidence.settlement_id == settlement_id
+                    && evidence.evidence_hash == evidence_hash
+                    && evidence.payout_fields_hash == payout_fields_hash
+                    && now >= evidence.valid_after
+                    && now <= evidence.expires_at,
+                Error::SettlementEvidenceAlreadyRecorded
+            );
+            emit!(SettlementEvidenceRecordedV2 {
+                dao: evidence.dao,
+                proposal: evidence.proposal,
+                payout_plan: evidence.payout_plan,
+                kind,
+                status: evidence.status.clone(),
+                settlement_id: evidence.settlement_id,
+                evidence_hash: evidence.evidence_hash,
+                expires_at: evidence.expires_at,
+            });
+            return Ok(());
+        }
         evidence.dao = ctx.accounts.dao.key();
         evidence.proposal = ctx.accounts.proposal.key();
         evidence.payout_plan = ctx.accounts.confidential_payout_plan.key();
@@ -4324,6 +4375,8 @@ pub enum Error {
     PolicySnapshotMismatch,
     #[msg("Proof verification companion account does not match the proposal or DAO")]
     ProofVerificationMismatch,
+    #[msg("Proof verification was already recorded with a different strict payload")]
+    ProofVerificationAlreadyRecorded,
     #[msg("Proof verification is not in verified status")]
     ProofVerificationNotVerified,
     #[msg("Proof verification is stale or expired")]
@@ -4336,6 +4389,8 @@ pub enum Error {
     InvalidSettlementEvidence,
     #[msg("Settlement evidence does not match the payout plan, proposal, or DAO")]
     SettlementEvidenceMismatch,
+    #[msg("Settlement evidence was already recorded with different strict evidence")]
+    SettlementEvidenceAlreadyRecorded,
     #[msg("Settlement evidence is not verified")]
     SettlementEvidenceNotVerified,
     #[msg("Settlement evidence is stale or not yet valid")]

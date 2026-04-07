@@ -2718,20 +2718,85 @@ describe("PrivateDAO", () => {
       assert.include(err.toString(), "PayloadHashMismatch");
     }
 
+    try {
+      await program.methods
+        .recordProofVerificationV2(
+          { thresholdAttestation: {} },
+          [...canonicalProposalPayloadHash(daoPda, v2ProposalPda)],
+          [...crypto.randomBytes(32)],
+          [...crypto.randomBytes(32)],
+          [...crypto.randomBytes(32)],
+          [...canonicalProofDomain(daoPda, v2ProposalPda)],
+        )
+        .accounts({
+          dao: daoPda,
+          daoSecurityPolicy: securityPolicyPda,
+          proposal: v2ProposalPda,
+          proposalProofVerification: proofVerificationPda,
+          recorder: authority.publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("A strict proof verification PDA must not be overwritten with a different payload");
+    } catch (err: any) {
+      assert.include(err.toString(), "ProofVerificationAlreadyRecorded");
+    }
+
+    const daoAfterWrongProof = await program.account["dao"].fetch(daoPda);
+    const [v2GoodProposalPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), daoAfterWrongProof.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+    await program.methods
+      .createProposal(
+        "V2 proof positive guard",
+        "Correct proof payload should clear strict proof checks and still respect lifecycle timing.",
+        new BN(3600),
+        null,
+      )
+      .accounts({
+        dao: daoPda,
+        proposal: v2GoodProposalPda,
+        proposerTokenAccount: authorityTokenAta,
+        proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [goodSnapshotPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal-policy-snapshot"), v2GoodProposalPda.toBuffer()],
+      program.programId,
+    );
+    await program.methods
+      .snapshotProposalExecutionPolicy()
+      .accounts({
+        dao: daoPda,
+        daoSecurityPolicy: securityPolicyPda,
+        proposal: v2GoodProposalPda,
+        proposalExecutionPolicySnapshot: goodSnapshotPda,
+        operator: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [goodProofVerificationPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal-proof-verification"), v2GoodProposalPda.toBuffer()],
+      program.programId,
+    );
     await program.methods
       .recordProofVerificationV2(
         { thresholdAttestation: {} },
-        [...canonicalProposalPayloadHash(daoPda, v2ProposalPda)],
+        [...canonicalProposalPayloadHash(daoPda, v2GoodProposalPda)],
         [...crypto.randomBytes(32)],
         [...crypto.randomBytes(32)],
         [...crypto.randomBytes(32)],
-        [...canonicalProofDomain(daoPda, v2ProposalPda)],
+        [...canonicalProofDomain(daoPda, v2GoodProposalPda)],
       )
       .accounts({
         dao: daoPda,
         daoSecurityPolicy: securityPolicyPda,
-        proposal: v2ProposalPda,
-        proposalProofVerification: proofVerificationPda,
+        proposal: v2GoodProposalPda,
+        proposalProofVerification: goodProofVerificationPda,
         recorder: authority.publicKey,
         systemProgram: SystemProgram.programId,
       })
@@ -2742,9 +2807,9 @@ describe("PrivateDAO", () => {
         .finalizeZkEnforcedProposalV2()
         .accounts({
           dao: daoPda,
-          proposal: v2ProposalPda,
-          proposalExecutionPolicySnapshot: snapshotPda,
-          proposalProofVerification: proofVerificationPda,
+          proposal: v2GoodProposalPda,
+          proposalExecutionPolicySnapshot: goodSnapshotPda,
+          proposalProofVerification: goodProofVerificationPda,
           finalizer: authority.publicKey,
         })
         .rpc();

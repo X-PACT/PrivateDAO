@@ -2,7 +2,7 @@
 
 ## Overview
 
-- Generated at: `2026-04-07T02:37:02.336Z`
+- Generated at: `2026-04-07T03:05:28.631Z`
 - Network: `devnet`
 - Canonical run label: `20260404110609`
 - Multi-proposal run label: `20260404144532`
