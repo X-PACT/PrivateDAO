@@ -49,11 +49,23 @@ type MainnetBlockers = {
   }>;
 };
 
+type LaunchOpsChecklist = {
+  decision: string;
+  productionMainnetClaimAllowed: boolean;
+  items: Array<{
+    id: string;
+    category: string;
+    status: string;
+    requiredBefore: string;
+  }>;
+};
+
 function main() {
   const submission = readJson<SubmissionRegistry>("docs/submission-registry.json");
   const proof = readJson<ProofRegistry>("docs/proof-registry.json");
   const attestation = readJson<ReviewAttestation>("docs/review-attestation.generated.json");
   const blockers = readJson<MainnetBlockers>("docs/mainnet-blockers.json");
+  const launchOps = readJson<LaunchOpsChecklist>("docs/launch-ops-checklist.json");
 
   const verified = Object.entries(submission.status)
     .filter(([, status]) => status === "verified")
@@ -100,6 +112,20 @@ ${blockers.blockers
   )
   .join("\n")}
 
+## Launch Operations Checklist
+
+- Checklist: \`docs/launch-ops-checklist.json\`
+- Human-readable checklist: \`docs/launch-ops-checklist.md\`
+- Current decision: \`${launchOps.decision}\`
+- Production mainnet claim allowed: \`${launchOps.productionMainnetClaimAllowed}\`
+
+${launchOps.items
+  .map(
+    (item) =>
+      `- \`${item.id}\` -> \`${item.status}\` (${item.category}, required before \`${item.requiredBefore}\`)`,
+  )
+  .join("\n")}
+
 ## Reviewer Artifact Summary
 
 - Verification gates tracked: \`${submission.gates.length}\`
@@ -143,6 +169,8 @@ npm run build:deployment-attestation
 npm run build:runtime-attestation
 npm run build:go-live-attestation
 npm run build:pdao-attestation
+npm run verify:launch-ops
+npm run verify:monitoring-alerts
 npm run verify:mainnet-blockers
 npm run verify:mainnet-readiness-report
 npm run verify:deployment-attestation

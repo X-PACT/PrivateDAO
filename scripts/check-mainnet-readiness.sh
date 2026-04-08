@@ -72,6 +72,8 @@ npm run build:cryptographic-manifest >/dev/null
 npm run verify:cryptographic-manifest >/dev/null
 npm run build:review-attestation >/dev/null
 npm run build:mainnet-readiness-report >/dev/null
+npm run verify:launch-ops >/dev/null
+npm run verify:monitoring-alerts >/dev/null
 npm run verify:mainnet-blockers >/dev/null
 npm run verify:mainnet-readiness-report >/dev/null
 retry_cmd 3 5 npm run verify:pdao-live >/dev/null
@@ -86,6 +88,12 @@ test -f docs/mainnet-readiness.md
 test -f docs/mainnet-readiness.generated.md
 test -f docs/mainnet-blockers.json
 test -f docs/mainnet-blockers.md
+test -f docs/launch-ops-checklist.json
+test -f docs/launch-ops-checklist.md
+test -f docs/monitoring-alert-rules.json
+test -f docs/monitoring-alert-rules.md
+test -f docs/authority-transfer-runbook.md
+test -f docs/wallet-e2e-test-plan.md
 test -f docs/deployment-attestation.generated.json
 test -f docs/go-live-criteria.md
 test -f docs/operational-drillbook.md

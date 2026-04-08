@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "project": "PrivateDAO",
+  "decision": "blocked-external-steps",
+  "productionMainnetClaimAllowed": false,
+  "items": [
+    {
+      "id": "create-production-multisig",
+      "category": "custody",
+      "status": "pending-external",
+      "requiredBefore": "mainnet-real-funds",
+      "evidence": [
+        "docs/authority-transfer-runbook.md",
+        "docs/authority-hardening.md"
+      ]
+    },
+    {
+      "id": "transfer-program-upgrade-authority",
+      "category": "custody",
+      "status": "pending-external",
+      "requiredBefore": "mainnet-real-funds",
+      "evidence": [
+        "docs/authority-transfer-runbook.md",
+        "docs/mainnet-cutover-runbook.md"
+      ]
+    },
+    {
+      "id": "configure-production-timelock",
+      "category": "governance",
+      "status": "repo-documented",
+      "requiredBefore": "mainnet-real-funds",
+      "evidence": [
+        "docs/authority-transfer-runbook.md",
+        "docs/mainnet-go-live-checklist.md"
+      ]
+    },
+    {
+      "id": "backup-and-recovery-procedures",
+      "category": "operations",
+      "status": "repo-documented",
+      "requiredBefore": "mainnet-real-funds",
+      "evidence": [
+        "docs/authority-transfer-runbook.md",
+        "docs/incident-response.md"
+      ]
+    },
+    {
+      "id": "monitoring-setup",
+      "category": "operations",
+      "status": "pending-external",
+      "requiredBefore": "mainnet-real-funds",
+      "evidence": [
+        "docs/monitoring-alerts.md",
+        "docs/monitoring-alert-rules.json",
+        "docs/monitoring-alert-rules.md"
+      ]
+    },
+    {
+      "id": "alerting-rules",
+      "category": "operations",
+      "status": "repo-defined",
+      "requiredBefore": "mainnet-real-funds",
+      "evidence": [
+        "docs/monitoring-alert-rules.json",
+        "docs/monitoring-alert-rules.md"
+      ]
+    },
+    {
+      "id": "operator-runbooks",
+      "category": "operations",
+      "status": "repo-documented",
+      "requiredBefore": "mainnet-real-funds",
+      "evidence": [
+        "docs/production-operations.md",
+        "docs/mainnet-cutover-runbook.md",
+        "docs/incident-response.md"
+      ]
+    },
+    {
+      "id": "emergency-procedures",
+      "category": "operations",
+      "status": "repo-documented",
+      "requiredBefore": "mainnet-real-funds",
+      "evidence": [
+        "docs/incident-response.md",
+        "docs/authority-transfer-runbook.md"
+      ]
+    },
+    {
+      "id": "real-device-testing",
+      "category": "runtime",
+      "status": "pending-runtime-captures",
+      "requiredBefore": "mainnet-real-funds",
+      "evidence": [
+        "docs/runtime/real-device.md",
+        "docs/runtime/real-device.generated.md",
+        "docs/wallet-e2e-test-plan.md"
+      ]
+    },
+    {
+      "id": "wallet-integration",
+      "category": "runtime",
+      "status": "repo-documented",
+      "requiredBefore": "mainnet-real-funds",
+      "evidence": [
+        "docs/wallet-runtime.md",
+        "docs/wallet-compatibility-matrix.generated.md",
+        "docs/wallet-e2e-test-plan.md"
+      ]
+    },
+    {
+      "id": "end-to-end-flows",
+      "category": "runtime",
+      "status": "devnet-proven",
+      "requiredBefore": "mainnet-real-funds",
+      "evidence": [
+        "docs/load-test-report.md",
+        "docs/devnet-resilience-report.md",
+        "docs/wallet-e2e-test-plan.md"
+      ]
+    }
+  ]
+}

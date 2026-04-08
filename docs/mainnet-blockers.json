@@ -29,6 +29,9 @@
       "nextAction": "Move production upgrade authority and operational authorities to a documented multisig or governance-owned path and rehearse rotation.",
       "evidence": [
         "docs/authority-hardening.md",
+        "docs/authority-transfer-runbook.md",
+        "docs/launch-ops-checklist.json",
+        "docs/launch-ops-checklist.md",
         "docs/mainnet-cutover-runbook.md"
       ]
     },
@@ -41,6 +44,10 @@
       "owner": "operations",
       "nextAction": "Configure live monitoring and alert delivery for proposal lifecycle, failed proof or settlement checks, RPC degradation, and treasury execution anomalies.",
       "evidence": [
+        "docs/launch-ops-checklist.json",
+        "docs/launch-ops-checklist.md",
+        "docs/monitoring-alert-rules.json",
+        "docs/monitoring-alert-rules.md",
         "docs/monitoring-alerts.md",
         "docs/production-operations.md",
         "docs/incident-response.md"
@@ -56,7 +63,10 @@
       "nextAction": "Capture and verify real-device wallet runs for the supported wallet/browser matrix before production launch.",
       "evidence": [
         "docs/runtime/real-device.md",
-        "docs/runtime/real-device.generated.md"
+        "docs/runtime/real-device.generated.md",
+        "docs/wallet-e2e-test-plan.md",
+        "docs/launch-ops-checklist.json",
+        "docs/launch-ops-checklist.md"
       ]
     },
     {
@@ -84,6 +94,8 @@
       "evidence": [
         "docs/release-ceremony.md",
         "docs/release-drill.generated.md",
+        "docs/launch-ops-checklist.json",
+        "docs/launch-ops-checklist.md",
         "docs/mainnet-cutover-runbook.md"
       ]
     }

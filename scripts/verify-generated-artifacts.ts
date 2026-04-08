@@ -874,6 +874,12 @@ function main() {
     "docs/go-live-attestation.generated.json",
     "docs/mainnet-blockers.json",
     "docs/mainnet-blockers.md",
+    "docs/launch-ops-checklist.json",
+    "docs/launch-ops-checklist.md",
+    "docs/authority-transfer-runbook.md",
+    "docs/monitoring-alert-rules.json",
+    "docs/monitoring-alert-rules.md",
+    "docs/wallet-e2e-test-plan.md",
   ]) {
     if (!cryptographicManifest.files.some((entry) => entry.path === manifestFile)) {
       throw new Error(`generated cryptographic manifest is missing ${manifestFile}`);
@@ -885,6 +891,12 @@ function main() {
   }
   if (!attestation.securityDocs.includes("docs/mainnet-blockers.md")) {
     throw new Error("generated attestation is missing the human mainnet blocker register");
+  }
+  if (!attestation.operationsDocs?.includes("docs/launch-ops-checklist.md")) {
+    throw new Error("generated attestation is missing the launch ops checklist");
+  }
+  if (!attestation.operationsDocs?.includes("docs/monitoring-alert-rules.md")) {
+    throw new Error("generated attestation is missing the monitoring alert rules");
   }
 
   for (const [pkg, count] of Object.entries(attestation.packageCounts)) {
@@ -1562,6 +1574,18 @@ function main() {
   }
   if (!cryptographicManifest.files.some((entry) => entry.path === "docs/release-ceremony-attestation.generated.json")) {
     throw new Error("generated cryptographic manifest is missing the release ceremony attestation");
+  }
+  for (const launchOpsFile of [
+    "docs/launch-ops-checklist.json",
+    "docs/launch-ops-checklist.md",
+    "docs/authority-transfer-runbook.md",
+    "docs/monitoring-alert-rules.json",
+    "docs/monitoring-alert-rules.md",
+    "docs/wallet-e2e-test-plan.md",
+  ]) {
+    if (!cryptographicManifest.files.some((entry) => entry.path === launchOpsFile)) {
+      throw new Error(`generated cryptographic manifest is missing ${launchOpsFile}`);
+    }
   }
 
   if (supplyChain.project !== "PrivateDAO" || supplyChain.algorithm !== "sha256") {

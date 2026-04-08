@@ -26,6 +26,8 @@ wallets/
 !docs/zk/external-closure.generated.json
 !docs/go-live-attestation.generated.json
 !docs/mainnet-blockers.json
+!docs/launch-ops-checklist.json
+!docs/monitoring-alert-rules.json
 !docs/devnet-wallet-registry.json
 !docs/devnet-bootstrap.json
 !docs/zk-proof-registry.json

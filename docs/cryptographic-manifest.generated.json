@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-08T00:54:02.083Z",
+  "generatedAt": "2026-04-08T01:28:34.650Z",
   "algorithm": "sha256",
-  "entryCount": 134,
-  "aggregateSha256": "22db16e21d86980911f44332110df7eccb488b9aab36230ab6ed6b76e9a5c8fa",
+  "entryCount": 140,
+  "aggregateSha256": "c29becc241fd59dcc58622f42f43547ab5ae42c05a1e3860fc3d0f7c498f2e57",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -502,12 +502,12 @@
     },
     {
       "path": "docs/supply-chain-attestation.generated.md",
-      "sha256": "9d048cbe95711474bfe77478f34230bc30150eda3cad48cdcabe824406be9b47",
+      "sha256": "e4f14fb2367c6b88e68a257cd409d774cbd6f3681ea2117cb1dbb939a00996b1",
       "bytes": 1694
     },
     {
       "path": "docs/supply-chain-attestation.generated.json",
-      "sha256": "afe887d594bec14b6d26b24d19959271cac631cb01e54f7b24e079ee3abbaf35",
+      "sha256": "a4377249f0888cea84c7bad341f697f26e137b2eac33211144474f5e93d02c3b",
       "bytes": 2020
     },
     {
@@ -552,13 +552,43 @@
     },
     {
       "path": "docs/mainnet-blockers.json",
-      "sha256": "264d96ed92bef486e120f130ffae445a2c7bc9334fafa571cc6f284f49cab335",
-      "bytes": 3635
+      "sha256": "5bd01f754ccbfb9b057df92151e0f553859a9a99645f258a11d1287e25437dc9",
+      "bytes": 4135
     },
     {
       "path": "docs/mainnet-blockers.md",
-      "sha256": "ce8781ea91092d49205c5eec3c932bbc2d86ae49ddc8265cbdc1b232be477c4e",
-      "bytes": 3083
+      "sha256": "6c22a743ef257467b0e12df9c12e12866cd2adf59526fedcfc4bc3b5c39d942b",
+      "bytes": 3487
+    },
+    {
+      "path": "docs/launch-ops-checklist.json",
+      "sha256": "029bbe59befd041a73e4dd9bade49161e1f89c122ca35f0ae6a66e17d4640b62",
+      "bytes": 3382
+    },
+    {
+      "path": "docs/launch-ops-checklist.md",
+      "sha256": "5d30d59df07a713736796578d2697d6d37faea0badf7cdf660b804d4019d8b3b",
+      "bytes": 2923
+    },
+    {
+      "path": "docs/authority-transfer-runbook.md",
+      "sha256": "ef65893770c66c99e918bd61f63d6f7245b00fcb3a5f04a73b01540b59f1e4e6",
+      "bytes": 4454
+    },
+    {
+      "path": "docs/monitoring-alert-rules.json",
+      "sha256": "6767aeeba0c1402fe06cc0dd5d9eb805b5ad52bc8f6f116b74f3b5c2773d6269",
+      "bytes": 3865
+    },
+    {
+      "path": "docs/monitoring-alert-rules.md",
+      "sha256": "21bd071d970e0429bc715e9f9a67beb9e4c16594f7046e3db2b16186fd2be5ee",
+      "bytes": 2225
+    },
+    {
+      "path": "docs/wallet-e2e-test-plan.md",
+      "sha256": "37ce786af815669d002d5341211b65e8e6d4ea2c6dfd7163f41bbf0ff0e503fa",
+      "bytes": 3251
     },
     {
       "path": "docs/external-readiness-intake.md",

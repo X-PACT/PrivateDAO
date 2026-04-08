@@ -59,6 +59,25 @@ This report is generated from the canonical PrivateDAO registries and reviewer a
 - `magicblock-refhe-source-receipts` -> `pending-integration` (privacy-settlement, high, required before `mainnet-real-funds`)
 - `mainnet-cutover-ceremony` -> `pending-external` (release, high, required before `mainnet-real-funds`)
 
+## Launch Operations Checklist
+
+- Checklist: `docs/launch-ops-checklist.json`
+- Human-readable checklist: `docs/launch-ops-checklist.md`
+- Current decision: `blocked-external-steps`
+- Production mainnet claim allowed: `false`
+
+- `create-production-multisig` -> `pending-external` (custody, required before `mainnet-real-funds`)
+- `transfer-program-upgrade-authority` -> `pending-external` (custody, required before `mainnet-real-funds`)
+- `configure-production-timelock` -> `repo-documented` (governance, required before `mainnet-real-funds`)
+- `backup-and-recovery-procedures` -> `repo-documented` (operations, required before `mainnet-real-funds`)
+- `monitoring-setup` -> `pending-external` (operations, required before `mainnet-real-funds`)
+- `alerting-rules` -> `repo-defined` (operations, required before `mainnet-real-funds`)
+- `operator-runbooks` -> `repo-documented` (operations, required before `mainnet-real-funds`)
+- `emergency-procedures` -> `repo-documented` (operations, required before `mainnet-real-funds`)
+- `real-device-testing` -> `pending-runtime-captures` (runtime, required before `mainnet-real-funds`)
+- `wallet-integration` -> `repo-documented` (runtime, required before `mainnet-real-funds`)
+- `end-to-end-flows` -> `devnet-proven` (runtime, required before `mainnet-real-funds`)
+
 ## Reviewer Artifact Summary
 
 - Verification gates tracked: `62`
@@ -76,8 +95,8 @@ This report is generated from the canonical PrivateDAO registries and reviewer a
 - ZK stack version: `1`
 - ZK layer count: `3`
 - Integrity algorithm: `sha256`
-- Integrity entries: `134`
-- Integrity aggregate sha256: `22db16e21d86980911f44332110df7eccb488b9aab36230ab6ed6b76e9a5c8fa`
+- Integrity entries: `140`
+- Integrity aggregate sha256: `c29becc241fd59dcc58622f42f43547ab5ae42c05a1e3860fc3d0f7c498f2e57`
 
 ## Mainnet Conclusion
 
@@ -105,6 +124,8 @@ npm run build:deployment-attestation
 npm run build:runtime-attestation
 npm run build:go-live-attestation
 npm run build:pdao-attestation
+npm run verify:launch-ops
+npm run verify:monitoring-alerts
 npm run verify:mainnet-blockers
 npm run verify:mainnet-readiness-report
 npm run verify:deployment-attestation

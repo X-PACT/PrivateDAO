@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "project": "PrivateDAO",
+  "environment": "mainnet-candidate",
+  "claimBoundary": "alert rules are defined in-repo; production delivery is pending external setup",
+  "rules": [
+    {
+      "id": "rpc-slot-staleness",
+      "category": "rpc",
+      "severity": "high",
+      "signal": "slot freshness",
+      "condition": "primary RPC slot lags fallback RPC by more than 20 slots for 3 consecutive probes",
+      "action": "switch reads to fallback RPC and pause treasury-sensitive operations until providers converge",
+      "runbook": "docs/incident-response.md",
+      "status": "defined"
+    },
+    {
+      "id": "blockhash-failure-spike",
+      "category": "rpc",
+      "severity": "high",
+      "signal": "latest blockhash failures",
+      "condition": "latest blockhash retrieval fails 3 times within 5 minutes",
+      "action": "route writes through fallback RPC and do not execute treasury operations until blockhash freshness recovers",
+      "runbook": "docs/incident-response.md",
+      "status": "defined"
+    },
+    {
+      "id": "unexpected-proposal-creation",
+      "category": "governance",
+      "severity": "high",
+      "signal": "proposal creation event",
+      "condition": "new proposal appears outside the expected operator or governance calendar",
+      "action": "capture proposal PDA, proposer, transaction signature, and determine whether veto or communication is required",
+      "runbook": "docs/incident-response.md",
+      "status": "defined"
+    },
+    {
+      "id": "failed-finalize-spike",
+      "category": "governance",
+      "severity": "medium",
+      "signal": "finalize failures",
+      "condition": "3 or more failed finalize attempts for the same proposal within 10 minutes",
+      "action": "inspect proposal phase, policy snapshot, proof verification state, and account constraints before retrying",
+      "runbook": "docs/incident-response.md",
+      "status": "defined"
+    },
+    {
+      "id": "strict-proof-failure",
+      "category": "zk",
+      "severity": "high",
+      "signal": "V2 proof verification failure",
+      "condition": "strict proof verification is missing, stale, mismatched, revoked, or not verified",
+      "action": "block finalize or execute attempts and inspect ProposalProofVerification, payload hash, and policy snapshot",
+      "runbook": "docs/mainnet-go-live-checklist.md",
+      "status": "defined"
+    },
+    {
+      "id": "settlement-evidence-failure",
+      "category": "privacy-settlement",
+      "severity": "high",
+      "signal": "V2 settlement evidence failure",
+      "condition": "settlement evidence is missing, stale, mismatched, unverified, or already consumed",
+      "action": "block confidential payout execution and inspect evidence binding, attestor policy, and consumption record",
+      "runbook": "docs/mainnet-go-live-checklist.md",
+      "status": "defined"
+    },
+    {
+      "id": "treasury-balance-change",
+      "category": "treasury",
+      "severity": "critical",
+      "signal": "treasury balance delta",
+      "condition": "treasury balance changes without an expected executed proposal transaction",
+      "action": "stop non-essential operations, preserve signatures, compare recipient and mint against proposal intent, and escalate as Severity 1",
+      "runbook": "docs/incident-response.md",
+      "status": "defined"
+    },
+    {
+      "id": "upgrade-authority-activity",
+      "category": "custody",
+      "severity": "critical",
+      "signal": "program upgrade authority or deployment activity",
+      "condition": "upgrade, buffer, authority, or deployment activity appears outside the release ceremony",
+      "action": "halt release actions, preserve program data, verify upgrade authority state, and escalate as Severity 1",
+      "runbook": "docs/authority-transfer-runbook.md",
+      "status": "defined"
+    }
+  ]
+}
