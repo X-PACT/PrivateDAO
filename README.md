@@ -57,6 +57,29 @@ Best-fit tracks and angles:
 | Governance / DAO infra | Private voting, treasury control, policy snapshots, voter-weight compatibility, and operator-focused execution. |
 | Privacy apps | Confidential payroll, bonus approvals, REFHE envelopes, MagicBlock corridors, and ZK evidence layers. |
 
+## Startup Readiness Path
+
+PrivateDAO is ready to be evaluated as a serious Frontier startup candidate, but the repository does not claim real-funds mainnet clearance yet. The current boundary is deliberate:
+
+| Stage | Current status | Evidence |
+| --- | --- | --- |
+| Product and protocol | Implemented on Devnet | Live frontend, Anchor program, PDAO governance mint, commit-reveal lifecycle, confidential payout flows, Strict V2 hardening. |
+| Reviewer evidence | Implemented and generated | 50-wallet Devnet rehearsal, ZK anchors, operational evidence, audit packet, cryptographic manifest, and `npm run verify:all`. |
+| Launch operations | Repo-defined, externally pending | Multisig intake, authority transfer runbook, launch ops checklist, monitoring rules, wallet E2E plan. |
+| Production custody | Pending external execution | 2-of-3 multisig, 48+ hour timelock, authority transfer signatures, signer backups, and post-transfer authority readouts. |
+| Mainnet real funds | Blocked until closure | External audit, live monitoring, real-device captures, source-verifiable MagicBlock/REFHE receipts, and final cutover ceremony. |
+
+Operational launch docs:
+
+- [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md)
+- [`docs/multisig-setup-intake.md`](docs/multisig-setup-intake.md)
+- [`docs/authority-transfer-runbook.md`](docs/authority-transfer-runbook.md)
+- [`docs/launch-ops-checklist.md`](docs/launch-ops-checklist.md)
+- [`docs/monitoring-alert-rules.md`](docs/monitoring-alert-rules.md)
+- [`docs/wallet-e2e-test-plan.md`](docs/wallet-e2e-test-plan.md)
+
+The README should stay aligned with this rule: implemented surfaces are described as implemented; external launch steps are described as pending until real evidence is recorded.
+
 ## Quick Links
 
 | Need | Link |
@@ -70,6 +93,8 @@ Best-fit tracks and angles:
 | Audit packet | [`docs/audit-packet.generated.md`](docs/audit-packet.generated.md) |
 | Operational evidence | [`docs/operational-evidence.generated.md`](docs/operational-evidence.generated.md) |
 | Runtime evidence | [`docs/runtime-evidence.generated.md`](docs/runtime-evidence.generated.md) |
+| Mainnet blockers | [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md) |
+| Multisig setup intake | [`docs/multisig-setup-intake.md`](docs/multisig-setup-intake.md) |
 | MagicBlock private payments | [`docs/magicblock/private-payments.md`](docs/magicblock/private-payments.md) |
 | RPC architecture | [`docs/rpc-architecture.md`](docs/rpc-architecture.md) |
 | PDAO token surface | [`docs/pdao-token.md`](docs/pdao-token.md) |
@@ -161,8 +186,8 @@ This section intentionally keeps the reviewer contract visible. The README is co
 | --- | --- |
 | Security review | [`docs/security-review.md`](docs/security-review.md), [`docs/threat-model.md`](docs/threat-model.md), [`docs/security-coverage-map.md`](docs/security-coverage-map.md), [`docs/failure-modes.md`](docs/failure-modes.md), [`docs/replay-analysis.md`](docs/replay-analysis.md) |
 | Live proof and release evidence | [`docs/live-proof.md`](docs/live-proof.md), [`docs/devnet-release-manifest.md`](docs/devnet-release-manifest.md), [`docs/verification-gates.md`](docs/verification-gates.md), [`docs/reviewer-fast-path.md`](docs/reviewer-fast-path.md), [`docs/reviewer-surface-map.md`](docs/reviewer-surface-map.md) |
-| Mainnet readiness | [`docs/mainnet-readiness.md`](docs/mainnet-readiness.md), [`docs/mainnet-readiness.generated.md`](docs/mainnet-readiness.generated.md), [`docs/deployment-attestation.generated.json`](docs/deployment-attestation.generated.json), [`docs/go-live-criteria.md`](docs/go-live-criteria.md), [`docs/go-live-attestation.generated.json`](docs/go-live-attestation.generated.json) |
-| Operations | [`docs/operational-drillbook.md`](docs/operational-drillbook.md), [`docs/production-operations.md`](docs/production-operations.md), [`docs/runtime-attestation.generated.json`](docs/runtime-attestation.generated.json), [`docs/runtime/real-device.md`](docs/runtime/real-device.md), [`docs/runtime/real-device.generated.md`](docs/runtime/real-device.generated.md) |
+| Mainnet readiness | [`docs/mainnet-readiness.md`](docs/mainnet-readiness.md), [`docs/mainnet-readiness.generated.md`](docs/mainnet-readiness.generated.md), [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md), [`docs/deployment-attestation.generated.json`](docs/deployment-attestation.generated.json), [`docs/go-live-criteria.md`](docs/go-live-criteria.md), [`docs/go-live-attestation.generated.json`](docs/go-live-attestation.generated.json) |
+| Operations | [`docs/operational-drillbook.md`](docs/operational-drillbook.md), [`docs/production-operations.md`](docs/production-operations.md), [`docs/authority-transfer-runbook.md`](docs/authority-transfer-runbook.md), [`docs/multisig-setup-intake.md`](docs/multisig-setup-intake.md), [`docs/launch-ops-checklist.md`](docs/launch-ops-checklist.md), [`docs/monitoring-alert-rules.md`](docs/monitoring-alert-rules.md), [`docs/wallet-e2e-test-plan.md`](docs/wallet-e2e-test-plan.md), [`docs/runtime-attestation.generated.json`](docs/runtime-attestation.generated.json), [`docs/runtime/real-device.md`](docs/runtime/real-device.md), [`docs/runtime/real-device.generated.md`](docs/runtime/real-device.generated.md) |
 | Product runtime | [`docs/fair-voting.md`](docs/fair-voting.md), [`docs/wallet-runtime.md`](docs/wallet-runtime.md), [`docs/operational-evidence.generated.md`](docs/operational-evidence.generated.md), [`docs/pdao-attestation.generated.json`](docs/pdao-attestation.generated.json), [`docs/strategy-operations.md`](docs/strategy-operations.md) |
 | Artifact integrity | [`docs/cryptographic-integrity.md`](docs/cryptographic-integrity.md), [`docs/cryptographic-manifest.generated.json`](docs/cryptographic-manifest.generated.json) |
 
@@ -390,8 +415,11 @@ Key docs:
 - [`docs/mainnet-go-live-checklist.md`](docs/mainnet-go-live-checklist.md)
 - [`docs/mainnet-readiness.generated.md`](docs/mainnet-readiness.generated.md)
 - [`docs/mainnet-proof-package.generated.md`](docs/mainnet-proof-package.generated.md)
+- [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md)
 - [`docs/authority-hardening.md`](docs/authority-hardening.md)
-- [`docs/monitoring-alerts.md`](docs/monitoring-alerts.md)
+- [`docs/multisig-setup-intake.md`](docs/multisig-setup-intake.md)
+- [`docs/monitoring-alert-rules.md`](docs/monitoring-alert-rules.md)
+- [`docs/wallet-e2e-test-plan.md`](docs/wallet-e2e-test-plan.md)
 - [`docs/release-ceremony.md`](docs/release-ceremony.md)
 
 ## Media And Submission Assets

@@ -3521,11 +3521,16 @@ body.judge-mode .judge-banner {
           <div class="curation-copy">Mainnet readiness stays visible, but isolated from the main operating surface. This keeps the product usable while preserving audit-grade release evidence.</div>
           <div class="curation-links">
             <a class="award-link" href="authority-hardening.md" target="_blank">Authority Hardening</a>
+            <a class="award-link" href="multisig-setup-intake.md" target="_blank">Multisig Setup Intake</a>
+            <a class="award-link" href="mainnet-blockers.md" target="_blank">Mainnet Blockers</a>
             <a class="award-link" href="mainnet-go-live-checklist.md" target="_blank">Mainnet Go-Live Checklist</a>
             <a class="award-link" href="mainnet-readiness.generated.md" target="_blank">Mainnet Readiness Report</a>
             <a class="award-link" href="mainnet-acceptance-matrix.generated.md" target="_blank">Mainnet Acceptance Matrix</a>
             <a class="award-link" href="mainnet-proof-package.generated.md" target="_blank">Mainnet Proof Package</a>
             <a class="award-link" href="go-live-criteria.md" target="_blank">Go-Live Criteria</a>
+            <a class="award-link" href="launch-ops-checklist.md" target="_blank">Launch Ops Checklist</a>
+            <a class="award-link" href="monitoring-alert-rules.md" target="_blank">Monitoring Alert Rules</a>
+            <a class="award-link" href="wallet-e2e-test-plan.md" target="_blank">Wallet E2E Test Plan</a>
             <a class="award-link" href="operational-drillbook.md" target="_blank">Operational Drillbook</a>
             <a class="award-link" href="release-drill.generated.md" target="_blank">Release Drill Trace</a>
             <a class="award-link" href="review-automation.md" target="_blank">Review Automation</a>
@@ -3552,7 +3557,7 @@ body.judge-mode .judge-banner {
       </div>
       <div class="award-meta-card">
         <div class="award-meta-card-label">DEVNET LOAD TEST</div>
-        <div class="award-meta-card-value">50 wallets · 223 tx · 50 adversarial checks</div>
+        <div class="award-meta-card-value">50 wallets · 212 attempts · 32 expected rejects · 3 ZK anchors</div>
       </div>
     </div>
 
@@ -4320,6 +4325,7 @@ execute() → treasury action
           <div class="curation-copy">These artifacts show what is ready in-repo, what is operationally pending, and how PrivateDAO moves from Devnet proof to production launch discipline.</div>
           <div class="curation-links">
             <a class="award-link" href="mainnet-readiness.generated.md" target="_blank">Mainnet Readiness</a>
+            <a class="award-link" href="mainnet-blockers.md" target="_blank">Mainnet Blockers</a>
             <a class="award-link" href="mainnet-acceptance-matrix.generated.md" target="_blank">Acceptance Matrix</a>
             <a class="award-link" href="mainnet-proof-package.generated.md" target="_blank">Proof Package</a>
             <a class="award-link" href="deployment-attestation.generated.json" target="_blank">Deployment Attestation</a>
@@ -4328,6 +4334,10 @@ execute() → treasury action
             <a class="award-link" href="consumer-readiness.md" target="_blank">Consumer Readiness</a>
             <a class="award-link" href="consumer-user-flows.md" target="_blank">Consumer User Flows</a>
             <a class="award-link" href="launch-growth-plan.md" target="_blank">Launch And Growth Plan</a>
+            <a class="award-link" href="multisig-setup-intake.md" target="_blank">Multisig Setup Intake</a>
+            <a class="award-link" href="launch-ops-checklist.md" target="_blank">Launch Ops Checklist</a>
+            <a class="award-link" href="monitoring-alert-rules.md" target="_blank">Monitoring Alert Rules</a>
+            <a class="award-link" href="wallet-e2e-test-plan.md" target="_blank">Wallet E2E Test Plan</a>
             <a class="award-link" href="cryptographic-posture.md" target="_blank">Cryptographic Posture</a>
             <a class="award-link" href="artifact-freshness.md" target="_blank">Artifact Freshness</a>
             <a class="award-link" href="verification-gates.md" target="_blank">Verification Gates</a>
@@ -4536,6 +4546,14 @@ execute() → treasury action
           <div style="color:var(--text2);line-height:1.8"><a class="award-link" href="authority-hardening.md" target="_blank">Open authority hardening path</a></div>
         </div>
         <div class="proposal-command-box">
+          <div class="proposal-detail-label">MULTISIG INTAKE</div>
+          <div style="color:var(--text2);line-height:1.8"><a class="award-link" href="multisig-setup-intake.md" target="_blank">Open multisig setup intake</a></div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">MAINNET BLOCKERS</div>
+          <div style="color:var(--text2);line-height:1.8"><a class="award-link" href="mainnet-blockers.md" target="_blank">Open production blocker register</a></div>
+        </div>
+        <div class="proposal-command-box">
           <div class="proposal-detail-label">READINESS REPORT</div>
           <div style="color:var(--text2);line-height:1.8"><a class="award-link" href="mainnet-readiness.generated.md" target="_blank">Open generated readiness report</a></div>
         </div>
@@ -4590,7 +4608,12 @@ execute() → treasury action
           <div class="proposal-command-box">
             <div class="proposal-detail-label">AUTHORITY HARDENING</div>
             <div class="diagnostic-value" style="color:var(--amber)">MULTISIG REQUIRED</div>
-            <div style="color:var(--text3);line-height:1.7;margin-top:8px">Upgrade authority, treasury operations, and token administration still need their final production custody path before any cutover should be called acceptable. See <a class="award-link" href="authority-hardening.md" target="_blank">Authority Hardening</a>.</div>
+            <div style="color:var(--text3);line-height:1.7;margin-top:8px">Upgrade authority, treasury operations, and token administration still need their final production custody path before any cutover should be called acceptable. The repository now defines the intake shape, but the multisig remains pending until public signer keys, timelock configuration, transfer signatures, and authority readouts exist. See <a class="award-link" href="authority-hardening.md" target="_blank">Authority Hardening</a> and <a class="award-link" href="multisig-setup-intake.md" target="_blank">Multisig Setup Intake</a>.</div>
+          </div>
+          <div class="proposal-command-box">
+            <div class="proposal-detail-label">STARTUP LAUNCH OPS</div>
+            <div class="diagnostic-value" style="color:var(--amber)">TRACKED, NOT CLEARED</div>
+            <div style="color:var(--text3);line-height:1.7;margin-top:8px">Launch operations are documented and machine-checked in the repo, but production monitoring, real-device wallet captures, and legal/audit closure remain external evidence gates. See <a class="award-link" href="launch-ops-checklist.md" target="_blank">Launch Ops Checklist</a>, <a class="award-link" href="monitoring-alert-rules.md" target="_blank">Monitoring Alert Rules</a>, and <a class="award-link" href="wallet-e2e-test-plan.md" target="_blank">Wallet E2E Test Plan</a>.</div>
           </div>
           <div class="proposal-command-box">
             <div class="proposal-detail-label">EXTERNAL AUDIT</div>
@@ -4640,6 +4663,8 @@ execute() → treasury action
           <button class="proposal-proof-link" type="button" onclick="updateDiagnostics()">Refresh Diagnostics</button>
           <button class="proposal-proof-link" type="button" onclick="copyDiagnosticsSnapshot()">Copy Snapshot</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('authority-hardening.md','Authority Hardening')">Open Authority Hardening</button>
+          <button class="proposal-proof-link" type="button" onclick="openDocument('multisig-setup-intake.md','Multisig Setup Intake')">Open Multisig Intake</button>
+          <button class="proposal-proof-link" type="button" onclick="openDocument('mainnet-blockers.md','Mainnet Blockers')">Open Mainnet Blockers</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('mainnet-go-live-checklist.md','Mainnet Go-Live Checklist')">Open Go-Live Checklist</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('mainnet-readiness.generated.md','Mainnet Readiness Report')">Open Readiness Report</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('mainnet-acceptance-matrix.generated.md','Mainnet Acceptance Matrix')">Open Acceptance Matrix</button>
@@ -4668,6 +4693,9 @@ execute() → treasury action
           <button class="proposal-proof-link" type="button" onclick="openDocument('artifact-freshness.md','Artifact Freshness')">Open Artifact Freshness</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('go-live-attestation.generated.json','Go-Live Attestation')">Open Go-Live Attestation</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('external-readiness-intake.md','External Readiness Intake')">Open External Readiness Intake</button>
+          <button class="proposal-proof-link" type="button" onclick="openDocument('launch-ops-checklist.md','Launch Ops Checklist')">Open Launch Ops Checklist</button>
+          <button class="proposal-proof-link" type="button" onclick="openDocument('monitoring-alert-rules.md','Monitoring Alert Rules')">Open Monitoring Rules</button>
+          <button class="proposal-proof-link" type="button" onclick="openDocument('wallet-e2e-test-plan.md','Wallet E2E Test Plan')">Open Wallet E2E Test Plan</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('release-drill.generated.md','Release Drill Trace')">Open Release Drill Trace</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('review-automation.md','Review Automation')">Open Review Automation</button>
         </div>

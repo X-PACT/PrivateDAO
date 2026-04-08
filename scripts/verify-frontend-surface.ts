@@ -188,6 +188,14 @@ function main() {
     "Go-Live Attestation",
     "Mainnet Acceptance Matrix",
     "Mainnet Proof Package",
+    "Mainnet Blockers",
+    "Multisig Setup Intake",
+    "Launch Ops Checklist",
+    "Monitoring Alert Rules",
+    "Wallet E2E Test Plan",
+    "50 wallets · 212 attempts · 32 expected rejects · 3 ZK anchors",
+    "STARTUP LAUNCH OPS",
+    "TRACKED, NOT CLEARED",
     "wallet-compatibility-matrix.generated.md",
     "devnet-canary.generated.md",
     "cryptographic-posture.md",
@@ -197,6 +205,11 @@ function main() {
     "devnet-scale-profiles.md",
     "artifact-freshness.md",
     "review-automation.md",
+    "mainnet-blockers.md",
+    "multisig-setup-intake.md",
+    "launch-ops-checklist.md",
+    "monitoring-alert-rules.md",
+    "wallet-e2e-test-plan.md",
     "Open Runtime Evidence",
     "Open Real-Device Runtime",
     "Open Operational Evidence",
@@ -228,6 +241,7 @@ function main() {
   assertNotContains(body, "Install Phantom or Solflare to sign transactions.", "frontend still shows the outdated wallet-install guidance");
   assertNotContains(body, "https://unpkg.com/@solana/web3.js", "frontend must not depend on the unpkg-hosted Solana web3 bundle");
   assertNotContains(body, "https://fonts.googleapis.com", "frontend must not depend on Google Fonts");
+  assertNotContains(body, "50 wallets · 223 tx · 50 adversarial checks", "frontend still shows stale Devnet rehearsal totals");
   assertNotContains(body, "localStorage.setItem", "frontend must not persist sensitive governance state in localStorage");
   assertNotContains(body, "localStorage.getItem", "frontend must not read persisted localStorage vote secrets");
   assertNotContains(body, "sessionStorage.setItem", "frontend must not persist sensitive governance state in sessionStorage");
