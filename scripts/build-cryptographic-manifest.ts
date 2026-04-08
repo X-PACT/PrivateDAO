@@ -61,6 +61,7 @@ const MANIFEST_FILES = [
   "docs/assets/icons/refhe-protocol.svg",
   "docs/assets/refhe-flow.svg",
   "docs/submission-registry.json",
+  "docs/investor-pitch-deck.md",
   "docs/independent-verification.md",
   "docs/token.md",
   "docs/pdao-token.md",

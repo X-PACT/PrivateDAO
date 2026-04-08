@@ -42,6 +42,9 @@ npm run build:zk-attestation >/dev/null
 echo "[verify-all] checking frontend surface"
 npm run verify:frontend-surface >/dev/null
 
+echo "[verify-all] checking investor pitch deck"
+npm run verify:investor-pitch-deck >/dev/null
+
 echo "[verify-all] checking program id consistency"
 npm run verify:program-id-consistency >/dev/null
 

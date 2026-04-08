@@ -43,6 +43,36 @@ compose_video() {
   cp "${scenes[4]}" "$poster"
 }
 
+copy_upload_asset() {
+  local video="$1"
+  local poster="$2"
+  local title="$3"
+
+  cp "$video" "$DESKTOP_DIR/$title.mp4"
+  cp "$poster" "$DESKTOP_DIR/$title - Poster.png"
+}
+
+render_week1() {
+  local base="$UPDATES_DIR/week-1"
+  local s1="$base-scene-1.png"
+  local s2="$base-scene-2.png"
+  local s3="$base-scene-3.png"
+  local s4="$base-scene-4.png"
+  local s5="$base-scene-5.png"
+  local video="$UPDATES_DIR/private-dao-week-1-update.mp4"
+  local poster="$UPDATES_DIR/private-dao-week-1-update-poster.png"
+
+  scene "$s1" "$ASSETS_DIR/frontend-hero.png" "WEEK 1 UPDATE" "PrivateDAO starts from a real protocol" "The project begins as a Solana governance product, not a landing page:" "Anchor program, wallet surface, and Devnet-first operating path." "Week 1 establishes the protocol foundation." "0x00E5FF"
+  scene "$s2" "$ASSETS_DIR/frontend-hero.png" "PROBLEM" "Public DAO voting leaks intent" "Visible votes create whale pressure, live-tally manipulation, and treasury" "signaling before decisions are final." "The core wedge is private governance with auditability." "0xFFE48A"
+  scene "$s3" "$ASSETS_DIR/frontend-hero.png" "CORE MECHANISM" "Commit-reveal governance on Solana" "Voters commit a proposal-bound hash, reveal later with salt, and move through" "finalize plus timelocked execution." "Private intent, deterministic lifecycle." "0x7E57FF"
+  scene "$s4" "$ASSETS_DIR/frontend-hero.png" "PRODUCT SURFACE" "The app is wallet-connected from the start" "The live frontend, PDAO Devnet token surface, and proof links make the system" "reviewable by judges and operators." "This is a product path, not only a contract path." "0x22C55E"
+  scene "$s5" "$ASSETS_DIR/frontend-hero.png" "WEEK 1 RESULT" "A serious Frontier foundation" "Week 1 closes the initial private governance thesis, Devnet identity, and" "reviewer-ready product direction." "x-pact.github.io/PrivateDAO  ·  github.com/X-PACT/PrivateDAO" "0xA9F5FF"
+
+  compose_video "$video" "$poster" "$s1" "$s2" "$s3" "$s4" "$s5"
+  copy_upload_asset "$video" "$poster" "Week 1 - PrivateDAO Frontier Hackathon - Private Governance Foundation"
+  rm -f "$s1" "$s2" "$s3" "$s4" "$s5"
+}
+
 render_week2() {
   local base="$UPDATES_DIR/week-2"
   local s1="$base-scene-1.png"
@@ -60,8 +90,7 @@ render_week2() {
   scene "$s5" "$ASSETS_DIR/frontend-hero.png" "WEEK 2 RESULT" "A real governance operating surface" "Week 2 closes the private governance core, zk hardening surface, and backend" "runtime path into one coherent Solana product." "x-pact.github.io/PrivateDAO  ·  github.com/X-PACT/PrivateDAO" "0xA9F5FF"
 
   compose_video "$video" "$poster" "$s1" "$s2" "$s3" "$s4" "$s5"
-  cp "$video" "$DESKTOP_DIR/"
-  cp "$poster" "$DESKTOP_DIR/"
+  copy_upload_asset "$video" "$poster" "Week 2 - PrivateDAO Frontier Hackathon - Live Private Governance And ZK Hardening"
   rm -f "$s1" "$s2" "$s3" "$s4" "$s5"
 }
 
@@ -82,8 +111,7 @@ render_week3() {
   scene "$s5" "$ASSETS_DIR/frontend-hero.png" "WEEK 3 RESULT" "Private voting became private operations" "Week 3 closes confidential payroll, bonus approval, MagicBlock corridor, and" "REFHE-gated settlement into one treasury workflow." "x-pact.github.io/PrivateDAO  ·  github.com/X-PACT/PrivateDAO" "0xA9F5FF"
 
   compose_video "$video" "$poster" "$s1" "$s2" "$s3" "$s4" "$s5"
-  cp "$video" "$DESKTOP_DIR/"
-  cp "$poster" "$DESKTOP_DIR/"
+  copy_upload_asset "$video" "$poster" "Week 3 - PrivateDAO Frontier Hackathon - Confidential Treasury Operations"
   rm -f "$s1" "$s2" "$s3" "$s4" "$s5"
 }
 
@@ -104,11 +132,11 @@ render_week4() {
   scene "$s5" "$ASSETS_DIR/frontend-hero.png" "WEEK 4 RESULT" "A credible mainnet-path product" "Week 4 shows private governance, confidential treasury operations, reviewer" "artifacts, and scale discipline living in one Solana product." "x-pact.github.io/PrivateDAO  ·  github.com/X-PACT/PrivateDAO" "0xA9F5FF"
 
   compose_video "$video" "$poster" "$s1" "$s2" "$s3" "$s4" "$s5"
-  cp "$video" "$DESKTOP_DIR/"
-  cp "$poster" "$DESKTOP_DIR/"
+  copy_upload_asset "$video" "$poster" "Week 4 - PrivateDAO Frontier Hackathon - Audit Readiness And Mainnet Path"
   rm -f "$s1" "$s2" "$s3" "$s4" "$s5"
 }
 
+render_week1
 render_week2
 render_week3
 render_week4

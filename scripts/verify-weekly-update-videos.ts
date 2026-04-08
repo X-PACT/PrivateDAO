@@ -19,6 +19,8 @@ type Probe = {
 
 const ROOT = path.resolve("docs/assets/weekly-updates");
 const EXPECTED = [
+  "private-dao-week-1-update.mp4",
+  "private-dao-week-1-update-poster.png",
   "private-dao-week-2-update.mp4",
   "private-dao-week-2-update-poster.png",
   "private-dao-week-3-update.mp4",

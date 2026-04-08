@@ -36,6 +36,7 @@ the confidential risk-approval and treasury-control layer for a serious USDC str
 
 ## Strategy Package
 
+- [investor-pitch-deck.md](/home/x-pact/PrivateDAO/docs/investor-pitch-deck.md)
 - [ranger-strategy-documentation.md](/home/x-pact/PrivateDAO/docs/ranger-strategy-documentation.md)
 - [strategy-blueprint.md](/home/x-pact/PrivateDAO/docs/strategy-blueprint.md)
 - [strategy-adaptor-interface.md](/home/x-pact/PrivateDAO/docs/strategy-adaptor-interface.md)

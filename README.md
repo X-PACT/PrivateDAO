@@ -98,6 +98,7 @@ The README should stay aligned with this rule: implemented surfaces are describe
 | MagicBlock private payments | [`docs/magicblock/private-payments.md`](docs/magicblock/private-payments.md) |
 | RPC architecture | [`docs/rpc-architecture.md`](docs/rpc-architecture.md) |
 | PDAO token surface | [`docs/pdao-token.md`](docs/pdao-token.md) |
+| Investor / competition pitch deck | [`docs/investor-pitch-deck.md`](docs/investor-pitch-deck.md) |
 | Colosseum submission answers | [`docs/colosseum-submission-answers.md`](docs/colosseum-submission-answers.md) |
 
 ## System Diagram
@@ -370,6 +371,7 @@ The 50-wallet package is the canonical reviewer baseline. Larger profiles write 
 
 Upload-ready weekly update videos are generated from the repository evidence surface:
 
+- [`docs/assets/weekly-updates/private-dao-week-1-update.mp4`](docs/assets/weekly-updates/private-dao-week-1-update.mp4)
 - [`docs/assets/weekly-updates/private-dao-week-2-update.mp4`](docs/assets/weekly-updates/private-dao-week-2-update.mp4)
 - [`docs/assets/weekly-updates/private-dao-week-3-update.mp4`](docs/assets/weekly-updates/private-dao-week-3-update.mp4)
 - [`docs/assets/weekly-updates/private-dao-week-4-update.mp4`](docs/assets/weekly-updates/private-dao-week-4-update.mp4)
@@ -425,6 +427,7 @@ Key docs:
 ## Media And Submission Assets
 
 - Public demo video: https://youtu.be/cwsPpNLiwbo
+- Investor / competition pitch deck: [`docs/investor-pitch-deck.md`](docs/investor-pitch-deck.md)
 - Repo-native investor reel: https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4
 - Poster: [`docs/assets/private-dao-investor-pitch-poster.png`](docs/assets/private-dao-investor-pitch-poster.png)
 - Submission dossier: [`docs/submission-dossier.md`](docs/submission-dossier.md)

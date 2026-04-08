@@ -134,6 +134,8 @@ function main() {
     "Consumer Readiness",
     "Consumer User Flows",
     "Launch And Growth Plan",
+    "Investor / Competition Deck",
+    "investor-pitch-deck.md",
     "Confidential Treasury Operations",
     "Encrypted payroll and bonus approvals",
     "REFHE Protocol",

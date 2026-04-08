@@ -89,8 +89,8 @@
 - Release drill: `docs/release-drill.generated.json`
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
-- Manifest entries: `132`
-- Aggregate sha256: `1ac8a2e40ae8d77ae3b8fcdbef21298f78419d2652a36200f4e9012167392e6d`
+- Manifest entries: `143`
+- Aggregate sha256: `428ddc8b1453c8b0bdd886ad695fea579593f4fa0dd1376b117ba0424b82a1ae`
 
 ## ZK Package
 

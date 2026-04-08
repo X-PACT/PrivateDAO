@@ -110,6 +110,7 @@
     "verify:read-node-ops": "ts-node scripts/verify-read-node-ops-snapshot.ts",
     "verify:colosseum-competitive": "ts-node scripts/verify-colosseum-competitive-analysis.ts",
     "verify:weekly-updates": "ts-node scripts/verify-weekly-update-videos.ts",
+    "verify:investor-pitch-deck": "ts-node scripts/verify-investor-pitch-deck.ts",
     "verify:submission-registry": "ts-node scripts/verify-submission-registry.ts",
     "verify:registry-consistency": "ts-node scripts/verify-registry-consistency.ts",
     "verify:generated-artifacts": "ts-node scripts/verify-generated-artifacts.ts",

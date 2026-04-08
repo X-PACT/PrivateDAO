@@ -11,9 +11,23 @@ These weekly videos are designed for hackathon update submissions on YouTube, Lo
 - 36 seconds each
 - ready for YouTube, Loom, or Vimeo upload
 
+## Week 1
+
+- file: `docs/assets/weekly-updates/private-dao-week-1-update.mp4`
+- upload title:
+  - `Week 1 - PrivateDAO Frontier Hackathon - Private Governance Foundation`
+- focus:
+  - private DAO governance thesis
+  - public-vote leakage problem
+  - commit-reveal Solana foundation
+  - live frontend and PDAO Devnet identity
+  - reviewer-ready product direction
+
 ## Week 2
 
 - file: `docs/assets/weekly-updates/private-dao-week-2-update.mp4`
+- upload title:
+  - `Week 2 - PrivateDAO Frontier Hackathon - Live Private Governance And ZK Hardening`
 - focus:
   - live governance product
   - commit-reveal lifecycle
@@ -24,6 +38,8 @@ These weekly videos are designed for hackathon update submissions on YouTube, Lo
 ## Week 3
 
 - file: `docs/assets/weekly-updates/private-dao-week-3-update.mp4`
+- upload title:
+  - `Week 3 - PrivateDAO Frontier Hackathon - Confidential Treasury Operations`
 - focus:
   - confidential payroll and bonus approvals
   - `MagicBlock` private payment corridors
@@ -34,8 +50,10 @@ These weekly videos are designed for hackathon update submissions on YouTube, Lo
 ## Week 4
 
 - file: `docs/assets/weekly-updates/private-dao-week-4-update.mp4`
+- upload title:
+  - `Week 4 - PrivateDAO Frontier Hackathon - Audit Readiness And Mainnet Path`
 - focus:
-  - 350-wallet wave plan
+  - 50-wallet Devnet rehearsal
   - reviewer-visible evidence surfaces
   - go-live blockers
   - mainnet direction and product maturity
@@ -49,12 +67,14 @@ The same videos are also copied into:
 
 The Desktop folder contains:
 
-- `private-dao-week-2-update.mp4`
-- `private-dao-week-2-update-poster.png`
-- `private-dao-week-3-update.mp4`
-- `private-dao-week-3-update-poster.png`
-- `private-dao-week-4-update.mp4`
-- `private-dao-week-4-update-poster.png`
+- `Week 1 - PrivateDAO Frontier Hackathon - Private Governance Foundation.mp4`
+- `Week 1 - PrivateDAO Frontier Hackathon - Private Governance Foundation - Poster.png`
+- `Week 2 - PrivateDAO Frontier Hackathon - Live Private Governance And ZK Hardening.mp4`
+- `Week 2 - PrivateDAO Frontier Hackathon - Live Private Governance And ZK Hardening - Poster.png`
+- `Week 3 - PrivateDAO Frontier Hackathon - Confidential Treasury Operations.mp4`
+- `Week 3 - PrivateDAO Frontier Hackathon - Confidential Treasury Operations - Poster.png`
+- `Week 4 - PrivateDAO Frontier Hackathon - Audit Readiness And Mainnet Path.mp4`
+- `Week 4 - PrivateDAO Frontier Hackathon - Audit Readiness And Mainnet Path - Poster.png`
 
 ## Render Command
 

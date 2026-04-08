@@ -867,6 +867,7 @@ function main() {
 
   for (const manifestFile of [
     "docs/go-live-criteria.md",
+    "docs/investor-pitch-deck.md",
     "docs/operational-drillbook.md",
     "docs/operational-evidence.generated.md",
     "docs/operational-evidence.generated.json",
