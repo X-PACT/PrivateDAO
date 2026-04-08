@@ -93,3 +93,18 @@ bash scripts/check-mainnet-readiness.sh
 ```
 
 This gate is intentionally conservative. It does not claim audit completion or automatic mainnet approval. It ensures the current repository clears the minimum internal release bar before any production cutover.
+
+## Production blocker register
+
+The repository also carries an explicit mainnet production blocker register:
+
+- `docs/mainnet-blockers.json`
+- `docs/mainnet-blockers.md`
+
+Run:
+
+```bash
+npm run verify:mainnet-blockers
+```
+
+This verifier does not turn open external blockers into a repository failure. It verifies that the blockers are explicit, evidence-linked, and incompatible with any premature real-funds mainnet claim.

@@ -13,6 +13,28 @@ need_cmd() {
   }
 }
 
+retry_cmd() {
+  local attempts="$1"
+  local delay="$2"
+  shift 2
+
+  local attempt=1
+  while true; do
+    if "$@"; then
+      return 0
+    fi
+
+    if [[ "$attempt" -ge "$attempts" ]]; then
+      echo "[mainnet] command failed after $attempts attempts: $*" >&2
+      return 1
+    fi
+
+    echo "[mainnet] retrying command after transient failure ($attempt/$attempts): $*" >&2
+    sleep "$delay"
+    attempt=$((attempt + 1))
+  done
+}
+
 need_cmd anchor
 need_cmd cargo
 need_cmd npm
@@ -46,9 +68,13 @@ npm run build:go-live-attestation >/dev/null
 npm run verify:go-live-attestation >/dev/null
 npm run build:pdao-attestation >/dev/null
 npm run verify:pdao-attestation >/dev/null
+npm run build:cryptographic-manifest >/dev/null
+npm run verify:cryptographic-manifest >/dev/null
+npm run build:review-attestation >/dev/null
 npm run build:mainnet-readiness-report >/dev/null
+npm run verify:mainnet-blockers >/dev/null
 npm run verify:mainnet-readiness-report >/dev/null
-npm run verify:pdao-live >/dev/null
+retry_cmd 3 5 npm run verify:pdao-live >/dev/null
 npm run verify:review-links >/dev/null
 npm run verify:ops-surface >/dev/null
 npm run verify:review-surface >/dev/null
@@ -58,6 +84,8 @@ test -f README.md
 test -f docs/live-proof.md
 test -f docs/mainnet-readiness.md
 test -f docs/mainnet-readiness.generated.md
+test -f docs/mainnet-blockers.json
+test -f docs/mainnet-blockers.md
 test -f docs/deployment-attestation.generated.json
 test -f docs/go-live-criteria.md
 test -f docs/operational-drillbook.md

@@ -141,6 +141,8 @@ Mainnet cutover should be treated as an operational ceremony, not an ad hoc depl
 
 Canonical evidence:
 
+- `docs/mainnet-blockers.json`
+- `docs/mainnet-blockers.md`
 - `docs/release-ceremony.md`
 - `docs/release-drill.generated.md`
 - `docs/deployment-attestation.generated.json`
@@ -153,6 +155,7 @@ Canonical evidence:
 PrivateDAO is ready for mainnet cutover only when all of the following are true:
 
 - repository verification passes
+- `npm run verify:mainnet-blockers` passes with all external blockers explicitly tracked
 - authority handling is hardened
 - external security review is complete
 - real-device wallet evidence exists

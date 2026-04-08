@@ -45,6 +45,20 @@ This report is generated from the canonical PrivateDAO registries and reviewer a
 - `externalAudit` -> `pending`
 - `mainnetRollout` -> `pending`
 
+## Mainnet Production Blocker Register
+
+- Register: `docs/mainnet-blockers.json`
+- Human-readable register: `docs/mainnet-blockers.md`
+- Current decision: `blocked-external-steps`
+- Production mainnet claim allowed: `false`
+
+- `external-audit-completion` -> `pending-external` (security, critical, required before `mainnet-real-funds`)
+- `upgrade-authority-multisig` -> `pending-external` (custody, critical, required before `mainnet-real-funds`)
+- `production-monitoring-alerts` -> `pending-external` (operations, high, required before `mainnet-real-funds`)
+- `real-device-wallet-runtime` -> `pending-runtime-captures` (runtime, high, required before `mainnet-real-funds`)
+- `magicblock-refhe-source-receipts` -> `pending-integration` (privacy-settlement, high, required before `mainnet-real-funds`)
+- `mainnet-cutover-ceremony` -> `pending-external` (release, high, required before `mainnet-real-funds`)
+
 ## Reviewer Artifact Summary
 
 - Verification gates tracked: `62`
@@ -62,8 +76,8 @@ This report is generated from the canonical PrivateDAO registries and reviewer a
 - ZK stack version: `1`
 - ZK layer count: `3`
 - Integrity algorithm: `sha256`
-- Integrity entries: `132`
-- Integrity aggregate sha256: `13166ed2977ab9145e4b9246fe77495f89fd198208b344ecefb720b724970700`
+- Integrity entries: `134`
+- Integrity aggregate sha256: `22db16e21d86980911f44332110df7eccb488b9aab36230ab6ed6b76e9a5c8fa`
 
 ## Mainnet Conclusion
 
@@ -91,6 +105,7 @@ npm run build:deployment-attestation
 npm run build:runtime-attestation
 npm run build:go-live-attestation
 npm run build:pdao-attestation
+npm run verify:mainnet-blockers
 npm run verify:mainnet-readiness-report
 npm run verify:deployment-attestation
 npm run verify:runtime-attestation

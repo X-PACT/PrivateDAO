@@ -118,6 +118,8 @@ const MANIFEST_FILES = [
   "docs/mainnet-acceptance-matrix.generated.json",
   "docs/mainnet-proof-package.generated.md",
   "docs/mainnet-proof-package.generated.json",
+  "docs/mainnet-blockers.json",
+  "docs/mainnet-blockers.md",
   "docs/external-readiness-intake.md",
   "docs/go-live-criteria.md",
   "docs/operational-drillbook.md",

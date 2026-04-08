@@ -872,10 +872,19 @@ function main() {
     "docs/operational-evidence.generated.json",
     "docs/runtime-attestation.generated.json",
     "docs/go-live-attestation.generated.json",
+    "docs/mainnet-blockers.json",
+    "docs/mainnet-blockers.md",
   ]) {
     if (!cryptographicManifest.files.some((entry) => entry.path === manifestFile)) {
       throw new Error(`generated cryptographic manifest is missing ${manifestFile}`);
     }
+  }
+
+  if (!attestation.runtimeDocs.includes("docs/mainnet-blockers.json")) {
+    throw new Error("generated attestation is missing the mainnet blocker register");
+  }
+  if (!attestation.securityDocs.includes("docs/mainnet-blockers.md")) {
+    throw new Error("generated attestation is missing the human mainnet blocker register");
   }
 
   for (const [pkg, count] of Object.entries(attestation.packageCounts)) {

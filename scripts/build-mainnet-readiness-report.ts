@@ -37,10 +37,23 @@ type ReviewAttestation = {
   };
 };
 
+type MainnetBlockers = {
+  decision: string;
+  productionMainnetClaimAllowed: boolean;
+  blockers: Array<{
+    id: string;
+    category: string;
+    severity: string;
+    status: string;
+    requiredBefore: string;
+  }>;
+};
+
 function main() {
   const submission = readJson<SubmissionRegistry>("docs/submission-registry.json");
   const proof = readJson<ProofRegistry>("docs/proof-registry.json");
   const attestation = readJson<ReviewAttestation>("docs/review-attestation.generated.json");
+  const blockers = readJson<MainnetBlockers>("docs/mainnet-blockers.json");
 
   const verified = Object.entries(submission.status)
     .filter(([, status]) => status === "verified")
@@ -72,6 +85,20 @@ ${verified.map((item) => `- \`${item}\``).join("\n")}
 ## Pending Or External Dependencies
 
 ${pending.map((item) => `- \`${item.name}\` -> \`${item.status}\``).join("\n")}
+
+## Mainnet Production Blocker Register
+
+- Register: \`docs/mainnet-blockers.json\`
+- Human-readable register: \`docs/mainnet-blockers.md\`
+- Current decision: \`${blockers.decision}\`
+- Production mainnet claim allowed: \`${blockers.productionMainnetClaimAllowed}\`
+
+${blockers.blockers
+  .map(
+    (blocker) =>
+      `- \`${blocker.id}\` -> \`${blocker.status}\` (${blocker.category}, ${blocker.severity}, required before \`${blocker.requiredBefore}\`)`,
+  )
+  .join("\n")}
 
 ## Reviewer Artifact Summary
 
@@ -116,6 +143,7 @@ npm run build:deployment-attestation
 npm run build:runtime-attestation
 npm run build:go-live-attestation
 npm run build:pdao-attestation
+npm run verify:mainnet-blockers
 npm run verify:mainnet-readiness-report
 npm run verify:deployment-attestation
 npm run verify:runtime-attestation

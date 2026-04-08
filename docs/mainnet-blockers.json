@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "project": "PrivateDAO",
+  "decision": "blocked-external-steps",
+  "productionMainnetClaimAllowed": false,
+  "summary": "PrivateDAO is devnet-proven and internally hardened, but real-funds mainnet production remains blocked until external audit, custody, monitoring, runtime, settlement-receipt, and release-ceremony items are closed with evidence.",
+  "blockers": [
+    {
+      "id": "external-audit-completion",
+      "category": "security",
+      "severity": "critical",
+      "status": "pending-external",
+      "requiredBefore": "mainnet-real-funds",
+      "owner": "external-auditor-and-core-team",
+      "nextAction": "Complete an external program audit against the exact deployed mainnet candidate and record finding closure or accepted residual risk.",
+      "evidence": [
+        "docs/audit-handoff.md",
+        "docs/zk-external-audit-scope.md",
+        "docs/mainnet-readiness.generated.md"
+      ]
+    },
+    {
+      "id": "upgrade-authority-multisig",
+      "category": "custody",
+      "severity": "critical",
+      "status": "pending-external",
+      "requiredBefore": "mainnet-real-funds",
+      "owner": "core-team",
+      "nextAction": "Move production upgrade authority and operational authorities to a documented multisig or governance-owned path and rehearse rotation.",
+      "evidence": [
+        "docs/authority-hardening.md",
+        "docs/mainnet-cutover-runbook.md"
+      ]
+    },
+    {
+      "id": "production-monitoring-alerts",
+      "category": "operations",
+      "severity": "high",
+      "status": "pending-external",
+      "requiredBefore": "mainnet-real-funds",
+      "owner": "operations",
+      "nextAction": "Configure live monitoring and alert delivery for proposal lifecycle, failed proof or settlement checks, RPC degradation, and treasury execution anomalies.",
+      "evidence": [
+        "docs/monitoring-alerts.md",
+        "docs/production-operations.md",
+        "docs/incident-response.md"
+      ]
+    },
+    {
+      "id": "real-device-wallet-runtime",
+      "category": "runtime",
+      "severity": "high",
+      "status": "pending-runtime-captures",
+      "requiredBefore": "mainnet-real-funds",
+      "owner": "product-and-qa",
+      "nextAction": "Capture and verify real-device wallet runs for the supported wallet/browser matrix before production launch.",
+      "evidence": [
+        "docs/runtime/real-device.md",
+        "docs/runtime/real-device.generated.md"
+      ]
+    },
+    {
+      "id": "magicblock-refhe-source-receipts",
+      "category": "privacy-settlement",
+      "severity": "high",
+      "status": "pending-integration",
+      "requiredBefore": "mainnet-real-funds",
+      "owner": "protocol-and-integration",
+      "nextAction": "Replace or supplement threshold-attested REFHE/MagicBlock settlement with source-verifiable receipts, canonical settlement hashes, or verifier CPI where available.",
+      "evidence": [
+        "docs/magicblock/runtime-evidence.md",
+        "docs/refhe-security-model.md",
+        "docs/canonical-verifier-boundary-decision.md"
+      ]
+    },
+    {
+      "id": "mainnet-cutover-ceremony",
+      "category": "release",
+      "severity": "high",
+      "status": "pending-external",
+      "requiredBefore": "mainnet-real-funds",
+      "owner": "release-manager",
+      "nextAction": "Run the final cutover ceremony with audit result, authority custody evidence, monitoring links, deployed program hash, and rollback or pause decision recorded.",
+      "evidence": [
+        "docs/release-ceremony.md",
+        "docs/release-drill.generated.md",
+        "docs/mainnet-cutover-runbook.md"
+      ]
+    }
+  ]
+}
