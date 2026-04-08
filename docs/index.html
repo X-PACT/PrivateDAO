@@ -947,16 +947,92 @@ nav.scrolled {
   line-height: 1.6;
 }
 
+.treasury-command-checklist {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.treasury-command-check-card {
+  padding: 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(2, 8, 14, 0.62);
+}
+
+.treasury-command-check-title {
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.treasury-command-check-list {
+  display: grid;
+  gap: 10px;
+}
+
+.treasury-command-check-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  color: var(--text2);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.treasury-command-check-item strong {
+  color: var(--text);
+  display: block;
+}
+
+.treasury-command-check-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  flex: 0 0 auto;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+}
+
+.treasury-command-check-icon.ready {
+  border-color: rgba(0,255,136,0.25);
+  background: rgba(0,255,136,0.08);
+  color: var(--green);
+}
+
+.treasury-command-check-icon.wait {
+  border-color: rgba(255,184,0,0.25);
+  background: rgba(255,184,0,0.08);
+  color: var(--amber);
+}
+
+.treasury-command-check-icon.blocked {
+  border-color: rgba(255,84,102,0.25);
+  background: rgba(255,84,102,0.08);
+  color: var(--red);
+}
+
 @media (max-width: 1120px) {
   .treasury-command-flow,
-  .treasury-command-tech-grid {
+  .treasury-command-tech-grid,
+  .treasury-command-checklist {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 760px) {
   .treasury-command-flow,
-  .treasury-command-tech-grid {
+  .treasury-command-tech-grid,
+  .treasury-command-checklist {
     grid-template-columns: 1fr;
   }
 }
@@ -3436,6 +3512,26 @@ body.judge-mode .judge-banner {
             <div class="treasury-command-tech-title">Read-node reliability</div>
             <div class="treasury-command-tech-copy" id="treasuryTechRpcCopy">The frontend reads runtime, proposals, and ops through the backend-indexer path when available, with direct RPC fallback.</div>
             <div class="treasury-command-tech-footer">This improves reviewer and operator visibility without changing treasury execution authority.</div>
+          </div>
+        </div>
+        <div class="treasury-command-checklist">
+          <div class="treasury-command-check-card">
+            <div class="treasury-command-check-title">Execution checklist</div>
+            <div class="treasury-command-check-list" id="treasuryExecutionChecklist">
+              <div class="treasury-command-check-item">
+                <div class="treasury-command-check-icon wait">..</div>
+                <div><strong>Waiting for live proposal context</strong>The checklist hydrates after a proposal is selected or the live proposal list loads.</div>
+              </div>
+            </div>
+          </div>
+          <div class="treasury-command-check-card">
+            <div class="treasury-command-check-title">Technology activation matrix</div>
+            <div class="treasury-command-check-list" id="treasuryTechnologyChecklist">
+              <div class="treasury-command-check-item">
+                <div class="treasury-command-check-icon wait">..</div>
+                <div><strong>Waiting for live proposal context</strong>This matrix will explain why ZK, REFHE, MagicBlock, or backend-indexed RPC matter for the currently active proposal.</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -9765,6 +9861,107 @@ function openTreasuryCommandExecute() {
   openExecuteModal(proposal.pubkey, proposal.proposalId, phase === 'Executable', proposal.executionUnlocksAt);
 }
 
+function treasuryChecklistIcon(status) {
+  if (status === 'ready') return { label: 'OK', className: 'ready' };
+  if (status === 'blocked') return { label: 'NO', className: 'blocked' };
+  return { label: '..', className: 'wait' };
+}
+
+function renderTreasuryChecklist(containerId, items) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = items.map((item) => {
+    const icon = treasuryChecklistIcon(item.state);
+    return `
+      <div class="treasury-command-check-item">
+        <div class="treasury-command-check-icon ${icon.className}">${icon.label}</div>
+        <div><strong>${item.title}</strong>${item.copy}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function buildTreasuryExecutionChecklist(proposal, phase, refheReadiness, magicBlockReadiness) {
+  const confidentialPlan = proposal?.confidentialPayoutPlan || null;
+  const commitReady = phase === 'Commit';
+  const revealReady = phase === 'Reveal';
+  const finalizeReady = phase === 'VotingClosed' || phase === 'Passed' || phase === 'Timelocked' || phase === 'Executable' || phase === 'Executed';
+  const executeReady = phase === 'Executable' || phase === 'Executed';
+  const refheRequired = Boolean(confidentialPlan);
+  const magicBlockRequired = Boolean(confidentialPlan && confidentialPlan.assetType === 'Token');
+
+  return [
+    {
+      title: 'Live proposal selected',
+      state: proposal ? 'ready' : 'wait',
+      copy: proposal ? `${proposal.title} is the active flow surface for this command center.` : 'Pick a live proposal or create one first.',
+    },
+    {
+      title: 'Commit window',
+      state: commitReady ? 'ready' : 'wait',
+      copy: commitReady ? 'Commit is currently valid for this proposal.' : `Current phase is ${phase}; commit is not open right now.`,
+    },
+    {
+      title: 'Reveal window',
+      state: revealReady ? 'ready' : 'wait',
+      copy: revealReady ? 'Reveal is currently valid with the original vote and salt.' : `Current phase is ${phase}; reveal is not open right now.`,
+    },
+    {
+      title: 'Finalize path',
+      state: finalizeReady ? 'ready' : 'wait',
+      copy: finalizeReady ? 'The proposal can move through finalize once the reveal lifecycle is complete.' : 'Finalize remains blocked until the reveal lifecycle reaches a valid finalize state.',
+    },
+    {
+      title: 'REFHE boundary',
+      state: !refheRequired ? 'ready' : refheReadiness.status === 'Ready' ? 'ready' : refheReadiness.status === 'Not Required' ? 'ready' : 'blocked',
+      copy: !refheRequired ? 'This proposal does not require REFHE because no confidential payout plan is attached.' : refheReadiness.copy,
+    },
+    {
+      title: 'MagicBlock boundary',
+      state: !magicBlockRequired ? 'ready' : magicBlockReadiness.status === 'Ready' ? 'ready' : magicBlockReadiness.status === 'Not Enabled' ? 'ready' : 'blocked',
+      copy: !magicBlockRequired ? 'This proposal does not require MagicBlock because it is not a confidential token payout plan.' : magicBlockReadiness.copy,
+    },
+    {
+      title: 'Execution unlock',
+      state: executeReady ? 'ready' : phase === 'Timelocked' ? 'wait' : 'blocked',
+      copy: executeReady ? 'Treasury execution is now available on-chain.' : phase === 'Timelocked' ? `Timelock is still active until ${formatUtc(proposal.executionUnlocksAt)}.` : 'Execution remains blocked until the proposal passes, finalizes, and clears timelock.',
+    },
+  ];
+}
+
+function buildTreasuryTechnologyChecklist(proposal, zkCardState, refheReadiness, magicBlockReadiness) {
+  const confidentialPlan = proposal?.confidentialPayoutPlan || null;
+  const tokenPlan = Boolean(confidentialPlan && confidentialPlan.assetType === 'Token');
+  return [
+    {
+      title: 'ZK',
+      state: zkCardState.pill === 'ZK Enforced' || zkCardState.pill === 'ZK Anchored' ? 'ready' : 'wait',
+      copy: zkCardState.copy,
+    },
+    {
+      title: 'REFHE',
+      state: !confidentialPlan ? 'wait' : refheReadiness.status === 'Ready' ? 'ready' : refheReadiness.status === 'Not Required' ? 'wait' : 'blocked',
+      copy: !confidentialPlan
+        ? 'REFHE is not active because the current proposal does not carry a confidential payout plan.'
+        : refheReadiness.copy,
+    },
+    {
+      title: 'MagicBlock',
+      state: !tokenPlan ? 'wait' : magicBlockReadiness.status === 'Ready' ? 'ready' : magicBlockReadiness.status === 'Not Enabled' ? 'wait' : 'blocked',
+      copy: !tokenPlan
+        ? 'MagicBlock is only relevant when the confidential payout asset is token.'
+        : magicBlockReadiness.copy,
+    },
+    {
+      title: 'RPC Fast / Read Node',
+      state: currentReadPath === 'Backend Indexer' ? 'ready' : 'wait',
+      copy: currentReadPath === 'Backend Indexer'
+        ? 'The app is currently hydrating proposals and runtime evidence through the backend-indexer path with pooled RPC reads.'
+        : 'The app is currently on direct RPC or fallback. Execution authority is unchanged, but reviewer visibility is lower than the backend-indexed path.',
+    },
+  ];
+}
+
 function updateConfidentialTreasuryCommandCenter() {
   const proposal = getTreasuryCommandProposal();
   const nowTs = Math.floor(Date.now() / 1000);
@@ -9810,6 +10007,22 @@ function updateConfidentialTreasuryCommandCenter() {
     if (rpcCopyEl) rpcCopyEl.textContent = currentReadPath === 'Backend Indexer'
       ? 'The app is currently reading runtime and proposal state through the backend-indexer path and managed RPC pool.'
       : 'The app is currently reading straight from direct RPC or a direct fallback path.';
+    renderTreasuryChecklist('treasuryExecutionChecklist', [
+      {
+        title: 'Flow not hydrated yet',
+        state: 'wait',
+        copy: wallet
+          ? 'Load a proposal from Live Proposals or create a new confidential payout proposal to activate the execution checklist.'
+          : 'Connect a wallet first, then load or create a proposal to activate the checklist.',
+      },
+    ]);
+    renderTreasuryChecklist('treasuryTechnologyChecklist', [
+      {
+        title: 'Technology matrix not hydrated yet',
+        state: 'wait',
+        copy: 'The current proposal determines whether ZK, REFHE, MagicBlock, or backend-indexed RPC are relevant in this flow.',
+      },
+    ]);
     return;
   }
 
@@ -9859,6 +10072,8 @@ function updateConfidentialTreasuryCommandCenter() {
   rpcCopyEl.textContent = currentReadPath === 'Backend Indexer'
     ? 'Proposal hydration, runtime checks, and ops snapshots are currently flowing through the backend-indexer path with pooled RPC reads.'
     : 'The frontend is currently reading directly from RPC or a fallback path. Evidence and execution logic remain unchanged.';
+  renderTreasuryChecklist('treasuryExecutionChecklist', buildTreasuryExecutionChecklist(proposal, phase, refheReadiness, magicBlockReadiness));
+  renderTreasuryChecklist('treasuryTechnologyChecklist', buildTreasuryTechnologyChecklist(proposal, zkCardState, refheReadiness, magicBlockReadiness));
 }
 
 function refreshDaoFilterOptions(proposals) {

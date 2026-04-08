@@ -31,6 +31,13 @@ PrivateDAO now exposes one reviewer-friendly flow for the core product story:
 - **RPC Fast / Read Node**
   The product surface reads runtime, proposal, and operations state through the backend-indexer path when available, giving reviewers and operators a stronger read experience without changing execution authority.
 
+## Proposal-Aware Activation Rules
+
+- **ZK** becomes stronger when the proposal carries the canonical proof path, parallel receipts, or a `zk_enforced` mode.
+- **REFHE** is relevant only when the proposal carries a confidential payroll, bonus, or grant payout plan that needs encrypted evaluation.
+- **MagicBlock** is relevant only when the confidential payout asset is token and the proposal has a private-payment corridor bound to it.
+- **RPC Fast / Read Node** improves the read path whenever the backend-indexer route is available, but it does not change who can sign or execute treasury actions.
+
 ## Honest Boundary
 
 This flow is live on Devnet and reviewer-ready. It does **not** claim:

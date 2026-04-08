@@ -90,7 +90,7 @@
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
 - Manifest entries: `143`
-- Aggregate sha256: `0a9877d799546f496f50aae2251085d60050127f40b6299333b75283786154dd`
+- Aggregate sha256: `7c269865eec24c645892b173162aa860dccc25c8fb26980112a74396f7d88f8b`
 
 ## ZK Package
 
