@@ -105,38 +105,38 @@ The README should stay aligned with this rule: implemented surfaces are describe
 
 ```mermaid
 flowchart LR
-  User[Wallet user / DAO operator] --> Frontend[Live web app<br/>docs/index.html]
-  User --> Android[Android native path<br/>Solana MWA]
-  Frontend --> Wallet[Wallet signing<br/>Phantom / Solflare]
+  User["Wallet user / DAO operator"] --> Frontend["Live web app - docs/index.html"]
+  User --> Android["Android native path - Solana MWA"]
+  Frontend --> Wallet["Wallet signing - Phantom / Solflare"]
   Android --> Wallet
-  Wallet --> Program[PrivateDAO Anchor program<br/>Solana Devnet]
-  Program --> DAO[DAO PDA]
-  Program --> Proposal[Proposal PDA]
-  Program --> Treasury[Treasury PDA]
-  Program --> VoteRecord[VoteRecord PDA]
-  Program --> StrictV2[Strict V2 companion accounts<br/>policy / proof / settlement / consumption]
-  Frontend --> ReadNode[Read-only backend node<br/>pooled RPC + metrics]
-  ReadNode --> RPC[Solana RPC / RPC Fast path]
-  Program --> Evidence[Runtime evidence<br/>ZK anchors + manifests + reports]
-  Evidence --> Reviewers[Judges / auditors / operators]
+  Wallet --> Program["PrivateDAO Anchor program - Solana Devnet"]
+  Program --> DAO["DAO PDA"]
+  Program --> Proposal["Proposal PDA"]
+  Program --> Treasury["Treasury PDA"]
+  Program --> VoteRecord["VoteRecord PDA"]
+  Program --> StrictV2["Strict V2 companion accounts - policy, proof, settlement, consumption"]
+  Frontend --> ReadNode["Read-only backend node - pooled RPC and metrics"]
+  ReadNode --> RPC["Solana RPC / RPC Fast path"]
+  Program --> Evidence["Runtime evidence - ZK anchors, manifests, reports"]
+  Evidence --> Reviewers["Judges / auditors / operators"]
 ```
 
 ## Governance Lifecycle
 
 ```mermaid
-stateDiagram-v2
-  [*] --> DaoCreated: create DAO
-  DaoCreated --> ProposalCreated: create proposal
-  ProposalCreated --> Commit: commit vote hash
-  Commit --> Reveal: reveal vote + salt
-  Reveal --> Finalize: after reveal window
-  Finalize --> Timelock: passed proposal
-  Timelock --> Execute: after execution delay
-  Timelock --> Vetoed: authority veto in timelock
-  ProposalCreated --> Cancelled: early cancel / V2 safe cancel
-  Execute --> [*]
-  Vetoed --> [*]
-  Cancelled --> [*]
+flowchart LR
+  Start["Start"] --> DaoCreated["DAO created"]
+  DaoCreated --> ProposalCreated["Proposal created"]
+  ProposalCreated --> Commit["Commit vote hash"]
+  Commit --> Reveal["Reveal vote and salt"]
+  Reveal --> Finalize["Finalize after reveal window"]
+  Finalize --> Timelock["Timelock for passed proposal"]
+  Timelock --> Execute["Execute after delay"]
+  Timelock --> Vetoed["Veto during timelock"]
+  ProposalCreated --> Cancelled["Early cancel / V2 safe cancel"]
+  Execute --> Done["Done"]
+  Vetoed --> Done
+  Cancelled --> Done
 ```
 
 ## Feature Map
