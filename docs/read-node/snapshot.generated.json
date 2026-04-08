@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-04-08T22:26:55.756Z",
+  "generatedAt": "2026-04-08T22:53:45.977Z",
   "readPath": "backend-indexer",
   "runtime": {
-    "generatedAt": "2026-04-08T22:26:52.772Z",
+    "generatedAt": "2026-04-08T22:53:43.083Z",
     "readPath": "backend-indexer",
     "rpcEndpoint": "https://api.devnet.solana.com",
     "rpcPoolSize": 1,
     "commitment": "confirmed",
     "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
-    "slot": 454211220,
+    "slot": 454215467,
     "solanaCore": "4.0.0-beta.6",
     "featureSet": 2475355604,
-    "latestBlockhash": "3WDZh2H6YZjKVXzaYVVidgNS6U1eoRBXoXcALfCUZ1NS",
-    "lastValidBlockHeight": 442088468,
+    "latestBlockhash": "CGFLYNBC9QLcgNZ5TFCmpU7hzNiRqE7jhxJMZuWxnaLH",
+    "lastValidBlockHeight": 442092709,
     "programExecutable": true,
     "programOwner": "BPFLoaderUpgradeab1e11111111111111111111111",
     "cacheTtlMs": 15000
@@ -31,7 +31,7 @@
     "uniqueDaos": 15
   },
   "overview": {
-    "generatedAt": "2026-04-08T22:26:55.755Z",
+    "generatedAt": "2026-04-08T22:53:45.976Z",
     "proposals": 35,
     "uniqueDaos": 15,
     "zkEnforced": 0,
@@ -129,20 +129,20 @@
       "dao": "2UBuKLVfY3kJ22WAmYEZDh71bWhJp2euRpPDq2qT1S8p"
     },
     {
-      "pubkey": "CVwr3LdzX8boAEkZEYLHcqJJbtnXrYQF5CEFKj9uPX5w",
-      "title": "Devnet Confidential MagicBlock REFHE",
-      "phase": "Finalized",
+      "pubkey": "HYJ3L9vpRqqgcWefoDTrrqryccsuL6B8tFq39fCwrUz1",
+      "title": "Multi proposal C",
+      "phase": "Executed",
       "zkMode": "Companion",
-      "confidentialPayout": true,
-      "dao": "2UBuKLVfY3kJ22WAmYEZDh71bWhJp2euRpPDq2qT1S8p"
+      "confidentialPayout": false,
+      "dao": "EyLjhct7TJwb7pa1HssjwZcTT9WMq6Vq5aAxTKsK1b8t"
     },
     {
-      "pubkey": "CNGiB41ZFiR6Kqtgi8sw6CBdEu14pt5Zat15m8RH9rfR",
-      "title": "Encrypted manifest bound MagicBlock bonus",
+      "pubkey": "GpVLxHfD1A5gLEKByjLcTSXK2X5CgfQu7Vi8QQFdx5mu",
+      "title": "Multi proposal C",
       "phase": "Finalized",
       "zkMode": "Companion",
-      "confidentialPayout": true,
-      "dao": "9yi2TGLcENufbRPVbEJH3BWJWrqsGxLfG6G7qJmUS8r6"
+      "confidentialPayout": false,
+      "dao": "7D3fmZ3CE8NjSLaetNvPaQ5Wd79XeUVEbNj7oqchkfFy"
     }
   ]
 }

@@ -4,6 +4,31 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
+run_parallel_group() {
+  local pids=()
+  local labels=()
+  local status=0
+
+  while [[ "$#" -gt 0 ]]; do
+    local label="$1"
+    local command="$2"
+    shift 2
+    echo "[verify-all] checking ${label}"
+    ( eval "$command" ) &
+    pids+=("$!")
+    labels+=("$label")
+  done
+
+  for i in "${!pids[@]}"; do
+    if ! wait "${pids[$i]}"; then
+      echo "[verify-all] ${labels[$i]} failed" >&2
+      status=1
+    fi
+  done
+
+  return "$status"
+}
+
 run_with_retry() {
   local attempts="$1"
   shift
@@ -30,14 +55,11 @@ npm run verify:live-proof >/dev/null
 echo "[verify-all] checking strategy surface"
 npm run verify:strategy-surface >/dev/null
 
-echo "[verify-all] rebuilding zk registry"
-npm run build:zk-registry >/dev/null
-
-echo "[verify-all] rebuilding zk transcript"
-npm run build:zk-transcript >/dev/null
-
-echo "[verify-all] rebuilding zk attestation"
-npm run build:zk-attestation >/dev/null
+echo "[verify-all] rebuilding zk registry / transcript / attestation"
+run_parallel_group \
+  "zk registry" "npm run build:zk-registry >/dev/null" \
+  "zk transcript" "npm run build:zk-transcript >/dev/null" \
+  "zk attestation" "npm run build:zk-attestation >/dev/null"
 
 echo "[verify-all] checking frontend surface"
 npm run verify:frontend-surface >/dev/null
@@ -45,20 +67,13 @@ npm run verify:frontend-surface >/dev/null
 echo "[verify-all] checking browser smoke"
 run_with_retry 2 timeout 120s npm run verify:browser-smoke >/dev/null
 
-echo "[verify-all] checking security remediation"
-npm run verify:security-remediation >/dev/null
-
-echo "[verify-all] checking investor pitch deck"
-npm run verify:investor-pitch-deck >/dev/null
-
-echo "[verify-all] checking demo video"
-npm run verify:demo-video >/dev/null
-
-echo "[verify-all] checking program id consistency"
-npm run verify:program-id-consistency >/dev/null
-
-echo "[verify-all] checking PDAO token surface"
-npm run verify:pdao-surface >/dev/null
+echo "[verify-all] checking remediation / pitch / demo / program surface"
+run_parallel_group \
+  "security remediation" "npm run verify:security-remediation >/dev/null" \
+  "investor pitch deck" "npm run verify:investor-pitch-deck >/dev/null" \
+  "demo video" "npm run verify:demo-video >/dev/null" \
+  "program id consistency" "npm run verify:program-id-consistency >/dev/null" \
+  "PDAO token surface" "npm run verify:pdao-surface >/dev/null"
 
 echo "[verify-all] rebuilding reviewer artifacts"
 run_with_retry 3 npm run build:devnet:review-artifacts >/dev/null
@@ -144,16 +159,11 @@ npm run verify:pdao-attestation >/dev/null
 echo "[verify-all] checking go-live attestation"
 npm run verify:go-live-attestation >/dev/null
 
-echo "[verify-all] checking review links"
-npm run verify:review-links >/dev/null
-
-echo "[verify-all] checking weekly update videos"
-npm run verify:weekly-updates >/dev/null
-
-echo "[verify-all] checking ops surface"
-npm run verify:ops-surface >/dev/null
-
-echo "[verify-all] checking reviewer surface"
-VERIFY_REVIEW_SURFACE_MODE=fast npm run verify:review-surface >/dev/null
+echo "[verify-all] checking review surface bundle"
+run_parallel_group \
+  "review links" "npm run verify:review-links >/dev/null" \
+  "weekly update videos" "npm run verify:weekly-updates >/dev/null" \
+  "ops surface" "npm run verify:ops-surface >/dev/null" \
+  "reviewer surface" "VERIFY_REVIEW_SURFACE_MODE=fast npm run verify:review-surface >/dev/null"
 
 echo "[verify-all] PASS"
