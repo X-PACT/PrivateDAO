@@ -131,6 +131,7 @@
     "verify:operational-evidence": "ts-node scripts/verify-operational-evidence.ts",
     "verify:release-drill": "ts-node scripts/verify-release-drill.ts",
     "verify:artifact-freshness": "bash scripts/verify-artifact-freshness.sh",
+    "verify:multisig-intake": "ts-node scripts/verify-multisig-setup-intake.ts",
     "verify:launch-ops": "ts-node scripts/verify-launch-ops-checklist.ts",
     "verify:monitoring-alerts": "ts-node scripts/verify-monitoring-alert-rules.ts",
     "verify:mainnet-blockers": "ts-node scripts/verify-mainnet-blockers.ts",

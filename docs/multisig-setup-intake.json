@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "project": "PrivateDAO",
+  "status": "pending-external",
+  "productionMainnetClaimAllowed": false,
+  "network": "mainnet-beta",
+  "custodyTarget": "program-upgrade-authority-and-production-ops-authorities",
+  "multisig": {
+    "requiredThreshold": 2,
+    "requiredSignerCount": 3,
+    "implementation": "pending-selection",
+    "address": null,
+    "creationSignature": null,
+    "rehearsalSignature": null
+  },
+  "timelock": {
+    "minimumHours": 48,
+    "configuredHours": null,
+    "configurationSignature": null,
+    "shorteningPolicy": "must-not-shorten-without-documented-governance-policy"
+  },
+  "signers": [
+    {
+      "slot": 1,
+      "role": "founder-operator",
+      "publicKey": null,
+      "storageClass": "cold-or-hardware",
+      "backupProcedureDocumented": false
+    },
+    {
+      "slot": 2,
+      "role": "independent-security-or-ops-signer",
+      "publicKey": null,
+      "storageClass": "cold-or-hardware",
+      "backupProcedureDocumented": false
+    },
+    {
+      "slot": 3,
+      "role": "recovery-or-governance-signer",
+      "publicKey": null,
+      "storageClass": "cold-or-hardware",
+      "backupProcedureDocumented": false
+    }
+  ],
+  "authorityTransfers": [
+    {
+      "surface": "program-upgrade-authority",
+      "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+      "destinationAuthority": null,
+      "transferSignature": null,
+      "postTransferReadout": null
+    },
+    {
+      "surface": "dao-authority",
+      "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+      "destinationAuthority": null,
+      "transferSignature": null,
+      "postTransferReadout": null
+    },
+    {
+      "surface": "treasury-operator-authority",
+      "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+      "destinationAuthority": null,
+      "transferSignature": null,
+      "postTransferReadout": null
+    }
+  ],
+  "backupProcedures": {
+    "seedPhrasesInRepository": false,
+    "privateKeysInRepository": false,
+    "hardwareOrColdStorageRequired": true,
+    "signerReplacementProcedureDocumented": true,
+    "releasePacketBackupRequired": true
+  },
+  "completionRule": "This intake is not complete until the multisig address, 3 public signer keys, 2-of-3 threshold, 48+ hour timelock configuration, rehearsal signature, transfer signatures, and post-transfer authority readouts are recorded. Never add seed phrases or private keys here."
+}

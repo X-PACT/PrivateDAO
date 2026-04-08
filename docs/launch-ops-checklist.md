@@ -29,10 +29,10 @@ Canonical machine-readable source:
 
 ## Evidence Index
 
-- `create-production-multisig`: `docs/authority-transfer-runbook.md`, `docs/authority-hardening.md`
-- `transfer-program-upgrade-authority`: `docs/authority-transfer-runbook.md`, `docs/mainnet-cutover-runbook.md`
-- `configure-production-timelock`: `docs/authority-transfer-runbook.md`, `docs/mainnet-go-live-checklist.md`
-- `backup-and-recovery-procedures`: `docs/authority-transfer-runbook.md`, `docs/incident-response.md`
+- `create-production-multisig`: `docs/multisig-setup-intake.json`, `docs/multisig-setup-intake.md`, `docs/authority-transfer-runbook.md`, `docs/authority-hardening.md`
+- `transfer-program-upgrade-authority`: `docs/multisig-setup-intake.json`, `docs/multisig-setup-intake.md`, `docs/authority-transfer-runbook.md`, `docs/mainnet-cutover-runbook.md`
+- `configure-production-timelock`: `docs/multisig-setup-intake.json`, `docs/multisig-setup-intake.md`, `docs/authority-transfer-runbook.md`, `docs/mainnet-go-live-checklist.md`
+- `backup-and-recovery-procedures`: `docs/multisig-setup-intake.json`, `docs/multisig-setup-intake.md`, `docs/authority-transfer-runbook.md`, `docs/incident-response.md`
 - `monitoring-setup`: `docs/monitoring-alerts.md`, `docs/monitoring-alert-rules.json`, `docs/monitoring-alert-rules.md`
 - `alerting-rules`: `docs/monitoring-alert-rules.json`, `docs/monitoring-alert-rules.md`
 - `operator-runbooks`: `docs/production-operations.md`, `docs/mainnet-cutover-runbook.md`, `docs/incident-response.md`

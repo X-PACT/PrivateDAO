@@ -30,6 +30,8 @@
       "evidence": [
         "docs/authority-hardening.md",
         "docs/authority-transfer-runbook.md",
+        "docs/multisig-setup-intake.json",
+        "docs/multisig-setup-intake.md",
         "docs/launch-ops-checklist.json",
         "docs/launch-ops-checklist.md",
         "docs/mainnet-cutover-runbook.md"

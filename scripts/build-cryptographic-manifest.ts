@@ -123,6 +123,8 @@ const MANIFEST_FILES = [
   "docs/launch-ops-checklist.json",
   "docs/launch-ops-checklist.md",
   "docs/authority-transfer-runbook.md",
+  "docs/multisig-setup-intake.json",
+  "docs/multisig-setup-intake.md",
   "docs/monitoring-alert-rules.json",
   "docs/monitoring-alert-rules.md",
   "docs/wallet-e2e-test-plan.md",

@@ -10,6 +10,8 @@
       "status": "pending-external",
       "requiredBefore": "mainnet-real-funds",
       "evidence": [
+        "docs/multisig-setup-intake.json",
+        "docs/multisig-setup-intake.md",
         "docs/authority-transfer-runbook.md",
         "docs/authority-hardening.md"
       ]
@@ -20,6 +22,8 @@
       "status": "pending-external",
       "requiredBefore": "mainnet-real-funds",
       "evidence": [
+        "docs/multisig-setup-intake.json",
+        "docs/multisig-setup-intake.md",
         "docs/authority-transfer-runbook.md",
         "docs/mainnet-cutover-runbook.md"
       ]
@@ -30,6 +34,8 @@
       "status": "repo-documented",
       "requiredBefore": "mainnet-real-funds",
       "evidence": [
+        "docs/multisig-setup-intake.json",
+        "docs/multisig-setup-intake.md",
         "docs/authority-transfer-runbook.md",
         "docs/mainnet-go-live-checklist.md"
       ]
@@ -40,6 +46,8 @@
       "status": "repo-documented",
       "requiredBefore": "mainnet-real-funds",
       "evidence": [
+        "docs/multisig-setup-intake.json",
+        "docs/multisig-setup-intake.md",
         "docs/authority-transfer-runbook.md",
         "docs/incident-response.md"
       ]

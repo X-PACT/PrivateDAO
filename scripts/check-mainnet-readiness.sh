@@ -68,11 +68,14 @@ npm run build:go-live-attestation >/dev/null
 npm run verify:go-live-attestation >/dev/null
 npm run build:pdao-attestation >/dev/null
 npm run verify:pdao-attestation >/dev/null
+npm run build:supply-chain-attestation >/dev/null
+npm run verify:supply-chain-attestation >/dev/null
 npm run build:cryptographic-manifest >/dev/null
 npm run verify:cryptographic-manifest >/dev/null
 npm run build:review-attestation >/dev/null
 npm run build:mainnet-readiness-report >/dev/null
 npm run verify:launch-ops >/dev/null
+npm run verify:multisig-intake >/dev/null
 npm run verify:monitoring-alerts >/dev/null
 npm run verify:mainnet-blockers >/dev/null
 npm run verify:mainnet-readiness-report >/dev/null
@@ -93,6 +96,8 @@ test -f docs/launch-ops-checklist.md
 test -f docs/monitoring-alert-rules.json
 test -f docs/monitoring-alert-rules.md
 test -f docs/authority-transfer-runbook.md
+test -f docs/multisig-setup-intake.json
+test -f docs/multisig-setup-intake.md
 test -f docs/wallet-e2e-test-plan.md
 test -f docs/deployment-attestation.generated.json
 test -f docs/go-live-criteria.md

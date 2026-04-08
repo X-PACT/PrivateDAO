@@ -30,6 +30,7 @@ Covered authority surfaces:
 
 Required evidence:
 
+- completed intake in `docs/multisig-setup-intake.json`
 - multisig address
 - threshold
 - signer role list
