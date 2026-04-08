@@ -101,6 +101,14 @@ The README should stay aligned with this rule: implemented surfaces are describe
 | Security remediation note | [`docs/security-audit-remediation-2026-04-08.md`](docs/security-audit-remediation-2026-04-08.md) |
 | Mainnet blockers | [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md) |
 | Multisig setup intake | [`docs/multisig-setup-intake.md`](docs/multisig-setup-intake.md) |
+| Production Simulation DAO | [`docs/production-simulation-dao.md`](docs/production-simulation-dao.md) |
+| Use case packs | [`docs/use-case-packs.md`](docs/use-case-packs.md) |
+| Operator guide | [`docs/operator-guide.md`](docs/operator-guide.md) |
+| Trust package | [`docs/trust-package.md`](docs/trust-package.md) |
+| Migration story | [`docs/migration-story.md`](docs/migration-story.md) |
+| Pilot program | [`docs/pilot-program.md`](docs/pilot-program.md) |
+| Pricing model | [`docs/pricing-model.md`](docs/pricing-model.md) |
+| Pilot SLA draft | [`docs/service-level-agreement.md`](docs/service-level-agreement.md) |
 | MagicBlock private payments | [`docs/magicblock/private-payments.md`](docs/magicblock/private-payments.md) |
 | RPC architecture | [`docs/rpc-architecture.md`](docs/rpc-architecture.md) |
 | PDAO token surface | [`docs/pdao-token.md`](docs/pdao-token.md) |
@@ -199,6 +207,7 @@ This section intentionally keeps the reviewer contract visible. The README is co
 | Operations | [`docs/operational-drillbook.md`](docs/operational-drillbook.md), [`docs/production-operations.md`](docs/production-operations.md), [`docs/authority-transfer-runbook.md`](docs/authority-transfer-runbook.md), [`docs/multisig-setup-intake.md`](docs/multisig-setup-intake.md), [`docs/launch-ops-checklist.md`](docs/launch-ops-checklist.md), [`docs/monitoring-alert-rules.md`](docs/monitoring-alert-rules.md), [`docs/wallet-e2e-test-plan.md`](docs/wallet-e2e-test-plan.md), [`docs/browser-automation-audit.md`](docs/browser-automation-audit.md), [`docs/runtime-attestation.generated.json`](docs/runtime-attestation.generated.json), [`docs/runtime/real-device.md`](docs/runtime/real-device.md), [`docs/runtime/real-device.generated.md`](docs/runtime/real-device.generated.md) |
 | Frontier integrations | [`docs/frontier-integrations.generated.md`](docs/frontier-integrations.generated.md), [`docs/magicblock/runtime.generated.md`](docs/magicblock/runtime.generated.md), [`docs/refhe-protocol.md`](docs/refhe-protocol.md), [`docs/read-node/ops.generated.md`](docs/read-node/ops.generated.md), [`docs/zk-proof-registry.json`](docs/zk-proof-registry.json) |
 | Product runtime | [`docs/fair-voting.md`](docs/fair-voting.md), [`docs/wallet-runtime.md`](docs/wallet-runtime.md), [`docs/operational-evidence.generated.md`](docs/operational-evidence.generated.md), [`docs/pdao-attestation.generated.json`](docs/pdao-attestation.generated.json), [`docs/strategy-operations.md`](docs/strategy-operations.md) |
+| Product packaging | [`docs/production-simulation-dao.md`](docs/production-simulation-dao.md), [`docs/use-case-packs.md`](docs/use-case-packs.md), [`docs/operator-guide.md`](docs/operator-guide.md), [`docs/trust-package.md`](docs/trust-package.md), [`docs/migration-story.md`](docs/migration-story.md), [`docs/pricing-model.md`](docs/pricing-model.md), [`docs/pilot-program.md`](docs/pilot-program.md), [`docs/service-level-agreement.md`](docs/service-level-agreement.md) |
 | Artifact integrity | [`docs/cryptographic-integrity.md`](docs/cryptographic-integrity.md), [`docs/cryptographic-manifest.generated.json`](docs/cryptographic-manifest.generated.json) |
 
 ## Architecture Assets
@@ -436,6 +445,8 @@ Key docs:
 ## Media And Submission Assets
 
 - Public demo video: https://youtu.be/cwsPpNLiwbo
+- Canonical lifecycle demo brief: [`docs/demo-video.md`](docs/demo-video.md)
+- Repo-native lifecycle demo: [`docs/assets/private-dao-demo-flow.mp4`](docs/assets/private-dao-demo-flow.mp4)
 - Investor / competition pitch deck: [`docs/investor-pitch-deck.md`](docs/investor-pitch-deck.md)
 - Repo-native investor reel: https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4
 - Poster: [`docs/assets/private-dao-investor-pitch-poster.png`](docs/assets/private-dao-investor-pitch-poster.png)

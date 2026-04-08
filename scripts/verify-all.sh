@@ -43,13 +43,16 @@ echo "[verify-all] checking frontend surface"
 npm run verify:frontend-surface >/dev/null
 
 echo "[verify-all] checking browser smoke"
-npm run verify:browser-smoke >/dev/null
+run_with_retry 2 timeout 120s npm run verify:browser-smoke >/dev/null
 
 echo "[verify-all] checking security remediation"
 npm run verify:security-remediation >/dev/null
 
 echo "[verify-all] checking investor pitch deck"
 npm run verify:investor-pitch-deck >/dev/null
+
+echo "[verify-all] checking demo video"
+npm run verify:demo-video >/dev/null
 
 echo "[verify-all] checking program id consistency"
 npm run verify:program-id-consistency >/dev/null

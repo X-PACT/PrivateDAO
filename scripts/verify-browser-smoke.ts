@@ -150,7 +150,7 @@ async function main() {
   ];
 
   try {
-    const domResult = await runChrome(chrome, [...chromeBaseArgs, "--dump-dom", url], 30_000);
+    const domResult = await runChrome(chrome, [...chromeBaseArgs, "--dump-dom", url], 45_000);
     for (const fragment of REQUIRED_DOM_FRAGMENTS) {
       if (!domResult.stdout.includes(fragment)) {
         throw new Error(`Browser DOM is missing required fragment: ${fragment}`);

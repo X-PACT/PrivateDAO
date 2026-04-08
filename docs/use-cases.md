@@ -1,5 +1,13 @@
 # Use Cases And Real-World Impact
 
+Structured pack view:
+
+- [Use Case Packs](use-case-packs.md)
+- [Grant Committee Pack](grant-committee-pack.md)
+- [Fund Governance Pack](fund-governance-pack.md)
+- [Gaming DAO Pack](gaming-dao-pack.md)
+- [Enterprise DAO Pack](enterprise-dao-pack.md)
+
 PrivateDAO is not only a governance contract. It is a governance security system for environments where public intent leakage creates operational and economic risk.
 
 ## 1. DAO Governance Privacy
