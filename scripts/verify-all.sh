@@ -42,6 +42,9 @@ npm run build:zk-attestation >/dev/null
 echo "[verify-all] checking frontend surface"
 npm run verify:frontend-surface >/dev/null
 
+echo "[verify-all] checking browser smoke"
+npm run verify:browser-smoke >/dev/null
+
 echo "[verify-all] checking investor pitch deck"
 npm run verify:investor-pitch-deck >/dev/null
 
@@ -52,7 +55,7 @@ echo "[verify-all] checking PDAO token surface"
 npm run verify:pdao-surface >/dev/null
 
 echo "[verify-all] rebuilding reviewer artifacts"
-npm run build:devnet:review-artifacts >/dev/null
+run_with_retry 3 npm run build:devnet:review-artifacts >/dev/null
 
 echo "[verify-all] checking submission registry"
 npm run verify:submission-registry >/dev/null

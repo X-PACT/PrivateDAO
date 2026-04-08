@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-04-08T14:19:58.129Z",
+  "generatedAt": "2026-04-08T16:07:16.484Z",
   "readPath": "backend-indexer",
   "runtime": {
-    "generatedAt": "2026-04-08T14:19:54.594Z",
+    "generatedAt": "2026-04-08T16:07:13.348Z",
     "readPath": "backend-indexer",
     "rpcEndpoint": "https://api.devnet.solana.com",
     "rpcPoolSize": 1,
     "commitment": "confirmed",
     "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
-    "slot": 454134041,
+    "slot": 454151062,
     "solanaCore": "4.0.0-beta.6",
     "featureSet": 2475355604,
-    "latestBlockhash": "7AB28Zuu5ygZuB1upZuVeYEVcC69qUbuz76omNF4DmPN",
-    "lastValidBlockHeight": 442011651,
+    "latestBlockhash": "3rJE9mBE3btzyxFgT6goXCBNanrezTo45tuq2ZXuSJxp",
+    "lastValidBlockHeight": 442028451,
     "programExecutable": true,
     "programOwner": "BPFLoaderUpgradeab1e11111111111111111111111",
     "cacheTtlMs": 15000
@@ -31,7 +31,7 @@
     "uniqueDaos": 15
   },
   "overview": {
-    "generatedAt": "2026-04-08T14:19:58.128Z",
+    "generatedAt": "2026-04-08T16:07:16.483Z",
     "proposals": 35,
     "uniqueDaos": 15,
     "zkEnforced": 0,
@@ -129,12 +129,12 @@
       "dao": "2UBuKLVfY3kJ22WAmYEZDh71bWhJp2euRpPDq2qT1S8p"
     },
     {
-      "pubkey": "HYJ3L9vpRqqgcWefoDTrrqryccsuL6B8tFq39fCwrUz1",
-      "title": "Multi proposal C",
+      "pubkey": "7YKm4zFcD8fzRuQAa8w9SDTrVaW8TSSddA7nhDm9TAK7",
+      "title": "Concurrent finalize and execute race",
       "phase": "Executed",
       "zkMode": "Companion",
       "confidentialPayout": false,
-      "dao": "EyLjhct7TJwb7pa1HssjwZcTT9WMq6Vq5aAxTKsK1b8t"
+      "dao": "FfLcDByf3Y2C3WrXC5q6aboEXUh7ddeSMhiawDdh5rFA"
     },
     {
       "pubkey": "GpVLxHfD1A5gLEKByjLcTSXK2X5CgfQu7Vi8QQFdx5mu",

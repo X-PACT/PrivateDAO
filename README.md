@@ -77,6 +77,7 @@ Operational launch docs:
 - [`docs/launch-ops-checklist.md`](docs/launch-ops-checklist.md)
 - [`docs/monitoring-alert-rules.md`](docs/monitoring-alert-rules.md)
 - [`docs/wallet-e2e-test-plan.md`](docs/wallet-e2e-test-plan.md)
+- [`docs/browser-automation-audit.md`](docs/browser-automation-audit.md)
 
 The README should stay aligned with this rule: implemented surfaces are described as implemented; external launch steps are described as pending until real evidence is recorded.
 
@@ -93,6 +94,7 @@ The README should stay aligned with this rule: implemented surfaces are describe
 | Audit packet | [`docs/audit-packet.generated.md`](docs/audit-packet.generated.md) |
 | Operational evidence | [`docs/operational-evidence.generated.md`](docs/operational-evidence.generated.md) |
 | Runtime evidence | [`docs/runtime-evidence.generated.md`](docs/runtime-evidence.generated.md) |
+| Browser automation audit | [`docs/browser-automation-audit.md`](docs/browser-automation-audit.md) |
 | Mainnet blockers | [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md) |
 | Multisig setup intake | [`docs/multisig-setup-intake.md`](docs/multisig-setup-intake.md) |
 | MagicBlock private payments | [`docs/magicblock/private-payments.md`](docs/magicblock/private-payments.md) |
@@ -189,7 +191,7 @@ This section intentionally keeps the reviewer contract visible. The README is co
 | Security review | [`docs/security-review.md`](docs/security-review.md), [`docs/threat-model.md`](docs/threat-model.md), [`docs/security-coverage-map.md`](docs/security-coverage-map.md), [`docs/failure-modes.md`](docs/failure-modes.md), [`docs/replay-analysis.md`](docs/replay-analysis.md) |
 | Live proof and release evidence | [`docs/live-proof.md`](docs/live-proof.md), [`docs/devnet-release-manifest.md`](docs/devnet-release-manifest.md), [`docs/verification-gates.md`](docs/verification-gates.md), [`docs/reviewer-fast-path.md`](docs/reviewer-fast-path.md), [`docs/reviewer-surface-map.md`](docs/reviewer-surface-map.md) |
 | Mainnet readiness | [`docs/mainnet-readiness.md`](docs/mainnet-readiness.md), [`docs/mainnet-readiness.generated.md`](docs/mainnet-readiness.generated.md), [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md), [`docs/deployment-attestation.generated.json`](docs/deployment-attestation.generated.json), [`docs/go-live-criteria.md`](docs/go-live-criteria.md), [`docs/go-live-attestation.generated.json`](docs/go-live-attestation.generated.json) |
-| Operations | [`docs/operational-drillbook.md`](docs/operational-drillbook.md), [`docs/production-operations.md`](docs/production-operations.md), [`docs/authority-transfer-runbook.md`](docs/authority-transfer-runbook.md), [`docs/multisig-setup-intake.md`](docs/multisig-setup-intake.md), [`docs/launch-ops-checklist.md`](docs/launch-ops-checklist.md), [`docs/monitoring-alert-rules.md`](docs/monitoring-alert-rules.md), [`docs/wallet-e2e-test-plan.md`](docs/wallet-e2e-test-plan.md), [`docs/runtime-attestation.generated.json`](docs/runtime-attestation.generated.json), [`docs/runtime/real-device.md`](docs/runtime/real-device.md), [`docs/runtime/real-device.generated.md`](docs/runtime/real-device.generated.md) |
+| Operations | [`docs/operational-drillbook.md`](docs/operational-drillbook.md), [`docs/production-operations.md`](docs/production-operations.md), [`docs/authority-transfer-runbook.md`](docs/authority-transfer-runbook.md), [`docs/multisig-setup-intake.md`](docs/multisig-setup-intake.md), [`docs/launch-ops-checklist.md`](docs/launch-ops-checklist.md), [`docs/monitoring-alert-rules.md`](docs/monitoring-alert-rules.md), [`docs/wallet-e2e-test-plan.md`](docs/wallet-e2e-test-plan.md), [`docs/browser-automation-audit.md`](docs/browser-automation-audit.md), [`docs/runtime-attestation.generated.json`](docs/runtime-attestation.generated.json), [`docs/runtime/real-device.md`](docs/runtime/real-device.md), [`docs/runtime/real-device.generated.md`](docs/runtime/real-device.generated.md) |
 | Product runtime | [`docs/fair-voting.md`](docs/fair-voting.md), [`docs/wallet-runtime.md`](docs/wallet-runtime.md), [`docs/operational-evidence.generated.md`](docs/operational-evidence.generated.md), [`docs/pdao-attestation.generated.json`](docs/pdao-attestation.generated.json), [`docs/strategy-operations.md`](docs/strategy-operations.md) |
 | Artifact integrity | [`docs/cryptographic-integrity.md`](docs/cryptographic-integrity.md), [`docs/cryptographic-manifest.generated.json`](docs/cryptographic-manifest.generated.json) |
 
