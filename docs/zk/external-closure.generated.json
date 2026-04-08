@@ -2,7 +2,7 @@
   "project": "PrivateDAO",
   "path": "zk_enforced_external_closure",
   "status": "pending-external-execution",
-  "generatedAt": "2026-04-08T21:16:27.550Z",
+  "generatedAt": "2026-04-08T21:41:25.577Z",
   "pendingBlockingCount": 3,
   "runtimeCaptureSummary": {
     "status": "pending-zk-enforced-capture",

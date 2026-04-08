@@ -1021,6 +1021,125 @@ nav.scrolled {
   color: var(--red);
 }
 
+.proposal-advisor-card {
+  margin-top: 14px;
+  padding: 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(180deg, rgba(9, 19, 28, 0.68), rgba(7, 14, 21, 0.9));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.proposal-advisor-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.proposal-advisor-kicker {
+  color: var(--text3);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.proposal-advisor-title {
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 800;
+  margin-top: 8px;
+}
+
+.proposal-advisor-copy {
+  margin-top: 10px;
+  color: var(--text2);
+  line-height: 1.7;
+  font-size: 13px;
+}
+
+.proposal-advisor-pill {
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.proposal-advisor-grid {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.proposal-advisor-item {
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.025);
+}
+
+.proposal-advisor-item-label {
+  color: var(--text3);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.proposal-advisor-item-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 11px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+}
+
+.proposal-advisor-item-state.recommended {
+  border-color: rgba(0,255,136,0.28);
+  background: rgba(0,255,136,0.08);
+  color: var(--green);
+}
+
+.proposal-advisor-item-state.optional {
+  border-color: rgba(255,184,0,0.28);
+  background: rgba(255,184,0,0.08);
+  color: var(--amber);
+}
+
+.proposal-advisor-item-state.not-needed {
+  color: var(--text2);
+}
+
+.proposal-advisor-item-copy {
+  margin-top: 10px;
+  color: var(--text2);
+  line-height: 1.65;
+  font-size: 12px;
+}
+
+@media (max-width: 1120px) {
+  .proposal-advisor-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .proposal-advisor-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 1120px) {
   .treasury-command-flow,
   .treasury-command-tech-grid,
@@ -3825,10 +3944,43 @@ body.judge-mode .judge-banner {
       </div>
       <code id="createProposalCommandHint">yarn create-proposal -- --dao &lt;DAO_PDA&gt; --title "Fund community work"</code>
       <div style="margin-top:8px;color:var(--text3);line-height:1.7">Best practice for multi-DAO operation: choose the DAO from the filter above, confirm the DAO PDA field matches that DAO, then create the proposal from a wallet that holds that DAO governance token. Confidential payout batches are configured immediately after proposal creation, using only the encrypted batch manifest, hashes, settlement account, and aggregate amount. Add REFHE inputs only when this proposal must bind encrypted payroll or bonus evaluation to a proposal-scoped on-chain envelope before execution.</div>
+      <div class="proposal-advisor-card">
+        <div class="proposal-advisor-head">
+          <div>
+            <div class="proposal-advisor-kicker">FRONTIER BUILDER ADVISOR</div>
+            <div class="proposal-advisor-title">Choose the right activation path before signing.</div>
+            <div class="proposal-advisor-copy" id="proposalBuilderAdvisorCopy">This advisor reads the current builder inputs and explains whether ZK, REFHE, MagicBlock, and the backend-indexer RPC path are recommended, optional, or not needed for the proposal you are about to create.</div>
+          </div>
+          <div class="proposal-advisor-pill" id="proposalBuilderAdvisorPill">GENERAL</div>
+        </div>
+        <div class="proposal-advisor-grid">
+          <div class="proposal-advisor-item">
+            <div class="proposal-advisor-item-label">ZK</div>
+            <div class="proposal-advisor-item-state optional" id="proposalAdvisorZkState">OPTIONAL</div>
+            <div class="proposal-advisor-item-copy" id="proposalAdvisorZkCopy">Use the ZK layer when the proposal will benefit from the stronger review path or zk_enforced finalize route.</div>
+          </div>
+          <div class="proposal-advisor-item">
+            <div class="proposal-advisor-item-label">REFHE</div>
+            <div class="proposal-advisor-item-state not-needed" id="proposalAdvisorRefheState">NOT NEEDED</div>
+            <div class="proposal-advisor-item-copy" id="proposalAdvisorRefheCopy">REFHE only matters for confidential payroll, bonus, or grant flows that require encrypted evaluation before execution.</div>
+          </div>
+          <div class="proposal-advisor-item">
+            <div class="proposal-advisor-item-label">MAGICBLOCK</div>
+            <div class="proposal-advisor-item-state not-needed" id="proposalAdvisorMagicBlockState">NOT NEEDED</div>
+            <div class="proposal-advisor-item-copy" id="proposalAdvisorMagicBlockCopy">MagicBlock is only relevant for confidential token payout plans that should not execute without private-payment corridor settlement.</div>
+          </div>
+          <div class="proposal-advisor-item">
+            <div class="proposal-advisor-item-label">RPC FAST / READ NODE</div>
+            <div class="proposal-advisor-item-state optional" id="proposalAdvisorRpcState">OPTIONAL</div>
+            <div class="proposal-advisor-item-copy" id="proposalAdvisorRpcCopy">The builder will still work on direct RPC, but backend-indexed reads provide a cleaner reviewer and operator experience when available.</div>
+          </div>
+        </div>
+      </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
         <a class="proposal-proof-link" href="confidential-payments.md" target="_blank">Confidential Payouts</a>
         <a class="proposal-proof-link" href="confidential-payroll-flow.md" target="_blank">Payroll Flow</a>
         <a class="proposal-proof-link" href="confidential-payments-diagram.md" target="_blank">Diagram</a>
+        <a class="proposal-proof-link" href="frontier-guided-flow.md" target="_blank">Frontier Guided Flow</a>
         <a class="proposal-proof-link" href="magicblock/private-payments.md" target="_blank">MagicBlock Private Payments</a>
         <a class="proposal-proof-link" href="refhe-protocol.md" target="_blank">REFHE Protocol</a>
         <a class="proposal-proof-link" href="refhe-operator-flow.md" target="_blank">REFHE Operator Flow</a>
@@ -6277,6 +6429,91 @@ function syncCreateProposalCommand(prefillDao = null) {
   if (magicBlockOwnerInput && wallet && !magicBlockOwnerInput.value.trim()) magicBlockOwnerInput.value = wallet;
   const hint = document.getElementById('createProposalCommandHint');
   if (hint) hint.textContent = buildCreateProposalCommand();
+  updateProposalBuilderAdvisor();
+}
+
+function setProposalAdvisorState(id, state, copy) {
+  const stateEl = document.getElementById(id);
+  const copyEl = document.getElementById(`${id.replace('State', 'Copy')}`);
+  if (!stateEl || !copyEl) return;
+  stateEl.textContent = state.label;
+  stateEl.className = `proposal-advisor-item-state ${state.className}`;
+  copyEl.textContent = copy;
+}
+
+function updateProposalBuilderAdvisor() {
+  const confidentialType = selectedConfidentialPayoutType();
+  const payoutAsset = (document.getElementById('createProposalPayoutAssetType')?.value || 'sol').trim().toLowerCase();
+  const title = (document.getElementById('createProposalTitle')?.value || '').trim();
+  const description = (document.getElementById('createProposalDescription')?.value || '').trim();
+  const refheConfig = selectedRefheConfig();
+  const magicBlockConfig = selectedMagicBlockConfig();
+  const advisorCopyEl = document.getElementById('proposalBuilderAdvisorCopy');
+  const advisorPillEl = document.getElementById('proposalBuilderAdvisorPill');
+  const walletConnected = Boolean(wallet);
+  const usesConfidential = Boolean(confidentialType);
+  const tokenConfidential = usesConfidential && payoutAsset === 'token';
+  const likelySensitive = /\b(payroll|salary|bonus|compensation|grant|review|committee|allocation|private)\b/i.test(`${title} ${description}`);
+  const refheFilled = Boolean(refheConfig.modelUri || refheConfig.policyHash || refheConfig.inputCiphertextHash || refheConfig.evaluationKeyHash);
+  const magicEnabled = magicBlockConfig.enabled;
+
+  if (advisorPillEl) {
+    advisorPillEl.textContent = usesConfidential
+      ? tokenConfidential
+        ? 'CONFIDENTIAL TOKEN FLOW'
+        : 'CONFIDENTIAL SOL FLOW'
+      : 'STANDARD TREASURY FLOW';
+  }
+
+  if (advisorCopyEl) {
+    advisorCopyEl.textContent = usesConfidential
+      ? tokenConfidential
+        ? 'This proposal is configured as a confidential token payout. The strongest path is encrypted manifest binding, optional REFHE evaluation when needed, and MagicBlock corridor settlement before execution.'
+        : 'This proposal is configured as a confidential SOL payout. Use encrypted manifest binding and optional REFHE evaluation when the payout requires encrypted review before treasury release.'
+      : 'This proposal is currently a standard treasury flow. Keep it simple unless the payout really needs confidentiality, private evaluation, or a stronger review path.';
+  }
+
+  const zkState = likelySensitive || usesConfidential
+    ? { label: 'RECOMMENDED', className: 'recommended' }
+    : { label: 'OPTIONAL', className: 'optional' };
+  const zkCopy = likelySensitive || usesConfidential
+    ? 'This proposal touches a sensitive or reviewer-heavy flow. ZK is recommended so the proposal can use the stronger review path and, when appropriate, the zk_enforced finalize route.'
+    : 'ZK is optional here. Use it when you want the stronger proof-oriented review path even for a simple treasury action.';
+  setProposalAdvisorState('proposalAdvisorZkState', zkState, zkCopy);
+
+  const refheState = !usesConfidential
+    ? { label: 'NOT NEEDED', className: 'not-needed' }
+    : refheFilled
+      ? { label: 'ENABLED', className: 'recommended' }
+      : { label: 'OPTIONAL', className: 'optional' };
+  const refheCopy = !usesConfidential
+    ? 'REFHE is not needed because this builder is not currently configured for a confidential payout.'
+    : refheFilled
+      ? 'REFHE inputs are already present. This proposal is set up to bind encrypted evaluation to the payout before execution.'
+      : 'REFHE is optional here. Turn it on when the confidential payout should depend on encrypted evaluation, policy logic, or reviewer-verifiable encrypted processing.';
+  setProposalAdvisorState('proposalAdvisorRefheState', refheState, refheCopy);
+
+  const magicState = !tokenConfidential
+    ? { label: 'NOT NEEDED', className: 'not-needed' }
+    : magicEnabled
+      ? { label: 'ENABLED', className: 'recommended' }
+      : { label: 'RECOMMENDED', className: 'recommended' };
+  const magicCopy = !tokenConfidential
+    ? 'MagicBlock is not needed unless this is a confidential token payout proposal.'
+    : magicEnabled
+      ? 'MagicBlock is already enabled for this confidential token payout. The proposal should bind corridor evidence before treasury execution.'
+      : 'MagicBlock is recommended because this is a confidential token payout. Enable the corridor when the token batch should remain blocked until private-payment settlement is recorded.';
+  setProposalAdvisorState('proposalAdvisorMagicBlockState', magicState, magicCopy);
+
+  const rpcState = currentReadPath === 'Backend Indexer'
+    ? { label: 'ACTIVE', className: 'recommended' }
+    : { label: walletConnected ? 'OPTIONAL' : 'CONNECT', className: currentReadPath === 'Backend Indexer' ? 'recommended' : 'optional' };
+  const rpcCopy = currentReadPath === 'Backend Indexer'
+    ? 'The app is currently using the backend-indexer path, which is the strongest reviewer and operator surface for this proposal builder.'
+    : walletConnected
+      ? 'The builder is currently on direct RPC or fallback. That is functional, but backend-indexed reads provide cleaner diagnostics and stronger Frontier reviewer visibility.'
+      : 'Connect a wallet and load the app fully to see whether the backend-indexed RPC path is active for this session.';
+  setProposalAdvisorState('proposalAdvisorRpcState', rpcState, rpcCopy);
 }
 
 function copyCreateProposalCommand() {
@@ -8629,6 +8866,7 @@ function updateHeroStats(proposals, nowTs) {
     sealedDisplay.innerHTML = "YES: ? &nbsp;/&nbsp; NO: ?";
     sealedInfo.innerHTML = "<span>›</span> No proposals found for this program ID<br><span>›</span> Create one from the repository CLI<br><span>›</span> The page will refresh automatically";
     updateHeroActionReadiness();
+    updateProposalBuilderAdvisor();
     return;
   }
 
@@ -8677,6 +8915,7 @@ function updateHeroStats(proposals, nowTs) {
       ? `Execution unlock: ${lead.executionUnlocksAt > nowTs ? formatRemaining(lead.executionUnlocksAt, nowTs) : "ready"}`
       : `Proposal status: ${lead.status}`;
   sealedInfo.innerHTML = `<span>›</span> ${lead.revealCount} reveals verified on-chain<br><span>›</span> ${zkCardState.pill}: ${zkCardState.copy}<br><span>›</span> ${revealLine}`;
+  updateProposalBuilderAdvisor();
 }
 
 async function updateDeploymentSnapshot() {
