@@ -1,15 +1,15 @@
 # Read Node Snapshot
 
-- Generated at: `2026-04-08T03:45:38.704Z`
+- Generated at: `2026-04-08T14:19:58.129Z`
 - Read path: `backend-indexer`
 - RPC endpoint: `https://api.devnet.solana.com`
 - RPC pool size: `1`
 - Cache entries: `2`
 - Cache TTL ms: `15000`
 - Program ID: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
-- Slot: `454033509`
-- Solana core: `3.1.10`
-- Feature set: `1620780344`
+- Slot: `454134041`
+- Solana core: `4.0.0-beta.6`
+- Feature set: `2475355604`
 
 ## Proposal Coverage
 
@@ -35,7 +35,7 @@
 ## Sample
 
 - `Devnet Confidential MagicBlock REFHE V3` | phase=`Finalized` | zk=`Companion` | payout=`true` | dao=`2UBuKLVfY3kJ22WAmYEZDh71bWhJp2euRpPDq2qT1S8p`
-- `Devnet Confidential MagicBlock REFHE V2` | phase=`Finalized` | zk=`Companion` | payout=`true` | dao=`2UBuKLVfY3kJ22WAmYEZDh71bWhJp2euRpPDq2qT1S8p`
 - `Encrypted manifest bound MagicBlock bonus v2` | phase=`Executed` | zk=`Companion` | payout=`true` | dao=`9yi2TGLcENufbRPVbEJH3BWJWrqsGxLfG6G7qJmUS8r6`
-- `Concurrent finalize and execute race` | phase=`Executed` | zk=`Companion` | payout=`false` | dao=`FfLcDByf3Y2C3WrXC5q6aboEXUh7ddeSMhiawDdh5rFA`
-- `Encrypted manifest bound MagicBlock bonus` | phase=`Finalized` | zk=`Companion` | payout=`true` | dao=`9yi2TGLcENufbRPVbEJH3BWJWrqsGxLfG6G7qJmUS8r6`
+- `Devnet Confidential MagicBlock REFHE V2` | phase=`Finalized` | zk=`Companion` | payout=`true` | dao=`2UBuKLVfY3kJ22WAmYEZDh71bWhJp2euRpPDq2qT1S8p`
+- `Multi proposal C` | phase=`Executed` | zk=`Companion` | payout=`false` | dao=`EyLjhct7TJwb7pa1HssjwZcTT9WMq6Vq5aAxTKsK1b8t`
+- `Multi proposal C` | phase=`Finalized` | zk=`Companion` | payout=`false` | dao=`7D3fmZ3CE8NjSLaetNvPaQ5Wd79XeUVEbNj7oqchkfFy`

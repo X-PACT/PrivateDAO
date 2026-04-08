@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-08T03:46:56.576Z`
+- generated at: `2026-04-08T14:20:44.674Z`
 - source snapshot: `2026-04-06T18:39:29.693Z`
 - API base: `https://copilot.colosseum.com/api/v1`
 - general result count: `5`

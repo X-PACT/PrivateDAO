@@ -699,6 +699,125 @@ nav.scrolled {
   margin-top: 16px;
 }
 
+.treasury-command-center {
+  margin-top: 24px;
+  padding: 26px;
+  border-radius: 28px;
+  border: 1px solid rgba(0, 229, 255, 0.18);
+  background:
+    radial-gradient(circle at 10% 0%, rgba(0, 229, 255, 0.14), transparent 30%),
+    linear-gradient(135deg, rgba(4, 14, 22, 0.96), rgba(8, 24, 34, 0.84) 48%, rgba(4, 9, 15, 0.96));
+  box-shadow: 0 28px 80px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.05);
+  overflow: hidden;
+  position: relative;
+}
+
+.treasury-command-center::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(90deg, rgba(0,0,0,0.8), transparent);
+  pointer-events: none;
+}
+
+.treasury-command-head,
+.treasury-command-grid,
+.treasury-command-actions {
+  position: relative;
+  z-index: 1;
+}
+
+.treasury-command-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 24px;
+  align-items: start;
+}
+
+.treasury-command-title {
+  font-size: clamp(28px, 4vw, 52px);
+  letter-spacing: -1.5px;
+  line-height: 0.95;
+  margin-top: 8px;
+}
+
+.treasury-command-copy {
+  margin-top: 14px;
+  max-width: 840px;
+  color: var(--text2);
+  line-height: 1.8;
+}
+
+.treasury-command-status {
+  min-width: 230px;
+  border: 1px solid rgba(0, 255, 136, 0.22);
+  background: rgba(0, 255, 136, 0.07);
+  border-radius: 20px;
+  padding: 18px;
+  font-family: var(--mono);
+  color: var(--green);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+}
+
+.treasury-command-status span {
+  display: block;
+  color: var(--text3);
+  font-size: 10px;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.treasury-command-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.treasury-command-step {
+  padding: 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(2, 8, 14, 0.62);
+}
+
+.treasury-command-step-num {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(0,229,255,0.34);
+  color: var(--cyan);
+  font-family: var(--mono);
+  font-size: 12px;
+  margin-bottom: 14px;
+}
+
+.treasury-command-step-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.treasury-command-step-copy {
+  color: var(--text2);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.treasury-command-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
 .surface-intro-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -3038,6 +3157,52 @@ body.judge-mode .judge-banner {
             <a class="award-link" href="confidential-payments-audit-scope.md" target="_blank">Audit Scope</a>
             <a class="award-link" href="audit-packet.generated.md" target="_blank">Audit Packet</a>
           </div>
+        </div>
+      </div>
+      <div class="treasury-command-center" id="confidentialTreasuryCommandCenter">
+        <div class="treasury-command-head">
+          <div>
+            <div class="curation-kicker">CONFIDENTIAL TREASURY COMMAND CENTER</div>
+            <div class="treasury-command-title">One guided path from private approval to evidence-gated execution.</div>
+            <div class="treasury-command-copy">
+              This operator flow turns the feature stack into a single user journey: choose a confidential payout, bind encrypted evidence, pass commit-reveal governance, wait for proof and settlement readiness, then execute only when the selected proposal is actually eligible. It is a product guide over the existing protocol surface; it does not bypass wallet signatures or on-chain timing rules.
+            </div>
+          </div>
+          <div class="treasury-command-status">
+            <span>CURRENT BOUNDARY</span>
+            Devnet-ready<br>
+            evidence-gated<br>
+            mainnet-blocked
+          </div>
+        </div>
+        <div class="treasury-command-grid">
+          <div class="treasury-command-step">
+            <div class="treasury-command-step-num">01</div>
+            <div class="treasury-command-step-title">Select DAO and payout type</div>
+            <div class="treasury-command-step-copy">Start with a DAO PDA, choose salary or bonus, define aggregate amount, recipient count, and the settlement recipient without placing the full sheet on chain.</div>
+          </div>
+          <div class="treasury-command-step">
+            <div class="treasury-command-step-num">02</div>
+            <div class="treasury-command-step-title">Bind encrypted evidence</div>
+            <div class="treasury-command-step-copy">Attach manifest hash, ciphertext hash, optional REFHE envelope inputs, and MagicBlock corridor settings for token payout paths.</div>
+          </div>
+          <div class="treasury-command-step">
+            <div class="treasury-command-step-num">03</div>
+            <div class="treasury-command-step-title">Pass private governance</div>
+            <div class="treasury-command-step-copy">Move through commit, reveal, finalize, and timelock. The selected proposal panel keeps valid next actions and explorer evidence tied to the same proposal.</div>
+          </div>
+          <div class="treasury-command-step">
+            <div class="treasury-command-step-num">04</div>
+            <div class="treasury-command-step-title">Execute only when ready</div>
+            <div class="treasury-command-step-copy">Execution remains blocked until the proposal is finalized, the timelock clears, and the relevant proof, REFHE, or MagicBlock evidence boundary is satisfied.</div>
+          </div>
+        </div>
+        <div class="treasury-command-actions">
+          <button class="action-btn action-execute" type="button" onclick="openConfidentialTreasuryWizard()">Start Guided Flow</button>
+          <button class="action-btn action-commit" type="button" onclick="copyConfidentialTreasuryEvidencePacket()">Copy Judge Evidence Packet</button>
+          <a class="proposal-proof-link" href="confidential-payroll-flow.md" target="_blank">Open Payroll Flow</a>
+          <a class="proposal-proof-link" href="magicblock/runtime.generated.md" target="_blank">Open MagicBlock Evidence</a>
+          <a class="proposal-proof-link" href="zk/enforced-runtime.generated.md" target="_blank">Open ZK Evidence</a>
         </div>
       </div>
     </div>
@@ -9775,6 +9940,78 @@ function startMigration() {
     return;
   }
   showToast('Migration command prepared in the panel below the form.', 'info');
+}
+
+function setInputValue(id, value) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.value = value;
+  el.dispatchEvent(new Event('input', { bubbles: true }));
+  el.dispatchEvent(new Event('change', { bubbles: true }));
+}
+
+function openConfidentialTreasuryWizard() {
+  showPage('proposals', findNavButton('proposals'));
+  setTimeout(() => {
+    setInputValue('createProposalTitle', 'Confidential bonus payout with evidence-gated execution');
+    setInputValue(
+      'createProposalDescription',
+      'Approve an aggregate confidential bonus payout through PrivateDAO. Recipient-level details remain in the encrypted manifest while the proposal binds hashes, governance approvals, optional REFHE evaluation, and MagicBlock settlement evidence before execution.'
+    );
+    setInputValue('createProposalDuration', '900');
+    setInputValue('createProposalAmount', '0.05');
+    setInputValue('createProposalConfidentialType', 'bonus');
+    setInputValue('createProposalPayoutAssetType', 'token');
+    setInputValue('createProposalPayoutTotal', '250000');
+    setInputValue('createProposalRecipientCount', '4');
+    setInputValue('createProposalManifestUri', 'box://encrypted-bonus-manifest');
+    setInputValue('createProposalRefheModelUri', 'box://refhe-bonus-policy');
+    setInputValue('createProposalMagicBlockEnabled', 'enabled');
+    setInputValue('createProposalMagicBlockApiBase', 'https://payments.magicblock.app');
+    if (wallet) {
+      setInputValue('createProposalRecipient', wallet);
+      setInputValue('createProposalSettlementRecipient', wallet);
+      setInputValue('createProposalMagicBlockOwnerWallet', wallet);
+    }
+    syncCreateProposalCommand();
+    document.getElementById('createProposalTitle')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    showToast('Confidential Treasury Command Center configured the proposal builder. Paste real hashes before signing.', 'success');
+  }, 120);
+}
+
+function copyConfidentialTreasuryEvidencePacket() {
+  const packet = [
+    '# PrivateDAO Confidential Treasury Command Center',
+    '',
+    'Flow: DAO selection -> confidential payout proposal -> encrypted manifest binding -> commit/reveal governance -> proof/settlement readiness -> evidence-gated execution.',
+    '',
+    'Implemented surfaces:',
+    '- Confidential salary and bonus proposal builder',
+    '- Manifest and ciphertext hash binding fields',
+    '- REFHE envelope inputs',
+    '- MagicBlock private-payment corridor inputs for token payout proposals',
+    '- Selected proposal panel with phase-bound next actions and explorer evidence',
+    '- Runtime evidence surfaces for MagicBlock and ZK-enforced paths',
+    '',
+    'Honest boundary:',
+    '- This is Devnet and audit-readiness evidence, not real-funds mainnet clearance.',
+    '- Execution still requires wallet signatures, successful finalize, timelock clearance, and relevant evidence readiness.',
+    '- External audit, production multisig, real-device captures, and source-verifiable settlement receipts remain launch blockers.',
+    '',
+    'Reviewer links:',
+    '- Live app: https://x-pact.github.io/PrivateDAO/',
+    '- Payroll flow: docs/confidential-payroll-flow.md',
+    '- MagicBlock runtime: docs/magicblock/runtime.generated.md',
+    '- ZK-enforced runtime: docs/zk/enforced-runtime.generated.md',
+    '- Mainnet blockers: docs/mainnet-blockers.md',
+  ].join('\n');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(packet)
+      .then(() => showToast('Confidential treasury evidence packet copied.', 'success'))
+      .catch(() => showToast(packet, 'info'));
+    return;
+  }
+  showToast(packet, 'info');
 }
 
 // ── Toast ────────────────────────────────────────────────
