@@ -45,6 +45,9 @@ npm run verify:frontend-surface >/dev/null
 echo "[verify-all] checking browser smoke"
 npm run verify:browser-smoke >/dev/null
 
+echo "[verify-all] checking security remediation"
+npm run verify:security-remediation >/dev/null
+
 echo "[verify-all] checking investor pitch deck"
 npm run verify:investor-pitch-deck >/dev/null
 

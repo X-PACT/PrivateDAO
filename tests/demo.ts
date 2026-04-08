@@ -38,10 +38,10 @@ import BN from "bn.js";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-function makeCommitment(vote: boolean, salt: Buffer, voter: PublicKey): Buffer {
+function makeCommitment(vote: boolean, salt: Buffer, voter: PublicKey, proposal: PublicKey): Buffer {
   return crypto
     .createHash("sha256")
-    .update(Buffer.concat([Buffer.from([vote ? 1 : 0]), salt, voter.toBuffer()]))
+    .update(Buffer.concat([Buffer.from([vote ? 1 : 0]), salt, proposal.toBuffer(), voter.toBuffer()]))
     .digest();
 }
 
@@ -293,7 +293,7 @@ describe("demo", () => {
       program.programId,
     );
     await program.methods
-      .commitDelegatedVote([...makeCommitment(votes.alice, salts.alice, alice.publicKey)], null)
+      .commitDelegatedVote([...makeCommitment(votes.alice, salts.alice, alice.publicKey, proposal1Pda)], null)
       .accounts({
         dao: daoPda, proposal: proposal1Pda,
         delegation: delegationPda,
@@ -312,7 +312,7 @@ describe("demo", () => {
       program.programId,
     );
     await program.methods
-      .commitVote([...makeCommitment(votes.bob, salts.bob, bob.publicKey)], null)
+      .commitVote([...makeCommitment(votes.bob, salts.bob, bob.publicKey, proposal1Pda)], null)
       .accounts({
         dao: daoPda, proposal: proposal1Pda,
         voterRecord: bobRecordPda, voterTokenAccount: bobAta,
@@ -329,7 +329,7 @@ describe("demo", () => {
       program.programId,
     );
     await program.methods
-      .commitVote([...makeCommitment(votes.carol, salts.carol, carol.publicKey)], keeper.publicKey)
+      .commitVote([...makeCommitment(votes.carol, salts.carol, carol.publicKey, proposal1Pda)], keeper.publicKey)
       .accounts({
         dao: daoPda, proposal: proposal1Pda,
         voterRecord: carolRecordPda, voterTokenAccount: carolAta,
@@ -346,7 +346,7 @@ describe("demo", () => {
       program.programId,
     );
     await program.methods
-      .commitVote([...makeCommitment(votes.whale, salts.whale, whale.publicKey)], null)
+      .commitVote([...makeCommitment(votes.whale, salts.whale, whale.publicKey, proposal1Pda)], null)
       .accounts({
         dao: daoPda, proposal: proposal1Pda,
         voterRecord: whaleRecordPda, voterTokenAccount: whaleAta,

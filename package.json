@@ -104,6 +104,7 @@
     "verify:zk-surface": "bash scripts/verify-zk-surface.sh",
     "verify:frontend-surface": "ts-node scripts/verify-frontend-surface.ts",
     "verify:browser-smoke": "ts-node scripts/verify-browser-smoke.ts",
+    "verify:security-remediation": "ts-node scripts/verify-security-remediation.ts",
     "verify:local-validator": "bash scripts/verify-local-validator-capability.sh",
     "verify:read-node": "MAGICBLOCK_HTTP_TIMEOUT_MS=2500 PRIVATE_DAO_RPC_TIMEOUT_MS=12000 ts-node scripts/verify-read-node.ts",
     "verify:read-node:http": "MAGICBLOCK_HTTP_TIMEOUT_MS=2500 PRIVATE_DAO_RPC_TIMEOUT_MS=12000 ts-node scripts/verify-read-node-http.ts",

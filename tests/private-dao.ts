@@ -1062,6 +1062,54 @@ describe("PrivateDAO", () => {
     console.log("  ✓ proposal cancelled successfully");
   });
 
+  it("rejects legacy cancellation after a commit has been recorded", async () => {
+    const dao = await program.account["dao"].fetch(daoPda);
+    const [cancelAfterCommitPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), dao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal("Do not cancel after commit", "Participation must make cancellation unsafe.", new BN(3600), null)
+      .accounts({
+        dao: daoPda, proposal: cancelAfterCommitPda,
+        proposerTokenAccount: authorityTokenAta, proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [voteRecordPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), cancelAfterCommitPda.toBuffer(), authority.publicKey.toBuffer()],
+      program.programId,
+    );
+    const [delegationMarkerPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("delegation"), cancelAfterCommitPda.toBuffer(), authority.publicKey.toBuffer()],
+      program.programId,
+    );
+    const salt = randomSalt();
+
+    await program.methods
+      .commitVote([...computeCommitment(true, salt, authority.publicKey, cancelAfterCommitPda)], null)
+      .accounts({
+        dao: daoPda, proposal: cancelAfterCommitPda,
+        voterRecord: voteRecordPda, delegationMarker: delegationMarkerPda, voterTokenAccount: authorityTokenAta,
+        voter: authority.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID, systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    try {
+      await program.methods
+        .cancelProposal()
+        .accounts({ dao: daoPda, proposal: cancelAfterCommitPda, authority: authority.publicKey })
+        .rpc();
+      assert.fail("Should have rejected cancellation after voting participation");
+    } catch (err: any) {
+      assert.include(err.toString(), "ProposalNotCancellable");
+      console.log("  ✓ legacy cancellation after commit rejected");
+    }
+  });
+
   it("rejects zero-value treasury deposit", async () => {
     const [treasuryPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("treasury"), daoPda.toBuffer()],

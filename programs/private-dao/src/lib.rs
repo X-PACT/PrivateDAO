@@ -4,6 +4,7 @@ use anchor_lang::system_program::{transfer, Transfer};
 use anchor_spl::token_interface::{
     self as token_interface, Mint, TokenAccount, TokenInterface, Transfer as TokenTransfer,
 };
+use anchor_spl::{token, token_2022};
 use sha2::{Digest, Sha256};
 
 declare_id!("5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx");
@@ -16,7 +17,7 @@ declare_id!("5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx");
 //  That enables three attacks: vote buying, whale intimidation, treasury MEV.
 //
 //  The fix — three-phase commit-reveal:
-//    Phase 1 COMMIT  → voter submits sha256(vote ‖ salt ‖ pubkey)
+//    Phase 1 COMMIT  → voter submits sha256(vote ‖ salt ‖ proposal ‖ voter)
 //                      tally shows 0/0 throughout the entire voting period
 //    Phase 2 REVEAL  → voter proves (vote, salt), tally updates
 //    Phase 3 EXECUTE → after timelock delay, treasury action fires
@@ -50,6 +51,7 @@ pub const REVEAL_REBATE_LAMPORTS: u64 = 1_000_000; // 0.001 SOL per reveal
 pub const DEFAULT_EXECUTION_DELAY: i64 = 86_400; // 24-hour timelock default
 pub const MIN_REVEAL_WINDOW_SECONDS: i64 = 5;
 pub const MIN_VOTING_DURATION_SECONDS: i64 = 5;
+pub const VOTER_WEIGHT_EXPIRY_SLOTS: u64 = 10_000;
 pub const MAX_POLICY_ATTESTORS: usize = 5;
 pub const PAYOUT_PAYLOAD_DOMAIN_V1: &[u8] = b"PrivateDAO::payout-payload:v1";
 pub const PROOF_PAYLOAD_DOMAIN_V1: &[u8] = b"PrivateDAO::proof-payload:v1";
@@ -787,14 +789,18 @@ pub mod private_dao {
 
     // ── Cancel proposal ───────────────────────────────────────────────────────
     //
-    // Authority-only legacy cancellation. This preserves the pre-upgrade ABI and
-    // behavior for existing integrations; strict pre-participation cancellation
-    // is enforced by cancel_proposal_v2 under DaoSecurityPolicy.
+    // Authority-only legacy cancellation. The ABI is preserved, but the safety
+    // invariant is now shared with V2: ordinary cancellation is only valid before
+    // meaningful participation starts.
 
     pub fn cancel_proposal(ctx: Context<CancelProposal>) -> Result<()> {
+        let now = Clock::get()?.unix_timestamp;
         let p = &mut ctx.accounts.proposal;
         require!(
-            p.status == ProposalStatus::Voting,
+            p.status == ProposalStatus::Voting
+                && now < p.voting_end
+                && p.commit_count == 0
+                && p.reveal_count == 0,
             Error::ProposalNotCancellable
         );
 
@@ -1194,6 +1200,7 @@ pub mod private_dao {
                     });
                 }
                 TreasuryActionType::SendToken => {
+                    validate_supported_token_program(&ctx.accounts.token_program.key())?;
                     require!(
                         ctx.accounts.treasury_recipient.key() == action.recipient,
                         Error::TreasuryRecipientMismatch
@@ -1295,6 +1302,10 @@ pub mod private_dao {
             Error::ConfidentialPayoutAlreadyFunded
         );
         if account_exists(&ctx.accounts.refhe_envelope) {
+            require!(
+                *ctx.accounts.refhe_envelope.owner == crate::ID,
+                Error::RefheEnvelopeMismatch
+            );
             let mut data: &[u8] = &ctx.accounts.refhe_envelope.data.borrow();
             let envelope = RefheEnvelope::try_deserialize(&mut data)
                 .map_err(|_| error!(Error::RefheEnvelopeMismatch))?;
@@ -1314,6 +1325,10 @@ pub mod private_dao {
             );
         }
         if account_exists(&ctx.accounts.magicblock_private_payment_corridor) {
+            require!(
+                *ctx.accounts.magicblock_private_payment_corridor.owner == crate::ID,
+                Error::MagicBlockCorridorMismatch
+            );
             let mut data: &[u8] = &ctx
                 .accounts
                 .magicblock_private_payment_corridor
@@ -1369,6 +1384,7 @@ pub mod private_dao {
                 )?;
             }
             ConfidentialAssetType::Token => {
+                validate_supported_token_program(&ctx.accounts.token_program.key())?;
                 let action_mint = plan
                     .token_mint
                     .ok_or(Error::ConfidentialPayoutTokenMintRequired)?;
@@ -1534,6 +1550,7 @@ pub mod private_dao {
                 )?;
             }
             ConfidentialAssetType::Token => {
+                validate_supported_token_program(&ctx.accounts.token_program.key())?;
                 let action_mint = plan
                     .token_mint
                     .ok_or(Error::ConfidentialPayoutTokenMintRequired)?;
@@ -1651,7 +1668,9 @@ pub mod private_dao {
     //
     // Implements spl-governance-addin-api VoterWeightRecord exactly.
     // Any Realms DAO can add PrivateDAO as a voter weight plugin today.
-    // Weight expires in 100 slots to stay fresh without repeated syncing.
+    // Weight expires after a bounded slot window to stay fresh without forcing
+    // governance clients to refresh every few dozen seconds under normal
+    // Solana slot times.
     // DualChamber exports the community chamber weight here; capital weight is
     // enforced inside PrivateDAO proposal finalization, not in this one record.
 
@@ -1669,7 +1688,7 @@ pub mod private_dao {
         vwr.governing_token_mint = ctx.accounts.governing_token_mint.key();
         vwr.governing_token_owner = ctx.accounts.voter.key();
         vwr.voter_weight = weight;
-        vwr.voter_weight_expiry = Some(Clock::get()?.slot + 100);
+        vwr.voter_weight_expiry = Some(Clock::get()?.slot + VOTER_WEIGHT_EXPIRY_SLOTS);
         vwr.weight_action = None;
         vwr.weight_action_target = None;
         vwr.reserved = [0u8; 8];
@@ -1694,7 +1713,7 @@ pub mod private_dao {
         vwr.governing_token_mint = ctx.accounts.governing_token_mint.key();
         vwr.governing_token_owner = ctx.accounts.voter.key();
         vwr.voter_weight = weight;
-        vwr.voter_weight_expiry = Some(Clock::get()?.slot + 100);
+        vwr.voter_weight_expiry = Some(Clock::get()?.slot + VOTER_WEIGHT_EXPIRY_SLOTS);
         vwr.weight_action = None;
         vwr.weight_action_target = None;
         vwr.reserved = [0u8; 8];
@@ -2267,7 +2286,7 @@ fn isqrt(n: u64) -> u64 {
     let mut y = x.div_ceil(2);
     while y < x {
         x = y;
-        y = (x + n / x) / 2;
+        y = ((x as u128 + (n / x) as u128) / 2) as u64;
     }
     x
 }
@@ -2543,6 +2562,14 @@ fn parse_token_account(info: &AccountInfo, expected_program: &Pubkey) -> Result<
     require!(*info.owner == *expected_program, Error::InvalidTokenProgram);
     let mut data: &[u8] = &info.try_borrow_data()?;
     TokenAccount::try_deserialize_unchecked(&mut data).map_err(Into::into)
+}
+
+fn validate_supported_token_program(program_id: &Pubkey) -> Result<()> {
+    require!(
+        *program_id == token::ID || *program_id == token_2022::ID,
+        Error::InvalidTokenProgram
+    );
+    Ok(())
 }
 
 fn validate_voting_config(cfg: &VotingConfig) -> Result<()> {
