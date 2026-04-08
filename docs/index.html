@@ -4812,6 +4812,11 @@ execute() → treasury action
             <div style="color:var(--text3);line-height:1.7;margin-top:8px">The repo now records anchors, receipts, and proposal policies, but the final production verifier boundary still needs to be frozen. See <a class="award-link" href="zk-verifier-strategy.md" target="_blank">ZK Verifier Strategy</a>.</div>
           </div>
           <div class="proposal-command-box">
+            <div class="proposal-detail-label">FRONTIER INTEGRATIONS</div>
+            <div class="diagnostic-value" style="color:var(--cyan)">LIVE DEVNET PROOF</div>
+            <div style="color:var(--text3);line-height:1.7;margin-top:8px">The repo now emits one machine-checked package that binds ZK proof anchors, MagicBlock settlement, REFHE settlement, and backend-indexed RPC state into a single Frontier-facing review surface. See <a class="award-link" href="frontier-integrations.generated.md" target="_blank">Frontier Integration Evidence</a>.</div>
+          </div>
+          <div class="proposal-command-box">
             <div class="proposal-detail-label">READ NODE / INDEXER</div>
             <div class="diagnostic-value" style="color:var(--amber)">DEPLOY RECOMMENDED</div>
             <div style="color:var(--text3);line-height:1.7;margin-top:8px">Mainnet readiness improves when proposal reads, DAO inspection, and runtime health move behind a pooled RPC read node instead of relying on browser RPC alone. See <a class="award-link" href="read-node/indexer.md" target="_blank">Read Node and Indexer</a>.</div>
@@ -4836,6 +4841,7 @@ execute() → treasury action
           <button class="proposal-proof-link" type="button" onclick="openDocument('mainnet-acceptance-matrix.generated.md','Mainnet Acceptance Matrix')">Open Acceptance Matrix</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('mainnet-proof-package.generated.md','Mainnet Proof Package')">Open Mainnet Proof Package</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('runtime-attestation.generated.json','Runtime Attestation')">Open Runtime Attestation</button>
+          <button class="proposal-proof-link" type="button" onclick="openDocument('frontier-integrations.generated.md','Frontier Integrations')">Open Frontier Integrations</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('phase-c-hardening.md','Phase C Hardening')">Open Phase C Hardening</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('zk-verifier-strategy.md','ZK Verifier Strategy')">Open Verifier Strategy</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('read-node/indexer.md','Read Node And Indexer')">Open Read Node</button>
@@ -10001,6 +10007,7 @@ function copyConfidentialTreasuryEvidencePacket() {
     'Reviewer links:',
     '- Live app: https://x-pact.github.io/PrivateDAO/',
     '- Payroll flow: docs/confidential-payroll-flow.md',
+    '- Frontier integrations: docs/frontier-integrations.generated.md',
     '- MagicBlock runtime: docs/magicblock/runtime.generated.md',
     '- ZK-enforced runtime: docs/zk/enforced-runtime.generated.md',
     '- Mainnet blockers: docs/mainnet-blockers.md',

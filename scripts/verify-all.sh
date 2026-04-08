@@ -105,6 +105,9 @@ npm run verify:read-node-snapshot >/dev/null
 echo "[verify-all] checking read-node ops snapshot"
 npm run verify:read-node-ops >/dev/null
 
+echo "[verify-all] checking Frontier integrations"
+npm run verify:frontier-integrations >/dev/null
+
 echo "[verify-all] checking Colosseum competitive analysis"
 npm run verify:colosseum-competitive >/dev/null
 

@@ -2,7 +2,7 @@
 
 ## Overview
 
-- Generated at: `2026-04-08T16:09:10.622Z`
+- Generated at: `2026-04-08T20:17:15.292Z`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - Diagnostics page: `https://x-pact.github.io/PrivateDAO/?page=diagnostics`
@@ -96,6 +96,8 @@
 - `docs/magicblock/runtime-captures.json`
 - `docs/magicblock/runtime.generated.md`
 - `docs/magicblock/runtime.generated.json`
+- `docs/frontier-integrations.generated.md`
+- `docs/frontier-integrations.generated.json`
 - `docs/zk/enforced-runtime-evidence.md`
 - `docs/zk/enforced-runtime-captures.json`
 - `docs/zk/enforced-runtime.generated.md`
@@ -122,6 +124,8 @@
 - `npm run verify:real-device-runtime`
 - `npm run build:magicblock-runtime`
 - `npm run verify:magicblock-runtime`
+- `npm run build:frontier-integrations`
+- `npm run verify:frontier-integrations`
 - `npm run build:zk-enforced-runtime`
 - `npm run verify:zk-enforced-runtime`
 - `npm run build:zk-external-closure`
@@ -139,5 +143,6 @@
 - It does not replace real device QA across every wallet release and browser combination.
 - It binds browser/runtime behavior to diagnostics, wallet matrix, canary, resilience evidence, and real-device capture intake in one summary.
 - It exposes the MagicBlock confidential payout corridor as a separate runtime track instead of burying it inside generic payout claims.
+- It adds a Frontier integration package that binds ZK anchors, MagicBlock settlement, REFHE settlement, and backend-indexed RPC state into one machine-checked review surface.
 - It exposes the stronger zk_enforced runtime blocker as a first-class evidence track instead of leaving it implicit in prose.
 - It tracks the remaining external closure path: runtime captures, external audit, and the canonical verifier-boundary freeze.

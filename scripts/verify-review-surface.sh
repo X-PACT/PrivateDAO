@@ -44,6 +44,8 @@ required_files=(
   "docs/runtime/real-device-captures.json"
   "docs/runtime/real-device.generated.md"
   "docs/runtime/real-device.generated.json"
+  "docs/frontier-integrations.generated.md"
+  "docs/frontier-integrations.generated.json"
   "docs/operational-evidence.generated.md"
   "docs/operational-evidence.generated.json"
   "docs/runtime-evidence.generated.md"

@@ -52,6 +52,8 @@ function main() {
     "docs/runtime/real-device-captures.json",
     "docs/runtime/real-device.generated.md",
     "docs/runtime/real-device.generated.json",
+    "docs/frontier-integrations.generated.md",
+    "docs/frontier-integrations.generated.json",
     "docs/zk/enforced-runtime-evidence.md",
     "docs/zk/enforced-runtime-captures.json",
     "docs/zk/enforced-runtime.generated.md",

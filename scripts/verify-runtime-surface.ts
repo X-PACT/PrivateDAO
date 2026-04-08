@@ -37,6 +37,7 @@ function main() {
     "Open Real-Device Runtime",
     "Open MagicBlock Runtime Path",
     "Open MagicBlock Runtime Package",
+    "Open Frontier Integrations",
     "Open Devnet Canary",
     "Open Runtime Attestation",
     "Open Go-Live Attestation",
@@ -59,6 +60,7 @@ function main() {
   assert(Boolean(runtime.runtimeDocs?.includes?.("docs/wallet-compatibility-matrix.generated.md")), "runtime attestation is missing wallet matrix docs");
   assert(Boolean(runtime.runtimeDocs?.includes?.("docs/runtime/real-device.generated.md")), "runtime attestation is missing real-device runtime docs");
   assert(Boolean(runtime.runtimeDocs?.includes?.("docs/magicblock/runtime.generated.md")), "runtime attestation is missing MagicBlock runtime docs");
+  assert(Boolean(runtime.runtimeDocs?.includes?.("docs/frontier-integrations.generated.md")), "runtime attestation is missing Frontier integration docs");
   assert(Boolean(runtime.runtimeDocs?.includes?.("docs/devnet-canary.generated.md")), "runtime attestation is missing devnet canary docs");
 
   if (runtime.pdaoToken?.mint) {

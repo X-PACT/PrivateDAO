@@ -16,6 +16,8 @@ function main() {
   const runtimeAttestationPath = path.resolve("docs/runtime-attestation.generated.json");
   const readNodeSnapshotJsonPath = path.resolve("docs/read-node/snapshot.generated.json");
   const readNodeSnapshotMdPath = path.resolve("docs/read-node/snapshot.generated.md");
+  const frontierIntegrationsJsonPath = path.resolve("docs/frontier-integrations.generated.json");
+  const frontierIntegrationsMdPath = path.resolve("docs/frontier-integrations.generated.md");
   const colosseumCompetitiveSourcePath = path.resolve("docs/competitive/source.json");
   const colosseumCompetitiveJsonPath = path.resolve("docs/competitive/analysis.generated.json");
   const colosseumCompetitiveMdPath = path.resolve("docs/competitive/analysis.generated.md");
@@ -97,6 +99,9 @@ function main() {
   }
   if (!fs.existsSync(readNodeSnapshotJsonPath) || !fs.existsSync(readNodeSnapshotMdPath)) {
     throw new Error("missing read-node snapshot artifacts");
+  }
+  if (!fs.existsSync(frontierIntegrationsJsonPath) || !fs.existsSync(frontierIntegrationsMdPath)) {
+    throw new Error("missing Frontier integration evidence artifacts");
   }
   if (!fs.existsSync(colosseumCompetitiveSourcePath) || !fs.existsSync(colosseumCompetitiveJsonPath) || !fs.existsSync(colosseumCompetitiveMdPath)) {
     throw new Error("missing Colosseum competitive analysis artifacts");
@@ -256,6 +261,23 @@ function main() {
     counts?: { proposals?: number; confidentialPayouts?: number };
   };
   const readNodeSnapshotMd = fs.readFileSync(readNodeSnapshotMdPath, "utf8");
+  const frontierIntegrations = JSON.parse(fs.readFileSync(frontierIntegrationsJsonPath, "utf8")) as {
+    project: string;
+    programId: string;
+    verificationWallet: string;
+    readNode: {
+      readPath: string;
+      rpcEndpoint: string;
+      rpcPoolSize: number;
+      overview: { confidentialPayouts: number; magicblockSettled: number; refheSettled: number };
+    };
+    simpleGovernance: { txChecks: Array<{ confirmed: boolean }>; lifecycleStatus: string; verificationStatus: string };
+    confidentialOperations: { txChecks: Array<{ confirmed: boolean }>; status: string; refheStatus: string; magicblockStatus: string };
+    zk: { anchorCount: number; anchorChecks: Array<{ confirmed: boolean; account: { exists: boolean } }>; status: string };
+    docs: string[];
+    commands: string[];
+  };
+  const frontierIntegrationsMd = fs.readFileSync(frontierIntegrationsMdPath, "utf8");
   const runtimeEvidence = JSON.parse(fs.readFileSync(runtimeEvidenceJsonPath, "utf8")) as {
     project: string;
     programId: string;
@@ -1122,6 +1144,56 @@ function main() {
   }
   if (!readNodeSnapshotMd.includes("Confidential payout proposals")) {
     throw new Error("read-node snapshot markdown is missing confidential payout coverage");
+  }
+
+  if (frontierIntegrations.project !== "PrivateDAO") {
+    throw new Error("Frontier integration evidence project mismatch");
+  }
+  if (frontierIntegrations.programId !== runtimeAttestation.programId) {
+    throw new Error("Frontier integration evidence program mismatch");
+  }
+  if (frontierIntegrations.verificationWallet !== runtimeAttestation.verificationWallet) {
+    throw new Error("Frontier integration evidence verification wallet mismatch");
+  }
+  if (frontierIntegrations.readNode.readPath !== "backend-indexer" || !frontierIntegrations.readNode.rpcEndpoint || frontierIntegrations.readNode.rpcPoolSize < 1) {
+    throw new Error("Frontier integration evidence read-node surface is incomplete");
+  }
+  if (frontierIntegrations.readNode.overview.confidentialPayouts < 1 || frontierIntegrations.readNode.overview.magicblockSettled < 1 || frontierIntegrations.readNode.overview.refheSettled < 1) {
+    throw new Error("Frontier integration evidence backend coverage is unexpectedly weak");
+  }
+  if (frontierIntegrations.simpleGovernance.txChecks.length < 5 || !frontierIntegrations.simpleGovernance.txChecks.every((entry) => entry.confirmed)) {
+    throw new Error("Frontier integration evidence simple governance tx coverage is unexpectedly weak");
+  }
+  if (!frontierIntegrations.simpleGovernance.lifecycleStatus) {
+    throw new Error("Frontier integration evidence simple governance lifecycle status is missing");
+  }
+  if (frontierIntegrations.simpleGovernance.verificationStatus !== "verified-devnet-governance-path") {
+    throw new Error("Frontier integration evidence simple governance path is degraded");
+  }
+  if (
+    frontierIntegrations.confidentialOperations.txChecks.length < 5 ||
+    !frontierIntegrations.confidentialOperations.txChecks.every((entry) => entry.confirmed) ||
+    frontierIntegrations.confidentialOperations.refheStatus !== "Settled" ||
+    frontierIntegrations.confidentialOperations.magicblockStatus !== "Settled" ||
+    frontierIntegrations.confidentialOperations.status !== "verified-devnet-confidential-path"
+  ) {
+    throw new Error("Frontier integration evidence confidential path is degraded");
+  }
+  if (
+    frontierIntegrations.zk.anchorCount < 3 ||
+    !frontierIntegrations.zk.anchorChecks.every((entry) => entry.confirmed && entry.account.exists) ||
+    frontierIntegrations.zk.status !== "proof-anchors-recorded-on-devnet"
+  ) {
+    throw new Error("Frontier integration evidence zk anchor path is degraded");
+  }
+  if (!frontierIntegrations.docs.includes("docs/magicblock/private-payments.md") || !frontierIntegrations.docs.includes("docs/refhe-protocol.md") || !frontierIntegrations.docs.includes("docs/rpc-architecture.md")) {
+    throw new Error("Frontier integration evidence docs are incomplete");
+  }
+  if (!frontierIntegrations.commands.includes("npm run verify:frontier-integrations")) {
+    throw new Error("Frontier integration evidence commands are incomplete");
+  }
+  if (!frontierIntegrationsMd.includes("# Frontier Integration Evidence") || !frontierIntegrationsMd.includes("Confidential MagicBlock + REFHE Path")) {
+    throw new Error("Frontier integration evidence markdown is invalid");
   }
 
   if (runtimeEvidence.project !== "PrivateDAO") {
