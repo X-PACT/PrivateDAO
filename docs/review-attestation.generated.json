@@ -75,7 +75,7 @@
   "cryptographicIntegrity": {
     "algorithm": "sha256",
     "entryCount": 143,
-    "aggregateSha256": "23c8200fd8ffc3214e77b21ae4aa073f865a66ffc3d8dde3dfd95774e64b74ac"
+    "aggregateSha256": "0a9877d799546f496f50aae2251085d60050127f40b6299333b75283786154dd"
   },
   "runtimeDocs": [
     "docs/read-node/indexer.md",

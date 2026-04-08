@@ -96,6 +96,7 @@ The README should stay aligned with this rule: implemented surfaces are describe
 | Operational evidence | [`docs/operational-evidence.generated.md`](docs/operational-evidence.generated.md) |
 | Runtime evidence | [`docs/runtime-evidence.generated.md`](docs/runtime-evidence.generated.md) |
 | Frontier integration evidence | [`docs/frontier-integrations.generated.md`](docs/frontier-integrations.generated.md) |
+| Guided product flow | [`docs/frontier-guided-flow.md`](docs/frontier-guided-flow.md) |
 | Browser automation audit | [`docs/browser-automation-audit.md`](docs/browser-automation-audit.md) |
 | Security remediation note | [`docs/security-audit-remediation-2026-04-08.md`](docs/security-audit-remediation-2026-04-08.md) |
 | Mainnet blockers | [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md) |
@@ -151,7 +152,7 @@ flowchart LR
 | Governance core | DAO creation, proposal creation, commit, reveal, finalize, execute, veto, cancel, delegation, keeper reveal. | [`programs/private-dao/src/lib.rs`](programs/private-dao/src/lib.rs), [`tests/private-dao.ts`](tests/private-dao.ts) |
 | Treasury execution | SOL and Token-2022/SPL treasury paths with recipient, mint, owner, and duplicate-execution checks. | [`docs/security-review.md`](docs/security-review.md), [`docs/failure-modes.md`](docs/failure-modes.md) |
 | Confidential payouts | Proposal-bound payroll and bonus plans with encrypted manifests and aggregate settlement. | [`docs/confidential-payments.md`](docs/confidential-payments.md), [`docs/confidential-payroll-flow.md`](docs/confidential-payroll-flow.md) |
-| Confidential Treasury Command Center | Live guided UI path that configures a confidential payout proposal, evidence bindings, REFHE inputs, MagicBlock corridor settings, and judge evidence copy without bypassing wallet signatures or on-chain timing rules. | [`docs/index.html`](docs/index.html), [`docs/confidential-payroll-flow.md`](docs/confidential-payroll-flow.md) |
+| Confidential Treasury Command Center | Live guided UI path that turns `Create -> Commit -> Reveal -> Execute` into one product flow, while surfacing ZK, REFHE, MagicBlock, and RPC Fast roles without bypassing wallet signatures or on-chain timing rules. | [`docs/index.html`](docs/index.html), [`docs/frontier-guided-flow.md`](docs/frontier-guided-flow.md) |
 | REFHE | Proposal-bound encrypted evaluation envelope with settlement gate and explicit trust model. | [`docs/refhe-protocol.md`](docs/refhe-protocol.md), [`docs/refhe-security-model.md`](docs/refhe-security-model.md) |
 | MagicBlock | Private-payment corridor support for confidential token payout flows, with runtime capture/evidence docs. | [`docs/magicblock/private-payments.md`](docs/magicblock/private-payments.md), [`docs/magicblock/runtime-evidence.md`](docs/magicblock/runtime-evidence.md) |
 | Frontier integration gate | One machine-checked package that binds ZK anchors, MagicBlock settlement, REFHE settlement, and backend-indexed RPC state into a single Devnet-verified review surface. | [`docs/frontier-integrations.generated.md`](docs/frontier-integrations.generated.md), [`docs/read-node/ops.generated.md`](docs/read-node/ops.generated.md) |

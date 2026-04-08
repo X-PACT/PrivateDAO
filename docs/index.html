@@ -818,6 +818,149 @@ nav.scrolled {
   margin-top: 22px;
 }
 
+.treasury-command-flow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.treasury-command-flow-card,
+.treasury-command-tech-card {
+  position: relative;
+  overflow: hidden;
+  padding: 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(2, 8, 14, 0.62);
+}
+
+.treasury-command-flow-card::before,
+.treasury-command-tech-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.08), transparent 58%);
+  pointer-events: none;
+}
+
+.treasury-command-flow-header,
+.treasury-command-tech-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.treasury-command-flow-label,
+.treasury-command-tech-label {
+  color: var(--text3);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.treasury-command-flow-status,
+.treasury-command-tech-status {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.treasury-command-flow-title,
+.treasury-command-tech-title {
+  position: relative;
+  z-index: 1;
+  color: var(--text);
+  font-size: 17px;
+  font-weight: 800;
+  margin: 10px 0 8px;
+}
+
+.treasury-command-flow-copy,
+.treasury-command-tech-copy,
+.treasury-command-context-copy {
+  position: relative;
+  z-index: 1;
+  color: var(--text2);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.treasury-command-flow-actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.treasury-command-flow-actions .proposal-proof-link {
+  margin: 0;
+}
+
+.treasury-command-tech-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.treasury-command-context {
+  margin-top: 18px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  position: relative;
+  z-index: 1;
+}
+
+.treasury-command-context-title {
+  color: var(--text3);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.treasury-command-tech-footer {
+  position: relative;
+  z-index: 1;
+  margin-top: 12px;
+  color: var(--text3);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+@media (max-width: 1120px) {
+  .treasury-command-flow,
+  .treasury-command-tech-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .treasury-command-flow,
+  .treasury-command-tech-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .surface-intro-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -3200,9 +3343,100 @@ body.judge-mode .judge-banner {
         <div class="treasury-command-actions">
           <button class="action-btn action-execute" type="button" onclick="openConfidentialTreasuryWizard()">Start Guided Flow</button>
           <button class="action-btn action-commit" type="button" onclick="copyConfidentialTreasuryEvidencePacket()">Copy Judge Evidence Packet</button>
+          <a class="proposal-proof-link" href="frontier-guided-flow.md" target="_blank">Open Frontier Flow</a>
           <a class="proposal-proof-link" href="confidential-payroll-flow.md" target="_blank">Open Payroll Flow</a>
           <a class="proposal-proof-link" href="magicblock/runtime.generated.md" target="_blank">Open MagicBlock Evidence</a>
           <a class="proposal-proof-link" href="zk/enforced-runtime.generated.md" target="_blank">Open ZK Evidence</a>
+        </div>
+        <div class="treasury-command-context">
+          <div class="treasury-command-context-title">ACTIVE FLOW CONTEXT</div>
+          <div class="treasury-command-context-copy" id="treasuryCommandContextCopy">Select a live proposal or connect a wallet to hydrate the guided flow with the current DAO, phase, and evidence boundary.</div>
+        </div>
+        <div class="treasury-command-flow" id="treasuryCommandFlow">
+          <div class="treasury-command-flow-card">
+            <div class="treasury-command-flow-header">
+              <div class="treasury-command-flow-label">STEP 1</div>
+              <div class="treasury-command-flow-status" id="treasuryFlowCreateState">CHECKING</div>
+            </div>
+            <div class="treasury-command-flow-title">Create proposal</div>
+            <div class="treasury-command-flow-copy" id="treasuryFlowCreateCopy">Configure a confidential salary, bonus, or grant proposal and keep the recipient-level sheet off-chain.</div>
+            <div class="treasury-command-flow-actions">
+              <button class="proposal-proof-link" type="button" onclick="openConfidentialTreasuryWizard()">Open Builder</button>
+            </div>
+          </div>
+          <div class="treasury-command-flow-card">
+            <div class="treasury-command-flow-header">
+              <div class="treasury-command-flow-label">STEP 2</div>
+              <div class="treasury-command-flow-status" id="treasuryFlowCommitState">WAIT</div>
+            </div>
+            <div class="treasury-command-flow-title">Commit vote</div>
+            <div class="treasury-command-flow-copy" id="treasuryFlowCommitCopy">Commit a hidden vote hash that binds vote byte, salt, proposal, and voter wallet.</div>
+            <div class="treasury-command-flow-actions">
+              <button class="proposal-proof-link" type="button" onclick="openTreasuryCommandCommit()">Open Commit</button>
+            </div>
+          </div>
+          <div class="treasury-command-flow-card">
+            <div class="treasury-command-flow-header">
+              <div class="treasury-command-flow-label">STEP 3</div>
+              <div class="treasury-command-flow-status" id="treasuryFlowRevealState">WAIT</div>
+            </div>
+            <div class="treasury-command-flow-title">Reveal and finalize</div>
+            <div class="treasury-command-flow-copy" id="treasuryFlowRevealCopy">Reveal the original vote and salt, then finalize through the standard or zk_enforced path when the window closes.</div>
+            <div class="treasury-command-flow-actions">
+              <button class="proposal-proof-link" type="button" onclick="openTreasuryCommandReveal()">Open Reveal</button>
+              <button class="proposal-proof-link" type="button" onclick="finalizeSelectedProposalInWallet()">Finalize</button>
+            </div>
+          </div>
+          <div class="treasury-command-flow-card">
+            <div class="treasury-command-flow-header">
+              <div class="treasury-command-flow-label">STEP 4</div>
+              <div class="treasury-command-flow-status" id="treasuryFlowExecuteState">WAIT</div>
+            </div>
+            <div class="treasury-command-flow-title">Execute treasury</div>
+            <div class="treasury-command-flow-copy" id="treasuryFlowExecuteCopy">Execution stays blocked until timelock, proposal phase, and confidential evidence boundaries are all satisfied.</div>
+            <div class="treasury-command-flow-actions">
+              <button class="proposal-proof-link" type="button" onclick="openTreasuryCommandExecute()">Open Execute</button>
+              <button class="proposal-proof-link" type="button" onclick="runMagicBlockCorridorInWallet()">Run MagicBlock Corridor</button>
+            </div>
+          </div>
+        </div>
+        <div class="treasury-command-tech-grid">
+          <div class="treasury-command-tech-card">
+            <div class="treasury-command-tech-header">
+              <div class="treasury-command-tech-label">ZK</div>
+              <div class="treasury-command-tech-status" id="treasuryTechZkState">REVIEW</div>
+            </div>
+            <div class="treasury-command-tech-title">ZK companion layer</div>
+            <div class="treasury-command-tech-copy" id="treasuryTechZkCopy">On-chain anchors, receipts, and the zk_enforced finalize path stay proposal-bound.</div>
+            <div class="treasury-command-tech-footer">Use this when the proposal needs stronger review receipts before finalize.</div>
+          </div>
+          <div class="treasury-command-tech-card">
+            <div class="treasury-command-tech-header">
+              <div class="treasury-command-tech-label">REFHE</div>
+              <div class="treasury-command-tech-status" id="treasuryTechRefheState">OPTIONAL</div>
+            </div>
+            <div class="treasury-command-tech-title">Encrypted evaluation</div>
+            <div class="treasury-command-tech-copy" id="treasuryTechRefheCopy">REFHE envelopes gate confidential payroll and bonus execution when encrypted evaluation is required.</div>
+            <div class="treasury-command-tech-footer">Use this for encrypted decision logic, not for every generic treasury action.</div>
+          </div>
+          <div class="treasury-command-tech-card">
+            <div class="treasury-command-tech-header">
+              <div class="treasury-command-tech-label">MagicBlock</div>
+              <div class="treasury-command-tech-status" id="treasuryTechMagicBlockState">OPTIONAL</div>
+            </div>
+            <div class="treasury-command-tech-title">Private token corridor</div>
+            <div class="treasury-command-tech-copy" id="treasuryTechMagicBlockCopy">MagicBlock binds confidential token payouts to a proposal-scoped private-payment corridor and settlement evidence.</div>
+            <div class="treasury-command-tech-footer">Use this for confidential token batches that should not execute without corridor settlement.</div>
+          </div>
+          <div class="treasury-command-tech-card">
+            <div class="treasury-command-tech-header">
+              <div class="treasury-command-tech-label">RPC Fast</div>
+              <div class="treasury-command-tech-status" id="treasuryTechRpcState">BACKEND</div>
+            </div>
+            <div class="treasury-command-tech-title">Read-node reliability</div>
+            <div class="treasury-command-tech-copy" id="treasuryTechRpcCopy">The frontend reads runtime, proposals, and ops through the backend-indexer path when available, with direct RPC fallback.</div>
+            <div class="treasury-command-tech-footer">This improves reviewer and operator visibility without changing treasury execution authority.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -9168,6 +9402,8 @@ function renderProposalDetail(p, nowTs) {
       <code>yarn execute -- --proposal ${p.pubkey}</code>
     </div>
   `;
+
+  updateConfidentialTreasuryCommandCenter();
 }
 
 function getZkAnchorInfo(proposalPubkey) {
@@ -9483,10 +9719,146 @@ function updateHeroActionReadiness() {
   commitEl.textContent = commitState;
   revealEl.textContent = revealState;
   executeEl.textContent = executeState;
+  updateConfidentialTreasuryCommandCenter();
 }
 
 function shortDaoLabel(daoPubkey) {
   return `${daoPubkey.slice(0, 4)}...${daoPubkey.slice(-4)}`;
+}
+
+function getTreasuryCommandProposal() {
+  if (currentSelectedProposal) return currentSelectedProposal;
+  if (currentSelectedProposalPubkey && liveProposalMap.has(currentSelectedProposalPubkey)) {
+    return liveProposalMap.get(currentSelectedProposalPubkey);
+  }
+  if (Array.isArray(lastLoadedProposals) && lastLoadedProposals.length > 0) {
+    return lastLoadedProposals[0];
+  }
+  return null;
+}
+
+function openTreasuryCommandCommit() {
+  const proposal = getTreasuryCommandProposal();
+  if (!proposal) {
+    showToast('Load or create a proposal first.', 'info');
+    return;
+  }
+  openCommitModal(proposal.proposalId, proposal.pubkey);
+}
+
+function openTreasuryCommandReveal() {
+  const proposal = getTreasuryCommandProposal();
+  if (!proposal) {
+    showToast('Load or create a proposal first.', 'info');
+    return;
+  }
+  openRevealModal(proposal.proposalId, proposal.pubkey);
+}
+
+function openTreasuryCommandExecute() {
+  const proposal = getTreasuryCommandProposal();
+  if (!proposal) {
+    showToast('Load or create a proposal first.', 'info');
+    return;
+  }
+  const phase = computePhase(proposal, Math.floor(Date.now() / 1000));
+  openExecuteModal(proposal.pubkey, proposal.proposalId, phase === 'Executable', proposal.executionUnlocksAt);
+}
+
+function updateConfidentialTreasuryCommandCenter() {
+  const proposal = getTreasuryCommandProposal();
+  const nowTs = Math.floor(Date.now() / 1000);
+  const createStateEl = document.getElementById('treasuryFlowCreateState');
+  const createCopyEl = document.getElementById('treasuryFlowCreateCopy');
+  const commitStateEl = document.getElementById('treasuryFlowCommitState');
+  const commitCopyEl = document.getElementById('treasuryFlowCommitCopy');
+  const revealStateEl = document.getElementById('treasuryFlowRevealState');
+  const revealCopyEl = document.getElementById('treasuryFlowRevealCopy');
+  const executeStateEl = document.getElementById('treasuryFlowExecuteState');
+  const executeCopyEl = document.getElementById('treasuryFlowExecuteCopy');
+  const contextCopyEl = document.getElementById('treasuryCommandContextCopy');
+  const zkStateEl = document.getElementById('treasuryTechZkState');
+  const zkCopyEl = document.getElementById('treasuryTechZkCopy');
+  const refheStateEl = document.getElementById('treasuryTechRefheState');
+  const refheCopyEl = document.getElementById('treasuryTechRefheCopy');
+  const magicStateEl = document.getElementById('treasuryTechMagicBlockState');
+  const magicCopyEl = document.getElementById('treasuryTechMagicBlockCopy');
+  const rpcStateEl = document.getElementById('treasuryTechRpcState');
+  const rpcCopyEl = document.getElementById('treasuryTechRpcCopy');
+
+  if (!createStateEl || !proposal) {
+    if (createStateEl) createStateEl.textContent = wallet ? 'READY' : 'CONNECT';
+    if (createCopyEl) createCopyEl.textContent = wallet
+      ? 'Open the builder, choose confidential salary, bonus, or grant routing, and bind aggregate hashes before signing.'
+      : 'Connect a Devnet wallet to prefill the builder and route the proposal into the live governance flow.';
+    if (commitStateEl) commitStateEl.textContent = 'WAIT';
+    if (commitCopyEl) commitCopyEl.textContent = 'Commit becomes available after a proposal exists and enters the commit window.';
+    if (revealStateEl) revealStateEl.textContent = 'WAIT';
+    if (revealCopyEl) revealCopyEl.textContent = 'Reveal becomes available only after voting closes and requires the original vote plus salt.';
+    if (executeStateEl) executeStateEl.textContent = 'WAIT';
+    if (executeCopyEl) executeCopyEl.textContent = 'Execution depends on a finalized proposal, cleared timelock, and any REFHE or MagicBlock boundary required by the selected payout path.';
+    if (contextCopyEl) contextCopyEl.textContent = wallet
+      ? 'No live proposal is selected yet. Load a proposal from Live Proposals or start a new confidential payout proposal from this command center.'
+      : 'Connect a wallet, then select a live proposal or start a new one to hydrate this command center with real on-chain status.';
+    if (zkStateEl) zkStateEl.textContent = 'REVIEW';
+    if (zkCopyEl) zkCopyEl.textContent = 'ZK remains proposal-bound. The command center will show whether the active proposal is in review, parallel, anchored, or zk_enforced mode.';
+    if (refheStateEl) refheStateEl.textContent = 'OPTIONAL';
+    if (refheCopyEl) refheCopyEl.textContent = 'REFHE is only required for confidential payroll, bonus, or grant batches that need encrypted evaluation before execution.';
+    if (magicStateEl) magicStateEl.textContent = 'OPTIONAL';
+    if (magicCopyEl) magicCopyEl.textContent = 'MagicBlock is only required for confidential token payout plans that should not execute without corridor settlement.';
+    if (rpcStateEl) rpcStateEl.textContent = currentReadPath.toUpperCase().replace(/\s+/g, ' ');
+    if (rpcCopyEl) rpcCopyEl.textContent = currentReadPath === 'Backend Indexer'
+      ? 'The app is currently reading runtime and proposal state through the backend-indexer path and managed RPC pool.'
+      : 'The app is currently reading straight from direct RPC or a direct fallback path.';
+    return;
+  }
+
+  const phase = computePhase(proposal, nowTs);
+  const zkCardState = getProposalZkCardState(proposal);
+  const refheReadiness = summarizeRefheReadiness(proposal);
+  const magicBlockReadiness = summarizeMagicBlockReadiness(proposal);
+  const confidentialPlan = proposal.confidentialPayoutPlan || null;
+  const createState = wallet ? 'READY' : 'CONNECT';
+  const commitState = currentHeroPhase === 'Commit' && wallet ? 'READY' : wallet ? 'WAIT' : 'CONNECT';
+  const revealState = currentHeroPhase === 'Reveal' && wallet ? 'READY' : wallet ? 'WAIT' : 'CONNECT';
+  const executeState = currentHeroPhase === 'Executable' && wallet
+    ? 'READY'
+    : currentHeroPhase === 'Timelocked'
+      ? 'TIMELOCK'
+      : currentHeroPhase === 'Executed'
+        ? 'DONE'
+        : wallet
+          ? 'WAIT'
+          : 'CONNECT';
+
+  createStateEl.textContent = createState;
+  createCopyEl.textContent = confidentialPlan
+    ? `Active flow is bound to ${proposal.title}. The proposal already carries a ${confidentialPlan.payoutType.toLowerCase()} payout plan with ${confidentialPlan.recipientCount} recipients and aggregate amount ${confidentialPlan.totalAmount}.`
+    : `Active flow is ${proposal.title}. Use the builder to create a confidential payout proposal against DAO ${shortDaoLabel(proposal.dao)} without publishing the recipient sheet on-chain.`;
+  commitStateEl.textContent = commitState;
+  commitCopyEl.textContent = phase === 'Commit'
+    ? `Commit is open for ${proposal.title}. Hidden vote hashes remain proposal-bound and ${proposal.commitCount} commitments are already recorded on-chain.`
+    : `Current phase is ${phase}. Commit is only valid during the commit window for ${proposal.title}.`;
+  revealStateEl.textContent = revealState;
+  revealCopyEl.textContent = phase === 'Reveal'
+    ? `Reveal is open now for ${proposal.title}. Use the original vote and salt; ${proposal.revealCount} reveals are already verified on-chain.`
+    : `Current phase is ${phase}. Reveal opens only after voting closes and stays tied to the same proposal and salt.`;
+  executeStateEl.textContent = executeState;
+  executeCopyEl.textContent = confidentialPlan
+    ? `Execution for ${proposal.title} remains blocked until finalize, timelock clearance, and any required ${refheReadiness.status === 'Ready' ? 'REFHE' : magicBlockReadiness.status === 'Ready' ? 'MagicBlock' : 'confidential'} evidence boundary is satisfied.`
+    : `Execution for ${proposal.title} remains blocked until finalize and timelock clearance, then releases the treasury action only through the live on-chain path.`;
+
+  contextCopyEl.textContent = `${proposal.title} · ${shortDaoLabel(proposal.dao)} · ${phase}. Read path: ${currentReadPath}. This command center reflects the current live proposal and keeps Create, Commit, Reveal, and Execute in one reviewer-friendly surface.`;
+  zkStateEl.textContent = zkCardState.pill.toUpperCase();
+  zkCopyEl.textContent = zkCardState.copy;
+  refheStateEl.textContent = refheReadiness.status.toUpperCase();
+  refheCopyEl.textContent = refheReadiness.copy;
+  magicStateEl.textContent = magicBlockReadiness.status.toUpperCase();
+  magicCopyEl.textContent = magicBlockReadiness.copy;
+  rpcStateEl.textContent = currentReadPath.toUpperCase().replace(/\s+/g, ' ');
+  rpcCopyEl.textContent = currentReadPath === 'Backend Indexer'
+    ? 'Proposal hydration, runtime checks, and ops snapshots are currently flowing through the backend-indexer path with pooled RPC reads.'
+    : 'The frontend is currently reading directly from RPC or a fallback path. Evidence and execution logic remain unchanged.';
 }
 
 function refreshDaoFilterOptions(proposals) {
@@ -9998,6 +10370,7 @@ function copyConfidentialTreasuryEvidencePacket() {
     '- MagicBlock private-payment corridor inputs for token payout proposals',
     '- Selected proposal panel with phase-bound next actions and explorer evidence',
     '- Runtime evidence surfaces for MagicBlock and ZK-enforced paths',
+    '- Backend-indexed RPC Fast-oriented read path for proposal, runtime, and ops visibility',
     '',
     'Honest boundary:',
     '- This is Devnet and audit-readiness evidence, not real-funds mainnet clearance.',
@@ -10007,6 +10380,7 @@ function copyConfidentialTreasuryEvidencePacket() {
     'Reviewer links:',
     '- Live app: https://x-pact.github.io/PrivateDAO/',
     '- Payroll flow: docs/confidential-payroll-flow.md',
+    '- Frontier flow: docs/frontier-guided-flow.md',
     '- Frontier integrations: docs/frontier-integrations.generated.md',
     '- MagicBlock runtime: docs/magicblock/runtime.generated.md',
     '- ZK-enforced runtime: docs/zk/enforced-runtime.generated.md',
