@@ -48,3 +48,12 @@ This flow is live on Devnet and reviewer-ready. It does **not** claim:
 - or source-verifiable receipt closure from every external system.
 
 Those remain documented launch blockers until they are actually closed with evidence.
+
+## Dedicated V3 Proof
+
+The original lifecycle proof remains live, and the repository now also carries a dedicated V3 Devnet packet for:
+
+- `Governance Hardening V3`
+- `Settlement Hardening V3`
+
+Use [`test-wallet-live-proof-v3.generated.md`](test-wallet-live-proof-v3.generated.md) when you need the additive hardening path specifically, rather than only the baseline treasury execution proof.

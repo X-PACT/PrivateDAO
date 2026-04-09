@@ -3996,6 +3996,8 @@ body.judge-mode .judge-banner {
         <a class="hero-link" href="pricing-model.md" target="_blank">Pricing Model ↗</a>
         <a class="hero-link" href="pilot-program.md" target="_blank">Pilot Program ↗</a>
         <a class="hero-link" href="service-level-agreement.md" target="_blank">Pilot SLA ↗</a>
+        <a class="hero-link" href="governance-hardening-v3.md" target="_blank">Governance Hardening V3 ↗</a>
+        <a class="hero-link" href="settlement-hardening-v3.md" target="_blank">Settlement Hardening V3 ↗</a>
         <a class="hero-link" href="zk-upgrade.md" target="_blank">ZK Overlay ↗</a>
         <a class="hero-link" href="cryptographic-integrity.md" target="_blank">Artifact Integrity ↗</a>
         <a class="hero-link" href="android-native.md" target="_blank">Android Native ↗</a>
@@ -4004,8 +4006,8 @@ body.judge-mode .judge-banner {
       <div class="hero-proof-strip">
         <div class="hero-proof-card">
           <div class="hero-proof-label">LIVE SUCCESS PROOF</div>
-          <div class="hero-proof-title" id="heroProofTitle1">Real Devnet treasury execution already completed</div>
-          <div class="hero-proof-copy" id="heroProofCopy1">A live wallet-to-wallet treasury action already ran through the full lifecycle: Create DAO, Submit proposal, Commit, Reveal, and Execute treasury on Devnet.</div>
+          <div class="hero-proof-title" id="heroProofTitle1">Real Devnet treasury execution already completed across baseline and V3 paths</div>
+          <div class="hero-proof-copy" id="heroProofCopy1">A live wallet-to-wallet treasury action already ran through the full lifecycle on Devnet, and a dedicated V3 packet now proves additive governance and settlement hardening without reinterpreting legacy flows.</div>
           <div class="hero-proof-links">
             <a class="hero-link" href="test-wallet-live-proof.generated.md" target="_blank">Latest Live Proof ↗</a>
             <a class="hero-link" href="test-wallet-live-proof-v3.generated.md" target="_blank">Live Proof V3 ↗</a>
@@ -4014,8 +4016,8 @@ body.judge-mode .judge-banner {
         </div>
         <div class="hero-proof-card">
           <div class="hero-proof-label">REVIEWER PACKET</div>
-          <div class="hero-proof-title" id="heroProofTitle2">50 wallets, 212 attempts, 3 on-chain ZK anchors</div>
-          <div class="hero-proof-copy" id="heroProofCopy2">The current reviewer surface already exposes the latest Devnet rehearsal, expected security rejects, ZK anchors, and runtime evidence in one machine-checked package.</div>
+          <div class="hero-proof-title" id="heroProofTitle2">50 wallets, 212 attempts, 3 on-chain ZK anchors, and V3 hardening proof</div>
+          <div class="hero-proof-copy" id="heroProofCopy2">The reviewer surface now combines the 50-wallet Devnet rehearsal, expected security rejects, ZK anchors, runtime evidence, and a dedicated V3 live proof packet in one machine-checked package.</div>
           <div class="hero-proof-links">
             <a class="hero-link" href="frontier-integrations.generated.md" target="_blank">Frontier Integrations ↗</a>
             <a class="hero-link" href="launch-trust-packet.generated.md" target="_blank">Launch Trust Packet ↗</a>
@@ -7873,10 +7875,10 @@ const HERO_PERSONAS = {
     line3: 'BUYER READY.',
     sub: 'PrivateDAO is packaged as a product buyers can understand: private governance, confidential treasury operations, and reviewer-grade evidence with a clear pilot-to-launch path.',
     feature: 'Product packs · Pilot program · Pricing and SLA · Trust package · Devnet proof surface',
-    proofTitle1: 'Real Devnet treasury execution already completed',
-    proofCopy1: 'A live wallet-to-wallet treasury action already ran through the full lifecycle: Create DAO, Submit proposal, Commit, Reveal, and Execute treasury on Devnet.',
-    proofTitle2: '50 wallets, 212 attempts, 3 on-chain ZK anchors',
-    proofCopy2: 'The current reviewer surface already exposes the latest Devnet rehearsal, expected security rejects, ZK anchors, and runtime evidence in one machine-checked package.',
+    proofTitle1: 'Real Devnet treasury execution already completed across baseline and V3 paths',
+    proofCopy1: 'A live wallet-to-wallet treasury action already ran through the full lifecycle on Devnet, and a dedicated V3 proof packet now shows the stricter governance and settlement path as well.',
+    proofTitle2: '50 wallets, 212 attempts, 3 on-chain ZK anchors, and V3 hardening proof',
+    proofCopy2: 'The current reviewer surface already exposes the latest Devnet rehearsal, expected security rejects, ZK anchors, runtime evidence, and the dedicated V3 live proof packet in one machine-checked package.',
     proofTitle3: 'Live now versus pending-external stays explicit',
     proofCopy3: 'The page sells the operating story, but it does not pretend multisig transfer, audit closure, or mainnet cutover are already complete.',
   },
@@ -7887,10 +7889,10 @@ const HERO_PERSONAS = {
     line3: 'EVIDENCE.',
     sub: 'PrivateDAO gives judges and auditors a direct path into live Devnet execution, generated trust packets, operational evidence, ZK anchors, and explicit mainnet boundaries.',
     feature: 'Operational evidence · Frontier integrations · Launch trust packet · Mainnet blockers · Judge mode',
-    proofTitle1: 'The live proof packet is already attached to the repo',
-    proofCopy1: 'Use the latest live proof, operational evidence, and trust packet instead of relying on screenshots or implied product claims.',
-    proofTitle2: 'The reviewer package is machine-checked',
-    proofCopy2: 'The current surface links generated evidence, runtime proofs, and readiness packets that pass repo verifiers rather than hand-written summaries.',
+    proofTitle1: 'The live proof packets are already attached to the repo',
+    proofCopy1: 'Use the baseline live proof, the dedicated V3 proof packet, operational evidence, and the trust packet instead of relying on screenshots or implied product claims.',
+    proofTitle2: 'The reviewer package is machine-checked end to end',
+    proofCopy2: 'The current surface links generated evidence, runtime proofs, V3 proof packets, and readiness packets that pass repo verifiers rather than hand-written summaries.',
     proofTitle3: 'Security and launch boundaries remain explicit',
     proofCopy3: 'This surface distinguishes live Devnet proof from pending-external multisig, audit, and mainnet cutover steps.',
   },
@@ -7901,10 +7903,10 @@ const HERO_PERSONAS = {
     line3: 'LIFECYCLE.',
     sub: 'PrivateDAO is already shaped like an operator workspace: create the DAO, fund the treasury, launch the proposal, run private voting, and execute treasury with proposal-bound guardrails.',
     feature: 'DAO bootstrap · Builder presets · Command center · Proposal-bound execution · RPC-backed diagnostics',
-    proofTitle1: 'The command center maps to real program actions',
-    proofCopy1: 'Every operator action remains phase-bound and wallet-signed. The UI is a guide over the live protocol, not a mock control panel.',
-    proofTitle2: 'The selected proposal panel keeps next actions obvious',
-    proofCopy2: 'Commit, reveal, finalize, execute, REFHE, MagicBlock, and proof readiness remain attached to the active proposal instead of floating as disconnected notes.',
+    proofTitle1: 'The command center maps to real program actions and V3 policy rails',
+    proofCopy1: 'Every operator action remains phase-bound and wallet-signed. The UI is a guide over the live protocol, and the V3 packet proves stricter governance and settlement execution paths on Devnet.',
+    proofTitle2: 'The selected proposal panel keeps next actions and hardening state obvious',
+    proofCopy2: 'Commit, reveal, finalize, execute, REFHE, MagicBlock, proof readiness, and V3 hardening state remain attached to the active proposal instead of floating as disconnected notes.',
     proofTitle3: 'The operator boundary is honest',
     proofCopy3: 'The workflow is Devnet-ready and evidence-gated today, while multisig custody, audit closure, and final mainnet launch remain external operations.',
   },
@@ -7979,7 +7981,7 @@ const PROPOSAL_PACK_SUMMARIES = {
     offer: 'Pilot Package',
     techList: ['Commit-reveal governance', 'Treasury execution', 'RPC Fast read path'],
     outcomeList: ['Fastest path to Create DAO → Submit proposal → Private vote → Execute treasury', 'Minimal operator overhead for the first pilot cycle', 'Clear reviewer packet and buyer-facing story'],
-    proof: 'Latest Live Proof + Pilot Program + Trust Package',
+    proof: 'Latest Live Proof + Live Proof V3 + Pilot Program + Trust Package',
     doc: 'grant-committee-pack.md',
   },
   'confidential-payroll': {
@@ -7991,7 +7993,7 @@ const PROPOSAL_PACK_SUMMARIES = {
     offer: 'Confidential Operations Premium',
     techList: ['Encrypted manifest binding', 'REFHE envelope', 'MagicBlock corridor', 'Trust package'],
     outcomeList: ['Payroll and bonus flows mapped into one proposal surface', 'Stronger buyer story for premium confidential operations', 'Operator guidance that stays honest about launch blockers'],
-    proof: 'Trust Package + Confidential Payments + Launch Trust Packet',
+    proof: 'Live Proof V3 + Trust Package + Confidential Payments + Launch Trust Packet',
     doc: 'enterprise-dao-pack.md',
   },
   'confidential-bonus': {
@@ -8003,7 +8005,7 @@ const PROPOSAL_PACK_SUMMARIES = {
     offer: 'Pilot Package or Enterprise Governance Retainer',
     techList: ['Commit-reveal governance', 'ZK review path', 'Optional REFHE envelope'],
     outcomeList: ['Private committee approvals with cleaner reviewer logic', 'Better fit for sensitive fund governance flows', 'Stronger migration story from public committee operations'],
-    proof: 'Frontier Integrations + Launch Trust Packet + Pricing Model',
+    proof: 'Live Proof V3 + Frontier Integrations + Launch Trust Packet + Pricing Model',
     doc: 'fund-governance-pack.md',
   },
   'private-token-distribution': {
@@ -8015,7 +8017,7 @@ const PROPOSAL_PACK_SUMMARIES = {
     offer: 'Hosted Read API + Ops',
     techList: ['Commit-reveal governance', 'MagicBlock corridor', 'Runtime evidence'],
     outcomeList: ['Token distribution flow that stays tied to governance', 'MagicBlock becomes visible as a real operator aid', 'Clear buyer story for reward and allocation programs'],
-    proof: 'Frontier Integrations + MagicBlock docs + Operational Evidence',
+    proof: 'Live Proof V3 + Frontier Integrations + MagicBlock docs + Operational Evidence',
     doc: 'gaming-dao-pack.md',
   },
 };
