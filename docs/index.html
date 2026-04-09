@@ -4886,6 +4886,35 @@ execute() → treasury action
       </div>
     </div>
 
+    <div class="proposal-preset-card reveal" style="margin-top:24px">
+      <div class="proposal-preset-head">
+        <div>
+          <div class="proposal-preset-kicker">REALMS MIGRATION PACKS</div>
+          <div class="proposal-preset-title">Start from the migration profile that matches the organization you are moving.</div>
+          <div class="proposal-preset-copy">These presets only configure the migration helper and next-step guidance. They do not submit transactions or claim full Realms replacement. They exist to shorten the path from migration intent to an exact PrivateDAO bootstrap command.</div>
+        </div>
+        <div class="proposal-preset-status" id="migrationPresetStatus">Preset ready: Community Treasury</div>
+      </div>
+      <div class="proposal-preset-grid">
+        <button class="proposal-preset-btn active" id="migrationPreset-community-treasury" type="button" onclick="applyMigrationPreset('community-treasury')">
+          <strong>COMMUNITY TREASURY</strong>
+          <span>Move a community governance group into private voting and controlled treasury execution with the simplest migration path.</span>
+        </button>
+        <button class="proposal-preset-btn" id="migrationPreset-grant-program" type="button" onclick="applyMigrationPreset('grant-program')">
+          <strong>GRANT PROGRAM</strong>
+          <span>Move grant reviews and budget approvals first, then add confidential committee workflows when needed.</span>
+        </button>
+        <button class="proposal-preset-btn" id="migrationPreset-fund-governance" type="button" onclick="applyMigrationPreset('fund-governance')">
+          <strong>FUND GOVERNANCE</strong>
+          <span>Start with private investment votes and controlled treasury actions, then grow into evidence-heavy confidential decisions.</span>
+        </button>
+        <button class="proposal-preset-btn" id="migrationPreset-enterprise-ops" type="button" onclick="applyMigrationPreset('enterprise-ops')">
+          <strong>ENTERPRISE OPS</strong>
+          <span>Use Realms migration as the first step toward confidential payroll, bonus approvals, and stronger operator controls.</span>
+        </button>
+      </div>
+    </div>
+
     <!-- Migration form -->
 	    <div style="margin-top:40px; background:var(--card); border:1px solid var(--border); border-radius:20px; padding:48px;" class="reveal">
 	      <div class="section-tag">MIGRATION FORM</div>
@@ -4912,6 +4941,43 @@ execute() → treasury action
 	        <div style="color:var(--text3);font-size:9px;letter-spacing:3px;margin-bottom:8px">MIGRATION COMMAND</div>
 	        <div id="migrationCommandHint">Fill the fields above to generate the exact migration command for this DAO.</div>
 	      </div>
+        <div class="proposal-advisor-card" style="margin-top:0">
+          <div class="proposal-advisor-head">
+            <div>
+              <div class="proposal-advisor-kicker">NEXT STEP GUIDE</div>
+              <div class="proposal-advisor-title">What to do immediately after migration.</div>
+              <div class="proposal-advisor-copy" id="migrationAdvisorCopy">Community treasury migrations should usually start with DAO bootstrap, a standard treasury grant flow, and the cleanest create → vote → execute lifecycle before adding confidential layers.</div>
+            </div>
+            <div class="proposal-advisor-pill" id="migrationAdvisorPill">COMMUNITY TREASURY</div>
+          </div>
+          <div class="proposal-advisor-grid">
+            <div class="proposal-advisor-item">
+              <div class="proposal-advisor-item-label">FIRST FLOW</div>
+              <div class="proposal-advisor-item-state recommended" id="migrationFirstFlowState">STANDARD DAO</div>
+              <div class="proposal-advisor-item-copy" id="migrationFirstFlowCopy">Start with DAO bootstrap, treasury funding, and a standard treasury proposal to preserve operator clarity.</div>
+            </div>
+            <div class="proposal-advisor-item">
+              <div class="proposal-advisor-item-label">REALMS FIT</div>
+              <div class="proposal-advisor-item-state optional" id="migrationFitState">MIGRATION READY</div>
+              <div class="proposal-advisor-item-copy" id="migrationFitCopy">Use the Realms governance pubkey only to preserve continuity and provenance. Do not assume total workflow parity on day one.</div>
+            </div>
+            <div class="proposal-advisor-item">
+              <div class="proposal-advisor-item-label">PRIVATE LAYERS</div>
+              <div class="proposal-advisor-item-state not-needed" id="migrationPrivacyState">LATER</div>
+              <div class="proposal-advisor-item-copy" id="migrationPrivacyCopy">Keep advanced layers optional at migration start unless the operating use case is already sensitive enough to require them.</div>
+            </div>
+            <div class="proposal-advisor-item">
+              <div class="proposal-advisor-item-label">PACK DOC</div>
+              <div class="proposal-advisor-item-state optional" id="migrationPackDocState">OPEN</div>
+              <div class="proposal-advisor-item-copy" id="migrationPackDocCopy">Open the matching pack, then use the generated migration command and the storefront builder below.</div>
+            </div>
+          </div>
+          <div class="curation-links" style="margin-top:14px">
+            <button class="proposal-proof-link" type="button" onclick="copyMigrationCommand()">Copy Migration Command</button>
+            <button class="proposal-proof-link" type="button" onclick="openMigrationPackDocument()">Open Pack Document</button>
+            <button class="proposal-proof-link" type="button" onclick="openStorefrontDaoFlow()">Open DAO Bootstrap</button>
+          </div>
+        </div>
 	      <button class="btn-primary" style="width:100%;padding:18px;font-size:16px" onclick="startMigration()">
 	        Review Migration Flow →
 	      </button>
@@ -11094,25 +11160,195 @@ function vetoProposal() {
 
 function startMigration() {
   if(!wallet) { showToast('Connect your Realms authority wallet first', 'error'); return; }
+  syncMigrationCommand();
+  showToast('Migration command reviewed. Copy it or open the matching pack before running the script.', 'success');
+}
+
+const MIGRATION_PRESETS = {
+  'community-treasury': {
+    label: 'Community Treasury',
+    packDoc: 'migration-story.md',
+    values: {
+      migrationName: 'PrivateDAO Community Treasury',
+      migrationQuorum: '51',
+    },
+    advisor: {
+      pill: 'COMMUNITY TREASURY',
+      copy: 'Community treasury migrations should start simple: preserve continuity, bootstrap the DAO, fund the treasury, and run one clean proposal before adding more advanced layers.',
+      firstFlowState: 'STANDARD DAO',
+      firstFlowCopy: 'Start with DAO bootstrap, treasury funding, and a standard treasury grant proposal.',
+      fitState: 'MIGRATION READY',
+      fitCopy: 'Use the Realms governance pubkey to preserve continuity and governance provenance.',
+      privacyState: 'LATER',
+      privacyCopy: 'Keep confidential payroll, REFHE, and MagicBlock optional until the community proves it needs them.',
+      packDocState: 'MIGRATION STORY',
+      packDocCopy: 'Use the migration story as the first operator brief for this move.',
+    },
+  },
+  'grant-program': {
+    label: 'Grant Program',
+    packDoc: 'grant-committee-pack.md',
+    values: {
+      migrationName: 'PrivateDAO Grant Committee',
+      migrationQuorum: '60',
+    },
+    advisor: {
+      pill: 'GRANT PROGRAM',
+      copy: 'Grant programs usually migrate committee decisions and budget approvals first. Private voting reduces reviewer pressure before public allocation decisions become final.',
+      firstFlowState: 'GRANT FLOW',
+      firstFlowCopy: 'Start with committee approvals and treasury grants before exploring confidential payout layers.',
+      fitState: 'HIGH FIT',
+      fitCopy: 'Realms-origin governance can migrate into private committee voting while keeping public grant outcomes visible only after finalize.',
+      privacyState: 'OPTIONAL',
+      privacyCopy: 'Confidential layers become useful when reviewer bias or sensitive allocations matter.',
+      packDocState: 'GRANT PACK',
+      packDocCopy: 'Open the Grant Committee Pack to match the migration story to the product flow.',
+    },
+  },
+  'fund-governance': {
+    label: 'Fund Governance',
+    packDoc: 'fund-governance-pack.md',
+    values: {
+      migrationName: 'PrivateDAO Fund Governance',
+      migrationQuorum: '67',
+    },
+    advisor: {
+      pill: 'FUND GOVERNANCE',
+      copy: 'Fund governance benefits early from private voting because treasury intent and committee direction are often too sensitive for live public signaling.',
+      firstFlowState: 'PRIVATE VOTE',
+      firstFlowCopy: 'Start with private investment or allocation proposals before layering confidential treasury operations.',
+      fitState: 'HIGH FIT',
+      fitCopy: 'Realms continuity matters here, but the strongest benefit comes from moving committee signaling into commit-reveal governance.',
+      privacyState: 'RECOMMENDED',
+      privacyCopy: 'ZK review paths and confidential flows are more likely to matter for fund governance than generic community operations.',
+      packDocState: 'FUND PACK',
+      packDocCopy: 'Open the Fund Governance Pack for the target operator story.',
+    },
+  },
+  'enterprise-ops': {
+    label: 'Enterprise Ops',
+    packDoc: 'enterprise-dao-pack.md',
+    values: {
+      migrationName: 'PrivateDAO Enterprise Ops',
+      migrationQuorum: '67',
+    },
+    advisor: {
+      pill: 'ENTERPRISE OPS',
+      copy: 'Enterprise-style migrations should preserve governance continuity first, then quickly move into confidential payroll, bonus approvals, and operator-grade trust packaging.',
+      firstFlowState: 'CONFIDENTIAL OPS',
+      firstFlowCopy: 'Start with DAO bootstrap, then move into confidential payroll or bonus presets once the migration succeeds.',
+      fitState: 'STRUCTURED FIT',
+      fitCopy: 'Use Realms migration as the continuity layer, not as the full operating model for sensitive internal workflows.',
+      privacyState: 'RECOMMENDED',
+      privacyCopy: 'REFHE, MagicBlock, and stronger review layers are more relevant earlier in enterprise-style workflows.',
+      packDocState: 'ENTERPRISE PACK',
+      packDocCopy: 'Open the Enterprise DAO Pack to line up migration, payroll, and operator support.',
+    },
+  },
+};
+
+let currentMigrationPreset = 'community-treasury';
+
+function updateMigrationPresetButtons(activeKey) {
+  Object.keys(MIGRATION_PRESETS).forEach((key) => {
+    const button = document.getElementById(`migrationPreset-${key}`);
+    if (!button) return;
+    button.classList.toggle('active', key === activeKey);
+  });
+}
+
+function updateMigrationAdvisor() {
+  const preset = MIGRATION_PRESETS[currentMigrationPreset];
+  if (!preset) return;
+  const advisor = preset.advisor;
+  const status = document.getElementById('migrationPresetStatus');
+  if (status) status.textContent = `Preset ready: ${preset.label}`;
+  const pill = document.getElementById('migrationAdvisorPill');
+  if (pill) pill.textContent = advisor.pill;
+  const copy = document.getElementById('migrationAdvisorCopy');
+  if (copy) copy.textContent = advisor.copy;
+  const firstFlowState = document.getElementById('migrationFirstFlowState');
+  if (firstFlowState) firstFlowState.textContent = advisor.firstFlowState;
+  const firstFlowCopy = document.getElementById('migrationFirstFlowCopy');
+  if (firstFlowCopy) firstFlowCopy.textContent = advisor.firstFlowCopy;
+  const fitState = document.getElementById('migrationFitState');
+  if (fitState) fitState.textContent = advisor.fitState;
+  const fitCopy = document.getElementById('migrationFitCopy');
+  if (fitCopy) fitCopy.textContent = advisor.fitCopy;
+  const privacyState = document.getElementById('migrationPrivacyState');
+  if (privacyState) {
+    privacyState.textContent = advisor.privacyState;
+    privacyState.className = `proposal-advisor-item-state ${advisor.privacyState === 'RECOMMENDED' ? 'recommended' : advisor.privacyState === 'OPTIONAL' ? 'optional' : 'not-needed'}`;
+  }
+  const privacyCopy = document.getElementById('migrationPrivacyCopy');
+  if (privacyCopy) privacyCopy.textContent = advisor.privacyCopy;
+  const packDocState = document.getElementById('migrationPackDocState');
+  if (packDocState) packDocState.textContent = advisor.packDocState;
+  const packDocCopy = document.getElementById('migrationPackDocCopy');
+  if (packDocCopy) packDocCopy.textContent = advisor.packDocCopy;
+}
+
+function applyMigrationPreset(key, options = {}) {
+  const { silent = false } = options;
+  const preset = MIGRATION_PRESETS[key];
+  if (!preset) return;
+  currentMigrationPreset = key;
+  Object.entries(preset.values).forEach(([id, value]) => {
+    const input = document.getElementById(id);
+    if (!input) return;
+    if (!input.value.trim() || id !== 'migrationQuorum') {
+      input.value = value;
+    } else {
+      input.value = value;
+    }
+  });
+  updateMigrationPresetButtons(key);
+  updateMigrationAdvisor();
+  syncMigrationCommand();
+  if (!silent) {
+    showToast(`${preset.label} migration preset applied. Review the command and next-step guidance below.`, 'success');
+  }
+}
+
+function buildMigrationCommand() {
   const governance = document.getElementById('migrationGovernance').value.trim();
   const name = document.getElementById('migrationName').value.trim();
   const mint = document.getElementById('migrationMint').value.trim();
   const quorum = document.getElementById('migrationQuorum').value.trim() || '51';
-  const command = [
+  return [
     'yarn ts-node migrations/migrate-realms-dao.ts',
     governance ? `--governance ${governance}` : '--governance <REALMS_GOVERNANCE_PUBKEY>',
     name ? `--name "${name}"` : '--name "<NEW_DAO_NAME>"',
     mint ? `--mint ${mint}` : '--mint <GOVERNANCE_TOKEN_MINT>',
     `--quorum ${quorum}`,
   ].join(' ');
-  document.getElementById('migrationCommandHint').textContent = command;
+}
+
+function syncMigrationCommand() {
+  const command = buildMigrationCommand();
+  const hint = document.getElementById('migrationCommandHint');
+  if (hint) hint.textContent = command;
+  return command;
+}
+
+function copyMigrationCommand() {
+  const command = syncMigrationCommand();
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(command)
       .then(() => showToast('Migration command copied to clipboard.', 'success'))
       .catch(() => showToast('Migration is executed via migrations/migrate-realms-dao.ts script.', 'info'));
     return;
   }
-  showToast('Migration command prepared in the panel below the form.', 'info');
+  showToast(command, 'info');
+}
+
+function openMigrationPackDocument() {
+  const preset = MIGRATION_PRESETS[currentMigrationPreset];
+  if (!preset?.packDoc) {
+    showToast('No migration pack document configured.', 'error');
+    return;
+  }
+  window.open(preset.packDoc, '_blank', 'noopener,noreferrer');
 }
 
 function setInputValue(id, value) {
@@ -11363,6 +11599,16 @@ observeReveal();
   if (el) el.addEventListener('input', () => syncDelegatedCommitCommand());
 });
 
+[
+  'migrationGovernance',
+  'migrationName',
+  'migrationMint',
+  'migrationQuorum',
+].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', () => syncMigrationCommand());
+});
+
 const initialParams = new URLSearchParams(window.location.search);
 const initialJudge = initialParams.get('judge');
 const initialPage = initialParams.get('page');
@@ -11379,6 +11625,8 @@ if (initialJudge === '1') {
 }
 
 syncCreateProposalCommand();
+applyMigrationPreset('community-treasury', { silent: true });
+syncMigrationCommand();
 syncCreateDaoCommand();
 syncDepositCommand();
 syncDelegateVoteCommand();
