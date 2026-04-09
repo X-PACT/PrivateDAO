@@ -41,6 +41,8 @@ PrivateDAO provides the governance and risk-control layer for this strategy:
 - Verification address: 4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD
 - Build-window verified: yes
 - Live governance proof: docs/live-proof.md
+- Additive V3 governance + settlement proof: docs/test-wallet-live-proof-v3.generated.md
+- V3 hardening docs: docs/governance-hardening-v3.md, docs/settlement-hardening-v3.md
 - Program: https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet
 - Live app: https://x-pact.github.io/PrivateDAO/
 

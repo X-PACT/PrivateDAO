@@ -94,6 +94,8 @@ ${config.leverageHealthRateFloor ? `- Health-rate floor: ${config.leverageHealth
 - Verification address: ${verificationAddress}
 - Build-window verified: ${config.onChainVerification.buildWindowVerified ? "yes" : "no"}
 - Live governance proof: docs/live-proof.md
+- Additive V3 governance + settlement proof: docs/test-wallet-live-proof-v3.generated.md
+- V3 hardening docs: docs/governance-hardening-v3.md, docs/settlement-hardening-v3.md
 - Program: https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet
 - Live app: https://x-pact.github.io/PrivateDAO/
 
