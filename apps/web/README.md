@@ -61,6 +61,15 @@ Meaning:
 
 The app uses `NEXT_PUBLIC_BASE_PATH` and `NEXT_PUBLIC_LIVE_SITE_URL` to keep routes, assets, metadata, and reviewer links consistent across both deployment targets.
 
+Mirror bundle helpers from the repo root:
+
+```bash
+npm run web:bundle:github
+npm run web:bundle:root
+```
+
+These produce export-ready directories and archives under `dist/`.
+
 ## Important Constraint
 
 This app does not replace the published static site yet. The `docs/` surface remains the live reviewer-facing interface until the Next.js build reaches parity and deployment cutover is explicitly handled.

@@ -8,6 +8,8 @@
     "web:build": "npm --prefix apps/web run build",
     "web:build:github": "npm --prefix apps/web run build:github",
     "web:build:root": "npm --prefix apps/web run build:root",
+    "web:bundle:github": "bash scripts/build-web-mirror-bundle.sh github",
+    "web:bundle:root": "bash scripts/build-web-mirror-bundle.sh root",
     "web:lint": "npm --prefix apps/web run lint",
     "start:read-node": "ts-node scripts/run-read-node.ts",
     "test": "bash scripts/run-local-anchor-suite.sh all",
