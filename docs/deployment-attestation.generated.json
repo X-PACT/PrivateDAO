@@ -32,6 +32,9 @@
     "releaseDrillSurface": "verified",
     "artifactFreshness": "verified",
     "zkCompanionStack": "verified",
+    "governanceHardeningV3": "verified",
+    "settlementHardeningV3": "verified",
+    "liveProofV3": "verified",
     "reviewerSurface": "verified",
     "operationsSurface": "verified",
     "competitivePositioningSurface": "verified",
@@ -44,6 +47,7 @@
     "npm run validate:ranger-strategy -- docs/ranger-strategy-config.devnet.json",
     "npm run verify:strategy-surface",
     "npm run verify:live-proof",
+    "npm run verify:test-wallet-live-proof:v3",
     "npm run verify:release-manifest",
     "npm run verify:program-id-consistency",
     "npm run verify:pdao-surface",
@@ -104,13 +108,13 @@
     "npm run verify:review-surface",
     "npm run verify:all"
   ],
-  "gateCount": 62,
+  "gateCount": 63,
   "packageCounts": {
     "strategy": 12,
-    "security": 16,
+    "security": 18,
     "zk": 28,
-    "proof": 78,
-    "operations": 31
+    "proof": 82,
+    "operations": 34
   },
   "zk": {
     "stackVersion": 1,

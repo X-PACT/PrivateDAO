@@ -1,7 +1,7 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-09T19:09:33+02:00",
-  "releaseCommit": "ffe2a7496f9b30c73f619185cbc4c31f8ac13734",
+  "generatedAt": "2026-04-09T19:15:41+02:00",
+  "releaseCommit": "4d4be549c8f2fde9b697f957c13255b241312316",
   "releaseBranch": "main",
   "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
   "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
@@ -32,7 +32,7 @@
     "npm run check:mainnet"
   ],
   "observedGateCount": 63,
-  "deploymentGateCount": 62,
+  "deploymentGateCount": 63,
   "goLiveDecision": "blocked-pending-external-steps",
   "unresolvedBlockers": [
     {

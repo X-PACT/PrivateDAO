@@ -74,12 +74,16 @@ echo "[verify-all] checking browser smoke"
 run_with_retry 2 timeout 120s npm run verify:browser-smoke >/dev/null
 
 echo "[verify-all] checking remediation / pitch / demo / program surface"
-run_parallel_group \
-  "security remediation" "npm run verify:security-remediation >/dev/null" \
-  "investor pitch deck" "npm run verify:investor-pitch-deck >/dev/null" \
-  "demo video" "npm run verify:demo-video >/dev/null" \
-  "program id consistency" "npm run verify:program-id-consistency >/dev/null" \
-  "PDAO token surface" "npm run verify:pdao-surface >/dev/null"
+echo "[verify-all] checking security remediation"
+npm run verify:security-remediation >/dev/null
+echo "[verify-all] checking investor pitch deck"
+npm run verify:investor-pitch-deck >/dev/null
+echo "[verify-all] checking demo video"
+npm run verify:demo-video >/dev/null
+echo "[verify-all] checking program id consistency"
+npm run verify:program-id-consistency >/dev/null
+echo "[verify-all] checking PDAO token surface"
+npm run verify:pdao-surface >/dev/null
 
 echo "[verify-all] rebuilding reviewer artifacts"
 run_with_retry 3 npm run build:devnet:review-artifacts >/dev/null

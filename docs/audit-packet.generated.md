@@ -98,7 +98,7 @@
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
 - Manifest entries: `143`
-- Aggregate sha256: `d46dfe3ca83e0ea605234ad6735ead79ced7dac4cf7ebd13a5dc71da8b354495`
+- Aggregate sha256: `596650ce4b545f4eba99fe772d1cb1135ec3a382e8ca9a57fb6f00cb8ccbfab3`
 
 ## ZK Package
 
@@ -150,6 +150,8 @@
 ## Security Package
 
 - `docs/security-review.md`
+- `docs/governance-hardening-v3.md`
+- `docs/settlement-hardening-v3.md`
 - `docs/threat-model.md`
 - `docs/security-coverage-map.md`
 - `docs/confidential-payments-audit-scope.md`
@@ -199,6 +201,10 @@
 
 ## Proof Package
 
+- `docs/test-wallet-live-proof-v3.generated.md`
+- `docs/test-wallet-live-proof-v3.generated.json`
+- `docs/governance-hardening-v3.md`
+- `docs/settlement-hardening-v3.md`
 - `docs/read-node/indexer.md`
 - `docs/read-node/same-domain-deploy.md`
 - `docs/rpc-architecture.md`
@@ -345,6 +351,9 @@
 
 ## Operations Package
 
+- `docs/governance-hardening-v3.md`
+- `docs/settlement-hardening-v3.md`
+- `docs/test-wallet-live-proof-v3.generated.md`
 - `docs/read-node/indexer.md`
 - `docs/read-node/same-domain-deploy.md`
 - `docs/rpc-architecture.md`
@@ -382,6 +391,7 @@
 - `npm run validate:ranger-strategy -- docs/ranger-strategy-config.devnet.json`
 - `npm run verify:strategy-surface`
 - `npm run verify:live-proof`
+- `npm run verify:test-wallet-live-proof:v3`
 - `npm run verify:release-manifest`
 - `npm run verify:program-id-consistency`
 - `npm run verify:pdao-surface`
@@ -459,6 +469,9 @@
 - releaseDrillSurface: `verified`
 - artifactFreshness: `verified`
 - zkCompanionStack: `verified`
+- governanceHardeningV3: `verified`
+- settlementHardeningV3: `verified`
+- liveProofV3: `verified`
 - reviewerSurface: `verified`
 - operationsSurface: `verified`
 - competitivePositioningSurface: `verified`
