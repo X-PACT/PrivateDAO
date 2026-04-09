@@ -48,6 +48,7 @@ declare_id!("5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx");
 // ─────────────────────────────────────────────────────────────────────────────
 
 pub const REVEAL_REBATE_LAMPORTS: u64 = 1_000_000; // 0.001 SOL per reveal
+pub const MAX_REVEAL_REBATE_V3_LAMPORTS: u64 = REVEAL_REBATE_LAMPORTS;
 pub const DEFAULT_EXECUTION_DELAY: i64 = 86_400; // 24-hour timelock default
 pub const MIN_REVEAL_WINDOW_SECONDS: i64 = 5;
 pub const MIN_VOTING_DURATION_SECONDS: i64 = 5;
@@ -304,6 +305,89 @@ pub mod private_dao {
             cancel_policy,
             proof_threshold,
             settlement_threshold,
+            updated_at: policy.updated_at,
+        });
+        Ok(())
+    }
+
+    pub fn initialize_dao_governance_policy_v3(
+        ctx: Context<InitializeDaoGovernancePolicyV3>,
+        quorum_policy: QuorumPolicyV3,
+        reveal_rebate_policy: RevealRebatePolicyV3,
+        reveal_rebate_lamports: u64,
+    ) -> Result<()> {
+        validate_governance_policy_v3(
+            &quorum_policy,
+            &reveal_rebate_policy,
+            reveal_rebate_lamports,
+        )?;
+
+        let policy = &mut ctx.accounts.dao_governance_policy_v3;
+        if policy.dao != Pubkey::default() {
+            require!(
+                policy.dao == ctx.accounts.dao.key()
+                    && policy.authority == ctx.accounts.authority.key()
+                    && policy.quorum_policy == quorum_policy
+                    && policy.reveal_rebate_policy == reveal_rebate_policy
+                    && policy.reveal_rebate_lamports == reveal_rebate_lamports,
+                Error::GovernancePolicyAlreadyInitialized
+            );
+            emit!(DaoGovernancePolicyInitializedV3 {
+                dao: policy.dao,
+                authority: policy.authority,
+                quorum_policy: policy.quorum_policy.clone(),
+                reveal_rebate_policy: policy.reveal_rebate_policy.clone(),
+                reveal_rebate_lamports: policy.reveal_rebate_lamports,
+                created_at: policy.created_at,
+            });
+            return Ok(());
+        }
+
+        let now = Clock::get()?.unix_timestamp;
+        policy.dao = ctx.accounts.dao.key();
+        policy.authority = ctx.accounts.authority.key();
+        policy.quorum_policy = quorum_policy.clone();
+        policy.reveal_rebate_policy = reveal_rebate_policy.clone();
+        policy.reveal_rebate_lamports = reveal_rebate_lamports;
+        policy.created_at = now;
+        policy.updated_at = now;
+        policy.bump = ctx.bumps.dao_governance_policy_v3;
+
+        emit!(DaoGovernancePolicyInitializedV3 {
+            dao: policy.dao,
+            authority: policy.authority,
+            quorum_policy,
+            reveal_rebate_policy,
+            reveal_rebate_lamports,
+            created_at: policy.created_at,
+        });
+        Ok(())
+    }
+
+    pub fn update_dao_governance_policy_v3(
+        ctx: Context<UpdateDaoGovernancePolicyV3>,
+        quorum_policy: QuorumPolicyV3,
+        reveal_rebate_policy: RevealRebatePolicyV3,
+        reveal_rebate_lamports: u64,
+    ) -> Result<()> {
+        validate_governance_policy_v3(
+            &quorum_policy,
+            &reveal_rebate_policy,
+            reveal_rebate_lamports,
+        )?;
+
+        let policy = &mut ctx.accounts.dao_governance_policy_v3;
+        policy.quorum_policy = quorum_policy.clone();
+        policy.reveal_rebate_policy = reveal_rebate_policy.clone();
+        policy.reveal_rebate_lamports = reveal_rebate_lamports;
+        policy.updated_at = Clock::get()?.unix_timestamp;
+
+        emit!(DaoGovernancePolicyUpdatedV3 {
+            dao: policy.dao,
+            authority: policy.authority,
+            quorum_policy,
+            reveal_rebate_policy,
+            reveal_rebate_lamports,
             updated_at: policy.updated_at,
         });
         Ok(())
@@ -1119,6 +1203,84 @@ pub mod private_dao {
         Ok(())
     }
 
+    pub fn reveal_vote_v3(ctx: Context<RevealVoteV3>, vote: bool, salt: [u8; 32]) -> Result<()> {
+        let now = Clock::get()?.unix_timestamp;
+        let p = &mut ctx.accounts.proposal;
+        let vr = &mut ctx.accounts.voter_record;
+        let snapshot = &ctx.accounts.proposal_governance_policy_snapshot_v3;
+
+        require!(
+            snapshot.dao == p.dao && snapshot.proposal == p.key(),
+            Error::GovernancePolicySnapshotMismatch
+        );
+        require!(p.status == ProposalStatus::Voting, Error::VotingNotOpen);
+        require!(now >= p.voting_end, Error::RevealTooEarly);
+        require!(now < p.reveal_end, Error::RevealClosed);
+        require!(vr.has_committed, Error::NotCommitted);
+        require!(!vr.has_revealed, Error::AlreadyRevealed);
+
+        let caller = ctx.accounts.revealer.key();
+        let is_voter = caller == vr.voter;
+        let is_keeper = vr.voter_reveal_authority == Some(caller);
+        require!(is_voter || is_keeper, Error::NotAuthorizedToReveal);
+
+        let computed = compute_vote_commitment(&p.key(), &vr.voter, vote, &salt);
+        require!(computed == vr.commitment, Error::CommitmentMismatch);
+
+        let cap = vr.capital_weight;
+        let com = vr.community_weight;
+
+        if vote {
+            p.yes_capital = p.yes_capital.checked_add(cap).ok_or(Error::Overflow)?;
+            p.yes_community = p.yes_community.checked_add(com).ok_or(Error::Overflow)?;
+        } else {
+            p.no_capital = p.no_capital.checked_add(cap).ok_or(Error::Overflow)?;
+            p.no_community = p.no_community.checked_add(com).ok_or(Error::Overflow)?;
+        }
+
+        vr.has_revealed = true;
+        vr.voted_yes = vote;
+        vr.voter_reveal_authority = None;
+        p.reveal_count = p.reveal_count.checked_add(1).ok_or(Error::Overflow)?;
+
+        let mut rebate_issued = 0u64;
+        if snapshot.reveal_rebate_policy == RevealRebatePolicyV3::DedicatedVaultRequired
+            && snapshot.reveal_rebate_lamports > 0
+        {
+            let expected_vault = reveal_rebate_vault_address(&p.dao);
+            require!(
+                ctx.accounts.reveal_rebate_vault.key() == expected_vault,
+                Error::RevealRebateVaultMismatch
+            );
+            require!(
+                ctx.accounts.reveal_rebate_vault.dao == p.dao,
+                Error::RevealRebateVaultMismatch
+            );
+
+            let vault_info = ctx.accounts.reveal_rebate_vault.to_account_info();
+            let vault_lamports = vault_info.lamports();
+            let vault_rent = Rent::get()?.minimum_balance(vault_info.data_len());
+            let rebate_floor = vault_rent
+                .checked_add(snapshot.reveal_rebate_lamports)
+                .ok_or(Error::Overflow)?;
+            if vault_lamports > rebate_floor {
+                **vault_info.try_borrow_mut_lamports()? -= snapshot.reveal_rebate_lamports;
+                **ctx.accounts.revealer.try_borrow_mut_lamports()? +=
+                    snapshot.reveal_rebate_lamports;
+                rebate_issued = snapshot.reveal_rebate_lamports;
+            }
+        }
+
+        emit!(VoteRevealedV3 {
+            proposal: p.key(),
+            voter: vr.voter,
+            reveal_count: p.reveal_count,
+            rebate_issued,
+            reveal_rebate_policy: snapshot.reveal_rebate_policy.clone(),
+        });
+        Ok(())
+    }
+
     // ── Phase 3a — Finalize ───────────────────────────────────────────────────
     //
     // Permissionless. Anyone calls after reveal_end.
@@ -1143,6 +1305,30 @@ pub mod private_dao {
             Error::AlreadyFinalized
         );
         finalize_proposal_state(&ctx.accounts.dao, &mut ctx.accounts.proposal, now)
+    }
+
+    pub fn finalize_proposal_v3(ctx: Context<FinalizeProposalV3>) -> Result<()> {
+        let now = Clock::get()?.unix_timestamp;
+        require!(
+            now >= ctx.accounts.proposal.reveal_end,
+            Error::RevealStillOpen
+        );
+        require!(
+            ctx.accounts.proposal.status == ProposalStatus::Voting,
+            Error::AlreadyFinalized
+        );
+        require!(
+            ctx.accounts.proposal_governance_policy_snapshot_v3.dao == ctx.accounts.dao.key()
+                && ctx.accounts.proposal_governance_policy_snapshot_v3.proposal
+                    == ctx.accounts.proposal.key(),
+            Error::GovernancePolicySnapshotMismatch
+        );
+        finalize_proposal_state_v3(
+            &ctx.accounts.dao,
+            &mut ctx.accounts.proposal,
+            &ctx.accounts.proposal_governance_policy_snapshot_v3,
+            now,
+        )
     }
 
     // ── Phase 3b — Execute ────────────────────────────────────────────────────
@@ -2029,6 +2215,99 @@ pub mod private_dao {
         Ok(())
     }
 
+    pub fn snapshot_proposal_governance_policy_v3(
+        ctx: Context<SnapshotProposalGovernancePolicyV3>,
+    ) -> Result<()> {
+        let snapshot = &mut ctx.accounts.proposal_governance_policy_snapshot_v3;
+        let policy = &ctx.accounts.dao_governance_policy_v3;
+        let eligible_capital = ctx.accounts.governance_token.supply;
+        require!(eligible_capital > 0, Error::InvalidGovernanceSnapshot);
+
+        if snapshot.proposal != Pubkey::default() {
+            require!(
+                snapshot.dao == ctx.accounts.dao.key()
+                    && snapshot.proposal == ctx.accounts.proposal.key()
+                    && snapshot.quorum_policy == policy.quorum_policy
+                    && snapshot.reveal_rebate_policy == policy.reveal_rebate_policy
+                    && snapshot.reveal_rebate_lamports == policy.reveal_rebate_lamports
+                    && snapshot.eligible_capital == eligible_capital
+                    && snapshot.object_version == 3,
+                Error::GovernancePolicySnapshotAlreadyRecorded
+            );
+            emit!(ProposalGovernancePolicySnapshottedV3 {
+                dao: snapshot.dao,
+                proposal: snapshot.proposal,
+                quorum_policy: snapshot.quorum_policy.clone(),
+                reveal_rebate_policy: snapshot.reveal_rebate_policy.clone(),
+                reveal_rebate_lamports: snapshot.reveal_rebate_lamports,
+                eligible_capital: snapshot.eligible_capital,
+                object_version: snapshot.object_version,
+            });
+            return Ok(());
+        }
+
+        snapshot.dao = ctx.accounts.dao.key();
+        snapshot.proposal = ctx.accounts.proposal.key();
+        snapshot.quorum_policy = policy.quorum_policy.clone();
+        snapshot.reveal_rebate_policy = policy.reveal_rebate_policy.clone();
+        snapshot.reveal_rebate_lamports = policy.reveal_rebate_lamports;
+        snapshot.eligible_capital = eligible_capital;
+        snapshot.snapshot_at = Clock::get()?.unix_timestamp;
+        snapshot.object_version = 3;
+        snapshot.bump = ctx.bumps.proposal_governance_policy_snapshot_v3;
+
+        emit!(ProposalGovernancePolicySnapshottedV3 {
+            dao: snapshot.dao,
+            proposal: snapshot.proposal,
+            quorum_policy: snapshot.quorum_policy.clone(),
+            reveal_rebate_policy: snapshot.reveal_rebate_policy.clone(),
+            reveal_rebate_lamports: snapshot.reveal_rebate_lamports,
+            eligible_capital: snapshot.eligible_capital,
+            object_version: snapshot.object_version,
+        });
+        Ok(())
+    }
+
+    pub fn fund_reveal_rebate_vault_v3(
+        ctx: Context<FundRevealRebateVaultV3>,
+        amount: u64,
+    ) -> Result<()> {
+        require!(amount > 0, Error::InvalidRevealRebateConfig);
+        require!(
+            ctx.accounts.dao_governance_policy_v3.reveal_rebate_policy
+                == RevealRebatePolicyV3::DedicatedVaultRequired,
+            Error::InvalidRevealRebateConfig
+        );
+        let vault = &mut ctx.accounts.reveal_rebate_vault;
+        if vault.dao == Pubkey::default() {
+            vault.dao = ctx.accounts.dao.key();
+            vault.bump = ctx.bumps.reveal_rebate_vault;
+        } else {
+            require!(
+                vault.dao == ctx.accounts.dao.key(),
+                Error::RevealRebateVaultMismatch
+            );
+        }
+        transfer(
+            CpiContext::new(
+                ctx.accounts.system_program.to_account_info(),
+                Transfer {
+                    from: ctx.accounts.funder.to_account_info(),
+                    to: ctx.accounts.reveal_rebate_vault.to_account_info(),
+                },
+            ),
+            amount,
+        )?;
+
+        emit!(RevealRebateVaultFundedV3 {
+            dao: ctx.accounts.dao.key(),
+            funder: ctx.accounts.funder.key(),
+            amount,
+            vault: ctx.accounts.reveal_rebate_vault.key(),
+        });
+        Ok(())
+    }
+
     pub fn record_proof_verification_v2(
         ctx: Context<RecordProofVerificationV2>,
         verification_kind: VerificationKind,
@@ -2174,6 +2453,67 @@ pub mod private_dao {
         );
 
         finalize_proposal_state(&ctx.accounts.dao, &mut ctx.accounts.proposal, now)
+    }
+
+    pub fn finalize_zk_enforced_proposal_v3(
+        ctx: Context<FinalizeZkEnforcedProposalV3>,
+    ) -> Result<()> {
+        let now = Clock::get()?.unix_timestamp;
+        let policy_snapshot = &ctx.accounts.proposal_execution_policy_snapshot;
+        let governance_snapshot = &ctx.accounts.proposal_governance_policy_snapshot_v3;
+        let verification = &ctx.accounts.proposal_proof_verification;
+        require!(
+            policy_snapshot.proposal == ctx.accounts.proposal.key()
+                && policy_snapshot.dao == ctx.accounts.dao.key(),
+            Error::PolicySnapshotMismatch
+        );
+        require!(
+            governance_snapshot.proposal == ctx.accounts.proposal.key()
+                && governance_snapshot.dao == ctx.accounts.dao.key(),
+            Error::GovernancePolicySnapshotMismatch
+        );
+        require!(
+            policy_snapshot.zk_policy == FeaturePolicy::StrictRequired
+                || policy_snapshot.zk_policy == FeaturePolicy::ThresholdAttestedRequired,
+            Error::StrictPolicyRequired
+        );
+        require!(
+            verification.dao == ctx.accounts.dao.key()
+                && verification.proposal == ctx.accounts.proposal.key(),
+            Error::ProofVerificationMismatch
+        );
+        require!(
+            verification.status == VerificationStatus::Verified,
+            Error::ProofVerificationNotVerified
+        );
+        require!(
+            now <= verification.expires_at,
+            Error::StaleProofVerification
+        );
+        require!(
+            verification.payload_hash
+                == canonical_proposal_payload_hash(
+                    &ctx.accounts.dao.key(),
+                    &ctx.accounts.proposal.key(),
+                    policy_snapshot.object_version,
+                ),
+            Error::PayloadHashMismatch
+        );
+        require!(
+            now >= ctx.accounts.proposal.reveal_end,
+            Error::RevealStillOpen
+        );
+        require!(
+            ctx.accounts.proposal.status == ProposalStatus::Voting,
+            Error::AlreadyFinalized
+        );
+
+        finalize_proposal_state_v3(
+            &ctx.accounts.dao,
+            &mut ctx.accounts.proposal,
+            governance_snapshot,
+            now,
+        )
     }
 
     pub fn record_settlement_evidence_v2(
@@ -2349,6 +2689,36 @@ fn cancel_rank(policy: &CancelPolicy) -> u8 {
     }
 }
 
+fn validate_governance_policy_v3(
+    quorum_policy: &QuorumPolicyV3,
+    reveal_rebate_policy: &RevealRebatePolicyV3,
+    reveal_rebate_lamports: u64,
+) -> Result<()> {
+    match quorum_policy {
+        QuorumPolicyV3::LegacyRevealParticipation | QuorumPolicyV3::TokenSupplyParticipation => {}
+    }
+    match reveal_rebate_policy {
+        RevealRebatePolicyV3::Disabled => {
+            require!(
+                reveal_rebate_lamports == 0,
+                Error::InvalidRevealRebateConfig
+            );
+        }
+        RevealRebatePolicyV3::DedicatedVaultRequired => {
+            require!(
+                reveal_rebate_lamports > 0
+                    && reveal_rebate_lamports <= MAX_REVEAL_REBATE_V3_LAMPORTS,
+                Error::InvalidRevealRebateConfig
+            );
+        }
+    }
+    Ok(())
+}
+
+fn reveal_rebate_vault_address(dao: &Pubkey) -> Pubkey {
+    Pubkey::find_program_address(&[b"reveal-rebate-vault-v3", dao.as_ref()], &crate::ID).0
+}
+
 fn canonical_proposal_payload_hash(
     dao: &Pubkey,
     proposal: &Pubkey,
@@ -2361,6 +2731,85 @@ fn canonical_proposal_payload_hash(
         proposal.as_ref(),
         version.as_ref(),
     ])
+}
+
+fn finalize_proposal_state_v3(
+    dao: &Account<Dao>,
+    p: &mut Account<Proposal>,
+    snapshot: &Account<ProposalGovernancePolicySnapshotV3>,
+    now: i64,
+) -> Result<()> {
+    let quorum_met = match snapshot.quorum_policy {
+        QuorumPolicyV3::LegacyRevealParticipation => {
+            p.commit_count > 0
+                && (p.reveal_count as u128) * 100
+                    >= (p.commit_count as u128) * (dao.quorum_percentage as u128)
+        }
+        QuorumPolicyV3::TokenSupplyParticipation => {
+            snapshot.eligible_capital > 0
+                && ((p.yes_capital as u128) + (p.no_capital as u128)) * 100
+                    >= (snapshot.eligible_capital as u128) * (dao.quorum_percentage as u128)
+        }
+    };
+
+    let passed = if quorum_met {
+        match &dao.voting_config {
+            VotingConfig::TokenWeighted => {
+                let total = p.yes_capital + p.no_capital;
+                total > 0 && p.yes_capital > p.no_capital
+            }
+            VotingConfig::Quadratic => {
+                let total = p.yes_community + p.no_community;
+                total > 0 && p.yes_community > p.no_community
+            }
+            VotingConfig::DualChamber {
+                capital_threshold,
+                community_threshold,
+            } => {
+                let cap_total = p.yes_capital + p.no_capital;
+                let capital_passes = cap_total > 0
+                    && (p.yes_capital as u128) * 100
+                        >= (cap_total as u128) * (*capital_threshold as u128);
+
+                let com_total = p.yes_community + p.no_community;
+                let community_passes = com_total > 0
+                    && (p.yes_community as u128) * 100
+                        >= (com_total as u128) * (*community_threshold as u128);
+
+                capital_passes && community_passes
+            }
+        }
+    } else {
+        false
+    };
+
+    p.status = if passed {
+        ProposalStatus::Passed
+    } else {
+        ProposalStatus::Failed
+    };
+
+    if passed {
+        p.execution_unlocks_at = now
+            .checked_add(dao.execution_delay_seconds)
+            .ok_or(Error::Overflow)?;
+    }
+
+    emit!(ProposalFinalizedV3 {
+        proposal: p.key(),
+        yes_capital: p.yes_capital,
+        no_capital: p.no_capital,
+        yes_community: p.yes_community,
+        no_community: p.no_community,
+        passed,
+        quorum_met,
+        commit_count: p.commit_count,
+        reveal_count: p.reveal_count,
+        eligible_capital: snapshot.eligible_capital,
+        quorum_policy: snapshot.quorum_policy.clone(),
+        execution_unlocks_at: p.execution_unlocks_at,
+    });
+    Ok(())
 }
 
 fn canonical_payout_fields_hash(
@@ -2788,6 +3237,38 @@ pub struct UpdateDaoSecurityPolicyV2<'info> {
 }
 
 #[derive(Accounts)]
+pub struct InitializeDaoGovernancePolicyV3<'info> {
+    #[account(has_one = authority)]
+    pub dao: Account<'info, Dao>,
+    #[account(
+        init_if_needed,
+        payer = authority,
+        space = DaoGovernancePolicyV3::LEN,
+        seeds = [b"dao-governance-policy-v3", dao.key().as_ref()],
+        bump
+    )]
+    pub dao_governance_policy_v3: Account<'info, DaoGovernancePolicyV3>,
+    #[account(mut)]
+    pub authority: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct UpdateDaoGovernancePolicyV3<'info> {
+    #[account(has_one = authority)]
+    pub dao: Account<'info, Dao>,
+    #[account(
+        mut,
+        seeds = [b"dao-governance-policy-v3", dao.key().as_ref()],
+        bump = dao_governance_policy_v3.bump,
+        constraint = dao_governance_policy_v3.dao == dao.key() @ Error::GovernancePolicyMismatch,
+        constraint = dao_governance_policy_v3.authority == authority.key() @ Error::GovernancePolicyMismatch
+    )]
+    pub dao_governance_policy_v3: Account<'info, DaoGovernancePolicyV3>,
+    pub authority: Signer<'info>,
+}
+
+#[derive(Accounts)]
 #[instruction(title: String)]
 pub struct CreateProposal<'info> {
     #[account(
@@ -2980,6 +3461,31 @@ pub struct RevealVote<'info> {
 }
 
 #[derive(Accounts)]
+pub struct RevealVoteV3<'info> {
+    #[account(
+        mut,
+        seeds = [b"proposal", proposal.dao.as_ref(), proposal.proposal_id.to_le_bytes().as_ref()],
+        bump = proposal.bump
+    )]
+    pub proposal: Account<'info, Proposal>,
+    #[account(
+        mut,
+        seeds = [b"vote", proposal.key().as_ref(), voter_record.voter.as_ref()],
+        bump = voter_record.bump
+    )]
+    pub voter_record: Account<'info, VoterRecord>,
+    #[account(
+        seeds = [b"proposal-governance-snapshot-v3", proposal.key().as_ref()],
+        bump = proposal_governance_policy_snapshot_v3.bump
+    )]
+    pub proposal_governance_policy_snapshot_v3: Account<'info, ProposalGovernancePolicySnapshotV3>,
+    #[account(mut, seeds = [b"reveal-rebate-vault-v3", proposal.dao.as_ref()], bump = reveal_rebate_vault.bump)]
+    pub reveal_rebate_vault: Account<'info, RevealRebateVaultV3State>,
+    #[account(mut)]
+    pub revealer: Signer<'info>,
+}
+
+#[derive(Accounts)]
 pub struct FinalizeProposal<'info> {
     pub dao: Account<'info, Dao>,
     #[account(
@@ -2988,6 +3494,23 @@ pub struct FinalizeProposal<'info> {
         bump = proposal.bump
     )]
     pub proposal: Account<'info, Proposal>,
+    pub finalizer: Signer<'info>,
+}
+
+#[derive(Accounts)]
+pub struct FinalizeProposalV3<'info> {
+    pub dao: Account<'info, Dao>,
+    #[account(
+        mut, has_one = dao,
+        seeds = [b"proposal", dao.key().as_ref(), proposal.proposal_id.to_le_bytes().as_ref()],
+        bump = proposal.bump
+    )]
+    pub proposal: Account<'info, Proposal>,
+    #[account(
+        seeds = [b"proposal-governance-snapshot-v3", proposal.key().as_ref()],
+        bump = proposal_governance_policy_snapshot_v3.bump
+    )]
+    pub proposal_governance_policy_snapshot_v3: Account<'info, ProposalGovernancePolicySnapshotV3>,
     pub finalizer: Signer<'info>,
 }
 
@@ -3474,6 +3997,60 @@ pub struct SnapshotProposalExecutionPolicy<'info> {
 }
 
 #[derive(Accounts)]
+pub struct SnapshotProposalGovernancePolicyV3<'info> {
+    pub dao: Account<'info, Dao>,
+    #[account(
+        seeds = [b"dao-governance-policy-v3", dao.key().as_ref()],
+        bump = dao_governance_policy_v3.bump,
+        constraint = dao_governance_policy_v3.dao == dao.key() @ Error::GovernancePolicyMismatch
+    )]
+    pub dao_governance_policy_v3: Account<'info, DaoGovernancePolicyV3>,
+    #[account(
+        has_one = dao,
+        seeds = [b"proposal", dao.key().as_ref(), proposal.proposal_id.to_le_bytes().as_ref()],
+        bump = proposal.bump
+    )]
+    pub proposal: Account<'info, Proposal>,
+    #[account(
+        constraint = governance_token.key() == dao.governance_token @ Error::GoverningMintMismatch
+    )]
+    pub governance_token: InterfaceAccount<'info, Mint>,
+    #[account(
+        init_if_needed,
+        payer = operator,
+        space = ProposalGovernancePolicySnapshotV3::LEN,
+        seeds = [b"proposal-governance-snapshot-v3", proposal.key().as_ref()],
+        bump
+    )]
+    pub proposal_governance_policy_snapshot_v3: Account<'info, ProposalGovernancePolicySnapshotV3>,
+    #[account(mut)]
+    pub operator: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct FundRevealRebateVaultV3<'info> {
+    pub dao: Account<'info, Dao>,
+    #[account(
+        seeds = [b"dao-governance-policy-v3", dao.key().as_ref()],
+        bump = dao_governance_policy_v3.bump,
+        constraint = dao_governance_policy_v3.dao == dao.key() @ Error::GovernancePolicyMismatch
+    )]
+    pub dao_governance_policy_v3: Account<'info, DaoGovernancePolicyV3>,
+    #[account(
+        init_if_needed,
+        payer = funder,
+        space = RevealRebateVaultV3State::LEN,
+        seeds = [b"reveal-rebate-vault-v3", dao.key().as_ref()],
+        bump
+    )]
+    pub reveal_rebate_vault: Account<'info, RevealRebateVaultV3State>,
+    #[account(mut)]
+    pub funder: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
 pub struct RecordProofVerificationV2<'info> {
     pub dao: Account<'info, Dao>,
     #[account(
@@ -3516,6 +4093,34 @@ pub struct FinalizeZkEnforcedProposalV2<'info> {
         bump = proposal_execution_policy_snapshot.bump
     )]
     pub proposal_execution_policy_snapshot: Account<'info, ProposalExecutionPolicySnapshot>,
+    #[account(
+        seeds = [b"proposal-proof-verification", proposal.key().as_ref()],
+        bump = proposal_proof_verification.bump
+    )]
+    pub proposal_proof_verification: Account<'info, ProposalProofVerification>,
+    pub finalizer: Signer<'info>,
+}
+
+#[derive(Accounts)]
+pub struct FinalizeZkEnforcedProposalV3<'info> {
+    pub dao: Account<'info, Dao>,
+    #[account(
+        mut,
+        has_one = dao,
+        seeds = [b"proposal", dao.key().as_ref(), proposal.proposal_id.to_le_bytes().as_ref()],
+        bump = proposal.bump
+    )]
+    pub proposal: Account<'info, Proposal>,
+    #[account(
+        seeds = [b"proposal-policy-snapshot", proposal.key().as_ref()],
+        bump = proposal_execution_policy_snapshot.bump
+    )]
+    pub proposal_execution_policy_snapshot: Account<'info, ProposalExecutionPolicySnapshot>,
+    #[account(
+        seeds = [b"proposal-governance-snapshot-v3", proposal.key().as_ref()],
+        bump = proposal_governance_policy_snapshot_v3.bump
+    )]
+    pub proposal_governance_policy_snapshot_v3: Account<'info, ProposalGovernancePolicySnapshotV3>,
     #[account(
         seeds = [b"proposal-proof-verification", proposal.key().as_ref()],
         bump = proposal_proof_verification.bump
@@ -3607,6 +4212,49 @@ impl DaoSecurityPolicy {
         + 8
         + 8
         + 1;
+}
+
+#[account]
+pub struct DaoGovernancePolicyV3 {
+    pub dao: Pubkey,
+    pub authority: Pubkey,
+    pub quorum_policy: QuorumPolicyV3,
+    pub reveal_rebate_policy: RevealRebatePolicyV3,
+    pub reveal_rebate_lamports: u64,
+    pub created_at: i64,
+    pub updated_at: i64,
+    pub bump: u8,
+}
+
+impl DaoGovernancePolicyV3 {
+    pub const LEN: usize = 8 + 32 + 32 + 1 + 1 + 8 + 8 + 8 + 1;
+}
+
+#[account]
+pub struct ProposalGovernancePolicySnapshotV3 {
+    pub dao: Pubkey,
+    pub proposal: Pubkey,
+    pub quorum_policy: QuorumPolicyV3,
+    pub reveal_rebate_policy: RevealRebatePolicyV3,
+    pub reveal_rebate_lamports: u64,
+    pub eligible_capital: u64,
+    pub snapshot_at: i64,
+    pub object_version: u8,
+    pub bump: u8,
+}
+
+impl ProposalGovernancePolicySnapshotV3 {
+    pub const LEN: usize = 8 + 32 + 32 + 1 + 1 + 8 + 8 + 8 + 1 + 1;
+}
+
+#[account]
+pub struct RevealRebateVaultV3State {
+    pub dao: Pubkey,
+    pub bump: u8,
+}
+
+impl RevealRebateVaultV3State {
+    pub const LEN: usize = 8 + 32 + 1;
 }
 
 #[account]
@@ -3998,6 +4646,18 @@ pub enum FeaturePolicy {
 pub enum CancelPolicy {
     LegacyAllowed,
     NoCancelAfterParticipation,
+}
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
+pub enum QuorumPolicyV3 {
+    LegacyRevealParticipation,
+    TokenSupplyParticipation,
+}
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
+pub enum RevealRebatePolicyV3 {
+    Disabled,
+    DedicatedVaultRequired,
 }
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
@@ -4407,6 +5067,37 @@ pub struct DaoSecurityPolicyUpdatedV2 {
 }
 
 #[event]
+pub struct DaoGovernancePolicyInitializedV3 {
+    pub dao: Pubkey,
+    pub authority: Pubkey,
+    pub quorum_policy: QuorumPolicyV3,
+    pub reveal_rebate_policy: RevealRebatePolicyV3,
+    pub reveal_rebate_lamports: u64,
+    pub created_at: i64,
+}
+
+#[event]
+pub struct DaoGovernancePolicyUpdatedV3 {
+    pub dao: Pubkey,
+    pub authority: Pubkey,
+    pub quorum_policy: QuorumPolicyV3,
+    pub reveal_rebate_policy: RevealRebatePolicyV3,
+    pub reveal_rebate_lamports: u64,
+    pub updated_at: i64,
+}
+
+#[event]
+pub struct ProposalGovernancePolicySnapshottedV3 {
+    pub dao: Pubkey,
+    pub proposal: Pubkey,
+    pub quorum_policy: QuorumPolicyV3,
+    pub reveal_rebate_policy: RevealRebatePolicyV3,
+    pub reveal_rebate_lamports: u64,
+    pub eligible_capital: u64,
+    pub object_version: u8,
+}
+
+#[event]
 pub struct ProposalExecutionPolicySnapshotted {
     pub dao: Pubkey,
     pub proposal: Pubkey,
@@ -4418,11 +5109,44 @@ pub struct ProposalExecutionPolicySnapshotted {
 }
 
 #[event]
+pub struct RevealRebateVaultFundedV3 {
+    pub dao: Pubkey,
+    pub funder: Pubkey,
+    pub amount: u64,
+    pub vault: Pubkey,
+}
+
+#[event]
 pub struct ProposalCancelledV2 {
     pub proposal: Pubkey,
     pub cancelled_by: Pubkey,
     pub policy_mode: EnforcementMode,
     pub cancel_policy: CancelPolicy,
+}
+
+#[event]
+pub struct VoteRevealedV3 {
+    pub proposal: Pubkey,
+    pub voter: Pubkey,
+    pub reveal_count: u64,
+    pub rebate_issued: u64,
+    pub reveal_rebate_policy: RevealRebatePolicyV3,
+}
+
+#[event]
+pub struct ProposalFinalizedV3 {
+    pub proposal: Pubkey,
+    pub yes_capital: u64,
+    pub no_capital: u64,
+    pub yes_community: u64,
+    pub no_community: u64,
+    pub passed: bool,
+    pub quorum_met: bool,
+    pub commit_count: u64,
+    pub reveal_count: u64,
+    pub eligible_capital: u64,
+    pub quorum_policy: QuorumPolicyV3,
+    pub execution_unlocks_at: i64,
 }
 
 #[event]
@@ -4637,6 +5361,20 @@ pub enum Error {
     SecurityPolicyAlreadyInitialized,
     #[msg("DAO security policy updates cannot roll back to weaker enforcement")]
     PolicyRollbackNotAllowed,
+    #[msg("DAO governance policy v3 is invalid")]
+    InvalidGovernancePolicy,
+    #[msg("DAO governance policy v3 was already initialized with a different configuration")]
+    GovernancePolicyAlreadyInitialized,
+    #[msg("DAO governance policy v3 does not match the expected DAO or authority")]
+    GovernancePolicyMismatch,
+    #[msg("Proposal governance snapshot v3 does not match the proposal or DAO")]
+    GovernancePolicySnapshotMismatch,
+    #[msg("Proposal governance snapshot v3 was already recorded under a different policy")]
+    GovernancePolicySnapshotAlreadyRecorded,
+    #[msg("Reveal rebate configuration is invalid for V3 governance mode")]
+    InvalidRevealRebateConfig,
+    #[msg("Reveal rebate vault PDA does not match the DAO v3 governance configuration")]
+    RevealRebateVaultMismatch,
     #[msg("DAO security policy does not match the expected DAO")]
     SecurityPolicyMismatch,
     #[msg("DAO security policy is emergency-disabled")]
@@ -4671,4 +5409,6 @@ pub enum Error {
     SettlementEvidenceNotVerified,
     #[msg("Settlement evidence is stale or not yet valid")]
     StaleSettlementEvidence,
+    #[msg("Proposal governance snapshot requires a non-zero eligible capital supply")]
+    InvalidGovernanceSnapshot,
 }

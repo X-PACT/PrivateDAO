@@ -2930,4 +2930,153 @@ describe("PrivateDAO", () => {
 
     console.log("  ✓ V2 proof path rejects payload substitution and preserves lifecycle timing");
   });
+
+  it("enforces V3 token-supply quorum and uses a dedicated reveal rebate vault", async () => {
+    const [governancePolicyPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("dao-governance-policy-v3"), daoPda.toBuffer()],
+      program.programId,
+    );
+    const [revealRebateVaultPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("reveal-rebate-vault-v3"), daoPda.toBuffer()],
+      program.programId,
+    );
+
+    await program.methods
+      .initializeDaoGovernancePolicyV3(
+        { tokenSupplyParticipation: {} },
+        { dedicatedVaultRequired: {} },
+        new BN(1_000_000),
+      )
+      .accounts({
+        dao: daoPda,
+        daoGovernancePolicyV3: governancePolicyPda,
+        authority: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    await program.methods
+      .fundRevealRebateVaultV3(new BN(2_000_000))
+      .accounts({
+        dao: daoPda,
+        daoGovernancePolicyV3: governancePolicyPda,
+        revealRebateVault: revealRebateVaultPda,
+        funder: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const dao = await program.account["dao"].fetch(daoPda);
+    const [proposalV3Pda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), daoPda.toBuffer(), dao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal(
+        "V3 token supply quorum",
+        "Low participation should fail under token-supply quorum even if all commits reveal.",
+        new BN(5),
+        null,
+      )
+      .accounts({
+        dao: daoPda,
+        proposal: proposalV3Pda,
+        proposerTokenAccount: authorityTokenAta,
+        proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [governanceSnapshotPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal-governance-snapshot-v3"), proposalV3Pda.toBuffer()],
+      program.programId,
+    );
+    await program.methods
+      .snapshotProposalGovernancePolicyV3()
+      .accounts({
+        dao: daoPda,
+        daoGovernancePolicyV3: governancePolicyPda,
+        proposal: proposalV3Pda,
+        governanceToken: governanceMint,
+        proposalGovernancePolicySnapshotV3: governanceSnapshotPda,
+        operator: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const keeper = Keypair.generate();
+    await provider.sendAndConfirm(new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: authority.publicKey,
+        toPubkey: keeper.publicKey,
+        lamports: Math.round(0.01 * LAMPORTS_PER_SOL),
+      }),
+    ), []);
+
+    const salt = randomSalt();
+    const [voteRecordPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), proposalV3Pda.toBuffer(), voter3.publicKey.toBuffer()],
+      program.programId,
+    );
+
+    await program.methods
+      .commitVote([...computeCommitment(true, salt, voter3.publicKey, proposalV3Pda)], keeper.publicKey)
+      .accounts({
+        dao: daoPda,
+        proposal: proposalV3Pda,
+        voterRecord: voteRecordPda,
+        delegationMarker: PublicKey.findProgramAddressSync(
+          [Buffer.from("delegation"), proposalV3Pda.toBuffer(), voter3.publicKey.toBuffer()],
+          program.programId,
+        )[0],
+        voterTokenAccount: v3Ata,
+        voter: voter3.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([voter3])
+      .rpc();
+
+    const created = await program.account["proposal"].fetch(proposalV3Pda);
+    await new Promise((resolve) => setTimeout(resolve, Math.max(created.votingEnd.toNumber() - Math.floor(Date.now() / 1000), 0) * 1000 + 1200));
+
+    const proposalLamportsBefore = await provider.connection.getBalance(proposalV3Pda);
+    const vaultLamportsBefore = await provider.connection.getBalance(revealRebateVaultPda);
+
+    await program.methods
+      .revealVoteV3(true, [...salt])
+      .accounts({
+        proposal: proposalV3Pda,
+        voterRecord: voteRecordPda,
+        proposalGovernancePolicySnapshotV3: governanceSnapshotPda,
+        revealRebateVault: revealRebateVaultPda,
+        revealer: keeper.publicKey,
+      })
+      .signers([keeper])
+      .rpc();
+
+    const proposalLamportsAfterReveal = await provider.connection.getBalance(proposalV3Pda);
+    const vaultLamportsAfterReveal = await provider.connection.getBalance(revealRebateVaultPda);
+    assert.equal(proposalLamportsAfterReveal, proposalLamportsBefore);
+    assert.equal(vaultLamportsBefore - vaultLamportsAfterReveal, 1_000_000);
+
+    const revealed = await program.account["proposal"].fetch(proposalV3Pda);
+    await new Promise((resolve) => setTimeout(resolve, Math.max(revealed.revealEnd.toNumber() - Math.floor(Date.now() / 1000), 0) * 1000 + 1200));
+
+    await program.methods
+      .finalizeProposalV3()
+      .accounts({
+        dao: daoPda,
+        proposal: proposalV3Pda,
+        proposalGovernancePolicySnapshotV3: governanceSnapshotPda,
+        finalizer: authority.publicKey,
+      })
+      .rpc();
+
+    const finalized = await program.account["proposal"].fetch(proposalV3Pda);
+    assert.deepEqual(finalized.status, { failed: {} });
+    assert.equal(finalized.executionUnlocksAt.toString(), "0");
+    console.log("  ✓ V3 uses dedicated rebate vault and rejects low participation under token-supply quorum");
+  });
 });
