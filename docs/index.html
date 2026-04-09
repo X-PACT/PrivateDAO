@@ -1357,6 +1357,14 @@ nav.scrolled {
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.03), 0 18px 48px rgba(0,0,0,0.16);
 }
 
+.storefront-overview-grid {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: minmax(0, 2.2fr) minmax(320px, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
 .storefront-rail-head {
   display: flex;
   justify-content: space-between;
@@ -1479,12 +1487,104 @@ nav.scrolled {
   margin-right: 8px;
 }
 
+.hero-mode-chip.active {
+  color: var(--void);
+  border-color: rgba(0,229,255,0.26);
+  background: var(--cyan);
+}
+
+.pack-summary-card {
+  padding: 20px;
+  border-radius: 24px;
+  border: 1px solid rgba(0,229,255,0.14);
+  background: linear-gradient(180deg, rgba(8, 16, 24, 0.82), rgba(7, 13, 20, 0.94));
+  box-shadow: 0 18px 50px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.03);
+  position: sticky;
+  top: 104px;
+}
+
+.pack-summary-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,229,255,0.18);
+  background: rgba(0,229,255,0.08);
+  color: var(--cyan);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.pack-summary-title {
+  color: var(--text);
+  font-size: 22px;
+  font-weight: 800;
+  margin-top: 14px;
+}
+
+.pack-summary-copy {
+  color: var(--text2);
+  font-size: 13px;
+  line-height: 1.75;
+  margin-top: 10px;
+}
+
+.pack-summary-section {
+  margin-top: 16px;
+}
+
+.pack-summary-label {
+  color: var(--text3);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.pack-summary-text {
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.75;
+  margin-top: 8px;
+}
+
+.pack-summary-list {
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
+  color: var(--text2);
+  font-size: 12px;
+}
+
+.pack-summary-list div::before {
+  content: "•";
+  color: var(--cyan);
+  margin-right: 8px;
+}
+
+.pack-summary-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
 @media (max-width: 1120px) {
   .proposal-preset-grid,
   .proposal-advisor-grid,
+  .storefront-overview-grid,
   .storefront-rail-grid,
   .storefront-compare-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .storefront-overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pack-summary-card {
+    position: static;
   }
 }
 
@@ -1492,6 +1592,7 @@ nav.scrolled {
   .proposal-preset-head,
   .proposal-preset-grid,
   .proposal-advisor-grid,
+  .storefront-overview-grid,
   .storefront-rail-grid,
   .storefront-compare-grid {
     grid-template-columns: 1fr;
@@ -3563,7 +3664,7 @@ body.judge-mode .judge-banner {
     </div>
     <div class="hero-content">
       <div class="hero-badge-row">
-        <div class="hero-eyebrow">◈ PRIVATE GOVERNANCE · CONFIDENTIAL TREASURY · SOLANA DEVNET LIVE</div>
+        <div class="hero-eyebrow" id="heroEyebrowCopy">◈ PRIVATE GOVERNANCE · CONFIDENTIAL TREASURY · SOLANA DEVNET LIVE</div>
         <div class="hero-medal-badge">
           <span class="hero-medal-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none">
@@ -3578,14 +3679,14 @@ body.judge-mode .judge-banner {
         <div class="hero-zk-badge">🔒 ZK Companion Layer</div>
       </div>
       <h1 class="hero-headline">
-        <span class="line1">PRIVATE</span>
-        <span class="line2">VOTING.</span>
-        <span class="line3">SAFE EXECUTION.</span>
+        <span class="line1" id="heroHeadlineLine1">PRIVATE</span>
+        <span class="line2" id="heroHeadlineLine2">VOTING.</span>
+        <span class="line3" id="heroHeadlineLine3">SAFE EXECUTION.</span>
       </h1>
-      <p class="hero-sub">
+      <p class="hero-sub" id="heroSubCopy">
         PrivateDAO is a live Solana governance and treasury product for serious on-chain organizations. Voting intent stays sealed during commit, confidential compensation stays aggregate on chain, and every lifecycle action remains signed, proposal-bound, and Devnet-verifiable.
       </p>
-      <div class="hero-feature-line">Commit-reveal governance · zk_enforced hardening · Confidential payroll and bonus plans · REFHE and MagicBlock payout gating · Backend-indexed runtime reads</div>
+      <div class="hero-feature-line" id="heroFeatureLine">Commit-reveal governance · zk_enforced hardening · Confidential payroll and bonus plans · REFHE and MagicBlock payout gating · Backend-indexed runtime reads</div>
       <div class="hero-tech-grid">
         <div class="hero-tech-card">
           <div class="hero-tech-header">
@@ -3662,9 +3763,9 @@ body.judge-mode .judge-banner {
         <button class="btn-ghost" onclick="openServiceCatalog()">Explore Services</button>
       </div>
       <div class="hero-mode-row">
-        <button class="hero-mode-chip" type="button" onclick="openJudgeQuickView()">Judge View</button>
-        <button class="hero-mode-chip" type="button" onclick="openBuyerQuickView()">Buyer View</button>
-        <button class="hero-mode-chip" type="button" onclick="openOperatorQuickView()">Operator View</button>
+        <button class="hero-mode-chip" data-hero-persona="judge" type="button" onclick="openJudgeQuickView()">Judge View</button>
+        <button class="hero-mode-chip" data-hero-persona="buyer" type="button" onclick="openBuyerQuickView()">Buyer View</button>
+        <button class="hero-mode-chip" data-hero-persona="operator" type="button" onclick="openOperatorQuickView()">Operator View</button>
         <button class="hero-mode-chip" type="button" onclick="copyJudgeModeLink()">Copy Judge Link</button>
       </div>
       <div class="hero-links">
@@ -3680,8 +3781,8 @@ body.judge-mode .judge-banner {
       <div class="hero-proof-strip">
         <div class="hero-proof-card">
           <div class="hero-proof-label">LIVE SUCCESS PROOF</div>
-          <div class="hero-proof-title">Real Devnet treasury execution already completed</div>
-          <div class="hero-proof-copy">A live wallet-to-wallet treasury action already ran through the full lifecycle: Create DAO, Submit proposal, Commit, Reveal, and Execute treasury on Devnet.</div>
+          <div class="hero-proof-title" id="heroProofTitle1">Real Devnet treasury execution already completed</div>
+          <div class="hero-proof-copy" id="heroProofCopy1">A live wallet-to-wallet treasury action already ran through the full lifecycle: Create DAO, Submit proposal, Commit, Reveal, and Execute treasury on Devnet.</div>
           <div class="hero-proof-links">
             <a class="hero-link" href="test-wallet-live-proof.generated.md" target="_blank">Latest Live Proof ↗</a>
             <a class="hero-link" href="operational-evidence.generated.md" target="_blank">Operational Evidence ↗</a>
@@ -3689,8 +3790,8 @@ body.judge-mode .judge-banner {
         </div>
         <div class="hero-proof-card">
           <div class="hero-proof-label">REVIEWER PACKET</div>
-          <div class="hero-proof-title">50 wallets, 212 attempts, 3 on-chain ZK anchors</div>
-          <div class="hero-proof-copy">The current reviewer surface already exposes the latest Devnet rehearsal, expected security rejects, ZK anchors, and runtime evidence in one machine-checked package.</div>
+          <div class="hero-proof-title" id="heroProofTitle2">50 wallets, 212 attempts, 3 on-chain ZK anchors</div>
+          <div class="hero-proof-copy" id="heroProofCopy2">The current reviewer surface already exposes the latest Devnet rehearsal, expected security rejects, ZK anchors, and runtime evidence in one machine-checked package.</div>
           <div class="hero-proof-links">
             <a class="hero-link" href="frontier-integrations.generated.md" target="_blank">Frontier Integrations ↗</a>
             <a class="hero-link" href="launch-trust-packet.generated.md" target="_blank">Launch Trust Packet ↗</a>
@@ -3698,8 +3799,8 @@ body.judge-mode .judge-banner {
         </div>
         <div class="hero-proof-card">
           <div class="hero-proof-label">BOUNDARY CHECK</div>
-          <div class="hero-proof-title">Live now versus pending-external stays explicit</div>
-          <div class="hero-proof-copy">The page sells the operating story, but it does not pretend multisig transfer, audit closure, or mainnet cutover are already complete. Those remain linked as pending-external blockers.</div>
+          <div class="hero-proof-title" id="heroProofTitle3">Live now versus pending-external stays explicit</div>
+          <div class="hero-proof-copy" id="heroProofCopy3">The page sells the operating story, but it does not pretend multisig transfer, audit closure, or mainnet cutover are already complete. Those remain linked as pending-external blockers.</div>
           <div class="hero-proof-links">
             <a class="hero-link" href="mainnet-blockers.md" target="_blank">Mainnet Blockers ↗</a>
             <a class="hero-link" href="go-live-attestation.generated.json" target="_blank">Go-Live Attestation ↗</a>
@@ -4263,7 +4364,8 @@ body.judge-mode .judge-banner {
       </div>
     </div>
 
-    <div class="storefront-rail reveal">
+    <div class="storefront-overview-grid reveal">
+      <div class="storefront-rail">
       <div class="storefront-rail-head">
         <div>
           <div class="proposal-preset-kicker">CHECKOUT-LIKE ONBOARDING</div>
@@ -4310,6 +4412,38 @@ body.judge-mode .judge-banner {
             <button class="proposal-proof-link" type="button" onclick="openTreasuryCommandCommit()">Open Vote Flow</button>
             <button class="proposal-proof-link" type="button" onclick="openTreasuryCommandExecute()">Open Execute Flow</button>
           </div>
+        </div>
+      </div>
+      </div>
+      <div class="pack-summary-card">
+        <div class="pack-summary-badge" id="selectedPackBadge">STANDARD GRANT PACK</div>
+        <div class="pack-summary-title" id="selectedPackTitle">Standard Treasury Grant</div>
+        <div class="pack-summary-copy" id="selectedPackCopy">The cleanest starting point for normal operators: bootstrap the DAO, fund the treasury, launch one proposal, then run private vote and execute with the least onboarding friction.</div>
+        <div class="pack-summary-section">
+          <div class="pack-summary-label">BEST FOR</div>
+          <div class="pack-summary-text" id="selectedPackBestFor">Grant committees and community treasuries that need private approvals before visible treasury movement.</div>
+        </div>
+        <div class="pack-summary-section">
+          <div class="pack-summary-label">ACTIVE TECHNOLOGY FIT</div>
+          <div class="pack-summary-list" id="selectedPackTechList">
+            <div>Commit-reveal governance</div>
+            <div>Treasury execution</div>
+            <div>RPC Fast read path</div>
+          </div>
+        </div>
+        <div class="pack-summary-section">
+          <div class="pack-summary-label">WHAT YOU GET</div>
+          <div class="pack-summary-list" id="selectedPackOutcomeList">
+            <div>Fastest path to Create DAO → Submit proposal → Private vote → Execute treasury</div>
+            <div>Minimal operator overhead for the first pilot cycle</div>
+            <div>Clear reviewer packet and buyer-facing story</div>
+          </div>
+        </div>
+        <div class="pack-summary-actions">
+          <button class="proposal-proof-link" type="button" onclick="openSelectedPackDocument()">Open Pack Doc</button>
+          <button class="proposal-proof-link" type="button" onclick="openStorefrontProposalLaunch()">Open Builder</button>
+          <button class="proposal-proof-link" type="button" onclick="copyPilotRequestPacket()">Copy Pilot Packet</button>
+          <button class="proposal-proof-link" type="button" onclick="openDocument('trust-package.md', 'Trust Package')">Trust Package</button>
         </div>
       </div>
     </div>
@@ -7264,15 +7398,19 @@ function openServiceCatalog() {
 }
 
 function openJudgeQuickView() {
-  setJudgeMode(true);
+  setHeroPersona('judge');
+  document.querySelector('.hero-proof-strip')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  showToast('Judge surface selected. Start from the proof strip, judge link, and reviewer packets.', 'success');
 }
 
 function openBuyerQuickView() {
-  openServiceCatalog();
-  showToast('Buyer surface opened. Start from pricing, pilot packet, and trust boundary.', 'success');
+  setHeroPersona('buyer');
+  document.querySelector('.storefront-compare-grid')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  showToast('Buyer surface selected. Start from pricing, pilot packet, and trust boundary.', 'success');
 }
 
 function openOperatorQuickView() {
+  setHeroPersona('operator');
   showPage('proposals', findNavButton('proposals'));
   setTimeout(() => {
     document.getElementById('confidentialTreasuryCommandCenter')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -7337,6 +7475,51 @@ function startUseCasePack(docPath, presetKey) {
   }, 120);
 }
 
+const HERO_PERSONAS = {
+  buyer: {
+    eyebrow: '◈ PRIVATE GOVERNANCE · COMMERCIAL PACKS · SOLANA DEVNET LIVE',
+    line1: 'PRIVATE',
+    line2: 'GOVERNANCE.',
+    line3: 'BUYER READY.',
+    sub: 'PrivateDAO is packaged as a product buyers can understand: private governance, confidential treasury operations, and reviewer-grade evidence with a clear pilot-to-launch path.',
+    feature: 'Product packs · Pilot program · Pricing and SLA · Trust package · Devnet proof surface',
+    proofTitle1: 'Real Devnet treasury execution already completed',
+    proofCopy1: 'A live wallet-to-wallet treasury action already ran through the full lifecycle: Create DAO, Submit proposal, Commit, Reveal, and Execute treasury on Devnet.',
+    proofTitle2: '50 wallets, 212 attempts, 3 on-chain ZK anchors',
+    proofCopy2: 'The current reviewer surface already exposes the latest Devnet rehearsal, expected security rejects, ZK anchors, and runtime evidence in one machine-checked package.',
+    proofTitle3: 'Live now versus pending-external stays explicit',
+    proofCopy3: 'The page sells the operating story, but it does not pretend multisig transfer, audit closure, or mainnet cutover are already complete.',
+  },
+  judge: {
+    eyebrow: '◈ REVIEWER SURFACE · DEVNET EVIDENCE · SOLANA PROGRAM LIVE',
+    line1: 'REVIEW',
+    line2: 'THE',
+    line3: 'EVIDENCE.',
+    sub: 'PrivateDAO gives judges and auditors a direct path into live Devnet execution, generated trust packets, operational evidence, ZK anchors, and explicit mainnet boundaries.',
+    feature: 'Operational evidence · Frontier integrations · Launch trust packet · Mainnet blockers · Judge mode',
+    proofTitle1: 'The live proof packet is already attached to the repo',
+    proofCopy1: 'Use the latest live proof, operational evidence, and trust packet instead of relying on screenshots or implied product claims.',
+    proofTitle2: 'The reviewer package is machine-checked',
+    proofCopy2: 'The current surface links generated evidence, runtime proofs, and readiness packets that pass repo verifiers rather than hand-written summaries.',
+    proofTitle3: 'Security and launch boundaries remain explicit',
+    proofCopy3: 'This surface distinguishes live Devnet proof from pending-external multisig, audit, and mainnet cutover steps.',
+  },
+  operator: {
+    eyebrow: '◈ OPERATOR FLOW · COMMAND CENTER · SOLANA DEVNET LIVE',
+    line1: 'OPERATE',
+    line2: 'THE',
+    line3: 'LIFECYCLE.',
+    sub: 'PrivateDAO is already shaped like an operator workspace: create the DAO, fund the treasury, launch the proposal, run private voting, and execute treasury with proposal-bound guardrails.',
+    feature: 'DAO bootstrap · Builder presets · Command center · Proposal-bound execution · RPC-backed diagnostics',
+    proofTitle1: 'The command center maps to real program actions',
+    proofCopy1: 'Every operator action remains phase-bound and wallet-signed. The UI is a guide over the live protocol, not a mock control panel.',
+    proofTitle2: 'The selected proposal panel keeps next actions obvious',
+    proofCopy2: 'Commit, reveal, finalize, execute, REFHE, MagicBlock, and proof readiness remain attached to the active proposal instead of floating as disconnected notes.',
+    proofTitle3: 'The operator boundary is honest',
+    proofCopy3: 'The workflow is Devnet-ready and evidence-gated today, while multisig custody, audit closure, and final mainnet launch remain external operations.',
+  },
+};
+
 const STOREFRONT_PROFILES_BY_PRESET = {
   'standard-grant': {
     shelfStatus: 'GRANT / COMMUNITY READY',
@@ -7396,6 +7579,45 @@ const STOREFRONT_PROFILES_BY_PRESET = {
   },
 };
 
+const PROPOSAL_PACK_SUMMARIES = {
+  'standard-grant': {
+    badge: 'STANDARD GRANT PACK',
+    title: 'Standard Treasury Grant',
+    copy: 'The cleanest starting point for normal operators: bootstrap the DAO, fund the treasury, launch one proposal, then run private vote and execute with the least onboarding friction.',
+    bestFor: 'Grant committees and community treasuries that need private approvals before visible treasury movement.',
+    techList: ['Commit-reveal governance', 'Treasury execution', 'RPC Fast read path'],
+    outcomeList: ['Fastest path to Create DAO → Submit proposal → Private vote → Execute treasury', 'Minimal operator overhead for the first pilot cycle', 'Clear reviewer packet and buyer-facing story'],
+    doc: 'grant-committee-pack.md',
+  },
+  'confidential-payroll': {
+    badge: 'ENTERPRISE OPS PACK',
+    title: 'Confidential Payroll',
+    copy: 'Use this pack when payroll, bonus approvals, and internal treasury operations need to move through a private governance layer instead of open signaling.',
+    bestFor: 'Enterprise-style treasury operators and serious internal governance teams.',
+    techList: ['Encrypted manifest binding', 'REFHE envelope', 'MagicBlock corridor', 'Trust package'],
+    outcomeList: ['Payroll and bonus flows mapped into one proposal surface', 'Stronger buyer story for premium confidential operations', 'Operator guidance that stays honest about launch blockers'],
+    doc: 'enterprise-dao-pack.md',
+  },
+  'confidential-bonus': {
+    badge: 'FUND GOVERNANCE PACK',
+    title: 'Confidential Bonus / Fund Governance',
+    copy: 'Use this pack when committee direction, sensitive allocations, or treasury intent should not leak while the vote is still live.',
+    bestFor: 'Crypto-native funds and committees that want private direction before treasury release.',
+    techList: ['Commit-reveal governance', 'ZK review path', 'Optional REFHE envelope'],
+    outcomeList: ['Private committee approvals with cleaner reviewer logic', 'Better fit for sensitive fund governance flows', 'Stronger migration story from public committee operations'],
+    doc: 'fund-governance-pack.md',
+  },
+  'private-token-distribution': {
+    badge: 'GAMING DAO PACK',
+    title: 'Private Token Distribution',
+    copy: 'Use this pack when allocations are token-native and should stay gated behind proposal-bound settlement evidence instead of noisy public signaling.',
+    bestFor: 'Gaming DAOs, guild reward programs, and token distribution operators.',
+    techList: ['Commit-reveal governance', 'MagicBlock corridor', 'Runtime evidence'],
+    outcomeList: ['Token distribution flow that stays tied to governance', 'MagicBlock becomes visible as a real operator aid', 'Clear buyer story for reward and allocation programs'],
+    doc: 'gaming-dao-pack.md',
+  },
+};
+
 function setStorefrontProfileByPreset(presetKey) {
   const profile = STOREFRONT_PROFILES_BY_PRESET[presetKey];
   if (!profile) return;
@@ -7418,6 +7640,63 @@ function setStorefrontProfileByPreset(presetKey) {
   mapText('storefrontCtaCopy', profile.ctaCopy);
   mapText('heroPrimaryCtaLabel', profile.heroPrimary);
   mapText('heroSecondaryCtaLabel', profile.heroSecondary);
+}
+
+let currentHeroPersona = 'buyer';
+
+function setHeroPersona(mode) {
+  const persona = HERO_PERSONAS[mode];
+  if (!persona) return;
+  currentHeroPersona = mode;
+  const mapText = (id, value) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+  };
+  mapText('heroEyebrowCopy', persona.eyebrow);
+  mapText('heroHeadlineLine1', persona.line1);
+  mapText('heroHeadlineLine2', persona.line2);
+  mapText('heroHeadlineLine3', persona.line3);
+  mapText('heroSubCopy', persona.sub);
+  mapText('heroFeatureLine', persona.feature);
+  mapText('heroProofTitle1', persona.proofTitle1);
+  mapText('heroProofCopy1', persona.proofCopy1);
+  mapText('heroProofTitle2', persona.proofTitle2);
+  mapText('heroProofCopy2', persona.proofCopy2);
+  mapText('heroProofTitle3', persona.proofTitle3);
+  mapText('heroProofCopy3', persona.proofCopy3);
+  document.querySelectorAll('[data-hero-persona]').forEach((chip) => {
+    chip.classList.toggle('active', chip.getAttribute('data-hero-persona') === mode);
+  });
+}
+
+function updateSelectedPackSummary() {
+  const summary = PROPOSAL_PACK_SUMMARIES[currentProposalBuilderPreset];
+  if (!summary) return;
+  const mapText = (id, value) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+  };
+  mapText('selectedPackBadge', summary.badge);
+  mapText('selectedPackTitle', summary.title);
+  mapText('selectedPackCopy', summary.copy);
+  mapText('selectedPackBestFor', summary.bestFor);
+  const techList = document.getElementById('selectedPackTechList');
+  if (techList) {
+    techList.innerHTML = summary.techList.map((item) => `<div>${item}</div>`).join('');
+  }
+  const outcomeList = document.getElementById('selectedPackOutcomeList');
+  if (outcomeList) {
+    outcomeList.innerHTML = summary.outcomeList.map((item) => `<div>${item}</div>`).join('');
+  }
+}
+
+function openSelectedPackDocument() {
+  const summary = PROPOSAL_PACK_SUMMARIES[currentProposalBuilderPreset];
+  if (!summary?.doc) {
+    showToast('No pack document configured for this preset.', 'error');
+    return;
+  }
+  window.open(summary.doc, '_blank', 'noopener,noreferrer');
 }
 
 function currentPageKey() {
@@ -12266,6 +12545,7 @@ function applyProposalBuilderPreset(key, options = {}) {
   if (status) status.textContent = preset.copy;
   syncCreateProposalCommand();
   updateStorefrontOnboardingRail();
+  updateSelectedPackSummary();
   if (!silent) {
     showToast(`${preset.label} preset applied. Review hashes and recipients before signing.`, 'success');
   }
@@ -12424,6 +12704,8 @@ if (initialJudge === '1') {
 
 syncCreateProposalCommand();
 setStorefrontProfileByPreset(currentProposalBuilderPreset || 'standard-grant');
+updateSelectedPackSummary();
+setHeroPersona(initialJudge === '1' ? 'judge' : 'buyer');
 applyMigrationPreset('community-treasury', { silent: true });
 syncMigrationCommand();
 syncCreateDaoCommand();
