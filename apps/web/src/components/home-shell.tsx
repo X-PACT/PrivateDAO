@@ -2,8 +2,10 @@ import Link from "next/link";
 import { ArrowRight, Shield, Sparkles, TrendingUp } from "lucide-react";
 
 import { GovernanceDashboard } from "@/components/governance-dashboard";
+import { DiagnosticsCenter } from "@/components/diagnostics-center";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { ProofCenter } from "@/components/proof-center";
+import { SecurityCenter } from "@/components/security-center";
 import { SectionHeader } from "@/components/section-header";
 import { ServicesSurface } from "@/components/services-surface";
 import { Badge } from "@/components/ui/badge";
@@ -129,6 +131,17 @@ export function HomeShell() {
 
       <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
+          eyebrow="Security"
+          title="Security and launch boundaries stay visible in the product, not only in docs"
+          description="Additive V3 hardening, launch blockers, integrations, and audit-oriented trust surfaces should remain understandable to operators, judges, and buyers."
+        />
+        <div className="mt-10">
+          <SecurityCenter />
+        </div>
+      </section>
+
+      <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHeader
           eyebrow="Product packs"
           title="Commercial surfaces that still explain the technology clearly"
           description="PrivateDAO is not only a protocol. The app also needs to communicate service packs, API-ready operations, and buyer-friendly rollout paths."
@@ -156,6 +169,17 @@ export function HomeShell() {
         />
         <div className="mt-10">
           <ServicesSurface />
+        </div>
+      </section>
+
+      <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHeader
+          eyebrow="Diagnostics"
+          title="Generated artifacts and runtime checks stay close to the product experience"
+          description="The migration should not lose the operator story: reviewer bundles, readiness gates, wallet runtime boundaries, and artifact freshness all need a clean UI surface."
+        />
+        <div className="mt-10">
+          <DiagnosticsCenter />
         </div>
       </section>
     </main>

@@ -1,0 +1,63 @@
+import { Activity, ArrowUpRight, FileCheck2 } from "lucide-react";
+
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { diagnosticsChecks, diagnosticsEvents } from "@/lib/site-data";
+
+export function DiagnosticsCenter() {
+  return (
+    <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
+      <Card>
+        <CardHeader>
+          <CardTitle>Operational diagnostics</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-4">
+          {diagnosticsChecks.map((check) => (
+            <a
+              key={check.name}
+              href={check.href}
+              rel="noreferrer"
+              target="_blank"
+              className="group rounded-3xl border border-white/8 bg-white/4 p-5 transition hover:border-cyan-300/30 hover:bg-white/6"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <div className="rounded-2xl border border-white/8 bg-black/25 p-3 text-cyan-200">
+                      <Activity className="h-4 w-4" />
+                    </div>
+                    <div className="text-lg font-medium text-white">{check.name}</div>
+                  </div>
+                  <Badge variant={check.state === "Pending external" ? "warning" : check.state === "Tracked" ? "violet" : "success"}>
+                    {check.state}
+                  </Badge>
+                  <p className="text-sm leading-7 text-white/56">{check.detail}</p>
+                </div>
+                <ArrowUpRight className="mt-1 h-4 w-4 text-cyan-300 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </div>
+            </a>
+          ))}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Verification chain</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-4">
+          {diagnosticsEvents.map((event) => (
+            <div key={event.title} className="rounded-3xl border border-white/8 bg-white/4 p-5">
+              <div className="flex items-center gap-3">
+                <div className="rounded-2xl border border-white/8 bg-black/25 p-3 text-emerald-200">
+                  <FileCheck2 className="h-4 w-4" />
+                </div>
+                <div className="text-base font-medium text-white">{event.title}</div>
+              </div>
+              <p className="mt-3 text-sm leading-7 text-white/56">{event.body}</p>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

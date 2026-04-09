@@ -301,6 +301,79 @@ export const servicesJourney = [
   },
 ];
 
+export const securityTracks = [
+  {
+    title: "Governance Hardening V3",
+    status: "Devnet-proven",
+    summary:
+      "Proposal-level governance snapshots, supply-based quorum mode, and reveal rebate vaults keep the path additive instead of reinterpreting legacy objects.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/governance-hardening-v3.md",
+  },
+  {
+    title: "Settlement Hardening V3",
+    status: "Devnet-proven",
+    summary:
+      "Payout caps, evidence aging, and proposal-scoped settlement policy snapshots keep confidential execution bounded and versioned.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/settlement-hardening-v3.md",
+  },
+  {
+    title: "Frontier integrations",
+    status: "Integrated",
+    summary:
+      "ZK anchors, REFHE envelopes, MagicBlock corridor evidence, and backend-indexed Fast RPC reads remain part of the product story.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/frontier-integrations.generated.md",
+  },
+  {
+    title: "Audit and trust surfaces",
+    status: "Reviewer-ready",
+    summary:
+      "Audit packet, trust package, launch trust packet, and mainnet blockers stay visible as product-facing security boundaries.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/audit-packet.generated.md",
+  },
+];
+
+export const diagnosticsChecks = [
+  {
+    name: "Proof packets",
+    state: "Healthy",
+    detail: "Baseline and V3 proof packets are generated and linked through the reviewer bundle.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/test-wallet-live-proof-v3.generated.md",
+  },
+  {
+    name: "Readiness gates",
+    state: "Tracked",
+    detail: "Mainnet blockers, launch checklist, and release ceremony attestations remain explicit and versioned.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/mainnet-readiness.generated.md",
+  },
+  {
+    name: "Wallet runtime",
+    state: "Pending external",
+    detail: "Real-device runtime captures are tracked honestly and separated from simulated reviewer proof.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/wallet-runtime.md",
+  },
+  {
+    name: "Monitoring and alerts",
+    state: "Documented",
+    detail: "Monitoring alerts, security review, and operator guides are packaged as operational follow-through.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/monitoring-alerts.md",
+  },
+];
+
+export const diagnosticsEvents = [
+  {
+    title: "Generated artifacts",
+    body: "Review attestation, cryptographic manifest, proof packages, and launch attestations stay regenerated together.",
+  },
+  {
+    title: "Review bundle",
+    body: "Reviewer tarball verification ensures baseline proof, V3 proof, fast-path docs, and audit packets travel together.",
+  },
+  {
+    title: "Mainnet gate",
+    body: "Readiness checks force honest launch boundaries instead of implying custody or audit completion that did not happen.",
+  },
+];
+
 export const analyticsSeries = {
   votes: [
     { name: "Mon", commits: 14, reveals: 9 },
