@@ -27,7 +27,7 @@ function main() {
     "zk-capability-matrix.md",
     "CAPABILITY MATRIX",
     "PER-LAYER REVIEW PATH",
-    "🔒 ZK Companion Layer",
+    "ZK Companion Layer",
     "1st Place · Superteam Poland",
     "Zero-Knowledge Protection",
     "Groth16 zk-SNARK companion proofs",
