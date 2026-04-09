@@ -1570,12 +1570,70 @@ nav.scrolled {
   margin-top: 16px;
 }
 
+.decision-matrix-grid {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.decision-matrix-card {
+  padding: 20px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(180deg, rgba(8, 16, 24, 0.72), rgba(7, 13, 20, 0.94));
+  box-shadow: 0 16px 40px rgba(0,0,0,0.16), inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.decision-matrix-label {
+  color: var(--text3);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.decision-matrix-title {
+  color: var(--text);
+  font-size: 20px;
+  font-weight: 800;
+  margin-top: 10px;
+}
+
+.decision-matrix-copy {
+  color: var(--text2);
+  font-size: 13px;
+  line-height: 1.75;
+  margin-top: 8px;
+}
+
+.decision-matrix-list {
+  margin-top: 12px;
+  display: grid;
+  gap: 8px;
+  color: var(--text2);
+  font-size: 12px;
+}
+
+.decision-matrix-list div::before {
+  content: "•";
+  color: var(--cyan);
+  margin-right: 8px;
+}
+
+.decision-matrix-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
 @media (max-width: 1120px) {
   .proposal-preset-grid,
   .proposal-advisor-grid,
   .storefront-overview-grid,
   .storefront-rail-grid,
-  .storefront-compare-grid {
+  .storefront-compare-grid,
+  .decision-matrix-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1594,7 +1652,8 @@ nav.scrolled {
   .proposal-advisor-grid,
   .storefront-overview-grid,
   .storefront-rail-grid,
-  .storefront-compare-grid {
+  .storefront-compare-grid,
+  .decision-matrix-grid {
     grid-template-columns: 1fr;
   }
 
@@ -4424,6 +4483,14 @@ body.judge-mode .judge-banner {
           <div class="pack-summary-text" id="selectedPackBestFor">Grant committees and community treasuries that need private approvals before visible treasury movement.</div>
         </div>
         <div class="pack-summary-section">
+          <div class="pack-summary-label">BUYER PATH</div>
+          <div class="pack-summary-text" id="selectedPackBuyerPath">Pilot package first, then operator trust packet and launch checklist.</div>
+        </div>
+        <div class="pack-summary-section">
+          <div class="pack-summary-label">RECOMMENDED OFFER</div>
+          <div class="pack-summary-text" id="selectedPackOffer">Pilot Package</div>
+        </div>
+        <div class="pack-summary-section">
           <div class="pack-summary-label">ACTIVE TECHNOLOGY FIT</div>
           <div class="pack-summary-list" id="selectedPackTechList">
             <div>Commit-reveal governance</div>
@@ -4439,11 +4506,77 @@ body.judge-mode .judge-banner {
             <div>Clear reviewer packet and buyer-facing story</div>
           </div>
         </div>
+        <div class="pack-summary-section">
+          <div class="pack-summary-label">NEXT PROOF TO OPEN</div>
+          <div class="pack-summary-text" id="selectedPackProof">Latest Live Proof + Trust Package</div>
+        </div>
         <div class="pack-summary-actions">
           <button class="proposal-proof-link" type="button" onclick="openSelectedPackDocument()">Open Pack Doc</button>
           <button class="proposal-proof-link" type="button" onclick="openStorefrontProposalLaunch()">Open Builder</button>
           <button class="proposal-proof-link" type="button" onclick="copyPilotRequestPacket()">Copy Pilot Packet</button>
+          <button class="proposal-proof-link" type="button" onclick="copyServiceCatalogPacket()">Copy Service Packet</button>
+          <button class="proposal-proof-link" type="button" onclick="openCommercialCompare()">Compare Plans</button>
+          <button class="proposal-proof-link" type="button" onclick="openCommercialApiSurface()">API Surface</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('trust-package.md', 'Trust Package')">Trust Package</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="award-detail-card reveal" style="margin-top:22px">
+      <div class="award-detail-head">
+        <div>
+          <div class="award-detail-title">Commercial Decision Surface</div>
+          <p class="award-detail-copy">
+            This layer keeps the next business decision obvious: compare the packs, open the API surface, or inspect the live-versus-pending boundary before you ask a buyer or reviewer to trust the story.
+          </p>
+        </div>
+        <div class="award-pill">DECISION LAYER</div>
+      </div>
+      <div class="decision-matrix-grid">
+        <div class="decision-matrix-card" id="commercialCompareCard">
+          <div class="decision-matrix-label">COMPARE PLANS</div>
+          <div class="decision-matrix-title">Choose the product pack before you read protocol details.</div>
+          <div class="decision-matrix-copy">Each pack already maps to a buyer persona, a technology stack emphasis, and an operating outcome. Start from the commercial shape, then open the exact proof and builder path.</div>
+          <div class="decision-matrix-list">
+            <div>Grant Committee: shortest route to DAO bootstrap and treasury execution</div>
+            <div>Fund Governance: private committee direction plus ZK review overlay</div>
+            <div>Gaming DAO: token-native operations with MagicBlock relevance</div>
+            <div>Enterprise DAO: payroll, bonus, trust package, and guided rollout</div>
+          </div>
+          <div class="decision-matrix-actions">
+            <button class="proposal-proof-link" type="button" onclick="scrollToStorefrontShelf()">Open Pack Shelf</button>
+            <button class="proposal-proof-link" type="button" onclick="openCommercialCompare()">Compare From Here</button>
+          </div>
+        </div>
+        <div class="decision-matrix-card" id="commercialApiCard">
+          <div class="decision-matrix-label">API + OPS</div>
+          <div class="decision-matrix-title">Open the hosted service surface before you promise an integration.</div>
+          <div class="decision-matrix-copy">PrivateDAO can already be packaged as hosted read infrastructure, runtime evidence exports, migration help, and pilot ops support without pretending that custody is delegated or final mainnet launch is complete.</div>
+          <div class="decision-matrix-list">
+            <div>Hosted Read API + pooled RPC / RPC Fast path</div>
+            <div>Runtime evidence and reviewer export packets</div>
+            <div>Realms migration and governance continuity help</div>
+            <div>Pilot onboarding, SLA, and operator guidance</div>
+          </div>
+          <div class="decision-matrix-actions">
+            <button class="proposal-proof-link" type="button" onclick="openCommercialApiSurface()">Open API Surface</button>
+            <button class="proposal-proof-link" type="button" onclick="copyServiceCatalogPacket()">Copy Service Packet</button>
+          </div>
+        </div>
+        <div class="decision-matrix-card" id="commercialBoundaryCard">
+          <div class="decision-matrix-label">LIVE BOUNDARY</div>
+          <div class="decision-matrix-title">Trust the line between live Devnet proof and pending-external launch work.</div>
+          <div class="decision-matrix-copy">This is where the page stays credible: it shows what is already real, what still needs external ceremony, and what a pilot should expect in week one versus a real-funds launch process.</div>
+          <div class="decision-matrix-list">
+            <div>Live now: lifecycle, evidence packets, ZK anchors, guided command center</div>
+            <div>Live now: REFHE and MagicBlock paths, RPC-backed reads, reviewer exports</div>
+            <div>Pending-external: multisig custody, authority transfer, audit closure</div>
+            <div>Pending-external: real-device matrix completion and final mainnet cutover</div>
+          </div>
+          <div class="decision-matrix-actions">
+            <button class="proposal-proof-link" type="button" onclick="openLiveBoundaryMatrix()">Open Boundary Surface</button>
+            <button class="proposal-proof-link" type="button" onclick="copyPilotRequestPacket()">Copy Pilot Packet</button>
+          </div>
         </div>
       </div>
     </div>
@@ -7397,6 +7530,30 @@ function openServiceCatalog() {
   openDocument('service-catalog.md', 'Service Catalog');
 }
 
+function openCommercialCompare() {
+  showPage('proof', findNavButton('proof'));
+  setTimeout(() => {
+    document.getElementById('commercialCompareCard')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    showToast('Commercial compare surface opened. Start from the pack fit, then move into pricing or the pilot packet.', 'success');
+  }, 120);
+}
+
+function openCommercialApiSurface() {
+  showPage('proof', findNavButton('proof'));
+  setTimeout(() => {
+    document.getElementById('commercialApiCard')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    showToast('API and operations surface opened. Use this for hosted read path, reviewer exports, and migration support.', 'success');
+  }, 120);
+}
+
+function openLiveBoundaryMatrix() {
+  showPage('proof', findNavButton('proof'));
+  setTimeout(() => {
+    document.getElementById('commercialBoundaryCard')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    showToast('Live boundary surface opened. Review live-now versus pending-external before promising a launch path.', 'success');
+  }, 120);
+}
+
 function openJudgeQuickView() {
   setHeroPersona('judge');
   document.querySelector('.hero-proof-strip')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -7448,6 +7605,45 @@ function copyPilotRequestPacket() {
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(packet)
       .then(() => showToast('Pilot packet copied.', 'success'))
+      .catch(() => showToast(packet, 'info'));
+    return;
+  }
+  showToast(packet, 'info');
+}
+
+function copyServiceCatalogPacket() {
+  const packet = [
+    'PrivateDAO Service Packet',
+    '',
+    'Commercial surfaces:',
+    '- Service Catalog: service-catalog.md',
+    '- Pricing Model: pricing-model.md',
+    '- Pilot Program: pilot-program.md',
+    '- Pilot SLA: service-level-agreement.md',
+    '- Operator Guide: operator-guide.md',
+    '- Trust Package: trust-package.md',
+    '',
+    'Best fit:',
+    '- Grant committees',
+    '- Crypto-native funds',
+    '- Gaming DAOs',
+    '- Enterprise-style treasury operators',
+    '',
+    'Live now:',
+    '- Devnet governance lifecycle',
+    '- Guided command center and builder presets',
+    '- Hosted read path / RPC-backed reviewer surface',
+    '- ZK anchors plus REFHE and MagicBlock integration paths',
+    '',
+    'Pending-external:',
+    '- multisig custody ceremony',
+    '- authority transfer',
+    '- external audit closure',
+    '- final real-device matrix and mainnet cutover',
+  ].join('\n');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(packet)
+      .then(() => showToast('Service packet copied.', 'success'))
       .catch(() => showToast(packet, 'info'));
     return;
   }
@@ -7585,8 +7781,11 @@ const PROPOSAL_PACK_SUMMARIES = {
     title: 'Standard Treasury Grant',
     copy: 'The cleanest starting point for normal operators: bootstrap the DAO, fund the treasury, launch one proposal, then run private vote and execute with the least onboarding friction.',
     bestFor: 'Grant committees and community treasuries that need private approvals before visible treasury movement.',
+    buyerPath: 'Start with the Pilot Package, then validate trust docs and runtime evidence before a broader rollout.',
+    offer: 'Pilot Package',
     techList: ['Commit-reveal governance', 'Treasury execution', 'RPC Fast read path'],
     outcomeList: ['Fastest path to Create DAO → Submit proposal → Private vote → Execute treasury', 'Minimal operator overhead for the first pilot cycle', 'Clear reviewer packet and buyer-facing story'],
+    proof: 'Latest Live Proof + Pilot Program + Trust Package',
     doc: 'grant-committee-pack.md',
   },
   'confidential-payroll': {
@@ -7594,8 +7793,11 @@ const PROPOSAL_PACK_SUMMARIES = {
     title: 'Confidential Payroll',
     copy: 'Use this pack when payroll, bonus approvals, and internal treasury operations need to move through a private governance layer instead of open signaling.',
     bestFor: 'Enterprise-style treasury operators and serious internal governance teams.',
+    buyerPath: 'Lead with Confidential Operations Premium, then open the trust package and operator guide together.',
+    offer: 'Confidential Operations Premium',
     techList: ['Encrypted manifest binding', 'REFHE envelope', 'MagicBlock corridor', 'Trust package'],
     outcomeList: ['Payroll and bonus flows mapped into one proposal surface', 'Stronger buyer story for premium confidential operations', 'Operator guidance that stays honest about launch blockers'],
+    proof: 'Trust Package + Confidential Payments + Launch Trust Packet',
     doc: 'enterprise-dao-pack.md',
   },
   'confidential-bonus': {
@@ -7603,8 +7805,11 @@ const PROPOSAL_PACK_SUMMARIES = {
     title: 'Confidential Bonus / Fund Governance',
     copy: 'Use this pack when committee direction, sensitive allocations, or treasury intent should not leak while the vote is still live.',
     bestFor: 'Crypto-native funds and committees that want private direction before treasury release.',
+    buyerPath: 'Start with Fund Governance as a pilot, then add ZK review language and pricing only after the operating need is clear.',
+    offer: 'Pilot Package or Enterprise Governance Retainer',
     techList: ['Commit-reveal governance', 'ZK review path', 'Optional REFHE envelope'],
     outcomeList: ['Private committee approvals with cleaner reviewer logic', 'Better fit for sensitive fund governance flows', 'Stronger migration story from public committee operations'],
+    proof: 'Frontier Integrations + Launch Trust Packet + Pricing Model',
     doc: 'fund-governance-pack.md',
   },
   'private-token-distribution': {
@@ -7612,8 +7817,11 @@ const PROPOSAL_PACK_SUMMARIES = {
     title: 'Private Token Distribution',
     copy: 'Use this pack when allocations are token-native and should stay gated behind proposal-bound settlement evidence instead of noisy public signaling.',
     bestFor: 'Gaming DAOs, guild reward programs, and token distribution operators.',
+    buyerPath: 'Start with Hosted Read API + Ops or a pilot, then open MagicBlock and runtime evidence together.',
+    offer: 'Hosted Read API + Ops',
     techList: ['Commit-reveal governance', 'MagicBlock corridor', 'Runtime evidence'],
     outcomeList: ['Token distribution flow that stays tied to governance', 'MagicBlock becomes visible as a real operator aid', 'Clear buyer story for reward and allocation programs'],
+    proof: 'Frontier Integrations + MagicBlock docs + Operational Evidence',
     doc: 'gaming-dao-pack.md',
   },
 };
@@ -7680,6 +7888,8 @@ function updateSelectedPackSummary() {
   mapText('selectedPackTitle', summary.title);
   mapText('selectedPackCopy', summary.copy);
   mapText('selectedPackBestFor', summary.bestFor);
+  mapText('selectedPackBuyerPath', summary.buyerPath);
+  mapText('selectedPackOffer', summary.offer);
   const techList = document.getElementById('selectedPackTechList');
   if (techList) {
     techList.innerHTML = summary.techList.map((item) => `<div>${item}</div>`).join('');
@@ -7688,6 +7898,7 @@ function updateSelectedPackSummary() {
   if (outcomeList) {
     outcomeList.innerHTML = summary.outcomeList.map((item) => `<div>${item}</div>`).join('');
   }
+  mapText('selectedPackProof', summary.proof);
 }
 
 function openSelectedPackDocument() {
