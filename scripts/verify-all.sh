@@ -55,6 +55,9 @@ npm run verify:live-proof >/dev/null
 echo "[verify-all] checking test-wallet live proof"
 npm run verify:test-wallet-live-proof >/dev/null
 
+echo "[verify-all] checking test-wallet live proof v3"
+npm run verify:test-wallet-live-proof:v3 >/dev/null
+
 echo "[verify-all] checking strategy surface"
 npm run verify:strategy-surface >/dev/null
 

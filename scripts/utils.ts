@@ -162,9 +162,50 @@ export function deriveDaoSecurityPolicyPda(dao: PublicKey, programId: PublicKey)
   )[0];
 }
 
+export function deriveDaoGovernancePolicyV3Pda(dao: PublicKey, programId: PublicKey): PublicKey {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("dao-governance-policy-v3"), dao.toBuffer()],
+    programId,
+  )[0];
+}
+
+export function deriveDaoSettlementPolicyV3Pda(dao: PublicKey, programId: PublicKey): PublicKey {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("dao-settlement-policy-v3"), dao.toBuffer()],
+    programId,
+  )[0];
+}
+
 export function deriveProposalExecutionPolicySnapshotPda(proposal: PublicKey, programId: PublicKey): PublicKey {
   return PublicKey.findProgramAddressSync(
     [Buffer.from("proposal-policy-snapshot"), proposal.toBuffer()],
+    programId,
+  )[0];
+}
+
+export function deriveProposalGovernancePolicySnapshotV3Pda(
+  proposal: PublicKey,
+  programId: PublicKey,
+): PublicKey {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("proposal-governance-snapshot-v3"), proposal.toBuffer()],
+    programId,
+  )[0];
+}
+
+export function deriveProposalSettlementPolicySnapshotV3Pda(
+  proposal: PublicKey,
+  programId: PublicKey,
+): PublicKey {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("proposal-settlement-policy-v3"), proposal.toBuffer()],
+    programId,
+  )[0];
+}
+
+export function deriveRevealRebateVaultV3Pda(dao: PublicKey, programId: PublicKey): PublicKey {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("reveal-rebate-vault-v3"), dao.toBuffer()],
     programId,
   )[0];
 }

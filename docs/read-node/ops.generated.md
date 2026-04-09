@@ -1,6 +1,6 @@
 # Read Node Ops Snapshot
 
-- Generated at: `2026-04-09T11:41:59.831Z`
+- Generated at: `2026-04-09T15:14:43.663Z`
 - Read path: `backend-indexer`
 - RPC endpoint: `https://api.devnet.solana.com`
 - RPC pool size: `1`
@@ -10,13 +10,13 @@
 
 ## Backend Coverage
 
-- proposals: `37`
-- unique DAOs: `17`
+- proposals: `41`
+- unique DAOs: `21`
 - zk-enforced proposals: `0`
-- confidential payout proposals: `6`
-- REFHE configured: `4`
-- REFHE settled: `3`
-- REFHE with verifier binding: `3`
+- confidential payout proposals: `8`
+- REFHE configured: `6`
+- REFHE settled: `4`
+- REFHE with verifier binding: `4`
 - executable confidential proposals: `0`
 
 ## Supported Devnet Profiles

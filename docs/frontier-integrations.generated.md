@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-09T11:42:49.355Z`
+- generated at: `2026-04-09T15:15:22.167Z`
 - network: `devnet`
 - program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
@@ -17,11 +17,11 @@
 - rpc provider class: `public-devnet`
 - MagicBlock API base: `https://payments.magicblock.app`
 - MagicBlock health: `ok`
-- indexed proposals: `37`
+- indexed proposals: `41`
 - indexed zk_enforced proposals: `0`
-- indexed confidential payout proposals: `6`
+- indexed confidential payout proposals: `8`
 - indexed MagicBlock-settled proposals: `3`
-- indexed REFHE-settled proposals: `3`
+- indexed REFHE-settled proposals: `4`
 
 ## Simple Governance Path
 
