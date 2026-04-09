@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Shield, Sparkles, TrendingUp } from "lucide-react";
 
@@ -13,10 +16,13 @@ import { ServicesSurface } from "@/components/services-surface";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { servicePacks, techCards } from "@/lib/site-data";
+import { heroPersonas, servicePacks, techCards } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
 export function HomeShell() {
+  const [persona, setPersona] = useState<keyof typeof heroPersonas>("buyer");
+  const activePersona = heroPersonas[persona];
+
   return (
     <main className="pb-24">
       <section className="mx-auto w-full max-w-7xl px-4 pt-12 sm:px-6 lg:px-8 lg:pt-20">
@@ -26,23 +32,42 @@ export function HomeShell() {
               <Badge variant="warning">1st Place - Superteam Poland</Badge>
               <Badge variant="cyan">Private governance on Solana</Badge>
               <Badge variant="violet">ZK + REFHE + MagicBlock + Fast RPC</Badge>
+              <Badge variant="success">{activePersona.badge}</Badge>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {(Object.entries(heroPersonas) as Array<[keyof typeof heroPersonas, (typeof heroPersonas)[keyof typeof heroPersonas]]>).map(([key, value]) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setPersona(key)}
+                  className={cn(
+                    "rounded-full border px-4 py-2 text-sm transition",
+                    persona === key
+                      ? "border-cyan-300/35 bg-cyan-300/12 text-cyan-100"
+                      : "border-white/10 bg-white/4 text-white/65 hover:bg-white/6 hover:text-white",
+                  )}
+                >
+                  {value.label} View
+                </button>
+              ))}
             </div>
             <div className="space-y-6">
+              <div className="text-[11px] uppercase tracking-[0.34em] text-emerald-300/80">{activePersona.eyebrow}</div>
               <div className="max-w-4xl text-5xl font-semibold tracking-[-0.04em] text-white sm:text-6xl lg:text-7xl">
-                Governance and treasury execution that feels like a real product, not a protocol demo.
+                {activePersona.title}
               </div>
               <p className="max-w-2xl text-lg leading-8 text-white/62 sm:text-xl">
-                PrivateDAO combines private voting, additive hardening, confidential payout rails, runtime trust packets, and commercial service surfaces in one governance dashboard.
+                {activePersona.description}
               </p>
             </div>
 
             <div className="flex flex-wrap gap-3">
-              <Link className={cn(buttonVariants({ size: "lg" }))} href="/dashboard">
-                Open governance dashboard
+              <Link className={cn(buttonVariants({ size: "lg" }))} href={activePersona.primaryCtaHref}>
+                {activePersona.primaryCtaLabel}
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/command-center">
-                Open command center
+              <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href={activePersona.secondaryCtaHref}>
+                {activePersona.secondaryCtaLabel}
               </Link>
               <a
                 className={cn(buttonVariants({ size: "lg", variant: "outline" }))}

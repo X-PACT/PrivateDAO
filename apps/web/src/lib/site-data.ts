@@ -578,3 +578,42 @@ export const trustLinks = [
     href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/test-wallet-live-proof-v3.generated.md",
   },
 ];
+
+export const heroPersonas = {
+  buyer: {
+    label: "Buyer",
+    eyebrow: "Pilot-ready product surface",
+    title: "Private governance and treasury execution packaged like a serious product.",
+    description:
+      "See service packs, pricing language, trust boundaries, launch blockers, and a guided path from product selection to treasury execution.",
+    primaryCtaLabel: "Open services",
+    primaryCtaHref: "/services",
+    secondaryCtaLabel: "Open command center",
+    secondaryCtaHref: "/command-center",
+    badge: "Commercial + launch aware",
+  },
+  judge: {
+    label: "Judge",
+    eyebrow: "Reviewer-first proof surface",
+    title: "Proof packets, additive hardening, and launch truth are visible without digging.",
+    description:
+      "Move from live proof to V3 hardening, integration packets, audit packet, and trust surfaces without losing the actual product flow.",
+    primaryCtaLabel: "Open proof center",
+    primaryCtaHref: "/proof",
+    secondaryCtaLabel: "Open awards + trust",
+    secondaryCtaHref: "/awards",
+    badge: "Baseline + V3 reviewer path",
+  },
+  operator: {
+    label: "Operator",
+    eyebrow: "Governance and runtime operations",
+    title: "Proposal actions, wallet state, diagnostics, and readiness gates stay connected.",
+    description:
+      "Command Center, governance dashboard, diagnostics, and launch blockers remain available in one operational surface for the team actually running the DAO.",
+    primaryCtaLabel: "Open governance dashboard",
+    primaryCtaHref: "/dashboard",
+    secondaryCtaLabel: "Open diagnostics",
+    secondaryCtaHref: "/diagnostics",
+    badge: "Runtime and wallet aware",
+  },
+} as const;
