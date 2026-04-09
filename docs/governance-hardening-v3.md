@@ -44,13 +44,15 @@ V3 snapshots proposal governance policy at proposal scope so future DAO-level po
 
 ## Current Verification Status
 
-Implemented and locally verified:
+Implemented, locally verified, and backed by a dedicated Devnet proof packet:
 
 - Rust compile and unit test pass
 - TypeScript typecheck passes
 - portable core checks pass
+- live Devnet proof exists in [`docs/test-wallet-live-proof-v3.generated.md`](test-wallet-live-proof-v3.generated.md)
 
 Operational note:
 
 - the local portable suite in this environment does not run the full AVX2-dependent Anchor validator path
-- V3 should therefore be treated as implemented and regression-covered, not as a replacement for the broader Devnet rehearsal evidence already recorded for legacy and V2 flows
+- `Governance Hardening V3` is no longer local-only; it has a dedicated Devnet execution proof packet in addition to compile and regression coverage
+- that proof packet is still a test-wallet Devnet artifact, not a production-custody or mainnet claim

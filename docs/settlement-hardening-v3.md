@@ -33,12 +33,14 @@
 
 ## Current Verification Status
 
-Implemented and locally verified:
+Implemented, locally verified, and backed by a dedicated Devnet proof packet:
 
 - Rust compile and unit test pass
 - TypeScript typecheck passes
+- live Devnet proof exists in [`docs/test-wallet-live-proof-v3.generated.md`](test-wallet-live-proof-v3.generated.md)
 
 Operational note:
 
 - this is an additive hardening layer
-- broader live Devnet execution evidence still comes from the existing runtime/reviewer packets unless and until dedicated V3 Devnet rehearsal artifacts are recorded
+- `Settlement Hardening V3` now has a dedicated Devnet rehearsal artifact proving the V3 execute path with proposal-scoped settlement policy snapshots and verified settlement evidence
+- that artifact is still a test-wallet Devnet packet, not a production-custody or mainnet claim
