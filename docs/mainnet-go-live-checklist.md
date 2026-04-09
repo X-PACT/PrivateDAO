@@ -19,6 +19,7 @@ Required outcome:
 - reviewer artifacts are fresh
 - proof registries are aligned
 - runtime and operational evidence are current
+- additive V3 hardening proof remains current
 - no stale generated files remain
 
 ## 2. Program And Authority Controls

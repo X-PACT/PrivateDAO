@@ -14,6 +14,7 @@ This checklist is the shortest operational path for a human operator preparing t
 ## Evidence Surfaces To Check First
 
 - [live-proof.md](/home/x-pact/PrivateDAO/docs/live-proof.md)
+- [test-wallet-live-proof-v3.generated.md](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.md)
 - [devnet-release-manifest.md](/home/x-pact/PrivateDAO/docs/devnet-release-manifest.md)
 - [proof-registry.json](/home/x-pact/PrivateDAO/docs/proof-registry.json)
 
@@ -22,10 +23,11 @@ This checklist is the shortest operational path for a human operator preparing t
 Run in this order:
 
 1. `npm run verify:live-proof`
-2. `npm run verify:release-manifest`
-3. `npm run verify:review-links`
-4. `npm run verify:review-surface`
-5. `npm run check:mainnet`
+2. `npm run verify:test-wallet-live-proof:v3`
+3. `npm run verify:release-manifest`
+4. `npm run verify:review-links`
+5. `npm run verify:review-surface`
+6. `npm run check:mainnet`
 
 ## Governance Operation Checklist
 

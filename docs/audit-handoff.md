@@ -16,7 +16,7 @@ Provide the following in this order:
 4. threat model
 5. security coverage map
 6. failure modes and replay analysis
-7. live devnet proof and release manifest
+7. baseline live devnet proof, dedicated V3 live proof, and release manifest
 8. test files and independent verification guide
 9. zk-enforced runtime package and verifier-boundary decision docs
 
@@ -34,8 +34,15 @@ Provide the following in this order:
 ### Live proof and release references
 
 - [live-proof.md](/home/x-pact/PrivateDAO/docs/live-proof.md)
+- [test-wallet-live-proof-v3.generated.md](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.md)
 - [devnet-release-manifest.md](/home/x-pact/PrivateDAO/docs/devnet-release-manifest.md)
 - [proof-registry.json](/home/x-pact/PrivateDAO/docs/proof-registry.json)
+
+### Additive hardening V3 references
+
+- [governance-hardening-v3.md](/home/x-pact/PrivateDAO/docs/governance-hardening-v3.md)
+- [settlement-hardening-v3.md](/home/x-pact/PrivateDAO/docs/settlement-hardening-v3.md)
+- [test-wallet-live-proof-v3.generated.json](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.json)
 
 ### Verification and test surfaces
 

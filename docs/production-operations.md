@@ -72,6 +72,7 @@ Relevant repository surfaces:
 
 - [check-mainnet-readiness.sh](/home/x-pact/PrivateDAO/scripts/check-mainnet-readiness.sh)
 - [independent-verification.md](/home/x-pact/PrivateDAO/docs/independent-verification.md)
+- [test-wallet-live-proof-v3.generated.md](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.md)
 
 ## Monitoring and Alerting
 
@@ -108,6 +109,8 @@ Relevant repository evidence:
 - [security-review.md](/home/x-pact/PrivateDAO/docs/security-review.md)
 - [failure-modes.md](/home/x-pact/PrivateDAO/docs/failure-modes.md)
 - [live-proof.md](/home/x-pact/PrivateDAO/docs/live-proof.md)
+- [governance-hardening-v3.md](/home/x-pact/PrivateDAO/docs/governance-hardening-v3.md)
+- [settlement-hardening-v3.md](/home/x-pact/PrivateDAO/docs/settlement-hardening-v3.md)
 
 ## Incident Response
 
@@ -139,6 +142,7 @@ What exists today in-repo:
 - formal threat reasoning
 - replay and failure-mode documentation
 - live devnet proof
+- dedicated additive V3 Devnet proof
 - release and readiness gates
 
 What still belongs to production rollout work:

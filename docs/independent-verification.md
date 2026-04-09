@@ -96,6 +96,7 @@ create proposal
 Open:
 
 - `docs/live-proof.md`
+- `docs/test-wallet-live-proof-v3.generated.md`
 
 This file contains:
 
@@ -106,6 +107,16 @@ This file contains:
 - real transaction hashes
 - explorer links
 - observed balance deltas
+
+Use the baseline proof when you want the canonical lifecycle quickly.
+
+Use `docs/test-wallet-live-proof-v3.generated.md` when you want the additive hardening path specifically:
+
+- `Governance Hardening V3`
+- `Settlement Hardening V3`
+- token-supply quorum snapshots
+- dedicated reveal rebate vault
+- payout caps and settlement evidence aging
 
 ### Reviewer-visible local/demo path
 
@@ -141,6 +152,23 @@ Expected result:
 - proposal is finalized
 - treasury action is executed
 - transaction hashes are printed
+
+### Reviewer-visible devnet path for additive V3 proof
+
+Run:
+
+```bash
+ANCHOR_PROVIDER_URL="https://devnet.helius-rpc.com/?api-key=YOUR_KEY" \
+ANCHOR_WALLET="$HOME/.config/solana/id.json" \
+npm run live-proof:v3
+```
+
+Expected result:
+
+- Governance Hardening V3 lifecycle completes
+- Settlement Hardening V3 lifecycle completes
+- dedicated proof packet is regenerated
+- both V3 execute transactions are printed
 
 ## 3. Manual CLI Reproduction
 

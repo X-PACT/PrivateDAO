@@ -8,6 +8,7 @@ It exists to reduce ambiguity between:
 
 - the deployed program
 - the live governance proof
+- the dedicated additive V3 proof
 - the review-facing strategy config
 - the proof links exposed in the frontend and README
 
@@ -65,9 +66,16 @@ These are intentionally different. The Token-2022 id belongs to the PDAO mint su
 These values are expected to match:
 
 - [live-proof.md](/home/x-pact/PrivateDAO/docs/live-proof.md)
+- [test-wallet-live-proof-v3.generated.md](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.md)
 - [ranger-strategy-config.devnet.json](/home/x-pact/PrivateDAO/docs/ranger-strategy-config.devnet.json)
 - [ranger-submission-bundle.generated.md](/home/x-pact/PrivateDAO/docs/ranger-submission-bundle.generated.md)
 - [README.md](/home/x-pact/PrivateDAO/README.md)
+
+## Additive V3 References
+
+- Governance Hardening V3: [governance-hardening-v3.md](/home/x-pact/PrivateDAO/docs/governance-hardening-v3.md)
+- Settlement Hardening V3: [settlement-hardening-v3.md](/home/x-pact/PrivateDAO/docs/settlement-hardening-v3.md)
+- Dedicated V3 Devnet proof: [test-wallet-live-proof-v3.generated.md](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.md)
 
 ## Operator Use
 
