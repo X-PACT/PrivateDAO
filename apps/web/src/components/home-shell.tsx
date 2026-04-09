@@ -17,11 +17,13 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { heroPersonas, servicePacks, techCards } from "@/lib/site-data";
+import { useSiteUrls } from "@/lib/site-urls";
 import { cn } from "@/lib/utils";
 
 export function HomeShell() {
   const [persona, setPersona] = useState<keyof typeof heroPersonas>("buyer");
   const activePersona = heroPersonas[persona];
+  const { judgeViewUrl } = useSiteUrls();
 
   return (
     <main className="pb-24">
@@ -71,7 +73,7 @@ export function HomeShell() {
               </Link>
               <a
                 className={cn(buttonVariants({ size: "lg", variant: "outline" }))}
-                href="https://x-pact.github.io/PrivateDAO/?page=proof&judge=1"
+                href={judgeViewUrl}
                 rel="noreferrer"
                 target="_blank"
               >

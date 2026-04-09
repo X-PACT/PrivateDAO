@@ -21,6 +21,7 @@ export const metadata: Metadata = {
   title: "PrivateDAO Next Surface",
   description:
     "Next.js migration for PrivateDAO: private governance, confidential treasury execution, runtime trust, and buyer-facing service surfaces on Solana.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_LIVE_SITE_URL ?? "https://x-pact.github.io/PrivateDAO/"),
 };
 
 export default function RootLayout({

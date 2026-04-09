@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 
 import { buttonVariants } from "@/components/ui/button";
+import { useSiteUrls } from "@/lib/site-urls";
 import { cn } from "@/lib/utils";
 import { WalletConnectButton } from "@/components/wallet-connect-button";
 
@@ -17,6 +20,8 @@ const navItems = [
 ];
 
 export function SiteHeader() {
+  const { liveSiteUrl } = useSiteUrls();
+
   return (
     <header className="sticky top-0 z-40 border-b border-white/8 bg-[#050816]/75 backdrop-blur-xl">
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-6 px-4 py-4 sm:px-6 lg:px-8">
@@ -45,7 +50,7 @@ export function SiteHeader() {
         <div className="flex items-center gap-3">
           <a
             className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "hidden lg:inline-flex")}
-            href="https://x-pact.github.io/PrivateDAO/"
+            href={liveSiteUrl}
             rel="noreferrer"
             target="_blank"
           >
