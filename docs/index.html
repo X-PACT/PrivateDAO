@@ -13,6 +13,7 @@
 <meta name="twitter:title" content="PrivateDAO — Private Governance, Confidential Treasury, and Runtime Trust on Solana">
 <meta name="twitter:description" content="PrivateDAO is a production-minded Solana governance and treasury product with private voting, zk_enforced hardening, confidential payroll, REFHE and MagicBlock payout paths, backend reads, and reviewer-visible runtime evidence.">
 <meta name="twitter:image" content="assets/social-preview.svg">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <script src="assets/vendor/solana-web3.iife.min.js"></script>
 <style>
 :root {
@@ -186,7 +187,7 @@ nav.scrolled {
   color: var(--text);
   display: inline-flex;
   align-items: center;
-  gap: 1px;
+  gap: 0;
 }
 .logo-name em { color: var(--cyan); font-style: normal; }
 
@@ -196,7 +197,7 @@ nav.scrolled {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin: 0 2px 0 1px;
+  margin: 0 -1px 0 -1px;
   position: relative;
   transform: translateY(1px);
   filter: drop-shadow(0 0 14px rgba(255, 207, 74, 0.22));
@@ -3030,8 +3031,25 @@ footer {
   padding: 48px 0;
 }
 .footer-inner { display:flex; justify-content:space-between; align-items:center; flex-wrap: wrap; gap: 20px; }
-.footer-brand { font-family: var(--display); font-size: 22px; letter-spacing: 2px; color: var(--text2); }
+.footer-brand { font-family: var(--display); font-size: 22px; letter-spacing: 2px; color: var(--text2); display:inline-flex; align-items:center; gap:0; }
 .footer-brand em { color: var(--cyan); font-style: normal; }
+
+.footer-pyramid-a {
+  width: 15px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 -1px;
+  transform: translateY(1px);
+  filter: drop-shadow(0 0 10px rgba(255, 207, 74, 0.2));
+}
+
+.footer-pyramid-a svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
 .footer-meta { font-family: var(--mono); font-size: 11px; color: var(--text3); }
 .footer-links { display:flex; gap:24px; }
 .footer-link { font-size: 13px; color: var(--text3); text-decoration:none; transition:color 0.2s; }
@@ -6927,7 +6945,14 @@ execute() → treasury action
 <footer>
   <div class="container">
     <div class="footer-inner">
-      <div class="footer-brand">Private<em>DAO</em></div>
+      <div class="footer-brand">Private<em>D</em><span class="footer-pyramid-a" aria-hidden="true">
+        <svg viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 2.2 18 21H2L10 2.2Z" stroke="#ffcf4a" stroke-width="1.9" stroke-linejoin="round"/>
+          <path d="M10 2.2V21" stroke="#ffb100" stroke-opacity="0.82" stroke-width="1.25"/>
+          <path d="M6.3 11.2h7.4" stroke="#ffdc64" stroke-width="1.25" stroke-linecap="round"/>
+          <path d="M4.6 17.1h10.8" stroke="#fff1b3" stroke-opacity="0.5" stroke-width="1.1" stroke-dasharray="3 4" stroke-linecap="round"/>
+        </svg>
+      </span><em>O</em></div>
       <div class="footer-meta">
         Program: 5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx · Core AGPLv3+ · SDK Apache-2.0 · Docs MIT
       </div>

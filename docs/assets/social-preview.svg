@@ -1,12 +1,58 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#02070f"/>
-      <stop offset="100%" stop-color="#0d2238"/>
+    <linearGradient id="bg" x1="90" y1="70" x2="1120" y2="620" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#02070f"/>
+      <stop offset="0.55" stop-color="#081420"/>
+      <stop offset="1" stop-color="#0d2238"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="690" y1="120" x2="1020" y2="500" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00e5ff" stop-opacity="0.16"/>
+      <stop offset="0.48" stop-color="#5d5cff" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#00ff88" stop-opacity="0.1"/>
+    </linearGradient>
+    <linearGradient id="goldEdge" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#ffcf4a"/>
+      <stop offset="0.52" stop-color="#ffdc64"/>
+      <stop offset="1" stop-color="#ffb100"/>
     </linearGradient>
   </defs>
-  <rect width="1200" height="630" fill="url(#g)"/>
-  <text x="80" y="250" fill="#00e5ff" font-family="Arial, sans-serif" font-size="76" font-weight="700">PrivateDAO</text>
-  <text x="80" y="320" fill="#e0f0ff" font-family="Arial, sans-serif" font-size="36">Commit-Reveal Governance on Solana</text>
-  <text x="80" y="390" fill="#7ba4cb" font-family="Arial, sans-serif" font-size="28">Quadratic voting · Timelocked treasury execution · Realms migration</text>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1005" cy="160" r="182" fill="url(#glow)"/>
+  <circle cx="940" cy="410" r="228" fill="url(#glow)" opacity="0.6"/>
+
+  <g opacity="0.34">
+    <path d="M740 110 1065 520H415L740 110Z" stroke="#00e5ff" stroke-opacity="0.16" stroke-width="2"/>
+    <path d="M740 110V520" stroke="#00e5ff" stroke-opacity="0.08" stroke-width="1.4"/>
+    <path d="M560 290H920" stroke="#00ff88" stroke-opacity="0.08" stroke-width="1.4"/>
+    <path d="M505 408H975" stroke="#5d5cff" stroke-opacity="0.08" stroke-width="1.2" stroke-dasharray="5 8"/>
+  </g>
+
+  <g transform="translate(80 170)">
+    <text x="0" y="96" fill="#e0f0ff" font-family="Arial, sans-serif" font-size="94" font-weight="700" letter-spacing="1.5">PrivateD</text>
+    <g transform="translate(445 18)">
+      <path d="M48 0 94 104H2L48 0Z" stroke="url(#goldEdge)" stroke-width="6.2" stroke-linejoin="round"/>
+      <path d="M48 0V104" stroke="#ffb100" stroke-opacity="0.82" stroke-width="3.8"/>
+      <path d="M26 50H70" stroke="#ffdc64" stroke-width="3.6" stroke-linecap="round"/>
+      <path d="M16 78H80" stroke="#fff1b3" stroke-opacity="0.58" stroke-width="2.8" stroke-dasharray="7 9" stroke-linecap="round"/>
+    </g>
+    <text x="552" y="96" fill="#00e5ff" font-family="Arial, sans-serif" font-size="94" font-weight="700" letter-spacing="1.5">O</text>
+  </g>
+
+  <text x="82" y="332" fill="#fff2bf" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="2">1st Place · Superteam Poland</text>
+  <text x="80" y="390" fill="#e0f0ff" font-family="Arial, sans-serif" font-size="36">Private governance, confidential treasury, and live Devnet execution on Solana.</text>
+  <text x="80" y="448" fill="#7ba4cb" font-family="Arial, sans-serif" font-size="27">Commit-reveal voting · ZK companion layer · REFHE and MagicBlock paths · RPC-backed runtime evidence</text>
+
+  <g transform="translate(80 500)">
+    <rect width="208" height="46" rx="23" fill="rgba(0,229,255,0.08)" stroke="rgba(0,229,255,0.24)"/>
+    <text x="24" y="29" fill="#00e5ff" font-family="Arial, sans-serif" font-size="20" font-weight="700">Solana + Anchor</text>
+  </g>
+  <g transform="translate(306 500)">
+    <rect width="176" height="46" rx="23" fill="rgba(255,207,74,0.08)" stroke="rgba(255,207,74,0.24)"/>
+    <text x="24" y="29" fill="#fff2bf" font-family="Arial, sans-serif" font-size="20" font-weight="700">PrivateDAO</text>
+  </g>
+  <g transform="translate(500 500)">
+    <rect width="194" height="46" rx="23" fill="rgba(0,255,136,0.08)" stroke="rgba(0,255,136,0.24)"/>
+    <text x="24" y="29" fill="#00ff88" font-family="Arial, sans-serif" font-size="20" font-weight="700">Guided Product Flow</text>
+  </g>
 </svg>
