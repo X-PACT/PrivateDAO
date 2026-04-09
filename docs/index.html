@@ -167,7 +167,7 @@ body::before {
 }
 
 /* ── LAYOUT ── */
-.container { max-width: 1280px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
+.container { max-width: 1240px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
 
 /* ── NAV ── */
 nav {
@@ -182,7 +182,7 @@ nav.scrolled {
   backdrop-filter: blur(24px);
   border-bottom-color: var(--border);
 }
-.nav-inner { display:flex; align-items:center; justify-content:space-between; gap: 18px; }
+.nav-inner { display:flex; align-items:center; justify-content:space-between; gap: 14px; }
 
 .logo-wrap { display:flex; align-items:center; gap:14px; color: inherit; text-decoration: none; flex: 0 0 auto; }
 .logo-wrap:hover,
@@ -275,8 +275,11 @@ nav.scrolled {
   display:flex;
   align-items: center;
   justify-content: center;
-  flex: 1 1 auto;
+  flex: 1 1 min(760px, 100%);
+  min-width: 0;
+  flex-wrap: wrap;
   gap: 8px;
+  row-gap: 6px;
   padding: 8px;
   border-radius: 16px;
   border: 1px solid rgba(255,255,255,0.05);
@@ -287,9 +290,9 @@ nav.scrolled {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 40px;
-  padding: 9px 16px;
-  font-size: 12.5px;
+  min-height: 36px;
+  padding: 8px 12px;
+  font-size: 11.5px;
   font-weight: 500;
   color: var(--text2);
   background: transparent;
@@ -311,13 +314,13 @@ nav.scrolled {
 .wallet-btn {
   display: flex; align-items:center; gap:10px;
   min-height: 44px;
-  padding: 11px 18px;
+  padding: 10px 14px;
   border: 1px solid var(--border2);
   background: var(--card);
   border-radius: 14px;
   color: var(--text);
   font-family: var(--mono);
-  font-size: 12.5px;
+  font-size: 12px;
   cursor: pointer;
   transition: all 0.25s;
   position: relative;
@@ -372,6 +375,7 @@ nav.scrolled {
 .hero .container {
   position: relative;
   z-index: 1;
+  max-width: 1180px;
 }
 
 .award-banner {
@@ -506,7 +510,7 @@ nav.scrolled {
   color: #fff6d1;
 }
 
-.hero-content { max-width: 760px; }
+.hero-content { max-width: 720px; }
 
 .hero-badge-row {
   display: inline-flex;
@@ -1876,7 +1880,7 @@ nav.scrolled {
   }
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 1480px) {
   .nav-inner {
     flex-wrap: wrap;
     justify-content: center;
@@ -1887,22 +1891,9 @@ nav.scrolled {
     width: 100%;
     justify-content: center;
   }
-}
-
-@media (max-width: 900px) {
-  .nav-links {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .nav-link {
-    width: 100%;
-  }
 
   .wallet-stack {
-    width: 100%;
-    display: flex;
-    justify-content: center;
+    flex: 0 0 auto;
   }
 }
 
@@ -3301,6 +3292,7 @@ body.judge-mode .judge-banner {
   .compare-grid, .protocol-steps, .features-grid { grid-template-columns: 1fr; }
   .migration-card { grid-template-columns: 1fr; }
   .nav-links { display: none; }
+  .nav-inner { justify-content: space-between; }
   .hero-headline { font-size: 72px; }
   .hero-zk-shield { width: 84px; height: 84px; top: 142px; right: 8px; opacity: 0.42; }
   .hero-feature-line { margin-top: -10px; }
@@ -3529,6 +3521,7 @@ body.judge-mode .judge-banner {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
 }
 .wallet-caret {
   font-size: 11px;
