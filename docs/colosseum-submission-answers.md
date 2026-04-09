@@ -48,6 +48,7 @@ Solana is now strong enough to support governance infrastructure that goes beyon
 - live Devnet governance token surface (`PDAO`)
 - commit-reveal governance
 - proposal-level `zk_enforced` hardening
+- additive `Governance Hardening V3` and `Settlement Hardening V3` paths with dedicated Devnet proof
 - confidential payroll and bonus approvals
 - REFHE-gated settlement path
 - MagicBlock private payment corridor path
@@ -68,9 +69,20 @@ This repo contains the core product, not just one contract. It includes the on-c
 - `@solana/web3.js`
 - wallet-connected web frontend
 - backend read node / indexer path
+- additive V3 governance and settlement hardening
 - REFHE-based encrypted payout flow
 - MagicBlock private payment corridor path
 - automated runtime evidence and review tooling
+
+## V3 Evidence Shortcut
+
+When a reviewer needs the stricter additive hardening path specifically, point them to:
+
+- `docs/test-wallet-live-proof-v3.generated.md`
+- `docs/governance-hardening-v3.md`
+- `docs/settlement-hardening-v3.md`
+
+This is a Devnet proof surface, not a production-custody or unrestricted-mainnet claim.
 
 ## Revenue / Funding Position
 

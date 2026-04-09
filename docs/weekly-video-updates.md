@@ -54,6 +54,7 @@ These weekly videos are designed for hackathon update submissions on YouTube, Lo
   - `Week 4 - PrivateDAO Frontier Hackathon - Audit Readiness And Mainnet Path`
 - focus:
   - 50-wallet Devnet rehearsal
+  - additive Governance Hardening V3 and Settlement Hardening V3 proof
   - reviewer-visible evidence surfaces
   - go-live blockers
   - mainnet direction and product maturity
