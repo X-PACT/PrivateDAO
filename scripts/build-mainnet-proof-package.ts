@@ -27,6 +27,9 @@ function main() {
     coreArtifacts: [
       "docs/mainnet-readiness.generated.md",
       "docs/mainnet-acceptance-matrix.generated.md",
+      "docs/test-wallet-live-proof-v3.generated.md",
+      "docs/governance-hardening-v3.md",
+      "docs/settlement-hardening-v3.md",
       "docs/release-ceremony-attestation.generated.md",
       "docs/release-drill.generated.md",
       "docs/operational-evidence.generated.md",
@@ -89,7 +92,7 @@ ${payload.commands.map((entry) => `- \`${entry}\``).join("\n")}
 
 ## Purpose
 
-This package is the shortest reviewer-facing path for mainnet readiness discussions. It binds the readiness report, acceptance matrix, runtime package, release discipline, and honest external-intake boundary into one compact surface.
+This package is the shortest reviewer-facing path for mainnet readiness discussions. It binds the readiness report, acceptance matrix, baseline and additive V3 proof surfaces, runtime package, release discipline, and honest external-intake boundary into one compact surface.
 `;
 }
 

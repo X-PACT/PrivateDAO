@@ -45,8 +45,8 @@ function main() {
     {
       layer: "governance-lifecycle",
       status: "accepted-in-repo",
-      evidence: ["docs/live-proof.md", "docs/load-test-report.md", "tests/full-flow-test.ts"],
-      rationale: "The lifecycle is live on Devnet and is covered by deterministic tests and published proof surfaces.",
+      evidence: ["docs/live-proof.md", "docs/test-wallet-live-proof-v3.generated.md", "docs/load-test-report.md", "tests/full-flow-test.ts"],
+      rationale: "The lifecycle is live on Devnet across both the baseline path and the additive V3 path, and is covered by deterministic tests and published proof surfaces.",
     },
     {
       layer: "security-reasoning",
@@ -83,8 +83,24 @@ function main() {
         runtimeEvidence.resilience.unexpectedFailures === 0
           ? "accepted-in-repo"
           : "pending-external",
-      evidence: ["docs/operational-evidence.generated.md", "docs/runtime-evidence.generated.md", "docs/devnet-canary.generated.md", "docs/devnet-resilience-report.md"],
+      evidence: ["docs/operational-evidence.generated.md", "docs/runtime-evidence.generated.md", "docs/devnet-canary.generated.md", "docs/devnet-resilience-report.md", "docs/test-wallet-live-proof-v3.generated.md"],
       rationale: "The repository proves runtime diagnostics, full lifecycle execution, RPC fallback, stale-blockhash recovery, and collision handling on Devnet.",
+    },
+    {
+      layer: "additive-v3-hardening",
+      status:
+        submission.status.governanceHardeningV3 === "verified" &&
+        submission.status.settlementHardeningV3 === "verified" &&
+        submission.status.liveProofV3 === "verified"
+          ? "accepted-in-repo"
+          : "pending-external",
+      evidence: [
+        "docs/governance-hardening-v3.md",
+        "docs/settlement-hardening-v3.md",
+        "docs/test-wallet-live-proof-v3.generated.md",
+        "docs/test-wallet-live-proof-v3.generated.json",
+      ],
+      rationale: "The stricter additive hardening path is documented, machine-checked, and proven on Devnet without reinterpreting legacy objects.",
     },
     {
       layer: "release-discipline",

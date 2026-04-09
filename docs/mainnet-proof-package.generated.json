@@ -1,10 +1,13 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-09T15:17:59.132Z",
+  "generatedAt": "2026-04-09T17:12:00.350Z",
   "packageDecision": "repository-strong-but-external-blockers-remain",
   "coreArtifacts": [
     "docs/mainnet-readiness.generated.md",
     "docs/mainnet-acceptance-matrix.generated.md",
+    "docs/test-wallet-live-proof-v3.generated.md",
+    "docs/governance-hardening-v3.md",
+    "docs/settlement-hardening-v3.md",
     "docs/release-ceremony-attestation.generated.md",
     "docs/release-drill.generated.md",
     "docs/operational-evidence.generated.md",
@@ -15,7 +18,7 @@
     "docs/external-readiness-intake.md"
   ],
   "summary": {
-    "acceptedInRepo": 8,
+    "acceptedInRepo": 9,
     "pendingExternal": 3,
     "notInRepo": 1,
     "runtimeWalletCount": 5,
@@ -35,6 +38,9 @@
       "releaseDrillSurface": "verified",
       "artifactFreshness": "verified",
       "zkCompanionStack": "verified",
+      "governanceHardeningV3": "verified",
+      "settlementHardeningV3": "verified",
+      "liveProofV3": "verified",
       "reviewerSurface": "verified",
       "operationsSurface": "verified",
       "competitivePositioningSurface": "verified",

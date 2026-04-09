@@ -2,8 +2,8 @@
 
 ## Overview
 
-- Generated at: `2026-04-09T16:48:54+02:00`
-- Release commit: `d2fd590eb5d18a09532298feef2f59f37a87b495`
+- Generated at: `2026-04-09T19:09:33+02:00`
+- Release commit: `ffe2a7496f9b30c73f619185cbc4c31f8ac13734`
 - Release branch: `main`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
@@ -22,12 +22,16 @@
 - `docs/mainnet-cutover-runbook.md`
 - `docs/operator-checklist.md`
 - `docs/mainnet-readiness.generated.md`
+- `docs/test-wallet-live-proof-v3.generated.md`
+- `docs/governance-hardening-v3.md`
+- `docs/settlement-hardening-v3.md`
 - `docs/deployment-attestation.generated.json`
 - `docs/go-live-attestation.generated.json`
 
 ## Mandatory Gates
 
 - `npm run verify:live-proof`
+- `npm run verify:test-wallet-live-proof:v3`
 - `npm run verify:release-manifest`
 - `npm run verify:review-links`
 - `npm run verify:review-surface`
@@ -35,7 +39,7 @@
 
 ## Ceremony Status
 
-- Observed gate count: `62`
+- Observed gate count: `63`
 - Deployment gate count: `62`
 - Go-live decision: `blocked-pending-external-steps`
 

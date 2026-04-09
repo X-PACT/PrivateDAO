@@ -20,6 +20,9 @@
     "releaseDrillSurface",
     "artifactFreshness",
     "zkCompanionStack",
+    "governanceHardeningV3",
+    "settlementHardeningV3",
+    "liveProofV3",
     "reviewerSurface",
     "operationsSurface",
     "competitivePositioningSurface"
@@ -46,13 +49,17 @@
     "npm run verify:all",
     "npm run verify:mainnet-readiness-report",
     "npm run verify:deployment-attestation",
-    "npm run verify:go-live-attestation"
+    "npm run verify:go-live-attestation",
+    "npm run verify:test-wallet-live-proof:v3"
   ],
   "criteriaDocs": [
     "docs/go-live-criteria.md",
     "docs/operational-drillbook.md",
     "docs/mainnet-readiness.md",
     "docs/mainnet-readiness.generated.md",
+    "docs/governance-hardening-v3.md",
+    "docs/settlement-hardening-v3.md",
+    "docs/test-wallet-live-proof-v3.generated.md",
     "docs/deployment-attestation.generated.json",
     "docs/zk/enforced-runtime-evidence.md",
     "docs/zk/enforced-runtime.generated.md",

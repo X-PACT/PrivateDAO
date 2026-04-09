@@ -42,6 +42,7 @@ function main() {
 
   const mandatoryGates = [
     "npm run verify:live-proof",
+    "npm run verify:test-wallet-live-proof:v3",
     "npm run verify:release-manifest",
     "npm run verify:review-links",
     "npm run verify:review-surface",
@@ -67,6 +68,9 @@ function main() {
       "docs/mainnet-cutover-runbook.md",
       "docs/operator-checklist.md",
       "docs/mainnet-readiness.generated.md",
+      "docs/test-wallet-live-proof-v3.generated.md",
+      "docs/governance-hardening-v3.md",
+      "docs/settlement-hardening-v3.md",
       "docs/deployment-attestation.generated.json",
       "docs/go-live-attestation.generated.json",
     ],

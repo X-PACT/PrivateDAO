@@ -3,11 +3,11 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-09T15:17:59.132Z`
+- generated at: `2026-04-09T17:12:00.350Z`
 - package decision: `repository-strong-but-external-blockers-remain`
 - program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
-- accepted in repo: `8`
+- accepted in repo: `9`
 - pending external: `3`
 - not in repo: `1`
 
@@ -15,6 +15,9 @@
 
 - `docs/mainnet-readiness.generated.md`
 - `docs/mainnet-acceptance-matrix.generated.md`
+- `docs/test-wallet-live-proof-v3.generated.md`
+- `docs/governance-hardening-v3.md`
+- `docs/settlement-hardening-v3.md`
 - `docs/release-ceremony-attestation.generated.md`
 - `docs/release-drill.generated.md`
 - `docs/operational-evidence.generated.md`
@@ -37,4 +40,4 @@
 
 ## Purpose
 
-This package is the shortest reviewer-facing path for mainnet readiness discussions. It binds the readiness report, acceptance matrix, runtime package, release discipline, and honest external-intake boundary into one compact surface.
+This package is the shortest reviewer-facing path for mainnet readiness discussions. It binds the readiness report, acceptance matrix, baseline and additive V3 proof surfaces, runtime package, release discipline, and honest external-intake boundary into one compact surface.

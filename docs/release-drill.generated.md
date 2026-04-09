@@ -2,9 +2,9 @@
 
 ## Overview
 
-- Generated at: `2026-04-09T16:48:54+02:00`
+- Generated at: `2026-04-09T19:09:33+02:00`
 - Mode: `repository-simulated-drill`
-- Release commit: `d2fd590eb5d18a09532298feef2f59f37a87b495`
+- Release commit: `ffe2a7496f9b30c73f619185cbc4c31f8ac13734`
 - Release branch: `main`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
@@ -21,6 +21,7 @@
 ## Mandatory Gates
 
 - `npm run verify:live-proof`
+- `npm run verify:test-wallet-live-proof:v3`
 - `npm run verify:release-manifest`
 - `npm run verify:review-links`
 - `npm run verify:review-surface`
@@ -41,7 +42,7 @@
 
 - reviewed-commit-freeze: `simulated-pass`
   category: `operator-check`
-  evidence: `d2fd590eb5d18a09532298feef2f59f37a87b495`
+  evidence: `ffe2a7496f9b30c73f619185cbc4c31f8ac13734`
   note: The reviewed repository commit becomes the release anchor before any cutover activity.
 
 - release-ceremony-attestation: `simulated-pass`
