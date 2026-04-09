@@ -79,6 +79,7 @@ Route parity reference:
 - `docs/web-next-route-parity.md`
 - `docs/web-next-handoff.generated.md`
 - `docs/web-next-cutover-map.generated.md`
+- `docs/web-next-query-strategy.generated.md`
 
 ## Important Constraint
 
