@@ -81,12 +81,22 @@ Adoption improves when communities can verify that the product is not just a pro
 PrivateDAO already supports that through:
 
 - live Devnet proof
+- dedicated additive hardening proof
 - security review surface
 - wallet diagnostics
 - generated reviewer artifacts
 - runtime and resilience evidence
 
 These assets reduce trust friction for early adopters.
+
+The highest-signal proof set for early launch conversations is:
+
+- `docs/live-proof.md`
+- `docs/test-wallet-live-proof-v3.generated.md`
+- `docs/governance-hardening-v3.md`
+- `docs/settlement-hardening-v3.md`
+
+This lets PrivateDAO present both the canonical product loop and the stricter additive hardening path without overstating mainnet readiness.
 
 ## Honest External Dependencies
 

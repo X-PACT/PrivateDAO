@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-09T17:47:10.329Z",
+  "generatedAt": "2026-04-09T18:09:09.828Z",
   "algorithm": "sha256",
   "entryCount": 143,
-  "aggregateSha256": "4361fa006b695ca6d6b9c29d150467079a0c38c95018645fd6d4ce47ad7e1e2f",
+  "aggregateSha256": "0d6c49143d035de2a024132ef0689c4557372b7c8dd3ec08560d162a9ddc6c59",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -302,8 +302,8 @@
     },
     {
       "path": "docs/wallet-runtime.md",
-      "sha256": "bfd03edb6fb79ce40b0b5a315f2c2dc68b7a1086c1d54d12fc8d5e2f88c14ddc",
-      "bytes": 3201
+      "sha256": "83503d2f4c8a111efe40e576a9901f8dca37882e73258c407a8ea6d51507921f",
+      "bytes": 3758
     },
     {
       "path": "docs/runtime/real-device.md",

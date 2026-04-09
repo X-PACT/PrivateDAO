@@ -81,6 +81,18 @@ The repository also publishes a read-only Devnet operational canary:
 
 This canary is intentionally lighter than the multi-wallet stress harness. It exists to provide a sustainable operational signal for RPC health and canonical Devnet anchor visibility between heavier stress runs.
 
+## Runtime Connection To Additive Hardening
+
+Wallet compatibility matters even more for the additive hardening path, because the stricter proposal lifecycle still depends on normal wallet-based signing and broadcast.
+
+When validating that stricter path, pair wallet runtime evidence with:
+
+- `docs/test-wallet-live-proof-v3.generated.md`
+- `docs/governance-hardening-v3.md`
+- `docs/settlement-hardening-v3.md`
+
+This keeps runtime QA connected to the exact governance and settlement hardening flows rather than treating wallet checks as a separate surface.
+
 ## Honest Boundary
 
 The repository can harden wallet logic and diagnostics, but it cannot claim universal compatibility for every wallet release on every platform without real runtime testing.

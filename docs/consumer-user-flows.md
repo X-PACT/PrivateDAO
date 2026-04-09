@@ -91,6 +91,14 @@ What the user experiences:
 - inspectable treasury actions
 - clear transaction evidence rather than hidden admin behavior
 
+For communities that need stricter treasury controls, the repository also ships an additive hardening path:
+
+- `docs/test-wallet-live-proof-v3.generated.md`
+- `docs/governance-hardening-v3.md`
+- `docs/settlement-hardening-v3.md`
+
+That path preserves the same user-visible lifecycle while adding stronger governance and settlement controls behind the scenes.
+
 ## 7. Mobile-Native Path
 
 PrivateDAO also exposes an Android-native path through Solana Mobile Wallet Adapter.
@@ -117,3 +125,12 @@ It affects:
 - how community weighting enters the lifecycle
 
 That makes the token feel like part of the product flow rather than an external badge.
+
+## 9. Reviewer And Operator Proof Path
+
+When a community, reviewer, or operator wants to validate that these flows are real rather than frontend-only, use:
+
+- `docs/live-proof.md` for the canonical baseline lifecycle
+- `docs/test-wallet-live-proof-v3.generated.md` for the additive hardening lifecycle
+- `docs/governance-hardening-v3.md`
+- `docs/settlement-hardening-v3.md`
