@@ -1627,13 +1627,71 @@ nav.scrolled {
   margin-top: 16px;
 }
 
+.proposal-experience-grid {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.proposal-experience-card {
+  padding: 18px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(180deg, rgba(8, 16, 24, 0.72), rgba(7, 13, 20, 0.94));
+  box-shadow: 0 16px 40px rgba(0,0,0,0.16), inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.proposal-experience-label {
+  color: var(--text3);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.proposal-experience-title {
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 800;
+  margin-top: 10px;
+}
+
+.proposal-experience-copy {
+  color: var(--text2);
+  font-size: 13px;
+  line-height: 1.75;
+  margin-top: 8px;
+}
+
+.proposal-experience-list {
+  margin-top: 12px;
+  display: grid;
+  gap: 8px;
+  color: var(--text2);
+  font-size: 12px;
+}
+
+.proposal-experience-list div::before {
+  content: "•";
+  color: var(--cyan);
+  margin-right: 8px;
+}
+
+.proposal-experience-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
 @media (max-width: 1120px) {
   .proposal-preset-grid,
   .proposal-advisor-grid,
   .storefront-overview-grid,
   .storefront-rail-grid,
   .storefront-compare-grid,
-  .decision-matrix-grid {
+  .decision-matrix-grid,
+  .proposal-experience-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1653,7 +1711,8 @@ nav.scrolled {
   .storefront-overview-grid,
   .storefront-rail-grid,
   .storefront-compare-grid,
-  .decision-matrix-grid {
+  .decision-matrix-grid,
+  .proposal-experience-grid {
     grid-template-columns: 1fr;
   }
 
@@ -3697,15 +3756,15 @@ body.judge-mode .judge-banner {
           <a class="award-cta secondary" href="mainnet-proof-package.generated.md" target="_blank">Open Mainnet Proof Package</a>
         </div>
       </div>
-      <div class="award-banner-meta">
-        <div class="award-banner-meta-row">
-          <div class="award-banner-meta-label">PLATFORM</div>
-          <div class="award-banner-meta-value">Superteam Poland</div>
-        </div>
-        <div class="award-banner-meta-row">
-          <div class="award-banner-meta-label">DATE</div>
-          <div class="award-banner-meta-value">March 2026</div>
-        </div>
+        <div class="award-banner-meta">
+          <div class="award-banner-meta-row">
+            <div class="award-banner-meta-label">AWARD</div>
+            <div class="award-banner-meta-value">🥇 1st Place · Superteam Poland</div>
+          </div>
+          <div class="award-banner-meta-row">
+            <div class="award-banner-meta-label">DATE</div>
+            <div class="award-banner-meta-value">March 2026</div>
+          </div>
       </div>
     </div>
   </div>
@@ -4634,6 +4693,13 @@ body.judge-mode .judge-banner {
         <div class="proposal-detail-box">
           <div class="proposal-detail-label">STATUS</div>
           <div class="proposal-detail-value">Click any live proposal card below to populate this panel.</div>
+        </div>
+      </div>
+      <div class="proposal-experience-grid" id="proposalExperienceGrid">
+        <div class="proposal-experience-card">
+          <div class="proposal-experience-label">BUYER STORY</div>
+          <div class="proposal-experience-title">Waiting for selected proposal context</div>
+          <div class="proposal-experience-copy">Choose a live proposal card to see the correct buyer path, proof packet, operator next step, and trust boundary for this exact proposal.</div>
         </div>
       </div>
       <div class="proposal-proof-links" id="proposalProofLinks"></div>
@@ -6659,8 +6725,8 @@ execute() → treasury action
             <div class="award-banner-meta-value">Fahd Kotb</div>
           </div>
           <div class="award-banner-meta-row">
-            <div class="award-banner-meta-label">PLATFORM</div>
-            <div class="award-banner-meta-value">Superteam Poland</div>
+            <div class="award-banner-meta-label">AWARD</div>
+            <div class="award-banner-meta-value">🥇 1st Place · Superteam Poland</div>
           </div>
           <div class="award-banner-meta-row">
             <div class="award-banner-meta-label">DATE</div>
@@ -6701,8 +6767,8 @@ execute() → treasury action
           <div class="award-meta-card-value">Rebuild production backend systems as on-chain Rust programs</div>
         </div>
         <div class="award-meta-card">
-          <div class="award-meta-card-label">PLATFORM</div>
-          <div class="award-meta-card-value">Superteam Poland</div>
+          <div class="award-meta-card-label">AWARD</div>
+          <div class="award-meta-card-value">🥇 1st Place · Superteam Poland</div>
         </div>
         <div class="award-meta-card">
           <div class="award-meta-card-label">DATE</div>
@@ -11161,6 +11227,7 @@ function renderProposalDetail(p, nowTs) {
   const confidentialExecutionBoundary = summarizeConfidentialExecutionBoundary(confidentialPlan, refheEnvelope, magicBlockCorridor);
   const anchorEventSummary = summarizeAnchorEvents(confidentialPlan, refheEnvelope, magicBlockCorridor);
   const detailGrid = document.getElementById('proposalDetailGrid');
+  const experienceGrid = document.getElementById('proposalExperienceGrid');
   const proofLinks = document.getElementById('proposalProofLinks');
   const commandGrid = document.getElementById('proposalCommandGrid');
   const phaseEl = document.getElementById('proposalDetailPhase');
@@ -11198,6 +11265,7 @@ function renderProposalDetail(p, nowTs) {
   const magicBlockSummary = magicBlockCorridor
     ? `${magicBlockCorridor.status} · ${magicBlockCorridor.cluster}<br>Queue ${magicBlockCorridor.transferQueue ? shortPk(magicBlockCorridor.transferQueue) : 'unset'} · Validator ${magicBlockCorridor.validator ? shortPk(magicBlockCorridor.validator) : 'unset'}<br>API ${magicBlockCorridor.apiBaseUrl}<br>${settlementEvidence}`
     : 'No MagicBlock corridor attached';
+  const experienceModel = buildProposalExperienceModel(p, phase, zkReadiness, refheReadiness, magicBlockReadiness);
 
   phaseEl.textContent = `${paddedId} · ${phase}`;
   introEl.textContent = `The selected proposal is live on devnet. Use this surface to understand the current phase, take the valid next step, and verify the resulting state on chain.`;
@@ -11296,6 +11364,55 @@ function renderProposalDetail(p, nowTs) {
       <div class="proposal-detail-value">${confidentialExecutionBoundary}</div>
     </div>
   `;
+
+  if (experienceGrid) {
+    experienceGrid.innerHTML = `
+      <div class="proposal-experience-card">
+        <div class="proposal-experience-label">BUYER STORY</div>
+        <div class="proposal-experience-title">${experienceModel.buyer.title}</div>
+        <div class="proposal-experience-copy">${experienceModel.buyer.copy}</div>
+        <div class="proposal-experience-list">${experienceModel.buyer.list.map((item) => `<div>${item}</div>`).join('')}</div>
+        <div class="proposal-experience-actions">
+          <button class="proposal-proof-link" type="button" onclick="copySelectedProposalCommercialPacket()">Copy Proposal Packet</button>
+          <button class="proposal-proof-link" type="button" onclick="openSelectedPackDocument()">Open Pack Doc</button>
+          <button class="proposal-proof-link" type="button" onclick="openCommercialCompare()">Compare Plans</button>
+        </div>
+      </div>
+      <div class="proposal-experience-card">
+        <div class="proposal-experience-label">OPERATOR NEXT STEP</div>
+        <div class="proposal-experience-title">${experienceModel.operator.title}</div>
+        <div class="proposal-experience-copy">${experienceModel.operator.copy}</div>
+        <div class="proposal-experience-list">${experienceModel.operator.list.map((item) => `<div>${item}</div>`).join('')}</div>
+        <div class="proposal-experience-actions">
+          <button class="proposal-proof-link" type="button" onclick="openOperatorQuickView()">Operator View</button>
+          <button class="proposal-proof-link" type="button" onclick="loadProposalHistory(currentSelectedProposal)">Load History</button>
+          <button class="proposal-proof-link" type="button" onclick="openSelectedProposalExplorer()">Open Explorer</button>
+        </div>
+      </div>
+      <div class="proposal-experience-card">
+        <div class="proposal-experience-label">JUDGE PATH</div>
+        <div class="proposal-experience-title">${experienceModel.judge.title}</div>
+        <div class="proposal-experience-copy">${experienceModel.judge.copy}</div>
+        <div class="proposal-experience-list">${experienceModel.judge.list.map((item) => `<div>${item}</div>`).join('')}</div>
+        <div class="proposal-experience-actions">
+          <button class="proposal-proof-link" type="button" onclick="openJudgeQuickView()">Judge View</button>
+          <button class="proposal-proof-link" type="button" onclick="shareCurrentProposal()">Copy Share Link</button>
+          <button class="proposal-proof-link" type="button" onclick="copyJudgeModeLink()">Copy Judge Link</button>
+        </div>
+      </div>
+      <div class="proposal-experience-card">
+        <div class="proposal-experience-label">LIVE BOUNDARY</div>
+        <div class="proposal-experience-title">${experienceModel.boundary.title}</div>
+        <div class="proposal-experience-copy">${experienceModel.boundary.copy}</div>
+        <div class="proposal-experience-list">${experienceModel.boundary.list.map((item) => `<div>${item}</div>`).join('')}</div>
+        <div class="proposal-experience-actions">
+          <button class="proposal-proof-link" type="button" onclick="openLiveBoundaryMatrix()">Open Boundary Surface</button>
+          <button class="proposal-proof-link" type="button" onclick="openDocument('mainnet-blockers.md', 'Mainnet Blockers')">Mainnet Blockers</button>
+          <button class="proposal-proof-link" type="button" onclick="openDocument('trust-package.md', 'Trust Package')">Trust Package</button>
+        </div>
+      </div>
+    `;
+  }
 
   proofLinks.innerHTML = `
     <a class="proposal-proof-link" href="${solscanAccount(p.pubkey)}" target="_blank">Proposal Explorer</a>
@@ -11561,6 +11678,135 @@ function summarizeMagicBlockReadiness(proposal) {
     copy: `MagicBlock corridor is settled via ${shortPk(corridor.validator)} and queue ${shortPk(corridor.transferQueue)} for this payout.`,
     nextStep: 'If the proposal has passed and timelock is cleared, execute the confidential payout through the MagicBlock-bound path.',
   };
+}
+
+function inferProposalPackKey(proposal) {
+  const plan = proposal?.confidentialPayoutPlan || null;
+  if (!plan) return 'standard-grant';
+  if (plan.assetType === 'Token') return 'private-token-distribution';
+  if (plan.payoutType === 'Salary') return 'confidential-payroll';
+  if (plan.payoutType === 'Bonus') return 'confidential-bonus';
+  return 'standard-grant';
+}
+
+function buildProposalExperienceModel(proposal, phase, zkReadiness, refheReadiness, magicBlockReadiness) {
+  const packKey = inferProposalPackKey(proposal);
+  const pack = PROPOSAL_PACK_SUMMARIES[packKey] || PROPOSAL_PACK_SUMMARIES['standard-grant'];
+  const hasConfidential = Boolean(proposal?.confidentialPayoutPlan);
+  const needsMagicBlock = Boolean(proposal?.confidentialPayoutPlan?.assetType === 'Token');
+  const needsRefhe = hasConfidential;
+  const executionState = phase === 'Executable'
+    ? 'Execution is live now'
+    : phase === 'Timelocked'
+      ? `Execution is timelocked until ${formatUtc(proposal.executionUnlocksAt)}`
+      : phase === 'Executed'
+        ? 'Treasury execution already landed on-chain'
+        : 'Execution is not live yet';
+  const buyerNext = phase === 'Executed'
+    ? 'Open the live proof packet and use this proposal as the buyer-facing reference flow.'
+    : phase === 'Executable'
+      ? 'Use this proposal to show a live-ready treasury action, then open the trust package and pilot packet.'
+      : phase === 'Reveal' || phase === 'Passed' || phase === 'VotingClosed'
+        ? 'Walk the buyer through why the proposal is phase-bound and what remains before execution.'
+        : 'Use this proposal to explain the start of the lifecycle before you promise execution readiness.';
+  const operatorNext = phase === 'Commit'
+    ? 'Commit is the only valid next action for direct voters right now.'
+    : phase === 'Reveal'
+      ? 'Reveal the original vote and salt, then prepare finalize.'
+      : phase === 'Passed' || phase === 'VotingClosed'
+        ? 'Finalize the proposal, then wait for the timelock if execution is not yet open.'
+        : phase === 'Executable'
+          ? 'Execute the treasury action now from the correct wallet and record the resulting signature.'
+          : phase === 'Executed'
+            ? 'Open explorer links, history, and the live proof packet instead of taking more actions.'
+            : 'Create or select another proposal if you need a fresh operating flow.';
+  const judgeNext = proposal?.zkMode === 'ZkEnforced'
+    ? 'This proposal already uses the stronger ZK review path. Open receipts, anchors, and launch trust evidence together.'
+    : zkReadiness.status === 'Ready'
+      ? 'Receipts are ready to promote this proposal into zk_enforced mode if the operator path needs that stronger review surface.'
+      : 'Use the proof links below to show how this proposal fits into the current evidence stack without overstating the ZK path.';
+  return {
+    pack,
+    buyer: {
+      title: `${pack.title} buyer story`,
+      copy: `${pack.bestFor} ${buyerNext}`,
+      list: [
+        `Recommended offer: ${pack.offer}`,
+        `Pack fit: ${pack.badge}`,
+        executionState,
+      ],
+    },
+    operator: {
+      title: 'Operator next step',
+      copy: `${operatorNext} This proposal remains wallet-signed, proposal-bound, and phase-locked.`,
+      list: [
+        `Current phase: ${phase}`,
+        `Next action: ${phase === 'Commit' ? 'Commit' : phase === 'Reveal' ? 'Reveal' : phase === 'Passed' || phase === 'VotingClosed' ? 'Finalize' : phase === 'Executable' ? 'Execute' : phase === 'Executed' ? 'Verify' : 'Inspect'}`,
+        `Execution state: ${executionState}`,
+      ],
+    },
+    judge: {
+      title: 'Judge and reviewer path',
+      copy: `${judgeNext} Proof links, explorer actions, runtime history, and trust packets stay scoped to this exact proposal.`,
+      list: [
+        `ZK readiness: ${zkReadiness.status}`,
+        `REFHE readiness: ${refheReadiness.status}`,
+        `MagicBlock readiness: ${magicBlockReadiness.status}`,
+      ],
+    },
+    boundary: {
+      title: 'Live boundary for this proposal',
+      copy: 'This card explains what this exact proposal proves today, versus what still remains outside the repo and outside this wallet flow before a real-funds launch can be claimed.',
+      list: [
+        `Live now: ${hasConfidential ? 'confidential payout path' : 'standard treasury path'} plus proposal-bound lifecycle`,
+        `Live now: ${needsRefhe ? `REFHE ${refheReadiness.status.toLowerCase()}` : 'REFHE not required for this proposal'}`,
+        `Live now: ${needsMagicBlock ? `MagicBlock ${magicBlockReadiness.status.toLowerCase()}` : 'MagicBlock not required for this proposal'}`,
+        'Pending-external: multisig custody, authority transfer, audit closure, final mainnet cutover',
+      ],
+    },
+  };
+}
+
+function copySelectedProposalCommercialPacket() {
+  if (!currentSelectedProposal) {
+    showToast('Select a proposal first.', 'error');
+    return;
+  }
+  const phase = computePhase(currentSelectedProposal, Math.floor(Date.now() / 1000));
+  const zkReadiness = summarizeZkEnforcedReadiness(currentSelectedProposal);
+  const refheReadiness = summarizeRefheReadiness(currentSelectedProposal);
+  const magicBlockReadiness = summarizeMagicBlockReadiness(currentSelectedProposal);
+  const pack = PROPOSAL_PACK_SUMMARIES[inferProposalPackKey(currentSelectedProposal)] || PROPOSAL_PACK_SUMMARIES['standard-grant'];
+  const packet = [
+    'PrivateDAO Proposal Packet',
+    '',
+    `Proposal: ${currentSelectedProposal.title}`,
+    `Proposal pubkey: ${currentSelectedProposal.pubkey}`,
+    `DAO: ${currentSelectedProposal.dao}`,
+    `Pack: ${pack.title}`,
+    `Current phase: ${phase}`,
+    '',
+    `Recommended offer: ${pack.offer}`,
+    `Best for: ${pack.bestFor}`,
+    '',
+    'Readiness:',
+    `- ZK: ${zkReadiness.status}`,
+    `- REFHE: ${refheReadiness.status}`,
+    `- MagicBlock: ${magicBlockReadiness.status}`,
+    '',
+    'Open next:',
+    `- Pack doc: ${pack.doc}`,
+    '- Live Proof: test-wallet-live-proof.generated.md',
+    '- Trust Package: trust-package.md',
+    '- Mainnet Blockers: mainnet-blockers.md',
+  ].join('\n');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(packet)
+      .then(() => showToast('Selected proposal packet copied.', 'success'))
+      .catch(() => showToast(packet, 'info'));
+    return;
+  }
+  showToast(packet, 'info');
 }
 
 async function hydrateSelectedProposalZkReceipts(proposalPubkey) {
@@ -12036,6 +12282,10 @@ function selectProposal(pubkey) {
   const p = liveProposalMap.get(pubkey);
   if (!p) return;
   currentSelectedProposal = p;
+  const inferredPack = inferProposalPackKey(p);
+  currentProposalBuilderPreset = inferredPack;
+  setStorefrontProfileByPreset(inferredPack);
+  updateSelectedPackSummary();
   renderProposalDetail(p, Math.floor(Date.now() / 1000));
   syncCreateProposalCommand(p.dao);
   syncDepositCommand(p.dao);
