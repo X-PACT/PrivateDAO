@@ -27,6 +27,29 @@ export const daoSummary = {
   reviewerState: "Live proof and runtime evidence available",
 };
 
+export const topMetrics = [
+  {
+    label: "Live proofs",
+    value: "2",
+    detail: "Baseline proof and dedicated V3 proof packet are both reviewer-facing",
+  },
+  {
+    label: "ZK anchors",
+    value: "3",
+    detail: "On-chain proof anchors exposed in the Devnet evidence path",
+  },
+  {
+    label: "Wallets",
+    value: "50",
+    detail: "Multi-wallet Devnet rehearsal already captured and packaged",
+  },
+  {
+    label: "Commercial rails",
+    value: "4",
+    detail: "Grant, fund, gaming, and enterprise service packs remain part of the UI",
+  },
+];
+
 export const proposalCards: ProposalCardModel[] = [
   {
     id: "PDAO-104",
@@ -207,6 +230,74 @@ export const commercialServices = [
     title: "Confidential Operations Premium",
     summary:
       "Add encrypted payout boundaries, V3 hardening, and reviewer-ready execution evidence.",
+  },
+];
+
+export const proofPackets = [
+  {
+    title: "Live proof",
+    summary: "Canonical Devnet create → vote → execute flow with public reviewer links.",
+    href: "https://x-pact.github.io/PrivateDAO/?page=proof&judge=1",
+    cta: "Open judge view",
+  },
+  {
+    title: "Live proof V3",
+    summary: "Dedicated additive hardening proof for Governance V3 and Settlement V3.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/test-wallet-live-proof-v3.generated.md",
+    cta: "Open V3 packet",
+  },
+  {
+    title: "Frontier integrations",
+    summary: "ZK, REFHE, MagicBlock, backend-indexed reads, and runtime evidence in one surface.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/frontier-integrations.generated.md",
+    cta: "Open integrations packet",
+  },
+  {
+    title: "Audit packet",
+    summary: "Reviewer and launch artifacts tied together with generated attestations.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/audit-packet.generated.md",
+    cta: "Open audit packet",
+  },
+];
+
+export const securitySurfaces = [
+  {
+    title: "Governance Hardening V3",
+    body: "Token-supply quorum mode, policy snapshots, and reveal rebate vaults stay additive and versioned.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/governance-hardening-v3.md",
+  },
+  {
+    title: "Settlement Hardening V3",
+    body: "Payout caps, evidence aging, REFHE/MagicBlock requirements, and single-use settlement consumption semantics.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/settlement-hardening-v3.md",
+  },
+  {
+    title: "Mainnet blockers",
+    body: "The app keeps launch boundaries honest: what is live now, what is pending-external, and what still needs custody/audit work.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/mainnet-blockers.md",
+  },
+];
+
+export const servicesJourney = [
+  {
+    title: "Pilot Program",
+    detail: "Week-by-week rollout packet for teams that want guided adoption rather than a raw protocol integration.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/pilot-program.md",
+  },
+  {
+    title: "Service Level Agreement",
+    detail: "Operational framing for hosted reads, response expectations, and trust boundaries.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/service-level-agreement.md",
+  },
+  {
+    title: "Pricing Model",
+    detail: "Commercial packaging for API, ops, and confidential governance support without hiding the technical stack.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/pricing-model.md",
+  },
+  {
+    title: "Trust Package",
+    detail: "A buyer-readable path into proof packets, runtime evidence, and launch readiness boundaries.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/trust-package.md",
   },
 ];
 

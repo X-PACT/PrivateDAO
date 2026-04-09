@@ -2,11 +2,14 @@ import Link from "next/link";
 import { ArrowRight, Shield, Sparkles, TrendingUp } from "lucide-react";
 
 import { GovernanceDashboard } from "@/components/governance-dashboard";
+import { MetricsStrip } from "@/components/metrics-strip";
+import { ProofCenter } from "@/components/proof-center";
 import { SectionHeader } from "@/components/section-header";
+import { ServicesSurface } from "@/components/services-surface";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { commercialServices, servicePacks, techCards } from "@/lib/site-data";
+import { servicePacks, techCards } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
 export function HomeShell() {
@@ -98,6 +101,10 @@ export function HomeShell() {
         </div>
       </section>
 
+      <section className="mx-auto mt-18 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <MetricsStrip />
+      </section>
+
       <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
           eyebrow="Governance dashboard"
@@ -106,6 +113,17 @@ export function HomeShell() {
         />
         <div className="mt-10">
           <GovernanceDashboard />
+        </div>
+      </section>
+
+      <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHeader
+          eyebrow="Proof center"
+          title="Baseline proof, V3 hardening, and runtime evidence stay first-class in the new app"
+          description="The migration should carry forward the reviewer story that already exists in the repository, including generated packets, integration proof, and honest launch boundaries."
+        />
+        <div className="mt-10">
+          <ProofCenter />
         </div>
       </section>
 
@@ -136,17 +154,8 @@ export function HomeShell() {
           title="API and operator services presented in the same product language"
           description="The migration keeps the hosted read API, pilot, and operator support surfaces visible to normal users instead of burying them in documentation."
         />
-        <div className="mt-10 grid gap-6 lg:grid-cols-3">
-          {commercialServices.map((service) => (
-            <Card key={service.title} className="bg-white/[0.03]">
-              <CardHeader>
-                <CardTitle className="text-lg">{service.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm leading-7 text-white/58">{service.summary}</p>
-              </CardContent>
-            </Card>
-          ))}
+        <div className="mt-10">
+          <ServicesSurface />
         </div>
       </section>
     </main>

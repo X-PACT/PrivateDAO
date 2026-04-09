@@ -7,7 +7,9 @@ import { WalletConnectButton } from "@/components/wallet-connect-button";
 const navItems = [
   { href: "/", label: "Overview" },
   { href: "/dashboard", label: "Dashboard" },
+  { href: "/proof", label: "Proof" },
   { href: "/analytics", label: "Analytics" },
+  { href: "/services", label: "Services" },
   { href: "/awards", label: "Awards" },
 ];
 
