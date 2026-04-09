@@ -41,10 +41,10 @@ Minimum closure evidence:
 
 ## Evidence Index
 
-- `external-audit-completion`: `docs/audit-handoff.md`, `docs/zk-external-audit-scope.md`, `docs/mainnet-readiness.generated.md`
-- `upgrade-authority-multisig`: `docs/authority-hardening.md`, `docs/authority-transfer-runbook.md`, `docs/multisig-setup-intake.json`, `docs/multisig-setup-intake.md`, `docs/launch-ops-checklist.json`, `docs/launch-ops-checklist.md`, `docs/mainnet-cutover-runbook.md`
+- `external-audit-completion`: `docs/audit-handoff.md`, `docs/external-audit-engagement.md`, `docs/zk-external-audit-scope.md`, `docs/mainnet-readiness.generated.md`, `docs/launch-trust-packet.generated.md`
+- `upgrade-authority-multisig`: `docs/authority-hardening.md`, `docs/authority-transfer-runbook.md`, `docs/production-custody-ceremony.md`, `docs/multisig-setup-intake.json`, `docs/multisig-setup-intake.md`, `docs/launch-ops-checklist.json`, `docs/launch-ops-checklist.md`, `docs/mainnet-cutover-runbook.md`, `docs/launch-trust-packet.generated.md`
 - `production-monitoring-alerts`: `docs/launch-ops-checklist.json`, `docs/launch-ops-checklist.md`, `docs/monitoring-alert-rules.json`, `docs/monitoring-alert-rules.md`, `docs/monitoring-alerts.md`, `docs/production-operations.md`, `docs/incident-response.md`
-- `real-device-wallet-runtime`: `docs/runtime/real-device.md`, `docs/runtime/real-device.generated.md`, `docs/wallet-e2e-test-plan.md`, `docs/launch-ops-checklist.json`, `docs/launch-ops-checklist.md`
+- `real-device-wallet-runtime`: `docs/runtime/real-device.md`, `docs/runtime/real-device.generated.md`, `docs/wallet-e2e-test-plan.md`, `docs/launch-ops-checklist.json`, `docs/launch-ops-checklist.md`, `docs/launch-trust-packet.generated.md`
 - `magicblock-refhe-source-receipts`: `docs/magicblock/runtime-evidence.md`, `docs/refhe-security-model.md`, `docs/canonical-verifier-boundary-decision.md`
 - `mainnet-cutover-ceremony`: `docs/release-ceremony.md`, `docs/release-drill.generated.md`, `docs/launch-ops-checklist.json`, `docs/launch-ops-checklist.md`, `docs/mainnet-cutover-runbook.md`
 

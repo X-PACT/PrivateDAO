@@ -102,62 +102,34 @@ npm run verify:cryptographic-manifest >/dev/null
 echo "[verify-all] checking release manifest"
 npm run verify:release-manifest >/dev/null
 
-echo "[verify-all] checking mainnet readiness report"
-npm run verify:mainnet-readiness-report >/dev/null
+echo "[verify-all] checking readiness and attestation bundle"
+run_parallel_group \
+  "mainnet readiness report" "npm run verify:mainnet-readiness-report >/dev/null" \
+  "launch trust packet" "npm run verify:launch-trust-packet >/dev/null" \
+  "deployment attestation" "npm run verify:deployment-attestation >/dev/null" \
+  "runtime attestation" "npm run verify:runtime-attestation >/dev/null"
 
-echo "[verify-all] checking deployment attestation"
-npm run verify:deployment-attestation >/dev/null
+echo "[verify-all] checking read-node bundle"
+run_parallel_group \
+  "read node" "npm run verify:read-node >/dev/null" \
+  "read node http surface" "run_with_retry 3 npm run verify:read-node:http >/dev/null" \
+  "read-node snapshot" "npm run verify:read-node-snapshot >/dev/null" \
+  "read-node ops snapshot" "npm run verify:read-node-ops >/dev/null"
 
-echo "[verify-all] checking runtime attestation"
-npm run verify:runtime-attestation >/dev/null
-
-echo "[verify-all] checking read node"
-npm run verify:read-node >/dev/null
-
-echo "[verify-all] checking read node http surface"
-run_with_retry 3 npm run verify:read-node:http >/dev/null
-
-echo "[verify-all] checking read-node snapshot"
-npm run verify:read-node-snapshot >/dev/null
-
-echo "[verify-all] checking read-node ops snapshot"
-npm run verify:read-node-ops >/dev/null
-
-echo "[verify-all] checking Frontier integrations"
-npm run verify:frontier-integrations >/dev/null
-
-echo "[verify-all] checking Colosseum competitive analysis"
-npm run verify:colosseum-competitive >/dev/null
-
-echo "[verify-all] checking real-device runtime intake"
-npm run verify:real-device-runtime >/dev/null
-
-echo "[verify-all] checking runtime evidence"
-npm run verify:runtime-evidence >/dev/null
-
-echo "[verify-all] checking operational evidence"
-npm run verify:operational-evidence >/dev/null
-
-echo "[verify-all] checking runtime surface"
-npm run verify:runtime-surface >/dev/null
-
-echo "[verify-all] checking confidential manifest encryption"
-npm run verify:confidential-manifest >/dev/null
-
-echo "[verify-all] checking V2 audit-readiness gates"
-npm run verify:audit-readiness:v2 >/dev/null
-
-echo "[verify-all] checking wallet compatibility matrix"
-npm run verify:wallet-matrix >/dev/null
-
-echo "[verify-all] checking devnet canary"
-npm run verify:devnet-canary >/dev/null
-
-echo "[verify-all] checking PDAO attestation"
-npm run verify:pdao-attestation >/dev/null
-
-echo "[verify-all] checking go-live attestation"
-npm run verify:go-live-attestation >/dev/null
+echo "[verify-all] checking integration and runtime bundle"
+run_parallel_group \
+  "Frontier integrations" "npm run verify:frontier-integrations >/dev/null" \
+  "Colosseum competitive analysis" "npm run verify:colosseum-competitive >/dev/null" \
+  "real-device runtime intake" "npm run verify:real-device-runtime >/dev/null" \
+  "runtime evidence" "npm run verify:runtime-evidence >/dev/null" \
+  "operational evidence" "npm run verify:operational-evidence >/dev/null" \
+  "runtime surface" "npm run verify:runtime-surface >/dev/null" \
+  "confidential manifest encryption" "npm run verify:confidential-manifest >/dev/null" \
+  "V2 audit-readiness gates" "npm run verify:audit-readiness:v2 >/dev/null" \
+  "wallet compatibility matrix" "npm run verify:wallet-matrix >/dev/null" \
+  "devnet canary" "npm run verify:devnet-canary >/dev/null" \
+  "PDAO attestation" "npm run verify:pdao-attestation >/dev/null" \
+  "go-live attestation" "npm run verify:go-live-attestation >/dev/null"
 
 echo "[verify-all] checking review surface bundle"
 run_parallel_group \

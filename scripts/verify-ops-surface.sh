@@ -27,6 +27,9 @@ required_files=(
   "docs/operator-checklist.md"
   "docs/risk-register.md"
   "docs/audit-handoff.md"
+  "docs/production-custody-ceremony.md"
+  "docs/external-audit-engagement.md"
+  "docs/pilot-onboarding-playbook.md"
 )
 
 for file in "${required_files[@]}"; do
@@ -44,7 +47,10 @@ if search_placeholders "$placeholder_pattern" \
   docs/mainnet-cutover-runbook.md \
   docs/operator-checklist.md \
   docs/risk-register.md \
-  docs/audit-handoff.md; then
+  docs/audit-handoff.md \
+  docs/production-custody-ceremony.md \
+  docs/external-audit-engagement.md \
+  docs/pilot-onboarding-playbook.md; then
   echo "[ops-surface] placeholder text detected in ops docs" >&2
   exit 1
 fi

@@ -39,4 +39,8 @@ Trust is improved, not faked, by being explicit about what is done and what rema
 - `docs/audit-packet.generated.md`
 - `docs/operational-evidence.generated.md`
 - `docs/runtime-evidence.generated.md`
+- `docs/launch-trust-packet.generated.md`
+- `docs/production-custody-ceremony.md`
+- `docs/external-audit-engagement.md`
+- `docs/pilot-onboarding-playbook.md`
 - `docs/mainnet-blockers.md`

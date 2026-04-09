@@ -13,7 +13,9 @@
         "docs/multisig-setup-intake.json",
         "docs/multisig-setup-intake.md",
         "docs/authority-transfer-runbook.md",
-        "docs/authority-hardening.md"
+        "docs/authority-hardening.md",
+        "docs/production-custody-ceremony.md",
+        "docs/launch-trust-packet.generated.md"
       ]
     },
     {
@@ -25,7 +27,9 @@
         "docs/multisig-setup-intake.json",
         "docs/multisig-setup-intake.md",
         "docs/authority-transfer-runbook.md",
-        "docs/mainnet-cutover-runbook.md"
+        "docs/mainnet-cutover-runbook.md",
+        "docs/production-custody-ceremony.md",
+        "docs/launch-trust-packet.generated.md"
       ]
     },
     {
@@ -102,7 +106,8 @@
       "evidence": [
         "docs/runtime/real-device.md",
         "docs/runtime/real-device.generated.md",
-        "docs/wallet-e2e-test-plan.md"
+        "docs/wallet-e2e-test-plan.md",
+        "docs/launch-trust-packet.generated.md"
       ]
     },
     {

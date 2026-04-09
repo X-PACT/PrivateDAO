@@ -77,6 +77,10 @@ Operational launch docs:
 - [`docs/launch-ops-checklist.md`](docs/launch-ops-checklist.md)
 - [`docs/monitoring-alert-rules.md`](docs/monitoring-alert-rules.md)
 - [`docs/wallet-e2e-test-plan.md`](docs/wallet-e2e-test-plan.md)
+- [`docs/launch-trust-packet.generated.md`](docs/launch-trust-packet.generated.md)
+- [`docs/production-custody-ceremony.md`](docs/production-custody-ceremony.md)
+- [`docs/external-audit-engagement.md`](docs/external-audit-engagement.md)
+- [`docs/pilot-onboarding-playbook.md`](docs/pilot-onboarding-playbook.md)
 - [`docs/browser-automation-audit.md`](docs/browser-automation-audit.md)
 - [`docs/security-audit-remediation-2026-04-08.md`](docs/security-audit-remediation-2026-04-08.md)
 
@@ -105,8 +109,12 @@ The README should stay aligned with this rule: implemented surfaces are describe
 | Use case packs | [`docs/use-case-packs.md`](docs/use-case-packs.md) |
 | Operator guide | [`docs/operator-guide.md`](docs/operator-guide.md) |
 | Trust package | [`docs/trust-package.md`](docs/trust-package.md) |
+| Launch trust packet | [`docs/launch-trust-packet.generated.md`](docs/launch-trust-packet.generated.md) |
+| Production custody ceremony | [`docs/production-custody-ceremony.md`](docs/production-custody-ceremony.md) |
+| External audit engagement | [`docs/external-audit-engagement.md`](docs/external-audit-engagement.md) |
 | Migration story | [`docs/migration-story.md`](docs/migration-story.md) |
 | Pilot program | [`docs/pilot-program.md`](docs/pilot-program.md) |
+| Pilot onboarding playbook | [`docs/pilot-onboarding-playbook.md`](docs/pilot-onboarding-playbook.md) |
 | Pricing model | [`docs/pricing-model.md`](docs/pricing-model.md) |
 | Pilot SLA draft | [`docs/service-level-agreement.md`](docs/service-level-agreement.md) |
 | MagicBlock private payments | [`docs/magicblock/private-payments.md`](docs/magicblock/private-payments.md) |
@@ -208,6 +216,7 @@ This section intentionally keeps the reviewer contract visible. The README is co
 | Frontier integrations | [`docs/frontier-integrations.generated.md`](docs/frontier-integrations.generated.md), [`docs/magicblock/runtime.generated.md`](docs/magicblock/runtime.generated.md), [`docs/refhe-protocol.md`](docs/refhe-protocol.md), [`docs/read-node/ops.generated.md`](docs/read-node/ops.generated.md), [`docs/zk-proof-registry.json`](docs/zk-proof-registry.json) |
 | Product runtime | [`docs/fair-voting.md`](docs/fair-voting.md), [`docs/wallet-runtime.md`](docs/wallet-runtime.md), [`docs/operational-evidence.generated.md`](docs/operational-evidence.generated.md), [`docs/pdao-attestation.generated.json`](docs/pdao-attestation.generated.json), [`docs/strategy-operations.md`](docs/strategy-operations.md) |
 | Product packaging | [`docs/production-simulation-dao.md`](docs/production-simulation-dao.md), [`docs/use-case-packs.md`](docs/use-case-packs.md), [`docs/operator-guide.md`](docs/operator-guide.md), [`docs/trust-package.md`](docs/trust-package.md), [`docs/migration-story.md`](docs/migration-story.md), [`docs/pricing-model.md`](docs/pricing-model.md), [`docs/pilot-program.md`](docs/pilot-program.md), [`docs/service-level-agreement.md`](docs/service-level-agreement.md) |
+| Launch and pilot operations | [`docs/launch-trust-packet.generated.md`](docs/launch-trust-packet.generated.md), [`docs/production-custody-ceremony.md`](docs/production-custody-ceremony.md), [`docs/external-audit-engagement.md`](docs/external-audit-engagement.md), [`docs/pilot-onboarding-playbook.md`](docs/pilot-onboarding-playbook.md) |
 | Artifact integrity | [`docs/cryptographic-integrity.md`](docs/cryptographic-integrity.md), [`docs/cryptographic-manifest.generated.json`](docs/cryptographic-manifest.generated.json) |
 
 ## Architecture Assets

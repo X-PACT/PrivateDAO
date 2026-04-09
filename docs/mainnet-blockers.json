@@ -15,8 +15,10 @@
       "nextAction": "Complete an external program audit against the exact deployed mainnet candidate and record finding closure or accepted residual risk.",
       "evidence": [
         "docs/audit-handoff.md",
+        "docs/external-audit-engagement.md",
         "docs/zk-external-audit-scope.md",
-        "docs/mainnet-readiness.generated.md"
+        "docs/mainnet-readiness.generated.md",
+        "docs/launch-trust-packet.generated.md"
       ]
     },
     {
@@ -30,11 +32,13 @@
       "evidence": [
         "docs/authority-hardening.md",
         "docs/authority-transfer-runbook.md",
+        "docs/production-custody-ceremony.md",
         "docs/multisig-setup-intake.json",
         "docs/multisig-setup-intake.md",
         "docs/launch-ops-checklist.json",
         "docs/launch-ops-checklist.md",
-        "docs/mainnet-cutover-runbook.md"
+        "docs/mainnet-cutover-runbook.md",
+        "docs/launch-trust-packet.generated.md"
       ]
     },
     {
@@ -68,7 +72,8 @@
         "docs/runtime/real-device.generated.md",
         "docs/wallet-e2e-test-plan.md",
         "docs/launch-ops-checklist.json",
-        "docs/launch-ops-checklist.md"
+        "docs/launch-ops-checklist.md",
+        "docs/launch-trust-packet.generated.md"
       ]
     },
     {

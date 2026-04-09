@@ -1,0 +1,81 @@
+{
+  "project": "PrivateDAO",
+  "generatedAt": "2026-04-09T00:48:32.607Z",
+  "decision": "blocked-external-steps",
+  "productionMainnetClaimAllowed": false,
+  "custody": {
+    "status": "pending-external",
+    "implementation": "pending-selection",
+    "threshold": "2-of-3",
+    "multisigAddress": null,
+    "signerSlotsConfigured": 0,
+    "pendingAuthorityTransfers": [
+      "program-upgrade-authority",
+      "dao-authority",
+      "treasury-operator-authority"
+    ],
+    "minimumTimelockHours": 48,
+    "configuredTimelockHours": null
+  },
+  "runtime": {
+    "status": "pending-real-device-capture",
+    "completedTargetCount": 0,
+    "targetCount": 5,
+    "pendingTargets": [
+      "Phantom",
+      "Solflare",
+      "Backpack",
+      "Glow",
+      "Android Native / Mobile"
+    ]
+  },
+  "audit": {
+    "status": "pending-external",
+    "pendingAction": "Complete an external program audit against the exact deployed mainnet candidate and record finding closure or accepted residual risk."
+  },
+  "pilot": {
+    "status": "repo-ready-pending-external-target",
+    "lifecycle": [
+      "Create DAO",
+      "Submit proposal",
+      "Private vote",
+      "Execute treasury"
+    ],
+    "packs": [
+      "Grant Committee Pack",
+      "Fund Governance Pack",
+      "Gaming DAO Pack",
+      "Enterprise DAO Pack"
+    ]
+  },
+  "linkedDocs": [
+    "docs/multisig-setup-intake.md",
+    "docs/production-custody-ceremony.md",
+    "docs/authority-transfer-runbook.md",
+    "docs/external-audit-engagement.md",
+    "docs/audit-handoff.md",
+    "docs/runtime/real-device.md",
+    "docs/pilot-onboarding-playbook.md",
+    "docs/pilot-program.md",
+    "docs/trust-package.md",
+    "docs/mainnet-blockers.md"
+  ],
+  "requiredExternalInputs": [
+    "3 production signer public keys",
+    "chosen multisig implementation and address",
+    "48+ hour timelock configuration evidence",
+    "authority transfer signatures and readouts",
+    "real-device wallet captures",
+    "external audit report or signed memo",
+    "first pilot DAO target and operator contact"
+  ],
+  "commands": [
+    "npm run build:launch-trust-packet",
+    "npm run verify:launch-trust-packet",
+    "npm run verify:multisig-intake",
+    "npm run verify:launch-ops",
+    "npm run verify:mainnet-blockers",
+    "npm run verify:real-device-runtime",
+    "npm run check:mainnet"
+  ]
+}

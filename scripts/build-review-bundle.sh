@@ -66,10 +66,15 @@ cp docs/go-live-attestation.generated.json "$OUT_DIR/docs/"
 cp docs/reviewer-surface-map.md "$OUT_DIR/docs/"
 cp docs/submission-dossier.md "$OUT_DIR/docs/"
 cp docs/audit-handoff.md "$OUT_DIR/docs/"
+cp docs/external-audit-engagement.md "$OUT_DIR/docs/"
+cp docs/production-custody-ceremony.md "$OUT_DIR/docs/"
 cp docs/operator-checklist.md "$OUT_DIR/docs/"
+cp docs/pilot-onboarding-playbook.md "$OUT_DIR/docs/"
 cp docs/risk-register.md "$OUT_DIR/docs/"
 cp docs/mainnet-readiness.md "$OUT_DIR/docs/"
 cp docs/production-operations.md "$OUT_DIR/docs/"
+cp docs/launch-trust-packet.generated.md "$OUT_DIR/docs/"
+cp docs/launch-trust-packet.generated.json "$OUT_DIR/docs/"
 
 tar -czf "$ARCHIVE" -C dist reviewer-bundle
 
