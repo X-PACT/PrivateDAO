@@ -2,6 +2,16 @@
 
 This note captures a real end-to-end governance run executed on Solana devnet from the repository surface using the verification wallet.
 
+Use this file as the canonical baseline lifecycle proof.
+
+For the stricter additive hardening path, open:
+
+- [`test-wallet-live-proof-v3.generated.md`](test-wallet-live-proof-v3.generated.md)
+- [`governance-hardening-v3.md`](governance-hardening-v3.md)
+- [`settlement-hardening-v3.md`](settlement-hardening-v3.md)
+
+That packet proves the dedicated `Governance Hardening V3` and `Settlement Hardening V3` flows separately from this baseline note.
+
 ## Program Deployment
 
 - Program ID: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`

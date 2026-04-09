@@ -373,9 +373,10 @@ Reference:
 
 ## 6. Explorer Proof
 
-The repository already includes real devnet proof in:
+The repository already includes two reviewer-visible Devnet proof paths:
 
-- `docs/live-proof.md`
+- `docs/live-proof.md` for the canonical baseline lifecycle
+- `docs/test-wallet-live-proof-v3.generated.md` for the additive hardening lifecycle
 
 Example transaction hashes:
 
@@ -387,12 +388,20 @@ Example transaction hashes:
 - finalize: `4JSPRJQuSY5es74TcChBTzuGMMCr4RknHkmr6vFmtmbav4TRABDAnapmtgipYioEZzh4wmKfg2PMzZHCfJ7UruLG`
 - execute: `x1vhP6H3Regi6WHYx6LUGbeo4CCbJxWwtUVucPVjonnymyccpM8mpb7t3UpQpqksXBU7PYGPd86cPnZLYwRzBn9`
 
-Use the explorer links in `docs/live-proof.md` to independently inspect:
+Use the explorer links in `docs/live-proof.md` to independently inspect the baseline lifecycle:
 
 - proposal account
 - DAO account
 - treasury account
 - each lifecycle transaction
+
+Use the explorer links in `docs/test-wallet-live-proof-v3.generated.md` to independently inspect the additive hardening lifecycle:
+
+- Governance Hardening V3 execute transaction
+- Settlement Hardening V3 execute transaction
+- proposal-scoped governance snapshot
+- proposal-scoped settlement snapshot
+- stricter payout and rebate behavior
 
 ## 7. Independent Verifier Checklist
 

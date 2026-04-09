@@ -77,6 +77,9 @@ required_files=(
   "docs/zk-evidence.md"
   "docs/reviewer-fast-path.md"
   "docs/live-proof.md"
+  "docs/governance-hardening-v3.md"
+  "docs/settlement-hardening-v3.md"
+  "docs/test-wallet-live-proof-v3.generated.md"
   "docs/devnet-resilience-report.md"
   "docs/devnet-release-manifest.md"
   "docs/proof-registry.json"
@@ -164,6 +167,9 @@ if search_placeholders "$placeholder_pattern" \
   docs/go-live-criteria.md \
   docs/operational-drillbook.md \
   docs/live-proof.md \
+  docs/governance-hardening-v3.md \
+  docs/settlement-hardening-v3.md \
+  docs/test-wallet-live-proof-v3.generated.md \
   docs/devnet-resilience-report.md \
   docs/mainnet-readiness.md \
   docs/ranger-strategy-documentation.md \

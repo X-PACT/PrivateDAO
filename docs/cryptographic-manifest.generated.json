@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-09T17:30:04.522Z",
+  "generatedAt": "2026-04-09T17:47:10.329Z",
   "algorithm": "sha256",
   "entryCount": 143,
-  "aggregateSha256": "596650ce4b545f4eba99fe772d1cb1135ec3a382e8ca9a57fb6f00cb8ccbfab3",
+  "aggregateSha256": "4361fa006b695ca6d6b9c29d150467079a0c38c95018645fd6d4ce47ad7e1e2f",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -152,8 +152,8 @@
     },
     {
       "path": "docs/live-proof.md",
-      "sha256": "ca55bef35cd7e42e95155205198188cec2add4aa3d001210daa21d3526df2c53",
-      "bytes": 5001
+      "sha256": "ee2a14602f0f3728ea916495636437cb10f0ebc4506f140aa1f648a4cf8cd892",
+      "bytes": 5448
     },
     {
       "path": "docs/read-node/indexer.md",
@@ -272,8 +272,8 @@
     },
     {
       "path": "docs/independent-verification.md",
-      "sha256": "743fc994ea6c8410396215babb288619fc2c9637c5105be024101eb94f37c7bd",
-      "bytes": 8519
+      "sha256": "78b754b3ac6641b12ef3668026312bc46dad0068a998d300413de27dac90509a",
+      "bytes": 9022
     },
     {
       "path": "docs/token.md",
