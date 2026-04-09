@@ -3,24 +3,11 @@
 ## Overview
 
 - project: `PrivateDAO Autonomous Executor`
-- generated at: `2026-04-09T16:06:47.844Z`
+- generated at: `2026-04-09T15:42:24.547Z`
 - status: `track-adaptation-ready`
 - wallet execution layer: `Zerion CLI fork (pending implementation)`
 - routing requirement: `All swaps must route through the Zerion API`
 - current repo claim: `governance-and-policy-layer-ready`
-
-## Submission flow
-
-1. Create DAO
-2. Submit proposal
-3. Private vote
-4. Execute treasury
-
-## Interfaces
-
-- PrivateDAO web app
-- Zerion CLI fork
-- Telegram/Discord/web wrapper (optional)
 
 ## Current live proof from this repository
 
@@ -43,15 +30,6 @@
 - 30-minute execution expiry
 - swap-only allowlist
 - single execution per approved proposal
-
-## Bounty compliance matrix
-
-- Fork Zerion CLI: `pending implementation` — Canonical adaptation spec and packet exist; live fork is not claimed complete in this repo.
-- Autonomous agent surface: `governance-and-policy layer ready` — PrivateDAO already supplies private approval, scoped policy, and execution-readiness surfaces.
-- At least one scoped policy: `ready` — Chain lock, spend cap, expiry, allowlist, and single-execution scope are already modeled in the product surface.
-- At least one real onchain transaction: `ready on PrivateDAO side` — Live V3 Devnet proof already shows real treasury execution and consumed settlement evidence.
-- Zerion-routed execution: `pending implementation` — Must be completed in the Zerion fork and then anchored back into the reviewer packet.
-- Demo quality: `ready to adapt` — Pitch deck, demo brief, and frontend section already carry the Autonomous Executor narrative.
 
 ## Technology mapping
 

@@ -5528,67 +5528,8 @@ body.judge-mode .judge-banner {
           <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px">
             <a class="award-link" href="zerion-autonomous-executor.md" target="_blank">Open Autonomous Executor</a>
             <a class="award-link" href="zerion-autonomous-executor.generated.md" target="_blank">Open Executor Packet</a>
-            <button class="proposal-proof-link" type="button" onclick="copyAutonomousExecutorPacket()">Copy Executor Packet</button>
             <a class="award-link" href="investor-pitch-deck.md" target="_blank">Pitch Deck</a>
             <a class="award-link" href="demo-video.md" target="_blank">Demo Brief</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="award-detail-card reveal" style="margin-top:24px">
-      <div class="award-detail-head">
-        <div>
-          <div class="award-detail-title">Autonomous Executor Track Fit</div>
-          <p class="award-detail-copy">
-            This is the cleanest way to take PrivateDAO into the Zerion bounty without pretending the execution fork already exists inside this repository. The repo already proves the governance brain, scoped-policy surface, and evidence layer. The Zerion fork becomes the wallet and execution engine.
-          </p>
-        </div>
-        <div class="award-pill">ZERION TRACK</div>
-      </div>
-      <div class="proposal-command-grid">
-        <div class="proposal-command-box">
-          <div class="proposal-detail-label">GOVERNANCE-CONTROLLED AGENT FLOW</div>
-          <div style="color:var(--text2);line-height:1.8">The visible flow stays simple and reviewer-friendly:</div>
-          <div style="margin-top:12px;display:grid;gap:10px;color:var(--text)">
-            <div>1. Create DAO</div>
-            <div>2. Submit proposal</div>
-            <div>3. Private vote</div>
-            <div>4. Execute treasury</div>
-          </div>
-        </div>
-        <div class="proposal-command-box">
-          <div class="proposal-detail-label">BOUNTY COMPLIANCE MATRIX</div>
-          <div style="color:var(--text2);line-height:1.8">Keep the claims precise. The repo is already strong on the governance side; the Zerion fork remains the execution-side build step.</div>
-          <div style="margin-top:12px;display:grid;gap:10px;color:var(--text)">
-            <div><strong>Scoped policy:</strong> ready</div>
-            <div><strong>Private approval path:</strong> ready</div>
-            <div><strong>Real treasury execution:</strong> already proven on Devnet</div>
-            <div><strong>Zerion-routed execution:</strong> pending implementation in the Zerion fork</div>
-          </div>
-        </div>
-        <div class="proposal-command-box">
-          <div class="proposal-detail-label">POLICY BUNDLE</div>
-          <div style="color:var(--text2);line-height:1.8">Recommended first execution envelope for the bounty submission:</div>
-          <div style="margin-top:12px;display:grid;gap:10px;color:var(--text)">
-            <div>Base-only chain lock</div>
-            <div>25 USDC spend cap</div>
-            <div>30 minute expiry</div>
-            <div>Swap-only allowlist</div>
-            <div>Single execution per approved proposal</div>
-          </div>
-        </div>
-        <div class="proposal-command-box">
-          <div class="proposal-detail-label">EXECUTION BOUNDARY</div>
-          <div style="color:var(--text2);line-height:1.8">Live now versus what still needs to be added for the bounty-specific submission:</div>
-          <div style="margin-top:12px;display:grid;gap:10px;color:var(--text)">
-            <div><strong>Live now:</strong> PrivateDAO governance, proof surfaces, runtime evidence, and V3 Devnet execution</div>
-            <div><strong>Pending:</strong> fork `zeriontech/zerion-ai`, route a real transaction through Zerion API, and bind its receipt back into the packet</div>
-          </div>
-          <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px">
-            <a class="award-link" href="zerion-autonomous-executor.generated.md" target="_blank">Open Compliance Packet</a>
-            <button class="proposal-proof-link" type="button" onclick="copyAutonomousExecutorPacket()">Copy Executor Packet</button>
-            <a class="award-link" href="test-wallet-live-proof-v3.generated.md" target="_blank">Open Live Proof V3</a>
           </div>
         </div>
       </div>
@@ -5675,7 +5616,6 @@ body.judge-mode .judge-banner {
           <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px">
             <button class="proposal-proof-link" type="button" onclick="openDocument('zerion-autonomous-executor.md', 'Autonomous Executor')">Open Autonomous Executor</button>
             <button class="proposal-proof-link" type="button" onclick="openDocument('zerion-autonomous-executor.generated.md', 'Autonomous Executor Packet')">Open Executor Packet</button>
-            <button class="proposal-proof-link" type="button" onclick="copyAutonomousExecutorPacket()">Copy Executor Packet</button>
             <a class="award-link" href="investor-pitch-deck.md" target="_blank">Pitch Deck</a>
             <a class="award-link" href="demo-video.md" target="_blank">Demo Brief</a>
           </div>
@@ -7883,50 +7823,6 @@ function copyPilotRequestPacket() {
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(packet)
       .then(() => showToast('Pilot packet copied.', 'success'))
-      .catch(() => showToast(packet, 'info'));
-    return;
-  }
-  showToast(packet, 'info');
-}
-
-function copyAutonomousExecutorPacket() {
-  const packet = [
-    'PrivateDAO Autonomous Executor',
-    '',
-    'Submission flow:',
-    '1. Create DAO',
-    '2. Submit proposal',
-    '3. Private vote',
-    '4. Execute treasury',
-    '',
-    'What the repo already proves:',
-    '- live V3 Devnet treasury execution',
-    '- private approval and scoped governance flow',
-    '- policy-shaped execution boundary',
-    '- runtime evidence and reviewer packet surface',
-    '',
-    'Recommended first policy:',
-    '- chain lock = Base only',
-    '- spend cap = 25 USDC',
-    '- expiry = 30 minutes',
-    '- action allowlist = swap only',
-    '- single execution per approved proposal',
-    '',
-    'What still must be built for the bounty-specific submission:',
-    '- fork zeriontech/zerion-ai',
-    '- execute one real transaction routed through Zerion API',
-    '- write Zerion receipt back into the PrivateDAO evidence packet',
-    '',
-    'Source docs:',
-    '- zerion-autonomous-executor.md',
-    '- zerion-autonomous-executor.generated.md',
-    '- test-wallet-live-proof-v3.generated.md',
-    '- investor-pitch-deck.md',
-    '- demo-video.md',
-  ].join('\n');
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(packet)
-      .then(() => showToast('Autonomous executor packet copied.', 'success'))
       .catch(() => showToast(packet, 'info'));
     return;
   }

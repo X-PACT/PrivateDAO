@@ -42,17 +42,6 @@ function main() {
       routingRequirement: "All swaps must route through the Zerion API",
       currentRepoClaim: "governance-and-policy-layer-ready",
     },
-    submissionFlow: [
-      "Create DAO",
-      "Submit proposal",
-      "Private vote",
-      "Execute treasury",
-    ],
-    interfaces: [
-      "PrivateDAO web app",
-      "Zerion CLI fork",
-      "Telegram/Discord/web wrapper (optional)",
-    ],
     currentLiveProof: {
       programId: liveProof.programId,
       governanceV3Dao: liveProof.governanceV3.dao,
@@ -72,38 +61,6 @@ function main() {
       "30-minute execution expiry",
       "swap-only allowlist",
       "single execution per approved proposal",
-    ],
-    bountyCompliance: [
-      {
-        requirement: "Fork Zerion CLI",
-        currentStatus: "pending implementation",
-        repoTruth: "Canonical adaptation spec and packet exist; live fork is not claimed complete in this repo.",
-      },
-      {
-        requirement: "Autonomous agent surface",
-        currentStatus: "governance-and-policy layer ready",
-        repoTruth: "PrivateDAO already supplies private approval, scoped policy, and execution-readiness surfaces.",
-      },
-      {
-        requirement: "At least one scoped policy",
-        currentStatus: "ready",
-        repoTruth: "Chain lock, spend cap, expiry, allowlist, and single-execution scope are already modeled in the product surface.",
-      },
-      {
-        requirement: "At least one real onchain transaction",
-        currentStatus: "ready on PrivateDAO side",
-        repoTruth: "Live V3 Devnet proof already shows real treasury execution and consumed settlement evidence.",
-      },
-      {
-        requirement: "Zerion-routed execution",
-        currentStatus: "pending implementation",
-        repoTruth: "Must be completed in the Zerion fork and then anchored back into the reviewer packet.",
-      },
-      {
-        requirement: "Demo quality",
-        currentStatus: "ready to adapt",
-        repoTruth: "Pitch deck, demo brief, and frontend section already carry the Autonomous Executor narrative.",
-      },
     ],
     technologyMapping: {
       zk: "private vote integrity and review-strengthening layer",
@@ -147,8 +104,6 @@ function buildMarkdown(payload: {
     routingRequirement: string;
     currentRepoClaim: string;
   };
-  submissionFlow: string[];
-  interfaces: string[];
   currentLiveProof: {
     programId: string;
     governanceV3Dao: string;
@@ -163,11 +118,6 @@ function buildMarkdown(payload: {
     settlementEvidenceConsumed: boolean;
   };
   scopedPolicyExamples: string[];
-  bountyCompliance: Array<{
-    requirement: string;
-    currentStatus: string;
-    repoTruth: string;
-  }>;
   technologyMapping: Record<string, string>;
   requiredNextSteps: string[];
   links: Record<string, string>;
@@ -189,14 +139,6 @@ function buildMarkdown(payload: {
 - routing requirement: \`${payload.bountyEngine.routingRequirement}\`
 - current repo claim: \`${payload.bountyEngine.currentRepoClaim}\`
 
-## Submission flow
-
-${payload.submissionFlow.map((entry, index) => `${index + 1}. ${entry}`).join("\n")}
-
-## Interfaces
-
-${payload.interfaces.map((entry) => `- ${entry}`).join("\n")}
-
 ## Current live proof from this repository
 
 - program id: \`${payload.currentLiveProof.programId}\`
@@ -214,10 +156,6 @@ ${payload.interfaces.map((entry) => `- ${entry}`).join("\n")}
 ## Scoped policy examples
 
 ${payload.scopedPolicyExamples.map((entry) => `- ${entry}`).join("\n")}
-
-## Bounty compliance matrix
-
-${payload.bountyCompliance.map((entry) => `- ${entry.requirement}: \`${entry.currentStatus}\` — ${entry.repoTruth}`).join("\n")}
 
 ## Technology mapping
 

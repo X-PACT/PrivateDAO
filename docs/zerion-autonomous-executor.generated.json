@@ -1,23 +1,12 @@
 {
   "project": "PrivateDAO Autonomous Executor",
-  "generatedAt": "2026-04-09T16:06:47.844Z",
+  "generatedAt": "2026-04-09T15:42:24.547Z",
   "status": "track-adaptation-ready",
   "bountyEngine": {
     "walletExecutionLayer": "Zerion CLI fork (pending implementation)",
     "routingRequirement": "All swaps must route through the Zerion API",
     "currentRepoClaim": "governance-and-policy-layer-ready"
   },
-  "submissionFlow": [
-    "Create DAO",
-    "Submit proposal",
-    "Private vote",
-    "Execute treasury"
-  ],
-  "interfaces": [
-    "PrivateDAO web app",
-    "Zerion CLI fork",
-    "Telegram/Discord/web wrapper (optional)"
-  ],
   "currentLiveProof": {
     "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
     "governanceV3Dao": "4cbohLbBBTao8Wo3oNdXZTx6VcdLVXDUBuKSzWoQAkgw",
@@ -37,38 +26,6 @@
     "30-minute execution expiry",
     "swap-only allowlist",
     "single execution per approved proposal"
-  ],
-  "bountyCompliance": [
-    {
-      "requirement": "Fork Zerion CLI",
-      "currentStatus": "pending implementation",
-      "repoTruth": "Canonical adaptation spec and packet exist; live fork is not claimed complete in this repo."
-    },
-    {
-      "requirement": "Autonomous agent surface",
-      "currentStatus": "governance-and-policy layer ready",
-      "repoTruth": "PrivateDAO already supplies private approval, scoped policy, and execution-readiness surfaces."
-    },
-    {
-      "requirement": "At least one scoped policy",
-      "currentStatus": "ready",
-      "repoTruth": "Chain lock, spend cap, expiry, allowlist, and single-execution scope are already modeled in the product surface."
-    },
-    {
-      "requirement": "At least one real onchain transaction",
-      "currentStatus": "ready on PrivateDAO side",
-      "repoTruth": "Live V3 Devnet proof already shows real treasury execution and consumed settlement evidence."
-    },
-    {
-      "requirement": "Zerion-routed execution",
-      "currentStatus": "pending implementation",
-      "repoTruth": "Must be completed in the Zerion fork and then anchored back into the reviewer packet."
-    },
-    {
-      "requirement": "Demo quality",
-      "currentStatus": "ready to adapt",
-      "repoTruth": "Pitch deck, demo brief, and frontend section already carry the Autonomous Executor narrative."
-    }
   ],
   "technologyMapping": {
     "zk": "private vote integrity and review-strengthening layer",
