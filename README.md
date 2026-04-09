@@ -107,6 +107,7 @@ The README should stay aligned with this rule: implemented surfaces are describe
 | Devnet program | https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet |
 | Guided product flow | [`docs/frontier-guided-flow.md`](docs/frontier-guided-flow.md) |
 | Live proof V3 | [`docs/test-wallet-live-proof-v3.generated.md`](docs/test-wallet-live-proof-v3.generated.md) |
+| Domain mirror plan | [`docs/domain-mirror.md`](docs/domain-mirror.md) |
 | Audit packet | [`docs/audit-packet.generated.md`](docs/audit-packet.generated.md) |
 | Operational evidence | [`docs/operational-evidence.generated.md`](docs/operational-evidence.generated.md) |
 | Frontier integration evidence | [`docs/frontier-integrations.generated.md`](docs/frontier-integrations.generated.md) |

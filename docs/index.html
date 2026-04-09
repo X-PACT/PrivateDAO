@@ -8,11 +8,14 @@
 <meta property="og:title" content="PrivateDAO — Private Governance, Confidential Treasury, and Runtime Trust on Solana">
 <meta property="og:description" content="PrivateDAO is a production-minded Solana governance and treasury product with private voting, zk_enforced hardening, confidential payroll, REFHE and MagicBlock payout paths, backend reads, and reviewer-visible runtime evidence.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://x-pact.github.io/PrivateDAO/" id="ogUrlMeta">
 <meta property="og:image" content="assets/social-preview.svg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="PrivateDAO — Private Governance, Confidential Treasury, and Runtime Trust on Solana">
 <meta name="twitter:description" content="PrivateDAO is a production-minded Solana governance and treasury product with private voting, zk_enforced hardening, confidential payroll, REFHE and MagicBlock payout paths, backend reads, and reviewer-visible runtime evidence.">
 <meta name="twitter:image" content="assets/social-preview.svg">
+<meta name="twitter:url" content="https://x-pact.github.io/PrivateDAO/" id="twitterUrlMeta">
+<link rel="canonical" href="https://x-pact.github.io/PrivateDAO/" id="canonicalLink">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <script src="assets/vendor/solana-web3.iife.min.js"></script>
 <style>
@@ -5336,7 +5339,7 @@ body.judge-mode .judge-banner {
           <div class="curation-title">Operate and verify the system</div>
           <div class="curation-copy">Start from the live app, inspect the program on Solscan, and use the Devnet lifecycle proof as the canonical operational path.</div>
           <div class="curation-links">
-            <a class="award-link" href="https://x-pact.github.io/PrivateDAO/" target="_blank">Live App</a>
+            <a class="award-link" href="./" target="_blank">Live App</a>
             <a class="award-link" href="?page=proof&judge=1" target="_blank">Review Surface</a>
             <a class="award-link" href="https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet" target="_blank">Program on Solscan</a>
             <a class="award-link" href="live-proof.md" target="_blank">Live Devnet Proof</a>
@@ -7977,6 +7980,28 @@ function openOperatorQuickView() {
     document.getElementById('confidentialTreasuryCommandCenter')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     showToast('Operator surface opened. Start from the command center and active proposal flow.', 'success');
   }, 120);
+}
+
+function getAppBaseUrl() {
+  return `${window.location.origin}${window.location.pathname}`;
+}
+
+function getAbsoluteDocUrl(path) {
+  return new URL(path, getAppBaseUrl()).toString();
+}
+
+function syncPublicUrlMetadata() {
+  const canonical = document.getElementById('canonicalLink');
+  const ogUrl = document.getElementById('ogUrlMeta');
+  const twitterUrl = document.getElementById('twitterUrlMeta');
+  const currentUrl = window.location.href;
+  const baseUrl = getAppBaseUrl();
+  if (canonical) canonical.setAttribute('href', baseUrl);
+  if (ogUrl) ogUrl.setAttribute('content', baseUrl);
+  if (twitterUrl) twitterUrl.setAttribute('content', baseUrl);
+  document.querySelectorAll('a[data-app-home-link="1"]').forEach((link) => {
+    link.setAttribute('href', baseUrl);
+  });
 }
 
 function copyPilotRequestPacket() {
@@ -13384,13 +13409,13 @@ function copyConfidentialTreasuryEvidencePacket() {
     '- External audit, production multisig, real-device captures, and source-verifiable settlement receipts remain launch blockers.',
     '',
     'Reviewer links:',
-    '- Live app: https://x-pact.github.io/PrivateDAO/',
-    '- Payroll flow: docs/confidential-payroll-flow.md',
-    '- Frontier flow: docs/frontier-guided-flow.md',
-    '- Frontier integrations: docs/frontier-integrations.generated.md',
-    '- MagicBlock runtime: docs/magicblock/runtime.generated.md',
-    '- ZK-enforced runtime: docs/zk/enforced-runtime.generated.md',
-    '- Mainnet blockers: docs/mainnet-blockers.md',
+    `- Live app: ${getAppBaseUrl()}`,
+    `- Payroll flow: ${getAbsoluteDocUrl('confidential-payroll-flow.md')}`,
+    `- Frontier flow: ${getAbsoluteDocUrl('frontier-guided-flow.md')}`,
+    `- Frontier integrations: ${getAbsoluteDocUrl('frontier-integrations.generated.md')}`,
+    `- MagicBlock runtime: ${getAbsoluteDocUrl('magicblock/runtime.generated.md')}`,
+    `- ZK-enforced runtime: ${getAbsoluteDocUrl('zk/enforced-runtime.generated.md')}`,
+    `- Mainnet blockers: ${getAbsoluteDocUrl('mainnet-blockers.md')}`,
   ].join('\n');
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(packet)
@@ -13494,6 +13519,7 @@ const initialParams = new URLSearchParams(window.location.search);
 const initialJudge = initialParams.get('judge');
 const initialPage = initialParams.get('page');
 const initialDoc = initialParams.get('doc');
+syncPublicUrlMetadata();
 if (initialJudge === '1') {
   document.body.classList.add('judge-mode');
   showPage('proof');

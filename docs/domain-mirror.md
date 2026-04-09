@@ -53,6 +53,22 @@ Both surfaces should resolve to the same repo-native frontend behavior:
 - ZK companion evidence
 - cryptographic integrity evidence
 
+## Application-Layer Hardening Already Applied
+
+The repo now includes mirror-safe frontend behavior at the application layer:
+
+- root entry redirects to `./docs/` while preserving query params and hash fragments
+- the live frontend updates canonical / Open Graph / Twitter URL metadata from the active origin
+- self-links inside the app no longer assume only `x-pact.github.io/PrivateDAO/`
+- copied evidence packets can now reference the active frontend origin instead of a hardcoded review host
+
+This means the same frontend bundle can be served from:
+
+- `https://x-pact.github.io/PrivateDAO/`
+- `https://app.privatedao.xyz/`
+
+without rewriting the UI logic itself.
+
 ## Current Recommendation
 
 During review:
