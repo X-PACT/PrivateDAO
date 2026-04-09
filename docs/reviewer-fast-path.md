@@ -8,10 +8,14 @@ This is the shortest high-signal path for a judge, auditor, or technical reviewe
    - `https://x-pact.github.io/PrivateDAO/?page=security`
 2. Open the live Proof Center:
    - `https://x-pact.github.io/PrivateDAO/?page=proof`
-3. Confirm the canonical devnet identity:
+3. Open the dedicated V3 proof packet when you want the additive hardening path specifically:
+   - `docs/test-wallet-live-proof-v3.generated.md`
+   - `docs/governance-hardening-v3.md`
+   - `docs/settlement-hardening-v3.md`
+4. Confirm the canonical devnet identity:
    - Program ID: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
    - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
-4. Read the audit summary:
+5. Read the audit summary:
    - `docs/security-review.md`
 
 ## Five-Minute Review
