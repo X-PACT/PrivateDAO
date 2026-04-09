@@ -182,6 +182,7 @@
     "verify:test-wallet-live-proof:v3": "ts-node scripts/verify-test-wallet-live-proof-v3.ts",
     "verify:release-manifest": "ts-node scripts/verify-release-manifest.ts",
     "verify:review-links": "ts-node scripts/verify-review-links.ts",
+    "verify:mirror-readiness": "ts-node scripts/verify-mirror-readiness.ts",
     "verify:ops-surface": "bash scripts/verify-ops-surface.sh",
     "verify:all": "bash scripts/verify-all.sh",
     "check:mainnet": "bash scripts/check-mainnet-readiness.sh",

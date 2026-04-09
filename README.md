@@ -108,6 +108,7 @@ The README should stay aligned with this rule: implemented surfaces are describe
 | Guided product flow | [`docs/frontier-guided-flow.md`](docs/frontier-guided-flow.md) |
 | Live proof V3 | [`docs/test-wallet-live-proof-v3.generated.md`](docs/test-wallet-live-proof-v3.generated.md) |
 | Domain mirror plan | [`docs/domain-mirror.md`](docs/domain-mirror.md) |
+| `.xyz` mirror checklist | [`docs/xyz-mirror-cutover-checklist.md`](docs/xyz-mirror-cutover-checklist.md) |
 | Audit packet | [`docs/audit-packet.generated.md`](docs/audit-packet.generated.md) |
 | Operational evidence | [`docs/operational-evidence.generated.md`](docs/operational-evidence.generated.md) |
 | Frontier integration evidence | [`docs/frontier-integrations.generated.md`](docs/frontier-integrations.generated.md) |

@@ -69,6 +69,10 @@ This means the same frontend bundle can be served from:
 
 without rewriting the UI logic itself.
 
+Execution checklist:
+
+- [`docs/xyz-mirror-cutover-checklist.md`](xyz-mirror-cutover-checklist.md)
+
 ## Current Recommendation
 
 During review:
