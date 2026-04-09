@@ -67,6 +67,34 @@ PrivateDAO fits Frontier because it sits at the intersection of:
 - **RPC Fast-oriented read reliability**
 - **Full-stack Solana product execution**
 
+## Zerion Track Fit
+
+`PrivateDAO Autonomous Executor` is the cleanest bounty-aligned expansion path:
+
+1. Create DAO
+2. Submit proposal
+3. Private vote
+4. Execute treasury
+
+In this model:
+
+- `PrivateDAO` remains the governance, privacy, policy, and evidence layer.
+- A fork of `zeriontech/zerion-ai` becomes the wallet and execution layer.
+- The first scoped policy bundle should stay narrow: `Base-only`, `25 USDC cap`, `30 minute expiry`, `swap-only`, `single execution`.
+
+What is already true in this repo:
+
+- the private approval path exists
+- the scoped-policy story exists
+- live V3 Devnet treasury execution already exists
+- runtime evidence and reviewer packets already exist
+
+What is still pending for the bounty-specific submission:
+
+- fork Zerion CLI
+- route one real transaction through Zerion API
+- attach the Zerion execution receipt back into the PrivateDAO packet
+
 ## Launch Boundary
 
 PrivateDAO is strong enough for Devnet evaluation, judge review, and pilot packaging, but this repository does **not** claim real-funds mainnet readiness yet. The current boundary is deliberate:

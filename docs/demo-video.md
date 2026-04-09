@@ -87,6 +87,8 @@ Then clarify the execution handoff:
 - the `Zerion CLI fork` is the wallet and execution engine
 - the transaction must be real and routed through Zerion API
 - the policy must stay scoped, not god-mode
+- the first execution envelope should stay narrow: `Base only`, `25 USDC`, `30 minute expiry`, `swap only`
+- the proof packet should show what is already live in the repo versus what the Zerion fork still needs to complete
 
 The video should frame this as:
 

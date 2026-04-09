@@ -195,10 +195,13 @@ Why this matters:
 - most agents are either unsafely autonomous or only simulators
 - this model introduces scoped execution after private collective approval
 - it preserves the project wedge: privacy, policy, and evidence
+- the visible submission flow stays simple: `Create DAO -> Submit proposal -> Private vote -> Execute treasury`
+- the first compliance bundle stays narrow: `Base-only`, `25 USDC cap`, `30 minute expiry`, `swap-only`
 
 Honest boundary:
 
 - the current repository documents this path and is technically aligned with it
+- the repo already proves the approval path and a real Devnet treasury execution
 - the Zerion fork and live Zerion-routed transaction remain the next implementation step for the bounty-specific submission
 
 ## Slide 12 - The Ask
