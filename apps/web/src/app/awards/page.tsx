@@ -1,6 +1,8 @@
 import { Trophy, Shield } from "lucide-react";
 
+import { MetricsStrip } from "@/components/metrics-strip";
 import { SectionHeader } from "@/components/section-header";
+import { TrustSurface } from "@/components/trust-surface";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { awards } from "@/lib/site-data";
@@ -18,6 +20,9 @@ export default function AwardsPage() {
           title="Recognition and submission credibility"
           description="This page carries the recognition story forward into the Next.js surface without losing the product or security context behind it."
         />
+      </div>
+      <div className="mt-10">
+        <MetricsStrip />
       </div>
       <div className="mt-10 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
         <Card className="overflow-hidden">
@@ -57,6 +62,9 @@ export default function AwardsPage() {
             </Card>
           ))}
         </div>
+      </div>
+      <div className="mt-10">
+        <TrustSurface />
       </div>
     </main>
   );

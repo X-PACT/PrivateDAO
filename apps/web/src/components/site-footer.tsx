@@ -9,6 +9,12 @@ export function SiteFooter() {
           <a href="https://x-pact.github.io/PrivateDAO/?page=proof&judge=1" target="_blank" rel="noreferrer" className="hover:text-white">
             Judge view
           </a>
+          <a href="https://github.com/X-PACT/PrivateDAO/blob/main/docs/launch-trust-packet.generated.md" target="_blank" rel="noreferrer" className="hover:text-white">
+            Launch trust packet
+          </a>
+          <a href="https://github.com/X-PACT/PrivateDAO/blob/main/docs/mainnet-blockers.md" target="_blank" rel="noreferrer" className="hover:text-white">
+            Mainnet blockers
+          </a>
           <a href="https://github.com/X-PACT/PrivateDAO" target="_blank" rel="noreferrer" className="hover:text-white">
             Repository
           </a>

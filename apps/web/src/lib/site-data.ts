@@ -545,3 +545,36 @@ export const awards = [
     value: "The product is reviewer-facing, operator-friendly, and additive to existing protocol rails",
   },
 ];
+
+export const trustLinks = [
+  {
+    title: "Judge proof view",
+    summary: "Fastest reviewer path into the live product proof surface.",
+    href: "https://x-pact.github.io/PrivateDAO/?page=proof&judge=1",
+  },
+  {
+    title: "Audit packet",
+    summary: "Generated audit-facing packet that ties reviewer and launch evidence together.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/audit-packet.generated.md",
+  },
+  {
+    title: "Launch trust packet",
+    summary: "Commercial and launch trust narrative with boundaries kept explicit.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/launch-trust-packet.generated.md",
+  },
+  {
+    title: "Mainnet blockers",
+    summary: "Honest list of what still needs custody, audit, and runtime evidence before real-funds launch.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/mainnet-blockers.md",
+  },
+  {
+    title: "Presentation deck",
+    summary: "Pitch-ready investor and competition presentation surface.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/investor-pitch-deck.md",
+  },
+  {
+    title: "Live proof V3",
+    summary: "Dedicated additive hardening proof packet for Governance V3 and Settlement V3.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/test-wallet-live-proof-v3.generated.md",
+  },
+];
