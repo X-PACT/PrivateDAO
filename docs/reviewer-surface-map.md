@@ -20,9 +20,10 @@ If a reviewer has only a few minutes, the strongest order is:
 2. open Judge Mode
 3. open the Security page
 4. open the Proof Center
-5. inspect the canonical Devnet manifest
-6. inspect the security review set
-7. inspect the end-to-end test files
+5. inspect the dedicated V3 proof packet when the stricter additive path matters
+6. inspect the canonical Devnet manifest
+7. inspect the security review set
+8. inspect the end-to-end test files
 
 ## Frontend Entry Points
 
@@ -36,8 +37,11 @@ If a reviewer has only a few minutes, the strongest order is:
 ### Product and proof
 
 - [live-proof.md](/home/x-pact/PrivateDAO/docs/live-proof.md)
+- [test-wallet-live-proof-v3.generated.md](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.md)
 - [devnet-release-manifest.md](/home/x-pact/PrivateDAO/docs/devnet-release-manifest.md)
 - [independent-verification.md](/home/x-pact/PrivateDAO/docs/independent-verification.md)
+- [governance-hardening-v3.md](/home/x-pact/PrivateDAO/docs/governance-hardening-v3.md)
+- [settlement-hardening-v3.md](/home/x-pact/PrivateDAO/docs/settlement-hardening-v3.md)
 
 ### Security and audit
 
@@ -85,3 +89,5 @@ It does not replace:
 - external audit judgment
 - live strategy-performance verification
 - production mainnet rollout execution
+
+The `V3` packet improves reviewer coverage for the additive hardening path, but it does not upgrade the repository's launch boundary beyond Devnet proof and explicitly documented pending-external steps.
