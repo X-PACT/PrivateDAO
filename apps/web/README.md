@@ -68,6 +68,8 @@ npm run web:bundle:github
 npm run web:bundle:root
 npm run web:verify:bundle:github
 npm run web:verify:bundle:root
+npm run build:web-next-handoff
+npm run verify:web-next-handoff
 ```
 
 These produce export-ready directories and archives under `dist/`.
@@ -75,6 +77,7 @@ These produce export-ready directories and archives under `dist/`.
 Route parity reference:
 
 - `docs/web-next-route-parity.md`
+- `docs/web-next-handoff.generated.md`
 
 ## Important Constraint
 
