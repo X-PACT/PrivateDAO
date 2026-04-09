@@ -181,8 +181,40 @@ nav.scrolled {
   font-size: 26px;
   letter-spacing: 2px;
   color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
 }
 .logo-name em { color: var(--cyan); font-style: normal; }
+
+.logo-pyramid-a {
+  width: 18px;
+  height: 21px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 1px;
+  transform: translateY(1px);
+  filter: drop-shadow(0 0 14px rgba(0, 229, 255, 0.18));
+  animation: logoPyramidPulse 4.8s ease-in-out infinite;
+}
+
+.logo-pyramid-a svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@keyframes logoPyramidPulse {
+  0%, 100% {
+    transform: translateY(1px) scale(1);
+    filter: drop-shadow(0 0 14px rgba(0, 229, 255, 0.16));
+  }
+  50% {
+    transform: translateY(0) scale(1.04);
+    filter: drop-shadow(0 0 18px rgba(0, 229, 255, 0.28));
+  }
+}
 
 .nav-links {
   display:flex;
@@ -3608,7 +3640,14 @@ body.judge-mode .judge-banner {
             <circle cx="10" cy="13" r="1.5" fill="#00e5ff"/>
           </svg>
         </div>
-        <span class="logo-name">Private<em>DAO</em></span>
+        <span class="logo-name">Private<em>D</em><span class="logo-pyramid-a" aria-label="A">
+          <svg viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 2.2 18 21H2L10 2.2Z" stroke="#00e5ff" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M10 2.2V21" stroke="rgba(93,92,255,0.72)" stroke-width="1.2"/>
+            <path d="M6.3 11.2h7.4" stroke="rgba(0,255,136,0.7)" stroke-width="1.2" stroke-linecap="round"/>
+            <path d="M4.6 17.1h10.8" stroke="rgba(0,229,255,0.4)" stroke-width="1.1" stroke-dasharray="3 4" stroke-linecap="round"/>
+          </svg>
+        </span><em>O</em></span>
       </div>
       <div class="nav-links">
         <button class="nav-link active" onclick="showPage('proposals',this)">Proposals</button>
