@@ -811,6 +811,15 @@ function main() {
   if (!attestation.runtimeDocs || !attestation.runtimeDocs.includes("docs/wallet-runtime.md")) {
     throw new Error("generated attestation runtime docs are missing");
   }
+  if (!attestation.runtimeDocs.includes("docs/governance-hardening-v3.md")) {
+    throw new Error("generated attestation is missing the governance V3 doc");
+  }
+  if (!attestation.runtimeDocs.includes("docs/settlement-hardening-v3.md")) {
+    throw new Error("generated attestation is missing the settlement V3 doc");
+  }
+  if (!attestation.runtimeDocs.includes("docs/test-wallet-live-proof-v3.generated.md")) {
+    throw new Error("generated attestation is missing the dedicated V3 live proof doc");
+  }
   if (!attestation.runtimeDocs.includes("docs/runtime-evidence.generated.md")) {
     throw new Error("generated attestation is missing the runtime evidence doc");
   }
@@ -841,6 +850,15 @@ function main() {
   if (!attestation.operationsDocs || !attestation.operationsDocs.includes("docs/release-ceremony.md")) {
     throw new Error("generated attestation is missing the release ceremony doc");
   }
+  if (!attestation.operationsDocs.includes("docs/governance-hardening-v3.md")) {
+    throw new Error("generated attestation operations docs are missing the governance V3 doc");
+  }
+  if (!attestation.operationsDocs.includes("docs/settlement-hardening-v3.md")) {
+    throw new Error("generated attestation operations docs are missing the settlement V3 doc");
+  }
+  if (!attestation.operationsDocs.includes("docs/test-wallet-live-proof-v3.generated.md")) {
+    throw new Error("generated attestation operations docs are missing the dedicated V3 live proof doc");
+  }
   if (!attestation.operationsDocs.includes("docs/release-ceremony-attestation.generated.md")) {
     throw new Error("generated attestation is missing the release ceremony attestation doc");
   }
@@ -849,6 +867,12 @@ function main() {
   }
   if (!attestation.securityDocs || !attestation.securityDocs.includes("docs/cryptographic-posture.md")) {
     throw new Error("generated attestation is missing the cryptographic posture doc");
+  }
+  if (!attestation.securityDocs.includes("docs/governance-hardening-v3.md")) {
+    throw new Error("generated attestation security docs are missing the governance V3 doc");
+  }
+  if (!attestation.securityDocs.includes("docs/settlement-hardening-v3.md")) {
+    throw new Error("generated attestation security docs are missing the settlement V3 doc");
   }
   if (!attestation.securityDocs.includes("docs/supply-chain-security.md")) {
     throw new Error("generated attestation is missing the supply-chain security doc");
@@ -1026,7 +1050,10 @@ function main() {
     !mainnetAcceptanceMd.includes("# Mainnet Acceptance Matrix") ||
     !mainnetAcceptanceMd.includes("docs/external-readiness-intake.md") ||
     !mainnetAcceptanceMd.includes("docs/runtime/real-device.generated.md") ||
-    !mainnetAcceptanceMd.includes("real-device-wallet-qa")
+    !mainnetAcceptanceMd.includes("real-device-wallet-qa") ||
+    !mainnetAcceptanceMd.includes("docs/test-wallet-live-proof-v3.generated.md") ||
+    !mainnetAcceptanceMd.includes("docs/governance-hardening-v3.md") ||
+    !mainnetAcceptanceMd.includes("docs/settlement-hardening-v3.md")
   ) {
     throw new Error("generated mainnet acceptance matrix markdown is invalid");
   }
@@ -1043,6 +1070,15 @@ function main() {
   if (!mainnetProofPackage.coreArtifacts.includes("docs/mainnet-acceptance-matrix.generated.md")) {
     throw new Error("generated mainnet proof package is missing the acceptance matrix");
   }
+  if (!mainnetProofPackage.coreArtifacts.includes("docs/test-wallet-live-proof-v3.generated.md")) {
+    throw new Error("generated mainnet proof package is missing the dedicated V3 live proof");
+  }
+  if (!mainnetProofPackage.coreArtifacts.includes("docs/governance-hardening-v3.md")) {
+    throw new Error("generated mainnet proof package is missing the governance V3 doc");
+  }
+  if (!mainnetProofPackage.coreArtifacts.includes("docs/settlement-hardening-v3.md")) {
+    throw new Error("generated mainnet proof package is missing the settlement V3 doc");
+  }
   if (!mainnetProofPackage.coreArtifacts.includes("docs/external-readiness-intake.md")) {
     throw new Error("generated mainnet proof package is missing the external readiness intake");
   }
@@ -1053,7 +1089,10 @@ function main() {
     !mainnetProofPackageMd.includes("# Mainnet Proof Package") ||
     !mainnetProofPackageMd.includes("docs/mainnet-acceptance-matrix.generated.md") ||
     !mainnetProofPackageMd.includes("docs/runtime-evidence.generated.md") ||
-    !mainnetProofPackageMd.includes("docs/runtime/real-device.generated.md")
+    !mainnetProofPackageMd.includes("docs/runtime/real-device.generated.md") ||
+    !mainnetProofPackageMd.includes("docs/test-wallet-live-proof-v3.generated.md") ||
+    !mainnetProofPackageMd.includes("docs/governance-hardening-v3.md") ||
+    !mainnetProofPackageMd.includes("docs/settlement-hardening-v3.md")
   ) {
     throw new Error("generated mainnet proof package markdown is invalid");
   }
