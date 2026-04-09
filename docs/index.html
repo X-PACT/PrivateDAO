@@ -1355,10 +1355,60 @@ nav.scrolled {
   margin-top: 14px;
 }
 
+.storefront-compare-grid {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.storefront-compare-card {
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.025);
+}
+
+.storefront-compare-label {
+  color: var(--text3);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.storefront-compare-title {
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 800;
+  margin-top: 10px;
+}
+
+.storefront-compare-copy {
+  color: var(--text2);
+  font-size: 13px;
+  line-height: 1.7;
+  margin-top: 8px;
+}
+
+.storefront-compare-list {
+  margin-top: 12px;
+  display: grid;
+  gap: 8px;
+  color: var(--text2);
+  font-size: 12px;
+}
+
+.storefront-compare-list div::before {
+  content: "•";
+  color: var(--cyan);
+  margin-right: 8px;
+}
+
 @media (max-width: 1120px) {
   .proposal-preset-grid,
   .proposal-advisor-grid,
-  .storefront-rail-grid {
+  .storefront-rail-grid,
+  .storefront-compare-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -1367,7 +1417,8 @@ nav.scrolled {
   .proposal-preset-head,
   .proposal-preset-grid,
   .proposal-advisor-grid,
-  .storefront-rail-grid {
+  .storefront-rail-grid,
+  .storefront-compare-grid {
     grid-template-columns: 1fr;
   }
 
@@ -3530,8 +3581,8 @@ body.judge-mode .judge-banner {
         </span>
       </a>
       <div class="hero-actions">
-        <button class="btn-primary" onclick="openStorefrontDaoFlow()">Start a DAO</button>
-        <button class="btn-ghost" onclick="openConfidentialTreasuryWizard()">Start Private Payout</button>
+        <button class="btn-primary" onclick="openStorefrontDaoFlow()"><span id="heroPrimaryCtaLabel">Start a DAO</span></button>
+        <button class="btn-ghost" onclick="openConfidentialTreasuryWizard()"><span id="heroSecondaryCtaLabel">Start Private Payout</span></button>
         <button class="btn-ghost" onclick="openRealmsMigrationStorefront()">Migrate from Realms</button>
         <button class="btn-ghost" onclick="openServiceCatalog()">Explore Services</button>
       </div>
@@ -3615,9 +3666,9 @@ body.judge-mode .judge-banner {
         <div>
           <div class="proposal-preset-kicker">STOREFRONT</div>
           <div class="proposal-preset-title">Choose the operating pack that matches the organization you serve.</div>
-          <div class="proposal-preset-copy">This layer makes PrivateDAO easier for a normal operator to understand. Each pack maps to the same product surface you already have: DAO creation, proposal submission, private voting, treasury execution, confidential payroll, Realms migration, and review automation.</div>
+          <div class="proposal-preset-copy" id="storefrontShelfCopy">Start with the pack that matches the organization you operate. Each pack maps to the same PrivateDAO surface: DAO creation, proposal submission, private voting, treasury execution, confidential payroll, Realms migration, and review automation.</div>
         </div>
-        <div class="proposal-preset-status">PRODUCT-FIRST ENTRY</div>
+          <div class="proposal-preset-status" id="storefrontShelfStatus">PRODUCT-FIRST ENTRY</div>
       </div>
       <div class="proposal-preset-grid">
         <button class="proposal-preset-btn" type="button" onclick="startUseCasePack('grant-committee-pack.md', 'standard-grant')">
@@ -3636,6 +3687,32 @@ body.judge-mode .judge-banner {
           <strong>ENTERPRISE DAO PACK</strong>
           <span>Run confidential payroll, bonus approvals, and operator-grade treasury controls for serious teams.</span>
         </button>
+      </div>
+      <div class="storefront-compare-grid">
+        <div class="storefront-compare-card">
+          <div class="storefront-compare-label">BEST FOR</div>
+          <div class="storefront-compare-title" id="storefrontBestForTitle">Community grants and treasury approvals</div>
+          <div class="storefront-compare-copy" id="storefrontBestForCopy">Best for grant committees that need private approvals and clean execution steps.</div>
+        </div>
+        <div class="storefront-compare-card">
+          <div class="storefront-compare-label">WHY THIS PACK</div>
+          <div class="storefront-compare-title" id="storefrontWhyPackTitle">Simple lifecycle, strong reviewer clarity</div>
+          <div class="storefront-compare-copy" id="storefrontWhyPackCopy">This pack keeps the flow centered on create DAO, fund treasury, submit proposal, private vote, and execute with the lowest onboarding friction.</div>
+        </div>
+        <div class="storefront-compare-card">
+          <div class="storefront-compare-label">TECHNOLOGY FIT</div>
+          <div class="storefront-compare-title" id="storefrontTechTitle">Core governance only</div>
+          <div class="storefront-compare-list" id="storefrontTechList">
+            <div>Commit-reveal governance</div>
+            <div>Treasury execution</div>
+            <div>Read-node visibility</div>
+          </div>
+        </div>
+        <div class="storefront-compare-card">
+          <div class="storefront-compare-label">PRIMARY CTA</div>
+          <div class="storefront-compare-title" id="storefrontCtaTitle">Launch a standard treasury proposal</div>
+          <div class="storefront-compare-copy" id="storefrontCtaCopy">Launch the DAO bootstrap, treasury funding, and proposal builder with the right defaults already loaded.</div>
+        </div>
       </div>
       <div class="proof-path-strip">
         <div class="proof-path-chip">
@@ -6925,12 +7002,96 @@ function startUseCasePack(docPath, presetKey) {
   showPage('proposals', findNavButton('proposals'));
   setTimeout(() => {
     applyProposalBuilderPreset(presetKey, { silent: true });
+    setStorefrontProfileByPreset(presetKey);
     scrollToProposalBuilder();
     if (docPath) {
       window.open(docPath, '_blank', 'noopener,noreferrer');
     }
     showToast('Use-case pack loaded. Review the mapped product story, then sign only after confirming the builder inputs.', 'success');
   }, 120);
+}
+
+const STOREFRONT_PROFILES_BY_PRESET = {
+  'standard-grant': {
+    shelfStatus: 'GRANT / COMMUNITY READY',
+    shelfCopy: 'Start with the pack that matches the organization you operate. This is the cleanest entry into PrivateDAO for community treasury approvals, grants, and committee decisions with private voting and visible treasury execution.',
+    bestForTitle: 'Community grants and treasury approvals',
+    bestForCopy: 'Best for grant committees that need private approvals and clean execution steps.',
+    whyPackTitle: 'Simple lifecycle, strong reviewer clarity',
+    whyPackCopy: 'This pack minimizes onboarding complexity while still proving the full governance flow from proposal to execution.',
+    techTitle: 'Core governance plus read-node',
+    techList: ['Commit-reveal governance', 'Treasury execution', 'RPC Fast read path'],
+    ctaTitle: 'Launch a standard treasury proposal',
+    ctaCopy: 'Launch the DAO bootstrap, treasury funding, and proposal builder with the right defaults already loaded.',
+    heroPrimary: 'Start a DAO',
+    heroSecondary: 'Launch Grant Flow',
+  },
+  'confidential-bonus': {
+    shelfStatus: 'FUND / SENSITIVE FLOW',
+    shelfCopy: 'This pack is tuned for sensitive allocations and committee approvals where the organization needs private voting and potentially stronger review layers before treasury release.',
+    bestForTitle: 'Fund governance and sensitive committee approvals',
+    bestForCopy: 'Best when treasury intent or investment direction should not leak while the decision is still active.',
+    whyPackTitle: 'Private direction before public capital movement',
+    whyPackCopy: 'This pack makes the strongest case for private governance plus optional ZK and REFHE review layers.',
+    techTitle: 'Governance plus ZK and REFHE',
+    techList: ['Commit-reveal governance', 'ZK review path', 'Optional REFHE envelope'],
+    ctaTitle: 'Launch a confidential committee proposal',
+    ctaCopy: 'Use this when private voting and stronger review logic matter more than payout complexity alone.',
+    heroPrimary: 'Start Fund Governance',
+    heroSecondary: 'Start Private Committee Flow',
+  },
+  'private-token-distribution': {
+    shelfStatus: 'GAMING / TOKEN FLOW',
+    shelfCopy: 'This pack is tuned for token distributions, guild payouts, and reward programs that need private governance and proposal-bound token release.',
+    bestForTitle: 'Gaming DAOs and private token drops',
+    bestForCopy: 'Best when token distribution needs to be proposal-bound, reviewer-visible, and less publicly telegraphed before finalization.',
+    whyPackTitle: 'Token operations without noisy signaling',
+    whyPackCopy: 'This pack makes MagicBlock most relevant because the product path is centered on confidential token payout corridors.',
+    techTitle: 'Governance plus MagicBlock',
+    techList: ['Commit-reveal governance', 'MagicBlock corridor', 'Runtime evidence'],
+    ctaTitle: 'Launch a private token distribution',
+    ctaCopy: 'Use this when the treasury action is token-native and should stay gated behind proposal-bound settlement evidence.',
+    heroPrimary: 'Start Gaming DAO',
+    heroSecondary: 'Start Token Distribution',
+  },
+  'confidential-payroll': {
+    shelfStatus: 'ENTERPRISE / OPS READY',
+    shelfCopy: 'This pack is tuned for enterprise-style organizations that need private payroll, confidential bonus approvals, and operator-grade treasury workflows.',
+    bestForTitle: 'Enterprise-style payroll and internal ops',
+    bestForCopy: 'Best when compensation or internal governance flows are too sensitive for open on-chain signaling.',
+    whyPackTitle: 'Confidential operations with product discipline',
+    whyPackCopy: 'This pack combines private governance, encrypted manifests, REFHE, MagicBlock hints, and operator-facing trust packaging.',
+    techTitle: 'Governance plus REFHE and MagicBlock',
+    techList: ['Encrypted manifest binding', 'REFHE envelope', 'MagicBlock corridor'],
+    ctaTitle: 'Launch a confidential payroll flow',
+    ctaCopy: 'Use this when the organization wants private governance to expand into serious operational workflows.',
+    heroPrimary: 'Start Enterprise DAO',
+    heroSecondary: 'Start Private Payroll',
+  },
+};
+
+function setStorefrontProfileByPreset(presetKey) {
+  const profile = STOREFRONT_PROFILES_BY_PRESET[presetKey];
+  if (!profile) return;
+  const mapText = (id, value) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+  };
+  mapText('storefrontShelfStatus', profile.shelfStatus);
+  mapText('storefrontShelfCopy', profile.shelfCopy);
+  mapText('storefrontBestForTitle', profile.bestForTitle);
+  mapText('storefrontBestForCopy', profile.bestForCopy);
+  mapText('storefrontWhyPackTitle', profile.whyPackTitle);
+  mapText('storefrontWhyPackCopy', profile.whyPackCopy);
+  mapText('storefrontTechTitle', profile.techTitle);
+  const techList = document.getElementById('storefrontTechList');
+  if (techList) {
+    techList.innerHTML = profile.techList.map((item) => `<div>${item}</div>`).join('');
+  }
+  mapText('storefrontCtaTitle', profile.ctaTitle);
+  mapText('storefrontCtaCopy', profile.ctaCopy);
+  mapText('heroPrimaryCtaLabel', profile.heroPrimary);
+  mapText('heroSecondaryCtaLabel', profile.heroSecondary);
 }
 
 function currentPageKey() {
@@ -11936,6 +12097,7 @@ if (initialJudge === '1') {
 }
 
 syncCreateProposalCommand();
+setStorefrontProfileByPreset(currentProposalBuilderPreset || 'standard-grant');
 applyMigrationPreset('community-treasury', { silent: true });
 syncMigrationCommand();
 syncCreateDaoCommand();
