@@ -10,6 +10,8 @@
     "web:build:root": "npm --prefix apps/web run build:root",
     "web:bundle:github": "bash scripts/build-web-mirror-bundle.sh github",
     "web:bundle:root": "bash scripts/build-web-mirror-bundle.sh root",
+    "web:verify:bundle:github": "bash scripts/verify-web-mirror-bundle.sh github",
+    "web:verify:bundle:root": "bash scripts/verify-web-mirror-bundle.sh root",
     "web:lint": "npm --prefix apps/web run lint",
     "start:read-node": "ts-node scripts/run-read-node.ts",
     "test": "bash scripts/run-local-anchor-suite.sh all",

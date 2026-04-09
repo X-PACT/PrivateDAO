@@ -66,9 +66,15 @@ Mirror bundle helpers from the repo root:
 ```bash
 npm run web:bundle:github
 npm run web:bundle:root
+npm run web:verify:bundle:github
+npm run web:verify:bundle:root
 ```
 
 These produce export-ready directories and archives under `dist/`.
+
+Route parity reference:
+
+- `docs/web-next-route-parity.md`
 
 ## Important Constraint
 

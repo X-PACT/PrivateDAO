@@ -59,5 +59,6 @@ Do not describe the Next.js app as the canonical live site until:
 ## Related Docs
 
 - [apps/web/README.md](/home/x-pact/PrivateDAO/apps/web/README.md)
+- [docs/web-next-route-parity.md](/home/x-pact/PrivateDAO/docs/web-next-route-parity.md)
 - [docs/domain-mirror.md](/home/x-pact/PrivateDAO/docs/domain-mirror.md)
 - [docs/xyz-mirror-cutover-checklist.md](/home/x-pact/PrivateDAO/docs/xyz-mirror-cutover-checklist.md)
