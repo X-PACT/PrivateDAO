@@ -6,8 +6,23 @@
     </linearGradient>
   </defs>
   <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#bg)" stroke="#12304c" stroke-width="2"/>
-  <path d="M32 15 47 47H17L32 15Z" stroke="#ffcf4a" stroke-width="3.2" stroke-linejoin="round"/>
-  <path d="M32 15V47" stroke="#ffb100" stroke-opacity="0.84" stroke-width="2"/>
-  <path d="M24.8 31h14.4" stroke="#ffdc64" stroke-width="2.2" stroke-linecap="round"/>
-  <path d="M21.2 39.6h21.6" stroke="#fff1b3" stroke-opacity="0.55" stroke-width="1.6" stroke-dasharray="3 4" stroke-linecap="round"/>
+  <defs>
+    <linearGradient id="pyramidLeft" x1="10" y1="14" x2="32" y2="49" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff1b3"/>
+      <stop offset="0.34" stop-color="#ffdc64"/>
+      <stop offset="1" stop-color="#bb7600"/>
+    </linearGradient>
+    <linearGradient id="pyramidRight" x1="32" y1="14" x2="52" y2="48" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffe28a"/>
+      <stop offset="0.48" stop-color="#ffb100"/>
+      <stop offset="1" stop-color="#8d5600"/>
+    </linearGradient>
+  </defs>
+  <path d="M32 13 47 47H32V13Z" fill="url(#pyramidRight)"/>
+  <path d="M32 13 32 47H17L32 13Z" fill="url(#pyramidLeft)"/>
+  <path d="M32 13 47 47H17L32 13Z" stroke="#ffd76a" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M32 13V47" stroke="#fff3c3" stroke-opacity="0.74" stroke-width="1.7"/>
+  <path d="M25 29.5h14" stroke="#fff3c3" stroke-opacity="0.8" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M22 37.8h20" stroke="#d08c00" stroke-opacity="0.84" stroke-width="1.8" stroke-linecap="round"/>
+  <ellipse cx="32" cy="16" rx="2.8" ry="1.6" fill="#fff8d7" fill-opacity="0.8"/>
 </svg>

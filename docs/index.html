@@ -192,15 +192,15 @@ nav.scrolled {
 .logo-name em { color: var(--cyan); font-style: normal; }
 
 .logo-pyramid-a {
-  width: 20px;
-  height: 24px;
+  width: 24px;
+  height: 28px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin: 0 -1px 0 -1px;
+  margin: 0 -2px 0 -2px;
   position: relative;
-  transform: translateY(1px);
-  filter: drop-shadow(0 0 14px rgba(255, 207, 74, 0.22));
+  transform: translateY(2px);
+  filter: drop-shadow(0 0 18px rgba(255, 207, 74, 0.26));
   animation: logoPyramidFloat 5.6s ease-in-out infinite;
 }
 
@@ -210,17 +210,17 @@ nav.scrolled {
   display: block;
   position: relative;
   z-index: 1;
-  transform-origin: center 58%;
+  transform-origin: center 60%;
   animation: logoPyramidSpin 6.2s ease-in-out infinite;
 }
 
 .logo-pyramid-a::before {
   content: "";
   position: absolute;
-  inset: 1px 2px 2px;
+  inset: 2px 3px 3px;
   clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
-  background: linear-gradient(115deg, rgba(255,255,255,0) 22%, rgba(255,249,214,0.55) 44%, rgba(255,255,255,0) 62%);
-  opacity: 0.75;
+  background: linear-gradient(112deg, rgba(255,255,255,0) 18%, rgba(255,245,196,0.76) 43%, rgba(255,255,255,0) 65%);
+  opacity: 0.9;
   pointer-events: none;
   z-index: 2;
   animation: logoPyramidShimmer 4.8s linear infinite;
@@ -228,12 +228,12 @@ nav.scrolled {
 
 @keyframes logoPyramidFloat {
   0%, 100% {
-    transform: translateY(1px) scale(1);
-    filter: drop-shadow(0 0 14px rgba(255, 207, 74, 0.18));
+    transform: translateY(2px) scale(1);
+    filter: drop-shadow(0 0 18px rgba(255, 207, 74, 0.22));
   }
   50% {
-    transform: translateY(0) scale(1.045);
-    filter: drop-shadow(0 0 18px rgba(255, 207, 74, 0.3));
+    transform: translateY(0) scale(1.055);
+    filter: drop-shadow(0 0 24px rgba(255, 207, 74, 0.34));
   }
 }
 
@@ -3035,14 +3035,14 @@ footer {
 .footer-brand em { color: var(--cyan); font-style: normal; }
 
 .footer-pyramid-a {
-  width: 15px;
-  height: 18px;
+  width: 18px;
+  height: 22px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin: 0 -1px;
-  transform: translateY(1px);
-  filter: drop-shadow(0 0 10px rgba(255, 207, 74, 0.2));
+  margin: 0 -2px;
+  transform: translateY(2px);
+  filter: drop-shadow(0 0 12px rgba(255, 207, 74, 0.24));
 }
 
 .footer-pyramid-a svg {
@@ -3693,10 +3693,25 @@ body.judge-mode .judge-banner {
         </div>
         <span class="logo-name">Private<em>D</em><span class="logo-pyramid-a" aria-label="A">
           <svg viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 2.2 18 21H2L10 2.2Z" stroke="#ffcf4a" stroke-width="1.9" stroke-linejoin="round"/>
-            <path d="M10 2.2V21" stroke="#ffb100" stroke-opacity="0.82" stroke-width="1.25"/>
-            <path d="M6.3 11.2h7.4" stroke="#ffdc64" stroke-width="1.25" stroke-linecap="round"/>
-            <path d="M4.6 17.1h10.8" stroke="#fff1b3" stroke-opacity="0.5" stroke-width="1.1" stroke-dasharray="3 4" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="logoPyramidLeft" x1="3" y1="4" x2="10" y2="22" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#fff1b3"/>
+                <stop offset="0.34" stop-color="#ffdc64"/>
+                <stop offset="1" stop-color="#c98500"/>
+              </linearGradient>
+              <linearGradient id="logoPyramidRight" x1="10" y1="3" x2="18" y2="22" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#ffe28a"/>
+                <stop offset="0.48" stop-color="#ffb100"/>
+                <stop offset="1" stop-color="#8c5600"/>
+              </linearGradient>
+            </defs>
+            <path d="M10 2 17.5 21H10V2Z" fill="url(#logoPyramidRight)"/>
+            <path d="M10 2 10 21H2.5L10 2Z" fill="url(#logoPyramidLeft)"/>
+            <path d="M10 2 17.5 21H2.5L10 2Z" stroke="#ffd76a" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M10 2V21" stroke="#fff3c3" stroke-opacity="0.72" stroke-width="0.95"/>
+            <path d="M6.05 11.4H13.95" stroke="#fff3c3" stroke-opacity="0.78" stroke-width="1.1" stroke-linecap="round"/>
+            <path d="M4.9 17.6H15.1" stroke="#d08c00" stroke-opacity="0.82" stroke-width="1.1" stroke-linecap="round"/>
+            <ellipse cx="10" cy="2.8" rx="1.5" ry="0.9" fill="#fff8d7" fill-opacity="0.78"/>
           </svg>
         </span><em>O</em></span>
       </div>
@@ -6947,10 +6962,25 @@ execute() → treasury action
     <div class="footer-inner">
       <div class="footer-brand">Private<em>D</em><span class="footer-pyramid-a" aria-hidden="true">
         <svg viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10 2.2 18 21H2L10 2.2Z" stroke="#ffcf4a" stroke-width="1.9" stroke-linejoin="round"/>
-          <path d="M10 2.2V21" stroke="#ffb100" stroke-opacity="0.82" stroke-width="1.25"/>
-          <path d="M6.3 11.2h7.4" stroke="#ffdc64" stroke-width="1.25" stroke-linecap="round"/>
-          <path d="M4.6 17.1h10.8" stroke="#fff1b3" stroke-opacity="0.5" stroke-width="1.1" stroke-dasharray="3 4" stroke-linecap="round"/>
+          <defs>
+            <linearGradient id="footerPyramidLeft" x1="3" y1="4" x2="10" y2="22" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#fff1b3"/>
+              <stop offset="0.34" stop-color="#ffdc64"/>
+              <stop offset="1" stop-color="#c98500"/>
+            </linearGradient>
+            <linearGradient id="footerPyramidRight" x1="10" y1="3" x2="18" y2="22" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#ffe28a"/>
+              <stop offset="0.48" stop-color="#ffb100"/>
+              <stop offset="1" stop-color="#8c5600"/>
+            </linearGradient>
+          </defs>
+          <path d="M10 2 17.5 21H10V2Z" fill="url(#footerPyramidRight)"/>
+          <path d="M10 2 10 21H2.5L10 2Z" fill="url(#footerPyramidLeft)"/>
+          <path d="M10 2 17.5 21H2.5L10 2Z" stroke="#ffd76a" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M10 2V21" stroke="#fff3c3" stroke-opacity="0.72" stroke-width="0.95"/>
+          <path d="M6.05 11.4H13.95" stroke="#fff3c3" stroke-opacity="0.78" stroke-width="1.1" stroke-linecap="round"/>
+          <path d="M4.9 17.6H15.1" stroke="#d08c00" stroke-opacity="0.82" stroke-width="1.1" stroke-linecap="round"/>
+          <ellipse cx="10" cy="2.8" rx="1.5" ry="0.9" fill="#fff8d7" fill-opacity="0.78"/>
         </svg>
       </span><em>O</em></div>
       <div class="footer-meta">
