@@ -47,6 +47,8 @@
   --shadow-strong: 0 24px 64px rgba(0,0,0,0.22);
   --surface-soft: rgba(9, 15, 22, 0.62);
   --surface-strong: linear-gradient(180deg, rgba(8, 16, 24, 0.76), rgba(7, 13, 20, 0.94));
+  --section-space: clamp(84px, 8vw, 108px);
+  --heading-space: clamp(30px, 4vw, 48px);
 }
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -550,14 +552,14 @@ nav.scrolled {
 }
 
 .hero-zk-badge .badge-glyph {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   border-radius: 999px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   background: rgba(255,255,255,0.14);
-  font-size: 11px;
+  font-size: 10px;
   line-height: 1;
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.16);
 }
@@ -611,20 +613,20 @@ nav.scrolled {
 .hero-headline .line3 { display: block; color: var(--cyan); }
 
 .hero-sub {
-  font-size: 18px;
+  font-size: clamp(16px, 1.35vw, 18px);
   color: var(--text2);
-  line-height: 1.7;
-  max-width: 580px;
-  margin-bottom: 34px;
+  line-height: 1.78;
+  max-width: 620px;
+  margin-bottom: 28px;
   animation: fadeUp 0.8s ease 0.2s both;
 }
 
 .hero-feature-line {
-  margin-top: -18px;
-  margin-bottom: 28px;
+  margin-top: -8px;
+  margin-bottom: 24px;
   color: var(--text3);
-  font-size: 14px;
-  line-height: 1.8;
+  font-size: 13px;
+  line-height: 1.75;
   letter-spacing: 0.2px;
   animation: fadeUp 0.8s ease 0.18s both;
   max-width: 680px;
@@ -751,8 +753,8 @@ nav.scrolled {
 .hero-proof-card {
   display: flex;
   flex-direction: column;
-  min-height: 210px;
-  padding: 16px;
+  min-height: 198px;
+  padding: 15px;
   border-radius: var(--radius-card);
   border: 1px solid rgba(255,255,255,0.08);
   background: var(--surface-soft);
@@ -792,8 +794,8 @@ nav.scrolled {
 
 .hero-tech-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(176px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
+  gap: 12px;
   margin-top: 18px;
   animation: fadeUp 0.8s ease 0.4s both;
 }
@@ -801,8 +803,8 @@ nav.scrolled {
 .hero-tech-card {
   display: flex;
   flex-direction: column;
-  min-height: 156px;
-  padding: 16px;
+  min-height: 146px;
+  padding: 15px;
   border-radius: var(--radius-card);
   border: 1px solid rgba(255,255,255,0.08);
   background: var(--surface-soft);
@@ -816,14 +818,14 @@ nav.scrolled {
 }
 
 .hero-tech-icon {
-  width: 40px;
-  height: 40px;
+  width: 34px;
+  height: 34px;
   border-radius: 12px;
   display: grid;
   place-items: center;
   border: 1px solid rgba(0,229,255,0.18);
   background: rgba(0,229,255,0.08);
-  font-size: 17px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 1;
   flex: 0 0 auto;
@@ -841,8 +843,8 @@ nav.scrolled {
 .hero-tech-copy {
   margin-top: 10px;
   color: var(--text2);
-  font-size: 12.5px;
-  line-height: 1.7;
+  font-size: 12px;
+  line-height: 1.68;
   flex: 1 1 auto;
 }
 
@@ -2116,7 +2118,7 @@ nav.scrolled {
 .stat-label { font-size: 12px; color: var(--text3); letter-spacing: 0.5px; }
 
 /* ── PROBLEM SECTION ── */
-.section { padding: 108px 0; }
+.section { padding: var(--section-space) 0; }
 
 .section-tag {
   font-family: var(--mono);
@@ -2124,15 +2126,15 @@ nav.scrolled {
   color: var(--cyan);
   letter-spacing: 4px;
   text-transform: uppercase;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .section-heading {
   font-family: var(--display);
-  font-size: clamp(48px, 6vw, 80px);
+  font-size: clamp(42px, 5.3vw, 72px);
   letter-spacing: 1px;
-  line-height: 0.95;
-  margin-bottom: 48px;
+  line-height: 0.98;
+  margin-bottom: var(--heading-space);
 }
 
 /* Compare grid */
@@ -3404,8 +3406,8 @@ body.judge-mode .judge-banner {
 
 .surface-strip {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
   margin-top: 24px;
 }
 
@@ -3418,8 +3420,8 @@ body.judge-mode .judge-banner {
   align-items: center;
   column-gap: 12px;
   row-gap: 3px;
-  min-height: 58px;
-  padding: 12px 14px;
+  min-height: 52px;
+  padding: 11px 13px;
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: 18px;
   background: rgba(7, 11, 18, 0.78);
@@ -3429,13 +3431,13 @@ body.judge-mode .judge-banner {
 }
 .surface-pill-icon {
   grid-area: icon;
-  width: 28px;
-  height: 28px;
-  border-radius: 10px;
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
+  font-size: 11px;
   line-height: 1;
   color: var(--text);
   background: rgba(255,255,255,0.08);
@@ -3446,7 +3448,7 @@ body.judge-mode .judge-banner {
 .surface-pill strong {
   grid-area: title;
   color: var(--text);
-  font-size: 12px;
+  font-size: 11.5px;
   letter-spacing: 0.08em;
   line-height: 1.15;
 }
@@ -3454,8 +3456,8 @@ body.judge-mode .judge-banner {
 .surface-pill > span:last-child {
   grid-area: copy;
   color: var(--text2);
-  font-size: 11px;
-  line-height: 1.45;
+  font-size: 10.5px;
+  line-height: 1.4;
   letter-spacing: 0;
   text-transform: none;
 }
