@@ -6,6 +6,7 @@ PrivateDAO already has:
 
 - a live Solana program on devnet
 - end-to-end governance lifecycle coverage
+- additive `Governance Hardening V3` and `Settlement Hardening V3` paths with dedicated Devnet proof
 - treasury execution validation
 - live explorer-linked proof
 - web and Android-native product surfaces
@@ -19,6 +20,7 @@ PrivateDAO already has:
 - invalid treasury wiring rejected
 - timelock and veto behavior validated
 - direct-commit/delegation overlap rejected on-chain and mirrored by operator/frontend surfaces
+- additive governance-policy and settlement-policy V3 paths proven on Devnet without reinterpreting legacy objects
 
 ### Release discipline
 
@@ -93,6 +95,16 @@ bash scripts/check-mainnet-readiness.sh
 ```
 
 This gate is intentionally conservative. It does not claim audit completion or automatic mainnet approval. It ensures the current repository clears the minimum internal release bar before any production cutover.
+
+## Dedicated V3 Proof
+
+The readiness story now includes a dedicated Devnet packet for the stricter additive path:
+
+- `docs/governance-hardening-v3.md`
+- `docs/settlement-hardening-v3.md`
+- `docs/test-wallet-live-proof-v3.generated.md`
+
+That packet strengthens the internal readiness story, but it does not remove the pending-external blockers for real-funds mainnet launch.
 
 ## Production blocker register
 

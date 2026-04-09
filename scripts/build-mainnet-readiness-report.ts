@@ -143,11 +143,19 @@ ${launchOps.items
 ${attestation.zk ? `- ZK stack version: \`${attestation.zk.stackVersion}\`\n- ZK layer count: \`${attestation.zk.entryCount}\`` : ""}
 ${attestation.cryptographicIntegrity ? `- Integrity algorithm: \`${attestation.cryptographicIntegrity.algorithm}\`\n- Integrity entries: \`${attestation.cryptographicIntegrity.entryCount}\`\n- Integrity aggregate sha256: \`${attestation.cryptographicIntegrity.aggregateSha256}\`` : ""}
 
+## Additive Hardening V3
+
+- Governance hardening note: \`docs/governance-hardening-v3.md\`
+- Settlement hardening note: \`docs/settlement-hardening-v3.md\`
+- Dedicated V3 live proof: \`docs/test-wallet-live-proof-v3.generated.md\`
+- V3 boundary: real Devnet proof for the additive hardening path, not a production-custody or mainnet claim
+
 ## Mainnet Conclusion
 
 What is strong now:
 
 - the governance lifecycle is live on devnet
+- the additive V3 governance and settlement hardening paths are Devnet-proven
 - reviewer-facing proof and security artifacts are published
 - the zk companion stack is registry-backed, transcript-backed, and attested
 - the PDAO token surface is metadata-backed, attested, and bound to the canonical review package

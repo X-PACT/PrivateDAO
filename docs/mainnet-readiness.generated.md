@@ -98,11 +98,19 @@ This report is generated from the canonical PrivateDAO registries and reviewer a
 - Integrity entries: `143`
 - Integrity aggregate sha256: `d46dfe3ca83e0ea605234ad6735ead79ced7dac4cf7ebd13a5dc71da8b354495`
 
+## Additive Hardening V3
+
+- Governance hardening note: `docs/governance-hardening-v3.md`
+- Settlement hardening note: `docs/settlement-hardening-v3.md`
+- Dedicated V3 live proof: `docs/test-wallet-live-proof-v3.generated.md`
+- V3 boundary: real Devnet proof for the additive hardening path, not a production-custody or mainnet claim
+
 ## Mainnet Conclusion
 
 What is strong now:
 
 - the governance lifecycle is live on devnet
+- the additive V3 governance and settlement hardening paths are Devnet-proven
 - reviewer-facing proof and security artifacts are published
 - the zk companion stack is registry-backed, transcript-backed, and attested
 - the PDAO token surface is metadata-backed, attested, and bound to the canonical review package

@@ -76,6 +76,10 @@ function main() {
     "docs/go-live-criteria.md",
     "docs/operational-drillbook.md",
     "docs/go-live-attestation.generated.json",
+    "docs/governance-hardening-v3.md",
+    "docs/settlement-hardening-v3.md",
+    "docs/test-wallet-live-proof-v3.generated.md",
+    "additive V3 governance and settlement hardening paths are Devnet-proven",
     "npm run verify:all",
     "bash scripts/check-mainnet-readiness.sh",
   ]) {
