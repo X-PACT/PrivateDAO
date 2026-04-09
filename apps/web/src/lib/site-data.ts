@@ -374,6 +374,53 @@ export const diagnosticsEvents = [
   },
 ];
 
+export const buyerJourneySteps = [
+  {
+    title: "Choose a product pack",
+    description: "Start from grant, fund, gaming, or enterprise rails so the app can bias the governance and treasury experience correctly.",
+    outcome: "The product story feels like a guided deployment, not a blank DAO console.",
+  },
+  {
+    title: "Create and fund the DAO",
+    description: "Bootstrap the DAO, treasury, governance settings, and wallet-connected runtime surfaces from one product shell.",
+    outcome: "Operators understand treasury rails, review state, and service options before launching governance.",
+  },
+  {
+    title: "Submit a private proposal",
+    description: "Proposal cards keep privacy boundary, treasury path, service fit, and hardening expectations visible before a vote begins.",
+    outcome: "Normal users understand what is being approved and what will be executed.",
+  },
+  {
+    title: "Private vote and execute treasury",
+    description: "Commit, reveal, evidence gates, and treasury execution remain connected to proof packets and runtime diagnostics.",
+    outcome: "The product closes the loop from governance intent to reviewer-visible execution evidence.",
+  },
+];
+
+export const commandCenterPacks = [
+  {
+    title: "Confidential Payroll",
+    subtitle: "Enterprise DAO",
+    summary: "Best for teams that need private payroll, bonus, and operator trust packaging with REFHE envelopes and additive governance hardening.",
+    technologies: ["REFHE", "Fast RPC", "Governance V3"],
+    readiness: "Execution-ready pattern",
+  },
+  {
+    title: "Private Grant Committee",
+    subtitle: "Grant Committee",
+    summary: "Best for proposal review committees that need private signal collection, generated proof packets, and a reviewer-safe grant flow.",
+    technologies: ["ZK", "Fast RPC", "Live proof"],
+    readiness: "Reviewer-ready pattern",
+  },
+  {
+    title: "Gaming Rewards Corridor",
+    subtitle: "Gaming DAO",
+    summary: "Best for token reward programs that need MagicBlock corridor evidence and proposal-scoped settlement boundaries.",
+    technologies: ["MagicBlock", "Settlement V3", "Diagnostics"],
+    readiness: "Evidence-gated pattern",
+  },
+];
+
 export const analyticsSeries = {
   votes: [
     { name: "Mon", commits: 14, reveals: 9 },

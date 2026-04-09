@@ -1,0 +1,33 @@
+import { BuyerJourneyRail } from "@/components/buyer-journey-rail";
+import { CommandCenter } from "@/components/command-center";
+import { MetricsStrip } from "@/components/metrics-strip";
+import { SectionHeader } from "@/components/section-header";
+import { Badge } from "@/components/ui/badge";
+
+export default function CommandCenterPage() {
+  return (
+    <main className="mx-auto w-full max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+      <div className="flex flex-wrap gap-3">
+        <Badge variant="cyan">Command Center</Badge>
+        <Badge variant="success">Create → Vote → Execute</Badge>
+        <Badge variant="violet">Commercial + reviewer aware</Badge>
+      </div>
+      <div className="mt-6">
+        <SectionHeader
+          eyebrow="Command Center"
+          title="A guided governance product surface for normal users, reviewers, and operators"
+          description="This is the part of the migration that closes the loop: product pack selection, proposal submission, private voting, proof visibility, and treasury execution all remain understandable without hiding the protocol."
+        />
+      </div>
+      <div className="mt-10">
+        <MetricsStrip />
+      </div>
+      <div className="mt-10">
+        <BuyerJourneyRail />
+      </div>
+      <div className="mt-10">
+        <CommandCenter />
+      </div>
+    </main>
+  );
+}

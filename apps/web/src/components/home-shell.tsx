@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ArrowRight, Shield, Sparkles, TrendingUp } from "lucide-react";
 
+import { BuyerJourneyRail } from "@/components/buyer-journey-rail";
+import { CommandCenter } from "@/components/command-center";
 import { GovernanceDashboard } from "@/components/governance-dashboard";
 import { DiagnosticsCenter } from "@/components/diagnostics-center";
 import { MetricsStrip } from "@/components/metrics-strip";
@@ -39,8 +41,11 @@ export function HomeShell() {
                 Open governance dashboard
                 <ArrowRight className="h-4 w-4" />
               </Link>
+              <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/command-center">
+                Open command center
+              </Link>
               <a
-                className={cn(buttonVariants({ size: "lg", variant: "secondary" }))}
+                className={cn(buttonVariants({ size: "lg", variant: "outline" }))}
                 href="https://x-pact.github.io/PrivateDAO/?page=proof&judge=1"
                 rel="noreferrer"
                 target="_blank"
@@ -105,6 +110,28 @@ export function HomeShell() {
 
       <section className="mx-auto mt-18 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <MetricsStrip />
+      </section>
+
+      <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHeader
+          eyebrow="Buyer Journey"
+          title="The migration keeps the product path obvious for normal users"
+          description="Instead of forcing users through a raw governance console, the app should guide them from product-pack selection to DAO setup, proposal submission, private voting, and treasury execution."
+        />
+        <div className="mt-10">
+          <BuyerJourneyRail />
+        </div>
+      </section>
+
+      <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHeader
+          eyebrow="Command Center"
+          title="The core governance flow stays in one visible product rail"
+          description="Proposal creation, voting, evidence gates, and treasury execution should feel connected to the same product surface rather than split across unrelated screens."
+        />
+        <div className="mt-10">
+          <CommandCenter />
+        </div>
       </section>
 
       <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
