@@ -2,6 +2,8 @@
 
 This note defines the evidence that must be collected outside the repository before PrivateDAO should be described as mainnet-ready in the strong operational sense.
 
+The repository already carries baseline live proof and dedicated additive V3 Devnet proof. This intake covers the steps that still remain external even after those in-repo evidence surfaces.
+
 ## Required External Evidence
 
 - external audit report or auditor-issued closing memo

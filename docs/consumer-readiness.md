@@ -30,6 +30,7 @@ PrivateDAO already maps to that requirement through:
 - Android-native mobile path
 - token-gated participation rather than anonymous spam
 - clear proposal phases rather than opaque moderator control
+- additive V3 hardening that is proven on Devnet instead of only described
 
 ## Product Value To Everyday Users
 
@@ -68,6 +69,7 @@ This is not framed as speculative tokenomics. It is framed as useful product beh
 - wallet diagnostics: `https://x-pact.github.io/PrivateDAO/?page=diagnostics`
 - governance token surface: `docs/pdao-token.md`
 - independent verification guide: `docs/independent-verification.md`
+- additive hardening proof: `docs/test-wallet-live-proof-v3.generated.md`
 
 ## Honest Fit Assessment
 
@@ -94,6 +96,7 @@ What is already present:
 - live governance token on Devnet via DeAura
 - mobile path
 - token-gated governance flow
+- baseline and additive V3 Devnet proof
 - polished reviewer surface
 
 What still depends on external execution rather than repository evidence alone:

@@ -31,6 +31,7 @@
 - build-window activity address recorded
 - explorer links collected
 - live or backtest evidence attached
+- additive V3 proof attached when using the stricter governance or settlement path
 - Drift proof attached if submitting to Drift Side Track
 
 ## Repo commands
@@ -45,4 +46,10 @@ Open the governance proof:
 
 ```bash
 npm run live-proof
+```
+
+Open the additive V3 governance + settlement proof:
+
+```bash
+npm run live-proof:v3
 ```

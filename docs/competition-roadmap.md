@@ -71,6 +71,12 @@ Add a reviewer-facing security note that maps protocol claims to tests:
 
 This should feel like an audit-minded checklist, not marketing.
 
+The stronger additive path is now already part of that direction:
+
+- `Governance Hardening V3`
+- `Settlement Hardening V3`
+- dedicated Devnet proof in `docs/test-wallet-live-proof-v3.generated.md`
+
 ### 4. Mainnet readiness checklist
 
 The repo already argues that the protocol is structurally ready for mainnet transition. The next step is to make that claim concrete with a checklist covering:
@@ -95,6 +101,8 @@ Extend the current live proof surface so the repo can produce:
 - delegated-vote proof
 - keeper-reveal proof
 - `SendSol` and `SendToken` execution proof
+
+The additive V3 path should be surfaced alongside the baseline proof whenever the stricter hardening path matters to judges.
 
 ### 2. Track-specific submission packaging
 
