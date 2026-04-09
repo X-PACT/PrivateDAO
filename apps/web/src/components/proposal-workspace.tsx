@@ -1,0 +1,149 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { ArrowUpRight, CheckCircle2, Clock3, LockKeyhole, WalletMinimal } from "lucide-react";
+
+import { VoteModal } from "@/components/vote-modal";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { commandCenterReferences, proposalCards, type ProposalCardModel } from "@/lib/site-data";
+
+const actionMap: Record<ProposalCardModel["status"], { commit: string; reveal: string; execute: string }> = {
+  "Live voting": {
+    commit: "Ready to commit",
+    reveal: "Reveal opens after commit window closes",
+    execute: "Execution blocked until vote and evidence path complete",
+  },
+  "Ready to reveal": {
+    commit: "Commit phase complete",
+    reveal: "Reveal can proceed",
+    execute: "Execution blocked until reveal and finalize complete",
+  },
+  Timelocked: {
+    commit: "Voting complete",
+    reveal: "Reveal complete",
+    execute: "Timelock still active",
+  },
+  "Execution ready": {
+    commit: "Voting complete",
+    reveal: "Reveal complete",
+    execute: "Treasury path is ready",
+  },
+  "Evidence gated": {
+    commit: "Voting complete",
+    reveal: "Reveal complete",
+    execute: "Settlement evidence still required",
+  },
+};
+
+export function ProposalWorkspace() {
+  const [selectedId, setSelectedId] = useState(proposalCards[0]?.id ?? "");
+  const [voteModalOpen, setVoteModalOpen] = useState(false);
+  const { connected } = useWallet();
+
+  const proposal = useMemo(
+    () => proposalCards.find((item) => item.id === selectedId) ?? proposalCards[0],
+    [selectedId],
+  );
+
+  const actions = actionMap[proposal.status];
+
+  return (
+    <>
+      <Card>
+        <CardHeader>
+          <CardTitle>Proposal workspace</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-5">
+          <div className="flex flex-wrap gap-3">
+            {proposalCards.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setSelectedId(item.id)}
+                className={`rounded-full border px-4 py-2 text-sm transition ${
+                  item.id === proposal.id
+                    ? "border-cyan-300/35 bg-cyan-300/12 text-cyan-100"
+                    : "border-white/10 bg-white/4 text-white/65 hover:bg-white/6 hover:text-white"
+                }`}
+              >
+                {item.id}
+              </button>
+            ))}
+          </div>
+
+          <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">{proposal.type}</div>
+                <div className="mt-2 text-xl font-medium text-white">{proposal.title}</div>
+                <p className="mt-3 max-w-3xl text-sm leading-7 text-white/58">{proposal.summary}</p>
+              </div>
+              <Badge variant={proposal.status === "Execution ready" ? "success" : proposal.status === "Evidence gated" ? "warning" : "cyan"}>
+                {proposal.status}
+              </Badge>
+            </div>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-3">
+            <div className="rounded-3xl border border-white/8 bg-black/20 p-4">
+              <div className="flex items-center gap-3">
+                <WalletMinimal className="h-4 w-4 text-cyan-300" />
+                <div className="text-sm font-medium text-white">Commit</div>
+              </div>
+              <div className="mt-3 text-sm leading-7 text-white/58">{actions.commit}</div>
+            </div>
+            <div className="rounded-3xl border border-white/8 bg-black/20 p-4">
+              <div className="flex items-center gap-3">
+                <LockKeyhole className="h-4 w-4 text-fuchsia-300" />
+                <div className="text-sm font-medium text-white">Reveal</div>
+              </div>
+              <div className="mt-3 text-sm leading-7 text-white/58">{actions.reveal}</div>
+            </div>
+            <div className="rounded-3xl border border-white/8 bg-black/20 p-4">
+              <div className="flex items-center gap-3">
+                {proposal.status === "Execution ready" ? <CheckCircle2 className="h-4 w-4 text-emerald-300" /> : <Clock3 className="h-4 w-4 text-white/60" />}
+                <div className="text-sm font-medium text-white">Execute treasury</div>
+              </div>
+              <div className="mt-3 text-sm leading-7 text-white/58">{actions.execute}</div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            <Button onClick={() => setVoteModalOpen(true)}>{connected ? "Open vote modal" : "Connect wallet to vote"}</Button>
+            <Button variant="secondary" disabled={!connected || proposal.status === "Live voting"}>
+              Review reveal state
+            </Button>
+            <Button variant="outline" disabled={proposal.status !== "Execution ready"}>
+              Open execution path
+            </Button>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-2">
+            {commandCenterReferences.map((reference) => (
+              <a
+                key={reference.title}
+                href={reference.href}
+                rel="noreferrer"
+                target="_blank"
+                className="group rounded-3xl border border-white/8 bg-white/4 p-4 transition hover:border-cyan-300/30 hover:bg-white/6"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <div className="text-sm font-medium text-white">{reference.title}</div>
+                    <div className="mt-2 text-sm leading-7 text-white/56">{reference.description}</div>
+                  </div>
+                  <ArrowUpRight className="mt-1 h-4 w-4 text-cyan-300 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </div>
+              </a>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <VoteModal proposal={voteModalOpen ? proposal : null} onClose={() => setVoteModalOpen(false)} />
+    </>
+  );
+}

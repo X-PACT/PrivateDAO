@@ -1,8 +1,10 @@
 import { BuyerJourneyRail } from "@/components/buyer-journey-rail";
 import { CommandCenter } from "@/components/command-center";
 import { MetricsStrip } from "@/components/metrics-strip";
+import { ProposalWorkspace } from "@/components/proposal-workspace";
 import { SectionHeader } from "@/components/section-header";
 import { Badge } from "@/components/ui/badge";
+import { WalletRuntimePanel } from "@/components/wallet-runtime-panel";
 
 export default function CommandCenterPage() {
   return (
@@ -27,6 +29,10 @@ export default function CommandCenterPage() {
       </div>
       <div className="mt-10">
         <CommandCenter />
+      </div>
+      <div className="mt-10 grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+        <ProposalWorkspace />
+        <WalletRuntimePanel />
       </div>
     </main>
   );

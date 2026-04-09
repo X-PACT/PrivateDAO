@@ -421,6 +421,29 @@ export const commandCenterPacks = [
   },
 ];
 
+export const commandCenterReferences = [
+  {
+    title: "Judge proof view",
+    description: "Fastest reviewer path into the live proof surface.",
+    href: "https://x-pact.github.io/PrivateDAO/?page=proof&judge=1",
+  },
+  {
+    title: "Dedicated V3 proof",
+    description: "Governance V3 and Settlement V3 proof packet for the additive hardening path.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/test-wallet-live-proof-v3.generated.md",
+  },
+  {
+    title: "Frontier integrations",
+    description: "ZK, REFHE, MagicBlock, and Fast RPC reviewer packet.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/frontier-integrations.generated.md",
+  },
+  {
+    title: "Launch trust packet",
+    description: "Commercial and launch boundaries linked to operational evidence.",
+    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/launch-trust-packet.generated.md",
+  },
+];
+
 export const analyticsSeries = {
   votes: [
     { name: "Mon", commits: 14, reveals: 9 },
