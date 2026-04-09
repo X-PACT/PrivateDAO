@@ -3323,6 +3323,14 @@ body.judge-mode .judge-banner {
   .migration-card { grid-template-columns: 1fr; }
   .nav-links { display: none; }
   .nav-inner { justify-content: space-between; }
+  .nav-actions {
+    gap: 10px;
+    margin-left: auto;
+  }
+  .wallet-trigger {
+    min-height: 42px;
+    padding: 10px 14px;
+  }
   .hero-headline { font-size: 72px; }
   .hero-zk-shield { width: 84px; height: 84px; top: 142px; right: 8px; opacity: 0.42; }
   .hero-feature-line { margin-top: -10px; }
@@ -3354,6 +3362,47 @@ body.judge-mode .judge-banner {
 @media(max-width:760px) {
   .container { padding: 0 20px; }
   .section { padding: 84px 0; }
+  nav {
+    padding: 16px 0;
+  }
+  .nav-inner {
+    gap: 10px;
+  }
+  .logo-wrap {
+    gap: 11px;
+  }
+  .logo-mark {
+    width: 34px;
+    height: 34px;
+  }
+  .logo-name {
+    font-size: 23px;
+    letter-spacing: 1.4px;
+  }
+  .logo-pyramid-a {
+    width: 23px;
+    height: 27px;
+    margin: 0 -1px;
+  }
+  .nav-actions {
+    gap: 8px;
+  }
+  .wallet-trigger {
+    min-height: 40px;
+    padding: 9px 12px;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 1.15px;
+  }
+  .wallet-chip {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    font-size: 10px;
+  }
+  .wallet-caret {
+    font-size: 10px;
+  }
   .section-heading {
     margin-bottom: 34px;
     line-height: 0.98;
@@ -3367,7 +3416,15 @@ body.judge-mode .judge-banner {
     gap: 10px;
   }
   .hero-badge-row {
+    gap: 8px;
     margin-bottom: 24px;
+  }
+  .hero-badge,
+  .judge-badge {
+    min-height: 34px;
+    padding: 8px 12px;
+    font-size: 11px;
+    letter-spacing: 0.7px;
   }
   .hero-headline {
     font-size: 58px;
@@ -3377,6 +3434,11 @@ body.judge-mode .judge-banner {
     font-size: 16px;
     margin-bottom: 24px;
   }
+  .hero-feature-line {
+    margin-top: -4px;
+    margin-bottom: 20px;
+    font-size: 12px;
+  }
   .surface-strip {
     gap: 8px;
   }
@@ -3385,19 +3447,33 @@ body.judge-mode .judge-banner {
     justify-content: flex-start;
   }
   .hero-actions {
-    gap: 10px;
+    gap: 8px;
   }
   .hero-actions .btn-primary,
   .hero-actions .btn-ghost {
     width: 100%;
     justify-content: center;
+    padding: 14px 20px;
+    font-size: 15px;
+  }
+  .hero-mode-row {
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .hero-mode-chip {
+    min-height: 38px;
+    padding: 9px 13px;
+    font-size: 11px;
   }
   .hero-links {
-    gap: 8px;
+    gap: 6px;
+    margin-top: 14px;
   }
   .hero-link {
     width: 100%;
     justify-content: flex-start;
+    min-height: 42px;
+    padding: 10px 12px;
   }
   .stats-inner {
     flex-direction: column;
@@ -3423,6 +3499,61 @@ body.judge-mode .judge-banner {
   }
   .compare-panel {
     padding: 28px 22px;
+  }
+  .proposal-control-strip {
+    gap: 10px;
+    margin: 16px 0 14px;
+  }
+  .proposal-control-chip {
+    padding: 13px 14px;
+    border-radius: 13px;
+  }
+  .proposal-control-kicker {
+    margin-bottom: 6px;
+  }
+  .wallet-panel {
+    right: -2px;
+    top: calc(100% + 10px);
+    width: min(340px, calc(100vw - 24px));
+    padding: 14px;
+    border-radius: 16px;
+  }
+  .wallet-panel-head {
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .wallet-panel-copy {
+    font-size: 11px;
+    line-height: 1.55;
+  }
+  .wallet-provider-list {
+    gap: 8px;
+  }
+  .wallet-provider-btn {
+    min-height: 68px;
+    padding: 13px 14px;
+    gap: 10px;
+    border-radius: 13px;
+  }
+  .wallet-provider-main {
+    gap: 12px;
+  }
+  .wallet-provider-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+  }
+  .wallet-provider-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+  .wallet-provider-meta strong {
+    font-size: 12px;
+  }
+  .wallet-provider-meta span,
+  .wallet-provider-state,
+  .wallet-panel-note {
+    font-size: 10px;
   }
 }
 
