@@ -105,6 +105,9 @@ function main() {
       aggregateSha256: cryptographicManifest.aggregateSha256,
     },
     runtimeDocs: [
+      "docs/governance-hardening-v3.md",
+      "docs/settlement-hardening-v3.md",
+      "docs/test-wallet-live-proof-v3.generated.md",
       "docs/read-node/indexer.md",
       "docs/rpc-architecture.md",
       "docs/backend-operator-flow.md",
@@ -172,6 +175,9 @@ function main() {
       "docs/go-live-attestation.generated.json",
     ],
     operationsDocs: [
+      "docs/governance-hardening-v3.md",
+      "docs/settlement-hardening-v3.md",
+      "docs/test-wallet-live-proof-v3.generated.md",
       "docs/read-node/indexer.md",
       "docs/rpc-architecture.md",
       "docs/backend-operator-flow.md",
@@ -194,6 +200,8 @@ function main() {
     ],
     securityDocs: [
       "docs/security-review.md",
+      "docs/governance-hardening-v3.md",
+      "docs/settlement-hardening-v3.md",
       "docs/confidential-payments-audit-scope.md",
       "docs/magicblock/private-payments.md",
       "docs/runtime/devnet-feature-sweep-2026-04-06.md",

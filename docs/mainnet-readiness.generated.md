@@ -34,6 +34,9 @@ This report is generated from the canonical PrivateDAO registries and reviewer a
 - `releaseDrillSurface`
 - `artifactFreshness`
 - `zkCompanionStack`
+- `governanceHardeningV3`
+- `settlementHardeningV3`
+- `liveProofV3`
 - `reviewerSurface`
 - `operationsSurface`
 - `competitivePositioningSurface`
@@ -80,13 +83,13 @@ This report is generated from the canonical PrivateDAO registries and reviewer a
 
 ## Reviewer Artifact Summary
 
-- Verification gates tracked: `62`
-- Gate count in review attestation: `62`
+- Verification gates tracked: `63`
+- Gate count in review attestation: `63`
 - Strategy package count: `12`
-- Security package count: `16`
+- Security package count: `18`
 - ZK package count: `28`
-- Proof package count: `78`
-- Operations package count: `31`
+- Proof package count: `82`
+- Operations package count: `34`
 - Runtime attestation: `docs/runtime-attestation.generated.json`
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Go-live criteria: `docs/go-live-criteria.md`

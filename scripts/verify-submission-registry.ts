@@ -58,6 +58,7 @@ function main() {
     "npm run validate:ranger-strategy -- docs/ranger-strategy-config.devnet.json",
     "npm run verify:strategy-surface",
     "npm run verify:live-proof",
+    "npm run verify:test-wallet-live-proof:v3",
     "npm run verify:release-manifest",
     "npm run verify:program-id-consistency",
     "npm run verify:pdao-surface",
