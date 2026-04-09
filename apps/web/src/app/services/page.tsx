@@ -1,8 +1,19 @@
+import type { Metadata } from "next";
+
 import { CommercialCompareSurface } from "@/components/commercial-compare-surface";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { SectionHeader } from "@/components/section-header";
 import { ServicesSurface } from "@/components/services-surface";
 import { Badge } from "@/components/ui/badge";
+import { buildRouteMetadata } from "@/lib/route-metadata";
+
+export const metadata: Metadata = buildRouteMetadata({
+  title: "Services",
+  description:
+    "Commercial comparison, hosted read API, pilot journey, pricing, SLA framing, and trust surfaces for PrivateDAO as a real product.",
+  path: "/services",
+  keywords: ["services", "pilot package", "pricing model", "hosted read api"],
+});
 
 export default function ServicesPage() {
   return (

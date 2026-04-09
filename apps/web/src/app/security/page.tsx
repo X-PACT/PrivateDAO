@@ -1,7 +1,18 @@
+import type { Metadata } from "next";
+
 import { MetricsStrip } from "@/components/metrics-strip";
 import { SectionHeader } from "@/components/section-header";
 import { SecurityCenter } from "@/components/security-center";
 import { Badge } from "@/components/ui/badge";
+import { buildRouteMetadata } from "@/lib/route-metadata";
+
+export const metadata: Metadata = buildRouteMetadata({
+  title: "Security",
+  description:
+    "Security architecture, additive V3 hardening, integrations, and explicit launch boundaries presented as a first-class product surface.",
+  path: "/security",
+  keywords: ["security", "governance hardening v3", "settlement hardening v3", "launch boundary"],
+});
 
 export default function SecurityPage() {
   return (

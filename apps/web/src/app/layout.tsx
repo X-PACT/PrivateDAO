@@ -18,10 +18,35 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PrivateDAO Next Surface",
+  title: {
+    default: "PrivateDAO Next Surface",
+    template: "%s",
+  },
   description:
     "Next.js migration for PrivateDAO: private governance, confidential treasury execution, runtime trust, and buyer-facing service surfaces on Solana.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_LIVE_SITE_URL ?? "https://x-pact.github.io/PrivateDAO/"),
+  openGraph: {
+    title: "PrivateDAO Next Surface",
+    description:
+      "Private governance, confidential treasury execution, runtime trust, and buyer-facing service surfaces on Solana.",
+    siteName: "PrivateDAO",
+    type: "website",
+    images: [
+      {
+        url: "/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: "PrivateDAO Next Surface",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "PrivateDAO Next Surface",
+    description:
+      "Private governance, confidential treasury execution, runtime trust, and buyer-facing service surfaces on Solana.",
+    images: ["/opengraph-image.png"],
+  },
 };
 
 export default function RootLayout({

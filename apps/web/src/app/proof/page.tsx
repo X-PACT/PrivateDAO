@@ -1,8 +1,19 @@
+import type { Metadata } from "next";
+
 import { MetricsStrip } from "@/components/metrics-strip";
 import { ProofFlowRail } from "@/components/proof-flow-rail";
 import { ProofCenter } from "@/components/proof-center";
 import { SectionHeader } from "@/components/section-header";
 import { Badge } from "@/components/ui/badge";
+import { buildRouteMetadata } from "@/lib/route-metadata";
+
+export const metadata: Metadata = buildRouteMetadata({
+  title: "Proof Center",
+  description:
+    "Baseline live proof, dedicated V3 hardening proof, integration packets, and launch truth boundaries exposed in one reviewer-friendly surface.",
+  path: "/proof",
+  keywords: ["proof center", "V3 hardening", "reviewer packets", "live proof"],
+});
 
 export default function ProofPage() {
   return (

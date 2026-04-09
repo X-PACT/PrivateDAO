@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Trophy, Shield } from "lucide-react";
 
 import { MetricsStrip } from "@/components/metrics-strip";
@@ -6,6 +7,15 @@ import { TrustSurface } from "@/components/trust-surface";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { awards } from "@/lib/site-data";
+import { buildRouteMetadata } from "@/lib/route-metadata";
+
+export const metadata: Metadata = buildRouteMetadata({
+  title: "Awards and Trust",
+  description:
+    "Recognition, reviewer links, launch trust packet, and credibility surfaces for PrivateDAO in a product-facing Next.js page.",
+  path: "/awards",
+  keywords: ["awards", "trust package", "judge links", "reviewer surface"],
+});
 
 export default function AwardsPage() {
   return (

@@ -1,5 +1,16 @@
+import type { Metadata } from "next";
+
 import { GovernanceDashboard } from "@/components/governance-dashboard";
 import { SectionHeader } from "@/components/section-header";
+import { buildRouteMetadata } from "@/lib/route-metadata";
+
+export const metadata: Metadata = buildRouteMetadata({
+  title: "Governance Dashboard",
+  description:
+    "Reusable governance dashboard UI for proposals, treasury actions, vote timelines, and execution evidence inside the PrivateDAO Next.js surface.",
+  path: "/dashboard",
+  keywords: ["governance dashboard", "proposal cards", "treasury table"],
+});
 
 export default function DashboardPage() {
   return (

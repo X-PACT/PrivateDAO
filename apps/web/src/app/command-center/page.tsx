@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 import { BuyerJourneyRail } from "@/components/buyer-journey-rail";
 import { CommandCenter } from "@/components/command-center";
 import { MetricsStrip } from "@/components/metrics-strip";
@@ -5,6 +7,15 @@ import { ProposalWorkspace } from "@/components/proposal-workspace";
 import { SectionHeader } from "@/components/section-header";
 import { Badge } from "@/components/ui/badge";
 import { WalletRuntimePanel } from "@/components/wallet-runtime-panel";
+import { buildRouteMetadata } from "@/lib/route-metadata";
+
+export const metadata: Metadata = buildRouteMetadata({
+  title: "Command Center",
+  description:
+    "Guided PrivateDAO workspace for product-pack selection, proposal actions, wallet runtime, private voting, proof links, and treasury execution rails.",
+  path: "/command-center",
+  keywords: ["command center", "wallet runtime", "private vote", "treasury execution"],
+});
 
 export default function CommandCenterPage() {
   return (

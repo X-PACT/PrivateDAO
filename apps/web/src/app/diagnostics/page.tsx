@@ -1,8 +1,19 @@
+import type { Metadata } from "next";
+
 import { DiagnosticsCenter } from "@/components/diagnostics-center";
 import { LaunchBlockersPanel } from "@/components/launch-blockers-panel";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { SectionHeader } from "@/components/section-header";
 import { Badge } from "@/components/ui/badge";
+import { buildRouteMetadata } from "@/lib/route-metadata";
+
+export const metadata: Metadata = buildRouteMetadata({
+  title: "Diagnostics",
+  description:
+    "Generated artifacts, runtime checks, reviewer bundle health, and launch blockers presented as a product-facing diagnostics surface.",
+  path: "/diagnostics",
+  keywords: ["diagnostics", "reviewer bundle", "artifact freshness", "runtime checks"],
+});
 
 export default function DiagnosticsPage() {
   return (
