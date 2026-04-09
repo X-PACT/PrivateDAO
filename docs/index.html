@@ -576,6 +576,52 @@ nav.scrolled {
   animation: fadeUp 0.8s ease 0.36s both;
 }
 
+.hero-tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+  animation: fadeUp 0.8s ease 0.4s both;
+}
+
+.hero-tech-card {
+  padding: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(9, 15, 22, 0.62);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.hero-tech-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-tech-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(0,229,255,0.18);
+  background: rgba(0,229,255,0.08);
+  font-size: 16px;
+}
+
+.hero-tech-label {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.hero-tech-copy {
+  margin-top: 10px;
+  color: var(--text2);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
 .hero-link {
   display: inline-flex;
   align-items: center;
@@ -1225,9 +1271,94 @@ nav.scrolled {
   text-align: left;
 }
 
+.storefront-rail {
+  margin: 18px 0;
+  padding: 20px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background:
+    radial-gradient(circle at top left, rgba(0,229,255,0.12), transparent 32%),
+    linear-gradient(180deg, rgba(12, 22, 33, 0.72), rgba(7, 14, 21, 0.94));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03), 0 18px 48px rgba(0,0,0,0.16);
+}
+
+.storefront-rail-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.storefront-rail-status {
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,229,255,0.18);
+  background: rgba(0,229,255,0.06);
+  color: var(--cyan);
+  font-family: var(--mono);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.storefront-rail-grid {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.storefront-rail-card {
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+}
+
+.storefront-rail-step {
+  color: var(--text3);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.storefront-rail-title {
+  color: var(--text);
+  font-size: 17px;
+  font-weight: 800;
+  margin-top: 10px;
+}
+
+.storefront-rail-copy {
+  color: var(--text2);
+  font-size: 13px;
+  line-height: 1.7;
+  margin-top: 8px;
+}
+
+.storefront-rail-state {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.storefront-rail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
 @media (max-width: 1120px) {
   .proposal-preset-grid,
-  .proposal-advisor-grid {
+  .proposal-advisor-grid,
+  .storefront-rail-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -1235,7 +1366,8 @@ nav.scrolled {
 @media (max-width: 760px) {
   .proposal-preset-head,
   .proposal-preset-grid,
-  .proposal-advisor-grid {
+  .proposal-advisor-grid,
+  .storefront-rail-grid {
     grid-template-columns: 1fr;
   }
 
@@ -3328,6 +3460,50 @@ body.judge-mode .judge-banner {
         PrivateDAO is a live Solana governance and treasury product for serious on-chain organizations. Voting intent stays sealed during commit, confidential compensation stays aggregate on chain, and every lifecycle action remains signed, proposal-bound, and Devnet-verifiable.
       </p>
       <div class="hero-feature-line">Commit-reveal governance · zk_enforced hardening · Confidential payroll and bonus plans · REFHE and MagicBlock payout gating · Backend-indexed runtime reads</div>
+      <div class="hero-tech-grid">
+        <div class="hero-tech-card">
+          <div class="hero-tech-header">
+            <div class="hero-tech-icon">◎</div>
+            <div class="hero-tech-label">Solana + Anchor</div>
+          </div>
+          <div class="hero-tech-copy">Real DAO lifecycle, treasury execution, PDA-bound governance state, and Devnet-verifiable transactions.</div>
+        </div>
+        <div class="hero-tech-card">
+          <div class="hero-tech-header">
+            <div class="hero-tech-icon">⟡</div>
+            <div class="hero-tech-label">ZK Layer</div>
+          </div>
+          <div class="hero-tech-copy">Companion proof anchors, proof registry, and stronger `zk_enforced` review path for sensitive proposals.</div>
+        </div>
+        <div class="hero-tech-card">
+          <div class="hero-tech-header">
+            <div class="hero-tech-icon">▣</div>
+            <div class="hero-tech-label">REFHE</div>
+          </div>
+          <div class="hero-tech-copy">Proposal-bound encrypted evaluation envelope for confidential payroll and bonus flows that need stronger review logic.</div>
+        </div>
+        <div class="hero-tech-card">
+          <div class="hero-tech-header">
+            <div class="hero-tech-icon">◈</div>
+            <div class="hero-tech-label">MagicBlock</div>
+          </div>
+          <div class="hero-tech-copy">Private token corridor support for confidential payout plans with proposal-bound settlement evidence.</div>
+        </div>
+        <div class="hero-tech-card">
+          <div class="hero-tech-header">
+            <div class="hero-tech-icon">⇄</div>
+            <div class="hero-tech-label">RPC Fast</div>
+          </div>
+          <div class="hero-tech-copy">Backend-indexed proposal reads, pooled RPC path, metrics, diagnostics, and direct RPC fallback for reliability.</div>
+        </div>
+        <div class="hero-tech-card">
+          <div class="hero-tech-header">
+            <div class="hero-tech-icon">◌</div>
+            <div class="hero-tech-label">Realms + Android</div>
+          </div>
+          <div class="hero-tech-copy">Realms-oriented migration path, voter-weight compatibility, and Android native support with Solana Mobile Wallet Adapter.</div>
+        </div>
+      </div>
       <div class="surface-strip">
         <div class="surface-pill"><span class="surface-pill-icon">✦</span><strong>Consumer</strong><span>Community treasury app</span></div>
         <div class="surface-pill"><span class="surface-pill-icon">◉</span><strong>Web</strong><span>Live governance surface</span></div>
@@ -3897,6 +4073,57 @@ body.judge-mode .judge-banner {
           <option value="all">All DAOs</option>
         </select>
         <button class="btn-primary" onclick="openCommitModal(-1)">Open Commit Builder</button>
+      </div>
+    </div>
+
+    <div class="storefront-rail reveal">
+      <div class="storefront-rail-head">
+        <div>
+          <div class="proposal-preset-kicker">CHECKOUT-LIKE ONBOARDING</div>
+          <div class="proposal-preset-title">Start like a product operator, not like a protocol archaeologist.</div>
+          <div class="proposal-preset-copy">This rail condenses the normal-user path into four actions: pick the right pack, create and fund the DAO, launch the proposal, then run private voting and treasury execution when the proposal is live.</div>
+        </div>
+        <div class="storefront-rail-status">PRODUCT FLOW</div>
+      </div>
+      <div class="storefront-rail-grid">
+        <div class="storefront-rail-card">
+          <div class="storefront-rail-step">STEP 1</div>
+          <div class="storefront-rail-title">Choose product pack</div>
+          <div class="storefront-rail-copy">Start from Grant Committee, Fund Governance, Gaming DAO, Enterprise DAO, or Realms Migration instead of filling raw fields from scratch.</div>
+          <div class="storefront-rail-state" id="storefrontPackState">STANDARD PACK</div>
+          <div class="storefront-rail-actions">
+            <button class="proposal-proof-link" type="button" onclick="scrollToStorefrontShelf()">Open Pack Shelf</button>
+          </div>
+        </div>
+        <div class="storefront-rail-card">
+          <div class="storefront-rail-step">STEP 2</div>
+          <div class="storefront-rail-title">Create and fund DAO</div>
+          <div class="storefront-rail-copy">Create the DAO, receive the initial governance token allocation, then fund the treasury from the same surface.</div>
+          <div class="storefront-rail-state" id="storefrontDaoState">CHECKING</div>
+          <div class="storefront-rail-actions">
+            <button class="proposal-proof-link" type="button" onclick="openStorefrontDaoFlow()">Open DAO Bootstrap</button>
+            <button class="proposal-proof-link" type="button" onclick="openStorefrontFundingStep()">Open Funding</button>
+          </div>
+        </div>
+        <div class="storefront-rail-card">
+          <div class="storefront-rail-step">STEP 3</div>
+          <div class="storefront-rail-title">Launch proposal</div>
+          <div class="storefront-rail-copy">Use a preset-backed builder instead of a blank console. The builder advisor already explains when ZK, REFHE, MagicBlock, and RPC Fast matter.</div>
+          <div class="storefront-rail-state" id="storefrontProposalState">CHECKING</div>
+          <div class="storefront-rail-actions">
+            <button class="proposal-proof-link" type="button" onclick="openStorefrontProposalLaunch()">Open Builder</button>
+          </div>
+        </div>
+        <div class="storefront-rail-card">
+          <div class="storefront-rail-step">STEP 4</div>
+          <div class="storefront-rail-title">Private vote and execute</div>
+          <div class="storefront-rail-copy">Commit, reveal, finalize, and execute remain phase-bound. When a proposal is live, the selected proposal panel and command center keep the next valid action obvious.</div>
+          <div class="storefront-rail-state" id="storefrontVoteState">CHECKING</div>
+          <div class="storefront-rail-actions">
+            <button class="proposal-proof-link" type="button" onclick="openTreasuryCommandCommit()">Open Vote Flow</button>
+            <button class="proposal-proof-link" type="button" onclick="openTreasuryCommandExecute()">Open Execute Flow</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -6649,6 +6876,36 @@ function openStorefrontDaoFlow() {
   setTimeout(() => {
     document.getElementById('builderDaoName')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     showToast('DAO bootstrap console ready. Create the DAO, fund the treasury, then move into proposal presets below.', 'success');
+  }, 120);
+}
+
+function openStorefrontFundingStep() {
+  showPage('proposals', findNavButton('proposals'));
+  setTimeout(() => {
+    if (currentHeroDaoPubkey) {
+      setInputValue('builderDepositDao', currentHeroDaoPubkey);
+    }
+    document.getElementById('builderDepositDao')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    showToast('Treasury funding step opened. Confirm the DAO PDA, then fund the treasury from the connected wallet.', 'success');
+  }, 120);
+}
+
+function openStorefrontProposalLaunch() {
+  showPage('proposals', findNavButton('proposals'));
+  setTimeout(() => {
+    applyProposalBuilderPreset(currentProposalBuilderPreset || 'standard-grant', { silent: true });
+    if (currentHeroDaoPubkey) {
+      setInputValue('createDaoPda', currentHeroDaoPubkey);
+    }
+    document.getElementById('createProposalTitle')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    showToast('Proposal builder opened with the active product pack. Review the advisor before signing.', 'success');
+  }, 120);
+}
+
+function scrollToStorefrontShelf() {
+  showPage('proposals', findNavButton('proposals'));
+  setTimeout(() => {
+    document.querySelector('.storefront-rail')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, 120);
 }
 
@@ -10461,7 +10718,57 @@ function updateHeroActionReadiness() {
   commitEl.textContent = commitState;
   revealEl.textContent = revealState;
   executeEl.textContent = executeState;
+  updateStorefrontOnboardingRail();
   updateConfidentialTreasuryCommandCenter();
+}
+
+function updateStorefrontOnboardingRail() {
+  const packEl = document.getElementById('storefrontPackState');
+  const daoEl = document.getElementById('storefrontDaoState');
+  const proposalEl = document.getElementById('storefrontProposalState');
+  const voteEl = document.getElementById('storefrontVoteState');
+  if (!packEl || !daoEl || !proposalEl || !voteEl) return;
+
+  const preset = PROPOSAL_BUILDER_PRESETS[currentProposalBuilderPreset];
+  const govTokenState = document.getElementById('statGovToken')?.textContent || 'UNKNOWN';
+  const proposal = getTreasuryCommandProposal();
+
+  packEl.textContent = preset ? preset.label.toUpperCase() : 'STANDARD PACK';
+  daoEl.textContent = !wallet
+    ? 'CONNECT WALLET'
+    : currentHeroDaoPubkey
+      ? 'DAO LIVE'
+      : 'CREATE DAO';
+  proposalEl.textContent = !wallet
+    ? 'CONNECT WALLET'
+    : govTokenState === 'READY'
+      ? 'READY TO LAUNCH'
+      : govTokenState === 'CHECKING'
+        ? 'CHECKING TOKEN'
+        : currentHeroDaoPubkey
+          ? 'NEED GOV TOKEN'
+          : 'CREATE DAO FIRST';
+
+  if (!wallet) {
+    voteEl.textContent = 'CONNECT WALLET';
+    return;
+  }
+  if (!proposal) {
+    voteEl.textContent = 'CREATE PROPOSAL';
+    return;
+  }
+  const phase = computePhase(proposal, Math.floor(Date.now() / 1000));
+  voteEl.textContent = phase === 'Commit'
+    ? 'COMMIT OPEN'
+    : phase === 'Reveal'
+      ? 'REVEAL OPEN'
+      : phase === 'Executable'
+        ? 'EXECUTE READY'
+        : phase === 'Timelocked'
+          ? 'TIMELOCK'
+          : phase === 'Executed'
+            ? 'EXECUTED'
+            : 'WAIT';
 }
 
 function shortDaoLabel(daoPubkey) {
@@ -11440,6 +11747,8 @@ const PROPOSAL_BUILDER_PRESETS = {
   },
 };
 
+let currentProposalBuilderPreset = 'standard-grant';
+
 function updateProposalBuilderPresetButtons(activeKey) {
   Object.keys(PROPOSAL_BUILDER_PRESETS).forEach((key) => {
     const button = document.getElementById(`proposalPreset-${key}`);
@@ -11452,6 +11761,7 @@ function applyProposalBuilderPreset(key, options = {}) {
   const { silent = false } = options;
   const preset = PROPOSAL_BUILDER_PRESETS[key];
   if (!preset) return;
+  currentProposalBuilderPreset = key;
   Object.entries(preset.values).forEach(([id, value]) => setInputValue(id, value));
   if (wallet) {
     setInputValue('createProposalRecipient', wallet);
@@ -11468,6 +11778,7 @@ function applyProposalBuilderPreset(key, options = {}) {
   const status = document.getElementById('proposalBuilderPresetStatus');
   if (status) status.textContent = preset.copy;
   syncCreateProposalCommand();
+  updateStorefrontOnboardingRail();
   if (!silent) {
     showToast(`${preset.label} preset applied. Review hashes and recipients before signing.`, 'success');
   }
