@@ -393,6 +393,107 @@ pub mod private_dao {
         Ok(())
     }
 
+    pub fn initialize_dao_settlement_policy_v3(
+        ctx: Context<InitializeDaoSettlementPolicyV3>,
+        min_evidence_age_seconds: i64,
+        max_payout_amount: u64,
+        require_refhe_settlement: bool,
+        require_magicblock_settlement: bool,
+    ) -> Result<()> {
+        validate_settlement_policy_v3(
+            min_evidence_age_seconds,
+            max_payout_amount,
+            require_refhe_settlement,
+            require_magicblock_settlement,
+        )?;
+
+        let policy = &mut ctx.accounts.dao_settlement_policy_v3;
+        if policy.dao != Pubkey::default() {
+            require!(
+                policy.dao == ctx.accounts.dao.key()
+                    && policy.authority == ctx.accounts.authority.key()
+                    && policy.min_evidence_age_seconds == min_evidence_age_seconds
+                    && policy.max_payout_amount == max_payout_amount
+                    && policy.require_refhe_settlement == require_refhe_settlement
+                    && policy.require_magicblock_settlement == require_magicblock_settlement,
+                Error::SettlementPolicyAlreadyInitialized
+            );
+            emit!(DaoSettlementPolicyInitializedV3 {
+                dao: policy.dao,
+                authority: policy.authority,
+                min_evidence_age_seconds: policy.min_evidence_age_seconds,
+                max_payout_amount: policy.max_payout_amount,
+                require_refhe_settlement: policy.require_refhe_settlement,
+                require_magicblock_settlement: policy.require_magicblock_settlement,
+                created_at: policy.created_at,
+            });
+            return Ok(());
+        }
+
+        let now = Clock::get()?.unix_timestamp;
+        policy.dao = ctx.accounts.dao.key();
+        policy.authority = ctx.accounts.authority.key();
+        policy.min_evidence_age_seconds = min_evidence_age_seconds;
+        policy.max_payout_amount = max_payout_amount;
+        policy.require_refhe_settlement = require_refhe_settlement;
+        policy.require_magicblock_settlement = require_magicblock_settlement;
+        policy.created_at = now;
+        policy.updated_at = now;
+        policy.bump = ctx.bumps.dao_settlement_policy_v3;
+
+        emit!(DaoSettlementPolicyInitializedV3 {
+            dao: policy.dao,
+            authority: policy.authority,
+            min_evidence_age_seconds,
+            max_payout_amount,
+            require_refhe_settlement,
+            require_magicblock_settlement,
+            created_at: policy.created_at,
+        });
+        Ok(())
+    }
+
+    pub fn update_dao_settlement_policy_v3(
+        ctx: Context<UpdateDaoSettlementPolicyV3>,
+        min_evidence_age_seconds: i64,
+        max_payout_amount: u64,
+        require_refhe_settlement: bool,
+        require_magicblock_settlement: bool,
+    ) -> Result<()> {
+        validate_settlement_policy_v3(
+            min_evidence_age_seconds,
+            max_payout_amount,
+            require_refhe_settlement,
+            require_magicblock_settlement,
+        )?;
+
+        let policy = &mut ctx.accounts.dao_settlement_policy_v3;
+        require!(
+            min_evidence_age_seconds >= policy.min_evidence_age_seconds
+                && max_payout_amount <= policy.max_payout_amount
+                && (!policy.require_refhe_settlement || require_refhe_settlement)
+                && (!policy.require_magicblock_settlement || require_magicblock_settlement),
+            Error::SettlementPolicyRollbackNotAllowed
+        );
+
+        policy.min_evidence_age_seconds = min_evidence_age_seconds;
+        policy.max_payout_amount = max_payout_amount;
+        policy.require_refhe_settlement = require_refhe_settlement;
+        policy.require_magicblock_settlement = require_magicblock_settlement;
+        policy.updated_at = Clock::get()?.unix_timestamp;
+
+        emit!(DaoSettlementPolicyUpdatedV3 {
+            dao: policy.dao,
+            authority: policy.authority,
+            min_evidence_age_seconds,
+            max_payout_amount,
+            require_refhe_settlement,
+            require_magicblock_settlement,
+            updated_at: policy.updated_at,
+        });
+        Ok(())
+    }
+
     // ── Create proposal ───────────────────────────────────────────────────────
 
     pub fn create_proposal(
@@ -1828,6 +1929,265 @@ pub mod private_dao {
         Ok(())
     }
 
+    pub fn execute_confidential_payout_plan_v3(
+        ctx: Context<ExecuteConfidentialPayoutPlanV3>,
+    ) -> Result<()> {
+        let now = Clock::get()?.unix_timestamp;
+        let settlement_snapshot = &ctx.accounts.proposal_settlement_policy_snapshot_v3;
+        let evidence = &ctx.accounts.settlement_evidence;
+        require!(
+            settlement_snapshot.dao == ctx.accounts.dao.key()
+                && settlement_snapshot.proposal == ctx.accounts.proposal.key()
+                && settlement_snapshot.payout_plan == ctx.accounts.confidential_payout_plan.key(),
+            Error::SettlementPolicySnapshotMismatch
+        );
+        require!(
+            settlement_snapshot.payout_fields_hash
+                == canonical_payout_fields_hash(
+                    &ctx.accounts.dao.key(),
+                    &ctx.accounts.proposal.key(),
+                    &ctx.accounts.confidential_payout_plan,
+                ),
+            Error::SettlementPolicySnapshotMismatch
+        );
+        require!(
+            evidence.dao == ctx.accounts.dao.key()
+                && evidence.proposal == ctx.accounts.proposal.key()
+                && evidence.payout_plan == ctx.accounts.confidential_payout_plan.key(),
+            Error::SettlementEvidenceMismatch
+        );
+        require!(
+            evidence.status == EvidenceStatus::Verified,
+            Error::SettlementEvidenceNotVerified
+        );
+        require!(
+            now >= evidence.valid_after && now <= evidence.expires_at,
+            Error::StaleSettlementEvidence
+        );
+        require!(
+            now >= evidence
+                .valid_after
+                .checked_add(settlement_snapshot.min_evidence_age_seconds)
+                .ok_or(Error::Overflow)?,
+            Error::SettlementEvidenceTooFresh
+        );
+
+        let p = &mut ctx.accounts.proposal;
+        require!(p.status == ProposalStatus::Passed, Error::ProposalNotPassed);
+        require!(!p.is_executed, Error::AlreadyExecuted);
+        require!(
+            now >= p.execution_unlocks_at,
+            Error::ExecutionTimelockActive
+        );
+        require!(
+            p.treasury_action.is_none(),
+            Error::ConfidentialPayoutConflictsWithTreasuryAction
+        );
+
+        let plan = &mut ctx.accounts.confidential_payout_plan;
+        require!(
+            plan.dao == ctx.accounts.dao.key() && plan.proposal == p.key(),
+            Error::ConfidentialPayoutPlanMismatch
+        );
+        require!(
+            plan.status == ConfidentialPayoutStatus::Configured,
+            Error::ConfidentialPayoutAlreadyFunded
+        );
+        require!(
+            plan.total_amount <= settlement_snapshot.max_payout_amount,
+            Error::PayoutAmountExceedsSettlementCap
+        );
+
+        if settlement_snapshot.require_refhe_settlement {
+            require!(
+                account_exists(&ctx.accounts.refhe_envelope),
+                Error::RefheSettlementRequired
+            );
+            require!(
+                *ctx.accounts.refhe_envelope.owner == crate::ID,
+                Error::RefheEnvelopeMismatch
+            );
+            let mut data: &[u8] = &ctx.accounts.refhe_envelope.data.borrow();
+            let envelope = RefheEnvelope::try_deserialize(&mut data)
+                .map_err(|_| error!(Error::RefheEnvelopeMismatch))?;
+            require!(
+                envelope.dao == ctx.accounts.dao.key()
+                    && envelope.proposal == p.key()
+                    && envelope.payout_plan == plan.key(),
+                Error::RefheEnvelopeMismatch
+            );
+            require!(
+                envelope.status == RefheEnvelopeStatus::Settled,
+                Error::RefheSettlementRequired
+            );
+            require!(
+                envelope.verifier_program.is_some(),
+                Error::RefheVerifierProgramRequired
+            );
+        }
+
+        if settlement_snapshot.require_magicblock_settlement
+            && plan.asset_type == ConfidentialAssetType::Token
+        {
+            require!(
+                account_exists(&ctx.accounts.magicblock_private_payment_corridor),
+                Error::MagicBlockSettlementRequired
+            );
+            require!(
+                *ctx.accounts.magicblock_private_payment_corridor.owner == crate::ID,
+                Error::MagicBlockCorridorMismatch
+            );
+            let mut data: &[u8] = &ctx
+                .accounts
+                .magicblock_private_payment_corridor
+                .data
+                .borrow();
+            let corridor = MagicBlockPrivatePaymentCorridor::try_deserialize(&mut data)
+                .map_err(|_| error!(Error::MagicBlockCorridorMismatch))?;
+            require!(
+                corridor.dao == ctx.accounts.dao.key()
+                    && corridor.proposal == p.key()
+                    && corridor.payout_plan == plan.key(),
+                Error::MagicBlockCorridorMismatch
+            );
+            require!(
+                corridor.status == MagicBlockSettlementStatus::Settled,
+                Error::MagicBlockSettlementRequired
+            );
+            require!(
+                corridor.token_mint == plan.token_mint.ok_or(Error::MagicBlockTokenMintRequired)?,
+                Error::MagicBlockCorridorMismatch
+            );
+            require!(
+                corridor.settlement_wallet == plan.settlement_recipient,
+                Error::MagicBlockCorridorMismatch
+            );
+            require!(
+                corridor.validator.is_some() && corridor.transfer_queue.is_some(),
+                Error::InvalidMagicBlockCorridor
+            );
+        }
+
+        let dao_key = ctx.accounts.dao.key();
+        let t_bump = ctx.bumps.treasury;
+        let seeds: &[&[u8]] = &[b"treasury", dao_key.as_ref(), &[t_bump]];
+        let signer = &[seeds];
+
+        match plan.asset_type {
+            ConfidentialAssetType::Sol => {
+                require!(
+                    ctx.accounts.settlement_recipient.key() == plan.settlement_recipient,
+                    Error::TreasuryRecipientMismatch
+                );
+                transfer(
+                    CpiContext::new_with_signer(
+                        ctx.accounts.system_program.to_account_info(),
+                        Transfer {
+                            from: ctx.accounts.treasury.to_account_info(),
+                            to: ctx.accounts.settlement_recipient.to_account_info(),
+                        },
+                        signer,
+                    ),
+                    plan.total_amount,
+                )?;
+            }
+            ConfidentialAssetType::Token => {
+                validate_supported_token_program(&ctx.accounts.token_program.key())?;
+                let action_mint = plan
+                    .token_mint
+                    .ok_or(Error::ConfidentialPayoutTokenMintRequired)?;
+                require!(
+                    ctx.accounts.settlement_recipient.key() == plan.settlement_recipient,
+                    Error::TreasuryRecipientMismatch
+                );
+                require!(
+                    *ctx.accounts.treasury_token_account.owner == ctx.accounts.token_program.key(),
+                    Error::InvalidTokenProgram
+                );
+                require!(
+                    *ctx.accounts.recipient_token_account.owner == ctx.accounts.token_program.key(),
+                    Error::InvalidTokenProgram
+                );
+
+                let treasury_token_account = parse_token_account(
+                    &ctx.accounts.treasury_token_account,
+                    &ctx.accounts.token_program.key(),
+                )?;
+                let recipient_token_account = parse_token_account(
+                    &ctx.accounts.recipient_token_account,
+                    &ctx.accounts.token_program.key(),
+                )?;
+
+                require!(
+                    treasury_token_account.owner == ctx.accounts.treasury.key(),
+                    Error::InvalidTreasuryTokenAuthority
+                );
+                require!(
+                    treasury_token_account.mint == action_mint,
+                    Error::InvalidTokenMint
+                );
+                require!(
+                    recipient_token_account.mint == action_mint,
+                    Error::InvalidTokenMint
+                );
+                require!(
+                    ctx.accounts.treasury_token_account.key()
+                        != ctx.accounts.recipient_token_account.key(),
+                    Error::DuplicateTokenAccounts
+                );
+                require!(
+                    recipient_token_account.owner == plan.settlement_recipient,
+                    Error::RecipientOwnerMismatch
+                );
+
+                #[allow(deprecated)]
+                token_interface::transfer(
+                    CpiContext::new_with_signer(
+                        ctx.accounts.token_program.to_account_info(),
+                        TokenTransfer {
+                            from: ctx.accounts.treasury_token_account.to_account_info(),
+                            to: ctx.accounts.recipient_token_account.to_account_info(),
+                            authority: ctx.accounts.treasury.to_account_info(),
+                        },
+                        signer,
+                    ),
+                    plan.total_amount,
+                )?;
+            }
+        }
+
+        let consumption = &mut ctx.accounts.settlement_consumption_record;
+        consumption.evidence = evidence.key();
+        consumption.consumed_by_proposal = p.key();
+        consumption.consumed_at = now;
+        consumption.bump = ctx.bumps.settlement_consumption_record;
+
+        plan.status = ConfidentialPayoutStatus::Funded;
+        plan.funded_at = now;
+        p.is_executed = true;
+
+        emit!(SettlementEvidenceConsumedV2 {
+            evidence: evidence.key(),
+            proposal: p.key(),
+            payout_plan: plan.key(),
+            consumed_at: now,
+        });
+        emit!(ConfidentialPayoutExecutedV3 {
+            proposal: p.key(),
+            settlement_recipient: plan.settlement_recipient,
+            asset_type: plan.asset_type.clone(),
+            token_mint: plan.token_mint,
+            recipient_count: plan.recipient_count,
+            total_amount: plan.total_amount,
+            funded_at: plan.funded_at,
+            min_evidence_age_seconds: settlement_snapshot.min_evidence_age_seconds,
+            max_payout_amount: settlement_snapshot.max_payout_amount,
+            require_refhe_settlement: settlement_snapshot.require_refhe_settlement,
+            require_magicblock_settlement: settlement_snapshot.require_magicblock_settlement,
+        });
+        Ok(())
+    }
+
     // ── Fund treasury ─────────────────────────────────────────────────────────
 
     pub fn deposit_treasury(ctx: Context<DepositTreasury>, amount: u64) -> Result<()> {
@@ -2263,6 +2623,69 @@ pub mod private_dao {
             reveal_rebate_policy: snapshot.reveal_rebate_policy.clone(),
             reveal_rebate_lamports: snapshot.reveal_rebate_lamports,
             eligible_capital: snapshot.eligible_capital,
+            object_version: snapshot.object_version,
+        });
+        Ok(())
+    }
+
+    pub fn snapshot_proposal_settlement_policy_v3(
+        ctx: Context<SnapshotProposalSettlementPolicyV3>,
+    ) -> Result<()> {
+        let snapshot = &mut ctx.accounts.proposal_settlement_policy_snapshot_v3;
+        let policy = &ctx.accounts.dao_settlement_policy_v3;
+        let payout_fields_hash = canonical_payout_fields_hash(
+            &ctx.accounts.dao.key(),
+            &ctx.accounts.proposal.key(),
+            &ctx.accounts.confidential_payout_plan,
+        );
+
+        if snapshot.proposal != Pubkey::default() {
+            require!(
+                snapshot.dao == ctx.accounts.dao.key()
+                    && snapshot.proposal == ctx.accounts.proposal.key()
+                    && snapshot.payout_plan == ctx.accounts.confidential_payout_plan.key()
+                    && snapshot.min_evidence_age_seconds == policy.min_evidence_age_seconds
+                    && snapshot.max_payout_amount == policy.max_payout_amount
+                    && snapshot.require_refhe_settlement == policy.require_refhe_settlement
+                    && snapshot.require_magicblock_settlement
+                        == policy.require_magicblock_settlement
+                    && snapshot.payout_fields_hash == payout_fields_hash
+                    && snapshot.object_version == 3,
+                Error::SettlementPolicySnapshotAlreadyRecorded
+            );
+            emit!(ProposalSettlementPolicySnapshottedV3 {
+                dao: snapshot.dao,
+                proposal: snapshot.proposal,
+                payout_plan: snapshot.payout_plan,
+                min_evidence_age_seconds: snapshot.min_evidence_age_seconds,
+                max_payout_amount: snapshot.max_payout_amount,
+                require_refhe_settlement: snapshot.require_refhe_settlement,
+                require_magicblock_settlement: snapshot.require_magicblock_settlement,
+                object_version: snapshot.object_version,
+            });
+            return Ok(());
+        }
+
+        snapshot.dao = ctx.accounts.dao.key();
+        snapshot.proposal = ctx.accounts.proposal.key();
+        snapshot.payout_plan = ctx.accounts.confidential_payout_plan.key();
+        snapshot.min_evidence_age_seconds = policy.min_evidence_age_seconds;
+        snapshot.max_payout_amount = policy.max_payout_amount;
+        snapshot.require_refhe_settlement = policy.require_refhe_settlement;
+        snapshot.require_magicblock_settlement = policy.require_magicblock_settlement;
+        snapshot.payout_fields_hash = payout_fields_hash;
+        snapshot.snapshot_at = Clock::get()?.unix_timestamp;
+        snapshot.object_version = 3;
+        snapshot.bump = ctx.bumps.proposal_settlement_policy_snapshot_v3;
+
+        emit!(ProposalSettlementPolicySnapshottedV3 {
+            dao: snapshot.dao,
+            proposal: snapshot.proposal,
+            payout_plan: snapshot.payout_plan,
+            min_evidence_age_seconds: snapshot.min_evidence_age_seconds,
+            max_payout_amount: snapshot.max_payout_amount,
+            require_refhe_settlement: snapshot.require_refhe_settlement,
+            require_magicblock_settlement: snapshot.require_magicblock_settlement,
             object_version: snapshot.object_version,
         });
         Ok(())
@@ -2712,6 +3135,20 @@ fn validate_governance_policy_v3(
             );
         }
     }
+    Ok(())
+}
+
+fn validate_settlement_policy_v3(
+    min_evidence_age_seconds: i64,
+    max_payout_amount: u64,
+    _require_refhe_settlement: bool,
+    _require_magicblock_settlement: bool,
+) -> Result<()> {
+    require!(
+        min_evidence_age_seconds >= 0,
+        Error::InvalidSettlementPolicyV3
+    );
+    require!(max_payout_amount > 0, Error::InvalidSettlementPolicyV3);
     Ok(())
 }
 
@@ -3269,6 +3706,38 @@ pub struct UpdateDaoGovernancePolicyV3<'info> {
 }
 
 #[derive(Accounts)]
+pub struct InitializeDaoSettlementPolicyV3<'info> {
+    #[account(has_one = authority)]
+    pub dao: Account<'info, Dao>,
+    #[account(
+        init_if_needed,
+        payer = authority,
+        space = DaoSettlementPolicyV3::LEN,
+        seeds = [b"dao-settlement-policy-v3", dao.key().as_ref()],
+        bump
+    )]
+    pub dao_settlement_policy_v3: Account<'info, DaoSettlementPolicyV3>,
+    #[account(mut)]
+    pub authority: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct UpdateDaoSettlementPolicyV3<'info> {
+    #[account(has_one = authority)]
+    pub dao: Account<'info, Dao>,
+    #[account(
+        mut,
+        seeds = [b"dao-settlement-policy-v3", dao.key().as_ref()],
+        bump = dao_settlement_policy_v3.bump,
+        constraint = dao_settlement_policy_v3.dao == dao.key() @ Error::SettlementPolicyMismatch,
+        constraint = dao_settlement_policy_v3.authority == authority.key() @ Error::SettlementPolicyMismatch
+    )]
+    pub dao_settlement_policy_v3: Account<'info, DaoSettlementPolicyV3>,
+    pub authority: Signer<'info>,
+}
+
+#[derive(Accounts)]
 #[instruction(title: String)]
 pub struct CreateProposal<'info> {
     #[account(
@@ -3674,6 +4143,78 @@ pub struct ExecuteConfidentialPayoutPlanV2<'info> {
 }
 
 #[derive(Accounts)]
+pub struct ExecuteConfidentialPayoutPlanV3<'info> {
+    pub dao: Box<Account<'info, Dao>>,
+    #[account(
+        mut,
+        has_one = dao,
+        seeds = [b"proposal", dao.key().as_ref(), proposal.proposal_id.to_le_bytes().as_ref()],
+        bump = proposal.bump
+    )]
+    pub proposal: Box<Account<'info, Proposal>>,
+    #[account(
+        mut,
+        seeds = [b"payout-plan", proposal.key().as_ref()],
+        bump = confidential_payout_plan.bump
+    )]
+    pub confidential_payout_plan: Box<Account<'info, ConfidentialPayoutPlan>>,
+    #[account(
+        seeds = [b"proposal-settlement-policy-v3", proposal.key().as_ref()],
+        bump = proposal_settlement_policy_snapshot_v3.bump,
+        constraint = proposal_settlement_policy_snapshot_v3.dao == dao.key() @ Error::SettlementPolicySnapshotMismatch,
+        constraint = proposal_settlement_policy_snapshot_v3.proposal == proposal.key() @ Error::SettlementPolicySnapshotMismatch,
+        constraint = proposal_settlement_policy_snapshot_v3.payout_plan == confidential_payout_plan.key() @ Error::SettlementPolicySnapshotMismatch
+    )]
+    pub proposal_settlement_policy_snapshot_v3:
+        Box<Account<'info, ProposalSettlementPolicySnapshotV3>>,
+    #[account(
+        seeds = [
+            b"settlement-evidence",
+            proposal.key().as_ref(),
+            confidential_payout_plan.key().as_ref(),
+            settlement_evidence.settlement_id.as_ref()
+        ],
+        bump = settlement_evidence.bump
+    )]
+    pub settlement_evidence: Box<Account<'info, SettlementEvidence>>,
+    #[account(
+        init,
+        payer = executor,
+        space = SettlementConsumptionRecord::LEN,
+        seeds = [b"settlement-consumption", settlement_evidence.key().as_ref()],
+        bump
+    )]
+    pub settlement_consumption_record: Box<Account<'info, SettlementConsumptionRecord>>,
+    #[account(mut, seeds = [b"treasury", dao.key().as_ref()], bump)]
+    pub treasury: SystemAccount<'info>,
+    #[account(mut)]
+    pub executor: Signer<'info>,
+    /// CHECK: settlement wallet for the encrypted payout batch
+    #[account(mut)]
+    pub settlement_recipient: AccountInfo<'info>,
+    /// CHECK: source token ATA for token payout batches; ignored for SOL payout batches
+    #[account(mut)]
+    pub treasury_token_account: AccountInfo<'info>,
+    /// CHECK: destination token ATA for token payout batches; ignored for SOL payout batches
+    #[account(mut)]
+    pub recipient_token_account: AccountInfo<'info>,
+    /// CHECK: policy-checked REFHE envelope for proposal-bound confidential execution
+    #[account(
+        seeds = [b"refhe-envelope", proposal.key().as_ref()],
+        bump
+    )]
+    pub refhe_envelope: UncheckedAccount<'info>,
+    /// CHECK: policy-checked MagicBlock private payments corridor
+    #[account(
+        seeds = [b"magicblock-corridor", proposal.key().as_ref()],
+        bump
+    )]
+    pub magicblock_private_payment_corridor: UncheckedAccount<'info>,
+    pub token_program: Interface<'info, TokenInterface>,
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
 pub struct ConfigureRefheEnvelope<'info> {
     pub dao: Account<'info, Dao>,
     #[account(
@@ -4029,6 +4570,39 @@ pub struct SnapshotProposalGovernancePolicyV3<'info> {
 }
 
 #[derive(Accounts)]
+pub struct SnapshotProposalSettlementPolicyV3<'info> {
+    pub dao: Account<'info, Dao>,
+    #[account(
+        seeds = [b"dao-settlement-policy-v3", dao.key().as_ref()],
+        bump = dao_settlement_policy_v3.bump,
+        constraint = dao_settlement_policy_v3.dao == dao.key() @ Error::SettlementPolicyMismatch
+    )]
+    pub dao_settlement_policy_v3: Account<'info, DaoSettlementPolicyV3>,
+    #[account(
+        has_one = dao,
+        seeds = [b"proposal", dao.key().as_ref(), proposal.proposal_id.to_le_bytes().as_ref()],
+        bump = proposal.bump
+    )]
+    pub proposal: Account<'info, Proposal>,
+    #[account(
+        seeds = [b"payout-plan", proposal.key().as_ref()],
+        bump = confidential_payout_plan.bump
+    )]
+    pub confidential_payout_plan: Account<'info, ConfidentialPayoutPlan>,
+    #[account(
+        init_if_needed,
+        payer = operator,
+        space = ProposalSettlementPolicySnapshotV3::LEN,
+        seeds = [b"proposal-settlement-policy-v3", proposal.key().as_ref()],
+        bump
+    )]
+    pub proposal_settlement_policy_snapshot_v3: Account<'info, ProposalSettlementPolicySnapshotV3>,
+    #[account(mut)]
+    pub operator: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
 pub struct FundRevealRebateVaultV3<'info> {
     pub dao: Account<'info, Dao>,
     #[account(
@@ -4231,6 +4805,23 @@ impl DaoGovernancePolicyV3 {
 }
 
 #[account]
+pub struct DaoSettlementPolicyV3 {
+    pub dao: Pubkey,
+    pub authority: Pubkey,
+    pub min_evidence_age_seconds: i64,
+    pub max_payout_amount: u64,
+    pub require_refhe_settlement: bool,
+    pub require_magicblock_settlement: bool,
+    pub created_at: i64,
+    pub updated_at: i64,
+    pub bump: u8,
+}
+
+impl DaoSettlementPolicyV3 {
+    pub const LEN: usize = 8 + 32 + 32 + 8 + 8 + 1 + 1 + 8 + 8 + 1;
+}
+
+#[account]
 pub struct ProposalGovernancePolicySnapshotV3 {
     pub dao: Pubkey,
     pub proposal: Pubkey,
@@ -4245,6 +4836,25 @@ pub struct ProposalGovernancePolicySnapshotV3 {
 
 impl ProposalGovernancePolicySnapshotV3 {
     pub const LEN: usize = 8 + 32 + 32 + 1 + 1 + 8 + 8 + 8 + 1 + 1;
+}
+
+#[account]
+pub struct ProposalSettlementPolicySnapshotV3 {
+    pub dao: Pubkey,
+    pub proposal: Pubkey,
+    pub payout_plan: Pubkey,
+    pub min_evidence_age_seconds: i64,
+    pub max_payout_amount: u64,
+    pub require_refhe_settlement: bool,
+    pub require_magicblock_settlement: bool,
+    pub payout_fields_hash: [u8; 32],
+    pub snapshot_at: i64,
+    pub object_version: u8,
+    pub bump: u8,
+}
+
+impl ProposalSettlementPolicySnapshotV3 {
+    pub const LEN: usize = 8 + 32 + 32 + 32 + 8 + 8 + 1 + 1 + 32 + 8 + 1 + 1;
 }
 
 #[account]
@@ -5087,6 +5697,28 @@ pub struct DaoGovernancePolicyUpdatedV3 {
 }
 
 #[event]
+pub struct DaoSettlementPolicyInitializedV3 {
+    pub dao: Pubkey,
+    pub authority: Pubkey,
+    pub min_evidence_age_seconds: i64,
+    pub max_payout_amount: u64,
+    pub require_refhe_settlement: bool,
+    pub require_magicblock_settlement: bool,
+    pub created_at: i64,
+}
+
+#[event]
+pub struct DaoSettlementPolicyUpdatedV3 {
+    pub dao: Pubkey,
+    pub authority: Pubkey,
+    pub min_evidence_age_seconds: i64,
+    pub max_payout_amount: u64,
+    pub require_refhe_settlement: bool,
+    pub require_magicblock_settlement: bool,
+    pub updated_at: i64,
+}
+
+#[event]
 pub struct ProposalGovernancePolicySnapshottedV3 {
     pub dao: Pubkey,
     pub proposal: Pubkey,
@@ -5094,6 +5726,18 @@ pub struct ProposalGovernancePolicySnapshottedV3 {
     pub reveal_rebate_policy: RevealRebatePolicyV3,
     pub reveal_rebate_lamports: u64,
     pub eligible_capital: u64,
+    pub object_version: u8,
+}
+
+#[event]
+pub struct ProposalSettlementPolicySnapshottedV3 {
+    pub dao: Pubkey,
+    pub proposal: Pubkey,
+    pub payout_plan: Pubkey,
+    pub min_evidence_age_seconds: i64,
+    pub max_payout_amount: u64,
+    pub require_refhe_settlement: bool,
+    pub require_magicblock_settlement: bool,
     pub object_version: u8,
 }
 
@@ -5147,6 +5791,21 @@ pub struct ProposalFinalizedV3 {
     pub eligible_capital: u64,
     pub quorum_policy: QuorumPolicyV3,
     pub execution_unlocks_at: i64,
+}
+
+#[event]
+pub struct ConfidentialPayoutExecutedV3 {
+    pub proposal: Pubkey,
+    pub settlement_recipient: Pubkey,
+    pub asset_type: ConfidentialAssetType,
+    pub token_mint: Option<Pubkey>,
+    pub recipient_count: u16,
+    pub total_amount: u64,
+    pub funded_at: i64,
+    pub min_evidence_age_seconds: i64,
+    pub max_payout_amount: u64,
+    pub require_refhe_settlement: bool,
+    pub require_magicblock_settlement: bool,
 }
 
 #[event]
@@ -5371,6 +6030,22 @@ pub enum Error {
     GovernancePolicySnapshotMismatch,
     #[msg("Proposal governance snapshot v3 was already recorded under a different policy")]
     GovernancePolicySnapshotAlreadyRecorded,
+    #[msg("DAO settlement policy v3 is invalid")]
+    InvalidSettlementPolicyV3,
+    #[msg("DAO settlement policy v3 was already initialized with a different configuration")]
+    SettlementPolicyAlreadyInitialized,
+    #[msg("DAO settlement policy updates cannot roll back to weaker execution requirements")]
+    SettlementPolicyRollbackNotAllowed,
+    #[msg("DAO settlement policy v3 does not match the expected DAO or authority")]
+    SettlementPolicyMismatch,
+    #[msg("Proposal settlement snapshot v3 does not match the proposal, DAO, or payout plan")]
+    SettlementPolicySnapshotMismatch,
+    #[msg("Proposal settlement snapshot v3 was already recorded under a different policy")]
+    SettlementPolicySnapshotAlreadyRecorded,
+    #[msg("Settlement evidence is still too fresh for V3 execution")]
+    SettlementEvidenceTooFresh,
+    #[msg("Confidential payout amount exceeds the V3 settlement cap")]
+    PayoutAmountExceedsSettlementCap,
     #[msg("Reveal rebate configuration is invalid for V3 governance mode")]
     InvalidRevealRebateConfig,
     #[msg("Reveal rebate vault PDA does not match the DAO v3 governance configuration")]
