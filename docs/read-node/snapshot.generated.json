@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-04-09T17:25:24.608Z",
+  "generatedAt": "2026-04-09T18:55:08.656Z",
   "readPath": "backend-indexer",
   "runtime": {
-    "generatedAt": "2026-04-09T17:25:21.105Z",
+    "generatedAt": "2026-04-09T18:55:04.745Z",
     "readPath": "backend-indexer",
     "rpcEndpoint": "https://api.devnet.solana.com",
     "rpcPoolSize": 1,
     "commitment": "confirmed",
     "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
-    "slot": 454391639,
+    "slot": 454405853,
     "solanaCore": "4.0.0-beta.6",
     "featureSet": 2475355604,
-    "latestBlockhash": "8UD5XeoAP8JcaTLe3qAbZctFcf4h5vNYxXpTCyi1kxWK",
-    "lastValidBlockHeight": 442268743,
+    "latestBlockhash": "79qLU6n4fPj4ne2P64wdbs29NjxCnprYKhbmXQz5qUPW",
+    "lastValidBlockHeight": 442282952,
     "programExecutable": true,
     "programOwner": "BPFLoaderUpgradeab1e11111111111111111111111",
     "cacheTtlMs": 15000
@@ -31,7 +31,7 @@
     "uniqueDaos": 21
   },
   "overview": {
-    "generatedAt": "2026-04-09T17:25:24.607Z",
+    "generatedAt": "2026-04-09T18:55:08.655Z",
     "proposals": 41,
     "uniqueDaos": 21,
     "zkEnforced": 0,

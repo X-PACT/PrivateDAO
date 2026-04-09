@@ -58,6 +58,7 @@ echo "[mainnet] verifying live proof and review surface"
 npm run verify:live-proof >/dev/null
 npm run verify:test-wallet-live-proof:v3 >/dev/null
 npm run verify:release-manifest >/dev/null
+npm run verify:review-bundle >/dev/null
 npm run verify:program-id-consistency >/dev/null
 npm run verify:pdao-surface >/dev/null
 npm run build:deployment-attestation >/dev/null

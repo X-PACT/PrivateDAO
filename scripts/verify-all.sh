@@ -94,6 +94,9 @@ npm run verify:submission-registry >/dev/null
 echo "[verify-all] checking registry consistency"
 npm run verify:registry-consistency >/dev/null
 
+echo "[verify-all] checking packaged review bundle"
+npm run verify:review-bundle >/dev/null
+
 echo "[verify-all] checking generated artifacts"
 npm run verify:generated-artifacts >/dev/null
 

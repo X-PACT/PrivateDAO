@@ -104,6 +104,7 @@
     "build:mainnet-proof-package": "ts-node scripts/build-mainnet-proof-package.ts",
     "build:launch-trust-packet": "ts-node scripts/build-launch-trust-packet.ts",
     "build:review-bundle": "bash scripts/build-review-bundle.sh",
+    "verify:review-bundle": "bash scripts/verify-review-bundle.sh",
     "render:demo-video": "bash scripts/render-demo-video.sh",
     "render:weekly-updates": "bash scripts/render-weekly-update-videos.sh",
     "verify:strategy-surface": "bash scripts/verify-strategy-surface.sh",
