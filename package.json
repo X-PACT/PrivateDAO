@@ -4,6 +4,9 @@
   "description": "Solana private governance system with commit-reveal voting, confidential payroll and bonus batches, timelocked execution, Groth16 companion proofs, and reviewer-visible security evidence",
   "scripts": {
     "build": "anchor build",
+    "web:dev": "npm --prefix apps/web run dev",
+    "web:build": "npm --prefix apps/web run build",
+    "web:lint": "npm --prefix apps/web run lint",
     "start:read-node": "ts-node scripts/run-read-node.ts",
     "test": "bash scripts/run-local-anchor-suite.sh all",
     "typecheck": "tsc --noEmit",

@@ -1,0 +1,66 @@
+"use client";
+
+import { X } from "lucide-react";
+
+import type { ProposalCardModel } from "@/lib/site-data";
+
+import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+
+type VoteModalProps = {
+  proposal: ProposalCardModel | null;
+  onClose: () => void;
+};
+
+export function VoteModal({ proposal, onClose }: VoteModalProps) {
+  if (!proposal) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#03050e]/80 px-4 backdrop-blur-md">
+      <div className="w-full max-w-2xl rounded-[32px] border border-white/12 bg-[linear-gradient(180deg,rgba(12,16,30,0.96),rgba(6,8,20,0.98))] p-6 shadow-[0_30px_120px_rgba(0,0,0,0.45)] sm:p-8">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <div className="text-[11px] uppercase tracking-[0.32em] text-emerald-300/80">Vote Modal</div>
+            <h3 className="mt-2 text-2xl font-semibold text-white">{proposal.title}</h3>
+            <p className="mt-2 max-w-xl text-sm leading-7 text-white/60">
+              This React migration keeps the voting flow legible for normal operators: proposal scope, privacy boundary, treasury path, and evidence requirements all stay visible before the user signs.
+            </p>
+          </div>
+          <button
+            aria-label="Close vote modal"
+            className="rounded-full border border-white/10 p-2 text-white/60 transition hover:bg-white/8 hover:text-white"
+            onClick={onClose}
+            type="button"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
+            <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Proposal ID</div>
+            <div className="mt-2 text-lg font-medium text-white">{proposal.id}</div>
+          </div>
+          <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
+            <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Status</div>
+            <div className="mt-2">
+              <Badge variant="cyan">{proposal.status}</Badge>
+            </div>
+          </div>
+          <div className="rounded-3xl border border-white/8 bg-white/4 p-4 sm:col-span-2">
+            <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Current boundary</div>
+            <div className="mt-2 text-sm leading-7 text-white/65">
+              {proposal.privacy}. Treasury execution remains blocked until voting, reveal, timelock, and evidence gates align with the selected hardening path.
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Button>Commit vote</Button>
+          <Button variant="secondary">Reveal vote</Button>
+          <Button variant="outline">Review execution path</Button>
+        </div>
+      </div>
+    </div>
+  );
+}

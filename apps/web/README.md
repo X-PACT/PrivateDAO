@@ -1,0 +1,41 @@
+# PrivateDAO Web
+
+This app is the new Next.js surface for `PrivateDAO`.
+
+It is being built as an isolated migration target under `apps/web` so the current live surface in `docs/index.html` stays intact while the React version is developed and verified.
+
+## Scope
+
+The goal is not a generic DAO dashboard. This app needs to preserve the real product story already present in the repository:
+
+- private governance on Solana
+- proposal lifecycle: create -> commit -> reveal -> execute
+- additive hardening paths including V3 governance and settlement
+- ZK, REFHE, MagicBlock, and Fast RPC surfaces
+- buyer-facing service and pilot surfaces
+
+## Current Routes
+
+- `/` overview and product landing page
+- `/dashboard` governance dashboard shell
+- `/analytics` analytics and treasury activity views
+- `/awards` recognition and credibility surface
+
+## Local Development
+
+Run from the repo root:
+
+```bash
+npm run web:dev
+```
+
+Or directly:
+
+```bash
+cd apps/web
+npm run dev
+```
+
+## Important Constraint
+
+This app does not replace the published static site yet. The `docs/` surface remains the live reviewer-facing interface until the Next.js build reaches parity and deployment cutover is explicitly handled.
