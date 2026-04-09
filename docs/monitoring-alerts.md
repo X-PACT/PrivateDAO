@@ -63,6 +63,8 @@ The most important signals for judges, grant reviewers, or auditors are:
 
 - [live-proof.md](/home/x-pact/PrivateDAO/docs/live-proof.md)
 - [test-wallet-live-proof-v3.generated.md](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.md)
+- [governance-hardening-v3.md](/home/x-pact/PrivateDAO/docs/governance-hardening-v3.md)
+- [settlement-hardening-v3.md](/home/x-pact/PrivateDAO/docs/settlement-hardening-v3.md)
 - [production-operations.md](/home/x-pact/PrivateDAO/docs/production-operations.md)
 - [incident-response.md](/home/x-pact/PrivateDAO/docs/incident-response.md)
 - [security-review.md](/home/x-pact/PrivateDAO/docs/security-review.md)

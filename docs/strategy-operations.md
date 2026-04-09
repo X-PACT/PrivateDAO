@@ -120,10 +120,12 @@ Reviewers should validate strategy-control evidence in this order:
 
 1. [live-proof.md](/home/x-pact/PrivateDAO/docs/live-proof.md)
 2. [test-wallet-live-proof-v3.generated.md](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.md)
-3. [ranger-strategy-documentation.md](/home/x-pact/PrivateDAO/docs/ranger-strategy-documentation.md)
-4. [risk-policy.md](/home/x-pact/PrivateDAO/docs/risk-policy.md)
-5. [ranger-submission-bundle.generated.md](/home/x-pact/PrivateDAO/docs/ranger-submission-bundle.generated.md)
-6. [judge-technical-audit.md](/home/x-pact/PrivateDAO/docs/judge-technical-audit.md)
+3. [governance-hardening-v3.md](/home/x-pact/PrivateDAO/docs/governance-hardening-v3.md)
+4. [settlement-hardening-v3.md](/home/x-pact/PrivateDAO/docs/settlement-hardening-v3.md)
+5. [ranger-strategy-documentation.md](/home/x-pact/PrivateDAO/docs/ranger-strategy-documentation.md)
+6. [risk-policy.md](/home/x-pact/PrivateDAO/docs/risk-policy.md)
+7. [ranger-submission-bundle.generated.md](/home/x-pact/PrivateDAO/docs/ranger-submission-bundle.generated.md)
+8. [judge-technical-audit.md](/home/x-pact/PrivateDAO/docs/judge-technical-audit.md)
 
 ## Honest Boundary
 
