@@ -8,6 +8,8 @@
 import * as anchor from "@coral-xyz/anchor";
 import { BN } from "@coral-xyz/anchor";
 import { LAMPORTS_PER_SOL, PublicKey, SystemProgram } from "@solana/web3.js";
+import fs from "fs";
+import path from "path";
 import {
   createMint,
   getAccount,
@@ -53,6 +55,7 @@ async function main() {
     mintAmount = 1000,
     recipient,
     governanceMint: governanceMintArg,
+    jsonOut,
   } = parseArgs();
 
   const vote = String(voteArg).toLowerCase() !== "no";
@@ -251,6 +254,52 @@ async function main() {
   const finalProposal = await program.account.proposal.fetch(proposalPda);
   const treasuryAfterExecute = await provider.connection.getBalance(treasuryPda);
   const recipientAfter = await provider.connection.getBalance(recipientPk);
+  const payload = {
+    generatedAt: new Date().toISOString(),
+    mode: "test-wallet-devnet-proof",
+    operatorWallet: walletPk.toBase58(),
+    recipientWallet: recipientPk.toBase58(),
+    programId: program.programId.toBase58(),
+    dao: daoPda.toBase58(),
+    governanceMint: mint.toBase58(),
+    treasury: treasuryPda.toBase58(),
+    proposal: proposalPda.toBase58(),
+    timings: {
+      votingEnd: finalProposal.votingEnd.toNumber(),
+      revealEnd: finalProposal.revealEnd.toNumber(),
+      executionUnlocksAt: finalProposal.executionUnlocksAt.toNumber(),
+    },
+    transactions: {
+      createDao: createDaoTx,
+      mintVoting: mintTx,
+      deposit: depositTx,
+      createProposal: proposalTx,
+      commit: commitTx,
+      reveal: revealTx,
+      finalize: finalizeTx,
+      execute: executeTx,
+    },
+    invariants: {
+      status: proposalStatusLabel(finalProposal.status),
+      isExecuted: finalProposal.isExecuted,
+      yesCapital: finalProposal.yesCapital.toString(),
+      noCapital: finalProposal.noCapital.toString(),
+      revealCount: finalProposal.revealCount.toString(),
+      commitCount: finalProposal.commitCount.toString(),
+      treasuryBeforeDepositLamports: treasuryBeforeDeposit,
+      treasuryBeforeExecuteLamports: treasuryBeforeExecute,
+      treasuryAfterExecuteLamports: treasuryAfterExecute,
+      recipientBeforeLamports: recipientBefore,
+      recipientAfterLamports: recipientAfter,
+    },
+  };
+
+  if (jsonOut) {
+    const outPath = path.resolve(String(jsonOut));
+    fs.mkdirSync(path.dirname(outPath), { recursive: true });
+    fs.writeFileSync(outPath, JSON.stringify(payload, null, 2) + "\n");
+    console.log(`\nJSON proof:      ${path.relative(process.cwd(), outPath)}`);
+  }
 
   console.log(`\n=== Live proof complete ===`);
   console.log(`DAO:             ${daoPda.toBase58()}`);

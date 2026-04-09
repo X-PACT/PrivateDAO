@@ -52,6 +52,9 @@ npm run validate:ranger-strategy -- docs/ranger-strategy-config.devnet.json >/de
 echo "[verify-all] checking live proof"
 npm run verify:live-proof >/dev/null
 
+echo "[verify-all] checking test-wallet live proof"
+npm run verify:test-wallet-live-proof >/dev/null
+
 echo "[verify-all] checking strategy surface"
 npm run verify:strategy-surface >/dev/null
 

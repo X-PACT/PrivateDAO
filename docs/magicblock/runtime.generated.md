@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-09T00:45:52.656Z`
+- generated at: `2026-04-09T11:43:41.969Z`
 - network: `devnet`
 - status: `pending-magicblock-capture`
 - target count: `6`
