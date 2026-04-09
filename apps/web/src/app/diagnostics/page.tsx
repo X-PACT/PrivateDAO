@@ -1,4 +1,5 @@
 import { DiagnosticsCenter } from "@/components/diagnostics-center";
+import { LaunchBlockersPanel } from "@/components/launch-blockers-panel";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { SectionHeader } from "@/components/section-header";
 import { Badge } from "@/components/ui/badge";
@@ -23,6 +24,9 @@ export default function DiagnosticsPage() {
       </div>
       <div className="mt-10">
         <DiagnosticsCenter />
+      </div>
+      <div className="mt-10">
+        <LaunchBlockersPanel />
       </div>
     </main>
   );

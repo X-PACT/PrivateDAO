@@ -1,4 +1,6 @@
 import { AnalyticsCharts } from "@/components/analytics-charts";
+import { AnalyticsSummary } from "@/components/analytics-summary";
+import { LaunchBlockersPanel } from "@/components/launch-blockers-panel";
 import { SectionHeader } from "@/components/section-header";
 import { Badge } from "@/components/ui/badge";
 
@@ -18,7 +20,13 @@ export default function AnalyticsPage() {
         />
       </div>
       <div className="mt-10">
+        <AnalyticsSummary />
+      </div>
+      <div className="mt-10">
         <AnalyticsCharts />
+      </div>
+      <div className="mt-10">
+        <LaunchBlockersPanel />
       </div>
     </main>
   );

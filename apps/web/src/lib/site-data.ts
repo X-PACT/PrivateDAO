@@ -444,6 +444,70 @@ export const commandCenterReferences = [
   },
 ];
 
+export const analyticsSnapshots = [
+  {
+    label: "Baseline live proof",
+    value: "Healthy",
+    detail: "Create → submit → private vote → execute treasury is already packaged as reviewer-facing Devnet evidence.",
+  },
+  {
+    label: "V3 hardening proof",
+    value: "Healthy",
+    detail: "Governance V3 and Settlement V3 have dedicated Devnet proof packets with additive boundaries.",
+  },
+  {
+    label: "Launch blockers",
+    value: "6 tracked",
+    detail: "Audit, multisig transfer, monitoring, real-device runtime, source-verifiable receipts, and cutover ceremony stay explicit.",
+  },
+  {
+    label: "Commercial readiness",
+    value: "Pilot-ready",
+    detail: "Service packs, pricing, SLA, trust package, and onboarding playbook remain visible in-product.",
+  },
+];
+
+export const analyticsReadiness = [
+  {
+    title: "Proof coverage",
+    body: "Baseline live proof, dedicated V3 hardening proof, frontier integrations, and audit packet are all reviewer-facing.",
+    tone: "success",
+  },
+  {
+    title: "Runtime operations",
+    body: "Execution logs, diagnostics surfaces, reviewer bundles, and readiness gates stay tied to generated artifacts.",
+    tone: "cyan",
+  },
+  {
+    title: "Launch truth boundary",
+    body: "Mainnet custody, multisig ceremony, audit closure, and real-device captures remain pending-external until evidenced.",
+    tone: "warning",
+  },
+];
+
+export const launchBlockers = [
+  {
+    name: "Multisig + authority transfer",
+    state: "Pending external",
+    note: "Program authority and operational privileges still need final custody ceremony evidence.",
+  },
+  {
+    name: "External audit closure",
+    state: "Pending external",
+    note: "Security review packet exists, but external sign-off is still an explicit blocker.",
+  },
+  {
+    name: "Real-device runtime captures",
+    state: "Pending external",
+    note: "Wallet runtime templates are documented; production captures are still separated from claims.",
+  },
+  {
+    name: "Monitoring + alerting",
+    state: "Documented",
+    note: "Operational rules exist and are linked, but live deployment evidence remains outside the repo surface.",
+  },
+];
+
 export const analyticsSeries = {
   votes: [
     { name: "Mon", commits: 14, reveals: 9 },
