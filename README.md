@@ -42,6 +42,7 @@ Public governance leaks intent too early. Live tallies, visible treasury intent,
 - **Security hardening:** additive Strict V2 policy accounts for proof verification, settlement evidence, cancellation safety, policy snapshots, and voter-weight scope.
 - **Runtime evidence:** Devnet rehearsals, ZK proof anchors, adversarial checks, generated manifests, release drill evidence, and reviewer-facing audit packets.
 - **Infrastructure path:** read-only backend node, pooled RPC reads, MagicBlock private-payment corridor support, and RPC Fast-oriented reliability documentation.
+- **Migration and service path:** Realms-oriented migration support, operator onboarding, hosted read API packaging, trust exports, pilot packaging, and startup-facing service documentation.
 
 ## Frontier Hackathon Fit
 
@@ -108,6 +109,7 @@ The README should stay aligned with this rule: implemented surfaces are describe
 | Multisig setup intake | [`docs/multisig-setup-intake.md`](docs/multisig-setup-intake.md) |
 | Production Simulation DAO | [`docs/production-simulation-dao.md`](docs/production-simulation-dao.md) |
 | Use case packs | [`docs/use-case-packs.md`](docs/use-case-packs.md) |
+| Service catalog | [`docs/service-catalog.md`](docs/service-catalog.md) |
 | Operator guide | [`docs/operator-guide.md`](docs/operator-guide.md) |
 | Trust package | [`docs/trust-package.md`](docs/trust-package.md) |
 | Launch trust packet | [`docs/launch-trust-packet.generated.md`](docs/launch-trust-packet.generated.md) |
@@ -170,6 +172,7 @@ flowchart LR
 | Treasury execution | SOL and Token-2022/SPL treasury paths with recipient, mint, owner, and duplicate-execution checks. | [`docs/security-review.md`](docs/security-review.md), [`docs/failure-modes.md`](docs/failure-modes.md) |
 | Confidential payouts | Proposal-bound payroll and bonus plans with encrypted manifests and aggregate settlement. | [`docs/confidential-payments.md`](docs/confidential-payments.md), [`docs/confidential-payroll-flow.md`](docs/confidential-payroll-flow.md) |
 | Confidential Treasury Command Center | Live guided UI path that turns `Create -> Commit -> Reveal -> Execute` into one product flow, then explains proposal-by-proposal whether ZK, REFHE, MagicBlock, and backend-indexed RPC are active, optional, or not required. The builder now includes smart presets for standard treasury grants, confidential payroll, confidential bonus, and private token distribution. | [`docs/index.html`](docs/index.html), [`docs/frontier-guided-flow.md`](docs/frontier-guided-flow.md) |
+| Storefront and service entry | The homepage now exposes product packs, Realms migration as a first-class entry, and a service catalog for hosted API, review exports, onboarding, and pilot support without pretending a self-serve SaaS checkout already exists. | [`docs/index.html`](docs/index.html), [`docs/service-catalog.md`](docs/service-catalog.md), [`docs/migration-story.md`](docs/migration-story.md) |
 | REFHE | Proposal-bound encrypted evaluation envelope with settlement gate and explicit trust model. | [`docs/refhe-protocol.md`](docs/refhe-protocol.md), [`docs/refhe-security-model.md`](docs/refhe-security-model.md) |
 | MagicBlock | Private-payment corridor support for confidential token payout flows, with runtime capture/evidence docs. | [`docs/magicblock/private-payments.md`](docs/magicblock/private-payments.md), [`docs/magicblock/runtime-evidence.md`](docs/magicblock/runtime-evidence.md) |
 | Frontier integration gate | One machine-checked package that binds ZK anchors, MagicBlock settlement, REFHE settlement, and backend-indexed RPC state into a single Devnet-verified review surface. | [`docs/frontier-integrations.generated.md`](docs/frontier-integrations.generated.md), [`docs/read-node/ops.generated.md`](docs/read-node/ops.generated.md) |
@@ -217,6 +220,7 @@ This section intentionally keeps the reviewer contract visible. The README is co
 | Frontier integrations | [`docs/frontier-integrations.generated.md`](docs/frontier-integrations.generated.md), [`docs/magicblock/runtime.generated.md`](docs/magicblock/runtime.generated.md), [`docs/refhe-protocol.md`](docs/refhe-protocol.md), [`docs/read-node/ops.generated.md`](docs/read-node/ops.generated.md), [`docs/zk-proof-registry.json`](docs/zk-proof-registry.json) |
 | Product runtime | [`docs/fair-voting.md`](docs/fair-voting.md), [`docs/wallet-runtime.md`](docs/wallet-runtime.md), [`docs/operational-evidence.generated.md`](docs/operational-evidence.generated.md), [`docs/pdao-attestation.generated.json`](docs/pdao-attestation.generated.json), [`docs/strategy-operations.md`](docs/strategy-operations.md) |
 | Product packaging | [`docs/production-simulation-dao.md`](docs/production-simulation-dao.md), [`docs/use-case-packs.md`](docs/use-case-packs.md), [`docs/operator-guide.md`](docs/operator-guide.md), [`docs/trust-package.md`](docs/trust-package.md), [`docs/migration-story.md`](docs/migration-story.md), [`docs/pricing-model.md`](docs/pricing-model.md), [`docs/pilot-program.md`](docs/pilot-program.md), [`docs/service-level-agreement.md`](docs/service-level-agreement.md) |
+| Services and API packaging | [`docs/service-catalog.md`](docs/service-catalog.md), [`docs/pricing-model.md`](docs/pricing-model.md), [`docs/pilot-program.md`](docs/pilot-program.md), [`docs/service-level-agreement.md`](docs/service-level-agreement.md), [`docs/pilot-onboarding-playbook.md`](docs/pilot-onboarding-playbook.md) |
 | Launch and pilot operations | [`docs/launch-trust-packet.generated.md`](docs/launch-trust-packet.generated.md), [`docs/production-custody-ceremony.md`](docs/production-custody-ceremony.md), [`docs/external-audit-engagement.md`](docs/external-audit-engagement.md), [`docs/pilot-onboarding-playbook.md`](docs/pilot-onboarding-playbook.md) |
 | Artifact integrity | [`docs/cryptographic-integrity.md`](docs/cryptographic-integrity.md), [`docs/cryptographic-manifest.generated.json`](docs/cryptographic-manifest.generated.json) |
 

@@ -3354,10 +3354,16 @@ body.judge-mode .judge-banner {
         </span>
       </a>
       <div class="hero-actions">
-        <button class="btn-primary" onclick="scrollToProposals()">View Live Proposals</button>
-        <button class="btn-ghost" onclick="showPage('protocol', findNavButton('protocol'))">How It Works →</button>
+        <button class="btn-primary" onclick="openStorefrontDaoFlow()">Start a DAO</button>
+        <button class="btn-ghost" onclick="openConfidentialTreasuryWizard()">Start Private Payout</button>
+        <button class="btn-ghost" onclick="openRealmsMigrationStorefront()">Migrate from Realms</button>
+        <button class="btn-ghost" onclick="openServiceCatalog()">Explore Services</button>
       </div>
       <div class="hero-links">
+        <a class="hero-link" href="service-catalog.md" target="_blank">Service Catalog ↗</a>
+        <a class="hero-link" href="pricing-model.md" target="_blank">Pricing Model ↗</a>
+        <a class="hero-link" href="pilot-program.md" target="_blank">Pilot Program ↗</a>
+        <a class="hero-link" href="service-level-agreement.md" target="_blank">Pilot SLA ↗</a>
         <a class="hero-link" href="zk-upgrade.md" target="_blank">ZK Overlay ↗</a>
         <a class="hero-link" href="cryptographic-integrity.md" target="_blank">Artifact Integrity ↗</a>
         <a class="hero-link" href="android-native.md" target="_blank">Android Native ↗</a>
@@ -3421,6 +3427,68 @@ body.judge-mode .judge-banner {
         <div class="proposal-control-kicker">EXECUTE</div>
         <div class="proposal-control-title" id="heroExecuteReady">CHECKING</div>
         <div class="proposal-control-copy">Execution remains blocked until finalize succeeds and timelock clears.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:18px">
+  <div class="container">
+    <div class="proposal-preset-card reveal">
+      <div class="proposal-preset-head">
+        <div>
+          <div class="proposal-preset-kicker">STOREFRONT</div>
+          <div class="proposal-preset-title">Choose the operating pack that matches the organization you serve.</div>
+          <div class="proposal-preset-copy">This layer makes PrivateDAO easier for a normal operator to understand. Each pack maps to the same product surface you already have: DAO creation, proposal submission, private voting, treasury execution, confidential payroll, Realms migration, and review automation.</div>
+        </div>
+        <div class="proposal-preset-status">PRODUCT-FIRST ENTRY</div>
+      </div>
+      <div class="proposal-preset-grid">
+        <button class="proposal-preset-btn" type="button" onclick="startUseCasePack('grant-committee-pack.md', 'standard-grant')">
+          <strong>GRANT COMMITTEE PACK</strong>
+          <span>Run private grant approvals, reviewer packets, and treasury disbursements with the cleanest DAO flow.</span>
+        </button>
+        <button class="proposal-preset-btn" type="button" onclick="startUseCasePack('fund-governance-pack.md', 'confidential-bonus')">
+          <strong>FUND GOVERNANCE PACK</strong>
+          <span>Manage sensitive allocations, private investment votes, and evidence-heavy committee proposals.</span>
+        </button>
+        <button class="proposal-preset-btn" type="button" onclick="startUseCasePack('gaming-dao-pack.md', 'private-token-distribution')">
+          <strong>GAMING DAO PACK</strong>
+          <span>Handle private token distribution, guild reward flows, and community treasury operations with less leakage.</span>
+        </button>
+        <button class="proposal-preset-btn" type="button" onclick="startUseCasePack('enterprise-dao-pack.md', 'confidential-payroll')">
+          <strong>ENTERPRISE DAO PACK</strong>
+          <span>Run confidential payroll, bonus approvals, and operator-grade treasury controls for serious teams.</span>
+        </button>
+      </div>
+      <div class="proof-path-strip">
+        <div class="proof-path-chip">
+          <div class="proof-path-kicker">REALMS</div>
+          <div class="proof-path-title">Migration-ready, not hand-wavy.</div>
+          <div class="proof-path-copy">PrivateDAO already supports a Realms-oriented migration path and voter-weight compatibility. Use it to move into private governance without pretending every Realms workflow becomes one click.</div>
+          <div class="curation-links">
+            <button class="proposal-proof-link" type="button" onclick="openRealmsMigrationStorefront()">Open Migration Flow</button>
+            <a class="award-link" href="migration-story.md" target="_blank">Migration Story</a>
+          </div>
+        </div>
+        <div class="proof-path-chip">
+          <div class="proof-path-kicker">PRODUCT FLOW</div>
+          <div class="proof-path-title">Create DAO → Submit proposal → Private vote → Execute treasury</div>
+          <div class="proof-path-copy">The homepage now keeps the lifecycle readable for non-builders. The same packs lead into the real DAO bootstrap, builder presets, command center, and proof layer below.</div>
+          <div class="curation-links">
+            <button class="proposal-proof-link" type="button" onclick="openStorefrontDaoFlow()">Open Lifecycle Flow</button>
+            <a class="award-link" href="production-simulation-dao.md" target="_blank">Production Simulation DAO</a>
+          </div>
+        </div>
+        <div class="proof-path-chip">
+          <div class="proof-path-kicker">API AND OPS</div>
+          <div class="proof-path-title">PrivateDAO is also a service surface.</div>
+          <div class="proof-path-copy">Beyond the app, the project can be delivered as hosted read API, review-export tooling, migration support, pilot onboarding, and operator workflows. The boundary stays honest: packaged services are documented, not faked as already-live SaaS checkout.</div>
+          <div class="curation-links">
+            <button class="proposal-proof-link" type="button" onclick="openServiceCatalog()">Open Service Catalog</button>
+            <a class="award-link" href="pricing-model.md" target="_blank">Pricing Model</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -4596,6 +4664,56 @@ body.judge-mode .judge-banner {
             <a class="award-link" href="demo-video.md" target="_blank">Demo Video Brief</a>
             <a class="award-link" href="assets/private-dao-demo-flow.mp4" target="_blank">MP4 Asset</a>
             <a class="award-link" href="assets/private-dao-demo-flow-poster.png" target="_blank">Poster</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="award-detail-card reveal" style="margin-top:24px">
+      <div class="award-detail-head">
+        <div>
+          <div class="award-detail-title">API, operator, and migration services</div>
+          <p class="award-detail-copy">
+            PrivateDAO is not only an application surface. It can also be packaged as a hosted read path, migration program, reviewer export layer, and guided pilot service for organizations that need governance operations support.
+          </p>
+        </div>
+        <div class="award-pill">SERVICE CATALOG</div>
+      </div>
+      <div class="proposal-command-grid">
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">HOSTED READ API</div>
+          <div style="color:var(--text2);line-height:1.8">Backend-indexed proposal reads, pooled RPC access, diagnostics, and operator snapshots for teams that want reliable governance visibility.</div>
+          <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px">
+            <a class="award-link" href="service-catalog.md" target="_blank">Service Catalog</a>
+            <a class="award-link" href="read-node/indexer.md" target="_blank">Read Node</a>
+            <a class="award-link" href="rpc-architecture.md" target="_blank">RPC Architecture</a>
+          </div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">REVIEW EXPORTS</div>
+          <div style="color:var(--text2);line-height:1.8">Evidence bundles, judge packets, audit-oriented runtime exports, and trust packaging for grants, internal approvals, and pilot reviews.</div>
+          <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px">
+            <a class="award-link" href="trust-package.md" target="_blank">Trust Package</a>
+            <a class="award-link" href="launch-trust-packet.generated.md" target="_blank">Launch Trust Packet</a>
+            <a class="award-link" href="audit-packet.generated.md" target="_blank">Audit Packet</a>
+          </div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">REALMS MIGRATION SERVICE</div>
+          <div style="color:var(--text2);line-height:1.8">Migration planning, governance token mapping, voter-weight compatibility, and continuity documentation for communities moving from Realms-oriented governance into private voting.</div>
+          <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px">
+            <button class="proposal-proof-link" type="button" onclick="openRealmsMigrationStorefront()">Open Migration Flow</button>
+            <a class="award-link" href="migration-story.md" target="_blank">Migration Story</a>
+            <a class="award-link" href="pilot-program.md" target="_blank">Pilot Program</a>
+          </div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">PILOT AND OPERATOR SUPPORT</div>
+          <div style="color:var(--text2);line-height:1.8">Onboarding, runbooks, operator training, monitoring expectations, and scoped service levels for organizations that want a guided rollout.</div>
+          <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px">
+            <a class="award-link" href="service-level-agreement.md" target="_blank">Pilot SLA</a>
+            <a class="award-link" href="pricing-model.md" target="_blank">Pricing Model</a>
+            <a class="award-link" href="pilot-onboarding-playbook.md" target="_blank">Pilot Onboarding</a>
           </div>
         </div>
       </div>
@@ -6454,6 +6572,42 @@ function copyDiagnosticsSnapshot() {
 // ── Scroll to proposals ─────────────────────────────────
 function scrollToProposals() {
   document.getElementById('proposals-anchor').scrollIntoView({behavior:'smooth'});
+}
+
+function scrollToProposalBuilder() {
+  document.getElementById('createDaoPda')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function openStorefrontDaoFlow() {
+  showPage('proposals', findNavButton('proposals'));
+  setTimeout(() => {
+    document.getElementById('builderDaoName')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    showToast('DAO bootstrap console ready. Create the DAO, fund the treasury, then move into proposal presets below.', 'success');
+  }, 120);
+}
+
+function openServiceCatalog() {
+  openDocument('service-catalog.md', 'Service Catalog');
+}
+
+function openRealmsMigrationStorefront() {
+  showPage('migrate', findNavButton('migrate'));
+  setTimeout(() => {
+    document.getElementById('migrationGovernance')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    showToast('Realms migration path opened. Review the boundaries, then generate the exact migration command.', 'success');
+  }, 120);
+}
+
+function startUseCasePack(docPath, presetKey) {
+  showPage('proposals', findNavButton('proposals'));
+  setTimeout(() => {
+    applyProposalBuilderPreset(presetKey, { silent: true });
+    scrollToProposalBuilder();
+    if (docPath) {
+      window.open(docPath, '_blank', 'noopener,noreferrer');
+    }
+    showToast('Use-case pack loaded. Review the mapped product story, then sign only after confirming the builder inputs.', 'success');
+  }, 120);
 }
 
 function currentPageKey() {
