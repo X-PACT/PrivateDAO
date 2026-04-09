@@ -56,6 +56,7 @@ npm run build:ranger-submission -- docs/ranger-strategy-config.devnet.json docs/
 
 echo "[mainnet] verifying live proof and review surface"
 npm run verify:live-proof >/dev/null
+npm run verify:test-wallet-live-proof:v3 >/dev/null
 npm run verify:release-manifest >/dev/null
 npm run verify:program-id-consistency >/dev/null
 npm run verify:pdao-surface >/dev/null
@@ -87,6 +88,9 @@ npm run verify:review-surface >/dev/null
 echo "[mainnet] required docs"
 test -f README.md
 test -f docs/live-proof.md
+test -f docs/test-wallet-live-proof-v3.generated.md
+test -f docs/governance-hardening-v3.md
+test -f docs/settlement-hardening-v3.md
 test -f docs/mainnet-readiness.md
 test -f docs/mainnet-readiness.generated.md
 test -f docs/mainnet-blockers.json
