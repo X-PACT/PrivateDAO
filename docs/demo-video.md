@@ -71,3 +71,25 @@ The render script also copies an upload-ready version to:
 5. execute treasury
 6. advanced layer explanation: ZK, REFHE, MagicBlock, RPC Fast
 7. closing with live app and repo links
+
+## Zerion variant
+
+For the Zerion bounty variant, keep the same first four visible steps:
+
+1. **Create DAO**
+2. **Submit proposal**
+3. **Private vote**
+4. **Execute treasury / execution agent**
+
+Then clarify the execution handoff:
+
+- `PrivateDAO` is the governance brain
+- the `Zerion CLI fork` is the wallet and execution engine
+- the transaction must be real and routed through Zerion API
+- the policy must stay scoped, not god-mode
+
+The video should frame this as:
+
+**PrivateDAO Autonomous Executor**
+
+not as a generic trading bot.

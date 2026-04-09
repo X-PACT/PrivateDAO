@@ -182,6 +182,25 @@ Production path:
 - deploy monitoring and alerting
 - perform final cutover ceremony
 
+## Slide 11B - Zerion Track Expansion
+
+PrivateDAO can expand into a governance-controlled execution agent for the Zerion track:
+
+- `PrivateDAO` remains the private governance and policy layer
+- a forked `Zerion CLI` becomes the wallet and execution engine
+- real swaps or bridges are executed only after private DAO approval
+
+Why this matters:
+
+- most agents are either unsafely autonomous or only simulators
+- this model introduces scoped execution after private collective approval
+- it preserves the project wedge: privacy, policy, and evidence
+
+Honest boundary:
+
+- the current repository documents this path and is technically aligned with it
+- the Zerion fork and live Zerion-routed transaction remain the next implementation step for the bounty-specific submission
+
 ## Slide 12 - The Ask
 
 PrivateDAO is seeking ecosystem funding, grants, and direct investment to move from advanced Devnet product and audit-readiness candidate into production-grade launch readiness.
@@ -216,4 +235,4 @@ Core links:
 - Economic model: `docs/economic-model.md`
 - Competition readiness: `docs/competition-readiness.md`
 - Investor video package: `docs/investor-video.md`
-
+- Zerion track adaptation: `docs/zerion-autonomous-executor.md`
