@@ -14,6 +14,8 @@
     "web:verify:bundle:root": "bash scripts/verify-web-mirror-bundle.sh root",
     "build:web-next-handoff": "ts-node scripts/build-web-next-handoff.ts",
     "verify:web-next-handoff": "ts-node scripts/verify-web-next-handoff.ts",
+    "build:web-next-cutover-map": "ts-node scripts/build-web-next-cutover-map.ts",
+    "verify:web-next-cutover-map": "ts-node scripts/verify-web-next-cutover-map.ts",
     "web:lint": "npm --prefix apps/web run lint",
     "start:read-node": "ts-node scripts/run-read-node.ts",
     "test": "bash scripts/run-local-anchor-suite.sh all",

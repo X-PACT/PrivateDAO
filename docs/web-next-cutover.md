@@ -60,6 +60,7 @@ Do not describe the Next.js app as the canonical live site until:
 
 - [apps/web/README.md](/home/x-pact/PrivateDAO/apps/web/README.md)
 - [docs/web-next-handoff.generated.md](/home/x-pact/PrivateDAO/docs/web-next-handoff.generated.md)
+- [docs/web-next-cutover-map.generated.md](/home/x-pact/PrivateDAO/docs/web-next-cutover-map.generated.md)
 - [docs/web-next-route-parity.md](/home/x-pact/PrivateDAO/docs/web-next-route-parity.md)
 - [docs/domain-mirror.md](/home/x-pact/PrivateDAO/docs/domain-mirror.md)
 - [docs/xyz-mirror-cutover-checklist.md](/home/x-pact/PrivateDAO/docs/xyz-mirror-cutover-checklist.md)
