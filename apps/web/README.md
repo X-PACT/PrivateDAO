@@ -17,8 +17,13 @@ The goal is not a generic DAO dashboard. This app needs to preserve the real pro
 ## Current Routes
 
 - `/` overview and product landing page
+- `/command-center` guided buyer / operator / reviewer workflow
 - `/dashboard` governance dashboard shell
 - `/analytics` analytics and treasury activity views
+- `/proof` reviewer and proof surface
+- `/security` additive hardening and launch boundary surface
+- `/diagnostics` runtime, readiness, and verification surface
+- `/services` commercial comparison and pilot surface
 - `/awards` recognition and credibility surface
 
 ## Local Development
@@ -35,6 +40,26 @@ Or directly:
 cd apps/web
 npm run dev
 ```
+
+## Static Export Modes
+
+This app is now configured for static export so it can become a mirror-safe deployment target before cutover.
+
+From the repo root:
+
+```bash
+npm run web:build
+npm run web:build:github
+npm run web:build:root
+```
+
+Meaning:
+
+- `web:build` uses the default environment and current base-path assumptions
+- `web:build:github` builds for `https://x-pact.github.io/PrivateDAO/`
+- `web:build:root` builds for a root domain such as `https://PrivateDAO.xyz/`
+
+The app uses `NEXT_PUBLIC_BASE_PATH` and `NEXT_PUBLIC_LIVE_SITE_URL` to keep routes, assets, metadata, and reviewer links consistent across both deployment targets.
 
 ## Important Constraint
 
