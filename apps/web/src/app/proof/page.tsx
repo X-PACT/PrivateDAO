@@ -1,4 +1,5 @@
 import { MetricsStrip } from "@/components/metrics-strip";
+import { ProofFlowRail } from "@/components/proof-flow-rail";
 import { ProofCenter } from "@/components/proof-center";
 import { SectionHeader } from "@/components/section-header";
 import { Badge } from "@/components/ui/badge";
@@ -20,6 +21,9 @@ export default function ProofPage() {
       </div>
       <div className="mt-10">
         <MetricsStrip />
+      </div>
+      <div className="mt-10">
+        <ProofFlowRail />
       </div>
       <div className="mt-10">
         <ProofCenter />

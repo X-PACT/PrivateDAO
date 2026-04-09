@@ -1,3 +1,4 @@
+import { CommercialCompareSurface } from "@/components/commercial-compare-surface";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { SectionHeader } from "@/components/section-header";
 import { ServicesSurface } from "@/components/services-surface";
@@ -20,6 +21,9 @@ export default function ServicesPage() {
       </div>
       <div className="mt-10">
         <MetricsStrip />
+      </div>
+      <div className="mt-10">
+        <CommercialCompareSurface />
       </div>
       <div className="mt-10">
         <ServicesSurface />
