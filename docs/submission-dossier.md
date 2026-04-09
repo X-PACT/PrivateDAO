@@ -12,6 +12,7 @@ It ties together:
 - what the strategy framing is
 - what the security evidence is
 - what the live proof is
+- what additive V3 hardening proves
 - what remains outside the repo
 
 ## Core Identity
@@ -30,6 +31,7 @@ the confidential risk-approval and treasury-control layer for a serious USDC str
 - treasury validation
 - replay and failure-mode reasoning
 - live devnet proof
+- dedicated Devnet proof for Governance Hardening V3 and Settlement Hardening V3
 - canonical release manifest
 - reviewer and operations verification gates
 - web and Android-native review surfaces
@@ -51,10 +53,14 @@ the confidential risk-approval and treasury-control layer for a serious USDC str
 - [security-coverage-map.md](/home/x-pact/PrivateDAO/docs/security-coverage-map.md)
 - [failure-modes.md](/home/x-pact/PrivateDAO/docs/failure-modes.md)
 - [replay-analysis.md](/home/x-pact/PrivateDAO/docs/replay-analysis.md)
+- [governance-hardening-v3.md](/home/x-pact/PrivateDAO/docs/governance-hardening-v3.md)
+- [settlement-hardening-v3.md](/home/x-pact/PrivateDAO/docs/settlement-hardening-v3.md)
 
 ## Live Proof Package
 
 - [live-proof.md](/home/x-pact/PrivateDAO/docs/live-proof.md)
+- [test-wallet-live-proof-v3.generated.md](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.md)
+- [test-wallet-live-proof-v3.generated.json](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.json)
 - [devnet-release-manifest.md](/home/x-pact/PrivateDAO/docs/devnet-release-manifest.md)
 - [proof-registry.json](/home/x-pact/PrivateDAO/docs/proof-registry.json)
 - [independent-verification.md](/home/x-pact/PrivateDAO/docs/independent-verification.md)
@@ -86,3 +92,12 @@ What still remains outside the current repository:
 - external audit
 - production mainnet rollout
 - any protocol-v2 interface change intended to tighten currently documented operational guards
+
+## Honest V3 Boundary
+
+The additive `V3` path is now part of the repository's serious proof surface:
+
+- `Governance Hardening V3` is Devnet-proven
+- `Settlement Hardening V3` is Devnet-proven
+- both remain additive and do not reinterpret legacy objects
+- neither is presented as a production-custody or unrestricted-mainnet claim

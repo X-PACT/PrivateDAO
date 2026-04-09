@@ -29,6 +29,7 @@ Do not call the system mainnet-ready if any of the following remain true:
 The repository-side readiness surface is considered internally strong when all of the following hold:
 
 - governance lifecycle is verified
+- additive governance and settlement hardening V3 paths are Devnet-proven
 - security reasoning is verified
 - zk companion stack is verified
 - reviewer surface is verified

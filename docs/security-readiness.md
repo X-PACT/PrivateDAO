@@ -12,8 +12,11 @@ PrivateDAO is currently best described as:
 - commit-reveal governance lifecycle
 - treasury execution safety checks
 - Strict V2 additive hardening
+- Governance Hardening V3 with token-supply quorum snapshots and dedicated reveal rebate vaults
+- Settlement Hardening V3 with payout caps, evidence aging, and proposal-scoped settlement policy snapshots
 - replay-aware evidence model
-- Devnet rehearsal evidence
+- baseline Devnet rehearsal evidence
+- dedicated Devnet proof for the additive V3 path
 - runtime and review artifacts
 
 ## Still required before unrestricted real-funds mainnet
@@ -33,3 +36,13 @@ PrivateDAO already distinguishes between:
 - external launch blockers
 
 That distinction must remain explicit in every demo, pitch, and pilot.
+
+## V3 evidence boundary
+
+The presence of `Governance Hardening V3`, `Settlement Hardening V3`, and `test-wallet-live-proof-v3.generated.*` means the repository can prove the additive hardening path on Devnet.
+
+It does not mean:
+
+- unrestricted mainnet custody is complete
+- external audit is complete
+- pending-external launch blockers are closed

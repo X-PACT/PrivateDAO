@@ -13,7 +13,7 @@ It is a readiness note, not a claim that every adjacent system already exists.
 | On-chain governance lifecycle | Strong | Commit, reveal, finalize, execute, delegation, veto, cancel, and treasury checks are implemented and evidenced. |
 | Security reasoning | Strong | Threat model, coverage map, replay analysis, failure modes, and protocol spec are present. |
 | Reviewer surface | Strong | README, Proof Center, Judge Mode, security page, and reviewer map are aligned. |
-| Live devnet evidence | Strong | Live proof, proof registry, and release manifest are all present and verified. |
+| Live devnet evidence | Strong | Baseline live proof, dedicated V3 live proof, proof registry, and release manifest are all present and verified. |
 | Operations documentation | Strong | Monitoring, incident response, cutover, risk register, and audit handoff are present. |
 | Android review surface | Strong | Android-native app and docs exist as a first-class counterpart. |
 | Strategy control-plane framing | Strong | Blueprint, adaptor boundary, risk policy, and strategy operations are explicit. |
@@ -28,6 +28,7 @@ PrivateDAO is already unusually strong in areas most hackathon and diligence rev
 
 - real protocol behavior
 - real proof links
+- additive V3 hardening with dedicated Devnet evidence
 - explicit failure reasoning
 - explicit residual risks
 - explicit operations discipline
@@ -40,6 +41,7 @@ PrivateDAO can credibly claim that it is:
 
 - a real governance security protocol
 - a private approval layer for treasury-sensitive decisions
+- a protocol with both baseline and additive V3 hardening paths proven on Devnet
 - a serious control plane for a USDC strategy stack
 - a review-ready and audit-friendly Solana project
 
@@ -64,3 +66,4 @@ And the shortest evidence pack is:
 
 - [submission-dossier.md](/home/x-pact/PrivateDAO/docs/submission-dossier.md)
 - [submission-registry.json](/home/x-pact/PrivateDAO/docs/submission-registry.json)
+- [test-wallet-live-proof-v3.generated.md](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.md)
