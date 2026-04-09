@@ -18,6 +18,8 @@
     "verify:web-next-cutover-map": "ts-node scripts/verify-web-next-cutover-map.ts",
     "build:web-next-query-strategy": "ts-node scripts/build-web-next-query-strategy.ts",
     "verify:web-next-query-strategy": "ts-node scripts/verify-web-next-query-strategy.ts",
+    "build:web-next-doc-viewer-plan": "ts-node scripts/build-web-next-doc-viewer-plan.ts",
+    "verify:web-next-doc-viewer-plan": "ts-node scripts/verify-web-next-doc-viewer-plan.ts",
     "web:lint": "npm --prefix apps/web run lint",
     "start:read-node": "ts-node scripts/run-read-node.ts",
     "test": "bash scripts/run-local-anchor-suite.sh all",
