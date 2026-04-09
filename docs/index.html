@@ -576,6 +576,81 @@ nav.scrolled {
   animation: fadeUp 0.8s ease 0.36s both;
 }
 
+.hero-mode-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+  animation: fadeUp 0.8s ease 0.38s both;
+}
+
+.hero-mode-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(9, 15, 22, 0.6);
+  color: var(--text2);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.hero-mode-chip:hover {
+  color: var(--cyan);
+  border-color: rgba(0,229,255,0.26);
+  background: rgba(0,229,255,0.08);
+}
+
+.hero-proof-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+  animation: fadeUp 0.8s ease 0.42s both;
+}
+
+.hero-proof-card {
+  padding: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(9, 15, 22, 0.62);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.hero-proof-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text3);
+  margin-bottom: 8px;
+}
+
+.hero-proof-title {
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.hero-proof-copy {
+  color: var(--text2);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.hero-proof-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
 .hero-tech-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -3586,6 +3661,12 @@ body.judge-mode .judge-banner {
         <button class="btn-ghost" onclick="openRealmsMigrationStorefront()">Migrate from Realms</button>
         <button class="btn-ghost" onclick="openServiceCatalog()">Explore Services</button>
       </div>
+      <div class="hero-mode-row">
+        <button class="hero-mode-chip" type="button" onclick="openJudgeQuickView()">Judge View</button>
+        <button class="hero-mode-chip" type="button" onclick="openBuyerQuickView()">Buyer View</button>
+        <button class="hero-mode-chip" type="button" onclick="openOperatorQuickView()">Operator View</button>
+        <button class="hero-mode-chip" type="button" onclick="copyJudgeModeLink()">Copy Judge Link</button>
+      </div>
       <div class="hero-links">
         <a class="hero-link" href="service-catalog.md" target="_blank">Service Catalog ↗</a>
         <a class="hero-link" href="pricing-model.md" target="_blank">Pricing Model ↗</a>
@@ -3595,6 +3676,35 @@ body.judge-mode .judge-banner {
         <a class="hero-link" href="cryptographic-integrity.md" target="_blank">Artifact Integrity ↗</a>
         <a class="hero-link" href="android-native.md" target="_blank">Android Native ↗</a>
         <a class="hero-link" href="domain-mirror.md" target="_blank">Mirror Deployment ↗</a>
+      </div>
+      <div class="hero-proof-strip">
+        <div class="hero-proof-card">
+          <div class="hero-proof-label">LIVE SUCCESS PROOF</div>
+          <div class="hero-proof-title">Real Devnet treasury execution already completed</div>
+          <div class="hero-proof-copy">A live wallet-to-wallet treasury action already ran through the full lifecycle: Create DAO, Submit proposal, Commit, Reveal, and Execute treasury on Devnet.</div>
+          <div class="hero-proof-links">
+            <a class="hero-link" href="test-wallet-live-proof.generated.md" target="_blank">Latest Live Proof ↗</a>
+            <a class="hero-link" href="operational-evidence.generated.md" target="_blank">Operational Evidence ↗</a>
+          </div>
+        </div>
+        <div class="hero-proof-card">
+          <div class="hero-proof-label">REVIEWER PACKET</div>
+          <div class="hero-proof-title">50 wallets, 212 attempts, 3 on-chain ZK anchors</div>
+          <div class="hero-proof-copy">The current reviewer surface already exposes the latest Devnet rehearsal, expected security rejects, ZK anchors, and runtime evidence in one machine-checked package.</div>
+          <div class="hero-proof-links">
+            <a class="hero-link" href="frontier-integrations.generated.md" target="_blank">Frontier Integrations ↗</a>
+            <a class="hero-link" href="launch-trust-packet.generated.md" target="_blank">Launch Trust Packet ↗</a>
+          </div>
+        </div>
+        <div class="hero-proof-card">
+          <div class="hero-proof-label">BOUNDARY CHECK</div>
+          <div class="hero-proof-title">Live now versus pending-external stays explicit</div>
+          <div class="hero-proof-copy">The page sells the operating story, but it does not pretend multisig transfer, audit closure, or mainnet cutover are already complete. Those remain linked as pending-external blockers.</div>
+          <div class="hero-proof-links">
+            <a class="hero-link" href="mainnet-blockers.md" target="_blank">Mainnet Blockers ↗</a>
+            <a class="hero-link" href="go-live-attestation.generated.json" target="_blank">Go-Live Attestation ↗</a>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -7151,6 +7261,23 @@ function scrollToStorefrontShelf() {
 
 function openServiceCatalog() {
   openDocument('service-catalog.md', 'Service Catalog');
+}
+
+function openJudgeQuickView() {
+  setJudgeMode(true);
+}
+
+function openBuyerQuickView() {
+  openServiceCatalog();
+  showToast('Buyer surface opened. Start from pricing, pilot packet, and trust boundary.', 'success');
+}
+
+function openOperatorQuickView() {
+  showPage('proposals', findNavButton('proposals'));
+  setTimeout(() => {
+    document.getElementById('confidentialTreasuryCommandCenter')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    showToast('Operator surface opened. Start from the command center and active proposal flow.', 'success');
+  }, 120);
 }
 
 function copyPilotRequestPacket() {
