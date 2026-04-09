@@ -81,12 +81,22 @@ function main() {
         "Enterprise DAO Pack",
       ],
     },
+    v3Evidence: {
+      governance: "docs/governance-hardening-v3.md",
+      settlement: "docs/settlement-hardening-v3.md",
+      liveProof: "docs/test-wallet-live-proof-v3.generated.md",
+      status: "devnet-proven",
+      boundary: "test-wallet-devnet-only",
+    },
     linkedDocs: [
       "docs/multisig-setup-intake.md",
       "docs/production-custody-ceremony.md",
       "docs/authority-transfer-runbook.md",
       "docs/external-audit-engagement.md",
       "docs/audit-handoff.md",
+      "docs/governance-hardening-v3.md",
+      "docs/settlement-hardening-v3.md",
+      "docs/test-wallet-live-proof-v3.generated.md",
       "docs/runtime/real-device.md",
       "docs/pilot-onboarding-playbook.md",
       "docs/pilot-program.md",
@@ -141,6 +151,13 @@ function buildMarkdown(payload: {
   };
   audit: { status: string; pendingAction: string };
   pilot: { status: string; lifecycle: string[]; packs: string[] };
+  v3Evidence: {
+    governance: string;
+    settlement: string;
+    liveProof: string;
+    status: string;
+    boundary: string;
+  };
   linkedDocs: string[];
   requiredExternalInputs: string[];
   commands: string[];
@@ -193,6 +210,14 @@ ${payload.pilot.lifecycle.map((entry, index) => `${index + 1}. ${entry}`).join("
 Available use-case packs:
 
 ${payload.pilot.packs.map((entry) => `- ${entry}`).join("\n")}
+
+## Additive V3 Evidence
+
+- governance hardening: \`${payload.v3Evidence.governance}\`
+- settlement hardening: \`${payload.v3Evidence.settlement}\`
+- dedicated live proof: \`${payload.v3Evidence.liveProof}\`
+- V3 evidence status: \`${payload.v3Evidence.status}\`
+- V3 evidence boundary: \`${payload.v3Evidence.boundary}\`
 
 ## Required External Inputs
 

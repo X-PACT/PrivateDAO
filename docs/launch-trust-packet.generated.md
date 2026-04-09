@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-09T15:18:09.474Z`
+- generated at: `2026-04-09T16:54:06.973Z`
 - current decision: `blocked-external-steps`
 - production mainnet claim allowed: `false`
 
@@ -59,6 +59,14 @@ Available use-case packs:
 - Gaming DAO Pack
 - Enterprise DAO Pack
 
+## Additive V3 Evidence
+
+- governance hardening: `docs/governance-hardening-v3.md`
+- settlement hardening: `docs/settlement-hardening-v3.md`
+- dedicated live proof: `docs/test-wallet-live-proof-v3.generated.md`
+- V3 evidence status: `devnet-proven`
+- V3 evidence boundary: `test-wallet-devnet-only`
+
 ## Required External Inputs
 
 - 3 production signer public keys
@@ -76,6 +84,9 @@ Available use-case packs:
 - `docs/authority-transfer-runbook.md`
 - `docs/external-audit-engagement.md`
 - `docs/audit-handoff.md`
+- `docs/governance-hardening-v3.md`
+- `docs/settlement-hardening-v3.md`
+- `docs/test-wallet-live-proof-v3.generated.md`
 - `docs/runtime/real-device.md`
 - `docs/pilot-onboarding-playbook.md`
 - `docs/pilot-program.md`

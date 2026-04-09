@@ -119,6 +119,14 @@ ${Object.entries(proof.transactions)
   .map(([label, tx]) => `- \`${label}\`: \`${tx}\``)
   .join("\n")}
 
+## Additive Hardening V3
+
+- Governance hardening note: \`docs/governance-hardening-v3.md\`
+- Settlement hardening note: \`docs/settlement-hardening-v3.md\`
+- Dedicated V3 live proof: \`docs/test-wallet-live-proof-v3.generated.md\`
+- Dedicated V3 live proof JSON: \`docs/test-wallet-live-proof-v3.generated.json\`
+- Boundary note: V3 evidence is a real Devnet packet for the stricter additive path, not a production-custody or mainnet claim
+
 ## Artifact Integrity
 
 - Read node and indexer: \`docs/read-node/indexer.md\`
@@ -204,6 +212,10 @@ ${submission.packages.zk.map((entry) => `- \`${entry}\``).join("\n")}
 ## Proof Package
 
 ${submission.packages.proof.map((entry) => `- \`${entry}\``).join("\n")}
+- \`docs/governance-hardening-v3.md\`
+- \`docs/settlement-hardening-v3.md\`
+- \`docs/test-wallet-live-proof-v3.generated.md\`
+- \`docs/test-wallet-live-proof-v3.generated.json\`
 
 ## Runtime Package
 

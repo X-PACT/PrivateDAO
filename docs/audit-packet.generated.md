@@ -57,6 +57,14 @@
 - `finalize`: `4JSPRJQuSY5es74TcChBTzuGMMCr4RknHkmr6vFmtmbav4TRABDAnapmtgipYioEZzh4wmKfg2PMzZHCfJ7UruLG`
 - `execute`: `x1vhP6H3Regi6WHYx6LUGbeo4CCbJxWwtUVucPVjonnymyccpM8mpb7t3UpQpqksXBU7PYGPd86cPnZLYwRzBn9`
 
+## Additive Hardening V3
+
+- Governance hardening note: `docs/governance-hardening-v3.md`
+- Settlement hardening note: `docs/settlement-hardening-v3.md`
+- Dedicated V3 live proof: `docs/test-wallet-live-proof-v3.generated.md`
+- Dedicated V3 live proof JSON: `docs/test-wallet-live-proof-v3.generated.json`
+- Boundary note: V3 evidence is a real Devnet packet for the stricter additive path, not a production-custody or mainnet claim
+
 ## Artifact Integrity
 
 - Read node and indexer: `docs/read-node/indexer.md`
@@ -269,6 +277,10 @@
 - `docs/deployment-attestation.generated.json`
 - `docs/runtime-attestation.generated.json`
 - `docs/go-live-attestation.generated.json`
+- `docs/governance-hardening-v3.md`
+- `docs/settlement-hardening-v3.md`
+- `docs/test-wallet-live-proof-v3.generated.md`
+- `docs/test-wallet-live-proof-v3.generated.json`
 
 ## Runtime Package
 

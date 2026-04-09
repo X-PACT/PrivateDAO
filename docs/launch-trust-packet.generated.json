@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-09T15:18:09.474Z",
+  "generatedAt": "2026-04-09T16:54:06.973Z",
   "decision": "blocked-external-steps",
   "productionMainnetClaimAllowed": false,
   "custody": {
@@ -48,12 +48,22 @@
       "Enterprise DAO Pack"
     ]
   },
+  "v3Evidence": {
+    "governance": "docs/governance-hardening-v3.md",
+    "settlement": "docs/settlement-hardening-v3.md",
+    "liveProof": "docs/test-wallet-live-proof-v3.generated.md",
+    "status": "devnet-proven",
+    "boundary": "test-wallet-devnet-only"
+  },
   "linkedDocs": [
     "docs/multisig-setup-intake.md",
     "docs/production-custody-ceremony.md",
     "docs/authority-transfer-runbook.md",
     "docs/external-audit-engagement.md",
     "docs/audit-handoff.md",
+    "docs/governance-hardening-v3.md",
+    "docs/settlement-hardening-v3.md",
+    "docs/test-wallet-live-proof-v3.generated.md",
     "docs/runtime/real-device.md",
     "docs/pilot-onboarding-playbook.md",
     "docs/pilot-program.md",

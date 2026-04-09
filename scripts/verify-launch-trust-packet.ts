@@ -21,6 +21,13 @@ type Packet = {
   };
   audit: { status: string; pendingAction: string };
   pilot: { status: string; lifecycle: string[]; packs: string[] };
+  v3Evidence: {
+    governance: string;
+    settlement: string;
+    liveProof: string;
+    status: string;
+    boundary: string;
+  };
   linkedDocs: string[];
   requiredExternalInputs: string[];
   commands: string[];
@@ -47,7 +54,13 @@ function main() {
   assert(packet.audit.status === "pending-external", "launch trust packet audit boundary must remain pending");
   assert(packet.pilot.lifecycle.join(" -> ") === "Create DAO -> Submit proposal -> Private vote -> Execute treasury", "launch trust packet pilot lifecycle mismatch");
   assert(packet.pilot.packs.includes("Grant Committee Pack"), "launch trust packet missing Grant Committee pack");
+  assert(packet.v3Evidence.liveProof === "docs/test-wallet-live-proof-v3.generated.md", "launch trust packet missing V3 live proof");
+  assert(packet.v3Evidence.status === "devnet-proven", "launch trust packet V3 evidence status mismatch");
+  assert(packet.v3Evidence.boundary === "test-wallet-devnet-only", "launch trust packet V3 boundary mismatch");
   assert(packet.linkedDocs.includes("docs/production-custody-ceremony.md"), "launch trust packet missing custody ceremony doc");
+  assert(packet.linkedDocs.includes("docs/governance-hardening-v3.md"), "launch trust packet missing governance v3 doc");
+  assert(packet.linkedDocs.includes("docs/settlement-hardening-v3.md"), "launch trust packet missing settlement v3 doc");
+  assert(packet.linkedDocs.includes("docs/test-wallet-live-proof-v3.generated.md"), "launch trust packet missing V3 live proof doc");
   assert(packet.linkedDocs.includes("docs/external-audit-engagement.md"), "launch trust packet missing external audit engagement doc");
   assert(packet.linkedDocs.includes("docs/pilot-onboarding-playbook.md"), "launch trust packet missing pilot onboarding playbook");
   assert(packet.commands.includes("npm run verify:launch-trust-packet"), "launch trust packet missing self verification command");
@@ -62,6 +75,8 @@ function main() {
     "Submit proposal",
     "Private vote",
     "Execute treasury",
+    "docs/test-wallet-live-proof-v3.generated.md",
+    "V3 evidence status",
   ]) {
     assert(markdown.includes(token), `launch trust packet markdown is missing: ${token}`);
   }
