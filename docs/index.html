@@ -1883,17 +1883,24 @@ nav.scrolled {
 @media (max-width: 1480px) {
   .nav-inner {
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: flex-start;
   }
 
   .nav-links {
     order: 3;
     width: 100%;
-    justify-content: center;
+    justify-content: flex-start;
+    margin-top: 8px;
+  }
+
+  .logo-wrap,
+  .wallet-stack {
+    flex: 0 0 auto;
   }
 
   .wallet-stack {
-    flex: 0 0 auto;
+    margin-left: auto;
   }
 }
 
