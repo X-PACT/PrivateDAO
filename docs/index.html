@@ -39,8 +39,8 @@
   --gold-deep: #ffb100;
   --gold-soft: #ffdc64;
   --text: #e0f0ff;
-  --text2: #7090b0;
-  --text3: #3a5570;
+  --text2: #7898b8;
+  --text3: #4a6683;
   --mono: 'SFMono-Regular', 'Liberation Mono', 'DejaVu Sans Mono', 'Courier New', monospace;
   --display: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   --body: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
@@ -91,9 +91,32 @@ button {
 }
 
 a:focus-visible,
-button:focus-visible {
-  outline: 2px solid rgba(0, 229, 255, 0.42);
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid rgba(0, 229, 255, 0.46);
   outline-offset: 3px;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  border-color: rgba(0, 229, 255, 0.42) !important;
+  box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.12);
+}
+
+.nav-link:focus-visible,
+.hero-link:focus-visible,
+.proposal-proof-link:focus-visible,
+.award-link:focus-visible,
+.award-cta:focus-visible,
+.wallet-trigger:focus-visible,
+.modal-close:focus-visible,
+.submit-btn:focus-visible {
+  outline: 2px solid rgba(0, 229, 255, 0.5);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px rgba(0, 229, 255, 0.1);
 }
 
 @media (pointer:fine) {
