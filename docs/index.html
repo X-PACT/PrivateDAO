@@ -5146,6 +5146,44 @@ body.judge-mode .judge-banner {
           </div>
         </div>
       </div>
+      <div class="proposal-command-grid" style="margin-top:18px">
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">COMMERCIAL CHECKOUT RAIL</div>
+          <div style="color:var(--text2);line-height:1.8">The first month should feel operationally clear, not fuzzy. This rail keeps the buyer story grounded in deliverables instead of generic enterprise language.</div>
+          <div style="margin-top:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px">
+            <div style="padding:12px;border-radius:16px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)">
+              <div class="proposal-detail-label">WEEK 1</div>
+              <div style="color:var(--text);font-weight:700;margin-top:8px">Scope one governance flow</div>
+              <div style="color:var(--text2);line-height:1.7;margin-top:6px">Choose one DAO workflow, one treasury action, and one operating pack.</div>
+            </div>
+            <div style="padding:12px;border-radius:16px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)">
+              <div class="proposal-detail-label">WEEK 2</div>
+              <div style="color:var(--text);font-weight:700;margin-top:8px">Run the production simulation</div>
+              <div style="color:var(--text2);line-height:1.7;margin-top:6px">Execute Create DAO, Submit proposal, Private vote, and Execute treasury on Devnet.</div>
+            </div>
+            <div style="padding:12px;border-radius:16px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)">
+              <div class="proposal-detail-label">WEEK 3</div>
+              <div style="color:var(--text);font-weight:700;margin-top:8px">Train operators and review trust</div>
+              <div style="color:var(--text2);line-height:1.7;margin-top:6px">Walk through runbooks, trust package, monitoring expectations, and signer model.</div>
+            </div>
+            <div style="padding:12px;border-radius:16px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)">
+              <div class="proposal-detail-label">WEEK 4</div>
+              <div style="color:var(--text);font-weight:700;margin-top:8px">Decide next custody step</div>
+              <div style="color:var(--text2);line-height:1.7;margin-top:6px">Continue Devnet, extend pilot, or begin multisig and audit preparation.</div>
+            </div>
+          </div>
+        </div>
+        <div class="proposal-command-box">
+          <div class="proposal-detail-label">REQUEST PILOT PACKET</div>
+          <div style="color:var(--text2);line-height:1.8">Copy a ready-to-send pilot packet with the exact links a buyer, partner, or evaluator needs: pilot program, pricing, SLA, trust package, onboarding playbook, and production simulation DAO.</div>
+          <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px">
+            <button class="proposal-proof-link" type="button" onclick="copyPilotRequestPacket()">Copy Pilot Packet</button>
+            <button class="proposal-proof-link" type="button" onclick="openDocument('pilot-program.md', 'Pilot Program')">Open Pilot Program</button>
+            <button class="proposal-proof-link" type="button" onclick="openDocument('pricing-model.md', 'Pricing Model')">Open Pricing Model</button>
+            <button class="proposal-proof-link" type="button" onclick="openDocument('trust-package.md', 'Trust Package')">Open Trust Package</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -7113,6 +7151,42 @@ function scrollToStorefrontShelf() {
 
 function openServiceCatalog() {
   openDocument('service-catalog.md', 'Service Catalog');
+}
+
+function copyPilotRequestPacket() {
+  const packet = [
+    'PrivateDAO Pilot Packet',
+    '',
+    'Best for: grant committees, crypto-native funds, gaming DAOs, and enterprise-style treasury operators that need private governance and accountable treasury execution.',
+    '',
+    'Start here:',
+    '- Pilot Program: pilot-program.md',
+    '- Pricing Model: pricing-model.md',
+    '- Pilot SLA: service-level-agreement.md',
+    '- Trust Package: trust-package.md',
+    '- Pilot Onboarding Playbook: pilot-onboarding-playbook.md',
+    '- Production Simulation DAO: production-simulation-dao.md',
+    '',
+    'Live now:',
+    '- Devnet DAO lifecycle',
+    '- Confidential Treasury Command Center',
+    '- ZK anchors and guided review path',
+    '- REFHE and MagicBlock integration paths',
+    '- Backend-indexed RPC / review surface',
+    '',
+    'Pending-external before real-funds mainnet:',
+    '- multisig custody ceremony',
+    '- authority transfer',
+    '- external audit closure',
+    '- final mainnet cutover',
+  ].join('\n');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(packet)
+      .then(() => showToast('Pilot packet copied.', 'success'))
+      .catch(() => showToast(packet, 'info'));
+    return;
+  }
+  showToast(packet, 'info');
 }
 
 function openRealmsMigrationStorefront() {
