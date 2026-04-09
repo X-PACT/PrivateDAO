@@ -14,6 +14,8 @@
 - Demo walkthrough: `tests/demo.ts`
 - Core behavior tests: `tests/private-dao.ts`
 - Live proof note: `docs/live-proof.md`
+- Dedicated V3 proof note: `docs/test-wallet-live-proof-v3.generated.md`
+- V3 hardening notes: `docs/governance-hardening-v3.md`, `docs/settlement-hardening-v3.md`
 - Live frontend: `docs/index.html`
 - Android-native counterpart: `apps/android-native/`
 
@@ -40,6 +42,7 @@
 - reveal must match the stored commitment
 - delegated paths are proposal-scoped, not generic
 - direct/delegated overlap is rejected on-chain and mirrored in operator-facing surfaces
+- additive V3 governance proof demonstrates token-supply quorum snapshots and a dedicated reveal rebate vault without reinterpreting legacy proposals
 
 ### Product proof surface
 
@@ -53,6 +56,7 @@ These are the honest limits today:
 
 - the repository is governance-strong but not yet a full Ranger vault strategy implementation
 - devnet proof exists, but mainnet deployment is not claimed here
+- additive V3 hardening is Devnet-proven, but still not presented as a mainnet custody claim
 - strategy alpha, APY, and vault performance require a strategy layer in addition to this repository
 - Android build verification requires a full Android SDK environment outside this shell
 

@@ -11,6 +11,7 @@ It is intentionally conservative.
 Current evidence in this repository supports:
 
 - live governance lifecycle proof on devnet
+- additive governance and settlement hardening proof on devnet
 - explorer-verifiable treasury execution proof
 - strategy eligibility framing
 - risk model framing
@@ -60,6 +61,7 @@ This document prevents overclaiming.
 It makes the review distinction explicit:
 
 - the governance and security layer is strongly evidenced today
+- the additive V3 hardening layer is also evidenced today
 - the strategy-performance layer is the next real expansion surface
 
 ## Reviewer Use

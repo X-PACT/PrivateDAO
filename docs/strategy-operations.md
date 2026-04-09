@@ -119,10 +119,11 @@ The following parameters are natural candidates for PrivateDAO approval:
 Reviewers should validate strategy-control evidence in this order:
 
 1. [live-proof.md](/home/x-pact/PrivateDAO/docs/live-proof.md)
-2. [ranger-strategy-documentation.md](/home/x-pact/PrivateDAO/docs/ranger-strategy-documentation.md)
-3. [risk-policy.md](/home/x-pact/PrivateDAO/docs/risk-policy.md)
-4. [ranger-submission-bundle.generated.md](/home/x-pact/PrivateDAO/docs/ranger-submission-bundle.generated.md)
-5. [judge-technical-audit.md](/home/x-pact/PrivateDAO/docs/judge-technical-audit.md)
+2. [test-wallet-live-proof-v3.generated.md](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.md)
+3. [ranger-strategy-documentation.md](/home/x-pact/PrivateDAO/docs/ranger-strategy-documentation.md)
+4. [risk-policy.md](/home/x-pact/PrivateDAO/docs/risk-policy.md)
+5. [ranger-submission-bundle.generated.md](/home/x-pact/PrivateDAO/docs/ranger-submission-bundle.generated.md)
+6. [judge-technical-audit.md](/home/x-pact/PrivateDAO/docs/judge-technical-audit.md)
 
 ## Honest Boundary
 
@@ -131,6 +132,7 @@ What this repository proves today:
 - private governance lifecycle is real on-chain
 - treasury execution checks are real on-chain
 - governance evidence is explorer-verifiable
+- additive V3 governance and settlement hardening are Devnet-proven
 - the operating model for a serious strategy control plane is concrete
 
 What still depends on the paired strategy stack:

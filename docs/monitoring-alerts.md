@@ -57,10 +57,12 @@ The most important signals for judges, grant reviewers, or auditors are:
 - every proposal lifecycle transition is reproducible
 - failed execution attempts are visible and non-mutating
 - operational health is not assumed; it is checked
+- additive V3 governance and settlement execution evidence is observable as a separate proof layer when the stricter path matters
 
 ## Related Repository Surfaces
 
 - [live-proof.md](/home/x-pact/PrivateDAO/docs/live-proof.md)
+- [test-wallet-live-proof-v3.generated.md](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.md)
 - [production-operations.md](/home/x-pact/PrivateDAO/docs/production-operations.md)
 - [incident-response.md](/home/x-pact/PrivateDAO/docs/incident-response.md)
 - [security-review.md](/home/x-pact/PrivateDAO/docs/security-review.md)

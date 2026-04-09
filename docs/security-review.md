@@ -16,6 +16,7 @@ PrivateDAO now includes a reviewer-visible hardening layer focused on realistic 
 - mainnet cutover readiness checks
 - non-breaking zk stack proof generation and verification
 - zk threat-extension reasoning and registry-backed review integrity
+- additive Governance Hardening V3 and Settlement Hardening V3 proof on Devnet
 - 50-wallet Devnet stress and adversarial execution evidence
 - multi-proposal isolation evidence
 - finalize and execute collision-race evidence
@@ -36,6 +37,9 @@ PrivateDAO now includes a reviewer-visible hardening layer focused on realistic 
 - wallet compatibility matrix: `docs/wallet-compatibility-matrix.generated.md`
 - devnet canary: `docs/devnet-canary.generated.md`
 - Devnet transaction registry: `docs/devnet-tx-registry.json`
+- Dedicated V3 live proof: `docs/test-wallet-live-proof-v3.generated.md`
+- Governance Hardening V3: `docs/governance-hardening-v3.md`
+- Settlement Hardening V3: `docs/settlement-hardening-v3.md`
 - Adversarial report: `docs/adversarial-report.json`
 - ZK proof registry: `docs/zk-proof-registry.json`
 - Mainnet gate: `scripts/check-mainnet-readiness.sh`
@@ -71,7 +75,7 @@ These clarifications are included because partial repo scans often overstate or 
 - Browser-native commit flows generate salts in memory and require the voter to save or export them. The review surface does not persist salts in `localStorage` or `sessionStorage`.
 - Raw commitment preimages are proposal-bound as `sha256(vote_byte || salt_32 || proposal_pubkey_32 || voter_pubkey_32)`, and replay remains proposal-scoped through the `VoteRecord` PDA, reveal account binding, and `has_committed` / `has_revealed` lifecycle flags.
 - Keeper reveal authority is proposal-scoped and optional. It can only submit the exact reveal for that stored commitment, and successful reveal clears the stored keeper authority from the record.
-- Reveal rebate is paid from the proposal account only when the proposal account stays rent-safe. The DAO treasury is not the rebate source.
+- In the baseline path, reveal rebate is paid from the proposal account only when the proposal account stays rent-safe. In `V3`, rebate is paid from a dedicated reveal rebate vault PDA instead. The DAO treasury is not the rebate source in either path.
 - The current zk stack is an additive Groth16 companion layer. It improves reviewer-visible proof surfaces today, but the deployed on-chain program remains the enforcement boundary.
 
 ### Lifecycle and replay safety
@@ -257,6 +261,16 @@ The repository now also exposes:
 - `docs/mainnet-proof-package.generated.md`
 
 These separate repository-accepted surfaces from external blockers so mainnet-readiness discussion stays explicit and reviewer-friendly.
+
+## Additive V3 Hardening Layer
+
+The repository now also includes a stricter additive path that does not reinterpret legacy objects:
+
+- `Governance Hardening V3` adds token-supply quorum snapshots and a dedicated reveal rebate vault
+- `Settlement Hardening V3` adds payout caps, minimum evidence age, and proposal-scoped settlement policy snapshots
+- `docs/test-wallet-live-proof-v3.generated.md` proves both paths on Devnet with real execute transactions
+
+This is a meaningful hardening extension to the baseline proof surface, but it remains a Devnet proof package rather than a production-custody or mainnet claim.
 
 ## Replay Summary
 
