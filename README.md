@@ -28,39 +28,46 @@
 
 **1st Place - Superteam Poland, March 2026.**
 
-PrivateDAO-related engineering won **1st Place** in the Superteam Poland challenge **"Rebuild production backend systems as on-chain Rust programs"**. That result is documented in [`docs/awards.md`](docs/awards.md) and is now the first signal in this repository because the same engineering discipline drives the current Frontier submission: real protocol code, real Devnet operation, real runtime evidence, and explicit security boundaries.
+PrivateDAO engineering won **1st Place** in the Superteam Poland challenge **"Rebuild production backend systems as on-chain Rust programs"**. That matters here because this repo is built the same way: live protocol code, live Devnet execution, explicit trust boundaries, and machine-checked reviewer evidence. See [`docs/awards.md`](docs/awards.md).
 
-## About PrivateDAO
+## What PrivateDAO Is
 
-PrivateDAO is a Solana governance and treasury product for DAOs, on-chain teams, and crypto-native organizations that need privacy without losing auditability.
+PrivateDAO is a Solana governance and treasury product for organizations that need privacy without losing operational discipline.
 
-Public governance leaks intent too early. Live tallies, visible treasury intent, and off-chain compensation workflows create whale pressure, coordination distortion, and sensitive operational leakage. PrivateDAO addresses that with a single Solana-native operating stack:
+It combines:
 
-- **Private voting:** commit-reveal governance with proposal-bound commitments and replay-resistant voting records.
-- **Confidential operations:** encrypted payroll and bonus approval flows with aggregate on-chain settlement metadata.
-- **Execution safety:** timelocked treasury execution, veto/cancel boundaries, strict token-account checks, and duplicate-execution resistance.
-- **Security hardening:** additive Strict V2 policy accounts for proof verification, settlement evidence, cancellation safety, policy snapshots, and voter-weight scope.
-- **Runtime evidence:** Devnet rehearsals, ZK proof anchors, adversarial checks, generated manifests, release drill evidence, and reviewer-facing audit packets.
-- **Infrastructure path:** read-only backend node, pooled RPC reads, MagicBlock private-payment corridor support, and RPC Fast-oriented reliability documentation.
-- **Migration and service path:** Realms-oriented migration support, operator onboarding, hosted read API packaging, trust exports, pilot packaging, and startup-facing service documentation.
+- **Private voting:** commit-reveal governance with proposal-bound commitments.
+- **Confidential treasury operations:** payroll, bonus, and payout flows with aggregate on-chain settlement state.
+- **Execution safety:** timelocks, veto and cancel boundaries, duplicate-execution resistance, and strict treasury account validation.
+- **Evidence and reviewability:** Devnet rehearsals, ZK proof anchors, runtime packets, manifests, and generated audit surfaces.
+- **Operational packaging:** Realms migration, hosted read/API packaging, trust exports, pilot material, and operator docs.
 
-## Frontier Hackathon Fit
+## What Is Live Now
 
-PrivateDAO is built for the current **Colosseum Frontier** environment: it is not a slide deck or UI mock. It is a live Devnet product with an Anchor program, frontend, backend read path, test harnesses, security documentation, and generated evidence.
+PrivateDAO is already a live Devnet product, not a concept deck:
 
-Best-fit tracks and angles:
+- Anchor program on Solana Devnet
+- Wallet-connected frontend
+- PDAO governance token surface
+- Create DAO → submit proposal → private vote → execute treasury flow
+- Confidential payout paths with `REFHE` and `MagicBlock` integration surfaces
+- `Strict V2` hardening for proof, settlement, cancellation, and policy snapshots
+- Backend read node and RPC Fast-oriented evidence path
+- Reviewer-facing runtime, security, and launch packets
 
-| Track / angle | Why PrivateDAO fits |
-| --- | --- |
-| 100xDevs open track | Strong Solana execution, full-stack product, real-world DAO problem, and broad developer evidence. |
-| RPC Fast | Read-heavy governance UX, backend read node, pooled RPC path, metrics, runtime snapshots, and Devnet load evidence. |
-| MagicBlock privacy | Proposal-bound private-payment corridor and confidential payout path, with honest evidence-gated execution boundaries. |
-| Governance / DAO infra | Private voting, treasury control, policy snapshots, voter-weight compatibility, and operator-focused execution. |
-| Privacy apps | Confidential payroll, bonus approvals, REFHE envelopes, MagicBlock corridors, and ZK evidence layers. |
+## Frontier Fit
 
-## Startup Readiness Path
+PrivateDAO fits Frontier because it sits at the intersection of:
 
-PrivateDAO is ready to be evaluated as a serious Frontier startup candidate, but the repository does not claim real-funds mainnet clearance yet. The current boundary is deliberate:
+- **Governance / DAO infrastructure**
+- **Privacy-preserving treasury operations**
+- **MagicBlock-integrated confidential payout paths**
+- **RPC Fast-oriented read reliability**
+- **Full-stack Solana product execution**
+
+## Launch Boundary
+
+PrivateDAO is strong enough for Devnet evaluation, judge review, and pilot packaging, but this repository does **not** claim real-funds mainnet readiness yet. The current boundary is deliberate:
 
 | Stage | Current status | Evidence |
 | --- | --- | --- |
@@ -87,44 +94,23 @@ Operational launch docs:
 
 The README should stay aligned with this rule: implemented surfaces are described as implemented; external launch steps are described as pending until real evidence is recorded.
 
-## Quick Links
+## Start Here
 
-| Need | Link |
+| If you need | Link |
 | --- | --- |
 | Live product | https://x-pact.github.io/PrivateDAO/ |
 | Judge / proof view | https://x-pact.github.io/PrivateDAO/?page=proof&judge=1 |
 | Wallet diagnostics | https://x-pact.github.io/PrivateDAO/?page=diagnostics |
 | Demo video | https://youtu.be/cwsPpNLiwbo |
 | Devnet program | https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet |
-| Security hardening V2 | [`docs/security-hardening-v2.md`](docs/security-hardening-v2.md) |
+| Guided product flow | [`docs/frontier-guided-flow.md`](docs/frontier-guided-flow.md) |
 | Audit packet | [`docs/audit-packet.generated.md`](docs/audit-packet.generated.md) |
 | Operational evidence | [`docs/operational-evidence.generated.md`](docs/operational-evidence.generated.md) |
-| Runtime evidence | [`docs/runtime-evidence.generated.md`](docs/runtime-evidence.generated.md) |
 | Frontier integration evidence | [`docs/frontier-integrations.generated.md`](docs/frontier-integrations.generated.md) |
-| Guided product flow | [`docs/frontier-guided-flow.md`](docs/frontier-guided-flow.md) |
-| Browser automation audit | [`docs/browser-automation-audit.md`](docs/browser-automation-audit.md) |
-| Security remediation note | [`docs/security-audit-remediation-2026-04-08.md`](docs/security-audit-remediation-2026-04-08.md) |
-| Test-wallet live proof | [`docs/test-wallet-live-proof.generated.md`](docs/test-wallet-live-proof.generated.md) |
 | Mainnet blockers | [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md) |
-| Multisig setup intake | [`docs/multisig-setup-intake.md`](docs/multisig-setup-intake.md) |
-| Production Simulation DAO | [`docs/production-simulation-dao.md`](docs/production-simulation-dao.md) |
-| Use case packs | [`docs/use-case-packs.md`](docs/use-case-packs.md) |
-| Service catalog | [`docs/service-catalog.md`](docs/service-catalog.md) |
-| Operator guide | [`docs/operator-guide.md`](docs/operator-guide.md) |
 | Trust package | [`docs/trust-package.md`](docs/trust-package.md) |
-| Launch trust packet | [`docs/launch-trust-packet.generated.md`](docs/launch-trust-packet.generated.md) |
-| Production custody ceremony | [`docs/production-custody-ceremony.md`](docs/production-custody-ceremony.md) |
-| External audit engagement | [`docs/external-audit-engagement.md`](docs/external-audit-engagement.md) |
-| Migration story | [`docs/migration-story.md`](docs/migration-story.md) |
-| Pilot program | [`docs/pilot-program.md`](docs/pilot-program.md) |
-| Pilot onboarding playbook | [`docs/pilot-onboarding-playbook.md`](docs/pilot-onboarding-playbook.md) |
-| Pricing model | [`docs/pricing-model.md`](docs/pricing-model.md) |
-| Pilot SLA draft | [`docs/service-level-agreement.md`](docs/service-level-agreement.md) |
-| MagicBlock private payments | [`docs/magicblock/private-payments.md`](docs/magicblock/private-payments.md) |
-| RPC architecture | [`docs/rpc-architecture.md`](docs/rpc-architecture.md) |
-| PDAO token surface | [`docs/pdao-token.md`](docs/pdao-token.md) |
+| Service catalog | [`docs/service-catalog.md`](docs/service-catalog.md) |
 | Investor / competition pitch deck | [`docs/investor-pitch-deck.md`](docs/investor-pitch-deck.md) |
-| Colosseum submission answers | [`docs/colosseum-submission-answers.md`](docs/colosseum-submission-answers.md) |
 
 ## System Diagram
 
