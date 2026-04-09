@@ -19,6 +19,7 @@ PrivateDAO publishes a large generated review surface. That surface is only usef
 ```bash
 npm run build:devnet:review-artifacts
 npm run build:review-bundle
+npm run verify:review-bundle
 npm run verify:artifact-freshness
 ```
 
@@ -32,5 +33,6 @@ This gate covers deterministic generated reviewer artifacts such as:
 - release ceremony attestation
 - release drill evidence
 - packaged reviewer bundle
+- packaged reviewer bundle contents, including canonical baseline proof and additive V3 proof
 
 It does not replace external audit, live production ceremony execution, device-level runtime QA, or live Devnet canary freshness.

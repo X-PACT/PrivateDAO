@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-09T18:56:37.237Z`
+- generated at: `2026-04-09T19:08:38.188Z`
 - network: `devnet`
 - program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`

@@ -10,6 +10,9 @@ npm run build:devnet:review-artifacts >/dev/null
 echo "[artifact-freshness] rebuilding packaged review bundle"
 npm run build:review-bundle >/dev/null
 
+echo "[artifact-freshness] verifying packaged review bundle contents"
+npm run verify:review-bundle >/dev/null
+
 tracked_paths=(
   "docs/zk-attestation.generated.json"
   "docs/pdao-attestation.generated.json"

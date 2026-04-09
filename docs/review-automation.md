@@ -17,12 +17,14 @@ PrivateDAO treats its reviewer surface as an operational system, not a static fo
 npm run verify:all
 npm run verify:artifact-freshness
 npm run build:review-bundle
+npm run verify:review-bundle
 ```
 
 ## What This Proves
 
 - reviewer-visible evidence is generated, not hand-maintained
 - release-facing documentation is coupled to verification gates
+- the packaged reviewer bundle is verified to include both canonical baseline proof and additive V3 proof surfaces
 - operational evidence remains reproducible across CI and local review runs
 
 ## Limits
