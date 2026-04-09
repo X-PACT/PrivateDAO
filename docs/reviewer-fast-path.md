@@ -47,6 +47,9 @@ If you want the verification breakdown:
 ## Live Proof Anchors
 
 - `docs/live-proof.md`
+- `docs/test-wallet-live-proof-v3.generated.md`
+- `docs/governance-hardening-v3.md`
+- `docs/settlement-hardening-v3.md`
 - `docs/devnet-release-manifest.md`
 - `docs/proof-registry.json`
 - `docs/independent-verification.md`

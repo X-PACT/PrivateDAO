@@ -76,6 +76,7 @@ If the concern touches treasury execution:
 1. confirm whether the proposal is already executed
 2. inspect the transaction in:
    - [live-proof.md](/home/x-pact/PrivateDAO/docs/live-proof.md)-style format
+   - [test-wallet-live-proof-v3.generated.md](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.md) when the stricter additive path is relevant
    - Solscan
 3. compare recipient, mint, and amount against the proposal intent
 4. confirm whether the action matches expected on-chain validation

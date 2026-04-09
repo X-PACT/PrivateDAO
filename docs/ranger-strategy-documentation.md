@@ -117,6 +117,9 @@ For Ranger judging, the required proof surface should include:
 This repository already ships the governance half of that proof surface through:
 
 - `docs/live-proof.md`
+- `docs/test-wallet-live-proof-v3.generated.md`
+- `docs/governance-hardening-v3.md`
+- `docs/settlement-hardening-v3.md`
 - Proof Center in `docs/index.html`
 - Explorer-linked proposal activity
 

@@ -171,6 +171,7 @@ Funding helps accelerate:
 - Repository: `https://github.com/X-PACT/PrivateDAO`
 - Live App: `https://x-pact.github.io/PrivateDAO/`
 - Live Proof: `docs/live-proof.md`
+- Live Proof V3: `docs/test-wallet-live-proof-v3.generated.md`
 - Security Review: `docs/security-review.md`
 - ZK Layer: `docs/zk-layer.md`
 - Mainnet Go-Live Checklist: `docs/mainnet-go-live-checklist.md`

@@ -11591,6 +11591,9 @@ function renderProposalDetail(p, nowTs) {
     <a class="proposal-proof-link" href="${solscanAccount(p.dao)}" target="_blank">DAO Explorer</a>
     <a class="proposal-proof-link" href="${solscanAccount(treasuryPda)}" target="_blank">Treasury Explorer</a>
     <a class="proposal-proof-link" href="live-proof.md" target="_blank">Live Devnet Proof</a>
+    <a class="proposal-proof-link" href="test-wallet-live-proof-v3.generated.md" target="_blank">Live Devnet Proof V3</a>
+    <a class="proposal-proof-link" href="governance-hardening-v3.md" target="_blank">Governance Hardening V3</a>
+    <a class="proposal-proof-link" href="settlement-hardening-v3.md" target="_blank">Settlement Hardening V3</a>
     <a class="proposal-proof-link" href="zk/enforced-operator-flow.md" target="_blank">ZK Operator Flow</a>
     <a class="proposal-proof-link" href="refhe-protocol.md" target="_blank">REFHE Protocol</a>
     <a class="proposal-proof-link" href="refhe-operator-flow.md" target="_blank">REFHE Operator Flow</a>
@@ -11685,15 +11688,16 @@ function getZkAnchorInfo(proposalPubkey) {
     };
   }
 
-  return {
-    status: 'This proposal follows the same commit-reveal and replay-safe lifecycle, but the published on-chain anchor set is currently reserved for the canonical Devnet proof path.',
-    reviewPath: 'Use the ZK Proof Registry and the canonical live proof package to inspect the current Groth16 companion layers and their proposal-bound anchor pattern.',
-    links: `
+    return {
+      status: 'This proposal follows the same commit-reveal and replay-safe lifecycle, but the published on-chain anchor set is currently reserved for the canonical Devnet proof path.',
+      reviewPath: 'Use the ZK Proof Registry, the canonical live proof package, and the dedicated V3 proof packet to inspect the current Groth16 companion layers and their proposal-bound anchor pattern.',
+      links: `
       <a class="proposal-proof-link" href="zk-proof-registry.json" target="_blank">ZK Proof Registry</a>
       <a class="proposal-proof-link" href="live-proof.md" target="_blank">Canonical Proof Path</a>
+      <a class="proposal-proof-link" href="test-wallet-live-proof-v3.generated.md" target="_blank">Dedicated V3 Proof Path</a>
     `,
-  };
-}
+    };
+  }
 
 function getProposalZkCardState(proposal) {
   const canonicalProposal = 'AegjmwkX1FknBJMDyH5yM6BMhyHsiUreNtz3d8iz3QrP';
