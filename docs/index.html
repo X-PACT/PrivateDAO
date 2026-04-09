@@ -165,7 +165,9 @@ nav.scrolled {
 }
 .nav-inner { display:flex; align-items:center; justify-content:space-between; }
 
-.logo-wrap { display:flex; align-items:center; gap:14px; }
+.logo-wrap { display:flex; align-items:center; gap:14px; color: inherit; text-decoration: none; }
+.logo-wrap:hover,
+.logo-wrap:focus-visible { text-decoration: none; }
 .logo-mark {
   width: 38px; height: 38px;
   border: 1.5px solid var(--cyan);
@@ -3683,7 +3685,7 @@ body.judge-mode .judge-banner {
 <nav id="nav">
   <div class="container">
     <div class="nav-inner">
-      <div class="logo-wrap">
+      <a class="logo-wrap" href="?page=proposals" aria-label="PrivateDAO home">
         <div class="logo-mark">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
             <rect x="3" y="8" width="14" height="10" rx="2" stroke="#00e5ff" stroke-width="1.5"/>
@@ -3714,7 +3716,7 @@ body.judge-mode .judge-banner {
             <ellipse cx="10" cy="2.8" rx="1.5" ry="0.9" fill="#fff8d7" fill-opacity="0.78"/>
           </svg>
         </span><em>O</em></span>
-      </div>
+      </a>
       <div class="nav-links">
         <button class="nav-link active" onclick="showPage('proposals',this)">Proposals</button>
         <button class="nav-link" onclick="showPage('proof',this)">Trust Layer</button>
