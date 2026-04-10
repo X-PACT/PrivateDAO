@@ -10,12 +10,24 @@ type CommunityPageProps = {
   searchParams?: { intake?: string; asset?: string; amount?: string; purpose?: string; lane?: string; profile?: string };
 };
 
-function normalizeIntake(value?: string) {
-  return value === "pilot" || value === "rpc" || value === "gaming" || value === "payments" || value === "support" ? value : undefined;
+function normalizeIntake(value?: string, profile?: string) {
+  if (value === "pilot" || value === "rpc" || value === "gaming" || value === "payments" || value === "support") {
+    return value;
+  }
+
+  if (profile === "pilot-funding") {
+    return "pilot";
+  }
+
+  if (profile === "treasury-top-up" || profile === "vendor-payout" || profile === "contributor-payout") {
+    return "payments";
+  }
+
+  return undefined;
 }
 
 export default function CommunityPage({ searchParams }: CommunityPageProps) {
-  const initialKind = normalizeIntake(searchParams?.intake);
+  const initialKind = normalizeIntake(searchParams?.intake, searchParams?.profile);
   const initialFundingContext = {
     asset: searchParams?.asset,
     amount: searchParams?.amount,

@@ -19,6 +19,10 @@ export type ServiceOperationalCard = {
     label: string;
     href: string;
   };
+  profileRoutes?: Array<{
+    label: string;
+    href: string;
+  }>;
   buyerMotion: string;
   mainnetGate: string;
 };
@@ -96,9 +100,14 @@ export function getServiceOperationalCards(): ServiceOperationalCard[] {
         "Open Services, then the command center, and walk through treasury-backed proposal execution as the governed payout path for contributors or vendors.",
       evidence: [payoutCoverage, executeHealth, proofCompletion].filter(Boolean) as MetricPreview[],
       intakeRoute: {
-        label: "Request payments flow",
-        href: "/engage?intake=payments",
+        label: "Treasury top-up",
+        href: "/engage?profile=treasury-top-up",
       },
+      profileRoutes: [
+        { label: "Pilot funding", href: "/engage?profile=pilot-funding" },
+        { label: "Vendor payout", href: "/engage?profile=vendor-payout" },
+        { label: "Contributor payout", href: "/engage?profile=contributor-payout" },
+      ],
       bestRoute: {
         label: "Open payments path",
         href: "/services",
@@ -117,7 +126,7 @@ export function getServiceOperationalCards(): ServiceOperationalCard[] {
       evidence: [proofFreshness, walletCoverage, proofCompletion].filter(Boolean) as MetricPreview[],
       intakeRoute: {
         label: "Start a pilot",
-        href: "/engage?intake=pilot",
+        href: "/engage?profile=pilot-funding",
       },
       bestRoute: {
         label: "Open trust layer",

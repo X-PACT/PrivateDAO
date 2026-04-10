@@ -54,7 +54,7 @@ export function CommunityHub() {
           </Link>
 
           <Link
-            href="/engage"
+            href="/engage?profile=pilot-funding"
             className="group rounded-3xl border border-emerald-300/16 bg-emerald-300/[0.08] p-5 transition hover:border-emerald-300/30 hover:bg-emerald-300/[0.12]"
           >
             <div className="flex items-start justify-between gap-4">

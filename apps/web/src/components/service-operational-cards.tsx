@@ -77,6 +77,17 @@ export function ServiceOperationalCards() {
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>
               </div>
+
+              {card.profileRoutes?.length ? (
+                <div className="mt-4 flex flex-wrap gap-3">
+                  {card.profileRoutes.map((route) => (
+                    <Link key={`${card.title}-${route.href}`} className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={route.href}>
+                      {route.label}
+                      <ArrowUpRight className="h-4 w-4" />
+                    </Link>
+                  ))}
+                </div>
+              ) : null}
             </div>
           );
         })}
