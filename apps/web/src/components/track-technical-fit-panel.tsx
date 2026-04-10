@@ -38,6 +38,25 @@ export function TrackTechnicalFitPanel({ slug }: TrackTechnicalFitPanelProps) {
         </div>
 
         <div className="grid gap-3">
+          {fit.sponsorEvidence.map((item) => (
+            <div
+              key={`${slug}-${item.sponsor}-${item.status}`}
+              className="rounded-3xl border border-cyan-300/14 bg-cyan-300/[0.08] p-4"
+            >
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/76">
+                  {item.sponsor}
+                </div>
+                <div className="rounded-full border border-white/10 bg-black/20 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-white/62">
+                  {item.status}
+                </div>
+              </div>
+              <div className="mt-3 text-sm leading-7 text-white/72">{item.detail}</div>
+            </div>
+          ))}
+        </div>
+
+        <div className="grid gap-3">
           {fit.sponsorUsage.map((line) => (
             <div key={`${slug}-${line}`} className="flex gap-3 rounded-3xl border border-white/8 bg-white/4 p-4 text-sm leading-7 text-white/64">
               <ShieldCheck className="mt-1 h-4 w-4 shrink-0 text-emerald-200" />

@@ -5,6 +5,7 @@ import type { CompetitionTrackWorkspace } from "@/lib/site-data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { SubmissionCoachPanel } from "@/components/submission-coach-panel";
+import { TrackAlignmentPanel } from "@/components/track-alignment-panel";
 import { TrackCommercializationPanel } from "@/components/track-commercialization-panel";
 import { TrackMainnetGatesPanel } from "@/components/track-mainnet-gates-panel";
 import { TrackTechnicalFitPanel } from "@/components/track-technical-fit-panel";
@@ -114,6 +115,8 @@ export function CompetitionWorkspace({ workspace }: CompetitionWorkspaceProps) {
 
         <SubmissionCoachPanel workspace={workspace} />
 
+        <TrackAlignmentPanel workspace={workspace} />
+
         <TrackTechnicalFitPanel slug={workspace.slug} />
 
         <TrackCommercializationPanel workspace={workspace} />
@@ -130,7 +133,7 @@ export function CompetitionWorkspace({ workspace }: CompetitionWorkspaceProps) {
                 Live route
               </Link>
               <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} href={workspace.judgeRoute}>
-                Judge route
+                Review route
               </Link>
               <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={workspace.proofRoute}>
                 Proof route

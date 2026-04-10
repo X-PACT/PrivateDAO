@@ -41,10 +41,10 @@ const assistantIntents: AssistantIntent[] = [
     keywords: ["start", "begin", "user", "easy", "onboarding", "consumer", "normal", "first run"],
   },
   {
-    title: "Open the shortest judge path",
+    title: "Open the shortest review path",
     summary:
       "Use the proof route with the judge context first. From there, continue into V3 proof, trust package, and mainnet blockers without digging through the full site.",
-    primaryActionLabel: "Open judge proof path",
+    primaryActionLabel: "Open review proof path",
     primaryActionHref: "/proof/?judge=1",
     relatedRoutes: [
       { label: "Trust Package", href: "/documents/trust-package" },
@@ -82,7 +82,7 @@ const assistantIntents: AssistantIntent[] = [
   {
     title: "Open the competition-ready workspace",
     summary:
-      "Go to the competition center when the question is about Frontier, privacy, RPC, consumer, Ranger, or sponsor-specific positioning. Each track keeps live route, judge route, proof route, deck route, and validation steps together.",
+      "Go to the competition center when the question is about Frontier, privacy, RPC, consumer, Ranger, or sponsor-specific positioning. Each track keeps live route, review route, proof route, deck route, and validation steps together.",
     primaryActionLabel: "Open competition center",
     primaryActionHref: "/tracks",
     relatedRoutes: [
@@ -199,7 +199,7 @@ function getTrackAnswer(query: string): AssistantSuggestion | null {
       primaryActionHref: `/tracks/${workspace.slug}`,
       relatedRoutes: [
         { label: "Mainnet blockers", href: "/documents/mainnet-blockers" },
-        { label: "Judge route", href: workspace.judgeRoute },
+        { label: "Review route", href: workspace.judgeRoute },
         { label: "Engage", href: "/engage" },
       ],
     };
@@ -243,7 +243,7 @@ function getTrackAnswer(query: string): AssistantSuggestion | null {
       primaryActionHref: `/tracks/${workspace.slug}`,
       relatedRoutes: [
         { label: "Live route", href: workspace.liveRoute },
-        { label: "Judge route", href: workspace.judgeRoute },
+        { label: "Review route", href: workspace.judgeRoute },
         { label: "Proof route", href: workspace.proofRoute },
       ],
     };
@@ -261,12 +261,12 @@ function getCompetitionSuggestion(query: string): AssistantSuggestion | null {
   return {
     title: `Open ${top.title}`,
     summary:
-      `${top.objective} Lead with ${top.liveRoute}, keep judges on ${top.judgeRoute}, and use the proof and deck routes as the submission support bundle.`,
+      `${top.objective} Lead with ${top.liveRoute}, keep reviewers on ${top.judgeRoute}, and use the proof and deck routes as the submission support bundle.`,
     primaryActionLabel: "Open track workspace",
     primaryActionHref: `/tracks/${top.slug}`,
     relatedRoutes: [
       { label: "Live route", href: top.liveRoute },
-      { label: "Judge route", href: top.judgeRoute },
+      { label: "Review route", href: top.judgeRoute },
       { label: "Proof route", href: top.proofRoute },
       { label: "Deck route", href: top.deckRoute },
     ],
