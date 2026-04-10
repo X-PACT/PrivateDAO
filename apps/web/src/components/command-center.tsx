@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { ArrowUpRight, LockKeyhole, ShieldCheck, WalletCards } from "lucide-react";
+import { ArrowUpRight, Binary, LockKeyhole, ShieldCheck, WalletCards } from "lucide-react";
 
 import { StatusBadge } from "@/components/status-badge";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { confidenceProfiles } from "@/lib/confidence-engine";
 import { cn } from "@/lib/utils";
 import { commandCenterPacks, executionLog, proposalCards } from "@/lib/site-data";
 
@@ -101,6 +102,38 @@ export function CommandCenter() {
                 </div>
               ))}
             </div>
+          </div>
+          <div className="rounded-3xl border border-white/8 bg-black/20 p-5">
+            <div className="flex items-center gap-3">
+              <Binary className="h-4 w-4 text-cyan-300" />
+              <div>
+                <div className="text-sm font-medium text-white">Confidence engine snapshot</div>
+                <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">
+                  ZK + REFHE + MagicBlock + Fast RPC
+                </div>
+              </div>
+            </div>
+            <div className="mt-4 space-y-3">
+              {confidenceProfiles.map((profile) => (
+                <div key={profile.title} className="rounded-2xl border border-white/8 bg-white/4 p-4">
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <div className="text-sm font-medium text-white">{profile.title}</div>
+                      <div className="mt-1 text-xs text-white/45">{profile.subtitle}</div>
+                    </div>
+                    <div className="rounded-xl border border-emerald-300/20 bg-emerald-400/10 px-3 py-1 text-sm font-medium text-white">
+                      {profile.total}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <Link
+              href="/documents/cryptographic-confidence-engine"
+              className={cn(buttonVariants({ size: "sm", variant: "outline" }), "mt-4 w-full")}
+            >
+              Open engine specification
+            </Link>
           </div>
         </CardContent>
       </Card>

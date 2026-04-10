@@ -66,6 +66,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/zk-capability-matrix.md`,
   },
   {
+    slug: "cryptographic-confidence-engine",
+    title: "Cryptographic Confidence Engine",
+    category: "Security",
+    summary: "Deterministic scoring model for how ZK, REFHE, MagicBlock, Fast RPC, and hardening surfaces change the confidence profile of each proposal pattern.",
+    audience: "Judges, security reviewers, operators, buyers",
+    boundary: "Interpretation layer only; it does not replace audit, custody, or formal security proofs.",
+    docPath: "docs/cryptographic-confidence-engine.md",
+    rawHref: `${repositoryBlobBase}/docs/cryptographic-confidence-engine.md`,
+  },
+  {
     slug: "settlement-hardening-v3",
     title: "Settlement Hardening V3",
     category: "Security",

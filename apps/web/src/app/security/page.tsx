@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { MetricsStrip } from "@/components/metrics-strip";
 import { SectionHeader } from "@/components/section-header";
+import { ConfidenceEngineSurface } from "@/components/confidence-engine-surface";
 import { SecurityCenter } from "@/components/security-center";
 import { ZkMatrixSurface } from "@/components/zk-matrix-surface";
 import { Badge } from "@/components/ui/badge";
@@ -45,6 +46,16 @@ export default function SecurityPage() {
       </div>
       <div className="mt-10">
         <ZkMatrixSurface />
+      </div>
+      <div className="mt-10">
+        <SectionHeader
+          eyebrow="Confidence Engine"
+          title="A deterministic scoring engine for ZK, REFHE, MagicBlock, and Fast RPC"
+          description="This surface does not claim magical security. It explains, with explicit weights, why one proposal pattern has stronger privacy depth, enforcement depth, execution integrity, or reviewer confidence than another."
+        />
+      </div>
+      <div className="mt-10">
+        <ConfidenceEngineSurface />
       </div>
     </main>
   );

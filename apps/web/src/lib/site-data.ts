@@ -253,6 +253,12 @@ export const proofPackets = [
     cta: "Open curated ZK matrix",
   },
   {
+    title: "Cryptographic confidence engine",
+    summary: "Deterministic scoring model for how ZK, REFHE, MagicBlock, and Fast RPC strengthen specific proposal patterns.",
+    href: "/documents/cryptographic-confidence-engine",
+    cta: "Open engine specification",
+  },
+  {
     title: "Frontier integrations",
     summary: "ZK, REFHE, MagicBlock, backend-indexed reads, and runtime evidence in one surface.",
     href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/frontier-integrations.generated.md",
@@ -271,6 +277,11 @@ export const securitySurfaces = [
     title: "ZK Capability Matrix",
     body: "Layer-by-layer truth-aligned matrix for proofs, anchors, attestation, zk_enforced posture, and verifier boundaries.",
     href: "/documents/zk-capability-matrix",
+  },
+  {
+    title: "Cryptographic Confidence Engine",
+    body: "Proposal-aware scoring model for privacy depth, enforcement depth, execution integrity, and reviewer confidence across ZK, REFHE, MagicBlock, and Fast RPC.",
+    href: "/documents/cryptographic-confidence-engine",
   },
   {
     title: "Governance Hardening V3",
@@ -325,6 +336,25 @@ export const zkMatrixHighlights = [
     state: "Not implemented",
     verifier: "Not claimed",
     boundary: "Future protocol phase",
+  },
+];
+
+export const confidenceEngineHighlights = [
+  {
+    factor: "Privacy depth",
+    meaning: "Commit-reveal, ZK review overlays, REFHE envelopes, and proposal-bound proof anchors.",
+  },
+  {
+    factor: "Enforcement depth",
+    meaning: "Governance V3, Settlement V3, anchors, REFHE boundaries, and MagicBlock evidence when present.",
+  },
+  {
+    factor: "Execution integrity",
+    meaning: "Fast RPC runtime, corridor evidence, live proof, and V3 proof completeness for the chosen proposal path.",
+  },
+  {
+    factor: "Reviewer confidence",
+    meaning: "Live proof, V3 packet, audit packet, and honest launch-boundary visibility.",
   },
 ];
 
