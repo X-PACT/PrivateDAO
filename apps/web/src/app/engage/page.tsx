@@ -4,6 +4,7 @@ import { CustomerConversionSurface } from "@/components/customer-conversion-surf
 import { LeadSupportIntake } from "@/components/lead-support-intake";
 import { OperationsShell } from "@/components/operations-shell";
 import { PlatformServiceArchitecture } from "@/components/platform-service-architecture";
+import { ProductIntakeForms } from "@/components/product-intake-forms";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
@@ -27,6 +28,7 @@ export default function EngagePage() {
       ]}
     >
       <LeadSupportIntake mode="engage" />
+      <ProductIntakeForms mode="engage" />
       <CustomerConversionSurface />
       <PlatformServiceArchitecture />
     </OperationsShell>
