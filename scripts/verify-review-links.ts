@@ -92,8 +92,8 @@ function main() {
     assertContains(frontend, ref, `docs/index.html is missing review reference: ${ref}`);
   }
 
-  assertContains(readme, "https://x-pact.github.io/PrivateDAO/?page=proof&judge=1", "README is missing Judge Mode entry point");
-  assertContains(readme, "https://x-pact.github.io/PrivateDAO/?page=diagnostics", "README is missing Wallet Diagnostics entry point");
+  assertContains(readme, "https://x-pact.github.io/PrivateDAO/proof/?judge=1", "README is missing Judge Mode entry point");
+  assertContains(readme, "https://x-pact.github.io/PrivateDAO/diagnostics/", "README is missing Wallet Diagnostics entry point");
   assertContains(frontend, "Judge Mode", "frontend is missing Judge Mode surface");
   assertContains(frontend, "Proof Center", "frontend is missing Proof Center surface");
   assertContains(frontend, "Security Evidence", "frontend is missing Security Evidence section");

@@ -134,7 +134,7 @@ async function main() {
     network: "devnet",
     programId: proof.programId,
     verificationWallet: proof.verificationWallet,
-    reviewerEntry: `${submission.frontend}?page=proof&judge=1`,
+    reviewerEntry: `${submission.frontend}proof/?judge=1`,
     readNode: {
       readPath: runtime.readPath,
       rpcEndpoint: runtime.rpcEndpoint,

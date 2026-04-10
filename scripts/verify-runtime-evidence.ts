@@ -50,7 +50,7 @@ function main() {
   assert(evidence.project === "PrivateDAO", "runtime evidence project mismatch");
   assert(evidence.programId === "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx", "runtime evidence program mismatch");
   assert(evidence.verificationWallet === "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD", "runtime evidence verification wallet mismatch");
-  assert(evidence.diagnosticsPage.endsWith("?page=diagnostics"), "runtime evidence diagnostics page mismatch");
+  assert(evidence.diagnosticsPage.endsWith("/diagnostics/"), "runtime evidence diagnostics page mismatch");
   assert(evidence.walletCount >= 5, "runtime evidence wallet count is unexpectedly low");
   assert(evidence.walletLabels.includes("Phantom"), "runtime evidence is missing Phantom");
   assert(evidence.walletLabels.includes("Solflare"), "runtime evidence is missing Solflare");

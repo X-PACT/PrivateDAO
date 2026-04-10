@@ -24,7 +24,7 @@ function main() {
     project: submission.project,
     programId: submission.programId,
     verificationWallet: submission.verificationWallet,
-    diagnosticsPage: `${submission.frontend}?page=diagnostics`,
+    diagnosticsPage: `${submission.frontend}diagnostics/`,
     runtimeDocs: [
       "docs/read-node/indexer.md",
       "docs/rpc-architecture.md",

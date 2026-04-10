@@ -120,7 +120,7 @@ This repository already ships the governance half of that proof surface through:
 - `docs/test-wallet-live-proof-v3.generated.md`
 - `docs/governance-hardening-v3.md`
 - `docs/settlement-hardening-v3.md`
-- Proof Center in `docs/index.html`
+- Proof Center in the published root Next.js surface
 - Explorer-linked proposal activity
 
 ## What remains before claiming full Ranger strategy completeness

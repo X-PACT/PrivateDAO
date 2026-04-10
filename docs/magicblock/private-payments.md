@@ -50,7 +50,7 @@ This is an authority-attested evidence gate. It does not claim that the PrivateD
 
 ## Surface area
 
-- Live frontend: `docs/index.html`
+- Live frontend: `repo root Next.js export`
 - CLI:
   - `npm run configure:magicblock`
   - `npm run settle:magicblock`

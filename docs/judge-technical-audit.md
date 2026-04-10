@@ -16,7 +16,7 @@
 - Live proof note: `docs/live-proof.md`
 - Dedicated V3 proof note: `docs/test-wallet-live-proof-v3.generated.md`
 - V3 hardening notes: `docs/governance-hardening-v3.md`, `docs/settlement-hardening-v3.md`
-- Live frontend: `docs/index.html`
+- Live frontend: `repo root Next.js export`
 - Android-native counterpart: `apps/android-native/`
 
 ## Verified strengths

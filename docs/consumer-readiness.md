@@ -66,7 +66,7 @@ This is not framed as speculative tokenomics. It is framed as useful product beh
 
 - live web frontend: `https://x-pact.github.io/PrivateDAO/`
 - mobile-native surface: `docs/android-native.md`
-- wallet diagnostics: `https://x-pact.github.io/PrivateDAO/?page=diagnostics`
+- wallet diagnostics: `https://x-pact.github.io/PrivateDAO/diagnostics/`
 - governance token surface: `docs/pdao-token.md`
 - independent verification guide: `docs/independent-verification.md`
 - additive hardening proof: `docs/test-wallet-live-proof-v3.generated.md`

@@ -44,7 +44,7 @@ function main() {
   assert(attestation.project === submission.project, "runtime attestation project mismatch");
   assert(attestation.programId === submission.programId, "runtime attestation program mismatch");
   assert(attestation.verificationWallet === submission.verificationWallet, "runtime attestation verification wallet mismatch");
-  assert(attestation.diagnosticsPage === `${submission.frontend}?page=diagnostics`, "runtime attestation diagnostics URL mismatch");
+  assert(attestation.diagnosticsPage === `${submission.frontend}diagnostics/`, "runtime attestation diagnostics URL mismatch");
 
   for (const doc of [
     "docs/wallet-runtime.md",

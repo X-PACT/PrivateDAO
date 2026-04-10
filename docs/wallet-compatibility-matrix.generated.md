@@ -1,6 +1,6 @@
 # Wallet Compatibility Matrix
 
-- diagnostics page: `https://x-pact.github.io/PrivateDAO/?page=diagnostics`
+- diagnostics page: `https://x-pact.github.io/PrivateDAO/diagnostics/`
 - program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 
 ## Matrix

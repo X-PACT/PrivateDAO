@@ -7,7 +7,7 @@ PrivateDAO now includes a lightweight browser-smoke gate for the live static fro
 
 The automated browser audit covers:
 
-- loading `docs/index.html` through a local static HTTP server
+- loading the published root Next.js surface through a local static HTTP server
 - rendering through a Chrome-compatible headless browser
 - confirming the Confidential Treasury Command Center is present in the DOM
 - confirming the guided flow actions and evidence-copy surface exist

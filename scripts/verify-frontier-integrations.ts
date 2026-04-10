@@ -64,7 +64,7 @@ function main() {
   assert(evidence.network === "devnet", "Frontier integration evidence network mismatch");
   assert(evidence.programId === "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx", "Frontier integration evidence program mismatch");
   assert(evidence.verificationWallet === "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD", "Frontier integration evidence verification wallet mismatch");
-  assert(evidence.reviewerEntry.includes("?page=proof&judge=1"), "Frontier integration evidence reviewer entry mismatch");
+  assert(evidence.reviewerEntry.includes("/proof/?judge=1"), "Frontier integration evidence reviewer entry mismatch");
 
   assert(evidence.readNode.readPath === "backend-indexer", "Frontier integration evidence read path mismatch");
   assert(Boolean(evidence.readNode.rpcEndpoint), "Frontier integration evidence missing rpc endpoint");

@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-09T19:10:37.157Z",
+  "generatedAt": "2026-04-10T01:23:28.015Z",
   "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
   "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
-  "diagnosticsPage": "https://x-pact.github.io/PrivateDAO/?page=diagnostics",
+  "diagnosticsPage": "https://x-pact.github.io/PrivateDAO/diagnostics/",
   "walletCount": 5,
   "walletLabels": [
     "Auto Detect",

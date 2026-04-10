@@ -2,10 +2,10 @@
 
 ## Overview
 
-- Generated at: `2026-04-09T19:10:37.157Z`
+- Generated at: `2026-04-10T01:23:28.015Z`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
-- Diagnostics page: `https://x-pact.github.io/PrivateDAO/?page=diagnostics`
+- Diagnostics page: `https://x-pact.github.io/PrivateDAO/diagnostics/`
 - Supported wallet classes: `5`
 
 ## Wallet Matrix

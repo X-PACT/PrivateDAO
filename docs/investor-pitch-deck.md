@@ -207,7 +207,7 @@ Core links:
 
 - README: `README.md`
 - Submission dossier: `docs/submission-dossier.md`
-- Live product: `docs/index.html`
+- Live product: `https://x-pact.github.io/PrivateDAO/`
 - Security hardening: `docs/security-hardening-v2.md`
 - Mainnet blockers: `docs/mainnet-blockers.md`
 - Multisig intake: `docs/multisig-setup-intake.md`
@@ -216,4 +216,3 @@ Core links:
 - Economic model: `docs/economic-model.md`
 - Competition readiness: `docs/competition-readiness.md`
 - Investor video package: `docs/investor-video.md`
-

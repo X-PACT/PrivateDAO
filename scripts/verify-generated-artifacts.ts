@@ -632,7 +632,7 @@ function main() {
     throw new Error("load test report is missing the expected overview");
   }
 
-  if (walletMatrix.programId !== attestation.programId || !walletMatrix.diagnosticsPage.endsWith("?page=diagnostics")) {
+  if (walletMatrix.programId !== attestation.programId || !walletMatrix.diagnosticsPage.endsWith("/diagnostics/")) {
     throw new Error("wallet compatibility matrix does not match canonical runtime state");
   }
 
@@ -1156,7 +1156,7 @@ function main() {
     throw new Error("generated runtime attestation verification wallet mismatch");
   }
 
-  if (!runtimeAttestation.diagnosticsPage.endsWith("?page=diagnostics")) {
+  if (!runtimeAttestation.diagnosticsPage.endsWith("/diagnostics/")) {
     throw new Error("generated runtime attestation diagnostics page mismatch");
   }
 

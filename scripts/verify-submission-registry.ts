@@ -29,7 +29,7 @@ function main() {
     throw new Error("submission registry frontend URL is unexpected");
   }
 
-  if (!registry.judgeMode.includes("?page=proof&judge=1")) {
+  if (!registry.judgeMode.includes("/proof/?judge=1")) {
     throw new Error("submission registry judge mode URL is unexpected");
   }
 

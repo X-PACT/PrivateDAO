@@ -10,9 +10,9 @@
 ## Reviewer Entry Points
 
 - Live frontend: https://x-pact.github.io/PrivateDAO/
-- Proof Center: https://x-pact.github.io/PrivateDAO/?page=proof
-- Judge Mode: https://x-pact.github.io/PrivateDAO/?page=proof&judge=1
-- Security page: https://x-pact.github.io/PrivateDAO/?page=security
+- Proof Center: https://x-pact.github.io/PrivateDAO/proof/
+- Judge Mode: https://x-pact.github.io/PrivateDAO/proof/?judge=1
+- Security page: https://x-pact.github.io/PrivateDAO/security/
 - YouTube pitch: https://youtu.be/cwsPpNLiwbo
 
 ## Live Devnet Anchors

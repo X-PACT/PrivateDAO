@@ -42,7 +42,7 @@ The video must communicate:
 - Program logic: `programs/private-dao/src/lib.rs`
 - SDK commitment helpers: `sdk/src/index.ts`
 - Lifecycle coverage: `tests/full-flow-test.ts`
-- Live frontend: `docs/index.html`
+- Live frontend: `repo root Next.js export`
 - Awards note: `docs/awards.md`
 
 ## Current Explainer Status

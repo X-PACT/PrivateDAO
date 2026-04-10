@@ -29,7 +29,7 @@ If a reviewer has only a few minutes, the strongest order is:
 
 - Live app: `https://x-pact.github.io/PrivateDAO/`
 - Proof Center: `https://x-pact.github.io/PrivateDAO/?page=proof`
-- Judge Mode: `https://x-pact.github.io/PrivateDAO/?page=proof&judge=1`
+- Judge Mode: `https://x-pact.github.io/PrivateDAO/proof/?judge=1`
 - Security page: `https://x-pact.github.io/PrivateDAO/?page=security`
 
 ## Canonical Documents Behind Those Surfaces
