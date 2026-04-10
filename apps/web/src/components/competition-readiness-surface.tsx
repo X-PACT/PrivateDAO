@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight, Award, CircleCheckBig, CircleDashed, TriangleAlert } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { competitionTracks } from "@/lib/site-data";
+import { getRankedCompetitionTracks } from "@/lib/track-ranking";
 
 function fitTone(fit: string) {
   if (fit.toLowerCase().includes("very")) return "border-emerald-300/20 bg-emerald-300/10 text-emerald-100";
@@ -19,9 +19,11 @@ function statusIcon(status: string) {
 }
 
 export function CompetitionReadinessSurface() {
+  const rankedTracks = getRankedCompetitionTracks();
+
   return (
     <div className="grid gap-6 xl:grid-cols-2">
-      {competitionTracks.map((track) => {
+      {rankedTracks.map((track) => {
         const StatusIcon = statusIcon(track.status);
 
         return (
@@ -71,6 +73,21 @@ export function CompetitionReadinessSurface() {
                 <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-4">
                   <div className="text-[11px] uppercase tracking-[0.24em] text-white/60">Best demo route</div>
                   <div className="mt-2 text-sm leading-7 text-white/68">{track.demoRoute}</div>
+                </div>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-3">
+                <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-4">
+                  <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/76">Win probability</div>
+                  <div className="mt-2 text-sm leading-7 text-white/76">{track.winProbability}/10</div>
+                </div>
+                <div className="rounded-3xl border border-emerald-300/16 bg-emerald-300/8 p-4">
+                  <div className="text-[11px] uppercase tracking-[0.24em] text-emerald-100/76">Commercial upside</div>
+                  <div className="mt-2 text-sm leading-7 text-white/76">{track.commercialUpside}/10</div>
+                </div>
+                <div className="rounded-3xl border border-amber-300/16 bg-amber-300/8 p-4">
+                  <div className="text-[11px] uppercase tracking-[0.24em] text-amber-100/76">Mainnet distance</div>
+                  <div className="mt-2 text-sm leading-7 text-white/76">{track.mainnetDistance}/10</div>
                 </div>
               </div>
 

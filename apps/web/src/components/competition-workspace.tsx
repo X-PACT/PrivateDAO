@@ -8,6 +8,7 @@ import { SubmissionCoachPanel } from "@/components/submission-coach-panel";
 import { TrackAlignmentPanel } from "@/components/track-alignment-panel";
 import { TrackCommercializationPanel } from "@/components/track-commercialization-panel";
 import { TrackMainnetGatesPanel } from "@/components/track-mainnet-gates-panel";
+import { TrackNarrativePanel } from "@/components/track-narrative-panel";
 import { TrackTechnicalFitPanel } from "@/components/track-technical-fit-panel";
 import { cn } from "@/lib/utils";
 
@@ -116,6 +117,8 @@ export function CompetitionWorkspace({ workspace }: CompetitionWorkspaceProps) {
         <SubmissionCoachPanel workspace={workspace} />
 
         <TrackAlignmentPanel workspace={workspace} />
+
+        <TrackNarrativePanel workspace={workspace} />
 
         <TrackTechnicalFitPanel slug={workspace.slug} />
 

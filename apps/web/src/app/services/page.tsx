@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { CommercialCompareSurface } from "@/components/commercial-compare-surface";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperationsShell } from "@/components/operations-shell";
+import { ServiceReadinessLadder } from "@/components/service-readiness-ladder";
 import { ServicesSurface } from "@/components/services-surface";
 import { SolutionCorridors } from "@/components/solution-corridors";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -32,6 +33,9 @@ export default function ServicesPage() {
       </div>
       <div>
         <SolutionCorridors />
+      </div>
+      <div>
+        <ServiceReadinessLadder />
       </div>
       <div>
         <CommercialCompareSurface />
