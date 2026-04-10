@@ -1,4 +1,5 @@
 import { DiagnosticsCenter } from "@/components/diagnostics-center";
+import { FrontierSignalBoard } from "@/components/frontier-signal-board";
 import { ProofCenter } from "@/components/proof-center";
 import { SecurityCenter } from "@/components/security-center";
 import { OperationsShell } from "@/components/operations-shell";
@@ -12,8 +13,10 @@ export default function NetworkPage() {
       badges={[
         { label: "Proof and runtime", variant: "cyan" },
         { label: "ZK + REFHE + MagicBlock + Fast RPC", variant: "violet" },
+        { label: "Competition-sensitive", variant: "success" },
       ]}
     >
+      <FrontierSignalBoard />
       <ProofCenter />
       <SecurityCenter />
       <DiagnosticsCenter />

@@ -1,5 +1,7 @@
 import { CommunityHub } from "@/components/community-hub";
 import { OperationsShell } from "@/components/operations-shell";
+import { VideoCenter } from "@/components/video-center";
+import { TrustSurface } from "@/components/trust-surface";
 
 export default function CommunityPage() {
   return (
@@ -10,9 +12,12 @@ export default function CommunityPage() {
       badges={[
         { label: "YouTube live", variant: "success" },
         { label: "Discord-ready", variant: "violet" },
+        { label: "Awards and story", variant: "cyan" },
       ]}
     >
       <CommunityHub />
+      <VideoCenter compact />
+      <TrustSurface />
     </OperationsShell>
   );
 }

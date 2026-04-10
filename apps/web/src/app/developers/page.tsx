@@ -1,5 +1,7 @@
 import { OperationsShell } from "@/components/operations-shell";
+import { ProofCenter } from "@/components/proof-center";
 import { SiteSearchPanel } from "@/components/site-search-panel";
+import { TrustSurface } from "@/components/trust-surface";
 
 export default function DevelopersPage() {
   return (
@@ -10,9 +12,12 @@ export default function DevelopersPage() {
       badges={[
         { label: "Docs and viewers", variant: "cyan" },
         { label: "Reviewer-ready", variant: "violet" },
+        { label: "Track-aware", variant: "success" },
       ]}
     >
       <SiteSearchPanel />
+      <ProofCenter />
+      <TrustSurface />
     </OperationsShell>
   );
 }

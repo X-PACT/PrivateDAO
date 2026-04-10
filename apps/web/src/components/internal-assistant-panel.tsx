@@ -1,8 +1,12 @@
+"use client";
+
+import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Compass, FileText, ShieldCheck, Sparkles, Wallet } from "lucide-react";
+import { ArrowRight, Compass, FileText, Search, ShieldCheck, Sparkles, Wallet } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
+import { getAssistantSuggestion } from "@/lib/search-assistant";
 import { cn } from "@/lib/utils";
 
 const assistantPaths = [
@@ -39,6 +43,9 @@ const assistantPaths = [
 ];
 
 export function InternalAssistantPanel() {
+  const [query, setQuery] = useState("");
+  const suggestion = useMemo(() => getAssistantSuggestion(query), [query]);
+
   return (
     <div className="grid gap-6 xl:grid-cols-[1.02fr_0.98fr]">
       <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,16,32,0.94),rgba(7,11,23,0.98))]">
@@ -46,6 +53,15 @@ export function InternalAssistantPanel() {
           <CardTitle>PrivateDAO internal assistant</CardTitle>
         </CardHeader>
         <CardContent className="space-y-5 text-sm leading-7 text-white/62">
+          <div className="flex items-center gap-3 rounded-3xl border border-white/10 bg-white/4 px-4 py-3">
+            <Search className="h-4 w-4 text-cyan-200" />
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Ask AI where to go: wallet, privacy, judge path, docs, tracks, RPC..."
+              className="w-full bg-transparent text-sm text-white outline-none placeholder:text-white/34"
+            />
+          </div>
           <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
             This assistant is optimized for routing users, judges, operators, and competition reviewers to the shortest correct path in the product. It keeps the site usable without forcing anyone to understand the whole system first.
           </div>
@@ -78,7 +94,23 @@ export function InternalAssistantPanel() {
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Link href="/search" className={cn(buttonVariants({ size: "sm" }), "w-full")}>
+          <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-5">
+            <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/72">AI routing answer</div>
+            <div className="mt-3 text-lg font-medium text-white">{suggestion.title}</div>
+            <p className="mt-3 text-sm leading-7 text-white/68">{suggestion.summary}</p>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Link href={suggestion.primaryActionHref} className={cn(buttonVariants({ size: "sm" }))}>
+                {suggestion.primaryActionLabel}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              {suggestion.relatedRoutes.map((route) => (
+                <Link key={`${suggestion.title}-${route.href}`} href={route.href} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                  {route.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+          <Link href="/search" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "w-full")}>
             Open site search
           </Link>
           <Link href="/story" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "w-full")}>
