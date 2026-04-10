@@ -33,6 +33,11 @@ type FundingProfileOverride = {
   handoff?: Partial<IntakePreset["handoff"]>;
   routeSet?: Array<{ label: string; href: string }>;
   summary?: string;
+  commercialBundle?: {
+    title: string;
+    summary: string;
+    routes: Array<{ label: string; href: string }>;
+  };
 };
 
 const intakePresets: IntakePreset[] = [
@@ -160,6 +165,15 @@ const fundingProfileOverrides: Record<string, FundingProfileOverride> = {
       { label: "Command Center", href: "/command-center" },
       { label: "Diagnostics", href: "/diagnostics" },
     ],
+    commercialBundle: {
+      title: "Treasury capitalization bundle",
+      summary: "Position the request as treasury runway for live services, buyer onboarding, and trust visibility.",
+      routes: [
+        { label: "Services", href: "/services" },
+        { label: "Engage", href: "/engage?profile=treasury-top-up" },
+        { label: "Security", href: "/security" },
+      ],
+    },
   },
   "pilot-funding": {
     summary: "Pilot funding tied to a time-boxed buyer rollout, measurable Devnet validation, and mainnet-aware next steps.",
@@ -177,6 +191,15 @@ const fundingProfileOverrides: Record<string, FundingProfileOverride> = {
       { label: "Services", href: "/services" },
       { label: "Proof", href: "/proof" },
     ],
+    commercialBundle: {
+      title: "Pilot and demo bundle",
+      summary: "Move from commercial qualification into the strongest live demo corridor and the startup-grade track narrative.",
+      routes: [
+        { label: "Engage", href: "/engage?profile=pilot-funding" },
+        { label: "Command Center", href: "/command-center" },
+        { label: "Colosseum Frontier", href: "/tracks/colosseum-frontier" },
+      ],
+    },
   },
   "vendor-payout": {
     summary: "Vendor payout routed as a governed operational disbursement with validation, diagnostics, and treasury discipline.",
@@ -195,6 +218,15 @@ const fundingProfileOverrides: Record<string, FundingProfileOverride> = {
       { label: "Diagnostics", href: "/diagnostics" },
       { label: "Security", href: "/security" },
     ],
+    commercialBundle: {
+      title: "Vendor execution bundle",
+      summary: "Keep the sender on the execution rail with operations, diagnostics, and payout review visible in one place.",
+      routes: [
+        { label: "Command Center", href: "/command-center" },
+        { label: "Diagnostics", href: "/diagnostics" },
+        { label: "Services", href: "/services" },
+      ],
+    },
   },
   "contributor-payout": {
     summary: "Contributor payout as a governed treasury flow for builders, operators, and retained contributors.",
@@ -213,6 +245,15 @@ const fundingProfileOverrides: Record<string, FundingProfileOverride> = {
       { label: "Security", href: "/security" },
       { label: "Services", href: "/services" },
     ],
+    commercialBundle: {
+      title: "Contributor operations bundle",
+      summary: "Keep contributor funding attached to governed execution, diagnostics, and security review rather than ad-hoc transfers.",
+      routes: [
+        { label: "Command Center", href: "/command-center" },
+        { label: "Diagnostics", href: "/diagnostics" },
+        { label: "Security", href: "/security" },
+      ],
+    },
   },
 };
 
@@ -293,6 +334,10 @@ function getResolvedPreset(preset: IntakePreset, fundingContext?: ProductIntakeF
   } satisfies IntakePreset;
 }
 
+function getCommercialBundle(fundingContext?: ProductIntakeFormsProps["initialFundingContext"]) {
+  return fundingContext?.profile ? fundingProfileOverrides[fundingContext.profile]?.commercialBundle : undefined;
+}
+
 export function ProductIntakeForms({ mode, initialKind, initialFundingContext }: ProductIntakeFormsProps) {
   const [kind, setKind] = useState<IntakeKind>(initialKind ?? (mode === "engage" ? "pilot" : "support"));
   const [name, setName] = useState("");
@@ -304,6 +349,7 @@ export function ProductIntakeForms({ mode, initialKind, initialFundingContext }:
 
   const basePreset = intakePresets.find((item) => item.kind === kind) ?? intakePresets[0];
   const preset = getResolvedPreset(basePreset, initialFundingContext);
+  const commercialBundle = getCommercialBundle(initialFundingContext);
   const Icon = preset.icon;
   const LaneIcon =
     preset.handoff.lane === "buyer"
@@ -533,6 +579,22 @@ export function ProductIntakeForms({ mode, initialKind, initialFundingContext }:
               )}
             </div>
           </div>
+
+          {commercialBundle ? (
+            <div className="rounded-3xl border border-violet-300/16 bg-violet-300/[0.08] p-5">
+              <div className="text-[11px] uppercase tracking-[0.24em] text-violet-100/76">Commercial route bundle</div>
+              <div className="mt-3 text-base font-medium text-white">{commercialBundle.title}</div>
+              <p className="mt-3 text-sm leading-7 text-white/64">{commercialBundle.summary}</p>
+              <div className="mt-4 flex flex-wrap gap-3">
+                {commercialBundle.routes.map((route) => (
+                  <Link key={`${commercialBundle.title}-${route.href}`} href={route.href} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                    {route.label}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ) : null}
 
           <div className="flex flex-wrap gap-3">
             <button
