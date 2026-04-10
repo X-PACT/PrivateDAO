@@ -145,6 +145,7 @@ type ProductIntakeFormsProps = {
     amount?: string;
     purpose?: string;
     lane?: string;
+    profile?: string;
   };
 };
 
@@ -156,8 +157,9 @@ function buildPacket(params: {
   contact: string;
   timeline: string;
   useCase: string;
+  fundingContext?: ProductIntakeFormsProps["initialFundingContext"];
 }) {
-  const { preset, mode, name, org, contact, timeline, useCase } = params;
+  const { preset, mode, name, org, contact, timeline, useCase, fundingContext } = params;
   return [
     `PrivateDAO Intake`,
     `Type: ${preset.title}`,
@@ -170,6 +172,9 @@ function buildPacket(params: {
     `Organization: ${org || "Not provided"}`,
     `Contact: ${contact || "Not provided"}`,
     `Timeline: ${timeline || "Not provided"}`,
+    `Treasury Profile: ${fundingContext?.profile || "Not provided"}`,
+    `Treasury Asset: ${fundingContext?.asset || "Not provided"}`,
+    `Treasury Amount: ${fundingContext?.amount || "Not provided"}`,
     `Use Case: ${useCase || "Not provided"}`,
     `Recommended Next Routes:`,
     ...preset.routeSet.map((route) => `- ${route.label}: ${route.href}`),
@@ -182,6 +187,7 @@ function buildInitialUseCase(initialFundingContext?: ProductIntakeFormsProps["in
   }
 
   const parts = [
+    initialFundingContext.profile ? `Profile: ${initialFundingContext.profile}` : null,
     initialFundingContext.amount ? `Amount: ${initialFundingContext.amount}` : null,
     initialFundingContext.asset ? `Asset: ${initialFundingContext.asset}` : null,
     initialFundingContext.purpose ? `Purpose: ${initialFundingContext.purpose}` : null,
@@ -221,8 +227,9 @@ export function ProductIntakeForms({ mode, initialKind, initialFundingContext }:
         contact,
         timeline,
         useCase,
+        fundingContext: initialFundingContext,
       }),
-    [preset, mode, name, org, contact, timeline, useCase],
+    [preset, mode, name, org, contact, timeline, useCase, initialFundingContext],
   );
 
   const isReady = Boolean(name.trim() && contact.trim() && useCase.trim());
@@ -286,10 +293,14 @@ export function ProductIntakeForms({ mode, initialKind, initialFundingContext }:
             <p className="mt-3 text-sm leading-7 text-white/60">{preset.summary}</p>
           </div>
 
-          {initialFundingContext?.asset || initialFundingContext?.amount || initialFundingContext?.purpose ? (
+          {initialFundingContext?.profile || initialFundingContext?.asset || initialFundingContext?.amount || initialFundingContext?.purpose ? (
             <div className="rounded-3xl border border-amber-300/16 bg-amber-300/[0.08] p-5">
               <div className="text-[11px] uppercase tracking-[0.24em] text-amber-100/76">Treasury context received</div>
               <div className="mt-4 grid gap-3 md:grid-cols-2">
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Profile</div>
+                  <div className="mt-2 text-sm font-medium text-white">{initialFundingContext.profile ?? "Not provided"}</div>
+                </div>
                 <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
                   <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Asset</div>
                   <div className="mt-2 text-sm font-medium text-white">{initialFundingContext.asset ?? "Not provided"}</div>

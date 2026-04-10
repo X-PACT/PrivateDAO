@@ -17,7 +17,7 @@ export const metadata: Metadata = buildRouteMetadata({
 });
 
 type EngagePageProps = {
-  searchParams?: { intake?: string; asset?: string; amount?: string; purpose?: string; lane?: string };
+  searchParams?: { intake?: string; asset?: string; amount?: string; purpose?: string; lane?: string; profile?: string };
 };
 
 function normalizeIntake(value?: string) {
@@ -31,6 +31,7 @@ export default function EngagePage({ searchParams }: EngagePageProps) {
     amount: searchParams?.amount,
     purpose: searchParams?.purpose,
     lane: searchParams?.lane,
+    profile: searchParams?.profile,
   };
 
   return (
