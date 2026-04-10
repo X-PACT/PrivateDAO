@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { BuyerJourneyRail } from "@/components/buyer-journey-rail";
 import { CommandCenter } from "@/components/command-center";
+import { GovernanceActionWorkbench } from "@/components/governance-action-workbench";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperatingBoundaryPanel } from "@/components/operating-boundary-panel";
 import { OperationsShell } from "@/components/operations-shell";
@@ -45,6 +46,9 @@ export default function CommandCenterPage() {
           title="Exact product operations"
           description="This route family keeps the full normal-user governance flow inside the UI: connect, create, vote, reveal, execute, log review, and diagnostics. Everything deeper stays in the repo."
         />
+      </div>
+      <div>
+        <GovernanceActionWorkbench />
       </div>
       <div>
         <BuyerJourneyRail />
