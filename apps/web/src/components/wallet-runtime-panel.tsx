@@ -3,6 +3,7 @@
 import { useWallet } from "@solana/wallet-adapter-react";
 import { CheckCircle2, ShieldAlert, WalletCards } from "lucide-react";
 
+import { ExecutionSurfaceInline } from "@/components/execution-surface-inline";
 import { WalletConnectButton } from "@/components/wallet-connect-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,12 +13,17 @@ import {
   PRIVATE_DAO_PROGRAM_ID,
 } from "@/lib/onchain-parity.generated";
 import { PRIVATE_DAO_NETWORK } from "@/lib/onchain-parity";
+import type { ExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 
 function shortenAddress(address: string) {
   return `${address.slice(0, 4)}…${address.slice(-4)}`;
 }
 
-export function WalletRuntimePanel() {
+type WalletRuntimePanelProps = {
+  executionSnapshot: ExecutionSurfaceSnapshot;
+};
+
+export function WalletRuntimePanel({ executionSnapshot }: WalletRuntimePanelProps) {
   const { connected, publicKey, wallet } = useWallet();
 
   return (
@@ -81,6 +87,8 @@ export function WalletRuntimePanel() {
             <div className="mt-3 text-sm leading-7 text-white/58">Mainnet custody, multisig, audit closure, and real-device runtime remain outside this claim boundary until evidence is recorded in the repo.</div>
           </div>
         </div>
+
+        <ExecutionSurfaceInline mode="wallet" snapshot={executionSnapshot} />
       </CardContent>
     </Card>
   );

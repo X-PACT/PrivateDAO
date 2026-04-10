@@ -6,11 +6,13 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { ArrowUpRight, CheckCircle2, Clock3, LockKeyhole, WalletMinimal } from "lucide-react";
 
 import { ProposalConfidencePanel } from "@/components/proposal-confidence-panel";
+import { ExecutionSurfaceInline } from "@/components/execution-surface-inline";
 import { VoteModal } from "@/components/vote-modal";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buildProposalConfidenceScorecard } from "@/lib/confidence-engine";
+import type { ExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { commandCenterReferences, proposalCards, type ProposalCardModel } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
@@ -42,7 +44,11 @@ const actionMap: Record<ProposalCardModel["status"], { commit: string; reveal: s
   },
 };
 
-export function ProposalWorkspace() {
+type ProposalWorkspaceProps = {
+  executionSnapshot: ExecutionSurfaceSnapshot;
+};
+
+export function ProposalWorkspace({ executionSnapshot }: ProposalWorkspaceProps) {
   const [selectedId, setSelectedId] = useState(proposalCards[0]?.id ?? "");
   const [voteModalOpen, setVoteModalOpen] = useState(false);
   const { connected } = useWallet();
@@ -139,6 +145,8 @@ export function ProposalWorkspace() {
               {proposal.status === "Execution ready" ? "Open curated execution packet" : "Open curated reviewer packet"}
             </Link>
           </div>
+
+          <ExecutionSurfaceInline mode="proposal" snapshot={executionSnapshot} />
 
           <div className="grid gap-4 lg:grid-cols-2">
             {commandCenterReferences.map((reference) => {

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Radar, ShieldCheck, WalletCards } from "lucide-react";
 
+import { ExecutionSurfaceInline } from "@/components/execution-surface-inline";
 import { GovernanceDashboard } from "@/components/governance-dashboard";
 import { OnchainParityPanel } from "@/components/onchain-parity-panel";
 import { GovernanceSessionPanel } from "@/components/governance-session-panel";
@@ -10,6 +11,7 @@ import { ProductActionMap } from "@/components/product-action-map";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { cn } from "@/lib/utils";
 
@@ -40,6 +42,8 @@ const dashboardHighlights = [
 ];
 
 export default function DashboardPage() {
+  const executionSnapshot = getExecutionSurfaceSnapshot();
+
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <section className="space-y-8">
@@ -98,6 +102,10 @@ export default function DashboardPage() {
 
       <section className="mt-12">
         <OperationalValidationPanels title="Dashboard operating health" />
+      </section>
+
+      <section className="mt-12">
+        <ExecutionSurfaceInline mode="proposal" snapshot={executionSnapshot} />
       </section>
 
       <section className="mt-12">

@@ -1,13 +1,19 @@
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, Wallet } from "lucide-react";
 
+import { ExecutionSurfaceInline } from "@/components/execution-surface-inline";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { ExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { buyerJourneySteps, gettingStartedActions, servicePacks, walletChoices } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
-export function GettingStartedWorkspace() {
+type GettingStartedWorkspaceProps = {
+  executionSnapshot: ExecutionSurfaceSnapshot;
+};
+
+export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWorkspaceProps) {
   return (
     <div className="space-y-8">
       <Card className="border-white/10 bg-[linear-gradient(135deg,rgba(20,241,149,0.09),rgba(153,69,255,0.11),rgba(0,194,255,0.08))]">
@@ -120,6 +126,8 @@ export function GettingStartedWorkspace() {
           ))}
         </CardContent>
       </Card>
+
+      <ExecutionSurfaceInline mode="start" snapshot={executionSnapshot} />
 
       <div className="flex flex-wrap gap-3">
         <Link className={cn(buttonVariants({ size: "lg" }))} href="/command-center">

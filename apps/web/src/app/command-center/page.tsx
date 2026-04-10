@@ -10,6 +10,7 @@ import { OperationalValidationPanels } from "@/components/operational-validation
 import { ProductActionMap } from "@/components/product-action-map";
 import { ProposalWorkspace } from "@/components/proposal-workspace";
 import { WalletRuntimePanel } from "@/components/wallet-runtime-panel";
+import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
@@ -21,6 +22,8 @@ export const metadata: Metadata = buildRouteMetadata({
 });
 
 export default function CommandCenterPage() {
+  const executionSnapshot = getExecutionSurfaceSnapshot();
+
   return (
     <OperationsShell
       eyebrow="Command Center"
@@ -60,8 +63,8 @@ export default function CommandCenterPage() {
         <OperationalValidationPanels title="Command-center operating health" />
       </div>
       <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-        <ProposalWorkspace />
-        <WalletRuntimePanel />
+        <ProposalWorkspace executionSnapshot={executionSnapshot} />
+        <WalletRuntimePanel executionSnapshot={executionSnapshot} />
       </div>
     </OperationsShell>
   );

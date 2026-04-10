@@ -6,6 +6,7 @@ import { OperatingBoundaryPanel } from "@/components/operating-boundary-panel";
 import { OperationsShell } from "@/components/operations-shell";
 import { ProductActionMap } from "@/components/product-action-map";
 import { SponsorSignalBar } from "@/components/sponsor-signal-bar";
+import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
@@ -17,6 +18,8 @@ export const metadata: Metadata = buildRouteMetadata({
 });
 
 export default function StartPage() {
+  const executionSnapshot = getExecutionSurfaceSnapshot();
+
   return (
     <OperationsShell
       eyebrow="Quick start"
@@ -38,7 +41,7 @@ export default function StartPage() {
         title="Start with the exact user journey"
         description="The first-run product path should make the eight real operations obvious and keep everything else out of sight until engineering truly needs it."
       />
-      <GettingStartedWorkspace />
+      <GettingStartedWorkspace executionSnapshot={executionSnapshot} />
     </OperationsShell>
   );
 }

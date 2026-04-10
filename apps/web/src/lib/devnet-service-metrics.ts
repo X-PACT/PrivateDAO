@@ -37,6 +37,31 @@ export type OperationalValidationSnapshot = {
   commercialReadiness: OperationalValidationCard;
 };
 
+export type ExecutionSurfaceSignal = {
+  label: string;
+  value: string;
+  detail: string;
+  tone: MetricTone;
+  routeHref: string;
+  routeLabel: string;
+};
+
+export type IncidentAlertSignal = {
+  title: string;
+  status: "Healthy" | "Watch" | "Action";
+  summary: string;
+  routeHref: string;
+  routeLabel: string;
+};
+
+export type ExecutionSurfaceSnapshot = {
+  proposalFlow: ExecutionSurfaceSignal;
+  walletReadiness: ExecutionSurfaceSignal;
+  proofFreshness: ExecutionSurfaceSignal;
+  commercialReadiness: ExecutionSurfaceSignal;
+  incidentAlerts: IncidentAlertSignal[];
+};
+
 function percent(numerator: number, denominator: number) {
   if (!denominator) return "0%";
   return `${Math.round((numerator / denominator) * 1000) / 10}%`;
@@ -475,5 +500,89 @@ export function getOperationalValidationSnapshot(): OperationalValidationSnapsho
       routeHref: "/tracks",
       tone: "fuchsia",
     },
+  };
+}
+
+export function getExecutionSurfaceSnapshot(): ExecutionSurfaceSnapshot {
+  const runtimeEvidence = readJson<RuntimeEvidenceJson>("docs/runtime-evidence.generated.json");
+  const devnetCanary = readJson<DevnetCanaryJson>("docs/devnet-canary.generated.json");
+  const validation = getOperationalValidationSnapshot();
+
+  const rpcLatency = devnetCanary.primaryRpc.blockhashLatencyMs;
+  const pendingRealDeviceTargets = runtimeEvidence.realDevice.pendingTargets.length;
+  const repeatedAttemptDelta =
+    runtimeEvidence.operational.totalAttemptCount - runtimeEvidence.operational.totalTxCount;
+  const unexpectedFailures = runtimeEvidence.devnetCanary.unexpectedFailures;
+  const unexpectedAdversarialSuccesses = runtimeEvidence.operational.unexpectedAdversarialSuccesses;
+  const proofAge = formatAgeLabel(validation.generatedAt);
+  const commercialTopline = validation.commercialReadiness.value.split(" · ").slice(0, 2).join(" · ");
+
+  const incidentAlerts: IncidentAlertSignal[] = [
+    {
+      title: "RPC delivery",
+      status: rpcLatency <= 1500 && unexpectedFailures === 0 ? "Healthy" : rpcLatency <= 3500 ? "Watch" : "Action",
+      summary:
+        unexpectedFailures === 0
+          ? `Primary Devnet blockhash latency is ${rpcLatency} ms with no unexpected canary failures.`
+          : `${unexpectedFailures} unexpected canary failure is recorded alongside ${rpcLatency} ms primary latency.`,
+      routeHref: "/diagnostics",
+      routeLabel: "Open diagnostics",
+    },
+    {
+      title: "Wallet runtime",
+      status: pendingRealDeviceTargets === 0 ? "Healthy" : pendingRealDeviceTargets <= 2 ? "Watch" : "Action",
+      summary:
+        pendingRealDeviceTargets === 0
+          ? "All tracked wallet targets are currently covered in runtime evidence."
+          : `${pendingRealDeviceTargets} real-device wallet target${pendingRealDeviceTargets === 1 ? "" : "s"} remain pending in the runtime capture set.`,
+      routeHref: "/diagnostics",
+      routeLabel: "Review wallet evidence",
+    },
+    {
+      title: "Replay and retry pressure",
+      status: repeatedAttemptDelta === 0 && unexpectedAdversarialSuccesses === 0 ? "Healthy" : repeatedAttemptDelta <= 2 ? "Watch" : "Action",
+      summary:
+        repeatedAttemptDelta === 0
+          ? "No abnormal retry delta is visible between attempted and successful tracked transactions."
+          : `${repeatedAttemptDelta} more attempts than successful tracked transactions are currently recorded; adversarial unexpected success count is ${unexpectedAdversarialSuccesses}.`,
+      routeHref: "/documents/incident-readiness-runbook",
+      routeLabel: "Open incident runbook",
+    },
+  ];
+
+  return {
+    proposalFlow: {
+      label: "Proposal flow health",
+      value: validation.proposalFlowHealth.value,
+      detail: validation.proposalFlowHealth.detail,
+      tone: validation.proposalFlowHealth.tone,
+      routeHref: "/command-center",
+      routeLabel: "Open command center",
+    },
+    walletReadiness: {
+      label: "Wallet readiness",
+      value: validation.walletReadiness.value,
+      detail: `${validation.walletReadiness.detail} Primary wallet runtime should stay visible before every sign request.`,
+      tone: validation.walletReadiness.tone,
+      routeHref: "/diagnostics",
+      routeLabel: "Open wallet diagnostics",
+    },
+    proofFreshness: {
+      label: "Proof freshness",
+      value: proofAge,
+      detail: `${validation.proofFreshness.detail} This is the freshness boundary the user and reviewer see before commit, reveal, finalize, and execute.`,
+      tone: validation.proofFreshness.tone,
+      routeHref: "/proof/?judge=1",
+      routeLabel: "Open proof path",
+    },
+    commercialReadiness: {
+      label: "Commercial readiness",
+      value: commercialTopline,
+      detail: `${validation.commercialReadiness.detail} These are the closest routes from Devnet operation to buyer-facing motion.`,
+      tone: validation.commercialReadiness.tone,
+      routeHref: "/engage",
+      routeLabel: "Open buyer path",
+    },
+    incidentAlerts,
   };
 }

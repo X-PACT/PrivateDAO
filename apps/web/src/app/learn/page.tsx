@@ -1,8 +1,11 @@
 import { GettingStartedWorkspace } from "@/components/getting-started-workspace";
 import { OperationsShell } from "@/components/operations-shell";
 import { VideoCenter } from "@/components/video-center";
+import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 
 export default function LearnPage() {
+  const executionSnapshot = getExecutionSurfaceSnapshot();
+
   return (
     <OperationsShell
       eyebrow="Learn"
@@ -14,7 +17,7 @@ export default function LearnPage() {
         { label: "Search or ask AI", variant: "violet" },
       ]}
     >
-      <GettingStartedWorkspace />
+      <GettingStartedWorkspace executionSnapshot={executionSnapshot} />
       <VideoCenter compact />
     </OperationsShell>
   );
