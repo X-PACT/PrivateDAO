@@ -369,6 +369,153 @@ export const commercialServices = [
   },
 ];
 
+export const platformServiceLayers = [
+  {
+    layer: "Layer 1",
+    title: "Governance Core",
+    summary:
+      "The live governance engine already runs the end-to-end DAO lifecycle with treasury execution inside the product shell.",
+    services: [
+      "Create DAO",
+      "Create Proposal",
+      "Commit Vote",
+      "Reveal Vote",
+      "Finalize Proposal",
+      "Execute Proposal",
+      "Treasury Execution",
+    ],
+    href: "/command-center",
+    cta: "Open governance core",
+  },
+  {
+    layer: "Layer 2",
+    title: "RPC Infrastructure",
+    summary:
+      "PrivateDAO is also an infrastructure surface: hosted reads, diagnostics, metered RPC posture, and DAO-specific runtime visibility.",
+    services: [
+      "Dedicated Solana RPC",
+      "Shared RPC",
+      "DAO-specific RPC",
+      "Read API",
+      "Usage diagnostics",
+      "Runtime evidence",
+    ],
+    href: "/services",
+    cta: "Open RPC surface",
+  },
+  {
+    layer: "Layer 3",
+    title: "Gaming DAO Toolkit",
+    summary:
+      "Gaming DAO turns reward, guild, clan, and tournament decisions into governance flows with proposal templates and treasury rails.",
+    services: [
+      "Game governance",
+      "Reward treasury",
+      "NFT voting",
+      "Clan DAO",
+      "Tournament payouts",
+      "Game proposal templates",
+    ],
+    href: "/products",
+    cta: "Open gaming corridor",
+  },
+  {
+    layer: "Layer 4",
+    title: "Payments DAO Engine",
+    summary:
+      "Payments extends the treasury model into contributors, vendors, subscriptions, and governed payout approvals.",
+    services: [
+      "Wallet payments",
+      "Contributor payouts",
+      "Vendor payments",
+      "Subscription billing",
+      "Treasury payouts",
+      "Payment approvals",
+    ],
+    href: "/services",
+    cta: "Open payments corridor",
+  },
+  {
+    layer: "Layer 5",
+    title: "Security and Proof Layer",
+    summary:
+      "ZK, REFHE, MagicBlock, Fast RPC, diagnostics, and trust packets are exposed as product rails rather than hidden implementation detail.",
+    services: [
+      "ZK capability matrix",
+      "Proof center",
+      "Confidence engine",
+      "Incident readiness",
+      "Authority hardening",
+      "Runtime diagnostics",
+    ],
+    href: "/security",
+    cta: "Open trust layer",
+  },
+  {
+    layer: "Layer 6",
+    title: "Developer Platform",
+    summary:
+      "The platform also needs a developer-facing surface for SDK, API, templates, billing posture, quotas, and RPC access.",
+    services: [
+      "SDK",
+      "API",
+      "CLI",
+      "Templates",
+      "API key issuance posture",
+      "Quota and billing framing",
+    ],
+    href: "/developers",
+    cta: "Open developer portal",
+  },
+];
+
+export const rpcPlans = [
+  {
+    name: "Free",
+    requests: "100K requests",
+    network: "Devnet",
+    price: "Free",
+    fit: "Builders evaluating PrivateDAO RPC and diagnostics on Devnet.",
+  },
+  {
+    name: "Pro",
+    requests: "5M requests",
+    network: "Devnet + hosted reads",
+    price: "Subscription",
+    fit: "Teams running governance, payouts, and app reads on a shared product rail.",
+  },
+  {
+    name: "Enterprise",
+    requests: "Unlimited / negotiated",
+    network: "Dedicated endpoint",
+    price: "Custom",
+    fit: "Organizations that need DAO-specific RPC, higher trust boundaries, and operator support.",
+  },
+];
+
+export const developerPlatformFeatures = [
+  {
+    title: "RPC access",
+    summary: "Dedicated RPC, shared RPC, DAO-specific RPC, and hosted read surfaces tied to diagnostics and runtime evidence.",
+    href: "/services",
+  },
+  {
+    title: "API and SDK",
+    summary: "Developer-facing API, SDK, CLI, and templates for integrating governance, payouts, and proof-aware reads.",
+    href: "/developers",
+  },
+  {
+    title: "Gaming DAO templates",
+    summary: "Proposal templates for events, rewards, guild voting, and game economy changes.",
+    href: "/products",
+  },
+  {
+    title: "Payments and governed payouts",
+    summary: "Contributor, vendor, and subscription approvals routed through the same treasury and proof rails.",
+    href: "/services",
+  },
+];
+
 export const productCorridors = [
   {
     name: "PrivateDAO Core",

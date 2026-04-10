@@ -1,6 +1,8 @@
+import { DeveloperPlatformSurface } from "@/components/developer-platform-surface";
 import { OperationsShell } from "@/components/operations-shell";
 import { ProofCenter } from "@/components/proof-center";
 import { SiteSearchPanel } from "@/components/site-search-panel";
+import { PlatformServiceArchitecture } from "@/components/platform-service-architecture";
 import { TrustSurface } from "@/components/trust-surface";
 
 export default function DevelopersPage() {
@@ -15,6 +17,8 @@ export default function DevelopersPage() {
         { label: "Track-aware", variant: "success" },
       ]}
     >
+      <DeveloperPlatformSurface />
+      <PlatformServiceArchitecture />
       <SiteSearchPanel />
       <ProofCenter />
       <TrustSurface />

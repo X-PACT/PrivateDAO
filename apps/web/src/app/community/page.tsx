@@ -1,5 +1,7 @@
 import { CommunityHub } from "@/components/community-hub";
+import { LeadSupportIntake } from "@/components/lead-support-intake";
 import { OperationsShell } from "@/components/operations-shell";
+import { PlatformServiceArchitecture } from "@/components/platform-service-architecture";
 import { VideoCenter } from "@/components/video-center";
 import { TrustSurface } from "@/components/trust-surface";
 
@@ -16,6 +18,8 @@ export default function CommunityPage() {
       ]}
     >
       <CommunityHub />
+      <LeadSupportIntake mode="community" />
+      <PlatformServiceArchitecture />
       <VideoCenter compact />
       <TrustSurface />
     </OperationsShell>
