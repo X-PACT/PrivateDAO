@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { BuyerJourneyRail } from "@/components/buyer-journey-rail";
 import { CommandCenter } from "@/components/command-center";
 import { MetricsStrip } from "@/components/metrics-strip";
+import { OperatingBoundaryPanel } from "@/components/operating-boundary-panel";
 import { OperationsShell } from "@/components/operations-shell";
 import { OperationalValidationPanels } from "@/components/operational-validation-panels";
 import { ProposalWorkspace } from "@/components/proposal-workspace";
@@ -31,6 +32,12 @@ export default function CommandCenterPage() {
     >
       <div>
         <MetricsStrip />
+      </div>
+      <div>
+        <OperatingBoundaryPanel
+          title="UI full, CLI disciplined"
+          summary="Command Center is where real users operate. Engineering-heavy recovery, migration, stress, and batch controls stay in the repo and CLI so the product surface remains clean."
+        />
       </div>
       <div>
         <BuyerJourneyRail />

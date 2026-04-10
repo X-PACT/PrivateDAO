@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { LockKeyhole, Search, Sparkles } from "lucide-react";
 
@@ -34,10 +35,14 @@ export function SiteHeader() {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4">
           <Link href="/" className="group flex min-w-0 items-center gap-3">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-[linear-gradient(180deg,rgba(12,18,37,0.96),rgba(5,9,22,0.98))] shadow-[0_18px_44px_rgba(0,0,0,0.28)]">
-              <div className="bg-[linear-gradient(135deg,#14f195,#00c2ff,#9945ff)] bg-clip-text text-2xl font-black text-transparent drop-shadow-[0_0_18px_rgba(20,241,149,0.36)] transition-transform duration-300 group-hover:scale-110">
-                △
-              </div>
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-[linear-gradient(180deg,rgba(12,18,37,0.96),rgba(5,9,22,0.98))] shadow-[0_18px_44px_rgba(0,0,0,0.28)]">
+              <Image
+                src="/assets/brand/privatedao-avatar-256.png"
+                alt="PrivateDAO brand mark"
+                width={48}
+                height={48}
+                className="h-12 w-12 transition-transform duration-300 group-hover:scale-105"
+              />
             </div>
             <div className="min-w-0">
               <div className="flex flex-nowrap items-center gap-0.5 whitespace-nowrap text-xl font-semibold tracking-tight text-white sm:text-2xl">

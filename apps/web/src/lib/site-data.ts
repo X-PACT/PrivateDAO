@@ -120,8 +120,10 @@ export const storyVideo = {
   title: "PrivateDAO Frontier Overview",
   summary:
     "A single product story that explains everything PrivateDAO ships today: private governance, confidential treasury operations, live proof, V3 hardening, RPC surfaces, Android access, product corridors, and competition readiness.",
-  runtime: "58 second MP4 · upload-ready",
-  siteHref: "/assets/private-dao-frontier-overview.mp4",
+  runtime: "YouTube-first public story reel · upload-ready MP4 backup",
+  youtubeHref: "https://youtu.be/6_wUfawIjhw",
+  embedHref: "https://www.youtube.com/embed/6_wUfawIjhw",
+  mp4Href: "/assets/private-dao-frontier-overview.mp4",
   posterHref: "/assets/private-dao-frontier-overview-poster.png",
   uploadFile:
     "/home/x-pact/Desktop/PrivateDAO-Frontier-Overview/PrivateDAO - Frontier Overview - Everything We Offer and Why Us.mp4",

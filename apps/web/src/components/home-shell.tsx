@@ -7,6 +7,7 @@ import { ArrowRight, Compass, LockKeyhole, PlayCircle, Radar, Shield, Sparkles, 
 import { CommunityHub } from "@/components/community-hub";
 import { GovernanceDashboard } from "@/components/governance-dashboard";
 import { MetricsStrip } from "@/components/metrics-strip";
+import { OperatingBoundaryPanel } from "@/components/operating-boundary-panel";
 import { SectionHeader } from "@/components/section-header";
 import { SolutionCorridors } from "@/components/solution-corridors";
 import { VideoCenter } from "@/components/video-center";
@@ -228,6 +229,10 @@ export function HomeShell() {
 
       <section className="mx-auto mt-18 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <MetricsStrip />
+      </section>
+
+      <section className="mx-auto mt-10 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <OperatingBoundaryPanel />
       </section>
 
       <section className="mx-auto mt-20 w-full max-w-7xl px-4 sm:px-6 lg:px-8">

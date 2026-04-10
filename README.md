@@ -58,6 +58,29 @@ PrivateDAO is already a live Devnet product, not a concept deck:
 - Backend read node and RPC Fast-oriented evidence path
 - Reviewer-facing runtime, security, and launch packets
 
+## Product Surface Split
+
+The public product UI is intentionally responsible for:
+
+- Connect Wallet
+- Create DAO
+- Create Proposal
+- Commit Vote
+- Reveal Vote
+- Execute Proposal
+- View Logs
+- Diagnostics
+
+The public repo and CLI remain available for:
+
+- Advanced debugging
+- Batch operations
+- Emergency recovery
+- Migration tools
+- Stress tests
+
+This keeps the buyer-facing product clean while preserving engineering and protocol discipline in the repo.
+
 ## Frontier Fit
 
 PrivateDAO fits Frontier because it sits at the intersection of:
@@ -467,7 +490,8 @@ Key docs:
 ## Media And Submission Assets
 
 - Public story video: https://privatedao.org/story/
-- Direct MP4: https://privatedao.org/assets/private-dao-frontier-overview.mp4
+- Public YouTube reel: https://youtu.be/6_wUfawIjhw
+- Direct MP4 backup: https://privatedao.org/assets/private-dao-frontier-overview.mp4
 - Upload-ready file: `/home/x-pact/Desktop/PrivateDAO-Frontier-Overview/PrivateDAO - Frontier Overview - Everything We Offer and Why Us.mp4`
 - Canonical lifecycle demo brief: [`docs/demo-video.md`](docs/demo-video.md)
 - Hosted lifecycle demo: https://privatedao.org/assets/private-dao-demo-flow.mp4
@@ -476,11 +500,16 @@ Key docs:
 - Investor / competition pitch deck: [`docs/investor-pitch-deck.md`](docs/investor-pitch-deck.md)
 - Frontier overview brief: [`docs/investor-video.md`](docs/investor-video.md)
 - Repo-native frontier reel: [`docs/assets/private-dao-frontier-overview.mp4`](docs/assets/private-dao-frontier-overview.mp4)
-- Hosted frontier reel: https://privatedao.org/assets/private-dao-frontier-overview.mp4
+- Hosted frontier reel page: https://privatedao.org/story/
+- Hosted frontier reel MP4 backup: https://privatedao.org/assets/private-dao-frontier-overview.mp4
 - Poster: [`docs/assets/private-dao-frontier-overview-poster.png`](docs/assets/private-dao-frontier-overview-poster.png)
 - Submission dossier: [`docs/submission-dossier.md`](docs/submission-dossier.md)
 - Final submission pack: [`SUBMISSION_FINAL.md`](SUBMISSION_FINAL.md)
 - Manual Colosseum answers: [`docs/colosseum-submission-answers.md`](docs/colosseum-submission-answers.md)
+- Colosseum project page: https://arena.colosseum.org/projects/explore/praivatedao
+- Official YouTube channel: https://www.youtube.com/@privatedao
+- Brand kit: [`docs/brand-kit.md`](docs/brand-kit.md)
+- Hosted brand avatar: https://privatedao.org/assets/brand/privatedao-avatar-1024.png
 - Technical explainer: [`docs/investor-video.md`](docs/investor-video.md)
 
 ## Ownership And Contact

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { GettingStartedWorkspace } from "@/components/getting-started-workspace";
+import { OperatingBoundaryPanel } from "@/components/operating-boundary-panel";
 import { OperationsShell } from "@/components/operations-shell";
 import { SponsorSignalBar } from "@/components/sponsor-signal-bar";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -26,6 +27,10 @@ export default function StartPage() {
       ]}
     >
       <SponsorSignalBar />
+      <OperatingBoundaryPanel
+        title="What stays inside the product"
+        summary="The public UI is for wallet connection, DAO creation, proposal flow, voting, execution, logs, and diagnostics. Debugging, migrations, batch operations, and recovery stay in the engineering layer."
+      />
       <GettingStartedWorkspace />
     </OperationsShell>
   );

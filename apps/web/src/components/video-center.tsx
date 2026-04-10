@@ -21,27 +21,38 @@ export function VideoCenter({ compact = false }: VideoCenterProps) {
           </div>
         </div>
         <CardContent className="p-4 sm:p-6">
-          <video
-            className="aspect-video w-full rounded-[24px] border border-white/10 bg-black/50 object-cover shadow-[0_20px_80px_rgba(0,0,0,0.35)]"
-            controls
-            playsInline
-            poster={storyVideo.posterHref}
-            preload="metadata"
-          >
-            <source src={storyVideo.siteHref} type="video/mp4" />
-          </video>
+          <div className="aspect-video overflow-hidden rounded-[24px] border border-white/10 bg-black/50 shadow-[0_20px_80px_rgba(0,0,0,0.35)]">
+            <iframe
+              className="h-full w-full"
+              src={storyVideo.embedHref}
+              title={storyVideo.title}
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
+          </div>
           <div className="mt-5 flex flex-wrap gap-3">
             <a
               className={cn(buttonVariants({ size: "sm" }))}
-              href={storyVideo.siteHref}
+              href={storyVideo.youtubeHref}
               rel="noreferrer"
               target="_blank"
             >
-              Open MP4
+              Open YouTube
               <ArrowUpRight className="h-3.5 w-3.5" />
             </a>
             <a
               className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}
+              href={storyVideo.mp4Href}
+              rel="noreferrer"
+              target="_blank"
+            >
+              Open MP4 backup
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </a>
+            <a
+              className={cn(buttonVariants({ size: "sm", variant: "outline" }))}
               href={storyVideo.posterHref}
               rel="noreferrer"
               target="_blank"
@@ -88,7 +99,7 @@ export function VideoCenter({ compact = false }: VideoCenterProps) {
               <div className="mt-2">
                 {compact
                   ? "Use this asset as the fast submission reel from the track workspaces."
-                  : "Upload the MP4 to YouTube or Loom, then replace any public submission links with that final hosted URL if needed."}
+                  : "The public review link is now the official YouTube upload, while the MP4 stays available as a backup and repo-native artifact."}
               </div>
             </div>
           </CardContent>
