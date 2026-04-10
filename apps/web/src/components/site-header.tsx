@@ -17,6 +17,7 @@ const navItems = [
   { href: "/diagnostics", label: "Diagnostics" },
   { href: "/analytics", label: "Analytics" },
   { href: "/services", label: "Services" },
+  { href: "/tracks", label: "Tracks" },
   { href: "/awards", label: "Awards" },
 ];
 

@@ -185,6 +185,16 @@ const curatedDocuments: CuratedDocument[] = [
     docPath: "docs/frontier-integrations.generated.md",
     rawHref: `${repositoryBlobBase}/docs/frontier-integrations.generated.md`,
   },
+  {
+    slug: "frontier-competition-readiness-2026",
+    title: "Frontier Competition Readiness 2026",
+    category: "Strategy",
+    summary: "Truth-aligned readiness map across the active Superteam and Frontier-adjacent tracks beyond the core Colosseum submission.",
+    audience: "Founders, judges, strategy reviewers, operators",
+    boundary: "Strategy surface only; it does not claim partner integrations or shipped behaviors beyond what already exists in the repo.",
+    docPath: "docs/frontier-competition-readiness-2026.md",
+    rawHref: `${repositoryBlobBase}/docs/frontier-competition-readiness-2026.md`,
+  },
 ];
 
 export function getCuratedDocuments() {

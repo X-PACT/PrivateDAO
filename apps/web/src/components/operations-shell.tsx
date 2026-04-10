@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Activity, BarChart3, BriefcaseBusiness, FileText, LayoutDashboard, ShieldCheck, Sparkles, SquareTerminal } from "lucide-react";
+import { Activity, BarChart3, BriefcaseBusiness, FileText, LayoutDashboard, ShieldCheck, Sparkles, SquareTerminal, Trophy } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,6 +18,7 @@ const operationsNav = [
   { href: "/diagnostics", label: "Diagnostics", icon: Activity, summary: "Runtime and artifact health" },
   { href: "/analytics", label: "Analytics", icon: BarChart3, summary: "Votes, proposals, actions" },
   { href: "/services", label: "Services", icon: BriefcaseBusiness, summary: "Pilot, API, commercial packs" },
+  { href: "/tracks", label: "Tracks", icon: Trophy, summary: "Competition readiness and fit" },
   { href: "/documents", label: "Documents", icon: FileText, summary: "Curated reviewer and trust docs" },
 ];
 
