@@ -2,7 +2,8 @@
 set -euo pipefail
 
 MODE="${1:-github}"
-REPO_ROOT="/home/x-pact/PrivateDAO"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 WEB_DIR="$REPO_ROOT/apps/web"
 DIST_DIR="$REPO_ROOT/dist"
 TARGET_DIR="$DIST_DIR/web-mirror-$MODE"
