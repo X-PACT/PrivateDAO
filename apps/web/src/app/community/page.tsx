@@ -51,7 +51,9 @@ export default function CommunityPage({ searchParams }: CommunityPageProps) {
       <LeadSupportIntake mode="community" />
       <ProductIntakeForms mode="community" initialKind={initialKind} initialFundingContext={initialFundingContext} />
       <PlatformServiceArchitecture />
-      <VideoCenter compact />
+      <div className="hidden lg:block">
+        <VideoCenter compact />
+      </div>
       <TrustSurface />
     </OperationsShell>
   );

@@ -49,9 +49,49 @@ export function OperationsShell({
   const pathname = usePathname();
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-      <div className="grid gap-8 xl:grid-cols-[280px_minmax(0,1fr)]">
-        <aside className="xl:sticky xl:top-28 xl:self-start">
+    <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+      <div className="mb-6 xl:hidden">
+        <Card className="border-white/10 bg-[#07101d]/88">
+          <CardHeader className="space-y-3">
+            <div className="text-[11px] uppercase tracking-[0.34em] text-cyan-200/78">Operational Surface</div>
+            <CardTitle className="text-lg">Quick route navigation</CardTitle>
+          </CardHeader>
+          <CardContent className="no-scrollbar flex gap-3 overflow-x-auto pb-1">
+            {operationsNav.map((item) => {
+              const Icon = item.icon;
+              const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "flex min-w-[170px] shrink-0 items-center gap-3 rounded-2xl border px-4 py-3 transition",
+                    active
+                      ? "border-cyan-300/25 bg-cyan-300/10 text-white"
+                      : "border-white/8 bg-white/[0.03] text-white/68",
+                  )}
+                >
+                  <div
+                    className={cn(
+                      "flex h-9 w-9 items-center justify-center rounded-xl border",
+                      active ? "border-cyan-300/20 bg-cyan-300/14 text-cyan-100" : "border-white/8 bg-black/20 text-white/72",
+                    )}
+                  >
+                    <Icon className="h-4 w-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-sm font-medium">{item.label}</div>
+                    <div className="mt-1 line-clamp-2 text-xs leading-5 text-white/45">{item.summary}</div>
+                  </div>
+                </Link>
+              );
+            })}
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid gap-6 xl:grid-cols-[280px_minmax(0,1fr)] xl:gap-8">
+        <aside className="hidden xl:sticky xl:top-28 xl:block xl:self-start">
           <Card className="border-white/10 bg-[#07101d]/88">
             <CardHeader className="space-y-4">
               <div className="space-y-2">
@@ -123,8 +163,8 @@ export function OperationsShell({
 
               <div className={cn("space-y-5", badges.length > 0 ? "mt-6" : "")}>
                 <div className="text-[11px] uppercase tracking-[0.34em] text-emerald-300/80">{eyebrow}</div>
-                <div className="max-w-4xl text-4xl font-semibold tracking-[-0.035em] text-white sm:text-5xl">{title}</div>
-                <p className="max-w-3xl text-base leading-8 text-white/60 sm:text-lg">{description}</p>
+                <div className="max-w-4xl text-3xl font-semibold tracking-[-0.035em] text-white sm:text-5xl">{title}</div>
+                <p className="max-w-3xl text-sm leading-7 text-white/60 sm:text-lg sm:leading-8">{description}</p>
               </div>
 
               <div className="mt-8 flex flex-wrap gap-3">
