@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, Clipboard, Download, Headset, Rocket, ServerCog, WalletCards } from "lucide-react";
+import { ArrowRight, BriefcaseBusiness, CheckCircle2, Clipboard, Download, Headset, LifeBuoy, Rocket, ServerCog, Sparkles, WalletCards } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
@@ -17,6 +17,15 @@ type IntakePreset = {
   title: string;
   summary: string;
   icon: typeof Rocket;
+  handoff: {
+    lane: "buyer" | "operator" | "support" | "track-demo";
+    owner: string;
+    destination: string;
+    priority: string;
+    narrative: string;
+    primaryAction: { label: string; href: string };
+    evidenceAction: { label: string; href: string };
+  };
   routeSet: Array<{ label: string; href: string }>;
 };
 
@@ -27,6 +36,15 @@ const intakePresets: IntakePreset[] = [
     title: "Pilot request",
     summary: "For teams ready to explore a real pilot path around governance, trust packaging, and mainnet-aware rollout.",
     icon: Rocket,
+    handoff: {
+      lane: "buyer",
+      owner: "Buyer motion",
+      destination: "Pilot and commercial path",
+      priority: "Qualified now",
+      narrative: "Move the request into Engage first, then keep Services and Command Center close so the commercial story stays tied to real product operation.",
+      primaryAction: { label: "Open buyer path", href: "/engage" },
+      evidenceAction: { label: "Open services evidence", href: "/services" },
+    },
     routeSet: [
       { label: "Engage", href: "/engage" },
       { label: "Services", href: "/services" },
@@ -39,6 +57,15 @@ const intakePresets: IntakePreset[] = [
     title: "RPC infrastructure request",
     summary: "For teams that need dedicated or shared RPC, hosted reads, diagnostics, and infrastructure support.",
     icon: ServerCog,
+    handoff: {
+      lane: "operator",
+      owner: "Infrastructure operator",
+      destination: "RPC onboarding and diagnostics",
+      priority: "Fast qualification",
+      narrative: "Route the team into Services and Diagnostics first, then continue into Developers so RPC onboarding remains measurable and implementation-ready.",
+      primaryAction: { label: "Open RPC services", href: "/services" },
+      evidenceAction: { label: "Open diagnostics", href: "/diagnostics" },
+    },
     routeSet: [
       { label: "Services", href: "/services" },
       { label: "Diagnostics", href: "/diagnostics" },
@@ -51,6 +78,15 @@ const intakePresets: IntakePreset[] = [
     title: "Gaming DAO demo request",
     summary: "For studios, guild operators, or tournament teams exploring reward governance and gaming treasury flows.",
     icon: WalletCards,
+    handoff: {
+      lane: "track-demo",
+      owner: "Track and product demo",
+      destination: "Gaming corridor and live demo",
+      priority: "Narrative-critical",
+      narrative: "Push the request into the gaming corridor, then use Command Center and Ranger routes so the demo stays tied to live governance and competition evidence.",
+      primaryAction: { label: "Open gaming corridor", href: "/products" },
+      evidenceAction: { label: "Open Ranger track", href: "/tracks/ranger-main" },
+    },
     routeSet: [
       { label: "Products", href: "/products" },
       { label: "Command Center", href: "/command-center" },
@@ -63,6 +99,15 @@ const intakePresets: IntakePreset[] = [
     title: "Payments DAO request",
     summary: "For contributor, vendor, subscription, or governed treasury payout flows.",
     icon: WalletCards,
+    handoff: {
+      lane: "buyer",
+      owner: "Payments buyer motion",
+      destination: "Governed payouts and treasury flow",
+      priority: "Commercial now",
+      narrative: "Take the request into Services and Command Center so the payments story remains anchored to governance-backed execution, not a generic checkout narrative.",
+      primaryAction: { label: "Open payments services", href: "/services" },
+      evidenceAction: { label: "Open command center", href: "/command-center" },
+    },
     routeSet: [
       { label: "Services", href: "/services" },
       { label: "Command Center", href: "/command-center" },
@@ -75,6 +120,15 @@ const intakePresets: IntakePreset[] = [
     title: "Support request",
     summary: "For route confusion, wallet questions, diagnostics issues, or fast operator guidance.",
     icon: Headset,
+    handoff: {
+      lane: "support",
+      owner: "Support and incident routing",
+      destination: "Assistant, diagnostics, and Discord",
+      priority: "Immediate",
+      narrative: "Keep the user inside the product first, then escalate to Diagnostics or Discord only when the issue needs operator context or live assistance.",
+      primaryAction: { label: "Open assistant", href: "/assistant" },
+      evidenceAction: { label: "Join Discord", href: "https://discord.gg/bC76YEcpDa" },
+    },
     routeSet: [
       { label: "Assistant", href: "/assistant" },
       { label: "Diagnostics", href: "/diagnostics" },
@@ -101,6 +155,10 @@ function buildPacket(params: {
     `PrivateDAO Intake`,
     `Type: ${preset.title}`,
     `Source Route: ${mode === "engage" ? "Engage" : "Community"}`,
+    `Handoff Lane: ${preset.handoff.lane}`,
+    `Handoff Owner: ${preset.handoff.owner}`,
+    `Destination: ${preset.handoff.destination}`,
+    `Priority: ${preset.handoff.priority}`,
     `Name: ${name || "Not provided"}`,
     `Organization: ${org || "Not provided"}`,
     `Contact: ${contact || "Not provided"}`,
@@ -122,6 +180,14 @@ export function ProductIntakeForms({ mode }: ProductIntakeFormsProps) {
 
   const preset = intakePresets.find((item) => item.kind === kind) ?? intakePresets[0];
   const Icon = preset.icon;
+  const LaneIcon =
+    preset.handoff.lane === "buyer"
+      ? BriefcaseBusiness
+      : preset.handoff.lane === "operator"
+        ? ServerCog
+        : preset.handoff.lane === "support"
+          ? LifeBuoy
+          : Sparkles;
 
   const packet = useMemo(
     () =>
@@ -257,6 +323,63 @@ export function ProductIntakeForms({ mode }: ProductIntakeFormsProps) {
             <pre className="mt-4 whitespace-pre-wrap text-sm leading-7 text-white/72">{packet}</pre>
           </div>
 
+          <div className="rounded-3xl border border-emerald-300/16 bg-emerald-300/[0.08] p-5">
+            <div className="flex items-center gap-2 text-white">
+              <LaneIcon className="h-4 w-4 text-emerald-100" />
+              <div className="text-[11px] uppercase tracking-[0.24em] text-emerald-100/76">Structured handoff</div>
+            </div>
+            <div className="mt-4 grid gap-3 md:grid-cols-2">
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+                <div className="text-[11px] uppercase tracking-[0.24em] text-white/46">Lane</div>
+                <div className="mt-2 text-sm font-medium capitalize text-white">{preset.handoff.lane.replace("-", " ")}</div>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+                <div className="text-[11px] uppercase tracking-[0.24em] text-white/46">Owner</div>
+                <div className="mt-2 text-sm font-medium text-white">{preset.handoff.owner}</div>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+                <div className="text-[11px] uppercase tracking-[0.24em] text-white/46">Destination</div>
+                <div className="mt-2 text-sm font-medium text-white">{preset.handoff.destination}</div>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+                <div className="text-[11px] uppercase tracking-[0.24em] text-white/46">Priority</div>
+                <div className="mt-2 text-sm font-medium text-white">{preset.handoff.priority}</div>
+              </div>
+            </div>
+            <div className="mt-4 rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/68">
+              {preset.handoff.narrative}
+            </div>
+            <div className="mt-4 flex flex-wrap gap-3">
+              {preset.handoff.primaryAction.href.startsWith("http") ? (
+                <a href={preset.handoff.primaryAction.href} target="_blank" rel="noreferrer" className={cn(buttonVariants({ size: "sm" }))}>
+                  {preset.handoff.primaryAction.label}
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+              ) : (
+                <Link href={preset.handoff.primaryAction.href} className={cn(buttonVariants({ size: "sm" }))}>
+                  {preset.handoff.primaryAction.label}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              )}
+              {preset.handoff.evidenceAction.href.startsWith("http") ? (
+                <a
+                  href={preset.handoff.evidenceAction.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}
+                >
+                  {preset.handoff.evidenceAction.label}
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+              ) : (
+                <Link href={preset.handoff.evidenceAction.href} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+                  {preset.handoff.evidenceAction.label}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              )}
+            </div>
+          </div>
+
           <div className="flex flex-wrap gap-3">
             <button
               type="button"
@@ -279,7 +402,10 @@ export function ProductIntakeForms({ mode }: ProductIntakeFormsProps) {
           </div>
 
           <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
-            <div className="text-[11px] uppercase tracking-[0.24em] text-white/46">Recommended next routes</div>
+            <div className="text-[11px] uppercase tracking-[0.24em] text-white/46">Delivery bundle</div>
+            <p className="mt-3 text-sm leading-7 text-white/60">
+              Use this route bundle to move from intake to buyer, operator, support, or demo follow-up without dropping the context collected above.
+            </p>
             <div className="mt-4 flex flex-wrap gap-3">
               {preset.routeSet.map((route) =>
                 route.href.startsWith("http") ? (
