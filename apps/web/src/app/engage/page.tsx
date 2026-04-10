@@ -17,7 +17,7 @@ export const metadata: Metadata = buildRouteMetadata({
 });
 
 type EngagePageProps = {
-  searchParams?: { intake?: string };
+  searchParams?: { intake?: string; asset?: string; amount?: string; purpose?: string; lane?: string };
 };
 
 function normalizeIntake(value?: string) {
@@ -26,6 +26,12 @@ function normalizeIntake(value?: string) {
 
 export default function EngagePage({ searchParams }: EngagePageProps) {
   const initialKind = normalizeIntake(searchParams?.intake);
+  const initialFundingContext = {
+    asset: searchParams?.asset,
+    amount: searchParams?.amount,
+    purpose: searchParams?.purpose,
+    lane: searchParams?.lane,
+  };
 
   return (
     <OperationsShell
@@ -39,7 +45,7 @@ export default function EngagePage({ searchParams }: EngagePageProps) {
       ]}
     >
       <LeadSupportIntake mode="engage" />
-      <ProductIntakeForms mode="engage" initialKind={initialKind} />
+      <ProductIntakeForms mode="engage" initialKind={initialKind} initialFundingContext={initialFundingContext} />
       <TreasuryReceiveSurface />
       <CustomerConversionSurface />
       <PlatformServiceArchitecture />

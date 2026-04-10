@@ -7,7 +7,7 @@ import { VideoCenter } from "@/components/video-center";
 import { TrustSurface } from "@/components/trust-surface";
 
 type CommunityPageProps = {
-  searchParams?: { intake?: string };
+  searchParams?: { intake?: string; asset?: string; amount?: string; purpose?: string; lane?: string };
 };
 
 function normalizeIntake(value?: string) {
@@ -16,6 +16,12 @@ function normalizeIntake(value?: string) {
 
 export default function CommunityPage({ searchParams }: CommunityPageProps) {
   const initialKind = normalizeIntake(searchParams?.intake);
+  const initialFundingContext = {
+    asset: searchParams?.asset,
+    amount: searchParams?.amount,
+    purpose: searchParams?.purpose,
+    lane: searchParams?.lane,
+  };
 
   return (
     <OperationsShell
@@ -30,7 +36,7 @@ export default function CommunityPage({ searchParams }: CommunityPageProps) {
     >
       <CommunityHub />
       <LeadSupportIntake mode="community" />
-      <ProductIntakeForms mode="community" initialKind={initialKind} />
+      <ProductIntakeForms mode="community" initialKind={initialKind} initialFundingContext={initialFundingContext} />
       <PlatformServiceArchitecture />
       <VideoCenter compact />
       <TrustSurface />

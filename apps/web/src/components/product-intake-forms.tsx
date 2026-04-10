@@ -140,6 +140,12 @@ const intakePresets: IntakePreset[] = [
 type ProductIntakeFormsProps = {
   mode: IntakeMode;
   initialKind?: IntakeKind;
+  initialFundingContext?: {
+    asset?: string;
+    amount?: string;
+    purpose?: string;
+    lane?: string;
+  };
 };
 
 function buildPacket(params: {
@@ -170,13 +176,28 @@ function buildPacket(params: {
   ].join("\n");
 }
 
-export function ProductIntakeForms({ mode, initialKind }: ProductIntakeFormsProps) {
+function buildInitialUseCase(initialFundingContext?: ProductIntakeFormsProps["initialFundingContext"]) {
+  if (!initialFundingContext?.asset && !initialFundingContext?.amount && !initialFundingContext?.purpose) {
+    return "";
+  }
+
+  const parts = [
+    initialFundingContext.amount ? `Amount: ${initialFundingContext.amount}` : null,
+    initialFundingContext.asset ? `Asset: ${initialFundingContext.asset}` : null,
+    initialFundingContext.purpose ? `Purpose: ${initialFundingContext.purpose}` : null,
+    initialFundingContext.lane ? `Lane: ${initialFundingContext.lane}` : null,
+  ].filter(Boolean);
+
+  return `Treasury funding context\n${parts.join("\n")}`;
+}
+
+export function ProductIntakeForms({ mode, initialKind, initialFundingContext }: ProductIntakeFormsProps) {
   const [kind, setKind] = useState<IntakeKind>(initialKind ?? (mode === "engage" ? "pilot" : "support"));
   const [name, setName] = useState("");
   const [org, setOrg] = useState("");
   const [contact, setContact] = useState("");
   const [timeline, setTimeline] = useState("");
-  const [useCase, setUseCase] = useState("");
+  const [useCase, setUseCase] = useState(buildInitialUseCase(initialFundingContext));
   const [status, setStatus] = useState<"idle" | "copied" | "downloaded">("idle");
 
   const preset = intakePresets.find((item) => item.kind === kind) ?? intakePresets[0];
@@ -264,6 +285,30 @@ export function ProductIntakeForms({ mode, initialKind }: ProductIntakeFormsProp
             <div className="text-lg font-medium text-white">{preset.title}</div>
             <p className="mt-3 text-sm leading-7 text-white/60">{preset.summary}</p>
           </div>
+
+          {initialFundingContext?.asset || initialFundingContext?.amount || initialFundingContext?.purpose ? (
+            <div className="rounded-3xl border border-amber-300/16 bg-amber-300/[0.08] p-5">
+              <div className="text-[11px] uppercase tracking-[0.24em] text-amber-100/76">Treasury context received</div>
+              <div className="mt-4 grid gap-3 md:grid-cols-2">
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Asset</div>
+                  <div className="mt-2 text-sm font-medium text-white">{initialFundingContext.asset ?? "Not provided"}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Amount</div>
+                  <div className="mt-2 text-sm font-medium text-white">{initialFundingContext.amount ?? "Not provided"}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Purpose</div>
+                  <div className="mt-2 text-sm font-medium text-white">{initialFundingContext.purpose ?? "Not provided"}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Lane</div>
+                  <div className="mt-2 text-sm font-medium text-white">{initialFundingContext.lane ?? "Not provided"}</div>
+                </div>
+              </div>
+            </div>
+          ) : null}
 
           <div className="grid gap-4">
             <label className="grid gap-2 text-sm text-white/70">

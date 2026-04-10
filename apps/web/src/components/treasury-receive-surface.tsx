@@ -89,6 +89,11 @@ export function TreasuryReceiveSurface() {
     setCopied("request-download");
   }
 
+  const encodedPurpose = encodeURIComponent(purpose);
+  const encodedAmount = encodeURIComponent(amount);
+  const engagePaymentsHref = `/engage?intake=payments&asset=${activeAsset.symbol}&amount=${encodedAmount}&purpose=${encodedPurpose}&lane=${lane}`;
+  const engagePilotHref = `/engage?intake=pilot&asset=${activeAsset.symbol}&amount=${encodedAmount}&purpose=${encodedPurpose}&lane=${lane}`;
+
   return (
     <Card>
       <CardHeader>
@@ -268,6 +273,22 @@ export function TreasuryReceiveSurface() {
                 <Download className="h-4 w-4" />
                 Download request
               </button>
+              <Link
+                href={engagePaymentsHref}
+                className={cn(buttonVariants({ size: "sm", variant: "outline" }), !isRequestReady && "pointer-events-none opacity-50")}
+                aria-disabled={!isRequestReady}
+              >
+                Continue to payments intake
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                href={engagePilotHref}
+                className={cn(buttonVariants({ size: "sm", variant: "outline" }), !isRequestReady && "pointer-events-none opacity-50")}
+                aria-disabled={!isRequestReady}
+              >
+                Continue to pilot intake
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
           </div>
         </div>
