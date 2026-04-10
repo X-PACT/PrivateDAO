@@ -119,6 +119,15 @@ It exists to answer a practical product question:
 
 > if we enable or disable one of these rails, how much confidence do we lose, and in which dimension?
 
+It also includes product-pack presets for:
+
+- `Grant Committee`
+- `Fund Governance`
+- `Gaming DAO`
+- `Enterprise DAO`
+
+These presets are not magic templates. They are opinionated starting points for the composer, and the operator can still override each rail manually.
+
 ## Score bands
 
 | Band | Range | Meaning |

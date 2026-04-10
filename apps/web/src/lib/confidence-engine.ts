@@ -15,6 +15,13 @@ export type ConfidenceSignals = {
 
 export type ConfidenceSignalKey = keyof ConfidenceSignals;
 
+export type ConfidencePreset = {
+  key: "grant" | "fund" | "gaming" | "enterprise";
+  label: string;
+  subtitle: string;
+  signals: ConfidenceSignals;
+};
+
 export type ConfidenceProfile = {
   title: string;
   subtitle: string;
@@ -261,6 +268,85 @@ export const defaultConfidenceSignals: ConfidenceSignals = {
   auditPacket: true,
   launchBoundaryExplicit: true,
 };
+
+export const confidencePresets: ConfidencePreset[] = [
+  {
+    key: "grant",
+    label: "Grant Committee",
+    subtitle: "Reviewer-safe grants with private signal collection",
+    signals: {
+      commitReveal: true,
+      zkReview: true,
+      zkAnchors: true,
+      governanceV3: true,
+      settlementV3: false,
+      refheEnvelope: false,
+      magicBlockEvidence: false,
+      fastRpcIndexed: true,
+      liveProof: true,
+      v3Proof: true,
+      auditPacket: true,
+      launchBoundaryExplicit: true,
+    },
+  },
+  {
+    key: "fund",
+    label: "Fund Governance",
+    subtitle: "High-sensitivity capital allocation with deeper review rails",
+    signals: {
+      commitReveal: true,
+      zkReview: true,
+      zkAnchors: true,
+      governanceV3: true,
+      settlementV3: true,
+      refheEnvelope: true,
+      magicBlockEvidence: false,
+      fastRpcIndexed: true,
+      liveProof: true,
+      v3Proof: true,
+      auditPacket: true,
+      launchBoundaryExplicit: true,
+    },
+  },
+  {
+    key: "gaming",
+    label: "Gaming DAO",
+    subtitle: "Corridor-style rewards with settlement evidence",
+    signals: {
+      commitReveal: true,
+      zkReview: false,
+      zkAnchors: false,
+      governanceV3: false,
+      settlementV3: true,
+      refheEnvelope: false,
+      magicBlockEvidence: true,
+      fastRpcIndexed: true,
+      liveProof: false,
+      v3Proof: true,
+      auditPacket: true,
+      launchBoundaryExplicit: true,
+    },
+  },
+  {
+    key: "enterprise",
+    label: "Enterprise DAO",
+    subtitle: "Payroll and bonus operations with confidential execution",
+    signals: {
+      commitReveal: true,
+      zkReview: true,
+      zkAnchors: true,
+      governanceV3: true,
+      settlementV3: true,
+      refheEnvelope: true,
+      magicBlockEvidence: false,
+      fastRpcIndexed: true,
+      liveProof: true,
+      v3Proof: true,
+      auditPacket: true,
+      launchBoundaryExplicit: true,
+    },
+  },
+];
 
 function includesAny(value: string, needles: string[]) {
   const normalized = value.toLowerCase();

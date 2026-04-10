@@ -9,6 +9,7 @@ import {
   confidenceDimensions,
   confidenceEnginePrinciples,
   confidenceProfiles,
+  confidencePresets,
   confidenceSignalDefinitions,
   defaultConfidenceSignals,
 } from "@/lib/confidence-engine";
@@ -20,10 +21,19 @@ const dimensionIcons = [Sparkles, ShieldCheck, Layers3, Binary];
 
 export function ConfidenceEngineSurface() {
   const [signals, setSignals] = useState(defaultConfidenceSignals);
+  const [activePreset, setActivePreset] = useState("fund");
   const customScore = useMemo(() => buildManualConfidenceScorecard(signals), [signals]);
 
   function toggleSignal(key: keyof typeof signals) {
     setSignals((current) => ({ ...current, [key]: !current[key] }));
+    setActivePreset("custom");
+  }
+
+  function applyPreset(presetKey: string) {
+    const preset = confidencePresets.find((entry) => entry.key === presetKey);
+    if (!preset) return;
+    setSignals(preset.signals);
+    setActivePreset(preset.key);
   }
 
   return (
@@ -80,9 +90,28 @@ export function ConfidenceEngineSurface() {
                   Toggle ZK, REFHE, MagicBlock, Fast RPC, and hardening rails
                 </div>
               </div>
-              <Badge variant={customScore.band === "Advanced" ? "success" : customScore.band === "Strong" ? "cyan" : "warning"}>
-                {customScore.total} · {customScore.band}
-              </Badge>
+                <Badge variant={customScore.band === "Advanced" ? "success" : customScore.band === "Strong" ? "cyan" : "warning"}>
+                  {customScore.total} · {customScore.band}
+                </Badge>
+              </div>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {confidencePresets.map((preset) => (
+                <Button
+                  key={preset.key}
+                  size="sm"
+                  type="button"
+                  variant={activePreset === preset.key ? "default" : "outline"}
+                  onClick={() => applyPreset(preset.key)}
+                >
+                  {preset.label}
+                </Button>
+              ))}
+            </div>
+            <div className="mt-4 rounded-2xl border border-white/8 bg-white/4 p-4 text-sm leading-7 text-white/58">
+              <span className="text-white/78">Preset:</span>{" "}
+              {activePreset === "custom"
+                ? "Custom composition after manual overrides."
+                : confidencePresets.find((preset) => preset.key === activePreset)?.subtitle}
             </div>
             <div className="mt-4 flex flex-wrap gap-2">
               {confidenceSignalDefinitions.map((signal) => (
