@@ -4,6 +4,7 @@ import { ArrowUpRight, CheckCircle2, ShieldCheck, Sparkles, Swords, Target, Time
 import type { CompetitionTrackWorkspace } from "@/lib/site-data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
+import { SubmissionCoachPanel } from "@/components/submission-coach-panel";
 import { TrackTechnicalFitPanel } from "@/components/track-technical-fit-panel";
 import { cn } from "@/lib/utils";
 
@@ -108,6 +109,8 @@ export function CompetitionWorkspace({ workspace }: CompetitionWorkspaceProps) {
             ))}
           </CardContent>
         </Card>
+
+        <SubmissionCoachPanel workspace={workspace} />
 
         <TrackTechnicalFitPanel slug={workspace.slug} />
 
