@@ -282,17 +282,17 @@ export const servicesJourney = [
   {
     title: "Pilot Program",
     detail: "Week-by-week rollout packet for teams that want guided adoption rather than a raw protocol integration.",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/pilot-program.md",
+    href: "/documents/pilot-program",
   },
   {
     title: "Service Level Agreement",
     detail: "Operational framing for hosted reads, response expectations, and trust boundaries.",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/service-level-agreement.md",
+    href: "/documents/service-level-agreement",
   },
   {
     title: "Pricing Model",
     detail: "Commercial packaging for API, ops, and confidential governance support without hiding the technical stack.",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/pricing-model.md",
+    href: "/documents/pricing-model",
   },
   {
     title: "Trust Package",
@@ -435,7 +435,7 @@ export const commandCenterReferences = [
   {
     title: "Frontier integrations",
     description: "ZK, REFHE, MagicBlock, and Fast RPC reviewer packet.",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/frontier-integrations.generated.md",
+    href: "/documents/frontier-integrations",
   },
   {
     title: "Launch trust packet",
@@ -585,28 +585,28 @@ export const commercialCompare = [
     fit: "Best for teams validating private governance and treasury operations before a longer rollout.",
     deliverable: "Week-by-week onboarding, trust packet, readiness framing, and guided operating plan.",
     cta: "Open pilot program",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/pilot-program.md",
+    href: "/documents/pilot-program",
   },
   {
     name: "Hosted Read API + Ops",
     fit: "Best for apps or teams that need cleaner governance data, evidence reads, and reviewer exports.",
     deliverable: "Hosted read surfaces, ops guidance, reviewer packet alignment, and product-facing API framing.",
     cta: "Open service catalog",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/service-catalog.md",
+    href: "/documents/service-catalog",
   },
   {
     name: "Confidential Operations Premium",
     fit: "Best for payroll, bonus, and private treasury teams that need stronger confidentiality boundaries.",
     deliverable: "REFHE paths, V3 hardening, evidence-gated treasury flows, and operator trust surfaces.",
     cta: "Open pricing model",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/pricing-model.md",
+    href: "/documents/pricing-model",
   },
   {
     name: "Enterprise Governance Retainer",
     fit: "Best for organizations that want longer-term support across launch, controls, and operator workflows.",
     deliverable: "SLA framing, trust package, launch blockers review, and governance operations guidance.",
     cta: "Open SLA",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/service-level-agreement.md",
+    href: "/documents/service-level-agreement",
   },
 ];
 
@@ -619,17 +619,17 @@ export const proofFlowSteps = [
   {
     title: "Dedicated V3 proof",
     detail: "Open the additive hardening packet for Governance V3 and Settlement V3 after reviewing the baseline flow.",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/test-wallet-live-proof-v3.generated.md",
+    href: "/documents/live-proof-v3",
   },
   {
     title: "Integration packet",
     detail: "Open the Frontier integrations packet to verify ZK, REFHE, MagicBlock, and Fast RPC surfaces together.",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/frontier-integrations.generated.md",
+    href: "/documents/frontier-integrations",
   },
   {
     title: "Audit and launch trust",
     detail: "Close the loop with audit packet, launch trust packet, and mainnet blockers so proof is not separated from deployment truth.",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/launch-trust-packet.generated.md",
+    href: "/documents/launch-trust-packet",
   },
 ];
 

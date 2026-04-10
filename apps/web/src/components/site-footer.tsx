@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useSiteUrls } from "@/lib/site-urls";
 
 export function SiteFooter() {
@@ -15,12 +17,12 @@ export function SiteFooter() {
           <a href={judgeViewUrl} target="_blank" rel="noreferrer" className="hover:text-white">
             Judge view
           </a>
-          <a href="https://github.com/X-PACT/PrivateDAO/blob/main/docs/launch-trust-packet.generated.md" target="_blank" rel="noreferrer" className="hover:text-white">
+          <Link href="/documents/launch-trust-packet" className="hover:text-white">
             Launch trust packet
-          </a>
-          <a href="https://github.com/X-PACT/PrivateDAO/blob/main/docs/mainnet-blockers.md" target="_blank" rel="noreferrer" className="hover:text-white">
+          </Link>
+          <Link href="/documents/mainnet-blockers" className="hover:text-white">
             Mainnet blockers
-          </a>
+          </Link>
           <a href="https://github.com/X-PACT/PrivateDAO" target="_blank" rel="noreferrer" className="hover:text-white">
             Repository
           </a>
