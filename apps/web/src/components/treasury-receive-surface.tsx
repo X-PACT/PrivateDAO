@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { CheckCircle2, Clipboard, Coins, Landmark, ShieldCheck, Wallet } from "lucide-react";
+import { useMemo, useState } from "react";
+import Link from "next/link";
+import { ArrowRight, CheckCircle2, Clipboard, Coins, Download, Landmark, ShieldCheck, Wallet } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
@@ -14,13 +15,78 @@ const assetIconMap = {
   USDG: Landmark,
 } as const;
 
+const handoffLanes = [
+  {
+    value: "buyer",
+    label: "Buyer lane",
+    summary: "Use for pilot funding, treasury top-ups, and commercial onboarding.",
+    routes: [
+      { label: "Engage", href: "/engage" },
+      { label: "Services", href: "/services" },
+    ],
+  },
+  {
+    value: "operator",
+    label: "Operator lane",
+    summary: "Use for infrastructure support, wallet operations, and RPC-backed treasury handling.",
+    routes: [
+      { label: "Command Center", href: "/command-center" },
+      { label: "Diagnostics", href: "/diagnostics" },
+    ],
+  },
+  {
+    value: "support",
+    label: "Support lane",
+    summary: "Use when the sender needs help validating the right route, asset, or funding context first.",
+    routes: [
+      { label: "Assistant", href: "/assistant" },
+      { label: "Community", href: "/community" },
+    ],
+  },
+] as const;
+
 export function TreasuryReceiveSurface() {
   const config = getTreasuryReceiveConfig();
   const [copied, setCopied] = useState<string | null>(null);
+  const [selectedAsset, setSelectedAsset] = useState<(typeof config.assets)[number]["symbol"]>("SOL");
+  const [amount, setAmount] = useState("");
+  const [purpose, setPurpose] = useState("");
+  const [lane, setLane] = useState<(typeof handoffLanes)[number]["value"]>("buyer");
+
+  const activeAsset = config.assets.find((asset) => asset.symbol === selectedAsset) ?? config.assets[0];
+  const activeLane = handoffLanes.find((item) => item.value === lane) ?? handoffLanes[0];
+  const requestPacket = useMemo(
+    () =>
+      [
+        "PrivateDAO Treasury Request",
+        `Network: ${config.network}`,
+        `Lane: ${activeLane.label}`,
+        `Asset: ${activeAsset.symbol}`,
+        `Amount: ${amount || "Not provided"}`,
+        `Purpose: ${purpose || "Not provided"}`,
+        `Receive address: ${activeAsset.receiveAddress}`,
+        `Mint: ${activeAsset.mint ?? "Configured at deployment through NEXT_PUBLIC_TREASURY_* env."}`,
+        "Recommended next routes:",
+        ...activeLane.routes.map((route) => `- ${route.label}: ${route.href}`),
+      ].join("\n"),
+    [activeAsset, activeLane, amount, config.network, purpose],
+  );
+  const isRequestReady = Boolean(amount.trim() && purpose.trim());
 
   async function copyValue(key: string, value: string) {
     await navigator.clipboard.writeText(value);
     setCopied(key);
+  }
+
+  function downloadRequest() {
+    const blob = new Blob([requestPacket], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `privatedao-${activeAsset.symbol.toLowerCase()}-${lane}-request.txt`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+    setCopied("request-download");
   }
 
   return (
@@ -100,6 +166,110 @@ export function TreasuryReceiveSurface() {
               </div>
             );
           })}
+        </div>
+
+        <div className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
+          <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
+            <div className="text-lg font-medium text-white">Treasury payment request</div>
+            <p className="mt-3 text-sm leading-7 text-white/60">
+              Pick the asset, amount, purpose, and handoff lane. The product returns a ready request packet tied to the correct public receive route.
+            </p>
+
+            <div className="mt-5 grid gap-4">
+              <label className="grid gap-2 text-sm text-white/70">
+                <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Asset</span>
+                <select
+                  value={selectedAsset}
+                  onChange={(event) => setSelectedAsset(event.target.value as typeof selectedAsset)}
+                  className="rounded-2xl border border-white/10 bg-white/4 px-4 py-3 text-white outline-none"
+                >
+                  {config.assets.map((asset) => (
+                    <option key={asset.symbol} value={asset.symbol} className="bg-[#0b1020]">
+                      {asset.symbol} · {asset.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="grid gap-2 text-sm text-white/70">
+                <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Amount</span>
+                <input
+                  value={amount}
+                  onChange={(event) => setAmount(event.target.value)}
+                  placeholder={`Amount in ${activeAsset.symbol}`}
+                  className="rounded-2xl border border-white/10 bg-white/4 px-4 py-3 text-white outline-none placeholder:text-white/34"
+                />
+              </label>
+
+              <label className="grid gap-2 text-sm text-white/70">
+                <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Purpose</span>
+                <textarea
+                  value={purpose}
+                  onChange={(event) => setPurpose(event.target.value)}
+                  placeholder="Treasury top-up, pilot funding, payout request, operator support..."
+                  rows={4}
+                  className="rounded-2xl border border-white/10 bg-white/4 px-4 py-3 text-white outline-none placeholder:text-white/34"
+                />
+              </label>
+
+              <label className="grid gap-2 text-sm text-white/70">
+                <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Handoff lane</span>
+                <select
+                  value={lane}
+                  onChange={(event) => setLane(event.target.value as typeof lane)}
+                  className="rounded-2xl border border-white/10 bg-white/4 px-4 py-3 text-white outline-none"
+                >
+                  {handoffLanes.map((item) => (
+                    <option key={item.value} value={item.value} className="bg-[#0b1020]">
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+          </div>
+
+          <div className="grid gap-4">
+            <div className="rounded-3xl border border-emerald-300/16 bg-emerald-300/[0.08] p-5">
+              <div className="text-[11px] uppercase tracking-[0.24em] text-emerald-100/76">Structured treasury packet</div>
+              <pre className="mt-4 whitespace-pre-wrap text-sm leading-7 text-white/72">{requestPacket}</pre>
+            </div>
+
+            <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
+              <div className="text-[11px] uppercase tracking-[0.24em] text-white/46">Lane summary</div>
+              <div className="mt-3 text-base font-medium text-white">{activeLane.label}</div>
+              <p className="mt-3 text-sm leading-7 text-white/60">{activeLane.summary}</p>
+              <div className="mt-4 flex flex-wrap gap-3">
+                {activeLane.routes.map((route) => (
+                  <Link key={`${activeLane.value}-${route.href}`} href={route.href} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                    {route.label}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={() => copyValue("treasury-request", requestPacket)}
+                disabled={!isRequestReady}
+                className={cn(buttonVariants({ size: "sm" }), !isRequestReady && "pointer-events-none opacity-50")}
+              >
+                <Clipboard className="h-4 w-4" />
+                Copy request packet
+              </button>
+              <button
+                type="button"
+                onClick={downloadRequest}
+                disabled={!isRequestReady}
+                className={cn(buttonVariants({ size: "sm", variant: "secondary" }), !isRequestReady && "pointer-events-none opacity-50")}
+              >
+                <Download className="h-4 w-4" />
+                Download request
+              </button>
+            </div>
+          </div>
         </div>
 
         <div className="rounded-3xl border border-amber-300/16 bg-amber-300/[0.08] p-5 text-sm leading-7 text-white/66">
