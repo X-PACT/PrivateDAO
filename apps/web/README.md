@@ -21,6 +21,7 @@ The goal is not a generic DAO dashboard. This app needs to preserve the real pro
 - `/dashboard` governance dashboard shell
 - `/analytics` analytics and treasury activity views
 - `/proof` reviewer and proof surface
+- `/documents` curated in-app document library for reviewer and trust docs
 - `/security` additive hardening and launch boundary surface
 - `/diagnostics` runtime, readiness, and verification surface
 - `/services` commercial comparison and pilot surface

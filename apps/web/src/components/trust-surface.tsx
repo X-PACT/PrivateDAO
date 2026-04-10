@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ArrowUpRight, ShieldCheck } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,23 +12,44 @@ export function TrustSurface() {
           <CardTitle>Reviewer and trust links</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 sm:grid-cols-2">
-          {trustLinks.map((link) => (
-            <a
+          {trustLinks.map((link) => {
+            const isInternal = link.href.startsWith("/");
+            const content = (
+              <>
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <div className="text-base font-medium text-white">{link.title}</div>
+                    <p className="mt-2 text-sm leading-7 text-white/56">{link.summary}</p>
+                  </div>
+                  <ArrowUpRight className="mt-1 h-4 w-4 text-cyan-300 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </div>
+              </>
+            );
+
+            if (isInternal) {
+              return (
+                <Link
+                  key={link.title}
+                  href={link.href}
+                  className="group rounded-3xl border border-white/8 bg-white/4 p-5 transition hover:border-cyan-300/25 hover:bg-white/6"
+                >
+                  {content}
+                </Link>
+              );
+            }
+
+            return (
+              <a
               key={link.title}
               href={link.href}
               rel="noreferrer"
               target="_blank"
               className="group rounded-3xl border border-white/8 bg-white/4 p-5 transition hover:border-cyan-300/25 hover:bg-white/6"
             >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <div className="text-base font-medium text-white">{link.title}</div>
-                  <p className="mt-2 text-sm leading-7 text-white/56">{link.summary}</p>
-                </div>
-                <ArrowUpRight className="mt-1 h-4 w-4 text-cyan-300 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </div>
-            </a>
-          ))}
+                {content}
+              </a>
+            );
+          })}
         </CardContent>
       </Card>
 

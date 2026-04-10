@@ -12,6 +12,7 @@ const navItems = [
   { href: "/command-center", label: "Command Center" },
   { href: "/dashboard", label: "Dashboard" },
   { href: "/proof", label: "Proof" },
+  { href: "/documents", label: "Documents" },
   { href: "/security", label: "Security" },
   { href: "/diagnostics", label: "Diagnostics" },
   { href: "/analytics", label: "Analytics" },

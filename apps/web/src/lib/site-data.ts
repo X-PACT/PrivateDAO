@@ -243,8 +243,8 @@ export const proofPackets = [
   {
     title: "Live proof V3",
     summary: "Dedicated additive hardening proof for Governance V3 and Settlement V3.",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/test-wallet-live-proof-v3.generated.md",
-    cta: "Open V3 packet",
+    href: "/documents/live-proof-v3",
+    cta: "Open curated V3 packet",
   },
   {
     title: "Frontier integrations",
@@ -255,8 +255,8 @@ export const proofPackets = [
   {
     title: "Audit packet",
     summary: "Reviewer and launch artifacts tied together with generated attestations.",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/audit-packet.generated.md",
-    cta: "Open audit packet",
+    href: "/documents/audit-packet",
+    cta: "Open curated audit packet",
   },
 ];
 
@@ -264,17 +264,17 @@ export const securitySurfaces = [
   {
     title: "Governance Hardening V3",
     body: "Token-supply quorum mode, policy snapshots, and reveal rebate vaults stay additive and versioned.",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/governance-hardening-v3.md",
+    href: "/documents/governance-hardening-v3",
   },
   {
     title: "Settlement Hardening V3",
     body: "Payout caps, evidence aging, REFHE/MagicBlock requirements, and single-use settlement consumption semantics.",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/settlement-hardening-v3.md",
+    href: "/documents/settlement-hardening-v3",
   },
   {
     title: "Mainnet blockers",
     body: "The app keeps launch boundaries honest: what is live now, what is pending-external, and what still needs custody/audit work.",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/mainnet-blockers.md",
+    href: "/documents/mainnet-blockers",
   },
 ];
 
@@ -555,17 +555,17 @@ export const trustLinks = [
   {
     title: "Audit packet",
     summary: "Generated audit-facing packet that ties reviewer and launch evidence together.",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/audit-packet.generated.md",
+    href: "/documents/audit-packet",
   },
   {
     title: "Launch trust packet",
     summary: "Commercial and launch trust narrative with boundaries kept explicit.",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/launch-trust-packet.generated.md",
+    href: "/documents/launch-trust-packet",
   },
   {
     title: "Mainnet blockers",
     summary: "Honest list of what still needs custody, audit, and runtime evidence before real-funds launch.",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/mainnet-blockers.md",
+    href: "/documents/mainnet-blockers",
   },
   {
     title: "Presentation deck",
@@ -575,7 +575,7 @@ export const trustLinks = [
   {
     title: "Live proof V3",
     summary: "Dedicated additive hardening proof packet for Governance V3 and Settlement V3.",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/test-wallet-live-proof-v3.generated.md",
+    href: "/documents/live-proof-v3",
   },
 ];
 
