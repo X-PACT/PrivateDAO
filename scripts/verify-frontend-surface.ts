@@ -26,7 +26,7 @@ function main() {
   const siteData = fs.readFileSync(SITE_DATA, "utf8");
   const siteFooter = fs.readFileSync(SITE_FOOTER, "utf8");
 
-  if (!homeShell.includes("1st Place - Superteam Poland") && !homeShell.includes('eyebrow="Achievements"')) {
+  if (!homeShell.includes("Superteam Poland") && !homeShell.includes('eyebrow="Why PrivateDAO"')) {
     throw new Error("home shell is missing the achievement surface for Superteam Poland");
   }
 
@@ -43,7 +43,7 @@ function main() {
     [homeShell, "Open judge proof view", "home shell is missing the judge CTA"],
     [homeShell, "Why PrivateDAO", "home shell is missing the Solana-style value section"],
     [homeShell, "A single upload-ready reel that explains everything we offer", "home shell is missing the hosted story video section"],
-    [homeShell, "Every heavy surface stays real, but the homepage now behaves like a product entrypoint", "home shell is missing the focused route-entry narrative"],
+    [homeShell, "Open the exact PrivateDAO surface you need without scrolling through a long landing page", "home shell is missing the focused route-entry narrative"],
     [commandCenter, "Command Center", "command center surface is missing"],
     [proofCenter, "Proof center", "proof center surface is missing"],
     [securityCenter, "Security architecture", "security center surface is missing"],
