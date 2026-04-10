@@ -13,6 +13,7 @@ import { ProofCenter } from "@/components/proof-center";
 import { SecurityCenter } from "@/components/security-center";
 import { SectionHeader } from "@/components/section-header";
 import { ServicesSurface } from "@/components/services-surface";
+import { SolutionCorridors } from "@/components/solution-corridors";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -143,6 +144,17 @@ export function HomeShell() {
 
       <section className="mx-auto mt-18 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <MetricsStrip />
+      </section>
+
+      <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHeader
+          eyebrow="Solution Corridors"
+          title="One governance product, multiple user-ready corridors"
+          description="The professional surface should make it obvious how the same stack serves private treasury teams, Realms-style committees, Android operators, gaming reward corridors, and RPC or API buyers."
+        />
+        <div className="mt-10">
+          <SolutionCorridors />
+        </div>
       </section>
 
       <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">

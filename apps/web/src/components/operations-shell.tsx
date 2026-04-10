@@ -1,0 +1,142 @@
+"use client";
+
+import type { ReactNode } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Activity, BarChart3, BriefcaseBusiness, FileText, LayoutDashboard, ShieldCheck, Sparkles, SquareTerminal } from "lucide-react";
+
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+const operationsNav = [
+  { href: "/command-center", label: "Command Center", icon: SquareTerminal, summary: "Create, vote, execute" },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, summary: "Governance state and treasury" },
+  { href: "/proof", label: "Proof", icon: Sparkles, summary: "Baseline and V3 evidence" },
+  { href: "/security", label: "Security", icon: ShieldCheck, summary: "Hardening and cryptography" },
+  { href: "/diagnostics", label: "Diagnostics", icon: Activity, summary: "Runtime and artifact health" },
+  { href: "/analytics", label: "Analytics", icon: BarChart3, summary: "Votes, proposals, actions" },
+  { href: "/services", label: "Services", icon: BriefcaseBusiness, summary: "Pilot, API, commercial packs" },
+  { href: "/documents", label: "Documents", icon: FileText, summary: "Curated reviewer and trust docs" },
+];
+
+type OperationsShellProps = {
+  eyebrow: string;
+  title: string;
+  description: string;
+  badges?: Array<{
+    label: string;
+    variant?: "cyan" | "violet" | "success" | "warning";
+  }>;
+  children: ReactNode;
+};
+
+export function OperationsShell({
+  eyebrow,
+  title,
+  description,
+  badges = [],
+  children,
+}: OperationsShellProps) {
+  const pathname = usePathname();
+
+  return (
+    <main className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <div className="grid gap-8 xl:grid-cols-[280px_minmax(0,1fr)]">
+        <aside className="xl:sticky xl:top-28 xl:self-start">
+          <Card className="border-white/10 bg-[#07101d]/88">
+            <CardHeader className="space-y-4">
+              <div className="space-y-2">
+                <div className="text-[11px] uppercase tracking-[0.34em] text-cyan-200/78">Operational Surface</div>
+                <CardTitle className="text-xl">Governance system navigation</CardTitle>
+              </div>
+              <p className="text-sm leading-7 text-white/56">
+                Multi-page operational UI for governance, proof, diagnostics, security, analytics, and commercial rollout.
+              </p>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              {operationsNav.map((item) => {
+                const Icon = item.icon;
+                const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      "flex items-start gap-3 rounded-2xl border px-4 py-3 transition",
+                      active
+                        ? "border-cyan-300/25 bg-cyan-300/10 text-white"
+                        : "border-white/8 bg-white/[0.03] text-white/68 hover:border-white/12 hover:bg-white/[0.05] hover:text-white",
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        "mt-0.5 flex h-9 w-9 items-center justify-center rounded-xl border",
+                        active ? "border-cyan-300/20 bg-cyan-300/14 text-cyan-100" : "border-white/8 bg-black/20 text-white/72",
+                      )}
+                    >
+                      <Icon className="h-4 w-4" />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-sm font-medium">{item.label}</div>
+                      <div className="mt-1 text-xs leading-6 text-white/45">{item.summary}</div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </CardContent>
+          </Card>
+
+          <Card className="mt-4 border-white/10 bg-white/[0.03]">
+            <CardHeader>
+              <CardTitle className="text-base">System rails</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 text-sm text-white/58">
+              <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">ZK: privacy review and proof anchors</div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">REFHE: confidential settlement and payout posture</div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">MagicBlock: execution corridor for responsive paths</div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">Fast RPC: operational speed, diagnostics, and runtime readiness</div>
+            </CardContent>
+          </Card>
+        </aside>
+
+        <div className="space-y-8">
+          <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,16,32,0.94),rgba(7,11,23,0.98))]">
+            <CardContent className="p-6 sm:p-8">
+              {badges.length > 0 ? (
+                <div className="flex flex-wrap gap-3">
+                  {badges.map((badge) => (
+                    <Badge key={badge.label} variant={badge.variant ?? "cyan"}>
+                      {badge.label}
+                    </Badge>
+                  ))}
+                </div>
+              ) : null}
+
+              <div className={cn("space-y-5", badges.length > 0 ? "mt-6" : "")}>
+                <div className="text-[11px] uppercase tracking-[0.34em] text-emerald-300/80">{eyebrow}</div>
+                <div className="max-w-4xl text-4xl font-semibold tracking-[-0.035em] text-white sm:text-5xl">{title}</div>
+                <p className="max-w-3xl text-base leading-8 text-white/60 sm:text-lg">{description}</p>
+              </div>
+
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link className={buttonVariants({ size: "sm" })} href="/command-center">
+                  Open command center
+                </Link>
+                <Link className={buttonVariants({ size: "sm", variant: "secondary" })} href="/dashboard">
+                  Open dashboard
+                </Link>
+                <Link className={buttonVariants({ size: "sm", variant: "outline" })} href="/documents">
+                  Open curated docs
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+
+          <div className="space-y-8">{children}</div>
+        </div>
+      </div>
+    </main>
+  );
+}

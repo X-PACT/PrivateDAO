@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 
 import { MetricsStrip } from "@/components/metrics-strip";
-import { SectionHeader } from "@/components/section-header";
 import { ConfidenceEngineSurface } from "@/components/confidence-engine-surface";
+import { OperationsShell } from "@/components/operations-shell";
 import { SecurityCenter } from "@/components/security-center";
+import { SectionHeader } from "@/components/section-header";
 import { ZkMatrixSurface } from "@/components/zk-matrix-surface";
-import { Badge } from "@/components/ui/badge";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
@@ -18,45 +18,42 @@ export const metadata: Metadata = buildRouteMetadata({
 
 export default function SecurityPage() {
   return (
-    <main className="mx-auto w-full max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-      <div className="flex flex-wrap gap-3">
-        <Badge variant="violet">Security</Badge>
-        <Badge variant="success">Additive hardening</Badge>
-        <Badge variant="cyan">ZK + REFHE + MagicBlock</Badge>
-      </div>
-      <div className="mt-6">
-        <SectionHeader
-          eyebrow="Security"
-          title="A security surface that keeps hardening, proof, and launch boundaries together"
-          description="The Next.js migration should make the security story easier to understand without flattening the truth: additive V3 hardening, integration rails, audit packets, and explicit launch blockers all stay visible."
-        />
-      </div>
-      <div className="mt-10">
+    <OperationsShell
+      eyebrow="Security"
+      title="A security surface that keeps hardening, proof, and launch boundaries together"
+      description="The security story stays productized without flattening the truth: additive V3 hardening, integration rails, audit packets, launch blockers, and the cryptographic rails behind the protocol."
+      badges={[
+        { label: "Security", variant: "violet" },
+        { label: "Additive hardening", variant: "success" },
+        { label: "ZK + REFHE + MagicBlock", variant: "cyan" },
+      ]}
+    >
+      <div>
         <MetricsStrip />
       </div>
-      <div className="mt-10">
+      <div>
         <SecurityCenter />
       </div>
-      <div className="mt-10">
+      <div>
         <SectionHeader
           eyebrow="ZK Matrix"
           title="A PrivateDAO-specific matrix for what ZK proves now and what it does not claim"
           description="This matrix turns the ZK story into a reviewer-friendly surface: live proofs, proposal-bound anchors, attestation, and zk_enforced posture on one side, with explicit non-claims on the other."
         />
       </div>
-      <div className="mt-10">
+      <div>
         <ZkMatrixSurface />
       </div>
-      <div className="mt-10">
+      <div>
         <SectionHeader
           eyebrow="Confidence Engine"
           title="A deterministic scoring engine for ZK, REFHE, MagicBlock, and Fast RPC"
           description="This surface does not claim magical security. It explains, with explicit weights, why one proposal pattern has stronger privacy depth, enforcement depth, execution integrity, or reviewer confidence than another."
         />
       </div>
-      <div className="mt-10">
+      <div>
         <ConfidenceEngineSurface />
       </div>
-    </main>
+    </OperationsShell>
   );
 }

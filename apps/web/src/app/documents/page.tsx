@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 
 import { DocumentLibrary } from "@/components/document-library";
-import { SectionHeader } from "@/components/section-header";
-import { Badge } from "@/components/ui/badge";
+import { OperationsShell } from "@/components/operations-shell";
 import { getCuratedDocuments } from "@/lib/curated-documents";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
@@ -18,22 +17,19 @@ export default function DocumentsPage() {
   const documents = getCuratedDocuments();
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-      <div className="flex flex-wrap gap-3">
-        <Badge variant="cyan">Documents</Badge>
-        <Badge variant="violet">Curated subset</Badge>
-        <Badge variant="warning">Viewer parity staged</Badge>
-      </div>
-      <div className="mt-6">
-        <SectionHeader
-          eyebrow="Document library"
-          title="Reviewer, trust, and launch documents inside the Next.js surface"
-          description="This is a curated in-app document route for the highest-value reviewer and trust surfaces. It does not replace the full query-driven docs viewer in the current live docs app yet."
-        />
-      </div>
-      <div className="mt-10">
+    <OperationsShell
+      eyebrow="Document library"
+      title="Reviewer, trust, and launch documents inside the Next.js surface"
+      description="This is the curated in-app document layer for the highest-value reviewer and trust surfaces. It complements the raw viewer, but already behaves like a proper product documentation center."
+      badges={[
+        { label: "Documents", variant: "cyan" },
+        { label: "Curated subset", variant: "violet" },
+        { label: "Viewer parity staged", variant: "warning" },
+      ]}
+    >
+      <div>
         <DocumentLibrary documents={documents} />
       </div>
-    </main>
+    </OperationsShell>
   );
 }

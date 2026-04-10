@@ -233,6 +233,54 @@ export const commercialServices = [
   },
 ];
 
+export const productCorridors = [
+  {
+    name: "PrivateDAO Core",
+    audience: "Private treasury teams and internal governance operators",
+    summary:
+      "The main governance system for private proposals, treasury execution, reviewer-visible evidence, and additive V3 hardening.",
+    technologies: ["ZK", "REFHE", "Governance V3", "Settlement V3"],
+    href: "/command-center",
+    cta: "Open core governance rail",
+  },
+  {
+    name: "Realms Compatibility Rail",
+    audience: "Teams that need a familiar committee and council posture",
+    summary:
+      "A compatibility-facing surface for organizations that still think in Realms-style committees but need stronger privacy, proof, and operational rails.",
+    technologies: ["ZK review", "Fast RPC", "Reviewer docs"],
+    href: "/documents/reviewer-fast-path",
+    cta: "Open reviewer compatibility rail",
+  },
+  {
+    name: "Android Native",
+    audience: "Mobile-first operators and signer workflows",
+    summary:
+      "A mobile and Android-facing runtime path for wallet access, reviewer journeys, and diagnostics without pretending the product is desktop-only.",
+    technologies: ["Wallet UX", "Diagnostics", "Fast RPC"],
+    href: "/viewer/android-native",
+    cta: "Open Android runtime surface",
+  },
+  {
+    name: "Gaming DAO Corridor",
+    audience: "Reward programs, tournaments, and token-native communities",
+    summary:
+      "MagicBlock-backed evidence corridors for reward distribution and proposal-scoped settlement logic where responsiveness matters.",
+    technologies: ["MagicBlock", "Settlement V3", "Proof"],
+    href: "/services",
+    cta: "Open gaming corridor",
+  },
+  {
+    name: "Read API + RPC",
+    audience: "Builders, operators, and hosted governance consumers",
+    summary:
+      "A commercial and operational surface for hosted reads, diagnostics, API-facing ops, and buyer-friendly product packaging.",
+    technologies: ["Fast RPC", "Hosted Read API", "Ops"],
+    href: "/services",
+    cta: "Open API and RPC surface",
+  },
+];
+
 export const proofPackets = [
   {
     title: "Live proof",
