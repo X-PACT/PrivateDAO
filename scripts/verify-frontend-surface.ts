@@ -64,7 +64,7 @@ function main() {
     [curatedDocuments, 'slug: "trust-package"', "curated documents are missing trust package"],
     [curatedDocuments, 'slug: "service-catalog"', "curated documents are missing service catalog"],
     [curatedDocuments, 'slug: "frontier-integrations"', "curated documents are missing frontier integrations"],
-    [siteFooter, "Discord soon", "site footer is missing the Discord placeholder"],
+    [siteFooter, "https://discord.gg/bC76YEcpDa", "site footer is missing the Discord server link"],
     [siteFooter, "https://www.youtube.com/@privatedao", "site footer is missing the YouTube channel"],
   ];
 

@@ -21,6 +21,7 @@ export function SiteSearchPanel() {
     );
   }, [query]);
   const suggestion = useMemo(() => getAssistantSuggestion(query), [query]);
+  const primaryIsExternal = suggestion.primaryActionHref.startsWith("http");
 
   return (
     <div className="grid gap-6">
@@ -59,18 +60,37 @@ export function SiteSearchPanel() {
             </div>
             <p className="mt-4 text-sm leading-7 text-white/68">{suggestion.summary}</p>
             <div className="mt-5 flex flex-wrap gap-3">
-              <Link className={cn(buttonVariants({ size: "sm" }))} href={suggestion.primaryActionHref}>
-                {suggestion.primaryActionLabel}
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              {suggestion.relatedRoutes.map((route) => (
-                <Link
-                  key={`${suggestion.title}-${route.href}`}
-                  className={cn(buttonVariants({ size: "sm", variant: "outline" }))}
-                  href={route.href}
-                >
-                  {route.label}
+              {primaryIsExternal ? (
+                <a className={cn(buttonVariants({ size: "sm" }))} href={suggestion.primaryActionHref} target="_blank" rel="noreferrer">
+                  {suggestion.primaryActionLabel}
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+              ) : (
+                <Link className={cn(buttonVariants({ size: "sm" }))} href={suggestion.primaryActionHref}>
+                  {suggestion.primaryActionLabel}
+                  <ArrowRight className="h-4 w-4" />
                 </Link>
+              )}
+              {suggestion.relatedRoutes.map((route) => (
+                route.href.startsWith("http") ? (
+                  <a
+                    key={`${suggestion.title}-${route.href}`}
+                    className={cn(buttonVariants({ size: "sm", variant: "outline" }))}
+                    href={route.href}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {route.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={`${suggestion.title}-${route.href}`}
+                    className={cn(buttonVariants({ size: "sm", variant: "outline" }))}
+                    href={route.href}
+                  >
+                    {route.label}
+                  </Link>
+                )
               ))}
             </div>
           </div>

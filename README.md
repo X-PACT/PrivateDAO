@@ -133,6 +133,7 @@ The README should stay aligned with this rule: implemented surfaces are describe
 | Command center | https://privatedao.org/command-center/ |
 | Governance dashboard | https://privatedao.org/dashboard/ |
 | Story video | https://privatedao.org/story/ |
+| Community | https://privatedao.org/community/ |
 | Judge / proof view | https://privatedao.org/proof/?judge=1 |
 | Wallet diagnostics | https://privatedao.org/diagnostics/ |
 | Services and buyer path | https://privatedao.org/services/ |
@@ -513,6 +514,7 @@ Key docs:
 - Manual Colosseum answers: [`docs/colosseum-submission-answers.md`](docs/colosseum-submission-answers.md)
 - Colosseum project page: https://arena.colosseum.org/projects/explore/praivatedao
 - Official YouTube channel: https://www.youtube.com/@privatedao
+- Official Discord server: https://discord.gg/bC76YEcpDa
 - Brand kit: [`docs/brand-kit.md`](docs/brand-kit.md)
 - Hosted brand avatar: https://privatedao.org/assets/brand/privatedao-avatar-1024.png
 - Technical explainer: [`docs/investor-video.md`](docs/investor-video.md)

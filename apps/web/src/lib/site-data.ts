@@ -180,9 +180,9 @@ export const communityLinks = [
   },
   {
     title: "Discord",
-    href: "#",
-    summary: "Server link will be added here as soon as the PrivateDAO Discord is live.",
-    cta: "Link coming soon",
+    href: "https://discord.gg/bC76YEcpDa",
+    summary: "Join the PrivateDAO server for product updates, community discussion, demo drops, and operator coordination.",
+    cta: "Join server",
   },
 ];
 

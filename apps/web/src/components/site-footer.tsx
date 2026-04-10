@@ -45,10 +45,15 @@ export function SiteFooter() {
             <Youtube className="h-4 w-4 text-red-300" />
             <span>YouTube</span>
           </a>
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/4 px-3 py-1.5 text-white/46">
-            <MessageSquareMore className="h-4 w-4 text-cyan-200/80" />
-            <span>Discord soon</span>
-          </span>
+          <a
+            href="https://discord.gg/bC76YEcpDa"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border border-cyan-400/18 bg-cyan-400/8 px-3 py-1.5 text-white/76 transition hover:border-cyan-300/30 hover:text-white"
+          >
+            <MessageSquareMore className="h-4 w-4 text-cyan-200" />
+            <span>Discord</span>
+          </a>
         </div>
       </div>
     </footer>

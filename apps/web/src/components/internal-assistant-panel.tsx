@@ -46,11 +46,18 @@ const assistantPaths = [
     href: "/tracks",
     icon: Sparkles,
   },
+  {
+    title: "I want the community channels",
+    summary: "Open Discord, YouTube, and the public community route without mixing them into proof or operator pages.",
+    href: "/community",
+    icon: Compass,
+  },
 ];
 
 export function InternalAssistantPanel() {
   const [query, setQuery] = useState("");
   const suggestion = useMemo(() => getAssistantSuggestion(query), [query]);
+  const primaryIsExternal = suggestion.primaryActionHref.startsWith("http");
 
   return (
     <div className="grid gap-6 xl:grid-cols-[1.02fr_0.98fr]">
@@ -108,14 +115,33 @@ export function InternalAssistantPanel() {
             <div className="mt-3 text-lg font-medium text-white">{suggestion.title}</div>
             <p className="mt-3 text-sm leading-7 text-white/68">{suggestion.summary}</p>
             <div className="mt-4 flex flex-wrap gap-3">
-              <Link href={suggestion.primaryActionHref} className={cn(buttonVariants({ size: "sm" }))}>
-                {suggestion.primaryActionLabel}
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              {suggestion.relatedRoutes.map((route) => (
-                <Link key={`${suggestion.title}-${route.href}`} href={route.href} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
-                  {route.label}
+              {primaryIsExternal ? (
+                <a href={suggestion.primaryActionHref} target="_blank" rel="noreferrer" className={cn(buttonVariants({ size: "sm" }))}>
+                  {suggestion.primaryActionLabel}
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+              ) : (
+                <Link href={suggestion.primaryActionHref} className={cn(buttonVariants({ size: "sm" }))}>
+                  {suggestion.primaryActionLabel}
+                  <ArrowRight className="h-4 w-4" />
                 </Link>
+              )}
+              {suggestion.relatedRoutes.map((route) => (
+                route.href.startsWith("http") ? (
+                  <a
+                    key={`${suggestion.title}-${route.href}`}
+                    href={route.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={cn(buttonVariants({ size: "sm", variant: "outline" }))}
+                  >
+                    {route.label}
+                  </a>
+                ) : (
+                  <Link key={`${suggestion.title}-${route.href}`} href={route.href} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                    {route.label}
+                  </Link>
+                )
               ))}
             </div>
           </div>

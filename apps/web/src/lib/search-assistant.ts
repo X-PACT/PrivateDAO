@@ -134,6 +134,19 @@ const assistantIntents: AssistantIntent[] = [
     keywords: ["service", "pricing", "pilot", "enterprise", "sales", "customer", "api", "hosted", "commercial", "rpc"],
   },
   {
+    title: "Join the PrivateDAO community",
+    summary:
+      "Use the community route when the goal is to join Discord, subscribe on YouTube, or follow public product updates without going through proof-heavy reviewer pages.",
+    primaryActionLabel: "Open community hub",
+    primaryActionHref: "/community",
+    relatedRoutes: [
+      { label: "Discord", href: "https://discord.gg/bC76YEcpDa" },
+      { label: "YouTube", href: "https://www.youtube.com/@privatedao" },
+      { label: "Story Video", href: "/story" },
+    ],
+    keywords: ["community", "discord", "join", "server", "youtube", "channel", "social", "telegram", "x"],
+  },
+  {
     title: "Search the document and viewer layer",
     summary:
       "Use the document library first for curated packets, then the broader viewer if you need raw repository depth or generated operational artifacts.",
