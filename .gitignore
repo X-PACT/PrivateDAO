@@ -9,6 +9,10 @@ wallets/
 wallets/
 .env
 *.json
+!apps/web/package.json
+!apps/web/package-lock.json
+!apps/web/components.json
+!apps/web/tsconfig.json
 !docs/proof-registry.json
 !docs/submission-registry.json
 !docs/review-attestation.generated.json
