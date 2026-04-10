@@ -16,21 +16,19 @@ export function GovernanceDashboard() {
 
   return (
     <>
-      <div className="grid gap-6 xl:grid-cols-[1.05fr_1.25fr]">
+      <div className="grid gap-6 xl:grid-cols-[0.92fr_1.08fr_0.94fr]">
         <DaoCard />
         <ExecutionLogPanel />
+        <VoteTimeline />
       </div>
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-[1.45fr_0.95fr]">
-        <div className="space-y-6">
-          <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
-            {proposalCards.map((proposal) => (
-              <ProposalCard key={proposal.id} proposal={proposal} onVote={setSelectedProposal} />
-            ))}
-          </div>
-          <TreasuryTable />
+      <div className="mt-6 space-y-6">
+        <div className="grid gap-6 lg:grid-cols-2 2xl:grid-cols-3">
+          {proposalCards.map((proposal) => (
+            <ProposalCard key={proposal.id} proposal={proposal} onVote={setSelectedProposal} />
+          ))}
         </div>
-        <VoteTimeline />
+        <TreasuryTable />
       </div>
 
       <VoteModal proposal={selectedProposal} onClose={() => setSelectedProposal(null)} />

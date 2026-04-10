@@ -43,7 +43,7 @@ function main() {
     [homeShell, "Open judge proof view", "home shell is missing the judge CTA"],
     [homeShell, "Why PrivateDAO", "home shell is missing the Solana-style value section"],
     [homeShell, "A single upload-ready reel that explains everything we offer", "home shell is missing the hosted story video section"],
-    [homeShell, "The migration keeps the product path obvious for normal users", "home shell is missing buyer-journey narrative"],
+    [homeShell, "Every heavy surface stays real, but the homepage now behaves like a product entrypoint", "home shell is missing the focused route-entry narrative"],
     [commandCenter, "Command Center", "command center surface is missing"],
     [proofCenter, "Proof center", "proof center surface is missing"],
     [securityCenter, "Security architecture", "security center surface is missing"],

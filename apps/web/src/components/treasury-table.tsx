@@ -3,8 +3,8 @@ import { treasuryRows } from "@/lib/site-data";
 
 export function TreasuryTable() {
   return (
-    <Card className="overflow-hidden">
-      <CardHeader>
+    <Card className="overflow-hidden border-white/10 bg-[linear-gradient(180deg,rgba(10,15,29,0.94),rgba(6,9,20,0.98))]">
+      <CardHeader className="pb-4">
         <CardTitle>Treasury table</CardTitle>
       </CardHeader>
       <CardContent className="overflow-x-auto">
@@ -20,7 +20,7 @@ export function TreasuryTable() {
           </thead>
           <tbody>
             {treasuryRows.map((row) => (
-              <tr key={row.asset} className="rounded-2xl bg-white/4 text-sm text-white/75">
+              <tr key={row.asset} className="rounded-[20px] bg-white/[0.03] text-sm text-white/75">
                 <td className="rounded-l-2xl border border-white/8 px-4 py-4 font-medium text-white">{row.asset}</td>
                 <td className="border-y border-white/8 px-4 py-4">{row.allocation}</td>
                 <td className="border-y border-white/8 px-4 py-4">{row.value}</td>

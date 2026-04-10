@@ -2,17 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, LockKeyhole, Shield, Sparkles, Zap } from "lucide-react";
+import { ArrowRight, Compass, LockKeyhole, Radar, Shield, Sparkles, WalletCards, Zap } from "lucide-react";
 
 import { BuyerJourneyRail } from "@/components/buyer-journey-rail";
-import { CommandCenter } from "@/components/command-center";
 import { GovernanceDashboard } from "@/components/governance-dashboard";
-import { DiagnosticsCenter } from "@/components/diagnostics-center";
 import { MetricsStrip } from "@/components/metrics-strip";
-import { ProofCenter } from "@/components/proof-center";
-import { SecurityCenter } from "@/components/security-center";
 import { SectionHeader } from "@/components/section-header";
-import { ServicesSurface } from "@/components/services-surface";
 import { SolutionCorridors } from "@/components/solution-corridors";
 import { SponsorSignalBar } from "@/components/sponsor-signal-bar";
 import { VideoCenter } from "@/components/video-center";
@@ -27,12 +22,56 @@ export function HomeShell() {
   const [persona, setPersona] = useState<keyof typeof heroPersonas>("buyer");
   const activePersona = heroPersonas[persona];
   const { judgeViewUrl } = useSiteUrls();
+  const surfaceCards = [
+    {
+      title: "Command Center",
+      description: "Create, vote, reveal, and execute through the wallet-first governance rail.",
+      href: "/command-center",
+      cta: "Open command center",
+      icon: Compass,
+    },
+    {
+      title: "Proof Center",
+      description: "Give judges and reviewers the shortest path to baseline, V3, and trust packets.",
+      href: "/proof/?judge=1",
+      cta: "Open proof path",
+      icon: Shield,
+    },
+    {
+      title: "Security Layer",
+      description: "Open ZK matrix, confidence engine, policy composer, and launch boundaries.",
+      href: "/security",
+      cta: "Open security",
+      icon: LockKeyhole,
+    },
+    {
+      title: "Services and API",
+      description: "Surface pilot packages, RPC, hosted reads, and enterprise governance offerings.",
+      href: "/services",
+      cta: "Open services",
+      icon: WalletCards,
+    },
+    {
+      title: "Diagnostics",
+      description: "Check runtime posture, readiness, generated artifacts, and reviewer surfaces.",
+      href: "/diagnostics",
+      cta: "Open diagnostics",
+      icon: Radar,
+    },
+    {
+      title: "Competition Center",
+      description: "Go directly to submission-ready tracks, decks, and proof routes for judges.",
+      href: "/tracks",
+      cta: "Open tracks",
+      icon: Sparkles,
+    },
+  ];
 
   return (
     <main className="pb-24">
-      <section className="mx-auto w-full max-w-7xl px-4 pt-16 sm:px-6 lg:px-8 lg:pt-24">
-        <div className="grid items-start gap-8 xl:grid-cols-[1.08fr_0.92fr]">
-          <div className="space-y-8">
+      <section className="mx-auto w-full max-w-7xl px-4 pt-12 sm:px-6 lg:px-8 lg:pt-18">
+        <div className="grid items-start gap-8 xl:grid-cols-[1.12fr_0.88fr]">
+          <div className="space-y-7">
             <div className="flex flex-wrap gap-3">
               <Badge variant="cyan">Private governance on Solana</Badge>
               <Badge variant="violet">ZK + REFHE + MagicBlock + Fast RPC</Badge>
@@ -55,12 +94,12 @@ export function HomeShell() {
                 </button>
               ))}
             </div>
-            <div className="space-y-6">
+            <div className="space-y-5">
               <div className="text-[11px] uppercase tracking-[0.34em] text-emerald-300/80">{activePersona.eyebrow}</div>
-              <div className="max-w-4xl text-4xl font-semibold tracking-[-0.04em] text-white sm:text-5xl lg:text-6xl xl:text-[4.25rem]">
+              <div className="max-w-3xl text-4xl font-semibold tracking-[-0.04em] text-white sm:text-5xl lg:text-[3.8rem] xl:text-[4rem]">
                 {activePersona.title}
               </div>
-              <p className="max-w-2xl text-base leading-8 text-white/62 sm:text-lg xl:text-[1.15rem]">
+              <p className="max-w-2xl text-base leading-8 text-white/62 sm:text-lg">
                 {activePersona.description}
               </p>
             </div>
@@ -84,7 +123,7 @@ export function HomeShell() {
             </div>
           </div>
 
-          <Card className="overflow-hidden border-white/12 xl:mt-3">
+          <Card className="overflow-hidden border-white/12 bg-[linear-gradient(180deg,rgba(13,18,34,0.94),rgba(7,10,22,0.98))] xl:mt-2">
             <CardHeader>
               <div className="flex items-center gap-3">
                 <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-emerald-300/15 bg-emerald-300/10 text-emerald-200">
@@ -98,9 +137,9 @@ export function HomeShell() {
             </CardHeader>
             <CardContent className="grid gap-3">
               {techCards.map((item, index) => (
-                <div key={item.name} className="rounded-3xl border border-white/8 bg-white/4 p-4">
+                <div key={item.name} className="rounded-[24px] border border-white/8 bg-white/[0.03] p-4">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/8 bg-black/30 text-white/85">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-[18px] border border-white/8 bg-black/30 text-white/85">
                       {index === 0 ? (
                         <Sparkles className="h-4 w-4" />
                       ) : index === 1 ? (
@@ -221,42 +260,42 @@ export function HomeShell() {
 
       <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
-          eyebrow="Solution Corridors"
-          title="One governance product, multiple user-ready corridors"
-          description="The professional surface should make it obvious how the same stack serves private treasury teams, Realms-style committees, Android operators, gaming reward corridors, and RPC or API buyers."
+          eyebrow="Explore PrivateDAO"
+          title="Every heavy surface stays real, but the homepage now behaves like a product entrypoint"
+          description="Instead of stacking every operational panel on the landing page, route users into the exact surface they need: command flow, proof, security, diagnostics, services, or competition tracks."
         />
-        <div className="mt-10">
-          <SolutionCorridors />
+        <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {surfaceCards.map((item) => {
+            const Icon = item.icon;
+
+            return (
+              <Card key={item.title} className="border-white/10 bg-[linear-gradient(180deg,rgba(10,15,30,0.92),rgba(6,9,20,0.98))]">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-[18px] border border-white/10 bg-white/[0.04] text-cyan-200">
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <CardTitle className="text-xl">{item.title}</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-sm leading-7 text-white/58">{item.description}</p>
+                  <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "w-full justify-between")} href={item.href}>
+                    {item.cta}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </section>
 
       <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
-          eyebrow="Buyer Journey"
-          title="The migration keeps the product path obvious for normal users"
-          description="Instead of forcing users through a raw governance console, the app should guide them from product-pack selection to DAO setup, proposal submission, private voting, and treasury execution."
-        />
-        <div className="mt-10">
-          <BuyerJourneyRail />
-        </div>
-      </section>
-
-      <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          eyebrow="Command Center"
-          title="The core governance flow stays in one visible product rail"
-          description="Proposal creation, voting, evidence gates, and treasury execution should feel connected to the same product surface rather than split across unrelated screens."
-        />
-        <div className="mt-10">
-          <CommandCenter />
-        </div>
-      </section>
-
-      <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          eyebrow="Governance dashboard"
-          title="A reusable React dashboard for proposals, treasury actions, and execution visibility"
-          description="This migration keeps the current product story intact: proposal cards, a treasury table, status badges, a vote timeline, and an execution log panel in one reusable surface."
+          eyebrow="Operational Dashboard"
+          title="A calmer, more product-grade dashboard for proposals, treasury, and execution posture"
+          description="The dashboard stays real and interactive, but it now sits in one concentrated section with clearer ratios, better card rhythm, and less homepage noise around it."
         />
         <div className="mt-10">
           <GovernanceDashboard />
@@ -265,66 +304,28 @@ export function HomeShell() {
 
       <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
-          eyebrow="Proof center"
-          title="Baseline proof, V3 hardening, and runtime evidence stay first-class in the new app"
-          description="The migration should carry forward the reviewer story that already exists in the repository, including generated packets, integration proof, and honest launch boundaries."
+          eyebrow="Corridors"
+          title="The same stack still powers buyer corridors, operator paths, and service packaging"
+          description="The homepage now samples these routes instead of embedding every heavy panel, while keeping all corridors live and reachable in one click."
         />
-        <div className="mt-10">
-          <ProofCenter />
-        </div>
-      </section>
-
-      <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          eyebrow="Security"
-          title="Security and launch boundaries stay visible in the product, not only in docs"
-          description="Additive V3 hardening, launch blockers, integrations, and audit-oriented trust surfaces should remain understandable to operators, judges, and buyers."
-        />
-        <div className="mt-10">
-          <SecurityCenter />
-        </div>
-      </section>
-
-      <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          eyebrow="Product packs"
-          title="Commercial surfaces that still explain the technology clearly"
-          description="PrivateDAO is not only a protocol. The app also needs to communicate service packs, API-ready operations, and buyer-friendly rollout paths."
-        />
-        <div className="mt-10 grid gap-6 lg:grid-cols-4">
-          {servicePacks.map((pack) => (
-            <Card key={pack.name} className="h-full">
-              <CardHeader>
-                <CardTitle className="text-lg">{pack.name}</CardTitle>
-              </CardHeader>
-              <CardContent className="flex h-full flex-col gap-4">
-                <p className="text-sm leading-7 text-white/58">{pack.fit}</p>
-                <div className="mt-auto rounded-3xl border border-white/8 bg-white/4 p-4 text-sm text-white/70">{pack.cta}</div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          eyebrow="Services"
-          title="API and operator services presented in the same product language"
-          description="The migration keeps the hosted read API, pilot, and operator support surfaces visible to normal users instead of burying them in documentation."
-        />
-        <div className="mt-10">
-          <ServicesSurface />
-        </div>
-      </section>
-
-      <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          eyebrow="Diagnostics"
-          title="Generated artifacts and runtime checks stay close to the product experience"
-          description="The migration should not lose the operator story: reviewer bundles, readiness gates, wallet runtime boundaries, and artifact freshness all need a clean UI surface."
-        />
-        <div className="mt-10">
-          <DiagnosticsCenter />
+        <div className="mt-10 grid gap-8 xl:grid-cols-[1.08fr_0.92fr]">
+          <SolutionCorridors />
+          <div className="space-y-6">
+            <BuyerJourneyRail />
+            <div className="grid gap-5 sm:grid-cols-2">
+              {servicePacks.slice(0, 4).map((pack) => (
+                <Card key={pack.name} className="h-full border-white/10 bg-[linear-gradient(180deg,rgba(10,15,30,0.92),rgba(6,9,20,0.98))]">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-lg">{pack.name}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <p className="text-sm leading-7 text-white/58">{pack.fit}</p>
+                    <div className="rounded-[22px] border border-white/8 bg-white/[0.03] p-3 text-sm text-white/68">{pack.cta}</div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
     </main>

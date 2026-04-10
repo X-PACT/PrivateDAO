@@ -5,15 +5,15 @@ import { executionLog } from "@/lib/site-data";
 
 export function ExecutionLogPanel() {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Execution log panel</CardTitle>
+    <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,15,29,0.94),rgba(6,9,20,0.98))]">
+      <CardHeader className="pb-4">
+        <CardTitle>Execution log</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {executionLog.map((item) => (
           <div
             key={item.label}
-            className="flex items-start gap-4 rounded-3xl border border-white/8 bg-white/4 p-4"
+            className="flex items-start gap-4 rounded-[22px] border border-white/8 bg-white/[0.03] p-4"
           >
             <div className="rounded-full border border-emerald-300/20 bg-emerald-300/10 p-2 text-emerald-200">
               <CheckCircle2 className="h-4 w-4" />
