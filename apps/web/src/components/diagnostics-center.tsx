@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Activity, ArrowUpRight, FileCheck2 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -12,14 +13,9 @@ export function DiagnosticsCenter() {
           <CardTitle>Operational diagnostics</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4">
-          {diagnosticsChecks.map((check) => (
-            <a
-              key={check.name}
-              href={check.href}
-              rel="noreferrer"
-              target="_blank"
-              className="group rounded-3xl border border-white/8 bg-white/4 p-5 transition hover:border-cyan-300/30 hover:bg-white/6"
-            >
+          {diagnosticsChecks.map((check) => {
+            const isInternal = check.href.startsWith("/");
+            const content = (
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
@@ -35,8 +31,32 @@ export function DiagnosticsCenter() {
                 </div>
                 <ArrowUpRight className="mt-1 h-4 w-4 text-cyan-300 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </div>
-            </a>
-          ))}
+            );
+
+            if (isInternal) {
+              return (
+                <Link
+                  key={check.name}
+                  href={check.href}
+                  className="group rounded-3xl border border-white/8 bg-white/4 p-5 transition hover:border-cyan-300/30 hover:bg-white/6"
+                >
+                  {content}
+                </Link>
+              );
+            }
+
+            return (
+              <a
+              key={check.name}
+              href={check.href}
+              rel="noreferrer"
+              target="_blank"
+              className="group rounded-3xl border border-white/8 bg-white/4 p-5 transition hover:border-cyan-300/30 hover:bg-white/6"
+            >
+                {content}
+              </a>
+            );
+          })}
         </CardContent>
       </Card>
 

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ArrowUpRight, BriefcaseBusiness } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -30,21 +31,42 @@ export function ServicesSurface() {
           <CardTitle>Pilot and trust journey</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4">
-          {servicesJourney.map((step) => (
-            <a
+          {servicesJourney.map((step) => {
+            const isInternal = step.href.startsWith("/");
+            const content = (
+              <>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="text-base font-medium text-white">{step.title}</div>
+                  <ArrowUpRight className="mt-1 h-4 w-4 text-emerald-300 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </div>
+                <p className="mt-3 text-sm leading-7 text-white/56">{step.detail}</p>
+              </>
+            );
+
+            if (isInternal) {
+              return (
+                <Link
+                  className="group rounded-3xl border border-white/8 bg-white/4 p-5 transition hover:border-emerald-300/25 hover:bg-white/6"
+                  href={step.href}
+                  key={step.title}
+                >
+                  {content}
+                </Link>
+              );
+            }
+
+            return (
+              <a
               className="group rounded-3xl border border-white/8 bg-white/4 p-5 transition hover:border-emerald-300/25 hover:bg-white/6"
               href={step.href}
               key={step.title}
               rel="noreferrer"
               target="_blank"
             >
-              <div className="flex items-start justify-between gap-4">
-                <div className="text-base font-medium text-white">{step.title}</div>
-                <ArrowUpRight className="mt-1 h-4 w-4 text-emerald-300 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </div>
-              <p className="mt-3 text-sm leading-7 text-white/56">{step.detail}</p>
-            </a>
-          ))}
+                {content}
+              </a>
+            );
+          })}
         </CardContent>
       </Card>
     </div>

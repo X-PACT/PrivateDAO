@@ -1,9 +1,11 @@
+import Link from "next/link";
 import { ArrowUpRight, LockKeyhole, ShieldCheck, WalletCards } from "lucide-react";
 
 import { StatusBadge } from "@/components/status-badge";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import { commandCenterPacks, executionLog, proposalCards } from "@/lib/site-data";
 
 export function CommandCenter() {
@@ -57,9 +59,9 @@ export function CommandCenter() {
             <Button size="sm" variant="secondary">
               Open vote modal
             </Button>
-            <Button size="sm" variant="outline">
-              Review proof center
-            </Button>
+            <Link href="/documents/reviewer-fast-path" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+              Review curated proof docs
+            </Link>
           </div>
         </CardContent>
       </Card>

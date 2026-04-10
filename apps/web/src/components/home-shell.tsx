@@ -94,6 +94,9 @@ export function HomeShell() {
                   <div className="text-[11px] uppercase tracking-[0.3em] text-fuchsia-300/70">Security</div>
                   <div className="mt-3 text-2xl font-semibold text-white">V3 hardening</div>
                   <div className="mt-2 text-sm leading-7 text-white/55">Quorum snapshots, evidence gates, and additive policy companions stay explicit.</div>
+                  <Link className="mt-4 inline-flex text-sm text-cyan-200 transition hover:text-cyan-100" href="/documents/governance-hardening-v3">
+                    Open curated hardening doc
+                  </Link>
                 </CardContent>
               </Card>
               <Card className="bg-white/[0.03]">
@@ -101,6 +104,9 @@ export function HomeShell() {
                   <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-300/70">Commercial</div>
                   <div className="mt-3 text-2xl font-semibold text-white">API + services</div>
                   <div className="mt-2 text-sm leading-7 text-white/55">Pilot-ready packs, hosted read surfaces, and operator trust packets.</div>
+                  <Link className="mt-4 inline-flex text-sm text-cyan-200 transition hover:text-cyan-100" href="/documents/trust-package">
+                    Open curated trust package
+                  </Link>
                 </CardContent>
               </Card>
             </div>

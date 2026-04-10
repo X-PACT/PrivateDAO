@@ -297,7 +297,7 @@ export const servicesJourney = [
   {
     title: "Trust Package",
     detail: "A buyer-readable path into proof packets, runtime evidence, and launch readiness boundaries.",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/trust-package.md",
+    href: "/documents/trust-package",
   },
 ];
 
@@ -337,13 +337,13 @@ export const diagnosticsChecks = [
     name: "Proof packets",
     state: "Healthy",
     detail: "Baseline and V3 proof packets are generated and linked through the reviewer bundle.",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/test-wallet-live-proof-v3.generated.md",
+    href: "/documents/live-proof-v3",
   },
   {
     name: "Readiness gates",
     state: "Tracked",
     detail: "Mainnet blockers, launch checklist, and release ceremony attestations remain explicit and versioned.",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/mainnet-readiness.generated.md",
+    href: "/documents/mainnet-blockers",
   },
   {
     name: "Wallet runtime",
@@ -430,7 +430,7 @@ export const commandCenterReferences = [
   {
     title: "Dedicated V3 proof",
     description: "Governance V3 and Settlement V3 proof packet for the additive hardening path.",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/test-wallet-live-proof-v3.generated.md",
+    href: "/documents/live-proof-v3",
   },
   {
     title: "Frontier integrations",
@@ -440,7 +440,7 @@ export const commandCenterReferences = [
   {
     title: "Launch trust packet",
     description: "Commercial and launch boundaries linked to operational evidence.",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/launch-trust-packet.generated.md",
+    href: "/documents/launch-trust-packet",
   },
 ];
 
