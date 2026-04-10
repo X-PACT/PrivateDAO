@@ -15,7 +15,17 @@ export const metadata: Metadata = buildRouteMetadata({
   keywords: ["engage", "pilot request", "hosted read api", "enterprise governance", "mainnet trajectory"],
 });
 
-export default function EngagePage() {
+type EngagePageProps = {
+  searchParams?: { intake?: string };
+};
+
+function normalizeIntake(value?: string) {
+  return value === "pilot" || value === "rpc" || value === "gaming" || value === "payments" || value === "support" ? value : undefined;
+}
+
+export default function EngagePage({ searchParams }: EngagePageProps) {
+  const initialKind = normalizeIntake(searchParams?.intake);
+
   return (
     <OperationsShell
       eyebrow="Engage"
@@ -28,7 +38,7 @@ export default function EngagePage() {
       ]}
     >
       <LeadSupportIntake mode="engage" />
-      <ProductIntakeForms mode="engage" />
+      <ProductIntakeForms mode="engage" initialKind={initialKind} />
       <CustomerConversionSurface />
       <PlatformServiceArchitecture />
     </OperationsShell>

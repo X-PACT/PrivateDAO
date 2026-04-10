@@ -139,6 +139,7 @@ const intakePresets: IntakePreset[] = [
 
 type ProductIntakeFormsProps = {
   mode: IntakeMode;
+  initialKind?: IntakeKind;
 };
 
 function buildPacket(params: {
@@ -169,8 +170,8 @@ function buildPacket(params: {
   ].join("\n");
 }
 
-export function ProductIntakeForms({ mode }: ProductIntakeFormsProps) {
-  const [kind, setKind] = useState<IntakeKind>(mode === "engage" ? "pilot" : "support");
+export function ProductIntakeForms({ mode, initialKind }: ProductIntakeFormsProps) {
+  const [kind, setKind] = useState<IntakeKind>(initialKind ?? (mode === "engage" ? "pilot" : "support"));
   const [name, setName] = useState("");
   const [org, setOrg] = useState("");
   const [contact, setContact] = useState("");

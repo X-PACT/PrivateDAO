@@ -67,10 +67,16 @@ export function ServiceOperationalCards() {
                 </div>
               </div>
 
-              <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "mt-5")} href={card.bestRoute.href}>
-                {card.bestRoute.label}
-                <ArrowUpRight className="h-4 w-4" />
-              </Link>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Link className={cn(buttonVariants({ size: "sm" }))} href={card.intakeRoute.href}>
+                  {card.intakeRoute.label}
+                  <ArrowUpRight className="h-4 w-4" />
+                </Link>
+                <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} href={card.bestRoute.href}>
+                  {card.bestRoute.label}
+                  <ArrowUpRight className="h-4 w-4" />
+                </Link>
+              </div>
             </div>
           );
         })}

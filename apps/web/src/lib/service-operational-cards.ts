@@ -11,6 +11,10 @@ export type ServiceOperationalCard = {
   summary: string;
   tryNow: string;
   evidence: MetricPreview[];
+  intakeRoute: {
+    label: string;
+    href: string;
+  };
   bestRoute: {
     label: string;
     href: string;
@@ -51,6 +55,10 @@ export function getServiceOperationalCards(): ServiceOperationalCard[] {
       tryNow:
         "Open Services and Diagnostics, inspect hosted read coverage, and route into the command center to see the same infrastructure powering live DAO actions on Devnet.",
       evidence: [rpcCoverage, rpcLatency, fallbackRecovery].filter(Boolean) as MetricPreview[],
+      intakeRoute: {
+        label: "Request RPC access",
+        href: "/engage?intake=rpc",
+      },
       bestRoute: {
         label: "Open RPC surface",
         href: "/services",
@@ -67,6 +75,10 @@ export function getServiceOperationalCards(): ServiceOperationalCard[] {
       tryNow:
         "Use Products for the gaming corridor, then continue into the command center to model reward, clan, or event decisions through the live proposal flow.",
       evidence: [magicblockSettlement, executeHealth, walletCoverage].filter(Boolean) as MetricPreview[],
+      intakeRoute: {
+        label: "Request gaming demo",
+        href: "/engage?intake=gaming",
+      },
       bestRoute: {
         label: "Open gaming corridor",
         href: "/products",
@@ -83,6 +95,10 @@ export function getServiceOperationalCards(): ServiceOperationalCard[] {
       tryNow:
         "Open Services, then the command center, and walk through treasury-backed proposal execution as the governed payout path for contributors or vendors.",
       evidence: [payoutCoverage, executeHealth, proofCompletion].filter(Boolean) as MetricPreview[],
+      intakeRoute: {
+        label: "Request payments flow",
+        href: "/engage?intake=payments",
+      },
       bestRoute: {
         label: "Open payments path",
         href: "/services",
@@ -99,6 +115,10 @@ export function getServiceOperationalCards(): ServiceOperationalCard[] {
       tryNow:
         "Open Security, inspect the ZK matrix and confidence engine, then jump into Proof and Diagnostics to see the encrypted and reviewer-facing path stay connected.",
       evidence: [proofFreshness, walletCoverage, proofCompletion].filter(Boolean) as MetricPreview[],
+      intakeRoute: {
+        label: "Start a pilot",
+        href: "/engage?intake=pilot",
+      },
       bestRoute: {
         label: "Open trust layer",
         href: "/security",

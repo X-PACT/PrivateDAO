@@ -6,7 +6,17 @@ import { ProductIntakeForms } from "@/components/product-intake-forms";
 import { VideoCenter } from "@/components/video-center";
 import { TrustSurface } from "@/components/trust-surface";
 
-export default function CommunityPage() {
+type CommunityPageProps = {
+  searchParams?: { intake?: string };
+};
+
+function normalizeIntake(value?: string) {
+  return value === "pilot" || value === "rpc" || value === "gaming" || value === "payments" || value === "support" ? value : undefined;
+}
+
+export default function CommunityPage({ searchParams }: CommunityPageProps) {
+  const initialKind = normalizeIntake(searchParams?.intake);
+
   return (
     <OperationsShell
       eyebrow="Community"
@@ -20,7 +30,7 @@ export default function CommunityPage() {
     >
       <CommunityHub />
       <LeadSupportIntake mode="community" />
-      <ProductIntakeForms mode="community" />
+      <ProductIntakeForms mode="community" initialKind={initialKind} />
       <PlatformServiceArchitecture />
       <VideoCenter compact />
       <TrustSurface />
