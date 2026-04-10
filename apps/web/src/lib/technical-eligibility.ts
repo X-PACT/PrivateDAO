@@ -1,0 +1,229 @@
+export type TechnicalEvidenceRoute = {
+  label: string;
+  href: string;
+};
+
+export type TrackTechnicalFit = {
+  coreIdentity: Array<{ label: string; value: string }>;
+  sponsorUsage: string[];
+  evidenceRoutes: TechnicalEvidenceRoute[];
+  validationGates: string[];
+};
+
+const coreIdentity = [
+  { label: "Program ID", value: "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx" },
+  { label: "Verification Wallet", value: "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD" },
+  { label: "Governance Mint", value: "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt" },
+  { label: "Token Program", value: "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb" },
+];
+
+const defaultRoutes: TechnicalEvidenceRoute[] = [
+  { label: "Frontier integrations", href: "/documents/frontier-integrations" },
+  { label: "PDAO attestation", href: "/viewer/pdao-attestation.generated" },
+  { label: "Wallet matrix", href: "/viewer/wallet-compatibility-matrix.generated" },
+  { label: "Judge proof path", href: "/proof/?judge=1" },
+];
+
+const fits: Record<string, TrackTechnicalFit> = {
+  "colosseum-frontier": {
+    coreIdentity,
+    sponsorUsage: [
+      "The live route uses a real wallet adapter path, a real program id, and a real governance mint instead of a staged mock.",
+      "The product shell connects onboarding, command center, proof, diagnostics, services, and trust packets into one startup-quality surface.",
+      "The submission path is deliberately product-first after Colosseum shifted Frontier judging toward product impact and business quality.",
+    ],
+    evidenceRoutes: [
+      { label: "Frontier operating brief", href: "/documents/colosseum-frontier-2026-operating-brief" },
+      ...defaultRoutes,
+    ],
+    validationGates: [
+      "npm run verify:submission-registry",
+      "npm run verify:generated-artifacts",
+      "npm run web:verify:live:root",
+    ],
+  },
+  "privacy-track": {
+    coreIdentity,
+    sponsorUsage: [
+      "MagicBlock is not a badge only: confidential settlement corridors and runtime evidence are already exposed on Devnet.",
+      "REFHE is tied to confidential payout plans and proposal-bound settlement, not positioned as a vague future primitive.",
+      "ZK proof anchors, reviewer packets, and the confidence engine together show privacy, reviewability, and execution integrity in one flow.",
+    ],
+    evidenceRoutes: [
+      { label: "ZK capability matrix", href: "/documents/zk-capability-matrix" },
+      { label: "Confidence engine", href: "/documents/cryptographic-confidence-engine" },
+      { label: "Live proof V3", href: "/documents/live-proof-v3" },
+      { label: "Frontier integrations", href: "/documents/frontier-integrations" },
+    ],
+    validationGates: [
+      "npm run verify:test-wallet-live-proof:v3",
+      "npm run verify:zk-docs",
+      "npm run verify:magicblock-runtime",
+    ],
+  },
+  "eitherway-live-dapp": {
+    coreIdentity,
+    sponsorUsage: [
+      "Solflare is the preferred wallet path in-product, while Phantom and Backpack remain first-class fallbacks in the adapter stack.",
+      "The live dApp corridor is not isolated from proof or services; it continues into command center, dashboard, and judge proof without leaving the app.",
+      "QuickNode/Kamino/DFlow fit is shown through wallet UX, runtime diagnostics, treasury corridors, and buyer-facing API packaging rather than logos alone.",
+    ],
+    evidenceRoutes: [
+      { label: "Start workspace", href: "/start" },
+      { label: "Command center", href: "/command-center" },
+      { label: "Wallet matrix", href: "/viewer/wallet-compatibility-matrix.generated" },
+      { label: "Frontier integrations", href: "/documents/frontier-integrations" },
+    ],
+    validationGates: [
+      "npm run verify:browser-smoke",
+      "npm run verify:wallet-matrix",
+      "npm run web:verify:live:root",
+    ],
+  },
+  "rpc-infrastructure": {
+    coreIdentity,
+    sponsorUsage: [
+      "Fast RPC is surfaced as hosted reads, diagnostics, runtime evidence, and buyer packaging rather than a buried infra detail.",
+      "The read path is backend-indexer based and already tied to proposal counts, confidential payout counts, and MagicBlock/REFHE runtime visibility.",
+      "This lets a QuickNode-style judge see operational value, not only raw endpoint usage.",
+    ],
+    evidenceRoutes: [
+      { label: "Diagnostics", href: "/diagnostics" },
+      { label: "Frontier integrations", href: "/documents/frontier-integrations" },
+      { label: "Runtime evidence", href: "/viewer/runtime-evidence.generated" },
+      { label: "Service catalog", href: "/documents/service-catalog" },
+    ],
+    validationGates: [
+      "npm run verify:runtime-evidence",
+      "npm run verify:runtime-surface",
+      "npm run verify:frontier-integrations",
+    ],
+  },
+  "consumer-apps": {
+    coreIdentity,
+    sponsorUsage: [
+      "The user path is explicit: start, connect wallet, enter command center, then reach proof or services only when needed.",
+      "Search or ask AI and the internal assistant remove repo-level complexity for normal users and judges.",
+      "The same product shell stays coherent for users, judges, buyers, and operators rather than fragmenting into different demos.",
+    ],
+    evidenceRoutes: [
+      { label: "Start workspace", href: "/start" },
+      { label: "Story route", href: "/story" },
+      { label: "Command center", href: "/command-center" },
+      { label: "Assistant", href: "/assistant" },
+    ],
+    validationGates: [
+      "npm run verify:browser-smoke",
+      "npm run verify:frontend-surface",
+      "npm run web:verify:live:root",
+    ],
+  },
+  "ranger-main": {
+    coreIdentity,
+    sponsorUsage: [
+      "Ranger main fit comes from integration quality across product shell, proof, trust, and buyer surfaces rather than any single feature.",
+      "The program id, token surface, runtime evidence, and submission routes are all connected in the live app, not hidden in separate docs folders.",
+      "This is what makes the startup read as coherent and investment-worthy rather than hackathon-fragmented.",
+    ],
+    evidenceRoutes: [
+      { label: "Dashboard", href: "/dashboard" },
+      { label: "Tracks center", href: "/tracks" },
+      { label: "Trust package", href: "/documents/trust-package" },
+      { label: "Investor deck", href: "/viewer/investor-pitch-deck" },
+    ],
+    validationGates: [
+      "npm run verify:submission-registry",
+      "npm run verify:review-links",
+      "npm run web:verify:live:root",
+    ],
+  },
+  "ranger-drift": {
+    coreIdentity,
+    sponsorUsage: [
+      "This fit is framed as treasury governance and risk discipline, not as a misleading trading-bot claim.",
+      "The confidence engine and treasury analytics explain bounded capital decisions in a way that judges can audit.",
+      "Execution remains policy-scoped through Governance V3, Settlement V3, and proposal-aware confidence scoring.",
+    ],
+    evidenceRoutes: [
+      { label: "Analytics", href: "/analytics" },
+      { label: "Confidence engine", href: "/documents/cryptographic-confidence-engine" },
+      { label: "Security", href: "/security" },
+      { label: "Trust package", href: "/documents/trust-package" },
+    ],
+    validationGates: [
+      "npm run verify:zk-docs",
+      "npm run verify:generated-artifacts",
+      "npm run verify:frontend-surface",
+    ],
+  },
+  "100xdevs": {
+    coreIdentity,
+    sponsorUsage: [
+      "The Next.js multi-page shell, static export deployment, in-app docs, and route-level workspaces make the frontend architecture visible.",
+      "Wallet UX, search, assistant routing, competition center, and product corridors show shipping discipline rather than toy frontend polish.",
+      "The codebase now reads as a product platform with reusable surfaces, not a single demo page.",
+    ],
+    evidenceRoutes: [
+      { label: "Dashboard", href: "/dashboard" },
+      { label: "Developers", href: "/developers" },
+      { label: "Search", href: "/search" },
+      { label: "Tracks center", href: "/tracks" },
+    ],
+    validationGates: [
+      "cd apps/web && npm run lint",
+      "cd apps/web && npm run build",
+      "npm run web:verify:live:root",
+    ],
+  },
+  "encrypt-ika": {
+    coreIdentity,
+    sponsorUsage: [
+      "REFHE is tied to confidential payout envelopes and proposal-scoped settlement rather than a vague encrypted-compute story.",
+      "The security route explains exactly where ZK, REFHE, MagicBlock, and Fast RPC contribute and where the honest boundary remains.",
+      "This makes encrypted operations feel like a real workflow improvement for payroll, bonus approvals, and committee actions.",
+    ],
+    evidenceRoutes: [
+      { label: "Security", href: "/security" },
+      { label: "REFHE protocol", href: "/viewer/refhe-protocol" },
+      { label: "REFHE security model", href: "/viewer/refhe-security-model" },
+      { label: "Frontier integrations", href: "/documents/frontier-integrations" },
+    ],
+    validationGates: [
+      "npm run verify:zk-docs",
+      "npm run verify:confidential-manifest",
+      "npm run verify:magicblock-runtime",
+    ],
+  },
+  "solrouter-encrypted-ai": {
+    coreIdentity,
+    sponsorUsage: [
+      "The assistant and Search or ask AI are deterministic routing layers tied to proof, docs, tracks, and operations rather than hallucinated autonomy.",
+      "The confidence engine gives encrypted-decision posture with explicit product rails and sponsor-aware track routing.",
+      "This keeps the AI angle grounded in execution and privacy instead of over-claiming a fully autonomous agent.",
+    ],
+    evidenceRoutes: [
+      { label: "Assistant", href: "/assistant" },
+      { label: "Search or ask AI", href: "/search" },
+      { label: "Confidence engine", href: "/documents/cryptographic-confidence-engine" },
+      { label: "Security", href: "/security" },
+    ],
+    validationGates: [
+      "npm run verify:frontend-surface",
+      "cd apps/web && npm run build",
+      "npm run web:verify:live:root",
+    ],
+  },
+};
+
+export function getTrackTechnicalFit(slug: string): TrackTechnicalFit {
+  return (
+    fits[slug] ?? {
+      coreIdentity,
+      sponsorUsage: [
+        "This track inherits the core PrivateDAO program, token, proof, wallet, and runtime surfaces already visible in the live app.",
+      ],
+      evidenceRoutes: defaultRoutes,
+      validationGates: ["npm run verify:frontend-surface", "npm run web:verify:live:root"],
+    }
+  );
+}
