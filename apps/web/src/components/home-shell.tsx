@@ -30,8 +30,8 @@ export function HomeShell() {
 
   return (
     <main className="pb-24">
-      <section className="mx-auto w-full max-w-7xl px-4 pt-12 sm:px-6 lg:px-8 lg:pt-20">
-        <div className="grid items-end gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+      <section className="mx-auto w-full max-w-7xl px-4 pt-16 sm:px-6 lg:px-8 lg:pt-24">
+        <div className="grid items-start gap-8 xl:grid-cols-[1.08fr_0.92fr]">
           <div className="space-y-8">
             <div className="flex flex-wrap gap-3">
               <Badge variant="warning">1st Place - Superteam Poland</Badge>
@@ -58,10 +58,10 @@ export function HomeShell() {
             </div>
             <div className="space-y-6">
               <div className="text-[11px] uppercase tracking-[0.34em] text-emerald-300/80">{activePersona.eyebrow}</div>
-              <div className="max-w-4xl text-5xl font-semibold tracking-[-0.04em] text-white sm:text-6xl lg:text-7xl">
+              <div className="max-w-4xl text-4xl font-semibold tracking-[-0.04em] text-white sm:text-5xl lg:text-6xl xl:text-[4.25rem]">
                 {activePersona.title}
               </div>
-              <p className="max-w-2xl text-lg leading-8 text-white/62 sm:text-xl">
+              <p className="max-w-2xl text-base leading-8 text-white/62 sm:text-lg xl:text-[1.15rem]">
                 {activePersona.description}
               </p>
             </div>
@@ -84,18 +84,18 @@ export function HomeShell() {
               </a>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-3">
+            <div className="grid gap-4 lg:grid-cols-3">
               <Card className="bg-white/[0.03]">
                 <CardContent className="p-5">
                   <div className="text-[11px] uppercase tracking-[0.3em] text-emerald-300/70">Lifecycle</div>
-                  <div className="mt-3 text-2xl font-semibold text-white">Create → Vote → Execute</div>
+                  <div className="mt-3 text-xl font-semibold text-white">Create → Vote → Execute</div>
                   <div className="mt-2 text-sm leading-7 text-white/55">One continuous governance and treasury rail for reviewers and operators.</div>
                 </CardContent>
               </Card>
               <Card className="bg-white/[0.03]">
                 <CardContent className="p-5">
                   <div className="text-[11px] uppercase tracking-[0.3em] text-fuchsia-300/70">Security</div>
-                  <div className="mt-3 text-2xl font-semibold text-white">V3 hardening</div>
+                  <div className="mt-3 text-xl font-semibold text-white">V3 hardening</div>
                   <div className="mt-2 text-sm leading-7 text-white/55">Quorum snapshots, evidence gates, and additive policy companions stay explicit.</div>
                   <Link className="mt-4 inline-flex text-sm text-cyan-200 transition hover:text-cyan-100" href="/documents/governance-hardening-v3">
                     Open curated hardening doc
@@ -105,7 +105,7 @@ export function HomeShell() {
               <Card className="bg-white/[0.03]">
                 <CardContent className="p-5">
                   <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-300/70">Commercial</div>
-                  <div className="mt-3 text-2xl font-semibold text-white">API + services</div>
+                  <div className="mt-3 text-xl font-semibold text-white">API + services</div>
                   <div className="mt-2 text-sm leading-7 text-white/55">Pilot-ready packs, hosted read surfaces, and operator trust packets.</div>
                   <Link className="mt-4 inline-flex text-sm text-cyan-200 transition hover:text-cyan-100" href="/documents/trust-package">
                     Open curated trust package
@@ -115,7 +115,7 @@ export function HomeShell() {
             </div>
           </div>
 
-          <Card className="overflow-hidden border-white/12">
+          <Card className="overflow-hidden border-white/12 xl:mt-3">
             <CardHeader>
               <div className="flex items-center gap-3">
                 <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-emerald-300/15 bg-emerald-300/10 text-emerald-200">
@@ -127,11 +127,11 @@ export function HomeShell() {
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="grid gap-4">
+            <CardContent className="grid gap-3">
               {techCards.map((item, index) => (
                 <div key={item.name} className="rounded-3xl border border-white/8 bg-white/4 p-4">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/8 bg-black/30 text-white/85">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/8 bg-black/30 text-white/85">
                       {index === 0 ? (
                         <Sparkles className="h-4 w-4" />
                       ) : index === 1 ? (
@@ -142,9 +142,9 @@ export function HomeShell() {
                         <Zap className="h-4 w-4" />
                       )}
                     </div>
-                    <div className="text-lg font-medium text-white">{item.name}</div>
+                    <div className="text-base font-medium text-white">{item.name}</div>
                   </div>
-                  <p className="mt-3 text-sm leading-7 text-white/58">{item.description}</p>
+                  <p className="mt-2 text-sm leading-7 text-white/58">{item.description}</p>
                 </div>
               ))}
             </CardContent>
