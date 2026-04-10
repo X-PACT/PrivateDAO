@@ -5,10 +5,12 @@ import { useMemo, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { ArrowUpRight, CheckCircle2, Clock3, LockKeyhole, WalletMinimal } from "lucide-react";
 
+import { ProposalConfidencePanel } from "@/components/proposal-confidence-panel";
 import { VoteModal } from "@/components/vote-modal";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { buildProposalConfidenceScorecard } from "@/lib/confidence-engine";
 import { commandCenterReferences, proposalCards, type ProposalCardModel } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
@@ -48,6 +50,18 @@ export function ProposalWorkspace() {
   const proposal = useMemo(
     () => proposalCards.find((item) => item.id === selectedId) ?? proposalCards[0],
     [selectedId],
+  );
+  const scorecard = useMemo(
+    () =>
+      buildProposalConfidenceScorecard({
+        title: proposal.title,
+        type: proposal.type,
+        status: proposal.status,
+        privacy: proposal.privacy,
+        tech: proposal.tech,
+        summary: proposal.summary,
+      }),
+    [proposal],
   );
 
   const actions = actionMap[proposal.status];
@@ -164,6 +178,8 @@ export function ProposalWorkspace() {
               );
             })}
           </div>
+
+          <ProposalConfidencePanel scorecard={scorecard} />
         </CardContent>
       </Card>
 

@@ -2,6 +2,7 @@
 
 import { X } from "lucide-react";
 
+import { getConfidenceEngineSummary } from "@/lib/confidence-engine";
 import type { ProposalCardModel } from "@/lib/site-data";
 
 import { Badge } from "./ui/badge";
@@ -14,6 +15,15 @@ type VoteModalProps = {
 
 export function VoteModal({ proposal, onClose }: VoteModalProps) {
   if (!proposal) return null;
+
+  const confidence = getConfidenceEngineSummary({
+    title: proposal.title,
+    type: proposal.type,
+    status: proposal.status,
+    privacy: proposal.privacy,
+    tech: proposal.tech,
+    summary: proposal.summary,
+  });
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#03050e]/80 px-4 backdrop-blur-md">
@@ -51,6 +61,20 @@ export function VoteModal({ proposal, onClose }: VoteModalProps) {
             <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Current boundary</div>
             <div className="mt-2 text-sm leading-7 text-white/65">
               {proposal.privacy}. Treasury execution remains blocked until voting, reveal, timelock, and evidence gates align with the selected hardening path.
+            </div>
+          </div>
+          <div className="rounded-3xl border border-white/8 bg-white/4 p-4 sm:col-span-2">
+            <div className="flex items-center justify-between gap-4">
+              <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Confidence engine</div>
+              <Badge variant={confidence.band === "Advanced" ? "success" : confidence.band === "Strong" ? "cyan" : "warning"}>
+                {confidence.total} · {confidence.band}
+              </Badge>
+            </div>
+            <div className="mt-2 text-sm leading-7 text-white/65">
+              Strongest signals: {confidence.strongestSignals.slice(0, 2).join(", ")}.
+            </div>
+            <div className="mt-2 text-sm leading-7 text-white/55">
+              Recommendation: {confidence.recommendations[0] ?? "Current path is already well-scoped for the selected proposal."}
             </div>
           </div>
         </div>

@@ -20,6 +20,15 @@ export type ConfidenceProfile = {
   signals: ConfidenceSignals;
 };
 
+export type ProposalConfidenceInput = {
+  title: string;
+  type: string;
+  status: string;
+  privacy: string;
+  tech: string[];
+  summary?: string;
+};
+
 type ConfidenceDimension = {
   title: string;
   weight: number;
@@ -43,6 +52,7 @@ export type ConfidenceScorecard = {
   }>;
   strongestSignals: string[];
   missingSignals: string[];
+  recommendations: string[];
 };
 
 const DIMENSIONS: ConfidenceDimension[] = [
@@ -198,6 +208,7 @@ export function buildConfidenceScorecard(profile: ConfidenceProfile): Confidence
     dimensions,
     strongestSignals: strongestSignals(profile.signals),
     missingSignals: missingSignals(profile.signals),
+    recommendations: buildRecommendations(profile.signals),
   };
 }
 
@@ -214,3 +225,98 @@ export const confidenceEnginePrinciples = [
   "ZK, REFHE, MagicBlock, and Fast RPC contribute differently depending on the proposal pattern.",
   "Launch blockers and external custody gaps are intentionally left outside the score so the app does not hide pending-external work.",
 ];
+
+function includesAny(value: string, needles: string[]) {
+  const normalized = value.toLowerCase();
+  return needles.some((needle) => normalized.includes(needle.toLowerCase()));
+}
+
+function inferSignals(input: ProposalConfidenceInput): ConfidenceSignals {
+  const joinedTech = input.tech.join(" ");
+  const privacyText = `${input.privacy} ${input.summary ?? ""} ${input.type}`;
+  const statusText = input.status.toLowerCase();
+
+  const commitReveal = includesAny(privacyText, ["commit-reveal", "private vote", "reveal"]);
+  const zkReview = includesAny(joinedTech, ["zk"]) || includesAny(privacyText, ["zk review"]);
+  const refheEnvelope = includesAny(joinedTech, ["refhe"]) || includesAny(privacyText, ["refhe", "encrypted manifest", "confidential"]);
+  const magicBlockEvidence = includesAny(joinedTech, ["magicblock"]) || includesAny(privacyText, ["corridor", "settlement"]);
+  const governanceV3 =
+    includesAny(joinedTech, ["governance v3"]) ||
+    includesAny(input.type, ["grant", "enterprise", "fund"]) ||
+    includesAny(privacyText, ["quorum", "governance"]);
+  const settlementV3 =
+    includesAny(joinedTech, ["settlement v3"]) ||
+    magicBlockEvidence ||
+    refheEnvelope ||
+    includesAny(privacyText, ["settlement", "execution"]);
+  const zkAnchors = zkReview || includesAny(privacyText, ["proof anchor", "anchored"]);
+  const fastRpcIndexed = includesAny(joinedTech, ["fast rpc"]) || includesAny(privacyText, ["runtime", "reviewer-visible"]);
+  const liveProof = statusText !== "evidence gated";
+  const v3Proof = governanceV3 || settlementV3;
+  const auditPacket = true;
+  const launchBoundaryExplicit = true;
+
+  return {
+    commitReveal,
+    zkReview,
+    zkAnchors,
+    governanceV3,
+    settlementV3,
+    refheEnvelope,
+    magicBlockEvidence,
+    fastRpcIndexed,
+    liveProof,
+    v3Proof,
+    auditPacket,
+    launchBoundaryExplicit,
+  };
+}
+
+function buildRecommendations(signals: ConfidenceSignals) {
+  const recommendations: string[] = [];
+
+  if (!signals.zkReview && !signals.refheEnvelope) {
+    recommendations.push("Use ZK review rails or REFHE when the proposal leaks sensitive internal intent.");
+  }
+  if (!signals.magicBlockEvidence && !signals.refheEnvelope) {
+    recommendations.push("Keep settlement simpler unless corridor evidence or encrypted payout semantics are actually required.");
+  }
+  if (!signals.fastRpcIndexed) {
+    recommendations.push("Expose Fast RPC-backed diagnostics before presenting the path as fully operator-ready.");
+  }
+  if (!signals.liveProof) {
+    recommendations.push("Attach a live proof path before treating the proposal as reviewer-complete.");
+  }
+  if (!signals.governanceV3) {
+    recommendations.push("Governance V3 improves enforceability when token-supply quorum or stricter policy snapshots matter.");
+  }
+
+  return recommendations.slice(0, 3);
+}
+
+export function buildProposalConfidenceScorecard(input: ProposalConfidenceInput): ConfidenceScorecard {
+  const signals = inferSignals(input);
+  const profile = buildConfidenceScorecard({
+    title: input.title,
+    subtitle: input.type,
+    explanation:
+      input.summary ??
+      "Proposal-aware reading of privacy, enforcement, execution, and reviewer confidence for this governance path.",
+    signals,
+  });
+
+  return {
+    ...profile,
+    recommendations: buildRecommendations(signals),
+  };
+}
+
+export function getConfidenceEngineSummary(input: ProposalConfidenceInput) {
+  const scorecard = buildProposalConfidenceScorecard(input);
+  return {
+    total: scorecard.total,
+    band: scorecard.band,
+    strongestSignals: scorecard.strongestSignals,
+    recommendations: scorecard.recommendations,
+  };
+}

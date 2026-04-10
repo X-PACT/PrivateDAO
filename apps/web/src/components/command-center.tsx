@@ -5,12 +5,20 @@ import { StatusBadge } from "@/components/status-badge";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { confidenceProfiles } from "@/lib/confidence-engine";
+import { buildProposalConfidenceScorecard, confidenceProfiles } from "@/lib/confidence-engine";
 import { cn } from "@/lib/utils";
 import { commandCenterPacks, executionLog, proposalCards } from "@/lib/site-data";
 
 export function CommandCenter() {
   const featuredProposal = proposalCards[0];
+  const featuredScore = buildProposalConfidenceScorecard({
+    title: featuredProposal.title,
+    type: featuredProposal.type,
+    status: featuredProposal.status,
+    privacy: featuredProposal.privacy,
+    tech: featuredProposal.tech,
+    summary: featuredProposal.summary,
+  });
 
   return (
     <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
@@ -127,6 +135,20 @@ export function CommandCenter() {
                   </div>
                 </div>
               ))}
+            </div>
+            <div className="mt-4 rounded-2xl border border-white/8 bg-white/4 p-4">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <div className="text-sm font-medium text-white">Featured proposal live score</div>
+                  <div className="mt-1 text-xs text-white/45">{featuredScore.title}</div>
+                </div>
+                <div className="rounded-xl border border-emerald-300/20 bg-emerald-400/10 px-3 py-1 text-sm font-medium text-white">
+                  {featuredScore.total}
+                </div>
+              </div>
+              <div className="mt-3 text-sm leading-7 text-white/58">
+                {featuredScore.strongestSignals.slice(0, 2).join(" · ")}
+              </div>
             </div>
             <Link
               href="/documents/cryptographic-confidence-engine"
