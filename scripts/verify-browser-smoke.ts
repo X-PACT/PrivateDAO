@@ -5,17 +5,16 @@ import os from "os";
 import path from "path";
 
 const ROOT = process.cwd();
-const DOCS_DIR = path.resolve(ROOT, "docs");
+const SURFACE_DIR = path.resolve(ROOT);
 const REQUIRED_DOM_FRAGMENTS = [
   "PrivateDAO",
-  "CONFIDENTIAL TREASURY COMMAND CENTER",
-  "One guided path from private approval to evidence-gated execution.",
-  "Start Guided Flow",
-  "Copy Judge Evidence Packet",
-  "openConfidentialTreasuryWizard",
-  "copyConfidentialTreasuryEvidencePacket",
-  "Paste real hashes before signing.",
-  "mainnet-blocked",
+  "Private governance on Solana",
+  "ZK + REFHE + MagicBlock + Fast RPC",
+  "Open judge proof view",
+  "The migration keeps the product path obvious for normal users",
+  "The core governance flow stays in one visible product rail",
+  "Baseline proof, V3 hardening, and runtime evidence stay first-class in the new app",
+  "API and operator services presented in the same product language",
 ];
 
 const CONTENT_TYPES: Record<string, string> = {
@@ -53,10 +52,18 @@ function createStaticServer() {
   const server = http.createServer((req, res) => {
     try {
       const url = new URL(req.url || "/", "http://127.0.0.1");
-      const requestedPath = decodeURIComponent(url.pathname === "/" ? "/index.html" : url.pathname);
-      const resolvedPath = path.resolve(DOCS_DIR, `.${requestedPath}`);
+      const normalizedPath =
+        url.pathname === "/"
+          ? "/index.html"
+          : url.pathname === "/PrivateDAO/" || url.pathname === "/PrivateDAO"
+            ? "/index.html"
+            : url.pathname.startsWith("/PrivateDAO/")
+              ? url.pathname.slice("/PrivateDAO".length)
+              : url.pathname;
+      const requestedPath = decodeURIComponent(normalizedPath);
+      const resolvedPath = path.resolve(SURFACE_DIR, `.${requestedPath}`);
 
-      if (!resolvedPath.startsWith(`${DOCS_DIR}${path.sep}`) && resolvedPath !== DOCS_DIR) {
+      if (!resolvedPath.startsWith(`${SURFACE_DIR}${path.sep}`) && resolvedPath !== SURFACE_DIR) {
         res.writeHead(403);
         res.end("Forbidden");
         return;
@@ -133,7 +140,7 @@ async function main() {
   const chrome = findChrome();
   const server = createStaticServer();
   const port = await listen(server);
-  const url = `http://127.0.0.1:${port}/`;
+  const url = `http://127.0.0.1:${port}/PrivateDAO/`;
   const screenshotPath = path.join(os.tmpdir(), `privatedao-browser-smoke-${Date.now()}.png`);
 
   const chromeBaseArgs = [

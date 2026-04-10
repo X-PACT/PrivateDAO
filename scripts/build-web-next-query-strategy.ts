@@ -12,63 +12,63 @@ type QueryRule = {
 const queryRules: QueryRule[] = [
   {
     query: "?page=proposals",
-    currentBehavior: "opens the current docs home surface",
+    currentBehavior: "legacy query entry preserved by the root Next.js surface",
     nextTarget: "/",
     strategy: "map-to-next-route",
     note: "This becomes the primary landing route in apps/web during staged mirror rollout.",
   },
   {
     query: "?page=proof",
-    currentBehavior: "opens the proof center in docs",
+    currentBehavior: "legacy proof query preserved by the root Next.js surface",
     nextTarget: "/proof/",
     strategy: "map-to-next-route",
     note: "The route exists in apps/web and is already exportable.",
   },
   {
     query: "?page=security",
-    currentBehavior: "opens the security surface in docs",
+    currentBehavior: "legacy security query preserved by the root Next.js surface",
     nextTarget: "/security/",
     strategy: "map-to-next-route",
     note: "Governance V3 and settlement V3 surfaces are available in apps/web.",
   },
   {
     query: "?page=diagnostics",
-    currentBehavior: "opens diagnostics and runtime panels in docs",
+    currentBehavior: "legacy diagnostics query preserved by the root Next.js surface",
     nextTarget: "/diagnostics/",
     strategy: "map-to-next-route",
     note: "Use apps/web once mirror routing is validated end-to-end.",
   },
   {
     query: "?page=awards",
-    currentBehavior: "opens awards and trust material in docs",
+    currentBehavior: "legacy awards query preserved by the root Next.js surface",
     nextTarget: "/awards/",
     strategy: "map-to-next-route",
     note: "Awards and trust surfaces exist in apps/web.",
   },
   {
     query: "?page=proof&judge=1",
-    currentBehavior: "forces judge-mode proof entry in docs",
+    currentBehavior: "forces judge-mode proof entry through the root Next.js surface",
     nextTarget: "/proof/?judge=1",
     strategy: "map-to-next-route",
     note: "The legacy entrypoint is now preserved in apps/web and keeps the reviewer intent visible inside the proof surface.",
   },
   {
     query: "?page=migrate",
-    currentBehavior: "opens migration-specific surface in docs",
+    currentBehavior: "legacy migration query preserved by the root Next.js surface",
     nextTarget: "/services/",
     strategy: "map-to-next-route",
     note: "Services is now the canonical migration and commercial landing surface in apps/web.",
   },
   {
     query: "?page=protocol",
-    currentBehavior: "opens protocol-centric narrative in docs",
+    currentBehavior: "legacy protocol query preserved by the root Next.js surface",
     nextTarget: "/security/",
     strategy: "map-to-next-route",
     note: "Security is now the canonical protocol and hardening route in apps/web.",
   },
   {
     query: "?page=docs&doc=reviewer-fast-path.md",
-    currentBehavior: "opens the docs viewer directly on reviewer-fast-path.md",
+    currentBehavior: "legacy docs-viewer query preserved by the root Next.js surface",
     nextTarget: "/documents/reviewer-fast-path/",
     strategy: "map-to-next-route",
     note: "Curated reviewer docs now have in-app routes, and the broader markdown corpus is available through /viewer/.",
@@ -80,8 +80,8 @@ function main() {
   const payload = {
     project: "PrivateDAO",
     generatedAt: new Date().toISOString(),
-    status: rootLive ? "query-strategy-live" : "query-strategy-next-ready",
-    currentLiveSurface: rootLive ? "repo root Next.js export" : "docs/index.html",
+    status: rootLive ? "query-strategy-live" : "query-strategy-incomplete",
+    currentLiveSurface: rootLive ? "repo root Next.js export" : "live surface missing",
     nextSurfaceRoot: "apps/web",
     queryRules,
     commands: [
@@ -94,13 +94,13 @@ function main() {
     routingBoundary: rootLive
       ? [
           "preserve legacy query entrypoints through the apps/web root route",
-          "keep docs available as the archive and raw-reference surface under /docs/",
+          "keep docs available only as the archive and raw-reference surface under /docs/",
           "prefer curated document routes first and fall back to /viewer/ for broader markdown parity",
         ]
       : [
-          "do not rewrite docs query entrypoints in-place while docs remains canonical",
-          "map legacy query entrypoints to apps/web routes while docs remains the canonical live surface",
-          "keep docs available as the authoritative archive until the mirror replaces it explicitly",
+          "restore the repo root Next.js export before claiming complete cutover",
+          "legacy query entrypoints should resolve through the Next root rather than the archived docs surface",
+          "keep docs available only as the archive and raw-reference surface once root publication is restored",
           "prefer curated document routes first and fall back to /viewer/ for broader markdown parity",
         ],
   };

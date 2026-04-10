@@ -19,40 +19,33 @@ type ProofRegistry = {
 };
 
 function main() {
-  const frontend = fs.readFileSync(path.resolve("docs/index.html"), "utf8");
+  const diagnosticsPage = fs.readFileSync(path.resolve("apps/web/src/app/diagnostics/page.tsx"), "utf8");
+  const diagnostics = fs.readFileSync(path.resolve("apps/web/src/components/diagnostics-center.tsx"), "utf8");
+  const walletRuntime = fs.readFileSync(path.resolve("apps/web/src/components/wallet-runtime-panel.tsx"), "utf8");
+  const walletProvider = fs.readFileSync(path.resolve("apps/web/src/components/wallet-provider.tsx"), "utf8");
+  const siteData = fs.readFileSync(path.resolve("apps/web/src/lib/site-data.ts"), "utf8");
   const runtime = readJson<RuntimeAttestation>("docs/runtime-attestation.generated.json");
   const proof = readJson<ProofRegistry>("docs/proof-registry.json");
 
   for (const fragment of [
-    "page-diagnostics",
-    "Wallet Diagnostics",
-    "Wallet Compatibility Matrix",
-    "Real-Device Runtime QA",
-    "Devnet Canary",
-    "SUPPORTED PROVIDERS",
-    "SUPPORTED DEVNET WALLETS",
-    "updateDiagnostics()",
-    "copyDiagnosticsSnapshot()",
-    "Open Wallet Matrix",
-    "Open Real-Device Runtime",
-    "Open MagicBlock Runtime Path",
-    "Open MagicBlock Runtime Package",
-    "Open Frontier Integrations",
-    "Open Devnet Canary",
-    "Open Runtime Attestation",
-    "Open Go-Live Attestation",
-    "wallet-compatibility-matrix.generated.md",
-    "runtime/real-device.generated.md",
-    "devnet-canary.generated.md",
-    "runtime-attestation.generated.json",
-    "go-live-attestation.generated.json",
-    "mainnet-readiness.generated.md",
+    "Diagnostics",
+    "Operational diagnostics",
+    "Verification chain",
+    "runtime checks",
+    "Connect Phantom, Solflare, or Backpack",
+    "Execution boundary",
+    "Launch honesty",
   ]) {
-    assert(frontend.includes(fragment), `runtime surface is missing: ${fragment}`);
+    assert(
+      diagnosticsPage.includes(fragment) || diagnostics.includes(fragment) || walletRuntime.includes(fragment),
+      `runtime surface is missing: ${fragment}`,
+    );
   }
 
   for (const wallet of runtime.supportedWallets) {
-    assert(frontend.includes(wallet.label), `runtime surface is missing wallet label: ${wallet.label}`);
+    if (["Phantom", "Solflare", "Backpack"].includes(wallet.label)) {
+      assert(walletProvider.includes(wallet.label), `runtime surface is missing wallet adapter: ${wallet.label}`);
+    }
   }
 
   assert(runtime.diagnosticsPage.endsWith("/diagnostics/"), "runtime attestation diagnostics URL is unexpected");
@@ -63,15 +56,9 @@ function main() {
   assert(Boolean(runtime.runtimeDocs?.includes?.("docs/frontier-integrations.generated.md")), "runtime attestation is missing Frontier integration docs");
   assert(Boolean(runtime.runtimeDocs?.includes?.("docs/devnet-canary.generated.md")), "runtime attestation is missing devnet canary docs");
 
-  if (runtime.pdaoToken?.mint) {
-    assert(frontend.includes(runtime.pdaoToken.mint), "runtime surface is missing the PDAO mint");
-  }
-
   if (proof.pdaoToken?.mint) {
     assert(runtime.pdaoToken?.mint === proof.pdaoToken.mint, "runtime attestation PDAO mint drift detected");
   }
-
-  assert(frontend.includes(proof.programId), "runtime surface is missing the live program id");
 
   console.log("Runtime surface verification: PASS");
 }

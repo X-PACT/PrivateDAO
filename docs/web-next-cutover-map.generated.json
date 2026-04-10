@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-10T01:11:33.994Z",
+  "generatedAt": "2026-04-10T01:38:59.127Z",
   "currentLiveSurface": "repo root Next.js export",
   "nextSurfaceRoot": "apps/web",
   "status": "live-cutover-map",
@@ -78,7 +78,7 @@
   ],
   "cutoverBoundary": [
     "apps/web export at the repo root is the canonical live surface",
-    "preserve docs as the archive and raw-reference surface under /docs/",
+    "preserve docs only as the archive and raw-reference surface under /docs/",
     "use /documents for curated packets and /viewer for broader repository markdown parity"
   ]
 }

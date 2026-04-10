@@ -28,9 +28,9 @@ If a reviewer has only a few minutes, the strongest order is:
 ## Frontend Entry Points
 
 - Live app: `https://x-pact.github.io/PrivateDAO/`
-- Proof Center: `https://x-pact.github.io/PrivateDAO/?page=proof`
+- Proof Center: `https://x-pact.github.io/PrivateDAO/proof/`
 - Judge Mode: `https://x-pact.github.io/PrivateDAO/proof/?judge=1`
-- Security page: `https://x-pact.github.io/PrivateDAO/?page=security`
+- Security page: `https://x-pact.github.io/PrivateDAO/security/`
 
 ## Canonical Documents Behind Those Surfaces
 

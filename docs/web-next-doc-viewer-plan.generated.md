@@ -3,9 +3,9 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-10T00:48:51.064Z`
-- status: `doc-viewer-parity-next-ready`
-- current canonical viewer: `docs/index.html?page=docs&doc=...`
+- generated at: `2026-04-10T01:38:30.799Z`
+- status: `doc-viewer-parity-live`
+- current canonical viewer: `apps/web /documents + /viewer`
 - next app root: `apps/web`
 
 ## Document Classes
@@ -93,6 +93,6 @@ Documents:
 
 ## Boundary
 
-- docs remains the canonical live surface until cutover is explicit
+- apps/web document routes are now the canonical in-app viewer surface
 - legacy docs queries now have Next destinations through curated /documents routes or the generic /viewer route
 - raw repository files remain authoritative even when rendered in-app

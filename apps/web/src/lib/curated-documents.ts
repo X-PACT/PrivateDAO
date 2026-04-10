@@ -56,6 +56,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/governance-hardening-v3.md`,
   },
   {
+    slug: "zk-capability-matrix",
+    title: "ZK Capability Matrix",
+    category: "Security",
+    summary: "PrivateDAO-specific matrix for what the ZK layer proves today, how it is verified, and what remains explicitly out of scope.",
+    audience: "Judges, security reviewers, operators",
+    boundary: "Truth-aligned matrix only; it does not upgrade the repo beyond the actual verifier and launch boundaries.",
+    docPath: "docs/zk-capability-matrix.md",
+    rawHref: `${repositoryBlobBase}/docs/zk-capability-matrix.md`,
+  },
+  {
     slug: "settlement-hardening-v3",
     title: "Settlement Hardening V3",
     category: "Security",

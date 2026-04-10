@@ -247,6 +247,12 @@ export const proofPackets = [
     cta: "Open curated V3 packet",
   },
   {
+    title: "ZK capability matrix",
+    summary: "PrivateDAO-specific matrix for what the ZK stack proves today, how it is verified, and what is still explicitly not claimed.",
+    href: "/documents/zk-capability-matrix",
+    cta: "Open curated ZK matrix",
+  },
+  {
     title: "Frontier integrations",
     summary: "ZK, REFHE, MagicBlock, backend-indexed reads, and runtime evidence in one surface.",
     href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/frontier-integrations.generated.md",
@@ -262,6 +268,11 @@ export const proofPackets = [
 
 export const securitySurfaces = [
   {
+    title: "ZK Capability Matrix",
+    body: "Layer-by-layer truth-aligned matrix for proofs, anchors, attestation, zk_enforced posture, and verifier boundaries.",
+    href: "/documents/zk-capability-matrix",
+  },
+  {
     title: "Governance Hardening V3",
     body: "Token-supply quorum mode, policy snapshots, and reveal rebate vaults stay additive and versioned.",
     href: "/documents/governance-hardening-v3",
@@ -275,6 +286,45 @@ export const securitySurfaces = [
     title: "Mainnet blockers",
     body: "The app keeps launch boundaries honest: what is live now, what is pending-external, and what still needs custody/audit work.",
     href: "/documents/mainnet-blockers",
+  },
+];
+
+export const zkMatrixHighlights = [
+  {
+    layer: "Vote validity",
+    state: "Live off-chain",
+    verifier: "prove + verify commands",
+    boundary: "Additive to current protocol",
+  },
+  {
+    layer: "Delegation authorization",
+    state: "Live off-chain",
+    verifier: "prove + verify commands",
+    boundary: "Additive to current protocol",
+  },
+  {
+    layer: "Tally integrity",
+    state: "Live off-chain",
+    verifier: "bounded tally proof",
+    boundary: "Not a full hidden tally replacement",
+  },
+  {
+    layer: "Proposal-bound proof anchors",
+    state: "Live and anchored",
+    verifier: "Frontier integrations + live proof V3",
+    boundary: "Reviewer-facing on-chain anchoring",
+  },
+  {
+    layer: "zk_enforced path",
+    state: "Live but bounded",
+    verifier: "verifier strategy + V3 proof packet",
+    boundary: "Not yet the dominant production recommendation",
+  },
+  {
+    layer: "On-chain verifier CPI",
+    state: "Not implemented",
+    verifier: "Not claimed",
+    boundary: "Future protocol phase",
   },
 ];
 

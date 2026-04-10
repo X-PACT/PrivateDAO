@@ -80,7 +80,7 @@ function main() {
   const payload = {
     project: "PrivateDAO",
     generatedAt: new Date().toISOString(),
-    currentLiveSurface: rootLive ? "repo root Next.js export" : "docs/index.html",
+    currentLiveSurface: rootLive ? "repo root Next.js export" : "live surface missing",
     nextSurfaceRoot: "apps/web",
     status: rootLive ? "live-cutover-map" : "staged-cutover-map",
     mappings,
@@ -94,12 +94,12 @@ function main() {
     cutoverBoundary: rootLive
       ? [
           "apps/web export at the repo root is the canonical live surface",
-          "preserve docs as the archive and raw-reference surface under /docs/",
+          "preserve docs only as the archive and raw-reference surface under /docs/",
           "use /documents for curated packets and /viewer for broader repository markdown parity",
         ]
       : [
-          "preserve docs as the canonical live surface until cutover is explicit",
-          "treat apps/web as the replacement-ready mirror with legacy query compatibility",
+          "restore the root Next.js export before claiming complete cutover",
+          "treat apps/web as the canonical live surface once the root export is restored",
           "use /documents for curated packets and /viewer for broader repository markdown parity",
         ],
   };

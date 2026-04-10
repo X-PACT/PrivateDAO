@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-10T01:12:03.588Z`
+- generated at: `2026-04-10T01:38:44.016Z`
 - current status: `live-on-root`
 - current live surface: `repo root Next.js export`
 - next app root: `apps/web`

@@ -17,9 +17,9 @@
     "canonicalGovernanceDao": "FZV9KmpeY1B31XvszQypp5T6nQN5C44JDLM4QWBEDvhx",
     "metadataUri": "https://x-pact.github.io/PrivateDAO/assets/pdao-token.json",
     "metadataAssetPath": "docs/assets/pdao-token.json",
-    "metadataSha256": "11f012d0c0ac9548bc1248b85bfd4f223ec80703bf5ad8af3379dca83571bf0a",
+    "metadataSha256": "93fe0d3f67cf2fe19a9d738d116e067d6cc54558c27070759ce361833e1d5321",
     "image": "https://x-pact.github.io/PrivateDAO/assets/logo.png",
-    "externalUrl": "https://x-pact.github.io/PrivateDAO/?page=security",
+    "externalUrl": "https://x-pact.github.io/PrivateDAO/security/",
     "transactionLabels": [
       "create-token",
       "create-account",

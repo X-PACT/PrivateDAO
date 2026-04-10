@@ -70,7 +70,7 @@ function main() {
   assert(attestation.pdaoToken.metadataAssetPath === "docs/assets/pdao-token.json", "PDAO attestation metadata asset path mismatch");
   assert(attestation.pdaoToken.metadataSha256 === sha256Hex(metadataBody), "PDAO attestation metadata sha256 mismatch");
   assert(attestation.pdaoToken.image === "https://x-pact.github.io/PrivateDAO/assets/logo.png", "PDAO attestation image mismatch");
-  assert(attestation.pdaoToken.externalUrl === "https://x-pact.github.io/PrivateDAO/?page=security", "PDAO attestation external URL mismatch");
+  assert(attestation.pdaoToken.externalUrl === "https://x-pact.github.io/PrivateDAO/security/", "PDAO attestation external URL mismatch");
   assert(attestation.pdaoToken.transactionLabels.length >= 4, "PDAO attestation transaction labels are incomplete");
   assert(attestation.programBoundary.privateDaoProgramId === proof.programId, "PDAO attestation program boundary governance mismatch");
   assert(attestation.programBoundary.tokenProgramId === proof.pdaoToken.programId, "PDAO attestation program boundary token mismatch");

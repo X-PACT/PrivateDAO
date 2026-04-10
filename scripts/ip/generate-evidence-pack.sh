@@ -30,7 +30,10 @@ cp "$ROOT_DIR/README.md" "$PKG_DIR/README.snapshot.md"
 cp "$ROOT_DIR/IP_POLICY.md" "$PKG_DIR/IP_POLICY.snapshot.md"
 cp "$ROOT_DIR/TRADEMARKS.md" "$PKG_DIR/TRADEMARKS.snapshot.md"
 cp "$ROOT_DIR/CHANGELOG.md" "$PKG_DIR/CHANGELOG.snapshot.md"
-cp "$ROOT_DIR/docs/index.html" "$PKG_DIR/docs.index.snapshot.html"
+cp "$ROOT_DIR/index.html" "$PKG_DIR/root.live.snapshot.html"
+if [ -f "$ROOT_DIR/docs/index.html" ]; then
+  cp "$ROOT_DIR/docs/index.html" "$PKG_DIR/docs.archive.snapshot.html"
+fi
 
 if [ -f "$ROOT_DIR/docs/assets/logo.png" ]; then
   cp "$ROOT_DIR/docs/assets/logo.png" "$PKG_DIR/logo.png"

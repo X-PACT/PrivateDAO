@@ -29,11 +29,8 @@ function main() {
   const markdown = fs.readFileSync(mdPath, "utf8");
 
   assert(payload.project === "PrivateDAO", "web next query strategy project mismatch");
-  assert(["query-strategy-next-ready", "query-strategy-live"].includes(payload.status), "web next query strategy status mismatch");
-  assert(
-    payload.currentLiveSurface === "docs/index.html" || payload.currentLiveSurface === "repo root Next.js export",
-    "web next query strategy live surface mismatch",
-  );
+  assert(payload.status === "query-strategy-live", "web next query strategy status mismatch");
+  assert(payload.currentLiveSurface === "repo root Next.js export", "web next query strategy live surface mismatch");
   assert(payload.nextSurfaceRoot === "apps/web", "web next query strategy next surface root mismatch");
 
   for (const query of [

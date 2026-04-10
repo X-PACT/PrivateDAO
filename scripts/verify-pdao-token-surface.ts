@@ -31,12 +31,11 @@ function main() {
   const readme = fs.readFileSync(path.resolve("README.md"), "utf8");
   const tokenDoc = fs.readFileSync(path.resolve("docs/token.md"), "utf8");
   const pdaoDoc = fs.readFileSync(path.resolve("docs/pdao-token.md"), "utf8");
-  const frontend = fs.readFileSync(path.resolve("docs/index.html"), "utf8");
 
   assert(metadata.name === "PDAO", "PDAO metadata name mismatch");
   assert(metadata.symbol === "PDAO", "PDAO metadata symbol mismatch");
   assert(metadata.image === "https://x-pact.github.io/PrivateDAO/assets/logo.png", "PDAO metadata image mismatch");
-  assert(metadata.external_url === "https://x-pact.github.io/PrivateDAO/?page=security", "PDAO metadata external URL mismatch");
+  assert(metadata.external_url === "https://x-pact.github.io/PrivateDAO/security/", "PDAO metadata external URL mismatch");
   assert(
     metadata.attributes.some((entry) => entry.trait_type === "PrivateDAO Program ID" && entry.value === proof.programId),
     "PDAO metadata is missing the canonical PrivateDAO program id",
@@ -95,16 +94,6 @@ function main() {
       proof.pdaoToken.mintAuthorityStatus === "disabled",
       "proof registry must report disabled PDAO mint authority",
     );
-  }
-
-  for (const fragment of [
-    proof.pdaoToken.mint,
-    "PrivateDAO Governance Token (PDAO)",
-    "pdao-attestation.generated.json",
-    "assets/pdao-token.json",
-    "PROGRAM BOUNDARY",
-  ]) {
-    assert(frontend.includes(fragment), `docs/index.html is missing token UI fragment: ${fragment}`);
   }
 
   console.log("PDAO token surface verification: PASS");

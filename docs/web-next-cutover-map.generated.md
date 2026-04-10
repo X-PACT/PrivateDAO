@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-10T01:11:33.994Z`
+- generated at: `2026-04-10T01:38:59.127Z`
 - status: `live-cutover-map`
 - current live surface: `repo root Next.js export`
 - next surface root: `apps/web`
@@ -84,5 +84,5 @@
 ## Cutover Boundary
 
 - apps/web export at the repo root is the canonical live surface
-- preserve docs as the archive and raw-reference surface under /docs/
+- preserve docs only as the archive and raw-reference surface under /docs/
 - use /documents for curated packets and /viewer for broader repository markdown parity

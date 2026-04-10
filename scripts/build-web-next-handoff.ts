@@ -33,11 +33,11 @@ function main() {
     project: "PrivateDAO",
     generatedAt,
     status: rootLive ? "live-on-root" : "staged-not-live",
-    currentLiveSurface: rootLive ? "repo root Next.js export" : "docs/index.html",
+    currentLiveSurface: rootLive ? "repo root Next.js export" : "live surface missing",
     nextAppRoot: "apps/web",
     reviewerBoundary: rootLive
       ? "apps/web static export at the repo root is now the canonical live reviewer-facing surface, while docs remains the archive and raw-reference surface."
-      : "docs remains the canonical live reviewer-facing surface until explicit cutover.",
+      : "the root Next.js export is missing and must be restored before claiming the live reviewer-facing surface is complete.",
     mirrorModes: [
       {
         mode: "github",
@@ -84,9 +84,9 @@ function main() {
           "keep reviewer links, judge-mode proof, and legacy docs entrypoints resolving through apps/web compatibility routes",
         ]
       : [
-          "do not replace docs/index.html silently",
-          "do not call apps/web canonical until reviewer links, judge-mode proof, and legacy docs entrypoints resolve under the mirror origin",
-          "preserve current GitHub Pages reviewer paths while the mirror is staged",
+          "restore the root Next.js export before claiming complete cutover",
+          "do not treat archived docs as the live reviewer-facing surface again",
+          "preserve reviewer links, judge-mode proof, and legacy docs entrypoints through the Next root once restored",
         ],
   };
 

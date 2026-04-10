@@ -2,7 +2,12 @@ import fs from "fs";
 import path from "path";
 
 const README = path.resolve("README.md");
-const FRONTEND = path.resolve("docs/index.html");
+const HOME_SHELL = path.resolve("apps/web/src/components/home-shell.tsx");
+const PROOF_CENTER = path.resolve("apps/web/src/components/proof-center.tsx");
+const SECURITY_CENTER = path.resolve("apps/web/src/components/security-center.tsx");
+const DIAGNOSTICS_CENTER = path.resolve("apps/web/src/components/diagnostics-center.tsx");
+const SERVICES_SURFACE = path.resolve("apps/web/src/components/services-surface.tsx");
+const CURATED_DOCUMENTS = path.resolve("apps/web/src/lib/curated-documents.ts");
 
 const requiredReadmeRefs = [
   "docs/security-review.md",
@@ -43,61 +48,36 @@ const requiredReadmeRefs = [
   "docs/cryptographic-manifest.generated.json",
 ];
 
-const requiredFrontendRefs = [
-  "security-review.md",
-  "threat-model.md",
-  "security-coverage-map.md",
-  "failure-modes.md",
-  "replay-analysis.md",
-  "live-proof.md",
-  "devnet-release-manifest.md",
-  "verification-gates.md",
-  "mainnet-readiness.generated.md",
-  "deployment-attestation.generated.json",
-  "go-live-criteria.md",
-  "operational-drillbook.md",
-  "runtime-attestation.generated.json",
-  "frontier-integrations.generated.md",
-  "frontier-guided-flow.md",
-  "test-wallet-live-proof-v3.generated.md",
-  "governance-hardening-v3.md",
-  "settlement-hardening-v3.md",
-  "runtime/real-device.md",
-  "runtime/real-device.generated.md",
-  "launch-trust-packet.generated.md",
-  "production-custody-ceremony.md",
-  "external-audit-engagement.md",
-  "pilot-onboarding-playbook.md",
-  "go-live-attestation.generated.json",
-  "production-operations.md",
-  "fair-voting.md",
-  "wallet-runtime.md",
-  "operational-evidence.generated.md",
-  "pdao-attestation.generated.json",
-  "reviewer-fast-path.md",
-  "strategy-operations.md",
-  "cryptographic-integrity.md",
-  "cryptographic-manifest.generated.json",
-];
-
 function main() {
   const readme = fs.readFileSync(README, "utf8");
-  const frontend = fs.readFileSync(FRONTEND, "utf8");
+  const homeShell = fs.readFileSync(HOME_SHELL, "utf8");
+  const proofCenter = fs.readFileSync(PROOF_CENTER, "utf8");
+  const securityCenter = fs.readFileSync(SECURITY_CENTER, "utf8");
+  const diagnosticsCenter = fs.readFileSync(DIAGNOSTICS_CENTER, "utf8");
+  const servicesSurface = fs.readFileSync(SERVICES_SURFACE, "utf8");
+  const curatedDocuments = fs.readFileSync(CURATED_DOCUMENTS, "utf8");
 
   for (const ref of requiredReadmeRefs) {
     assertContains(readme, ref, `README is missing review reference: ${ref}`);
   }
 
-  for (const ref of requiredFrontendRefs) {
-    assertContains(frontend, ref, `docs/index.html is missing review reference: ${ref}`);
-  }
-
   assertContains(readme, "https://x-pact.github.io/PrivateDAO/proof/?judge=1", "README is missing Judge Mode entry point");
   assertContains(readme, "https://x-pact.github.io/PrivateDAO/diagnostics/", "README is missing Wallet Diagnostics entry point");
-  assertContains(frontend, "Judge Mode", "frontend is missing Judge Mode surface");
-  assertContains(frontend, "Proof Center", "frontend is missing Proof Center surface");
-  assertContains(frontend, "Security Evidence", "frontend is missing Security Evidence section");
-  assertContains(frontend, "Wallet Diagnostics", "frontend is missing Wallet Diagnostics surface");
+  assertContains(homeShell, "Open judge proof view", "Next home shell is missing Judge Mode entry point");
+  assertContains(proofCenter, "Proof center", "Next proof center is missing");
+  assertContains(securityCenter, "Security architecture", "Next security center is missing");
+  assertContains(diagnosticsCenter, "Operational diagnostics", "Next diagnostics center is missing");
+  assertContains(servicesSurface, "Pilot and trust journey", "Next services surface is missing the pilot journey");
+  for (const ref of [
+    'slug: "reviewer-fast-path"',
+    'slug: "audit-packet"',
+    'slug: "live-proof-v3"',
+    'slug: "launch-trust-packet"',
+    'slug: "mainnet-blockers"',
+    'slug: "trust-package"',
+  ]) {
+    assertContains(curatedDocuments, ref, `Next curated document library is missing review reference: ${ref}`);
+  }
 
   console.log("Review link verification: PASS");
 }

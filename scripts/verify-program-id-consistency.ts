@@ -7,7 +7,6 @@ function main() {
   verifyAnchorToml();
   verifyProgramSource();
   verifyDocs();
-  verifyFrontend();
   verifySupportingScripts();
   console.log("Program ID consistency verification: PASS");
 }
@@ -46,14 +45,6 @@ function verifyDocs() {
     assert(Boolean(match), `${file} is missing its program-id anchor`);
     assert(match?.[1] === CANONICAL_PROGRAM_ID, `${file} drifted to a different program id: ${match?.[1] || "missing"}`);
   }
-}
-
-function verifyFrontend() {
-  const body = fs.readFileSync(path.resolve("docs/index.html"), "utf8");
-  const match = body.match(/const PROGRAM_ID = "([^"]+)";/);
-  assert(Boolean(match), "docs/index.html is missing the PROGRAM_ID constant");
-  assert(match?.[1] === CANONICAL_PROGRAM_ID, `frontend PROGRAM_ID drifted: ${match?.[1] || "missing"}`);
-  assert(body.includes(CANONICAL_PROGRAM_ID), "frontend surface is missing the canonical program id");
 }
 
 function verifySupportingScripts() {

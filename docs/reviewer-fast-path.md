@@ -5,9 +5,9 @@ This is the shortest high-signal path for a judge, auditor, or technical reviewe
 ## Two-Minute Review
 
 1. Open the live Security surface:
-   - `https://x-pact.github.io/PrivateDAO/?page=security`
+   - `https://x-pact.github.io/PrivateDAO/security/`
 2. Open the live Proof Center:
-   - `https://x-pact.github.io/PrivateDAO/?page=proof`
+   - `https://x-pact.github.io/PrivateDAO/proof/`
 3. Open the dedicated V3 proof packet when you want the additive hardening path specifically:
    - `docs/test-wallet-live-proof-v3.generated.md`
    - `docs/governance-hardening-v3.md`

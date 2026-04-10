@@ -12,7 +12,7 @@ Planned mirror:
 
 ## What Is Already Ready In-Repo
 
-- root entry preserves query params and hash fragments when redirecting into `docs/`
+- the root Next.js export is already the live surface
 - the live frontend derives canonical and social URL metadata from the active origin
 - self-links inside the app no longer hardcode only the review host
 - copied evidence packets can reference the active frontend origin
@@ -23,7 +23,7 @@ Planned mirror:
 1. Create the DNS record for `app.privatedao.xyz`
 2. Point the mirror domain at the same static bundle host used for the review surface
 3. Ensure HTTPS is active and valid
-4. Confirm the mirror serves the same `docs/` bundle and assets
+4. Confirm the mirror serves the same root Next.js export bundle and assets
 5. Verify that reviewer links remain unchanged in public submissions until mirror validation is complete
 
 ## Cutover Validation
@@ -36,8 +36,8 @@ Validate both URLs manually:
 Check the following at both URLs:
 
 1. Home page loads without console-breaking errors
-2. `?page=proof&judge=1` still opens the proof view
-3. `?page=diagnostics` still opens diagnostics
+2. `/proof/?judge=1` still opens the proof view
+3. `/diagnostics/` still opens diagnostics
 4. top navigation works
 5. `Connect Wallet` remains visible and usable
 6. live proof links open correctly
@@ -60,8 +60,8 @@ until the mirror has been verified end-to-end.
 When the mirror is live, capture:
 
 - screenshot of home page on `.xyz`
-- screenshot of `?page=proof&judge=1` on `.xyz`
-- screenshot of `?page=diagnostics` on `.xyz`
+- screenshot of `/proof/?judge=1` on `.xyz`
+- screenshot of `/diagnostics/` on `.xyz`
 - browser metadata inspection showing canonical/OG URL on `.xyz`
 - one note confirming GitHub Pages still serves the same surface
 

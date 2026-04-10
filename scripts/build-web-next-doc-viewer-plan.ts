@@ -79,8 +79,8 @@ function main() {
   const payload = {
     project: "PrivateDAO",
     generatedAt: new Date().toISOString(),
-    status: "doc-viewer-parity-next-ready",
-    currentCanonicalViewer: "docs/index.html?page=docs&doc=...",
+    status: "doc-viewer-parity-live",
+    currentCanonicalViewer: "apps/web /documents + /viewer",
     nextAppRoot: "apps/web",
     docClasses,
     nextStepPhases: [
@@ -95,7 +95,7 @@ function main() {
       "npm run verify:web-next-query-strategy",
     ],
     boundary: [
-      "docs remains the canonical live surface until cutover is explicit",
+      "apps/web document routes are now the canonical in-app viewer surface",
       "legacy docs queries now have Next destinations through curated /documents routes or the generic /viewer route",
       "raw repository files remain authoritative even when rendered in-app",
     ],

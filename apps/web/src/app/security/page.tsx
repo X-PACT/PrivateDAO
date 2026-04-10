@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { SectionHeader } from "@/components/section-header";
 import { SecurityCenter } from "@/components/security-center";
+import { ZkMatrixSurface } from "@/components/zk-matrix-surface";
 import { Badge } from "@/components/ui/badge";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
@@ -34,6 +35,16 @@ export default function SecurityPage() {
       </div>
       <div className="mt-10">
         <SecurityCenter />
+      </div>
+      <div className="mt-10">
+        <SectionHeader
+          eyebrow="ZK Matrix"
+          title="A PrivateDAO-specific matrix for what ZK proves now and what it does not claim"
+          description="This matrix turns the ZK story into a reviewer-friendly surface: live proofs, proposal-bound anchors, attestation, and zk_enforced posture on one side, with explicit non-claims on the other."
+        />
+      </div>
+      <div className="mt-10">
+        <ZkMatrixSurface />
       </div>
     </main>
   );

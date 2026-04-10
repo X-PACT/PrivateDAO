@@ -37,11 +37,8 @@ function main() {
   const markdown = fs.readFileSync(mdPath, "utf8");
 
   assert(payload.project === "PrivateDAO", "web next handoff project mismatch");
-  assert(["staged-not-live", "live-on-root"].includes(payload.status), "web next handoff status mismatch");
-  assert(
-    payload.currentLiveSurface === "docs/index.html" || payload.currentLiveSurface === "repo root Next.js export",
-    "web next handoff live surface mismatch",
-  );
+  assert(payload.status === "live-on-root", "web next handoff status mismatch");
+  assert(payload.currentLiveSurface === "repo root Next.js export", "web next handoff live surface mismatch");
   assert(payload.nextAppRoot === "apps/web", "web next handoff app root mismatch");
   assert(payload.reviewerBoundary.includes("canonical live reviewer-facing surface"), "web next handoff boundary text is too weak");
 
@@ -102,11 +99,7 @@ function main() {
     assert(markdown.includes(token), `web next handoff markdown is missing: ${token}`);
   }
 
-  assert(
-    markdown.includes("current live surface: `docs/index.html`") ||
-      markdown.includes("current live surface: `repo root Next.js export`"),
-    "web next handoff markdown live surface mismatch",
-  );
+  assert(markdown.includes("current live surface: `repo root Next.js export`"), "web next handoff markdown live surface mismatch");
 
   console.log("Web next handoff verification: PASS");
 }

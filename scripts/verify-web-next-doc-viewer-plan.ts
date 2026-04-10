@@ -30,8 +30,8 @@ function main() {
   const markdown = fs.readFileSync(mdPath, "utf8");
 
   assert(payload.project === "PrivateDAO", "web next doc viewer plan project mismatch");
-  assert(payload.status === "doc-viewer-parity-next-ready", "web next doc viewer plan status mismatch");
-  assert(payload.currentCanonicalViewer === "docs/index.html?page=docs&doc=...", "web next doc viewer plan canonical viewer mismatch");
+  assert(payload.status === "doc-viewer-parity-live", "web next doc viewer plan status mismatch");
+  assert(payload.currentCanonicalViewer === "apps/web /documents + /viewer", "web next doc viewer plan canonical viewer mismatch");
   assert(payload.nextAppRoot === "apps/web", "web next doc viewer plan app root mismatch");
 
   const tiers = [
@@ -62,7 +62,7 @@ function main() {
   }
 
   for (const boundary of [
-    "docs remains the canonical live surface until cutover is explicit",
+    "apps/web document routes are now the canonical in-app viewer surface",
     "legacy docs queries now have Next destinations through curated /documents routes or the generic /viewer route",
     "raw repository files remain authoritative even when rendered in-app",
   ]) {
