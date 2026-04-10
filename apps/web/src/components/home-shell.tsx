@@ -88,10 +88,10 @@ export function HomeShell() {
   ];
 
   return (
-    <main className="pb-24">
-      <section className="mx-auto w-full max-w-7xl px-4 pt-12 sm:px-6 lg:px-8 lg:pt-18">
-        <div className="grid items-start gap-10 xl:grid-cols-[1.14fr_0.86fr]">
-          <div className="space-y-8">
+    <main className="pb-20 sm:pb-24">
+      <section className="mx-auto w-full max-w-7xl px-4 pt-8 sm:px-6 sm:pt-12 lg:px-8 lg:pt-18">
+        <div className="grid items-start gap-8 xl:grid-cols-[1.14fr_0.86fr] xl:gap-10">
+          <div className="space-y-6 sm:space-y-8">
             <div className="flex flex-wrap gap-3">
               <Badge variant="cyan">Private governance on Solana</Badge>
               <Badge variant="violet">ZK + REFHE + MagicBlock + Fast RPC</Badge>
@@ -114,12 +114,12 @@ export function HomeShell() {
                 </button>
               ))}
             </div>
-            <div className="space-y-5">
+            <div className="space-y-4 sm:space-y-5">
               <div className="text-[11px] uppercase tracking-[0.34em] text-emerald-300/80">{activePersona.eyebrow}</div>
-              <div className="max-w-3xl text-4xl font-semibold tracking-[-0.045em] text-white sm:text-5xl lg:text-[4rem] xl:text-[4.35rem]">
+              <div className="max-w-3xl text-3xl font-semibold tracking-[-0.045em] text-white sm:text-5xl lg:text-[4rem] xl:text-[4.35rem]">
                 {activePersona.title}
               </div>
-              <p className="max-w-2xl text-base leading-8 text-white/62 sm:text-lg">
+              <p className="max-w-2xl text-sm leading-7 text-white/62 sm:text-lg sm:leading-8">
                 {activePersona.description}
               </p>
             </div>
@@ -227,15 +227,15 @@ export function HomeShell() {
         </div>
       </section>
 
-      <section className="mx-auto mt-18 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section className="mx-auto mt-14 w-full max-w-7xl px-4 sm:mt-18 sm:px-6 lg:px-8">
         <MetricsStrip />
       </section>
 
-      <section className="mx-auto mt-10 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section className="mx-auto mt-8 w-full max-w-7xl px-4 sm:mt-10 sm:px-6 lg:px-8">
         <OperatingBoundaryPanel />
       </section>
 
-      <section className="mx-auto mt-20 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section className="mx-auto mt-16 w-full max-w-7xl px-4 sm:mt-20 sm:px-6 lg:px-8">
         <SectionHeader
           eyebrow="Start Building"
           title="Reference paths for governance, proof, and end-user rollout"
@@ -284,7 +284,7 @@ export function HomeShell() {
         </div>
       </section>
 
-      <section className="mx-auto mt-18 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section className="mx-auto mt-16 w-full max-w-7xl px-4 sm:mt-18 sm:px-6 lg:px-8">
         <SectionHeader
           eyebrow="Quick access"
           title="Open the exact PrivateDAO surface you need without scrolling through a long landing page"
@@ -317,7 +317,7 @@ export function HomeShell() {
         </div>
       </section>
 
-      <section className="mx-auto mt-18 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section className="mx-auto mt-16 w-full max-w-7xl px-4 sm:mt-18 sm:px-6 lg:px-8">
         <SectionHeader
           eyebrow="Why PrivateDAO"
           title="A Solana-native governance product shaped around the rails judges and users actually inspect"
@@ -360,7 +360,7 @@ export function HomeShell() {
         </div>
       </section>
 
-      <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section className="mx-auto mt-18 w-full max-w-7xl px-4 sm:mt-24 sm:px-6 lg:px-8">
         <SectionHeader
           eyebrow="Story Video"
           title="A single upload-ready reel that explains everything we offer and why PrivateDAO wins"
@@ -371,13 +371,13 @@ export function HomeShell() {
         </div>
       </section>
 
-      <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section className="mx-auto mt-18 w-full max-w-7xl px-4 sm:mt-24 sm:px-6 lg:px-8">
         <SectionHeader
           eyebrow="Operational Dashboard"
           title="A real governance dashboard, centered and readable instead of buried in a long landing page"
           description="The main operational board stays visible on the homepage as a single strong preview, while the full route remains available at `/dashboard`."
         />
-        <div className="mt-10">
+        <div className="mt-10 hidden lg:block">
           <GovernanceDashboard />
           <div className="mt-6 flex justify-end">
             <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} href="/dashboard">
@@ -385,9 +385,24 @@ export function HomeShell() {
             </Link>
           </div>
         </div>
+        <div className="mt-8 lg:hidden">
+          <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,15,30,0.92),rgba(6,9,20,0.98))]">
+            <CardHeader>
+              <CardTitle className="text-2xl">Open the full dashboard on mobile</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm leading-7 text-white/58">
+                The mobile homepage keeps the dashboard summary lightweight. Use the dedicated route for the full treasury, proposal, and execution board.
+              </p>
+              <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} href="/dashboard">
+                Open full dashboard
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
       </section>
 
-      <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section className="mx-auto mt-18 w-full max-w-7xl px-4 sm:mt-24 sm:px-6 lg:px-8">
         <SectionHeader
           eyebrow="Routes and Corridors"
           title="Use-case corridors, product rails, and community surfaces stay visible without bloating the homepage"
@@ -396,7 +411,9 @@ export function HomeShell() {
         <div className="mt-10 grid gap-8 xl:grid-cols-[1.08fr_0.92fr]">
           <SolutionCorridors />
           <div className="space-y-6">
-            <VideoCenter compact />
+            <div className="hidden xl:block">
+              <VideoCenter compact />
+            </div>
             <CommunityHub />
           </div>
         </div>

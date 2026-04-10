@@ -50,6 +50,14 @@ a {
   text-decoration: none;
 }
 
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 ::selection {
   background: rgba(20, 241, 149, 0.22);
   color: white;

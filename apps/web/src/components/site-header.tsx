@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { LockKeyhole, Search, Sparkles } from "lucide-react";
 
+import { BrandMark } from "@/components/brand-mark";
 import { buttonVariants } from "@/components/ui/button";
 import { useSiteUrls } from "@/lib/site-urls";
 import { cn } from "@/lib/utils";
@@ -33,21 +33,15 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-white/8 bg-[#050816]/75 backdrop-blur-xl">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-start justify-between gap-4 sm:items-center">
           <Link href="/" className="group flex min-w-0 items-center gap-3">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-[linear-gradient(180deg,rgba(12,18,37,0.96),rgba(5,9,22,0.98))] shadow-[0_18px_44px_rgba(0,0,0,0.28)]">
-              <Image
-                src="/assets/brand/privatedao-avatar.svg"
-                alt="PrivateDAO brand mark"
-                width={48}
-                height={48}
-                className="h-10 w-10 object-contain p-0.5 transition-transform duration-300 group-hover:scale-105"
-              />
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-[linear-gradient(180deg,rgba(12,18,37,0.96),rgba(5,9,22,0.98))] p-1.5 shadow-[0_18px_44px_rgba(0,0,0,0.28)]">
+              <BrandMark className="h-full w-full transition-transform duration-300 group-hover:scale-105" />
             </div>
             <div className="min-w-0">
-              <div className="flex flex-nowrap items-center gap-0.5 whitespace-nowrap text-xl font-semibold tracking-tight text-white sm:text-2xl">
+              <div className="flex flex-nowrap items-center gap-0.5 whitespace-nowrap text-lg font-semibold tracking-tight text-white sm:text-2xl">
                 <span>PrivateD</span>
-                <span className="inline-block bg-[linear-gradient(135deg,#14f195,#00c2ff,#9945ff)] bg-clip-text text-[1.45rem] font-black text-transparent drop-shadow-[0_0_20px_rgba(20,241,149,0.42)] animate-pulse sm:text-[1.7rem]">
+                <span className="inline-block bg-[linear-gradient(135deg,#14f195,#00c2ff,#9945ff)] bg-clip-text text-[1.3rem] font-black text-transparent drop-shadow-[0_0_20px_rgba(20,241,149,0.42)] animate-pulse sm:text-[1.7rem]">
                   △
                 </span>
                 <span>O</span>
@@ -59,7 +53,7 @@ export function SiteHeader() {
             </div>
           </Link>
 
-          <div className="flex shrink-0 items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
             <Link
               href="/search"
               className={cn(buttonVariants({ size: "sm", variant: "ghost" }), "h-10 w-10 rounded-full p-0 text-white/72")}
@@ -86,10 +80,10 @@ export function SiteHeader() {
           </div>
         </div>
 
-        <nav className="flex flex-wrap items-center gap-1.5 border-t border-white/6 pt-3">
+        <nav className="no-scrollbar flex items-center gap-1.5 overflow-x-auto border-t border-white/6 pt-3 pb-1">
           {navItems.map((item) => (
             <Link
-              className={cn(buttonVariants({ size: "sm", variant: "ghost" }), "px-3 text-white/72")}
+              className={cn(buttonVariants({ size: "sm", variant: "ghost" }), "shrink-0 px-3 text-white/72")}
               href={item.href}
               key={item.href}
             >
@@ -104,15 +98,15 @@ export function SiteHeader() {
             <Link href="/search" className="truncate">
               Search or ask AI
             </Link>
-            <span className="ml-auto rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[11px] uppercase tracking-[0.18em] text-white/38">
+            <span className="ml-auto hidden rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[11px] uppercase tracking-[0.18em] text-white/38 sm:inline-flex">
               ⌘K
             </span>
           </div>
 
-          <nav className="flex flex-wrap items-center gap-1.5">
+          <nav className="no-scrollbar flex items-center gap-1.5 overflow-x-auto pb-1">
             {utilityNav.map((item) => (
               <Link
-                className={cn(buttonVariants({ size: "sm", variant: "ghost" }), "px-3 text-white/68")}
+                className={cn(buttonVariants({ size: "sm", variant: "ghost" }), "shrink-0 px-3 text-white/68")}
                 href={item.href}
                 key={item.href}
               >
