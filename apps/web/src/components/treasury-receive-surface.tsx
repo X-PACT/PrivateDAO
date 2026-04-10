@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, Clipboard, Coins, Download, Landmark, ShieldCheck, Wallet } from "lucide-react";
 
@@ -45,20 +45,80 @@ const handoffLanes = [
   },
 ] as const;
 
+const destinationProfiles = [
+  {
+    value: "treasury-top-up",
+    label: "Treasury top-up",
+    summary: "Route capital into the treasury for runway, governance execution, and shared operating capacity.",
+    defaultLane: "buyer",
+    defaultPurpose: "Treasury top-up for governance runway and shared Devnet operations.",
+    intake: "payments",
+    nextRoutes: [
+      { label: "Services", href: "/services" },
+      { label: "Command Center", href: "/command-center" },
+    ],
+  },
+  {
+    value: "pilot-funding",
+    label: "Pilot funding",
+    summary: "Fund a time-boxed pilot so the buyer path stays tied to a real product and measurable Devnet execution.",
+    defaultLane: "buyer",
+    defaultPurpose: "Pilot funding for PrivateDAO rollout, buyer onboarding, and measured Devnet validation.",
+    intake: "pilot",
+    nextRoutes: [
+      { label: "Engage", href: "/engage" },
+      { label: "Services", href: "/services" },
+    ],
+  },
+  {
+    value: "vendor-payout",
+    label: "Vendor payout",
+    summary: "Prepare a governed payout for an external service provider with clear operational routing and evidence.",
+    defaultLane: "operator",
+    defaultPurpose: "Vendor payout request routed through governed treasury operations.",
+    intake: "payments",
+    nextRoutes: [
+      { label: "Command Center", href: "/command-center" },
+      { label: "Diagnostics", href: "/diagnostics" },
+    ],
+  },
+  {
+    value: "contributor-payout",
+    label: "Contributor payout",
+    summary: "Issue a governed payout for contributors, builders, or operators while preserving treasury discipline.",
+    defaultLane: "operator",
+    defaultPurpose: "Contributor payout request for governed treasury execution.",
+    intake: "payments",
+    nextRoutes: [
+      { label: "Command Center", href: "/command-center" },
+      { label: "Security", href: "/security" },
+    ],
+  },
+] as const;
+
 export function TreasuryReceiveSurface() {
   const config = getTreasuryReceiveConfig();
   const [copied, setCopied] = useState<string | null>(null);
   const [selectedAsset, setSelectedAsset] = useState<(typeof config.assets)[number]["symbol"]>("SOL");
+  const [profile, setProfile] = useState<(typeof destinationProfiles)[number]["value"]>("treasury-top-up");
   const [amount, setAmount] = useState("");
   const [purpose, setPurpose] = useState("");
   const [lane, setLane] = useState<(typeof handoffLanes)[number]["value"]>("buyer");
 
   const activeAsset = config.assets.find((asset) => asset.symbol === selectedAsset) ?? config.assets[0];
+  const activeProfile = destinationProfiles.find((item) => item.value === profile) ?? destinationProfiles[0];
   const activeLane = handoffLanes.find((item) => item.value === lane) ?? handoffLanes[0];
+
+  useEffect(() => {
+    setLane(activeProfile.defaultLane);
+    setPurpose(activeProfile.defaultPurpose);
+  }, [activeProfile]);
+
   const requestPacket = useMemo(
     () =>
       [
         "PrivateDAO Treasury Request",
+        `Destination profile: ${activeProfile.label}`,
         `Network: ${config.network}`,
         `Lane: ${activeLane.label}`,
         `Asset: ${activeAsset.symbol}`,
@@ -67,9 +127,9 @@ export function TreasuryReceiveSurface() {
         `Receive address: ${activeAsset.receiveAddress}`,
         `Mint: ${activeAsset.mint ?? "Configured at deployment through NEXT_PUBLIC_TREASURY_* env."}`,
         "Recommended next routes:",
-        ...activeLane.routes.map((route) => `- ${route.label}: ${route.href}`),
+        ...activeProfile.nextRoutes.map((route) => `- ${route.label}: ${route.href}`),
       ].join("\n"),
-    [activeAsset, activeLane, amount, config.network, purpose],
+    [activeAsset, activeLane.label, activeProfile, amount, config.network, purpose],
   );
   const isRequestReady = Boolean(amount.trim() && purpose.trim());
 
@@ -91,8 +151,8 @@ export function TreasuryReceiveSurface() {
 
   const encodedPurpose = encodeURIComponent(purpose);
   const encodedAmount = encodeURIComponent(amount);
-  const engagePaymentsHref = `/engage?intake=payments&asset=${activeAsset.symbol}&amount=${encodedAmount}&purpose=${encodedPurpose}&lane=${lane}`;
-  const engagePilotHref = `/engage?intake=pilot&asset=${activeAsset.symbol}&amount=${encodedAmount}&purpose=${encodedPurpose}&lane=${lane}`;
+  const encodedProfile = encodeURIComponent(activeProfile.value);
+  const engagePrimaryHref = `/engage?intake=${activeProfile.intake}&asset=${activeAsset.symbol}&amount=${encodedAmount}&purpose=${encodedPurpose}&lane=${lane}&profile=${encodedProfile}`;
 
   return (
     <Card>
@@ -182,6 +242,22 @@ export function TreasuryReceiveSurface() {
 
             <div className="mt-5 grid gap-4">
               <label className="grid gap-2 text-sm text-white/70">
+                <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Destination profile</span>
+                <select
+                  value={profile}
+                  onChange={(event) => setProfile(event.target.value as typeof profile)}
+                  className="rounded-2xl border border-white/10 bg-white/4 px-4 py-3 text-white outline-none"
+                >
+                  {destinationProfiles.map((item) => (
+                    <option key={item.value} value={item.value} className="bg-[#0b1020]">
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+                <span className="text-xs leading-6 text-white/46">{activeProfile.summary}</span>
+              </label>
+
+              <label className="grid gap-2 text-sm text-white/70">
                 <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Asset</span>
                 <select
                   value={selectedAsset}
@@ -241,12 +317,14 @@ export function TreasuryReceiveSurface() {
             </div>
 
             <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
-              <div className="text-[11px] uppercase tracking-[0.24em] text-white/46">Lane summary</div>
-              <div className="mt-3 text-base font-medium text-white">{activeLane.label}</div>
-              <p className="mt-3 text-sm leading-7 text-white/60">{activeLane.summary}</p>
+              <div className="text-[11px] uppercase tracking-[0.24em] text-white/46">Profile and lane summary</div>
+              <div className="mt-3 text-base font-medium text-white">{activeProfile.label}</div>
+              <p className="mt-3 text-sm leading-7 text-white/60">{activeProfile.summary}</p>
+              <div className="mt-4 text-sm font-medium text-white">{activeLane.label}</div>
+              <p className="mt-2 text-sm leading-7 text-white/60">{activeLane.summary}</p>
               <div className="mt-4 flex flex-wrap gap-3">
-                {activeLane.routes.map((route) => (
-                  <Link key={`${activeLane.value}-${route.href}`} href={route.href} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                {activeProfile.nextRoutes.map((route) => (
+                  <Link key={`${activeProfile.value}-${route.href}`} href={route.href} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
                     {route.label}
                     <ArrowRight className="h-4 w-4" />
                   </Link>
@@ -274,19 +352,11 @@ export function TreasuryReceiveSurface() {
                 Download request
               </button>
               <Link
-                href={engagePaymentsHref}
+                href={engagePrimaryHref}
                 className={cn(buttonVariants({ size: "sm", variant: "outline" }), !isRequestReady && "pointer-events-none opacity-50")}
                 aria-disabled={!isRequestReady}
               >
-                Continue to payments intake
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                href={engagePilotHref}
-                className={cn(buttonVariants({ size: "sm", variant: "outline" }), !isRequestReady && "pointer-events-none opacity-50")}
-                aria-disabled={!isRequestReady}
-              >
-                Continue to pilot intake
+                Continue to {activeProfile.intake === "pilot" ? "pilot" : "payments"} intake
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
