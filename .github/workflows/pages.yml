@@ -24,13 +24,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            apps/web/package-lock.json
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Install web dependencies
+        run: npm --prefix apps/web ci
+
+      - name: Build root web mirror bundle
+        run: npm run web:bundle:root
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload docs artifact
+      - name: Upload root web artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./docs
+          path: ./dist/web-mirror-root
 
       - name: Deploy to GitHub Pages
         id: deployment
