@@ -40,6 +40,12 @@ const assistantPaths = [
     href: "/start",
     icon: Wallet,
   },
+  {
+    title: "I need the best competition workspace",
+    summary: "Open the competition center, then route into the exact track bundle for Colosseum, privacy, RPC, consumer, Ranger, or 100xDevs.",
+    href: "/tracks",
+    icon: Sparkles,
+  },
 ];
 
 export function InternalAssistantPanel() {
@@ -58,7 +64,7 @@ export function InternalAssistantPanel() {
             <input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Ask AI where to go: wallet, privacy, judge path, docs, tracks, RPC..."
+              placeholder="Ask AI where to go: QuickNode, Solflare, privacy, judge path, consumer, Ranger, 100xDevs..."
               className="w-full bg-transparent text-sm text-white outline-none placeholder:text-white/34"
             />
           </div>

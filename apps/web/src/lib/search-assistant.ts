@@ -1,3 +1,5 @@
+import { competitionTrackWorkspaces } from "@/lib/site-data";
+
 export type AssistantSuggestion = {
   title: string;
   summary: string;
@@ -128,9 +130,69 @@ const fallbackSuggestion: AssistantSuggestion = {
   ],
 };
 
+const competitionAliases: Record<string, string[]> = {
+  "colosseum-frontier": ["colosseum", "frontier", "grand champion", "accelerator", "product impact"],
+  "privacy-track": ["privacy", "magicblock", "encrypted", "zk", "refhe", "private governance"],
+  "eitherway-live-dapp": ["eitherway", "solflare", "kamino", "dflow", "quicknode", "live dapp", "wallet track"],
+  "rpc-infrastructure": ["rpc", "quicknode", "infrastructure", "hosted reads", "diagnostics", "api"],
+  "consumer-apps": ["consumer", "tokenton", "tokenton26", "ux", "onboarding", "normal users"],
+  "ranger-main": ["ranger", "main track", "startup quality", "build a bear"],
+  "ranger-drift": ["drift", "treasury", "capital allocation", "side track", "risk"],
+  "100xdevs": ["100xdevs", "frontend", "next.js", "developer quality", "shipping discipline"],
+  "encrypt-ika": ["encrypt", "ika", "encrypted ops", "confidential operations"],
+  "solrouter-encrypted-ai": ["solrouter", "encrypted ai", "assistant", "ai track"],
+};
+
+function getCompetitionSuggestion(query: string): AssistantSuggestion | null {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return null;
+
+  const scored = competitionTrackWorkspaces
+    .map((workspace) => {
+      const aliasTerms = competitionAliases[workspace.slug] ?? [];
+      const rawTerms = [
+        workspace.slug,
+        workspace.title,
+        workspace.sponsor,
+        workspace.primaryCorridor,
+        ...workspace.skillsNeeded,
+        ...aliasTerms,
+      ]
+        .join(" ")
+        .toLowerCase()
+        .split(/[^a-z0-9.+#-]+/g)
+        .filter(Boolean);
+
+      const uniqueTerms = [...new Set(rawTerms)];
+      const score = uniqueTerms.reduce((sum, term) => (normalized.includes(term) ? sum + 1 : sum), 0);
+      return { workspace, score };
+    })
+    .sort((left, right) => right.score - left.score);
+
+  const top = scored[0];
+  if (!top || top.score === 0) return null;
+
+  return {
+    title: `Open ${top.workspace.title}`,
+    summary:
+      `${top.workspace.objective} Lead with ${top.workspace.liveRoute}, keep judges on ${top.workspace.judgeRoute}, and use the proof and deck routes as the submission support bundle.`,
+    primaryActionLabel: "Open track workspace",
+    primaryActionHref: `/tracks/${top.workspace.slug}`,
+    relatedRoutes: [
+      { label: "Live route", href: top.workspace.liveRoute },
+      { label: "Judge route", href: top.workspace.judgeRoute },
+      { label: "Proof route", href: top.workspace.proofRoute },
+      { label: "Deck route", href: top.workspace.deckRoute },
+    ],
+  };
+}
+
 export function getAssistantSuggestion(query: string): AssistantSuggestion {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return fallbackSuggestion;
+
+  const competitionSuggestion = getCompetitionSuggestion(normalized);
+  if (competitionSuggestion) return competitionSuggestion;
 
   const scored = assistantIntents
     .map((intent) => ({

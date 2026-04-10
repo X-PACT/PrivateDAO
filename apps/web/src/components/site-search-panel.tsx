@@ -43,7 +43,7 @@ export function SiteSearchPanel() {
               {results.length} result{results.length === 1 ? "" : "s"}
             </div>
             <div className="rounded-3xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/58">
-              Ask in natural language: “best wallet for consumer demo”, “judge path for privacy track”, “where is the ZK matrix”, or “how do I open the RPC workspace”.
+              Ask in natural language: “best wallet for consumer demo”, “judge path for privacy track”, “QuickNode submission route”, “MagicBlock track”, “100xDevs workspace”, or “how do I open the RPC workspace”.
             </div>
           </div>
 
