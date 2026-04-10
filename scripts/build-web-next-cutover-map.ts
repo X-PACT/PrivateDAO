@@ -76,29 +76,43 @@ const mappings: MappingEntry[] = [
 ];
 
 function main() {
+  const rootLive = detectRootLiveSurface();
   const payload = {
     project: "PrivateDAO",
     generatedAt: new Date().toISOString(),
-    currentLiveSurface: "docs/index.html",
+    currentLiveSurface: rootLive ? "repo root Next.js export" : "docs/index.html",
     nextSurfaceRoot: "apps/web",
-    status: "staged-cutover-map",
+    status: rootLive ? "live-cutover-map" : "staged-cutover-map",
     mappings,
     commands: [
       "npm run build:web-next-cutover-map",
       "npm run verify:web-next-cutover-map",
       "npm run web:verify:bundle:github",
+      "npm run web:verify:live:github",
       "npm run verify:web-next-handoff",
     ],
-    cutoverBoundary: [
-      "preserve docs as the canonical live surface until cutover is explicit",
-      "treat apps/web as the replacement-ready mirror with legacy query compatibility",
-      "use /documents for curated packets and /viewer for broader repository markdown parity",
-    ],
+    cutoverBoundary: rootLive
+      ? [
+          "apps/web export at the repo root is the canonical live surface",
+          "preserve docs as the archive and raw-reference surface under /docs/",
+          "use /documents for curated packets and /viewer for broader repository markdown parity",
+        ]
+      : [
+          "preserve docs as the canonical live surface until cutover is explicit",
+          "treat apps/web as the replacement-ready mirror with legacy query compatibility",
+          "use /documents for curated packets and /viewer for broader repository markdown parity",
+        ],
   };
 
   fs.writeFileSync(path.resolve("docs/web-next-cutover-map.generated.json"), JSON.stringify(payload, null, 2) + "\n");
   fs.writeFileSync(path.resolve("docs/web-next-cutover-map.generated.md"), buildMarkdown(payload));
   console.log("Wrote web next cutover map");
+}
+
+function detectRootLiveSurface() {
+  const rootIndex = path.resolve("index.html");
+  const nextDir = path.resolve("_next");
+  return fs.existsSync(rootIndex) && fs.existsSync(nextDir) && !fs.readFileSync(rootIndex, "utf8").includes("window.location.replace(target)");
 }
 
 function buildMarkdown(payload: {

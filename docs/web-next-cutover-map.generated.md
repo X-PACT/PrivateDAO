@@ -3,9 +3,9 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-10T00:49:57.417Z`
-- status: `staged-cutover-map`
-- current live surface: `docs/index.html`
+- generated at: `2026-04-10T01:11:33.994Z`
+- status: `live-cutover-map`
+- current live surface: `repo root Next.js export`
 - next surface root: `apps/web`
 
 ## Staged Route Mapping
@@ -78,10 +78,11 @@
 - `npm run build:web-next-cutover-map`
 - `npm run verify:web-next-cutover-map`
 - `npm run web:verify:bundle:github`
+- `npm run web:verify:live:github`
 - `npm run verify:web-next-handoff`
 
 ## Cutover Boundary
 
-- preserve docs as the canonical live surface until cutover is explicit
-- treat apps/web as the replacement-ready mirror with legacy query compatibility
+- apps/web export at the repo root is the canonical live surface
+- preserve docs as the archive and raw-reference surface under /docs/
 - use /documents for curated packets and /viewer for broader repository markdown parity

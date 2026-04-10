@@ -1,6 +1,6 @@
 # Next.js Route Parity
 
-This checklist defines the minimum route parity expected before `apps/web` can replace or formally mirror the current `docs/` reviewer surface.
+This checklist defines the route parity now expected from the published `apps/web` surface at the repo root.
 
 It is a UI parity checklist, not a protocol claim.
 
@@ -83,11 +83,13 @@ It is a UI parity checklist, not a protocol claim.
 - Trust links
 - Reviewer-facing credibility path
 
-## Cutover Rule
+## Live Rule
 
-Do not call `apps/web` the canonical live surface until:
+The canonical live surface now comes from `apps/web` at the repo root.
 
-- these routes are exported successfully
+Keep verifying that:
+
+- these routes continue exporting successfully
 - mirror links resolve correctly
 - reviewer links open the right evidence
-- the current `docs/` entrypoint can be preserved or redirected intentionally
+- `docs/` remains available as the archive and raw-reference fallback

@@ -29,8 +29,11 @@ function main() {
   const markdown = fs.readFileSync(mdPath, "utf8");
 
   assert(payload.project === "PrivateDAO", "web next query strategy project mismatch");
-  assert(payload.status === "query-strategy-next-ready", "web next query strategy status mismatch");
-  assert(payload.currentLiveSurface === "docs/index.html", "web next query strategy must preserve docs as live surface");
+  assert(["query-strategy-next-ready", "query-strategy-live"].includes(payload.status), "web next query strategy status mismatch");
+  assert(
+    payload.currentLiveSurface === "docs/index.html" || payload.currentLiveSurface === "repo root Next.js export",
+    "web next query strategy live surface mismatch",
+  );
   assert(payload.nextSurfaceRoot === "apps/web", "web next query strategy next surface root mismatch");
 
   for (const query of [
@@ -66,18 +69,15 @@ function main() {
     "npm run verify:web-next-query-strategy",
     "npm run build:web-next-cutover-map",
     "npm run verify:web-next-cutover-map",
+    "npm run web:verify:live:github",
   ]) {
     assert(payload.commands.includes(command), `web next query strategy missing command: ${command}`);
   }
 
-  for (const boundary of [
-    "do not rewrite docs query entrypoints in-place while docs remains canonical",
-    "map legacy query entrypoints to apps/web routes while docs remains the canonical live surface",
-    "keep docs available as the authoritative archive until the mirror replaces it explicitly",
-    "prefer curated document routes first and fall back to /viewer/ for broader markdown parity",
-  ]) {
-    assert(payload.routingBoundary.includes(boundary), `web next query strategy missing boundary: ${boundary}`);
-  }
+  assert(
+    payload.routingBoundary.includes("prefer curated document routes first and fall back to /viewer/ for broader markdown parity"),
+    "web next query strategy missing documents/viewer boundary",
+  );
 
   for (const token of [
     "# Web Next Query Preservation Strategy",

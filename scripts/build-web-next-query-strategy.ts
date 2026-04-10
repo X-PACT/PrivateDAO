@@ -76,11 +76,12 @@ const queryRules: QueryRule[] = [
 ];
 
 function main() {
+  const rootLive = detectRootLiveSurface();
   const payload = {
     project: "PrivateDAO",
     generatedAt: new Date().toISOString(),
-    status: "query-strategy-next-ready",
-    currentLiveSurface: "docs/index.html",
+    status: rootLive ? "query-strategy-live" : "query-strategy-next-ready",
+    currentLiveSurface: rootLive ? "repo root Next.js export" : "docs/index.html",
     nextSurfaceRoot: "apps/web",
     queryRules,
     commands: [
@@ -88,18 +89,31 @@ function main() {
       "npm run verify:web-next-query-strategy",
       "npm run build:web-next-cutover-map",
       "npm run verify:web-next-cutover-map",
+      "npm run web:verify:live:github",
     ],
-    routingBoundary: [
-      "do not rewrite docs query entrypoints in-place while docs remains canonical",
-      "map legacy query entrypoints to apps/web routes while docs remains the canonical live surface",
-      "keep docs available as the authoritative archive until the mirror replaces it explicitly",
-      "prefer curated document routes first and fall back to /viewer/ for broader markdown parity",
-    ],
+    routingBoundary: rootLive
+      ? [
+          "preserve legacy query entrypoints through the apps/web root route",
+          "keep docs available as the archive and raw-reference surface under /docs/",
+          "prefer curated document routes first and fall back to /viewer/ for broader markdown parity",
+        ]
+      : [
+          "do not rewrite docs query entrypoints in-place while docs remains canonical",
+          "map legacy query entrypoints to apps/web routes while docs remains the canonical live surface",
+          "keep docs available as the authoritative archive until the mirror replaces it explicitly",
+          "prefer curated document routes first and fall back to /viewer/ for broader markdown parity",
+        ],
   };
 
   fs.writeFileSync(path.resolve("docs/web-next-query-strategy.generated.json"), JSON.stringify(payload, null, 2) + "\n");
   fs.writeFileSync(path.resolve("docs/web-next-query-strategy.generated.md"), buildMarkdown(payload));
   console.log("Wrote web next query strategy");
+}
+
+function detectRootLiveSurface() {
+  const rootIndex = path.resolve("index.html");
+  const nextDir = path.resolve("_next");
+  return fs.existsSync(rootIndex) && fs.existsSync(nextDir) && !fs.readFileSync(rootIndex, "utf8").includes("window.location.replace(target)");
 }
 
 function buildMarkdown(payload: {

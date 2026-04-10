@@ -57,7 +57,8 @@ Both surfaces should resolve to the same repo-native frontend behavior:
 
 The repo now includes mirror-safe frontend behavior at the application layer:
 
-- root entry redirects to `./docs/` while preserving query params and hash fragments
+- the repo root now serves the Next.js export directly instead of redirecting into `docs/`
+- the root surface preserves legacy `?page=` entrypoints through the new Next.js compatibility layer
 - the live frontend updates canonical / Open Graph / Twitter URL metadata from the active origin
 - self-links inside the app no longer assume only `x-pact.github.io/PrivateDAO/`
 - copied evidence packets can now reference the active frontend origin instead of a hardcoded review host
@@ -77,6 +78,6 @@ Execution checklist:
 
 During review:
 
-- keep `https://x-pact.github.io/PrivateDAO/` active
+- keep `https://x-pact.github.io/PrivateDAO/` as the canonical review URL
 - add `.xyz` only as a parallel mirror
-- do not replace the current URLs in reviewer-facing artifacts until the mirror is verified end-to-end
+- do not replace the current review URLs in reviewer-facing artifacts until the mirror is verified end-to-end

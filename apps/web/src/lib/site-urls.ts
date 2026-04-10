@@ -29,7 +29,7 @@ export function resolveSiteBaseUrl() {
 }
 
 export function buildJudgeViewUrl() {
-  return `${resolveSiteBaseUrl()}/?page=proof&judge=1`;
+  return `${resolveSiteBaseUrl()}/proof/?judge=1`;
 }
 
 export function useSiteUrls() {

@@ -237,7 +237,7 @@ export const proofPackets = [
   {
     title: "Live proof",
     summary: "Canonical Devnet create → vote → execute flow with public reviewer links.",
-    href: "https://x-pact.github.io/PrivateDAO/?page=proof&judge=1",
+    href: "/proof/?judge=1",
     cta: "Open judge view",
   },
   {
@@ -425,7 +425,7 @@ export const commandCenterReferences = [
   {
     title: "Judge proof view",
     description: "Fastest reviewer path into the live proof surface.",
-    href: "https://x-pact.github.io/PrivateDAO/?page=proof&judge=1",
+    href: "/proof/?judge=1",
   },
   {
     title: "Dedicated V3 proof",
@@ -550,7 +550,7 @@ export const trustLinks = [
   {
     title: "Judge proof view",
     summary: "Fastest reviewer path into the live product proof surface.",
-    href: "https://x-pact.github.io/PrivateDAO/?page=proof&judge=1",
+    href: "/proof/?judge=1",
   },
   {
     title: "Audit packet",
@@ -614,7 +614,7 @@ export const proofFlowSteps = [
   {
     title: "Live proof",
     detail: "Open the canonical Devnet flow that proves create → submit → private vote → execute treasury happened.",
-    href: "https://x-pact.github.io/PrivateDAO/?page=proof&judge=1",
+    href: "/proof/?judge=1",
   },
   {
     title: "Dedicated V3 proof",

@@ -3,14 +3,14 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-10T00:49:27.864Z`
-- current status: `staged-not-live`
-- current live surface: `docs/index.html`
+- generated at: `2026-04-10T01:12:03.588Z`
+- current status: `live-on-root`
+- current live surface: `repo root Next.js export`
 - next app root: `apps/web`
 
 Boundary:
 
-- docs remains the canonical live reviewer-facing surface until explicit cutover.
+- apps/web static export at the repo root is now the canonical live reviewer-facing surface, while docs remains the archive and raw-reference surface.
 
 ## Mirror Modes
 
@@ -19,7 +19,7 @@ Boundary:
 - base path: `/PrivateDAO`
 - bundle directory: `dist/web-mirror-github`
 - archive: `dist/web-mirror-github.tar.gz`
-- status: `build-required`
+- status: `published-at-root`
 - verification: `npm run web:verify:bundle:github`
 
 ### root
@@ -57,11 +57,13 @@ Boundary:
 - `npm run web:build:github`
 - `npm run web:bundle:github`
 - `npm run web:verify:bundle:github`
+- `npm run web:publish:github`
+- `npm run web:verify:live:github`
 - `npm run build:web-next-handoff`
 - `npm run verify:web-next-handoff`
 
 ## Cutover Rule
 
-- do not replace docs/index.html silently
-- do not call apps/web canonical until reviewer links, judge-mode proof, and legacy docs entrypoints resolve under the mirror origin
-- preserve current GitHub Pages reviewer paths while the mirror is staged
+- treat the repo root Next.js export as the canonical live surface
+- preserve docs as the archive and raw-reference surface under /docs/
+- keep reviewer links, judge-mode proof, and legacy docs entrypoints resolving through apps/web compatibility routes

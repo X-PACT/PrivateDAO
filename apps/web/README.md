@@ -1,8 +1,8 @@
 # PrivateDAO Web
 
-This app is the new Next.js surface for `PrivateDAO`.
+This app is the Next.js surface for `PrivateDAO`.
 
-It is being built as an isolated migration target under `apps/web` so the current live surface in `docs/index.html` stays intact while the React version is developed and verified.
+It now powers the published root surface, while `docs/` remains available as the archive and raw-reference surface for reviewer packets and deep links that still point there.
 
 ## Scope
 
@@ -44,7 +44,7 @@ npm run dev
 
 ## Static Export Modes
 
-This app is now configured for static export so it can become a mirror-safe deployment target before cutover.
+This app is now configured for static export and already serves as the canonical published surface at the repo root.
 
 From the repo root:
 
@@ -62,13 +62,15 @@ Meaning:
 
 The app uses `NEXT_PUBLIC_BASE_PATH` and `NEXT_PUBLIC_LIVE_SITE_URL` to keep routes, assets, metadata, and reviewer links consistent across both deployment targets.
 
-Mirror bundle helpers from the repo root:
+Mirror and live-surface helpers from the repo root:
 
 ```bash
 npm run web:bundle:github
 npm run web:bundle:root
 npm run web:verify:bundle:github
 npm run web:verify:bundle:root
+npm run web:publish:github
+npm run web:verify:live:github
 npm run build:web-next-handoff
 npm run verify:web-next-handoff
 ```
@@ -83,6 +85,13 @@ Route parity reference:
 - `docs/web-next-query-strategy.generated.md`
 - `docs/web-next-doc-viewer-plan.generated.md`
 
-## Important Constraint
+## Live Publishing Rule
 
-This app does not replace the published static site yet. The `docs/` surface remains the live reviewer-facing interface until the Next.js build reaches parity and deployment cutover is explicitly handled.
+The published root surface now comes from the `apps/web` static export.
+
+The `docs/` directory remains in the repository and remains useful for:
+
+- archive/reference access
+- raw markdown review
+- historical deep links
+- reviewer cross-checking during mirror and `.xyz` rollout

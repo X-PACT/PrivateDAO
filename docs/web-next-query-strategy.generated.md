@@ -3,9 +3,9 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-10T00:48:14.161Z`
-- status: `query-strategy-next-ready`
-- current live surface: `docs/index.html`
+- generated at: `2026-04-10T01:11:04.621Z`
+- status: `query-strategy-live`
+- current live surface: `repo root Next.js export`
 - next surface root: `apps/web`
 
 ## Query Rules
@@ -79,10 +79,10 @@
 - `npm run verify:web-next-query-strategy`
 - `npm run build:web-next-cutover-map`
 - `npm run verify:web-next-cutover-map`
+- `npm run web:verify:live:github`
 
 ## Routing Boundary
 
-- do not rewrite docs query entrypoints in-place while docs remains canonical
-- map legacy query entrypoints to apps/web routes while docs remains the canonical live surface
-- keep docs available as the authoritative archive until the mirror replaces it explicitly
+- preserve legacy query entrypoints through the apps/web root route
+- keep docs available as the archive and raw-reference surface under /docs/
 - prefer curated document routes first and fall back to /viewer/ for broader markdown parity

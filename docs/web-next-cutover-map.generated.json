@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-10T00:49:57.417Z",
-  "currentLiveSurface": "docs/index.html",
+  "generatedAt": "2026-04-10T01:11:33.994Z",
+  "currentLiveSurface": "repo root Next.js export",
   "nextSurfaceRoot": "apps/web",
-  "status": "staged-cutover-map",
+  "status": "live-cutover-map",
   "mappings": [
     {
       "currentEntry": "/?page=proposals",
@@ -73,11 +73,12 @@
     "npm run build:web-next-cutover-map",
     "npm run verify:web-next-cutover-map",
     "npm run web:verify:bundle:github",
+    "npm run web:verify:live:github",
     "npm run verify:web-next-handoff"
   ],
   "cutoverBoundary": [
-    "preserve docs as the canonical live surface until cutover is explicit",
-    "treat apps/web as the replacement-ready mirror with legacy query compatibility",
+    "apps/web export at the repo root is the canonical live surface",
+    "preserve docs as the archive and raw-reference surface under /docs/",
     "use /documents for curated packets and /viewer for broader repository markdown parity"
   ]
 }

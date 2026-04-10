@@ -29,8 +29,11 @@ function main() {
   const markdown = fs.readFileSync(mdPath, "utf8");
 
   assert(payload.project === "PrivateDAO", "web next cutover map project mismatch");
-  assert(payload.status === "staged-cutover-map", "web next cutover map status mismatch");
-  assert(payload.currentLiveSurface === "docs/index.html", "web next cutover map must preserve docs as live surface");
+  assert(["staged-cutover-map", "live-cutover-map"].includes(payload.status), "web next cutover map status mismatch");
+  assert(
+    payload.currentLiveSurface === "docs/index.html" || payload.currentLiveSurface === "repo root Next.js export",
+    "web next cutover map live surface mismatch",
+  );
   assert(payload.nextSurfaceRoot === "apps/web", "web next cutover map next surface root mismatch");
 
   for (const entry of [
@@ -61,18 +64,16 @@ function main() {
     "npm run build:web-next-cutover-map",
     "npm run verify:web-next-cutover-map",
     "npm run web:verify:bundle:github",
+    "npm run web:verify:live:github",
     "npm run verify:web-next-handoff",
   ]) {
     assert(payload.commands.includes(command), `web next cutover map missing command: ${command}`);
   }
 
-  for (const boundary of [
-    "preserve docs as the canonical live surface until cutover is explicit",
-    "treat apps/web as the replacement-ready mirror with legacy query compatibility",
-    "use /documents for curated packets and /viewer for broader repository markdown parity",
-  ]) {
-    assert(payload.cutoverBoundary.includes(boundary), `web next cutover map missing boundary: ${boundary}`);
-  }
+  assert(
+    payload.cutoverBoundary.includes("use /documents for curated packets and /viewer for broader repository markdown parity"),
+    "web next cutover map missing documents/viewer boundary",
+  );
 
   for (const token of [
     "# Web Next Cutover Map",

@@ -27,21 +27,28 @@ function main() {
   const githubArchive = "dist/web-mirror-github.tar.gz";
   const rootBundleDir = "dist/web-mirror-root";
   const rootArchive = "dist/web-mirror-root.tar.gz";
+  const rootLive = detectRootLiveSurface();
 
   const payload = {
     project: "PrivateDAO",
     generatedAt,
-    status: "staged-not-live",
-    currentLiveSurface: "docs/index.html",
+    status: rootLive ? "live-on-root" : "staged-not-live",
+    currentLiveSurface: rootLive ? "repo root Next.js export" : "docs/index.html",
     nextAppRoot: "apps/web",
-    reviewerBoundary: "docs remains the canonical live reviewer-facing surface until explicit cutover.",
+    reviewerBoundary: rootLive
+      ? "apps/web static export at the repo root is now the canonical live reviewer-facing surface, while docs remains the archive and raw-reference surface."
+      : "docs remains the canonical live reviewer-facing surface until explicit cutover.",
     mirrorModes: [
       {
         mode: "github",
         basePath: "/PrivateDAO",
         bundleDir: githubBundleDir,
         archive: githubArchive,
-        status: fs.existsSync(path.resolve(githubBundleDir)) && fs.existsSync(path.resolve(githubArchive)) ? "built-and-verified" : "build-required",
+        status: rootLive
+          ? "published-at-root"
+          : fs.existsSync(path.resolve(githubBundleDir)) && fs.existsSync(path.resolve(githubArchive))
+            ? "built-and-verified"
+            : "build-required",
         verificationCommand: "npm run web:verify:bundle:github",
       },
       {
@@ -65,19 +72,41 @@ function main() {
       "npm run web:build:github",
       "npm run web:bundle:github",
       "npm run web:verify:bundle:github",
+      "npm run web:publish:github",
+      "npm run web:verify:live:github",
       "npm run build:web-next-handoff",
       "npm run verify:web-next-handoff",
     ],
-    cutoverRule: [
-      "do not replace docs/index.html silently",
-      "do not call apps/web canonical until reviewer links, judge-mode proof, and legacy docs entrypoints resolve under the mirror origin",
-      "preserve current GitHub Pages reviewer paths while the mirror is staged",
-    ],
+    cutoverRule: rootLive
+      ? [
+          "treat the repo root Next.js export as the canonical live surface",
+          "preserve docs as the archive and raw-reference surface under /docs/",
+          "keep reviewer links, judge-mode proof, and legacy docs entrypoints resolving through apps/web compatibility routes",
+        ]
+      : [
+          "do not replace docs/index.html silently",
+          "do not call apps/web canonical until reviewer links, judge-mode proof, and legacy docs entrypoints resolve under the mirror origin",
+          "preserve current GitHub Pages reviewer paths while the mirror is staged",
+        ],
   };
 
   fs.writeFileSync(path.resolve("docs/web-next-handoff.generated.json"), JSON.stringify(payload, null, 2) + "\n");
   fs.writeFileSync(path.resolve("docs/web-next-handoff.generated.md"), buildMarkdown(payload));
   console.log("Wrote web next handoff manifest");
+}
+
+function detectRootLiveSurface() {
+  const rootIndex = path.resolve("index.html");
+  const nextDir = path.resolve("_next");
+  const liveProofRoute = path.resolve("proof/index.html");
+  const noJekyll = path.resolve(".nojekyll");
+
+  if (!fs.existsSync(rootIndex) || !fs.existsSync(nextDir) || !fs.existsSync(liveProofRoute) || !fs.existsSync(noJekyll)) {
+    return false;
+  }
+
+  const html = fs.readFileSync(rootIndex, "utf8");
+  return html.includes("/_next/") && !html.includes("window.location.replace(target)");
 }
 
 function buildMarkdown(payload: {

@@ -1,13 +1,11 @@
-# Next.js Mirror Cutover
+# Next.js Live Cutover
 
-This note records the safe transition path from the current live `docs/` surface to the new `apps/web` Next.js export.
-
-It is not a claim that cutover has already happened.
+This note records the completed transition from the old `docs/` entry surface to the new `apps/web` Next.js export at the repo root.
 
 ## Current Truth
 
-- `docs/index.html` remains the live reviewer-facing surface.
-- `apps/web` is now static-export capable and mirror-ready.
+- The repo root now serves the `apps/web` static export as the live reviewer-facing surface.
+- `docs/` remains available as the archive and raw-reference surface.
 - `apps/web` now includes:
   - legacy `?page=` compatibility at the root route
   - curated `/documents/` routes for reviewer and trust packets
@@ -35,34 +33,38 @@ Generated artifacts:
 - `dist/web-mirror-root/`
 - `dist/web-mirror-root.tar.gz`
 
-## Recommended Cutover Order
+## Completed Cutover Checks
 
-1. Keep `docs/` as the canonical public surface.
-2. Publish `apps/web` as a mirror deployment.
-3. Verify:
-   - `/`
-   - `/command-center/`
-   - `/proof/`
-   - `/proof/?judge=1`
-   - `/documents/`
-   - `/viewer/`
-   - `/security/`
-   - `/diagnostics/`
-   - `/services/`
-   - `/awards/`
-4. Verify that legacy `?page=` entrypoints route correctly into `apps/web`.
-5. Verify that live-site links and judge links resolve correctly under the mirror origin.
-6. Verify that root-domain export works independently of `/PrivateDAO`.
-7. Only then decide whether `docs/` should be replaced or kept as the stable public archive surface.
+The root publication now verifies:
 
-## Do Not Claim Yet
+1. `/`
+2. `/command-center/`
+3. `/proof/`
+4. `/proof/?judge=1`
+5. `/documents/`
+6. `/viewer/`
+7. `/security/`
+8. `/diagnostics/`
+9. `/services/`
+10. `/awards/`
+11. legacy `?page=` entrypoints routing through the Next root surface
+12. reviewer and judge links resolving under the GitHub Pages base path
 
-Do not describe the Next.js app as the canonical live site until:
+## Remaining Boundary
 
-- mirror deployment is public
-- route parity has been manually checked
-- reviewer links are confirmed working end-to-end
-- any `.xyz` domain mapping is validated
+Do not interpret this completed cutover as a `.xyz` domain cutover.
+
+What is complete now:
+
+- GitHub Pages root publication from `apps/web`
+- legacy query compatibility through the new root
+- curated `/documents` routes
+- broad `/viewer` parity for repository markdown
+
+What remains optional and external:
+
+- `.xyz` DNS and HTTPS mapping
+- deciding whether `.xyz` becomes the primary production hostname
 
 ## Related Docs
 
