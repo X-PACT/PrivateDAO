@@ -79,7 +79,7 @@ export function InternalAssistantPanel() {
             This assistant is optimized for routing users, judges, operators, and competition reviewers to the shortest correct path in the product. It keeps the site usable without forcing anyone to understand the whole system first.
           </div>
           <div className="rounded-3xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/58">
-            Try: “what is blocking privacy track mainnet?” or “what is the fastest paid motion for QuickNode track?”.
+            Try: “I need pilot funding”, “vendor payout”, “treasury top-up”, “what is blocking privacy track mainnet?”, or “what is the fastest paid motion for QuickNode track?”.
           </div>
           <div className="grid gap-4">
             {assistantPaths.map((path) => {

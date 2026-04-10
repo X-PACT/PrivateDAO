@@ -187,6 +187,73 @@ const competitionAliases: Record<string, string[]> = {
   "solrouter-encrypted-ai": ["solrouter", "encrypted ai", "assistant", "ai track"],
 };
 
+function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return null;
+
+  if (normalized.includes("pilot funding")) {
+    return {
+      title: "Open the pilot funding bundle",
+      summary:
+        "Go straight into the buyer path with pilot funding selected, then continue into the strongest live startup route with trust, proof, and story links already aligned.",
+      primaryActionLabel: "Open pilot funding path",
+      primaryActionHref: "/engage?profile=pilot-funding",
+      relatedRoutes: [
+        { label: "Colosseum Frontier", href: "/tracks/colosseum-frontier?profile=pilot-funding" },
+        { label: "Proof", href: "/documents/frontier-competition-readiness-2026" },
+        { label: "Trust", href: "/security" },
+      ],
+    };
+  }
+
+  if (normalized.includes("vendor payout")) {
+    return {
+      title: "Open the vendor payout bundle",
+      summary:
+        "Route directly into governed payout handling for vendors, then keep execution, diagnostics, and trust visible without forcing a generic payments search first.",
+      primaryActionLabel: "Open vendor payout path",
+      primaryActionHref: "/engage?profile=vendor-payout",
+      relatedRoutes: [
+        { label: "Live dApp track", href: "/tracks/eitherway-live-dapp?profile=vendor-payout" },
+        { label: "Command Center", href: "/command-center" },
+        { label: "Diagnostics", href: "/diagnostics" },
+      ],
+    };
+  }
+
+  if (normalized.includes("contributor payout")) {
+    return {
+      title: "Open the contributor payout bundle",
+      summary:
+        "Route the request into governed contributor funding, then keep command execution, diagnostics, and trust packaging together in one commercial path.",
+      primaryActionLabel: "Open contributor payout path",
+      primaryActionHref: "/engage?profile=contributor-payout",
+      relatedRoutes: [
+        { label: "Consumer Apps track", href: "/tracks/consumer-apps?profile=contributor-payout" },
+        { label: "Command Center", href: "/command-center" },
+        { label: "Trust", href: "/security" },
+      ],
+    };
+  }
+
+  if (normalized.includes("treasury top-up") || normalized.includes("treasury top up") || normalized.includes("top-up") || normalized.includes("top up")) {
+    return {
+      title: "Open the treasury top-up bundle",
+      summary:
+        "Use the treasury capitalization path when the goal is operating runway, buyer onboarding, and stronger trust visibility rather than a one-off transfer.",
+      primaryActionLabel: "Open treasury top-up path",
+      primaryActionHref: "/engage?profile=treasury-top-up",
+      relatedRoutes: [
+        { label: "RPC track", href: "/tracks/rpc-infrastructure?profile=treasury-top-up" },
+        { label: "Services", href: "/services" },
+        { label: "Trust", href: "/security" },
+      ],
+    };
+  }
+
+  return null;
+}
+
 function findCompetitionWorkspace(query: string) {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return null;
@@ -382,6 +449,9 @@ function getCompetitionSuggestion(query: string): AssistantSuggestion | null {
 export function getAssistantSuggestion(query: string): AssistantSuggestion {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return fallbackSuggestion;
+
+  const treasuryProfileSuggestion = getTreasuryProfileSuggestion(normalized);
+  if (treasuryProfileSuggestion) return treasuryProfileSuggestion;
 
   const trackAnswer = getTrackAnswer(normalized);
   if (trackAnswer) return trackAnswer;
