@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Radar, ShieldCheck, WalletCards } from "lucide-react";
 
 import { GovernanceDashboard } from "@/components/governance-dashboard";
+import { GovernanceSessionPanel } from "@/components/governance-session-panel";
 import { OperationalValidationPanels } from "@/components/operational-validation-panels";
 import { ProductActionMap } from "@/components/product-action-map";
 import { Badge } from "@/components/ui/badge";
@@ -96,6 +97,10 @@ export default function DashboardPage() {
 
       <section className="mt-12">
         <OperationalValidationPanels title="Dashboard operating health" />
+      </section>
+
+      <section className="mt-12">
+        <GovernanceSessionPanel title="Live session carried from onboarding and command center" />
       </section>
 
       <section className="mt-12">

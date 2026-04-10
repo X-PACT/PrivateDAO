@@ -1,34 +1,41 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import Link from "next/link";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Activity, CheckCircle2, ChevronRight, FilePlus2, FolderPlus, ListChecks, Play, ShieldCheck, Vote, Wallet } from "lucide-react";
 
+import { useGovernanceSession } from "@/components/governance-session";
 import { WalletConnectButton } from "@/components/wallet-connect-button";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-type LogEntry = {
-  label: string;
-  value: string;
-};
-
 const voteChoices = ["Approve", "Reject", "Abstain"] as const;
 
 export function GovernanceActionWorkbench() {
   const { connected, wallet } = useWallet();
-  const [daoName, setDaoName] = useState("PrivateDAO Frontier Council");
-  const [daoCreated, setDaoCreated] = useState(false);
-  const [proposalTitle, setProposalTitle] = useState("Confidential payroll batch / April");
-  const [proposalCreated, setProposalCreated] = useState(false);
-  const [voteChoice, setVoteChoice] = useState<(typeof voteChoices)[number]>("Approve");
-  const [voteCommitted, setVoteCommitted] = useState(false);
-  const [voteRevealed, setVoteRevealed] = useState(false);
-  const [proposalExecuted, setProposalExecuted] = useState(false);
-  const [logs, setLogs] = useState<LogEntry[]>([]);
+  const {
+    daoName,
+    daoCreated,
+    proposalTitle,
+    proposalCreated,
+    voteChoice,
+    voteCommitted,
+    voteRevealed,
+    proposalExecuted,
+    logs,
+    setDaoName,
+    setProposalTitle,
+    setVoteChoice,
+    createDao,
+    createProposal,
+    commitVote,
+    revealVote,
+    executeProposal,
+    resetSession,
+  } = useGovernanceSession();
 
   const canCreateDao = connected && !daoCreated && daoName.trim().length >= 3;
   const canCreateProposal = daoCreated && !proposalCreated && proposalTitle.trim().length >= 6;
@@ -37,40 +44,6 @@ export function GovernanceActionWorkbench() {
   const canExecute = voteRevealed && !proposalExecuted;
 
   const activeWalletLabel = useMemo(() => wallet?.adapter.name ?? "Connected wallet", [wallet]);
-
-  function appendLog(label: string, value: string) {
-    setLogs((current) => [{ label, value }, ...current].slice(0, 8));
-  }
-
-  function handleCreateDao() {
-    if (!canCreateDao) return;
-    setDaoCreated(true);
-    appendLog("DAO created", `${daoName} staged in the product shell and ready for proposal creation.`);
-  }
-
-  function handleCreateProposal() {
-    if (!canCreateProposal) return;
-    setProposalCreated(true);
-    appendLog("Proposal created", `${proposalTitle} is now the active proposal in the UI flow.`);
-  }
-
-  function handleCommitVote() {
-    if (!canCommit) return;
-    setVoteCommitted(true);
-    appendLog("Vote committed", `${voteChoice} was committed through the wallet-first governance path.`);
-  }
-
-  function handleRevealVote() {
-    if (!canReveal) return;
-    setVoteRevealed(true);
-    appendLog("Vote revealed", `${voteChoice} moved into the reveal stage with proof and diagnostics still available.`);
-  }
-
-  function handleExecuteProposal() {
-    if (!canExecute) return;
-    setProposalExecuted(true);
-    appendLog("Proposal executed", `${proposalTitle} advanced to the execute stage in the product workflow.`);
-  }
 
   return (
     <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,16,32,0.94),rgba(7,11,23,0.98))]">
@@ -116,7 +89,7 @@ export function GovernanceActionWorkbench() {
               className="mt-4 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
               placeholder="DAO name"
             />
-            <Button className="mt-4 w-full" disabled={!canCreateDao} onClick={handleCreateDao}>
+            <Button className="mt-4 w-full" disabled={!canCreateDao} onClick={createDao}>
               Create DAO
             </Button>
           </div>
@@ -132,7 +105,7 @@ export function GovernanceActionWorkbench() {
               className="mt-4 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
               placeholder="Proposal title"
             />
-            <Button className="mt-4 w-full" disabled={!canCreateProposal} onClick={handleCreateProposal}>
+            <Button className="mt-4 w-full" disabled={!canCreateProposal} onClick={createProposal}>
               Create Proposal
             </Button>
           </div>
@@ -159,7 +132,7 @@ export function GovernanceActionWorkbench() {
                 </button>
               ))}
             </div>
-            <Button className="mt-4 w-full" disabled={!canCommit} onClick={handleCommitVote}>
+            <Button className="mt-4 w-full" disabled={!canCommit} onClick={commitVote}>
               Commit Vote
             </Button>
           </div>
@@ -172,7 +145,7 @@ export function GovernanceActionWorkbench() {
             <p className="mt-4 text-sm leading-7 text-white/56">
               Reveal stays inside the same product rail instead of dropping the user into scripts or terminal-only steps.
             </p>
-            <Button className="mt-4 w-full" disabled={!canReveal} onClick={handleRevealVote} variant="secondary">
+            <Button className="mt-4 w-full" disabled={!canReveal} onClick={revealVote} variant="secondary">
               Reveal Vote
             </Button>
           </div>
@@ -185,7 +158,7 @@ export function GovernanceActionWorkbench() {
             <p className="mt-4 text-sm leading-7 text-white/56">
               Execution only unlocks after the flow reaches the right boundary, keeping the UI honest and operational.
             </p>
-            <Button className="mt-4 w-full" disabled={!canExecute} onClick={handleExecuteProposal} variant="outline">
+            <Button className="mt-4 w-full" disabled={!canExecute} onClick={executeProposal} variant="outline">
               Execute Proposal
             </Button>
           </div>
@@ -227,6 +200,14 @@ export function GovernanceActionWorkbench() {
               Diagnostics remain in the web app too. Runtime evidence, proof freshness, wallet coverage, and execution health stay visible without leaving the product surface.
             </p>
             <div className="mt-4 flex flex-col gap-3">
+              <Button
+                variant="ghost"
+                className="justify-between rounded-2xl text-white/72"
+                onClick={resetSession}
+              >
+                Reset session
+                <ChevronRight className="h-4 w-4" />
+              </Button>
               <Link href="/diagnostics" className={cn(buttonVariants({ size: "sm" }), "justify-between")}>
                 Open diagnostics
                 <ChevronRight className="h-4 w-4" />

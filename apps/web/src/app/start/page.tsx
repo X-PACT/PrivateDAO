@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { GettingStartedWorkspace } from "@/components/getting-started-workspace";
+import { GovernanceSessionPanel } from "@/components/governance-session-panel";
 import { OperatingBoundaryPanel } from "@/components/operating-boundary-panel";
 import { OperationsShell } from "@/components/operations-shell";
 import { ProductActionMap } from "@/components/product-action-map";
@@ -32,6 +33,7 @@ export default function StartPage() {
         title="What stays inside the product"
         summary="The public UI is for wallet connection, DAO creation, proposal flow, voting, execution, logs, and diagnostics. Debugging, migrations, batch operations, and recovery stay in the engineering layer."
       />
+      <GovernanceSessionPanel title="Shared product session" />
       <ProductActionMap
         title="Start with the exact user journey"
         description="The first-run product path should make the eight real operations obvious and keep everything else out of sight until engineering truly needs it."
