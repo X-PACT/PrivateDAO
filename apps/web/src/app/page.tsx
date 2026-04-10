@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
 import { HomeShell } from "@/components/home-shell";
+import { LegacyEntryBridge } from "@/components/legacy-entry-bridge";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
@@ -12,5 +14,12 @@ export const metadata: Metadata = buildRouteMetadata({
 });
 
 export default function HomePage() {
-  return <HomeShell />;
+  return (
+    <>
+      <Suspense fallback={null}>
+        <LegacyEntryBridge />
+      </Suspense>
+      <HomeShell />
+    </>
+  );
 }
