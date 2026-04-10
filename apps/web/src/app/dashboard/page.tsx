@@ -8,6 +8,7 @@ import { OnchainParityPanel } from "@/components/onchain-parity-panel";
 import { GovernanceSessionPanel } from "@/components/governance-session-panel";
 import { OperationalValidationPanels } from "@/components/operational-validation-panels";
 import { ProductActionMap } from "@/components/product-action-map";
+import { TreasuryProfileQuickActions } from "@/components/treasury-profile-quick-actions";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -118,6 +119,10 @@ export default function DashboardPage() {
 
       <section className="mt-12">
         <GovernanceSessionPanel title="Live session carried from onboarding and command center" />
+      </section>
+
+      <section className="mt-12">
+        <TreasuryProfileQuickActions title="Commercial actions from the dashboard" />
       </section>
 
       <section className="mt-12">

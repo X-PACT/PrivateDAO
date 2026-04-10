@@ -37,11 +37,11 @@ export function SiteHeader() {
           <Link href="/" className="group flex min-w-0 items-center gap-3">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-[linear-gradient(180deg,rgba(12,18,37,0.96),rgba(5,9,22,0.98))] shadow-[0_18px_44px_rgba(0,0,0,0.28)]">
               <Image
-                src="/assets/brand/privatedao-avatar-256.png"
+                src="/assets/brand/privatedao-avatar.svg"
                 alt="PrivateDAO brand mark"
                 width={48}
                 height={48}
-                className="h-12 w-12 transition-transform duration-300 group-hover:scale-105"
+                className="h-10 w-10 object-contain p-0.5 transition-transform duration-300 group-hover:scale-105"
               />
             </div>
             <div className="min-w-0">
