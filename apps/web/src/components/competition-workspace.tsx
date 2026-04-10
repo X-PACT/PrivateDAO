@@ -5,6 +5,7 @@ import type { CompetitionTrackWorkspace } from "@/lib/site-data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { SubmissionCoachPanel } from "@/components/submission-coach-panel";
+import { DevnetServiceMetricsPanel } from "@/components/devnet-service-metrics-panel";
 import { TrackAlignmentPanel } from "@/components/track-alignment-panel";
 import { TrackCommercializationPanel } from "@/components/track-commercialization-panel";
 import { TrackInvestmentCasePanel } from "@/components/track-investment-case-panel";
@@ -122,6 +123,8 @@ export function CompetitionWorkspace({ workspace }: CompetitionWorkspaceProps) {
         <TrackNarrativePanel workspace={workspace} />
 
         <TrackInvestmentCasePanel workspace={workspace} />
+
+        <DevnetServiceMetricsPanel trackSlug={workspace.slug} />
 
         <TrackTechnicalFitPanel slug={workspace.slug} />
 

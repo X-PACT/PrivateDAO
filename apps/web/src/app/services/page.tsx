@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { CommercialCompareSurface } from "@/components/commercial-compare-surface";
+import { DevnetServiceMetricsPanel } from "@/components/devnet-service-metrics-panel";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperationsShell } from "@/components/operations-shell";
 import { ServiceReadinessLadder } from "@/components/service-readiness-ladder";
@@ -33,6 +34,9 @@ export default function ServicesPage() {
       </div>
       <div>
         <SolutionCorridors />
+      </div>
+      <div>
+        <DevnetServiceMetricsPanel scope="services" />
       </div>
       <div>
         <ServiceReadinessLadder />

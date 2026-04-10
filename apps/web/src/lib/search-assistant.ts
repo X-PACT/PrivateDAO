@@ -208,6 +208,28 @@ function getTrackAnswer(query: string): AssistantSuggestion | null {
   }
 
   if (
+    normalized.includes("latency") ||
+    normalized.includes("success rate") ||
+    normalized.includes("wallet coverage") ||
+    normalized.includes("proof completion") ||
+    normalized.includes("execute health") ||
+    normalized.includes("reveal health")
+  ) {
+    return {
+      title: `Devnet metrics for ${workspace.title}`,
+      summary:
+        "Open the track workspace to see measured Devnet metrics for success rate, latency, wallet coverage, proof completion, and reveal or execute health in one panel.",
+      primaryActionLabel: "Open track workspace",
+      primaryActionHref: `/tracks/${workspace.slug}`,
+      relatedRoutes: [
+        { label: "Diagnostics", href: "/diagnostics" },
+        { label: "Services", href: "/services" },
+        { label: "Runtime evidence", href: "/viewer/runtime-evidence.generated" },
+      ],
+    };
+  }
+
+  if (
     normalized.includes("program id") ||
     normalized.includes("token") ||
     normalized.includes("wallet matrix") ||

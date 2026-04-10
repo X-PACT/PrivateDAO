@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { DiagnosticsCenter } from "@/components/diagnostics-center";
+import { DevnetServiceMetricsPanel } from "@/components/devnet-service-metrics-panel";
 import { LaunchBlockersPanel } from "@/components/launch-blockers-panel";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperationsShell } from "@/components/operations-shell";
@@ -31,6 +32,9 @@ export default function DiagnosticsPage() {
       </div>
       <div>
         <DiagnosticsCenter />
+      </div>
+      <div>
+        <DevnetServiceMetricsPanel scope="diagnostics" />
       </div>
       <div>
         <LaunchBlockersPanel />

@@ -104,7 +104,7 @@ The README should stay aligned with this rule: implemented surfaces are describe
 | Story video | https://privatedao.org/story/ |
 | Judge / proof view | https://privatedao.org/proof/?judge=1 |
 | Wallet diagnostics | https://privatedao.org/diagnostics/ |
-| Demo video MP4 | https://privatedao.org/assets/private-dao-frontier-overview.mp4 |
+| Demo video MP4 | https://privatedao.org/assets/private-dao-demo-flow.mp4 |
 | Devnet program | https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet |
 | Guided product flow | [`docs/frontier-guided-flow.md`](docs/frontier-guided-flow.md) |
 | Live proof V3 | [`docs/test-wallet-live-proof-v3.generated.md`](docs/test-wallet-live-proof-v3.generated.md) |
@@ -466,7 +466,9 @@ Key docs:
 - Direct MP4: https://privatedao.org/assets/private-dao-frontier-overview.mp4
 - Upload-ready file: `/home/x-pact/Desktop/PrivateDAO-Frontier-Overview/PrivateDAO - Frontier Overview - Everything We Offer and Why Us.mp4`
 - Canonical lifecycle demo brief: [`docs/demo-video.md`](docs/demo-video.md)
+- Hosted lifecycle demo: https://privatedao.org/assets/private-dao-demo-flow.mp4
 - Repo-native lifecycle demo: [`docs/assets/private-dao-demo-flow.mp4`](docs/assets/private-dao-demo-flow.mp4)
+- Upload-ready lifecycle demo: `/home/x-pact/Desktop/PrivateDAO-Demo-Video/PrivateDAO - Real Demo Flow - Create DAO Submit Proposal Private Vote Execute Treasury - Clean.mp4`
 - Investor / competition pitch deck: [`docs/investor-pitch-deck.md`](docs/investor-pitch-deck.md)
 - Frontier overview brief: [`docs/investor-video.md`](docs/investor-video.md)
 - Repo-native frontier reel: [`docs/assets/private-dao-frontier-overview.mp4`](docs/assets/private-dao-frontier-overview.mp4)
