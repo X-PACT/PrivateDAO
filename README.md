@@ -137,6 +137,7 @@ The README should stay aligned with this rule: implemented surfaces are describe
 | Judge / proof view | https://privatedao.org/proof/?judge=1 |
 | Wallet diagnostics | https://privatedao.org/diagnostics/ |
 | Services and buyer path | https://privatedao.org/services/ |
+| Treasury receive surface | https://privatedao.org/services/ |
 | Demo video MP4 | https://privatedao.org/assets/private-dao-demo-flow.mp4 |
 | Devnet program | https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet |
 | Guided product flow | [`docs/frontier-guided-flow.md`](docs/frontier-guided-flow.md) |
@@ -188,6 +189,26 @@ flowchart LR
   Vetoed --> Done
   Cancelled --> Done
 ```
+
+## Treasury Receive Configuration
+
+The frontend can expose public treasury intake rails for:
+
+- `SOL`
+- `USDC`
+- `USDG`
+
+These are configured through public environment variables only:
+
+- `NEXT_PUBLIC_TREASURY_RECEIVE_ADDRESS`
+- `NEXT_PUBLIC_TREASURY_SOL_RECEIVE_ADDRESS`
+- `NEXT_PUBLIC_TREASURY_USDC_RECEIVE_ADDRESS`
+- `NEXT_PUBLIC_TREASURY_USDG_RECEIVE_ADDRESS`
+- `NEXT_PUBLIC_TREASURY_USDC_MINT`
+- `NEXT_PUBLIC_TREASURY_USDG_MINT`
+- `NEXT_PUBLIC_TREASURY_NETWORK`
+
+Use only public receive addresses here. Do not place signer keypairs, seed phrases, or treasury secrets in the frontend or this repository.
 
 ## Feature Map
 

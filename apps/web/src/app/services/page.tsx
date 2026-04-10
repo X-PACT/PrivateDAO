@@ -9,6 +9,7 @@ import { ServiceOperationalCards } from "@/components/service-operational-cards"
 import { ServiceReadinessLadder } from "@/components/service-readiness-ladder";
 import { ServicesSurface } from "@/components/services-surface";
 import { SolutionCorridors } from "@/components/solution-corridors";
+import { TreasuryReceiveSurface } from "@/components/treasury-receive-surface";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
@@ -42,6 +43,9 @@ export default function ServicesPage() {
       </div>
       <div>
         <ServiceOperationalCards />
+      </div>
+      <div>
+        <TreasuryReceiveSurface />
       </div>
       <div>
         <PlatformServiceArchitecture />
