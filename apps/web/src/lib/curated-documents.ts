@@ -195,6 +195,16 @@ const curatedDocuments: CuratedDocument[] = [
     docPath: "docs/frontier-competition-readiness-2026.md",
     rawHref: `${repositoryBlobBase}/docs/frontier-competition-readiness-2026.md`,
   },
+  {
+    slug: "competition-execution-playbook",
+    title: "Competition Execution Playbook",
+    category: "Strategy",
+    summary: "Development playbook for keeping product, demo, docs, proof, and UX aligned with the active competition targets.",
+    audience: "Founders, operators, product leads, reviewers",
+    boundary: "Execution guidance only; it does not by itself upgrade the repo beyond what is actually implemented.",
+    docPath: "docs/competition-execution-playbook.md",
+    rawHref: `${repositoryBlobBase}/docs/competition-execution-playbook.md`,
+  },
 ];
 
 export function getCuratedDocuments() {
