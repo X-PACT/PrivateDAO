@@ -5,6 +5,7 @@ import type { CompetitionTrackWorkspace } from "@/lib/site-data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { SubmissionCoachPanel } from "@/components/submission-coach-panel";
+import { TrackCommercializationPanel } from "@/components/track-commercialization-panel";
 import { TrackTechnicalFitPanel } from "@/components/track-technical-fit-panel";
 import { cn } from "@/lib/utils";
 
@@ -113,6 +114,8 @@ export function CompetitionWorkspace({ workspace }: CompetitionWorkspaceProps) {
         <SubmissionCoachPanel workspace={workspace} />
 
         <TrackTechnicalFitPanel slug={workspace.slug} />
+
+        <TrackCommercializationPanel workspace={workspace} />
 
         <Card>
           <CardHeader>
