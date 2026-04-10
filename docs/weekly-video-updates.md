@@ -16,6 +16,8 @@ These weekly videos are designed for hackathon update submissions on YouTube, Lo
 - file: `docs/assets/weekly-updates/private-dao-week-1-update.mp4`
 - upload title:
   - `Week 1 - PrivateDAO Frontier Hackathon - Private Governance Foundation`
+- ready script:
+  - [`docs/weekly-update-week-1-colosseum.md`](weekly-update-week-1-colosseum.md)
 - focus:
   - private DAO governance thesis
   - public-vote leakage problem
