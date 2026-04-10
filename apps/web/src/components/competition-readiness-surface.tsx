@@ -55,6 +55,25 @@ export function CompetitionReadinessSurface() {
                 <p className="mt-3 text-sm leading-7 text-white/58">{track.summary}</p>
               </div>
 
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-4">
+                  <div className="text-[11px] uppercase tracking-[0.24em] text-fuchsia-200/76">Priority</div>
+                  <div className="mt-2 text-sm leading-7 text-white/68">{track.priority}</div>
+                </div>
+                <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-4">
+                  <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-200/76">Prize posture</div>
+                  <div className="mt-2 text-sm leading-7 text-white/68">{track.prizeSummary}</div>
+                </div>
+                <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-4">
+                  <div className="text-[11px] uppercase tracking-[0.24em] text-emerald-300/76">Recommended wallet</div>
+                  <div className="mt-2 text-sm leading-7 text-white/68">{track.recommendedWallet}</div>
+                </div>
+                <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-4">
+                  <div className="text-[11px] uppercase tracking-[0.24em] text-white/60">Best demo route</div>
+                  <div className="mt-2 text-sm leading-7 text-white/68">{track.demoRoute}</div>
+                </div>
+              </div>
+
               <div className="grid gap-4 sm:grid-cols-3">
                 <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-4">
                   <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-200/76">Edge</div>
@@ -68,6 +87,11 @@ export function CompetitionReadinessSurface() {
                   <div className="text-[11px] uppercase tracking-[0.24em] text-emerald-300/76">Next action</div>
                   <div className="mt-2 text-sm leading-7 text-white/60">{track.action}</div>
                 </div>
+              </div>
+
+              <div className="rounded-3xl border border-emerald-300/18 bg-emerald-300/8 p-4">
+                <div className="text-[11px] uppercase tracking-[0.24em] text-emerald-100/76">Winning thesis</div>
+                <div className="mt-2 text-sm leading-7 text-white/72">{track.winningThesis}</div>
               </div>
 
               <div className="flex flex-wrap gap-3">

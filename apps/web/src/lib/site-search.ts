@@ -61,6 +61,12 @@ export const siteSearchItems: SiteSearchItem[] = [
     summary: "Competition readiness center across Frontier, Ranger, RPC, consumer, and privacy tracks.",
   },
   {
+    title: "Colosseum Frontier Workspace",
+    href: "/tracks/colosseum-frontier",
+    category: "Track",
+    summary: "Primary first-place startup-quality submission chain for the Frontier Hackathon.",
+  },
+  {
     title: "Assistant",
     href: "/assistant",
     category: "Route",

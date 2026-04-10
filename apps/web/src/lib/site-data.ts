@@ -417,11 +417,39 @@ export const productCorridors = [
 
 export const competitionTracks = [
   {
+    slug: "colosseum-frontier",
+    title: "Colosseum Frontier",
+    sponsor: "Colosseum + Solana Foundation",
+    fit: "Very strong",
+    status: "Primary first-place push",
+    priority: "Priority 1",
+    prizeSummary: "$30k grand champion, top-20 startup awards, and accelerator capital upside.",
+    winnerAnnouncementBy: "Hackathon runs April 6 to May 11, 2026; judge on product impact first.",
+    recommendedWallet: "Solflare for the live demo, Phantom as fallback for judges.",
+    demoRoute: "/start",
+    winningThesis:
+      "Win by showing one coherent startup-quality product: start flow, command center, proof continuity, services, diagnostics, and trust surfaces in one system.",
+    summary:
+      "PrivateDAO is now strongest where product impact, security posture, wallet UX, proof continuity, and startup-quality packaging meet inside one live surface.",
+    edge: "The project already has a root-domain app, story route, tracks workspace, proof center, diagnostics, and commercial corridors.",
+    gap: "The highest-value gap is continued tightening of first-run clarity and submission polish, not protocol invention.",
+    action: "Lead the full submission from /start to /command-center to /proof/?judge=1, then close with services, diagnostics, and trust package.",
+    href: "/start",
+    sourceUrl: "https://blog.colosseum.com/announcing-the-solana-frontier-hackathon/",
+  },
+  {
     slug: "privacy-track",
     title: "Privacy Track",
     sponsor: "MagicBlock and privacy-aligned partners",
     fit: "Strong",
     status: "Submission-ready with stronger live surface",
+    priority: "Priority 2",
+    prizeSummary: "Privacy sponsor recognition inside the wider Frontier cycle.",
+    winnerAnnouncementBy: "Track follows the active Frontier judging window.",
+    recommendedWallet: "Solflare first, Phantom second for judge familiarity.",
+    demoRoute: "/security",
+    winningThesis:
+      "Show private governance, encrypted operations, ZK review, and REFHE settlement as one user-understandable product corridor.",
     summary:
       "PrivateDAO is already strongest where private voting, ZK review, REFHE envelopes, MagicBlock corridors, and reviewer-visible evidence converge.",
     edge: "This is the most natural track for the current protocol, security story, and additive V3 hardening posture.",
@@ -436,6 +464,13 @@ export const competitionTracks = [
     sponsor: "Eitherway App",
     fit: "Strong with one partner-facing flow",
     status: "Submission-ready with wallet-first corridor",
+    priority: "Priority 7",
+    prizeSummary: "Live dApp sponsor fit around wallet UX, partner polish, and infrastructure rails.",
+    winnerAnnouncementBy: "Follow the Superteam listing for final track timing.",
+    recommendedWallet: "Solflare as the default demo wallet.",
+    demoRoute: "/command-center",
+    winningThesis:
+      "Show one wallet-first product flow that feels live, partner-ready, and infrastructure-aware from the first click.",
     summary:
       "The app is live and operational already, but this track gets stronger when one concrete partner-facing flow is surfaced around wallet UX, live dApp behavior, and infrastructure.",
     edge: "PrivateDAO already has wallet adapter, operational UI, and live proof surfaces; the highest-value uplift is a tighter partner corridor.",
@@ -450,6 +485,13 @@ export const competitionTracks = [
     sponsor: "RPC infrastructure sponsors",
     fit: "Very strong",
     status: "Submission-ready",
+    priority: "Priority 3",
+    prizeSummary: "$10k in infrastructure credits with strong runtime and hosted-read fit.",
+    winnerAnnouncementBy: "Follow the sponsor listing and credit-award schedule.",
+    recommendedWallet: "Solflare for continuity; wallet is secondary to diagnostics.",
+    demoRoute: "/diagnostics",
+    winningThesis:
+      "Win by making hosted reads, diagnostics, runtime evidence, and buyer-facing API packaging impossible to miss.",
     summary:
       "Fast RPC, diagnostics, hosted reads, and reviewer-facing runtime surfaces are already part of the product story and commercial rails.",
     edge: "The project already sells hosted read API plus ops, not just protocol theory.",
@@ -464,6 +506,13 @@ export const competitionTracks = [
     sponsor: "TokenTon26",
     fit: "Moderate to strong",
     status: "Submission-ready with consumer-first shell",
+    priority: "Priority 6",
+    prizeSummary: "$8.5k consumer pool where clarity and first-run UX matter most.",
+    winnerAnnouncementBy: "Listing currently shows April 2, 2026 for the track decision date.",
+    recommendedWallet: "Solflare first, Phantom fallback.",
+    demoRoute: "/start",
+    winningThesis:
+      "Make governance feel simple and confident to a normal user through onboarding, story, and wallet-first action flow.",
     summary:
       "The frontend is now much stronger, but this track wants the app to feel intuitive to normal users, not only operators and reviewers.",
     edge: "The new operational shell and corridors already move the project closer to consumer-grade clarity.",
@@ -478,6 +527,13 @@ export const competitionTracks = [
     sponsor: "Ranger Build a Bear",
     fit: "Strong",
     status: "Submission-ready for a first-place push",
+    priority: "Priority 4",
+    prizeSummary: "Main-track startup quality and integrated-product evaluation.",
+    winnerAnnouncementBy: "Follow the Ranger main-track schedule.",
+    recommendedWallet: "Solflare for live demo continuity.",
+    demoRoute: "/tracks/ranger-main",
+    winningThesis:
+      "Present PrivateDAO as a startup-quality product with protocol depth, trust posture, commercial corridors, and operator-grade execution.",
     summary:
       "PrivateDAO already reads as serious infra: governance, evidence, trust packaging, and live runtime surfaces are all present.",
     edge: "This track rewards integrated products, and the project already combines protocol, ops, review, and commercial layers.",
@@ -492,6 +548,13 @@ export const competitionTracks = [
     sponsor: "Ranger / Drift",
     fit: "Moderate",
     status: "Focused treasury-governance thesis",
+    priority: "Priority 8",
+    prizeSummary: "Side-track fit if the treasury strategy story is kept bounded and credible.",
+    winnerAnnouncementBy: "Follow the Ranger side-track schedule.",
+    recommendedWallet: "Solflare or Phantom; secondary to analytics and treasury framing.",
+    demoRoute: "/analytics",
+    winningThesis:
+      "Frame PrivateDAO as bounded capital-governance infrastructure, not as a speculative trading bot.",
     summary:
       "The governance and confidential execution rails are strong, but this track gets stronger if tied to treasury strategy, risk policy, or capital allocation workflows.",
     edge: "The confidence engine and V3 policy surfaces can be adapted into a stronger capital-governance narrative.",
@@ -506,6 +569,13 @@ export const competitionTracks = [
     sponsor: "100xDevs",
     fit: "Strong",
     status: "Submission-ready",
+    priority: "Priority 5",
+    prizeSummary: "$10k pool where frontend quality, shipping discipline, and route architecture are visible differentiators.",
+    winnerAnnouncementBy: "Listing currently shows May 25, 2026.",
+    recommendedWallet: "Solflare for polish, Phantom as fallback.",
+    demoRoute: "/dashboard",
+    winningThesis:
+      "Win by proving this is a real product shell with reusable architecture, strong UX, and deployment discipline.",
     summary:
       "This track benefits from end-to-end product quality, and the app now has a strong operational shell, multi-page architecture, and live surface.",
     edge: "The migration from static docs-style pages to a professional Next.js product UI is now a real differentiator.",
@@ -520,6 +590,13 @@ export const competitionTracks = [
     sponsor: "Encrypt / IKA",
     fit: "Strong",
     status: "Submission-ready with encrypted operations emphasis",
+    priority: "Priority 7",
+    prizeSummary: "Encrypted-operations sponsor fit with strong privacy and workflow framing.",
+    winnerAnnouncementBy: "Follow the listing schedule and sponsor updates.",
+    recommendedWallet: "Solflare; wallet is secondary to encrypted-ops framing.",
+    demoRoute: "/security",
+    winningThesis:
+      "Lead with encrypted payroll and confidential operations before diving into low-level cryptography labels.",
     summary:
       "The project already has a legitimate encrypted operations thesis thanks to REFHE, ZK, reviewer packets, and explicit security boundaries.",
     edge: "Few submissions can tell a coherent privacy story across governance, settlement, review, and product packaging.",
@@ -534,6 +611,13 @@ export const competitionTracks = [
     sponsor: "SolRouter",
     fit: "Partial",
     status: "Secondary track with deterministic assistant posture",
+    priority: "Priority 9",
+    prizeSummary: "Secondary AI-adjacent fit if deterministic reasoning stays clearly bounded.",
+    winnerAnnouncementBy: "Follow the listing schedule and sponsor updates.",
+    recommendedWallet: "Solflare; wallet is not the main judging concern here.",
+    demoRoute: "/assistant",
+    winningThesis:
+      "Use deterministic reasoning and policy composition as the current assistant story without pretending to ship a full encrypted agent.",
     summary:
       "The cryptographic confidence engine is strong, but this track becomes much stronger if wrapped in a more explicit encrypted AI or assistant workflow.",
     edge: "There is already a deterministic engine and strong privacy rails to build on.",
@@ -571,6 +655,53 @@ export type CompetitionTrackWorkspace = {
 };
 
 export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
+  {
+    slug: "colosseum-frontier",
+    title: "Colosseum Frontier Workspace",
+    sponsor: "Colosseum + Solana Foundation",
+    prizeSummary: "$30k grand champion, top-20 startup awards, and accelerator upside up to $250k pre-seed.",
+    winnerAnnouncementBy: "Frontier runs April 6 to May 11, 2026 and judges product impact above bounty stacking.",
+    skillsNeeded: ["Frontend", "Backend", "Blockchain", "Design", "Product"],
+    recommendedWallet: "Solflare for the main demo, Phantom fallback for judge familiarity.",
+    devnetStatus: "Live on Devnet with root-domain product shell, command center, proof center, diagnostics, services, and story route.",
+    objective:
+      "Present PrivateDAO as a startup-quality Solana product that already behaves like a pre-mainnet company rather than a hacked-together protocol demo.",
+    whyUs:
+      "PrivateDAO now connects onboarding, wallet-first governance, proof continuity, diagnostics, services, trust packets, and competition routes inside one live app.",
+    primaryCorridor: "Start → Command Center → Proof → Services",
+    liveRoute: "/start",
+    judgeRoute: "/proof/?judge=1",
+    proofRoute: "/documents/frontier-competition-readiness-2026",
+    deckRoute: "/viewer/investor-pitch-deck",
+    videoRoute: "/story",
+    readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
+    sourceUrl: "https://blog.colosseum.com/announcing-the-solana-frontier-hackathon/",
+    deliverables: [
+      "Lead the first 90 seconds from /start into /command-center with a real wallet-first path.",
+      "Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity.",
+      "Keep the README, deck, story video, and track center perfectly aligned with the live site.",
+    ],
+    requirements: [
+      "A coherent startup-quality product, not a collection of unrelated track demos.",
+      "Visible product impact, trust posture, and security maturity after the Drift exploit context.",
+      "A live application that feels disciplined on Devnet and credible for mainnet later.",
+    ],
+    winningMoves: [
+      "Open with the problem, the user path, and why this is a real governance product, not with protocol trivia.",
+      "Show signer hygiene, timelock awareness, proof continuity, and launch honesty as first-class product values.",
+      "Use the story route to compress the whole thesis, then deepen through command center, proof, and services.",
+    ],
+    sponsorFit: [
+      "Colosseum Frontier now rewards product impact and startup quality more than bounty accumulation.",
+      "The root-domain live app, multi-page shell, and route-level workspaces directly serve that judging posture.",
+      "PrivateDAO is strongest when shown as one coherent product company with privacy, infra, and buyer layers connected.",
+    ],
+    validationSteps: [
+      "Run `cd apps/web && npm run lint && npm run build` before recording or final screenshots.",
+      "Run `npm run web:bundle:root && npm run web:verify:live:root` to keep the live site deployment-grade.",
+      "Use `/start`, `/story`, `/command-center`, `/proof/?judge=1`, and `/services` as the primary submission chain.",
+    ],
+  },
   {
     slug: "privacy-track",
     title: "Privacy Track Workspace",
