@@ -19,6 +19,12 @@ export const siteSearchItems: SiteSearchItem[] = [
     summary: "Hosted product reel for judges, users, and sponsors.",
   },
   {
+    title: "Community",
+    href: "/community",
+    category: "Route",
+    summary: "Join Discord, follow product updates, open pilot interest, and route into support or operator paths.",
+  },
+  {
     title: "Dashboard",
     href: "/dashboard",
     category: "Route",

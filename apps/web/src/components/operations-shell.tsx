@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Activity, BarChart3, BriefcaseBusiness, Compass, FileSearch, FileText, LayoutDashboard, PlayCircle, Rocket, ShieldCheck, Sparkles, SquareTerminal, Trophy } from "lucide-react";
+import { Activity, BarChart3, BriefcaseBusiness, Compass, FileSearch, FileText, LayoutDashboard, MessageSquareMore, PlayCircle, Rocket, ShieldCheck, Sparkles, SquareTerminal, Trophy } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,6 +14,7 @@ const operationsNav = [
   { href: "/start", label: "Start", icon: Compass, summary: "Guided onboarding and wallet-first flow" },
   { href: "/assistant", label: "AI Assistant", icon: Sparkles, summary: "Internal AI-style guide across routes, docs, and proof" },
   { href: "/story", label: "Story", icon: PlayCircle, summary: "Hosted product video and why-us reel" },
+  { href: "/community", label: "Community", icon: MessageSquareMore, summary: "Join, updates, pilot interest, and support routing" },
   { href: "/command-center", label: "Command Center", icon: SquareTerminal, summary: "Create, vote, execute" },
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, summary: "Governance state and treasury" },
   { href: "/proof", label: "Proof", icon: Sparkles, summary: "Baseline and V3 evidence" },

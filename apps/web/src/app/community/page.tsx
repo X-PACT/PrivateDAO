@@ -7,12 +7,12 @@ export default function CommunityPage() {
   return (
     <OperationsShell
       eyebrow="Community"
-      title="PrivateDAO community channels, awards, and public momentum"
-      description="Community should be a first-class route with the official YouTube channel, Discord entry, achievement visibility, and direct access to the competition center."
+      title="Join the community, follow product momentum, and move into pilot or operator paths"
+      description="Community is not a dead-end social page. It is the public entry for Discord, YouTube, product updates, pilot intent, support routing, and the shortest next step into PrivateDAO as a user, buyer, or operator."
       badges={[
-        { label: "YouTube live", variant: "success" },
-        { label: "Discord-ready", variant: "violet" },
-        { label: "Awards and story", variant: "cyan" },
+        { label: "Discord live", variant: "success" },
+        { label: "YouTube live", variant: "violet" },
+        { label: "Join -> pilot -> operator", variant: "cyan" },
       ]}
     >
       <CommunityHub />
