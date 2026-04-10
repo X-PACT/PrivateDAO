@@ -3,8 +3,8 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-09T23:54:08.836Z`
-- status: `query-strategy-staged`
+- generated at: `2026-04-10T00:48:14.161Z`
+- status: `query-strategy-next-ready`
 - current live surface: `docs/index.html`
 - next surface root: `apps/web`
 
@@ -48,30 +48,30 @@
 ### ?page=proof&judge=1
 
 - current behavior: forces judge-mode proof entry in docs
-- next target: `/proof/`
-- strategy: `preserve-on-docs`
-- note: Keep the query-driven judge entrypoint on docs until apps/web reproduces the same review-specific behavior.
+- next target: `/proof/?judge=1`
+- strategy: `map-to-next-route`
+- note: The legacy entrypoint is now preserved in apps/web and keeps the reviewer intent visible inside the proof surface.
 
 ### ?page=migrate
 
 - current behavior: opens migration-specific surface in docs
 - next target: `/services/`
-- strategy: `preserve-on-docs`
-- note: The closest Next surface is services, but exact migration parity is not yet complete.
+- strategy: `map-to-next-route`
+- note: Services is now the canonical migration and commercial landing surface in apps/web.
 
 ### ?page=protocol
 
 - current behavior: opens protocol-centric narrative in docs
 - next target: `/security/`
-- strategy: `preserve-on-docs`
-- note: Protocol detail is distributed across security and proof routes in apps/web.
+- strategy: `map-to-next-route`
+- note: Security is now the canonical protocol and hardening route in apps/web.
 
 ### ?page=docs&doc=reviewer-fast-path.md
 
 - current behavior: opens the docs viewer directly on reviewer-fast-path.md
-- next target: `/proof/`
-- strategy: `defer-until-doc-viewer`
-- note: Do not redirect this until a dedicated document viewer exists in apps/web.
+- next target: `/documents/reviewer-fast-path/`
+- strategy: `map-to-next-route`
+- note: Curated reviewer docs now have in-app routes, and the broader markdown corpus is available through /viewer/.
 
 ## Commands
 
@@ -83,5 +83,6 @@
 ## Routing Boundary
 
 - do not rewrite docs query entrypoints in-place while docs remains canonical
-- only map low-risk page routes to apps/web during mirror staging
-- leave judge-mode and docs-viewer flows on docs until route-specific parity is explicit
+- map legacy query entrypoints to apps/web routes while docs remains the canonical live surface
+- keep docs available as the authoritative archive until the mirror replaces it explicitly
+- prefer curated document routes first and fall back to /viewer/ for broader markdown parity

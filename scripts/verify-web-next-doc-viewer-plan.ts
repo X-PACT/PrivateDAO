@@ -30,7 +30,7 @@ function main() {
   const markdown = fs.readFileSync(mdPath, "utf8");
 
   assert(payload.project === "PrivateDAO", "web next doc viewer plan project mismatch");
-  assert(payload.status === "doc-viewer-parity-staged", "web next doc viewer plan status mismatch");
+  assert(payload.status === "doc-viewer-parity-next-ready", "web next doc viewer plan status mismatch");
   assert(payload.currentCanonicalViewer === "docs/index.html?page=docs&doc=...", "web next doc viewer plan canonical viewer mismatch");
   assert(payload.nextAppRoot === "apps/web", "web next doc viewer plan app root mismatch");
 
@@ -39,16 +39,16 @@ function main() {
     "ops-and-readiness",
     "commercial-and-pilot",
     "deep-reference",
-    "current-docs-viewer-only",
+    "legacy-query-entrypoints",
   ];
   for (const tier of tiers) {
     assert(payload.docClasses.some((entry) => entry.tier === tier), `web next doc viewer plan missing tier: ${tier}`);
   }
 
   const reviewerCore = payload.docClasses.find((entry) => entry.tier === "reviewer-core");
-  const docsViewerOnly = payload.docClasses.find((entry) => entry.tier === "current-docs-viewer-only");
+  const docsViewerOnly = payload.docClasses.find((entry) => entry.tier === "legacy-query-entrypoints");
   assert(reviewerCore?.strategy === "surface-as-links", "web next doc viewer reviewer-core strategy mismatch");
-  assert(docsViewerOnly?.strategy === "keep-in-docs-viewer", "web next doc viewer canonical viewer strategy mismatch");
+  assert(docsViewerOnly?.strategy === "surface-as-links", "web next doc viewer canonical viewer strategy mismatch");
   assert(reviewerCore?.docs.includes("reviewer-fast-path.md"), "web next doc viewer plan missing reviewer-fast-path.md");
   assert(docsViewerOnly?.docs.includes("?page=docs&doc=reviewer-fast-path.md"), "web next doc viewer plan missing docs viewer query path");
 
@@ -62,9 +62,9 @@ function main() {
   }
 
   for (const boundary of [
-    "do not claim docs-viewer parity today",
-    "keep ?page=docs&doc=... canonical until an explicit Next document route exists",
-    "prefer reviewer-safe raw links over partial embedded viewer behavior",
+    "docs remains the canonical live surface until cutover is explicit",
+    "legacy docs queries now have Next destinations through curated /documents routes or the generic /viewer route",
+    "raw repository files remain authoritative even when rendered in-app",
   ]) {
     assert(payload.boundary.includes(boundary), `web next doc viewer plan missing boundary: ${boundary}`);
   }
@@ -72,8 +72,8 @@ function main() {
   for (const token of [
     "# Web Next Document Viewer Parity Plan",
     "### reviewer-core",
-    "### current-docs-viewer-only",
-    "- strategy: `keep-in-docs-viewer`",
+    "### legacy-query-entrypoints",
+    "- strategy: `surface-as-links`",
     "`?page=docs&doc=reviewer-fast-path.md`",
   ]) {
     assert(markdown.includes(token), `web next doc viewer markdown is missing: ${token}`);

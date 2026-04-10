@@ -11,6 +11,7 @@ It is a UI parity checklist, not a protocol claim.
 - `/dashboard/`
 - `/proof/`
 - `/documents/`
+- `/viewer/`
 - `/security/`
 - `/diagnostics/`
 - `/analytics/`
@@ -44,6 +45,12 @@ It is a UI parity checklist, not a protocol claim.
 - Curated reviewer and trust document library
 - In-app routes for V3 proof, audit packet, launch trust packet, and blockers
 - Raw-file links preserved for authoritative references
+
+### `/viewer/`
+
+- Repository markdown viewer for broad docs parity
+- Static routes for legacy markdown entrypoints across `docs/**/*.md`
+- Supports cutover away from `?page=docs&doc=...` without dropping raw-file authority
 
 ### `/security/`
 

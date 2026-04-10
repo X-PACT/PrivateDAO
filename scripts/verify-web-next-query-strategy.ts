@@ -29,7 +29,7 @@ function main() {
   const markdown = fs.readFileSync(mdPath, "utf8");
 
   assert(payload.project === "PrivateDAO", "web next query strategy project mismatch");
-  assert(payload.status === "query-strategy-staged", "web next query strategy status mismatch");
+  assert(payload.status === "query-strategy-next-ready", "web next query strategy status mismatch");
   assert(payload.currentLiveSurface === "docs/index.html", "web next query strategy must preserve docs as live surface");
   assert(payload.nextSurfaceRoot === "apps/web", "web next query strategy next surface root mismatch");
 
@@ -51,8 +51,15 @@ function main() {
   const judge = payload.queryRules.find((entry) => entry.query === "?page=proof&judge=1");
   const docsViewer = payload.queryRules.find((entry) => entry.query === "?page=docs&doc=reviewer-fast-path.md");
   assert(proposals?.strategy === "map-to-next-route", "web next query strategy proposals rule mismatch");
-  assert(judge?.strategy === "preserve-on-docs", "web next query strategy judge rule mismatch");
-  assert(docsViewer?.strategy === "defer-until-doc-viewer", "web next query strategy docs viewer rule mismatch");
+  assert(judge?.strategy === "map-to-next-route", "web next query strategy judge rule mismatch");
+  assert(judge?.nextTarget === "/proof/?judge=1", "web next query strategy judge target mismatch");
+  assert(docsViewer?.strategy === "map-to-next-route", "web next query strategy docs viewer rule mismatch");
+  assert(docsViewer?.nextTarget === "/documents/reviewer-fast-path/", "web next query strategy docs viewer target mismatch");
+
+  const migrate = payload.queryRules.find((entry) => entry.query === "?page=migrate");
+  const protocol = payload.queryRules.find((entry) => entry.query === "?page=protocol");
+  assert(migrate?.strategy === "map-to-next-route", "web next query strategy migrate rule mismatch");
+  assert(protocol?.strategy === "map-to-next-route", "web next query strategy protocol rule mismatch");
 
   for (const command of [
     "npm run build:web-next-query-strategy",
@@ -65,8 +72,9 @@ function main() {
 
   for (const boundary of [
     "do not rewrite docs query entrypoints in-place while docs remains canonical",
-    "only map low-risk page routes to apps/web during mirror staging",
-    "leave judge-mode and docs-viewer flows on docs until route-specific parity is explicit",
+    "map legacy query entrypoints to apps/web routes while docs remains the canonical live surface",
+    "keep docs available as the authoritative archive until the mirror replaces it explicitly",
+    "prefer curated document routes first and fall back to /viewer/ for broader markdown parity",
   ]) {
     assert(payload.routingBoundary.includes(boundary), `web next query strategy missing boundary: ${boundary}`);
   }
@@ -74,9 +82,9 @@ function main() {
   for (const token of [
     "# Web Next Query Preservation Strategy",
     "### ?page=proof&judge=1",
-    "- strategy: `preserve-on-docs`",
+    "- strategy: `map-to-next-route`",
     "### ?page=docs&doc=reviewer-fast-path.md",
-    "- strategy: `defer-until-doc-viewer`",
+    "- next target: `/documents/reviewer-fast-path/`",
   ]) {
     assert(markdown.includes(token), `web next query strategy markdown is missing: ${token}`);
   }

@@ -13,6 +13,7 @@ const routes: RouteEntry[] = [
   { route: "/dashboard/", exportPath: "dashboard/index.html", purpose: "DAO, proposal, treasury, and execution overview" },
   { route: "/proof/", exportPath: "proof/index.html", purpose: "baseline proof, V3 proof, and reviewer trail" },
   { route: "/documents/", exportPath: "documents/index.html", purpose: "curated reviewer and trust document library" },
+  { route: "/viewer/", exportPath: "viewer/index.html", purpose: "repository markdown viewer for broader docs parity and legacy query preservation" },
   { route: "/security/", exportPath: "security/index.html", purpose: "governance and settlement hardening surfaces" },
   { route: "/diagnostics/", exportPath: "diagnostics/index.html", purpose: "artifact health, runtime checks, and launch blockers" },
   { route: "/analytics/", exportPath: "analytics/index.html", purpose: "votes, treasury actions, and readiness analytics" },
@@ -69,7 +70,7 @@ function main() {
     ],
     cutoverRule: [
       "do not replace docs/index.html silently",
-      "do not call apps/web canonical until reviewer links and judge links resolve under the mirror origin",
+      "do not call apps/web canonical until reviewer links, judge-mode proof, and legacy docs entrypoints resolve under the mirror origin",
       "preserve current GitHub Pages reviewer paths while the mirror is staged",
     ],
   };

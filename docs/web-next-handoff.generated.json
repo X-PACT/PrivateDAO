@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-10T00:19:38.540Z",
+  "generatedAt": "2026-04-10T00:49:27.864Z",
   "status": "staged-not-live",
   "currentLiveSurface": "docs/index.html",
   "nextAppRoot": "apps/web",
@@ -50,6 +50,11 @@
       "purpose": "curated reviewer and trust document library"
     },
     {
+      "route": "/viewer/",
+      "exportPath": "viewer/index.html",
+      "purpose": "repository markdown viewer for broader docs parity and legacy query preservation"
+    },
+    {
       "route": "/security/",
       "exportPath": "security/index.html",
       "purpose": "governance and settlement hardening surfaces"
@@ -91,7 +96,7 @@
   ],
   "cutoverRule": [
     "do not replace docs/index.html silently",
-    "do not call apps/web canonical until reviewer links and judge links resolve under the mirror origin",
+    "do not call apps/web canonical until reviewer links, judge-mode proof, and legacy docs entrypoints resolve under the mirror origin",
     "preserve current GitHub Pages reviewer paths while the mirror is staged"
   ]
 }

@@ -31,6 +31,15 @@ required_routes=(
   "documents/reviewer-fast-path/index.html"
   "documents/audit-packet/index.html"
   "documents/live-proof-v3/index.html"
+  "documents/trust-package/index.html"
+  "documents/pilot-program/index.html"
+  "documents/service-catalog/index.html"
+  "viewer/index.html"
+  "viewer/reviewer-fast-path/index.html"
+  "viewer/service-catalog/index.html"
+  "viewer/mainnet-blockers/index.html"
+  "viewer/pilot-program/index.html"
+  "viewer/governance-hardening-v3/index.html"
 )
 
 for route in "${required_routes[@]}"; do

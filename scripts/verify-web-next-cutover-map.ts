@@ -52,9 +52,10 @@ function main() {
   const docsViewer = payload.mappings.find((item) => item.currentEntry === "/?page=docs&doc=reviewer-fast-path.md");
   assert(proposals?.nextRoute === "/", "web next cutover map proposals route mismatch");
   assert(proposals?.parityStatus === "ready-for-mirror", "web next cutover map proposals parity mismatch");
-  assert(judge?.parityStatus === "staged-partial", "web next cutover map judge parity mismatch");
+  assert(judge?.nextRoute === "/proof/?judge=1", "web next cutover map judge target mismatch");
+  assert(judge?.parityStatus === "ready-for-mirror", "web next cutover map judge parity mismatch");
   assert(docsViewer?.nextRoute === "/documents/reviewer-fast-path/", "web next cutover map docs viewer target mismatch");
-  assert(docsViewer?.parityStatus === "staged-partial", "web next cutover map docs viewer parity mismatch");
+  assert(docsViewer?.parityStatus === "ready-for-mirror", "web next cutover map docs viewer parity mismatch");
 
   for (const command of [
     "npm run build:web-next-cutover-map",
@@ -66,9 +67,9 @@ function main() {
   }
 
   for (const boundary of [
-    "preserve current docs query-entrypoints during staged mirror rollout",
-    "treat apps/web as route-parity candidate, not canonical replacement yet",
-    "keep docs document-viewer flows canonical until curated document routes expand into full viewer parity",
+    "preserve docs as the canonical live surface until cutover is explicit",
+    "treat apps/web as the replacement-ready mirror with legacy query compatibility",
+    "use /documents for curated packets and /viewer for broader repository markdown parity",
   ]) {
     assert(payload.cutoverBoundary.includes(boundary), `web next cutover map missing boundary: ${boundary}`);
   }
@@ -78,6 +79,7 @@ function main() {
     "### /?page=proposals",
     "### /?page=proof&judge=1",
     "### /?page=docs&doc=reviewer-fast-path.md",
+    "- next route: `/proof/?judge=1`",
     "- next route: `/documents/reviewer-fast-path/`",
   ]) {
     assert(markdown.includes(token), `web next cutover markdown is missing: ${token}`);

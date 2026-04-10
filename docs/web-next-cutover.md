@@ -8,6 +8,10 @@ It is not a claim that cutover has already happened.
 
 - `docs/index.html` remains the live reviewer-facing surface.
 - `apps/web` is now static-export capable and mirror-ready.
+- `apps/web` now includes:
+  - legacy `?page=` compatibility at the root route
+  - curated `/documents/` routes for reviewer and trust packets
+  - broad `/viewer/` routes for repository markdown parity
 - The Next.js app supports:
   - `/PrivateDAO` base path for GitHub Pages
   - root-domain export for a future `.xyz` deployment
@@ -39,13 +43,17 @@ Generated artifacts:
    - `/`
    - `/command-center/`
    - `/proof/`
+   - `/proof/?judge=1`
+   - `/documents/`
+   - `/viewer/`
    - `/security/`
    - `/diagnostics/`
    - `/services/`
    - `/awards/`
-4. Verify that live-site links and judge links resolve correctly under the mirror origin.
-5. Verify that root-domain export works independently of `/PrivateDAO`.
-6. Only then decide whether `docs/` should be replaced or kept as the stable public archive surface.
+4. Verify that legacy `?page=` entrypoints route correctly into `apps/web`.
+5. Verify that live-site links and judge links resolve correctly under the mirror origin.
+6. Verify that root-domain export works independently of `/PrivateDAO`.
+7. Only then decide whether `docs/` should be replaced or kept as the stable public archive surface.
 
 ## Do Not Claim Yet
 

@@ -56,6 +56,7 @@ function main() {
     "/dashboard/",
     "/proof/",
     "/documents/",
+    "/viewer/",
     "/security/",
     "/diagnostics/",
     "/analytics/",
@@ -91,6 +92,7 @@ function main() {
     "docs remains the canonical live reviewer-facing surface until explicit cutover.",
     "`/proof/` -> `proof/index.html`",
     "`/documents/` -> `documents/index.html`",
+    "`/viewer/` -> `viewer/index.html`",
     "`/services/` -> `services/index.html`",
     "`npm run web:verify:bundle:github`",
   ]) {

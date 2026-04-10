@@ -3,8 +3,8 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-09T23:56:46.806Z`
-- status: `doc-viewer-parity-staged`
+- generated at: `2026-04-10T00:48:51.064Z`
+- status: `doc-viewer-parity-next-ready`
 - current canonical viewer: `docs/index.html?page=docs&doc=...`
 - next app root: `apps/web`
 
@@ -14,7 +14,7 @@
 
 - next surface: `/proof/`
 - strategy: `surface-as-links`
-- rationale: These documents already appear as proof and reviewer links in apps/web, but the full interactive docs-viewer behavior is not yet ported.
+- rationale: These documents already appear as proof and reviewer links in apps/web, and key reviewer packets now have curated in-app routes.
 
 Documents:
 
@@ -28,7 +28,7 @@ Documents:
 
 - next surface: `/diagnostics/`
 - strategy: `surface-as-links`
-- rationale: These operator and launch artifacts belong in diagnostics and trust surfaces as direct links before a dedicated embedded viewer exists.
+- rationale: These operator and launch artifacts belong in diagnostics and trust surfaces, with curated packets available directly in apps/web.
 
 Documents:
 
@@ -42,7 +42,7 @@ Documents:
 
 - next surface: `/services/`
 - strategy: `surface-as-links`
-- rationale: The commercial journey already exists in apps/web and can continue using direct document links without recreating the docs viewer first.
+- rationale: The commercial journey already exists in apps/web and now links into curated in-app documents for the highest-value commercial packets.
 
 Documents:
 
@@ -56,7 +56,7 @@ Documents:
 
 - next surface: `/security/`
 - strategy: `candidate-for-future-viewer`
-- rationale: These are long-form technical references better served by a future document browser or MDX content layer.
+- rationale: These are long-form technical references now supported by the generic /viewer/ route, while curated routes remain preferred for the highest-signal packets.
 
 Documents:
 
@@ -66,11 +66,11 @@ Documents:
 - `zk-verifier-strategy.md`
 - `read-node/indexer.md`
 
-### current-docs-viewer-only
+### legacy-query-entrypoints
 
-- next surface: `docs/index.html`
-- strategy: `keep-in-docs-viewer`
-- rationale: Query-driven document-viewer entrypoints remain canonical in docs until apps/web gets explicit viewer parity.
+- next surface: `apps/web /documents + /viewer`
+- strategy: `surface-as-links`
+- rationale: Legacy query entrypoints now have explicit Next routes, using curated documents when available and /viewer/ for broader markdown parity.
 
 Documents:
 
@@ -80,9 +80,9 @@ Documents:
 
 ## Next Step Phases
 
-- phase 1: keep docs viewer canonical and link documents from apps/web surfaces
-- phase 2: add a dedicated apps/web document route with curated proof, trust, and ops packets
-- phase 3: decide whether long-form technical docs should move into MDX or remain raw-doc references
+- phase 1: preserve high-signal reviewer and trust packets in curated /documents routes
+- phase 2: preserve broader markdown parity through /viewer/[...slug]
+- phase 3: decide whether the remaining long-form docs should move into MDX or stay repository-driven
 
 ## Commands
 
@@ -93,6 +93,6 @@ Documents:
 
 ## Boundary
 
-- do not claim docs-viewer parity today
-- keep ?page=docs&doc=... canonical until an explicit Next document route exists
-- prefer reviewer-safe raw links over partial embedded viewer behavior
+- docs remains the canonical live surface until cutover is explicit
+- legacy docs queries now have Next destinations through curated /documents routes or the generic /viewer route
+- raw repository files remain authoritative even when rendered in-app

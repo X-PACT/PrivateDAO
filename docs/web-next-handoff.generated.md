@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-10T00:19:38.540Z`
+- generated at: `2026-04-10T00:49:27.864Z`
 - current status: `staged-not-live`
 - current live surface: `docs/index.html`
 - next app root: `apps/web`
@@ -37,6 +37,7 @@ Boundary:
 - `/dashboard/` -> `dashboard/index.html` (DAO, proposal, treasury, and execution overview)
 - `/proof/` -> `proof/index.html` (baseline proof, V3 proof, and reviewer trail)
 - `/documents/` -> `documents/index.html` (curated reviewer and trust document library)
+- `/viewer/` -> `viewer/index.html` (repository markdown viewer for broader docs parity and legacy query preservation)
 - `/security/` -> `security/index.html` (governance and settlement hardening surfaces)
 - `/diagnostics/` -> `diagnostics/index.html` (artifact health, runtime checks, and launch blockers)
 - `/analytics/` -> `analytics/index.html` (votes, treasury actions, and readiness analytics)
@@ -62,5 +63,5 @@ Boundary:
 ## Cutover Rule
 
 - do not replace docs/index.html silently
-- do not call apps/web canonical until reviewer links and judge links resolve under the mirror origin
+- do not call apps/web canonical until reviewer links, judge-mode proof, and legacy docs entrypoints resolve under the mirror origin
 - preserve current GitHub Pages reviewer paths while the mirror is staged

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
 import { MetricsStrip } from "@/components/metrics-strip";
+import { ProofEntryBanner } from "@/components/proof-entry-banner";
 import { ProofFlowRail } from "@/components/proof-flow-rail";
 import { ProofCenter } from "@/components/proof-center";
 import { SectionHeader } from "@/components/section-header";
@@ -29,6 +31,9 @@ export default function ProofPage() {
           title="Runtime evidence, reviewer packets, and additive hardening in one surface"
           description="The Next.js app should expose the same proof story as the current site: baseline live proof, dedicated V3 hardening proof, integration packets, and clear launch boundaries."
         />
+        <Suspense fallback={null}>
+          <ProofEntryBanner />
+        </Suspense>
       </div>
       <div className="mt-10">
         <MetricsStrip />

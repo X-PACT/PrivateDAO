@@ -27,9 +27,9 @@ const mappings: MappingEntry[] = [
   {
     currentEntry: "/?page=proof&judge=1",
     currentPurpose: "judge-focused review surface",
-    nextRoute: "/proof/",
-    parityStatus: "staged-partial",
-    note: "The route exists, but the exact judge query-mode behavior remains anchored to the current docs surface until mirror validation is complete.",
+    nextRoute: "/proof/?judge=1",
+    parityStatus: "ready-for-mirror",
+    note: "Judge-mode query is preserved inside the Next proof surface; mirror-origin validation still remains part of cutover execution.",
   },
   {
     currentEntry: "/?page=security",
@@ -56,22 +56,22 @@ const mappings: MappingEntry[] = [
     currentEntry: "/?page=migrate",
     currentPurpose: "migration and Realms-adjacent transition surface inside the current docs app",
     nextRoute: "/services/",
-    parityStatus: "staged-partial",
-    note: "Commercial and migration-adjacent story exists, but the exact docs migration screen is not yet a dedicated Next route.",
+    parityStatus: "ready-for-mirror",
+    note: "Services is the canonical migration and commercial landing surface in apps/web.",
   },
   {
     currentEntry: "/?page=protocol",
     currentPurpose: "protocol reference and system explanation",
     nextRoute: "/security/",
-    parityStatus: "staged-partial",
-    note: "Protocol explanation is distributed across security and proof surfaces rather than a dedicated route.",
+    parityStatus: "ready-for-mirror",
+    note: "Security is now the canonical protocol and hardening surface in apps/web.",
   },
   {
     currentEntry: "/?page=docs&doc=reviewer-fast-path.md",
     currentPurpose: "document viewer entrypoint for reviewer packets",
     nextRoute: "/documents/reviewer-fast-path/",
-    parityStatus: "staged-partial",
-    note: "A curated in-app document route now exists, but the full query-driven docs-viewer behavior remains canonical in docs.",
+    parityStatus: "ready-for-mirror",
+    note: "Curated reviewer packets route to /documents and broader markdown parity is preserved through /viewer/.",
   },
 ];
 
@@ -90,9 +90,9 @@ function main() {
       "npm run verify:web-next-handoff",
     ],
     cutoverBoundary: [
-      "preserve current docs query-entrypoints during staged mirror rollout",
-      "treat apps/web as route-parity candidate, not canonical replacement yet",
-      "keep docs document-viewer flows canonical until curated document routes expand into full viewer parity",
+      "preserve docs as the canonical live surface until cutover is explicit",
+      "treat apps/web as the replacement-ready mirror with legacy query compatibility",
+      "use /documents for curated packets and /viewer for broader repository markdown parity",
     ],
   };
 

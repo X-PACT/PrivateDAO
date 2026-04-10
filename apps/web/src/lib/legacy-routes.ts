@@ -7,6 +7,8 @@ const legacyPageRouteMap: Record<string, string> = {
   analytics: "/analytics",
   services: "/services",
   awards: "/awards",
+  migrate: "/services",
+  protocol: "/security",
   command: "/command-center",
   "command-center": "/command-center",
   documents: "/documents",
