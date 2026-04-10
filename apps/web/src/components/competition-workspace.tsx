@@ -7,6 +7,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { SubmissionCoachPanel } from "@/components/submission-coach-panel";
 import { TrackAlignmentPanel } from "@/components/track-alignment-panel";
 import { TrackCommercializationPanel } from "@/components/track-commercialization-panel";
+import { TrackInvestmentCasePanel } from "@/components/track-investment-case-panel";
 import { TrackMainnetGatesPanel } from "@/components/track-mainnet-gates-panel";
 import { TrackNarrativePanel } from "@/components/track-narrative-panel";
 import { TrackTechnicalFitPanel } from "@/components/track-technical-fit-panel";
@@ -119,6 +120,8 @@ export function CompetitionWorkspace({ workspace }: CompetitionWorkspaceProps) {
         <TrackAlignmentPanel workspace={workspace} />
 
         <TrackNarrativePanel workspace={workspace} />
+
+        <TrackInvestmentCasePanel workspace={workspace} />
 
         <TrackTechnicalFitPanel slug={workspace.slug} />
 

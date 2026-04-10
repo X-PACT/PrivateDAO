@@ -2,6 +2,8 @@ import { competitionTrackWorkspaces } from "@/lib/site-data";
 import { getSubmissionCoachPlan } from "@/lib/submission-coach";
 import { getTrackCommercializationPlan } from "@/lib/track-commercialization";
 import { getTrackMainnetGatePlan } from "@/lib/track-mainnet-gates";
+import { getTrackNarrativePlan } from "@/lib/track-narratives";
+import { getTrackTechnicalFit } from "@/lib/technical-eligibility";
 
 export type AssistantSuggestion = {
   title: string;
@@ -201,6 +203,49 @@ function getTrackAnswer(query: string): AssistantSuggestion | null {
         { label: "Mainnet blockers", href: "/documents/mainnet-blockers" },
         { label: "Review route", href: workspace.judgeRoute },
         { label: "Engage", href: "/engage" },
+      ],
+    };
+  }
+
+  if (
+    normalized.includes("program id") ||
+    normalized.includes("token") ||
+    normalized.includes("wallet matrix") ||
+    normalized.includes("runtime evidence") ||
+    normalized.includes("technical evidence")
+  ) {
+    const technical = getTrackTechnicalFit(workspace.slug);
+    return {
+      title: `Technical evidence for ${workspace.title}`,
+      summary:
+        `${technical.coreIdentity[0]?.label}: ${technical.coreIdentity[0]?.value}. ${technical.sponsorUsage[0]}`,
+      primaryActionLabel: "Open track workspace",
+      primaryActionHref: `/tracks/${workspace.slug}`,
+      relatedRoutes: [
+        { label: technical.evidenceRoutes[0]?.label ?? "Proof route", href: technical.evidenceRoutes[0]?.href ?? workspace.proofRoute },
+        { label: technical.evidenceRoutes[1]?.label ?? "Wallet matrix", href: technical.evidenceRoutes[1]?.href ?? "/viewer/wallet-compatibility-matrix.generated" },
+        { label: "Trust package", href: "/documents/trust-package" },
+      ],
+    };
+  }
+
+  if (
+    normalized.includes("why us") ||
+    normalized.includes("sponsor should care") ||
+    normalized.includes("future problem") ||
+    normalized.includes("problem and solution") ||
+    normalized.includes("investor")
+  ) {
+    const narrative = getTrackNarrativePlan(workspace);
+    return {
+      title: `Strategic case for ${workspace.title}`,
+      summary: `${narrative.whySponsorShouldCareNow} ${narrative.futureProblemSolution}`.trim(),
+      primaryActionLabel: "Open track workspace",
+      primaryActionHref: `/tracks/${workspace.slug}`,
+      relatedRoutes: [
+        { label: "Engage", href: "/engage" },
+        { label: "Proof", href: workspace.proofRoute },
+        { label: "Review", href: workspace.judgeRoute },
       ],
     };
   }
