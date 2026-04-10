@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 
-const FALLBACK_SITE_URL = "https://x-pact.github.io/PrivateDAO";
+const FALLBACK_SITE_URL = "https://privatedao.org";
 
 function normalizeBaseUrl(input: string) {
   return input.replace(/\/+$/, "");

@@ -115,7 +115,7 @@ export function HomeShell() {
           <Card className="overflow-hidden border-white/12">
             <CardHeader>
               <div className="flex items-center gap-3">
-                <div className="rounded-2xl border border-emerald-300/15 bg-emerald-300/10 p-3 text-emerald-200">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-emerald-300/15 bg-emerald-300/10 text-emerald-200">
                   <Shield className="h-5 w-5" />
                 </div>
                 <div>
@@ -128,7 +128,7 @@ export function HomeShell() {
               {techCards.map((item, index) => (
                 <div key={item.name} className="rounded-3xl border border-white/8 bg-white/4 p-4">
                   <div className="flex items-center gap-3">
-                    <div className="rounded-2xl border border-white/8 bg-black/30 p-3 text-white/85">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/8 bg-black/30 text-white/85">
                       {index === 0 ? <Sparkles className="h-4 w-4" /> : index === 1 ? <Shield className="h-4 w-4" /> : <TrendingUp className="h-4 w-4" />}
                     </div>
                     <div className="text-lg font-medium text-white">{item.name}</div>
@@ -208,13 +208,13 @@ export function HomeShell() {
         />
         <div className="mt-10 grid gap-6 lg:grid-cols-4">
           {servicePacks.map((pack) => (
-            <Card key={pack.name}>
+            <Card key={pack.name} className="h-full">
               <CardHeader>
                 <CardTitle className="text-lg">{pack.name}</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="flex h-full flex-col gap-4">
                 <p className="text-sm leading-7 text-white/58">{pack.fit}</p>
-                <div className="rounded-3xl border border-white/8 bg-white/4 p-4 text-sm text-white/70">{pack.cta}</div>
+                <div className="mt-auto rounded-3xl border border-white/8 bg-white/4 p-4 text-sm text-white/70">{pack.cta}</div>
               </CardContent>
             </Card>
           ))}
