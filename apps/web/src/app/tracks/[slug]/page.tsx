@@ -12,6 +12,7 @@ import { buildRouteMetadata } from "@/lib/route-metadata";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
+  searchParams?: Promise<{ profile?: string; intake?: string }>;
 };
 
 export async function generateStaticParams() {
@@ -37,8 +38,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   });
 }
 
-export default async function TrackWorkspacePage({ params }: PageProps) {
+export default async function TrackWorkspacePage({ params, searchParams }: PageProps) {
   const { slug } = await params;
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
   const workspace = getCompetitionTrackWorkspace(slug);
   if (!workspace) notFound();
 
@@ -54,7 +56,7 @@ export default async function TrackWorkspacePage({ params }: PageProps) {
       ]}
     >
       <div>
-        <CompetitionWorkspace workspace={workspace} />
+        <CompetitionWorkspace workspace={workspace} commercialProfile={resolvedSearchParams?.profile} intake={resolvedSearchParams?.intake} />
       </div>
       <div>
         <VideoCenter compact />

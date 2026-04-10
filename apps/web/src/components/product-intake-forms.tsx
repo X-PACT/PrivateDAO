@@ -171,6 +171,7 @@ const fundingProfileOverrides: Record<string, FundingProfileOverride> = {
       routes: [
         { label: "Services", href: "/services" },
         { label: "Engage", href: "/engage?profile=treasury-top-up" },
+        { label: "RPC track", href: "/tracks/rpc-infrastructure?profile=treasury-top-up" },
         { label: "Security", href: "/security" },
       ],
     },
@@ -197,7 +198,7 @@ const fundingProfileOverrides: Record<string, FundingProfileOverride> = {
       routes: [
         { label: "Engage", href: "/engage?profile=pilot-funding" },
         { label: "Command Center", href: "/command-center" },
-        { label: "Colosseum Frontier", href: "/tracks/colosseum-frontier" },
+        { label: "Colosseum Frontier", href: "/tracks/colosseum-frontier?profile=pilot-funding" },
       ],
     },
   },
@@ -224,6 +225,7 @@ const fundingProfileOverrides: Record<string, FundingProfileOverride> = {
       routes: [
         { label: "Command Center", href: "/command-center" },
         { label: "Diagnostics", href: "/diagnostics" },
+        { label: "Live dApp track", href: "/tracks/eitherway-live-dapp?profile=vendor-payout" },
         { label: "Services", href: "/services" },
       ],
     },
@@ -251,6 +253,7 @@ const fundingProfileOverrides: Record<string, FundingProfileOverride> = {
       routes: [
         { label: "Command Center", href: "/command-center" },
         { label: "Diagnostics", href: "/diagnostics" },
+        { label: "Consumer Apps track", href: "/tracks/consumer-apps?profile=contributor-payout" },
         { label: "Security", href: "/security" },
       ],
     },

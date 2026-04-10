@@ -18,12 +18,86 @@ import { cn } from "@/lib/utils";
 
 type CompetitionWorkspaceProps = {
   workspace: CompetitionTrackWorkspace;
+  commercialProfile?: string;
+  intake?: string;
 };
 
-export function CompetitionWorkspace({ workspace }: CompetitionWorkspaceProps) {
+function getCommercialContinuityBundle(workspace: CompetitionTrackWorkspace, commercialProfile?: string, intake?: string) {
+  if (!commercialProfile && !intake) {
+    return null;
+  }
+
+  if (commercialProfile === "pilot-funding" || intake === "pilot") {
+    return {
+      title: "Pilot continuity bundle",
+      summary:
+        "Keep the buyer path tied to the live startup route: demo first, then proof, then trust. This track is now carrying the same commercial context that began in Engage.",
+      routes: [
+        { label: "Live demo", href: workspace.liveRoute },
+        { label: "Proof", href: workspace.proofRoute },
+        { label: "Trust", href: "/security" },
+        { label: "Story", href: workspace.videoRoute },
+      ],
+    };
+  }
+
+  if (commercialProfile === "treasury-top-up") {
+    return {
+      title: "Treasury capitalization continuity",
+      summary:
+        "Frame this as operating runway for a real product, not a donation. Services, Engage, and Trust stay connected so the sender sees where capital improves reliability and buyer readiness.",
+      routes: [
+        { label: "Services", href: "/services" },
+        { label: "Engage", href: "/engage?profile=treasury-top-up" },
+        { label: "Trust", href: "/security" },
+        { label: "Proof", href: workspace.proofRoute },
+      ],
+    };
+  }
+
+  if (commercialProfile === "vendor-payout" || commercialProfile === "contributor-payout" || intake === "payments") {
+    return {
+      title: "Governed payout continuity",
+      summary:
+        "This commercial path stays operational: command execution, diagnostics, and proof are kept in one visible bundle so payouts read as governed treasury actions rather than ad-hoc transfers.",
+      routes: [
+        { label: "Command Center", href: "/command-center" },
+        { label: "Diagnostics", href: "/diagnostics" },
+        { label: "Trust", href: "/security" },
+        { label: "Proof", href: workspace.proofRoute },
+      ],
+    };
+  }
+
+  return null;
+}
+
+export function CompetitionWorkspace({ workspace, commercialProfile, intake }: CompetitionWorkspaceProps) {
+  const commercialBundle = getCommercialContinuityBundle(workspace, commercialProfile, intake);
   return (
     <div className="grid gap-6 xl:grid-cols-[1.06fr_0.94fr]">
       <div className="grid gap-6">
+        {commercialBundle ? (
+          <Card>
+            <CardHeader>
+              <CardTitle>Commercial continuity</CardTitle>
+            </CardHeader>
+            <CardContent className="grid gap-4">
+              <div className="rounded-3xl border border-violet-300/16 bg-violet-300/[0.08] p-4 text-sm leading-7 text-white/68">
+                <div className="text-[11px] uppercase tracking-[0.28em] text-violet-100/76">{commercialBundle.title}</div>
+                <div className="mt-2">{commercialBundle.summary}</div>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                {commercialBundle.routes.map((route) => (
+                  <Link key={`${commercialBundle.title}-${route.href}`} className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={route.href}>
+                    {route.label}
+                  </Link>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        ) : null}
+
         <Card>
           <CardHeader>
             <CardTitle>Submission bundle snapshot</CardTitle>
