@@ -13,6 +13,8 @@ export type ConfidenceSignals = {
   launchBoundaryExplicit: boolean;
 };
 
+export type ConfidenceSignalKey = keyof ConfidenceSignals;
+
 export type ConfidenceProfile = {
   title: string;
   subtitle: string;
@@ -226,6 +228,40 @@ export const confidenceEnginePrinciples = [
   "Launch blockers and external custody gaps are intentionally left outside the score so the app does not hide pending-external work.",
 ];
 
+export const confidenceSignalDefinitions: Array<{
+  key: ConfidenceSignalKey;
+  label: string;
+  group: "privacy" | "enforcement" | "execution" | "review";
+}> = [
+  { key: "commitReveal", label: "Commit-reveal voting", group: "privacy" },
+  { key: "zkReview", label: "ZK review overlay", group: "privacy" },
+  { key: "zkAnchors", label: "Proposal-bound proof anchors", group: "enforcement" },
+  { key: "governanceV3", label: "Governance Hardening V3", group: "enforcement" },
+  { key: "settlementV3", label: "Settlement Hardening V3", group: "enforcement" },
+  { key: "refheEnvelope", label: "REFHE envelope", group: "execution" },
+  { key: "magicBlockEvidence", label: "MagicBlock settlement evidence", group: "execution" },
+  { key: "fastRpcIndexed", label: "Fast RPC indexed runtime", group: "execution" },
+  { key: "liveProof", label: "Baseline live proof", group: "review" },
+  { key: "v3Proof", label: "Dedicated V3 proof", group: "review" },
+  { key: "auditPacket", label: "Audit packet", group: "review" },
+  { key: "launchBoundaryExplicit", label: "Explicit launch boundary", group: "review" },
+];
+
+export const defaultConfidenceSignals: ConfidenceSignals = {
+  commitReveal: true,
+  zkReview: true,
+  zkAnchors: true,
+  governanceV3: true,
+  settlementV3: true,
+  refheEnvelope: false,
+  magicBlockEvidence: false,
+  fastRpcIndexed: true,
+  liveProof: true,
+  v3Proof: true,
+  auditPacket: true,
+  launchBoundaryExplicit: true,
+};
+
 function includesAny(value: string, needles: string[]) {
   const normalized = value.toLowerCase();
   return needles.some((needle) => normalized.includes(needle.toLowerCase()));
@@ -319,4 +355,14 @@ export function getConfidenceEngineSummary(input: ProposalConfidenceInput) {
     strongestSignals: scorecard.strongestSignals,
     recommendations: scorecard.recommendations,
   };
+}
+
+export function buildManualConfidenceScorecard(signals: ConfidenceSignals, title = "Custom proposal path", subtitle = "Interactive policy composer") {
+  return buildConfidenceScorecard({
+    title,
+    subtitle,
+    explanation:
+      "Interactive policy composition for a proposal path that mixes ZK, REFHE, MagicBlock, Fast RPC, and additive hardening rails before execution.",
+    signals,
+  });
 }

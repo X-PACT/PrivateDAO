@@ -96,6 +96,29 @@ total =
 
 The result is rounded to the nearest integer.
 
+## Interactive policy composer
+
+The Next.js security surface includes an interactive composer that lets the operator or reviewer toggle:
+
+- `Commit-reveal`
+- `ZK review`
+- `Proposal-bound proof anchors`
+- `Governance V3`
+- `Settlement V3`
+- `REFHE`
+- `MagicBlock`
+- `Fast RPC`
+- `Live proof`
+- `V3 proof`
+- `Audit packet`
+- `Explicit launch boundary`
+
+This does not create any new protocol capability by itself.
+
+It exists to answer a practical product question:
+
+> if we enable or disable one of these rails, how much confidence do we lose, and in which dimension?
+
 ## Score bands
 
 | Band | Range | Meaning |

@@ -1,16 +1,31 @@
+"use client";
+
 import Link from "next/link";
+import { useMemo, useState } from "react";
 import { ArrowUpRight, Binary, Layers3, ShieldCheck, Sparkles } from "lucide-react";
 
 import {
+  buildManualConfidenceScorecard,
   confidenceDimensions,
   confidenceEnginePrinciples,
   confidenceProfiles,
+  confidenceSignalDefinitions,
+  defaultConfidenceSignals,
 } from "@/lib/confidence-engine";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const dimensionIcons = [Sparkles, ShieldCheck, Layers3, Binary];
 
 export function ConfidenceEngineSurface() {
+  const [signals, setSignals] = useState(defaultConfidenceSignals);
+  const customScore = useMemo(() => buildManualConfidenceScorecard(signals), [signals]);
+
+  function toggleSignal(key: keyof typeof signals) {
+    setSignals((current) => ({ ...current, [key]: !current[key] }));
+  }
+
   return (
     <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
       <Card>
@@ -55,6 +70,41 @@ export function ConfidenceEngineSurface() {
               {confidenceEnginePrinciples.map((principle) => (
                 <div key={principle}>• {principle}</div>
               ))}
+            </div>
+          </div>
+          <div className="rounded-3xl border border-white/8 bg-black/20 p-5">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <div className="text-sm font-medium text-white">Interactive policy composer</div>
+                <div className="mt-1 text-[11px] uppercase tracking-[0.28em] text-cyan-300/75">
+                  Toggle ZK, REFHE, MagicBlock, Fast RPC, and hardening rails
+                </div>
+              </div>
+              <Badge variant={customScore.band === "Advanced" ? "success" : customScore.band === "Strong" ? "cyan" : "warning"}>
+                {customScore.total} · {customScore.band}
+              </Badge>
+            </div>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {confidenceSignalDefinitions.map((signal) => (
+                <Button
+                  key={signal.key}
+                  size="sm"
+                  type="button"
+                  variant={signals[signal.key] ? "default" : "outline"}
+                  onClick={() => toggleSignal(signal.key)}
+                  className="justify-start"
+                >
+                  {signal.label}
+                </Button>
+              ))}
+            </div>
+            <div className="mt-4 grid gap-3 md:grid-cols-2">
+              <div className="rounded-2xl border border-white/8 bg-white/4 p-4 text-sm leading-7 text-white/56">
+                <span className="text-white/78">Strongest signals:</span> {customScore.strongestSignals.join(", ")}
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-white/4 p-4 text-sm leading-7 text-white/56">
+                <span className="text-white/78">Recommendations:</span> {customScore.recommendations.join(" ")}
+              </div>
             </div>
           </div>
         </CardContent>
