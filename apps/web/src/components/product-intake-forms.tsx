@@ -29,6 +29,12 @@ type IntakePreset = {
   routeSet: Array<{ label: string; href: string }>;
 };
 
+type FundingProfileOverride = {
+  handoff?: Partial<IntakePreset["handoff"]>;
+  routeSet?: Array<{ label: string; href: string }>;
+  summary?: string;
+};
+
 const intakePresets: IntakePreset[] = [
   {
     kind: "pilot",
@@ -137,6 +143,79 @@ const intakePresets: IntakePreset[] = [
   },
 ];
 
+const fundingProfileOverrides: Record<string, FundingProfileOverride> = {
+  "treasury-top-up": {
+    summary: "Treasury top-up for governance runway, shared operations, and customer-facing reliability.",
+    handoff: {
+      owner: "Treasury buyer motion",
+      destination: "Treasury capitalization and governed operating runway",
+      priority: "Commercial now",
+      narrative:
+        "Treat this as treasury capitalization, not a generic payment. Keep Services and Command Center close so the sender sees how capital strengthens live governance, diagnostics, and operator continuity.",
+      primaryAction: { label: "Open treasury services", href: "/services" },
+      evidenceAction: { label: "Open command center", href: "/command-center" },
+    },
+    routeSet: [
+      { label: "Services", href: "/services" },
+      { label: "Command Center", href: "/command-center" },
+      { label: "Diagnostics", href: "/diagnostics" },
+    ],
+  },
+  "pilot-funding": {
+    summary: "Pilot funding tied to a time-boxed buyer rollout, measurable Devnet validation, and mainnet-aware next steps.",
+    handoff: {
+      owner: "Pilot buyer motion",
+      destination: "Pilot funding and buyer onboarding",
+      priority: "Qualified now",
+      narrative:
+        "Keep the story commercial: this funding should accelerate a concrete pilot, evidence collection, and trust packaging rather than sit as abstract treasury capital.",
+      primaryAction: { label: "Open engage path", href: "/engage" },
+      evidenceAction: { label: "Open services evidence", href: "/services" },
+    },
+    routeSet: [
+      { label: "Engage", href: "/engage" },
+      { label: "Services", href: "/services" },
+      { label: "Proof", href: "/proof" },
+    ],
+  },
+  "vendor-payout": {
+    summary: "Vendor payout routed as a governed operational disbursement with validation, diagnostics, and treasury discipline.",
+    handoff: {
+      lane: "operator",
+      owner: "Operations payout lane",
+      destination: "Vendor disbursement and execution controls",
+      priority: "Operational",
+      narrative:
+        "This is an operator-grade treasury action. Keep Command Center and Diagnostics in the loop so beneficiary validation, execution health, and payout evidence remain explicit.",
+      primaryAction: { label: "Open command center", href: "/command-center" },
+      evidenceAction: { label: "Open diagnostics", href: "/diagnostics" },
+    },
+    routeSet: [
+      { label: "Command Center", href: "/command-center" },
+      { label: "Diagnostics", href: "/diagnostics" },
+      { label: "Security", href: "/security" },
+    ],
+  },
+  "contributor-payout": {
+    summary: "Contributor payout as a governed treasury flow for builders, operators, and retained contributors.",
+    handoff: {
+      lane: "operator",
+      owner: "Contributor payout lane",
+      destination: "Contributor disbursement and governed treasury execution",
+      priority: "Operational",
+      narrative:
+        "Frame this as a retained contributor flow, not a one-off transfer. Keep payout policy, treasury review, and execution evidence visible to preserve operating credibility.",
+      primaryAction: { label: "Open command center", href: "/command-center" },
+      evidenceAction: { label: "Open security", href: "/security" },
+    },
+    routeSet: [
+      { label: "Command Center", href: "/command-center" },
+      { label: "Security", href: "/security" },
+      { label: "Services", href: "/services" },
+    ],
+  },
+};
+
 type ProductIntakeFormsProps = {
   mode: IntakeMode;
   initialKind?: IntakeKind;
@@ -197,6 +276,23 @@ function buildInitialUseCase(initialFundingContext?: ProductIntakeFormsProps["in
   return `Treasury funding context\n${parts.join("\n")}`;
 }
 
+function getResolvedPreset(preset: IntakePreset, fundingContext?: ProductIntakeFormsProps["initialFundingContext"]) {
+  const override = fundingContext?.profile ? fundingProfileOverrides[fundingContext.profile] : undefined;
+  if (!override) {
+    return preset;
+  }
+
+  return {
+    ...preset,
+    summary: override.summary ?? preset.summary,
+    handoff: {
+      ...preset.handoff,
+      ...override.handoff,
+    },
+    routeSet: override.routeSet ?? preset.routeSet,
+  } satisfies IntakePreset;
+}
+
 export function ProductIntakeForms({ mode, initialKind, initialFundingContext }: ProductIntakeFormsProps) {
   const [kind, setKind] = useState<IntakeKind>(initialKind ?? (mode === "engage" ? "pilot" : "support"));
   const [name, setName] = useState("");
@@ -206,7 +302,8 @@ export function ProductIntakeForms({ mode, initialKind, initialFundingContext }:
   const [useCase, setUseCase] = useState(buildInitialUseCase(initialFundingContext));
   const [status, setStatus] = useState<"idle" | "copied" | "downloaded">("idle");
 
-  const preset = intakePresets.find((item) => item.kind === kind) ?? intakePresets[0];
+  const basePreset = intakePresets.find((item) => item.kind === kind) ?? intakePresets[0];
+  const preset = getResolvedPreset(basePreset, initialFundingContext);
   const Icon = preset.icon;
   const LaneIcon =
     preset.handoff.lane === "buyer"
