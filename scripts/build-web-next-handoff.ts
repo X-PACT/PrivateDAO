@@ -12,6 +12,7 @@ const routes: RouteEntry[] = [
   { route: "/command-center/", exportPath: "command-center/index.html", purpose: "proposal workspace and execution journey" },
   { route: "/dashboard/", exportPath: "dashboard/index.html", purpose: "DAO, proposal, treasury, and execution overview" },
   { route: "/proof/", exportPath: "proof/index.html", purpose: "baseline proof, V3 proof, and reviewer trail" },
+  { route: "/documents/", exportPath: "documents/index.html", purpose: "curated reviewer and trust document library" },
   { route: "/security/", exportPath: "security/index.html", purpose: "governance and settlement hardening surfaces" },
   { route: "/diagnostics/", exportPath: "diagnostics/index.html", purpose: "artifact health, runtime checks, and launch blockers" },
   { route: "/analytics/", exportPath: "analytics/index.html", purpose: "votes, treasury actions, and readiness analytics" },
@@ -55,6 +56,7 @@ function main() {
     parityDocs: [
       "docs/web-next-cutover.md",
       "docs/web-next-route-parity.md",
+      "docs/web-next-doc-viewer-plan.generated.md",
       "docs/domain-mirror.md",
       "docs/xyz-mirror-cutover-checklist.md",
     ],

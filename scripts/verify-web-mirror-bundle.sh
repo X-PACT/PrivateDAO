@@ -22,11 +22,15 @@ required_routes=(
   "command-center/index.html"
   "dashboard/index.html"
   "proof/index.html"
+  "documents/index.html"
   "security/index.html"
   "diagnostics/index.html"
   "analytics/index.html"
   "services/index.html"
   "awards/index.html"
+  "documents/reviewer-fast-path/index.html"
+  "documents/audit-packet/index.html"
+  "documents/live-proof-v3/index.html"
 )
 
 for route in "${required_routes[@]}"; do

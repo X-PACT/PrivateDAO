@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-09T23:47:22.243Z",
+  "generatedAt": "2026-04-10T00:19:38.540Z",
   "status": "staged-not-live",
   "currentLiveSurface": "docs/index.html",
   "nextAppRoot": "apps/web",
@@ -11,7 +11,7 @@
       "basePath": "/PrivateDAO",
       "bundleDir": "dist/web-mirror-github",
       "archive": "dist/web-mirror-github.tar.gz",
-      "status": "built-and-verified",
+      "status": "build-required",
       "verificationCommand": "npm run web:verify:bundle:github"
     },
     {
@@ -45,6 +45,11 @@
       "purpose": "baseline proof, V3 proof, and reviewer trail"
     },
     {
+      "route": "/documents/",
+      "exportPath": "documents/index.html",
+      "purpose": "curated reviewer and trust document library"
+    },
+    {
       "route": "/security/",
       "exportPath": "security/index.html",
       "purpose": "governance and settlement hardening surfaces"
@@ -73,6 +78,7 @@
   "parityDocs": [
     "docs/web-next-cutover.md",
     "docs/web-next-route-parity.md",
+    "docs/web-next-doc-viewer-plan.generated.md",
     "docs/domain-mirror.md",
     "docs/xyz-mirror-cutover-checklist.md"
   ],

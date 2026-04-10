@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-09T23:47:22.243Z`
+- generated at: `2026-04-10T00:19:38.540Z`
 - current status: `staged-not-live`
 - current live surface: `docs/index.html`
 - next app root: `apps/web`
@@ -19,7 +19,7 @@ Boundary:
 - base path: `/PrivateDAO`
 - bundle directory: `dist/web-mirror-github`
 - archive: `dist/web-mirror-github.tar.gz`
-- status: `built-and-verified`
+- status: `build-required`
 - verification: `npm run web:verify:bundle:github`
 
 ### root
@@ -36,6 +36,7 @@ Boundary:
 - `/command-center/` -> `command-center/index.html` (proposal workspace and execution journey)
 - `/dashboard/` -> `dashboard/index.html` (DAO, proposal, treasury, and execution overview)
 - `/proof/` -> `proof/index.html` (baseline proof, V3 proof, and reviewer trail)
+- `/documents/` -> `documents/index.html` (curated reviewer and trust document library)
 - `/security/` -> `security/index.html` (governance and settlement hardening surfaces)
 - `/diagnostics/` -> `diagnostics/index.html` (artifact health, runtime checks, and launch blockers)
 - `/analytics/` -> `analytics/index.html` (votes, treasury actions, and readiness analytics)
@@ -46,6 +47,7 @@ Boundary:
 
 - `docs/web-next-cutover.md`
 - `docs/web-next-route-parity.md`
+- `docs/web-next-doc-viewer-plan.generated.md`
 - `docs/domain-mirror.md`
 - `docs/xyz-mirror-cutover-checklist.md`
 

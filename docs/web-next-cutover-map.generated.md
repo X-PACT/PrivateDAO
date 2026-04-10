@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-09T23:51:30.574Z`
+- generated at: `2026-04-10T00:20:20.743Z`
 - status: `staged-cutover-map`
 - current live surface: `docs/index.html`
 - next surface root: `apps/web`
@@ -69,9 +69,9 @@
 ### /?page=docs&doc=reviewer-fast-path.md
 
 - purpose: document viewer entrypoint for reviewer packets
-- next route: `/proof/`
-- parity status: `docs-reference-only`
-- note: Reviewer documents remain canonical in docs/ until a dedicated document-viewer strategy exists in apps/web.
+- next route: `/documents/reviewer-fast-path/`
+- parity status: `staged-partial`
+- note: A curated in-app document route now exists, but the full query-driven docs-viewer behavior remains canonical in docs.
 
 ## Commands
 
@@ -84,4 +84,4 @@
 
 - preserve current docs query-entrypoints during staged mirror rollout
 - treat apps/web as route-parity candidate, not canonical replacement yet
-- keep docs document-viewer flows canonical until dedicated viewer parity exists
+- keep docs document-viewer flows canonical until curated document routes expand into full viewer parity

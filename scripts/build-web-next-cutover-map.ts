@@ -69,9 +69,9 @@ const mappings: MappingEntry[] = [
   {
     currentEntry: "/?page=docs&doc=reviewer-fast-path.md",
     currentPurpose: "document viewer entrypoint for reviewer packets",
-    nextRoute: "/proof/",
-    parityStatus: "docs-reference-only",
-    note: "Reviewer documents remain canonical in docs/ until a dedicated document-viewer strategy exists in apps/web.",
+    nextRoute: "/documents/reviewer-fast-path/",
+    parityStatus: "staged-partial",
+    note: "A curated in-app document route now exists, but the full query-driven docs-viewer behavior remains canonical in docs.",
   },
 ];
 
@@ -92,7 +92,7 @@ function main() {
     cutoverBoundary: [
       "preserve current docs query-entrypoints during staged mirror rollout",
       "treat apps/web as route-parity candidate, not canonical replacement yet",
-      "keep docs document-viewer flows canonical until dedicated viewer parity exists",
+      "keep docs document-viewer flows canonical until curated document routes expand into full viewer parity",
     ],
   };
 

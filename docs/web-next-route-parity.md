@@ -10,6 +10,7 @@ It is a UI parity checklist, not a protocol claim.
 - `/command-center/`
 - `/dashboard/`
 - `/proof/`
+- `/documents/`
 - `/security/`
 - `/diagnostics/`
 - `/analytics/`
@@ -37,6 +38,12 @@ It is a UI parity checklist, not a protocol claim.
 - V3 proof
 - Frontier integrations
 - Audit and launch trust closure
+
+### `/documents/`
+
+- Curated reviewer and trust document library
+- In-app routes for V3 proof, audit packet, launch trust packet, and blockers
+- Raw-file links preserved for authoritative references
 
 ### `/security/`
 

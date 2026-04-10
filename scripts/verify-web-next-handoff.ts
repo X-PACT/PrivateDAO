@@ -55,6 +55,7 @@ function main() {
     "/command-center/",
     "/dashboard/",
     "/proof/",
+    "/documents/",
     "/security/",
     "/diagnostics/",
     "/analytics/",
@@ -68,6 +69,7 @@ function main() {
   for (const doc of [
     "docs/web-next-cutover.md",
     "docs/web-next-route-parity.md",
+    "docs/web-next-doc-viewer-plan.generated.md",
     "docs/domain-mirror.md",
     "docs/xyz-mirror-cutover-checklist.md",
   ]) {
@@ -88,6 +90,7 @@ function main() {
     "current live surface: `docs/index.html`",
     "docs remains the canonical live reviewer-facing surface until explicit cutover.",
     "`/proof/` -> `proof/index.html`",
+    "`/documents/` -> `documents/index.html`",
     "`/services/` -> `services/index.html`",
     "`npm run web:verify:bundle:github`",
   ]) {
