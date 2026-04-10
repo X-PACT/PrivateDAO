@@ -5,6 +5,7 @@ import { DevnetServiceMetricsPanel } from "@/components/devnet-service-metrics-p
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperationsShell } from "@/components/operations-shell";
 import { PlatformServiceArchitecture } from "@/components/platform-service-architecture";
+import { ServiceOperationalCards } from "@/components/service-operational-cards";
 import { ServiceReadinessLadder } from "@/components/service-readiness-ladder";
 import { ServicesSurface } from "@/components/services-surface";
 import { SolutionCorridors } from "@/components/solution-corridors";
@@ -38,6 +39,9 @@ export default function ServicesPage() {
       </div>
       <div>
         <DevnetServiceMetricsPanel scope="services" />
+      </div>
+      <div>
+        <ServiceOperationalCards />
       </div>
       <div>
         <PlatformServiceArchitecture />
