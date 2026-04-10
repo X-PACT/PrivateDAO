@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Search, Sparkles } from "lucide-react";
+import { LockKeyhole, Search, Sparkles } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
 import { useSiteUrls } from "@/lib/site-urls";
@@ -9,11 +9,11 @@ import { cn } from "@/lib/utils";
 import { WalletConnectButton } from "@/components/wallet-connect-button";
 
 const navItems = [
-  { href: "/start", label: "Learn" },
-  { href: "/documents", label: "Developers" },
-  { href: "/services", label: "Products" },
-  { href: "/proof", label: "Network" },
-  { href: "/tracks", label: "Community" },
+  { href: "/learn", label: "Learn" },
+  { href: "/developers", label: "Developers" },
+  { href: "/products", label: "Products" },
+  { href: "/network", label: "Network" },
+  { href: "/community", label: "Community" },
 ];
 
 const utilityNav = [
@@ -34,13 +34,22 @@ export function SiteHeader() {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4">
           <Link href="/" className="group flex min-w-0 items-center gap-3">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-amber-300/20 bg-[radial-gradient(circle_at_top,#ffdf80,#ffb100_58%,#9f5a00)] text-base font-black text-slate-950 shadow-[0_14px_36px_rgba(255,177,0,0.22)] transition-transform duration-300 group-hover:scale-[1.03]">
-              △
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-[linear-gradient(180deg,rgba(12,18,37,0.96),rgba(5,9,22,0.98))] shadow-[0_18px_44px_rgba(0,0,0,0.28)]">
+              <div className="bg-[linear-gradient(135deg,#14f195,#00c2ff,#9945ff)] bg-clip-text text-2xl font-black text-transparent drop-shadow-[0_0_18px_rgba(20,241,149,0.36)] transition-transform duration-300 group-hover:scale-110">
+                △
+              </div>
             </div>
             <div className="min-w-0">
-              <div className="text-lg font-semibold tracking-tight text-white">PrivateDAO</div>
-              <div className="truncate text-[11px] uppercase tracking-[0.28em] text-white/42">
-                Solana private governance, proof, diagnostics, and services
+              <div className="flex flex-nowrap items-center gap-0.5 whitespace-nowrap text-xl font-semibold tracking-tight text-white sm:text-2xl">
+                <span>PrivateD</span>
+                <span className="inline-block bg-[linear-gradient(135deg,#14f195,#00c2ff,#9945ff)] bg-clip-text text-[1.45rem] font-black text-transparent drop-shadow-[0_0_20px_rgba(20,241,149,0.42)] animate-pulse sm:text-[1.7rem]">
+                  △
+                </span>
+                <span>O</span>
+              </div>
+              <div className="mt-1 hidden items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-white/42 lg:flex">
+                <LockKeyhole className="h-3.5 w-3.5 text-cyan-200/80" />
+                <span>Solana private governance, proof, diagnostics, and services</span>
               </div>
             </div>
           </Link>

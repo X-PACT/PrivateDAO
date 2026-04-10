@@ -169,6 +169,21 @@ export const achievements = [
   },
 ];
 
+export const communityLinks = [
+  {
+    title: "YouTube",
+    href: "https://www.youtube.com/@privatedao",
+    summary: "Official PrivateDAO channel for product videos, demos, and competition reels.",
+    cta: "Open channel",
+  },
+  {
+    title: "Discord",
+    href: "#",
+    summary: "Server link will be added here as soon as the PrivateDAO Discord is live.",
+    cta: "Link coming soon",
+  },
+];
+
 export const proposalCards: ProposalCardModel[] = [
   {
     id: "PDAO-104",

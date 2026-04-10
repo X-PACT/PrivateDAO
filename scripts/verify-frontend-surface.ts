@@ -11,6 +11,7 @@ const DIAGNOSTICS_CENTER = path.resolve("apps/web/src/components/diagnostics-cen
 const SERVICES_SURFACE = path.resolve("apps/web/src/components/services-surface.tsx");
 const CURATED_DOCUMENTS = path.resolve("apps/web/src/lib/curated-documents.ts");
 const SITE_DATA = path.resolve("apps/web/src/lib/site-data.ts");
+const SITE_FOOTER = path.resolve("apps/web/src/components/site-footer.tsx");
 
 function main() {
   const rootIndex = fs.readFileSync(ROOT_INDEX, "utf8");
@@ -23,6 +24,7 @@ function main() {
   const servicesSurface = fs.readFileSync(SERVICES_SURFACE, "utf8");
   const curatedDocuments = fs.readFileSync(CURATED_DOCUMENTS, "utf8");
   const siteData = fs.readFileSync(SITE_DATA, "utf8");
+  const siteFooter = fs.readFileSync(SITE_FOOTER, "utf8");
 
   if (!homeShell.includes("1st Place - Superteam Poland") && !homeShell.includes('eyebrow="Achievements"')) {
     throw new Error("home shell is missing the achievement surface for Superteam Poland");
@@ -31,8 +33,11 @@ function main() {
   const checks: Array<[string, string, string]> = [
     [rootIndex, "__next_f.push", "root live surface is missing the exported Next.js app payload"],
     [siteHeader, 'href: "/documents"', "site header is missing the Documents route"],
-    [siteHeader, 'href: "/start"', "site header is missing the Start route"],
+    [siteHeader, 'href: "/learn"', "site header is missing the Learn route"],
     [siteHeader, 'href: "/story"', "site header is missing the Story route"],
+    [siteHeader, 'href: "/community"', "site header is missing the Community route"],
+    [siteHeader, 'href: "/products"', "site header is missing the Products route"],
+    [siteHeader, 'href: "/network"', "site header is missing the Network route"],
     [homeShell, "Private governance on Solana", "home shell is missing the Solana product badge"],
     [homeShell, "ZK + REFHE + MagicBlock + Fast RPC", "home shell is missing the integrated tech badge"],
     [homeShell, "Open judge proof view", "home shell is missing the judge CTA"],
@@ -52,12 +57,15 @@ function main() {
     [siteData, "REFHE", "site data is missing REFHE"],
     [siteData, "MagicBlock", "site data is missing MagicBlock"],
     [siteData, "Fast RPC", "site data is missing Fast RPC"],
+    [siteData, "https://www.youtube.com/@privatedao", "site data is missing the official YouTube channel"],
     [curatedDocuments, 'slug: "reviewer-fast-path"', "curated documents are missing reviewer-fast-path"],
     [curatedDocuments, 'slug: "audit-packet"', "curated documents are missing the audit packet"],
     [curatedDocuments, 'slug: "live-proof-v3"', "curated documents are missing live proof V3"],
     [curatedDocuments, 'slug: "trust-package"', "curated documents are missing trust package"],
     [curatedDocuments, 'slug: "service-catalog"', "curated documents are missing service catalog"],
     [curatedDocuments, 'slug: "frontier-integrations"', "curated documents are missing frontier integrations"],
+    [siteFooter, "Discord soon", "site footer is missing the Discord placeholder"],
+    [siteFooter, "https://www.youtube.com/@privatedao", "site footer is missing the YouTube channel"],
   ];
 
   const hasGithubPagesPrefix = rootIndex.includes("/PrivateDAO/_next/");
