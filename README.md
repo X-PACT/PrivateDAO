@@ -48,6 +48,7 @@ PrivateDAO is already a live Devnet product, not a concept deck:
 
 - Anchor program on Solana Devnet
 - Wallet-connected frontend
+- Operational routes for onboarding, command, dashboard, proof, diagnostics, and services
 - PDAO governance token surface
 - Create DAO → submit proposal → private vote → execute treasury flow
 - Confidential payout paths with `REFHE` and `MagicBlock` integration surfaces
@@ -101,9 +102,12 @@ The README should stay aligned with this rule: implemented surfaces are describe
 | If you need | Link |
 | --- | --- |
 | Live product | https://privatedao.org/ |
+| Command center | https://privatedao.org/command-center/ |
+| Governance dashboard | https://privatedao.org/dashboard/ |
 | Story video | https://privatedao.org/story/ |
 | Judge / proof view | https://privatedao.org/proof/?judge=1 |
 | Wallet diagnostics | https://privatedao.org/diagnostics/ |
+| Services and buyer path | https://privatedao.org/services/ |
 | Demo video MP4 | https://privatedao.org/assets/private-dao-demo-flow.mp4 |
 | Devnet program | https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet |
 | Guided product flow | [`docs/frontier-guided-flow.md`](docs/frontier-guided-flow.md) |

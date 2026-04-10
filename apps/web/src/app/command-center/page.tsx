@@ -4,6 +4,7 @@ import { BuyerJourneyRail } from "@/components/buyer-journey-rail";
 import { CommandCenter } from "@/components/command-center";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperationsShell } from "@/components/operations-shell";
+import { OperationalValidationPanels } from "@/components/operational-validation-panels";
 import { ProposalWorkspace } from "@/components/proposal-workspace";
 import { WalletRuntimePanel } from "@/components/wallet-runtime-panel";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -36,6 +37,9 @@ export default function CommandCenterPage() {
       </div>
       <div>
         <CommandCenter />
+      </div>
+      <div>
+        <OperationalValidationPanels title="Command-center operating health" />
       </div>
       <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
         <ProposalWorkspace />

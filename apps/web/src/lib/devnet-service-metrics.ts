@@ -1,6 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import { proposalCards } from "@/lib/site-data";
+import { getRankedCompetitionTracks } from "@/lib/track-ranking";
+
 type MetricTone = "cyan" | "emerald" | "amber" | "fuchsia";
 
 export type DevnetMetricCard = {
@@ -15,6 +18,23 @@ export type DevnetServiceMetricsSnapshot = {
   diagnostics: DevnetMetricCard[];
   services: DevnetMetricCard[];
   tracks: Record<string, DevnetMetricCard[]>;
+};
+
+export type OperationalValidationCard = {
+  label: string;
+  value: string;
+  detail: string;
+  routeLabel: string;
+  routeHref: string;
+  tone: MetricTone;
+};
+
+export type OperationalValidationSnapshot = {
+  generatedAt: string;
+  proposalFlowHealth: OperationalValidationCard;
+  walletReadiness: OperationalValidationCard;
+  proofFreshness: OperationalValidationCard;
+  commercialReadiness: OperationalValidationCard;
 };
 
 function percent(numerator: number, denominator: number) {
@@ -53,6 +73,7 @@ type RuntimeEvidenceJson = {
 };
 
 type DevnetCanaryJson = {
+  generatedAt: string;
   primaryRpc: {
     blockhashLatencyMs: number;
     versionLatencyMs: number;
@@ -64,6 +85,7 @@ type DevnetCanaryJson = {
 };
 
 type FrontierIntegrationsJson = {
+  generatedAt: string;
   readNode: {
     overview: {
       proposals: number;
@@ -102,6 +124,15 @@ type FrontierIntegrationsJson = {
 function readJson<T>(relativePath: string): T {
   const filePath = path.resolve(process.cwd(), "..", "..", relativePath);
   return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
+}
+
+function formatAgeLabel(isoTimestamp: string) {
+  const ageMs = Date.now() - new Date(isoTimestamp).getTime();
+  const hours = Math.max(0, Math.round(ageMs / (1000 * 60 * 60)));
+  if (hours < 1) return "fresh this hour";
+  if (hours < 24) return `${hours}h old`;
+  const days = Math.round(hours / 24);
+  return `${days}d old`;
 }
 
 export function getDevnetServiceMetrics(): DevnetServiceMetricsSnapshot {
@@ -370,4 +401,79 @@ export function getDevnetServiceMetrics(): DevnetServiceMetricsSnapshot {
   };
 
   return { overview, diagnostics, services, tracks };
+}
+
+export function getOperationalValidationSnapshot(): OperationalValidationSnapshot {
+  const runtimeEvidence = readJson<RuntimeEvidenceJson>("docs/runtime-evidence.generated.json");
+  const devnetCanary = readJson<DevnetCanaryJson>("docs/devnet-canary.generated.json");
+  const frontierIntegrations = readJson<FrontierIntegrationsJson>("docs/frontier-integrations.generated.json");
+
+  const liveVotingCount = proposalCards.filter((proposal) => proposal.status === "Live voting").length;
+  const revealReadyCount = proposalCards.filter((proposal) => proposal.status === "Ready to reveal").length;
+  const executionReadyCount = proposalCards.filter((proposal) => proposal.status === "Execution ready").length;
+  const evidenceGatedCount = proposalCards.filter((proposal) => proposal.status === "Evidence gated").length;
+  const proposalFlowHealthyCount = executionReadyCount + revealReadyCount;
+
+  const walletReviewReadyCount = runtimeEvidence.matrixStatuses.filter(
+    (item) => item.status === "devnet-review-ready",
+  ).length;
+  const walletDiagnosticsCoverageCount = runtimeEvidence.matrixStatuses.filter(
+    (item) => item.diagnosticsVisible,
+  ).length;
+
+  const verifiedGovernanceTxCount = frontierIntegrations.simpleGovernance.txChecks.filter(
+    (item) => item.confirmed && item.status === "finalized",
+  ).length;
+  const verifiedGovernanceLifecycleCount = frontierIntegrations.simpleGovernance.txChecks.length;
+  const executionSuccessCount = [
+    frontierIntegrations.simpleGovernance.txChecks.find((item) => item.label === "execute"),
+    frontierIntegrations.confidentialOperations.txChecks.find(
+      (item) => item.label === "magicblock-execute",
+    ),
+  ].filter((item) => item?.confirmed && item.status === "finalized").length;
+
+  const rankedTracks = getRankedCompetitionTracks().slice(0, 3);
+  const freshestTimestamp = [runtimeEvidence.generatedAt, devnetCanary.generatedAt, frontierIntegrations.generatedAt]
+    .sort((left, right) => new Date(right).getTime() - new Date(left).getTime())[0];
+
+  return {
+    generatedAt: freshestTimestamp,
+    proposalFlowHealth: {
+      label: "Proposal flow health",
+      value: percent(
+        proposalFlowHealthyCount + executionSuccessCount,
+        proposalCards.length + 2,
+      ),
+      detail: `${verifiedGovernanceTxCount}/${verifiedGovernanceLifecycleCount} governance proof steps are finalized. ${liveVotingCount} proposal is still in commit mode and ${evidenceGatedCount} proposal is still waiting on settlement evidence.`,
+      routeLabel: "Open proof and execution",
+      routeHref: "/proof/?judge=1",
+      tone: "emerald",
+    },
+    walletReadiness: {
+      label: "Wallet-by-wallet readiness",
+      value: percent(walletReviewReadyCount, runtimeEvidence.walletCount),
+      detail: `${walletReviewReadyCount}/${runtimeEvidence.walletCount} wallets are review-ready and ${walletDiagnosticsCoverageCount}/${runtimeEvidence.walletCount} expose diagnostics. Pending real-device targets remain visible in runtime evidence.`,
+      routeLabel: "Open wallet diagnostics",
+      routeHref: "/diagnostics",
+      tone: "cyan",
+    },
+    proofFreshness: {
+      label: "Proof freshness",
+      value: formatAgeLabel(freshestTimestamp),
+      detail: `Runtime evidence ${formatAgeLabel(runtimeEvidence.generatedAt)}, Devnet canary ${formatAgeLabel(devnetCanary.generatedAt)}, and frontier integrations ${formatAgeLabel(frontierIntegrations.generatedAt)} remain published together.`,
+      routeLabel: "Open trust documents",
+      routeHref: "/documents/live-proof-v3",
+      tone: "amber",
+    },
+    commercialReadiness: {
+      label: "Track-specific commercial readiness",
+      value: rankedTracks.map((track) => track.title).join(" · "),
+      detail: `Current top conversion-ready tracks combine win probability, commercial upside, and mainnet distance: ${rankedTracks
+        .map((track) => `${track.title} (${track.compositeScore}/10)`)
+        .join(" · ")}.`,
+      routeLabel: "Open competition center",
+      routeHref: "/tracks",
+      tone: "fuchsia",
+    },
+  };
 }

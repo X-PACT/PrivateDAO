@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Radar, ShieldCheck, WalletCards } from "lucide-react";
 
 import { GovernanceDashboard } from "@/components/governance-dashboard";
+import { OperationalValidationPanels } from "@/components/operational-validation-panels";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -90,6 +91,10 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         </div>
+      </section>
+
+      <section className="mt-12">
+        <OperationalValidationPanels title="Dashboard operating health" />
       </section>
 
       <section className="mt-12">

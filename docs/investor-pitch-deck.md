@@ -11,7 +11,7 @@ Private governance, confidential treasury operations, and audit-grade runtime ev
 Proof anchors:
 
 - 1st Place - Superteam Poland, March 2026: `docs/awards.md`
-- Live product: `https://x-pact.github.io/PrivateDAO/`
+- Live product: `https://privatedao.org/`
 - Devnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - PDAO Devnet governance mint: `AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt`
 
@@ -60,6 +60,7 @@ PrivateDAO is beyond concept stage and already runs as a Devnet product.
 Implemented and evidenced today:
 
 - live wallet-connected frontend
+- live operational routes for `/start`, `/command-center`, `/dashboard`, `/proof`, `/diagnostics`, and `/services`
 - Anchor program and PDA account model
 - PDAO Token-2022 governance mint surface
 - commit, reveal, finalize, veto, cancel, execute lifecycle
@@ -88,6 +89,7 @@ Evidence:
 - 180 successful attempts
 - 32 expected security rejections
 - 3 on-chain ZK proof anchors
+- live Devnet operating health inside `/dashboard`, `/command-center`, `/services`, and `/diagnostics`
 - generated audit packet and cryptographic manifest
 - Colosseum competitive analysis and submission package
 
@@ -207,7 +209,11 @@ Core links:
 
 - README: `README.md`
 - Submission dossier: `docs/submission-dossier.md`
-- Live product: `https://x-pact.github.io/PrivateDAO/`
+- Live product: `https://privatedao.org/`
+- Command center: `https://privatedao.org/command-center/`
+- Dashboard: `https://privatedao.org/dashboard/`
+- Services: `https://privatedao.org/services/`
+- Diagnostics: `https://privatedao.org/diagnostics/`
 - Security hardening: `docs/security-hardening-v2.md`
 - Mainnet blockers: `docs/mainnet-blockers.md`
 - Multisig intake: `docs/multisig-setup-intake.md`
