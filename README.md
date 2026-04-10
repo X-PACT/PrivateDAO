@@ -81,6 +81,11 @@ The public repo and CLI remain available for:
 
 This keeps the buyer-facing product clean while preserving engineering and protocol discipline in the repo.
 
+The rule is strict:
+
+- If a normal user needs it, it belongs in the UI.
+- If it is for protocol maintenance, incident handling, migrations, or engineering-only control, it belongs in the public repo and CLI.
+
 ## Frontier Fit
 
 PrivateDAO fits Frontier because it sits at the intersection of:

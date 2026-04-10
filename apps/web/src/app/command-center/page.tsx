@@ -6,6 +6,7 @@ import { MetricsStrip } from "@/components/metrics-strip";
 import { OperatingBoundaryPanel } from "@/components/operating-boundary-panel";
 import { OperationsShell } from "@/components/operations-shell";
 import { OperationalValidationPanels } from "@/components/operational-validation-panels";
+import { ProductActionMap } from "@/components/product-action-map";
 import { ProposalWorkspace } from "@/components/proposal-workspace";
 import { WalletRuntimePanel } from "@/components/wallet-runtime-panel";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -37,6 +38,12 @@ export default function CommandCenterPage() {
         <OperatingBoundaryPanel
           title="UI full, CLI disciplined"
           summary="Command Center is where real users operate. Engineering-heavy recovery, migration, stress, and batch controls stay in the repo and CLI so the product surface remains clean."
+        />
+      </div>
+      <div>
+        <ProductActionMap
+          title="Exact product operations"
+          description="This route family keeps the full normal-user governance flow inside the UI: connect, create, vote, reveal, execute, log review, and diagnostics. Everything deeper stays in the repo."
         />
       </div>
       <div>

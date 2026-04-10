@@ -4,6 +4,7 @@ import { ArrowRight, Radar, ShieldCheck, WalletCards } from "lucide-react";
 
 import { GovernanceDashboard } from "@/components/governance-dashboard";
 import { OperationalValidationPanels } from "@/components/operational-validation-panels";
+import { ProductActionMap } from "@/components/product-action-map";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -95,6 +96,13 @@ export default function DashboardPage() {
 
       <section className="mt-12">
         <OperationalValidationPanels title="Dashboard operating health" />
+      </section>
+
+      <section className="mt-12">
+        <ProductActionMap
+          title="What the UI owns"
+          description="Dashboard is part of the public product surface. It is responsible for execution visibility, logs, and diagnostics, while repo-only tools remain outside the buyer-facing runtime."
+        />
       </section>
 
       <section className="mt-12">
