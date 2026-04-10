@@ -19,7 +19,7 @@ import { VideoCenter } from "@/components/video-center";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { heroPersonas, servicePacks, techCards } from "@/lib/site-data";
+import { achievements, heroPersonas, servicePacks, techCards } from "@/lib/site-data";
 import { useSiteUrls } from "@/lib/site-urls";
 import { cn } from "@/lib/utils";
 
@@ -34,7 +34,6 @@ export function HomeShell() {
         <div className="grid items-start gap-8 xl:grid-cols-[1.08fr_0.92fr]">
           <div className="space-y-8">
             <div className="flex flex-wrap gap-3">
-              <Badge variant="warning">1st Place - Superteam Poland</Badge>
               <Badge variant="cyan">Private governance on Solana</Badge>
               <Badge variant="violet">ZK + REFHE + MagicBlock + Fast RPC</Badge>
               <Badge variant="success">{activePersona.badge}</Badge>
@@ -83,36 +82,6 @@ export function HomeShell() {
                 Open judge proof view
               </a>
             </div>
-
-            <div className="grid gap-4 lg:grid-cols-3">
-              <Card className="bg-white/[0.03]">
-                <CardContent className="p-5">
-                  <div className="text-[11px] uppercase tracking-[0.3em] text-emerald-300/70">Lifecycle</div>
-                  <div className="mt-3 text-xl font-semibold text-white">Create → Vote → Execute</div>
-                  <div className="mt-2 text-sm leading-7 text-white/55">One continuous governance and treasury rail for reviewers and operators.</div>
-                </CardContent>
-              </Card>
-              <Card className="bg-white/[0.03]">
-                <CardContent className="p-5">
-                  <div className="text-[11px] uppercase tracking-[0.3em] text-fuchsia-300/70">Security</div>
-                  <div className="mt-3 text-xl font-semibold text-white">V3 hardening</div>
-                  <div className="mt-2 text-sm leading-7 text-white/55">Quorum snapshots, evidence gates, and additive policy companions stay explicit.</div>
-                  <Link className="mt-4 inline-flex text-sm text-cyan-200 transition hover:text-cyan-100" href="/documents/governance-hardening-v3">
-                    Open curated hardening doc
-                  </Link>
-                </CardContent>
-              </Card>
-              <Card className="bg-white/[0.03]">
-                <CardContent className="p-5">
-                  <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-300/70">Commercial</div>
-                  <div className="mt-3 text-xl font-semibold text-white">API + services</div>
-                  <div className="mt-2 text-sm leading-7 text-white/55">Pilot-ready packs, hosted read surfaces, and operator trust packets.</div>
-                  <Link className="mt-4 inline-flex text-sm text-cyan-200 transition hover:text-cyan-100" href="/documents/trust-package">
-                    Open curated trust package
-                  </Link>
-                </CardContent>
-              </Card>
-            </div>
           </div>
 
           <Card className="overflow-hidden border-white/12 xl:mt-3">
@@ -156,11 +125,83 @@ export function HomeShell() {
         <MetricsStrip />
       </section>
 
+      <section className="mx-auto mt-20 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHeader
+          eyebrow="Start Building"
+          title="Reference paths for governance, proof, and end-user rollout"
+          description="The landing page should make the first three moves obvious: launch the product flow, inspect the proof stack, or open the service corridor."
+        />
+        <div className="mt-8 grid gap-5 lg:grid-cols-3">
+          <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(11,16,31,0.92),rgba(7,10,22,0.98))]">
+            <CardHeader>
+              <CardTitle className="text-2xl">Launch the live app</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm leading-7 text-white/58">
+                Start with the guided onboarding, connect a wallet, and continue into the operational flow without reading documentation first.
+              </p>
+              <Link className={cn(buttonVariants({ size: "sm" }))} href="/start">
+                Open start workspace
+              </Link>
+            </CardContent>
+          </Card>
+          <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(11,16,31,0.92),rgba(7,10,22,0.98))]">
+            <CardHeader>
+              <CardTitle className="text-2xl">Inspect proof and trust</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm leading-7 text-white/58">
+                Jump straight into the reviewer path, V3 packet, ZK matrix, and trust surfaces that explain why the system is credible on Devnet today.
+              </p>
+              <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} href="/proof/?judge=1">
+                Open judge path
+              </Link>
+            </CardContent>
+          </Card>
+          <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(11,16,31,0.92),rgba(7,10,22,0.98))]">
+            <CardHeader>
+              <CardTitle className="text-2xl">Package services and rollout</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm leading-7 text-white/58">
+                Open the service corridor for pilot packages, hosted reads, enterprise governance, and competition-facing buyer narratives.
+              </p>
+              <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href="/services">
+                Open services
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
       <section className="mx-auto mt-18 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
-          eyebrow="Sponsor-ready identity"
-          title="A Solana-native visual surface with sponsor-aware product signals"
-          description="The new shell leans into Solana’s signature gradient language while still giving sponsor-aligned corridors room to feel intentional, modern, and professional."
+          eyebrow="Achievements"
+          title="Proof of execution, shown once and in the right place"
+          description="Recognition belongs in a dedicated achievement layer, not repeated across the hero and top navigation."
+        />
+        <div className="mt-8 grid gap-4 lg:grid-cols-3">
+          {achievements.map((item) => (
+            <Card key={item.title} className="border-amber-300/18 bg-[linear-gradient(180deg,rgba(56,43,8,0.92),rgba(27,20,5,0.98))]">
+              <CardHeader>
+                <CardTitle className="text-xl text-amber-50">{item.title}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="rounded-2xl border border-amber-200/12 bg-black/18 px-4 py-3 text-sm leading-7 text-amber-50/72">
+                  {item.detail}
+                </div>
+                <div className="text-[11px] uppercase tracking-[0.28em] text-amber-200/68">{item.meta}</div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto mt-18 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHeader
+          eyebrow="Why PrivateDAO"
+          title="A Solana-native governance product with visible sponsor-fit and real operating rails"
+          description="This layer should feel closer to the Solana DAO reference page: fewer distractions, clearer strengths, and a direct explanation of why the product belongs on Solana."
         />
         <div className="mt-8">
           <SponsorSignalBar />

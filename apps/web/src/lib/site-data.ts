@@ -160,6 +160,15 @@ export const gettingStartedActions = [
   },
 ];
 
+export const achievements = [
+  {
+    title: "1st Place · Superteam Poland",
+    detail:
+      "The backend win is now presented as proof of execution discipline, not repeated decor across the interface.",
+    meta: "March 2026",
+  },
+];
+
 export const proposalCards: ProposalCardModel[] = [
   {
     id: "PDAO-104",

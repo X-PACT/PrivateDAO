@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Bot, Search } from "lucide-react";
+import { Search, Sparkles } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
 import { useSiteUrls } from "@/lib/site-urls";
@@ -9,17 +9,21 @@ import { cn } from "@/lib/utils";
 import { WalletConnectButton } from "@/components/wallet-connect-button";
 
 const navItems = [
-  { href: "/", label: "Overview" },
-  { href: "/start", label: "Start" },
-  { href: "/assistant", label: "Assistant" },
-  { href: "/story", label: "Story" },
-  { href: "/command-center", label: "Command Center" },
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/proof", label: "Proof" },
-  { href: "/documents", label: "Documents" },
-  { href: "/security", label: "Security" },
-  { href: "/services", label: "Services" },
-  { href: "/tracks", label: "Tracks" },
+  { href: "/start", label: "Learn" },
+  { href: "/documents", label: "Developers" },
+  { href: "/services", label: "Products" },
+  { href: "/proof", label: "Network" },
+  { href: "/tracks", label: "Community" },
+];
+
+const utilityNav = [
+  { href: "/documents", label: "Documentation" },
+  { href: "/services", label: "API" },
+  { href: "/command-center", label: "Cookbook" },
+  { href: "/story", label: "Bootcamp" },
+  { href: "/dashboard", label: "Devnet" },
+  { href: "/security", label: "Skills" },
+  { href: "/assistant", label: "Get Support" },
 ];
 
 export function SiteHeader() {
@@ -34,12 +38,7 @@ export function SiteHeader() {
               △
             </div>
             <div className="min-w-0">
-              <div className="flex flex-wrap items-center gap-2">
-                <div className="text-lg font-semibold tracking-tight text-white">PrivateDAO</div>
-                <span className="rounded-full border border-emerald-300/20 bg-emerald-300/10 px-2.5 py-1 text-[10px] uppercase tracking-[0.24em] text-emerald-200">
-                  1st Place · Superteam Poland
-                </span>
-              </div>
+              <div className="text-lg font-semibold tracking-tight text-white">PrivateDAO</div>
               <div className="truncate text-[11px] uppercase tracking-[0.28em] text-white/42">
                 Solana private governance, proof, diagnostics, and services
               </div>
@@ -59,7 +58,7 @@ export function SiteHeader() {
               className={cn(buttonVariants({ size: "sm", variant: "ghost" }), "h-10 w-10 rounded-full p-0 text-white/72")}
               aria-label="Open assistant"
             >
-              <Bot className="h-4 w-4" />
+              <Sparkles className="h-4 w-4" />
             </Link>
             <a
               className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "hidden xl:inline-flex")}
@@ -84,6 +83,30 @@ export function SiteHeader() {
             </Link>
           ))}
         </nav>
+
+        <div className="flex flex-col gap-3 border-t border-white/6 pt-3 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex min-w-0 items-center gap-2 rounded-full border border-white/10 bg-white/4 px-4 py-2 text-sm text-white/62">
+            <Search className="h-4 w-4 text-cyan-200" />
+            <Link href="/search" className="truncate">
+              Search or ask AI
+            </Link>
+            <span className="ml-auto rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[11px] uppercase tracking-[0.18em] text-white/38">
+              ⌘K
+            </span>
+          </div>
+
+          <nav className="flex flex-wrap items-center gap-1.5">
+            {utilityNav.map((item) => (
+              <Link
+                className={cn(buttonVariants({ size: "sm", variant: "ghost" }), "px-3 text-white/68")}
+                href={item.href}
+                key={item.href}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
       </div>
     </header>
   );

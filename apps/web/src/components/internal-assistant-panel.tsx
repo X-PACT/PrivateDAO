@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Bot, Compass, FileText, ShieldCheck, Sparkles, Wallet } from "lucide-react";
+import { Compass, FileText, ShieldCheck, Sparkles, Wallet } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
@@ -72,7 +72,7 @@ export function InternalAssistantPanel() {
         <CardHeader>
           <div className="flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-cyan-300/20 bg-cyan-300/10 text-cyan-100">
-              <Bot className="h-5 w-5" />
+              <Sparkles className="h-5 w-5" />
             </div>
             <CardTitle>Recommended fast routes</CardTitle>
           </div>

@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Activity, BarChart3, Bot, BriefcaseBusiness, Compass, FileSearch, FileText, LayoutDashboard, PlayCircle, ShieldCheck, Sparkles, SquareTerminal, Trophy } from "lucide-react";
+import { Activity, BarChart3, BriefcaseBusiness, Compass, FileSearch, FileText, LayoutDashboard, PlayCircle, ShieldCheck, Sparkles, SquareTerminal, Trophy } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 
 const operationsNav = [
   { href: "/start", label: "Start", icon: Compass, summary: "Guided onboarding and wallet-first flow" },
-  { href: "/assistant", label: "Assistant", icon: Bot, summary: "Internal guide across routes, docs, and proof" },
+  { href: "/assistant", label: "AI Assistant", icon: Sparkles, summary: "Internal AI-style guide across routes, docs, and proof" },
   { href: "/story", label: "Story", icon: PlayCircle, summary: "Hosted product video and why-us reel" },
   { href: "/command-center", label: "Command Center", icon: SquareTerminal, summary: "Create, vote, execute" },
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, summary: "Governance state and treasury" },
