@@ -1,4 +1,7 @@
 import { competitionTrackWorkspaces } from "@/lib/site-data";
+import { getSubmissionCoachPlan } from "@/lib/submission-coach";
+import { getTrackCommercializationPlan } from "@/lib/track-commercialization";
+import { getTrackMainnetGatePlan } from "@/lib/track-mainnet-gates";
 
 export type AssistantSuggestion = {
   title: string;
@@ -143,7 +146,7 @@ const competitionAliases: Record<string, string[]> = {
   "solrouter-encrypted-ai": ["solrouter", "encrypted ai", "assistant", "ai track"],
 };
 
-function getCompetitionSuggestion(query: string): AssistantSuggestion | null {
+function findCompetitionWorkspace(query: string) {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return null;
 
@@ -164,25 +167,108 @@ function getCompetitionSuggestion(query: string): AssistantSuggestion | null {
         .filter(Boolean);
 
       const uniqueTerms = [...new Set(rawTerms)];
-      const score = uniqueTerms.reduce((sum, term) => (normalized.includes(term) ? sum + 1 : sum), 0);
+      const score = uniqueTerms.reduce(
+        (sum, term) => (normalized.includes(term) ? sum + 1 : sum),
+        0,
+      );
       return { workspace, score };
     })
     .sort((left, right) => right.score - left.score);
 
   const top = scored[0];
   if (!top || top.score === 0) return null;
+  return top.workspace;
+}
+
+function getTrackAnswer(query: string): AssistantSuggestion | null {
+  const normalized = query.trim().toLowerCase();
+  const workspace = findCompetitionWorkspace(normalized);
+  if (!workspace) return null;
+
+  if (
+    normalized.includes("blocking") ||
+    normalized.includes("mainnet") ||
+    normalized.includes("blocker")
+  ) {
+    const gates = getTrackMainnetGatePlan(workspace);
+    return {
+      title: `Mainnet blockers for ${workspace.title}`,
+      summary:
+        `${gates.beforeMainnet[0]} ${gates.beforeMainnet[1] ?? ""}`.trim(),
+      primaryActionLabel: "Open track workspace",
+      primaryActionHref: `/tracks/${workspace.slug}`,
+      relatedRoutes: [
+        { label: "Mainnet blockers", href: "/documents/mainnet-blockers" },
+        { label: "Judge route", href: workspace.judgeRoute },
+        { label: "Engage", href: "/engage" },
+      ],
+    };
+  }
+
+  if (
+    normalized.includes("paid") ||
+    normalized.includes("customer") ||
+    normalized.includes("commercial") ||
+    normalized.includes("sell") ||
+    normalized.includes("pricing") ||
+    normalized.includes("motion")
+  ) {
+    const commercialization = getTrackCommercializationPlan(workspace);
+    return {
+      title: `Fastest paid motion for ${workspace.title}`,
+      summary: commercialization.firstPaidMotion,
+      primaryActionLabel: "Open engage route",
+      primaryActionHref: "/engage",
+      relatedRoutes: [
+        { label: "Track workspace", href: `/tracks/${workspace.slug}` },
+        { label: "Services", href: "/services" },
+        { label: commercialization.routes[0]?.label ?? "Pilot program", href: commercialization.routes[0]?.href ?? "/documents/pilot-program" },
+      ],
+    };
+  }
+
+  if (
+    normalized.includes("readiness") ||
+    normalized.includes("score") ||
+    normalized.includes("gap") ||
+    normalized.includes("improvement") ||
+    normalized.includes("demo order")
+  ) {
+    const coach = getSubmissionCoachPlan(workspace);
+    return {
+      title: `Submission coach for ${workspace.title}`,
+      summary:
+        `Readiness ${coach.readinessScore} (${coach.readinessBand}). Weakest gap: ${coach.weakestGap}`,
+      primaryActionLabel: "Open track workspace",
+      primaryActionHref: `/tracks/${workspace.slug}`,
+      relatedRoutes: [
+        { label: "Live route", href: workspace.liveRoute },
+        { label: "Judge route", href: workspace.judgeRoute },
+        { label: "Proof route", href: workspace.proofRoute },
+      ],
+    };
+  }
+
+  return null;
+}
+
+function getCompetitionSuggestion(query: string): AssistantSuggestion | null {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return null;
+  const top = findCompetitionWorkspace(normalized);
+  if (!top) return null;
 
   return {
-    title: `Open ${top.workspace.title}`,
+    title: `Open ${top.title}`,
     summary:
-      `${top.workspace.objective} Lead with ${top.workspace.liveRoute}, keep judges on ${top.workspace.judgeRoute}, and use the proof and deck routes as the submission support bundle.`,
+      `${top.objective} Lead with ${top.liveRoute}, keep judges on ${top.judgeRoute}, and use the proof and deck routes as the submission support bundle.`,
     primaryActionLabel: "Open track workspace",
-    primaryActionHref: `/tracks/${top.workspace.slug}`,
+    primaryActionHref: `/tracks/${top.slug}`,
     relatedRoutes: [
-      { label: "Live route", href: top.workspace.liveRoute },
-      { label: "Judge route", href: top.workspace.judgeRoute },
-      { label: "Proof route", href: top.workspace.proofRoute },
-      { label: "Deck route", href: top.workspace.deckRoute },
+      { label: "Live route", href: top.liveRoute },
+      { label: "Judge route", href: top.judgeRoute },
+      { label: "Proof route", href: top.proofRoute },
+      { label: "Deck route", href: top.deckRoute },
     ],
   };
 }
@@ -190,6 +276,9 @@ function getCompetitionSuggestion(query: string): AssistantSuggestion | null {
 export function getAssistantSuggestion(query: string): AssistantSuggestion {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return fallbackSuggestion;
+
+  const trackAnswer = getTrackAnswer(normalized);
+  if (trackAnswer) return trackAnswer;
 
   const competitionSuggestion = getCompetitionSuggestion(normalized);
   if (competitionSuggestion) return competitionSuggestion;
