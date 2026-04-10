@@ -2,7 +2,9 @@
 
 import { X } from "lucide-react";
 
+import { OnchainParityPanel } from "@/components/onchain-parity-panel";
 import { getConfidenceEngineSummary } from "@/lib/confidence-engine";
+import { buildPreparedActionSummary, type PreparedActionSummary } from "@/lib/onchain-parity";
 import type { ProposalCardModel } from "@/lib/site-data";
 
 import { Badge } from "./ui/badge";
@@ -24,6 +26,25 @@ export function VoteModal({ proposal, onClose }: VoteModalProps) {
     tech: proposal.tech,
     summary: proposal.summary,
   });
+  const actionSummaries: PreparedActionSummary[] = [
+    buildPreparedActionSummary({
+      action: "commit_vote",
+      proposal,
+      proposalId: proposal.id,
+      voteChoice: "Approve / Reject / Abstain",
+    }),
+    buildPreparedActionSummary({
+      action: "reveal_vote",
+      proposal,
+      proposalId: proposal.id,
+      voteChoice: "Stored vote + salt",
+    }),
+    buildPreparedActionSummary({
+      action: proposal.status === "Execution ready" ? "execute_proposal" : "finalize_proposal",
+      proposal,
+      proposalId: proposal.id,
+    }),
+  ];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#03050e]/80 px-4 backdrop-blur-md">
@@ -77,6 +98,53 @@ export function VoteModal({ proposal, onClose }: VoteModalProps) {
               Recommendation: {confidence.recommendations[0] ?? "Current path is already well-scoped for the selected proposal."}
             </div>
           </div>
+        </div>
+
+        <div className="mt-6 grid gap-4">
+          {actionSummaries.map((summary) => (
+            <div key={summary.instructionName} className="rounded-3xl border border-white/8 bg-white/4 p-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Safe signing summary</div>
+                  <div className="mt-2 text-base font-medium text-white">{summary.operationType}</div>
+                </div>
+                <Badge variant="cyan">{summary.instructionName}</Badge>
+              </div>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Proposal</div>
+                  <div className="mt-2 text-white">{summary.proposalId}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Signer role</div>
+                  <div className="mt-2 text-white">{summary.signerRole}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Beneficiary / path</div>
+                  <div className="mt-2 text-white">{summary.beneficiary}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Amount / asset</div>
+                  <div className="mt-2 text-white">{summary.amountOrAsset}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Mint</div>
+                  <div className="mt-2 break-all text-white">{summary.governanceMint}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Timelock / gate</div>
+                  <div className="mt-2 text-white">{summary.timelock}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-6">
+          <OnchainParityPanel
+            action={proposal.status === "Execution ready" ? "execute_proposal" : proposal.status === "Ready to reveal" ? "reveal_vote" : "commit_vote"}
+            compact
+          />
         </div>
 
         <div className="mt-6 flex flex-wrap gap-3">

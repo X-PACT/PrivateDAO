@@ -132,4 +132,16 @@ export const siteSearchItems: SiteSearchItem[] = [
     category: "Document",
     summary: "High-signal trust packet for buyers, judges, and operators.",
   },
+  {
+    title: "Authority Hardening for Mainnet",
+    href: "/documents/authority-hardening-mainnet",
+    category: "Document",
+    summary: "Multisig, upgrade authority, treasury authority, and admin-boundary discipline before Mainnet.",
+  },
+  {
+    title: "Incident Readiness Runbook",
+    href: "/documents/incident-readiness-runbook",
+    category: "Document",
+    summary: "Monitoring, alerts, logs, and operator response loop for RPC, wallet, and governance failures.",
+  },
 ];

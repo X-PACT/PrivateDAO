@@ -12,6 +12,8 @@ import { TrackInvestmentCasePanel } from "@/components/track-investment-case-pan
 import { TrackMainnetGatesPanel } from "@/components/track-mainnet-gates-panel";
 import { TrackNarrativePanel } from "@/components/track-narrative-panel";
 import { TrackTechnicalFitPanel } from "@/components/track-technical-fit-panel";
+import { AuthorityHardeningPanel } from "@/components/authority-hardening-panel";
+import { IncidentReadinessPanel } from "@/components/incident-readiness-panel";
 import { cn } from "@/lib/utils";
 
 type CompetitionWorkspaceProps = {
@@ -131,6 +133,10 @@ export function CompetitionWorkspace({ workspace }: CompetitionWorkspaceProps) {
         <TrackCommercializationPanel workspace={workspace} />
 
         <TrackMainnetGatesPanel workspace={workspace} />
+
+        <AuthorityHardeningPanel />
+
+        <IncidentReadinessPanel />
 
         <Card>
           <CardHeader>

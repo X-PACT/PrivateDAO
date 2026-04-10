@@ -16,6 +16,8 @@
     "web:publish:root": "bash scripts/publish-web-live-surface.sh root",
     "web:verify:live:github": "bash scripts/verify-web-live-surface.sh github",
     "web:verify:live:root": "bash scripts/verify-web-live-surface.sh root",
+    "build:onchain-ui-parity": "ts-node scripts/build-onchain-ui-parity.ts",
+    "verify:onchain-ui-parity": "ts-node scripts/verify-onchain-ui-parity.ts",
     "build:web-next-handoff": "ts-node scripts/build-web-next-handoff.ts",
     "verify:web-next-handoff": "ts-node scripts/verify-web-next-handoff.ts",
     "build:web-next-cutover-map": "ts-node scripts/build-web-next-cutover-map.ts",

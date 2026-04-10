@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Radar, ShieldCheck, WalletCards } from "lucide-react";
 
 import { GovernanceDashboard } from "@/components/governance-dashboard";
+import { OnchainParityPanel } from "@/components/onchain-parity-panel";
 import { GovernanceSessionPanel } from "@/components/governance-session-panel";
 import { OperationalValidationPanels } from "@/components/operational-validation-panels";
 import { ProductActionMap } from "@/components/product-action-map";
@@ -97,6 +98,14 @@ export default function DashboardPage() {
 
       <section className="mt-12">
         <OperationalValidationPanels title="Dashboard operating health" />
+      </section>
+
+      <section className="mt-12">
+        <OnchainParityPanel
+          action="execute_proposal"
+          title="Execution parity"
+          compact
+        />
       </section>
 
       <section className="mt-12">

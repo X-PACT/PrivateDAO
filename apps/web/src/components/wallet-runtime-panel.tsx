@@ -6,6 +6,12 @@ import { CheckCircle2, ShieldAlert, WalletCards } from "lucide-react";
 import { WalletConnectButton } from "@/components/wallet-connect-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  PRIVATE_DAO_GOVERNANCE_MINT,
+  PRIVATE_DAO_GOVERNANCE_TOKEN_PROGRAM,
+  PRIVATE_DAO_PROGRAM_ID,
+} from "@/lib/onchain-parity.generated";
+import { PRIVATE_DAO_NETWORK } from "@/lib/onchain-parity";
 
 function shortenAddress(address: string) {
   return `${address.slice(0, 4)}…${address.slice(-4)}`;
@@ -37,6 +43,18 @@ export function WalletRuntimePanel() {
         </div>
 
         <div className="grid gap-4">
+          <div className="rounded-3xl border border-white/8 bg-black/20 p-4">
+            <div className="flex items-center gap-3">
+              <WalletCards className="h-4 w-4 text-cyan-300" />
+              <div className="text-sm font-medium text-white">Signing boundary</div>
+            </div>
+            <div className="mt-3 grid gap-3 text-sm leading-7 text-white/58">
+              <div>Network: {PRIVATE_DAO_NETWORK}</div>
+              <div>Program ID: {shortenAddress(PRIVATE_DAO_PROGRAM_ID)}</div>
+              <div>Governance mint: {shortenAddress(PRIVATE_DAO_GOVERNANCE_MINT)}</div>
+              <div>Token program: {shortenAddress(PRIVATE_DAO_GOVERNANCE_TOKEN_PROGRAM)}</div>
+            </div>
+          </div>
           <div className="rounded-3xl border border-white/8 bg-black/20 p-4">
             <div className="flex items-center gap-3">
               <WalletCards className="h-4 w-4 text-cyan-300" />

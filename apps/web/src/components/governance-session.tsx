@@ -24,6 +24,7 @@ type GovernanceSessionState = {
   voteChoice: VoteChoice;
   voteCommitted: boolean;
   voteRevealed: boolean;
+  proposalFinalized: boolean;
   proposalExecuted: boolean;
   logs: GovernanceLogEntry[];
 };
@@ -36,6 +37,7 @@ type GovernanceSessionContextValue = GovernanceSessionState & {
   createProposal: () => void;
   commitVote: () => void;
   revealVote: () => void;
+  finalizeProposal: () => void;
   executeProposal: () => void;
   resetSession: () => void;
 };
@@ -50,6 +52,7 @@ const defaultState: GovernanceSessionState = {
   voteChoice: "Approve",
   voteCommitted: false,
   voteRevealed: false,
+  proposalFinalized: false,
   proposalExecuted: false,
   logs: [],
 };
@@ -57,24 +60,23 @@ const defaultState: GovernanceSessionState = {
 const GovernanceSessionContext = createContext<GovernanceSessionContextValue | null>(null);
 
 export function GovernanceSessionProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<GovernanceSessionState>(defaultState);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
+  const [state, setState] = useState<GovernanceSessionState>(() => {
+    if (typeof window === "undefined") return defaultState;
     const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return;
+    if (!raw) return defaultState;
 
     try {
       const parsed = JSON.parse(raw) as Partial<GovernanceSessionState>;
-      setState({
+      return {
         ...defaultState,
         ...parsed,
         logs: Array.isArray(parsed.logs) ? parsed.logs : [],
-      });
+      };
     } catch {
       window.localStorage.removeItem(STORAGE_KEY);
+      return defaultState;
     }
-  }, []);
+  });
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -97,7 +99,15 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
       createDao: () =>
         setState((current) =>
           withLog(
-            { ...current, daoCreated: true },
+            {
+              ...current,
+              daoCreated: true,
+              proposalCreated: false,
+              voteCommitted: false,
+              voteRevealed: false,
+              proposalFinalized: false,
+              proposalExecuted: false,
+            },
             "DAO created",
             `${current.daoName} staged in the product shell and ready for proposal creation.`,
           ),
@@ -105,7 +115,14 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
       createProposal: () =>
         setState((current) =>
           withLog(
-            { ...current, proposalCreated: true },
+            {
+              ...current,
+              proposalCreated: true,
+              voteCommitted: false,
+              voteRevealed: false,
+              proposalFinalized: false,
+              proposalExecuted: false,
+            },
             "Proposal created",
             `${current.proposalTitle} is now the active proposal in the UI flow.`,
           ),
@@ -124,6 +141,14 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
             { ...current, voteRevealed: true },
             "Vote revealed",
             `${current.voteChoice} moved into the reveal stage with proof and diagnostics still available.`,
+          ),
+        ),
+      finalizeProposal: () =>
+        setState((current) =>
+          withLog(
+            { ...current, proposalFinalized: true },
+            "Proposal finalized",
+            `${current.proposalTitle} has been finalized in the staged UI flow and is now waiting on execution timing.`,
           ),
         ),
       executeProposal: () =>

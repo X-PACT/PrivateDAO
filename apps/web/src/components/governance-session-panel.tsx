@@ -11,6 +11,7 @@ const steps = [
   { key: "proposalCreated", label: "Create Proposal" },
   { key: "voteCommitted", label: "Commit Vote" },
   { key: "voteRevealed", label: "Reveal Vote" },
+  { key: "proposalFinalized", label: "Finalize Proposal" },
   { key: "proposalExecuted", label: "Execute Proposal" },
 ] as const;
 
@@ -28,8 +29,8 @@ export function GovernanceSessionPanel({
       <CardHeader className="space-y-3">
         <div className="flex items-center justify-between gap-3">
           <CardTitle>{title}</CardTitle>
-          <Badge variant={session.proposalExecuted ? "success" : session.voteCommitted ? "cyan" : "warning"}>
-            {session.proposalExecuted ? "Execution staged" : session.voteCommitted ? "Voting in progress" : "Session active"}
+          <Badge variant={session.proposalExecuted ? "success" : session.proposalFinalized ? "cyan" : "warning"}>
+            {session.proposalExecuted ? "Execution staged" : session.proposalFinalized ? "Finalized" : "Session active"}
           </Badge>
         </div>
       </CardHeader>

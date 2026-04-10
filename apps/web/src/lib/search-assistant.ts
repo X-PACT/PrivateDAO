@@ -69,6 +69,32 @@ const assistantIntents: AssistantIntent[] = [
     keywords: ["zk", "security", "encryption", "magicblock", "refhe", "rpc", "fast rpc", "cryptography", "matrix"],
   },
   {
+    title: "Review mainnet authority hardening",
+    summary:
+      "Open the security route and the authority brief when the question is about multisig, upgrade authority, treasury authority, or admin-boundary discipline before Mainnet.",
+    primaryActionLabel: "Open authority hardening",
+    primaryActionHref: "/documents/authority-hardening-mainnet",
+    relatedRoutes: [
+      { label: "Security", href: "/security" },
+      { label: "Mainnet Blockers", href: "/documents/mainnet-blockers" },
+      { label: "Production Custody Ceremony", href: "/documents/production-custody-ceremony" },
+    ],
+    keywords: ["multisig", "authority", "upgrade authority", "treasury authority", "admin authority", "ceremony", "mainnet hardening"],
+  },
+  {
+    title: "Open the monitoring and incident path",
+    summary:
+      "Use diagnostics and the incident runbook when the question is about RPC failures, wallet errors, repeated tx attempts, alerts, logs, or response discipline.",
+    primaryActionLabel: "Open incident readiness runbook",
+    primaryActionHref: "/documents/incident-readiness-runbook",
+    relatedRoutes: [
+      { label: "Diagnostics", href: "/diagnostics" },
+      { label: "Proof Center", href: "/proof" },
+      { label: "Runtime evidence", href: "/viewer/runtime-evidence.generated" },
+    ],
+    keywords: ["incident", "runbook", "monitoring", "alerts", "logs", "rpc failures", "wallet errors", "replay", "duplicate calls"],
+  },
+  {
     title: "Find the best wallet and live dApp path",
     summary:
       "Lead with Solflare for the current product shell. Keep Phantom as a familiar fallback, then continue into the command center or Eitherway-style live dApp route.",

@@ -3,6 +3,7 @@ import {
   Activity,
   ChevronRight,
   FilePlus2,
+  Flag,
   FolderPlus,
   ListChecks,
   Play,
@@ -44,6 +45,12 @@ const uiActions = [
     detail: "Reveal remains a first-class product action rather than a hidden protocol-only step.",
     href: "/command-center",
     icon: ListChecks,
+  },
+  {
+    title: "Finalize Proposal",
+    detail: "Finalize stays explicit in the UI so the product matches the real on-chain phase boundary before execution.",
+    href: "/command-center",
+    icon: Flag,
   },
   {
     title: "Execute Proposal",

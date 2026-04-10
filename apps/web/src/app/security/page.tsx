@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { MetricsStrip } from "@/components/metrics-strip";
+import { AuthorityHardeningPanel } from "@/components/authority-hardening-panel";
 import { ConfidenceEngineSurface } from "@/components/confidence-engine-surface";
 import { FrontierSignalBoard } from "@/components/frontier-signal-board";
 import { OperationsShell } from "@/components/operations-shell";
@@ -34,6 +35,9 @@ export default function SecurityPage() {
       </div>
       <div>
         <SecurityCenter />
+      </div>
+      <div>
+        <AuthorityHardeningPanel />
       </div>
       <div>
         <SectionHeader
