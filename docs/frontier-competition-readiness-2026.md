@@ -8,6 +8,31 @@ It is intentionally truth-aligned:
 - It distinguishes strong fit from staged or partial fit.
 - It does not claim partner integrations, external audits, or AI behaviors that are not already shipped.
 
+The live product routes that now matter most for competition work are:
+
+- `https://privatedao.org/start/`
+- `https://privatedao.org/story/`
+- `https://privatedao.org/tracks/`
+- `https://privatedao.org/proof/?judge=1`
+- `https://privatedao.org/services/`
+
+## 2026 ecosystem operating signal
+
+The April 2026 Colosseum operating context changes how we should optimize:
+
+- Frontier Hackathon is now framed around product impact rather than a bounty-collection posture.
+- The Drift exploit shifted serious protocol evaluation toward signer hygiene, timelocks, operational security, and incident readiness.
+- STRIDE and SIRN raised the baseline for what a mature Solana protocol should communicate around operational security.
+- Anchor v1 and Bootcamp 2026 raised the bar for migration discipline, test posture, runtime safety, and full-stack polish.
+
+For PrivateDAO, this means:
+
+- lean harder into the live product shell
+- make onboarding and wallet UX easier
+- keep proof and trust routes tightly connected
+- keep security and launch honesty visible
+- present the project as a startup-quality product, not as isolated protocol research
+
 ## Current strategic priority order
 
 1. Privacy Track
@@ -34,13 +59,11 @@ It is intentionally truth-aligned:
 ### Build a Live dApp with Solflare, Kamino, DFlow, or QuickNode with Eitherway App
 
 - Source: `https://superteam.fun/earn/listing/build-a-live-dapp-with-solflare-kamino-dflow-or-quicknode-with-eitherway-app`
-- Fit: strong with one explicit partner-facing flow
+- Fit: strong with a wallet-first submission corridor
 - Why:
   - The app is live, wallet-enabled, and now presented as a professional operational surface.
-- Gap:
-  - A more explicit Solflare/QuickNode/Eitherway-oriented corridor still strengthens the fit.
 - Highest-value move:
-  - Add a named wallet-first partner demo path and keep the UX friction low from connect wallet to proof.
+  - Lead with the story video, wallet-first operational shell, and the dedicated track workspace.
 
 ### RPC Infrastructure Credits
 
@@ -54,13 +77,11 @@ It is intentionally truth-aligned:
 ### TokenTon Consumer Apps Track
 
 - Source: `https://superteam.fun/earn/listing/tokenton26-consumer-apps-track-dollar8500-prize-pool`
-- Fit: moderate to strong
+- Fit: strong with a consumer-first shell
 - Why:
   - The frontend is now much closer to a real product with multi-page routing, wallet UX, and operational shells.
-- Gap:
-  - It still needs more direct first-run onboarding and clearer consumer-first labeling in some flows.
 - Highest-value move:
-  - Emphasize the command center, simplified pack entry, and wallet-first onboarding.
+  - Emphasize the story route, command center, simplified pack entry, and wallet-first onboarding.
 
 ### Ranger Main Track
 
@@ -70,6 +91,14 @@ It is intentionally truth-aligned:
   - PrivateDAO already combines protocol, operations, trust surfaces, reviewer proof, and commercial packaging into one product.
 - Highest-value move:
   - Open with the integrated product story, not isolated technical artifacts.
+
+### Colosseum Frontier
+
+- Fit: strong if judged on product impact
+- Why:
+  - The project now has a root-domain live app, command center, buyer corridors, proof center, diagnostics, track workspaces, and a hosted product reel.
+- Highest-value move:
+  - Lead from `/start`, `/story`, and `/command-center` into `/proof/?judge=1`, then close with services and trust surfaces.
 
 ### Ranger Drift Side Track
 
@@ -114,6 +143,9 @@ It is intentionally truth-aligned:
 - `Android Native`
 - `Gaming DAO Corridor`
 - `Read API + RPC`
+- comprehensive story video
+- quick-start route under `/start`
+- track workspaces under `/tracks/[slug]`
 
 ## Submission discipline
 
@@ -123,3 +155,4 @@ When adapting the project for any track:
 - Do not claim external audit completion if it has not happened.
 - Do not imply an encrypted AI surface exists unless it is actually shipped.
 - Keep Devnet proof, V3 hardening, trust package, and launch blockers consistent across deck, demo, docs, and UI.
+- Treat signer posture, timelocks, and operational security as first-class parts of the product story after the Drift exploit.

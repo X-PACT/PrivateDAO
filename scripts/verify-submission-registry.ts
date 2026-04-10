@@ -25,7 +25,10 @@ function main() {
     throw new Error("submission registry project name mismatch");
   }
 
-  if (!registry.frontend.startsWith("https://x-pact.github.io/PrivateDAO/")) {
+  if (
+    !registry.frontend.startsWith("https://privatedao.org/") &&
+    !registry.frontend.startsWith("https://x-pact.github.io/PrivateDAO/")
+  ) {
     throw new Error("submission registry frontend URL is unexpected");
   }
 

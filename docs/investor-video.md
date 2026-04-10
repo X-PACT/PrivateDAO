@@ -1,13 +1,14 @@
-# PrivateDAO Investor Video Package
+# PrivateDAO Frontier Overview Video Package
 
 ## Objective
 
-Create a premium 45 to 60 second investor-facing explainer video for PrivateDAO that is suitable for:
+Create a premium 50 second frontier-facing explainer video for PrivateDAO that is suitable for:
 
 - grant reviewers
 - technical partners
 - ecosystem investors
 - infrastructure operators
+- hackathon judges across privacy, RPC, consumer, and product tracks
 
 The video must communicate:
 
@@ -16,7 +17,7 @@ The video must communicate:
 - The system solves real governance leakage problems
 - The project now combines protocol hardening, proposal-level `zk_enforced` paths, confidential payroll and bonus approvals, REFHE-gated settlement, a backend read node, Android support, and published cryptographic artifact integrity
 - The project has third-party validation through a verified 1st Place achievement
-- The final output is a short investor explainer with a clear infrastructure thesis
+- The final output is a short product-and-competition explainer with a clear infrastructure thesis
 
 ## Core Claims To Preserve
 
@@ -48,9 +49,10 @@ The video must communicate:
 ## Current Explainer Status
 
 - Current known status: the repo-native render is the canonical source of truth in this repo
-- Repo-native render script: `scripts/render-investor-video.sh`
-- Repo-native rendered asset: `docs/assets/private-dao-investor-pitch.mp4`
-- Repo-native poster: `docs/assets/private-dao-investor-pitch-poster.png`
+- Repo-native render script: `scripts/render-frontier-overview-video.sh`
+- Repo-native rendered asset: `docs/assets/private-dao-frontier-overview.mp4`
+- Repo-native poster: `docs/assets/private-dao-frontier-overview-poster.png`
+- Hosted public asset: `https://privatedao.org/assets/private-dao-frontier-overview.mp4`
 
 ## Mainnet Positioning
 
@@ -67,7 +69,7 @@ The video should not imply a completed external audit or claim production adopti
 
 ## New Angle
 
-The current render should communicate that PrivateDAO is growing from private voting into confidential organizational operations and production-grade governance infrastructure.
+The current render should communicate that PrivateDAO is growing from private voting into a full product surface for confidential organizational operations and production-grade governance infrastructure.
 
 That means the video should now show:
 
@@ -77,6 +79,8 @@ That means the video should now show:
 - REFHE-gated confidential settlement
 - backend read node and runtime operator surfaces
 - Android-native access path
+- service packs and hosted RPC / read surfaces
+- competition workspaces and why PrivateDAO is strongest across privacy, infrastructure, and product-quality tracks
 - mainnet transition readiness
 - a credible path toward investable governance infrastructure
 
@@ -84,14 +88,14 @@ That means the video should now show:
 
 The repository carries a usable project explainer artifact directly in the repo, with the MP4 as the canonical public watch surface.
 
-- Primary repo video target: `docs/assets/private-dao-investor-pitch.mp4`
-- Poster target: `docs/assets/private-dao-investor-pitch-poster.png`
-- Render source: `scripts/render-investor-video.sh`
-- README should link to the repo-native MP4 directly
+- Primary repo video target: `docs/assets/private-dao-frontier-overview.mp4`
+- Poster target: `docs/assets/private-dao-frontier-overview-poster.png`
+- Render source: `scripts/render-frontier-overview-video.sh`
+- README and live site should link to the hosted MP4 directly
 
 ## Packaging Notes
 
 - Do not mention any prize amount
 - Keep claims bounded to what the repository and award note support
 - Use premium technical styling rather than generic startup hype
-- Keep the ending concise, technical, and investable
+- Keep the ending concise, technical, investable, and competition-ready

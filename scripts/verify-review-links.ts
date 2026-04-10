@@ -61,8 +61,19 @@ function main() {
     assertContains(readme, ref, `README is missing review reference: ${ref}`);
   }
 
-  assertContains(readme, "https://x-pact.github.io/PrivateDAO/proof/?judge=1", "README is missing Judge Mode entry point");
-  assertContains(readme, "https://x-pact.github.io/PrivateDAO/diagnostics/", "README is missing Wallet Diagnostics entry point");
+  const hasJudgeEntry =
+    readme.includes("https://privatedao.org/proof/?judge=1") ||
+    readme.includes("https://x-pact.github.io/PrivateDAO/proof/?judge=1");
+  if (!hasJudgeEntry) {
+    throw new Error("README is missing Judge Mode entry point");
+  }
+
+  const hasDiagnosticsEntry =
+    readme.includes("https://privatedao.org/diagnostics/") ||
+    readme.includes("https://x-pact.github.io/PrivateDAO/diagnostics/");
+  if (!hasDiagnosticsEntry) {
+    throw new Error("README is missing Wallet Diagnostics entry point");
+  }
   assertContains(homeShell, "Open judge proof view", "Next home shell is missing Judge Mode entry point");
   assertContains(proofCenter, "Proof center", "Next proof center is missing");
   assertContains(securityCenter, "Security architecture", "Next security center is missing");

@@ -25,13 +25,16 @@ function main() {
   const siteData = fs.readFileSync(SITE_DATA, "utf8");
 
   const checks: Array<[string, string, string]> = [
-    [rootIndex, "/PrivateDAO/_next/", "root live surface is missing the GitHub Pages asset prefix"],
     [rootIndex, "__next_f.push", "root live surface is missing the exported Next.js app payload"],
     [siteHeader, 'href: "/documents"', "site header is missing the Documents route"],
+    [siteHeader, 'href: "/start"', "site header is missing the Start route"],
+    [siteHeader, 'href: "/story"', "site header is missing the Story route"],
     [homeShell, "1st Place - Superteam Poland", "home shell is missing the awards badge"],
     [homeShell, "Private governance on Solana", "home shell is missing the Solana product badge"],
     [homeShell, "ZK + REFHE + MagicBlock + Fast RPC", "home shell is missing the integrated tech badge"],
     [homeShell, "Open judge proof view", "home shell is missing the judge CTA"],
+    [homeShell, "Sponsor-ready identity", "home shell is missing the sponsor-ready section"],
+    [homeShell, "A single upload-ready reel that explains everything we offer", "home shell is missing the hosted story video section"],
     [homeShell, "The migration keeps the product path obvious for normal users", "home shell is missing buyer-journey narrative"],
     [commandCenter, "Command Center", "command center surface is missing"],
     [proofCenter, "Proof center", "proof center surface is missing"],
@@ -53,6 +56,12 @@ function main() {
     [curatedDocuments, 'slug: "service-catalog"', "curated documents are missing service catalog"],
     [curatedDocuments, 'slug: "frontier-integrations"', "curated documents are missing frontier integrations"],
   ];
+
+  const hasGithubPagesPrefix = rootIndex.includes("/PrivateDAO/_next/");
+  const hasRootDomainPrefix = rootIndex.includes("/_next/");
+  if (!hasGithubPagesPrefix && !hasRootDomainPrefix) {
+    throw new Error("root live surface is missing both root-domain and GitHub Pages Next asset prefixes");
+  }
 
   for (const [body, fragment, message] of checks) {
     if (!body.includes(fragment)) {

@@ -4,9 +4,9 @@ This file is the canonical answer pack for manual Colosseum and side-track submi
 
 ## Core Links
 
-- Website: `https://x-pact.github.io/PrivateDAO/`
+- Website: `https://privatedao.org/`
 - GitHub: `https://github.com/X-PACT/PrivateDAO`
-- Demo video: `https://youtu.be/cwsPpNLiwbo`
+- Demo video: `https://privatedao.org/assets/private-dao-frontier-overview.mp4`
 - Colosseum profile: `https://arena.colosseum.org/profiles/PraivateDAO`
 - Project X link: `https://x.com/i/status/2039742760719151177`
 

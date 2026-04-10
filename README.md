@@ -2,7 +2,7 @@
 # PrivateDAO
 
 <p align="center">
-  <a href="https://x-pact.github.io/PrivateDAO/" target="_blank">
+  <a href="https://privatedao.org/" target="_blank">
     <img src="docs/assets/frontend-hero.png" alt="PrivateDAO live Solana governance frontend" width="920" />
   </a>
 </p>
@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <a href="https://x-pact.github.io/PrivateDAO/"><img src="https://img.shields.io/badge/Live%20Product-Open-14F195?logo=solana" alt="Live product" /></a>
+  <a href="https://privatedao.org/"><img src="https://img.shields.io/badge/Live%20Product-Open-14F195?logo=solana" alt="Live product" /></a>
   <a href="https://github.com/X-PACT/PrivateDAO/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/X-PACT/PrivateDAO/ci.yml?branch=main&label=CI" alt="CI status" /></a>
   <a href="docs/awards.md"><img src="https://img.shields.io/badge/Superteam%20Poland-1st%20Place-gold" alt="Superteam Poland 1st Place" /></a>
   <a href="https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet"><img src="https://img.shields.io/badge/Solana-Devnet%20Program-14F195" alt="Devnet program" /></a>
@@ -100,10 +100,11 @@ The README should stay aligned with this rule: implemented surfaces are describe
 
 | If you need | Link |
 | --- | --- |
-| Live product | https://x-pact.github.io/PrivateDAO/ |
-| Judge / proof view | https://x-pact.github.io/PrivateDAO/proof/?judge=1 |
-| Wallet diagnostics | https://x-pact.github.io/PrivateDAO/diagnostics/ |
-| Demo video | https://youtu.be/cwsPpNLiwbo |
+| Live product | https://privatedao.org/ |
+| Story video | https://privatedao.org/story/ |
+| Judge / proof view | https://privatedao.org/proof/?judge=1 |
+| Wallet diagnostics | https://privatedao.org/diagnostics/ |
+| Demo video MP4 | https://privatedao.org/assets/private-dao-frontier-overview.mp4 |
 | Devnet program | https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet |
 | Guided product flow | [`docs/frontier-guided-flow.md`](docs/frontier-guided-flow.md) |
 | Live proof V3 | [`docs/test-wallet-live-proof-v3.generated.md`](docs/test-wallet-live-proof-v3.generated.md) |
@@ -310,8 +311,8 @@ For navigation inside the large docs and scripts surfaces:
 
 If you only have a few minutes:
 
-1. Open the live product: https://x-pact.github.io/PrivateDAO/
-2. Open judge mode: https://x-pact.github.io/PrivateDAO/proof/?judge=1
+1. Open the live product: https://privatedao.org/
+2. Open judge mode: https://privatedao.org/proof/?judge=1
 3. Read [`docs/reviewer-fast-path.md`](docs/reviewer-fast-path.md)
 4. Read [`docs/security-hardening-v2.md`](docs/security-hardening-v2.md)
 5. Read [`docs/operational-evidence.generated.md`](docs/operational-evidence.generated.md)
@@ -461,12 +462,16 @@ Key docs:
 
 ## Media And Submission Assets
 
-- Public demo video: https://youtu.be/cwsPpNLiwbo
+- Public story video: https://privatedao.org/story/
+- Direct MP4: https://privatedao.org/assets/private-dao-frontier-overview.mp4
+- Upload-ready file: `/home/x-pact/Desktop/PrivateDAO-Frontier-Overview/PrivateDAO - Frontier Overview - Everything We Offer and Why Us.mp4`
 - Canonical lifecycle demo brief: [`docs/demo-video.md`](docs/demo-video.md)
 - Repo-native lifecycle demo: [`docs/assets/private-dao-demo-flow.mp4`](docs/assets/private-dao-demo-flow.mp4)
 - Investor / competition pitch deck: [`docs/investor-pitch-deck.md`](docs/investor-pitch-deck.md)
-- Repo-native investor reel: https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4
-- Poster: [`docs/assets/private-dao-investor-pitch-poster.png`](docs/assets/private-dao-investor-pitch-poster.png)
+- Frontier overview brief: [`docs/investor-video.md`](docs/investor-video.md)
+- Repo-native frontier reel: [`docs/assets/private-dao-frontier-overview.mp4`](docs/assets/private-dao-frontier-overview.mp4)
+- Hosted frontier reel: https://privatedao.org/assets/private-dao-frontier-overview.mp4
+- Poster: [`docs/assets/private-dao-frontier-overview-poster.png`](docs/assets/private-dao-frontier-overview-poster.png)
 - Submission dossier: [`docs/submission-dossier.md`](docs/submission-dossier.md)
 - Final submission pack: [`SUBMISSION_FINAL.md`](SUBMISSION_FINAL.md)
 - Manual Colosseum answers: [`docs/colosseum-submission-answers.md`](docs/colosseum-submission-answers.md)

@@ -3,11 +3,11 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-10T01:22:28.833Z`
+- generated at: `2026-04-10T05:21:06.356Z`
 - network: `devnet`
 - program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
-- judge entry: `https://x-pact.github.io/PrivateDAO/proof/?judge=1`
+- judge entry: `https://privatedao.org/proof/?judge=1`
 
 ## RPC Fast / Read Node
 

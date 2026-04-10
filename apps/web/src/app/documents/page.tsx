@@ -23,8 +23,8 @@ export default function DocumentsPage() {
       description="This is the curated in-app document layer for the highest-value reviewer and trust surfaces. It complements the raw viewer, but already behaves like a proper product documentation center."
       badges={[
         { label: "Documents", variant: "cyan" },
-        { label: "Curated subset", variant: "violet" },
-        { label: "Viewer parity staged", variant: "warning" },
+        { label: "Curated in-app library", variant: "violet" },
+        { label: "Raw viewer included", variant: "warning" },
       ]}
     >
       <div>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { MetricsStrip } from "@/components/metrics-strip";
 import { ConfidenceEngineSurface } from "@/components/confidence-engine-surface";
+import { FrontierSignalBoard } from "@/components/frontier-signal-board";
 import { OperationsShell } from "@/components/operations-shell";
 import { SecurityCenter } from "@/components/security-center";
 import { SectionHeader } from "@/components/section-header";
@@ -33,6 +34,16 @@ export default function SecurityPage() {
       </div>
       <div>
         <SecurityCenter />
+      </div>
+      <div>
+        <SectionHeader
+          eyebrow="2026 operating reality"
+          title="Security posture now has to survive real-world signer attacks, not only audit checklists"
+          description="The Drift exploit and STRIDE response changed what serious judges expect. PrivateDAO keeps signer discipline, launch blockers, runtime visibility, and migration-safe hardening in the product surface instead of hiding them in ops notes."
+        />
+      </div>
+      <div>
+        <FrontierSignalBoard />
       </div>
       <div>
         <SectionHeader

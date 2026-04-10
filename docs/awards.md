@@ -20,7 +20,7 @@ The work demonstrates:
 ### Verification Surface
 
 - Repository: https://github.com/X-PACT/PrivateDAO
-- Live demo: https://x-pact.github.io/PrivateDAO/
+- Live demo: https://privatedao.org/
 - Program source: `programs/private-dao/src/lib.rs`
 - Full lifecycle test: `tests/full-flow-test.ts`
 

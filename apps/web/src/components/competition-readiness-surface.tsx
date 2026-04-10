@@ -72,8 +72,15 @@ export function CompetitionReadinessSurface() {
 
               <div className="flex flex-wrap gap-3">
                 <Link
-                  href={track.href}
+                  href={`/tracks/${track.slug}`}
                   className="inline-flex items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-xs font-medium uppercase tracking-[0.22em] text-cyan-100 transition hover:bg-cyan-300/14"
+                >
+                  Open track workspace
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </Link>
+                <Link
+                  href={track.href}
+                  className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-4 py-2 text-xs font-medium uppercase tracking-[0.22em] text-white/72 transition hover:bg-white/10"
                 >
                   Open relevant surface
                   <ArrowUpRight className="h-3.5 w-3.5" />

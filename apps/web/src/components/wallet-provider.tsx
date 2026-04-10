@@ -15,13 +15,13 @@ type WalletProviderShellProps = {
 export function WalletProviderShell({ children }: WalletProviderShellProps) {
   const endpoint = process.env.NEXT_PUBLIC_SOLANA_RPC_URL ?? clusterApiUrl("devnet");
   const wallets = useMemo(
-    () => [new PhantomWalletAdapter(), new SolflareWalletAdapter(), new BackpackWalletAdapter()],
+    () => [new SolflareWalletAdapter(), new PhantomWalletAdapter(), new BackpackWalletAdapter()],
     [],
   );
 
   return (
     <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} autoConnect={false}>
+      <WalletProvider wallets={wallets} autoConnect>
         <WalletModalProvider>{children}</WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>

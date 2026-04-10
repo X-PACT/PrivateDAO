@@ -24,9 +24,24 @@ body::before {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at 20% 20%, rgba(20, 241, 149, 0.08), transparent 22%),
-    radial-gradient(circle at 80% 10%, rgba(153, 69, 255, 0.1), transparent 28%),
+    radial-gradient(circle at 18% 16%, rgba(20, 241, 149, 0.13), transparent 22%),
+    radial-gradient(circle at 80% 9%, rgba(153, 69, 255, 0.16), transparent 30%),
+    radial-gradient(circle at 70% 32%, rgba(255, 111, 60, 0.08), transparent 20%),
+    radial-gradient(circle at 38% 76%, rgba(0, 194, 255, 0.07), transparent 24%),
     linear-gradient(180deg, rgba(255,255,255,0.03), transparent 24%);
+  z-index: -1;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 90px 90px;
+  mask-image: radial-gradient(circle at center, rgba(0,0,0,0.55), transparent 78%);
   z-index: -1;
 }
 
@@ -41,12 +56,12 @@ a {
 }
 
 .wallet-adapter-shell .wallet-adapter-button {
-  min-width: 172px;
-  height: 44px;
-  padding: 0 16px;
+  min-width: 158px;
+  height: 42px;
+  padding: 0 15px;
   border-radius: 999px;
-  background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
+  background: linear-gradient(135deg, rgba(20, 241, 149, 0.22), rgba(0, 194, 255, 0.18), rgba(153, 69, 255, 0.28));
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12), 0 16px 42px rgba(73, 27, 121, 0.32);
   color: white;
   display: inline-flex;
   align-items: center;
@@ -59,7 +74,11 @@ a {
 }
 
 .wallet-adapter-shell .wallet-adapter-button:hover {
-  background: linear-gradient(135deg, rgba(255,255,255,0.11), rgba(255,255,255,0.06));
+  background: linear-gradient(135deg, rgba(20, 241, 149, 0.3), rgba(0, 194, 255, 0.22), rgba(153, 69, 255, 0.34));
+}
+
+.wallet-adapter-shell .wallet-adapter-button-trigger {
+  justify-content: center;
 }
 
 .wallet-adapter-shell .wallet-adapter-button-start-icon {
@@ -70,10 +89,19 @@ a {
   margin-left: 0;
 }
 
+.wallet-adapter-shell .wallet-adapter-button-start-icon img,
+.wallet-adapter-shell .wallet-adapter-button-end-icon img,
+.wallet-adapter-shell .wallet-adapter-button-start-icon svg,
+.wallet-adapter-shell .wallet-adapter-button-end-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
 .wallet-adapter-shell .wallet-adapter-modal-wrapper {
   background: rgba(3, 5, 16, 0.96);
   border: 1px solid rgba(255,255,255,0.08);
   box-shadow: 0 24px 80px rgba(0,0,0,0.42);
+  backdrop-filter: blur(26px);
 }
 
 .wallet-adapter-shell .wallet-adapter-modal-title,
@@ -83,6 +111,23 @@ a {
 
 .wallet-adapter-shell .wallet-adapter-modal-list .wallet-adapter-button {
   border-radius: 18px;
+  background: linear-gradient(135deg, rgba(20, 241, 149, 0.08), rgba(153, 69, 255, 0.12));
+}
+
+.wallet-adapter-shell .wallet-adapter-dropdown-list,
+.wallet-adapter-shell .wallet-adapter-modal-container {
+  font-family: var(--font-space-grotesk), Arial, Helvetica, sans-serif;
+}
+
+.wallet-adapter-shell .wallet-adapter-dropdown-list {
+  background: rgba(4, 8, 20, 0.96);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  box-shadow: 0 24px 72px rgba(0,0,0,0.35);
+}
+
+.wallet-adapter-shell .wallet-adapter-dropdown-list-item {
+  border-radius: 14px;
 }
 
 @media (prefers-reduced-motion: reduce) {

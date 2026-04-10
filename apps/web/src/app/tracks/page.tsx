@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 
 import { CompetitionReadinessSurface } from "@/components/competition-readiness-surface";
+import { FrontierSignalBoard } from "@/components/frontier-signal-board";
 import { OperationsShell } from "@/components/operations-shell";
 import { SolutionCorridors } from "@/components/solution-corridors";
+import { VideoCenter } from "@/components/video-center";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
@@ -18,7 +20,7 @@ export default function TracksPage() {
     <OperationsShell
       eyebrow="Competition Readiness"
       title="A track-by-track readiness surface for Frontier, Superteam, and side-track submissions"
-      description="This page keeps the competition strategy honest. It shows where PrivateDAO is already strongest, where the frontend and product shell now help, and what still needs a sharper corridor before a first-place push."
+      description="This page keeps the competition strategy disciplined while still aiming high. It shows where PrivateDAO is strongest already, which routes now serve as first-place submission corridors, and how the live product, proof, and services surfaces reinforce each track."
       badges={[
         { label: "Competition Readiness", variant: "cyan" },
         { label: "Truth-aligned", variant: "success" },
@@ -27,6 +29,12 @@ export default function TracksPage() {
     >
       <div>
         <CompetitionReadinessSurface />
+      </div>
+      <div>
+        <FrontierSignalBoard />
+      </div>
+      <div>
+        <VideoCenter compact />
       </div>
       <div>
         <SolutionCorridors />

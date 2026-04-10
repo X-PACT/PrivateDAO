@@ -14,6 +14,9 @@ export function SiteFooter() {
           PrivateDAO is a privacy-focused governance and treasury product on Solana with additive hardening, runtime evidence, and reviewer-ready proof surfaces.
         </div>
         <div className="flex flex-wrap gap-5">
+          <Link href="/story" className="hover:text-white">
+            Story video
+          </Link>
           <a href={judgeViewUrl} target="_blank" rel="noreferrer" className="hover:text-white">
             Judge view
           </a>

@@ -9,16 +9,15 @@ import { WalletConnectButton } from "@/components/wallet-connect-button";
 
 const navItems = [
   { href: "/", label: "Overview" },
+  { href: "/start", label: "Start" },
+  { href: "/story", label: "Story" },
   { href: "/command-center", label: "Command Center" },
   { href: "/dashboard", label: "Dashboard" },
   { href: "/proof", label: "Proof" },
   { href: "/documents", label: "Documents" },
   { href: "/security", label: "Security" },
-  { href: "/diagnostics", label: "Diagnostics" },
-  { href: "/analytics", label: "Analytics" },
   { href: "/services", label: "Services" },
   { href: "/tracks", label: "Tracks" },
-  { href: "/awards", label: "Awards" },
 ];
 
 export function SiteHeader() {
@@ -26,7 +25,7 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/8 bg-[#050816]/75 backdrop-blur-xl">
-      <div className="mx-auto grid w-full max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-4 px-4 py-4 sm:px-6 lg:px-8">
+      <div className="mx-auto grid w-full max-w-7xl grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 px-4 py-4 sm:px-6 lg:px-8">
         <Link href="/" className="group flex items-center gap-3">
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-amber-300/20 bg-[radial-gradient(circle_at_top,#ffdf80,#ffb100_58%,#9f5a00)] text-base font-black text-slate-950 shadow-[0_14px_36px_rgba(255,177,0,0.22)] transition-transform duration-300 group-hover:scale-[1.03]">
             △
@@ -37,10 +36,10 @@ export function SiteHeader() {
           </div>
         </Link>
 
-        <nav className="hidden items-center justify-center gap-2 md:flex">
+        <nav className="hidden items-center justify-center gap-1.5 lg:flex">
           {navItems.map((item) => (
             <Link
-              className={cn(buttonVariants({ size: "sm", variant: "ghost" }), "text-white/72")}
+              className={cn(buttonVariants({ size: "sm", variant: "ghost" }), "px-3 text-white/72")}
               href={item.href}
               key={item.href}
             >
@@ -49,9 +48,9 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="flex items-center justify-end gap-3">
+        <div className="flex items-center justify-end gap-2">
           <a
-            className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "hidden lg:inline-flex")}
+            className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "hidden 2xl:inline-flex")}
             href={liveSiteUrl}
             rel="noreferrer"
             target="_blank"

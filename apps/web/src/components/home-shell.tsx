@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Shield, Sparkles, TrendingUp } from "lucide-react";
+import { ArrowRight, LockKeyhole, Shield, Sparkles, Zap } from "lucide-react";
 
 import { BuyerJourneyRail } from "@/components/buyer-journey-rail";
 import { CommandCenter } from "@/components/command-center";
@@ -14,6 +14,8 @@ import { SecurityCenter } from "@/components/security-center";
 import { SectionHeader } from "@/components/section-header";
 import { ServicesSurface } from "@/components/services-surface";
 import { SolutionCorridors } from "@/components/solution-corridors";
+import { SponsorSignalBar } from "@/components/sponsor-signal-bar";
+import { VideoCenter } from "@/components/video-center";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -129,8 +131,16 @@ export function HomeShell() {
               {techCards.map((item, index) => (
                 <div key={item.name} className="rounded-3xl border border-white/8 bg-white/4 p-4">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/8 bg-black/30 text-white/85">
-                      {index === 0 ? <Sparkles className="h-4 w-4" /> : index === 1 ? <Shield className="h-4 w-4" /> : <TrendingUp className="h-4 w-4" />}
+                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/8 bg-black/30 text-white/85">
+                      {index === 0 ? (
+                        <Sparkles className="h-4 w-4" />
+                      ) : index === 1 ? (
+                        <LockKeyhole className="h-4 w-4" />
+                      ) : index === 2 ? (
+                        <Shield className="h-4 w-4" />
+                      ) : (
+                        <Zap className="h-4 w-4" />
+                      )}
                     </div>
                     <div className="text-lg font-medium text-white">{item.name}</div>
                   </div>
@@ -144,6 +154,28 @@ export function HomeShell() {
 
       <section className="mx-auto mt-18 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <MetricsStrip />
+      </section>
+
+      <section className="mx-auto mt-18 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHeader
+          eyebrow="Sponsor-ready identity"
+          title="A Solana-native visual surface with sponsor-aware product signals"
+          description="The new shell leans into Solana’s signature gradient language while still giving sponsor-aligned corridors room to feel intentional, modern, and professional."
+        />
+        <div className="mt-8">
+          <SponsorSignalBar />
+        </div>
+      </section>
+
+      <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHeader
+          eyebrow="Story Video"
+          title="A single upload-ready reel that explains everything we offer and why PrivateDAO wins"
+          description="The product now ships with one comprehensive video hosted on the live site. It covers the product, the cryptographic stack, the service corridors, and the strongest competition-ready paths in a single watch surface."
+        />
+        <div className="mt-10">
+          <VideoCenter compact />
+        </div>
       </section>
 
       <section className="mx-auto mt-24 w-full max-w-7xl px-4 sm:px-6 lg:px-8">

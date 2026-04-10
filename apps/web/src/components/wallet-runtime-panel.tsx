@@ -43,7 +43,9 @@ export function WalletRuntimePanel() {
               <div className="text-sm font-medium text-white">Active wallet</div>
             </div>
             <div className="mt-3 text-sm leading-7 text-white/58">
-              {connected && publicKey ? `${wallet?.adapter.name ?? "Solana wallet"} · ${shortenAddress(publicKey.toBase58())}` : "Connect Phantom, Solflare, or Backpack to activate product actions."}
+              {connected && publicKey
+                ? `${wallet?.adapter.name ?? "Solana wallet"} · ${shortenAddress(publicKey.toBase58())}`
+                : "Connect Solflare, Phantom, or Backpack to activate product actions."}
             </div>
           </div>
           <div className="rounded-3xl border border-white/8 bg-black/20 p-4">

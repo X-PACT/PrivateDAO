@@ -9,11 +9,11 @@
 
 ## Reviewer Entry Points
 
-- Live frontend: https://x-pact.github.io/PrivateDAO/
-- Proof Center: https://x-pact.github.io/PrivateDAO/proof/
-- Judge Mode: https://x-pact.github.io/PrivateDAO/proof/?judge=1
-- Security page: https://x-pact.github.io/PrivateDAO/security/
-- YouTube pitch: https://youtu.be/cwsPpNLiwbo
+- Live frontend: https://privatedao.org/
+- Proof Center: https://privatedao.org/proof/
+- Judge Mode: https://privatedao.org/proof/?judge=1
+- Security page: https://privatedao.org/security/
+- Public story video: https://privatedao.org/assets/private-dao-frontier-overview.mp4
 
 ## Live Devnet Anchors
 
@@ -27,7 +27,7 @@
 - PDAO mint: `AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt`
 - PDAO program: `TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb`
 - PDAO token account: `F4q77ZMJdC7eoEUw3CCR7DbKGTggyExjuMGKBEiM2ct4`
-- PDAO metadata URI: `https://x-pact.github.io/PrivateDAO/assets/pdao-token.json`
+- PDAO metadata URI: `https://privatedao.org/assets/pdao-token.json`
 - PDAO decimals: `9`
 - PDAO initial supply: `1000000`
 - PDAO attestation: `docs/pdao-attestation.generated.json`
