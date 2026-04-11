@@ -34,6 +34,8 @@ function main() {
     run("npm run record:custody-observed-readouts");
     run("npm run build:canonical-custody-proof");
     run("npm run verify:canonical-custody-proof");
+    run("npm run build:custody-proof-reviewer-packet");
+    run("npm run verify:custody-proof-reviewer-packet");
     run("npm run build:launch-trust-packet");
     run("npm run verify:launch-trust-packet");
     run("npm run verify:generated-artifacts");

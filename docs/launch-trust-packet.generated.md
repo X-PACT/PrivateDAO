@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-11T04:44:32.958Z`
+- generated at: `2026-04-11T05:22:29.482Z`
 - current decision: `blocked-external-steps`
 - production mainnet claim allowed: `false`
 
@@ -83,6 +83,7 @@ Available use-case packs:
 
 - `docs/multisig-setup-intake.md`
 - `docs/canonical-custody-proof.generated.md`
+- `docs/custody-proof-reviewer-packet.generated.md`
 - `docs/custody-observed-readouts.json`
 - `docs/production-custody-ceremony.md`
 - `docs/authority-transfer-runbook.md`
@@ -101,6 +102,8 @@ Available use-case packs:
 
 - `npm run build:launch-trust-packet`
 - `npm run verify:launch-trust-packet`
+- `npm run build:custody-proof-reviewer-packet`
+- `npm run verify:custody-proof-reviewer-packet`
 - `npm run verify:multisig-intake`
 - `npm run verify:launch-ops`
 - `npm run verify:mainnet-blockers`

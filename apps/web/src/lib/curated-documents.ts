@@ -176,6 +176,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/canonical-custody-proof.generated.md`,
   },
   {
+    slug: "custody-proof-reviewer-packet",
+    title: "Custody Proof Reviewer Packet",
+    category: "Reviewer core",
+    summary: "Reviewer-facing custody truth packet that condenses what is externally proven now, what is still pending, and the exact strict ingestion route for ceremony evidence.",
+    audience: "Judges, auditors, technical reviewers, launch leads",
+    boundary: "Reviewer condensation only; it does not claim ceremony completion until the exact external artifacts exist.",
+    docPath: "docs/custody-proof-reviewer-packet.generated.md",
+    rawHref: `${repositoryBlobBase}/docs/custody-proof-reviewer-packet.generated.md`,
+  },
+  {
     slug: "external-audit-engagement",
     title: "External Audit Engagement",
     category: "Operations",

@@ -15,6 +15,8 @@ function main() {
   const releaseCeremonyMdPath = path.resolve("docs/release-ceremony-attestation.generated.md");
   const canonicalCustodyProofJsonPath = path.resolve("docs/canonical-custody-proof.generated.json");
   const canonicalCustodyProofMdPath = path.resolve("docs/canonical-custody-proof.generated.md");
+  const custodyReviewerPacketJsonPath = path.resolve("docs/custody-proof-reviewer-packet.generated.json");
+  const custodyReviewerPacketMdPath = path.resolve("docs/custody-proof-reviewer-packet.generated.md");
   const runtimeAttestationPath = path.resolve("docs/runtime-attestation.generated.json");
   const readNodeSnapshotJsonPath = path.resolve("docs/read-node/snapshot.generated.json");
   const readNodeSnapshotMdPath = path.resolve("docs/read-node/snapshot.generated.md");
@@ -98,6 +100,9 @@ function main() {
   }
   if (!fs.existsSync(canonicalCustodyProofJsonPath) || !fs.existsSync(canonicalCustodyProofMdPath)) {
     throw new Error("missing canonical custody proof artifacts");
+  }
+  if (!fs.existsSync(custodyReviewerPacketJsonPath) || !fs.existsSync(custodyReviewerPacketMdPath)) {
+    throw new Error("missing custody proof reviewer packet artifacts");
   }
   if (!fs.existsSync(runtimeAttestationPath)) {
     throw new Error("missing generated runtime attestation");

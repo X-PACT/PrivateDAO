@@ -48,6 +48,7 @@ wallets/
 !docs/release-ceremony-attestation.generated.json
 !docs/custody-observed-readouts.json
 !docs/canonical-custody-proof.generated.json
+!docs/custody-proof-reviewer-packet.generated.json
 !docs/runtime-evidence.generated.json
 !docs/release-drill.generated.json
 !docs/competitive/source.json

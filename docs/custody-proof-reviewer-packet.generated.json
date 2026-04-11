@@ -1,0 +1,145 @@
+{
+  "project": "PrivateDAO",
+  "generatedAt": "2026-04-11T05:23:35.012Z",
+  "reviewerIntent": "Explain the current custody truth, show what is externally proven now, and make the missing external ceremony evidence explicit without narrative drift.",
+  "custodyStatus": "pending-external",
+  "productionMainnetClaimAllowed": false,
+  "trustDecision": "blocked-external-steps",
+  "custodyCompletion": "1/25",
+  "exactBlocker": {
+    "id": "upgrade-authority-multisig",
+    "severity": "critical",
+    "status": "pending-external",
+    "nextAction": "Move production upgrade authority and operational authorities to a documented multisig or governance-owned path and rehearse rotation.",
+    "evidence": [
+      "docs/authority-hardening.md",
+      "docs/authority-transfer-runbook.md",
+      "docs/production-custody-ceremony.md",
+      "docs/multisig-setup-intake.json",
+      "docs/multisig-setup-intake.md",
+      "docs/launch-ops-checklist.json",
+      "docs/launch-ops-checklist.md",
+      "docs/mainnet-cutover-runbook.md",
+      "docs/launch-trust-packet.generated.md"
+    ]
+  },
+  "currentTruth": {
+    "summary": "PrivateDAO is devnet-proven and internally hardened, but real-funds mainnet production remains blocked until external audit, custody, monitoring, runtime, settlement-receipt, and release-ceremony items are closed with evidence.",
+    "multisigImplementation": "pending-selection",
+    "multisigAddress": null,
+    "threshold": "2-of-3",
+    "configuredTimelockHours": null,
+    "minimumTimelockHours": 48
+  },
+  "externallyProvenNow": {
+    "observedReadouts": [
+      {
+        "label": "Current deployed program readout",
+        "cluster": "devnet",
+        "address": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+        "explorerUrl": "https://explorer.solana.com/address/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet",
+        "authority": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+        "programDataAddress": "CeggEn3sNVbiuJHLKDaCPMH4uLczu1Dr3ZGKKcaKBqeN",
+        "lastDeploySlot": 454368825
+      },
+      {
+        "label": "Current DAO anchor readout",
+        "cluster": "devnet",
+        "address": "FZV9KmpeY1B31XvszQypp5T6nQN5C44JDLM4QWBEDvhx",
+        "explorerUrl": "https://explorer.solana.com/address/FZV9KmpeY1B31XvszQypp5T6nQN5C44JDLM4QWBEDvhx?cluster=devnet",
+        "authority": null,
+        "programDataAddress": null,
+        "lastDeploySlot": null
+      },
+      {
+        "label": "Current treasury anchor readout",
+        "cluster": "devnet",
+        "address": "AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c",
+        "explorerUrl": "https://explorer.solana.com/address/AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c?cluster=devnet",
+        "authority": null,
+        "programDataAddress": null,
+        "lastDeploySlot": null
+      }
+    ],
+    "explorerLinkedArtifacts": []
+  },
+  "exactPendingItems": [
+    "chosen multisig implementation",
+    "multisig public address",
+    "multisig creation signature",
+    "rehearsal signature",
+    "timelock configuration of at least 48 hours",
+    "timelock configuration signature or readout",
+    "signer slot 1 public key",
+    "backup procedure for signer slot 1",
+    "signer slot 2 public key",
+    "backup procedure for signer slot 2",
+    "signer slot 3 public key",
+    "backup procedure for signer slot 3",
+    "program upgrade authority destination authority",
+    "program upgrade authority transfer signature",
+    "program upgrade authority post-transfer readout",
+    "program upgrade authority post-transfer readout reference",
+    "dao authority destination authority",
+    "dao authority transfer signature",
+    "dao authority post-transfer readout",
+    "dao authority post-transfer readout reference",
+    "treasury operator authority destination authority",
+    "treasury operator authority transfer signature",
+    "treasury operator authority post-transfer readout",
+    "treasury operator authority post-transfer readout reference"
+  ],
+  "strictIngestionRoute": [
+    "Build the public-key and signature packet in https://privatedao.org/custody/",
+    "Save it locally as docs/custody-evidence-intake.json",
+    "Run npm run apply:custody-evidence-intake",
+    "Re-open canonical custody proof, launch trust packet, and the track proof closure surfaces"
+  ],
+  "requiredExternalInputs": [
+    "3 production signer public keys",
+    "chosen multisig implementation and address",
+    "48+ hour timelock configuration evidence",
+    "authority transfer signatures, explorer links, and readouts",
+    "real-device wallet captures",
+    "external audit report or signed memo",
+    "first pilot DAO target and operator contact"
+  ],
+  "linkedDocs": [
+    "docs/canonical-custody-proof.generated.md",
+    "docs/launch-trust-packet.generated.md",
+    "docs/production-custody-ceremony.md",
+    "docs/multisig-setup-intake.md",
+    "docs/multisig-setup-intake.json",
+    "docs/mainnet-blockers.md",
+    "docs/custody-proof-reviewer-packet.generated.md",
+    "docs/custody-observed-readouts.json",
+    "docs/authority-transfer-runbook.md",
+    "docs/external-audit-engagement.md",
+    "docs/audit-handoff.md",
+    "docs/governance-hardening-v3.md",
+    "docs/settlement-hardening-v3.md",
+    "docs/test-wallet-live-proof-v3.generated.md",
+    "docs/runtime/real-device.md",
+    "docs/pilot-onboarding-playbook.md",
+    "docs/pilot-program.md",
+    "docs/trust-package.md"
+  ],
+  "canonicalCommands": [
+    "npm run build:custody-proof-reviewer-packet",
+    "npm run verify:custody-proof-reviewer-packet",
+    "npm run apply:custody-evidence-intake",
+    "npm run build:launch-trust-packet",
+    "npm run verify:launch-trust-packet",
+    "npm run verify:multisig-intake",
+    "npm run verify:launch-ops",
+    "npm run verify:mainnet-blockers",
+    "npm run verify:real-device-runtime",
+    "npm run check:mainnet"
+  ],
+  "liveRoutes": [
+    "https://privatedao.org/custody/",
+    "https://privatedao.org/security/",
+    "https://privatedao.org/documents/launch-trust-packet/",
+    "https://privatedao.org/documents/canonical-custody-proof/"
+  ]
+}

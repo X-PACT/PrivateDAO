@@ -106,6 +106,7 @@ function main() {
     linkedDocs: [
       "docs/multisig-setup-intake.md",
       "docs/canonical-custody-proof.generated.md",
+      "docs/custody-proof-reviewer-packet.generated.md",
       "docs/custody-observed-readouts.json",
       "docs/production-custody-ceremony.md",
       "docs/authority-transfer-runbook.md",
@@ -132,6 +133,8 @@ function main() {
     commands: [
       "npm run build:launch-trust-packet",
       "npm run verify:launch-trust-packet",
+      "npm run build:custody-proof-reviewer-packet",
+      "npm run verify:custody-proof-reviewer-packet",
       "npm run verify:multisig-intake",
       "npm run verify:launch-ops",
       "npm run verify:mainnet-blockers",

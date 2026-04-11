@@ -62,6 +62,7 @@ function main() {
   assert(packet.v3Evidence.boundary === "test-wallet-devnet-only", "launch trust packet V3 boundary mismatch");
   assert(packet.linkedDocs.includes("docs/production-custody-ceremony.md"), "launch trust packet missing custody ceremony doc");
   assert(packet.linkedDocs.includes("docs/canonical-custody-proof.generated.md"), "launch trust packet missing canonical custody proof doc");
+  assert(packet.linkedDocs.includes("docs/custody-proof-reviewer-packet.generated.md"), "launch trust packet missing custody reviewer packet doc");
   assert(packet.linkedDocs.includes("docs/custody-observed-readouts.json"), "launch trust packet missing custody observed readouts source");
   assert(packet.linkedDocs.includes("docs/governance-hardening-v3.md"), "launch trust packet missing governance v3 doc");
   assert(packet.linkedDocs.includes("docs/settlement-hardening-v3.md"), "launch trust packet missing settlement v3 doc");
@@ -69,11 +70,13 @@ function main() {
   assert(packet.linkedDocs.includes("docs/external-audit-engagement.md"), "launch trust packet missing external audit engagement doc");
   assert(packet.linkedDocs.includes("docs/pilot-onboarding-playbook.md"), "launch trust packet missing pilot onboarding playbook");
   assert(packet.commands.includes("npm run verify:launch-trust-packet"), "launch trust packet missing self verification command");
+  assert(packet.commands.includes("npm run verify:custody-proof-reviewer-packet"), "launch trust packet missing reviewer packet verification command");
 
   for (const token of [
     "# Launch Trust Packet",
     "docs/production-custody-ceremony.md",
     "docs/canonical-custody-proof.generated.md",
+    "docs/custody-proof-reviewer-packet.generated.md",
     "docs/external-audit-engagement.md",
     "docs/pilot-onboarding-playbook.md",
     "3 production signer public keys",
@@ -84,6 +87,7 @@ function main() {
     "Execute treasury",
     "docs/test-wallet-live-proof-v3.generated.md",
     "V3 evidence status",
+    "npm run verify:custody-proof-reviewer-packet",
   ]) {
     assert(markdown.includes(token), `launch trust packet markdown is missing: ${token}`);
   }

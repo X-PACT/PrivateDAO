@@ -132,6 +132,7 @@ The canonical custody source of truth is:
 - [`docs/multisig-setup-intake.json`](docs/multisig-setup-intake.json)
 - [`docs/custody-observed-readouts.json`](docs/custody-observed-readouts.json)
 - [`docs/canonical-custody-proof.generated.md`](docs/canonical-custody-proof.generated.md)
+- [`docs/custody-proof-reviewer-packet.generated.md`](docs/custody-proof-reviewer-packet.generated.md)
 - [`docs/production-custody-ceremony.md`](docs/production-custody-ceremony.md)
 - [`docs/authority-transfer-runbook.md`](docs/authority-transfer-runbook.md)
 - [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md)
@@ -163,6 +164,7 @@ Live proof surface:
 - `https://privatedao.org/custody/`
 - `https://privatedao.org/documents/`
 - `https://privatedao.org/documents/canonical-custody-proof/`
+- `https://privatedao.org/documents/custody-proof-reviewer-packet/`
 - `https://privatedao.org/documents/launch-trust-packet/`
 - `https://privatedao.org/documents/mainnet-blockers/`
 
@@ -593,6 +595,7 @@ Key docs:
 - [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md)
 - [`docs/authority-hardening.md`](docs/authority-hardening.md)
 - [`docs/multisig-setup-intake.md`](docs/multisig-setup-intake.md)
+- [`docs/custody-proof-reviewer-packet.generated.md`](docs/custody-proof-reviewer-packet.generated.md)
 - [`docs/monitoring-alert-rules.md`](docs/monitoring-alert-rules.md)
 - [`docs/wallet-e2e-test-plan.md`](docs/wallet-e2e-test-plan.md)
 - [`docs/release-ceremony.md`](docs/release-ceremony.md)

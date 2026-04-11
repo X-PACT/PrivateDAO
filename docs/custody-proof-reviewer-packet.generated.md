@@ -1,0 +1,155 @@
+# Custody Proof Reviewer Packet
+
+## Overview
+
+- project: `PrivateDAO`
+- generated at: `2026-04-11T05:23:35.012Z`
+- reviewer intent: Explain the current custody truth, show what is externally proven now, and make the missing external ceremony evidence explicit without narrative drift.
+- custody status: `pending-external`
+- trust decision: `blocked-external-steps`
+- production mainnet claim allowed: `false`
+- custody completion: `1/25`
+
+## Current Truth
+
+- summary: PrivateDAO is devnet-proven and internally hardened, but real-funds mainnet production remains blocked until external audit, custody, monitoring, runtime, settlement-receipt, and release-ceremony items are closed with evidence.
+- multisig implementation: `pending-selection`
+- multisig address: `pending`
+- threshold: `2-of-3`
+- configured timelock hours: `pending`
+- minimum timelock hours: `48`
+
+## What Is Externally Proven Now
+
+- Current deployed program readout (devnet)
+  - address: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+  - explorer: https://explorer.solana.com/address/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet
+  - authority: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
+  - program data: `CeggEn3sNVbiuJHLKDaCPMH4uLczu1Dr3ZGKKcaKBqeN`
+  - last deploy slot: `454368825`
+- Current DAO anchor readout (devnet)
+  - address: `FZV9KmpeY1B31XvszQypp5T6nQN5C44JDLM4QWBEDvhx`
+  - explorer: https://explorer.solana.com/address/FZV9KmpeY1B31XvszQypp5T6nQN5C44JDLM4QWBEDvhx?cluster=devnet
+  - authority: `pending`
+  - program data: `pending`
+  - last deploy slot: `pending`
+- Current treasury anchor readout (devnet)
+  - address: `AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c`
+  - explorer: https://explorer.solana.com/address/AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c?cluster=devnet
+  - authority: `pending`
+  - program data: `pending`
+  - last deploy slot: `pending`
+
+Explorer-linked artifacts:
+
+- No custody ceremony signatures are recorded yet.
+
+## Exact Pending Items
+
+- chosen multisig implementation
+- multisig public address
+- multisig creation signature
+- rehearsal signature
+- timelock configuration of at least 48 hours
+- timelock configuration signature or readout
+- signer slot 1 public key
+- backup procedure for signer slot 1
+- signer slot 2 public key
+- backup procedure for signer slot 2
+- signer slot 3 public key
+- backup procedure for signer slot 3
+- program upgrade authority destination authority
+- program upgrade authority transfer signature
+- program upgrade authority post-transfer readout
+- program upgrade authority post-transfer readout reference
+- dao authority destination authority
+- dao authority transfer signature
+- dao authority post-transfer readout
+- dao authority post-transfer readout reference
+- treasury operator authority destination authority
+- treasury operator authority transfer signature
+- treasury operator authority post-transfer readout
+- treasury operator authority post-transfer readout reference
+
+## Exact Mainnet Blocker
+
+- blocker id: `upgrade-authority-multisig`
+- severity: `critical`
+- status: `pending-external`
+- next action: Move production upgrade authority and operational authorities to a documented multisig or governance-owned path and rehearse rotation.
+
+Blocker evidence refs:
+
+- docs/authority-hardening.md
+- docs/authority-transfer-runbook.md
+- docs/production-custody-ceremony.md
+- docs/multisig-setup-intake.json
+- docs/multisig-setup-intake.md
+- docs/launch-ops-checklist.json
+- docs/launch-ops-checklist.md
+- docs/mainnet-cutover-runbook.md
+- docs/launch-trust-packet.generated.md
+
+## Strict Ingestion Route
+
+1. Build the public-key and signature packet in https://privatedao.org/custody/
+2. Save it locally as docs/custody-evidence-intake.json
+3. Run npm run apply:custody-evidence-intake
+4. Re-open canonical custody proof, launch trust packet, and the track proof closure surfaces
+
+## Required External Inputs
+
+- 3 production signer public keys
+- chosen multisig implementation and address
+- 48+ hour timelock configuration evidence
+- authority transfer signatures, explorer links, and readouts
+- real-device wallet captures
+- external audit report or signed memo
+- first pilot DAO target and operator contact
+
+## Live Routes
+
+- https://privatedao.org/custody/
+- https://privatedao.org/security/
+- https://privatedao.org/documents/launch-trust-packet/
+- https://privatedao.org/documents/canonical-custody-proof/
+
+## Linked Docs
+
+- `docs/canonical-custody-proof.generated.md`
+- `docs/launch-trust-packet.generated.md`
+- `docs/production-custody-ceremony.md`
+- `docs/multisig-setup-intake.md`
+- `docs/multisig-setup-intake.json`
+- `docs/mainnet-blockers.md`
+- `docs/custody-proof-reviewer-packet.generated.md`
+- `docs/custody-observed-readouts.json`
+- `docs/authority-transfer-runbook.md`
+- `docs/external-audit-engagement.md`
+- `docs/audit-handoff.md`
+- `docs/governance-hardening-v3.md`
+- `docs/settlement-hardening-v3.md`
+- `docs/test-wallet-live-proof-v3.generated.md`
+- `docs/runtime/real-device.md`
+- `docs/pilot-onboarding-playbook.md`
+- `docs/pilot-program.md`
+- `docs/trust-package.md`
+
+## Canonical Commands
+
+- `npm run build:custody-proof-reviewer-packet`
+- `npm run verify:custody-proof-reviewer-packet`
+- `npm run apply:custody-evidence-intake`
+- `npm run build:launch-trust-packet`
+- `npm run verify:launch-trust-packet`
+- `npm run verify:multisig-intake`
+- `npm run verify:launch-ops`
+- `npm run verify:mainnet-blockers`
+- `npm run verify:real-device-runtime`
+- `npm run check:mainnet`
+
+## Honest Boundary
+
+This reviewer packet proves the current observed custody state, the exact missing ceremony evidence, and the strict repo-safe ingestion path.
+
+It does not claim that production multisig, signer closure, authority transfer, or post-transfer readouts already exist until those exact public artifacts are recorded.

@@ -158,6 +158,7 @@ Canonical sources:
 
 - `docs/custody-observed-readouts.json`
 - `docs/canonical-custody-proof.generated.md`
+- `docs/custody-proof-reviewer-packet.generated.md`
 - `docs/multisig-setup-intake.json`
 - `docs/production-custody-ceremony.md`
 - `docs/authority-transfer-runbook.md`
@@ -169,6 +170,11 @@ Strict ingestion path:
 1. Build the public-key and signature packet in `https://privatedao.org/custody/`
 2. Save it as local operator input: `docs/custody-evidence-intake.json`
 3. Run `npm run apply:custody-evidence-intake`
+
+Reviewer-facing condensation:
+
+- `docs/custody-proof-reviewer-packet.generated.md`
+- `https://privatedao.org/documents/custody-proof-reviewer-packet/`
 
 ## Slide 9 - Business Model
 
@@ -282,6 +288,7 @@ Core links:
 - Mainnet blockers: `docs/mainnet-blockers.md`
 - Multisig intake: `docs/multisig-setup-intake.md`
 - Multisig intake JSON: `docs/multisig-setup-intake.json`
+- Custody proof reviewer packet: `docs/custody-proof-reviewer-packet.generated.md`
 - Production custody ceremony: `docs/production-custody-ceremony.md`
 - Authority transfer runbook: `docs/authority-transfer-runbook.md`
 - Monitoring rules: `docs/monitoring-alert-rules.md`

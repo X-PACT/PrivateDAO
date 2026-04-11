@@ -12,10 +12,14 @@ This is the shortest high-signal path for a judge, auditor, or technical reviewe
    - `docs/test-wallet-live-proof-v3.generated.md`
    - `docs/governance-hardening-v3.md`
    - `docs/settlement-hardening-v3.md`
-4. Confirm the canonical devnet identity:
+4. Open the custody truth path:
+   - `docs/canonical-custody-proof.generated.md`
+   - `docs/custody-proof-reviewer-packet.generated.md`
+   - `docs/launch-trust-packet.generated.md`
+5. Confirm the canonical devnet identity:
    - Program ID: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
    - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
-5. Read the audit summary:
+6. Read the audit summary:
    - `docs/security-review.md`
 
 ## Five-Minute Review
@@ -28,7 +32,11 @@ This is the shortest high-signal path for a judge, auditor, or technical reviewe
    - `docs/failure-modes.md`
 4. Read replay resistance analysis:
    - `docs/replay-analysis.md`
-5. Inspect the strongest lifecycle tests:
+5. Inspect the strict custody ingestion route:
+   - `docs/production-custody-ceremony.md`
+   - `docs/multisig-setup-intake.md`
+   - `npm run apply:custody-evidence-intake`
+6. Inspect the strongest lifecycle tests:
    - `tests/private-dao.ts`
    - `tests/full-flow-test.ts`
 
