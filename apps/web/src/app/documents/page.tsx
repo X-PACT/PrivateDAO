@@ -6,6 +6,7 @@ import { CustodyTruthQuickActions } from "@/components/custody-truth-quick-actio
 import { DataCorridorQuickLinks } from "@/components/data-corridor-quick-links";
 import { DocumentLibrary } from "@/components/document-library";
 import { CustodyTrustContinuity } from "@/components/custody-trust-continuity";
+import { EcosystemFocusAlignmentStrip } from "@/components/ecosystem-focus-alignment-strip";
 import { OperationsShell } from "@/components/operations-shell";
 import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-truth-strip";
 import { getCuratedDocuments, getCuratedDocumentsBySlugs } from "@/lib/curated-documents";
@@ -69,6 +70,12 @@ export default function DocumentsPage() {
         <DataCorridorQuickLinks
           title="Telemetry reviewer fast path"
           description="Open the telemetry packet, diagnostics, analytics, and hosted-read proof directly from the document center when the reviewer is validating runtime, RPC, or data-side readiness."
+        />
+      </div>
+      <div>
+        <EcosystemFocusAlignmentStrip
+          title="Ecosystem focus alignment for grant and partner reviewers"
+          description="Use this packet layer when the reviewer wants to see how PrivateDAO maps to decentralisation, censorship resistance, DAO tooling, education, developer tooling, payments, and selective cause-driven use cases."
         />
       </div>
       <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.05] p-5">

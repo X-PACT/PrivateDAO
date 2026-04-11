@@ -10,6 +10,10 @@ It is intentionally truth-aligned:
 
 The point is not to collect names. The point is to keep PrivateDAO ready for the highest-value adjacent opportunities without drifting away from the core product thesis.
 
+The ecosystem-focus packet that complements this opportunity map is:
+
+- `docs/ecosystem-focus-alignment.generated.md`
+
 ## Startup Capital Corridor
 
 - Sources:

@@ -218,6 +218,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/strategic-opportunity-readiness-2026.md`,
   },
   {
+    slug: "ecosystem-focus-alignment",
+    title: "Ecosystem Focus Alignment",
+    category: "Strategy",
+    summary: "Generated reviewer-safe mapping from the live product into decentralisation, censorship resistance, DAO tooling, education, developer tooling, payments, and selective cause-driven fit.",
+    audience: "Grant reviewers, partners, judges, founders",
+    boundary: "Alignment packet only; it does not claim every ecosystem corridor is equally mature or externally validated.",
+    docPath: "docs/ecosystem-focus-alignment.generated.md",
+    rawHref: `${repositoryBlobBase}/docs/ecosystem-focus-alignment.generated.md`,
+  },
+  {
     slug: "track-reviewer-packet-colosseum-frontier",
     title: getTrackReviewerPacketPublicLabel("colosseum-frontier"),
     category: "Reviewer core",

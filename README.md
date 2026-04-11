@@ -225,6 +225,25 @@ Canonical strategic reference:
 
 - [`docs/strategic-opportunity-readiness-2026.md`](docs/strategic-opportunity-readiness-2026.md)
 - [`docs/reviewer-telemetry-packet.generated.md`](docs/reviewer-telemetry-packet.generated.md)
+- [`docs/ecosystem-focus-alignment.generated.md`](docs/ecosystem-focus-alignment.generated.md)
+
+## Ecosystem Focus Alignment
+
+The current ecosystem-facing fit is documented in:
+
+- [`docs/ecosystem-focus-alignment.generated.md`](docs/ecosystem-focus-alignment.generated.md)
+
+This packet keeps the case disciplined across:
+
+- decentralisation
+- censorship resistance
+- DAO tooling
+- education
+- developer tooling
+- payments
+- selective cause-driven fit
+
+The rule remains strict: only corridors already visible in the live product are presented as shipped, and every area keeps an explicit next gap instead of inflated claims.
 
 ## Story And Community
 

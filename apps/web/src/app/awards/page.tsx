@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Trophy, Shield } from "lucide-react";
 
 import { MetricsStrip } from "@/components/metrics-strip";
+import { EcosystemFocusAlignmentStrip } from "@/components/ecosystem-focus-alignment-strip";
 import { SectionHeader } from "@/components/section-header";
 import { TrustSurface } from "@/components/trust-surface";
 import { Badge } from "@/components/ui/badge";
@@ -33,6 +34,12 @@ export default function AwardsPage() {
       </div>
       <div className="mt-10">
         <MetricsStrip />
+      </div>
+      <div className="mt-10">
+        <EcosystemFocusAlignmentStrip
+          title="How the current ecosystem focus areas map to the live product"
+          description="Use this layer to show grant and ecosystem reviewers that PrivateDAO already fits decentralisation, DAO tooling, developer tooling, payments, education, and reviewer-safe infrastructure work without pretending every corridor is equally mature."
+        />
       </div>
       <div className="mt-10 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
         <Card className="overflow-hidden">

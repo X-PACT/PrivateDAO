@@ -5,6 +5,7 @@ import { CommercialCompareSurface } from "@/components/commercial-compare-surfac
 import { CustodyReadinessStrip } from "@/components/custody-readiness-strip";
 import { DataCorridorQuickLinks } from "@/components/data-corridor-quick-links";
 import { DevnetServiceMetricsPanel } from "@/components/devnet-service-metrics-panel";
+import { EcosystemFocusAlignmentStrip } from "@/components/ecosystem-focus-alignment-strip";
 import { HostedReadProofStrip } from "@/components/hosted-read-proof-strip";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperationsShell } from "@/components/operations-shell";
@@ -43,6 +44,12 @@ export default function ServicesPage() {
         <ReviewerTelemetryTruthStrip
           title="Telemetry truth for infrastructure buyers"
           description="Put freshness, hosted-read scale, finalized proof counts, and the telemetry packet above the commercial infrastructure story."
+        />
+      </div>
+      <div>
+        <EcosystemFocusAlignmentStrip
+          title="Services also close real ecosystem focus areas"
+          description="Make the payments, DAO tooling, developer tooling, and decentralisation fit explicit from the services surface instead of leaving it buried in grant notes."
         />
       </div>
       <div>

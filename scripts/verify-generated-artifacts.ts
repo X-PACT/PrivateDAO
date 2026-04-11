@@ -29,6 +29,8 @@ function main() {
   const custodyReviewerPacketMdPath = path.resolve("docs/custody-proof-reviewer-packet.generated.md");
   const reviewerTelemetryPacketJsonPath = path.resolve("docs/reviewer-telemetry-packet.generated.json");
   const reviewerTelemetryPacketMdPath = path.resolve("docs/reviewer-telemetry-packet.generated.md");
+  const ecosystemFocusAlignmentJsonPath = path.resolve("docs/ecosystem-focus-alignment.generated.json");
+  const ecosystemFocusAlignmentMdPath = path.resolve("docs/ecosystem-focus-alignment.generated.md");
   const runtimeAttestationPath = path.resolve("docs/runtime-attestation.generated.json");
   const readNodeSnapshotJsonPath = path.resolve("docs/read-node/snapshot.generated.json");
   const readNodeSnapshotMdPath = path.resolve("docs/read-node/snapshot.generated.md");
@@ -124,6 +126,9 @@ function main() {
   }
   if (!fs.existsSync(reviewerTelemetryPacketJsonPath) || !fs.existsSync(reviewerTelemetryPacketMdPath)) {
     throw new Error("missing reviewer telemetry packet artifacts");
+  }
+  if (!fs.existsSync(ecosystemFocusAlignmentJsonPath) || !fs.existsSync(ecosystemFocusAlignmentMdPath)) {
+    throw new Error("missing ecosystem focus alignment artifacts");
   }
   if (!fs.existsSync(runtimeAttestationPath)) {
     throw new Error("missing generated runtime attestation");

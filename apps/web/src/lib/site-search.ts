@@ -151,6 +151,12 @@ export const siteSearchItems: SiteSearchItem[] = [
     summary: "Opportunity map for startup accelerator, regional grants, data and telemetry, confidential payout, and hardening-first corridors around the Frontier cycle.",
   },
   {
+    title: "Ecosystem Focus Alignment",
+    href: "/documents/ecosystem-focus-alignment",
+    category: "Document",
+    summary: "Reviewer-safe mapping from the live product into decentralisation, censorship resistance, DAO tooling, education, developer tooling, payments, and selective cause-driven fit.",
+  },
+  {
     title: "Multisig Setup Intake",
     href: "/documents/multisig-setup-intake",
     category: "Document",

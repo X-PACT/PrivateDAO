@@ -1,0 +1,98 @@
+{
+  "generatedAt": "2026-04-11T15:09:24.775Z",
+  "title": "Ecosystem Focus Alignment",
+  "summary": "Truth-aligned mapping of PrivateDAO into decentralisation, censorship resistance, DAO tooling, education, developer tooling, payments, and selective cause-driven fit.",
+  "focusAreas": [
+    {
+      "slug": "decentralisation",
+      "title": "Promote decentralisation",
+      "fit": "strong",
+      "whatWorksNow": "PrivateDAO already exposes wallet-connected governance, launch blockers, custody truth, authority hardening, and reviewer-safe trust surfaces instead of hiding operational trust in off-product workflows.",
+      "whyItMatters": "This makes decentralisation inspectable as product behavior and operating discipline, not only protocol rhetoric.",
+      "exactGap": "Production multisig closure and authority-transfer evidence still remain the real boundary before stronger decentralisation claims can be made for mainnet funds.",
+      "bestRoutes": [
+        "/start",
+        "/documents/canonical-custody-proof",
+        "/documents/launch-trust-packet"
+      ]
+    },
+    {
+      "slug": "censorship-resistance",
+      "title": "Make Solana more censorship resistant",
+      "fit": "moderate",
+      "whatWorksNow": "PrivateDAO already ships commit-reveal governance, execution safety boundaries, hosted reads, runtime diagnostics, and reviewer-facing proof routes that strengthen governance resilience.",
+      "whyItMatters": "These surfaces show how operational censorship boundaries are handled before a proposal reaches execution.",
+      "exactGap": "The strongest censorship-resistance case still depends on completed custody evidence, monitored runtime ownership, and more externally proven infrastructure closure.",
+      "bestRoutes": [
+        "/security",
+        "/diagnostics",
+        "/documents/live-proof-v3"
+      ]
+    },
+    {
+      "slug": "dao-tooling",
+      "title": "DAO tooling",
+      "fit": "strong",
+      "whatWorksNow": "The core live product already covers DAO creation, proposal lifecycle, private voting, treasury motion handling, trust packets, telemetry, and reviewer-safe surfaces.",
+      "whyItMatters": "Coordination, communication, treasury routing, and proof are already productized into one Solana governance shell.",
+      "exactGap": "The highest-value next step is to keep treasury professionalism and custody continuity extremely tight as the product advances toward mainnet operations.",
+      "bestRoutes": [
+        "/command-center",
+        "/dashboard",
+        "/services"
+      ]
+    },
+    {
+      "slug": "education",
+      "title": "Education",
+      "fit": "moderate",
+      "whatWorksNow": "PrivateDAO already ships a hosted story route, community hub, start workspace, reviewer packets, and documents that onboard judges, users, and operators quickly.",
+      "whyItMatters": "The product already teaches governance, proof, and launch discipline through live routes instead of isolated theory.",
+      "exactGap": "Education will get stronger as video openings, onboarding copy, and public community materials stay perfectly synced with live proof and telemetry.",
+      "bestRoutes": [
+        "/story",
+        "/community",
+        "/start"
+      ]
+    },
+    {
+      "slug": "developer-tooling",
+      "title": "Developer tooling",
+      "fit": "strong",
+      "whatWorksNow": "PrivateDAO already provides reviewer telemetry, generated packets, hosted-read proof, runtime diagnostics, and a developer route tied to real product infrastructure.",
+      "whyItMatters": "This turns the repository and product into a usable Solana infrastructure workflow instead of a raw code dump.",
+      "exactGap": "The best uplift is continued strengthening of exported telemetry, runtime evidence summaries, and infrastructure-facing docs for external engineers.",
+      "bestRoutes": [
+        "/developers",
+        "/analytics",
+        "/documents/reviewer-telemetry-packet"
+      ]
+    },
+    {
+      "slug": "payments",
+      "title": "Payments",
+      "fit": "strong",
+      "whatWorksNow": "Treasury request routing, confidential payout framing, payments-oriented intake flows, and reviewer-safe custody truth are already visible in the live product.",
+      "whyItMatters": "This makes DAO treasury operations and business-facing payout flows concrete rather than conceptual.",
+      "exactGap": "The strongest version still requires strict sender discipline, explorer-linked rails, and completed authority-transfer evidence for real-funds credibility.",
+      "bestRoutes": [
+        "/services",
+        "/security",
+        "/custody"
+      ]
+    },
+    {
+      "slug": "cause-driven",
+      "title": "Cause-driven building",
+      "fit": "selective",
+      "whatWorksNow": "PrivateDAO already supports grant governance, community treasury routing, and privacy-aware payout approval flows that can serve more inclusive coordination models.",
+      "whyItMatters": "The product can support public-good and community-funding structures without exposing every intermediate decision publicly.",
+      "exactGap": "This remains a selective fit until a cause-specific pilot, partner, or measurable impact program is actually documented.",
+      "bestRoutes": [
+        "/documents/grant-committee-pack",
+        "/services",
+        "/community"
+      ]
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import { DeveloperPlatformSurface } from "@/components/developer-platform-surface";
+import { EcosystemFocusAlignmentStrip } from "@/components/ecosystem-focus-alignment-strip";
 import { OperationsShell } from "@/components/operations-shell";
 import { ProofCenter } from "@/components/proof-center";
 import { SiteSearchPanel } from "@/components/site-search-panel";
@@ -17,6 +18,10 @@ export default function DevelopersPage() {
         { label: "Track-aware", variant: "success" },
       ]}
     >
+      <EcosystemFocusAlignmentStrip
+        title="Developer tooling fit should be obvious on the developer route"
+        description="Keep the tooling, telemetry, censorship-resistance, and infrastructure fit legible before the reviewer dives into proof packets and repo artifacts."
+      />
       <DeveloperPlatformSurface />
       <PlatformServiceArchitecture />
       <SiteSearchPanel />

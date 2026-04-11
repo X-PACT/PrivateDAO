@@ -202,6 +202,29 @@ const assistantIntents: AssistantIntent[] = [
     ],
   },
   {
+    title: "Open ecosystem focus alignment",
+    summary:
+      "Use this packet when the reviewer wants the exact mapping from PrivateDAO into decentralisation, censorship resistance, DAO tooling, education, developer tooling, payments, and selective cause-driven fit.",
+    primaryActionLabel: "Open ecosystem focus alignment",
+    primaryActionHref: "/documents/ecosystem-focus-alignment",
+    relatedRoutes: [
+      { label: "Strategic opportunity map", href: "/documents/strategic-opportunity-readiness-2026" },
+      { label: "Services", href: "/services" },
+      { label: "Developers", href: "/developers" },
+    ],
+    keywords: [
+      "decentralisation",
+      "decentralization",
+      "censorship resistance",
+      "dao tooling",
+      "education",
+      "developer tooling",
+      "payments grant",
+      "cause driven",
+      "focus alignment",
+    ],
+  },
+  {
     title: "Package the commercial and API surface",
     summary:
       "Use the services route when the question is about pilots, hosted reads, enterprise governance, sales posture, or infrastructure packaging for buyers and partners.",

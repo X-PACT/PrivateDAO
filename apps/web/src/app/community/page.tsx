@@ -1,4 +1,5 @@
 import { CommunityHub } from "@/components/community-hub";
+import { EcosystemFocusAlignmentStrip } from "@/components/ecosystem-focus-alignment-strip";
 import { LeadSupportIntake } from "@/components/lead-support-intake";
 import { OperationsShell } from "@/components/operations-shell";
 import { PlatformServiceArchitecture } from "@/components/platform-service-architecture";
@@ -47,6 +48,10 @@ export default function CommunityPage({ searchParams }: CommunityPageProps) {
         { label: "Join -> pilot -> operator", variant: "cyan" },
       ]}
     >
+      <EcosystemFocusAlignmentStrip
+        title="Community and education fit now starts from the live product"
+        description="Show that education and community alignment already come from hosted story, onboarding, and reviewer-safe trust routes, not from a dead-end social page."
+      />
       <CommunityHub />
       <LeadSupportIntake mode="community" />
       <ProductIntakeForms mode="community" initialKind={initialKind} initialFundingContext={initialFundingContext} />
