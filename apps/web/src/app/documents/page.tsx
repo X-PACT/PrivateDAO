@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { DocumentLibrary } from "@/components/document-library";
+import { CustodyTrustContinuity } from "@/components/custody-trust-continuity";
 import { OperationsShell } from "@/components/operations-shell";
 import { getCuratedDocuments } from "@/lib/curated-documents";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -27,6 +28,9 @@ export default function DocumentsPage() {
         { label: "Raw viewer included", variant: "warning" },
       ]}
     >
+      <div>
+        <CustodyTrustContinuity mode="documents" />
+      </div>
       <div>
         <DocumentLibrary documents={documents} />
       </div>

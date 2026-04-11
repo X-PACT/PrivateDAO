@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight, BriefcaseBusiness, KeyRound, Rocket, ShieldCheck } from "lucide-react";
 
+import { CustodyTrustContinuity } from "@/components/custody-trust-continuity";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   competitionTrackWorkspaces,
@@ -14,6 +15,8 @@ const offerIcons = [Rocket, KeyRound, ShieldCheck, BriefcaseBusiness];
 export function CustomerConversionSurface() {
   return (
     <div className="grid gap-6">
+      <CustodyTrustContinuity mode="buyer" />
+
       <Card>
         <CardHeader>
           <CardTitle>Customer conversion ladder</CardTitle>
