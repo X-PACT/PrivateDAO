@@ -69,6 +69,28 @@ const assistantIntents: AssistantIntent[] = [
     keywords: ["zk", "security", "encryption", "magicblock", "refhe", "rpc", "fast rpc", "cryptography", "matrix"],
   },
   {
+    title: "Open the Security + Intelligence layer",
+    summary:
+      "Use the intelligence route when the user wants proposal analysis, treasury risk warnings, voting summaries, RPC interpretation, or gaming-governance assistance inside the product.",
+    primaryActionLabel: "Open intelligence workspace",
+    primaryActionHref: "/intelligence",
+    relatedRoutes: [
+      { label: "Security", href: "/security" },
+      { label: "Services", href: "/services" },
+      { label: "RPC Infrastructure Track", href: "/tracks/rpc-infrastructure" },
+    ],
+    keywords: [
+      "proposal analyzer",
+      "treasury risk",
+      "voting summary",
+      "rpc analyzer",
+      "gaming ai",
+      "intelligence",
+      "ai features",
+      "ai powered",
+    ],
+  },
+  {
     title: "Review mainnet authority hardening",
     summary:
       "Open the security route and the authority brief when the question is about multisig, upgrade authority, treasury authority, or admin-boundary discipline before Mainnet.",

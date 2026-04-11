@@ -4,6 +4,7 @@ import { MetricsStrip } from "@/components/metrics-strip";
 import { AuthorityHardeningPanel } from "@/components/authority-hardening-panel";
 import { ConfidenceEngineSurface } from "@/components/confidence-engine-surface";
 import { FrontierSignalBoard } from "@/components/frontier-signal-board";
+import { IntelligenceLayerSurface } from "@/components/intelligence-layer-surface";
 import { OperationsShell } from "@/components/operations-shell";
 import { SecurityCenter } from "@/components/security-center";
 import { SectionHeader } from "@/components/section-header";
@@ -68,6 +69,16 @@ export default function SecurityPage() {
       </div>
       <div>
         <ConfidenceEngineSurface />
+      </div>
+      <div>
+        <SectionHeader
+          eyebrow="Security + Intelligence"
+          title="Proposal, treasury, voting, RPC, and gaming analysis belong inside the security story"
+          description="PrivateDAO should help users detect abnormal treasury motions, summarize governance discussion, and interpret runtime health before signatures happen. This is where AI-style assistance becomes operational instead of cosmetic."
+        />
+      </div>
+      <div>
+        <IntelligenceLayerSurface />
       </div>
     </OperationsShell>
   );

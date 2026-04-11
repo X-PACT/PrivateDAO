@@ -5,6 +5,7 @@ import { DevnetServiceMetricsPanel } from "@/components/devnet-service-metrics-p
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperationsShell } from "@/components/operations-shell";
 import { PlatformServiceArchitecture } from "@/components/platform-service-architecture";
+import { SectionHeader } from "@/components/section-header";
 import { ServiceOperationalCards } from "@/components/service-operational-cards";
 import { ServiceReadinessLadder } from "@/components/service-readiness-ladder";
 import { ServicesSurface } from "@/components/services-surface";
@@ -46,6 +47,22 @@ export default function ServicesPage() {
         <ServiceOperationalCards />
       </div>
       <div>
+        <SectionHeader
+          eyebrow="AI-powered features"
+          title="Operational intelligence is now part of the commercial surface"
+          description="Proposal Analyzer, Treasury Risk AI, Voting Summary, RPC Analyzer, and Gaming AI strengthen how buyers understand PrivateDAO. They are part of the product story because they improve real decisions."
+        />
+      </div>
+      <div>
+        <ServicesSurface />
+      </div>
+      <div>
+        <CommercialCompareSurface />
+      </div>
+      <div className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6 text-sm leading-7 text-white/66">
+        Open <a className="text-cyan-100 underline underline-offset-4" href="/intelligence">/intelligence</a> to try the live Security + Intelligence layer. It is where proposal analysis, treasury warnings, voting compression, RPC interpretation, and gaming-governance assistance become user-visible.
+      </div>
+      <div>
         <TreasuryProfileQuickActions title="Fast commercial treasury routes" />
       </div>
       <div>
@@ -56,12 +73,6 @@ export default function ServicesPage() {
       </div>
       <div>
         <ServiceReadinessLadder />
-      </div>
-      <div>
-        <CommercialCompareSurface />
-      </div>
-      <div>
-        <ServicesSurface />
       </div>
     </OperationsShell>
   );

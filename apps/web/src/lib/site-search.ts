@@ -49,6 +49,12 @@ export const siteSearchItems: SiteSearchItem[] = [
     summary: "ZK matrix, confidence engine, policy composer, and hardening surfaces.",
   },
   {
+    title: "Intelligence",
+    href: "/intelligence",
+    category: "Route",
+    summary: "Proposal Analyzer, Treasury Risk AI, Voting Summary, RPC Analyzer, and Gaming AI in one operational layer.",
+  },
+  {
     title: "Diagnostics",
     href: "/diagnostics",
     category: "Route",
@@ -119,6 +125,36 @@ export const siteSearchItems: SiteSearchItem[] = [
     href: "/documents/cryptographic-confidence-engine",
     category: "Document",
     summary: "Deterministic scoring for ZK, REFHE, MagicBlock, Fast RPC, and governance posture.",
+  },
+  {
+    title: "Proposal Analyzer",
+    href: "/intelligence#proposal-analyzer",
+    category: "Service",
+    summary: "Pre-vote proposal risk analysis for amount size, recipient novelty, timelock strength, and treasury framing.",
+  },
+  {
+    title: "Treasury Risk AI",
+    href: "/intelligence#treasury-risk-ai",
+    category: "Service",
+    summary: "Treasury anomaly review for large payouts, repeated attempts, short execution delays, and new recipients.",
+  },
+  {
+    title: "Voting Summary",
+    href: "/intelligence#voting-summary",
+    category: "Service",
+    summary: "Compress governance discussion into support, concern, and execution-safety signals.",
+  },
+  {
+    title: "RPC Analyzer",
+    href: "/intelligence#rpc-analyzer",
+    category: "Service",
+    summary: "Turn latency, success rate, error rate, and retry pressure into a readable RPC health posture.",
+  },
+  {
+    title: "Gaming AI",
+    href: "/intelligence#gaming-ai",
+    category: "Service",
+    summary: "Evaluate reward changes, payout fan-out, and clan impact before game-governance rollout.",
   },
   {
     title: "ZK Capability Matrix",

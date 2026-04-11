@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Compass, FileText, Search, ShieldCheck, Sparkles, Wallet } from "lucide-react";
+import { ArrowRight, BrainCircuit, Compass, FileText, Search, ShieldCheck, Sparkles, Wallet } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
@@ -27,6 +27,12 @@ const assistantPaths = [
     summary: "Go straight to the ZK matrix, confidence engine, and policy composer.",
     href: "/security",
     icon: ShieldCheck,
+  },
+  {
+    title: "I need AI-powered governance analysis",
+    summary: "Open the intelligence layer for Proposal Analyzer, Treasury Risk AI, Voting Summary, RPC Analyzer, and Gaming AI.",
+    href: "/intelligence",
+    icon: BrainCircuit,
   },
   {
     title: "I need docs fast",
@@ -71,7 +77,7 @@ export function InternalAssistantPanel() {
             <input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Ask AI where to go: QuickNode, Solflare, privacy, judge path, consumer, Ranger, 100xDevs..."
+              placeholder="Ask AI where to go: Proposal Analyzer, treasury risk, QuickNode, Solflare, privacy, review path..."
               className="w-full bg-transparent text-sm text-white outline-none placeholder:text-white/34"
             />
           </div>
@@ -79,7 +85,7 @@ export function InternalAssistantPanel() {
             This assistant is optimized for routing users, judges, operators, and competition reviewers to the shortest correct path in the product. It keeps the site usable without forcing anyone to understand the whole system first.
           </div>
           <div className="rounded-3xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/58">
-            Try: “I need pilot funding”, “vendor payout”, “treasury top-up”, “what is blocking privacy track mainnet?”, or “what is the fastest paid motion for QuickNode track?”.
+            Try: “proposal analyzer”, “treasury risk ai”, “rpc analyzer”, “I need pilot funding”, or “what is blocking privacy track mainnet?”.
           </div>
           <div className="grid gap-4">
             {assistantPaths.map((path) => {
