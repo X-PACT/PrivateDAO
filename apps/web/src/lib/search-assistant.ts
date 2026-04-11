@@ -1,6 +1,7 @@
 import { competitionTrackWorkspaces, proposalRegistry } from "@/lib/site-data";
 import { getCompetitionLaneLabel } from "@/lib/competition-lane-labels";
 import { getSubmissionCoachPlan } from "@/lib/submission-coach";
+import { getTreasuryReceiveConfig } from "@/lib/treasury-receive-config";
 import { getTrackCommercializationPlan } from "@/lib/track-commercialization";
 import { getTrackMainnetGatePlan } from "@/lib/track-mainnet-gates";
 import { getTrackNarrativePlan } from "@/lib/track-narratives";
@@ -12,6 +13,19 @@ export type AssistantSuggestion = {
   summary: string;
   primaryActionLabel: string;
   primaryActionHref: string;
+  queryBlock?: {
+    kind: "payments-truth";
+    title: string;
+    readiness: string;
+    network: string;
+    rails: string;
+    blocker: string;
+    blockerSummary: string;
+    reviewerPacketLabel: string;
+    reviewerPacketHref: string;
+    bestRouteLabel: string;
+    bestRouteHref: string;
+  };
   relatedRoutes: Array<{
     label: string;
     href: string;
@@ -29,6 +43,49 @@ type AssistantIntent = {
   }>;
   keywords: string[];
 };
+
+function hasPaymentsTruthIntent(normalized: string) {
+  return [
+    "treasury",
+    "payments",
+    "payment",
+    "vendor payout",
+    "contributor payout",
+    "pilot funding",
+    "treasury top-up",
+    "treasury top up",
+    "top-up",
+    "top up",
+    "sender checklist",
+    "payment rails",
+    "treasury rails",
+  ].some((term) => normalized.includes(term));
+}
+
+function getPaymentsTruthBlock(normalized: string): AssistantSuggestion["queryBlock"] | undefined {
+  if (!hasPaymentsTruthIntent(normalized)) return undefined;
+
+  const treasury = getTreasuryReceiveConfig();
+  const isExecutionPath =
+    normalized.includes("vendor payout") || normalized.includes("contributor payout");
+
+  return {
+    kind: "payments-truth",
+    title: "Payments truth",
+    readiness: "Devnet rails live, production treasury still evidence-gated",
+    network: treasury.network,
+    rails: `${treasury.assets.length} public rails`,
+    blocker: "upgrade-authority-multisig · pending-external",
+    blockerSummary:
+      "Move production upgrade authority and operational authorities to a documented multisig or governance-owned path and rehearse rotation.",
+    reviewerPacketLabel: "Open treasury reviewer packet",
+    reviewerPacketHref: "/documents/treasury-reviewer-packet",
+    bestRouteLabel: isExecutionPath
+      ? "Open command-center payments path"
+      : "Open services payments path",
+    bestRouteHref: isExecutionPath ? "/command-center" : "/services",
+  };
+}
 
 const assistantIntents: AssistantIntent[] = [
   {
@@ -354,6 +411,7 @@ function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
         { label: "2. Engage", href: "/engage?profile=pilot-funding" },
         { label: "3. Proof", href: workspace.proofRoute },
       ],
+      queryBlock: getPaymentsTruthBlock(normalized),
     };
   }
 
@@ -369,6 +427,7 @@ function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
         { label: "2. Engage", href: "/engage?profile=treasury-top-up" },
         { label: "3. Services", href: "/services" },
       ],
+      queryBlock: getPaymentsTruthBlock(normalized),
     };
   }
 
@@ -384,6 +443,7 @@ function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
         { label: "2. Command Center", href: "/command-center" },
         { label: "3. Diagnostics", href: "/diagnostics" },
       ],
+      queryBlock: getPaymentsTruthBlock(normalized),
     };
   }
 
@@ -398,6 +458,7 @@ function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
       { label: "2. Command Center", href: "/command-center" },
       { label: "3. Security", href: "/security" },
     ],
+    queryBlock: getPaymentsTruthBlock(normalized),
   };
 }
 
@@ -496,6 +557,7 @@ function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null
         { label: "2. Frontier primary workspace", href: "/tracks/colosseum-frontier?profile=pilot-funding" },
         { label: "3. Proof and trust", href: "/documents/frontier-competition-readiness-2026" },
       ],
+      queryBlock: getPaymentsTruthBlock(normalized),
     };
   }
 
@@ -511,6 +573,7 @@ function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null
         { label: "2. Live app corridor", href: "/tracks/eitherway-live-dapp?profile=vendor-payout" },
         { label: "3. Command and diagnostics", href: "/command-center" },
       ],
+      queryBlock: getPaymentsTruthBlock(normalized),
     };
   }
 
@@ -526,6 +589,7 @@ function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null
         { label: "2. Wallet-first product workspace", href: "/tracks/consumer-apps?profile=contributor-payout" },
         { label: "3. Command and trust", href: "/command-center" },
       ],
+      queryBlock: getPaymentsTruthBlock(normalized),
     };
   }
 
@@ -541,6 +605,7 @@ function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null
         { label: "2. Runtime infrastructure workspace", href: "/tracks/rpc-infrastructure?profile=treasury-top-up" },
         { label: "3. Services and trust", href: "/services" },
       ],
+      queryBlock: getPaymentsTruthBlock(normalized),
     };
   }
 
@@ -819,6 +884,7 @@ function getCustodyTruthSuggestion(query: string): AssistantSuggestion | null {
       { label: "2. Canonical custody proof", href: "/documents/canonical-custody-proof" },
       { label: "3. Custody workspace", href: "/custody" },
     ],
+    queryBlock: getPaymentsTruthBlock(normalized),
   };
 }
 
@@ -852,6 +918,7 @@ function getTelemetrySuggestion(query: string): AssistantSuggestion | null {
       { label: "2. Diagnostics", href: "/diagnostics" },
       { label: "3. Analytics", href: "/analytics" },
     ],
+    queryBlock: getPaymentsTruthBlock(normalized),
   };
 }
 
@@ -897,6 +964,7 @@ function getTrackReviewerPacketSuggestion(query: string): AssistantSuggestion | 
       { label: "2. Track workspace", href: match.trackRoute },
       { label: "3. Track proof route", href: match.proofRoute },
     ],
+    queryBlock: getPaymentsTruthBlock(normalized),
   };
 }
 
@@ -946,6 +1014,7 @@ export function getAssistantSuggestion(query: string): AssistantSuggestion {
     summary: top.intent.summary,
     primaryActionLabel: top.intent.primaryActionLabel,
     primaryActionHref: top.intent.primaryActionHref,
+    queryBlock: getPaymentsTruthBlock(normalized),
     relatedRoutes: top.intent.relatedRoutes,
   };
 }

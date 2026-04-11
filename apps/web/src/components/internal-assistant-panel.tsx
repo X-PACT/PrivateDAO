@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, BrainCircuit, Compass, FileText, Search, ShieldCheck, Sparkles, Wallet } from "lucide-react";
+import { ArrowRight, BanknoteArrowDown, BrainCircuit, Compass, FileText, Search, ShieldCheck, Sparkles, Wallet, WalletCards } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
@@ -150,6 +150,47 @@ export function InternalAssistantPanel() {
                 )
               ))}
             </div>
+            {suggestion.queryBlock?.kind === "payments-truth" ? (
+              <div className="mt-5 rounded-3xl border border-emerald-300/16 bg-emerald-300/[0.07] p-4">
+                <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-100/72">
+                  {suggestion.queryBlock.title}
+                </div>
+                <div className="mt-4 grid gap-3">
+                  <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                    <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-white/42">
+                      <BanknoteArrowDown className="h-3.5 w-3.5 text-emerald-200/78" />
+                      Readiness
+                    </div>
+                    <div className="mt-2 text-sm font-medium text-white">{suggestion.queryBlock.readiness}</div>
+                  </div>
+                  <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                    <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-white/42">
+                      <WalletCards className="h-3.5 w-3.5 text-emerald-200/78" />
+                      Rails
+                    </div>
+                    <div className="mt-2 text-sm font-medium text-white">
+                      {suggestion.queryBlock.network} · {suggestion.queryBlock.rails}
+                    </div>
+                  </div>
+                  <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                    <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-white/42">
+                      <ShieldCheck className="h-3.5 w-3.5 text-emerald-200/78" />
+                      Blocker
+                    </div>
+                    <div className="mt-2 text-sm font-medium text-white">{suggestion.queryBlock.blocker}</div>
+                    <p className="mt-2 text-sm leading-7 text-white/58">{suggestion.queryBlock.blockerSummary}</p>
+                  </div>
+                </div>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <Link href={suggestion.queryBlock.reviewerPacketHref} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+                    {suggestion.queryBlock.reviewerPacketLabel}
+                  </Link>
+                  <Link href={suggestion.queryBlock.bestRouteHref} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                    {suggestion.queryBlock.bestRouteLabel}
+                  </Link>
+                </div>
+              </div>
+            ) : null}
           </div>
           <Link href="/search" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "w-full")}>
             Open site search
