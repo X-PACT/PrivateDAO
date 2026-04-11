@@ -3,6 +3,7 @@
 import { X } from "lucide-react";
 
 import { OnchainParityPanel } from "@/components/onchain-parity-panel";
+import { ProposalAnalyzerInline } from "@/components/proposal-analyzer-inline";
 import { getConfidenceEngineSummary } from "@/lib/confidence-engine";
 import { buildPreparedActionSummary, type PreparedActionSummary } from "@/lib/onchain-parity";
 import type { ProposalCardModel } from "@/lib/site-data";
@@ -98,6 +99,10 @@ export function VoteModal({ proposal, onClose }: VoteModalProps) {
               Recommendation: {confidence.recommendations[0] ?? "Current path is already well-scoped for the selected proposal."}
             </div>
           </div>
+        </div>
+
+        <div className="mt-6">
+          <ProposalAnalyzerInline proposal={proposal} />
         </div>
 
         <div className="mt-6 grid gap-4">

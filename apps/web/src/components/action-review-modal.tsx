@@ -3,6 +3,7 @@
 import { X } from "lucide-react";
 
 import { OnchainParityPanel } from "@/components/onchain-parity-panel";
+import { ProposalAnalyzerInline } from "@/components/proposal-analyzer-inline";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { buildPreparedActionSummary } from "@/lib/onchain-parity";
@@ -102,6 +103,12 @@ export function ActionReviewModal({
           <Badge variant="success">Program {summary.programId.slice(0, 8)}…</Badge>
           <Badge variant="violet">Token {summary.governanceTokenProgram.slice(0, 8)}…</Badge>
         </div>
+
+        {proposal ? (
+          <div className="mt-6">
+            <ProposalAnalyzerInline proposal={proposal} />
+          </div>
+        ) : null}
 
         <div className="mt-6">
           <OnchainParityPanel action={action} preparedSummary={summary} />
