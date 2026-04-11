@@ -312,8 +312,10 @@ export function getCuratedDocuments() {
 }
 
 export function getCuratedDocumentsBySlugs(slugs: string[]) {
-  const wanted = new Set(slugs);
-  return curatedDocuments.filter((entry) => wanted.has(entry.slug));
+  const documentMap = new Map(curatedDocuments.map((entry) => [entry.slug, entry]));
+  return slugs
+    .map((slug) => documentMap.get(slug))
+    .filter((entry): entry is CuratedDocument => entry !== undefined);
 }
 
 export function getCuratedDocument(slug: string) {

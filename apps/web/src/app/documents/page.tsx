@@ -8,11 +8,16 @@ import { OperationsShell } from "@/components/operations-shell";
 import { getCuratedDocuments, getCuratedDocumentsBySlugs } from "@/lib/curated-documents";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
-const PRIORITY_REVIEWER_PACKET_SLUGS = [
+const PRIORITY_TRUTH_SURFACE_SLUGS = [
+  "canonical-custody-proof",
+  "custody-proof-reviewer-packet",
+  "launch-trust-packet",
+];
+
+const TRACK_REVIEWER_PACKET_SLUGS = [
   "track-reviewer-packet-colosseum-frontier",
   "track-reviewer-packet-privacy-track",
   "track-reviewer-packet-rpc-infrastructure",
-  "custody-proof-reviewer-packet",
 ];
 
 export const metadata: Metadata = buildRouteMetadata({
@@ -25,8 +30,11 @@ export const metadata: Metadata = buildRouteMetadata({
 
 export default function DocumentsPage() {
   const documents = getCuratedDocuments();
-  const priorityReviewerPackets = getCuratedDocumentsBySlugs(PRIORITY_REVIEWER_PACKET_SLUGS);
-  const prioritySlugs = new Set(priorityReviewerPackets.map((document) => document.slug));
+  const priorityTruthSurfaces = getCuratedDocumentsBySlugs(PRIORITY_TRUTH_SURFACE_SLUGS);
+  const trackReviewerPackets = getCuratedDocumentsBySlugs(TRACK_REVIEWER_PACKET_SLUGS);
+  const prioritySlugs = new Set(
+    [...priorityTruthSurfaces, ...trackReviewerPackets].map((document) => document.slug),
+  );
   const remainingDocuments = documents.filter((document) => !prioritySlugs.has(document.slug));
 
   return (
@@ -54,12 +62,21 @@ export default function DocumentsPage() {
       </div>
       <div>
         <div className="mb-5">
-          <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/76">Priority reviewer packets</div>
+          <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/76">Priority truth surfaces</div>
           <div className="mt-3 max-w-3xl text-sm leading-7 text-white/60">
-            Open these four packets first if the reviewer entered from `/documents`. They already compress the three priority track packets plus the custody truth packet without requiring search.
+            Open these three documents first if the reviewer entered from `/documents`. They establish the operating truth first: canonical custody proof, the reviewer-safe custody packet, and the launch trust packet.
           </div>
         </div>
-        <DocumentLibrary documents={priorityReviewerPackets} />
+        <DocumentLibrary documents={priorityTruthSurfaces} />
+      </div>
+      <div>
+        <div className="mb-5">
+          <div className="text-[11px] uppercase tracking-[0.3em] text-violet-200/76">Track reviewer packets</div>
+          <div className="mt-3 max-w-3xl text-sm leading-7 text-white/60">
+            After the truth surfaces, open the three priority track packets for the judge-first summary of Frontier, Privacy, and RPC Infrastructure.
+          </div>
+        </div>
+        <DocumentLibrary documents={trackReviewerPackets} />
       </div>
       <div>
         <div className="mb-5">
