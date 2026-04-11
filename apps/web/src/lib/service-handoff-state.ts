@@ -30,6 +30,9 @@ export type ServiceHandoffState = {
   source: "start" | "services" | "command-center";
 };
 
+let storedServiceHandoffRawCache: string | null = null;
+let storedServiceHandoffParsedCache: ServiceHandoffState | null = null;
+
 export function buildServiceHandoffQuery(state: ServiceHandoffState) {
   const params = new URLSearchParams();
   params.set("proposal", state.proposalId);
@@ -71,6 +74,19 @@ export function parseStoredServiceHandoffState(raw: string | null): ServiceHando
   } catch {
     return null;
   }
+}
+
+export function readStoredServiceHandoffState(): ServiceHandoffState | null {
+  if (typeof window === "undefined") return null;
+
+  const raw = window.localStorage.getItem(SERVICE_HANDOFF_STORAGE_KEY);
+  if (raw === storedServiceHandoffRawCache) {
+    return storedServiceHandoffParsedCache;
+  }
+
+  storedServiceHandoffRawCache = raw;
+  storedServiceHandoffParsedCache = parseStoredServiceHandoffState(raw);
+  return storedServiceHandoffParsedCache;
 }
 
 export function readServiceHandoffState(searchParams: URLSearchParams) {

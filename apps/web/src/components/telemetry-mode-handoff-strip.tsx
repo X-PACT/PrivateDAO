@@ -8,8 +8,8 @@ import { ArrowRight, Radar, ServerCog, ScrollText } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  parseStoredServiceHandoffState,
   readServiceHandoffState,
+  readStoredServiceHandoffState,
   SERVICE_HANDOFF_STORAGE_KEY,
   type ServiceHandoffTelemetryMode,
 } from "@/lib/service-handoff-state";
@@ -64,10 +64,7 @@ function subscribeToStorage(callback: () => void) {
 }
 
 function getStoredSnapshot() {
-  if (typeof window === "undefined") return null;
-  return parseStoredServiceHandoffState(
-    window.localStorage.getItem(SERVICE_HANDOFF_STORAGE_KEY),
-  );
+  return readStoredServiceHandoffState();
 }
 
 export function TelemetryModeHandoffStrip({

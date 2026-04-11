@@ -10,6 +10,7 @@ import { buttonVariants } from "@/components/ui/button";
 import {
   buildServiceHandoffQuery,
   readServiceHandoffState,
+  readStoredServiceHandoffState,
   SERVICE_HANDOFF_STORAGE_KEY,
   type ServiceHandoffState,
 } from "@/lib/service-handoff-state";
@@ -19,18 +20,6 @@ import { cn } from "@/lib/utils";
 type ServiceHandoffStripProps = {
   context: "services" | "command-center";
 };
-
-function safeReadStoredState() {
-  if (typeof window === "undefined") return null;
-  const raw = window.localStorage.getItem(SERVICE_HANDOFF_STORAGE_KEY);
-  if (!raw) return null;
-
-  try {
-    return JSON.parse(raw) as ServiceHandoffState;
-  } catch {
-    return null;
-  }
-}
 
 function subscribeToStorage(callback: () => void) {
   if (typeof window === "undefined") return () => {};
@@ -44,7 +33,7 @@ function subscribeToStorage(callback: () => void) {
 }
 
 function getStoredSnapshot() {
-  return safeReadStoredState();
+  return readStoredServiceHandoffState();
 }
 
 const copy = {

@@ -9,8 +9,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import {
   buildServiceHandoffQuery,
-  parseStoredServiceHandoffState,
   readServiceHandoffState,
+  readStoredServiceHandoffState,
   SERVICE_HANDOFF_STORAGE_KEY,
   type ServiceHandoffProfile,
 } from "@/lib/service-handoff-state";
@@ -63,10 +63,7 @@ function subscribeToStorage(callback: () => void) {
 }
 
 function getStoredSnapshot() {
-  if (typeof window === "undefined") return null;
-  return parseStoredServiceHandoffState(
-    window.localStorage.getItem(SERVICE_HANDOFF_STORAGE_KEY),
-  );
+  return readStoredServiceHandoffState();
 }
 
 export function TreasuryProfileQuickActions({ title = "Commercial quick actions" }: TreasuryProfileQuickActionsProps) {
