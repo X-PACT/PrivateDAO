@@ -7,6 +7,7 @@ import { ShieldCheck, WalletCards } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CustodyTrustContinuity } from "@/components/custody-trust-continuity";
 import { buildCustodyNarrative, custodyEvidenceUpdatedEvent, emptyCustodyEvidence, getCustodyEvidenceCompletion, readCustodyEvidence, type CustodyEvidence } from "@/lib/custody-evidence";
 import type { CompetitionTrackWorkspace } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
@@ -128,6 +129,7 @@ export function TrackCustodyImpactPanel({ workspace }: TrackCustodyImpactPanelPr
             Evidence completion {completion.completed}/{completion.total}
           </Button>
         </div>
+        <CustodyTrustContinuity mode="track" />
       </CardContent>
     </Card>
   );

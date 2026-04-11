@@ -11,7 +11,7 @@ import { buildCustodyNarrative, custodyEvidenceUpdatedEvent, emptyCustodyEvidenc
 import { cn } from "@/lib/utils";
 
 type CustodyTrustContinuityProps = {
-  mode?: "documents" | "buyer";
+  mode?: "documents" | "buyer" | "track";
 };
 
 function downloadPacket(filename: string, contents: string) {
@@ -50,11 +50,49 @@ export function CustodyTrustContinuity({ mode = "buyer" }: CustodyTrustContinuit
 
   const completion = useMemo(() => getCustodyEvidenceCompletion(evidence), [evidence]);
   const narrative = useMemo(() => buildCustodyNarrative(evidence), [evidence]);
+  const wording = useMemo(() => {
+    if (mode === "documents") {
+      return {
+        packetTitle: "Reviewer packet copy",
+        packetDescription: "Copy a concise reviewer-facing custody update that stays aligned with the repo narrative and current trust boundary.",
+        packetNote: "Use this packet when you need reviewer or audit-facing wording without manually rewriting the trust state.",
+        snippetTitle: "Reviewer / deck snippet",
+        snippetDescription: "Copy a trust-and-custody snippet that fits reviewer notes, audit summaries, or trust slides.",
+        snippetNote: "This snippet stays aligned with the live product state and is intended for reviewer packets or trust sections.",
+        snippetLabel: "Suggested reviewer copy:",
+        buyerTitle: "Reviewer trust path",
+      };
+    }
+
+    if (mode === "track") {
+      return {
+        packetTitle: "Judge packet copy",
+        packetDescription: "Copy a concise judge-facing custody update that explains what is implemented, what is recorded, and what remains explicitly outside the claim boundary.",
+        packetNote: "Use this packet when you need submission wording that strengthens trust without overstating mainnet readiness.",
+        snippetTitle: "Judge / submission snippet",
+        snippetDescription: "Copy a custody-and-trust snippet that fits the submission route, track workspace, or judge-facing notes.",
+        snippetNote: "This snippet stays aligned with the live product state and is intended for submission trust, mainnet distance, or judge-facing sections.",
+        snippetLabel: "Suggested submission copy:",
+        buyerTitle: "Submission trust path",
+      };
+    }
+
+    return {
+      packetTitle: "README packet copy",
+      packetDescription: "Copy a concise custody update that stays aligned with the repo narrative and current trust boundary.",
+      packetNote: "Use this packet when you need a README-style update without manually rewriting the trust state.",
+      snippetTitle: "Pitch deck snippet",
+      snippetDescription: "Copy a concise custody-and-trust update that fits the investor or competition deck without rewriting the boundary language by hand.",
+      snippetNote: "This snippet stays aligned with the live product state and is intended for the custody, trust, or mainnet-readiness slides.",
+      snippetLabel: "Suggested slide copy:",
+      buyerTitle: "Commercial buyer path",
+    };
+  }, [mode]);
 
   const readmeCopy = useMemo(
     () =>
       [
-        "README-aligned custody update",
+        mode === "documents" ? "Reviewer-aligned custody update" : mode === "track" ? "Judge-aligned custody update" : "README-aligned custody update",
         "",
         `Custody status: ${narrative.badge}`,
         `Custody completion: ${completion.completed}/${completion.total}`,
@@ -67,23 +105,39 @@ export function CustodyTrustContinuity({ mode = "buyer" }: CustodyTrustContinuit
         `Upgrade transfer signature: ${evidence.upgradeTransferSignature.trim() || "Not recorded yet"}`,
         `Treasury transfer signature: ${evidence.treasuryTransferSignature.trim() || "Not recorded yet"}`,
       ].join("\n"),
-    [completion, evidence, narrative],
+    [completion, evidence, mode, narrative],
   );
 
   const pitchDeckSnippet = useMemo(
     () =>
       [
-        "Pitch deck snippet - custody and trust",
+        mode === "documents"
+          ? "Reviewer snippet - custody and trust"
+          : mode === "track"
+            ? "Judge submission snippet - custody and trust"
+            : "Pitch deck snippet - custody and trust",
         "",
         `Custody status: ${narrative.badge}`,
         `Custody completion: ${completion.completed}/${completion.total}`,
         "",
-        "Suggested slide copy:",
-        completion.completed === 0
-          ? "PrivateDAO already exposes the custody workflow inside the product, while production multisig and authority-transfer evidence remain an explicit external launch gate."
-          : completion.completed < completion.total
-            ? `PrivateDAO now records partial custody ceremony evidence in-product (${completion.completed}/${completion.total}), which strengthens reviewer trust while keeping the remaining authority-transfer artifacts explicitly open.`
-            : "PrivateDAO now keeps a fully populated custody packet inside the product surface, materially improving launch trust while preserving the explicit boundary around final external validation.",
+        wording.snippetLabel,
+        mode === "track"
+          ? completion.completed === 0
+            ? "This submission already exposes the custody workflow inside the product, while production multisig and authority-transfer evidence remain explicit external launch gates rather than hidden assumptions."
+            : completion.completed < completion.total
+              ? `This submission now records partial custody ceremony evidence in-product (${completion.completed}/${completion.total}), which strengthens submission trust while keeping the remaining authority-transfer artifacts explicitly open.`
+              : "This submission now keeps a fully populated custody packet inside the product surface, materially improving submission trust and shortening visible mainnet distance while preserving the explicit boundary around final external validation."
+          : mode === "documents"
+            ? completion.completed === 0
+              ? "PrivateDAO already exposes the custody workflow inside the product, while production multisig and authority-transfer evidence remain explicit external launch gates for reviewer discipline."
+              : completion.completed < completion.total
+                ? `PrivateDAO now records partial custody ceremony evidence in-product (${completion.completed}/${completion.total}), which strengthens reviewer trust while keeping the remaining authority-transfer artifacts explicitly open.`
+                : "PrivateDAO now keeps a fully populated custody packet inside the product surface, materially improving reviewer confidence while preserving the explicit boundary around final external validation."
+            : completion.completed === 0
+              ? "PrivateDAO already exposes the custody workflow inside the product, while production multisig and authority-transfer evidence remain an explicit external launch gate."
+              : completion.completed < completion.total
+                ? `PrivateDAO now records partial custody ceremony evidence in-product (${completion.completed}/${completion.total}), which strengthens reviewer trust while keeping the remaining authority-transfer artifacts explicitly open.`
+                : "PrivateDAO now keeps a fully populated custody packet inside the product surface, materially improving launch trust while preserving the explicit boundary around final external validation.",
         "",
         "Operator proof points:",
         `- Multisig address: ${evidence.multisigAddress.trim() || "Not recorded yet"}`,
@@ -96,7 +150,7 @@ export function CustodyTrustContinuity({ mode = "buyer" }: CustodyTrustContinuit
         "- https://privatedao.org/security/",
         "- https://privatedao.org/documents/launch-trust-packet/",
       ].join("\n"),
-    [completion, evidence, narrative],
+    [completion, evidence, mode, narrative, wording.snippetLabel],
   );
 
   async function copyReadmePacket() {
@@ -112,29 +166,39 @@ export function CustodyTrustContinuity({ mode = "buyer" }: CustodyTrustContinuit
   }
 
   const buyerSummary =
-    completion.completed === 0
-      ? "Buyer posture remains pilot-ready on Devnet, but production custody still needs recorded multisig and authority-transfer evidence."
-      : completion.completed < completion.total
-        ? "Buyer posture improves because custody evidence is starting to become inspectable, but mainnet promises should stay bounded until the remaining ceremony artifacts exist."
-        : "Buyer posture is materially stronger because the custody packet is fully populated in-product, while final external validation still remains explicit.";
+    mode === "track"
+      ? completion.completed === 0
+        ? "Submission trust remains strong on Devnet, but custody readiness still needs recorded multisig and authority-transfer evidence before mainnet distance can be described as materially shortened."
+        : completion.completed < completion.total
+          ? "Submission trust improves because custody evidence is becoming inspectable, but judge-facing mainnet claims should stay bounded until the remaining ceremony artifacts exist."
+          : "Submission trust is materially stronger because the custody packet is fully populated in-product, while final external validation still remains explicit."
+      : mode === "documents"
+        ? completion.completed === 0
+          ? "Reviewer posture remains evidence-aware, but production custody still needs recorded multisig and authority-transfer evidence."
+          : completion.completed < completion.total
+            ? "Reviewer posture improves because custody evidence is starting to become inspectable, but the remaining ceremony artifacts still need closure."
+            : "Reviewer posture is materially stronger because the custody packet is fully populated in-product, while final external validation still remains explicit."
+        : completion.completed === 0
+          ? "Buyer posture remains pilot-ready on Devnet, but production custody still needs recorded multisig and authority-transfer evidence."
+          : completion.completed < completion.total
+            ? "Buyer posture improves because custody evidence is starting to become inspectable, but mainnet promises should stay bounded until the remaining ceremony artifacts exist."
+            : "Buyer posture is materially stronger because the custody packet is fully populated in-product, while final external validation still remains explicit.";
 
   return (
     <div className="grid gap-6 xl:grid-cols-2 2xl:grid-cols-4">
       <Card>
         <CardHeader>
-          <CardTitle>README packet copy</CardTitle>
+          <CardTitle>{wording.packetTitle}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center gap-3">
             <div className="rounded-2xl border border-white/8 bg-black/25 p-3 text-cyan-200">
               <FileText className="h-4 w-4" />
             </div>
-            <div className="text-sm leading-7 text-white/58">
-              Copy a concise custody update that stays aligned with the repo narrative and current trust boundary.
-            </div>
+            <div className="text-sm leading-7 text-white/58">{wording.packetDescription}</div>
           </div>
           <div className="rounded-3xl border border-white/8 bg-white/4 p-4 text-sm leading-7 text-white/60">
-            Custody status is now evidence-aware inside the product. Use this packet when you need a README-style update without manually rewriting the trust state.
+            Custody status is now evidence-aware inside the product. {wording.packetNote}
           </div>
           <div className="flex flex-wrap gap-3">
             <Button onClick={copyReadmePacket}>{copyState === "copied" ? "Copied packet" : "Copy packet"}</Button>
@@ -147,19 +211,17 @@ export function CustodyTrustContinuity({ mode = "buyer" }: CustodyTrustContinuit
 
       <Card>
         <CardHeader>
-          <CardTitle>Pitch deck snippet</CardTitle>
+          <CardTitle>{wording.snippetTitle}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center gap-3">
             <div className="rounded-2xl border border-white/8 bg-black/25 p-3 text-fuchsia-200">
               <FileText className="h-4 w-4" />
             </div>
-            <div className="text-sm leading-7 text-white/58">
-              Copy a concise custody-and-trust update that fits the investor or competition deck without rewriting the boundary language by hand.
-            </div>
+            <div className="text-sm leading-7 text-white/58">{wording.snippetDescription}</div>
           </div>
           <div className="rounded-3xl border border-white/8 bg-white/4 p-4 text-sm leading-7 text-white/60">
-            This snippet stays aligned with the live product state and is intended for the custody, trust, or mainnet-readiness slides.
+            {wording.snippetNote}
           </div>
           <div className="flex flex-wrap gap-3">
             <Button onClick={copyPitchPacket}>{pitchCopyState === "copied" ? "Copied snippet" : "Copy snippet"}</Button>
@@ -200,7 +262,7 @@ export function CustodyTrustContinuity({ mode = "buyer" }: CustodyTrustContinuit
 
       <Card>
         <CardHeader>
-          <CardTitle>Commercial buyer path</CardTitle>
+          <CardTitle>{wording.buyerTitle}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center gap-3">
