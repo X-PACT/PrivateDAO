@@ -1,0 +1,180 @@
+{
+  "project": "PrivateDAO",
+  "generatedAt": "2026-04-11T14:20:29.957Z",
+  "reviewerIntent": "Show the shortest truth-synced route into runtime maturity, hosted reads, indexed governance, and infrastructure-facing reviewer value without claiming unsupported partnerships or mainnet readiness.",
+  "truthSources": [
+    {
+      "label": "Runtime evidence",
+      "generatedAt": "2026-04-10T01:23:28.015Z",
+      "href": "docs/runtime-evidence.generated.md"
+    },
+    {
+      "label": "Frontier integrations",
+      "generatedAt": "2026-04-10T05:21:06.356Z",
+      "href": "docs/frontier-integrations.generated.md"
+    },
+    {
+      "label": "Read-node snapshot",
+      "generatedAt": "2026-04-11T04:01:57.067Z",
+      "href": "docs/read-node/snapshot.generated.md"
+    },
+    {
+      "label": "Devnet service metrics",
+      "generatedAt": "2026-04-10T05:21:06.356Z",
+      "href": "apps/web/src/lib/devnet-service-metrics.ts"
+    }
+  ],
+  "whatWorksNow": [
+    "Hosted reads expose 41 indexed proposals across 21 DAOs through the backend-indexer path.",
+    "Diagnostics, analytics, and services remain live reviewer-visible routes starting from https://x-pact.github.io/PrivateDAO/diagnostics/.",
+    "7/7 canonical governance lifecycle transactions are finalized in the current integrations package.",
+    "5/5 confidential settlement corridor transactions are finalized in the current integrations package.",
+    "4 REFHE-settled and 3 MagicBlock-settled proposal paths are already reflected in the indexed source."
+  ],
+  "externallyProvenNow": [
+    "Runtime evidence package generated at 2026-04-10T01:23:28.015Z and published as docs/runtime-evidence.generated.md.",
+    "Frontier integrations package generated at 2026-04-10T05:21:06.356Z with reviewer entry https://privatedao.org/proof/?judge=1.",
+    "Read-node snapshot generated at 2026-04-11T04:01:57.067Z on slot 454721049 against https://api.devnet.solana.com.",
+    "Proposal flow health, wallet readiness, and proof freshness summaries are taken from the same devnet service metrics module used by the live app.",
+    "Unexpected runtime failures remain 0 and unexpected adversarial successes remain 0."
+  ],
+  "exactBoundary": [
+    "This packet does not claim live third-party analytics partnerships.",
+    "It does not claim production mainnet custody or launch approval.",
+    "It does not replace canonical custody proof, launch trust packet, or mainnet blockers.",
+    "Pending real-device captures remain explicit and are not hidden behind aggregate metrics."
+  ],
+  "hostedReadProof": {
+    "readPath": "backend-indexer",
+    "rpcEndpoint": "https://api.devnet.solana.com",
+    "slot": 454721049,
+    "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+    "commitment": "confirmed",
+    "proposals": 41,
+    "uniqueDaos": 21
+  },
+  "runtimeSnapshot": {
+    "diagnosticsPage": "https://x-pact.github.io/PrivateDAO/diagnostics/",
+    "walletCount": 5,
+    "unexpectedFailures": 0,
+    "fallbackRecovered": true,
+    "staleBlockhashRecovered": true,
+    "pendingRealDeviceTargets": 5
+  },
+  "integrationsSnapshot": {
+    "governanceStatus": "verified-devnet-governance-path",
+    "confidentialStatus": "verified-devnet-confidential-path",
+    "governanceFinalizedCount": 7,
+    "governanceTotalCount": 7,
+    "confidentialFinalizedCount": 5,
+    "confidentialTotalCount": 5,
+    "zkAnchorsConfirmed": 3,
+    "zkAnchorsTotal": 3
+  },
+  "exportReadySummaries": [
+    {
+      "label": "Proposal flow health",
+      "value": "37.5%",
+      "detail": "7/7 governance proof steps are finalized. 0 proposal is already executed on devnet, 0 proposal is still in commit mode, and 5 proposal is still waiting on settlement evidence.",
+      "routeLabel": "Open proof and execution",
+      "routeHref": "/proof/?judge=1",
+      "tone": "emerald"
+    },
+    {
+      "label": "Wallet-by-wallet readiness",
+      "value": "80%",
+      "detail": "4/5 wallets are review-ready and 5/5 expose diagnostics. Pending real-device targets remain visible in runtime evidence.",
+      "routeLabel": "Open wallet diagnostics",
+      "routeHref": "/diagnostics",
+      "tone": "cyan"
+    },
+    {
+      "label": "Proof freshness",
+      "value": "1d old",
+      "detail": "Runtime evidence 2d old, Devnet canary 2d old, and frontier integrations 1d old remain published together.",
+      "routeLabel": "Open trust documents",
+      "routeHref": "/documents/live-proof-v3",
+      "tone": "amber"
+    },
+    {
+      "label": "Hosted read coverage",
+      "value": "41",
+      "detail": "The backend-indexer read path currently exposes 41 indexed proposals across 21 DAOs.",
+      "tone": "cyan",
+      "routeLabel": "Open services",
+      "routeHref": "/services"
+    },
+    {
+      "label": "MagicBlock settlement completion",
+      "value": "100%",
+      "detail": "5/5 confidential corridor transactions finalized in the current integration evidence package.",
+      "tone": "amber",
+      "routeLabel": "Open diagnostics",
+      "routeHref": "/diagnostics"
+    },
+    {
+      "label": "Primary RPC latency",
+      "value": "242 ms",
+      "detail": "Current blockhash latency from the primary Devnet endpoint. Version latency is 1504 ms.",
+      "tone": "cyan",
+      "routeLabel": "Open analytics",
+      "routeHref": "/analytics"
+    }
+  ],
+  "reviewerFirstPath": [
+    {
+      "label": "Open telemetry packet",
+      "href": "/documents/reviewer-telemetry-packet",
+      "reason": "Start from the generated truth-synced packet instead of inferring readiness from multiple pages."
+    },
+    {
+      "label": "Open diagnostics",
+      "href": "/diagnostics",
+      "reason": "Validate runtime health and reviewer-visible operational signals."
+    },
+    {
+      "label": "Open analytics",
+      "href": "/analytics",
+      "reason": "Inspect export-ready summaries sourced from the same metrics module."
+    },
+    {
+      "label": "Open services",
+      "href": "/services",
+      "reason": "Confirm the hosted-read and buyer-facing infrastructure route."
+    }
+  ],
+  "bestDemoRoute": {
+    "start": "/services",
+    "sequence": [
+      "/services",
+      "/diagnostics",
+      "/analytics",
+      "/documents/reviewer-telemetry-packet"
+    ],
+    "explanation": "Lead with the buyer-visible infrastructure surface, then validate runtime health, then show export-ready analytics summaries, and finally land on the reviewer packet that binds the same truth sources together."
+  },
+  "linkedDocs": [
+    "docs/reviewer-telemetry-packet.generated.md",
+    "docs/runtime-evidence.generated.md",
+    "docs/frontier-integrations.generated.md",
+    "docs/read-node/snapshot.generated.md",
+    "docs/launch-trust-packet.generated.md",
+    "docs/canonical-custody-proof.generated.md"
+  ],
+  "liveRoutes": [
+    "https://privatedao.org/services/",
+    "https://privatedao.org/diagnostics/",
+    "https://privatedao.org/analytics/",
+    "https://privatedao.org/documents/reviewer-telemetry-packet/"
+  ],
+  "commands": [
+    "npm run build:reviewer-telemetry-packet",
+    "npm run verify:reviewer-telemetry-packet",
+    "npm run build:runtime-evidence",
+    "npm run verify:runtime-evidence",
+    "npm run build:frontier-integrations",
+    "npm run verify:frontier-integrations",
+    "npm run build:read-node-snapshot",
+    "npm run verify:read-node-snapshot"
+  ]
+}

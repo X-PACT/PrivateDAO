@@ -27,6 +27,8 @@ function main() {
   ]);
   const custodyReviewerPacketJsonPath = path.resolve("docs/custody-proof-reviewer-packet.generated.json");
   const custodyReviewerPacketMdPath = path.resolve("docs/custody-proof-reviewer-packet.generated.md");
+  const reviewerTelemetryPacketJsonPath = path.resolve("docs/reviewer-telemetry-packet.generated.json");
+  const reviewerTelemetryPacketMdPath = path.resolve("docs/reviewer-telemetry-packet.generated.md");
   const runtimeAttestationPath = path.resolve("docs/runtime-attestation.generated.json");
   const readNodeSnapshotJsonPath = path.resolve("docs/read-node/snapshot.generated.json");
   const readNodeSnapshotMdPath = path.resolve("docs/read-node/snapshot.generated.md");
@@ -119,6 +121,9 @@ function main() {
   }
   if (!fs.existsSync(custodyReviewerPacketJsonPath) || !fs.existsSync(custodyReviewerPacketMdPath)) {
     throw new Error("missing custody proof reviewer packet artifacts");
+  }
+  if (!fs.existsSync(reviewerTelemetryPacketJsonPath) || !fs.existsSync(reviewerTelemetryPacketMdPath)) {
+    throw new Error("missing reviewer telemetry packet artifacts");
   }
   if (!fs.existsSync(runtimeAttestationPath)) {
     throw new Error("missing generated runtime attestation");
