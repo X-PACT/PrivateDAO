@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Activity, ArrowUpRight, FileCheck2 } from "lucide-react";
 
