@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { BuyerJourneyRail } from "@/components/buyer-journey-rail";
 import { CommandCenter } from "@/components/command-center";
 import { CustodyReadinessStrip } from "@/components/custody-readiness-strip";
+import { CustodyTruthQuickActions } from "@/components/custody-truth-quick-actions";
 import { CustodyWorkspace } from "@/components/custody-workspace";
 import { GovernanceActionWorkbench } from "@/components/governance-action-workbench";
 import { MetricsStrip } from "@/components/metrics-strip";
@@ -39,6 +40,12 @@ export default function CommandCenterPage() {
         { label: "Commercial + reviewer aware", variant: "violet" },
       ]}
     >
+      <div>
+        <CustodyTruthQuickActions
+          title="Custody truth quick actions"
+          description="Open reviewer truth, canonical proof, intake schema, and the strict apply route without leaving the command shell first."
+        />
+      </div>
       <div>
         <CustodyReadinessStrip context="command-center" />
       </div>

@@ -510,7 +510,7 @@ export function CustodyWorkspace() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card id="strict-intake-packet" className="scroll-mt-24">
         <CardHeader>
           <CardTitle>Strict intake packet</CardTitle>
         </CardHeader>

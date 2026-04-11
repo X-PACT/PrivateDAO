@@ -4,6 +4,7 @@ import { ArrowRight, Radar, ShieldCheck, WalletCards } from "lucide-react";
 
 import { ExecutionSurfaceInline } from "@/components/execution-surface-inline";
 import { CustodyReadinessStrip } from "@/components/custody-readiness-strip";
+import { CustodyTruthQuickActions } from "@/components/custody-truth-quick-actions";
 import { GovernanceDashboard } from "@/components/governance-dashboard";
 import { OnchainParityPanel } from "@/components/onchain-parity-panel";
 import { GovernanceSessionPanel } from "@/components/governance-session-panel";
@@ -100,6 +101,13 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         </div>
+      </section>
+
+      <section className="mt-10">
+        <CustodyTruthQuickActions
+          title="Custody truth quick actions"
+          description="Open the exact custody truth surfaces directly from the dashboard: reviewer packet, canonical proof, strict intake shape, and the apply route."
+        />
       </section>
 
       <section className="mt-10">
