@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import dynamic from "next/dynamic";
 
 import { BuyerJourneyRail } from "@/components/buyer-journey-rail";
 import { CommandCenter } from "@/components/command-center";
+import { CommandCenterLiveShell } from "@/components/command-center-live-shell";
 import { CustodyReadinessStrip } from "@/components/custody-readiness-strip";
 import { CustodyTruthQuickActions } from "@/components/custody-truth-quick-actions";
 import { CustodyWorkspace } from "@/components/custody-workspace";
@@ -21,30 +21,6 @@ import { TreasuryProfileQuickActions } from "@/components/treasury-profile-quick
 import { WalletFirstServiceActionsStrip } from "@/components/wallet-first-service-actions-strip";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { buildRouteMetadata } from "@/lib/route-metadata";
-
-const GovernanceActionWorkbench = dynamic(
-  () => import("@/components/governance-action-workbench").then((mod) => mod.GovernanceActionWorkbench),
-  {
-    ssr: false,
-    loading: () => <div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading governance workbench…</div>,
-  },
-);
-
-const ProposalWorkspace = dynamic(
-  () => import("@/components/proposal-workspace").then((mod) => mod.ProposalWorkspace),
-  {
-    ssr: false,
-    loading: () => <div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading proposal workspace…</div>,
-  },
-);
-
-const WalletRuntimePanel = dynamic(
-  () => import("@/components/wallet-runtime-panel").then((mod) => mod.WalletRuntimePanel),
-  {
-    ssr: false,
-    loading: () => <div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading wallet runtime…</div>,
-  },
-);
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Command Center",
@@ -104,8 +80,8 @@ export default function CommandCenterPage() {
           summary="Command Center is where real users operate. Engineering-heavy recovery, migration, stress, and batch controls stay in the repo and CLI so the product surface remains clean."
         />
       </div>
+      <CommandCenterLiveShell executionSnapshot={executionSnapshot} />
       <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-        <GovernanceActionWorkbench />
         <div className="space-y-6">
           <ProductActionMap
             title="Exact product operations"
@@ -124,12 +100,6 @@ export default function CommandCenterPage() {
           <BuyerJourneyRail />
           <OperationalValidationPanels title="Command-center operating health" />
         </div>
-      </div>
-      <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-        <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading proposal workspace…</div>}>
-          <ProposalWorkspace executionSnapshot={executionSnapshot} />
-        </Suspense>
-        <WalletRuntimePanel executionSnapshot={executionSnapshot} />
       </div>
       <div>
         <CustodyWorkspace />
