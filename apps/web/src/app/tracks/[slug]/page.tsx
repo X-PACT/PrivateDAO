@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { CompetitionWorkspace } from "@/components/competition-workspace";
 import { OperationsShell } from "@/components/operations-shell";
+import { TrackSubmissionCapsule } from "@/components/track-submission-capsule";
 import { VideoCenter } from "@/components/video-center";
 import {
   competitionTrackWorkspaces,
@@ -55,6 +56,9 @@ export default async function TrackWorkspacePage({ params, searchParams }: PageP
         { label: "Truth-aligned", variant: "violet" },
       ]}
     >
+      <div>
+        <TrackSubmissionCapsule workspace={workspace} />
+      </div>
       <div>
         <CompetitionWorkspace workspace={workspace} commercialProfile={resolvedSearchParams?.profile} intake={resolvedSearchParams?.intake} />
       </div>
