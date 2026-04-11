@@ -208,6 +208,22 @@ The operating rule stays strict:
 - multiple reviewer corridors under the same Frontier narrative
 - no contradiction between site, README, deck, demo, or proof
 
+## Strategic Opportunity Corridors
+
+Beyond the primary Frontier judging posture, PrivateDAO is also being prepared for adjacent opportunities that strengthen the same commercial product thesis instead of fragmenting it.
+
+| Corridor | Current strongest route | What it proves now |
+| --- | --- | --- |
+| Startup capital corridor | `https://privatedao.org/start/` -> `https://privatedao.org/story/` -> `https://privatedao.org/services/` | Startup-quality product shell, buyer corridor, and reviewer-safe trust packaging |
+| Regional grant corridor | `https://privatedao.org/awards/` -> `https://privatedao.org/tracks/colosseum-frontier/` | Ecosystem credibility, product maturity, and proof continuity |
+| Data and telemetry corridor | `https://privatedao.org/diagnostics/` -> `https://privatedao.org/analytics/` | Runtime evidence, indexed proposal state, and hosted-read credibility |
+| Confidential payout corridor | `https://privatedao.org/security/` -> `https://privatedao.org/services/` -> `https://privatedao.org/custody/` | Private treasury approvals, encrypted operations framing, and custody-aware payout discipline |
+| Audit and hardening corridor | `https://privatedao.org/documents/canonical-custody-proof/` -> `https://privatedao.org/diagnostics/` | Canonical custody truth, authority hardening, and incident-readiness posture |
+
+Canonical strategic reference:
+
+- [`docs/strategic-opportunity-readiness-2026.md`](docs/strategic-opportunity-readiness-2026.md)
+
 ## Story And Community
 
 These are the public-facing routes reviewers, users, and buyers should see first:

@@ -1,5 +1,6 @@
 import { competitionTrackWorkspaces } from "@/lib/site-data";
 import { proposalRegistry } from "@/lib/site-data";
+import { getCompetitionLaneLabel } from "@/lib/competition-lane-labels";
 import { getTrackReviewerPacketPublicLabel, getTrackReviewerPacketPublicSummary, getTrackReviewerPacketRoute } from "@/lib/track-reviewer-packets";
 
 export type SiteSearchItem = {
@@ -99,10 +100,10 @@ export const siteSearchItems: SiteSearchItem[] = [
     title: "Tracks",
     href: "/tracks",
     category: "Track",
-    summary: "Competition readiness center across Frontier, Ranger, RPC, consumer, and privacy tracks.",
+    summary: "Submission corridor center across Frontier, runtime infrastructure, confidential governance, grants, and adjacent reviewer opportunities.",
   },
   {
-    title: "Colosseum Frontier Workspace",
+    title: "Frontier Primary Workspace",
     href: "/tracks/colosseum-frontier",
     category: "Track",
     summary: "Primary first-place startup-quality submission chain for the Frontier Hackathon.",
@@ -136,6 +137,12 @@ export const siteSearchItems: SiteSearchItem[] = [
     href: "/documents/custody-proof-reviewer-packet",
     category: "Document",
     summary: "Reviewer-facing custody packet that condenses what is proven now, what is still pending, and the strict ingestion route.",
+  },
+  {
+    title: "Strategic Opportunity Readiness",
+    href: "/documents/strategic-opportunity-readiness-2026",
+    category: "Document",
+    summary: "Opportunity map for startup accelerator, regional grants, data and telemetry, confidential payout, and hardening-first corridors around the Frontier cycle.",
   },
   {
     title: "Multisig Setup Intake",
@@ -381,7 +388,7 @@ function getProfileTrackLeadItems(query: string): SiteSearchItem[] {
   if (profile === "pilot-funding") {
     return [
       {
-        title: `Pilot Funding Route - ${workspace.title}`,
+        title: `Pilot Funding Route - ${getCompetitionLaneLabel(workspace.slug)}`,
         href: `/tracks/${workspace.slug}?profile=pilot-funding`,
         category: "Track",
         matchKind: "profile + track",
@@ -401,7 +408,7 @@ function getProfileTrackLeadItems(query: string): SiteSearchItem[] {
   if (profile === "treasury-top-up") {
     return [
       {
-        title: `Treasury Top-up Route - ${workspace.title}`,
+        title: `Treasury Top-up Route - ${getCompetitionLaneLabel(workspace.slug)}`,
         href: `/tracks/${workspace.slug}?profile=treasury-top-up`,
         category: "Track",
         matchKind: "profile + track",
@@ -421,7 +428,7 @@ function getProfileTrackLeadItems(query: string): SiteSearchItem[] {
   if (profile === "vendor-payout") {
     return [
       {
-        title: `Vendor Payout Route - ${workspace.title}`,
+        title: `Vendor Payout Route - ${getCompetitionLaneLabel(workspace.slug)}`,
         href: `/tracks/${workspace.slug}?profile=vendor-payout`,
         category: "Track",
         matchKind: "profile + track",
@@ -440,7 +447,7 @@ function getProfileTrackLeadItems(query: string): SiteSearchItem[] {
 
   return [
     {
-      title: `Contributor Payout Route - ${workspace.title}`,
+      title: `Contributor Payout Route - ${getCompetitionLaneLabel(workspace.slug)}`,
       href: `/tracks/${workspace.slug}?profile=contributor-payout`,
       category: "Track",
       matchKind: "profile + track",
@@ -466,7 +473,7 @@ function getTrackAwareLeadItems(query: string): SiteSearchItem[] {
 
   return [
     {
-      title: `${workspace.title} Route`,
+      title: `${getCompetitionLaneLabel(workspace.slug)} Route`,
       href: `/tracks/${workspace.slug}`,
       category: "Track",
       matchKind: "track-aware",
@@ -474,6 +481,72 @@ function getTrackAwareLeadItems(query: string): SiteSearchItem[] {
         "Track-aware result. Open the matching workspace directly, then follow the track-specific proof, trust, and demo bundle from the top capsule.",
     },
   ];
+}
+
+function getStrategicOpportunityLeadItems(query: string): SiteSearchItem[] {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return [];
+
+  const strategicRules = [
+    {
+      keywords: ["startup accelerator", "accelerator grant", "startup grant"],
+      item: {
+        title: "Startup Capital Corridor",
+        href: "/documents/strategic-opportunity-readiness-2026",
+        category: "Document" as const,
+        summary:
+          "Start from the strategic opportunity map, then open services and the custody reviewer packet for the startup-capital route.",
+        matchKind: "track-aware" as const,
+      },
+    },
+    {
+      keywords: ["poland grant", "regional grant", "poland grants"],
+      item: {
+        title: "Regional Grant Corridor",
+        href: "/documents/strategic-opportunity-readiness-2026",
+        category: "Document" as const,
+        summary:
+          "Open the regional grant corridor first, then use awards, the Frontier primary workspace, and launch trust as the proof chain.",
+        matchKind: "track-aware" as const,
+      },
+    },
+    {
+      keywords: ["dune data", "dune analytics", "data sidetrack", "data side track"],
+      item: {
+        title: "Data And Telemetry Corridor",
+        href: "/documents/strategic-opportunity-readiness-2026",
+        category: "Document" as const,
+        summary:
+          "Open the telemetry corridor first, then continue into diagnostics, analytics, and frontier integrations for the runtime story.",
+        matchKind: "track-aware" as const,
+      },
+    },
+    {
+      keywords: ["umbra", "confidential payout", "private payout"],
+      item: {
+        title: "Confidential Payout Corridor",
+        href: "/documents/strategic-opportunity-readiness-2026",
+        category: "Document" as const,
+        summary:
+          "Open the confidential payout corridor first, then continue into security, services, custody, and reviewer-safe grant governance.",
+        matchKind: "track-aware" as const,
+      },
+    },
+    {
+      keywords: ["adevar", "audit bounty", "hardening bounty", "security bounty"],
+      item: {
+        title: "Audit And Hardening Corridor",
+        href: "/documents/strategic-opportunity-readiness-2026",
+        category: "Document" as const,
+        summary:
+          "Open the hardening corridor first, then continue into canonical custody proof, authority hardening, incident readiness, and diagnostics.",
+        matchKind: "track-aware" as const,
+      },
+    },
+  ];
+
+  const match = strategicRules.find((rule) => rule.keywords.some((keyword) => normalized.includes(keyword)));
+  return match ? [match.item] : [];
 }
 
 function getProposalLeadItems(query: string): SiteSearchItem[] {
@@ -606,6 +679,7 @@ export function getSiteSearchResults(query: string): SiteSearchItem[] {
 
   const trackReviewerPacketLeadItems = getTrackReviewerPacketLeadItems(normalized);
   const custodyLeadItems = getCustodyLeadItems(normalized);
+  const strategicOpportunityLeadItems = getStrategicOpportunityLeadItems(normalized);
   const profileTrackLeadItems = getProfileTrackLeadItems(normalized);
   const trackAwareLeadItems = getTrackAwareLeadItems(normalized);
   const proposalLeadItems = getProposalLeadItems(normalized);
@@ -625,7 +699,7 @@ export function getSiteSearchResults(query: string): SiteSearchItem[] {
   );
 
   const seen = new Set<string>();
-  return [...trackReviewerPacketLeadItems, ...custodyLeadItems, ...profileTrackLeadItems, ...trackAwareLeadItems, ...proposalLeadItems, ...profileAwareLeadItems, ...generalResults].filter((item) => {
+  return [...trackReviewerPacketLeadItems, ...custodyLeadItems, ...strategicOpportunityLeadItems, ...profileTrackLeadItems, ...trackAwareLeadItems, ...proposalLeadItems, ...profileAwareLeadItems, ...generalResults].filter((item) => {
     const key = `${item.category}:${item.href}`;
     if (seen.has(key)) return false;
     seen.add(key);

@@ -198,6 +198,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/track-judge-first-openings.generated.md`,
   },
   {
+    slug: "strategic-opportunity-readiness-2026",
+    title: "Strategic Opportunity Readiness 2026",
+    category: "Strategy",
+    summary: "Truth-aligned readiness map for accelerator, grant, analytics, confidential-payout, and hardening corridors around the Frontier cycle.",
+    audience: "Founders, judges, grant reviewers, operators",
+    boundary: "Strategic alignment surface only; it does not claim wins, funding, or integrations that are not already evidenced.",
+    docPath: "docs/strategic-opportunity-readiness-2026.md",
+    rawHref: `${repositoryBlobBase}/docs/strategic-opportunity-readiness-2026.md`,
+  },
+  {
     slug: "track-reviewer-packet-colosseum-frontier",
     title: getTrackReviewerPacketPublicLabel("colosseum-frontier"),
     category: "Reviewer core",

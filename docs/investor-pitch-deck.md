@@ -206,6 +206,9 @@ Best Frontier review lanes:
 - confidential-governance corridor via commit-reveal governance, ZK posture, REFHE, and privacy-aware settlement
 - runtime-infrastructure corridor via diagnostics, hosted reads, API packaging, and runtime evidence
 - polished product-execution corridor via route quality, live proof continuity, and reviewer discipline
+- startup-capital corridor via `/start`, `/story`, `/services`, and the custody reviewer packet
+- data-and-telemetry corridor via `/diagnostics`, `/analytics`, and frontier integrations
+- confidential-payout corridor via `/security`, `/services`, `/custody`, and reviewer-safe grant governance
 
 Live reviewer workspaces:
 

@@ -156,3 +156,58 @@ When adapting the project for any track:
 - Do not imply an encrypted AI surface exists unless it is actually shipped.
 - Keep Devnet proof, V3 hardening, trust package, and launch blockers consistent across deck, demo, docs, and UI.
 - Treat signer posture, timelocks, and operational security as first-class parts of the product story after the Drift exploit.
+
+## Adjacent strategic opportunity corridors
+
+These are worth pursuing only when they strengthen the same commercial governance product rather than fragmenting it.
+
+### Startup capital corridor
+
+- Sources:
+  - `https://superteam.fun/earn/grants/startup-accelerator-grant`
+- Fit: strong
+- Why:
+  - The live product shell, services surface, story route, and custody reviewer packet already support a startup-quality funding narrative.
+- Highest-value move:
+  - Keep treasury professionalism and custody truth tight enough that capital reviewers see one coherent product and launch-readiness case.
+
+### Regional grant corridor
+
+- Sources:
+  - `https://superteam.fun/earn/listing/superteam-poland`
+  - `https://superteam.fun/earn/grants/Poland-grants`
+- Fit: moderate
+- Why:
+  - The first-place Poland signal plus the live app and reviewer packets already provide regional proof of execution.
+- Highest-value move:
+  - Keep the case tied to ecosystem infrastructure and proof continuity, not generic grant hunting.
+
+### Data and telemetry corridor
+
+- Sources:
+  - `https://superteam.fun/earn/listing/dune-analytics-x-superteam-earn-or-frontier-data-sidetrack`
+- Fit: moderate
+- Why:
+  - Diagnostics, runtime evidence, hosted reads, and indexed proposal state already give PrivateDAO a real telemetry story.
+- Highest-value move:
+  - Tighten analyst-facing summaries, exports, and evidence packaging around diagnostics and read-node value.
+
+### Confidential payout corridor
+
+- Sources:
+  - `https://superteam.fun/earn/listing/umbra-side-track`
+- Fit: strong
+- Why:
+  - PrivateDAO already supports confidential grant, payroll, and payout governance with reviewer-safe proof and treasury routing.
+- Highest-value move:
+  - Keep payout evidence, sender discipline, and custody-linked treasury truth extremely explicit.
+
+### Audit and hardening corridor
+
+- Sources:
+  - `https://superteam.fun/earn/listing/50k-adevarlabs-bounty`
+- Fit: selective
+- Why:
+  - Authority hardening, incident readiness, diagnostics, and canonical custody proof are already part of the repo and product.
+- Highest-value move:
+  - Keep this corridor fully evidence-bound until external audit or third-party review exists.

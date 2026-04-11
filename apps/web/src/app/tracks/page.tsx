@@ -3,32 +3,36 @@ import type { Metadata } from "next";
 import { CompetitionReadinessSurface } from "@/components/competition-readiness-surface";
 import { FrontierSignalBoard } from "@/components/frontier-signal-board";
 import { OperationsShell } from "@/components/operations-shell";
+import { StrategicOpportunitySurface } from "@/components/strategic-opportunity-surface";
 import { SolutionCorridors } from "@/components/solution-corridors";
 import { VideoCenter } from "@/components/video-center";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
-  title: "Competition Readiness",
+  title: "Submission Corridors",
   description:
-    "Track-by-track readiness surface for Frontier and Superteam competitions across privacy, RPC, consumer, infrastructure, and live dApp categories.",
+    "Professional submission corridors for Frontier, grants, infrastructure, and adjacent reviewer opportunities without bounty-stacking optics.",
   path: "/tracks",
-  keywords: ["competition readiness", "frontier tracks", "superteam", "privacy track", "rpc", "consumer apps"],
+  keywords: ["submission corridors", "frontier readiness", "runtime infrastructure", "confidential governance", "startup grant"],
 });
 
 export default function TracksPage() {
   return (
     <OperationsShell
-      eyebrow="Competition Readiness"
-      title="A track-by-track readiness surface for Frontier, Superteam, and side-track submissions"
-      description="This page keeps the competition strategy disciplined while still aiming high. It shows where PrivateDAO is strongest already, which routes now serve as first-place submission corridors, and how the live product, proof, and services surfaces reinforce each track."
+      eyebrow="Submission Corridors"
+      title="A disciplined readiness surface for Frontier, grants, and adjacent reviewer opportunities"
+      description="This page keeps PrivateDAO aligned around one product thesis while still exposing the strongest reviewer corridors, infrastructure lanes, and capital-readiness opportunities."
       badges={[
-        { label: "Competition Readiness", variant: "cyan" },
+        { label: "Submission Corridors", variant: "cyan" },
         { label: "Truth-aligned", variant: "success" },
-        { label: "Track-by-track", variant: "violet" },
+        { label: "Reviewer-first", variant: "violet" },
       ]}
     >
       <div>
         <CompetitionReadinessSurface />
+      </div>
+      <div>
+        <StrategicOpportunitySurface />
       </div>
       <div>
         <FrontierSignalBoard />

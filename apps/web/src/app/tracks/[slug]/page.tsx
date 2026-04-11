@@ -8,6 +8,7 @@ import { TrackJudgeFirstTopStrip } from "@/components/track-judge-first-top-stri
 import { TrackProofClosurePanel } from "@/components/track-proof-closure-panel";
 import { TrackSubmissionCapsule } from "@/components/track-submission-capsule";
 import { VideoCenter } from "@/components/video-center";
+import { getCompetitionLaneLabel, getCompetitionLaneSummary } from "@/lib/competition-lane-labels";
 import {
   competitionTrackWorkspaces,
   getCompetitionTrackWorkspace,
@@ -35,8 +36,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   return buildRouteMetadata({
-    title: workspace.title,
-    description: workspace.objective,
+    title: getCompetitionLaneLabel(workspace.slug),
+    description: getCompetitionLaneSummary(workspace.slug),
     path: `/tracks/${workspace.slug}`,
     keywords: [workspace.sponsor, "competition workspace", workspace.slug],
   });
@@ -50,11 +51,11 @@ export default async function TrackWorkspacePage({ params }: PageProps) {
 
   return (
     <OperationsShell
-      eyebrow="Competition Workspace"
-      title={workspace.title}
-      description={workspace.objective}
+      eyebrow="Submission Workspace"
+      title={getCompetitionLaneLabel(workspace.slug)}
+      description={getCompetitionLaneSummary(workspace.slug)}
       badges={[
-        { label: workspace.sponsor, variant: "cyan" },
+        { label: "Reviewer corridor", variant: "cyan" },
         { label: "Submission route", variant: "success" },
         { label: "Truth-aligned", variant: "violet" },
       ]}

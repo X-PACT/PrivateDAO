@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, Clipboard, Coins, Download, Landmark, ShieldCheck, Wallet } from "lucide-react";
+import { ArrowRight, ArrowUpRight, CheckCircle2, Clipboard, Coins, Download, FileCheck2, Landmark, ShieldCheck, Wallet } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
@@ -96,11 +96,31 @@ const destinationProfiles = [
   },
 ] as const;
 
+const treasuryReviewerLinks = [
+  { label: "Canonical custody proof", href: "/documents/canonical-custody-proof" },
+  { label: "Custody reviewer packet", href: "/documents/custody-proof-reviewer-packet" },
+  { label: "Launch trust packet", href: "/documents/launch-trust-packet" },
+  { label: "Mainnet blockers", href: "/documents/mainnet-blockers" },
+] as const;
+
+const treasurySendingChecklist = [
+  "Confirm the destination profile before sending funds.",
+  "Copy the exact public address for the chosen asset rail.",
+  "Attach a reference string so the payment request can be matched to the treasury packet.",
+  "Open the custody proof and launch trust packet if the sender needs reviewer-grade operating truth.",
+] as const;
+
+function buildSolanaExplorerHref(address: string, network: string) {
+  const cluster = network.toLowerCase().includes("devnet") ? "?cluster=devnet" : "";
+  return `https://solscan.io/account/${address}${cluster}`;
+}
+
 export function TreasuryReceiveSurface() {
   const config = getTreasuryReceiveConfig();
   const [copied, setCopied] = useState<string | null>(null);
   const [selectedAsset, setSelectedAsset] = useState<(typeof config.assets)[number]["symbol"]>("SOL");
   const [profile, setProfile] = useState<(typeof destinationProfiles)[number]["value"]>("treasury-top-up");
+  const [reference, setReference] = useState("");
   const [amount, setAmount] = useState("");
   const [purpose, setPurpose] = useState("");
   const [lane, setLane] = useState<(typeof handoffLanes)[number]["value"]>("buyer");
@@ -122,16 +142,18 @@ export function TreasuryReceiveSurface() {
         `Network: ${config.network}`,
         `Lane: ${activeLane.label}`,
         `Asset: ${activeAsset.symbol}`,
+        `Reference: ${reference || "Not provided"}`,
         `Amount: ${amount || "Not provided"}`,
         `Purpose: ${purpose || "Not provided"}`,
         `Receive address: ${activeAsset.receiveAddress}`,
         `Mint: ${activeAsset.mint ?? "Configured at deployment through NEXT_PUBLIC_TREASURY_* env."}`,
+        `Explorer: ${buildSolanaExplorerHref(activeAsset.receiveAddress, config.network)}`,
         "Recommended next routes:",
         ...activeProfile.nextRoutes.map((route) => `- ${route.label}: ${route.href}`),
       ].join("\n"),
-    [activeAsset, activeLane.label, activeProfile, amount, config.network, purpose],
+    [activeAsset, activeLane.label, activeProfile, amount, config.network, purpose, reference],
   );
-  const isRequestReady = Boolean(amount.trim() && purpose.trim());
+  const isRequestReady = Boolean(amount.trim() && purpose.trim() && reference.trim());
 
   async function copyValue(key: string, value: string) {
     await navigator.clipboard.writeText(value);
@@ -174,8 +196,57 @@ export function TreasuryReceiveSurface() {
               <Clipboard className="h-4 w-4" />
               Copy treasury address
             </button>
+            <Link href={buildSolanaExplorerHref(config.treasuryAddress, config.network)} target="_blank" rel="noreferrer" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+              Open explorer
+              <ArrowUpRight className="h-4 w-4" />
+            </Link>
             <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-4 py-2 text-xs uppercase tracking-[0.18em] text-white/62">
               Accepted assets: SOL / USDC / USDG
+            </div>
+          </div>
+        </div>
+
+        <div className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
+          <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
+            <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-emerald-200/78">
+              <FileCheck2 className="h-4 w-4" />
+              Treasury operating standard
+            </div>
+            <div className="mt-3 text-sm leading-7 text-white/62">
+              This surface is intentionally public-address only. It supports treasury intake, reviewer truth, and buyer-safe payment routing without exposing signer material or hidden operator state.
+            </div>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">What is public</div>
+                <div className="mt-2">Receive addresses, mint references, routing context, and the reviewer-safe trust packet.</div>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">What stays private</div>
+                <div className="mt-2">Signer keys, treasury seeds, multisig ceremony inputs, and any authority-transfer secrets remain outside the frontend.</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
+            <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-white/58">
+              <ShieldCheck className="h-4 w-4 text-cyan-200" />
+              Reviewer truth and payment discipline
+            </div>
+            <div className="mt-4 grid gap-3">
+              {treasuryReviewerLinks.map((item) => (
+                <Link key={item.href} href={item.href} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+                  {item.label}
+                  <ArrowUpRight className="h-4 w-4" />
+                </Link>
+              ))}
+            </div>
+            <div className="mt-5 rounded-2xl border border-white/8 bg-black/20 p-4">
+              <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Sender checklist</div>
+              <div className="mt-3 grid gap-2 text-sm leading-7 text-white/62">
+                {treasurySendingChecklist.map((item) => (
+                  <div key={item}>{item}</div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -228,6 +299,15 @@ export function TreasuryReceiveSurface() {
                   <Clipboard className="h-4 w-4" />
                   Copy {asset.symbol} route
                 </button>
+                <Link
+                  href={buildSolanaExplorerHref(asset.receiveAddress, asset.network)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={cn(buttonVariants({ size: "sm", variant: "outline" }), "mt-3")}
+                >
+                  Open {asset.symbol} explorer
+                  <ArrowUpRight className="h-4 w-4" />
+                </Link>
               </div>
             );
           })}
@@ -270,6 +350,17 @@ export function TreasuryReceiveSurface() {
                     </option>
                   ))}
                 </select>
+              </label>
+
+              <label className="grid gap-2 text-sm text-white/70">
+                <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Reference</span>
+                <input
+                  value={reference}
+                  onChange={(event) => setReference(event.target.value)}
+                  placeholder="PILOT-APR-001 / OPS-REQUEST-042"
+                  className="rounded-2xl border border-white/10 bg-white/4 px-4 py-3 text-white outline-none placeholder:text-white/34"
+                />
+                <span className="text-xs leading-6 text-white/46">Use a stable reference so treasury ops can match the sender, packet, and support lane without guesswork.</span>
               </label>
 
               <label className="grid gap-2 text-sm text-white/70">

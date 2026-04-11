@@ -1,4 +1,5 @@
 import { competitionTrackWorkspaces, proposalRegistry } from "@/lib/site-data";
+import { getCompetitionLaneLabel } from "@/lib/competition-lane-labels";
 import { getSubmissionCoachPlan } from "@/lib/submission-coach";
 import { getTrackCommercializationPlan } from "@/lib/track-commercialization";
 import { getTrackMainnetGatePlan } from "@/lib/track-mainnet-gates";
@@ -78,7 +79,7 @@ const assistantIntents: AssistantIntent[] = [
     relatedRoutes: [
       { label: "Security", href: "/security" },
       { label: "Services", href: "/services" },
-      { label: "RPC Infrastructure Track", href: "/tracks/rpc-infrastructure" },
+      { label: "Runtime infrastructure lane", href: "/tracks/rpc-infrastructure" },
     ],
     keywords: [
       "proposal analyzer",
@@ -163,6 +164,29 @@ const assistantIntents: AssistantIntent[] = [
       { label: "Wallet-first product lane", href: "/tracks/consumer-apps" },
     ],
     keywords: ["competition", "hackathon", "frontier", "colosseum", "privacy", "ranger", "consumer", "100xdevs", "solrouter", "ika", "encrypt"],
+  },
+  {
+    title: "Open the strategic opportunity readiness map",
+    summary:
+      "Use the opportunity map when the question is about startup accelerator grants, regional grants, analytics side opportunities, confidential payout fit, or hardening-first bounty posture around the same product thesis.",
+    primaryActionLabel: "Open opportunity readiness",
+    primaryActionHref: "/documents/strategic-opportunity-readiness-2026",
+    relatedRoutes: [
+      { label: "Services", href: "/services" },
+      { label: "Diagnostics", href: "/diagnostics" },
+      { label: "Canonical custody proof", href: "/documents/canonical-custody-proof" },
+    ],
+    keywords: [
+      "startup accelerator",
+      "accelerator grant",
+      "poland grant",
+      "regional grant",
+      "dune data",
+      "dune analytics",
+      "umbra",
+      "adevar",
+      "audit bounty",
+    ],
   },
   {
     title: "Package the commercial and API surface",
@@ -263,7 +287,7 @@ function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
 
   if (profile === "pilot-funding") {
     return {
-      title: `Pilot funding route for ${workspace.title}`,
+      title: `Pilot funding route for ${getCompetitionLaneLabel(workspace.slug)}`,
       summary:
         "Go straight into the profile-aware track. The first three surfaces are ordered for pilot funding: submission path first, then coach and alignment, then trust and proof.",
       primaryActionLabel: "Open profile-aware track",
@@ -278,7 +302,7 @@ function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
 
   if (profile === "treasury-top-up") {
     return {
-      title: `Treasury top-up route for ${workspace.title}`,
+      title: `Treasury top-up route for ${getCompetitionLaneLabel(workspace.slug)}`,
       summary:
         "Go straight into the profile-aware track. The first three surfaces are ordered for treasury capitalization: commercialization first, then investment case and mainnet gates, then supporting metrics.",
       primaryActionLabel: "Open profile-aware track",
@@ -293,7 +317,7 @@ function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
 
   if (profile === "vendor-payout") {
     return {
-      title: `Vendor payout route for ${workspace.title}`,
+      title: `Vendor payout route for ${getCompetitionLaneLabel(workspace.slug)}`,
       summary:
         "Go straight into the profile-aware track. The first three surfaces are ordered for governed vendor execution: submission path first, then metrics and diagnostics, then custody and trust.",
       primaryActionLabel: "Open profile-aware track",
@@ -307,7 +331,7 @@ function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
   }
 
   return {
-    title: `Contributor payout route for ${workspace.title}`,
+    title: `Contributor payout route for ${getCompetitionLaneLabel(workspace.slug)}`,
     summary:
       "Go straight into the profile-aware track. The first three surfaces are ordered for governed contributor funding: submission path first, then metrics, then custody and trust before broader commercial reading.",
     primaryActionLabel: "Open profile-aware track",
@@ -317,6 +341,85 @@ function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
       { label: "2. Command Center", href: "/command-center" },
       { label: "3. Security", href: "/security" },
     ],
+  };
+}
+
+function getStrategicOpportunitySuggestion(query: string): AssistantSuggestion | null {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return null;
+
+  const opportunityRules = [
+    {
+      keywords: ["startup accelerator", "accelerator grant", "startup grant"],
+      title: "Open the startup capital corridor",
+      summary:
+        "Start from the strategic opportunity map, then move into services and the custody reviewer packet. This is the shortest evidence-bound route for accelerator and funding reviewers.",
+      primaryActionHref: "/documents/strategic-opportunity-readiness-2026",
+      relatedRoutes: [
+        { label: "1. Strategic opportunity map", href: "/documents/strategic-opportunity-readiness-2026" },
+        { label: "2. Services", href: "/services" },
+        { label: "3. Custody reviewer packet", href: "/documents/custody-proof-reviewer-packet" },
+      ],
+    },
+    {
+      keywords: ["poland grant", "regional grant", "poland grants"],
+      title: "Open the regional grant corridor",
+      summary:
+        "Start from the strategic opportunity map, then use awards, the Frontier primary workspace, and the launch trust packet as the regional proof chain.",
+      primaryActionHref: "/documents/strategic-opportunity-readiness-2026",
+      relatedRoutes: [
+        { label: "1. Strategic opportunity map", href: "/documents/strategic-opportunity-readiness-2026" },
+        { label: "2. Awards", href: "/awards" },
+        { label: "3. Launch trust packet", href: "/documents/launch-trust-packet" },
+      ],
+    },
+    {
+      keywords: ["dune data", "dune analytics", "data sidetrack", "data side track"],
+      title: "Open the data and telemetry corridor",
+      summary:
+        "Start from the strategic opportunity map, then continue into diagnostics, analytics, and frontier integrations for the clearest runtime-data story.",
+      primaryActionHref: "/documents/strategic-opportunity-readiness-2026",
+      relatedRoutes: [
+        { label: "1. Strategic opportunity map", href: "/documents/strategic-opportunity-readiness-2026" },
+        { label: "2. Diagnostics", href: "/diagnostics" },
+        { label: "3. Analytics", href: "/analytics" },
+      ],
+    },
+    {
+      keywords: ["umbra", "confidential payout", "private payout"],
+      title: "Open the confidential payout corridor",
+      summary:
+        "Start from the strategic opportunity map, then continue into security, services, and custody for the reviewer-safe payout path.",
+      primaryActionHref: "/documents/strategic-opportunity-readiness-2026",
+      relatedRoutes: [
+        { label: "1. Strategic opportunity map", href: "/documents/strategic-opportunity-readiness-2026" },
+        { label: "2. Security", href: "/security" },
+        { label: "3. Custody", href: "/custody" },
+      ],
+    },
+    {
+      keywords: ["adevar", "audit bounty", "hardening bounty", "security bounty"],
+      title: "Open the audit and hardening corridor",
+      summary:
+        "Start from the strategic opportunity map, then continue into canonical custody proof, authority hardening, and incident readiness as the strict hardening bundle.",
+      primaryActionHref: "/documents/strategic-opportunity-readiness-2026",
+      relatedRoutes: [
+        { label: "1. Strategic opportunity map", href: "/documents/strategic-opportunity-readiness-2026" },
+        { label: "2. Canonical custody proof", href: "/documents/canonical-custody-proof" },
+        { label: "3. Authority hardening", href: "/documents/authority-hardening-mainnet" },
+      ],
+    },
+  ];
+
+  const match = opportunityRules.find((rule) => rule.keywords.some((keyword) => normalized.includes(keyword)));
+  if (!match) return null;
+
+  return {
+    title: match.title,
+    summary: match.summary,
+    primaryActionLabel: "Open opportunity readiness",
+    primaryActionHref: match.primaryActionHref,
+    relatedRoutes: match.relatedRoutes,
   };
 }
 
@@ -333,7 +436,7 @@ function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null
       primaryActionHref: "/engage?profile=pilot-funding",
       relatedRoutes: [
         { label: "1. Engage", href: "/engage?profile=pilot-funding" },
-        { label: "2. Colosseum track", href: "/tracks/colosseum-frontier?profile=pilot-funding" },
+        { label: "2. Frontier primary workspace", href: "/tracks/colosseum-frontier?profile=pilot-funding" },
         { label: "3. Proof and trust", href: "/documents/frontier-competition-readiness-2026" },
       ],
     };
@@ -348,7 +451,7 @@ function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null
       primaryActionHref: "/engage?profile=vendor-payout",
       relatedRoutes: [
         { label: "1. Engage", href: "/engage?profile=vendor-payout" },
-        { label: "2. Live dApp track", href: "/tracks/eitherway-live-dapp?profile=vendor-payout" },
+        { label: "2. Live app corridor", href: "/tracks/eitherway-live-dapp?profile=vendor-payout" },
         { label: "3. Command and diagnostics", href: "/command-center" },
       ],
     };
@@ -363,7 +466,7 @@ function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null
       primaryActionHref: "/engage?profile=contributor-payout",
       relatedRoutes: [
         { label: "1. Engage", href: "/engage?profile=contributor-payout" },
-        { label: "2. Consumer Apps track", href: "/tracks/consumer-apps?profile=contributor-payout" },
+        { label: "2. Wallet-first product workspace", href: "/tracks/consumer-apps?profile=contributor-payout" },
         { label: "3. Command and trust", href: "/command-center" },
       ],
     };
@@ -378,7 +481,7 @@ function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null
       primaryActionHref: "/engage?profile=treasury-top-up",
       relatedRoutes: [
         { label: "1. Engage", href: "/engage?profile=treasury-top-up" },
-        { label: "2. RPC track", href: "/tracks/rpc-infrastructure?profile=treasury-top-up" },
+        { label: "2. Runtime infrastructure workspace", href: "/tracks/rpc-infrastructure?profile=treasury-top-up" },
         { label: "3. Services and trust", href: "/services" },
       ],
     };
@@ -722,6 +825,9 @@ export function getAssistantSuggestion(query: string): AssistantSuggestion {
 
   const custodyTruthSuggestion = getCustodyTruthSuggestion(normalized);
   if (custodyTruthSuggestion) return custodyTruthSuggestion;
+
+  const strategicOpportunitySuggestion = getStrategicOpportunitySuggestion(normalized);
+  if (strategicOpportunitySuggestion) return strategicOpportunitySuggestion;
 
   const trackAnswer = getTrackAnswer(normalized);
   if (trackAnswer) return trackAnswer;

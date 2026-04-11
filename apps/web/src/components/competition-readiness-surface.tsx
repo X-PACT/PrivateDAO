@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight, Award, CircleCheckBig, CircleDashed, TriangleAlert } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getCompetitionLaneLabel, getCompetitionLaneSummary } from "@/lib/competition-lane-labels";
 import { getRankedCompetitionTracks } from "@/lib/track-ranking";
 
 function fitTone(fit: string) {
@@ -25,6 +26,8 @@ export function CompetitionReadinessSurface() {
     <div className="grid gap-6 xl:grid-cols-2">
       {rankedTracks.map((track) => {
         const StatusIcon = statusIcon(track.status);
+        const publicTitle = getCompetitionLaneLabel(track.slug);
+        const publicSummary = getCompetitionLaneSummary(track.slug);
 
         return (
           <Card key={track.title} className="h-full border-white/10 bg-[linear-gradient(180deg,rgba(12,16,30,0.92),rgba(8,10,22,0.98))]">
@@ -45,7 +48,7 @@ export function CompetitionReadinessSurface() {
               </div>
               <div className="space-y-2">
                 <div className="text-[11px] uppercase tracking-[0.32em] text-emerald-300/72">{track.sponsor}</div>
-                <CardTitle className="text-2xl">{track.title}</CardTitle>
+                <CardTitle className="text-2xl">{publicTitle}</CardTitle>
               </div>
             </CardHeader>
             <CardContent className="space-y-5">
@@ -54,7 +57,8 @@ export function CompetitionReadinessSurface() {
                   <StatusIcon className="h-4 w-4 text-cyan-200" />
                   {track.status}
                 </div>
-                <p className="mt-3 text-sm leading-7 text-white/58">{track.summary}</p>
+                <p className="mt-3 text-sm leading-7 text-white/58">{publicSummary}</p>
+                <p className="mt-3 text-sm leading-7 text-white/50">{track.summary}</p>
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
