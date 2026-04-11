@@ -9,6 +9,7 @@ import { GovernanceDashboard } from "@/components/governance-dashboard";
 import { OnchainParityPanel } from "@/components/onchain-parity-panel";
 import { GovernanceSessionPanel } from "@/components/governance-session-panel";
 import { OperationalValidationPanels } from "@/components/operational-validation-panels";
+import { PaymentsTruthStrip } from "@/components/payments-truth-strip";
 import { ProductActionMap } from "@/components/product-action-map";
 import { TreasuryProfileQuickActions } from "@/components/treasury-profile-quick-actions";
 import { Badge } from "@/components/ui/badge";
@@ -101,6 +102,10 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         </div>
+      </section>
+
+      <section className="mt-10">
+        <PaymentsTruthStrip context="dashboard" />
       </section>
 
       <section className="mt-10">

@@ -10,6 +10,7 @@ import { HostedReadProofStrip } from "@/components/hosted-read-proof-strip";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperationsShell } from "@/components/operations-shell";
 import { PlatformServiceArchitecture } from "@/components/platform-service-architecture";
+import { PaymentsTruthStrip } from "@/components/payments-truth-strip";
 import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-truth-strip";
 import { SectionHeader } from "@/components/section-header";
 import { ServiceOperationalCards } from "@/components/service-operational-cards";
@@ -41,6 +42,9 @@ export default function ServicesPage() {
         { label: "Pilot-ready", variant: "success" },
       ]}
     >
+      <div>
+        <PaymentsTruthStrip context="services" />
+      </div>
       <div>
         <ReviewerTelemetryTruthStrip
           title="Telemetry truth for infrastructure buyers"
