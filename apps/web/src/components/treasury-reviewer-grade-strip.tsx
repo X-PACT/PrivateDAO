@@ -24,6 +24,10 @@ type TreasuryReviewerGradeStripProps = {
 
 const reviewerTruthLinks = [
   {
+    label: "Treasury reviewer packet",
+    href: "/documents/treasury-reviewer-packet",
+  },
+  {
     label: "Canonical custody proof",
     href: "/documents/canonical-custody-proof",
   },

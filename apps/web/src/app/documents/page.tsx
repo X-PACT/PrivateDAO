@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 const PRIORITY_TRUTH_SURFACE_SLUGS = [
   "canonical-custody-proof",
   "custody-proof-reviewer-packet",
+  "treasury-reviewer-packet",
   "launch-trust-packet",
 ];
 
@@ -94,11 +95,11 @@ export default function DocumentsPage() {
           <Link href="/documents/canonical-custody-proof" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
             Open truth
           </Link>
-          <Link href="#track-reviewer-packets" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
-            Open track packet
+          <Link href="/documents/treasury-reviewer-packet" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+            Open treasury packet
           </Link>
           <Link href="/documents/reviewer-fast-path" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
-            Open best demo route
+            Open fast path
           </Link>
         </div>
       </div>
@@ -112,7 +113,7 @@ export default function DocumentsPage() {
         <div className="mb-5">
           <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/76">Priority truth surfaces</div>
           <div className="mt-3 max-w-3xl text-sm leading-7 text-white/60">
-            Open these three documents first if the reviewer entered from `/documents`. They establish the operating truth first: canonical custody proof, the reviewer-safe custody packet, and the launch trust packet.
+            Open these documents first if the reviewer entered from `/documents`. They establish the operating truth first: canonical custody proof, the reviewer-safe custody packet, the treasury reviewer packet, and the launch trust packet.
           </div>
         </div>
         <DocumentLibrary documents={priorityTruthSurfaces} />

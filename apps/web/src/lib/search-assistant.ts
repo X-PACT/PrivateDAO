@@ -140,6 +140,27 @@ const assistantIntents: AssistantIntent[] = [
     keywords: ["incident", "runbook", "monitoring", "alerts", "logs", "rpc failures", "wallet errors", "replay", "duplicate calls"],
   },
   {
+    title: "Open the treasury reviewer packet",
+    summary:
+      "Use the treasury packet when the question is about public rails, sender discipline, reviewer truth links, payments fit, or the exact treasury blocker instead of general custody flow only.",
+    primaryActionLabel: "Open treasury reviewer packet",
+    primaryActionHref: "/documents/treasury-reviewer-packet",
+    relatedRoutes: [
+      { label: "Services", href: "/services" },
+      { label: "Canonical custody proof", href: "/documents/canonical-custody-proof" },
+      { label: "Custody reviewer packet", href: "/documents/custody-proof-reviewer-packet" },
+    ],
+    keywords: [
+      "treasury reviewer packet",
+      "treasury packet",
+      "treasury proof",
+      "sender checklist",
+      "payment rails",
+      "treasury rails",
+      "payments proof",
+    ],
+  },
+  {
     title: "Open the reviewer telemetry packet",
     summary:
       "Use the telemetry packet when the question is about data-side readiness, hosted reads, runtime evidence, analytics posture, or RPC reviewer packaging.",

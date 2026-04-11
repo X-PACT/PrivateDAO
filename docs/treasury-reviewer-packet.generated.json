@@ -1,0 +1,151 @@
+{
+  "project": "PrivateDAO",
+  "generatedAt": "2026-04-11T15:53:20.536Z",
+  "reviewerIntent": "Explain the treasury intake and payout posture as a reviewer-grade infrastructure surface, with strict sender discipline, public rails, proof links, commercial fit, and exact blocker visibility.",
+  "treasuryNetwork": "Solana Devnet",
+  "treasuryAddress": "AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c",
+  "custodyStatus": "pending-external",
+  "productionMainnetClaimAllowed": false,
+  "exactBlocker": {
+    "id": "upgrade-authority-multisig",
+    "severity": "critical",
+    "status": "pending-external",
+    "nextAction": "Move production upgrade authority and operational authorities to a documented multisig or governance-owned path and rehearse rotation.",
+    "evidence": [
+      "docs/authority-hardening.md",
+      "docs/authority-transfer-runbook.md",
+      "docs/production-custody-ceremony.md",
+      "docs/multisig-setup-intake.json",
+      "docs/multisig-setup-intake.md",
+      "docs/launch-ops-checklist.json",
+      "docs/launch-ops-checklist.md",
+      "docs/mainnet-cutover-runbook.md",
+      "docs/launch-trust-packet.generated.md"
+    ]
+  },
+  "trustDecision": "blocked-external-steps",
+  "strictSenderChecklist": [
+    "Confirm whether the request is treasury top-up, pilot funding, vendor payout, or contributor payout before selecting a rail.",
+    "Copy the exact public receive address and explorer link for the chosen asset rail instead of reusing a previous address.",
+    "Attach a reference string that includes payer, purpose, amount, and settlement context so the packet can be matched later.",
+    "Open reviewer truth surfaces before implying production-safe settlement or custody posture to a buyer, sender, or judge.",
+    "Treat the current rails as public Devnet treasury intake until authority-transfer evidence closes the production custody blocker."
+  ],
+  "referenceLinkedRails": [
+    {
+      "symbol": "SOL",
+      "name": "Native SOL",
+      "receiveAddress": "AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c",
+      "explorerUrl": "https://solscan.io/account/AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c?cluster=devnet",
+      "mint": null,
+      "decimals": 9,
+      "note": "Use this rail for treasury top-ups, operator funding, and governed SOL transfers on Devnet."
+    },
+    {
+      "symbol": "USDC",
+      "name": "USDC",
+      "receiveAddress": "AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c",
+      "explorerUrl": "https://solscan.io/account/AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c?cluster=devnet",
+      "mint": null,
+      "decimals": 6,
+      "note": "Use this rail for governed payouts, vendor settlement, and stable-value treasury requests when USDC is the active stable asset."
+    },
+    {
+      "symbol": "USDG",
+      "name": "USDG",
+      "receiveAddress": "AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c",
+      "explorerUrl": "https://solscan.io/account/AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c?cluster=devnet",
+      "mint": null,
+      "decimals": 6,
+      "note": "Use this rail for alternative stable settlement when the team or customer operates with USDG-compatible treasury flows."
+    }
+  ],
+  "reviewerTruthLinks": [
+    "docs/canonical-custody-proof.generated.md",
+    "docs/custody-proof-reviewer-packet.generated.md",
+    "docs/launch-trust-packet.generated.md",
+    "docs/reviewer-telemetry-packet.generated.md",
+    "docs/mainnet-blockers.md",
+    "docs/ecosystem-focus-alignment.generated.md"
+  ],
+  "commercialPaymentsAlignment": [
+    {
+      "slug": "dao-tooling",
+      "title": "DAO tooling",
+      "fit": "strong",
+      "whatWorksNow": "The core live product already covers DAO creation, proposal lifecycle, private voting, treasury motion handling, trust packets, telemetry, and reviewer-safe surfaces.",
+      "exactGap": "The highest-value next step is to keep treasury professionalism and custody continuity extremely tight as the product advances toward mainnet operations.",
+      "bestRoutes": [
+        "/command-center",
+        "/dashboard",
+        "/services"
+      ]
+    },
+    {
+      "slug": "developer-tooling",
+      "title": "Developer tooling",
+      "fit": "strong",
+      "whatWorksNow": "PrivateDAO already provides reviewer telemetry, generated packets, hosted-read proof, runtime diagnostics, and a developer route tied to real product infrastructure.",
+      "exactGap": "The best uplift is continued strengthening of exported telemetry, runtime evidence summaries, and infrastructure-facing docs for external engineers.",
+      "bestRoutes": [
+        "/developers",
+        "/analytics",
+        "/documents/reviewer-telemetry-packet"
+      ]
+    },
+    {
+      "slug": "payments",
+      "title": "Payments",
+      "fit": "strong",
+      "whatWorksNow": "Treasury request routing, confidential payout framing, payments-oriented intake flows, and reviewer-safe custody truth are already visible in the live product.",
+      "exactGap": "The strongest version still requires strict sender discipline, explorer-linked rails, and completed authority-transfer evidence for real-funds credibility.",
+      "bestRoutes": [
+        "/services",
+        "/security",
+        "/custody"
+      ]
+    }
+  ],
+  "exactPendingItems": [
+    "chosen multisig implementation",
+    "multisig public address",
+    "multisig creation signature",
+    "rehearsal signature",
+    "timelock configuration of at least 48 hours",
+    "timelock configuration signature or readout",
+    "signer slot 1 public key",
+    "backup procedure for signer slot 1",
+    "signer slot 2 public key",
+    "backup procedure for signer slot 2",
+    "signer slot 3 public key",
+    "backup procedure for signer slot 3",
+    "program upgrade authority destination authority",
+    "program upgrade authority transfer signature",
+    "program upgrade authority post-transfer readout",
+    "program upgrade authority post-transfer readout reference",
+    "dao authority destination authority",
+    "dao authority transfer signature",
+    "dao authority post-transfer readout",
+    "dao authority post-transfer readout reference",
+    "treasury operator authority destination authority",
+    "treasury operator authority transfer signature",
+    "treasury operator authority post-transfer readout",
+    "treasury operator authority post-transfer readout reference"
+  ],
+  "currentTruth": {
+    "summary": "PrivateDAO is devnet-proven and internally hardened, but real-funds mainnet production remains blocked until external audit, custody, monitoring, runtime, settlement-receipt, and release-ceremony items are closed with evidence.",
+    "threshold": "2-of-3",
+    "multisigAddress": null
+  },
+  "liveRoutes": [
+    "https://privatedao.org/services/",
+    "https://privatedao.org/custody/",
+    "https://privatedao.org/documents/treasury-reviewer-packet/",
+    "https://privatedao.org/documents/canonical-custody-proof/"
+  ],
+  "canonicalCommands": [
+    "npm run build:treasury-reviewer-packet",
+    "npm run verify:treasury-reviewer-packet",
+    "npm run apply:custody-evidence-intake"
+  ]
+}

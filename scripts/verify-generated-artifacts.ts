@@ -27,6 +27,8 @@ function main() {
   ]);
   const custodyReviewerPacketJsonPath = path.resolve("docs/custody-proof-reviewer-packet.generated.json");
   const custodyReviewerPacketMdPath = path.resolve("docs/custody-proof-reviewer-packet.generated.md");
+  const treasuryReviewerPacketJsonPath = path.resolve("docs/treasury-reviewer-packet.generated.json");
+  const treasuryReviewerPacketMdPath = path.resolve("docs/treasury-reviewer-packet.generated.md");
   const reviewerTelemetryPacketJsonPath = path.resolve("docs/reviewer-telemetry-packet.generated.json");
   const reviewerTelemetryPacketMdPath = path.resolve("docs/reviewer-telemetry-packet.generated.md");
   const ecosystemFocusAlignmentJsonPath = path.resolve("docs/ecosystem-focus-alignment.generated.json");
@@ -123,6 +125,9 @@ function main() {
   }
   if (!fs.existsSync(custodyReviewerPacketJsonPath) || !fs.existsSync(custodyReviewerPacketMdPath)) {
     throw new Error("missing custody proof reviewer packet artifacts");
+  }
+  if (!fs.existsSync(treasuryReviewerPacketJsonPath) || !fs.existsSync(treasuryReviewerPacketMdPath)) {
+    throw new Error("missing treasury reviewer packet artifacts");
   }
   if (!fs.existsSync(reviewerTelemetryPacketJsonPath) || !fs.existsSync(reviewerTelemetryPacketMdPath)) {
     throw new Error("missing reviewer telemetry packet artifacts");

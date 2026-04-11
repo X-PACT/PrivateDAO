@@ -81,6 +81,8 @@ cp docs/mainnet-readiness.md "$OUT_DIR/docs/"
 cp docs/production-operations.md "$OUT_DIR/docs/"
 cp docs/launch-trust-packet.generated.md "$OUT_DIR/docs/"
 cp docs/launch-trust-packet.generated.json "$OUT_DIR/docs/"
+cp docs/treasury-reviewer-packet.generated.md "$OUT_DIR/docs/"
+cp docs/treasury-reviewer-packet.generated.json "$OUT_DIR/docs/"
 cp docs/reviewer-telemetry-packet.generated.md "$OUT_DIR/docs/"
 cp docs/reviewer-telemetry-packet.generated.json "$OUT_DIR/docs/"
 

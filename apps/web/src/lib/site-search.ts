@@ -139,6 +139,12 @@ export const siteSearchItems: SiteSearchItem[] = [
     summary: "Reviewer-facing custody packet that condenses what is proven now, what is still pending, and the strict ingestion route.",
   },
   {
+    title: "Treasury Reviewer Packet",
+    href: "/documents/treasury-reviewer-packet",
+    category: "Document",
+    summary: "Generated treasury-facing reviewer packet with strict sender checklist, reference-linked rails, reviewer truth links, payments fit, and exact blocker visibility.",
+  },
+  {
     title: "Reviewer Telemetry Packet",
     href: "/documents/reviewer-telemetry-packet",
     category: "Document",

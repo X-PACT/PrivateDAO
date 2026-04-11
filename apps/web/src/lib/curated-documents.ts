@@ -28,6 +28,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/reviewer-fast-path.md`,
   },
   {
+    slug: "treasury-reviewer-packet",
+    title: "Treasury Reviewer Packet",
+    category: "Reviewer core",
+    summary: "Generated treasury-facing reviewer packet with strict sender discipline, reference-linked rails, payments fit, reviewer truth links, and exact blocker visibility.",
+    audience: "Judges, grant reviewers, buyers, operators",
+    boundary: "Reviewer packet only; it does not claim completed custody ceremony or real-funds production readiness.",
+    docPath: "docs/treasury-reviewer-packet.generated.md",
+    rawHref: `${repositoryBlobBase}/docs/treasury-reviewer-packet.generated.md`,
+  },
+  {
     slug: "reviewer-telemetry-packet",
     title: "Reviewer Telemetry Packet",
     category: "Reviewer core",
