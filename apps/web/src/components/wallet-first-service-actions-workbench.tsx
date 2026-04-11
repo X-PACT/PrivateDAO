@@ -21,6 +21,8 @@ import {
 } from "@/lib/wallet-first-service-actions";
 import {
   buildServiceHandoffQuery,
+  parseStoredServiceHandoffState,
+  readServiceHandoffState,
   SERVICE_HANDOFF_STORAGE_KEY,
   type ServiceHandoffState,
 } from "@/lib/service-handoff-state";
@@ -366,6 +368,44 @@ export function WalletFirstServiceActionsWorkbench({
   const [selectedTelemetrySlug, setSelectedTelemetrySlug] = useState<TelemetryInspectorMode["slug"]>(
     data.telemetryModes[0]?.slug ?? "packet",
   );
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const queryState = readServiceHandoffState(new URLSearchParams(window.location.search));
+    const storedState = parseStoredServiceHandoffState(
+      window.localStorage.getItem(SERVICE_HANDOFF_STORAGE_KEY),
+    );
+    const initialState = queryState ?? storedState;
+
+    if (!initialState) return;
+
+    if (data.proposals.some((item) => item.id === initialState.proposalId)) {
+      setSelectedProposalId(initialState.proposalId);
+    }
+
+    if (data.payouts.some((item) => item.slug === initialState.payoutProfile)) {
+      setSelectedPayoutSlug(initialState.payoutProfile);
+    }
+
+    if (data.telemetryModes.some((item) => item.slug === initialState.telemetryMode)) {
+      setSelectedTelemetrySlug(initialState.telemetryMode);
+    }
+
+    if (context === "services" && data.payouts.some((item) => item.slug === initialState.payoutProfile)) {
+      setActiveLane("payout-route-selection");
+      return;
+    }
+
+    if (context === "command-center" && data.proposals.some((item) => item.id === initialState.proposalId)) {
+      setActiveLane("proposal-review");
+      return;
+    }
+
+    if (data.telemetryModes.some((item) => item.slug === initialState.telemetryMode)) {
+      setActiveLane("telemetry-inspection");
+    }
+  }, [context, data.payouts, data.proposals, data.telemetryModes]);
 
   const selectedProposal = useMemo(
     () => data.proposals.find((item) => item.id === selectedProposalId) ?? data.proposals[0],
