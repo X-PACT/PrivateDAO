@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { CanonicalCustodyProofSurface } from "@/components/canonical-custody-proof-surface";
 import { CustodyTruthQuickActions } from "@/components/custody-truth-quick-actions";
@@ -7,6 +8,8 @@ import { CustodyTrustContinuity } from "@/components/custody-trust-continuity";
 import { OperationsShell } from "@/components/operations-shell";
 import { getCuratedDocuments, getCuratedDocumentsBySlugs } from "@/lib/curated-documents";
 import { buildRouteMetadata } from "@/lib/route-metadata";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const PRIORITY_TRUTH_SURFACE_SLUGS = [
   "canonical-custody-proof",
@@ -54,13 +57,30 @@ export default function DocumentsPage() {
           description="Reviewer and operator fast path into the custody truth surfaces: reviewer packet, canonical proof, intake shape, and the strict apply route."
         />
       </div>
+      <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.05] p-5">
+        <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/78">Reviewer fast path strip</div>
+        <div className="mt-3 max-w-3xl text-sm leading-7 text-white/60">
+          Start from `/documents` and reach operating truth, the correct reviewer packet, and the shortest demo route in two clicks instead of scanning the full library.
+        </div>
+        <div className="mt-5 grid gap-3 md:grid-cols-3">
+          <Link href="/documents/canonical-custody-proof" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
+            Open truth
+          </Link>
+          <Link href="#track-reviewer-packets" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+            Open track packet
+          </Link>
+          <Link href="/documents/reviewer-fast-path" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+            Open best demo route
+          </Link>
+        </div>
+      </div>
       <div>
         <CanonicalCustodyProofSurface mode="documents" />
       </div>
       <div>
         <CustodyTrustContinuity mode="documents" />
       </div>
-      <div>
+      <div id="priority-truth-surfaces">
         <div className="mb-5">
           <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/76">Priority truth surfaces</div>
           <div className="mt-3 max-w-3xl text-sm leading-7 text-white/60">
@@ -69,7 +89,7 @@ export default function DocumentsPage() {
         </div>
         <DocumentLibrary documents={priorityTruthSurfaces} />
       </div>
-      <div>
+      <div id="track-reviewer-packets">
         <div className="mb-5">
           <div className="text-[11px] uppercase tracking-[0.3em] text-violet-200/76">Track reviewer packets</div>
           <div className="mt-3 max-w-3xl text-sm leading-7 text-white/60">
