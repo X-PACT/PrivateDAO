@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { authorityHardeningLinks, authorityHardeningSections } from "@/lib/authority-hardening";
-import { emptyCustodyEvidence, readCustodyEvidence, writeCustodyEvidence } from "@/lib/custody-evidence";
+import { emptyCustodyEvidence, readCustodyEvidence, writeCustodyEvidence, type CustodyEvidence } from "@/lib/custody-evidence";
 import { cn } from "@/lib/utils";
 
 const custodySteps = [
@@ -52,47 +52,38 @@ function downloadPacket(filename: string, contents: string) {
 }
 
 export function CustodyWorkspace() {
-  const [multisigAddress, setMultisigAddress] = useState("");
-  const [threshold, setThreshold] = useState("2-of-3");
-  const [signerRoster, setSignerRoster] = useState("");
-  const [upgradeTransferSignature, setUpgradeTransferSignature] = useState("");
-  const [treasuryTransferSignature, setTreasuryTransferSignature] = useState("");
-  const [postTransferReadouts, setPostTransferReadouts] = useState("");
+  const [draftEvidence, setDraftEvidence] = useState<CustodyEvidence>(emptyCustodyEvidence);
   const [copyState, setCopyState] = useState<"idle" | "copied">("idle");
 
   useEffect(() => {
-    const parsed = readCustodyEvidence();
-    setMultisigAddress(parsed.multisigAddress ?? "");
-    setThreshold(parsed.threshold ?? "2-of-3");
-    setSignerRoster(parsed.signerRoster ?? "");
-    setUpgradeTransferSignature(parsed.upgradeTransferSignature ?? "");
-    setTreasuryTransferSignature(parsed.treasuryTransferSignature ?? "");
-    setPostTransferReadouts(parsed.postTransferReadouts ?? "");
+    const timer = window.setTimeout(() => {
+      setDraftEvidence(readCustodyEvidence());
+    }, 0);
+
+    return () => window.clearTimeout(timer);
   }, []);
 
   useEffect(() => {
-    const payload = {
-      multisigAddress,
-      threshold,
-      signerRoster,
-      upgradeTransferSignature,
-      treasuryTransferSignature,
-      postTransferReadouts,
-    };
+    writeCustodyEvidence(draftEvidence);
+  }, [draftEvidence]);
 
-    writeCustodyEvidence(payload);
-  }, [multisigAddress, threshold, signerRoster, upgradeTransferSignature, treasuryTransferSignature, postTransferReadouts]);
+  function updateDraftEvidence<K extends keyof CustodyEvidence>(
+    key: K,
+    value: CustodyEvidence[K],
+  ) {
+    setDraftEvidence((current) => ({ ...current, [key]: value }));
+  }
 
   const evidenceFields = useMemo<EvidenceField[]>(
     () => [
-      { label: "Multisig public address", value: multisigAddress.trim() || "Not recorded yet" },
-      { label: "Threshold", value: threshold.trim() || "Not recorded yet" },
-      { label: "Signer roster", value: signerRoster.trim() || "Not recorded yet" },
-      { label: "Upgrade transfer signature", value: upgradeTransferSignature.trim() || "Not recorded yet" },
-      { label: "Treasury transfer signature", value: treasuryTransferSignature.trim() || "Not recorded yet" },
-      { label: "Post-transfer readouts", value: postTransferReadouts.trim() || "Not recorded yet" },
+      { label: "Multisig public address", value: draftEvidence.multisigAddress.trim() || "Not recorded yet" },
+      { label: "Threshold", value: draftEvidence.threshold.trim() || "Not recorded yet" },
+      { label: "Signer roster", value: draftEvidence.signerRoster.trim() || "Not recorded yet" },
+      { label: "Upgrade transfer signature", value: draftEvidence.upgradeTransferSignature.trim() || "Not recorded yet" },
+      { label: "Treasury transfer signature", value: draftEvidence.treasuryTransferSignature.trim() || "Not recorded yet" },
+      { label: "Post-transfer readouts", value: draftEvidence.postTransferReadouts.trim() || "Not recorded yet" },
     ],
-    [multisigAddress, threshold, signerRoster, upgradeTransferSignature, treasuryTransferSignature, postTransferReadouts],
+    [draftEvidence],
   );
 
   const packet = useMemo(() => {
@@ -127,8 +118,8 @@ export function CustodyWorkspace() {
         <CardHeader>
           <div className="flex items-center justify-between gap-4">
             <div>
-              <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-300/80">Custody Workspace</div>
-              <CardTitle className="mt-2">Multisig and authority transfer now have a live execution surface</CardTitle>
+              <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-300/80">Operator draft capture</div>
+              <CardTitle className="mt-2">Draft and export custody evidence without promoting it into canonical launch proof</CardTitle>
             </div>
             <Badge variant="warning">Evidence still required</Badge>
           </div>
@@ -136,7 +127,7 @@ export function CustodyWorkspace() {
         <CardContent className="space-y-5">
           <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
             <div className="text-sm leading-7 text-white/60">
-              PrivateDAO no longer treats custody as a hidden ops note. The workflow is now explicit: signer set, multisig creation, upgrade authority transfer, treasury authority transfer, and post-transfer readouts. What is still pending is the external signature evidence, not the operating plan.
+              The canonical launch truth now lives in the repo-backed proof surface above. This draft capture remains useful for operators preparing the ceremony packet, but it is intentionally not the official source of truth until the repo artifacts are updated with real values and explorer-linked evidence.
             </div>
           </div>
 
@@ -153,13 +144,13 @@ export function CustodyWorkspace() {
           </div>
 
           <div className="rounded-3xl border border-cyan-300/12 bg-cyan-300/5 p-5">
-            <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/72">Evidence capture</div>
+            <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/72">Draft evidence capture</div>
             <div className="mt-4 grid gap-4 lg:grid-cols-2">
               <label id="multisig-address" className="space-y-2 scroll-mt-24">
                 <div className="text-sm font-medium text-white">Multisig public address</div>
                 <input
-                  value={multisigAddress}
-                  onChange={(event) => setMultisigAddress(event.target.value)}
+                  value={draftEvidence.multisigAddress}
+                  onChange={(event) => updateDraftEvidence("multisigAddress", event.target.value)}
                   className="h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
                   placeholder="Enter the production multisig public address"
                 />
@@ -167,8 +158,8 @@ export function CustodyWorkspace() {
               <label id="threshold" className="space-y-2 scroll-mt-24">
                 <div className="text-sm font-medium text-white">Threshold</div>
                 <input
-                  value={threshold}
-                  onChange={(event) => setThreshold(event.target.value)}
+                  value={draftEvidence.threshold}
+                  onChange={(event) => updateDraftEvidence("threshold", event.target.value)}
                   className="h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
                   placeholder="2-of-3"
                 />
@@ -176,8 +167,8 @@ export function CustodyWorkspace() {
               <label id="signer-roster" className="space-y-2 lg:col-span-2 scroll-mt-24">
                 <div className="text-sm font-medium text-white">Signer roster</div>
                 <textarea
-                  value={signerRoster}
-                  onChange={(event) => setSignerRoster(event.target.value)}
+                  value={draftEvidence.signerRoster}
+                  onChange={(event) => updateDraftEvidence("signerRoster", event.target.value)}
                   className="min-h-28 w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none placeholder:text-white/28"
                   placeholder={"Signer A - upgrade lead\nSigner B - treasury lead\nSigner C - recovery lead"}
                 />
@@ -185,8 +176,8 @@ export function CustodyWorkspace() {
               <label id="upgrade-transfer-signature" className="space-y-2 scroll-mt-24">
                 <div className="text-sm font-medium text-white">Upgrade transfer signature</div>
                 <input
-                  value={upgradeTransferSignature}
-                  onChange={(event) => setUpgradeTransferSignature(event.target.value)}
+                  value={draftEvidence.upgradeTransferSignature}
+                  onChange={(event) => updateDraftEvidence("upgradeTransferSignature", event.target.value)}
                   className="h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
                   placeholder="Explorer-linked signature"
                 />
@@ -194,8 +185,8 @@ export function CustodyWorkspace() {
               <label id="treasury-transfer-signature" className="space-y-2 scroll-mt-24">
                 <div className="text-sm font-medium text-white">Treasury transfer signature</div>
                 <input
-                  value={treasuryTransferSignature}
-                  onChange={(event) => setTreasuryTransferSignature(event.target.value)}
+                  value={draftEvidence.treasuryTransferSignature}
+                  onChange={(event) => updateDraftEvidence("treasuryTransferSignature", event.target.value)}
                   className="h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
                   placeholder="Explorer-linked signature"
                 />
@@ -203,8 +194,8 @@ export function CustodyWorkspace() {
               <label id="post-transfer-readouts" className="space-y-2 lg:col-span-2 scroll-mt-24">
                 <div className="text-sm font-medium text-white">Post-transfer readouts</div>
                 <textarea
-                  value={postTransferReadouts}
-                  onChange={(event) => setPostTransferReadouts(event.target.value)}
+                  value={draftEvidence.postTransferReadouts}
+                  onChange={(event) => updateDraftEvidence("postTransferReadouts", event.target.value)}
                   className="min-h-28 w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none placeholder:text-white/28"
                   placeholder={"Program upgrade authority readout\nTreasury authority readout\nAdmin authority readout"}
                 />

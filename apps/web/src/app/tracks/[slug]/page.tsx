@@ -4,6 +4,7 @@ import { Suspense } from "react";
 
 import { CompetitionWorkspace } from "@/components/competition-workspace";
 import { OperationsShell } from "@/components/operations-shell";
+import { TrackProofClosurePanel } from "@/components/track-proof-closure-panel";
 import { TrackSubmissionCapsule } from "@/components/track-submission-capsule";
 import { VideoCenter } from "@/components/video-center";
 import {
@@ -59,6 +60,9 @@ export default async function TrackWorkspacePage({ params }: PageProps) {
         <Suspense fallback={<div className="h-px" aria-hidden="true" />}>
           <TrackSubmissionCapsule workspace={workspace} />
         </Suspense>
+      </div>
+      <div>
+        <TrackProofClosurePanel workspace={workspace} />
       </div>
       <div>
         <CompetitionWorkspace workspace={workspace} />

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { CanonicalCustodyProofSurface } from "@/components/canonical-custody-proof-surface";
 import { CustodyWorkspace } from "@/components/custody-workspace";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperationsShell } from "@/components/operations-shell";
@@ -27,6 +28,9 @@ export default function CustodyPage() {
     >
       <div>
         <MetricsStrip />
+      </div>
+      <div>
+        <CanonicalCustodyProofSurface />
       </div>
       <div>
         <CustodyWorkspace />

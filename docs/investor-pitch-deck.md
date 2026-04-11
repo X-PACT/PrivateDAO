@@ -136,6 +136,30 @@ Honest boundary:
 - real-funds mainnet is blocked until custody, monitoring, real-device captures, and audit closure are complete
 - ZK and external settlement source-verification can be strengthened further through verifier/source receipt integrations
 
+## Slide 8A - Canonical Custody Proof
+
+PrivateDAO now has a canonical custody proof surface, not only narrative slides.
+
+Official custody state today:
+
+- status: `pending-external`
+- production mainnet claim allowed: `false`
+- network: `mainnet-beta`
+- threshold target: `2-of-3`
+- signer public keys recorded: `0/3`
+- multisig implementation: `pending-selection`
+- multisig address: `pending`
+- authority transfer signatures: `pending`
+- post-transfer readouts: `pending`
+
+Canonical sources:
+
+- `docs/multisig-setup-intake.json`
+- `docs/production-custody-ceremony.md`
+- `docs/authority-transfer-runbook.md`
+- `docs/mainnet-blockers.md`
+- `https://privatedao.org/custody/`
+
 ## Slide 9 - Business Model
 
 PrivateDAO does not claim live protocol revenue today.
@@ -197,6 +221,12 @@ Production path:
 - deploy monitoring and alerting
 - perform final cutover ceremony
 
+The important discipline is explicit:
+
+- repo truth and live product truth must match
+- custody remains pending until real explorer-linked signatures and authority readouts exist
+- no deck language should outrun the canonical custody packet
+
 ## Slide 12 - The Ask
 
 PrivateDAO is seeking ecosystem funding, grants, and direct investment to move from advanced Devnet product and audit-readiness candidate into production-grade launch readiness.
@@ -228,6 +258,8 @@ Core links:
 - Services: `https://privatedao.org/services/`
 - Diagnostics: `https://privatedao.org/diagnostics/`
 - Custody workspace: `https://privatedao.org/custody/`
+- Launch trust packet: `https://privatedao.org/documents/launch-trust-packet/`
+- Mainnet blockers: `https://privatedao.org/documents/mainnet-blockers/`
 - Track center: `https://privatedao.org/tracks/`
 - Colosseum workspace: `https://privatedao.org/tracks/colosseum-frontier/`
 - Privacy workspace: `https://privatedao.org/tracks/privacy-track/`
@@ -239,6 +271,9 @@ Core links:
 - Security hardening: `docs/security-hardening-v2.md`
 - Mainnet blockers: `docs/mainnet-blockers.md`
 - Multisig intake: `docs/multisig-setup-intake.md`
+- Multisig intake JSON: `docs/multisig-setup-intake.json`
+- Production custody ceremony: `docs/production-custody-ceremony.md`
+- Authority transfer runbook: `docs/authority-transfer-runbook.md`
 - Monitoring rules: `docs/monitoring-alert-rules.md`
 - Wallet E2E plan: `docs/wallet-e2e-test-plan.md`
 - Economic model: `docs/economic-model.md`

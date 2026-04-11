@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { CanonicalCustodyProofSurface } from "@/components/canonical-custody-proof-surface";
 import { DocumentLibrary } from "@/components/document-library";
 import { CustodyTrustContinuity } from "@/components/custody-trust-continuity";
 import { OperationsShell } from "@/components/operations-shell";
@@ -28,6 +29,9 @@ export default function DocumentsPage() {
         { label: "Raw viewer included", variant: "warning" },
       ]}
     >
+      <div>
+        <CanonicalCustodyProofSurface mode="documents" />
+      </div>
       <div>
         <CustodyTrustContinuity mode="documents" />
       </div>

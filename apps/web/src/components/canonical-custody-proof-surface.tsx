@@ -1,0 +1,190 @@
+import { ArrowUpRight, KeyRound, ShieldCheck, WalletCards } from "lucide-react";
+
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { buttonVariants } from "@/components/ui/button";
+import { getCanonicalCustodyProofSnapshot } from "@/lib/canonical-custody-proof";
+import { cn } from "@/lib/utils";
+
+type CanonicalCustodyProofSurfaceProps = {
+  mode?: "operations" | "documents";
+};
+
+function renderValue(value: string | null | undefined, fallback = "Pending external") {
+  return value && value.trim().length > 0 ? value : fallback;
+}
+
+export function CanonicalCustodyProofSurface({
+  mode = "operations",
+}: CanonicalCustodyProofSurfaceProps) {
+  const snapshot = getCanonicalCustodyProofSnapshot();
+  const badgeVariant =
+    snapshot.completedItems === 0
+      ? "warning"
+      : snapshot.completedItems < snapshot.totalItems
+        ? "cyan"
+        : "success";
+
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-300/80">
+              Canonical custody proof
+            </div>
+            <CardTitle className="mt-2">
+              Repo-backed multisig and authority proof, with exact pending items and explorer-linked closure points
+            </CardTitle>
+          </div>
+          <Badge variant={badgeVariant}>
+            {snapshot.status} · {snapshot.completedItems}/{snapshot.totalItems}
+          </Badge>
+        </div>
+      </CardHeader>
+      <CardContent className="grid gap-5">
+        <div className="rounded-3xl border border-white/8 bg-white/4 p-5 text-sm leading-7 text-white/60">
+          {snapshot.summary}
+        </div>
+
+        <div className="grid gap-4 xl:grid-cols-3">
+          <div className="rounded-3xl border border-white/8 bg-black/20 p-5">
+            <div className="flex items-center gap-3">
+              <KeyRound className="h-4 w-4 text-cyan-200" />
+              <div className="text-sm font-medium text-white">Multisig and timelock</div>
+            </div>
+            <div className="mt-4 space-y-3 text-sm leading-7 text-white/58">
+              <div><span className="text-white/76">Implementation:</span> {renderValue(snapshot.multisig.implementation)}</div>
+              <div><span className="text-white/76">Multisig address:</span> {renderValue(snapshot.multisig.address)}</div>
+              <div><span className="text-white/76">Threshold:</span> {snapshot.multisig.threshold}</div>
+              <div><span className="text-white/76">Creation signature:</span> {renderValue(snapshot.multisig.creationSignature)}</div>
+              <div><span className="text-white/76">Rehearsal signature:</span> {renderValue(snapshot.multisig.rehearsalSignature)}</div>
+              <div><span className="text-white/76">Configured timelock:</span> {snapshot.timelock.configuredHours ?? "Pending external"}{snapshot.timelock.configuredHours ? "h" : ""}</div>
+              <div><span className="text-white/76">Timelock config proof:</span> {renderValue(snapshot.timelock.configurationSignature)}</div>
+            </div>
+            <div className="mt-4 flex flex-wrap gap-3">
+              {snapshot.multisig.addressExplorerUrl ? (
+                <a className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={snapshot.multisig.addressExplorerUrl} target="_blank" rel="noreferrer">
+                  Multisig explorer
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+              ) : null}
+              {snapshot.timelock.configurationExplorerUrl ? (
+                <a className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={snapshot.timelock.configurationExplorerUrl} target="_blank" rel="noreferrer">
+                  Timelock proof
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+              ) : null}
+            </div>
+          </div>
+
+          <div className="rounded-3xl border border-white/8 bg-black/20 p-5">
+            <div className="flex items-center gap-3">
+              <WalletCards className="h-4 w-4 text-emerald-200" />
+              <div className="text-sm font-medium text-white">Signer roster</div>
+            </div>
+            <div className="mt-4 space-y-3">
+              {snapshot.signers.map((signer) => (
+                <div key={signer.slot} className="rounded-2xl border border-white/8 bg-white/4 p-3 text-sm leading-7 text-white/58">
+                  <div className="font-medium text-white">
+                    Slot {signer.slot} · {signer.role}
+                  </div>
+                  <div className="mt-1">Public key: {renderValue(signer.publicKey)}</div>
+                  <div>Storage class: {signer.storageClass}</div>
+                  <div>Backup documented: {signer.backupProcedureDocumented ? "yes" : "no"}</div>
+                  {signer.publicKeyExplorerUrl ? (
+                    <a className="mt-2 inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-cyan-200" href={signer.publicKeyExplorerUrl} target="_blank" rel="noreferrer">
+                      explorer
+                      <ArrowUpRight className="h-3.5 w-3.5" />
+                    </a>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-3xl border border-white/8 bg-black/20 p-5">
+            <div className="flex items-center gap-3">
+              <ShieldCheck className="h-4 w-4 text-amber-200" />
+              <div className="text-sm font-medium text-white">Authority transfer proof</div>
+            </div>
+            <div className="mt-4 space-y-3">
+              {snapshot.authorityTransfers.map((transfer) => (
+                <div key={transfer.surface} className="rounded-2xl border border-white/8 bg-white/4 p-3 text-sm leading-7 text-white/58">
+                  <div className="font-medium capitalize text-white">
+                    {transfer.surface.replaceAll("-", " ")}
+                  </div>
+                  <div className="mt-1">Program ID: {transfer.programId}</div>
+                  <div>Destination authority: {renderValue(transfer.destinationAuthority)}</div>
+                  <div>Transfer signature: {renderValue(transfer.transferSignature)}</div>
+                  <div>Post-transfer readout: {renderValue(transfer.postTransferReadout)}</div>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    <a className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={transfer.programExplorerUrl} target="_blank" rel="noreferrer">
+                      Program
+                    </a>
+                    {transfer.destinationExplorerUrl ? (
+                      <a className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={transfer.destinationExplorerUrl} target="_blank" rel="noreferrer">
+                        Destination
+                      </a>
+                    ) : null}
+                    {transfer.transferExplorerUrl ? (
+                      <a className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={transfer.transferExplorerUrl} target="_blank" rel="noreferrer">
+                        Transfer tx
+                      </a>
+                    ) : null}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="grid gap-4 xl:grid-cols-[1.05fr_0.95fr]">
+          <div className="rounded-3xl border border-amber-300/14 bg-amber-300/[0.06] p-5">
+            <div className="text-[11px] uppercase tracking-[0.28em] text-amber-200/78">
+              Exact pending items
+            </div>
+            <div className="mt-4 grid gap-2">
+              {snapshot.pendingItems.map((item) => (
+                <div key={item} className="text-sm leading-7 text-white/62">
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
+            <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/76">
+              Exact blocker and sources
+            </div>
+            <div className="mt-4 text-sm leading-7 text-white/62">
+              <div><span className="text-white/78">Blocker:</span> {snapshot.blocker.id}</div>
+              <div><span className="text-white/78">Severity:</span> {snapshot.blocker.severity}</div>
+              <div><span className="text-white/78">Status:</span> {snapshot.blocker.status}</div>
+              <div className="mt-2">{snapshot.blocker.nextAction}</div>
+            </div>
+            <div className="mt-4 flex flex-wrap gap-3">
+              {snapshot.rawSources.map((source) => (
+                <a
+                  key={source.href}
+                  className={cn(buttonVariants({ size: "sm", variant: "outline" }))}
+                  href={source.href}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {source.label}
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+              ))}
+            </div>
+            {mode === "documents" ? (
+              <div className="mt-4 rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/58">
+                This is the reviewer-safe proof surface. It only reflects the canonical repo files and does not promote operator draft capture into official launch truth.
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}

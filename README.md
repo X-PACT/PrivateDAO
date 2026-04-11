@@ -125,6 +125,38 @@ Operational launch docs:
 
 The README should stay aligned with this rule: implemented surfaces are described as implemented; external launch steps are described as pending until real evidence is recorded.
 
+## Canonical Custody Proof
+
+The canonical custody source of truth is:
+
+- [`docs/multisig-setup-intake.json`](docs/multisig-setup-intake.json)
+- [`docs/production-custody-ceremony.md`](docs/production-custody-ceremony.md)
+- [`docs/authority-transfer-runbook.md`](docs/authority-transfer-runbook.md)
+- [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md)
+
+Current official custody state from the canonical intake:
+
+- status: `pending-external`
+- production mainnet claim allowed: `false`
+- network: `mainnet-beta`
+- threshold target: `2-of-3`
+- signer public keys recorded: `0/3`
+- multisig implementation: `pending-selection`
+- multisig address: `pending`
+- timelock configuration evidence: `pending`
+- rehearsal signature: `pending`
+- upgrade / DAO / treasury transfer signatures: `pending`
+- post-transfer authority readouts: `pending`
+
+Live proof surface:
+
+- `https://privatedao.org/custody/`
+- `https://privatedao.org/documents/`
+- `https://privatedao.org/documents/launch-trust-packet/`
+- `https://privatedao.org/documents/mainnet-blockers/`
+
+This is intentional: the product now exposes the exact custody proof shape and blocker state, but it still does not claim the ceremony happened before the real addresses, signatures, explorer links, and readouts are recorded.
+
 ## Start Here
 
 | If you need | Link |
@@ -133,6 +165,8 @@ The README should stay aligned with this rule: implemented surfaces are describe
 | Command center | https://privatedao.org/command-center/ |
 | Governance dashboard | https://privatedao.org/dashboard/ |
 | Custody workspace | https://privatedao.org/custody/ |
+| Launch trust packet | https://privatedao.org/documents/launch-trust-packet/ |
+| Mainnet blockers | https://privatedao.org/documents/mainnet-blockers/ |
 | Story video | https://privatedao.org/story/ |
 | Community | https://privatedao.org/community/ |
 | Judge / proof view | https://privatedao.org/proof/?judge=1 |
@@ -141,6 +175,7 @@ The README should stay aligned with this rule: implemented surfaces are describe
 | Treasury receive surface | https://privatedao.org/services/ |
 | Demo video MP4 | https://privatedao.org/assets/private-dao-demo-flow.mp4 |
 | Devnet program | https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet |
+| Canonical custody intake | [`docs/multisig-setup-intake.json`](docs/multisig-setup-intake.json) |
 
 The launch boundary is now surfaced in-product through `https://privatedao.org/custody/`, where multisig creation, authority transfer, and evidence requirements are shown as a live operating workflow rather than a hidden note.
 

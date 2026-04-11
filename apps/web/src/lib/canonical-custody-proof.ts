@@ -1,0 +1,261 @@
+import fs from "node:fs";
+import path from "node:path";
+
+type MultisigSetupIntake = {
+  status: string;
+  productionMainnetClaimAllowed: boolean;
+  network: string;
+  multisig: {
+    requiredThreshold: number;
+    requiredSignerCount: number;
+    implementation: string | null;
+    address: string | null;
+    creationSignature: string | null;
+    rehearsalSignature: string | null;
+  };
+  timelock: {
+    minimumHours: number;
+    configuredHours: number | null;
+    configurationSignature: string | null;
+  };
+  signers: Array<{
+    slot: number;
+    role: string;
+    publicKey: string | null;
+    storageClass: string;
+    backupProcedureDocumented: boolean;
+  }>;
+  authorityTransfers: Array<{
+    surface: string;
+    programId: string;
+    destinationAuthority: string | null;
+    transferSignature: string | null;
+    postTransferReadout: string | null;
+  }>;
+};
+
+type MainnetBlockerRegister = {
+  summary: string;
+  blockers: Array<{
+    id: string;
+    category: string;
+    severity: string;
+    status: string;
+    nextAction: string;
+    evidence: string[];
+  }>;
+};
+
+export type CustodyProofLink = {
+  label: string;
+  href: string;
+};
+
+export type CanonicalCustodyProofSnapshot = {
+  status: string;
+  productionMainnetClaimAllowed: boolean;
+  network: string;
+  summary: string;
+  multisig: {
+    implementation: string | null;
+    address: string | null;
+    addressExplorerUrl: string | null;
+    threshold: string;
+    creationSignature: string | null;
+    creationExplorerUrl: string | null;
+    rehearsalSignature: string | null;
+    rehearsalExplorerUrl: string | null;
+  };
+  timelock: {
+    minimumHours: number;
+    configuredHours: number | null;
+    configurationSignature: string | null;
+    configurationExplorerUrl: string | null;
+  };
+  signers: Array<{
+    slot: number;
+    role: string;
+    publicKey: string | null;
+    publicKeyExplorerUrl: string | null;
+    storageClass: string;
+    backupProcedureDocumented: boolean;
+  }>;
+  authorityTransfers: Array<{
+    surface: string;
+    programId: string;
+    programExplorerUrl: string;
+    destinationAuthority: string | null;
+    destinationExplorerUrl: string | null;
+    transferSignature: string | null;
+    transferExplorerUrl: string | null;
+    postTransferReadout: string | null;
+  }>;
+  completedItems: number;
+  totalItems: number;
+  pendingItems: string[];
+  blocker: {
+    id: string;
+    severity: string;
+    status: string;
+    nextAction: string;
+    evidence: string[];
+  };
+  rawSources: CustodyProofLink[];
+};
+
+function readJson<T>(relativePath: string): T {
+  const filePath = path.resolve(process.cwd(), "..", "..", relativePath);
+  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
+}
+
+function getClusterSuffix(network: string) {
+  if (network === "mainnet-beta") {
+    return "";
+  }
+  return `?cluster=${network}`;
+}
+
+function buildExplorerTxUrl(signature: string | null, network: string) {
+  if (!signature) return null;
+  return `https://explorer.solana.com/tx/${signature}${getClusterSuffix(network)}`;
+}
+
+function buildExplorerAccountUrl(address: string | null, network: string) {
+  if (!address) return null;
+  return `https://explorer.solana.com/address/${address}${getClusterSuffix(network)}`;
+}
+
+function prettySurface(surface: string) {
+  return surface.replaceAll("-", " ");
+}
+
+export function getCanonicalCustodyProofSnapshot(): CanonicalCustodyProofSnapshot {
+  const intake = readJson<MultisigSetupIntake>("docs/multisig-setup-intake.json");
+  const blockers = readJson<MainnetBlockerRegister>("docs/mainnet-blockers.json");
+  const custodyBlocker = blockers.blockers.find(
+    (item) => item.id === "upgrade-authority-multisig",
+  );
+
+  if (!custodyBlocker) {
+    throw new Error("Missing upgrade-authority-multisig blocker in mainnet-blockers.json");
+  }
+
+  const pendingItems: string[] = [];
+
+  if (!intake.multisig.implementation || intake.multisig.implementation === "pending-selection") {
+    pendingItems.push("chosen multisig implementation");
+  }
+  if (!intake.multisig.address) {
+    pendingItems.push("multisig public address");
+  }
+  if (!intake.multisig.creationSignature) {
+    pendingItems.push("multisig creation signature");
+  }
+  if (!intake.multisig.rehearsalSignature) {
+    pendingItems.push("rehearsal signature");
+  }
+  if (!intake.timelock.configuredHours || intake.timelock.configuredHours < intake.timelock.minimumHours) {
+    pendingItems.push(`timelock configuration of at least ${intake.timelock.minimumHours} hours`);
+  }
+  if (!intake.timelock.configurationSignature) {
+    pendingItems.push("timelock configuration signature or readout");
+  }
+
+  intake.signers.forEach((signer) => {
+    if (!signer.publicKey) {
+      pendingItems.push(`signer slot ${signer.slot} public key`);
+    }
+    if (!signer.backupProcedureDocumented) {
+      pendingItems.push(`backup procedure for signer slot ${signer.slot}`);
+    }
+  });
+
+  intake.authorityTransfers.forEach((transfer) => {
+    if (!transfer.destinationAuthority) {
+      pendingItems.push(`${prettySurface(transfer.surface)} destination authority`);
+    }
+    if (!transfer.transferSignature) {
+      pendingItems.push(`${prettySurface(transfer.surface)} transfer signature`);
+    }
+    if (!transfer.postTransferReadout) {
+      pendingItems.push(`${prettySurface(transfer.surface)} post-transfer readout`);
+    }
+  });
+
+  const totalItems =
+    6 +
+    intake.signers.length * 2 +
+    intake.authorityTransfers.length * 3;
+  const completedItems = totalItems - pendingItems.length;
+
+  return {
+    status: intake.status,
+    productionMainnetClaimAllowed: intake.productionMainnetClaimAllowed,
+    network: intake.network,
+    summary: blockers.summary,
+    multisig: {
+      implementation: intake.multisig.implementation,
+      address: intake.multisig.address,
+      addressExplorerUrl: buildExplorerAccountUrl(intake.multisig.address, intake.network),
+      threshold: `${intake.multisig.requiredThreshold}-of-${intake.multisig.requiredSignerCount}`,
+      creationSignature: intake.multisig.creationSignature,
+      creationExplorerUrl: buildExplorerTxUrl(intake.multisig.creationSignature, intake.network),
+      rehearsalSignature: intake.multisig.rehearsalSignature,
+      rehearsalExplorerUrl: buildExplorerTxUrl(intake.multisig.rehearsalSignature, intake.network),
+    },
+    timelock: {
+      minimumHours: intake.timelock.minimumHours,
+      configuredHours: intake.timelock.configuredHours,
+      configurationSignature: intake.timelock.configurationSignature,
+      configurationExplorerUrl: buildExplorerTxUrl(
+        intake.timelock.configurationSignature,
+        intake.network,
+      ),
+    },
+    signers: intake.signers.map((signer) => ({
+      ...signer,
+      publicKeyExplorerUrl: buildExplorerAccountUrl(signer.publicKey, intake.network),
+    })),
+    authorityTransfers: intake.authorityTransfers.map((transfer) => ({
+      ...transfer,
+      programExplorerUrl: buildExplorerAccountUrl(transfer.programId, intake.network) ?? "",
+      destinationExplorerUrl: buildExplorerAccountUrl(
+        transfer.destinationAuthority,
+        intake.network,
+      ),
+      transferExplorerUrl: buildExplorerTxUrl(transfer.transferSignature, intake.network),
+    })),
+    completedItems,
+    totalItems,
+    pendingItems,
+    blocker: {
+      id: custodyBlocker.id,
+      severity: custodyBlocker.severity,
+      status: custodyBlocker.status,
+      nextAction: custodyBlocker.nextAction,
+      evidence: custodyBlocker.evidence,
+    },
+    rawSources: [
+      {
+        label: "Canonical intake JSON",
+        href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/multisig-setup-intake.json",
+      },
+      {
+        label: "Production custody ceremony",
+        href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/production-custody-ceremony.md",
+      },
+      {
+        label: "Authority transfer runbook",
+        href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/authority-transfer-runbook.md",
+      },
+      {
+        label: "Launch trust packet",
+        href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/launch-trust-packet.generated.md",
+      },
+      {
+        label: "Mainnet blocker register",
+        href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/mainnet-blockers.md",
+      },
+    ],
+  };
+}
