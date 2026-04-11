@@ -7,6 +7,7 @@ import { OperationsShell } from "@/components/operations-shell";
 import { ProofEntryBanner } from "@/components/proof-entry-banner";
 import { ProofFlowRail } from "@/components/proof-flow-rail";
 import { ProofCenter } from "@/components/proof-center";
+import { ReadNodeActivationStrip } from "@/components/read-node-activation-strip";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
@@ -36,6 +37,9 @@ export default function ProofPage() {
       </div>
       <div>
         <JudgeRuntimeLogsPanel />
+      </div>
+      <div>
+        <ReadNodeActivationStrip context="proof" />
       </div>
       <div>
         <MetricsStrip />

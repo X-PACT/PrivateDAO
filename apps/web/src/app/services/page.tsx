@@ -13,6 +13,7 @@ import { PlatformServiceArchitecture } from "@/components/platform-service-archi
 import { PaymentsTruthStrip } from "@/components/payments-truth-strip";
 import { PdaoTokenStrategyStrip } from "@/components/pdao-token-strategy-strip";
 import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-truth-strip";
+import { ReadNodeActivationStrip } from "@/components/read-node-activation-strip";
 import { SectionHeader } from "@/components/section-header";
 import { ServiceOperationalCards } from "@/components/service-operational-cards";
 import { ServiceReadinessLadder } from "@/components/service-readiness-ladder";
@@ -54,6 +55,9 @@ export default function ServicesPage() {
           title="Telemetry truth for infrastructure buyers"
           description="Put freshness, hosted-read scale, finalized proof counts, and the telemetry packet above the commercial infrastructure story."
         />
+      </div>
+      <div>
+        <ReadNodeActivationStrip context="services" />
       </div>
       <div>
         <EcosystemFocusAlignmentStrip

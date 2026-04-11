@@ -1,0 +1,117 @@
+import fs from "node:fs";
+import path from "node:path";
+
+export type ReadNodeActivationContext = "services" | "command-center" | "proof";
+
+type ReadNodeSnapshot = {
+  generatedAt: string;
+  readPath: string;
+  counts: {
+    proposals: number;
+    uniqueDaos: number;
+    confidentialPayouts: number;
+  };
+  overview: {
+    refheConfigured: number;
+    refheSettled: number;
+    magicblockConfigured: number;
+    magicblockSettled: number;
+  };
+};
+
+type ReadNodeOpsSnapshot = {
+  deployment: {
+    sameDomainRecommended: boolean;
+    guide: string;
+    readApiPath: string;
+  };
+  operatorChecks: string[];
+};
+
+export type ReadNodeActivationSnapshot = {
+  title: string;
+  description: string;
+  activationState: string;
+  exactGap: string;
+  readPath: string;
+  indexedProposalCount: string;
+  confidentialCoverage: string;
+  integrationCoverage: string;
+  bestRouteHref: string;
+  bestRouteLabel: string;
+  telemetryHref: string;
+  telemetryLabel: string;
+  snapshotHref: string;
+  snapshotLabel: string;
+  opsHref: string;
+  opsLabel: string;
+  deployHref: string;
+  deployLabel: string;
+  operatorCheckCount: string;
+};
+
+function readJson<T>(relativePath: string): T {
+  const filePath = path.resolve(process.cwd(), "..", "..", relativePath);
+  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
+}
+
+function getContextCopy(context: ReadNodeActivationContext) {
+  if (context === "services") {
+    return {
+      title: "Hosted-read activation",
+      description:
+        "Buyer-facing infrastructure value starts here: indexed governance reads, reviewer telemetry, and the exact backend deployment target stay in one commercial path instead of being split across docs and GitHub blobs.",
+      bestRouteHref: "/services",
+      bestRouteLabel: "Open buyer infrastructure route",
+    };
+  }
+
+  if (context === "command-center") {
+    return {
+      title: "Read-node operator activation",
+      description:
+        "Operators need one truth surface for backend-indexed reads, runtime checks, and the exact deployment gap before same-domain `/api/v1` becomes a live production-style rail.",
+      bestRouteHref: "/command-center",
+      bestRouteLabel: "Open operator command path",
+    };
+  }
+
+  return {
+    title: "Read-node judge activation",
+    description:
+      "Judges should see that read-node is not a claim buried in docs: the indexed read path, telemetry packet, and deployment target are part of the proof story with an explicit backend gap.",
+    bestRouteHref: "/proof",
+    bestRouteLabel: "Open judge proof route",
+  };
+}
+
+export function getReadNodeActivationSnapshot(
+  context: ReadNodeActivationContext,
+): ReadNodeActivationSnapshot {
+  const snapshot = readJson<ReadNodeSnapshot>("docs/read-node/snapshot.generated.json");
+  const ops = readJson<ReadNodeOpsSnapshot>("docs/read-node/ops.generated.json");
+  const copy = getContextCopy(context);
+
+  return {
+    title: copy.title,
+    description: copy.description,
+    activationState: "Indexed reads are live in-product; same-domain backend serving is still pending host cutover",
+    exactGap:
+      "The current live site is static on GitHub Pages. `/api/v1` becomes a true product rail only after a separate backend host and reverse proxy are cut over.",
+    readPath: snapshot.readPath,
+    indexedProposalCount: `${snapshot.counts.proposals} proposals / ${snapshot.counts.uniqueDaos} DAOs`,
+    confidentialCoverage: `${snapshot.counts.confidentialPayouts} confidential payouts`,
+    integrationCoverage: `${snapshot.overview.refheSettled}/${snapshot.overview.refheConfigured} REFHE settled · ${snapshot.overview.magicblockSettled}/${snapshot.overview.magicblockConfigured} MagicBlock settled`,
+    bestRouteHref: copy.bestRouteHref,
+    bestRouteLabel: copy.bestRouteLabel,
+    telemetryHref: "/documents/reviewer-telemetry-packet",
+    telemetryLabel: "Open telemetry packet",
+    snapshotHref: "/documents/read-node-snapshot",
+    snapshotLabel: "Open read-node snapshot",
+    opsHref: "/documents/read-node-ops",
+    opsLabel: "Open read-node ops",
+    deployHref: "/documents/read-node-same-domain-deploy",
+    deployLabel: "Open deploy target",
+    operatorCheckCount: `${ops.operatorChecks.length} operator checks`,
+  };
+}
