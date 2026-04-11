@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { GettingStartedWorkspace } from "@/components/getting-started-workspace";
 import { GovernanceSessionPanel } from "@/components/governance-session-panel";
+import { InfrastructureStartupProofStrip } from "@/components/infrastructure-startup-proof-strip";
 import { OperatingBoundaryPanel } from "@/components/operating-boundary-panel";
 import { OperationsShell } from "@/components/operations-shell";
 import { ProductActionMap } from "@/components/product-action-map";
@@ -32,6 +33,7 @@ export default function StartPage() {
         { label: "Proof still connected", variant: "violet" },
       ]}
     >
+      <InfrastructureStartupProofStrip route="start" />
       <SponsorSignalBar />
       <OperatingBoundaryPanel
         title="What stays inside the product"

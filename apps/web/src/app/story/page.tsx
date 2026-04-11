@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { InfrastructureStartupProofStrip } from "@/components/infrastructure-startup-proof-strip";
 import { OperationsShell } from "@/components/operations-shell";
 import { SectionHeader } from "@/components/section-header";
 import { VideoCenter } from "@/components/video-center";
@@ -25,6 +26,7 @@ export default function StoryPage() {
         { label: "Competition aligned", variant: "violet" },
       ]}
     >
+      <InfrastructureStartupProofStrip route="story" />
       <div>
         <VideoCenter />
       </div>
