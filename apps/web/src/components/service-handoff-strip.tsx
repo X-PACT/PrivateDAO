@@ -53,6 +53,13 @@ const copy = {
   },
 } as const;
 
+const payoutProfileLabels: Record<ServiceHandoffState["payoutProfile"], string> = {
+  "pilot-funding": "Pilot funding",
+  "treasury-top-up": "Treasury top-up",
+  "vendor-payout": "Vendor payout",
+  "contributor-payout": "Contributor payout",
+};
+
 export function ServiceHandoffStrip({ context }: ServiceHandoffStripProps) {
   const searchParams = useSearchParams();
   const storedState = useSyncExternalStore(
@@ -69,7 +76,7 @@ export function ServiceHandoffStrip({ context }: ServiceHandoffStripProps) {
           proposalTitle: storedState?.proposalTitle ?? queryState.proposalId,
           proposalStatus: storedState?.proposalStatus ?? "Context selected",
           payoutProfile: queryState.payoutProfile,
-          payoutTitle: storedState?.payoutTitle ?? queryState.payoutProfile,
+          payoutTitle: payoutProfileLabels[queryState.payoutProfile],
           telemetryMode: queryState.telemetryMode,
           updatedAt: storedState?.updatedAt ?? "query-handoff",
           source: storedState?.source ?? context,
