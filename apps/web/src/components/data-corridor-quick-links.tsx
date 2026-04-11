@@ -30,6 +30,11 @@ const quickLinks = [
     href: "/documents/frontier-integrations",
     icon: Database,
   },
+  {
+    label: "Open read-node snapshot",
+    href: "/documents/read-node-snapshot",
+    icon: FileText,
+  },
 ] as const;
 
 export function DataCorridorQuickLinks({
@@ -40,7 +45,7 @@ export function DataCorridorQuickLinks({
     <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.06] p-5">
       <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/78">{title}</div>
       <div className="mt-3 max-w-3xl text-sm leading-7 text-white/60">{description}</div>
-      <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+      <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
         {quickLinks.map((item) => {
           const Icon = item.icon;
 

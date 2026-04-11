@@ -25,9 +25,8 @@ const proofLinks: ProofLink[] = [
   },
   {
     label: "Read-node snapshot",
-    href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/read-node/snapshot.generated.md",
+    href: "/documents/read-node-snapshot",
     icon: FileSpreadsheet,
-    external: true,
   },
   {
     label: "Launch trust packet",

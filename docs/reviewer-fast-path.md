@@ -18,6 +18,8 @@ This is the shortest high-signal path for a judge, auditor, or technical reviewe
    - `docs/launch-trust-packet.generated.md`
 5. Open the telemetry truth path when the reviewer needs the infrastructure and data corridor explicitly:
    - `docs/reviewer-telemetry-packet.generated.md`
+   - `docs/read-node/snapshot.generated.md`
+   - `docs/read-node/ops.generated.md`
    - `https://privatedao.org/diagnostics/`
    - `https://privatedao.org/analytics/`
    - `https://privatedao.org/services/`

@@ -57,16 +57,20 @@ export function AnalystGradeDataCorridor() {
             Open telemetry packet
             <ArrowUpRight className="h-4 w-4" />
           </Link>
+          <Link href="/documents/read-node-snapshot" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+            Open read-node snapshot
+            <ArrowUpRight className="h-4 w-4" />
+          </Link>
           <Link href="/diagnostics" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
             Open diagnostics
             <ArrowUpRight className="h-4 w-4" />
           </Link>
-          <Link href="/analytics" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
-            Open analytics
+          <Link href="/documents/read-node-ops" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+            Open read-node ops
             <ArrowUpRight className="h-4 w-4" />
           </Link>
           <Link href="/documents/frontier-integrations" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
-            Open hosted-read proof
+            Open integrations
             <ArrowUpRight className="h-4 w-4" />
           </Link>
         </div>
