@@ -3,8 +3,8 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { CompetitionWorkspace } from "@/components/competition-workspace";
-import { CustodyTruthQuickActions } from "@/components/custody-truth-quick-actions";
 import { OperationsShell } from "@/components/operations-shell";
+import { TrackJudgeFirstTopStrip } from "@/components/track-judge-first-top-strip";
 import { TrackProofClosurePanel } from "@/components/track-proof-closure-panel";
 import { TrackSubmissionCapsule } from "@/components/track-submission-capsule";
 import { VideoCenter } from "@/components/video-center";
@@ -13,16 +13,11 @@ import {
   getCompetitionTrackWorkspace,
 } from "@/lib/site-data";
 import { buildRouteMetadata } from "@/lib/route-metadata";
+import { TRACK_PROOF_PRIORITY_SLUGS } from "@/lib/track-proof-closure";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
-
-const CUSTODY_TRUTH_PRIORITY_TRACKS = new Set([
-  "colosseum-frontier",
-  "privacy-track",
-  "rpc-infrastructure",
-]);
 
 export async function generateStaticParams() {
   return competitionTrackWorkspaces.map((workspace) => ({ slug: workspace.slug }));
@@ -51,7 +46,7 @@ export default async function TrackWorkspacePage({ params }: PageProps) {
   const { slug } = await params;
   const workspace = getCompetitionTrackWorkspace(slug);
   if (!workspace) notFound();
-  const showCustodyTruthQuickActions = CUSTODY_TRUTH_PRIORITY_TRACKS.has(workspace.slug);
+  const showJudgeFirstTopStrip = TRACK_PROOF_PRIORITY_SLUGS.has(workspace.slug);
 
   return (
     <OperationsShell
@@ -66,20 +61,18 @@ export default async function TrackWorkspacePage({ params }: PageProps) {
     >
       <div>
         <Suspense fallback={<div className="h-px" aria-hidden="true" />}>
-          <TrackSubmissionCapsule workspace={workspace} />
+          {showJudgeFirstTopStrip ? (
+            <TrackJudgeFirstTopStrip workspace={workspace} />
+          ) : (
+            <TrackSubmissionCapsule workspace={workspace} />
+          )}
         </Suspense>
       </div>
-      {showCustodyTruthQuickActions ? (
+      {!showJudgeFirstTopStrip ? (
         <div>
-          <CustodyTruthQuickActions
-            title="Custody truth surfaces for judges"
-            description={`Open the exact custody proof, reviewer packet, intake schema, and apply route for ${workspace.title} without leaving the top submission layer.`}
-          />
+          <TrackProofClosurePanel workspace={workspace} />
         </div>
       ) : null}
-      <div>
-        <TrackProofClosurePanel workspace={workspace} />
-      </div>
       <div>
         <CompetitionWorkspace workspace={workspace} />
       </div>
