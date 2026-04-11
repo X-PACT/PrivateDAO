@@ -1,6 +1,7 @@
 import { competitionTrackWorkspaces } from "@/lib/site-data";
 import { proposalRegistry } from "@/lib/site-data";
 import { getCompetitionLaneLabel } from "@/lib/competition-lane-labels";
+import { getTreasuryReceiveConfig } from "@/lib/treasury-receive-config";
 import { getTrackReviewerPacketPublicLabel, getTrackReviewerPacketPublicSummary, getTrackReviewerPacketRoute } from "@/lib/track-reviewer-packets";
 
 export type SiteSearchItem = {
@@ -8,7 +9,7 @@ export type SiteSearchItem = {
   href: string;
   category: "Route" | "Track" | "Document" | "Proof" | "Service" | "Proposal";
   summary: string;
-  matchKind?: "profile-aware" | "track-aware" | "profile + track";
+  matchKind?: "profile-aware" | "track-aware" | "profile + track" | "payments-truth";
 };
 
 type ProfileAwareSearchRule = {
@@ -738,10 +739,65 @@ function getTelemetryLeadItems(query: string): SiteSearchItem[] {
   ];
 }
 
+function getPaymentsTruthLeadItems(query: string): SiteSearchItem[] {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return [];
+
+  const paymentsTerms = [
+    "treasury",
+    "payments",
+    "payment",
+    "vendor payout",
+    "contributor payout",
+    "pilot funding",
+    "treasury top-up",
+    "treasury top up",
+    "top-up",
+    "top up",
+    "sender checklist",
+    "payment rails",
+    "treasury rails",
+  ];
+
+  if (!paymentsTerms.some((term) => normalized.includes(term))) {
+    return [];
+  }
+
+  const treasury = getTreasuryReceiveConfig();
+  const isExecutionPath =
+    normalized.includes("vendor payout") || normalized.includes("contributor payout");
+  const bestRoute = isExecutionPath ? "/command-center" : "/services";
+  const bestRouteLabel = isExecutionPath ? "command-center" : "services";
+
+  return [
+    {
+      title: "Payments Truth",
+      href: "/documents/treasury-reviewer-packet",
+      category: "Document",
+      matchKind: "payments-truth",
+      summary:
+        `Readiness: Devnet rails live, production treasury still evidence-gated. ` +
+        `Network: ${treasury.network}. Rails: ${treasury.assets.length}. ` +
+        `Blocker: upgrade-authority-multisig · pending-external. ` +
+        `Open treasury reviewer packet first, then continue into ${bestRouteLabel} for the best route.`,
+    },
+    {
+      title: "Best Payments Route",
+      href: bestRoute,
+      category: "Route",
+      matchKind: "payments-truth",
+      summary: isExecutionPath
+        ? "Use command-center first for governed vendor or contributor payout execution, then open the treasury reviewer packet."
+        : "Use services first for treasury top-up, pilot funding, and buyer-safe payments review, then open the treasury reviewer packet.",
+    },
+  ];
+}
+
 export function getSiteSearchResults(query: string): SiteSearchItem[] {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return siteSearchItems;
 
+  const paymentsTruthLeadItems = getPaymentsTruthLeadItems(normalized);
   const trackReviewerPacketLeadItems = getTrackReviewerPacketLeadItems(normalized);
   const custodyLeadItems = getCustodyLeadItems(normalized);
   const telemetryLeadItems = getTelemetryLeadItems(normalized);
@@ -765,7 +821,7 @@ export function getSiteSearchResults(query: string): SiteSearchItem[] {
   );
 
   const seen = new Set<string>();
-  return [...trackReviewerPacketLeadItems, ...custodyLeadItems, ...telemetryLeadItems, ...strategicOpportunityLeadItems, ...profileTrackLeadItems, ...trackAwareLeadItems, ...proposalLeadItems, ...profileAwareLeadItems, ...generalResults].filter((item) => {
+  return [...paymentsTruthLeadItems, ...trackReviewerPacketLeadItems, ...custodyLeadItems, ...telemetryLeadItems, ...strategicOpportunityLeadItems, ...profileTrackLeadItems, ...trackAwareLeadItems, ...proposalLeadItems, ...profileAwareLeadItems, ...generalResults].filter((item) => {
     const key = `${item.category}:${item.href}`;
     if (seen.has(key)) return false;
     seen.add(key);

@@ -143,7 +143,14 @@ export function SiteSearchPanel() {
               <div className="text-sm font-medium text-white">{item.title}</div>
               <div className="flex flex-wrap items-center justify-end gap-2">
                 {item.matchKind ? (
-                  <div className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-[11px] uppercase tracking-[0.22em] text-cyan-100/82">
+                  <div
+                    className={cn(
+                      "rounded-full px-3 py-1 text-[11px] uppercase tracking-[0.22em]",
+                      item.matchKind === "payments-truth"
+                        ? "border border-emerald-300/20 bg-emerald-300/10 text-emerald-100/82"
+                        : "border border-cyan-300/20 bg-cyan-300/10 text-cyan-100/82",
+                    )}
+                  >
                     {item.matchKind}
                   </div>
                 ) : null}
