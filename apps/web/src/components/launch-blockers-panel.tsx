@@ -1,17 +1,63 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
 import { AlertTriangle, CheckCircle2 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { launchBlockers } from "@/lib/site-data";
+import { custodyEvidenceStorageKey, emptyCustodyEvidence, getCustodyEvidenceCompletion, type CustodyEvidence } from "@/lib/custody-evidence";
 
 export function LaunchBlockersPanel() {
+  const [evidence, setEvidence] = useState<CustodyEvidence>(emptyCustodyEvidence);
+
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem(custodyEvidenceStorageKey);
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as Partial<CustodyEvidence>;
+      setEvidence({ ...emptyCustodyEvidence, ...parsed });
+    } catch {
+      setEvidence(emptyCustodyEvidence);
+    }
+  }, []);
+
+  const completion = useMemo(() => getCustodyEvidenceCompletion(evidence), [evidence]);
+  const blockers = useMemo(
+    () =>
+      launchBlockers.map((blocker) => {
+        if (blocker.name !== "Multisig + authority transfer") {
+          return blocker;
+        }
+
+        if (completion.completed === 0) {
+          return blocker;
+        }
+
+        if (completion.completed < completion.total) {
+          return {
+            ...blocker,
+            state: "Tracked",
+            note: `Custody evidence is partially recorded in-product (${completion.completed}/${completion.total}). Final external signatures and readouts are still required before closure.`,
+          };
+        }
+
+        return {
+          ...blocker,
+          state: "Documented",
+          note: "Custody evidence fields are fully populated in-product. Final external validation still needs to stay aligned with the recorded packet.",
+        };
+      }),
+    [completion],
+  );
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Launch blockers and readiness</CardTitle>
       </CardHeader>
       <CardContent className="grid gap-4">
-        {launchBlockers.map((blocker) => (
+        {blockers.map((blocker) => (
           <div key={blocker.name} className="rounded-3xl border border-white/8 bg-white/4 p-5">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div className="flex items-center gap-3">
@@ -20,7 +66,7 @@ export function LaunchBlockersPanel() {
                 </div>
                 <div className="text-base font-medium text-white">{blocker.name}</div>
               </div>
-              <Badge variant={blocker.state === "Documented" ? "cyan" : "warning"}>{blocker.state}</Badge>
+              <Badge variant={blocker.state === "Documented" ? "success" : blocker.state === "Tracked" ? "cyan" : "warning"}>{blocker.state}</Badge>
             </div>
             <p className="mt-3 text-sm leading-7 text-white/58">{blocker.note}</p>
           </div>

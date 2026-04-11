@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowUpRight, ShieldCheck } from "lucide-react";
 
+import { CustodySummaryInline } from "@/components/custody-summary-inline";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { trustLinks } from "@/lib/site-data";
 
@@ -58,6 +61,7 @@ export function TrustSurface() {
           <CardTitle>Why this matters</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4">
+          <CustodySummaryInline />
           <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
             <div className="flex items-center gap-3">
               <div className="rounded-2xl border border-white/8 bg-black/25 p-3 text-emerald-200">

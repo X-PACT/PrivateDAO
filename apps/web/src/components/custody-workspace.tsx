@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Copy, Download, KeyRound, ShieldCheck, WalletCards } from "lucide-react";
 
@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { authorityHardeningLinks, authorityHardeningSections } from "@/lib/authority-hardening";
+import { custodyEvidenceStorageKey, emptyCustodyEvidence } from "@/lib/custody-evidence";
 import { cn } from "@/lib/utils";
 
 const custodySteps = [
@@ -58,6 +59,39 @@ export function CustodyWorkspace() {
   const [treasuryTransferSignature, setTreasuryTransferSignature] = useState("");
   const [postTransferReadouts, setPostTransferReadouts] = useState("");
   const [copyState, setCopyState] = useState<"idle" | "copied">("idle");
+
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem(custodyEvidenceStorageKey);
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as Partial<typeof emptyCustodyEvidence>;
+      setMultisigAddress(parsed.multisigAddress ?? "");
+      setThreshold(parsed.threshold ?? "2-of-3");
+      setSignerRoster(parsed.signerRoster ?? "");
+      setUpgradeTransferSignature(parsed.upgradeTransferSignature ?? "");
+      setTreasuryTransferSignature(parsed.treasuryTransferSignature ?? "");
+      setPostTransferReadouts(parsed.postTransferReadouts ?? "");
+    } catch {
+      // keep defaults
+    }
+  }, []);
+
+  useEffect(() => {
+    const payload = {
+      multisigAddress,
+      threshold,
+      signerRoster,
+      upgradeTransferSignature,
+      treasuryTransferSignature,
+      postTransferReadouts,
+    };
+
+    try {
+      window.localStorage.setItem(custodyEvidenceStorageKey, JSON.stringify(payload));
+    } catch {
+      // ignore storage issues in constrained browsers
+    }
+  }, [multisigAddress, threshold, signerRoster, upgradeTransferSignature, treasuryTransferSignature, postTransferReadouts]);
 
   const evidenceFields = useMemo<EvidenceField[]>(
     () => [
