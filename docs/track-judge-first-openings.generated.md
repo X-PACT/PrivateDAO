@@ -1,0 +1,109 @@
+# Track Judge-First Openings
+
+## Overview
+
+- project: `PrivateDAO`
+- generated at: `2026-04-11T13:06:13.281Z`
+- purpose: Canonical judge-first copy for track workspaces, reviewer packets, and the first 30 to 45 seconds of track videos.
+
+## Colosseum Frontier Workspace
+
+- slug: `colosseum-frontier`
+- sponsor: `Colosseum + Solana Foundation`
+- best demo route: `/start`
+- proof route: `/documents/frontier-competition-readiness-2026`
+- video route: `/story`
+
+### What Works Now
+
+- Lead the first 90 seconds from /start into /command-center with a real wallet-first path.
+- Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity.
+- Keep the README, deck, story video, and track center perfectly aligned with the live site.
+
+### What Is Externally Proven
+
+- Proof center: The full governance lifecycle, proof packets, and reviewer path are already visible inside the live product. (/proof)
+- Launch trust packet: The repo already binds launch truth, blockers, and buyer-safe trust wording into one explicit packet. (/documents/launch-trust-packet)
+
+### Exact Blocker
+
+- upgrade-authority-multisig: The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded.
+
+### First 30 To 45 Seconds
+
+1. What works now: Lead the first 90 seconds from /start into /command-center with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and track center perfectly aligned with the live site.
+2. What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet.
+3. Exact blocker: upgrade-authority-multisig. The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded.
+4. Best demo route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes.
+
+### Voiceover Script
+
+What works now: Lead the first 90 seconds from /start into /command-center with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and track center perfectly aligned with the live site. What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet. Exact blocker: upgrade-authority-multisig. The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded. Best demo route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes.
+
+## Privacy Track Workspace
+
+- slug: `privacy-track`
+- sponsor: `MagicBlock and privacy-aligned partners`
+- best demo route: `/story`
+- proof route: `/documents/live-proof-v3`
+- video route: `/story`
+
+### What Works Now
+
+- Use the comprehensive story video as the first-pass demo for judges.
+- Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet.
+- Keep the pitch deck anchored around private governance, confidential payouts, and honest launch boundaries.
+
+### What Is Externally Proven
+
+- Live Proof V3: Devnet proposal lifecycle, V3 hardening, and explorer-verifiable proof anchors are already documented. (/documents/live-proof-v3)
+- ZK capability matrix: The repo already states what the privacy layer proves today and what remains outside the claim boundary. (/documents/zk-capability-matrix)
+
+### Exact Blocker
+
+- magicblock-refhe-source-receipts: Privacy launch remains blocked until settlement receipts or verifier-grade source proof replace the current integration boundary.
+
+### First 30 To 45 Seconds
+
+1. What works now: Use the comprehensive story video as the first-pass demo for judges. Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet. Keep the pitch deck anchored around private governance, confidential payouts, and honest launch boundaries.
+2. What is externally proven: Live Proof V3 via /documents/live-proof-v3 and ZK capability matrix via /documents/zk-capability-matrix.
+3. Exact blocker: magicblock-refhe-source-receipts. Privacy launch remains blocked until settlement receipts or verifier-grade source proof replace the current integration boundary.
+4. Best demo route: open /story first. Lead with /story, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes.
+
+### Voiceover Script
+
+What works now: Use the comprehensive story video as the first-pass demo for judges. Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet. Keep the pitch deck anchored around private governance, confidential payouts, and honest launch boundaries. What is externally proven: Live Proof V3 via /documents/live-proof-v3 and ZK capability matrix via /documents/zk-capability-matrix. Exact blocker: magicblock-refhe-source-receipts. Privacy launch remains blocked until settlement receipts or verifier-grade source proof replace the current integration boundary. Best demo route: open /story first. Lead with /story, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes.
+
+## RPC Infrastructure Credits Workspace
+
+- slug: `rpc-infrastructure`
+- sponsor: `RPC infrastructure sponsors`
+- best demo route: `/services`
+- proof route: `/documents/frontier-integrations`
+- video route: `/story`
+
+### What Works Now
+
+- Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path.
+- Use the service catalog, SLA, pricing, and trust package as the commercial proof layer.
+- Keep the Fast RPC role explicit in video, deck, README, and services UI.
+
+### What Is Externally Proven
+
+- Diagnostics: Latency, success rate, wallet coverage, proof completion, and incident-facing diagnostics are already surfaced live. (/diagnostics)
+- Frontier integrations: Hosted-read and runtime evidence already prove the infrastructure story on Devnet with reviewer-facing artifacts. (/documents/frontier-integrations)
+
+### Exact Blocker
+
+- production-monitoring-alerts: RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded.
+
+### First 30 To 45 Seconds
+
+1. What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Fast RPC role explicit in video, deck, README, and services UI.
+2. What is externally proven: Diagnostics via /diagnostics and Frontier integrations via /documents/frontier-integrations.
+3. Exact blocker: production-monitoring-alerts. RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded.
+4. Best demo route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes.
+
+### Voiceover Script
+
+What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Fast RPC role explicit in video, deck, README, and services UI. What is externally proven: Diagnostics via /diagnostics and Frontier integrations via /documents/frontier-integrations. Exact blocker: production-monitoring-alerts. RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded. Best demo route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes.

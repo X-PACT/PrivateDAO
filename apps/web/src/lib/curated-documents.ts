@@ -186,6 +186,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/custody-proof-reviewer-packet.generated.md`,
   },
   {
+    slug: "track-judge-first-openings",
+    title: "Track Judge-First Openings",
+    category: "Reviewer core",
+    summary: "Canonical 30 to 45 second opening copy for the three priority tracks, kept aligned with the judge-first top strip and reviewer packet.",
+    audience: "Judges, reviewers, founders, video editors",
+    boundary: "Presentation alignment surface only; it does not change what is proven, pending, or externally blocked.",
+    docPath: "docs/track-judge-first-openings.generated.md",
+    rawHref: `${repositoryBlobBase}/docs/track-judge-first-openings.generated.md`,
+  },
+  {
     slug: "external-audit-engagement",
     title: "External Audit Engagement",
     category: "Operations",

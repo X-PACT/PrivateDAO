@@ -13,6 +13,7 @@ wallets/
 !apps/web/package-lock.json
 !apps/web/components.json
 !apps/web/tsconfig.json
+!apps/web/tsconfig.scripts.json
 !docs/proof-registry.json
 !docs/submission-registry.json
 !docs/review-attestation.generated.json
@@ -49,6 +50,7 @@ wallets/
 !docs/custody-observed-readouts.json
 !docs/canonical-custody-proof.generated.json
 !docs/custody-proof-reviewer-packet.generated.json
+!docs/track-judge-first-openings.generated.json
 !docs/runtime-evidence.generated.json
 !docs/release-drill.generated.json
 !docs/competitive/source.json

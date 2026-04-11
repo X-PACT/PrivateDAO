@@ -10,8 +10,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buildCustodyNarrative, custodyEvidenceUpdatedEvent, emptyCustodyEvidence, getCustodyEvidenceCompletion, readCustodyEvidence, type CustodyEvidence } from "@/lib/custody-evidence";
 import type { CompetitionTrackWorkspace } from "@/lib/site-data";
-import { getSubmissionCoachPlan } from "@/lib/submission-coach";
-import { getTrackSpecificProofContext } from "@/lib/track-proof-closure";
+import { getTrackJudgeFirstCopy } from "@/lib/track-judge-first-copy";
 import { cn } from "@/lib/utils";
 
 type TrackJudgeFirstTopStripProps = {
@@ -22,14 +21,6 @@ function getMainnetDistance(completed: number, total: number) {
   if (completed === 0) return "Still clearly bounded by explicit custody and external validation gates.";
   if (completed < total) return "Shorter than before, but still blocked by missing signatures or post-transfer readouts.";
   return "Operationally shorter, with final external validation still preserved as a separate step.";
-}
-
-function getProfileAwareDemoRoute(workspace: CompetitionTrackWorkspace, commercialProfile?: string) {
-  if (commercialProfile === "pilot-funding") return workspace.liveRoute;
-  if (commercialProfile === "treasury-top-up") return "/services";
-  if (commercialProfile === "vendor-payout" || commercialProfile === "contributor-payout") return "/command-center";
-
-  return getSubmissionCoachPlan(workspace).finalDemoOrder[0] ?? workspace.liveRoute;
 }
 
 export function TrackJudgeFirstTopStrip({ workspace }: TrackJudgeFirstTopStripProps) {
@@ -55,10 +46,8 @@ export function TrackJudgeFirstTopStrip({ workspace }: TrackJudgeFirstTopStripPr
 
   const completion = useMemo(() => getCustodyEvidenceCompletion(evidence), [evidence]);
   const narrative = useMemo(() => buildCustodyNarrative(evidence), [evidence]);
-  const proofContext = useMemo(() => getTrackSpecificProofContext(workspace), [workspace]);
   const commercialProfile = searchParams.get("profile") ?? undefined;
-  const bestDemoRoute = useMemo(() => getProfileAwareDemoRoute(workspace, commercialProfile), [commercialProfile, workspace]);
-  const whatWorksNow = workspace.deliverables.slice(0, 3);
+  const judgeFirstCopy = useMemo(() => getTrackJudgeFirstCopy(workspace, commercialProfile), [commercialProfile, workspace]);
   const mainnetDistance = getMainnetDistance(completion.completed, completion.total);
 
   return (
@@ -82,8 +71,8 @@ export function TrackJudgeFirstTopStrip({ workspace }: TrackJudgeFirstTopStripPr
           <div className="grid gap-4 lg:grid-cols-2">
             <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-5">
               <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-300/78">What works now</div>
-              <div className="mt-4 grid gap-2 text-sm leading-7 text-white/64">
-                {whatWorksNow.map((item) => (
+                <div className="mt-4 grid gap-2 text-sm leading-7 text-white/64">
+                {judgeFirstCopy.whatWorksNow.map((item) => (
                   <div key={item}>{item}</div>
                 ))}
               </div>
@@ -94,7 +83,7 @@ export function TrackJudgeFirstTopStrip({ workspace }: TrackJudgeFirstTopStripPr
                 What is externally proven
               </div>
               <div className="mt-4 grid gap-3">
-                {proofContext.externallyProven.map((item) => (
+                {judgeFirstCopy.externallyProven.map((item) => (
                   <div key={item.href} className="rounded-2xl border border-white/8 bg-black/20 p-4">
                     <div className="text-sm font-medium text-white">{item.label}</div>
                     <div className="mt-2 text-sm leading-7 text-white/58">{item.summary}</div>
@@ -114,8 +103,8 @@ export function TrackJudgeFirstTopStrip({ workspace }: TrackJudgeFirstTopStripPr
                 <TimerReset className="h-3.5 w-3.5" />
                 Exact blocker
               </div>
-              <div className="mt-3 text-lg font-medium text-white">{proofContext.exactBlocker}</div>
-              <div className="mt-2 text-sm leading-7 text-white/62">{proofContext.exactBlockerSummary}</div>
+              <div className="mt-3 text-lg font-medium text-white">{judgeFirstCopy.exactBlocker}</div>
+              <div className="mt-2 text-sm leading-7 text-white/62">{judgeFirstCopy.exactBlockerSummary}</div>
             </div>
 
             <div className="rounded-3xl border border-amber-300/14 bg-amber-300/[0.06] p-5">
@@ -126,7 +115,7 @@ export function TrackJudgeFirstTopStrip({ workspace }: TrackJudgeFirstTopStripPr
               <div className="mt-3 text-sm leading-7 text-white/62">
                 {narrative.badge} · completion {completion.completed}/{completion.total}
               </div>
-              <div className="mt-2 text-sm leading-7 text-white/58">{proofContext.pendingSummary}</div>
+              <div className="mt-2 text-sm leading-7 text-white/58">{judgeFirstCopy.pendingSummary}</div>
             </div>
           </div>
         </div>
@@ -138,10 +127,10 @@ export function TrackJudgeFirstTopStrip({ workspace }: TrackJudgeFirstTopStripPr
               Best demo route
             </div>
             <div className="mt-3 text-sm leading-7 text-white/62">
-              Open the fastest valid route for this track and profile, then keep proof and custody attached to the same judge flow.
+              {judgeFirstCopy.bestDemoSummary}
             </div>
-            <Link href={bestDemoRoute} className={cn(buttonVariants({ size: "sm" }), "mt-4 w-full justify-between")}>
-              Open {bestDemoRoute}
+            <Link href={judgeFirstCopy.bestDemoRoute} className={cn(buttonVariants({ size: "sm" }), "mt-4 w-full justify-between")}>
+              Open {judgeFirstCopy.bestDemoRoute}
               <ArrowUpRight className="h-3.5 w-3.5" />
             </Link>
           </div>

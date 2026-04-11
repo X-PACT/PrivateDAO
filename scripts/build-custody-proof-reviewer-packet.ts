@@ -74,6 +74,16 @@ type LaunchTrustPacket = {
   commands: string[];
 };
 
+type TrackJudgeFirstOpenings = {
+  tracks: Array<{
+    slug: string;
+    title: string;
+    bestDemoRoute: string;
+    openingSequence: string[];
+    voiceoverScript: string;
+  }>;
+};
+
 function readJson<T>(relativePath: string): T {
   return JSON.parse(fs.readFileSync(path.resolve(relativePath), "utf8")) as T;
 }
@@ -87,6 +97,7 @@ function hasExplorerArtifact(
 function main() {
   const custody = readJson<CanonicalCustodyProof>("docs/canonical-custody-proof.generated.json");
   const trust = readJson<LaunchTrustPacket>("docs/launch-trust-packet.generated.json");
+  const judgeFirstOpenings = readJson<TrackJudgeFirstOpenings>("docs/track-judge-first-openings.generated.json");
 
   const payload = {
     project: "PrivateDAO",
@@ -147,10 +158,12 @@ function main() {
       "Run npm run apply:custody-evidence-intake",
       "Re-open canonical custody proof, launch trust packet, and the track proof closure surfaces",
     ],
+    judgeFirstTrackOpenings: judgeFirstOpenings.tracks,
     requiredExternalInputs: trust.requiredExternalInputs,
     linkedDocs: Array.from(
       new Set([
         "docs/canonical-custody-proof.generated.md",
+        "docs/track-judge-first-openings.generated.md",
         "docs/launch-trust-packet.generated.md",
         "docs/production-custody-ceremony.md",
         "docs/multisig-setup-intake.md",
@@ -163,6 +176,8 @@ function main() {
       new Set([
         "npm run build:custody-proof-reviewer-packet",
         "npm run verify:custody-proof-reviewer-packet",
+        "npm run build:track-judge-first-openings",
+        "npm run verify:track-judge-first-openings",
         "npm run apply:custody-evidence-intake",
         ...trust.commands,
       ]),
@@ -228,6 +243,13 @@ function buildMarkdown(payload: {
   };
   exactPendingItems: string[];
   strictIngestionRoute: string[];
+  judgeFirstTrackOpenings: Array<{
+    slug: string;
+    title: string;
+    bestDemoRoute: string;
+    openingSequence: string[];
+    voiceoverScript: string;
+  }>;
   requiredExternalInputs: string[];
   linkedDocs: string[];
   canonicalCommands: string[];
@@ -252,6 +274,17 @@ function buildMarkdown(payload: {
         .map((entry) => `- ${entry.label}: \`${entry.signature}\` -> ${entry.href}`)
         .join("\n")
     : "- No custody ceremony signatures are recorded yet.";
+
+  const judgeFirstOpenings = payload.judgeFirstTrackOpenings
+    .map((track) =>
+      [
+        `### ${track.title}`,
+        `- best demo route: \`${track.bestDemoRoute}\``,
+        ...track.openingSequence.map((line, index) => `${index + 1}. ${line}`),
+        `- voiceover: ${track.voiceoverScript}`,
+      ].join("\n"),
+    )
+    .join("\n\n");
 
   return `# Custody Proof Reviewer Packet
 
@@ -300,6 +333,12 @@ ${payload.exactBlocker.evidence.map((entry) => `- ${entry}`).join("\n")}
 ## Strict Ingestion Route
 
 ${payload.strictIngestionRoute.map((entry, index) => `${index + 1}. ${entry}`).join("\n")}
+
+## Judge-First Track Openings
+
+Use these exact opening sequences to keep the first 30 to 45 seconds of the track videos aligned with the judge-first top strip and the reviewer packet.
+
+${judgeFirstOpenings}
 
 ## Required External Inputs
 

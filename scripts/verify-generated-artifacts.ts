@@ -15,6 +15,8 @@ function main() {
   const releaseCeremonyMdPath = path.resolve("docs/release-ceremony-attestation.generated.md");
   const canonicalCustodyProofJsonPath = path.resolve("docs/canonical-custody-proof.generated.json");
   const canonicalCustodyProofMdPath = path.resolve("docs/canonical-custody-proof.generated.md");
+  const trackJudgeFirstOpeningsJsonPath = path.resolve("docs/track-judge-first-openings.generated.json");
+  const trackJudgeFirstOpeningsMdPath = path.resolve("docs/track-judge-first-openings.generated.md");
   const custodyReviewerPacketJsonPath = path.resolve("docs/custody-proof-reviewer-packet.generated.json");
   const custodyReviewerPacketMdPath = path.resolve("docs/custody-proof-reviewer-packet.generated.md");
   const runtimeAttestationPath = path.resolve("docs/runtime-attestation.generated.json");
@@ -100,6 +102,9 @@ function main() {
   }
   if (!fs.existsSync(canonicalCustodyProofJsonPath) || !fs.existsSync(canonicalCustodyProofMdPath)) {
     throw new Error("missing canonical custody proof artifacts");
+  }
+  if (!fs.existsSync(trackJudgeFirstOpeningsJsonPath) || !fs.existsSync(trackJudgeFirstOpeningsMdPath)) {
+    throw new Error("missing track judge-first openings artifacts");
   }
   if (!fs.existsSync(custodyReviewerPacketJsonPath) || !fs.existsSync(custodyReviewerPacketMdPath)) {
     throw new Error("missing custody proof reviewer packet artifacts");

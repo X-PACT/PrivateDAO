@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-11T05:23:35.012Z`
+- generated at: `2026-04-11T13:07:41.256Z`
 - reviewer intent: Explain the current custody truth, show what is externally proven now, and make the missing external ceremony evidence explicit without narrative drift.
 - custody status: `pending-external`
 - trust decision: `blocked-external-steps`
@@ -97,6 +97,34 @@ Blocker evidence refs:
 3. Run npm run apply:custody-evidence-intake
 4. Re-open canonical custody proof, launch trust packet, and the track proof closure surfaces
 
+## Judge-First Track Openings
+
+Use these exact opening sequences to keep the first 30 to 45 seconds of the track videos aligned with the judge-first top strip and the reviewer packet.
+
+### Colosseum Frontier Workspace
+- best demo route: `/start`
+1. What works now: Lead the first 90 seconds from /start into /command-center with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and track center perfectly aligned with the live site.
+2. What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet.
+3. Exact blocker: upgrade-authority-multisig. The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded.
+4. Best demo route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes.
+- voiceover: What works now: Lead the first 90 seconds from /start into /command-center with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and track center perfectly aligned with the live site. What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet. Exact blocker: upgrade-authority-multisig. The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded. Best demo route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes.
+
+### Privacy Track Workspace
+- best demo route: `/story`
+1. What works now: Use the comprehensive story video as the first-pass demo for judges. Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet. Keep the pitch deck anchored around private governance, confidential payouts, and honest launch boundaries.
+2. What is externally proven: Live Proof V3 via /documents/live-proof-v3 and ZK capability matrix via /documents/zk-capability-matrix.
+3. Exact blocker: magicblock-refhe-source-receipts. Privacy launch remains blocked until settlement receipts or verifier-grade source proof replace the current integration boundary.
+4. Best demo route: open /story first. Lead with /story, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes.
+- voiceover: What works now: Use the comprehensive story video as the first-pass demo for judges. Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet. Keep the pitch deck anchored around private governance, confidential payouts, and honest launch boundaries. What is externally proven: Live Proof V3 via /documents/live-proof-v3 and ZK capability matrix via /documents/zk-capability-matrix. Exact blocker: magicblock-refhe-source-receipts. Privacy launch remains blocked until settlement receipts or verifier-grade source proof replace the current integration boundary. Best demo route: open /story first. Lead with /story, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes.
+
+### RPC Infrastructure Credits Workspace
+- best demo route: `/services`
+1. What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Fast RPC role explicit in video, deck, README, and services UI.
+2. What is externally proven: Diagnostics via /diagnostics and Frontier integrations via /documents/frontier-integrations.
+3. Exact blocker: production-monitoring-alerts. RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded.
+4. Best demo route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes.
+- voiceover: What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Fast RPC role explicit in video, deck, README, and services UI. What is externally proven: Diagnostics via /diagnostics and Frontier integrations via /documents/frontier-integrations. Exact blocker: production-monitoring-alerts. RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded. Best demo route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes.
+
 ## Required External Inputs
 
 - 3 production signer public keys
@@ -117,6 +145,7 @@ Blocker evidence refs:
 ## Linked Docs
 
 - `docs/canonical-custody-proof.generated.md`
+- `docs/track-judge-first-openings.generated.md`
 - `docs/launch-trust-packet.generated.md`
 - `docs/production-custody-ceremony.md`
 - `docs/multisig-setup-intake.md`
@@ -139,6 +168,8 @@ Blocker evidence refs:
 
 - `npm run build:custody-proof-reviewer-packet`
 - `npm run verify:custody-proof-reviewer-packet`
+- `npm run build:track-judge-first-openings`
+- `npm run verify:track-judge-first-openings`
 - `npm run apply:custody-evidence-intake`
 - `npm run build:launch-trust-packet`
 - `npm run verify:launch-trust-packet`

@@ -10,6 +10,9 @@ These weekly videos are designed for hackathon update submissions on YouTube, Lo
 - direct, judge-friendly update structure
 - 36 seconds each
 - ready for YouTube, Loom, or Vimeo upload
+- for track-specific reels, keep the first 30 to 45 seconds aligned with:
+  - `docs/track-judge-first-openings.generated.md`
+  - `docs/custody-proof-reviewer-packet.generated.md`
 
 ## Week 1
 
@@ -85,6 +88,12 @@ The Desktop folder contains:
 cd /home/x-pact/PrivateDAO
 bash scripts/render-weekly-update-videos.sh
 ```
+
+## Judge-First Track Openings
+
+Use this generated document when recording or editing track-specific videos so the opening matches the live judge-first top strip:
+
+- [`docs/track-judge-first-openings.generated.md`](track-judge-first-openings.generated.md)
 
 ## Verification Command
 
