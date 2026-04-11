@@ -9,7 +9,7 @@ import {
   type TreasuryReviewerTruthContext,
 } from "@/lib/treasury-reviewer-truth";
 import { getReviewerTelemetryTruthSnapshot } from "@/lib/reviewer-telemetry-truth";
-import { proposalCards } from "@/lib/site-data";
+import { proposalRegistry } from "@/lib/site-data";
 
 export type WalletFirstServiceActionContext = "start" | "services" | "command-center";
 
@@ -184,7 +184,7 @@ export function getWalletFirstServiceActions(
 }
 
 function getProposalReviewOptions(): ProposalReviewOption[] {
-  return proposalCards.map((proposal) => ({
+  return proposalRegistry.map((proposal) => ({
     id: proposal.id,
     title: proposal.title,
     status: proposal.status,
