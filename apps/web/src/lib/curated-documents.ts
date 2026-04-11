@@ -311,6 +311,11 @@ export function getCuratedDocuments() {
   return curatedDocuments;
 }
 
+export function getCuratedDocumentsBySlugs(slugs: string[]) {
+  const wanted = new Set(slugs);
+  return curatedDocuments.filter((entry) => wanted.has(entry.slug));
+}
+
 export function getCuratedDocument(slug: string) {
   return curatedDocuments.find((entry) => entry.slug === slug) ?? null;
 }

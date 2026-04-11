@@ -5,8 +5,15 @@ import { CustodyTruthQuickActions } from "@/components/custody-truth-quick-actio
 import { DocumentLibrary } from "@/components/document-library";
 import { CustodyTrustContinuity } from "@/components/custody-trust-continuity";
 import { OperationsShell } from "@/components/operations-shell";
-import { getCuratedDocuments } from "@/lib/curated-documents";
+import { getCuratedDocuments, getCuratedDocumentsBySlugs } from "@/lib/curated-documents";
 import { buildRouteMetadata } from "@/lib/route-metadata";
+
+const PRIORITY_REVIEWER_PACKET_SLUGS = [
+  "track-reviewer-packet-colosseum-frontier",
+  "track-reviewer-packet-privacy-track",
+  "track-reviewer-packet-rpc-infrastructure",
+  "custody-proof-reviewer-packet",
+];
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Curated Documents",
@@ -18,6 +25,9 @@ export const metadata: Metadata = buildRouteMetadata({
 
 export default function DocumentsPage() {
   const documents = getCuratedDocuments();
+  const priorityReviewerPackets = getCuratedDocumentsBySlugs(PRIORITY_REVIEWER_PACKET_SLUGS);
+  const prioritySlugs = new Set(priorityReviewerPackets.map((document) => document.slug));
+  const remainingDocuments = documents.filter((document) => !prioritySlugs.has(document.slug));
 
   return (
     <OperationsShell
@@ -43,7 +53,22 @@ export default function DocumentsPage() {
         <CustodyTrustContinuity mode="documents" />
       </div>
       <div>
-        <DocumentLibrary documents={documents} />
+        <div className="mb-5">
+          <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/76">Priority reviewer packets</div>
+          <div className="mt-3 max-w-3xl text-sm leading-7 text-white/60">
+            Open these four packets first if the reviewer entered from `/documents`. They already compress the three priority track packets plus the custody truth packet without requiring search.
+          </div>
+        </div>
+        <DocumentLibrary documents={priorityReviewerPackets} />
+      </div>
+      <div>
+        <div className="mb-5">
+          <div className="text-[11px] uppercase tracking-[0.3em] text-white/46">All curated documents</div>
+          <div className="mt-3 max-w-3xl text-sm leading-7 text-white/56">
+            The rest of the document center stays below as the broader proof, trust, launch, strategy, and reviewer library.
+          </div>
+        </div>
+        <DocumentLibrary documents={remainingDocuments} />
       </div>
     </OperationsShell>
   );
