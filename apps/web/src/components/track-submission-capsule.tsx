@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 
 type TrackSubmissionCapsuleProps = {
   workspace: CompetitionTrackWorkspace;
+  commercialProfile?: string;
 };
 
 function getMainnetDistance(completed: number, total: number) {
@@ -22,7 +23,82 @@ function getMainnetDistance(completed: number, total: number) {
   return "Operationally shorter, with final external validation still preserved as a separate step.";
 }
 
-export function TrackSubmissionCapsule({ workspace }: TrackSubmissionCapsuleProps) {
+function getCommercialCapsuleContext(workspace: CompetitionTrackWorkspace, commercialProfile?: string) {
+  if (commercialProfile === "pilot-funding") {
+    return {
+      bestDemoRoute: workspace.liveRoute,
+      trustLabel: "Pilot trust",
+      trustSummary:
+        "Trust framing stays buyer-oriented: show the live product first, then proof, then launch discipline. This keeps the pilot motion tied to a real operating route instead of a generic funding request.",
+      commercialPath: {
+        label: "Open pilot path",
+        href: "/engage?profile=pilot-funding",
+      },
+      commercialSummary:
+        "Commercial path: qualify the buyer, run the live demo, then keep trust and proof attached to the same track route.",
+    };
+  }
+
+  if (commercialProfile === "treasury-top-up") {
+    return {
+      bestDemoRoute: "/services",
+      trustLabel: "Treasury trust",
+      trustSummary:
+        "Trust framing stays capital-aware: this should read as governed runway for services and operations, with custody and trust surfaces proving that capital is not being absorbed into an opaque admin path.",
+      commercialPath: {
+        label: "Open treasury path",
+        href: "/engage?profile=treasury-top-up",
+      },
+      commercialSummary:
+        "Commercial path: move from capitalization into services, trust, and operating readiness so treasury capital is tied to visible product reliability.",
+    };
+  }
+
+  if (commercialProfile === "vendor-payout") {
+    return {
+      bestDemoRoute: "/command-center",
+      trustLabel: "Vendor execution trust",
+      trustSummary:
+        "Trust framing stays operational: show governed payout execution, diagnostics, and reviewable treasury motion together so vendor disbursement reads as controlled product behavior.",
+      commercialPath: {
+        label: "Open vendor path",
+        href: "/engage?profile=vendor-payout",
+      },
+      commercialSummary:
+        "Commercial path: start from command execution, keep diagnostics visible, and anchor the payout story to governed operations rather than ad-hoc transfers.",
+    };
+  }
+
+  if (commercialProfile === "contributor-payout") {
+    return {
+      bestDemoRoute: "/command-center",
+      trustLabel: "Contributor trust",
+      trustSummary:
+        "Trust framing stays contributor-aware: the product should demonstrate retained contributor payouts as governed treasury actions with visible policy and execution review.",
+      commercialPath: {
+        label: "Open contributor path",
+        href: "/engage?profile=contributor-payout",
+      },
+      commercialSummary:
+        "Commercial path: tie contributor payouts to governed execution, security review, and repeatable treasury policy rather than one-off transfers.",
+    };
+  }
+
+  return {
+    bestDemoRoute: getSubmissionCoachPlan(workspace).finalDemoOrder[0] ?? workspace.liveRoute,
+    trustLabel: "Trust",
+    trustSummary:
+      "Trust framing stays evidence-aware: the live product, proof surfaces, and custody boundary should read as one coherent operating story.",
+    commercialPath: {
+      label: "Open buyer path",
+      href: "/engage",
+    },
+    commercialSummary:
+      "Commercial path: keep the live route, trust, and proof attached so product, buyer, and reviewer all see one coherent operating story.",
+  };
+}
+
+export function TrackSubmissionCapsule({ workspace, commercialProfile }: TrackSubmissionCapsuleProps) {
   const [evidence, setEvidence] = useState<CustodyEvidence>(emptyCustodyEvidence);
 
   useEffect(() => {
@@ -45,7 +121,9 @@ export function TrackSubmissionCapsule({ workspace }: TrackSubmissionCapsuleProp
   const completion = useMemo(() => getCustodyEvidenceCompletion(evidence), [evidence]);
   const narrative = useMemo(() => buildCustodyNarrative(evidence), [evidence]);
   const coach = useMemo(() => getSubmissionCoachPlan(workspace), [workspace]);
-  const bestDemoRoute = coach.finalDemoOrder[0] ?? workspace.liveRoute;
+  const commercialContext = useMemo(() => getCommercialCapsuleContext(workspace, commercialProfile), [commercialProfile, workspace]);
+  const bestDemoRoute = commercialContext.bestDemoRoute ?? coach.finalDemoOrder[0] ?? workspace.liveRoute;
+  const displayedTrustSummary = commercialProfile ? commercialContext.trustSummary : narrative.summary;
   const whatWorksNow = workspace.deliverables.slice(0, 3);
   const mainnetDistance = getMainnetDistance(completion.completed, completion.total);
 
@@ -92,8 +170,9 @@ export function TrackSubmissionCapsule({ workspace }: TrackSubmissionCapsuleProp
             <div className="rounded-3xl border border-white/8 bg-black/20 p-4">
               <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-emerald-300/76">
                 <ShieldCheck className="h-3.5 w-3.5" />
-                Trust
+                {commercialContext.trustLabel}
               </div>
+              <div className="mt-3 text-sm leading-7 text-white/66">{displayedTrustSummary}</div>
               <Link href="/documents/launch-trust-packet" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "mt-3 w-full justify-between")}>
                 Open trust packet
                 <ArrowUpRight className="h-3.5 w-3.5" />
@@ -118,6 +197,18 @@ export function TrackSubmissionCapsule({ workspace }: TrackSubmissionCapsuleProp
               </div>
               <div className="mt-3 text-sm leading-7 text-white/66">{mainnetDistance}</div>
             </div>
+          </div>
+
+          <div className="rounded-3xl border border-white/8 bg-black/20 p-4">
+            <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-white/70">
+              <ArrowUpRight className="h-3.5 w-3.5" />
+              Commercial path
+            </div>
+            <div className="mt-3 text-sm leading-7 text-white/66">{commercialContext.commercialSummary}</div>
+            <Link href={commercialContext.commercialPath.href} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "mt-3 w-full justify-between")}>
+              {commercialContext.commercialPath.label}
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </Link>
           </div>
         </div>
 
@@ -178,10 +269,10 @@ export function TrackSubmissionCapsule({ workspace }: TrackSubmissionCapsuleProp
           <div className="rounded-3xl border border-white/8 bg-black/20 p-5">
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-emerald-300/76">
               <ShieldCheck className="h-3.5 w-3.5" />
-              Trust
+              {commercialContext.trustLabel}
             </div>
             <div className="mt-3 text-sm leading-7 text-white/66">
-              {narrative.summary}
+              {displayedTrustSummary}
             </div>
             <Link href="/documents/launch-trust-packet" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "mt-4 w-full justify-between")}>
               Open trust packet
@@ -198,6 +289,20 @@ export function TrackSubmissionCapsule({ workspace }: TrackSubmissionCapsuleProp
             </div>
             <Link href="/custody" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "mt-4 w-full justify-between")}>
               Open custody workspace
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+        </div>
+
+        <div className="hidden md:grid">
+          <div className="rounded-3xl border border-white/8 bg-black/20 p-5">
+            <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-white/70">
+              <ArrowUpRight className="h-3.5 w-3.5" />
+              Commercial path
+            </div>
+            <div className="mt-3 text-sm leading-7 text-white/66">{commercialContext.commercialSummary}</div>
+            <Link href={commercialContext.commercialPath.href} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "mt-4 w-full justify-between md:max-w-xs")}>
+              {commercialContext.commercialPath.label}
               <ArrowUpRight className="h-3.5 w-3.5" />
             </Link>
           </div>

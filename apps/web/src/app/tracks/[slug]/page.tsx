@@ -57,7 +57,7 @@ export default async function TrackWorkspacePage({ params, searchParams }: PageP
       ]}
     >
       <div>
-        <TrackSubmissionCapsule workspace={workspace} />
+        <TrackSubmissionCapsule workspace={workspace} commercialProfile={resolvedSearchParams?.profile} />
       </div>
       <div>
         <CompetitionWorkspace workspace={workspace} commercialProfile={resolvedSearchParams?.profile} intake={resolvedSearchParams?.intake} />
