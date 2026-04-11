@@ -17,6 +17,7 @@ import { ProductActionMap } from "@/components/product-action-map";
 import { ProposalWorkspace } from "@/components/proposal-workspace";
 import { ReadNodeActivationStrip } from "@/components/read-node-activation-strip";
 import { ReadNodeHostReadinessStrip } from "@/components/read-node-host-readiness-strip";
+import { ServiceHandoffStrip } from "@/components/service-handoff-strip";
 import { TreasuryProfileQuickActions } from "@/components/treasury-profile-quick-actions";
 import { WalletRuntimePanel } from "@/components/wallet-runtime-panel";
 import { WalletFirstServiceActionsStrip } from "@/components/wallet-first-service-actions-strip";
@@ -47,6 +48,11 @@ export default function CommandCenterPage() {
     >
       <div>
         <PaymentsTruthStrip context="command-center" />
+      </div>
+      <div>
+        <Suspense fallback={null}>
+          <ServiceHandoffStrip context="command-center" />
+        </Suspense>
       </div>
       <div>
         <WalletFirstServiceActionsStrip context="command-center" />

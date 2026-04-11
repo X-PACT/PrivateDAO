@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -19,6 +19,11 @@ import {
   type WalletFirstServiceActionContext,
   type WalletFirstServiceWorkbenchData,
 } from "@/lib/wallet-first-service-actions";
+import {
+  buildServiceHandoffQuery,
+  SERVICE_HANDOFF_STORAGE_KEY,
+  type ServiceHandoffState,
+} from "@/lib/service-handoff-state";
 import { cn } from "@/lib/utils";
 
 type WalletFirstServiceActionsWorkbenchProps = {
@@ -60,6 +65,24 @@ const copy = {
       "The command shell should not only point to routes. It should let operators stage proposal review, choose payout paths, and switch telemetry mode before taking the next action.",
   },
 } as const;
+
+function buildStoredHandoffState(
+  context: WalletFirstServiceActionContext,
+  proposal: ProposalReviewOption,
+  payout: PayoutRouteOption,
+  telemetry: TelemetryInspectorMode,
+): ServiceHandoffState {
+  return {
+    proposalId: proposal.id,
+    proposalTitle: proposal.title,
+    proposalStatus: proposal.status,
+    payoutProfile: payout.slug,
+    payoutTitle: payout.title,
+    telemetryMode: telemetry.slug,
+    updatedAt: new Date().toISOString(),
+    source: context,
+  };
+}
 
 function LaneButtons({
   actions,
@@ -121,11 +144,13 @@ function LaneButtons({
 
 function ProposalReviewForm({
   proposals,
+  selectedId,
+  onChange,
 }: {
   proposals: ProposalReviewOption[];
+  selectedId: string;
+  onChange: (value: string) => void;
 }) {
-  const [selectedId, setSelectedId] = useState(proposals[0]?.id ?? "");
-
   const selected = useMemo(
     () => proposals.find((item) => item.id === selectedId) ?? proposals[0],
     [proposals, selectedId],
@@ -142,7 +167,7 @@ function ProposalReviewForm({
             <button
               key={proposal.id}
               type="button"
-              onClick={() => setSelectedId(proposal.id)}
+              onClick={() => onChange(proposal.id)}
               className={cn(
                 "rounded-2xl border px-4 py-3 text-left text-sm transition",
                 proposal.id === selected.id
@@ -191,11 +216,13 @@ function ProposalReviewForm({
 
 function PayoutRouteForm({
   payouts,
+  selectedSlug,
+  onChange,
 }: {
   payouts: PayoutRouteOption[];
+  selectedSlug: PayoutRouteOption["slug"];
+  onChange: (value: PayoutRouteOption["slug"]) => void;
 }) {
-  const [selectedSlug, setSelectedSlug] = useState(payouts[0]?.slug ?? "pilot-funding");
-
   const selected = useMemo(
     () => payouts.find((item) => item.slug === selectedSlug) ?? payouts[0],
     [payouts, selectedSlug],
@@ -212,7 +239,7 @@ function PayoutRouteForm({
             <button
               key={item.slug}
               type="button"
-              onClick={() => setSelectedSlug(item.slug)}
+              onClick={() => onChange(item.slug)}
               className={cn(
                 "rounded-2xl border px-4 py-3 text-left text-sm transition",
                 item.slug === selected.slug
@@ -260,11 +287,13 @@ function PayoutRouteForm({
 
 function TelemetryInspectorForm({
   modes,
+  selectedSlug,
+  onChange,
 }: {
   modes: TelemetryInspectorMode[];
+  selectedSlug: TelemetryInspectorMode["slug"];
+  onChange: (value: TelemetryInspectorMode["slug"]) => void;
 }) {
-  const [selectedSlug, setSelectedSlug] = useState(modes[0]?.slug ?? "packet");
-
   const selected = useMemo(
     () => modes.find((item) => item.slug === selectedSlug) ?? modes[0],
     [modes, selectedSlug],
@@ -281,7 +310,7 @@ function TelemetryInspectorForm({
             <button
               key={mode.slug}
               type="button"
-              onClick={() => setSelectedSlug(mode.slug)}
+              onClick={() => onChange(mode.slug)}
               className={cn(
                 "rounded-2xl border px-4 py-3 text-left text-sm transition",
                 mode.slug === selected.slug
@@ -330,6 +359,38 @@ export function WalletFirstServiceActionsWorkbench({
 }: WalletFirstServiceActionsWorkbenchProps) {
   const [activeLane, setActiveLane] = useState<LaneSlug>("proposal-review");
   const sectionCopy = copy[context];
+  const [selectedProposalId, setSelectedProposalId] = useState(data.proposals[0]?.id ?? "");
+  const [selectedPayoutSlug, setSelectedPayoutSlug] = useState<PayoutRouteOption["slug"]>(
+    data.payouts[0]?.slug ?? "pilot-funding",
+  );
+  const [selectedTelemetrySlug, setSelectedTelemetrySlug] = useState<TelemetryInspectorMode["slug"]>(
+    data.telemetryModes[0]?.slug ?? "packet",
+  );
+
+  const selectedProposal = useMemo(
+    () => data.proposals.find((item) => item.id === selectedProposalId) ?? data.proposals[0],
+    [data.proposals, selectedProposalId],
+  );
+  const selectedPayout = useMemo(
+    () => data.payouts.find((item) => item.slug === selectedPayoutSlug) ?? data.payouts[0],
+    [data.payouts, selectedPayoutSlug],
+  );
+  const selectedTelemetry = useMemo(
+    () => data.telemetryModes.find((item) => item.slug === selectedTelemetrySlug) ?? data.telemetryModes[0],
+    [data.telemetryModes, selectedTelemetrySlug],
+  );
+
+  const handoffState = useMemo(() => {
+    if (!selectedProposal || !selectedPayout || !selectedTelemetry) return null;
+    return buildStoredHandoffState(context, selectedProposal, selectedPayout, selectedTelemetry);
+  }, [context, selectedPayout, selectedProposal, selectedTelemetry]);
+
+  useEffect(() => {
+    if (!handoffState || typeof window === "undefined") return;
+    window.localStorage.setItem(SERVICE_HANDOFF_STORAGE_KEY, JSON.stringify(handoffState));
+  }, [handoffState]);
+
+  const handoffQuery = handoffState ? buildServiceHandoffQuery(handoffState) : "";
 
   return (
     <Card className="border-fuchsia-300/14 bg-[linear-gradient(180deg,rgba(19,12,34,0.95),rgba(11,9,24,0.98))]">
@@ -341,14 +402,56 @@ export function WalletFirstServiceActionsWorkbench({
       <CardContent className="space-y-5">
         <LaneButtons actions={data.actions} activeLane={activeLane} onChange={setActiveLane} />
 
+        {handoffState ? (
+          <div className="grid gap-4 xl:grid-cols-[0.95fr_1.05fr]">
+            <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
+              <div className="text-[11px] uppercase tracking-[0.24em] text-white/40">Payout intent summary</div>
+              <div className="mt-3 text-base font-medium text-white">{selectedPayout.title}</div>
+              <div className="mt-2 text-sm leading-7 text-white/58">{selectedPayout.summary}</div>
+              <div className="mt-4 grid gap-3 md:grid-cols-2">
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Proposal context</div>
+                  <div className="mt-2 text-sm font-medium text-white">{selectedProposal.id}</div>
+                  <div className="mt-1 text-sm text-white/54">{selectedProposal.title}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Telemetry persistence</div>
+                  <div className="mt-2 text-sm font-medium text-white">{selectedTelemetry.title}</div>
+                  <div className="mt-1 text-sm text-white/54">Stored for services and command-center handoff</div>
+                </div>
+              </div>
+            </div>
+            <div className="rounded-[24px] border border-white/8 bg-black/20 p-5">
+              <div className="text-[11px] uppercase tracking-[0.24em] text-white/40">Selected route payload</div>
+              <div className="mt-3 break-all rounded-2xl border border-white/8 bg-white/[0.03] p-4 font-mono text-xs leading-6 text-white/64">
+                proposal={handoffState.proposalId}&amp;profile={handoffState.payoutProfile}&amp;telemetryMode={handoffState.telemetryMode}&amp;handoff=1
+              </div>
+              <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <Link href={`/services?${handoffQuery}#service-handoff`} className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
+                  Continue in services
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link href={`/command-center?${handoffQuery}#service-handoff`} className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+                  Continue in command-center
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link href={`/analytics?${handoffQuery}#telemetry-inspection`} className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+                  Continue telemetry inspection
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        ) : null}
+
         {activeLane === "proposal-review" ? (
-          <ProposalReviewForm proposals={data.proposals} />
+          <ProposalReviewForm proposals={data.proposals} selectedId={selectedProposalId} onChange={setSelectedProposalId} />
         ) : null}
         {activeLane === "payout-route-selection" ? (
-          <PayoutRouteForm payouts={data.payouts} />
+          <PayoutRouteForm payouts={data.payouts} selectedSlug={selectedPayoutSlug} onChange={setSelectedPayoutSlug} />
         ) : null}
         {activeLane === "telemetry-inspection" ? (
-          <TelemetryInspectorForm modes={data.telemetryModes} />
+          <TelemetryInspectorForm modes={data.telemetryModes} selectedSlug={selectedTelemetrySlug} onChange={setSelectedTelemetrySlug} />
         ) : null}
       </CardContent>
     </Card>

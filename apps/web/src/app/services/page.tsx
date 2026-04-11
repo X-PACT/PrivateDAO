@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 
 import { AnalystGradeDataCorridor } from "@/components/analyst-grade-data-corridor";
@@ -18,6 +19,7 @@ import { ReadNodeHostReadinessStrip } from "@/components/read-node-host-readines
 import { SectionHeader } from "@/components/section-header";
 import { ServiceOperationalCards } from "@/components/service-operational-cards";
 import { ServiceReadinessLadder } from "@/components/service-readiness-ladder";
+import { ServiceHandoffStrip } from "@/components/service-handoff-strip";
 import { ServicesSurface } from "@/components/services-surface";
 import { SolutionCorridors } from "@/components/solution-corridors";
 import { TreasuryReceiveSurface } from "@/components/treasury-receive-surface";
@@ -48,6 +50,11 @@ export default function ServicesPage() {
     >
       <div>
         <PaymentsTruthStrip context="services" />
+      </div>
+      <div>
+        <Suspense fallback={null}>
+          <ServiceHandoffStrip context="services" />
+        </Suspense>
       </div>
       <div>
         <WalletFirstServiceActionsStrip context="services" />
