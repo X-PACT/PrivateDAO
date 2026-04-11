@@ -1,13 +1,13 @@
 # Read Node Snapshot
 
-- Generated at: `2026-04-11T03:34:14.320Z`
+- Generated at: `2026-04-11T03:44:01.320Z`
 - Read path: `backend-indexer`
 - RPC endpoint: `https://api.devnet.solana.com`
 - RPC pool size: `1`
 - Cache entries: `2`
 - Cache TTL ms: `15000`
 - Program ID: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
-- Slot: `454716635`
+- Slot: `454718193`
 - Solana core: `4.0.0-beta.6`
 - Feature set: `2475355604`
 
@@ -45,3 +45,9 @@
 - `payroll` | phase=`Executed` | proposal=`52UpWHJodPWQzpR8u2qqpgwo3jRB7mvjgwCnf8oSJuXX` | recipient=`Confidential settlement wallet` | mint=`9RqMo8zzCwH3XDCJq6STJSzrVS39MkWz4q7zXsYznsdC`
 - `gaming` | phase=`Finalized` | proposal=`QwRmN5WFDL7AxXT8fjcZNhy53cgLk7UWnJ5qB2CmRaJ` | recipient=`MagicBlock settlement corridor` | mint=`58WbHdCZgFhiAnVNjQqs4LeZReeYW6YdEZQin4civfMh`
 - `grant` | phase=`Executed` | proposal=`A5Hd89vpCTVPALhuwurLQvyAkHyrNGhvZtAcJvBmuJ9U` | recipient=`AbF9Q5WkSgQRMV8R7HwHa1WgoPAytM6XxyZVzf7fFWDy` | mint=`SOL`
+
+## Featured Proposal Registry
+
+- `PDAO-104` | `Encrypted manifest bound MagicBlock bonus v2` | status=`Executed` | treasury=`Confidential payout executed for 1,000,000 units to 2TrX…1mCk via mint 9RqM…nsdC`
+- `PDAO-105` | `Devnet Confidential MagicBlock REFHE V3` | status=`Evidence gated` | treasury=`Confidential payout still gated for 1,000,000 units to 2TrX…1mCk via mint 58Wb…vfMh`
+- `PDAO-106` | `Multi proposal A` | status=`Executed` | treasury=`0.02 SOL sent to AbF9…FWDy`

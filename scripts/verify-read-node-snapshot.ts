@@ -35,6 +35,10 @@ function main() {
     throw new Error("read-node snapshot missing featured grant proposal context");
   }
 
+  if (!Array.isArray(json.featuredProposalRegistry) || json.featuredProposalRegistry.length < 3) {
+    throw new Error("read-node snapshot missing featured proposal registry");
+  }
+
   const profile350 = Array.isArray(json.profiles) ? json.profiles.find((profile: any) => profile.name === "350") : null;
   if (!profile350 || profile350.waveCount !== 7 || profile350.waveSize !== 50) {
     throw new Error("read-node snapshot missing 350-wave profile");
@@ -60,8 +64,16 @@ function main() {
     throw new Error("read-node markdown snapshot missing featured proposal context section");
   }
 
+  if (!markdown.includes("Featured Proposal Registry")) {
+    throw new Error("read-node markdown snapshot missing featured proposal registry section");
+  }
+
   if (!frontendModule.includes("READ_NODE_FEATURED_PROPOSAL_CONTEXTS")) {
     throw new Error("read-node snapshot missing frontend proposal context module");
+  }
+
+  if (!frontendModule.includes("READ_NODE_FEATURED_PROPOSAL_REGISTRY")) {
+    throw new Error("read-node snapshot missing frontend proposal registry module");
   }
 
   console.log("Read-node snapshot verification: PASS");

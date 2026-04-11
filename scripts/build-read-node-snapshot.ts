@@ -43,6 +43,22 @@ type PresentationStatus =
   | "Evidence gated"
   | "Executed";
 
+type FeaturedProposalContexts = ReturnType<typeof buildFeaturedProposalContexts>;
+
+type ProposalRegistryEntry = {
+  id: string;
+  title: string;
+  type: string;
+  status: PresentationStatus;
+  quorum: string;
+  window: string;
+  treasury: string;
+  privacy: string;
+  tech: string[];
+  summary: string;
+  execution: FeaturedProposalContexts[keyof FeaturedProposalContexts];
+};
+
 const ROOT = path.resolve(__dirname, "..");
 const JSON_PATH = path.join(ROOT, "docs/read-node/snapshot.generated.json");
 const MD_PATH = path.join(ROOT, "docs/read-node/snapshot.generated.md");
@@ -188,6 +204,68 @@ function buildTreasurySummary(
   return "Treasury action is still pending explicit indexing in the current proposal record";
 }
 
+function buildQuorumSummary(
+  proposal: Awaited<ReturnType<PrivateDaoReadNode["fetchProposals"]>>[number],
+) {
+  if (!proposal.daoDetails) {
+    return "Indexed DAO quorum is still unavailable in the current proposal record";
+  }
+
+  return `${proposal.daoDetails.quorumPercentage}% quorum · governance token requirement ${proposal.daoDetails.governanceTokenRequired}`;
+}
+
+function buildPrivacySummary(
+  proposal: Awaited<ReturnType<PrivateDaoReadNode["fetchProposals"]>>[number],
+) {
+  if (proposal.refheEnvelope) {
+    return "Commit-reveal + REFHE envelope";
+  }
+
+  if (proposal.magicblockCorridor) {
+    return "Commit-reveal + MagicBlock settlement";
+  }
+
+  if (proposal.treasuryAction) {
+    return "Commit-reveal + indexed treasury action";
+  }
+
+  return "Commit-reveal governance path";
+}
+
+function buildTechSummary(
+  proposal: Awaited<ReturnType<PrivateDaoReadNode["fetchProposals"]>>[number],
+) {
+  const tech = new Set<string>();
+  if (proposal.zkMode && proposal.zkMode !== "Disabled") {
+    tech.add("ZK");
+  }
+  if (proposal.refheEnvelope) {
+    tech.add("REFHE");
+  }
+  if (proposal.magicblockCorridor) {
+    tech.add("MagicBlock");
+  }
+  tech.add("Fast RPC");
+  return Array.from(tech);
+}
+
+function buildRegistrySummary(
+  proposal: Awaited<ReturnType<PrivateDaoReadNode["fetchProposals"]>>[number],
+  status: PresentationStatus,
+) {
+  const base = proposal.description.trim() || proposal.title;
+  if (status === "Executed") {
+    return `${base} This indexed proposal already executed on devnet and should be reviewed as proof, not as a pending signature flow.`;
+  }
+  if (status === "Evidence gated") {
+    return `${base} The governance phase is complete, but settlement evidence still gates the commercial trust surface.`;
+  }
+  if (status === "Execution ready") {
+    return `${base} The governance lifecycle is complete enough that the treasury path is ready to execute once the operator reviews the final packet.`;
+  }
+  return base;
+}
+
 function buildFeaturedProposalContexts(
   proposals: Awaited<ReturnType<PrivateDaoReadNode["fetchProposals"]>>,
   report: DevnetMultiProposalReport,
@@ -329,6 +407,42 @@ function buildFeaturedProposalContexts(
   } as const;
 }
 
+function buildFeaturedProposalRegistry(
+  proposals: Awaited<ReturnType<PrivateDaoReadNode["fetchProposals"]>>,
+  contexts: FeaturedProposalContexts,
+): ProposalRegistryEntry[] {
+  const proposalByPubkey = new Map(proposals.map((proposal) => [proposal.pubkey, proposal]));
+  const registrySpec = [
+    { key: "payroll" as const, id: "PDAO-104", type: "Enterprise DAO", pubkey: FEATURED_PROPOSAL_KEYS.payroll },
+    { key: "gaming" as const, id: "PDAO-105", type: "Gaming DAO", pubkey: FEATURED_PROPOSAL_KEYS.gaming },
+    { key: "grant" as const, id: "PDAO-106", type: "Grant Committee", pubkey: FEATURED_PROPOSAL_KEYS.grant },
+  ];
+
+  return registrySpec.map((spec) => {
+    const proposal = proposalByPubkey.get(spec.pubkey);
+    if (!proposal) {
+      throw new Error(`featured registry proposal missing from read-node snapshot: ${spec.pubkey}`);
+    }
+
+    const execution = contexts[spec.key];
+    const status = execution.presentationStatus ?? "Evidence gated";
+
+    return {
+      id: spec.id,
+      title: proposal.title,
+      type: spec.type,
+      status,
+      quorum: buildQuorumSummary(proposal),
+      window: execution.presentationWindow ?? buildWindowSummary(proposal.phase, status),
+      treasury: execution.presentationTreasury ?? buildTreasurySummary(proposal, status),
+      privacy: buildPrivacySummary(proposal),
+      tech: buildTechSummary(proposal),
+      summary: buildRegistrySummary(proposal, status),
+      execution,
+    };
+  });
+}
+
 async function main() {
   const readNode = new PrivateDaoReadNode();
   const [runtime, proposals] = await Promise.all([
@@ -364,6 +478,7 @@ async function main() {
     ).length,
   };
   const featuredProposalContexts = buildFeaturedProposalContexts(proposals, report, integrations);
+  const featuredProposalRegistry = buildFeaturedProposalRegistry(proposals, featuredProposalContexts);
 
   const payload = {
     generatedAt: new Date().toISOString(),
@@ -374,6 +489,7 @@ async function main() {
     overview,
     profiles,
     featuredProposalContexts,
+    featuredProposalRegistry,
     sample: proposals.slice(0, 5).map((proposal) => ({
       pubkey: proposal.pubkey,
       title: proposal.title,
@@ -427,6 +543,10 @@ ${payload.sample.map((proposal) => `- \`${proposal.title}\` | phase=\`${proposal
 - \`payroll\` | phase=\`${featuredProposalContexts.payroll.indexedPhase}\` | proposal=\`${featuredProposalContexts.payroll.proposalAccount}\` | recipient=\`${featuredProposalContexts.payroll.recipientLabel}\` | mint=\`${featuredProposalContexts.payroll.mintAddress ?? featuredProposalContexts.payroll.mintSymbol}\`
 - \`gaming\` | phase=\`${featuredProposalContexts.gaming.indexedPhase}\` | proposal=\`${featuredProposalContexts.gaming.proposalAccount}\` | recipient=\`${featuredProposalContexts.gaming.recipientLabel}\` | mint=\`${featuredProposalContexts.gaming.mintAddress ?? featuredProposalContexts.gaming.mintSymbol}\`
 - \`grant\` | phase=\`${featuredProposalContexts.grant.indexedPhase}\` | proposal=\`${featuredProposalContexts.grant.proposalAccount}\` | recipient=\`${featuredProposalContexts.grant.recipient}\` | mint=\`${featuredProposalContexts.grant.mintAddress ?? featuredProposalContexts.grant.mintSymbol}\`
+
+## Featured Proposal Registry
+
+${featuredProposalRegistry.map((proposal) => `- \`${proposal.id}\` | \`${proposal.title}\` | status=\`${proposal.status}\` | treasury=\`${proposal.treasury}\``).join("\n")}
 `,
   );
 
@@ -435,6 +555,7 @@ ${payload.sample.map((proposal) => `- \`${proposal.title}\` | phase=\`${proposal
 // Generated by scripts/build-read-node-snapshot.ts. Do not edit manually.
 
 export const READ_NODE_FEATURED_PROPOSAL_CONTEXTS = ${JSON.stringify(featuredProposalContexts, null, 2)} as const;
+export const READ_NODE_FEATURED_PROPOSAL_REGISTRY = ${JSON.stringify(featuredProposalRegistry, null, 2)} as const;
 
 export type ReadNodeFeaturedProposalContextKey = keyof typeof READ_NODE_FEATURED_PROPOSAL_CONTEXTS;
 `;
