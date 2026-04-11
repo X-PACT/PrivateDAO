@@ -4,6 +4,7 @@ import { X } from "lucide-react";
 
 import { OnchainParityPanel } from "@/components/onchain-parity-panel";
 import { ProposalAnalyzerInline } from "@/components/proposal-analyzer-inline";
+import { TreasuryRiskInline } from "@/components/treasury-risk-inline";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { buildPreparedActionSummary } from "@/lib/onchain-parity";
@@ -105,8 +106,9 @@ export function ActionReviewModal({
         </div>
 
         {proposal ? (
-          <div className="mt-6">
+          <div className="mt-6 grid gap-4">
             <ProposalAnalyzerInline proposal={proposal} />
+            <TreasuryRiskInline proposal={proposal} />
           </div>
         ) : null}
 

@@ -28,6 +28,10 @@ export type ProposalCardAnalysis = IntelligenceAnalysis & {
   sourceSummary: string;
 };
 
+export type TreasuryCardAnalysis = IntelligenceAnalysis & {
+  sourceSummary: string;
+};
+
 export const intelligenceFeatures: IntelligenceFeature[] = [
   {
     id: "proposal-analyzer",
@@ -223,6 +227,55 @@ export function analyzeProposalCard(proposal: ProposalCardModel): ProposalCardAn
     scoreLabel,
     scoreValue,
     sourceSummary: "Derived from the live proposal card: status, treasury path, privacy boundary, window, and execution wording.",
+  };
+}
+
+export function analyzeTreasuryProposalCard(proposal: ProposalCardModel): TreasuryCardAnalysis {
+  const inferredAmount = inferProposalAmount(`${proposal.treasury} ${proposal.summary}`);
+  const historicalUseCount = inferHistoricalUseCount(proposal);
+  const text = `${proposal.title} ${proposal.summary} ${proposal.treasury}`.toLowerCase();
+  const newRecipient = historicalUseCount <= 1;
+  const repeatedAttempts = proposal.status === "Evidence gated" ? 2 : proposal.status === "Execution ready" ? 1 : 0;
+  const executionDelayHours = inferProposalTimelockHours(proposal.window, proposal.status);
+  const normalAmount =
+    proposal.type === "Enterprise DAO"
+      ? 0.05
+      : proposal.type === "Grant Committee"
+        ? 50
+        : proposal.type === "Gaming DAO"
+          ? 20
+          : 25;
+
+  const analysis = analyzeTreasuryRisk({
+    amount: inferredAmount?.amount ?? normalAmount,
+    normalAmount,
+    repeatedAttempts,
+    newRecipient,
+    executionDelayHours,
+  });
+
+  const bullets = [...analysis.bullets];
+
+  if (text.includes("grant")) {
+    bullets.push("Grant tranches should expose beneficiary legitimacy and tranche checkpoints before treasury release.");
+  }
+
+  if (text.includes("reward") || text.includes("gaming")) {
+    bullets.push("Reward corridors need extra diagnostics because fan-out and settlement delays compound quickly.");
+  }
+
+  if (text.includes("payroll")) {
+    bullets.push("Payroll motions are safer when the payout manifest remains encrypted but reviewer-readable at execution time.");
+  }
+
+  return {
+    headline: analysis.headline,
+    summary: analysis.summary,
+    bullets: bullets.slice(0, 4),
+    scoreLabel: analysis.scoreLabel,
+    scoreValue: analysis.scoreValue,
+    sourceSummary:
+      "Derived from the live treasury wording on the proposal card: payout size hints, proposal class, status, and execution gating state.",
   };
 }
 

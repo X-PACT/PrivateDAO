@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { LockKeyhole, Search, Sparkles } from "lucide-react";
 
-import { BrandMark } from "@/components/brand-mark";
 import { buttonVariants } from "@/components/ui/button";
 import { useSiteUrls } from "@/lib/site-urls";
 import { cn } from "@/lib/utils";
@@ -35,8 +34,11 @@ export function SiteHeader() {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex items-start justify-between gap-4 sm:items-center">
           <Link href="/" className="group flex min-w-0 items-center gap-3">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-[linear-gradient(180deg,rgba(12,18,37,0.96),rgba(5,9,22,0.98))] p-1.5 shadow-[0_18px_44px_rgba(0,0,0,0.28)]">
-              <BrandMark className="h-full w-full transition-transform duration-300 group-hover:scale-105" />
+            <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-[linear-gradient(180deg,rgba(12,18,37,0.96),rgba(5,9,22,0.98))] shadow-[0_18px_44px_rgba(0,0,0,0.28)]">
+              <div className="absolute inset-[6px] rounded-[18px] border border-cyan-300/20 bg-[radial-gradient(circle_at_top,#10304b,transparent_70%)]" />
+              <span className="relative bg-[linear-gradient(135deg,#14f195,#00c2ff,#9945ff)] bg-clip-text text-[1.4rem] font-black leading-none text-transparent drop-shadow-[0_0_16px_rgba(20,241,149,0.28)]">
+                △
+              </span>
             </div>
             <div className="min-w-0">
               <div className="flex flex-nowrap items-center gap-0.5 whitespace-nowrap text-lg font-semibold tracking-tight text-white sm:text-2xl">

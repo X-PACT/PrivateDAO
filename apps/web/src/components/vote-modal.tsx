@@ -4,6 +4,7 @@ import { X } from "lucide-react";
 
 import { OnchainParityPanel } from "@/components/onchain-parity-panel";
 import { ProposalAnalyzerInline } from "@/components/proposal-analyzer-inline";
+import { TreasuryRiskInline } from "@/components/treasury-risk-inline";
 import { getConfidenceEngineSummary } from "@/lib/confidence-engine";
 import { buildPreparedActionSummary, type PreparedActionSummary } from "@/lib/onchain-parity";
 import type { ProposalCardModel } from "@/lib/site-data";
@@ -101,8 +102,9 @@ export function VoteModal({ proposal, onClose }: VoteModalProps) {
           </div>
         </div>
 
-        <div className="mt-6">
+        <div className="mt-6 grid gap-4">
           <ProposalAnalyzerInline proposal={proposal} />
+          <TreasuryRiskInline proposal={proposal} />
         </div>
 
         <div className="mt-6 grid gap-4">
