@@ -30,7 +30,7 @@ It exists to reduce ambiguity between:
 - PDAO mint: `AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt`
 - PDAO program: `TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb` (`Token-2022`)
 - PDAO token account: `F4q77ZMJdC7eoEUw3CCR7DbKGTggyExjuMGKBEiM2ct4`
-- PDAO metadata URI: `https://x-pact.github.io/PrivateDAO/assets/pdao-token.json`
+- PDAO metadata URI: `https://privatedao.org/assets/pdao-token.json`
 - PDAO initial supply: `1,000,000 PDAO`
 - PDAO mint authority: `disabled`
 - Mint-authority disable transaction: `dnv2vXPkFRM5fd42vgA4Cjkx85UCDTvFssYcS97ArZFQNGRVDd3DRzAUuvUVX1QFUAYcTpayJhbnomLCgjp2jj2`

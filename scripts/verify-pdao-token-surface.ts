@@ -34,8 +34,8 @@ function main() {
 
   assert(metadata.name === "PDAO", "PDAO metadata name mismatch");
   assert(metadata.symbol === "PDAO", "PDAO metadata symbol mismatch");
-  assert(metadata.image === "https://x-pact.github.io/PrivateDAO/assets/logo.png", "PDAO metadata image mismatch");
-  assert(metadata.external_url === "https://x-pact.github.io/PrivateDAO/security/", "PDAO metadata external URL mismatch");
+  assert(metadata.image === "https://privatedao.org/assets/logo.png", "PDAO metadata image mismatch");
+  assert(metadata.external_url === "https://privatedao.org/security/", "PDAO metadata external URL mismatch");
   assert(
     metadata.attributes.some((entry) => entry.trait_type === "PrivateDAO Program ID" && entry.value === proof.programId),
     "PDAO metadata is missing the canonical PrivateDAO program id",
@@ -46,7 +46,7 @@ function main() {
   );
   assert(metadata.properties?.category === "image", "PDAO metadata category mismatch");
   assert(
-    Boolean(metadata.properties?.files?.some((entry) => entry.uri === "https://x-pact.github.io/PrivateDAO/assets/logo.png")),
+    Boolean(metadata.properties?.files?.some((entry) => entry.uri === "https://privatedao.org/assets/logo.png")),
     "PDAO metadata files are missing the canonical logo",
   );
 

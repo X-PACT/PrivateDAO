@@ -1645,7 +1645,7 @@ function main() {
     throw new Error("generated PDAO attestation metadata asset path mismatch");
   }
 
-  if (pdaoAttestation.pdaoToken.metadataUri !== "https://x-pact.github.io/PrivateDAO/assets/pdao-token.json") {
+  if (pdaoAttestation.pdaoToken.metadataUri !== "https://privatedao.org/assets/pdao-token.json") {
     throw new Error("generated PDAO attestation metadata URI mismatch");
   }
 

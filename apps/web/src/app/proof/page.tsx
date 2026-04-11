@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import { MetricsStrip } from "@/components/metrics-strip";
+import { JudgeRuntimeLogsPanel } from "@/components/judge-runtime-logs-panel";
 import { OperationsShell } from "@/components/operations-shell";
 import { ProofEntryBanner } from "@/components/proof-entry-banner";
 import { ProofFlowRail } from "@/components/proof-flow-rail";
@@ -32,6 +33,9 @@ export default function ProofPage() {
         <Suspense fallback={null}>
           <ProofEntryBanner />
         </Suspense>
+      </div>
+      <div>
+        <JudgeRuntimeLogsPanel />
       </div>
       <div>
         <MetricsStrip />

@@ -14,7 +14,7 @@ PrivateDAO now documents and publishes a live Devnet governance voting token pro
 - Mint: `AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt`
 - Program: `TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb` (`Token-2022`)
 - Decimals: `9`
-- Metadata URI: `https://x-pact.github.io/PrivateDAO/assets/pdao-token.json`
+- Metadata URI: `https://privatedao.org/assets/pdao-token.json`
 - Verification wallet / metadata update authority: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - Mint authority: `disabled`
 - Mint-authority disable transaction: `dnv2vXPkFRM5fd42vgA4Cjkx85UCDTvFssYcS97ArZFQNGRVDd3DRzAUuvUVX1QFUAYcTpayJhbnomLCgjp2jj2`
@@ -128,7 +128,7 @@ Those should be attached as operational launch evidence rather than fabricated i
 
 ```bash
 spl-token -C /tmp/pdao-solana-config.yml display --program-2022 AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt --output json-compact
-curl -fsSL https://x-pact.github.io/PrivateDAO/assets/pdao-token.json
+curl -fsSL https://privatedao.org/assets/pdao-token.json
 solana confirm --url devnet 5zGeSePpx2q3dFTNBi8Vmn8ucd9B3jEW6MKqrCUWtQQa3FipwDPFVKRrAoWQhJagBVqKMfUcWxVfpA6Q2vymanA6
 solana confirm --url devnet 45gM6Jo3SSbwxzqyGRSMhTmz47r8wsaAMikdkbSQ2AyoXMEA3JAJM9X6eufjwnKY5QYU6QCFTjAfR9cVExKu2rhn
 solana confirm --url devnet 4kgVoRGATdVAWVoYAYGqWnJBpDHiiRmFyQ3rgRz2uWEGdsx3Hosg5Ro7JGY7xSygD1vUUsGCduseCMWYx4MbXgur
