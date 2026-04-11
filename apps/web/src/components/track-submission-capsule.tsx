@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { ArrowUpRight, Gauge, KeyRound, ShieldCheck, TimerReset, Zap } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -99,6 +100,7 @@ function getCommercialCapsuleContext(workspace: CompetitionTrackWorkspace, comme
 }
 
 export function TrackSubmissionCapsule({ workspace, commercialProfile }: TrackSubmissionCapsuleProps) {
+  const searchParams = useSearchParams();
   const [evidence, setEvidence] = useState<CustodyEvidence>(emptyCustodyEvidence);
 
   useEffect(() => {
@@ -121,9 +123,10 @@ export function TrackSubmissionCapsule({ workspace, commercialProfile }: TrackSu
   const completion = useMemo(() => getCustodyEvidenceCompletion(evidence), [evidence]);
   const narrative = useMemo(() => buildCustodyNarrative(evidence), [evidence]);
   const coach = useMemo(() => getSubmissionCoachPlan(workspace), [workspace]);
-  const commercialContext = useMemo(() => getCommercialCapsuleContext(workspace, commercialProfile), [commercialProfile, workspace]);
+  const resolvedProfile = commercialProfile ?? searchParams.get("profile") ?? undefined;
+  const commercialContext = useMemo(() => getCommercialCapsuleContext(workspace, resolvedProfile), [resolvedProfile, workspace]);
   const bestDemoRoute = commercialContext.bestDemoRoute ?? coach.finalDemoOrder[0] ?? workspace.liveRoute;
-  const displayedTrustSummary = commercialProfile ? commercialContext.trustSummary : narrative.summary;
+  const displayedTrustSummary = resolvedProfile ? commercialContext.trustSummary : narrative.summary;
   const whatWorksNow = workspace.deliverables.slice(0, 3);
   const mainnetDistance = getMainnetDistance(completion.completed, completion.total);
 

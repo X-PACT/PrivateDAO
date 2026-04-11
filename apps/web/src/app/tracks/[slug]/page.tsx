@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 import { CompetitionWorkspace } from "@/components/competition-workspace";
 import { OperationsShell } from "@/components/operations-shell";
@@ -13,7 +14,6 @@ import { buildRouteMetadata } from "@/lib/route-metadata";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
-  searchParams?: Promise<{ profile?: string; intake?: string }>;
 };
 
 export async function generateStaticParams() {
@@ -39,9 +39,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   });
 }
 
-export default async function TrackWorkspacePage({ params, searchParams }: PageProps) {
+export default async function TrackWorkspacePage({ params }: PageProps) {
   const { slug } = await params;
-  const resolvedSearchParams = searchParams ? await searchParams : undefined;
   const workspace = getCompetitionTrackWorkspace(slug);
   if (!workspace) notFound();
 
@@ -57,10 +56,12 @@ export default async function TrackWorkspacePage({ params, searchParams }: PageP
       ]}
     >
       <div>
-        <TrackSubmissionCapsule workspace={workspace} commercialProfile={resolvedSearchParams?.profile} />
+        <Suspense fallback={<div className="h-px" aria-hidden="true" />}>
+          <TrackSubmissionCapsule workspace={workspace} />
+        </Suspense>
       </div>
       <div>
-        <CompetitionWorkspace workspace={workspace} commercialProfile={resolvedSearchParams?.profile} intake={resolvedSearchParams?.intake} />
+        <CompetitionWorkspace workspace={workspace} />
       </div>
       <div>
         <VideoCenter compact />

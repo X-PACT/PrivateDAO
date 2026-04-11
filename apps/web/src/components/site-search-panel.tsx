@@ -100,8 +100,15 @@ export function SiteSearchPanel() {
           >
             <div className="flex items-center justify-between gap-4">
               <div className="text-sm font-medium text-white">{item.title}</div>
-              <div className="rounded-full border border-white/10 bg-black/20 px-3 py-1 text-[11px] uppercase tracking-[0.22em] text-white/52">
-                {item.category}
+              <div className="flex flex-wrap items-center justify-end gap-2">
+                {item.matchKind ? (
+                  <div className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-[11px] uppercase tracking-[0.22em] text-cyan-100/82">
+                    {item.matchKind}
+                  </div>
+                ) : null}
+                <div className="rounded-full border border-white/10 bg-black/20 px-3 py-1 text-[11px] uppercase tracking-[0.22em] text-white/52">
+                  {item.category}
+                </div>
               </div>
             </div>
             <div className="mt-3 text-sm leading-7 text-white/58">{item.summary}</div>

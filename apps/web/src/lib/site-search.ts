@@ -5,6 +5,7 @@ export type SiteSearchItem = {
   href: string;
   category: "Route" | "Track" | "Document" | "Proof" | "Service";
   summary: string;
+  matchKind?: "profile-aware" | "track-aware" | "profile + track";
 };
 
 type ProfileAwareSearchRule = {
@@ -357,6 +358,7 @@ function getProfileTrackLeadItems(query: string): SiteSearchItem[] {
         title: `Pilot Funding Route - ${workspace.title}`,
         href: `/tracks/${workspace.slug}?profile=pilot-funding`,
         category: "Track",
+        matchKind: "profile + track",
         summary:
           "Profile-aware track route. First surfaces: submission path, coach and alignment, then trust and proof.",
       },
@@ -364,6 +366,7 @@ function getProfileTrackLeadItems(query: string): SiteSearchItem[] {
         title: "Pilot Funding Intake",
         href: "/engage?profile=pilot-funding",
         category: "Route",
+        matchKind: "profile-aware",
         summary: "Commercial qualification route with pilot funding preselected.",
       },
     ];
@@ -375,6 +378,7 @@ function getProfileTrackLeadItems(query: string): SiteSearchItem[] {
         title: `Treasury Top-up Route - ${workspace.title}`,
         href: `/tracks/${workspace.slug}?profile=treasury-top-up`,
         category: "Track",
+        matchKind: "profile + track",
         summary:
           "Profile-aware capitalization route. First surfaces: commercialization, investment case, and mainnet gates.",
       },
@@ -382,6 +386,7 @@ function getProfileTrackLeadItems(query: string): SiteSearchItem[] {
         title: "Treasury Top-up Intake",
         href: "/engage?profile=treasury-top-up",
         category: "Route",
+        matchKind: "profile-aware",
         summary: "Treasury capitalization route with top-up context preselected.",
       },
     ];
@@ -393,6 +398,7 @@ function getProfileTrackLeadItems(query: string): SiteSearchItem[] {
         title: `Vendor Payout Route - ${workspace.title}`,
         href: `/tracks/${workspace.slug}?profile=vendor-payout`,
         category: "Track",
+        matchKind: "profile + track",
         summary:
           "Profile-aware vendor payout route. First surfaces: submission path, metrics and diagnostics, then custody and trust.",
       },
@@ -400,6 +406,7 @@ function getProfileTrackLeadItems(query: string): SiteSearchItem[] {
         title: "Vendor Payout Intake",
         href: "/engage?profile=vendor-payout",
         category: "Route",
+        matchKind: "profile-aware",
         summary: "Governed vendor payout route with execution context preselected.",
       },
     ];
@@ -410,6 +417,7 @@ function getProfileTrackLeadItems(query: string): SiteSearchItem[] {
       title: `Contributor Payout Route - ${workspace.title}`,
       href: `/tracks/${workspace.slug}?profile=contributor-payout`,
       category: "Track",
+      matchKind: "profile + track",
       summary:
         "Profile-aware contributor payout route. First surfaces: submission path, metrics, then custody and trust.",
     },
@@ -417,7 +425,27 @@ function getProfileTrackLeadItems(query: string): SiteSearchItem[] {
       title: "Contributor Payout Intake",
       href: "/engage?profile=contributor-payout",
       category: "Route",
+      matchKind: "profile-aware",
       summary: "Governed contributor payout route with funding context preselected.",
+    },
+  ];
+}
+
+function getTrackAwareLeadItems(query: string): SiteSearchItem[] {
+  const normalized = query.trim().toLowerCase();
+  const profile = detectTreasuryProfile(normalized);
+  const workspace = findCompetitionWorkspace(normalized);
+
+  if (!workspace || profile) return [];
+
+  return [
+    {
+      title: `${workspace.title} Route`,
+      href: `/tracks/${workspace.slug}`,
+      category: "Track",
+      matchKind: "track-aware",
+      summary:
+        "Track-aware result. Open the matching workspace directly, then follow the track-specific proof, trust, and demo bundle from the top capsule.",
     },
   ];
 }
@@ -427,11 +455,15 @@ export function getSiteSearchResults(query: string): SiteSearchItem[] {
   if (!normalized) return siteSearchItems;
 
   const profileTrackLeadItems = getProfileTrackLeadItems(normalized);
+  const trackAwareLeadItems = getTrackAwareLeadItems(normalized);
 
   const profileAwareLeadItems =
     profileAwareSearchRules.find((rule) =>
       rule.keywords.some((keyword) => normalized.includes(keyword)),
-    )?.leadItems ?? [];
+    )?.leadItems.map((item) => ({
+      ...item,
+      matchKind: item.matchKind ?? "profile-aware",
+    })) ?? [];
 
   const generalResults = siteSearchItems.filter((item) =>
     [item.title, item.summary, item.category].some((field) =>
@@ -440,7 +472,7 @@ export function getSiteSearchResults(query: string): SiteSearchItem[] {
   );
 
   const seen = new Set<string>();
-  return [...profileTrackLeadItems, ...profileAwareLeadItems, ...generalResults].filter((item) => {
+  return [...profileTrackLeadItems, ...trackAwareLeadItems, ...profileAwareLeadItems, ...generalResults].filter((item) => {
     const key = `${item.category}:${item.href}`;
     if (seen.has(key)) return false;
     seen.add(key);

@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, Suspense, type ReactNode } from "react";
 import Link from "next/link";
 import { ArrowUpRight, CheckCircle2, ShieldCheck, Sparkles, Swords, Target, TimerReset, Wallet } from "lucide-react";
 
@@ -16,151 +16,19 @@ import { TrackTechnicalFitPanel } from "@/components/track-technical-fit-panel";
 import { TrackCustodyImpactPanel } from "@/components/track-custody-impact-panel";
 import { AuthorityHardeningPanel } from "@/components/authority-hardening-panel";
 import { IncidentReadinessPanel } from "@/components/incident-readiness-panel";
+import { TrackCommercialContinuityCard } from "@/components/track-commercial-continuity-card";
+import { WorkspacePanelOrderController } from "@/components/workspace-panel-order-controller";
 import { cn } from "@/lib/utils";
+import { getWorkspacePanelOrder, type WorkspacePanelKey } from "@/lib/track-profile-routing";
 
 type CompetitionWorkspaceProps = {
   workspace: CompetitionTrackWorkspace;
-  commercialProfile?: string;
-  intake?: string;
 };
 
-type WorkspacePanelKey =
-  | "submissionPath"
-  | "submissionCoach"
-  | "trackAlignment"
-  | "trackNarrative"
-  | "trackInvestmentCase"
-  | "devnetServiceMetrics"
-  | "trackTechnicalFit"
-  | "trackCommercialization"
-  | "trackMainnetGates"
-  | "trackCustodyImpact"
-  | "authorityHardening"
-  | "incidentReadiness";
+export function CompetitionWorkspace({ workspace }: CompetitionWorkspaceProps) {
+  const orderedPanels = getWorkspacePanelOrder();
 
-function getCommercialContinuityBundle(workspace: CompetitionTrackWorkspace, commercialProfile?: string, intake?: string) {
-  if (!commercialProfile && !intake) {
-    return null;
-  }
-
-  if (commercialProfile === "pilot-funding" || intake === "pilot") {
-    return {
-      title: "Pilot continuity bundle",
-      summary:
-        "Keep the buyer path tied to the live startup route: demo first, then proof, then trust. This track is now carrying the same commercial context that began in Engage.",
-      routes: [
-        { label: "Live demo", href: workspace.liveRoute },
-        { label: "Proof", href: workspace.proofRoute },
-        { label: "Trust", href: "/security" },
-        { label: "Story", href: workspace.videoRoute },
-      ],
-    };
-  }
-
-  if (commercialProfile === "treasury-top-up") {
-    return {
-      title: "Treasury capitalization continuity",
-      summary:
-        "Frame this as operating runway for a real product, not a donation. Services, Engage, and Trust stay connected so the sender sees where capital improves reliability and buyer readiness.",
-      routes: [
-        { label: "Services", href: "/services" },
-        { label: "Engage", href: "/engage?profile=treasury-top-up" },
-        { label: "Trust", href: "/security" },
-        { label: "Proof", href: workspace.proofRoute },
-      ],
-    };
-  }
-
-  if (commercialProfile === "vendor-payout" || commercialProfile === "contributor-payout" || intake === "payments") {
-    return {
-      title: "Governed payout continuity",
-      summary:
-        "This commercial path stays operational: command execution, diagnostics, and proof are kept in one visible bundle so payouts read as governed treasury actions rather than ad-hoc transfers.",
-      routes: [
-        { label: "Command Center", href: "/command-center" },
-        { label: "Diagnostics", href: "/diagnostics" },
-        { label: "Trust", href: "/security" },
-        { label: "Proof", href: workspace.proofRoute },
-      ],
-    };
-  }
-
-  return null;
-}
-
-function getWorkspacePanelOrder(commercialProfile?: string, intake?: string): WorkspacePanelKey[] {
-  if (commercialProfile === "pilot-funding" || intake === "pilot") {
-    return [
-      "submissionPath",
-      "submissionCoach",
-      "trackAlignment",
-      "trackCustodyImpact",
-      "devnetServiceMetrics",
-      "trackTechnicalFit",
-      "trackNarrative",
-      "trackInvestmentCase",
-      "trackCommercialization",
-      "trackMainnetGates",
-      "authorityHardening",
-      "incidentReadiness",
-    ];
-  }
-
-  if (commercialProfile === "treasury-top-up") {
-    return [
-      "trackCommercialization",
-      "trackInvestmentCase",
-      "trackMainnetGates",
-      "devnetServiceMetrics",
-      "trackAlignment",
-      "trackCustodyImpact",
-      "submissionPath",
-      "submissionCoach",
-      "trackTechnicalFit",
-      "trackNarrative",
-      "authorityHardening",
-      "incidentReadiness",
-    ];
-  }
-
-  if (commercialProfile === "vendor-payout" || commercialProfile === "contributor-payout" || intake === "payments") {
-    return [
-      "submissionPath",
-      "devnetServiceMetrics",
-      "trackCustodyImpact",
-      "authorityHardening",
-      "incidentReadiness",
-      "trackAlignment",
-      "trackTechnicalFit",
-      "trackCommercialization",
-      "trackInvestmentCase",
-      "trackMainnetGates",
-      "submissionCoach",
-      "trackNarrative",
-    ];
-  }
-
-  return [
-    "submissionCoach",
-    "trackAlignment",
-    "trackNarrative",
-    "trackInvestmentCase",
-    "devnetServiceMetrics",
-    "trackTechnicalFit",
-    "trackCommercialization",
-    "trackMainnetGates",
-    "trackCustodyImpact",
-    "authorityHardening",
-    "incidentReadiness",
-    "submissionPath",
-  ];
-}
-
-export function CompetitionWorkspace({ workspace, commercialProfile, intake }: CompetitionWorkspaceProps) {
-  const commercialBundle = getCommercialContinuityBundle(workspace, commercialProfile, intake);
-  const orderedPanels = getWorkspacePanelOrder(commercialProfile, intake);
-
-  const panelMap: Record<WorkspacePanelKey, JSX.Element> = {
+  const panelMap: Record<WorkspacePanelKey, ReactNode> = {
     submissionCoach: <SubmissionCoachPanel workspace={workspace} />,
     trackAlignment: <TrackAlignmentPanel workspace={workspace} />,
     trackNarrative: <TrackNarrativePanel workspace={workspace} />,
@@ -229,28 +97,11 @@ export function CompetitionWorkspace({ workspace, commercialProfile, intake }: C
   };
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[1.06fr_0.94fr]">
+      <div className="grid gap-6 xl:grid-cols-[1.06fr_0.94fr]">
       <div className="grid gap-6">
-        {commercialBundle ? (
-          <Card>
-            <CardHeader>
-              <CardTitle>Commercial continuity</CardTitle>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              <div className="rounded-3xl border border-violet-300/16 bg-violet-300/[0.08] p-4 text-sm leading-7 text-white/68">
-                <div className="text-[11px] uppercase tracking-[0.28em] text-violet-100/76">{commercialBundle.title}</div>
-                <div className="mt-2">{commercialBundle.summary}</div>
-              </div>
-              <div className="flex flex-wrap gap-3">
-                {commercialBundle.routes.map((route) => (
-                  <Link key={`${commercialBundle.title}-${route.href}`} className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={route.href}>
-                    {route.label}
-                  </Link>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        ) : null}
+        <Suspense fallback={null}>
+          <TrackCommercialContinuityCard workspace={workspace} />
+        </Suspense>
 
         <Card>
           <CardHeader>
@@ -331,7 +182,10 @@ export function CompetitionWorkspace({ workspace, commercialProfile, intake }: C
         </Card>
       </div>
 
-      <div className="grid gap-6">
+      <div className="grid gap-6" data-workspace-panel-container={workspace.slug}>
+        <Suspense fallback={null}>
+          <WorkspacePanelOrderController workspaceSlug={workspace.slug} />
+        </Suspense>
         <Card>
           <CardHeader>
             <CardTitle>Track requirements in product terms</CardTitle>
@@ -346,7 +200,12 @@ export function CompetitionWorkspace({ workspace, commercialProfile, intake }: C
           </CardContent>
         </Card>
         {orderedPanels.map((panelKey) => (
-          <Fragment key={`${workspace.slug}-${panelKey}`}>{panelMap[panelKey]}</Fragment>
+          <div
+            key={`${workspace.slug}-${panelKey}`}
+            data-workspace-panel-key={panelKey}
+          >
+            <Fragment>{panelMap[panelKey]}</Fragment>
+          </div>
         ))}
 
         <Card>
