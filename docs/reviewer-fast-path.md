@@ -16,10 +16,17 @@ This is the shortest high-signal path for a judge, auditor, or technical reviewe
    - `docs/canonical-custody-proof.generated.md`
    - `docs/custody-proof-reviewer-packet.generated.md`
    - `docs/launch-trust-packet.generated.md`
-5. Confirm the canonical devnet identity:
+5. Open the track packet directly when you already know the judging corridor:
+   - Colosseum Frontier:
+     - `docs/track-reviewer-packets/colosseum-frontier.generated.md`
+   - Privacy Track:
+     - `docs/track-reviewer-packets/privacy-track.generated.md`
+   - RPC Infrastructure:
+     - `docs/track-reviewer-packets/rpc-infrastructure.generated.md`
+6. Confirm the canonical devnet identity:
    - Program ID: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
    - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
-6. Read the audit summary:
+7. Read the audit summary:
    - `docs/security-review.md`
 
 ## Five-Minute Review

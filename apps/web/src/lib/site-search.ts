@@ -1,5 +1,6 @@
 import { competitionTrackWorkspaces } from "@/lib/site-data";
 import { proposalRegistry } from "@/lib/site-data";
+import { getTrackReviewerPacketRoute } from "@/lib/track-reviewer-packets";
 
 export type SiteSearchItem = {
   title: string;
@@ -560,10 +561,53 @@ function getCustodyLeadItems(query: string): SiteSearchItem[] {
   ];
 }
 
+function getTrackReviewerPacketLeadItems(query: string): SiteSearchItem[] {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return [];
+
+  const packetRules = [
+    {
+      keywords: ["privacy reviewer packet", "privacy packet", "privacy judge packet"],
+      title: "Privacy Track Reviewer Packet",
+      href: getTrackReviewerPacketRoute("privacy-track"),
+      summary:
+        "Direct judge packet for Privacy Track: judge-first opening, proof closure, exact blocker, best demo route, and reviewer links in one file.",
+    },
+    {
+      keywords: ["rpc reviewer packet", "rpc packet", "infrastructure reviewer packet", "infrastructure packet"],
+      title: "RPC Infrastructure Reviewer Packet",
+      href: getTrackReviewerPacketRoute("rpc-infrastructure"),
+      summary:
+        "Direct judge packet for RPC Infrastructure: judge-first opening, proof closure, exact blocker, best demo route, and reviewer links in one file.",
+    },
+    {
+      keywords: ["colosseum packet", "colosseum reviewer packet", "frontier packet", "frontier reviewer packet"],
+      title: "Colosseum Frontier Reviewer Packet",
+      href: getTrackReviewerPacketRoute("colosseum-frontier"),
+      summary:
+        "Direct judge packet for Colosseum Frontier: judge-first opening, proof closure, exact blocker, best demo route, and reviewer links in one file.",
+    },
+  ];
+
+  const match = packetRules.find((rule) => rule.keywords.some((keyword) => normalized.includes(keyword)));
+  if (!match) return [];
+
+  return [
+    {
+      title: match.title,
+      href: match.href,
+      category: "Document",
+      summary: match.summary,
+      matchKind: "track-aware",
+    },
+  ];
+}
+
 export function getSiteSearchResults(query: string): SiteSearchItem[] {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return siteSearchItems;
 
+  const trackReviewerPacketLeadItems = getTrackReviewerPacketLeadItems(normalized);
   const custodyLeadItems = getCustodyLeadItems(normalized);
   const profileTrackLeadItems = getProfileTrackLeadItems(normalized);
   const trackAwareLeadItems = getTrackAwareLeadItems(normalized);
@@ -584,7 +628,7 @@ export function getSiteSearchResults(query: string): SiteSearchItem[] {
   );
 
   const seen = new Set<string>();
-  return [...custodyLeadItems, ...profileTrackLeadItems, ...trackAwareLeadItems, ...proposalLeadItems, ...profileAwareLeadItems, ...generalResults].filter((item) => {
+  return [...trackReviewerPacketLeadItems, ...custodyLeadItems, ...profileTrackLeadItems, ...trackAwareLeadItems, ...proposalLeadItems, ...profileAwareLeadItems, ...generalResults].filter((item) => {
     const key = `${item.category}:${item.href}`;
     if (seen.has(key)) return false;
     seen.add(key);

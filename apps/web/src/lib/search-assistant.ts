@@ -3,6 +3,7 @@ import { getSubmissionCoachPlan } from "@/lib/submission-coach";
 import { getTrackCommercializationPlan } from "@/lib/track-commercialization";
 import { getTrackMainnetGatePlan } from "@/lib/track-mainnet-gates";
 import { getTrackNarrativePlan } from "@/lib/track-narratives";
+import { getTrackReviewerPacketRoute } from "@/lib/track-reviewer-packets";
 import { getTrackTechnicalFit } from "@/lib/technical-eligibility";
 
 export type AssistantSuggestion = {
@@ -661,9 +662,57 @@ function getCustodyTruthSuggestion(query: string): AssistantSuggestion | null {
   };
 }
 
+function getTrackReviewerPacketSuggestion(query: string): AssistantSuggestion | null {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return null;
+
+  const packetRules = [
+    {
+      keywords: ["privacy reviewer packet", "privacy packet", "privacy judge packet"],
+      title: "Open the Privacy Track reviewer packet",
+      route: getTrackReviewerPacketRoute("privacy-track"),
+      trackRoute: "/tracks/privacy-track",
+      proofRoute: "/documents/live-proof-v3",
+    },
+    {
+      keywords: ["rpc reviewer packet", "rpc packet", "infrastructure reviewer packet", "infrastructure packet"],
+      title: "Open the RPC Infrastructure reviewer packet",
+      route: getTrackReviewerPacketRoute("rpc-infrastructure"),
+      trackRoute: "/tracks/rpc-infrastructure",
+      proofRoute: "/documents/frontier-integrations",
+    },
+    {
+      keywords: ["colosseum packet", "colosseum reviewer packet", "frontier packet", "frontier reviewer packet"],
+      title: "Open the Colosseum Frontier reviewer packet",
+      route: getTrackReviewerPacketRoute("colosseum-frontier"),
+      trackRoute: "/tracks/colosseum-frontier",
+      proofRoute: "/documents/frontier-competition-readiness-2026",
+    },
+  ];
+
+  const match = packetRules.find((rule) => rule.keywords.some((keyword) => normalized.includes(keyword)));
+  if (!match) return null;
+
+  return {
+    title: match.title,
+    summary:
+      "Open the track-specific reviewer packet first. It already bundles the judge-first opening, proof closure, exact blocker, best demo route, and the shortest reviewer links for that track.",
+    primaryActionLabel: "Open track reviewer packet",
+    primaryActionHref: match.route,
+    relatedRoutes: [
+      { label: "1. Track reviewer packet", href: match.route },
+      { label: "2. Track workspace", href: match.trackRoute },
+      { label: "3. Track proof route", href: match.proofRoute },
+    ],
+  };
+}
+
 export function getAssistantSuggestion(query: string): AssistantSuggestion {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return fallbackSuggestion;
+
+  const trackReviewerPacketSuggestion = getTrackReviewerPacketSuggestion(normalized);
+  if (trackReviewerPacketSuggestion) return trackReviewerPacketSuggestion;
 
   const profileTrackSuggestion = getProfileTrackSuggestion(normalized);
   if (profileTrackSuggestion) return profileTrackSuggestion;
