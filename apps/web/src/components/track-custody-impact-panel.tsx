@@ -76,13 +76,13 @@ export function TrackCustodyImpactPanel({ workspace }: TrackCustodyImpactPanelPr
     };
   }, []);
 
-  if (!supportedTracks.has(workspace.slug)) {
-    return null;
-  }
-
   const completion = useMemo(() => getCustodyEvidenceCompletion(evidence), [evidence]);
   const narrative = useMemo(() => buildCustodyNarrative(evidence), [evidence]);
   const impact = useMemo(() => buildTrackImpact(workspace, completion.ratio), [completion.ratio, workspace]);
+
+  if (!supportedTracks.has(workspace.slug)) {
+    return null;
+  }
 
   return (
     <Card>

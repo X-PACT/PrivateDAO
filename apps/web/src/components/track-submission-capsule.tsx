@@ -66,7 +66,62 @@ export function TrackSubmissionCapsule({ workspace }: TrackSubmissionCapsuleProp
         </div>
       </CardHeader>
       <CardContent className="grid gap-4">
-        <div className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
+        <div className="grid gap-3 md:hidden">
+          <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-4">
+            <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-cyan-200/76">
+              <Gauge className="h-3.5 w-3.5" />
+              Best demo route
+            </div>
+            <Link href={bestDemoRoute} className={cn(buttonVariants({ size: "sm" }), "mt-3 w-full justify-between")}>
+              Open {bestDemoRoute}
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-3xl border border-white/8 bg-black/20 p-4">
+              <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-cyan-200/76">
+                <ShieldCheck className="h-3.5 w-3.5" />
+                Proof
+              </div>
+              <Link href={workspace.proofRoute} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "mt-3 w-full justify-between")}>
+                Open proof
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+            <div className="rounded-3xl border border-white/8 bg-black/20 p-4">
+              <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-emerald-300/76">
+                <ShieldCheck className="h-3.5 w-3.5" />
+                Trust
+              </div>
+              <Link href="/documents/launch-trust-packet" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "mt-3 w-full justify-between")}>
+                Open trust packet
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-3xl border border-white/8 bg-black/20 p-4">
+              <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-amber-200/76">
+                <KeyRound className="h-3.5 w-3.5" />
+                Custody state
+              </div>
+              <div className="mt-3 text-sm leading-7 text-white/66">
+                {narrative.badge} · {completion.completed}/{completion.total}
+              </div>
+            </div>
+            <div className="rounded-3xl border border-white/8 bg-black/20 p-4">
+              <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-fuchsia-200/76">
+                <TimerReset className="h-3.5 w-3.5" />
+                Mainnet distance
+              </div>
+              <div className="mt-3 text-sm leading-7 text-white/66">{mainnetDistance}</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="hidden gap-4 md:grid xl:grid-cols-[1.1fr_0.9fr]">
           <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-5">
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-emerald-300/76">
               <Zap className="h-3.5 w-3.5" />
@@ -106,7 +161,7 @@ export function TrackSubmissionCapsule({ workspace }: TrackSubmissionCapsuleProp
           </div>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="hidden gap-4 md:grid md:grid-cols-3">
           <div className="rounded-3xl border border-white/8 bg-black/20 p-5">
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-cyan-200/76">
               <ShieldCheck className="h-3.5 w-3.5" />

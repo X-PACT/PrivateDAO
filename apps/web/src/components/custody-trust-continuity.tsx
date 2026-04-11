@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { Copy, Download, FileText, ShieldCheck, WalletCards } from "lucide-react";
+import { FileText, ShieldCheck, WalletCards } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -204,11 +204,7 @@ export function CustodyTrustContinuity({ mode = "buyer" }: CustodyTrustContinuit
   const pitchDeckSnippet = useMemo(
     () =>
       [
-        mode === "documents"
-          ? "Reviewer snippet - custody and trust"
-          : mode === "track"
-            ? "Judge submission snippet - custody and trust"
-            : "Pitch deck snippet - custody and trust",
+        getSnippetHeading(mode),
         "",
         `Custody status: ${narrative.badge}`,
         `Custody completion: ${completion.completed}/${completion.total}`,
