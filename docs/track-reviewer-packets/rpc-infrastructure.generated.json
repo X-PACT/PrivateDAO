@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-11T13:14:44.462Z",
+  "generatedAt": "2026-04-11T13:32:50.040Z",
   "track": {
     "slug": "rpc-infrastructure",
-    "title": "RPC Infrastructure Credits Workspace",
+    "title": "Runtime Infrastructure Reviewer Packet",
     "sponsor": "RPC infrastructure sponsors",
     "objective": "Make the hosted read path, diagnostics, and runtime trust posture impossible to miss."
   },

@@ -3,10 +3,10 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-11T13:06:13.281Z`
+- generated at: `2026-04-11T13:32:51.341Z`
 - purpose: Canonical judge-first copy for track workspaces, reviewer packets, and the first 30 to 45 seconds of track videos.
 
-## Colosseum Frontier Workspace
+## Frontier Reviewer Packet
 
 - slug: `colosseum-frontier`
 - sponsor: `Colosseum + Solana Foundation`
@@ -40,7 +40,7 @@
 
 What works now: Lead the first 90 seconds from /start into /command-center with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and track center perfectly aligned with the live site. What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet. Exact blocker: upgrade-authority-multisig. The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded. Best demo route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes.
 
-## Privacy Track Workspace
+## Confidential Governance Reviewer Packet
 
 - slug: `privacy-track`
 - sponsor: `MagicBlock and privacy-aligned partners`
@@ -74,7 +74,7 @@ What works now: Lead the first 90 seconds from /start into /command-center with 
 
 What works now: Use the comprehensive story video as the first-pass demo for judges. Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet. Keep the pitch deck anchored around private governance, confidential payouts, and honest launch boundaries. What is externally proven: Live Proof V3 via /documents/live-proof-v3 and ZK capability matrix via /documents/zk-capability-matrix. Exact blocker: magicblock-refhe-source-receipts. Privacy launch remains blocked until settlement receipts or verifier-grade source proof replace the current integration boundary. Best demo route: open /story first. Lead with /story, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes.
 
-## RPC Infrastructure Credits Workspace
+## Runtime Infrastructure Reviewer Packet
 
 - slug: `rpc-infrastructure`
 - sponsor: `RPC infrastructure sponsors`

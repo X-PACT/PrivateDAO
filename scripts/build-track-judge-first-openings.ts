@@ -4,6 +4,7 @@ import path from "path";
 import { competitionTrackWorkspaces } from "../apps/web/src/lib/site-data";
 import { getTrackJudgeFirstCopy } from "../apps/web/src/lib/track-judge-first-copy";
 import { TRACK_PROOF_PRIORITY_SLUGS } from "../apps/web/src/lib/track-proof-closure";
+import { getTrackReviewerPacketPublicLabel } from "../apps/web/src/lib/track-reviewer-packets";
 
 const OUTPUT_JSON = path.resolve("docs/track-judge-first-openings.generated.json");
 const OUTPUT_MD = path.resolve("docs/track-judge-first-openings.generated.md");
@@ -16,7 +17,7 @@ function main() {
 
       return {
         slug: workspace.slug,
-        title: workspace.title,
+        title: getTrackReviewerPacketPublicLabel(workspace.slug),
         sponsor: workspace.sponsor,
         liveRoute: workspace.liveRoute,
         proofRoute: workspace.proofRoute,

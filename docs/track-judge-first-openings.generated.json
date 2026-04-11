@@ -1,11 +1,11 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-11T13:06:13.281Z",
+  "generatedAt": "2026-04-11T13:32:51.341Z",
   "purpose": "Canonical judge-first copy for track workspaces, reviewer packets, and the first 30 to 45 seconds of track videos.",
   "tracks": [
     {
       "slug": "colosseum-frontier",
-      "title": "Colosseum Frontier Workspace",
+      "title": "Frontier Reviewer Packet",
       "sponsor": "Colosseum + Solana Foundation",
       "liveRoute": "/start",
       "proofRoute": "/documents/frontier-competition-readiness-2026",
@@ -41,7 +41,7 @@
     },
     {
       "slug": "privacy-track",
-      "title": "Privacy Track Workspace",
+      "title": "Confidential Governance Reviewer Packet",
       "sponsor": "MagicBlock and privacy-aligned partners",
       "liveRoute": "/security",
       "proofRoute": "/documents/live-proof-v3",
@@ -77,7 +77,7 @@
     },
     {
       "slug": "rpc-infrastructure",
-      "title": "RPC Infrastructure Credits Workspace",
+      "title": "Runtime Infrastructure Reviewer Packet",
       "sponsor": "RPC infrastructure sponsors",
       "liveRoute": "/services",
       "proofRoute": "/documents/frontier-integrations",

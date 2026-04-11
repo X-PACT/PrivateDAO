@@ -1,9 +1,9 @@
-# Privacy Track Workspace Reviewer Packet
+# Confidential Governance Reviewer Packet Reviewer Packet
 
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-11T13:14:44.457Z`
+- generated at: `2026-04-11T13:32:50.038Z`
 - track slug: `privacy-track`
 - sponsor: `MagicBlock and privacy-aligned partners`
 - objective: Show PrivateDAO as the clearest privacy-native governance and confidential treasury product in the field.

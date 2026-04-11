@@ -1,6 +1,8 @@
 import fs from "fs";
 import path from "path";
 
+import { getTrackReviewerPacketPublicLabel } from "../apps/web/src/lib/track-reviewer-packets";
+
 type TrackJudgeFirstOpenings = {
   project: string;
   tracks: Array<{
@@ -38,9 +40,9 @@ function main() {
 
   for (const token of [
     "# Track Judge-First Openings",
-    "## Colosseum Frontier Workspace",
-    "## Privacy Track Workspace",
-    "## RPC Infrastructure Credits Workspace",
+    `## ${getTrackReviewerPacketPublicLabel("colosseum-frontier")}`,
+    `## ${getTrackReviewerPacketPublicLabel("privacy-track")}`,
+    `## ${getTrackReviewerPacketPublicLabel("rpc-infrastructure")}`,
     "### First 30 To 45 Seconds",
     "### Voiceover Script",
   ]) {

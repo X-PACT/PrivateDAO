@@ -1,9 +1,9 @@
-# RPC Infrastructure Credits Workspace Reviewer Packet
+# Runtime Infrastructure Reviewer Packet Reviewer Packet
 
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-11T13:14:44.462Z`
+- generated at: `2026-04-11T13:32:50.040Z`
 - track slug: `rpc-infrastructure`
 - sponsor: `RPC infrastructure sponsors`
 - objective: Make the hosted read path, diagnostics, and runtime trust posture impossible to miss.

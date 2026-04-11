@@ -3,7 +3,7 @@ import { getSubmissionCoachPlan } from "@/lib/submission-coach";
 import { getTrackCommercializationPlan } from "@/lib/track-commercialization";
 import { getTrackMainnetGatePlan } from "@/lib/track-mainnet-gates";
 import { getTrackNarrativePlan } from "@/lib/track-narratives";
-import { getTrackReviewerPacketRoute } from "@/lib/track-reviewer-packets";
+import { getTrackReviewerPacketPublicLabel, getTrackReviewerPacketRoute } from "@/lib/track-reviewer-packets";
 import { getTrackTechnicalFit } from "@/lib/technical-eligibility";
 
 export type AssistantSuggestion = {
@@ -141,11 +141,11 @@ const assistantIntents: AssistantIntent[] = [
   {
     title: "Find the best wallet and live dApp path",
     summary:
-      "Lead with Solflare for the current product shell. Keep Phantom as a familiar fallback, then continue into the command center or Eitherway-style live dApp route.",
+      "Lead with Solflare for the current product shell. Keep Phantom as a familiar fallback, then continue into the command center or the live app corridor.",
     primaryActionLabel: "Open wallet-first start path",
     primaryActionHref: "/start",
     relatedRoutes: [
-      { label: "Eitherway Live dApp Track", href: "/tracks/eitherway-live-dapp" },
+      { label: "Live app corridor", href: "/tracks/eitherway-live-dapp" },
       { label: "Dashboard", href: "/dashboard" },
       { label: "Command Center", href: "/command-center" },
     ],
@@ -154,13 +154,13 @@ const assistantIntents: AssistantIntent[] = [
   {
     title: "Open the competition-ready workspace",
     summary:
-      "Go to the competition center when the question is about Frontier, privacy, RPC, consumer, Ranger, or sponsor-specific positioning. Each track keeps live route, review route, proof route, deck route, and validation steps together.",
+      "Go to the competition center when the question is about Frontier packaging, confidential governance, runtime infrastructure, or adjacent reviewer positioning. Each workspace keeps live route, review route, proof route, deck route, and validation steps together.",
     primaryActionLabel: "Open competition center",
     primaryActionHref: "/tracks",
     relatedRoutes: [
-      { label: "Privacy Track", href: "/tracks/privacy-track" },
-      { label: "RPC Infrastructure", href: "/tracks/rpc-infrastructure" },
-      { label: "Consumer Apps", href: "/tracks/consumer-apps" },
+      { label: "Confidential governance lane", href: "/tracks/privacy-track" },
+      { label: "Runtime infrastructure lane", href: "/tracks/rpc-infrastructure" },
+      { label: "Wallet-first product lane", href: "/tracks/consumer-apps" },
     ],
     keywords: ["competition", "hackathon", "frontier", "colosseum", "privacy", "ranger", "consumer", "100xdevs", "solrouter", "ika", "encrypt"],
   },
@@ -669,21 +669,21 @@ function getTrackReviewerPacketSuggestion(query: string): AssistantSuggestion | 
   const packetRules = [
     {
       keywords: ["privacy reviewer packet", "privacy packet", "privacy judge packet"],
-      title: "Open the Privacy Track reviewer packet",
+      title: `Open the ${getTrackReviewerPacketPublicLabel("privacy-track")}`,
       route: getTrackReviewerPacketRoute("privacy-track"),
       trackRoute: "/tracks/privacy-track",
       proofRoute: "/documents/live-proof-v3",
     },
     {
       keywords: ["rpc reviewer packet", "rpc packet", "infrastructure reviewer packet", "infrastructure packet"],
-      title: "Open the RPC Infrastructure reviewer packet",
+      title: `Open the ${getTrackReviewerPacketPublicLabel("rpc-infrastructure")}`,
       route: getTrackReviewerPacketRoute("rpc-infrastructure"),
       trackRoute: "/tracks/rpc-infrastructure",
       proofRoute: "/documents/frontier-integrations",
     },
     {
       keywords: ["colosseum packet", "colosseum reviewer packet", "frontier packet", "frontier reviewer packet"],
-      title: "Open the Colosseum Frontier reviewer packet",
+      title: `Open the ${getTrackReviewerPacketPublicLabel("colosseum-frontier")}`,
       route: getTrackReviewerPacketRoute("colosseum-frontier"),
       trackRoute: "/tracks/colosseum-frontier",
       proofRoute: "/documents/frontier-competition-readiness-2026",

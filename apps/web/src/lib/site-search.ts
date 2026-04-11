@@ -1,6 +1,6 @@
 import { competitionTrackWorkspaces } from "@/lib/site-data";
 import { proposalRegistry } from "@/lib/site-data";
-import { getTrackReviewerPacketRoute } from "@/lib/track-reviewer-packets";
+import { getTrackReviewerPacketPublicLabel, getTrackReviewerPacketPublicSummary, getTrackReviewerPacketRoute } from "@/lib/track-reviewer-packets";
 
 export type SiteSearchItem = {
   title: string;
@@ -144,31 +144,31 @@ export const siteSearchItems: SiteSearchItem[] = [
     summary: "Canonical intake shape for signer keys, multisig address, timelock, and authority-transfer evidence.",
   },
   {
-    title: "Privacy Track Workspace",
+    title: "Confidential Governance Workspace",
     href: "/tracks/privacy-track",
     category: "Track",
-    summary: "MagicBlock/privacy-aligned submission bundle and validation steps.",
+    summary: "Confidential-governance submission bundle and validation steps.",
   },
   {
-    title: "Eitherway Live dApp Workspace",
+    title: "Live App Workspace",
     href: "/tracks/eitherway-live-dapp",
     category: "Track",
-    summary: "Wallet-first live dApp corridor for Solflare, QuickNode, and sponsor-facing demos.",
+    summary: "Wallet-first live app corridor for buyer-facing demos and polished product flow.",
   },
   {
-    title: "RPC Infrastructure Workspace",
+    title: "Runtime Infrastructure Workspace",
     href: "/tracks/rpc-infrastructure",
     category: "Track",
     summary: "Hosted read path, diagnostics, runtime evidence, and Fast RPC packaging.",
   },
   {
-    title: "Consumer Apps Workspace",
+    title: "Wallet-First Product Workspace",
     href: "/tracks/consumer-apps",
     category: "Track",
     summary: "Best path for normal users, onboarding, clarity, and consumer-grade UX.",
   },
   {
-    title: "100xDevs Workspace",
+    title: "Frontend Execution Workspace",
     href: "/tracks/100xdevs",
     category: "Track",
     summary: "Frontend excellence, route architecture, deployment discipline, and polished shell.",
@@ -568,24 +568,21 @@ function getTrackReviewerPacketLeadItems(query: string): SiteSearchItem[] {
   const packetRules = [
     {
       keywords: ["privacy reviewer packet", "privacy packet", "privacy judge packet"],
-      title: "Privacy Track Reviewer Packet",
+      title: getTrackReviewerPacketPublicLabel("privacy-track"),
       href: getTrackReviewerPacketRoute("privacy-track"),
-      summary:
-        "Direct judge packet for Privacy Track: judge-first opening, proof closure, exact blocker, best demo route, and reviewer links in one file.",
+      summary: getTrackReviewerPacketPublicSummary("privacy-track"),
     },
     {
       keywords: ["rpc reviewer packet", "rpc packet", "infrastructure reviewer packet", "infrastructure packet"],
-      title: "RPC Infrastructure Reviewer Packet",
+      title: getTrackReviewerPacketPublicLabel("rpc-infrastructure"),
       href: getTrackReviewerPacketRoute("rpc-infrastructure"),
-      summary:
-        "Direct judge packet for RPC Infrastructure: judge-first opening, proof closure, exact blocker, best demo route, and reviewer links in one file.",
+      summary: getTrackReviewerPacketPublicSummary("rpc-infrastructure"),
     },
     {
       keywords: ["colosseum packet", "colosseum reviewer packet", "frontier packet", "frontier reviewer packet"],
-      title: "Colosseum Frontier Reviewer Packet",
+      title: getTrackReviewerPacketPublicLabel("colosseum-frontier"),
       href: getTrackReviewerPacketRoute("colosseum-frontier"),
-      summary:
-        "Direct judge packet for Colosseum Frontier: judge-first opening, proof closure, exact blocker, best demo route, and reviewer links in one file.",
+      summary: getTrackReviewerPacketPublicSummary("colosseum-frontier"),
     },
   ];
 

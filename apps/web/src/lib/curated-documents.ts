@@ -1,6 +1,8 @@
 import fs from "fs";
 import path from "path";
 
+import { getTrackReviewerPacketPublicLabel, getTrackReviewerPacketPublicSummary } from "@/lib/track-reviewer-packets";
+
 export type CuratedDocument = {
   slug: string;
   title: string;
@@ -197,9 +199,9 @@ const curatedDocuments: CuratedDocument[] = [
   },
   {
     slug: "track-reviewer-packet-colosseum-frontier",
-    title: "Colosseum Frontier Reviewer Packet",
+    title: getTrackReviewerPacketPublicLabel("colosseum-frontier"),
     category: "Reviewer core",
-    summary: "Judge packet for Colosseum Frontier with judge-first opening, proof closure, exact blocker, best demo route, and reviewer links.",
+    summary: getTrackReviewerPacketPublicSummary("colosseum-frontier"),
     audience: "Judges, reviewers, founders",
     boundary: "Track packet only; it does not alter the underlying trust or blocker truth.",
     docPath: "docs/track-reviewer-packets/colosseum-frontier.generated.md",
@@ -207,9 +209,9 @@ const curatedDocuments: CuratedDocument[] = [
   },
   {
     slug: "track-reviewer-packet-privacy-track",
-    title: "Privacy Track Reviewer Packet",
+    title: getTrackReviewerPacketPublicLabel("privacy-track"),
     category: "Reviewer core",
-    summary: "Judge packet for Privacy Track with judge-first opening, proof closure, exact blocker, best demo route, and reviewer links.",
+    summary: getTrackReviewerPacketPublicSummary("privacy-track"),
     audience: "Judges, reviewers, founders",
     boundary: "Track packet only; it does not alter the underlying trust or blocker truth.",
     docPath: "docs/track-reviewer-packets/privacy-track.generated.md",
@@ -217,9 +219,9 @@ const curatedDocuments: CuratedDocument[] = [
   },
   {
     slug: "track-reviewer-packet-rpc-infrastructure",
-    title: "RPC Infrastructure Reviewer Packet",
+    title: getTrackReviewerPacketPublicLabel("rpc-infrastructure"),
     category: "Reviewer core",
-    summary: "Judge packet for RPC Infrastructure with judge-first opening, proof closure, exact blocker, best demo route, and reviewer links.",
+    summary: getTrackReviewerPacketPublicSummary("rpc-infrastructure"),
     audience: "Judges, reviewers, founders",
     boundary: "Track packet only; it does not alter the underlying trust or blocker truth.",
     docPath: "docs/track-reviewer-packets/rpc-infrastructure.generated.md",

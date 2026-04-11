@@ -5,7 +5,11 @@ import { competitionTrackWorkspaces } from "../apps/web/src/lib/site-data";
 import { getTrackJudgeFirstCopy } from "../apps/web/src/lib/track-judge-first-copy";
 import { getTrackMainnetGatePlan } from "../apps/web/src/lib/track-mainnet-gates";
 import { getTrackSpecificProofContext } from "../apps/web/src/lib/track-proof-closure";
-import { getTrackReviewerPacketDocumentPath, TRACK_REVIEWER_PACKET_SLUGS } from "../apps/web/src/lib/track-reviewer-packets";
+import {
+  getTrackReviewerPacketDocumentPath,
+  getTrackReviewerPacketPublicLabel,
+  TRACK_REVIEWER_PACKET_SLUGS,
+} from "../apps/web/src/lib/track-reviewer-packets";
 import { getTrackTechnicalFit } from "../apps/web/src/lib/technical-eligibility";
 
 const OUTPUT_DIR = path.resolve("docs/track-reviewer-packets");
@@ -28,7 +32,7 @@ function main() {
       generatedAt: new Date().toISOString(),
       track: {
         slug: workspace.slug,
-        title: workspace.title,
+        title: getTrackReviewerPacketPublicLabel(workspace.slug),
         sponsor: workspace.sponsor,
         objective: workspace.objective,
       },

@@ -192,27 +192,20 @@ This is intentional: the product now exposes the exact custody proof shape and b
 
 The launch boundary is now surfaced in-product through `https://privatedao.org/custody/`, where multisig creation, authority transfer, and evidence requirements are shown as a live operating workflow rather than a hidden note.
 
-## Active Track Matrix
+## Frontier Review Surfaces
 
-PrivateDAO is being packaged as one coherent product across the active Frontier and adjacent Superteam tracks. The routes below are the canonical live workspaces.
+PrivateDAO is being presented as one coherent product around Frontier Hackathon. The public review lanes stay visible without exposing a long public list of track names.
 
-| Track | Live workspace | Strongest visible fit |
+| Reviewer lane | Live workspace | Strongest visible fit |
 | --- | --- | --- |
-| Colosseum Frontier | https://privatedao.org/tracks/colosseum-frontier/ | Startup-quality product shell, trust surfaces, proof continuity, and buyer path |
-| Privacy Track | https://privatedao.org/tracks/privacy-track/ | Commit-reveal governance, ZK review posture, REFHE, MagicBlock-linked privacy corridor |
-| RPC Infrastructure | https://privatedao.org/tracks/rpc-infrastructure/ | Hosted reads, diagnostics, API packaging, runtime evidence |
-| Ranger Main | https://privatedao.org/tracks/ranger-main/ | Product coherence, security posture, commercial packaging, and operating maturity |
-| 100xDevs | https://privatedao.org/tracks/100xdevs/ | Next.js execution quality, reusable UI, route discipline, and live polish |
-| Consumer Apps | https://privatedao.org/tracks/consumer-apps/ | Wallet-first onboarding, clearer navigation, operator-to-buyer continuity |
-| Eitherway Live dApp | https://privatedao.org/tracks/eitherway-live-dapp/ | Live wallet UX, partner-facing demo path, and polished app behavior |
-| Encrypt / IKA | https://privatedao.org/tracks/encrypt-ika/ | Encrypted operations, confidential payroll, ZK and REFHE framing |
-| Ranger Drift Side Track | https://privatedao.org/tracks/ranger-drift/ | Treasury strategy and policy-bounded capital-governance story |
-| SolRouter Encrypted AI | https://privatedao.org/tracks/solrouter-encrypted-ai/ | Deterministic security and intelligence posture, without overstating encrypted agents |
+| Frontier primary workspace | https://privatedao.org/tracks/colosseum-frontier/ | Startup-quality product shell, trust surfaces, proof continuity, and buyer path |
+| Confidential governance lane | https://privatedao.org/tracks/privacy-track/ | Commit-reveal governance, ZK review posture, REFHE, and privacy-aware settlement |
+| Runtime infrastructure lane | https://privatedao.org/tracks/rpc-infrastructure/ | Hosted reads, diagnostics, API packaging, and runtime evidence |
 
 The operating rule stays strict:
 
 - one product thesis
-- many track-specific workspaces
+- multiple reviewer corridors under the same Frontier narrative
 - no contradiction between site, README, deck, demo, or proof
 
 ## Story And Community

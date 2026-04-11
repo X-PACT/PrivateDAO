@@ -1,20 +1,22 @@
 import fs from "fs";
 import path from "path";
 
+import { getTrackReviewerPacketPublicLabel } from "../apps/web/src/lib/track-reviewer-packets";
+
 const TRACKS = [
   {
     slug: "colosseum-frontier",
-    heading: "# Colosseum Frontier Workspace Reviewer Packet",
+    heading: `# ${getTrackReviewerPacketPublicLabel("colosseum-frontier")}`,
     route: "/start",
   },
   {
     slug: "privacy-track",
-    heading: "# Privacy Track Workspace Reviewer Packet",
+    heading: `# ${getTrackReviewerPacketPublicLabel("privacy-track")}`,
     route: "/story",
   },
   {
     slug: "rpc-infrastructure",
-    heading: "# RPC Infrastructure Credits Workspace Reviewer Packet",
+    heading: `# ${getTrackReviewerPacketPublicLabel("rpc-infrastructure")}`,
     route: "/services",
   },
 ];

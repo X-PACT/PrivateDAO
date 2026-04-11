@@ -91,9 +91,9 @@ export default function DocumentsPage() {
       </div>
       <div id="track-reviewer-packets">
         <div className="mb-5">
-          <div className="text-[11px] uppercase tracking-[0.3em] text-violet-200/76">Track reviewer packets</div>
+          <div className="text-[11px] uppercase tracking-[0.3em] text-violet-200/76">Reviewer packets</div>
           <div className="mt-3 max-w-3xl text-sm leading-7 text-white/60">
-            After the truth surfaces, open the three priority track packets for the judge-first summary of Frontier, Privacy, and RPC Infrastructure.
+            After the truth surfaces, open the three reviewer packets for the main Frontier submission, the confidential-governance corridor, and the runtime-infrastructure corridor.
           </div>
         </div>
         <DocumentLibrary documents={trackReviewerPackets} />

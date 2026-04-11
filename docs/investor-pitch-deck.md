@@ -200,24 +200,18 @@ Best early users:
 - mobile-first Solana communities
 - strategy or risk committees that need private approval before execution
 
-Best Frontier tracks:
+Best Frontier review lanes:
 
-- Colosseum Frontier via the live product shell and buyer path
-- Privacy Track via commit-reveal governance, ZK posture, REFHE, and MagicBlock-linked corridors
-- RPC Infrastructure via diagnostics, hosted reads, API packaging, and runtime evidence
-- Ranger Main and 100xDevs via product coherence, route quality, and shipping discipline
-- Consumer and Eitherway via wallet-first onboarding and live dApp polish
+- primary Frontier product shell via the live buyer and command path
+- confidential-governance corridor via commit-reveal governance, ZK posture, REFHE, and privacy-aware settlement
+- runtime-infrastructure corridor via diagnostics, hosted reads, API packaging, and runtime evidence
+- polished product-execution corridor via route quality, live proof continuity, and reviewer discipline
 
-Live track workspaces:
+Live reviewer workspaces:
 
 - `https://privatedao.org/tracks/colosseum-frontier/`
 - `https://privatedao.org/tracks/privacy-track/`
 - `https://privatedao.org/tracks/rpc-infrastructure/`
-- `https://privatedao.org/tracks/ranger-main/`
-- `https://privatedao.org/tracks/100xdevs/`
-- `https://privatedao.org/tracks/consumer-apps/`
-- `https://privatedao.org/tracks/eitherway-live-dapp/`
-- `https://privatedao.org/tracks/encrypt-ika/`
 
 ## Slide 11 - Roadmap
 

@@ -16,12 +16,12 @@ This is the shortest high-signal path for a judge, auditor, or technical reviewe
    - `docs/canonical-custody-proof.generated.md`
    - `docs/custody-proof-reviewer-packet.generated.md`
    - `docs/launch-trust-packet.generated.md`
-5. Open the track packet directly when you already know the judging corridor:
-   - Colosseum Frontier:
+5. Open the reviewer packet directly when you already know the judging corridor:
+   - Frontier reviewer packet:
      - `docs/track-reviewer-packets/colosseum-frontier.generated.md`
-   - Privacy Track:
+   - Confidential governance reviewer packet:
      - `docs/track-reviewer-packets/privacy-track.generated.md`
-   - RPC Infrastructure:
+   - Runtime infrastructure reviewer packet:
      - `docs/track-reviewer-packets/rpc-infrastructure.generated.md`
 6. Confirm the canonical devnet identity:
    - Program ID: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
