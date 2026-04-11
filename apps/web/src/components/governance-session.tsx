@@ -20,6 +20,7 @@ type GovernanceSessionState = {
   daoName: string;
   daoCreated: boolean;
   proposalTitle: string;
+  reviewContextKey: string | null;
   proposalCreated: boolean;
   voteChoice: VoteChoice;
   voteCommitted: boolean;
@@ -33,6 +34,13 @@ type GovernanceSessionContextValue = GovernanceSessionState & {
   setDaoName: (value: string) => void;
   setProposalTitle: (value: string) => void;
   setVoteChoice: (value: VoteChoice) => void;
+  stageReviewContext: (input: {
+    proposalId: string;
+    proposalTitle: string;
+    proposalStatus: string;
+    telemetryMode: string;
+    source: string;
+  }) => void;
   createDao: () => void;
   createProposal: () => void;
   commitVote: () => void;
@@ -48,6 +56,7 @@ const defaultState: GovernanceSessionState = {
   daoName: "PrivateDAO Frontier Council",
   daoCreated: false,
   proposalTitle: "Confidential payroll batch / April",
+  reviewContextKey: null,
   proposalCreated: false,
   voteChoice: "Approve",
   voteCommitted: false,
@@ -96,6 +105,23 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
       setDaoName: (daoName) => setState((current) => ({ ...current, daoName })),
       setProposalTitle: (proposalTitle) => setState((current) => ({ ...current, proposalTitle })),
       setVoteChoice: (voteChoice) => setState((current) => ({ ...current, voteChoice })),
+      stageReviewContext: ({ proposalId, proposalTitle, proposalStatus, telemetryMode, source }) =>
+        setState((current) => {
+          const reviewContextKey = `${proposalId}:${proposalStatus}:${telemetryMode}:${source}`;
+          if (current.reviewContextKey === reviewContextKey) {
+            return current;
+          }
+
+          return withLog(
+            {
+              ...current,
+              proposalTitle,
+              reviewContextKey,
+            },
+            "Review context loaded",
+            `${proposalId} · ${proposalTitle} staged from ${source} with ${telemetryMode} telemetry mode.`,
+          );
+        }),
       createDao: () =>
         setState((current) =>
           withLog(

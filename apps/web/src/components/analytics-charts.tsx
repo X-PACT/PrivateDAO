@@ -18,10 +18,12 @@ import {
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { analyticsSeries } from "@/lib/site-data";
+import { useServiceHandoffTelemetryMode } from "@/lib/use-service-handoff-snapshot";
 
 const pieColors = ["#14f195", "#9945ff", "#00c2ff", "#ffb100"];
 
 export function AnalyticsCharts() {
+  const telemetryMode = useServiceHandoffTelemetryMode("services");
   const mounted = useSyncExternalStore(
     () => () => {},
     () => true,
@@ -52,6 +54,9 @@ export function AnalyticsCharts() {
       <Card>
         <CardHeader>
           <CardTitle>Votes: commits vs reveals</CardTitle>
+          <div className="text-sm leading-7 text-white/54">
+            Active telemetry mode: {telemetryMode}
+          </div>
         </CardHeader>
         <CardContent className="h-[320px] min-w-0">
           <ResponsiveContainer width="100%" height="100%">
@@ -87,6 +92,13 @@ export function AnalyticsCharts() {
       <Card>
         <CardHeader>
           <CardTitle>Treasury action mix</CardTitle>
+          <div className="text-sm leading-7 text-white/54">
+            {telemetryMode === "backend"
+              ? "Backend cutover mode keeps treasury mix aligned with hosted-read rollout."
+              : telemetryMode === "snapshot"
+                ? "Snapshot mode emphasizes indexed treasury mix and proposal coverage."
+                : "Packet mode keeps treasury mix reviewer-safe and export-first."}
+          </div>
         </CardHeader>
         <CardContent className="h-[320px] min-w-0">
           <ResponsiveContainer width="100%" height="100%">
@@ -112,6 +124,13 @@ export function AnalyticsCharts() {
       <Card className="xl:col-span-2">
         <CardHeader>
           <CardTitle>Proposal throughput</CardTitle>
+          <div className="text-sm leading-7 text-white/54">
+            {telemetryMode === "backend"
+              ? "Hosted service mode prioritizes continuity into health, metrics, and deployment routes."
+              : telemetryMode === "snapshot"
+                ? "Indexed snapshot mode prioritizes proposal throughput and finalized coverage."
+                : "Reviewer packet mode prioritizes exported proof and freshness context."}
+          </div>
         </CardHeader>
         <CardContent className="h-[340px] min-w-0">
           <ResponsiveContainer width="100%" height="100%">

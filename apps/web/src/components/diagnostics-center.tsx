@@ -3,14 +3,23 @@ import { Activity, ArrowUpRight, FileCheck2 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
 import { diagnosticsChecks, diagnosticsEvents } from "@/lib/site-data";
 
 export function DiagnosticsCenter() {
+  const handoff = useServiceHandoffSnapshot("command-center");
+  const modeDetail =
+    handoff?.telemetrySelection?.summary ??
+    "Diagnostics falls back to the reviewer packet until a stronger telemetry mode is staged.";
+
   return (
     <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
       <Card>
         <CardHeader>
           <CardTitle>Operational diagnostics</CardTitle>
+          <div className="text-sm leading-7 text-white/54">
+            Active telemetry mode: {handoff?.telemetryMode ?? "packet"} · {modeDetail}
+          </div>
         </CardHeader>
         <CardContent className="grid gap-4">
           {diagnosticsChecks.map((check) => {

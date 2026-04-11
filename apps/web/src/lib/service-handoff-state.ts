@@ -7,6 +7,18 @@ export const SERVICE_HANDOFF_PROFILES = [
   "contributor-payout",
 ] as const;
 
+export const SERVICE_HANDOFF_LANES = [
+  "buyer",
+  "operator",
+  "support",
+] as const;
+
+export const SERVICE_HANDOFF_ASSET_SYMBOLS = [
+  "SOL",
+  "USDC",
+  "USDG",
+] as const;
+
 export const SERVICE_HANDOFF_TELEMETRY_MODES = [
   "packet",
   "snapshot",
@@ -16,8 +28,47 @@ export const SERVICE_HANDOFF_TELEMETRY_MODES = [
 export type ServiceHandoffProfile =
   | (typeof SERVICE_HANDOFF_PROFILES)[number];
 
+export type ServiceHandoffLane =
+  | (typeof SERVICE_HANDOFF_LANES)[number];
+
+export type ServiceHandoffAssetSymbol =
+  | (typeof SERVICE_HANDOFF_ASSET_SYMBOLS)[number];
+
 export type ServiceHandoffTelemetryMode =
   | (typeof SERVICE_HANDOFF_TELEMETRY_MODES)[number];
+
+export type ServiceHandoffProposalReview = {
+  proposalAccount: string | null;
+  window: string;
+  treasury: string;
+  executionTarget: string;
+  evidenceRoute: string;
+  proofHref: string;
+  proofLabel: string;
+};
+
+export type ServiceHandoffPayoutIntent = {
+  assetSymbol: ServiceHandoffAssetSymbol;
+  amount: string;
+  amountDisplay: string;
+  reference: string;
+  purpose: string;
+  lane: ServiceHandoffLane;
+  routeFocus: string;
+  recipient: string | null;
+  mintAddress: string | null;
+  executionTarget: string;
+  evidenceRoute: string;
+};
+
+export type ServiceHandoffTelemetrySelection = {
+  title: string;
+  summary: string;
+  state: string;
+  stateDetail: string;
+  primaryHref: string;
+  proofHref: string;
+};
 
 export type ServiceHandoffState = {
   proposalId: string;
@@ -28,6 +79,15 @@ export type ServiceHandoffState = {
   telemetryMode: ServiceHandoffTelemetryMode;
   updatedAt: string;
   source: "start" | "services" | "command-center";
+  proposalReview?: ServiceHandoffProposalReview;
+  payoutIntent?: ServiceHandoffPayoutIntent;
+  telemetrySelection?: ServiceHandoffTelemetrySelection;
+};
+
+export type ServiceHandoffSelection = {
+  proposalId: string;
+  payoutProfile: ServiceHandoffProfile;
+  telemetryMode: ServiceHandoffTelemetryMode;
 };
 
 let storedServiceHandoffRawCache: string | null = null;
@@ -44,6 +104,16 @@ export function buildServiceHandoffQuery(state: ServiceHandoffState) {
 
 export function isServiceHandoffProfile(value: string | null | undefined): value is ServiceHandoffProfile {
   return !!value && SERVICE_HANDOFF_PROFILES.includes(value as ServiceHandoffProfile);
+}
+
+export function isServiceHandoffLane(value: string | null | undefined): value is ServiceHandoffLane {
+  return !!value && SERVICE_HANDOFF_LANES.includes(value as ServiceHandoffLane);
+}
+
+export function isServiceHandoffAssetSymbol(
+  value: string | null | undefined,
+): value is ServiceHandoffAssetSymbol {
+  return !!value && SERVICE_HANDOFF_ASSET_SYMBOLS.includes(value as ServiceHandoffAssetSymbol);
 }
 
 export function isServiceHandoffTelemetryMode(
@@ -70,6 +140,57 @@ export function parseStoredServiceHandoffState(raw: string | null): ServiceHando
       return null;
     }
 
+    if (parsed.proposalReview) {
+      const proposalReview = parsed.proposalReview as Partial<ServiceHandoffProposalReview>;
+      if (
+        typeof proposalReview.window !== "string" ||
+        typeof proposalReview.treasury !== "string" ||
+        typeof proposalReview.executionTarget !== "string" ||
+        typeof proposalReview.evidenceRoute !== "string" ||
+        typeof proposalReview.proofHref !== "string" ||
+        typeof proposalReview.proofLabel !== "string" ||
+        !(
+          typeof proposalReview.proposalAccount === "string" ||
+          proposalReview.proposalAccount === null
+        )
+      ) {
+        return null;
+      }
+    }
+
+    if (parsed.payoutIntent) {
+      const payoutIntent = parsed.payoutIntent as Partial<ServiceHandoffPayoutIntent>;
+      if (
+        !isServiceHandoffAssetSymbol(payoutIntent.assetSymbol) ||
+        typeof payoutIntent.amount !== "string" ||
+        typeof payoutIntent.amountDisplay !== "string" ||
+        typeof payoutIntent.reference !== "string" ||
+        typeof payoutIntent.purpose !== "string" ||
+        !isServiceHandoffLane(payoutIntent.lane) ||
+        typeof payoutIntent.routeFocus !== "string" ||
+        !(typeof payoutIntent.recipient === "string" || payoutIntent.recipient === null) ||
+        !(typeof payoutIntent.mintAddress === "string" || payoutIntent.mintAddress === null) ||
+        typeof payoutIntent.executionTarget !== "string" ||
+        typeof payoutIntent.evidenceRoute !== "string"
+      ) {
+        return null;
+      }
+    }
+
+    if (parsed.telemetrySelection) {
+      const telemetrySelection = parsed.telemetrySelection as Partial<ServiceHandoffTelemetrySelection>;
+      if (
+        typeof telemetrySelection.title !== "string" ||
+        typeof telemetrySelection.summary !== "string" ||
+        typeof telemetrySelection.state !== "string" ||
+        typeof telemetrySelection.stateDetail !== "string" ||
+        typeof telemetrySelection.primaryHref !== "string" ||
+        typeof telemetrySelection.proofHref !== "string"
+      ) {
+        return null;
+      }
+    }
+
     return parsed as ServiceHandoffState;
   } catch {
     return null;
@@ -89,7 +210,7 @@ export function readStoredServiceHandoffState(): ServiceHandoffState | null {
   return storedServiceHandoffParsedCache;
 }
 
-export function readServiceHandoffState(searchParams: URLSearchParams) {
+export function readServiceHandoffState(searchParams: URLSearchParams): ServiceHandoffSelection | null {
   const proposalId = searchParams.get("proposal");
   const payoutProfile = searchParams.get("profile");
   const telemetryMode = searchParams.get("telemetryMode");
@@ -102,5 +223,27 @@ export function readServiceHandoffState(searchParams: URLSearchParams) {
     proposalId,
     payoutProfile,
     telemetryMode,
+  };
+}
+
+export function mergeServiceHandoffState(
+  selection: ServiceHandoffSelection | null,
+  storedState: ServiceHandoffState | null,
+  fallbackSource: ServiceHandoffState["source"],
+): ServiceHandoffState | null {
+  if (!selection) return storedState;
+
+  return {
+    proposalId: selection.proposalId,
+    proposalTitle: storedState?.proposalTitle ?? selection.proposalId,
+    proposalStatus: storedState?.proposalStatus ?? "Context selected",
+    payoutProfile: selection.payoutProfile,
+    payoutTitle: storedState?.payoutTitle ?? selection.payoutProfile,
+    telemetryMode: selection.telemetryMode,
+    updatedAt: storedState?.updatedAt ?? "query-handoff",
+    source: storedState?.source ?? fallbackSource,
+    proposalReview: storedState?.proposalReview,
+    payoutIntent: storedState?.payoutIntent,
+    telemetrySelection: storedState?.telemetrySelection,
   };
 }

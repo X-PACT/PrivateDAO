@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Activity, CheckCircle2, ChevronRight, FilePlus2, Flag, FolderPlus, ListChecks, Play, ShieldCheck, Vote, Wallet } from "lucide-react";
@@ -14,6 +14,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buildPreparedActionSummary } from "@/lib/onchain-parity";
 import type { CoreGovernanceInstructionName } from "@/lib/onchain-parity.generated";
+import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
 import { cn } from "@/lib/utils";
 
 const voteChoices = ["Approve", "Reject", "Abstain"] as const;
@@ -35,6 +36,7 @@ export function GovernanceActionWorkbench() {
     setDaoName,
     setProposalTitle,
     setVoteChoice,
+    stageReviewContext,
     createDao,
     createProposal,
     commitVote,
@@ -50,6 +52,7 @@ export function GovernanceActionWorkbench() {
   const canReveal = voteCommitted && !voteRevealed;
   const canFinalize = voteRevealed && !proposalFinalized;
   const canExecute = proposalFinalized && !proposalExecuted;
+  const handoff = useServiceHandoffSnapshot("command-center");
 
   const activeWalletLabel = useMemo(() => wallet?.adapter.name ?? "Connected wallet", [wallet]);
   const nextAction = useMemo<CoreGovernanceInstructionName>(() => {
@@ -71,6 +74,17 @@ export function GovernanceActionWorkbench() {
       }),
     [daoName, nextAction, proposalCreated, proposalTitle, voteChoice],
   );
+
+  useEffect(() => {
+    if (!handoff) return;
+    stageReviewContext({
+      proposalId: handoff.proposalId,
+      proposalTitle: handoff.proposalTitle,
+      proposalStatus: handoff.proposalStatus,
+      telemetryMode: handoff.telemetryMode,
+      source: handoff.source,
+    });
+  }, [handoff, stageReviewContext]);
 
   function openReview(action: CoreGovernanceInstructionName) {
     setReviewAction(action);

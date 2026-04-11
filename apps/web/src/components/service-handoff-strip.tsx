@@ -1,40 +1,21 @@
 "use client";
 
-import { useMemo, useSyncExternalStore } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { ArrowRight, Radar, ReceiptText, WalletCards } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import {
   buildServiceHandoffQuery,
-  readServiceHandoffState,
-  readStoredServiceHandoffState,
-  SERVICE_HANDOFF_STORAGE_KEY,
   type ServiceHandoffState,
 } from "@/lib/service-handoff-state";
 import { getProposalById } from "@/lib/site-data";
+import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
 import { cn } from "@/lib/utils";
 
 type ServiceHandoffStripProps = {
   context: "services" | "command-center";
 };
-
-function subscribeToStorage(callback: () => void) {
-  if (typeof window === "undefined") return () => {};
-  const handler = (event: StorageEvent) => {
-    if (event.key === SERVICE_HANDOFF_STORAGE_KEY) {
-      callback();
-    }
-  };
-  window.addEventListener("storage", handler);
-  return () => window.removeEventListener("storage", handler);
-}
-
-function getStoredSnapshot() {
-  return readStoredServiceHandoffState();
-}
 
 const copy = {
   services: {
@@ -61,39 +42,22 @@ const payoutProfileLabels: Record<ServiceHandoffState["payoutProfile"], string> 
 };
 
 export function ServiceHandoffStrip({ context }: ServiceHandoffStripProps) {
-  const searchParams = useSearchParams();
-  const storedState = useSyncExternalStore(
-    subscribeToStorage,
-    getStoredSnapshot,
-    () => null,
-  );
-
-  const snapshot = useMemo(() => {
-    const queryState = readServiceHandoffState(searchParams);
-    const baseState: ServiceHandoffState | null = queryState
-      ? {
-          proposalId: queryState.proposalId,
-          proposalTitle: storedState?.proposalTitle ?? queryState.proposalId,
-          proposalStatus: storedState?.proposalStatus ?? "Context selected",
-          payoutProfile: queryState.payoutProfile,
-          payoutTitle: payoutProfileLabels[queryState.payoutProfile],
-          telemetryMode: queryState.telemetryMode,
-          updatedAt: storedState?.updatedAt ?? "query-handoff",
-          source: storedState?.source ?? context,
-        }
-      : storedState;
-
-    if (!baseState) return null;
-
-    const proposal = getProposalById(baseState.proposalId);
-
-    return {
-      ...baseState,
-      proposalTitle: proposal?.title ?? baseState.proposalTitle,
-      proposalStatus: proposal?.status ?? baseState.proposalStatus,
-      query: buildServiceHandoffQuery(baseState),
-    };
-  }, [context, searchParams, storedState]);
+  const baseSnapshot = useServiceHandoffSnapshot(context);
+  const snapshot: (ServiceHandoffState & { query: string }) | null = baseSnapshot
+    ? {
+        ...baseSnapshot,
+        proposalTitle:
+          getProposalById(baseSnapshot.proposalId)?.title ??
+          baseSnapshot.proposalTitle,
+        proposalStatus:
+          getProposalById(baseSnapshot.proposalId)?.status ??
+          baseSnapshot.proposalStatus,
+        payoutTitle:
+          baseSnapshot.payoutTitle ??
+          payoutProfileLabels[baseSnapshot.payoutProfile],
+        query: buildServiceHandoffQuery(baseSnapshot),
+      }
+    : null;
 
   if (!snapshot) return null;
 
@@ -147,6 +111,14 @@ export function ServiceHandoffStrip({ context }: ServiceHandoffStripProps) {
           <div className="mt-3 break-all font-mono text-xs leading-6 text-white/64">
             proposal={snapshot.proposalId}&amp;profile={snapshot.payoutProfile}&amp;telemetryMode={snapshot.telemetryMode}&amp;handoff=1
           </div>
+          {snapshot.payoutIntent ? (
+            <div className="mt-3 text-sm leading-7 text-white/56">
+              {snapshot.payoutIntent.assetSymbol}
+              {snapshot.payoutIntent.amount ? ` · ${snapshot.payoutIntent.amount}` : " · sender amount pending"}
+              {" · "}
+              {snapshot.payoutIntent.reference}
+            </div>
+          ) : null}
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">

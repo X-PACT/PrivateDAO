@@ -4,11 +4,34 @@ import { ShieldAlert, Sparkles, TrendingUp } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
 import { analyticsReadiness, analyticsSnapshots } from "@/lib/site-data";
 
 export function AnalyticsSummary() {
+  const handoff = useServiceHandoffSnapshot("services");
+  const modeTitle =
+    handoff?.telemetrySelection?.title ??
+    (handoff?.telemetryMode === "backend"
+      ? "Backend path"
+      : handoff?.telemetryMode === "snapshot"
+        ? "Read-node snapshot"
+        : "Reviewer packet");
+
   return (
     <div className="grid gap-6">
+      <Card className="border-fuchsia-300/14 bg-[linear-gradient(180deg,rgba(19,12,34,0.95),rgba(11,9,24,0.98))]">
+        <CardHeader className="pb-3">
+          <div className="text-[11px] uppercase tracking-[0.28em] text-fuchsia-200/78">Telemetry continuity</div>
+          <CardTitle className="text-xl">Analytics is now following {modeTitle}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm leading-7 text-white/58">
+            {handoff?.telemetrySelection?.summary ??
+              "Analytics falls back to the reviewer packet until a stronger telemetry mode is staged from the wallet-first workbench."}
+          </p>
+        </CardContent>
+      </Card>
+
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {analyticsSnapshots.map((snapshot) => (
           <Card key={snapshot.label}>

@@ -32,6 +32,14 @@ export type ProposalReviewOption = {
   window: string;
   treasury: string;
   summary: string;
+  proposalAccount: string | null;
+  executionTarget: string;
+  evidenceRoute: string;
+  amount: number | null;
+  amountDisplay: string;
+  mintSymbol: string | null;
+  mintAddress: string | null;
+  recipient: string | null;
   primaryHref: string;
   primaryLabel: string;
   proofHref: string;
@@ -43,6 +51,8 @@ export type PayoutRouteOption = {
   title: string;
   summary: string;
   routeFocus: string;
+  defaultLane: "buyer" | "operator" | "support";
+  defaultAssetSymbol: "SOL" | "USDC" | "USDG";
   state: string;
   stateDetail: string;
   primaryHref: string;
@@ -191,6 +201,14 @@ function getProposalReviewOptions(): ProposalReviewOption[] {
     window: proposal.window,
     treasury: proposal.treasury,
     summary: proposal.summary,
+    proposalAccount: proposal.execution.proposalAccount ?? null,
+    executionTarget: proposal.execution.executionTarget,
+    evidenceRoute: proposal.execution.txContext.evidenceRoute,
+    amount: proposal.execution.amount,
+    amountDisplay: proposal.execution.amountDisplay,
+    mintSymbol: proposal.execution.mintSymbol,
+    mintAddress: proposal.execution.mintAddress,
+    recipient: proposal.execution.recipient,
     primaryHref: `/command-center?proposal=${proposal.id}#proposal-review-action`,
     primaryLabel: "Open review lane with this proposal",
     proofHref:
@@ -216,6 +234,8 @@ function getPayoutRouteOptions(
       summary:
         "Use the buyer-safe pilot corridor when the story is startup traction, reviewer trust, and fastest commercial onboarding.",
       routeFocus: "Buyer-safe pilot corridor",
+      defaultLane: "buyer",
+      defaultAssetSymbol: "SOL",
       state: treasury.paymentsReadiness,
       stateDetail: treasury.exactBlockerSummary,
       primaryHref: "/engage?profile=pilot-funding",
@@ -229,6 +249,8 @@ function getPayoutRouteOptions(
       summary:
         "Use the treasury top-up route when the motion is capitalization, runway, or governance-approved funding for live service operations.",
       routeFocus: "Treasury capitalization corridor",
+      defaultLane: "buyer",
+      defaultAssetSymbol: "SOL",
       state: treasury.paymentsReadiness,
       stateDetail: treasury.exactBlockerSummary,
       primaryHref: "/engage?profile=treasury-top-up",
@@ -242,6 +264,8 @@ function getPayoutRouteOptions(
       summary:
         "Use the governed vendor route when the action needs execution visibility, payout discipline, and command-shell traceability.",
       routeFocus: "Operator-visible payout corridor",
+      defaultLane: "operator",
+      defaultAssetSymbol: "USDC",
       state: treasury.paymentsReadiness,
       stateDetail: treasury.exactBlockerSummary,
       primaryHref: "/engage?profile=vendor-payout",
@@ -255,6 +279,8 @@ function getPayoutRouteOptions(
       summary:
         "Use the contributor route when the payment needs governance context, role discipline, and the same proof continuity as vendor actions.",
       routeFocus: "Governed contributor payout corridor",
+      defaultLane: "operator",
+      defaultAssetSymbol: "USDC",
       state: treasury.paymentsReadiness,
       stateDetail: treasury.exactBlockerSummary,
       primaryHref: "/engage?profile=contributor-payout",

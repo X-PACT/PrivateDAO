@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -20,6 +20,7 @@ import {
   type WalletFirstServiceWorkbenchData,
 } from "@/lib/wallet-first-service-actions";
 import {
+  type ServiceHandoffAssetSymbol,
   buildServiceHandoffQuery,
   parseStoredServiceHandoffState,
   readServiceHandoffState,
@@ -74,6 +75,11 @@ function buildStoredHandoffState(
   payout: PayoutRouteOption,
   telemetry: TelemetryInspectorMode,
 ): ServiceHandoffState {
+  const assetSymbol = resolvePayoutAssetSymbol(proposal, payout);
+  const amount = resolvePayoutAmount(proposal, assetSymbol);
+  const reference = buildPayoutReference(proposal, payout);
+  const purpose = `${payout.title} for ${proposal.id} · ${proposal.title}`;
+
   return {
     proposalId: proposal.id,
     proposalTitle: proposal.title,
@@ -83,7 +89,68 @@ function buildStoredHandoffState(
     telemetryMode: telemetry.slug,
     updatedAt: new Date().toISOString(),
     source: context,
+    proposalReview: {
+      proposalAccount: proposal.proposalAccount,
+      window: proposal.window,
+      treasury: proposal.treasury,
+      executionTarget: proposal.executionTarget,
+      evidenceRoute: proposal.evidenceRoute,
+      proofHref: proposal.proofHref,
+      proofLabel: proposal.proofLabel,
+    },
+    payoutIntent: {
+      assetSymbol,
+      amount,
+      amountDisplay: proposal.amountDisplay,
+      reference,
+      purpose,
+      lane: payout.defaultLane,
+      routeFocus: payout.routeFocus,
+      recipient: proposal.recipient,
+      mintAddress: proposal.mintAddress,
+      executionTarget: proposal.executionTarget,
+      evidenceRoute: proposal.evidenceRoute,
+    },
+    telemetrySelection: {
+      title: telemetry.title,
+      summary: telemetry.summary,
+      state: telemetry.state,
+      stateDetail: telemetry.stateDetail,
+      primaryHref: telemetry.primaryHref,
+      proofHref: telemetry.proofHref,
+    },
   };
+}
+
+function resolvePayoutAssetSymbol(
+  proposal: ProposalReviewOption,
+  payout: PayoutRouteOption,
+): ServiceHandoffAssetSymbol {
+  if (proposal.mintSymbol === "SOL") return "SOL";
+  if (proposal.mintSymbol === "USDC") return "USDC";
+  if (proposal.mintSymbol === "USDG") return "USDG";
+  return payout.defaultAssetSymbol;
+}
+
+function resolvePayoutAmount(
+  proposal: ProposalReviewOption,
+  assetSymbol: ServiceHandoffAssetSymbol,
+) {
+  if (proposal.amount === null) return "";
+  if (assetSymbol === "SOL" && proposal.mintSymbol === "SOL") {
+    return String(proposal.amount);
+  }
+  if (assetSymbol === proposal.mintSymbol) {
+    return String(proposal.amount);
+  }
+  return "";
+}
+
+function buildPayoutReference(
+  proposal: ProposalReviewOption,
+  payout: PayoutRouteOption,
+) {
+  return `${proposal.id}-${payout.slug}`.toUpperCase();
 }
 
 function LaneButtons({
@@ -360,7 +427,7 @@ export function WalletFirstServiceActionsWorkbench({
   data,
 }: WalletFirstServiceActionsWorkbenchProps) {
   const [activeLane, setActiveLane] = useState<LaneSlug>("proposal-review");
-  const [hasHydratedHandoff, setHasHydratedHandoff] = useState(false);
+  const hasHydratedHandoffRef = useRef(false);
   const sectionCopy = copy[context];
   const [selectedProposalId, setSelectedProposalId] = useState(data.proposals[0]?.id ?? "");
   const [selectedPayoutSlug, setSelectedPayoutSlug] = useState<PayoutRouteOption["slug"]>(
@@ -380,7 +447,7 @@ export function WalletFirstServiceActionsWorkbench({
     const initialState = queryState ?? storedState;
 
     if (!initialState) {
-      setHasHydratedHandoff(true);
+      hasHydratedHandoffRef.current = true;
       return;
     }
 
@@ -410,7 +477,7 @@ export function WalletFirstServiceActionsWorkbench({
       setActiveLane("telemetry-inspection");
     }
 
-    setHasHydratedHandoff(true);
+    hasHydratedHandoffRef.current = true;
   }, [context, data.payouts, data.proposals, data.telemetryModes]);
 
   const selectedProposal = useMemo(
@@ -432,9 +499,9 @@ export function WalletFirstServiceActionsWorkbench({
   }, [context, selectedPayout, selectedProposal, selectedTelemetry]);
 
   useEffect(() => {
-    if (!hasHydratedHandoff || !handoffState || typeof window === "undefined") return;
+    if (!hasHydratedHandoffRef.current || !handoffState || typeof window === "undefined") return;
     window.localStorage.setItem(SERVICE_HANDOFF_STORAGE_KEY, JSON.stringify(handoffState));
-  }, [handoffState, hasHydratedHandoff]);
+  }, [handoffState]);
 
   const handoffQuery = handoffState ? buildServiceHandoffQuery(handoffState) : "";
 
@@ -465,12 +532,34 @@ export function WalletFirstServiceActionsWorkbench({
                   <div className="mt-2 text-sm font-medium text-white">{selectedTelemetry.title}</div>
                   <div className="mt-1 text-sm text-white/54">Stored for services and command-center handoff</div>
                 </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Prefilled request</div>
+                  <div className="mt-2 text-sm font-medium text-white">
+                    {handoffState.payoutIntent?.assetSymbol ?? "SOL"}
+                    {handoffState.payoutIntent?.amount
+                      ? ` · ${handoffState.payoutIntent.amount}`
+                      : " · amount left open for sender input"}
+                  </div>
+                  <div className="mt-1 text-sm text-white/54">
+                    {handoffState.payoutIntent?.reference ?? "Reference pending"}
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Execution target</div>
+                  <div className="mt-2 text-sm text-white/68">
+                    {handoffState.payoutIntent?.executionTarget ?? selectedProposal.executionTarget}
+                  </div>
+                </div>
               </div>
             </div>
             <div className="rounded-[24px] border border-white/8 bg-black/20 p-5">
               <div className="text-[11px] uppercase tracking-[0.24em] text-white/40">Selected route payload</div>
               <div className="mt-3 break-all rounded-2xl border border-white/8 bg-white/[0.03] p-4 font-mono text-xs leading-6 text-white/64">
                 proposal={handoffState.proposalId}&amp;profile={handoffState.payoutProfile}&amp;telemetryMode={handoffState.telemetryMode}&amp;handoff=1
+              </div>
+              <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.03] p-4 text-xs leading-6 text-white/62">
+                request.asset={handoffState.payoutIntent?.assetSymbol ?? "SOL"} · request.reference=
+                {handoffState.payoutIntent?.reference ?? "pending"} · lane={handoffState.payoutIntent?.lane ?? "buyer"}
               </div>
               <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <Link href={`/services?${handoffQuery}#service-handoff`} className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>

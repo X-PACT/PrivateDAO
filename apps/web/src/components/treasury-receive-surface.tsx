@@ -1,18 +1,16 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { ArrowRight, ArrowUpRight, CheckCircle2, Clipboard, Coins, Download, FileCheck2, Landmark, ShieldCheck, Wallet } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import {
-  parseStoredServiceHandoffState,
-  readServiceHandoffState,
-  SERVICE_HANDOFF_STORAGE_KEY,
+  type ServiceHandoffAssetSymbol,
 } from "@/lib/service-handoff-state";
 import { getTreasuryReceiveConfig } from "@/lib/treasury-receive-config";
+import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
 import { cn } from "@/lib/utils";
 
 const assetIconMap = {
@@ -121,8 +119,16 @@ function buildSolanaExplorerHref(address: string, network: string) {
   return `https://solscan.io/account/${address}${cluster}`;
 }
 
+function resolveSupportedAsset(
+  assets: Array<{ symbol: "SOL" | "USDC" | "USDG" }>,
+  requestedAsset: ServiceHandoffAssetSymbol,
+) {
+  return assets.some((asset) => asset.symbol === requestedAsset)
+    ? requestedAsset
+    : "SOL";
+}
+
 export function TreasuryReceiveSurface() {
-  const searchParams = useSearchParams();
   const config = getTreasuryReceiveConfig();
   const [copied, setCopied] = useState<string | null>(null);
   const [selectedAsset, setSelectedAsset] = useState<(typeof config.assets)[number]["symbol"]>("SOL");
@@ -131,18 +137,13 @@ export function TreasuryReceiveSurface() {
   const [amount, setAmount] = useState("");
   const [purpose, setPurpose] = useState("");
   const [lane, setLane] = useState<(typeof handoffLanes)[number]["value"]>("buyer");
+  const handoff = useServiceHandoffSnapshot("services");
+  const appliedHandoffKeyRef = useRef<string | null>(null);
 
   const activeAsset = config.assets.find((asset) => asset.symbol === selectedAsset) ?? config.assets[0];
   const activeProfile = destinationProfiles.find((item) => item.value === profile) ?? destinationProfiles[0];
   const activeLane = handoffLanes.find((item) => item.value === lane) ?? handoffLanes[0];
-  const handoffProfile = useMemo(() => {
-    const queryState = readServiceHandoffState(searchParams);
-    if (queryState?.payoutProfile) return queryState.payoutProfile;
-    if (typeof window === "undefined") return null;
-    return parseStoredServiceHandoffState(
-      window.localStorage.getItem(SERVICE_HANDOFF_STORAGE_KEY),
-    )?.payoutProfile ?? null;
-  }, [searchParams]);
+  const handoffProfile = handoff?.payoutProfile ?? null;
 
   useEffect(() => {
     setLane(activeProfile.defaultLane);
@@ -150,9 +151,25 @@ export function TreasuryReceiveSurface() {
   }, [activeProfile]);
 
   useEffect(() => {
-    if (!handoffProfile) return;
-    setProfile(handoffProfile);
-  }, [handoffProfile]);
+    if (!handoff) return;
+
+    const handoffKey = `${handoff.updatedAt}:${handoff.proposalId}:${handoff.payoutProfile}:${handoff.telemetryMode}`;
+    if (appliedHandoffKeyRef.current === handoffKey) return;
+
+    setProfile(handoff.payoutProfile);
+
+    if (handoff.payoutIntent) {
+      setSelectedAsset(resolveSupportedAsset(config.assets, handoff.payoutIntent.assetSymbol));
+      setLane(handoff.payoutIntent.lane);
+      setReference(handoff.payoutIntent.reference);
+      setPurpose(handoff.payoutIntent.purpose);
+      if (handoff.payoutIntent.amount) {
+        setAmount(handoff.payoutIntent.amount);
+      }
+    }
+
+    appliedHandoffKeyRef.current = handoffKey;
+  }, [config.assets, handoff]);
 
   const requestPacket = useMemo(
     () =>
@@ -342,6 +359,9 @@ export function TreasuryReceiveSurface() {
             {handoffProfile ? (
               <div className="mt-4 rounded-2xl border border-emerald-300/18 bg-emerald-300/[0.08] px-4 py-3 text-sm leading-7 text-white/72">
                 Applied from service handoff: <span className="font-medium text-white">{activeProfile.label}</span>
+                {handoff?.proposalId ? (
+                  <span className="text-white/56"> · {handoff.proposalId}</span>
+                ) : null}
               </div>
             ) : null}
 
@@ -446,6 +466,18 @@ export function TreasuryReceiveSurface() {
                   </Link>
                 ))}
               </div>
+              {handoff?.payoutIntent ? (
+                <div className="mt-4 rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Handoff continuity</div>
+                  <div className="mt-2">
+                    {handoff.payoutIntent.routeFocus} · {handoff.payoutIntent.assetSymbol}
+                    {handoff.payoutIntent.amount ? ` · ${handoff.payoutIntent.amount}` : " · sender amount still required"}
+                  </div>
+                  <div className="mt-2 text-white/54">
+                    {handoff.payoutIntent.reference} · {handoff.payoutIntent.executionTarget}
+                  </div>
+                </div>
+              ) : null}
             </div>
 
             <div className="flex flex-wrap gap-3">
