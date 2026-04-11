@@ -7,7 +7,7 @@ import { ShieldCheck, WalletCards } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { buildCustodyNarrative, custodyEvidenceStorageKey, emptyCustodyEvidence, getCustodyEvidenceCompletion, type CustodyEvidence } from "@/lib/custody-evidence";
+import { buildCustodyNarrative, custodyEvidenceUpdatedEvent, emptyCustodyEvidence, getCustodyEvidenceCompletion, readCustodyEvidence, type CustodyEvidence } from "@/lib/custody-evidence";
 import type { CompetitionTrackWorkspace } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
@@ -59,14 +59,20 @@ export function TrackCustodyImpactPanel({ workspace }: TrackCustodyImpactPanelPr
   const [evidence, setEvidence] = useState<CustodyEvidence>(emptyCustodyEvidence);
 
   useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem(custodyEvidenceStorageKey);
-      if (!raw) return;
-      const parsed = JSON.parse(raw) as Partial<CustodyEvidence>;
-      setEvidence({ ...emptyCustodyEvidence, ...parsed });
-    } catch {
-      setEvidence(emptyCustodyEvidence);
-    }
+    const syncEvidence = () => setEvidence(readCustodyEvidence());
+
+    syncEvidence();
+    window.addEventListener(custodyEvidenceUpdatedEvent, syncEvidence);
+    window.addEventListener("storage", syncEvidence);
+    window.addEventListener("focus", syncEvidence);
+    window.addEventListener("pageshow", syncEvidence);
+
+    return () => {
+      window.removeEventListener(custodyEvidenceUpdatedEvent, syncEvidence);
+      window.removeEventListener("storage", syncEvidence);
+      window.removeEventListener("focus", syncEvidence);
+      window.removeEventListener("pageshow", syncEvidence);
+    };
   }, []);
 
   if (!supportedTracks.has(workspace.slug)) {
