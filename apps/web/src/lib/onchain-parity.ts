@@ -59,6 +59,7 @@ export function buildPreparedActionSummary({
 }: BuildPreparedActionInput): PreparedActionSummary {
   const parity = getCoreInstructionParity(action);
   const baseProposalId = proposalId ?? proposal?.id ?? "Pending proposal PDA";
+  const execution = proposal?.execution;
 
   let beneficiary = "Not applicable";
   let amountOrAsset = "Not applicable";
@@ -73,8 +74,8 @@ export function buildPreparedActionSummary({
       break;
     case "create_proposal":
       beneficiary = proposalTitle ? `Proposal PDA for ${proposalTitle}` : "Proposal PDA derived from dao + proposal_count";
-      amountOrAsset = proposal?.treasury ?? "Treasury action or descriptive proposal payload";
-      timelock = "Voting window starts immediately, reveal follows after voting_end";
+      amountOrAsset = execution?.amountDisplay ?? proposal?.treasury ?? "Treasury action or descriptive proposal payload";
+      timelock = execution?.timelockLabel ?? "Voting window starts immediately, reveal follows after voting_end";
       break;
     case "commit_vote":
       beneficiary = `${baseProposalId} voter record PDA`;
@@ -95,11 +96,12 @@ export function buildPreparedActionSummary({
       operationType = "Finalize proposal";
       break;
     case "execute_proposal":
-      beneficiary = proposal?.treasury ?? "Treasury recipient from approved treasury_action";
-      amountOrAsset = proposal?.treasury ?? "Approved treasury amount and asset";
-      timelock = proposal?.status === "Execution ready"
-        ? "Execution ready in current surface; on-chain path still enforces execution_unlocks_at"
-        : "Blocked until proposal is passed, finalized, and timelock expires";
+      beneficiary = execution?.recipient ?? execution?.recipientLabel ?? proposal?.treasury ?? "Treasury recipient from approved treasury_action";
+      amountOrAsset = execution?.amountDisplay ?? proposal?.treasury ?? "Approved treasury amount and asset";
+      timelock = execution?.timelockLabel
+        ?? (proposal?.status === "Execution ready"
+          ? "Execution ready in current surface; on-chain path still enforces execution_unlocks_at"
+          : "Blocked until proposal is passed, finalized, and timelock expires");
       operationType = "Execute proposal";
       break;
   }

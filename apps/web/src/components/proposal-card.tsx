@@ -1,6 +1,7 @@
 import { ArrowUpRight, LockKeyhole, TimerReset } from "lucide-react";
 
 import { ProposalAnalyzerInline } from "@/components/proposal-analyzer-inline";
+import { TreasuryRiskInline } from "@/components/treasury-risk-inline";
 import { StatusBadge } from "@/components/status-badge";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -28,6 +29,7 @@ export function ProposalCard({ proposal, onVote }: ProposalCardProps) {
       <CardContent className="space-y-5">
         <p className="text-sm leading-7 text-white/62">{proposal.summary}</p>
         <ProposalAnalyzerInline proposal={proposal} compact />
+        <TreasuryRiskInline proposal={proposal} compact />
         <div className="grid gap-3 rounded-[24px] border border-white/8 bg-black/20 p-4">
           <div className="flex items-start gap-3">
             <TimerReset className="mt-0.5 h-4 w-4 text-cyan-300" />

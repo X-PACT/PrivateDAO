@@ -7,6 +7,7 @@ import { ArrowUpRight, CheckCircle2, Clock3, LockKeyhole, WalletMinimal } from "
 
 import { ProposalConfidencePanel } from "@/components/proposal-confidence-panel";
 import { ProposalAnalyzerInline } from "@/components/proposal-analyzer-inline";
+import { TreasuryRiskInline } from "@/components/treasury-risk-inline";
 import { ExecutionSurfaceInline } from "@/components/execution-surface-inline";
 import { VoteModal } from "@/components/vote-modal";
 import { Badge } from "@/components/ui/badge";
@@ -149,7 +150,10 @@ export function ProposalWorkspace({ executionSnapshot }: ProposalWorkspaceProps)
 
           <ExecutionSurfaceInline mode="proposal" snapshot={executionSnapshot} />
 
-          <ProposalAnalyzerInline proposal={proposal} />
+          <div className="grid gap-4 xl:grid-cols-2">
+            <ProposalAnalyzerInline proposal={proposal} />
+            <TreasuryRiskInline proposal={proposal} />
+          </div>
 
           <div className="grid gap-4 lg:grid-cols-2">
             {commandCenterReferences.map((reference) => {

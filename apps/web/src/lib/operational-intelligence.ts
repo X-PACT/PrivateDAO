@@ -84,73 +84,21 @@ function normalizeAddress(value: string) {
   return value.trim();
 }
 
-function inferProposalAmount(text: string) {
-  const match = text.match(/(\d+(?:\.\d+)?)\s*(SOL|USDC|USDG)?/i);
-  if (!match) {
-    return undefined;
-  }
+function getProposalContextSummary(proposal: ProposalCardModel) {
+  const context = proposal.execution;
+  const availableSignals = [
+    context.recipientKnown ? "recipient" : null,
+    context.amount !== null ? "amount" : null,
+    context.mintSymbol ? "mint" : null,
+    context.timelockHours !== null ? "timelock-hours" : "timelock-state",
+    "execution-target",
+  ].filter(Boolean);
 
-  return {
-    amount: Number(match[1]),
-    mint: (match[2] ?? "governed asset").toUpperCase(),
-  };
-}
-
-function inferProposalTimelockHours(window: string, status: ProposalCardModel["status"]) {
-  const remaining = window.match(/(\d+)h\s+remaining/i);
-  if (remaining) {
-    return Number(remaining[1]);
-  }
-
-  if (status === "Execution ready") {
-    return 24;
-  }
-
-  if (status === "Timelocked") {
-    return 12;
-  }
-
-  return 18;
-}
-
-function inferHistoricalUseCount(proposal: ProposalCardModel) {
-  const text = `${proposal.title} ${proposal.summary} ${proposal.treasury}`.toLowerCase();
-
-  if (text.includes("payroll") || text.includes("vendor") || text.includes("contributor")) {
-    return 3;
-  }
-
-  if (text.includes("grant")) {
-    return 2;
-  }
-
-  if (text.includes("gaming") || text.includes("reward")) {
-    return 1;
-  }
-
-  return 0;
-}
-
-function inferRecipientLabel(proposal: ProposalCardModel) {
-  const text = `${proposal.title} ${proposal.summary} ${proposal.treasury}`.toLowerCase();
-
-  if (text.includes("payroll")) {
-    return "Encrypted payroll corridor";
-  }
-
-  if (text.includes("grant")) {
-    return "Grant tranche recipient set";
-  }
-
-  if (text.includes("gaming") || text.includes("reward")) {
-    return "Gaming settlement corridor";
-  }
-
-  return "Governed treasury destination";
+  return `${context.sourceLabel}. Structured execution context reads ${availableSignals.join(", ")} directly instead of inferring them from card prose.`;
 }
 
 export function analyzeProposalCard(proposal: ProposalCardModel): ProposalCardAnalysis {
-  const inferredAmount = inferProposalAmount(`${proposal.treasury} ${proposal.summary}`);
+  const context = proposal.execution;
   const text = `${proposal.title} ${proposal.summary} ${proposal.treasury} ${proposal.privacy}`.toLowerCase();
   const bullets: string[] = [];
   let score = 5.2;
@@ -194,22 +142,37 @@ export function analyzeProposalCard(proposal: ProposalCardModel): ProposalCardAn
     bullets.push("Operational payout framing is legible to operators and easier to evaluate than a generic transfer.");
   }
 
-  if (!inferredAmount) {
-    score += 0.4;
-    bullets.push("Amount is not explicit on the card, so operators should surface the treasury magnitude before signing.");
-  } else if (inferredAmount.amount >= 100) {
+  if (context.amount === null) {
+    score += 0.8;
+    bullets.push("The structured proposal context still lacks an explicit execution amount, so signers should request the exact treasury magnitude before voting.");
+  } else if (context.amount >= 100) {
     score += 1.4;
-    bullets.push(`Card suggests a ${inferredAmount.amount} ${inferredAmount.mint} motion, which deserves stronger treasury context.`);
+    bullets.push(`The live execution context carries a ${context.amountDisplay}, which deserves stronger treasury explanation before signatures are collected.`);
+  }
+
+  if (!context.recipientKnown) {
+    score += 1.2;
+    bullets.push("The recipient set is still intentionally undisclosed in the structured proposal payload, so reviewer trust depends on a stronger execution packet.");
+  }
+
+  if (!context.mintSymbol) {
+    score += 0.9;
+    bullets.push("Mint is not yet explicit in the proposal execution context, so wallet signers should not treat the payout asset as final.");
+  }
+
+  if (context.timelockHours === null) {
+    score += 0.6;
+    bullets.push("The current path exposes timelock state but not exact unlock hours, which should be tightened before mainnet-facing claims.");
   }
 
   const analysis = analyzeProposalRisk({
     title: proposal.title,
     summary: proposal.summary,
-    amount: inferredAmount?.amount ?? 0,
-    recipient: inferRecipientLabel(proposal),
-    mint: inferredAmount?.mint ?? "governed asset",
-    timelockHours: inferProposalTimelockHours(proposal.window, proposal.status),
-    historicalUseCount: inferHistoricalUseCount(proposal),
+    amount: context.amount ?? 0,
+    recipient: context.recipient ?? context.recipientLabel,
+    mint: context.mintSymbol ?? "pending-asset-disclosure",
+    timelockHours: context.timelockHours ?? 0,
+    historicalUseCount: context.historicalUseCount,
   });
 
   const scoreValue = Math.max(1, Math.min(10, Number(((analysis.scoreValue + score) / 2).toFixed(1))));
@@ -226,35 +189,35 @@ export function analyzeProposalCard(proposal: ProposalCardModel): ProposalCardAn
     bullets: [...analysis.bullets, ...bullets].slice(0, 4),
     scoreLabel,
     scoreValue,
-    sourceSummary: "Derived from the live proposal card: status, treasury path, privacy boundary, window, and execution wording.",
+    sourceSummary: getProposalContextSummary(proposal),
   };
 }
 
 export function analyzeTreasuryProposalCard(proposal: ProposalCardModel): TreasuryCardAnalysis {
-  const inferredAmount = inferProposalAmount(`${proposal.treasury} ${proposal.summary}`);
-  const historicalUseCount = inferHistoricalUseCount(proposal);
+  const context = proposal.execution;
   const text = `${proposal.title} ${proposal.summary} ${proposal.treasury}`.toLowerCase();
-  const newRecipient = historicalUseCount <= 1;
-  const repeatedAttempts = proposal.status === "Evidence gated" ? 2 : proposal.status === "Execution ready" ? 1 : 0;
-  const executionDelayHours = inferProposalTimelockHours(proposal.window, proposal.status);
-  const normalAmount =
-    proposal.type === "Enterprise DAO"
-      ? 0.05
-      : proposal.type === "Grant Committee"
-        ? 50
-        : proposal.type === "Gaming DAO"
-          ? 20
-          : 25;
 
   const analysis = analyzeTreasuryRisk({
-    amount: inferredAmount?.amount ?? normalAmount,
-    normalAmount,
-    repeatedAttempts,
-    newRecipient,
-    executionDelayHours,
+    amount: context.amount ?? 0,
+    normalAmount: context.baselineAmount ?? 0,
+    repeatedAttempts: context.repeatedAttempts,
+    newRecipient: !context.recipientKnown || context.historicalUseCount <= 1,
+    executionDelayHours: context.timelockHours ?? 0,
   });
 
   const bullets = [...analysis.bullets];
+
+  if (context.amount === null) {
+    bullets.push("Treasury magnitude is still pending in the structured proposal payload, so payout risk should stay conservative.");
+  }
+
+  if (!context.recipientKnown) {
+    bullets.push("Recipient disclosure is still pending, so beneficiary validation cannot be completed from the current packet alone.");
+  }
+
+  if (!context.mintSymbol) {
+    bullets.push("Asset mint is still missing from the structured proposal context, which weakens wallet-side payout verification.");
+  }
 
   if (text.includes("grant")) {
     bullets.push("Grant tranches should expose beneficiary legitimacy and tranche checkpoints before treasury release.");
@@ -274,8 +237,7 @@ export function analyzeTreasuryProposalCard(proposal: ProposalCardModel): Treasu
     bullets: bullets.slice(0, 4),
     scoreLabel: analysis.scoreLabel,
     scoreValue: analysis.scoreValue,
-    sourceSummary:
-      "Derived from the live treasury wording on the proposal card: payout size hints, proposal class, status, and execution gating state.",
+    sourceSummary: getProposalContextSummary(proposal),
   };
 }
 
@@ -285,7 +247,7 @@ export function analyzeProposalRisk(input: {
   amount: number;
   recipient: string;
   mint: string;
-  timelockHours: number;
+  timelockHours: number | null;
   historicalUseCount: number;
 }) {
   let score = 2.2;
@@ -313,9 +275,12 @@ export function analyzeProposalRisk(input: {
     bullets.push("Recipient is lightly used and should carry an explicit rationale before voting.");
   }
 
-  if (input.timelockHours < 12) {
+  if (input.timelockHours !== null && input.timelockHours < 12) {
     score += 1.4;
     bullets.push("Timelock is short. Reviewers may want a stronger waiting period before execution.");
+  } else if (input.timelockHours === null) {
+    score += 0.8;
+    bullets.push("Exact timelock hours are still missing from the structured proposal context.");
   }
 
   const summaryText = `${input.title} ${input.summary}`.toLowerCase();
@@ -352,7 +317,7 @@ export function analyzeTreasuryRisk(input: {
   normalAmount: number;
   repeatedAttempts: number;
   newRecipient: boolean;
-  executionDelayHours: number;
+  executionDelayHours: number | null;
 }) {
   const ratio =
     input.normalAmount > 0 ? Number((input.amount / input.normalAmount).toFixed(2)) : input.amount;
@@ -380,9 +345,12 @@ export function analyzeTreasuryRisk(input: {
     bullets.push("Recipient is new to the treasury path and should be validated before execution.");
   }
 
-  if (input.executionDelayHours < 24) {
+  if (input.executionDelayHours !== null && input.executionDelayHours < 24) {
     score += 1.1;
     bullets.push("Execution delay is short for a treasury-sensitive motion.");
+  } else if (input.executionDelayHours === null) {
+    score += 0.8;
+    bullets.push("Execution delay is not yet explicit in the treasury packet.");
   }
 
   const clamped = Math.max(1, Math.min(10, Number(score.toFixed(1))));

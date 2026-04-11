@@ -142,6 +142,12 @@ export function VoteModal({ proposal, onClose }: VoteModalProps) {
                   <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Timelock / gate</div>
                   <div className="mt-2 text-white">{summary.timelock}</div>
                 </div>
+                {proposal.execution ? (
+                  <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68 sm:col-span-2">
+                    <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Execution target</div>
+                    <div className="mt-2 text-white">{proposal.execution.executionTarget}</div>
+                  </div>
+                ) : null}
               </div>
             </div>
           ))}

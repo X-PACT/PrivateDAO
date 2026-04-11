@@ -97,6 +97,12 @@ export function ActionReviewModal({
             <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Timelock / gate</div>
             <div className="mt-2 text-sm font-medium text-white">{summary.timelock}</div>
           </div>
+          {proposal?.execution ? (
+            <div className="rounded-3xl border border-white/8 bg-white/4 p-4 md:col-span-2 xl:col-span-4">
+              <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Execution target</div>
+              <div className="mt-2 text-sm font-medium text-white">{proposal.execution.executionTarget}</div>
+            </div>
+          ) : null}
         </div>
 
         <div className="mt-4 flex flex-wrap gap-3">

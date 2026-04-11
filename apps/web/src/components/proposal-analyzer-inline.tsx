@@ -13,6 +13,7 @@ type ProposalAnalyzerInlineProps = {
 
 export function ProposalAnalyzerInline({ proposal, compact = false }: ProposalAnalyzerInlineProps) {
   const analysis = analyzeProposalCard(proposal);
+  const context = proposal.execution;
 
   return (
     <div className="rounded-3xl border border-cyan-300/15 bg-cyan-400/5 p-4">
@@ -32,6 +33,32 @@ export function ProposalAnalyzerInline({ proposal, compact = false }: ProposalAn
       </div>
 
       <p className="mt-3 text-sm leading-7 text-white/62">{analysis.summary}</p>
+
+      <div className="mt-3 grid gap-3 rounded-[24px] border border-cyan-300/12 bg-black/20 p-4 sm:grid-cols-2">
+        <div className="text-sm leading-7 text-white/56">
+          <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/60">Recipient</div>
+          <div className="mt-1 break-all text-white/80">{context.recipient ?? context.recipientLabel}</div>
+        </div>
+        <div className="text-sm leading-7 text-white/56">
+          <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/60">Amount / mint</div>
+          <div className="mt-1 text-white/80">
+            {context.amountDisplay}
+            {context.mintAddress ? ` · ${context.mintAddress}` : ""}
+          </div>
+        </div>
+        {!compact ? (
+          <>
+            <div className="text-sm leading-7 text-white/56">
+              <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/60">Timelock</div>
+              <div className="mt-1 text-white/80">{context.timelockLabel}</div>
+            </div>
+            <div className="text-sm leading-7 text-white/56">
+              <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/60">Execution target</div>
+              <div className="mt-1 text-white/80">{context.executionTarget}</div>
+            </div>
+          </>
+        ) : null}
+      </div>
 
       <div className="mt-3 space-y-2">
         {(compact ? analysis.bullets.slice(0, 2) : analysis.bullets).map((bullet) => (
