@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import dynamic from "next/dynamic";
 
 import { BuyerJourneyRail } from "@/components/buyer-journey-rail";
 import { CommandCenter } from "@/components/command-center";
 import { CustodyReadinessStrip } from "@/components/custody-readiness-strip";
 import { CustodyTruthQuickActions } from "@/components/custody-truth-quick-actions";
 import { CustodyWorkspace } from "@/components/custody-workspace";
-import { GovernanceActionWorkbench } from "@/components/governance-action-workbench";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperatingBoundaryPanel } from "@/components/operating-boundary-panel";
 import { OperationsShell } from "@/components/operations-shell";
@@ -14,15 +14,37 @@ import { OperationalValidationPanels } from "@/components/operational-validation
 import { PaymentsTruthStrip } from "@/components/payments-truth-strip";
 import { PdaoTokenStrategyStrip } from "@/components/pdao-token-strategy-strip";
 import { ProductActionMap } from "@/components/product-action-map";
-import { ProposalWorkspace } from "@/components/proposal-workspace";
 import { ReadNodeActivationStrip } from "@/components/read-node-activation-strip";
 import { ReadNodeHostReadinessStrip } from "@/components/read-node-host-readiness-strip";
 import { ServiceHandoffStrip } from "@/components/service-handoff-strip";
 import { TreasuryProfileQuickActions } from "@/components/treasury-profile-quick-actions";
-import { WalletRuntimePanel } from "@/components/wallet-runtime-panel";
 import { WalletFirstServiceActionsStrip } from "@/components/wallet-first-service-actions-strip";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { buildRouteMetadata } from "@/lib/route-metadata";
+
+const GovernanceActionWorkbench = dynamic(
+  () => import("@/components/governance-action-workbench").then((mod) => mod.GovernanceActionWorkbench),
+  {
+    ssr: false,
+    loading: () => <div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading governance workbench…</div>,
+  },
+);
+
+const ProposalWorkspace = dynamic(
+  () => import("@/components/proposal-workspace").then((mod) => mod.ProposalWorkspace),
+  {
+    ssr: false,
+    loading: () => <div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading proposal workspace…</div>,
+  },
+);
+
+const WalletRuntimePanel = dynamic(
+  () => import("@/components/wallet-runtime-panel").then((mod) => mod.WalletRuntimePanel),
+  {
+    ssr: false,
+    loading: () => <div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading wallet runtime…</div>,
+  },
+);
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Command Center",
