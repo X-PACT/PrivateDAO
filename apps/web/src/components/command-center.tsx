@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight, Binary, LockKeyhole, ShieldCheck, WalletCards } from "lucide-react";
 
+import { ProposalAnalyzerInline } from "@/components/proposal-analyzer-inline";
 import { StatusBadge } from "@/components/status-badge";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -38,6 +39,8 @@ export function CommandCenter() {
             <div className="mt-2 text-xl font-medium text-white">{featuredProposal.title}</div>
             <p className="mt-3 text-sm leading-7 text-white/58">{featuredProposal.summary}</p>
           </div>
+
+          <ProposalAnalyzerInline proposal={featuredProposal} />
 
           <div className="grid gap-4 md:grid-cols-3">
             <div className="rounded-3xl border border-white/8 bg-black/20 p-4">
