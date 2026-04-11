@@ -164,6 +164,12 @@ Canonical sources:
 - `docs/mainnet-blockers.md`
 - `https://privatedao.org/custody/`
 
+Strict ingestion path:
+
+1. Build the public-key and signature packet in `https://privatedao.org/custody/`
+2. Save it as local operator input: `docs/custody-evidence-intake.json`
+3. Run `npm run apply:custody-evidence-intake`
+
 ## Slide 9 - Business Model
 
 PrivateDAO does not claim live protocol revenue today.

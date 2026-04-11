@@ -36,7 +36,7 @@ function getTrackSpecificProofContext(workspace: CompetitionTrackWorkspace) {
       exactBlockerSummary:
         "Privacy launch remains blocked until settlement receipts or verifier-grade source proof replace the current integration boundary.",
       pendingSummary:
-        "Custody evidence is still required, but the exact privacy-side blocker stays the source-verifiable receipt path, not generic wording.",
+        "Custody evidence is still required, and the signer or transfer packet can now be ingested through /custody in a strict repo-safe shape. The exact privacy-side blocker still remains the source-verifiable receipt path, not generic wording.",
     };
   }
 
@@ -58,7 +58,7 @@ function getTrackSpecificProofContext(workspace: CompetitionTrackWorkspace) {
       exactBlockerSummary:
         "RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded.",
       pendingSummary:
-        "Custody still matters for buyer trust, but the exact infrastructure blocker is monitored operations, not generic product maturity.",
+        "Custody still matters for buyer trust, and the new /custody ingestion flow reduces operator drift when the real signer and transfer data arrives. The exact infrastructure blocker remains monitored operations, not generic product maturity.",
     };
   }
 
@@ -79,7 +79,7 @@ function getTrackSpecificProofContext(workspace: CompetitionTrackWorkspace) {
     exactBlockerSummary:
       "The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded.",
     pendingSummary:
-      "For the main submission, custody is not a side detail. It is the exact trust gate that separates a strong Devnet product from a real-funds launch claim.",
+      "For the main submission, custody is not a side detail. It is the exact trust gate that separates a strong Devnet product from a real-funds launch claim, and the strict ingestion route now makes that ceremony packet reproducible instead of manual.",
   };
 }
 
@@ -162,6 +162,9 @@ export function TrackProofClosurePanel({
             <div className="mt-4 flex flex-wrap gap-3">
               <Link href="/custody" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
                 Open custody proof
+              </Link>
+              <Link href="/documents/multisig-setup-intake" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                Open intake shape
               </Link>
               <Link href="/documents/mainnet-blockers" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
                 Open blockers
