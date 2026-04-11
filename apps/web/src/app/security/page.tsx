@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { AuthorityHardeningPanel } from "@/components/authority-hardening-panel";
 import { ConfidenceEngineSurface } from "@/components/confidence-engine-surface";
+import { CustodyWorkspace } from "@/components/custody-workspace";
 import { FrontierSignalBoard } from "@/components/frontier-signal-board";
 import { IntelligenceLayerSurface } from "@/components/intelligence-layer-surface";
 import { OperationsShell } from "@/components/operations-shell";
@@ -39,6 +40,9 @@ export default function SecurityPage() {
       </div>
       <div>
         <AuthorityHardeningPanel />
+      </div>
+      <div>
+        <CustodyWorkspace />
       </div>
       <div>
         <SectionHeader

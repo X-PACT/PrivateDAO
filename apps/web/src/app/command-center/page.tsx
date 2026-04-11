@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { BuyerJourneyRail } from "@/components/buyer-journey-rail";
 import { CommandCenter } from "@/components/command-center";
+import { CustodyWorkspace } from "@/components/custody-workspace";
 import { GovernanceActionWorkbench } from "@/components/governance-action-workbench";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperatingBoundaryPanel } from "@/components/operating-boundary-panel";
@@ -36,39 +37,36 @@ export default function CommandCenterPage() {
         { label: "Commercial + reviewer aware", variant: "violet" },
       ]}
     >
-      <div>
+      <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
         <MetricsStrip />
-      </div>
-      <div>
         <OperatingBoundaryPanel
           title="UI full, CLI disciplined"
           summary="Command Center is where real users operate. Engineering-heavy recovery, migration, stress, and batch controls stay in the repo and CLI so the product surface remains clean."
         />
       </div>
-      <div>
-        <ProductActionMap
-          title="Exact product operations"
-          description="This route family keeps the full normal-user governance flow inside the UI: connect, create, vote, reveal, execute, log review, and diagnostics. Everything deeper stays in the repo."
-        />
-      </div>
-      <div>
+      <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
         <GovernanceActionWorkbench />
+        <div className="space-y-6">
+          <ProductActionMap
+            title="Exact product operations"
+            description="This route family keeps the full normal-user governance flow inside the UI: connect, create, vote, reveal, execute, log review, and diagnostics. Everything deeper stays in the repo."
+          />
+          <TreasuryProfileQuickActions title="Commercial treasury actions" />
+        </div>
       </div>
-      <div>
-        <BuyerJourneyRail />
-      </div>
-      <div>
+      <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
         <CommandCenter />
-      </div>
-      <div>
-        <OperationalValidationPanels title="Command-center operating health" />
-      </div>
-      <div>
-        <TreasuryProfileQuickActions title="Commercial treasury actions" />
+        <div className="space-y-6">
+          <BuyerJourneyRail />
+          <OperationalValidationPanels title="Command-center operating health" />
+        </div>
       </div>
       <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
         <ProposalWorkspace executionSnapshot={executionSnapshot} />
         <WalletRuntimePanel executionSnapshot={executionSnapshot} />
+      </div>
+      <div>
+        <CustodyWorkspace />
       </div>
     </OperationsShell>
   );

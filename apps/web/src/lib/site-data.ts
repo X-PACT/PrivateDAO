@@ -1620,7 +1620,7 @@ export const launchBlockers = [
   {
     name: "Multisig + authority transfer",
     state: "Pending external",
-    note: "Program authority and operational privileges still need final custody ceremony evidence.",
+    note: "Custody workspace and transfer runbooks are live; program authority and operational privileges still need final multisig transaction evidence.",
   },
   {
     name: "External audit closure",

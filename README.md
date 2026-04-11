@@ -132,6 +132,7 @@ The README should stay aligned with this rule: implemented surfaces are describe
 | Live product | https://privatedao.org/ |
 | Command center | https://privatedao.org/command-center/ |
 | Governance dashboard | https://privatedao.org/dashboard/ |
+| Custody workspace | https://privatedao.org/custody/ |
 | Story video | https://privatedao.org/story/ |
 | Community | https://privatedao.org/community/ |
 | Judge / proof view | https://privatedao.org/proof/?judge=1 |
@@ -140,6 +141,8 @@ The README should stay aligned with this rule: implemented surfaces are describe
 | Treasury receive surface | https://privatedao.org/services/ |
 | Demo video MP4 | https://privatedao.org/assets/private-dao-demo-flow.mp4 |
 | Devnet program | https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet |
+
+The launch boundary is now surfaced in-product through `https://privatedao.org/custody/`, where multisig creation, authority transfer, and evidence requirements are shown as a live operating workflow rather than a hidden note.
 
 ## Active Track Matrix
 

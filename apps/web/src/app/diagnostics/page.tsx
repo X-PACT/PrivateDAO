@@ -6,6 +6,7 @@ import { IncidentReadinessPanel } from "@/components/incident-readiness-panel";
 import { LaunchBlockersPanel } from "@/components/launch-blockers-panel";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperationsShell } from "@/components/operations-shell";
+import { CustodyWorkspace } from "@/components/custody-workspace";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
@@ -42,6 +43,9 @@ export default function DiagnosticsPage() {
       </div>
       <div>
         <LaunchBlockersPanel />
+      </div>
+      <div>
+        <CustodyWorkspace />
       </div>
     </OperationsShell>
   );

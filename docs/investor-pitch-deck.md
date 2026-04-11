@@ -61,6 +61,7 @@ Implemented and evidenced today:
 
 - live wallet-connected frontend
 - live operational routes for `/start`, `/command-center`, `/dashboard`, `/proof`, `/diagnostics`, and `/services`
+- live custody route for `/custody` covering multisig and authority-transfer workflow
 - Anchor program and PDA account model
 - PDAO Token-2022 governance mint surface
 - commit, reveal, finalize, veto, cancel, execute lifecycle
@@ -226,6 +227,7 @@ Core links:
 - Dashboard: `https://privatedao.org/dashboard/`
 - Services: `https://privatedao.org/services/`
 - Diagnostics: `https://privatedao.org/diagnostics/`
+- Custody workspace: `https://privatedao.org/custody/`
 - Track center: `https://privatedao.org/tracks/`
 - Colosseum workspace: `https://privatedao.org/tracks/colosseum-frontier/`
 - Privacy workspace: `https://privatedao.org/tracks/privacy-track/`

@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Activity, BarChart3, BrainCircuit, BriefcaseBusiness, Compass, FileSearch, FileText, LayoutDashboard, MessageSquareMore, PlayCircle, Rocket, ShieldCheck, Sparkles, SquareTerminal, Trophy } from "lucide-react";
+import { Activity, BarChart3, BrainCircuit, BriefcaseBusiness, Compass, FileSearch, FileText, KeyRound, LayoutDashboard, MessageSquareMore, PlayCircle, Rocket, ShieldCheck, Sparkles, SquareTerminal, Trophy } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,6 +21,7 @@ const operationsNav = [
   { href: "/security", label: "Security", icon: ShieldCheck, summary: "Hardening and cryptography" },
   { href: "/intelligence", label: "Intelligence", icon: BrainCircuit, summary: "Proposal, treasury, voting, RPC, and gaming analysis" },
   { href: "/diagnostics", label: "Diagnostics", icon: Activity, summary: "Runtime and artifact health" },
+  { href: "/custody", label: "Custody", icon: KeyRound, summary: "Multisig, authority transfer, and custody evidence" },
   { href: "/analytics", label: "Analytics", icon: BarChart3, summary: "Votes, proposals, actions" },
   { href: "/services", label: "Services", icon: BriefcaseBusiness, summary: "Pilot, API, commercial packs" },
   { href: "/engage", label: "Engage", icon: Rocket, summary: "Buyer path, pilot motion, mainnet trajectory" },
