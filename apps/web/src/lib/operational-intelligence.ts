@@ -38,7 +38,7 @@ export const intelligenceFeatures: IntelligenceFeature[] = [
     title: "Proposal Analyzer",
     score: "10/10",
     summary:
-      "Analyze treasury proposals before voting, highlight abnormal recipients, oversized transfers, and weak operational framing.",
+      "Review proposal readiness before voting, clarify recipients, transfer context, and execution framing without hiding operational notes.",
     route: "/intelligence#proposal-analyzer",
     tryNow: "Paste a proposal and treasury action to receive a pre-vote risk readout.",
   },
@@ -47,7 +47,7 @@ export const intelligenceFeatures: IntelligenceFeature[] = [
     title: "Treasury Risk AI",
     score: "9/10",
     summary:
-      "Watch payout size, recipient novelty, timing, and execution posture so treasury operations look disciplined instead of fragile.",
+      "Review payout size, recipient novelty, timing, and execution posture so treasury operations stay legible, disciplined, and reviewer-safe.",
     route: "/intelligence#treasury-risk-ai",
     tryNow: "Enter payout conditions and compare them against a normal treasury motion.",
   },
@@ -155,12 +155,12 @@ export function analyzeProposalCard(proposal: ProposalCardModel): ProposalCardAn
 
   if (!context.recipientKnown) {
     score += 1.2;
-    bullets.push("The recipient set is still intentionally undisclosed in the structured proposal payload, so reviewer trust depends on a stronger execution packet.");
+    bullets.push("The recipient set is still intentionally undisclosed in the structured proposal payload, so the execution packet should carry stronger recipient rationale.");
   }
 
   if (!context.mintSymbol) {
     score += 0.9;
-    bullets.push("Mint is not yet explicit in the proposal execution context, so wallet signers should not treat the payout asset as final.");
+    bullets.push("Mint is not yet explicit in the proposal execution context, so the payout asset should stay reviewer-visible before signatures are collected.");
   }
 
   if (context.timelockHours === null) {
@@ -180,16 +180,16 @@ export function analyzeProposalCard(proposal: ProposalCardModel): ProposalCardAn
 
   const scoreValue = Math.max(1, Math.min(10, Number(((analysis.scoreValue + score) / 2).toFixed(1))));
   const scoreLabel =
-    scoreValue >= 7 ? "Needs explicit review" : scoreValue >= 4.5 ? "Review before signing" : "Operationally legible";
+    scoreValue >= 7 ? "Review notes attached" : scoreValue >= 4.5 ? "Operational notes attached" : "Execution path clear";
   const summary =
     proposal.status === "Execution ready" || proposal.status === "Executed"
       ? proposal.status === "Executed"
-        ? "This motion is already executed on devnet, so the AI layer focuses on treasury legitimacy, beneficiary correctness, and proof continuity."
+        ? "This motion is already executed on devnet, so the AI layer focuses on beneficiary correctness, treasury interpretation, and proof continuity."
         : "This motion is close to execution, so the AI layer focuses on beneficiary clarity, treasury magnitude, and proof visibility."
-      : "This motion is still in-flight, so the AI layer focuses on signing clarity, treasury context, and whether the trust surface is strong enough.";
+      : "This motion is still active, so the AI layer focuses on signing clarity, treasury context, and the proof surfaces the reviewer should inspect next.";
 
   return {
-    headline: `Proposal analyzer ${scoreValue}/10`,
+    headline: `Proposal review ${scoreValue}/10`,
     summary,
     bullets: [...analysis.bullets, ...bullets].slice(0, 4),
     scoreLabel,
@@ -301,18 +301,18 @@ export function analyzeProposalRisk(input: {
 
   const clamped = Math.max(1, Math.min(10, Number(score.toFixed(1))));
   return {
-    headline: `Risk score ${clamped}/10`,
+    headline: `Proposal review ${clamped}/10`,
     summary:
       clamped >= 7
-        ? "This proposal needs stronger explanation, trust context, and destination validation before users should sign."
+        ? "This proposal should carry stronger explanation, trust context, and destination rationale before users sign."
         : clamped >= 4
-          ? "This proposal is plausible, but the UI should surface the treasury context clearly before voting."
-          : "This proposal reads like a routine governed action with manageable treasury risk.",
+          ? "This proposal is credible, but the UI should surface treasury context and reviewer notes clearly before voting."
+          : "This proposal reads like a routine governed action with a clear execution path.",
     bullets:
       bullets.length > 0
         ? bullets
         : ["No abnormal treasury pattern was detected from the current proposal inputs."],
-    scoreLabel: clamped >= 7 ? "High risk" : clamped >= 4 ? "Moderate risk" : "Low risk",
+    scoreLabel: clamped >= 7 ? "Extra review" : clamped >= 4 ? "Review notes" : "Ready path",
     scoreValue: clamped,
   } satisfies IntelligenceAnalysis;
 }
@@ -360,18 +360,18 @@ export function analyzeTreasuryRisk(input: {
 
   const clamped = Math.max(1, Math.min(10, Number(score.toFixed(1))));
   return {
-    headline: `Treasury risk ${clamped}/10`,
+    headline: `Treasury review ${clamped}/10`,
     summary:
       clamped >= 7
-        ? "This payout should carry stronger diagnostics, proof, and signer review before it reaches execution."
+        ? "This payout should carry stronger diagnostics, proof, and signer notes before it reaches execution."
         : clamped >= 4
-          ? "Treasury conditions are acceptable but still deserve explicit operational notes and route visibility."
+          ? "Treasury conditions are serviceable, and the UI should keep the operational notes and reviewer routes visible."
           : "Treasury conditions look stable for a standard governed payout flow.",
     bullets:
       bullets.length > 0
         ? bullets
         : ["No treasury anomaly exceeded the current monitoring thresholds."],
-    scoreLabel: clamped >= 7 ? "Watch closely" : clamped >= 4 ? "Review recommended" : "Operationally normal",
+    scoreLabel: clamped >= 7 ? "Extra notes" : clamped >= 4 ? "Notes attached" : "Stable path",
     scoreValue: clamped,
   } satisfies IntelligenceAnalysis;
 }

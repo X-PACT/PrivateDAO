@@ -58,7 +58,7 @@ export function ReadNodeActivationStrip({ context }: ReadNodeActivationStripProp
           <div className="mt-2 text-sm leading-7 text-white/62">{snapshot.integrationCoverage}</div>
         </div>
 
-        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-6">
           <Link href={snapshot.bestRouteHref} className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
             {snapshot.bestRouteLabel}
             <ArrowRight className="h-4 w-4" />
@@ -80,6 +80,10 @@ export function ReadNodeActivationStrip({ context }: ReadNodeActivationStripProp
               <FileText className="h-4 w-4" />
               {snapshot.deployLabel}
             </span>
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+          <Link href={snapshot.cutoverPacketHref} className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+            {snapshot.cutoverPacketLabel}
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

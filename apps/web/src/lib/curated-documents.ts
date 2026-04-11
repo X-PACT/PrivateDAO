@@ -118,6 +118,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/read-node/same-domain-deploy.md`,
   },
   {
+    slug: "read-node-backend-cutover",
+    title: "Read-Node Backend Cutover Packet",
+    category: "Infrastructure",
+    summary: "Generated cutover packet for moving read-node from reviewer-visible evidence into a real hosted backend corridor, with deployment target, public proof, route binding, and UI fallback policy.",
+    audience: "Operators, infrastructure reviewers, judges, buyers",
+    boundary: "Cutover packet only; it does not claim that same-domain `/api/v1` is already live on the current public static site.",
+    docPath: "docs/read-node/backend-cutover-packet.generated.md",
+    rawHref: `${repositoryBlobBase}/docs/read-node/backend-cutover-packet.generated.md`,
+  },
+  {
     slug: "audit-packet",
     title: "Audit Packet",
     category: "Reviewer core",

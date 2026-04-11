@@ -1,0 +1,68 @@
+{
+  "project": "PrivateDAO",
+  "generatedAt": "2026-04-11T18:24:15.123Z",
+  "activationState": "Indexed governance reads and runtime evidence are live in the product, but same-domain backend serving is still pending a dedicated host and reverse proxy outside GitHub Pages.",
+  "exactBoundary": "Do not claim `/api/v1` as live on the current public site until the read node is hosted behind a real domain or subdomain with health, metrics, and reverse-proxy evidence.",
+  "deploymentTarget": {
+    "frontendHost": "https://app.privatedao.xyz/",
+    "readApiPath": "/api/v1",
+    "healthPath": "/healthz",
+    "metricsPath": "/api/v1/metrics",
+    "sameDomainRecommended": true
+  },
+  "publicProof": {
+    "indexedProposalCount": 41,
+    "uniqueDaos": 21,
+    "confidentialPayouts": 8,
+    "refheSettled": 4,
+    "magicblockSettled": 3,
+    "telemetryGeneratedAt": "2026-04-11T14:20:29.957Z"
+  },
+  "routeBindingStrategy": [
+    "Serve the static frontend from a dedicated application host instead of GitHub Pages-only origin.",
+    "Reverse-proxy `/api/v1/*` to the read-node process while keeping writes wallet-signed on the client.",
+    "Expose `/healthz` and `/api/v1/metrics` publicly for reviewer and operator verification.",
+    "Keep all existing reviewer packets and `/documents/*` routes bound to the same truth sources after host cutover."
+  ],
+  "uiFallbackPolicy": [
+    "Until backend cutover is live, keep read-node evidence available through in-app packets and snapshots.",
+    "Use static reviewer telemetry, diagnostics, and proof routes as the public truth surfaces on GitHub Pages.",
+    "Do not hide the backend hosting gap from buyers, judges, or operators.",
+    "After cutover, keep the static routes readable as fallback documentation rather than the primary service rail."
+  ],
+  "buyerPath": [
+    "/services",
+    "/documents/reviewer-telemetry-packet",
+    "/documents/read-node-backend-cutover"
+  ],
+  "operatorPath": [
+    "/command-center",
+    "/documents/read-node-ops",
+    "/documents/read-node-backend-cutover"
+  ],
+  "judgePath": [
+    "/proof/?judge=1",
+    "/documents/read-node-snapshot",
+    "/documents/read-node-backend-cutover"
+  ],
+  "linkedDocs": [
+    "docs/read-node/indexer.md",
+    "docs/read-node/snapshot.generated.md",
+    "docs/read-node/ops.generated.md",
+    "docs/read-node/same-domain-deploy.md",
+    "docs/reviewer-telemetry-packet.generated.md"
+  ],
+  "liveRoutes": [
+    "https://privatedao.org/services/",
+    "https://privatedao.org/command-center/",
+    "https://privatedao.org/proof/?judge=1",
+    "https://privatedao.org/documents/read-node-snapshot/"
+  ],
+  "commands": [
+    "npm run start:read-node",
+    "npm run build:read-node-backend-cutover",
+    "npm run verify:read-node-backend-cutover",
+    "npm run verify:read-node-snapshot",
+    "npm run verify:reviewer-telemetry-packet"
+  ]
+}

@@ -171,6 +171,12 @@ export const siteSearchItems: SiteSearchItem[] = [
     summary: "Reviewer-safe packet for telemetry, hosted reads, runtime evidence, and infrastructure-facing product value.",
   },
   {
+    title: "Read-Node Backend Cutover Packet",
+    href: "/documents/read-node-backend-cutover",
+    category: "Document",
+    summary: "Deployment-target packet for turning reviewer-visible read-node evidence into a real hosted backend corridor with route binding and UI fallback policy.",
+  },
+  {
     title: "Strategic Opportunity Readiness",
     href: "/documents/strategic-opportunity-readiness-2026",
     category: "Document",

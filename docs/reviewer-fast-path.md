@@ -20,6 +20,7 @@ This is the shortest high-signal path for a judge, auditor, or technical reviewe
    - `docs/reviewer-telemetry-packet.generated.md`
    - `docs/read-node/snapshot.generated.md`
    - `docs/read-node/ops.generated.md`
+   - `docs/read-node/backend-cutover-packet.generated.md`
    - `https://privatedao.org/diagnostics/`
    - `https://privatedao.org/analytics/`
    - `https://privatedao.org/services/`

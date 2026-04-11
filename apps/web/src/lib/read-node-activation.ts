@@ -47,6 +47,8 @@ export type ReadNodeActivationSnapshot = {
   opsLabel: string;
   deployHref: string;
   deployLabel: string;
+  cutoverPacketHref: string;
+  cutoverPacketLabel: string;
   operatorCheckCount: string;
 };
 
@@ -112,6 +114,8 @@ export function getReadNodeActivationSnapshot(
     opsLabel: "Open read-node ops",
     deployHref: "/documents/read-node-same-domain-deploy",
     deployLabel: "Open deploy target",
+    cutoverPacketHref: "/documents/read-node-backend-cutover",
+    cutoverPacketLabel: "Open cutover packet",
     operatorCheckCount: `${ops.operatorChecks.length} operator checks`,
   };
 }

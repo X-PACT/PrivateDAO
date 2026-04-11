@@ -196,6 +196,19 @@ const assistantIntents: AssistantIntent[] = [
     keywords: ["zk", "security", "encryption", "magicblock", "refhe", "rpc", "fast rpc", "cryptography", "matrix"],
   },
   {
+    title: "Open the hosted-read backend cutover path",
+    summary:
+      "Use the read-node cutover packet when the question is about same-domain `/api/v1`, backend hosting, route binding, public health and metrics proof, or the exact gap between static Pages and a real hosted read service.",
+    primaryActionLabel: "Open read-node backend cutover packet",
+    primaryActionHref: "/documents/read-node-backend-cutover",
+    relatedRoutes: [
+      { label: "Read-Node Snapshot", href: "/documents/read-node-snapshot" },
+      { label: "Read-Node Ops", href: "/documents/read-node-ops" },
+      { label: "Services", href: "/services" },
+    ],
+    keywords: ["read node", "read-node", "backend cutover", "same-domain", "api v1", "hosted reads", "metrics", "healthz"],
+  },
+  {
     title: "Open the Security + Intelligence layer",
     summary:
       "Use the intelligence route when the user wants proposal analysis, treasury risk warnings, voting summaries, RPC interpretation, or gaming-governance assistance inside the product.",
