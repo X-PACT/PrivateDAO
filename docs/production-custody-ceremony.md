@@ -51,6 +51,7 @@ The custody ceremony must cover:
 - DAO authority transfer signature
 - treasury operator transfer signature
 - post-transfer `solana program show` or equivalent authority readout
+- post-transfer readout reference URL or repo-backed evidence path
 - screenshots or exported approval history from the multisig client, when available
 
 ## Failure Conditions
@@ -68,6 +69,9 @@ Abort the ceremony if:
 Once the real ceremony is complete, update:
 
 - `docs/multisig-setup-intake.json`
+- `docs/custody-observed-readouts.json`
+- `docs/canonical-custody-proof.generated.json`
+- `docs/canonical-custody-proof.generated.md`
 - `docs/launch-ops-checklist.json`
 - `docs/mainnet-blockers.json`
 - `docs/trust-package.md`

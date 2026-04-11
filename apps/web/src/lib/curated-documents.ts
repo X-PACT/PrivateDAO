@@ -166,6 +166,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/production-custody-ceremony.md`,
   },
   {
+    slug: "canonical-custody-proof",
+    title: "Canonical Custody Proof",
+    category: "Operations",
+    summary: "Repo-backed custody truth packet with exact pending items, observed chain readouts, and explorer-linked closure points.",
+    audience: "Operators, auditors, judges, buyers",
+    boundary: "Truth packet only; it does not claim that production multisig or authority transfer signatures already exist.",
+    docPath: "docs/canonical-custody-proof.generated.md",
+    rawHref: `${repositoryBlobBase}/docs/canonical-custody-proof.generated.md`,
+  },
+  {
     slug: "external-audit-engagement",
     title: "External Audit Engagement",
     category: "Operations",

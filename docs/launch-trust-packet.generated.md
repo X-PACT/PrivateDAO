@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-09T19:12:15.511Z`
+- generated at: `2026-04-11T04:44:32.958Z`
 - current decision: `blocked-external-steps`
 - production mainnet claim allowed: `false`
 
@@ -16,6 +16,8 @@
 - signer slots configured: `0`
 - minimum timelock hours: `48`
 - configured timelock hours: `pending`
+- observed devnet authority: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
+- observed target-network program status: `not-found`
 
 Pending authority transfers:
 
@@ -72,7 +74,7 @@ Available use-case packs:
 - 3 production signer public keys
 - chosen multisig implementation and address
 - 48+ hour timelock configuration evidence
-- authority transfer signatures and readouts
+- authority transfer signatures, explorer links, and readouts
 - real-device wallet captures
 - external audit report or signed memo
 - first pilot DAO target and operator contact
@@ -80,6 +82,8 @@ Available use-case packs:
 ## Linked Docs
 
 - `docs/multisig-setup-intake.md`
+- `docs/canonical-custody-proof.generated.md`
+- `docs/custody-observed-readouts.json`
 - `docs/production-custody-ceremony.md`
 - `docs/authority-transfer-runbook.md`
 - `docs/external-audit-engagement.md`

@@ -38,11 +38,24 @@ type RealDeviceEvidence = {
   };
 };
 
+type CanonicalCustodyProof = {
+  observedReadouts: Array<{
+    id: string;
+    cluster: string;
+    status: string;
+    address: string;
+    authority: string | null;
+  }>;
+};
+
 function main() {
   const multisig = readJson<MultisigIntake>("docs/multisig-setup-intake.json");
   const launchOps = readJson<LaunchChecklist>("docs/launch-ops-checklist.json");
   const blockers = readJson<MainnetBlockers>("docs/mainnet-blockers.json");
   const realDevice = readJson<RealDeviceEvidence>("docs/runtime/real-device.generated.json");
+  const canonicalCustody = readJson<CanonicalCustodyProof>("docs/canonical-custody-proof.generated.json");
+  const devnetProgramReadout = canonicalCustody.observedReadouts.find((entry) => entry.id === "devnet-program");
+  const mainnetProgramReadout = canonicalCustody.observedReadouts.find((entry) => entry.id === "mainnet-program");
 
   const payload = {
     project: "PrivateDAO",
@@ -58,6 +71,8 @@ function main() {
       pendingAuthorityTransfers: multisig.authorityTransfers.filter((entry) => !entry.transferSignature).map((entry) => entry.surface),
       minimumTimelockHours: multisig.timelock.minimumHours,
       configuredTimelockHours: multisig.timelock.configuredHours,
+      observedDevnetAuthority: devnetProgramReadout?.authority ?? null,
+      observedMainnetProgramStatus: mainnetProgramReadout?.status ?? "unknown",
     },
     runtime: {
       status: realDevice.status,
@@ -90,6 +105,8 @@ function main() {
     },
     linkedDocs: [
       "docs/multisig-setup-intake.md",
+      "docs/canonical-custody-proof.generated.md",
+      "docs/custody-observed-readouts.json",
       "docs/production-custody-ceremony.md",
       "docs/authority-transfer-runbook.md",
       "docs/external-audit-engagement.md",
@@ -107,7 +124,7 @@ function main() {
       "3 production signer public keys",
       "chosen multisig implementation and address",
       "48+ hour timelock configuration evidence",
-      "authority transfer signatures and readouts",
+      "authority transfer signatures, explorer links, and readouts",
       "real-device wallet captures",
       "external audit report or signed memo",
       "first pilot DAO target and operator contact",
@@ -142,6 +159,8 @@ function buildMarkdown(payload: {
     pendingAuthorityTransfers: string[];
     minimumTimelockHours: number;
     configuredTimelockHours: number | null;
+    observedDevnetAuthority: string | null;
+    observedMainnetProgramStatus: string;
   };
   runtime: {
     status: string;
@@ -180,6 +199,8 @@ function buildMarkdown(payload: {
 - signer slots configured: \`${payload.custody.signerSlotsConfigured}\`
 - minimum timelock hours: \`${payload.custody.minimumTimelockHours}\`
 - configured timelock hours: \`${payload.custody.configuredTimelockHours ?? "pending"}\`
+- observed devnet authority: \`${payload.custody.observedDevnetAuthority ?? "pending"}\`
+- observed target-network program status: \`${payload.custody.observedMainnetProgramStatus}\`
 
 Pending authority transfers:
 

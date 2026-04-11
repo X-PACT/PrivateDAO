@@ -130,6 +130,8 @@ The README should stay aligned with this rule: implemented surfaces are describe
 The canonical custody source of truth is:
 
 - [`docs/multisig-setup-intake.json`](docs/multisig-setup-intake.json)
+- [`docs/custody-observed-readouts.json`](docs/custody-observed-readouts.json)
+- [`docs/canonical-custody-proof.generated.md`](docs/canonical-custody-proof.generated.md)
 - [`docs/production-custody-ceremony.md`](docs/production-custody-ceremony.md)
 - [`docs/authority-transfer-runbook.md`](docs/authority-transfer-runbook.md)
 - [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md)
@@ -147,11 +149,14 @@ Current official custody state from the canonical intake:
 - rehearsal signature: `pending`
 - upgrade / DAO / treasury transfer signatures: `pending`
 - post-transfer authority readouts: `pending`
+- current deployed authority readout observed on `devnet`: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
+- target-network program readout on `mainnet-beta`: `not found`
 
 Live proof surface:
 
 - `https://privatedao.org/custody/`
 - `https://privatedao.org/documents/`
+- `https://privatedao.org/documents/canonical-custody-proof/`
 - `https://privatedao.org/documents/launch-trust-packet/`
 - `https://privatedao.org/documents/mainnet-blockers/`
 

@@ -46,6 +46,8 @@ wallets/
 !docs/devnet-canary.generated.json
 !docs/supply-chain-attestation.generated.json
 !docs/release-ceremony-attestation.generated.json
+!docs/custody-observed-readouts.json
+!docs/canonical-custody-proof.generated.json
 !docs/runtime-evidence.generated.json
 !docs/release-drill.generated.json
 !docs/competitive/source.json

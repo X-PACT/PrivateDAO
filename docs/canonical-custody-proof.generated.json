@@ -1,0 +1,253 @@
+{
+  "project": "PrivateDAO",
+  "generatedAt": "2026-04-11T04:44:32.520Z",
+  "status": "pending-external",
+  "productionMainnetClaimAllowed": false,
+  "network": "mainnet-beta",
+  "summary": "PrivateDAO is devnet-proven and internally hardened, but real-funds mainnet production remains blocked until external audit, custody, monitoring, runtime, settlement-receipt, and release-ceremony items are closed with evidence.",
+  "multisig": {
+    "implementation": "pending-selection",
+    "address": null,
+    "addressExplorerUrl": null,
+    "threshold": "2-of-3",
+    "creationSignature": null,
+    "creationExplorerUrl": null,
+    "rehearsalSignature": null,
+    "rehearsalExplorerUrl": null
+  },
+  "timelock": {
+    "minimumHours": 48,
+    "configuredHours": null,
+    "configurationSignature": null,
+    "configurationExplorerUrl": null,
+    "configurationReferenceUrl": null
+  },
+  "signers": [
+    {
+      "slot": 1,
+      "role": "founder-operator",
+      "publicKey": null,
+      "storageClass": "cold-or-hardware",
+      "backupProcedureDocumented": false,
+      "publicKeyExplorerUrl": null
+    },
+    {
+      "slot": 2,
+      "role": "independent-security-or-ops-signer",
+      "publicKey": null,
+      "storageClass": "cold-or-hardware",
+      "backupProcedureDocumented": false,
+      "publicKeyExplorerUrl": null
+    },
+    {
+      "slot": 3,
+      "role": "recovery-or-governance-signer",
+      "publicKey": null,
+      "storageClass": "cold-or-hardware",
+      "backupProcedureDocumented": false,
+      "publicKeyExplorerUrl": null
+    }
+  ],
+  "authorityTransfers": [
+    {
+      "surface": "program-upgrade-authority",
+      "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+      "destinationAuthority": null,
+      "transferSignature": null,
+      "postTransferReadout": null,
+      "postTransferReadoutReferenceUrl": null,
+      "programExplorerUrl": "https://explorer.solana.com/address/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+      "destinationExplorerUrl": null,
+      "transferExplorerUrl": null
+    },
+    {
+      "surface": "dao-authority",
+      "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+      "destinationAuthority": null,
+      "transferSignature": null,
+      "postTransferReadout": null,
+      "postTransferReadoutReferenceUrl": null,
+      "programExplorerUrl": "https://explorer.solana.com/address/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+      "destinationExplorerUrl": null,
+      "transferExplorerUrl": null
+    },
+    {
+      "surface": "treasury-operator-authority",
+      "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+      "destinationAuthority": null,
+      "transferSignature": null,
+      "postTransferReadout": null,
+      "postTransferReadoutReferenceUrl": null,
+      "programExplorerUrl": "https://explorer.solana.com/address/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+      "destinationExplorerUrl": null,
+      "transferExplorerUrl": null
+    }
+  ],
+  "observedReadouts": [
+    {
+      "id": "devnet-program",
+      "label": "Current deployed program readout",
+      "cluster": "devnet",
+      "status": "observed",
+      "address": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+      "explorerUrl": "https://explorer.solana.com/address/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet",
+      "observedAt": "2026-04-11T04:43:46.722Z",
+      "command": "solana program show 5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx --url devnet",
+      "owner": "BPFLoaderUpgradeab1e11111111111111111111111",
+      "authority": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+      "programDataAddress": "CeggEn3sNVbiuJHLKDaCPMH4uLczu1Dr3ZGKKcaKBqeN",
+      "lastDeploySlot": 454368825,
+      "balanceSol": "9.82850136",
+      "executable": true,
+      "error": null,
+      "note": "This is the currently observed live deployment readout. It is external chain evidence, but it is not mainnet custody proof by itself."
+    },
+    {
+      "id": "devnet-dao",
+      "label": "Current DAO anchor readout",
+      "cluster": "devnet",
+      "status": "observed",
+      "address": "FZV9KmpeY1B31XvszQypp5T6nQN5C44JDLM4QWBEDvhx",
+      "explorerUrl": "https://explorer.solana.com/address/FZV9KmpeY1B31XvszQypp5T6nQN5C44JDLM4QWBEDvhx?cluster=devnet",
+      "observedAt": "2026-04-11T04:43:47.486Z",
+      "command": "solana account FZV9KmpeY1B31XvszQypp5T6nQN5C44JDLM4QWBEDvhx --url devnet --output json",
+      "owner": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+      "authority": null,
+      "programDataAddress": null,
+      "lastDeploySlot": null,
+      "balanceSol": "0.00235248",
+      "executable": false,
+      "error": null,
+      "note": "Current DAO PDA visibility on devnet."
+    },
+    {
+      "id": "devnet-treasury",
+      "label": "Current treasury anchor readout",
+      "cluster": "devnet",
+      "status": "observed",
+      "address": "AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c",
+      "explorerUrl": "https://explorer.solana.com/address/AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c?cluster=devnet",
+      "observedAt": "2026-04-11T04:43:48.243Z",
+      "command": "solana account AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c --url devnet --output json",
+      "owner": "11111111111111111111111111111111",
+      "authority": null,
+      "programDataAddress": null,
+      "lastDeploySlot": null,
+      "balanceSol": "0.15",
+      "executable": false,
+      "error": null,
+      "note": "Current treasury PDA visibility on devnet."
+    },
+    {
+      "id": "mainnet-program",
+      "label": "Target network program readout",
+      "cluster": "mainnet-beta",
+      "status": "not-found",
+      "address": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+      "explorerUrl": "https://explorer.solana.com/address/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+      "observedAt": "2026-04-11T04:43:48.758Z",
+      "command": "solana program show 5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx --url mainnet-beta",
+      "owner": null,
+      "authority": null,
+      "programDataAddress": null,
+      "lastDeploySlot": null,
+      "balanceSol": null,
+      "executable": null,
+      "error": "Error: Unable to find the account 5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+      "note": "If this stays not-found, mainnet custody transfer is not merely pending multisig evidence; there is no current mainnet program readout for this program id."
+    },
+    {
+      "id": "mainnet-treasury",
+      "label": "Target network treasury readout",
+      "cluster": "mainnet-beta",
+      "status": "not-found",
+      "address": "AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c",
+      "explorerUrl": "https://explorer.solana.com/address/AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c",
+      "observedAt": "2026-04-11T04:43:49.168Z",
+      "command": "solana account AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c --url mainnet-beta --output json",
+      "owner": null,
+      "authority": null,
+      "programDataAddress": null,
+      "lastDeploySlot": null,
+      "balanceSol": null,
+      "executable": null,
+      "error": "Error: AccountNotFound: pubkey=AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c",
+      "note": "Target-network treasury visibility is required before claiming real-funds mainnet readiness."
+    }
+  ],
+  "completedItems": 1,
+  "totalItems": 25,
+  "pendingItems": [
+    "chosen multisig implementation",
+    "multisig public address",
+    "multisig creation signature",
+    "rehearsal signature",
+    "timelock configuration of at least 48 hours",
+    "timelock configuration signature or readout",
+    "signer slot 1 public key",
+    "backup procedure for signer slot 1",
+    "signer slot 2 public key",
+    "backup procedure for signer slot 2",
+    "signer slot 3 public key",
+    "backup procedure for signer slot 3",
+    "program upgrade authority destination authority",
+    "program upgrade authority transfer signature",
+    "program upgrade authority post-transfer readout",
+    "program upgrade authority post-transfer readout reference",
+    "dao authority destination authority",
+    "dao authority transfer signature",
+    "dao authority post-transfer readout",
+    "dao authority post-transfer readout reference",
+    "treasury operator authority destination authority",
+    "treasury operator authority transfer signature",
+    "treasury operator authority post-transfer readout",
+    "treasury operator authority post-transfer readout reference"
+  ],
+  "blocker": {
+    "id": "upgrade-authority-multisig",
+    "severity": "critical",
+    "status": "pending-external",
+    "nextAction": "Move production upgrade authority and operational authorities to a documented multisig or governance-owned path and rehearse rotation.",
+    "evidence": [
+      "docs/authority-hardening.md",
+      "docs/authority-transfer-runbook.md",
+      "docs/production-custody-ceremony.md",
+      "docs/multisig-setup-intake.json",
+      "docs/multisig-setup-intake.md",
+      "docs/launch-ops-checklist.json",
+      "docs/launch-ops-checklist.md",
+      "docs/mainnet-cutover-runbook.md",
+      "docs/launch-trust-packet.generated.md"
+    ]
+  },
+  "rawSources": [
+    {
+      "label": "Canonical intake JSON",
+      "href": "https://github.com/X-PACT/PrivateDAO/blob/main/docs/multisig-setup-intake.json"
+    },
+    {
+      "label": "Observed custody readouts",
+      "href": "https://github.com/X-PACT/PrivateDAO/blob/main/docs/custody-observed-readouts.json"
+    },
+    {
+      "label": "Canonical custody proof packet",
+      "href": "https://github.com/X-PACT/PrivateDAO/blob/main/docs/canonical-custody-proof.generated.md"
+    },
+    {
+      "label": "Production custody ceremony",
+      "href": "https://github.com/X-PACT/PrivateDAO/blob/main/docs/production-custody-ceremony.md"
+    },
+    {
+      "label": "Authority transfer runbook",
+      "href": "https://github.com/X-PACT/PrivateDAO/blob/main/docs/authority-transfer-runbook.md"
+    },
+    {
+      "label": "Launch trust packet",
+      "href": "https://github.com/X-PACT/PrivateDAO/blob/main/docs/launch-trust-packet.generated.md"
+    },
+    {
+      "label": "Mainnet blocker register",
+      "href": "https://github.com/X-PACT/PrivateDAO/blob/main/docs/mainnet-blockers.md"
+    }
+  ]
+}

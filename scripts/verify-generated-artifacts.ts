@@ -13,6 +13,8 @@ function main() {
   const goLiveAttestationPath = path.resolve("docs/go-live-attestation.generated.json");
   const releaseCeremonyJsonPath = path.resolve("docs/release-ceremony-attestation.generated.json");
   const releaseCeremonyMdPath = path.resolve("docs/release-ceremony-attestation.generated.md");
+  const canonicalCustodyProofJsonPath = path.resolve("docs/canonical-custody-proof.generated.json");
+  const canonicalCustodyProofMdPath = path.resolve("docs/canonical-custody-proof.generated.md");
   const runtimeAttestationPath = path.resolve("docs/runtime-attestation.generated.json");
   const readNodeSnapshotJsonPath = path.resolve("docs/read-node/snapshot.generated.json");
   const readNodeSnapshotMdPath = path.resolve("docs/read-node/snapshot.generated.md");
@@ -93,6 +95,9 @@ function main() {
   }
   if (!fs.existsSync(releaseCeremonyJsonPath) || !fs.existsSync(releaseCeremonyMdPath)) {
     throw new Error("missing release ceremony attestation artifacts");
+  }
+  if (!fs.existsSync(canonicalCustodyProofJsonPath) || !fs.existsSync(canonicalCustodyProofMdPath)) {
+    throw new Error("missing canonical custody proof artifacts");
   }
   if (!fs.existsSync(runtimeAttestationPath)) {
     throw new Error("missing generated runtime attestation");

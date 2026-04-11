@@ -75,6 +75,12 @@ export function CanonicalCustodyProofSurface({
                   <ArrowUpRight className="h-3.5 w-3.5" />
                 </a>
               ) : null}
+              {snapshot.timelock.configurationReferenceUrl ? (
+                <a className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={snapshot.timelock.configurationReferenceUrl} target="_blank" rel="noreferrer">
+                  Timelock reference
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+              ) : null}
             </div>
           </div>
 
@@ -112,7 +118,7 @@ export function CanonicalCustodyProofSurface({
               {snapshot.authorityTransfers.map((transfer) => (
                 <div key={transfer.surface} className="rounded-2xl border border-white/8 bg-white/4 p-3 text-sm leading-7 text-white/58">
                   <div className="font-medium capitalize text-white">
-                    {transfer.surface.replaceAll("-", " ")}
+                    {transfer.surface.split("-").join(" ")}
                   </div>
                   <div className="mt-1">Program ID: {transfer.programId}</div>
                   <div>Destination authority: {renderValue(transfer.destinationAuthority)}</div>
@@ -130,6 +136,11 @@ export function CanonicalCustodyProofSurface({
                     {transfer.transferExplorerUrl ? (
                       <a className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={transfer.transferExplorerUrl} target="_blank" rel="noreferrer">
                         Transfer tx
+                      </a>
+                    ) : null}
+                    {transfer.postTransferReadoutReferenceUrl ? (
+                      <a className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={transfer.postTransferReadoutReferenceUrl} target="_blank" rel="noreferrer">
+                        Readout reference
                       </a>
                     ) : null}
                   </div>
@@ -182,6 +193,63 @@ export function CanonicalCustodyProofSurface({
                 This is the reviewer-safe proof surface. It only reflects the canonical repo files and does not promote operator draft capture into official launch truth.
               </div>
             ) : null}
+          </div>
+        </div>
+
+        <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
+          <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/76">
+            Observed chain readouts
+          </div>
+          <div className="mt-4 grid gap-4 xl:grid-cols-2">
+            {snapshot.observedReadouts.map((readout) => (
+              <div key={readout.id} className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/58">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="font-medium text-white">{readout.label}</div>
+                  <Badge variant={readout.status === "observed" ? "success" : "warning"}>
+                    {readout.cluster} · {readout.status}
+                  </Badge>
+                </div>
+                <div className="mt-3 break-words">
+                  <span className="text-white/76">Address:</span> {readout.address}
+                </div>
+                {readout.authority ? (
+                  <div><span className="text-white/76">Authority:</span> {readout.authority}</div>
+                ) : null}
+                {readout.programDataAddress ? (
+                  <div><span className="text-white/76">ProgramData:</span> {readout.programDataAddress}</div>
+                ) : null}
+                {readout.owner ? (
+                  <div><span className="text-white/76">Owner:</span> {readout.owner}</div>
+                ) : null}
+                {readout.lastDeploySlot ? (
+                  <div><span className="text-white/76">Last deploy slot:</span> {readout.lastDeploySlot}</div>
+                ) : null}
+                {readout.balanceSol ? (
+                  <div><span className="text-white/76">Balance:</span> {readout.balanceSol} SOL</div>
+                ) : null}
+                {typeof readout.executable === "boolean" ? (
+                  <div><span className="text-white/76">Executable:</span> {readout.executable ? "yes" : "no"}</div>
+                ) : null}
+                {readout.error ? (
+                  <div className="mt-2 text-amber-100/88">
+                    <span className="text-white/76">Observed error:</span> {readout.error}
+                  </div>
+                ) : null}
+                {readout.note ? <div className="mt-2">{readout.note}</div> : null}
+                <div className="mt-3 text-xs uppercase tracking-[0.22em] text-white/36">
+                  observed at {readout.observedAt}
+                </div>
+                <div className="mt-2 break-words text-xs text-white/40">{readout.command}</div>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {readout.explorerUrl ? (
+                    <a className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={readout.explorerUrl} target="_blank" rel="noreferrer">
+                      Explorer
+                      <ArrowUpRight className="h-3.5 w-3.5" />
+                    </a>
+                  ) : null}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </CardContent>

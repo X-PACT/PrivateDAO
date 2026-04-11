@@ -78,6 +78,7 @@ After transferring:
 
 - read the authority state from the target account
 - retain explorer links for the transfer transaction
+- retain a reference URL or repo-backed file for the post-transfer readout
 - update the release ceremony packet
 - run a read-only operational sanity check before enabling treasury execution
 
@@ -119,6 +120,7 @@ The `upgrade-authority-multisig` blocker can only be marked complete when all of
 - threshold and signer roles
 - authority transfer transaction signature
 - post-transfer authority readout
+- post-transfer authority readout reference
 - signer recovery process
 - release packet reference
 

@@ -17,6 +17,7 @@
     "minimumHours": 48,
     "configuredHours": null,
     "configurationSignature": null,
+    "configurationReferenceUrl": null,
     "shorteningPolicy": "must-not-shorten-without-documented-governance-policy"
   },
   "signers": [
@@ -48,21 +49,24 @@
       "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
       "destinationAuthority": null,
       "transferSignature": null,
-      "postTransferReadout": null
+      "postTransferReadout": null,
+      "postTransferReadoutReferenceUrl": null
     },
     {
       "surface": "dao-authority",
       "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
       "destinationAuthority": null,
       "transferSignature": null,
-      "postTransferReadout": null
+      "postTransferReadout": null,
+      "postTransferReadoutReferenceUrl": null
     },
     {
       "surface": "treasury-operator-authority",
       "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
       "destinationAuthority": null,
       "transferSignature": null,
-      "postTransferReadout": null
+      "postTransferReadout": null,
+      "postTransferReadoutReferenceUrl": null
     }
   ],
   "backupProcedures": {

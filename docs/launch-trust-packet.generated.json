@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-09T19:12:15.511Z",
+  "generatedAt": "2026-04-11T04:44:32.958Z",
   "decision": "blocked-external-steps",
   "productionMainnetClaimAllowed": false,
   "custody": {
@@ -15,7 +15,9 @@
       "treasury-operator-authority"
     ],
     "minimumTimelockHours": 48,
-    "configuredTimelockHours": null
+    "configuredTimelockHours": null,
+    "observedDevnetAuthority": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+    "observedMainnetProgramStatus": "not-found"
   },
   "runtime": {
     "status": "pending-real-device-capture",
@@ -57,6 +59,8 @@
   },
   "linkedDocs": [
     "docs/multisig-setup-intake.md",
+    "docs/canonical-custody-proof.generated.md",
+    "docs/custody-observed-readouts.json",
     "docs/production-custody-ceremony.md",
     "docs/authority-transfer-runbook.md",
     "docs/external-audit-engagement.md",
@@ -74,7 +78,7 @@
     "3 production signer public keys",
     "chosen multisig implementation and address",
     "48+ hour timelock configuration evidence",
-    "authority transfer signatures and readouts",
+    "authority transfer signatures, explorer links, and readouts",
     "real-device wallet captures",
     "external audit report or signed memo",
     "first pilot DAO target and operator contact"

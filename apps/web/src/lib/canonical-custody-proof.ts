@@ -17,6 +17,7 @@ type MultisigSetupIntake = {
     minimumHours: number;
     configuredHours: number | null;
     configurationSignature: string | null;
+    configurationReferenceUrl?: string | null;
   };
   signers: Array<{
     slot: number;
@@ -31,6 +32,7 @@ type MultisigSetupIntake = {
     destinationAuthority: string | null;
     transferSignature: string | null;
     postTransferReadout: string | null;
+    postTransferReadoutReferenceUrl?: string | null;
   }>;
 };
 
@@ -43,6 +45,31 @@ type MainnetBlockerRegister = {
     status: string;
     nextAction: string;
     evidence: string[];
+  }>;
+};
+
+type CustodyObservedReadouts = {
+  schemaVersion: number;
+  project: string;
+  targetNetwork: string;
+  targetProgramId: string;
+  observedReadouts: Array<{
+    id: string;
+    label: string;
+    cluster: string;
+    status: string;
+    address: string;
+    explorerUrl: string | null;
+    observedAt: string;
+    command: string;
+    owner: string | null;
+    authority: string | null;
+    programDataAddress: string | null;
+    lastDeploySlot: number | null;
+    balanceSol: string | null;
+    executable: boolean | null;
+    error: string | null;
+    note: string | null;
   }>;
 };
 
@@ -71,6 +98,7 @@ export type CanonicalCustodyProofSnapshot = {
     configuredHours: number | null;
     configurationSignature: string | null;
     configurationExplorerUrl: string | null;
+    configurationReferenceUrl: string | null;
   };
   signers: Array<{
     slot: number;
@@ -89,7 +117,9 @@ export type CanonicalCustodyProofSnapshot = {
     transferSignature: string | null;
     transferExplorerUrl: string | null;
     postTransferReadout: string | null;
+    postTransferReadoutReferenceUrl: string | null;
   }>;
+  observedReadouts: CustodyObservedReadouts["observedReadouts"];
   completedItems: number;
   totalItems: number;
   pendingItems: string[];
@@ -103,8 +133,22 @@ export type CanonicalCustodyProofSnapshot = {
   rawSources: CustodyProofLink[];
 };
 
+function resolveRepoRelativePath(relativePath: string) {
+  const candidates = [
+    path.resolve(process.cwd(), relativePath),
+    path.resolve(process.cwd(), "..", "..", relativePath),
+  ];
+
+  const match = candidates.find((candidate) => fs.existsSync(candidate));
+  if (!match) {
+    throw new Error(`Unable to resolve repo-relative path: ${relativePath}`);
+  }
+
+  return match;
+}
+
 function readJson<T>(relativePath: string): T {
-  const filePath = path.resolve(process.cwd(), "..", "..", relativePath);
+  const filePath = resolveRepoRelativePath(relativePath);
   return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
 }
 
@@ -126,12 +170,13 @@ function buildExplorerAccountUrl(address: string | null, network: string) {
 }
 
 function prettySurface(surface: string) {
-  return surface.replaceAll("-", " ");
+  return surface.split("-").join(" ");
 }
 
 export function getCanonicalCustodyProofSnapshot(): CanonicalCustodyProofSnapshot {
   const intake = readJson<MultisigSetupIntake>("docs/multisig-setup-intake.json");
   const blockers = readJson<MainnetBlockerRegister>("docs/mainnet-blockers.json");
+  const observedReadouts = readJson<CustodyObservedReadouts>("docs/custody-observed-readouts.json");
   const custodyBlocker = blockers.blockers.find(
     (item) => item.id === "upgrade-authority-multisig",
   );
@@ -160,6 +205,9 @@ export function getCanonicalCustodyProofSnapshot(): CanonicalCustodyProofSnapsho
   if (!intake.timelock.configurationSignature) {
     pendingItems.push("timelock configuration signature or readout");
   }
+  if (intake.timelock.configurationSignature && !intake.timelock.configurationReferenceUrl) {
+    pendingItems.push("timelock configuration reference url");
+  }
 
   intake.signers.forEach((signer) => {
     if (!signer.publicKey) {
@@ -180,12 +228,15 @@ export function getCanonicalCustodyProofSnapshot(): CanonicalCustodyProofSnapsho
     if (!transfer.postTransferReadout) {
       pendingItems.push(`${prettySurface(transfer.surface)} post-transfer readout`);
     }
+    if (!transfer.postTransferReadoutReferenceUrl) {
+      pendingItems.push(`${prettySurface(transfer.surface)} post-transfer readout reference`);
+    }
   });
 
   const totalItems =
-    6 +
+    7 +
     intake.signers.length * 2 +
-    intake.authorityTransfers.length * 3;
+    intake.authorityTransfers.length * 4;
   const completedItems = totalItems - pendingItems.length;
 
   return {
@@ -211,6 +262,7 @@ export function getCanonicalCustodyProofSnapshot(): CanonicalCustodyProofSnapsho
         intake.timelock.configurationSignature,
         intake.network,
       ),
+      configurationReferenceUrl: intake.timelock.configurationReferenceUrl ?? null,
     },
     signers: intake.signers.map((signer) => ({
       ...signer,
@@ -224,7 +276,9 @@ export function getCanonicalCustodyProofSnapshot(): CanonicalCustodyProofSnapsho
         intake.network,
       ),
       transferExplorerUrl: buildExplorerTxUrl(transfer.transferSignature, intake.network),
+      postTransferReadoutReferenceUrl: transfer.postTransferReadoutReferenceUrl ?? null,
     })),
+    observedReadouts: observedReadouts.observedReadouts,
     completedItems,
     totalItems,
     pendingItems,
@@ -239,6 +293,14 @@ export function getCanonicalCustodyProofSnapshot(): CanonicalCustodyProofSnapsho
       {
         label: "Canonical intake JSON",
         href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/multisig-setup-intake.json",
+      },
+      {
+        label: "Observed custody readouts",
+        href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/custody-observed-readouts.json",
+      },
+      {
+        label: "Canonical custody proof packet",
+        href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/canonical-custody-proof.generated.md",
       },
       {
         label: "Production custody ceremony",

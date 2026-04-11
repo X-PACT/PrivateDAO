@@ -12,6 +12,8 @@ type Packet = {
     signerSlotsConfigured: number;
     minimumTimelockHours: number;
     pendingAuthorityTransfers: string[];
+    observedDevnetAuthority: string | null;
+    observedMainnetProgramStatus: string;
   };
   runtime: {
     status: string;
@@ -49,6 +51,7 @@ function main() {
   assert(packet.custody.threshold === "2-of-3", "launch trust packet threshold mismatch");
   assert(packet.custody.minimumTimelockHours >= 48, "launch trust packet timelock floor is too low");
   assert(packet.custody.pendingAuthorityTransfers.includes("program-upgrade-authority"), "launch trust packet missing program authority transfer");
+  assert(packet.custody.observedDevnetAuthority === "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD", "launch trust packet observed devnet authority mismatch");
   assert(packet.runtime.targetCount >= 5, "launch trust packet runtime target count is too low");
   assert(packet.runtime.pendingTargets.includes("Phantom"), "launch trust packet missing Phantom pending target");
   assert(packet.audit.status === "pending-external", "launch trust packet audit boundary must remain pending");
@@ -58,6 +61,8 @@ function main() {
   assert(packet.v3Evidence.status === "devnet-proven", "launch trust packet V3 evidence status mismatch");
   assert(packet.v3Evidence.boundary === "test-wallet-devnet-only", "launch trust packet V3 boundary mismatch");
   assert(packet.linkedDocs.includes("docs/production-custody-ceremony.md"), "launch trust packet missing custody ceremony doc");
+  assert(packet.linkedDocs.includes("docs/canonical-custody-proof.generated.md"), "launch trust packet missing canonical custody proof doc");
+  assert(packet.linkedDocs.includes("docs/custody-observed-readouts.json"), "launch trust packet missing custody observed readouts source");
   assert(packet.linkedDocs.includes("docs/governance-hardening-v3.md"), "launch trust packet missing governance v3 doc");
   assert(packet.linkedDocs.includes("docs/settlement-hardening-v3.md"), "launch trust packet missing settlement v3 doc");
   assert(packet.linkedDocs.includes("docs/test-wallet-live-proof-v3.generated.md"), "launch trust packet missing V3 live proof doc");
@@ -68,9 +73,11 @@ function main() {
   for (const token of [
     "# Launch Trust Packet",
     "docs/production-custody-ceremony.md",
+    "docs/canonical-custody-proof.generated.md",
     "docs/external-audit-engagement.md",
     "docs/pilot-onboarding-playbook.md",
     "3 production signer public keys",
+    "observed devnet authority",
     "Create DAO",
     "Submit proposal",
     "Private vote",

@@ -151,9 +151,13 @@ Official custody state today:
 - multisig address: `pending`
 - authority transfer signatures: `pending`
 - post-transfer readouts: `pending`
+- observed current devnet authority: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
+- observed target-network program readout: `not found`
 
 Canonical sources:
 
+- `docs/custody-observed-readouts.json`
+- `docs/canonical-custody-proof.generated.md`
 - `docs/multisig-setup-intake.json`
 - `docs/production-custody-ceremony.md`
 - `docs/authority-transfer-runbook.md`

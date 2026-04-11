@@ -35,6 +35,7 @@ Canonical machine-readable source:
 - DAO authority transfer signature, if applicable
 - treasury operator authority transfer signature, if applicable
 - post-transfer `solana program show` or equivalent authority readout
+- post-transfer readout reference URL or repo-backed evidence path
 - backup and signer replacement procedure retained outside secret material
 
 ## Forbidden Evidence
@@ -51,9 +52,13 @@ Canonical machine-readable source:
 
 This is correct until real public signer keys, multisig address, timelock configuration, transfer signatures, and authority readouts exist.
 
+Canonical reviewer-safe packet:
+
+- `docs/canonical-custody-proof.generated.md`
+- `docs/custody-observed-readouts.json`
+
 ## Verification
 
 ```bash
 npm run verify:multisig-intake
 ```
-
