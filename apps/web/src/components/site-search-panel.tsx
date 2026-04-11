@@ -38,7 +38,7 @@ export function SiteSearchPanel() {
               {results.length} result{results.length === 1 ? "" : "s"}
             </div>
             <div className="rounded-3xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/58">
-              Ask in natural language: “I need pilot funding”, “vendor payout”, “treasury top-up”, “best wallet for consumer demo”, “what is blocking privacy track mainnet?”, or “what is the fastest paid motion for QuickNode track?”.
+              Ask in natural language: “I need pilot funding”, “vendor payout”, “treasury top-up”, “custody proof”, “reviewer packet”, “multisig intake”, “best wallet for consumer demo”, or “what is blocking privacy track mainnet?”.
             </div>
           </div>
 

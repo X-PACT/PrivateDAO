@@ -104,6 +104,27 @@ const assistantIntents: AssistantIntent[] = [
     keywords: ["multisig", "authority", "upgrade authority", "treasury authority", "admin authority", "ceremony", "mainnet hardening"],
   },
   {
+    title: "Open custody truth and reviewer packet",
+    summary:
+      "Use the canonical custody proof and reviewer packet when the question is about multisig evidence, signer roster, authority transfer signatures, or the strict repo-safe ingestion route.",
+    primaryActionLabel: "Open custody reviewer packet",
+    primaryActionHref: "/documents/custody-proof-reviewer-packet",
+    relatedRoutes: [
+      { label: "Canonical custody proof", href: "/documents/canonical-custody-proof" },
+      { label: "Custody workspace", href: "/custody" },
+      { label: "Multisig intake shape", href: "/documents/multisig-setup-intake" },
+    ],
+    keywords: [
+      "custody proof",
+      "reviewer packet",
+      "authority transfer",
+      "multisig intake",
+      "signer roster",
+      "custody ceremony",
+      "canonical custody",
+    ],
+  },
+  {
     title: "Open the monitoring and incident path",
     summary:
       "Use diagnostics and the incident runbook when the question is about RPC failures, wallet errors, repeated tx attempts, alerts, logs, or response discipline.",
@@ -608,6 +629,38 @@ function getProposalSuggestion(query: string): AssistantSuggestion | null {
   };
 }
 
+function getCustodyTruthSuggestion(query: string): AssistantSuggestion | null {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return null;
+
+  const custodyTerms = [
+    "custody proof",
+    "reviewer packet",
+    "authority transfer",
+    "multisig intake",
+    "signer roster",
+    "custody ceremony",
+    "canonical custody",
+  ];
+
+  if (!custodyTerms.some((term) => normalized.includes(term))) {
+    return null;
+  }
+
+  return {
+    title: "Open custody truth and reviewer packet",
+    summary:
+      "Start from the reviewer packet, then open the canonical custody proof, then the strict custody workspace. This is the fastest route for multisig truth, authority transfer status, and exact pending ceremony evidence.",
+    primaryActionLabel: "Open reviewer packet",
+    primaryActionHref: "/documents/custody-proof-reviewer-packet",
+    relatedRoutes: [
+      { label: "1. Reviewer packet", href: "/documents/custody-proof-reviewer-packet" },
+      { label: "2. Canonical custody proof", href: "/documents/canonical-custody-proof" },
+      { label: "3. Custody workspace", href: "/custody" },
+    ],
+  };
+}
+
 export function getAssistantSuggestion(query: string): AssistantSuggestion {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return fallbackSuggestion;
@@ -617,6 +670,9 @@ export function getAssistantSuggestion(query: string): AssistantSuggestion {
 
   const treasuryProfileSuggestion = getTreasuryProfileSuggestion(normalized);
   if (treasuryProfileSuggestion) return treasuryProfileSuggestion;
+
+  const custodyTruthSuggestion = getCustodyTruthSuggestion(normalized);
+  if (custodyTruthSuggestion) return custodyTruthSuggestion;
 
   const trackAnswer = getTrackAnswer(normalized);
   if (trackAnswer) return trackAnswer;

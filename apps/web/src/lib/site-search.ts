@@ -119,6 +119,30 @@ export const siteSearchItems: SiteSearchItem[] = [
     summary: "Curated reviewer and trust document library inside the product.",
   },
   {
+    title: "Custody",
+    href: "/custody",
+    category: "Route",
+    summary: "Strict custody evidence ingestion workspace for multisig, timelock, signer roster, and authority-transfer proof.",
+  },
+  {
+    title: "Canonical Custody Proof",
+    href: "/documents/canonical-custody-proof",
+    category: "Document",
+    summary: "Repo-backed custody truth packet with exact pending items, observed readouts, and explorer-linked closure points.",
+  },
+  {
+    title: "Custody Proof Reviewer Packet",
+    href: "/documents/custody-proof-reviewer-packet",
+    category: "Document",
+    summary: "Reviewer-facing custody packet that condenses what is proven now, what is still pending, and the strict ingestion route.",
+  },
+  {
+    title: "Multisig Setup Intake",
+    href: "/documents/multisig-setup-intake",
+    category: "Document",
+    summary: "Canonical intake shape for signer keys, multisig address, timelock, and authority-transfer evidence.",
+  },
+  {
     title: "Privacy Track Workspace",
     href: "/tracks/privacy-track",
     category: "Track",
@@ -493,10 +517,54 @@ function getProposalLeadItems(query: string): SiteSearchItem[] {
   }));
 }
 
+function getCustodyLeadItems(query: string): SiteSearchItem[] {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return [];
+
+  const custodyTerms = [
+    "custody proof",
+    "reviewer packet",
+    "authority transfer",
+    "multisig intake",
+    "signer roster",
+    "custody ceremony",
+    "canonical custody",
+  ];
+
+  if (!custodyTerms.some((term) => normalized.includes(term))) {
+    return [];
+  }
+
+  return [
+    {
+      title: "Custody Proof Reviewer Packet",
+      href: "/documents/custody-proof-reviewer-packet",
+      category: "Document",
+      summary:
+        "Start here for reviewer-facing custody truth. It condenses what is externally proven now, what is still pending, and the exact strict ingestion route.",
+    },
+    {
+      title: "Canonical Custody Proof",
+      href: "/documents/canonical-custody-proof",
+      category: "Document",
+      summary:
+        "Open the canonical custody truth packet next for exact pending items, exact blocker, and explorer-linked closure points.",
+    },
+    {
+      title: "Custody Workspace",
+      href: "/custody",
+      category: "Route",
+      summary:
+        "Open the strict custody workspace to build the signer and transfer packet in the exact repo-safe intake shape.",
+    },
+  ];
+}
+
 export function getSiteSearchResults(query: string): SiteSearchItem[] {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return siteSearchItems;
 
+  const custodyLeadItems = getCustodyLeadItems(normalized);
   const profileTrackLeadItems = getProfileTrackLeadItems(normalized);
   const trackAwareLeadItems = getTrackAwareLeadItems(normalized);
   const proposalLeadItems = getProposalLeadItems(normalized);
@@ -516,7 +584,7 @@ export function getSiteSearchResults(query: string): SiteSearchItem[] {
   );
 
   const seen = new Set<string>();
-  return [...profileTrackLeadItems, ...trackAwareLeadItems, ...proposalLeadItems, ...profileAwareLeadItems, ...generalResults].filter((item) => {
+  return [...custodyLeadItems, ...profileTrackLeadItems, ...trackAwareLeadItems, ...proposalLeadItems, ...profileAwareLeadItems, ...generalResults].filter((item) => {
     const key = `${item.category}:${item.href}`;
     if (seen.has(key)) return false;
     seen.add(key);
