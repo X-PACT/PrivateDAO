@@ -9,6 +9,7 @@ import { HostedReadProofStrip } from "@/components/hosted-read-proof-strip";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperationsShell } from "@/components/operations-shell";
 import { PlatformServiceArchitecture } from "@/components/platform-service-architecture";
+import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-truth-strip";
 import { SectionHeader } from "@/components/section-header";
 import { ServiceOperationalCards } from "@/components/service-operational-cards";
 import { ServiceReadinessLadder } from "@/components/service-readiness-ladder";
@@ -38,6 +39,12 @@ export default function ServicesPage() {
         { label: "Pilot-ready", variant: "success" },
       ]}
     >
+      <div>
+        <ReviewerTelemetryTruthStrip
+          title="Telemetry truth for infrastructure buyers"
+          description="Put freshness, hosted-read scale, finalized proof counts, and the telemetry packet above the commercial infrastructure story."
+        />
+      </div>
       <div>
         <MetricsStrip />
       </div>

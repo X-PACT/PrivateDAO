@@ -7,6 +7,7 @@ import { DataCorridorQuickLinks } from "@/components/data-corridor-quick-links";
 import { DocumentLibrary } from "@/components/document-library";
 import { CustodyTrustContinuity } from "@/components/custody-trust-continuity";
 import { OperationsShell } from "@/components/operations-shell";
+import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-truth-strip";
 import { getCuratedDocuments, getCuratedDocumentsBySlugs } from "@/lib/curated-documents";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { buttonVariants } from "@/components/ui/button";
@@ -52,6 +53,12 @@ export default function DocumentsPage() {
         { label: "Raw viewer included", variant: "warning" },
       ]}
     >
+      <div>
+        <ReviewerTelemetryTruthStrip
+          title="Reviewer telemetry fast path"
+          description="Surface freshness, indexed proposal scale, finalized governance and confidential counts, and the direct telemetry packet route before the rest of the document center."
+        />
+      </div>
       <div>
         <CustodyTruthQuickActions
           title="Custody truth quick actions"
