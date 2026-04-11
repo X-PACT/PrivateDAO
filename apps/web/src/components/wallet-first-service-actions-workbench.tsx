@@ -439,6 +439,10 @@ export function WalletFirstServiceActionsWorkbench({
                   Continue telemetry inspection
                   <ArrowRight className="h-4 w-4" />
                 </Link>
+                <Link href={`/diagnostics?${handoffQuery}`} className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+                  Continue diagnostics
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
               </div>
             </div>
           </div>

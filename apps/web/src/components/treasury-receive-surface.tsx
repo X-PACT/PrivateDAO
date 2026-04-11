@@ -2,10 +2,16 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { ArrowRight, ArrowUpRight, CheckCircle2, Clipboard, Coins, Download, FileCheck2, Landmark, ShieldCheck, Wallet } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
+import {
+  parseStoredServiceHandoffState,
+  readServiceHandoffState,
+  SERVICE_HANDOFF_STORAGE_KEY,
+} from "@/lib/service-handoff-state";
 import { getTreasuryReceiveConfig } from "@/lib/treasury-receive-config";
 import { cn } from "@/lib/utils";
 
@@ -116,6 +122,7 @@ function buildSolanaExplorerHref(address: string, network: string) {
 }
 
 export function TreasuryReceiveSurface() {
+  const searchParams = useSearchParams();
   const config = getTreasuryReceiveConfig();
   const [copied, setCopied] = useState<string | null>(null);
   const [selectedAsset, setSelectedAsset] = useState<(typeof config.assets)[number]["symbol"]>("SOL");
@@ -128,11 +135,24 @@ export function TreasuryReceiveSurface() {
   const activeAsset = config.assets.find((asset) => asset.symbol === selectedAsset) ?? config.assets[0];
   const activeProfile = destinationProfiles.find((item) => item.value === profile) ?? destinationProfiles[0];
   const activeLane = handoffLanes.find((item) => item.value === lane) ?? handoffLanes[0];
+  const handoffProfile = useMemo(() => {
+    const queryState = readServiceHandoffState(searchParams);
+    if (queryState?.payoutProfile) return queryState.payoutProfile;
+    if (typeof window === "undefined") return null;
+    return parseStoredServiceHandoffState(
+      window.localStorage.getItem(SERVICE_HANDOFF_STORAGE_KEY),
+    )?.payoutProfile ?? null;
+  }, [searchParams]);
 
   useEffect(() => {
     setLane(activeProfile.defaultLane);
     setPurpose(activeProfile.defaultPurpose);
   }, [activeProfile]);
+
+  useEffect(() => {
+    if (!handoffProfile) return;
+    setProfile(handoffProfile);
+  }, [handoffProfile]);
 
   const requestPacket = useMemo(
     () =>
@@ -319,6 +339,11 @@ export function TreasuryReceiveSurface() {
             <p className="mt-3 text-sm leading-7 text-white/60">
               Pick the asset, amount, purpose, and handoff lane. The product returns a ready request packet tied to the correct public receive route.
             </p>
+            {handoffProfile ? (
+              <div className="mt-4 rounded-2xl border border-emerald-300/18 bg-emerald-300/[0.08] px-4 py-3 text-sm leading-7 text-white/72">
+                Applied from service handoff: <span className="font-medium text-white">{activeProfile.label}</span>
+              </div>
+            ) : null}
 
             <div className="mt-5 grid gap-4">
               <label className="grid gap-2 text-sm text-white/70">

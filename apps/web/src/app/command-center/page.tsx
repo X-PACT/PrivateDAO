@@ -89,7 +89,9 @@ export default function CommandCenterPage() {
             title="Exact product operations"
             description="This route family keeps the full normal-user governance flow inside the UI: connect, create, vote, reveal, execute, log review, and diagnostics. Everything deeper stays in the repo."
           />
-          <TreasuryProfileQuickActions title="Commercial treasury actions" />
+          <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading treasury routes…</div>}>
+            <TreasuryProfileQuickActions title="Commercial treasury actions" />
+          </Suspense>
         </div>
       </div>
       <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">

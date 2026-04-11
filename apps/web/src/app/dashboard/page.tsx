@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { ArrowRight, Radar, ShieldCheck, WalletCards } from "lucide-react";
 
@@ -145,7 +146,9 @@ export default function DashboardPage() {
       </section>
 
       <section className="mt-12">
-        <TreasuryProfileQuickActions title="Commercial actions from the dashboard" />
+        <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading treasury routes…</div>}>
+          <TreasuryProfileQuickActions title="Commercial actions from the dashboard" />
+        </Suspense>
       </section>
 
       <section className="mt-12">

@@ -125,7 +125,9 @@ export default function ServicesPage() {
         Open <a className="text-cyan-100 underline underline-offset-4" href="/intelligence">/intelligence</a> to try the live Security + Intelligence layer. It is where proposal analysis, treasury warnings, voting compression, RPC interpretation, and gaming-governance assistance become user-visible.
       </div>
       <div>
-        <TreasuryProfileQuickActions title="Fast commercial treasury routes" />
+        <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading treasury routes…</div>}>
+          <TreasuryProfileQuickActions title="Fast commercial treasury routes" />
+        </Suspense>
       </div>
       <div>
         <TreasuryReviewerGradeStrip
@@ -134,7 +136,9 @@ export default function ServicesPage() {
         />
       </div>
       <div>
-        <TreasuryReceiveSurface />
+        <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading treasury receive surface…</div>}>
+          <TreasuryReceiveSurface />
+        </Suspense>
       </div>
       <div>
         <PlatformServiceArchitecture />

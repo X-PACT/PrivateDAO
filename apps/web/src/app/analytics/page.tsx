@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 
 import { AnalystGradeDataCorridor } from "@/components/analyst-grade-data-corridor";
@@ -8,6 +9,7 @@ import { HostedReadProofStrip } from "@/components/hosted-read-proof-strip";
 import { LaunchBlockersPanel } from "@/components/launch-blockers-panel";
 import { OperationsShell } from "@/components/operations-shell";
 import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-truth-strip";
+import { TelemetryModeHandoffStrip } from "@/components/telemetry-mode-handoff-strip";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
@@ -30,6 +32,11 @@ export default function AnalyticsPage() {
         { label: "Votes · proposals · treasury actions", variant: "success" },
       ]}
     >
+      <div>
+        <Suspense fallback={null}>
+          <TelemetryModeHandoffStrip context="analytics" />
+        </Suspense>
+      </div>
       <div>
         <ReviewerTelemetryTruthStrip
           id="telemetry-inspection"

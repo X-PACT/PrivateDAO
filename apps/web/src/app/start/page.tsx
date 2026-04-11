@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
 import { GettingStartedWorkspace } from "@/components/getting-started-workspace";
 import { GovernanceSessionPanel } from "@/components/governance-session-panel";
@@ -42,7 +43,9 @@ export default function StartPage() {
       />
       <GovernanceSessionPanel title="Shared product session" />
       <WalletFirstServiceActionsStrip context="start" />
-      <TreasuryProfileQuickActions title="Commercial treasury actions" />
+      <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading treasury routes…</div>}>
+        <TreasuryProfileQuickActions title="Commercial treasury actions" />
+      </Suspense>
       <ProductActionMap
         title="Start with the exact user journey"
         description="The first-run product path should make the eight real operations obvious and keep everything else out of sight until engineering truly needs it."

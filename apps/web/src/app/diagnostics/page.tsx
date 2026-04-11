@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 
 import { AnalystGradeDataCorridor } from "@/components/analyst-grade-data-corridor";
@@ -10,6 +11,7 @@ import { LaunchBlockersPanel } from "@/components/launch-blockers-panel";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperationsShell } from "@/components/operations-shell";
 import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-truth-strip";
+import { TelemetryModeHandoffStrip } from "@/components/telemetry-mode-handoff-strip";
 import { CustodyWorkspace } from "@/components/custody-workspace";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
@@ -33,6 +35,11 @@ export default function DiagnosticsPage() {
         { label: "Reviewer bundle aware", variant: "success" },
       ]}
     >
+      <div>
+        <Suspense fallback={null}>
+          <TelemetryModeHandoffStrip context="diagnostics" />
+        </Suspense>
+      </div>
       <div>
         <ReviewerTelemetryTruthStrip
           title="Telemetry truth for diagnostics reviewers"
