@@ -927,7 +927,7 @@ function getProposalSuggestion(query: string): AssistantSuggestion | null {
   return {
     title: `Open live indexed proposal ${proposal.id}`,
     summary:
-      `${proposal.title} is being routed from the unified indexed proposal registry. Open the command center with this proposal preselected, then review the analyzer and treasury risk surfaces on the real execution context.`,
+      `${proposal.title} is being routed from the unified indexed proposal registry. Open the command center with this proposal preselected, then review the proposal and treasury execution surfaces on the real execution context.`,
     primaryActionLabel: "Open command center with proposal",
     primaryActionHref: `/command-center?proposal=${encodeURIComponent(proposal.id)}`,
     relatedRoutes: [

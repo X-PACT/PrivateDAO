@@ -33,7 +33,7 @@ export default function IntelligencePage() {
         <SectionHeader
           eyebrow="Not a chatbot"
           title="AI in PrivateDAO should improve decisions, not just add another chat window"
-          description="This route is intentionally operational. It helps users understand proposal risk, treasury risk, voting posture, RPC quality, and gaming-governance implications before they sign or execute anything."
+          description="This route is intentionally operational. It helps users understand proposal review context, treasury execution context, voting posture, RPC quality, and gaming-governance implications before they sign or execute anything."
         />
       </div>
       <div>
