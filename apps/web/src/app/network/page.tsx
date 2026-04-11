@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import { DiagnosticsCenter } from "@/components/diagnostics-center";
 import { FrontierSignalBoard } from "@/components/frontier-signal-board";
 import { ProofCenter } from "@/components/proof-center";
@@ -19,7 +21,9 @@ export default function NetworkPage() {
       <FrontierSignalBoard />
       <ProofCenter />
       <SecurityCenter />
-      <DiagnosticsCenter />
+      <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading network diagnostics…</div>}>
+        <DiagnosticsCenter />
+      </Suspense>
     </OperationsShell>
   );
 }
