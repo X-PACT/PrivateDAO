@@ -165,7 +165,7 @@ export function CustodyWorkspace() {
           <div className="rounded-3xl border border-cyan-300/12 bg-cyan-300/5 p-5">
             <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/72">Evidence capture</div>
             <div className="mt-4 grid gap-4 lg:grid-cols-2">
-              <label className="space-y-2">
+              <label id="multisig-address" className="space-y-2 scroll-mt-24">
                 <div className="text-sm font-medium text-white">Multisig public address</div>
                 <input
                   value={multisigAddress}
@@ -174,7 +174,7 @@ export function CustodyWorkspace() {
                   placeholder="Enter the production multisig public address"
                 />
               </label>
-              <label className="space-y-2">
+              <label id="threshold" className="space-y-2 scroll-mt-24">
                 <div className="text-sm font-medium text-white">Threshold</div>
                 <input
                   value={threshold}
@@ -183,7 +183,7 @@ export function CustodyWorkspace() {
                   placeholder="2-of-3"
                 />
               </label>
-              <label className="space-y-2 lg:col-span-2">
+              <label id="signer-roster" className="space-y-2 lg:col-span-2 scroll-mt-24">
                 <div className="text-sm font-medium text-white">Signer roster</div>
                 <textarea
                   value={signerRoster}
@@ -192,7 +192,7 @@ export function CustodyWorkspace() {
                   placeholder={"Signer A - upgrade lead\nSigner B - treasury lead\nSigner C - recovery lead"}
                 />
               </label>
-              <label className="space-y-2">
+              <label id="upgrade-transfer-signature" className="space-y-2 scroll-mt-24">
                 <div className="text-sm font-medium text-white">Upgrade transfer signature</div>
                 <input
                   value={upgradeTransferSignature}
@@ -201,7 +201,7 @@ export function CustodyWorkspace() {
                   placeholder="Explorer-linked signature"
                 />
               </label>
-              <label className="space-y-2">
+              <label id="treasury-transfer-signature" className="space-y-2 scroll-mt-24">
                 <div className="text-sm font-medium text-white">Treasury transfer signature</div>
                 <input
                   value={treasuryTransferSignature}
@@ -210,7 +210,7 @@ export function CustodyWorkspace() {
                   placeholder="Explorer-linked signature"
                 />
               </label>
-              <label className="space-y-2 lg:col-span-2">
+              <label id="post-transfer-readouts" className="space-y-2 lg:col-span-2 scroll-mt-24">
                 <div className="text-sm font-medium text-white">Post-transfer readouts</div>
                 <textarea
                   value={postTransferReadouts}
