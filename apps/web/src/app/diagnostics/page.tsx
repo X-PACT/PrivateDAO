@@ -59,13 +59,17 @@ export default function DiagnosticsPage() {
         <MetricsStrip />
       </div>
       <div>
-        <DiagnosticsCenter />
+        <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading diagnostics center…</div>}>
+          <DiagnosticsCenter />
+        </Suspense>
       </div>
       <div>
         <IncidentReadinessPanel />
       </div>
       <div>
-        <DevnetServiceMetricsPanel scope="diagnostics" />
+        <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading diagnostics metrics…</div>}>
+          <DevnetServiceMetricsPanel scope="diagnostics" />
+        </Suspense>
       </div>
       <div>
         <AnalystGradeDataCorridor />

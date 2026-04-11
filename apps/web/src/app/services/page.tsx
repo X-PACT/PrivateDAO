@@ -97,7 +97,9 @@ export default function ServicesPage() {
         <SolutionCorridors />
       </div>
       <div>
-        <DevnetServiceMetricsPanel scope="services" />
+        <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading service metrics…</div>}>
+          <DevnetServiceMetricsPanel scope="services" />
+        </Suspense>
       </div>
       <div>
         <HostedReadProofStrip />

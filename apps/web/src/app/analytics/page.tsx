@@ -51,13 +51,17 @@ export default function AnalyticsPage() {
         <AnalystGradeDataCorridor />
       </div>
       <div>
-        <AnalyticsSummary />
+        <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading analytics summary…</div>}>
+          <AnalyticsSummary />
+        </Suspense>
       </div>
       <div>
         <HostedReadProofStrip />
       </div>
       <div>
-        <AnalyticsCharts />
+        <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading analytics charts…</div>}>
+          <AnalyticsCharts />
+        </Suspense>
       </div>
       <div>
         <LaunchBlockersPanel />
