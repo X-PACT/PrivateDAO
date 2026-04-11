@@ -11,7 +11,6 @@ import {
   buildServiceHandoffQuery,
   readServiceHandoffState,
   readStoredServiceHandoffState,
-  SERVICE_HANDOFF_EVENT,
   SERVICE_HANDOFF_STORAGE_KEY,
   type ServiceHandoffProfile,
 } from "@/lib/service-handoff-state";
@@ -60,11 +59,7 @@ function subscribeToStorage(callback: () => void) {
     }
   };
   window.addEventListener("storage", handler);
-  window.addEventListener(SERVICE_HANDOFF_EVENT, callback);
-  return () => {
-    window.removeEventListener("storage", handler);
-    window.removeEventListener(SERVICE_HANDOFF_EVENT, callback);
-  };
+  return () => window.removeEventListener("storage", handler);
 }
 
 function getStoredSnapshot() {
