@@ -1,5 +1,8 @@
+"use client";
+
+import { useMemo, useState } from "react";
 import Link from "next/link";
-import { KeyRound, ShieldCheck, WalletCards } from "lucide-react";
+import { Copy, Download, KeyRound, ShieldCheck, WalletCards } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -30,7 +33,70 @@ const custodySteps = [
   },
 ];
 
+type EvidenceField = {
+  label: string;
+  value: string;
+};
+
+function downloadPacket(filename: string, contents: string) {
+  const blob = new Blob([contents], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename;
+  document.body.appendChild(anchor);
+  anchor.click();
+  document.body.removeChild(anchor);
+  URL.revokeObjectURL(url);
+}
+
 export function CustodyWorkspace() {
+  const [multisigAddress, setMultisigAddress] = useState("");
+  const [threshold, setThreshold] = useState("2-of-3");
+  const [signerRoster, setSignerRoster] = useState("");
+  const [upgradeTransferSignature, setUpgradeTransferSignature] = useState("");
+  const [treasuryTransferSignature, setTreasuryTransferSignature] = useState("");
+  const [postTransferReadouts, setPostTransferReadouts] = useState("");
+  const [copyState, setCopyState] = useState<"idle" | "copied">("idle");
+
+  const evidenceFields = useMemo<EvidenceField[]>(
+    () => [
+      { label: "Multisig public address", value: multisigAddress.trim() || "Not recorded yet" },
+      { label: "Threshold", value: threshold.trim() || "Not recorded yet" },
+      { label: "Signer roster", value: signerRoster.trim() || "Not recorded yet" },
+      { label: "Upgrade transfer signature", value: upgradeTransferSignature.trim() || "Not recorded yet" },
+      { label: "Treasury transfer signature", value: treasuryTransferSignature.trim() || "Not recorded yet" },
+      { label: "Post-transfer readouts", value: postTransferReadouts.trim() || "Not recorded yet" },
+    ],
+    [multisigAddress, threshold, signerRoster, upgradeTransferSignature, treasuryTransferSignature, postTransferReadouts],
+  );
+
+  const packet = useMemo(() => {
+    const lines = [
+      "PrivateDAO Custody Evidence Packet",
+      "",
+      "This packet records the current custody and authority-transfer evidence state.",
+      "It does not claim mainnet custody completion until all external signatures and readouts are present.",
+      "",
+      ...evidenceFields.flatMap((field) => [`${field.label}:`, field.value, ""]),
+      "Recommended source routes:",
+      "https://privatedao.org/custody/",
+      "https://privatedao.org/security/",
+      "https://privatedao.org/diagnostics/",
+      "https://privatedao.org/documents/production-custody-ceremony/",
+      "https://privatedao.org/documents/authority-hardening-mainnet/",
+      "https://privatedao.org/documents/authority-transfer-runbook/",
+    ];
+
+    return lines.join("\n");
+  }, [evidenceFields]);
+
+  async function copyPacket() {
+    await navigator.clipboard.writeText(packet);
+    setCopyState("copied");
+    window.setTimeout(() => setCopyState("idle"), 1600);
+  }
+
   return (
     <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
       <Card>
@@ -62,6 +128,66 @@ export function CustodyWorkspace() {
             ))}
           </div>
 
+          <div className="rounded-3xl border border-cyan-300/12 bg-cyan-300/5 p-5">
+            <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/72">Evidence capture</div>
+            <div className="mt-4 grid gap-4 lg:grid-cols-2">
+              <label className="space-y-2">
+                <div className="text-sm font-medium text-white">Multisig public address</div>
+                <input
+                  value={multisigAddress}
+                  onChange={(event) => setMultisigAddress(event.target.value)}
+                  className="h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                  placeholder="Enter the production multisig public address"
+                />
+              </label>
+              <label className="space-y-2">
+                <div className="text-sm font-medium text-white">Threshold</div>
+                <input
+                  value={threshold}
+                  onChange={(event) => setThreshold(event.target.value)}
+                  className="h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                  placeholder="2-of-3"
+                />
+              </label>
+              <label className="space-y-2 lg:col-span-2">
+                <div className="text-sm font-medium text-white">Signer roster</div>
+                <textarea
+                  value={signerRoster}
+                  onChange={(event) => setSignerRoster(event.target.value)}
+                  className="min-h-28 w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none placeholder:text-white/28"
+                  placeholder={"Signer A - upgrade lead\nSigner B - treasury lead\nSigner C - recovery lead"}
+                />
+              </label>
+              <label className="space-y-2">
+                <div className="text-sm font-medium text-white">Upgrade transfer signature</div>
+                <input
+                  value={upgradeTransferSignature}
+                  onChange={(event) => setUpgradeTransferSignature(event.target.value)}
+                  className="h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                  placeholder="Explorer-linked signature"
+                />
+              </label>
+              <label className="space-y-2">
+                <div className="text-sm font-medium text-white">Treasury transfer signature</div>
+                <input
+                  value={treasuryTransferSignature}
+                  onChange={(event) => setTreasuryTransferSignature(event.target.value)}
+                  className="h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                  placeholder="Explorer-linked signature"
+                />
+              </label>
+              <label className="space-y-2 lg:col-span-2">
+                <div className="text-sm font-medium text-white">Post-transfer readouts</div>
+                <textarea
+                  value={postTransferReadouts}
+                  onChange={(event) => setPostTransferReadouts(event.target.value)}
+                  className="min-h-28 w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none placeholder:text-white/28"
+                  placeholder={"Program upgrade authority readout\nTreasury authority readout\nAdmin authority readout"}
+                />
+              </label>
+            </div>
+          </div>
+
           <div className="grid gap-4 lg:grid-cols-3">
             {authorityHardeningSections.map((section, index) => (
               <div key={section.title} className="rounded-3xl border border-white/8 bg-white/4 p-5">
@@ -87,7 +213,7 @@ export function CustodyWorkspace() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Execution packet</CardTitle>
+          <CardTitle>Evidence packet</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="rounded-3xl border border-white/8 bg-black/20 p-5">
@@ -97,15 +223,25 @@ export function CustodyWorkspace() {
             </p>
           </div>
           <div className="rounded-3xl border border-white/8 bg-black/20 p-5">
-            <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Best next evidence</div>
-            <div className="mt-3 space-y-2 text-sm leading-7 text-white/56">
-              <div>Multisig public address and threshold</div>
-              <div>Upgrade authority transfer signature</div>
-              <div>Treasury authority transfer signature</div>
-              <div>Post-transfer authority readouts</div>
+            <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Current packet preview</div>
+            <div className="mt-3 space-y-3">
+              {evidenceFields.map((field) => (
+                <div key={field.label}>
+                  <div className="text-xs uppercase tracking-[0.22em] text-white/36">{field.label}</div>
+                  <div className="mt-1 break-words text-sm leading-7 text-white/58">{field.value}</div>
+                </div>
+              ))}
             </div>
           </div>
           <div className="grid gap-3">
+            <Button onClick={copyPacket} className="justify-between">
+              {copyState === "copied" ? "Copied evidence packet" : "Copy evidence packet"}
+              <Copy className="h-4 w-4" />
+            </Button>
+            <Button variant="secondary" onClick={() => downloadPacket("privatedao-custody-evidence.txt", packet)} className="justify-between">
+              Download evidence packet
+              <Download className="h-4 w-4" />
+            </Button>
             {authorityHardeningLinks.map((link) => (
               <Link key={link.href} href={link.href} className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
                 {link.label}
@@ -117,9 +253,6 @@ export function CustodyWorkspace() {
             <Link href="/documents/authority-transfer-runbook" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
               Open authority transfer runbook
             </Link>
-            <Button disabled className="justify-between">
-              Record custody evidence
-            </Button>
           </div>
         </CardContent>
       </Card>
