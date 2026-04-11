@@ -5,6 +5,7 @@ import path from "path";
 function main() {
   const json = JSON.parse(fs.readFileSync(path.resolve("docs/read-node/snapshot.generated.json"), "utf8"));
   const markdown = fs.readFileSync(path.resolve("docs/read-node/snapshot.generated.md"), "utf8");
+  const frontendModule = fs.readFileSync(path.resolve("apps/web/src/lib/read-node-proposal-context.generated.ts"), "utf8");
 
   if (json.readPath !== "backend-indexer") {
     throw new Error("read-node snapshot path mismatch");
@@ -20,6 +21,18 @@ function main() {
 
   if (typeof json.overview?.refheConfigured !== "number") {
     throw new Error("read-node snapshot missing REFHE overview");
+  }
+
+  if (!json.featuredProposalContexts?.payroll?.proposalAccount) {
+    throw new Error("read-node snapshot missing featured payroll proposal context");
+  }
+
+  if (!json.featuredProposalContexts?.gaming?.proposalAccount) {
+    throw new Error("read-node snapshot missing featured gaming proposal context");
+  }
+
+  if (!json.featuredProposalContexts?.grant?.proposalAccount) {
+    throw new Error("read-node snapshot missing featured grant proposal context");
   }
 
   const profile350 = Array.isArray(json.profiles) ? json.profiles.find((profile: any) => profile.name === "350") : null;
@@ -41,6 +54,14 @@ function main() {
 
   if (!markdown.includes("Devnet Load Profiles")) {
     throw new Error("read-node markdown snapshot missing devnet load profile section");
+  }
+
+  if (!markdown.includes("Featured Proposal Contexts")) {
+    throw new Error("read-node markdown snapshot missing featured proposal context section");
+  }
+
+  if (!frontendModule.includes("READ_NODE_FEATURED_PROPOSAL_CONTEXTS")) {
+    throw new Error("read-node snapshot missing frontend proposal context module");
   }
 
   console.log("Read-node snapshot verification: PASS");

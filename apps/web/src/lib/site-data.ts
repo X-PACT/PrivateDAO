@@ -1,3 +1,5 @@
+import { READ_NODE_FEATURED_PROPOSAL_CONTEXTS } from "@/lib/read-node-proposal-context.generated";
+
 export type ProposalStatus =
   | "Live voting"
   | "Ready to reveal"
@@ -22,6 +24,7 @@ export type ProposalCardModel = {
 export type ProposalExecutionContext = {
   sourceType: "evidence-backed" | "runtime-indexed" | "operator-draft";
   sourceLabel: string;
+  indexedPhase?: string;
   proposalAccount: string;
   daoAccount?: string;
   treasuryAccount?: string;
@@ -48,6 +51,25 @@ export type ProposalExecutionContext = {
     executeSignature?: string;
   };
 };
+
+function getFeaturedExecutionContext(
+  key: keyof typeof READ_NODE_FEATURED_PROPOSAL_CONTEXTS,
+  fallback: ProposalExecutionContext,
+): ProposalExecutionContext {
+  const generated = READ_NODE_FEATURED_PROPOSAL_CONTEXTS[key];
+  if (!generated) {
+    return fallback;
+  }
+
+  return {
+    ...fallback,
+    ...generated,
+    txContext: {
+      ...fallback.txContext,
+      ...generated.txContext,
+    },
+  };
+}
 
 export const daoSummary = {
   name: "PrivateDAO Frontier Council",
@@ -230,7 +252,7 @@ export const proposalCards: ProposalCardModel[] = [
     tech: ["ZK", "REFHE", "Fast RPC"],
     summary:
       "Payroll proposal with encrypted manifest binding, reviewer-visible readiness checks, and evidence-bound execution.",
-    execution: {
+    execution: getFeaturedExecutionContext("payroll", {
       sourceType: "evidence-backed",
       sourceLabel: "Canonical confidential operations evidence",
       proposalAccount: "52UpWHJodPWQzpR8u2qqpgwo3jRB7mvjgwCnf8oSJuXX",
@@ -253,7 +275,7 @@ export const proposalCards: ProposalCardModel[] = [
         evidenceRoute: "/proof/?judge=1",
         executeSignature: "LoNED2YKkYWxaQbFV4y8fCzqGi5YrpPSruJYppqfvcTyAJ2zU5HM92QEsPNydQb26abE7qp2kB7hCNPJFbVUUPA",
       },
-    },
+    }),
   },
   {
     id: "PDAO-105",
@@ -267,7 +289,7 @@ export const proposalCards: ProposalCardModel[] = [
     tech: ["MagicBlock", "Fast RPC"],
     summary:
       "Private token distribution stays blocked until proposal-scoped settlement evidence matures and corridor execution is bound.",
-    execution: {
+    execution: getFeaturedExecutionContext("gaming", {
       sourceType: "runtime-indexed",
       sourceLabel: "Backend-indexed confidential corridor sample",
       proposalAccount: "QwRmN5WFDL7AxXT8fjcZNhy53cgLk7UWnJ5qB2CmRaJ",
@@ -289,7 +311,7 @@ export const proposalCards: ProposalCardModel[] = [
         proofStatus: "runtime-indexed-confidential-path",
         evidenceRoute: "/proof/?judge=1",
       },
-    },
+    }),
   },
   {
     id: "PDAO-106",
@@ -303,7 +325,7 @@ export const proposalCards: ProposalCardModel[] = [
     tech: ["ZK", "Fast RPC"],
     summary:
       "Grant committee flow optimized for private signal collection with a strong reviewer path and generated evidence surfaces.",
-    execution: {
+    execution: getFeaturedExecutionContext("grant", {
       sourceType: "operator-draft",
       sourceLabel: "Structured proposal creation draft bound to live governance UX",
       proposalAccount: "A5Hd89vpCTVPALhuwurLQvyAkHyrNGhvZtAcJvBmuJ9U",
@@ -327,7 +349,7 @@ export const proposalCards: ProposalCardModel[] = [
         evidenceRoute: "/documents/reviewer-fast-path",
         createProposalSignature: "u7V1B5cUx91KY69pE9JSMfkAt9SFcVZbDrP9Nsv3XqatNHfr1P2jZwKkaCHCZuPyqm4WJgmH8w8SDUQoJQc938S",
       },
-    },
+    }),
   },
 ];
 
