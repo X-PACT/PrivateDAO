@@ -79,7 +79,7 @@ export type ServiceHandoffState = {
   payoutTitle: string;
   telemetryMode: ServiceHandoffTelemetryMode;
   updatedAt: string;
-  source: "start" | "services" | "command-center";
+  source: "start" | "services" | "command-center" | "analytics" | "diagnostics";
   proposalReview?: ServiceHandoffProposalReview;
   payoutIntent?: ServiceHandoffPayoutIntent;
   telemetrySelection?: ServiceHandoffTelemetrySelection;
@@ -142,7 +142,13 @@ export function parseStoredServiceHandoffState(raw: string | null): ServiceHando
       typeof parsed.payoutTitle !== "string" ||
       !isServiceHandoffTelemetryMode(parsed.telemetryMode) ||
       typeof parsed.updatedAt !== "string" ||
-      (parsed.source !== "start" && parsed.source !== "services" && parsed.source !== "command-center")
+      (
+        parsed.source !== "start" &&
+        parsed.source !== "services" &&
+        parsed.source !== "command-center" &&
+        parsed.source !== "analytics" &&
+        parsed.source !== "diagnostics"
+      )
     ) {
       return null;
     }
