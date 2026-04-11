@@ -45,20 +45,31 @@ export function getTrackJudgeFirstCopy(
   commercialProfile?: string,
 ): TrackJudgeFirstCopy {
   const proofContext = getTrackSpecificProofContext(workspace);
+  const telemetryProof = {
+    label: "Reviewer telemetry packet",
+    href: "/documents/reviewer-telemetry-packet",
+    summary:
+      "Generated telemetry truth packet that binds runtime evidence, frontier integrations, read-node snapshot, and devnet service metrics into one reviewer-safe route.",
+  };
+  const externallyProven = [...proofContext.externallyProven, telemetryProof];
   const whatWorksNow = workspace.deliverables.slice(0, 3);
   const bestDemoRoute = getProfileAwareDemoRoute(workspace, commercialProfile);
-  const bestDemoSummary = getProfileAwareDemoSummary(workspace, commercialProfile, bestDemoRoute);
+  const bestDemoSummary = `${getProfileAwareDemoSummary(
+    workspace,
+    commercialProfile,
+    bestDemoRoute,
+  )} Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story.`;
 
   const openingSequence = [
     `What works now: ${whatWorksNow.join(" ")}`,
-    `What is externally proven: ${proofContext.externallyProven.map((item) => `${item.label} via ${item.href}`).join(" and ")}.`,
+    `What is externally proven: ${externallyProven.map((item) => `${item.label} via ${item.href}`).join(" and ")}.`,
     `Exact blocker: ${proofContext.exactBlocker}. ${proofContext.exactBlockerSummary}`,
     `Best demo route: open ${bestDemoRoute} first. ${bestDemoSummary}`,
   ];
 
   return {
     whatWorksNow,
-    externallyProven: proofContext.externallyProven,
+    externallyProven,
     exactBlocker: proofContext.exactBlocker,
     exactBlockerSummary: proofContext.exactBlockerSummary,
     pendingSummary: proofContext.pendingSummary,

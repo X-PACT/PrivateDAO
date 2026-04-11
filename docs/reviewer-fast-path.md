@@ -16,17 +16,22 @@ This is the shortest high-signal path for a judge, auditor, or technical reviewe
    - `docs/canonical-custody-proof.generated.md`
    - `docs/custody-proof-reviewer-packet.generated.md`
    - `docs/launch-trust-packet.generated.md`
-5. Open the reviewer packet directly when you already know the judging corridor:
+5. Open the telemetry truth path when the reviewer needs the infrastructure and data corridor explicitly:
+   - `docs/reviewer-telemetry-packet.generated.md`
+   - `https://privatedao.org/diagnostics/`
+   - `https://privatedao.org/analytics/`
+   - `https://privatedao.org/services/`
+6. Open the reviewer packet directly when you already know the judging corridor:
    - Frontier reviewer packet:
      - `docs/track-reviewer-packets/colosseum-frontier.generated.md`
    - Confidential governance reviewer packet:
      - `docs/track-reviewer-packets/privacy-track.generated.md`
    - Runtime infrastructure reviewer packet:
      - `docs/track-reviewer-packets/rpc-infrastructure.generated.md`
-6. Confirm the canonical devnet identity:
+7. Confirm the canonical devnet identity:
    - Program ID: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
    - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
-7. Read the audit summary:
+8. Read the audit summary:
    - `docs/security-review.md`
 
 ## Five-Minute Review

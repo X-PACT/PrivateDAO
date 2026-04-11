@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-11T13:07:41.256Z",
+  "generatedAt": "2026-04-11T14:36:24.610Z",
   "reviewerIntent": "Explain the current custody truth, show what is externally proven now, and make the missing external ceremony evidence explicit without narrative drift.",
   "custodyStatus": "pending-external",
   "productionMainnetClaimAllowed": false,
@@ -98,7 +98,7 @@
   "judgeFirstTrackOpenings": [
     {
       "slug": "colosseum-frontier",
-      "title": "Colosseum Frontier Workspace",
+      "title": "Frontier Reviewer Packet",
       "sponsor": "Colosseum + Solana Foundation",
       "liveRoute": "/start",
       "proofRoute": "/documents/frontier-competition-readiness-2026",
@@ -134,7 +134,7 @@
     },
     {
       "slug": "privacy-track",
-      "title": "Privacy Track Workspace",
+      "title": "Confidential Governance Reviewer Packet",
       "sponsor": "MagicBlock and privacy-aligned partners",
       "liveRoute": "/security",
       "proofRoute": "/documents/live-proof-v3",
@@ -170,7 +170,7 @@
     },
     {
       "slug": "rpc-infrastructure",
-      "title": "RPC Infrastructure Credits Workspace",
+      "title": "Runtime Infrastructure Reviewer Packet",
       "sponsor": "RPC infrastructure sponsors",
       "liveRoute": "/services",
       "proofRoute": "/documents/frontier-integrations",

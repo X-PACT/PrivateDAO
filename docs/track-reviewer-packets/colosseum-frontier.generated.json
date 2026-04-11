@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-11T13:32:50.032Z",
+  "generatedAt": "2026-04-11T14:36:31.791Z",
   "track": {
     "slug": "colosseum-frontier",
     "title": "Frontier Reviewer Packet",
@@ -10,11 +10,11 @@
   "judgeFirstOpening": {
     "lines": [
       "What works now: Lead the first 90 seconds from /start into /command-center with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and track center perfectly aligned with the live site.",
-      "What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet.",
+      "What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet.",
       "Exact blocker: upgrade-authority-multisig. The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded.",
-      "Best demo route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes."
+      "Best demo route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story."
     ],
-    "voiceoverScript": "What works now: Lead the first 90 seconds from /start into /command-center with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and track center perfectly aligned with the live site. What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet. Exact blocker: upgrade-authority-multisig. The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded. Best demo route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes."
+    "voiceoverScript": "What works now: Lead the first 90 seconds from /start into /command-center with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and track center perfectly aligned with the live site. What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: upgrade-authority-multisig. The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded. Best demo route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story."
   },
   "proofClosure": {
     "whatWorksNow": [
@@ -32,6 +32,11 @@
         "label": "Launch trust packet",
         "href": "/documents/launch-trust-packet",
         "summary": "The repo already binds launch truth, blockers, and buyer-safe trust wording into one explicit packet."
+      },
+      {
+        "label": "Reviewer telemetry packet",
+        "href": "/documents/reviewer-telemetry-packet",
+        "summary": "Generated telemetry truth packet that binds runtime evidence, frontier integrations, read-node snapshot, and devnet service metrics into one reviewer-safe route."
       }
     ],
     "pendingSummary": "For the main submission, custody is not a side detail. It is the exact trust gate that separates a strong Devnet product from a real-funds launch claim, and the strict ingestion route now makes that ceremony packet reproducible instead of manual."
@@ -42,7 +47,7 @@
   },
   "bestDemoRoute": {
     "route": "/start",
-    "summary": "Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes."
+    "summary": "Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story."
   },
   "reviewerLinks": [
     {
@@ -60,6 +65,10 @@
     {
       "label": "Story video",
       "href": "/story"
+    },
+    {
+      "label": "Reviewer telemetry packet",
+      "href": "/documents/reviewer-telemetry-packet"
     },
     {
       "label": "Launch trust packet",

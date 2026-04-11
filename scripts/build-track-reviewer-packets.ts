@@ -60,6 +60,7 @@ function main() {
             { label: "Proof route", href: workspace.proofRoute },
             { label: "Judge route", href: workspace.judgeRoute },
             { label: "Story video", href: workspace.videoRoute },
+            { label: "Reviewer telemetry packet", href: "/documents/reviewer-telemetry-packet" },
             { label: "Launch trust packet", href: "/documents/launch-trust-packet" },
             { label: "Canonical custody proof", href: "/documents/canonical-custody-proof" },
             { label: "Custody reviewer packet", href: "/documents/custody-proof-reviewer-packet" },

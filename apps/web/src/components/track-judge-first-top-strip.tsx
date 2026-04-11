@@ -153,6 +153,10 @@ export function TrackJudgeFirstTopStrip({ workspace }: TrackJudgeFirstTopStripPr
                 Open track reviewer packet
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
+              <Link href="/documents/reviewer-telemetry-packet" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full justify-between")}>
+                Open telemetry packet
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </Link>
               <Link href="/documents/canonical-custody-proof" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full justify-between")}>
                 Open canonical proof
                 <ArrowUpRight className="h-3.5 w-3.5" />

@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-11T13:32:50.040Z",
+  "generatedAt": "2026-04-11T14:36:31.798Z",
   "track": {
     "slug": "rpc-infrastructure",
     "title": "Runtime Infrastructure Reviewer Packet",
@@ -10,11 +10,11 @@
   "judgeFirstOpening": {
     "lines": [
       "What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Fast RPC role explicit in video, deck, README, and services UI.",
-      "What is externally proven: Diagnostics via /diagnostics and Frontier integrations via /documents/frontier-integrations.",
+      "What is externally proven: Diagnostics via /diagnostics and Frontier integrations via /documents/frontier-integrations and Reviewer telemetry packet via /documents/reviewer-telemetry-packet.",
       "Exact blocker: production-monitoring-alerts. RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded.",
-      "Best demo route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes."
+      "Best demo route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story."
     ],
-    "voiceoverScript": "What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Fast RPC role explicit in video, deck, README, and services UI. What is externally proven: Diagnostics via /diagnostics and Frontier integrations via /documents/frontier-integrations. Exact blocker: production-monitoring-alerts. RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded. Best demo route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes."
+    "voiceoverScript": "What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Fast RPC role explicit in video, deck, README, and services UI. What is externally proven: Diagnostics via /diagnostics and Frontier integrations via /documents/frontier-integrations and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: production-monitoring-alerts. RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded. Best demo route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story."
   },
   "proofClosure": {
     "whatWorksNow": [
@@ -32,6 +32,11 @@
         "label": "Frontier integrations",
         "href": "/documents/frontier-integrations",
         "summary": "Hosted-read and runtime evidence already prove the infrastructure story on Devnet with reviewer-facing artifacts."
+      },
+      {
+        "label": "Reviewer telemetry packet",
+        "href": "/documents/reviewer-telemetry-packet",
+        "summary": "Generated telemetry truth packet that binds runtime evidence, frontier integrations, read-node snapshot, and devnet service metrics into one reviewer-safe route."
       }
     ],
     "pendingSummary": "Custody still matters for buyer trust, and the new /custody ingestion flow reduces operator drift when the real signer and transfer data arrives. The exact infrastructure blocker remains monitored operations, not generic product maturity."
@@ -42,7 +47,7 @@
   },
   "bestDemoRoute": {
     "route": "/services",
-    "summary": "Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes."
+    "summary": "Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story."
   },
   "reviewerLinks": [
     {
@@ -60,6 +65,10 @@
     {
       "label": "Story video",
       "href": "/story"
+    },
+    {
+      "label": "Reviewer telemetry packet",
+      "href": "/documents/reviewer-telemetry-packet"
     },
     {
       "label": "Launch trust packet",
