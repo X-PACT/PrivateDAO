@@ -19,6 +19,7 @@ import { SolutionCorridors } from "@/components/solution-corridors";
 import { TreasuryReceiveSurface } from "@/components/treasury-receive-surface";
 import { TreasuryProfileQuickActions } from "@/components/treasury-profile-quick-actions";
 import { buildRouteMetadata } from "@/lib/route-metadata";
+import { TreasuryReviewerGradeStrip } from "@/components/treasury-reviewer-grade-strip";
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Services",
@@ -97,6 +98,12 @@ export default function ServicesPage() {
       </div>
       <div>
         <TreasuryProfileQuickActions title="Fast commercial treasury routes" />
+      </div>
+      <div>
+        <TreasuryReviewerGradeStrip
+          context="services"
+          description="Collapse treasury professionalism into one reviewer-grade surface before the receive rails: sender discipline, proof links, rail references, commercial fit, and the exact blocker stay visible together."
+        />
       </div>
       <div>
         <TreasuryReceiveSurface />

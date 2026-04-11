@@ -9,6 +9,7 @@ import { CustodyTrustContinuity } from "@/components/custody-trust-continuity";
 import { EcosystemFocusAlignmentStrip } from "@/components/ecosystem-focus-alignment-strip";
 import { OperationsShell } from "@/components/operations-shell";
 import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-truth-strip";
+import { TreasuryReviewerGradeStrip } from "@/components/treasury-reviewer-grade-strip";
 import { getCuratedDocuments, getCuratedDocumentsBySlugs } from "@/lib/curated-documents";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { buttonVariants } from "@/components/ui/button";
@@ -64,6 +65,12 @@ export default function DocumentsPage() {
         <CustodyTruthQuickActions
           title="Custody truth quick actions"
           description="Reviewer and operator fast path into the custody truth surfaces: reviewer packet, canonical proof, intake shape, and the strict apply route."
+        />
+      </div>
+      <div>
+        <TreasuryReviewerGradeStrip
+          context="documents"
+          description="Open the treasury story as one reviewer-grade packet from the document center: strict sender checklist, linked rails, truth surfaces, payments fit, and exact blocker visibility."
         />
       </div>
       <div>

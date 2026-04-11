@@ -4,6 +4,7 @@ import { CanonicalCustodyProofSurface } from "@/components/canonical-custody-pro
 import { CustodyWorkspace } from "@/components/custody-workspace";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperationsShell } from "@/components/operations-shell";
+import { TreasuryReviewerGradeStrip } from "@/components/treasury-reviewer-grade-strip";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
@@ -31,6 +32,12 @@ export default function CustodyPage() {
       </div>
       <div>
         <CanonicalCustodyProofSurface />
+      </div>
+      <div>
+        <TreasuryReviewerGradeStrip
+          context="custody"
+          description="Keep treasury sender discipline and reviewer-facing payments truth next to custody proof, so the ceremony route never drifts away from the business-facing rails it must justify."
+        />
       </div>
       <div>
         <CustodyWorkspace />
