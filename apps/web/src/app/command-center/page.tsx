@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { BuyerJourneyRail } from "@/components/buyer-journey-rail";
 import { CommandCenter } from "@/components/command-center";
+import { CustodyReadinessStrip } from "@/components/custody-readiness-strip";
 import { CustodyWorkspace } from "@/components/custody-workspace";
 import { GovernanceActionWorkbench } from "@/components/governance-action-workbench";
 import { MetricsStrip } from "@/components/metrics-strip";
@@ -37,6 +38,9 @@ export default function CommandCenterPage() {
         { label: "Commercial + reviewer aware", variant: "violet" },
       ]}
     >
+      <div>
+        <CustodyReadinessStrip context="command-center" />
+      </div>
       <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
         <MetricsStrip />
         <OperatingBoundaryPanel

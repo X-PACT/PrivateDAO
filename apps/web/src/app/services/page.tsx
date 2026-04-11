@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { CommercialCompareSurface } from "@/components/commercial-compare-surface";
+import { CustodyReadinessStrip } from "@/components/custody-readiness-strip";
 import { DevnetServiceMetricsPanel } from "@/components/devnet-service-metrics-panel";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperationsShell } from "@/components/operations-shell";
@@ -36,6 +37,9 @@ export default function ServicesPage() {
     >
       <div>
         <MetricsStrip />
+      </div>
+      <div>
+        <CustodyReadinessStrip context="services" />
       </div>
       <div>
         <SolutionCorridors />
