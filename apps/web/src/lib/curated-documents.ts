@@ -18,6 +18,16 @@ const repositoryBlobBase = "https://github.com/X-PACT/PrivateDAO/blob/main";
 
 const curatedDocuments: CuratedDocument[] = [
   {
+    slug: "payments-reviewer-fast-path",
+    title: "Payments Reviewer Fast Path",
+    category: "Reviewer core",
+    summary: "Shortest reviewer-safe path into treasury reviewer packet, canonical custody proof, services payments rail, and command-center payout route.",
+    audience: "Judges, grant reviewers, buyers, operators",
+    boundary: "Fast-path only; it does not upgrade custody, authority-transfer, or mainnet treasury claims beyond the underlying truth surfaces.",
+    docPath: "docs/payments-reviewer-fast-path.md",
+    rawHref: `${repositoryBlobBase}/docs/payments-reviewer-fast-path.md`,
+  },
+  {
     slug: "reviewer-fast-path",
     title: "Reviewer Fast Path",
     category: "Reviewer core",

@@ -116,6 +116,12 @@ export const siteSearchItems: SiteSearchItem[] = [
     summary: "Internal product guide for finding the best route, proof packet, or submission path fast.",
   },
   {
+    title: "Payments Reviewer Fast Path",
+    href: "/documents/payments-reviewer-fast-path",
+    category: "Document",
+    summary: "Shortest reviewer-safe route into treasury packet, custody truth, services payments rail, and command-center payout path.",
+  },
+  {
     title: "Documents",
     href: "/documents",
     category: "Document",
