@@ -11,7 +11,7 @@ import { analyticsReadiness, analyticsSnapshots } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
 export function AnalyticsSummary() {
-  const handoff = useServiceHandoffSnapshot("services");
+  const handoff = useServiceHandoffSnapshot("analytics");
   const modeTitle =
     handoff?.telemetrySelection?.title ??
     (handoff?.telemetryMode === "backend"

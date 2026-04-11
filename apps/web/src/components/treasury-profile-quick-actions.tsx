@@ -97,6 +97,31 @@ export function TreasuryProfileQuickActions({ title = "Commercial quick actions"
         <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent className="grid gap-4 lg:grid-cols-2">
+        {storedState?.payoutIntent ? (
+          <div className="rounded-3xl border border-cyan-300/18 bg-cyan-300/[0.08] p-5 lg:col-span-2">
+            <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/78">Execution-ready payout intent</div>
+            <div className="mt-3 text-base font-medium text-white">
+              {storedState.payoutTitle ?? selectedProfile} · {storedState.payoutIntent.amountDisplay}
+            </div>
+            <div className="mt-2 text-sm leading-7 text-white/60">
+              {storedState.payoutIntent.reference} · {storedState.payoutIntent.executionTarget}
+            </div>
+            <div className="mt-4 grid gap-3 md:grid-cols-3">
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Asset</div>
+                <div className="mt-2 text-sm text-white/70">{storedState.payoutIntent.assetSymbol}</div>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Lane</div>
+                <div className="mt-2 text-sm text-white/70">{storedState.payoutIntent.lane}</div>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Telemetry mode</div>
+                <div className="mt-2 text-sm text-white/70">{storedState.telemetryMode}</div>
+              </div>
+            </div>
+          </div>
+        ) : null}
         {quickActions.map((item) => {
           const Icon = item.icon;
           const isSelected = item.value === selectedProfile;

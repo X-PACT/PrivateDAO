@@ -26,6 +26,7 @@ export function GovernanceActionWorkbench() {
     daoName,
     daoCreated,
     proposalTitle,
+    executionIntent,
     proposalCreated,
     voteChoice,
     voteCommitted,
@@ -37,6 +38,7 @@ export function GovernanceActionWorkbench() {
     setProposalTitle,
     setVoteChoice,
     stageReviewContext,
+    stageExecutionIntent,
     createDao,
     createProposal,
     commitVote,
@@ -92,8 +94,22 @@ export function GovernanceActionWorkbench() {
       telemetryMode: handoff.telemetryMode,
       source: handoff.source,
     });
+    if (handoff.payoutIntent) {
+      stageExecutionIntent({
+        proposalId: handoff.proposalId,
+        payoutProfile: handoff.payoutProfile,
+        payoutTitle: handoff.payoutTitle,
+        telemetryMode: handoff.telemetryMode,
+        amountDisplay: handoff.payoutIntent.amountDisplay,
+        reference: handoff.payoutIntent.reference,
+        purpose: handoff.payoutIntent.purpose,
+        executionTarget: handoff.payoutIntent.executionTarget,
+        evidenceRoute: handoff.payoutIntent.evidenceRoute,
+        source: handoff.source,
+      });
+    }
     appliedReviewRef.current = continuityKey;
-  }, [handoff, proposalCreated, proposalTitle, setProposalTitle, stageReviewContext]);
+  }, [handoff, proposalCreated, proposalTitle, setProposalTitle, stageExecutionIntent, stageReviewContext]);
 
   function openReview(action: CoreGovernanceInstructionName) {
     setReviewAction(action);
@@ -180,6 +196,44 @@ export function GovernanceActionWorkbench() {
                 <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
                   <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Evidence route</div>
                   <div className="mt-2 text-sm text-white/70">{handoff.proposalReview.evidenceRoute}</div>
+                </div>
+              </div>
+            </div>
+          ) : null}
+
+          {executionIntent ? (
+            <div className="rounded-[24px] border border-emerald-300/18 bg-emerald-300/[0.08] p-5 md:col-span-2">
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div>
+                  <div className="text-[11px] uppercase tracking-[0.24em] text-emerald-100/80">Execution request loaded</div>
+                  <div className="mt-2 text-base font-medium text-white">
+                    {executionIntent.payoutTitle} · {executionIntent.amountDisplay}
+                  </div>
+                  <div className="mt-2 text-sm leading-7 text-white/62">
+                    {executionIntent.reference} · {executionIntent.purpose}
+                  </div>
+                </div>
+                <Link href={executionIntent.evidenceRoute} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+                  Open payout proof
+                  <ArrowUpRight className="h-4 w-4" />
+                </Link>
+              </div>
+              <div className="mt-4 grid gap-3 md:grid-cols-2">
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Payout profile</div>
+                  <div className="mt-2 text-sm text-white/70">{executionIntent.payoutProfile}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Telemetry mode</div>
+                  <div className="mt-2 text-sm text-white/70">{executionIntent.telemetryMode}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Purpose</div>
+                  <div className="mt-2 text-sm text-white/70">{executionIntent.purpose}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Execution target</div>
+                  <div className="mt-2 text-sm text-white/70">{executionIntent.executionTarget}</div>
                 </div>
               </div>
             </div>

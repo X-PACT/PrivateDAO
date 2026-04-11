@@ -11,7 +11,7 @@ import { diagnosticsChecks, diagnosticsEvents } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
 export function DiagnosticsCenter() {
-  const handoff = useServiceHandoffSnapshot("command-center");
+  const handoff = useServiceHandoffSnapshot("diagnostics");
   const modeDetail =
     handoff?.telemetrySelection?.summary ??
     "Diagnostics falls back to the reviewer packet until a stronger telemetry mode is staged.";

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { ArrowUpRight, CheckCircle2, Clock3, LockKeyhole, WalletMinimal } from "lucide-react";
@@ -16,7 +16,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buildProposalConfidenceScorecard } from "@/lib/confidence-engine";
 import type { ExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
-import { commandCenterReferences, getProposalById, proposalCards, type ProposalCardModel } from "@/lib/site-data";
+import { commandCenterReferences, getProposalById, proposalCards, proposalRegistry, type ProposalCardModel } from "@/lib/site-data";
 import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
 import { cn } from "@/lib/utils";
 
@@ -84,14 +84,6 @@ export function ProposalWorkspace({ executionSnapshot }: ProposalWorkspaceProps)
 
   const actions = actionMap[proposal.status];
 
-  useEffect(() => {
-    if (!handoff?.proposalId) return;
-    if (proposal.id === handoff.proposalId) return;
-    if (getProposalById(handoff.proposalId)) {
-      setSelectedId(handoff.proposalId);
-    }
-  }, [handoff?.proposalId, proposal.id]);
-
   return (
     <>
       <Card>
@@ -100,7 +92,7 @@ export function ProposalWorkspace({ executionSnapshot }: ProposalWorkspaceProps)
         </CardHeader>
         <CardContent className="space-y-5">
           <div className="flex flex-wrap gap-3">
-            {proposalCards.map((item) => (
+            {proposalRegistry.map((item) => (
               <button
                 key={item.id}
                 type="button"

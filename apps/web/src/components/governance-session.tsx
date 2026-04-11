@@ -16,11 +16,24 @@ type GovernanceLogEntry = {
   value: string;
 };
 
+type GovernanceExecutionIntent = {
+  payoutProfile: string;
+  payoutTitle: string;
+  telemetryMode: string;
+  amountDisplay: string;
+  reference: string;
+  purpose: string;
+  executionTarget: string;
+  evidenceRoute: string;
+};
+
 type GovernanceSessionState = {
   daoName: string;
   daoCreated: boolean;
   proposalTitle: string;
   reviewContextKey: string | null;
+  executionIntentKey: string | null;
+  executionIntent: GovernanceExecutionIntent | null;
   proposalCreated: boolean;
   voteChoice: VoteChoice;
   voteCommitted: boolean;
@@ -41,6 +54,18 @@ type GovernanceSessionContextValue = GovernanceSessionState & {
     telemetryMode: string;
     source: string;
   }) => void;
+  stageExecutionIntent: (input: {
+    proposalId: string;
+    payoutProfile: string;
+    payoutTitle: string;
+    telemetryMode: string;
+    amountDisplay: string;
+    reference: string;
+    purpose: string;
+    executionTarget: string;
+    evidenceRoute: string;
+    source: string;
+  }) => void;
   createDao: () => void;
   createProposal: () => void;
   commitVote: () => void;
@@ -57,6 +82,8 @@ const defaultState: GovernanceSessionState = {
   daoCreated: false,
   proposalTitle: "Confidential payroll batch / April",
   reviewContextKey: null,
+  executionIntentKey: null,
+  executionIntent: null,
   proposalCreated: false,
   voteChoice: "Approve",
   voteCommitted: false,
@@ -120,6 +147,43 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
             },
             "Review context loaded",
             `${proposalId} · ${proposalTitle} staged from ${source} with ${telemetryMode} telemetry mode.`,
+          );
+        }),
+      stageExecutionIntent: ({
+        proposalId,
+        payoutProfile,
+        payoutTitle,
+        telemetryMode,
+        amountDisplay,
+        reference,
+        purpose,
+        executionTarget,
+        evidenceRoute,
+        source,
+      }) =>
+        setState((current) => {
+          const executionIntentKey = `${proposalId}:${payoutProfile}:${telemetryMode}:${reference}:${source}`;
+          if (current.executionIntentKey === executionIntentKey) {
+            return current;
+          }
+
+          return withLog(
+            {
+              ...current,
+              executionIntentKey,
+              executionIntent: {
+                payoutProfile,
+                payoutTitle,
+                telemetryMode,
+                amountDisplay,
+                reference,
+                purpose,
+                executionTarget,
+                evidenceRoute,
+              },
+            },
+            "Execution request loaded",
+            `${proposalId} · ${payoutTitle} · ${amountDisplay} · ${reference} staged from ${source}.`,
           );
         }),
       createDao: () =>

@@ -23,7 +23,7 @@ import { useServiceHandoffTelemetryMode } from "@/lib/use-service-handoff-snapsh
 const pieColors = ["#14f195", "#9945ff", "#00c2ff", "#ffb100"];
 
 export function AnalyticsCharts() {
-  const telemetryMode = useServiceHandoffTelemetryMode("services");
+  const telemetryMode = useServiceHandoffTelemetryMode("analytics");
   const mounted = useSyncExternalStore(
     () => () => {},
     () => true,

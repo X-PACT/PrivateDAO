@@ -292,7 +292,7 @@ export function TreasuryReceiveSurface() {
   const engagePrimaryHref = `/engage?intake=${activeProfile.intake}&asset=${activeAsset.symbol}&amount=${encodedAmount}&purpose=${encodedPurpose}&lane=${lane}&profile=${encodedProfile}`;
 
   return (
-    <Card>
+    <Card id="treasury-receive-surface">
       <CardHeader>
         <CardTitle>Treasury receive surface</CardTitle>
         <p className="mt-2 text-sm leading-7 text-white/60">
@@ -322,7 +322,7 @@ export function TreasuryReceiveSurface() {
         </div>
 
         <div className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
-          <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
+          <div id="treasury-payment-request" className="rounded-3xl border border-white/8 bg-white/4 p-5">
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-emerald-200/78">
               <FileCheck2 className="h-4 w-4" />
               Treasury operating standard
