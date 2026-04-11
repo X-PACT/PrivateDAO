@@ -2,11 +2,14 @@ import {
   getExecutionSurfaceSnapshot,
   type ExecutionSurfaceSnapshot,
 } from "@/lib/devnet-service-metrics";
+import { getReadNodeActivationSnapshot } from "@/lib/read-node-activation";
+import { getReadNodeHostReadinessSnapshot } from "@/lib/read-node-host-readiness";
 import {
   getTreasuryReviewerTruthSnapshot,
   type TreasuryReviewerTruthContext,
 } from "@/lib/treasury-reviewer-truth";
 import { getReviewerTelemetryTruthSnapshot } from "@/lib/reviewer-telemetry-truth";
+import { proposalCards } from "@/lib/site-data";
 
 export type WalletFirstServiceActionContext = "start" | "services" | "command-center";
 
@@ -20,6 +23,51 @@ export type WalletFirstServiceAction = {
   primaryLabel: string;
   proofHref: string;
   proofLabel: string;
+};
+
+export type ProposalReviewOption = {
+  id: string;
+  title: string;
+  status: string;
+  window: string;
+  treasury: string;
+  summary: string;
+  primaryHref: string;
+  primaryLabel: string;
+  proofHref: string;
+  proofLabel: string;
+};
+
+export type PayoutRouteOption = {
+  slug: "pilot-funding" | "treasury-top-up" | "vendor-payout" | "contributor-payout";
+  title: string;
+  summary: string;
+  routeFocus: string;
+  state: string;
+  stateDetail: string;
+  primaryHref: string;
+  primaryLabel: string;
+  proofHref: string;
+  proofLabel: string;
+};
+
+export type TelemetryInspectorMode = {
+  slug: "packet" | "snapshot" | "backend";
+  title: string;
+  summary: string;
+  state: string;
+  stateDetail: string;
+  primaryHref: string;
+  primaryLabel: string;
+  proofHref: string;
+  proofLabel: string;
+};
+
+export type WalletFirstServiceWorkbenchData = {
+  actions: WalletFirstServiceAction[];
+  proposals: ProposalReviewOption[];
+  payouts: PayoutRouteOption[];
+  telemetryModes: TelemetryInspectorMode[];
 };
 
 function getTreasuryContext(context: WalletFirstServiceActionContext): TreasuryReviewerTruthContext {
@@ -133,4 +181,148 @@ export function getWalletFirstServiceActions(
     getPayoutRouteAction(context),
     getTelemetryInspectionAction(context),
   ];
+}
+
+function getProposalReviewOptions(): ProposalReviewOption[] {
+  return proposalCards.map((proposal) => ({
+    id: proposal.id,
+    title: proposal.title,
+    status: proposal.status,
+    window: proposal.window,
+    treasury: proposal.treasury,
+    summary: proposal.summary,
+    primaryHref: `/command-center?proposal=${proposal.id}#proposal-review-action`,
+    primaryLabel: "Open review lane with this proposal",
+    proofHref:
+      proposal.status === "Execution ready" || proposal.status === "Executed"
+        ? "/documents/live-proof-v3"
+        : "/proof#judge-runtime-logs",
+    proofLabel:
+      proposal.status === "Execution ready" || proposal.status === "Executed"
+        ? "Open execution packet"
+        : "Open runtime proof",
+  }));
+}
+
+function getPayoutRouteOptions(
+  context: WalletFirstServiceActionContext,
+): PayoutRouteOption[] {
+  const treasury = getTreasuryReviewerTruthSnapshot(getTreasuryContext(context));
+
+  return [
+    {
+      slug: "pilot-funding",
+      title: "Pilot funding",
+      summary:
+        "Use the buyer-safe pilot corridor when the story is startup traction, reviewer trust, and fastest commercial onboarding.",
+      routeFocus: "Buyer-safe pilot corridor",
+      state: treasury.paymentsReadiness,
+      stateDetail: treasury.exactBlockerSummary,
+      primaryHref: "/engage?profile=pilot-funding",
+      primaryLabel: "Open pilot funding path",
+      proofHref: treasury.reviewerPacketHref,
+      proofLabel: treasury.reviewerPacketLabel,
+    },
+    {
+      slug: "treasury-top-up",
+      title: "Treasury top-up",
+      summary:
+        "Use the treasury top-up route when the motion is capitalization, runway, or governance-approved funding for live service operations.",
+      routeFocus: "Treasury capitalization corridor",
+      state: treasury.paymentsReadiness,
+      stateDetail: treasury.exactBlockerSummary,
+      primaryHref: "/engage?profile=treasury-top-up",
+      primaryLabel: "Open treasury top-up path",
+      proofHref: "/services#treasury-reviewer-grade",
+      proofLabel: "Open services treasury rail",
+    },
+    {
+      slug: "vendor-payout",
+      title: "Vendor payout",
+      summary:
+        "Use the governed vendor route when the action needs execution visibility, payout discipline, and command-shell traceability.",
+      routeFocus: "Operator-visible payout corridor",
+      state: treasury.paymentsReadiness,
+      stateDetail: treasury.exactBlockerSummary,
+      primaryHref: "/engage?profile=vendor-payout",
+      primaryLabel: "Open vendor payout path",
+      proofHref: "/command-center",
+      proofLabel: "Open command-center payout path",
+    },
+    {
+      slug: "contributor-payout",
+      title: "Contributor payout",
+      summary:
+        "Use the contributor route when the payment needs governance context, role discipline, and the same proof continuity as vendor actions.",
+      routeFocus: "Governed contributor payout corridor",
+      state: treasury.paymentsReadiness,
+      stateDetail: treasury.exactBlockerSummary,
+      primaryHref: "/engage?profile=contributor-payout",
+      primaryLabel: "Open contributor payout path",
+      proofHref: "/command-center",
+      proofLabel: "Open command-center payout path",
+    },
+  ];
+}
+
+function getTelemetryInspectorModes(
+  context: WalletFirstServiceActionContext,
+): TelemetryInspectorMode[] {
+  const telemetry = getReviewerTelemetryTruthSnapshot();
+  const activation = getReadNodeActivationSnapshot(
+    context === "services" ? "services" : context === "command-center" ? "command-center" : "proof",
+  );
+  const host = getReadNodeHostReadinessSnapshot(
+    context === "services" ? "services" : context === "command-center" ? "command-center" : "proof",
+  );
+
+  return [
+    {
+      slug: "packet",
+      title: "Reviewer packet",
+      summary:
+        "Stay on the reviewer-safe packet when the goal is freshness, finalized counts, and exported proof with minimal operator context switching.",
+      state: telemetry.freshnessLabel,
+      stateDetail: `${telemetry.indexedProposalCount} · ${telemetry.governanceFinalized} governance finalized · ${telemetry.confidentialFinalized} confidential finalized`,
+      primaryHref: telemetry.packetHref,
+      primaryLabel: telemetry.packetLabel,
+      proofHref: "/analytics#telemetry-inspection",
+      proofLabel: "Open analytics telemetry lane",
+    },
+    {
+      slug: "snapshot",
+      title: "Read-node snapshot",
+      summary:
+        "Switch to snapshot mode when the reviewer or operator needs indexed coverage, confidential coverage, and the current read path in one place.",
+      state: activation.activationState,
+      stateDetail: `${activation.indexedProposalCount} · ${activation.confidentialCoverage} · ${activation.readPath}`,
+      primaryHref: activation.snapshotHref,
+      primaryLabel: activation.snapshotLabel,
+      proofHref: activation.opsHref,
+      proofLabel: activation.opsLabel,
+    },
+    {
+      slug: "backend",
+      title: "Backend path",
+      summary:
+        "Use backend mode when the conversation shifts from packet review to actual hosted service cutover, public health endpoints, and fallback policy.",
+      state: host.readinessState,
+      stateDetail: `${host.deploymentTarget} · ${host.publicHealthPath} · ${host.publicMetricsPath}`,
+      primaryHref: host.deployHref,
+      primaryLabel: host.deployLabel,
+      proofHref: host.packetHref,
+      proofLabel: host.packetLabel,
+    },
+  ];
+}
+
+export function getWalletFirstServiceWorkbenchData(
+  context: WalletFirstServiceActionContext,
+): WalletFirstServiceWorkbenchData {
+  return {
+    actions: getWalletFirstServiceActions(context),
+    proposals: getProposalReviewOptions(),
+    payouts: getPayoutRouteOptions(context),
+    telemetryModes: getTelemetryInspectorModes(context),
+  };
 }
