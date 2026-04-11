@@ -99,7 +99,7 @@ export function buildPreparedActionSummary({
       beneficiary = execution?.recipient ?? execution?.recipientLabel ?? proposal?.treasury ?? "Treasury recipient from approved treasury_action";
       amountOrAsset = execution?.amountDisplay ?? proposal?.treasury ?? "Approved treasury amount and asset";
       timelock = execution?.timelockLabel
-        ?? (proposal?.status === "Execution ready"
+        ?? (proposal?.status === "Execution ready" || proposal?.status === "Executed"
           ? "Execution ready in current surface; on-chain path still enforces execution_unlocks_at"
           : "Blocked until proposal is passed, finalized, and timelock expires");
       operationType = "Execute proposal";

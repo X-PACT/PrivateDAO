@@ -22,6 +22,10 @@ export const READ_NODE_FEATURED_PROPOSAL_CONTEXTS = {
     "historicalUseCount": 1,
     "repeatedAttempts": 0,
     "baselineAmount": 1000000,
+    "presentationStatus": "Executed",
+    "presentationWindow": "Commit closed · Reveal complete · Executed on devnet",
+    "presentationTreasury": "Confidential payout executed for 1,000,000 units to 2TrX…1mCk via mint 9RqM…nsdC",
+    "phaseMappingLabel": "Executed indexed phase maps to Executed in the product surface",
     "txContext": {
       "proofStatus": "verified-devnet-confidential-path",
       "evidenceRoute": "/proof/?judge=1",
@@ -47,6 +51,10 @@ export const READ_NODE_FEATURED_PROPOSAL_CONTEXTS = {
     "historicalUseCount": 1,
     "repeatedAttempts": 1,
     "baselineAmount": 1000000,
+    "presentationStatus": "Evidence gated",
+    "presentationWindow": "Voting closed · Finalized on devnet · Settlement evidence still incomplete",
+    "presentationTreasury": "Confidential payout still gated for 1,000,000 units to 2TrX…1mCk via mint 58Wb…vfMh",
+    "phaseMappingLabel": "Finalized indexed phase maps to Evidence gated in the product surface",
     "txContext": {
       "proofStatus": "runtime-indexed-confidential-path",
       "evidenceRoute": "/proof/?judge=1"
@@ -71,6 +79,10 @@ export const READ_NODE_FEATURED_PROPOSAL_CONTEXTS = {
     "historicalUseCount": 1,
     "repeatedAttempts": 0,
     "baselineAmount": 0.02,
+    "presentationStatus": "Executed",
+    "presentationWindow": "Commit closed · Reveal complete · Executed on devnet",
+    "presentationTreasury": "0.02 SOL sent to AbF9…FWDy",
+    "phaseMappingLabel": "Executed indexed phase maps to Executed in the product surface",
     "txContext": {
       "proofStatus": "verified-devnet-governance-path",
       "evidenceRoute": "/documents/reviewer-fast-path",

@@ -20,6 +20,14 @@ type VoteModalProps = {
 export function VoteModal({ proposal, onClose }: VoteModalProps) {
   if (!proposal) return null;
 
+  const isExecuted = proposal.status === "Executed";
+  const reviewAction =
+    proposal.status === "Execution ready" || proposal.status === "Executed"
+      ? "execute_proposal"
+      : proposal.status === "Ready to reveal"
+        ? "reveal_vote"
+        : "commit_vote";
+
   const confidence = getConfidenceEngineSummary({
     title: proposal.title,
     type: proposal.type,
@@ -42,7 +50,7 @@ export function VoteModal({ proposal, onClose }: VoteModalProps) {
       voteChoice: "Stored vote + salt",
     }),
     buildPreparedActionSummary({
-      action: proposal.status === "Execution ready" ? "execute_proposal" : "finalize_proposal",
+      action: proposal.status === "Execution ready" || proposal.status === "Executed" ? "execute_proposal" : "finalize_proposal",
       proposal,
       proposalId: proposal.id,
     }),
@@ -56,7 +64,9 @@ export function VoteModal({ proposal, onClose }: VoteModalProps) {
             <div className="text-[11px] uppercase tracking-[0.32em] text-emerald-300/80">Vote Modal</div>
             <h3 className="mt-2 text-2xl font-semibold text-white">{proposal.title}</h3>
             <p className="mt-2 max-w-xl text-sm leading-7 text-white/60">
-              This React migration keeps the voting flow legible for normal operators: proposal scope, privacy boundary, treasury path, and evidence requirements all stay visible before the user signs.
+              {isExecuted
+                ? "This review surface now reflects an already executed proposal record: commit, reveal, treasury target, and proof context stay visible without pretending the operator is still about to sign."
+                : "This React migration keeps the voting flow legible for normal operators: proposal scope, privacy boundary, treasury path, and evidence requirements all stay visible before the user signs."}
             </p>
           </div>
           <button
@@ -82,8 +92,8 @@ export function VoteModal({ proposal, onClose }: VoteModalProps) {
           </div>
           <div className="rounded-3xl border border-white/8 bg-white/4 p-4 sm:col-span-2">
             <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Current boundary</div>
-            <div className="mt-2 text-sm leading-7 text-white/65">
-              {proposal.privacy}. Treasury execution remains blocked until voting, reveal, timelock, and evidence gates align with the selected hardening path.
+              <div className="mt-2 text-sm leading-7 text-white/65">
+              {proposal.privacy}. {isExecuted ? "The indexed record shows that treasury execution already cleared the governance path on devnet." : "Treasury execution remains blocked until voting, reveal, timelock, and evidence gates align with the selected hardening path."}
             </div>
           </div>
           <div className="rounded-3xl border border-white/8 bg-white/4 p-4 sm:col-span-2">
@@ -154,16 +164,13 @@ export function VoteModal({ proposal, onClose }: VoteModalProps) {
         </div>
 
         <div className="mt-6">
-          <OnchainParityPanel
-            action={proposal.status === "Execution ready" ? "execute_proposal" : proposal.status === "Ready to reveal" ? "reveal_vote" : "commit_vote"}
-            compact
-          />
+          <OnchainParityPanel action={reviewAction} compact />
         </div>
 
         <div className="mt-6 flex flex-wrap gap-3">
-          <Button>Commit vote</Button>
-          <Button variant="secondary">Reveal vote</Button>
-          <Button variant="outline">Review execution path</Button>
+          <Button>{isExecuted ? "Review commit trail" : "Commit vote"}</Button>
+          <Button variant="secondary">{isExecuted ? "Review reveal trail" : "Reveal vote"}</Button>
+          <Button variant="outline">{isExecuted ? "Execution confirmed" : "Review execution path"}</Button>
         </div>
       </div>
     </div>

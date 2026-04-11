@@ -44,6 +44,11 @@ const actionMap: Record<ProposalCardModel["status"], { commit: string; reveal: s
     reveal: "Reveal complete",
     execute: "Settlement evidence still required",
   },
+  Executed: {
+    commit: "Commit trail already recorded on devnet",
+    reveal: "Reveal trail already recorded on devnet",
+    execute: "Treasury motion already executed on devnet",
+  },
 };
 
 type ProposalWorkspaceProps = {
@@ -105,7 +110,7 @@ export function ProposalWorkspace({ executionSnapshot }: ProposalWorkspaceProps)
                 <div className="mt-2 text-xl font-medium text-white">{proposal.title}</div>
                 <p className="mt-3 max-w-3xl text-sm leading-7 text-white/58">{proposal.summary}</p>
               </div>
-              <Badge variant={proposal.status === "Execution ready" ? "success" : proposal.status === "Evidence gated" ? "warning" : "cyan"}>
+              <Badge variant={proposal.status === "Execution ready" || proposal.status === "Executed" ? "success" : proposal.status === "Evidence gated" ? "warning" : "cyan"}>
                 {proposal.status}
               </Badge>
             </div>
@@ -128,7 +133,7 @@ export function ProposalWorkspace({ executionSnapshot }: ProposalWorkspaceProps)
             </div>
             <div className="rounded-3xl border border-white/8 bg-black/20 p-4">
               <div className="flex items-center gap-3">
-                {proposal.status === "Execution ready" ? <CheckCircle2 className="h-4 w-4 text-emerald-300" /> : <Clock3 className="h-4 w-4 text-white/60" />}
+                {proposal.status === "Execution ready" || proposal.status === "Executed" ? <CheckCircle2 className="h-4 w-4 text-emerald-300" /> : <Clock3 className="h-4 w-4 text-white/60" />}
                 <div className="text-sm font-medium text-white">Execute treasury</div>
               </div>
               <div className="mt-3 text-sm leading-7 text-white/58">{actions.execute}</div>
@@ -136,15 +141,17 @@ export function ProposalWorkspace({ executionSnapshot }: ProposalWorkspaceProps)
           </div>
 
           <div className="flex flex-wrap gap-3">
-            <Button onClick={() => setVoteModalOpen(true)}>{connected ? "Open vote modal" : "Connect wallet to vote"}</Button>
-            <Button variant="secondary" disabled={!connected || proposal.status === "Live voting"}>
-              Review reveal state
+            <Button onClick={() => setVoteModalOpen(true)}>
+              {connected ? (proposal.status === "Executed" ? "Open execution review" : "Open vote modal") : "Connect wallet to review"}
+            </Button>
+            <Button variant="secondary" disabled={!connected || proposal.status === "Live voting" || proposal.status === "Executed"}>
+              {proposal.status === "Executed" ? "Reveal complete" : "Review reveal state"}
             </Button>
             <Link
-              href={proposal.status === "Execution ready" ? "/documents/live-proof-v3" : "/documents/reviewer-fast-path"}
+              href={proposal.status === "Execution ready" || proposal.status === "Executed" ? "/documents/live-proof-v3" : "/documents/reviewer-fast-path"}
               className={cn(buttonVariants({ variant: "outline" }))}
             >
-              {proposal.status === "Execution ready" ? "Open curated execution packet" : "Open curated reviewer packet"}
+              {proposal.status === "Execution ready" || proposal.status === "Executed" ? "Open curated execution packet" : "Open curated reviewer packet"}
             </Link>
           </div>
 

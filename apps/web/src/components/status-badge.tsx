@@ -7,6 +7,7 @@ const variantMap: Record<ProposalStatus, "success" | "warning" | "cyan" | "viole
   Timelocked: "violet",
   "Execution ready": "success",
   "Evidence gated": "warning",
+  Executed: "success",
 };
 
 export function StatusBadge({ status }: { status: ProposalStatus }) {

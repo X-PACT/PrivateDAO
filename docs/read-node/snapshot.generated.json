@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-04-11T03:19:06.885Z",
+  "generatedAt": "2026-04-11T03:34:14.320Z",
   "readPath": "backend-indexer",
   "runtime": {
-    "generatedAt": "2026-04-11T03:19:02.899Z",
+    "generatedAt": "2026-04-11T03:34:09.775Z",
     "readPath": "backend-indexer",
     "rpcEndpoint": "https://api.devnet.solana.com",
     "rpcPoolSize": 1,
     "commitment": "confirmed",
     "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
-    "slot": 454714229,
+    "slot": 454716635,
     "solanaCore": "4.0.0-beta.6",
     "featureSet": 2475355604,
-    "latestBlockhash": "EYdJ2sMcr6LuV8UGDrMPWXTF3mbQFdVeXDpPXdfGbphM",
-    "lastValidBlockHeight": 442589825,
+    "latestBlockhash": "5d553LBKyBiyHepqEEgymtFQHu9GJU3Pp8eM7LruoLaK",
+    "lastValidBlockHeight": 442592223,
     "programExecutable": true,
     "programOwner": "BPFLoaderUpgradeab1e11111111111111111111111",
     "cacheTtlMs": 15000
@@ -31,7 +31,7 @@
     "uniqueDaos": 21
   },
   "overview": {
-    "generatedAt": "2026-04-11T03:19:06.663Z",
+    "generatedAt": "2026-04-11T03:34:14.085Z",
     "proposals": 41,
     "uniqueDaos": 21,
     "zkEnforced": 0,
@@ -123,6 +123,10 @@
       "historicalUseCount": 1,
       "repeatedAttempts": 0,
       "baselineAmount": 1000000,
+      "presentationStatus": "Executed",
+      "presentationWindow": "Commit closed · Reveal complete · Executed on devnet",
+      "presentationTreasury": "Confidential payout executed for 1,000,000 units to 2TrX…1mCk via mint 9RqM…nsdC",
+      "phaseMappingLabel": "Executed indexed phase maps to Executed in the product surface",
       "txContext": {
         "proofStatus": "verified-devnet-confidential-path",
         "evidenceRoute": "/proof/?judge=1",
@@ -148,6 +152,10 @@
       "historicalUseCount": 1,
       "repeatedAttempts": 1,
       "baselineAmount": 1000000,
+      "presentationStatus": "Evidence gated",
+      "presentationWindow": "Voting closed · Finalized on devnet · Settlement evidence still incomplete",
+      "presentationTreasury": "Confidential payout still gated for 1,000,000 units to 2TrX…1mCk via mint 58Wb…vfMh",
+      "phaseMappingLabel": "Finalized indexed phase maps to Evidence gated in the product surface",
       "txContext": {
         "proofStatus": "runtime-indexed-confidential-path",
         "evidenceRoute": "/proof/?judge=1"
@@ -172,6 +180,10 @@
       "historicalUseCount": 1,
       "repeatedAttempts": 0,
       "baselineAmount": 0.02,
+      "presentationStatus": "Executed",
+      "presentationWindow": "Commit closed · Reveal complete · Executed on devnet",
+      "presentationTreasury": "0.02 SOL sent to AbF9…FWDy",
+      "phaseMappingLabel": "Executed indexed phase maps to Executed in the product surface",
       "txContext": {
         "proofStatus": "verified-devnet-governance-path",
         "evidenceRoute": "/documents/reviewer-fast-path",

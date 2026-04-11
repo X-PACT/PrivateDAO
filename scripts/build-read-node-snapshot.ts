@@ -35,6 +35,14 @@ type FrontierIntegrations = {
   };
 };
 
+type PresentationStatus =
+  | "Live voting"
+  | "Ready to reveal"
+  | "Timelocked"
+  | "Execution ready"
+  | "Evidence gated"
+  | "Executed";
+
 const ROOT = path.resolve(__dirname, "..");
 const JSON_PATH = path.join(ROOT, "docs/read-node/snapshot.generated.json");
 const MD_PATH = path.join(ROOT, "docs/read-node/snapshot.generated.md");
@@ -80,6 +88,106 @@ function formatSourceLabel(title: string, phase: string) {
   return `Backend-indexed proposal record: ${title} (${phase})`;
 }
 
+function mapIndexedPhaseToPresentationStatus(
+  phase: string,
+  options?: {
+    hasConfidentialPayout?: boolean;
+    payoutFunded?: boolean;
+    payoutSettled?: boolean;
+  },
+): PresentationStatus {
+  if (phase === "Executed") {
+    return "Executed";
+  }
+
+  if (phase === "Executable") {
+    return "Execution ready";
+  }
+
+  if (phase === "Timelocked") {
+    return "Timelocked";
+  }
+
+  if (phase === "Reveal") {
+    return "Ready to reveal";
+  }
+
+  if (phase === "Voting") {
+    return "Live voting";
+  }
+
+  if (
+    phase === "Finalized" &&
+    options?.hasConfidentialPayout &&
+    (!options.payoutFunded || !options.payoutSettled)
+  ) {
+    return "Evidence gated";
+  }
+
+  if (phase === "Finalized") {
+    return "Timelocked";
+  }
+
+  return "Evidence gated";
+}
+
+function buildWindowSummary(phase: string, status: PresentationStatus) {
+  if (status === "Executed") {
+    return "Commit closed · Reveal complete · Executed on devnet";
+  }
+
+  if (status === "Execution ready") {
+    return "Commit closed · Reveal complete · Timelock cleared";
+  }
+
+  if (status === "Timelocked") {
+    return "Voting closed · Finalized on devnet · Timelock still active";
+  }
+
+  if (status === "Ready to reveal") {
+    return "Commit closed · Reveal window is open";
+  }
+
+  if (status === "Live voting") {
+    return "Commit window still open on the indexed proposal record";
+  }
+
+  if (phase === "Finalized") {
+    return "Voting closed · Finalized on devnet · Settlement evidence still incomplete";
+  }
+
+  return "Execution boundary still depends on explicit evidence completion";
+}
+
+function buildTreasurySummary(
+  proposal: Awaited<ReturnType<PrivateDaoReadNode["fetchProposals"]>>[number],
+  status: PresentationStatus,
+) {
+  if (proposal.treasuryAction) {
+    const amount = formatLamportsToSol(proposal.treasuryAction.amountLamports);
+    const asset = proposal.treasuryAction.tokenMint ? "SPL token" : "SOL";
+    const recipient = `${proposal.treasuryAction.recipient.slice(0, 4)}…${proposal.treasuryAction.recipient.slice(-4)}`;
+    const verb = status === "Executed" ? "sent" : status === "Execution ready" ? "ready to send" : "queued to send";
+    return `${amount} ${asset} ${verb} to ${recipient}`;
+  }
+
+  if (proposal.confidentialPayoutPlan) {
+    const recipient = `${proposal.confidentialPayoutPlan.settlementRecipient.slice(0, 4)}…${proposal.confidentialPayoutPlan.settlementRecipient.slice(-4)}`;
+    const mint = proposal.confidentialPayoutPlan.tokenMint
+      ? `${proposal.confidentialPayoutPlan.tokenMint.slice(0, 4)}…${proposal.confidentialPayoutPlan.tokenMint.slice(-4)}`
+      : "native asset";
+    const statusLead =
+      status === "Executed"
+        ? "Confidential payout executed"
+        : status === "Evidence gated"
+          ? "Confidential payout still gated"
+          : "Confidential payout prepared";
+    return `${statusLead} for ${formatRawUnits(proposal.confidentialPayoutPlan.totalAmount)} units to ${recipient} via mint ${mint}`;
+  }
+
+  return "Treasury action is still pending explicit indexing in the current proposal record";
+}
+
 function buildFeaturedProposalContexts(
   proposals: Awaited<ReturnType<PrivateDaoReadNode["fetchProposals"]>>,
   report: DevnetMultiProposalReport,
@@ -106,6 +214,17 @@ function buildFeaturedProposalContexts(
   }
 
   const grantReport = reportByPubkey.get(grant.pubkey);
+  const payrollStatus = mapIndexedPhaseToPresentationStatus(payroll.phase, {
+    hasConfidentialPayout: true,
+    payoutFunded: payroll.confidentialPayoutPlan.status === "Funded",
+    payoutSettled: payroll.magicblockCorridor?.status === "Settled",
+  });
+  const gamingStatus = mapIndexedPhaseToPresentationStatus(gaming.phase, {
+    hasConfidentialPayout: true,
+    payoutFunded: gaming.confidentialPayoutPlan.status === "Funded",
+    payoutSettled: gaming.magicblockCorridor?.status === "Settled",
+  });
+  const grantStatus = mapIndexedPhaseToPresentationStatus(grant.phase);
 
   return {
     payroll: {
@@ -130,6 +249,10 @@ function buildFeaturedProposalContexts(
       historicalUseCount: 1,
       repeatedAttempts: payroll.phase === "Executed" ? 0 : 1,
       baselineAmount: payroll.confidentialPayoutPlan.totalAmount,
+      presentationStatus: payrollStatus,
+      presentationWindow: buildWindowSummary(payroll.phase, payrollStatus),
+      presentationTreasury: buildTreasurySummary(payroll, payrollStatus),
+      phaseMappingLabel: `${payroll.phase} indexed phase maps to ${payrollStatus} in the product surface`,
       txContext: {
         proofStatus: integrations.confidentialOperations?.status ?? "runtime-indexed-confidential-path",
         evidenceRoute: "/proof/?judge=1",
@@ -158,6 +281,10 @@ function buildFeaturedProposalContexts(
       historicalUseCount: 1,
       repeatedAttempts: gaming.phase === "Executed" ? 0 : 1,
       baselineAmount: gaming.confidentialPayoutPlan.totalAmount,
+      presentationStatus: gamingStatus,
+      presentationWindow: buildWindowSummary(gaming.phase, gamingStatus),
+      presentationTreasury: buildTreasurySummary(gaming, gamingStatus),
+      phaseMappingLabel: `${gaming.phase} indexed phase maps to ${gamingStatus} in the product surface`,
       txContext: {
         proofStatus: gaming.magicblockCorridor?.status === "Settled" ? "runtime-indexed-confidential-path" : "runtime-indexed-settlement-pending",
         evidenceRoute: "/proof/?judge=1",
@@ -185,6 +312,10 @@ function buildFeaturedProposalContexts(
       historicalUseCount: 1,
       repeatedAttempts: grantReport?.executeTx ? 0 : 1,
       baselineAmount: formatLamportsToSol(grant.treasuryAction.amountLamports),
+      presentationStatus: grantStatus,
+      presentationWindow: buildWindowSummary(grant.phase, grantStatus),
+      presentationTreasury: buildTreasurySummary(grant, grantStatus),
+      phaseMappingLabel: `${grant.phase} indexed phase maps to ${grantStatus} in the product surface`,
       txContext: {
         proofStatus: grantReport?.executeTx ? "verified-devnet-governance-path" : "runtime-indexed-governance-path",
         evidenceRoute: "/documents/reviewer-fast-path",

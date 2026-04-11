@@ -437,7 +437,8 @@ export function getOperationalValidationSnapshot(): OperationalValidationSnapsho
   const revealReadyCount = proposalCards.filter((proposal) => proposal.status === "Ready to reveal").length;
   const executionReadyCount = proposalCards.filter((proposal) => proposal.status === "Execution ready").length;
   const evidenceGatedCount = proposalCards.filter((proposal) => proposal.status === "Evidence gated").length;
-  const proposalFlowHealthyCount = executionReadyCount + revealReadyCount;
+  const executedCount = proposalCards.filter((proposal) => proposal.status === "Executed").length;
+  const proposalFlowHealthyCount = executionReadyCount + revealReadyCount + executedCount;
 
   const walletReviewReadyCount = runtimeEvidence.matrixStatuses.filter(
     (item) => item.status === "devnet-review-ready",
@@ -469,7 +470,7 @@ export function getOperationalValidationSnapshot(): OperationalValidationSnapsho
         proposalFlowHealthyCount + executionSuccessCount,
         proposalCards.length + 2,
       ),
-      detail: `${verifiedGovernanceTxCount}/${verifiedGovernanceLifecycleCount} governance proof steps are finalized. ${liveVotingCount} proposal is still in commit mode and ${evidenceGatedCount} proposal is still waiting on settlement evidence.`,
+      detail: `${verifiedGovernanceTxCount}/${verifiedGovernanceLifecycleCount} governance proof steps are finalized. ${executedCount} proposal is already executed on devnet, ${liveVotingCount} proposal is still in commit mode, and ${evidenceGatedCount} proposal is still waiting on settlement evidence.`,
       routeLabel: "Open proof and execution",
       routeHref: "/proof/?judge=1",
       tone: "emerald",

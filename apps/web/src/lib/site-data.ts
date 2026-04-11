@@ -5,7 +5,8 @@ export type ProposalStatus =
   | "Ready to reveal"
   | "Timelocked"
   | "Execution ready"
-  | "Evidence gated";
+  | "Evidence gated"
+  | "Executed";
 
 export type ProposalCardModel = {
   id: string;
@@ -25,6 +26,10 @@ export type ProposalExecutionContext = {
   sourceType: "evidence-backed" | "runtime-indexed" | "operator-draft";
   sourceLabel: string;
   indexedPhase?: string;
+  presentationStatus?: ProposalStatus;
+  presentationWindow?: string;
+  presentationTreasury?: string;
+  phaseMappingLabel?: string;
   proposalAccount: string;
   daoAccount?: string;
   treasuryAccount?: string;
@@ -70,6 +75,85 @@ function getFeaturedExecutionContext(
     },
   };
 }
+
+const payrollExecutionDefaults: ProposalExecutionContext = {
+  sourceType: "evidence-backed",
+  sourceLabel: "Canonical confidential operations evidence",
+  proposalAccount: "52UpWHJodPWQzpR8u2qqpgwo3jRB7mvjgwCnf8oSJuXX",
+  daoAccount: "9yi2TGLcENufbRPVbEJH3BWJWrqsGxLfG6G7qJmUS8r6",
+  executionTarget: "Aggregate payroll payout to the confidential settlement wallet after governance clearance.",
+  recipient: "2TrX1tAJjcPcV8nc6f8LBAe97jZVi5hPG6jND3Wb1mCk",
+  recipientLabel: "Confidential settlement wallet",
+  recipientKnown: true,
+  amount: 0.05,
+  amountDisplay: "0.05 SOL aggregate payout",
+  mintSymbol: "SOL",
+  mintAddress: null,
+  timelockHours: null,
+  timelockLabel: "Timelock already cleared in the current execution-ready evidence path",
+  historicalUseCount: 4,
+  repeatedAttempts: 0,
+  baselineAmount: 0.05,
+  txContext: {
+    proofStatus: "verified-devnet-confidential-path",
+    evidenceRoute: "/proof/?judge=1",
+    executeSignature: "LoNED2YKkYWxaQbFV4y8fCzqGi5YrpPSruJYppqfvcTyAJ2zU5HM92QEsPNydQb26abE7qp2kB7hCNPJFbVUUPA",
+  },
+};
+
+const gamingExecutionDefaults: ProposalExecutionContext = {
+  sourceType: "runtime-indexed",
+  sourceLabel: "Backend-indexed confidential corridor sample",
+  proposalAccount: "QwRmN5WFDL7AxXT8fjcZNhy53cgLk7UWnJ5qB2CmRaJ",
+  daoAccount: "2UBuKLVfY3kJ22WAmYEZDh71bWhJp2euRpPDq2qT1S8p",
+  executionTarget: "MagicBlock reward corridor with settlement gating before final distribution.",
+  recipient: "8YH5f29UX363oMM1mqsXDyyBtyu4Y1b1BBuikV4xkAys",
+  recipientLabel: "MagicBlock settlement corridor",
+  recipientKnown: true,
+  amount: null,
+  amountDisplay: "Reward amount still withheld in the current reviewer surface",
+  mintSymbol: null,
+  mintAddress: null,
+  timelockHours: null,
+  timelockLabel: "Execution remains blocked until settlement evidence and final payout routing are explicit",
+  historicalUseCount: 1,
+  repeatedAttempts: 1,
+  baselineAmount: null,
+  txContext: {
+    proofStatus: "runtime-indexed-confidential-path",
+    evidenceRoute: "/proof/?judge=1",
+  },
+};
+
+const grantExecutionDefaults: ProposalExecutionContext = {
+  sourceType: "operator-draft",
+  sourceLabel: "Structured proposal creation draft bound to live governance UX",
+  proposalAccount: "A5Hd89vpCTVPALhuwurLQvyAkHyrNGhvZtAcJvBmuJ9U",
+  daoAccount: "EyLjhct7TJwb7pa1HssjwZcTT9WMq6Vq5aAxTKsK1b8t",
+  treasuryAccount: "CgqzWTGHX3qNDe9FLJEFrmNQr3gddUXbGQuWN5r5YzM6",
+  executionTarget: "Grant tranche release to the approved committee beneficiary set after finalization and unlock.",
+  recipient: null,
+  recipientLabel: "Grant beneficiary set still pending reviewer disclosure",
+  recipientKnown: false,
+  amount: null,
+  amountDisplay: "USDC-equivalent tranche amount still pending explicit proposal payload",
+  mintSymbol: "USDC-equivalent",
+  mintAddress: null,
+  timelockHours: null,
+  timelockLabel: "Still in commit window; final execution lock is not available until finalize",
+  historicalUseCount: 2,
+  repeatedAttempts: 0,
+  baselineAmount: null,
+  txContext: {
+    proofStatus: "create-bound-proposal-draft",
+    evidenceRoute: "/documents/reviewer-fast-path",
+    createProposalSignature: "u7V1B5cUx91KY69pE9JSMfkAt9SFcVZbDrP9Nsv3XqatNHfr1P2jZwKkaCHCZuPyqm4WJgmH8w8SDUQoJQc938S",
+  },
+};
+
+const payrollExecution = getFeaturedExecutionContext("payroll", payrollExecutionDefaults);
+const gamingExecution = getFeaturedExecutionContext("gaming", gamingExecutionDefaults);
+const grantExecution = getFeaturedExecutionContext("grant", grantExecutionDefaults);
 
 export const daoSummary = {
   name: "PrivateDAO Frontier Council",
@@ -244,112 +328,43 @@ export const proposalCards: ProposalCardModel[] = [
     id: "PDAO-104",
     title: "Confidential payroll batch / April",
     type: "Enterprise DAO",
-    status: "Execution ready",
+    status: payrollExecution.presentationStatus ?? "Execution ready",
     quorum: "Token supply quorum snapshot captured",
-    window: "Commit closed · Reveal complete",
-    treasury: "0.05 SOL demo payout plus encrypted manifest",
+    window: payrollExecution.presentationWindow ?? "Commit closed · Reveal complete",
+    treasury: payrollExecution.presentationTreasury ?? "0.05 SOL demo payout plus encrypted manifest",
     privacy: "Commit-reveal + REFHE envelope",
     tech: ["ZK", "REFHE", "Fast RPC"],
     summary:
       "Payroll proposal with encrypted manifest binding, reviewer-visible readiness checks, and evidence-bound execution.",
-    execution: getFeaturedExecutionContext("payroll", {
-      sourceType: "evidence-backed",
-      sourceLabel: "Canonical confidential operations evidence",
-      proposalAccount: "52UpWHJodPWQzpR8u2qqpgwo3jRB7mvjgwCnf8oSJuXX",
-      daoAccount: "9yi2TGLcENufbRPVbEJH3BWJWrqsGxLfG6G7qJmUS8r6",
-      executionTarget: "Aggregate payroll payout to the confidential settlement wallet after governance clearance.",
-      recipient: "2TrX1tAJjcPcV8nc6f8LBAe97jZVi5hPG6jND3Wb1mCk",
-      recipientLabel: "Confidential settlement wallet",
-      recipientKnown: true,
-      amount: 0.05,
-      amountDisplay: "0.05 SOL aggregate payout",
-      mintSymbol: "SOL",
-      mintAddress: null,
-      timelockHours: null,
-      timelockLabel: "Timelock already cleared in the current execution-ready evidence path",
-      historicalUseCount: 4,
-      repeatedAttempts: 0,
-      baselineAmount: 0.05,
-      txContext: {
-        proofStatus: "verified-devnet-confidential-path",
-        evidenceRoute: "/proof/?judge=1",
-        executeSignature: "LoNED2YKkYWxaQbFV4y8fCzqGi5YrpPSruJYppqfvcTyAJ2zU5HM92QEsPNydQb26abE7qp2kB7hCNPJFbVUUPA",
-      },
-    }),
+    execution: payrollExecution,
   },
   {
     id: "PDAO-105",
     title: "Gaming rewards private corridor",
     type: "Gaming DAO",
-    status: "Evidence gated",
+    status: gamingExecution.presentationStatus ?? "Evidence gated",
     quorum: "Private voting live",
-    window: "Reveal still open",
-    treasury: "Token reward corridor waiting on settlement",
+    window: gamingExecution.presentationWindow ?? "Reveal still open",
+    treasury: gamingExecution.presentationTreasury ?? "Token reward corridor waiting on settlement",
     privacy: "Commit-reveal + MagicBlock settlement",
     tech: ["MagicBlock", "Fast RPC"],
     summary:
       "Private token distribution stays blocked until proposal-scoped settlement evidence matures and corridor execution is bound.",
-    execution: getFeaturedExecutionContext("gaming", {
-      sourceType: "runtime-indexed",
-      sourceLabel: "Backend-indexed confidential corridor sample",
-      proposalAccount: "QwRmN5WFDL7AxXT8fjcZNhy53cgLk7UWnJ5qB2CmRaJ",
-      daoAccount: "2UBuKLVfY3kJ22WAmYEZDh71bWhJp2euRpPDq2qT1S8p",
-      executionTarget: "MagicBlock reward corridor with settlement gating before final distribution.",
-      recipient: "8YH5f29UX363oMM1mqsXDyyBtyu4Y1b1BBuikV4xkAys",
-      recipientLabel: "MagicBlock settlement corridor",
-      recipientKnown: true,
-      amount: null,
-      amountDisplay: "Reward amount still withheld in the current reviewer surface",
-      mintSymbol: null,
-      mintAddress: null,
-      timelockHours: null,
-      timelockLabel: "Execution remains blocked until settlement evidence and final payout routing are explicit",
-      historicalUseCount: 1,
-      repeatedAttempts: 1,
-      baselineAmount: null,
-      txContext: {
-        proofStatus: "runtime-indexed-confidential-path",
-        evidenceRoute: "/proof/?judge=1",
-      },
-    }),
+    execution: gamingExecution,
   },
   {
     id: "PDAO-106",
     title: "Grant committee tranche approval",
     type: "Grant Committee",
-    status: "Live voting",
+    status: grantExecution.presentationStatus ?? "Live voting",
     quorum: "Supply-based quorum policy active",
-    window: "Commit open · 17h remaining",
-    treasury: "Reviewer-friendly USDC-equivalent grant tranche",
+    window: grantExecution.presentationWindow ?? "Commit open · 17h remaining",
+    treasury: grantExecution.presentationTreasury ?? "Reviewer-friendly USDC-equivalent grant tranche",
     privacy: "Commit-reveal + optional ZK review path",
     tech: ["ZK", "Fast RPC"],
     summary:
       "Grant committee flow optimized for private signal collection with a strong reviewer path and generated evidence surfaces.",
-    execution: getFeaturedExecutionContext("grant", {
-      sourceType: "operator-draft",
-      sourceLabel: "Structured proposal creation draft bound to live governance UX",
-      proposalAccount: "A5Hd89vpCTVPALhuwurLQvyAkHyrNGhvZtAcJvBmuJ9U",
-      daoAccount: "EyLjhct7TJwb7pa1HssjwZcTT9WMq6Vq5aAxTKsK1b8t",
-      treasuryAccount: "CgqzWTGHX3qNDe9FLJEFrmNQr3gddUXbGQuWN5r5YzM6",
-      executionTarget: "Grant tranche release to the approved committee beneficiary set after finalization and unlock.",
-      recipient: null,
-      recipientLabel: "Grant beneficiary set still pending reviewer disclosure",
-      recipientKnown: false,
-      amount: null,
-      amountDisplay: "USDC-equivalent tranche amount still pending explicit proposal payload",
-      mintSymbol: "USDC-equivalent",
-      mintAddress: null,
-      timelockHours: null,
-      timelockLabel: "Still in commit window; final execution lock is not available until finalize",
-      historicalUseCount: 2,
-      repeatedAttempts: 0,
-      baselineAmount: null,
-      txContext: {
-        proofStatus: "create-bound-proposal-draft",
-        evidenceRoute: "/documents/reviewer-fast-path",
-        createProposalSignature: "u7V1B5cUx91KY69pE9JSMfkAt9SFcVZbDrP9Nsv3XqatNHfr1P2jZwKkaCHCZuPyqm4WJgmH8w8SDUQoJQc938S",
-      },
-    }),
+    execution: grantExecution,
   },
 ];
 

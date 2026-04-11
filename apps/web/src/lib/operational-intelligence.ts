@@ -106,6 +106,9 @@ export function analyzeProposalCard(proposal: ProposalCardModel): ProposalCardAn
   if (proposal.status === "Execution ready") {
     score -= 1.3;
     bullets.push("Execution posture looks disciplined because voting and reveal are already complete.");
+  } else if (proposal.status === "Executed") {
+    score -= 1.7;
+    bullets.push("The indexed proposal record is already executed on devnet, so the remaining review question is proof quality rather than signing readiness.");
   } else if (proposal.status === "Live voting") {
     score += 1.1;
     bullets.push("Proposal is still live, so signer clarity and treasury explanation matter before voting closes.");
@@ -179,8 +182,10 @@ export function analyzeProposalCard(proposal: ProposalCardModel): ProposalCardAn
   const scoreLabel =
     scoreValue >= 7 ? "Needs explicit review" : scoreValue >= 4.5 ? "Review before signing" : "Operationally legible";
   const summary =
-    proposal.status === "Execution ready"
-      ? "This motion is close to execution, so the AI layer focuses on beneficiary clarity, treasury magnitude, and proof visibility."
+    proposal.status === "Execution ready" || proposal.status === "Executed"
+      ? proposal.status === "Executed"
+        ? "This motion is already executed on devnet, so the AI layer focuses on treasury legitimacy, beneficiary correctness, and proof continuity."
+        : "This motion is close to execution, so the AI layer focuses on beneficiary clarity, treasury magnitude, and proof visibility."
       : "This motion is still in-flight, so the AI layer focuses on signing clarity, treasury context, and whether the trust surface is strong enough.";
 
   return {
