@@ -35,7 +35,12 @@ node -e '
   if (process.argv[5] === "disabled" && body.mintAuthority !== null) throw new Error("live PDAO mint authority should be disabled");
   if (tokenMetadata.name !== "PDAO") throw new Error("live PDAO name mismatch");
   if (tokenMetadata.symbol !== "PDAO") throw new Error("live PDAO symbol mismatch");
-  if (tokenMetadata.uri !== process.argv[4]) throw new Error("live PDAO metadata URI mismatch");
+  if (tokenMetadata.uri !== process.argv[4]) {
+    console.error(`[pdao-live] on-chain metadata URI: ${tokenMetadata.uri || "<missing>"}`);
+    console.error(`[pdao-live] expected published URI: ${process.argv[4]}`);
+    console.error("[pdao-live] blocker: Token-2022 metadata still points to the old published asset; update authority cutover is still pending");
+    process.exit(1);
+  }
   if (String(body.supply) !== "1000000000000000") throw new Error("live PDAO raw supply mismatch");
 ' "$TMP_JSON" "$TOKEN_PROGRAM" "$MINT" "$METADATA_URI" "$MINT_AUTHORITY_STATUS"
 rm -f "$TMP_JSON"

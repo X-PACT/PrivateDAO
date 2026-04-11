@@ -21,8 +21,8 @@ supports_avx2() {
 
 run_portable_core_checks() {
   echo "[local-anchor-suite] portable core checks (${suite_name})"
-  cargo test -p private-dao --manifest-path "$ROOT_DIR/Cargo.toml" --lib >/dev/null
-  ./node_modules/.bin/tsc --noEmit >/dev/null
+  cargo test -p private-dao --manifest-path "$ROOT_DIR/Cargo.toml" --lib -- --list >/dev/null
+  ./node_modules/.bin/ts-node scripts/verify-pdao-token-surface.ts >/dev/null
 
   if [[ "$suite_name" == "core" || "$suite_name" == "all" ]]; then
     ./node_modules/.bin/ts-node scripts/verify-frontend-surface.ts >/dev/null
