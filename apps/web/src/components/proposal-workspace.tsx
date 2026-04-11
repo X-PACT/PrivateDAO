@@ -61,13 +61,27 @@ export function ProposalWorkspace({ executionSnapshot }: ProposalWorkspaceProps)
   const searchParams = useSearchParams();
   const requestedProposalId = searchParams.get("proposal");
   const handoff = useServiceHandoffSnapshot("command-center");
-  const [selectedId, setSelectedId] = useState(() => getProposalById(requestedProposalId)?.id ?? proposalCards[0]?.id ?? "");
+  const [selectedId, setSelectedId] = useState("");
   const [voteModalOpen, setVoteModalOpen] = useState(false);
   const { connected } = useWallet();
+  const selectedProposalId = useMemo(
+    () =>
+      getProposalById(selectedId)?.id ??
+      getProposalById(requestedProposalId)?.id ??
+      getProposalById(handoff?.proposalId)?.id ??
+      proposalCards[0]?.id ??
+      "",
+    [handoff?.proposalId, requestedProposalId, selectedId],
+  );
 
   const proposal = useMemo(
-    () => getProposalById(selectedId) ?? getProposalById(requestedProposalId) ?? getProposalById(handoff?.proposalId) ?? proposalCards[0],
-    [handoff?.proposalId, requestedProposalId, selectedId],
+    () =>
+      getProposalById(selectedProposalId) ??
+      getProposalById(selectedId) ??
+      getProposalById(requestedProposalId) ??
+      getProposalById(handoff?.proposalId) ??
+      proposalCards[0],
+    [handoff?.proposalId, requestedProposalId, selectedId, selectedProposalId],
   );
   const scorecard = useMemo(
     () =>

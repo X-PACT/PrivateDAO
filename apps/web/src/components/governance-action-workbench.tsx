@@ -80,7 +80,7 @@ export function GovernanceActionWorkbench() {
 
   useEffect(() => {
     if (!handoff) return;
-    const continuityKey = `${handoff.proposalId}:${handoff.telemetryMode}:${handoff.source}`;
+    const continuityKey = `${handoff.proposalId}:${handoff.telemetryMode}:${handoff.source}:${handoff.payoutIntent?.reference ?? "no-payout"}`;
     if (appliedReviewRef.current === continuityKey) return;
 
     if (!proposalCreated && proposalTitle !== handoff.proposalTitle) {
