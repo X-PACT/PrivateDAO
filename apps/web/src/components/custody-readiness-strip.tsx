@@ -10,7 +10,7 @@ import { buildCustodyNarrative, custodyEvidenceUpdatedEvent, emptyCustodyEvidenc
 import { cn } from "@/lib/utils";
 
 type CustodyReadinessStripProps = {
-  context?: "dashboard" | "command-center" | "services";
+  context?: "dashboard" | "command-center" | "services" | "security";
 };
 
 const contextCopy: Record<NonNullable<CustodyReadinessStripProps["context"]>, { label: string; description: string }> = {
@@ -25,6 +25,10 @@ const contextCopy: Record<NonNullable<CustodyReadinessStripProps["context"]>, { 
   services: {
     label: "Commercial readiness",
     description: "Buyers and judges should see the custody boundary beside service packaging, not only inside security-only routes.",
+  },
+  security: {
+    label: "Security readiness",
+    description: "Trust boundary, custody summary, and mainnet framing should update in the same surface where hardening and launch discipline are reviewed.",
   },
 };
 

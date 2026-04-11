@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { AuthorityHardeningPanel } from "@/components/authority-hardening-panel";
 import { ConfidenceEngineSurface } from "@/components/confidence-engine-surface";
+import { CustodyReadinessStrip } from "@/components/custody-readiness-strip";
 import { CustodyWorkspace } from "@/components/custody-workspace";
 import { FrontierSignalBoard } from "@/components/frontier-signal-board";
 import { IntelligenceLayerSurface } from "@/components/intelligence-layer-surface";
@@ -34,6 +35,9 @@ export default function SecurityPage() {
     >
       <div>
         <MetricsStrip />
+      </div>
+      <div>
+        <CustodyReadinessStrip context="security" />
       </div>
       <div>
         <SecurityCenter />
