@@ -1,9 +1,10 @@
 import { competitionTrackWorkspaces } from "@/lib/site-data";
+import { proposalRegistry } from "@/lib/site-data";
 
 export type SiteSearchItem = {
   title: string;
   href: string;
-  category: "Route" | "Track" | "Document" | "Proof" | "Service";
+  category: "Route" | "Track" | "Document" | "Proof" | "Service" | "Proposal";
   summary: string;
   matchKind?: "profile-aware" | "track-aware" | "profile + track";
 };
@@ -450,12 +451,55 @@ function getTrackAwareLeadItems(query: string): SiteSearchItem[] {
   ];
 }
 
+function getProposalLeadItems(query: string): SiteSearchItem[] {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return [];
+
+  const scored = proposalRegistry
+    .map((proposal) => {
+      const searchable = [
+        proposal.id,
+        proposal.title,
+        proposal.type,
+        proposal.status,
+        proposal.execution.proposalAccount,
+        proposal.execution.recipient ?? "",
+        proposal.execution.recipientLabel,
+        proposal.execution.executionTarget,
+        proposal.execution.mintAddress ?? "",
+        proposal.execution.mintSymbol ?? "",
+        proposal.summary,
+      ]
+        .join(" ")
+        .toLowerCase();
+
+      let score = 0;
+      if (searchable.includes(normalized)) score += 6;
+      for (const token of normalized.split(/\s+/).filter(Boolean)) {
+        if (searchable.includes(token)) score += 1;
+      }
+
+      return { proposal, score };
+    })
+    .filter((entry) => entry.score > 0)
+    .sort((left, right) => right.score - left.score)
+    .slice(0, 3);
+
+  return scored.map(({ proposal }) => ({
+    title: `${proposal.id} · ${proposal.title}`,
+    href: `/command-center?proposal=${encodeURIComponent(proposal.id)}`,
+    category: "Proposal",
+    summary: `${proposal.status} · ${proposal.execution.amountDisplay} · ${proposal.execution.recipientLabel}. Open the command center with this live indexed proposal preselected.`,
+  }));
+}
+
 export function getSiteSearchResults(query: string): SiteSearchItem[] {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return siteSearchItems;
 
   const profileTrackLeadItems = getProfileTrackLeadItems(normalized);
   const trackAwareLeadItems = getTrackAwareLeadItems(normalized);
+  const proposalLeadItems = getProposalLeadItems(normalized);
 
   const profileAwareLeadItems =
     profileAwareSearchRules.find((rule) =>
@@ -472,7 +516,7 @@ export function getSiteSearchResults(query: string): SiteSearchItem[] {
   );
 
   const seen = new Set<string>();
-  return [...profileTrackLeadItems, ...trackAwareLeadItems, ...profileAwareLeadItems, ...generalResults].filter((item) => {
+  return [...profileTrackLeadItems, ...trackAwareLeadItems, ...proposalLeadItems, ...profileAwareLeadItems, ...generalResults].filter((item) => {
     const key = `${item.category}:${item.href}`;
     if (seen.has(key)) return false;
     seen.add(key);

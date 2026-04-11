@@ -1,4 +1,4 @@
-import { competitionTrackWorkspaces } from "@/lib/site-data";
+import { competitionTrackWorkspaces, proposalRegistry } from "@/lib/site-data";
 import { getSubmissionCoachPlan } from "@/lib/submission-coach";
 import { getTrackCommercializationPlan } from "@/lib/track-commercialization";
 import { getTrackMainnetGatePlan } from "@/lib/track-mainnet-gates";
@@ -557,6 +557,57 @@ function getCompetitionSuggestion(query: string): AssistantSuggestion | null {
   };
 }
 
+function getProposalSuggestion(query: string): AssistantSuggestion | null {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return null;
+
+  const scored = proposalRegistry
+    .map((proposal) => {
+      const searchable = [
+        proposal.id,
+        proposal.title,
+        proposal.type,
+        proposal.status,
+        proposal.execution.proposalAccount,
+        proposal.execution.recipient ?? "",
+        proposal.execution.recipientLabel,
+        proposal.execution.executionTarget,
+        proposal.execution.mintAddress ?? "",
+        proposal.execution.mintSymbol ?? "",
+        proposal.summary,
+      ]
+        .join(" ")
+        .toLowerCase();
+
+      let score = 0;
+      if (searchable.includes(normalized)) score += 6;
+      for (const token of normalized.split(/\s+/).filter(Boolean)) {
+        if (searchable.includes(token)) score += 1;
+      }
+
+      return { proposal, score };
+    })
+    .filter((entry) => entry.score > 0)
+    .sort((left, right) => right.score - left.score);
+
+  const top = scored[0];
+  if (!top) return null;
+
+  const proposal = top.proposal;
+  return {
+    title: `Open live indexed proposal ${proposal.id}`,
+    summary:
+      `${proposal.title} is being routed from the unified indexed proposal registry. Open the command center with this proposal preselected, then review the analyzer and treasury risk surfaces on the real execution context.`,
+    primaryActionLabel: "Open command center with proposal",
+    primaryActionHref: `/command-center?proposal=${encodeURIComponent(proposal.id)}`,
+    relatedRoutes: [
+      { label: "1. Command Center", href: `/command-center?proposal=${encodeURIComponent(proposal.id)}` },
+      { label: "2. Dashboard", href: "/dashboard" },
+      { label: "3. Evidence route", href: proposal.execution.txContext.evidenceRoute },
+    ],
+  };
+}
+
 export function getAssistantSuggestion(query: string): AssistantSuggestion {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return fallbackSuggestion;
@@ -569,6 +620,9 @@ export function getAssistantSuggestion(query: string): AssistantSuggestion {
 
   const trackAnswer = getTrackAnswer(normalized);
   if (trackAnswer) return trackAnswer;
+
+  const proposalSuggestion = getProposalSuggestion(normalized);
+  if (proposalSuggestion) return proposalSuggestion;
 
   const competitionSuggestion = getCompetitionSuggestion(normalized);
   if (competitionSuggestion) return competitionSuggestion;

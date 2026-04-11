@@ -43,7 +43,45 @@ type PresentationStatus =
   | "Evidence gated"
   | "Executed";
 
-type FeaturedProposalContexts = ReturnType<typeof buildFeaturedProposalContexts>;
+type ProposalContext = {
+  sourceType: "runtime-indexed";
+  sourceLabel: string;
+  indexedPhase: string;
+  proposalAccount: string;
+  daoAccount: string;
+  executionTarget: string;
+  recipient: string | null;
+  recipientLabel: string;
+  recipientKnown: boolean;
+  amount: number | null;
+  amountDisplay: string;
+  mintSymbol: string | null;
+  mintAddress: string | null;
+  timelockHours: number | null;
+  timelockLabel: string;
+  historicalUseCount: number;
+  repeatedAttempts: number;
+  baselineAmount: number | null;
+  presentationStatus: PresentationStatus;
+  presentationWindow: string;
+  presentationTreasury: string;
+  phaseMappingLabel: string;
+  txContext: {
+    proofStatus: string;
+    evidenceRoute: string;
+    createProposalSignature?: string;
+    commitSignature?: string;
+    revealSignature?: string;
+    finalizeSignature?: string;
+    executeSignature?: string;
+  };
+};
+
+type FeaturedProposalContexts = {
+  payroll: ProposalContext;
+  gaming: ProposalContext;
+  grant: ProposalContext;
+};
 
 type ProposalRegistryEntry = {
   id: string;
@@ -102,6 +140,18 @@ function formatTimelockLabel(seconds: number | null | undefined) {
 
 function formatSourceLabel(title: string, phase: string) {
   return `Backend-indexed proposal record: ${title} (${phase})`;
+}
+
+function proposalRegistryId(
+  proposal: Awaited<ReturnType<PrivateDaoReadNode["fetchProposals"]>>[number],
+) {
+  if (proposal.pubkey === FEATURED_PROPOSAL_KEYS.payroll) return "PDAO-104";
+  if (proposal.pubkey === FEATURED_PROPOSAL_KEYS.gaming) return "PDAO-105";
+  if (proposal.pubkey === FEATURED_PROPOSAL_KEYS.grant) return "PDAO-106";
+
+  const proposalId = String(proposal.proposalId).padStart(3, "0");
+  const daoSuffix = proposal.dao.slice(0, 4).toUpperCase();
+  return `PDAO-${proposalId}-${daoSuffix}`;
 }
 
 function mapIndexedPhaseToPresentationStatus(
@@ -266,11 +316,160 @@ function buildRegistrySummary(
   return base;
 }
 
+function inferProposalType(
+  proposal: Awaited<ReturnType<PrivateDaoReadNode["fetchProposals"]>>[number],
+) {
+  const text = `${proposal.title} ${proposal.description}`.toLowerCase();
+  if (
+    text.includes("game") ||
+    text.includes("gaming") ||
+    text.includes("reward") ||
+    text.includes("tournament") ||
+    text.includes("clan") ||
+    proposal.magicblockCorridor
+  ) {
+    return "Gaming DAO";
+  }
+
+  if (text.includes("grant")) {
+    return "Grant Committee";
+  }
+
+  if (text.includes("payroll") || proposal.confidentialPayoutPlan || proposal.refheEnvelope) {
+    return "Enterprise DAO";
+  }
+
+  if (proposal.treasuryAction) {
+    return "Treasury Committee";
+  }
+
+  return "Governance Council";
+}
+
+function inferExecutionTarget(
+  proposal: Awaited<ReturnType<PrivateDaoReadNode["fetchProposals"]>>[number],
+) {
+  if (proposal.magicblockCorridor) {
+    return "MagicBlock reward corridor with settlement gating before final distribution.";
+  }
+
+  if (proposal.confidentialPayoutPlan) {
+    return "Aggregate confidential payout to the settlement wallet after governance clearance.";
+  }
+
+  if (proposal.treasuryAction) {
+    return "Send treasury funds to the approved beneficiary after governance finalization and unlock.";
+  }
+
+  return "Execution target remains governed by the indexed proposal account and current DAO phase.";
+}
+
+function buildProposalContext(
+  proposal: Awaited<ReturnType<PrivateDaoReadNode["fetchProposals"]>>[number],
+  reportEntry: ProposalReportEntry | undefined,
+  integrations: FrontierIntegrations,
+): ProposalContext {
+  const hasConfidentialPayout = Boolean(proposal.confidentialPayoutPlan);
+  const confidentialPlan = proposal.confidentialPayoutPlan;
+  const treasuryAction = proposal.treasuryAction;
+  const magicBlockExecute =
+    proposal.pubkey === FEATURED_PROPOSAL_KEYS.payroll
+      ? integrations.confidentialOperations?.txChecks?.find((entry) => entry.label === "magicblock-execute")
+      : null;
+  const status = mapIndexedPhaseToPresentationStatus(proposal.phase, {
+    hasConfidentialPayout,
+    payoutFunded: confidentialPlan?.status === "Funded",
+    payoutSettled: proposal.magicblockCorridor?.status === "Settled",
+  });
+
+  const amount =
+    treasuryAction
+      ? formatLamportsToSol(treasuryAction.amountLamports)
+      : confidentialPlan
+        ? confidentialPlan.totalAmount
+        : null;
+
+  const amountDisplay =
+    treasuryAction
+      ? `${formatLamportsToSol(treasuryAction.amountLamports)} ${treasuryAction.tokenMint ? "SPL token" : "SOL"}`
+      : confidentialPlan
+        ? `${formatRawUnits(confidentialPlan.totalAmount)} raw token units`
+        : "Pending exact amount from the indexed proposal record";
+
+  const recipient =
+    treasuryAction?.recipient ??
+    proposal.magicblockCorridor?.settlementWallet ??
+    confidentialPlan?.settlementRecipient ??
+    null;
+
+  const recipientLabel = treasuryAction
+    ? "Treasury beneficiary"
+    : proposal.magicblockCorridor
+      ? "MagicBlock settlement corridor"
+      : confidentialPlan
+        ? "Confidential settlement wallet"
+        : "Execution target pending index evidence";
+
+  const mintAddress = treasuryAction?.tokenMint ?? confidentialPlan?.tokenMint ?? null;
+  const mintSymbol = treasuryAction ? (treasuryAction.tokenMint ? "SPL token" : "SOL") : confidentialPlan ? "SPL token" : null;
+
+  return {
+    sourceType: "runtime-indexed",
+    sourceLabel: formatSourceLabel(proposal.title, proposal.phase),
+    indexedPhase: proposal.phase,
+    proposalAccount: proposal.pubkey,
+    daoAccount: proposal.dao,
+    executionTarget: inferExecutionTarget(proposal),
+    recipient,
+    recipientLabel,
+    recipientKnown: Boolean(recipient),
+    amount,
+    amountDisplay,
+    mintSymbol,
+    mintAddress,
+    timelockHours:
+      typeof proposal.daoDetails?.executionDelaySeconds === "number"
+        ? Number((proposal.daoDetails.executionDelaySeconds / 3600).toFixed(6))
+        : null,
+    timelockLabel: formatTimelockLabel(proposal.daoDetails?.executionDelaySeconds),
+    historicalUseCount: 1,
+    repeatedAttempts: Math.max(
+      0,
+      (reportEntry?.commitTxs?.length ?? 0) +
+        (reportEntry?.revealTxs?.length ?? 0) +
+        (reportEntry?.executeTx ? 1 : 0) -
+        (proposal.phase === "Executed" ? 1 : 0),
+    ),
+    baselineAmount: amount,
+    presentationStatus: status,
+    presentationWindow: buildWindowSummary(proposal.phase, status),
+    presentationTreasury: buildTreasurySummary(proposal, status),
+    phaseMappingLabel: `${proposal.phase} indexed phase maps to ${status} in the product surface`,
+    txContext: {
+      proofStatus: proposal.magicblockCorridor
+        ? proposal.magicblockCorridor.status === "Settled"
+          ? "runtime-indexed-confidential-path"
+          : "runtime-indexed-settlement-pending"
+        : reportEntry?.executeTx
+          ? "verified-devnet-governance-path"
+          : hasConfidentialPayout
+            ? integrations.confidentialOperations?.status ?? "runtime-indexed-confidential-path"
+            : "runtime-indexed-governance-path",
+      evidenceRoute: hasConfidentialPayout ? "/proof/?judge=1" : "/documents/reviewer-fast-path",
+      createProposalSignature: reportEntry?.createProposalTx,
+      commitSignature: reportEntry?.commitTxs?.[0],
+      revealSignature: reportEntry?.revealTxs?.[0],
+      finalizeSignature: reportEntry?.finalizeTx,
+      executeSignature: reportEntry?.executeTx ?? magicBlockExecute?.signature,
+    },
+  };
+}
+
 function buildFeaturedProposalContexts(
   proposals: Awaited<ReturnType<PrivateDaoReadNode["fetchProposals"]>>,
   report: DevnetMultiProposalReport,
   integrations: FrontierIntegrations,
-) {
+): FeaturedProposalContexts {
   const proposalByPubkey = new Map(proposals.map((proposal) => [proposal.pubkey, proposal]));
   const reportByPubkey = new Map((report.proposals ?? []).map((proposal) => [proposal.proposalPublicKey, proposal]));
   const confidentialExecute = integrations.confidentialOperations?.txChecks?.find((entry) => entry.label === "magicblock-execute");
@@ -291,146 +490,28 @@ function buildFeaturedProposalContexts(
     throw new Error("featured grant proposal missing treasury action in read-node snapshot");
   }
 
-  const grantReport = reportByPubkey.get(grant.pubkey);
-  const payrollStatus = mapIndexedPhaseToPresentationStatus(payroll.phase, {
-    hasConfidentialPayout: true,
-    payoutFunded: payroll.confidentialPayoutPlan.status === "Funded",
-    payoutSettled: payroll.magicblockCorridor?.status === "Settled",
-  });
-  const gamingStatus = mapIndexedPhaseToPresentationStatus(gaming.phase, {
-    hasConfidentialPayout: true,
-    payoutFunded: gaming.confidentialPayoutPlan.status === "Funded",
-    payoutSettled: gaming.magicblockCorridor?.status === "Settled",
-  });
-  const grantStatus = mapIndexedPhaseToPresentationStatus(grant.phase);
-
   return {
-    payroll: {
-      sourceType: "runtime-indexed",
-      sourceLabel: formatSourceLabel(payroll.title, payroll.phase),
-      indexedPhase: payroll.phase,
-      proposalAccount: payroll.pubkey,
-      daoAccount: payroll.dao,
-      executionTarget: "Aggregate payroll payout to the confidential settlement wallet after governance clearance.",
-      recipient: payroll.confidentialPayoutPlan.settlementRecipient,
-      recipientLabel: "Confidential settlement wallet",
-      recipientKnown: true,
-      amount: payroll.confidentialPayoutPlan.totalAmount,
-      amountDisplay: `${formatRawUnits(payroll.confidentialPayoutPlan.totalAmount)} raw token units`,
-      mintSymbol: "SPL token",
-      mintAddress: payroll.confidentialPayoutPlan.tokenMint,
-      timelockHours:
-        typeof payroll.daoDetails?.executionDelaySeconds === "number"
-          ? Number((payroll.daoDetails.executionDelaySeconds / 3600).toFixed(6))
-          : null,
-      timelockLabel: formatTimelockLabel(payroll.daoDetails?.executionDelaySeconds),
-      historicalUseCount: 1,
-      repeatedAttempts: payroll.phase === "Executed" ? 0 : 1,
-      baselineAmount: payroll.confidentialPayoutPlan.totalAmount,
-      presentationStatus: payrollStatus,
-      presentationWindow: buildWindowSummary(payroll.phase, payrollStatus),
-      presentationTreasury: buildTreasurySummary(payroll, payrollStatus),
-      phaseMappingLabel: `${payroll.phase} indexed phase maps to ${payrollStatus} in the product surface`,
-      txContext: {
-        proofStatus: integrations.confidentialOperations?.status ?? "runtime-indexed-confidential-path",
-        evidenceRoute: "/proof/?judge=1",
-        executeSignature: confidentialExecute?.signature,
-      },
-    },
-    gaming: {
-      sourceType: "runtime-indexed",
-      sourceLabel: formatSourceLabel(gaming.title, gaming.phase),
-      indexedPhase: gaming.phase,
-      proposalAccount: gaming.pubkey,
-      daoAccount: gaming.dao,
-      executionTarget: "MagicBlock reward corridor with settlement gating before final distribution.",
-      recipient: gaming.magicblockCorridor?.settlementWallet ?? gaming.confidentialPayoutPlan.settlementRecipient,
-      recipientLabel: "MagicBlock settlement corridor",
-      recipientKnown: true,
-      amount: gaming.confidentialPayoutPlan.totalAmount,
-      amountDisplay: `${formatRawUnits(gaming.confidentialPayoutPlan.totalAmount)} raw token units`,
-      mintSymbol: "SPL token",
-      mintAddress: gaming.confidentialPayoutPlan.tokenMint,
-      timelockHours:
-        typeof gaming.daoDetails?.executionDelaySeconds === "number"
-          ? Number((gaming.daoDetails.executionDelaySeconds / 3600).toFixed(6))
-          : null,
-      timelockLabel: formatTimelockLabel(gaming.daoDetails?.executionDelaySeconds),
-      historicalUseCount: 1,
-      repeatedAttempts: gaming.phase === "Executed" ? 0 : 1,
-      baselineAmount: gaming.confidentialPayoutPlan.totalAmount,
-      presentationStatus: gamingStatus,
-      presentationWindow: buildWindowSummary(gaming.phase, gamingStatus),
-      presentationTreasury: buildTreasurySummary(gaming, gamingStatus),
-      phaseMappingLabel: `${gaming.phase} indexed phase maps to ${gamingStatus} in the product surface`,
-      txContext: {
-        proofStatus: gaming.magicblockCorridor?.status === "Settled" ? "runtime-indexed-confidential-path" : "runtime-indexed-settlement-pending",
-        evidenceRoute: "/proof/?judge=1",
-      },
-    },
-    grant: {
-      sourceType: "runtime-indexed",
-      sourceLabel: formatSourceLabel(grant.title, grant.phase),
-      indexedPhase: grant.phase,
-      proposalAccount: grant.pubkey,
-      daoAccount: grant.dao,
-      executionTarget: "Send treasury funds to the approved beneficiary after governance finalization and unlock.",
-      recipient: grant.treasuryAction.recipient,
-      recipientLabel: "Treasury beneficiary",
-      recipientKnown: true,
-      amount: formatLamportsToSol(grant.treasuryAction.amountLamports),
-      amountDisplay: `${formatLamportsToSol(grant.treasuryAction.amountLamports)} SOL`,
-      mintSymbol: grant.treasuryAction.tokenMint ? "SPL token" : "SOL",
-      mintAddress: grant.treasuryAction.tokenMint,
-      timelockHours:
-        typeof grant.daoDetails?.executionDelaySeconds === "number"
-          ? Number((grant.daoDetails.executionDelaySeconds / 3600).toFixed(6))
-          : null,
-      timelockLabel: formatTimelockLabel(grant.daoDetails?.executionDelaySeconds),
-      historicalUseCount: 1,
-      repeatedAttempts: grantReport?.executeTx ? 0 : 1,
-      baselineAmount: formatLamportsToSol(grant.treasuryAction.amountLamports),
-      presentationStatus: grantStatus,
-      presentationWindow: buildWindowSummary(grant.phase, grantStatus),
-      presentationTreasury: buildTreasurySummary(grant, grantStatus),
-      phaseMappingLabel: `${grant.phase} indexed phase maps to ${grantStatus} in the product surface`,
-      txContext: {
-        proofStatus: grantReport?.executeTx ? "verified-devnet-governance-path" : "runtime-indexed-governance-path",
-        evidenceRoute: "/documents/reviewer-fast-path",
-        createProposalSignature: grantReport?.createProposalTx,
-        commitSignature: grantReport?.commitTxs?.[0],
-        revealSignature: grantReport?.revealTxs?.[0],
-        finalizeSignature: grantReport?.finalizeTx,
-        executeSignature: grantReport?.executeTx,
-      },
-    },
+    payroll: buildProposalContext(payroll, reportByPubkey.get(payroll.pubkey), integrations),
+    gaming: buildProposalContext(gaming, reportByPubkey.get(gaming.pubkey), integrations),
+    grant: buildProposalContext(grant, reportByPubkey.get(grant.pubkey), integrations),
   } as const;
 }
 
-function buildFeaturedProposalRegistry(
+function buildProposalRegistry(
   proposals: Awaited<ReturnType<PrivateDaoReadNode["fetchProposals"]>>,
-  contexts: FeaturedProposalContexts,
+  report: DevnetMultiProposalReport,
+  integrations: FrontierIntegrations,
 ): ProposalRegistryEntry[] {
-  const proposalByPubkey = new Map(proposals.map((proposal) => [proposal.pubkey, proposal]));
-  const registrySpec = [
-    { key: "payroll" as const, id: "PDAO-104", type: "Enterprise DAO", pubkey: FEATURED_PROPOSAL_KEYS.payroll },
-    { key: "gaming" as const, id: "PDAO-105", type: "Gaming DAO", pubkey: FEATURED_PROPOSAL_KEYS.gaming },
-    { key: "grant" as const, id: "PDAO-106", type: "Grant Committee", pubkey: FEATURED_PROPOSAL_KEYS.grant },
-  ];
+  const reportByPubkey = new Map((report.proposals ?? []).map((proposal) => [proposal.proposalPublicKey, proposal]));
 
-  return registrySpec.map((spec) => {
-    const proposal = proposalByPubkey.get(spec.pubkey);
-    if (!proposal) {
-      throw new Error(`featured registry proposal missing from read-node snapshot: ${spec.pubkey}`);
-    }
-
-    const execution = contexts[spec.key];
+  return proposals.map((proposal) => {
+    const execution = buildProposalContext(proposal, reportByPubkey.get(proposal.pubkey), integrations);
     const status = execution.presentationStatus ?? "Evidence gated";
 
     return {
-      id: spec.id,
+      id: proposalRegistryId(proposal),
       title: proposal.title,
-      type: spec.type,
+      type: inferProposalType(proposal),
       status,
       quorum: buildQuorumSummary(proposal),
       window: execution.presentationWindow ?? buildWindowSummary(proposal.phase, status),
@@ -478,7 +559,12 @@ async function main() {
     ).length,
   };
   const featuredProposalContexts = buildFeaturedProposalContexts(proposals, report, integrations);
-  const featuredProposalRegistry = buildFeaturedProposalRegistry(proposals, featuredProposalContexts);
+  const proposalRegistry = buildProposalRegistry(proposals, report, integrations);
+  const featuredProposalRegistry = proposalRegistry.filter((proposal) =>
+    [FEATURED_PROPOSAL_KEYS.payroll, FEATURED_PROPOSAL_KEYS.gaming, FEATURED_PROPOSAL_KEYS.grant].includes(
+      proposal.execution.proposalAccount as typeof FEATURED_PROPOSAL_KEYS[keyof typeof FEATURED_PROPOSAL_KEYS],
+    ),
+  );
 
   const payload = {
     generatedAt: new Date().toISOString(),
@@ -488,16 +574,25 @@ async function main() {
     counts,
     overview,
     profiles,
-    featuredProposalContexts,
-    featuredProposalRegistry,
-    sample: proposals.slice(0, 5).map((proposal) => ({
-      pubkey: proposal.pubkey,
+    proposals: proposalRegistry.map((proposal) => ({
+      id: proposal.id,
       title: proposal.title,
-      phase: proposal.phase,
-      zkMode: proposal.zkMode,
-      confidentialPayout: Boolean(proposal.confidentialPayoutPlan),
-      dao: proposal.dao,
+      type: proposal.type,
+      status: proposal.status,
+      indexedPhase: proposal.execution.indexedPhase,
+      proposalAccount: proposal.execution.proposalAccount,
+      daoAccount: proposal.execution.daoAccount,
+      executionTarget: proposal.execution.executionTarget,
+      recipient: proposal.execution.recipient,
+      amountDisplay: proposal.execution.amountDisplay,
+      mintAddress: proposal.execution.mintAddress,
+      timelockLabel: proposal.execution.timelockLabel,
+      evidenceRoute: proposal.execution.txContext.evidenceRoute,
+      executeSignature: proposal.execution.txContext.executeSignature,
     })),
+    featuredProposalContexts,
+    proposalRegistry,
+    featuredProposalRegistry,
   };
 
   fs.writeFileSync(JSON_PATH, JSON.stringify(payload, null, 2) + "\n");
@@ -536,7 +631,14 @@ ${profiles.map((profile) => `- \`${profile.name}\` | wallets=\`${profile.walletC
 
 ## Sample
 
-${payload.sample.map((proposal) => `- \`${proposal.title}\` | phase=\`${proposal.phase}\` | zk=\`${proposal.zkMode}\` | payout=\`${proposal.confidentialPayout}\` | dao=\`${proposal.dao}\``).join("\n")}
+${payload.proposals.slice(0, 5).map((proposal) => `- \`${proposal.title}\` | phase=\`${proposal.indexedPhase}\` | recipient=\`${proposal.recipient ?? "pending"}\` | amount=\`${proposal.amountDisplay}\` | dao=\`${proposal.daoAccount}\``).join("\n")}
+
+## Proposal Registry
+
+- Registry entries: \`${proposalRegistry.length}\`
+- Executed: \`${proposalRegistry.filter((proposal) => proposal.status === "Executed").length}\`
+- Evidence gated: \`${proposalRegistry.filter((proposal) => proposal.status === "Evidence gated").length}\`
+- Execution ready: \`${proposalRegistry.filter((proposal) => proposal.status === "Execution ready").length}\`
 
 ## Featured Proposal Contexts
 
@@ -555,6 +657,7 @@ ${featuredProposalRegistry.map((proposal) => `- \`${proposal.id}\` | \`${proposa
 // Generated by scripts/build-read-node-snapshot.ts. Do not edit manually.
 
 export const READ_NODE_FEATURED_PROPOSAL_CONTEXTS = ${JSON.stringify(featuredProposalContexts, null, 2)} as const;
+export const READ_NODE_PROPOSAL_REGISTRY = ${JSON.stringify(proposalRegistry, null, 2)} as const;
 export const READ_NODE_FEATURED_PROPOSAL_REGISTRY = ${JSON.stringify(featuredProposalRegistry, null, 2)} as const;
 
 export type ReadNodeFeaturedProposalContextKey = keyof typeof READ_NODE_FEATURED_PROPOSAL_CONTEXTS;

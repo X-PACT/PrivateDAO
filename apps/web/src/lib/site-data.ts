@@ -1,4 +1,4 @@
-import { READ_NODE_FEATURED_PROPOSAL_REGISTRY } from "@/lib/read-node-proposal-context.generated";
+import { READ_NODE_PROPOSAL_REGISTRY } from "@/lib/read-node-proposal-context.generated";
 
 export type ProposalStatus =
   | "Live voting"
@@ -225,16 +225,73 @@ export const communityLinks = [
   },
 ];
 
-export const proposalCards: ProposalCardModel[] = READ_NODE_FEATURED_PROPOSAL_REGISTRY.map((proposal) => ({
-  ...proposal,
-  tech: [...proposal.tech],
-  execution: {
-    ...proposal.execution,
-    txContext: {
-      ...proposal.execution.txContext,
+function cloneProposalCard(proposal: (typeof READ_NODE_PROPOSAL_REGISTRY)[number]): ProposalCardModel {
+  return {
+    ...proposal,
+    tech: [...proposal.tech],
+    execution: {
+      ...proposal.execution,
+      txContext: {
+        ...proposal.execution.txContext,
+      },
     },
-  },
-}));
+  };
+}
+
+function proposalStatusRank(status: ProposalStatus) {
+  switch (status) {
+    case "Execution ready":
+      return 6;
+    case "Evidence gated":
+      return 5;
+    case "Executed":
+      return 4;
+    case "Timelocked":
+      return 3;
+    case "Ready to reveal":
+      return 2;
+    case "Live voting":
+      return 1;
+  }
+}
+
+function proposalSignalStrength(proposal: ProposalCardModel) {
+  let score = proposalStatusRank(proposal.status) * 100;
+  score += proposal.tech.length * 8;
+  if (proposal.execution.txContext.executeSignature) score += 18;
+  if (proposal.execution.txContext.finalizeSignature) score += 10;
+  if (proposal.execution.recipientKnown) score += 6;
+  if (proposal.execution.mintAddress) score += 4;
+  if (proposal.execution.indexedPhase === "Executed") score += 8;
+  return score;
+}
+
+function compareProposalCards(left: ProposalCardModel, right: ProposalCardModel) {
+  const signalGap = proposalSignalStrength(right) - proposalSignalStrength(left);
+  if (signalGap !== 0) return signalGap;
+  return left.id.localeCompare(right.id);
+}
+
+export const proposalRegistry: ProposalCardModel[] = READ_NODE_PROPOSAL_REGISTRY.map(cloneProposalCard).sort(compareProposalCards);
+
+export function getProposalById(proposalId?: string | null) {
+  if (!proposalId) return null;
+  return (
+    proposalRegistry.find((proposal) => proposal.id === proposalId) ??
+    proposalRegistry.find((proposal) => proposal.execution.proposalAccount === proposalId) ??
+    null
+  );
+}
+
+export function getPrimaryProposalCards(limit = 6) {
+  return proposalRegistry.slice(0, Math.max(1, limit));
+}
+
+export const proposalCards: ProposalCardModel[] = getPrimaryProposalCards();
+
+export function getFeaturedProposal(proposalId?: string | null) {
+  return getProposalById(proposalId) ?? proposalCards[0] ?? proposalRegistry[0] ?? null;
+}
 
 export const treasuryRows = [
   {

@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { ArrowUpRight, Binary, LockKeyhole, ShieldCheck, WalletCards } from "lucide-react";
 
 import { ProposalAnalyzerInline } from "@/components/proposal-analyzer-inline";
@@ -7,11 +10,16 @@ import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buildProposalConfidenceScorecard, confidenceProfiles } from "@/lib/confidence-engine";
+import { getFeaturedProposal } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
-import { commandCenterPacks, executionLog, proposalCards } from "@/lib/site-data";
+import { commandCenterPacks, executionLog } from "@/lib/site-data";
 
 export function CommandCenter() {
-  const featuredProposal = proposalCards[0];
+  const searchParams = useSearchParams();
+  const featuredProposal = getFeaturedProposal(searchParams.get("proposal"));
+  if (!featuredProposal) {
+    return null;
+  }
   const featuredScore = buildProposalConfidenceScorecard({
     title: featuredProposal.title,
     type: featuredProposal.type,

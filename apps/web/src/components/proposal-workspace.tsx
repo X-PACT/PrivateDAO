@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { ArrowUpRight, CheckCircle2, Clock3, LockKeyhole, WalletMinimal } from "lucide-react";
 
@@ -15,7 +16,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buildProposalConfidenceScorecard } from "@/lib/confidence-engine";
 import type { ExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
-import { commandCenterReferences, proposalCards, type ProposalCardModel } from "@/lib/site-data";
+import { commandCenterReferences, getProposalById, proposalCards, type ProposalCardModel } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
 const actionMap: Record<ProposalCardModel["status"], { commit: string; reveal: string; execute: string }> = {
@@ -56,13 +57,15 @@ type ProposalWorkspaceProps = {
 };
 
 export function ProposalWorkspace({ executionSnapshot }: ProposalWorkspaceProps) {
-  const [selectedId, setSelectedId] = useState(proposalCards[0]?.id ?? "");
+  const searchParams = useSearchParams();
+  const requestedProposalId = searchParams.get("proposal");
+  const [selectedId, setSelectedId] = useState(() => getProposalById(requestedProposalId)?.id ?? proposalCards[0]?.id ?? "");
   const [voteModalOpen, setVoteModalOpen] = useState(false);
   const { connected } = useWallet();
 
   const proposal = useMemo(
-    () => proposalCards.find((item) => item.id === selectedId) ?? proposalCards[0],
-    [selectedId],
+    () => getProposalById(selectedId) ?? getProposalById(requestedProposalId) ?? proposalCards[0],
+    [requestedProposalId, selectedId],
   );
   const scorecard = useMemo(
     () =>

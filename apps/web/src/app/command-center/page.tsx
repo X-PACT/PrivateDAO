@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
 import { BuyerJourneyRail } from "@/components/buyer-journey-rail";
 import { CommandCenter } from "@/components/command-center";
@@ -59,14 +60,18 @@ export default function CommandCenterPage() {
         </div>
       </div>
       <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-        <CommandCenter />
+        <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading live indexed proposal…</div>}>
+          <CommandCenter />
+        </Suspense>
         <div className="space-y-6">
           <BuyerJourneyRail />
           <OperationalValidationPanels title="Command-center operating health" />
         </div>
       </div>
       <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-        <ProposalWorkspace executionSnapshot={executionSnapshot} />
+        <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading proposal workspace…</div>}>
+          <ProposalWorkspace executionSnapshot={executionSnapshot} />
+        </Suspense>
         <WalletRuntimePanel executionSnapshot={executionSnapshot} />
       </div>
       <div>
