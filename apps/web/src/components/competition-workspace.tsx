@@ -12,6 +12,7 @@ import { TrackInvestmentCasePanel } from "@/components/track-investment-case-pan
 import { TrackMainnetGatesPanel } from "@/components/track-mainnet-gates-panel";
 import { TrackNarrativePanel } from "@/components/track-narrative-panel";
 import { TrackTechnicalFitPanel } from "@/components/track-technical-fit-panel";
+import { TrackCustodyImpactPanel } from "@/components/track-custody-impact-panel";
 import { AuthorityHardeningPanel } from "@/components/authority-hardening-panel";
 import { IncidentReadinessPanel } from "@/components/incident-readiness-panel";
 import { cn } from "@/lib/utils";
@@ -207,6 +208,8 @@ export function CompetitionWorkspace({ workspace, commercialProfile, intake }: C
         <TrackCommercializationPanel workspace={workspace} />
 
         <TrackMainnetGatesPanel workspace={workspace} />
+
+        <TrackCustodyImpactPanel workspace={workspace} />
 
         <AuthorityHardeningPanel />
 
