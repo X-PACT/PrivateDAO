@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Link from "next/link";
 import { ArrowUpRight, CheckCircle2, ShieldCheck, Sparkles, Swords, Target, TimerReset, Wallet } from "lucide-react";
 
@@ -22,6 +23,20 @@ type CompetitionWorkspaceProps = {
   commercialProfile?: string;
   intake?: string;
 };
+
+type WorkspacePanelKey =
+  | "submissionPath"
+  | "submissionCoach"
+  | "trackAlignment"
+  | "trackNarrative"
+  | "trackInvestmentCase"
+  | "devnetServiceMetrics"
+  | "trackTechnicalFit"
+  | "trackCommercialization"
+  | "trackMainnetGates"
+  | "trackCustodyImpact"
+  | "authorityHardening"
+  | "incidentReadiness";
 
 function getCommercialContinuityBundle(workspace: CompetitionTrackWorkspace, commercialProfile?: string, intake?: string) {
   if (!commercialProfile && !intake) {
@@ -73,8 +88,146 @@ function getCommercialContinuityBundle(workspace: CompetitionTrackWorkspace, com
   return null;
 }
 
+function getWorkspacePanelOrder(commercialProfile?: string, intake?: string): WorkspacePanelKey[] {
+  if (commercialProfile === "pilot-funding" || intake === "pilot") {
+    return [
+      "submissionPath",
+      "submissionCoach",
+      "trackAlignment",
+      "trackCustodyImpact",
+      "devnetServiceMetrics",
+      "trackTechnicalFit",
+      "trackNarrative",
+      "trackInvestmentCase",
+      "trackCommercialization",
+      "trackMainnetGates",
+      "authorityHardening",
+      "incidentReadiness",
+    ];
+  }
+
+  if (commercialProfile === "treasury-top-up") {
+    return [
+      "trackCommercialization",
+      "trackInvestmentCase",
+      "trackMainnetGates",
+      "devnetServiceMetrics",
+      "trackAlignment",
+      "trackCustodyImpact",
+      "submissionPath",
+      "submissionCoach",
+      "trackTechnicalFit",
+      "trackNarrative",
+      "authorityHardening",
+      "incidentReadiness",
+    ];
+  }
+
+  if (commercialProfile === "vendor-payout" || commercialProfile === "contributor-payout" || intake === "payments") {
+    return [
+      "submissionPath",
+      "devnetServiceMetrics",
+      "trackCustodyImpact",
+      "authorityHardening",
+      "incidentReadiness",
+      "trackAlignment",
+      "trackTechnicalFit",
+      "trackCommercialization",
+      "trackInvestmentCase",
+      "trackMainnetGates",
+      "submissionCoach",
+      "trackNarrative",
+    ];
+  }
+
+  return [
+    "submissionCoach",
+    "trackAlignment",
+    "trackNarrative",
+    "trackInvestmentCase",
+    "devnetServiceMetrics",
+    "trackTechnicalFit",
+    "trackCommercialization",
+    "trackMainnetGates",
+    "trackCustodyImpact",
+    "authorityHardening",
+    "incidentReadiness",
+    "submissionPath",
+  ];
+}
+
 export function CompetitionWorkspace({ workspace, commercialProfile, intake }: CompetitionWorkspaceProps) {
   const commercialBundle = getCommercialContinuityBundle(workspace, commercialProfile, intake);
+  const orderedPanels = getWorkspacePanelOrder(commercialProfile, intake);
+
+  const panelMap: Record<WorkspacePanelKey, JSX.Element> = {
+    submissionCoach: <SubmissionCoachPanel workspace={workspace} />,
+    trackAlignment: <TrackAlignmentPanel workspace={workspace} />,
+    trackNarrative: <TrackNarrativePanel workspace={workspace} />,
+    trackInvestmentCase: <TrackInvestmentCasePanel workspace={workspace} />,
+    devnetServiceMetrics: <DevnetServiceMetricsPanel trackSlug={workspace.slug} />,
+    trackTechnicalFit: <TrackTechnicalFitPanel slug={workspace.slug} />,
+    trackCommercialization: <TrackCommercializationPanel workspace={workspace} />,
+    trackMainnetGates: <TrackMainnetGatesPanel workspace={workspace} />,
+    trackCustodyImpact: <TrackCustodyImpactPanel workspace={workspace} />,
+    authorityHardening: <AuthorityHardeningPanel />,
+    incidentReadiness: <IncidentReadinessPanel />,
+    submissionPath: (
+      <Card>
+        <CardHeader>
+          <CardTitle>Submission path</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Link className={cn(buttonVariants({ size: "sm" }))} href={workspace.liveRoute}>
+              Live route
+            </Link>
+            <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} href={workspace.judgeRoute}>
+              Review route
+            </Link>
+            <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={workspace.proofRoute}>
+              Proof route
+            </Link>
+            <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={workspace.deckRoute}>
+              Deck route
+            </Link>
+            <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={workspace.videoRoute}>
+              Story video route
+            </Link>
+          </div>
+          <a
+            className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "w-full")}
+            href={workspace.readmeHref}
+            rel="noreferrer"
+            target="_blank"
+          >
+            README
+            <ArrowUpRight className="h-3.5 w-3.5" />
+          </a>
+          <a
+            className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full")}
+            href={workspace.sourceUrl}
+            rel="noreferrer"
+            target="_blank"
+          >
+            Official track source
+            <ArrowUpRight className="h-3.5 w-3.5" />
+          </a>
+          <div className="rounded-3xl border border-white/8 bg-white/4 p-4 text-sm leading-7 text-white/60">
+            <div className="text-[11px] uppercase tracking-[0.28em] text-white/46">Skills needed</div>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {workspace.skillsNeeded.map((skill) => (
+                <span key={skill} className="rounded-full border border-white/10 bg-white/6 px-3 py-1 text-[11px] uppercase tracking-[0.22em] text-white/62">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    ),
+  };
+
   return (
     <div className="grid gap-6 xl:grid-cols-[1.06fr_0.94fr]">
       <div className="grid gap-6">
@@ -192,81 +345,9 @@ export function CompetitionWorkspace({ workspace, commercialProfile, intake }: C
             ))}
           </CardContent>
         </Card>
-
-        <SubmissionCoachPanel workspace={workspace} />
-
-        <TrackAlignmentPanel workspace={workspace} />
-
-        <TrackNarrativePanel workspace={workspace} />
-
-        <TrackInvestmentCasePanel workspace={workspace} />
-
-        <DevnetServiceMetricsPanel trackSlug={workspace.slug} />
-
-        <TrackTechnicalFitPanel slug={workspace.slug} />
-
-        <TrackCommercializationPanel workspace={workspace} />
-
-        <TrackMainnetGatesPanel workspace={workspace} />
-
-        <TrackCustodyImpactPanel workspace={workspace} />
-
-        <AuthorityHardeningPanel />
-
-        <IncidentReadinessPanel />
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Submission path</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid gap-3 sm:grid-cols-2">
-              <Link className={cn(buttonVariants({ size: "sm" }))} href={workspace.liveRoute}>
-                Live route
-              </Link>
-              <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} href={workspace.judgeRoute}>
-                Review route
-              </Link>
-              <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={workspace.proofRoute}>
-                Proof route
-              </Link>
-              <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={workspace.deckRoute}>
-                Deck route
-              </Link>
-              <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={workspace.videoRoute}>
-                Story video route
-              </Link>
-            </div>
-            <a
-              className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "w-full")}
-              href={workspace.readmeHref}
-              rel="noreferrer"
-              target="_blank"
-            >
-              README
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </a>
-            <a
-              className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full")}
-              href={workspace.sourceUrl}
-              rel="noreferrer"
-              target="_blank"
-            >
-              Official track source
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </a>
-            <div className="rounded-3xl border border-white/8 bg-white/4 p-4 text-sm leading-7 text-white/60">
-              <div className="text-[11px] uppercase tracking-[0.28em] text-white/46">Skills needed</div>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {workspace.skillsNeeded.map((skill) => (
-                  <span key={skill} className="rounded-full border border-white/10 bg-white/6 px-3 py-1 text-[11px] uppercase tracking-[0.22em] text-white/62">
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        {orderedPanels.map((panelKey) => (
+          <Fragment key={`${workspace.slug}-${panelKey}`}>{panelMap[panelKey]}</Fragment>
+        ))}
 
         <Card>
           <CardHeader>
