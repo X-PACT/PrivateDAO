@@ -1,3 +1,5 @@
+import { competitionTrackWorkspaces } from "@/lib/site-data";
+
 export type SiteSearchItem = {
   title: string;
   href: string;
@@ -9,6 +11,25 @@ type ProfileAwareSearchRule = {
   keywords: string[];
   leadItems: SiteSearchItem[];
 };
+
+const competitionAliases: Record<string, string[]> = {
+  "colosseum-frontier": ["colosseum", "frontier", "grand champion", "accelerator", "product impact"],
+  "privacy-track": ["privacy", "magicblock", "encrypted", "zk", "refhe", "private governance"],
+  "eitherway-live-dapp": ["eitherway", "solflare", "kamino", "dflow", "quicknode", "live dapp", "wallet track"],
+  "rpc-infrastructure": ["rpc", "quicknode", "infrastructure", "hosted reads", "diagnostics", "api"],
+  "consumer-apps": ["consumer", "tokenton", "tokenton26", "ux", "onboarding", "normal users"],
+  "ranger-main": ["ranger", "main track", "startup quality", "build a bear"],
+  "ranger-drift": ["drift", "treasury", "capital allocation", "side track", "risk"],
+  "100xdevs": ["100xdevs", "frontend", "next.js", "developer quality", "shipping discipline"],
+  "encrypt-ika": ["encrypt", "ika", "encrypted ops", "confidential operations"],
+  "solrouter-encrypted-ai": ["solrouter", "encrypted ai", "assistant", "ai track"],
+};
+
+type TreasuryProfile =
+  | "pilot-funding"
+  | "treasury-top-up"
+  | "vendor-payout"
+  | "contributor-payout";
 
 export const siteSearchItems: SiteSearchItem[] = [
   {
@@ -272,9 +293,140 @@ const profileAwareSearchRules: ProfileAwareSearchRule[] = [
   },
 ];
 
+function detectTreasuryProfile(query: string): TreasuryProfile | null {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return null;
+  if (normalized.includes("pilot funding")) return "pilot-funding";
+  if (normalized.includes("vendor payout")) return "vendor-payout";
+  if (normalized.includes("contributor payout")) return "contributor-payout";
+  if (
+    normalized.includes("treasury top-up") ||
+    normalized.includes("treasury top up") ||
+    normalized.includes("top-up") ||
+    normalized.includes("top up")
+  ) {
+    return "treasury-top-up";
+  }
+  return null;
+}
+
+function findCompetitionWorkspace(query: string) {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return null;
+
+  const scored = competitionTrackWorkspaces
+    .map((workspace) => {
+      const aliasTerms = competitionAliases[workspace.slug] ?? [];
+      const rawTerms = [
+        workspace.slug,
+        workspace.title,
+        workspace.sponsor,
+        workspace.primaryCorridor,
+        ...workspace.skillsNeeded,
+        ...aliasTerms,
+      ]
+        .join(" ")
+        .toLowerCase()
+        .split(/[^a-z0-9.+#-]+/g)
+        .filter(Boolean);
+
+      const uniqueTerms = [...new Set(rawTerms)];
+      const score = uniqueTerms.reduce(
+        (sum, term) => (normalized.includes(term) ? sum + 1 : sum),
+        0,
+      );
+      return { workspace, score };
+    })
+    .sort((left, right) => right.score - left.score);
+
+  const top = scored[0];
+  if (!top || top.score === 0) return null;
+  return top.workspace;
+}
+
+function getProfileTrackLeadItems(query: string): SiteSearchItem[] {
+  const normalized = query.trim().toLowerCase();
+  const profile = detectTreasuryProfile(normalized);
+  const workspace = findCompetitionWorkspace(normalized);
+
+  if (!profile || !workspace) return [];
+
+  if (profile === "pilot-funding") {
+    return [
+      {
+        title: `Pilot Funding Route - ${workspace.title}`,
+        href: `/tracks/${workspace.slug}?profile=pilot-funding`,
+        category: "Track",
+        summary:
+          "Profile-aware track route. First surfaces: submission path, coach and alignment, then trust and proof.",
+      },
+      {
+        title: "Pilot Funding Intake",
+        href: "/engage?profile=pilot-funding",
+        category: "Route",
+        summary: "Commercial qualification route with pilot funding preselected.",
+      },
+    ];
+  }
+
+  if (profile === "treasury-top-up") {
+    return [
+      {
+        title: `Treasury Top-up Route - ${workspace.title}`,
+        href: `/tracks/${workspace.slug}?profile=treasury-top-up`,
+        category: "Track",
+        summary:
+          "Profile-aware capitalization route. First surfaces: commercialization, investment case, and mainnet gates.",
+      },
+      {
+        title: "Treasury Top-up Intake",
+        href: "/engage?profile=treasury-top-up",
+        category: "Route",
+        summary: "Treasury capitalization route with top-up context preselected.",
+      },
+    ];
+  }
+
+  if (profile === "vendor-payout") {
+    return [
+      {
+        title: `Vendor Payout Route - ${workspace.title}`,
+        href: `/tracks/${workspace.slug}?profile=vendor-payout`,
+        category: "Track",
+        summary:
+          "Profile-aware vendor payout route. First surfaces: submission path, metrics and diagnostics, then custody and trust.",
+      },
+      {
+        title: "Vendor Payout Intake",
+        href: "/engage?profile=vendor-payout",
+        category: "Route",
+        summary: "Governed vendor payout route with execution context preselected.",
+      },
+    ];
+  }
+
+  return [
+    {
+      title: `Contributor Payout Route - ${workspace.title}`,
+      href: `/tracks/${workspace.slug}?profile=contributor-payout`,
+      category: "Track",
+      summary:
+        "Profile-aware contributor payout route. First surfaces: submission path, metrics, then custody and trust.",
+    },
+    {
+      title: "Contributor Payout Intake",
+      href: "/engage?profile=contributor-payout",
+      category: "Route",
+      summary: "Governed contributor payout route with funding context preselected.",
+    },
+  ];
+}
+
 export function getSiteSearchResults(query: string): SiteSearchItem[] {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return siteSearchItems;
+
+  const profileTrackLeadItems = getProfileTrackLeadItems(normalized);
 
   const profileAwareLeadItems =
     profileAwareSearchRules.find((rule) =>
@@ -288,7 +440,7 @@ export function getSiteSearchResults(query: string): SiteSearchItem[] {
   );
 
   const seen = new Set<string>();
-  return [...profileAwareLeadItems, ...generalResults].filter((item) => {
+  return [...profileTrackLeadItems, ...profileAwareLeadItems, ...generalResults].filter((item) => {
     const key = `${item.category}:${item.href}`;
     if (seen.has(key)) return false;
     seen.add(key);

@@ -209,6 +209,95 @@ const competitionAliases: Record<string, string[]> = {
   "solrouter-encrypted-ai": ["solrouter", "encrypted ai", "assistant", "ai track"],
 };
 
+type TreasuryProfile =
+  | "pilot-funding"
+  | "treasury-top-up"
+  | "vendor-payout"
+  | "contributor-payout";
+
+function detectTreasuryProfile(query: string): TreasuryProfile | null {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return null;
+  if (normalized.includes("pilot funding")) return "pilot-funding";
+  if (normalized.includes("vendor payout")) return "vendor-payout";
+  if (normalized.includes("contributor payout")) return "contributor-payout";
+  if (
+    normalized.includes("treasury top-up") ||
+    normalized.includes("treasury top up") ||
+    normalized.includes("top-up") ||
+    normalized.includes("top up")
+  ) {
+    return "treasury-top-up";
+  }
+  return null;
+}
+
+function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
+  const normalized = query.trim().toLowerCase();
+  const profile = detectTreasuryProfile(normalized);
+  const workspace = findCompetitionWorkspace(normalized);
+
+  if (!profile || !workspace) return null;
+
+  if (profile === "pilot-funding") {
+    return {
+      title: `Pilot funding route for ${workspace.title}`,
+      summary:
+        "Go straight into the profile-aware track. The first three surfaces are ordered for pilot funding: submission path first, then coach and alignment, then trust and proof.",
+      primaryActionLabel: "Open profile-aware track",
+      primaryActionHref: `/tracks/${workspace.slug}?profile=pilot-funding`,
+      relatedRoutes: [
+        { label: "1. Track workspace", href: `/tracks/${workspace.slug}?profile=pilot-funding` },
+        { label: "2. Engage", href: "/engage?profile=pilot-funding" },
+        { label: "3. Proof", href: workspace.proofRoute },
+      ],
+    };
+  }
+
+  if (profile === "treasury-top-up") {
+    return {
+      title: `Treasury top-up route for ${workspace.title}`,
+      summary:
+        "Go straight into the profile-aware track. The first three surfaces are ordered for treasury capitalization: commercialization first, then investment case and mainnet gates, then supporting metrics.",
+      primaryActionLabel: "Open profile-aware track",
+      primaryActionHref: `/tracks/${workspace.slug}?profile=treasury-top-up`,
+      relatedRoutes: [
+        { label: "1. Track workspace", href: `/tracks/${workspace.slug}?profile=treasury-top-up` },
+        { label: "2. Engage", href: "/engage?profile=treasury-top-up" },
+        { label: "3. Services", href: "/services" },
+      ],
+    };
+  }
+
+  if (profile === "vendor-payout") {
+    return {
+      title: `Vendor payout route for ${workspace.title}`,
+      summary:
+        "Go straight into the profile-aware track. The first three surfaces are ordered for governed vendor execution: submission path first, then metrics and diagnostics, then custody and trust.",
+      primaryActionLabel: "Open profile-aware track",
+      primaryActionHref: `/tracks/${workspace.slug}?profile=vendor-payout`,
+      relatedRoutes: [
+        { label: "1. Track workspace", href: `/tracks/${workspace.slug}?profile=vendor-payout` },
+        { label: "2. Command Center", href: "/command-center" },
+        { label: "3. Diagnostics", href: "/diagnostics" },
+      ],
+    };
+  }
+
+  return {
+    title: `Contributor payout route for ${workspace.title}`,
+    summary:
+      "Go straight into the profile-aware track. The first three surfaces are ordered for governed contributor funding: submission path first, then metrics, then custody and trust before broader commercial reading.",
+    primaryActionLabel: "Open profile-aware track",
+    primaryActionHref: `/tracks/${workspace.slug}?profile=contributor-payout`,
+    relatedRoutes: [
+      { label: "1. Track workspace", href: `/tracks/${workspace.slug}?profile=contributor-payout` },
+      { label: "2. Command Center", href: "/command-center" },
+      { label: "3. Security", href: "/security" },
+    ],
+  };
+}
+
 function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return null;
@@ -471,6 +560,9 @@ function getCompetitionSuggestion(query: string): AssistantSuggestion | null {
 export function getAssistantSuggestion(query: string): AssistantSuggestion {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return fallbackSuggestion;
+
+  const profileTrackSuggestion = getProfileTrackSuggestion(normalized);
+  if (profileTrackSuggestion) return profileTrackSuggestion;
 
   const treasuryProfileSuggestion = getTreasuryProfileSuggestion(normalized);
   if (treasuryProfileSuggestion) return treasuryProfileSuggestion;
