@@ -360,6 +360,7 @@ export function WalletFirstServiceActionsWorkbench({
   data,
 }: WalletFirstServiceActionsWorkbenchProps) {
   const [activeLane, setActiveLane] = useState<LaneSlug>("proposal-review");
+  const [hasHydratedHandoff, setHasHydratedHandoff] = useState(false);
   const sectionCopy = copy[context];
   const [selectedProposalId, setSelectedProposalId] = useState(data.proposals[0]?.id ?? "");
   const [selectedPayoutSlug, setSelectedPayoutSlug] = useState<PayoutRouteOption["slug"]>(
@@ -378,7 +379,10 @@ export function WalletFirstServiceActionsWorkbench({
     );
     const initialState = queryState ?? storedState;
 
-    if (!initialState) return;
+    if (!initialState) {
+      setHasHydratedHandoff(true);
+      return;
+    }
 
     if (data.proposals.some((item) => item.id === initialState.proposalId)) {
       setSelectedProposalId(initialState.proposalId);
@@ -405,6 +409,8 @@ export function WalletFirstServiceActionsWorkbench({
     if (data.telemetryModes.some((item) => item.slug === initialState.telemetryMode)) {
       setActiveLane("telemetry-inspection");
     }
+
+    setHasHydratedHandoff(true);
   }, [context, data.payouts, data.proposals, data.telemetryModes]);
 
   const selectedProposal = useMemo(
@@ -426,9 +432,9 @@ export function WalletFirstServiceActionsWorkbench({
   }, [context, selectedPayout, selectedProposal, selectedTelemetry]);
 
   useEffect(() => {
-    if (!handoffState || typeof window === "undefined") return;
+    if (!hasHydratedHandoff || !handoffState || typeof window === "undefined") return;
     window.localStorage.setItem(SERVICE_HANDOFF_STORAGE_KEY, JSON.stringify(handoffState));
-  }, [handoffState]);
+  }, [handoffState, hasHydratedHandoff]);
 
   const handoffQuery = handoffState ? buildServiceHandoffQuery(handoffState) : "";
 
