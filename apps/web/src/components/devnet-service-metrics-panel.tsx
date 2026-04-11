@@ -1,10 +1,7 @@
-"use client";
-
 import { Activity, Gauge, ShieldCheck, Wallet } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getDevnetServiceMetrics } from "@/lib/devnet-service-metrics";
-import { useServiceHandoffTelemetryMode } from "@/lib/use-service-handoff-snapshot";
 
 type DevnetServiceMetricsPanelProps = {
   scope?: "overview" | "services" | "diagnostics";
@@ -29,9 +26,6 @@ export function DevnetServiceMetricsPanel({
   scope = "overview",
   trackSlug,
 }: DevnetServiceMetricsPanelProps) {
-  const telemetryMode = useServiceHandoffTelemetryMode(
-    scope === "diagnostics" ? "command-center" : "services",
-  );
   const metrics = getDevnetServiceMetrics();
   const cards = trackSlug ? metrics.tracks[trackSlug] ?? metrics.overview : metrics[scope];
 
@@ -39,9 +33,6 @@ export function DevnetServiceMetricsPanel({
     <Card>
       <CardHeader>
         <CardTitle>Devnet service metrics</CardTitle>
-        <div className="text-sm leading-7 text-white/54">
-          Metrics focus is currently staged for {telemetryMode} mode.
-        </div>
       </CardHeader>
       <CardContent className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {cards.map((metric) => {
