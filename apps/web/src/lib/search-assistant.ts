@@ -217,13 +217,13 @@ function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null
     return {
       title: "Open the pilot funding bundle",
       summary:
-        "Go straight into the buyer path with pilot funding selected, then continue into the strongest live startup route with trust, proof, and story links already aligned.",
+        "Start with Engage to qualify the buyer path, then open the Colosseum track where the first three surfaces are ordered for pilot funding: submission path, coach and alignment, then trust and proof.",
       primaryActionLabel: "Open pilot funding path",
       primaryActionHref: "/engage?profile=pilot-funding",
       relatedRoutes: [
-        { label: "Colosseum Frontier", href: "/tracks/colosseum-frontier?profile=pilot-funding" },
-        { label: "Proof", href: "/documents/frontier-competition-readiness-2026" },
-        { label: "Trust", href: "/security" },
+        { label: "1. Engage", href: "/engage?profile=pilot-funding" },
+        { label: "2. Colosseum track", href: "/tracks/colosseum-frontier?profile=pilot-funding" },
+        { label: "3. Proof and trust", href: "/documents/frontier-competition-readiness-2026" },
       ],
     };
   }
@@ -232,13 +232,13 @@ function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null
     return {
       title: "Open the vendor payout bundle",
       summary:
-        "Route directly into governed payout handling for vendors, then keep execution, diagnostics, and trust visible without forcing a generic payments search first.",
+        "Start from the vendor payout lane, then use the live dApp track with execution-first ordering: submission path first, then metrics and diagnostics, then custody and trust.",
       primaryActionLabel: "Open vendor payout path",
       primaryActionHref: "/engage?profile=vendor-payout",
       relatedRoutes: [
-        { label: "Live dApp track", href: "/tracks/eitherway-live-dapp?profile=vendor-payout" },
-        { label: "Command Center", href: "/command-center" },
-        { label: "Diagnostics", href: "/diagnostics" },
+        { label: "1. Engage", href: "/engage?profile=vendor-payout" },
+        { label: "2. Live dApp track", href: "/tracks/eitherway-live-dapp?profile=vendor-payout" },
+        { label: "3. Command and diagnostics", href: "/command-center" },
       ],
     };
   }
@@ -247,13 +247,13 @@ function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null
     return {
       title: "Open the contributor payout bundle",
       summary:
-        "Route the request into governed contributor funding, then keep command execution, diagnostics, and trust packaging together in one commercial path.",
+        "Start from the contributor payout lane, then use the consumer track with execution-first ordering: submission path first, then metrics, then custody and trust before broad commercial reading.",
       primaryActionLabel: "Open contributor payout path",
       primaryActionHref: "/engage?profile=contributor-payout",
       relatedRoutes: [
-        { label: "Consumer Apps track", href: "/tracks/consumer-apps?profile=contributor-payout" },
-        { label: "Command Center", href: "/command-center" },
-        { label: "Trust", href: "/security" },
+        { label: "1. Engage", href: "/engage?profile=contributor-payout" },
+        { label: "2. Consumer Apps track", href: "/tracks/consumer-apps?profile=contributor-payout" },
+        { label: "3. Command and trust", href: "/command-center" },
       ],
     };
   }
@@ -262,13 +262,13 @@ function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null
     return {
       title: "Open the treasury top-up bundle",
       summary:
-        "Use the treasury capitalization path when the goal is operating runway, buyer onboarding, and stronger trust visibility rather than a one-off transfer.",
+        "Start with treasury capitalization in Engage, then open the RPC track where services, commercialization, and mainnet gates are intentionally raised before deeper proof reading.",
       primaryActionLabel: "Open treasury top-up path",
       primaryActionHref: "/engage?profile=treasury-top-up",
       relatedRoutes: [
-        { label: "RPC track", href: "/tracks/rpc-infrastructure?profile=treasury-top-up" },
-        { label: "Services", href: "/services" },
-        { label: "Trust", href: "/security" },
+        { label: "1. Engage", href: "/engage?profile=treasury-top-up" },
+        { label: "2. RPC track", href: "/tracks/rpc-infrastructure?profile=treasury-top-up" },
+        { label: "3. Services and trust", href: "/services" },
       ],
     };
   }
