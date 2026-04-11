@@ -4,6 +4,7 @@ import { getTrackSpecificProofContext } from "@/lib/track-proof-closure";
 
 export type TrackJudgeFirstCopy = {
   whatWorksNow: string[];
+  paymentsReadiness: string;
   externallyProven: Array<{
     label: string;
     href: string;
@@ -45,20 +46,32 @@ export function getTrackJudgeFirstCopy(
   commercialProfile?: string,
 ): TrackJudgeFirstCopy {
   const proofContext = getTrackSpecificProofContext(workspace);
+  const treasuryProof = {
+    label: "Treasury reviewer packet",
+    href: "/documents/treasury-reviewer-packet",
+    summary:
+      "Generated treasury packet that makes sender discipline, reference-linked rails, payments fit, and the exact treasury blocker reviewer-visible.",
+  };
   const telemetryProof = {
     label: "Reviewer telemetry packet",
     href: "/documents/reviewer-telemetry-packet",
     summary:
       "Generated telemetry truth packet that binds runtime evidence, frontier integrations, read-node snapshot, and devnet service metrics into one reviewer-safe route.",
   };
-  const externallyProven = [...proofContext.externallyProven, telemetryProof];
+  const externallyProven = [...proofContext.externallyProven, treasuryProof, telemetryProof];
   const whatWorksNow = workspace.deliverables.slice(0, 3);
   const bestDemoRoute = getProfileAwareDemoRoute(workspace, commercialProfile);
+  const paymentsReadiness =
+    commercialProfile === "treasury-top-up"
+      ? "Treasury capitalization route is live on public Devnet rails, but production-safe custody still depends on authority-transfer evidence."
+      : commercialProfile === "vendor-payout" || commercialProfile === "contributor-payout"
+        ? "Governed payout framing is live, with rails, trust links, and diagnostics visible before any real-funds claim."
+        : "Treasury rails, reviewer-safe packet, and custody truth are already live as part of the startup-grade payments story.";
   const bestDemoSummary = `${getProfileAwareDemoSummary(
     workspace,
     commercialProfile,
     bestDemoRoute,
-  )} Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story.`;
+  )} Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story.`;
 
   const openingSequence = [
     `What works now: ${whatWorksNow.join(" ")}`,
@@ -69,6 +82,7 @@ export function getTrackJudgeFirstCopy(
 
   return {
     whatWorksNow,
+    paymentsReadiness,
     externallyProven,
     exactBlocker: proofContext.exactBlocker,
     exactBlockerSummary: proofContext.exactBlockerSummary,

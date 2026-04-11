@@ -89,7 +89,7 @@ export default function DocumentsPage() {
       <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.05] p-5">
         <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/78">Reviewer fast path strip</div>
         <div className="mt-3 max-w-3xl text-sm leading-7 text-white/60">
-          Start from `/documents` and reach operating truth, the correct reviewer packet, and the shortest demo route in two clicks instead of scanning the full library.
+          Start from `/documents` and reach operating truth, treasury rails, the correct reviewer packet, and the shortest demo route in two clicks instead of scanning the full library.
         </div>
         <div className="mt-5 grid gap-3 md:grid-cols-3">
           <Link href="/documents/canonical-custody-proof" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
@@ -101,6 +101,9 @@ export default function DocumentsPage() {
           <Link href="/documents/reviewer-fast-path" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
             Open fast path
           </Link>
+        </div>
+        <div className="mt-4 text-sm leading-7 text-white/56">
+          Reviewer truth here now includes treasury readiness explicitly: open the treasury reviewer packet when the reviewer needs public rails, sender discipline, payments fit, and the exact treasury blocker without leaving the first screen.
         </div>
       </div>
       <div>

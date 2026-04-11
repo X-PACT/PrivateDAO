@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Gauge, LockKeyhole, Radar, ShieldCheck, TimerReset } from "lucide-react";
+import { ArrowRight, Gauge, LockKeyhole, Radar, ShieldCheck, TimerReset, WalletCards } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
@@ -65,7 +65,7 @@ export function InfrastructureStartupProofStrip({
         <div className="max-w-4xl text-sm leading-7 text-white/58">{config.description}</div>
       </CardHeader>
       <CardContent className="space-y-5">
-        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-6">
           <div className="rounded-[22px] border border-white/8 bg-white/[0.03] px-4 py-4">
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-white/42">
               <Gauge className="h-3.5 w-3.5 text-cyan-200/78" />
@@ -120,6 +120,19 @@ export function InfrastructureStartupProofStrip({
 
           <div className="rounded-[22px] border border-white/8 bg-white/[0.03] px-4 py-4">
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-white/42">
+              <WalletCards className="h-3.5 w-3.5 text-cyan-200/78" />
+              Payments readiness
+            </div>
+            <div className="mt-3 text-lg font-semibold tracking-tight text-white">
+              Treasury packet live
+            </div>
+            <div className="mt-2 text-sm leading-7 text-white/56">
+              {judgeFirstCopy.paymentsReadiness}
+            </div>
+          </div>
+
+          <div className="rounded-[22px] border border-white/8 bg-white/[0.03] px-4 py-4">
+            <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-white/42">
               <ShieldCheck className="h-3.5 w-3.5 text-cyan-200/78" />
               Best demo route
             </div>
@@ -145,6 +158,13 @@ export function InfrastructureStartupProofStrip({
             className={cn(buttonVariants({ variant: "outline" }), "justify-between sm:min-w-[240px]")}
           >
             Open reviewer telemetry
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+          <Link
+            href="/documents/treasury-reviewer-packet"
+            className={cn(buttonVariants({ variant: "outline" }), "justify-between sm:min-w-[230px]")}
+          >
+            Open treasury packet
             <ArrowRight className="h-4 w-4" />
           </Link>
           <Link

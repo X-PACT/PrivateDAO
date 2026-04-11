@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { ArrowUpRight, Gauge, KeyRound, ShieldCheck, TimerReset } from "lucide-react";
+import { ArrowUpRight, Gauge, KeyRound, ShieldCheck, TimerReset, WalletCards } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -119,6 +119,14 @@ export function TrackJudgeFirstTopStrip({ workspace }: TrackJudgeFirstTopStripPr
               <div className="mt-2 text-sm leading-7 text-white/58">{judgeFirstCopy.pendingSummary}</div>
             </div>
           </div>
+
+          <div className="rounded-3xl border border-emerald-300/14 bg-emerald-300/[0.06] p-5">
+            <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-emerald-200/78">
+              <WalletCards className="h-3.5 w-3.5" />
+              Payments readiness
+            </div>
+            <div className="mt-3 text-sm leading-7 text-white/62">{judgeFirstCopy.paymentsReadiness}</div>
+          </div>
         </div>
 
         <div className="grid gap-4">
@@ -142,7 +150,7 @@ export function TrackJudgeFirstTopStrip({ workspace }: TrackJudgeFirstTopStripPr
               Reviewer packet
             </div>
             <div className="mt-3 text-sm leading-7 text-white/62">
-              Jump directly into the shortest reviewer-facing custody truth packet without leaving the top layer.
+              Jump directly into custody truth, treasury rails, telemetry truth, and the track packet without leaving the top layer.
             </div>
             <div className="mt-4 grid gap-3">
               <Link href="/documents/custody-proof-reviewer-packet" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "w-full justify-between")}>
@@ -155,6 +163,10 @@ export function TrackJudgeFirstTopStrip({ workspace }: TrackJudgeFirstTopStripPr
               </Link>
               <Link href="/documents/reviewer-telemetry-packet" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full justify-between")}>
                 Open telemetry packet
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </Link>
+              <Link href="/documents/treasury-reviewer-packet" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full justify-between")}>
+                Open treasury packet
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
               <Link href="/documents/canonical-custody-proof" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full justify-between")}>
