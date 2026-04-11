@@ -10,11 +10,40 @@ import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
 import { diagnosticsChecks, diagnosticsEvents } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
+function buildFallbackTelemetrySelection(mode: "packet" | "snapshot" | "backend") {
+  if (mode === "backend") {
+    return {
+      title: "Backend cutover path",
+      summary: "Backend mode keeps diagnostics aligned with host readiness, route binding, and public health/metrics proof.",
+      stateDetail: "Use the deployment and telemetry proof paths while the hosted read corridor is being hardened.",
+      primaryHref: "/documents/read-node-same-domain-deploy",
+      proofHref: "/documents/reviewer-telemetry-packet",
+    };
+  }
+
+  if (mode === "snapshot") {
+    return {
+      title: "Read-node snapshot",
+      summary: "Snapshot mode keeps diagnostics tied to indexed proposal coverage and read-node output.",
+      stateDetail: "Use the snapshot packet when the reviewer needs state coverage and finalized counts without backend claims.",
+      primaryHref: "/documents/read-node-snapshot",
+      proofHref: "/documents/reviewer-telemetry-packet",
+    };
+  }
+
+  return {
+    title: "Reviewer telemetry packet",
+    summary: "Packet mode keeps diagnostics reviewer-safe until a stronger telemetry lane is selected.",
+    stateDetail: "Use the telemetry packet when the goal is proof, freshness, and export-safe diagnostics context.",
+    primaryHref: "/documents/reviewer-telemetry-packet",
+    proofHref: "/documents/reviewer-telemetry-packet",
+  };
+}
+
 export function DiagnosticsCenter() {
   const handoff = useServiceHandoffSnapshot("diagnostics");
-  const modeDetail =
-    handoff?.telemetrySelection?.summary ??
-    "Diagnostics falls back to the reviewer packet until a stronger telemetry mode is staged.";
+  const activeSelection = handoff?.telemetrySelection ?? buildFallbackTelemetrySelection(handoff?.telemetryMode ?? "packet");
+  const modeDetail = activeSelection.summary;
 
   return (
     <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
@@ -26,17 +55,17 @@ export function DiagnosticsCenter() {
           </div>
         </CardHeader>
         <CardContent className="grid gap-4">
-          {handoff?.telemetrySelection ? (
+          {activeSelection ? (
             <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-5">
               <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/78">Telemetry execution lane</div>
-              <div className="mt-3 text-base font-medium text-white">{handoff.telemetrySelection.title}</div>
-              <div className="mt-2 text-sm leading-7 text-white/62">{handoff.telemetrySelection.stateDetail}</div>
+              <div className="mt-3 text-base font-medium text-white">{activeSelection.title}</div>
+              <div className="mt-2 text-sm leading-7 text-white/62">{activeSelection.stateDetail}</div>
               <div className="mt-4 flex flex-wrap gap-3">
-                <Link href={handoff.telemetrySelection.primaryHref} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+                <Link href={activeSelection.primaryHref} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
                   Open active diagnostics lane
                   <ArrowRight className="h-4 w-4" />
                 </Link>
-                <Link href={handoff.telemetrySelection.proofHref} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                <Link href={activeSelection.proofHref} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
                   Open telemetry proof
                   <ArrowRight className="h-4 w-4" />
                 </Link>

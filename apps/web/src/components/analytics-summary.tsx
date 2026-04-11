@@ -10,15 +10,37 @@ import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
 import { analyticsReadiness, analyticsSnapshots } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
+function buildFallbackTelemetrySelection(mode: "packet" | "snapshot" | "backend") {
+  if (mode === "backend") {
+    return {
+      title: "Backend path",
+      summary: "Hosted service mode keeps analytics aligned with backend cutover, health, metrics, and deployment proof.",
+      primaryHref: "/documents/read-node-same-domain-deploy",
+      proofHref: "/documents/reviewer-telemetry-packet",
+    };
+  }
+
+  if (mode === "snapshot") {
+    return {
+      title: "Read-node snapshot",
+      summary: "Indexed snapshot mode keeps analytics tied to proposal coverage, finalized state, and read-node proof.",
+      primaryHref: "/documents/read-node-snapshot",
+      proofHref: "/documents/reviewer-telemetry-packet",
+    };
+  }
+
+  return {
+    title: "Reviewer packet",
+    summary: "Reviewer packet mode keeps analytics export-safe until a stronger telemetry lane is selected.",
+    primaryHref: "/documents/reviewer-telemetry-packet",
+    proofHref: "/documents/reviewer-telemetry-packet",
+  };
+}
+
 export function AnalyticsSummary() {
   const handoff = useServiceHandoffSnapshot("analytics");
-  const modeTitle =
-    handoff?.telemetrySelection?.title ??
-    (handoff?.telemetryMode === "backend"
-      ? "Backend path"
-      : handoff?.telemetryMode === "snapshot"
-        ? "Read-node snapshot"
-        : "Reviewer packet");
+  const activeSelection = handoff?.telemetrySelection ?? buildFallbackTelemetrySelection(handoff?.telemetryMode ?? "packet");
+  const modeTitle = activeSelection.title;
 
   return (
     <div className="grid gap-6">
@@ -29,19 +51,16 @@ export function AnalyticsSummary() {
         </CardHeader>
         <CardContent>
           <p className="text-sm leading-7 text-white/58">
-            {handoff?.telemetrySelection?.summary ??
-              "Analytics falls back to the reviewer packet until a stronger telemetry mode is staged from the wallet-first workbench."}
+            {activeSelection.summary}
           </p>
-          {handoff?.telemetrySelection ? (
-            <div className="mt-4 flex flex-wrap gap-3">
-              <Link href={handoff.telemetrySelection.primaryHref} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
-                Open active telemetry lane
-              </Link>
-              <Link href={handoff.telemetrySelection.proofHref} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
-                Open proof route
-              </Link>
-            </div>
-          ) : null}
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Link href={activeSelection.primaryHref} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+              Open active telemetry lane
+            </Link>
+            <Link href={activeSelection.proofHref} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+              Open proof route
+            </Link>
+          </div>
         </CardContent>
       </Card>
 
