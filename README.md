@@ -140,6 +140,40 @@ The README should stay aligned with this rule: implemented surfaces are describe
 | Treasury receive surface | https://privatedao.org/services/ |
 | Demo video MP4 | https://privatedao.org/assets/private-dao-demo-flow.mp4 |
 | Devnet program | https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet |
+
+## Active Track Matrix
+
+PrivateDAO is being packaged as one coherent product across the active Frontier and adjacent Superteam tracks. The routes below are the canonical live workspaces.
+
+| Track | Live workspace | Strongest visible fit |
+| --- | --- | --- |
+| Colosseum Frontier | https://privatedao.org/tracks/colosseum-frontier/ | Startup-quality product shell, trust surfaces, proof continuity, and buyer path |
+| Privacy Track | https://privatedao.org/tracks/privacy-track/ | Commit-reveal governance, ZK review posture, REFHE, MagicBlock-linked privacy corridor |
+| RPC Infrastructure | https://privatedao.org/tracks/rpc-infrastructure/ | Hosted reads, diagnostics, API packaging, runtime evidence |
+| Ranger Main | https://privatedao.org/tracks/ranger-main/ | Product coherence, security posture, commercial packaging, and operating maturity |
+| 100xDevs | https://privatedao.org/tracks/100xdevs/ | Next.js execution quality, reusable UI, route discipline, and live polish |
+| Consumer Apps | https://privatedao.org/tracks/consumer-apps/ | Wallet-first onboarding, clearer navigation, operator-to-buyer continuity |
+| Eitherway Live dApp | https://privatedao.org/tracks/eitherway-live-dapp/ | Live wallet UX, partner-facing demo path, and polished app behavior |
+| Encrypt / IKA | https://privatedao.org/tracks/encrypt-ika/ | Encrypted operations, confidential payroll, ZK and REFHE framing |
+| Ranger Drift Side Track | https://privatedao.org/tracks/ranger-drift/ | Treasury strategy and policy-bounded capital-governance story |
+| SolRouter Encrypted AI | https://privatedao.org/tracks/solrouter-encrypted-ai/ | Deterministic security and intelligence posture, without overstating encrypted agents |
+
+The operating rule stays strict:
+
+- one product thesis
+- many track-specific workspaces
+- no contradiction between site, README, deck, demo, or proof
+
+## Story And Community
+
+These are the public-facing routes reviewers, users, and buyers should see first:
+
+| Surface | Link |
+| --- | --- |
+| Story video route | https://privatedao.org/story/ |
+| Weekly / public YouTube | https://www.youtube.com/@privatedao |
+| Official Discord | https://discord.gg/bC76YEcpDa |
+| Colosseum project page | https://arena.colosseum.org/projects/explore/praivatedao |
 | Guided product flow | [`docs/frontier-guided-flow.md`](docs/frontier-guided-flow.md) |
 | Live proof V3 | [`docs/test-wallet-live-proof-v3.generated.md`](docs/test-wallet-live-proof-v3.generated.md) |
 | Domain mirror plan | [`docs/domain-mirror.md`](docs/domain-mirror.md) |

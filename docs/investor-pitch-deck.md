@@ -161,10 +161,22 @@ Best early users:
 
 Best Frontier tracks:
 
-- 100xDevs open track
-- RPC Fast infrastructure track
-- MagicBlock privacy track after runtime captures and source-verifiable receipt work
-- governance, privacy, and DAO infrastructure tracks
+- Colosseum Frontier via the live product shell and buyer path
+- Privacy Track via commit-reveal governance, ZK posture, REFHE, and MagicBlock-linked corridors
+- RPC Infrastructure via diagnostics, hosted reads, API packaging, and runtime evidence
+- Ranger Main and 100xDevs via product coherence, route quality, and shipping discipline
+- Consumer and Eitherway via wallet-first onboarding and live dApp polish
+
+Live track workspaces:
+
+- `https://privatedao.org/tracks/colosseum-frontier/`
+- `https://privatedao.org/tracks/privacy-track/`
+- `https://privatedao.org/tracks/rpc-infrastructure/`
+- `https://privatedao.org/tracks/ranger-main/`
+- `https://privatedao.org/tracks/100xdevs/`
+- `https://privatedao.org/tracks/consumer-apps/`
+- `https://privatedao.org/tracks/eitherway-live-dapp/`
+- `https://privatedao.org/tracks/encrypt-ika/`
 
 ## Slide 11 - Roadmap
 
@@ -214,6 +226,14 @@ Core links:
 - Dashboard: `https://privatedao.org/dashboard/`
 - Services: `https://privatedao.org/services/`
 - Diagnostics: `https://privatedao.org/diagnostics/`
+- Track center: `https://privatedao.org/tracks/`
+- Colosseum workspace: `https://privatedao.org/tracks/colosseum-frontier/`
+- Privacy workspace: `https://privatedao.org/tracks/privacy-track/`
+- RPC workspace: `https://privatedao.org/tracks/rpc-infrastructure/`
+- Story video: `https://privatedao.org/story/`
+- YouTube channel: `https://www.youtube.com/@privatedao`
+- Discord: `https://discord.gg/bC76YEcpDa`
+- Colosseum project page: `https://arena.colosseum.org/projects/explore/praivatedao`
 - Security hardening: `docs/security-hardening-v2.md`
 - Mainnet blockers: `docs/mainnet-blockers.md`
 - Multisig intake: `docs/multisig-setup-intake.md`
