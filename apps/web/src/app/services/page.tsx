@@ -14,6 +14,7 @@ import { PaymentsTruthStrip } from "@/components/payments-truth-strip";
 import { PdaoTokenStrategyStrip } from "@/components/pdao-token-strategy-strip";
 import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-truth-strip";
 import { ReadNodeActivationStrip } from "@/components/read-node-activation-strip";
+import { ReadNodeHostReadinessStrip } from "@/components/read-node-host-readiness-strip";
 import { SectionHeader } from "@/components/section-header";
 import { ServiceOperationalCards } from "@/components/service-operational-cards";
 import { ServiceReadinessLadder } from "@/components/service-readiness-ladder";
@@ -58,6 +59,9 @@ export default function ServicesPage() {
       </div>
       <div>
         <ReadNodeActivationStrip context="services" />
+      </div>
+      <div>
+        <ReadNodeHostReadinessStrip context="services" />
       </div>
       <div>
         <EcosystemFocusAlignmentStrip

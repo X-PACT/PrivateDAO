@@ -16,6 +16,7 @@ import { PdaoTokenStrategyStrip } from "@/components/pdao-token-strategy-strip";
 import { ProductActionMap } from "@/components/product-action-map";
 import { ProposalWorkspace } from "@/components/proposal-workspace";
 import { ReadNodeActivationStrip } from "@/components/read-node-activation-strip";
+import { ReadNodeHostReadinessStrip } from "@/components/read-node-host-readiness-strip";
 import { TreasuryProfileQuickActions } from "@/components/treasury-profile-quick-actions";
 import { WalletRuntimePanel } from "@/components/wallet-runtime-panel";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
@@ -60,6 +61,9 @@ export default function CommandCenterPage() {
       </div>
       <div>
         <ReadNodeActivationStrip context="command-center" />
+      </div>
+      <div>
+        <ReadNodeHostReadinessStrip context="command-center" />
       </div>
       <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
         <MetricsStrip />

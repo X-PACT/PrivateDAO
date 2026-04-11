@@ -9,6 +9,7 @@ import { CustodyTrustContinuity } from "@/components/custody-trust-continuity";
 import { EcosystemFocusAlignmentStrip } from "@/components/ecosystem-focus-alignment-strip";
 import { OperationsShell } from "@/components/operations-shell";
 import { PdaoTokenStrategyStrip } from "@/components/pdao-token-strategy-strip";
+import { ReadNodeHostReadinessStrip } from "@/components/read-node-host-readiness-strip";
 import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-truth-strip";
 import { TreasuryReviewerGradeStrip } from "@/components/treasury-reviewer-grade-strip";
 import { getCuratedDocuments, getCuratedDocumentsBySlugs } from "@/lib/curated-documents";
@@ -83,6 +84,9 @@ export default function DocumentsPage() {
           title="Telemetry reviewer fast path"
           description="Open the telemetry packet, diagnostics, analytics, and hosted-read proof directly from the document center when the reviewer is validating runtime, RPC, or data-side readiness."
         />
+      </div>
+      <div>
+        <ReadNodeHostReadinessStrip context="documents" />
       </div>
       <div>
         <EcosystemFocusAlignmentStrip

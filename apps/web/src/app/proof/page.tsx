@@ -8,6 +8,7 @@ import { ProofEntryBanner } from "@/components/proof-entry-banner";
 import { ProofFlowRail } from "@/components/proof-flow-rail";
 import { ProofCenter } from "@/components/proof-center";
 import { ReadNodeActivationStrip } from "@/components/read-node-activation-strip";
+import { ReadNodeHostReadinessStrip } from "@/components/read-node-host-readiness-strip";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
@@ -40,6 +41,9 @@ export default function ProofPage() {
       </div>
       <div>
         <ReadNodeActivationStrip context="proof" />
+      </div>
+      <div>
+        <ReadNodeHostReadinessStrip context="proof" />
       </div>
       <div>
         <MetricsStrip />
