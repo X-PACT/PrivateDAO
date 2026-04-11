@@ -1,11 +1,14 @@
 "use client";
 
+import Link from "next/link";
 import { ShieldAlert, Sparkles, TrendingUp } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
 import { analyticsReadiness, analyticsSnapshots } from "@/lib/site-data";
+import { cn } from "@/lib/utils";
 
 export function AnalyticsSummary() {
   const handoff = useServiceHandoffSnapshot("services");
@@ -29,6 +32,16 @@ export function AnalyticsSummary() {
             {handoff?.telemetrySelection?.summary ??
               "Analytics falls back to the reviewer packet until a stronger telemetry mode is staged from the wallet-first workbench."}
           </p>
+          {handoff?.telemetrySelection ? (
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Link href={handoff.telemetrySelection.primaryHref} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+                Open active telemetry lane
+              </Link>
+              <Link href={handoff.telemetrySelection.proofHref} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                Open proof route
+              </Link>
+            </div>
+          ) : null}
         </CardContent>
       </Card>
 

@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { Activity, ArrowUpRight, FileCheck2 } from "lucide-react";
+import { Activity, ArrowRight, ArrowUpRight, FileCheck2 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
 import { diagnosticsChecks, diagnosticsEvents } from "@/lib/site-data";
+import { cn } from "@/lib/utils";
 
 export function DiagnosticsCenter() {
   const handoff = useServiceHandoffSnapshot("command-center");
@@ -24,6 +26,23 @@ export function DiagnosticsCenter() {
           </div>
         </CardHeader>
         <CardContent className="grid gap-4">
+          {handoff?.telemetrySelection ? (
+            <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-5">
+              <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/78">Telemetry execution lane</div>
+              <div className="mt-3 text-base font-medium text-white">{handoff.telemetrySelection.title}</div>
+              <div className="mt-2 text-sm leading-7 text-white/62">{handoff.telemetrySelection.stateDetail}</div>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <Link href={handoff.telemetrySelection.primaryHref} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+                  Open active diagnostics lane
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link href={handoff.telemetrySelection.proofHref} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                  Open telemetry proof
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+          ) : null}
           {diagnosticsChecks.map((check) => {
             const isInternal = check.href.startsWith("/");
             const content = (

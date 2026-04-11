@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { ArrowUpRight, CheckCircle2, Clock3, LockKeyhole, WalletMinimal } from "lucide-react";
@@ -17,6 +17,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buildProposalConfidenceScorecard } from "@/lib/confidence-engine";
 import type { ExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { commandCenterReferences, getProposalById, proposalCards, type ProposalCardModel } from "@/lib/site-data";
+import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
 import { cn } from "@/lib/utils";
 
 const actionMap: Record<ProposalCardModel["status"], { commit: string; reveal: string; execute: string }> = {
@@ -59,13 +60,14 @@ type ProposalWorkspaceProps = {
 export function ProposalWorkspace({ executionSnapshot }: ProposalWorkspaceProps) {
   const searchParams = useSearchParams();
   const requestedProposalId = searchParams.get("proposal");
+  const handoff = useServiceHandoffSnapshot("command-center");
   const [selectedId, setSelectedId] = useState(() => getProposalById(requestedProposalId)?.id ?? proposalCards[0]?.id ?? "");
   const [voteModalOpen, setVoteModalOpen] = useState(false);
   const { connected } = useWallet();
 
   const proposal = useMemo(
-    () => getProposalById(selectedId) ?? getProposalById(requestedProposalId) ?? proposalCards[0],
-    [requestedProposalId, selectedId],
+    () => getProposalById(selectedId) ?? getProposalById(requestedProposalId) ?? getProposalById(handoff?.proposalId) ?? proposalCards[0],
+    [handoff?.proposalId, requestedProposalId, selectedId],
   );
   const scorecard = useMemo(
     () =>
@@ -81,6 +83,14 @@ export function ProposalWorkspace({ executionSnapshot }: ProposalWorkspaceProps)
   );
 
   const actions = actionMap[proposal.status];
+
+  useEffect(() => {
+    if (!handoff?.proposalId) return;
+    if (proposal.id === handoff.proposalId) return;
+    if (getProposalById(handoff.proposalId)) {
+      setSelectedId(handoff.proposalId);
+    }
+  }, [handoff?.proposalId, proposal.id]);
 
   return (
     <>
@@ -105,6 +115,42 @@ export function ProposalWorkspace({ executionSnapshot }: ProposalWorkspaceProps)
               </button>
             ))}
           </div>
+
+          {handoff?.proposalReview && handoff.proposalId === proposal.id ? (
+            <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-5">
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div>
+                  <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/78">Review continuity</div>
+                  <div className="mt-2 text-base font-medium text-white">The active command-center proposal is carrying staged execution context.</div>
+                  <div className="mt-2 text-sm leading-7 text-white/60">
+                    Window, treasury boundary, execution target, and proof route are being consumed from the wallet-first handoff instead of forcing the operator to rebuild context manually.
+                  </div>
+                </div>
+                <Link href={handoff.proposalReview.proofHref} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                  {handoff.proposalReview.proofLabel}
+                  <ArrowUpRight className="h-4 w-4" />
+                </Link>
+              </div>
+              <div className="mt-4 grid gap-3 md:grid-cols-2">
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/60">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Window</div>
+                  <div className="mt-2 text-white">{handoff.proposalReview.window}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/60">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Treasury boundary</div>
+                  <div className="mt-2 text-white">{handoff.proposalReview.treasury}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/60">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Execution target</div>
+                  <div className="mt-2 text-white">{handoff.proposalReview.executionTarget}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/60">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Evidence route</div>
+                  <div className="mt-2 text-white">{handoff.proposalReview.evidenceRoute}</div>
+                </div>
+              </div>
+            </div>
+          ) : null}
 
           <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
             <div className="flex flex-wrap items-start justify-between gap-4">
@@ -208,7 +254,7 @@ export function ProposalWorkspace({ executionSnapshot }: ProposalWorkspaceProps)
         </CardContent>
       </Card>
 
-      <VoteModal proposal={voteModalOpen ? proposal : null} onClose={() => setVoteModalOpen(false)} />
+      <VoteModal proposal={voteModalOpen ? proposal : null} handoff={handoff?.proposalId === proposal.id ? handoff : null} onClose={() => setVoteModalOpen(false)} />
     </>
   );
 }

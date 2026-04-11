@@ -1,4 +1,5 @@
 export const SERVICE_HANDOFF_STORAGE_KEY = "privatedao:service-handoff";
+export const SERVICE_HANDOFF_EVENT = "privatedao:service-handoff-updated";
 
 export const SERVICE_HANDOFF_PROFILES = [
   "pilot-funding",
@@ -92,6 +93,12 @@ export type ServiceHandoffSelection = {
 
 let storedServiceHandoffRawCache: string | null = null;
 let storedServiceHandoffParsedCache: ServiceHandoffState | null = null;
+
+function updateStoredServiceHandoffCache(raw: string | null) {
+  storedServiceHandoffRawCache = raw;
+  storedServiceHandoffParsedCache = parseStoredServiceHandoffState(raw);
+  return storedServiceHandoffParsedCache;
+}
 
 export function buildServiceHandoffQuery(state: ServiceHandoffState) {
   const params = new URLSearchParams();
@@ -205,9 +212,16 @@ export function readStoredServiceHandoffState(): ServiceHandoffState | null {
     return storedServiceHandoffParsedCache;
   }
 
-  storedServiceHandoffRawCache = raw;
-  storedServiceHandoffParsedCache = parseStoredServiceHandoffState(raw);
-  return storedServiceHandoffParsedCache;
+  return updateStoredServiceHandoffCache(raw);
+}
+
+export function writeStoredServiceHandoffState(state: ServiceHandoffState) {
+  if (typeof window === "undefined") return;
+
+  const raw = JSON.stringify(state);
+  window.localStorage.setItem(SERVICE_HANDOFF_STORAGE_KEY, raw);
+  updateStoredServiceHandoffCache(raw);
+  window.dispatchEvent(new CustomEvent(SERVICE_HANDOFF_EVENT, { detail: state }));
 }
 
 export function readServiceHandoffState(searchParams: URLSearchParams): ServiceHandoffSelection | null {

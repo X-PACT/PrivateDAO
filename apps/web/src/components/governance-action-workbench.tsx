@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { Activity, CheckCircle2, ChevronRight, FilePlus2, Flag, FolderPlus, ListChecks, Play, ShieldCheck, Vote, Wallet } from "lucide-react";
+import { Activity, ArrowUpRight, CheckCircle2, ChevronRight, FilePlus2, Flag, FolderPlus, ListChecks, Play, ShieldCheck, Vote, Wallet } from "lucide-react";
 
 import { ActionReviewModal } from "@/components/action-review-modal";
 import { useGovernanceSession } from "@/components/governance-session";
@@ -53,6 +53,7 @@ export function GovernanceActionWorkbench() {
   const canFinalize = voteRevealed && !proposalFinalized;
   const canExecute = proposalFinalized && !proposalExecuted;
   const handoff = useServiceHandoffSnapshot("command-center");
+  const appliedReviewRef = useRef<string | null>(null);
 
   const activeWalletLabel = useMemo(() => wallet?.adapter.name ?? "Connected wallet", [wallet]);
   const nextAction = useMemo<CoreGovernanceInstructionName>(() => {
@@ -77,6 +78,13 @@ export function GovernanceActionWorkbench() {
 
   useEffect(() => {
     if (!handoff) return;
+    const continuityKey = `${handoff.proposalId}:${handoff.telemetryMode}:${handoff.source}`;
+    if (appliedReviewRef.current === continuityKey) return;
+
+    if (!proposalCreated && proposalTitle !== handoff.proposalTitle) {
+      setProposalTitle(handoff.proposalTitle);
+    }
+
     stageReviewContext({
       proposalId: handoff.proposalId,
       proposalTitle: handoff.proposalTitle,
@@ -84,7 +92,8 @@ export function GovernanceActionWorkbench() {
       telemetryMode: handoff.telemetryMode,
       source: handoff.source,
     });
-  }, [handoff, stageReviewContext]);
+    appliedReviewRef.current = continuityKey;
+  }, [handoff, proposalCreated, proposalTitle, setProposalTitle, stageReviewContext]);
 
   function openReview(action: CoreGovernanceInstructionName) {
     setReviewAction(action);
@@ -137,6 +146,44 @@ export function GovernanceActionWorkbench() {
               <WalletConnectButton />
             </div>
           </div>
+
+          {handoff?.proposalReview ? (
+            <div className="rounded-[24px] border border-cyan-300/16 bg-cyan-300/[0.08] p-5 md:col-span-2">
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div>
+                  <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/80">Execution continuity</div>
+                  <div className="mt-2 text-base font-medium text-white">
+                    {handoff.proposalId} · {handoff.proposalTitle}
+                  </div>
+                  <div className="mt-2 text-sm leading-7 text-white/62">
+                    The selected proposal is staged directly into the command shell with execution target, treasury boundary, and proof route already attached.
+                  </div>
+                </div>
+                <Link href={handoff.proposalReview.proofHref} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+                  {handoff.proposalReview.proofLabel}
+                  <ArrowUpRight className="h-4 w-4" />
+                </Link>
+              </div>
+              <div className="mt-4 grid gap-3 md:grid-cols-2">
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Execution target</div>
+                  <div className="mt-2 text-sm text-white/70">{handoff.proposalReview.executionTarget}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Treasury boundary</div>
+                  <div className="mt-2 text-sm text-white/70">{handoff.proposalReview.treasury}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Window</div>
+                  <div className="mt-2 text-sm text-white/70">{handoff.proposalReview.window}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Evidence route</div>
+                  <div className="mt-2 text-sm text-white/70">{handoff.proposalReview.evidenceRoute}</div>
+                </div>
+              </div>
+            </div>
+          ) : null}
 
           <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
             <div className="flex items-center gap-3">

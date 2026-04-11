@@ -7,6 +7,7 @@ import { ProposalAnalyzerInline } from "@/components/proposal-analyzer-inline";
 import { TreasuryRiskInline } from "@/components/treasury-risk-inline";
 import { getConfidenceEngineSummary } from "@/lib/confidence-engine";
 import { buildPreparedActionSummary, type PreparedActionSummary } from "@/lib/onchain-parity";
+import type { ServiceHandoffState } from "@/lib/service-handoff-state";
 import type { ProposalCardModel } from "@/lib/site-data";
 
 import { Badge } from "./ui/badge";
@@ -14,10 +15,11 @@ import { Button } from "./ui/button";
 
 type VoteModalProps = {
   proposal: ProposalCardModel | null;
+  handoff?: ServiceHandoffState | null;
   onClose: () => void;
 };
 
-export function VoteModal({ proposal, onClose }: VoteModalProps) {
+export function VoteModal({ proposal, handoff, onClose }: VoteModalProps) {
   if (!proposal) return null;
 
   const isExecuted = proposal.status === "Executed";
@@ -96,6 +98,22 @@ export function VoteModal({ proposal, onClose }: VoteModalProps) {
               {proposal.privacy}. {isExecuted ? "The indexed record shows that treasury execution already cleared the governance path on devnet." : "Treasury execution remains blocked until voting, reveal, timelock, and evidence gates align with the selected hardening path."}
             </div>
           </div>
+          {handoff?.proposalReview ? (
+            <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-4 sm:col-span-2">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/76">Execution continuity</div>
+                  <div className="mt-2 text-sm leading-7 text-white/68">
+                    {handoff.proposalReview.executionTarget} · {handoff.proposalReview.window}
+                  </div>
+                </div>
+                <Badge variant="cyan">{handoff.telemetryMode}</Badge>
+              </div>
+              <div className="mt-2 text-sm leading-7 text-white/58">
+                {handoff.proposalReview.treasury}
+              </div>
+            </div>
+          ) : null}
           <div className="rounded-3xl border border-white/8 bg-white/4 p-4 sm:col-span-2">
             <div className="flex items-center justify-between gap-4">
               <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Confidence engine</div>
@@ -171,6 +189,13 @@ export function VoteModal({ proposal, onClose }: VoteModalProps) {
           <Button>{isExecuted ? "Review commit trail" : "Commit vote"}</Button>
           <Button variant="secondary">{isExecuted ? "Review reveal trail" : "Reveal vote"}</Button>
           <Button variant="outline">{isExecuted ? "Execution confirmed" : "Review execution path"}</Button>
+          {handoff?.proposalReview ? (
+            <Button asChild variant="outline">
+              <a href={handoff.proposalReview.proofHref}>
+                {handoff.proposalReview.proofLabel}
+              </a>
+            </Button>
+          ) : null}
         </div>
       </div>
     </div>

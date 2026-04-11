@@ -7,7 +7,9 @@ import { ArrowRight, ArrowUpRight, CheckCircle2, Clipboard, Coins, Download, Fil
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import {
+  buildServiceHandoffQuery,
   type ServiceHandoffAssetSymbol,
+  writeStoredServiceHandoffState,
 } from "@/lib/service-handoff-state";
 import { getTreasuryReceiveConfig } from "@/lib/treasury-receive-config";
 import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
@@ -139,6 +141,7 @@ export function TreasuryReceiveSurface() {
   const [lane, setLane] = useState<(typeof handoffLanes)[number]["value"]>("buyer");
   const handoff = useServiceHandoffSnapshot("services");
   const appliedHandoffKeyRef = useRef<string | null>(null);
+  const persistedPayloadSignatureRef = useRef<string | null>(null);
 
   const activeAsset = config.assets.find((asset) => asset.symbol === selectedAsset) ?? config.assets[0];
   const activeProfile = destinationProfiles.find((item) => item.value === profile) ?? destinationProfiles[0];
@@ -190,7 +193,82 @@ export function TreasuryReceiveSurface() {
       ].join("\n"),
     [activeAsset, activeLane.label, activeProfile, amount, config.network, purpose, reference],
   );
+  const executionPayload = useMemo(
+    () => ({
+      proposalId: handoff?.proposalId ?? "services-treasury-intake",
+      profile: activeProfile.value,
+      profileLabel: activeProfile.label,
+      lane,
+      laneLabel: activeLane.label,
+      assetSymbol: activeAsset.symbol,
+      assetMint: activeAsset.mint ?? "env-configured",
+      amount: amount || null,
+      reference: reference || null,
+      purpose: purpose || null,
+      receiveAddress: activeAsset.receiveAddress,
+      routeFocus: handoff?.payoutIntent?.routeFocus ?? activeProfile.summary,
+      executionTarget: handoff?.payoutIntent?.executionTarget ?? `Treasury receive rail · ${activeAsset.symbol}`,
+      telemetryMode: handoff?.telemetryMode ?? "packet",
+    }),
+    [activeAsset, activeLane.label, activeProfile, amount, handoff, lane, purpose, reference],
+  );
+  const persistedPayoutIntent = useMemo(() => {
+    if (!handoff) return null;
+
+    return {
+      assetSymbol: activeAsset.symbol,
+      amount,
+      amountDisplay: amount ? `${amount} ${activeAsset.symbol}` : `${activeAsset.symbol} amount pending`,
+      reference: reference || `${activeProfile.value.toUpperCase()}-REQUEST-PENDING`,
+      purpose: purpose || activeProfile.defaultPurpose,
+      lane,
+      routeFocus: handoff.payoutIntent?.routeFocus ?? activeProfile.summary,
+      recipient: activeAsset.receiveAddress,
+      mintAddress: activeAsset.mint ?? null,
+      executionTarget: handoff.payoutIntent?.executionTarget ?? `Treasury receive rail · ${activeAsset.symbol}`,
+      evidenceRoute: handoff.payoutIntent?.evidenceRoute ?? "/documents/treasury-reviewer-packet",
+    };
+  }, [activeAsset, activeProfile, amount, handoff, lane, purpose, reference]);
+  const persistedStateSignature = useMemo(
+    () =>
+      handoff && persistedPayoutIntent
+        ? JSON.stringify({
+            proposalId: handoff.proposalId,
+            payoutProfile: activeProfile.value,
+            telemetryMode: handoff.telemetryMode,
+            payoutIntent: persistedPayoutIntent,
+          })
+        : null,
+    [activeProfile.value, handoff, persistedPayoutIntent],
+  );
+  const continueHandoffQuery = useMemo(
+    () =>
+      handoff && persistedPayoutIntent
+        ? buildServiceHandoffQuery({
+            ...handoff,
+            payoutProfile: activeProfile.value,
+            payoutTitle: activeProfile.label,
+            payoutIntent: persistedPayoutIntent,
+          })
+        : "",
+    [activeProfile.label, activeProfile.value, handoff, persistedPayoutIntent],
+  );
   const isRequestReady = Boolean(amount.trim() && purpose.trim() && reference.trim());
+
+  useEffect(() => {
+    if (!handoff || !persistedPayoutIntent || !persistedStateSignature) return;
+    if (persistedPayloadSignatureRef.current === persistedStateSignature) return;
+
+    writeStoredServiceHandoffState({
+      ...handoff,
+      payoutProfile: activeProfile.value,
+      payoutTitle: activeProfile.label,
+      updatedAt: new Date().toISOString(),
+      source: "services",
+      payoutIntent: persistedPayoutIntent,
+    });
+    persistedPayloadSignatureRef.current = persistedStateSignature;
+  }, [activeProfile.label, activeProfile.value, handoff, persistedPayoutIntent, persistedStateSignature]);
 
   async function copyValue(key: string, value: string) {
     await navigator.clipboard.writeText(value);
@@ -452,6 +530,23 @@ export function TreasuryReceiveSurface() {
               <pre className="mt-4 whitespace-pre-wrap text-sm leading-7 text-white/72">{requestPacket}</pre>
             </div>
 
+            <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-5">
+              <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/76">Execution payload continuity</div>
+              <pre className="mt-4 whitespace-pre-wrap text-xs leading-6 text-white/72">{JSON.stringify(executionPayload, null, 2)}</pre>
+              {continueHandoffQuery ? (
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <Link href={`/services?${continueHandoffQuery}#service-handoff`} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                    Refresh services continuity
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                  <Link href={`/command-center?${continueHandoffQuery}#proposal-review-action`} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                    Continue to command-center
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              ) : null}
+            </div>
+
             <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
               <div className="text-[11px] uppercase tracking-[0.24em] text-white/46">Profile and lane summary</div>
               <div className="mt-3 text-base font-medium text-white">{activeProfile.label}</div>
@@ -507,6 +602,16 @@ export function TreasuryReceiveSurface() {
                 Continue to {activeProfile.intake === "pilot" ? "pilot" : "payments"} intake
                 <ArrowRight className="h-4 w-4" />
               </Link>
+              {continueHandoffQuery ? (
+                <Link
+                  href={`/command-center?${continueHandoffQuery}#proposal-review-action`}
+                  className={cn(buttonVariants({ size: "sm", variant: "outline" }), !isRequestReady && "pointer-events-none opacity-50")}
+                  aria-disabled={!isRequestReady}
+                >
+                  Continue to governed execution
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              ) : null}
             </div>
           </div>
         </div>
