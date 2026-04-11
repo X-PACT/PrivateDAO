@@ -104,6 +104,7 @@
     "build:supply-chain-attestation": "ts-node scripts/build-supply-chain-attestation.ts",
     "build:release-ceremony-attestation": "ts-node scripts/build-release-ceremony-attestation.ts",
     "record:custody-observed-readouts": "ts-node scripts/record-custody-observed-readouts.ts",
+    "apply:custody-evidence-intake": "ts-node scripts/apply-custody-evidence-intake.ts",
     "build:canonical-custody-proof": "ts-node scripts/build-canonical-custody-proof.ts",
     "build:runtime-evidence": "ts-node scripts/build-runtime-evidence.ts",
     "build:real-device-runtime": "ts-node scripts/build-real-device-runtime-evidence.ts",

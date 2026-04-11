@@ -2,45 +2,70 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { Copy, Download, KeyRound, ShieldCheck, WalletCards } from "lucide-react";
+import {
+  AlertTriangle,
+  Copy,
+  Download,
+  KeyRound,
+  Link2,
+  ShieldCheck,
+  WalletCards,
+} from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { authorityHardeningLinks, authorityHardeningSections } from "@/lib/authority-hardening";
-import { emptyCustodyEvidence, readCustodyEvidence, writeCustodyEvidence, type CustodyEvidence } from "@/lib/custody-evidence";
+import {
+  buildCustodyEvidenceJson,
+  buildCustodyEvidenceMarkdown,
+  buildCustodyEvidenceIntakePayload,
+  custodyAuthorityTransferSurfaces,
+  custodyProgramId,
+  emptyCustodyEvidence,
+  getCustodyEvidenceCompletion,
+  looksLikeReference,
+  looksLikeSolanaAddress,
+  looksLikeSolanaSignature,
+  normalizeThreshold,
+  readCustodyEvidence,
+  writeCustodyEvidence,
+  type CustodyAuthorityTransferEvidence,
+  type CustodyEvidence,
+  type CustodySignerEvidence,
+} from "@/lib/custody-evidence";
 import { cn } from "@/lib/utils";
 
 const custodySteps = [
   {
     title: "Define signer set",
-    summary: "Freeze the production signer roster, role ownership, and threshold model before any authority movement.",
+    summary: "Freeze the real 3-signer roster and backup procedures before any authority movement.",
     state: "Repo-ready",
   },
   {
-    title: "Create multisig",
-    summary: "Create the production multisig and record the public address, threshold, and signer inventory.",
+    title: "Record multisig package",
+    summary: "Collect the implementation, address, creation signature, rehearsal signature, and timelock references in one structured packet.",
+    state: "Strict ingestion live",
+  },
+  {
+    title: "Capture authority transfer evidence",
+    summary: "Record the destination authority, transfer signature, and post-transfer readout reference for each operational surface.",
     state: "External execution pending",
   },
   {
-    title: "Transfer upgrade authority",
-    summary: "Move program upgrade authority into the multisig and preserve explorer-linked transaction evidence.",
-    state: "External signature pending",
-  },
-  {
-    title: "Transfer treasury authority",
-    summary: "Move treasury operations and admin rails into the final authority split with explicit readouts.",
-    state: "External signature pending",
+    title: "Apply and rebuild canonical proof",
+    summary: "Save the JSON packet into `docs/custody-evidence-intake.json` and run the apply command to update canonical proof artifacts.",
+    state: "Repo automation ready",
   },
 ];
 
-type EvidenceField = {
-  label: string;
-  value: string;
+type ValidationState = {
+  ok: boolean;
+  text: string;
 };
 
-function downloadPacket(filename: string, contents: string) {
-  const blob = new Blob([contents], { type: "text/plain;charset=utf-8" });
+function downloadPacket(filename: string, contents: string, mimeType = "text/plain;charset=utf-8") {
+  const blob = new Blob([contents], { type: mimeType });
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
   anchor.href = url;
@@ -51,9 +76,49 @@ function downloadPacket(filename: string, contents: string) {
   URL.revokeObjectURL(url);
 }
 
+function getValidationTone(validation: ValidationState) {
+  return validation.ok
+    ? "border-emerald-300/18 bg-emerald-300/[0.07] text-emerald-100"
+    : "border-amber-300/18 bg-amber-300/[0.08] text-amber-100";
+}
+
+function summarizeValidation(ok: boolean, successText: string, pendingText: string): ValidationState {
+  return { ok, text: ok ? successText : pendingText };
+}
+
+function getSignerValidation(signer: CustodySignerEvidence): ValidationState {
+  return summarizeValidation(
+    looksLikeSolanaAddress(signer.publicKey) && signer.backupProcedureDocumented,
+    "Public key and backup discipline recorded.",
+    "Need a real signer public key and backup confirmation.",
+  );
+}
+
+function getTransferValidation(transfer: CustodyAuthorityTransferEvidence): ValidationState {
+  const ok =
+    looksLikeSolanaAddress(transfer.destinationAuthority) &&
+    looksLikeSolanaSignature(transfer.transferSignature) &&
+    transfer.postTransferReadout.trim().length > 0 &&
+    looksLikeReference(transfer.postTransferReadoutReferenceUrl);
+
+  return summarizeValidation(
+    ok,
+    "Destination, signature, and readout reference are all recorded.",
+    "Need destination authority, transfer signature, readout text, and a reference link.",
+  );
+}
+
+function EvidenceStatus({ validation }: { validation: ValidationState }) {
+  return (
+    <div className={cn("rounded-full border px-3 py-1 text-xs font-medium", getValidationTone(validation))}>
+      {validation.ok ? "Valid" : "Pending"}
+    </div>
+  );
+}
+
 export function CustodyWorkspace() {
   const [draftEvidence, setDraftEvidence] = useState<CustodyEvidence>(emptyCustodyEvidence);
-  const [copyState, setCopyState] = useState<"idle" | "copied">("idle");
+  const [copyState, setCopyState] = useState<"idle" | "json" | "markdown">("idle");
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -74,43 +139,76 @@ export function CustodyWorkspace() {
     setDraftEvidence((current) => ({ ...current, [key]: value }));
   }
 
-  const evidenceFields = useMemo<EvidenceField[]>(
-    () => [
-      { label: "Multisig public address", value: draftEvidence.multisigAddress.trim() || "Not recorded yet" },
-      { label: "Threshold", value: draftEvidence.threshold.trim() || "Not recorded yet" },
-      { label: "Signer roster", value: draftEvidence.signerRoster.trim() || "Not recorded yet" },
-      { label: "Upgrade transfer signature", value: draftEvidence.upgradeTransferSignature.trim() || "Not recorded yet" },
-      { label: "Treasury transfer signature", value: draftEvidence.treasuryTransferSignature.trim() || "Not recorded yet" },
-      { label: "Post-transfer readouts", value: draftEvidence.postTransferReadouts.trim() || "Not recorded yet" },
+  function updateSigner(slot: number, next: Partial<CustodySignerEvidence>) {
+    setDraftEvidence((current) => ({
+      ...current,
+      signers: current.signers.map((signer) =>
+        signer.slot === slot ? { ...signer, ...next } : signer,
+      ),
+    }));
+  }
+
+  function updateTransfer(surface: CustodyAuthorityTransferEvidence["surface"], next: Partial<CustodyAuthorityTransferEvidence>) {
+    setDraftEvidence((current) => ({
+      ...current,
+      authorityTransfers: current.authorityTransfers.map((transfer) =>
+        transfer.surface === surface ? { ...transfer, ...next } : transfer,
+      ),
+    }));
+  }
+
+  const completion = useMemo(() => getCustodyEvidenceCompletion(draftEvidence), [draftEvidence]);
+  const intakePayload = useMemo(() => buildCustodyEvidenceIntakePayload(draftEvidence), [draftEvidence]);
+  const jsonPacket = useMemo(() => buildCustodyEvidenceJson(draftEvidence), [draftEvidence]);
+  const markdownPacket = useMemo(() => buildCustodyEvidenceMarkdown(draftEvidence), [draftEvidence]);
+
+  const multisigValidation = useMemo(
+    () =>
+      summarizeValidation(
+        draftEvidence.multisigImplementation !== "pending-selection" &&
+          looksLikeSolanaAddress(draftEvidence.multisigAddress) &&
+          looksLikeSolanaSignature(draftEvidence.multisigCreationSignature) &&
+          looksLikeSolanaSignature(draftEvidence.rehearsalSignature),
+        "Implementation, multisig address, creation signature, and rehearsal signature are recorded.",
+        "Need implementation, multisig address, creation signature, and rehearsal signature.",
+      ),
+    [
+      draftEvidence.multisigAddress,
+      draftEvidence.multisigCreationSignature,
+      draftEvidence.multisigImplementation,
+      draftEvidence.rehearsalSignature,
     ],
-    [draftEvidence],
   );
 
-  const packet = useMemo(() => {
-    const lines = [
-      "PrivateDAO Custody Evidence Packet",
-      "",
-      "This packet records the current custody and authority-transfer evidence state.",
-      "It does not claim mainnet custody completion until all external signatures and readouts are present.",
-      "",
-      ...evidenceFields.flatMap((field) => [`${field.label}:`, field.value, ""]),
-      "Recommended source routes:",
-      "https://privatedao.org/custody/",
-      "https://privatedao.org/security/",
-      "https://privatedao.org/diagnostics/",
-      "https://privatedao.org/documents/production-custody-ceremony/",
-      "https://privatedao.org/documents/authority-hardening-mainnet/",
-      "https://privatedao.org/documents/authority-transfer-runbook/",
-    ];
+  const thresholdValidation = useMemo(
+    () =>
+      summarizeValidation(
+        normalizeThreshold(draftEvidence.threshold) === "2-of-3" &&
+          Number(draftEvidence.timelockConfiguredHours) >= 48 &&
+          looksLikeSolanaSignature(draftEvidence.timelockConfigurationSignature) &&
+          looksLikeReference(draftEvidence.timelockConfigurationReferenceUrl),
+        "Threshold and timelock evidence are fully recorded.",
+        "Need exact 2-of-3 threshold, 48+ hour timelock, configuration signature, and reference URL.",
+      ),
+    [
+      draftEvidence.threshold,
+      draftEvidence.timelockConfiguredHours,
+      draftEvidence.timelockConfigurationReferenceUrl,
+      draftEvidence.timelockConfigurationSignature,
+    ],
+  );
 
-    return lines.join("\n");
-  }, [evidenceFields]);
-
-  async function copyPacket() {
-    await navigator.clipboard.writeText(packet);
-    setCopyState("copied");
+  const copyJsonPacket = async () => {
+    await navigator.clipboard.writeText(jsonPacket);
+    setCopyState("json");
     window.setTimeout(() => setCopyState("idle"), 1600);
-  }
+  };
+
+  const copyMarkdownPacket = async () => {
+    await navigator.clipboard.writeText(markdownPacket);
+    setCopyState("markdown");
+    window.setTimeout(() => setCopyState("idle"), 1600);
+  };
 
   return (
     <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
@@ -118,16 +216,19 @@ export function CustodyWorkspace() {
         <CardHeader>
           <div className="flex items-center justify-between gap-4">
             <div>
-              <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-300/80">Operator draft capture</div>
-              <CardTitle className="mt-2">Draft and export custody evidence without promoting it into canonical launch proof</CardTitle>
+              <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-300/80">Strict custody ingestion</div>
+              <CardTitle className="mt-2">Record ceremony evidence in the exact shape needed by the canonical custody proof</CardTitle>
             </div>
-            <Badge variant="warning">Evidence still required</Badge>
+            <Badge variant={completion.completed === completion.total ? "success" : completion.completed > 0 ? "cyan" : "warning"}>
+              {completion.completed}/{completion.total} gates
+            </Badge>
           </div>
         </CardHeader>
         <CardContent className="space-y-5">
           <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
             <div className="text-sm leading-7 text-white/60">
-              The canonical launch truth now lives in the repo-backed proof surface above. This draft capture remains useful for operators preparing the ceremony packet, but it is intentionally not the official source of truth until the repo artifacts are updated with real values and explorer-linked evidence.
+              This surface no longer collects free-form notes only. It builds a strict, reviewer-safe JSON packet that maps directly into{" "}
+              <code>docs/multisig-setup-intake.json</code>. Only public keys, public transaction signatures, and readout references belong here.
             </div>
           </div>
 
@@ -136,17 +237,34 @@ export function CustodyWorkspace() {
               <div key={step.title} className="rounded-3xl border border-white/8 bg-black/20 p-4">
                 <div className="flex items-center justify-between gap-3">
                   <div className="text-sm font-medium text-white">{step.title}</div>
-                  <Badge variant={step.state === "Repo-ready" ? "success" : "warning"}>{step.state}</Badge>
+                  <Badge variant={step.state === "Repo-ready" ? "success" : step.state === "Strict ingestion live" ? "cyan" : "warning"}>
+                    {step.state}
+                  </Badge>
                 </div>
                 <div className="mt-3 text-sm leading-7 text-white/56">{step.summary}</div>
               </div>
             ))}
           </div>
 
-          <div className="rounded-3xl border border-cyan-300/12 bg-cyan-300/5 p-5">
-            <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/72">Draft evidence capture</div>
+          <div id="multisig-address" className="rounded-3xl border border-cyan-300/12 bg-cyan-300/5 p-5 scroll-mt-24">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/72">Multisig package</div>
+                <div className="mt-1 text-lg font-semibold text-white">Implementation, address, creation signature, and rehearsal signature</div>
+              </div>
+              <EvidenceStatus validation={multisigValidation} />
+            </div>
             <div className="mt-4 grid gap-4 lg:grid-cols-2">
-              <label id="multisig-address" className="space-y-2 scroll-mt-24">
+              <label className="space-y-2">
+                <div className="text-sm font-medium text-white">Implementation</div>
+                <input
+                  value={draftEvidence.multisigImplementation}
+                  onChange={(event) => updateDraftEvidence("multisigImplementation", event.target.value)}
+                  className="h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                  placeholder="squads-v4"
+                />
+              </label>
+              <label className="space-y-2">
                 <div className="text-sm font-medium text-white">Multisig public address</div>
                 <input
                   value={draftEvidence.multisigAddress}
@@ -155,7 +273,38 @@ export function CustodyWorkspace() {
                   placeholder="Enter the production multisig public address"
                 />
               </label>
-              <label id="threshold" className="space-y-2 scroll-mt-24">
+              <label className="space-y-2">
+                <div className="text-sm font-medium text-white">Multisig creation signature</div>
+                <input
+                  value={draftEvidence.multisigCreationSignature}
+                  onChange={(event) => updateDraftEvidence("multisigCreationSignature", event.target.value)}
+                  className="h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                  placeholder="Public creation transaction signature"
+                />
+              </label>
+              <label className="space-y-2">
+                <div className="text-sm font-medium text-white">Rehearsal signature</div>
+                <input
+                  value={draftEvidence.rehearsalSignature}
+                  onChange={(event) => updateDraftEvidence("rehearsalSignature", event.target.value)}
+                  className="h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                  placeholder="Zero-value or low-risk rehearsal transaction"
+                />
+              </label>
+            </div>
+            <div className="mt-4 text-sm leading-7 text-white/58">{multisigValidation.text}</div>
+          </div>
+
+          <div id="threshold" className="rounded-3xl border border-white/8 bg-black/20 p-5 scroll-mt-24">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/72">Threshold and timelock</div>
+                <div className="mt-1 text-lg font-semibold text-white">Capture the final threshold and 48+ hour configuration evidence</div>
+              </div>
+              <EvidenceStatus validation={thresholdValidation} />
+            </div>
+            <div className="mt-4 grid gap-4 lg:grid-cols-2">
+              <label className="space-y-2">
                 <div className="text-sm font-medium text-white">Threshold</div>
                 <input
                   value={draftEvidence.threshold}
@@ -164,42 +313,177 @@ export function CustodyWorkspace() {
                   placeholder="2-of-3"
                 />
               </label>
-              <label id="signer-roster" className="space-y-2 lg:col-span-2 scroll-mt-24">
-                <div className="text-sm font-medium text-white">Signer roster</div>
-                <textarea
-                  value={draftEvidence.signerRoster}
-                  onChange={(event) => updateDraftEvidence("signerRoster", event.target.value)}
-                  className="min-h-28 w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none placeholder:text-white/28"
-                  placeholder={"Signer A - upgrade lead\nSigner B - treasury lead\nSigner C - recovery lead"}
-                />
-              </label>
-              <label id="upgrade-transfer-signature" className="space-y-2 scroll-mt-24">
-                <div className="text-sm font-medium text-white">Upgrade transfer signature</div>
+              <label className="space-y-2">
+                <div className="text-sm font-medium text-white">Configured timelock hours</div>
                 <input
-                  value={draftEvidence.upgradeTransferSignature}
-                  onChange={(event) => updateDraftEvidence("upgradeTransferSignature", event.target.value)}
+                  value={draftEvidence.timelockConfiguredHours}
+                  onChange={(event) => updateDraftEvidence("timelockConfiguredHours", event.target.value)}
                   className="h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
-                  placeholder="Explorer-linked signature"
+                  placeholder="48"
                 />
               </label>
-              <label id="treasury-transfer-signature" className="space-y-2 scroll-mt-24">
-                <div className="text-sm font-medium text-white">Treasury transfer signature</div>
+              <label className="space-y-2">
+                <div className="text-sm font-medium text-white">Timelock configuration signature</div>
                 <input
-                  value={draftEvidence.treasuryTransferSignature}
-                  onChange={(event) => updateDraftEvidence("treasuryTransferSignature", event.target.value)}
+                  value={draftEvidence.timelockConfigurationSignature}
+                  onChange={(event) => updateDraftEvidence("timelockConfigurationSignature", event.target.value)}
                   className="h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
-                  placeholder="Explorer-linked signature"
+                  placeholder="Configuration transaction signature"
                 />
               </label>
-              <label id="post-transfer-readouts" className="space-y-2 lg:col-span-2 scroll-mt-24">
-                <div className="text-sm font-medium text-white">Post-transfer readouts</div>
-                <textarea
-                  value={draftEvidence.postTransferReadouts}
-                  onChange={(event) => updateDraftEvidence("postTransferReadouts", event.target.value)}
-                  className="min-h-28 w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none placeholder:text-white/28"
-                  placeholder={"Program upgrade authority readout\nTreasury authority readout\nAdmin authority readout"}
+              <label className="space-y-2">
+                <div className="text-sm font-medium text-white">Timelock reference URL or docs path</div>
+                <input
+                  value={draftEvidence.timelockConfigurationReferenceUrl}
+                  onChange={(event) => updateDraftEvidence("timelockConfigurationReferenceUrl", event.target.value)}
+                  className="h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                  placeholder="https://explorer.solana.com/... or docs/..."
                 />
               </label>
+            </div>
+            <div className="mt-4 text-sm leading-7 text-white/58">{thresholdValidation.text}</div>
+          </div>
+
+          <div id="signer-roster" className="rounded-3xl border border-white/8 bg-black/20 p-5 scroll-mt-24">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/72">Signer roster</div>
+                <div className="mt-1 text-lg font-semibold text-white">Record each signer slot with a real public key and backup confirmation</div>
+              </div>
+              <EvidenceStatus
+                validation={summarizeValidation(
+                  completion.checks.signerRoster,
+                  "All signer slots are structurally complete.",
+                  "One or more signer slots still need a public key or backup confirmation.",
+                )}
+              />
+            </div>
+            <div className="mt-4 grid gap-4">
+              {draftEvidence.signers.map((signer) => {
+                const validation = getSignerValidation(signer);
+                return (
+                  <div key={signer.slot} className="rounded-3xl border border-white/8 bg-white/[0.03] p-4">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <div className="text-sm font-medium text-white">
+                        Slot {signer.slot} · {signer.role}
+                      </div>
+                      <EvidenceStatus validation={validation} />
+                    </div>
+                    <div className="mt-4 grid gap-4 lg:grid-cols-[1.3fr_0.7fr]">
+                      <label className="space-y-2">
+                        <div className="text-sm font-medium text-white">Signer public key</div>
+                        <input
+                          value={signer.publicKey}
+                          onChange={(event) => updateSigner(signer.slot, { publicKey: event.target.value })}
+                          className="h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                          placeholder="Public key only"
+                        />
+                      </label>
+                      <label className="flex items-end gap-3 rounded-2xl border border-white/10 bg-black/20 px-4 py-3">
+                        <input
+                          type="checkbox"
+                          checked={signer.backupProcedureDocumented}
+                          onChange={(event) =>
+                            updateSigner(signer.slot, { backupProcedureDocumented: event.target.checked })
+                          }
+                          className="mt-1 h-4 w-4 rounded border-white/20 bg-black/20"
+                        />
+                        <div>
+                          <div className="text-sm font-medium text-white">Backup procedure documented</div>
+                          <div className="text-xs leading-6 text-white/50">Still no private keys or seed phrases here.</div>
+                        </div>
+                      </label>
+                    </div>
+                    <div className="mt-3 text-sm leading-7 text-white/58">{validation.text}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="rounded-3xl border border-white/8 bg-black/20 p-5">
+            <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/72">Authority transfer surfaces</div>
+            <div className="mt-1 text-lg font-semibold text-white">Each surface needs destination authority, transfer signature, and post-transfer readout reference</div>
+            <div className="mt-4 grid gap-4">
+              {custodyAuthorityTransferSurfaces.map((surface) => {
+                const transfer = draftEvidence.authorityTransfers.find((entry) => entry.surface === surface)!;
+                const validation = getTransferValidation(transfer);
+
+                return (
+                  <div
+                    key={surface}
+                    id={
+                      surface === "program-upgrade-authority"
+                        ? "upgrade-transfer-signature"
+                        : surface === "treasury-operator-authority"
+                          ? "treasury-transfer-signature"
+                          : undefined
+                    }
+                    className="rounded-3xl border border-white/8 bg-white/[0.03] p-4 scroll-mt-24"
+                  >
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <div>
+                        <div className="text-sm font-medium text-white">{surface}</div>
+                        <div className="mt-1 text-xs uppercase tracking-[0.24em] text-white/38">{transfer.programId}</div>
+                      </div>
+                      <EvidenceStatus validation={validation} />
+                    </div>
+                    <div className="mt-4 grid gap-4 lg:grid-cols-2">
+                      <label className="space-y-2">
+                        <div className="text-sm font-medium text-white">Destination authority</div>
+                        <input
+                          value={transfer.destinationAuthority}
+                          onChange={(event) =>
+                            updateTransfer(surface, { destinationAuthority: event.target.value, programId: custodyProgramId })
+                          }
+                          className="h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                          placeholder="Final authority public key"
+                        />
+                      </label>
+                      <label className="space-y-2">
+                        <div className="text-sm font-medium text-white">Transfer signature</div>
+                        <input
+                          value={transfer.transferSignature}
+                          onChange={(event) =>
+                            updateTransfer(surface, { transferSignature: event.target.value, programId: custodyProgramId })
+                          }
+                          className="h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                          placeholder="Public transaction signature"
+                        />
+                      </label>
+                      <label
+                        id={surface === "dao-authority" ? "post-transfer-readouts" : undefined}
+                        className="space-y-2 lg:col-span-2 scroll-mt-24"
+                      >
+                        <div className="text-sm font-medium text-white">Post-transfer readout</div>
+                        <textarea
+                          value={transfer.postTransferReadout}
+                          onChange={(event) =>
+                            updateTransfer(surface, { postTransferReadout: event.target.value, programId: custodyProgramId })
+                          }
+                          className="min-h-24 w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none placeholder:text-white/28"
+                          placeholder="Paste the exact authority or ownership readout here"
+                        />
+                      </label>
+                      <label className="space-y-2 lg:col-span-2">
+                        <div className="text-sm font-medium text-white">Readout reference URL or docs path</div>
+                        <input
+                          value={transfer.postTransferReadoutReferenceUrl}
+                          onChange={(event) =>
+                            updateTransfer(surface, {
+                              postTransferReadoutReferenceUrl: event.target.value,
+                              programId: custodyProgramId,
+                            })
+                          }
+                          className="h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                          placeholder="https://explorer.solana.com/... or docs/..."
+                        />
+                      </label>
+                    </div>
+                    <div className="mt-3 text-sm leading-7 text-white/58">{validation.text}</div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -228,35 +512,82 @@ export function CustodyWorkspace() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Evidence packet</CardTitle>
+          <CardTitle>Strict intake packet</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="rounded-3xl border border-white/8 bg-black/20 p-5">
-            <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-300/75">What is true now</div>
-            <p className="mt-3 text-sm leading-7 text-white/58">
-              The custody workflow, signer split, and authority transfer runbooks are live and reviewable inside the product. The missing piece is the recorded transaction evidence from the real ceremony.
-            </p>
-          </div>
-          <div className="rounded-3xl border border-white/8 bg-black/20 p-5">
-            <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Current packet preview</div>
-            <div className="mt-3 space-y-3">
-              {evidenceFields.map((field) => (
-                <div key={field.label}>
-                  <div className="text-xs uppercase tracking-[0.22em] text-white/36">{field.label}</div>
-                  <div className="mt-1 break-words text-sm leading-7 text-white/58">{field.value}</div>
-                </div>
-              ))}
+          <div className="rounded-3xl border border-emerald-300/12 bg-emerald-300/[0.06] p-5">
+            <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-300/75">How to close this fast</div>
+            <div className="mt-3 text-sm leading-7 text-white/58">
+              When the real ceremony values arrive, download the JSON packet below, save it as <code>docs/custody-evidence-intake.json</code>, then run <code>npm run apply:custody-evidence-intake</code>. That command updates the canonical intake and rebuilds custody proof artifacts.
             </div>
           </div>
+
+          <div className="rounded-3xl border border-white/8 bg-black/20 p-5">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Ingestion readiness</div>
+                <div className="mt-1 text-lg font-semibold text-white">{completion.completed}/{completion.total} structured gates passed</div>
+              </div>
+              <Badge variant={completion.completed === completion.total ? "success" : completion.completed > 0 ? "cyan" : "warning"}>
+                {intakePayload.status}
+              </Badge>
+            </div>
+            <div className="mt-3 text-sm leading-7 text-white/58">
+              This local packet remains reviewer-safe. It accepts only public keys, public transaction signatures, and docs or explorer references.
+            </div>
+          </div>
+
+          <div className="rounded-3xl border border-white/8 bg-black/20 p-5">
+            <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Current packet preview</div>
+            <div className="mt-3 space-y-3 text-sm leading-7 text-white/58">
+              <div>Multisig implementation: {intakePayload.multisig.implementation}</div>
+              <div>Multisig address: {intakePayload.multisig.address ?? "Not recorded yet"}</div>
+              <div>Timelock configured hours: {intakePayload.timelock.configuredHours ?? "Not recorded yet"}</div>
+              <div>Signer keys populated: {intakePayload.signers.filter((signer) => signer.publicKey).length}/3</div>
+              <div>Authority transfers with signatures: {intakePayload.authorityTransfers.filter((transfer) => transfer.transferSignature).length}/3</div>
+            </div>
+          </div>
+
           <div className="grid gap-3">
-            <Button onClick={copyPacket} className="justify-between">
-              {copyState === "copied" ? "Copied evidence packet" : "Copy evidence packet"}
+            <Button onClick={copyJsonPacket} className="justify-between">
+              {copyState === "json" ? "Copied strict JSON packet" : "Copy strict JSON packet"}
               <Copy className="h-4 w-4" />
             </Button>
-            <Button variant="secondary" onClick={() => downloadPacket("privatedao-custody-evidence.txt", packet)} className="justify-between">
-              Download evidence packet
+            <Button
+              variant="secondary"
+              onClick={() =>
+                downloadPacket(
+                  "privatedao-custody-evidence-intake.json",
+                  jsonPacket,
+                  "application/json;charset=utf-8",
+                )
+              }
+              className="justify-between"
+            >
+              Download strict JSON packet
               <Download className="h-4 w-4" />
             </Button>
+            <Button variant="secondary" onClick={copyMarkdownPacket} className="justify-between">
+              {copyState === "markdown" ? "Copied handoff markdown" : "Copy operator handoff markdown"}
+              <Link2 className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => downloadPacket("privatedao-custody-evidence-handoff.md", markdownPacket)}
+              className="justify-between"
+            >
+              Download operator handoff markdown
+              <Download className="h-4 w-4" />
+            </Button>
+            <div className="rounded-3xl border border-amber-300/12 bg-amber-300/[0.06] p-4">
+              <div className="flex items-center gap-2 text-amber-100">
+                <AlertTriangle className="h-4 w-4" />
+                <div className="text-xs uppercase tracking-[0.24em] text-amber-200/78">Never include secrets</div>
+              </div>
+              <div className="mt-3 text-sm leading-7 text-white/58">
+                No seed phrases, private keys, unencrypted keypair exports, or screenshots containing secret material belong in this packet.
+              </div>
+            </div>
             {authorityHardeningLinks.map((link) => (
               <Link key={link.href} href={link.href} className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
                 {link.label}

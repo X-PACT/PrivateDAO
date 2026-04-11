@@ -68,6 +68,8 @@ Abort the ceremony if:
 
 Once the real ceremony is complete, update:
 
+- local operator input `docs/custody-evidence-intake.json`
+- run `npm run apply:custody-evidence-intake`
 - `docs/multisig-setup-intake.json`
 - `docs/custody-observed-readouts.json`
 - `docs/canonical-custody-proof.generated.json`

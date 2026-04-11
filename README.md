@@ -136,6 +136,12 @@ The canonical custody source of truth is:
 - [`docs/authority-transfer-runbook.md`](docs/authority-transfer-runbook.md)
 - [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md)
 
+Strict operator ingestion path:
+
+1. Build the packet in `https://privatedao.org/custody/`
+2. Save it locally as `docs/custody-evidence-intake.json`
+3. Run `npm run apply:custody-evidence-intake`
+
 Current official custody state from the canonical intake:
 
 - status: `pending-external`

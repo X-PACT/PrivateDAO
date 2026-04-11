@@ -6,6 +6,16 @@ Canonical machine-readable source:
 
 - `docs/multisig-setup-intake.json`
 
+Strict operator ingestion path:
+
+- Build the packet in `/custody`
+- Save the downloaded JSON as local operator input: `docs/custody-evidence-intake.json`
+- Apply and rebuild all linked proof artifacts with:
+
+```bash
+npm run apply:custody-evidence-intake
+```
+
 ## Required Target
 
 - Network: `mainnet-beta`

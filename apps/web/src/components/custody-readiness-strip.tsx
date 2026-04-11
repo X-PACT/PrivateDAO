@@ -65,7 +65,7 @@ export function CustodyReadinessStrip({ context = "dashboard" }: CustodyReadines
         { key: "treasuryTransferSignature", label: "Treasury transfer signature", href: "/custody#treasury-transfer-signature" },
         { key: "postTransferReadouts", label: "Post-transfer readouts", href: "/custody#post-transfer-readouts" },
       ].filter((item) => !completion.checks[item.key as keyof typeof completion.checks]),
-    [completion.checks],
+    [completion],
   );
 
   const readinessDetail =
