@@ -518,7 +518,7 @@ export function CustodyWorkspace() {
           <div className="rounded-3xl border border-emerald-300/12 bg-emerald-300/[0.06] p-5">
             <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-300/75">How to close this fast</div>
             <div className="mt-3 text-sm leading-7 text-white/58">
-              When the real ceremony values arrive, download the JSON packet below, save it as <code>docs/custody-evidence-intake.json</code>, then run <code>npm run apply:custody-evidence-intake</code>. That command updates the canonical intake and rebuilds custody proof artifacts.
+              When the real ceremony values arrive, download the JSON packet below, save it as <code>docs/custody-evidence-intake.json</code>, then run <code>npm run apply:custody-evidence-intake</code>. That command updates the canonical intake and rebuilds canonical custody proof, reviewer packet, and launch trust packet artifacts together.
             </div>
           </div>
 
@@ -595,6 +595,15 @@ export function CustodyWorkspace() {
             ))}
             <Link href="/documents/multisig-setup-intake" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
               Open multisig setup intake
+            </Link>
+            <Link href="/documents/canonical-custody-proof" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
+              Open canonical custody proof
+            </Link>
+            <Link href="/documents/custody-proof-reviewer-packet" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
+              Open reviewer packet
+            </Link>
+            <Link href="/documents/launch-trust-packet" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
+              Open launch trust packet
             </Link>
             <Link href="/documents/authority-transfer-runbook" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
               Open authority transfer runbook

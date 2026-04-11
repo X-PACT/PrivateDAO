@@ -264,6 +264,9 @@ export function CustodyTrustContinuity({ mode = "buyer" }: CustodyTrustContinuit
             <Button variant="secondary" onClick={() => downloadPacket("privatedao-readme-custody-update.txt", readmeCopy)}>
               Download packet
             </Button>
+            <Link href="/documents/custody-proof-reviewer-packet" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+              Open reviewer packet
+            </Link>
           </div>
         </CardContent>
       </Card>
@@ -316,6 +319,9 @@ export function CustodyTrustContinuity({ mode = "buyer" }: CustodyTrustContinuit
           <Link href="/documents/launch-trust-packet" className={cn(buttonVariants({ variant: "outline" }), "w-full justify-between")}>
             Open launch trust packet
           </Link>
+          <Link href="/documents/custody-proof-reviewer-packet" className={cn(buttonVariants({ variant: "outline" }), "w-full justify-between")}>
+            Open reviewer packet
+          </Link>
         </CardContent>
       </Card>
 
@@ -341,6 +347,9 @@ export function CustodyTrustContinuity({ mode = "buyer" }: CustodyTrustContinuit
             </Link>
             <Link href="/custody" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
               Open custody workspace
+            </Link>
+            <Link href="/documents/custody-proof-reviewer-packet" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+              Reviewer packet
             </Link>
           </div>
         </CardContent>
