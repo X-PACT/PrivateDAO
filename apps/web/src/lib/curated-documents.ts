@@ -18,6 +18,26 @@ const repositoryBlobBase = "https://github.com/X-PACT/PrivateDAO/blob/main";
 
 const curatedDocuments: CuratedDocument[] = [
   {
+    slug: "token-architecture",
+    title: "Token Architecture",
+    category: "Strategy",
+    summary: "Canonical explanation of what the PrivateDAO token does now, what it gates, and how it stays aligned with governance rather than speculative tokenomics.",
+    audience: "Judges, buyers, grant reviewers, operators",
+    boundary: "Architecture note only; it does not claim a mainnet market token launch or expand token utility beyond the live documented Devnet governance surface.",
+    docPath: "docs/token.md",
+    rawHref: `${repositoryBlobBase}/docs/token.md`,
+  },
+  {
+    slug: "pdao-token-surface",
+    title: "PDAO Token Surface",
+    category: "Reviewer core",
+    summary: "Reviewer-safe token surface for the live Devnet governance mint, including mint details, attested transactions, disabled mint authority, and product-facing interpretation.",
+    audience: "Judges, grant reviewers, buyers, operators",
+    boundary: "Live Devnet token truth only; it does not claim a public mainnet token launch or speculative market posture.",
+    docPath: "docs/pdao-token.md",
+    rawHref: `${repositoryBlobBase}/docs/pdao-token.md`,
+  },
+  {
     slug: "payments-reviewer-fast-path",
     title: "Payments Reviewer Fast Path",
     category: "Reviewer core",

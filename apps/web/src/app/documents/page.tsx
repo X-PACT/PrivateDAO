@@ -8,6 +8,7 @@ import { DocumentLibrary } from "@/components/document-library";
 import { CustodyTrustContinuity } from "@/components/custody-trust-continuity";
 import { EcosystemFocusAlignmentStrip } from "@/components/ecosystem-focus-alignment-strip";
 import { OperationsShell } from "@/components/operations-shell";
+import { PdaoTokenStrategyStrip } from "@/components/pdao-token-strategy-strip";
 import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-truth-strip";
 import { TreasuryReviewerGradeStrip } from "@/components/treasury-reviewer-grade-strip";
 import { getCuratedDocuments, getCuratedDocumentsBySlugs } from "@/lib/curated-documents";
@@ -73,6 +74,9 @@ export default function DocumentsPage() {
           context="documents"
           description="Open the treasury story as one reviewer-grade packet from the document center: strict sender checklist, linked rails, truth surfaces, payments fit, and exact blocker visibility."
         />
+      </div>
+      <div>
+        <PdaoTokenStrategyStrip context="documents" />
       </div>
       <div>
         <DataCorridorQuickLinks

@@ -11,6 +11,7 @@ import { MetricsStrip } from "@/components/metrics-strip";
 import { OperationsShell } from "@/components/operations-shell";
 import { PlatformServiceArchitecture } from "@/components/platform-service-architecture";
 import { PaymentsTruthStrip } from "@/components/payments-truth-strip";
+import { PdaoTokenStrategyStrip } from "@/components/pdao-token-strategy-strip";
 import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-truth-strip";
 import { SectionHeader } from "@/components/section-header";
 import { ServiceOperationalCards } from "@/components/service-operational-cards";
@@ -44,6 +45,9 @@ export default function ServicesPage() {
     >
       <div>
         <PaymentsTruthStrip context="services" />
+      </div>
+      <div>
+        <PdaoTokenStrategyStrip context="services" />
       </div>
       <div>
         <ReviewerTelemetryTruthStrip

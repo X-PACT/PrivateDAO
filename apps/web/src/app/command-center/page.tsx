@@ -12,6 +12,7 @@ import { OperatingBoundaryPanel } from "@/components/operating-boundary-panel";
 import { OperationsShell } from "@/components/operations-shell";
 import { OperationalValidationPanels } from "@/components/operational-validation-panels";
 import { PaymentsTruthStrip } from "@/components/payments-truth-strip";
+import { PdaoTokenStrategyStrip } from "@/components/pdao-token-strategy-strip";
 import { ProductActionMap } from "@/components/product-action-map";
 import { ProposalWorkspace } from "@/components/proposal-workspace";
 import { TreasuryProfileQuickActions } from "@/components/treasury-profile-quick-actions";
@@ -43,6 +44,9 @@ export default function CommandCenterPage() {
     >
       <div>
         <PaymentsTruthStrip context="command-center" />
+      </div>
+      <div>
+        <PdaoTokenStrategyStrip context="command-center" />
       </div>
       <div>
         <CustodyTruthQuickActions
