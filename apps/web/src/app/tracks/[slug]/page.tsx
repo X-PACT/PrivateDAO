@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { CompetitionWorkspace } from "@/components/competition-workspace";
+import { CustodyTruthQuickActions } from "@/components/custody-truth-quick-actions";
 import { OperationsShell } from "@/components/operations-shell";
 import { TrackProofClosurePanel } from "@/components/track-proof-closure-panel";
 import { TrackSubmissionCapsule } from "@/components/track-submission-capsule";
@@ -16,6 +17,12 @@ import { buildRouteMetadata } from "@/lib/route-metadata";
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
+
+const CUSTODY_TRUTH_PRIORITY_TRACKS = new Set([
+  "colosseum-frontier",
+  "privacy-track",
+  "rpc-infrastructure",
+]);
 
 export async function generateStaticParams() {
   return competitionTrackWorkspaces.map((workspace) => ({ slug: workspace.slug }));
@@ -44,6 +51,7 @@ export default async function TrackWorkspacePage({ params }: PageProps) {
   const { slug } = await params;
   const workspace = getCompetitionTrackWorkspace(slug);
   if (!workspace) notFound();
+  const showCustodyTruthQuickActions = CUSTODY_TRUTH_PRIORITY_TRACKS.has(workspace.slug);
 
   return (
     <OperationsShell
@@ -61,6 +69,14 @@ export default async function TrackWorkspacePage({ params }: PageProps) {
           <TrackSubmissionCapsule workspace={workspace} />
         </Suspense>
       </div>
+      {showCustodyTruthQuickActions ? (
+        <div>
+          <CustodyTruthQuickActions
+            title="Custody truth surfaces for judges"
+            description={`Open the exact custody proof, reviewer packet, intake schema, and apply route for ${workspace.title} without leaving the top submission layer.`}
+          />
+        </div>
+      ) : null}
       <div>
         <TrackProofClosurePanel workspace={workspace} />
       </div>
