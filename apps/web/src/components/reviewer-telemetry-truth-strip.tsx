@@ -7,6 +7,7 @@ import { getReviewerTelemetryTruthSnapshot } from "@/lib/reviewer-telemetry-trut
 import { cn } from "@/lib/utils";
 
 type ReviewerTelemetryTruthStripProps = {
+  id?: string;
   title?: string;
   description?: string;
 };
@@ -35,13 +36,14 @@ const statMeta = [
 ] as const;
 
 export function ReviewerTelemetryTruthStrip({
+  id,
   title = "Telemetry truth strip",
   description = "Read the current telemetry truth from the generated packet and the same runtime metrics used by the live surface.",
 }: ReviewerTelemetryTruthStripProps) {
   const snapshot = getReviewerTelemetryTruthSnapshot();
 
   return (
-    <Card className="border-cyan-300/14 bg-[linear-gradient(180deg,rgba(9,16,31,0.96),rgba(6,11,21,0.98))]">
+    <Card id={id} className="border-cyan-300/14 bg-[linear-gradient(180deg,rgba(9,16,31,0.96),rgba(6,11,21,0.98))]">
       <CardHeader className="gap-3">
         <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/80">
           Telemetry truth

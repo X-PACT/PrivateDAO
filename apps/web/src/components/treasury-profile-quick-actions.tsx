@@ -38,7 +38,7 @@ type TreasuryProfileQuickActionsProps = {
 
 export function TreasuryProfileQuickActions({ title = "Commercial quick actions" }: TreasuryProfileQuickActionsProps) {
   return (
-    <Card>
+    <Card id="payout-route-selection">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>

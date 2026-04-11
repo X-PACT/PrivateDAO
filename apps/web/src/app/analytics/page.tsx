@@ -32,6 +32,7 @@ export default function AnalyticsPage() {
     >
       <div>
         <ReviewerTelemetryTruthStrip
+          id="telemetry-inspection"
           title="Telemetry truth for analytics reviewers"
           description="Keep freshness, hosted-read scale, finalized governance counts, and the reviewer packet visible above the analytics surface itself."
         />

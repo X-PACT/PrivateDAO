@@ -8,6 +8,7 @@ import { OperationsShell } from "@/components/operations-shell";
 import { ProductActionMap } from "@/components/product-action-map";
 import { SponsorSignalBar } from "@/components/sponsor-signal-bar";
 import { TreasuryProfileQuickActions } from "@/components/treasury-profile-quick-actions";
+import { WalletFirstServiceActionsStrip } from "@/components/wallet-first-service-actions-strip";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
@@ -40,6 +41,7 @@ export default function StartPage() {
         summary="The public UI is for wallet connection, DAO creation, proposal flow, voting, execution, logs, and diagnostics. Debugging, migrations, batch operations, and recovery stay in the engineering layer."
       />
       <GovernanceSessionPanel title="Shared product session" />
+      <WalletFirstServiceActionsStrip context="start" />
       <TreasuryProfileQuickActions title="Commercial treasury actions" />
       <ProductActionMap
         title="Start with the exact user journey"

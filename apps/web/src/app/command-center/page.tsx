@@ -19,6 +19,7 @@ import { ReadNodeActivationStrip } from "@/components/read-node-activation-strip
 import { ReadNodeHostReadinessStrip } from "@/components/read-node-host-readiness-strip";
 import { TreasuryProfileQuickActions } from "@/components/treasury-profile-quick-actions";
 import { WalletRuntimePanel } from "@/components/wallet-runtime-panel";
+import { WalletFirstServiceActionsStrip } from "@/components/wallet-first-service-actions-strip";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
@@ -46,6 +47,9 @@ export default function CommandCenterPage() {
     >
       <div>
         <PaymentsTruthStrip context="command-center" />
+      </div>
+      <div>
+        <WalletFirstServiceActionsStrip context="command-center" />
       </div>
       <div>
         <PdaoTokenStrategyStrip context="command-center" />

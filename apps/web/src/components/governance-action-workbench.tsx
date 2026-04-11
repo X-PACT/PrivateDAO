@@ -92,7 +92,7 @@ export function GovernanceActionWorkbench() {
 
   return (
     <>
-      <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,16,32,0.94),rgba(7,11,23,0.98))]">
+      <Card id="proposal-review-action" className="border-white/10 bg-[linear-gradient(180deg,rgba(10,16,32,0.94),rgba(7,11,23,0.98))]">
         <CardHeader className="space-y-3">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>

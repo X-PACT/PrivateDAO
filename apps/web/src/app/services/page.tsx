@@ -24,6 +24,7 @@ import { TreasuryReceiveSurface } from "@/components/treasury-receive-surface";
 import { TreasuryProfileQuickActions } from "@/components/treasury-profile-quick-actions";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { TreasuryReviewerGradeStrip } from "@/components/treasury-reviewer-grade-strip";
+import { WalletFirstServiceActionsStrip } from "@/components/wallet-first-service-actions-strip";
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Services",
@@ -49,10 +50,14 @@ export default function ServicesPage() {
         <PaymentsTruthStrip context="services" />
       </div>
       <div>
+        <WalletFirstServiceActionsStrip context="services" />
+      </div>
+      <div>
         <PdaoTokenStrategyStrip context="services" />
       </div>
       <div>
         <ReviewerTelemetryTruthStrip
+          id="telemetry-inspection"
           title="Telemetry truth for infrastructure buyers"
           description="Put freshness, hosted-read scale, finalized proof counts, and the telemetry packet above the commercial infrastructure story."
         />
