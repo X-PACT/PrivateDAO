@@ -1,4 +1,5 @@
 export const custodyEvidenceStorageKey = "privatedao.custody.evidence";
+export const custodyEvidenceUpdatedEvent = "privatedao:custody-evidence-updated";
 
 export type CustodyEvidence = {
   multisigAddress: string;
@@ -17,6 +18,34 @@ export const emptyCustodyEvidence: CustodyEvidence = {
   treasuryTransferSignature: "",
   postTransferReadouts: "",
 };
+
+export function readCustodyEvidence(): CustodyEvidence {
+  if (typeof window === "undefined") {
+    return emptyCustodyEvidence;
+  }
+
+  try {
+    const raw = window.localStorage.getItem(custodyEvidenceStorageKey);
+    if (!raw) return emptyCustodyEvidence;
+    const parsed = JSON.parse(raw) as Partial<CustodyEvidence>;
+    return { ...emptyCustodyEvidence, ...parsed };
+  } catch {
+    return emptyCustodyEvidence;
+  }
+}
+
+export function writeCustodyEvidence(evidence: CustodyEvidence) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  try {
+    window.localStorage.setItem(custodyEvidenceStorageKey, JSON.stringify(evidence));
+    window.dispatchEvent(new CustomEvent(custodyEvidenceUpdatedEvent, { detail: evidence }));
+  } catch {
+    // ignore storage issues in constrained browsers
+  }
+}
 
 export function getCustodyEvidenceCompletion(evidence: CustodyEvidence) {
   const checks = {

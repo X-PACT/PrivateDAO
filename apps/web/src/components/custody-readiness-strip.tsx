@@ -6,7 +6,7 @@ import { AlertTriangle, ArrowRight, KeyRound, ShieldCheck, WalletCards } from "l
 
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
-import { buildCustodyNarrative, custodyEvidenceStorageKey, emptyCustodyEvidence, getCustodyEvidenceCompletion, type CustodyEvidence } from "@/lib/custody-evidence";
+import { buildCustodyNarrative, custodyEvidenceUpdatedEvent, emptyCustodyEvidence, getCustodyEvidenceCompletion, readCustodyEvidence, type CustodyEvidence } from "@/lib/custody-evidence";
 import { cn } from "@/lib/utils";
 
 type CustodyReadinessStripProps = {
@@ -32,14 +32,20 @@ export function CustodyReadinessStrip({ context = "dashboard" }: CustodyReadines
   const [evidence, setEvidence] = useState<CustodyEvidence>(emptyCustodyEvidence);
 
   useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem(custodyEvidenceStorageKey);
-      if (!raw) return;
-      const parsed = JSON.parse(raw) as Partial<CustodyEvidence>;
-      setEvidence({ ...emptyCustodyEvidence, ...parsed });
-    } catch {
-      setEvidence(emptyCustodyEvidence);
-    }
+    const syncEvidence = () => setEvidence(readCustodyEvidence());
+
+    syncEvidence();
+    window.addEventListener(custodyEvidenceUpdatedEvent, syncEvidence);
+    window.addEventListener("storage", syncEvidence);
+    window.addEventListener("focus", syncEvidence);
+    window.addEventListener("pageshow", syncEvidence);
+
+    return () => {
+      window.removeEventListener(custodyEvidenceUpdatedEvent, syncEvidence);
+      window.removeEventListener("storage", syncEvidence);
+      window.removeEventListener("focus", syncEvidence);
+      window.removeEventListener("pageshow", syncEvidence);
+    };
   }, []);
 
   const completion = useMemo(() => getCustodyEvidenceCompletion(evidence), [evidence]);
