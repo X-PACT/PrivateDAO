@@ -105,7 +105,7 @@ export default function ServicesPage() {
         <SectionHeader
           eyebrow="AI-powered features"
           title="Operational intelligence is now part of the commercial surface"
-          description="Proposal Analyzer, Treasury Risk AI, Voting Summary, RPC Analyzer, and Gaming AI strengthen how buyers understand PrivateDAO. They are part of the product story because they improve real decisions."
+          description="Proposal Review AI, Treasury Review AI, Voting Summary, RPC Analyzer, and Gaming AI strengthen how buyers understand PrivateDAO. They are part of the product story because they improve real decisions."
         />
       </div>
       <div>

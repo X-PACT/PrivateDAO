@@ -211,7 +211,7 @@ const assistantIntents: AssistantIntent[] = [
   {
     title: "Open the Security + Intelligence layer",
     summary:
-      "Use the intelligence route when the user wants proposal analysis, treasury risk warnings, voting summaries, RPC interpretation, or gaming-governance assistance inside the product.",
+      "Use the intelligence route when the user wants proposal review, treasury execution review, voting summaries, RPC interpretation, or gaming-governance assistance inside the product.",
     primaryActionLabel: "Open intelligence workspace",
     primaryActionHref: "/intelligence",
     relatedRoutes: [
@@ -222,6 +222,8 @@ const assistantIntents: AssistantIntent[] = [
     keywords: [
       "proposal analyzer",
       "treasury risk",
+      "treasury review",
+      "proposal review",
       "voting summary",
       "rpc analyzer",
       "gaming ai",

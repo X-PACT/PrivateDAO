@@ -132,7 +132,7 @@ export function IntelligenceLayerSurface() {
             <CardTitle>Security + Intelligence layer</CardTitle>
           </div>
           <p className="max-w-3xl text-sm leading-7 text-white/62">
-            This is where AI belongs in PrivateDAO: proposal analysis, treasury risk review, voting compression, RPC health interpretation, and gaming-governance assistance. It is decision support, not a shallow chatbot.
+            This is where AI belongs in PrivateDAO: proposal review, treasury execution review, voting compression, RPC interpretation, and gaming-governance assistance. It is decision support, not a shallow chatbot.
           </p>
           <div className="flex flex-wrap gap-3">
             <Badge variant="cyan">Operational intelligence</Badge>
@@ -162,7 +162,7 @@ export function IntelligenceLayerSurface() {
                 <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-black/20 text-cyan-100">
                   <Icon className="h-5 w-5" />
                 </div>
-                <div className="text-xs font-medium tracking-[0.24em] text-cyan-100/72">{feature.score}</div>
+                <div className="text-xs font-medium tracking-[0.24em] text-cyan-100/72">{feature.posture}</div>
               </div>
               <div className="mt-4 text-base font-medium text-white">{feature.title}</div>
               <p className="mt-3 text-sm leading-7 text-white/58">{feature.summary}</p>

@@ -10,7 +10,7 @@ export type IntelligenceFeatureId =
 export type IntelligenceFeature = {
   id: IntelligenceFeatureId;
   title: string;
-  score: string;
+  posture: string;
   summary: string;
   route: string;
   tryNow: string;
@@ -35,8 +35,8 @@ export type TreasuryCardAnalysis = IntelligenceAnalysis & {
 export const intelligenceFeatures: IntelligenceFeature[] = [
   {
     id: "proposal-analyzer",
-    title: "Proposal Analyzer",
-    score: "10/10",
+    title: "Proposal Review AI",
+    posture: "Execution-visible",
     summary:
       "Review proposal readiness before voting, clarify recipients, transfer context, and execution framing without hiding operational notes.",
     route: "/intelligence#proposal-analyzer",
@@ -44,8 +44,8 @@ export const intelligenceFeatures: IntelligenceFeature[] = [
   },
   {
     id: "treasury-risk-ai",
-    title: "Treasury Risk AI",
-    score: "9/10",
+    title: "Treasury Review AI",
+    posture: "Payments-visible",
     summary:
       "Review payout size, recipient novelty, timing, and execution posture so treasury operations stay legible, disciplined, and reviewer-safe.",
     route: "/intelligence#treasury-risk-ai",
@@ -54,7 +54,7 @@ export const intelligenceFeatures: IntelligenceFeature[] = [
   {
     id: "voting-summary",
     title: "Voting Summary",
-    score: "8/10",
+    posture: "Discussion-ready",
     summary:
       "Summarize discussion threads into support, concern, and execution-readiness language for judges and operators.",
     route: "/intelligence#voting-summary",
@@ -63,7 +63,7 @@ export const intelligenceFeatures: IntelligenceFeature[] = [
   {
     id: "rpc-analyzer",
     title: "RPC Analyzer",
-    score: "9/10",
+    posture: "Infra-grade",
     summary:
       "Turn raw latency, failure rate, and retry pressure into a readable RPC health posture for operators and buyers.",
     route: "/intelligence#rpc-analyzer",
@@ -72,7 +72,7 @@ export const intelligenceFeatures: IntelligenceFeature[] = [
   {
     id: "gaming-ai",
     title: "Gaming AI",
-    score: "8/10",
+    posture: "Economy-aware",
     summary:
       "Review reward changes, clan payouts, and event proposals so game governance does not accidentally damage the economy.",
     route: "/intelligence#gaming-ai",
@@ -180,7 +180,7 @@ export function analyzeProposalCard(proposal: ProposalCardModel): ProposalCardAn
 
   const scoreValue = Math.max(1, Math.min(10, Number(((analysis.scoreValue + score) / 2).toFixed(1))));
   const scoreLabel =
-    scoreValue >= 7 ? "Review notes attached" : scoreValue >= 4.5 ? "Operational notes attached" : "Execution path clear";
+    scoreValue >= 7 ? "Execution notes attached" : scoreValue >= 4.5 ? "Operational notes attached" : "Execution path clear";
   const summary =
     proposal.status === "Execution ready" || proposal.status === "Executed"
       ? proposal.status === "Executed"
@@ -189,7 +189,7 @@ export function analyzeProposalCard(proposal: ProposalCardModel): ProposalCardAn
       : "This motion is still active, so the AI layer focuses on signing clarity, treasury context, and the proof surfaces the reviewer should inspect next.";
 
   return {
-    headline: `Proposal review ${scoreValue}/10`,
+    headline: "Proposal execution review",
     summary,
     bullets: [...analysis.bullets, ...bullets].slice(0, 4),
     scoreLabel,
@@ -274,15 +274,15 @@ export function analyzeProposalRisk(input: {
 
   if (input.historicalUseCount === 0) {
     score += 1.9;
-    bullets.push("Recipient has no prior usage history in this governance context.");
+    bullets.push("Recipient has no prior usage history in this governance context yet.");
   } else if (input.historicalUseCount <= 2) {
     score += 1.0;
-    bullets.push("Recipient is lightly used and should carry an explicit rationale before voting.");
+    bullets.push("Recipient is lightly used, so the route should keep an explicit rationale visible before voting.");
   }
 
   if (input.timelockHours !== null && input.timelockHours < 12) {
     score += 1.4;
-    bullets.push("Timelock is short. Reviewers may want a stronger waiting period before execution.");
+    bullets.push("Timelock is compact, so timing context should stay explicit before execution.");
   } else if (input.timelockHours === null) {
     score += 0.8;
     bullets.push("Exact timelock hours are still missing from the structured proposal context.");
@@ -301,18 +301,18 @@ export function analyzeProposalRisk(input: {
 
   const clamped = Math.max(1, Math.min(10, Number(score.toFixed(1))));
   return {
-    headline: `Proposal review ${clamped}/10`,
+    headline: "Proposal execution review",
     summary:
       clamped >= 7
-        ? "This proposal should carry stronger explanation, trust context, and destination rationale before users sign."
+        ? "This proposal should keep explanation, trust context, and destination rationale visible before signatures are collected."
         : clamped >= 4
-          ? "This proposal is credible, but the UI should surface treasury context and reviewer notes clearly before voting."
+          ? "This proposal is serviceable, and the route should keep treasury context and reviewer notes visible before voting."
           : "This proposal reads like a routine governed action with a clear execution path.",
     bullets:
       bullets.length > 0
         ? bullets
         : ["No abnormal treasury pattern was detected from the current proposal inputs."],
-    scoreLabel: clamped >= 7 ? "Extra review" : clamped >= 4 ? "Review notes" : "Ready path",
+    scoreLabel: clamped >= 7 ? "Execution notes attached" : clamped >= 4 ? "Route notes attached" : "Ready path",
     scoreValue: clamped,
   } satisfies IntelligenceAnalysis;
 }
@@ -339,39 +339,39 @@ export function analyzeTreasuryRisk(input: {
 
   if (input.repeatedAttempts >= 3) {
     score += 2.4;
-    bullets.push("Repeated request attempts suggest pressure on operators or a failing path.");
+    bullets.push("Repeated request attempts mean the route should keep operator trail and request history visible.");
   } else if (input.repeatedAttempts > 0) {
     score += 1.0;
-    bullets.push("This request has already been attempted before and should be checked against logs.");
+    bullets.push("This request has already been attempted before, so the route should stay connected to logs and prior context.");
   }
 
   if (input.newRecipient) {
     score += 1.6;
-    bullets.push("Recipient is new to the treasury path and should be validated before execution.");
+    bullets.push("Recipient has limited treasury history, so destination context should stay visible before execution.");
   }
 
   if (input.executionDelayHours !== null && input.executionDelayHours < 24) {
     score += 1.1;
-    bullets.push("Execution delay is short for a treasury-sensitive motion.");
+    bullets.push("Execution delay is compact, so timing and signer context should stay explicit through execution.");
   } else if (input.executionDelayHours === null) {
     score += 0.8;
-    bullets.push("Execution delay is not yet explicit in the treasury packet.");
+    bullets.push("Execution delay is not yet explicit in the treasury packet, so timing context should stay visible.");
   }
 
   const clamped = Math.max(1, Math.min(10, Number(score.toFixed(1))));
   return {
-    headline: `Treasury review ${clamped}/10`,
+    headline: "Treasury execution review",
     summary:
       clamped >= 7
-        ? "This payout should carry stronger diagnostics, proof, and signer notes before it reaches execution."
+        ? "This payout should keep diagnostics, proof, and signer context visible before it reaches execution."
         : clamped >= 4
-          ? "Treasury conditions are serviceable, and the UI should keep the operational notes and reviewer routes visible."
-          : "Treasury conditions look stable for a standard governed payout flow.",
+          ? "Treasury conditions are serviceable, and the route should keep operational notes and reviewer links visible."
+          : "Treasury conditions read as a standard governed payout flow.",
     bullets:
       bullets.length > 0
         ? bullets
         : ["No treasury anomaly exceeded the current monitoring thresholds."],
-    scoreLabel: clamped >= 7 ? "Extra notes" : clamped >= 4 ? "Notes attached" : "Stable path",
+    scoreLabel: clamped >= 7 ? "Execution notes attached" : clamped >= 4 ? "Route notes attached" : "Visible payout path",
     scoreValue: clamped,
   } satisfies IntelligenceAnalysis;
 }
@@ -446,7 +446,7 @@ export function analyzeRpcHealth(input: {
 
   const clamped = Math.max(1, Math.min(10, Number(score.toFixed(1))));
   return {
-    headline: `RPC score ${clamped}/10`,
+    headline: "RPC operating posture",
     summary:
       clamped >= 8.5
         ? "This reads like a credible RPC surface for a buyer-facing infrastructure story."
@@ -497,7 +497,7 @@ export function analyzeGamingGovernance(input: {
 
   const clamped = Math.max(1, Math.min(10, Number(score.toFixed(1))));
   return {
-    headline: `Gaming governance score ${clamped}/10`,
+    headline: "Gaming governance posture",
     summary:
       clamped >= 8
         ? "This game governance motion is product-legible and commercially attractive for a studio demo."

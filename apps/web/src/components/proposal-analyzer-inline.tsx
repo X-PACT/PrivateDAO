@@ -23,7 +23,7 @@ export function ProposalAnalyzerInline({ proposal, compact = false }: ProposalAn
             <BrainCircuit className="h-4 w-4 text-cyan-200" />
           </div>
           <div>
-            <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/70">AI Proposal Analyzer</div>
+            <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/70">Proposal Review AI</div>
             <div className="mt-1 text-sm font-medium text-white">{analysis.headline}</div>
           </div>
         </div>

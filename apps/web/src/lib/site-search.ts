@@ -84,7 +84,7 @@ export const siteSearchItems: SiteSearchItem[] = [
     title: "Intelligence",
     href: "/intelligence",
     category: "Route",
-    summary: "Proposal Analyzer, Treasury Risk AI, Voting Summary, RPC Analyzer, and Gaming AI in one operational layer.",
+    summary: "Proposal Review AI, Treasury Review AI, Voting Summary, RPC Analyzer, and Gaming AI in one operational layer.",
   },
   {
     title: "Diagnostics",
@@ -231,16 +231,16 @@ export const siteSearchItems: SiteSearchItem[] = [
     summary: "Deterministic scoring for ZK, REFHE, MagicBlock, Fast RPC, and governance posture.",
   },
   {
-    title: "Proposal Analyzer",
+    title: "Proposal Review AI",
     href: "/intelligence#proposal-analyzer",
     category: "Service",
-    summary: "Pre-vote proposal risk analysis for amount size, recipient novelty, timelock strength, and treasury framing.",
+    summary: "Pre-vote proposal review for amount size, recipient context, timelock strength, and treasury framing.",
   },
   {
-    title: "Treasury Risk AI",
+    title: "Treasury Review AI",
     href: "/intelligence#treasury-risk-ai",
     category: "Service",
-    summary: "Treasury anomaly review for large payouts, repeated attempts, short execution delays, and new recipients.",
+    summary: "Treasury execution review for payout size, route history, timing context, and destination visibility.",
   },
   {
     title: "Voting Summary",

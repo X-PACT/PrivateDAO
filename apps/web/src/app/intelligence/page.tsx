@@ -9,9 +9,9 @@ import { buildRouteMetadata } from "@/lib/route-metadata";
 export const metadata: Metadata = buildRouteMetadata({
   title: "Intelligence",
   description:
-    "Operational intelligence for proposals, treasury, voting, RPC, and gaming. Built for decision support inside PrivateDAO instead of a shallow chatbot.",
+    "Operational intelligence for proposals, treasury execution, voting, RPC, and gaming. Built for decision support inside PrivateDAO instead of a shallow chatbot.",
   path: "/intelligence",
-  keywords: ["ai", "proposal analyzer", "treasury risk", "voting summary", "rpc analyzer", "gaming ai"],
+  keywords: ["ai", "proposal review", "treasury review", "voting summary", "rpc analyzer", "gaming ai"],
 });
 
 export default function IntelligencePage() {
@@ -19,7 +19,7 @@ export default function IntelligencePage() {
     <OperationsShell
       eyebrow="Intelligence"
       title="Operational intelligence that helps users take safer governance actions"
-      description="PrivateDAO uses intelligence where it actually matters: proposal review, treasury risk detection, voting compression, RPC health interpretation, and gaming-governance decision support."
+      description="PrivateDAO uses intelligence where it actually matters: proposal review, treasury execution review, voting compression, RPC health interpretation, and gaming-governance decision support."
       badges={[
         { label: "Security + Intelligence", variant: "cyan" },
         { label: "Decision support", variant: "success" },

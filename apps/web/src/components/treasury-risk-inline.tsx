@@ -23,7 +23,7 @@ export function TreasuryRiskInline({ proposal, compact = false }: TreasuryRiskIn
             <ShieldAlert className="h-4 w-4 text-amber-200" />
           </div>
           <div>
-            <div className="text-[11px] uppercase tracking-[0.28em] text-amber-200/75">Treasury Risk AI</div>
+            <div className="text-[11px] uppercase tracking-[0.28em] text-amber-200/75">Treasury Review AI</div>
             <div className="mt-1 text-sm font-medium text-white">{analysis.headline}</div>
           </div>
         </div>
