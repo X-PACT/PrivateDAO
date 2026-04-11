@@ -139,6 +139,12 @@ export const siteSearchItems: SiteSearchItem[] = [
     summary: "Reviewer-facing custody packet that condenses what is proven now, what is still pending, and the strict ingestion route.",
   },
   {
+    title: "Reviewer Telemetry Packet",
+    href: "/documents/reviewer-telemetry-packet",
+    category: "Document",
+    summary: "Reviewer-safe packet for telemetry, hosted reads, runtime evidence, and infrastructure-facing product value.",
+  },
+  {
     title: "Strategic Opportunity Readiness",
     href: "/documents/strategic-opportunity-readiness-2026",
     category: "Document",
@@ -673,12 +679,60 @@ function getTrackReviewerPacketLeadItems(query: string): SiteSearchItem[] {
   ];
 }
 
+function getTelemetryLeadItems(query: string): SiteSearchItem[] {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return [];
+
+  const telemetryTerms = [
+    "telemetry packet",
+    "reviewer telemetry",
+    "hosted read proof",
+    "data corridor",
+    "analytics packet",
+    "runtime telemetry",
+    "dune data",
+    "dune analytics",
+  ];
+
+  if (!telemetryTerms.some((term) => normalized.includes(term))) {
+    return [];
+  }
+
+  return [
+    {
+      title: "Reviewer Telemetry Packet",
+      href: "/documents/reviewer-telemetry-packet",
+      category: "Document",
+      summary:
+        "Start here for reviewer-safe telemetry. It connects diagnostics, analytics, hosted-read proof, and runtime evidence in one corridor.",
+      matchKind: "track-aware",
+    },
+    {
+      title: "Diagnostics",
+      href: "/diagnostics",
+      category: "Route",
+      summary:
+        "Operational diagnostics, runtime checks, and reviewer bundle health for infrastructure-facing review.",
+      matchKind: "track-aware",
+    },
+    {
+      title: "Analytics",
+      href: "/analytics",
+      category: "Route",
+      summary:
+        "Export-ready analytics summaries for votes, proposals, treasury operations, and data-side readiness.",
+      matchKind: "track-aware",
+    },
+  ];
+}
+
 export function getSiteSearchResults(query: string): SiteSearchItem[] {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return siteSearchItems;
 
   const trackReviewerPacketLeadItems = getTrackReviewerPacketLeadItems(normalized);
   const custodyLeadItems = getCustodyLeadItems(normalized);
+  const telemetryLeadItems = getTelemetryLeadItems(normalized);
   const strategicOpportunityLeadItems = getStrategicOpportunityLeadItems(normalized);
   const profileTrackLeadItems = getProfileTrackLeadItems(normalized);
   const trackAwareLeadItems = getTrackAwareLeadItems(normalized);
@@ -699,7 +753,7 @@ export function getSiteSearchResults(query: string): SiteSearchItem[] {
   );
 
   const seen = new Set<string>();
-  return [...trackReviewerPacketLeadItems, ...custodyLeadItems, ...strategicOpportunityLeadItems, ...profileTrackLeadItems, ...trackAwareLeadItems, ...proposalLeadItems, ...profileAwareLeadItems, ...generalResults].filter((item) => {
+  return [...trackReviewerPacketLeadItems, ...custodyLeadItems, ...telemetryLeadItems, ...strategicOpportunityLeadItems, ...profileTrackLeadItems, ...trackAwareLeadItems, ...proposalLeadItems, ...profileAwareLeadItems, ...generalResults].filter((item) => {
     const key = `${item.category}:${item.href}`;
     if (seen.has(key)) return false;
     seen.add(key);

@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 
+import { AnalystGradeDataCorridor } from "@/components/analyst-grade-data-corridor";
 import { AnalyticsCharts } from "@/components/analytics-charts";
 import { AnalyticsSummary } from "@/components/analytics-summary";
+import { DataCorridorQuickLinks } from "@/components/data-corridor-quick-links";
+import { HostedReadProofStrip } from "@/components/hosted-read-proof-strip";
 import { LaunchBlockersPanel } from "@/components/launch-blockers-panel";
 import { OperationsShell } from "@/components/operations-shell";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -27,7 +30,16 @@ export default function AnalyticsPage() {
       ]}
     >
       <div>
+        <DataCorridorQuickLinks />
+      </div>
+      <div>
+        <AnalystGradeDataCorridor />
+      </div>
+      <div>
         <AnalyticsSummary />
+      </div>
+      <div>
+        <HostedReadProofStrip />
       </div>
       <div>
         <AnalyticsCharts />

@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 
+import { AnalystGradeDataCorridor } from "@/components/analyst-grade-data-corridor";
+import { DataCorridorQuickLinks } from "@/components/data-corridor-quick-links";
 import { DiagnosticsCenter } from "@/components/diagnostics-center";
 import { DevnetServiceMetricsPanel } from "@/components/devnet-service-metrics-panel";
+import { HostedReadProofStrip } from "@/components/hosted-read-proof-strip";
 import { IncidentReadinessPanel } from "@/components/incident-readiness-panel";
 import { LaunchBlockersPanel } from "@/components/launch-blockers-panel";
 import { MetricsStrip } from "@/components/metrics-strip";
@@ -30,6 +33,15 @@ export default function DiagnosticsPage() {
       ]}
     >
       <div>
+        <DataCorridorQuickLinks
+          title="Reviewer telemetry quick links"
+          description="Fast path from diagnostics into the telemetry packet, analytics summaries, and hosted-read proof without forcing the reviewer to infer the data corridor."
+        />
+      </div>
+      <div>
+        <HostedReadProofStrip />
+      </div>
+      <div>
         <MetricsStrip />
       </div>
       <div>
@@ -40,6 +52,9 @@ export default function DiagnosticsPage() {
       </div>
       <div>
         <DevnetServiceMetricsPanel scope="diagnostics" />
+      </div>
+      <div>
+        <AnalystGradeDataCorridor />
       </div>
       <div>
         <LaunchBlockersPanel />

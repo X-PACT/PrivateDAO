@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { CanonicalCustodyProofSurface } from "@/components/canonical-custody-proof-surface";
 import { CustodyTruthQuickActions } from "@/components/custody-truth-quick-actions";
+import { DataCorridorQuickLinks } from "@/components/data-corridor-quick-links";
 import { DocumentLibrary } from "@/components/document-library";
 import { CustodyTrustContinuity } from "@/components/custody-trust-continuity";
 import { OperationsShell } from "@/components/operations-shell";
@@ -55,6 +56,12 @@ export default function DocumentsPage() {
         <CustodyTruthQuickActions
           title="Custody truth quick actions"
           description="Reviewer and operator fast path into the custody truth surfaces: reviewer packet, canonical proof, intake shape, and the strict apply route."
+        />
+      </div>
+      <div>
+        <DataCorridorQuickLinks
+          title="Telemetry reviewer fast path"
+          description="Open the telemetry packet, diagnostics, analytics, and hosted-read proof directly from the document center when the reviewer is validating runtime, RPC, or data-side readiness."
         />
       </div>
       <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.05] p-5">

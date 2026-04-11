@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 
+import { AnalystGradeDataCorridor } from "@/components/analyst-grade-data-corridor";
 import { CommercialCompareSurface } from "@/components/commercial-compare-surface";
 import { CustodyReadinessStrip } from "@/components/custody-readiness-strip";
+import { DataCorridorQuickLinks } from "@/components/data-corridor-quick-links";
 import { DevnetServiceMetricsPanel } from "@/components/devnet-service-metrics-panel";
+import { HostedReadProofStrip } from "@/components/hosted-read-proof-strip";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperationsShell } from "@/components/operations-shell";
 import { PlatformServiceArchitecture } from "@/components/platform-service-architecture";
@@ -42,10 +45,22 @@ export default function ServicesPage() {
         <CustodyReadinessStrip context="services" />
       </div>
       <div>
+        <DataCorridorQuickLinks
+          title="Data-side quick links"
+          description="Buyer-safe path into the telemetry packet, diagnostics, analytics, and hosted-read proof so infrastructure reviewers can inspect the data corridor from the services surface."
+        />
+      </div>
+      <div>
         <SolutionCorridors />
       </div>
       <div>
         <DevnetServiceMetricsPanel scope="services" />
+      </div>
+      <div>
+        <HostedReadProofStrip />
+      </div>
+      <div>
+        <AnalystGradeDataCorridor />
       </div>
       <div>
         <ServiceOperationalCards />

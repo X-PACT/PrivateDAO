@@ -101,6 +101,7 @@ Primary references:
 - `docs/audit-packet.generated.md`
 - `docs/cryptographic-manifest.generated.json`
 - `docs/competitive/analysis.generated.md`
+- `docs/reviewer-telemetry-packet.md`
 
 ## Slide 7 - Differentiation
 

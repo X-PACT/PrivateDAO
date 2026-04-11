@@ -140,6 +140,19 @@ const assistantIntents: AssistantIntent[] = [
     keywords: ["incident", "runbook", "monitoring", "alerts", "logs", "rpc failures", "wallet errors", "replay", "duplicate calls"],
   },
   {
+    title: "Open the reviewer telemetry packet",
+    summary:
+      "Use the telemetry packet when the question is about data-side readiness, hosted reads, runtime evidence, analytics posture, or RPC reviewer packaging.",
+    primaryActionLabel: "Open telemetry packet",
+    primaryActionHref: "/documents/reviewer-telemetry-packet",
+    relatedRoutes: [
+      { label: "Diagnostics", href: "/diagnostics" },
+      { label: "Analytics", href: "/analytics" },
+      { label: "Frontier integrations", href: "/documents/frontier-integrations" },
+    ],
+    keywords: ["telemetry packet", "reviewer telemetry", "hosted read proof", "data corridor", "analytics packet", "rpc packet"],
+  },
+  {
     title: "Find the best wallet and live dApp path",
     summary:
       "Lead with Solflare for the current product shell. Keep Phantom as a familiar fallback, then continue into the command center or the live app corridor.",
@@ -765,6 +778,39 @@ function getCustodyTruthSuggestion(query: string): AssistantSuggestion | null {
   };
 }
 
+function getTelemetrySuggestion(query: string): AssistantSuggestion | null {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return null;
+
+  const telemetryTerms = [
+    "telemetry packet",
+    "reviewer telemetry",
+    "hosted read proof",
+    "data corridor",
+    "analytics packet",
+    "runtime telemetry",
+    "dune data",
+    "dune analytics",
+  ];
+
+  if (!telemetryTerms.some((term) => normalized.includes(term))) {
+    return null;
+  }
+
+  return {
+    title: "Open the reviewer telemetry packet",
+    summary:
+      "Start from the telemetry packet, then open diagnostics, analytics, and frontier integrations. This is the shortest route for runtime maturity, hosted-read value, and infrastructure-facing reviewer proof.",
+    primaryActionLabel: "Open telemetry packet",
+    primaryActionHref: "/documents/reviewer-telemetry-packet",
+    relatedRoutes: [
+      { label: "1. Reviewer telemetry packet", href: "/documents/reviewer-telemetry-packet" },
+      { label: "2. Diagnostics", href: "/diagnostics" },
+      { label: "3. Analytics", href: "/analytics" },
+    ],
+  };
+}
+
 function getTrackReviewerPacketSuggestion(query: string): AssistantSuggestion | null {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return null;
@@ -825,6 +871,9 @@ export function getAssistantSuggestion(query: string): AssistantSuggestion {
 
   const custodyTruthSuggestion = getCustodyTruthSuggestion(normalized);
   if (custodyTruthSuggestion) return custodyTruthSuggestion;
+
+  const telemetrySuggestion = getTelemetrySuggestion(normalized);
+  if (telemetrySuggestion) return telemetrySuggestion;
 
   const strategicOpportunitySuggestion = getStrategicOpportunitySuggestion(normalized);
   if (strategicOpportunitySuggestion) return strategicOpportunitySuggestion;

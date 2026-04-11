@@ -28,6 +28,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/reviewer-fast-path.md`,
   },
   {
+    slug: "reviewer-telemetry-packet",
+    title: "Reviewer Telemetry Packet",
+    category: "Reviewer core",
+    summary: "Shortest reviewer-safe route into telemetry, hosted reads, runtime evidence, and the infrastructure value layer behind PrivateDAO.",
+    audience: "Judges, infrastructure reviewers, grant reviewers, operators",
+    boundary: "Telemetry packet only; it does not claim external analytics partnerships or production mainnet readiness.",
+    docPath: "docs/reviewer-telemetry-packet.md",
+    rawHref: `${repositoryBlobBase}/docs/reviewer-telemetry-packet.md`,
+  },
+  {
     slug: "audit-packet",
     title: "Audit Packet",
     category: "Reviewer core",

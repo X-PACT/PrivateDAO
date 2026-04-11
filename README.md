@@ -179,6 +179,7 @@ This is intentional: the product now exposes the exact custody proof shape and b
 | Governance dashboard | https://privatedao.org/dashboard/ |
 | Custody workspace | https://privatedao.org/custody/ |
 | Launch trust packet | https://privatedao.org/documents/launch-trust-packet/ |
+| Reviewer telemetry packet | https://privatedao.org/documents/reviewer-telemetry-packet/ |
 | Mainnet blockers | https://privatedao.org/documents/mainnet-blockers/ |
 | Story video | https://privatedao.org/story/ |
 | Community | https://privatedao.org/community/ |
@@ -223,6 +224,7 @@ Beyond the primary Frontier judging posture, PrivateDAO is also being prepared f
 Canonical strategic reference:
 
 - [`docs/strategic-opportunity-readiness-2026.md`](docs/strategic-opportunity-readiness-2026.md)
+- [`docs/reviewer-telemetry-packet.md`](docs/reviewer-telemetry-packet.md)
 
 ## Story And Community
 
@@ -241,6 +243,7 @@ These are the public-facing routes reviewers, users, and buyers should see first
 | Audit packet | [`docs/audit-packet.generated.md`](docs/audit-packet.generated.md) |
 | Operational evidence | [`docs/operational-evidence.generated.md`](docs/operational-evidence.generated.md) |
 | Frontier integration evidence | [`docs/frontier-integrations.generated.md`](docs/frontier-integrations.generated.md) |
+| Reviewer telemetry packet | [`docs/reviewer-telemetry-packet.md`](docs/reviewer-telemetry-packet.md) |
 | Mainnet blockers | [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md) |
 | Trust package | [`docs/trust-package.md`](docs/trust-package.md) |
 | Service catalog | [`docs/service-catalog.md`](docs/service-catalog.md) |
