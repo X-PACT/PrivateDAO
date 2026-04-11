@@ -71,7 +71,7 @@ export function ServiceHandoffStrip({ context }: ServiceHandoffStripProps) {
           payoutProfile: queryState.payoutProfile,
           payoutTitle: storedState?.payoutTitle ?? queryState.payoutProfile,
           telemetryMode: queryState.telemetryMode,
-          updatedAt: storedState?.updatedAt ?? new Date().toISOString(),
+          updatedAt: storedState?.updatedAt ?? "query-handoff",
           source: storedState?.source ?? context,
         }
       : storedState;
@@ -128,7 +128,9 @@ export function ServiceHandoffStrip({ context }: ServiceHandoffStripProps) {
             </div>
             <div className="mt-3 text-sm font-medium text-white">{snapshot.telemetryMode}</div>
             <div className="mt-1 text-sm leading-6 text-white/58">
-              Persisted from {snapshot.source} · {new Date(snapshot.updatedAt).toLocaleString()}
+              {snapshot.updatedAt === "query-handoff"
+                ? `Persisted from ${snapshot.source} via query handoff`
+                : `Persisted from ${snapshot.source} · ${snapshot.updatedAt}`}
             </div>
           </div>
         </div>
