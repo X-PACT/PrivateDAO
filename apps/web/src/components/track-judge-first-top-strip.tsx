@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buildCustodyNarrative, custodyEvidenceUpdatedEvent, emptyCustodyEvidence, getCustodyEvidenceCompletion, readCustodyEvidence, type CustodyEvidence } from "@/lib/custody-evidence";
 import type { CompetitionTrackWorkspace } from "@/lib/site-data";
 import { getTrackJudgeFirstCopy } from "@/lib/track-judge-first-copy";
+import { getTrackReviewerPacketRoute } from "@/lib/track-reviewer-packets";
 import { cn } from "@/lib/utils";
 
 type TrackJudgeFirstTopStripProps = {
@@ -146,6 +147,10 @@ export function TrackJudgeFirstTopStrip({ workspace }: TrackJudgeFirstTopStripPr
             <div className="mt-4 grid gap-3">
               <Link href="/documents/custody-proof-reviewer-packet" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "w-full justify-between")}>
                 Open reviewer packet
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </Link>
+              <Link href={getTrackReviewerPacketRoute(workspace.slug)} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full justify-between")}>
+                Open track reviewer packet
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
               <Link href="/documents/canonical-custody-proof" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full justify-between")}>

@@ -51,6 +51,7 @@ wallets/
 !docs/canonical-custody-proof.generated.json
 !docs/custody-proof-reviewer-packet.generated.json
 !docs/track-judge-first-openings.generated.json
+!docs/track-reviewer-packets/*.generated.json
 !docs/runtime-evidence.generated.json
 !docs/release-drill.generated.json
 !docs/competitive/source.json
