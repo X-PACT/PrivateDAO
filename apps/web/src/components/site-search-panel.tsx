@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowRight, Search, Sparkles } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
-import { siteSearchItems } from "@/lib/site-search";
+import { getSiteSearchResults } from "@/lib/site-search";
 import { getAssistantSuggestion } from "@/lib/search-assistant";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -13,13 +13,7 @@ import { cn } from "@/lib/utils";
 export function SiteSearchPanel() {
   const [query, setQuery] = useState("");
 
-  const results = useMemo(() => {
-    const normalized = query.trim().toLowerCase();
-    if (!normalized) return siteSearchItems;
-    return siteSearchItems.filter((item) =>
-      [item.title, item.summary, item.category].some((field) => field.toLowerCase().includes(normalized)),
-    );
-  }, [query]);
+  const results = useMemo(() => getSiteSearchResults(query), [query]);
   const suggestion = useMemo(() => getAssistantSuggestion(query), [query]);
   const primaryIsExternal = suggestion.primaryActionHref.startsWith("http");
 

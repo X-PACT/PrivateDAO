@@ -5,6 +5,11 @@ export type SiteSearchItem = {
   summary: string;
 };
 
+type ProfileAwareSearchRule = {
+  keywords: string[];
+  leadItems: SiteSearchItem[];
+};
+
 export const siteSearchItems: SiteSearchItem[] = [
   {
     title: "Start",
@@ -187,3 +192,106 @@ export const siteSearchItems: SiteSearchItem[] = [
     summary: "Monitoring, alerts, logs, and operator response loop for RPC, wallet, and governance failures.",
   },
 ];
+
+const profileAwareSearchRules: ProfileAwareSearchRule[] = [
+  {
+    keywords: ["pilot funding"],
+    leadItems: [
+      {
+        title: "Pilot Funding Bundle",
+        href: "/tracks/colosseum-frontier?profile=pilot-funding",
+        category: "Track",
+        summary:
+          "Start with the Colosseum pilot route. Inside the track, the first surfaces are ordered for pilot funding: submission path, coach and alignment, then trust and proof.",
+      },
+      {
+        title: "Pilot Funding Intake",
+        href: "/engage?profile=pilot-funding",
+        category: "Route",
+        summary:
+          "Open the buyer path with pilot funding preselected, then continue into the live track route with proof and trust already aligned.",
+      },
+    ],
+  },
+  {
+    keywords: ["treasury top-up", "treasury top up", "top-up", "top up"],
+    leadItems: [
+      {
+        title: "Treasury Top-up Bundle",
+        href: "/tracks/rpc-infrastructure?profile=treasury-top-up",
+        category: "Track",
+        summary:
+          "Start with the RPC track. Services, commercialization, and mainnet gates are intentionally raised before deeper proof reading for treasury capitalization.",
+      },
+      {
+        title: "Treasury Top-up Intake",
+        href: "/engage?profile=treasury-top-up",
+        category: "Route",
+        summary:
+          "Open the treasury capitalization path with treasury top-up preselected, then continue into services and trust without a generic payments detour.",
+      },
+    ],
+  },
+  {
+    keywords: ["vendor payout"],
+    leadItems: [
+      {
+        title: "Vendor Payout Bundle",
+        href: "/tracks/eitherway-live-dapp?profile=vendor-payout",
+        category: "Track",
+        summary:
+          "Start with the live dApp track. The ordered surfaces emphasize submission path, metrics and diagnostics, then custody and trust for governed vendor execution.",
+      },
+      {
+        title: "Vendor Payout Intake",
+        href: "/engage?profile=vendor-payout",
+        category: "Route",
+        summary:
+          "Open the governed vendor payout lane directly, then move into execution, diagnostics, and trust without a generic search flow.",
+      },
+    ],
+  },
+  {
+    keywords: ["contributor payout"],
+    leadItems: [
+      {
+        title: "Contributor Payout Bundle",
+        href: "/tracks/consumer-apps?profile=contributor-payout",
+        category: "Track",
+        summary:
+          "Start with the consumer track. The ordered surfaces emphasize submission path, metrics, then custody and trust for governed contributor funding.",
+      },
+      {
+        title: "Contributor Payout Intake",
+        href: "/engage?profile=contributor-payout",
+        category: "Route",
+        summary:
+          "Open the governed contributor payout lane directly, then move into command, trust, and policy-aligned funding without a generic payments detour.",
+      },
+    ],
+  },
+];
+
+export function getSiteSearchResults(query: string): SiteSearchItem[] {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return siteSearchItems;
+
+  const profileAwareLeadItems =
+    profileAwareSearchRules.find((rule) =>
+      rule.keywords.some((keyword) => normalized.includes(keyword)),
+    )?.leadItems ?? [];
+
+  const generalResults = siteSearchItems.filter((item) =>
+    [item.title, item.summary, item.category].some((field) =>
+      field.toLowerCase().includes(normalized),
+    ),
+  );
+
+  const seen = new Set<string>();
+  return [...profileAwareLeadItems, ...generalResults].filter((item) => {
+    const key = `${item.category}:${item.href}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
