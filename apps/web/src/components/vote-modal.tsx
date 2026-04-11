@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { X } from "lucide-react";
 
 import { OnchainParityPanel } from "@/components/onchain-parity-panel";
@@ -11,7 +12,7 @@ import type { ServiceHandoffState } from "@/lib/service-handoff-state";
 import type { ProposalCardModel } from "@/lib/site-data";
 
 import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 
 type VoteModalProps = {
   proposal: ProposalCardModel | null;
@@ -190,11 +191,9 @@ export function VoteModal({ proposal, handoff, onClose }: VoteModalProps) {
           <Button variant="secondary">{isExecuted ? "Review reveal trail" : "Reveal vote"}</Button>
           <Button variant="outline">{isExecuted ? "Execution confirmed" : "Review execution path"}</Button>
           {handoff?.proposalReview ? (
-            <Button asChild variant="outline">
-              <a href={handoff.proposalReview.proofHref}>
-                {handoff.proposalReview.proofLabel}
-              </a>
-            </Button>
+            <Link href={handoff.proposalReview.proofHref} className={buttonVariants({ variant: "outline" })}>
+              {handoff.proposalReview.proofLabel}
+            </Link>
           ) : null}
         </div>
       </div>
