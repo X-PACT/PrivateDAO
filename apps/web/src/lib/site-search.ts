@@ -1,6 +1,7 @@
 import { competitionTrackWorkspaces } from "@/lib/site-data";
 import { proposalRegistry } from "@/lib/site-data";
 import { getCompetitionLaneLabel } from "@/lib/competition-lane-labels";
+import { getPdaoTokenStrategySnapshot } from "@/lib/pdao-token-strategy";
 import { getTreasuryReceiveConfig } from "@/lib/treasury-receive-config";
 import { getTrackReviewerPacketPublicLabel, getTrackReviewerPacketPublicSummary, getTrackReviewerPacketRoute } from "@/lib/track-reviewer-packets";
 
@@ -9,7 +10,7 @@ export type SiteSearchItem = {
   href: string;
   category: "Route" | "Track" | "Document" | "Proof" | "Service" | "Proposal";
   summary: string;
-  matchKind?: "profile-aware" | "track-aware" | "profile + track" | "payments-truth";
+  matchKind?: "profile-aware" | "track-aware" | "profile + track" | "payments-truth" | "token-truth";
 };
 
 type ProfileAwareSearchRule = {
@@ -120,6 +121,18 @@ export const siteSearchItems: SiteSearchItem[] = [
     href: "/documents/payments-reviewer-fast-path",
     category: "Document",
     summary: "Shortest reviewer-safe route into treasury packet, custody truth, services payments rail, and command-center payout path.",
+  },
+  {
+    title: "PDAO Token Surface",
+    href: "/documents/pdao-token-surface",
+    category: "Document",
+    summary: "Reviewer-safe token truth for the live Devnet governance mint, including mint details, attestation, and what PDAO does now.",
+  },
+  {
+    title: "Token Architecture",
+    href: "/documents/token-architecture",
+    category: "Document",
+    summary: "Canonical architecture note for what PDAO is, what it gates, and what remains future-facing without speculative tokenomics.",
   },
   {
     title: "Documents",
@@ -799,11 +812,58 @@ function getPaymentsTruthLeadItems(query: string): SiteSearchItem[] {
   ];
 }
 
+function getTokenTruthLeadItems(query: string): SiteSearchItem[] {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return [];
+
+  const tokenTerms = [
+    "pdao",
+    "token utility",
+    "governance token",
+    "payments token",
+    "payment token",
+    "token strategy",
+    "token surface",
+    "devnet token",
+    "live token",
+    "governance mint",
+  ];
+
+  if (!tokenTerms.some((term) => normalized.includes(term))) {
+    return [];
+  }
+
+  const snapshot = getPdaoTokenStrategySnapshot("documents");
+
+  return [
+    {
+      title: "PDAO Token Truth",
+      href: "/documents/pdao-token-surface",
+      category: "Document",
+      matchKind: "token-truth",
+      summary:
+        `What it is: ${snapshot.network} governance and coordination token. ` +
+        `What it is not: not a public mainnet payment coin. ` +
+        `What it gates: ${snapshot.gates.slice(0, 3).map((item) => item.label).join(" · ")}. ` +
+        `Open the token surface first, then token architecture for the full boundary.`,
+    },
+    {
+      title: "Best Token Proof Route",
+      href: "/documents/token-architecture",
+      category: "Document",
+      matchKind: "token-truth",
+      summary:
+        "Open token architecture next for the exact governance-token boundary, then continue into command-center to see the live governed product path.",
+    },
+  ];
+}
+
 export function getSiteSearchResults(query: string): SiteSearchItem[] {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return siteSearchItems;
 
   const paymentsTruthLeadItems = getPaymentsTruthLeadItems(normalized);
+  const tokenTruthLeadItems = getTokenTruthLeadItems(normalized);
   const trackReviewerPacketLeadItems = getTrackReviewerPacketLeadItems(normalized);
   const custodyLeadItems = getCustodyLeadItems(normalized);
   const telemetryLeadItems = getTelemetryLeadItems(normalized);
@@ -827,7 +887,7 @@ export function getSiteSearchResults(query: string): SiteSearchItem[] {
   );
 
   const seen = new Set<string>();
-  return [...paymentsTruthLeadItems, ...trackReviewerPacketLeadItems, ...custodyLeadItems, ...telemetryLeadItems, ...strategicOpportunityLeadItems, ...profileTrackLeadItems, ...trackAwareLeadItems, ...proposalLeadItems, ...profileAwareLeadItems, ...generalResults].filter((item) => {
+  return [...tokenTruthLeadItems, ...paymentsTruthLeadItems, ...trackReviewerPacketLeadItems, ...custodyLeadItems, ...telemetryLeadItems, ...strategicOpportunityLeadItems, ...profileTrackLeadItems, ...trackAwareLeadItems, ...proposalLeadItems, ...profileAwareLeadItems, ...generalResults].filter((item) => {
     const key = `${item.category}:${item.href}`;
     if (seen.has(key)) return false;
     seen.add(key);

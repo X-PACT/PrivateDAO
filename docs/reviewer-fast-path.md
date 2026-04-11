@@ -27,22 +27,28 @@ This is the shortest high-signal path for a judge, auditor, or technical reviewe
    - `docs/custody-proof-reviewer-packet.generated.md`
    - `https://privatedao.org/services/`
    - `https://privatedao.org/custody/`
-7. Open the payments fast path when the reviewer wants the shortest treasury review corridor only:
+7. Open the token truth path when the reviewer needs the exact governance mint boundary, token utility, and what PDAO gates:
+   - `docs/pdao-token.md`
+   - `docs/token.md`
+   - `docs/pdao-attestation.generated.json`
+   - `https://privatedao.org/command-center/`
+   - `https://privatedao.org/dashboard/`
+8. Open the payments fast path when the reviewer wants the shortest treasury review corridor only:
    - `docs/payments-reviewer-fast-path.md`
    - `docs/treasury-reviewer-packet.generated.md`
    - `https://privatedao.org/services/`
    - `https://privatedao.org/command-center/`
-8. Open the reviewer packet directly when you already know the judging corridor:
+9. Open the reviewer packet directly when you already know the judging corridor:
    - Frontier reviewer packet:
      - `docs/track-reviewer-packets/colosseum-frontier.generated.md`
    - Confidential governance reviewer packet:
      - `docs/track-reviewer-packets/privacy-track.generated.md`
    - Runtime infrastructure reviewer packet:
      - `docs/track-reviewer-packets/rpc-infrastructure.generated.md`
-9. Confirm the canonical devnet identity:
+10. Confirm the canonical devnet identity:
    - Program ID: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
    - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
-10. Read the audit summary:
+11. Read the audit summary:
    - `docs/security-review.md`
 
 ## Five-Minute Review

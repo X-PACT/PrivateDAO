@@ -1,4 +1,5 @@
 import { competitionTrackWorkspaces, proposalRegistry } from "@/lib/site-data";
+import { getPdaoTokenStrategySnapshot } from "@/lib/pdao-token-strategy";
 import { getCompetitionLaneLabel } from "@/lib/competition-lane-labels";
 import { getSubmissionCoachPlan } from "@/lib/submission-coach";
 import { getTreasuryReceiveConfig } from "@/lib/treasury-receive-config";
@@ -25,6 +26,16 @@ export type AssistantSuggestion = {
     reviewerPacketHref: string;
     bestRouteLabel: string;
     bestRouteHref: string;
+  } | {
+    kind: "token-truth";
+    title: string;
+    whatItIs: string;
+    whatItIsNot: string;
+    gates: string;
+    bestProofRouteLabel: string;
+    bestProofRouteHref: string;
+    tokenSurfaceLabel: string;
+    tokenSurfaceHref: string;
   };
   relatedRoutes: Array<{
     label: string;
@@ -62,6 +73,21 @@ function hasPaymentsTruthIntent(normalized: string) {
   ].some((term) => normalized.includes(term));
 }
 
+function hasTokenTruthIntent(normalized: string) {
+  return [
+    "pdao",
+    "token utility",
+    "governance token",
+    "payments token",
+    "payment token",
+    "token strategy",
+    "token surface",
+    "devnet token",
+    "live token",
+    "governance mint",
+  ].some((term) => normalized.includes(term));
+}
+
 function getPaymentsTruthBlock(normalized: string): AssistantSuggestion["queryBlock"] | undefined {
   if (!hasPaymentsTruthIntent(normalized)) return undefined;
 
@@ -87,7 +113,49 @@ function getPaymentsTruthBlock(normalized: string): AssistantSuggestion["queryBl
   };
 }
 
+function getTokenTruthBlock(normalized: string): AssistantSuggestion["queryBlock"] | undefined {
+  if (!hasTokenTruthIntent(normalized)) return undefined;
+
+  const snapshot = getPdaoTokenStrategySnapshot("documents");
+  const whatItIs = `${snapshot.network} governance and coordination token with live mint ${snapshot.mint}.`;
+  const whatItIsNot =
+    "Not a public mainnet payment coin, not speculative tokenomics, and not a claim that the token itself is the settlement asset.";
+  const gates = snapshot.gates
+    .slice(0, 3)
+    .map((item) => item.label)
+    .join(" · ");
+
+  return {
+    kind: "token-truth",
+    title: "PDAO token truth",
+    whatItIs,
+    whatItIsNot,
+    gates,
+    bestProofRouteLabel: "Open PDAO token surface",
+    bestProofRouteHref: snapshot.tokenSurfaceHref,
+    tokenSurfaceLabel: "Open token architecture",
+    tokenSurfaceHref: snapshot.tokenArchitectureHref,
+  };
+}
+
+function getHighPriorityQueryBlock(normalized: string): AssistantSuggestion["queryBlock"] | undefined {
+  return getTokenTruthBlock(normalized) ?? getPaymentsTruthBlock(normalized);
+}
+
 const assistantIntents: AssistantIntent[] = [
+  {
+    title: "Open the PDAO token truth path",
+    summary:
+      "Use the token surface and token architecture docs when the reviewer wants the live governance mint boundary, token utility, token-gated participation, or the exact distinction between governance coordination and payment rails.",
+    primaryActionLabel: "Open PDAO token surface",
+    primaryActionHref: "/documents/pdao-token-surface",
+    relatedRoutes: [
+      { label: "Token Architecture", href: "/documents/token-architecture" },
+      { label: "Command Center", href: "/command-center" },
+      { label: "Dashboard", href: "/dashboard" },
+    ],
+    keywords: ["pdao", "token utility", "governance token", "payments token", "token strategy", "governance mint"],
+  },
   {
     title: "Start a normal-user PrivateDAO flow",
     summary:
@@ -411,7 +479,7 @@ function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
         { label: "2. Engage", href: "/engage?profile=pilot-funding" },
         { label: "3. Proof", href: workspace.proofRoute },
       ],
-      queryBlock: getPaymentsTruthBlock(normalized),
+      queryBlock: getHighPriorityQueryBlock(normalized),
     };
   }
 
@@ -427,7 +495,7 @@ function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
         { label: "2. Engage", href: "/engage?profile=treasury-top-up" },
         { label: "3. Services", href: "/services" },
       ],
-      queryBlock: getPaymentsTruthBlock(normalized),
+      queryBlock: getHighPriorityQueryBlock(normalized),
     };
   }
 
@@ -443,7 +511,7 @@ function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
         { label: "2. Command Center", href: "/command-center" },
         { label: "3. Diagnostics", href: "/diagnostics" },
       ],
-      queryBlock: getPaymentsTruthBlock(normalized),
+      queryBlock: getHighPriorityQueryBlock(normalized),
     };
   }
 
@@ -458,7 +526,7 @@ function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
       { label: "2. Command Center", href: "/command-center" },
       { label: "3. Security", href: "/security" },
     ],
-    queryBlock: getPaymentsTruthBlock(normalized),
+    queryBlock: getHighPriorityQueryBlock(normalized),
   };
 }
 
@@ -884,7 +952,7 @@ function getCustodyTruthSuggestion(query: string): AssistantSuggestion | null {
       { label: "2. Canonical custody proof", href: "/documents/canonical-custody-proof" },
       { label: "3. Custody workspace", href: "/custody" },
     ],
-    queryBlock: getPaymentsTruthBlock(normalized),
+    queryBlock: getHighPriorityQueryBlock(normalized),
   };
 }
 
@@ -918,7 +986,26 @@ function getTelemetrySuggestion(query: string): AssistantSuggestion | null {
       { label: "2. Diagnostics", href: "/diagnostics" },
       { label: "3. Analytics", href: "/analytics" },
     ],
-    queryBlock: getPaymentsTruthBlock(normalized),
+    queryBlock: getHighPriorityQueryBlock(normalized),
+  };
+}
+
+function getTokenTruthSuggestion(query: string): AssistantSuggestion | null {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized || !hasTokenTruthIntent(normalized)) return null;
+
+  return {
+    title: "Open the PDAO token truth path",
+    summary:
+      "Start from the PDAO token surface, then open token architecture, then continue into command-center or dashboard to see the token as live governance coordination rather than speculative token copy.",
+    primaryActionLabel: "Open PDAO token surface",
+    primaryActionHref: "/documents/pdao-token-surface",
+    relatedRoutes: [
+      { label: "1. PDAO token surface", href: "/documents/pdao-token-surface" },
+      { label: "2. Token architecture", href: "/documents/token-architecture" },
+      { label: "3. Command Center", href: "/command-center" },
+    ],
+    queryBlock: getTokenTruthBlock(normalized),
   };
 }
 
@@ -964,7 +1051,7 @@ function getTrackReviewerPacketSuggestion(query: string): AssistantSuggestion | 
       { label: "2. Track workspace", href: match.trackRoute },
       { label: "3. Track proof route", href: match.proofRoute },
     ],
-    queryBlock: getPaymentsTruthBlock(normalized),
+    queryBlock: getHighPriorityQueryBlock(normalized),
   };
 }
 
@@ -980,6 +1067,9 @@ export function getAssistantSuggestion(query: string): AssistantSuggestion {
 
   const treasuryProfileSuggestion = getTreasuryProfileSuggestion(normalized);
   if (treasuryProfileSuggestion) return treasuryProfileSuggestion;
+
+  const tokenTruthSuggestion = getTokenTruthSuggestion(normalized);
+  if (tokenTruthSuggestion) return tokenTruthSuggestion;
 
   const custodyTruthSuggestion = getCustodyTruthSuggestion(normalized);
   if (custodyTruthSuggestion) return custodyTruthSuggestion;
@@ -1014,7 +1104,7 @@ export function getAssistantSuggestion(query: string): AssistantSuggestion {
     summary: top.intent.summary,
     primaryActionLabel: top.intent.primaryActionLabel,
     primaryActionHref: top.intent.primaryActionHref,
-    queryBlock: getPaymentsTruthBlock(normalized),
+    queryBlock: getHighPriorityQueryBlock(normalized),
     relatedRoutes: top.intent.relatedRoutes,
   };
 }

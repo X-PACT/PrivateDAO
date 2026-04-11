@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, BanknoteArrowDown, BrainCircuit, Compass, FileText, Search, ShieldCheck, Sparkles, Wallet, WalletCards } from "lucide-react";
+import { ArrowRight, BanknoteArrowDown, BrainCircuit, Coins, Compass, FileText, LockKeyhole, Search, ShieldCheck, Sparkles, Wallet, WalletCards } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
@@ -187,6 +187,44 @@ export function InternalAssistantPanel() {
                   </Link>
                   <Link href={suggestion.queryBlock.bestRouteHref} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
                     {suggestion.queryBlock.bestRouteLabel}
+                  </Link>
+                </div>
+              </div>
+            ) : null}
+            {suggestion.queryBlock?.kind === "token-truth" ? (
+              <div className="mt-5 rounded-3xl border border-fuchsia-300/16 bg-fuchsia-300/[0.07] p-4">
+                <div className="text-[11px] uppercase tracking-[0.28em] text-fuchsia-100/72">
+                  {suggestion.queryBlock.title}
+                </div>
+                <div className="mt-4 grid gap-3">
+                  <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                    <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-white/42">
+                      <Coins className="h-3.5 w-3.5 text-fuchsia-200/78" />
+                      What it is
+                    </div>
+                    <div className="mt-2 text-sm font-medium text-white">{suggestion.queryBlock.whatItIs}</div>
+                  </div>
+                  <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                    <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-white/42">
+                      <ShieldCheck className="h-3.5 w-3.5 text-fuchsia-200/78" />
+                      What it is not
+                    </div>
+                    <div className="mt-2 text-sm font-medium text-white">{suggestion.queryBlock.whatItIsNot}</div>
+                  </div>
+                  <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                    <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-white/42">
+                      <LockKeyhole className="h-3.5 w-3.5 text-fuchsia-200/78" />
+                      What it gates
+                    </div>
+                    <p className="mt-2 text-sm leading-7 text-white/58">{suggestion.queryBlock.gates}</p>
+                  </div>
+                </div>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <Link href={suggestion.queryBlock.bestProofRouteHref} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+                    {suggestion.queryBlock.bestProofRouteLabel}
+                  </Link>
+                  <Link href={suggestion.queryBlock.tokenSurfaceHref} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                    {suggestion.queryBlock.tokenSurfaceLabel}
                   </Link>
                 </div>
               </div>

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, BanknoteArrowDown, Search, ShieldCheck, Sparkles, WalletCards } from "lucide-react";
+import { ArrowRight, BanknoteArrowDown, Coins, LockKeyhole, Search, ShieldCheck, Sparkles, WalletCards } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
 import { getSiteSearchResults } from "@/lib/site-search";
@@ -128,6 +128,44 @@ export function SiteSearchPanel() {
                 </div>
               </div>
             ) : null}
+            {suggestion.queryBlock?.kind === "token-truth" ? (
+              <div className="mt-5 rounded-3xl border border-fuchsia-300/16 bg-fuchsia-300/[0.07] p-4">
+                <div className="text-[11px] uppercase tracking-[0.28em] text-fuchsia-100/72">
+                  {suggestion.queryBlock.title}
+                </div>
+                <div className="mt-4 grid gap-3 md:grid-cols-3">
+                  <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                    <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-white/42">
+                      <Coins className="h-3.5 w-3.5 text-fuchsia-200/78" />
+                      What it is
+                    </div>
+                    <div className="mt-2 text-sm font-medium text-white">{suggestion.queryBlock.whatItIs}</div>
+                  </div>
+                  <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                    <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-white/42">
+                      <ShieldCheck className="h-3.5 w-3.5 text-fuchsia-200/78" />
+                      What it is not
+                    </div>
+                    <div className="mt-2 text-sm font-medium text-white">{suggestion.queryBlock.whatItIsNot}</div>
+                  </div>
+                  <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                    <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-white/42">
+                      <LockKeyhole className="h-3.5 w-3.5 text-fuchsia-200/78" />
+                      What it gates
+                    </div>
+                    <div className="mt-2 text-sm font-medium text-white">{suggestion.queryBlock.gates}</div>
+                  </div>
+                </div>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} href={suggestion.queryBlock.bestProofRouteHref}>
+                    {suggestion.queryBlock.bestProofRouteLabel}
+                  </Link>
+                  <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={suggestion.queryBlock.tokenSurfaceHref}>
+                    {suggestion.queryBlock.tokenSurfaceLabel}
+                  </Link>
+                </div>
+              </div>
+            ) : null}
           </div>
         </CardContent>
       </Card>
@@ -148,6 +186,8 @@ export function SiteSearchPanel() {
                       "rounded-full px-3 py-1 text-[11px] uppercase tracking-[0.22em]",
                       item.matchKind === "payments-truth"
                         ? "border border-emerald-300/20 bg-emerald-300/10 text-emerald-100/82"
+                        : item.matchKind === "token-truth"
+                          ? "border border-fuchsia-300/20 bg-fuchsia-300/10 text-fuchsia-100/82"
                         : "border border-cyan-300/20 bg-cyan-300/10 text-cyan-100/82",
                     )}
                   >
