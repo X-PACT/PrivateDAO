@@ -29,6 +29,7 @@ function downloadPacket(filename: string, contents: string) {
 export function CustodyTrustContinuity({ mode = "buyer" }: CustodyTrustContinuityProps) {
   const [evidence, setEvidence] = useState<CustodyEvidence>(emptyCustodyEvidence);
   const [copyState, setCopyState] = useState<"idle" | "copied">("idle");
+  const [pitchCopyState, setPitchCopyState] = useState<"idle" | "copied">("idle");
 
   useEffect(() => {
     const syncEvidence = () => setEvidence(readCustodyEvidence());
@@ -69,10 +70,45 @@ export function CustodyTrustContinuity({ mode = "buyer" }: CustodyTrustContinuit
     [completion, evidence, narrative],
   );
 
+  const pitchDeckSnippet = useMemo(
+    () =>
+      [
+        "Pitch deck snippet - custody and trust",
+        "",
+        `Custody status: ${narrative.badge}`,
+        `Custody completion: ${completion.completed}/${completion.total}`,
+        "",
+        "Suggested slide copy:",
+        completion.completed === 0
+          ? "PrivateDAO already exposes the custody workflow inside the product, while production multisig and authority-transfer evidence remain an explicit external launch gate."
+          : completion.completed < completion.total
+            ? `PrivateDAO now records partial custody ceremony evidence in-product (${completion.completed}/${completion.total}), which strengthens reviewer trust while keeping the remaining authority-transfer artifacts explicitly open.`
+            : "PrivateDAO now keeps a fully populated custody packet inside the product surface, materially improving launch trust while preserving the explicit boundary around final external validation.",
+        "",
+        "Operator proof points:",
+        `- Multisig address: ${evidence.multisigAddress.trim() || "Not recorded yet"}`,
+        `- Threshold: ${evidence.threshold.trim() || "Not recorded yet"}`,
+        `- Upgrade transfer signature: ${evidence.upgradeTransferSignature.trim() || "Not recorded yet"}`,
+        `- Treasury transfer signature: ${evidence.treasuryTransferSignature.trim() || "Not recorded yet"}`,
+        "",
+        "Routes:",
+        "- https://privatedao.org/custody/",
+        "- https://privatedao.org/security/",
+        "- https://privatedao.org/documents/launch-trust-packet/",
+      ].join("\n"),
+    [completion, evidence, narrative],
+  );
+
   async function copyReadmePacket() {
     await navigator.clipboard.writeText(readmeCopy);
     setCopyState("copied");
     window.setTimeout(() => setCopyState("idle"), 1600);
+  }
+
+  async function copyPitchPacket() {
+    await navigator.clipboard.writeText(pitchDeckSnippet);
+    setPitchCopyState("copied");
+    window.setTimeout(() => setPitchCopyState("idle"), 1600);
   }
 
   const buyerSummary =
@@ -83,7 +119,7 @@ export function CustodyTrustContinuity({ mode = "buyer" }: CustodyTrustContinuit
         : "Buyer posture is materially stronger because the custody packet is fully populated in-product, while final external validation still remains explicit.";
 
   return (
-    <div className="grid gap-6 xl:grid-cols-3">
+    <div className="grid gap-6 xl:grid-cols-2 2xl:grid-cols-4">
       <Card>
         <CardHeader>
           <CardTitle>README packet copy</CardTitle>
@@ -105,6 +141,34 @@ export function CustodyTrustContinuity({ mode = "buyer" }: CustodyTrustContinuit
             <Button variant="secondary" onClick={() => downloadPacket("privatedao-readme-custody-update.txt", readmeCopy)}>
               Download packet
             </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Pitch deck snippet</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="rounded-2xl border border-white/8 bg-black/25 p-3 text-fuchsia-200">
+              <FileText className="h-4 w-4" />
+            </div>
+            <div className="text-sm leading-7 text-white/58">
+              Copy a concise custody-and-trust update that fits the investor or competition deck without rewriting the boundary language by hand.
+            </div>
+          </div>
+          <div className="rounded-3xl border border-white/8 bg-white/4 p-4 text-sm leading-7 text-white/60">
+            This snippet stays aligned with the live product state and is intended for the custody, trust, or mainnet-readiness slides.
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Button onClick={copyPitchPacket}>{pitchCopyState === "copied" ? "Copied snippet" : "Copy snippet"}</Button>
+            <Button variant="secondary" onClick={() => downloadPacket("privatedao-pitch-deck-custody-snippet.txt", pitchDeckSnippet)}>
+              Download snippet
+            </Button>
+            <Link href="/viewer/investor-pitch-deck" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+              Open deck route
+            </Link>
           </div>
         </CardContent>
       </Card>
