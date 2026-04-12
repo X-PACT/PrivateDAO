@@ -13,6 +13,7 @@ import {
   type ServiceHandoffRequestDelivery,
   writeStoredServiceHandoffState,
 } from "@/lib/service-handoff-state";
+import { getProposalById } from "@/lib/site-data";
 import { getTreasuryReceiveConfig } from "@/lib/treasury-receive-config";
 import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
 import { cn } from "@/lib/utils";
@@ -136,6 +137,34 @@ function resolveSupportedAsset(
     : "SOL";
 }
 
+function buildProposalBackedPrefill(
+  proposalId: string,
+  profileValue: (typeof destinationProfiles)[number]["value"],
+) {
+  const proposal = getProposalById(proposalId);
+  const profile = destinationProfiles.find((item) => item.value === profileValue);
+  if (!proposal || !profile) return null;
+
+  const supportedMint =
+    proposal.execution.mintSymbol === "SOL" ||
+    proposal.execution.mintSymbol === "USDC" ||
+    proposal.execution.mintSymbol === "USDG"
+      ? proposal.execution.mintSymbol
+      : null;
+  const assetSymbol = supportedMint ?? profile.defaultAsset;
+
+  return {
+    assetSymbol,
+    lane: profile.defaultLane,
+    reference: `${proposal.id}-${profile.value}`.toUpperCase(),
+    amount:
+      proposal.execution.amount !== null && supportedMint === assetSymbol
+        ? String(proposal.execution.amount)
+        : "",
+    purpose: `${profile.label} for ${proposal.id} · ${proposal.title}`,
+  };
+}
+
 export function TreasuryReceiveSurface() {
   const config = getTreasuryReceiveConfig();
   const [copied, setCopied] = useState<string | null>(null);
@@ -189,21 +218,36 @@ export function TreasuryReceiveSurface() {
 
     const handoffKey = `${handoff.proposalId}:${handoff.payoutProfile}:${handoff.telemetryMode}`;
     if (appliedHandoffKeyRef.current === handoffKey) return;
+    const proposalBackedPrefill = buildProposalBackedPrefill(handoff.proposalId, handoff.payoutProfile);
+    const handoffProfileConfig =
+      destinationProfiles.find((item) => item.value === handoff.payoutProfile) ??
+      destinationProfiles[0];
 
     setProfile(handoff.payoutProfile);
 
-    if (handoff.payoutIntent && allowStoredServicesHydration) {
+    const shouldUseProposalBackedPrefill =
+      Boolean(proposalBackedPrefill) &&
+      (
+        !handoff.payoutIntent ||
+        handoff.payoutIntent.reference.endsWith("REQUEST-PENDING") ||
+        !handoff.payoutIntent.amount ||
+        handoff.payoutIntent.purpose === handoffProfileConfig.defaultPurpose ||
+        handoff.payoutIntent.executionTarget.startsWith("Treasury receive rail")
+      );
+
+    if (shouldUseProposalBackedPrefill && proposalBackedPrefill) {
+      setSelectedAsset(resolveSupportedAsset(config.assets, proposalBackedPrefill.assetSymbol));
+      setLane(proposalBackedPrefill.lane);
+      setReference(proposalBackedPrefill.reference);
+      setPurpose(proposalBackedPrefill.purpose);
+      setAmount(proposalBackedPrefill.amount);
+    } else if (handoff.payoutIntent && allowStoredServicesHydration) {
       setSelectedAsset(resolveSupportedAsset(config.assets, handoff.payoutIntent.assetSymbol));
       setLane(handoff.payoutIntent.lane);
       setReference(handoff.payoutIntent.reference);
       setPurpose(handoff.payoutIntent.purpose);
-      if (handoff.payoutIntent.amount) {
-        setAmount(handoff.payoutIntent.amount);
-      }
+      setAmount(handoff.payoutIntent.amount);
     } else {
-      const handoffProfileConfig =
-        destinationProfiles.find((item) => item.value === handoff.payoutProfile) ??
-        destinationProfiles[0];
       setSelectedAsset(
         resolveSupportedAsset(config.assets, handoffProfileConfig.defaultAsset),
       );
