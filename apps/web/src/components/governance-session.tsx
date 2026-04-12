@@ -337,7 +337,7 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
         ),
       executeProposal: () =>
         setState((current) => {
-          const nextExecutionIntent = current.executionIntent?.requestPayload
+          const nextExecutionIntent: GovernanceExecutionIntent | null = current.executionIntent?.requestPayload
             ? {
                 ...current.executionIntent,
                 requestPayload: {
@@ -347,7 +347,7 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
                 requestDelivery: current.executionIntent.requestDelivery
                   ? {
                       ...current.executionIntent.requestDelivery,
-                      state: "executed",
+                      state: "executed" as const,
                       stateDetail:
                         "Authoritative request object signed and submitted from the payload-driven command-center lane.",
                     }
