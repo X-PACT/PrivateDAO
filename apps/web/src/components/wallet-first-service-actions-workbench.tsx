@@ -305,7 +305,7 @@ function PayoutRouteForm({
   onChange,
 }: {
   payouts: PayoutRouteOption[];
-  selectedSlug: PayoutRouteOption["slug"];
+  selectedSlug: PayoutRouteOption["slug"] | "";
   onChange: (value: PayoutRouteOption["slug"]) => void;
 }) {
   const selected = useMemo(
@@ -376,7 +376,7 @@ function TelemetryInspectorForm({
   onChange,
 }: {
   modes: TelemetryInspectorMode[];
-  selectedSlug: TelemetryInspectorMode["slug"];
+  selectedSlug: TelemetryInspectorMode["slug"] | "";
   onChange: (value: TelemetryInspectorMode["slug"]) => void;
 }) {
   const selected = useMemo(
