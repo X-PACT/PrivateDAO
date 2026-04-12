@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
-const siteName = "PrivateDAO";
-const defaultImage = "/opengraph-image.png";
+import { defaultOgImage, siteDescription, siteKeywords, siteName } from "@/lib/site-brand";
 
 type BuildRouteMetadataInput = {
   title: string;
@@ -23,14 +22,7 @@ export function buildRouteMetadata({
     title: fullTitle,
     description,
     keywords: [
-      "PrivateDAO",
-      "Solana governance",
-      "confidential treasury",
-      "private voting",
-      "ZK",
-      "REFHE",
-      "MagicBlock",
-      "Fast RPC",
+      ...siteKeywords,
       ...keywords,
     ],
     alternates: {
@@ -44,7 +36,7 @@ export function buildRouteMetadata({
       type: "website",
       images: [
         {
-          url: defaultImage,
+          url: defaultOgImage,
           width: 1200,
           height: 630,
           alt: fullTitle,
@@ -55,7 +47,43 @@ export function buildRouteMetadata({
       card: "summary_large_image",
       title: fullTitle,
       description,
-      images: [defaultImage],
+      images: [defaultOgImage],
     },
+    category: "technology",
+    applicationName: siteName,
+  };
+}
+
+export function buildBrandHomeMetadata(): Metadata {
+  return {
+    title: siteName,
+    description: siteDescription,
+    keywords: siteKeywords,
+    alternates: {
+      canonical: "/",
+    },
+    openGraph: {
+      title: siteName,
+      description: siteDescription,
+      siteName,
+      type: "website",
+      url: "/",
+      images: [
+        {
+          url: defaultOgImage,
+          width: 1200,
+          height: 630,
+          alt: siteName,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: siteName,
+      description: siteDescription,
+      images: [defaultOgImage],
+    },
+    category: "technology",
+    applicationName: siteName,
   };
 }

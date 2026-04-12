@@ -1,0 +1,58 @@
+# Brand Search Ops
+
+Last updated: 2026-04-12
+
+This packet covers the exact non-code work required to improve `PrivateDAO` brand search visibility in English and Arabic after on-site SEO is already in place.
+
+## On-Site State
+
+The site now ships:
+
+- canonical metadata on the primary routes
+- `robots.txt`
+- `sitemap.xml`
+- `manifest.webmanifest`
+- Organization and WebSite schema
+- English and Arabic brand variants:
+  - `PrivateDAO`
+  - `Private DAO`
+  - `برايفيت داو`
+  - `برايفت داو`
+
+These changes improve indexability. They do not guarantee first position by themselves.
+
+## Exact External Actions
+
+1. verify the canonical domain in Google Search Console
+2. submit:
+   - `https://privatedao.org/sitemap.xml`
+3. verify the canonical domain in Bing Webmaster Tools
+4. submit:
+   - `https://privatedao.org/sitemap.xml`
+5. keep `privatedao.org` as the only canonical index target
+6. keep `www.privatedao.org` and `x-pact.github.io/PrivateDAO` redirected to the canonical domain
+7. keep brand-consistent references across:
+   - GitHub repo
+   - YouTube channel
+   - Discord
+   - pitch decks
+   - grant submissions
+   - hackathon submissions
+
+## Brand Search Reality
+
+If the goal is that users typing `PrivateDAO` or `برايفيت داو` see the site first, the ranking system depends on:
+
+- crawl completion
+- canonical consistency
+- off-site brand references
+- search-console submission
+- brand uniqueness
+
+Browser type does not meaningfully change this. Search engine indexing does.
+
+## Exact Finish Line
+
+The statement below becomes technically reasonable only after the external actions above are complete and the site is indexed under the canonical domain:
+
+`Brand search is properly indexed and positioned to compete for first-result visibility.`

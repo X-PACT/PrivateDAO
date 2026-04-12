@@ -238,6 +238,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/production-style-custody-closure-plan.md`,
   },
   {
+    slug: "brand-search-ops",
+    title: "Brand Search Ops",
+    category: "Growth",
+    summary: "Exact operational checklist for turning on-site SEO work into real brand-search visibility for `PrivateDAO` and its Arabic variants through canonical indexing and search-console submission.",
+    audience: "Operators, growth owners, reviewers",
+    boundary: "Search operations packet only; it improves crawl and index readiness but does not guarantee first-position ranking by itself.",
+    docPath: "docs/brand-search-ops.md",
+    rawHref: `${repositoryBlobBase}/docs/brand-search-ops.md`,
+  },
+  {
     slug: "trust-package",
     title: "Trust Package",
     category: "Trust",
