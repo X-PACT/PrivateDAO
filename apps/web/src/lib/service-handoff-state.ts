@@ -426,9 +426,22 @@ export function mergeServiceHandoffState(
       : sameProfile
         ? storedState?.requestDelivery
         : undefined;
+  const requestPayload =
+    sameProfile && storedState?.requestPayload
+      ? {
+          ...storedState.requestPayload,
+          requestRoute:
+            requestDelivery?.requestRoute ?? storedState.requestPayload.requestRoute,
+          deliveryRoute:
+            requestDelivery?.deliveryRoute ?? storedState.requestPayload.deliveryRoute,
+          telemetryRoute:
+            requestDelivery?.telemetryRoute ?? storedState.requestPayload.telemetryRoute,
+        }
+      : undefined;
 
   return {
     ...baseState,
     requestDelivery,
+    requestPayload,
   };
 }
