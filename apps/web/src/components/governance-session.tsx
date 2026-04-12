@@ -194,10 +194,6 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
       }) =>
         setState((current) => {
           const executionIntentKey = `${proposalId}:${payoutProfile}:${telemetryMode}:${reference}:${source}`;
-          if (current.executionIntentKey === executionIntentKey) {
-            return current;
-          }
-
           const nextExecutionIntent = {
             payoutProfile,
             payoutTitle,
@@ -208,13 +204,25 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
             executionTarget,
             evidenceRoute,
           };
+          const sanitizedLogs = sanitizeGovernanceLogs(current.logs, nextExecutionIntent);
+          if (current.executionIntentKey === executionIntentKey) {
+            if (sanitizedLogs === current.logs) {
+              return current;
+            }
+
+            return {
+              ...current,
+              executionIntent: nextExecutionIntent,
+              logs: sanitizedLogs,
+            };
+          }
 
           return withLog(
             {
               ...current,
               executionIntentKey,
               executionIntent: nextExecutionIntent,
-              logs: sanitizeGovernanceLogs(current.logs, nextExecutionIntent),
+              logs: sanitizedLogs,
             },
             "Execution request loaded",
             `${proposalId} · ${payoutTitle} · ${amountDisplay} · ${reference} staged from ${source}.`,

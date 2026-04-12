@@ -16,6 +16,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buildProposalConfidenceScorecard } from "@/lib/confidence-engine";
 import type { ExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
+import { buildServiceHandoffQuery } from "@/lib/service-handoff-state";
 import { commandCenterReferences, getProposalById, proposalCards, proposalRegistry, type ProposalCardModel } from "@/lib/site-data";
 import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
 import { cn } from "@/lib/utils";
@@ -102,6 +103,7 @@ export function ProposalWorkspace({ executionSnapshot }: ProposalWorkspaceProps)
   );
   const hasActiveExecutionContinuity =
     handoff?.proposalId === proposal.id && Boolean(handoff.payoutIntent);
+  const continuityQuery = handoff ? buildServiceHandoffQuery(handoff) : "";
 
   const actions = actionMap[proposal.status];
 
@@ -281,6 +283,17 @@ export function ProposalWorkspace({ executionSnapshot }: ProposalWorkspaceProps)
                     <div className="text-sm leading-7 text-white/56">
                       Execution target: {handoff.payoutIntent.executionTarget}
                     </div>
+                  </div>
+                  <div className="mt-4 flex flex-wrap gap-3">
+                    <Button onClick={() => setVoteModalOpen(true)}>
+                      Open delivered signing shell
+                    </Button>
+                    <Link
+                      href={continuityQuery ? `/network?${continuityQuery}` : "/network"}
+                      className={cn(buttonVariants({ variant: "outline" }))}
+                    >
+                      Open execution network logs
+                    </Link>
                   </div>
                 </div>
               </>
