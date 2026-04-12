@@ -46,7 +46,9 @@ export default function AnalyticsPage() {
         />
       </div>
       <div>
-        <TelemetryRuntimeFocusStrip context="analytics" />
+        <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading telemetry runtime focus…</div>}>
+          <TelemetryRuntimeFocusStrip context="analytics" />
+        </Suspense>
       </div>
       <div>
         <DataCorridorQuickLinks />

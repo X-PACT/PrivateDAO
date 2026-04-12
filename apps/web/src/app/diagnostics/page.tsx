@@ -48,7 +48,9 @@ export default function DiagnosticsPage() {
         />
       </div>
       <div>
-        <TelemetryRuntimeFocusStrip context="diagnostics" />
+        <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading telemetry runtime focus…</div>}>
+          <TelemetryRuntimeFocusStrip context="diagnostics" />
+        </Suspense>
       </div>
       <div>
         <DataCorridorQuickLinks

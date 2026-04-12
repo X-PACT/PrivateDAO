@@ -23,7 +23,9 @@ export default function NetworkPage() {
       <Suspense fallback={null}>
         <TelemetryModeHandoffStrip context="network" />
       </Suspense>
-      <TelemetryRuntimeFocusStrip context="network" />
+      <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading telemetry runtime focus…</div>}>
+        <TelemetryRuntimeFocusStrip context="network" />
+      </Suspense>
       <FrontierSignalBoard />
       <ProofCenter />
       <SecurityCenter />
