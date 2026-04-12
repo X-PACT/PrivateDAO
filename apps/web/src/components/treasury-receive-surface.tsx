@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { ArrowRight, ArrowUpRight, CheckCircle2, Clipboard, Coins, Download, FileCheck2, Landmark, ShieldCheck, Wallet } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -57,6 +56,7 @@ const destinationProfiles = [
     value: "treasury-top-up",
     label: "Treasury top-up",
     summary: "Route capital into the treasury for runway, governance execution, and shared operating capacity.",
+    defaultAsset: "SOL" as const,
     defaultLane: "buyer",
     defaultPurpose: "Treasury top-up for governance runway and shared Devnet operations.",
     intake: "payments",
@@ -69,6 +69,7 @@ const destinationProfiles = [
     value: "pilot-funding",
     label: "Pilot funding",
     summary: "Fund a time-boxed pilot so the buyer path stays tied to a real product and measurable Devnet execution.",
+    defaultAsset: "USDC" as const,
     defaultLane: "buyer",
     defaultPurpose: "Pilot funding for PrivateDAO rollout, buyer onboarding, and measured Devnet validation.",
     intake: "pilot",
@@ -81,6 +82,7 @@ const destinationProfiles = [
     value: "vendor-payout",
     label: "Vendor payout",
     summary: "Prepare a governed payout for an external service provider with clear operational routing and evidence.",
+    defaultAsset: "USDC" as const,
     defaultLane: "operator",
     defaultPurpose: "Vendor payout request routed through governed treasury operations.",
     intake: "payments",
@@ -93,6 +95,7 @@ const destinationProfiles = [
     value: "contributor-payout",
     label: "Contributor payout",
     summary: "Issue a governed payout for contributors, builders, or operators while preserving treasury discipline.",
+    defaultAsset: "USDC" as const,
     defaultLane: "operator",
     defaultPurpose: "Contributor payout request for governed treasury execution.",
     intake: "payments",
@@ -132,7 +135,6 @@ function resolveSupportedAsset(
 }
 
 export function TreasuryReceiveSurface() {
-  const router = useRouter();
   const config = getTreasuryReceiveConfig();
   const [copied, setCopied] = useState<string | null>(null);
   const [selectedAsset, setSelectedAsset] = useState<(typeof config.assets)[number]["symbol"]>("SOL");
@@ -149,11 +151,27 @@ export function TreasuryReceiveSurface() {
   const activeProfile = destinationProfiles.find((item) => item.value === profile) ?? destinationProfiles[0];
   const activeLane = handoffLanes.find((item) => item.value === lane) ?? handoffLanes[0];
   const handoffProfile = handoff?.payoutProfile ?? null;
+  const allowStoredServicesHydration =
+    handoff?.source !== "services" ||
+    handoff?.requestDelivery?.state === "staged" ||
+    handoff?.requestDelivery?.state === "delivered";
 
   useEffect(() => {
+    if (
+      handoff?.payoutIntent &&
+      handoff.payoutProfile === activeProfile.value &&
+      allowStoredServicesHydration
+    ) {
+      return;
+    }
+
+    const defaultAsset = resolveSupportedAsset(config.assets, activeProfile.defaultAsset);
     setLane(activeProfile.defaultLane);
+    setSelectedAsset(defaultAsset);
+    setReference(`${activeProfile.value.toUpperCase()}-REQUEST-PENDING`);
+    setAmount("");
     setPurpose(activeProfile.defaultPurpose);
-  }, [activeProfile]);
+  }, [activeProfile, allowStoredServicesHydration, config.assets, handoff?.payoutIntent, handoff?.payoutProfile]);
 
   useEffect(() => {
     if (!handoff) return;
@@ -163,7 +181,7 @@ export function TreasuryReceiveSurface() {
 
     setProfile(handoff.payoutProfile);
 
-    if (handoff.payoutIntent) {
+    if (handoff.payoutIntent && allowStoredServicesHydration) {
       setSelectedAsset(resolveSupportedAsset(config.assets, handoff.payoutIntent.assetSymbol));
       setLane(handoff.payoutIntent.lane);
       setReference(handoff.payoutIntent.reference);
@@ -171,10 +189,21 @@ export function TreasuryReceiveSurface() {
       if (handoff.payoutIntent.amount) {
         setAmount(handoff.payoutIntent.amount);
       }
+    } else {
+      const handoffProfileConfig =
+        destinationProfiles.find((item) => item.value === handoff.payoutProfile) ??
+        destinationProfiles[0];
+      setSelectedAsset(
+        resolveSupportedAsset(config.assets, handoffProfileConfig.defaultAsset),
+      );
+      setLane(handoffProfileConfig.defaultLane);
+      setReference(`${handoffProfileConfig.value.toUpperCase()}-REQUEST-PENDING`);
+      setAmount("");
+      setPurpose(handoffProfileConfig.defaultPurpose);
     }
 
     appliedHandoffKeyRef.current = handoffKey;
-  }, [config.assets, handoff]);
+  }, [allowStoredServicesHydration, config.assets, handoff]);
 
   const requestPacket = useMemo(
     () =>
@@ -408,11 +437,6 @@ export function TreasuryReceiveSurface() {
   function stageRequest() {
     updateDeliveryState("staged");
     setCopied("request-staged");
-  }
-
-  function deliverRequest() {
-    updateDeliveryState("delivered");
-    router.push(deliveryRoute);
   }
 
   return (
@@ -736,14 +760,17 @@ export function TreasuryReceiveSurface() {
                 >
                   Stage request in UI
                 </button>
-                <button
-                  type="button"
-                  onClick={deliverRequest}
-                  disabled={!isRequestReady}
+                <Link
+                  href={deliveryRoute}
+                  onClick={() => {
+                    if (!isRequestReady) return;
+                    updateDeliveryState("delivered");
+                  }}
                   className={cn(buttonVariants({ size: "sm" }), !isRequestReady && "pointer-events-none opacity-50")}
+                  aria-disabled={!isRequestReady}
                 >
                   Deliver to command center
-                </button>
+                </Link>
                 <Link
                   href={telemetryRoute}
                   className={cn(buttonVariants({ size: "sm", variant: "outline" }), !isRequestReady && "pointer-events-none opacity-50")}

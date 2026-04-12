@@ -284,6 +284,11 @@ export function mergeServiceHandoffState(
 ): ServiceHandoffState | null {
   if (!selection) return storedState;
 
+  const sameProposal = storedState?.proposalId === selection.proposalId;
+  const sameProfile = sameProposal && storedState?.payoutProfile === selection.payoutProfile;
+  const sameTelemetryMode =
+    sameProposal && storedState?.telemetryMode === selection.telemetryMode;
+
   return {
     proposalId: selection.proposalId,
     proposalTitle: storedState?.proposalTitle ?? selection.proposalId,
@@ -292,10 +297,10 @@ export function mergeServiceHandoffState(
     payoutTitle: storedState?.payoutTitle ?? selection.payoutProfile,
     telemetryMode: selection.telemetryMode,
     updatedAt: storedState?.updatedAt ?? "query-handoff",
-    source: storedState?.source ?? fallbackSource,
-    proposalReview: storedState?.proposalReview,
-    payoutIntent: storedState?.payoutIntent,
-    telemetrySelection: storedState?.telemetrySelection,
-    requestDelivery: storedState?.requestDelivery,
+    source: sameProposal ? storedState?.source ?? fallbackSource : fallbackSource,
+    proposalReview: sameProposal ? storedState?.proposalReview : undefined,
+    payoutIntent: sameProfile ? storedState?.payoutIntent : undefined,
+    telemetrySelection: sameTelemetryMode ? storedState?.telemetrySelection : undefined,
+    requestDelivery: sameProfile ? storedState?.requestDelivery : undefined,
   };
 }
