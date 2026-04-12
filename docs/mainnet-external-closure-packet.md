@@ -55,6 +55,7 @@ What remains open:
 - production signer custody setup
 - authority-transfer execution against the production custody target
 - post-transfer readouts and references
+- production-style closure plan adoption from the live rehearsal source
 
 Required closure items:
 
@@ -76,6 +77,8 @@ Canonical evidence files:
 
 - `docs/multisig-setup-intake.json`
 - `docs/multisig-setup-intake.md`
+- `docs/production-style-custody-closure-plan.json`
+- `docs/production-style-custody-closure-plan.md`
 - `docs/authority-transfer-runbook.md`
 - `docs/canonical-custody-proof.generated.md`
 - `docs/custody-observed-readouts.json`

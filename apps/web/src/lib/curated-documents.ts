@@ -228,6 +228,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/devnet-rehearsal-multisig.md`,
   },
   {
+    slug: "production-style-custody-closure-plan",
+    title: "Production-Style Custody Closure Plan",
+    category: "Trust",
+    summary: "Minimal-delta plan for moving from the live Devnet rehearsal multisig to a production-shaped custody closure model without overstating that rehearsal artifacts are already production custody.",
+    audience: "Operators, reviewers, release owners",
+    boundary: "Planning packet only; it does not claim the production multisig, timelock, or authority transfers already exist.",
+    docPath: "docs/production-style-custody-closure-plan.md",
+    rawHref: `${repositoryBlobBase}/docs/production-style-custody-closure-plan.md`,
+  },
+  {
     slug: "trust-package",
     title: "Trust Package",
     category: "Trust",

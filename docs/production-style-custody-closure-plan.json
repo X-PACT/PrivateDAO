@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "project": "PrivateDAO",
+  "status": "candidate-production-style-closure-plan",
+  "networkTarget": "mainnet-beta",
+  "sourceRehearsal": {
+    "network": "devnet",
+    "multisigAddress": "EqbW1xQRABPNmPM4TMkdygp6j94i7A3DSbgFKTpqXvJE",
+    "creationSignature": "4KSyTYQTzeNpBDWou7GFLmvUpAhLgmNKkNdd4PZqndLpCWmUnArffYRQUwe6zrTmQD5uCbBfBR6pakf9Gz8dviRp",
+    "requiredThreshold": 2,
+    "requiredSignerCount": 3
+  },
+  "productionShape": {
+    "requiredThreshold": 2,
+    "requiredSignerCount": 3,
+    "timelockMinimumHours": 48,
+    "multisigAddress": null,
+    "creationSignature": null
+  },
+  "candidateSignerModel": [
+    {
+      "slot": 1,
+      "role": "founder-operator",
+      "walletLabel": "Solflare",
+      "publicKey": "73EzhBNNdM2ZV3LzMxyNZ5FwGiZCZJrbZTHyRxhTsdq9",
+      "allowedForProductionIf": [
+        "moved to cold-or-hardware custody",
+        "kept operationally available for founder execution",
+        "not the only active authority path"
+      ]
+    },
+    {
+      "slot": 2,
+      "role": "independent-security-or-ops-signer",
+      "walletLabel": "Phantom",
+      "publicKey": "BBBPcpUnnBi3CWUhcv6vLTqaY9pugAGuhgw2Axjpvcr2",
+      "allowedForProductionIf": [
+        "operationally independent from slot 1",
+        "moved to cold-or-hardware custody",
+        "approval and recovery path are documented"
+      ]
+    },
+    {
+      "slot": 3,
+      "role": "recovery-or-governance-signer",
+      "walletLabel": "Backpack",
+      "publicKey": "2KpA69UB55tfWUSkKj5j7Tvebd3eG22hEs9hjXUq7pf5",
+      "allowedForProductionIf": [
+        "kept separate from slot 1 and slot 2 control",
+        "moved to cold-or-hardware custody",
+        "backup and recovery procedure are documented"
+      ]
+    }
+  ],
+  "authorityTransferTargets": [
+    "program-upgrade-authority",
+    "dao-authority",
+    "treasury-operator-authority"
+  ],
+  "minimalDeltaRule": "Keep the 2-of-3 role model and slot semantics unchanged; only swap signer public keys if the rehearsal wallets do not satisfy production custody rules.",
+  "closureRule": "Production custody becomes closed only after a new mainnet-beta multisig exists, the signer set is confirmed as cold-or-hardware, the 48+ hour timelock is recorded, and authority-transfer plus post-transfer evidence are retained."
+}
