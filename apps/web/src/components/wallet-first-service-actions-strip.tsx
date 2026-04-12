@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import {
   getWalletFirstServiceWorkbenchData,
   type WalletFirstServiceActionContext,
@@ -12,5 +14,15 @@ type WalletFirstServiceActionsStripProps = {
 export function WalletFirstServiceActionsStrip({ context }: WalletFirstServiceActionsStripProps) {
   const data = getWalletFirstServiceWorkbenchData(context);
 
-  return <WalletFirstServiceActionsWorkbench context={context} data={data} />;
+  return (
+    <Suspense
+      fallback={
+        <div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">
+          Loading execution workbench…
+        </div>
+      }
+    >
+      <WalletFirstServiceActionsWorkbench context={context} data={data} />
+    </Suspense>
+  );
 }
