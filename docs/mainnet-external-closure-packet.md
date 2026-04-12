@@ -40,6 +40,22 @@ Boundary:
 
 These remain external because they require real signers and final production custody decisions.
 
+What is already closed below production:
+
+- a live Devnet rehearsal multisig exists:
+  - address: `EqbW1xQRABPNmPM4TMkdygp6j94i7A3DSbgFKTpqXvJE`
+  - threshold: `2-of-3`
+  - creation signature: `4KSyTYQTzeNpBDWou7GFLmvUpAhLgmNKkNdd4PZqndLpCWmUnArffYRQUwe6zrTmQD5uCbBfBR6pakf9Gz8dviRp`
+- canonical rehearsal packet:
+  - `docs/devnet-rehearsal-multisig.md`
+
+What remains open:
+
+- production multisig selection or creation
+- production signer custody setup
+- authority-transfer execution against the production custody target
+- post-transfer readouts and references
+
 Required closure items:
 
 1. select and record production multisig implementation

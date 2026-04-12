@@ -218,6 +218,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/mainnet-external-closure-packet.md`,
   },
   {
+    slug: "devnet-rehearsal-multisig",
+    title: "Devnet Rehearsal Multisig",
+    category: "Trust",
+    summary: "Live Devnet rehearsal multisig packet recording the created 2-of-3 signer set, multisig address, and creation signature without overstating it as the production custody closure.",
+    audience: "Operators, reviewers, judges",
+    boundary: "Rehearsal artifact only; it does not replace the production multisig, mainnet authority transfer, or release ceremony closure.",
+    docPath: "docs/devnet-rehearsal-multisig.md",
+    rawHref: `${repositoryBlobBase}/docs/devnet-rehearsal-multisig.md`,
+  },
+  {
     slug: "trust-package",
     title: "Trust Package",
     category: "Trust",
