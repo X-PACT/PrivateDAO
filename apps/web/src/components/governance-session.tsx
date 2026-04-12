@@ -57,7 +57,10 @@ function sanitizeGovernanceLogs(
         return true;
       }
 
-      return entry.value.includes(executionIntent.reference);
+      return (
+        entry.value.includes(executionIntent.reference) &&
+        entry.value.includes(executionIntent.amountDisplay)
+      );
     })
     .slice(0, 8);
 }

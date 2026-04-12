@@ -100,6 +100,8 @@ export function ProposalWorkspace({ executionSnapshot }: ProposalWorkspaceProps)
       }),
     [proposal],
   );
+  const hasActiveExecutionContinuity =
+    handoff?.proposalId === proposal.id && Boolean(handoff.payoutIntent);
 
   const actions = actionMap[proposal.status];
 
@@ -218,8 +220,76 @@ export function ProposalWorkspace({ executionSnapshot }: ProposalWorkspaceProps)
           <ExecutionSurfaceInline mode="proposal" snapshot={executionSnapshot} />
 
           <div className="grid gap-4 xl:grid-cols-2">
-            <ProposalAnalyzerInline proposal={proposal} />
-            <TreasuryRiskInline proposal={proposal} />
+            {hasActiveExecutionContinuity && handoff?.payoutIntent ? (
+              <>
+                <div className="rounded-3xl border border-cyan-300/15 bg-cyan-400/5 p-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/70">Execution continuity</div>
+                      <div className="mt-1 text-sm font-medium text-white">{handoff.payoutTitle}</div>
+                    </div>
+                    <Badge variant="cyan">Continuity active</Badge>
+                  </div>
+                  <p className="mt-3 text-sm leading-7 text-white/62">
+                    The active execution lane is now overriding proposal-derived analyzer copy so the operator sees the exact payload being delivered, not legacy proposal context.
+                  </p>
+                  <div className="mt-3 grid gap-3 rounded-[24px] border border-cyan-300/12 bg-black/20 p-4 sm:grid-cols-2">
+                    <div className="text-sm leading-7 text-white/56">
+                      <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/60">Recipient / lane</div>
+                      <div className="mt-1 break-all text-white/80">
+                        {handoff.payoutIntent.recipient ?? handoff.payoutIntent.executionTarget}
+                      </div>
+                    </div>
+                    <div className="text-sm leading-7 text-white/56">
+                      <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/60">Amount / asset</div>
+                      <div className="mt-1 text-white/80">{handoff.payoutIntent.amountDisplay}</div>
+                    </div>
+                    <div className="text-sm leading-7 text-white/56">
+                      <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/60">Reference</div>
+                      <div className="mt-1 text-white/80">{handoff.payoutIntent.reference}</div>
+                    </div>
+                    <div className="text-sm leading-7 text-white/56">
+                      <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/60">Telemetry mode</div>
+                      <div className="mt-1 text-white/80">{handoff.telemetryMode}</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="rounded-3xl border border-emerald-300/15 bg-emerald-400/5 p-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-200/75">Delivered execution lane</div>
+                      <div className="mt-1 text-sm font-medium text-white">Command-center is reading the same treasury request payload</div>
+                    </div>
+                    <Badge variant={handoff.requestDelivery?.state === "delivered" ? "success" : "cyan"}>
+                      {handoff.requestDelivery?.state ?? "draft"}
+                    </Badge>
+                  </div>
+                  <p className="mt-3 text-sm leading-7 text-white/62">
+                    This panel stays bound to the delivered request object, treasury route, and telemetry continuity so the active operator context does not drift back to proposal-only heuristics.
+                  </p>
+                  <div className="mt-3 space-y-2">
+                    <div className="text-sm leading-7 text-white/56">
+                      {handoff.requestDelivery?.state === "delivered"
+                        ? `Delivered into command-center${handoff.requestDelivery.deliveredAt ? ` at ${handoff.requestDelivery.deliveredAt}` : ""}.`
+                        : handoff.requestDelivery?.state === "staged"
+                          ? "Execution request is staged and waiting for final delivery."
+                          : "Execution request remains editable in services."}
+                    </div>
+                    <div className="text-sm leading-7 text-white/56">
+                      Proof route: {handoff.payoutIntent.evidenceRoute}
+                    </div>
+                    <div className="text-sm leading-7 text-white/56">
+                      Execution target: {handoff.payoutIntent.executionTarget}
+                    </div>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <ProposalAnalyzerInline proposal={proposal} />
+                <TreasuryRiskInline proposal={proposal} />
+              </>
+            )}
           </div>
 
           <div className="grid gap-4 lg:grid-cols-2">
