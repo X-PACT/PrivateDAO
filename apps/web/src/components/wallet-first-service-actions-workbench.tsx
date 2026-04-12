@@ -518,6 +518,35 @@ export function WalletFirstServiceActionsWorkbench({
 
   useEffect(() => {
     if (!handoffState || typeof window === "undefined") return;
+    const storedState = readStoredServiceHandoffState();
+    const sameSelection =
+      storedState?.proposalId === handoffState.proposalId &&
+      storedState?.payoutProfile === handoffState.payoutProfile &&
+      storedState?.telemetryMode === handoffState.telemetryMode;
+
+    if (sameSelection && storedState) {
+      const preserveStoredPayoutIntent =
+        Boolean(storedState.payoutIntent?.amount?.trim()) ||
+        storedState.requestDelivery?.state === "staged" ||
+        storedState.requestDelivery?.state === "delivered";
+      const mergedState: ServiceHandoffState = {
+        ...handoffState,
+        proposalReview: storedState.proposalReview ?? handoffState.proposalReview,
+        payoutIntent: preserveStoredPayoutIntent
+          ? storedState.payoutIntent ?? handoffState.payoutIntent
+          : handoffState.payoutIntent,
+        telemetrySelection: storedState.telemetrySelection ?? handoffState.telemetrySelection,
+        requestDelivery: storedState.requestDelivery ?? handoffState.requestDelivery,
+        source: preserveStoredPayoutIntent ? storedState.source : handoffState.source,
+        updatedAt: preserveStoredPayoutIntent ? storedState.updatedAt : handoffState.updatedAt,
+      };
+
+      if (JSON.stringify(mergedState) !== JSON.stringify(storedState)) {
+        writeStoredServiceHandoffState(mergedState);
+      }
+      return;
+    }
+
     writeStoredServiceHandoffState(handoffState);
   }, [handoffState]);
 
