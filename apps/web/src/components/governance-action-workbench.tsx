@@ -87,16 +87,19 @@ export function GovernanceActionWorkbench() {
     if (!proposalFinalized) return "finalize_proposal";
     return "execute_proposal";
   }, [daoCreated, proposalCreated, voteCommitted, voteRevealed, proposalFinalized]);
+  const hasPayloadDrivenExecution = Boolean(executionIntent?.requestPayload);
+  const payloadDrivenRequest = executionIntent?.requestPayload ?? null;
+  const activeShellAction = hasPayloadDrivenExecution ? stagedReviewAction : nextAction;
   const preparedSummary = useMemo(
     () =>
       buildPreparedActionSummary({
-        action: nextAction,
+        action: activeShellAction,
         daoName,
-        proposalTitle,
-        proposalId: proposalCreated ? "Session proposal" : undefined,
+        proposalTitle: payloadDrivenRequest?.purpose ?? proposalTitle,
+        proposalId: payloadDrivenRequest?.requestId ?? (proposalCreated ? "Session proposal" : undefined),
         voteChoice,
       }),
-    [daoName, nextAction, proposalCreated, proposalTitle, voteChoice],
+    [activeShellAction, daoName, payloadDrivenRequest?.purpose, payloadDrivenRequest?.requestId, proposalCreated, proposalTitle, voteChoice],
   );
   const continuityLogs = useMemo(() => {
     if (!handoff) return [];
@@ -128,8 +131,6 @@ export function GovernanceActionWorkbench() {
 
     return derived;
   }, [continuityRequestPayload, executionIntent, handoff]);
-  const hasPayloadDrivenExecution = Boolean(executionIntent?.requestPayload);
-  const payloadDrivenRequest = executionIntent?.requestPayload ?? null;
   const payloadActionReady =
     Boolean(stagedProposal) &&
     Boolean(executionIntent) &&
@@ -365,8 +366,8 @@ export function GovernanceActionWorkbench() {
                   <div>{payloadDrivenRequest?.reference}</div>
                   <div>{payloadDrivenRequest?.requestRoute}</div>
                 </div>
-                <Button className="mt-4 w-full" onClick={() => openReview("create_proposal")} variant="secondary">
-                  Review request object
+                <Button className="mt-4 w-full" onClick={() => openReview(stagedReviewAction)} variant="secondary">
+                  Review authoritative request object
                 </Button>
               </div>
 

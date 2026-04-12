@@ -87,6 +87,10 @@ export function RuntimeEvidenceContinuityPanel({
                 <br />
                 {requestPayload.executionTarget}
                 <br />
+                {requestPayload.requestRoute}
+                <br />
+                {requestPayload.deliveryRoute}
+                <br />
                 {requestPayload.telemetryRoute}
               </div>
             ) : (

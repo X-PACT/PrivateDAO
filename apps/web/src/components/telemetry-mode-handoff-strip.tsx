@@ -88,24 +88,10 @@ export function TelemetryModeHandoffStrip({
     () => queryState?.telemetryMode ?? storedState?.telemetryMode ?? "packet",
     [queryState, storedState],
   );
+  const activeState = queryState ?? storedState;
   const continuityQuery = useMemo(
-    () =>
-      queryState
-        ? buildServiceHandoffQuery({
-            proposalId: queryState.proposalId,
-            payoutProfile: queryState.payoutProfile,
-            telemetryMode: queryState.telemetryMode,
-            requestDelivery: queryState.deliveryState
-              ? {
-                  state: queryState.deliveryState,
-                  deliveredAt: queryState.deliveryState === "delivered" ? queryState.deliveredAt ?? null : null,
-                }
-              : undefined,
-          })
-        : storedState
-          ? buildServiceHandoffQuery(storedState)
-          : "",
-    [queryState, storedState],
+    () => (activeState ? buildServiceHandoffQuery(activeState) : ""),
+    [activeState],
   );
   const selected = modeCopy[selectedMode];
   const Icon = selected.icon;
@@ -174,14 +160,15 @@ export function TelemetryModeHandoffStrip({
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
-            {storedState?.requestPayload ? (
+            {activeState?.requestPayload ? (
               <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.03] p-4 text-sm leading-7 text-white/58">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/42">Request payload continuity</div>
                 <div className="mt-2 text-white/78">
-                  {storedState.requestPayload.requestId} · {storedState.requestPayload.amountDisplay}
+                  {activeState.requestPayload.requestId} · {activeState.requestPayload.amountDisplay}
                 </div>
-                <div className="mt-1 text-white/62">{storedState.requestPayload.deliveryRoute}</div>
-                <div className="mt-1 text-white/62">{storedState.requestPayload.telemetryRoute}</div>
+                <div className="mt-1 text-white/62">{activeState.requestPayload.requestRoute}</div>
+                <div className="mt-1 text-white/62">{activeState.requestPayload.deliveryRoute}</div>
+                <div className="mt-1 text-white/62">{activeState.requestPayload.telemetryRoute}</div>
               </div>
             ) : null}
           </div>

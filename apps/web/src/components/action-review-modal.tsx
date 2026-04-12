@@ -61,6 +61,11 @@ export function ActionReviewModal({
         ? `Authoritative request object loaded · ${delivery?.state ?? payload.state} · telemetry ${payload.telemetryMode}`
         : `Execution continuity loaded · telemetry ${executionIntent.telemetryMode}`
       : summary.timelock;
+  const confirmLabel = executionIntent
+    ? action === "execute_proposal"
+      ? "Continue with authoritative execution"
+      : "Continue with payload-driven signing shell"
+    : "Continue in UI";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#03050e]/84 px-4 backdrop-blur-md">
@@ -210,12 +215,38 @@ export function ActionReviewModal({
           </div>
         ) : null}
 
+        {payload ? (
+          <div className="mt-6 rounded-3xl border border-amber-300/16 bg-amber-300/[0.08] p-5">
+            <div className="text-[11px] uppercase tracking-[0.28em] text-amber-100/80">Final signing payload</div>
+            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Request state</div>
+                <div className="mt-2 text-white">{delivery?.state ?? payload.state ?? "draft"}</div>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Telemetry mode</div>
+                <div className="mt-2 text-white">{payload.telemetryMode}</div>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68 sm:col-span-2">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Purpose</div>
+                <div className="mt-2 text-white">{payload.purpose}</div>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68 sm:col-span-2">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Route binding</div>
+                <div className="mt-2 text-white/72">{payload.requestRoute}</div>
+                <div className="mt-1 text-white/72">{payload.deliveryRoute}</div>
+                <div className="mt-1 text-white/72">{payload.telemetryRoute}</div>
+              </div>
+            </div>
+          </div>
+        ) : null}
+
         <div className="mt-6">
           <OnchainParityPanel action={action} preparedSummary={summary} />
         </div>
 
         <div className="mt-6 flex flex-wrap gap-3">
-          <Button onClick={onConfirm}>{executionIntent ? "Continue with staged action" : "Continue in UI"}</Button>
+          <Button onClick={onConfirm}>{confirmLabel}</Button>
           <Button variant="secondary" onClick={onClose}>
             Go back
           </Button>
