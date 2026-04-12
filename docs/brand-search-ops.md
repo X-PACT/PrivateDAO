@@ -21,17 +21,26 @@ The site now ships:
 
 These changes improve indexability. They do not guarantee first position by themselves.
 
+## Current Status
+
+- Google Search Console:
+  - domain property verified for `privatedao.org`
+  - sitemap submitted:
+    - `https://privatedao.org/sitemap.xml`
+  - latest observed result:
+    - `Success`
+    - discovered pages: `70`
+- Bing Webmaster Tools:
+  - site imported from Google Search Console
+  - verification closed through Google import
+  - sitemap submitted:
+    - `https://privatedao.org/sitemap.xml`
+
 ## Exact External Actions
 
-1. verify the canonical domain in Google Search Console
-2. submit:
-   - `https://privatedao.org/sitemap.xml`
-3. verify the canonical domain in Bing Webmaster Tools
-4. submit:
-   - `https://privatedao.org/sitemap.xml`
-5. keep `privatedao.org` as the only canonical index target
-6. keep `www.privatedao.org` and `x-pact.github.io/PrivateDAO` redirected to the canonical domain
-7. keep brand-consistent references across:
+1. keep `privatedao.org` as the only canonical index target
+2. keep `www.privatedao.org` and `x-pact.github.io/PrivateDAO` redirected to the canonical domain
+3. keep brand-consistent references across:
    - GitHub repo
    - YouTube channel
    - Discord
