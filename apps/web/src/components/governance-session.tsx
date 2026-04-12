@@ -43,6 +43,38 @@ type GovernanceSessionState = {
   logs: GovernanceLogEntry[];
 };
 
+function sanitizeGovernanceLogs(
+  logs: GovernanceLogEntry[],
+  executionIntent: GovernanceExecutionIntent | null,
+) {
+  if (!executionIntent) {
+    return logs.slice(0, 8);
+  }
+
+  return logs
+    .filter((entry) => {
+      if (entry.label !== "Execution request loaded") {
+        return true;
+      }
+
+      return entry.value.includes(executionIntent.reference);
+    })
+    .slice(0, 8);
+}
+
+function mergePersistedGovernanceState(parsed: Partial<GovernanceSessionState>): GovernanceSessionState {
+  const mergedState = {
+    ...defaultState,
+    ...parsed,
+    logs: Array.isArray(parsed.logs) ? parsed.logs : [],
+  };
+
+  return {
+    ...mergedState,
+    logs: sanitizeGovernanceLogs(mergedState.logs, mergedState.executionIntent ?? null),
+  };
+}
+
 type GovernanceSessionContextValue = GovernanceSessionState & {
   setDaoName: (value: string) => void;
   setProposalTitle: (value: string) => void;
@@ -103,11 +135,7 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
 
     try {
       const parsed = JSON.parse(raw) as Partial<GovernanceSessionState>;
-      return {
-        ...defaultState,
-        ...parsed,
-        logs: Array.isArray(parsed.logs) ? parsed.logs : [],
-      };
+      return mergePersistedGovernanceState(parsed);
     } catch {
       window.localStorage.removeItem(STORAGE_KEY);
       return defaultState;
@@ -167,20 +195,23 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
             return current;
           }
 
+          const nextExecutionIntent = {
+            payoutProfile,
+            payoutTitle,
+            telemetryMode,
+            amountDisplay,
+            reference,
+            purpose,
+            executionTarget,
+            evidenceRoute,
+          };
+
           return withLog(
             {
               ...current,
               executionIntentKey,
-              executionIntent: {
-                payoutProfile,
-                payoutTitle,
-                telemetryMode,
-                amountDisplay,
-                reference,
-                purpose,
-                executionTarget,
-                evidenceRoute,
-              },
+              executionIntent: nextExecutionIntent,
+              logs: sanitizeGovernanceLogs(current.logs, nextExecutionIntent),
             },
             "Execution request loaded",
             `${proposalId} · ${payoutTitle} · ${amountDisplay} · ${reference} staged from ${source}.`,

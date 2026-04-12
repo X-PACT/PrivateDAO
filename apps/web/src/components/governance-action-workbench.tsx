@@ -14,6 +14,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buildPreparedActionSummary } from "@/lib/onchain-parity";
 import type { CoreGovernanceInstructionName } from "@/lib/onchain-parity.generated";
+import { buildServiceHandoffQuery } from "@/lib/service-handoff-state";
 import { getProposalById, type ProposalCardModel } from "@/lib/site-data";
 import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
 import { cn } from "@/lib/utils";
@@ -74,6 +75,7 @@ export function GovernanceActionWorkbench() {
   const autoOpenReviewRef = useRef<string | null>(null);
   const stagedProposal = handoff?.proposalId ? getProposalById(handoff.proposalId) ?? null : null;
   const stagedReviewAction = resolveStagedReviewAction(stagedProposal);
+  const continuityQuery = handoff ? buildServiceHandoffQuery(handoff) : "";
 
   const activeWalletLabel = useMemo(() => wallet?.adapter.name ?? "Connected wallet", [wallet]);
   const nextAction = useMemo<CoreGovernanceInstructionName>(() => {
@@ -311,7 +313,7 @@ export function GovernanceActionWorkbench() {
                   <Button size="sm" onClick={() => openReview(stagedReviewAction)}>
                     Open staged action shell
                   </Button>
-                  <Link href={`/network?proposal=${handoff?.proposalId}&profile=${handoff?.payoutProfile}&telemetryMode=${handoff?.telemetryMode}&handoff=1`} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+                  <Link href={continuityQuery ? `/network?${continuityQuery}` : "/network"} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
                     Follow telemetry into network
                     <ArrowUpRight className="h-4 w-4" />
                   </Link>

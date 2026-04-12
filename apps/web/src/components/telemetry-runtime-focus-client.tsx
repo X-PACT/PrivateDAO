@@ -6,6 +6,7 @@ import { Radar, ServerCog, ShieldCheck } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import type { JudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
+import { buildServiceHandoffQuery } from "@/lib/service-handoff-state";
 import { useServiceHandoffSnapshot, useServiceHandoffTelemetryMode } from "@/lib/use-service-handoff-snapshot";
 import { cn } from "@/lib/utils";
 
@@ -44,6 +45,12 @@ const contextHref = {
   network: "/network",
 } as const;
 
+function attachContinuityQuery(href: string, query: string) {
+  if (!query) return href;
+  const [path, hash] = href.split("#");
+  return hash ? `${path}?${query}#${hash}` : `${path}?${query}`;
+}
+
 export function TelemetryRuntimeFocusClient({
   context,
   snapshot,
@@ -78,6 +85,8 @@ export function TelemetryRuntimeFocusClient({
         }
       : null;
   const renderedEntries = continuityEntry ? [continuityEntry, ...entries] : entries;
+  const continuityQuery = handoff ? buildServiceHandoffQuery(handoff) : "";
+  const contextualHref = attachContinuityQuery(contextHref[context], continuityQuery);
 
   return (
     <Card className="border-cyan-300/14 bg-[linear-gradient(180deg,rgba(9,16,31,0.96),rgba(6,11,21,0.98))]">
@@ -104,7 +113,7 @@ export function TelemetryRuntimeFocusClient({
             <Link href={active.href} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
               {active.label}
             </Link>
-            <Link href={contextHref[context]} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+            <Link href={contextualHref} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
               Stay on {context}
             </Link>
           </div>

@@ -18,12 +18,13 @@ import {
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { analyticsSeries } from "@/lib/site-data";
-import { useServiceHandoffTelemetryMode } from "@/lib/use-service-handoff-snapshot";
+import { useServiceHandoffSnapshot, useServiceHandoffTelemetryMode } from "@/lib/use-service-handoff-snapshot";
 
 const pieColors = ["#14f195", "#9945ff", "#00c2ff", "#ffb100"];
 
 export function AnalyticsCharts() {
   const telemetryMode = useServiceHandoffTelemetryMode("analytics");
+  const handoff = useServiceHandoffSnapshot("analytics");
   const mounted = useSyncExternalStore(
     () => () => {},
     () => true,
@@ -57,6 +58,17 @@ export function AnalyticsCharts() {
           <div className="text-sm leading-7 text-white/54">
             Active telemetry mode: {telemetryMode}
           </div>
+          {handoff?.payoutIntent ? (
+            <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm leading-6 text-white/58">
+              {handoff.proposalId} · {handoff.payoutIntent.amountDisplay} · {handoff.payoutIntent.reference}
+              {" · "}
+              {handoff.requestDelivery?.state === "delivered"
+                ? "delivered into command-center"
+                : handoff.requestDelivery?.state === "staged"
+                  ? "staged in services"
+                  : "draft in services"}
+            </div>
+          ) : null}
         </CardHeader>
         <CardContent className="h-[320px] min-w-0">
           <ResponsiveContainer width="100%" height="100%">

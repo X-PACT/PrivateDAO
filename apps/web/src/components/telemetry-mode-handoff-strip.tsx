@@ -91,12 +91,17 @@ export function TelemetryModeHandoffStrip({
   const continuityQuery = useMemo(
     () =>
       queryState
-        ? new URLSearchParams({
-            proposal: queryState.proposalId,
-            profile: queryState.payoutProfile,
+        ? buildServiceHandoffQuery({
+            proposalId: queryState.proposalId,
+            payoutProfile: queryState.payoutProfile,
             telemetryMode: queryState.telemetryMode,
-            handoff: "1",
-          }).toString()
+            requestDelivery: queryState.deliveryState
+              ? {
+                  state: queryState.deliveryState,
+                  deliveredAt: queryState.deliveryState === "delivered" ? queryState.deliveredAt ?? null : null,
+                }
+              : undefined,
+          })
         : storedState
           ? buildServiceHandoffQuery(storedState)
           : "",

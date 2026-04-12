@@ -103,6 +103,13 @@ export type ServiceHandoffSelection = {
   deliveredAt?: string;
 };
 
+type ServiceHandoffQueryState = {
+  proposalId: string;
+  payoutProfile: ServiceHandoffProfile;
+  telemetryMode: ServiceHandoffTelemetryMode;
+  requestDelivery?: Pick<ServiceHandoffRequestDelivery, "state" | "deliveredAt">;
+};
+
 let storedServiceHandoffRawCache: string | null = null;
 let storedServiceHandoffParsedCache: ServiceHandoffState | null = null;
 
@@ -112,12 +119,25 @@ function updateStoredServiceHandoffCache(raw: string | null) {
   return storedServiceHandoffParsedCache;
 }
 
-export function buildServiceHandoffQuery(state: ServiceHandoffState) {
+export function buildServiceHandoffQuery(state: ServiceHandoffQueryState) {
   const params = new URLSearchParams();
   params.set("proposal", state.proposalId);
   params.set("profile", state.payoutProfile);
   params.set("telemetryMode", state.telemetryMode);
   params.set("handoff", "1");
+  if (
+    state.requestDelivery?.state === "staged" ||
+    state.requestDelivery?.state === "delivered"
+  ) {
+    params.set("deliveryState", state.requestDelivery.state);
+  }
+  if (
+    state.requestDelivery?.state === "delivered" &&
+    typeof state.requestDelivery.deliveredAt === "string" &&
+    state.requestDelivery.deliveredAt.length > 0
+  ) {
+    params.set("deliveredAt", state.requestDelivery.deliveredAt);
+  }
   return params.toString();
 }
 
