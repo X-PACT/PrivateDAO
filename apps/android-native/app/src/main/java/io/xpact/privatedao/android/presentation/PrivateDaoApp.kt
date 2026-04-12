@@ -691,6 +691,8 @@ private fun ProposalDetailCard(
             proposal.treasuryAction?.let {
                 SettingsRow("Treasury action", "${it.type} → ${it.recipient}")
             }
+            ProposalExecutionPacketCard(proposal = proposal, phase = phase)
+            RuntimeContinuityCard(proposal = proposal, phase = phase)
             if (phase == ProposalPhase.Commit && isAuthorityWallet) {
                 Button(onClick = onSubmitCancel, enabled = !uiState.walletBusy, modifier = Modifier.fillMaxWidth()) {
                     Text("Cancel in authority wallet")
@@ -763,6 +765,71 @@ private fun ProposalDetailCard(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun ProposalExecutionPacketCard(proposal: ProposalSummary, phase: ProposalPhase) {
+    val treasuryAction = proposal.treasuryAction
+    val treasurySummary = when {
+        treasuryAction == null -> "No treasury action is attached to this proposal."
+        treasuryAction.type == TreasuryActionType.SendToken -> {
+            val mint = treasuryAction.tokenMint ?: "Unknown mint"
+            "Token payout of ${treasuryAction.amountLamports} raw units to ${treasuryAction.recipient}. Recipient ATA must already exist for mint $mint."
+        }
+        treasuryAction.type == TreasuryActionType.SendSol ->
+            "SOL payout of ${formatSolAmount(treasuryAction.amountLamports)} to ${treasuryAction.recipient}."
+        else -> "Custom CPI action routed to ${treasuryAction.recipient}."
+    }
+
+    Card(shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFF111A27))) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text("Execution packet", color = Color.White, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+            Text(
+                "Operate from the same proposal payload the web app uses: current phase, authority context, execution delay, recipient, and payout shape stay visible before signing.",
+                color = Color(0xFFADB8C7),
+            )
+            Text("Phase: ${phase.name}", color = Color.White)
+            Text(treasurySummary, color = Color(0xFFADB8C7))
+            proposal.treasuryAction?.tokenMint?.let { mint ->
+                Text("Token mint: $mint", color = Color.White)
+            }
+        }
+    }
+}
+
+@Composable
+private fun RuntimeContinuityCard(proposal: ProposalSummary, phase: ProposalPhase) {
+    val summary = when (phase) {
+        ProposalPhase.Commit -> "The proposal is still in commit phase. Keep reviewer proof and authority context attached before the vote locks."
+        ProposalPhase.Reveal -> "Reveal is active. This is the right moment to keep proof, explorer continuity, and follow-up monitoring paths visible."
+        ProposalPhase.ReadyToFinalize -> "Voting windows are closed. Finalization should stay attached to proof and runtime evidence, not just a signature."
+        ProposalPhase.Timelocked -> "The proposal passed but remains timelocked. Monitoring, incident response, and runtime evidence should stay attached until execution unlocks."
+        ProposalPhase.Executable -> "Execution is open. Treat this as an operator surface: treasury preview, monitoring rules, and proof continuity should remain one tap away."
+        ProposalPhase.Executed -> "Execution is complete. Keep explorer proof, runtime evidence, and monitoring follow-up attached to the result."
+        ProposalPhase.Cancelled -> "The proposal was cancelled by authority. Preserve reviewer continuity and the cancellation trail."
+        ProposalPhase.Vetoed -> "The proposal was vetoed during timelock. Preserve authority context and reviewer evidence for the veto decision."
+        ProposalPhase.Failed -> "The proposal failed the governance path. Preserve proof and activity context for post-mortem review."
+        ProposalPhase.Finalized -> "The proposal is finalized. Continue from proof and monitoring surfaces for reviewer-safe verification."
+    }
+
+    Card(shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFF111A27))) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Text("Runtime continuity", color = Color.White, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+            Text(summary, color = Color(0xFFADB8C7))
+            ReviewLinkRow(
+                "Proof center" to PrivateDaoConfig.proofCenterUrl,
+                "Live proof V3" to PrivateDaoConfig.liveProofUrl,
+            )
+            ReviewLinkRow(
+                "Monitoring rules" to PrivateDaoConfig.monitoringAlertsUrl,
+                "Real-device runtime" to PrivateDaoConfig.realDeviceRuntimeUrl,
+            )
+            ReviewLinkRow(
+                "Incident response" to PrivateDaoConfig.incidentResponseUrl,
+                "Android web surface" to PrivateDaoConfig.androidSurfaceUrl,
+            )
         }
     }
 }
@@ -847,10 +914,25 @@ private fun SubmissionStateCard(uiState: UiState) {
             title = "Latest execution proof",
             body = "Latest wallet submission succeeded. Keep the signature and explorer link attached to any reviewer or operator handoff.",
             actions = {
-                ReviewLinkRow("Explorer tx" to submission.result.explorerUrl)
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    ReviewLinkRow("Explorer tx" to submission.result.explorerUrl)
+                    ReviewLinkRow(
+                        "Proof center" to PrivateDaoConfig.proofCenterUrl,
+                        "Live proof V3" to PrivateDaoConfig.liveProofUrl,
+                    )
+                    ReviewLinkRow(
+                        "Monitoring rules" to PrivateDaoConfig.monitoringAlertsUrl,
+                        "Real-device runtime" to PrivateDaoConfig.realDeviceRuntimeUrl,
+                    )
+                }
             },
         )
     }
+}
+
+private fun formatSolAmount(lamports: Long): String {
+    val sol = lamports.toDouble() / 1_000_000_000.0
+    return if (sol >= 1.0) String.format("%.4f SOL", sol) else String.format("%.6f SOL", sol)
 }
 
 @Composable
