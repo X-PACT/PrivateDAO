@@ -10,16 +10,22 @@ import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buildProposalConfidenceScorecard, confidenceProfiles } from "@/lib/confidence-engine";
+import { buildServiceHandoffQuery } from "@/lib/service-handoff-state";
 import { getFeaturedProposal } from "@/lib/site-data";
+import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
 import { cn } from "@/lib/utils";
 import { commandCenterPacks, executionLog } from "@/lib/site-data";
 
 export function CommandCenter() {
   const searchParams = useSearchParams();
   const featuredProposal = getFeaturedProposal(searchParams.get("proposal"));
+  const handoff = useServiceHandoffSnapshot("command-center");
   if (!featuredProposal) {
     return null;
   }
+  const hasActiveExecutionContinuity =
+    handoff?.proposalId === featuredProposal.id && Boolean(handoff.payoutIntent);
+  const continuityQuery = handoff ? buildServiceHandoffQuery(handoff) : "";
   const featuredScore = buildProposalConfidenceScorecard({
     title: featuredProposal.title,
     type: featuredProposal.type,
@@ -48,7 +54,48 @@ export function CommandCenter() {
             <p className="mt-3 text-sm leading-7 text-white/58">{featuredProposal.summary}</p>
           </div>
 
-          <ProposalAnalyzerInline proposal={featuredProposal} />
+          {hasActiveExecutionContinuity && handoff?.payoutIntent ? (
+            <div className="rounded-3xl border border-cyan-300/15 bg-cyan-400/5 p-4">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/70">Execution continuity</div>
+                  <div className="mt-1 text-sm font-medium text-white">{handoff.requestPayload?.requestId ?? handoff.proposalId}</div>
+                </div>
+                <Badge variant="cyan">Live payload</Badge>
+              </div>
+              <p className="mt-3 text-sm leading-7 text-white/62">
+                Command-center is prioritizing the delivered treasury request payload over proposal-derived analyzer copy for this active execution lane.
+              </p>
+              <div className="mt-3 grid gap-3 rounded-[24px] border border-cyan-300/12 bg-black/20 p-4 sm:grid-cols-2">
+                <div className="text-sm leading-7 text-white/56">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/60">Amount / asset</div>
+                  <div className="mt-1 text-white/80">{handoff.requestPayload?.amountDisplay ?? handoff.payoutIntent.amountDisplay}</div>
+                </div>
+                <div className="text-sm leading-7 text-white/56">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/60">Reference</div>
+                  <div className="mt-1 text-white/80">{handoff.requestPayload?.reference ?? handoff.payoutIntent.reference}</div>
+                </div>
+                <div className="text-sm leading-7 text-white/56">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/60">Execution target</div>
+                  <div className="mt-1 text-white/80">{handoff.requestPayload?.executionTarget ?? handoff.payoutIntent.executionTarget}</div>
+                </div>
+                <div className="text-sm leading-7 text-white/56">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/60">Telemetry lane</div>
+                  <div className="mt-1 text-white/80">{handoff.requestPayload?.telemetryMode ?? handoff.telemetryMode}</div>
+                </div>
+              </div>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <Link href={continuityQuery ? `/command-center?${continuityQuery}#proposal-review-action` : "/command-center#proposal-review-action"} className={cn(buttonVariants({ size: "sm" }))}>
+                  Open delivered signing shell
+                </Link>
+                <Link href={continuityQuery ? `/network?${continuityQuery}` : "/network"} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                  Open execution network logs
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <ProposalAnalyzerInline proposal={featuredProposal} />
+          )}
 
           <div className="grid gap-4 md:grid-cols-3">
             <div className="rounded-3xl border border-white/8 bg-black/20 p-4">
