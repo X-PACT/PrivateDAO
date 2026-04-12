@@ -16,7 +16,7 @@ type GovernanceLogEntry = {
   value: string;
 };
 
-type GovernanceExecutionIntent = {
+export type GovernanceExecutionIntent = {
   payoutProfile: string;
   payoutTitle: string;
   telemetryMode: string;

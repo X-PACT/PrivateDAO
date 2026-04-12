@@ -4,6 +4,7 @@ import { X } from "lucide-react";
 
 import { OnchainParityPanel } from "@/components/onchain-parity-panel";
 import { ProposalAnalyzerInline } from "@/components/proposal-analyzer-inline";
+import type { GovernanceExecutionIntent } from "@/components/governance-session";
 import { TreasuryRiskInline } from "@/components/treasury-risk-inline";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,7 @@ type ActionReviewModalProps = {
   proposalId?: string;
   voteChoice?: string;
   proposal?: ProposalCardModel;
+  executionIntent?: GovernanceExecutionIntent | null;
   onClose: () => void;
   onConfirm: () => void;
 };
@@ -29,6 +31,7 @@ export function ActionReviewModal({
   proposalId,
   voteChoice,
   proposal,
+  executionIntent,
   onClose,
   onConfirm,
 }: ActionReviewModalProps) {
@@ -111,6 +114,32 @@ export function ActionReviewModal({
           <Badge variant="violet">Token {summary.governanceTokenProgram.slice(0, 8)}…</Badge>
         </div>
 
+        {executionIntent ? (
+          <div className="mt-6 rounded-3xl border border-emerald-300/18 bg-emerald-300/[0.08] p-5">
+            <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-100/80">Execution continuity packet</div>
+            <div className="mt-3 text-base font-medium text-white">
+              {executionIntent.payoutTitle} · {executionIntent.amountDisplay}
+            </div>
+            <div className="mt-2 text-sm leading-7 text-white/62">
+              {executionIntent.reference} · {executionIntent.purpose}
+            </div>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Payout profile</div>
+                <div className="mt-2 text-white">{executionIntent.payoutProfile}</div>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Telemetry mode</div>
+                <div className="mt-2 text-white">{executionIntent.telemetryMode}</div>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68 sm:col-span-2">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Execution target</div>
+                <div className="mt-2 text-white">{executionIntent.executionTarget}</div>
+              </div>
+            </div>
+          </div>
+        ) : null}
+
         {proposal ? (
           <div className="mt-6 grid gap-4">
             <ProposalAnalyzerInline proposal={proposal} />
@@ -123,7 +152,7 @@ export function ActionReviewModal({
         </div>
 
         <div className="mt-6 flex flex-wrap gap-3">
-          <Button onClick={onConfirm}>Continue in UI</Button>
+          <Button onClick={onConfirm}>{executionIntent ? "Continue with staged action" : "Continue in UI"}</Button>
           <Button variant="secondary" onClick={onClose}>
             Go back
           </Button>

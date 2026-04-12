@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   ArrowRight,
   Radar,
@@ -22,8 +23,8 @@ import {
 import {
   type ServiceHandoffAssetSymbol,
   buildServiceHandoffQuery,
-  parseStoredServiceHandoffState,
   readServiceHandoffState,
+  readStoredServiceHandoffState,
   SERVICE_HANDOFF_STORAGE_KEY,
   type ServiceHandoffState,
 } from "@/lib/service-handoff-state";
@@ -68,6 +69,21 @@ const copy = {
       "The command shell should not only point to routes. It should let operators stage proposal review, choose payout paths, and switch telemetry mode before taking the next action.",
   },
 } as const;
+
+function subscribeToStorage(callback: () => void) {
+  if (typeof window === "undefined") return () => {};
+  const handler = (event: StorageEvent) => {
+    if (event.key === SERVICE_HANDOFF_STORAGE_KEY) {
+      callback();
+    }
+  };
+  window.addEventListener("storage", handler);
+  return () => window.removeEventListener("storage", handler);
+}
+
+function getStoredSnapshot() {
+  return readStoredServiceHandoffState();
+}
 
 function buildStoredHandoffState(
   context: WalletFirstServiceActionContext,
@@ -426,71 +442,54 @@ export function WalletFirstServiceActionsWorkbench({
   context,
   data,
 }: WalletFirstServiceActionsWorkbenchProps) {
-  const [activeLane, setActiveLane] = useState<LaneSlug>("proposal-review");
-  const hasHydratedHandoffRef = useRef(false);
+  const searchParams = useSearchParams();
+  const storedState = useSyncExternalStore(subscribeToStorage, getStoredSnapshot, () => null);
   const sectionCopy = copy[context];
-  const [selectedProposalId, setSelectedProposalId] = useState(data.proposals[0]?.id ?? "");
-  const [selectedPayoutSlug, setSelectedPayoutSlug] = useState<PayoutRouteOption["slug"]>(
-    data.payouts[0]?.slug ?? "pilot-funding",
-  );
-  const [selectedTelemetrySlug, setSelectedTelemetrySlug] = useState<TelemetryInspectorMode["slug"]>(
-    data.telemetryModes[0]?.slug ?? "packet",
-  );
+  const queryState = readServiceHandoffState(searchParams);
+  const initialState = useMemo(() => queryState ?? storedState, [queryState, storedState]);
+  const [manualLane, setManualLane] = useState<LaneSlug | "">("");
+  const [selectedProposalId, setSelectedProposalId] = useState("");
+  const [selectedPayoutSlug, setSelectedPayoutSlug] = useState<PayoutRouteOption["slug"] | "">("");
+  const [selectedTelemetrySlug, setSelectedTelemetrySlug] = useState<TelemetryInspectorMode["slug"] | "">("");
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
+  const activeLane = useMemo<LaneSlug>(() => {
+    if (manualLane) return manualLane;
 
-    const queryState = readServiceHandoffState(new URLSearchParams(window.location.search));
-    const storedState = parseStoredServiceHandoffState(
-      window.localStorage.getItem(SERVICE_HANDOFF_STORAGE_KEY),
-    );
-    const initialState = queryState ?? storedState;
-
-    if (!initialState) {
-      hasHydratedHandoffRef.current = true;
-      return;
+    if (context === "services" && initialState && data.payouts.some((item) => item.slug === initialState.payoutProfile)) {
+      return "payout-route-selection";
     }
 
-    if (data.proposals.some((item) => item.id === initialState.proposalId)) {
-      setSelectedProposalId(initialState.proposalId);
+    if (context === "command-center" && initialState && data.proposals.some((item) => item.id === initialState.proposalId)) {
+      return "proposal-review";
     }
 
-    if (data.payouts.some((item) => item.slug === initialState.payoutProfile)) {
-      setSelectedPayoutSlug(initialState.payoutProfile);
+    if (initialState && data.telemetryModes.some((item) => item.slug === initialState.telemetryMode)) {
+      return "telemetry-inspection";
     }
 
-    if (data.telemetryModes.some((item) => item.slug === initialState.telemetryMode)) {
-      setSelectedTelemetrySlug(initialState.telemetryMode);
-    }
-
-    if (context === "services" && data.payouts.some((item) => item.slug === initialState.payoutProfile)) {
-      setActiveLane("payout-route-selection");
-      return;
-    }
-
-    if (context === "command-center" && data.proposals.some((item) => item.id === initialState.proposalId)) {
-      setActiveLane("proposal-review");
-      return;
-    }
-
-    if (data.telemetryModes.some((item) => item.slug === initialState.telemetryMode)) {
-      setActiveLane("telemetry-inspection");
-    }
-
-    hasHydratedHandoffRef.current = true;
-  }, [context, data.payouts, data.proposals, data.telemetryModes]);
+    return "proposal-review";
+  }, [context, data.payouts, data.proposals, data.telemetryModes, initialState, manualLane]);
 
   const selectedProposal = useMemo(
-    () => data.proposals.find((item) => item.id === selectedProposalId) ?? data.proposals[0],
-    [data.proposals, selectedProposalId],
+    () =>
+      data.proposals.find((item) => item.id === selectedProposalId) ??
+      (initialState && data.proposals.find((item) => item.id === initialState.proposalId)) ??
+      data.proposals[0],
+    [data.proposals, initialState, selectedProposalId],
   );
   const selectedPayout = useMemo(
-    () => data.payouts.find((item) => item.slug === selectedPayoutSlug) ?? data.payouts[0],
-    [data.payouts, selectedPayoutSlug],
+    () =>
+      data.payouts.find((item) => item.slug === selectedPayoutSlug) ??
+      (initialState && data.payouts.find((item) => item.slug === initialState.payoutProfile)) ??
+      data.payouts[0],
+    [data.payouts, initialState, selectedPayoutSlug],
   );
   const selectedTelemetry = useMemo(
-    () => data.telemetryModes.find((item) => item.slug === selectedTelemetrySlug) ?? data.telemetryModes[0],
-    [data.telemetryModes, selectedTelemetrySlug],
+    () =>
+      data.telemetryModes.find((item) => item.slug === selectedTelemetrySlug) ??
+      (initialState && data.telemetryModes.find((item) => item.slug === initialState.telemetryMode)) ??
+      data.telemetryModes[0],
+    [data.telemetryModes, initialState, selectedTelemetrySlug],
   );
 
   const handoffState = useMemo(() => {
@@ -499,7 +498,7 @@ export function WalletFirstServiceActionsWorkbench({
   }, [context, selectedPayout, selectedProposal, selectedTelemetry]);
 
   useEffect(() => {
-    if (!hasHydratedHandoffRef.current || !handoffState || typeof window === "undefined") return;
+    if (!handoffState || typeof window === "undefined") return;
     window.localStorage.setItem(SERVICE_HANDOFF_STORAGE_KEY, JSON.stringify(handoffState));
   }, [handoffState]);
 
@@ -513,7 +512,7 @@ export function WalletFirstServiceActionsWorkbench({
         <div className="max-w-4xl text-sm leading-7 text-white/58">{sectionCopy.description}</div>
       </CardHeader>
       <CardContent className="space-y-5">
-        <LaneButtons actions={data.actions} activeLane={activeLane} onChange={setActiveLane} />
+        <LaneButtons actions={data.actions} activeLane={activeLane} onChange={setManualLane} />
 
         {handoffState ? (
           <div className="grid gap-4 xl:grid-cols-[0.95fr_1.05fr]">
@@ -576,6 +575,10 @@ export function WalletFirstServiceActionsWorkbench({
                 </Link>
                 <Link href={`/diagnostics?${handoffQuery}`} className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
                   Continue diagnostics
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link href={`/network?${handoffQuery}`} className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+                  Continue network
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>

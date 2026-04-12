@@ -8,6 +8,7 @@ import { ArrowRight, Radar, ServerCog, ScrollText } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
+  buildServiceHandoffQuery,
   readServiceHandoffState,
   readStoredServiceHandoffState,
   SERVICE_HANDOFF_STORAGE_KEY,
@@ -16,7 +17,7 @@ import {
 import { cn } from "@/lib/utils";
 
 type TelemetryModeHandoffStripProps = {
-  context: "analytics" | "diagnostics";
+  context: "analytics" | "diagnostics" | "network";
 };
 
 const modeCopy: Record<
@@ -81,9 +82,22 @@ export function TelemetryModeHandoffStrip({
     () => queryState?.telemetryMode ?? storedState?.telemetryMode ?? "packet",
     [queryState, storedState],
   );
+  const activeHandoff = useMemo(() => queryState ?? storedState, [queryState, storedState]);
+  const continuityQuery = useMemo(
+    () => (activeHandoff ? buildServiceHandoffQuery(activeHandoff) : ""),
+    [activeHandoff],
+  );
   const selected = modeCopy[selectedMode];
   const Icon = selected.icon;
-  const homeHref = context === "analytics" ? "/analytics#telemetry-inspection" : "/diagnostics";
+  const homeHref =
+    context === "analytics"
+      ? "/analytics#telemetry-inspection"
+      : context === "diagnostics"
+        ? "/diagnostics"
+        : "/network";
+  const analyticsHref = continuityQuery ? `/analytics?${continuityQuery}#telemetry-inspection` : "/analytics#telemetry-inspection";
+  const diagnosticsHref = continuityQuery ? `/diagnostics?${continuityQuery}` : "/diagnostics";
+  const networkHref = continuityQuery ? `/network?${continuityQuery}` : "/network";
 
   return (
     <Card className="border-cyan-300/14 bg-[linear-gradient(180deg,rgba(9,16,31,0.96),rgba(6,11,21,0.98))]">
@@ -115,6 +129,9 @@ export function TelemetryModeHandoffStrip({
             <div className="mt-2 text-sm leading-7 text-white/58">
               Source: {queryState ? "query handoff" : storedState ? `stored from ${storedState.source}` : "default packet mode"}
             </div>
+            <div className="mt-2 text-sm leading-7 text-white/58">
+              Route continuity: analytics, diagnostics, and network stay on the same telemetry lane.
+            </div>
             <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link href={selected.href} className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
                 {selected.label}
@@ -122,6 +139,18 @@ export function TelemetryModeHandoffStrip({
               </Link>
               <Link href={homeHref} className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
                 Stay on {context}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link href={analyticsHref} className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+                Open analytics
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link href={diagnosticsHref} className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+                Open diagnostics
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link href={networkHref} className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+                Open network
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>

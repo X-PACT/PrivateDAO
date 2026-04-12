@@ -286,10 +286,72 @@ export function TreasuryReceiveSurface() {
     setCopied("request-download");
   }
 
+  function downloadStructuredRequest() {
+    const blob = new Blob([JSON.stringify(structuredRequestObject, null, 2)], { type: "application/json;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `privatedao-${activeAsset.symbol.toLowerCase()}-${lane}-request.json`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+    setCopied("structured-request-download");
+  }
+
   const encodedPurpose = encodeURIComponent(purpose);
   const encodedAmount = encodeURIComponent(amount);
   const encodedProfile = encodeURIComponent(activeProfile.value);
   const engagePrimaryHref = `/engage?intake=${activeProfile.intake}&asset=${activeAsset.symbol}&amount=${encodedAmount}&purpose=${encodedPurpose}&lane=${lane}&profile=${encodedProfile}`;
+  const structuredRequestObject = useMemo(
+    () => ({
+      kind: "privatedao.treasury.request",
+      state: isRequestReady ? "ready-for-delivery" : "draft-pending-input",
+      requestId: `${activeProfile.value}:${reference || "reference-pending"}`.toUpperCase(),
+      preparedAt: new Date().toISOString(),
+      proposalId: handoff?.proposalId ?? "services-treasury-intake",
+      proposalTitle: handoff?.proposalTitle ?? activeProfile.label,
+      network: config.network,
+      payoutProfile: activeProfile.value,
+      payoutTitle: activeProfile.label,
+      lane,
+      telemetryMode: handoff?.telemetryMode ?? "packet",
+      asset: {
+        symbol: activeAsset.symbol,
+        mint: activeAsset.mint ?? "env-configured",
+        receiveAddress: activeAsset.receiveAddress,
+      },
+      amount: amount || null,
+      amountDisplay: amount ? `${amount} ${activeAsset.symbol}` : `${activeAsset.symbol} amount pending`,
+      reference: reference || null,
+      purpose: purpose || null,
+      routeFocus: handoff?.payoutIntent?.routeFocus ?? activeProfile.summary,
+      executionTarget: handoff?.payoutIntent?.executionTarget ?? `Treasury receive rail · ${activeAsset.symbol}`,
+      evidenceRoute: handoff?.payoutIntent?.evidenceRoute ?? "/documents/treasury-reviewer-packet",
+      requestRoute: continueHandoffQuery ? `/services?${continueHandoffQuery}#treasury-payment-request` : "/services#treasury-payment-request",
+      deliveryRoute: continueHandoffQuery ? `/command-center?${continueHandoffQuery}#proposal-review-action` : "/command-center#proposal-review-action",
+      telemetryRoute: continueHandoffQuery ? `/network?${continueHandoffQuery}` : "/network",
+    }),
+    [
+      activeAsset.mint,
+      activeAsset.receiveAddress,
+      activeAsset.symbol,
+      activeProfile.label,
+      activeProfile.summary,
+      activeProfile.value,
+      amount,
+      config.network,
+      continueHandoffQuery,
+      handoff?.payoutIntent?.evidenceRoute,
+      handoff?.payoutIntent?.executionTarget,
+      handoff?.payoutIntent?.routeFocus,
+      handoff?.proposalId,
+      handoff?.proposalTitle,
+      handoff?.telemetryMode,
+      isRequestReady,
+      lane,
+      purpose,
+      reference,
+    ],
+  );
 
   return (
     <Card id="treasury-receive-surface">
@@ -543,8 +605,37 @@ export function TreasuryReceiveSurface() {
                     Continue to command-center
                     <ArrowRight className="h-4 w-4" />
                   </Link>
+                  <Link href={`/network?${continueHandoffQuery}`} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                    Continue to network
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
                 </div>
               ) : null}
+            </div>
+
+            <div className="rounded-3xl border border-emerald-300/16 bg-emerald-300/[0.08] p-5">
+              <div className="text-[11px] uppercase tracking-[0.24em] text-emerald-100/76">Delivery-ready request object</div>
+              <pre className="mt-4 whitespace-pre-wrap text-xs leading-6 text-white/72">{JSON.stringify(structuredRequestObject, null, 2)}</pre>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={() => copyValue("structured-request", JSON.stringify(structuredRequestObject, null, 2))}
+                  className={cn(buttonVariants({ size: "sm" }), !isRequestReady && "pointer-events-none opacity-50")}
+                  disabled={!isRequestReady}
+                >
+                  <Clipboard className="h-4 w-4" />
+                  Copy request object
+                </button>
+                <button
+                  type="button"
+                  onClick={downloadStructuredRequest}
+                  className={cn(buttonVariants({ size: "sm", variant: "secondary" }), !isRequestReady && "pointer-events-none opacity-50")}
+                  disabled={!isRequestReady}
+                >
+                  <Download className="h-4 w-4" />
+                  Download request JSON
+                </button>
+              </div>
             </div>
 
             <div className="rounded-3xl border border-white/8 bg-white/4 p-5">

@@ -14,10 +14,25 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buildPreparedActionSummary } from "@/lib/onchain-parity";
 import type { CoreGovernanceInstructionName } from "@/lib/onchain-parity.generated";
+import { getProposalById, type ProposalCardModel } from "@/lib/site-data";
 import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
 import { cn } from "@/lib/utils";
 
 const voteChoices = ["Approve", "Reject", "Abstain"] as const;
+
+function resolveStagedReviewAction(proposal: ProposalCardModel | null): CoreGovernanceInstructionName {
+  if (!proposal) return "commit_vote";
+
+  if (proposal.status === "Ready to reveal") {
+    return "reveal_vote";
+  }
+
+  if (proposal.status === "Live voting") {
+    return "commit_vote";
+  }
+
+  return "execute_proposal";
+}
 
 export function GovernanceActionWorkbench() {
   const [reviewAction, setReviewAction] = useState<CoreGovernanceInstructionName | null>(null);
@@ -56,6 +71,8 @@ export function GovernanceActionWorkbench() {
   const canExecute = proposalFinalized && !proposalExecuted;
   const handoff = useServiceHandoffSnapshot("command-center");
   const appliedReviewRef = useRef<string | null>(null);
+  const stagedProposal = handoff?.proposalId ? getProposalById(handoff.proposalId) ?? null : null;
+  const stagedReviewAction = resolveStagedReviewAction(stagedProposal);
 
   const activeWalletLabel = useMemo(() => wallet?.adapter.name ?? "Connected wallet", [wallet]);
   const nextAction = useMemo<CoreGovernanceInstructionName>(() => {
@@ -236,6 +253,17 @@ export function GovernanceActionWorkbench() {
                   <div className="mt-2 text-sm text-white/70">{executionIntent.executionTarget}</div>
                 </div>
               </div>
+              {stagedProposal ? (
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <Button size="sm" onClick={() => openReview(stagedReviewAction)}>
+                    Open staged action shell
+                  </Button>
+                  <Link href={`/network?proposal=${handoff?.proposalId}&profile=${handoff?.payoutProfile}&telemetryMode=${handoff?.telemetryMode}&handoff=1`} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+                    Follow telemetry into network
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              ) : null}
             </div>
           ) : null}
 
@@ -415,9 +443,11 @@ export function GovernanceActionWorkbench() {
       <ActionReviewModal
         action={reviewAction}
         daoName={daoName}
-        proposalTitle={proposalTitle}
-        proposalId={proposalCreated ? "Session proposal" : undefined}
+        proposalTitle={stagedProposal?.title ?? proposalTitle}
+        proposalId={stagedProposal?.id ?? (proposalCreated ? "Session proposal" : undefined)}
         voteChoice={voteChoice}
+        proposal={stagedProposal ?? undefined}
+        executionIntent={executionIntent}
         onClose={() => setReviewAction(null)}
         onConfirm={confirmReviewAction}
       />

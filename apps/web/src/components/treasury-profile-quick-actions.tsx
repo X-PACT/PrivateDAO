@@ -120,6 +120,16 @@ export function TreasuryProfileQuickActions({ title = "Commercial quick actions"
                 <div className="mt-2 text-sm text-white/70">{storedState.telemetryMode}</div>
               </div>
             </div>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Link href={`/services?${handoffQuery}#treasury-payment-request`} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                Open request object
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link href={`/command-center?${handoffQuery}#proposal-review-action`} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                Continue execution lane
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
           </div>
         ) : null}
         {quickActions.map((item) => {
