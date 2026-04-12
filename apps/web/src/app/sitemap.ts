@@ -17,6 +17,7 @@ const coreRoutes = [
   "/network",
   "/products",
   "/community",
+  "/android",
   "/engage",
   "/documents",
   "/custody",

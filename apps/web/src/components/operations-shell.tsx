@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Activity, BarChart3, BrainCircuit, BriefcaseBusiness, Compass, FileSearch, FileText, KeyRound, LayoutDashboard, MessageSquareMore, PlayCircle, Rocket, ShieldCheck, Sparkles, SquareTerminal, Trophy } from "lucide-react";
+import { Activity, BarChart3, BrainCircuit, BriefcaseBusiness, Compass, FileSearch, FileText, KeyRound, LayoutDashboard, MessageSquareMore, PlayCircle, Rocket, ShieldCheck, Smartphone, Sparkles, SquareTerminal, Trophy } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,6 +17,7 @@ const operationsNav = [
   { href: "/community", label: "Community", icon: MessageSquareMore, summary: "Join, updates, pilot interest, and support routing" },
   { href: "/command-center", label: "Command Center", icon: SquareTerminal, summary: "Create, vote, execute" },
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, summary: "Governance state and treasury" },
+  { href: "/android", label: "Android", icon: Smartphone, summary: "Mobile app, APK download, parity plan" },
   { href: "/proof", label: "Proof", icon: Sparkles, summary: "Baseline and V3 evidence" },
   { href: "/security", label: "Security", icon: ShieldCheck, summary: "Hardening and cryptography" },
   { href: "/intelligence", label: "Intelligence", icon: BrainCircuit, summary: "Proposal, treasury, voting, RPC, and gaming analysis" },

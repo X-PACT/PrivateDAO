@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { MessageSquareMore, Youtube } from "lucide-react";
+import { Download, MessageSquareMore, Smartphone, Youtube } from "lucide-react";
 
+import { androidApkDownloadUrl } from "@/lib/android-surface";
 import { useSiteUrls } from "@/lib/site-urls";
 
 export function SiteFooter() {
@@ -26,6 +27,9 @@ export function SiteFooter() {
           <Link href="/community" className="hover:text-white">
             Community
           </Link>
+          <Link href="/android" className="hover:text-white">
+            Android
+          </Link>
           <Link href="/story" className="hover:text-white">
             Story video
           </Link>
@@ -47,6 +51,22 @@ export function SiteFooter() {
           <a href={liveSiteUrl} target="_blank" rel="noreferrer" className="hover:text-white">
             Current live site
           </a>
+          <a
+            href={androidApkDownloadUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border border-emerald-400/18 bg-emerald-400/8 px-3 py-1.5 text-white/76 transition hover:border-emerald-300/30 hover:text-white"
+          >
+            <Download className="h-4 w-4 text-emerald-200" />
+            <span>Android APK</span>
+          </a>
+          <Link
+            href="/android"
+            className="inline-flex items-center gap-2 rounded-full border border-violet-400/18 bg-violet-400/8 px-3 py-1.5 text-white/76 transition hover:border-violet-300/30 hover:text-white"
+          >
+            <Smartphone className="h-4 w-4 text-violet-200" />
+            <span>Android app</span>
+          </Link>
           <a
             href="https://www.youtube.com/@privatedao"
             target="_blank"
