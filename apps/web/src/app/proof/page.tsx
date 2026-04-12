@@ -3,6 +3,7 @@ import { Suspense } from "react";
 
 import { MetricsStrip } from "@/components/metrics-strip";
 import { JudgeRuntimeLogsPanel } from "@/components/judge-runtime-logs-panel";
+import { JudgeExecutionContinuityPanel } from "@/components/judge-execution-continuity-panel";
 import { OperationsShell } from "@/components/operations-shell";
 import { ProofEntryBanner } from "@/components/proof-entry-banner";
 import { ProofFlowRail } from "@/components/proof-flow-rail";
@@ -38,6 +39,9 @@ export default function ProofPage() {
       </div>
       <div>
         <JudgeRuntimeLogsPanel />
+      </div>
+      <div>
+        <JudgeExecutionContinuityPanel />
       </div>
       <div>
         <ReadNodeActivationStrip context="proof" />
