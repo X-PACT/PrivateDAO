@@ -1,7 +1,4 @@
-import type {
-  ExecutionSurfaceSnapshot,
-  IncidentAlertSignal,
-} from "@/lib/devnet-service-metrics";
+import type { ExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import type {
   JudgeLogEntry,
   JudgeRuntimeLogsSnapshot,
@@ -102,6 +99,11 @@ export function buildAuthoritativeExecutionEvidence(
     ],
     monitoringTimeline: [
       {
+        label: "Evidence freshness",
+        detail: runtimeSnapshot.freshness,
+        status: "time-bound proof",
+      },
+      {
         label: "Real-device coverage",
         detail: runtimeSnapshot.runtime.walletCoverage,
         status: "runtime capture",
@@ -115,6 +117,16 @@ export function buildAuthoritativeExecutionEvidence(
         label: "Adversarial discipline",
         detail: runtimeSnapshot.runtime.adversarialSummary,
         status: "reviewer visible",
+      },
+      {
+        label: "V3 governance hardening",
+        detail: `${runtimeSnapshot.v3Hardening.mode} · ${runtimeSnapshot.v3Hardening.governanceProposal}`,
+        status: runtimeSnapshot.v3Hardening.governanceExecuted ? "executed" : "tracked",
+      },
+      {
+        label: "Settlement evidence continuity",
+        detail: `${runtimeSnapshot.v3Hardening.settlementProposal} · evidence ${runtimeSnapshot.v3Hardening.settlementEvidenceConsumed ? "consumed" : "pending"}`,
+        status: "confidential lane",
       },
       {
         label: strongestAlert?.title ?? "Monitoring posture",

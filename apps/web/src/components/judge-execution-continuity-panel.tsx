@@ -107,13 +107,28 @@ export function JudgeExecutionContinuityPanel({
         </div>
         {evidence ? (
           <div className="grid gap-3 xl:col-span-2">
-            {evidence.monitoringTimeline.slice(0, 3).map((entry) => (
+            {evidence.executionTimeline.map((entry) => (
+              <div key={`judge-execution-${entry.label}`} className="rounded-2xl border border-white/8 bg-black/20 p-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="text-sm font-medium text-white">{entry.label}</div>
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-emerald-200/72">{entry.status}</div>
+                </div>
+                <div className="mt-2 text-sm leading-7 text-white/62">{entry.detail}</div>
+              </div>
+            ))}
+            {evidence.monitoringTimeline.map((entry) => (
               <div key={entry.label} className="rounded-2xl border border-white/8 bg-black/20 p-4">
                 <div className="flex items-center justify-between gap-3">
                   <div className="text-sm font-medium text-white">{entry.label}</div>
                   <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/72">{entry.status}</div>
                 </div>
                 <div className="mt-2 text-sm leading-7 text-white/62">{entry.detail}</div>
+                {entry.routeHref && entry.routeLabel ? (
+                  <Link href={entry.routeHref} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "mt-3 justify-between")}>
+                    {entry.routeLabel}
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                ) : null}
               </div>
             ))}
           </div>

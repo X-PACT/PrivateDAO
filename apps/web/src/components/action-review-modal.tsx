@@ -63,7 +63,7 @@ export function ActionReviewModal({
       : summary.timelock;
   const confirmLabel = executionIntent
     ? action === "execute_proposal"
-      ? "Continue with authoritative execution"
+      ? "Sign and submit delivered payload"
       : "Continue with payload-driven signing shell"
     : "Continue in UI";
 
@@ -166,6 +166,14 @@ export function ActionReviewModal({
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Delivery state</div>
                 <div className="mt-2 text-white">{delivery?.state ?? payload?.state ?? "draft-pending-input"}</div>
               </div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Submit lane</div>
+                <div className="mt-2 text-white">{payload?.deliveryRoute ?? executionIntent.evidenceRoute}</div>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Runtime lane</div>
+                <div className="mt-2 text-white">{payload?.telemetryRoute ?? executionIntent.evidenceRoute}</div>
+              </div>
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68 sm:col-span-2">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Execution target</div>
                 <div className="mt-2 text-white">{summaryBeneficiary}</div>
@@ -208,8 +216,8 @@ export function ActionReviewModal({
                 <div className="mt-2 text-white">{executionIntent.payoutTitle}</div>
               </div>
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
-                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Proof route</div>
-                <div className="mt-2 text-white">{executionIntent.evidenceRoute}</div>
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Signing and proof route</div>
+                <div className="mt-2 text-white">{payload?.deliveryRoute ?? executionIntent.evidenceRoute}</div>
               </div>
             </div>
           </div>
@@ -236,6 +244,12 @@ export function ActionReviewModal({
                 <div className="mt-2 text-white/72">{payload.requestRoute}</div>
                 <div className="mt-1 text-white/72">{payload.deliveryRoute}</div>
                 <div className="mt-1 text-white/72">{payload.telemetryRoute}</div>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68 sm:col-span-2">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Submit controls</div>
+                <div className="mt-2 text-white/72">
+                  Final signing now stays bound to the same authoritative request object before submit, delivery, and runtime review.
+                </div>
               </div>
             </div>
           </div>

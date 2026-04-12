@@ -335,15 +335,23 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
           ),
         ),
       executeProposal: () =>
-        setState((current) =>
-          withLog(
+        setState((current) => {
+          const nextState = withLog(
             { ...current, proposalExecuted: true },
-            "Proposal executed",
+            current.executionIntent?.requestPayload ? "Delivered payload submitted" : "Proposal executed",
             current.executionIntent?.requestPayload
-              ? `${current.executionIntent.requestPayload.requestId} · ${current.executionIntent.requestPayload.amountDisplay} · ${current.executionIntent.requestPayload.reference ?? "reference pending"} advanced through the command-center signing shell.`
+              ? `${current.executionIntent.requestPayload.requestId} · ${current.executionIntent.requestPayload.amountDisplay} · ${current.executionIntent.requestPayload.reference ?? "reference pending"} submitted from the payload-driven signing shell into ${current.executionIntent.requestPayload.deliveryRoute}.`
               : `${current.proposalTitle} advanced to the execute stage in the product workflow.`,
-          ),
-        ),
+          );
+
+          return current.executionIntent?.requestPayload
+            ? withLog(
+                nextState,
+                "Runtime review lane attached",
+                `${current.executionIntent.requestPayload.telemetryRoute} remains attached to the same authoritative request object after submit.`,
+              )
+            : nextState;
+        }),
       resetSession: () => setState(defaultState),
     }),
     [state],

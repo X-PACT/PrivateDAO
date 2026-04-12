@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { startTransition, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Activity, ArrowUpRight, CheckCircle2, ChevronRight, FilePlus2, Flag, FolderPlus, ListChecks, Play, ShieldCheck, Vote, Wallet } from "lucide-react";
@@ -180,7 +180,9 @@ export function GovernanceActionWorkbench() {
     const autoOpenKey = `${handoff.proposalId}:${handoff.requestDelivery.state}:${handoff.requestDelivery.deliveredAt ?? "pending"}`;
     if (autoOpenReviewRef.current === autoOpenKey) return;
 
-    setReviewAction(stagedReviewAction);
+    startTransition(() => {
+      setReviewAction(stagedReviewAction);
+    });
     autoOpenReviewRef.current = autoOpenKey;
   }, [executionIntent, handoff, stagedProposal, stagedReviewAction]);
 
@@ -383,7 +385,7 @@ export function GovernanceActionWorkbench() {
                   <div>Delivery: {executionIntent?.requestDelivery?.state ?? payloadDrivenRequest?.state}</div>
                 </div>
                 <Button className="mt-4 w-full" onClick={() => openReview(stagedReviewAction)} variant="secondary">
-                  Open signing shell
+                  Open signing and submit shell
                 </Button>
               </div>
 
@@ -401,7 +403,7 @@ export function GovernanceActionWorkbench() {
                   onClick={() => openReview("execute_proposal")}
                   variant="outline"
                 >
-                  Execute delivered payload
+                  Sign and submit delivered payload
                 </Button>
               </div>
             </>

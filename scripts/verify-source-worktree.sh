@@ -20,8 +20,13 @@ fi
 forbidden_paths="$(printf '%s\n' "$candidate_paths" | grep -E "$forbidden_regex" || true)"
 
 if [[ -n "$forbidden_paths" ]]; then
+  forbidden_count="$(printf '%s\n' "$forbidden_paths" | wc -l | tr -d ' ')"
   echo "source worktree preflight: mirror/export churn detected"
-  printf '%s\n' "$forbidden_paths"
+  printf 'mirror/export paths: %s\n' "$forbidden_count"
+  printf '%s\n' "$forbidden_paths" | sed -n '1,25p'
+  if [[ "$forbidden_count" -gt 25 ]]; then
+    printf '... truncated %s additional path(s)\n' "$((forbidden_count - 25))"
+  fi
   if [[ "${PRIVATE_DAO_STRICT_WORKTREE_PREFLIGHT:-0}" == "1" ]]; then
     exit 1
   fi
