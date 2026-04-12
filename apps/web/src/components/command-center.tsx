@@ -68,6 +68,10 @@ export function CommandCenter() {
               </p>
               <div className="mt-3 grid gap-3 rounded-[24px] border border-cyan-300/12 bg-black/20 p-4 sm:grid-cols-2">
                 <div className="text-sm leading-7 text-white/56">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/60">Authoritative request object</div>
+                  <div className="mt-1 text-white/80">{handoff.requestPayload?.kind ?? "request payload pending"}</div>
+                </div>
+                <div className="text-sm leading-7 text-white/56">
                   <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/60">Amount / asset</div>
                   <div className="mt-1 text-white/80">{handoff.requestPayload?.amountDisplay ?? handoff.payoutIntent.amountDisplay}</div>
                 </div>
@@ -83,10 +87,19 @@ export function CommandCenter() {
                   <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/60">Telemetry lane</div>
                   <div className="mt-1 text-white/80">{handoff.requestPayload?.telemetryMode ?? handoff.telemetryMode}</div>
                 </div>
+                <div className="text-sm leading-7 text-white/56 sm:col-span-2">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/60">Payload continuity</div>
+                  <div className="mt-1 break-all text-white/80">
+                    {handoff.requestPayload?.requestRoute ?? handoff.requestDelivery?.requestRoute}
+                  </div>
+                </div>
               </div>
               <div className="mt-4 flex flex-wrap gap-3">
                 <Link href={continuityQuery ? `/command-center?${continuityQuery}#proposal-review-action` : "/command-center#proposal-review-action"} className={cn(buttonVariants({ size: "sm" }))}>
-                  Open delivered signing shell
+                  Review authoritative request object
+                </Link>
+                <Link href={continuityQuery ? `/command-center?${continuityQuery}#proposal-review-action` : "/command-center#proposal-review-action"} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+                  Execute authoritative request
                 </Link>
                 <Link href={continuityQuery ? `/network?${continuityQuery}` : "/network"} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
                   Open execution network logs
