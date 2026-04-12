@@ -259,6 +259,7 @@ export function writeStoredServiceHandoffState(state: ServiceHandoffState) {
   const raw = JSON.stringify(state);
   window.localStorage.setItem(SERVICE_HANDOFF_STORAGE_KEY, raw);
   updateStoredServiceHandoffCache(raw);
+  window.dispatchEvent(new CustomEvent(SERVICE_HANDOFF_EVENT, { detail: state }));
 }
 
 export function readServiceHandoffState(searchParams: URLSearchParams): ServiceHandoffSelection | null {
