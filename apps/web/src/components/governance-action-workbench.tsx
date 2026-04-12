@@ -354,6 +354,14 @@ export function GovernanceActionWorkbench() {
                     Follow telemetry into network
                     <ArrowUpRight className="h-4 w-4" />
                   </Link>
+                  <Link href="/documents/monitoring-alert-rules" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+                    Open alert rules
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                  <Link href="/documents/real-device-runtime" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+                    Open real-device runtime
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
                 </div>
               ) : null}
             </div>
@@ -375,6 +383,16 @@ export function GovernanceActionWorkbench() {
                 <Button className="mt-4 w-full" onClick={() => openReview(stagedReviewAction)} variant="secondary">
                   Review payload-driven signing shell
                 </Button>
+                <div className="mt-3 flex flex-wrap gap-3">
+                  <Link href="/documents/monitoring-alert-rules" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+                    Open alert rules
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                  <Link href="/documents/real-device-runtime" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+                    Open real-device runtime
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                </div>
               </div>
 
               <div className="rounded-[24px] border border-cyan-300/16 bg-cyan-300/[0.08] p-5">
@@ -391,6 +409,16 @@ export function GovernanceActionWorkbench() {
                 <Button className="mt-4 w-full" onClick={() => openReview(stagedReviewAction)} variant="secondary">
                   {payloadExecutionState === "executed" ? "Review submitted payload shell" : "Open signing and submit shell"}
                 </Button>
+                <div className="mt-3 flex flex-wrap gap-3">
+                  <Link href={payloadDrivenRequest?.telemetryRoute ?? (continuityQuery ? `/network?${continuityQuery}` : "/network")} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+                    Open execution telemetry
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                  <Link href={payloadDrivenRequest?.evidenceRoute ?? "/proof"} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+                    Open payout proof
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                </div>
               </div>
 
               <div className="rounded-[24px] border border-amber-300/16 bg-amber-300/8 p-5">
