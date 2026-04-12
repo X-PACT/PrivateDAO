@@ -10,7 +10,10 @@ import { ProofFlowRail } from "@/components/proof-flow-rail";
 import { ProofCenter } from "@/components/proof-center";
 import { ReadNodeActivationStrip } from "@/components/read-node-activation-strip";
 import { ReadNodeHostReadinessStrip } from "@/components/read-node-host-readiness-strip";
+import { RuntimeEvidenceContinuityPanel } from "@/components/runtime-evidence-continuity-panel";
 import { buildRouteMetadata } from "@/lib/route-metadata";
+import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
+import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Proof Center",
@@ -21,6 +24,9 @@ export const metadata: Metadata = buildRouteMetadata({
 });
 
 export default function ProofPage() {
+  const executionSnapshot = getExecutionSurfaceSnapshot();
+  const runtimeSnapshot = getJudgeRuntimeLogsSnapshot();
+
   return (
     <OperationsShell
       eyebrow="Proof"
@@ -43,6 +49,15 @@ export default function ProofPage() {
       <div>
         <Suspense fallback={null}>
           <JudgeExecutionContinuityPanel />
+        </Suspense>
+      </div>
+      <div>
+        <Suspense fallback={null}>
+          <RuntimeEvidenceContinuityPanel
+            context="proof"
+            executionSnapshot={executionSnapshot}
+            runtimeSnapshot={runtimeSnapshot}
+          />
         </Suspense>
       </div>
       <div>

@@ -84,6 +84,26 @@ function mergePersistedGovernanceState(parsed: Partial<GovernanceSessionState>):
   };
 }
 
+function deriveExecutionContinuityFlags(
+  requestDelivery: ServiceHandoffRequestDelivery | null | undefined,
+  requestPayload: ServiceHandoffRequestPayload | null | undefined,
+) {
+  const deliveryState = requestDelivery?.state ?? requestPayload?.state ?? "draft";
+  const delivered =
+    deliveryState === "delivered" || deliveryState === "ready-for-execution";
+  const staged =
+    delivered || deliveryState === "staged" || deliveryState === "ready-for-delivery";
+
+  return {
+    daoCreated: staged,
+    proposalCreated: staged,
+    voteCommitted: staged,
+    voteRevealed: staged,
+    proposalFinalized: staged,
+    proposalExecuted: deliveryState === "executed",
+  };
+}
+
 type GovernanceSessionContextValue = GovernanceSessionState & {
   setDaoName: (value: string) => void;
   setProposalTitle: (value: string) => void;
@@ -216,6 +236,10 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
             requestPayload: requestPayload ?? null,
             requestDelivery: requestDelivery ?? null,
           };
+          const continuityFlags = deriveExecutionContinuityFlags(
+            requestDelivery ?? null,
+            requestPayload ?? null,
+          );
           const sanitizedLogs = sanitizeGovernanceLogs(current.logs, nextExecutionIntent);
           if (current.executionIntentKey === executionIntentKey) {
             if (sanitizedLogs === current.logs) {
@@ -224,6 +248,7 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
 
             return {
               ...current,
+              ...continuityFlags,
               executionIntent: nextExecutionIntent,
               logs: sanitizedLogs,
             };
@@ -232,6 +257,7 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
           return withLog(
             {
               ...current,
+              ...continuityFlags,
               executionIntentKey,
               executionIntent: nextExecutionIntent,
               logs: sanitizedLogs,

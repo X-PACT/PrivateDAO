@@ -15,6 +15,9 @@ import { TelemetryRuntimeFocusStrip } from "@/components/telemetry-runtime-focus
 import { TelemetryModeHandoffStrip } from "@/components/telemetry-mode-handoff-strip";
 import { CustodyWorkspace } from "@/components/custody-workspace";
 import { buildRouteMetadata } from "@/lib/route-metadata";
+import { RuntimeEvidenceContinuityPanel } from "@/components/runtime-evidence-continuity-panel";
+import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
+import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Diagnostics",
@@ -25,6 +28,9 @@ export const metadata: Metadata = buildRouteMetadata({
 });
 
 export default function DiagnosticsPage() {
+  const executionSnapshot = getExecutionSurfaceSnapshot();
+  const runtimeSnapshot = getJudgeRuntimeLogsSnapshot();
+
   return (
     <OperationsShell
       eyebrow="Diagnostics"
@@ -67,6 +73,15 @@ export default function DiagnosticsPage() {
       <div>
         <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading diagnostics center…</div>}>
           <DiagnosticsCenter />
+        </Suspense>
+      </div>
+      <div>
+        <Suspense fallback={null}>
+          <RuntimeEvidenceContinuityPanel
+            context="diagnostics"
+            executionSnapshot={executionSnapshot}
+            runtimeSnapshot={runtimeSnapshot}
+          />
         </Suspense>
       </div>
       <div>

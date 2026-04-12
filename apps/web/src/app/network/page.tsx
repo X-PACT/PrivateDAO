@@ -7,8 +7,14 @@ import { SecurityCenter } from "@/components/security-center";
 import { TelemetryRuntimeFocusStrip } from "@/components/telemetry-runtime-focus-strip";
 import { TelemetryModeHandoffStrip } from "@/components/telemetry-mode-handoff-strip";
 import { OperationsShell } from "@/components/operations-shell";
+import { RuntimeEvidenceContinuityPanel } from "@/components/runtime-evidence-continuity-panel";
+import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
+import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 
 export default function NetworkPage() {
+  const executionSnapshot = getExecutionSurfaceSnapshot();
+  const runtimeSnapshot = getJudgeRuntimeLogsSnapshot();
+
   return (
     <OperationsShell
       eyebrow="Network"
@@ -25,6 +31,13 @@ export default function NetworkPage() {
       </Suspense>
       <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading telemetry runtime focus…</div>}>
         <TelemetryRuntimeFocusStrip context="network" />
+      </Suspense>
+      <Suspense fallback={null}>
+        <RuntimeEvidenceContinuityPanel
+          context="network"
+          executionSnapshot={executionSnapshot}
+          runtimeSnapshot={runtimeSnapshot}
+        />
       </Suspense>
       <FrontierSignalBoard />
       <ProofCenter />

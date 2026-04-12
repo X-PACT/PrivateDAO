@@ -128,6 +128,14 @@ export function GovernanceActionWorkbench() {
 
     return derived;
   }, [continuityRequestPayload, executionIntent, handoff]);
+  const hasPayloadDrivenExecution = Boolean(executionIntent?.requestPayload);
+  const payloadDrivenRequest = executionIntent?.requestPayload ?? null;
+  const payloadActionReady =
+    Boolean(stagedProposal) &&
+    Boolean(executionIntent) &&
+    (executionIntent?.requestDelivery?.state === "delivered" ||
+      executionIntent?.requestPayload?.state === "ready-for-delivery" ||
+      canExecute);
 
   useEffect(() => {
     if (!handoff) return;
@@ -344,103 +352,159 @@ export function GovernanceActionWorkbench() {
             </div>
           ) : null}
 
-          <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
-            <div className="flex items-center gap-3">
-              <FolderPlus className="h-4 w-4 text-emerald-300" />
-              <div className="text-base font-medium text-white">Create DAO</div>
-            </div>
-            <input
-              value={daoName}
-              onChange={(event) => setDaoName(event.target.value)}
-              className="mt-4 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
-              placeholder="DAO name"
-            />
-            <Button className="mt-4 w-full" disabled={!canCreateDao} onClick={() => openReview("initialize_dao")}>
-              Create DAO
-            </Button>
-          </div>
+          {hasPayloadDrivenExecution ? (
+            <>
+              <div className="rounded-[24px] border border-emerald-300/16 bg-emerald-300/[0.08] p-5">
+                <div className="flex items-center gap-3">
+                  <FolderPlus className="h-4 w-4 text-emerald-300" />
+                  <div className="text-base font-medium text-white">Authoritative request object</div>
+                </div>
+                <div className="mt-4 space-y-2 text-sm leading-7 text-white/66">
+                  <div>{payloadDrivenRequest?.requestId}</div>
+                  <div>{payloadDrivenRequest?.amountDisplay}</div>
+                  <div>{payloadDrivenRequest?.reference}</div>
+                  <div>{payloadDrivenRequest?.requestRoute}</div>
+                </div>
+                <Button className="mt-4 w-full" onClick={() => openReview("create_proposal")} variant="secondary">
+                  Review request object
+                </Button>
+              </div>
 
-          <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
-            <div className="flex items-center gap-3">
-              <FilePlus2 className="h-4 w-4 text-cyan-300" />
-              <div className="text-base font-medium text-white">Create Proposal</div>
-            </div>
-            <input
-              value={proposalTitle}
-              onChange={(event) => setProposalTitle(event.target.value)}
-              className="mt-4 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
-              placeholder="Proposal title"
-            />
-            <Button className="mt-4 w-full" disabled={!canCreateProposal} onClick={() => openReview("create_proposal")}>
-              Create Proposal
-            </Button>
-          </div>
+              <div className="rounded-[24px] border border-cyan-300/16 bg-cyan-300/[0.08] p-5">
+                <div className="flex items-center gap-3">
+                  <Vote className="h-4 w-4 text-cyan-300" />
+                  <div className="text-base font-medium text-white">Signing shell</div>
+                </div>
+                <div className="mt-4 space-y-2 text-sm leading-7 text-white/66">
+                  <div>Telemetry: {payloadDrivenRequest?.telemetryMode}</div>
+                  <div>Target: {payloadDrivenRequest?.executionTarget}</div>
+                  <div>Lane: {payloadDrivenRequest?.lane}</div>
+                  <div>Delivery: {executionIntent?.requestDelivery?.state ?? payloadDrivenRequest?.state}</div>
+                </div>
+                <Button className="mt-4 w-full" onClick={() => openReview(stagedReviewAction)} variant="secondary">
+                  Open signing shell
+                </Button>
+              </div>
 
-          <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
-            <div className="flex items-center gap-3">
-              <Vote className="h-4 w-4 text-fuchsia-300" />
-              <div className="text-base font-medium text-white">Commit Vote</div>
-            </div>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {voteChoices.map((choice) => (
-                <button
-                  key={choice}
-                  type="button"
-                  onClick={() => setVoteChoice(choice)}
-                  className={cn(
-                    "rounded-full border px-3 py-1.5 text-xs uppercase tracking-[0.16em] transition",
-                    voteChoice === choice
-                      ? "border-cyan-300/30 bg-cyan-300/10 text-cyan-100"
-                      : "border-white/10 bg-black/20 text-white/60",
-                  )}
+              <div className="rounded-[24px] border border-amber-300/16 bg-amber-300/8 p-5">
+                <div className="flex items-center gap-3">
+                  <Play className="h-4 w-4 text-amber-300" />
+                  <div className="text-base font-medium text-white">Execute delivered request</div>
+                </div>
+                <p className="mt-4 text-sm leading-7 text-white/60">
+                  The execution control now follows the delivered treasury payload directly instead of falling back to a proposal-only action path.
+                </p>
+                <Button
+                  className="mt-4 w-full"
+                  disabled={!payloadActionReady}
+                  onClick={() => openReview("execute_proposal")}
+                  variant="outline"
                 >
-                  {choice}
-                </button>
-              ))}
-            </div>
-            <Button className="mt-4 w-full" disabled={!canCommit} onClick={() => openReview("commit_vote")}>
-              Commit Vote
-            </Button>
-          </div>
+                  Execute authoritative request
+                </Button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+                <div className="flex items-center gap-3">
+                  <FolderPlus className="h-4 w-4 text-emerald-300" />
+                  <div className="text-base font-medium text-white">Create DAO</div>
+                </div>
+                <input
+                  value={daoName}
+                  onChange={(event) => setDaoName(event.target.value)}
+                  className="mt-4 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                  placeholder="DAO name"
+                />
+                <Button className="mt-4 w-full" disabled={!canCreateDao} onClick={() => openReview("initialize_dao")}>
+                  Create DAO
+                </Button>
+              </div>
 
-          <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
-            <div className="flex items-center gap-3">
-              <ShieldCheck className="h-4 w-4 text-emerald-300" />
-              <div className="text-base font-medium text-white">Reveal Vote</div>
-            </div>
-            <p className="mt-4 text-sm leading-7 text-white/56">
-              Reveal stays inside the same product rail instead of dropping the user into scripts or terminal-only steps.
-            </p>
-            <Button className="mt-4 w-full" disabled={!canReveal} onClick={() => openReview("reveal_vote")} variant="secondary">
-              Reveal Vote
-            </Button>
-          </div>
+              <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+                <div className="flex items-center gap-3">
+                  <FilePlus2 className="h-4 w-4 text-cyan-300" />
+                  <div className="text-base font-medium text-white">Create Proposal</div>
+                </div>
+                <input
+                  value={proposalTitle}
+                  onChange={(event) => setProposalTitle(event.target.value)}
+                  className="mt-4 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                  placeholder="Proposal title"
+                />
+                <Button className="mt-4 w-full" disabled={!canCreateProposal} onClick={() => openReview("create_proposal")}>
+                  Create Proposal
+                </Button>
+              </div>
 
-          <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
-            <div className="flex items-center gap-3">
-              <Flag className="h-4 w-4 text-cyan-300" />
-              <div className="text-base font-medium text-white">Finalize Proposal</div>
-            </div>
-            <p className="mt-4 text-sm leading-7 text-white/56">
-              Finalize is explicit in the UI because the on-chain flow has a real finalize boundary before execution unlocks.
-            </p>
-            <Button className="mt-4 w-full" disabled={!canFinalize} onClick={() => openReview("finalize_proposal")} variant="secondary">
-              Finalize Proposal
-            </Button>
-          </div>
+              <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+                <div className="flex items-center gap-3">
+                  <Vote className="h-4 w-4 text-fuchsia-300" />
+                  <div className="text-base font-medium text-white">Commit Vote</div>
+                </div>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {voteChoices.map((choice) => (
+                    <button
+                      key={choice}
+                      type="button"
+                      onClick={() => setVoteChoice(choice)}
+                      className={cn(
+                        "rounded-full border px-3 py-1.5 text-xs uppercase tracking-[0.16em] transition",
+                        voteChoice === choice
+                          ? "border-cyan-300/30 bg-cyan-300/10 text-cyan-100"
+                          : "border-white/10 bg-black/20 text-white/60",
+                      )}
+                    >
+                      {choice}
+                    </button>
+                  ))}
+                </div>
+                <Button className="mt-4 w-full" disabled={!canCommit} onClick={() => openReview("commit_vote")}>
+                  Commit Vote
+                </Button>
+              </div>
 
-          <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
-            <div className="flex items-center gap-3">
-              <Play className="h-4 w-4 text-amber-300" />
-              <div className="text-base font-medium text-white">Execute Proposal</div>
-            </div>
-            <p className="mt-4 text-sm leading-7 text-white/56">
-              Execution only unlocks after the flow reaches the right boundary, keeping the UI honest and operational.
-            </p>
-            <Button className="mt-4 w-full" disabled={!canExecute} onClick={() => openReview("execute_proposal")} variant="outline">
-              Execute Proposal
-            </Button>
-          </div>
+              <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+                <div className="flex items-center gap-3">
+                  <ShieldCheck className="h-4 w-4 text-emerald-300" />
+                  <div className="text-base font-medium text-white">Reveal Vote</div>
+                </div>
+                <p className="mt-4 text-sm leading-7 text-white/56">
+                  Reveal stays inside the same product rail instead of dropping the user into scripts or terminal-only steps.
+                </p>
+                <Button className="mt-4 w-full" disabled={!canReveal} onClick={() => openReview("reveal_vote")} variant="secondary">
+                  Reveal Vote
+                </Button>
+              </div>
+
+              <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+                <div className="flex items-center gap-3">
+                  <Flag className="h-4 w-4 text-cyan-300" />
+                  <div className="text-base font-medium text-white">Finalize Proposal</div>
+                </div>
+                <p className="mt-4 text-sm leading-7 text-white/56">
+                  Finalize is explicit in the UI because the on-chain flow has a real finalize boundary before execution unlocks.
+                </p>
+                <Button className="mt-4 w-full" disabled={!canFinalize} onClick={() => openReview("finalize_proposal")} variant="secondary">
+                  Finalize Proposal
+                </Button>
+              </div>
+
+              <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+                <div className="flex items-center gap-3">
+                  <Play className="h-4 w-4 text-amber-300" />
+                  <div className="text-base font-medium text-white">Execute Proposal</div>
+                </div>
+                <p className="mt-4 text-sm leading-7 text-white/56">
+                  Execution only unlocks after the flow reaches the right boundary, keeping the UI honest and operational.
+                </p>
+                <Button className="mt-4 w-full" disabled={!canExecute} onClick={() => openReview("execute_proposal")} variant="outline">
+                  Execute Proposal
+                </Button>
+              </div>
+            </>
+          )}
 
           <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
             <div className="flex flex-wrap items-center justify-between gap-3">
