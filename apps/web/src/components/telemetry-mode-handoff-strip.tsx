@@ -174,6 +174,16 @@ export function TelemetryModeHandoffStrip({
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
+            {storedState?.requestPayload ? (
+              <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.03] p-4 text-sm leading-7 text-white/58">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/42">Request payload continuity</div>
+                <div className="mt-2 text-white/78">
+                  {storedState.requestPayload.requestId} · {storedState.requestPayload.amountDisplay}
+                </div>
+                <div className="mt-1 text-white/62">{storedState.requestPayload.deliveryRoute}</div>
+                <div className="mt-1 text-white/62">{storedState.requestPayload.telemetryRoute}</div>
+              </div>
+            ) : null}
           </div>
         </div>
       </CardContent>

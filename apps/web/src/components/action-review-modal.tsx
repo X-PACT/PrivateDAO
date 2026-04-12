@@ -129,7 +129,7 @@ export function ActionReviewModal({
             <div className="mt-2 text-sm leading-7 text-white/62">
               {executionIntent.reference} · {executionIntent.purpose}
             </div>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Payout profile</div>
                 <div className="mt-2 text-white">{executionIntent.payoutProfile}</div>
@@ -138,10 +138,26 @@ export function ActionReviewModal({
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Telemetry mode</div>
                 <div className="mt-2 text-white">{executionIntent.telemetryMode}</div>
               </div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Request ID</div>
+                <div className="mt-2 text-white">{executionIntent.requestPayload?.requestId ?? executionIntent.reference}</div>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Delivery state</div>
+                <div className="mt-2 text-white">{executionIntent.requestDelivery?.state ?? executionIntent.requestPayload?.state ?? "draft-pending-input"}</div>
+              </div>
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68 sm:col-span-2">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Execution target</div>
                 <div className="mt-2 text-white">{executionIntent.executionTarget}</div>
               </div>
+              {executionIntent.requestPayload ? (
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68 sm:col-span-2">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Request continuity routes</div>
+                  <div className="mt-2 text-white">{executionIntent.requestPayload.requestRoute}</div>
+                  <div className="mt-1 text-white/72">{executionIntent.requestPayload.deliveryRoute}</div>
+                  <div className="mt-1 text-white/72">{executionIntent.requestPayload.telemetryRoute}</div>
+                </div>
+              ) : null}
             </div>
           </div>
         ) : null}

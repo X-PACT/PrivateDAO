@@ -134,7 +134,11 @@ export function TelemetryRuntimeFocusClient({
               </div>
               {handoff.requestPayload ? (
                 <div className="mt-2 text-sm leading-7 text-white/58">
-                  {handoff.requestPayload.executionTarget} · {handoff.requestPayload.telemetryRoute}
+                  {handoff.requestPayload.executionTarget} · {handoff.requestPayload.requestRoute}
+                  <br />
+                  {handoff.requestPayload.deliveryRoute}
+                  <br />
+                  {handoff.requestPayload.telemetryRoute}
                 </div>
               ) : null}
             </div>

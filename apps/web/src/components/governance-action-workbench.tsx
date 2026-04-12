@@ -155,6 +155,8 @@ export function GovernanceActionWorkbench() {
         purpose: handoff.payoutIntent.purpose,
         executionTarget: handoff.payoutIntent.executionTarget,
         evidenceRoute: handoff.payoutIntent.evidenceRoute,
+        requestPayload: handoff.requestPayload,
+        requestDelivery: handoff.requestDelivery,
         source: handoff.source,
       });
     }
@@ -296,6 +298,18 @@ export function GovernanceActionWorkbench() {
                   <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Execution target</div>
                   <div className="mt-2 text-sm text-white/70">{executionIntent.executionTarget}</div>
                 </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Request ID</div>
+                  <div className="mt-2 text-sm text-white/70">
+                    {executionIntent.requestPayload?.requestId ?? executionIntent.reference}
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Request state</div>
+                  <div className="mt-2 text-sm text-white/70">
+                    {executionIntent.requestPayload?.state ?? executionIntent.requestDelivery?.state ?? "draft-pending-input"}
+                  </div>
+                </div>
               </div>
               {handoff?.requestDelivery ? (
                 <div className="mt-4 rounded-2xl border border-white/8 bg-black/20 p-4">
@@ -313,7 +327,14 @@ export function GovernanceActionWorkbench() {
                   <Button size="sm" onClick={() => openReview(stagedReviewAction)}>
                     Open staged action shell
                   </Button>
-                  <Link href={continuityQuery ? `/network?${continuityQuery}` : "/network"} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+                  <Link
+                    href={executionIntent.requestDelivery?.deliveryRoute ?? (continuityQuery ? `/command-center?${continuityQuery}#proposal-review-action` : "/command-center#proposal-review-action")}
+                    className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}
+                  >
+                    Open delivered lane
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                  <Link href={executionIntent.requestDelivery?.telemetryRoute ?? (continuityQuery ? `/network?${continuityQuery}` : "/network")} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
                     Follow telemetry into network
                     <ArrowUpRight className="h-4 w-4" />
                   </Link>

@@ -8,6 +8,10 @@ import {
   useMemo,
   useState,
 } from "react";
+import type {
+  ServiceHandoffRequestDelivery,
+  ServiceHandoffRequestPayload,
+} from "@/lib/service-handoff-state";
 
 type VoteChoice = "Approve" | "Reject" | "Abstain";
 
@@ -25,6 +29,8 @@ export type GovernanceExecutionIntent = {
   purpose: string;
   executionTarget: string;
   evidenceRoute: string;
+  requestPayload: ServiceHandoffRequestPayload | null;
+  requestDelivery: ServiceHandoffRequestDelivery | null;
 };
 
 type GovernanceSessionState = {
@@ -99,6 +105,8 @@ type GovernanceSessionContextValue = GovernanceSessionState & {
     purpose: string;
     executionTarget: string;
     evidenceRoute: string;
+    requestPayload?: ServiceHandoffRequestPayload | null;
+    requestDelivery?: ServiceHandoffRequestDelivery | null;
     source: string;
   }) => void;
   createDao: () => void;
@@ -190,10 +198,12 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
         purpose,
         executionTarget,
         evidenceRoute,
+        requestPayload,
+        requestDelivery,
         source,
       }) =>
         setState((current) => {
-          const executionIntentKey = `${proposalId}:${payoutProfile}:${telemetryMode}:${reference}:${source}`;
+          const executionIntentKey = `${proposalId}:${payoutProfile}:${telemetryMode}:${reference}:${requestPayload?.requestId ?? "no-request"}:${requestDelivery?.state ?? "draft"}:${source}`;
           const nextExecutionIntent = {
             payoutProfile,
             payoutTitle,
@@ -203,6 +213,8 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
             purpose,
             executionTarget,
             evidenceRoute,
+            requestPayload: requestPayload ?? null,
+            requestDelivery: requestDelivery ?? null,
           };
           const sanitizedLogs = sanitizeGovernanceLogs(current.logs, nextExecutionIntent);
           if (current.executionIntentKey === executionIntentKey) {
@@ -225,7 +237,7 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
               logs: sanitizedLogs,
             },
             "Execution request loaded",
-            `${proposalId} · ${payoutTitle} · ${amountDisplay} · ${reference} staged from ${source}.`,
+            `${proposalId} · ${requestPayload?.requestId ?? payoutTitle} · ${amountDisplay} · ${reference} staged from ${source}.`,
           );
         }),
       createDao: () =>

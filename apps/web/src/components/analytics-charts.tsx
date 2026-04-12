@@ -60,13 +60,19 @@ export function AnalyticsCharts() {
           </div>
           {handoff?.payoutIntent ? (
             <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm leading-6 text-white/58">
-              {handoff.proposalId} · {handoff.payoutIntent.amountDisplay} · {handoff.payoutIntent.reference}
+              {(handoff.requestPayload?.requestId ?? handoff.proposalId)} · {handoff.requestPayload?.amountDisplay ?? handoff.payoutIntent.amountDisplay} · {handoff.requestPayload?.reference ?? handoff.payoutIntent.reference}
               {" · "}
               {handoff.requestDelivery?.state === "delivered"
                 ? "delivered into command-center"
                 : handoff.requestDelivery?.state === "staged"
                   ? "staged in services"
                   : "draft in services"}
+              {handoff.requestPayload ? (
+                <>
+                  <br />
+                  <span className="text-white/72">{handoff.requestPayload.telemetryRoute}</span>
+                </>
+              ) : null}
             </div>
           ) : null}
         </CardHeader>
