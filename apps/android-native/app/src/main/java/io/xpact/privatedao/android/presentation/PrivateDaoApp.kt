@@ -95,6 +95,8 @@ fun PrivateDaoApp(
     onSubmitCommitVote: () -> Unit,
     onSubmitRevealVote: () -> Unit,
     onSubmitFinalize: () -> Unit,
+    onSubmitCancel: () -> Unit,
+    onSubmitVeto: () -> Unit,
     onSubmitExecute: () -> Unit,
 ) {
     val navController = rememberNavController()
@@ -145,6 +147,8 @@ fun PrivateDaoApp(
                 onSubmitCommitVote = onSubmitCommitVote,
                 onSubmitRevealVote = onSubmitRevealVote,
                 onSubmitFinalize = onSubmitFinalize,
+                onSubmitCancel = onSubmitCancel,
+                onSubmitVeto = onSubmitVeto,
                 onSubmitExecute = onSubmitExecute,
             )
         }
@@ -171,6 +175,8 @@ private fun AppNavHost(
     onSubmitCommitVote: () -> Unit,
     onSubmitRevealVote: () -> Unit,
     onSubmitFinalize: () -> Unit,
+    onSubmitCancel: () -> Unit,
+    onSubmitVeto: () -> Unit,
     onSubmitExecute: () -> Unit,
 ) {
     NavHost(
@@ -210,6 +216,8 @@ private fun AppNavHost(
                 onSubmitCommitVote = onSubmitCommitVote,
                 onSubmitRevealVote = onSubmitRevealVote,
                 onSubmitFinalize = onSubmitFinalize,
+                onSubmitCancel = onSubmitCancel,
+                onSubmitVeto = onSubmitVeto,
                 onSubmitExecute = onSubmitExecute,
                 modifier = Modifier.padding(padding),
             )
@@ -368,6 +376,8 @@ private fun ProposalScreen(
     onSubmitCommitVote: () -> Unit,
     onSubmitRevealVote: () -> Unit,
     onSubmitFinalize: () -> Unit,
+    onSubmitCancel: () -> Unit,
+    onSubmitVeto: () -> Unit,
     onSubmitExecute: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -401,6 +411,8 @@ private fun ProposalScreen(
                     onSubmitCommitVote = onSubmitCommitVote,
                     onSubmitRevealVote = onSubmitRevealVote,
                     onSubmitFinalize = onSubmitFinalize,
+                    onSubmitCancel = onSubmitCancel,
+                    onSubmitVeto = onSubmitVeto,
                     onSubmitExecute = onSubmitExecute,
                 )
             }
@@ -657,8 +669,12 @@ private fun ProposalDetailCard(
     onSubmitCommitVote: () -> Unit,
     onSubmitRevealVote: () -> Unit,
     onSubmitFinalize: () -> Unit,
+    onSubmitCancel: () -> Unit,
+    onSubmitVeto: () -> Unit,
     onSubmitExecute: () -> Unit,
 ) {
+    val authorityPubkey = proposal.daoSummary?.authority
+    val isAuthorityWallet = uiState.wallet?.publicKeyBase58 == authorityPubkey && authorityPubkey != null
     Card(shape = RoundedCornerShape(28.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFF0F131D))) {
         Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
             Text("Proposal proof", color = Color.White, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
@@ -670,9 +686,15 @@ private fun ProposalDetailCard(
             proposal.daoSummary?.let {
                 SettingsRow("DAO authority", it.authority)
                 SettingsRow("Execution delay", "${it.executionDelaySeconds}s")
+                SettingsRow("Authority wallet", if (isAuthorityWallet) "Connected" else "Not connected")
             }
             proposal.treasuryAction?.let {
                 SettingsRow("Treasury action", "${it.type} → ${it.recipient}")
+            }
+            if (phase == ProposalPhase.Commit && isAuthorityWallet) {
+                Button(onClick = onSubmitCancel, enabled = !uiState.walletBusy, modifier = Modifier.fillMaxWidth()) {
+                    Text("Cancel in authority wallet")
+                }
             }
             if (phase == ProposalPhase.Commit) {
                 FormTextField("Keeper pubkey (optional)", uiState.commitVoteForm.keeperPubkey) { value ->
@@ -708,6 +730,11 @@ private fun ProposalDetailCard(
             }
             if (phase == ProposalPhase.Timelocked) {
                 ValidationCard("This proposal passed but is still inside the timelock window. Execution stays blocked until the unlock time clears.")
+                if (isAuthorityWallet) {
+                    Button(onClick = onSubmitVeto, enabled = !uiState.walletBusy, modifier = Modifier.fillMaxWidth()) {
+                        Text("Veto in authority wallet")
+                    }
+                }
             }
             if (phase == ProposalPhase.Executable) {
                 Button(onClick = onSubmitExecute, enabled = uiState.wallet != null && !uiState.walletBusy, modifier = Modifier.fillMaxWidth()) {

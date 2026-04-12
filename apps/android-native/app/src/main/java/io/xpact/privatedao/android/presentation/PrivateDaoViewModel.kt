@@ -245,6 +245,34 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
 
+    fun submitCancel(launcher: ActivityResultLauncher<MobileWalletAdapterManager.StartMobileWalletAdapterActivity.CreateParams>) {
+        val wallet = uiState.value.wallet ?: return setError("Connect a wallet first.")
+        val proposal = uiState.value.selectedProposal ?: return setError("Select a proposal first.")
+        val authority = proposal.daoSummary?.authority ?: return setError("DAO authority is not loaded for this proposal.")
+        if (wallet.publicKeyBase58 != authority) return setError("Only the DAO authority wallet can cancel this proposal.")
+        viewModelScope.launch {
+            runSubmission {
+                val tx = repository.buildCancelTransaction(wallet.publicKeyBase58, proposal)
+                walletManager.signAndSendSingleTransaction(launcher, wallet, tx).toResult()
+            }
+            selectProposal(proposal.pubkey)
+        }
+    }
+
+    fun submitVeto(launcher: ActivityResultLauncher<MobileWalletAdapterManager.StartMobileWalletAdapterActivity.CreateParams>) {
+        val wallet = uiState.value.wallet ?: return setError("Connect a wallet first.")
+        val proposal = uiState.value.selectedProposal ?: return setError("Select a proposal first.")
+        val authority = proposal.daoSummary?.authority ?: return setError("DAO authority is not loaded for this proposal.")
+        if (wallet.publicKeyBase58 != authority) return setError("Only the DAO authority wallet can veto this proposal.")
+        viewModelScope.launch {
+            runSubmission {
+                val tx = repository.buildVetoTransaction(wallet.publicKeyBase58, proposal)
+                walletManager.signAndSendSingleTransaction(launcher, wallet, tx).toResult()
+            }
+            selectProposal(proposal.pubkey)
+        }
+    }
+
     fun submitExecute(launcher: ActivityResultLauncher<MobileWalletAdapterManager.StartMobileWalletAdapterActivity.CreateParams>) {
         val wallet = uiState.value.wallet ?: return setError("Connect a wallet first.")
         val proposal = uiState.value.selectedProposal ?: return setError("Select a proposal first.")

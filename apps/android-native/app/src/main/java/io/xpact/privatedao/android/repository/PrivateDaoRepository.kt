@@ -206,6 +206,36 @@ class PrivateDaoRepository(
         return LegacyTransactionBuilder.build(walletPubkey, rpcClient.getLatestBlockhash(), listOf(instruction))
     }
 
+    suspend fun buildCancelTransaction(walletPubkey: String, proposal: ProposalSummary): ByteArray {
+        val dao = proposal.daoSummary ?: loadDao(proposal.dao)
+        val data = AnchorEncoding.discriminator("cancel_proposal")
+        val instruction = TransactionInstruction(
+            programId = PrivateDaoConfig.programId,
+            accounts = listOf(
+                AccountMeta(dao.pubkey, isSigner = false, isWritable = false),
+                AccountMeta(proposal.pubkey, isSigner = false, isWritable = true),
+                AccountMeta(walletPubkey, isSigner = true, isWritable = false),
+            ),
+            data = data,
+        )
+        return LegacyTransactionBuilder.build(walletPubkey, rpcClient.getLatestBlockhash(), listOf(instruction))
+    }
+
+    suspend fun buildVetoTransaction(walletPubkey: String, proposal: ProposalSummary): ByteArray {
+        val dao = proposal.daoSummary ?: loadDao(proposal.dao)
+        val data = AnchorEncoding.discriminator("veto_proposal")
+        val instruction = TransactionInstruction(
+            programId = PrivateDaoConfig.programId,
+            accounts = listOf(
+                AccountMeta(dao.pubkey, isSigner = false, isWritable = false),
+                AccountMeta(proposal.pubkey, isSigner = false, isWritable = true),
+                AccountMeta(walletPubkey, isSigner = true, isWritable = false),
+            ),
+            data = data,
+        )
+        return LegacyTransactionBuilder.build(walletPubkey, rpcClient.getLatestBlockhash(), listOf(instruction))
+    }
+
     suspend fun buildExecuteTransaction(walletPubkey: String, proposal: ProposalSummary): ByteArray {
         val dao = proposal.daoSummary ?: loadDao(proposal.dao)
         val treasury = dao.treasuryPda

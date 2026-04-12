@@ -47,6 +47,8 @@ class MainActivity : ComponentActivity() {
                     onSubmitCommitVote = { vm.submitCommitVote(launcher) },
                     onSubmitRevealVote = { vm.submitRevealVote(launcher) },
                     onSubmitFinalize = { vm.submitFinalize(launcher) },
+                    onSubmitCancel = { vm.submitCancel(launcher) },
+                    onSubmitVeto = { vm.submitVeto(launcher) },
                     onSubmitExecute = { vm.submitExecute(launcher) },
                 )
             }

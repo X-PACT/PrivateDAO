@@ -4,6 +4,21 @@ PrivateDAO now includes a first-class Android-native app under `apps/android-nat
 
 This is not a hybrid wrapper and not a generic wallet demo. It is a Kotlin Android counterpart of the current PrivateDAO product and follows the same governance lifecycle and protocol assumptions already used by the Solana program, scripts, tests, and live web surface.
 
+## Web / Mobile Integration Truth
+
+The Android app and the web app are expected to serve the same governance product, not parallel products.
+
+That means:
+
+- the same on-chain program ID
+- the same DAO / proposal / treasury PDAs
+- the same proposal phases
+- the same authority semantics
+- the same proof-first reviewer links
+- the same explorer and monitoring continuity
+
+The Android branch is therefore judged against web parity, not against a standalone mobile demo standard.
+
 ## Why Android-first
 
 PrivateDAO is Android-first on mobile because Solana Mobile Wallet Adapter is the official mobile dApp path for Android wallets today. This app therefore uses:
@@ -169,6 +184,8 @@ Implemented mobile transaction paths:
 - commit vote
 - reveal vote
 - finalize proposal
+- cancel proposal (authority-only)
+- veto proposal during timelock (authority-only)
 - execute proposal for SOL and token treasury paths
 
 Implemented mobile read paths:

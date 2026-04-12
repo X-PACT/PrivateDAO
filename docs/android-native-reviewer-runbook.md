@@ -10,6 +10,14 @@ This branch proves three things:
 - the wallet lifecycle uses the current Mobile Wallet Adapter path without deprecated lifecycle gating
 - reviewer and runtime surfaces stay reachable from the app itself instead of living only in external docs
 
+## Web / Mobile Parity Standard
+
+Review this branch as part of one product surface:
+
+- web and Android both read the same on-chain DAO/proposal state
+- web and Android both point reviewers to the same proof center and incident/monitoring docs
+- Android now exposes authority-only `cancel` and `veto` flows, so mobile is no longer limited to voter-only happy paths
+
 ## Verified Build Commands
 
 From `apps/android-native/`:
