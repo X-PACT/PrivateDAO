@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowRight, ArrowUpRight, CheckCircle2, Clipboard, Coins, Download, FileCheck2, Landmark, ShieldCheck, Wallet } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -137,6 +138,7 @@ function resolveSupportedAsset(
 }
 
 export function TreasuryReceiveSurface() {
+  const router = useRouter();
   const config = getTreasuryReceiveConfig();
   const [copied, setCopied] = useState<string | null>(null);
   const [isMounted, setIsMounted] = useState(false);
@@ -151,6 +153,7 @@ export function TreasuryReceiveSurface() {
   const appliedHandoffKeyRef = useRef<string | null>(null);
   const persistedPayloadSignatureRef = useRef<string | null>(null);
   const requestDeliveryOverrideRef = useRef<ServiceHandoffRequestDelivery["state"] | null>(null);
+  const [localDeliveryState, setLocalDeliveryState] = useState<ServiceHandoffRequestDelivery["state"] | null>(null);
   const activeAsset = config.assets.find((asset) => asset.symbol === selectedAsset) ?? config.assets[0];
   const activeProfile = destinationProfiles.find((item) => item.value === profile) ?? destinationProfiles[0];
   const activeLane = handoffLanes.find((item) => item.value === lane) ?? handoffLanes[0];
@@ -213,8 +216,14 @@ export function TreasuryReceiveSurface() {
     }
 
     persistedPayloadSignatureRef.current = null;
+    setLocalDeliveryState(null);
     appliedHandoffKeyRef.current = handoffKey;
   }, [allowStoredServicesHydration, config.assets, handoff]);
+
+  useEffect(() => {
+    if (isRequestReady) return;
+    setLocalDeliveryState(null);
+  }, [isRequestReady]);
 
   const requestPacket = useMemo(
     () =>
@@ -304,6 +313,44 @@ export function TreasuryReceiveSurface() {
     : deliveryRoute;
   const isRequestReady = Boolean(amount.trim() && purpose.trim() && reference.trim());
 
+  const buildRequestDelivery = useCallback((
+    state: ServiceHandoffRequestDelivery["state"],
+  ): ServiceHandoffRequestDelivery => {
+    return {
+      state,
+      stateDetail:
+        state === "delivered"
+          ? "Request delivered into the command-center execution lane with the exact treasury payload attached."
+          : state === "staged"
+            ? "Request staged in the services lane and ready for governed delivery."
+            : isRequestReady
+              ? "Structured request is ready to be staged or delivered into the execution lane."
+              : "Complete amount, reference, and purpose before staging the request for delivery.",
+      requestRoute,
+      deliveryRoute,
+      telemetryRoute,
+      deliveredAt: state === "delivered" ? new Date().toISOString() : null,
+    };
+  }, [deliveryRoute, isRequestReady, requestRoute, telemetryRoute]);
+
+  const activeRequestDelivery = useMemo(() => {
+    if (localDeliveryState === "staged" || localDeliveryState === "delivered") {
+      return buildRequestDelivery(localDeliveryState);
+    }
+
+    const storedState = persistedHandoff?.requestDelivery;
+    if (storedState && (storedState.state === "staged" || storedState.state === "delivered")) {
+      return {
+        ...storedState,
+        requestRoute,
+        deliveryRoute,
+        telemetryRoute,
+      };
+    }
+
+    return buildRequestDelivery("draft");
+  }, [buildRequestDelivery, localDeliveryState, persistedHandoff?.requestDelivery]);
+
   useEffect(() => {
     if (!handoff || !persistedPayoutIntent || !persistedStateSignature) return;
     if (persistedPayloadSignatureRef.current === persistedStateSignature) return;
@@ -318,17 +365,7 @@ export function TreasuryReceiveSurface() {
 
     const requestDelivery =
       deliveryOverride === "staged" || deliveryOverride === "delivered"
-        ? {
-            state: deliveryOverride,
-            stateDetail:
-              deliveryOverride === "delivered"
-                ? "Request delivered into the command-center execution lane with the exact treasury payload attached."
-                : "Request staged in the services lane and ready for governed delivery.",
-            requestRoute,
-            deliveryRoute,
-            telemetryRoute,
-            deliveredAt: deliveryOverride === "delivered" ? new Date().toISOString() : null,
-          }
+        ? buildRequestDelivery(deliveryOverride)
         : matchingStoredDelivery &&
             (matchingStoredDelivery.state === "staged" || matchingStoredDelivery.state === "delivered")
         ? {
@@ -345,16 +382,7 @@ export function TreasuryReceiveSurface() {
             deliveryRoute,
             telemetryRoute,
           }
-        : {
-            state: "draft" as const,
-            stateDetail: isRequestReady
-              ? "Structured request is ready to be staged or delivered into the execution lane."
-              : "Complete amount, reference, and purpose before staging the request for delivery.",
-            requestRoute,
-            deliveryRoute,
-            telemetryRoute,
-            deliveredAt: null,
-          };
+        : buildRequestDelivery("draft");
 
     writeStoredServiceHandoffState({
       ...handoff,
@@ -369,7 +397,7 @@ export function TreasuryReceiveSurface() {
       requestDeliveryOverrideRef.current = null;
     }
     persistedPayloadSignatureRef.current = persistedStateSignature;
-  }, [activeProfile.label, activeProfile.value, deliveryRoute, handoff, isRequestReady, persistedPayoutIntent, persistedStateSignature, requestRoute, telemetryRoute]);
+  }, [activeProfile.label, activeProfile.value, buildRequestDelivery, handoff, persistedPayoutIntent, persistedStateSignature]);
 
   async function copyValue(key: string, value: string) {
     await navigator.clipboard.writeText(value);
@@ -457,6 +485,7 @@ export function TreasuryReceiveSurface() {
     if (!handoffBase || !persistedPayoutIntent) return;
 
     requestDeliveryOverrideRef.current = state;
+    setLocalDeliveryState(state);
     writeStoredServiceHandoffState({
       ...handoffBase,
       payoutProfile: activeProfile.value,
@@ -464,18 +493,15 @@ export function TreasuryReceiveSurface() {
       updatedAt: new Date().toISOString(),
       source: "services",
       payoutIntent: persistedPayoutIntent,
-      requestDelivery: {
-        state,
-        stateDetail:
-          state === "delivered"
-            ? "Request delivered into the command-center execution lane with the exact treasury payload attached."
-            : "Request staged in the services lane and ready for governed delivery.",
-        requestRoute,
-        deliveryRoute,
-        telemetryRoute,
-        deliveredAt: state === "delivered" ? new Date().toISOString() : null,
-      },
+      requestDelivery: buildRequestDelivery(state),
     });
+  }
+
+  function handleDeliveryNavigation(state: "staged" | "delivered") {
+    if (!isRequestReady) return;
+    updateDeliveryState(state);
+    setCopied(state === "staged" ? "request-staged" : "request-delivered");
+    router.push(state === "staged" ? stagedRequestRoute : deliveredRequestRoute);
   }
 
   if (!isMounted) {
@@ -808,19 +834,16 @@ export function TreasuryReceiveSurface() {
             <div className="rounded-3xl border border-emerald-300/16 bg-emerald-300/[0.08] p-5">
               <div className="text-[11px] uppercase tracking-[0.24em] text-emerald-100/76">Governed delivery lane</div>
               <div className="mt-3 text-base font-medium text-white">
-                {handoff?.requestDelivery?.state === "delivered"
+                {activeRequestDelivery.state === "delivered"
                   ? "Delivered into command-center"
-                  : handoff?.requestDelivery?.state === "staged"
+                  : activeRequestDelivery.state === "staged"
                     ? "Staged in services"
                     : isRequestReady
                       ? "Ready to stage"
                       : "Draft pending input"}
               </div>
               <div className="mt-2 text-sm leading-7 text-white/62">
-                {handoff?.requestDelivery?.stateDetail ??
-                  (isRequestReady
-                    ? "Stage the request in the services lane, then deliver the same payload directly into command-center execution."
-                    : "Complete amount, reference, and purpose so the delivery lane can consume a valid request object.")}
+                {activeRequestDelivery.stateDetail}
               </div>
               <div className="mt-4 grid gap-3 md:grid-cols-2">
                 <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
@@ -833,29 +856,22 @@ export function TreasuryReceiveSurface() {
                 </div>
               </div>
               <div className="mt-4 flex flex-wrap gap-3">
-                <Link
-                  href={stagedRequestRoute}
-                  onClick={() => {
-                    if (!isRequestReady) return;
-                    updateDeliveryState("staged");
-                    setCopied("request-staged");
-                  }}
-                  aria-disabled={!isRequestReady}
+                <button
+                  type="button"
+                  onClick={() => handleDeliveryNavigation("staged")}
+                  disabled={!isRequestReady}
                   className={cn(buttonVariants({ size: "sm", variant: "secondary" }), !isRequestReady && "pointer-events-none opacity-50")}
                 >
                   Stage request in UI
-                </Link>
-                <Link
-                  href={deliveredRequestRoute}
-                  onClick={() => {
-                    if (!isRequestReady) return;
-                    updateDeliveryState("delivered");
-                  }}
-                  aria-disabled={!isRequestReady}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleDeliveryNavigation("delivered")}
+                  disabled={!isRequestReady}
                   className={cn(buttonVariants({ size: "sm" }), !isRequestReady && "pointer-events-none opacity-50")}
                 >
                   Deliver to command center
-                </Link>
+                </button>
                 <Link
                   href={telemetryRoute}
                   className={cn(buttonVariants({ size: "sm", variant: "outline" }), !isRequestReady && "pointer-events-none opacity-50")}
