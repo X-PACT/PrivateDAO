@@ -154,6 +154,7 @@ export function TreasuryReceiveSurface() {
   const activeAsset = config.assets.find((asset) => asset.symbol === selectedAsset) ?? config.assets[0];
   const activeProfile = destinationProfiles.find((item) => item.value === profile) ?? destinationProfiles[0];
   const activeLane = handoffLanes.find((item) => item.value === lane) ?? handoffLanes[0];
+  const persistedHandoff = handoff ?? readStoredServiceHandoffState();
   const handoffProfile = handoff?.payoutProfile ?? null;
   const allowStoredServicesHydration = Boolean(handoff?.payoutIntent);
 
@@ -236,7 +237,7 @@ export function TreasuryReceiveSurface() {
   );
   const executionPayload = useMemo(
     () => ({
-      proposalId: handoff?.proposalId ?? "services-treasury-intake",
+      proposalId: persistedHandoff?.proposalId ?? "services-treasury-intake",
       profile: activeProfile.value,
       profileLabel: activeProfile.label,
       lane,
@@ -247,15 +248,13 @@ export function TreasuryReceiveSurface() {
       reference: reference || null,
       purpose: purpose || null,
       receiveAddress: activeAsset.receiveAddress,
-      routeFocus: handoff?.payoutIntent?.routeFocus ?? activeProfile.summary,
-      executionTarget: handoff?.payoutIntent?.executionTarget ?? `Treasury receive rail · ${activeAsset.symbol}`,
-      telemetryMode: handoff?.telemetryMode ?? "packet",
+      routeFocus: persistedHandoff?.payoutIntent?.routeFocus ?? activeProfile.summary,
+      executionTarget: persistedHandoff?.payoutIntent?.executionTarget ?? `Treasury receive rail · ${activeAsset.symbol}`,
+      telemetryMode: persistedHandoff?.telemetryMode ?? "packet",
     }),
-    [activeAsset, activeLane.label, activeProfile, amount, handoff, lane, purpose, reference],
+    [activeAsset, activeLane.label, activeProfile, amount, lane, persistedHandoff, purpose, reference],
   );
   const persistedPayoutIntent = useMemo(() => {
-    if (!handoff) return null;
-
     return {
       assetSymbol: activeAsset.symbol,
       amount,
@@ -263,36 +262,36 @@ export function TreasuryReceiveSurface() {
       reference: reference || `${activeProfile.value.toUpperCase()}-REQUEST-PENDING`,
       purpose: purpose || activeProfile.defaultPurpose,
       lane,
-      routeFocus: handoff.payoutIntent?.routeFocus ?? activeProfile.summary,
+      routeFocus: persistedHandoff?.payoutIntent?.routeFocus ?? activeProfile.summary,
       recipient: activeAsset.receiveAddress,
       mintAddress: activeAsset.mint ?? null,
-      executionTarget: handoff.payoutIntent?.executionTarget ?? `Treasury receive rail · ${activeAsset.symbol}`,
-      evidenceRoute: handoff.payoutIntent?.evidenceRoute ?? "/documents/treasury-reviewer-packet",
+      executionTarget: persistedHandoff?.payoutIntent?.executionTarget ?? `Treasury receive rail · ${activeAsset.symbol}`,
+      evidenceRoute: persistedHandoff?.payoutIntent?.evidenceRoute ?? "/documents/treasury-reviewer-packet",
     };
-  }, [activeAsset, activeProfile, amount, handoff, lane, purpose, reference]);
+  }, [activeAsset, activeProfile, amount, lane, persistedHandoff, purpose, reference]);
   const persistedStateSignature = useMemo(
     () =>
-      handoff && persistedPayoutIntent
+      persistedHandoff && persistedPayoutIntent
         ? JSON.stringify({
-            proposalId: handoff.proposalId,
+            proposalId: persistedHandoff.proposalId,
             payoutProfile: activeProfile.value,
-            telemetryMode: handoff.telemetryMode,
+            telemetryMode: persistedHandoff.telemetryMode,
             payoutIntent: persistedPayoutIntent,
           })
         : null,
-    [activeProfile.value, handoff, persistedPayoutIntent],
+    [activeProfile.value, persistedHandoff, persistedPayoutIntent],
   );
   const continueHandoffQuery = useMemo(
     () =>
-      handoff && persistedPayoutIntent
+      persistedHandoff && persistedPayoutIntent
         ? buildServiceHandoffQuery({
-            ...handoff,
+            ...persistedHandoff,
             payoutProfile: activeProfile.value,
             payoutTitle: activeProfile.label,
             payoutIntent: persistedPayoutIntent,
           })
         : "",
-    [activeProfile.label, activeProfile.value, handoff, persistedPayoutIntent],
+    [activeProfile.label, activeProfile.value, persistedHandoff, persistedPayoutIntent],
   );
   const requestRoute = continueHandoffQuery ? `/services?${continueHandoffQuery}#treasury-payment-request` : "/services#treasury-payment-request";
   const deliveryRoute = continueHandoffQuery ? `/command-center?${continueHandoffQuery}#proposal-review-action` : "/command-center#proposal-review-action";
@@ -403,13 +402,13 @@ export function TreasuryReceiveSurface() {
       state: isRequestReady ? "ready-for-delivery" : "draft-pending-input",
       requestId: `${activeProfile.value}:${reference || "reference-pending"}`.toUpperCase(),
       preparedAt: requestPreparedAt,
-      proposalId: handoff?.proposalId ?? "services-treasury-intake",
-      proposalTitle: handoff?.proposalTitle ?? activeProfile.label,
+      proposalId: persistedHandoff?.proposalId ?? "services-treasury-intake",
+      proposalTitle: persistedHandoff?.proposalTitle ?? activeProfile.label,
       network: config.network,
       payoutProfile: activeProfile.value,
       payoutTitle: activeProfile.label,
       lane,
-      telemetryMode: handoff?.telemetryMode ?? "packet",
+      telemetryMode: persistedHandoff?.telemetryMode ?? "packet",
       asset: {
         symbol: activeAsset.symbol,
         mint: activeAsset.mint ?? "env-configured",
@@ -419,9 +418,9 @@ export function TreasuryReceiveSurface() {
       amountDisplay: amount ? `${amount} ${activeAsset.symbol}` : `${activeAsset.symbol} amount pending`,
       reference: reference || null,
       purpose: purpose || null,
-      routeFocus: handoff?.payoutIntent?.routeFocus ?? activeProfile.summary,
-      executionTarget: handoff?.payoutIntent?.executionTarget ?? `Treasury receive rail · ${activeAsset.symbol}`,
-      evidenceRoute: handoff?.payoutIntent?.evidenceRoute ?? "/documents/treasury-reviewer-packet",
+      routeFocus: persistedHandoff?.payoutIntent?.routeFocus ?? activeProfile.summary,
+      executionTarget: persistedHandoff?.payoutIntent?.executionTarget ?? `Treasury receive rail · ${activeAsset.symbol}`,
+      evidenceRoute: persistedHandoff?.payoutIntent?.evidenceRoute ?? "/documents/treasury-reviewer-packet",
       requestRoute,
       deliveryRoute,
       telemetryRoute,
@@ -436,14 +435,9 @@ export function TreasuryReceiveSurface() {
       amount,
       config.network,
       deliveryRoute,
-      handoff?.payoutIntent?.evidenceRoute,
-      handoff?.payoutIntent?.executionTarget,
-      handoff?.payoutIntent?.routeFocus,
-      handoff?.proposalId,
-      handoff?.proposalTitle,
-      handoff?.telemetryMode,
       isRequestReady,
       lane,
+      persistedHandoff,
       purpose,
       reference,
       requestPreparedAt,
@@ -453,11 +447,12 @@ export function TreasuryReceiveSurface() {
   );
 
   function updateDeliveryState(state: "staged" | "delivered") {
-    if (!handoff || !persistedPayoutIntent) return;
+    const handoffBase = persistedHandoff;
+    if (!handoffBase || !persistedPayoutIntent) return;
 
     requestDeliveryOverrideRef.current = state;
     writeStoredServiceHandoffState({
-      ...handoff,
+      ...handoffBase,
       payoutProfile: activeProfile.value,
       payoutTitle: activeProfile.label,
       updatedAt: new Date().toISOString(),
