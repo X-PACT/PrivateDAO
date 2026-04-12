@@ -264,6 +264,26 @@ export function TreasuryReceiveSurface() {
     if (!handoff || !persistedPayoutIntent || !persistedStateSignature) return;
     if (persistedPayloadSignatureRef.current === persistedStateSignature) return;
 
+    const requestDelivery =
+      handoff.requestDelivery &&
+      (handoff.requestDelivery.state === "staged" || handoff.requestDelivery.state === "delivered")
+        ? {
+            ...handoff.requestDelivery,
+            requestRoute,
+            deliveryRoute,
+            telemetryRoute,
+          }
+        : {
+            state: "draft" as const,
+            stateDetail: isRequestReady
+              ? "Structured request is ready to be staged or delivered into the execution lane."
+              : "Complete amount, reference, and purpose before staging the request for delivery.",
+            requestRoute,
+            deliveryRoute,
+            telemetryRoute,
+            deliveredAt: null,
+          };
+
     writeStoredServiceHandoffState({
       ...handoff,
       payoutProfile: activeProfile.value,
@@ -271,16 +291,7 @@ export function TreasuryReceiveSurface() {
       updatedAt: new Date().toISOString(),
       source: "services",
       payoutIntent: persistedPayoutIntent,
-      requestDelivery: {
-        state: "draft",
-        stateDetail: isRequestReady
-          ? "Structured request is ready to be staged or delivered into the execution lane."
-          : "Complete amount, reference, and purpose before staging the request for delivery.",
-        requestRoute,
-        deliveryRoute,
-        telemetryRoute,
-        deliveredAt: null,
-      },
+      requestDelivery,
     });
     persistedPayloadSignatureRef.current = persistedStateSignature;
   }, [activeProfile.label, activeProfile.value, deliveryRoute, handoff, isRequestReady, persistedPayoutIntent, persistedStateSignature, requestRoute, telemetryRoute]);
