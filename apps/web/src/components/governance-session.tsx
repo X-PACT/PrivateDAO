@@ -53,20 +53,30 @@ function sanitizeGovernanceLogs(
   logs: GovernanceLogEntry[],
   executionIntent: GovernanceExecutionIntent | null,
 ) {
-  if (!executionIntent) {
-    return logs.slice(0, 8);
-  }
+  const filtered = executionIntent
+    ? logs.filter((entry) => {
+        if (entry.label !== "Execution request loaded") {
+          return true;
+        }
 
-  return logs
+        return (
+          entry.value.includes(executionIntent.reference) &&
+          entry.value.includes(executionIntent.amountDisplay)
+        );
+      })
+    : logs;
+
+  const deduped = filtered.filter(
+    (entry, index, collection) =>
+      collection.findIndex(
+        (candidate) =>
+          candidate.label === entry.label && candidate.value === entry.value,
+      ) === index,
+  );
+
+  return deduped
     .filter((entry) => {
-      if (entry.label !== "Execution request loaded") {
-        return true;
-      }
-
-      return (
-        entry.value.includes(executionIntent.reference) &&
-        entry.value.includes(executionIntent.amountDisplay)
-      );
+      return Boolean(entry.label.trim()) && Boolean(entry.value.trim());
     })
     .slice(0, 8);
 }
@@ -181,7 +191,10 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
   function withLog(current: GovernanceSessionState, label: string, value: string): GovernanceSessionState {
     return {
       ...current,
-      logs: [{ label, value }, ...current.logs].slice(0, 8),
+      logs: sanitizeGovernanceLogs(
+        [{ label, value }, ...current.logs],
+        current.executionIntent,
+      ),
     };
   }
 

@@ -10,6 +10,13 @@ import { OperationsShell } from "@/components/operations-shell";
 import { RuntimeEvidenceContinuityPanel } from "@/components/runtime-evidence-continuity-panel";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Network | PrivateDAO",
+  description:
+    "Runtime evidence, diagnostics, proof, and network-grade reviewer surfaces for the live PrivateDAO Devnet system.",
+};
 
 export default function NetworkPage() {
   const executionSnapshot = getExecutionSurfaceSnapshot();
