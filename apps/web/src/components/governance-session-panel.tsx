@@ -69,6 +69,18 @@ export function GovernanceSessionPanel({
                   {session.executionIntent.requestPayload.telemetryRoute}
                 </div>
               </div>
+              <div className="rounded-[18px] border border-white/8 bg-black/20 p-3 text-sm text-white/64 sm:col-span-2">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Final signing packet</div>
+                <div className="mt-2 text-white">
+                  {session.executionIntent.requestPayload.requestId}
+                </div>
+                <div className="mt-1 text-white/72">{session.executionIntent.requestPayload.requestRoute}</div>
+                <div className="mt-1 text-white/72">{session.executionIntent.requestPayload.deliveryRoute}</div>
+                <div className="mt-1 text-white/72">{session.executionIntent.requestPayload.telemetryRoute}</div>
+                <div className="mt-2 text-white/72">
+                  {session.executionIntent.requestPayload.purpose}
+                </div>
+              </div>
             </div>
             <div className="mt-4 flex flex-wrap gap-3">
               <Link
