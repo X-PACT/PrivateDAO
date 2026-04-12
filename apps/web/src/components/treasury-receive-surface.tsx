@@ -339,16 +339,40 @@ export function TreasuryReceiveSurface() {
         : "",
     [activeProfile.label, activeProfile.value, persistedHandoff, persistedPayoutIntent],
   );
-  const requestRoute = continueHandoffQuery ? `/services?${continueHandoffQuery}#treasury-payment-request` : "/services#treasury-payment-request";
-  const deliveryRoute = continueHandoffQuery ? `/command-center?${continueHandoffQuery}#proposal-review-action` : "/command-center#proposal-review-action";
-  const telemetryRoute = continueHandoffQuery ? `/network?${continueHandoffQuery}` : "/network";
-  const stagedRequestRoute = continueHandoffQuery
-    ? `/services?${continueHandoffQuery}&deliveryState=staged#treasury-payment-request`
-    : requestRoute;
-  const deliveredRequestRoute = continueHandoffQuery
-    ? `/command-center?${continueHandoffQuery}&deliveryState=delivered#proposal-review-action`
-    : deliveryRoute;
   const isRequestReady = Boolean(amount.trim() && purpose.trim() && reference.trim());
+
+  const buildRouteWithDelivery = useCallback(
+    (
+      basePath: "/services" | "/command-center" | "/network",
+      state: ServiceHandoffRequestDelivery["state"],
+      deliveredAt: string | null,
+    ) => {
+      if (!continueHandoffQuery) {
+        return basePath === "/services"
+          ? "/services#treasury-payment-request"
+          : basePath === "/command-center"
+            ? "/command-center#proposal-review-action"
+            : "/network";
+      }
+
+      const params = new URLSearchParams(continueHandoffQuery);
+      if (state === "staged" || state === "delivered") {
+        params.set("deliveryState", state);
+      }
+      if (state === "delivered" && deliveredAt) {
+        params.set("deliveredAt", deliveredAt);
+      }
+
+      if (basePath === "/services") {
+        return `/services?${params.toString()}#treasury-payment-request`;
+      }
+      if (basePath === "/command-center") {
+        return `/command-center?${params.toString()}#proposal-review-action`;
+      }
+      return `/network?${params.toString()}`;
+    },
+    [continueHandoffQuery],
+  );
 
   useEffect(() => {
     if (isRequestReady) return;
@@ -357,7 +381,9 @@ export function TreasuryReceiveSurface() {
 
   const buildRequestDelivery = useCallback((
     state: ServiceHandoffRequestDelivery["state"],
+    deliveredAtOverride?: string | null,
   ): ServiceHandoffRequestDelivery => {
+    const deliveredAt = state === "delivered" ? deliveredAtOverride ?? new Date().toISOString() : null;
     return {
       state,
       stateDetail:
@@ -368,12 +394,12 @@ export function TreasuryReceiveSurface() {
             : isRequestReady
               ? "Structured request is ready to be staged or delivered into the execution lane."
               : "Complete amount, reference, and purpose before staging the request for delivery.",
-      requestRoute,
-      deliveryRoute,
-      telemetryRoute,
-      deliveredAt: state === "delivered" ? new Date().toISOString() : null,
+      requestRoute: buildRouteWithDelivery("/services", state, deliveredAt),
+      deliveryRoute: buildRouteWithDelivery("/command-center", state, deliveredAt),
+      telemetryRoute: buildRouteWithDelivery("/network", state, deliveredAt),
+      deliveredAt,
     };
-  }, [deliveryRoute, isRequestReady, requestRoute, telemetryRoute]);
+  }, [buildRouteWithDelivery, isRequestReady]);
 
   const activeRequestDelivery = useMemo(() => {
     if (localDeliveryState === "staged" || localDeliveryState === "delivered") {
@@ -384,14 +410,14 @@ export function TreasuryReceiveSurface() {
     if (storedState && (storedState.state === "staged" || storedState.state === "delivered")) {
       return {
         ...storedState,
-        requestRoute,
-        deliveryRoute,
-        telemetryRoute,
+        requestRoute: buildRouteWithDelivery("/services", storedState.state, storedState.deliveredAt),
+        deliveryRoute: buildRouteWithDelivery("/command-center", storedState.state, storedState.deliveredAt),
+        telemetryRoute: buildRouteWithDelivery("/network", storedState.state, storedState.deliveredAt),
       };
     }
 
     return buildRequestDelivery("draft");
-  }, [buildRequestDelivery, localDeliveryState, persistedHandoff?.requestDelivery]);
+  }, [buildRequestDelivery, buildRouteWithDelivery, localDeliveryState, persistedHandoff?.requestDelivery]);
 
   useEffect(() => {
     if (!handoff || !persistedPayoutIntent || !persistedStateSignature) return;
@@ -412,17 +438,17 @@ export function TreasuryReceiveSurface() {
             (matchingStoredDelivery.state === "staged" || matchingStoredDelivery.state === "delivered")
         ? {
             ...matchingStoredDelivery,
-            requestRoute,
-            deliveryRoute,
-            telemetryRoute,
+            requestRoute: buildRouteWithDelivery("/services", matchingStoredDelivery.state, matchingStoredDelivery.deliveredAt),
+            deliveryRoute: buildRouteWithDelivery("/command-center", matchingStoredDelivery.state, matchingStoredDelivery.deliveredAt),
+            telemetryRoute: buildRouteWithDelivery("/network", matchingStoredDelivery.state, matchingStoredDelivery.deliveredAt),
           }
         : handoff.requestDelivery &&
             (handoff.requestDelivery.state === "staged" || handoff.requestDelivery.state === "delivered")
         ? {
             ...handoff.requestDelivery,
-            requestRoute,
-            deliveryRoute,
-            telemetryRoute,
+            requestRoute: buildRouteWithDelivery("/services", handoff.requestDelivery.state, handoff.requestDelivery.deliveredAt),
+            deliveryRoute: buildRouteWithDelivery("/command-center", handoff.requestDelivery.state, handoff.requestDelivery.deliveredAt),
+            telemetryRoute: buildRouteWithDelivery("/network", handoff.requestDelivery.state, handoff.requestDelivery.deliveredAt),
           }
         : buildRequestDelivery("draft");
 
@@ -439,7 +465,7 @@ export function TreasuryReceiveSurface() {
       requestDeliveryOverrideRef.current = null;
     }
     persistedPayloadSignatureRef.current = persistedStateSignature;
-  }, [activeProfile.label, activeProfile.value, buildRequestDelivery, handoff, persistedPayoutIntent, persistedStateSignature]);
+  }, [activeProfile.label, activeProfile.value, buildRequestDelivery, buildRouteWithDelivery, handoff, persistedPayoutIntent, persistedStateSignature]);
 
   async function copyValue(key: string, value: string) {
     await navigator.clipboard.writeText(value);
@@ -497,9 +523,9 @@ export function TreasuryReceiveSurface() {
       routeFocus: persistedHandoff?.payoutIntent?.routeFocus ?? activeProfile.summary,
       executionTarget: persistedHandoff?.payoutIntent?.executionTarget ?? `Treasury receive rail · ${activeAsset.symbol}`,
       evidenceRoute: persistedHandoff?.payoutIntent?.evidenceRoute ?? "/documents/treasury-reviewer-packet",
-      requestRoute,
-      deliveryRoute,
-      telemetryRoute,
+      requestRoute: activeRequestDelivery.requestRoute,
+      deliveryRoute: activeRequestDelivery.deliveryRoute,
+      telemetryRoute: activeRequestDelivery.telemetryRoute,
     }),
     [
       activeAsset.mint,
@@ -510,40 +536,34 @@ export function TreasuryReceiveSurface() {
       activeProfile.value,
       amount,
       config.network,
-      deliveryRoute,
       isRequestReady,
       lane,
       persistedHandoff,
       purpose,
       reference,
       requestPreparedAt,
-      requestRoute,
-      telemetryRoute,
+      activeRequestDelivery.deliveryRoute,
+      activeRequestDelivery.requestRoute,
+      activeRequestDelivery.telemetryRoute,
     ],
   );
 
-  function updateDeliveryState(state: "staged" | "delivered") {
-    const handoffBase = persistedHandoff;
-    if (!handoffBase || !persistedPayoutIntent) return;
-
+  function handleDeliveryNavigation(state: "staged" | "delivered") {
+    if (!isRequestReady || !persistedHandoff || !persistedPayoutIntent) return;
+    const requestDelivery = buildRequestDelivery(state);
     requestDeliveryOverrideRef.current = state;
     setLocalDeliveryState(state);
     writeStoredServiceHandoffState({
-      ...handoffBase,
+      ...persistedHandoff,
       payoutProfile: activeProfile.value,
       payoutTitle: activeProfile.label,
       updatedAt: new Date().toISOString(),
       source: "services",
       payoutIntent: persistedPayoutIntent,
-      requestDelivery: buildRequestDelivery(state),
+      requestDelivery,
     });
-  }
-
-  function handleDeliveryNavigation(state: "staged" | "delivered") {
-    if (!isRequestReady) return;
-    updateDeliveryState(state);
     setCopied(state === "staged" ? "request-staged" : "request-delivered");
-    window.location.assign(state === "staged" ? stagedRequestRoute : deliveredRequestRoute);
+    window.location.assign(state === "staged" ? requestDelivery.requestRoute : requestDelivery.deliveryRoute);
   }
 
   if (!isMounted) {
@@ -890,11 +910,11 @@ export function TreasuryReceiveSurface() {
               <div className="mt-4 grid gap-3 md:grid-cols-2">
                 <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
                   <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Request route</div>
-                  <div className="mt-2 text-white">{requestRoute}</div>
+                  <div className="mt-2 text-white">{activeRequestDelivery.requestRoute}</div>
                 </div>
                 <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
                   <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Delivery route</div>
-                  <div className="mt-2 text-white">{deliveryRoute}</div>
+                  <div className="mt-2 text-white">{activeRequestDelivery.deliveryRoute}</div>
                 </div>
               </div>
               <div className="mt-4 flex flex-wrap gap-3">
@@ -915,7 +935,7 @@ export function TreasuryReceiveSurface() {
                   Deliver to command center
                 </button>
                 <Link
-                  href={telemetryRoute}
+                  href={activeRequestDelivery.telemetryRoute}
                   className={cn(buttonVariants({ size: "sm", variant: "outline" }), !isRequestReady && "pointer-events-none opacity-50")}
                   aria-disabled={!isRequestReady}
                 >

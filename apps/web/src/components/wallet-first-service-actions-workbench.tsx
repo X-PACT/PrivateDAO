@@ -100,6 +100,7 @@ function buildStoredHandoffState(
 ): ServiceHandoffState {
   const assetSymbol = resolvePayoutAssetSymbol(proposal, payout);
   const amount = resolvePayoutAmount(proposal, assetSymbol);
+  const amountDisplay = buildPayoutAmountDisplay(amount, assetSymbol);
   const reference = buildPayoutReference(proposal, payout);
   const purpose = `${payout.title} for ${proposal.id} · ${proposal.title}`;
 
@@ -124,7 +125,7 @@ function buildStoredHandoffState(
     payoutIntent: {
       assetSymbol,
       amount,
-      amountDisplay: proposal.amountDisplay,
+      amountDisplay,
       reference,
       purpose,
       lane: payout.defaultLane,
@@ -167,6 +168,17 @@ function resolvePayoutAmount(
     return String(proposal.amount);
   }
   return "";
+}
+
+function buildPayoutAmountDisplay(
+  amount: string,
+  assetSymbol: ServiceHandoffAssetSymbol,
+) {
+  if (amount.trim().length > 0) {
+    return `${amount} ${assetSymbol}`;
+  }
+
+  return `${assetSymbol} sender amount pending`;
 }
 
 function buildPayoutReference(

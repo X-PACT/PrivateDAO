@@ -45,6 +45,12 @@ export function ActionReviewModal({
     voteChoice,
     proposal,
   });
+  const summaryBeneficiary = executionIntent?.executionTarget ?? summary.beneficiary;
+  const summaryAmountOrAsset = executionIntent?.amountDisplay ?? summary.amountOrAsset;
+  const summaryTimelock =
+    executionIntent
+      ? `Execution continuity loaded · telemetry ${executionIntent.telemetryMode}`
+      : summary.timelock;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#03050e]/84 px-4 backdrop-blur-md">
@@ -86,11 +92,11 @@ export function ActionReviewModal({
           </div>
           <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
             <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Beneficiary / path</div>
-            <div className="mt-2 text-sm font-medium text-white">{summary.beneficiary}</div>
+            <div className="mt-2 text-sm font-medium text-white">{summaryBeneficiary}</div>
           </div>
           <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
             <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Amount / asset</div>
-            <div className="mt-2 text-sm font-medium text-white">{summary.amountOrAsset}</div>
+            <div className="mt-2 text-sm font-medium text-white">{summaryAmountOrAsset}</div>
           </div>
           <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
             <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Governance mint</div>
@@ -98,7 +104,7 @@ export function ActionReviewModal({
           </div>
           <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
             <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Timelock / gate</div>
-            <div className="mt-2 text-sm font-medium text-white">{summary.timelock}</div>
+            <div className="mt-2 text-sm font-medium text-white">{summaryTimelock}</div>
           </div>
           {proposal?.execution ? (
             <div className="rounded-3xl border border-white/8 bg-white/4 p-4 md:col-span-2 xl:col-span-4">
@@ -140,10 +146,34 @@ export function ActionReviewModal({
           </div>
         ) : null}
 
-        {proposal ? (
+        {proposal && !executionIntent ? (
           <div className="mt-6 grid gap-4">
             <ProposalAnalyzerInline proposal={proposal} />
             <TreasuryRiskInline proposal={proposal} />
+          </div>
+        ) : null}
+
+        {executionIntent ? (
+          <div className="mt-6 rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-5">
+            <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/80">Execution continuity checks</div>
+            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Payload source</div>
+                <div className="mt-2 text-white">{executionIntent.reference}</div>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Review posture</div>
+                <div className="mt-2 text-white">Execution packet loaded from governed services continuity.</div>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Commercial route</div>
+                <div className="mt-2 text-white">{executionIntent.payoutTitle}</div>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Proof route</div>
+                <div className="mt-2 text-white">{executionIntent.evidenceRoute}</div>
+              </div>
+            </div>
           </div>
         ) : null}
 

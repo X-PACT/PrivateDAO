@@ -100,6 +100,7 @@ export type ServiceHandoffSelection = {
   payoutProfile: ServiceHandoffProfile;
   telemetryMode: ServiceHandoffTelemetryMode;
   deliveryState?: "staged" | "delivered";
+  deliveredAt?: string;
 };
 
 let storedServiceHandoffRawCache: string | null = null;
@@ -268,6 +269,7 @@ export function readServiceHandoffState(searchParams: URLSearchParams): ServiceH
   const payoutProfile = searchParams.get("profile");
   const telemetryMode = searchParams.get("telemetryMode");
   const deliveryState = searchParams.get("deliveryState");
+  const deliveredAt = searchParams.get("deliveredAt");
 
   if (!proposalId || !isServiceHandoffProfile(payoutProfile) || !isServiceHandoffTelemetryMode(telemetryMode)) {
     return null;
@@ -280,6 +282,10 @@ export function readServiceHandoffState(searchParams: URLSearchParams): ServiceH
     deliveryState:
       deliveryState === "staged" || deliveryState === "delivered"
         ? deliveryState
+        : undefined,
+    deliveredAt:
+      deliveryState === "delivered" && typeof deliveredAt === "string" && deliveredAt.length > 0
+        ? deliveredAt
         : undefined,
   };
 }
@@ -318,7 +324,9 @@ export function mergeServiceHandoffState(
       ? {
           state: selection.deliveryState,
           stateDetail:
-            selection.deliveryState === "delivered"
+            selection.deliveryState === "delivered" && sameProfile && storedState?.requestDelivery?.stateDetail
+              ? storedState.requestDelivery.stateDetail
+              : selection.deliveryState === "delivered"
               ? "Execution handoff delivered into command-center from the active UI lane."
               : "Execution handoff staged in services and ready for governed delivery.",
           requestRoute: `/services?${baseQuery}#treasury-payment-request`,
@@ -326,7 +334,9 @@ export function mergeServiceHandoffState(
           telemetryRoute: `/network?${baseQuery}`,
           deliveredAt:
             selection.deliveryState === "delivered"
-              ? storedState?.requestDelivery?.deliveredAt ?? "query-handoff"
+              ? (sameProfile && storedState?.requestDelivery?.state === "delivered"
+                  ? storedState.requestDelivery.deliveredAt
+                  : undefined) ?? selection.deliveredAt ?? "query-handoff"
               : null,
         }
       : sameProfile
