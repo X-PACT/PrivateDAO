@@ -152,10 +152,7 @@ export function TreasuryReceiveSurface() {
   const activeProfile = destinationProfiles.find((item) => item.value === profile) ?? destinationProfiles[0];
   const activeLane = handoffLanes.find((item) => item.value === lane) ?? handoffLanes[0];
   const handoffProfile = handoff?.payoutProfile ?? null;
-  const allowStoredServicesHydration =
-    handoff?.source !== "services" ||
-    handoff?.requestDelivery?.state === "staged" ||
-    handoff?.requestDelivery?.state === "delivered";
+  const allowStoredServicesHydration = Boolean(handoff?.payoutIntent);
 
   useEffect(() => {
     setIsMounted(true);
