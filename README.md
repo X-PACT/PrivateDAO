@@ -376,6 +376,7 @@ Reference:
 
 - Native app root: `apps/android-native/`
 - Android guide: `docs/android-native.md`
+- Downloadable branch APK: `artifacts/android/PrivateDAO-android-devnet-debug.apk`
 
 ## Live Devnet Proof
 

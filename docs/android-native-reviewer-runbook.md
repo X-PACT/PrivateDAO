@@ -35,6 +35,18 @@ Expected artifact:
 apps/android-native/app/build/outputs/apk/debug/app-debug.apk
 ```
 
+Packaged branch download:
+
+```text
+artifacts/android/PrivateDAO-android-devnet-debug.apk
+```
+
+Direct URL:
+
+```text
+https://github.com/X-PACT/PrivateDAO/raw/feat/android-native-private-dao/artifacts/android/PrivateDAO-android-devnet-debug.apk
+```
+
 ## Android Runtime Path
 
 From the repo root:

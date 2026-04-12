@@ -255,6 +255,13 @@ Verified local output on this branch:
 - result: `BUILD SUCCESSFUL`
 - artifact: `apps/android-native/app/build/outputs/apk/debug/app-debug.apk`
 
+Packaged downloadable branch artifact:
+
+- file: `artifacts/android/PrivateDAO-android-devnet-debug.apk`
+- sha256: `32d5b07cf29b703d57537b0a6d2746a9ce34b6665fd3c90a597f0d3fd77048a4`
+- direct download:
+  - `https://github.com/X-PACT/PrivateDAO/raw/feat/android-native-private-dao/artifacts/android/PrivateDAO-android-devnet-debug.apk`
+
 ## Emulator / Device Runtime Path
 
 The branch now includes explicit shell entry points for Android runtime verification:
@@ -304,6 +311,7 @@ This captures:
 - the emulator bootstrap path
 - the in-app reviewer/runtime surfaces
 - the remaining runtime limitation when Google emulator packages are still downloading
+- the current downloadable APK path for branch review
 
 ## Run / Judge Flow
 
