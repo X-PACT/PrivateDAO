@@ -19,7 +19,9 @@ import { ReadNodeHostReadinessStrip } from "@/components/read-node-host-readines
 import { ServiceHandoffStrip } from "@/components/service-handoff-strip";
 import { TreasuryProfileQuickActions } from "@/components/treasury-profile-quick-actions";
 import { WalletFirstServiceActionsStrip } from "@/components/wallet-first-service-actions-strip";
+import { AuthoritativeExecutionTrail } from "@/components/authoritative-execution-trail";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
+import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
@@ -32,6 +34,7 @@ export const metadata: Metadata = buildRouteMetadata({
 
 export default function CommandCenterPage() {
   const executionSnapshot = getExecutionSurfaceSnapshot();
+  const runtimeSnapshot = getJudgeRuntimeLogsSnapshot();
 
   return (
     <OperationsShell
@@ -50,6 +53,11 @@ export default function CommandCenterPage() {
       <div>
         <Suspense fallback={null}>
           <ServiceHandoffStrip context="command-center" />
+        </Suspense>
+      </div>
+      <div>
+        <Suspense fallback={null}>
+          <AuthoritativeExecutionTrail context="command-center" runtimeSnapshot={runtimeSnapshot} />
         </Suspense>
       </div>
       <div>

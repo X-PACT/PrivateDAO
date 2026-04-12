@@ -71,6 +71,26 @@ export function RuntimeEvidenceContinuityPanel({
               ))}
             </div>
           </div>
+          <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+            <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-white/40">
+              <Activity className="h-3.5 w-3.5 text-emerald-200" />
+              Runtime timeline
+            </div>
+            <div className="mt-3 grid gap-3">
+              <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-3">
+                <div className="text-sm font-medium text-white">Real-device coverage</div>
+                <div className="mt-2 text-sm leading-7 text-white/60">{runtimeSnapshot.runtime.walletCoverage}</div>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-3">
+                <div className="text-sm font-medium text-white">Transaction capture</div>
+                <div className="mt-2 text-sm leading-7 text-white/60">{runtimeSnapshot.runtime.txSuccessRate}</div>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-3">
+                <div className="text-sm font-medium text-white">Adversarial discipline</div>
+                <div className="mt-2 text-sm leading-7 text-white/60">{runtimeSnapshot.runtime.adversarialSummary}</div>
+              </div>
+            </div>
+          </div>
         </div>
         <div className="grid gap-3">
           <div className="rounded-2xl border border-white/8 bg-black/20 p-4">

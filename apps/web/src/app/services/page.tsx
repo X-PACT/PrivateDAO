@@ -27,6 +27,8 @@ import { TreasuryProfileQuickActions } from "@/components/treasury-profile-quick
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { TreasuryReviewerGradeStrip } from "@/components/treasury-reviewer-grade-strip";
 import { WalletFirstServiceActionsStrip } from "@/components/wallet-first-service-actions-strip";
+import { AuthoritativeExecutionTrail } from "@/components/authoritative-execution-trail";
+import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Services",
@@ -37,6 +39,7 @@ export const metadata: Metadata = buildRouteMetadata({
 });
 
 export default function ServicesPage() {
+  const runtimeSnapshot = getJudgeRuntimeLogsSnapshot();
   return (
     <OperationsShell
       eyebrow="Commercial"
@@ -54,6 +57,11 @@ export default function ServicesPage() {
       <div>
         <Suspense fallback={null}>
           <ServiceHandoffStrip context="services" />
+        </Suspense>
+      </div>
+      <div>
+        <Suspense fallback={null}>
+          <AuthoritativeExecutionTrail context="services" runtimeSnapshot={runtimeSnapshot} />
         </Suspense>
       </div>
       <div>
