@@ -85,6 +85,20 @@ export function GovernanceSessionPanel({
                 Open execution telemetry
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
+              <Link
+                href="/documents/monitoring-alert-rules"
+                className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}
+              >
+                Open alert rules
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+              <Link
+                href="/documents/real-device-runtime"
+                className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}
+              >
+                Open real-device runtime
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
             </div>
           </div>
         ) : null}

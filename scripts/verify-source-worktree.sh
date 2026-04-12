@@ -11,6 +11,8 @@ staged_paths="$(git -C "$REPO_ROOT" diff --cached --name-only)"
 untracked_paths="$(git -C "$REPO_ROOT" ls-files --others --exclude-standard)"
 
 candidate_paths="$(printf '%s\n%s\n%s\n' "$unstaged_paths" "$staged_paths" "$untracked_paths" | sed '/^$/d' | sort -u)"
+staged_forbidden_paths="$(printf '%s\n' "$staged_paths" | grep -E "$forbidden_regex" || true)"
+local_forbidden_paths="$(printf '%s\n%s\n' "$unstaged_paths" "$untracked_paths" | sed '/^$/d' | grep -E "$forbidden_regex" || true)"
 
 if [[ -z "$candidate_paths" ]]; then
   echo "source worktree preflight: no source hygiene issues"
@@ -23,18 +25,23 @@ source_count="$(printf '%s\n' "$source_paths" | sed '/^$/d' | wc -l | tr -d ' ')
 
 if [[ -n "$forbidden_paths" ]]; then
   forbidden_count="$(printf '%s\n' "$forbidden_paths" | wc -l | tr -d ' ')"
+  staged_forbidden_count="$(printf '%s\n' "$staged_forbidden_paths" | sed '/^$/d' | wc -l | tr -d ' ')"
+  local_forbidden_count="$(printf '%s\n' "$local_forbidden_paths" | sed '/^$/d' | wc -l | tr -d ' ')"
   echo "source worktree preflight: mirror/export churn detected"
   printf 'mirror/export paths: %s\n' "$forbidden_count"
+  printf 'staged mirror/export paths: %s\n' "$staged_forbidden_count"
+  printf 'unstaged or untracked mirror/export paths: %s\n' "$local_forbidden_count"
   printf 'source paths outside mirror/export scope: %s\n' "$source_count"
   printf '%s\n' "$forbidden_paths" | sed -n '1,25p'
   if [[ "$forbidden_count" -gt 25 ]]; then
     printf '... truncated %s additional path(s)\n' "$((forbidden_count - 25))"
   fi
-  if [[ "${PRIVATE_DAO_STRICT_WORKTREE_PREFLIGHT:-0}" == "1" ]]; then
+  if [[ "${PRIVATE_DAO_STRICT_WORKTREE_PREFLIGHT:-0}" == "1" && "$staged_forbidden_count" -gt 0 ]]; then
     exit 1
   fi
-  echo "source worktree preflight: warning only (set PRIVATE_DAO_STRICT_WORKTREE_PREFLIGHT=1 to hard fail)"
+  echo "source worktree preflight: warning only (strict mode now hard-fails staged mirror/export churn only)"
   echo "source worktree preflight: use 'npm run status:source' to inspect only source-scoped deltas"
+  echo "source worktree preflight: use 'npm run status:source:staged' before commit"
   exit 0
 fi
 

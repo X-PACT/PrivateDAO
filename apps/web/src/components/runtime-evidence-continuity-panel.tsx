@@ -187,6 +187,29 @@ export function RuntimeEvidenceContinuityPanel({
               </div>
             </div>
           ) : null}
+          <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+            <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-white/40">
+              <BellRing className="h-3.5 w-3.5 text-cyan-200" />
+              Reviewer-operable controls
+            </div>
+            <div className="mt-2 text-sm leading-7 text-white/60">
+              Real-device intake, alert rules, and runtime runbooks stay reachable from the same evidence object instead of splitting into unrelated document trails.
+            </div>
+            <div className="mt-3 flex flex-wrap gap-3">
+              <Link href="/documents/real-device-runtime" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")}>
+                Open real-device runtime
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+              <Link href="/documents/monitoring-alert-rules" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+                Open alert rules
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+              <Link href="/documents/incident-readiness-runbook" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+                Open incident runbook
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
           <div className="flex flex-wrap gap-3">
             <Link href={proofHref} className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")}>
               Open judge route

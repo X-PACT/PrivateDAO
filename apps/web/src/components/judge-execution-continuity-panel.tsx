@@ -115,6 +115,10 @@ export function JudgeExecutionContinuityPanel({
               Open real-device runtime
               <ArrowUpRight className="h-4 w-4" />
             </Link>
+            <Link href="/documents/incident-readiness-runbook" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+              Open incident runbook
+              <ArrowUpRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
         {evidence ? (
