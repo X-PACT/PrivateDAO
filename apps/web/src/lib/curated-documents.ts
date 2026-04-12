@@ -208,6 +208,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/mainnet-blockers.md`,
   },
   {
+    slug: "mainnet-external-closure-packet",
+    title: "Mainnet External Closure Packet",
+    category: "Trust",
+    summary: "Single operator packet for the remaining external-only path: PDAO metadata cutover, custody and authority closure, deploy-only SOL funding, and the exact point at which mainnet can truthfully be called funding-ready.",
+    audience: "Operators, buyers, reviewers, release owners",
+    boundary: "Closure packet only; it does not claim that external signers, update authority, or cutover ceremony have already executed.",
+    docPath: "docs/mainnet-external-closure-packet.md",
+    rawHref: `${repositoryBlobBase}/docs/mainnet-external-closure-packet.md`,
+  },
+  {
     slug: "trust-package",
     title: "Trust Package",
     category: "Trust",
