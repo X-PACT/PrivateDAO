@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import {
   buildServiceHandoffQuery,
+  readStoredServiceHandoffState,
   type ServiceHandoffAssetSymbol,
   writeStoredServiceHandoffState,
 } from "@/lib/service-handoff-state";
@@ -208,6 +209,7 @@ export function TreasuryReceiveSurface() {
       setPurpose(handoffProfileConfig.defaultPurpose);
     }
 
+    persistedPayloadSignatureRef.current = null;
     appliedHandoffKeyRef.current = handoffKey;
   }, [allowStoredServicesHydration, config.assets, handoff]);
 
@@ -354,9 +356,24 @@ export function TreasuryReceiveSurface() {
     if (!handoff || !persistedPayoutIntent || !persistedStateSignature) return;
     if (persistedPayloadSignatureRef.current === persistedStateSignature) return;
 
+    const storedState = readStoredServiceHandoffState();
+    const matchingStoredDelivery =
+      storedState?.proposalId === handoff.proposalId &&
+      storedState?.payoutProfile === activeProfile.value
+        ? storedState.requestDelivery
+        : undefined;
+
     const requestDelivery =
-      handoff.requestDelivery &&
-      (handoff.requestDelivery.state === "staged" || handoff.requestDelivery.state === "delivered")
+      matchingStoredDelivery &&
+      (matchingStoredDelivery.state === "staged" || matchingStoredDelivery.state === "delivered")
+        ? {
+            ...matchingStoredDelivery,
+            requestRoute,
+            deliveryRoute,
+            telemetryRoute,
+          }
+        : handoff.requestDelivery &&
+            (handoff.requestDelivery.state === "staged" || handoff.requestDelivery.state === "delivered")
         ? {
             ...handoff.requestDelivery,
             requestRoute,
