@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { ArrowRight, ArrowUpRight, CheckCircle2, Clipboard, Coins, Download, FileCheck2, Landmark, ShieldCheck, Wallet } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -138,7 +137,6 @@ function resolveSupportedAsset(
 }
 
 export function TreasuryReceiveSurface() {
-  const router = useRouter();
   const config = getTreasuryReceiveConfig();
   const [copied, setCopied] = useState<string | null>(null);
   const [isMounted, setIsMounted] = useState(false);
@@ -501,7 +499,7 @@ export function TreasuryReceiveSurface() {
     if (!isRequestReady) return;
     updateDeliveryState(state);
     setCopied(state === "staged" ? "request-staged" : "request-delivered");
-    router.push(state === "staged" ? stagedRequestRoute : deliveredRequestRoute);
+    window.location.assign(state === "staged" ? stagedRequestRoute : deliveredRequestRoute);
   }
 
   if (!isMounted) {
