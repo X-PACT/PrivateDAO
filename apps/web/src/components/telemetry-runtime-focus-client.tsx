@@ -6,7 +6,7 @@ import { Radar, ServerCog, ShieldCheck } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import type { JudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
-import { useServiceHandoffTelemetryMode } from "@/lib/use-service-handoff-snapshot";
+import { useServiceHandoffSnapshot, useServiceHandoffTelemetryMode } from "@/lib/use-service-handoff-snapshot";
 import { cn } from "@/lib/utils";
 
 type TelemetryRuntimeFocusClientProps = {
@@ -49,6 +49,7 @@ export function TelemetryRuntimeFocusClient({
   snapshot,
 }: TelemetryRuntimeFocusClientProps) {
   const mode = useServiceHandoffTelemetryMode(context);
+  const handoff = useServiceHandoffSnapshot(context);
   const active = modeCopy[mode];
   const entries =
     mode === "backend"
@@ -62,6 +63,20 @@ export function TelemetryRuntimeFocusClient({
       : mode === "snapshot"
         ? `${snapshot.governance.proposal} · ${snapshot.governance.verificationStatus}`
         : `${snapshot.confidential.proposal} · ${snapshot.confidential.verificationStatus}`;
+  const continuityEntry =
+    handoff?.payoutIntent
+      ? {
+          label: `${handoff.proposalId} · ${handoff.payoutTitle}`,
+          signature: `${handoff.payoutIntent.reference} · ${handoff.payoutIntent.amountDisplay}`,
+          status:
+            handoff.requestDelivery?.state === "delivered"
+              ? "delivered-from-services"
+              : handoff.requestDelivery?.state === "staged"
+                ? "staged-for-delivery"
+                : "draft-execution-context",
+        }
+      : null;
+  const renderedEntries = continuityEntry ? [continuityEntry, ...entries] : entries;
 
   return (
     <Card className="border-cyan-300/14 bg-[linear-gradient(180deg,rgba(9,16,31,0.96),rgba(6,11,21,0.98))]">
@@ -92,9 +107,24 @@ export function TelemetryRuntimeFocusClient({
               Stay on {context}
             </Link>
           </div>
+          {handoff?.payoutIntent ? (
+            <div className="mt-4 rounded-2xl border border-white/8 bg-black/20 p-4">
+              <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Execution continuity</div>
+              <div className="mt-2 text-sm font-medium text-white">
+                {handoff.payoutIntent.amountDisplay} · {handoff.payoutIntent.reference}
+              </div>
+              <div className="mt-2 text-sm leading-7 text-white/58">
+                {handoff.requestDelivery?.state === "delivered"
+                  ? "Delivery state is already consumed by command-center and kept visible in runtime panels."
+                  : handoff.requestDelivery?.state === "staged"
+                    ? "Delivery state is staged and ready for command-center execution."
+                    : "Delivery context is present, but the request remains editable."}
+              </div>
+            </div>
+          ) : null}
         </div>
         <div className="grid gap-3">
-          {entries.map((entry) => (
+          {renderedEntries.map((entry) => (
             <div key={`${mode}-${entry.label}-${entry.signature}`} className="rounded-2xl border border-white/8 bg-black/20 p-4">
               <div className="flex items-center justify-between gap-3">
                 <div className="text-sm font-medium text-white">{entry.label}</div>

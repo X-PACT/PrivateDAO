@@ -95,6 +95,36 @@ export function GovernanceActionWorkbench() {
       }),
     [daoName, nextAction, proposalCreated, proposalTitle, voteChoice],
   );
+  const continuityLogs = useMemo(() => {
+    if (!handoff) return [];
+
+    const derived: Array<{ label: string; value: string }> = [];
+
+    if (executionIntent) {
+      derived.push({
+        label: "Execution continuity",
+        value: `${executionIntent.payoutTitle} · ${executionIntent.amountDisplay} · ${executionIntent.reference}`,
+      });
+      derived.push({
+        label: "Execution target",
+        value: `${executionIntent.executionTarget} · telemetry ${executionIntent.telemetryMode}`,
+      });
+    }
+
+    if (handoff.requestDelivery) {
+      derived.push({
+        label: "Delivery state",
+        value:
+          handoff.requestDelivery.state === "delivered"
+            ? `delivered · ${handoff.requestDelivery.deliveredAt ?? "timestamp pending"}`
+            : handoff.requestDelivery.state === "staged"
+              ? "staged · ready for governed command-center delivery"
+              : "draft · request remains editable in services",
+      });
+    }
+
+    return derived;
+  }, [executionIntent, handoff]);
 
   useEffect(() => {
     if (!handoff) return;
@@ -400,7 +430,7 @@ export function GovernanceActionWorkbench() {
             </div>
             <div className="mt-4 grid gap-3">
               {logs.length > 0 ? (
-                logs.map((entry) => (
+                [...continuityLogs, ...logs].map((entry) => (
                   <div key={`${entry.label}-${entry.value}`} className="rounded-2xl border border-white/8 bg-black/20 p-4">
                     <div className="text-sm font-medium text-white">{entry.label}</div>
                     <div className="mt-2 text-sm leading-7 text-white/56">{entry.value}</div>

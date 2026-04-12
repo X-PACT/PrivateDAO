@@ -53,6 +53,24 @@ export function AnalyticsSummary() {
           <p className="text-sm leading-7 text-white/58">
             {activeSelection.summary}
           </p>
+          {handoff?.payoutIntent ? (
+            <div className="mt-4 rounded-2xl border border-white/8 bg-black/20 p-4">
+              <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Execution continuity</div>
+              <div className="mt-2 text-sm font-medium text-white">
+                {handoff.proposalId} · {handoff.payoutTitle}
+              </div>
+              <div className="mt-2 text-sm leading-7 text-white/58">
+                {handoff.payoutIntent.amountDisplay} · {handoff.payoutIntent.reference}
+              </div>
+              <div className="mt-2 text-sm leading-7 text-white/58">
+                {handoff.requestDelivery?.state === "delivered"
+                  ? "Request already delivered into command-center."
+                  : handoff.requestDelivery?.state === "staged"
+                    ? "Request is staged in services and ready for governed delivery."
+                    : "Request is still editable in services before delivery."}
+              </div>
+            </div>
+          ) : null}
           <div className="mt-4 flex flex-wrap gap-3">
             <Link href={activeSelection.primaryHref} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
               Open active telemetry lane
