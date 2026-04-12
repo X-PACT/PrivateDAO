@@ -60,6 +60,7 @@ const destinationProfiles = [
     label: "Treasury top-up",
     summary: "Route capital into the treasury for runway, governance execution, and shared operating capacity.",
     defaultAsset: "SOL" as const,
+    defaultAmount: "0.02",
     defaultLane: "buyer",
     defaultPurpose: "Treasury top-up for governance runway and shared Devnet operations.",
     intake: "payments",
@@ -73,6 +74,7 @@ const destinationProfiles = [
     label: "Pilot funding",
     summary: "Fund a time-boxed pilot so the buyer path stays tied to a real product and measurable Devnet execution.",
     defaultAsset: "USDC" as const,
+    defaultAmount: "250",
     defaultLane: "buyer",
     defaultPurpose: "Pilot funding for PrivateDAO rollout, buyer onboarding, and measured Devnet validation.",
     intake: "pilot",
@@ -86,6 +88,7 @@ const destinationProfiles = [
     label: "Vendor payout",
     summary: "Prepare a governed payout for an external service provider with clear operational routing and evidence.",
     defaultAsset: "USDC" as const,
+    defaultAmount: "250",
     defaultLane: "operator",
     defaultPurpose: "Vendor payout request routed through governed treasury operations.",
     intake: "payments",
@@ -99,6 +102,7 @@ const destinationProfiles = [
     label: "Contributor payout",
     summary: "Issue a governed payout for contributors, builders, or operators while preserving treasury discipline.",
     defaultAsset: "USDC" as const,
+    defaultAmount: "50",
     defaultLane: "operator",
     defaultPurpose: "Contributor payout request for governed treasury execution.",
     intake: "payments",
@@ -160,7 +164,7 @@ function buildProposalBackedPrefill(
     amount:
       proposal.execution.amount !== null && supportedMint === assetSymbol
         ? String(proposal.execution.amount)
-        : "",
+        : profile.defaultAmount,
     purpose: `${profile.label} for ${proposal.id} · ${proposal.title}`,
   };
 }
@@ -193,11 +197,7 @@ export function TreasuryReceiveSurface() {
   }, []);
 
   useEffect(() => {
-    if (
-      handoff?.payoutIntent &&
-      handoff.payoutProfile === activeProfile.value &&
-      allowStoredServicesHydration
-    ) {
+    if (handoff?.payoutProfile === activeProfile.value) {
       return;
     }
 
@@ -205,9 +205,9 @@ export function TreasuryReceiveSurface() {
     setLane(activeProfile.defaultLane);
     setSelectedAsset(defaultAsset);
     setReference(`${activeProfile.value.toUpperCase()}-REQUEST-PENDING`);
-    setAmount("");
+    setAmount(activeProfile.defaultAmount);
     setPurpose(activeProfile.defaultPurpose);
-  }, [activeProfile, allowStoredServicesHydration, config.assets, handoff?.payoutIntent, handoff?.payoutProfile]);
+  }, [activeProfile, config.assets, handoff?.payoutProfile]);
 
   useEffect(() => {
     setRequestPreparedAt(new Date().toISOString());
@@ -253,7 +253,7 @@ export function TreasuryReceiveSurface() {
       );
       setLane(handoffProfileConfig.defaultLane);
       setReference(`${handoffProfileConfig.value.toUpperCase()}-REQUEST-PENDING`);
-      setAmount("");
+      setAmount(handoffProfileConfig.defaultAmount);
       setPurpose(handoffProfileConfig.defaultPurpose);
     }
 
