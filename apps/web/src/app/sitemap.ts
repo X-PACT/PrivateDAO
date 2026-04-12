@@ -3,6 +3,8 @@ import type { MetadataRoute } from "next";
 import { getCuratedDocuments } from "@/lib/curated-documents";
 import { siteUrl } from "@/lib/site-brand";
 
+export const dynamic = "force-static";
+
 const coreRoutes = [
   "",
   "/start",
