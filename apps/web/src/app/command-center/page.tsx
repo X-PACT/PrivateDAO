@@ -7,6 +7,7 @@ import { CommandCenterLiveShell } from "@/components/command-center-live-shell";
 import { CustodyReadinessStrip } from "@/components/custody-readiness-strip";
 import { CustodyTruthQuickActions } from "@/components/custody-truth-quick-actions";
 import { CustodyWorkspace } from "@/components/custody-workspace";
+import { ExecutionOperationsStrip } from "@/components/execution-operations-strip";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperatingBoundaryPanel } from "@/components/operating-boundary-panel";
 import { OperationsShell } from "@/components/operations-shell";
@@ -58,6 +59,11 @@ export default function CommandCenterPage() {
       <div>
         <Suspense fallback={null}>
           <AuthoritativeExecutionTrail context="command-center" runtimeSnapshot={runtimeSnapshot} />
+        </Suspense>
+      </div>
+      <div>
+        <Suspense fallback={null}>
+          <ExecutionOperationsStrip context="command-center" />
         </Suspense>
       </div>
       <div>

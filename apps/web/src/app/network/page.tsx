@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 
 import { DiagnosticsCenter } from "@/components/diagnostics-center";
+import { ExecutionOperationsStrip } from "@/components/execution-operations-strip";
 import { FrontierSignalBoard } from "@/components/frontier-signal-board";
 import { ProofCenter } from "@/components/proof-center";
 import { SecurityCenter } from "@/components/security-center";
@@ -45,6 +46,9 @@ export default function NetworkPage() {
           executionSnapshot={executionSnapshot}
           runtimeSnapshot={runtimeSnapshot}
         />
+      </Suspense>
+      <Suspense fallback={null}>
+        <ExecutionOperationsStrip context="network" />
       </Suspense>
       <FrontierSignalBoard />
       <ProofCenter />
