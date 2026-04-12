@@ -331,13 +331,13 @@ export function TreasuryReceiveSurface() {
     () =>
       persistedHandoff && persistedPayoutIntent
         ? buildServiceHandoffQuery({
-            ...persistedHandoff,
+            proposalId: persistedHandoff.proposalId,
             payoutProfile: activeProfile.value,
-            payoutTitle: activeProfile.label,
-            payoutIntent: persistedPayoutIntent,
+            telemetryMode: persistedHandoff.telemetryMode,
+            requestDelivery: persistedHandoff.requestDelivery,
           })
         : "",
-    [activeProfile.label, activeProfile.value, persistedHandoff, persistedPayoutIntent],
+    [activeProfile.value, persistedHandoff, persistedPayoutIntent],
   );
   const isRequestReady = Boolean(amount.trim() && purpose.trim() && reference.trim());
 
