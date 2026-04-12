@@ -10,6 +10,7 @@ import {
   buildServiceHandoffQuery,
   readStoredServiceHandoffState,
   type ServiceHandoffAssetSymbol,
+  type ServiceHandoffRequestDelivery,
   writeStoredServiceHandoffState,
 } from "@/lib/service-handoff-state";
 import { getTreasuryReceiveConfig } from "@/lib/treasury-receive-config";
@@ -149,6 +150,7 @@ export function TreasuryReceiveSurface() {
   const handoff = useServiceHandoffSnapshot("services");
   const appliedHandoffKeyRef = useRef<string | null>(null);
   const persistedPayloadSignatureRef = useRef<string | null>(null);
+  const requestDeliveryOverrideRef = useRef<ServiceHandoffRequestDelivery["state"] | null>(null);
   const activeAsset = config.assets.find((asset) => asset.symbol === selectedAsset) ?? config.assets[0];
   const activeProfile = destinationProfiles.find((item) => item.value === profile) ?? destinationProfiles[0];
   const activeLane = handoffLanes.find((item) => item.value === lane) ?? handoffLanes[0];
@@ -297,61 +299,6 @@ export function TreasuryReceiveSurface() {
   const telemetryRoute = continueHandoffQuery ? `/network?${continueHandoffQuery}` : "/network";
   const isRequestReady = Boolean(amount.trim() && purpose.trim() && reference.trim());
 
-  function getLiveExecutionDraft() {
-    if (!handoff) return null;
-    const profileConfig = activeProfile;
-    const assetConfig = activeAsset;
-    const laneConfig = activeLane;
-    const referenceValue =
-      reference.trim() || `${profileConfig.value.toUpperCase()}-REQUEST-PENDING`;
-    const amountValue = amount.trim();
-    const purposeValue = purpose.trim() || profileConfig.defaultPurpose;
-
-    const payoutIntent = {
-      assetSymbol: assetConfig.symbol,
-      amount: amountValue,
-      amountDisplay: amountValue
-        ? `${amountValue} ${assetConfig.symbol}`
-        : `${assetConfig.symbol} amount pending`,
-      reference: referenceValue,
-      purpose: purposeValue,
-      lane: laneConfig.value,
-      routeFocus: handoff.payoutIntent?.routeFocus ?? profileConfig.summary,
-      recipient: handoff.payoutIntent?.recipient ?? assetConfig.receiveAddress,
-      mintAddress: assetConfig.mint ?? null,
-      executionTarget:
-        handoff.payoutIntent?.executionTarget ??
-        `Treasury receive rail · ${assetConfig.symbol}`,
-      evidenceRoute:
-        handoff.payoutIntent?.evidenceRoute ??
-        "/documents/treasury-reviewer-packet",
-    } satisfies NonNullable<typeof handoff.payoutIntent>;
-
-    const nextState = {
-      ...handoff,
-      payoutProfile: profileConfig.value,
-      payoutTitle: profileConfig.label,
-      updatedAt: new Date().toISOString(),
-      source: "services" as const,
-      payoutIntent,
-    };
-    const query = buildServiceHandoffQuery(nextState);
-
-    return {
-      profileConfig,
-      assetConfig,
-      laneConfig,
-      referenceValue,
-      amountValue,
-      purposeValue,
-      nextState,
-      payoutIntent,
-      requestRoute: `/services?${query}#treasury-payment-request`,
-      deliveryRoute: `/command-center?${query}#proposal-review-action`,
-      telemetryRoute: `/network?${query}`,
-    };
-  }
-
   useEffect(() => {
     if (!handoff || !persistedPayoutIntent || !persistedStateSignature) return;
     if (persistedPayloadSignatureRef.current === persistedStateSignature) return;
@@ -362,10 +309,23 @@ export function TreasuryReceiveSurface() {
       storedState?.payoutProfile === activeProfile.value
         ? storedState.requestDelivery
         : undefined;
+    const deliveryOverride = requestDeliveryOverrideRef.current;
 
     const requestDelivery =
-      matchingStoredDelivery &&
-      (matchingStoredDelivery.state === "staged" || matchingStoredDelivery.state === "delivered")
+      deliveryOverride === "staged" || deliveryOverride === "delivered"
+        ? {
+            state: deliveryOverride,
+            stateDetail:
+              deliveryOverride === "delivered"
+                ? "Request delivered into the command-center execution lane with the exact treasury payload attached."
+                : "Request staged in the services lane and ready for governed delivery.",
+            requestRoute,
+            deliveryRoute,
+            telemetryRoute,
+            deliveredAt: deliveryOverride === "delivered" ? new Date().toISOString() : null,
+          }
+        : matchingStoredDelivery &&
+            (matchingStoredDelivery.state === "staged" || matchingStoredDelivery.state === "delivered")
         ? {
             ...matchingStoredDelivery,
             requestRoute,
@@ -400,6 +360,9 @@ export function TreasuryReceiveSurface() {
       payoutIntent: persistedPayoutIntent,
       requestDelivery,
     });
+    if (deliveryOverride && requestDelivery.state === deliveryOverride) {
+      requestDeliveryOverrideRef.current = null;
+    }
     persistedPayloadSignatureRef.current = persistedStateSignature;
   }, [activeProfile.label, activeProfile.value, deliveryRoute, handoff, isRequestReady, persistedPayoutIntent, persistedStateSignature, requestRoute, telemetryRoute]);
 
@@ -490,27 +453,25 @@ export function TreasuryReceiveSurface() {
   );
 
   function updateDeliveryState(state: "staged" | "delivered") {
-    const liveDraft = getLiveExecutionDraft();
-    if (!liveDraft) return;
+    if (!handoff || !persistedPayoutIntent) return;
 
-    setProfile(liveDraft.profileConfig.value);
-    setSelectedAsset(liveDraft.assetConfig.symbol);
-    setLane(liveDraft.laneConfig.value);
-    setReference(liveDraft.referenceValue);
-    setAmount(liveDraft.amountValue);
-    setPurpose(liveDraft.purposeValue);
-
+    requestDeliveryOverrideRef.current = state;
     writeStoredServiceHandoffState({
-      ...liveDraft.nextState,
+      ...handoff,
+      payoutProfile: activeProfile.value,
+      payoutTitle: activeProfile.label,
+      updatedAt: new Date().toISOString(),
+      source: "services",
+      payoutIntent: persistedPayoutIntent,
       requestDelivery: {
         state,
         stateDetail:
           state === "delivered"
             ? "Request delivered into the command-center execution lane with the exact treasury payload attached."
             : "Request staged in the services lane and ready for governed delivery.",
-        requestRoute: liveDraft.requestRoute,
-        deliveryRoute: liveDraft.deliveryRoute,
-        telemetryRoute: liveDraft.telemetryRoute,
+        requestRoute,
+        deliveryRoute,
+        telemetryRoute,
         deliveredAt: state === "delivered" ? new Date().toISOString() : null,
       },
     });
@@ -888,11 +849,8 @@ export function TreasuryReceiveSurface() {
                   type="button"
                   onClick={() => {
                     if (!isRequestReady) return;
-                    const liveDraft = getLiveExecutionDraft();
                     updateDeliveryState("delivered");
-                    if (liveDraft) {
-                      window.location.assign(liveDraft.deliveryRoute);
-                    }
+                    window.location.assign(deliveryRoute);
                   }}
                   disabled={!isRequestReady}
                   className={cn(buttonVariants({ size: "sm" }), !isRequestReady && "pointer-events-none opacity-50")}
