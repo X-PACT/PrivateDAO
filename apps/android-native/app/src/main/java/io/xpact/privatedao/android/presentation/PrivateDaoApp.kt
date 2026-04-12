@@ -1,5 +1,7 @@
 package io.xpact.privatedao.android.presentation
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -39,6 +41,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -60,6 +63,8 @@ import io.xpact.privatedao.android.model.ProposalPhase
 import io.xpact.privatedao.android.model.ProposalSummary
 import io.xpact.privatedao.android.model.RevealVoteForm
 import io.xpact.privatedao.android.model.DepositTreasuryForm
+import io.xpact.privatedao.android.model.SubmissionState
+import io.xpact.privatedao.android.model.validationError
 import io.xpact.privatedao.android.model.TreasuryActionType
 
 private enum class Destination(val route: String, val label: String) {
@@ -342,6 +347,15 @@ private fun HomeScreen(uiState: UiState, onRefresh: () -> Unit, onWalletAction: 
                 } ?: "Select a proposal to see phase-specific governance actions and transaction proofs.",
             )
         }
+        item {
+            ReviewerOpsCard(
+                title = "Reviewer and runtime ops",
+                body = "Open the same reviewer surfaces used by the web product: proof center, judge mode, monitoring alerts, incident response, and the reviewer fast path.",
+            )
+        }
+        item {
+            SubmissionStateCard(uiState = uiState)
+        }
     }
 }
 
@@ -390,6 +404,9 @@ private fun ProposalScreen(
                     onSubmitExecute = onSubmitExecute,
                 )
             }
+        }
+        item {
+            SubmissionStateCard(uiState = uiState)
         }
     }
 }
@@ -448,6 +465,9 @@ private fun CreateProposalScreen(
                 Text("Create DAO in wallet")
             }
         }
+        uiState.createDaoForm.validationError()?.let { message ->
+            item { ValidationCard(message) }
+        }
         item {
             HeroCard(
                 title = "Deposit treasury",
@@ -468,6 +488,9 @@ private fun CreateProposalScreen(
             Button(onClick = onSubmitDepositTreasury, enabled = uiState.wallet != null && !uiState.walletBusy && uiState.depositTreasuryForm.daoPubkey.isNotBlank(), modifier = Modifier.fillMaxWidth()) {
                 Text("Deposit treasury in wallet")
             }
+        }
+        uiState.depositTreasuryForm.validationError()?.let { message ->
+            item { ValidationCard(message) }
         }
         item {
             HeroCard(
@@ -517,9 +540,25 @@ private fun CreateProposalScreen(
             }
         }
         item {
-            Button(onClick = onSubmit, enabled = uiState.wallet != null && !uiState.walletBusy, modifier = Modifier.fillMaxWidth()) {
+            Button(
+                onClick = onSubmit,
+                enabled = uiState.wallet != null && !uiState.walletBusy && uiState.createProposalForm.validationError() == null,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
                 Text("Create proposal in wallet")
             }
+        }
+        uiState.createProposalForm.validationError()?.let { message ->
+            item { ValidationCard(message) }
+        }
+        item {
+            ReviewerOpsCard(
+                title = "Execution and reviewer links",
+                body = "Use the Android-native create surface without losing the proof layer. These links stay aligned with the main repo’s live proof, monitoring, and reviewer docs.",
+            )
+        }
+        item {
+            SubmissionStateCard(uiState = uiState)
         }
     }
 }
@@ -562,13 +601,22 @@ private fun SettingsScreen(uiState: UiState, modifier: Modifier = Modifier) {
         item {
             HeroCard(
                 title = "Environment",
-                body = "Devnet is the default mobile environment. The app is structured for a future mainnet switch without changing protocol semantics.",
+                body = "Devnet is the default mobile environment. The app is structured for a future mainnet switch without changing protocol semantics, but production cutover still requires reviewer evidence, monitoring, and explicit custody closure.",
             )
         }
         item { SettingsRow("Program ID", PrivateDaoConfig.programId) }
         item { SettingsRow("RPC", PrivateDaoConfig.rpcUrl) }
         item { SettingsRow("Explorer", "Solscan devnet links") }
         item { SettingsRow("Wallet", uiState.wallet?.publicKeyBase58 ?: "Not connected") }
+        item {
+            ReviewerOpsCard(
+                title = "Mainnet and reviewer runbooks",
+                body = "These links expose the proof-first packet expected before any real-funds cutover: live proof, monitoring alerts, incident response, mainnet readiness, and the condensed reviewer path.",
+            )
+        }
+        item {
+            SubmissionStateCard(uiState = uiState)
+        }
     }
 }
 
@@ -619,6 +667,10 @@ private fun ProposalDetailCard(
             SettingsRow("Phase", phase.name)
             SettingsRow("Status", proposal.status.name)
             SettingsRow("Explorer", PrivateDaoConfig.accountExplorer(proposal.pubkey))
+            proposal.daoSummary?.let {
+                SettingsRow("DAO authority", it.authority)
+                SettingsRow("Execution delay", "${it.executionDelaySeconds}s")
+            }
             proposal.treasuryAction?.let {
                 SettingsRow("Treasury action", "${it.type} → ${it.recipient}")
             }
@@ -654,11 +706,24 @@ private fun ProposalDetailCard(
                     Text("Finalize in wallet")
                 }
             }
+            if (phase == ProposalPhase.Timelocked) {
+                ValidationCard("This proposal passed but is still inside the timelock window. Execution stays blocked until the unlock time clears.")
+            }
             if (phase == ProposalPhase.Executable) {
                 Button(onClick = onSubmitExecute, enabled = uiState.wallet != null && !uiState.walletBusy, modifier = Modifier.fillMaxWidth()) {
                     Text("Execute in wallet")
                 }
             }
+            if (phase == ProposalPhase.Commit) {
+                uiState.commitVoteForm.validationError()?.let { ValidationCard(it) }
+            }
+            if (phase == ProposalPhase.Reveal) {
+                uiState.revealVoteForm.validationError()?.let { ValidationCard(it) }
+            }
+            ReviewerOpsCard(
+                title = "Proof and runtime continuity",
+                body = "Keep the selected proposal tied to proof center, judge mode, live proof, monitoring alerts, and incident response while you operate from Android.",
+            )
             if (uiState.proposalActivity.isNotEmpty()) {
                 Text("Recent activity", color = Color.White, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
                 uiState.proposalActivity.take(5).forEach { activity ->
@@ -672,6 +737,92 @@ private fun ProposalDetailCard(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun ReviewerOpsCard(title: String, body: String) {
+    HeroCard(
+        title = title,
+        body = body,
+        actions = {
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                ReviewLinkRow(
+                    "Proof center" to PrivateDaoConfig.proofCenterUrl,
+                    "Judge mode" to PrivateDaoConfig.judgeModeUrl,
+                )
+                ReviewLinkRow(
+                    "Live proof" to PrivateDaoConfig.liveProofUrl,
+                    "Monitoring alerts" to PrivateDaoConfig.monitoringAlertsUrl,
+                )
+                ReviewLinkRow(
+                    "Incident response" to PrivateDaoConfig.incidentResponseUrl,
+                    "Reviewer fast path" to PrivateDaoConfig.reviewerFastPathUrl,
+                )
+                ReviewLinkRow(
+                    "Mainnet readiness" to PrivateDaoConfig.mainnetReadinessUrl,
+                )
+            }
+        },
+    )
+}
+
+@Composable
+private fun ReviewLinkRow(vararg links: Pair<String, String>) {
+    Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+        links.forEach { (label, url) ->
+            LinkButton(
+                label = label,
+                url = url,
+                modifier = Modifier.weight(1f),
+            )
+        }
+    }
+}
+
+@Composable
+private fun LinkButton(label: String, url: String, modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    OutlinedButton(
+        onClick = {
+            context.startActivity(
+                Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+            )
+        },
+        modifier = modifier,
+    ) {
+        Text(label, maxLines = 1, overflow = TextOverflow.Ellipsis)
+    }
+}
+
+@Composable
+private fun ValidationCard(message: String) {
+    Card(shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFF2A1414))) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Text("Validation gate", color = Color(0xFFFFD76B), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+            Text(message, color = Color.White)
+        }
+    }
+}
+
+@Composable
+private fun SubmissionStateCard(uiState: UiState) {
+    when (val submission = uiState.submissionState) {
+        SubmissionState.Idle -> Unit
+        SubmissionState.InFlight -> HeroCard(
+            title = "Submission in flight",
+            body = "The wallet operation is still running. Wait for the signature before retrying or switching phases.",
+        )
+        is SubmissionState.Failure -> ValidationCard(submission.message)
+        is SubmissionState.Success -> HeroCard(
+            title = "Latest execution proof",
+            body = "Latest wallet submission succeeded. Keep the signature and explorer link attached to any reviewer or operator handoff.",
+            actions = {
+                ReviewLinkRow("Explorer tx" to submission.result.explorerUrl)
+            },
+        )
     }
 }
 

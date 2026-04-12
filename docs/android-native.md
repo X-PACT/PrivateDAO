@@ -273,6 +273,19 @@ Environment overrides are supported through:
 
 This keeps emulator setup reproducible instead of relying on ad-hoc Android Studio state.
 
+## Reviewer / Release Runbook
+
+For the shortest Android-native review and release-check path, use:
+
+- `docs/android-native-reviewer-runbook.md`
+
+This captures:
+
+- the verified build commands
+- the emulator bootstrap path
+- the in-app reviewer/runtime surfaces
+- the remaining runtime limitation when Google emulator packages are still downloading
+
 ## Run / Judge Flow
 
 Recommended review path for judges:

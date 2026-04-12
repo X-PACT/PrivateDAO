@@ -159,3 +159,35 @@ sealed interface SubmissionState {
     data class Success(val result: ProposalActionResult) : SubmissionState
     data class Failure(val message: String) : SubmissionState
 }
+
+fun CreateDaoForm.validationError(): String? = when {
+    daoName.isBlank() -> "DAO name is required"
+    quorumPercentage !in 1..100 -> "Quorum percentage must be between 1 and 100"
+    revealWindowSeconds <= 0L -> "Reveal window must be greater than zero"
+    executionDelaySeconds <= 0L -> "Execution delay must be greater than zero"
+    else -> null
+}
+
+fun DepositTreasuryForm.validationError(): String? = when {
+    daoPubkey.isBlank() -> "DAO PDA is required before depositing treasury"
+    amountSol.toDoubleOrNull()?.let { it > 0.0 } != true -> "Deposit amount must be greater than zero"
+    else -> null
+}
+
+fun CreateProposalForm.validationError(): String? = when {
+    daoPubkey.isBlank() -> "DAO PDA is required before creating a proposal"
+    title.isBlank() -> "Proposal title is required"
+    description.isBlank() -> "Proposal description is required"
+    durationSeconds <= 0L -> "Voting duration must be greater than zero"
+    treasuryType != TreasuryActionType.CustomCpi && treasuryRecipient.isBlank() -> "Treasury recipient is required for executable treasury proposals"
+    treasuryAmountSol.toDoubleOrNull()?.let { it > 0.0 } != true -> "Treasury amount must be greater than zero"
+    treasuryType == TreasuryActionType.SendToken && treasuryMint.isBlank() -> "Token treasury proposals require a mint"
+    else -> null
+}
+
+fun CommitVoteForm.validationError(): String? = null
+
+fun RevealVoteForm.validationError(): String? = when {
+    saltHex.isBlank() -> "Saved vote salt is required for reveal"
+    else -> null
+}
