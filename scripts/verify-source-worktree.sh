@@ -18,11 +18,14 @@ if [[ -z "$candidate_paths" ]]; then
 fi
 
 forbidden_paths="$(printf '%s\n' "$candidate_paths" | grep -E "$forbidden_regex" || true)"
+source_paths="$(printf '%s\n' "$candidate_paths" | grep -Ev "$forbidden_regex" || true)"
+source_count="$(printf '%s\n' "$source_paths" | sed '/^$/d' | wc -l | tr -d ' ')"
 
 if [[ -n "$forbidden_paths" ]]; then
   forbidden_count="$(printf '%s\n' "$forbidden_paths" | wc -l | tr -d ' ')"
   echo "source worktree preflight: mirror/export churn detected"
   printf 'mirror/export paths: %s\n' "$forbidden_count"
+  printf 'source paths outside mirror/export scope: %s\n' "$source_count"
   printf '%s\n' "$forbidden_paths" | sed -n '1,25p'
   if [[ "$forbidden_count" -gt 25 ]]; then
     printf '... truncated %s additional path(s)\n' "$((forbidden_count - 25))"
@@ -31,7 +34,8 @@ if [[ -n "$forbidden_paths" ]]; then
     exit 1
   fi
   echo "source worktree preflight: warning only (set PRIVATE_DAO_STRICT_WORKTREE_PREFLIGHT=1 to hard fail)"
+  echo "source worktree preflight: use 'npm run status:source' to inspect only source-scoped deltas"
   exit 0
 fi
 
-echo "source worktree preflight: worktree is source-safe"
+printf 'source worktree preflight: worktree is source-safe (%s source path(s))\n' "$source_count"

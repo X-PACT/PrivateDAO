@@ -30,6 +30,8 @@ export function RuntimeEvidenceContinuityPanel({
   const networkHref = continuityQuery ? `/network?${continuityQuery}` : "/network";
   const proofHref = continuityQuery ? `/proof?${continuityQuery}` : "/proof";
   const requestPayload = handoff?.requestPayload ?? null;
+  const requestDelivery = handoff?.requestDelivery ?? null;
+  const executionState = requestDelivery?.state ?? requestPayload?.state ?? "draft";
   const evidence =
     handoff && requestPayload
       ? buildAuthoritativeExecutionEvidence(handoff, runtimeSnapshot, executionSnapshot)
@@ -137,6 +139,8 @@ export function RuntimeEvidenceContinuityPanel({
             </div>
             {requestPayload ? (
               <div className="mt-2 text-sm leading-7 text-white/60">
+                state {executionState}
+                <br />
                 {requestPayload.amountDisplay} · {requestPayload.reference}
                 <br />
                 {requestPayload.executionTarget}
@@ -153,6 +157,32 @@ export function RuntimeEvidenceContinuityPanel({
               </div>
             )}
           </div>
+          {requestPayload ? (
+            <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+              <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-white/40">
+                <BellRing className="h-3.5 w-3.5 text-cyan-200" />
+                Monitoring intake
+              </div>
+              <div className="mt-2 text-sm font-medium text-white">
+                {executionState === "executed"
+                  ? "Same payload now anchors runtime and monitoring review after submit."
+                  : "Same payload stays attached to runtime and monitoring before final submit."}
+              </div>
+              <div className="mt-2 text-sm leading-7 text-white/60">
+                {requestDelivery?.stateDetail ?? "Runtime review is attached to the active execution object."}
+              </div>
+              <div className="mt-3 flex flex-wrap gap-3">
+                <Link href={networkHref} className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")}>
+                  Open live network intake
+                  <ArrowUpRight className="h-4 w-4" />
+                </Link>
+                <Link href="/documents/monitoring-alert-rules" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+                  Open alert rules
+                  <ArrowUpRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+          ) : null}
           <div className="flex flex-wrap gap-3">
             <Link href={proofHref} className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")}>
               Open judge route

@@ -20,6 +20,7 @@
     "verify:source-preflight": "bash scripts/verify-source-preflight.sh",
     "verify:source-worktree": "bash scripts/verify-source-worktree.sh",
     "verify:rapid-work-preflight": "npm run verify:source-preflight && npm run verify:source-worktree",
+    "verify:rapid-work-preflight:strict": "npm run verify:source-preflight && PRIVATE_DAO_STRICT_WORKTREE_PREFLIGHT=1 npm run verify:source-worktree",
     "status:source:staged": "git diff --cached --name-only -- .github apps docs frontend migrations programs scripts sdk tests README.md Anchor.toml Cargo.toml Cargo.lock package.json package-lock.json tsconfig.json",
     "build:onchain-ui-parity": "ts-node scripts/build-onchain-ui-parity.ts",
     "verify:onchain-ui-parity": "ts-node scripts/verify-onchain-ui-parity.ts",

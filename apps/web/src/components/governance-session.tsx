@@ -12,6 +12,7 @@ import type {
   ServiceHandoffRequestDelivery,
   ServiceHandoffRequestPayload,
 } from "@/lib/service-handoff-state";
+import { markStoredServiceHandoffExecuted } from "@/lib/service-handoff-state";
 
 type VoteChoice = "Approve" | "Reject" | "Abstain";
 
@@ -336,8 +337,38 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
         ),
       executeProposal: () =>
         setState((current) => {
+          const nextExecutionIntent = current.executionIntent?.requestPayload
+            ? {
+                ...current.executionIntent,
+                requestPayload: {
+                  ...current.executionIntent.requestPayload,
+                  state: "executed",
+                },
+                requestDelivery: current.executionIntent.requestDelivery
+                  ? {
+                      ...current.executionIntent.requestDelivery,
+                      state: "executed",
+                      stateDetail:
+                        "Authoritative request object signed and submitted from the payload-driven command-center lane.",
+                    }
+                  : null,
+              }
+            : current.executionIntent;
+
+          if (current.executionIntent?.requestPayload) {
+            markStoredServiceHandoffExecuted({
+              stateDetail:
+                "Authoritative request object signed and submitted from the payload-driven command-center lane.",
+              telemetryRoute: current.executionIntent.requestPayload.telemetryRoute,
+            });
+          }
+
           const nextState = withLog(
-            { ...current, proposalExecuted: true },
+            {
+              ...current,
+              proposalExecuted: true,
+              executionIntent: nextExecutionIntent,
+            },
             current.executionIntent?.requestPayload ? "Delivered payload submitted" : "Proposal executed",
             current.executionIntent?.requestPayload
               ? `${current.executionIntent.requestPayload.requestId} · ${current.executionIntent.requestPayload.amountDisplay} · ${current.executionIntent.requestPayload.reference ?? "reference pending"} submitted from the payload-driven signing shell into ${current.executionIntent.requestPayload.deliveryRoute}.`

@@ -378,6 +378,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/incident-readiness-runbook.md`,
   },
   {
+    slug: "monitoring-alert-rules",
+    title: "Monitoring Alert Rules",
+    category: "Operations",
+    summary: "Machine-checked monitoring and alert rules for RPC, wallet, proposal-state, and hosted-read runtime visibility.",
+    audience: "Operators, reviewers, buyers, security readers",
+    boundary: "Rules surface only; it does not claim external monitoring closure beyond the underlying evidence boundary.",
+    docPath: "docs/monitoring-alert-rules.md",
+    rawHref: `${repositoryBlobBase}/docs/monitoring-alert-rules.md`,
+  },
+  {
     slug: "frontier-integrations",
     title: "Frontier Integrations",
     category: "Reviewer core",

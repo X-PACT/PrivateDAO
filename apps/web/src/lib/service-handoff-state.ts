@@ -72,7 +72,7 @@ export type ServiceHandoffTelemetrySelection = {
 };
 
 export type ServiceHandoffRequestDelivery = {
-  state: "draft" | "staged" | "delivered";
+  state: "draft" | "staged" | "delivered" | "executed";
   stateDetail: string;
   requestRoute: string;
   deliveryRoute: string;
@@ -134,7 +134,7 @@ export type ServiceHandoffSelection = {
   proposalId: string;
   payoutProfile: ServiceHandoffProfile;
   telemetryMode: ServiceHandoffTelemetryMode;
-  deliveryState?: "staged" | "delivered";
+  deliveryState?: "staged" | "delivered" | "executed";
   deliveredAt?: string;
   requestPayloadSeed?: ServiceHandoffRequestPayloadSeed;
 };
@@ -196,12 +196,14 @@ export function buildServiceHandoffQuery(state: ServiceHandoffQueryState) {
   params.set("handoff", "1");
   if (
     state.requestDelivery?.state === "staged" ||
-    state.requestDelivery?.state === "delivered"
+    state.requestDelivery?.state === "delivered" ||
+    state.requestDelivery?.state === "executed"
   ) {
     params.set("deliveryState", state.requestDelivery.state);
   }
   if (
-    state.requestDelivery?.state === "delivered" &&
+    (state.requestDelivery?.state === "delivered" ||
+      state.requestDelivery?.state === "executed") &&
     typeof state.requestDelivery.deliveredAt === "string" &&
     state.requestDelivery.deliveredAt.length > 0
   ) {
@@ -356,7 +358,8 @@ export function parseStoredServiceHandoffState(raw: string | null): ServiceHando
         (
           requestDelivery.state !== "draft" &&
           requestDelivery.state !== "staged" &&
-          requestDelivery.state !== "delivered"
+          requestDelivery.state !== "delivered" &&
+          requestDelivery.state !== "executed"
         ) ||
         typeof requestDelivery.stateDetail !== "string" ||
         typeof requestDelivery.requestRoute !== "string" ||
@@ -447,11 +450,15 @@ export function readServiceHandoffState(searchParams: URLSearchParams): ServiceH
     payoutProfile,
     telemetryMode,
     deliveryState:
-      deliveryState === "staged" || deliveryState === "delivered"
+      deliveryState === "staged" ||
+      deliveryState === "delivered" ||
+      deliveryState === "executed"
         ? deliveryState
         : undefined,
     deliveredAt:
-      deliveryState === "delivered" && typeof deliveredAt === "string" && deliveredAt.length > 0
+      (deliveryState === "delivered" || deliveryState === "executed") &&
+      typeof deliveredAt === "string" &&
+      deliveredAt.length > 0
         ? deliveredAt
         : undefined,
     requestPayloadSeed,
@@ -489,12 +496,18 @@ export function mergeServiceHandoffState(
     requestPayloadSeed: selection.requestPayloadSeed ?? storedState?.requestPayload,
   });
   const requestDelivery =
-    selection.deliveryState === "staged" || selection.deliveryState === "delivered"
+    selection.deliveryState === "staged" ||
+    selection.deliveryState === "delivered" ||
+    selection.deliveryState === "executed"
       ? {
           state: selection.deliveryState,
           stateDetail:
-            selection.deliveryState === "delivered" && sameProfile && storedState?.requestDelivery?.stateDetail
+            (selection.deliveryState === "delivered" || selection.deliveryState === "executed") &&
+            sameProfile &&
+            storedState?.requestDelivery?.stateDetail
               ? storedState.requestDelivery.stateDetail
+              : selection.deliveryState === "executed"
+              ? "Authoritative request object already signed and submitted from command-center."
               : selection.deliveryState === "delivered"
               ? "Execution handoff delivered into command-center from the active UI lane."
               : "Execution handoff staged in services and ready for governed delivery.",
@@ -502,8 +515,10 @@ export function mergeServiceHandoffState(
           deliveryRoute: `/command-center?${baseQuery}#proposal-review-action`,
           telemetryRoute: `/network?${baseQuery}`,
           deliveredAt:
-            selection.deliveryState === "delivered"
-              ? (sameProfile && storedState?.requestDelivery?.state === "delivered"
+            selection.deliveryState === "delivered" || selection.deliveryState === "executed"
+              ? (sameProfile &&
+                (storedState?.requestDelivery?.state === "delivered" ||
+                  storedState?.requestDelivery?.state === "executed")
                   ? storedState.requestDelivery.deliveredAt
                   : undefined) ?? selection.deliveredAt ?? "query-handoff"
               : null,
@@ -536,4 +551,40 @@ export function mergeServiceHandoffState(
     requestDelivery,
     requestPayload,
   };
+}
+
+export function markStoredServiceHandoffExecuted(input: {
+  stateDetail: string;
+  telemetryRoute?: string | null;
+}) {
+  if (typeof window === "undefined") return null;
+
+  const storedState = readStoredServiceHandoffState();
+  if (!storedState?.requestPayload || !storedState.requestDelivery) {
+    return null;
+  }
+
+  const executedAt = new Date().toISOString();
+  const requestDelivery: ServiceHandoffRequestDelivery = {
+    ...storedState.requestDelivery,
+    state: "executed",
+    stateDetail: input.stateDetail,
+    telemetryRoute: input.telemetryRoute ?? storedState.requestDelivery.telemetryRoute,
+    deliveredAt: storedState.requestDelivery.deliveredAt ?? executedAt,
+  };
+  const requestPayload: ServiceHandoffRequestPayload = {
+    ...storedState.requestPayload,
+    state: "executed",
+    telemetryRoute: requestDelivery.telemetryRoute,
+  };
+
+  const nextState: ServiceHandoffState = {
+    ...storedState,
+    updatedAt: executedAt,
+    requestDelivery,
+    requestPayload,
+  };
+
+  writeStoredServiceHandoffState(nextState);
+  return nextState;
 }

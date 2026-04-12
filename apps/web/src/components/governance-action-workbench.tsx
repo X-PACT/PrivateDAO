@@ -135,8 +135,12 @@ export function GovernanceActionWorkbench() {
     Boolean(stagedProposal) &&
     Boolean(executionIntent) &&
     (executionIntent?.requestDelivery?.state === "delivered" ||
+      executionIntent?.requestDelivery?.state === "executed" ||
       executionIntent?.requestPayload?.state === "ready-for-delivery" ||
+      executionIntent?.requestPayload?.state === "executed" ||
       canExecute);
+  const payloadExecutionState =
+    executionIntent?.requestDelivery?.state ?? executionIntent?.requestPayload?.state ?? "draft";
 
   useEffect(() => {
     if (!handoff) return;
@@ -329,7 +333,7 @@ export function GovernanceActionWorkbench() {
                   <div className="mt-2 text-sm text-white/70">{handoff.requestDelivery.stateDetail}</div>
                   <div className="mt-2 text-xs leading-6 text-white/52">
                     {handoff.requestDelivery.deliveredAt
-                      ? `Delivered at ${handoff.requestDelivery.deliveredAt}`
+                      ? `${handoff.requestDelivery.state === "executed" ? "Executed" : "Delivered"} at ${handoff.requestDelivery.deliveredAt}`
                       : `Execution route ${handoff.requestDelivery.deliveryRoute}`}
                   </div>
                 </div>
@@ -382,10 +386,10 @@ export function GovernanceActionWorkbench() {
                   <div>Telemetry: {payloadDrivenRequest?.telemetryMode}</div>
                   <div>Target: {payloadDrivenRequest?.executionTarget}</div>
                   <div>Lane: {payloadDrivenRequest?.lane}</div>
-                  <div>Delivery: {executionIntent?.requestDelivery?.state ?? payloadDrivenRequest?.state}</div>
+                  <div>Delivery: {payloadExecutionState}</div>
                 </div>
                 <Button className="mt-4 w-full" onClick={() => openReview(stagedReviewAction)} variant="secondary">
-                  Open signing and submit shell
+                  {payloadExecutionState === "executed" ? "Review submitted payload shell" : "Open signing and submit shell"}
                 </Button>
               </div>
 
@@ -403,7 +407,7 @@ export function GovernanceActionWorkbench() {
                   onClick={() => openReview("execute_proposal")}
                   variant="outline"
                 >
-                  Sign and submit delivered payload
+                  {payloadExecutionState === "executed" ? "Payload already submitted" : "Sign and submit delivered payload"}
                 </Button>
               </div>
             </>

@@ -66,6 +66,10 @@ export function JudgeExecutionContinuityPanel({
           <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
             <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Delivery state</div>
             <div className="mt-2 text-sm font-medium text-white">{deliveryState}</div>
+            <div className="mt-2 text-sm leading-7 text-white/62">
+              {handoff.requestDelivery?.stateDetail ??
+                "The judge route is tracking the same execution object used by services and command-center."}
+            </div>
           </div>
         </div>
         <div className="grid gap-3">
@@ -101,6 +105,10 @@ export function JudgeExecutionContinuityPanel({
             </Link>
             <Link href={telemetryRoute} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
               Open network logs
+              <ArrowUpRight className="h-4 w-4" />
+            </Link>
+            <Link href="/documents/monitoring-alert-rules" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+              Open alert rules
               <ArrowUpRight className="h-4 w-4" />
             </Link>
           </div>
