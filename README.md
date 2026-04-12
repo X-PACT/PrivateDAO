@@ -319,7 +319,7 @@ The installer:
 
 PrivateDAO now includes a real Android-native app under `apps/android-native/`.
 
-This mobile app is built as an Android-first counterpart of the current project because Solana Mobile Wallet Adapter is the official mobile dApp path for Android today. The stack is:
+This mobile app is built as an Android-first counterpart of the current project because Solana Mobile Wallet Adapter is the official mobile dApp path for Android today. The product direction is to make mobile a first-class operating surface for the same governance services already exposed through the web app. The stack is:
 
 - Kotlin native
 - Jetpack Compose
@@ -334,6 +334,7 @@ What the Android app mirrors from the current product:
 - same commit-reveal semantics
 - same governance terminology
 - same proof-first positioning for judges and reviewers
+- same authority-driven cancel / veto semantics
 
 Current Android-native mobile support:
 
@@ -346,9 +347,18 @@ Current Android-native mobile support:
 - commit vote
 - reveal vote
 - finalize proposal
+- cancel proposal from the authority wallet
+- veto proposal during timelock from the authority wallet
 - execute proposal for SOL and token treasury paths
 - view tx signatures and explorer links
+- open proof, monitoring, incident, and reviewer continuity links from inside the app
 - view awards / credibility surface
+
+Current delivery posture:
+
+- the Android app is already usable for the core governance and treasury lifecycle on devnet
+- the Android app is being developed to reach broader service parity with the web app
+- web-dense reviewer centers and some proof-heavy surfaces remain linked from mobile while they continue moving toward deeper native coverage
 
 Android-native system diagram:
 

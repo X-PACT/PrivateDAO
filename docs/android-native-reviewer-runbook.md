@@ -18,6 +18,8 @@ Review this branch as part of one product surface:
 - web and Android both point reviewers to the same proof center and incident/monitoring docs
 - Android now exposes authority-only `cancel` and `veto` flows, so mobile is no longer limited to voter-only happy paths
 
+The intended product direction is clear: the Android app is being developed as a mobile-operable counterpart to the web app, with the same governance lifecycle, the same authority model, and progressively deeper access to the same service corridors.
+
 ## Verified Build Commands
 
 From `apps/android-native/`:
@@ -78,9 +80,9 @@ The Android UI now exposes reviewer-operable links and validation gates in-app:
 - Reviewer Fast Path: `https://x-pact.github.io/PrivateDAO/docs/reviewer-fast-path.md`
 - Mainnet Readiness: `https://x-pact.github.io/PrivateDAO/docs/mainnet-readiness.md`
 
-## Remaining Runtime Limitation
+## Runtime Status
 
-If Android emulator packages are still downloading slowly from the Google repository, that is an environment bandwidth issue, not an app blocker. The app branch remains ready to boot once:
+If Android emulator packages are still downloading slowly from the Google repository, that is an environment bandwidth issue, not a product-side blocker. The app branch remains ready to boot once:
 
 - `emulator`
 - `system-images;android-36;google_apis;x86_64`

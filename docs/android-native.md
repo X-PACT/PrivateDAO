@@ -4,9 +4,9 @@ PrivateDAO now includes a first-class Android-native app under `apps/android-nat
 
 This is not a hybrid wrapper and not a generic wallet demo. It is a Kotlin Android counterpart of the current PrivateDAO product and follows the same governance lifecycle and protocol assumptions already used by the Solana program, scripts, tests, and live web surface.
 
-## Web / Mobile Integration Truth
+## Web / Mobile Integration Direction
 
-The Android app and the web app are expected to serve the same governance product, not parallel products.
+The Android app is being developed to serve the same governance product as the web app, not a parallel mobile-only product.
 
 That means:
 
@@ -17,7 +17,7 @@ That means:
 - the same proof-first reviewer links
 - the same explorer and monitoring continuity
 
-The Android branch is therefore judged against web parity, not against a standalone mobile demo standard.
+The Android branch is therefore developed against web parity, not against a standalone mobile demo standard.
 
 ## Why Android-first
 
@@ -196,15 +196,17 @@ Implemented mobile read paths:
 - fetch recent proposal transaction signatures
 - generate explorer links
 
-## Honest Current Limitations
+## Current Surface And Expansion Path
 
-These are real limitations, not hidden gaps:
+The Android app is already strong enough to operate the core governance lifecycle on devnet. The remaining work is now focused on expanding the mobile surface until it reaches broader service parity with the web product.
+
+Current expansion items:
 
 - `SendToken` execution is now wired in the Android client, but it still depends on the recipient associated token account existing on-chain for the configured mint
 - the Android app currently prioritizes the governance lifecycle and treasury/operator essentials; the broader browser-only proof center and judge-mode surfaces still live primarily in the web product
 - release hardening for production signing is not closed yet; the verified output in this branch is a local debug APK
 
-None of these change the protocol or on-chain behavior. They only define the current mobile surface area.
+None of these change the protocol or on-chain behavior. They only define the current stage of the mobile delivery surface while the app is being expanded toward fuller web parity.
 
 ## Build
 
