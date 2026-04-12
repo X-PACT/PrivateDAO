@@ -148,13 +148,6 @@ export function TreasuryReceiveSurface() {
   const handoff = useServiceHandoffSnapshot("services");
   const appliedHandoffKeyRef = useRef<string | null>(null);
   const persistedPayloadSignatureRef = useRef<string | null>(null);
-  const profileRef = useRef<HTMLSelectElement | null>(null);
-  const assetRef = useRef<HTMLSelectElement | null>(null);
-  const referenceRef = useRef<HTMLInputElement | null>(null);
-  const amountRef = useRef<HTMLInputElement | null>(null);
-  const purposeRef = useRef<HTMLTextAreaElement | null>(null);
-  const laneRef = useRef<HTMLSelectElement | null>(null);
-
   const activeAsset = config.assets.find((asset) => asset.symbol === selectedAsset) ?? config.assets[0];
   const activeProfile = destinationProfiles.find((item) => item.value === profile) ?? destinationProfiles[0];
   const activeLane = handoffLanes.find((item) => item.value === lane) ?? handoffLanes[0];
@@ -307,28 +300,13 @@ export function TreasuryReceiveSurface() {
 
   function getLiveExecutionDraft() {
     if (!handoff) return null;
-
-    const profileValue = (profileRef.current?.value as (typeof destinationProfiles)[number]["value"]) || activeProfile.value;
-    const profileConfig =
-      destinationProfiles.find((item) => item.value === profileValue) ?? activeProfile;
-    const assetValue = resolveSupportedAsset(
-      config.assets,
-      (assetRef.current?.value as ServiceHandoffAssetSymbol) ||
-        profileConfig.defaultAsset,
-    );
-    const assetConfig =
-      config.assets.find((asset) => asset.symbol === assetValue) ?? activeAsset;
-    const laneValue =
-      (laneRef.current?.value as (typeof handoffLanes)[number]["value"]) ||
-      profileConfig.defaultLane;
-    const laneConfig =
-      handoffLanes.find((item) => item.value === laneValue) ?? activeLane;
+    const profileConfig = activeProfile;
+    const assetConfig = activeAsset;
+    const laneConfig = activeLane;
     const referenceValue =
-      referenceRef.current?.value.trim() ||
-      `${profileConfig.value.toUpperCase()}-REQUEST-PENDING`;
-    const amountValue = amountRef.current?.value.trim() || "";
-    const purposeValue =
-      purposeRef.current?.value.trim() || profileConfig.defaultPurpose;
+      reference.trim() || `${profileConfig.value.toUpperCase()}-REQUEST-PENDING`;
+    const amountValue = amount.trim();
+    const purposeValue = purpose.trim() || profileConfig.defaultPurpose;
 
     const payoutIntent = {
       assetSymbol: assetConfig.symbol,
@@ -338,7 +316,7 @@ export function TreasuryReceiveSurface() {
         : `${assetConfig.symbol} amount pending`,
       reference: referenceValue,
       purpose: purposeValue,
-      lane: laneValue,
+      lane: laneConfig.value,
       routeFocus: handoff.payoutIntent?.routeFocus ?? profileConfig.summary,
       recipient: handoff.payoutIntent?.recipient ?? assetConfig.receiveAddress,
       mintAddress: assetConfig.mint ?? null,
@@ -727,7 +705,6 @@ export function TreasuryReceiveSurface() {
               <label className="grid gap-2 text-sm text-white/70">
                 <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Destination profile</span>
                 <select
-                  ref={profileRef}
                   value={profile}
                   onChange={(event) => setProfile(event.target.value as typeof profile)}
                   className="rounded-2xl border border-white/10 bg-white/4 px-4 py-3 text-white outline-none"
@@ -744,7 +721,6 @@ export function TreasuryReceiveSurface() {
               <label className="grid gap-2 text-sm text-white/70">
                 <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Asset</span>
                 <select
-                  ref={assetRef}
                   value={selectedAsset}
                   onChange={(event) => setSelectedAsset(event.target.value as typeof selectedAsset)}
                   className="rounded-2xl border border-white/10 bg-white/4 px-4 py-3 text-white outline-none"
@@ -760,7 +736,6 @@ export function TreasuryReceiveSurface() {
               <label className="grid gap-2 text-sm text-white/70">
                 <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Reference</span>
                 <input
-                  ref={referenceRef}
                   value={reference}
                   onChange={(event) => setReference(event.target.value)}
                   placeholder="PILOT-APR-001 / OPS-REQUEST-042"
@@ -772,7 +747,6 @@ export function TreasuryReceiveSurface() {
               <label className="grid gap-2 text-sm text-white/70">
                 <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Amount</span>
                 <input
-                  ref={amountRef}
                   value={amount}
                   onChange={(event) => setAmount(event.target.value)}
                   placeholder={`Amount in ${activeAsset.symbol}`}
@@ -783,7 +757,6 @@ export function TreasuryReceiveSurface() {
               <label className="grid gap-2 text-sm text-white/70">
                 <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Purpose</span>
                 <textarea
-                  ref={purposeRef}
                   value={purpose}
                   onChange={(event) => setPurpose(event.target.value)}
                   placeholder="Treasury top-up, pilot funding, payout request, operator support..."
@@ -795,7 +768,6 @@ export function TreasuryReceiveSurface() {
               <label className="grid gap-2 text-sm text-white/70">
                 <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Handoff lane</span>
                 <select
-                  ref={laneRef}
                   value={lane}
                   onChange={(event) => setLane(event.target.value as typeof lane)}
                   className="rounded-2xl border border-white/10 bg-white/4 px-4 py-3 text-white outline-none"
