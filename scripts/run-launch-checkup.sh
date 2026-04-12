@@ -68,6 +68,7 @@ run_check "core suite" internal npm run test:core
 run_check "monitoring alerts" internal npm run verify:monitoring-alerts
 run_check "real-device runtime" internal npm run verify:real-device-runtime
 run_check "multisig intake verification" internal npm run verify:multisig-intake
+run_check "production mainnet closure checklist" internal npm run verify:production-mainnet-closure
 run_external_state_check "multisig intake closure" \
   node -e 'const intake=require("./docs/multisig-setup-intake.json"); if (intake.status !== "complete" || intake.productionMainnetClaimAllowed !== true) { console.error(`status=${intake.status} productionMainnetClaimAllowed=${intake.productionMainnetClaimAllowed}`); process.exit(1); }'
 run_check "mainnet blocker registry verification" internal npm run verify:mainnet-blockers

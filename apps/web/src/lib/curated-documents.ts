@@ -238,6 +238,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/production-style-custody-closure-plan.md`,
   },
   {
+    slug: "production-mainnet-closure-checklist",
+    title: "Production Mainnet Closure Checklist",
+    category: "Trust",
+    summary: "Exact split between what is already closed internally and what still remains external before any honest production mainnet claim can be made.",
+    audience: "Operators, reviewers, release owners",
+    boundary: "Closure checklist only; it does not claim that production multisig, timelock, or authority transfers are already complete.",
+    docPath: "docs/production-mainnet-closure-checklist.md",
+    rawHref: `${repositoryBlobBase}/docs/production-mainnet-closure-checklist.md`,
+  },
+  {
     slug: "brand-search-ops",
     title: "Brand Search Ops",
     category: "Growth",

@@ -24,6 +24,18 @@ npm run apply:custody-evidence-intake
 - Custody target: program upgrade authority and production operational authorities
 - Secret handling: no seed phrases, no private keys, no hot-wallet exports in Git
 
+## Live Rehearsal Source
+
+- Devnet rehearsal multisig:
+  - address: `EqbW1xQRABPNmPM4TMkdygp6j94i7A3DSbgFKTpqXvJE`
+  - creation signature: `4KSyTYQTzeNpBDWou7GFLmvUpAhLgmNKkNdd4PZqndLpCWmUnArffYRQUwe6zrTmQD5uCbBfBR6pakf9Gz8dviRp`
+- Rehearsal proved:
+  - the `2-of-3` model is live
+  - the 3-role signer shape is workable
+  - the production closure can keep the same conceptual structure with minimal change
+
+This rehearsal is real evidence. It is not itself the production custody closure.
+
 ## Required Signer Slots
 
 | Slot | Role | Public Key | Storage Class | Backup Procedure |
@@ -31,6 +43,16 @@ npm run apply:custody-evidence-intake
 | 1 | founder-operator | pending | cold-or-hardware | pending |
 | 2 | independent-security-or-ops-signer | pending | cold-or-hardware | pending |
 | 3 | recovery-or-governance-signer | pending | cold-or-hardware | pending |
+
+## Candidate Minimal-Delta Production Model
+
+These are the current rehearsal wallets and may be promoted only if they are moved into production-safe custody posture.
+
+| Slot | Role | Rehearsal Wallet | Candidate Public Key | Promotion Condition |
+| --- | --- | --- | --- | --- |
+| 1 | founder-operator | Solflare | `73EzhBNNdM2ZV3LzMxyNZ5FwGiZCZJrbZTHyRxhTsdq9` | moved to cold-or-hardware custody and retained as the operational founder signer |
+| 2 | independent-security-or-ops-signer | Phantom | `BBBPcpUnnBi3CWUhcv6vLTqaY9pugAGuhgw2Axjpvcr2` | signer is operationally independent and approval path is documented |
+| 3 | recovery-or-governance-signer | Backpack | `2KpA69UB55tfWUSkKj5j7Tvebd3eG22hEs9hjXUq7pf5` | recovery/governance path remains separate and backup path is documented |
 
 ## Required Evidence Before Completion
 

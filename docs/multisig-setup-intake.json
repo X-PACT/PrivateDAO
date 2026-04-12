@@ -5,6 +5,11 @@
   "productionMainnetClaimAllowed": false,
   "network": "mainnet-beta",
   "custodyTarget": "program-upgrade-authority-and-production-ops-authorities",
+  "rehearsalSource": {
+    "network": "devnet",
+    "multisigAddress": "EqbW1xQRABPNmPM4TMkdygp6j94i7A3DSbgFKTpqXvJE",
+    "creationSignature": "4KSyTYQTzeNpBDWou7GFLmvUpAhLgmNKkNdd4PZqndLpCWmUnArffYRQUwe6zrTmQD5uCbBfBR6pakf9Gz8dviRp"
+  },
   "multisig": {
     "requiredThreshold": 2,
     "requiredSignerCount": 3,
@@ -13,6 +18,29 @@
     "creationSignature": null,
     "rehearsalSignature": null
   },
+  "candidateSignerModel": [
+    {
+      "slot": 1,
+      "role": "founder-operator",
+      "walletLabel": "Solflare",
+      "candidatePublicKey": "73EzhBNNdM2ZV3LzMxyNZ5FwGiZCZJrbZTHyRxhTsdq9",
+      "promotionCondition": "moved to cold-or-hardware custody and retained as the operational founder signer"
+    },
+    {
+      "slot": 2,
+      "role": "independent-security-or-ops-signer",
+      "walletLabel": "Phantom",
+      "candidatePublicKey": "BBBPcpUnnBi3CWUhcv6vLTqaY9pugAGuhgw2Axjpvcr2",
+      "promotionCondition": "signer is operationally independent and approval path is documented"
+    },
+    {
+      "slot": 3,
+      "role": "recovery-or-governance-signer",
+      "walletLabel": "Backpack",
+      "candidatePublicKey": "2KpA69UB55tfWUSkKj5j7Tvebd3eG22hEs9hjXUq7pf5",
+      "promotionCondition": "recovery/governance path remains separate and backup path is documented"
+    }
+  ],
   "timelock": {
     "minimumHours": 48,
     "configuredHours": null,

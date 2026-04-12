@@ -79,6 +79,8 @@ Canonical evidence files:
 - `docs/multisig-setup-intake.md`
 - `docs/production-style-custody-closure-plan.json`
 - `docs/production-style-custody-closure-plan.md`
+- `docs/production-mainnet-closure-checklist.json`
+- `docs/production-mainnet-closure-checklist.md`
 - `docs/authority-transfer-runbook.md`
 - `docs/canonical-custody-proof.generated.md`
 - `docs/custody-observed-readouts.json`

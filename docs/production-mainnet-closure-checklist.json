@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "project": "PrivateDAO",
+  "status": "pending-external",
+  "productionMainnetClaimAllowed": false,
+  "closedInternalReadiness": {
+    "pdaoLiveMetadataCutover": true,
+    "brandSearchVerification": true,
+    "devnetRehearsalMultisig": true,
+    "launchCheckupLocalReady": true
+  },
+  "remainingExternalClosure": {
+    "productionMultisigCreated": false,
+    "signerCustodyHardened": false,
+    "timelockConfigured": false,
+    "authorityTransfersComplete": false,
+    "postTransferReadoutsRecorded": false,
+    "mainnetCutoverCeremonyComplete": false
+  },
+  "deployFunding": {
+    "deployOnlyRecommendedSol": 20,
+    "fundingReady": false
+  },
+  "canonicalEvidence": [
+    "docs/mainnet-external-closure-packet.md",
+    "docs/production-style-custody-closure-plan.md",
+    "docs/multisig-setup-intake.json",
+    "docs/multisig-setup-intake.md",
+    "docs/mainnet-blockers.json",
+    "docs/mainnet-blockers.md",
+    "docs/brand-search-ops.md"
+  ],
+  "finishLineRule": "The statement 'only deploy wallet funding remains' becomes honest only after every remainingExternalClosure field is true and fundingReady is the only false production gate."
+}

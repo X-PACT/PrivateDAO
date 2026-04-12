@@ -195,6 +195,7 @@
     "verify:artifact-freshness": "bash scripts/verify-artifact-freshness.sh",
     "verify:multisig-intake": "ts-node scripts/verify-multisig-setup-intake.ts",
     "verify:devnet-rehearsal-multisig": "ts-node scripts/verify-devnet-rehearsal-multisig.ts",
+    "verify:production-mainnet-closure": "ts-node scripts/verify-production-mainnet-closure-checklist.ts",
     "verify:launch-ops": "ts-node scripts/verify-launch-ops-checklist.ts",
     "verify:monitoring-alerts": "ts-node scripts/verify-monitoring-alert-rules.ts",
     "verify:mainnet-blockers": "ts-node scripts/verify-mainnet-blockers.ts",
