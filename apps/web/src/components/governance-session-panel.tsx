@@ -1,10 +1,13 @@
 "use client";
 
-import { CheckCircle2, Clock3 } from "lucide-react";
+import Link from "next/link";
+import { ArrowUpRight, CheckCircle2, Clock3 } from "lucide-react";
 
 import { useGovernanceSession } from "@/components/governance-session";
 import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 const steps = [
   { key: "daoCreated", label: "Create DAO" },
@@ -35,6 +38,56 @@ export function GovernanceSessionPanel({
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
+        {session.executionIntent?.requestPayload ? (
+          <div className="rounded-[22px] border border-cyan-300/16 bg-cyan-300/[0.08] p-4">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/78">Authoritative execution shell</div>
+                <div className="mt-2 text-base font-medium text-white">
+                  {session.executionIntent.requestPayload.requestId}
+                </div>
+                <div className="mt-2 text-sm leading-7 text-white/60">
+                  {session.executionIntent.requestPayload.amountDisplay} · {session.executionIntent.requestPayload.reference}
+                  <br />
+                  {session.executionIntent.requestPayload.executionTarget}
+                </div>
+              </div>
+              <Badge variant={session.executionIntent.requestDelivery?.state === "executed" ? "success" : "cyan"}>
+                {session.executionIntent.requestDelivery?.state ?? session.executionIntent.requestPayload.state}
+              </Badge>
+            </div>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-[18px] border border-white/8 bg-black/20 p-3 text-sm text-white/64">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Final signing source</div>
+                <div className="mt-2 text-white">
+                  {session.executionIntent.requestPayload.kind}
+                </div>
+              </div>
+              <div className="rounded-[18px] border border-white/8 bg-black/20 p-3 text-sm text-white/64">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Telemetry route</div>
+                <div className="mt-2 break-all text-white">
+                  {session.executionIntent.requestPayload.telemetryRoute}
+                </div>
+              </div>
+            </div>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Link
+                href={`${session.executionIntent.requestPayload.deliveryRoute}#proposal-review-action`}
+                className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")}
+              >
+                Open final signing lane
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+              <Link
+                href={session.executionIntent.requestPayload.telemetryRoute}
+                className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}
+              >
+                Open execution telemetry
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+        ) : null}
         <div className="grid gap-4 md:grid-cols-2">
           <div className="rounded-[22px] border border-white/8 bg-white/[0.03] p-4">
             <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">DAO</div>
