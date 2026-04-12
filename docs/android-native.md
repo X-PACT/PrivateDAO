@@ -205,6 +205,7 @@ Current expansion items:
 - `SendToken` execution is now wired in the Android client, but it still depends on the recipient associated token account existing on-chain for the configured mint
 - the Android app currently prioritizes the governance lifecycle and treasury/operator essentials; the broader browser-only proof center and judge-mode surfaces still live primarily in the web product
 - release hardening for production signing is not closed yet; the verified output in this branch is a local debug APK
+- proposal detail and latest-submission states now keep runtime continuity visible in-app through proof, monitoring, incident response, and Android web-surface handoff links
 
 None of these change the protocol or on-chain behavior. They only define the current stage of the mobile delivery surface while the app is being expanded toward fuller web parity.
 
@@ -258,6 +259,21 @@ Verified local output on this branch:
 Packaged downloadable branch artifact:
 
 - file: `artifacts/android/PrivateDAO-android-devnet-debug.apk`
+- checksum: `32d5b07cf29b703d57537b0a6d2746a9ce34b6665fd3c90a597f0d3fd77048a4`
+
+## Release Hardening Status
+
+The branch now includes the minimum release scaffolding needed to move from a local debug build to a controlled signed artifact:
+
+- adaptive launcher icons replace the Android placeholder icon
+- release signing is wired through `release-signing.properties` or matching environment variables
+- the Android app now targets the live `https://privatedao.org` proof and monitoring surfaces
+
+Still required before a production release claim:
+
+- final keystore and release signing secrets
+- booted emulator or real-device proof for the current branch state
+- version bump and release notes for the distribution target
 - sha256: `32d5b07cf29b703d57537b0a6d2746a9ce34b6665fd3c90a597f0d3fd77048a4`
 - direct download:
   - `https://github.com/X-PACT/PrivateDAO/raw/feat/android-native-private-dao/artifacts/android/PrivateDAO-android-devnet-debug.apk`

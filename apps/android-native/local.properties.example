@@ -1,1 +1,6 @@
 sdk.dir=/home/your-user/Android/Sdk
+# Optional release signing file consumed by app/build.gradle.kts
+# storeFile=/absolute/path/to/privatedao-release.keystore
+# storePassword=replace-me
+# keyAlias=privatedao
+# keyPassword=replace-me

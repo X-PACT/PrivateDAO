@@ -9,6 +9,7 @@ This branch proves three things:
 - the Android-native app compiles and packages cleanly
 - the wallet lifecycle uses the current Mobile Wallet Adapter path without deprecated lifecycle gating
 - reviewer and runtime surfaces stay reachable from the app itself instead of living only in external docs
+- release packaging is moving toward a production-ready path with dedicated launcher icons and explicit signing inputs
 
 ## Web / Mobile Parity Standard
 
@@ -77,6 +78,7 @@ The Android UI now exposes reviewer-operable links and validation gates in-app:
   - proposal explorer
   - DAO authority
   - execution delay
+  - execution packet and runtime continuity cards
   - timelock validation messaging
   - proof center / judge mode / live proof / monitoring / incident response links
 - Settings:
@@ -84,13 +86,14 @@ The Android UI now exposes reviewer-operable links and validation gates in-app:
 
 ## External Reviewer Links
 
-- Proof Center: `https://x-pact.github.io/PrivateDAO/?page=proof`
-- Judge Mode: `https://x-pact.github.io/PrivateDAO/?page=proof&judge=1`
-- Live Proof: `https://x-pact.github.io/PrivateDAO/docs/live-proof.md`
-- Monitoring Alerts: `https://x-pact.github.io/PrivateDAO/docs/monitoring-alerts.md`
-- Incident Response: `https://x-pact.github.io/PrivateDAO/docs/incident-response.md`
-- Reviewer Fast Path: `https://x-pact.github.io/PrivateDAO/docs/reviewer-fast-path.md`
-- Mainnet Readiness: `https://x-pact.github.io/PrivateDAO/docs/mainnet-readiness.md`
+- Proof Center: `https://privatedao.org/proof`
+- Judge Mode: `https://privatedao.org/proof?judge=1`
+- Live Proof: `https://privatedao.org/documents/live-proof-v3`
+- Monitoring Alerts: `https://privatedao.org/documents/monitoring-alert-rules`
+- Incident Response: `https://privatedao.org/documents/incident-response`
+- Reviewer Fast Path: `https://privatedao.org/documents/reviewer-fast-path`
+- Mainnet Readiness: `https://privatedao.org/documents/mainnet-readiness`
+- Android Surface: `https://privatedao.org/android`
 
 ## Runtime Status
 

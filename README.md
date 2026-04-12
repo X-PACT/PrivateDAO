@@ -2,17 +2,18 @@
 # PrivateDAO
 
 <p align="center">
-  <a href="https://x-pact.github.io/PrivateDAO/" target="_blank">
+  <a href="https://privatedao.org/" target="_blank">
     <img src="docs/assets/frontend-hero.png" alt="PrivateDAO interactive frontend preview" width="900" />
   </a>
 </p>
 
-[![Live Frontend](https://img.shields.io/badge/Live%20Frontend-Open-00e5ff?logo=solana)](https://x-pact.github.io/PrivateDAO/)
-[![Web Surface](https://img.shields.io/badge/Web-Live%20Governance%20Surface-0ea5e9)](https://x-pact.github.io/PrivateDAO/)
+[![Live Frontend](https://img.shields.io/badge/Live%20Frontend-Open-00e5ff?logo=solana)](https://privatedao.org/)
+[![Web Surface](https://img.shields.io/badge/Web-Live%20Governance%20Surface-0ea5e9)](https://privatedao.org/)
 [![Android Native](https://img.shields.io/badge/Android-Kotlin%20Native-7c3aed)](docs/android-native.md)
 [![Mobile Wallet](https://img.shields.io/badge/Mobile-MWA%20Ready-22c55e)](docs/android-native.md)
 [![Android Runtime](https://img.shields.io/badge/Android-Runtime%20Scripts-16a34a)](docs/android-native.md)
 [![Android Reviewer Runbook](https://img.shields.io/badge/Android-Reviewer%20Runbook-0ea5e9)](docs/android-native-reviewer-runbook.md)
+[![Android Release Hardening](https://img.shields.io/badge/Android-Release%20Hardening-0f766e)](docs/android-native-release-hardening.md)
 [![Award](https://img.shields.io/badge/Award-1st%20Place%20Superteam%20Earn-gold)](docs/awards.md)
 [![Built on](https://img.shields.io/badge/Built%20on-Solana-purple)](https://solana.com)
 [![Category](https://img.shields.io/badge/Category-Backend%20Systems-blue)](docs/awards.md)
@@ -98,9 +99,10 @@ That is why PrivateDAO treats lifecycle enforcement, signer correctness, account
 
 Quick links:
 
-- Live frontend: `https://x-pact.github.io/PrivateDAO/`
-- Proof Center: `https://x-pact.github.io/PrivateDAO/?page=proof`
-- Judge Mode: `https://x-pact.github.io/PrivateDAO/?page=proof&judge=1`
+- Live frontend: `https://privatedao.org/`
+- Android surface: `https://privatedao.org/android`
+- Proof Center: `https://privatedao.org/proof`
+- Judge Mode: `https://privatedao.org/proof?judge=1`
 - Android native guide: `docs/android-native.md`
 - Awards page: `docs/awards.md`
 - Strategy documentation: `https://us04docs.zoom.us/doc/Zd34HEaHSKyZGRxBcqxXQg`
@@ -140,7 +142,7 @@ Quick links:
 - Proof registry: `docs/proof-registry.json`
 - Investor video package: `docs/investor-video.md`
 - YouTube pitch video: `https://youtu.be/KVNFZXHNZTQ`
-- Repo-native video asset: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
+- Repo-native video asset: `https://privatedao.org/assets/private-dao-investor-pitch.mp4`
 - On-chain program: `programs/private-dao/src/lib.rs`
 - End-to-end lifecycle test: `tests/full-flow-test.ts`
 
@@ -148,7 +150,7 @@ Quick links:
 
 If a judge only has 2-3 minutes, the strongest review order is:
 
-1. Open `https://x-pact.github.io/PrivateDAO/?page=security`
+1. Open `https://privatedao.org/security`
 2. Open `docs/threat-model.md`
 3. Open `docs/security-review.md`
 4. Open `tests/private-dao.ts`
@@ -420,7 +422,7 @@ The system demonstrates:
 
 - Platform: https://earn.superteam.fun
 - Repository: https://github.com/X-PACT/PrivateDAO
-- Demo: https://x-pact.github.io/PrivateDAO/
+- Demo: https://privatedao.org/
 - Award note: `docs/awards.md`
 
 ## 🎯 Current Hackathon Submissions
@@ -472,7 +474,7 @@ PrivateDAO brings commit-reveal voting, proposal-scoped private delegation, keep
 
 - Strategy documentation for judges, partners, and investors: `https://us04docs.zoom.us/doc/Zd34HEaHSKyZGRxBcqxXQg`
 - Watch the YouTube pitch video: `https://youtu.be/KVNFZXHNZTQ`
-- Repo-native video asset: `https://x-pact.github.io/PrivateDAO/assets/private-dao-investor-pitch.mp4`
+- Repo-native video asset: `https://privatedao.org/assets/private-dao-investor-pitch.mp4`
 - Video brief and production package: `docs/investor-video.md`
 - Voiceover script: `docs/video-voiceover.md`
 - Shotlist and visual direction: `docs/video-shotlist.md`
@@ -586,9 +588,9 @@ Initialize DAO
 
 ## Quick Review Pack
 
-- Live frontend: `https://x-pact.github.io/PrivateDAO/`
-- Judge Mode: `https://x-pact.github.io/PrivateDAO/?page=proof&judge=1`
-- Proof Center: `https://x-pact.github.io/PrivateDAO/?page=proof`
+- Live frontend: `https://privatedao.org/`
+- Judge Mode: `https://privatedao.org/proof?judge=1`
+- Proof Center: `https://privatedao.org/proof`
 - Android-native guide: `docs/android-native.md`
 - Main submission: `SUBMISSION.md`
 - Final-form submission: `SUBMISSION_FINAL.md`

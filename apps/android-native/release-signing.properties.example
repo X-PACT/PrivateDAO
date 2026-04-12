@@ -1,0 +1,10 @@
+# Copy to release-signing.properties and fill with your production keystore details.
+# You can also provide the same values through these environment variables:
+# PRIVATEDAO_RELEASE_STORE_FILE
+# PRIVATEDAO_RELEASE_STORE_PASSWORD
+# PRIVATEDAO_RELEASE_KEY_ALIAS
+# PRIVATEDAO_RELEASE_KEY_PASSWORD
+storeFile=/absolute/path/to/privatedao-release.keystore
+storePassword=replace-me
+keyAlias=privatedao
+keyPassword=replace-me

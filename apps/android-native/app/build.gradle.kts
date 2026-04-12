@@ -6,6 +6,14 @@ plugins {
 }
 
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
+
+val releaseSigningProperties = Properties().apply {
+    val signingFile = rootProject.file("release-signing.properties")
+    if (signingFile.exists()) {
+        signingFile.inputStream().use(::load)
+    }
+}
 
 android {
     namespace = "io.xpact.privatedao.android"
@@ -22,9 +30,36 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
+    signingConfigs {
+        create("release") {
+            val storeFilePath = providers.environmentVariable("PRIVATEDAO_RELEASE_STORE_FILE")
+                .orElse(releaseSigningProperties.getProperty("storeFile") ?: "")
+                .get()
+            val storePassword = providers.environmentVariable("PRIVATEDAO_RELEASE_STORE_PASSWORD")
+                .orElse(releaseSigningProperties.getProperty("storePassword") ?: "")
+                .get()
+            val keyAlias = providers.environmentVariable("PRIVATEDAO_RELEASE_KEY_ALIAS")
+                .orElse(releaseSigningProperties.getProperty("keyAlias") ?: "")
+                .get()
+            val keyPassword = providers.environmentVariable("PRIVATEDAO_RELEASE_KEY_PASSWORD")
+                .orElse(releaseSigningProperties.getProperty("keyPassword") ?: "")
+                .get()
+
+            if (storeFilePath.isNotBlank() && storePassword.isNotBlank() && keyAlias.isNotBlank() && keyPassword.isNotBlank()) {
+                storeFile = file(storeFilePath)
+                this.storePassword = storePassword
+                this.keyAlias = keyAlias
+                this.keyPassword = keyPassword
+                enableV1Signing = true
+                enableV2Signing = true
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
