@@ -74,6 +74,7 @@ export function TelemetryRuntimeFocusClient({
               : handoff.requestDelivery?.state === "staged"
                 ? "staged-for-delivery"
                 : "draft-execution-context",
+          slot: undefined,
         }
       : null;
   const renderedEntries = continuityEntry ? [continuityEntry, ...entries] : entries;
