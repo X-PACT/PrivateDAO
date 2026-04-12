@@ -327,6 +327,7 @@ export function TreasuryReceiveSurface() {
         : null,
     [activeProfile.value, persistedHandoff, persistedPayoutIntent],
   );
+  const isRequestReady = Boolean(amount.trim() && purpose.trim() && reference.trim());
   const requestPayloadSeed = useMemo(
     () => ({
       kind: "privatedao.treasury.request",
@@ -383,8 +384,6 @@ export function TreasuryReceiveSurface() {
         : "",
     [activeProfile.value, persistedHandoff, persistedPayoutIntent, requestPayloadSeed],
   );
-  const isRequestReady = Boolean(amount.trim() && purpose.trim() && reference.trim());
-
   const buildRouteWithDelivery = useCallback(
     (
       basePath: "/services" | "/command-center" | "/network",

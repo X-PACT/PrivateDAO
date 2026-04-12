@@ -94,7 +94,11 @@ export function DiagnosticsCenter() {
               </div>
               {handoff.requestPayload ? (
                 <div className="mt-2 text-sm leading-7 text-white/62">
-                  {handoff.requestPayload.executionTarget} · {handoff.requestPayload.requestRoute}
+                  {handoff.requestPayload.kind} · {handoff.requestPayload.executionTarget}
+                  <br />
+                  {handoff.requestPayload.requestRoute}
+                  <br />
+                  {handoff.requestPayload.telemetryRoute}
                 </div>
               ) : null}
               <div className="mt-4 flex flex-wrap gap-3">

@@ -73,7 +73,11 @@ export function AnalyticsSummary() {
               </div>
               {handoff.requestPayload ? (
                 <div className="mt-2 text-sm leading-7 text-white/58">
-                  {handoff.requestPayload.executionTarget} · {handoff.requestPayload.routeFocus}
+                  {handoff.requestPayload.kind} · {handoff.requestPayload.executionTarget}
+                  <br />
+                  {handoff.requestPayload.requestRoute}
+                  <br />
+                  {handoff.requestPayload.telemetryRoute}
                 </div>
               ) : null}
             </div>
