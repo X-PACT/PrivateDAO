@@ -388,6 +388,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/monitoring-alert-rules.md`,
   },
   {
+    slug: "real-device-runtime",
+    title: "Real-Device Runtime Evidence",
+    category: "Operations",
+    summary: "Canonical real-device wallet runtime evidence package with capture coverage, pending targets, and reviewer-safe Devnet proof.",
+    audience: "Operators, reviewers, buyers, security readers",
+    boundary: "Runtime evidence surface only; it does not claim all target devices are closed beyond the recorded capture set.",
+    docPath: "docs/runtime/real-device.generated.md",
+    rawHref: `${repositoryBlobBase}/docs/runtime/real-device.generated.md`,
+  },
+  {
     slug: "frontier-integrations",
     title: "Frontier Integrations",
     category: "Reviewer core",

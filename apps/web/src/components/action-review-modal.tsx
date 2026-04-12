@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { X } from "lucide-react";
 
 import { OnchainParityPanel } from "@/components/onchain-parity-panel";
@@ -7,11 +8,12 @@ import { ProposalAnalyzerInline } from "@/components/proposal-analyzer-inline";
 import type { GovernanceExecutionIntent } from "@/components/governance-session";
 import { TreasuryRiskInline } from "@/components/treasury-risk-inline";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { buildPreparedActionSummary } from "@/lib/onchain-parity";
 import type { CoreGovernanceInstructionName } from "@/lib/onchain-parity.generated";
 import type { ServiceHandoffRequestDelivery, ServiceHandoffRequestPayload } from "@/lib/service-handoff-state";
 import type { ProposalCardModel } from "@/lib/site-data";
+import { cn } from "@/lib/utils";
 
 type ActionReviewModalProps = {
   action: CoreGovernanceInstructionName | null;
@@ -52,6 +54,9 @@ export function ActionReviewModal({
   });
   const payload = requestPayload ?? executionIntent?.requestPayload ?? null;
   const delivery = requestDelivery ?? executionIntent?.requestDelivery ?? null;
+  const deliveryState = delivery?.state ?? payload?.state ?? "draft";
+  const payloadAlreadySubmitted =
+    action === "execute_proposal" && deliveryState === "executed";
   const summaryProposalId = payload?.requestId ?? summary.proposalId;
   const summaryBeneficiary = payload?.executionTarget ?? executionIntent?.executionTarget ?? summary.beneficiary;
   const summaryAmountOrAsset = payload?.amountDisplay ?? executionIntent?.amountDisplay ?? summary.amountOrAsset;
@@ -63,7 +68,9 @@ export function ActionReviewModal({
       : summary.timelock;
   const confirmLabel = executionIntent
     ? action === "execute_proposal"
-      ? "Sign and submit delivered payload"
+      ? payloadAlreadySubmitted
+        ? "Payload already submitted"
+        : "Sign and submit delivered payload"
       : "Continue with payload-driven signing shell"
     : "Continue in UI";
 
@@ -252,6 +259,20 @@ export function ActionReviewModal({
                 </div>
               </div>
             </div>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Link href={payload.deliveryRoute} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+                Open final delivery lane
+              </Link>
+              <Link href={payload.telemetryRoute} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                Open authoritative telemetry lane
+              </Link>
+              <Link href="/documents/monitoring-alert-rules" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                Open alert rules
+              </Link>
+              <Link href="/documents/real-device-runtime" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                Open real-device runtime
+              </Link>
+            </div>
           </div>
         ) : null}
 
@@ -260,7 +281,9 @@ export function ActionReviewModal({
         </div>
 
         <div className="mt-6 flex flex-wrap gap-3">
-          <Button onClick={onConfirm}>{confirmLabel}</Button>
+          <Button disabled={payloadAlreadySubmitted} onClick={onConfirm}>
+            {confirmLabel}
+          </Button>
           <Button variant="secondary" onClick={onClose}>
             Go back
           </Button>

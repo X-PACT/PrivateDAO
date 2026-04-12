@@ -13,6 +13,8 @@ if [[ -z "$staged_paths" ]]; then
   exit 0
 fi
 
+staged_source_count="$(printf '%s\n' "$staged_paths" | sed '/^$/d' | wc -l | tr -d ' ')"
+
 forbidden_paths="$(printf '%s\n' "$staged_paths" | grep -E "$forbidden_regex" || true)"
 
 if [[ -n "$forbidden_paths" ]]; then
@@ -21,4 +23,5 @@ if [[ -n "$forbidden_paths" ]]; then
   exit 1
 fi
 
-echo "source preflight: staged changes are source-safe"
+echo "source preflight: staged changes are source-safe ($staged_source_count source path(s))"
+echo "source preflight: inspect staged source with 'npm run status:source:staged'"

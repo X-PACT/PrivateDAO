@@ -107,6 +107,8 @@ export function buildAuthoritativeExecutionEvidence(
         label: "Real-device coverage",
         detail: runtimeSnapshot.runtime.walletCoverage,
         status: "runtime capture",
+        routeHref: "/documents/real-device-runtime",
+        routeLabel: "Open real-device runtime",
       },
       {
         label: "Transaction capture",
@@ -134,8 +136,8 @@ export function buildAuthoritativeExecutionEvidence(
           strongestAlert?.summary ??
           "Monitoring evidence remains attached to runtime and reviewer routes.",
         status: strongestAlert?.status ?? "Healthy",
-        routeHref: strongestAlert?.routeHref,
-        routeLabel: strongestAlert?.routeLabel,
+        routeHref: strongestAlert?.routeHref ?? "/documents/monitoring-alert-rules",
+        routeLabel: strongestAlert?.routeLabel ?? "Open alert rules",
       },
     ],
   };
