@@ -327,6 +327,49 @@ export function TreasuryReceiveSurface() {
         : null,
     [activeProfile.value, persistedHandoff, persistedPayoutIntent],
   );
+  const requestPayloadSeed = useMemo(
+    () => ({
+      kind: "privatedao.treasury.request",
+      state: isRequestReady ? "ready-for-delivery" : "draft-pending-input",
+      requestId: `${activeProfile.value}:${reference || "reference-pending"}`.toUpperCase(),
+      preparedAt: requestPreparedAt,
+      proposalId: persistedHandoff?.proposalId ?? "services-treasury-intake",
+      proposalTitle: persistedHandoff?.proposalTitle ?? activeProfile.label,
+      network: config.network,
+      payoutProfile: activeProfile.value,
+      payoutTitle: activeProfile.label,
+      lane,
+      telemetryMode: persistedHandoff?.telemetryMode ?? "packet",
+      asset: {
+        symbol: activeAsset.symbol,
+        mint: activeAsset.mint ?? "env-configured",
+        receiveAddress: activeAsset.receiveAddress,
+      },
+      amount: amount || null,
+      amountDisplay: amount ? `${amount} ${activeAsset.symbol}` : `${activeAsset.symbol} amount pending`,
+      reference: reference || null,
+      purpose: purpose || null,
+      routeFocus: persistedHandoff?.payoutIntent?.routeFocus ?? activeProfile.summary,
+      executionTarget: persistedHandoff?.payoutIntent?.executionTarget ?? `Treasury receive rail · ${activeAsset.symbol}`,
+      evidenceRoute: persistedHandoff?.payoutIntent?.evidenceRoute ?? "/documents/treasury-reviewer-packet",
+    }),
+    [
+      activeAsset.mint,
+      activeAsset.receiveAddress,
+      activeAsset.symbol,
+      activeProfile.label,
+      activeProfile.summary,
+      activeProfile.value,
+      amount,
+      config.network,
+      isRequestReady,
+      lane,
+      persistedHandoff,
+      purpose,
+      reference,
+      requestPreparedAt,
+    ],
+  );
   const continueHandoffQuery = useMemo(
     () =>
       persistedHandoff && persistedPayoutIntent
@@ -335,9 +378,10 @@ export function TreasuryReceiveSurface() {
             payoutProfile: activeProfile.value,
             telemetryMode: persistedHandoff.telemetryMode,
             requestDelivery: persistedHandoff.requestDelivery,
+            requestPayloadSeed,
           })
         : "",
-    [activeProfile.value, persistedHandoff, persistedPayoutIntent],
+    [activeProfile.value, persistedHandoff, persistedPayoutIntent, requestPayloadSeed],
   );
   const isRequestReady = Boolean(amount.trim() && purpose.trim() && reference.trim());
 
@@ -501,51 +545,16 @@ export function TreasuryReceiveSurface() {
   const engagePrimaryHref = `/engage?intake=${activeProfile.intake}&asset=${activeAsset.symbol}&amount=${encodedAmount}&purpose=${encodedPurpose}&lane=${lane}&profile=${encodedProfile}`;
   const structuredRequestObject = useMemo(
     () => ({
-      kind: "privatedao.treasury.request",
-      state: isRequestReady ? "ready-for-delivery" : "draft-pending-input",
-      requestId: `${activeProfile.value}:${reference || "reference-pending"}`.toUpperCase(),
-      preparedAt: requestPreparedAt,
-      proposalId: persistedHandoff?.proposalId ?? "services-treasury-intake",
-      proposalTitle: persistedHandoff?.proposalTitle ?? activeProfile.label,
-      network: config.network,
-      payoutProfile: activeProfile.value,
-      payoutTitle: activeProfile.label,
-      lane,
-      telemetryMode: persistedHandoff?.telemetryMode ?? "packet",
-      asset: {
-        symbol: activeAsset.symbol,
-        mint: activeAsset.mint ?? "env-configured",
-        receiveAddress: activeAsset.receiveAddress,
-      },
-      amount: amount || null,
-      amountDisplay: amount ? `${amount} ${activeAsset.symbol}` : `${activeAsset.symbol} amount pending`,
-      reference: reference || null,
-      purpose: purpose || null,
-      routeFocus: persistedHandoff?.payoutIntent?.routeFocus ?? activeProfile.summary,
-      executionTarget: persistedHandoff?.payoutIntent?.executionTarget ?? `Treasury receive rail · ${activeAsset.symbol}`,
-      evidenceRoute: persistedHandoff?.payoutIntent?.evidenceRoute ?? "/documents/treasury-reviewer-packet",
+      ...requestPayloadSeed,
       requestRoute: activeRequestDelivery.requestRoute,
       deliveryRoute: activeRequestDelivery.deliveryRoute,
       telemetryRoute: activeRequestDelivery.telemetryRoute,
     }),
     [
-      activeAsset.mint,
-      activeAsset.receiveAddress,
-      activeAsset.symbol,
-      activeProfile.label,
-      activeProfile.summary,
-      activeProfile.value,
-      amount,
-      config.network,
-      isRequestReady,
-      lane,
-      persistedHandoff,
-      purpose,
-      reference,
-      requestPreparedAt,
       activeRequestDelivery.deliveryRoute,
       activeRequestDelivery.requestRoute,
       activeRequestDelivery.telemetryRoute,
+      requestPayloadSeed,
     ],
   );
 

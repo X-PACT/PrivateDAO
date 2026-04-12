@@ -109,6 +109,11 @@ export type ServiceHandoffRequestPayload = {
   telemetryRoute: string;
 };
 
+export type ServiceHandoffRequestPayloadSeed = Omit<
+  ServiceHandoffRequestPayload,
+  "requestRoute" | "deliveryRoute" | "telemetryRoute"
+>;
+
 export type ServiceHandoffState = {
   proposalId: string;
   proposalTitle: string;
@@ -131,6 +136,7 @@ export type ServiceHandoffSelection = {
   telemetryMode: ServiceHandoffTelemetryMode;
   deliveryState?: "staged" | "delivered";
   deliveredAt?: string;
+  requestPayloadSeed?: ServiceHandoffRequestPayloadSeed;
 };
 
 type ServiceHandoffQueryState = {
@@ -138,6 +144,7 @@ type ServiceHandoffQueryState = {
   payoutProfile: ServiceHandoffProfile;
   telemetryMode: ServiceHandoffTelemetryMode;
   requestDelivery?: Pick<ServiceHandoffRequestDelivery, "state" | "deliveredAt">;
+  requestPayloadSeed?: ServiceHandoffRequestPayloadSeed;
 };
 
 let storedServiceHandoffRawCache: string | null = null;
@@ -168,7 +175,50 @@ export function buildServiceHandoffQuery(state: ServiceHandoffQueryState) {
   ) {
     params.set("deliveredAt", state.requestDelivery.deliveredAt);
   }
+  if (state.requestPayloadSeed) {
+    params.set("requestPayload", JSON.stringify(state.requestPayloadSeed));
+  }
   return params.toString();
+}
+
+function parseRequestPayloadSeed(
+  raw: string | null,
+): ServiceHandoffRequestPayloadSeed | undefined {
+  if (!raw) return undefined;
+
+  try {
+    const parsed = JSON.parse(raw) as Partial<ServiceHandoffRequestPayloadSeed>;
+    if (
+      typeof parsed.kind !== "string" ||
+      typeof parsed.state !== "string" ||
+      typeof parsed.requestId !== "string" ||
+      typeof parsed.preparedAt !== "string" ||
+      typeof parsed.proposalId !== "string" ||
+      typeof parsed.proposalTitle !== "string" ||
+      typeof parsed.network !== "string" ||
+      typeof parsed.payoutProfile !== "string" ||
+      typeof parsed.payoutTitle !== "string" ||
+      typeof parsed.lane !== "string" ||
+      typeof parsed.telemetryMode !== "string" ||
+      !parsed.asset ||
+      typeof parsed.asset.symbol !== "string" ||
+      typeof parsed.asset.mint !== "string" ||
+      typeof parsed.asset.receiveAddress !== "string" ||
+      !(typeof parsed.amount === "string" || parsed.amount === null) ||
+      typeof parsed.amountDisplay !== "string" ||
+      !(typeof parsed.reference === "string" || parsed.reference === null) ||
+      !(typeof parsed.purpose === "string" || parsed.purpose === null) ||
+      typeof parsed.routeFocus !== "string" ||
+      typeof parsed.executionTarget !== "string" ||
+      typeof parsed.evidenceRoute !== "string"
+    ) {
+      return undefined;
+    }
+
+    return parsed as ServiceHandoffRequestPayloadSeed;
+  } catch {
+    return undefined;
+  }
 }
 
 export function isServiceHandoffProfile(value: string | null | undefined): value is ServiceHandoffProfile {
@@ -354,6 +404,7 @@ export function readServiceHandoffState(searchParams: URLSearchParams): ServiceH
   const telemetryMode = searchParams.get("telemetryMode");
   const deliveryState = searchParams.get("deliveryState");
   const deliveredAt = searchParams.get("deliveredAt");
+  const requestPayloadSeed = parseRequestPayloadSeed(searchParams.get("requestPayload"));
 
   if (!proposalId || !isServiceHandoffProfile(payoutProfile) || !isServiceHandoffTelemetryMode(telemetryMode)) {
     return null;
@@ -371,6 +422,7 @@ export function readServiceHandoffState(searchParams: URLSearchParams): ServiceH
       deliveryState === "delivered" && typeof deliveredAt === "string" && deliveredAt.length > 0
         ? deliveredAt
         : undefined,
+    requestPayloadSeed,
   };
 }
 
@@ -402,7 +454,8 @@ export function mergeServiceHandoffState(
   const baseQuery = buildServiceHandoffQuery({
     ...baseState,
     requestDelivery: storedState?.requestDelivery,
-  } as ServiceHandoffState);
+    requestPayloadSeed: selection.requestPayloadSeed ?? storedState?.requestPayload,
+  });
   const requestDelivery =
     selection.deliveryState === "staged" || selection.deliveryState === "delivered"
       ? {
@@ -437,6 +490,13 @@ export function mergeServiceHandoffState(
           telemetryRoute:
             requestDelivery?.telemetryRoute ?? storedState.requestPayload.telemetryRoute,
         }
+      : selection.requestPayloadSeed
+        ? {
+            ...selection.requestPayloadSeed,
+            requestRoute: requestDelivery?.requestRoute ?? `/services?${baseQuery}#treasury-payment-request`,
+            deliveryRoute: requestDelivery?.deliveryRoute ?? `/command-center?${baseQuery}#proposal-review-action`,
+            telemetryRoute: requestDelivery?.telemetryRoute ?? `/network?${baseQuery}`,
+          }
       : undefined;
 
   return {

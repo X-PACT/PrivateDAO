@@ -163,12 +163,13 @@ export function ActionReviewModal({
               </div>
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68 sm:col-span-2">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Execution target</div>
-                <div className="mt-2 text-white">{executionIntent.executionTarget}</div>
+                <div className="mt-2 text-white">{summaryBeneficiary}</div>
               </div>
               {payload ? (
                 <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68 sm:col-span-2">
                   <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Authoritative request object</div>
                   <div className="mt-2 text-white">{payload.kind}</div>
+                  <div className="mt-1 text-white/72">{payload.requestId}</div>
                   <div className="mt-1 text-white/72">{payload.requestRoute}</div>
                   <div className="mt-1 text-white/72">{payload.deliveryRoute}</div>
                   <div className="mt-1 text-white/72">{payload.telemetryRoute}</div>
