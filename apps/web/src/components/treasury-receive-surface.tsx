@@ -143,6 +143,7 @@ export function TreasuryReceiveSurface() {
   const [amount, setAmount] = useState("");
   const [purpose, setPurpose] = useState("");
   const [lane, setLane] = useState<(typeof handoffLanes)[number]["value"]>("buyer");
+  const [requestPreparedAt, setRequestPreparedAt] = useState<string>("pending-client-hydration");
   const handoff = useServiceHandoffSnapshot("services");
   const appliedHandoffKeyRef = useRef<string | null>(null);
   const persistedPayloadSignatureRef = useRef<string | null>(null);
@@ -178,6 +179,10 @@ export function TreasuryReceiveSurface() {
     setAmount("");
     setPurpose(activeProfile.defaultPurpose);
   }, [activeProfile, allowStoredServicesHydration, config.assets, handoff?.payoutIntent, handoff?.payoutProfile]);
+
+  useEffect(() => {
+    setRequestPreparedAt(new Date().toISOString());
+  }, []);
 
   useEffect(() => {
     if (!handoff) return;
@@ -437,7 +442,7 @@ export function TreasuryReceiveSurface() {
       kind: "privatedao.treasury.request",
       state: isRequestReady ? "ready-for-delivery" : "draft-pending-input",
       requestId: `${activeProfile.value}:${reference || "reference-pending"}`.toUpperCase(),
-      preparedAt: new Date().toISOString(),
+      preparedAt: requestPreparedAt,
       proposalId: handoff?.proposalId ?? "services-treasury-intake",
       proposalTitle: handoff?.proposalTitle ?? activeProfile.label,
       network: config.network,
@@ -481,6 +486,7 @@ export function TreasuryReceiveSurface() {
       lane,
       purpose,
       reference,
+      requestPreparedAt,
       requestRoute,
       telemetryRoute,
     ],
