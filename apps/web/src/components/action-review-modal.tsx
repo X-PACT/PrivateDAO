@@ -45,11 +45,15 @@ export function ActionReviewModal({
     voteChoice,
     proposal,
   });
-  const summaryBeneficiary = executionIntent?.executionTarget ?? summary.beneficiary;
-  const summaryAmountOrAsset = executionIntent?.amountDisplay ?? summary.amountOrAsset;
+  const payload = executionIntent?.requestPayload ?? null;
+  const summaryProposalId = payload?.requestId ?? summary.proposalId;
+  const summaryBeneficiary = payload?.executionTarget ?? executionIntent?.executionTarget ?? summary.beneficiary;
+  const summaryAmountOrAsset = payload?.amountDisplay ?? executionIntent?.amountDisplay ?? summary.amountOrAsset;
   const summaryTimelock =
     executionIntent
-      ? `Execution continuity loaded · telemetry ${executionIntent.telemetryMode}`
+      ? payload
+        ? `Authoritative request object loaded · ${executionIntent.requestDelivery?.state ?? payload.state} · telemetry ${payload.telemetryMode}`
+        : `Execution continuity loaded · telemetry ${executionIntent.telemetryMode}`
       : summary.timelock;
 
   return (
@@ -80,7 +84,7 @@ export function ActionReviewModal({
           </div>
           <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
             <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Proposal ID</div>
-            <div className="mt-2 text-sm font-medium text-white">{summary.proposalId}</div>
+            <div className="mt-2 text-sm font-medium text-white">{summaryProposalId}</div>
           </div>
           <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
             <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Network</div>
@@ -124,10 +128,10 @@ export function ActionReviewModal({
           <div className="mt-6 rounded-3xl border border-emerald-300/18 bg-emerald-300/[0.08] p-5">
             <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-100/80">Execution continuity packet</div>
             <div className="mt-3 text-base font-medium text-white">
-              {executionIntent.payoutTitle} · {executionIntent.amountDisplay}
+              {payload?.payoutTitle ?? executionIntent.payoutTitle} · {summaryAmountOrAsset}
             </div>
             <div className="mt-2 text-sm leading-7 text-white/62">
-              {executionIntent.reference} · {executionIntent.purpose}
+              {(payload?.reference ?? executionIntent.reference) || "Reference pending"} · {(payload?.purpose ?? executionIntent.purpose) || "Purpose pending"}
             </div>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
@@ -140,22 +144,23 @@ export function ActionReviewModal({
               </div>
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Request ID</div>
-                <div className="mt-2 text-white">{executionIntent.requestPayload?.requestId ?? executionIntent.reference}</div>
+                <div className="mt-2 text-white">{payload?.requestId ?? executionIntent.reference}</div>
               </div>
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Delivery state</div>
-                <div className="mt-2 text-white">{executionIntent.requestDelivery?.state ?? executionIntent.requestPayload?.state ?? "draft-pending-input"}</div>
+                <div className="mt-2 text-white">{executionIntent.requestDelivery?.state ?? payload?.state ?? "draft-pending-input"}</div>
               </div>
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68 sm:col-span-2">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Execution target</div>
                 <div className="mt-2 text-white">{executionIntent.executionTarget}</div>
               </div>
-              {executionIntent.requestPayload ? (
+              {payload ? (
                 <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68 sm:col-span-2">
-                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Request continuity routes</div>
-                  <div className="mt-2 text-white">{executionIntent.requestPayload.requestRoute}</div>
-                  <div className="mt-1 text-white/72">{executionIntent.requestPayload.deliveryRoute}</div>
-                  <div className="mt-1 text-white/72">{executionIntent.requestPayload.telemetryRoute}</div>
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Authoritative request object</div>
+                  <div className="mt-2 text-white">{payload.kind}</div>
+                  <div className="mt-1 text-white/72">{payload.requestRoute}</div>
+                  <div className="mt-1 text-white/72">{payload.deliveryRoute}</div>
+                  <div className="mt-1 text-white/72">{payload.telemetryRoute}</div>
                 </div>
               ) : null}
             </div>
@@ -175,7 +180,7 @@ export function ActionReviewModal({
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Payload source</div>
-                <div className="mt-2 text-white">{executionIntent.reference}</div>
+                <div className="mt-2 text-white">{payload?.requestId ?? executionIntent.reference}</div>
               </div>
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Review posture</div>

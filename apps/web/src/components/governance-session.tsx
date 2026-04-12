@@ -300,7 +300,9 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
           withLog(
             { ...current, proposalExecuted: true },
             "Proposal executed",
-            `${current.proposalTitle} advanced to the execute stage in the product workflow.`,
+            current.executionIntent?.requestPayload
+              ? `${current.executionIntent.requestPayload.requestId} · ${current.executionIntent.requestPayload.amountDisplay} · ${current.executionIntent.requestPayload.reference ?? "reference pending"} advanced through the command-center signing shell.`
+              : `${current.proposalTitle} advanced to the execute stage in the product workflow.`,
           ),
         ),
       resetSession: () => setState(defaultState),

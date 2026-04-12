@@ -74,6 +74,7 @@ export function GovernanceActionWorkbench() {
   const appliedReviewRef = useRef<string | null>(null);
   const autoOpenReviewRef = useRef<string | null>(null);
   const stagedProposal = handoff?.proposalId ? getProposalById(handoff.proposalId) ?? null : null;
+  const continuityRequestPayload = handoff?.requestPayload ?? null;
   const stagedReviewAction = resolveStagedReviewAction(stagedProposal);
   const continuityQuery = handoff ? buildServiceHandoffQuery(handoff) : "";
 
@@ -105,11 +106,11 @@ export function GovernanceActionWorkbench() {
     if (executionIntent) {
       derived.push({
         label: "Execution continuity",
-        value: `${handoff?.requestPayload?.requestId ?? executionIntent.payoutTitle} · ${handoff?.requestPayload?.amountDisplay ?? executionIntent.amountDisplay} · ${handoff?.requestPayload?.reference ?? executionIntent.reference}`,
+        value: `${continuityRequestPayload?.requestId ?? executionIntent.payoutTitle} · ${continuityRequestPayload?.amountDisplay ?? executionIntent.amountDisplay} · ${continuityRequestPayload?.reference ?? executionIntent.reference}`,
       });
       derived.push({
         label: "Execution target",
-        value: `${handoff?.requestPayload?.executionTarget ?? executionIntent.executionTarget} · telemetry ${handoff?.requestPayload?.telemetryMode ?? executionIntent.telemetryMode}`,
+        value: `${continuityRequestPayload?.executionTarget ?? executionIntent.executionTarget} · telemetry ${continuityRequestPayload?.telemetryMode ?? executionIntent.telemetryMode}`,
       });
     }
 
@@ -126,7 +127,7 @@ export function GovernanceActionWorkbench() {
     }
 
     return derived;
-  }, [executionIntent, handoff]);
+  }, [continuityRequestPayload, executionIntent, handoff]);
 
   useEffect(() => {
     if (!handoff) return;
@@ -148,20 +149,20 @@ export function GovernanceActionWorkbench() {
       stageExecutionIntent({
         proposalId: handoff.proposalId,
         payoutProfile: handoff.payoutProfile,
-        payoutTitle: handoff.payoutTitle,
-        telemetryMode: handoff.telemetryMode,
-        amountDisplay: handoff.payoutIntent.amountDisplay,
-        reference: handoff.payoutIntent.reference,
-        purpose: handoff.payoutIntent.purpose,
-        executionTarget: handoff.payoutIntent.executionTarget,
-        evidenceRoute: handoff.payoutIntent.evidenceRoute,
+        payoutTitle: continuityRequestPayload?.payoutTitle ?? handoff.payoutTitle,
+        telemetryMode: continuityRequestPayload?.telemetryMode ?? handoff.telemetryMode,
+        amountDisplay: continuityRequestPayload?.amountDisplay ?? handoff.payoutIntent.amountDisplay,
+        reference: continuityRequestPayload?.reference ?? handoff.payoutIntent.reference,
+        purpose: continuityRequestPayload?.purpose ?? handoff.payoutIntent.purpose,
+        executionTarget: continuityRequestPayload?.executionTarget ?? handoff.payoutIntent.executionTarget,
+        evidenceRoute: continuityRequestPayload?.evidenceRoute ?? handoff.payoutIntent.evidenceRoute,
         requestPayload: handoff.requestPayload,
         requestDelivery: handoff.requestDelivery,
         source: handoff.source,
       });
     }
     appliedReviewRef.current = continuityKey;
-  }, [handoff, proposalCreated, proposalTitle, setProposalTitle, stageExecutionIntent, stageReviewContext]);
+  }, [continuityRequestPayload, handoff, proposalCreated, proposalTitle, setProposalTitle, stageExecutionIntent, stageReviewContext]);
 
   useEffect(() => {
     if (!handoff?.requestDelivery || !executionIntent || !stagedProposal) return;

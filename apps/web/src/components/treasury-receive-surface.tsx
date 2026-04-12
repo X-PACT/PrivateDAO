@@ -388,11 +388,11 @@ export function TreasuryReceiveSurface() {
       state,
       stateDetail:
         state === "delivered"
-          ? "Request delivered into the command-center execution lane with the exact treasury payload attached."
+          ? "Request object delivered into the command-center execution lane with the exact treasury payload attached."
           : state === "staged"
-            ? "Request staged in the services lane and ready for governed delivery."
+            ? "Request object submitted in the services lane and ready for governed delivery."
             : isRequestReady
-              ? "Structured request is ready to be staged or delivered into the execution lane."
+              ? "Structured request object is ready to be submitted or delivered into the execution lane."
               : "Complete amount, reference, and purpose before staging the request for delivery.",
       requestRoute: buildRouteWithDelivery("/services", state, deliveredAt),
       deliveryRoute: buildRouteWithDelivery("/command-center", state, deliveredAt),
@@ -901,15 +901,23 @@ export function TreasuryReceiveSurface() {
                 {activeRequestDelivery.state === "delivered"
                   ? "Delivered into command-center"
                   : activeRequestDelivery.state === "staged"
-                    ? "Staged in services"
+                    ? "Submitted in services"
                     : isRequestReady
-                      ? "Ready to stage"
+                      ? "Ready to submit"
                       : "Draft pending input"}
               </div>
               <div className="mt-2 text-sm leading-7 text-white/62">
                 {activeRequestDelivery.stateDetail}
               </div>
               <div className="mt-4 grid gap-3 md:grid-cols-2">
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Request object ID</div>
+                  <div className="mt-2 text-white">{structuredRequestObject.requestId}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Request object state</div>
+                  <div className="mt-2 text-white">{structuredRequestObject.state}</div>
+                </div>
                 <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
                   <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Request route</div>
                   <div className="mt-2 text-white">{activeRequestDelivery.requestRoute}</div>
@@ -926,7 +934,7 @@ export function TreasuryReceiveSurface() {
                   disabled={!isRequestReady}
                   className={cn(buttonVariants({ size: "sm", variant: "secondary" }), !isRequestReady && "pointer-events-none opacity-50")}
                 >
-                  Stage request in UI
+                  Submit request object in UI
                 </button>
                 <button
                   type="button"
@@ -934,7 +942,7 @@ export function TreasuryReceiveSurface() {
                   disabled={!isRequestReady}
                   className={cn(buttonVariants({ size: "sm" }), !isRequestReady && "pointer-events-none opacity-50")}
                 >
-                  Deliver to command center
+                  Deliver request object to command-center
                 </button>
                 <Link
                   href={activeRequestDelivery.telemetryRoute}
