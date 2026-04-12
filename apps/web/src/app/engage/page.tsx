@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Suspense } from "react";
+import { ArrowUpRight, Mail, MessageCircleMore, ShieldCheck } from "lucide-react";
 
 import { CustomerConversionSurface } from "@/components/customer-conversion-surface";
 import { LeadSupportIntake } from "@/components/lead-support-intake";
 import { OperationsShell } from "@/components/operations-shell";
 import { PlatformServiceArchitecture } from "@/components/platform-service-architecture";
 import { ProductIntakeForms } from "@/components/product-intake-forms";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TreasuryReceiveSurface } from "@/components/treasury-receive-surface";
+import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Engage",
@@ -63,6 +68,52 @@ export default function EngagePage({ searchParams }: EngagePageProps) {
       <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading treasury receive surface…</div>}>
         <TreasuryReceiveSurface />
       </Suspense>
+      <Card>
+        <CardHeader>
+          <CardTitle>Ownership, investor, and donor contact</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-5">
+          <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-4 text-sm leading-7 text-white/72">
+            PrivateDAO is produced with execution support from a multi-national technical team. Product ownership, brand control, repository ownership, and commercialization rights remain solely with <span className="text-white">Fahd Kotb</span>.
+          </div>
+          <div className="grid gap-4 lg:grid-cols-[1.3fr_0.9fr]">
+            <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
+              <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-emerald-200/76">
+                <Mail className="h-3.5 w-3.5" />
+                Use this contact surface for
+              </div>
+              <div className="mt-3 space-y-2 text-sm leading-7 text-white/68">
+                <div>Investment discussions, donations, strategic help, enterprise pilots, integrations, and direct founder coordination.</div>
+                <div>Primary email: <a className="text-white hover:text-cyan-200" href="mailto:fahd.kotb@tuta.io">fahd.kotb@tuta.io</a></div>
+                <div>Operations email: <a className="text-white hover:text-cyan-200" href="mailto:i.kotb@proton.me">i.kotb@proton.me</a></div>
+                <div>Additional contact: <a className="text-white hover:text-cyan-200" href="mailto:eslamkotb.369@gmail.com">eslamkotb.369@gmail.com</a></div>
+                <div>WhatsApp: <a className="text-white hover:text-cyan-200" href="https://wa.me/201124030209" target="_blank" rel="noreferrer">+20 112 403 0209</a></div>
+              </div>
+            </div>
+            <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
+              <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-fuchsia-200/76">
+                <MessageCircleMore className="h-3.5 w-3.5" />
+                Direct channels
+              </div>
+              <div className="mt-3 space-y-3 text-sm leading-7 text-white/68">
+                <div>Telegram: <a className="text-white hover:text-cyan-200" href="https://t.me/Fahdkotb" target="_blank" rel="noreferrer">@Fahdkotb</a></div>
+                <div>Discord: <a className="text-white hover:text-cyan-200" href="https://discord.gg/dzaVXjkug" target="_blank" rel="noreferrer">discord.gg/dzaVXjkug</a></div>
+                <div>X: <a className="text-white hover:text-cyan-200" href="https://x.com/FahdX369" target="_blank" rel="noreferrer">@FahdX369</a></div>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Link href="/documents/ownership-and-contact" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
+              Open ownership packet
+              <ArrowUpRight className="h-4 w-4" />
+            </Link>
+            <Link href="/documents/launch-trust-packet" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+              Open launch trust packet
+              <ShieldCheck className="h-4 w-4" />
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
       <CustomerConversionSurface />
       <PlatformServiceArchitecture />
     </OperationsShell>

@@ -11,10 +11,18 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-white/8 bg-[#050816]">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-10 text-sm text-white/55 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-        <div className="max-w-2xl">
-          PrivateDAO is a privacy-focused governance and treasury product on Solana with additive hardening, runtime evidence, and reviewer-ready proof surfaces.
+        <div className="max-w-3xl space-y-2">
+          <div>
+            PrivateDAO is a privacy-focused governance and treasury product on Solana with additive hardening, runtime evidence, and reviewer-ready proof surfaces.
+          </div>
+          <div className="text-xs leading-6 text-white/44">
+            Produced with execution support from a multi-national technical team. Product ownership, brand control, and commercialization rights remain solely with Fahd Kotb.
+          </div>
         </div>
         <div className="flex flex-wrap items-center gap-5">
+          <Link href="/engage" className="hover:text-white">
+            Engage
+          </Link>
           <Link href="/community" className="hover:text-white">
             Community
           </Link>
@@ -29,6 +37,9 @@ export function SiteFooter() {
           </Link>
           <Link href="/documents/mainnet-blockers" className="hover:text-white">
             Mainnet blockers
+          </Link>
+          <Link href="/documents/ownership-and-contact" className="hover:text-white">
+            Ownership and contact
           </Link>
           <a href="https://github.com/X-PACT/PrivateDAO" target="_blank" rel="noreferrer" className="hover:text-white">
             Repository

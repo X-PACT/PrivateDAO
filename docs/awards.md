@@ -26,13 +26,13 @@ The work demonstrates:
 
 ## Ownership And Contact
 
-PrivateDAO is independently built and maintained by **Fahd Kotb**.
+PrivateDAO is produced with execution support from a multi-national technical team. Product ownership, brand control, commercialization rights, and beneficial ownership remain solely with **Fahd Kotb**.
 
 - Primary email: [fahd.kotb@tuta.io](mailto:fahd.kotb@tuta.io)
-- Secondary email: [i.kotb@proton.me](mailto:i.kotb@proton.me)
-- Operations email: [eslamkotb.fmt@gmail.com](mailto:eslamkotb.fmt@gmail.com)
+- Operations email: [i.kotb@proton.me](mailto:i.kotb@proton.me)
 - Additional contact: [eslamkotb.369@gmail.com](mailto:eslamkotb.369@gmail.com)
 - WhatsApp: [+20 112 403 0209](https://wa.me/201124030209)
-- WhatsApp backup: [+20 107 000 4967](https://wa.me/201070004967)
-- X: [@FahdX369](https://x.com/FahdX369)
 - Telegram: [@Fahdkotb](https://t.me/Fahdkotb)
+- Discord: [PrivateDAO community server](https://discord.gg/dzaVXjkug)
+- X: [@FahdX369](https://x.com/FahdX369)
+- Ownership packet: [docs/ownership-and-contact.md](ownership-and-contact.md)

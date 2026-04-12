@@ -258,6 +258,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/brand-search-ops.md`,
   },
   {
+    slug: "ownership-and-contact",
+    title: "Ownership And Contact",
+    category: "Trust",
+    summary: "Professional disclosure covering the multi-national execution team context, sole ownership by Fahd Kotb, and the direct contact surface for investment, donations, strategic help, and operator coordination.",
+    audience: "Investors, donors, partners, reviewers, operators",
+    boundary: "Disclosure and contact packet only; it does not alter custody, authority-transfer, or legal structure beyond the explicit ownership statement recorded in the document.",
+    docPath: "docs/ownership-and-contact.md",
+    rawHref: `${repositoryBlobBase}/docs/ownership-and-contact.md`,
+  },
+  {
     slug: "trust-package",
     title: "Trust Package",
     category: "Trust",
