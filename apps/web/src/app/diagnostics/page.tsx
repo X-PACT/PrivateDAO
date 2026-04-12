@@ -11,6 +11,7 @@ import { LaunchBlockersPanel } from "@/components/launch-blockers-panel";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperationsShell } from "@/components/operations-shell";
 import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-truth-strip";
+import { TelemetryRuntimeFocusStrip } from "@/components/telemetry-runtime-focus-strip";
 import { TelemetryModeHandoffStrip } from "@/components/telemetry-mode-handoff-strip";
 import { CustodyWorkspace } from "@/components/custody-workspace";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -45,6 +46,9 @@ export default function DiagnosticsPage() {
           title="Telemetry truth for diagnostics reviewers"
           description="Show packet freshness, indexed proposal scale, finalized counts, and the direct telemetry packet route before the deeper diagnostics surfaces."
         />
+      </div>
+      <div>
+        <TelemetryRuntimeFocusStrip context="diagnostics" />
       </div>
       <div>
         <DataCorridorQuickLinks

@@ -4,6 +4,7 @@ import { DiagnosticsCenter } from "@/components/diagnostics-center";
 import { FrontierSignalBoard } from "@/components/frontier-signal-board";
 import { ProofCenter } from "@/components/proof-center";
 import { SecurityCenter } from "@/components/security-center";
+import { TelemetryRuntimeFocusStrip } from "@/components/telemetry-runtime-focus-strip";
 import { TelemetryModeHandoffStrip } from "@/components/telemetry-mode-handoff-strip";
 import { OperationsShell } from "@/components/operations-shell";
 
@@ -22,6 +23,7 @@ export default function NetworkPage() {
       <Suspense fallback={null}>
         <TelemetryModeHandoffStrip context="network" />
       </Suspense>
+      <TelemetryRuntimeFocusStrip context="network" />
       <FrontierSignalBoard />
       <ProofCenter />
       <SecurityCenter />

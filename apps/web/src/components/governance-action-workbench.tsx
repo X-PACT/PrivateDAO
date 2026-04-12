@@ -71,6 +71,7 @@ export function GovernanceActionWorkbench() {
   const canExecute = proposalFinalized && !proposalExecuted;
   const handoff = useServiceHandoffSnapshot("command-center");
   const appliedReviewRef = useRef<string | null>(null);
+  const autoOpenReviewRef = useRef<string | null>(null);
   const stagedProposal = handoff?.proposalId ? getProposalById(handoff.proposalId) ?? null : null;
   const stagedReviewAction = resolveStagedReviewAction(stagedProposal);
 
@@ -127,6 +128,17 @@ export function GovernanceActionWorkbench() {
     }
     appliedReviewRef.current = continuityKey;
   }, [handoff, proposalCreated, proposalTitle, setProposalTitle, stageExecutionIntent, stageReviewContext]);
+
+  useEffect(() => {
+    if (!handoff?.requestDelivery || !executionIntent || !stagedProposal) return;
+    if (handoff.requestDelivery.state !== "delivered") return;
+
+    const autoOpenKey = `${handoff.proposalId}:${handoff.requestDelivery.state}:${handoff.requestDelivery.deliveredAt ?? "pending"}`;
+    if (autoOpenReviewRef.current === autoOpenKey) return;
+
+    setReviewAction(stagedReviewAction);
+    autoOpenReviewRef.current = autoOpenKey;
+  }, [executionIntent, handoff, stagedProposal, stagedReviewAction]);
 
   function openReview(action: CoreGovernanceInstructionName) {
     setReviewAction(action);
@@ -253,6 +265,17 @@ export function GovernanceActionWorkbench() {
                   <div className="mt-2 text-sm text-white/70">{executionIntent.executionTarget}</div>
                 </div>
               </div>
+              {handoff?.requestDelivery ? (
+                <div className="mt-4 rounded-2xl border border-white/8 bg-black/20 p-4">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Delivery lane</div>
+                  <div className="mt-2 text-sm text-white/70">{handoff.requestDelivery.stateDetail}</div>
+                  <div className="mt-2 text-xs leading-6 text-white/52">
+                    {handoff.requestDelivery.deliveredAt
+                      ? `Delivered at ${handoff.requestDelivery.deliveredAt}`
+                      : `Execution route ${handoff.requestDelivery.deliveryRoute}`}
+                  </div>
+                </div>
+              ) : null}
               {stagedProposal ? (
                 <div className="mt-4 flex flex-wrap gap-3">
                   <Button size="sm" onClick={() => openReview(stagedReviewAction)}>

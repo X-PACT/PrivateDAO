@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { ArrowUpRight, CheckCircle2, Clock3, LockKeyhole, WalletMinimal } from "lucide-react";
@@ -73,6 +73,11 @@ export function ProposalWorkspace({ executionSnapshot }: ProposalWorkspaceProps)
       "",
     [handoff?.proposalId, requestedProposalId, selectedId],
   );
+
+  useEffect(() => {
+    if (!handoff?.proposalId) return;
+    setSelectedId(handoff.proposalId);
+  }, [handoff?.proposalId]);
 
   const proposal = useMemo(
     () =>

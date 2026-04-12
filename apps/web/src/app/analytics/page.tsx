@@ -9,6 +9,7 @@ import { HostedReadProofStrip } from "@/components/hosted-read-proof-strip";
 import { LaunchBlockersPanel } from "@/components/launch-blockers-panel";
 import { OperationsShell } from "@/components/operations-shell";
 import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-truth-strip";
+import { TelemetryRuntimeFocusStrip } from "@/components/telemetry-runtime-focus-strip";
 import { TelemetryModeHandoffStrip } from "@/components/telemetry-mode-handoff-strip";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
@@ -43,6 +44,9 @@ export default function AnalyticsPage() {
           title="Telemetry truth for analytics reviewers"
           description="Keep freshness, hosted-read scale, finalized governance counts, and the reviewer packet visible above the analytics surface itself."
         />
+      </div>
+      <div>
+        <TelemetryRuntimeFocusStrip context="analytics" />
       </div>
       <div>
         <DataCorridorQuickLinks />

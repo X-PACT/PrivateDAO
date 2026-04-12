@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowRight, ArrowUpRight, CheckCircle2, Clipboard, Coins, Download, FileCheck2, Landmark, ShieldCheck, Wallet } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -131,6 +132,7 @@ function resolveSupportedAsset(
 }
 
 export function TreasuryReceiveSurface() {
+  const router = useRouter();
   const config = getTreasuryReceiveConfig();
   const [copied, setCopied] = useState<string | null>(null);
   const [selectedAsset, setSelectedAsset] = useState<(typeof config.assets)[number]["symbol"]>("SOL");
@@ -253,6 +255,9 @@ export function TreasuryReceiveSurface() {
         : "",
     [activeProfile.label, activeProfile.value, handoff, persistedPayoutIntent],
   );
+  const requestRoute = continueHandoffQuery ? `/services?${continueHandoffQuery}#treasury-payment-request` : "/services#treasury-payment-request";
+  const deliveryRoute = continueHandoffQuery ? `/command-center?${continueHandoffQuery}#proposal-review-action` : "/command-center#proposal-review-action";
+  const telemetryRoute = continueHandoffQuery ? `/network?${continueHandoffQuery}` : "/network";
   const isRequestReady = Boolean(amount.trim() && purpose.trim() && reference.trim());
 
   useEffect(() => {
@@ -266,9 +271,19 @@ export function TreasuryReceiveSurface() {
       updatedAt: new Date().toISOString(),
       source: "services",
       payoutIntent: persistedPayoutIntent,
+      requestDelivery: {
+        state: "draft",
+        stateDetail: isRequestReady
+          ? "Structured request is ready to be staged or delivered into the execution lane."
+          : "Complete amount, reference, and purpose before staging the request for delivery.",
+        requestRoute,
+        deliveryRoute,
+        telemetryRoute,
+        deliveredAt: null,
+      },
     });
     persistedPayloadSignatureRef.current = persistedStateSignature;
-  }, [activeProfile.label, activeProfile.value, handoff, persistedPayoutIntent, persistedStateSignature]);
+  }, [activeProfile.label, activeProfile.value, deliveryRoute, handoff, isRequestReady, persistedPayoutIntent, persistedStateSignature, requestRoute, telemetryRoute]);
 
   async function copyValue(key: string, value: string) {
     await navigator.clipboard.writeText(value);
@@ -326,9 +341,9 @@ export function TreasuryReceiveSurface() {
       routeFocus: handoff?.payoutIntent?.routeFocus ?? activeProfile.summary,
       executionTarget: handoff?.payoutIntent?.executionTarget ?? `Treasury receive rail · ${activeAsset.symbol}`,
       evidenceRoute: handoff?.payoutIntent?.evidenceRoute ?? "/documents/treasury-reviewer-packet",
-      requestRoute: continueHandoffQuery ? `/services?${continueHandoffQuery}#treasury-payment-request` : "/services#treasury-payment-request",
-      deliveryRoute: continueHandoffQuery ? `/command-center?${continueHandoffQuery}#proposal-review-action` : "/command-center#proposal-review-action",
-      telemetryRoute: continueHandoffQuery ? `/network?${continueHandoffQuery}` : "/network",
+      requestRoute,
+      deliveryRoute,
+      telemetryRoute,
     }),
     [
       activeAsset.mint,
@@ -339,7 +354,7 @@ export function TreasuryReceiveSurface() {
       activeProfile.value,
       amount,
       config.network,
-      continueHandoffQuery,
+      deliveryRoute,
       handoff?.payoutIntent?.evidenceRoute,
       handoff?.payoutIntent?.executionTarget,
       handoff?.payoutIntent?.routeFocus,
@@ -350,8 +365,44 @@ export function TreasuryReceiveSurface() {
       lane,
       purpose,
       reference,
+      requestRoute,
+      telemetryRoute,
     ],
   );
+
+  function updateDeliveryState(state: "staged" | "delivered") {
+    if (!handoff || !persistedPayoutIntent) return;
+
+    writeStoredServiceHandoffState({
+      ...handoff,
+      payoutProfile: activeProfile.value,
+      payoutTitle: activeProfile.label,
+      updatedAt: new Date().toISOString(),
+      source: "services",
+      payoutIntent: persistedPayoutIntent,
+      requestDelivery: {
+        state,
+        stateDetail:
+          state === "delivered"
+            ? "Request delivered into the command-center execution lane with the exact treasury payload attached."
+            : "Request staged in the services lane and ready for governed delivery.",
+        requestRoute,
+        deliveryRoute,
+        telemetryRoute,
+        deliveredAt: state === "delivered" ? new Date().toISOString() : null,
+      },
+    });
+  }
+
+  function stageRequest() {
+    updateDeliveryState("staged");
+    setCopied("request-staged");
+  }
+
+  function deliverRequest() {
+    updateDeliveryState("delivered");
+    router.push(deliveryRoute);
+  }
 
   return (
     <Card id="treasury-receive-surface">
@@ -635,6 +686,60 @@ export function TreasuryReceiveSurface() {
                   <Download className="h-4 w-4" />
                   Download request JSON
                 </button>
+              </div>
+            </div>
+
+            <div className="rounded-3xl border border-emerald-300/16 bg-emerald-300/[0.08] p-5">
+              <div className="text-[11px] uppercase tracking-[0.24em] text-emerald-100/76">Governed delivery lane</div>
+              <div className="mt-3 text-base font-medium text-white">
+                {handoff?.requestDelivery?.state === "delivered"
+                  ? "Delivered into command-center"
+                  : handoff?.requestDelivery?.state === "staged"
+                    ? "Staged in services"
+                    : isRequestReady
+                      ? "Ready to stage"
+                      : "Draft pending input"}
+              </div>
+              <div className="mt-2 text-sm leading-7 text-white/62">
+                {handoff?.requestDelivery?.stateDetail ??
+                  (isRequestReady
+                    ? "Stage the request in the services lane, then deliver the same payload directly into command-center execution."
+                    : "Complete amount, reference, and purpose so the delivery lane can consume a valid request object.")}
+              </div>
+              <div className="mt-4 grid gap-3 md:grid-cols-2">
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Request route</div>
+                  <div className="mt-2 text-white">{requestRoute}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Delivery route</div>
+                  <div className="mt-2 text-white">{deliveryRoute}</div>
+                </div>
+              </div>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={stageRequest}
+                  disabled={!isRequestReady}
+                  className={cn(buttonVariants({ size: "sm", variant: "secondary" }), !isRequestReady && "pointer-events-none opacity-50")}
+                >
+                  Stage request in UI
+                </button>
+                <button
+                  type="button"
+                  onClick={deliverRequest}
+                  disabled={!isRequestReady}
+                  className={cn(buttonVariants({ size: "sm" }), !isRequestReady && "pointer-events-none opacity-50")}
+                >
+                  Deliver to command center
+                </button>
+                <Link
+                  href={telemetryRoute}
+                  className={cn(buttonVariants({ size: "sm", variant: "outline" }), !isRequestReady && "pointer-events-none opacity-50")}
+                  aria-disabled={!isRequestReady}
+                >
+                  Continue telemetry lane
+                </Link>
               </div>
             </div>
 

@@ -71,6 +71,15 @@ export type ServiceHandoffTelemetrySelection = {
   proofHref: string;
 };
 
+export type ServiceHandoffRequestDelivery = {
+  state: "draft" | "staged" | "delivered";
+  stateDetail: string;
+  requestRoute: string;
+  deliveryRoute: string;
+  telemetryRoute: string;
+  deliveredAt: string | null;
+};
+
 export type ServiceHandoffState = {
   proposalId: string;
   proposalTitle: string;
@@ -83,6 +92,7 @@ export type ServiceHandoffState = {
   proposalReview?: ServiceHandoffProposalReview;
   payoutIntent?: ServiceHandoffPayoutIntent;
   telemetrySelection?: ServiceHandoffTelemetrySelection;
+  requestDelivery?: ServiceHandoffRequestDelivery;
 };
 
 export type ServiceHandoffSelection = {
@@ -205,6 +215,27 @@ export function parseStoredServiceHandoffState(raw: string | null): ServiceHando
       }
     }
 
+    if (parsed.requestDelivery) {
+      const requestDelivery = parsed.requestDelivery as Partial<ServiceHandoffRequestDelivery>;
+      if (
+        (
+          requestDelivery.state !== "draft" &&
+          requestDelivery.state !== "staged" &&
+          requestDelivery.state !== "delivered"
+        ) ||
+        typeof requestDelivery.stateDetail !== "string" ||
+        typeof requestDelivery.requestRoute !== "string" ||
+        typeof requestDelivery.deliveryRoute !== "string" ||
+        typeof requestDelivery.telemetryRoute !== "string" ||
+        !(
+          typeof requestDelivery.deliveredAt === "string" ||
+          requestDelivery.deliveredAt === null
+        )
+      ) {
+        return null;
+      }
+    }
+
     return parsed as ServiceHandoffState;
   } catch {
     return null;
@@ -265,5 +296,6 @@ export function mergeServiceHandoffState(
     proposalReview: storedState?.proposalReview,
     payoutIntent: storedState?.payoutIntent,
     telemetrySelection: storedState?.telemetrySelection,
+    requestDelivery: storedState?.requestDelivery,
   };
 }
