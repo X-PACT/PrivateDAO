@@ -146,6 +146,12 @@ export function TreasuryReceiveSurface() {
   const handoff = useServiceHandoffSnapshot("services");
   const appliedHandoffKeyRef = useRef<string | null>(null);
   const persistedPayloadSignatureRef = useRef<string | null>(null);
+  const profileRef = useRef<HTMLSelectElement | null>(null);
+  const assetRef = useRef<HTMLSelectElement | null>(null);
+  const referenceRef = useRef<HTMLInputElement | null>(null);
+  const amountRef = useRef<HTMLInputElement | null>(null);
+  const purposeRef = useRef<HTMLTextAreaElement | null>(null);
+  const laneRef = useRef<HTMLSelectElement | null>(null);
 
   const activeAsset = config.assets.find((asset) => asset.symbol === selectedAsset) ?? config.assets[0];
   const activeProfile = destinationProfiles.find((item) => item.value === profile) ?? destinationProfiles[0];
@@ -289,6 +295,76 @@ export function TreasuryReceiveSurface() {
   const telemetryRoute = continueHandoffQuery ? `/network?${continueHandoffQuery}` : "/network";
   const isRequestReady = Boolean(amount.trim() && purpose.trim() && reference.trim());
 
+  function getLiveExecutionDraft() {
+    if (!handoff) return null;
+
+    const profileValue = (profileRef.current?.value as (typeof destinationProfiles)[number]["value"]) || activeProfile.value;
+    const profileConfig =
+      destinationProfiles.find((item) => item.value === profileValue) ?? activeProfile;
+    const assetValue = resolveSupportedAsset(
+      config.assets,
+      (assetRef.current?.value as ServiceHandoffAssetSymbol) ||
+        profileConfig.defaultAsset,
+    );
+    const assetConfig =
+      config.assets.find((asset) => asset.symbol === assetValue) ?? activeAsset;
+    const laneValue =
+      (laneRef.current?.value as (typeof handoffLanes)[number]["value"]) ||
+      profileConfig.defaultLane;
+    const laneConfig =
+      handoffLanes.find((item) => item.value === laneValue) ?? activeLane;
+    const referenceValue =
+      referenceRef.current?.value.trim() ||
+      `${profileConfig.value.toUpperCase()}-REQUEST-PENDING`;
+    const amountValue = amountRef.current?.value.trim() || "";
+    const purposeValue =
+      purposeRef.current?.value.trim() || profileConfig.defaultPurpose;
+
+    const payoutIntent = {
+      assetSymbol: assetConfig.symbol,
+      amount: amountValue,
+      amountDisplay: amountValue
+        ? `${amountValue} ${assetConfig.symbol}`
+        : `${assetConfig.symbol} amount pending`,
+      reference: referenceValue,
+      purpose: purposeValue,
+      lane: laneValue,
+      routeFocus: handoff.payoutIntent?.routeFocus ?? profileConfig.summary,
+      recipient: handoff.payoutIntent?.recipient ?? assetConfig.receiveAddress,
+      mintAddress: assetConfig.mint ?? null,
+      executionTarget:
+        handoff.payoutIntent?.executionTarget ??
+        `Treasury receive rail · ${assetConfig.symbol}`,
+      evidenceRoute:
+        handoff.payoutIntent?.evidenceRoute ??
+        "/documents/treasury-reviewer-packet",
+    } satisfies NonNullable<typeof handoff.payoutIntent>;
+
+    const nextState = {
+      ...handoff,
+      payoutProfile: profileConfig.value,
+      payoutTitle: profileConfig.label,
+      updatedAt: new Date().toISOString(),
+      source: "services" as const,
+      payoutIntent,
+    };
+    const query = buildServiceHandoffQuery(nextState);
+
+    return {
+      profileConfig,
+      assetConfig,
+      laneConfig,
+      referenceValue,
+      amountValue,
+      purposeValue,
+      nextState,
+      payoutIntent,
+      requestRoute: `/services?${query}#treasury-payment-request`,
+      deliveryRoute: `/command-center?${query}#proposal-review-action`,
+      telemetryRoute: `/network?${query}`,
+    };
+  }
+
   useEffect(() => {
     if (!handoff || !persistedPayoutIntent || !persistedStateSignature) return;
     if (persistedPayloadSignatureRef.current === persistedStateSignature) return;
@@ -411,24 +487,27 @@ export function TreasuryReceiveSurface() {
   );
 
   function updateDeliveryState(state: "staged" | "delivered") {
-    if (!handoff || !persistedPayoutIntent) return;
+    const liveDraft = getLiveExecutionDraft();
+    if (!liveDraft) return;
+
+    setProfile(liveDraft.profileConfig.value);
+    setSelectedAsset(liveDraft.assetConfig.symbol);
+    setLane(liveDraft.laneConfig.value);
+    setReference(liveDraft.referenceValue);
+    setAmount(liveDraft.amountValue);
+    setPurpose(liveDraft.purposeValue);
 
     writeStoredServiceHandoffState({
-      ...handoff,
-      payoutProfile: activeProfile.value,
-      payoutTitle: activeProfile.label,
-      updatedAt: new Date().toISOString(),
-      source: "services",
-      payoutIntent: persistedPayoutIntent,
+      ...liveDraft.nextState,
       requestDelivery: {
         state,
         stateDetail:
           state === "delivered"
             ? "Request delivered into the command-center execution lane with the exact treasury payload attached."
             : "Request staged in the services lane and ready for governed delivery.",
-        requestRoute,
-        deliveryRoute,
-        telemetryRoute,
+        requestRoute: liveDraft.requestRoute,
+        deliveryRoute: liveDraft.deliveryRoute,
+        telemetryRoute: liveDraft.telemetryRoute,
         deliveredAt: state === "delivered" ? new Date().toISOString() : null,
       },
     });
@@ -595,6 +674,7 @@ export function TreasuryReceiveSurface() {
               <label className="grid gap-2 text-sm text-white/70">
                 <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Destination profile</span>
                 <select
+                  ref={profileRef}
                   value={profile}
                   onChange={(event) => setProfile(event.target.value as typeof profile)}
                   className="rounded-2xl border border-white/10 bg-white/4 px-4 py-3 text-white outline-none"
@@ -611,6 +691,7 @@ export function TreasuryReceiveSurface() {
               <label className="grid gap-2 text-sm text-white/70">
                 <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Asset</span>
                 <select
+                  ref={assetRef}
                   value={selectedAsset}
                   onChange={(event) => setSelectedAsset(event.target.value as typeof selectedAsset)}
                   className="rounded-2xl border border-white/10 bg-white/4 px-4 py-3 text-white outline-none"
@@ -626,6 +707,7 @@ export function TreasuryReceiveSurface() {
               <label className="grid gap-2 text-sm text-white/70">
                 <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Reference</span>
                 <input
+                  ref={referenceRef}
                   value={reference}
                   onChange={(event) => setReference(event.target.value)}
                   placeholder="PILOT-APR-001 / OPS-REQUEST-042"
@@ -637,6 +719,7 @@ export function TreasuryReceiveSurface() {
               <label className="grid gap-2 text-sm text-white/70">
                 <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Amount</span>
                 <input
+                  ref={amountRef}
                   value={amount}
                   onChange={(event) => setAmount(event.target.value)}
                   placeholder={`Amount in ${activeAsset.symbol}`}
@@ -647,6 +730,7 @@ export function TreasuryReceiveSurface() {
               <label className="grid gap-2 text-sm text-white/70">
                 <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Purpose</span>
                 <textarea
+                  ref={purposeRef}
                   value={purpose}
                   onChange={(event) => setPurpose(event.target.value)}
                   placeholder="Treasury top-up, pilot funding, payout request, operator support..."
@@ -658,6 +742,7 @@ export function TreasuryReceiveSurface() {
               <label className="grid gap-2 text-sm text-white/70">
                 <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Handoff lane</span>
                 <select
+                  ref={laneRef}
                   value={lane}
                   onChange={(event) => setLane(event.target.value as typeof lane)}
                   className="rounded-2xl border border-white/10 bg-white/4 px-4 py-3 text-white outline-none"
@@ -760,17 +845,21 @@ export function TreasuryReceiveSurface() {
                 >
                   Stage request in UI
                 </button>
-                <Link
-                  href={deliveryRoute}
+                <button
+                  type="button"
                   onClick={() => {
                     if (!isRequestReady) return;
+                    const liveDraft = getLiveExecutionDraft();
                     updateDeliveryState("delivered");
+                    if (liveDraft) {
+                      window.location.assign(liveDraft.deliveryRoute);
+                    }
                   }}
+                  disabled={!isRequestReady}
                   className={cn(buttonVariants({ size: "sm" }), !isRequestReady && "pointer-events-none opacity-50")}
-                  aria-disabled={!isRequestReady}
                 >
                   Deliver to command center
-                </Link>
+                </button>
                 <Link
                   href={telemetryRoute}
                   className={cn(buttonVariants({ size: "sm", variant: "outline" }), !isRequestReady && "pointer-events-none opacity-50")}
