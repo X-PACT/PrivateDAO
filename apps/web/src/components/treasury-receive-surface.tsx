@@ -151,7 +151,7 @@ function buildProposalBackedPrefill(
     proposal.execution.mintSymbol === "USDG"
       ? proposal.execution.mintSymbol
       : null;
-  const assetSymbol = supportedMint ?? profile.defaultAsset;
+  const assetSymbol: ServiceHandoffAssetSymbol = supportedMint ?? profile.defaultAsset;
 
   return {
     assetSymbol,
