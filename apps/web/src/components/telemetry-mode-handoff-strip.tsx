@@ -82,10 +82,19 @@ export function TelemetryModeHandoffStrip({
     () => queryState?.telemetryMode ?? storedState?.telemetryMode ?? "packet",
     [queryState, storedState],
   );
-  const activeHandoff = useMemo(() => queryState ?? storedState, [queryState, storedState]);
   const continuityQuery = useMemo(
-    () => (activeHandoff ? buildServiceHandoffQuery(activeHandoff) : ""),
-    [activeHandoff],
+    () =>
+      queryState
+        ? new URLSearchParams({
+            proposal: queryState.proposalId,
+            profile: queryState.payoutProfile,
+            telemetryMode: queryState.telemetryMode,
+            handoff: "1",
+          }).toString()
+        : storedState
+          ? buildServiceHandoffQuery(storedState)
+          : "",
+    [queryState, storedState],
   );
   const selected = modeCopy[selectedMode];
   const Icon = selected.icon;
