@@ -137,6 +137,7 @@ function resolveSupportedAsset(
 export function TreasuryReceiveSurface() {
   const config = getTreasuryReceiveConfig();
   const [copied, setCopied] = useState<string | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
   const [selectedAsset, setSelectedAsset] = useState<(typeof config.assets)[number]["symbol"]>("SOL");
   const [profile, setProfile] = useState<(typeof destinationProfiles)[number]["value"]>("treasury-top-up");
   const [reference, setReference] = useState("");
@@ -162,6 +163,10 @@ export function TreasuryReceiveSurface() {
     handoff?.source !== "services" ||
     handoff?.requestDelivery?.state === "staged" ||
     handoff?.requestDelivery?.state === "delivered";
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     if (
@@ -522,6 +527,48 @@ export function TreasuryReceiveSurface() {
   function stageRequest() {
     updateDeliveryState("staged");
     setCopied("request-staged");
+  }
+
+  if (!isMounted) {
+    return (
+      <Card id="treasury-receive-surface">
+        <CardHeader>
+          <CardTitle>Treasury receive surface</CardTitle>
+          <p className="mt-2 text-sm leading-7 text-white/60">
+            Loading the live treasury execution lane with the current proposal, payout profile, and telemetry continuity.
+          </p>
+        </CardHeader>
+        <CardContent className="grid gap-4">
+          <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-5 text-sm leading-7 text-white/62">
+            Interactive treasury controls are mounting client-side so the request payload, wallet continuity, and governed delivery state stay aligned with live Devnet execution.
+          </div>
+          <div className="grid gap-4 xl:grid-cols-3">
+            {config.assets.map((asset) => {
+              const Icon = assetIconMap[asset.symbol];
+              return (
+                <div key={asset.symbol} className="rounded-3xl border border-white/8 bg-white/4 p-5">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-emerald-200">
+                        <Icon className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <div className="text-lg font-medium text-white">{asset.symbol}</div>
+                        <div className="mt-1 text-sm text-white/56">{asset.name}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-4 rounded-2xl border border-white/8 bg-black/20 p-4">
+                    <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Receive address</div>
+                    <div className="mt-2 break-all font-mono text-sm leading-7 text-white/74">{asset.receiveAddress}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </CardContent>
+      </Card>
+    );
   }
 
   return (
