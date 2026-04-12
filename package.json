@@ -18,6 +18,8 @@
     "web:verify:live:root": "bash scripts/verify-web-live-surface.sh root",
     "status:source": "bash scripts/status-source-tree.sh",
     "verify:source-preflight": "bash scripts/verify-source-preflight.sh",
+    "verify:source-worktree": "bash scripts/verify-source-worktree.sh",
+    "verify:rapid-work-preflight": "npm run verify:source-worktree && npm run verify:source-preflight",
     "build:onchain-ui-parity": "ts-node scripts/build-onchain-ui-parity.ts",
     "verify:onchain-ui-parity": "ts-node scripts/verify-onchain-ui-parity.ts",
     "build:web-next-handoff": "ts-node scripts/build-web-next-handoff.ts",

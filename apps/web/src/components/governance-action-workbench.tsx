@@ -367,7 +367,7 @@ export function GovernanceActionWorkbench() {
                   <div>{payloadDrivenRequest?.requestRoute}</div>
                 </div>
                 <Button className="mt-4 w-full" onClick={() => openReview(stagedReviewAction)} variant="secondary">
-                  Review authoritative request object
+                  Review payload-driven signing shell
                 </Button>
               </div>
 
@@ -401,7 +401,7 @@ export function GovernanceActionWorkbench() {
                   onClick={() => openReview("execute_proposal")}
                   variant="outline"
                 >
-                  Execute authoritative request
+                  Execute delivered payload
                 </Button>
               </div>
             </>

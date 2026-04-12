@@ -6,6 +6,7 @@ import { Activity, BellRing, Smartphone, ArrowUpRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
+import { buildAuthoritativeExecutionEvidence } from "@/lib/authoritative-execution-evidence";
 import type { ExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import type { JudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 import { buildServiceHandoffQuery } from "@/lib/service-handoff-state";
@@ -29,6 +30,28 @@ export function RuntimeEvidenceContinuityPanel({
   const networkHref = continuityQuery ? `/network?${continuityQuery}` : "/network";
   const proofHref = continuityQuery ? `/proof?${continuityQuery}` : "/proof";
   const requestPayload = handoff?.requestPayload ?? null;
+  const evidence =
+    handoff && requestPayload
+      ? buildAuthoritativeExecutionEvidence(handoff, runtimeSnapshot, executionSnapshot)
+      : null;
+  const runtimeTimeline =
+    evidence?.monitoringTimeline ?? [
+      {
+        label: "Real-device coverage",
+        detail: runtimeSnapshot.runtime.walletCoverage,
+        status: "runtime capture",
+      },
+      {
+        label: "Transaction capture",
+        detail: runtimeSnapshot.runtime.txSuccessRate,
+        status: "telemetry continuity",
+      },
+      {
+        label: "Adversarial discipline",
+        detail: runtimeSnapshot.runtime.adversarialSummary,
+        status: "reviewer visible",
+      },
+    ];
 
   return (
     <Card className="border-fuchsia-300/16 bg-[linear-gradient(180deg,rgba(21,13,39,0.95),rgba(10,8,24,0.98))]">
@@ -77,18 +100,29 @@ export function RuntimeEvidenceContinuityPanel({
               Runtime timeline
             </div>
             <div className="mt-3 grid gap-3">
-              <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-3">
-                <div className="text-sm font-medium text-white">Real-device coverage</div>
-                <div className="mt-2 text-sm leading-7 text-white/60">{runtimeSnapshot.runtime.walletCoverage}</div>
-              </div>
-              <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-3">
-                <div className="text-sm font-medium text-white">Transaction capture</div>
-                <div className="mt-2 text-sm leading-7 text-white/60">{runtimeSnapshot.runtime.txSuccessRate}</div>
-              </div>
-              <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-3">
-                <div className="text-sm font-medium text-white">Adversarial discipline</div>
-                <div className="mt-2 text-sm leading-7 text-white/60">{runtimeSnapshot.runtime.adversarialSummary}</div>
-              </div>
+              {runtimeTimeline.map((entry) => (
+                <div key={entry.label} className="rounded-2xl border border-white/8 bg-white/[0.03] p-3">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="text-sm font-medium text-white">{entry.label}</div>
+                    <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/72">
+                      {entry.status}
+                    </div>
+                  </div>
+                  <div className="mt-2 text-sm leading-7 text-white/60">{entry.detail}</div>
+                  {entry.routeHref && entry.routeLabel ? (
+                    <Link
+                      href={entry.routeHref}
+                      className={cn(
+                        buttonVariants({ size: "sm", variant: "outline" }),
+                        "mt-3 justify-between",
+                      )}
+                    >
+                      {entry.routeLabel}
+                      <ArrowUpRight className="h-4 w-4" />
+                    </Link>
+                  ) : null}
+                </div>
+              ))}
             </div>
           </div>
         </div>

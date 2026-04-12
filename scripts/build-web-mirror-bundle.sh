@@ -9,6 +9,10 @@ DIST_DIR="$REPO_ROOT/dist"
 TARGET_DIR="$DIST_DIR/web-mirror-$MODE"
 ARCHIVE_PATH="$DIST_DIR/web-mirror-$MODE.tar.gz"
 
+if [[ "${PRIVATE_DAO_SKIP_SOURCE_PREFLIGHT:-0}" != "1" ]]; then
+  bash "$SCRIPT_DIR/verify-source-worktree.sh"
+fi
+
 mkdir -p "$DIST_DIR"
 rm -rf "$TARGET_DIR" "$ARCHIVE_PATH"
 

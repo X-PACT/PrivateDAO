@@ -5,16 +5,32 @@ import { ArrowUpRight, FileCheck2, RadioTower, ShieldCheck } from "lucide-react"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
+import type { ExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
+import { buildAuthoritativeExecutionEvidence } from "@/lib/authoritative-execution-evidence";
+import type { JudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
 import { cn } from "@/lib/utils";
 
-export function JudgeExecutionContinuityPanel() {
+type JudgeExecutionContinuityPanelProps = {
+  executionSnapshot: ExecutionSurfaceSnapshot;
+  runtimeSnapshot: JudgeRuntimeLogsSnapshot;
+};
+
+export function JudgeExecutionContinuityPanel({
+  executionSnapshot,
+  runtimeSnapshot,
+}: JudgeExecutionContinuityPanelProps) {
   const handoff = useServiceHandoffSnapshot("proof");
 
   if (!handoff?.payoutIntent) {
     return null;
   }
 
+  const evidence = buildAuthoritativeExecutionEvidence(
+    handoff,
+    runtimeSnapshot,
+    executionSnapshot,
+  );
   const requestId = handoff.requestPayload?.requestId ?? handoff.proposalId;
   const amountDisplay = handoff.requestPayload?.amountDisplay ?? handoff.payoutIntent.amountDisplay;
   const reference = handoff.requestPayload?.reference ?? handoff.payoutIntent.reference;
@@ -89,6 +105,19 @@ export function JudgeExecutionContinuityPanel() {
             </Link>
           </div>
         </div>
+        {evidence ? (
+          <div className="grid gap-3 xl:col-span-2">
+            {evidence.monitoringTimeline.slice(0, 3).map((entry) => (
+              <div key={entry.label} className="rounded-2xl border border-white/8 bg-black/20 p-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="text-sm font-medium text-white">{entry.label}</div>
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/72">{entry.status}</div>
+                </div>
+                <div className="mt-2 text-sm leading-7 text-white/62">{entry.detail}</div>
+              </div>
+            ))}
+          </div>
+        ) : null}
       </CardContent>
     </Card>
   );

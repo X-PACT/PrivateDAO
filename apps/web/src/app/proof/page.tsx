@@ -49,7 +49,10 @@ export default function ProofPage() {
       </div>
       <div>
         <Suspense fallback={null}>
-          <JudgeExecutionContinuityPanel />
+          <JudgeExecutionContinuityPanel
+            executionSnapshot={executionSnapshot}
+            runtimeSnapshot={runtimeSnapshot}
+          />
         </Suspense>
       </div>
       <div>

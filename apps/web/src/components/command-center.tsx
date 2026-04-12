@@ -93,16 +93,22 @@ export function CommandCenter() {
                     {handoff.requestPayload?.requestRoute ?? handoff.requestDelivery?.requestRoute}
                   </div>
                 </div>
+                <div className="text-sm leading-7 text-white/56 sm:col-span-2">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/60">Signing source</div>
+                  <div className="mt-1 text-white/80">
+                    The delivered request payload now drives the signing shell, execution review, and runtime log trail before any signature step.
+                  </div>
+                </div>
               </div>
               <div className="mt-4 flex flex-wrap gap-3">
                 <Link href={continuityQuery ? `/command-center?${continuityQuery}#proposal-review-action` : "/command-center#proposal-review-action"} className={cn(buttonVariants({ size: "sm" }))}>
-                  Review authoritative request object
+                  Review payload-driven signing shell
                 </Link>
                 <Link href={continuityQuery ? `/command-center?${continuityQuery}#proposal-review-action` : "/command-center#proposal-review-action"} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
-                  Execute authoritative request
+                  Execute delivered payload
                 </Link>
                 <Link href={continuityQuery ? `/network?${continuityQuery}` : "/network"} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
-                  Open execution network logs
+                  Open authoritative network log trail
                 </Link>
               </div>
             </div>

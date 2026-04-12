@@ -4,6 +4,7 @@ set -euo pipefail
 MODE="${1:-github}"
 REPO_ROOT="/home/x-pact/PrivateDAO"
 TARGET_DIR="$REPO_ROOT/dist/web-mirror-$MODE"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 case "$MODE" in
   github|root)
@@ -14,6 +15,10 @@ case "$MODE" in
     exit 1
     ;;
 esac
+
+if [[ "${PRIVATE_DAO_SKIP_SOURCE_PREFLIGHT:-0}" != "1" ]]; then
+  bash "$SCRIPT_DIR/verify-source-worktree.sh"
+fi
 
 if [[ ! -d "$TARGET_DIR" ]]; then
   echo "Missing mirror bundle at $TARGET_DIR. Building it first."

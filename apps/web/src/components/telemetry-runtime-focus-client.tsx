@@ -5,6 +5,7 @@ import { Radar, ServerCog, ShieldCheck } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
+import { buildAuthoritativeExecutionEvidence } from "@/lib/authoritative-execution-evidence";
 import type { JudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 import { buildServiceHandoffQuery } from "@/lib/service-handoff-state";
 import { useServiceHandoffSnapshot, useServiceHandoffTelemetryMode } from "@/lib/use-service-handoff-snapshot";
@@ -70,20 +71,22 @@ export function TelemetryRuntimeFocusClient({
       : mode === "snapshot"
         ? `${snapshot.governance.proposal} · ${snapshot.governance.verificationStatus}`
         : `${snapshot.confidential.proposal} · ${snapshot.confidential.verificationStatus}`;
-  const continuityEntry =
-    handoff?.payoutIntent
-      ? {
-          label: `${handoff.requestPayload?.requestId ?? handoff.proposalId} · ${handoff.payoutTitle}`,
-          signature: `${handoff.requestPayload?.reference ?? handoff.payoutIntent.reference} · ${handoff.requestPayload?.amountDisplay ?? handoff.payoutIntent.amountDisplay}`,
-          status:
-            handoff.requestDelivery?.state === "delivered"
-              ? "delivered-from-services"
-              : handoff.requestDelivery?.state === "staged"
-                ? "staged-for-delivery"
-                : "draft-execution-context",
-          slot: undefined,
-        }
-      : null;
+  const authoritativeEvidence = handoff?.requestPayload
+    ? buildAuthoritativeExecutionEvidence(handoff, snapshot)
+    : null;
+  const continuityEntry = authoritativeEvidence
+    ? {
+        label: authoritativeEvidence.requestSummary,
+        signature: authoritativeEvidence.requestRouteSummary.join(" · "),
+        status:
+          handoff?.requestDelivery?.state === "delivered"
+            ? "delivered-from-services"
+            : handoff?.requestDelivery?.state === "staged"
+              ? "staged-for-delivery"
+              : "draft-execution-context",
+        slot: undefined,
+      }
+    : null;
   const renderedEntries = continuityEntry ? [continuityEntry, ...entries] : entries;
   const continuityQuery = handoff ? buildServiceHandoffQuery(handoff) : "";
   const contextualHref = attachContinuityQuery(contextHref[context], continuityQuery);

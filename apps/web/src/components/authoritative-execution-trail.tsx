@@ -6,6 +6,7 @@ import { ArrowUpRight, Radar, ReceiptText, ShieldCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
+import { buildAuthoritativeExecutionEvidence } from "@/lib/authoritative-execution-evidence";
 import type { JudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 import { buildServiceHandoffQuery } from "@/lib/service-handoff-state";
 import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
@@ -25,42 +26,8 @@ export function AuthoritativeExecutionTrail({
 
   const continuityQuery = buildServiceHandoffQuery(handoff);
   const payload = handoff.requestPayload;
-  const delivery = handoff.requestDelivery;
-  const governanceExecute =
-    runtimeSnapshot.governance.entries.find((entry) => entry.label === "execute") ??
-    runtimeSnapshot.governance.entries.at(-1);
-  const confidentialSettle =
-    runtimeSnapshot.confidential.entries.find((entry) => entry.label === "magicblock-settle") ??
-    runtimeSnapshot.confidential.entries.at(-1);
-  const timeline = [
-    {
-      label: "Request prepared",
-      detail: `${payload.requestId} · ${payload.amountDisplay}`,
-      status: payload.state,
-    },
-    {
-      label: "Command delivery",
-      detail:
-        delivery?.state === "delivered"
-          ? `delivered · ${delivery.deliveredAt ?? "timestamp pending"}`
-          : delivery?.state ?? "draft",
-      status: payload.payoutTitle,
-    },
-    {
-      label: "Governance execution evidence",
-      detail: governanceExecute
-        ? `${governanceExecute.label} · ${governanceExecute.signature}`
-        : runtimeSnapshot.governance.verificationStatus,
-      status: runtimeSnapshot.governance.proposal,
-    },
-    {
-      label: "Confidential settlement evidence",
-      detail: confidentialSettle
-        ? `${confidentialSettle.label} · ${confidentialSettle.signature}`
-        : runtimeSnapshot.confidential.verificationStatus,
-      status: runtimeSnapshot.confidential.proposal,
-    },
-  ];
+  const evidence = buildAuthoritativeExecutionEvidence(handoff, runtimeSnapshot);
+  if (!evidence) return null;
 
   return (
     <Card className="border-emerald-300/16 bg-[linear-gradient(180deg,rgba(11,23,24,0.95),rgba(8,16,18,0.98))]">
@@ -90,18 +57,14 @@ export function AuthoritativeExecutionTrail({
             {payload.executionTarget}
           </div>
           <div className="mt-4 grid gap-3 text-sm leading-7 text-white/58">
-            <div>
-              <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Request route</div>
-              <div className="mt-1 break-all text-white/78">{payload.requestRoute}</div>
-            </div>
-            <div>
-              <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Delivery route</div>
-              <div className="mt-1 break-all text-white/78">{payload.deliveryRoute}</div>
-            </div>
-            <div>
-              <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Telemetry route</div>
-              <div className="mt-1 break-all text-white/78">{payload.telemetryRoute}</div>
-            </div>
+            {evidence.requestRouteSummary.map((route, index) => (
+              <div key={`${route}-${index}`}>
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">
+                  {index === 0 ? "Request route" : index === 1 ? "Delivery route" : "Telemetry route"}
+                </div>
+                <div className="mt-1 break-all text-white/78">{route}</div>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -111,7 +74,7 @@ export function AuthoritativeExecutionTrail({
             Execution timeline
           </div>
           <div className="mt-4 grid gap-3">
-            {timeline.map((entry, index) => (
+            {evidence.executionTimeline.map((entry, index) => (
               <div key={`${entry.label}-${index}`} className="rounded-2xl border border-white/8 bg-white/[0.03] p-3">
                 <div className="flex items-center justify-between gap-3">
                   <div className="text-sm font-medium text-white">{entry.label}</div>
