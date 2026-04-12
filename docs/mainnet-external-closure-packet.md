@@ -13,35 +13,28 @@ Current honest state:
 
 This packet does not claim that mainnet launch is complete. It isolates the remaining work that requires custody signers, token update authority, or external audit/ceremony execution.
 
-## 1. Single Blocking Cutover For `verify:pdao-live`
+## 1. `PDAO live` metadata cutover
 
-Current on-chain Token-2022 metadata URI:
+Status:
 
-`https://x-pact.github.io/PrivateDAO/assets/pdao-token.json`
+- complete on Devnet
 
-Canonical published metadata URI:
+Closed by:
 
-`https://privatedao.org/assets/pdao-token.json`
+- update authority: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
+- update transaction:
+  - `Cou2ws3HJspXJpgAL6HyMTCJZ72aTXn88Ks9Rn3jrD4BUvSQxFV4gLgtLkdGdzHsH3gnpRhRj4yyGSq2r8HdFiD`
+- updated URI:
+  - `https://privatedao.org/assets/pdao-token.json`
 
-Impact:
+Verification:
 
-- `npm run verify:pdao-live` fails
-- live token proof is not yet fully closed
-- mainnet truth cannot be represented as fully closed while this mismatch remains
+- `npm run verify:pdao-live` now passes
 
-Required external action:
+Boundary:
 
-1. use the current Token-2022 metadata update authority for `PDAO`
-2. update the on-chain metadata URI to:
-   - `https://privatedao.org/assets/pdao-token.json`
-3. retain:
-   - transaction signature
-   - explorer link
-   - post-update readout
-
-Completion test:
-
-- `npm run verify:pdao-live`
+- token metadata cutover is closed
+- this does not close production custody, multisig, or mainnet ceremony work
 
 ## 2. Custody And Authority Closure
 
@@ -124,4 +117,4 @@ The statement below becomes professionally valid only after the actions above ar
 
 Until then, the honest status is:
 
-`Local engineering is ready. External custody, metadata authority, and release-ceremony closure are still required.`
+`Local engineering is ready. PDAO metadata cutover is closed. External custody, authority, and release-ceremony closure are still required.`
