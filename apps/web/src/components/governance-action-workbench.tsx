@@ -429,6 +429,14 @@ export function GovernanceActionWorkbench() {
                 <p className="mt-4 text-sm leading-7 text-white/60">
                   The execution control now follows the delivered treasury payload directly instead of falling back to a proposal-only action path.
                 </p>
+                <div className="mt-4 rounded-2xl border border-white/8 bg-black/20 p-4">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Final signing packet</div>
+                  <div className="mt-2 text-sm text-white/72">{payloadDrivenRequest?.requestId}</div>
+                  <div className="mt-1 text-sm text-white/72">{payloadDrivenRequest?.amountDisplay}</div>
+                  <div className="mt-1 text-sm text-white/72">{payloadDrivenRequest?.reference}</div>
+                  <div className="mt-1 text-sm text-white/72">{payloadDrivenRequest?.deliveryRoute}</div>
+                  <div className="mt-1 text-sm text-white/72">{payloadDrivenRequest?.telemetryRoute}</div>
+                </div>
                 <Button
                   className="mt-4 w-full"
                   disabled={!payloadActionReady}
@@ -437,6 +445,24 @@ export function GovernanceActionWorkbench() {
                 >
                   {payloadExecutionState === "executed" ? "Payload already submitted" : "Sign and submit delivered payload"}
                 </Button>
+                <div className="mt-3 flex flex-wrap gap-3">
+                  <Link href={payloadDrivenRequest?.deliveryRoute ?? (continuityQuery ? `/command-center?${continuityQuery}#proposal-review-action` : "/command-center#proposal-review-action")} className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")}>
+                    Open final signing lane
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                  <Link href={payloadDrivenRequest?.telemetryRoute ?? (continuityQuery ? `/network?${continuityQuery}` : "/network")} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+                    Open execution telemetry
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                  <Link href="/documents/monitoring-alert-rules" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+                    Open alert rules
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                  <Link href="/documents/real-device-runtime" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+                    Open real-device runtime
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                </div>
               </div>
             </>
           ) : (
