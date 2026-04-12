@@ -148,8 +148,8 @@ class MobileWalletAdapterManager(
                         identity.iconRelativeUri,
                         identity.name,
                         chain,
-                        features,
                         null,
+                        features,
                         authorizedAccounts?.toTypedArray(),
                         null,
                     ).get()!!

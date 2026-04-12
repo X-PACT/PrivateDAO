@@ -185,11 +185,17 @@ These are real limitations, not hidden gaps:
 
 - `SendToken` execution is now wired in the Android client, but it still depends on the recipient associated token account existing on-chain for the configured mint
 - the Android app currently prioritizes the governance lifecycle and treasury/operator essentials; the broader browser-only proof center and judge-mode surfaces still live primarily in the web product
-- full local build verification was limited in this session by missing local Android SDK / Gradle execution environment in the workspace shell
+- release hardening for production signing is not closed yet; the verified output in this branch is a local debug APK
 
 None of these change the protocol or on-chain behavior. They only define the current mobile surface area.
 
 ## Build
+
+The branch now ships a Gradle wrapper, so the canonical entry point is:
+
+```text
+apps/android-native/gradlew
+```
 
 Open the Android app in Android Studio from:
 
@@ -201,9 +207,32 @@ Typical steps:
 
 1. Install Android Studio with Android SDK support
 2. Open `apps/android-native`
-3. Let Gradle sync dependencies
-4. Run on an Android device or emulator
-5. Install an MWA-compatible wallet on the target device for real wallet flows
+3. Copy `local.properties.example` to `local.properties`
+4. Point `sdk.dir` to your Android SDK in `local.properties`
+5. Ensure Gradle runs under JDK 17 (`JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64` on Ubuntu-like systems)
+6. Let Gradle sync dependencies
+7. Run on an Android device or emulator
+8. Install an MWA-compatible wallet on the target device for real wallet flows
+
+Canonical shell build:
+
+```text
+cd apps/android-native
+JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 ./gradlew assembleDebug
+```
+
+Required SDK packages for the verified local build:
+
+- `platform-tools`
+- `platforms;android-36`
+- `build-tools;36.0.0`
+- `build-tools;35.0.0`
+
+Verified local output on this branch:
+
+- command: `./gradlew assembleDebug`
+- result: `BUILD SUCCESSFUL`
+- artifact: `apps/android-native/app/build/outputs/apk/debug/app-debug.apk`
 
 ## Run / Judge Flow
 
