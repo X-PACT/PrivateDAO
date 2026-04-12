@@ -187,7 +187,7 @@ export function TreasuryReceiveSurface() {
   useEffect(() => {
     if (!handoff) return;
 
-    const handoffKey = `${handoff.updatedAt}:${handoff.proposalId}:${handoff.payoutProfile}:${handoff.telemetryMode}`;
+    const handoffKey = `${handoff.proposalId}:${handoff.payoutProfile}:${handoff.telemetryMode}`;
     if (appliedHandoffKeyRef.current === handoffKey) return;
 
     setProfile(handoff.payoutProfile);
