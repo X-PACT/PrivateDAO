@@ -105,11 +105,11 @@ export function GovernanceActionWorkbench() {
     if (executionIntent) {
       derived.push({
         label: "Execution continuity",
-        value: `${executionIntent.payoutTitle} · ${executionIntent.amountDisplay} · ${executionIntent.reference}`,
+        value: `${handoff?.requestPayload?.requestId ?? executionIntent.payoutTitle} · ${handoff?.requestPayload?.amountDisplay ?? executionIntent.amountDisplay} · ${handoff?.requestPayload?.reference ?? executionIntent.reference}`,
       });
       derived.push({
         label: "Execution target",
-        value: `${executionIntent.executionTarget} · telemetry ${executionIntent.telemetryMode}`,
+        value: `${handoff?.requestPayload?.executionTarget ?? executionIntent.executionTarget} · telemetry ${handoff?.requestPayload?.telemetryMode ?? executionIntent.telemetryMode}`,
       });
     }
 

@@ -76,10 +76,14 @@ export function DiagnosticsCenter() {
             <div className="rounded-3xl border border-emerald-300/16 bg-emerald-300/[0.08] p-5">
               <div className="text-[11px] uppercase tracking-[0.24em] text-emerald-100/78">Execution continuity diagnostics</div>
               <div className="mt-3 text-base font-medium text-white">
-                {handoff.proposalId} · {handoff.payoutTitle}
+                {handoff.requestPayload?.requestId ?? handoff.proposalId} · {handoff.payoutTitle}
               </div>
               <div className="mt-2 text-sm leading-7 text-white/62">
-                {handoff.payoutIntent.amountDisplay} · {handoff.payoutIntent.reference} · lane {handoff.payoutIntent.lane}
+                {handoff.requestPayload?.amountDisplay ?? handoff.payoutIntent.amountDisplay}
+                {" · "}
+                {handoff.requestPayload?.reference ?? handoff.payoutIntent.reference}
+                {" · lane "}
+                {handoff.requestPayload?.lane ?? handoff.payoutIntent.lane}
               </div>
               <div className="mt-2 text-sm leading-7 text-white/62">
                 {handoff.requestDelivery?.state === "delivered"
@@ -88,6 +92,11 @@ export function DiagnosticsCenter() {
                     ? "Staged in services and ready for governed delivery."
                     : "Still in draft inside services."}
               </div>
+              {handoff.requestPayload ? (
+                <div className="mt-2 text-sm leading-7 text-white/62">
+                  {handoff.requestPayload.executionTarget} · {handoff.requestPayload.requestRoute}
+                </div>
+              ) : null}
               <div className="mt-4 flex flex-wrap gap-3">
                 <Link href={handoff.requestDelivery?.deliveryRoute ?? "/command-center"} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
                   Open command-center execution lane

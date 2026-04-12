@@ -73,8 +73,8 @@ export function TelemetryRuntimeFocusClient({
   const continuityEntry =
     handoff?.payoutIntent
       ? {
-          label: `${handoff.proposalId} · ${handoff.payoutTitle}`,
-          signature: `${handoff.payoutIntent.reference} · ${handoff.payoutIntent.amountDisplay}`,
+          label: `${handoff.requestPayload?.requestId ?? handoff.proposalId} · ${handoff.payoutTitle}`,
+          signature: `${handoff.requestPayload?.reference ?? handoff.payoutIntent.reference} · ${handoff.requestPayload?.amountDisplay ?? handoff.payoutIntent.amountDisplay}`,
           status:
             handoff.requestDelivery?.state === "delivered"
               ? "delivered-from-services"
@@ -121,7 +121,9 @@ export function TelemetryRuntimeFocusClient({
             <div className="mt-4 rounded-2xl border border-white/8 bg-black/20 p-4">
               <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Execution continuity</div>
               <div className="mt-2 text-sm font-medium text-white">
-                {handoff.payoutIntent.amountDisplay} · {handoff.payoutIntent.reference}
+                {handoff.requestPayload?.amountDisplay ?? handoff.payoutIntent.amountDisplay}
+                {" · "}
+                {handoff.requestPayload?.reference ?? handoff.payoutIntent.reference}
               </div>
               <div className="mt-2 text-sm leading-7 text-white/58">
                 {handoff.requestDelivery?.state === "delivered"
@@ -130,6 +132,11 @@ export function TelemetryRuntimeFocusClient({
                     ? "Delivery state is staged and ready for command-center execution."
                     : "Delivery context is present, but the request remains editable."}
               </div>
+              {handoff.requestPayload ? (
+                <div className="mt-2 text-sm leading-7 text-white/58">
+                  {handoff.requestPayload.executionTarget} · {handoff.requestPayload.telemetryRoute}
+                </div>
+              ) : null}
             </div>
           ) : null}
         </div>

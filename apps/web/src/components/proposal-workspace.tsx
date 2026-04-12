@@ -244,15 +244,21 @@ export function ProposalWorkspace({ executionSnapshot }: ProposalWorkspaceProps)
                     </div>
                     <div className="text-sm leading-7 text-white/56">
                       <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/60">Amount / asset</div>
-                      <div className="mt-1 text-white/80">{handoff.payoutIntent.amountDisplay}</div>
+                      <div className="mt-1 text-white/80">
+                        {handoff.requestPayload?.amountDisplay ?? handoff.payoutIntent.amountDisplay}
+                      </div>
                     </div>
                     <div className="text-sm leading-7 text-white/56">
                       <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/60">Reference</div>
-                      <div className="mt-1 text-white/80">{handoff.payoutIntent.reference}</div>
+                      <div className="mt-1 text-white/80">
+                        {handoff.requestPayload?.reference ?? handoff.payoutIntent.reference}
+                      </div>
                     </div>
                     <div className="text-sm leading-7 text-white/56">
                       <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/60">Telemetry mode</div>
-                      <div className="mt-1 text-white/80">{handoff.telemetryMode}</div>
+                      <div className="mt-1 text-white/80">
+                        {handoff.requestPayload?.telemetryMode ?? handoff.telemetryMode}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -278,10 +284,10 @@ export function ProposalWorkspace({ executionSnapshot }: ProposalWorkspaceProps)
                           : "Execution request remains editable in services."}
                     </div>
                     <div className="text-sm leading-7 text-white/56">
-                      Proof route: {handoff.payoutIntent.evidenceRoute}
+                      Proof route: {handoff.requestPayload?.evidenceRoute ?? handoff.payoutIntent.evidenceRoute}
                     </div>
                     <div className="text-sm leading-7 text-white/56">
-                      Execution target: {handoff.payoutIntent.executionTarget}
+                      Execution target: {handoff.requestPayload?.executionTarget ?? handoff.payoutIntent.executionTarget}
                     </div>
                   </div>
                   <div className="mt-4 flex flex-wrap gap-3">

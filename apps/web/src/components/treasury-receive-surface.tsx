@@ -460,6 +460,7 @@ export function TreasuryReceiveSurface() {
       source: "services",
       payoutIntent: persistedPayoutIntent,
       requestDelivery,
+      requestPayload: structuredRequestObject,
     });
     if (deliveryOverride && requestDelivery.state === deliveryOverride) {
       requestDeliveryOverrideRef.current = null;
@@ -561,6 +562,7 @@ export function TreasuryReceiveSurface() {
       source: "services",
       payoutIntent: persistedPayoutIntent,
       requestDelivery,
+      requestPayload: structuredRequestObject,
     });
     setCopied(state === "staged" ? "request-staged" : "request-delivered");
     window.location.assign(state === "staged" ? requestDelivery.requestRoute : requestDelivery.deliveryRoute);

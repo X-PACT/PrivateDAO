@@ -80,6 +80,35 @@ export type ServiceHandoffRequestDelivery = {
   deliveredAt: string | null;
 };
 
+export type ServiceHandoffRequestPayload = {
+  kind: string;
+  state: string;
+  requestId: string;
+  preparedAt: string;
+  proposalId: string;
+  proposalTitle: string;
+  network: string;
+  payoutProfile: string;
+  payoutTitle: string;
+  lane: string;
+  telemetryMode: string;
+  asset: {
+    symbol: string;
+    mint: string;
+    receiveAddress: string;
+  };
+  amount: string | null;
+  amountDisplay: string;
+  reference: string | null;
+  purpose: string | null;
+  routeFocus: string;
+  executionTarget: string;
+  evidenceRoute: string;
+  requestRoute: string;
+  deliveryRoute: string;
+  telemetryRoute: string;
+};
+
 export type ServiceHandoffState = {
   proposalId: string;
   proposalTitle: string;
@@ -93,6 +122,7 @@ export type ServiceHandoffState = {
   payoutIntent?: ServiceHandoffPayoutIntent;
   telemetrySelection?: ServiceHandoffTelemetrySelection;
   requestDelivery?: ServiceHandoffRequestDelivery;
+  requestPayload?: ServiceHandoffRequestPayload;
 };
 
 export type ServiceHandoffSelection = {
@@ -253,6 +283,39 @@ export function parseStoredServiceHandoffState(raw: string | null): ServiceHando
           typeof requestDelivery.deliveredAt === "string" ||
           requestDelivery.deliveredAt === null
         )
+      ) {
+        return null;
+      }
+    }
+
+    if (parsed.requestPayload) {
+      const requestPayload = parsed.requestPayload as Partial<ServiceHandoffRequestPayload>;
+      if (
+        typeof requestPayload.kind !== "string" ||
+        typeof requestPayload.state !== "string" ||
+        typeof requestPayload.requestId !== "string" ||
+        typeof requestPayload.preparedAt !== "string" ||
+        typeof requestPayload.proposalId !== "string" ||
+        typeof requestPayload.proposalTitle !== "string" ||
+        typeof requestPayload.network !== "string" ||
+        typeof requestPayload.payoutProfile !== "string" ||
+        typeof requestPayload.payoutTitle !== "string" ||
+        typeof requestPayload.lane !== "string" ||
+        typeof requestPayload.telemetryMode !== "string" ||
+        !requestPayload.asset ||
+        typeof requestPayload.asset.symbol !== "string" ||
+        typeof requestPayload.asset.mint !== "string" ||
+        typeof requestPayload.asset.receiveAddress !== "string" ||
+        !(typeof requestPayload.amount === "string" || requestPayload.amount === null) ||
+        typeof requestPayload.amountDisplay !== "string" ||
+        !(typeof requestPayload.reference === "string" || requestPayload.reference === null) ||
+        !(typeof requestPayload.purpose === "string" || requestPayload.purpose === null) ||
+        typeof requestPayload.routeFocus !== "string" ||
+        typeof requestPayload.executionTarget !== "string" ||
+        typeof requestPayload.evidenceRoute !== "string" ||
+        typeof requestPayload.requestRoute !== "string" ||
+        typeof requestPayload.deliveryRoute !== "string" ||
+        typeof requestPayload.telemetryRoute !== "string"
       ) {
         return null;
       }

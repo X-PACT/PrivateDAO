@@ -57,10 +57,12 @@ export function AnalyticsSummary() {
             <div className="mt-4 rounded-2xl border border-white/8 bg-black/20 p-4">
               <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Execution continuity</div>
               <div className="mt-2 text-sm font-medium text-white">
-                {handoff.proposalId} · {handoff.payoutTitle}
+                {handoff.requestPayload?.requestId ?? handoff.proposalId} · {handoff.payoutTitle}
               </div>
               <div className="mt-2 text-sm leading-7 text-white/58">
-                {handoff.payoutIntent.amountDisplay} · {handoff.payoutIntent.reference}
+                {handoff.requestPayload?.amountDisplay ?? handoff.payoutIntent.amountDisplay}
+                {" · "}
+                {handoff.requestPayload?.reference ?? handoff.payoutIntent.reference}
               </div>
               <div className="mt-2 text-sm leading-7 text-white/58">
                 {handoff.requestDelivery?.state === "delivered"
@@ -69,6 +71,11 @@ export function AnalyticsSummary() {
                     ? "Request is staged in services and ready for governed delivery."
                     : "Request is still editable in services before delivery."}
               </div>
+              {handoff.requestPayload ? (
+                <div className="mt-2 text-sm leading-7 text-white/58">
+                  {handoff.requestPayload.executionTarget} · {handoff.requestPayload.routeFocus}
+                </div>
+              ) : null}
             </div>
           ) : null}
           <div className="mt-4 flex flex-wrap gap-3">
