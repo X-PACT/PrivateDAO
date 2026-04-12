@@ -529,6 +529,10 @@ export function WalletFirstServiceActionsWorkbench({
         Boolean(storedState.payoutIntent?.amount?.trim()) ||
         storedState.requestDelivery?.state === "staged" ||
         storedState.requestDelivery?.state === "delivered";
+      const preserveStoredRequestPayload =
+        storedState.requestDelivery?.state === "staged" ||
+        storedState.requestDelivery?.state === "delivered" ||
+        Boolean(storedState.requestPayload);
       const mergedState: ServiceHandoffState = {
         ...handoffState,
         proposalReview: storedState.proposalReview ?? handoffState.proposalReview,
@@ -537,6 +541,9 @@ export function WalletFirstServiceActionsWorkbench({
           : handoffState.payoutIntent,
         telemetrySelection: storedState.telemetrySelection ?? handoffState.telemetrySelection,
         requestDelivery: storedState.requestDelivery ?? handoffState.requestDelivery,
+        requestPayload: preserveStoredRequestPayload
+          ? storedState.requestPayload ?? handoffState.requestPayload
+          : handoffState.requestPayload,
         source: preserveStoredPayoutIntent ? storedState.source : handoffState.source,
         updatedAt: preserveStoredPayoutIntent ? storedState.updatedAt : handoffState.updatedAt,
       };
