@@ -145,6 +145,7 @@ type ServiceHandoffQueryState = {
   telemetryMode: ServiceHandoffTelemetryMode;
   requestDelivery?: Pick<ServiceHandoffRequestDelivery, "state" | "deliveredAt">;
   requestPayloadSeed?: ServiceHandoffRequestPayloadSeed;
+  requestPayload?: ServiceHandoffRequestPayloadSeed;
 };
 
 let storedServiceHandoffRawCache: string | null = null;
@@ -158,6 +159,7 @@ function updateStoredServiceHandoffCache(raw: string | null) {
 
 export function buildServiceHandoffQuery(state: ServiceHandoffQueryState) {
   const params = new URLSearchParams();
+  const requestPayloadSeed = state.requestPayloadSeed ?? state.requestPayload;
   params.set("proposal", state.proposalId);
   params.set("profile", state.payoutProfile);
   params.set("telemetryMode", state.telemetryMode);
@@ -175,8 +177,8 @@ export function buildServiceHandoffQuery(state: ServiceHandoffQueryState) {
   ) {
     params.set("deliveredAt", state.requestDelivery.deliveredAt);
   }
-  if (state.requestPayloadSeed) {
-    params.set("requestPayload", JSON.stringify(state.requestPayloadSeed));
+  if (requestPayloadSeed) {
+    params.set("requestPayload", JSON.stringify(requestPayloadSeed));
   }
   return params.toString();
 }
