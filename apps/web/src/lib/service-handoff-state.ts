@@ -99,6 +99,7 @@ export type ServiceHandoffSelection = {
   proposalId: string;
   payoutProfile: ServiceHandoffProfile;
   telemetryMode: ServiceHandoffTelemetryMode;
+  deliveryState?: "staged" | "delivered";
 };
 
 let storedServiceHandoffRawCache: string | null = null;
@@ -266,6 +267,7 @@ export function readServiceHandoffState(searchParams: URLSearchParams): ServiceH
   const proposalId = searchParams.get("proposal");
   const payoutProfile = searchParams.get("profile");
   const telemetryMode = searchParams.get("telemetryMode");
+  const deliveryState = searchParams.get("deliveryState");
 
   if (!proposalId || !isServiceHandoffProfile(payoutProfile) || !isServiceHandoffTelemetryMode(telemetryMode)) {
     return null;
@@ -275,6 +277,10 @@ export function readServiceHandoffState(searchParams: URLSearchParams): ServiceH
     proposalId,
     payoutProfile,
     telemetryMode,
+    deliveryState:
+      deliveryState === "staged" || deliveryState === "delivered"
+        ? deliveryState
+        : undefined,
   };
 }
 
@@ -289,8 +295,7 @@ export function mergeServiceHandoffState(
   const sameProfile = sameProposal && storedState?.payoutProfile === selection.payoutProfile;
   const sameTelemetryMode =
     sameProposal && storedState?.telemetryMode === selection.telemetryMode;
-
-  return {
+  const baseState = {
     proposalId: selection.proposalId,
     proposalTitle: storedState?.proposalTitle ?? selection.proposalId,
     proposalStatus: storedState?.proposalStatus ?? "Context selected",
@@ -302,6 +307,34 @@ export function mergeServiceHandoffState(
     proposalReview: sameProposal ? storedState?.proposalReview : undefined,
     payoutIntent: sameProfile ? storedState?.payoutIntent : undefined,
     telemetrySelection: sameTelemetryMode ? storedState?.telemetrySelection : undefined,
-    requestDelivery: sameProfile ? storedState?.requestDelivery : undefined,
+  } satisfies Omit<ServiceHandoffState, "requestDelivery">;
+
+  const baseQuery = buildServiceHandoffQuery({
+    ...baseState,
+    requestDelivery: storedState?.requestDelivery,
+  } as ServiceHandoffState);
+  const requestDelivery =
+    selection.deliveryState === "staged" || selection.deliveryState === "delivered"
+      ? {
+          state: selection.deliveryState,
+          stateDetail:
+            selection.deliveryState === "delivered"
+              ? "Execution handoff delivered into command-center from the active UI lane."
+              : "Execution handoff staged in services and ready for governed delivery.",
+          requestRoute: `/services?${baseQuery}#treasury-payment-request`,
+          deliveryRoute: `/command-center?${baseQuery}#proposal-review-action`,
+          telemetryRoute: `/network?${baseQuery}`,
+          deliveredAt:
+            selection.deliveryState === "delivered"
+              ? storedState?.requestDelivery?.deliveredAt ?? "query-handoff"
+              : null,
+        }
+      : sameProfile
+        ? storedState?.requestDelivery
+        : undefined;
+
+  return {
+    ...baseState,
+    requestDelivery,
   };
 }

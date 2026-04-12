@@ -296,6 +296,12 @@ export function TreasuryReceiveSurface() {
   const requestRoute = continueHandoffQuery ? `/services?${continueHandoffQuery}#treasury-payment-request` : "/services#treasury-payment-request";
   const deliveryRoute = continueHandoffQuery ? `/command-center?${continueHandoffQuery}#proposal-review-action` : "/command-center#proposal-review-action";
   const telemetryRoute = continueHandoffQuery ? `/network?${continueHandoffQuery}` : "/network";
+  const stagedRequestRoute = continueHandoffQuery
+    ? `/services?${continueHandoffQuery}&deliveryState=staged#treasury-payment-request`
+    : requestRoute;
+  const deliveredRequestRoute = continueHandoffQuery
+    ? `/command-center?${continueHandoffQuery}&deliveryState=delivered#proposal-review-action`
+    : deliveryRoute;
   const isRequestReady = Boolean(amount.trim() && purpose.trim() && reference.trim());
 
   useEffect(() => {
@@ -470,11 +476,6 @@ export function TreasuryReceiveSurface() {
         deliveredAt: state === "delivered" ? new Date().toISOString() : null,
       },
     });
-  }
-
-  function stageRequest() {
-    updateDeliveryState("staged");
-    setCopied("request-staged");
   }
 
   if (!isMounted) {
@@ -832,26 +833,29 @@ export function TreasuryReceiveSurface() {
                 </div>
               </div>
               <div className="mt-4 flex flex-wrap gap-3">
-                <button
-                  type="button"
-                  onClick={stageRequest}
-                  disabled={!isRequestReady}
+                <Link
+                  href={stagedRequestRoute}
+                  onClick={() => {
+                    if (!isRequestReady) return;
+                    updateDeliveryState("staged");
+                    setCopied("request-staged");
+                  }}
+                  aria-disabled={!isRequestReady}
                   className={cn(buttonVariants({ size: "sm", variant: "secondary" }), !isRequestReady && "pointer-events-none opacity-50")}
                 >
                   Stage request in UI
-                </button>
-                <button
-                  type="button"
+                </Link>
+                <Link
+                  href={deliveredRequestRoute}
                   onClick={() => {
                     if (!isRequestReady) return;
                     updateDeliveryState("delivered");
-                    window.location.assign(deliveryRoute);
                   }}
-                  disabled={!isRequestReady}
+                  aria-disabled={!isRequestReady}
                   className={cn(buttonVariants({ size: "sm" }), !isRequestReady && "pointer-events-none opacity-50")}
                 >
                   Deliver to command center
-                </button>
+                </Link>
                 <Link
                   href={telemetryRoute}
                   className={cn(buttonVariants({ size: "sm", variant: "outline" }), !isRequestReady && "pointer-events-none opacity-50")}
