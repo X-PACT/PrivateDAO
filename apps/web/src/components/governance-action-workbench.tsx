@@ -131,7 +131,7 @@ export function GovernanceActionWorkbench() {
 
   useEffect(() => {
     if (!handoff) return;
-    const continuityKey = `${handoff.proposalId}:${handoff.telemetryMode}:${handoff.source}:${handoff.payoutIntent?.reference ?? "no-payout"}`;
+    const continuityKey = `${handoff.proposalId}:${handoff.telemetryMode}:${handoff.source}:${handoff.payoutIntent?.reference ?? "no-payout"}:${continuityRequestPayload?.requestId ?? "no-request"}:${handoff.requestDelivery?.state ?? "draft"}`;
     if (appliedReviewRef.current === continuityKey) return;
 
     if (!proposalCreated && proposalTitle !== handoff.proposalTitle) {
