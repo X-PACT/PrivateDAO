@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO_ROOT="/home/x-pact/PrivateDAO"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 forbidden_regex='^(404\.html|CNAME|__next\.|_next/|_not-found/|analytics/|assistant/|awards/|command-center/|community/|dashboard/|developers/|diagnostics/|documents/|network/|products/|proof/|search/|security/|services/|start/|story/|tracks/|treasury/|viewer/|dist/|docs/index\.html|docs/assets/weekly-live-captures/|docs/assets/weekly-updates-live/|docs/assets/weekly-youtube-ready/|docs/assets/weekly-updates/private-dao-week-1-update\.mp4|docs/assets/weekly-updates/week-1-scene-[1-5]\.png)'
 
