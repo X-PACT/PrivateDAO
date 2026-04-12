@@ -89,6 +89,8 @@ export function TelemetryModeHandoffStrip({
     [queryState, storedState],
   );
   const activeState = queryState ?? storedState;
+  const activeRequestPayload =
+    activeState && "requestPayload" in activeState ? activeState.requestPayload : undefined;
   const continuityQuery = useMemo(
     () => (activeState ? buildServiceHandoffQuery(activeState) : ""),
     [activeState],
@@ -160,15 +162,15 @@ export function TelemetryModeHandoffStrip({
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
-            {activeState?.requestPayload ? (
+            {activeRequestPayload ? (
               <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.03] p-4 text-sm leading-7 text-white/58">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/42">Request payload continuity</div>
                 <div className="mt-2 text-white/78">
-                  {activeState.requestPayload.requestId} · {activeState.requestPayload.amountDisplay}
+                  {activeRequestPayload.requestId} · {activeRequestPayload.amountDisplay}
                 </div>
-                <div className="mt-1 text-white/62">{activeState.requestPayload.requestRoute}</div>
-                <div className="mt-1 text-white/62">{activeState.requestPayload.deliveryRoute}</div>
-                <div className="mt-1 text-white/62">{activeState.requestPayload.telemetryRoute}</div>
+                <div className="mt-1 text-white/62">{activeRequestPayload.requestRoute}</div>
+                <div className="mt-1 text-white/62">{activeRequestPayload.deliveryRoute}</div>
+                <div className="mt-1 text-white/62">{activeRequestPayload.telemetryRoute}</div>
               </div>
             ) : null}
           </div>
