@@ -220,11 +220,6 @@ export function TreasuryReceiveSurface() {
     appliedHandoffKeyRef.current = handoffKey;
   }, [allowStoredServicesHydration, config.assets, handoff]);
 
-  useEffect(() => {
-    if (isRequestReady) return;
-    setLocalDeliveryState(null);
-  }, [isRequestReady]);
-
   const requestPacket = useMemo(
     () =>
       [
@@ -312,6 +307,11 @@ export function TreasuryReceiveSurface() {
     ? `/command-center?${continueHandoffQuery}&deliveryState=delivered#proposal-review-action`
     : deliveryRoute;
   const isRequestReady = Boolean(amount.trim() && purpose.trim() && reference.trim());
+
+  useEffect(() => {
+    if (isRequestReady) return;
+    setLocalDeliveryState(null);
+  }, [isRequestReady]);
 
   const buildRequestDelivery = useCallback((
     state: ServiceHandoffRequestDelivery["state"],
