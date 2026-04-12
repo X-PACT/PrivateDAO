@@ -41,7 +41,9 @@ export default function ProofPage() {
         <JudgeRuntimeLogsPanel />
       </div>
       <div>
-        <JudgeExecutionContinuityPanel />
+        <Suspense fallback={null}>
+          <JudgeExecutionContinuityPanel />
+        </Suspense>
       </div>
       <div>
         <ReadNodeActivationStrip context="proof" />
