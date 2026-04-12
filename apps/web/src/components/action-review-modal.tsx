@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { buildPreparedActionSummary } from "@/lib/onchain-parity";
 import type { CoreGovernanceInstructionName } from "@/lib/onchain-parity.generated";
+import type { ServiceHandoffRequestDelivery, ServiceHandoffRequestPayload } from "@/lib/service-handoff-state";
 import type { ProposalCardModel } from "@/lib/site-data";
 
 type ActionReviewModalProps = {
@@ -20,6 +21,8 @@ type ActionReviewModalProps = {
   voteChoice?: string;
   proposal?: ProposalCardModel;
   executionIntent?: GovernanceExecutionIntent | null;
+  requestPayload?: ServiceHandoffRequestPayload | null;
+  requestDelivery?: ServiceHandoffRequestDelivery | null;
   onClose: () => void;
   onConfirm: () => void;
 };
@@ -32,6 +35,8 @@ export function ActionReviewModal({
   voteChoice,
   proposal,
   executionIntent,
+  requestPayload,
+  requestDelivery,
   onClose,
   onConfirm,
 }: ActionReviewModalProps) {
@@ -45,14 +50,15 @@ export function ActionReviewModal({
     voteChoice,
     proposal,
   });
-  const payload = executionIntent?.requestPayload ?? null;
+  const payload = requestPayload ?? executionIntent?.requestPayload ?? null;
+  const delivery = requestDelivery ?? executionIntent?.requestDelivery ?? null;
   const summaryProposalId = payload?.requestId ?? summary.proposalId;
   const summaryBeneficiary = payload?.executionTarget ?? executionIntent?.executionTarget ?? summary.beneficiary;
   const summaryAmountOrAsset = payload?.amountDisplay ?? executionIntent?.amountDisplay ?? summary.amountOrAsset;
   const summaryTimelock =
     executionIntent
       ? payload
-        ? `Authoritative request object loaded · ${executionIntent.requestDelivery?.state ?? payload.state} · telemetry ${payload.telemetryMode}`
+        ? `Authoritative request object loaded · ${delivery?.state ?? payload.state} · telemetry ${payload.telemetryMode}`
         : `Execution continuity loaded · telemetry ${executionIntent.telemetryMode}`
       : summary.timelock;
 
@@ -148,7 +154,7 @@ export function ActionReviewModal({
               </div>
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Delivery state</div>
-                <div className="mt-2 text-white">{executionIntent.requestDelivery?.state ?? payload?.state ?? "draft-pending-input"}</div>
+                <div className="mt-2 text-white">{delivery?.state ?? payload?.state ?? "draft-pending-input"}</div>
               </div>
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68 sm:col-span-2">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Execution target</div>

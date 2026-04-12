@@ -525,6 +525,8 @@ export function GovernanceActionWorkbench() {
         voteChoice={voteChoice}
         proposal={stagedProposal ?? undefined}
         executionIntent={executionIntent}
+        requestPayload={continuityRequestPayload}
+        requestDelivery={handoff?.requestDelivery ?? null}
         onClose={() => setReviewAction(null)}
         onConfirm={confirmReviewAction}
       />
