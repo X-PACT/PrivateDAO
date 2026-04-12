@@ -102,7 +102,12 @@ export type JudgeRuntimeLogsSnapshot = {
 };
 
 function readJson<T>(relativePath: string): T {
-  const filePath = path.resolve(process.cwd(), "..", "..", relativePath);
+  const filePath = path.resolve(
+    /* turbopackIgnore: true */ process.cwd(),
+    "..",
+    "..",
+    relativePath,
+  );
   return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
 }
 

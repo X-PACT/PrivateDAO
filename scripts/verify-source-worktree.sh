@@ -23,6 +23,23 @@ forbidden_paths="$(printf '%s\n' "$candidate_paths" | grep -E "$forbidden_regex"
 source_paths="$(printf '%s\n' "$candidate_paths" | grep -Ev "$forbidden_regex" || true)"
 source_count="$(printf '%s\n' "$source_paths" | sed '/^$/d' | wc -l | tr -d ' ')"
 
+summarize_paths() {
+  awk -F/ '
+    {
+      key = $1;
+      if ($1 == "docs" && $2 != "") {
+        key = $1 "/" $2;
+      }
+      counts[key]++;
+    }
+    END {
+      for (key in counts) {
+        printf "%6d  %s\n", counts[key], key;
+      }
+    }
+  ' | sort -nr | sed -n '1,10p'
+}
+
 if [[ -n "$forbidden_paths" ]]; then
   forbidden_count="$(printf '%s\n' "$forbidden_paths" | wc -l | tr -d ' ')"
   staged_forbidden_count="$(printf '%s\n' "$staged_forbidden_paths" | sed '/^$/d' | wc -l | tr -d ' ')"
@@ -32,9 +49,15 @@ if [[ -n "$forbidden_paths" ]]; then
   printf 'staged mirror/export paths: %s\n' "$staged_forbidden_count"
   printf 'unstaged or untracked mirror/export paths: %s\n' "$local_forbidden_count"
   printf 'source paths outside mirror/export scope: %s\n' "$source_count"
-  printf '%s\n' "$forbidden_paths" | sed -n '1,25p'
-  if [[ "$forbidden_count" -gt 25 ]]; then
-    printf '... truncated %s additional path(s)\n' "$((forbidden_count - 25))"
+  echo "top mirror/export scopes:"
+  printf '%s\n' "$forbidden_paths" | summarize_paths
+  if [[ "${PRIVATE_DAO_WORKTREE_VERBOSE:-0}" == "1" ]]; then
+    printf '%s\n' "$forbidden_paths" | sed -n '1,25p'
+    if [[ "$forbidden_count" -gt 25 ]]; then
+      printf '... truncated %s additional path(s)\n' "$((forbidden_count - 25))"
+    fi
+  else
+    echo "set PRIVATE_DAO_WORKTREE_VERBOSE=1 to print sample churn paths"
   fi
   if [[ "${PRIVATE_DAO_STRICT_WORKTREE_PREFLIGHT:-0}" == "1" && "$staged_forbidden_count" -gt 0 ]]; then
     exit 1
