@@ -11,6 +11,7 @@
 [![Web Surface](https://img.shields.io/badge/Web-Live%20Governance%20Surface-0ea5e9)](https://x-pact.github.io/PrivateDAO/)
 [![Android Native](https://img.shields.io/badge/Android-Kotlin%20Native-7c3aed)](docs/android-native.md)
 [![Mobile Wallet](https://img.shields.io/badge/Mobile-MWA%20Ready-22c55e)](docs/android-native.md)
+[![Android Runtime](https://img.shields.io/badge/Android-Runtime%20Scripts-16a34a)](docs/android-native.md)
 [![Award](https://img.shields.io/badge/Award-1st%20Place%20Superteam%20Earn-gold)](docs/awards.md)
 [![Built on](https://img.shields.io/badge/Built%20on-Solana-purple)](https://solana.com)
 [![Category](https://img.shields.io/badge/Category-Backend%20Systems-blue)](docs/awards.md)

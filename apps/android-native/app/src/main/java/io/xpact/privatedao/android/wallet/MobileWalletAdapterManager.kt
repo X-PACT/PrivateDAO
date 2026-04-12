@@ -11,7 +11,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.GuardedBy
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.whenResumed
+import androidx.lifecycle.LifecycleEventObserver
 import com.solana.mobilewalletadapter.clientlib.protocol.JsonRpc20Client
 import com.solana.mobilewalletadapter.clientlib.protocol.MobileWalletAdapterClient
 import com.solana.mobilewalletadapter.clientlib.scenario.LocalAssociationIntentCreator
@@ -31,10 +31,12 @@ import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.suspendCancellableCoroutine
 import java.io.IOException
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
+import kotlin.coroutines.resume
 
 class MobileWalletAdapterManager(
     application: Application,
@@ -142,20 +144,16 @@ class MobileWalletAdapterManager(
             protocolVersion: SessionProperties.ProtocolVersion,
         ): MobileWalletAdapterClient.AuthorizationResult = try {
             runInterruptible(Dispatchers.IO) {
-                if (protocolVersion == SessionProperties.ProtocolVersion.V1) {
-                    client.authorize(
-                        identity.uri,
-                        identity.iconRelativeUri,
-                        identity.name,
-                        chain,
-                        null,
-                        features,
-                        authorizedAccounts?.toTypedArray(),
-                        null,
-                    ).get()!!
-                } else {
-                    client.authorize(identity.uri, identity.iconRelativeUri, identity.name, ProtocolContract.CLUSTER_DEVNET).get()!!
-                }
+                client.authorize(
+                    identity.uri,
+                    identity.iconRelativeUri,
+                    identity.name,
+                    chain,
+                    null,
+                    features,
+                    authorizedAccounts?.toTypedArray(),
+                    null,
+                ).get()!!
             }
         } catch (e: ExecutionException) {
             throw mapException("authorize", e)
@@ -254,7 +252,24 @@ class MobileWalletAdapterManager(
 
         suspend fun waitForActivityResumed() {
             withTimeout(20_000L) {
-                activityLifecycle.whenResumed {}
+                activityLifecycle.awaitResumed()
+            }
+        }
+
+        private suspend fun Lifecycle.awaitResumed() {
+            if (currentState.isAtLeast(Lifecycle.State.RESUMED)) return
+
+            suspendCancellableCoroutine<Unit> { continuation ->
+                lateinit var observer: LifecycleEventObserver
+                observer = LifecycleEventObserver { _, _ ->
+                    if (currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                        removeObserver(observer)
+                        if (continuation.isActive) continuation.resume(Unit)
+                    }
+                }
+
+                addObserver(observer)
+                continuation.invokeOnCancellation { removeObserver(observer) }
             }
         }
 

@@ -227,12 +227,51 @@ Required SDK packages for the verified local build:
 - `platforms;android-36`
 - `build-tools;36.0.0`
 - `build-tools;35.0.0`
+- `emulator`
+- `system-images;android-36;google_apis;x86_64`
 
 Verified local output on this branch:
 
 - command: `./gradlew assembleDebug`
 - result: `BUILD SUCCESSFUL`
 - artifact: `apps/android-native/app/build/outputs/apk/debug/app-debug.apk`
+
+## Emulator / Device Runtime Path
+
+The branch now includes explicit shell entry points for Android runtime verification:
+
+1. Bootstrap emulator packages and the AVD:
+
+```text
+./scripts/bootstrap-android-emulator.sh
+```
+
+2. Boot the emulator:
+
+```text
+./scripts/run-android-emulator.sh
+```
+
+3. Install and launch the debug APK:
+
+```text
+./scripts/install-android-debug-apk.sh
+```
+
+Default emulator settings:
+
+- AVD name: `PrivateDAO_API_36`
+- system image: `system-images;android-36;google_apis;x86_64`
+- device profile: `pixel_6`
+
+Environment overrides are supported through:
+
+- `ANDROID_HOME` / `ANDROID_SDK_ROOT`
+- `PRIVATE_DAO_ANDROID_AVD_NAME`
+- `PRIVATE_DAO_ANDROID_SYSTEM_IMAGE`
+- `PRIVATE_DAO_ANDROID_DEVICE_ID`
+
+This keeps emulator setup reproducible instead of relying on ad-hoc Android Studio state.
 
 ## Run / Judge Flow
 
