@@ -34,14 +34,27 @@ export type GovernanceExecutionIntent = {
   requestDelivery: ServiceHandoffRequestDelivery | null;
 };
 
+type LiveDaoRuntime = {
+  address: string;
+  governanceMint: string;
+  signature: string;
+};
+
+type LiveProposalRuntime = {
+  address: string;
+  signature: string;
+};
+
 type GovernanceSessionState = {
   daoName: string;
   daoCreated: boolean;
+  liveDaoRuntime: LiveDaoRuntime | null;
   proposalTitle: string;
   reviewContextKey: string | null;
   executionIntentKey: string | null;
   executionIntent: GovernanceExecutionIntent | null;
   proposalCreated: boolean;
+  liveProposalRuntime: LiveProposalRuntime | null;
   voteChoice: VoteChoice;
   voteCommitted: boolean;
   voteRevealed: boolean;
@@ -141,8 +154,8 @@ type GovernanceSessionContextValue = GovernanceSessionState & {
     requestDelivery?: ServiceHandoffRequestDelivery | null;
     source: string;
   }) => void;
-  createDao: () => void;
-  createProposal: () => void;
+  createDao: (liveRuntime?: LiveDaoRuntime | null) => void;
+  createProposal: (liveRuntime?: LiveProposalRuntime | null) => void;
   commitVote: () => void;
   revealVote: () => void;
   finalizeProposal: () => void;
@@ -155,11 +168,13 @@ const STORAGE_KEY = "privatedao-governance-session";
 const defaultState: GovernanceSessionState = {
   daoName: "PrivateDAO Frontier Council",
   daoCreated: false,
+  liveDaoRuntime: null,
   proposalTitle: "Confidential payroll batch / April",
   reviewContextKey: null,
   executionIntentKey: null,
   executionIntent: null,
   proposalCreated: false,
+  liveProposalRuntime: null,
   voteChoice: "Approve",
   voteCommitted: false,
   voteRevealed: false,
@@ -283,35 +298,42 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
             `${proposalId} · ${requestPayload?.requestId ?? payoutTitle} · ${amountDisplay} · ${reference} staged from ${source}.`,
           );
         }),
-      createDao: () =>
+      createDao: (liveRuntime) =>
         setState((current) =>
           withLog(
             {
               ...current,
               daoCreated: true,
+              liveDaoRuntime: liveRuntime ?? current.liveDaoRuntime,
               proposalCreated: false,
+              liveProposalRuntime: null,
               voteCommitted: false,
               voteRevealed: false,
               proposalFinalized: false,
               proposalExecuted: false,
             },
             "DAO created",
-            `${current.daoName} staged in the product shell and ready for proposal creation.`,
+            liveRuntime
+              ? `${current.daoName} bootstrapped live on devnet at ${liveRuntime.address}.`
+              : `${current.daoName} staged in the product shell and ready for proposal creation.`,
           ),
         ),
-      createProposal: () =>
+      createProposal: (liveRuntime) =>
         setState((current) =>
           withLog(
             {
               ...current,
               proposalCreated: true,
+              liveProposalRuntime: liveRuntime ?? current.liveProposalRuntime,
               voteCommitted: false,
               voteRevealed: false,
               proposalFinalized: false,
               proposalExecuted: false,
             },
             "Proposal created",
-            `${current.proposalTitle} is now the active proposal in the UI flow.`,
+            liveRuntime
+              ? `${current.proposalTitle} submitted live on devnet at ${liveRuntime.address}.`
+              : `${current.proposalTitle} is now the active proposal in the UI flow.`,
           ),
         ),
       commitVote: () =>

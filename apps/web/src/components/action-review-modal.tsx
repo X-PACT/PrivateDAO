@@ -74,6 +74,8 @@ export function ActionReviewModal({
       : "Continue with payload-driven signing shell"
     : action === "initialize_dao"
       ? "Sign and submit DAO bootstrap"
+      : action === "create_proposal"
+        ? "Sign and submit proposal create"
       : "Continue in UI";
 
   return (

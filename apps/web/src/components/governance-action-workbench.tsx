@@ -2,6 +2,7 @@
 
 import { startTransition, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { PublicKey } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Activity, ArrowUpRight, CheckCircle2, ChevronRight, FilePlus2, Flag, FolderPlus, ListChecks, Play, ShieldCheck, Vote, Wallet } from "lucide-react";
 
@@ -14,7 +15,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buildPreparedActionSummary } from "@/lib/onchain-parity";
 import type { CoreGovernanceInstructionName } from "@/lib/onchain-parity.generated";
-import { buildCreateDaoBootstrapTransaction } from "@/lib/dao-bootstrap";
+import { buildCreateDaoBootstrapTransaction, buildCreateProposalTransaction } from "@/lib/dao-bootstrap";
 import { buildServiceHandoffQuery } from "@/lib/service-handoff-state";
 import { getProposalById, type ProposalCardModel } from "@/lib/site-data";
 import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
@@ -45,14 +46,22 @@ export function GovernanceActionWorkbench() {
     governanceMint?: string;
     signature?: string;
   }>({ status: "idle", message: "" });
+  const [createProposalRuntime, setCreateProposalRuntime] = useState<{
+    status: "idle" | "submitting" | "success" | "error";
+    message: string;
+    proposalAddress?: string;
+    signature?: string;
+  }>({ status: "idle", message: "" });
   const { connection } = useConnection();
   const { connected, wallet, publicKey, sendTransaction } = useWallet();
   const {
     daoName,
     daoCreated,
+    liveDaoRuntime,
     proposalTitle,
     executionIntent,
     proposalCreated,
+    liveProposalRuntime,
     voteChoice,
     voteCommitted,
     voteRevealed,
@@ -81,6 +90,12 @@ export function GovernanceActionWorkbench() {
     daoName.trim().length >= 3 &&
     createDaoRuntime.status !== "submitting";
   const canCreateProposal = daoCreated && !proposalCreated && proposalTitle.trim().length >= 6;
+  const canSubmitLiveProposal =
+    connected &&
+    Boolean(publicKey) &&
+    canCreateProposal &&
+    Boolean(liveDaoRuntime?.address && liveDaoRuntime.governanceMint) &&
+    createProposalRuntime.status !== "submitting";
   const canCommit = proposalCreated && !voteCommitted;
   const canReveal = voteCommitted && !voteRevealed;
   const canFinalize = voteRevealed && !proposalFinalized;
@@ -248,7 +263,11 @@ export function GovernanceActionWorkbench() {
 
       await connection.confirmTransaction(signature, "confirmed");
 
-      createDao();
+      createDao({
+        address: bootstrap.dao.toBase58(),
+        governanceMint: bootstrap.governanceMint.toBase58(),
+        signature,
+      });
       recordLog(
         "DAO bootstrap submitted",
         `${daoName.trim()} · ${bootstrap.dao.toBase58()} · ${signature}`,
@@ -277,6 +296,80 @@ export function GovernanceActionWorkbench() {
     }
   }
 
+  async function submitCreateProposalLive() {
+    if (!publicKey) {
+      setCreateProposalRuntime({
+        status: "error",
+        message: "Connect a wallet before submitting the proposal on devnet.",
+      });
+      return;
+    }
+    if (!liveDaoRuntime?.address) {
+      setCreateProposalRuntime({
+        status: "error",
+        message: "Create the DAO live first so the web flow has a real DAO address to target.",
+      });
+      return;
+    }
+
+    try {
+      setCreateProposalRuntime({
+        status: "submitting",
+        message: "Preparing live proposal transaction for wallet signature...",
+      });
+
+      const proposalSubmission = await buildCreateProposalTransaction({
+        proposer: publicKey,
+        connection,
+        daoAddress: new PublicKey(liveDaoRuntime.address),
+        title: proposalTitle.trim(),
+        description: `${proposalTitle.trim()} submitted from the live web governance surface.`,
+        votingDurationSeconds: 3600,
+      });
+
+      setCreateProposalRuntime({
+        status: "submitting",
+        message: "Awaiting wallet signature for the live proposal transaction...",
+        proposalAddress: proposalSubmission.proposal.toBase58(),
+      });
+
+      const signature = await sendTransaction(proposalSubmission.transaction, connection, {
+        preflightCommitment: "confirmed",
+      });
+
+      await connection.confirmTransaction(signature, "confirmed");
+
+      createProposal({
+        address: proposalSubmission.proposal.toBase58(),
+        signature,
+      });
+      recordLog(
+        "Proposal submitted",
+        `${proposalTitle.trim()} · ${proposalSubmission.proposal.toBase58()} · ${signature}`,
+      );
+      recordLog(
+        "Proposal DAO lane",
+        `${proposalSubmission.dao.toBase58()} · governance mint ${proposalSubmission.governanceMint.toBase58()} · proposer ATA ${proposalSubmission.proposerTokenAccount.toBase58()}`,
+      );
+
+      setCreateProposalRuntime({
+        status: "success",
+        message: "Proposal submitted to devnet from the web wallet flow.",
+        proposalAddress: proposalSubmission.proposal.toBase58(),
+        signature,
+      });
+    } catch (error) {
+      const message =
+        error instanceof Error && error.message
+          ? error.message
+          : "Web wallet proposal submit failed before confirmation.";
+      setCreateProposalRuntime({
+        status: "error",
+        message,
+      });
+    }
+  }
+
   async function confirmReviewAction() {
     if (!reviewAction) return;
     const activeAction = reviewAction;
@@ -284,6 +377,10 @@ export function GovernanceActionWorkbench() {
 
     if (activeAction === "initialize_dao") {
       await submitCreateDaoLive();
+      return;
+    }
+    if (activeAction === "create_proposal") {
+      await submitCreateProposalLive();
       return;
     }
 
@@ -307,10 +404,10 @@ export function GovernanceActionWorkbench() {
               <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/72">Web app workflow</div>
               <CardTitle className="mt-2">All normal-user operations run from the UI</CardTitle>
             </div>
-              <Badge variant="success">Live DAO Create</Badge>
+              <Badge variant="success">Live DAO / Proposal Create</Badge>
             </div>
             <p className="max-w-3xl text-sm leading-7 text-white/60">
-            Wallet connection and DAO bootstrap now run live from the web surface on devnet. Proposal, vote, reveal, finalize, and execute still stay in the same UI shell while deeper on-chain parity keeps expanding from the same product lane.
+            Wallet connection, DAO bootstrap, and proposal submit now run live from the web surface on devnet. Vote, reveal, finalize, and execute still stay in the same UI shell while deeper on-chain parity keeps expanding from the same product lane.
           </p>
         </CardHeader>
         <CardContent className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
@@ -613,9 +710,47 @@ export function GovernanceActionWorkbench() {
                   className="mt-4 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
                   placeholder="Proposal title"
                 />
-                <Button className="mt-4 w-full" disabled={!canCreateProposal} onClick={() => openReview("create_proposal")}>
+                {!liveDaoRuntime?.address ? (
+                  <p className="mt-4 text-sm leading-7 text-amber-100/70">
+                    Live proposal submit unlocks after a live web DAO bootstrap so the wallet flow has a real DAO address and governance mint to target.
+                  </p>
+                ) : null}
+                {liveDaoRuntime?.address ? (
+                  <div className="mt-4 rounded-2xl border border-cyan-300/16 bg-cyan-300/[0.08] p-3 text-sm text-white/72">
+                    <div className="text-[11px] uppercase tracking-[0.2em] text-cyan-100/72">Live DAO lane</div>
+                    <div className="mt-2 break-all text-white">{liveDaoRuntime.address}</div>
+                    <div className="mt-1 break-all text-white/62">Governance mint {liveDaoRuntime.governanceMint}</div>
+                  </div>
+                ) : null}
+                <Button className="mt-4 w-full" disabled={!canSubmitLiveProposal} onClick={() => openReview("create_proposal")}>
                   Create Proposal
                 </Button>
+                {createProposalRuntime.status !== "idle" ? (
+                  <div
+                    className={cn(
+                      "mt-4 rounded-2xl border p-3 text-sm leading-7",
+                      createProposalRuntime.status === "error"
+                        ? "border-rose-300/20 bg-rose-300/[0.08] text-rose-100/82"
+                        : createProposalRuntime.status === "success"
+                          ? "border-emerald-300/18 bg-emerald-300/[0.08] text-emerald-100/82"
+                          : "border-cyan-300/18 bg-cyan-300/[0.08] text-cyan-100/82",
+                    )}
+                  >
+                    <div>{createProposalRuntime.message}</div>
+                    {createProposalRuntime.proposalAddress ? (
+                      <div className="mt-2 break-all text-white/70">Proposal {createProposalRuntime.proposalAddress}</div>
+                    ) : null}
+                    {createProposalRuntime.signature ? (
+                      <div className="mt-1 break-all text-white/60">Signature {createProposalRuntime.signature}</div>
+                    ) : null}
+                  </div>
+                ) : liveProposalRuntime ? (
+                  <div className="mt-4 rounded-2xl border border-emerald-300/18 bg-emerald-300/[0.08] p-3 text-sm leading-7 text-emerald-100/82">
+                    <div>Last live proposal submit cleared from the web wallet flow.</div>
+                    <div className="mt-2 break-all text-white/70">Proposal {liveProposalRuntime.address}</div>
+                    <div className="mt-1 break-all text-white/60">Signature {liveProposalRuntime.signature}</div>
+                  </div>
+                ) : null}
               </div>
 
               <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
