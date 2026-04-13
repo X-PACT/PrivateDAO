@@ -61,6 +61,39 @@ type CreateProposalResult = {
   transaction: Transaction;
 };
 
+type ProposalAccountDetails = {
+  dao: string;
+  executionUnlocksAt: number;
+  proposalId: bigint;
+  revealEnd: number;
+  title: string;
+  votingEnd: number;
+};
+
+type CommitVoteInput = {
+  commitment: Uint8Array;
+  connection: Connection;
+  daoAddress: PublicKey;
+  proposalAddress: PublicKey;
+  voter: PublicKey;
+  voterRevealAuthority?: PublicKey | null;
+};
+
+type RevealVoteInput = {
+  connection: Connection;
+  proposalAddress: PublicKey;
+  salt: Uint8Array;
+  vote: boolean;
+  voter: PublicKey;
+};
+
+type FinalizeProposalInput = {
+  connection: Connection;
+  daoAddress: PublicKey;
+  finalizer: PublicKey;
+  proposalAddress: PublicKey;
+};
+
 const SYSVAR_RENT_PUBKEY = new PublicKey("SysvarRent111111111111111111111111111111111");
 const MINT_ACCOUNT_SPACE = 82;
 
@@ -159,6 +192,22 @@ function deriveAssociatedTokenAddress(owner: PublicKey, mint: PublicKey) {
   return ata;
 }
 
+function deriveVoteRecordAddress(proposal: PublicKey, voter: PublicKey) {
+  const [voteRecord] = PublicKey.findProgramAddressSync(
+    [Buffer.from("vote"), proposal.toBuffer(), voter.toBuffer()],
+    PRIVATE_DAO_PROGRAM_ID,
+  );
+  return voteRecord;
+}
+
+function deriveDelegationMarkerAddress(proposal: PublicKey, voter: PublicKey) {
+  const [delegationMarker] = PublicKey.findProgramAddressSync(
+    [Buffer.from("delegation"), proposal.toBuffer(), voter.toBuffer()],
+    PRIVATE_DAO_PROGRAM_ID,
+  );
+  return delegationMarker;
+}
+
 async function resolveLatestBlockhash(connection: Connection) {
   let latestError: unknown;
 
@@ -220,6 +269,34 @@ function decodeDaoAccount(data: Uint8Array): DaoAccountDetails {
   };
 }
 
+function decodeProposalAccount(data: Uint8Array): ProposalAccountDetails {
+  const offset = { value: 8 };
+  const dao = new PublicKey(data.slice(offset.value, offset.value + 32)).toBase58();
+  offset.value += 32;
+  offset.value += 32; // proposer
+  const proposalId = parseU64LE(data, offset.value);
+  offset.value += 8;
+  const title = parseString(data, offset);
+  offset.value += parseU32LE(data, offset.value) + 4; // description
+  offset.value += 1; // status
+  const votingEnd = parseI64LE(data, offset.value);
+  offset.value += 8;
+  const revealEnd = parseI64LE(data, offset.value);
+  offset.value += 8;
+  offset.value += 8 * 6; // yes/no tallies + commit/reveal counts
+  offset.value += 75; // treasury action
+  const executionUnlocksAt = parseI64LE(data, offset.value);
+
+  return {
+    dao,
+    executionUnlocksAt,
+    proposalId,
+    revealEnd,
+    title,
+    votingEnd,
+  };
+}
+
 export async function fetchDaoAccountDetails(connection: Connection, daoAddress: PublicKey) {
   const info = await connection.getAccountInfo(daoAddress, "confirmed");
   if (!info) {
@@ -227,6 +304,15 @@ export async function fetchDaoAccountDetails(connection: Connection, daoAddress:
   }
 
   return decodeDaoAccount(info.data);
+}
+
+export async function fetchProposalAccountDetails(connection: Connection, proposalAddress: PublicKey) {
+  const info = await connection.getAccountInfo(proposalAddress, "confirmed");
+  if (!info) {
+    throw new Error("Proposal account was not found on devnet.");
+  }
+
+  return decodeProposalAccount(info.data);
 }
 
 export async function buildCreateDaoBootstrapTransaction({
@@ -363,4 +449,139 @@ export async function buildCreateProposalTransaction({
     proposerTokenAccount,
     transaction,
   };
+}
+
+export async function computeProposalCommitment(
+  vote: boolean,
+  salt: Uint8Array,
+  proposal: PublicKey,
+  voter: PublicKey,
+) {
+  const preimage = concatBytes(
+    new Uint8Array([vote ? 1 : 0]),
+    salt,
+    proposal.toBytes(),
+    voter.toBytes(),
+  );
+  const digest = await crypto.subtle.digest("SHA-256", preimage);
+  return new Uint8Array(digest);
+}
+
+export async function buildCommitVoteTransaction({
+  commitment,
+  connection,
+  daoAddress,
+  proposalAddress,
+  voter,
+  voterRevealAuthority = null,
+}: CommitVoteInput) {
+  const dao = await fetchDaoAccountDetails(connection, daoAddress);
+  const governanceMint = new PublicKey(dao.governanceToken);
+  const voterTokenAccount = deriveAssociatedTokenAddress(voter, governanceMint);
+  const voterTokenAccountInfo = await connection.getAccountInfo(voterTokenAccount, "confirmed");
+  if (!voterTokenAccountInfo) {
+    throw new Error("Governance token account was not found for the connected wallet.");
+  }
+
+  const delegationMarker = deriveDelegationMarkerAddress(proposalAddress, voter);
+  const voterRecord = deriveVoteRecordAddress(proposalAddress, voter);
+  const data = concatBytes(
+    await anchorMethodDiscriminator("commit_vote"),
+    commitment,
+    voterRevealAuthority
+      ? concatBytes(new Uint8Array([1]), voterRevealAuthority.toBytes())
+      : new Uint8Array([0]),
+  );
+
+  const instruction = new TransactionInstruction({
+    programId: PRIVATE_DAO_PROGRAM_ID,
+    keys: [
+      { pubkey: daoAddress, isSigner: false, isWritable: false },
+      { pubkey: proposalAddress, isSigner: false, isWritable: true },
+      { pubkey: voterRecord, isSigner: false, isWritable: true },
+      { pubkey: delegationMarker, isSigner: false, isWritable: false },
+      { pubkey: voterTokenAccount, isSigner: false, isWritable: false },
+      { pubkey: voter, isSigner: true, isWritable: true },
+      { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
+      { pubkey: SystemProgram.programId, isSigner: false, isWritable: false },
+    ],
+    data: Buffer.from(data),
+  });
+
+  const transaction = new Transaction().add(instruction);
+  transaction.feePayer = voter;
+  const latest = await resolveLatestBlockhash(connection);
+  transaction.recentBlockhash = latest.blockhash;
+
+  return {
+    governanceMint,
+    transaction,
+    voterRecord,
+    voterTokenAccount,
+  };
+}
+
+export async function buildRevealVoteTransaction({
+  connection,
+  proposalAddress,
+  salt,
+  vote,
+  voter,
+}: RevealVoteInput) {
+  if (salt.length !== 32) {
+    throw new Error("Reveal salt must be exactly 32 bytes.");
+  }
+
+  const voterRecord = deriveVoteRecordAddress(proposalAddress, voter);
+  const data = concatBytes(
+    await anchorMethodDiscriminator("reveal_vote"),
+    new Uint8Array([vote ? 1 : 0]),
+    salt,
+  );
+
+  const instruction = new TransactionInstruction({
+    programId: PRIVATE_DAO_PROGRAM_ID,
+    keys: [
+      { pubkey: proposalAddress, isSigner: false, isWritable: true },
+      { pubkey: voterRecord, isSigner: false, isWritable: true },
+      { pubkey: voter, isSigner: true, isWritable: true },
+    ],
+    data: Buffer.from(data),
+  });
+
+  const transaction = new Transaction().add(instruction);
+  transaction.feePayer = voter;
+  const latest = await resolveLatestBlockhash(connection);
+  transaction.recentBlockhash = latest.blockhash;
+
+  return {
+    transaction,
+    voterRecord,
+  };
+}
+
+export async function buildFinalizeProposalTransaction({
+  connection,
+  daoAddress,
+  finalizer,
+  proposalAddress,
+}: FinalizeProposalInput) {
+  const data = await anchorMethodDiscriminator("finalize_proposal");
+
+  const instruction = new TransactionInstruction({
+    programId: PRIVATE_DAO_PROGRAM_ID,
+    keys: [
+      { pubkey: daoAddress, isSigner: false, isWritable: false },
+      { pubkey: proposalAddress, isSigner: false, isWritable: true },
+      { pubkey: finalizer, isSigner: true, isWritable: false },
+    ],
+    data: Buffer.from(data),
+  });
+
+  const transaction = new Transaction().add(instruction);
+  transaction.feePayer = finalizer;
+  const latest = await resolveLatestBlockhash(connection);
+  transaction.recentBlockhash = latest.blockhash;
+
+  return { transaction };
 }

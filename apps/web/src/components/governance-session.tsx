@@ -45,6 +45,16 @@ type LiveProposalRuntime = {
   signature: string;
 };
 
+type LiveVoteRuntime = {
+  commitmentHex: string;
+  commitSignature?: string;
+  finalizeSignature?: string;
+  proposalAddress: string;
+  revealSignature?: string;
+  saltHex: string;
+  voteChoice: VoteChoice;
+};
+
 type GovernanceSessionState = {
   daoName: string;
   daoCreated: boolean;
@@ -55,6 +65,7 @@ type GovernanceSessionState = {
   executionIntent: GovernanceExecutionIntent | null;
   proposalCreated: boolean;
   liveProposalRuntime: LiveProposalRuntime | null;
+  liveVoteRuntime: LiveVoteRuntime | null;
   voteChoice: VoteChoice;
   voteCommitted: boolean;
   voteRevealed: boolean;
@@ -156,9 +167,9 @@ type GovernanceSessionContextValue = GovernanceSessionState & {
   }) => void;
   createDao: (liveRuntime?: LiveDaoRuntime | null) => void;
   createProposal: (liveRuntime?: LiveProposalRuntime | null) => void;
-  commitVote: () => void;
-  revealVote: () => void;
-  finalizeProposal: () => void;
+  commitVote: (liveRuntime?: LiveVoteRuntime | null) => void;
+  revealVote: (liveRuntime?: Pick<LiveVoteRuntime, "proposalAddress" | "revealSignature" | "saltHex" | "voteChoice"> | null) => void;
+  finalizeProposal: (signature?: string | null) => void;
   executeProposal: () => void;
   resetSession: () => void;
 };
@@ -175,6 +186,7 @@ const defaultState: GovernanceSessionState = {
   executionIntent: null,
   proposalCreated: false,
   liveProposalRuntime: null,
+  liveVoteRuntime: null,
   voteChoice: "Approve",
   voteCommitted: false,
   voteRevealed: false,
@@ -336,28 +348,61 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
               : `${current.proposalTitle} is now the active proposal in the UI flow.`,
           ),
         ),
-      commitVote: () =>
+      commitVote: (liveRuntime) =>
         setState((current) =>
           withLog(
-            { ...current, voteCommitted: true },
+            {
+              ...current,
+              voteCommitted: true,
+              liveVoteRuntime: liveRuntime
+                ? {
+                    ...liveRuntime,
+                    voteChoice: current.voteChoice,
+                  }
+                : current.liveVoteRuntime,
+            },
             "Vote committed",
-            `${current.voteChoice} was committed through the wallet-first governance path.`,
+            liveRuntime
+              ? `${current.voteChoice} commitment submitted live for ${liveRuntime.proposalAddress}.`
+              : `${current.voteChoice} was committed through the wallet-first governance path.`,
           ),
         ),
-      revealVote: () =>
+      revealVote: (liveRuntime) =>
         setState((current) =>
           withLog(
-            { ...current, voteRevealed: true },
+            {
+              ...current,
+              voteRevealed: true,
+              liveVoteRuntime: current.liveVoteRuntime && liveRuntime
+                ? {
+                    ...current.liveVoteRuntime,
+                    revealSignature: liveRuntime.revealSignature,
+                  }
+                : current.liveVoteRuntime,
+            },
             "Vote revealed",
-            `${current.voteChoice} moved into the reveal stage with proof and diagnostics still available.`,
+            liveRuntime?.revealSignature
+              ? `${current.voteChoice} reveal submitted live for ${liveRuntime.proposalAddress}.`
+              : `${current.voteChoice} moved into the reveal stage with proof and diagnostics still available.`,
           ),
         ),
-      finalizeProposal: () =>
+      finalizeProposal: (signature) =>
         setState((current) =>
           withLog(
-            { ...current, proposalFinalized: true },
+            {
+              ...current,
+              proposalFinalized: true,
+              liveVoteRuntime: current.liveVoteRuntime && signature
+                ? {
+                    ...current.liveVoteRuntime,
+                    finalizeSignature: signature,
+                  }
+                : current.liveVoteRuntime,
+            },
             "Proposal finalized",
-            `${current.proposalTitle} has been finalized in the staged UI flow and is now waiting on execution timing.`,
+            signature
+              ? `${current.proposalTitle} finalized live on devnet and is now waiting on execution timing.`
+              : `${current.proposalTitle} has been finalized in the staged UI flow and is now waiting on execution timing.`,
           ),
         ),
       executeProposal: () =>

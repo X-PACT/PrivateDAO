@@ -15,7 +15,15 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buildPreparedActionSummary } from "@/lib/onchain-parity";
 import type { CoreGovernanceInstructionName } from "@/lib/onchain-parity.generated";
-import { buildCreateDaoBootstrapTransaction, buildCreateProposalTransaction } from "@/lib/dao-bootstrap";
+import {
+  buildCommitVoteTransaction,
+  buildCreateDaoBootstrapTransaction,
+  buildCreateProposalTransaction,
+  buildFinalizeProposalTransaction,
+  buildRevealVoteTransaction,
+  computeProposalCommitment,
+  fetchProposalAccountDetails,
+} from "@/lib/dao-bootstrap";
 import { buildServiceHandoffQuery } from "@/lib/service-handoff-state";
 import { getProposalById, type ProposalCardModel } from "@/lib/site-data";
 import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
@@ -37,6 +45,16 @@ function resolveStagedReviewAction(proposal: ProposalCardModel | null): CoreGove
   return "execute_proposal";
 }
 
+function toHex(bytes: Uint8Array) {
+  return Array.from(bytes, (value) => value.toString(16).padStart(2, "0")).join("");
+}
+
+function randomSalt32() {
+  const salt = new Uint8Array(32);
+  crypto.getRandomValues(salt);
+  return salt;
+}
+
 export function GovernanceActionWorkbench() {
   const [reviewAction, setReviewAction] = useState<CoreGovernanceInstructionName | null>(null);
   const [createDaoRuntime, setCreateDaoRuntime] = useState<{
@@ -52,6 +70,23 @@ export function GovernanceActionWorkbench() {
     proposalAddress?: string;
     signature?: string;
   }>({ status: "idle", message: "" });
+  const [commitVoteRuntime, setCommitVoteRuntime] = useState<{
+    status: "idle" | "submitting" | "success" | "error";
+    message: string;
+    commitmentHex?: string;
+    saltHex?: string;
+    signature?: string;
+  }>({ status: "idle", message: "" });
+  const [revealVoteRuntime, setRevealVoteRuntime] = useState<{
+    status: "idle" | "submitting" | "success" | "error";
+    message: string;
+    signature?: string;
+  }>({ status: "idle", message: "" });
+  const [finalizeRuntime, setFinalizeRuntime] = useState<{
+    status: "idle" | "submitting" | "success" | "error";
+    message: string;
+    signature?: string;
+  }>({ status: "idle", message: "" });
   const { connection } = useConnection();
   const { connected, wallet, publicKey, sendTransaction } = useWallet();
   const {
@@ -62,6 +97,7 @@ export function GovernanceActionWorkbench() {
     executionIntent,
     proposalCreated,
     liveProposalRuntime,
+    liveVoteRuntime,
     voteChoice,
     voteCommitted,
     voteRevealed,
@@ -171,6 +207,26 @@ export function GovernanceActionWorkbench() {
       canExecute);
   const payloadExecutionState =
     executionIntent?.requestDelivery?.state ?? executionIntent?.requestPayload?.state ?? "draft";
+  const activeLiveProposalAddress = liveProposalRuntime?.address;
+  const hasLiveCommitLane = Boolean(liveDaoRuntime?.address && activeLiveProposalAddress);
+  const canCommitLive =
+    connected &&
+    Boolean(publicKey) &&
+    hasLiveCommitLane &&
+    canCommit &&
+    commitVoteRuntime.status !== "submitting";
+  const canRevealLive =
+    connected &&
+    Boolean(publicKey) &&
+    Boolean(liveVoteRuntime?.saltHex && activeLiveProposalAddress) &&
+    canReveal &&
+    revealVoteRuntime.status !== "submitting";
+  const canFinalizeLive =
+    connected &&
+    Boolean(publicKey) &&
+    hasLiveCommitLane &&
+    canFinalize &&
+    finalizeRuntime.status !== "submitting";
 
   useEffect(() => {
     if (!handoff) return;
@@ -370,6 +426,207 @@ export function GovernanceActionWorkbench() {
     }
   }
 
+  async function submitCommitVoteLive() {
+    if (!publicKey || !liveDaoRuntime?.address || !activeLiveProposalAddress) {
+      setCommitVoteRuntime({
+        status: "error",
+        message: "Create the DAO and proposal live first so commit has a real devnet lane to target.",
+      });
+      return;
+    }
+
+    try {
+      setCommitVoteRuntime({
+        status: "submitting",
+        message: "Preparing commit transaction and sealing a fresh 32-byte reveal salt...",
+      });
+
+      const proposalAddress = new PublicKey(activeLiveProposalAddress);
+      const proposalDetails = await fetchProposalAccountDetails(connection, proposalAddress);
+      const nowTs = Math.floor(Date.now() / 1000);
+      if (nowTs >= proposalDetails.votingEnd) {
+        throw new Error("Voting window already closed for the live proposal. Commit is no longer allowed.");
+      }
+
+      const salt = randomSalt32();
+      const vote = voteChoice === "Approve";
+      const commitment = await computeProposalCommitment(vote, salt, proposalAddress, publicKey);
+      const commitSubmission = await buildCommitVoteTransaction({
+        commitment,
+        connection,
+        daoAddress: new PublicKey(liveDaoRuntime.address),
+        proposalAddress,
+        voter: publicKey,
+      });
+
+      setCommitVoteRuntime({
+        status: "submitting",
+        message: "Awaiting wallet signature for the live commit transaction...",
+        commitmentHex: toHex(commitment),
+        saltHex: toHex(salt),
+      });
+
+      const signature = await sendTransaction(commitSubmission.transaction, connection, {
+        preflightCommitment: "confirmed",
+      });
+
+      await connection.confirmTransaction(signature, "confirmed");
+
+      commitVote({
+        commitmentHex: toHex(commitment),
+        commitSignature: signature,
+        proposalAddress: proposalAddress.toBase58(),
+        saltHex: toHex(salt),
+        voteChoice,
+      });
+      recordLog("Vote commitment submitted", `${proposalAddress.toBase58()} · ${voteChoice} · ${signature}`);
+
+      setCommitVoteRuntime({
+        status: "success",
+        message: "Commit submitted live on devnet. Preserve the reveal salt before moving to reveal.",
+        commitmentHex: toHex(commitment),
+        saltHex: toHex(salt),
+        signature,
+      });
+    } catch (error) {
+      setCommitVoteRuntime({
+        status: "error",
+        message:
+          error instanceof Error && error.message
+            ? error.message
+            : "Commit vote failed before confirmation.",
+      });
+    }
+  }
+
+  async function submitRevealVoteLive() {
+    if (!publicKey || !liveVoteRuntime?.saltHex || !activeLiveProposalAddress) {
+      setRevealVoteRuntime({
+        status: "error",
+        message: "Commit live first so reveal has the stored salt and proposal address.",
+      });
+      return;
+    }
+
+    try {
+      setRevealVoteRuntime({
+        status: "submitting",
+        message: "Preparing live reveal transaction from the stored commitment preimage...",
+      });
+
+      const proposalAddress = new PublicKey(activeLiveProposalAddress);
+      const proposalDetails = await fetchProposalAccountDetails(connection, proposalAddress);
+      const nowTs = Math.floor(Date.now() / 1000);
+      if (nowTs < proposalDetails.votingEnd) {
+        throw new Error("Voting is still open. Reveal starts only after the commit window closes.");
+      }
+      if (nowTs >= proposalDetails.revealEnd) {
+        throw new Error("Reveal window already closed for this live proposal.");
+      }
+
+      const saltBytes = Uint8Array.from(Buffer.from(liveVoteRuntime.saltHex, "hex"));
+      const revealSubmission = await buildRevealVoteTransaction({
+        connection,
+        proposalAddress,
+        salt: saltBytes,
+        vote: liveVoteRuntime.voteChoice === "Approve",
+        voter: publicKey,
+      });
+
+      setRevealVoteRuntime({
+        status: "submitting",
+        message: "Awaiting wallet signature for the live reveal transaction...",
+      });
+
+      const signature = await sendTransaction(revealSubmission.transaction, connection, {
+        preflightCommitment: "confirmed",
+      });
+
+      await connection.confirmTransaction(signature, "confirmed");
+
+      revealVote({
+        proposalAddress: proposalAddress.toBase58(),
+        revealSignature: signature,
+        saltHex: liveVoteRuntime.saltHex,
+        voteChoice: liveVoteRuntime.voteChoice,
+      });
+      recordLog("Vote reveal submitted", `${proposalAddress.toBase58()} · ${liveVoteRuntime.voteChoice} · ${signature}`);
+
+      setRevealVoteRuntime({
+        status: "success",
+        message: "Reveal submitted live on devnet from the stored vote preimage.",
+        signature,
+      });
+    } catch (error) {
+      setRevealVoteRuntime({
+        status: "error",
+        message:
+          error instanceof Error && error.message
+            ? error.message
+            : "Reveal vote failed before confirmation.",
+      });
+    }
+  }
+
+  async function submitFinalizeProposalLive() {
+    if (!publicKey || !liveDaoRuntime?.address || !activeLiveProposalAddress) {
+      setFinalizeRuntime({
+        status: "error",
+        message: "Create and track a live proposal first so finalize has a real DAO/proposal lane to target.",
+      });
+      return;
+    }
+
+    try {
+      setFinalizeRuntime({
+        status: "submitting",
+        message: "Preparing live finalize transaction for the current proposal lane...",
+      });
+
+      const proposalAddress = new PublicKey(activeLiveProposalAddress);
+      const proposalDetails = await fetchProposalAccountDetails(connection, proposalAddress);
+      const nowTs = Math.floor(Date.now() / 1000);
+      if (nowTs < proposalDetails.revealEnd) {
+        throw new Error("Reveal window is still open. Finalize becomes valid only after reveal_end.");
+      }
+
+      const finalizeSubmission = await buildFinalizeProposalTransaction({
+        connection,
+        daoAddress: new PublicKey(liveDaoRuntime.address),
+        finalizer: publicKey,
+        proposalAddress,
+      });
+
+      setFinalizeRuntime({
+        status: "submitting",
+        message: "Awaiting wallet signature for the live finalize transaction...",
+      });
+
+      const signature = await sendTransaction(finalizeSubmission.transaction, connection, {
+        preflightCommitment: "confirmed",
+      });
+
+      await connection.confirmTransaction(signature, "confirmed");
+
+      finalizeProposal(signature);
+      recordLog("Proposal finalized live", `${proposalAddress.toBase58()} · ${signature}`);
+
+      setFinalizeRuntime({
+        status: "success",
+        message: "Finalize submitted live on devnet for the current proposal lane.",
+        signature,
+      });
+    } catch (error) {
+      setFinalizeRuntime({
+        status: "error",
+        message:
+          error instanceof Error && error.message
+            ? error.message
+            : "Finalize proposal failed before confirmation.",
+      });
+    }
+  }
+
   async function confirmReviewAction() {
     if (!reviewAction) return;
     const activeAction = reviewAction;
@@ -381,6 +638,18 @@ export function GovernanceActionWorkbench() {
     }
     if (activeAction === "create_proposal") {
       await submitCreateProposalLive();
+      return;
+    }
+    if (activeAction === "commit_vote") {
+      await submitCommitVoteLive();
+      return;
+    }
+    if (activeAction === "reveal_vote") {
+      await submitRevealVoteLive();
+      return;
+    }
+    if (activeAction === "finalize_proposal") {
+      await submitFinalizeProposalLive();
       return;
     }
 
@@ -404,10 +673,10 @@ export function GovernanceActionWorkbench() {
               <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/72">Web app workflow</div>
               <CardTitle className="mt-2">All normal-user operations run from the UI</CardTitle>
             </div>
-              <Badge variant="success">Live DAO / Proposal Create</Badge>
-            </div>
-            <p className="max-w-3xl text-sm leading-7 text-white/60">
-            Wallet connection, DAO bootstrap, and proposal submit now run live from the web surface on devnet. Vote, reveal, finalize, and execute still stay in the same UI shell while deeper on-chain parity keeps expanding from the same product lane.
+            <Badge variant="success">Live DAO / Proposal / Vote Lane</Badge>
+          </div>
+          <p className="max-w-3xl text-sm leading-7 text-white/60">
+            Wallet connection, DAO bootstrap, proposal submit, vote commit, vote reveal, and finalize now share the same web product lane. Execute still remains the last staged shell while the same runtime truth keeps expanding from this surface.
           </p>
         </CardHeader>
         <CardContent className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
@@ -758,6 +1027,17 @@ export function GovernanceActionWorkbench() {
                   <Vote className="h-4 w-4 text-fuchsia-300" />
                   <div className="text-base font-medium text-white">Commit Vote</div>
                 </div>
+                {!hasLiveCommitLane ? (
+                  <p className="mt-4 text-sm leading-7 text-amber-100/70">
+                    Live commit unlocks only after a live DAO bootstrap and live proposal submit. The web surface will not fake a commit lane without a real devnet proposal address.
+                  </p>
+                ) : (
+                  <div className="mt-4 rounded-2xl border border-fuchsia-300/18 bg-fuchsia-300/[0.08] p-3 text-sm text-white/72">
+                    <div className="text-[11px] uppercase tracking-[0.2em] text-fuchsia-100/72">Live proposal lane</div>
+                    <div className="mt-2 break-all text-white">{activeLiveProposalAddress}</div>
+                    <div className="mt-1 text-white/62">Vote choice {voteChoice}</div>
+                  </div>
+                )}
                 <div className="mt-4 flex flex-wrap gap-2">
                   {voteChoices.map((choice) => (
                     <button
@@ -775,9 +1055,41 @@ export function GovernanceActionWorkbench() {
                     </button>
                   ))}
                 </div>
-                <Button className="mt-4 w-full" disabled={!canCommit} onClick={() => openReview("commit_vote")}>
-                  Commit Vote
+                <Button className="mt-4 w-full" disabled={!canCommitLive} onClick={() => openReview("commit_vote")}>
+                  {commitVoteRuntime.status === "submitting" ? "Awaiting wallet..." : "Commit Vote"}
                 </Button>
+                {commitVoteRuntime.status !== "idle" ? (
+                  <div
+                    className={cn(
+                      "mt-4 rounded-2xl border p-3 text-sm leading-7",
+                      commitVoteRuntime.status === "error"
+                        ? "border-rose-300/20 bg-rose-300/[0.08] text-rose-100/82"
+                        : commitVoteRuntime.status === "success"
+                          ? "border-emerald-300/18 bg-emerald-300/[0.08] text-emerald-100/82"
+                          : "border-fuchsia-300/18 bg-fuchsia-300/[0.08] text-fuchsia-100/82",
+                    )}
+                  >
+                    <div>{commitVoteRuntime.message}</div>
+                    {commitVoteRuntime.commitmentHex ? (
+                      <div className="mt-2 break-all text-white/70">Commitment {commitVoteRuntime.commitmentHex}</div>
+                    ) : null}
+                    {commitVoteRuntime.saltHex ? (
+                      <div className="mt-1 break-all text-white/60">Reveal salt {commitVoteRuntime.saltHex}</div>
+                    ) : null}
+                    {commitVoteRuntime.signature ? (
+                      <div className="mt-1 break-all text-white/60">Signature {commitVoteRuntime.signature}</div>
+                    ) : null}
+                  </div>
+                ) : liveVoteRuntime ? (
+                  <div className="mt-4 rounded-2xl border border-emerald-300/18 bg-emerald-300/[0.08] p-3 text-sm leading-7 text-emerald-100/82">
+                    <div>Last live commit is preserved in the session for the reveal lane.</div>
+                    <div className="mt-2 break-all text-white/70">Commitment {liveVoteRuntime.commitmentHex}</div>
+                    <div className="mt-1 break-all text-white/60">Salt {liveVoteRuntime.saltHex}</div>
+                    {liveVoteRuntime.commitSignature ? (
+                      <div className="mt-1 break-all text-white/60">Signature {liveVoteRuntime.commitSignature}</div>
+                    ) : null}
+                  </div>
+                ) : null}
               </div>
 
               <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
@@ -785,12 +1097,42 @@ export function GovernanceActionWorkbench() {
                   <ShieldCheck className="h-4 w-4 text-emerald-300" />
                   <div className="text-base font-medium text-white">Reveal Vote</div>
                 </div>
-                <p className="mt-4 text-sm leading-7 text-white/56">
-                  Reveal stays inside the same product rail instead of dropping the user into scripts or terminal-only steps.
-                </p>
-                <Button className="mt-4 w-full" disabled={!canReveal} onClick={() => openReview("reveal_vote")} variant="secondary">
-                  Reveal Vote
+                {!liveVoteRuntime?.saltHex ? (
+                  <p className="mt-4 text-sm leading-7 text-amber-100/70">
+                    Reveal uses the stored live commit salt. Until a live commit succeeds, reveal stays locked instead of pretending it can proceed.
+                  </p>
+                ) : (
+                  <div className="mt-4 rounded-2xl border border-emerald-300/18 bg-emerald-300/[0.08] p-3 text-sm text-white/72">
+                    <div className="text-[11px] uppercase tracking-[0.2em] text-emerald-100/72">Stored reveal preimage</div>
+                    <div className="mt-2 break-all text-white">Proposal {liveVoteRuntime.proposalAddress}</div>
+                    <div className="mt-1 break-all text-white/62">Salt {liveVoteRuntime.saltHex}</div>
+                  </div>
+                )}
+                <Button className="mt-4 w-full" disabled={!canRevealLive} onClick={() => openReview("reveal_vote")} variant="secondary">
+                  {revealVoteRuntime.status === "submitting" ? "Awaiting wallet..." : "Reveal Vote"}
                 </Button>
+                {revealVoteRuntime.status !== "idle" ? (
+                  <div
+                    className={cn(
+                      "mt-4 rounded-2xl border p-3 text-sm leading-7",
+                      revealVoteRuntime.status === "error"
+                        ? "border-rose-300/20 bg-rose-300/[0.08] text-rose-100/82"
+                        : revealVoteRuntime.status === "success"
+                          ? "border-emerald-300/18 bg-emerald-300/[0.08] text-emerald-100/82"
+                          : "border-cyan-300/18 bg-cyan-300/[0.08] text-cyan-100/82",
+                    )}
+                  >
+                    <div>{revealVoteRuntime.message}</div>
+                    {revealVoteRuntime.signature ? (
+                      <div className="mt-2 break-all text-white/60">Signature {revealVoteRuntime.signature}</div>
+                    ) : null}
+                  </div>
+                ) : liveVoteRuntime?.revealSignature ? (
+                  <div className="mt-4 rounded-2xl border border-emerald-300/18 bg-emerald-300/[0.08] p-3 text-sm leading-7 text-emerald-100/82">
+                    <div>Last live reveal cleared from this same web lane.</div>
+                    <div className="mt-2 break-all text-white/60">Signature {liveVoteRuntime.revealSignature}</div>
+                  </div>
+                ) : null}
               </div>
 
               <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
@@ -798,12 +1140,42 @@ export function GovernanceActionWorkbench() {
                   <Flag className="h-4 w-4 text-cyan-300" />
                   <div className="text-base font-medium text-white">Finalize Proposal</div>
                 </div>
-                <p className="mt-4 text-sm leading-7 text-white/56">
-                  Finalize is explicit in the UI because the on-chain flow has a real finalize boundary before execution unlocks.
-                </p>
-                <Button className="mt-4 w-full" disabled={!canFinalize} onClick={() => openReview("finalize_proposal")} variant="secondary">
-                  Finalize Proposal
+                {!hasLiveCommitLane ? (
+                  <p className="mt-4 text-sm leading-7 text-amber-100/70">
+                    Finalize needs the same live DAO and proposal lane used by commit and reveal. It stays blocked until the web flow has a real on-chain proposal to close.
+                  </p>
+                ) : (
+                  <div className="mt-4 rounded-2xl border border-cyan-300/16 bg-cyan-300/[0.08] p-3 text-sm text-white/72">
+                    <div className="text-[11px] uppercase tracking-[0.2em] text-cyan-100/72">Finalize lane</div>
+                    <div className="mt-2 break-all text-white">DAO {liveDaoRuntime?.address}</div>
+                    <div className="mt-1 break-all text-white/62">Proposal {activeLiveProposalAddress}</div>
+                  </div>
+                )}
+                <Button className="mt-4 w-full" disabled={!canFinalizeLive} onClick={() => openReview("finalize_proposal")} variant="secondary">
+                  {finalizeRuntime.status === "submitting" ? "Awaiting wallet..." : "Finalize Proposal"}
                 </Button>
+                {finalizeRuntime.status !== "idle" ? (
+                  <div
+                    className={cn(
+                      "mt-4 rounded-2xl border p-3 text-sm leading-7",
+                      finalizeRuntime.status === "error"
+                        ? "border-rose-300/20 bg-rose-300/[0.08] text-rose-100/82"
+                        : finalizeRuntime.status === "success"
+                          ? "border-emerald-300/18 bg-emerald-300/[0.08] text-emerald-100/82"
+                          : "border-cyan-300/18 bg-cyan-300/[0.08] text-cyan-100/82",
+                    )}
+                  >
+                    <div>{finalizeRuntime.message}</div>
+                    {finalizeRuntime.signature ? (
+                      <div className="mt-2 break-all text-white/60">Signature {finalizeRuntime.signature}</div>
+                    ) : null}
+                  </div>
+                ) : liveVoteRuntime?.finalizeSignature ? (
+                  <div className="mt-4 rounded-2xl border border-emerald-300/18 bg-emerald-300/[0.08] p-3 text-sm leading-7 text-emerald-100/82">
+                    <div>Last live finalize cleared from the current proposal lane.</div>
+                    <div className="mt-2 break-all text-white/60">Signature {liveVoteRuntime.finalizeSignature}</div>
+                  </div>
+                ) : null}
               </div>
 
               <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
@@ -812,7 +1184,7 @@ export function GovernanceActionWorkbench() {
                   <div className="text-base font-medium text-white">Execute Proposal</div>
                 </div>
                 <p className="mt-4 text-sm leading-7 text-white/56">
-                  Execution only unlocks after the flow reaches the right boundary, keeping the UI honest and operational.
+                  Execution still stays in the staged signing shell. The web live lane now reaches finalize, while execute remains the last boundary still being unified.
                 </p>
                 <Button className="mt-4 w-full" disabled={!canExecute} onClick={() => openReview("execute_proposal")} variant="outline">
                   Execute Proposal

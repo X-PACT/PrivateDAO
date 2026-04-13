@@ -69,6 +69,7 @@ The public product UI is intentionally responsible for:
 - Create Proposal on Devnet from the connected web wallet after live DAO bootstrap
 - Commit Vote
 - Reveal Vote
+- Finalize Proposal
 - Execute Proposal
 - View Logs
 - Diagnostics
@@ -87,7 +88,8 @@ Current web/runtime boundary:
 
 - `Create DAO` now has a live wallet-first Devnet bootstrap path in the web action workbench.
 - `Create Proposal` now has a live wallet-first Devnet submit path in the same workbench once a live DAO bootstrap has already established the DAO lane.
-- The remaining proposal / vote / finalize / execute stages still stay visible in the same product shell while unified live parity continues expanding across web and Android.
+- `Commit Vote`, `Reveal Vote`, and `Finalize Proposal` now use the same live wallet-first workbench lane once a real DAO and proposal already exist in session state.
+- `Execute Proposal` still stays visible in the same product shell, but remains the last staged shell while unified live parity continues expanding across web and Android.
 
 The rule is strict:
 
