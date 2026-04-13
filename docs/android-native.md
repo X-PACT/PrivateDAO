@@ -250,6 +250,13 @@ Required SDK packages for the verified local build:
 - `emulator`
 - `system-images;android-36;google_apis;x86_64`
 
+Current emulator bootstrap status on the branch:
+
+- the system image is installed locally
+- the AVD can be created on a larger mount via `ANDROID_AVD_HOME=/data/privatedao-android-avd`
+- the repaired headless cold-boot path reaches `adb device`
+- the remaining automated runtime gate on this host is waiting for Android framework boot completion so that the `package` service becomes available for APK install
+
 Verified local output on this branch:
 
 - command: `./gradlew assembleDebug`

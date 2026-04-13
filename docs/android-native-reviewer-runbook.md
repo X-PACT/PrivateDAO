@@ -61,7 +61,8 @@ From the repo root:
 Notes:
 
 - `bootstrap-android-emulator.sh` installs `emulator` and `system-images;android-36;google_apis;x86_64`, then creates `PrivateDAO_API_36`
-- `run-android-emulator.sh` boots the emulator and waits for `sys.boot_completed=1`
+- `bootstrap-android-emulator.sh` now also respects `ANDROID_AVD_HOME` and pins a smaller data partition for tighter hosts
+- `run-android-emulator.sh` now prefers a headless cold-boot path (`-no-window`, `-no-boot-anim`, `-no-snapshot`, `-wipe-data`) for CI-style verification on constrained Linux hosts
 - `install-android-debug-apk.sh` installs and launches the debug build through `adb`
 
 ## Reviewer Surfaces Inside The App
@@ -97,9 +98,12 @@ The Android UI now exposes reviewer-operable links and validation gates in-app:
 
 ## Runtime Status
 
-If Android emulator packages are still downloading slowly from the Google repository, that is an environment bandwidth issue, not a product-side blocker. The app branch remains ready to boot once:
+Current verified runtime state on this branch:
 
-- `emulator`
-- `system-images;android-36;google_apis;x86_64`
+- `system-images;android-36;google_apis;x86_64` is installed
+- the AVD can now be created under `/data` on hosts where `/` is too small
+- the emulator reaches `adb device` on the repaired headless cold-boot path
 
-finish installing under the configured Android SDK.
+Current remaining runtime gate:
+
+- wait for the emulated Android framework to reach `sys.boot_completed=1` so that `package` service is available and the APK can be installed automatically
