@@ -280,16 +280,19 @@ Verified real-device output on this branch:
 - install result: `Performing Streamed Install` -> `Success`
 - launch result: `Starting: Intent { cmp=io.xpact.privatedao.android/.MainActivity }`
 - screenshot artifact: `artifacts/android/runtime/real-device-runtime-proof.png`
+- clean reinstall artifact: `artifacts/android/runtime/post-clean-reinstall-state.png`
 - user-confirmed during the same session: wallet connected from the Android device flow
 - wallet-connected UI proof is now captured from the device state with a live `Disconnect` action visible
 - post-refresh proof artifact: `artifacts/android/runtime/post-refresh-device-state.png`
 - create-form proof artifact: `artifacts/android/runtime/create-tab-state.png`
 - current lifecycle blocker on the connected wallet is missing devnet SOL for the first `Create DAO` transaction
+- the rebuilt APK now installs cleanly after replacing the heavy `bcprov` dependency with a lighter Ed25519 dependency for PDA curve checks
 
 Packaged downloadable branch artifact:
 
 - file: `artifacts/android/PrivateDAO-android-devnet-debug.apk`
 - checksum: `32d5b07cf29b703d57537b0a6d2746a9ce34b6665fd3c90a597f0d3fd77048a4`
+- checksum: `2785289b8899a7d55a4168b80b15edeca9664478391aca48845e474805930169`
 
 ## Release Hardening Status
 

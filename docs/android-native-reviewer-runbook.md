@@ -107,9 +107,11 @@ Current verified runtime state on this branch:
 - the emulator package service is unstable on this host and can flip between `Service package: found` and `Service package: not found`
 - a physical Android device (`SM-A235F`) now has verified install and launch proof for `io.xpact.privatedao.android`
 - screenshot artifact: `artifacts/android/runtime/real-device-runtime-proof.png`
+- clean reinstall artifact: `artifacts/android/runtime/post-clean-reinstall-state.png`
 - the physical device also shows wallet-connected state through a live `Disconnect` action after connection
 - refresh-state proof artifact: `artifacts/android/runtime/post-refresh-device-state.png`
 - create-surface proof artifact: `artifacts/android/runtime/create-tab-state.png`
+- the branch now also has a clean reinstall proof after rebuilding the APK with the lighter Ed25519 dependency path
 
 Current remaining runtime gate:
 

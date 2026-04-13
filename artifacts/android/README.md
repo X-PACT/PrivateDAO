@@ -8,7 +8,7 @@ This directory holds the latest branch-packaged Android APK for the `feat/androi
 - branch: `feat/android-native-private-dao`
 - build type: `debug`
 - target network: `devnet`
-- sha256: `32d5b07cf29b703d57537b0a6d2746a9ce34b6665fd3c90a597f0d3fd77048a4`
+- sha256: `2785289b8899a7d55a4168b80b15edeca9664478391aca48845e474805930169`
 
 ## Real-device proof artifact
 
@@ -26,6 +26,8 @@ Additional runtime captures:
   - `Create DAO` form prepared on the physical device
 - `runtime/post-create-tap-state.png`
   - attempted lifecycle action from the physical device
+- `runtime/post-clean-reinstall-state.png`
+  - clean reinstall proof after rebuilding the APK with the latest wallet identity and field-readability fixes
 
 ## Intended use
 

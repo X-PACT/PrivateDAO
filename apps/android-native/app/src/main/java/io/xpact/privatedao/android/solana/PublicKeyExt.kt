@@ -1,6 +1,7 @@
 package io.xpact.privatedao.android.solana
 
-import org.bouncycastle.math.ec.rfc8032.Ed25519
+import net.i2p.crypto.eddsa.spec.EdDSANamedCurveTable
+import net.i2p.crypto.eddsa.spec.EdDSAPublicKeySpec
 import java.security.MessageDigest
 
 data class AccountMeta(
@@ -11,6 +12,7 @@ data class AccountMeta(
 
 object PublicKeyExt {
     private val pdaMarker = "ProgramDerivedAddress".toByteArray()
+    private val ed25519Spec = EdDSANamedCurveTable.getByName(EdDSANamedCurveTable.ED_25519)
 
     fun toBytes(base58: String): ByteArray = Base58.decode(base58)
 
@@ -52,7 +54,8 @@ object PublicKeyExt {
 
     private fun isOnCurve(candidate: ByteArray): Boolean {
         return try {
-            Ed25519.validatePublicKeyFull(candidate, 0)
+            EdDSAPublicKeySpec(candidate, ed25519Spec)
+            true
         } catch (_: Throwable) {
             false
         }
