@@ -238,12 +238,8 @@ class MobileWalletAdapterManager(
                 wasConnected = connected.also { connected = false }
             }
             localScope?.let { scope ->
-                if (wasConnected) {
-                    scope.launch {
-                        delay(5_000L)
-                        scope.cancel()
-                    }
-                } else {
+                scope.launch {
+                    delay(if (wasConnected) 5_000L else 20_000L)
                     scope.cancel()
                 }
             }

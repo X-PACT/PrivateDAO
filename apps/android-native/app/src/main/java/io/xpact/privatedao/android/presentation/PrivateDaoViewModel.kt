@@ -306,10 +306,11 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
                 )
             }
         } catch (error: Throwable) {
+            val resolvedMessage = resolveSubmissionErrorMessage(error)
             _uiState.update {
                 it.copy(
-                    submissionState = SubmissionState.Failure(error.message ?: "Transaction failed"),
-                    errorMessage = error.message,
+                    submissionState = SubmissionState.Failure(resolvedMessage),
+                    errorMessage = resolvedMessage,
                 )
             }
         }
@@ -317,6 +318,18 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
 
     private fun setError(message: String) {
         _uiState.update { it.copy(errorMessage = message) }
+    }
+
+    private fun resolveSubmissionErrorMessage(error: Throwable): String {
+        val raw = error.message ?: "Transaction failed"
+        val lowered = raw.lowercase()
+        return when {
+            "insufficient" in lowered || "lamport" in lowered || "funds" in lowered ->
+                "Connected wallet needs more Devnet SOL before this transaction can be submitted."
+            "econnrefused" in lowered || "connection refused" in lowered || "wallet association failed" in lowered ->
+                "Wallet session did not complete cleanly. Disconnect and reconnect the wallet, then try again."
+            else -> raw
+        }
     }
 
     private fun String.toResult(): ProposalActionResult = ProposalActionResult(
