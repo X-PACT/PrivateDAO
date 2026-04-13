@@ -114,8 +114,9 @@ Current verified runtime state on this branch:
 - create-surface proof artifact: `artifacts/android/runtime/create-tab-state.png`
 - the branch now also has a clean reinstall proof after rebuilding the APK with the lighter Ed25519 dependency path
 - the current rebuilt APK also installs over the existing package after the Solana UI refresh tranche
+- the newest rebuilt APK separates `Create` into dedicated `DAO`, `Treasury`, and `Proposal` panels and defaults DAO bootstrap to a unique devnet-safe name
 
 Current remaining runtime gate:
 
 - emulator-side install proof is still blocked by package-service instability, but real-device install and launch proof is now closed
-- the next real-device lifecycle blocker is devnet balance on the connected wallet before `Create DAO in wallet` can succeed
+- the next real-device lifecycle gate is to re-run `Create DAO in wallet` on the rebuilt APK and capture a successful DAO bootstrap from the phone

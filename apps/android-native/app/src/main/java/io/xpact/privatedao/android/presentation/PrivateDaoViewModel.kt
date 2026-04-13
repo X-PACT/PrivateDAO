@@ -1,6 +1,7 @@
 package io.xpact.privatedao.android.presentation
 
 import android.app.Application
+import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,6 +22,7 @@ import io.xpact.privatedao.android.model.ProposalStatus
 import io.xpact.privatedao.android.model.ProposalSummary
 import io.xpact.privatedao.android.model.RevealVoteForm
 import io.xpact.privatedao.android.model.SubmissionState
+import io.xpact.privatedao.android.model.defaultDaoName
 import io.xpact.privatedao.android.repository.PrivateDaoRepository
 import io.xpact.privatedao.android.solana.Binary
 import io.xpact.privatedao.android.solana.SolanaRpcClient
@@ -32,6 +34,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class PrivateDaoViewModel(application: Application) : AndroidViewModel(application) {
+    private companion object {
+        const val TAG = "PrivateDaoViewModel"
+    }
+
     private val repository = PrivateDaoRepository(SolanaRpcClient(PrivateDaoConfig.rpcUrl))
     private val walletManager = MobileWalletAdapterManager(application)
     private val voteEnvelopeStore = VoteEnvelopeStore(application)
@@ -70,7 +76,14 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
                     uiState.value.selectedProposalPubkey?.let(::selectProposal)
                 }
                 .onFailure { error ->
-                    _uiState.update { it.copy(isLoading = false, errorMessage = error.message ?: "Failed loading devnet data") }
+                    _uiState.update {
+                        val hasUsableState = it.wallet != null || it.daos.isNotEmpty() || it.proposals.isNotEmpty()
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = if (hasUsableState) null else "Devnet sync is still loading. Try refresh again in a moment.",
+                            bannerMessage = if (hasUsableState) "Devnet sync is delayed. You can still submit wallet actions." else it.bannerMessage,
+                        )
+                    }
                 }
         }
     }
@@ -168,6 +181,7 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
                         bannerMessage = "DAO bootstrap submitted. Expected DAO PDA: $daoPda",
                         depositTreasuryForm = it.depositTreasuryForm.copy(daoPubkey = daoPda),
                         createProposalForm = it.createProposalForm.copy(daoPubkey = daoPda),
+                        createDaoForm = it.createDaoForm.copy(daoName = defaultDaoName()),
                     )
                 }
                 signature.toResult()
@@ -306,6 +320,7 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
                 )
             }
         } catch (error: Throwable) {
+            Log.e(TAG, "Submission failed", error)
             val resolvedMessage = resolveSubmissionErrorMessage(error)
             _uiState.update {
                 it.copy(
@@ -326,6 +341,8 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
         return when {
             "insufficient" in lowered || "lamport" in lowered || "funds" in lowered ->
                 "Connected wallet needs more Devnet SOL before this transaction can be submitted."
+            "already in use" in lowered || "already exists" in lowered || "account in use" in lowered ->
+                "This DAO name is already in use on devnet for the connected wallet. Change the DAO name and try again."
             "econnrefused" in lowered || "connection refused" in lowered || "wallet association failed" in lowered ->
                 "Wallet session did not complete cleanly. Disconnect and reconnect the wallet, then try again."
             else -> raw

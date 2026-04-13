@@ -130,12 +130,15 @@ enum class DaoMode {
 }
 
 data class CreateDaoForm(
-    val daoName: String = "PrivateDAO Live",
+    val daoName: String = defaultDaoName(),
     val quorumPercentage: Int = 51,
     val revealWindowSeconds: Long = 3600,
     val executionDelaySeconds: Long = 86400,
     val mode: DaoMode = DaoMode.TokenWeighted,
 )
+
+fun defaultDaoName(seed: Long = System.currentTimeMillis()): String =
+    "PrivateDAO ${seed.toString().takeLast(6)}"
 
 data class DepositTreasuryForm(
     val daoPubkey: String = "",

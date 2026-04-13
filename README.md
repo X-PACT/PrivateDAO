@@ -400,7 +400,9 @@ User-confirmed in the same session:
 - the app opened on the physical device
 - wallet connection was established from the Android device path
 - `Disconnect` surfaced on the live Android home screen, which confirms a connected wallet session
-- the next lifecycle gate is devnet funding for the connected wallet before `Create DAO in wallet` can complete
+- the newest rebuilt APK now separates `Create` into dedicated `DAO`, `Treasury`, and `Proposal` panels so the first lifecycle step is no longer buried under proposal-only validation
+- DAO bootstrap now defaults to a unique devnet-safe name instead of repeatedly reusing `PrivateDAO Live`
+- the next on-device validation step is to re-run `Create DAO in wallet` on the rebuilt APK and confirm the first DAO bootstrap succeeds from the physical device
 - a fresh rebuilt APK was later installed cleanly on the same device after replacing the heavy `bcprov` dependency that was stalling `mergeDebugGlobalSynthetics`
 - the current rebuilt APK now also installs cleanly over the existing package after the Solana-branded UI refresh and lighter nav-glyph path
 

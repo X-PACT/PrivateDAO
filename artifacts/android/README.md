@@ -8,7 +8,7 @@ This directory holds the latest branch-packaged Android APK for the `feat/androi
 - branch: `feat/android-native-private-dao`
 - build type: `debug`
 - target network: `devnet`
-- sha256: `be885827b08bebce5d6efe1cc70a70d25cd812370371150a75fba6259dc51c51`
+- sha256: `f035d529813aeef5207d8ef8ab25f744cff936b6f88996de22a07178b1083cf3`
 
 ## Real-device proof artifact
 
@@ -30,6 +30,10 @@ Additional runtime captures:
   - clean reinstall proof after rebuilding the APK with the latest wallet identity and field-readability fixes
 - `runtime/post-ui-refresh-reinstall.png`
   - over-install proof after the Solana-branded UI refresh and lighter nav-glyph rebuild
+- current rebuilt flow:
+  - `Create` is split into `DAO`, `Treasury`, and `Proposal`
+  - DAO bootstrap defaults to a unique devnet-safe name
+  - the next device proof target is a successful `Create DAO in wallet` submission from the rebuilt APK
 
 ## Intended use
 

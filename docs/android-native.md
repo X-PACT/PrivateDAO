@@ -286,15 +286,15 @@ Verified real-device output on this branch:
 - wallet-connected UI proof is now captured from the device state with a live `Disconnect` action visible
 - post-refresh proof artifact: `artifacts/android/runtime/post-refresh-device-state.png`
 - create-form proof artifact: `artifacts/android/runtime/create-tab-state.png`
-- current lifecycle blocker on the connected wallet is missing devnet SOL for the first `Create DAO` transaction
+- the newest rebuilt APK now splits `Create` into dedicated `DAO`, `Treasury`, and `Proposal` panels so DAO bootstrap starts on its own surface instead of under proposal validation
+- DAO bootstrap now defaults to a unique devnet-safe name rather than repeatedly submitting `PrivateDAO Live`
+- the remaining on-device validation step is to re-run `Create DAO in wallet` on the rebuilt APK and capture the first successful DAO bootstrap from the physical device
 - the rebuilt APK now installs cleanly after replacing the heavy `bcprov` dependency with a lighter Ed25519 dependency for PDA curve checks
 
 Packaged downloadable branch artifact:
 
 - file: `artifacts/android/PrivateDAO-android-devnet-debug.apk`
-- checksum: `32d5b07cf29b703d57537b0a6d2746a9ce34b6665fd3c90a597f0d3fd77048a4`
-- checksum: `2785289b8899a7d55a4168b80b15edeca9664478391aca48845e474805930169`
-- checksum: `be885827b08bebce5d6efe1cc70a70d25cd812370371150a75fba6259dc51c51`
+- checksum: `f035d529813aeef5207d8ef8ab25f744cff936b6f88996de22a07178b1083cf3`
 
 ## Release Hardening Status
 
@@ -303,14 +303,14 @@ The branch now includes the minimum release scaffolding needed to move from a lo
 - adaptive launcher icons replace the Android placeholder icon
 - release signing is wired through `release-signing.properties` or matching environment variables
 - the Android app now targets the live `https://privatedao.org` proof and monitoring surfaces
-- the latest rebuilt APK also carries the Solana-branded navigation refresh, lighter custom nav glyphs, and softer devnet-read failure messaging
+- the latest rebuilt APK also carries the Solana-branded navigation refresh, lighter custom nav glyphs, softer devnet-read failure messaging, and a dedicated `DAO / Treasury / Proposal` create workflow
 
 Still required before a production release claim:
 
 - final keystore and release signing secrets
 - booted emulator or real-device proof for the current branch state
 - version bump and release notes for the distribution target
-- sha256: `32d5b07cf29b703d57537b0a6d2746a9ce34b6665fd3c90a597f0d3fd77048a4`
+- sha256: `f035d529813aeef5207d8ef8ab25f744cff936b6f88996de22a07178b1083cf3`
 - direct download:
   - `https://github.com/X-PACT/PrivateDAO/raw/feat/android-native-private-dao/artifacts/android/PrivateDAO-android-devnet-debug.apk`
 

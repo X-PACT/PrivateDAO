@@ -93,6 +93,12 @@ private enum class Destination(val route: String, val label: String) {
     Settings("settings", "Settings"),
 }
 
+private enum class CreatePanel {
+    Dao,
+    Treasury,
+    Proposal,
+}
+
 @Composable
 fun PrivateDaoApp(
     uiState: UiState,
@@ -458,6 +464,8 @@ private fun CreateProposalScreen(
     onSubmit: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var createPanel by remember { mutableIntStateOf(CreatePanel.Dao.ordinal) }
+
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(20.dp),
@@ -465,139 +473,200 @@ private fun CreateProposalScreen(
     ) {
         item {
             HeroCard(
-                title = "Create DAO",
-                body = "This Android-native path bootstraps the governance mint and initializes the DAO from the same wallet, matching the repo’s devnet-first bootstrap flow.",
+                title = "Create and treasury ops",
+                body = "Choose one clear path at a time: bootstrap a DAO, fund its treasury, or create a proposal from an existing DAO.",
             )
-        }
-        item {
-            FormTextField("DAO name", uiState.createDaoForm.daoName) { value ->
-                onCreateDaoChange { it.copy(daoName = value) }
-            }
-        }
-        item {
-            FormTextField("Quorum percentage", uiState.createDaoForm.quorumPercentage.toString()) { value ->
-                onCreateDaoChange { it.copy(quorumPercentage = value.toIntOrNull() ?: it.quorumPercentage) }
-            }
-        }
-        item {
-            FormTextField("Reveal window (seconds)", uiState.createDaoForm.revealWindowSeconds.toString()) { value ->
-                onCreateDaoChange { it.copy(revealWindowSeconds = value.toLongOrNull() ?: it.revealWindowSeconds) }
-            }
-        }
-        item {
-            FormTextField("Execution delay (seconds)", uiState.createDaoForm.executionDelaySeconds.toString()) { value ->
-                onCreateDaoChange { it.copy(executionDelaySeconds = value.toLongOrNull() ?: it.executionDelaySeconds) }
-            }
         }
         item {
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
-                OutlinedButton(onClick = { onCreateDaoChange { it.copy(mode = DaoMode.TokenWeighted) } }, modifier = Modifier.weight(1f)) { Text("Token") }
-                OutlinedButton(onClick = { onCreateDaoChange { it.copy(mode = DaoMode.Quadratic) } }, modifier = Modifier.weight(1f)) { Text("Quadratic") }
-                OutlinedButton(onClick = { onCreateDaoChange { it.copy(mode = DaoMode.DualChamber) } }, modifier = Modifier.weight(1f)) { Text("Dual") }
+                SegmentedActionButton(
+                    label = "DAO",
+                    selected = createPanel == CreatePanel.Dao.ordinal,
+                    modifier = Modifier.weight(1f),
+                ) { createPanel = CreatePanel.Dao.ordinal }
+                SegmentedActionButton(
+                    label = "Treasury",
+                    selected = createPanel == CreatePanel.Treasury.ordinal,
+                    modifier = Modifier.weight(1f),
+                ) { createPanel = CreatePanel.Treasury.ordinal }
+                SegmentedActionButton(
+                    label = "Proposal",
+                    selected = createPanel == CreatePanel.Proposal.ordinal,
+                    modifier = Modifier.weight(1f),
+                ) { createPanel = CreatePanel.Proposal.ordinal }
             }
         }
-        item {
-            Button(
-                onClick = onSubmitCreateDao,
-                enabled = uiState.wallet != null && !uiState.walletBusy,
-                modifier = Modifier.fillMaxWidth(),
-                colors = primaryButtonColors(),
-            ) {
-                Text("Create DAO in wallet")
+        if (createPanel == CreatePanel.Dao.ordinal) {
+            item {
+                HeroCard(
+                    title = "Create DAO",
+                    body = "Bootstrap a fresh DAO and governance mint from the connected wallet. This path now starts with a unique devnet-safe DAO name by default.",
+                )
+            }
+            item {
+                FormTextField("DAO name", uiState.createDaoForm.daoName) { value ->
+                    onCreateDaoChange { it.copy(daoName = value) }
+                }
+            }
+            item {
+                Text(
+                    "Use a unique DAO name on devnet. The app now suggests a fresh name by default.",
+                    color = BodyMuted,
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
+            item {
+                FormTextField("Quorum percentage", uiState.createDaoForm.quorumPercentage.toString()) { value ->
+                    onCreateDaoChange { it.copy(quorumPercentage = value.toIntOrNull() ?: it.quorumPercentage) }
+                }
+            }
+            item {
+                FormTextField("Reveal window (seconds)", uiState.createDaoForm.revealWindowSeconds.toString()) { value ->
+                    onCreateDaoChange { it.copy(revealWindowSeconds = value.toLongOrNull() ?: it.revealWindowSeconds) }
+                }
+            }
+            item {
+                FormTextField("Execution delay (seconds)", uiState.createDaoForm.executionDelaySeconds.toString()) { value ->
+                    onCreateDaoChange { it.copy(executionDelaySeconds = value.toLongOrNull() ?: it.executionDelaySeconds) }
+                }
+            }
+            item {
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+                    SegmentedActionButton(
+                        label = "Token",
+                        selected = uiState.createDaoForm.mode == DaoMode.TokenWeighted,
+                        modifier = Modifier.weight(1f),
+                    ) { onCreateDaoChange { it.copy(mode = DaoMode.TokenWeighted) } }
+                    SegmentedActionButton(
+                        label = "Quad",
+                        selected = uiState.createDaoForm.mode == DaoMode.Quadratic,
+                        modifier = Modifier.weight(1f),
+                    ) { onCreateDaoChange { it.copy(mode = DaoMode.Quadratic) } }
+                    SegmentedActionButton(
+                        label = "Dual",
+                        selected = uiState.createDaoForm.mode == DaoMode.DualChamber,
+                        modifier = Modifier.weight(1f),
+                    ) { onCreateDaoChange { it.copy(mode = DaoMode.DualChamber) } }
+                }
+            }
+            item {
+                Button(
+                    onClick = onSubmitCreateDao,
+                    enabled = uiState.wallet != null && !uiState.walletBusy,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = primaryButtonColors(),
+                ) {
+                    Text("Create DAO in wallet")
+                }
+            }
+            uiState.createDaoForm.validationError()?.let { message ->
+                item { ValidationCard(message) }
             }
         }
-        uiState.createDaoForm.validationError()?.let { message ->
-            item { ValidationCard(message) }
-        }
-        item {
-            HeroCard(
-                title = "Deposit treasury",
-                body = "Treasury funding remains a separate on-chain step, exactly like the current repo scripts.",
-            )
-        }
-        item {
-            FormTextField("DAO PDA for deposit", uiState.depositTreasuryForm.daoPubkey) { value ->
-                onDepositTreasuryChange { it.copy(daoPubkey = value) }
+
+        if (createPanel == CreatePanel.Treasury.ordinal) {
+            item {
+                HeroCard(
+                    title = "Deposit treasury",
+                    body = "Treasury funding remains a separate on-chain step, exactly like the current repo scripts.",
+                )
+            }
+            item {
+                FormTextField("DAO PDA for deposit", uiState.depositTreasuryForm.daoPubkey) { value ->
+                    onDepositTreasuryChange { it.copy(daoPubkey = value) }
+                }
+            }
+            item {
+                FormTextField("Deposit amount SOL", uiState.depositTreasuryForm.amountSol) { value ->
+                    onDepositTreasuryChange { it.copy(amountSol = value) }
+                }
+            }
+            item {
+                Button(
+                    onClick = onSubmitDepositTreasury,
+                    enabled = uiState.wallet != null && !uiState.walletBusy && uiState.depositTreasuryForm.daoPubkey.isNotBlank(),
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = primaryButtonColors(),
+                ) {
+                    Text("Deposit treasury in wallet")
+                }
+            }
+            uiState.depositTreasuryForm.validationError()?.let { message ->
+                item { ValidationCard(message) }
             }
         }
-        item {
-            FormTextField("Deposit amount SOL", uiState.depositTreasuryForm.amountSol) { value ->
-                onDepositTreasuryChange { it.copy(amountSol = value) }
+
+        if (createPanel == CreatePanel.Proposal.ordinal) {
+            item {
+                HeroCard(
+                    title = "Create proposal",
+                    body = "Any wallet holding the DAO governance token can submit a proposal on-chain.",
+                )
+            }
+            item {
+                FormTextField("DAO PDA", uiState.createProposalForm.daoPubkey) { value ->
+                    onChange { it.copy(daoPubkey = value) }
+                }
+            }
+            item {
+                FormTextField("Title", uiState.createProposalForm.title) { value ->
+                    onChange { it.copy(title = value) }
+                }
+            }
+            item {
+                FormTextField("Description", uiState.createProposalForm.description, minLines = 4) { value ->
+                    onChange { it.copy(description = value) }
+                }
+            }
+            item {
+                FormTextField("Voting duration (seconds)", uiState.createProposalForm.durationSeconds.toString()) { value ->
+                    onChange { it.copy(durationSeconds = value.toLongOrNull() ?: it.durationSeconds) }
+                }
+            }
+            item {
+                FormTextField("Treasury recipient (optional)", uiState.createProposalForm.treasuryRecipient) { value ->
+                    onChange { it.copy(treasuryRecipient = value) }
+                }
+            }
+            item {
+                FormTextField("Treasury amount (SOL or raw token units)", uiState.createProposalForm.treasuryAmountSol) { value ->
+                    onChange { it.copy(treasuryAmountSol = value) }
+                }
+            }
+            item {
+                FormTextField("Treasury mint (token actions only)", uiState.createProposalForm.treasuryMint) { value ->
+                    onChange { it.copy(treasuryMint = value) }
+                }
+            }
+            item {
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+                    SegmentedActionButton(
+                        label = "Send SOL",
+                        selected = uiState.createProposalForm.treasuryType == TreasuryActionType.SendSol,
+                        modifier = Modifier.weight(1f),
+                    ) { onChange { it.copy(treasuryType = TreasuryActionType.SendSol) } }
+                    SegmentedActionButton(
+                        label = "Send Token",
+                        selected = uiState.createProposalForm.treasuryType == TreasuryActionType.SendToken,
+                        modifier = Modifier.weight(1f),
+                    ) { onChange { it.copy(treasuryType = TreasuryActionType.SendToken) } }
+                }
+            }
+            item {
+                Button(
+                    onClick = onSubmit,
+                    enabled = uiState.wallet != null && !uiState.walletBusy && uiState.createProposalForm.validationError() == null,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = primaryButtonColors(),
+                ) {
+                    Text("Create proposal in wallet")
+                }
+            }
+            uiState.createProposalForm.validationError()?.let { message ->
+                item { ValidationCard(message) }
             }
         }
-        item {
-            Button(
-                onClick = onSubmitDepositTreasury,
-                enabled = uiState.wallet != null && !uiState.walletBusy && uiState.depositTreasuryForm.daoPubkey.isNotBlank(),
-                modifier = Modifier.fillMaxWidth(),
-                colors = primaryButtonColors(),
-            ) {
-                Text("Deposit treasury in wallet")
-            }
-        }
-        uiState.depositTreasuryForm.validationError()?.let { message ->
-            item { ValidationCard(message) }
-        }
-        item {
-            HeroCard(
-                title = "Create proposal",
-                body = "Faithful to the repo: proposal creation is not authority-only. Any wallet holding the DAO governance token can submit a proposal on-chain.",
-            )
-        }
-        item {
-            FormTextField("DAO PDA", uiState.createProposalForm.daoPubkey) { value ->
-                onChange { it.copy(daoPubkey = value) }
-            }
-        }
-        item {
-            FormTextField("Title", uiState.createProposalForm.title) { value ->
-                onChange { it.copy(title = value) }
-            }
-        }
-        item {
-            FormTextField("Description", uiState.createProposalForm.description, minLines = 4) { value ->
-                onChange { it.copy(description = value) }
-            }
-        }
-        item {
-            FormTextField("Voting duration (seconds)", uiState.createProposalForm.durationSeconds.toString()) { value ->
-                onChange { it.copy(durationSeconds = value.toLongOrNull() ?: it.durationSeconds) }
-            }
-        }
-        item {
-            FormTextField("Treasury recipient (optional)", uiState.createProposalForm.treasuryRecipient) { value ->
-                onChange { it.copy(treasuryRecipient = value) }
-            }
-        }
-        item {
-            FormTextField("Treasury amount (SOL or raw token units)", uiState.createProposalForm.treasuryAmountSol) { value ->
-                onChange { it.copy(treasuryAmountSol = value) }
-            }
-        }
-        item {
-            FormTextField("Treasury mint (token actions only)", uiState.createProposalForm.treasuryMint) { value ->
-                onChange { it.copy(treasuryMint = value) }
-            }
-        }
-        item {
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
-                OutlinedButton(onClick = { onChange { it.copy(treasuryType = TreasuryActionType.SendSol) } }, modifier = Modifier.weight(1f)) { Text("Send SOL") }
-                OutlinedButton(onClick = { onChange { it.copy(treasuryType = TreasuryActionType.SendToken) } }, modifier = Modifier.weight(1f)) { Text("Send Token") }
-            }
-        }
-        item {
-            Button(
-                onClick = onSubmit,
-                enabled = uiState.wallet != null && !uiState.walletBusy && uiState.createProposalForm.validationError() == null,
-                modifier = Modifier.fillMaxWidth(),
-                colors = primaryButtonColors(),
-            ) {
-                Text("Create proposal in wallet")
-            }
-        }
-        uiState.createProposalForm.validationError()?.let { message ->
-            item { ValidationCard(message) }
-        }
+
         item {
             ReviewerOpsCard(
                 title = "Execution and reviewer links",
@@ -1096,6 +1165,31 @@ private fun primaryButtonColors() = ButtonDefaults.buttonColors(
     containerColor = SolanaPurple,
     contentColor = Color.White,
 )
+
+@Composable
+private fun SegmentedActionButton(
+    label: String,
+    selected: Boolean,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
+    if (selected) {
+        Button(
+            onClick = onClick,
+            modifier = modifier,
+            colors = primaryButtonColors(),
+        ) {
+            Text(label, maxLines = 1, softWrap = false)
+        }
+    } else {
+        OutlinedButton(
+            onClick = onClick,
+            modifier = modifier,
+        ) {
+            Text(label, maxLines = 1, softWrap = false)
+        }
+    }
+}
 
 @Composable
 private fun DestinationGlyph(destination: Destination, selected: Boolean) {
