@@ -393,6 +393,7 @@ The branch now has real-device proof in addition to emulator work:
 - launch path: `adb -s R58T33JGLHN shell am start -n io.xpact.privatedao.android/.MainActivity`
 - screenshot artifact: `artifacts/android/runtime/real-device-runtime-proof.png`
 - clean reinstall artifact: `artifacts/android/runtime/post-clean-reinstall-state.png`
+- post-refresh reinstall artifact: `artifacts/android/runtime/post-ui-refresh-reinstall.png`
 
 User-confirmed in the same session:
 
@@ -401,6 +402,7 @@ User-confirmed in the same session:
 - `Disconnect` surfaced on the live Android home screen, which confirms a connected wallet session
 - the next lifecycle gate is devnet funding for the connected wallet before `Create DAO in wallet` can complete
 - a fresh rebuilt APK was later installed cleanly on the same device after replacing the heavy `bcprov` dependency that was stalling `mergeDebugGlobalSynthetics`
+- the current rebuilt APK now also installs cleanly over the existing package after the Solana-branded UI refresh and lighter nav-glyph path
 
 ## Live Devnet Proof
 

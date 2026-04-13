@@ -8,7 +8,7 @@ This directory holds the latest branch-packaged Android APK for the `feat/androi
 - branch: `feat/android-native-private-dao`
 - build type: `debug`
 - target network: `devnet`
-- sha256: `2785289b8899a7d55a4168b80b15edeca9664478391aca48845e474805930169`
+- sha256: `be885827b08bebce5d6efe1cc70a70d25cd812370371150a75fba6259dc51c51`
 
 ## Real-device proof artifact
 
@@ -28,6 +28,8 @@ Additional runtime captures:
   - attempted lifecycle action from the physical device
 - `runtime/post-clean-reinstall-state.png`
   - clean reinstall proof after rebuilding the APK with the latest wallet identity and field-readability fixes
+- `runtime/post-ui-refresh-reinstall.png`
+  - over-install proof after the Solana-branded UI refresh and lighter nav-glyph rebuild
 
 ## Intended use
 

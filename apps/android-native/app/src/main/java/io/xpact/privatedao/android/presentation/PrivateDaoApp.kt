@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,14 +14,18 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -68,11 +73,21 @@ import io.xpact.privatedao.android.model.SubmissionState
 import io.xpact.privatedao.android.model.validationError
 import io.xpact.privatedao.android.model.TreasuryActionType
 
+private val SolanaGreen = Color(0xFF14F195)
+private val SolanaPurple = Color(0xFF9945FF)
+private val SolanaBlue = Color(0xFF00C2FF)
+private val AppBackground = Color(0xFF05070C)
+private val SurfacePrimary = Color(0xFF0D1118)
+private val SurfaceSecondary = Color(0xFF101825)
+private val SurfaceTertiary = Color(0xFF111A27)
+private val BodyMuted = Color(0xFFADB8C7)
+private val LabelMuted = Color(0xFF91A3B8)
+
 private enum class Destination(val route: String, val label: String) {
     Splash("splash", "Splash"),
     Wallet("wallet", "Wallet"),
     Home("home", "Home"),
-    Proposals("proposals", "Proposals"),
+    Proposals("proposals", "Votes"),
     Create("create", "Create"),
     Awards("awards", "Awards"),
     Settings("settings", "Settings"),
@@ -115,19 +130,19 @@ fun PrivateDaoApp(
                 val backStack by navController.currentBackStackEntryAsState()
                 val current = backStack?.destination?.route
                 if (current != Destination.Splash.route) {
-                    NavigationBar(containerColor = Color(0xFF0B0F18)) {
+                    NavigationBar(containerColor = SurfacePrimary) {
                         listOf(Destination.Home, Destination.Proposals, Destination.Create, Destination.Awards, Destination.Settings).forEach { item ->
                             NavigationBarItem(
                                 selected = current == item.route,
                                 onClick = { navController.navigate(item.route) },
-                                icon = { Box(Modifier.size(8.dp).background(if (current == item.route) Color(0xFFFFD76B) else Color(0xFF4B5563), RoundedCornerShape(999.dp))) },
-                                label = { Text(item.label) },
+                                icon = { DestinationGlyph(destination = item, selected = current == item.route) },
+                                label = { Text(item.label, maxLines = 1) },
                             )
                         }
                     }
                 }
             },
-            containerColor = Color(0xFF05070C),
+            containerColor = AppBackground,
         ) { padding ->
             AppNavHost(
                 navController = navController,
@@ -251,13 +266,15 @@ private fun SplashScreen(onDone: () -> Unit) {
         onDone()
     }
     Box(
-        modifier = Modifier.fillMaxSize().background(Color(0xFF05070C)),
+        modifier = Modifier.fillMaxSize().background(AppBackground),
         contentAlignment = Alignment.Center,
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            SolanaMark()
+            Spacer(Modifier.height(12.dp))
             Text("PrivateDAO", color = Color.White, style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
             Spacer(Modifier.height(8.dp))
-            Text("Vote Without Fear", color = Color(0xFFFFD76B), style = MaterialTheme.typography.titleMedium)
+            Text("Vote Without Fear", color = SolanaGreen, style = MaterialTheme.typography.titleMedium)
         }
     }
 }
@@ -268,7 +285,12 @@ private fun WalletScreen(uiState: UiState, onConnect: () -> Unit, onContinue: ()
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Android-native wallet flow") },
+                title = {
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                        SolanaMark(modifier = Modifier.size(28.dp))
+                        Text("Android-native wallet flow")
+                    }
+                },
             )
         },
         containerColor = Color.Transparent,
@@ -281,6 +303,7 @@ private fun WalletScreen(uiState: UiState, onConnect: () -> Unit, onContinue: ()
                 title = "Android-first by design",
                 body = "PrivateDAO uses Kotlin native + Solana Mobile Wallet Adapter because Android is the official mobile dApp path for Solana wallets today.",
             )
+            SolanaStatusStrip()
             HeroCard(
                 title = "Wallet state",
                 body = when {
@@ -315,14 +338,14 @@ private fun HomeScreen(uiState: UiState, onRefresh: () -> Unit, onWalletAction: 
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
-                            Brush.linearGradient(listOf(Color(0xFF7A5300), Color(0xFFFFD76B), Color(0xFFB68017))),
+                            Brush.linearGradient(listOf(SolanaPurple, SolanaBlue, SolanaGreen)),
                             RoundedCornerShape(28.dp),
                         )
                         .padding(22.dp)
                 ) {
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text("🏆 1st Place — Superteam Earn", color = Color(0xFF1A1200), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleLarge)
-                        Text("Rebuild production backend systems as on-chain Rust programs", color = Color(0xFF322100))
+                        Text("🏆 1st Place — Superteam Earn", color = Color(0xFF091410), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleLarge)
+                        Text("Rebuild production backend systems as on-chain Rust programs", color = Color(0xFF0F1722))
                     }
                 }
             }
@@ -333,7 +356,7 @@ private fun HomeScreen(uiState: UiState, onRefresh: () -> Unit, onWalletAction: 
                 body = "The Android app mirrors the current web product: live DAO/proposal reads, commit-reveal voting, finalize, execute, tx signatures, and explorer links.",
                 actions = {
                     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Button(onClick = onRefresh) { Text("Refresh") }
+                        Button(onClick = onRefresh, colors = primaryButtonColors()) { Text("Refresh") }
                         OutlinedButton(onClick = onWalletAction) {
                             Text(if (uiState.wallet == null) "Connect" else "Disconnect")
                         }
@@ -344,7 +367,7 @@ private fun HomeScreen(uiState: UiState, onRefresh: () -> Unit, onWalletAction: 
         item {
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp), modifier = Modifier.fillMaxWidth()) {
                 MetricCard("DAOs", uiState.daos.size.toString(), Modifier.weight(1f))
-                MetricCard("Proposals", uiState.proposals.size.toString(), Modifier.weight(1f))
+                MetricCard("Votes", uiState.proposals.size.toString(), Modifier.weight(1f))
                 MetricCard("Network", PrivateDaoConfig.clusterLabel, Modifier.weight(1f))
             }
         }
@@ -474,7 +497,12 @@ private fun CreateProposalScreen(
             }
         }
         item {
-            Button(onClick = onSubmitCreateDao, enabled = uiState.wallet != null && !uiState.walletBusy, modifier = Modifier.fillMaxWidth()) {
+            Button(
+                onClick = onSubmitCreateDao,
+                enabled = uiState.wallet != null && !uiState.walletBusy,
+                modifier = Modifier.fillMaxWidth(),
+                colors = primaryButtonColors(),
+            ) {
                 Text("Create DAO in wallet")
             }
         }
@@ -498,7 +526,12 @@ private fun CreateProposalScreen(
             }
         }
         item {
-            Button(onClick = onSubmitDepositTreasury, enabled = uiState.wallet != null && !uiState.walletBusy && uiState.depositTreasuryForm.daoPubkey.isNotBlank(), modifier = Modifier.fillMaxWidth()) {
+            Button(
+                onClick = onSubmitDepositTreasury,
+                enabled = uiState.wallet != null && !uiState.walletBusy && uiState.depositTreasuryForm.daoPubkey.isNotBlank(),
+                modifier = Modifier.fillMaxWidth(),
+                colors = primaryButtonColors(),
+            ) {
                 Text("Deposit treasury in wallet")
             }
         }
@@ -557,6 +590,7 @@ private fun CreateProposalScreen(
                 onClick = onSubmit,
                 enabled = uiState.wallet != null && !uiState.walletBusy && uiState.createProposalForm.validationError() == null,
                 modifier = Modifier.fillMaxWidth(),
+                colors = primaryButtonColors(),
             ) {
                 Text("Create proposal in wallet")
             }
@@ -591,13 +625,13 @@ private fun AwardsScreen(uiState: UiState, modifier: Modifier = Modifier) {
         }
         items(uiState.awards) { award ->
             Card(
-                colors = CardDefaults.cardColors(containerColor = Color(0xFF10141D)),
+                colors = CardDefaults.cardColors(containerColor = SurfaceSecondary),
                 shape = RoundedCornerShape(22.dp),
             ) {
                 Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(award.title, color = Color(0xFFFFD76B), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                    Text(award.title, color = SolanaGreen, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                     Text(award.challenge, color = Color.White)
-                    Text("${award.platform} • ${award.dateLabel}", color = Color(0xFFADB8C7))
+                    Text("${award.platform} • ${award.dateLabel}", color = BodyMuted)
                 }
             }
         }
@@ -637,7 +671,7 @@ private fun SettingsScreen(uiState: UiState, modifier: Modifier = Modifier) {
 private fun ProposalCard(proposal: ProposalSummary, phase: ProposalPhase, selected: Boolean, onClick: () -> Unit) {
     Card(
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = if (selected) Color(0xFF101825) else Color(0xFF0D1118)),
+        colors = CardDefaults.cardColors(containerColor = if (selected) SurfaceSecondary else SurfacePrimary),
         modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
     ) {
         Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -645,12 +679,12 @@ private fun ProposalCard(proposal: ProposalSummary, phase: ProposalPhase, select
                 AssistChip(
                     onClick = {},
                     label = { Text(phase.name) },
-                    colors = AssistChipDefaults.assistChipColors(containerColor = Color(0x1FFFD76B), labelColor = Color(0xFFFFD76B)),
+                    colors = AssistChipDefaults.assistChipColors(containerColor = SolanaPurple.copy(alpha = 0.18f), labelColor = SolanaGreen),
                 )
-                Text("Proposal #${proposal.proposalId}", color = Color(0xFF91A3B8))
+                Text("Proposal #${proposal.proposalId}", color = LabelMuted)
             }
             Text(proposal.title, color = Color.White, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-            Text(proposal.description, color = Color(0xFFADB8C7), maxLines = 3, overflow = TextOverflow.Ellipsis)
+            Text(proposal.description, color = BodyMuted, maxLines = 3, overflow = TextOverflow.Ellipsis)
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 SmallMetric("Commits", proposal.commitCount.toString())
                 SmallMetric("Reveals", proposal.revealCount.toString())
@@ -676,7 +710,7 @@ private fun ProposalDetailCard(
 ) {
     val authorityPubkey = proposal.daoSummary?.authority
     val isAuthorityWallet = uiState.wallet?.publicKeyBase58 == authorityPubkey && authorityPubkey != null
-    Card(shape = RoundedCornerShape(28.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFF0F131D))) {
+    Card(shape = RoundedCornerShape(28.dp), colors = CardDefaults.cardColors(containerColor = SurfacePrimary)) {
         Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
             Text("Proposal proof", color = Color.White, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
             SettingsRow("Proposal", proposal.pubkey)
@@ -894,9 +928,9 @@ private fun LinkButton(label: String, url: String, modifier: Modifier = Modifier
 
 @Composable
 private fun ValidationCard(message: String) {
-    Card(shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFF2A1414))) {
+    Card(shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFF221128))) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Text("Validation gate", color = Color(0xFFFFD76B), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+            Text("Validation gate", color = SolanaGreen, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
             Text(message, color = Color.White)
         }
     }
@@ -938,20 +972,29 @@ private fun formatSolAmount(lamports: Long): String {
 
 @Composable
 private fun HeroCard(title: String, body: String, actions: @Composable (() -> Unit)? = null) {
-    Card(shape = RoundedCornerShape(28.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFF0D1118))) {
-        Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Text(title, color = Color.White, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-            Text(body, color = Color(0xFFADB8C7))
-            actions?.invoke()
+    Card(shape = RoundedCornerShape(28.dp), colors = CardDefaults.cardColors(containerColor = Color.Transparent)) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    Brush.linearGradient(listOf(SurfacePrimary, SurfaceSecondary, Color(0xFF121329))),
+                    RoundedCornerShape(28.dp),
+                )
+        ) {
+            Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Text(title, color = Color.White, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                Text(body, color = BodyMuted)
+                actions?.invoke()
+            }
         }
     }
 }
 
 @Composable
 private fun MetricCard(label: String, value: String, modifier: Modifier = Modifier) {
-    Card(modifier = modifier, colors = CardDefaults.cardColors(containerColor = Color(0xFF10141D)), shape = RoundedCornerShape(22.dp)) {
+    Card(modifier = modifier, colors = CardDefaults.cardColors(containerColor = SurfaceSecondary), shape = RoundedCornerShape(22.dp)) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(label, color = Color(0xFF91A3B8))
+            Text(label, color = LabelMuted)
             Text(value, color = Color.White, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
         }
     }
@@ -960,7 +1003,7 @@ private fun MetricCard(label: String, value: String, modifier: Modifier = Modifi
 @Composable
 private fun SmallMetric(label: String, value: String) {
     Column {
-        Text(label, color = Color(0xFF91A3B8), style = MaterialTheme.typography.labelSmall)
+        Text(label, color = LabelMuted, style = MaterialTheme.typography.labelSmall)
         Text(value, color = Color.White)
     }
 }
@@ -968,7 +1011,7 @@ private fun SmallMetric(label: String, value: String) {
 @Composable
 private fun SettingsRow(label: String, value: String) {
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        Text(label.uppercase(), color = Color(0xFF91A3B8), style = MaterialTheme.typography.labelSmall)
+        Text(label.uppercase(), color = LabelMuted, style = MaterialTheme.typography.labelSmall)
         Text(value, color = Color.White)
     }
 }
@@ -980,19 +1023,174 @@ private fun FormTextField(label: String, value: String, minLines: Int = 1, onVal
         onValueChange = onValueChange,
         modifier = Modifier.fillMaxWidth(),
         minLines = minLines,
-        label = { Text(label, color = Color(0xFFADB8C7)) },
+        label = { Text(label, color = BodyMuted) },
         textStyle = MaterialTheme.typography.bodyLarge.copy(color = Color.White),
         colors = TextFieldDefaults.colors(
             focusedTextColor = Color.White,
             unfocusedTextColor = Color.White,
-            focusedContainerColor = Color(0xFF0F131D),
-            unfocusedContainerColor = Color(0xFF0F131D),
-            disabledContainerColor = Color(0xFF0F131D),
-            focusedIndicatorColor = Color(0xFFFFD76B),
+            focusedContainerColor = SurfaceTertiary,
+            unfocusedContainerColor = SurfaceTertiary,
+            disabledContainerColor = SurfaceTertiary,
+            focusedIndicatorColor = SolanaGreen,
             unfocusedIndicatorColor = Color(0xFF3A4657),
-            cursorColor = Color(0xFFFFD76B),
-            focusedLabelColor = Color(0xFFFFD76B),
-            unfocusedLabelColor = Color(0xFFADB8C7),
+            cursorColor = SolanaGreen,
+            focusedLabelColor = SolanaGreen,
+            unfocusedLabelColor = BodyMuted,
         ),
     )
+}
+
+@Composable
+private fun SolanaStatusStrip() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .horizontalScroll(rememberScrollState()),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        StatusChip("Solana", SolanaGreen, SolanaPurple)
+        StatusChip("Devnet", SolanaBlue, SolanaGreen)
+        StatusChip("MWA", SolanaPurple, SolanaBlue)
+    }
+}
+
+@Composable
+private fun StatusChip(label: String, start: Color, end: Color) {
+    Box(
+        modifier = Modifier
+            .background(
+                Brush.horizontalGradient(listOf(start.copy(alpha = 0.22f), end.copy(alpha = 0.22f))),
+                RoundedCornerShape(999.dp),
+            )
+            .padding(horizontal = 14.dp, vertical = 8.dp)
+    ) {
+        Text(label, color = Color.White, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold)
+    }
+}
+
+@Composable
+private fun SolanaMark(modifier: Modifier = Modifier) {
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        SolanaStripe(offset = 8.dp)
+        SolanaStripe()
+        SolanaStripe(offset = 8.dp)
+    }
+}
+
+@Composable
+private fun SolanaStripe(offset: androidx.compose.ui.unit.Dp = 0.dp) {
+    Box(
+        modifier = Modifier
+            .padding(start = offset)
+            .width(28.dp)
+            .height(6.dp)
+            .background(
+                Brush.horizontalGradient(listOf(SolanaGreen, SolanaBlue, SolanaPurple)),
+                RoundedCornerShape(999.dp),
+            )
+    )
+}
+
+@Composable
+private fun primaryButtonColors() = ButtonDefaults.buttonColors(
+    containerColor = SolanaPurple,
+    contentColor = Color.White,
+)
+
+@Composable
+private fun DestinationGlyph(destination: Destination, selected: Boolean) {
+    val active = if (selected) SolanaGreen else LabelMuted
+    val inactiveFill = active.copy(alpha = 0.22f)
+
+    Box(
+        modifier = Modifier.size(width = 24.dp, height = 18.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        when (destination) {
+            Destination.Home, Destination.Wallet, Destination.Splash -> {
+                Box(
+                    modifier = Modifier
+                        .size(14.dp)
+                        .background(inactiveFill, RoundedCornerShape(5.dp))
+                )
+                Box(
+                    modifier = Modifier
+                        .size(width = 8.dp, height = 8.dp)
+                        .background(active, RoundedCornerShape(3.dp))
+                )
+            }
+
+            Destination.Proposals -> {
+                Box(
+                    modifier = Modifier
+                        .offset(y = (-4).dp)
+                        .width(18.dp)
+                        .height(4.dp)
+                        .background(active, RoundedCornerShape(999.dp))
+                )
+                Box(
+                    modifier = Modifier
+                        .offset(y = 4.dp)
+                        .width(14.dp)
+                        .height(4.dp)
+                        .background(inactiveFill, RoundedCornerShape(999.dp))
+                )
+            }
+
+            Destination.Create -> {
+                Box(
+                    modifier = Modifier
+                        .width(16.dp)
+                        .height(4.dp)
+                        .background(active, RoundedCornerShape(999.dp))
+                )
+                Box(
+                    modifier = Modifier
+                        .width(4.dp)
+                        .height(16.dp)
+                        .background(active, RoundedCornerShape(999.dp))
+                )
+            }
+
+            Destination.Awards -> {
+                Box(
+                    modifier = Modifier
+                        .offset(x = (-5).dp, y = 3.dp)
+                        .size(width = 4.dp, height = 10.dp)
+                        .background(inactiveFill, RoundedCornerShape(999.dp))
+                )
+                Box(
+                    modifier = Modifier
+                        .size(width = 4.dp, height = 14.dp)
+                        .background(active, RoundedCornerShape(999.dp))
+                )
+                Box(
+                    modifier = Modifier
+                        .offset(x = 5.dp, y = (-3).dp)
+                        .size(width = 4.dp, height = 8.dp)
+                        .background(SolanaPurple.copy(alpha = if (selected) 1f else 0.45f), RoundedCornerShape(999.dp))
+                )
+            }
+
+            Destination.Settings -> {
+                Box(
+                    modifier = Modifier
+                        .offset(x = (-6).dp)
+                        .size(4.dp)
+                        .background(active, RoundedCornerShape(999.dp))
+                )
+                Box(
+                    modifier = Modifier
+                        .size(4.dp)
+                        .background(active, RoundedCornerShape(999.dp))
+                )
+                Box(
+                    modifier = Modifier
+                        .offset(x = 6.dp)
+                        .size(4.dp)
+                        .background(active, RoundedCornerShape(999.dp))
+                )
+            }
+        }
+    }
 }
