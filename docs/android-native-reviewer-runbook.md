@@ -103,7 +103,9 @@ Current verified runtime state on this branch:
 - `system-images;android-36;google_apis;x86_64` is installed
 - the AVD can now be created under `/data` on hosts where `/` is too small
 - the emulator reaches `adb device` on the repaired headless cold-boot path
+- the Android framework progresses far enough for `service check package` to resolve
+- `adb shell getprop sys.boot_completed` now returns `1`
 
 Current remaining runtime gate:
 
-- wait for the emulated Android framework to reach `sys.boot_completed=1` so that `package` service is available and the APK can be installed automatically
+- the emulator still stalls inside PackageInstaller during `adb install`, so install proof on this host remains blocked by installer runtime behavior rather than by boot/bootstrap state

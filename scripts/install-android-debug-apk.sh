@@ -7,6 +7,7 @@ APP_DIR="$ROOT_DIR/apps/android-native"
 SDK_ROOT="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-$HOME/Android/Sdk}}"
 ADB_BIN="$SDK_ROOT/platform-tools/adb"
 APK_PATH="$APP_DIR/app/build/outputs/apk/debug/app-debug.apk"
+ADB_INSTALL_TIMEOUT_SECONDS="${ADB_INSTALL_TIMEOUT_SECONDS:-90}"
 
 green() { printf '\033[0;32m%s\033[0m\n' "$1"; }
 red() { printf '\033[0;31m%s\033[0m\n' "$1"; }
@@ -33,7 +34,23 @@ if ! "$ADB_BIN" get-state >/dev/null 2>&1; then
   exit 1
 fi
 
-"$ADB_BIN" install -r "$APK_PATH"
+BOOT_COMPLETED="$("$ADB_BIN" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')"
+if [ "$BOOT_COMPLETED" != "1" ]; then
+  red "Android framework is not fully booted yet (sys.boot_completed=$BOOT_COMPLETED)"
+  printf 'Wait for full boot, then retry.\n'
+  exit 1
+fi
+
+if ! timeout "${ADB_INSTALL_TIMEOUT_SECONDS}s" "$ADB_BIN" install -r "$APK_PATH"; then
+  red "adb install did not complete within ${ADB_INSTALL_TIMEOUT_SECONDS}s"
+  printf 'Device state:\n'
+  "$ADB_BIN" devices -l || true
+  printf 'sys.boot_completed=%s\n' "$("$ADB_BIN" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')"
+  printf 'package service: %s\n' "$("$ADB_BIN" shell service check package 2>/dev/null | tr -d '\r')"
+  printf 'Retry after the emulator settles, or increase ADB_INSTALL_TIMEOUT_SECONDS.\n'
+  exit 1
+fi
+
 "$ADB_BIN" shell am start -n io.xpact.privatedao.android/.MainActivity
 
 green "Installed and launched PrivateDAO debug APK"

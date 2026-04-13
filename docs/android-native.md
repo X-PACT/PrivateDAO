@@ -255,13 +255,21 @@ Current emulator bootstrap status on the branch:
 - the system image is installed locally
 - the AVD can be created on a larger mount via `ANDROID_AVD_HOME=/data/privatedao-android-avd`
 - the repaired headless cold-boot path reaches `adb device`
-- the remaining automated runtime gate on this host is waiting for Android framework boot completion so that the `package` service becomes available for APK install
+- the Android framework now resolves `package` service on this host
+- `sys.boot_completed=1` is now observed on the running AVD
+- the remaining host-specific runtime gate is PackageInstaller itself, which still stalls during `adb install` on this emulator image instead of returning a normal success/failure code
 
 Verified local output on this branch:
 
 - command: `./gradlew assembleDebug`
 - result: `BUILD SUCCESSFUL`
 - artifact: `apps/android-native/app/build/outputs/apk/debug/app-debug.apk`
+- command: `adb devices -l`
+- result: `emulator-5554 device`
+- command: `adb shell getprop sys.boot_completed`
+- result: `1`
+- command: `adb shell service check package`
+- result: `Service package: found`
 
 Packaged downloadable branch artifact:
 
