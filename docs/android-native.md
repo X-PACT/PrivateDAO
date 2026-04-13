@@ -255,9 +255,9 @@ Current emulator bootstrap status on the branch:
 - the system image is installed locally
 - the AVD can be created on a larger mount via `ANDROID_AVD_HOME=/data/privatedao-android-avd`
 - the repaired headless cold-boot path reaches `adb device`
-- the Android framework now resolves `package` service on this host
 - `sys.boot_completed=1` is now observed on the running AVD
-- the remaining host-specific runtime gate is PackageInstaller itself, which still stalls during `adb install` on this emulator image instead of returning a normal success/failure code
+- the emulator's `package` service is unstable on this host and can flip between `found` and `not found`
+- the remaining host-specific runtime gate is PackageInstaller stability on this emulator image, which still breaks `adb install` even after framework boot completion
 
 Verified local output on this branch:
 
@@ -269,7 +269,7 @@ Verified local output on this branch:
 - command: `adb shell getprop sys.boot_completed`
 - result: `1`
 - command: `adb shell service check package`
-- result: `Service package: found`
+- result: intermittently `Service package: found` and later `Service package: not found`
 
 Packaged downloadable branch artifact:
 
