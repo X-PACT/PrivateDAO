@@ -34,6 +34,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -979,6 +980,19 @@ private fun FormTextField(label: String, value: String, minLines: Int = 1, onVal
         onValueChange = onValueChange,
         modifier = Modifier.fillMaxWidth(),
         minLines = minLines,
-        label = { Text(label) },
+        label = { Text(label, color = Color(0xFFADB8C7)) },
+        textStyle = MaterialTheme.typography.bodyLarge.copy(color = Color.White),
+        colors = TextFieldDefaults.colors(
+            focusedTextColor = Color.White,
+            unfocusedTextColor = Color.White,
+            focusedContainerColor = Color(0xFF0F131D),
+            unfocusedContainerColor = Color(0xFF0F131D),
+            disabledContainerColor = Color(0xFF0F131D),
+            focusedIndicatorColor = Color(0xFFFFD76B),
+            unfocusedIndicatorColor = Color(0xFF3A4657),
+            cursorColor = Color(0xFFFFD76B),
+            focusedLabelColor = Color(0xFFFFD76B),
+            unfocusedLabelColor = Color(0xFFADB8C7),
+        ),
     )
 }
