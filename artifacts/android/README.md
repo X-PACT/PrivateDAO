@@ -18,6 +18,15 @@ This directory holds the latest branch-packaged Android APK for the `feat/androi
   - `adb -s R58T33JGLHN install -r PrivateDAO-android-devnet-debug.apk`
   - `adb -s R58T33JGLHN shell am start -n io.xpact.privatedao.android/.MainActivity`
 
+Additional runtime captures:
+
+- `runtime/post-refresh-device-state.png`
+  - wallet-connected home surface with live `Disconnect`
+- `runtime/create-tab-state.png`
+  - `Create DAO` form prepared on the physical device
+- `runtime/post-create-tap-state.png`
+  - attempted lifecycle action from the physical device
+
 ## Intended use
 
 This APK is the current downloadable branch artifact for:

@@ -397,6 +397,8 @@ User-confirmed in the same session:
 
 - the app opened on the physical device
 - wallet connection was established from the Android device path
+- `Disconnect` surfaced on the live Android home screen, which confirms a connected wallet session
+- the next lifecycle gate is devnet funding for the connected wallet before `Create DAO in wallet` can complete
 
 ## Live Devnet Proof
 

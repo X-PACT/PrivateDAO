@@ -281,6 +281,10 @@ Verified real-device output on this branch:
 - launch result: `Starting: Intent { cmp=io.xpact.privatedao.android/.MainActivity }`
 - screenshot artifact: `artifacts/android/runtime/real-device-runtime-proof.png`
 - user-confirmed during the same session: wallet connected from the Android device flow
+- wallet-connected UI proof is now captured from the device state with a live `Disconnect` action visible
+- post-refresh proof artifact: `artifacts/android/runtime/post-refresh-device-state.png`
+- create-form proof artifact: `artifacts/android/runtime/create-tab-state.png`
+- current lifecycle blocker on the connected wallet is missing devnet SOL for the first `Create DAO` transaction
 
 Packaged downloadable branch artifact:
 

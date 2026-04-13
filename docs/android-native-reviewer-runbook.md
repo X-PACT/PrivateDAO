@@ -107,7 +107,11 @@ Current verified runtime state on this branch:
 - the emulator package service is unstable on this host and can flip between `Service package: found` and `Service package: not found`
 - a physical Android device (`SM-A235F`) now has verified install and launch proof for `io.xpact.privatedao.android`
 - screenshot artifact: `artifacts/android/runtime/real-device-runtime-proof.png`
+- the physical device also shows wallet-connected state through a live `Disconnect` action after connection
+- refresh-state proof artifact: `artifacts/android/runtime/post-refresh-device-state.png`
+- create-surface proof artifact: `artifacts/android/runtime/create-tab-state.png`
 
 Current remaining runtime gate:
 
 - emulator-side install proof is still blocked by package-service instability, but real-device install and launch proof is now closed
+- the next real-device lifecycle blocker is devnet balance on the connected wallet before `Create DAO in wallet` can succeed
