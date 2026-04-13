@@ -72,7 +72,9 @@ export function ActionReviewModal({
         ? "Payload already submitted"
         : "Sign and submit delivered payload"
       : "Continue with payload-driven signing shell"
-    : "Continue in UI";
+    : action === "initialize_dao"
+      ? "Sign and submit DAO bootstrap"
+      : "Continue in UI";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#03050e]/84 px-4 backdrop-blur-md">

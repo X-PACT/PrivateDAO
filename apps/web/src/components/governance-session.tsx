@@ -119,6 +119,7 @@ type GovernanceSessionContextValue = GovernanceSessionState & {
   setDaoName: (value: string) => void;
   setProposalTitle: (value: string) => void;
   setVoteChoice: (value: VoteChoice) => void;
+  recordLog: (label: string, value: string) => void;
   stageReviewContext: (input: {
     proposalId: string;
     proposalTitle: string;
@@ -205,6 +206,8 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
       setDaoName: (daoName) => setState((current) => ({ ...current, daoName })),
       setProposalTitle: (proposalTitle) => setState((current) => ({ ...current, proposalTitle })),
       setVoteChoice: (voteChoice) => setState((current) => ({ ...current, voteChoice })),
+      recordLog: (label, value) =>
+        setState((current) => withLog(current, label, value)),
       stageReviewContext: ({ proposalId, proposalTitle, proposalStatus, telemetryMode, source }) =>
         setState((current) => {
           const reviewContextKey = `${proposalId}:${proposalStatus}:${telemetryMode}:${source}`;

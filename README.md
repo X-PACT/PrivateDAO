@@ -50,7 +50,8 @@ PrivateDAO is already a live Devnet product, not a concept deck:
 - Wallet-connected frontend
 - Operational routes for onboarding, command, dashboard, proof, diagnostics, and services
 - PDAO governance token surface
-- Create DAO → submit proposal → private vote → execute treasury flow
+- Web wallet DAO bootstrap on Devnet
+- Repo-native and device-native proof paths for the broader governance lifecycle
 - Confidential payout paths with `REFHE` and `MagicBlock` integration surfaces
 - `Strict V2` hardening for proof, settlement, cancellation, and policy snapshots
 - `Governance Hardening V3` for token-supply quorum snapshots and dedicated reveal rebate vaults
@@ -63,7 +64,7 @@ PrivateDAO is already a live Devnet product, not a concept deck:
 The public product UI is intentionally responsible for:
 
 - Connect Wallet
-- Create DAO
+- Create DAO on Devnet from the connected web wallet
 - Create Proposal
 - Commit Vote
 - Reveal Vote
@@ -80,6 +81,11 @@ The public repo and CLI remain available for:
 - Stress tests
 
 This keeps the buyer-facing product clean while preserving engineering and protocol discipline in the repo.
+
+Current web/runtime boundary:
+
+- `Create DAO` now has a live wallet-first Devnet bootstrap path in the web action workbench.
+- The remaining proposal / vote / finalize / execute stages still stay visible in the same product shell while unified live parity continues expanding across web and Android.
 
 The rule is strict:
 

@@ -2,7 +2,7 @@
 
 import { startTransition, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Activity, ArrowUpRight, CheckCircle2, ChevronRight, FilePlus2, Flag, FolderPlus, ListChecks, Play, ShieldCheck, Vote, Wallet } from "lucide-react";
 
 import { ActionReviewModal } from "@/components/action-review-modal";
@@ -14,6 +14,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buildPreparedActionSummary } from "@/lib/onchain-parity";
 import type { CoreGovernanceInstructionName } from "@/lib/onchain-parity.generated";
+import { buildCreateDaoBootstrapTransaction } from "@/lib/dao-bootstrap";
 import { buildServiceHandoffQuery } from "@/lib/service-handoff-state";
 import { getProposalById, type ProposalCardModel } from "@/lib/site-data";
 import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
@@ -37,7 +38,15 @@ function resolveStagedReviewAction(proposal: ProposalCardModel | null): CoreGove
 
 export function GovernanceActionWorkbench() {
   const [reviewAction, setReviewAction] = useState<CoreGovernanceInstructionName | null>(null);
-  const { connected, wallet } = useWallet();
+  const [createDaoRuntime, setCreateDaoRuntime] = useState<{
+    status: "idle" | "submitting" | "success" | "error";
+    message: string;
+    daoAddress?: string;
+    governanceMint?: string;
+    signature?: string;
+  }>({ status: "idle", message: "" });
+  const { connection } = useConnection();
+  const { connected, wallet, publicKey, sendTransaction } = useWallet();
   const {
     daoName,
     daoCreated,
@@ -53,6 +62,7 @@ export function GovernanceActionWorkbench() {
     setDaoName,
     setProposalTitle,
     setVoteChoice,
+    recordLog,
     stageReviewContext,
     stageExecutionIntent,
     createDao,
@@ -64,7 +74,12 @@ export function GovernanceActionWorkbench() {
     resetSession,
   } = useGovernanceSession();
 
-  const canCreateDao = connected && !daoCreated && daoName.trim().length >= 3;
+  const canCreateDao =
+    connected &&
+    Boolean(publicKey) &&
+    !daoCreated &&
+    daoName.trim().length >= 3 &&
+    createDaoRuntime.status !== "submitting";
   const canCreateProposal = daoCreated && !proposalCreated && proposalTitle.trim().length >= 6;
   const canCommit = proposalCreated && !voteCommitted;
   const canReveal = voteCommitted && !voteRevealed;
@@ -194,8 +209,84 @@ export function GovernanceActionWorkbench() {
     setReviewAction(action);
   }
 
-  function confirmReviewAction() {
+  async function submitCreateDaoLive() {
+    if (!publicKey) {
+      setCreateDaoRuntime({
+        status: "error",
+        message: "Connect a wallet before creating the DAO on devnet.",
+      });
+      return;
+    }
+
+    try {
+      setCreateDaoRuntime({
+        status: "submitting",
+        message: "Preparing DAO bootstrap transaction for wallet signature...",
+      });
+
+      const bootstrap = await buildCreateDaoBootstrapTransaction({
+        authority: publicKey,
+        connection,
+        name: daoName.trim(),
+        quorum: 51,
+        revealWindowSeconds: 5,
+        delaySeconds: 5,
+        votingMode: "token",
+      });
+
+      setCreateDaoRuntime({
+        status: "submitting",
+        message: "Awaiting wallet signature for the DAO bootstrap transaction...",
+        daoAddress: bootstrap.dao.toBase58(),
+        governanceMint: bootstrap.governanceMint.toBase58(),
+      });
+
+      const signature = await sendTransaction(bootstrap.transaction, connection, {
+        preflightCommitment: "confirmed",
+        signers: [bootstrap.mintSigner],
+      });
+
+      await connection.confirmTransaction(signature, "confirmed");
+
+      createDao();
+      recordLog(
+        "DAO bootstrap submitted",
+        `${daoName.trim()} · ${bootstrap.dao.toBase58()} · ${signature}`,
+      );
+      recordLog(
+        "Governance mint provisioned",
+        `${bootstrap.governanceMint.toBase58()} minted as the DAO governance token for the live devnet bootstrap.`,
+      );
+
+      setCreateDaoRuntime({
+        status: "success",
+        message: "DAO bootstrap submitted to devnet from the web wallet flow.",
+        daoAddress: bootstrap.dao.toBase58(),
+        governanceMint: bootstrap.governanceMint.toBase58(),
+        signature,
+      });
+    } catch (error) {
+      const message =
+        error instanceof Error && error.message
+          ? error.message
+          : "Web wallet DAO bootstrap failed before confirmation.";
+      setCreateDaoRuntime({
+        status: "error",
+        message,
+      });
+    }
+  }
+
+  async function confirmReviewAction() {
     if (!reviewAction) return;
+    const activeAction = reviewAction;
+    setReviewAction(null);
+
+    if (activeAction === "initialize_dao") {
+      await submitCreateDaoLive();
+      return;
+    }
+
     const handlers: Record<CoreGovernanceInstructionName, () => void> = {
       initialize_dao: createDao,
       create_proposal: createProposal,
@@ -204,8 +295,7 @@ export function GovernanceActionWorkbench() {
       finalize_proposal: finalizeProposal,
       execute_proposal: executeProposal,
     };
-    handlers[reviewAction]();
-    setReviewAction(null);
+    handlers[activeAction]();
   }
 
   return (
@@ -217,10 +307,10 @@ export function GovernanceActionWorkbench() {
               <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/72">Web app workflow</div>
               <CardTitle className="mt-2">All normal-user operations run from the UI</CardTitle>
             </div>
-            <Badge variant="success">UI Full</Badge>
-          </div>
-          <p className="max-w-3xl text-sm leading-7 text-white/60">
-            Wallet connection, DAO creation, proposal creation, commit, reveal, finalize, execute, logs, and diagnostics live here in the product surface. CLI-only operations stay out of the user flow.
+              <Badge variant="success">Live DAO Create</Badge>
+            </div>
+            <p className="max-w-3xl text-sm leading-7 text-white/60">
+            Wallet connection and DAO bootstrap now run live from the web surface on devnet. Proposal, vote, reveal, finalize, and execute still stay in the same UI shell while deeper on-chain parity keeps expanding from the same product lane.
           </p>
         </CardHeader>
         <CardContent className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
@@ -479,8 +569,37 @@ export function GovernanceActionWorkbench() {
                   placeholder="DAO name"
                 />
                 <Button className="mt-4 w-full" disabled={!canCreateDao} onClick={() => openReview("initialize_dao")}>
-                  Create DAO
+                  {createDaoRuntime.status === "submitting" ? "Awaiting wallet..." : "Create DAO on devnet"}
                 </Button>
+                {createDaoRuntime.message ? (
+                  <div
+                    className={cn(
+                      "mt-4 rounded-2xl border p-4 text-sm leading-7",
+                      createDaoRuntime.status === "error"
+                        ? "border-rose-300/18 bg-rose-300/10 text-rose-100/84"
+                        : createDaoRuntime.status === "success"
+                          ? "border-emerald-300/18 bg-emerald-300/[0.08] text-emerald-100/84"
+                          : "border-cyan-300/16 bg-cyan-300/[0.08] text-cyan-100/84",
+                    )}
+                  >
+                    <div>{createDaoRuntime.message}</div>
+                    {createDaoRuntime.daoAddress ? (
+                      <div className="mt-2 break-all text-xs text-white/70">
+                        DAO: {createDaoRuntime.daoAddress}
+                      </div>
+                    ) : null}
+                    {createDaoRuntime.governanceMint ? (
+                      <div className="mt-1 break-all text-xs text-white/70">
+                        Governance mint: {createDaoRuntime.governanceMint}
+                      </div>
+                    ) : null}
+                    {createDaoRuntime.signature ? (
+                      <div className="mt-1 break-all text-xs text-white/70">
+                        Signature: {createDaoRuntime.signature}
+                      </div>
+                    ) : null}
+                  </div>
+                ) : null}
               </div>
 
               <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
@@ -635,7 +754,7 @@ export function GovernanceActionWorkbench() {
                 <div className="text-base font-medium text-white">Workflow boundary</div>
               </div>
               <p className="mt-3 text-sm leading-7 text-white/60">
-                Normal users never need the terminal for these core governance operations. Advanced debugging, migrations, batch recovery, and stress tooling remain in the repo by design.
+                The web wallet flow now owns live DAO bootstrap. The remaining lifecycle stages stay inside the same product lane while proposal and execution parity keep moving from staged shell behavior into live on-chain submits.
               </p>
             </div>
           </div>
