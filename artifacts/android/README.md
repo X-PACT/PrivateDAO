@@ -10,6 +10,14 @@ This directory holds the latest branch-packaged Android APK for the `feat/androi
 - target network: `devnet`
 - sha256: `32d5b07cf29b703d57537b0a6d2746a9ce34b6665fd3c90a597f0d3fd77048a4`
 
+## Real-device proof artifact
+
+- file: `runtime/real-device-runtime-proof.png`
+- device: `SM-A235F`
+- captured after:
+  - `adb -s R58T33JGLHN install -r PrivateDAO-android-devnet-debug.apk`
+  - `adb -s R58T33JGLHN shell am start -n io.xpact.privatedao.android/.MainActivity`
+
 ## Intended use
 
 This APK is the current downloadable branch artifact for:

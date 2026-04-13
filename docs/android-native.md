@@ -271,6 +271,17 @@ Verified local output on this branch:
 - command: `adb shell service check package`
 - result: intermittently `Service package: found` and later `Service package: not found`
 
+Verified real-device output on this branch:
+
+- device: `SM-A235F`
+- Android release: `14`
+- package path: `/data/app/.../io.xpact.privatedao.android.../base.apk`
+- app version: `1.0.0`
+- install result: `Performing Streamed Install` -> `Success`
+- launch result: `Starting: Intent { cmp=io.xpact.privatedao.android/.MainActivity }`
+- screenshot artifact: `artifacts/android/runtime/real-device-runtime-proof.png`
+- user-confirmed during the same session: wallet connected from the Android device flow
+
 Packaged downloadable branch artifact:
 
 - file: `artifacts/android/PrivateDAO-android-devnet-debug.apk`

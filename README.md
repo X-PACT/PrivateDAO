@@ -379,6 +379,24 @@ Reference:
 - Native app root: `apps/android-native/`
 - Android guide: `docs/android-native.md`
 - Downloadable branch APK: `artifacts/android/PrivateDAO-android-devnet-debug.apk`
+- Real-device runtime proof: `artifacts/android/runtime/real-device-runtime-proof.png`
+
+## Real Device Runtime Proof
+
+The branch now has real-device proof in addition to emulator work:
+
+- device: `SM-A235F`
+- Android: `14`
+- app package: `io.xpact.privatedao.android`
+- app version: `1.0.0`
+- install path: `adb -s R58T33JGLHN install -r ...`
+- launch path: `adb -s R58T33JGLHN shell am start -n io.xpact.privatedao.android/.MainActivity`
+- screenshot artifact: `artifacts/android/runtime/real-device-runtime-proof.png`
+
+User-confirmed in the same session:
+
+- the app opened on the physical device
+- wallet connection was established from the Android device path
 
 ## Live Devnet Proof
 

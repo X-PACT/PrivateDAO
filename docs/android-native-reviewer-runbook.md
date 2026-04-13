@@ -105,7 +105,9 @@ Current verified runtime state on this branch:
 - the emulator reaches `adb device` on the repaired headless cold-boot path
 - `adb shell getprop sys.boot_completed` now returns `1`
 - the emulator package service is unstable on this host and can flip between `Service package: found` and `Service package: not found`
+- a physical Android device (`SM-A235F`) now has verified install and launch proof for `io.xpact.privatedao.android`
+- screenshot artifact: `artifacts/android/runtime/real-device-runtime-proof.png`
 
 Current remaining runtime gate:
 
-- the emulator still breaks inside PackageInstaller during `adb install`, so install proof on this host remains blocked by package-service instability rather than by build/bootstrap state
+- emulator-side install proof is still blocked by package-service instability, but real-device install and launch proof is now closed
