@@ -3,6 +3,7 @@
 import {
   Connection,
   Keypair,
+  LAMPORTS_PER_SOL,
   PublicKey,
   SystemProgram,
   Transaction,
@@ -49,7 +50,7 @@ type CreateProposalInput = {
   description?: string;
   proposer: PublicKey;
   title: string;
-  treasuryAction?: null;
+  treasuryAction?: TreasuryActionInput | null;
   votingDurationSeconds?: number;
 };
 
@@ -69,8 +70,35 @@ type ProposalAccountDetails = {
   proposalId: bigint;
   revealEnd: number;
   status: "Voting" | "Passed" | "Failed" | "Cancelled" | "Vetoed" | "Unknown";
+  treasuryAction: TreasuryActionDetails | null;
   title: string;
   votingEnd: number;
+};
+
+type TreasuryActionInput =
+  | {
+      actionType: "SendSol";
+      amountLamports: bigint;
+      recipient: PublicKey;
+    }
+  | {
+      actionType: "SendToken";
+      amountLamports: bigint;
+      recipient: PublicKey;
+      tokenMint: PublicKey;
+    }
+  | {
+      actionType: "CustomCPI";
+      amountLamports: bigint;
+      recipient: PublicKey;
+    };
+
+type TreasuryActionDetails = {
+  actionType: "SendSol" | "SendToken" | "CustomCPI" | "Unknown";
+  amountLamports: bigint;
+  amountSol: number;
+  recipient: string;
+  tokenMint: string | null;
 };
 
 type CommitVoteInput = {
@@ -118,7 +146,7 @@ function parseU32LE(data: Uint8Array, offset: number) {
   return new DataView(data.buffer, data.byteOffset + offset, 4).getUint32(0, true);
 }
 
-function encodeU64LE(value: number) {
+function encodeU64LE(value: number | bigint) {
   const out = new Uint8Array(8);
   new DataView(out.buffer).setBigUint64(0, BigInt(value), true);
   return out;
@@ -175,6 +203,29 @@ function encodeVotingConfig(mode: VotingMode) {
   if (mode === "quadratic") return new Uint8Array([1]);
   if (mode === "dual") return new Uint8Array([2, 50, 50]);
   return new Uint8Array([0]);
+}
+
+function encodeTreasuryAction(action: TreasuryActionInput | null | undefined) {
+  if (!action) {
+    return new Uint8Array([0]);
+  }
+
+  const actionType =
+    action.actionType === "SendSol"
+      ? new Uint8Array([0])
+      : action.actionType === "SendToken"
+        ? new Uint8Array([1])
+        : new Uint8Array([2]);
+
+  return concatBytes(
+    new Uint8Array([1]),
+    actionType,
+    encodeU64LE(action.amountLamports),
+    action.recipient.toBytes(),
+    action.actionType === "SendToken"
+      ? concatBytes(new Uint8Array([1]), action.tokenMint.toBytes())
+      : new Uint8Array([0]),
+  );
 }
 
 function buildInitializeMintInstruction(mintPubkey: PublicKey, mintAuthority: PublicKey, decimals = 6) {
@@ -313,7 +364,40 @@ function decodeProposalAccount(data: Uint8Array): ProposalAccountDetails {
   offset.value += 8;
   offset.value += 8 * 6; // yes/no tallies + commit/reveal counts
   const hasTreasuryAction = data[offset.value] === 1;
-  offset.value += 75; // treasury action
+  let treasuryAction: TreasuryActionDetails | null = null;
+  offset.value += 1;
+  if (hasTreasuryAction) {
+    const actionTypeByte = data[offset.value];
+    offset.value += 1;
+    const amountLamports = parseU64LE(data, offset.value);
+    offset.value += 8;
+    const recipient = new PublicKey(data.slice(offset.value, offset.value + 32)).toBase58();
+    offset.value += 32;
+    const hasTokenMint = data[offset.value] === 1;
+    offset.value += 1;
+    let tokenMint: string | null = null;
+    if (hasTokenMint) {
+      tokenMint = new PublicKey(data.slice(offset.value, offset.value + 32)).toBase58();
+    }
+    offset.value += 32;
+
+    treasuryAction = {
+      actionType:
+        actionTypeByte === 0
+          ? "SendSol"
+          : actionTypeByte === 1
+            ? "SendToken"
+            : actionTypeByte === 2
+              ? "CustomCPI"
+              : "Unknown",
+      amountLamports,
+      amountSol: Number(amountLamports) / LAMPORTS_PER_SOL,
+      recipient,
+      tokenMint,
+    };
+  } else {
+    offset.value += 74;
+  }
   const executionUnlocksAt = parseI64LE(data, offset.value);
   offset.value += 8;
   const isExecuted = data[offset.value] === 1;
@@ -339,6 +423,7 @@ function decodeProposalAccount(data: Uint8Array): ProposalAccountDetails {
     proposalId,
     revealEnd,
     status,
+    treasuryAction,
     title,
     votingEnd,
   };
@@ -469,7 +554,7 @@ export async function buildCreateProposalTransaction({
     encodeAnchorString(title.trim()),
     encodeAnchorString((description ?? title).trim()),
     encodeI64LE(votingDurationSeconds),
-    treasuryAction ? new Uint8Array([1]) : new Uint8Array([0]),
+    encodeTreasuryAction(treasuryAction),
   );
 
   const instruction = new TransactionInstruction({

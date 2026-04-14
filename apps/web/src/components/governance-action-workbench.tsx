@@ -2,7 +2,7 @@
 
 import { startTransition, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { PublicKey } from "@solana/web3.js";
+import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Activity, ArrowUpRight, CheckCircle2, ChevronRight, FilePlus2, Flag, FolderPlus, ListChecks, Play, ShieldCheck, Vote, Wallet } from "lucide-react";
 
@@ -56,6 +56,28 @@ function randomSalt32() {
   return salt;
 }
 
+function parseSolAmountToLamports(value: string) {
+  const normalized = value.trim();
+  if (!normalized) {
+    throw new Error("Treasury amount is required when a treasury recipient is set.");
+  }
+  if (!/^\d+(\.\d{1,9})?$/.test(normalized)) {
+    throw new Error("Treasury amount must be a positive SOL value with up to 9 decimals.");
+  }
+
+  const [wholePart, fractionalPart = ""] = normalized.split(".");
+  const wholeLamports = BigInt(wholePart) * BigInt(LAMPORTS_PER_SOL);
+  const paddedFraction = (fractionalPart + "000000000").slice(0, 9);
+  const fractionalLamports = BigInt(paddedFraction);
+  const amountLamports = wholeLamports + fractionalLamports;
+
+  if (amountLamports <= BigInt(0)) {
+    throw new Error("Treasury amount must be greater than zero.");
+  }
+
+  return amountLamports;
+}
+
 export function GovernanceActionWorkbench() {
   const [reviewAction, setReviewAction] = useState<CoreGovernanceInstructionName | null>(null);
   const [createDaoRuntime, setCreateDaoRuntime] = useState<{
@@ -93,6 +115,8 @@ export function GovernanceActionWorkbench() {
     message: string;
     signature?: string;
   }>({ status: "idle", message: "" });
+  const [proposalTreasuryRecipient, setProposalTreasuryRecipient] = useState("");
+  const [proposalTreasuryAmountSol, setProposalTreasuryAmountSol] = useState("");
   const { connection } = useConnection();
   const { connected, wallet, publicKey, sendTransaction } = useWallet();
   const {
@@ -132,11 +156,46 @@ export function GovernanceActionWorkbench() {
     daoName.trim().length >= 3 &&
     createDaoRuntime.status !== "submitting";
   const canCreateProposal = daoCreated && !proposalCreated && proposalTitle.trim().length >= 6;
+  const proposalTreasuryDraft = useMemo(() => {
+    const recipient = proposalTreasuryRecipient.trim();
+    const amount = proposalTreasuryAmountSol.trim();
+
+    if (!recipient && !amount) {
+      return { action: null, error: null as string | null };
+    }
+
+    if (!recipient || !amount) {
+      return {
+        action: null,
+        error: "Enter both treasury recipient and SOL amount, or leave both blank for a standard proposal.",
+      };
+    }
+
+    try {
+      return {
+        action: {
+          actionType: "SendSol" as const,
+          amountLamports: parseSolAmountToLamports(amount),
+          recipient: new PublicKey(recipient),
+        },
+        error: null as string | null,
+      };
+    } catch (error) {
+      return {
+        action: null,
+        error:
+          error instanceof Error && error.message
+            ? error.message
+            : "Treasury action inputs are invalid.",
+      };
+    }
+  }, [proposalTreasuryAmountSol, proposalTreasuryRecipient]);
   const canSubmitLiveProposal =
     connected &&
     Boolean(publicKey) &&
     canCreateProposal &&
     Boolean(liveDaoRuntime?.address && liveDaoRuntime.governanceMint) &&
+    !proposalTreasuryDraft.error &&
     createProposalRuntime.status !== "submitting";
   const canCommit = proposalCreated && !voteCommitted;
   const canReveal = voteCommitted && !voteRevealed;
@@ -379,11 +438,20 @@ export function GovernanceActionWorkbench() {
       });
       return;
     }
+    if (proposalTreasuryDraft.error) {
+      setCreateProposalRuntime({
+        status: "error",
+        message: proposalTreasuryDraft.error,
+      });
+      return;
+    }
 
     try {
       setCreateProposalRuntime({
         status: "submitting",
-        message: "Preparing live proposal transaction for wallet signature...",
+        message: proposalTreasuryDraft.action
+          ? "Preparing live treasury proposal transaction for wallet signature..."
+          : "Preparing live proposal transaction for wallet signature...",
       });
 
       const proposalSubmission = await buildCreateProposalTransaction({
@@ -392,6 +460,7 @@ export function GovernanceActionWorkbench() {
         daoAddress: new PublicKey(liveDaoRuntime.address),
         title: proposalTitle.trim(),
         description: `${proposalTitle.trim()} submitted from the live web governance surface.`,
+        treasuryAction: proposalTreasuryDraft.action,
         votingDurationSeconds: 3600,
       });
 
@@ -415,6 +484,12 @@ export function GovernanceActionWorkbench() {
         "Proposal submitted",
         `${proposalTitle.trim()} · ${proposalSubmission.proposal.toBase58()} · ${signature}`,
       );
+      if (proposalTreasuryDraft.action) {
+        recordLog(
+          "Treasury action attached",
+          `${proposalTreasuryAmountSol.trim()} SOL -> ${proposalTreasuryRecipient.trim()}`,
+        );
+      }
       recordLog(
         "Proposal DAO lane",
         `${proposalSubmission.dao.toBase58()} · governance mint ${proposalSubmission.governanceMint.toBase58()} · proposer ATA ${proposalSubmission.proposerTokenAccount.toBase58()}`,
@@ -422,7 +497,9 @@ export function GovernanceActionWorkbench() {
 
       setCreateProposalRuntime({
         status: "success",
-        message: "Proposal submitted to devnet from the web wallet flow.",
+        message: proposalTreasuryDraft.action
+          ? "Treasury proposal submitted to devnet from the web wallet flow."
+          : "Proposal submitted to devnet from the web wallet flow.",
         proposalAddress: proposalSubmission.proposal.toBase58(),
         signature,
       });
@@ -664,13 +741,16 @@ export function GovernanceActionWorkbench() {
       if (proposalDetails.isExecuted) {
         throw new Error("This live proposal is already executed on devnet.");
       }
-      if (proposalDetails.hasTreasuryAction) {
-        throw new Error(
-          "The current web live execute lane supports standard proposals without treasury actions. Treasury transfer execution still requires the richer payout path.",
-        );
-      }
       if (nowTs < proposalDetails.executionUnlocksAt) {
         throw new Error("Execution timelock is still active for this live proposal.");
+      }
+      if (
+        proposalDetails.treasuryAction &&
+        proposalDetails.treasuryAction.actionType !== "SendSol"
+      ) {
+        throw new Error(
+          "The current web live execute lane supports standard proposals and SendSol treasury motions. Token or custom treasury actions still require the richer payout path.",
+        );
       }
 
       const executeSubmission = await buildExecuteProposalTransaction({
@@ -678,6 +758,9 @@ export function GovernanceActionWorkbench() {
         daoAddress: new PublicKey(liveDaoRuntime.address),
         executor: publicKey,
         proposalAddress,
+        treasuryRecipient: proposalDetails.treasuryAction
+          ? new PublicKey(proposalDetails.treasuryAction.recipient)
+          : publicKey,
       });
 
       setExecuteRuntime({
@@ -696,8 +779,9 @@ export function GovernanceActionWorkbench() {
 
       setExecuteRuntime({
         status: "success",
-        message:
-          "Standard execute submitted live on devnet. This current web proposal lane carries no treasury action, so execute closes the lifecycle without moving treasury funds.",
+        message: proposalDetails.treasuryAction
+          ? `Treasury execute submitted live on devnet. ${proposalDetails.treasuryAction.amountSol} SOL will settle to ${proposalDetails.treasuryAction.recipient}.`
+          : "Standard execute submitted live on devnet. This current web proposal lane carries no treasury action, so execute closes the lifecycle without moving treasury funds.",
         signature,
       });
     } catch (error) {
@@ -1067,6 +1151,26 @@ export function GovernanceActionWorkbench() {
                   className="mt-4 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
                   placeholder="Proposal title"
                 />
+                <input
+                  value={proposalTreasuryRecipient}
+                  onChange={(event) => setProposalTreasuryRecipient(event.target.value)}
+                  className="mt-3 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                  placeholder="Optional treasury recipient (SendSol)"
+                />
+                <input
+                  value={proposalTreasuryAmountSol}
+                  onChange={(event) => setProposalTreasuryAmountSol(event.target.value)}
+                  className="mt-3 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                  placeholder="Optional treasury amount in SOL"
+                />
+                <p className="mt-3 text-sm leading-7 text-white/60">
+                  Leave recipient and amount blank for a standard governance proposal. Fill both fields to create a live SendSol treasury motion.
+                </p>
+                {proposalTreasuryDraft.error ? (
+                  <div className="mt-3 rounded-2xl border border-rose-300/20 bg-rose-300/[0.08] p-3 text-sm leading-7 text-rose-100/82">
+                    {proposalTreasuryDraft.error}
+                  </div>
+                ) : null}
                 {!liveDaoRuntime?.address ? (
                   <p className="mt-4 text-sm leading-7 text-amber-100/70">
                     Live proposal submit unlocks after a live web DAO bootstrap so the wallet flow has a real DAO address and governance mint to target.
@@ -1077,6 +1181,11 @@ export function GovernanceActionWorkbench() {
                     <div className="text-[11px] uppercase tracking-[0.2em] text-cyan-100/72">Live DAO lane</div>
                     <div className="mt-2 break-all text-white">{liveDaoRuntime.address}</div>
                     <div className="mt-1 break-all text-white/62">Governance mint {liveDaoRuntime.governanceMint}</div>
+                    {proposalTreasuryDraft.action ? (
+                      <div className="mt-1 text-white/62">
+                        Pending treasury action {proposalTreasuryAmountSol.trim()} SOL {"->"} {proposalTreasuryRecipient.trim()}
+                      </div>
+                    ) : null}
                   </div>
                 ) : null}
                 <Button className="mt-4 w-full" disabled={!canSubmitLiveProposal} onClick={() => openReview("create_proposal")}>
@@ -1273,12 +1382,14 @@ export function GovernanceActionWorkbench() {
                 </div>
                 {!hasLiveCommitLane ? (
                   <p className="mt-4 text-sm leading-7 text-amber-100/70">
-                    Standard execute unlocks only after the same live DAO/proposal lane reaches finalize. Without that lane, the web surface will not imply that execute can proceed.
+                    Execute unlocks only after the same live DAO/proposal lane reaches finalize. Without that lane, the web surface will not imply that execute can proceed.
                   </p>
                 ) : (
                   <div className="mt-4 rounded-2xl border border-amber-300/18 bg-amber-300/[0.08] p-3 text-sm text-white/72">
                     <div className="text-[11px] uppercase tracking-[0.2em] text-amber-100/72">Execute boundary</div>
-                    <div className="mt-2 text-white">This current web lane executes only standard proposals without treasury actions.</div>
+                    <div className="mt-2 text-white">
+                      This current web lane executes standard proposals and live SendSol treasury motions. Token and custom treasury actions still stay on the richer payout path.
+                    </div>
                     <div className="mt-1 break-all text-white/62">Proposal {activeLiveProposalAddress}</div>
                   </div>
                 )}
@@ -1303,7 +1414,7 @@ export function GovernanceActionWorkbench() {
                   </div>
                 ) : liveVoteRuntime?.executeSignature ? (
                   <div className="mt-4 rounded-2xl border border-emerald-300/18 bg-emerald-300/[0.08] p-3 text-sm leading-7 text-emerald-100/82">
-                    <div>Last standard execute cleared from the current web lane.</div>
+                    <div>Last live execute cleared from the current web lane.</div>
                     <div className="mt-2 break-all text-white/60">Signature {liveVoteRuntime.executeSignature}</div>
                   </div>
                 ) : null}
