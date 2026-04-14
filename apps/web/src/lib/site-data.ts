@@ -195,9 +195,9 @@ export const gettingStartedActions = [
     href: "/story",
   },
   {
-    title: "Move into command center",
+    title: "Move into govern",
     detail: "Create, vote, reveal, and execute in one operational rail without dropping into raw docs.",
-    href: "/command-center",
+    href: "/govern",
   },
 ];
 
@@ -449,8 +449,8 @@ export const platformServiceLayers = [
       "Execute Proposal",
       "Treasury Execution",
     ],
-    href: "/command-center",
-    cta: "Open governance core",
+    href: "/govern",
+    cta: "Open govern flow",
   },
   {
     layer: "Layer 2",
@@ -588,7 +588,7 @@ export const productCorridors = [
     summary:
       "The main governance system for private proposals, treasury execution, reviewer-visible evidence, and additive V3 hardening.",
     technologies: ["ZK", "REFHE", "Governance V3", "Settlement V3"],
-    href: "/command-center",
+    href: "/govern",
     cta: "Open core governance rail",
   },
   {
@@ -642,12 +642,12 @@ export const competitionTracks = [
     recommendedWallet: "Solflare for the live demo, Phantom as fallback for judges.",
     demoRoute: "/start",
     winningThesis:
-      "Win by showing one coherent startup-quality product: start flow, command center, proof continuity, services, diagnostics, and trust surfaces in one system.",
+      "Win by showing one coherent startup-quality product: start flow, govern flow, proof continuity, services, diagnostics, and trust surfaces in one system.",
     summary:
       "PrivateDAO is now strongest where product impact, security posture, wallet UX, proof continuity, and startup-quality packaging meet inside one live surface.",
     edge: "The project already has a root-domain app, story route, tracks workspace, proof center, diagnostics, and commercial corridors.",
     gap: "The highest-value gap is continued tightening of first-run clarity and submission polish, not protocol invention.",
-    action: "Lead the full submission from /start to /command-center to /proof/?judge=1, then close with services, diagnostics, and trust package.",
+    action: "Lead the full submission from /start to /govern to /proof/?judge=1, then close with services, diagnostics, and trust package.",
     href: "/start",
     sourceUrl: "https://blog.colosseum.com/announcing-the-solana-frontier-hackathon/",
   },
@@ -682,14 +682,14 @@ export const competitionTracks = [
     prizeSummary: "Live dApp sponsor fit around wallet UX, partner polish, and infrastructure rails.",
     winnerAnnouncementBy: "Follow the Superteam listing for final track timing.",
     recommendedWallet: "Solflare as the default demo wallet.",
-    demoRoute: "/command-center",
+    demoRoute: "/govern",
     winningThesis:
       "Show one wallet-first product flow that feels live, partner-ready, and infrastructure-aware from the first click.",
     summary:
       "The app is live and operational already, but this track gets stronger when one concrete partner-facing flow is surfaced around wallet UX, live dApp behavior, and infrastructure.",
     edge: "PrivateDAO already has wallet adapter, operational UI, and live proof surfaces; the highest-value uplift is a tighter partner corridor.",
-    gap: "The strongest version of this submission is the wallet-first corridor, the hosted story video, and the command center flow working together.",
-    action: "Lead with the live app, the story route, and the command center as one continuous wallet-first demo.",
+    gap: "The strongest version of this submission is the wallet-first corridor, the hosted story video, and the govern flow working together.",
+    action: "Lead with the live app, the story route, and the govern flow as one continuous wallet-first demo.",
     href: "/services",
     sourceUrl: "https://superteam.fun/earn/listing/build-a-live-dapp-with-solflare-kamino-dflow-or-quicknode-with-eitherway-app",
   },
@@ -730,9 +730,9 @@ export const competitionTracks = [
     summary:
       "The frontend is now much stronger, but this track wants the app to feel intuitive to normal users, not only operators and reviewers.",
     edge: "The new operational shell and corridors already move the project closer to consumer-grade clarity.",
-    gap: "The strongest version of this submission is the buyer journey, the story video, and the command center working as one product path.",
-    action: "Lead with the story route, buyer journey, command center, and cleaner wallet-first navigation.",
-    href: "/command-center",
+    gap: "The strongest version of this submission is the buyer journey, the story video, and the govern flow working as one product path.",
+    action: "Lead with the story route, buyer journey, govern flow, and cleaner wallet-first navigation.",
+    href: "/govern",
     sourceUrl: "https://superteam.fun/earn/listing/tokenton26-consumer-apps-track-dollar8500-prize-pool",
   },
   {
@@ -877,12 +877,12 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winnerAnnouncementBy: "Frontier runs April 6 to May 11, 2026 and judges product impact above bounty stacking.",
     skillsNeeded: ["Frontend", "Backend", "Blockchain", "Design", "Product"],
     recommendedWallet: "Solflare for the main demo, Phantom fallback for judge familiarity.",
-    devnetStatus: "Live on Devnet with root-domain product shell, command center, proof center, diagnostics, services, and story route.",
+    devnetStatus: "Live on Devnet with root-domain product shell, govern flow, proof center, diagnostics, services, and story route.",
     objective:
       "Present PrivateDAO as a startup-quality Solana product that already behaves like a pre-mainnet company rather than a hacked-together protocol demo.",
     whyUs:
       "PrivateDAO now connects onboarding, wallet-first governance, proof continuity, diagnostics, services, trust packets, and competition routes inside one live app.",
-    primaryCorridor: "Start → Command Center → Proof → Services",
+    primaryCorridor: "Start → Govern → Proof → Services",
     liveRoute: "/start",
     judgeRoute: "/proof/?judge=1",
     proofRoute: "/documents/frontier-competition-readiness-2026",
@@ -891,7 +891,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl: "https://blog.colosseum.com/announcing-the-solana-frontier-hackathon/",
     deliverables: [
-      "Lead the first 90 seconds from /start into /command-center with a real wallet-first path.",
+      "Lead the first 90 seconds from /start into /govern with a real wallet-first path.",
       "Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity.",
       "Keep the README, deck, story video, and track center perfectly aligned with the live site.",
     ],
@@ -903,7 +903,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winningMoves: [
       "Open with the problem, the user path, and why this is a real governance product, not with protocol trivia.",
       "Show signer hygiene, timelock awareness, proof continuity, and launch honesty as first-class product values.",
-      "Use the story route to compress the whole thesis, then deepen through command center, proof, and services.",
+      "Use the story route to compress the whole thesis, then deepen through govern, proof, and services.",
     ],
     sponsorFit: [
       "Colosseum Frontier now rewards product impact and startup quality more than bounty accumulation.",
@@ -913,7 +913,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     validationSteps: [
       "Run `cd apps/web && npm run lint && npm run build` before recording or final screenshots.",
       "Run `npm run web:bundle:root && npm run web:verify:live:root` to keep the live site deployment-grade.",
-      "Use `/start`, `/story`, `/command-center`, `/proof/?judge=1`, and `/services` as the primary submission chain.",
+      "Use `/start`, `/story`, `/govern`, `/proof/?judge=1`, and `/services` as the primary submission chain.",
     ],
   },
   {
@@ -972,13 +972,13 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winnerAnnouncementBy: "Follow the sponsor track announcement date listed on Superteam Earn.",
     skillsNeeded: ["Frontend", "Backend", "Blockchain"],
     recommendedWallet: "Solflare as the default demo wallet, Phantom as the backup judge wallet.",
-    devnetStatus: "Live on Devnet with wallet adapter, command center, onboarding, and hosted story video.",
+    devnetStatus: "Live on Devnet with wallet adapter, govern flow, onboarding, and hosted story video.",
     objective:
       "Present PrivateDAO as a wallet-first live dApp with a polished operational UI, clean partner corridor, and concrete usage path.",
     whyUs:
-      "The Next.js product shell, wallet adapter integration, command center, proof center, and diagnostics already make PrivateDAO feel like a serious live application rather than a docs shell.",
+      "The Next.js product shell, wallet adapter integration, govern flow, proof center, and diagnostics already make PrivateDAO feel like a serious live application rather than a docs shell.",
     primaryCorridor: "PrivateDAO Core + Read API + RPC",
-    liveRoute: "/command-center",
+    liveRoute: "/govern",
     judgeRoute: "/proof/?judge=1",
     proofRoute: "/documents/frontier-integrations",
     deckRoute: "/viewer/investor-pitch-deck",
@@ -987,7 +987,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     sourceUrl:
       "https://superteam.fun/earn/listing/build-a-live-dapp-with-solflare-kamino-dflow-or-quicknode-with-eitherway-app",
     deliverables: [
-      "Demo a wallet-connected path from overview to command center to treasury execution.",
+      "Demo a wallet-connected path from overview to govern to treasury execution.",
       "Use the new story video plus the live dApp surface on privatedao.org as the submission core.",
       "Show partner-fit corridors for wallet UX, proof, diagnostics, and infrastructure readiness.",
     ],
@@ -999,17 +999,17 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winningMoves: [
       "Lead with the live operational shell and Connect Wallet as the first interaction.",
       "Show that the same app serves judges, operators, and buyers without changing products.",
-      "Use the story route, command center, and proof center as one connected demo path.",
+      "Use the story route, govern flow, and proof center as one connected demo path.",
     ],
     sponsorFit: [
       "Wallet-native judges care about a clean first-run path more than a dense proof surface on first click.",
-      "The story route, start route, and command center now work as one connected live-dApp corridor.",
+      "The story route, start route, and govern flow now work as one connected live-dApp corridor.",
       "Eitherway fit improves when the product reads as a real startup app rather than a docs shell.",
     ],
     validationSteps: [
       "Run `npm run verify:browser-smoke` after UI edits so wallet and route entry remain stable.",
       "Run `npm run verify:frontend-surface` so the live shell stays polished and coherent.",
-      "Use `https://privatedao.org/start/` then `https://privatedao.org/command-center/` as the primary demo sequence.",
+      "Use `https://privatedao.org/start/` then `https://privatedao.org/govern/` as the primary demo sequence.",
     ],
   },
   {
@@ -1068,13 +1068,13 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winnerAnnouncementBy: "April 2, 2026 according to the live listing.",
     skillsNeeded: ["Frontend", "Backend", "Blockchain", "Design"],
     recommendedWallet: "Solflare for first-run clarity, Phantom as the mainstream fallback.",
-    devnetStatus: "Live on Devnet with guided onboarding, story route, buyer journey rail, and command center.",
+    devnetStatus: "Live on Devnet with guided onboarding, story route, buyer journey rail, and govern flow.",
     objective:
       "Show that a governance system can feel intuitive, guided, and non-intimidating to a normal user.",
     whyUs:
-      "The new multi-page shell, buyer journey rail, command center, and wallet-first product story already improve first-run comprehension compared with a raw DAO console.",
+      "The new multi-page shell, buyer journey rail, govern flow, and wallet-first product story already improve first-run comprehension compared with a raw DAO console.",
     primaryCorridor: "PrivateDAO Core + Buyer Journey",
-    liveRoute: "/command-center",
+    liveRoute: "/govern",
     judgeRoute: "/story",
     proofRoute: "/documents/trust-package",
     deckRoute: "/viewer/investor-pitch-deck",
@@ -1083,7 +1083,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     sourceUrl:
       "https://superteam.fun/earn/listing/tokenton26-consumer-apps-track-dollar8500-prize-pool",
     deliverables: [
-      "Lead the demo from the home page into a guided pack selection and then into the command center.",
+      "Lead the demo from the home page into a guided pack selection and then into govern.",
       "Keep labels human-readable and buyer-first on the home, story, services, and documents routes.",
       "Use the comprehensive story video as the fast first-look asset for non-technical judges.",
     ],
@@ -1104,7 +1104,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     ],
     validationSteps: [
       "Run `npm run verify:browser-smoke` after changing onboarding or wallet UX.",
-      "Keep `/start/`, `/story/`, and `/command-center/` in the submission bundle and README.",
+      "Keep `/start/`, `/story/`, and `/govern/` in the submission bundle and README.",
       "Use the hosted frontier overview video as the first asset for non-technical judges.",
     ],
   },
@@ -1130,7 +1130,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl: "https://superteam.fun/earn/listing/ranger-build-a-bear-hackathon-main-track",
     deliverables: [
-      "Lead with the product shell, corridors, command center, and trust links rather than protocol detail first.",
+      "Lead with the product shell, corridors, govern flow, and trust links rather than protocol detail first.",
       "Use the story route and the tracks workspace as submission entrypoints.",
       "Keep the deck and README aligned with the live site and competition center.",
     ],
@@ -1843,8 +1843,8 @@ export const heroPersonas = {
       "See service packs, pricing language, trust boundaries, launch blockers, and a guided path from product selection to treasury execution.",
     primaryCtaLabel: "Get started",
     primaryCtaHref: "/start",
-    secondaryCtaLabel: "Open command center",
-    secondaryCtaHref: "/command-center",
+    secondaryCtaLabel: "Open govern",
+    secondaryCtaHref: "/govern",
     badge: "Commercial + launch aware",
   },
   judge: {
