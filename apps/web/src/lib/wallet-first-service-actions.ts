@@ -94,8 +94,8 @@ function getProposalReviewAction(context: WalletFirstServiceActionContext, execu
           primaryLabel: "Open proposal review lane",
         }
       : {
-          primaryHref: "/command-center#proposal-review-action",
-          primaryLabel: "Open command-center review lane",
+          primaryHref: "/govern#proposal-review-action",
+          primaryLabel: "Open govern review lane",
         };
 
   return {
@@ -209,7 +209,7 @@ function getProposalReviewOptions(): ProposalReviewOption[] {
     mintSymbol: proposal.execution.mintSymbol,
     mintAddress: proposal.execution.mintAddress,
     recipient: proposal.execution.recipient,
-    primaryHref: `/command-center?proposal=${proposal.id}#proposal-review-action`,
+    primaryHref: `/govern?proposal=${proposal.id}#proposal-review-action`,
     primaryLabel: "Open review lane with this proposal",
     proofHref:
       proposal.status === "Execution ready" || proposal.status === "Executed"
@@ -262,7 +262,7 @@ function getPayoutRouteOptions(
       slug: "vendor-payout",
       title: "Vendor payout",
       summary:
-        "Use the governed vendor route when the action needs execution visibility, payout discipline, and command-shell traceability.",
+        "Use the governed vendor route when the action needs execution visibility, payout discipline, and govern-flow traceability.",
       routeFocus: "Operator-visible payout corridor",
       defaultLane: "operator",
       defaultAssetSymbol: "USDC",
@@ -270,8 +270,8 @@ function getPayoutRouteOptions(
       stateDetail: treasury.exactBlockerSummary,
       primaryHref: "/engage?profile=vendor-payout",
       primaryLabel: "Open vendor payout path",
-      proofHref: "/command-center",
-      proofLabel: "Open command-center payout path",
+      proofHref: "/govern",
+      proofLabel: "Open govern payout path",
     },
     {
       slug: "contributor-payout",
@@ -285,8 +285,8 @@ function getPayoutRouteOptions(
       stateDetail: treasury.exactBlockerSummary,
       primaryHref: "/engage?profile=contributor-payout",
       primaryLabel: "Open contributor payout path",
-      proofHref: "/command-center",
-      proofLabel: "Open command-center payout path",
+      proofHref: "/govern",
+      proofLabel: "Open govern payout path",
     },
   ];
 }

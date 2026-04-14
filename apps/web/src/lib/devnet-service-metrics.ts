@@ -557,8 +557,8 @@ export function getExecutionSurfaceSnapshot(): ExecutionSurfaceSnapshot {
       value: validation.proposalFlowHealth.value,
       detail: validation.proposalFlowHealth.detail,
       tone: validation.proposalFlowHealth.tone,
-      routeHref: "/command-center",
-      routeLabel: "Open command center",
+      routeHref: "/govern",
+      routeLabel: "Open govern flow",
     },
     walletReadiness: {
       label: "Wallet readiness",
