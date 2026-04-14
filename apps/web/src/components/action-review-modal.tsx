@@ -76,7 +76,15 @@ export function ActionReviewModal({
       ? "Sign and submit DAO bootstrap"
       : action === "create_proposal"
         ? "Sign and submit proposal create"
-      : "Continue in UI";
+      : action === "commit_vote"
+        ? "Sign and submit vote commit"
+        : action === "reveal_vote"
+          ? "Sign and submit vote reveal"
+          : action === "finalize_proposal"
+            ? "Sign and submit proposal finalize"
+            : action === "execute_proposal"
+              ? "Sign and submit standard execute"
+              : "Continue in UI";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#03050e]/84 px-4 backdrop-blur-md">

@@ -89,7 +89,8 @@ Current web/runtime boundary:
 - `Create DAO` now has a live wallet-first Devnet bootstrap path in the web action workbench.
 - `Create Proposal` now has a live wallet-first Devnet submit path in the same workbench once a live DAO bootstrap has already established the DAO lane.
 - `Commit Vote`, `Reveal Vote`, and `Finalize Proposal` now use the same live wallet-first workbench lane once a real DAO and proposal already exist in session state.
-- `Execute Proposal` still stays visible in the same product shell, but remains the last staged shell while unified live parity continues expanding across web and Android.
+- `Execute Proposal` now also has a live wallet-first standard execute path for the current no-treasury-action web proposal lane.
+- Treasury transfer execution still requires the richer payout path because the current live web proposal builder does not yet carry treasury actions into the proposal itself.
 
 The rule is strict:
 

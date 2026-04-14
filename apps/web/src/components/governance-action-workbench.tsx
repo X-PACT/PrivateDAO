@@ -19,6 +19,7 @@ import {
   buildCommitVoteTransaction,
   buildCreateDaoBootstrapTransaction,
   buildCreateProposalTransaction,
+  buildExecuteProposalTransaction,
   buildFinalizeProposalTransaction,
   buildRevealVoteTransaction,
   computeProposalCommitment,
@@ -83,6 +84,11 @@ export function GovernanceActionWorkbench() {
     signature?: string;
   }>({ status: "idle", message: "" });
   const [finalizeRuntime, setFinalizeRuntime] = useState<{
+    status: "idle" | "submitting" | "success" | "error";
+    message: string;
+    signature?: string;
+  }>({ status: "idle", message: "" });
+  const [executeRuntime, setExecuteRuntime] = useState<{
     status: "idle" | "submitting" | "success" | "error";
     message: string;
     signature?: string;
@@ -227,6 +233,12 @@ export function GovernanceActionWorkbench() {
     hasLiveCommitLane &&
     canFinalize &&
     finalizeRuntime.status !== "submitting";
+  const canExecuteLive =
+    connected &&
+    Boolean(publicKey) &&
+    hasLiveCommitLane &&
+    canExecute &&
+    executeRuntime.status !== "submitting";
 
   useEffect(() => {
     if (!handoff) return;
@@ -627,6 +639,78 @@ export function GovernanceActionWorkbench() {
     }
   }
 
+  async function submitExecuteProposalLive() {
+    if (!publicKey || !liveDaoRuntime?.address || !activeLiveProposalAddress) {
+      setExecuteRuntime({
+        status: "error",
+        message: "Create, finalize, and keep a live DAO/proposal lane first so execute has a real target.",
+      });
+      return;
+    }
+
+    try {
+      setExecuteRuntime({
+        status: "submitting",
+        message: "Preparing standard execute transaction for the current live proposal lane...",
+      });
+
+      const proposalAddress = new PublicKey(activeLiveProposalAddress);
+      const proposalDetails = await fetchProposalAccountDetails(connection, proposalAddress);
+      const nowTs = Math.floor(Date.now() / 1000);
+
+      if (proposalDetails.status !== "Passed") {
+        throw new Error("Only passed proposals can execute. Finalize the live proposal first and re-check its outcome.");
+      }
+      if (proposalDetails.isExecuted) {
+        throw new Error("This live proposal is already executed on devnet.");
+      }
+      if (proposalDetails.hasTreasuryAction) {
+        throw new Error(
+          "The current web live execute lane supports standard proposals without treasury actions. Treasury transfer execution still requires the richer payout path.",
+        );
+      }
+      if (nowTs < proposalDetails.executionUnlocksAt) {
+        throw new Error("Execution timelock is still active for this live proposal.");
+      }
+
+      const executeSubmission = await buildExecuteProposalTransaction({
+        connection,
+        daoAddress: new PublicKey(liveDaoRuntime.address),
+        executor: publicKey,
+        proposalAddress,
+      });
+
+      setExecuteRuntime({
+        status: "submitting",
+        message: "Awaiting wallet signature for the standard execute transaction...",
+      });
+
+      const signature = await sendTransaction(executeSubmission.transaction, connection, {
+        preflightCommitment: "confirmed",
+      });
+
+      await connection.confirmTransaction(signature, "confirmed");
+
+      executeProposal(signature);
+      recordLog("Proposal executed live", `${proposalAddress.toBase58()} · ${signature}`);
+
+      setExecuteRuntime({
+        status: "success",
+        message:
+          "Standard execute submitted live on devnet. This current web proposal lane carries no treasury action, so execute closes the lifecycle without moving treasury funds.",
+        signature,
+      });
+    } catch (error) {
+      setExecuteRuntime({
+        status: "error",
+        message:
+          error instanceof Error && error.message
+            ? error.message
+            : "Execute proposal failed before confirmation.",
+      });
+    }
+  }
+
   async function confirmReviewAction() {
     if (!reviewAction) return;
     const activeAction = reviewAction;
@@ -652,6 +736,10 @@ export function GovernanceActionWorkbench() {
       await submitFinalizeProposalLive();
       return;
     }
+    if (activeAction === "execute_proposal" && !hasPayloadDrivenExecution) {
+      await submitExecuteProposalLive();
+      return;
+    }
 
     const handlers: Record<CoreGovernanceInstructionName, () => void> = {
       initialize_dao: createDao,
@@ -673,10 +761,10 @@ export function GovernanceActionWorkbench() {
               <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/72">Web app workflow</div>
               <CardTitle className="mt-2">All normal-user operations run from the UI</CardTitle>
             </div>
-            <Badge variant="success">Live DAO / Proposal / Vote Lane</Badge>
+            <Badge variant="success">Live DAO / Proposal / Vote / Execute Lane</Badge>
           </div>
           <p className="max-w-3xl text-sm leading-7 text-white/60">
-            Wallet connection, DAO bootstrap, proposal submit, vote commit, vote reveal, and finalize now share the same web product lane. Execute still remains the last staged shell while the same runtime truth keeps expanding from this surface.
+            Wallet connection, DAO bootstrap, proposal submit, vote commit, vote reveal, finalize, and standard execute now share the same web product lane. Treasury transfer execution still remains a richer path that needs treasury actions to be carried from proposal creation.
           </p>
         </CardHeader>
         <CardContent className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
@@ -1183,12 +1271,42 @@ export function GovernanceActionWorkbench() {
                   <Play className="h-4 w-4 text-amber-300" />
                   <div className="text-base font-medium text-white">Execute Proposal</div>
                 </div>
-                <p className="mt-4 text-sm leading-7 text-white/56">
-                  Execution still stays in the staged signing shell. The web live lane now reaches finalize, while execute remains the last boundary still being unified.
-                </p>
-                <Button className="mt-4 w-full" disabled={!canExecute} onClick={() => openReview("execute_proposal")} variant="outline">
-                  Execute Proposal
+                {!hasLiveCommitLane ? (
+                  <p className="mt-4 text-sm leading-7 text-amber-100/70">
+                    Standard execute unlocks only after the same live DAO/proposal lane reaches finalize. Without that lane, the web surface will not imply that execute can proceed.
+                  </p>
+                ) : (
+                  <div className="mt-4 rounded-2xl border border-amber-300/18 bg-amber-300/[0.08] p-3 text-sm text-white/72">
+                    <div className="text-[11px] uppercase tracking-[0.2em] text-amber-100/72">Execute boundary</div>
+                    <div className="mt-2 text-white">This current web lane executes only standard proposals without treasury actions.</div>
+                    <div className="mt-1 break-all text-white/62">Proposal {activeLiveProposalAddress}</div>
+                  </div>
+                )}
+                <Button className="mt-4 w-full" disabled={!canExecuteLive} onClick={() => openReview("execute_proposal")} variant="outline">
+                  {executeRuntime.status === "submitting" ? "Awaiting wallet..." : "Execute Proposal"}
                 </Button>
+                {executeRuntime.status !== "idle" ? (
+                  <div
+                    className={cn(
+                      "mt-4 rounded-2xl border p-3 text-sm leading-7",
+                      executeRuntime.status === "error"
+                        ? "border-rose-300/20 bg-rose-300/[0.08] text-rose-100/82"
+                        : executeRuntime.status === "success"
+                          ? "border-emerald-300/18 bg-emerald-300/[0.08] text-emerald-100/82"
+                          : "border-amber-300/18 bg-amber-300/[0.08] text-amber-100/82",
+                    )}
+                  >
+                    <div>{executeRuntime.message}</div>
+                    {executeRuntime.signature ? (
+                      <div className="mt-2 break-all text-white/60">Signature {executeRuntime.signature}</div>
+                    ) : null}
+                  </div>
+                ) : liveVoteRuntime?.executeSignature ? (
+                  <div className="mt-4 rounded-2xl border border-emerald-300/18 bg-emerald-300/[0.08] p-3 text-sm leading-7 text-emerald-100/82">
+                    <div>Last standard execute cleared from the current web lane.</div>
+                    <div className="mt-2 break-all text-white/60">Signature {liveVoteRuntime.executeSignature}</div>
+                  </div>
+                ) : null}
               </div>
             </>
           )}

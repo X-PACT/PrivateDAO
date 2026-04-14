@@ -48,6 +48,7 @@ type LiveProposalRuntime = {
 type LiveVoteRuntime = {
   commitmentHex: string;
   commitSignature?: string;
+  executeSignature?: string;
   finalizeSignature?: string;
   proposalAddress: string;
   revealSignature?: string;
@@ -170,7 +171,7 @@ type GovernanceSessionContextValue = GovernanceSessionState & {
   commitVote: (liveRuntime?: LiveVoteRuntime | null) => void;
   revealVote: (liveRuntime?: Pick<LiveVoteRuntime, "proposalAddress" | "revealSignature" | "saltHex" | "voteChoice"> | null) => void;
   finalizeProposal: (signature?: string | null) => void;
-  executeProposal: () => void;
+  executeProposal: (signature?: string | null) => void;
   resetSession: () => void;
 };
 
@@ -405,7 +406,7 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
               : `${current.proposalTitle} has been finalized in the staged UI flow and is now waiting on execution timing.`,
           ),
         ),
-      executeProposal: () =>
+      executeProposal: (signature) =>
         setState((current) => {
           const nextExecutionIntent: GovernanceExecutionIntent | null = current.executionIntent?.requestPayload
             ? {
@@ -437,12 +438,20 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
             {
               ...current,
               proposalExecuted: true,
+              liveVoteRuntime: current.liveVoteRuntime && signature
+                ? {
+                    ...current.liveVoteRuntime,
+                    executeSignature: signature,
+                  }
+                : current.liveVoteRuntime,
               executionIntent: nextExecutionIntent,
             },
             current.executionIntent?.requestPayload ? "Delivered payload submitted" : "Proposal executed",
             current.executionIntent?.requestPayload
               ? `${current.executionIntent.requestPayload.requestId} · ${current.executionIntent.requestPayload.amountDisplay} · ${current.executionIntent.requestPayload.reference ?? "reference pending"} submitted from the payload-driven signing shell into ${current.executionIntent.requestPayload.deliveryRoute}.`
-              : `${current.proposalTitle} advanced to the execute stage in the product workflow.`,
+              : signature
+                ? `${current.proposalTitle} executed live on devnet from the current standard proposal lane.`
+                : `${current.proposalTitle} advanced to the execute stage in the product workflow.`,
           );
 
           return current.executionIntent?.requestPayload

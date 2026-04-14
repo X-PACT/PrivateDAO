@@ -64,8 +64,11 @@ type CreateProposalResult = {
 type ProposalAccountDetails = {
   dao: string;
   executionUnlocksAt: number;
+  hasTreasuryAction: boolean;
+  isExecuted: boolean;
   proposalId: bigint;
   revealEnd: number;
+  status: "Voting" | "Passed" | "Failed" | "Cancelled" | "Vetoed" | "Unknown";
   title: string;
   votingEnd: number;
 };
@@ -92,6 +95,14 @@ type FinalizeProposalInput = {
   daoAddress: PublicKey;
   finalizer: PublicKey;
   proposalAddress: PublicKey;
+};
+
+type ExecuteProposalInput = {
+  connection: Connection;
+  daoAddress: PublicKey;
+  executor: PublicKey;
+  proposalAddress: PublicKey;
+  treasuryRecipient?: PublicKey;
 };
 
 const SYSVAR_RENT_PUBKEY = new PublicKey("SysvarRent111111111111111111111111111111111");
@@ -208,6 +219,22 @@ function deriveDelegationMarkerAddress(proposal: PublicKey, voter: PublicKey) {
   return delegationMarker;
 }
 
+function deriveTreasuryAddress(dao: PublicKey) {
+  const [treasury] = PublicKey.findProgramAddressSync(
+    [Buffer.from("treasury"), dao.toBuffer()],
+    PRIVATE_DAO_PROGRAM_ID,
+  );
+  return treasury;
+}
+
+function deriveConfidentialPayoutPlanAddress(proposal: PublicKey) {
+  const [plan] = PublicKey.findProgramAddressSync(
+    [Buffer.from("payout-plan"), proposal.toBuffer()],
+    PRIVATE_DAO_PROGRAM_ID,
+  );
+  return plan;
+}
+
 async function resolveLatestBlockhash(connection: Connection) {
   let latestError: unknown;
 
@@ -278,20 +305,40 @@ function decodeProposalAccount(data: Uint8Array): ProposalAccountDetails {
   offset.value += 8;
   const title = parseString(data, offset);
   offset.value += parseU32LE(data, offset.value) + 4; // description
-  offset.value += 1; // status
+  const statusByte = data[offset.value];
+  offset.value += 1;
   const votingEnd = parseI64LE(data, offset.value);
   offset.value += 8;
   const revealEnd = parseI64LE(data, offset.value);
   offset.value += 8;
   offset.value += 8 * 6; // yes/no tallies + commit/reveal counts
+  const hasTreasuryAction = data[offset.value] === 1;
   offset.value += 75; // treasury action
   const executionUnlocksAt = parseI64LE(data, offset.value);
+  offset.value += 8;
+  const isExecuted = data[offset.value] === 1;
+
+  const status =
+    statusByte === 0
+      ? "Voting"
+      : statusByte === 1
+        ? "Passed"
+        : statusByte === 2
+          ? "Failed"
+          : statusByte === 3
+            ? "Cancelled"
+            : statusByte === 4
+              ? "Vetoed"
+              : "Unknown";
 
   return {
     dao,
     executionUnlocksAt,
+    hasTreasuryAction,
+    isExecuted,
     proposalId,
     revealEnd,
+    status,
     title,
     votingEnd,
   };
@@ -584,4 +631,44 @@ export async function buildFinalizeProposalTransaction({
   transaction.recentBlockhash = latest.blockhash;
 
   return { transaction };
+}
+
+export async function buildExecuteProposalTransaction({
+  connection,
+  daoAddress,
+  executor,
+  proposalAddress,
+  treasuryRecipient = executor,
+}: ExecuteProposalInput) {
+  const treasury = deriveTreasuryAddress(daoAddress);
+  const confidentialPayoutPlan = deriveConfidentialPayoutPlanAddress(proposalAddress);
+  const data = await anchorMethodDiscriminator("execute_proposal");
+
+  const instruction = new TransactionInstruction({
+    programId: PRIVATE_DAO_PROGRAM_ID,
+    keys: [
+      { pubkey: daoAddress, isSigner: false, isWritable: false },
+      { pubkey: proposalAddress, isSigner: false, isWritable: true },
+      { pubkey: treasury, isSigner: false, isWritable: true },
+      { pubkey: executor, isSigner: true, isWritable: false },
+      { pubkey: treasuryRecipient, isSigner: false, isWritable: true },
+      { pubkey: treasury, isSigner: false, isWritable: true },
+      { pubkey: treasury, isSigner: false, isWritable: true },
+      { pubkey: confidentialPayoutPlan, isSigner: false, isWritable: false },
+      { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
+      { pubkey: SystemProgram.programId, isSigner: false, isWritable: false },
+    ],
+    data: Buffer.from(data),
+  });
+
+  const transaction = new Transaction().add(instruction);
+  transaction.feePayer = executor;
+  const latest = await resolveLatestBlockhash(connection);
+  transaction.recentBlockhash = latest.blockhash;
+
+  return {
+    confidentialPayoutPlan,
+    transaction,
+    treasury,
+  };
 }
