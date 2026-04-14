@@ -63,6 +63,8 @@ export function OperationsShell({
   const pathname = usePathname();
   const navItems = navigationMode === "guided" ? guidedNav : operationsNav;
   const useMinimalGuidedChrome = navigationMode === "guided";
+  const isGovernRoute = pathname === "/govern" || pathname.startsWith("/govern/");
+  const isGuidedRoute = navigationMode === "guided";
 
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
@@ -184,7 +186,7 @@ export function OperationsShell({
               </div>
 
               <div className="mt-8 flex flex-wrap gap-3">
-                {pathname === "/govern" ? (
+                {isGovernRoute ? (
                   <>
                     <a className={buttonVariants({ size: "sm" })} href="#proposal-review-action">
                       Start the flow
@@ -192,8 +194,8 @@ export function OperationsShell({
                     <Link className={buttonVariants({ size: "sm", variant: "secondary" })} href="/live">
                       Open live state
                     </Link>
-                    <Link className={buttonVariants({ size: "sm", variant: "outline" })} href="/documents">
-                      Open curated docs
+                    <Link className={buttonVariants({ size: "sm", variant: "outline" })} href="/trust">
+                      Open trust only if needed
                     </Link>
                   </>
                 ) : (
@@ -204,9 +206,15 @@ export function OperationsShell({
                     <Link className={buttonVariants({ size: "sm", variant: "secondary" })} href="/live">
                       Open live state
                     </Link>
-                    <Link className={buttonVariants({ size: "sm", variant: "outline" })} href="/documents">
-                      Open curated docs
-                    </Link>
+                    {isGuidedRoute ? (
+                      <Link className={buttonVariants({ size: "sm", variant: "outline" })} href="/trust">
+                        Open trust only if needed
+                      </Link>
+                    ) : (
+                      <Link className={buttonVariants({ size: "sm", variant: "outline" })} href="/documents">
+                        Open curated docs
+                      </Link>
+                    )}
                   </>
                 )}
               </div>
