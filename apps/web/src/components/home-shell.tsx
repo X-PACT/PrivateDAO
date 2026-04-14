@@ -20,8 +20,8 @@ export function HomeShell() {
     {
       title: "Command Center",
       description: "Create, vote, reveal, and execute through the wallet-first governance rail.",
-      href: "/command-center",
-      cta: "Open command center",
+      href: "/govern",
+      cta: "Open govern",
       icon: Compass,
     },
     {
@@ -34,8 +34,8 @@ export function HomeShell() {
     {
       title: "Security Layer",
       description: "Open ZK matrix, confidence engine, policy composer, and launch boundaries.",
-      href: "/security",
-      cta: "Open security",
+      href: "/trust",
+      cta: "Open trust",
       icon: LockKeyhole,
     },
     {
@@ -76,7 +76,7 @@ export function HomeShell() {
     {
       title: "Story video is submission-ready",
       description: "The public reel explains the product, cryptography, and commercial corridors in one watch surface.",
-      href: "/story",
+      href: "/demo",
       icon: PlayCircle,
     },
   ];
@@ -90,13 +90,13 @@ export function HomeShell() {
     {
       title: "2. Create and govern",
       description: "Create a DAO, submit a proposal, vote, and execute from one wallet-first surface.",
-      href: "/command-center",
+      href: "/govern",
       cta: "Open govern",
     },
     {
       title: "3. Verify the result",
       description: "Check live state, logs, and proof without leaving the product corridor.",
-      href: "/dashboard",
+      href: "/live",
       cta: "Open live state",
     },
   ];

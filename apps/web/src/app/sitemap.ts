@@ -8,6 +8,10 @@ export const dynamic = "force-static";
 const coreRoutes = [
   "",
   "/start",
+  "/govern",
+  "/live",
+  "/trust",
+  "/demo",
   "/services",
   "/command-center",
   "/proof",

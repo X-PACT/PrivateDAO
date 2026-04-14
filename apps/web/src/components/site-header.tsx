@@ -37,10 +37,10 @@ const navItems = [
 const utilityNav = [
   { href: "/documents", label: "Docs" },
   { href: "/services", label: "Plans & API" },
-  { href: "/command-center", label: "Govern" },
-  { href: "/story", label: "Demo" },
-  { href: "/dashboard", label: "Live State" },
-  { href: "/security", label: "Trust" },
+  { href: "/govern", label: "Govern" },
+  { href: "/demo", label: "Demo" },
+  { href: "/live", label: "Live State" },
+  { href: "/trust", label: "Trust" },
   { href: "/assistant", label: "Get Support" },
 ];
 

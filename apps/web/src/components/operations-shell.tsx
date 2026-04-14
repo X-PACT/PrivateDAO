@@ -13,13 +13,13 @@ import { cn } from "@/lib/utils";
 const operationsNav = [
   { href: "/start", label: "Start", icon: Compass, summary: "Guided onboarding and wallet-first flow" },
   { href: "/assistant", label: "AI Assistant", icon: Sparkles, summary: "Internal AI-style guide across routes, docs, and proof" },
-  { href: "/story", label: "Demo", icon: PlayCircle, summary: "Product demo and fast explanation" },
+  { href: "/demo", label: "Demo", icon: PlayCircle, summary: "Product demo and fast explanation" },
   { href: "/community", label: "Community", icon: MessageSquareMore, summary: "Join, updates, pilot interest, and support routing" },
-  { href: "/command-center", label: "Govern", icon: SquareTerminal, summary: "Create, vote, and execute on Devnet" },
-  { href: "/dashboard", label: "Live State", icon: LayoutDashboard, summary: "Proposals, treasury, and action logs" },
+  { href: "/govern", label: "Govern", icon: SquareTerminal, summary: "Create, vote, and execute on Devnet" },
+  { href: "/live", label: "Live State", icon: LayoutDashboard, summary: "Proposals, treasury, and action logs" },
   { href: "/android", label: "Android", icon: Smartphone, summary: "Mobile app, APK download, parity plan" },
   { href: "/proof", label: "Proof", icon: Sparkles, summary: "Baseline and V3 evidence" },
-  { href: "/security", label: "Trust", icon: ShieldCheck, summary: "Security, proof, and operating boundaries" },
+  { href: "/trust", label: "Trust", icon: ShieldCheck, summary: "Security, proof, and operating boundaries" },
   { href: "/intelligence", label: "Intelligence", icon: BrainCircuit, summary: "Proposal, treasury, voting, RPC, and gaming analysis" },
   { href: "/diagnostics", label: "Health", icon: Activity, summary: "Runtime status and verification health" },
   { href: "/custody", label: "Custody", icon: KeyRound, summary: "Multisig, authority transfer, and custody evidence" },
@@ -171,11 +171,11 @@ export function OperationsShell({
               </div>
 
               <div className="mt-8 flex flex-wrap gap-3">
-                <Link className={buttonVariants({ size: "sm" })} href="/command-center">
-                  Open command center
+                <Link className={buttonVariants({ size: "sm" })} href="/govern">
+                  Open govern
                 </Link>
-                <Link className={buttonVariants({ size: "sm", variant: "secondary" })} href="/dashboard">
-                  Open dashboard
+                <Link className={buttonVariants({ size: "sm", variant: "secondary" })} href="/live">
+                  Open live state
                 </Link>
                 <Link className={buttonVariants({ size: "sm", variant: "outline" })} href="/documents">
                   Open curated docs
