@@ -94,6 +94,7 @@ function parseRawTokenAmount(value: string) {
 
 export function GovernanceActionWorkbench() {
   const [reviewAction, setReviewAction] = useState<CoreGovernanceInstructionName | null>(null);
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const [createDaoRuntime, setCreateDaoRuntime] = useState<{
     status: "idle" | "submitting" | "success" | "error";
     message: string;
@@ -250,6 +251,20 @@ export function GovernanceActionWorkbench() {
   const continuityRequestPayload = handoff?.requestPayload ?? null;
   const stagedReviewAction = resolveStagedReviewAction(stagedProposal);
   const continuityQuery = handoff ? buildServiceHandoffQuery(handoff) : "";
+  const nextAction = useMemo<CoreGovernanceInstructionName>(() => {
+    if (!effectiveDaoCreated) return "initialize_dao";
+    if (!effectiveProposalCreated) return "create_proposal";
+    if (!effectiveVoteCommitted) return "commit_vote";
+    if (!effectiveVoteRevealed) return "reveal_vote";
+    if (!effectiveProposalFinalized) return "finalize_proposal";
+    return "execute_proposal";
+  }, [
+    effectiveDaoCreated,
+    effectiveProposalCreated,
+    effectiveVoteCommitted,
+    effectiveVoteRevealed,
+    effectiveProposalFinalized,
+  ]);
 
   const activeWalletLabel = useMemo(() => wallet?.adapter.name ?? "Connected wallet", [wallet]);
   const hasPayloadDrivenExecution = Boolean(executionIntent?.requestPayload);
@@ -306,20 +321,6 @@ export function GovernanceActionWorkbench() {
       canExecute);
   const payloadExecutionState =
     executionIntent?.requestDelivery?.state ?? executionIntent?.requestPayload?.state ?? "draft";
-  const nextAction = useMemo<CoreGovernanceInstructionName>(() => {
-    if (!effectiveDaoCreated) return "initialize_dao";
-    if (!effectiveProposalCreated) return "create_proposal";
-    if (!effectiveVoteCommitted) return "commit_vote";
-    if (!effectiveVoteRevealed) return "reveal_vote";
-    if (!effectiveProposalFinalized) return "finalize_proposal";
-    return "execute_proposal";
-  }, [
-    effectiveDaoCreated,
-    effectiveProposalCreated,
-    effectiveVoteCommitted,
-    effectiveVoteRevealed,
-    effectiveProposalFinalized,
-  ]);
   const hasLiveCommitLane = Boolean(hasLiveDaoLane && activeLiveProposalAddress);
   const canCommitLive =
     connected &&
@@ -417,6 +418,80 @@ export function GovernanceActionWorkbench() {
     appliedReviewRef.current = null;
     autoOpenReviewRef.current = null;
   }
+
+  const currentStep = useMemo(() => {
+    if (!connected || !publicKey) {
+      return {
+        number: "01",
+        title: "Connect a wallet",
+        description: "Start by connecting a supported wallet. The rest of the flow stays hidden behind this single step.",
+        action: null as CoreGovernanceInstructionName | null,
+      };
+    }
+    if (!effectiveDaoCreated) {
+      return {
+        number: "02",
+        title: "Create your DAO",
+        description: "Create the DAO first. Once it lands, proposal creation unlocks automatically on the same surface.",
+        action: "initialize_dao" as const,
+      };
+    }
+    if (!effectiveProposalCreated) {
+      return {
+        number: "03",
+        title: "Create a proposal",
+        description: "You already have a live DAO. The next step is a single proposal create from the same wallet lane.",
+        action: "create_proposal" as const,
+      };
+    }
+    if (!effectiveVoteCommitted) {
+      return {
+        number: "04",
+        title: "Commit your vote",
+        description: "Proposal is live. Commit a vote first, then reveal it after the commit window closes.",
+        action: "commit_vote" as const,
+      };
+    }
+    if (!effectiveVoteRevealed) {
+      return {
+        number: "05",
+        title: "Reveal your vote",
+        description: "The commit is stored. Reveal the vote from the same proposal lane when the reveal window opens.",
+        action: "reveal_vote" as const,
+      };
+    }
+    if (!effectiveProposalFinalized) {
+      return {
+        number: "06",
+        title: "Finalize the proposal",
+        description: "Finalize the result to lock the on-chain outcome before execution.",
+        action: "finalize_proposal" as const,
+      };
+    }
+    if (!effectiveProposalExecuted) {
+      return {
+        number: "07",
+        title: "Execute the result",
+        description: "Execution is the last user step. Run it only after finalize clears and the timelock is over.",
+        action: "execute_proposal" as const,
+      };
+    }
+    return {
+      number: "08",
+      title: "Lifecycle complete",
+      description: "This DAO lane already completed the standard governance flow. You can reset the session and start the next run.",
+      action: null as CoreGovernanceInstructionName | null,
+    };
+  }, [
+    connected,
+    publicKey,
+    effectiveDaoCreated,
+    effectiveProposalCreated,
+    effectiveProposalExecuted,
+    effectiveProposalFinalized,
+    effectiveVoteCommitted,
+    effectiveVoteRevealed,
+  ]);
 
   async function submitCreateDaoLive() {
     if (!publicKey) {
@@ -919,17 +994,73 @@ export function GovernanceActionWorkbench() {
         <CardHeader className="space-y-3">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/72">Web app workflow</div>
-              <CardTitle className="mt-2">All normal-user operations run from the UI</CardTitle>
+              <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/72">Guided Devnet flow</div>
+              <CardTitle className="mt-2">Run the whole governance cycle without leaving the product</CardTitle>
             </div>
-            <Badge variant="success">Live DAO / Proposal / Vote / Execute Lane</Badge>
+            <Badge variant="success">User-first wallet lane</Badge>
           </div>
           <p className="max-w-3xl text-sm leading-7 text-white/60">
-            Wallet connection, DAO bootstrap, proposal submit, vote commit, vote reveal, finalize, and standard execute now share the same web product lane. Treasury transfer execution still remains a richer path that needs treasury actions to be carried from proposal creation.
+            This surface now prioritizes the next normal-user step first: connect, create a DAO, create a proposal, vote, reveal, finalize, then execute. Advanced diagnostics and parity details stay available, but they no longer lead the page.
           </p>
         </CardHeader>
         <CardContent className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
           <div className="grid gap-4 md:grid-cols-2">
+          <div className="rounded-[28px] border border-cyan-300/16 bg-[linear-gradient(180deg,rgba(11,24,41,0.92),rgba(7,14,25,0.98))] p-5 md:col-span-2">
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div className="max-w-2xl">
+                <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/76">Current step · {currentStep.number}</div>
+                <div className="mt-2 text-2xl font-semibold text-white">{currentStep.title}</div>
+                <p className="mt-3 text-sm leading-7 text-white/62">{currentStep.description}</p>
+              </div>
+              {currentStep.action ? (
+                <Button
+                  size="lg"
+                  className="min-w-[220px] justify-between"
+                  onClick={() => currentStep.action && openReview(currentStep.action)}
+                  disabled={
+                    (currentStep.action === "initialize_dao" && !canCreateDao) ||
+                    (currentStep.action === "create_proposal" && !canSubmitLiveProposal) ||
+                    (currentStep.action === "commit_vote" && !canCommitLive) ||
+                    (currentStep.action === "reveal_vote" && !canRevealLive) ||
+                    (currentStep.action === "finalize_proposal" && !canFinalizeLive) ||
+                    (currentStep.action === "execute_proposal" && !canExecuteLive)
+                  }
+                >
+                  {currentStep.title}
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              ) : (
+                <Button size="lg" variant="secondary" onClick={handleResetSession}>
+                  Start a new run
+                </Button>
+              )}
+            </div>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {[
+                { label: "Connect", done: connected },
+                { label: "DAO", done: effectiveDaoCreated },
+                { label: "Proposal", done: effectiveProposalCreated },
+                { label: "Commit", done: effectiveVoteCommitted },
+                { label: "Reveal", done: effectiveVoteRevealed },
+                { label: "Finalize", done: effectiveProposalFinalized },
+                { label: "Execute", done: effectiveProposalExecuted },
+              ].map(({ label, done }, index) => (
+                <div
+                  key={label}
+                  className={cn(
+                    "rounded-full border px-3 py-1.5 text-xs uppercase tracking-[0.16em]",
+                    done
+                      ? "border-emerald-300/22 bg-emerald-300/[0.12] text-emerald-100"
+                      : index === 0 && !connected
+                        ? "border-cyan-300/24 bg-cyan-300/[0.12] text-cyan-100"
+                        : "border-white/10 bg-black/20 text-white/46",
+                  )}
+                >
+                  {label}
+                </div>
+              ))}
+            </div>
+          </div>
           <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
@@ -1175,7 +1306,7 @@ export function GovernanceActionWorkbench() {
               <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
                 <div className="flex items-center gap-3">
                   <FolderPlus className="h-4 w-4 text-emerald-300" />
-                  <div className="text-base font-medium text-white">Create DAO</div>
+                  <div className="text-base font-medium text-white">Step 1 · Create DAO</div>
                 </div>
                 <input
                   value={daoName}
@@ -1220,7 +1351,7 @@ export function GovernanceActionWorkbench() {
               <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
                 <div className="flex items-center gap-3">
                   <FilePlus2 className="h-4 w-4 text-cyan-300" />
-                  <div className="text-base font-medium text-white">Create Proposal</div>
+                  <div className="text-base font-medium text-white">Step 2 · Create Proposal</div>
                 </div>
                 <input
                   value={proposalTitle}
@@ -1342,7 +1473,7 @@ export function GovernanceActionWorkbench() {
               <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
                 <div className="flex items-center gap-3">
                   <Vote className="h-4 w-4 text-fuchsia-300" />
-                  <div className="text-base font-medium text-white">Commit Vote</div>
+                  <div className="text-base font-medium text-white">Step 3 · Commit Vote</div>
                 </div>
                 {!hasLiveCommitLane ? (
                   <p className="mt-4 text-sm leading-7 text-amber-100/70">
@@ -1412,7 +1543,7 @@ export function GovernanceActionWorkbench() {
               <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
                 <div className="flex items-center gap-3">
                   <ShieldCheck className="h-4 w-4 text-emerald-300" />
-                  <div className="text-base font-medium text-white">Reveal Vote</div>
+                  <div className="text-base font-medium text-white">Step 4 · Reveal Vote</div>
                 </div>
                 {!liveVoteRuntime?.saltHex ? (
                   <p className="mt-4 text-sm leading-7 text-amber-100/70">
@@ -1455,7 +1586,7 @@ export function GovernanceActionWorkbench() {
               <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
                 <div className="flex items-center gap-3">
                   <Flag className="h-4 w-4 text-cyan-300" />
-                  <div className="text-base font-medium text-white">Finalize Proposal</div>
+                  <div className="text-base font-medium text-white">Step 5 · Finalize Proposal</div>
                 </div>
                 {!hasLiveCommitLane ? (
                   <p className="mt-4 text-sm leading-7 text-amber-100/70">
@@ -1498,7 +1629,7 @@ export function GovernanceActionWorkbench() {
               <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
                 <div className="flex items-center gap-3">
                   <Play className="h-4 w-4 text-amber-300" />
-                  <div className="text-base font-medium text-white">Execute Proposal</div>
+                  <div className="text-base font-medium text-white">Step 6 · Execute Proposal</div>
                 </div>
                 {!hasLiveCommitLane ? (
                   <p className="mt-4 text-sm leading-7 text-amber-100/70">
@@ -1542,16 +1673,22 @@ export function GovernanceActionWorkbench() {
             </>
           )}
 
-          <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
-            <div className="flex flex-wrap items-center justify-between gap-3">
+          <details className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
+            <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-3">
                 <ListChecks className="h-4 w-4 text-cyan-300" />
-                <div className="text-base font-medium text-white">View Logs</div>
+                <div>
+                  <div className="text-base font-medium text-white">Advanced details and logs</div>
+                  <div className="mt-1 text-sm text-white/48">Open this only if you want runtime messages, signatures, and diagnostics.</div>
+                </div>
               </div>
-              <Link href="/dashboard" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
-                Open full dashboard
-              </Link>
-            </div>
+              <div className="flex items-center gap-3">
+                <Link href="/dashboard" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+                  Open full dashboard
+                </Link>
+                <ChevronRight className="h-4 w-4 text-white/52" />
+              </div>
+            </summary>
             <div className="mt-4 grid gap-3">
               {logs.length > 0 ? (
                 [...continuityLogs, ...logs].map((entry) => (
@@ -1562,57 +1699,71 @@ export function GovernanceActionWorkbench() {
                 ))
               ) : (
                 <div className="rounded-2xl border border-dashed border-white/10 bg-black/20 p-4 text-sm leading-7 text-white/48">
-                  Logs appear here as the wallet, DAO, proposal, vote, reveal, and execute actions move through the UI.
+                  Logs appear here after wallet, DAO, proposal, vote, reveal, and execute actions move through the UI.
                 </div>
               )}
             </div>
-          </div>
+          </details>
           </div>
 
           <div className="space-y-4">
-            <OnchainParityPanel action={nextAction} preparedSummary={preparedSummary} compact />
-
             <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-5">
-            <div className="flex items-center gap-3">
-              <Activity className="h-4 w-4 text-cyan-300" />
-              <div className="text-base font-medium text-white">Diagnostics</div>
-            </div>
-            <p className="mt-3 text-sm leading-7 text-white/58">
-              Diagnostics remain in the web app too. Runtime evidence, proof freshness, wallet coverage, and execution health stay visible without leaving the product surface.
-            </p>
-            <div className="mt-4 flex flex-col gap-3">
-              <Button
-                variant="ghost"
-                className="justify-between rounded-2xl text-white/72"
-                onClick={handleResetSession}
-              >
-                Reset session
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-              <Link href="/diagnostics" className={cn(buttonVariants({ size: "sm" }), "justify-between")}>
-                Open diagnostics
-                <ChevronRight className="h-4 w-4" />
-              </Link>
-              <Link href="/proof" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")}>
-                Open proof
-                <ChevronRight className="h-4 w-4" />
-              </Link>
-              <Link href="/services" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
-                Open services
-                <ChevronRight className="h-4 w-4" />
-              </Link>
-            </div>
-            </div>
-
-            <div className="rounded-[28px] border border-emerald-300/18 bg-emerald-300/8 p-5">
               <div className="flex items-center gap-3">
                 <CheckCircle2 className="h-4 w-4 text-emerald-200" />
-                <div className="text-base font-medium text-white">Workflow boundary</div>
+                <div className="text-base font-medium text-white">Simple path</div>
               </div>
               <p className="mt-3 text-sm leading-7 text-white/60">
-                The web wallet flow now owns live DAO bootstrap. The remaining lifecycle stages stay inside the same product lane while proposal and execution parity keep moving from staged shell behavior into live on-chain submits.
+                Normal users should only need one surface: connect, create a DAO, create a proposal, vote, reveal, finalize, then execute. Proof and diagnostics stay available, but they are now secondary.
               </p>
+              <div className="mt-4 flex flex-col gap-3">
+                <Button
+                  variant="ghost"
+                  className="justify-between rounded-2xl text-white/72"
+                  onClick={handleResetSession}
+                >
+                  Reset this run
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="secondary"
+                  className="justify-between rounded-2xl"
+                  onClick={() => setShowAdvanced((current) => !current)}
+                >
+                  {showAdvanced ? "Hide advanced panels" : "Show advanced panels"}
+                  <ChevronRight className={cn("h-4 w-4 transition", showAdvanced ? "rotate-90" : "")} />
+                </Button>
+              </div>
             </div>
+
+            {showAdvanced ? (
+              <>
+                <OnchainParityPanel action={nextAction} preparedSummary={preparedSummary} compact />
+
+                <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-5">
+                  <div className="flex items-center gap-3">
+                    <Activity className="h-4 w-4 text-cyan-300" />
+                    <div className="text-base font-medium text-white">Advanced routes</div>
+                  </div>
+                  <p className="mt-3 text-sm leading-7 text-white/58">
+                    Runtime evidence, proof freshness, wallet coverage, and execution health remain available here for operators and reviewers.
+                  </p>
+                  <div className="mt-4 flex flex-col gap-3">
+                    <Link href="/diagnostics" className={cn(buttonVariants({ size: "sm" }), "justify-between")}>
+                      Open diagnostics
+                      <ChevronRight className="h-4 w-4" />
+                    </Link>
+                    <Link href="/proof" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")}>
+                      Open proof
+                      <ChevronRight className="h-4 w-4" />
+                    </Link>
+                    <Link href="/services" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+                      Open services
+                      <ChevronRight className="h-4 w-4" />
+                    </Link>
+                  </div>
+                </div>
+              </>
+            ) : null}
           </div>
         </CardContent>
       </Card>
