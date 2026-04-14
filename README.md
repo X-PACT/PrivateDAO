@@ -90,6 +90,7 @@ Current web/runtime boundary:
 - `Create Proposal` now has a live wallet-first Devnet submit path in the same workbench once a live DAO bootstrap has already established the DAO lane, including the current live `SendSol` and `SendToken` treasury-motion lanes.
 - `Commit Vote`, `Reveal Vote`, and `Finalize Proposal` now use the same live wallet-first workbench lane once a real DAO and proposal already exist in session state.
 - `Execute Proposal` now also has a live wallet-first path for standard proposals and the current live `SendSol` and `SendToken` treasury-motion lanes.
+- Repo-script lifecycle proof exists for the governance core, while browser-wallet proof on the web and real-device action proof on Android remain explicitly pending until they are captured in runtime evidence.
 - `CustomCPI` still requires the richer payout path; the current live web builder now carries the supported treasury transfer variants, but it does not claim arbitrary treasury action coverage.
 
 The rule is strict:

@@ -1,11 +1,15 @@
 "use client";
 
+import Link from "next/link";
 import { ShieldCheck } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getGovernanceRuntimeStatus } from "@/lib/governance-runtime-status";
 import { getCoreInstructionParity, type PreparedActionSummary } from "@/lib/onchain-parity";
 import type { CoreGovernanceInstructionName } from "@/lib/onchain-parity.generated";
+import { cn } from "@/lib/utils";
 
 type OnchainParityPanelProps = {
   action: CoreGovernanceInstructionName;
@@ -21,6 +25,7 @@ export function OnchainParityPanel({
   preparedSummary,
 }: OnchainParityPanelProps) {
   const parity = getCoreInstructionParity(action);
+  const runtimeStatus = getGovernanceRuntimeStatus(action);
 
   return (
     <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(9,14,28,0.96),rgba(5,9,20,0.98))]">
@@ -73,6 +78,52 @@ export function OnchainParityPanel({
                   <span>{account.writable ? "mutable" : "read"} · {account.signer ? "signer" : "non-signer"}</span>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-[22px] border border-cyan-300/16 bg-cyan-300/[0.08] p-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/72">Runtime verification status</div>
+              <div className="mt-2 text-sm leading-7 text-white/68">{runtimeStatus.supportNote}</div>
+            </div>
+            <Link href="/documents/real-device-runtime" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+              Open runtime evidence
+            </Link>
+          </div>
+          <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+            <div className="rounded-[18px] border border-white/8 bg-black/20 p-3">
+              <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Live lane</div>
+              <div className="mt-2">
+                <Badge variant={runtimeStatus.liveWalletLane ? "success" : "warning"}>
+                  {runtimeStatus.liveWalletLane ? "Wallet-first live" : "Pending"}
+                </Badge>
+              </div>
+            </div>
+            <div className="rounded-[18px] border border-white/8 bg-black/20 p-3">
+              <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Repo proof</div>
+              <div className="mt-2">
+                <Badge variant={runtimeStatus.repoScriptProofCaptured ? "success" : "warning"}>
+                  {runtimeStatus.repoScriptProofCaptured ? "Captured" : "Pending"}
+                </Badge>
+              </div>
+            </div>
+            <div className="rounded-[18px] border border-white/8 bg-black/20 p-3">
+              <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Browser wallet proof</div>
+              <div className="mt-2">
+                <Badge variant={runtimeStatus.browserWalletProofCaptured ? "success" : "warning"}>
+                  {runtimeStatus.browserWalletProofCaptured ? "Captured" : "Pending"}
+                </Badge>
+              </div>
+            </div>
+            <div className="rounded-[18px] border border-white/8 bg-black/20 p-3">
+              <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Real-device proof</div>
+              <div className="mt-2">
+                <Badge variant={runtimeStatus.realDeviceProofCaptured ? "success" : "warning"}>
+                  {runtimeStatus.realDeviceProofCaptured ? "Captured" : "Pending"}
+                </Badge>
+              </div>
             </div>
           </div>
         </div>

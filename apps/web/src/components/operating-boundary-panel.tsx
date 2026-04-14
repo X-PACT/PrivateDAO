@@ -1,6 +1,9 @@
-import { Code2, MonitorSmartphone } from "lucide-react";
+import Link from "next/link";
+import { Code2, MonitorSmartphone, ShieldCheck } from "lucide-react";
 
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 const uiOperations = [
   "Connect Wallet",
@@ -8,6 +11,7 @@ const uiOperations = [
   "Create Proposal",
   "Commit Vote",
   "Reveal Vote",
+  "Finalize Proposal",
   "Execute Proposal",
   "View Logs",
   "Diagnostics",
@@ -72,6 +76,43 @@ export function OperatingBoundaryPanel({
                 {item}
               </div>
             ))}
+          </div>
+        </div>
+
+        <div className="rounded-[28px] border border-violet-300/16 bg-violet-300/8 p-5 xl:col-span-2">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="flex items-center gap-3 text-violet-100">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-violet-300/16 bg-black/20">
+                <ShieldCheck className="h-5 w-5" />
+              </div>
+              <div>
+                <div className="text-[11px] uppercase tracking-[0.28em] text-violet-200/72">Verification split</div>
+                <div className="mt-1 text-lg font-medium text-white">Live lane and proof status stay explicit</div>
+              </div>
+            </div>
+            <Link href="/documents/real-device-runtime" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+              Open runtime evidence
+            </Link>
+          </div>
+          <div className="mt-4 grid gap-3 md:grid-cols-3">
+            <div className="rounded-[22px] border border-white/8 bg-black/20 p-4">
+              <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Live now in product UI</div>
+              <div className="mt-2 text-sm leading-7 text-white/72">
+                Create DAO, Create Proposal, Commit, Reveal, Finalize, and Execute are wired through the live wallet-first lane on Devnet.
+              </div>
+            </div>
+            <div className="rounded-[22px] border border-white/8 bg-black/20 p-4">
+              <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Repo proof captured</div>
+              <div className="mt-2 text-sm leading-7 text-white/72">
+                Local wallet lifecycle proof exists for the governance core, including treasury execution in the repo proof surfaces.
+              </div>
+            </div>
+            <div className="rounded-[22px] border border-white/8 bg-black/20 p-4">
+              <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Pending captures</div>
+              <div className="mt-2 text-sm leading-7 text-white/72">
+                Browser-wallet proof on the web and real-device action proof on Android still need direct runtime capture. They are not implied by the live code lane alone.
+              </div>
+            </div>
           </div>
         </div>
       </CardContent>
