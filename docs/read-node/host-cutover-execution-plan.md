@@ -3,6 +3,19 @@
 Last updated: 2026-04-14
 Status: planned, not yet cut over
 
+## Current Verified State
+
+As of 2026-04-14:
+
+- `privatedao.org` is still served by GitHub Pages
+- `x-pact.github.io/PrivateDAO/` is also served by GitHub Pages
+- the current repo contains:
+  - `CNAME` -> `privatedao.org`
+  - `.github/workflows/pages.yml`
+- this means the current public domain is still a GitHub Pages custom-domain deployment, not an independent primary host
+
+This plan exists to change that safely.
+
 ## Purpose
 
 This plan exists to separate the public product shell from backend read infrastructure without breaking trust, reviewer proof, or user-facing routes.
@@ -71,6 +84,7 @@ It should not:
 - keep the current static product surface live
 - deploy the read-node to a dedicated backend host
 - verify internal health and metrics before exposing public paths
+- do not remove `CNAME` or break GitHub Pages before the independent primary host is verified externally
 
 ### Stage 2: Public Proof
 
@@ -88,6 +102,16 @@ It should not:
 - bind `/api/v1` through the reverse proxy
 - keep existing static routes and `/documents/*` intact
 - verify that public routes still work when backend reads are slow
+
+### Stage 3.5: Primary / Backup Split
+
+- point `privatedao.org` to the new independent primary host
+- keep GitHub Pages as backup-only at:
+  - `x-pact.github.io/PrivateDAO/`
+- make sure GitHub backup bundles do not carry `CNAME`
+- verify:
+  - `privatedao.org` is no longer served by `GitHub.com`
+  - `x-pact.github.io/PrivateDAO/` still works as fallback mirror
 
 ### Stage 4: Operational Hardening
 
@@ -136,6 +160,17 @@ unless those claims are separately verified
 5. product routes still work when backend is slow
 6. proof and docs routes remain available without backend dependence
 7. logs show correct upstream status for read failures
+8. `privatedao.org` is no longer served by GitHub Pages headers
+9. GitHub Pages still works as backup-only mirror
+
+## Repo Guards Added
+
+The repo now includes:
+
+- `npm run verify:host-topology`
+- `npm run verify:host-topology:strict`
+
+And `scripts/build-web-mirror-bundle.sh` only copies `CNAME` in `root` mode, not in `github` mode. This keeps backup bundles compatible with a future backup-only GitHub Pages posture.
 
 ## Linked Sources
 

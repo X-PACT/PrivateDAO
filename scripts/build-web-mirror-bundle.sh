@@ -33,7 +33,7 @@ esac
 cp -R "$WEB_DIR/out" "$TARGET_DIR"
 touch "$TARGET_DIR/.nojekyll"
 
-if [[ -f "$REPO_ROOT/CNAME" ]]; then
+if [[ "$MODE" == "root" && -f "$REPO_ROOT/CNAME" ]]; then
   cp "$REPO_ROOT/CNAME" "$TARGET_DIR/CNAME"
 fi
 

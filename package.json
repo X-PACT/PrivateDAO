@@ -16,6 +16,8 @@
     "web:publish:root": "bash scripts/publish-web-live-surface.sh root",
     "web:verify:live:github": "bash scripts/verify-web-live-surface.sh github",
     "web:verify:live:root": "bash scripts/verify-web-live-surface.sh root",
+    "verify:host-topology": "bash scripts/verify-host-topology.sh",
+    "verify:host-topology:strict": "PRIVATE_DAO_STRICT_HOST_TOPOLOGY=1 bash scripts/verify-host-topology.sh",
     "status:source": "bash scripts/status-source-tree.sh",
     "verify:source-preflight": "bash scripts/verify-source-preflight.sh",
     "verify:source-worktree": "bash scripts/verify-source-worktree.sh",
