@@ -3,11 +3,9 @@
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, Compass, PlayCircle, Shield, Trophy } from "lucide-react";
 
-import { SectionHeader } from "@/components/section-header";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { achievements, techCards } from "@/lib/site-data";
 import { useSiteUrls } from "@/lib/site-urls";
 import { cn } from "@/lib/utils";
 
@@ -53,12 +51,6 @@ export function HomeShell() {
       cta: "Open live state",
     },
   ];
-  const trustSignals = [
-    "PrivateDAO is a wallet-first app for creating a private Solana DAO and running proposals on Devnet.",
-    "Proof and trust surfaces are available when you need them, but they no longer block the first run.",
-    "Web, Android, and reviewer routes now point to one product story instead of competing shells.",
-  ];
-
   return (
     <main className="pb-20 sm:pb-24">
       <section className="mx-auto w-full max-w-7xl px-4 pt-8 sm:px-6 sm:pt-12 lg:px-8 lg:pt-18">
@@ -168,53 +160,40 @@ export function HomeShell() {
         </div>
       </section>
 
-      <section className="mx-auto mt-16 w-full max-w-7xl px-4 sm:mt-18 sm:px-6 lg:px-8">
-        <SectionHeader
-          eyebrow="Why it feels credible"
-          title="A governance product first, with proof behind it"
-          description="The public surface now explains the product in plain language, then lets power users open trust and proof when they want the deeper layer."
-        />
-        <div className="mt-8 grid gap-5 lg:grid-cols-3">
-          {achievements.map((item) => (
-            <Card key={item.title} className="border-amber-300/18 bg-[linear-gradient(180deg,rgba(56,43,8,0.92),rgba(27,20,5,0.98))]">
-              <CardHeader className="pb-4">
-                <CardTitle className="text-xl text-amber-50">{item.title}</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="rounded-2xl border border-amber-200/12 bg-black/18 px-4 py-3 text-sm leading-7 text-amber-50/72">
-                  {item.detail}
-                </div>
-                <div className="text-[11px] uppercase tracking-[0.28em] text-amber-200/68">{item.meta}</div>
-              </CardContent>
-            </Card>
-          ))}
-
-          <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,15,30,0.92),rgba(6,9,20,0.98))] lg:col-span-2">
-            <CardHeader className="pb-4">
-              <CardTitle>What users get right away</CardTitle>
-            </CardHeader>
-            <CardContent className="grid gap-4 md:grid-cols-2">
-              {trustSignals.map((signal) => (
-                <div key={signal} className="rounded-[22px] border border-white/8 bg-white/[0.03] p-4 text-sm leading-7 text-white/60">
-                  {signal}
-                </div>
-              ))}
-              {techCards.slice(0, 1).map((item) => (
-                <div key={item.name} className="rounded-[22px] border border-white/8 bg-white/[0.03] p-4 text-sm leading-7 text-white/60">
-                  {item.name}: {item.description}
-                </div>
-              ))}
-            </CardContent>
-          </Card>
+      <section className="mx-auto mt-14 w-full max-w-7xl px-4 sm:mt-16 sm:px-6 lg:px-8">
+        <div className="grid gap-4 lg:grid-cols-[0.9fr_2.1fr]">
+          <div className="rounded-[24px] border border-amber-300/18 bg-[linear-gradient(180deg,rgba(61,46,9,0.92),rgba(26,20,5,0.98))] p-5">
+            <div className="flex items-center gap-2 text-amber-100">
+              <Trophy className="h-4 w-4" />
+              <div className="text-[11px] uppercase tracking-[0.28em]">Recognition</div>
+            </div>
+            <div className="mt-2 text-lg font-semibold text-amber-50">1st Place · Superteam Poland</div>
+            <div className="mt-2 text-sm leading-7 text-amber-50/70">
+              Proof remains available, but it no longer dominates the public landing page.
+            </div>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5 text-sm leading-7 text-white/62">
+              PrivateDAO is a wallet-first app for creating a private Solana DAO and running proposals on Devnet.
+            </div>
+            <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5 text-sm leading-7 text-white/62">
+              Live state and proof stay available when needed, but they no longer block the first run.
+            </div>
+            <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5 text-sm leading-7 text-white/62">
+              Web, Android, and reviewer routes now point to one product story instead of competing shells.
+            </div>
+          </div>
         </div>
       </section>
 
       <section className="mx-auto mt-18 w-full max-w-7xl px-4 sm:mt-24 sm:px-6 lg:px-8">
-        <SectionHeader
-          eyebrow="Need more?"
-          title="Go deeper only when you need it"
-          description="The homepage stays focused on using the product. Demo, live state, and trust stay available when you intentionally want more depth."
-        />
+        <div className="max-w-3xl space-y-4">
+          <div className="text-[11px] font-medium uppercase tracking-[0.34em] text-emerald-300/80">Need more?</div>
+          <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Go deeper only when you need it</h2>
+          <p className="text-base leading-8 text-white/60 sm:text-lg">
+            The homepage stays focused on using the product. Demo, live state, and trust stay available when you intentionally want more depth.
+          </p>
+        </div>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,15,30,0.92),rgba(6,9,20,0.98))]">
             <CardHeader><CardTitle className="text-xl">Watch the demo</CardTitle></CardHeader>
