@@ -1,0 +1,19 @@
+1
+00:00:00,000 --> 00:00:08,000
+Week three connects treasury and trust more clearly.
+
+2
+00:00:08,000 --> 00:00:18,500
+Governance, treasury execution, and security posture read together.
+
+3
+00:00:18,500 --> 00:00:28,500
+Trust boundaries are now visible inside the live product shell.
+
+4
+00:00:28,500 --> 00:00:38,500
+This strengthens both the buyer story and the operator story.
+
+5
+00:00:38,500 --> 00:00:46,500
+Next comes launch trust and clearer mainnet discipline.

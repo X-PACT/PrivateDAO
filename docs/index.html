@@ -2586,18 +2586,18 @@ nav.scrolled {
   align-items: center;
   justify-content: center;
   gap: 7px;
-  min-height: 34px;
-  padding: 8px 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(0,229,255,0.16);
-  background: rgba(0,229,255,0.045);
+  min-height: 32px;
+  padding: 7px 11px;
+  border-radius: 11px;
+  border: 1px solid rgba(0,229,255,0.15);
+  background: linear-gradient(180deg, rgba(0,229,255,0.06), rgba(0,229,255,0.032));
   color: var(--cyan);
   text-decoration: none;
   font-size: 11.5px;
   font-weight: 600;
   cursor: pointer;
   appearance: none;
-  line-height: 1.15;
+  line-height: 1.1;
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
   transition: transform .18s ease, border-color .18s ease, background .18s ease, color .18s ease;
 }
@@ -3274,10 +3274,11 @@ nav.scrolled {
 
 /* ── FOOTER ── */
 footer {
-  border-top: 1px solid var(--border);
-  padding: 42px 0;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  background: linear-gradient(180deg, rgba(5, 10, 16, 0.66), rgba(4, 8, 13, 0.92));
+  padding: 38px 0;
 }
-.footer-inner { display:flex; justify-content:space-between; align-items:center; flex-wrap: wrap; gap: 16px; }
+.footer-inner { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap: wrap; gap: 20px; }
 .footer-brand { font-family: var(--display); font-size: 22px; letter-spacing: 2px; color: var(--text2); display:inline-flex; align-items:center; gap:0; }
 .footer-brand em { color: var(--cyan); font-style: normal; }
 
@@ -3297,9 +3298,9 @@ footer {
   height: 100%;
   display: block;
 }
-.footer-meta { font-family: var(--mono); font-size: 11px; color: var(--text3); }
-.footer-links { display:flex; gap:20px; flex-wrap: wrap; }
-.footer-link { font-size: 13px; color: var(--text3); text-decoration:none; transition:color 0.2s; }
+.footer-meta { font-family: var(--mono); font-size: 11px; color: var(--text3); line-height: 1.7; }
+.footer-links { display:flex; gap:14px; row-gap: 10px; flex-wrap: wrap; }
+.footer-link { display: inline-flex; align-items: center; min-height: 30px; font-size: 12.5px; color: var(--text3); text-decoration:none; transition:color 0.2s; }
 .footer-link:hover { color: var(--cyan); }
 
 /* ── TOAST ── */
@@ -4025,8 +4026,11 @@ body.judge-mode .judge-banner {
   gap: 16px;
   flex-wrap: wrap;
   margin-top: 18px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.07);
+  background: linear-gradient(180deg, rgba(8, 14, 21, 0.84), rgba(6, 11, 17, 0.94));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
 }
 .doc-viewer-actions {
   display: flex;
@@ -4034,11 +4038,11 @@ body.judge-mode .judge-banner {
   flex-wrap: wrap;
 }
 .doc-viewer-content {
-  margin-top: 20px;
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 24px;
+  margin-top: 14px;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 22px;
   background: linear-gradient(180deg, rgba(6, 12, 19, 0.92), rgba(4, 10, 16, 0.96));
-  padding: 28px;
+  padding: 26px;
   box-shadow: 0 18px 48px rgba(0, 0, 0, 0.18);
 }
 .doc-viewer-empty {

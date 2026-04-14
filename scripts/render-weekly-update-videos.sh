@@ -62,11 +62,11 @@ render_week1() {
   local video="$UPDATES_DIR/private-dao-week-1-update.mp4"
   local poster="$UPDATES_DIR/private-dao-week-1-update-poster.png"
 
-  scene "$s1" "$ASSETS_DIR/frontend-hero.png" "WEEK 1 UPDATE" "PrivateDAO starts from a real protocol" "The project begins as a Solana governance product, not a landing page:" "Anchor program, wallet surface, and Devnet-first operating path." "Week 1 establishes the protocol foundation." "0x00E5FF"
-  scene "$s2" "$ASSETS_DIR/frontend-hero.png" "PROBLEM" "Public DAO voting leaks intent" "Visible votes create whale pressure, live-tally manipulation, and treasury" "signaling before decisions are final." "The core wedge is private governance with auditability." "0xFFE48A"
-  scene "$s3" "$ASSETS_DIR/frontend-hero.png" "CORE MECHANISM" "Commit-reveal governance on Solana" "Voters commit a proposal-bound hash, reveal later with salt, and move through" "finalize plus timelocked execution." "Private intent, deterministic lifecycle." "0x7E57FF"
-  scene "$s4" "$ASSETS_DIR/frontend-hero.png" "PRODUCT SURFACE" "The app is wallet-connected from the start" "The live frontend, PDAO Devnet token surface, and proof links make the system" "reviewable by judges and operators." "This is a product path, not only a contract path." "0x22C55E"
-  scene "$s5" "$ASSETS_DIR/frontend-hero.png" "WEEK 1 RESULT" "A serious Frontier foundation" "Week 1 closes the initial private governance thesis, Devnet identity, and" "reviewer-ready product direction." "x-pact.github.io/PrivateDAO  ·  github.com/X-PACT/PrivateDAO" "0xA9F5FF"
+  scene "$s1" "$ASSETS_DIR/frontend-hero.png" "WEEK 1 UPDATE" "PrivateDAO is live on Devnet" "Governance infrastructure on Solana, already moving through a real wallet-first" "product flow instead of a concept-only demo." "Week 1 proves live product momentum." "0x00E5FF"
+  scene "$s2" "$ASSETS_DIR/frontend-hero.png" "LIVE FLOW" "Core governance path already works" "Connect wallet, create DAO, create proposal, and move through private vote" "commit with the same product surface." "Real interaction, not mocked screens." "0xFFE48A"
+  scene "$s3" "$ASSETS_DIR/frontend-hero.png" "CORE MECHANISM" "Commit now, reveal later, execute safely" "PrivateDAO uses commit-reveal voting to reduce early intent leakage while" "keeping finalization and treasury execution disciplined." "Private governance with explicit execution boundaries." "0x7E57FF"
+  scene "$s4" "$ASSETS_DIR/frontend-hero.png" "PRODUCT SHELL" "Proof, diagnostics, and buyer routes already exist" "Proof surfaces, diagnostics, search, assistant, and product corridors are" "already visible inside one live app." "This is shaping into real governance infrastructure." "0x22C55E"
+  scene "$s5" "$ASSETS_DIR/frontend-hero.png" "NEXT STEP" "Week 1 closes with a strong foundation" "The next build step is sharper buyer flow, stronger trust surfaces, and deeper" "track packaging on top of the same Devnet core." "privatedao.org  ·  github.com/X-PACT/PrivateDAO" "0xA9F5FF"
 
   compose_video "$video" "$poster" "$s1" "$s2" "$s3" "$s4" "$s5"
   copy_upload_asset "$video" "$poster" "Week 1 - PrivateDAO Frontier Hackathon - Private Governance Foundation"

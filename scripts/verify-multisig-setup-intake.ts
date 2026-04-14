@@ -23,6 +23,7 @@ type MultisigSetupIntake = {
     minimumHours: number;
     configuredHours: number | null;
     configurationSignature: NullableString;
+    configurationReferenceUrl?: NullableString;
     shorteningPolicy: string;
   };
   signers: Array<{
@@ -38,6 +39,7 @@ type MultisigSetupIntake = {
     destinationAuthority: NullableString;
     transferSignature: NullableString;
     postTransferReadout: NullableString;
+    postTransferReadoutReferenceUrl?: NullableString;
   }>;
   backupProcedures: {
     seedPhrasesInRepository: boolean;
@@ -120,11 +122,16 @@ function main(): void {
     assertNonEmpty(intake.multisig.creationSignature ?? "", "multisig creation signature");
     assertNonEmpty(intake.multisig.rehearsalSignature ?? "", "multisig rehearsal signature");
     assertNonEmpty(intake.timelock.configurationSignature ?? "", "timelock configuration signature");
+    assertReference(intake.timelock.configurationReferenceUrl ?? "", "timelock configuration reference");
     for (const transfer of intake.authorityTransfers) {
       assertNonEmpty(transfer.destinationAuthority ?? "", `${transfer.surface} destinationAuthority`);
       assertPublicKey(transfer.destinationAuthority ?? "", `${transfer.surface} destinationAuthority`);
       assertNonEmpty(transfer.transferSignature ?? "", `${transfer.surface} transferSignature`);
       assertNonEmpty(transfer.postTransferReadout ?? "", `${transfer.surface} postTransferReadout`);
+      assertReference(
+        transfer.postTransferReadoutReferenceUrl ?? "",
+        `${transfer.surface} postTransferReadoutReferenceUrl`,
+      );
     }
   }
 
@@ -191,6 +198,14 @@ function assertPublicKey(value: string, label: string): void {
   } catch (error) {
     throw new Error(`${label} is not a valid Solana public key: ${(error as Error).message}`);
   }
+}
+
+function assertReference(value: string, label: string): void {
+  assertNonEmpty(value, label);
+  const normalized = value.trim();
+  const isHttp = normalized.startsWith("https://");
+  const isRepoDoc = normalized.startsWith("docs/");
+  assert(isHttp || isRepoDoc, `${label} must be an https URL or docs/ path`);
 }
 
 function readJson<T>(relativePath: string): T {
