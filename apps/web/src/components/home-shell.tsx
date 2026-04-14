@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, Compass, PlayCircle, Shield, Trophy, WalletCards } from "lucide-react";
+import { ArrowRight, CheckCircle2, Compass, PlayCircle, Shield, Trophy } from "lucide-react";
 
 import { SectionHeader } from "@/components/section-header";
-import { ProductServiceMap } from "@/components/product-service-map";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,29 +13,6 @@ import { cn } from "@/lib/utils";
 
 export function HomeShell() {
   const { judgeViewUrl } = useSiteUrls();
-  const primaryRoutes = [
-    {
-      title: "Start in one minute",
-      description: "Connect a wallet, choose the guided flow, and land in the live Devnet journey without learning internal route names first.",
-      href: "/start",
-      cta: "Open start",
-      icon: Compass,
-    },
-    {
-      title: "Create and govern",
-      description: "Create a DAO, submit a proposal, vote, and execute from one wallet-first surface on Devnet.",
-      href: "/govern",
-      cta: "Open govern",
-      icon: WalletCards,
-    },
-    {
-      title: "Watch the product first",
-      description: "Use the demo route if you want the product story before touching the live flow.",
-      href: "/demo",
-      cta: "Open demo",
-      icon: PlayCircle,
-    },
-  ];
   const storyCards = [
     {
       title: "Start in under a minute",
@@ -192,95 +168,6 @@ export function HomeShell() {
         </div>
       </section>
 
-      <section className="mx-auto mt-16 w-full max-w-7xl px-4 sm:mt-20 sm:px-6 lg:px-8">
-        <ProductServiceMap
-          title="Understand PrivateDAO in one glance"
-          description="This is the shortest map through the product: start the wallet flow, run governance, track the result, then inspect API, pricing, security, and proof."
-        />
-      </section>
-
-      <section className="mx-auto mt-16 w-full max-w-7xl px-4 sm:mt-20 sm:px-6 lg:px-8">
-        <SectionHeader
-          eyebrow="Start here"
-          title="Choose the next action, not the internal route name"
-          description="The homepage should tell a normal user where to click first and what will happen next."
-        />
-        <div className="mt-8 grid gap-5 lg:grid-cols-3">
-          <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(11,16,31,0.92),rgba(7,10,22,0.98))]">
-            <CardHeader>
-              <CardTitle className="text-2xl">Start the live app</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-sm leading-7 text-white/58">
-                Connect a wallet and move straight into the guided Devnet flow without reading docs first.
-              </p>
-              <Link className={cn(buttonVariants({ size: "sm" }))} href="/start">
-                Open start workspace
-              </Link>
-            </CardContent>
-          </Card>
-          <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(11,16,31,0.92),rgba(7,10,22,0.98))]">
-            <CardHeader>
-              <CardTitle className="text-2xl">Inspect trust when needed</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-sm leading-7 text-white/58">
-                Open the judge and reviewer path only when you want the deeper proof and operating detail.
-              </p>
-              <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} href="/proof/?judge=1">
-                Open judge path
-              </Link>
-            </CardContent>
-          </Card>
-          <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(11,16,31,0.92),rgba(7,10,22,0.98))]">
-            <CardHeader>
-              <CardTitle className="text-2xl">Explore services and API</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-sm leading-7 text-white/58">
-                See service plans, hosted reads, API positioning, and commercial rollout surfaces in one place.
-              </p>
-              <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href="/services">
-                Open services
-              </Link>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      <section className="mx-auto mt-16 w-full max-w-7xl px-4 sm:mt-18 sm:px-6 lg:px-8">
-        <SectionHeader
-          eyebrow="Quick access"
-          title="Choose by outcome"
-          description="These cards answer the three questions a new user usually has: where do I start, where do I act, and where do I verify the result."
-        />
-        <div className="mt-8 grid gap-5 md:grid-cols-3">
-          {primaryRoutes.map((item) => {
-            const Icon = item.icon;
-
-            return (
-              <Card key={item.title} className="border-white/10 bg-[linear-gradient(180deg,rgba(10,15,30,0.92),rgba(6,9,20,0.98))]">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-[18px] border border-white/10 bg-white/[0.04] text-cyan-200">
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <CardTitle className="text-xl">{item.title}</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-sm leading-7 text-white/58">{item.description}</p>
-                  <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "w-full justify-between")} href={item.href}>
-                    {item.cta}
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-      </section>
-
       <section className="mx-auto mt-16 w-full max-w-7xl px-4 sm:mt-18 sm:px-6 lg:px-8">
         <SectionHeader
           eyebrow="Why it feels credible"
@@ -324,9 +211,9 @@ export function HomeShell() {
 
       <section className="mx-auto mt-18 w-full max-w-7xl px-4 sm:mt-24 sm:px-6 lg:px-8">
         <SectionHeader
-          eyebrow="Next step"
+          eyebrow="Need more?"
           title="Go deeper only when you need it"
-          description="The homepage stays focused. Deeper operations, proof, and rollout details live on their own routes where they belong."
+          description="The homepage stays focused on using the product. Demo, live state, and trust stay available when you intentionally want more depth."
         />
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,15,30,0.92),rgba(6,9,20,0.98))]">
