@@ -36,7 +36,7 @@ const fits: Record<string, TrackTechnicalFit> = {
     coreIdentity,
     sponsorUsage: [
       "The live route uses a real wallet adapter path, a real program id, and a real governance mint instead of a staged mock.",
-      "The product shell connects onboarding, command center, proof, diagnostics, services, and trust packets into one startup-quality surface.",
+      "The product shell connects onboarding, govern, proof, diagnostics, services, and trust packets into one startup-quality surface.",
       "The submission path is deliberately product-first after Colosseum shifted Frontier judging toward product impact and business quality.",
     ],
     sponsorEvidence: [
@@ -44,7 +44,7 @@ const fits: Record<string, TrackTechnicalFit> = {
         sponsor: "Colosseum",
         status: "Direct live use",
         detail:
-          "The app now demonstrates one connected startup-quality product chain across start, command center, proof, diagnostics, services, and trust, which directly matches Frontier's product-impact posture.",
+          "The app now demonstrates one connected startup-quality product chain across start, govern, proof, diagnostics, services, and trust, which directly matches Frontier's product-impact posture.",
       },
       {
         sponsor: "Solana Foundation",
@@ -106,7 +106,7 @@ const fits: Record<string, TrackTechnicalFit> = {
     coreIdentity,
     sponsorUsage: [
       "Solflare is the preferred wallet path in-product, while Phantom and Backpack remain first-class fallbacks in the adapter stack.",
-      "The live dApp corridor is not isolated from proof or services; it continues into command center, dashboard, and judge proof without leaving the app.",
+      "The live dApp corridor is not isolated from proof or services; it continues into govern, live state, and judge proof without leaving the app.",
       "QuickNode/Kamino/DFlow fit is shown through wallet UX, runtime diagnostics, treasury corridors, and buyer-facing API packaging rather than logos alone.",
     ],
     sponsorEvidence: [
@@ -131,7 +131,7 @@ const fits: Record<string, TrackTechnicalFit> = {
     ],
     evidenceRoutes: [
       { label: "Start workspace", href: "/start" },
-      { label: "Command center", href: "/command-center" },
+      { label: "Govern", href: "/govern" },
       { label: "Wallet matrix", href: "/viewer/wallet-compatibility-matrix.generated" },
       { label: "Frontier integrations", href: "/documents/frontier-integrations" },
     ],
@@ -177,7 +177,7 @@ const fits: Record<string, TrackTechnicalFit> = {
   "consumer-apps": {
     coreIdentity,
     sponsorUsage: [
-      "The user path is explicit: start, connect wallet, enter command center, then reach proof or services only when needed.",
+      "The user path is explicit: start, connect wallet, enter govern, then reach proof or services only when needed.",
       "Search or ask AI and the internal assistant remove repo-level complexity for normal users and judges.",
       "The same product shell stays coherent for users, judges, buyers, and operators rather than fragmenting into different demos.",
     ],
@@ -198,7 +198,7 @@ const fits: Record<string, TrackTechnicalFit> = {
     evidenceRoutes: [
       { label: "Start workspace", href: "/start" },
       { label: "Story route", href: "/story" },
-      { label: "Command center", href: "/command-center" },
+      { label: "Govern", href: "/govern" },
       { label: "Assistant", href: "/assistant" },
     ],
     validationGates: [

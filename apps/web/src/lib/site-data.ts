@@ -1864,7 +1864,7 @@ export const heroPersonas = {
     eyebrow: "Governance and runtime operations",
     title: "Proposal actions, wallet state, diagnostics, and readiness gates stay connected.",
     description:
-      "Command Center, governance dashboard, diagnostics, and launch blockers remain available in one operational surface for the team actually running the DAO.",
+      "Govern, live state, diagnostics, and launch blockers remain available in one operational surface for the team actually running the DAO.",
     primaryCtaLabel: "Open governance dashboard",
     primaryCtaHref: "/dashboard",
     secondaryCtaLabel: "Open diagnostics",

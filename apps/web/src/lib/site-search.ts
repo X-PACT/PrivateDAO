@@ -63,10 +63,10 @@ export const siteSearchItems: SiteSearchItem[] = [
     summary: "Governance dashboard with proposal cards, treasury data, and execution visibility.",
   },
   {
-    title: "Command Center",
-    href: "/command-center",
+    title: "Govern",
+    href: "/govern",
     category: "Route",
-    summary: "Create, vote, execute, and track proposal confidence in one workspace.",
+    summary: "Create a DAO, submit a proposal, vote, finalize, and execute in one guided workspace.",
   },
   {
     title: "Proof Center",
@@ -120,7 +120,7 @@ export const siteSearchItems: SiteSearchItem[] = [
     title: "Payments Reviewer Fast Path",
     href: "/documents/payments-reviewer-fast-path",
     category: "Document",
-    summary: "Shortest reviewer-safe route into treasury packet, custody truth, services payments rail, and command-center payout path.",
+    summary: "Shortest reviewer-safe route into treasury packet, custody truth, services payments rail, and govern payout path.",
   },
   {
     title: "PDAO Token Surface",
@@ -629,9 +629,9 @@ function getProposalLeadItems(query: string): SiteSearchItem[] {
 
   return scored.map(({ proposal }) => ({
     title: `${proposal.id} · ${proposal.title}`,
-    href: `/command-center?proposal=${encodeURIComponent(proposal.id)}`,
+    href: `/govern?proposal=${encodeURIComponent(proposal.id)}`,
     category: "Proposal",
-    summary: `${proposal.status} · ${proposal.execution.amountDisplay} · ${proposal.execution.recipientLabel}. Open the command center with this live indexed proposal preselected.`,
+    summary: `${proposal.status} · ${proposal.execution.amountDisplay} · ${proposal.execution.recipientLabel}. Open the govern flow with this live indexed proposal preselected.`,
   }));
 }
 
@@ -791,8 +791,8 @@ function getPaymentsTruthLeadItems(query: string): SiteSearchItem[] {
   const treasury = getTreasuryReceiveConfig();
   const isExecutionPath =
     normalized.includes("vendor payout") || normalized.includes("contributor payout");
-  const bestRoute = isExecutionPath ? "/command-center" : "/services";
-  const bestRouteLabel = isExecutionPath ? "command-center" : "services";
+  const bestRoute = isExecutionPath ? "/govern" : "/services";
+  const bestRouteLabel = isExecutionPath ? "govern" : "services";
 
   return [
     {
@@ -812,7 +812,7 @@ function getPaymentsTruthLeadItems(query: string): SiteSearchItem[] {
       category: "Route",
       matchKind: "payments-truth",
       summary: isExecutionPath
-        ? "Use command-center first for governed vendor or contributor payout execution, then open the treasury reviewer packet."
+        ? "Use govern first for governed vendor or contributor payout execution, then open the treasury reviewer packet."
         : "Use services first for treasury top-up, pilot funding, and buyer-safe payments review, then open the treasury reviewer packet.",
     },
   ];
@@ -859,7 +859,7 @@ function getTokenTruthLeadItems(query: string): SiteSearchItem[] {
       category: "Document",
       matchKind: "token-truth",
       summary:
-        "Open token architecture next for the exact governance-token boundary, then continue into command-center to see the live governed product path.",
+        "Open token architecture next for the exact governance-token boundary, then continue into govern to see the live governed product path.",
     },
   ];
 }

@@ -107,9 +107,9 @@ function getPaymentsTruthBlock(normalized: string): AssistantSuggestion["queryBl
     reviewerPacketLabel: "Open treasury reviewer packet",
     reviewerPacketHref: "/documents/treasury-reviewer-packet",
     bestRouteLabel: isExecutionPath
-      ? "Open command-center payments path"
+      ? "Open govern payments path"
       : "Open services payments path",
-    bestRouteHref: isExecutionPath ? "/command-center" : "/services",
+    bestRouteHref: isExecutionPath ? "/govern" : "/services",
   };
 }
 
@@ -151,19 +151,19 @@ const assistantIntents: AssistantIntent[] = [
     primaryActionHref: "/documents/pdao-token-surface",
     relatedRoutes: [
       { label: "Token Architecture", href: "/documents/token-architecture" },
-      { label: "Command Center", href: "/command-center" },
-      { label: "Dashboard", href: "/dashboard" },
+      { label: "Govern", href: "/govern" },
+      { label: "Live State", href: "/live" },
     ],
     keywords: ["pdao", "token utility", "governance token", "payments token", "token strategy", "governance mint"],
   },
   {
     title: "Start a normal-user PrivateDAO flow",
     summary:
-      "Use the onboarding path first, connect a wallet, then continue into the command center instead of jumping into proof or raw documents.",
+      "Use the onboarding path first, connect a wallet, then continue into the govern flow instead of jumping into proof or raw documents.",
     primaryActionLabel: "Open start workspace",
     primaryActionHref: "/start",
     relatedRoutes: [
-      { label: "Command Center", href: "/command-center" },
+      { label: "Govern", href: "/govern" },
       { label: "Services", href: "/services" },
       { label: "Story Video", href: "/story" },
     ],
@@ -316,13 +316,13 @@ const assistantIntents: AssistantIntent[] = [
   {
     title: "Find the best wallet and live dApp path",
     summary:
-      "Lead with Solflare for the current product shell. Keep Phantom as a familiar fallback, then continue into the command center or the live app corridor.",
+      "Lead with Solflare for the current product shell. Keep Phantom as a familiar fallback, then continue into the govern flow or the live app corridor.",
     primaryActionLabel: "Open wallet-first start path",
     primaryActionHref: "/start",
     relatedRoutes: [
       { label: "Live app corridor", href: "/tracks/eitherway-live-dapp" },
-      { label: "Dashboard", href: "/dashboard" },
-      { label: "Command Center", href: "/command-center" },
+      { label: "Live State", href: "/live" },
+      { label: "Govern", href: "/govern" },
     ],
     keywords: ["wallet", "solflare", "phantom", "backpack", "kamino", "dflow", "quicknode", "eitherway"],
   },
@@ -429,11 +429,11 @@ const assistantIntents: AssistantIntent[] = [
 const fallbackSuggestion: AssistantSuggestion = {
   title: "Start from the product shell",
   summary:
-    "If the goal is unclear, begin at onboarding or the command center. That gives the shortest route to a real product flow, wallet action, proof surface, or competition workspace.",
+    "If the goal is unclear, begin at onboarding or the govern flow. That gives the shortest route to a real product flow, wallet action, proof surface, or competition workspace.",
   primaryActionLabel: "Open start workspace",
   primaryActionHref: "/start",
   relatedRoutes: [
-    { label: "Command Center", href: "/command-center" },
+    { label: "Govern", href: "/govern" },
     { label: "Search", href: "/search" },
     { label: "Tracks", href: "/tracks" },
   ],
@@ -523,7 +523,7 @@ function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
       primaryActionHref: `/tracks/${workspace.slug}?profile=vendor-payout`,
       relatedRoutes: [
         { label: "1. Track workspace", href: `/tracks/${workspace.slug}?profile=vendor-payout` },
-        { label: "2. Command Center", href: "/command-center" },
+        { label: "2. Govern", href: "/govern" },
         { label: "3. Diagnostics", href: "/diagnostics" },
       ],
       queryBlock: getHighPriorityQueryBlock(normalized),
@@ -538,7 +538,7 @@ function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
     primaryActionHref: `/tracks/${workspace.slug}?profile=contributor-payout`,
     relatedRoutes: [
       { label: "1. Track workspace", href: `/tracks/${workspace.slug}?profile=contributor-payout` },
-      { label: "2. Command Center", href: "/command-center" },
+      { label: "2. Govern", href: "/govern" },
       { label: "3. Security", href: "/security" },
     ],
     queryBlock: getHighPriorityQueryBlock(normalized),
@@ -654,7 +654,7 @@ function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null
       relatedRoutes: [
         { label: "1. Engage", href: "/engage?profile=vendor-payout" },
         { label: "2. Live app corridor", href: "/tracks/eitherway-live-dapp?profile=vendor-payout" },
-        { label: "3. Command and diagnostics", href: "/command-center" },
+        { label: "3. Govern and diagnostics", href: "/govern" },
       ],
       queryBlock: getPaymentsTruthBlock(normalized),
     };
@@ -670,7 +670,7 @@ function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null
       relatedRoutes: [
         { label: "1. Engage", href: "/engage?profile=contributor-payout" },
         { label: "2. Wallet-first product workspace", href: "/tracks/consumer-apps?profile=contributor-payout" },
-        { label: "3. Command and trust", href: "/command-center" },
+        { label: "3. Govern and trust", href: "/govern" },
       ],
       queryBlock: getPaymentsTruthBlock(normalized),
     };
@@ -927,12 +927,12 @@ function getProposalSuggestion(query: string): AssistantSuggestion | null {
   return {
     title: `Open live indexed proposal ${proposal.id}`,
     summary:
-      `${proposal.title} is being routed from the unified indexed proposal registry. Open the command center with this proposal preselected, then review the proposal and treasury execution surfaces on the real execution context.`,
-    primaryActionLabel: "Open command center with proposal",
-    primaryActionHref: `/command-center?proposal=${encodeURIComponent(proposal.id)}`,
+      `${proposal.title} is being routed from the unified indexed proposal registry. Open the govern flow with this proposal preselected, then review the proposal and treasury execution surfaces on the real execution context.`,
+    primaryActionLabel: "Open govern flow with proposal",
+    primaryActionHref: `/govern?proposal=${encodeURIComponent(proposal.id)}`,
     relatedRoutes: [
-      { label: "1. Command Center", href: `/command-center?proposal=${encodeURIComponent(proposal.id)}` },
-      { label: "2. Dashboard", href: "/dashboard" },
+      { label: "1. Govern", href: `/govern?proposal=${encodeURIComponent(proposal.id)}` },
+      { label: "2. Live State", href: "/live" },
       { label: "3. Evidence route", href: proposal.execution.txContext.evidenceRoute },
     ],
   };
@@ -1012,13 +1012,13 @@ function getTokenTruthSuggestion(query: string): AssistantSuggestion | null {
   return {
     title: "Open the PDAO token truth path",
     summary:
-      "Start from the PDAO token surface, then open token architecture, then continue into command-center or dashboard to see the token as live governance coordination rather than speculative token copy.",
+      "Start from the PDAO token surface, then open token architecture, then continue into govern or live state to see the token as live governance coordination rather than speculative token copy.",
     primaryActionLabel: "Open PDAO token surface",
     primaryActionHref: "/documents/pdao-token-surface",
     relatedRoutes: [
       { label: "1. PDAO token surface", href: "/documents/pdao-token-surface" },
       { label: "2. Token architecture", href: "/documents/token-architecture" },
-      { label: "3. Command Center", href: "/command-center" },
+      { label: "3. Govern", href: "/govern" },
     ],
     queryBlock: getTokenTruthBlock(normalized),
   };

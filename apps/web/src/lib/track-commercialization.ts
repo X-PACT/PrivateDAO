@@ -17,7 +17,7 @@ export function getTrackCommercializationPlan(
       buyerType: "DAO founders, protocol teams, and early-stage Solana operators evaluating a serious governance operating system.",
       customerOffer: "Pilot Package -> Hosted Read API + Ops -> Enterprise Governance Retainer.",
       commercialNarrative:
-        "Colosseum is our strongest startup-quality corridor because it shows the full product chain: onboarding, command center, proof, diagnostics, and services as one sellable system.",
+        "Colosseum is our strongest startup-quality corridor because it shows the full product chain: onboarding, govern, proof, diagnostics, and services as one sellable system.",
       firstPaidMotion:
         "Close a guided pilot where the customer adopts PrivateDAO Core plus trust-package review before a longer governance rollout.",
       mainnetUpgradePath: [
@@ -57,7 +57,7 @@ export function getTrackCommercializationPlan(
   if (workspace.slug === "eitherway-live-dapp") {
     return {
       buyerType: "Consumer-facing or wallet-first products that need governance actions to feel polished for normal users.",
-      customerOffer: "Pilot Package with wallet onboarding and guided command-center rollout.",
+      customerOffer: "Pilot Package with wallet onboarding and guided govern rollout.",
       commercialNarrative:
         "The Eitherway track converts best when the wallet is not the endpoint but the start of a meaningful proposal and treasury flow.",
       firstPaidMotion:
@@ -69,7 +69,7 @@ export function getTrackCommercializationPlan(
       ],
       routes: [
         { label: "Start", href: "/start" },
-        { label: "Command center", href: "/command-center" },
+        { label: "Govern", href: "/govern" },
         { label: "Service level agreement", href: "/documents/service-level-agreement" },
       ],
     };
