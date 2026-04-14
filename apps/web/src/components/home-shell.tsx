@@ -2,15 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Compass, LockKeyhole, PlayCircle, Radar, Shield, Sparkles, Trophy, WalletCards, Zap } from "lucide-react";
+import { ArrowRight, CheckCircle2, Compass, LockKeyhole, PlayCircle, Radar, Shield, Sparkles, Trophy, WalletCards } from "lucide-react";
 
-import { CommunityHub } from "@/components/community-hub";
-import { GovernanceDashboard } from "@/components/governance-dashboard";
-import { MetricsStrip } from "@/components/metrics-strip";
-import { OperatingBoundaryPanel } from "@/components/operating-boundary-panel";
 import { SectionHeader } from "@/components/section-header";
-import { SolutionCorridors } from "@/components/solution-corridors";
-import { VideoCenter } from "@/components/video-center";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -85,6 +79,31 @@ export function HomeShell() {
       href: "/story",
       icon: PlayCircle,
     },
+  ];
+  const fastActionSteps = [
+    {
+      title: "1. Connect a wallet",
+      description: "Start from the onboarding flow and land in the product with Devnet-ready wallet controls.",
+      href: "/start",
+      cta: "Open start",
+    },
+    {
+      title: "2. Create and govern",
+      description: "Create a DAO, submit a proposal, vote, and execute from one wallet-first surface.",
+      href: "/command-center",
+      cta: "Open govern",
+    },
+    {
+      title: "3. Verify the result",
+      description: "Check live state, logs, and proof without leaving the product corridor.",
+      href: "/dashboard",
+      cta: "Open live state",
+    },
+  ];
+  const trustSignals = [
+    "Wallet-first Devnet flow is exposed directly from the product, not buried behind docs.",
+    "Proof and trust surfaces stay available when needed, but no longer dominate the homepage.",
+    "Android, web, and reviewer routes now point to one product story instead of competing shells.",
   ];
 
   return (
@@ -168,87 +187,65 @@ export function HomeShell() {
                   <Shield className="h-5 w-5" />
                 </div>
                 <div>
-                  <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Live product snapshot</div>
-                  <CardTitle className="mt-2">One serious governance product, six visible operating rails</CardTitle>
+                  <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Do something now</div>
+                  <CardTitle className="mt-2">Fastest path from landing page to live Devnet action</CardTitle>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid gap-3 sm:grid-cols-2">
-                <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-4">
-                  <div className="text-[11px] uppercase tracking-[0.28em] text-white/42">Live on</div>
-                  <div className="mt-2 text-2xl font-semibold text-white">Solana Devnet</div>
-                  <div className="mt-2 text-sm leading-7 text-white/56">Wallet-first product shell with proof, diagnostics, tracks, and services already routed.</div>
-                </div>
-                <div className="rounded-[24px] border border-amber-300/18 bg-[linear-gradient(180deg,rgba(61,46,9,0.92),rgba(26,20,5,0.98))] p-4">
-                  <div className="flex items-center gap-2 text-amber-100">
-                    <Trophy className="h-4 w-4" />
-                    <div className="text-[11px] uppercase tracking-[0.28em]">Achievement</div>
-                  </div>
-                  <div className="mt-2 text-lg font-semibold text-amber-50">1st Place · Superteam Poland</div>
-                  <div className="mt-2 text-sm leading-7 text-amber-50/70">Execution proof belongs here, not repeated across the hero and top navigation.</div>
+              <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
+                <div className="text-[11px] uppercase tracking-[0.28em] text-white/42">Live on</div>
+                <div className="mt-2 text-2xl font-semibold text-white">Solana Devnet</div>
+                <div className="mt-2 text-sm leading-7 text-white/56">
+                  Start from wallet connection, move into governance, and keep live state and proof one click away.
                 </div>
               </div>
 
               <div className="grid gap-3">
-                {techCards.map((item, index) => (
-                  <div key={item.name} className="rounded-[24px] border border-white/8 bg-white/[0.03] p-4">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-[18px] border border-white/8 bg-black/30 text-white/85">
-                        {index === 0 ? (
-                          <Sparkles className="h-4 w-4" />
-                        ) : index === 1 ? (
-                          <LockKeyhole className="h-4 w-4" />
-                        ) : index === 2 ? (
-                          <Shield className="h-4 w-4" />
-                        ) : (
-                          <Zap className="h-4 w-4" />
-                        )}
-                      </div>
-                      <div className="text-base font-medium text-white">{item.name}</div>
+                {fastActionSteps.map((item) => (
+                  <div key={item.title} className="rounded-[24px] border border-white/8 bg-white/[0.03] p-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="text-base font-medium text-white">{item.title}</div>
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 text-emerald-300" />
                     </div>
                     <p className="mt-2 text-sm leading-7 text-white/58">{item.description}</p>
+                    <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "mt-4 w-full justify-between")} href={item.href}>
+                      {item.cta}
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
                   </div>
                 ))}
               </div>
 
-              <div className="grid gap-3 sm:grid-cols-2">
-                <Link className={cn(buttonVariants({ size: "sm" }), "justify-between")} href="/dashboard">
-                  Open dashboard
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")} href="/tracks">
-                  Open tracks
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
+              <div className="rounded-[24px] border border-amber-300/18 bg-[linear-gradient(180deg,rgba(61,46,9,0.92),rgba(26,20,5,0.98))] p-4">
+                <div className="flex items-center gap-2 text-amber-100">
+                  <Trophy className="h-4 w-4" />
+                  <div className="text-[11px] uppercase tracking-[0.28em]">Recognition</div>
+                </div>
+                <div className="mt-2 text-lg font-semibold text-amber-50">1st Place · Superteam Poland</div>
+                <div className="mt-2 text-sm leading-7 text-amber-50/70">
+                  Strong proof remains available for judges and investors, but the homepage now stays focused on product action first.
+                </div>
               </div>
             </CardContent>
           </Card>
         </div>
       </section>
 
-      <section className="mx-auto mt-14 w-full max-w-7xl px-4 sm:mt-18 sm:px-6 lg:px-8">
-        <MetricsStrip />
-      </section>
-
-      <section className="mx-auto mt-8 w-full max-w-7xl px-4 sm:mt-10 sm:px-6 lg:px-8">
-        <OperatingBoundaryPanel />
-      </section>
-
       <section className="mx-auto mt-16 w-full max-w-7xl px-4 sm:mt-20 sm:px-6 lg:px-8">
         <SectionHeader
-          eyebrow="Start Building"
-          title="Reference paths for governance, proof, and end-user rollout"
-          description="The landing page should make the first three moves obvious: launch the product flow, inspect the proof stack, or open the service corridor."
+          eyebrow="Start here"
+          title="Open the exact PrivateDAO surface you need without guessing route names"
+          description="The homepage should behave like a product front door: act now, learn fast, and open deeper proof only when you actually need it."
         />
         <div className="mt-8 grid gap-5 lg:grid-cols-3">
           <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(11,16,31,0.92),rgba(7,10,22,0.98))]">
             <CardHeader>
-              <CardTitle className="text-2xl">Launch the live app</CardTitle>
+              <CardTitle className="text-2xl">Start the live app</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-sm leading-7 text-white/58">
-                Start with the guided onboarding, connect a wallet, and continue into the operational flow without reading documentation first.
+                Connect a wallet and move straight into the guided Devnet flow without reading docs first.
               </p>
               <Link className={cn(buttonVariants({ size: "sm" }))} href="/start">
                 Open start workspace
@@ -257,11 +254,11 @@ export function HomeShell() {
           </Card>
           <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(11,16,31,0.92),rgba(7,10,22,0.98))]">
             <CardHeader>
-              <CardTitle className="text-2xl">Inspect proof and trust</CardTitle>
+              <CardTitle className="text-2xl">Inspect trust when needed</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-sm leading-7 text-white/58">
-                Jump straight into the reviewer path, V3 packet, ZK matrix, and trust surfaces that explain why the system is credible on Devnet today.
+                Open the judge and reviewer path only when you want the deeper proof and operating detail.
               </p>
               <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} href="/proof/?judge=1">
                 Open judge path
@@ -270,11 +267,11 @@ export function HomeShell() {
           </Card>
           <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(11,16,31,0.92),rgba(7,10,22,0.98))]">
             <CardHeader>
-              <CardTitle className="text-2xl">Package services and rollout</CardTitle>
+              <CardTitle className="text-2xl">Explore plans and API</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-sm leading-7 text-white/58">
-                Open the service corridor for pilot packages, hosted reads, enterprise governance, and competition-facing buyer narratives.
+                See service plans, hosted reads, API positioning, and commercial rollout surfaces in one place.
               </p>
               <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href="/services">
                 Open services
@@ -287,8 +284,8 @@ export function HomeShell() {
       <section className="mx-auto mt-16 w-full max-w-7xl px-4 sm:mt-18 sm:px-6 lg:px-8">
         <SectionHeader
           eyebrow="Quick access"
-          title="Open the exact PrivateDAO surface you need without scrolling through a long landing page"
-          description="The homepage now behaves like a startup product front door: it points users directly to the route they need instead of embedding every heavy panel inline."
+          title="Choose a route by task, not by internal architecture"
+          description="These cards translate the product into plain next actions instead of exposing internal naming that only makes sense to the team."
         />
         <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {primaryRoutes.map((item) => {
@@ -319,9 +316,9 @@ export function HomeShell() {
 
       <section className="mx-auto mt-16 w-full max-w-7xl px-4 sm:mt-18 sm:px-6 lg:px-8">
         <SectionHeader
-          eyebrow="Why PrivateDAO"
-          title="A Solana-native governance product shaped around the rails judges and users actually inspect"
-          description="The product is not just a dashboard. It connects private governance, proof, diagnostics, services, and track-specific submission posture in one system."
+          eyebrow="Why teams trust it"
+          title="A user-first governance product with proof behind it, not proof pasted in front of it"
+          description="The homepage now keeps the message simple: act on Devnet quickly, then open the deeper trust and review surfaces only when needed."
         />
         <div className="mt-8 grid gap-5 lg:grid-cols-3">
           {achievements.map((item) => (
@@ -340,21 +337,19 @@ export function HomeShell() {
 
           <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,15,30,0.92),rgba(6,9,20,0.98))] lg:col-span-2">
             <CardHeader className="pb-4">
-              <CardTitle>Why the stack is credible</CardTitle>
+              <CardTitle>What users get right away</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4 md:grid-cols-2">
-              <div className="rounded-[22px] border border-white/8 bg-white/[0.03] p-4 text-sm leading-7 text-white/60">
-                `ZK`, `REFHE`, `MagicBlock`, and `Fast RPC` are visible as product rails, not hidden implementation details.
-              </div>
-              <div className="rounded-[22px] border border-white/8 bg-white/[0.03] p-4 text-sm leading-7 text-white/60">
-                Judges, operators, and normal users each get their own route into the same live system without breaking the product story.
-              </div>
-              <div className="rounded-[22px] border border-white/8 bg-white/[0.03] p-4 text-sm leading-7 text-white/60">
-                The system stays truth-aligned about Devnet, hardening, launch blockers, and external dependencies.
-              </div>
-              <div className="rounded-[22px] border border-white/8 bg-white/[0.03] p-4 text-sm leading-7 text-white/60">
-                Wallet UX, proof continuity, commercial corridors, and competition tracks all point to one coherent startup surface.
-              </div>
+              {trustSignals.map((signal) => (
+                <div key={signal} className="rounded-[22px] border border-white/8 bg-white/[0.03] p-4 text-sm leading-7 text-white/60">
+                  {signal}
+                </div>
+              ))}
+              {techCards.slice(0, 1).map((item) => (
+                <div key={item.name} className="rounded-[22px] border border-white/8 bg-white/[0.03] p-4 text-sm leading-7 text-white/60">
+                  {item.name}: {item.description}
+                </div>
+              ))}
             </CardContent>
           </Card>
         </div>
@@ -362,60 +357,32 @@ export function HomeShell() {
 
       <section className="mx-auto mt-18 w-full max-w-7xl px-4 sm:mt-24 sm:px-6 lg:px-8">
         <SectionHeader
-          eyebrow="Story Video"
-          title="A single upload-ready reel that explains everything we offer and why PrivateDAO wins"
-          description="The product now ships with one comprehensive video hosted on the live site. It covers the product, the cryptographic stack, the service corridors, and the strongest competition-ready paths in a single watch surface."
+          eyebrow="Next step"
+          title="When you are ready for more depth, open the dedicated surface instead of forcing it into the homepage"
+          description="The homepage now stays focused. Deeper operations, proof, and rollout details live on their own routes where they belong."
         />
-        <div className="mt-10">
-          <VideoCenter compact />
-        </div>
-      </section>
-
-      <section className="mx-auto mt-18 w-full max-w-7xl px-4 sm:mt-24 sm:px-6 lg:px-8">
-        <SectionHeader
-          eyebrow="Operational Dashboard"
-          title="A real governance dashboard, centered and readable instead of buried in a long landing page"
-          description="The main operational board stays visible on the homepage as a single strong preview, while the full route remains available at `/dashboard`."
-        />
-        <div className="mt-10 hidden lg:block">
-          <GovernanceDashboard />
-          <div className="mt-6 flex justify-end">
-            <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} href="/dashboard">
-              Open full dashboard
-            </Link>
-          </div>
-        </div>
-        <div className="mt-8 lg:hidden">
+        <div className="mt-10 grid gap-5 md:grid-cols-3">
           <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,15,30,0.92),rgba(6,9,20,0.98))]">
-            <CardHeader>
-              <CardTitle className="text-2xl">Open the full dashboard on mobile</CardTitle>
-            </CardHeader>
+            <CardHeader><CardTitle className="text-xl">Watch the demo</CardTitle></CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-sm leading-7 text-white/58">
-                The mobile homepage keeps the dashboard summary lightweight. Use the dedicated route for the full treasury, proposal, and execution board.
-              </p>
-              <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} href="/dashboard">
-                Open full dashboard
-              </Link>
+              <p className="text-sm leading-7 text-white/58">Open the hosted demo when you want the fast visual explanation.</p>
+              <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} href="/story">Open demo</Link>
             </CardContent>
           </Card>
-        </div>
-      </section>
-
-      <section className="mx-auto mt-18 w-full max-w-7xl px-4 sm:mt-24 sm:px-6 lg:px-8">
-        <SectionHeader
-          eyebrow="Routes and Corridors"
-          title="Use-case corridors, product rails, and community surfaces stay visible without bloating the homepage"
-          description="This keeps the product understandable to buyers, users, judges, and sponsors while leaving each heavy surface on its own dedicated route."
-        />
-        <div className="mt-10 grid gap-8 xl:grid-cols-[1.08fr_0.92fr]">
-          <SolutionCorridors />
-          <div className="space-y-6">
-            <div className="hidden xl:block">
-              <VideoCenter compact />
-            </div>
-            <CommunityHub />
-          </div>
+          <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,15,30,0.92),rgba(6,9,20,0.98))]">
+            <CardHeader><CardTitle className="text-xl">Open live state</CardTitle></CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm leading-7 text-white/58">Use the dedicated live state route for proposals, treasury, and execution logs.</p>
+              <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} href="/dashboard">Open live state</Link>
+            </CardContent>
+          </Card>
+          <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,15,30,0.92),rgba(6,9,20,0.98))]">
+            <CardHeader><CardTitle className="text-xl">Open trust surfaces</CardTitle></CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm leading-7 text-white/58">Use proof and trust routes for judges, operators, and technical review when needed.</p>
+              <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href="/proof">Open proof</Link>
+            </CardContent>
+          </Card>
         </div>
       </section>
     </main>

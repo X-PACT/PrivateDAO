@@ -35,12 +35,12 @@ const navItems = [
 ];
 
 const utilityNav = [
-  { href: "/documents", label: "Documentation" },
-  { href: "/services", label: "API" },
-  { href: "/command-center", label: "Cookbook" },
-  { href: "/story", label: "Bootcamp" },
-  { href: "/dashboard", label: "Devnet" },
-  { href: "/security", label: "Skills" },
+  { href: "/documents", label: "Docs" },
+  { href: "/services", label: "Plans & API" },
+  { href: "/command-center", label: "Govern" },
+  { href: "/story", label: "Demo" },
+  { href: "/dashboard", label: "Live State" },
+  { href: "/security", label: "Trust" },
   { href: "/assistant", label: "Get Support" },
 ];
 

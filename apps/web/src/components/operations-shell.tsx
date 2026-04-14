@@ -13,15 +13,15 @@ import { cn } from "@/lib/utils";
 const operationsNav = [
   { href: "/start", label: "Start", icon: Compass, summary: "Guided onboarding and wallet-first flow" },
   { href: "/assistant", label: "AI Assistant", icon: Sparkles, summary: "Internal AI-style guide across routes, docs, and proof" },
-  { href: "/story", label: "Story", icon: PlayCircle, summary: "Hosted product video and why-us reel" },
+  { href: "/story", label: "Demo", icon: PlayCircle, summary: "Product demo and fast explanation" },
   { href: "/community", label: "Community", icon: MessageSquareMore, summary: "Join, updates, pilot interest, and support routing" },
-  { href: "/command-center", label: "Command Center", icon: SquareTerminal, summary: "Create, vote, execute" },
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, summary: "Governance state and treasury" },
+  { href: "/command-center", label: "Govern", icon: SquareTerminal, summary: "Create, vote, and execute on Devnet" },
+  { href: "/dashboard", label: "Live State", icon: LayoutDashboard, summary: "Proposals, treasury, and action logs" },
   { href: "/android", label: "Android", icon: Smartphone, summary: "Mobile app, APK download, parity plan" },
   { href: "/proof", label: "Proof", icon: Sparkles, summary: "Baseline and V3 evidence" },
-  { href: "/security", label: "Security", icon: ShieldCheck, summary: "Hardening and cryptography" },
+  { href: "/security", label: "Trust", icon: ShieldCheck, summary: "Security, proof, and operating boundaries" },
   { href: "/intelligence", label: "Intelligence", icon: BrainCircuit, summary: "Proposal, treasury, voting, RPC, and gaming analysis" },
-  { href: "/diagnostics", label: "Diagnostics", icon: Activity, summary: "Runtime and artifact health" },
+  { href: "/diagnostics", label: "Health", icon: Activity, summary: "Runtime status and verification health" },
   { href: "/custody", label: "Custody", icon: KeyRound, summary: "Multisig, authority transfer, and custody evidence" },
   { href: "/analytics", label: "Analytics", icon: BarChart3, summary: "Votes, proposals, actions" },
   { href: "/services", label: "Services", icon: BriefcaseBusiness, summary: "Pilot, API, commercial packs" },
@@ -99,10 +99,10 @@ export function OperationsShell({
             <CardHeader className="space-y-4">
               <div className="space-y-2">
                 <div className="text-[11px] uppercase tracking-[0.34em] text-cyan-200/78">Operational Surface</div>
-                <CardTitle className="text-xl">Governance system navigation</CardTitle>
+                <CardTitle className="text-xl">Product navigation</CardTitle>
               </div>
               <p className="text-sm leading-7 text-white/56">
-                Multi-page operational UI for governance, proof, diagnostics, security, analytics, and commercial rollout.
+                User-first routes for onboarding, governance, proof, support, and live operating state.
               </p>
             </CardHeader>
             <CardContent className="space-y-2">
