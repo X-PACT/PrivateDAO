@@ -85,6 +85,19 @@ type RealDeviceRuntimeEvidence = {
   };
 };
 
+type BrowserWalletRuntimeEvidence = {
+  status: string;
+  summary: {
+    targetCount: number;
+    completedTargetCount: number;
+    successfulConnectCount: number;
+    successfulSubmissionCount: number;
+    diagnosticsCaptureCount: number;
+    actionCoverageCount: number;
+    pendingTargets: string[];
+  };
+};
+
 type ZkEnforcedRuntimeEvidence = {
   status: string;
   summary: {
@@ -124,6 +137,7 @@ function main() {
   const resilience = readJson<DevnetResilience>("docs/devnet-resilience-report.json");
   const operational = readJson<OperationalEvidence>("docs/operational-evidence.generated.json");
   const realDevice = readJson<RealDeviceRuntimeEvidence>("docs/runtime/real-device.generated.json");
+  const browserWallet = readJson<BrowserWalletRuntimeEvidence>("docs/runtime/browser-wallet.generated.json");
   const magicBlock = readJson<MagicBlockRuntimeEvidence>("docs/magicblock/runtime.generated.json");
   const zkEnforced = readJson<ZkEnforcedRuntimeEvidence>("docs/zk/enforced-runtime.generated.json");
   const zkExternalClosure = readJson<ZkExternalClosure>("docs/zk/external-closure.generated.json");
@@ -164,6 +178,16 @@ function main() {
       successfulSubmissionCount: realDevice.summary.successfulSubmissionCount,
       diagnosticsCaptureCount: realDevice.summary.diagnosticsCaptureCount,
       pendingTargets: realDevice.summary.pendingTargets,
+    },
+    browserWallet: {
+      status: browserWallet.status,
+      targetCount: browserWallet.summary.targetCount,
+      completedTargetCount: browserWallet.summary.completedTargetCount,
+      successfulConnectCount: browserWallet.summary.successfulConnectCount,
+      successfulSubmissionCount: browserWallet.summary.successfulSubmissionCount,
+      diagnosticsCaptureCount: browserWallet.summary.diagnosticsCaptureCount,
+      actionCoverageCount: browserWallet.summary.actionCoverageCount,
+      pendingTargets: browserWallet.summary.pendingTargets,
     },
     magicBlock: {
       status: magicBlock.status,
@@ -214,6 +238,10 @@ function main() {
       "docs/runtime/real-device-captures.json",
       "docs/runtime/real-device.generated.md",
       "docs/runtime/real-device.generated.json",
+      "docs/runtime/browser-wallet.md",
+      "docs/runtime/browser-wallet-captures.json",
+      "docs/runtime/browser-wallet.generated.md",
+      "docs/runtime/browser-wallet.generated.json",
       "docs/magicblock/private-payments.md",
       "docs/magicblock/operator-flow.md",
       "docs/magicblock/runtime-evidence.md",
@@ -245,6 +273,8 @@ function main() {
       "npm run verify:operational-evidence",
       "npm run build:governance-runtime-proof",
       "npm run verify:governance-runtime-proof",
+      "npm run build:browser-wallet-runtime",
+      "npm run verify:browser-wallet-runtime",
       "npm run build:wallet-matrix",
       "npm run verify:wallet-matrix",
       "npm run build:real-device-runtime",
@@ -269,6 +299,7 @@ function main() {
       "It does not replace real device QA across every wallet release and browser combination.",
       "It binds browser/runtime behavior to diagnostics, wallet matrix, canary, resilience evidence, and real-device capture intake in one summary.",
       "It includes a dedicated governance runtime proof packet so reviewers can see the difference between shipped wallet-first lanes and still-pending browser or device captures.",
+      "It now carries a separate browser-wallet runtime intake so live web governance claims stay tied to actual injected-wallet captures instead of code paths alone.",
       "It exposes the MagicBlock confidential payout corridor as a separate runtime track instead of burying it inside generic payout claims.",
       "It adds a Frontier integration package that binds ZK anchors, MagicBlock settlement, REFHE settlement, and backend-indexed RPC state into one machine-checked review surface.",
       "It exposes the stronger zk_enforced runtime blocker as a first-class evidence track instead of leaving it implicit in prose.",
@@ -300,6 +331,16 @@ function buildMarkdown(evidence: {
     successfulConnectCount: number;
     successfulSubmissionCount: number;
     diagnosticsCaptureCount: number;
+    pendingTargets: string[];
+  };
+  browserWallet: {
+    status: string;
+    targetCount: number;
+    completedTargetCount: number;
+    successfulConnectCount: number;
+    successfulSubmissionCount: number;
+    diagnosticsCaptureCount: number;
+    actionCoverageCount: number;
     pendingTargets: string[];
   };
   magicBlock: {
@@ -385,6 +426,17 @@ ${evidence.matrixStatuses
 - Successful submission count: \`${evidence.realDevice.successfulSubmissionCount}\`
 - Diagnostics capture count: \`${evidence.realDevice.diagnosticsCaptureCount}\`
 - Pending targets: \`${evidence.realDevice.pendingTargets.join(", ") || "none"}\`
+
+## Browser-Wallet Runtime Intake
+
+- Status: \`${evidence.browserWallet.status}\`
+- Target count: \`${evidence.browserWallet.targetCount}\`
+- Completed target count: \`${evidence.browserWallet.completedTargetCount}\`
+- Successful connect count: \`${evidence.browserWallet.successfulConnectCount}\`
+- Successful submission count: \`${evidence.browserWallet.successfulSubmissionCount}\`
+- Diagnostics capture count: \`${evidence.browserWallet.diagnosticsCaptureCount}\`
+- Action coverage count: \`${evidence.browserWallet.actionCoverageCount}\`
+- Pending targets: \`${evidence.browserWallet.pendingTargets.join(", ") || "none"}\`
 
 ## MagicBlock Runtime Intake
 

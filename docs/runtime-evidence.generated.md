@@ -2,10 +2,10 @@
 
 ## Overview
 
-- Generated at: `2026-04-14T01:41:28.256Z`
+- Generated at: `2026-04-14T01:52:02.999Z`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
-- Diagnostics page: `https://x-pact.github.io/PrivateDAO/diagnostics/`
+- Diagnostics page: `https://privatedao.org/diagnostics/`
 - Supported wallet classes: `5`
 
 ## Wallet Matrix
@@ -40,6 +40,17 @@
 - Successful submission count: `0`
 - Diagnostics capture count: `0`
 - Pending targets: `Phantom, Solflare, Backpack, Glow, Android Native / Mobile`
+
+## Browser-Wallet Runtime Intake
+
+- Status: `pending-browser-wallet-capture`
+- Target count: `4`
+- Completed target count: `0`
+- Successful connect count: `0`
+- Successful submission count: `0`
+- Diagnostics capture count: `0`
+- Action coverage count: `0`
+- Pending targets: `Phantom, Solflare, Backpack, Glow`
 
 ## MagicBlock Runtime Intake
 
@@ -90,6 +101,10 @@
 - `docs/runtime/real-device-captures.json`
 - `docs/runtime/real-device.generated.md`
 - `docs/runtime/real-device.generated.json`
+- `docs/runtime/browser-wallet.md`
+- `docs/runtime/browser-wallet-captures.json`
+- `docs/runtime/browser-wallet.generated.md`
+- `docs/runtime/browser-wallet.generated.json`
 - `docs/magicblock/private-payments.md`
 - `docs/magicblock/operator-flow.md`
 - `docs/magicblock/runtime-evidence.md`
@@ -128,6 +143,8 @@
 - `npm run verify:operational-evidence`
 - `npm run build:governance-runtime-proof`
 - `npm run verify:governance-runtime-proof`
+- `npm run build:browser-wallet-runtime`
+- `npm run verify:browser-wallet-runtime`
 - `npm run build:wallet-matrix`
 - `npm run verify:wallet-matrix`
 - `npm run build:real-device-runtime`
@@ -153,6 +170,7 @@
 - It does not replace real device QA across every wallet release and browser combination.
 - It binds browser/runtime behavior to diagnostics, wallet matrix, canary, resilience evidence, and real-device capture intake in one summary.
 - It includes a dedicated governance runtime proof packet so reviewers can see the difference between shipped wallet-first lanes and still-pending browser or device captures.
+- It now carries a separate browser-wallet runtime intake so live web governance claims stay tied to actual injected-wallet captures instead of code paths alone.
 - It exposes the MagicBlock confidential payout corridor as a separate runtime track instead of burying it inside generic payout claims.
 - It adds a Frontier integration package that binds ZK anchors, MagicBlock settlement, REFHE settlement, and backend-indexed RPC state into one machine-checked review surface.
 - It exposes the stronger zk_enforced runtime blocker as a first-class evidence track instead of leaving it implicit in prose.

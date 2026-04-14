@@ -7,6 +7,10 @@ Use these templates when collecting real wallet and device evidence on Devnet:
 - `backpack-desktop.json`
 - `glow-desktop.json`
 - `android-runtime.json`
+- `phantom-browser-wallet.json`
+- `solflare-browser-wallet.json`
+- `backpack-browser-wallet.json`
+- `glow-browser-wallet.json`
 
 Fast path:
 

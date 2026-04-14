@@ -44,6 +44,10 @@ required_files=(
   "docs/runtime/real-device-captures.json"
   "docs/runtime/real-device.generated.md"
   "docs/runtime/real-device.generated.json"
+  "docs/runtime/browser-wallet.md"
+  "docs/runtime/browser-wallet-captures.json"
+  "docs/runtime/browser-wallet.generated.md"
+  "docs/runtime/browser-wallet.generated.json"
   "docs/frontier-integrations.generated.md"
   "docs/frontier-integrations.generated.json"
   "docs/operational-evidence.generated.md"
@@ -154,6 +158,8 @@ if search_placeholders "$placeholder_pattern" \
   docs/wallet-runtime.md \
   docs/runtime/real-device.md \
   docs/runtime/real-device.generated.md \
+  docs/runtime/browser-wallet.md \
+  docs/runtime/browser-wallet.generated.md \
   docs/operational-evidence.generated.md \
   docs/runtime-evidence.generated.md \
   docs/wallet-compatibility-matrix.generated.md \

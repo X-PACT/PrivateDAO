@@ -1,0 +1,32 @@
+{
+  "project": "PrivateDAO",
+  "network": "devnet",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "targets": [
+    {
+      "id": "phantom-browser-wallet",
+      "walletLabel": "Phantom",
+      "environmentType": "desktop-browser",
+      "status": "pending-capture"
+    },
+    {
+      "id": "solflare-browser-wallet",
+      "walletLabel": "Solflare",
+      "environmentType": "desktop-browser",
+      "status": "pending-capture"
+    },
+    {
+      "id": "backpack-browser-wallet",
+      "walletLabel": "Backpack",
+      "environmentType": "desktop-browser",
+      "status": "pending-capture"
+    },
+    {
+      "id": "glow-browser-wallet",
+      "walletLabel": "Glow",
+      "environmentType": "desktop-browser",
+      "status": "pending-capture"
+    }
+  ],
+  "captures": []
+}

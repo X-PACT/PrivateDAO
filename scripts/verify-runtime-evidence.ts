@@ -20,6 +20,16 @@ type RuntimeEvidence = {
     diagnosticsCaptureCount: number;
     pendingTargets: string[];
   };
+  browserWallet: {
+    status: string;
+    targetCount: number;
+    completedTargetCount: number;
+    successfulConnectCount: number;
+    successfulSubmissionCount: number;
+    diagnosticsCaptureCount: number;
+    actionCoverageCount: number;
+    pendingTargets: string[];
+  };
   operational: {
     walletCount: number;
     totalTxCount: number;
@@ -61,6 +71,8 @@ function main() {
   assert(evidence.resilience.staleBlockhashRecovered, "runtime evidence missing stale blockhash recovery");
   assert(evidence.realDevice.targetCount >= 5, "runtime evidence real-device target count is unexpectedly low");
   assert(evidence.realDevice.pendingTargets.length >= 1, "runtime evidence real-device boundary should remain honest until captures exist");
+  assert(evidence.browserWallet.targetCount >= 4, "runtime evidence browser-wallet target count is unexpectedly low");
+  assert(evidence.browserWallet.pendingTargets.length >= 1, "runtime evidence browser-wallet boundary should remain honest until captures exist");
   assert(evidence.operational.walletCount >= 50, "runtime evidence operational wallet count is unexpectedly low");
   assert(evidence.operational.totalAttemptCount >= 200, "runtime evidence operational attempt count is unexpectedly low");
   assert(evidence.operational.zkProofCount >= 1, "runtime evidence operational zk proof count is unexpectedly low");
@@ -75,6 +87,10 @@ function main() {
     "docs/runtime/real-device-captures.json",
     "docs/runtime/real-device.generated.md",
     "docs/runtime/real-device.generated.json",
+    "docs/runtime/browser-wallet.md",
+    "docs/runtime/browser-wallet-captures.json",
+    "docs/runtime/browser-wallet.generated.md",
+    "docs/runtime/browser-wallet.generated.json",
     "docs/runtime-attestation.generated.json",
     "docs/frontier-integrations.generated.md",
     "docs/frontier-integrations.generated.json",
@@ -93,6 +109,8 @@ function main() {
   for (const command of [
     "npm run build:governance-runtime-proof",
     "npm run verify:governance-runtime-proof",
+    "npm run build:browser-wallet-runtime",
+    "npm run verify:browser-wallet-runtime",
     "npm run build:wallet-matrix",
     "npm run verify:wallet-matrix",
     "npm run build:real-device-runtime",
@@ -113,6 +131,7 @@ function main() {
   assert(markdown.includes("Devnet Canary Summary"), "runtime evidence markdown missing canary summary");
   assert(markdown.includes("Resilience Summary"), "runtime evidence markdown missing resilience summary");
   assert(markdown.includes("Real-Device Runtime Intake"), "runtime evidence markdown missing real-device summary");
+  assert(markdown.includes("Browser-Wallet Runtime Intake"), "runtime evidence markdown missing browser-wallet summary");
   assert(markdown.includes("Operational Summary"), "runtime evidence markdown missing operational summary");
   assert(markdown.includes("Governance Runtime Proof"), "runtime evidence markdown missing governance proof section");
 

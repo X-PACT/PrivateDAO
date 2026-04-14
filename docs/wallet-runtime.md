@@ -72,6 +72,15 @@ PrivateDAO now publishes a real-device runtime intake package:
 
 This keeps desktop and mobile wallet QA tied to a canonical capture registry instead of leaving that work as an informal future note.
 
+PrivateDAO also publishes a browser-wallet runtime intake package for the live web lane:
+
+- `docs/runtime/browser-wallet.md`
+- `docs/runtime/browser-wallet-captures.json`
+- `docs/runtime/browser-wallet.generated.md`
+- `docs/runtime/browser-wallet.generated.json`
+
+This keeps browser-wallet runtime claims tied to captured injected-wallet runs instead of treating build success as runtime proof.
+
 ## Sustained Runtime Signal
 
 The repository also publishes a read-only Devnet operational canary:

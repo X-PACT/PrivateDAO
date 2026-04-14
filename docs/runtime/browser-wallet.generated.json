@@ -1,0 +1,59 @@
+{
+  "project": "PrivateDAO",
+  "generatedAt": "2026-04-14T01:51:16.913Z",
+  "network": "devnet",
+  "summary": {
+    "targetCount": 4,
+    "completedTargetCount": 0,
+    "successfulConnectCount": 0,
+    "successfulSubmissionCount": 0,
+    "diagnosticsCaptureCount": 0,
+    "actionCoverageCount": 0,
+    "pendingTargets": [
+      "Phantom",
+      "Solflare",
+      "Backpack",
+      "Glow"
+    ]
+  },
+  "targets": [
+    {
+      "id": "phantom-browser-wallet",
+      "walletLabel": "Phantom",
+      "environmentType": "desktop-browser",
+      "status": "pending-capture"
+    },
+    {
+      "id": "solflare-browser-wallet",
+      "walletLabel": "Solflare",
+      "environmentType": "desktop-browser",
+      "status": "pending-capture"
+    },
+    {
+      "id": "backpack-browser-wallet",
+      "walletLabel": "Backpack",
+      "environmentType": "desktop-browser",
+      "status": "pending-capture"
+    },
+    {
+      "id": "glow-browser-wallet",
+      "walletLabel": "Glow",
+      "environmentType": "desktop-browser",
+      "status": "pending-capture"
+    }
+  ],
+  "captures": [],
+  "requiredDocs": [
+    "docs/runtime/browser-wallet.md",
+    "docs/runtime/browser-wallet-captures.json",
+    "docs/governance-runtime-proof.generated.json",
+    "docs/wallet-runtime.md"
+  ],
+  "commands": [
+    "npm run build:browser-wallet-runtime",
+    "npm run verify:browser-wallet-runtime",
+    "npm run verify:runtime-surface",
+    "npm run verify:all"
+  ],
+  "status": "pending-browser-wallet-capture"
+}

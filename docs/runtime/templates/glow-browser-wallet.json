@@ -1,0 +1,21 @@
+{
+  "id": "glow-browser-wallet",
+  "walletLabel": "Glow",
+  "walletVersion": "example-version",
+  "environmentType": "desktop-browser",
+  "os": "macOS 15",
+  "browserOrClient": "Chrome 136",
+  "network": "devnet",
+  "actionsCovered": [
+    "Create DAO"
+  ],
+  "connectResult": "failure",
+  "signingResult": "not-attempted",
+  "submissionResult": "not-attempted",
+  "diagnosticsSnapshotCaptured": false,
+  "txSignature": null,
+  "explorerUrl": null,
+  "errorMessage": "replace-with-runtime-result",
+  "evidenceRefs": [],
+  "capturedAt": "2026-04-14T00:00:00.000Z"
+}

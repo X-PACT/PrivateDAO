@@ -2,7 +2,7 @@
 
 ## Overview
 
-- Generated at: `2026-04-14T01:36:45.457Z`
+- Generated at: `2026-04-14T01:51:19.448Z`
 - Project: `PrivateDAO`
 - Network: `devnet`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
@@ -78,6 +78,8 @@
 - `docs/test-wallet-live-proof.generated.md`
 - `docs/test-wallet-live-proof-v3.generated.md`
 - `docs/runtime-evidence.generated.md`
+- `docs/runtime/browser-wallet.generated.md`
+- `docs/runtime/browser-wallet.md`
 - `docs/runtime/real-device.generated.md`
 - `docs/runtime/real-device.md`
 - `docs/launch-trust-packet.generated.md`
@@ -89,11 +91,13 @@
 - `npm run live-proof:v3`
 - `npm run build:governance-runtime-proof`
 - `npm run verify:governance-runtime-proof`
+- `npm run build:browser-wallet-runtime`
+- `npm run verify:browser-wallet-runtime`
 - `npm run build:real-device-runtime`
 - `npm run verify:real-device-runtime`
 
 ## Notes
 
 - This packet separates live web wallet capability from runtime proof capture so the product does not overclaim based on shipped code alone.
-- Repo-script proof exists for the governance core lifecycle, but browser-wallet proof on the web and real-device action proof on Android remain pending until captures are recorded.
+- Repo-script proof exists for the governance core lifecycle, but browser-wallet proof on the web and real-device action proof on Android remain pending until captures are recorded in their runtime registries.
 - The web wallet lane currently covers Create DAO, Create Proposal, Commit Vote, Reveal Vote, Finalize Proposal, and Execute Proposal for standard, SendSol, and SendToken proposals.

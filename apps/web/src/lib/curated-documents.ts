@@ -18,6 +18,16 @@ const repositoryBlobBase = "https://github.com/X-PACT/PrivateDAO/blob/main";
 
 const curatedDocuments: CuratedDocument[] = [
   {
+    slug: "browser-wallet-runtime",
+    title: "Browser-Wallet Runtime Evidence",
+    category: "Reviewer core",
+    summary: "Generated intake packet for browser-wallet runtime captures across Phantom, Solflare, Backpack, and Glow in the live web governance lane.",
+    audience: "Judges, reviewers, operators",
+    boundary: "Capture registry only; it does not claim browser-wallet runtime proof exists until actual injected-wallet runs are recorded.",
+    docPath: "docs/runtime/browser-wallet.generated.md",
+    rawHref: `${repositoryBlobBase}/docs/runtime/browser-wallet.generated.md`,
+  },
+  {
     slug: "token-architecture",
     title: "Token Architecture",
     category: "Strategy",

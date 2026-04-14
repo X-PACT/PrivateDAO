@@ -48,6 +48,10 @@ function main() {
 
   for (const doc of [
     "docs/wallet-runtime.md",
+    "docs/runtime/browser-wallet.md",
+    "docs/runtime/browser-wallet-captures.json",
+    "docs/runtime/browser-wallet.generated.md",
+    "docs/runtime/browser-wallet.generated.json",
     "docs/runtime/real-device.md",
     "docs/runtime/real-device-captures.json",
     "docs/runtime/real-device.generated.md",

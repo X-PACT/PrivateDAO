@@ -32,7 +32,7 @@ function main() {
     "Operational diagnostics",
     "Verification chain",
     "runtime checks",
-    "Connect Phantom, Solflare, or Backpack",
+    "Connect Solflare, Phantom, or Backpack",
     "Execution boundary",
     "Launch honesty",
   ]) {
@@ -51,6 +51,7 @@ function main() {
   assert(runtime.diagnosticsPage.endsWith("/diagnostics/"), "runtime attestation diagnostics URL is unexpected");
 
   assert(Boolean(runtime.runtimeDocs?.includes?.("docs/wallet-compatibility-matrix.generated.md")), "runtime attestation is missing wallet matrix docs");
+  assert(Boolean(runtime.runtimeDocs?.includes?.("docs/runtime/browser-wallet.generated.md")), "runtime attestation is missing browser-wallet runtime docs");
   assert(Boolean(runtime.runtimeDocs?.includes?.("docs/runtime/real-device.generated.md")), "runtime attestation is missing real-device runtime docs");
   assert(Boolean(runtime.runtimeDocs?.includes?.("docs/magicblock/runtime.generated.md")), "runtime attestation is missing MagicBlock runtime docs");
   assert(Boolean(runtime.runtimeDocs?.includes?.("docs/frontier-integrations.generated.md")), "runtime attestation is missing Frontier integration docs");
