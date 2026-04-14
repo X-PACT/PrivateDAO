@@ -7,7 +7,7 @@
       "id": "phantom-browser-wallet",
       "walletLabel": "Phantom",
       "environmentType": "desktop-browser",
-      "status": "pending-capture"
+      "status": "captured-with-failures"
     },
     {
       "id": "solflare-browser-wallet",
@@ -28,5 +28,30 @@
       "status": "pending-capture"
     }
   ],
-  "captures": []
+  "captures": [
+    {
+      "id": "phantom-browser-wallet",
+      "walletLabel": "Phantom",
+      "walletVersion": "unknown",
+      "environmentType": "desktop-browser",
+      "os": "Linux",
+      "browserOrClient": "Playwright Chromium",
+      "network": "devnet",
+      "actionsCovered": [
+        "Connect Wallet",
+        "Create DAO"
+      ],
+      "connectResult": "success",
+      "signingResult": "failure",
+      "submissionResult": "not-attempted",
+      "diagnosticsSnapshotCaptured": true,
+      "txSignature": null,
+      "explorerUrl": null,
+      "errorMessage": "Create DAO reached the live pre-sign review and then the 'Awaiting wallet signature for the DAO bootstrap transaction...' state from the web command-center lane. Phantom was connected successfully, but browser automation did not complete a wallet popup/signature handoff. An earlier run in the same environment also surfaced 'Could not establish connection' and 'Attempting to use a disconnected port object' from the Phantom extension session.",
+      "evidenceRefs": [
+        "docs/assets/runtime/browser-wallet/phantom-create-dao-awaiting-wallet.png"
+      ],
+      "capturedAt": "2026-04-14T15:20:00.000Z"
+    }
+  ]
 }
