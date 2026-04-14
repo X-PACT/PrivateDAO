@@ -80,6 +80,8 @@ function main() {
     "docs/frontier-integrations.generated.json",
     "docs/operational-evidence.generated.md",
     "docs/operational-evidence.generated.json",
+    "docs/governance-runtime-proof.generated.md",
+    "docs/governance-runtime-proof.generated.json",
     "docs/wallet-compatibility-matrix.generated.md",
     "docs/devnet-canary.generated.md",
     "docs/devnet-resilience-report.md",
@@ -89,6 +91,8 @@ function main() {
   }
 
   for (const command of [
+    "npm run build:governance-runtime-proof",
+    "npm run verify:governance-runtime-proof",
     "npm run build:wallet-matrix",
     "npm run verify:wallet-matrix",
     "npm run build:real-device-runtime",
@@ -110,6 +114,7 @@ function main() {
   assert(markdown.includes("Resilience Summary"), "runtime evidence markdown missing resilience summary");
   assert(markdown.includes("Real-Device Runtime Intake"), "runtime evidence markdown missing real-device summary");
   assert(markdown.includes("Operational Summary"), "runtime evidence markdown missing operational summary");
+  assert(markdown.includes("Governance Runtime Proof"), "runtime evidence markdown missing governance proof section");
 
   console.log("Runtime evidence verification: PASS");
 }

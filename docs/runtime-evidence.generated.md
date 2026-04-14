@@ -2,7 +2,7 @@
 
 ## Overview
 
-- Generated at: `2026-04-10T01:23:28.015Z`
+- Generated at: `2026-04-14T01:41:28.256Z`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - Diagnostics page: `https://x-pact.github.io/PrivateDAO/diagnostics/`
@@ -109,15 +109,25 @@
 - `docs/runtime-attestation.generated.json`
 - `docs/operational-evidence.generated.md`
 - `docs/operational-evidence.generated.json`
+- `docs/governance-runtime-proof.generated.md`
+- `docs/governance-runtime-proof.generated.json`
 - `docs/wallet-compatibility-matrix.generated.md`
 - `docs/devnet-canary.generated.md`
 - `docs/devnet-resilience-report.md`
 - `docs/fair-voting.md`
 
+## Governance Runtime Proof
+
+- Dedicated packet: `docs/governance-runtime-proof.generated.md`
+- Machine-readable source: `docs/governance-runtime-proof.generated.json`
+- Purpose: separate shipped wallet-first governance capability from repo proof, browser-wallet proof, and real-device proof so the product does not overclaim based on code alone.
+
 ## Commands
 
 - `npm run build:operational-evidence`
 - `npm run verify:operational-evidence`
+- `npm run build:governance-runtime-proof`
+- `npm run verify:governance-runtime-proof`
 - `npm run build:wallet-matrix`
 - `npm run verify:wallet-matrix`
 - `npm run build:real-device-runtime`
@@ -142,6 +152,7 @@
 - This runtime evidence package is Devnet-focused and reviewer-visible.
 - It does not replace real device QA across every wallet release and browser combination.
 - It binds browser/runtime behavior to diagnostics, wallet matrix, canary, resilience evidence, and real-device capture intake in one summary.
+- It includes a dedicated governance runtime proof packet so reviewers can see the difference between shipped wallet-first lanes and still-pending browser or device captures.
 - It exposes the MagicBlock confidential payout corridor as a separate runtime track instead of burying it inside generic payout claims.
 - It adds a Frontier integration package that binds ZK anchors, MagicBlock settlement, REFHE settlement, and backend-indexed RPC state into one machine-checked review surface.
 - It exposes the stronger zk_enforced runtime blocker as a first-class evidence track instead of leaving it implicit in prose.
