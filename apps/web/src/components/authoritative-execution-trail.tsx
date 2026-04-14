@@ -96,8 +96,8 @@ export function AuthoritativeExecutionTrail({
               Open services lane
               <ArrowUpRight className="h-4 w-4" />
             </Link>
-            <Link href={`/command-center?${continuityQuery}#proposal-review-action`} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
-              Open command-center lane
+            <Link href={`/govern?${continuityQuery}#proposal-review-action`} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+              Open govern lane
               <ArrowUpRight className="h-4 w-4" />
             </Link>
             <Link href={`/proof?${continuityQuery}`} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>

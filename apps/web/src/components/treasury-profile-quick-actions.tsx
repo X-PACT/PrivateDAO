@@ -131,8 +131,8 @@ export function TreasuryProfileQuickActions({ title = "Commercial quick actions"
                 Open request object
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link href={`/command-center?${handoffQuery}#proposal-review-action`} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
-                Continue execution lane
+              <Link href={`/govern?${handoffQuery}#proposal-review-action`} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                Continue govern flow
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>

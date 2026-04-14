@@ -39,7 +39,7 @@ const handoffLanes = [
     label: "Operator lane",
     summary: "Use for infrastructure support, wallet operations, and RPC-backed treasury handling.",
     routes: [
-      { label: "Command Center", href: "/command-center" },
+      { label: "Govern", href: "/govern" },
       { label: "Diagnostics", href: "/diagnostics" },
     ],
   },
@@ -66,7 +66,7 @@ const destinationProfiles = [
     intake: "payments",
     nextRoutes: [
       { label: "Services", href: "/services" },
-      { label: "Command Center", href: "/command-center" },
+      { label: "Govern", href: "/govern" },
     ],
   },
   {
@@ -93,7 +93,7 @@ const destinationProfiles = [
     defaultPurpose: "Vendor payout request routed through governed treasury operations.",
     intake: "payments",
     nextRoutes: [
-      { label: "Command Center", href: "/command-center" },
+      { label: "Govern", href: "/govern" },
       { label: "Diagnostics", href: "/diagnostics" },
     ],
   },
@@ -107,7 +107,7 @@ const destinationProfiles = [
     defaultPurpose: "Contributor payout request for governed treasury execution.",
     intake: "payments",
     nextRoutes: [
-      { label: "Command Center", href: "/command-center" },
+      { label: "Govern", href: "/govern" },
       { label: "Security", href: "/security" },
     ],
   },
@@ -386,15 +386,15 @@ export function TreasuryReceiveSurface() {
   );
   const buildRouteWithDelivery = useCallback(
     (
-      basePath: "/services" | "/command-center" | "/network",
+      basePath: "/services" | "/govern" | "/network",
       state: ServiceHandoffRequestDelivery["state"],
       deliveredAt: string | null,
     ) => {
       if (!continueHandoffQuery) {
         return basePath === "/services"
           ? "/services#treasury-payment-request"
-          : basePath === "/command-center"
-            ? "/command-center#proposal-review-action"
+          : basePath === "/govern"
+            ? "/govern#proposal-review-action"
             : "/network";
       }
 
@@ -409,8 +409,8 @@ export function TreasuryReceiveSurface() {
       if (basePath === "/services") {
         return `/services?${params.toString()}#treasury-payment-request`;
       }
-      if (basePath === "/command-center") {
-        return `/command-center?${params.toString()}#proposal-review-action`;
+      if (basePath === "/govern") {
+        return `/govern?${params.toString()}#proposal-review-action`;
       }
       return `/network?${params.toString()}`;
     },
@@ -431,14 +431,14 @@ export function TreasuryReceiveSurface() {
       state,
       stateDetail:
         state === "delivered"
-          ? "Request object delivered into the command-center execution lane with the exact treasury payload attached."
+          ? "Request object delivered into the govern execution lane with the exact treasury payload attached."
           : state === "staged"
             ? "Request object submitted in the services lane and ready for governed delivery."
             : isRequestReady
               ? "Structured request object is ready to be submitted or delivered into the execution lane."
               : "Complete amount, reference, and purpose before staging the request for delivery.",
       requestRoute: buildRouteWithDelivery("/services", state, deliveredAt),
-      deliveryRoute: buildRouteWithDelivery("/command-center", state, deliveredAt),
+      deliveryRoute: buildRouteWithDelivery("/govern", state, deliveredAt),
       telemetryRoute: buildRouteWithDelivery("/network", state, deliveredAt),
       deliveredAt,
     };
@@ -454,7 +454,7 @@ export function TreasuryReceiveSurface() {
       return {
         ...storedState,
         requestRoute: buildRouteWithDelivery("/services", storedState.state, storedState.deliveredAt),
-        deliveryRoute: buildRouteWithDelivery("/command-center", storedState.state, storedState.deliveredAt),
+        deliveryRoute: buildRouteWithDelivery("/govern", storedState.state, storedState.deliveredAt),
         telemetryRoute: buildRouteWithDelivery("/network", storedState.state, storedState.deliveredAt),
       };
     }
@@ -528,7 +528,7 @@ export function TreasuryReceiveSurface() {
           ? {
               ...matchingStoredDelivery,
               requestRoute: buildRouteWithDelivery("/services", matchingStoredDelivery.state, matchingStoredDelivery.deliveredAt),
-              deliveryRoute: buildRouteWithDelivery("/command-center", matchingStoredDelivery.state, matchingStoredDelivery.deliveredAt),
+              deliveryRoute: buildRouteWithDelivery("/govern", matchingStoredDelivery.state, matchingStoredDelivery.deliveredAt),
               telemetryRoute: buildRouteWithDelivery("/network", matchingStoredDelivery.state, matchingStoredDelivery.deliveredAt),
             }
           : handoff.requestDelivery &&
@@ -536,7 +536,7 @@ export function TreasuryReceiveSurface() {
             ? {
                 ...handoff.requestDelivery,
                 requestRoute: buildRouteWithDelivery("/services", handoff.requestDelivery.state, handoff.requestDelivery.deliveredAt),
-                deliveryRoute: buildRouteWithDelivery("/command-center", handoff.requestDelivery.state, handoff.requestDelivery.deliveredAt),
+                deliveryRoute: buildRouteWithDelivery("/govern", handoff.requestDelivery.state, handoff.requestDelivery.deliveredAt),
                 telemetryRoute: buildRouteWithDelivery("/network", handoff.requestDelivery.state, handoff.requestDelivery.deliveredAt),
               }
             : buildRequestDelivery("draft");
@@ -875,8 +875,8 @@ export function TreasuryReceiveSurface() {
                     Refresh services continuity
                     <ArrowRight className="h-4 w-4" />
                   </Link>
-                  <Link href={`/command-center?${continueHandoffQuery}#proposal-review-action`} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
-                    Continue to command-center
+                  <Link href={`/govern?${continueHandoffQuery}#proposal-review-action`} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                    Continue to govern
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                   <Link href={`/network?${continueHandoffQuery}`} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
@@ -916,7 +916,7 @@ export function TreasuryReceiveSurface() {
               <div className="text-[11px] uppercase tracking-[0.24em] text-emerald-100/76">Governed delivery lane</div>
               <div className="mt-3 text-base font-medium text-white">
                 {activeRequestDelivery.state === "delivered"
-                  ? "Delivered into command-center"
+                  ? "Delivered into govern"
                   : activeRequestDelivery.state === "staged"
                     ? "Submitted in services"
                     : isRequestReady
@@ -950,7 +950,7 @@ export function TreasuryReceiveSurface() {
                 <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
                   <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Submit progression</div>
                   <div className="mt-2 text-white">
-                    Draft in services → submitted in services → delivered into command-center → runtime continuity on network.
+                    Draft in services → submitted in services → delivered into govern → runtime continuity on network.
                   </div>
                 </div>
               </div>
@@ -1038,7 +1038,7 @@ export function TreasuryReceiveSurface() {
               </Link>
               {continueHandoffQuery ? (
                 <Link
-                  href={`/command-center?${continueHandoffQuery}#proposal-review-action`}
+                  href={`/govern?${continueHandoffQuery}#proposal-review-action`}
                   className={cn(buttonVariants({ size: "sm", variant: "outline" }), !isRequestReady && "pointer-events-none opacity-50")}
                   aria-disabled={!isRequestReady}
                 >
