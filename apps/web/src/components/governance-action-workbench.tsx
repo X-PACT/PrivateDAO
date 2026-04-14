@@ -164,14 +164,24 @@ export function GovernanceActionWorkbench() {
     executeProposal,
     resetSession,
   } = useGovernanceSession();
+  const activeLiveProposalAddress = liveProposalRuntime?.address;
+  const hasLiveDaoLane = Boolean(liveDaoRuntime?.address && liveDaoRuntime.governanceMint);
+  const effectiveDaoCreated = daoCreated || hasLiveDaoLane;
+  const effectiveProposalCreated = proposalCreated || Boolean(activeLiveProposalAddress);
+  const effectiveVoteCommitted = voteCommitted || Boolean(liveVoteRuntime?.commitSignature && activeLiveProposalAddress);
+  const effectiveVoteRevealed = voteRevealed || Boolean(liveVoteRuntime?.revealSignature && activeLiveProposalAddress);
+  const effectiveProposalFinalized =
+    proposalFinalized || Boolean(liveVoteRuntime?.finalizeSignature && activeLiveProposalAddress);
+  const effectiveProposalExecuted =
+    proposalExecuted || Boolean(liveVoteRuntime?.executeSignature && activeLiveProposalAddress);
 
   const canCreateDao =
     connected &&
     Boolean(publicKey) &&
-    !daoCreated &&
+    !effectiveDaoCreated &&
     daoName.trim().length >= 3 &&
     createDaoRuntime.status !== "submitting";
-  const canCreateProposal = daoCreated && !proposalCreated && proposalTitle.trim().length >= 6;
+  const canCreateProposal = effectiveDaoCreated && !effectiveProposalCreated && proposalTitle.trim().length >= 6;
   const proposalTreasuryDraft = useMemo(() => {
     const recipient = proposalTreasuryRecipient.trim();
     const amount = proposalTreasuryAmountSol.trim();
@@ -232,10 +242,7 @@ export function GovernanceActionWorkbench() {
     Boolean(liveDaoRuntime?.address && liveDaoRuntime.governanceMint) &&
     !proposalTreasuryDraft.error &&
     createProposalRuntime.status !== "submitting";
-  const canCommit = proposalCreated && !voteCommitted;
-  const canReveal = voteCommitted && !voteRevealed;
-  const canFinalize = voteRevealed && !proposalFinalized;
-  const canExecute = proposalFinalized && !proposalExecuted;
+  const canExecute = effectiveProposalFinalized && !effectiveProposalExecuted;
   const handoff = useServiceHandoffSnapshot("command-center");
   const appliedReviewRef = useRef<string | null>(null);
   const autoOpenReviewRef = useRef<string | null>(null);
@@ -245,14 +252,6 @@ export function GovernanceActionWorkbench() {
   const continuityQuery = handoff ? buildServiceHandoffQuery(handoff) : "";
 
   const activeWalletLabel = useMemo(() => wallet?.adapter.name ?? "Connected wallet", [wallet]);
-  const nextAction = useMemo<CoreGovernanceInstructionName>(() => {
-    if (!daoCreated) return "initialize_dao";
-    if (!proposalCreated) return "create_proposal";
-    if (!voteCommitted) return "commit_vote";
-    if (!voteRevealed) return "reveal_vote";
-    if (!proposalFinalized) return "finalize_proposal";
-    return "execute_proposal";
-  }, [daoCreated, proposalCreated, voteCommitted, voteRevealed, proposalFinalized]);
   const hasPayloadDrivenExecution = Boolean(executionIntent?.requestPayload);
   const payloadDrivenRequest = executionIntent?.requestPayload ?? null;
   const activeShellAction = hasPayloadDrivenExecution ? stagedReviewAction : nextAction;
@@ -307,25 +306,41 @@ export function GovernanceActionWorkbench() {
       canExecute);
   const payloadExecutionState =
     executionIntent?.requestDelivery?.state ?? executionIntent?.requestPayload?.state ?? "draft";
-  const activeLiveProposalAddress = liveProposalRuntime?.address;
-  const hasLiveCommitLane = Boolean(liveDaoRuntime?.address && activeLiveProposalAddress);
+  const nextAction = useMemo<CoreGovernanceInstructionName>(() => {
+    if (!effectiveDaoCreated) return "initialize_dao";
+    if (!effectiveProposalCreated) return "create_proposal";
+    if (!effectiveVoteCommitted) return "commit_vote";
+    if (!effectiveVoteRevealed) return "reveal_vote";
+    if (!effectiveProposalFinalized) return "finalize_proposal";
+    return "execute_proposal";
+  }, [
+    effectiveDaoCreated,
+    effectiveProposalCreated,
+    effectiveVoteCommitted,
+    effectiveVoteRevealed,
+    effectiveProposalFinalized,
+  ]);
+  const hasLiveCommitLane = Boolean(hasLiveDaoLane && activeLiveProposalAddress);
   const canCommitLive =
     connected &&
     Boolean(publicKey) &&
     hasLiveCommitLane &&
-    canCommit &&
+    effectiveProposalCreated &&
+    !effectiveVoteCommitted &&
     commitVoteRuntime.status !== "submitting";
   const canRevealLive =
     connected &&
     Boolean(publicKey) &&
     Boolean(liveVoteRuntime?.saltHex && activeLiveProposalAddress) &&
-    canReveal &&
+    effectiveVoteCommitted &&
+    !effectiveVoteRevealed &&
     revealVoteRuntime.status !== "submitting";
   const canFinalizeLive =
     connected &&
     Boolean(publicKey) &&
     hasLiveCommitLane &&
-    canFinalize &&
+    effectiveVoteRevealed &&
+    !effectiveProposalFinalized &&
     finalizeRuntime.status !== "submitting";
   const canExecuteLive =
     connected &&
