@@ -171,15 +171,31 @@ export function OperationsShell({
               </div>
 
               <div className="mt-8 flex flex-wrap gap-3">
-                <Link className={buttonVariants({ size: "sm" })} href="/govern">
-                  Open govern
-                </Link>
-                <Link className={buttonVariants({ size: "sm", variant: "secondary" })} href="/live">
-                  Open live state
-                </Link>
-                <Link className={buttonVariants({ size: "sm", variant: "outline" })} href="/documents">
-                  Open curated docs
-                </Link>
+                {pathname === "/govern" ? (
+                  <>
+                    <a className={buttonVariants({ size: "sm" })} href="#proposal-review-action">
+                      Start the flow
+                    </a>
+                    <Link className={buttonVariants({ size: "sm", variant: "secondary" })} href="/live">
+                      Open live state
+                    </Link>
+                    <Link className={buttonVariants({ size: "sm", variant: "outline" })} href="/documents">
+                      Open curated docs
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link className={buttonVariants({ size: "sm" })} href="/govern">
+                      Open govern
+                    </Link>
+                    <Link className={buttonVariants({ size: "sm", variant: "secondary" })} href="/live">
+                      Open live state
+                    </Link>
+                    <Link className={buttonVariants({ size: "sm", variant: "outline" })} href="/documents">
+                      Open curated docs
+                    </Link>
+                  </>
+                )}
               </div>
             </CardContent>
           </Card>
