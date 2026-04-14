@@ -2,7 +2,7 @@
 
 ## Overview
 
-- Generated at: `2026-04-14T15:11:41.498Z`
+- Generated at: `2026-04-14T15:22:20.984Z`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - Diagnostics page: `https://privatedao.org/diagnostics/`
@@ -45,12 +45,12 @@
 
 - Status: `pending-browser-wallet-capture`
 - Target count: `4`
-- Completed target count: `1`
-- Successful connect count: `1`
-- Successful submission count: `0`
-- Diagnostics capture count: `1`
+- Completed target count: `2`
+- Successful connect count: `2`
+- Successful submission count: `1`
+- Diagnostics capture count: `2`
 - Action coverage count: `2`
-- Pending targets: `Solflare, Backpack, Glow`
+- Pending targets: `Backpack, Glow`
 
 ## MagicBlock Runtime Intake
 

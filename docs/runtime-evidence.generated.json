@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-14T15:11:41.498Z",
+  "generatedAt": "2026-04-14T15:22:20.984Z",
   "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
   "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
   "diagnosticsPage": "https://privatedao.org/diagnostics/",
@@ -80,13 +80,12 @@
   "browserWallet": {
     "status": "pending-browser-wallet-capture",
     "targetCount": 4,
-    "completedTargetCount": 1,
-    "successfulConnectCount": 1,
-    "successfulSubmissionCount": 0,
-    "diagnosticsCaptureCount": 1,
+    "completedTargetCount": 2,
+    "successfulConnectCount": 2,
+    "successfulSubmissionCount": 1,
+    "diagnosticsCaptureCount": 2,
     "actionCoverageCount": 2,
     "pendingTargets": [
-      "Solflare",
       "Backpack",
       "Glow"
     ]

@@ -13,7 +13,7 @@
       "id": "solflare-browser-wallet",
       "walletLabel": "Solflare",
       "environmentType": "desktop-browser",
-      "status": "pending-capture"
+      "status": "captured-success"
     },
     {
       "id": "backpack-browser-wallet",
@@ -52,6 +52,30 @@
         "docs/assets/runtime/browser-wallet/phantom-create-dao-awaiting-wallet.png"
       ],
       "capturedAt": "2026-04-14T15:20:00.000Z"
+    },
+    {
+      "id": "solflare-browser-wallet",
+      "walletLabel": "Solflare",
+      "walletVersion": "unknown",
+      "environmentType": "desktop-browser",
+      "os": "Linux",
+      "browserOrClient": "Playwright Chromium",
+      "network": "devnet",
+      "actionsCovered": [
+        "Connect Wallet",
+        "Create DAO"
+      ],
+      "connectResult": "success",
+      "signingResult": "success",
+      "submissionResult": "success",
+      "diagnosticsSnapshotCaptured": true,
+      "txSignature": "3kgAdZcuEePqBTB3bKWQBW1uT3Uv9zCU2XdhyQEd9hZGSvzoE4iSLNu8sb3PhwgsuVWPsMnNEVffcQgtUJogX59D",
+      "explorerUrl": "https://explorer.solana.com/tx/3kgAdZcuEePqBTB3bKWQBW1uT3Uv9zCU2XdhyQEd9hZGSvzoE4iSLNu8sb3PhwgsuVWPsMnNEVffcQgtUJogX59D?cluster=devnet",
+      "errorMessage": null,
+      "evidenceRefs": [
+        "docs/assets/runtime/browser-wallet/solflare-create-dao-success.png"
+      ],
+      "capturedAt": "2026-04-14T15:21:28.000Z"
     }
   ]
 }

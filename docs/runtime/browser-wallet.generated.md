@@ -3,26 +3,25 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-14T15:11:40.950Z`
+- generated at: `2026-04-14T15:22:20.632Z`
 - network: `devnet`
 - status: `pending-browser-wallet-capture`
 - target count: `4`
-- completed target count: `1`
-- successful connect count: `1`
-- successful submission count: `0`
-- diagnostics snapshot count: `1`
+- completed target count: `2`
+- successful connect count: `2`
+- successful submission count: `1`
+- diagnostics snapshot count: `2`
 - action coverage count: `2`
 
 ## Target Matrix
 
 - Phantom (`phantom-browser-wallet`) | environment: `desktop-browser` | status: `captured-with-failures`
-- Solflare (`solflare-browser-wallet`) | environment: `desktop-browser` | status: `pending-capture`
+- Solflare (`solflare-browser-wallet`) | environment: `desktop-browser` | status: `captured-success`
 - Backpack (`backpack-browser-wallet`) | environment: `desktop-browser` | status: `pending-capture`
 - Glow (`glow-browser-wallet`) | environment: `desktop-browser` | status: `pending-capture`
 
 ## Pending Targets
 
-- Solflare
 - Backpack
 - Glow
 
@@ -42,6 +41,21 @@
 - tx signature: `none`
 - explorer url: `none`
 - error message: `Create DAO reached the live pre-sign review and then the 'Awaiting wallet signature for the DAO bootstrap transaction...' state from the web command-center lane. Phantom was connected successfully, but browser automation did not complete a wallet popup/signature handoff. An earlier run in the same environment also surfaced 'Could not establish connection' and 'Attempting to use a disconnected port object' from the Phantom extension session.`
+
+### Solflare
+
+- captured at: `2026-04-14T15:21:28.000Z`
+- environment: `desktop-browser`
+- os: `Linux`
+- browser or client: `Playwright Chromium`
+- actions covered: `Connect Wallet, Create DAO`
+- connect result: `success`
+- signing result: `success`
+- submission result: `success`
+- diagnostics snapshot captured: `true`
+- tx signature: `3kgAdZcuEePqBTB3bKWQBW1uT3Uv9zCU2XdhyQEd9hZGSvzoE4iSLNu8sb3PhwgsuVWPsMnNEVffcQgtUJogX59D`
+- explorer url: `https://explorer.solana.com/tx/3kgAdZcuEePqBTB3bKWQBW1uT3Uv9zCU2XdhyQEd9hZGSvzoE4iSLNu8sb3PhwgsuVWPsMnNEVffcQgtUJogX59D?cluster=devnet`
+- error message: `none`
 
 ## Required Docs
 
