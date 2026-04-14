@@ -554,7 +554,7 @@ export async function buildCreateDaoBootstrapTransaction({
     mintSigner.publicKey,
     authorityTokenAccount,
     authority,
-    1_000_000_000n,
+    BigInt(1_000_000_000),
   );
 
   const daoData = concatBytes(
