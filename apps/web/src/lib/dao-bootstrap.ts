@@ -12,6 +12,7 @@ import {
 
 export const PRIVATE_DAO_PROGRAM_ID = new PublicKey("5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx");
 export const TOKEN_PROGRAM_ID = new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
+export const TOKEN_2022_PROGRAM_ID = new PublicKey("TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb");
 export const ASSOCIATED_TOKEN_PROGRAM_ID = new PublicKey("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL");
 
 type VotingMode = "token" | "quadratic" | "dual";
@@ -131,6 +132,7 @@ type ExecuteProposalInput = {
   executor: PublicKey;
   proposalAddress: PublicKey;
   treasuryRecipient?: PublicKey;
+  treasuryTokenMint?: PublicKey | null;
 };
 
 const SYSVAR_RENT_PUBKEY = new PublicKey("SysvarRent111111111111111111111111111111111");
@@ -246,12 +248,48 @@ function buildInitializeMintInstruction(mintPubkey: PublicKey, mintAuthority: Pu
   });
 }
 
-function deriveAssociatedTokenAddress(owner: PublicKey, mint: PublicKey) {
+function deriveAssociatedTokenAddress(
+  owner: PublicKey,
+  mint: PublicKey,
+  tokenProgram: PublicKey = TOKEN_PROGRAM_ID,
+) {
   const [ata] = PublicKey.findProgramAddressSync(
-    [owner.toBytes(), TOKEN_PROGRAM_ID.toBytes(), mint.toBytes()],
+    [owner.toBytes(), tokenProgram.toBytes(), mint.toBytes()],
     ASSOCIATED_TOKEN_PROGRAM_ID,
   );
   return ata;
+}
+
+async function resolveTokenProgramForMint(connection: Connection, mint: PublicKey) {
+  const info = await connection.getAccountInfo(mint, "confirmed");
+  if (!info) {
+    throw new Error(`Mint account not found: ${mint.toBase58()}`);
+  }
+  if (!info.owner.equals(TOKEN_PROGRAM_ID) && !info.owner.equals(TOKEN_2022_PROGRAM_ID)) {
+    throw new Error(`Unsupported token program for mint ${mint.toBase58()}: ${info.owner.toBase58()}`);
+  }
+  return info.owner;
+}
+
+function buildCreateAssociatedTokenAccountInstruction(
+  payer: PublicKey,
+  ata: PublicKey,
+  owner: PublicKey,
+  mint: PublicKey,
+  tokenProgram: PublicKey,
+) {
+  return new TransactionInstruction({
+    programId: ASSOCIATED_TOKEN_PROGRAM_ID,
+    keys: [
+      { pubkey: payer, isSigner: true, isWritable: true },
+      { pubkey: ata, isSigner: false, isWritable: true },
+      { pubkey: owner, isSigner: false, isWritable: false },
+      { pubkey: mint, isSigner: false, isWritable: false },
+      { pubkey: SystemProgram.programId, isSigner: false, isWritable: false },
+      { pubkey: tokenProgram, isSigner: false, isWritable: false },
+    ],
+    data: Buffer.alloc(0),
+  });
 }
 
 function deriveVoteRecordAddress(proposal: PublicKey, voter: PublicKey) {
@@ -724,10 +762,34 @@ export async function buildExecuteProposalTransaction({
   executor,
   proposalAddress,
   treasuryRecipient = executor,
+  treasuryTokenMint = null,
 }: ExecuteProposalInput) {
   const treasury = deriveTreasuryAddress(daoAddress);
   const confidentialPayoutPlan = deriveConfidentialPayoutPlanAddress(proposalAddress);
   const data = await anchorMethodDiscriminator("execute_proposal");
+  let tokenProgram = TOKEN_PROGRAM_ID;
+  let treasuryTokenAccount = treasury;
+  let recipientTokenAccount = treasury;
+  const preInstructions: TransactionInstruction[] = [];
+
+  if (treasuryTokenMint) {
+    tokenProgram = await resolveTokenProgramForMint(connection, treasuryTokenMint);
+    treasuryTokenAccount = deriveAssociatedTokenAddress(treasury, treasuryTokenMint, tokenProgram);
+    recipientTokenAccount = deriveAssociatedTokenAddress(treasuryRecipient, treasuryTokenMint, tokenProgram);
+
+    const recipientTokenInfo = await connection.getAccountInfo(recipientTokenAccount, "confirmed");
+    if (!recipientTokenInfo) {
+      preInstructions.push(
+        buildCreateAssociatedTokenAccountInstruction(
+          executor,
+          recipientTokenAccount,
+          treasuryRecipient,
+          treasuryTokenMint,
+          tokenProgram,
+        ),
+      );
+    }
+  }
 
   const instruction = new TransactionInstruction({
     programId: PRIVATE_DAO_PROGRAM_ID,
@@ -737,16 +799,20 @@ export async function buildExecuteProposalTransaction({
       { pubkey: treasury, isSigner: false, isWritable: true },
       { pubkey: executor, isSigner: true, isWritable: false },
       { pubkey: treasuryRecipient, isSigner: false, isWritable: true },
-      { pubkey: treasury, isSigner: false, isWritable: true },
-      { pubkey: treasury, isSigner: false, isWritable: true },
+      { pubkey: treasuryTokenAccount, isSigner: false, isWritable: true },
+      { pubkey: recipientTokenAccount, isSigner: false, isWritable: true },
       { pubkey: confidentialPayoutPlan, isSigner: false, isWritable: false },
-      { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
+      { pubkey: tokenProgram, isSigner: false, isWritable: false },
       { pubkey: SystemProgram.programId, isSigner: false, isWritable: false },
     ],
     data: Buffer.from(data),
   });
 
-  const transaction = new Transaction().add(instruction);
+  const transaction = new Transaction();
+  for (const preInstruction of preInstructions) {
+    transaction.add(preInstruction);
+  }
+  transaction.add(instruction);
   transaction.feePayer = executor;
   const latest = await resolveLatestBlockhash(connection);
   transaction.recentBlockhash = latest.blockhash;

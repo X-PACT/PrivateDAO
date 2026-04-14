@@ -78,6 +78,20 @@ function parseSolAmountToLamports(value: string) {
   return amountLamports;
 }
 
+function parseRawTokenAmount(value: string) {
+  const normalized = value.trim();
+  if (!/^\d+$/.test(normalized)) {
+    throw new Error("Token amount must be a positive whole number of raw units.");
+  }
+
+  const amount = BigInt(normalized);
+  if (amount <= BigInt(0)) {
+    throw new Error("Token amount must be greater than zero.");
+  }
+
+  return amount;
+}
+
 export function GovernanceActionWorkbench() {
   const [reviewAction, setReviewAction] = useState<CoreGovernanceInstructionName | null>(null);
   const [createDaoRuntime, setCreateDaoRuntime] = useState<{
@@ -115,8 +129,10 @@ export function GovernanceActionWorkbench() {
     message: string;
     signature?: string;
   }>({ status: "idle", message: "" });
+  const [proposalTreasuryMode, setProposalTreasuryMode] = useState<"standard" | "sol" | "token">("standard");
   const [proposalTreasuryRecipient, setProposalTreasuryRecipient] = useState("");
   const [proposalTreasuryAmountSol, setProposalTreasuryAmountSol] = useState("");
+  const [proposalTreasuryTokenMint, setProposalTreasuryTokenMint] = useState("");
   const { connection } = useConnection();
   const { connected, wallet, publicKey, sendTransaction } = useWallet();
   const {
@@ -159,19 +175,38 @@ export function GovernanceActionWorkbench() {
   const proposalTreasuryDraft = useMemo(() => {
     const recipient = proposalTreasuryRecipient.trim();
     const amount = proposalTreasuryAmountSol.trim();
+    const tokenMint = proposalTreasuryTokenMint.trim();
 
-    if (!recipient && !amount) {
+    if (proposalTreasuryMode === "standard") {
       return { action: null, error: null as string | null };
     }
 
     if (!recipient || !amount) {
       return {
         action: null,
-        error: "Enter both treasury recipient and SOL amount, or leave both blank for a standard proposal.",
+        error: "Enter both treasury recipient and amount for a treasury motion, or switch back to Standard.",
       };
     }
 
     try {
+      if (proposalTreasuryMode === "token") {
+        if (!tokenMint) {
+          return {
+            action: null,
+            error: "Token treasury motions require a token mint address.",
+          };
+        }
+        return {
+          action: {
+            actionType: "SendToken" as const,
+            amountLamports: parseRawTokenAmount(amount),
+            recipient: new PublicKey(recipient),
+            tokenMint: new PublicKey(tokenMint),
+          },
+          error: null as string | null,
+        };
+      }
+
       return {
         action: {
           actionType: "SendSol" as const,
@@ -189,7 +224,7 @@ export function GovernanceActionWorkbench() {
             : "Treasury action inputs are invalid.",
       };
     }
-  }, [proposalTreasuryAmountSol, proposalTreasuryRecipient]);
+  }, [proposalTreasuryAmountSol, proposalTreasuryMode, proposalTreasuryRecipient, proposalTreasuryTokenMint]);
   const canSubmitLiveProposal =
     connected &&
     Boolean(publicKey) &&
@@ -487,7 +522,9 @@ export function GovernanceActionWorkbench() {
       if (proposalTreasuryDraft.action) {
         recordLog(
           "Treasury action attached",
-          `${proposalTreasuryAmountSol.trim()} SOL -> ${proposalTreasuryRecipient.trim()}`,
+          proposalTreasuryDraft.action.actionType === "SendToken"
+            ? `${proposalTreasuryAmountSol.trim()} raw units of ${proposalTreasuryTokenMint.trim()} -> ${proposalTreasuryRecipient.trim()}`
+            : `${proposalTreasuryAmountSol.trim()} SOL -> ${proposalTreasuryRecipient.trim()}`,
         );
       }
       recordLog(
@@ -761,6 +798,10 @@ export function GovernanceActionWorkbench() {
         treasuryRecipient: proposalDetails.treasuryAction
           ? new PublicKey(proposalDetails.treasuryAction.recipient)
           : publicKey,
+        treasuryTokenMint:
+          proposalDetails.treasuryAction?.actionType === "SendToken" && proposalDetails.treasuryAction.tokenMint
+            ? new PublicKey(proposalDetails.treasuryAction.tokenMint)
+            : null,
       });
 
       setExecuteRuntime({
@@ -779,8 +820,11 @@ export function GovernanceActionWorkbench() {
 
       setExecuteRuntime({
         status: "success",
-        message: proposalDetails.treasuryAction
-          ? `Treasury execute submitted live on devnet. ${proposalDetails.treasuryAction.amountSol} SOL will settle to ${proposalDetails.treasuryAction.recipient}.`
+        message:
+          proposalDetails.treasuryAction?.actionType === "SendToken"
+            ? `Token treasury execute submitted live on devnet. ${proposalDetails.treasuryAction.amountLamports.toString()} raw units of ${proposalDetails.treasuryAction.tokenMint} will settle to ${proposalDetails.treasuryAction.recipient}.`
+            : proposalDetails.treasuryAction
+              ? `Treasury execute submitted live on devnet. ${proposalDetails.treasuryAction.amountSol} SOL will settle to ${proposalDetails.treasuryAction.recipient}.`
           : "Standard execute submitted live on devnet. This current web proposal lane carries no treasury action, so execute closes the lifecycle without moving treasury funds.",
         signature,
       });
@@ -1151,20 +1195,61 @@ export function GovernanceActionWorkbench() {
                   className="mt-4 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
                   placeholder="Proposal title"
                 />
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {[
+                    ["standard", "Standard"],
+                    ["sol", "Send SOL"],
+                    ["token", "Send Token"],
+                  ].map(([mode, label]) => (
+                    <button
+                      key={mode}
+                      type="button"
+                      onClick={() => setProposalTreasuryMode(mode as "standard" | "sol" | "token")}
+                      className={cn(
+                        "rounded-full border px-3 py-1.5 text-xs uppercase tracking-[0.16em] transition",
+                        proposalTreasuryMode === mode
+                          ? "border-cyan-300/30 bg-cyan-300/10 text-cyan-100"
+                          : "border-white/10 bg-black/20 text-white/60",
+                      )}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
                 <input
                   value={proposalTreasuryRecipient}
                   onChange={(event) => setProposalTreasuryRecipient(event.target.value)}
                   className="mt-3 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
-                  placeholder="Optional treasury recipient (SendSol)"
+                  placeholder={
+                    proposalTreasuryMode === "standard"
+                      ? "Optional treasury recipient"
+                      : "Treasury recipient wallet"
+                  }
                 />
                 <input
                   value={proposalTreasuryAmountSol}
                   onChange={(event) => setProposalTreasuryAmountSol(event.target.value)}
                   className="mt-3 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
-                  placeholder="Optional treasury amount in SOL"
+                  placeholder={
+                    proposalTreasuryMode === "token"
+                      ? "Token amount in raw units"
+                      : "Treasury amount in SOL"
+                  }
                 />
+                {proposalTreasuryMode === "token" ? (
+                  <input
+                    value={proposalTreasuryTokenMint}
+                    onChange={(event) => setProposalTreasuryTokenMint(event.target.value)}
+                    className="mt-3 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                    placeholder="Token mint"
+                  />
+                ) : null}
                 <p className="mt-3 text-sm leading-7 text-white/60">
-                  Leave recipient and amount blank for a standard governance proposal. Fill both fields to create a live SendSol treasury motion.
+                  {proposalTreasuryMode === "standard"
+                    ? "Standard proposals carry no treasury movement."
+                    : proposalTreasuryMode === "token"
+                      ? "SendToken proposals use a recipient wallet plus token mint. Amount is currently entered in raw token units."
+                      : "SendSol proposals move SOL from the treasury to the specified recipient when executed."}
                 </p>
                 {proposalTreasuryDraft.error ? (
                   <div className="mt-3 rounded-2xl border border-rose-300/20 bg-rose-300/[0.08] p-3 text-sm leading-7 text-rose-100/82">
@@ -1183,7 +1268,9 @@ export function GovernanceActionWorkbench() {
                     <div className="mt-1 break-all text-white/62">Governance mint {liveDaoRuntime.governanceMint}</div>
                     {proposalTreasuryDraft.action ? (
                       <div className="mt-1 text-white/62">
-                        Pending treasury action {proposalTreasuryAmountSol.trim()} SOL {"->"} {proposalTreasuryRecipient.trim()}
+                        {proposalTreasuryDraft.action.actionType === "SendToken"
+                          ? `Pending treasury action ${proposalTreasuryAmountSol.trim()} raw units of ${proposalTreasuryTokenMint.trim()} -> ${proposalTreasuryRecipient.trim()}`
+                          : `Pending treasury action ${proposalTreasuryAmountSol.trim()} SOL -> ${proposalTreasuryRecipient.trim()}`}
                       </div>
                     ) : null}
                   </div>
@@ -1388,7 +1475,7 @@ export function GovernanceActionWorkbench() {
                   <div className="mt-4 rounded-2xl border border-amber-300/18 bg-amber-300/[0.08] p-3 text-sm text-white/72">
                     <div className="text-[11px] uppercase tracking-[0.2em] text-amber-100/72">Execute boundary</div>
                     <div className="mt-2 text-white">
-                      This current web lane executes standard proposals and live SendSol treasury motions. Token and custom treasury actions still stay on the richer payout path.
+                      This current web lane executes standard proposals plus the current live SendSol and SendToken treasury motions. Custom treasury actions still stay on the richer payout path.
                     </div>
                     <div className="mt-1 break-all text-white/62">Proposal {activeLiveProposalAddress}</div>
                   </div>

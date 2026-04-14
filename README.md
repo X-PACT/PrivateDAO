@@ -87,10 +87,10 @@ This keeps the buyer-facing product clean while preserving engineering and proto
 Current web/runtime boundary:
 
 - `Create DAO` now has a live wallet-first Devnet bootstrap path in the web action workbench.
-- `Create Proposal` now has a live wallet-first Devnet submit path in the same workbench once a live DAO bootstrap has already established the DAO lane, including the current live `SendSol` treasury-motion lane.
+- `Create Proposal` now has a live wallet-first Devnet submit path in the same workbench once a live DAO bootstrap has already established the DAO lane, including the current live `SendSol` and `SendToken` treasury-motion lanes.
 - `Commit Vote`, `Reveal Vote`, and `Finalize Proposal` now use the same live wallet-first workbench lane once a real DAO and proposal already exist in session state.
-- `Execute Proposal` now also has a live wallet-first path for standard proposals and the current live `SendSol` treasury-motion lane.
-- Token-transfer and custom treasury-action execution still require the richer payout path; the current live web builder now carries `SendSol`, but it does not yet cover every treasury action variant.
+- `Execute Proposal` now also has a live wallet-first path for standard proposals and the current live `SendSol` and `SendToken` treasury-motion lanes.
+- `CustomCPI` still requires the richer payout path; the current live web builder now carries the supported treasury transfer variants, but it does not claim arbitrary treasury action coverage.
 
 The rule is strict:
 
