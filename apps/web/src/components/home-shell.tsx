@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2, Compass, PlayCircle, Shield, Trophy, WalletCards } from "lucide-react";
 
 import { SectionHeader } from "@/components/section-header";
+import { ProductServiceMap } from "@/components/product-service-map";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -189,6 +190,13 @@ export function HomeShell() {
             </CardContent>
           </Card>
         </div>
+      </section>
+
+      <section className="mx-auto mt-16 w-full max-w-7xl px-4 sm:mt-20 sm:px-6 lg:px-8">
+        <ProductServiceMap
+          title="Understand PrivateDAO in one glance"
+          description="This is the shortest map through the product: start the wallet flow, run governance, track the result, then inspect API, pricing, security, and proof."
+        />
       </section>
 
       <section className="mx-auto mt-16 w-full max-w-7xl px-4 sm:mt-20 sm:px-6 lg:px-8">

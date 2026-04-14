@@ -7,6 +7,7 @@ import { InfrastructureStartupProofStrip } from "@/components/infrastructure-sta
 import { OperatingBoundaryPanel } from "@/components/operating-boundary-panel";
 import { OperationsShell } from "@/components/operations-shell";
 import { ProductActionMap } from "@/components/product-action-map";
+import { ProductServiceMap } from "@/components/product-service-map";
 import { SponsorSignalBar } from "@/components/sponsor-signal-bar";
 import { TreasuryProfileQuickActions } from "@/components/treasury-profile-quick-actions";
 import { WalletFirstServiceActionsStrip } from "@/components/wallet-first-service-actions-strip";
@@ -29,6 +30,7 @@ export default function StartPage() {
       eyebrow="Quick start"
       title="Connect a wallet and start the full Devnet flow without learning the product architecture first"
       description="This page is the easy on-ramp. It explains what PrivateDAO lets you do, points to the exact first action, and keeps deeper proof and trust surfaces one layer away."
+      navigationMode="guided"
       badges={[
         { label: "Consumer-first shell", variant: "success" },
         { label: "Wallet-ready", variant: "cyan" },
@@ -42,6 +44,11 @@ export default function StartPage() {
         summary="The public UI is for wallet connection, DAO creation, proposal flow, voting, execution, logs, and diagnostics. Debugging, migrations, batch operations, and recovery stay in the engineering layer."
       />
       <GovernanceSessionPanel title="Shared product session" />
+      <ProductServiceMap
+        compact
+        title="PrivateDAO service map"
+        description="Use this map if you are deciding where to go next: start the live flow, track the result, or inspect API and trust without learning internal route names."
+      />
       <WalletFirstServiceActionsStrip context="start" />
       <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading treasury routes…</div>}>
         <TreasuryProfileQuickActions title="Commercial treasury actions" />

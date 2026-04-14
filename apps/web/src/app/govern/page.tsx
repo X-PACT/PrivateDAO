@@ -18,6 +18,7 @@ export default function GovernPage() {
       eyebrow="Govern"
       title="Create a DAO, submit a proposal, vote, and execute from one simple flow"
       description="This route is the user-first governance path. It leads with the next action only, while logs, proof, and diagnostics stay available when you need them."
+      navigationMode="guided"
       badges={[
         { label: "Wallet-first", variant: "cyan" },
         { label: "Devnet", variant: "success" },

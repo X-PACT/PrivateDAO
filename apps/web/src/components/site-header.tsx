@@ -29,16 +29,16 @@ const WalletConnectButton = dynamic(
 const navItems = [
   { href: "/start", label: "Start" },
   { href: "/govern", label: "Govern" },
-  { href: "/live", label: "Live State" },
+  { href: "/live", label: "Track Activity" },
   { href: "/demo", label: "Demo" },
   { href: "/trust", label: "Trust" },
 ];
 
 const utilityNav = [
-  { href: "/services", label: "Plans & API" },
+  { href: "/services", label: "API & Pricing" },
   { href: "/documents", label: "Docs" },
   { href: "/community", label: "Community" },
-  { href: "/assistant", label: "Get Support" },
+  { href: "/assistant", label: "Help" },
 ];
 
 export function SiteHeader() {
@@ -85,7 +85,7 @@ export function SiteHeader() {
               rel="noreferrer"
               target="_blank"
             >
-              Live Surface
+              Open App
             </a>
             <WalletConnectButton />
           </div>

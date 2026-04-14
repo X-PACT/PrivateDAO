@@ -22,11 +22,11 @@ import { buildRouteMetadata } from "@/lib/route-metadata";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = buildRouteMetadata({
-  title: "Governance Dashboard",
+  title: "Track Activity",
   description:
-    "Reusable governance dashboard UI for proposals, treasury actions, vote timelines, and execution evidence inside the PrivateDAO Next.js surface.",
+    "Track proposals, treasury movement, vote timelines, and execution evidence after any wallet action in PrivateDAO.",
   path: "/dashboard",
-  keywords: ["governance dashboard", "proposal cards", "treasury table"],
+  keywords: ["track activity", "proposal state", "treasury activity", "execution evidence"],
 });
 
 const dashboardHighlights = [
@@ -54,36 +54,36 @@ export default function DashboardPage() {
     <main className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <section className="space-y-8">
         <div className="flex flex-wrap gap-3">
-          <Badge variant="cyan">Governance Dashboard</Badge>
-          <Badge variant="violet">Treasury + timelines</Badge>
-          <Badge variant="success">Operational UI</Badge>
+          <Badge variant="cyan">Track Activity</Badge>
+          <Badge variant="violet">Treasury + proposals</Badge>
+          <Badge variant="success">Live Devnet state</Badge>
         </div>
 
         <div className="grid gap-8 xl:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-5">
-            <div className="text-[11px] uppercase tracking-[0.34em] text-emerald-300/80">Dashboard</div>
+            <div className="text-[11px] uppercase tracking-[0.34em] text-emerald-300/80">Activity view</div>
             <h1 className="max-w-3xl text-4xl font-semibold tracking-[-0.045em] text-white sm:text-5xl lg:text-[4rem]">
-              Governance operations, treasury posture, and execution visibility in one route.
+              Track proposals, treasury state, and execution results without leaving the product.
             </h1>
             <p className="max-w-2xl text-base leading-8 text-white/60 sm:text-lg">
-              This dashboard is built as the operational home for PrivateDAO, not as a gallery of demo widgets. Proposal state, treasury rails, timelines, and execution evidence stay readable and usable under one product shell.
+              This route is for checking what happened after a wallet action. Open it when you want to confirm a proposal, inspect treasury posture, or follow execution and logs in one readable place.
             </p>
             <div className="flex flex-wrap gap-3">
-              <Link className={buttonVariants({ size: "lg" })} href="/command-center">
-                Open command center
+              <Link className={buttonVariants({ size: "lg" })} href="/govern">
+                Open govern flow
               </Link>
               <Link className={buttonVariants({ size: "lg", variant: "secondary" })} href="/proof/?judge=1">
-                Open judge path
+                Open proof
               </Link>
               <Link className={buttonVariants({ size: "lg", variant: "outline" })} href="/diagnostics">
-                Open diagnostics
+                Open health
               </Link>
             </div>
           </div>
 
           <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,15,30,0.94),rgba(6,9,20,0.98))]">
             <CardHeader>
-              <CardTitle>Dashboard principles</CardTitle>
+              <CardTitle>What this view is for</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4">
               {dashboardHighlights.map((item) => {

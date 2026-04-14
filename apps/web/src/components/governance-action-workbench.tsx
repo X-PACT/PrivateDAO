@@ -1683,8 +1683,8 @@ export function GovernanceActionWorkbench() {
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <Link href="/dashboard" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
-                  Open full dashboard
+                <Link href="/live" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+                  Open activity view
                 </Link>
                 <ChevronRight className="h-4 w-4 text-white/52" />
               </div>
@@ -1757,7 +1757,7 @@ export function GovernanceActionWorkbench() {
                       <ChevronRight className="h-4 w-4" />
                     </Link>
                     <Link href="/services" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
-                      Open services
+                      Open API and pricing
                       <ChevronRight className="h-4 w-4" />
                     </Link>
                   </div>
