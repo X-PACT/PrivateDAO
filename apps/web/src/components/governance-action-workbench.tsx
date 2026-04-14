@@ -765,7 +765,7 @@ export function GovernanceActionWorkbench() {
     try {
       setExecuteRuntime({
         status: "submitting",
-        message: "Preparing standard execute transaction for the current live proposal lane...",
+        message: "Preparing execute transaction for the current live proposal lane...",
       });
 
       const proposalAddress = new PublicKey(activeLiveProposalAddress);
@@ -783,10 +783,11 @@ export function GovernanceActionWorkbench() {
       }
       if (
         proposalDetails.treasuryAction &&
-        proposalDetails.treasuryAction.actionType !== "SendSol"
+        proposalDetails.treasuryAction.actionType !== "SendSol" &&
+        proposalDetails.treasuryAction.actionType !== "SendToken"
       ) {
         throw new Error(
-          "The current web live execute lane supports standard proposals and SendSol treasury motions. Token or custom treasury actions still require the richer payout path.",
+          "The current web live execute lane supports standard proposals plus SendSol and SendToken treasury motions. Custom treasury actions still require the richer payout path.",
         );
       }
 
@@ -806,7 +807,7 @@ export function GovernanceActionWorkbench() {
 
       setExecuteRuntime({
         status: "submitting",
-        message: "Awaiting wallet signature for the standard execute transaction...",
+        message: "Awaiting wallet signature for the execute transaction...",
       });
 
       const signature = await sendTransaction(executeSubmission.transaction, connection, {
