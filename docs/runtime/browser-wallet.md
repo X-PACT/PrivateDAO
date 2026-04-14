@@ -92,6 +92,22 @@ When browser-wallet evidence is captured from `/command-center`, the lane must s
 
 This matters because the governance session alone was not enough; a persisted handoff could silently rehydrate a payload-driven execution lane and contaminate `Create DAO` browser captures.
 
+## Public Surface Replay Note
+
+After the root live mirror publish in commit `74480771`, a fresh Solflare replay on `https://privatedao.org/govern/` confirmed that:
+
+- the public surface no longer depended on stale chunk paths from the older mirror
+- `Reset session` no longer left the governance shell stuck in a stale `Awaiting wallet` state
+- `Create DAO` could again reach:
+  - `PRE-SIGN REVIEW`
+  - `Awaiting wallet signature for the DAO bootstrap transaction...`
+
+That replay is a clean public-surface handoff proof, not a new signed submission proof.
+
+Evidence:
+
+- `docs/assets/runtime/browser-wallet/solflare-create-dao-awaiting-wallet-clean-replay.png`
+
 ## Minimal Capture Payload Example
 
 ```json
