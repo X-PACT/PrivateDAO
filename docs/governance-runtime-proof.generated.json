@@ -1,0 +1,111 @@
+{
+  "project": "PrivateDAO",
+  "generatedAt": "2026-04-14T01:36:45.457Z",
+  "network": "devnet",
+  "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+  "liveWalletLaneCount": 6,
+  "repoScriptProofCount": 6,
+  "browserWalletProofCount": 0,
+  "realDeviceProofCount": 0,
+  "pendingBrowserWalletProofActions": [
+    "Create DAO",
+    "Create Proposal",
+    "Commit Vote",
+    "Reveal Vote",
+    "Finalize Proposal",
+    "Execute Proposal"
+  ],
+  "pendingRealDeviceProofActions": [
+    "Create DAO",
+    "Create Proposal",
+    "Commit Vote",
+    "Reveal Vote",
+    "Finalize Proposal",
+    "Execute Proposal"
+  ],
+  "unsupportedExecutionBoundary": "CustomCPI treasury actions remain outside the executable release boundary.",
+  "actions": [
+    {
+      "action": "initialize_dao",
+      "displayName": "Create DAO",
+      "instructionName": "initialize_dao",
+      "liveWalletLane": true,
+      "repoScriptProofCaptured": true,
+      "browserWalletProofCaptured": false,
+      "realDeviceProofCaptured": false,
+      "supportNote": "DAO bootstrap is live in the web wallet lane. Repo-script proof exists; browser-wallet and real-device captures still need to be recorded."
+    },
+    {
+      "action": "create_proposal",
+      "displayName": "Create Proposal",
+      "instructionName": "create_proposal",
+      "liveWalletLane": true,
+      "repoScriptProofCaptured": true,
+      "browserWalletProofCaptured": false,
+      "realDeviceProofCaptured": false,
+      "supportNote": "Proposal submit is live in the web wallet lane, including the current SendSol and SendToken treasury motions. Browser-wallet and real-device captures remain pending."
+    },
+    {
+      "action": "commit_vote",
+      "displayName": "Commit Vote",
+      "instructionName": "commit_vote",
+      "liveWalletLane": true,
+      "repoScriptProofCaptured": true,
+      "browserWalletProofCaptured": false,
+      "realDeviceProofCaptured": false,
+      "supportNote": "Commit vote is live in the web wallet lane once a real DAO and proposal already exist in session state. Browser-wallet and real-device captures remain pending."
+    },
+    {
+      "action": "reveal_vote",
+      "displayName": "Reveal Vote",
+      "instructionName": "reveal_vote",
+      "liveWalletLane": true,
+      "repoScriptProofCaptured": true,
+      "browserWalletProofCaptured": false,
+      "realDeviceProofCaptured": false,
+      "supportNote": "Reveal vote is live in the web wallet lane once a live commit already exists in the same session. Browser-wallet and real-device captures remain pending."
+    },
+    {
+      "action": "finalize_proposal",
+      "displayName": "Finalize Proposal",
+      "instructionName": "finalize_proposal",
+      "liveWalletLane": true,
+      "repoScriptProofCaptured": true,
+      "browserWalletProofCaptured": false,
+      "realDeviceProofCaptured": false,
+      "supportNote": "Finalize proposal is live in the web wallet lane. Repo-script proof exists; browser-wallet and real-device captures still need to be recorded."
+    },
+    {
+      "action": "execute_proposal",
+      "displayName": "Execute Proposal",
+      "instructionName": "execute_proposal",
+      "liveWalletLane": true,
+      "repoScriptProofCaptured": true,
+      "browserWalletProofCaptured": false,
+      "realDeviceProofCaptured": false,
+      "supportNote": "Execute proposal is live in the web wallet lane for standard, SendSol, and SendToken proposals. CustomCPI remains outside the current executable release boundary."
+    }
+  ],
+  "linkedDocs": [
+    "docs/test-wallet-live-proof.generated.md",
+    "docs/test-wallet-live-proof-v3.generated.md",
+    "docs/runtime-evidence.generated.md",
+    "docs/runtime/real-device.generated.md",
+    "docs/runtime/real-device.md",
+    "docs/launch-trust-packet.generated.md",
+    "docs/treasury-reviewer-packet.generated.md"
+  ],
+  "commands": [
+    "npm run live-proof",
+    "npm run live-proof:v3",
+    "npm run build:governance-runtime-proof",
+    "npm run verify:governance-runtime-proof",
+    "npm run build:real-device-runtime",
+    "npm run verify:real-device-runtime"
+  ],
+  "notes": [
+    "This packet separates live web wallet capability from runtime proof capture so the product does not overclaim based on shipped code alone.",
+    "Repo-script proof exists for the governance core lifecycle, but browser-wallet proof on the web and real-device action proof on Android remain pending until captures are recorded.",
+    "The web wallet lane currently covers Create DAO, Create Proposal, Commit Vote, Reveal Vote, Finalize Proposal, and Execute Proposal for standard, SendSol, and SendToken proposals."
+  ]
+}

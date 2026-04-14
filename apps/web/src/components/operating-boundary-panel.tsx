@@ -90,8 +90,8 @@ export function OperatingBoundaryPanel({
                 <div className="mt-1 text-lg font-medium text-white">Live lane and proof status stay explicit</div>
               </div>
             </div>
-            <Link href="/documents/real-device-runtime" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
-              Open runtime evidence
+            <Link href="/documents/governance-runtime-proof" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+              Open proof packet
             </Link>
           </div>
           <div className="mt-4 grid gap-3 md:grid-cols-3">

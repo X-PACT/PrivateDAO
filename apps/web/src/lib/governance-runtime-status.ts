@@ -9,7 +9,7 @@ export type GovernanceRuntimeStatus = {
   supportNote: string;
 };
 
-const GOVERNANCE_RUNTIME_STATUS: Record<CoreGovernanceInstructionName, GovernanceRuntimeStatus> = {
+export const GOVERNANCE_RUNTIME_STATUS: Record<CoreGovernanceInstructionName, GovernanceRuntimeStatus> = {
   initialize_dao: {
     action: "initialize_dao",
     liveWalletLane: true,
@@ -65,6 +65,15 @@ const GOVERNANCE_RUNTIME_STATUS: Record<CoreGovernanceInstructionName, Governanc
       "Execute proposal is live in the web wallet lane for standard, SendSol, and SendToken proposals. CustomCPI remains outside the current executable release boundary.",
   },
 };
+
+export const GOVERNANCE_RUNTIME_STATUS_ORDER: CoreGovernanceInstructionName[] = [
+  "initialize_dao",
+  "create_proposal",
+  "commit_vote",
+  "reveal_vote",
+  "finalize_proposal",
+  "execute_proposal",
+];
 
 export function getGovernanceRuntimeStatus(action: CoreGovernanceInstructionName) {
   return GOVERNANCE_RUNTIME_STATUS[action];

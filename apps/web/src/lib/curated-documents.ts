@@ -448,6 +448,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/monitoring-alert-rules.md`,
   },
   {
+    slug: "governance-runtime-proof",
+    title: "Governance Runtime Proof Status",
+    category: "Operations",
+    summary: "Machine-checked packet that separates live wallet-first governance capability from repo proof, browser-wallet proof, and real-device proof capture.",
+    audience: "Operators, reviewers, buyers, security readers",
+    boundary: "Truth packet only; it does not claim browser-wallet or real-device governance action proof until those captures are recorded.",
+    docPath: "docs/governance-runtime-proof.generated.md",
+    rawHref: `${repositoryBlobBase}/docs/governance-runtime-proof.generated.md`,
+  },
+  {
     slug: "real-device-runtime",
     title: "Real-Device Runtime Evidence",
     category: "Operations",

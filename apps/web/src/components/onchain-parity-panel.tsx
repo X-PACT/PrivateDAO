@@ -88,8 +88,8 @@ export function OnchainParityPanel({
               <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/72">Runtime verification status</div>
               <div className="mt-2 text-sm leading-7 text-white/68">{runtimeStatus.supportNote}</div>
             </div>
-            <Link href="/documents/real-device-runtime" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
-              Open runtime evidence
+            <Link href="/documents/governance-runtime-proof" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+              Open proof packet
             </Link>
           </div>
           <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
