@@ -287,8 +287,26 @@ function buildCreateAssociatedTokenAccountInstruction(
       { pubkey: mint, isSigner: false, isWritable: false },
       { pubkey: SystemProgram.programId, isSigner: false, isWritable: false },
       { pubkey: tokenProgram, isSigner: false, isWritable: false },
+      { pubkey: SYSVAR_RENT_PUBKEY, isSigner: false, isWritable: false },
     ],
     data: Buffer.alloc(0),
+  });
+}
+
+function buildMintToInstruction(
+  mintPubkey: PublicKey,
+  destination: PublicKey,
+  authority: PublicKey,
+  amount: bigint,
+) {
+  return new TransactionInstruction({
+    programId: TOKEN_PROGRAM_ID,
+    keys: [
+      { pubkey: mintPubkey, isSigner: false, isWritable: true },
+      { pubkey: destination, isSigner: false, isWritable: true },
+      { pubkey: authority, isSigner: true, isWritable: false },
+    ],
+    data: Buffer.from(concatBytes(new Uint8Array([7]), encodeU64LE(amount))),
   });
 }
 
@@ -511,6 +529,8 @@ export async function buildCreateDaoBootstrapTransaction({
     MINT_ACCOUNT_SPACE,
     "confirmed",
   );
+  const authorityTokenAccount = deriveAssociatedTokenAddress(authority, mintSigner.publicKey, TOKEN_PROGRAM_ID);
+  const authorityTokenAccountInfo = await connection.getAccountInfo(authorityTokenAccount, "confirmed");
 
   const createMintIx = SystemProgram.createAccount({
     fromPubkey: authority,
@@ -521,6 +541,21 @@ export async function buildCreateDaoBootstrapTransaction({
   });
 
   const initMintIx = buildInitializeMintInstruction(mintSigner.publicKey, authority, 6);
+  const createAuthorityTokenAccountIx = authorityTokenAccountInfo
+    ? null
+    : buildCreateAssociatedTokenAccountInstruction(
+        authority,
+        authorityTokenAccount,
+        authority,
+        mintSigner.publicKey,
+        TOKEN_PROGRAM_ID,
+      );
+  const mintInitialGovernanceSupplyIx = buildMintToInstruction(
+    mintSigner.publicKey,
+    authorityTokenAccount,
+    authority,
+    1_000_000_000n,
+  );
 
   const daoData = concatBytes(
     await anchorMethodDiscriminator("initialize_dao"),
@@ -543,7 +578,11 @@ export async function buildCreateDaoBootstrapTransaction({
     data: Buffer.from(daoData),
   });
 
-  const transaction = new Transaction().add(createMintIx, initMintIx, createDaoIx);
+  const transaction = new Transaction().add(createMintIx, initMintIx);
+  if (createAuthorityTokenAccountIx) {
+    transaction.add(createAuthorityTokenAccountIx);
+  }
+  transaction.add(mintInitialGovernanceSupplyIx, createDaoIx);
   transaction.feePayer = authority;
 
   const latest = await resolveLatestBlockhash(connection);
