@@ -386,6 +386,23 @@ export function GovernanceActionWorkbench() {
     setReviewAction(action);
   }
 
+  function handleResetSession() {
+    resetSession();
+    setReviewAction(null);
+    setCreateDaoRuntime({ status: "idle", message: "" });
+    setCreateProposalRuntime({ status: "idle", message: "" });
+    setCommitVoteRuntime({ status: "idle", message: "" });
+    setRevealVoteRuntime({ status: "idle", message: "" });
+    setFinalizeRuntime({ status: "idle", message: "" });
+    setExecuteRuntime({ status: "idle", message: "" });
+    setProposalTreasuryMode("standard");
+    setProposalTreasuryRecipient("");
+    setProposalTreasuryAmountSol("");
+    setProposalTreasuryTokenMint("");
+    appliedReviewRef.current = null;
+    autoOpenReviewRef.current = null;
+  }
+
   async function submitCreateDaoLive() {
     if (!publicKey) {
       setCreateDaoRuntime({
@@ -1552,7 +1569,7 @@ export function GovernanceActionWorkbench() {
               <Button
                 variant="ghost"
                 className="justify-between rounded-2xl text-white/72"
-                onClick={resetSession}
+                onClick={handleResetSession}
               >
                 Reset session
                 <ChevronRight className="h-4 w-4" />
