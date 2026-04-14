@@ -8,7 +8,7 @@ This directory holds the latest branch-packaged Android APK for the `feat/androi
 - branch: `feat/android-native-private-dao`
 - build type: `debug`
 - target network: `devnet`
-- sha256: `f035d529813aeef5207d8ef8ab25f744cff936b6f88996de22a07178b1083cf3`
+- sha256: `567b9e71d619e3c86b140b61747b2058f42b68b26adaf91d0615f2293455401b`
 
 ## Real-device proof artifact
 
@@ -33,6 +33,7 @@ Additional runtime captures:
 - current rebuilt flow:
   - `Create` is split into `DAO`, `Treasury`, and `Proposal`
   - DAO bootstrap defaults to a unique devnet-safe name
+  - Android RPC now routes across primary-plus-fallback devnet endpoints instead of a single public RPC host
   - the next device proof target is a successful `Create DAO in wallet` submission from the rebuilt APK
 
 ## Intended use

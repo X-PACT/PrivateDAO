@@ -295,7 +295,7 @@ Verified real-device output on this branch:
 Packaged downloadable branch artifact:
 
 - file: `artifacts/android/PrivateDAO-android-devnet-debug.apk`
-- checksum: `f035d529813aeef5207d8ef8ab25f744cff936b6f88996de22a07178b1083cf3`
+- checksum: `567b9e71d619e3c86b140b61747b2058f42b68b26adaf91d0615f2293455401b`
 
 ## Release Hardening Status
 
@@ -311,7 +311,7 @@ Still required before a production release claim:
 - final keystore and release signing secrets
 - booted emulator or real-device proof for the current branch state
 - version bump and release notes for the distribution target
-- sha256: `f035d529813aeef5207d8ef8ab25f744cff936b6f88996de22a07178b1083cf3`
+- sha256: `567b9e71d619e3c86b140b61747b2058f42b68b26adaf91d0615f2293455401b`
 - direct download:
   - `https://github.com/X-PACT/PrivateDAO/raw/feat/android-native-private-dao/artifacts/android/PrivateDAO-android-devnet-debug.apk`
 

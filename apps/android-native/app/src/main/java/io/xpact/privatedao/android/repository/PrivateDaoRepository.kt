@@ -290,7 +290,9 @@ class PrivateDaoRepository(
             listOf("dao".toByteArray(), PublicKeyExt.toBytes(walletPubkey), form.daoName.toByteArray()),
             PrivateDaoConfig.programId,
         ).first
-        val mintRent = rpcClient.getMinimumBalanceForRentExemption(82)
+        val mintRent = runCatching {
+            rpcClient.getMinimumBalanceForRentExemption(PrivateDaoConfig.mintAccountSpace)
+        }.getOrDefault(PrivateDaoConfig.mintRentExemptionLamports)
         val votingConfig = when (form.mode) {
             DaoMode.TokenWeighted -> byteArrayOf(0)
             DaoMode.Quadratic -> byteArrayOf(1)
