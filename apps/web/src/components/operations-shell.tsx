@@ -63,10 +63,11 @@ export function OperationsShell({
 }: OperationsShellProps) {
   const pathname = usePathname();
   const navItems = navigationMode === "guided" ? guidedNav : operationsNav;
+  const useMinimalGuidedChrome = navigationMode === "guided" && (pathname === "/govern" || pathname === "/start");
 
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
-      <div className="mb-6 xl:hidden">
+      {!useMinimalGuidedChrome ? <div className="mb-6 xl:hidden">
         <Card className="border-white/10 bg-[#07101d]/88">
           <CardHeader className="space-y-3">
             <div className="text-[11px] uppercase tracking-[0.34em] text-cyan-200/78">Explore</div>
@@ -104,10 +105,10 @@ export function OperationsShell({
             })}
           </CardContent>
         </Card>
-      </div>
+      </div> : null}
 
       <div className="grid gap-6 xl:grid-cols-[280px_minmax(0,1fr)] xl:gap-8">
-        <aside className="hidden xl:sticky xl:top-28 xl:block xl:self-start">
+        {!useMinimalGuidedChrome ? <aside className="hidden xl:sticky xl:top-28 xl:block xl:self-start">
           <Card className="border-white/10 bg-[#07101d]/88">
             <CardHeader className="space-y-4">
               <div className="space-y-2">
@@ -172,9 +173,9 @@ export function OperationsShell({
                 <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">MagicBlock: execution corridor for responsive paths</div>
                 <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">Fast RPC: operational speed, diagnostics, and runtime readiness</div>
               </CardContent>
-            </Card>
+              </Card>
           )}
-        </aside>
+        </aside> : null}
 
         <div className="space-y-8">
           <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,16,32,0.94),rgba(7,11,23,0.98))]">

@@ -1,18 +1,13 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
+import Link from "next/link";
 
 import { GettingStartedWorkspace } from "@/components/getting-started-workspace";
-import { GovernanceSessionPanel } from "@/components/governance-session-panel";
-import { InfrastructureStartupProofStrip } from "@/components/infrastructure-startup-proof-strip";
-import { OperatingBoundaryPanel } from "@/components/operating-boundary-panel";
 import { OperationsShell } from "@/components/operations-shell";
 import { ProductActionMap } from "@/components/product-action-map";
-import { ProductServiceMap } from "@/components/product-service-map";
-import { SponsorSignalBar } from "@/components/sponsor-signal-bar";
-import { TreasuryProfileQuickActions } from "@/components/treasury-profile-quick-actions";
-import { WalletFirstServiceActionsStrip } from "@/components/wallet-first-service-actions-strip";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { buildRouteMetadata } from "@/lib/route-metadata";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Get Started",
@@ -42,22 +37,24 @@ export default function StartPage() {
         title="Use the app in this order"
         description="This map keeps the first run simple: start, govern, track the result, then inspect trust or API only when you need more depth."
       />
-      <GovernanceSessionPanel title="Current session in the app" />
-      <WalletFirstServiceActionsStrip context="start" />
-      <InfrastructureStartupProofStrip route="start" />
-      <SponsorSignalBar />
-      <OperatingBoundaryPanel
-        title="What stays inside the product"
-        summary="The public UI is for wallet connection, DAO creation, proposal flow, voting, execution, logs, and diagnostics. Debugging, migrations, batch operations, and recovery stay in the engineering layer."
-      />
-      <ProductServiceMap
-        compact
-        title="PrivateDAO service map"
-        description="Use this map if you are deciding where to go next: start the live flow, track the result, or inspect API and trust without learning internal route names."
-      />
-      <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading treasury routes…</div>}>
-        <TreasuryProfileQuickActions title="Commercial treasury actions" />
-      </Suspense>
+      <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-6">
+        <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/76">Need more after the first run?</div>
+        <h2 className="mt-3 text-xl font-semibold text-white">Use only two routes after this page</h2>
+        <p className="mt-3 max-w-3xl text-sm leading-7 text-white/64">
+          Go to <strong className="text-white">Govern</strong> to create a DAO, create a proposal, vote, and execute. Open <strong className="text-white">Live State</strong> only after a wallet action when you want to check the result.
+        </p>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <Link href="/govern" className={cn(buttonVariants({ size: "sm" }))}>
+            Open govern
+          </Link>
+          <Link href="/live" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+            Open live state
+          </Link>
+          <Link href="/trust" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+            Open trust only if needed
+          </Link>
+        </div>
+      </div>
     </OperationsShell>
   );
 }
