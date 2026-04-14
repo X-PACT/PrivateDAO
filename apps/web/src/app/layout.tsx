@@ -86,6 +86,13 @@ export default function RootLayout({
               }}
             />
             <Script
+              id="privatedao-next-asset-recovery"
+              strategy="beforeInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `(function(){var PARAM='__pd_reload';var KEY='privatedao-next-asset-recovery:'+(window.location.pathname||'/');function nextAsset(url){return typeof url==='string'&&url.indexOf('/_next/static/')!==-1;}function once(){try{if(window.sessionStorage.getItem(KEY)==='1'){return false;}window.sessionStorage.setItem(KEY,'1');return true;}catch(_){return true;}}function hardReload(){if(!once()){return;}var url=new URL(window.location.href);url.searchParams.set(PARAM,String(Date.now()));window.location.replace(url.toString());}function maybeRecover(value){var message='';if(typeof value==='string'){message=value;}else if(value&&typeof value.message==='string'){message=value.message;}else if(value&&typeof value.reason==='string'){message=value.reason;}if(message.indexOf('ChunkLoadError')!==-1||message.indexOf('Loading CSS chunk')!==-1||message.indexOf('Failed to fetch dynamically imported module')!==-1){hardReload();}}window.addEventListener('error',function(event){var target=event.target;if(target&&nextAsset(target.src||target.href)){hardReload();}},true);window.addEventListener('unhandledrejection',function(event){maybeRecover(event.reason);});if(window.location.search.indexOf(PARAM+'=')!==-1){window.addEventListener('load',function(){var url=new URL(window.location.href);url.searchParams.delete(PARAM);window.history.replaceState(window.history.state,'',url.toString());},{once:true});}})();`,
+              }}
+            />
+            <Script
               id="privatedao-organization-jsonld"
               type="application/ld+json"
               strategy="afterInteractive"
