@@ -3,7 +3,6 @@ import Link from "next/link";
 
 import { GettingStartedWorkspace } from "@/components/getting-started-workspace";
 import { OperationsShell } from "@/components/operations-shell";
-import { ProductActionMap } from "@/components/product-action-map";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { buttonVariants } from "@/components/ui/button";
@@ -33,10 +32,6 @@ export default function StartPage() {
       ]}
     >
       <GettingStartedWorkspace executionSnapshot={executionSnapshot} />
-      <ProductActionMap
-        title="Use the app in this order"
-        description="This map keeps the first run simple: start, govern, track the result, then inspect trust or API only when you need more depth."
-      />
       <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-6">
         <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/76">Need more after the first run?</div>
         <h2 className="mt-3 text-xl font-semibold text-white">Use only two routes after this page</h2>

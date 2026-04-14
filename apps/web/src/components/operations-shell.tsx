@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Activity, BarChart3, BrainCircuit, BriefcaseBusiness, Compass, FileSearch, FileText, KeyRound, LayoutDashboard, MessageSquareMore, PlayCircle, Rocket, ShieldCheck, Smartphone, Sparkles, SquareTerminal, Trophy } from "lucide-react";
 
-import { ProductServiceMap } from "@/components/product-service-map";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
@@ -63,7 +62,7 @@ export function OperationsShell({
 }: OperationsShellProps) {
   const pathname = usePathname();
   const navItems = navigationMode === "guided" ? guidedNav : operationsNav;
-  const useMinimalGuidedChrome = navigationMode === "guided" && (pathname === "/govern" || pathname === "/start");
+  const useMinimalGuidedChrome = navigationMode === "guided";
 
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
@@ -113,12 +112,10 @@ export function OperationsShell({
             <CardHeader className="space-y-4">
               <div className="space-y-2">
                 <div className="text-[11px] uppercase tracking-[0.34em] text-cyan-200/78">Explore</div>
-                <CardTitle className="text-xl">{navigationMode === "guided" ? "Simple route map" : "Product navigation"}</CardTitle>
+                <CardTitle className="text-xl">Product navigation</CardTitle>
               </div>
               <p className="text-sm leading-7 text-white/56">
-                {navigationMode === "guided"
-                  ? "The shortest map through PrivateDAO: start, act, track results, then inspect API or trust only if needed."
-                  : "User-first routes for onboarding, governance, proof, support, and live product state."}
+                User-first routes for onboarding, governance, proof, support, and live product state.
               </p>
             </CardHeader>
             <CardContent className="space-y-2">
@@ -154,27 +151,17 @@ export function OperationsShell({
             </CardContent>
           </Card>
 
-          {navigationMode === "guided" ? (
-            <div className="mt-4">
-              <ProductServiceMap
-                compact
-                title="PrivateDAO map"
-                description="Read this as a service map, not a route catalog. Start, use the app, track the result, then inspect API and proof when you want more depth."
-              />
-            </div>
-          ) : (
-            <Card className="mt-4 border-white/10 bg-white/[0.03]">
-              <CardHeader>
-                <CardTitle className="text-base">System rails</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3 text-sm text-white/58">
-                <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">ZK: privacy review and proof anchors</div>
-                <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">REFHE: confidential settlement and payout posture</div>
-                <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">MagicBlock: execution corridor for responsive paths</div>
-                <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">Fast RPC: operational speed, diagnostics, and runtime readiness</div>
-              </CardContent>
-              </Card>
-          )}
+          <Card className="mt-4 border-white/10 bg-white/[0.03]">
+            <CardHeader>
+              <CardTitle className="text-base">System rails</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 text-sm text-white/58">
+              <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">ZK: privacy review and proof anchors</div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">REFHE: confidential settlement and payout posture</div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">MagicBlock: execution corridor for responsive paths</div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">Fast RPC: operational speed, diagnostics, and runtime readiness</div>
+            </CardContent>
+          </Card>
         </aside> : null}
 
         <div className="space-y-8">
