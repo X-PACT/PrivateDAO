@@ -30,38 +30,38 @@ const uiActions = [
   },
   {
     title: "Create Proposal",
-    detail: "Open the command center and stage governance actions from the product shell.",
-    href: "/command-center",
+    detail: "Stay in the same govern flow and submit the first proposal after the DAO is ready.",
+    href: "/govern",
     icon: FilePlus2,
   },
   {
     title: "Commit Vote",
-    detail: "Commit voting stays inside the live wallet-connected governance surface.",
-    href: "/command-center",
+    detail: "Commit voting stays inside the same live wallet-connected govern surface.",
+    href: "/govern",
     icon: Vote,
   },
   {
     title: "Reveal Vote",
     detail: "Reveal remains a first-class product action rather than a hidden protocol-only step.",
-    href: "/command-center",
+    href: "/govern",
     icon: ListChecks,
   },
   {
     title: "Finalize Proposal",
-    detail: "Finalize stays explicit in the UI so the product matches the real on-chain phase boundary before execution.",
-    href: "/command-center",
+    detail: "Finalize stays explicit in the govern flow so the product matches the real on-chain phase boundary before execution.",
+    href: "/govern",
     icon: Flag,
   },
   {
     title: "Execute Proposal",
-    detail: "Execution only becomes visible when the proof and readiness boundary says it is ready.",
-    href: "/dashboard",
+    detail: "Execution only becomes visible when the real readiness boundary says it is ready.",
+    href: "/govern",
     icon: Play,
   },
   {
-    title: "View Logs",
-    detail: "Execution logs, vote timeline, and treasury state belong inside the operating dashboard.",
-    href: "/dashboard",
+    title: "Track Activity",
+    detail: "Follow proposals, vote timeline, treasury state, and execution results in the activity view.",
+    href: "/live",
     icon: ListChecks,
   },
   {
@@ -86,8 +86,8 @@ type ProductActionMapProps = {
 };
 
 export function ProductActionMap({
-  title = "UI Full + Repo Public",
-  description = "The public product should expose only the real user journey. Engineering-heavy flows stay in the public repo and CLI so the interface remains serious, clean, and commercial.",
+  title = "What the app lets you do",
+  description = "The public app should expose the real user journey only: connect, govern, track the result, and inspect trust when needed. Engineering-heavy flows stay outside the normal user path.",
 }: ProductActionMapProps) {
   return (
     <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,16,32,0.94),rgba(7,11,23,0.98))]">
@@ -97,7 +97,7 @@ export function ProductActionMap({
       </CardHeader>
       <CardContent className="grid gap-6 xl:grid-cols-[1.18fr_0.82fr]">
         <div className="space-y-4">
-          <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-200/72">UI Full</div>
+          <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-200/72">Product flow</div>
           <div className="grid gap-3 md:grid-cols-2">
             {uiActions.map((item) => {
               const Icon = item.icon;
@@ -123,7 +123,7 @@ export function ProductActionMap({
         </div>
 
         <div className="space-y-4">
-          <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/72">Repo Public + CLI</div>
+          <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/72">Operator layer</div>
           <div className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/8 p-5">
             <div className="flex items-center gap-3">
               <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-cyan-300/16 bg-black/20 text-cyan-100">

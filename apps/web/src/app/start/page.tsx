@@ -37,27 +37,27 @@ export default function StartPage() {
         { label: "Proof still connected", variant: "violet" },
       ]}
     >
+      <GettingStartedWorkspace executionSnapshot={executionSnapshot} />
+      <ProductActionMap
+        title="Use the app in this order"
+        description="This map keeps the first run simple: start, govern, track the result, then inspect trust or API only when you need more depth."
+      />
+      <GovernanceSessionPanel title="Current session in the app" />
+      <WalletFirstServiceActionsStrip context="start" />
       <InfrastructureStartupProofStrip route="start" />
       <SponsorSignalBar />
       <OperatingBoundaryPanel
         title="What stays inside the product"
         summary="The public UI is for wallet connection, DAO creation, proposal flow, voting, execution, logs, and diagnostics. Debugging, migrations, batch operations, and recovery stay in the engineering layer."
       />
-      <GovernanceSessionPanel title="Shared product session" />
       <ProductServiceMap
         compact
         title="PrivateDAO service map"
         description="Use this map if you are deciding where to go next: start the live flow, track the result, or inspect API and trust without learning internal route names."
       />
-      <WalletFirstServiceActionsStrip context="start" />
       <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading treasury routes…</div>}>
         <TreasuryProfileQuickActions title="Commercial treasury actions" />
       </Suspense>
-      <ProductActionMap
-        title="Start with the exact user journey"
-        description="The first-run product path should make the eight real operations obvious and keep everything else out of sight until engineering truly needs it."
-      />
-      <GettingStartedWorkspace executionSnapshot={executionSnapshot} />
     </OperationsShell>
   );
 }

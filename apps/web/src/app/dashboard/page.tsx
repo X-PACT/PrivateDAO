@@ -142,7 +142,7 @@ export default function DashboardPage() {
       </section>
 
       <section className="mt-12">
-        <GovernanceSessionPanel title="Live session carried from onboarding and command center" />
+        <GovernanceSessionPanel title="Live session carried from start and govern" />
       </section>
 
       <section className="mt-12">
