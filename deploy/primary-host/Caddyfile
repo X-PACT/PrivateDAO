@@ -1,0 +1,36 @@
+{
+	email {$ACME_EMAIL}
+}
+
+(privatedao_primary_host) {
+	root * /srv/privatedao/site
+	encode gzip zstd
+
+	header {
+		X-PrivateDAO-Primary-Host "candidate"
+		X-PrivateDAO-Backup-Policy "github-pages-backup-only"
+	}
+
+	@health path /healthz
+	handle @health {
+		reverse_proxy read-node:8787
+	}
+
+	@api path /api/v1 /api/v1/*
+	handle @api {
+		reverse_proxy read-node:8787
+	}
+
+	handle {
+		try_files {path} {path}/ /index.html
+		file_server
+	}
+}
+
+:8080 {
+	import privatedao_primary_host
+}
+
+{$PRIMARY_DOMAIN:privatedao.org} {
+	import privatedao_primary_host
+}

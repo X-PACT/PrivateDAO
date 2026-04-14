@@ -1,20 +1,8 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
 
+import { GovernWorkbenchClient } from "@/components/govern/govern-workbench-client";
 import { OperationsShell } from "@/components/operations-shell";
 import { buildRouteMetadata } from "@/lib/route-metadata";
-
-const GovernanceActionWorkbench = dynamic(
-  () => import("@/components/governance-action-workbench").then((mod) => mod.GovernanceActionWorkbench),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">
-        Loading guided governance flow…
-      </div>
-    ),
-  },
-);
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Govern",
@@ -36,7 +24,7 @@ export default function GovernPage() {
         { label: "User-first flow", variant: "violet" },
       ]}
     >
-      <GovernanceActionWorkbench />
+      <GovernWorkbenchClient />
     </OperationsShell>
   );
 }

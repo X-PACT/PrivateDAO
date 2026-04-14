@@ -169,8 +169,27 @@ The repo now includes:
 
 - `npm run verify:host-topology`
 - `npm run verify:host-topology:strict`
+- `npm run deploy:primary-host:prepare`
+- `npm run deploy:primary-host:up`
+- `npm run deploy:primary-host:down`
+- `npm run verify:primary-host-stack`
 
 And `scripts/build-web-mirror-bundle.sh` only copies `CNAME` in `root` mode, not in `github` mode. This keeps backup bundles compatible with a future backup-only GitHub Pages posture.
+
+The repo now also ships a concrete candidate primary-host stack:
+
+- [deploy/primary-host/docker-compose.yml](/home/x-pact/PrivateDAO/deploy/primary-host/docker-compose.yml)
+- [deploy/primary-host/Caddyfile](/home/x-pact/PrivateDAO/deploy/primary-host/Caddyfile)
+- [deploy/primary-host/read-node.Dockerfile](/home/x-pact/PrivateDAO/deploy/primary-host/read-node.Dockerfile)
+- [deploy/primary-host/.env.example](/home/x-pact/PrivateDAO/deploy/primary-host/.env.example)
+- [scripts/prepare-primary-host-stack.sh](/home/x-pact/PrivateDAO/scripts/prepare-primary-host-stack.sh)
+- [scripts/verify-primary-host-stack.sh](/home/x-pact/PrivateDAO/scripts/verify-primary-host-stack.sh)
+
+This makes the remaining external dependency explicit:
+
+- host provisioning
+- environment file placement
+- DNS cutover
 
 ## Linked Sources
 
