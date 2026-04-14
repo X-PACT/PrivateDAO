@@ -16,7 +16,7 @@ import { buildRouteMetadata } from "@/lib/route-metadata";
 export const metadata: Metadata = buildRouteMetadata({
   title: "Get Started",
   description:
-    "The easiest first-run path into PrivateDAO: choose a corridor, connect a wallet, and move from product onboarding into command-center governance.",
+    "The easiest first-run path into PrivateDAO: connect a wallet, create a DAO, submit a proposal, and move through the live Devnet flow.",
   path: "/start",
   keywords: ["getting started", "wallet onboarding", "consumer path", "service corridor"],
 });
@@ -27,8 +27,8 @@ export default function StartPage() {
   return (
     <OperationsShell
       eyebrow="Quick start"
-      title="Start PrivateDAO the way a normal user expects a serious product to work"
-      description="Choose the right corridor, connect a wallet, and move through a guided governance flow without losing the proof, trust, and operational depth behind the product."
+      title="Connect a wallet and start the full Devnet flow without learning the product architecture first"
+      description="This page is the easy on-ramp. It explains what PrivateDAO lets you do, points to the exact first action, and keeps deeper proof and trust surfaces one layer away."
       badges={[
         { label: "Consumer-first shell", variant: "success" },
         { label: "Wallet-ready", variant: "cyan" },

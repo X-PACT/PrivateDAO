@@ -56,7 +56,7 @@ export function OperationsShell({
       <div className="mb-6 xl:hidden">
         <Card className="border-white/10 bg-[#07101d]/88">
           <CardHeader className="space-y-3">
-            <div className="text-[11px] uppercase tracking-[0.34em] text-cyan-200/78">Operational Surface</div>
+            <div className="text-[11px] uppercase tracking-[0.34em] text-cyan-200/78">Explore</div>
             <CardTitle className="text-lg">Quick route navigation</CardTitle>
           </CardHeader>
           <CardContent className="no-scrollbar flex gap-3 overflow-x-auto pb-1">
@@ -98,11 +98,11 @@ export function OperationsShell({
           <Card className="border-white/10 bg-[#07101d]/88">
             <CardHeader className="space-y-4">
               <div className="space-y-2">
-                <div className="text-[11px] uppercase tracking-[0.34em] text-cyan-200/78">Operational Surface</div>
+                <div className="text-[11px] uppercase tracking-[0.34em] text-cyan-200/78">Explore</div>
                 <CardTitle className="text-xl">Product navigation</CardTitle>
               </div>
               <p className="text-sm leading-7 text-white/56">
-                User-first routes for onboarding, governance, proof, support, and live operating state.
+                User-first routes for onboarding, governance, proof, support, and live product state.
               </p>
             </CardHeader>
             <CardContent className="space-y-2">

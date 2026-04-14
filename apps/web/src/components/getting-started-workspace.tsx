@@ -22,23 +22,23 @@ export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWor
             <Badge variant="success">Built for a normal user first-run</Badge>
             <div className="space-y-3">
               <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                Start with the corridor that matches your team, then connect a wallet and move straight into governance.
+                Connect a wallet, create a DAO, submit a proposal, vote, and execute from one guided path.
               </h2>
               <p className="max-w-2xl text-base leading-8 text-white/62 sm:text-lg">
-                This workspace removes the need to understand every proof packet up front. It gives a direct path into
-                the right service rail, the right wallet, and the right command surface for the team using PrivateDAO.
+                This workspace removes the need to understand every proof packet up front. It tells a normal user
+                exactly what the product does and where to click first.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
-              <Link className={buttonVariants({ size: "lg" })} href="/command-center">
-                Open command center
+              <Link className={buttonVariants({ size: "lg" })} href="/govern">
+                Open the governance flow
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link className={buttonVariants({ size: "lg", variant: "secondary" })} href="/services">
-                Compare service corridors
+              <Link className={buttonVariants({ size: "lg", variant: "secondary" })} href="/live">
+                See live state and logs
               </Link>
               <Link className={buttonVariants({ size: "lg", variant: "outline" })} href="/story">
-                Watch story video
+                Watch the product story
               </Link>
             </div>
           </div>
@@ -66,13 +66,13 @@ export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWor
       <div className="grid gap-6 xl:grid-cols-[1.12fr_0.88fr]">
         <Card>
           <CardHeader>
-            <CardTitle>Choose your PrivateDAO corridor</CardTitle>
+            <CardTitle>What you can do right now</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-4 md:grid-cols-2">
-            {servicePacks.map((pack) => (
+            {servicePacks.slice(0, 2).map((pack) => (
               <Link
                 key={pack.name}
-                href="/services"
+                href={pack.name.toLowerCase().includes("api") ? "/services" : "/govern"}
                 className="rounded-[26px] border border-white/8 bg-white/[0.04] p-5 transition hover:border-emerald-300/25 hover:bg-white/[0.06]"
               >
                 <div className="text-base font-medium text-white">{pack.name}</div>
@@ -80,6 +80,16 @@ export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWor
                 <div className="mt-4 text-sm font-medium text-cyan-200">{pack.cta}</div>
               </Link>
             ))}
+            <Link
+              href="/proof"
+              className="rounded-[26px] border border-white/8 bg-white/[0.04] p-5 transition hover:border-emerald-300/25 hover:bg-white/[0.06]"
+            >
+              <div className="text-base font-medium text-white">Check proof only if you need it</div>
+              <p className="mt-3 text-sm leading-7 text-white/58">
+                Proof, trust, and reviewer packets stay available, but they do not block the first successful session.
+              </p>
+              <div className="mt-4 text-sm font-medium text-cyan-200">Open proof</div>
+            </Link>
           </CardContent>
         </Card>
 
@@ -100,8 +110,8 @@ export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWor
               </div>
             ))}
             <div className="rounded-[24px] border border-emerald-300/18 bg-emerald-300/8 p-4 text-sm leading-7 text-white/68">
-              Connect Wallet is kept in the top-right shell position and auto-reconnects when possible, so users land
-              in the product instead of redoing wallet setup every visit.
+              Connect Wallet stays in the top-right shell position and auto-reconnects when possible, so users land in
+              the product instead of redoing wallet setup every visit.
             </div>
           </CardContent>
         </Card>
@@ -130,14 +140,14 @@ export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWor
       <ExecutionSurfaceInline mode="start" snapshot={executionSnapshot} />
 
       <div className="flex flex-wrap gap-3">
-        <Link className={cn(buttonVariants({ size: "lg" }))} href="/command-center">
-          Continue to command center
+        <Link className={cn(buttonVariants({ size: "lg" }))} href="/govern">
+          Continue to the governance flow
         </Link>
         <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/proof">
-          Open proof center
+          Open proof only when needed
         </Link>
         <Link className={cn(buttonVariants({ size: "lg", variant: "outline" }))} href="/tracks">
-          Open competition center
+          Open track evidence
         </Link>
       </div>
     </div>

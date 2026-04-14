@@ -27,20 +27,17 @@ const WalletConnectButton = dynamic(
 );
 
 const navItems = [
-  { href: "/learn", label: "Learn" },
-  { href: "/developers", label: "Developers" },
-  { href: "/products", label: "Products" },
-  { href: "/network", label: "Network" },
-  { href: "/community", label: "Community" },
+  { href: "/start", label: "Start" },
+  { href: "/govern", label: "Govern" },
+  { href: "/live", label: "Live State" },
+  { href: "/demo", label: "Demo" },
+  { href: "/trust", label: "Trust" },
 ];
 
 const utilityNav = [
-  { href: "/documents", label: "Docs" },
   { href: "/services", label: "Plans & API" },
-  { href: "/govern", label: "Govern" },
-  { href: "/demo", label: "Demo" },
-  { href: "/live", label: "Live State" },
-  { href: "/trust", label: "Trust" },
+  { href: "/documents", label: "Docs" },
+  { href: "/community", label: "Community" },
   { href: "/assistant", label: "Get Support" },
 ];
 
@@ -62,7 +59,7 @@ export function SiteHeader() {
               </div>
               <div className="mt-1 hidden items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-white/42 lg:flex">
                 <LockKeyhole className="h-3.5 w-3.5 text-cyan-200/80" />
-                <span>Solana private governance, proof, diagnostics, and services</span>
+                <span>Create a private Solana DAO, propose, vote, and execute in one wallet-first flow</span>
               </div>
             </div>
           </Link>
@@ -94,10 +91,10 @@ export function SiteHeader() {
           </div>
         </div>
 
-        <nav className="no-scrollbar flex items-center gap-1.5 overflow-x-auto border-t border-white/6 pt-3 pb-1">
-          {navItems.map((item) => (
-            <Link
-              className={cn(buttonVariants({ size: "sm", variant: "ghost" }), "shrink-0 px-3 text-white/72")}
+          <nav className="no-scrollbar flex items-center gap-1.5 overflow-x-auto border-t border-white/6 pt-3 pb-1">
+            {navItems.map((item) => (
+              <Link
+                className={cn(buttonVariants({ size: "sm", variant: "ghost" }), "shrink-0 px-3 text-white/72")}
               href={item.href}
               key={item.href}
             >
@@ -110,7 +107,7 @@ export function SiteHeader() {
           <div className="flex min-w-0 items-center gap-2 rounded-full border border-white/10 bg-white/4 px-4 py-2 text-sm text-white/62">
             <Search className="h-4 w-4 text-cyan-200" />
             <Link href="/search" className="truncate">
-              Search or ask AI
+              Search the app, docs, or live proof
             </Link>
             <span className="ml-auto hidden rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[11px] uppercase tracking-[0.18em] text-white/38 sm:inline-flex">
               ⌘K

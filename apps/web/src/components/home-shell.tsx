@@ -1,63 +1,39 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, Compass, LockKeyhole, PlayCircle, Radar, Shield, Sparkles, Trophy, WalletCards } from "lucide-react";
+import { ArrowRight, CheckCircle2, Compass, PlayCircle, Shield, Trophy, WalletCards } from "lucide-react";
 
 import { SectionHeader } from "@/components/section-header";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { achievements, heroPersonas, techCards } from "@/lib/site-data";
+import { achievements, techCards } from "@/lib/site-data";
 import { useSiteUrls } from "@/lib/site-urls";
 import { cn } from "@/lib/utils";
 
 export function HomeShell() {
-  const [persona, setPersona] = useState<keyof typeof heroPersonas>("buyer");
-  const activePersona = heroPersonas[persona];
   const { judgeViewUrl } = useSiteUrls();
   const primaryRoutes = [
     {
-      title: "Command Center",
-      description: "Create, vote, reveal, and execute through the wallet-first governance rail.",
-      href: "/govern",
-      cta: "Open govern",
+      title: "Start in one minute",
+      description: "Connect a wallet, choose the guided flow, and land in the live Devnet journey without learning internal route names first.",
+      href: "/start",
+      cta: "Open start",
       icon: Compass,
     },
     {
-      title: "Proof Center",
-      description: "Give judges and reviewers the shortest path to baseline, V3, and trust packets.",
-      href: "/proof/?judge=1",
-      cta: "Open proof path",
-      icon: Shield,
-    },
-    {
-      title: "Security Layer",
-      description: "Open ZK matrix, confidence engine, policy composer, and launch boundaries.",
-      href: "/trust",
-      cta: "Open trust",
-      icon: LockKeyhole,
-    },
-    {
-      title: "Services and API",
-      description: "Surface pilot packages, RPC, hosted reads, and enterprise governance offerings.",
-      href: "/services",
-      cta: "Open services",
+      title: "Create and govern",
+      description: "Create a DAO, submit a proposal, vote, and execute from one wallet-first surface on Devnet.",
+      href: "/govern",
+      cta: "Open govern",
       icon: WalletCards,
     },
     {
-      title: "Diagnostics",
-      description: "Check runtime posture, readiness, generated artifacts, and reviewer surfaces.",
-      href: "/diagnostics",
-      cta: "Open diagnostics",
-      icon: Radar,
-    },
-    {
-      title: "Competition Center",
-      description: "Go directly to submission-ready tracks, decks, and proof routes for judges.",
-      href: "/tracks",
-      cta: "Open tracks",
-      icon: Sparkles,
+      title: "Watch the product first",
+      description: "Use the demo route if you want the product story before touching the live flow.",
+      href: "/demo",
+      cta: "Open demo",
+      icon: PlayCircle,
     },
   ];
   const storyCards = [
@@ -83,13 +59,13 @@ export function HomeShell() {
   const fastActionSteps = [
     {
       title: "1. Connect a wallet",
-      description: "Start from the onboarding flow and land in the product with Devnet-ready wallet controls.",
+      description: "Start from the onboarding flow and connect a Devnet-ready wallet without guessing which route to open.",
       href: "/start",
       cta: "Open start",
     },
     {
       title: "2. Create and govern",
-      description: "Create a DAO, submit a proposal, vote, and execute from one wallet-first surface.",
+      description: "Create a DAO, submit a proposal, vote, and execute from one guided governance surface.",
       href: "/govern",
       cta: "Open govern",
     },
@@ -101,9 +77,9 @@ export function HomeShell() {
     },
   ];
   const trustSignals = [
-    "Wallet-first Devnet flow is exposed directly from the product, not buried behind docs.",
-    "Proof and trust surfaces stay available when needed, but no longer dominate the homepage.",
-    "Android, web, and reviewer routes now point to one product story instead of competing shells.",
+    "PrivateDAO is a wallet-first app for creating a private Solana DAO and running proposals on Devnet.",
+    "Proof and trust surfaces are available when you need them, but they no longer block the first run.",
+    "Web, Android, and reviewer routes now point to one product story instead of competing shells.",
   ];
 
   return (
@@ -113,43 +89,26 @@ export function HomeShell() {
           <div className="space-y-6 sm:space-y-8">
             <div className="flex flex-wrap gap-3">
               <Badge variant="cyan">Private governance on Solana</Badge>
-              <Badge variant="violet">ZK + REFHE + MagicBlock + Fast RPC</Badge>
-              <Badge variant="success">{activePersona.badge}</Badge>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {(Object.entries(heroPersonas) as Array<[keyof typeof heroPersonas, (typeof heroPersonas)[keyof typeof heroPersonas]]>).map(([key, value]) => (
-                <button
-                  key={key}
-                  type="button"
-                  onClick={() => setPersona(key)}
-                  className={cn(
-                    "rounded-full border px-4 py-2 text-sm transition",
-                    persona === key
-                      ? "border-cyan-300/35 bg-cyan-300/12 text-cyan-100"
-                      : "border-white/10 bg-white/4 text-white/65 hover:bg-white/6 hover:text-white",
-                  )}
-                >
-                  {value.label} View
-                </button>
-              ))}
+              <Badge variant="violet">Devnet live flow</Badge>
+              <Badge variant="success">User-first start</Badge>
             </div>
             <div className="space-y-4 sm:space-y-5">
-              <div className="text-[11px] uppercase tracking-[0.34em] text-emerald-300/80">{activePersona.eyebrow}</div>
+              <div className="text-[11px] uppercase tracking-[0.34em] text-emerald-300/80">What PrivateDAO does</div>
               <div className="max-w-3xl text-3xl font-semibold tracking-[-0.045em] text-white sm:text-5xl lg:text-[4rem] xl:text-[4.35rem]">
-                {activePersona.title}
+                Create a private Solana DAO, submit a proposal, vote, and execute without leaving one guided wallet flow.
               </div>
               <p className="max-w-2xl text-sm leading-7 text-white/62 sm:text-lg sm:leading-8">
-                {activePersona.description}
+                PrivateDAO turns treasury decisions into a simple Devnet product flow. Start with wallet connection, create a DAO, move into proposals and voting, then inspect live state and proof only when you need more depth.
               </p>
             </div>
 
             <div className="flex flex-wrap gap-3">
-              <Link className={cn(buttonVariants({ size: "lg" }))} href={activePersona.primaryCtaHref}>
-                {activePersona.primaryCtaLabel}
+              <Link className={cn(buttonVariants({ size: "lg" }))} href="/start">
+                Start in under a minute
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href={activePersona.secondaryCtaHref}>
-                {activePersona.secondaryCtaLabel}
+              <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/govern">
+                Open the live governance flow
               </Link>
               <a
                 className={cn(buttonVariants({ size: "lg", variant: "outline" }))}
@@ -183,21 +142,21 @@ export function HomeShell() {
           <Card className="overflow-hidden border-white/12 bg-[linear-gradient(180deg,rgba(13,18,34,0.94),rgba(7,10,22,0.98))] xl:mt-1">
             <CardHeader>
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-emerald-300/15 bg-emerald-300/10 text-emerald-200">
-                  <Shield className="h-5 w-5" />
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-emerald-300/15 bg-emerald-300/10 text-emerald-200">
+                    <Shield className="h-5 w-5" />
+                  </div>
+                  <div>
+                  <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Try it now</div>
+                  <CardTitle className="mt-2">The shortest path from landing page to a real Devnet action</CardTitle>
+                  </div>
                 </div>
-                <div>
-                  <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Do something now</div>
-                  <CardTitle className="mt-2">Fastest path from landing page to live Devnet action</CardTitle>
-                </div>
-              </div>
-            </CardHeader>
+              </CardHeader>
             <CardContent className="space-y-6">
               <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
-                <div className="text-[11px] uppercase tracking-[0.28em] text-white/42">Live on</div>
+                <div className="text-[11px] uppercase tracking-[0.28em] text-white/42">Use case</div>
                 <div className="mt-2 text-2xl font-semibold text-white">Solana Devnet</div>
                 <div className="mt-2 text-sm leading-7 text-white/56">
-                  Start from wallet connection, move into governance, and keep live state and proof one click away.
+                  Use it when you want a team or community to create a DAO, propose an action, vote privately, and execute from one surface.
                 </div>
               </div>
 
@@ -224,7 +183,7 @@ export function HomeShell() {
                 </div>
                 <div className="mt-2 text-lg font-semibold text-amber-50">1st Place · Superteam Poland</div>
                 <div className="mt-2 text-sm leading-7 text-amber-50/70">
-                  Strong proof remains available for judges and investors, but the homepage now stays focused on product action first.
+                  Strong proof remains available for judges and investors, but the homepage now stays focused on what the product lets a user do first.
                 </div>
               </div>
             </CardContent>
@@ -235,8 +194,8 @@ export function HomeShell() {
       <section className="mx-auto mt-16 w-full max-w-7xl px-4 sm:mt-20 sm:px-6 lg:px-8">
         <SectionHeader
           eyebrow="Start here"
-          title="Open the exact PrivateDAO surface you need without guessing route names"
-          description="The homepage should behave like a product front door: act now, learn fast, and open deeper proof only when you actually need it."
+          title="Choose the next action, not the internal route name"
+          description="The homepage should tell a normal user where to click first and what will happen next."
         />
         <div className="mt-8 grid gap-5 lg:grid-cols-3">
           <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(11,16,31,0.92),rgba(7,10,22,0.98))]">
@@ -267,7 +226,7 @@ export function HomeShell() {
           </Card>
           <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(11,16,31,0.92),rgba(7,10,22,0.98))]">
             <CardHeader>
-              <CardTitle className="text-2xl">Explore plans and API</CardTitle>
+              <CardTitle className="text-2xl">Explore services and API</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-sm leading-7 text-white/58">
@@ -284,10 +243,10 @@ export function HomeShell() {
       <section className="mx-auto mt-16 w-full max-w-7xl px-4 sm:mt-18 sm:px-6 lg:px-8">
         <SectionHeader
           eyebrow="Quick access"
-          title="Choose a route by task, not by internal architecture"
-          description="These cards translate the product into plain next actions instead of exposing internal naming that only makes sense to the team."
+          title="Choose by outcome"
+          description="These cards answer the three questions a new user usually has: where do I start, where do I act, and where do I verify the result."
         />
-        <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-8 grid gap-5 md:grid-cols-3">
           {primaryRoutes.map((item) => {
             const Icon = item.icon;
 
@@ -316,9 +275,9 @@ export function HomeShell() {
 
       <section className="mx-auto mt-16 w-full max-w-7xl px-4 sm:mt-18 sm:px-6 lg:px-8">
         <SectionHeader
-          eyebrow="Why teams trust it"
-          title="A user-first governance product with proof behind it, not proof pasted in front of it"
-          description="The homepage now keeps the message simple: act on Devnet quickly, then open the deeper trust and review surfaces only when needed."
+          eyebrow="Why it feels credible"
+          title="A governance product first, with proof behind it"
+          description="The public surface now explains the product in plain language, then lets power users open trust and proof when they want the deeper layer."
         />
         <div className="mt-8 grid gap-5 lg:grid-cols-3">
           {achievements.map((item) => (
@@ -358,8 +317,8 @@ export function HomeShell() {
       <section className="mx-auto mt-18 w-full max-w-7xl px-4 sm:mt-24 sm:px-6 lg:px-8">
         <SectionHeader
           eyebrow="Next step"
-          title="When you are ready for more depth, open the dedicated surface instead of forcing it into the homepage"
-          description="The homepage now stays focused. Deeper operations, proof, and rollout details live on their own routes where they belong."
+          title="Go deeper only when you need it"
+          description="The homepage stays focused. Deeper operations, proof, and rollout details live on their own routes where they belong."
         />
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,15,30,0.92),rgba(6,9,20,0.98))]">
@@ -373,7 +332,7 @@ export function HomeShell() {
             <CardHeader><CardTitle className="text-xl">Open live state</CardTitle></CardHeader>
             <CardContent className="space-y-4">
               <p className="text-sm leading-7 text-white/58">Use the dedicated live state route for proposals, treasury, and execution logs.</p>
-              <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} href="/dashboard">Open live state</Link>
+              <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} href="/live">Open live state</Link>
             </CardContent>
           </Card>
           <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,15,30,0.92),rgba(6,9,20,0.98))]">
