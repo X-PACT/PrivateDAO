@@ -7,6 +7,49 @@ apply plugin: 'org.jetbrains.kotlin.plugin.compose'
 
 def releaseSigningProperties = new Properties()
 def signingFile = rootProject.file("release-signing.properties")
+
+def trimEnv = { value -> value == null ? "" : value.trim() }
+def isPlaceholder = { value ->
+    def normalized = trimEnv(value)
+    !normalized ||
+        normalized.contains('${') ||
+        normalized == "your_helius_api_key_here" ||
+        normalized == "your_alchemy_api_key_here" ||
+        normalized == "your_rpc_url_here"
+}
+def buildDevnetRpcCandidates = { String preferredRpc ->
+    def candidates = []
+    def appendCandidate = { value ->
+        def normalized = trimEnv(value)
+        if (normalized && !candidates.contains(normalized)) {
+            candidates << normalized
+        }
+    }
+
+    appendCandidate(preferredRpc)
+    appendCandidate(System.getenv("SOLANA_RPC_URL"))
+    appendCandidate(System.getenv("ALCHEMY_DEVNET_RPC_URL"))
+
+    def alchemyApiKey = trimEnv(System.getenv("ALCHEMY_API_KEY"))
+    if (!isPlaceholder(alchemyApiKey)) {
+        appendCandidate("https://solana-devnet.g.alchemy.com/v2/${alchemyApiKey}")
+    }
+
+    def heliusApiKey = trimEnv(System.getenv("HELIUS_API_KEY"))
+    if (!isPlaceholder(heliusApiKey)) {
+        appendCandidate("https://devnet.helius-rpc.com/?api-key=${heliusApiKey}")
+    }
+
+    appendCandidate(System.getenv("QUICKNODE_DEVNET_RPC"))
+    appendCandidate("https://api.devnet.solana.com")
+    return candidates
+}
+def encodeFallbacks = { candidates ->
+    candidates.size() > 1 ? candidates.subList(1, candidates.size()).join("|") : ""
+}
+
+def releaseRpcCandidates = buildDevnetRpcCandidates(null)
+def debugRpcCandidates = buildDevnetRpcCandidates(System.getenv("PRIVATEDAO_DEBUG_RPC_URL"))
 if (signingFile.exists()) {
     signingFile.withInputStream { releaseSigningProperties.load(it) }
 }
@@ -21,6 +64,8 @@ android {
         targetSdk 36
         versionCode 1
         versionName "1.0.0"
+        buildConfigField "String", "DEVNET_RPC_URL", "\"${releaseRpcCandidates[0]}\""
+        buildConfigField "String", "DEVNET_RPC_FALLBACK_URLS", "\"${encodeFallbacks(releaseRpcCandidates)}\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -47,6 +92,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField "String", "DEVNET_RPC_URL", "\"${debugRpcCandidates[0]}\""
+            buildConfigField "String", "DEVNET_RPC_FALLBACK_URLS", "\"${encodeFallbacks(debugRpcCandidates)}\""
+        }
         release {
             minifyEnabled false
             signingConfig signingConfigs.release

@@ -288,7 +288,8 @@ Verified real-device output on this branch:
 - create-form proof artifact: `artifacts/android/runtime/create-tab-state.png`
 - the newest rebuilt APK now splits `Create` into dedicated `DAO`, `Treasury`, and `Proposal` panels so DAO bootstrap starts on its own surface instead of under proposal validation
 - DAO bootstrap now defaults to a unique devnet-safe name rather than repeatedly submitting `PrivateDAO Live`
-- the remaining on-device validation step is to re-run `Create DAO in wallet` on the rebuilt APK and capture the first successful DAO bootstrap from the physical device
+- the Android RPC client now rotates across configured devnet endpoints instead of relying on one public RPC host for blockhash and rent reads
+- the remaining on-device validation step is to re-run `Create DAO in wallet` on the rebuilt APK after the RPC-route upgrade and capture the first successful DAO bootstrap from the physical device
 - the rebuilt APK now installs cleanly after replacing the heavy `bcprov` dependency with a lighter Ed25519 dependency for PDA curve checks
 
 Packaged downloadable branch artifact:

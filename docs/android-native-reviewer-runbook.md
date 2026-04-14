@@ -115,8 +115,9 @@ Current verified runtime state on this branch:
 - the branch now also has a clean reinstall proof after rebuilding the APK with the lighter Ed25519 dependency path
 - the current rebuilt APK also installs over the existing package after the Solana UI refresh tranche
 - the newest rebuilt APK separates `Create` into dedicated `DAO`, `Treasury`, and `Proposal` panels and defaults DAO bootstrap to a unique devnet-safe name
+- the Android RPC client now rotates across configured devnet endpoints instead of relying on a single public RPC host for blockhash and rent reads
 
 Current remaining runtime gate:
 
 - emulator-side install proof is still blocked by package-service instability, but real-device install and launch proof is now closed
-- the next real-device lifecycle gate is to re-run `Create DAO in wallet` on the rebuilt APK and capture a successful DAO bootstrap from the phone
+- the next real-device lifecycle gate is to re-run `Create DAO in wallet` on the rebuilt APK after the RPC-route upgrade and capture a successful DAO bootstrap from the phone

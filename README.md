@@ -402,7 +402,8 @@ User-confirmed in the same session:
 - `Disconnect` surfaced on the live Android home screen, which confirms a connected wallet session
 - the newest rebuilt APK now separates `Create` into dedicated `DAO`, `Treasury`, and `Proposal` panels so the first lifecycle step is no longer buried under proposal-only validation
 - DAO bootstrap now defaults to a unique devnet-safe name instead of repeatedly reusing `PrivateDAO Live`
-- the next on-device validation step is to re-run `Create DAO in wallet` on the rebuilt APK and confirm the first DAO bootstrap succeeds from the physical device
+- the Android RPC client now rotates across configured devnet endpoints instead of relying on a single public RPC host for blockhash and rent reads
+- the next on-device validation step is to re-run `Create DAO in wallet` on the rebuilt APK after the RPC-route upgrade and confirm the first DAO bootstrap succeeds from the physical device
 - a fresh rebuilt APK was later installed cleanly on the same device after replacing the heavy `bcprov` dependency that was stalling `mergeDebugGlobalSynthetics`
 - the current rebuilt APK now also installs cleanly over the existing package after the Solana-branded UI refresh and lighter nav-glyph path
 
@@ -784,6 +785,10 @@ RPC behavior note:
 - `scripts/check-rpc-health.sh` validates RPC availability with `getVersion`
 - the docs frontend and `yarn list-proposals` rely on account reads such as `getProgramAccounts`, `getSlot`, and `getBlockTime`
 - `scripts/check-contracts.sh` now supports JSON-RPC fallback account inspection when `solana` CLI is not installed
+- the Android app now follows the same devnet posture instead of pinning itself to one RPC host:
+  - primary RPC from `PRIVATEDAO_DEBUG_RPC_URL` or `SOLANA_RPC_URL`
+  - fallback chain derived from `ALCHEMY_DEVNET_RPC_URL`, `ALCHEMY_API_KEY`, `HELIUS_API_KEY`, `QUICKNODE_DEVNET_RPC`, then public devnet
+  - the current route is surfaced inside the Android `Settings` screen
 
 Fund and sanity-check devnet access:
 

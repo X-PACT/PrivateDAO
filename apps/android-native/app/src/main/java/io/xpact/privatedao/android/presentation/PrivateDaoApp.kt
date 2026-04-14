@@ -550,13 +550,16 @@ private fun CreateProposalScreen(
                 }
             }
             item {
+                SubmissionStateCard(uiState = uiState)
+            }
+            item {
                 Button(
                     onClick = onSubmitCreateDao,
-                    enabled = uiState.wallet != null && !uiState.walletBusy,
+                    enabled = uiState.wallet != null && !uiState.walletBusy && uiState.submissionState != SubmissionState.InFlight,
                     modifier = Modifier.fillMaxWidth(),
                     colors = primaryButtonColors(),
                 ) {
-                    Text("Create DAO in wallet")
+                    Text(if (uiState.submissionState == SubmissionState.InFlight) "Wallet action in flight..." else "Create DAO in wallet")
                 }
             }
             uiState.createDaoForm.validationError()?.let { message ->
@@ -721,7 +724,8 @@ private fun SettingsScreen(uiState: UiState, modifier: Modifier = Modifier) {
             )
         }
         item { SettingsRow("Program ID", PrivateDaoConfig.programId) }
-        item { SettingsRow("RPC", PrivateDaoConfig.rpcUrl) }
+        item { SettingsRow("RPC primary", PrivateDaoConfig.rpcUrl) }
+        item { SettingsRow("RPC route", PrivateDaoConfig.rpcRouteSummary) }
         item { SettingsRow("Explorer", "Solscan devnet links") }
         item { SettingsRow("Wallet", uiState.wallet?.publicKeyBase58 ?: "Not connected") }
         item {
@@ -1011,7 +1015,7 @@ private fun SubmissionStateCard(uiState: UiState) {
         SubmissionState.Idle -> Unit
         SubmissionState.InFlight -> HeroCard(
             title = "Submission in flight",
-            body = "The wallet operation is still running. Wait for the signature before retrying or switching phases.",
+            body = "The wallet operation is still running. Wait for the wallet prompt or signature before retrying. If this stays stuck, refresh once or relaunch the app.",
         )
         is SubmissionState.Failure -> ValidationCard(submission.message)
         is SubmissionState.Success -> HeroCard(

@@ -27,18 +27,20 @@ import io.xpact.privatedao.android.repository.PrivateDaoRepository
 import io.xpact.privatedao.android.solana.Binary
 import io.xpact.privatedao.android.solana.SolanaRpcClient
 import io.xpact.privatedao.android.wallet.MobileWalletAdapterManager
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PrivateDaoViewModel(application: Application) : AndroidViewModel(application) {
     private companion object {
         const val TAG = "PrivateDaoViewModel"
     }
 
-    private val repository = PrivateDaoRepository(SolanaRpcClient(PrivateDaoConfig.rpcUrl))
+    private val repository = PrivateDaoRepository(SolanaRpcClient(PrivateDaoConfig.rpcUrls))
     private val walletManager = MobileWalletAdapterManager(application)
     private val voteEnvelopeStore = VoteEnvelopeStore(application)
 
@@ -49,10 +51,6 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
         )
     )
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
-
-    init {
-        refresh()
-    }
 
     fun refresh() {
         viewModelScope.launch {
@@ -80,8 +78,8 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
                         val hasUsableState = it.wallet != null || it.daos.isNotEmpty() || it.proposals.isNotEmpty()
                         it.copy(
                             isLoading = false,
-                            errorMessage = if (hasUsableState) null else "Devnet sync is still loading. Try refresh again in a moment.",
-                            bannerMessage = if (hasUsableState) "Devnet sync is delayed. You can still submit wallet actions." else it.bannerMessage,
+                            errorMessage = if (hasUsableState) null else "Devnet data is still loading. Try refresh again in a moment.",
+                            bannerMessage = if (hasUsableState) "Devnet reads are delayed on the current RPC route. Wallet actions can still continue." else it.bannerMessage,
                         )
                     }
                 }
@@ -160,21 +158,28 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun submitCreateProposal(launcher: ActivityResultLauncher<MobileWalletAdapterManager.StartMobileWalletAdapterActivity.CreateParams>) {
+        if (guardSubmissionInFlight("proposal")) return
         val wallet = uiState.value.wallet ?: return setError("Connect a wallet first.")
         viewModelScope.launch {
-            runSubmission {
-                val tx = repository.buildCreateProposalTransaction(wallet.publicKeyBase58, uiState.value.createProposalForm)
+            val submitted = runSubmission {
+                val tx = withContext(Dispatchers.IO) {
+                    repository.buildCreateProposalTransaction(wallet.publicKeyBase58, uiState.value.createProposalForm)
+                }
                 walletManager.signAndSendSingleTransaction(launcher, wallet, tx).toResult()
             }
-            refresh()
+            if (submitted) refresh()
         }
     }
 
     fun submitCreateDao(launcher: ActivityResultLauncher<MobileWalletAdapterManager.StartMobileWalletAdapterActivity.CreateParams>) {
+        if (guardSubmissionInFlight("DAO bootstrap")) return
         val wallet = uiState.value.wallet ?: return setError("Connect a wallet first.")
         viewModelScope.launch {
-            runSubmission {
-                val (tx, daoPda) = repository.buildCreateDaoTransaction(wallet.publicKeyBase58, uiState.value.createDaoForm)
+            _uiState.update { it.copy(bannerMessage = "Preparing DAO bootstrap transaction...") }
+            val submitted = runSubmission {
+                val (tx, daoPda) = withContext(Dispatchers.IO) {
+                    repository.buildCreateDaoTransaction(wallet.publicKeyBase58, uiState.value.createDaoForm)
+                }
                 val signature = walletManager.signAndSendSingleTransaction(launcher, wallet, tx)
                 _uiState.update {
                     it.copy(
@@ -186,31 +191,37 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
                 }
                 signature.toResult()
             }
-            refresh()
+            if (submitted) refresh()
         }
     }
 
     fun submitDepositTreasury(launcher: ActivityResultLauncher<MobileWalletAdapterManager.StartMobileWalletAdapterActivity.CreateParams>) {
+        if (guardSubmissionInFlight("treasury deposit")) return
         val wallet = uiState.value.wallet ?: return setError("Connect a wallet first.")
         viewModelScope.launch {
-            runSubmission {
-                val (tx, treasuryPda) = repository.buildDepositTreasuryTransaction(wallet.publicKeyBase58, uiState.value.depositTreasuryForm)
+            val submitted = runSubmission {
+                val (tx, treasuryPda) = withContext(Dispatchers.IO) {
+                    repository.buildDepositTreasuryTransaction(wallet.publicKeyBase58, uiState.value.depositTreasuryForm)
+                }
                 val signature = walletManager.signAndSendSingleTransaction(launcher, wallet, tx)
                 _uiState.update {
                     it.copy(bannerMessage = "Treasury deposit submitted to $treasuryPda")
                 }
                 signature.toResult()
             }
-            refresh()
+            if (submitted) refresh()
         }
     }
 
     fun submitCommitVote(launcher: ActivityResultLauncher<MobileWalletAdapterManager.StartMobileWalletAdapterActivity.CreateParams>) {
+        if (guardSubmissionInFlight("commit vote")) return
         val wallet = uiState.value.wallet ?: return setError("Connect a wallet first.")
         val proposal = uiState.value.selectedProposal ?: return setError("Select a proposal first.")
         viewModelScope.launch {
-            runSubmission {
-                val (tx, salt) = repository.buildCommitTransaction(wallet.publicKeyBase58, proposal, uiState.value.commitVoteForm)
+            val submitted = runSubmission {
+                val (tx, salt) = withContext(Dispatchers.IO) {
+                    repository.buildCommitTransaction(wallet.publicKeyBase58, proposal, uiState.value.commitVoteForm)
+                }
                 val signature = walletManager.signAndSendSingleTransaction(launcher, wallet, tx)
                 voteEnvelopeStore.save(
                     StoredVoteEnvelope(
@@ -231,72 +242,93 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
                 }
                 signature.toResult()
             }
-            selectProposal(proposal.pubkey)
+            if (submitted) selectProposal(proposal.pubkey)
         }
     }
 
     fun submitRevealVote(launcher: ActivityResultLauncher<MobileWalletAdapterManager.StartMobileWalletAdapterActivity.CreateParams>) {
+        if (guardSubmissionInFlight("reveal vote")) return
         val wallet = uiState.value.wallet ?: return setError("Connect a wallet first.")
         val proposal = uiState.value.selectedProposal ?: return setError("Select a proposal first.")
         viewModelScope.launch {
-            runSubmission {
-                val tx = repository.buildRevealTransaction(wallet.publicKeyBase58, proposal, uiState.value.revealVoteForm)
+            val submitted = runSubmission {
+                val tx = withContext(Dispatchers.IO) {
+                    repository.buildRevealTransaction(wallet.publicKeyBase58, proposal, uiState.value.revealVoteForm)
+                }
                 walletManager.signAndSendSingleTransaction(launcher, wallet, tx).toResult()
             }
-            selectProposal(proposal.pubkey)
+            if (submitted) selectProposal(proposal.pubkey)
         }
     }
 
     fun submitFinalize(launcher: ActivityResultLauncher<MobileWalletAdapterManager.StartMobileWalletAdapterActivity.CreateParams>) {
+        if (guardSubmissionInFlight("finalize")) return
         val wallet = uiState.value.wallet ?: return setError("Connect a wallet first.")
         val proposal = uiState.value.selectedProposal ?: return setError("Select a proposal first.")
         viewModelScope.launch {
-            runSubmission {
-                val tx = repository.buildFinalizeTransaction(wallet.publicKeyBase58, proposal)
+            val submitted = runSubmission {
+                val tx = withContext(Dispatchers.IO) {
+                    repository.buildFinalizeTransaction(wallet.publicKeyBase58, proposal)
+                }
                 walletManager.signAndSendSingleTransaction(launcher, wallet, tx).toResult()
             }
-            selectProposal(proposal.pubkey)
+            if (submitted) selectProposal(proposal.pubkey)
         }
     }
 
     fun submitCancel(launcher: ActivityResultLauncher<MobileWalletAdapterManager.StartMobileWalletAdapterActivity.CreateParams>) {
+        if (guardSubmissionInFlight("cancel")) return
         val wallet = uiState.value.wallet ?: return setError("Connect a wallet first.")
         val proposal = uiState.value.selectedProposal ?: return setError("Select a proposal first.")
         val authority = proposal.daoSummary?.authority ?: return setError("DAO authority is not loaded for this proposal.")
         if (wallet.publicKeyBase58 != authority) return setError("Only the DAO authority wallet can cancel this proposal.")
         viewModelScope.launch {
-            runSubmission {
-                val tx = repository.buildCancelTransaction(wallet.publicKeyBase58, proposal)
+            val submitted = runSubmission {
+                val tx = withContext(Dispatchers.IO) {
+                    repository.buildCancelTransaction(wallet.publicKeyBase58, proposal)
+                }
                 walletManager.signAndSendSingleTransaction(launcher, wallet, tx).toResult()
             }
-            selectProposal(proposal.pubkey)
+            if (submitted) selectProposal(proposal.pubkey)
         }
     }
 
     fun submitVeto(launcher: ActivityResultLauncher<MobileWalletAdapterManager.StartMobileWalletAdapterActivity.CreateParams>) {
+        if (guardSubmissionInFlight("veto")) return
         val wallet = uiState.value.wallet ?: return setError("Connect a wallet first.")
         val proposal = uiState.value.selectedProposal ?: return setError("Select a proposal first.")
         val authority = proposal.daoSummary?.authority ?: return setError("DAO authority is not loaded for this proposal.")
         if (wallet.publicKeyBase58 != authority) return setError("Only the DAO authority wallet can veto this proposal.")
         viewModelScope.launch {
-            runSubmission {
-                val tx = repository.buildVetoTransaction(wallet.publicKeyBase58, proposal)
+            val submitted = runSubmission {
+                val tx = withContext(Dispatchers.IO) {
+                    repository.buildVetoTransaction(wallet.publicKeyBase58, proposal)
+                }
                 walletManager.signAndSendSingleTransaction(launcher, wallet, tx).toResult()
             }
-            selectProposal(proposal.pubkey)
+            if (submitted) selectProposal(proposal.pubkey)
         }
     }
 
     fun submitExecute(launcher: ActivityResultLauncher<MobileWalletAdapterManager.StartMobileWalletAdapterActivity.CreateParams>) {
+        if (guardSubmissionInFlight("execute")) return
         val wallet = uiState.value.wallet ?: return setError("Connect a wallet first.")
         val proposal = uiState.value.selectedProposal ?: return setError("Select a proposal first.")
         viewModelScope.launch {
-            runSubmission {
-                val tx = repository.buildExecuteTransaction(wallet.publicKeyBase58, proposal)
+            val submitted = runSubmission {
+                val tx = withContext(Dispatchers.IO) {
+                    repository.buildExecuteTransaction(wallet.publicKeyBase58, proposal)
+                }
                 walletManager.signAndSendSingleTransaction(launcher, wallet, tx).toResult()
             }
-            selectProposal(proposal.pubkey)
+            if (submitted) selectProposal(proposal.pubkey)
         }
+    }
+
+    private fun guardSubmissionInFlight(actionLabel: String): Boolean {
+        if (uiState.value.submissionState != SubmissionState.InFlight) return false
+        setError("A previous wallet action is still marked in flight. Wait a moment, then refresh or relaunch before retrying $actionLabel.")
+        return true
     }
 
     private suspend fun runWalletOperation(block: suspend () -> Unit) {
@@ -309,7 +341,7 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
         _uiState.update { it.copy(walletBusy = false) }
     }
 
-    private suspend fun runSubmission(block: suspend () -> ProposalActionResult) {
+    private suspend fun runSubmission(block: suspend () -> ProposalActionResult): Boolean {
         _uiState.update { it.copy(submissionState = SubmissionState.InFlight, errorMessage = null) }
         try {
             val result = block()
@@ -319,6 +351,7 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
                     bannerMessage = "Submitted: ${result.signature.take(6)}…${result.signature.takeLast(6)}",
                 )
             }
+            return true
         } catch (error: Throwable) {
             Log.e(TAG, "Submission failed", error)
             val resolvedMessage = resolveSubmissionErrorMessage(error)
@@ -328,6 +361,7 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
                     errorMessage = resolvedMessage,
                 )
             }
+            return false
         }
     }
 
@@ -345,6 +379,10 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
                 "This DAO name is already in use on devnet for the connected wallet. Change the DAO name and try again."
             "econnrefused" in lowered || "connection refused" in lowered || "wallet association failed" in lowered ->
                 "Wallet session did not complete cleanly. Disconnect and reconnect the wallet, then try again."
+            "connection rate limits exceeded" in lowered || "getrecentblockhash" in lowered || "getlatestblockhash" in lowered ->
+                "Devnet blockhash reads were throttled across the current RPC route. Wait a few seconds, then try the wallet action once."
+            "minimumbalanceforrentexemption" in lowered || "empty response body" in lowered || "malformed json" in lowered || "expected start of the object" in lowered ->
+                "Devnet rent or account data was delayed across the current RPC route. Try Create DAO again; wallet actions can still continue."
             else -> raw
         }
     }

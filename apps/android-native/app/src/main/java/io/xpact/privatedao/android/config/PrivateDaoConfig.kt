@@ -1,10 +1,20 @@
 package io.xpact.privatedao.android.config
 
+import io.xpact.privatedao.android.BuildConfig
+
 object PrivateDaoConfig {
     const val appName = "PrivateDAO"
     const val tagline = "Vote Without Fear"
     const val programId = "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx"
-    const val rpcUrl = "https://api.devnet.solana.com"
+    const val rpcUrl = BuildConfig.DEVNET_RPC_URL
+    val rpcFallbackUrls: List<String> =
+        BuildConfig.DEVNET_RPC_FALLBACK_URLS
+            .split('|')
+            .map(String::trim)
+            .filter(String::isNotEmpty)
+            .distinct()
+    val rpcUrls: List<String> = listOf(rpcUrl) + rpcFallbackUrls.filterNot { it == rpcUrl }
+    val rpcRouteSummary: String = rpcUrls.joinToString(" -> ")
     const val chain = "solana:devnet"
     const val clusterLabel = "Devnet"
     const val webBaseUrl = "https://privatedao.org"
@@ -22,6 +32,8 @@ object PrivateDaoConfig {
     const val tokenProgramId = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
     const val associatedTokenProgramId = "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
     const val rentSysvarId = "SysvarRent111111111111111111111111111111111"
+    const val mintAccountSpace = 82
+    const val mintRentExemptionLamports = 1_461_600L
 
     fun accountExplorer(address: String): String = "https://solscan.io/account/$address?cluster=devnet"
     fun txExplorer(signature: String): String = "https://solscan.io/tx/$signature?cluster=devnet"
