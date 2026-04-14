@@ -10,12 +10,12 @@ const stages = [
     color: "text-cyan-100",
     eyebrow: "Live product",
     points: [
-      "Wallet-first command center and dashboard for live governance operations.",
+      "Wallet-first govern flow and live activity surface for governance operations.",
       "Hosted Read API + Ops, confidential operations, and enterprise governance service packaging.",
       "Proof, diagnostics, and trust routes connected to the same product shell customers see.",
     ],
     links: [
-      { label: "Command Center", href: "/command-center" },
+      { label: "Govern", href: "/govern" },
       { label: "Services", href: "/services" },
       { label: "Engage", href: "/engage" },
     ],

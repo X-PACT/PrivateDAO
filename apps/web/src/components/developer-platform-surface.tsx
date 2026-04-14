@@ -24,8 +24,8 @@ export function DeveloperPlatformSurface() {
       case "governance":
         return {
           title: "Governance integration path",
-          summary: "Start with the command center and docs, then keep proof and diagnostics visible while integrating DAO actions into your own app.",
-          href: "/command-center",
+          summary: "Start with the govern flow and docs, then keep proof and diagnostics visible while integrating DAO actions into your own app.",
+          href: "/govern",
           cta: "Open governance path",
         };
       case "gaming":

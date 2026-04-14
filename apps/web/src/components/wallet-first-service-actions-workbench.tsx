@@ -584,7 +584,7 @@ export function WalletFirstServiceActionsWorkbench({
                 <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
                   <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Telemetry persistence</div>
                   <div className="mt-2 text-sm font-medium text-white">{selectedTelemetry.title}</div>
-                  <div className="mt-1 text-sm text-white/54">Stored for services and command-center handoff</div>
+                  <div className="mt-1 text-sm text-white/54">Stored for services and govern handoff</div>
                 </div>
                 <div className="rounded-2xl border border-white/8 bg-black/20 p-3">
                   <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Prefilled request</div>
@@ -620,8 +620,8 @@ export function WalletFirstServiceActionsWorkbench({
                   Continue in services
                   <ArrowRight className="h-4 w-4" />
                 </Link>
-                <Link href={`/command-center?${handoffQuery}#service-handoff`} className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
-                  Continue in command-center
+                <Link href={`/govern?${handoffQuery}#service-handoff`} className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+                  Continue in govern
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link href={`/analytics?${handoffQuery}#telemetry-inspection`} className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
