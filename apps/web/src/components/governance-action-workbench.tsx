@@ -4,7 +4,7 @@ import { startTransition, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { Activity, ArrowUpRight, CheckCircle2, ChevronRight, FilePlus2, Flag, FolderPlus, ListChecks, Play, ShieldCheck, Vote, Wallet } from "lucide-react";
+import { Activity, ArrowUpRight, ChevronRight, FilePlus2, Flag, FolderPlus, ListChecks, Play, ShieldCheck, Vote, Wallet } from "lucide-react";
 
 import { ActionReviewModal } from "@/components/action-review-modal";
 import { useGovernanceSession } from "@/components/governance-session";
@@ -304,7 +304,7 @@ export function GovernanceActionWorkbench() {
           handoff.requestDelivery.state === "delivered"
             ? `delivered · ${handoff.requestDelivery.deliveredAt ?? "timestamp pending"}`
             : handoff.requestDelivery.state === "staged"
-              ? "staged · ready for governed command-center delivery"
+              ? "staged · ready for govern delivery"
               : "draft · request remains editable in services",
       });
     }
@@ -492,6 +492,29 @@ export function GovernanceActionWorkbench() {
     effectiveVoteCommitted,
     effectiveVoteRevealed,
   ]);
+  const showDaoCard =
+    !hasPayloadDrivenExecution &&
+    (!effectiveDaoCreated || currentStep.action === "initialize_dao" || createDaoRuntime.status !== "idle");
+  const showProposalCard =
+    !hasPayloadDrivenExecution &&
+    effectiveDaoCreated &&
+    (!effectiveProposalCreated || currentStep.action === "create_proposal" || createProposalRuntime.status !== "idle");
+  const showCommitCard =
+    !hasPayloadDrivenExecution &&
+    effectiveProposalCreated &&
+    (!effectiveVoteCommitted || currentStep.action === "commit_vote" || commitVoteRuntime.status !== "idle");
+  const showRevealCard =
+    !hasPayloadDrivenExecution &&
+    effectiveVoteCommitted &&
+    (!effectiveVoteRevealed || currentStep.action === "reveal_vote" || revealVoteRuntime.status !== "idle");
+  const showFinalizeCard =
+    !hasPayloadDrivenExecution &&
+    effectiveVoteRevealed &&
+    (!effectiveProposalFinalized || currentStep.action === "finalize_proposal" || finalizeRuntime.status !== "idle");
+  const showExecuteCard =
+    !hasPayloadDrivenExecution &&
+    effectiveProposalFinalized &&
+    (!effectiveProposalExecuted || currentStep.action === "execute_proposal" || executeRuntime.status !== "idle" || effectiveProposalExecuted);
 
   async function submitCreateDaoLive() {
     if (!publicKey) {
@@ -1003,7 +1026,7 @@ export function GovernanceActionWorkbench() {
             This surface now prioritizes the next normal-user step first: connect, create a DAO, create a proposal, vote, reveal, finalize, then execute. Advanced diagnostics and parity details stay available, but they no longer lead the page.
           </p>
         </CardHeader>
-        <CardContent className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+        <CardContent className="space-y-6">
           <div className="grid gap-4 md:grid-cols-2">
           <div className="rounded-[28px] border border-cyan-300/16 bg-[linear-gradient(180deg,rgba(11,24,41,0.92),rgba(7,14,25,0.98))] p-5 md:col-span-2">
             <div className="flex flex-wrap items-start justify-between gap-4">
@@ -1060,6 +1083,24 @@ export function GovernanceActionWorkbench() {
                 </div>
               ))}
             </div>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Button
+                variant="ghost"
+                className="justify-between rounded-2xl text-white/72"
+                onClick={handleResetSession}
+              >
+                Reset this run
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="secondary"
+                className="justify-between rounded-2xl"
+                onClick={() => setShowAdvanced((current) => !current)}
+              >
+                {showAdvanced ? "Hide advanced" : "Show advanced"}
+                <ChevronRight className={cn("h-4 w-4 transition", showAdvanced ? "rotate-90" : "")} />
+              </Button>
+            </div>
           </div>
           <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
             <div className="flex items-center justify-between gap-3">
@@ -1078,7 +1119,7 @@ export function GovernanceActionWorkbench() {
             </div>
           </div>
 
-          {handoff?.proposalReview ? (
+          {showAdvanced && handoff?.proposalReview ? (
             <div className="rounded-[24px] border border-cyan-300/16 bg-cyan-300/[0.08] p-5 md:col-span-2">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
@@ -1087,7 +1128,7 @@ export function GovernanceActionWorkbench() {
                     {handoff.proposalId} · {handoff.proposalTitle}
                   </div>
                   <div className="mt-2 text-sm leading-7 text-white/62">
-                    The selected proposal is staged directly into the command shell with execution target, treasury boundary, and proof route already attached.
+                    The selected proposal is staged directly into the govern flow with execution target, treasury boundary, and proof route already attached.
                   </div>
                 </div>
                 <Link href={handoff.proposalReview.proofHref} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
@@ -1116,7 +1157,7 @@ export function GovernanceActionWorkbench() {
             </div>
           ) : null}
 
-          {executionIntent ? (
+          {showAdvanced && executionIntent ? (
             <div className="rounded-[24px] border border-emerald-300/18 bg-emerald-300/[0.08] p-5 md:col-span-2">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
@@ -1180,7 +1221,7 @@ export function GovernanceActionWorkbench() {
                     Open staged action shell
                   </Button>
                   <Link
-                    href={executionIntent.requestDelivery?.deliveryRoute ?? (continuityQuery ? `/command-center?${continuityQuery}#proposal-review-action` : "/command-center#proposal-review-action")}
+                    href={executionIntent.requestDelivery?.deliveryRoute ?? (continuityQuery ? `/govern?${continuityQuery}#proposal-review-action` : "/govern#proposal-review-action")}
                     className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}
                   >
                     Open delivered lane
@@ -1282,7 +1323,7 @@ export function GovernanceActionWorkbench() {
                   {payloadExecutionState === "executed" ? "Payload already submitted" : "Sign and submit delivered payload"}
                 </Button>
                 <div className="mt-3 flex flex-wrap gap-3">
-                  <Link href={payloadDrivenRequest?.deliveryRoute ?? (continuityQuery ? `/command-center?${continuityQuery}#proposal-review-action` : "/command-center#proposal-review-action")} className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")}>
+                  <Link href={payloadDrivenRequest?.deliveryRoute ?? (continuityQuery ? `/govern?${continuityQuery}#proposal-review-action` : "/govern#proposal-review-action")} className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")}>
                     Open final signing lane
                     <ArrowUpRight className="h-4 w-4" />
                   </Link>
@@ -1303,6 +1344,7 @@ export function GovernanceActionWorkbench() {
             </>
           ) : (
             <>
+              {showDaoCard ? (
               <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
                 <div className="flex items-center gap-3">
                   <FolderPlus className="h-4 w-4 text-emerald-300" />
@@ -1347,7 +1389,9 @@ export function GovernanceActionWorkbench() {
                   </div>
                 ) : null}
               </div>
+              ) : null}
 
+              {showProposalCard ? (
               <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
                 <div className="flex items-center gap-3">
                   <FilePlus2 className="h-4 w-4 text-cyan-300" />
@@ -1469,7 +1513,9 @@ export function GovernanceActionWorkbench() {
                   </div>
                 ) : null}
               </div>
+              ) : null}
 
+              {showCommitCard ? (
               <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
                 <div className="flex items-center gap-3">
                   <Vote className="h-4 w-4 text-fuchsia-300" />
@@ -1539,7 +1585,9 @@ export function GovernanceActionWorkbench() {
                   </div>
                 ) : null}
               </div>
+              ) : null}
 
+              {showRevealCard ? (
               <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
                 <div className="flex items-center gap-3">
                   <ShieldCheck className="h-4 w-4 text-emerald-300" />
@@ -1582,7 +1630,9 @@ export function GovernanceActionWorkbench() {
                   </div>
                 ) : null}
               </div>
+              ) : null}
 
+              {showFinalizeCard ? (
               <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
                 <div className="flex items-center gap-3">
                   <Flag className="h-4 w-4 text-cyan-300" />
@@ -1625,7 +1675,9 @@ export function GovernanceActionWorkbench() {
                   </div>
                 ) : null}
               </div>
+              ) : null}
 
+              {showExecuteCard ? (
               <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
                 <div className="flex items-center gap-3">
                   <Play className="h-4 w-4 text-amber-300" />
@@ -1670,6 +1722,7 @@ export function GovernanceActionWorkbench() {
                   </div>
                 ) : null}
               </div>
+              ) : null}
             </>
           )}
 
@@ -1704,66 +1757,36 @@ export function GovernanceActionWorkbench() {
               )}
             </div>
           </details>
-          </div>
 
-          <div className="space-y-4">
-            <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-5">
-              <div className="flex items-center gap-3">
-                <CheckCircle2 className="h-4 w-4 text-emerald-200" />
-                <div className="text-base font-medium text-white">Simple path</div>
-              </div>
-              <p className="mt-3 text-sm leading-7 text-white/60">
-                Normal users should only need one surface: connect, create a DAO, create a proposal, vote, reveal, finalize, then execute. Proof and diagnostics stay available, but they are now secondary.
-              </p>
-              <div className="mt-4 flex flex-col gap-3">
-                <Button
-                  variant="ghost"
-                  className="justify-between rounded-2xl text-white/72"
-                  onClick={handleResetSession}
-                >
-                  Reset this run
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="secondary"
-                  className="justify-between rounded-2xl"
-                  onClick={() => setShowAdvanced((current) => !current)}
-                >
-                  {showAdvanced ? "Hide advanced panels" : "Show advanced panels"}
-                  <ChevronRight className={cn("h-4 w-4 transition", showAdvanced ? "rotate-90" : "")} />
-                </Button>
+          {showAdvanced ? (
+            <div className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
+              <OnchainParityPanel action={nextAction} preparedSummary={preparedSummary} compact />
+
+              <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-5">
+                <div className="flex items-center gap-3">
+                  <Activity className="h-4 w-4 text-cyan-300" />
+                  <div className="text-base font-medium text-white">Advanced routes</div>
+                </div>
+                <p className="mt-3 text-sm leading-7 text-white/58">
+                  Runtime evidence, proof freshness, wallet coverage, and execution health remain available here for operators and reviewers.
+                </p>
+                <div className="mt-4 flex flex-col gap-3">
+                  <Link href="/diagnostics" className={cn(buttonVariants({ size: "sm" }), "justify-between")}>
+                    Open diagnostics
+                    <ChevronRight className="h-4 w-4" />
+                  </Link>
+                  <Link href="/proof" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")}>
+                    Open proof
+                    <ChevronRight className="h-4 w-4" />
+                  </Link>
+                  <Link href="/services" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
+                    Open API and pricing
+                    <ChevronRight className="h-4 w-4" />
+                  </Link>
+                </div>
               </div>
             </div>
-
-            {showAdvanced ? (
-              <>
-                <OnchainParityPanel action={nextAction} preparedSummary={preparedSummary} compact />
-
-                <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-5">
-                  <div className="flex items-center gap-3">
-                    <Activity className="h-4 w-4 text-cyan-300" />
-                    <div className="text-base font-medium text-white">Advanced routes</div>
-                  </div>
-                  <p className="mt-3 text-sm leading-7 text-white/58">
-                    Runtime evidence, proof freshness, wallet coverage, and execution health remain available here for operators and reviewers.
-                  </p>
-                  <div className="mt-4 flex flex-col gap-3">
-                    <Link href="/diagnostics" className={cn(buttonVariants({ size: "sm" }), "justify-between")}>
-                      Open diagnostics
-                      <ChevronRight className="h-4 w-4" />
-                    </Link>
-                    <Link href="/proof" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")}>
-                      Open proof
-                      <ChevronRight className="h-4 w-4" />
-                    </Link>
-                    <Link href="/services" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
-                      Open API and pricing
-                      <ChevronRight className="h-4 w-4" />
-                    </Link>
-                  </div>
-                </div>
-              </>
-            ) : null}
+          ) : null}
           </div>
         </CardContent>
       </Card>
