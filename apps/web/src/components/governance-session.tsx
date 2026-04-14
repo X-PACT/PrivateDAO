@@ -12,7 +12,10 @@ import type {
   ServiceHandoffRequestDelivery,
   ServiceHandoffRequestPayload,
 } from "@/lib/service-handoff-state";
-import { markStoredServiceHandoffExecuted } from "@/lib/service-handoff-state";
+import {
+  clearStoredServiceHandoffState,
+  markStoredServiceHandoffExecuted,
+} from "@/lib/service-handoff-state";
 
 type VoteChoice = "Approve" | "Reject" | "Abstain";
 
@@ -462,7 +465,10 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
               )
             : nextState;
         }),
-      resetSession: () => setState(defaultState),
+      resetSession: () => {
+        clearStoredServiceHandoffState();
+        setState(defaultState);
+      },
     }),
     [state],
   );

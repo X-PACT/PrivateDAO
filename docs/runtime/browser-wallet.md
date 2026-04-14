@@ -81,6 +81,17 @@ npm run build:browser-wallet-runtime
 npm run verify:browser-wallet-runtime
 ```
 
+## Clean Capture Baseline
+
+When browser-wallet evidence is captured from `/command-center`, the lane must start from a genuinely clean state.
+
+`Reset session` now clears both:
+
+- `privatedao-governance-session`
+- `privatedao:service-handoff`
+
+This matters because the governance session alone was not enough; a persisted handoff could silently rehydrate a payload-driven execution lane and contaminate `Create DAO` browser captures.
+
 ## Minimal Capture Payload Example
 
 ```json

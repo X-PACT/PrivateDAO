@@ -433,6 +433,14 @@ export function writeStoredServiceHandoffState(state: ServiceHandoffState) {
   window.dispatchEvent(new CustomEvent(SERVICE_HANDOFF_EVENT, { detail: state }));
 }
 
+export function clearStoredServiceHandoffState() {
+  if (typeof window === "undefined") return;
+
+  window.localStorage.removeItem(SERVICE_HANDOFF_STORAGE_KEY);
+  updateStoredServiceHandoffCache(null);
+  window.dispatchEvent(new CustomEvent(SERVICE_HANDOFF_EVENT, { detail: null }));
+}
+
 export function readServiceHandoffState(searchParams: URLSearchParams): ServiceHandoffSelection | null {
   const proposalId = searchParams.get("proposal");
   const payoutProfile = searchParams.get("profile");
