@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 const assistantPaths = [
   {
     title: "I want the easiest start",
-    summary: "Open the onboarding path, connect a wallet, and move into the command center.",
+    summary: "Open the onboarding path, connect a wallet, and move into the guided govern flow.",
     href: "/start",
     icon: Compass,
   },
@@ -42,7 +42,7 @@ const assistantPaths = [
   },
   {
     title: "I need the right wallet flow",
-    summary: "Use Solflare-first onboarding and continue into command-center execution.",
+    summary: "Use Solflare-first onboarding and continue into the govern flow.",
     href: "/start",
     icon: Wallet,
   },
@@ -236,8 +236,8 @@ export function InternalAssistantPanel() {
           <Link href="/story" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "w-full")}>
             Open story video
           </Link>
-          <Link href="/dashboard" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full")}>
-            Open dashboard
+          <Link href="/live" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full")}>
+            Open activity
           </Link>
           <Link href="/tracks" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full")}>
             Open competition center

@@ -63,7 +63,7 @@ export function LeadSupportIntake({ mode }: LeadSupportIntakeProps) {
         related: [
           { label: "Engage", href: "/engage" },
           { label: "Diagnostics", href: "/diagnostics" },
-          { label: "Command Center", href: "/command-center" },
+          { label: "Govern", href: "/govern" },
         ],
       };
     }
@@ -71,11 +71,11 @@ export function LeadSupportIntake({ mode }: LeadSupportIntakeProps) {
     if (interest === "gaming") {
       return {
         title: "Gaming DAO path",
-        summary: "Use Products for the gaming corridor, then move into Command Center to show how proposals, rewards, and treasury rails become a live flow.",
+        summary: "Use Products for the gaming corridor, then move into Govern to show how proposals, rewards, and treasury rails become a live flow.",
         primaryHref: "/products",
         primaryLabel: "Open gaming corridor",
         related: [
-          { label: "Command Center", href: "/command-center" },
+          { label: "Govern", href: "/govern" },
           { label: "Services", href: "/services" },
           { label: "Tracks", href: "/tracks/ranger-main" },
         ],
@@ -85,12 +85,12 @@ export function LeadSupportIntake({ mode }: LeadSupportIntakeProps) {
     if (interest === "payments") {
       return {
         title: "Payments path",
-        summary: "Use Services first, then Command Center for governance-backed payouts and Diagnostics for runtime trust.",
+        summary: "Use Services first, then Govern for governance-backed payouts and Live State for runtime follow-up.",
         primaryHref: "/services",
         primaryLabel: "Open payments services",
         related: [
-          { label: "Command Center", href: "/command-center" },
-          { label: "Diagnostics", href: "/diagnostics" },
+          { label: "Govern", href: "/govern" },
+          { label: "Live State", href: "/live" },
           { label: "Engage", href: "/engage" },
         ],
       };
@@ -114,16 +114,16 @@ export function LeadSupportIntake({ mode }: LeadSupportIntakeProps) {
       title: stage === "operate" ? "Operator-ready route" : stage === "pilot" ? "Pilot-ready route" : "Exploration route",
       summary:
         stage === "operate"
-          ? "Go straight into Command Center, then keep Diagnostics and Engage close so operation, trust, and buyer posture stay together."
+          ? "Go straight into Govern, then keep Live State and Engage close so operation, trust, and buyer posture stay together."
           : stage === "pilot"
-            ? "Use Engage and Services first, then demonstrate the live flow in Command Center."
-            : "Start from Community or Start, then continue into the command center when the visitor is ready for a real action.",
-      primaryHref: stage === "operate" ? "/command-center" : stage === "pilot" ? "/engage" : "/start",
-      primaryLabel: stage === "operate" ? "Open command center" : stage === "pilot" ? "Open engage" : "Open start",
+            ? "Use Engage and Services first, then demonstrate the live flow in Govern."
+            : "Start from Community or Start, then continue into Govern when the visitor is ready for a real action.",
+      primaryHref: stage === "operate" ? "/govern" : stage === "pilot" ? "/engage" : "/start",
+      primaryLabel: stage === "operate" ? "Open govern" : stage === "pilot" ? "Open engage" : "Open start",
       related: [
         { label: "Services", href: "/services" },
         { label: "Community", href: "/community" },
-        { label: "Story", href: "/story" },
+        { label: "Track Activity", href: "/live" },
       ],
     };
   }, [interest, role, stage]);

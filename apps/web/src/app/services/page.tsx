@@ -45,6 +45,7 @@ export default function ServicesPage() {
       eyebrow="Commercial"
       title="Service and pilot surfaces presented like a product, not buried in docs"
       description="PrivateDAO also needs to sell what it can do: API rails, operator support, pilot onboarding, trust packaging, and pricing language that stays technically honest."
+      navigationMode="guided"
       badges={[
         { label: "Services", variant: "warning" },
         { label: "Hosted Read API + Ops", variant: "cyan" },
@@ -52,87 +53,13 @@ export default function ServicesPage() {
       ]}
     >
       <div>
-        <PaymentsTruthStrip context="services" />
-      </div>
-      <div>
-        <Suspense fallback={null}>
-          <ServiceHandoffStrip context="services" />
-        </Suspense>
-      </div>
-      <div>
-        <Suspense fallback={null}>
-          <AuthoritativeExecutionTrail context="services" runtimeSnapshot={runtimeSnapshot} />
-        </Suspense>
-      </div>
-      <div>
-        <WalletFirstServiceActionsStrip context="services" />
-      </div>
-      <div>
-        <PdaoTokenStrategyStrip context="services" />
-      </div>
-      <div>
-        <ReviewerTelemetryTruthStrip
-          id="telemetry-inspection"
-          title="Telemetry truth for infrastructure buyers"
-          description="Put freshness, hosted-read scale, finalized proof counts, and the telemetry packet above the commercial infrastructure story."
-        />
-      </div>
-      <div>
-        <ReadNodeActivationStrip context="services" />
-      </div>
-      <div>
-        <ReadNodeHostReadinessStrip context="services" />
-      </div>
-      <div>
-        <EcosystemFocusAlignmentStrip
-          title="Services also close real ecosystem focus areas"
-          description="Make the payments, DAO tooling, developer tooling, and decentralisation fit explicit from the services surface instead of leaving it buried in grant notes."
-        />
-      </div>
-      <div>
-        <MetricsStrip />
-      </div>
-      <div>
-        <CustodyReadinessStrip context="services" />
-      </div>
-      <div>
-        <DataCorridorQuickLinks
-          title="Data-side quick links"
-          description="Buyer-safe path into the telemetry packet, diagnostics, analytics, and hosted-read proof so infrastructure reviewers can inspect the data corridor from the services surface."
-        />
-      </div>
-      <div>
-        <SolutionCorridors />
-      </div>
-      <div>
-        <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading service metrics…</div>}>
-          <DevnetServiceMetricsPanel scope="services" />
-        </Suspense>
-      </div>
-      <div>
-        <HostedReadProofStrip />
-      </div>
-      <div>
-        <AnalystGradeDataCorridor />
-      </div>
-      <div>
-        <ServiceOperationalCards />
-      </div>
-      <div>
-        <SectionHeader
-          eyebrow="AI-powered features"
-          title="Operational intelligence is now part of the commercial surface"
-          description="Proposal Review AI, Treasury Review AI, Voting Summary, RPC Analyzer, and Gaming AI strengthen how buyers understand PrivateDAO. They are part of the product story because they improve real decisions."
-        />
-      </div>
-      <div>
         <ServicesSurface />
       </div>
       <div>
         <CommercialCompareSurface />
       </div>
-      <div className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6 text-sm leading-7 text-white/66">
-        Open <a className="text-cyan-100 underline underline-offset-4" href="/intelligence">/intelligence</a> to try the live Security + Intelligence layer. It is where proposal analysis, treasury warnings, voting compression, RPC interpretation, and gaming-governance assistance become user-visible.
+      <div>
+        <WalletFirstServiceActionsStrip context="services" />
       </div>
       <div>
         <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading treasury routes…</div>}>
@@ -150,12 +77,93 @@ export default function ServicesPage() {
           <TreasuryReceiveSurface />
         </Suspense>
       </div>
-      <div>
-        <PlatformServiceArchitecture />
+      <div className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6 text-sm leading-7 text-white/66">
+        Open <a className="text-cyan-100 underline underline-offset-4" href="/intelligence">/intelligence</a> to try the live Security + Intelligence layer. It is where proposal analysis, treasury warnings, voting compression, RPC interpretation, and gaming-governance assistance become user-visible.
       </div>
-      <div>
-        <ServiceReadinessLadder />
+      <details className="rounded-[28px] border border-white/10 bg-white/[0.03] p-1">
+        <summary className="cursor-pointer list-none rounded-[24px] px-5 py-4 text-sm font-medium text-white/78">
+          Advanced buyer and operator detail
+        </summary>
+        <div className="space-y-8 px-4 pb-5 pt-2">
+          <div>
+        <PaymentsTruthStrip context="services" />
       </div>
+          <div>
+            <Suspense fallback={null}>
+              <ServiceHandoffStrip context="services" />
+            </Suspense>
+          </div>
+          <div>
+            <Suspense fallback={null}>
+              <AuthoritativeExecutionTrail context="services" runtimeSnapshot={runtimeSnapshot} />
+            </Suspense>
+          </div>
+          <div>
+            <PdaoTokenStrategyStrip context="services" />
+          </div>
+          <div>
+            <ReviewerTelemetryTruthStrip
+              id="telemetry-inspection"
+              title="Telemetry truth for infrastructure buyers"
+              description="Put freshness, hosted-read scale, finalized proof counts, and the telemetry packet above the commercial infrastructure story."
+            />
+          </div>
+          <div>
+            <ReadNodeActivationStrip context="services" />
+          </div>
+          <div>
+            <ReadNodeHostReadinessStrip context="services" />
+          </div>
+          <div>
+            <EcosystemFocusAlignmentStrip
+              title="Services also close real ecosystem focus areas"
+              description="Make the payments, DAO tooling, developer tooling, and decentralisation fit explicit from the services surface instead of leaving it buried in grant notes."
+            />
+          </div>
+          <div>
+            <MetricsStrip />
+          </div>
+          <div>
+            <CustodyReadinessStrip context="services" />
+          </div>
+          <div>
+            <DataCorridorQuickLinks
+              title="Data-side quick links"
+              description="Buyer-safe path into the telemetry packet, diagnostics, analytics, and hosted-read proof so infrastructure reviewers can inspect the data corridor from the services surface."
+            />
+          </div>
+          <div>
+            <SolutionCorridors />
+          </div>
+          <div>
+            <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading service metrics…</div>}>
+              <DevnetServiceMetricsPanel scope="services" />
+            </Suspense>
+          </div>
+          <div>
+            <HostedReadProofStrip />
+          </div>
+          <div>
+            <AnalystGradeDataCorridor />
+          </div>
+          <div>
+            <ServiceOperationalCards />
+          </div>
+          <div>
+            <SectionHeader
+              eyebrow="AI-powered features"
+              title="Operational intelligence is now part of the commercial surface"
+              description="Proposal Review AI, Treasury Review AI, Voting Summary, RPC Analyzer, and Gaming AI strengthen how buyers understand PrivateDAO. They are part of the product story because they improve real decisions."
+            />
+          </div>
+          <div>
+            <PlatformServiceArchitecture />
+          </div>
+          <div>
+            <ServiceReadinessLadder />
+          </div>
+        </div>
+      </details>
     </OperationsShell>
   );
 }

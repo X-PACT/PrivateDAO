@@ -81,7 +81,7 @@ export function CommunityHub() {
             </div>
             <div className="mt-4 text-lg font-medium text-white">Get support or operate</div>
             <div className="mt-3 text-sm leading-7 text-white/62">
-              Route directly into support, search, or the command center when the user is ready to act.
+              Route directly into support, search, or the live govern flow when the user is ready to act.
             </div>
           </Link>
         </CardContent>
@@ -151,8 +151,8 @@ export function CommunityHub() {
             <Link href="/engage" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "w-full")}>
               Open buyer path
             </Link>
-            <Link href="/command-center" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full")}>
-              Open command center
+            <Link href="/govern" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full")}>
+              Open govern flow
             </Link>
             <Link href="/services" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full")}>
               Open services
