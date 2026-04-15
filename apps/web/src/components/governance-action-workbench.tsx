@@ -82,6 +82,23 @@ function formatRemainingSeconds(seconds: number) {
   return `${hours}h ${minuteRemainder}m`;
 }
 
+function getActionAnchorId(action: CoreGovernanceInstructionName) {
+  switch (action) {
+    case "create_proposal":
+      return "proposal-review-action";
+    case "commit_vote":
+      return "commit-vote-action";
+    case "reveal_vote":
+      return "reveal-vote-action";
+    case "finalize_proposal":
+      return "finalize-proposal-action";
+    case "execute_proposal":
+      return "execute-proposal-action";
+    default:
+      return "govern-current-step";
+  }
+}
+
 function parseSolAmountToLamports(value: string) {
   const normalized = value.trim();
   if (!normalized) {
@@ -637,16 +654,32 @@ export function GovernanceActionWorkbench() {
     !hasPayloadDrivenExecution &&
     effectiveProposalFinalized &&
     (!effectiveProposalExecuted || currentStep.action === "execute_proposal" || executeRuntime.status !== "idle" || effectiveProposalExecuted);
+  const activeActionAnchorId = getActionAnchorId(currentStep.action);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (window.location.hash !== "#proposal-review-action") return;
+    const supportedHashes = new Set([
+      "#proposal-review-action",
+      "#commit-vote-action",
+      "#reveal-vote-action",
+      "#finalize-proposal-action",
+      "#execute-proposal-action",
+    ]);
+    const requestedHash = window.location.hash;
+    if (!supportedHashes.has(requestedHash)) return;
 
     let attempts = 0;
     let timeoutId: number | undefined;
 
-    const scrollToProposal = () => {
-      const target = document.getElementById("proposal-review-action");
+    const resolveTargetId = () => {
+      if (requestedHash === "#proposal-review-action") {
+        return activeActionAnchorId;
+      }
+      return requestedHash.slice(1);
+    };
+
+    const scrollToAction = () => {
+      const target = document.getElementById(resolveTargetId()) ?? document.getElementById("govern-current-step");
       if (target) {
         target.scrollIntoView({ block: "start" });
         return;
@@ -654,17 +687,17 @@ export function GovernanceActionWorkbench() {
 
       if (attempts >= 8) return;
       attempts += 1;
-      timeoutId = window.setTimeout(scrollToProposal, 120);
+      timeoutId = window.setTimeout(scrollToAction, 120);
     };
 
-    timeoutId = window.setTimeout(scrollToProposal, 80);
+    timeoutId = window.setTimeout(scrollToAction, 80);
 
     return () => {
       if (timeoutId) {
         window.clearTimeout(timeoutId);
       }
     };
-  }, [showProposalCard]);
+  }, [activeActionAnchorId, showCommitCard, showExecuteCard, showFinalizeCard, showProposalCard, showRevealCard]);
 
   async function submitCreateDaoLive() {
     if (!publicKey) {
@@ -1208,7 +1241,10 @@ export function GovernanceActionWorkbench() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
-          <div className="rounded-[28px] border border-cyan-300/16 bg-[linear-gradient(180deg,rgba(11,24,41,0.92),rgba(7,14,25,0.98))] p-5 md:col-span-2">
+          <div
+            id="govern-current-step"
+            className="scroll-mt-28 rounded-[28px] border border-cyan-300/16 bg-[linear-gradient(180deg,rgba(11,24,41,0.92),rgba(7,14,25,0.98))] p-5 md:col-span-2"
+          >
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div className="max-w-2xl">
                 <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/76">Do this now · step {currentStep.number}</div>
@@ -1772,7 +1808,7 @@ export function GovernanceActionWorkbench() {
           ) : null}
 
           {showCommitCard ? (
-          <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
+          <div id="commit-vote-action" className="scroll-mt-28 rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
                 <div className="flex items-center gap-3">
                   <Vote className="h-4 w-4 text-fuchsia-300" />
                   <div className="text-base font-medium text-white">Step 3 · Commit Vote</div>
@@ -1844,7 +1880,7 @@ export function GovernanceActionWorkbench() {
           ) : null}
 
           {showRevealCard ? (
-          <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
+          <div id="reveal-vote-action" className="scroll-mt-28 rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
                 <div className="flex items-center gap-3">
                   <ShieldCheck className="h-4 w-4 text-emerald-300" />
                   <div className="text-base font-medium text-white">Step 4 · Reveal Vote</div>
@@ -1903,7 +1939,7 @@ export function GovernanceActionWorkbench() {
           ) : null}
 
           {showFinalizeCard ? (
-          <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
+          <div id="finalize-proposal-action" className="scroll-mt-28 rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
                 <div className="flex items-center gap-3">
                   <Flag className="h-4 w-4 text-cyan-300" />
                   <div className="text-base font-medium text-white">Step 5 · Finalize Proposal</div>
@@ -1948,7 +1984,7 @@ export function GovernanceActionWorkbench() {
           ) : null}
 
           {showExecuteCard ? (
-          <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
+          <div id="execute-proposal-action" className="scroll-mt-28 rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
                 <div className="flex items-center gap-3">
                   <Play className="h-4 w-4 text-amber-300" />
                   <div className="text-base font-medium text-white">Step 6 · Execute Proposal</div>
