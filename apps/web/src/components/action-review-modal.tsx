@@ -195,11 +195,11 @@ export function ActionReviewModal({
               </div>
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Submit lane</div>
-                <div className="mt-2 text-white">{payload?.deliveryRoute ?? executionIntent.evidenceRoute}</div>
+                <div className="mt-2 text-white">{payload?.deliveryRoute ?? executionIntent?.evidenceRoute ?? "delivery-route-pending"}</div>
               </div>
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Runtime lane</div>
-                <div className="mt-2 text-white">{payload?.telemetryRoute ?? executionIntent.evidenceRoute}</div>
+                <div className="mt-2 text-white">{payload?.telemetryRoute ?? executionIntent?.evidenceRoute ?? "telemetry-route-pending"}</div>
               </div>
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68 sm:col-span-2">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Execution target</div>
@@ -232,7 +232,7 @@ export function ActionReviewModal({
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Payload source</div>
-                <div className="mt-2 text-white">{payload?.requestId ?? executionIntent.reference}</div>
+                <div className="mt-2 text-white">{payload?.requestId ?? executionIntent?.reference ?? "request-pending"}</div>
               </div>
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Review posture</div>
@@ -240,11 +240,11 @@ export function ActionReviewModal({
               </div>
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Commercial route</div>
-                <div className="mt-2 text-white">{executionIntent.payoutTitle}</div>
+                <div className="mt-2 text-white">{executionIntent?.payoutTitle ?? "continuity-pending"}</div>
               </div>
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Signing and proof route</div>
-                <div className="mt-2 text-white">{payload?.deliveryRoute ?? executionIntent.evidenceRoute}</div>
+                <div className="mt-2 text-white">{payload?.deliveryRoute ?? executionIntent?.evidenceRoute ?? "delivery-route-pending"}</div>
               </div>
             </div>
           </div>
