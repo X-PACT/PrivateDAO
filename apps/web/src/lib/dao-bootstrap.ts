@@ -587,6 +587,12 @@ export async function buildCreateDaoBootstrapTransaction({
     [Buffer.from("dao"), authority.toBuffer(), Buffer.from(name)],
     PRIVATE_DAO_PROGRAM_ID,
   );
+  const existingDaoInfo = await connection.getAccountInfo(dao, "confirmed");
+  if (existingDaoInfo) {
+    throw new Error(
+      `A DAO named "${name}" already exists for this wallet on devnet (${dao.toBase58()}). Change the DAO name or continue from the existing DAO.`,
+    );
+  }
 
   const mintRent = await connection.getMinimumBalanceForRentExemption(
     MINT_ACCOUNT_SPACE,
