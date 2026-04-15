@@ -73,6 +73,28 @@ export function HomeShell() {
       detail: "Reliable live reads, signatures, and action logs.",
     },
   ];
+  const technologyServiceMap = [
+    {
+      technology: "FHE / REFHE",
+      service: "Confidential payout and treasury motion rehearsal",
+      outcome: "Used when the product needs to prepare private treasury movement without flattening the whole flow into plain-text operating steps.",
+    },
+    {
+      technology: "ZK",
+      service: "Verifiable governance and privacy review",
+      outcome: "Used when judges, partners, or operators need proof-linked trust without turning the normal user route into a cryptography lecture.",
+    },
+    {
+      technology: "MagicBlock",
+      service: "Responsive action corridor for governance and gaming",
+      outcome: "Used where wallet-first actions need a faster execution lane so DAO and game-linked decisions do not feel stuck behind slow runtime behavior.",
+    },
+    {
+      technology: "Fast RPC",
+      service: "Live state, logs, and signature confirmation",
+      outcome: "Used to keep Devnet reads, proposal status, and action feedback visible after a wallet action instead of leaving the user guessing.",
+    },
+  ];
   return (
     <main className="pb-20 sm:pb-24">
       <section className="mx-auto w-full max-w-7xl px-4 pt-8 sm:px-6 sm:pt-12 lg:px-8 lg:pt-18">
@@ -247,6 +269,29 @@ export function HomeShell() {
               Fast RPC and hosted reads keep live state, signatures, proposal progress, and execution logs visible so users can tell what really happened after a wallet action.
             </p>
           </div>
+        </div>
+      </section>
+
+      <section className="mx-auto mt-14 w-full max-w-7xl px-4 sm:mt-16 sm:px-6 lg:px-8">
+        <div className="max-w-3xl space-y-4">
+          <div className="text-[11px] font-medium uppercase tracking-[0.34em] text-emerald-300/80">How the stack maps to services</div>
+          <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">These technologies are tied to real product lanes, not a theory slide</h2>
+          <p className="text-base leading-8 text-white/60 sm:text-lg">
+            PrivateDAO uses each rail for a specific user-facing job. The public story should make that obvious: governance runs the DAO, gaming uses the same responsive decision corridor, confidential payout depends on privacy rails, and Fast RPC keeps the result visible.
+          </p>
+        </div>
+        <div className="mt-8 grid gap-4 xl:grid-cols-2">
+          {technologyServiceMap.map((item) => (
+            <div key={item.technology} className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
+              <div className="flex flex-wrap items-center gap-3">
+                <Badge variant={item.technology === "ZK" ? "violet" : item.technology === "Fast RPC" ? "warning" : item.technology === "MagicBlock" ? "cyan" : "success"}>
+                  {item.technology}
+                </Badge>
+                <div className="text-base font-medium text-white">{item.service}</div>
+              </div>
+              <p className="mt-3 text-sm leading-7 text-white/60">{item.outcome}</p>
+            </div>
+          ))}
         </div>
       </section>
 
