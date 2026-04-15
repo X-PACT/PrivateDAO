@@ -58,6 +58,30 @@ function randomSalt32() {
   return salt;
 }
 
+function formatRuntimeWindow(unixSeconds: number) {
+  return new Intl.DateTimeFormat("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+    hour12: false,
+    timeZone: "Africa/Cairo",
+  }).format(new Date(unixSeconds * 1000));
+}
+
+function formatRemainingSeconds(seconds: number) {
+  if (seconds <= 0) return "0s";
+  const minutes = Math.floor(seconds / 60);
+  const remainder = seconds % 60;
+  if (minutes <= 0) return `${remainder}s`;
+  if (minutes < 60) return `${minutes}m ${remainder}s`;
+  const hours = Math.floor(minutes / 60);
+  const minuteRemainder = minutes % 60;
+  return `${hours}h ${minuteRemainder}m`;
+}
+
 function parseSolAmountToLamports(value: string) {
   const normalized = value.trim();
   if (!normalized) {
@@ -163,6 +187,12 @@ export function GovernanceActionWorkbench() {
   const [proposalTreasuryRecipient, setProposalTreasuryRecipient] = useState("");
   const [proposalTreasuryAmountSol, setProposalTreasuryAmountSol] = useState("");
   const [proposalTreasuryTokenMint, setProposalTreasuryTokenMint] = useState("");
+  const [liveProposalWindow, setLiveProposalWindow] = useState<{
+    votingEnd: number;
+    revealEnd: number;
+    status: string;
+  } | null>(null);
+  const [nowSeconds, setNowSeconds] = useState(() => Math.floor(Date.now() / 1000));
   const { connection } = useConnection();
   const { connected, wallet, publicKey, sendTransaction } = useWallet();
   const {
@@ -361,6 +391,12 @@ export function GovernanceActionWorkbench() {
   const payloadExecutionState =
     executionIntent?.requestDelivery?.state ?? executionIntent?.requestPayload?.state ?? "draft";
   const hasLiveCommitLane = Boolean(hasLiveDaoLane && activeLiveProposalAddress);
+  const revealWindowOpen = Boolean(
+    effectiveVoteCommitted &&
+      liveProposalWindow &&
+      nowSeconds >= liveProposalWindow.votingEnd &&
+      nowSeconds < liveProposalWindow.revealEnd,
+  );
   const canCommitLive =
     connected &&
     Boolean(publicKey) &&
@@ -373,6 +409,7 @@ export function GovernanceActionWorkbench() {
     Boolean(publicKey) &&
     Boolean(liveVoteRuntime?.saltHex && activeLiveProposalAddress) &&
     effectiveVoteCommitted &&
+    revealWindowOpen &&
     !effectiveVoteRevealed &&
     revealVoteRuntime.status !== "submitting";
   const canFinalizeLive =
@@ -380,6 +417,7 @@ export function GovernanceActionWorkbench() {
     Boolean(publicKey) &&
     hasLiveCommitLane &&
     effectiveVoteRevealed &&
+    Boolean(liveProposalWindow && nowSeconds >= liveProposalWindow.revealEnd) &&
     !effectiveProposalFinalized &&
     finalizeRuntime.status !== "submitting";
   const canExecuteLive =
@@ -388,6 +426,51 @@ export function GovernanceActionWorkbench() {
     hasLiveCommitLane &&
     canExecute &&
     executeRuntime.status !== "submitting";
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setNowSeconds(Math.floor(Date.now() / 1000));
+    }, 1000);
+
+    return () => window.clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadLiveProposalWindow() {
+      if (!activeLiveProposalAddress) {
+        setLiveProposalWindow(null);
+        return;
+      }
+
+      try {
+        const proposal = await fetchProposalAccountDetails(connection, new PublicKey(activeLiveProposalAddress));
+        if (cancelled) return;
+        setLiveProposalWindow({
+          votingEnd: proposal.votingEnd,
+          revealEnd: proposal.revealEnd,
+          status: proposal.status,
+        });
+      } catch {
+        if (cancelled) return;
+        setLiveProposalWindow(null);
+      }
+    }
+
+    void loadLiveProposalWindow();
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    activeLiveProposalAddress,
+    commitVoteRuntime.status,
+    connection,
+    effectiveVoteCommitted,
+    effectiveVoteRevealed,
+    finalizeRuntime.status,
+    revealVoteRuntime.status,
+  ]);
 
   useEffect(() => {
     if (!handoff) return;
@@ -1775,6 +1858,20 @@ export function GovernanceActionWorkbench() {
                     <div className="text-[11px] uppercase tracking-[0.2em] text-emerald-100/72">Stored reveal preimage</div>
                     <div className="mt-2 break-all text-white">Proposal {liveVoteRuntime.proposalAddress}</div>
                     <div className="mt-1 break-all text-white/62">Salt {liveVoteRuntime.saltHex}</div>
+                    {liveProposalWindow ? (
+                      <>
+                        <div className="mt-2 text-white/72">
+                          Reveal opens at {formatRuntimeWindow(liveProposalWindow.votingEnd)}
+                        </div>
+                        <div className="mt-1 text-white/62">
+                          {nowSeconds < liveProposalWindow.votingEnd
+                            ? `Commit window still open · ${formatRemainingSeconds(liveProposalWindow.votingEnd - nowSeconds)} remaining`
+                            : nowSeconds >= liveProposalWindow.revealEnd
+                              ? "Reveal window already closed"
+                              : `Reveal window live until ${formatRuntimeWindow(liveProposalWindow.revealEnd)}`}
+                        </div>
+                      </>
+                    ) : null}
                   </div>
                 )}
                 <Button className="mt-4 w-full" disabled={!canRevealLive} onClick={() => openReview("reveal_vote")} variant="secondary">
