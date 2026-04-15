@@ -49,6 +49,7 @@ function buildTelemetryModel(workspace: CompetitionTrackWorkspace) {
     routes: [
       { label: "Open telemetry export packet", href: "/documents/telemetry-export-packet" },
       { label: "Open analytics telemetry lane", href: "/analytics#telemetry-inspection" },
+      { label: "Open monitoring closure", href: "/security#monitoring-delivery-readiness" },
       { label: "Open diagnostics", href: "/diagnostics" },
       { label: "Open runtime evidence", href: "/documents/runtime-evidence" },
     ],
@@ -87,6 +88,7 @@ function buildPayoutModel(workspace: CompetitionTrackWorkspace) {
     ],
     routes: [
       { label: "Open payout evidence packet", href: "/documents/confidential-payout-evidence-packet" },
+      { label: "Open receipt closure", href: "/services#settlement-receipt-readiness" },
       { label: "Open services payout lane", href: "/services#payout-route-selection" },
       { label: "Open security", href: "/security" },
       { label: "Open custody proof", href: "/custody" },
@@ -131,9 +133,10 @@ function buildCapitalModel(workspace: CompetitionTrackWorkspace) {
     ],
     routes: [
       primaryPacket,
+      { label: "Open runtime closure", href: "/security#real-device-capture-readiness" },
+      { label: "Open monitoring closure", href: "/security#monitoring-delivery-readiness" },
       { label: "Open services", href: "/services" },
       { label: "Open trust", href: "/trust" },
-      { label: "Open mainnet blockers", href: "/documents/mainnet-blockers" },
     ],
   };
 }

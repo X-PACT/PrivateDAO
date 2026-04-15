@@ -7,6 +7,7 @@ import { GrantExecutionReadinessPanel } from "@/components/grant-execution-readi
 import { OperationsShell } from "@/components/operations-shell";
 import { TrackJudgeFirstTopStrip } from "@/components/track-judge-first-top-strip";
 import { TrackOperationalEdgePanel } from "@/components/track-operational-edge-panel";
+import { TrackExecutionUnlockPanel } from "@/components/track-execution-unlock-panel";
 import { TrackProofClosurePanel } from "@/components/track-proof-closure-panel";
 import { TrackSubmissionCapsule } from "@/components/track-submission-capsule";
 import { VideoCenter } from "@/components/video-center";
@@ -73,6 +74,9 @@ export default async function TrackWorkspacePage({ params }: PageProps) {
       </div>
       <div>
         <TrackOperationalEdgePanel workspace={workspace} />
+      </div>
+      <div>
+        <TrackExecutionUnlockPanel workspace={workspace} />
       </div>
       <div>
         <GrantExecutionReadinessPanel workspace={workspace} />
