@@ -140,6 +140,10 @@ export function GrantExecutionReadinessPanel({ workspace }: GrantExecutionReadin
             Open funding scorecard
             <ArrowUpRight className="h-4 w-4" />
           </Link>
+          <Link href="/documents/runtime-operations-readiness-packet" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+            Open runtime ops packet
+            <ArrowUpRight className="h-4 w-4" />
+          </Link>
           <Link href="/services" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
             Open services
             <ArrowUpRight className="h-4 w-4" />
@@ -148,7 +152,7 @@ export function GrantExecutionReadinessPanel({ workspace }: GrantExecutionReadin
             Open trust
             <ArrowUpRight className="h-4 w-4" />
           </Link>
-          <Link href="/documents/mainnet-blockers" className={cn(buttonVariants({ variant: "outline" }), "justify-between md:col-span-2 xl:col-span-1")}>
+          <Link href="/documents/mainnet-blockers" className={cn(buttonVariants({ variant: "outline" }), "justify-between md:col-span-2 xl:col-span-2")}>
             Open blockers
             <ArrowUpRight className="h-4 w-4" />
           </Link>

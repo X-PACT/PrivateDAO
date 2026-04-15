@@ -8,6 +8,7 @@ import { CustodyWorkspace } from "@/components/custody-workspace";
 import { FrontierSignalBoard } from "@/components/frontier-signal-board";
 import { IntelligenceLayerSurface } from "@/components/intelligence-layer-surface";
 import { OperationsShell } from "@/components/operations-shell";
+import { RuntimeOperationsReadinessPanel } from "@/components/runtime-operations-readiness-panel";
 import { SecurityCenter } from "@/components/security-center";
 import { SectionHeader } from "@/components/section-header";
 import { ZkMatrixSurface } from "@/components/zk-matrix-surface";
@@ -85,6 +86,9 @@ export default function SecurityPage() {
       </div>
       <div>
         <SettlementReceiptSurface />
+      </div>
+      <div>
+        <RuntimeOperationsReadinessPanel />
       </div>
       <div>
         <SectionHeader

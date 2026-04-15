@@ -568,6 +568,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/funding-readiness-scorecard.md`,
   },
   {
+    slug: "runtime-operations-readiness-packet",
+    title: "Runtime Operations Readiness Packet",
+    category: "Operations",
+    summary: "Single packet for funders and reviewers showing the current real-device wallet matrix gap, monitoring closure gap, and why these are the highest-value operational unlocks before mainnet claims.",
+    audience: "Grant reviewers, accelerator reviewers, operators, founders",
+    boundary: "Operations packet only; it clarifies the current runtime and monitoring posture without claiming those blockers are already closed.",
+    docPath: "docs/runtime-operations-readiness-packet.md",
+    rawHref: `${repositoryBlobBase}/docs/runtime-operations-readiness-packet.md`,
+  },
+  {
     slug: "competition-execution-playbook",
     title: "Competition Execution Playbook",
     category: "Strategy",
