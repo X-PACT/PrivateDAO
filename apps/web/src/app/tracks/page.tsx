@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { CompetitionReadinessSurface } from "@/components/competition-readiness-surface";
 import { FrontierSignalBoard } from "@/components/frontier-signal-board";
+import { FundingCorridorIndexPanel } from "@/components/funding-corridor-index-panel";
 import { OperationsShell } from "@/components/operations-shell";
 import { StrategicOpportunitySurface } from "@/components/strategic-opportunity-surface";
 import { CapitalReadinessPacketStrip } from "@/components/capital-readiness-packet-strip";
@@ -37,6 +38,9 @@ export default function TracksPage() {
       </div>
       <div>
         <CapitalReadinessPacketStrip />
+      </div>
+      <div>
+        <FundingCorridorIndexPanel />
       </div>
       <div>
         <FrontierSignalBoard />
