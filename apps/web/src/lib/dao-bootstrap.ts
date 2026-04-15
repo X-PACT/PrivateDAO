@@ -63,6 +63,14 @@ type CreateProposalResult = {
   transaction: Transaction;
 };
 
+type GovernanceHolderSnapshot = {
+  dao: PublicKey;
+  governanceMint: PublicKey;
+  tokenAccount: PublicKey;
+  tokenProgram: PublicKey;
+  rawAmount: bigint;
+};
+
 type ProposalAccountDetails = {
   dao: string;
   executionUnlocksAt: number;
@@ -613,16 +621,23 @@ export async function buildCreateProposalTransaction({
     throw new Error("Proposal duration must be a positive number of seconds.");
   }
 
-  const dao = await fetchDaoAccountDetails(connection, daoAddress);
-  const governanceMint = new PublicKey(dao.governanceToken);
-  const proposerTokenAccount = deriveAssociatedTokenAddress(proposer, governanceMint);
-  const proposerTokenAccountInfo = await connection.getAccountInfo(proposerTokenAccount, "confirmed");
-  if (!proposerTokenAccountInfo) {
-    throw new Error("Governance token account was not found for the connected wallet.");
+  const daoDetails = await fetchDaoAccountDetails(connection, daoAddress);
+  const governanceHolder = await fetchGovernanceHolderSnapshot({
+    connection,
+    daoAddress,
+    holder: proposer,
+    daoDetails,
+  });
+  if (governanceHolder.rawAmount <= BigInt(0)) {
+    throw new Error("The connected wallet does not hold governance tokens for this DAO.");
   }
 
   const [proposal] = PublicKey.findProgramAddressSync(
-    [Buffer.from("proposal"), daoAddress.toBuffer(), Buffer.from(encodeU64LE(Number(dao.proposalCount)))],
+    [
+      Buffer.from("proposal"),
+      daoAddress.toBuffer(),
+      Buffer.from(encodeU64LE(Number(daoDetails.proposalCount))),
+    ],
     PRIVATE_DAO_PROGRAM_ID,
   );
 
@@ -639,7 +654,7 @@ export async function buildCreateProposalTransaction({
     keys: [
       { pubkey: daoAddress, isSigner: false, isWritable: true },
       { pubkey: proposal, isSigner: false, isWritable: true },
-      { pubkey: proposerTokenAccount, isSigner: false, isWritable: false },
+      { pubkey: governanceHolder.tokenAccount, isSigner: false, isWritable: false },
       { pubkey: proposer, isSigner: true, isWritable: true },
       { pubkey: SystemProgram.programId, isSigner: false, isWritable: false },
     ],
@@ -653,10 +668,48 @@ export async function buildCreateProposalTransaction({
 
   return {
     dao: daoAddress,
-    governanceMint,
+    governanceMint: governanceHolder.governanceMint,
     proposal,
-    proposerTokenAccount,
+    proposerTokenAccount: governanceHolder.tokenAccount,
     transaction,
+  };
+}
+
+export async function fetchGovernanceHolderSnapshot({
+  connection,
+  daoAddress,
+  daoDetails,
+  holder,
+}: {
+  connection: Connection;
+  daoAddress: PublicKey;
+  daoDetails?: DaoAccountDetails;
+  holder: PublicKey;
+}): Promise<GovernanceHolderSnapshot> {
+  const resolvedDaoDetails = daoDetails ?? (await fetchDaoAccountDetails(connection, daoAddress));
+  const governanceMint = new PublicKey(resolvedDaoDetails.governanceToken);
+  const tokenProgram = await resolveTokenProgramForMint(connection, governanceMint);
+  const tokenAccount = deriveAssociatedTokenAddress(holder, governanceMint, tokenProgram);
+  const tokenAccountInfo = await connection.getAccountInfo(tokenAccount, "confirmed");
+
+  if (!tokenAccountInfo) {
+    return {
+      dao: daoAddress,
+      governanceMint,
+      tokenAccount,
+      tokenProgram,
+      rawAmount: BigInt(0),
+    };
+  }
+
+  const balance = await connection.getTokenAccountBalance(tokenAccount, "confirmed");
+
+  return {
+    dao: daoAddress,
+    governanceMint,
+    tokenAccount,
+    tokenProgram,
+    rawAmount: BigInt(balance.value.amount),
   };
 }
 
@@ -684,12 +737,13 @@ export async function buildCommitVoteTransaction({
   voter,
   voterRevealAuthority = null,
 }: CommitVoteInput) {
-  const dao = await fetchDaoAccountDetails(connection, daoAddress);
-  const governanceMint = new PublicKey(dao.governanceToken);
-  const voterTokenAccount = deriveAssociatedTokenAddress(voter, governanceMint);
-  const voterTokenAccountInfo = await connection.getAccountInfo(voterTokenAccount, "confirmed");
-  if (!voterTokenAccountInfo) {
-    throw new Error("Governance token account was not found for the connected wallet.");
+  const governanceHolder = await fetchGovernanceHolderSnapshot({
+    connection,
+    daoAddress,
+    holder: voter,
+  });
+  if (governanceHolder.rawAmount <= BigInt(0)) {
+    throw new Error("The connected wallet does not hold governance tokens for this DAO.");
   }
 
   const delegationMarker = deriveDelegationMarkerAddress(proposalAddress, voter);
@@ -709,9 +763,9 @@ export async function buildCommitVoteTransaction({
       { pubkey: proposalAddress, isSigner: false, isWritable: true },
       { pubkey: voterRecord, isSigner: false, isWritable: true },
       { pubkey: delegationMarker, isSigner: false, isWritable: false },
-      { pubkey: voterTokenAccount, isSigner: false, isWritable: false },
+      { pubkey: governanceHolder.tokenAccount, isSigner: false, isWritable: false },
       { pubkey: voter, isSigner: true, isWritable: true },
-      { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
+      { pubkey: governanceHolder.tokenProgram, isSigner: false, isWritable: false },
       { pubkey: SystemProgram.programId, isSigner: false, isWritable: false },
     ],
     data: Buffer.from(data),
@@ -723,10 +777,10 @@ export async function buildCommitVoteTransaction({
   transaction.recentBlockhash = latest.blockhash;
 
   return {
-    governanceMint,
+    governanceMint: governanceHolder.governanceMint,
     transaction,
     voterRecord,
-    voterTokenAccount,
+    voterTokenAccount: governanceHolder.tokenAccount,
   };
 }
 

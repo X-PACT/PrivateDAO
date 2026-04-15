@@ -39,6 +39,7 @@ export type GovernanceExecutionIntent = {
 
 type LiveDaoRuntime = {
   address: string;
+  authority?: string;
   governanceMint: string;
   signature: string;
 };

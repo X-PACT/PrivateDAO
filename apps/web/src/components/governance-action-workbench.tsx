@@ -23,6 +23,7 @@ import {
   buildFinalizeProposalTransaction,
   buildRevealVoteTransaction,
   computeProposalCommitment,
+  fetchGovernanceHolderSnapshot,
   fetchProposalAccountDetails,
 } from "@/lib/dao-bootstrap";
 import { buildServiceHandoffQuery } from "@/lib/service-handoff-state";
@@ -125,6 +126,7 @@ export function GovernanceActionWorkbench() {
     status: "idle" | "submitting" | "success" | "error";
     message: string;
     daoAddress?: string;
+    authority?: string;
     governanceMint?: string;
     signature?: string;
   }>({ status: "idle", message: "" });
@@ -599,6 +601,7 @@ export function GovernanceActionWorkbench() {
         status: "submitting",
         message: "Awaiting wallet signature for the DAO bootstrap transaction...",
         daoAddress: bootstrap.dao.toBase58(),
+        authority: publicKey.toBase58(),
         governanceMint: bootstrap.governanceMint.toBase58(),
       });
 
@@ -611,6 +614,7 @@ export function GovernanceActionWorkbench() {
 
       createDao({
         address: bootstrap.dao.toBase58(),
+        authority: publicKey.toBase58(),
         governanceMint: bootstrap.governanceMint.toBase58(),
         signature,
       });
@@ -627,6 +631,7 @@ export function GovernanceActionWorkbench() {
         status: "success",
         message: "DAO bootstrap submitted to devnet from the web wallet flow.",
         daoAddress: bootstrap.dao.toBase58(),
+        authority: publicKey.toBase58(),
         governanceMint: bootstrap.governanceMint.toBase58(),
         signature,
       });
@@ -657,6 +662,14 @@ export function GovernanceActionWorkbench() {
       });
       return;
     }
+    if (liveDaoRuntime.authority && liveDaoRuntime.authority !== publicKey.toBase58()) {
+      setCreateProposalRuntime({
+        status: "error",
+        message:
+          "This live DAO was created by another wallet. Reconnect the creator wallet or reset the session and bootstrap a new DAO from the current wallet first.",
+      });
+      return;
+    }
     if (proposalTreasuryDraft.error) {
       setCreateProposalRuntime({
         status: "error",
@@ -672,6 +685,17 @@ export function GovernanceActionWorkbench() {
           ? "Preparing live treasury proposal transaction for wallet signature..."
           : "Preparing live proposal transaction for wallet signature...",
       });
+
+      const governanceHolder = await fetchGovernanceHolderSnapshot({
+        connection,
+        daoAddress: new PublicKey(liveDaoRuntime.address),
+        holder: publicKey,
+      });
+      if (governanceHolder.rawAmount <= BigInt(0)) {
+        throw new Error(
+          "The connected wallet does not hold governance tokens for this DAO. Reconnect the wallet that created the DAO, or reset the session and bootstrap a new DAO from this wallet.",
+        );
+      }
 
       const proposalSubmission = await buildCreateProposalTransaction({
         proposer: publicKey,
@@ -751,6 +775,17 @@ export function GovernanceActionWorkbench() {
         status: "submitting",
         message: "Preparing commit transaction and sealing a fresh 32-byte reveal salt...",
       });
+
+      const governanceHolder = await fetchGovernanceHolderSnapshot({
+        connection,
+        daoAddress: new PublicKey(liveDaoRuntime.address),
+        holder: publicKey,
+      });
+      if (governanceHolder.rawAmount <= BigInt(0)) {
+        throw new Error(
+          "The connected wallet does not hold governance tokens for this DAO. Reconnect the governance holder wallet before committing a vote.",
+        );
+      }
 
       const proposalAddress = new PublicKey(activeLiveProposalAddress);
       const proposalDetails = await fetchProposalAccountDetails(connection, proposalAddress);
@@ -1348,6 +1383,11 @@ export function GovernanceActionWorkbench() {
                     Governance mint: {createDaoRuntime.governanceMint}
                   </div>
                 ) : null}
+                {createDaoRuntime.authority ? (
+                  <div className="mt-1 break-all text-xs text-white/55">
+                    Wallet: {createDaoRuntime.authority}
+                  </div>
+                ) : null}
                 {createDaoRuntime.signature ? (
                   <div className="mt-1 break-all text-xs text-white/70">
                     Signature: {createDaoRuntime.signature}
@@ -1471,6 +1511,9 @@ export function GovernanceActionWorkbench() {
                     <>
                       <div className="mt-2 break-all text-white">{liveDaoRuntime.address}</div>
                       <div className="mt-1 break-all text-white/62">Governance mint {liveDaoRuntime.governanceMint}</div>
+                      {liveDaoRuntime.authority ? (
+                        <div className="mt-1 break-all text-white/52">Creator wallet {liveDaoRuntime.authority}</div>
+                      ) : null}
                     </>
                   ) : (
                     <div className="mt-2 text-white/62">Create the DAO first so proposal submit can target a real on-chain lane.</div>
