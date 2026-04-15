@@ -618,6 +618,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/monitoring-delivery-closure-packet.md`,
   },
   {
+    slug: "monitoring-delivery-evidence",
+    title: "Monitoring Delivery Evidence",
+    category: "Operations",
+    summary: "Generated evidence package for monitoring delivery ownership, requirement closure, transcript expectations, and current claim boundary.",
+    audience: "Funders, judges, operators, reviewers",
+    boundary: "Generated evidence only; it does not claim live alert routing or tested production transcripts are already complete.",
+    docPath: "docs/monitoring-delivery.generated.md",
+    rawHref: `${repositoryBlobBase}/docs/monitoring-delivery.generated.md`,
+  },
+  {
     slug: "monitoring-delivery-evidence-packet",
     title: "Monitoring Delivery Evidence Packet",
     category: "Operations",
@@ -626,6 +636,16 @@ const curatedDocuments: CuratedDocument[] = [
     boundary: "Operations packet only; it does not claim live alert routing or production incident ownership is already closed.",
     docPath: "docs/monitoring-delivery-evidence-packet.md",
     rawHref: `${repositoryBlobBase}/docs/monitoring-delivery-evidence-packet.md`,
+  },
+  {
+    slug: "settlement-receipt-closure-evidence",
+    title: "Settlement Receipt Closure Evidence",
+    category: "Trust",
+    summary: "Generated evidence package for the privacy-settlement closure program, including requirement counts and linked supporting artifacts.",
+    audience: "Funders, judges, buyers, reviewers",
+    boundary: "Generated closure evidence only; it does not claim source-verifiable settlement receipts are already closed.",
+    docPath: "docs/settlement-receipt-closure.generated.md",
+    rawHref: `${repositoryBlobBase}/docs/settlement-receipt-closure.generated.md`,
   },
   {
     slug: "competition-execution-playbook",
