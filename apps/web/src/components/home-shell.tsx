@@ -54,25 +54,21 @@ export function HomeShell() {
   const techBadges = [
     {
       label: "FHE / REFHE",
-      tone: "text-emerald-100",
       badgeClass: "border-emerald-300/25 bg-emerald-300/[0.14] text-emerald-100",
       detail: "Confidential treasury and settlement posture.",
     },
     {
       label: "ZK",
-      tone: "text-violet-100",
       badgeClass: "border-violet-300/25 bg-violet-300/[0.14] text-violet-100",
       detail: "Verifiable privacy without exposing raw decision data.",
     },
     {
       label: "MagicBlock",
-      tone: "text-cyan-100",
       badgeClass: "border-cyan-300/25 bg-cyan-300/[0.14] text-cyan-100",
       detail: "Responsive execution corridor for wallet-first actions.",
     },
     {
       label: "Fast RPC",
-      tone: "text-amber-100",
       badgeClass: "border-amber-300/25 bg-amber-300/[0.14] text-amber-100",
       detail: "Reliable live reads, signatures, and action logs.",
     },
@@ -115,7 +111,9 @@ export function HomeShell() {
               </a>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="space-y-3">
+              <div className="text-[11px] uppercase tracking-[0.28em] text-white/38">Powered by the live stack</div>
+              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
               {techBadges.map((item) => (
                 <div key={item.label} className="rounded-[20px] border border-white/10 bg-white/[0.03] px-4 py-3">
                   <Badge className={cn("border text-[10px] uppercase tracking-[0.22em]", item.badgeClass)}>
@@ -124,6 +122,7 @@ export function HomeShell() {
                   <div className="mt-2 text-sm leading-6 text-white/62">{item.detail}</div>
                 </div>
               ))}
+              </div>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-3">
@@ -198,27 +197,15 @@ export function HomeShell() {
       </section>
 
       <section className="mx-auto mt-14 w-full max-w-7xl px-4 sm:mt-16 sm:px-6 lg:px-8">
-        <div className="grid gap-4 lg:grid-cols-[0.9fr_2.1fr]">
-          <div className="rounded-[24px] border border-amber-300/18 bg-[linear-gradient(180deg,rgba(61,46,9,0.92),rgba(26,20,5,0.98))] p-5">
-            <div className="flex items-center gap-2 text-amber-100">
-              <Trophy className="h-4 w-4" />
-              <div className="text-[11px] uppercase tracking-[0.28em]">Recognition</div>
-            </div>
-            <div className="mt-2 text-lg font-semibold text-amber-50">1st Place · Superteam Poland</div>
-            <div className="mt-2 text-sm leading-7 text-amber-50/70">
-              Proof remains available, but it no longer dominates the public landing page.
-            </div>
+        <div className="grid gap-4 md:grid-cols-3">
+          <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5 text-sm leading-7 text-white/62">
+            PrivateDAO is a wallet-first Solana product for private governance, live Devnet execution, and treasury motion rehearsal.
           </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5 text-sm leading-7 text-white/62">
-              PrivateDAO is a wallet-first app for creating a private Solana DAO and running proposals on Devnet.
-            </div>
-            <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5 text-sm leading-7 text-white/62">
-              Live state and proof stay available when needed, but they no longer block the first run.
-            </div>
-            <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5 text-sm leading-7 text-white/62">
-              Web, Android, and reviewer routes now point to one product story instead of competing shells.
-            </div>
+          <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5 text-sm leading-7 text-white/62">
+            The public surface explains the product first, then opens proof, diagnostics, and trust only when the user asks for them.
+          </div>
+          <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5 text-sm leading-7 text-white/62">
+            Web, Android, and reviewer routes now sit on one product narrative instead of competing shells and mislabeled pages.
           </div>
         </div>
       </section>

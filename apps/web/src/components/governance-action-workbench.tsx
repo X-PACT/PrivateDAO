@@ -1350,37 +1350,37 @@ export function GovernanceActionWorkbench() {
                     </button>
                   ))}
                 </div>
-                <input
-                  value={proposalTreasuryRecipient}
-                  onChange={(event) => setProposalTreasuryRecipient(event.target.value)}
-                  className="mt-3 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
-                  placeholder={
-                    proposalTreasuryMode === "standard"
-                      ? "Optional treasury recipient"
-                      : "Treasury recipient wallet"
-                  }
-                />
-                <input
-                  value={proposalTreasuryAmountSol}
-                  onChange={(event) => setProposalTreasuryAmountSol(event.target.value)}
-                  className="mt-3 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
-                  placeholder={
-                    proposalTreasuryMode === "token"
-                      ? "Token amount in raw units"
-                      : "Treasury amount in SOL"
-                  }
-                />
-                {proposalTreasuryMode === "token" ? (
-                  <input
-                    value={proposalTreasuryTokenMint}
-                    onChange={(event) => setProposalTreasuryTokenMint(event.target.value)}
-                    className="mt-3 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
-                    placeholder="Token mint"
-                  />
+                {proposalTreasuryMode !== "standard" ? (
+                  <>
+                    <input
+                      value={proposalTreasuryRecipient}
+                      onChange={(event) => setProposalTreasuryRecipient(event.target.value)}
+                      className="mt-3 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                      placeholder="Treasury recipient wallet"
+                    />
+                    <input
+                      value={proposalTreasuryAmountSol}
+                      onChange={(event) => setProposalTreasuryAmountSol(event.target.value)}
+                      className="mt-3 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                      placeholder={
+                        proposalTreasuryMode === "token"
+                          ? "Token amount in raw units"
+                          : "Treasury amount in SOL"
+                      }
+                    />
+                    {proposalTreasuryMode === "token" ? (
+                      <input
+                        value={proposalTreasuryTokenMint}
+                        onChange={(event) => setProposalTreasuryTokenMint(event.target.value)}
+                        className="mt-3 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                        placeholder="Token mint"
+                      />
+                    ) : null}
+                  </>
                 ) : null}
                 <p className="mt-3 text-sm leading-7 text-white/60">
                   {proposalTreasuryMode === "standard"
-                    ? "Standard proposals carry no treasury movement."
+                    ? "Standard proposals carry no treasury movement. Switch to Send SOL or Send Token only when you want a treasury action."
                     : proposalTreasuryMode === "token"
                       ? "SendToken proposals use a recipient wallet plus token mint. Amount is currently entered in raw token units."
                       : "SendSol proposals move SOL from the treasury to the specified recipient when executed."}

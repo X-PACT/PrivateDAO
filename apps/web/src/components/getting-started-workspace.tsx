@@ -28,14 +28,13 @@ export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWor
       <Card className="border-white/10 bg-[linear-gradient(135deg,rgba(20,241,149,0.09),rgba(153,69,255,0.11),rgba(0,194,255,0.08))]">
         <CardContent className="grid gap-8 p-6 lg:grid-cols-[1.1fr_0.9fr] lg:p-8">
           <div className="space-y-5">
-            <Badge variant="success">Built for a normal user first-run</Badge>
+            <Badge variant="success">Built for a normal user first run</Badge>
             <div className="space-y-3">
               <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
                 Connect a wallet, create a DAO, submit a proposal, vote, and execute from one guided path.
               </h2>
               <p className="max-w-2xl text-base leading-8 text-white/62 sm:text-lg">
-                This workspace removes the need to understand every proof packet up front. It tells a normal user
-                exactly what the product does and where to click first.
+                This route keeps the first run narrow: connect a wallet, open govern, and use live state only after a wallet action lands.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -53,7 +52,7 @@ export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWor
           </div>
 
           <div className="grid gap-4">
-            {gettingStartedActions.map((action, index) => (
+            {gettingStartedActions.slice(0, 3).map((action, index) => (
               <Link
                 key={action.title}
                 href={action.href}
@@ -78,7 +77,7 @@ export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWor
             <div>
               <div className="text-base font-medium text-white">Need wallet guidance or session detail?</div>
               <p className="mt-2 text-sm leading-7 text-white/58">
-                Keep the first run simple by going straight to <strong className="text-white">Govern</strong>. Open the details below only if you want wallet recommendations or a preview of the live session data.
+                Keep the first run simple by going straight to <strong className="text-white">Govern</strong>. Open the details below only if you need wallet recommendations or a preview of the live session data.
               </p>
             </div>
             <button
@@ -155,27 +154,17 @@ export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWor
         </CardContent>
       </Card>
 
-      <Card className="border-white/10 bg-white/[0.03]">
-        <CardContent className="flex flex-wrap items-center justify-between gap-4 p-6">
-          <div className="max-w-2xl">
-            <div className="text-base font-medium text-white">Need more than the main flow?</div>
-            <p className="mt-2 text-sm leading-7 text-white/58">
-              Use <strong className="text-white">Live State</strong> after a wallet action, or open <strong className="text-white">Trust</strong> only when you want proof, hardening, and operating detail.
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <Link className={cn(buttonVariants({ size: "lg" }))} href="/govern">
-              Continue to govern
-            </Link>
-            <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/live">
-              Open live state
-            </Link>
-            <Link className={cn(buttonVariants({ size: "lg", variant: "outline" }))} href="/trust">
-              Open trust
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="flex flex-wrap gap-3">
+        <Link className={cn(buttonVariants({ size: "lg" }))} href="/govern">
+          Continue to govern
+        </Link>
+        <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/live">
+          Open live state
+        </Link>
+        <Link className={cn(buttonVariants({ size: "lg", variant: "outline" }))} href="/trust">
+          Open trust only if needed
+        </Link>
+      </div>
     </div>
   );
 }
