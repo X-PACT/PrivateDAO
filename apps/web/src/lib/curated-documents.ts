@@ -588,6 +588,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/runtime-operations-readiness-packet.md`,
   },
   {
+    slug: "execution-unlock-bundle",
+    title: "Execution Unlock Bundle",
+    category: "Operations",
+    summary: "Generated bundle that compresses the three highest-value remaining closures: real-device wallet coverage, monitoring delivery, and settlement receipt closure.",
+    audience: "Funders, judges, operators, reviewers",
+    boundary: "Generated bundle only; it summarizes closure posture without claiming those blockers are already complete.",
+    docPath: "docs/execution-unlock-bundle.generated.md",
+    rawHref: `${repositoryBlobBase}/docs/execution-unlock-bundle.generated.md`,
+  },
+  {
     slug: "real-device-capture-closure-packet",
     title: "Real-Device Capture Closure Packet",
     category: "Trust",
