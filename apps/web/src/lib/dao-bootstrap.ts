@@ -285,6 +285,7 @@ function buildCreateAssociatedTokenAccountInstruction(
   owner: PublicKey,
   mint: PublicKey,
   tokenProgram: PublicKey,
+  options?: { idempotent?: boolean },
 ) {
   return new TransactionInstruction({
     programId: ASSOCIATED_TOKEN_PROGRAM_ID,
@@ -297,7 +298,7 @@ function buildCreateAssociatedTokenAccountInstruction(
       { pubkey: tokenProgram, isSigner: false, isWritable: false },
       { pubkey: SYSVAR_RENT_PUBKEY, isSigner: false, isWritable: false },
     ],
-    data: Buffer.alloc(0),
+    data: Buffer.from([options?.idempotent ? 1 : 0]),
   });
 }
 
@@ -611,6 +612,7 @@ export async function buildCreateDaoBootstrapTransaction({
         authority,
         mintSigner.publicKey,
         TOKEN_PROGRAM_ID,
+        { idempotent: true },
       );
   const mintInitialGovernanceSupplyIx = buildMintToInstruction(
     mintSigner.publicKey,
@@ -933,6 +935,7 @@ export async function buildExecuteProposalTransaction({
           treasuryRecipient,
           treasuryTokenMint,
           tokenProgram,
+          { idempotent: true },
         ),
       );
     }
