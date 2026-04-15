@@ -17,6 +17,7 @@ import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-tru
 import { ReadNodeActivationStrip } from "@/components/read-node-activation-strip";
 import { ReadNodeHostReadinessStrip } from "@/components/read-node-host-readiness-strip";
 import { SectionHeader } from "@/components/section-header";
+import { SettlementReceiptSurface } from "@/components/settlement-receipt-surface";
 import { ServiceOperationalCards } from "@/components/service-operational-cards";
 import { ServiceReadinessLadder } from "@/components/service-readiness-ladder";
 import { ServiceHandoffStrip } from "@/components/service-handoff-strip";
@@ -76,6 +77,9 @@ export default function ServicesPage() {
         <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading treasury receive surface…</div>}>
           <TreasuryReceiveSurface />
         </Suspense>
+      </div>
+      <div id="payout-route-selection">
+        <SettlementReceiptSurface />
       </div>
       <div className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6 text-sm leading-7 text-white/66">
         Open <a className="text-cyan-100 underline underline-offset-4" href="/intelligence">/intelligence</a> to try the live Security + Intelligence layer. It is where proposal analysis, treasury warnings, voting compression, RPC interpretation, and gaming-governance assistance become user-visible.

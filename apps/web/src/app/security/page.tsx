@@ -12,6 +12,7 @@ import { SecurityCenter } from "@/components/security-center";
 import { SectionHeader } from "@/components/section-header";
 import { ZkMatrixSurface } from "@/components/zk-matrix-surface";
 import { ConfidentialPayoutEvidenceStrip } from "@/components/confidential-payout-evidence-strip";
+import { SettlementReceiptSurface } from "@/components/settlement-receipt-surface";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
@@ -81,6 +82,9 @@ export default function SecurityPage() {
       </div>
       <div>
         <ConfidentialPayoutEvidenceStrip />
+      </div>
+      <div>
+        <SettlementReceiptSurface />
       </div>
       <div>
         <SectionHeader

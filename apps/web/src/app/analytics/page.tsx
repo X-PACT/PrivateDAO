@@ -9,6 +9,7 @@ import { HostedReadProofStrip } from "@/components/hosted-read-proof-strip";
 import { LaunchBlockersPanel } from "@/components/launch-blockers-panel";
 import { OperationsShell } from "@/components/operations-shell";
 import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-truth-strip";
+import { TelemetryExportReadinessPanel } from "@/components/telemetry-export-readiness-panel";
 import { TelemetryRuntimeFocusStrip } from "@/components/telemetry-runtime-focus-strip";
 import { TelemetryModeHandoffStrip } from "@/components/telemetry-mode-handoff-strip";
 import { SectionHeader } from "@/components/section-header";
@@ -63,6 +64,9 @@ export default function AnalyticsPage() {
       </div>
       <div>
         <AnalystGradeDataCorridor />
+      </div>
+      <div>
+        <TelemetryExportReadinessPanel />
       </div>
       <div>
         <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading analytics summary…</div>}>
