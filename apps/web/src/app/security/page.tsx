@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { MetricsStrip } from "@/components/metrics-strip";
+import { MainnetExecutionScorecardPanel } from "@/components/mainnet-execution-scorecard-panel";
 import { AuthorityHardeningPanel } from "@/components/authority-hardening-panel";
 import { ConfidenceEngineSurface } from "@/components/confidence-engine-surface";
 import { CustodyReadinessStrip } from "@/components/custody-readiness-strip";
@@ -93,6 +94,9 @@ export default function SecurityPage() {
       </div>
       <div>
         <RealDeviceWalletMatrixPanel />
+      </div>
+      <div>
+        <MainnetExecutionScorecardPanel />
       </div>
       <div>
         <SectionHeader
