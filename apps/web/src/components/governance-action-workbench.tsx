@@ -1031,7 +1031,7 @@ export function GovernanceActionWorkbench() {
           <div className="rounded-[28px] border border-cyan-300/16 bg-[linear-gradient(180deg,rgba(11,24,41,0.92),rgba(7,14,25,0.98))] p-5 md:col-span-2">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div className="max-w-2xl">
-                <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/76">Current step · {currentStep.number}</div>
+                <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/76">Do this now · step {currentStep.number}</div>
                 <div className="mt-2 text-2xl font-semibold text-white">{currentStep.title}</div>
                 <p className="mt-3 text-sm leading-7 text-white/62">{currentStep.description}</p>
               </div>
@@ -1058,31 +1058,6 @@ export function GovernanceActionWorkbench() {
                 </Button>
               )}
             </div>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {[
-                { label: "Connect", done: connected },
-                { label: "DAO", done: effectiveDaoCreated },
-                { label: "Proposal", done: effectiveProposalCreated },
-                { label: "Commit", done: effectiveVoteCommitted },
-                { label: "Reveal", done: effectiveVoteRevealed },
-                { label: "Finalize", done: effectiveProposalFinalized },
-                { label: "Execute", done: effectiveProposalExecuted },
-              ].map(({ label, done }, index) => (
-                <div
-                  key={label}
-                  className={cn(
-                    "rounded-full border px-3 py-1.5 text-xs uppercase tracking-[0.16em]",
-                    done
-                      ? "border-emerald-300/22 bg-emerald-300/[0.12] text-emerald-100"
-                      : index === 0 && !connected
-                        ? "border-cyan-300/24 bg-cyan-300/[0.12] text-cyan-100"
-                        : "border-white/10 bg-black/20 text-white/46",
-                  )}
-                >
-                  {label}
-                </div>
-              ))}
-            </div>
             <div className="mt-4 flex flex-wrap gap-3">
               <Button
                 variant="ghost"
@@ -1101,6 +1076,33 @@ export function GovernanceActionWorkbench() {
                 <ChevronRight className={cn("h-4 w-4 transition", showAdvanced ? "rotate-90" : "")} />
               </Button>
             </div>
+            {showAdvanced ? (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {[
+                  { label: "Connect", done: connected },
+                  { label: "DAO", done: effectiveDaoCreated },
+                  { label: "Proposal", done: effectiveProposalCreated },
+                  { label: "Commit", done: effectiveVoteCommitted },
+                  { label: "Reveal", done: effectiveVoteRevealed },
+                  { label: "Finalize", done: effectiveProposalFinalized },
+                  { label: "Execute", done: effectiveProposalExecuted },
+                ].map(({ label, done }, index) => (
+                  <div
+                    key={label}
+                    className={cn(
+                      "rounded-full border px-3 py-1.5 text-xs uppercase tracking-[0.16em]",
+                      done
+                        ? "border-emerald-300/22 bg-emerald-300/[0.12] text-emerald-100"
+                        : index === 0 && !connected
+                          ? "border-cyan-300/24 bg-cyan-300/[0.12] text-cyan-100"
+                          : "border-white/10 bg-black/20 text-white/46",
+                    )}
+                  >
+                    {label}
+                  </div>
+                ))}
+              </div>
+            ) : null}
           </div>
           <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
             <div className="flex items-center justify-between gap-3">
