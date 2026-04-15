@@ -8,6 +8,7 @@ import { CustodyWorkspace } from "@/components/custody-workspace";
 import { FrontierSignalBoard } from "@/components/frontier-signal-board";
 import { IntelligenceLayerSurface } from "@/components/intelligence-layer-surface";
 import { OperationsShell } from "@/components/operations-shell";
+import { RealDeviceWalletMatrixPanel } from "@/components/real-device-wallet-matrix-panel";
 import { RuntimeOperationsReadinessPanel } from "@/components/runtime-operations-readiness-panel";
 import { SecurityCenter } from "@/components/security-center";
 import { SectionHeader } from "@/components/section-header";
@@ -89,6 +90,9 @@ export default function SecurityPage() {
       </div>
       <div>
         <RuntimeOperationsReadinessPanel />
+      </div>
+      <div>
+        <RealDeviceWalletMatrixPanel />
       </div>
       <div>
         <SectionHeader
