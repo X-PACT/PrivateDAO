@@ -69,7 +69,7 @@ export function ActionReviewModal({
     usesPayloadContinuity
       ? payload
         ? `Authoritative request object loaded · ${delivery?.state ?? payload.state} · telemetry ${payload.telemetryMode}`
-        : `Execution continuity loaded · telemetry ${executionIntent.telemetryMode}`
+        : `Execution continuity loaded · telemetry ${executionIntent?.telemetryMode ?? "packet"}`
       : summary.timelock;
   const confirmLabel = usesPayloadContinuity
     ? action === "execute_proposal"
