@@ -82,7 +82,7 @@ function formatRemainingSeconds(seconds: number) {
   return `${hours}h ${minuteRemainder}m`;
 }
 
-function getActionAnchorId(action: CoreGovernanceInstructionName) {
+function getActionAnchorId(action: CoreGovernanceInstructionName | null) {
   switch (action) {
     case "create_proposal":
       return "proposal-review-action";
