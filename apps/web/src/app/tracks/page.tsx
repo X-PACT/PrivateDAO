@@ -4,6 +4,7 @@ import { CompetitionReadinessSurface } from "@/components/competition-readiness-
 import { FrontierSignalBoard } from "@/components/frontier-signal-board";
 import { OperationsShell } from "@/components/operations-shell";
 import { StrategicOpportunitySurface } from "@/components/strategic-opportunity-surface";
+import { CapitalReadinessPacketStrip } from "@/components/capital-readiness-packet-strip";
 import { SolutionCorridors } from "@/components/solution-corridors";
 import { VideoCenter } from "@/components/video-center";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -33,6 +34,9 @@ export default function TracksPage() {
       </div>
       <div>
         <StrategicOpportunitySurface />
+      </div>
+      <div>
+        <CapitalReadinessPacketStrip />
       </div>
       <div>
         <FrontierSignalBoard />

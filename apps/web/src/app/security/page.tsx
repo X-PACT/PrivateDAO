@@ -11,6 +11,7 @@ import { OperationsShell } from "@/components/operations-shell";
 import { SecurityCenter } from "@/components/security-center";
 import { SectionHeader } from "@/components/section-header";
 import { ZkMatrixSurface } from "@/components/zk-matrix-surface";
+import { ConfidentialPayoutEvidenceStrip } from "@/components/confidential-payout-evidence-strip";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
@@ -77,6 +78,9 @@ export default function SecurityPage() {
       </div>
       <div>
         <ConfidenceEngineSurface />
+      </div>
+      <div>
+        <ConfidentialPayoutEvidenceStrip />
       </div>
       <div>
         <SectionHeader

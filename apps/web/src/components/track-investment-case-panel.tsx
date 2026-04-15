@@ -17,6 +17,22 @@ export function TrackInvestmentCasePanel({ workspace }: TrackInvestmentCasePanel
   const commercialization = getTrackCommercializationPlan(workspace);
   const mainnet = getTrackMainnetGatePlan(workspace);
   const narrative = getTrackNarrativePlan(workspace);
+  const specialPacketHref =
+    workspace.slug === "rpc-infrastructure" || workspace.slug === "dune-analytics"
+      ? "/documents/telemetry-export-packet"
+      : workspace.slug === "encrypt-ika" || workspace.slug === "umbra-confidential-payout"
+        ? "/documents/confidential-payout-evidence-packet"
+        : workspace.slug === "startup-accelerator" || workspace.slug === "poland-grants"
+          ? "/documents/capital-readiness-packet"
+          : null;
+  const specialPacketLabel =
+    workspace.slug === "rpc-infrastructure" || workspace.slug === "dune-analytics"
+      ? "Telemetry export packet"
+      : workspace.slug === "encrypt-ika" || workspace.slug === "umbra-confidential-payout"
+        ? "Confidential payout packet"
+        : workspace.slug === "startup-accelerator" || workspace.slug === "poland-grants"
+          ? "Capital readiness packet"
+          : null;
 
   return (
     <Card>
@@ -106,6 +122,15 @@ export function TrackInvestmentCasePanel({ workspace }: TrackInvestmentCasePanel
         </div>
 
         <div className="flex flex-wrap gap-3">
+          {specialPacketHref && specialPacketLabel ? (
+            <Link
+              href={specialPacketHref}
+              className="inline-flex items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-xs uppercase tracking-[0.18em] text-cyan-100 transition hover:border-cyan-300/30 hover:text-white"
+            >
+              {specialPacketLabel}
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </Link>
+          ) : null}
           {technical.evidenceRoutes.slice(0, 4).map((route) => (
             <Link
               key={`${workspace.slug}-${route.href}`}

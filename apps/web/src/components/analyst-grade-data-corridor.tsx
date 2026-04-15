@@ -23,7 +23,7 @@ const exportSummaries = [
   },
   {
     title: "Export-ready route",
-    body: "The telemetry packet now gives a compact path into diagnostics, analytics, runtime evidence, and the hosted-read proof chain.",
+    body: "The telemetry export packet now gives a compact path into diagnostics, analytics, runtime evidence, and the hosted-read proof chain.",
     icon: TowerControl,
   },
 ] as const;
@@ -53,6 +53,10 @@ export function AnalystGradeDataCorridor() {
         </div>
 
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          <Link href="/documents/telemetry-export-packet" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
+            Open telemetry export packet
+            <ArrowUpRight className="h-4 w-4" />
+          </Link>
           <Link href="/documents/reviewer-telemetry-packet" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
             Open telemetry packet
             <ArrowUpRight className="h-4 w-4" />

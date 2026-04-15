@@ -11,6 +11,7 @@ import { OperationsShell } from "@/components/operations-shell";
 import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-truth-strip";
 import { TelemetryRuntimeFocusStrip } from "@/components/telemetry-runtime-focus-strip";
 import { TelemetryModeHandoffStrip } from "@/components/telemetry-mode-handoff-strip";
+import { SectionHeader } from "@/components/section-header";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
@@ -43,6 +44,13 @@ export default function AnalyticsPage() {
           id="telemetry-inspection"
           title="Telemetry truth for analytics reviewers"
           description="Keep freshness, hosted-read scale, finalized governance counts, and the reviewer packet visible above the analytics surface itself."
+        />
+      </div>
+      <div>
+        <SectionHeader
+          eyebrow="Dune + RPC fit"
+          title="This analytics route is now part of the competition submission surface"
+          description="Use this corridor when judges need to see exportable telemetry, hosted-read value, runtime proof, and commercial infrastructure logic in one place."
         />
       </div>
       <div>
