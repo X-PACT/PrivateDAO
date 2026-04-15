@@ -578,6 +578,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/runtime-operations-readiness-packet.md`,
   },
   {
+    slug: "monitoring-delivery-evidence-packet",
+    title: "Monitoring Delivery Evidence Packet",
+    category: "Operations",
+    summary: "Explains what is already defined for monitoring and alerts, what still requires external delivery, and why this is one of the clearest execution unlocks before honest mainnet claims.",
+    audience: "Grant reviewers, accelerator reviewers, operators, founders",
+    boundary: "Operations packet only; it does not claim live alert routing or production incident ownership is already closed.",
+    docPath: "docs/monitoring-delivery-evidence-packet.md",
+    rawHref: `${repositoryBlobBase}/docs/monitoring-delivery-evidence-packet.md`,
+  },
+  {
     slug: "competition-execution-playbook",
     title: "Competition Execution Playbook",
     category: "Strategy",
