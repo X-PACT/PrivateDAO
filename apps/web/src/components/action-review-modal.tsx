@@ -87,8 +87,10 @@ export function ActionReviewModal({
               : "Continue in UI";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#03050e]/84 px-4 backdrop-blur-md">
-      <div className="w-full max-w-4xl rounded-[32px] border border-white/12 bg-[linear-gradient(180deg,rgba(12,16,30,0.97),rgba(6,8,20,0.99))] p-6 shadow-[0_30px_120px_rgba(0,0,0,0.48)] sm:p-8">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-[#03050e]/84 px-4 py-4 backdrop-blur-md sm:flex sm:items-center sm:justify-center sm:py-6">
+      <div className="mx-auto w-full max-w-4xl overflow-hidden rounded-[32px] border border-white/12 bg-[linear-gradient(180deg,rgba(12,16,30,0.97),rgba(6,8,20,0.99))] shadow-[0_30px_120px_rgba(0,0,0,0.48)]">
+        <div className="max-h-[calc(100vh-2rem)] overflow-y-auto overscroll-contain p-6 sm:max-h-[calc(100vh-3rem)] sm:p-8">
+        <div className="sticky top-0 z-10 -mx-6 -mt-6 mb-6 border-b border-white/8 bg-[linear-gradient(180deg,rgba(12,16,30,0.98),rgba(12,16,30,0.94))] px-6 py-6 backdrop-blur-md sm:-mx-8 sm:-mt-8 sm:px-8 sm:py-8">
         <div className="flex items-start justify-between gap-4">
           <div>
             <div className="text-[11px] uppercase tracking-[0.32em] text-cyan-200/72">Pre-sign review</div>
@@ -105,6 +107,7 @@ export function ActionReviewModal({
           >
             <X className="h-5 w-5" />
           </button>
+        </div>
         </div>
 
         <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -292,13 +295,16 @@ export function ActionReviewModal({
           <OnchainParityPanel action={action} preparedSummary={summary} />
         </div>
 
-        <div className="mt-6 flex flex-wrap gap-3">
+        <div className="sticky bottom-0 z-10 -mx-6 -mb-6 mt-6 border-t border-white/8 bg-[linear-gradient(180deg,rgba(12,16,30,0.92),rgba(6,8,20,0.98))] px-6 py-5 backdrop-blur-md sm:-mx-8 sm:-mb-8 sm:px-8 sm:py-6">
+        <div className="flex flex-wrap gap-3">
           <Button disabled={payloadAlreadySubmitted} onClick={onConfirm}>
             {confirmLabel}
           </Button>
           <Button variant="secondary" onClick={onClose}>
             Go back
           </Button>
+        </div>
+        </div>
         </div>
       </div>
     </div>
