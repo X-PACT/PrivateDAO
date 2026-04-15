@@ -1121,6 +1121,28 @@ export function GovernanceActionWorkbench() {
             </div>
           </div>
 
+          {hasPayloadDrivenExecution ? (
+            <div className="rounded-[24px] border border-amber-300/18 bg-amber-300/[0.08] p-5 md:col-span-2">
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div className="max-w-3xl">
+                  <div className="text-[11px] uppercase tracking-[0.24em] text-amber-100/80">Service continuity lane detected</div>
+                  <div className="mt-2 text-base font-medium text-white">You are viewing a governed service payload, not just the normal proposal form.</div>
+                  <div className="mt-2 text-sm leading-7 text-white/64">
+                    If you want the normal DAO proposal flow, switch back to a clean govern run. If you want to inspect the governed service request, open advanced and use the payload controls there.
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  <Button size="sm" onClick={handleResetSession}>
+                    Return to normal govern flow
+                  </Button>
+                  <Button size="sm" variant="secondary" onClick={() => setShowAdvanced(true)}>
+                    Inspect payload lane
+                  </Button>
+                </div>
+              </div>
+            </div>
+          ) : null}
+
           {showAdvanced && handoff?.proposalReview ? (
             <div className="rounded-[24px] border border-cyan-300/16 bg-cyan-300/[0.08] p-5 md:col-span-2">
               <div className="flex flex-wrap items-start justify-between gap-4">
@@ -1246,7 +1268,206 @@ export function GovernanceActionWorkbench() {
             </div>
           ) : null}
 
-          {hasPayloadDrivenExecution ? (
+          {showDaoCard ? (
+          <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
+            <div className="flex items-center gap-3">
+              <FolderPlus className="h-4 w-4 text-emerald-300" />
+              <div className="text-base font-medium text-white">Step 1 · Create DAO</div>
+            </div>
+            <input
+              value={daoName}
+              onChange={(event) => setDaoName(event.target.value)}
+              className="mt-4 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+              placeholder="DAO name"
+            />
+            <Button className="mt-4 w-full" disabled={!canCreateDao} onClick={() => openReview("initialize_dao")}>
+              {createDaoRuntime.status === "submitting" ? "Awaiting wallet..." : "Create DAO on devnet"}
+            </Button>
+            {createDaoRuntime.message ? (
+              <div
+                className={cn(
+                  "mt-4 rounded-2xl border p-4 text-sm leading-7",
+                  createDaoRuntime.status === "error"
+                    ? "border-rose-300/18 bg-rose-300/10 text-rose-100/84"
+                    : createDaoRuntime.status === "success"
+                      ? "border-emerald-300/18 bg-emerald-300/[0.08] text-emerald-100/84"
+                      : "border-cyan-300/16 bg-cyan-300/[0.08] text-cyan-100/84",
+                )}
+              >
+                <div>{createDaoRuntime.message}</div>
+                {createDaoRuntime.daoAddress ? (
+                  <div className="mt-2 break-all text-xs text-white/70">
+                    DAO: {createDaoRuntime.daoAddress}
+                  </div>
+                ) : null}
+                {createDaoRuntime.governanceMint ? (
+                  <div className="mt-1 break-all text-xs text-white/70">
+                    Governance mint: {createDaoRuntime.governanceMint}
+                  </div>
+                ) : null}
+                {createDaoRuntime.signature ? (
+                  <div className="mt-1 break-all text-xs text-white/70">
+                    Signature: {createDaoRuntime.signature}
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+          </div>
+          ) : null}
+
+          {showProposalCard ? (
+          <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
+            <div className="flex items-center gap-3">
+              <FilePlus2 className="h-4 w-4 text-cyan-300" />
+              <div className="text-base font-medium text-white">Step 2 · Create Proposal</div>
+            </div>
+            <div className="mt-4 grid gap-5 xl:grid-cols-[minmax(0,1.1fr)_minmax(300px,0.9fr)]">
+              <div>
+                <input
+                  value={proposalTitle}
+                  onChange={(event) => setProposalTitle(event.target.value)}
+                  className="h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                  placeholder="Proposal title"
+                />
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {[
+                    ["standard", "Standard"],
+                    ["sol", "Send SOL"],
+                    ["token", "Send Token"],
+                  ].map(([mode, label]) => (
+                    <button
+                      key={mode}
+                      type="button"
+                      onClick={() => setProposalTreasuryMode(mode as "standard" | "sol" | "token")}
+                      className={cn(
+                        "rounded-full border px-3 py-1.5 text-xs uppercase tracking-[0.16em] transition",
+                        proposalTreasuryMode === mode
+                          ? "border-cyan-300/30 bg-cyan-300/10 text-cyan-100"
+                          : "border-white/10 bg-black/20 text-white/60",
+                      )}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+                <input
+                  value={proposalTreasuryRecipient}
+                  onChange={(event) => setProposalTreasuryRecipient(event.target.value)}
+                  className="mt-3 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                  placeholder={
+                    proposalTreasuryMode === "standard"
+                      ? "Optional treasury recipient"
+                      : "Treasury recipient wallet"
+                  }
+                />
+                <input
+                  value={proposalTreasuryAmountSol}
+                  onChange={(event) => setProposalTreasuryAmountSol(event.target.value)}
+                  className="mt-3 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                  placeholder={
+                    proposalTreasuryMode === "token"
+                      ? "Token amount in raw units"
+                      : "Treasury amount in SOL"
+                  }
+                />
+                {proposalTreasuryMode === "token" ? (
+                  <input
+                    value={proposalTreasuryTokenMint}
+                    onChange={(event) => setProposalTreasuryTokenMint(event.target.value)}
+                    className="mt-3 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
+                    placeholder="Token mint"
+                  />
+                ) : null}
+                <p className="mt-3 text-sm leading-7 text-white/60">
+                  {proposalTreasuryMode === "standard"
+                    ? "Standard proposals carry no treasury movement."
+                    : proposalTreasuryMode === "token"
+                      ? "SendToken proposals use a recipient wallet plus token mint. Amount is currently entered in raw token units."
+                      : "SendSol proposals move SOL from the treasury to the specified recipient when executed."}
+                </p>
+                {proposalTreasuryDraft.error ? (
+                  <div className="mt-3 rounded-2xl border border-rose-300/20 bg-rose-300/[0.08] p-3 text-sm leading-7 text-rose-100/82">
+                    {proposalTreasuryDraft.error}
+                  </div>
+                ) : null}
+                <Button className="mt-4 w-full" disabled={!canSubmitLiveProposal} onClick={() => openReview("create_proposal")}>
+                  Create Proposal
+                </Button>
+                {createProposalRuntime.status !== "idle" ? (
+                  <div
+                    className={cn(
+                      "mt-4 rounded-2xl border p-3 text-sm leading-7",
+                      createProposalRuntime.status === "error"
+                        ? "border-rose-300/20 bg-rose-300/[0.08] text-rose-100/82"
+                        : createProposalRuntime.status === "success"
+                          ? "border-emerald-300/18 bg-emerald-300/[0.08] text-emerald-100/82"
+                          : "border-cyan-300/18 bg-cyan-300/[0.08] text-cyan-100/82",
+                    )}
+                  >
+                    <div>{createProposalRuntime.message}</div>
+                    {createProposalRuntime.proposalAddress ? (
+                      <div className="mt-2 break-all text-white/70">Proposal {createProposalRuntime.proposalAddress}</div>
+                    ) : null}
+                    {createProposalRuntime.signature ? (
+                      <div className="mt-1 break-all text-white/60">Signature {createProposalRuntime.signature}</div>
+                    ) : null}
+                  </div>
+                ) : liveProposalRuntime ? (
+                  <div className="mt-4 rounded-2xl border border-emerald-300/18 bg-emerald-300/[0.08] p-3 text-sm leading-7 text-emerald-100/82">
+                    <div>Last live proposal submit cleared from the web wallet flow.</div>
+                    <div className="mt-2 break-all text-white/70">Proposal {liveProposalRuntime.address}</div>
+                    <div className="mt-1 break-all text-white/60">Signature {liveProposalRuntime.signature}</div>
+                  </div>
+                ) : null}
+              </div>
+
+              <div className="space-y-3">
+                <div className="rounded-[22px] border border-cyan-300/16 bg-cyan-300/[0.08] p-4 text-sm text-white/72">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-cyan-100/72">Live DAO lane</div>
+                  {liveDaoRuntime?.address ? (
+                    <>
+                      <div className="mt-2 break-all text-white">{liveDaoRuntime.address}</div>
+                      <div className="mt-1 break-all text-white/62">Governance mint {liveDaoRuntime.governanceMint}</div>
+                    </>
+                  ) : (
+                    <div className="mt-2 text-white/62">Create the DAO first so proposal submit can target a real on-chain lane.</div>
+                  )}
+                </div>
+
+                <div className="rounded-[22px] border border-white/10 bg-black/20 p-4 text-sm leading-7 text-white/62">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Proposal mode</div>
+                  <div className="mt-2 text-white">
+                    {proposalTreasuryMode === "standard"
+                      ? "Standard governance proposal"
+                      : proposalTreasuryMode === "token"
+                        ? "Treasury motion · Send token"
+                        : "Treasury motion · Send SOL"}
+                  </div>
+                  {proposalTreasuryDraft.action ? (
+                    <div className="mt-2 text-white/62">
+                      {proposalTreasuryDraft.action.actionType === "SendToken"
+                        ? `${proposalTreasuryAmountSol.trim()} raw units of ${proposalTreasuryTokenMint.trim()} to ${proposalTreasuryRecipient.trim()}`
+                        : `${proposalTreasuryAmountSol.trim()} SOL to ${proposalTreasuryRecipient.trim()}`}
+                    </div>
+                  ) : (
+                    <div className="mt-2 text-white/52">
+                      Keep this as Standard if you only want a normal governance proposal.
+                    </div>
+                  )}
+                </div>
+
+                <div className="rounded-[22px] border border-white/10 bg-black/20 p-4 text-sm leading-7 text-white/62">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Before you click</div>
+                  <div className="mt-2 text-white/62">
+                    Use the same connected wallet that created the live DAO. The review modal will appear first, then Solflare opens for signature.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          ) : null}
+
+          {showAdvanced && hasPayloadDrivenExecution ? (
             <>
               <div className="rounded-[24px] border border-emerald-300/16 bg-emerald-300/[0.08] p-5">
                 <div className="flex items-center gap-3">
@@ -1344,209 +1565,10 @@ export function GovernanceActionWorkbench() {
                 </div>
               </div>
             </>
-          ) : (
-            <>
-              {showDaoCard ? (
-              <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
-                <div className="flex items-center gap-3">
-                  <FolderPlus className="h-4 w-4 text-emerald-300" />
-                  <div className="text-base font-medium text-white">Step 1 · Create DAO</div>
-                </div>
-                <input
-                  value={daoName}
-                  onChange={(event) => setDaoName(event.target.value)}
-                  className="mt-4 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
-                  placeholder="DAO name"
-                />
-                <Button className="mt-4 w-full" disabled={!canCreateDao} onClick={() => openReview("initialize_dao")}>
-                  {createDaoRuntime.status === "submitting" ? "Awaiting wallet..." : "Create DAO on devnet"}
-                </Button>
-                {createDaoRuntime.message ? (
-                  <div
-                    className={cn(
-                      "mt-4 rounded-2xl border p-4 text-sm leading-7",
-                      createDaoRuntime.status === "error"
-                        ? "border-rose-300/18 bg-rose-300/10 text-rose-100/84"
-                        : createDaoRuntime.status === "success"
-                          ? "border-emerald-300/18 bg-emerald-300/[0.08] text-emerald-100/84"
-                          : "border-cyan-300/16 bg-cyan-300/[0.08] text-cyan-100/84",
-                    )}
-                  >
-                    <div>{createDaoRuntime.message}</div>
-                    {createDaoRuntime.daoAddress ? (
-                      <div className="mt-2 break-all text-xs text-white/70">
-                        DAO: {createDaoRuntime.daoAddress}
-                      </div>
-                    ) : null}
-                    {createDaoRuntime.governanceMint ? (
-                      <div className="mt-1 break-all text-xs text-white/70">
-                        Governance mint: {createDaoRuntime.governanceMint}
-                      </div>
-                    ) : null}
-                    {createDaoRuntime.signature ? (
-                      <div className="mt-1 break-all text-xs text-white/70">
-                        Signature: {createDaoRuntime.signature}
-                      </div>
-                    ) : null}
-                  </div>
-                ) : null}
-              </div>
-              ) : null}
+          ) : null}
 
-              {showProposalCard ? (
-              <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
-                <div className="flex items-center gap-3">
-                  <FilePlus2 className="h-4 w-4 text-cyan-300" />
-                  <div className="text-base font-medium text-white">Step 2 · Create Proposal</div>
-                </div>
-                <div className="mt-4 grid gap-5 xl:grid-cols-[minmax(0,1.1fr)_minmax(300px,0.9fr)]">
-                  <div>
-                    <input
-                      value={proposalTitle}
-                      onChange={(event) => setProposalTitle(event.target.value)}
-                      className="h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
-                      placeholder="Proposal title"
-                    />
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {[
-                        ["standard", "Standard"],
-                        ["sol", "Send SOL"],
-                        ["token", "Send Token"],
-                      ].map(([mode, label]) => (
-                        <button
-                          key={mode}
-                          type="button"
-                          onClick={() => setProposalTreasuryMode(mode as "standard" | "sol" | "token")}
-                          className={cn(
-                            "rounded-full border px-3 py-1.5 text-xs uppercase tracking-[0.16em] transition",
-                            proposalTreasuryMode === mode
-                              ? "border-cyan-300/30 bg-cyan-300/10 text-cyan-100"
-                              : "border-white/10 bg-black/20 text-white/60",
-                          )}
-                        >
-                          {label}
-                        </button>
-                      ))}
-                    </div>
-                    <input
-                      value={proposalTreasuryRecipient}
-                      onChange={(event) => setProposalTreasuryRecipient(event.target.value)}
-                      className="mt-3 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
-                      placeholder={
-                        proposalTreasuryMode === "standard"
-                          ? "Optional treasury recipient"
-                          : "Treasury recipient wallet"
-                      }
-                    />
-                    <input
-                      value={proposalTreasuryAmountSol}
-                      onChange={(event) => setProposalTreasuryAmountSol(event.target.value)}
-                      className="mt-3 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
-                      placeholder={
-                        proposalTreasuryMode === "token"
-                          ? "Token amount in raw units"
-                          : "Treasury amount in SOL"
-                      }
-                    />
-                    {proposalTreasuryMode === "token" ? (
-                      <input
-                        value={proposalTreasuryTokenMint}
-                        onChange={(event) => setProposalTreasuryTokenMint(event.target.value)}
-                        className="mt-3 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
-                        placeholder="Token mint"
-                      />
-                    ) : null}
-                    <p className="mt-3 text-sm leading-7 text-white/60">
-                      {proposalTreasuryMode === "standard"
-                        ? "Standard proposals carry no treasury movement."
-                        : proposalTreasuryMode === "token"
-                          ? "SendToken proposals use a recipient wallet plus token mint. Amount is currently entered in raw token units."
-                          : "SendSol proposals move SOL from the treasury to the specified recipient when executed."}
-                    </p>
-                    {proposalTreasuryDraft.error ? (
-                      <div className="mt-3 rounded-2xl border border-rose-300/20 bg-rose-300/[0.08] p-3 text-sm leading-7 text-rose-100/82">
-                        {proposalTreasuryDraft.error}
-                      </div>
-                    ) : null}
-                    <Button className="mt-4 w-full" disabled={!canSubmitLiveProposal} onClick={() => openReview("create_proposal")}>
-                      Create Proposal
-                    </Button>
-                    {createProposalRuntime.status !== "idle" ? (
-                      <div
-                        className={cn(
-                          "mt-4 rounded-2xl border p-3 text-sm leading-7",
-                          createProposalRuntime.status === "error"
-                            ? "border-rose-300/20 bg-rose-300/[0.08] text-rose-100/82"
-                            : createProposalRuntime.status === "success"
-                              ? "border-emerald-300/18 bg-emerald-300/[0.08] text-emerald-100/82"
-                              : "border-cyan-300/18 bg-cyan-300/[0.08] text-cyan-100/82",
-                        )}
-                      >
-                        <div>{createProposalRuntime.message}</div>
-                        {createProposalRuntime.proposalAddress ? (
-                          <div className="mt-2 break-all text-white/70">Proposal {createProposalRuntime.proposalAddress}</div>
-                        ) : null}
-                        {createProposalRuntime.signature ? (
-                          <div className="mt-1 break-all text-white/60">Signature {createProposalRuntime.signature}</div>
-                        ) : null}
-                      </div>
-                    ) : liveProposalRuntime ? (
-                      <div className="mt-4 rounded-2xl border border-emerald-300/18 bg-emerald-300/[0.08] p-3 text-sm leading-7 text-emerald-100/82">
-                        <div>Last live proposal submit cleared from the web wallet flow.</div>
-                        <div className="mt-2 break-all text-white/70">Proposal {liveProposalRuntime.address}</div>
-                        <div className="mt-1 break-all text-white/60">Signature {liveProposalRuntime.signature}</div>
-                      </div>
-                    ) : null}
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="rounded-[22px] border border-cyan-300/16 bg-cyan-300/[0.08] p-4 text-sm text-white/72">
-                      <div className="text-[11px] uppercase tracking-[0.2em] text-cyan-100/72">Live DAO lane</div>
-                      {liveDaoRuntime?.address ? (
-                        <>
-                          <div className="mt-2 break-all text-white">{liveDaoRuntime.address}</div>
-                          <div className="mt-1 break-all text-white/62">Governance mint {liveDaoRuntime.governanceMint}</div>
-                        </>
-                      ) : (
-                        <div className="mt-2 text-white/62">Create the DAO first so proposal submit can target a real on-chain lane.</div>
-                      )}
-                    </div>
-
-                    <div className="rounded-[22px] border border-white/10 bg-black/20 p-4 text-sm leading-7 text-white/62">
-                      <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Proposal mode</div>
-                      <div className="mt-2 text-white">
-                        {proposalTreasuryMode === "standard"
-                          ? "Standard governance proposal"
-                          : proposalTreasuryMode === "token"
-                            ? "Treasury motion · Send token"
-                            : "Treasury motion · Send SOL"}
-                      </div>
-                      {proposalTreasuryDraft.action ? (
-                        <div className="mt-2 text-white/62">
-                          {proposalTreasuryDraft.action.actionType === "SendToken"
-                            ? `${proposalTreasuryAmountSol.trim()} raw units of ${proposalTreasuryTokenMint.trim()} to ${proposalTreasuryRecipient.trim()}`
-                            : `${proposalTreasuryAmountSol.trim()} SOL to ${proposalTreasuryRecipient.trim()}`}
-                        </div>
-                      ) : (
-                        <div className="mt-2 text-white/52">
-                          Keep this as Standard if you only want a normal governance proposal.
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="rounded-[22px] border border-white/10 bg-black/20 p-4 text-sm leading-7 text-white/62">
-                      <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Before you click</div>
-                      <div className="mt-2 text-white/62">
-                        Use the same connected wallet that created the live DAO. The review modal will appear first, then Solflare opens for signature.
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              ) : null}
-
-              {showCommitCard ? (
-              <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
+          {showCommitCard ? (
+          <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
                 <div className="flex items-center gap-3">
                   <Vote className="h-4 w-4 text-fuchsia-300" />
                   <div className="text-base font-medium text-white">Step 3 · Commit Vote</div>
@@ -1615,10 +1637,10 @@ export function GovernanceActionWorkbench() {
                   </div>
                 ) : null}
               </div>
-              ) : null}
+          ) : null}
 
-              {showRevealCard ? (
-              <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
+          {showRevealCard ? (
+          <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
                 <div className="flex items-center gap-3">
                   <ShieldCheck className="h-4 w-4 text-emerald-300" />
                   <div className="text-base font-medium text-white">Step 4 · Reveal Vote</div>
@@ -1660,10 +1682,10 @@ export function GovernanceActionWorkbench() {
                   </div>
                 ) : null}
               </div>
-              ) : null}
+          ) : null}
 
-              {showFinalizeCard ? (
-              <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
+          {showFinalizeCard ? (
+          <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
                 <div className="flex items-center gap-3">
                   <Flag className="h-4 w-4 text-cyan-300" />
                   <div className="text-base font-medium text-white">Step 5 · Finalize Proposal</div>
@@ -1705,10 +1727,10 @@ export function GovernanceActionWorkbench() {
                   </div>
                 ) : null}
               </div>
-              ) : null}
+          ) : null}
 
-              {showExecuteCard ? (
-              <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
+          {showExecuteCard ? (
+          <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
                 <div className="flex items-center gap-3">
                   <Play className="h-4 w-4 text-amber-300" />
                   <div className="text-base font-medium text-white">Step 6 · Execute Proposal</div>
@@ -1752,9 +1774,7 @@ export function GovernanceActionWorkbench() {
                   </div>
                 ) : null}
               </div>
-              ) : null}
-            </>
-          )}
+          ) : null}
 
           <details className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
             <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3">

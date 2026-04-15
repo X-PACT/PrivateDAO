@@ -51,6 +51,32 @@ export function HomeShell() {
       cta: "Open live state",
     },
   ];
+  const techBadges = [
+    {
+      label: "FHE / REFHE",
+      tone: "text-emerald-100",
+      badgeClass: "border-emerald-300/25 bg-emerald-300/[0.14] text-emerald-100",
+      detail: "Confidential treasury and settlement posture.",
+    },
+    {
+      label: "ZK",
+      tone: "text-violet-100",
+      badgeClass: "border-violet-300/25 bg-violet-300/[0.14] text-violet-100",
+      detail: "Verifiable privacy without exposing raw decision data.",
+    },
+    {
+      label: "MagicBlock",
+      tone: "text-cyan-100",
+      badgeClass: "border-cyan-300/25 bg-cyan-300/[0.14] text-cyan-100",
+      detail: "Responsive execution corridor for wallet-first actions.",
+    },
+    {
+      label: "Fast RPC",
+      tone: "text-amber-100",
+      badgeClass: "border-amber-300/25 bg-amber-300/[0.14] text-amber-100",
+      detail: "Reliable live reads, signatures, and action logs.",
+    },
+  ];
   return (
     <main className="pb-20 sm:pb-24">
       <section className="mx-auto w-full max-w-7xl px-4 pt-8 sm:px-6 sm:pt-12 lg:px-8 lg:pt-18">
@@ -87,6 +113,17 @@ export function HomeShell() {
               >
                 Open judge proof view
               </a>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+              {techBadges.map((item) => (
+                <div key={item.label} className="rounded-[20px] border border-white/10 bg-white/[0.03] px-4 py-3">
+                  <Badge className={cn("border text-[10px] uppercase tracking-[0.22em]", item.badgeClass)}>
+                    {item.label}
+                  </Badge>
+                  <div className="mt-2 text-sm leading-6 text-white/62">{item.detail}</div>
+                </div>
+              ))}
             </div>
 
             <div className="grid gap-4 sm:grid-cols-3">
