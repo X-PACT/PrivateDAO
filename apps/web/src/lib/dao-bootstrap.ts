@@ -374,6 +374,60 @@ async function resolveLatestBlockhash(connection: Connection) {
     : new Error("Unable to resolve a devnet blockhash for DAO bootstrap.");
 }
 
+export async function awaitLiveSignatureOnCluster({
+  connection,
+  signature,
+  timeoutMs = 120_000,
+  pollIntervalMs = 2_000,
+}: {
+  connection: Connection;
+  signature: string;
+  timeoutMs?: number;
+  pollIntervalMs?: number;
+}) {
+  const start = Date.now();
+
+  while (Date.now() - start < timeoutMs) {
+    const statuses = await connection.getSignatureStatuses([signature], {
+      searchTransactionHistory: true,
+    });
+    const status = statuses.value[0];
+
+    if (status) {
+      if (status.err) {
+        throw new Error(`Devnet rejected the submitted transaction: ${JSON.stringify(status.err)}`);
+      }
+
+      if (status.confirmationStatus === "confirmed" || status.confirmationStatus === "finalized") {
+        return status;
+      }
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, pollIntervalMs));
+  }
+
+  const transaction = await connection.getTransaction(signature, {
+    commitment: "confirmed",
+    maxSupportedTransactionVersion: 0,
+  });
+  if (transaction?.meta?.err) {
+    throw new Error(`Devnet returned an on-chain execution error: ${JSON.stringify(transaction.meta.err)}`);
+  }
+  if (transaction) {
+    return {
+      confirmationStatus: "confirmed" as const,
+      confirmations: null,
+      err: null,
+      slot: transaction.slot,
+      status: { Ok: null },
+    };
+  }
+
+  throw new Error(
+    "The wallet returned a signature, but the transaction is not visible on Devnet. Confirm the wallet is on Devnet, then retry once.",
+  );
+}
+
 function decodeDaoAccount(data: Uint8Array): DaoAccountDetails {
   const offset = { value: 8 };
   const authority = new PublicKey(data.slice(offset.value, offset.value + 32)).toBase58();

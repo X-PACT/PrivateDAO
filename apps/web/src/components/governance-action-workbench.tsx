@@ -22,6 +22,7 @@ import {
   buildExecuteProposalTransaction,
   buildFinalizeProposalTransaction,
   buildRevealVoteTransaction,
+  awaitLiveSignatureOnCluster,
   computeProposalCommitment,
   fetchGovernanceHolderSnapshot,
   fetchProposalAccountDetails,
@@ -610,7 +611,7 @@ export function GovernanceActionWorkbench() {
         signers: [bootstrap.mintSigner],
       });
 
-      await connection.confirmTransaction(signature, "confirmed");
+      await awaitLiveSignatureOnCluster({ connection, signature });
 
       createDao({
         address: bootstrap.dao.toBase58(),
@@ -717,7 +718,7 @@ export function GovernanceActionWorkbench() {
         preflightCommitment: "confirmed",
       });
 
-      await connection.confirmTransaction(signature, "confirmed");
+      await awaitLiveSignatureOnCluster({ connection, signature });
 
       createProposal({
         address: proposalSubmission.proposal.toBase58(),
@@ -816,7 +817,7 @@ export function GovernanceActionWorkbench() {
         preflightCommitment: "confirmed",
       });
 
-      await connection.confirmTransaction(signature, "confirmed");
+      await awaitLiveSignatureOnCluster({ connection, signature });
 
       commitVote({
         commitmentHex: toHex(commitment),
@@ -885,7 +886,7 @@ export function GovernanceActionWorkbench() {
         preflightCommitment: "confirmed",
       });
 
-      await connection.confirmTransaction(signature, "confirmed");
+      await awaitLiveSignatureOnCluster({ connection, signature });
 
       revealVote({
         proposalAddress: proposalAddress.toBase58(),
@@ -946,7 +947,7 @@ export function GovernanceActionWorkbench() {
         preflightCommitment: "confirmed",
       });
 
-      await connection.confirmTransaction(signature, "confirmed");
+      await awaitLiveSignatureOnCluster({ connection, signature });
 
       finalizeProposal(signature);
       recordLog("Proposal finalized live", `${proposalAddress.toBase58()} · ${signature}`);
@@ -1025,7 +1026,7 @@ export function GovernanceActionWorkbench() {
         preflightCommitment: "confirmed",
       });
 
-      await connection.confirmTransaction(signature, "confirmed");
+      await awaitLiveSignatureOnCluster({ connection, signature });
 
       executeProposal(signature);
       recordLog("Proposal executed live", `${proposalAddress.toBase58()} · ${signature}`);
