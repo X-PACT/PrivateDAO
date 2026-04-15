@@ -57,7 +57,7 @@ function getCommercialCapsuleContext(workspace: CompetitionTrackWorkspace, comme
 
   if (commercialProfile === "vendor-payout") {
     return {
-      bestDemoRoute: "/command-center",
+      bestDemoRoute: "/govern",
       trustLabel: "Vendor execution trust",
       trustSummary:
         "Trust framing stays operational: show governed payout execution, diagnostics, and reviewable treasury motion together so vendor disbursement reads as controlled product behavior.",
@@ -72,7 +72,7 @@ function getCommercialCapsuleContext(workspace: CompetitionTrackWorkspace, comme
 
   if (commercialProfile === "contributor-payout") {
     return {
-      bestDemoRoute: "/command-center",
+      bestDemoRoute: "/govern",
       trustLabel: "Contributor trust",
       trustSummary:
         "Trust framing stays contributor-aware: the product should demonstrate retained contributor payouts as governed treasury actions with visible policy and execution review.",

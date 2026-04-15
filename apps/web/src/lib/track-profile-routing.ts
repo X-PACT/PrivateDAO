@@ -76,9 +76,9 @@ export function getCommercialContinuityBundle(
     return {
       title: "Governed payout continuity",
       summary:
-        "This commercial path stays operational: command execution, diagnostics, and proof are kept in one visible bundle so payouts read as governed treasury actions rather than ad-hoc transfers.",
+        "This commercial path stays operational: governed execution, diagnostics, and proof are kept in one visible bundle so payouts read as treasury policy instead of ad-hoc transfers.",
       routes: [
-        { label: "Command Center", href: "/command-center" },
+        { label: "Govern", href: "/govern" },
         { label: "Diagnostics", href: "/diagnostics" },
         { label: "Trust", href: "/security" },
         { label: "Proof", href: workspace.proofRoute },

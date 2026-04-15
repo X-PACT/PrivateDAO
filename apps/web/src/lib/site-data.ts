@@ -1673,7 +1673,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     primaryCorridor: "Services + Trust + Awards",
     liveRoute: "/services",
     judgeRoute: "/trust",
-    proofRoute: "/documents/capital-readiness-packet",
+    proofRoute: "/documents/poland-foundation-grant-application-packet",
     deckRoute: "/viewer/investor-pitch-deck",
     videoRoute: "/story",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",

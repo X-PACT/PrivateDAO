@@ -58,7 +58,7 @@ For each track below:
 | Umbra Side Track | https://superteam.fun/earn/listing/umbra-side-track | $10k, skills: blockchain/backend/frontend. | Private payout must appear as a concrete governed workflow. | Strong | payout-centric evidence and sender-discipline packet |
 | Adevar Labs Audit Credits | https://superteam.fun/earn/listing/50k-adevarlabs-bounty | $50k audit credits, blockchain-focused. | Hardening honesty and audit preparation matter more than hype. | Strong | explicit pre-audit readiness bundle |
 | Superteam Poland | https://superteam.fun/earn/listing/superteam-poland | $10k, regional listing for Poland, skills include mobile and growth. | Regional execution breadth matters: product, mobile, growth, delivery. | Strong | regional packet tying prior Poland win to current product maturity |
-| Poland Grants | https://superteam.fun/earn/grants/Poland-grants | Regional grants corridor. | Need ecosystem value and commercial durability, not hackathon-only optics. | Strong | explicit regional grant packet |
+| Poland Grants | https://superteam.fun/earn/grants/Poland-grants | Solana Foundation–backed regional instagrant corridor with explicit DAO tooling, payments, developer tooling, education, decentralization, and censorship-resistance focus. | Needs fast proof of work, concise application quality, and milestones that can ship in weeks rather than vague roadmap promises. | Very strong | application-ready Poland grant packet tied to live product, proof of work, and explicit blocker truth |
 | Startup Accelerator Grant | https://superteam.fun/earn/grants/startup-accelerator-grant | Startup grant corridor. | Must read like an investable company-in-formation. | Very strong | capital-readiness packet aligned with blocker truth |
 
 ## Startup accelerator support signal
@@ -77,6 +77,24 @@ Interpretation for PrivateDAO:
 
 - the accelerator corridor should be treated as a disciplined startup submission surface, not as generic “grant farming”
 - the strongest packet is product-first, then services, then trust, then mainnet gates
+
+## Poland Grants support signal
+
+Verified facts from the grant brief supplied in-session:
+
+- grants target work that promotes decentralization and censorship resistance on Solana
+- grants explicitly support DAO tooling, developer tooling, education, and payments
+- proof of work matters more than credentials
+- reviewers prefer projects that ship quickly and are clearly executable by the team
+- grants can fund between `$1` and `$10,000`
+- recommended review cadence is roughly one week, with milestone-based follow-on payouts
+- open source expectation is explicit
+
+Interpretation for PrivateDAO:
+
+- this is one of the strongest true-fit grant corridors because PrivateDAO already spans DAO tooling, payments, developer tooling, and ecosystem education
+- the submission should be concise and product-first, not research-heavy
+- the strongest application posture is a live Devnet product plus explicit blocker truth, not a speculative mainnet promise
 
 ## Highest-value track-to-service mapping
 

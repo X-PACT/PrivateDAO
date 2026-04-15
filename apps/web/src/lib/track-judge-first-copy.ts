@@ -22,7 +22,7 @@ export type TrackJudgeFirstCopy = {
 function getProfileAwareDemoRoute(workspace: CompetitionTrackWorkspace, commercialProfile?: string) {
   if (commercialProfile === "pilot-funding") return workspace.liveRoute;
   if (commercialProfile === "treasury-top-up") return "/services";
-  if (commercialProfile === "vendor-payout" || commercialProfile === "contributor-payout") return "/command-center";
+  if (commercialProfile === "vendor-payout" || commercialProfile === "contributor-payout") return "/govern";
 
   return getSubmissionCoachPlan(workspace).finalDemoOrder[0] ?? workspace.liveRoute;
 }

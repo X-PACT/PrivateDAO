@@ -63,13 +63,13 @@ function inferNextFastestImprovement(workspace: CompetitionTrackWorkspace) {
   const fit = getTrackTechnicalFit(workspace.slug);
 
   if (workspace.slug === "colosseum-frontier") {
-    return "Record one ultra-clean end-to-end run of `/start` → `/command-center` → `/proof/?judge=1` → `/services` and mirror those screenshots into the deck.";
+    return "Record one ultra-clean end-to-end run of `/start` → `/govern` → `/proof/?judge=1` → `/services` and mirror those screenshots into the deck.";
   }
   if (workspace.slug === "privacy-track") {
     return "Lead the first 45 seconds from a confidential use case, then branch into `/security` and the V3 packet instead of starting with terminology.";
   }
   if (workspace.slug === "eitherway-live-dapp") {
-    return "Use Solflare as the single default demo wallet and rehearse one uninterrupted wallet-to-action flow through `/command-center`.";
+    return "Use Solflare as the single default demo wallet and rehearse one uninterrupted wallet-to-action flow through `/govern`.";
   }
   if (workspace.slug === "rpc-infrastructure") {
     return "Tighten the runtime narrative around `/diagnostics`, `/documents/frontier-integrations`, and the hosted service docs so RPC value is unmistakable.";
@@ -98,19 +98,19 @@ function inferNextFastestImprovement(workspace: CompetitionTrackWorkspace) {
 
 function inferFinalDemoOrder(workspace: CompetitionTrackWorkspace) {
   if (workspace.slug === "colosseum-frontier") {
-    return ["/start", "/command-center", "/proof/?judge=1", "/services", "/story"];
+    return ["/start", "/govern", "/proof/?judge=1", "/services", "/story"];
   }
   if (workspace.slug === "privacy-track") {
     return ["/story", "/security", "/documents/zk-capability-matrix", "/proof/?judge=1", "/documents/live-proof-v3"];
   }
   if (workspace.slug === "eitherway-live-dapp") {
-    return ["/start", "/command-center", "/dashboard", "/proof/?judge=1", "/story"];
+    return ["/start", "/govern", "/dashboard", "/proof/?judge=1", "/story"];
   }
   if (workspace.slug === "rpc-infrastructure") {
     return ["/services", "/diagnostics", "/documents/frontier-integrations", "/documents/service-catalog", "/story"];
   }
   if (workspace.slug === "consumer-apps") {
-    return ["/story", "/start", "/command-center", "/assistant", "/proof/?judge=1"];
+    return ["/story", "/start", "/govern", "/assistant", "/proof/?judge=1"];
   }
   if (workspace.slug === "ranger-main") {
     return ["/story", "/tracks", "/dashboard", "/documents/trust-package", "/services"];

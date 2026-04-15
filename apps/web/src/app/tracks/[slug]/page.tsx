@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { CompetitionWorkspace } from "@/components/competition-workspace";
 import { OperationsShell } from "@/components/operations-shell";
 import { TrackJudgeFirstTopStrip } from "@/components/track-judge-first-top-strip";
+import { TrackOperationalEdgePanel } from "@/components/track-operational-edge-panel";
 import { TrackProofClosurePanel } from "@/components/track-proof-closure-panel";
 import { TrackSubmissionCapsule } from "@/components/track-submission-capsule";
 import { VideoCenter } from "@/components/video-center";
@@ -68,6 +69,9 @@ export default async function TrackWorkspacePage({ params }: PageProps) {
             <TrackSubmissionCapsule workspace={workspace} />
           )}
         </Suspense>
+      </div>
+      <div>
+        <TrackOperationalEdgePanel workspace={workspace} />
       </div>
       {!showJudgeFirstTopStrip ? (
         <div>

@@ -538,6 +538,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/capital-readiness-packet.md`,
   },
   {
+    slug: "poland-foundation-grant-application-packet",
+    title: "Poland Foundation Grant Application Packet",
+    category: "Grants",
+    summary: "Application-ready packet for Superteam Poland and Solana Foundation grant review, including concise problem framing, proof-of-work routes, milestones, KPIs, and honest mainnet boundaries.",
+    audience: "Grant reviewers, regional ecosystem reviewers, founders, operators",
+    boundary: "Application packet only; it sharpens the current grant posture without claiming completed audit, custody closure, or mainnet real-funds readiness.",
+    docPath: "docs/poland-foundation-grant-application-packet.md",
+    rawHref: `${repositoryBlobBase}/docs/poland-foundation-grant-application-packet.md`,
+  },
+  {
     slug: "competition-execution-playbook",
     title: "Competition Execution Playbook",
     category: "Strategy",

@@ -20,17 +20,21 @@ export function TrackInvestmentCasePanel({ workspace }: TrackInvestmentCasePanel
   const specialPacketHref =
     workspace.slug === "rpc-infrastructure" || workspace.slug === "dune-analytics"
       ? "/documents/telemetry-export-packet"
-      : workspace.slug === "encrypt-ika" || workspace.slug === "umbra-confidential-payout"
+    : workspace.slug === "encrypt-ika" || workspace.slug === "umbra-confidential-payout"
         ? "/documents/confidential-payout-evidence-packet"
-        : workspace.slug === "startup-accelerator" || workspace.slug === "poland-grants"
+        : workspace.slug === "poland-grants"
+          ? "/documents/poland-foundation-grant-application-packet"
+          : workspace.slug === "startup-accelerator"
           ? "/documents/capital-readiness-packet"
           : null;
   const specialPacketLabel =
     workspace.slug === "rpc-infrastructure" || workspace.slug === "dune-analytics"
       ? "Telemetry export packet"
-      : workspace.slug === "encrypt-ika" || workspace.slug === "umbra-confidential-payout"
+    : workspace.slug === "encrypt-ika" || workspace.slug === "umbra-confidential-payout"
         ? "Confidential payout packet"
-        : workspace.slug === "startup-accelerator" || workspace.slug === "poland-grants"
+        : workspace.slug === "poland-grants"
+          ? "Poland grant packet"
+          : workspace.slug === "startup-accelerator"
           ? "Capital readiness packet"
           : null;
 
