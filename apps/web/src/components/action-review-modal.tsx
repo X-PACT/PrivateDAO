@@ -55,18 +55,23 @@ export function ActionReviewModal({
   const payload = requestPayload ?? executionIntent?.requestPayload ?? null;
   const delivery = requestDelivery ?? executionIntent?.requestDelivery ?? null;
   const deliveryState = delivery?.state ?? payload?.state ?? "draft";
+  const usesPayloadContinuity = action === "execute_proposal" && Boolean(executionIntent);
   const payloadAlreadySubmitted =
-    action === "execute_proposal" && deliveryState === "executed";
-  const summaryProposalId = payload?.requestId ?? summary.proposalId;
-  const summaryBeneficiary = payload?.executionTarget ?? executionIntent?.executionTarget ?? summary.beneficiary;
-  const summaryAmountOrAsset = payload?.amountDisplay ?? executionIntent?.amountDisplay ?? summary.amountOrAsset;
+    usesPayloadContinuity && deliveryState === "executed";
+  const summaryProposalId = usesPayloadContinuity ? payload?.requestId ?? summary.proposalId : summary.proposalId;
+  const summaryBeneficiary = usesPayloadContinuity
+    ? payload?.executionTarget ?? executionIntent?.executionTarget ?? summary.beneficiary
+    : summary.beneficiary;
+  const summaryAmountOrAsset = usesPayloadContinuity
+    ? payload?.amountDisplay ?? executionIntent?.amountDisplay ?? summary.amountOrAsset
+    : summary.amountOrAsset;
   const summaryTimelock =
-    executionIntent
+    usesPayloadContinuity
       ? payload
         ? `Authoritative request object loaded · ${delivery?.state ?? payload.state} · telemetry ${payload.telemetryMode}`
         : `Execution continuity loaded · telemetry ${executionIntent.telemetryMode}`
       : summary.timelock;
-  const confirmLabel = executionIntent
+  const confirmLabel = usesPayloadContinuity
     ? action === "execute_proposal"
       ? payloadAlreadySubmitted
         ? "Payload already submitted"
@@ -143,7 +148,7 @@ export function ActionReviewModal({
             <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Timelock / gate</div>
             <div className="mt-2 text-sm font-medium text-white">{summaryTimelock}</div>
           </div>
-          {executionIntent ? (
+          {usesPayloadContinuity ? (
             <div className="rounded-3xl border border-white/8 bg-white/4 p-4 md:col-span-2 xl:col-span-4">
               <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Execution route</div>
               <div className="mt-2 text-sm font-medium text-white">{summaryBeneficiary}</div>
@@ -162,7 +167,7 @@ export function ActionReviewModal({
           <Badge variant="violet">Token {summary.governanceTokenProgram.slice(0, 8)}…</Badge>
         </div>
 
-        {executionIntent ? (
+        {usesPayloadContinuity ? (
           <div className="mt-6 rounded-3xl border border-emerald-300/18 bg-emerald-300/[0.08] p-5">
             <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-100/80">Execution continuity packet</div>
             <div className="mt-3 text-base font-medium text-white">
@@ -214,14 +219,14 @@ export function ActionReviewModal({
           </div>
         ) : null}
 
-        {proposal && !executionIntent ? (
+        {proposal && !usesPayloadContinuity ? (
           <div className="mt-6 grid gap-4">
             <ProposalAnalyzerInline proposal={proposal} />
             <TreasuryRiskInline proposal={proposal} />
           </div>
         ) : null}
 
-        {executionIntent ? (
+        {usesPayloadContinuity ? (
           <div className="mt-6 rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-5">
             <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/80">Execution continuity checks</div>
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
@@ -245,7 +250,7 @@ export function ActionReviewModal({
           </div>
         ) : null}
 
-        {payload ? (
+        {usesPayloadContinuity && payload ? (
           <div className="mt-6 rounded-3xl border border-amber-300/16 bg-amber-300/[0.08] p-5">
             <div className="text-[11px] uppercase tracking-[0.28em] text-amber-100/80">Final signing payload</div>
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
