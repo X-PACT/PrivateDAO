@@ -4,6 +4,8 @@
 
 This document is the shortest serious handoff for a judge, grant reviewer, investor, or diligence process.
 
+For track-specific routing, packet choice, and what must be softened before submitting each corridor, pair this file with [superteam-track-submission-matrix-2026.md](/home/x-pact/PrivateDAO/docs/superteam-track-submission-matrix-2026.md).
+
 PrivateDAO now combines protocol hardening, zero-knowledge proof surfaces, and a published cryptographic artifact integrity layer so reviewers can validate not only the protocol logic, but also the integrity of the evidence package itself.
 
 It ties together:

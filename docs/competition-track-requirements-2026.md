@@ -192,3 +192,7 @@ If PrivateDAO wants first-place probability rather than broad participation opti
 8. Superteam Poland / Poland Grants
 
 That ordering is not prize-size driven. It is fit-driven, evidence-driven, and commercial-future driven.
+
+## Submission operations companion
+
+Use [superteam-track-submission-matrix-2026.md](/home/x-pact/PrivateDAO/docs/superteam-track-submission-matrix-2026.md) as the canonical companion when the question is no longer "does this track fit?" but "what exactly should we submit, through which posture, and what must be softened or removed before sending it?"

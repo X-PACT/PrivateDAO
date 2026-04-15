@@ -18,6 +18,16 @@ const repositoryBlobBase = "https://github.com/X-PACT/PrivateDAO/blob/main";
 
 const curatedDocuments: CuratedDocument[] = [
   {
+    slug: "superteam-track-submission-matrix-2026",
+    title: "Superteam Track Submission Matrix 2026",
+    category: "Strategy",
+    summary: "Canonical operating matrix for what each active Superteam or adjacent track should be submitted with, which packet to use, and what claims must be softened before sending.",
+    audience: "Founders, operators, grant reviewers, judges",
+    boundary: "Submission-operations guidance only; it does not by itself make a listing agent-eligible or claim that any manual form has already been updated.",
+    docPath: "docs/superteam-track-submission-matrix-2026.md",
+    rawHref: `${repositoryBlobBase}/docs/superteam-track-submission-matrix-2026.md`,
+  },
+  {
     slug: "browser-wallet-runtime",
     title: "Browser-Wallet Runtime Evidence",
     category: "Reviewer core",
