@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { MainnetExecutionScorecardPanel } from "@/components/mainnet-execution-scorecard-panel";
 import { MonitoringDeliveryEvidencePanel } from "@/components/monitoring-delivery-evidence-panel";
+import { MonitoringDeliveryClosurePanel } from "@/components/monitoring-delivery-closure-panel";
 import { AuthorityHardeningPanel } from "@/components/authority-hardening-panel";
 import { ConfidenceEngineSurface } from "@/components/confidence-engine-surface";
 import { CustodyReadinessStrip } from "@/components/custody-readiness-strip";
@@ -102,6 +103,9 @@ export default function SecurityPage() {
       </div>
       <div>
         <MainnetExecutionScorecardPanel />
+      </div>
+      <div id="monitoring-delivery-readiness">
+        <MonitoringDeliveryClosurePanel />
       </div>
       <div>
         <MonitoringDeliveryEvidencePanel />

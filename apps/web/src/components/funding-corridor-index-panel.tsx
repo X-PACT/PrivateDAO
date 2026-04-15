@@ -27,7 +27,7 @@ const corridors = [
   {
     title: "Confidential payout",
     summary: "Privacy, payout proof, settlement evidence, and blocker honesty in one governed corridor.",
-    href: "/services#payout-route-selection",
+    href: "/services#settlement-receipt-readiness",
     icon: LockKeyhole,
   },
   {

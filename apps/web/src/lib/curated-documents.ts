@@ -588,6 +588,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/real-device-capture-closure-packet.md`,
   },
   {
+    slug: "settlement-receipt-closure-packet",
+    title: "Settlement Receipt Closure Packet",
+    category: "Trust",
+    summary: "Execution packet for the remaining privacy-settlement blocker: what is already true on Devnet, what still blocks mainnet payout claims, and what evidence closes the gap.",
+    audience: "Funders, judges, buyers, operators",
+    boundary: "Closure packet only; it does not claim source-verifiable settlement receipts are already closed or that confidential payout is already mainnet real-funds ready.",
+    docPath: "docs/settlement-receipt-closure-packet.md",
+    rawHref: `${repositoryBlobBase}/docs/settlement-receipt-closure-packet.md`,
+  },
+  {
     slug: "monitoring-delivery-evidence-packet",
     title: "Monitoring Delivery Evidence Packet",
     category: "Operations",
