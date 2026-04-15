@@ -11,6 +11,24 @@ This packet turns the current Superteam Poland / Solana Foundation grant applica
 
 It is written to be copied into the grant form with minimal editing.
 
+## Verified program facts
+
+From the active Poland grants listing:
+
+- the corridor is open to builders in Poland
+- the grant size can range from `$1` to `$10,000`
+- reviewers prefer fast, executable work over broad speculative roadmaps
+- proof of work matters more than credentials
+- the grant explicitly names:
+  - decentralisation
+  - censorship resistance
+  - DAO tooling
+  - developer tooling
+  - education
+  - payments
+
+This is why the submission should read like a shipped DAO tooling and payments product with a short execution delta, not like a research memo.
+
 ## Recommended project title
 
 **PrivateDAO**
@@ -210,5 +228,14 @@ The strongest version of this grant application is:
 - proof-linked
 - honest about blockers
 - specific about why the capital accelerates decentralization, censorship resistance, DAO tooling, and payments
+
+## Best supporting packet set
+
+1. `/tracks/poland-grants`
+2. `/services`
+3. `/trust`
+4. `/documents/poland-foundation-grant-application-packet`
+5. `/documents/funding-readiness-scorecard`
+6. `/documents/mainnet-blockers`
 
 That is more convincing than a feature list or an overconfident mainnet claim.

@@ -4,6 +4,19 @@
 
 This packet is for accelerator-style reviewers who are not only asking whether PrivateDAO works on Devnet, but whether it already behaves like a company that can turn capital into a disciplined mainnet release.
 
+## Reviewer expectation
+
+The strongest accelerator posture is not "we have many features."
+
+It is:
+
+- one coherent product
+- one believable company thesis
+- one narrow use-of-capital path
+- one honest blocker set
+
+This packet is written around that standard.
+
 ## Short position
 
 PrivateDAO is already a live Devnet product with:
@@ -119,9 +132,10 @@ Claim instead:
 2. `/story`
 3. `/services`
 4. `/trust`
-5. `/viewer/investor-pitch-deck`
-6. `/documents/mainnet-blockers`
-7. `/documents/capital-readiness-packet`
+5. `/documents/startup-accelerator-application-packet`
+6. `/documents/funding-readiness-scorecard`
+7. `/viewer/investor-pitch-deck`
+8. `/documents/mainnet-blockers`
 
 ## Why this should be funded
 
