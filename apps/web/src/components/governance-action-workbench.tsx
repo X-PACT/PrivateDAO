@@ -351,34 +351,6 @@ export function GovernanceActionWorkbench() {
     executeRuntime.status !== "submitting";
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (window.location.hash !== "#proposal-review-action") return;
-
-    let attempts = 0;
-    let timeoutId: number | undefined;
-
-    const scrollToProposal = () => {
-      const target = document.getElementById("proposal-review-action");
-      if (target) {
-        target.scrollIntoView({ block: "start" });
-        return;
-      }
-
-      if (attempts >= 8) return;
-      attempts += 1;
-      timeoutId = window.setTimeout(scrollToProposal, 120);
-    };
-
-    timeoutId = window.setTimeout(scrollToProposal, 80);
-
-    return () => {
-      if (timeoutId) {
-        window.clearTimeout(timeoutId);
-      }
-    };
-  }, [showProposalCard]);
-
-  useEffect(() => {
     if (!handoff) return;
     const continuityKey = `${handoff.proposalId}:${handoff.telemetryMode}:${handoff.source}:${handoff.payoutIntent?.reference ?? "no-payout"}:${continuityRequestPayload?.requestId ?? "no-request"}:${handoff.requestDelivery?.state ?? "draft"}`;
     if (appliedReviewRef.current === continuityKey) return;
@@ -543,6 +515,34 @@ export function GovernanceActionWorkbench() {
     !hasPayloadDrivenExecution &&
     effectiveProposalFinalized &&
     (!effectiveProposalExecuted || currentStep.action === "execute_proposal" || executeRuntime.status !== "idle" || effectiveProposalExecuted);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.location.hash !== "#proposal-review-action") return;
+
+    let attempts = 0;
+    let timeoutId: number | undefined;
+
+    const scrollToProposal = () => {
+      const target = document.getElementById("proposal-review-action");
+      if (target) {
+        target.scrollIntoView({ block: "start" });
+        return;
+      }
+
+      if (attempts >= 8) return;
+      attempts += 1;
+      timeoutId = window.setTimeout(scrollToProposal, 120);
+    };
+
+    timeoutId = window.setTimeout(scrollToProposal, 80);
+
+    return () => {
+      if (timeoutId) {
+        window.clearTimeout(timeoutId);
+      }
+    };
+  }, [showProposalCard]);
 
   async function submitCreateDaoLive() {
     if (!publicKey) {
