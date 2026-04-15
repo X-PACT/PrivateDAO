@@ -1013,27 +1013,27 @@ export function GovernanceActionWorkbench() {
 
   return (
     <>
-      <Card id="proposal-review-action" className="border-white/10 bg-[linear-gradient(180deg,rgba(10,16,32,0.94),rgba(7,11,23,0.98))]">
-        <CardHeader className="space-y-3">
+      <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,16,32,0.94),rgba(7,11,23,0.98))]">
+        <CardHeader className="space-y-3 pb-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/72">Guided Devnet flow</div>
-              <CardTitle className="mt-2">Run the whole governance cycle without leaving the product</CardTitle>
+              <CardTitle className="mt-2 text-2xl sm:text-3xl">Run the whole governance cycle without leaving the product</CardTitle>
             </div>
             <Badge variant="success">User-first wallet lane</Badge>
           </div>
-          <p className="max-w-3xl text-sm leading-7 text-white/60">
-            This surface now prioritizes the next normal-user step first: connect, create a DAO, create a proposal, vote, reveal, finalize, then execute. Advanced diagnostics and parity details stay available, but they no longer lead the page.
+          <p className="max-w-2xl text-sm leading-7 text-white/56">
+            Start with the next action only. Advanced diagnostics and payload continuity stay behind the advanced toggle.
           </p>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
           <div className="rounded-[28px] border border-cyan-300/16 bg-[linear-gradient(180deg,rgba(11,24,41,0.92),rgba(7,14,25,0.98))] p-5 md:col-span-2">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div className="max-w-2xl">
                 <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/76">Do this now · step {currentStep.number}</div>
-                <div className="mt-2 text-2xl font-semibold text-white">{currentStep.title}</div>
-                <p className="mt-3 text-sm leading-7 text-white/62">{currentStep.description}</p>
+                <div className="mt-2 text-xl font-semibold text-white sm:text-2xl">{currentStep.title}</div>
+                <p className="mt-2 text-sm leading-7 text-white/58">{currentStep.description}</p>
               </div>
               {currentStep.action ? (
                 <Button
@@ -1316,12 +1316,12 @@ export function GovernanceActionWorkbench() {
           ) : null}
 
           {showProposalCard ? (
-          <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
+          <div id="proposal-review-action" className="scroll-mt-28 rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
             <div className="flex items-center gap-3">
               <FilePlus2 className="h-4 w-4 text-cyan-300" />
               <div className="text-base font-medium text-white">Step 2 · Create Proposal</div>
             </div>
-            <div className="mt-4 grid gap-5 xl:grid-cols-[minmax(0,1.1fr)_minmax(300px,0.9fr)]">
+            <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
               <div>
                 <input
                   value={proposalTitle}
@@ -1378,7 +1378,7 @@ export function GovernanceActionWorkbench() {
                     ) : null}
                   </>
                 ) : null}
-                <p className="mt-3 text-sm leading-7 text-white/60">
+                <p className="mt-3 text-sm leading-7 text-white/58">
                   {proposalTreasuryMode === "standard"
                     ? "Standard proposals carry no treasury movement. Switch to Send SOL or Send Token only when you want a treasury action."
                     : proposalTreasuryMode === "token"

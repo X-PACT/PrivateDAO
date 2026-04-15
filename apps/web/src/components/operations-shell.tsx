@@ -65,6 +65,12 @@ export function OperationsShell({
   const useMinimalGuidedChrome = navigationMode === "guided";
   const isGovernRoute = pathname === "/govern" || pathname.startsWith("/govern/");
   const isGuidedRoute = navigationMode === "guided";
+  const heroTitleClass = useMinimalGuidedChrome
+    ? "max-w-4xl text-2xl font-semibold tracking-[-0.03em] text-white sm:text-4xl lg:text-[2.8rem]"
+    : "max-w-4xl text-3xl font-semibold tracking-[-0.035em] text-white sm:text-5xl";
+  const heroDescriptionClass = useMinimalGuidedChrome
+    ? "max-w-2xl text-sm leading-7 text-white/60 sm:text-base sm:leading-7"
+    : "max-w-3xl text-sm leading-7 text-white/60 sm:text-lg sm:leading-8";
 
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
@@ -173,7 +179,7 @@ export function OperationsShell({
 
         <div className="space-y-8">
           <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,16,32,0.94),rgba(7,11,23,0.98))]">
-            <CardContent className="p-6 sm:p-8">
+            <CardContent className={cn("p-6", useMinimalGuidedChrome ? "sm:p-6" : "sm:p-8")}>
               {badges.length > 0 ? (
                 <div className="flex flex-wrap gap-3">
                   {badges.map((badge) => (
@@ -186,11 +192,11 @@ export function OperationsShell({
 
               <div className={cn("space-y-5", badges.length > 0 ? "mt-6" : "")}>
                 <div className="text-[11px] uppercase tracking-[0.34em] text-emerald-300/80">{eyebrow}</div>
-                <div className="max-w-4xl text-3xl font-semibold tracking-[-0.035em] text-white sm:text-5xl">{title}</div>
-                <p className="max-w-3xl text-sm leading-7 text-white/60 sm:text-lg sm:leading-8">{description}</p>
+                <div className={heroTitleClass}>{title}</div>
+                <p className={heroDescriptionClass}>{description}</p>
               </div>
 
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className={cn("flex flex-wrap gap-3", useMinimalGuidedChrome ? "mt-6" : "mt-8")}>
                 {isGovernRoute ? (
                   <>
                     <a className={buttonVariants({ size: "sm" })} href="#proposal-review-action">
