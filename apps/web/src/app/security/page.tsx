@@ -11,6 +11,7 @@ import { FrontierSignalBoard } from "@/components/frontier-signal-board";
 import { IntelligenceLayerSurface } from "@/components/intelligence-layer-surface";
 import { OperationsShell } from "@/components/operations-shell";
 import { RealDeviceWalletMatrixPanel } from "@/components/real-device-wallet-matrix-panel";
+import { RealDeviceCaptureClosurePanel } from "@/components/real-device-capture-closure-panel";
 import { RuntimeOperationsReadinessPanel } from "@/components/runtime-operations-readiness-panel";
 import { SecurityCenter } from "@/components/security-center";
 import { SectionHeader } from "@/components/section-header";
@@ -95,6 +96,9 @@ export default function SecurityPage() {
       </div>
       <div>
         <RealDeviceWalletMatrixPanel />
+      </div>
+      <div id="real-device-capture-readiness">
+        <RealDeviceCaptureClosurePanel />
       </div>
       <div>
         <MainnetExecutionScorecardPanel />

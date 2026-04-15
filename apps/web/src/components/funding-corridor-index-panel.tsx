@@ -33,7 +33,7 @@ const corridors = [
   {
     title: "Runtime operations",
     summary: "Real-device wallet matrix and monitoring closure presented as the highest-value operational funding gap.",
-    href: "/documents/runtime-operations-readiness-packet",
+    href: "/security#real-device-capture-readiness",
     icon: Smartphone,
   },
 ] as const;

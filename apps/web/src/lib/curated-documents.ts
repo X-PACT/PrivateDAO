@@ -578,6 +578,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/runtime-operations-readiness-packet.md`,
   },
   {
+    slug: "real-device-capture-closure-packet",
+    title: "Real-Device Capture Closure Packet",
+    category: "Trust",
+    summary: "Execution packet for closing the remaining wallet matrix gap with target-by-target capture standards, evidence requirements, and reviewer-safe boundaries.",
+    audience: "Funders, judges, operators, reviewers",
+    boundary: "Closure program only; it does not claim the wallet matrix is already complete or that browser-only proof replaces real-device capture.",
+    docPath: "docs/real-device-capture-closure-packet.md",
+    rawHref: `${repositoryBlobBase}/docs/real-device-capture-closure-packet.md`,
+  },
+  {
     slug: "monitoring-delivery-evidence-packet",
     title: "Monitoring Delivery Evidence Packet",
     category: "Operations",

@@ -144,6 +144,10 @@ export function GrantExecutionReadinessPanel({ workspace }: GrantExecutionReadin
             Open runtime ops packet
             <ArrowUpRight className="h-4 w-4" />
           </Link>
+          <Link href="/documents/real-device-capture-closure-packet" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+            Open capture closure
+            <ArrowUpRight className="h-4 w-4" />
+          </Link>
           <Link href="/services" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
             Open services
             <ArrowUpRight className="h-4 w-4" />
