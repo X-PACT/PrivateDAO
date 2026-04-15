@@ -498,6 +498,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/frontier-competition-readiness-2026.md`,
   },
   {
+    slug: "competition-track-requirements-2026",
+    title: "Competition Track Requirements 2026",
+    category: "Strategy",
+    summary: "Canonical requirements matrix across the active Frontier, Superteam, regional grant, accelerator, privacy, analytics, audit-credit, and confidential payout corridors tied to shipped product truth.",
+    audience: "Founders, judges, grant reviewers, operators",
+    boundary: "Requirements and fit matrix only; it does not claim partner-native integrations, audit closure, or mainnet readiness beyond the documented blocker state.",
+    docPath: "docs/competition-track-requirements-2026.md",
+    rawHref: `${repositoryBlobBase}/docs/competition-track-requirements-2026.md`,
+  },
+  {
     slug: "competition-execution-playbook",
     title: "Competition Execution Playbook",
     category: "Strategy",

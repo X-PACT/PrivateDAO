@@ -20,6 +20,18 @@ export function getCompetitionLaneLabel(slug: string) {
       return "Encrypted Operations Workspace";
     case "solrouter-encrypted-ai":
       return "Deterministic Reasoning Workspace";
+    case "dune-analytics":
+      return "Telemetry Intelligence Workspace";
+    case "umbra-confidential-payout":
+      return "Confidential Payout Workspace";
+    case "adevar-audit-credits":
+      return "Hardening Review Workspace";
+    case "superteam-poland":
+      return "Regional Poland Workspace";
+    case "poland-grants":
+      return "Poland Grants Workspace";
+    case "startup-accelerator":
+      return "Startup Capital Workspace";
     default:
       return "Competition Workspace";
   }
@@ -47,6 +59,18 @@ export function getCompetitionLaneSummary(slug: string) {
       return "Encrypted operations corridor for confidential payroll, treasury approvals, and deterministic proof.";
     case "solrouter-encrypted-ai":
       return "Deterministic reasoning corridor for policy-guided AI-adjacent workflows without overclaiming autonomy.";
+    case "dune-analytics":
+      return "Telemetry corridor for analytics exports, runtime evidence, and hosted-read infrastructure value.";
+    case "umbra-confidential-payout":
+      return "Confidential payout corridor for private treasury motions, payroll, and reviewer-safe settlement proof.";
+    case "adevar-audit-credits":
+      return "Hardening corridor for authority control, incident readiness, and audit-credit eligibility without overclaiming audit closure.";
+    case "superteam-poland":
+      return "Regional-first corridor for Poland-facing judges, growth proof, and product execution on Solana.";
+    case "poland-grants":
+      return "Regional grant corridor for Poland-based funding reviewers who need infrastructure value and product traction.";
+    case "startup-accelerator":
+      return "Capital-readiness corridor for startup reviewers who need product proof, commercial rails, and disciplined mainnet boundaries.";
     default:
       return "Competition corridor aligned with live product, proof, and trust surfaces.";
   }
