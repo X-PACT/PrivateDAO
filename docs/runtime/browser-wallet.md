@@ -108,6 +108,28 @@ Evidence:
 
 - `docs/assets/runtime/browser-wallet/solflare-create-dao-awaiting-wallet-clean-replay.png`
 
+## Captured Solflare Governance Continuation
+
+On `2026-04-15`, a live Solflare desktop-browser session on `https://privatedao.org/govern/` completed the web wallet flow through:
+
+- `Create DAO`
+- `Create Proposal`
+- `Commit Vote`
+
+Captured runtime values:
+
+- DAO bootstrap signature: `4zDfzZ9DBcfGmDf2ogeX2Z6UTUJYhxxY8zYNFBLQHMeFXzDhpmaegYm6aPMfEBvHiBKZ2b1rW3G8Hi3iWX1WPYie`
+- DAO: `8XDpMqrQnJfv7h7pYF7HjpeaEJWd6fB3V9ymt1xoXT9z`
+- Governance mint: `AshNR4wm8GpvHpT8xjNkfPQW9P6bXiBYvje9WnW4txfr`
+- Wallet: `Ey1z1djLDuRsi6BX7fQDcazY1LgCH4RN4gJ2dST8imze`
+- Proposal signature: `5KZnxXobUWECRHq41DomD1RZf62vo9ysyjveBRzra8FYtz5oCH5tc2Puy9CpvxnYVfUr3sFdBm7jkSEXDdtFEcFm`
+- Proposal: `CCfVPMj4tBk1pFYJbMVK5Fmxc6JCQhSEtuCLRRGzjGad`
+- Commit signature: `4pJMv7Vx4hf3pxum59DxoNjaRt38gh9oq2KVyyzY3ksqnLtaxSs4oQRYWxG594KrynsGDtqoL3eqr5GSgEe9Hp7q`
+- Commitment: `a62879abf6213c89a6e248ae3b575a47c07487fbb6e8299826451768463eca77`
+- Reveal salt: `b24604fe2728fb1e77d76ca3e66fd678fba5a4974647eb55b80a1b57c0b8b773`
+
+The reveal step remained correctly blocked at that moment because the commit window had not yet closed.
+
 ## Minimal Capture Payload Example
 
 ```json

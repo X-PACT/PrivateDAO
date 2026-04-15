@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-14T15:22:20.632Z`
+- generated at: `2026-04-15T17:37:59.290Z`
 - network: `devnet`
 - status: `pending-browser-wallet-capture`
 - target count: `4`
@@ -11,12 +11,12 @@
 - successful connect count: `2`
 - successful submission count: `1`
 - diagnostics snapshot count: `2`
-- action coverage count: `2`
+- action coverage count: `4`
 
 ## Target Matrix
 
 - Phantom (`phantom-browser-wallet`) | environment: `desktop-browser` | status: `captured-with-failures`
-- Solflare (`solflare-browser-wallet`) | environment: `desktop-browser` | status: `captured-success`
+- Solflare (`solflare-browser-wallet`) | environment: `desktop-browser` | status: `captured`
 - Backpack (`backpack-browser-wallet`) | environment: `desktop-browser` | status: `pending-capture`
 - Glow (`glow-browser-wallet`) | environment: `desktop-browser` | status: `pending-capture`
 
@@ -44,17 +44,17 @@
 
 ### Solflare
 
-- captured at: `2026-04-14T15:21:28.000Z`
+- captured at: `2026-04-15T17:36:14.000Z`
 - environment: `desktop-browser`
 - os: `Linux`
-- browser or client: `Playwright Chromium`
-- actions covered: `Connect Wallet, Create DAO`
+- browser or client: `Brave`
+- actions covered: `Connect Wallet, Create DAO, Create Proposal, Commit Vote`
 - connect result: `success`
 - signing result: `success`
 - submission result: `success`
 - diagnostics snapshot captured: `true`
-- tx signature: `3kgAdZcuEePqBTB3bKWQBW1uT3Uv9zCU2XdhyQEd9hZGSvzoE4iSLNu8sb3PhwgsuVWPsMnNEVffcQgtUJogX59D`
-- explorer url: `https://explorer.solana.com/tx/3kgAdZcuEePqBTB3bKWQBW1uT3Uv9zCU2XdhyQEd9hZGSvzoE4iSLNu8sb3PhwgsuVWPsMnNEVffcQgtUJogX59D?cluster=devnet`
+- tx signature: `4zDfzZ9DBcfGmDf2ogeX2Z6UTUJYhxxY8zYNFBLQHMeFXzDhpmaegYm6aPMfEBvHiBKZ2b1rW3G8Hi3iWX1WPYie`
+- explorer url: `https://explorer.solana.com/tx/4zDfzZ9DBcfGmDf2ogeX2Z6UTUJYhxxY8zYNFBLQHMeFXzDhpmaegYm6aPMfEBvHiBKZ2b1rW3G8Hi3iWX1WPYie?cluster=devnet`
 - error message: `none`
 
 ## Required Docs

@@ -1,7 +1,7 @@
 {
   "project": "PrivateDAO",
   "network": "devnet",
-  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "generatedAt": "2026-04-15T17:36:51.495Z",
   "targets": [
     {
       "id": "phantom-browser-wallet",
@@ -13,7 +13,7 @@
       "id": "solflare-browser-wallet",
       "walletLabel": "Solflare",
       "environmentType": "desktop-browser",
-      "status": "captured-success"
+      "status": "captured"
     },
     {
       "id": "backpack-browser-wallet",
@@ -59,23 +59,25 @@
       "walletVersion": "unknown",
       "environmentType": "desktop-browser",
       "os": "Linux",
-      "browserOrClient": "Playwright Chromium",
+      "browserOrClient": "Brave",
       "network": "devnet",
       "actionsCovered": [
         "Connect Wallet",
-        "Create DAO"
+        "Create DAO",
+        "Create Proposal",
+        "Commit Vote"
       ],
       "connectResult": "success",
       "signingResult": "success",
       "submissionResult": "success",
       "diagnosticsSnapshotCaptured": true,
-      "txSignature": "3kgAdZcuEePqBTB3bKWQBW1uT3Uv9zCU2XdhyQEd9hZGSvzoE4iSLNu8sb3PhwgsuVWPsMnNEVffcQgtUJogX59D",
-      "explorerUrl": "https://explorer.solana.com/tx/3kgAdZcuEePqBTB3bKWQBW1uT3Uv9zCU2XdhyQEd9hZGSvzoE4iSLNu8sb3PhwgsuVWPsMnNEVffcQgtUJogX59D?cluster=devnet",
+      "txSignature": "4zDfzZ9DBcfGmDf2ogeX2Z6UTUJYhxxY8zYNFBLQHMeFXzDhpmaegYm6aPMfEBvHiBKZ2b1rW3G8Hi3iWX1WPYie",
       "errorMessage": null,
       "evidenceRefs": [
         "docs/assets/runtime/browser-wallet/solflare-create-dao-success.png"
       ],
-      "capturedAt": "2026-04-14T15:21:28.000Z"
+      "capturedAt": "2026-04-15T17:36:14.000Z",
+      "explorerUrl": "https://explorer.solana.com/tx/4zDfzZ9DBcfGmDf2ogeX2Z6UTUJYhxxY8zYNFBLQHMeFXzDhpmaegYm6aPMfEBvHiBKZ2b1rW3G8Hi3iWX1WPYie?cluster=devnet"
     }
   ]
 }
