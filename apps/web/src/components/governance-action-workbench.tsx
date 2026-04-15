@@ -92,6 +92,32 @@ function parseRawTokenAmount(value: string) {
   return amount;
 }
 
+function describeWalletActionError(error: unknown, fallback: string) {
+  if (error instanceof Error) {
+    const message = error.message?.trim();
+    const name = error.name?.trim() ?? "";
+    const combined = `${name} ${message}`.trim();
+
+    if (combined.includes("WalletSendTransactionError")) {
+      return "The wallet did not complete proposal submission. Re-open the wallet popup and approve the pending transaction, or reconnect the wallet and try once.";
+    }
+
+    if (combined.includes("WalletSignTransactionError")) {
+      return "The wallet did not sign the transaction. Re-open the wallet popup and complete the signature once.";
+    }
+
+    if (combined.includes("WalletConnectionError")) {
+      return "The wallet connection was rejected or lost. Reconnect the wallet, then retry the action once.";
+    }
+
+    if (message) {
+      return message;
+    }
+  }
+
+  return fallback;
+}
+
 export function GovernanceActionWorkbench() {
   const [reviewAction, setReviewAction] = useState<CoreGovernanceInstructionName | null>(null);
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -699,14 +725,15 @@ export function GovernanceActionWorkbench() {
         signature,
       });
     } catch (error) {
-      const message =
-        error instanceof Error && error.message
-          ? error.message
-          : "Web wallet proposal submit failed before confirmation.";
+      const message = describeWalletActionError(
+        error,
+        "Web wallet proposal submit failed before confirmation.",
+      );
       setCreateProposalRuntime({
         status: "error",
         message,
       });
+      recordLog("Proposal submit failed", message);
     }
   }
 
@@ -775,10 +802,7 @@ export function GovernanceActionWorkbench() {
     } catch (error) {
       setCommitVoteRuntime({
         status: "error",
-        message:
-          error instanceof Error && error.message
-            ? error.message
-            : "Commit vote failed before confirmation.",
+        message: describeWalletActionError(error, "Commit vote failed before confirmation."),
       });
     }
   }
@@ -844,10 +868,7 @@ export function GovernanceActionWorkbench() {
     } catch (error) {
       setRevealVoteRuntime({
         status: "error",
-        message:
-          error instanceof Error && error.message
-            ? error.message
-            : "Reveal vote failed before confirmation.",
+        message: describeWalletActionError(error, "Reveal vote failed before confirmation."),
       });
     }
   }
@@ -903,10 +924,7 @@ export function GovernanceActionWorkbench() {
     } catch (error) {
       setFinalizeRuntime({
         status: "error",
-        message:
-          error instanceof Error && error.message
-            ? error.message
-            : "Finalize proposal failed before confirmation.",
+        message: describeWalletActionError(error, "Finalize proposal failed before confirmation."),
       });
     }
   }
@@ -990,10 +1008,7 @@ export function GovernanceActionWorkbench() {
     } catch (error) {
       setExecuteRuntime({
         status: "error",
-        message:
-          error instanceof Error && error.message
-            ? error.message
-            : "Execute proposal failed before confirmation.",
+        message: describeWalletActionError(error, "Execute proposal failed before confirmation."),
       });
     }
   }
