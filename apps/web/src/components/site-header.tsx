@@ -103,7 +103,7 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="flex flex-col gap-3 border-t border-white/6 pt-3 lg:flex-row lg:items-center lg:justify-between">
+        <div className="hidden border-t border-white/6 pt-3 lg:flex lg:flex-row lg:items-center lg:justify-between lg:gap-3">
           <div className="flex min-w-0 items-center gap-2 rounded-full border border-white/10 bg-white/4 px-4 py-2 text-sm text-white/62">
             <Search className="h-4 w-4 text-cyan-200" />
             <Link href="/search" className="truncate">
