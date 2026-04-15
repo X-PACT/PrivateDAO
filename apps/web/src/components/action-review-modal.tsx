@@ -171,23 +171,23 @@ export function ActionReviewModal({
           <div className="mt-6 rounded-3xl border border-emerald-300/18 bg-emerald-300/[0.08] p-5">
             <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-100/80">Execution continuity packet</div>
             <div className="mt-3 text-base font-medium text-white">
-              {payload?.payoutTitle ?? executionIntent.payoutTitle} · {summaryAmountOrAsset}
+              {payload?.payoutTitle ?? executionIntent?.payoutTitle ?? "Execution continuity"} · {summaryAmountOrAsset}
             </div>
             <div className="mt-2 text-sm leading-7 text-white/62">
-              {(payload?.reference ?? executionIntent.reference) || "Reference pending"} · {(payload?.purpose ?? executionIntent.purpose) || "Purpose pending"}
+              {(payload?.reference ?? executionIntent?.reference) || "Reference pending"} · {(payload?.purpose ?? executionIntent?.purpose) || "Purpose pending"}
             </div>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Payout profile</div>
-                <div className="mt-2 text-white">{executionIntent.payoutProfile}</div>
+                <div className="mt-2 text-white">{executionIntent?.payoutProfile ?? "continuity-pending"}</div>
               </div>
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Telemetry mode</div>
-                <div className="mt-2 text-white">{executionIntent.telemetryMode}</div>
+                <div className="mt-2 text-white">{executionIntent?.telemetryMode ?? "packet"}</div>
               </div>
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Request ID</div>
-                <div className="mt-2 text-white">{payload?.requestId ?? executionIntent.reference}</div>
+                <div className="mt-2 text-white">{payload?.requestId ?? executionIntent?.reference ?? "request-pending"}</div>
               </div>
               <div className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Delivery state</div>
