@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { Download, MessageSquareMore, Smartphone, Youtube } from "lucide-react";
 
@@ -7,6 +8,7 @@ import { androidApkDownloadUrl } from "@/lib/android-surface";
 import { useSiteUrls } from "@/lib/site-urls";
 
 export function SiteFooter() {
+  const [showMore, setShowMore] = useState(false);
   const { judgeViewUrl, liveSiteUrl } = useSiteUrls();
 
   return (
@@ -20,7 +22,29 @@ export function SiteFooter() {
             Produced with execution support from a multi-national technical team. Product ownership, brand control, and commercialization rights remain solely with Fahd Kotb.
           </div>
         </div>
-        <div className="flex flex-wrap items-center gap-5">
+        <div className="flex flex-col gap-4 lg:items-end">
+          <div className="flex flex-wrap items-center gap-5">
+            <Link href="/start" className="hover:text-white">
+              Start
+            </Link>
+            <Link href="/govern" className="hover:text-white">
+              Govern
+            </Link>
+            <Link href="/live" className="hover:text-white">
+              Live State
+            </Link>
+            <Link href="/trust" className="hover:text-white">
+              Trust
+            </Link>
+          </div>
+          <button
+            type="button"
+            className="text-left text-xs uppercase tracking-[0.24em] text-white/44 transition hover:text-white lg:hidden"
+            onClick={() => setShowMore((current) => !current)}
+          >
+            {showMore ? "Hide more links" : "Show more links"}
+          </button>
+          <div className={showMore ? "flex flex-wrap items-center gap-5" : "hidden flex-wrap items-center gap-5 lg:flex"}>
           <Link href="/engage" className="hover:text-white">
             Engage
           </Link>
@@ -85,6 +109,7 @@ export function SiteFooter() {
             <MessageSquareMore className="h-4 w-4 text-cyan-200" />
             <span>Discord</span>
           </a>
+          </div>
         </div>
       </div>
     </footer>
