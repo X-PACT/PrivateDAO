@@ -178,6 +178,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/zk-capability-matrix.md`,
   },
   {
+    slug: "canonical-verifier-boundary-decision",
+    title: "Canonical Verifier Boundary Decision",
+    category: "Security",
+    summary: "Decision surface for whether the long-term privacy boundary remains receipt-based or moves to a stricter verifier-program boundary.",
+    audience: "Judges, security reviewers, operators, funders",
+    boundary: "Decision packet only; it does not claim the stronger verifier-program path is already complete or production-frozen.",
+    docPath: "docs/canonical-verifier-boundary-decision.md",
+    rawHref: `${repositoryBlobBase}/docs/canonical-verifier-boundary-decision.md`,
+  },
+  {
     slug: "cryptographic-confidence-engine",
     title: "Cryptographic Confidence Engine",
     category: "Security",
@@ -596,6 +606,16 @@ const curatedDocuments: CuratedDocument[] = [
     boundary: "Closure packet only; it does not claim source-verifiable settlement receipts are already closed or that confidential payout is already mainnet real-funds ready.",
     docPath: "docs/settlement-receipt-closure-packet.md",
     rawHref: `${repositoryBlobBase}/docs/settlement-receipt-closure-packet.md`,
+  },
+  {
+    slug: "monitoring-delivery-closure-packet",
+    title: "Monitoring Delivery Closure Packet",
+    category: "Trust",
+    summary: "Execution packet for closing live alert routing, operator ownership, and tested transcript gaps between the in-repo rulebook and believable production monitoring delivery.",
+    audience: "Funders, judges, operators, reviewers",
+    boundary: "Closure packet only; it does not claim live alert routing, tested transcripts, or exercised production incident ownership already exist.",
+    docPath: "docs/monitoring-delivery-closure-packet.md",
+    rawHref: `${repositoryBlobBase}/docs/monitoring-delivery-closure-packet.md`,
   },
   {
     slug: "monitoring-delivery-evidence-packet",

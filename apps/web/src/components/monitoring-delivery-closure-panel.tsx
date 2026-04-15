@@ -48,12 +48,27 @@ export function MonitoringDeliveryClosurePanel() {
           </div>
         </div>
 
-        <div className="grid gap-4 xl:grid-cols-2">
+        <div className="grid gap-4 xl:grid-cols-3">
           <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-5">
             <div className="text-[11px] uppercase tracking-[0.22em] text-white/48">Delivery requirements</div>
             <div className="mt-3 grid gap-2 text-sm leading-7 text-white/62">
               {snapshot.deliveryRequirements.map((item) => (
-                <div key={item}>{item}</div>
+                <div key={item.label} className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">
+                  <div className="text-white/82">{item.label}</div>
+                  <div className="text-white/52">{item.status} · {item.evidence}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-5">
+            <div className="text-[11px] uppercase tracking-[0.22em] text-white/48">Owner assignments</div>
+            <div className="mt-3 grid gap-2 text-sm leading-7 text-white/62">
+              {snapshot.ownerAssignments.map((item) => (
+                <div key={item.role} className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">
+                  <div className="text-white/82">{item.role}</div>
+                  <div className="text-white/52">{item.status} · {item.scope}</div>
+                </div>
               ))}
             </div>
           </div>
@@ -68,6 +83,15 @@ export function MonitoringDeliveryClosurePanel() {
           </div>
         </div>
 
+        <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-5">
+          <div className="text-[11px] uppercase tracking-[0.22em] text-white/48">Transcript requirements</div>
+          <div className="mt-3 grid gap-2 text-sm leading-7 text-white/62 md:grid-cols-2">
+            {snapshot.transcriptRequirements.map((item) => (
+              <div key={item}>{item}</div>
+            ))}
+          </div>
+        </div>
+
         <div className="rounded-3xl border border-fuchsia-300/14 bg-fuchsia-300/[0.06] p-5 text-sm leading-7 text-white/64">
           <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-fuchsia-200/78">
             <ShieldCheck className="h-4 w-4" />
@@ -79,6 +103,10 @@ export function MonitoringDeliveryClosurePanel() {
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
           <Link href="/documents/monitoring-delivery-evidence-packet" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
             Monitoring packet
+            <ArrowUpRight className="h-4 w-4" />
+          </Link>
+          <Link href="/documents/monitoring-delivery-closure-packet" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+            Closure packet
             <ArrowUpRight className="h-4 w-4" />
           </Link>
           <Link href="/documents/monitoring-alert-rules" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>

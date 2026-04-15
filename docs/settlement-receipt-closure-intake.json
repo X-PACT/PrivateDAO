@@ -1,0 +1,36 @@
+{
+  "project": "PrivateDAO",
+  "status": "pending-source-receipt-closure",
+  "closureRequirements": [
+    {
+      "id": "canonical-settlement-hash",
+      "label": "Canonical settlement hash",
+      "status": "pending",
+      "evidence": "published receipt or verifier-bound hash"
+    },
+    {
+      "id": "payout-object-linkage",
+      "label": "Payout object linkage",
+      "status": "pending",
+      "evidence": "receipt linked to governed payout object"
+    },
+    {
+      "id": "residual-trust-model",
+      "label": "Residual trust model",
+      "status": "pending",
+      "evidence": "explicit written boundary when source receipts are unavailable"
+    },
+    {
+      "id": "reviewer-proof-route",
+      "label": "Reviewer proof route",
+      "status": "pending",
+      "evidence": "reviewer-visible publication path for receipt evidence"
+    }
+  ],
+  "supportingArtifacts": [
+    "docs/confidential-payout-evidence-packet.md",
+    "docs/canonical-verifier-boundary-decision.md",
+    "docs/magicblock/runtime-evidence.md",
+    "docs/refhe-security-model.md"
+  ]
+}

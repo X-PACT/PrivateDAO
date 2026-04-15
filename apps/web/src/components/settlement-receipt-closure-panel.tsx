@@ -61,7 +61,10 @@ export function SettlementReceiptClosurePanel() {
             <div className="text-[11px] uppercase tracking-[0.22em] text-white/48">Required closure</div>
             <div className="mt-3 grid gap-2 text-sm leading-7 text-white/62">
               {snapshot.requiredClosure.map((item) => (
-                <div key={item}>{item}</div>
+                <div key={item.label} className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">
+                  <div className="text-white/82">{item.label}</div>
+                  <div className="text-white/52">{item.status} · {item.evidence}</div>
+                </div>
               ))}
             </div>
           </div>
@@ -86,6 +89,10 @@ export function SettlementReceiptClosurePanel() {
           </Link>
           <Link href="/documents/confidential-payout-evidence-packet" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
             Payout evidence
+            <ArrowUpRight className="h-4 w-4" />
+          </Link>
+          <Link href="/documents/canonical-verifier-boundary-decision" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+            Verifier boundary
             <ArrowUpRight className="h-4 w-4" />
           </Link>
           <Link href="/documents/mainnet-blockers" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
