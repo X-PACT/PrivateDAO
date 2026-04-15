@@ -194,16 +194,26 @@ export function GovernanceActionWorkbench() {
     executeProposal,
     resetSession,
   } = useGovernanceSession();
-  const activeLiveProposalAddress = liveProposalRuntime?.address;
-  const hasLiveDaoLane = Boolean(liveDaoRuntime?.address && liveDaoRuntime.governanceMint);
-  const effectiveDaoCreated = daoCreated || hasLiveDaoLane;
-  const effectiveProposalCreated = proposalCreated || Boolean(activeLiveProposalAddress);
-  const effectiveVoteCommitted = voteCommitted || Boolean(liveVoteRuntime?.commitSignature && activeLiveProposalAddress);
-  const effectiveVoteRevealed = voteRevealed || Boolean(liveVoteRuntime?.revealSignature && activeLiveProposalAddress);
+  const liveDaoWalletMismatch = Boolean(
+    publicKey &&
+      liveDaoRuntime?.authority &&
+      liveDaoRuntime.authority !== publicKey.toBase58(),
+  );
+  const activeLiveDaoRuntime = liveDaoWalletMismatch ? null : liveDaoRuntime;
+  const activeLiveProposalAddress = liveDaoWalletMismatch ? null : liveProposalRuntime?.address;
+  const hasLiveDaoLane = Boolean(activeLiveDaoRuntime?.address && activeLiveDaoRuntime.governanceMint);
+  const effectiveDaoCreated = !liveDaoWalletMismatch && (daoCreated || hasLiveDaoLane);
+  const effectiveProposalCreated = !liveDaoWalletMismatch && (proposalCreated || Boolean(activeLiveProposalAddress));
+  const effectiveVoteCommitted =
+    !liveDaoWalletMismatch && (voteCommitted || Boolean(liveVoteRuntime?.commitSignature && activeLiveProposalAddress));
+  const effectiveVoteRevealed =
+    !liveDaoWalletMismatch && (voteRevealed || Boolean(liveVoteRuntime?.revealSignature && activeLiveProposalAddress));
   const effectiveProposalFinalized =
-    proposalFinalized || Boolean(liveVoteRuntime?.finalizeSignature && activeLiveProposalAddress);
+    !liveDaoWalletMismatch &&
+    (proposalFinalized || Boolean(liveVoteRuntime?.finalizeSignature && activeLiveProposalAddress));
   const effectiveProposalExecuted =
-    proposalExecuted || Boolean(liveVoteRuntime?.executeSignature && activeLiveProposalAddress);
+    !liveDaoWalletMismatch &&
+    (proposalExecuted || Boolean(liveVoteRuntime?.executeSignature && activeLiveProposalAddress));
 
   const canCreateDao =
     connected &&
@@ -269,7 +279,7 @@ export function GovernanceActionWorkbench() {
     connected &&
     Boolean(publicKey) &&
     canCreateProposal &&
-    Boolean(liveDaoRuntime?.address && liveDaoRuntime.governanceMint) &&
+    Boolean(activeLiveDaoRuntime?.address && activeLiveDaoRuntime.governanceMint) &&
     !proposalTreasuryDraft.error &&
     createProposalRuntime.status !== "submitting";
   const canExecute = effectiveProposalFinalized && !effectiveProposalExecuted;
@@ -656,14 +666,16 @@ export function GovernanceActionWorkbench() {
       });
       return;
     }
-    if (!liveDaoRuntime?.address) {
+    if (!activeLiveDaoRuntime?.address) {
       setCreateProposalRuntime({
         status: "error",
-        message: "Create the DAO live first so the web flow has a real DAO address to target.",
+        message: liveDaoWalletMismatch
+          ? "The current wallet does not own the live DAO in this session. Reset the session and bootstrap a fresh DAO from this wallet."
+          : "Create the DAO live first so the web flow has a real DAO address to target.",
       });
       return;
     }
-    if (liveDaoRuntime.authority && liveDaoRuntime.authority !== publicKey.toBase58()) {
+    if (activeLiveDaoRuntime.authority && activeLiveDaoRuntime.authority !== publicKey.toBase58()) {
       setCreateProposalRuntime({
         status: "error",
         message:
@@ -689,7 +701,7 @@ export function GovernanceActionWorkbench() {
 
       const governanceHolder = await fetchGovernanceHolderSnapshot({
         connection,
-        daoAddress: new PublicKey(liveDaoRuntime.address),
+        daoAddress: new PublicKey(activeLiveDaoRuntime.address),
         holder: publicKey,
       });
       if (governanceHolder.rawAmount <= BigInt(0)) {
@@ -701,7 +713,7 @@ export function GovernanceActionWorkbench() {
       const proposalSubmission = await buildCreateProposalTransaction({
         proposer: publicKey,
         connection,
-        daoAddress: new PublicKey(liveDaoRuntime.address),
+        daoAddress: new PublicKey(activeLiveDaoRuntime.address),
         title: proposalTitle.trim(),
         description: `${proposalTitle.trim()} submitted from the live web governance surface.`,
         treasuryAction: proposalTreasuryDraft.action,
@@ -763,10 +775,12 @@ export function GovernanceActionWorkbench() {
   }
 
   async function submitCommitVoteLive() {
-    if (!publicKey || !liveDaoRuntime?.address || !activeLiveProposalAddress) {
+    if (!publicKey || !activeLiveDaoRuntime?.address || !activeLiveProposalAddress) {
       setCommitVoteRuntime({
         status: "error",
-        message: "Create the DAO and proposal live first so commit has a real devnet lane to target.",
+        message: liveDaoWalletMismatch
+          ? "The current wallet does not own the live DAO in this session. Reset the session and bootstrap a fresh DAO from this wallet."
+          : "Create the DAO and proposal live first so commit has a real devnet lane to target.",
       });
       return;
     }
@@ -779,7 +793,7 @@ export function GovernanceActionWorkbench() {
 
       const governanceHolder = await fetchGovernanceHolderSnapshot({
         connection,
-        daoAddress: new PublicKey(liveDaoRuntime.address),
+        daoAddress: new PublicKey(activeLiveDaoRuntime.address),
         holder: publicKey,
       });
       if (governanceHolder.rawAmount <= BigInt(0)) {
@@ -801,7 +815,7 @@ export function GovernanceActionWorkbench() {
       const commitSubmission = await buildCommitVoteTransaction({
         commitment,
         connection,
-        daoAddress: new PublicKey(liveDaoRuntime.address),
+        daoAddress: new PublicKey(activeLiveDaoRuntime.address),
         proposalAddress,
         voter: publicKey,
       });
@@ -910,10 +924,12 @@ export function GovernanceActionWorkbench() {
   }
 
   async function submitFinalizeProposalLive() {
-    if (!publicKey || !liveDaoRuntime?.address || !activeLiveProposalAddress) {
+    if (!publicKey || !activeLiveDaoRuntime?.address || !activeLiveProposalAddress) {
       setFinalizeRuntime({
         status: "error",
-        message: "Create and track a live proposal first so finalize has a real DAO/proposal lane to target.",
+        message: liveDaoWalletMismatch
+          ? "The current wallet does not own the live DAO in this session. Reset the session and bootstrap a fresh DAO from this wallet."
+          : "Create and track a live proposal first so finalize has a real DAO/proposal lane to target.",
       });
       return;
     }
@@ -933,7 +949,7 @@ export function GovernanceActionWorkbench() {
 
       const finalizeSubmission = await buildFinalizeProposalTransaction({
         connection,
-        daoAddress: new PublicKey(liveDaoRuntime.address),
+        daoAddress: new PublicKey(activeLiveDaoRuntime.address),
         finalizer: publicKey,
         proposalAddress,
       });
@@ -966,10 +982,12 @@ export function GovernanceActionWorkbench() {
   }
 
   async function submitExecuteProposalLive() {
-    if (!publicKey || !liveDaoRuntime?.address || !activeLiveProposalAddress) {
+    if (!publicKey || !activeLiveDaoRuntime?.address || !activeLiveProposalAddress) {
       setExecuteRuntime({
         status: "error",
-        message: "Create, finalize, and keep a live DAO/proposal lane first so execute has a real target.",
+        message: liveDaoWalletMismatch
+          ? "The current wallet does not own the live DAO in this session. Reset the session and bootstrap a fresh DAO from this wallet."
+          : "Create, finalize, and keep a live DAO/proposal lane first so execute has a real target.",
       });
       return;
     }
@@ -1005,7 +1023,7 @@ export function GovernanceActionWorkbench() {
 
       const executeSubmission = await buildExecuteProposalTransaction({
         connection,
-        daoAddress: new PublicKey(liveDaoRuntime.address),
+        daoAddress: new PublicKey(activeLiveDaoRuntime.address),
         executor: publicKey,
         proposalAddress,
         treasuryRecipient: proposalDetails.treasuryAction
@@ -1496,6 +1514,14 @@ export function GovernanceActionWorkbench() {
                       <div className="mt-1 break-all text-white/60">Signature {createProposalRuntime.signature}</div>
                     ) : null}
                   </div>
+                ) : liveDaoWalletMismatch ? (
+                  <div className="mt-4 rounded-2xl border border-amber-300/20 bg-amber-300/[0.08] p-3 text-sm leading-7 text-amber-100/82">
+                    <div>This session is carrying a DAO created by another wallet.</div>
+                    <div className="mt-2 text-white/72">Reset once, then bootstrap a DAO from the currently connected wallet.</div>
+                    <Button className="mt-3" onClick={handleResetSession} size="sm" variant="secondary">
+                      Reset to current wallet
+                    </Button>
+                  </div>
                 ) : liveProposalRuntime ? (
                   <div className="mt-4 rounded-2xl border border-emerald-300/18 bg-emerald-300/[0.08] p-3 text-sm leading-7 text-emerald-100/82">
                     <div>Last live proposal submit cleared from the web wallet flow.</div>
@@ -1508,10 +1534,18 @@ export function GovernanceActionWorkbench() {
               <div className="space-y-3">
                 <div className="rounded-[22px] border border-cyan-300/16 bg-cyan-300/[0.08] p-4 text-sm text-white/72">
                   <div className="text-[11px] uppercase tracking-[0.2em] text-cyan-100/72">Live DAO lane</div>
-                  {liveDaoRuntime?.address ? (
+                  {activeLiveDaoRuntime?.address ? (
                     <>
-                      <div className="mt-2 break-all text-white">{liveDaoRuntime.address}</div>
-                      <div className="mt-1 break-all text-white/62">Governance mint {liveDaoRuntime.governanceMint}</div>
+                      <div className="mt-2 break-all text-white">{activeLiveDaoRuntime.address}</div>
+                      <div className="mt-1 break-all text-white/62">Governance mint {activeLiveDaoRuntime.governanceMint}</div>
+                      {activeLiveDaoRuntime.authority ? (
+                        <div className="mt-1 break-all text-white/52">Creator wallet {activeLiveDaoRuntime.authority}</div>
+                      ) : null}
+                    </>
+                  ) : liveDaoWalletMismatch && liveDaoRuntime?.address ? (
+                    <>
+                      <div className="mt-2 text-amber-100">Live DAO belongs to another wallet.</div>
+                      <div className="mt-2 break-all text-white/72">{liveDaoRuntime.address}</div>
                       {liveDaoRuntime.authority ? (
                         <div className="mt-1 break-all text-white/52">Creator wallet {liveDaoRuntime.authority}</div>
                       ) : null}
