@@ -108,7 +108,12 @@ export function OperationsShell({
         </Card>
       </div> : null}
 
-      <div className="grid gap-6 xl:grid-cols-[280px_minmax(0,1fr)] xl:gap-8">
+      <div
+        className={cn(
+          "grid gap-6 xl:gap-8",
+          !useMinimalGuidedChrome && "xl:grid-cols-[280px_minmax(0,1fr)]",
+        )}
+      >
         {!useMinimalGuidedChrome ? <aside className="hidden xl:sticky xl:top-28 xl:block xl:self-start">
           <Card className="border-white/10 bg-[#07101d]/88">
             <CardHeader className="space-y-4">

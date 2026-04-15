@@ -186,6 +186,46 @@ export function HomeShell() {
         </div>
       </section>
 
+      <section className="mx-auto mt-14 w-full max-w-7xl px-4 sm:mt-16 sm:px-6 lg:px-8">
+        <div className="max-w-3xl space-y-4">
+          <div className="text-[11px] font-medium uppercase tracking-[0.34em] text-cyan-200/78">Why it works</div>
+          <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Four systems make the product usable, private, and fast</h2>
+          <p className="text-base leading-8 text-white/60 sm:text-lg">
+            PrivateDAO is not just a UI shell. It combines privacy, responsive execution, and reliable reads so a real Devnet governance action can move from wallet click to visible result without forcing the user to learn the architecture first.
+          </p>
+        </div>
+        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
+            <div className="text-[11px] uppercase tracking-[0.24em] text-emerald-300/80">REFHE</div>
+            <div className="mt-3 text-lg font-semibold text-white">Confidential settlement posture</div>
+            <p className="mt-3 text-sm leading-7 text-white/58">
+              REFHE supports the encrypted payout and settlement path so sensitive treasury actions do not depend on plain-text operating flow alone.
+            </p>
+          </div>
+          <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
+            <div className="text-[11px] uppercase tracking-[0.24em] text-violet-200/80">ZK</div>
+            <div className="mt-3 text-lg font-semibold text-white">Verifiable privacy proof</div>
+            <p className="mt-3 text-sm leading-7 text-white/58">
+              Zero-knowledge proof surfaces give judges, partners, and operators a verifiable trust layer without turning the main product route into a proof maze.
+            </p>
+          </div>
+          <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
+            <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-200/80">MagicBlock</div>
+            <div className="mt-3 text-lg font-semibold text-white">Responsive execution corridor</div>
+            <p className="mt-3 text-sm leading-7 text-white/58">
+              MagicBlock gives the product a faster action corridor for treasury and governance execution where slow, clumsy wallet UX would otherwise kill momentum.
+            </p>
+          </div>
+          <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
+            <div className="text-[11px] uppercase tracking-[0.24em] text-amber-200/80">Fast RPC</div>
+            <div className="mt-3 text-lg font-semibold text-white">Reliable live state and logs</div>
+            <p className="mt-3 text-sm leading-7 text-white/58">
+              Fast RPC and hosted reads keep live state, signatures, proposal progress, and execution logs visible so users can tell what really happened after a wallet action.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section className="mx-auto mt-18 w-full max-w-7xl px-4 sm:mt-24 sm:px-6 lg:px-8">
         <div className="max-w-3xl space-y-4">
           <div className="text-[11px] font-medium uppercase tracking-[0.34em] text-emerald-300/80">Need more?</div>
