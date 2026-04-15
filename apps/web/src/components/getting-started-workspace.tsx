@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, Wallet } from "lucide-react";
 
@@ -13,6 +14,7 @@ type GettingStartedWorkspaceProps = {
 };
 
 export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWorkspaceProps) {
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const firstSessionSummary = {
     daoCount: executionSnapshot.proposalFlow.value,
     walletCoverage: executionSnapshot.walletReadiness.value,
@@ -68,67 +70,88 @@ export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWor
         </CardContent>
       </Card>
 
-      <div className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
-        <Card>
-          <CardHeader>
-            <CardTitle>Recommended wallet path</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {walletChoices.map((wallet) => (
-              <div key={wallet.name} className="rounded-[24px] border border-white/8 bg-white/[0.04] p-4">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-black/20 text-cyan-100">
-                    <Wallet className="h-4 w-4" />
-                  </div>
-                  <div className="text-base font-medium text-white">{wallet.name}</div>
-                </div>
-                <p className="mt-3 text-sm leading-7 text-white/58">{wallet.fit}</p>
-              </div>
-            ))}
-            <div className="rounded-[24px] border border-emerald-300/18 bg-emerald-300/8 p-4 text-sm leading-7 text-white/68">
-              Connect Wallet stays in the top-right shell position and auto-reconnects when possible, so users land in
-              the product instead of redoing wallet setup every visit.
+      <Card className="border-white/10 bg-white/[0.03]">
+        <CardContent className="space-y-4 p-6">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <div className="text-base font-medium text-white">Need wallet guidance or session detail?</div>
+              <p className="mt-2 text-sm leading-7 text-white/58">
+                Keep the first run simple by going straight to <strong className="text-white">Govern</strong>. Open the details below only if you want wallet recommendations or a preview of the live session data.
+              </p>
             </div>
-          </CardContent>
-        </Card>
+            <button
+              type="button"
+              className={cn(buttonVariants({ size: "sm", variant: "outline" }), "shrink-0")}
+              onClick={() => setShowAdvanced((current) => !current)}
+            >
+              {showAdvanced ? "Hide details" : "Show wallet and session detail"}
+            </button>
+          </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>What the first successful session looks like</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {buyerJourneySteps.slice(0, 3).map((step) => (
-              <div key={step.title} className="rounded-[26px] border border-white/8 bg-white/[0.04] p-5">
-                <div className="flex items-center gap-3">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-300" />
-                  <div className="text-base font-medium text-white">{step.title}</div>
-                </div>
-                <p className="mt-3 text-sm leading-7 text-white/58">{step.description}</p>
-                <div className="mt-4 rounded-2xl border border-white/8 bg-black/20 px-4 py-3 text-sm text-white/68">
-                  {step.outcome}
-                </div>
-              </div>
-            ))}
-            <div className="rounded-[26px] border border-cyan-300/16 bg-cyan-300/[0.08] p-5 text-sm leading-7 text-white/68">
-              The product already tracks live governance health in the background:
-              <div className="mt-3 grid gap-3 sm:grid-cols-3">
-                <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">
-                  <div className="text-[11px] uppercase tracking-[0.18em] text-white/40">Proposal flow</div>
-                  <div className="mt-2 text-white">{firstSessionSummary.daoCount}</div>
-                </div>
-                <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">
-                  <div className="text-[11px] uppercase tracking-[0.18em] text-white/40">Wallet readiness</div>
-                  <div className="mt-2 text-white">{firstSessionSummary.walletCoverage}</div>
-                </div>
-                <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">
-                  <div className="text-[11px] uppercase tracking-[0.18em] text-white/40">Proof freshness</div>
-                  <div className="mt-2 text-white">{firstSessionSummary.proofFreshness}</div>
-                </div>
-              </div>
+          {showAdvanced ? (
+            <div className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Recommended wallet path</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {walletChoices.map((wallet) => (
+                    <div key={wallet.name} className="rounded-[24px] border border-white/8 bg-white/[0.04] p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-black/20 text-cyan-100">
+                          <Wallet className="h-4 w-4" />
+                        </div>
+                        <div className="text-base font-medium text-white">{wallet.name}</div>
+                      </div>
+                      <p className="mt-3 text-sm leading-7 text-white/58">{wallet.fit}</p>
+                    </div>
+                  ))}
+                  <div className="rounded-[24px] border border-emerald-300/18 bg-emerald-300/8 p-4 text-sm leading-7 text-white/68">
+                    Connect Wallet stays in the top-right shell position and auto-reconnects when possible, so users land in the product instead of redoing wallet setup every visit.
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>What the first successful session looks like</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {buyerJourneySteps.slice(0, 3).map((step) => (
+                    <div key={step.title} className="rounded-[26px] border border-white/8 bg-white/[0.04] p-5">
+                      <div className="flex items-center gap-3">
+                        <CheckCircle2 className="h-4 w-4 text-emerald-300" />
+                        <div className="text-base font-medium text-white">{step.title}</div>
+                      </div>
+                      <p className="mt-3 text-sm leading-7 text-white/58">{step.description}</p>
+                      <div className="mt-4 rounded-2xl border border-white/8 bg-black/20 px-4 py-3 text-sm text-white/68">
+                        {step.outcome}
+                      </div>
+                    </div>
+                  ))}
+                  <div className="rounded-[26px] border border-cyan-300/16 bg-cyan-300/[0.08] p-5 text-sm leading-7 text-white/68">
+                    The product already tracks live governance health in the background:
+                    <div className="mt-3 grid gap-3 sm:grid-cols-3">
+                      <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">
+                        <div className="text-[11px] uppercase tracking-[0.18em] text-white/40">Proposal flow</div>
+                        <div className="mt-2 text-white">{firstSessionSummary.daoCount}</div>
+                      </div>
+                      <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">
+                        <div className="text-[11px] uppercase tracking-[0.18em] text-white/40">Wallet readiness</div>
+                        <div className="mt-2 text-white">{firstSessionSummary.walletCoverage}</div>
+                      </div>
+                      <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">
+                        <div className="text-[11px] uppercase tracking-[0.18em] text-white/40">Proof freshness</div>
+                        <div className="mt-2 text-white">{firstSessionSummary.proofFreshness}</div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
-          </CardContent>
-        </Card>
-      </div>
+          ) : null}
+        </CardContent>
+      </Card>
 
       <Card className="border-white/10 bg-white/[0.03]">
         <CardContent className="flex flex-wrap items-center justify-between gap-4 p-6">
