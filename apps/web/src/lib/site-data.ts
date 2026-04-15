@@ -1720,7 +1720,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     primaryCorridor: "Start + Story + Services + Trust",
     liveRoute: "/start",
     judgeRoute: "/story",
-    proofRoute: "/documents/capital-readiness-packet",
+    proofRoute: "/documents/startup-accelerator-application-packet",
     deckRoute: "/viewer/investor-pitch-deck",
     videoRoute: "/story",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
@@ -1746,7 +1746,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
       "Accelerator reviewers will reward coherence, honesty, and visible execution more than extra feature count.",
     ],
     validationSteps: [
-      "Use `/start`, `/story`, `/services`, `/trust`, and `/viewer/investor-pitch-deck` as the capital packet.",
+      "Use `/start`, `/story`, `/services`, `/trust`, `/documents/startup-accelerator-application-packet`, and `/viewer/investor-pitch-deck` as the capital packet.",
       "Keep `docs/mainnet-blockers.json` and public trust language aligned before any grant submission.",
       "Do not claim mainnet launch readiness until the blocker set is materially closed.",
     ],

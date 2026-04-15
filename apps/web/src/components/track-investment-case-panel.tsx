@@ -25,7 +25,7 @@ export function TrackInvestmentCasePanel({ workspace }: TrackInvestmentCasePanel
         : workspace.slug === "poland-grants"
           ? "/documents/poland-foundation-grant-application-packet"
           : workspace.slug === "startup-accelerator"
-          ? "/documents/capital-readiness-packet"
+          ? "/documents/startup-accelerator-application-packet"
           : null;
   const specialPacketLabel =
     workspace.slug === "rpc-infrastructure" || workspace.slug === "dune-analytics"
@@ -35,7 +35,7 @@ export function TrackInvestmentCasePanel({ workspace }: TrackInvestmentCasePanel
         : workspace.slug === "poland-grants"
           ? "Poland grant packet"
           : workspace.slug === "startup-accelerator"
-          ? "Capital readiness packet"
+          ? "Accelerator packet"
           : null;
 
   return (

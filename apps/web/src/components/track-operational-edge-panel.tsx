@@ -100,6 +100,8 @@ function buildCapitalModel(workspace: CompetitionTrackWorkspace) {
   const primaryPacket =
     workspace.slug === "poland-grants"
       ? { label: "Open Poland grant packet", href: "/documents/poland-foundation-grant-application-packet" }
+      : workspace.slug === "startup-accelerator"
+        ? { label: "Open accelerator packet", href: "/documents/startup-accelerator-application-packet" }
       : { label: "Open capital readiness packet", href: "/documents/capital-readiness-packet" };
 
   return {

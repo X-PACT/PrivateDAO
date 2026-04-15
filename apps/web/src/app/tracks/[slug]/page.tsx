@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { CompetitionWorkspace } from "@/components/competition-workspace";
+import { GrantExecutionReadinessPanel } from "@/components/grant-execution-readiness-panel";
 import { OperationsShell } from "@/components/operations-shell";
 import { TrackJudgeFirstTopStrip } from "@/components/track-judge-first-top-strip";
 import { TrackOperationalEdgePanel } from "@/components/track-operational-edge-panel";
@@ -72,6 +73,9 @@ export default async function TrackWorkspacePage({ params }: PageProps) {
       </div>
       <div>
         <TrackOperationalEdgePanel workspace={workspace} />
+      </div>
+      <div>
+        <GrantExecutionReadinessPanel workspace={workspace} />
       </div>
       {!showJudgeFirstTopStrip ? (
         <div>
