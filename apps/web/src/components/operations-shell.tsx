@@ -195,7 +195,8 @@ export function OperationsShell({
                       Open live state
                     </Link>
                     <Link className={buttonVariants({ size: "sm", variant: "outline" })} href="/trust">
-                      Open trust only if needed
+                      <span className="hidden sm:inline">Open trust only if needed</span>
+                      <span className="sm:hidden">Trust</span>
                     </Link>
                   </>
                 ) : (
@@ -207,7 +208,7 @@ export function OperationsShell({
                       Open live state
                     </Link>
                     {isGuidedRoute ? (
-                      <Link className={buttonVariants({ size: "sm", variant: "outline" })} href="/trust">
+                      <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }), "hidden sm:inline-flex")} href="/trust">
                         Open trust only if needed
                       </Link>
                     ) : (
