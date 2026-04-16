@@ -103,7 +103,7 @@ export default function DocumentsPage() {
           <Link href="/documents/reviewer-fast-path" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
             Open fast path
           </Link>
-          <Link href="/documents/private-dao-guide" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+          <Link href="/learn" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
             Open plain-language guide
           </Link>
         </div>

@@ -17,7 +17,6 @@ export type CuratedDocument = {
 const repositoryBlobBase = "https://github.com/X-PACT/PrivateDAO/blob/main";
 
 const indexableDocumentSlugs = new Set<string>([
-  "private-dao-guide",
   "solana-developer-tooling-proposal-2026",
   "technical-verification-status-2026",
   "reviewer-fast-path",
@@ -38,16 +37,6 @@ export function getIndexableCuratedDocuments() {
 }
 
 const curatedDocuments: CuratedDocument[] = [
-  {
-    slug: "private-dao-guide",
-    title: "PrivateDAO Guide",
-    category: "Learn",
-    summary: "Plain-language guide to what PrivateDAO is, why it exists, how governance, payments, gaming, API, RPC, and privacy fit together, and how to verify the product yourself on Devnet.",
-    audience: "Normal users, judges, grant reviewers, operators, community contributors",
-    boundary: "Educational product guide only; it explains the current product, Devnet verification path, and ecosystem value without upgrading any production gate beyond the linked evidence.",
-    docPath: "docs/private-dao-guide.md",
-    rawHref: `${repositoryBlobBase}/docs/private-dao-guide.md`,
-  },
   {
     slug: "encrypted-operations-lane",
     title: "Encrypted Operations Lane",

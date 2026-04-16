@@ -184,8 +184,8 @@ export function ProductLearningGuide({
                 Connect on Devnet
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link className={buttonVariants({ size: "lg", variant: "secondary" })} href="/documents/private-dao-guide">
-                Open the written guide
+              <Link className={buttonVariants({ size: "lg", variant: "secondary" })} href="/story">
+                Watch the product story
               </Link>
               <Link className={buttonVariants({ size: "lg", variant: "outline" })} href="/proof">
                 Inspect proof and runtime
