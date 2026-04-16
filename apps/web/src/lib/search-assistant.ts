@@ -457,7 +457,7 @@ const assistantIntents: AssistantIntent[] = [
     primaryActionLabel: "Open community hub",
     primaryActionHref: "/community",
     relatedRoutes: [
-      { label: "Discord", href: "https://discord.gg/bC76YEcpDa" },
+      { label: "Discord", href: "https://discord.gg/PbM8BC2A" },
       { label: "YouTube", href: "https://www.youtube.com/@privatedao" },
       { label: "Story Video", href: "/story" },
     ],

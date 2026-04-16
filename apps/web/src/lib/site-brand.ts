@@ -37,7 +37,7 @@ export function buildOrganizationJsonLd() {
     sameAs: [
       "https://github.com/X-PACT/PrivateDAO",
       "https://www.youtube.com/@privatedao",
-      "https://discord.gg/bC76YEcpDa",
+      "https://discord.gg/PbM8BC2A",
       "https://x.com/FahdX369",
     ],
   };

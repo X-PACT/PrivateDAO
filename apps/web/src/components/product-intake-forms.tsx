@@ -138,12 +138,12 @@ const intakePresets: IntakePreset[] = [
       priority: "Immediate",
       narrative: "Keep the user inside the product first, then escalate to Diagnostics or Discord only when the issue needs operator context or live assistance.",
       primaryAction: { label: "Open assistant", href: "/assistant" },
-      evidenceAction: { label: "Join Discord", href: "https://discord.gg/bC76YEcpDa" },
+      evidenceAction: { label: "Join Discord", href: "https://discord.gg/PbM8BC2A" },
     },
     routeSet: [
       { label: "Assistant", href: "/assistant" },
       { label: "Diagnostics", href: "/diagnostics" },
-      { label: "Discord", href: "https://discord.gg/bC76YEcpDa" },
+      { label: "Discord", href: "https://discord.gg/PbM8BC2A" },
     ],
   },
 ];

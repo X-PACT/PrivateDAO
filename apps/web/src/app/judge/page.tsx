@@ -46,6 +46,9 @@ export default function JudgePage() {
             <Link href="/proof?judge=1" className={cn(buttonVariants({ size: "sm" }))}>
               Open full proof
             </Link>
+            <Link href="/learn" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+              Open learning guide
+            </Link>
             <Link href="/documents/reviewer-fast-path" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
               Open reviewer fast path
             </Link>

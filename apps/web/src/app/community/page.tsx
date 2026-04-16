@@ -54,12 +54,12 @@ export default function CommunityPage({ searchParams }: CommunityPageProps) {
   return (
     <OperationsShell
       eyebrow="Community"
-      title="Join the community, follow product momentum, and step directly into pilot or operator paths"
-      description="Community is the public entry for Discord, YouTube, product updates, pilot intent, support routing, and the shortest next step into PrivateDAO as a user, buyer, operator, or ecosystem supporter."
+      title="Join Discord, learn the product, try Devnet, and verify the result from one public route"
+      description="Community is the public entry for the full onboarding ladder: join the live server, learn what PrivateDAO does, try the browser-first Devnet flow, and verify the real outcome in the judge and proof surfaces."
       badges={[
         { label: "Discord live", variant: "success" },
         { label: "YouTube live", variant: "violet" },
-        { label: "Join -> support -> pilot", variant: "cyan" },
+        { label: "Join -> learn -> try -> verify", variant: "cyan" },
       ]}
     >
       <EcosystemFocusAlignmentStrip

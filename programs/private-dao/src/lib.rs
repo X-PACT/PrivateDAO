@@ -3,16 +3,12 @@ use anchor_lang::prelude::*;
 use anchor_spl::token_interface::{Mint, TokenAccount, TokenInterface};
 
 mod error;
-#[path = "dao.rs"]
-mod dao_instructions;
-#[path = "privacy.rs"]
-mod privacy_instructions;
-#[path = "treasury.rs"]
-mod treasury_instructions;
+mod dao;
+mod privacy;
+mod treasury;
 mod traits;
 mod utils;
-#[path = "voting.rs"]
-mod voting_instructions;
+mod voting;
 
 pub use error::Error;
 pub use traits::{ProposalLifecycle, Sha256VoteCommitment, TreasuryActionPolicy, VoteCommitment};
@@ -83,7 +79,7 @@ pub mod private_dao {
         execution_delay_seconds: i64,
         voting_config: VotingConfig,
     ) -> Result<()> {
-        dao_instructions::initialize_dao(
+        dao::initialize_dao(
             ctx,
             dao_name,
             quorum_percentage,
@@ -108,7 +104,7 @@ pub mod private_dao {
         execution_delay_seconds: i64,
         voting_config: VotingConfig,
     ) -> Result<()> {
-        dao_instructions::migrate_from_realms(
+        dao::migrate_from_realms(
             ctx,
             dao_name,
             realms_governance,
@@ -139,7 +135,7 @@ pub mod private_dao {
         proof_ttl_seconds: i64,
         settlement_ttl_seconds: i64,
     ) -> Result<()> {
-        dao_instructions::initialize_dao_security_policy(
+        dao::initialize_dao_security_policy(
             ctx,
             mode,
             zk_policy,
@@ -171,7 +167,7 @@ pub mod private_dao {
         proof_ttl_seconds: i64,
         settlement_ttl_seconds: i64,
     ) -> Result<()> {
-        dao_instructions::update_dao_security_policy_v2(
+        dao::update_dao_security_policy_v2(
             ctx,
             mode,
             zk_policy,
@@ -194,7 +190,7 @@ pub mod private_dao {
         reveal_rebate_policy: RevealRebatePolicyV3,
         reveal_rebate_lamports: u64,
     ) -> Result<()> {
-        dao_instructions::initialize_dao_governance_policy_v3(
+        dao::initialize_dao_governance_policy_v3(
             ctx,
             quorum_policy,
             reveal_rebate_policy,
@@ -208,7 +204,7 @@ pub mod private_dao {
         reveal_rebate_policy: RevealRebatePolicyV3,
         reveal_rebate_lamports: u64,
     ) -> Result<()> {
-        dao_instructions::update_dao_governance_policy_v3(
+        dao::update_dao_governance_policy_v3(
             ctx,
             quorum_policy,
             reveal_rebate_policy,
@@ -223,7 +219,7 @@ pub mod private_dao {
         require_refhe_settlement: bool,
         require_magicblock_settlement: bool,
     ) -> Result<()> {
-        dao_instructions::initialize_dao_settlement_policy_v3(
+        dao::initialize_dao_settlement_policy_v3(
             ctx,
             min_evidence_age_seconds,
             max_payout_amount,
@@ -239,7 +235,7 @@ pub mod private_dao {
         require_refhe_settlement: bool,
         require_magicblock_settlement: bool,
     ) -> Result<()> {
-        dao_instructions::update_dao_settlement_policy_v3(
+        dao::update_dao_settlement_policy_v3(
             ctx,
             min_evidence_age_seconds,
             max_payout_amount,
@@ -257,7 +253,7 @@ pub mod private_dao {
         voting_duration_seconds: i64,
         treasury_action: Option<TreasuryAction>,
     ) -> Result<()> {
-        voting_instructions::create_proposal(
+        voting::create_proposal(
             ctx,
             title,
             description,
@@ -278,7 +274,7 @@ pub mod private_dao {
         manifest_hash: [u8; 32],
         ciphertext_hash: [u8; 32],
     ) -> Result<()> {
-        treasury_instructions::configure_confidential_payout_plan(
+        treasury::configure_confidential_payout_plan(
             ctx,
             payout_type,
             asset_type,
@@ -299,7 +295,7 @@ pub mod private_dao {
         input_ciphertext_hash: [u8; 32],
         evaluation_key_hash: [u8; 32],
     ) -> Result<()> {
-        treasury_instructions::configure_refhe_envelope(
+        treasury::configure_refhe_envelope(
             ctx,
             model_uri,
             policy_hash,
@@ -315,7 +311,7 @@ pub mod private_dao {
         proof_bundle_hash: [u8; 32],
         verifier_program: Pubkey,
     ) -> Result<()> {
-        treasury_instructions::settle_refhe_envelope(
+        treasury::settle_refhe_envelope(
             ctx,
             result_ciphertext_hash,
             result_commitment_hash,
@@ -335,7 +331,7 @@ pub mod private_dao {
         private_transfer_amount: u64,
         withdrawal_amount: u64,
     ) -> Result<()> {
-        treasury_instructions::configure_magicblock_private_payment_corridor(
+        treasury::configure_magicblock_private_payment_corridor(
             ctx,
             api_base_url,
             cluster,
@@ -356,7 +352,7 @@ pub mod private_dao {
         transfer_tx_signature: String,
         withdraw_tx_signature: String,
     ) -> Result<()> {
-        treasury_instructions::settle_magicblock_private_payment_corridor(
+        treasury::settle_magicblock_private_payment_corridor(
             ctx,
             validator,
             transfer_queue,
@@ -373,11 +369,11 @@ pub mod private_dao {
     // meaningful participation starts.
 
     pub fn cancel_proposal(ctx: Context<CancelProposal>) -> Result<()> {
-        voting_instructions::cancel_proposal(ctx)
+        voting::cancel_proposal(ctx)
     }
 
     pub fn cancel_proposal_v2(ctx: Context<CancelProposalV2>) -> Result<()> {
-        voting_instructions::cancel_proposal_v2(ctx)
+        voting::cancel_proposal_v2(ctx)
     }
 
     // ── Veto proposal ─────────────────────────────────────────────────────────
@@ -393,7 +389,7 @@ pub mod private_dao {
     // This prevents the authority from becoming a permanent blocker.
 
     pub fn veto_proposal(ctx: Context<VetoProposal>) -> Result<()> {
-        voting_instructions::veto_proposal(ctx)
+        voting::veto_proposal(ctx)
     }
 
     // ── Phase 1 — Commit ──────────────────────────────────────────────────────
@@ -413,7 +409,7 @@ pub mod private_dao {
         commitment: [u8; 32],
         voter_reveal_authority: Option<Pubkey>,
     ) -> Result<()> {
-        voting_instructions::commit_vote(ctx, commitment, voter_reveal_authority)
+        voting::commit_vote(ctx, commitment, voter_reveal_authority)
     }
 
     // ── Vote delegation ───────────────────────────────────────────────────────
@@ -427,7 +423,7 @@ pub mod private_dao {
     //   - No other Solana governance tool supports private delegation
 
     pub fn delegate_vote(ctx: Context<DelegateVote>, delegatee: Pubkey) -> Result<()> {
-        voting_instructions::delegate_vote(ctx, delegatee)
+        voting::delegate_vote(ctx, delegatee)
     }
 
     // ── Commit with delegation ────────────────────────────────────────────────
@@ -441,7 +437,7 @@ pub mod private_dao {
         commitment: [u8; 32],
         voter_reveal_authority: Option<Pubkey>,
     ) -> Result<()> {
-        voting_instructions::commit_delegated_vote(ctx, commitment, voter_reveal_authority)
+        voting::commit_delegated_vote(ctx, commitment, voter_reveal_authority)
     }
 
     // ── Phase 2 — Reveal ──────────────────────────────────────────────────────
@@ -454,11 +450,11 @@ pub mod private_dao {
     // proposal account only when it remains rent-safe.
 
     pub fn reveal_vote(ctx: Context<RevealVote>, vote: bool, salt: [u8; 32]) -> Result<()> {
-        voting_instructions::reveal_vote(ctx, vote, salt)
+        voting::reveal_vote(ctx, vote, salt)
     }
 
     pub fn reveal_vote_v3(ctx: Context<RevealVoteV3>, vote: bool, salt: [u8; 32]) -> Result<()> {
-        voting_instructions::reveal_vote_v3(ctx, vote, salt)
+        voting::reveal_vote_v3(ctx, vote, salt)
     }
 
     // ── Phase 3a — Finalize ───────────────────────────────────────────────────
@@ -475,11 +471,11 @@ pub mod private_dao {
     // During the timelock, authority can call veto_proposal to block execution.
 
     pub fn finalize_proposal(ctx: Context<FinalizeProposal>) -> Result<()> {
-        voting_instructions::finalize_proposal(ctx)
+        voting::finalize_proposal(ctx)
     }
 
     pub fn finalize_proposal_v3(ctx: Context<FinalizeProposalV3>) -> Result<()> {
-        voting_instructions::finalize_proposal_v3(ctx)
+        voting::finalize_proposal_v3(ctx)
     }
 
     // ── Phase 3b — Execute ────────────────────────────────────────────────────
@@ -492,31 +488,31 @@ pub mod private_dao {
     //   execute  = move funds     (only after timelock + no veto)
 
     pub fn execute_proposal(ctx: Context<ExecuteProposal>) -> Result<()> {
-        treasury_instructions::execute_proposal(ctx)
+        treasury::execute_proposal(ctx)
     }
 
     pub fn execute_confidential_payout_plan(
         ctx: Context<ExecuteConfidentialPayoutPlan>,
     ) -> Result<()> {
-        treasury_instructions::execute_confidential_payout_plan(ctx)
+        treasury::execute_confidential_payout_plan(ctx)
     }
 
     pub fn execute_confidential_payout_plan_v2(
         ctx: Context<ExecuteConfidentialPayoutPlanV2>,
     ) -> Result<()> {
-        treasury_instructions::execute_confidential_payout_plan_v2(ctx)
+        treasury::execute_confidential_payout_plan_v2(ctx)
     }
 
     pub fn execute_confidential_payout_plan_v3(
         ctx: Context<ExecuteConfidentialPayoutPlanV3>,
     ) -> Result<()> {
-        treasury_instructions::execute_confidential_payout_plan_v3(ctx)
+        treasury::execute_confidential_payout_plan_v3(ctx)
     }
 
     // ── Fund treasury ─────────────────────────────────────────────────────────
 
     pub fn deposit_treasury(ctx: Context<DepositTreasury>, amount: u64) -> Result<()> {
-        treasury_instructions::deposit_treasury(ctx, amount)
+        treasury::deposit_treasury(ctx, amount)
     }
 
     // ── Realms voter weight plugin ─────────────────────────────────────────────
@@ -530,18 +526,18 @@ pub mod private_dao {
     // enforced inside PrivateDAO proposal finalization, not in this one record.
 
     pub fn update_voter_weight_record(ctx: Context<UpdateVoterWeightRecord>) -> Result<()> {
-        voting_instructions::update_voter_weight_record(ctx)
+        voting::update_voter_weight_record(ctx)
     }
 
     pub fn update_voter_weight_record_v2(
         ctx: Context<UpdateVoterWeightRecordV2>,
         scope: VoterWeightScope,
     ) -> Result<()> {
-        voting_instructions::update_voter_weight_record_v2(ctx, scope)
+        voting::update_voter_weight_record_v2(ctx, scope)
     }
 
     pub fn get_voter_weight_record(ctx: Context<GetVoterWeightRecord>) -> Result<u64> {
-        voting_instructions::get_voter_weight_record(ctx)
+        voting::get_voter_weight_record(ctx)
     }
 
     // ── ZK proof anchor ──────────────────────────────────────────────────────
@@ -560,7 +556,7 @@ pub mod private_dao {
         verification_key_hash: [u8; 32],
         bundle_hash: [u8; 32],
     ) -> Result<()> {
-        privacy_instructions::anchor_zk_proof(
+        privacy::anchor_zk_proof(
             ctx,
             layer,
             proof_system,
@@ -586,7 +582,7 @@ pub mod private_dao {
         verification_mode: ZkVerificationMode,
         verifier_program: Option<Pubkey>,
     ) -> Result<()> {
-        privacy_instructions::verify_zk_proof_on_chain(
+        privacy::verify_zk_proof_on_chain(
             ctx,
             layer,
             verification_mode,
@@ -598,36 +594,36 @@ pub mod private_dao {
         ctx: Context<ConfigureProposalZkMode>,
         mode: ProposalZkMode,
     ) -> Result<()> {
-        privacy_instructions::configure_proposal_zk_mode(ctx, mode)
+        privacy::configure_proposal_zk_mode(ctx, mode)
     }
 
     pub fn finalize_zk_enforced_proposal(ctx: Context<FinalizeZkEnforcedProposal>) -> Result<()> {
-        privacy_instructions::finalize_zk_enforced_proposal(ctx)
+        privacy::finalize_zk_enforced_proposal(ctx)
     }
 
     pub fn snapshot_proposal_execution_policy(
         ctx: Context<SnapshotProposalExecutionPolicy>,
     ) -> Result<()> {
-        privacy_instructions::snapshot_proposal_execution_policy(ctx)
+        privacy::snapshot_proposal_execution_policy(ctx)
     }
 
     pub fn snapshot_proposal_governance_policy_v3(
         ctx: Context<SnapshotProposalGovernancePolicyV3>,
     ) -> Result<()> {
-        privacy_instructions::snapshot_proposal_governance_policy_v3(ctx)
+        privacy::snapshot_proposal_governance_policy_v3(ctx)
     }
 
     pub fn snapshot_proposal_settlement_policy_v3(
         ctx: Context<SnapshotProposalSettlementPolicyV3>,
     ) -> Result<()> {
-        privacy_instructions::snapshot_proposal_settlement_policy_v3(ctx)
+        privacy::snapshot_proposal_settlement_policy_v3(ctx)
     }
 
     pub fn fund_reveal_rebate_vault_v3(
         ctx: Context<FundRevealRebateVaultV3>,
         amount: u64,
     ) -> Result<()> {
-        privacy_instructions::fund_reveal_rebate_vault_v3(ctx, amount)
+        privacy::fund_reveal_rebate_vault_v3(ctx, amount)
     }
 
     pub fn record_proof_verification_v2(
@@ -639,7 +635,7 @@ pub mod private_dao {
         verification_key_hash: [u8; 32],
         domain_separator: [u8; 32],
     ) -> Result<()> {
-        privacy_instructions::record_proof_verification_v2(
+        privacy::record_proof_verification_v2(
             ctx,
             verification_kind,
             payload_hash,
@@ -653,13 +649,13 @@ pub mod private_dao {
     pub fn finalize_zk_enforced_proposal_v2(
         ctx: Context<FinalizeZkEnforcedProposalV2>,
     ) -> Result<()> {
-        privacy_instructions::finalize_zk_enforced_proposal_v2(ctx)
+        privacy::finalize_zk_enforced_proposal_v2(ctx)
     }
 
     pub fn finalize_zk_enforced_proposal_v3(
         ctx: Context<FinalizeZkEnforcedProposalV3>,
     ) -> Result<()> {
-        privacy_instructions::finalize_zk_enforced_proposal_v3(ctx)
+        privacy::finalize_zk_enforced_proposal_v3(ctx)
     }
 
     pub fn record_settlement_evidence_v2(
@@ -669,7 +665,7 @@ pub mod private_dao {
         evidence_hash: [u8; 32],
         payout_fields_hash: [u8; 32],
     ) -> Result<()> {
-        privacy_instructions::record_settlement_evidence_v2(
+        privacy::record_settlement_evidence_v2(
             ctx,
             kind,
             settlement_id,

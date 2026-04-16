@@ -16,11 +16,11 @@ export function CommunityHub() {
     <div className="grid gap-6">
       <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,16,32,0.94),rgba(7,11,23,0.98))]">
         <CardHeader>
-          <CardTitle>Join, update, pilot, operate</CardTitle>
+          <CardTitle>Join, learn, try, verify</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 xl:grid-cols-4">
           <a
-            href="https://discord.gg/bC76YEcpDa"
+            href="https://discord.gg/PbM8BC2A"
             target="_blank"
             rel="noreferrer"
             className="group rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-5 transition hover:border-cyan-300/30 hover:bg-cyan-300/[0.12]"
@@ -31,14 +31,14 @@ export function CommunityHub() {
               </div>
               <ArrowRight className="mt-1 h-4 w-4 text-cyan-200 transition group-hover:translate-x-0.5" />
             </div>
-            <div className="mt-4 text-lg font-medium text-white">Join the server</div>
+            <div className="mt-4 text-lg font-medium text-white">Join Discord</div>
             <div className="mt-3 text-sm leading-7 text-white/62">
-              Enter the live Discord for announcements, demos, feedback, and operator discussion.
+              Enter the live server for onboarding help, announcements, demos, feedback, and real-time operator discussion.
             </div>
           </a>
 
           <Link
-            href="/story"
+            href="/learn"
             className="group rounded-3xl border border-white/10 bg-white/4 p-5 transition hover:border-violet-300/24 hover:bg-white/6"
           >
             <div className="flex items-start justify-between gap-4">
@@ -47,14 +47,14 @@ export function CommunityHub() {
               </div>
               <ArrowRight className="mt-1 h-4 w-4 text-violet-200 transition group-hover:translate-x-0.5" />
             </div>
-            <div className="mt-4 text-lg font-medium text-white">Follow updates</div>
+            <div className="mt-4 text-lg font-medium text-white">Learn PrivateDAO</div>
             <div className="mt-3 text-sm leading-7 text-white/62">
-              Watch the story reel, new demo drops, and public product momentum from the same route.
+              Start with the plain-language guide to understand private governance, treasury rails, RPC, APIs, ZK, and the product stack before you touch the wallet flow.
             </div>
           </Link>
 
           <Link
-            href="/engage?profile=pilot-funding"
+            href="/start"
             className="group rounded-3xl border border-emerald-300/16 bg-emerald-300/[0.08] p-5 transition hover:border-emerald-300/30 hover:bg-emerald-300/[0.12]"
           >
             <div className="flex items-start justify-between gap-4">
@@ -63,14 +63,14 @@ export function CommunityHub() {
               </div>
               <ArrowRight className="mt-1 h-4 w-4 text-emerald-200 transition group-hover:translate-x-0.5" />
             </div>
-            <div className="mt-4 text-lg font-medium text-white">Start a pilot</div>
+            <div className="mt-4 text-lg font-medium text-white">Try Devnet</div>
             <div className="mt-3 text-sm leading-7 text-white/62">
-              Move from community interest to buyer path, pilot packaging, and mainnet-aware rollout.
+              Connect a Devnet wallet, create a DAO, submit a proposal, vote, reveal, and execute from the browser without terminal work.
             </div>
           </Link>
 
           <Link
-            href="/assistant"
+            href="/judge"
             className="group rounded-3xl border border-amber-300/16 bg-amber-300/[0.08] p-5 transition hover:border-amber-300/30 hover:bg-amber-300/[0.12]"
           >
             <div className="flex items-start justify-between gap-4">
@@ -79,9 +79,9 @@ export function CommunityHub() {
               </div>
               <ArrowRight className="mt-1 h-4 w-4 text-amber-200 transition group-hover:translate-x-0.5" />
             </div>
-            <div className="mt-4 text-lg font-medium text-white">Get support or operate</div>
+            <div className="mt-4 text-lg font-medium text-white">Verify in Judge</div>
             <div className="mt-3 text-sm leading-7 text-white/62">
-              Route directly into support, search, or the live govern flow when the user is ready to act.
+              Open the shortest reviewer path for lifecycle proof, transaction hashes, execution status, and the Agentic Treasury Micropayment Rail.
             </div>
           </Link>
         </CardContent>
@@ -135,21 +135,18 @@ export function CommunityHub() {
               <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-amber-300/18 bg-amber-300/10 text-amber-100">
                 <Trophy className="h-5 w-5" />
               </div>
-              <CardTitle>Community-ready routes</CardTitle>
+              <CardTitle>Get help and start</CardTitle>
             </div>
           </CardHeader>
           <CardContent className="grid gap-3">
-            <Link href="/awards" className={cn(buttonVariants({ size: "sm" }), "w-full")}>
-              Open achievements
+            <Link href="/learn" className={cn(buttonVariants({ size: "sm" }), "w-full")}>
+              Open the learning guide
             </Link>
-            <Link href="/tracks" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "w-full")}>
-              Open competition center
+            <Link href="/start" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "w-full")}>
+              Open the Devnet start route
             </Link>
-            <Link href="/story" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full")}>
-              Open story video
-            </Link>
-            <Link href="/engage" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "w-full")}>
-              Open buyer path
+            <Link href="/assistant" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full")}>
+              Open support routing
             </Link>
             <Link href="/govern" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full")}>
               Open govern flow
@@ -157,19 +154,11 @@ export function CommunityHub() {
             <Link href="/services" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full")}>
               Open services
             </Link>
-            <Link href="/assistant" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full")}>
-              Open support routing
+            <Link href="/engage" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "w-full")}>
+              Open pilot and buyer path
             </Link>
-            <a
-              href="https://arena.colosseum.org/projects/explore/praivatedao"
-              target="_blank"
-              rel="noreferrer"
-              className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full")}
-            >
-              Open Colosseum project
-            </a>
             <div className="rounded-3xl border border-white/10 bg-black/20 p-4 text-sm leading-7 text-white/58">
-              This route keeps public community links, awards, videos, buyer routing, and operator entry visible without mixing them into proof-heavy pages.
+              If a visitor gets blocked, the recovery path should stay obvious: ask in Discord, reopen the learning guide, or return to the browser-first Devnet flow.
             </div>
           </CardContent>
         </Card>
@@ -184,6 +173,20 @@ export function CommunityHub() {
             </div>
           </CardHeader>
           <CardContent className="grid gap-3">
+            <Link href="/story" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full")}>
+              Open story video
+            </Link>
+            <Link href="/awards" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "w-full")}>
+              Open achievements
+            </Link>
+            <a
+              href="https://arena.colosseum.org/projects/explore/praivatedao"
+              target="_blank"
+              rel="noreferrer"
+              className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full")}
+            >
+              Open Colosseum project
+            </a>
             <a
               href="/assets/brand/privatedao-avatar-1024.png"
               target="_blank"

@@ -289,7 +289,7 @@ These are the public-facing routes reviewers, users, and buyers should see first
 | --- | --- |
 | Story video route | https://privatedao.org/story/ |
 | Weekly / public YouTube | https://www.youtube.com/@privatedao |
-| Official Discord | https://discord.gg/bC76YEcpDa |
+| Official Discord | https://discord.gg/PbM8BC2A |
 | Colosseum project page | https://arena.colosseum.org/projects/explore/praivatedao |
 | Guided product flow | [`docs/frontier-guided-flow.md`](docs/frontier-guided-flow.md) |
 | Live proof V3 | [`docs/test-wallet-live-proof-v3.generated.md`](docs/test-wallet-live-proof-v3.generated.md) |
@@ -714,7 +714,7 @@ Key docs:
 - Manual Colosseum answers: [`docs/colosseum-submission-answers.md`](docs/colosseum-submission-answers.md)
 - Colosseum project page: https://arena.colosseum.org/projects/explore/praivatedao
 - Official YouTube channel: https://www.youtube.com/@privatedao
-- Official Discord server: https://discord.gg/bC76YEcpDa
+- Official Discord server: https://discord.gg/PbM8BC2A
 - Brand kit: [`docs/brand-kit.md`](docs/brand-kit.md)
 - Hosted brand avatar: https://privatedao.org/assets/brand/privatedao-avatar-1024.png
 - Technical explainer: [`docs/investor-video.md`](docs/investor-video.md)
@@ -730,7 +730,7 @@ For investment, donation, strategic help, integrations, or direct operator coord
 - Additional contact: [eslamkotb.369@gmail.com](mailto:eslamkotb.369@gmail.com)
 - WhatsApp: [+20 112 403 0209](https://wa.me/201124030209)
 - Telegram: [@Fahdkotb](https://t.me/Fahdkotb)
-- Discord: [PrivateDAO community server](https://discord.gg/dzaVXjkug)
+- Discord: [PrivateDAO community server](https://discord.gg/PbM8BC2A)
 - X: [@FahdX369](https://x.com/FahdX369)
 - Leadership and contact packet: [`docs/ownership-and-contact.md`](docs/ownership-and-contact.md)
 

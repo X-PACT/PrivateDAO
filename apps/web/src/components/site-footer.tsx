@@ -101,7 +101,7 @@ export function SiteFooter() {
             <span>YouTube</span>
           </a>
           <a
-            href="https://discord.gg/bC76YEcpDa"
+            href="https://discord.gg/PbM8BC2A"
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-2 rounded-full border border-cyan-400/18 bg-cyan-400/8 px-3 py-1.5 text-white/76 transition hover:border-cyan-300/30 hover:text-white"

@@ -25,7 +25,7 @@ This means outside contributors, technical collaborators, reviewers, and deliver
 - Additional contact: [eslamkotb.369@gmail.com](mailto:eslamkotb.369@gmail.com)
 - WhatsApp: [+20 112 403 0209](https://wa.me/201124030209)
 - Telegram: [@Fahdkotb](https://t.me/Fahdkotb)
-- Discord: [PrivateDAO community server](https://discord.gg/dzaVXjkug)
+- Discord: [PrivateDAO community server](https://discord.gg/PbM8BC2A)
 - X: [@FahdX369](https://x.com/FahdX369)
 
 ## Operational Boundary

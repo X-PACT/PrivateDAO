@@ -161,6 +161,14 @@ export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWor
         <Link className={cn(buttonVariants({ size: "lg", variant: "outline" }))} href="/learn">
           Return to guide
         </Link>
+        <a
+          className={cn(buttonVariants({ size: "lg", variant: "outline" }))}
+          href="https://discord.gg/PbM8BC2A"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Need help? Join Discord
+        </a>
       </div>
     </div>
   );

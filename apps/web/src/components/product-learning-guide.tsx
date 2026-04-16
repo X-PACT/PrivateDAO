@@ -442,6 +442,14 @@ export function ProductLearningGuide({
               <Link href="/documents/reviewer-telemetry-packet" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
                 Open telemetry packet
               </Link>
+              <a
+                href="https://discord.gg/PbM8BC2A"
+                target="_blank"
+                rel="noreferrer"
+                className={cn(buttonVariants({ size: "sm", variant: "outline" }))}
+              >
+                Need help? Join Discord
+              </a>
             </div>
           </div>
         </CardContent>

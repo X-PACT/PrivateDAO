@@ -325,7 +325,7 @@ Core links:
 - Mainnet blockers: `https://privatedao.org/documents/mainnet-blockers/`
 - Story video: `https://privatedao.org/story/`
 - YouTube channel: `https://www.youtube.com/@privatedao`
-- Discord: `https://discord.gg/bC76YEcpDa`
+- Discord: `https://discord.gg/PbM8BC2A`
 - Colosseum project page: `https://arena.colosseum.org/projects/explore/praivatedao`
 - Security hardening: `docs/security-hardening-v2.md`
 - Mainnet blockers: `docs/mainnet-blockers.md`
