@@ -44,6 +44,23 @@ export function AnalyticsSummary() {
 
   return (
     <div className="grid gap-6">
+      <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(12,16,30,0.94),rgba(7,10,22,0.98))]">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-xl">What these analytics mean</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-4 md:grid-cols-3 text-sm leading-7 text-white/60">
+          <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+            Proposal analytics show whether the governance path is being used and completed, not just whether pages are being visited.
+          </div>
+          <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+            Treasury analytics show how payout and execution intent move through the product before a reviewer opens the proof packets.
+          </div>
+          <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+            Telemetry freshness helps a normal visitor understand whether the runtime view is recent and active before they inspect signatures and logs.
+          </div>
+        </CardContent>
+      </Card>
+
       <Card className="border-fuchsia-300/14 bg-[linear-gradient(180deg,rgba(19,12,34,0.95),rgba(11,9,24,0.98))]">
         <CardHeader className="pb-3">
           <div className="text-[11px] uppercase tracking-[0.28em] text-fuchsia-200/78">Telemetry continuity</div>

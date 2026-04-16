@@ -142,6 +142,23 @@ export function IntelligenceLayerSurface() {
         </CardHeader>
       </Card>
 
+      <Card>
+        <CardHeader>
+          <CardTitle>How to use this route</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-4 md:grid-cols-3 text-sm leading-7 text-white/60">
+          <div className="rounded-2xl border border-white/8 bg-white/[0.04] p-4">
+            Open it before signing when you want a plain-language explanation of proposal or treasury risk.
+          </div>
+          <div className="rounded-2xl border border-white/8 bg-white/[0.04] p-4">
+            Use the RPC analyzer when the product feels slow and you want the data path explained without digging through logs first.
+          </div>
+          <div className="rounded-2xl border border-white/8 bg-white/[0.04] p-4">
+            Use the gaming path when governance and reward decisions need to stay fair, fast, and understandable to non-experts.
+          </div>
+        </CardContent>
+      </Card>
+
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
         {intelligenceFeatures.map((feature) => {
           const Icon = featureIcons[feature.id];
@@ -310,6 +327,10 @@ export function IntelligenceLayerSurface() {
             <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-5">
               <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/72">Intelligence output</div>
               <p className="mt-3 text-base text-white">{currentAnalysis.summary}</p>
+            </div>
+
+            <div className="rounded-3xl border border-emerald-300/16 bg-emerald-300/[0.08] p-5 text-sm leading-7 text-white/70">
+              The point of this output is not to replace human judgment. It is to compress hard governance, treasury, RPC, and gaming context into something a signer can actually understand before acting.
             </div>
 
             <div className="grid gap-3">

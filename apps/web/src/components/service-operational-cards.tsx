@@ -45,6 +45,10 @@ export function ServiceOperationalCards() {
                 <div className="mt-2 text-sm leading-7 text-white/70">{card.tryNow}</div>
               </div>
 
+              <div className="mt-4 rounded-2xl border border-emerald-300/16 bg-emerald-300/[0.08] p-4 text-sm leading-7 text-white/70">
+                Start with <span className="text-white">/learn</span> if you are new, then run the service path on Devnet and verify the result through analytics, proof, or reviewer packets instead of trusting the copy alone.
+              </div>
+
               <div className="mt-4 grid gap-3">
                 {card.evidence.map((metric) => (
                   <div key={`${card.title}-${metric.label}`} className="rounded-2xl border border-white/8 bg-black/20 p-4">

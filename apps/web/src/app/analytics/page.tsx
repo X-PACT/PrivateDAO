@@ -19,9 +19,9 @@ import { buildRouteMetadata } from "@/lib/route-metadata";
 export const metadata: Metadata = buildRouteMetadata({
   title: "Analytics",
   description:
-    "Responsive analytics for votes, proposals, treasury actions, readiness summaries, and launch blockers across the PrivateDAO product surface.",
+    "Responsive analytics for votes, proposals, treasury actions, hashes, telemetry, and runtime visibility across the PrivateDAO product surface.",
   path: "/analytics",
-  keywords: ["analytics", "recharts", "launch blockers", "treasury actions"],
+  keywords: ["analytics", "recharts", "runtime telemetry", "treasury actions", "proposal evidence"],
   index: false,
 });
 
@@ -29,14 +29,17 @@ export default function AnalyticsPage() {
   return (
     <OperationsShell
       eyebrow="Analytics"
-      title="Operational metrics for votes, proposals, and treasury activity"
-      description="Recharts-backed analytics make the governance system feel operational rather than presentational, while still reflecting the same security, proof, and treasury realities already in the repo."
+      title="Operational analytics that explain what happened on-chain in language a normal user can follow"
+      description="This route turns proposal counts, treasury motions, telemetry, and runtime freshness into a readable product surface. It exists so a visitor can understand what happened after a wallet action without reading raw logs first."
       badges={[
         { label: "Responsive analytics", variant: "cyan" },
         { label: "Recharts", variant: "violet" },
         { label: "Votes · proposals · treasury actions", variant: "success" },
       ]}
     >
+      <div className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6 text-sm leading-7 text-white/68">
+        Start with <a className="text-cyan-100 underline underline-offset-4" href="/learn">/learn</a> if you are new. Use this route after a real Devnet action to understand the product through counts, freshness, and treasury movement before going deeper into proof or diagnostics.
+      </div>
       <div>
         <Suspense fallback={null}>
           <TelemetryModeHandoffStrip context="analytics" />
@@ -51,9 +54,9 @@ export default function AnalyticsPage() {
       </div>
       <div>
         <SectionHeader
-          eyebrow="Dune + RPC fit"
-          title="This analytics route is now part of the competition submission surface"
-          description="Use this corridor when judges need to see exportable telemetry, hosted-read value, runtime proof, and commercial infrastructure logic in one place."
+          eyebrow="Runtime and telemetry"
+          title="Analytics is the easiest way to understand the live blockchain story after a wallet action"
+          description="Use this corridor when a visitor, judge, or operator wants to understand signatures, telemetry, hosted-read value, treasury behavior, and runtime proof in one place without starting from raw blockchain internals."
         />
       </div>
       <div>
