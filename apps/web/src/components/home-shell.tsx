@@ -31,9 +31,9 @@ export function HomeShell() {
       icon: Shield,
     },
     {
-      title: "Story video is submission-ready",
+      title: "Product story is submission-ready",
       description: "The public reel explains the product, cryptography, and commercial corridors in one watch surface.",
-      href: "/demo",
+      href: "/story",
       icon: PlayCircle,
     },
   ];
@@ -117,7 +117,7 @@ export function HomeShell() {
   ];
   const faqItems = [
     {
-      question: "Is PrivateDAO already a real product or only a demo?",
+      question: "Is PrivateDAO already a real product or only a prototype shell?",
       answer:
         "It is already a live Devnet product with wallet-first governance, proof, trust, and telemetry surfaces. The active work now is to keep converting that Devnet proof into stronger production-grade closure.",
     },
@@ -461,15 +461,15 @@ export function HomeShell() {
           <div className="text-[11px] font-medium uppercase tracking-[0.34em] text-emerald-300/80">Need more?</div>
           <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Go deeper only when you need it</h2>
           <p className="text-base leading-8 text-white/60 sm:text-lg">
-            The homepage stays focused on using the product. Demo, live state, and trust stay available when you intentionally want more depth.
+            The homepage stays focused on using the product. Story, live state, and trust stay available when you intentionally want more depth.
           </p>
         </div>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,15,30,0.92),rgba(6,9,20,0.98))]">
-            <CardHeader><CardTitle className="text-xl">Watch the demo</CardTitle></CardHeader>
+            <CardHeader><CardTitle className="text-xl">Watch the product story</CardTitle></CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-sm leading-7 text-white/58">Open the hosted demo when you want the fast visual explanation.</p>
-              <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} href="/story">Open demo</Link>
+              <p className="text-sm leading-7 text-white/58">Open the hosted product story when you want the fast visual explanation.</p>
+              <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} href="/story">Open story</Link>
             </CardContent>
           </Card>
           <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,15,30,0.92),rgba(6,9,20,0.98))]">

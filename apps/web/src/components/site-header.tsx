@@ -31,7 +31,7 @@ const navItems = [
   { href: "/start", label: "Start" },
   { href: "/govern", label: "Govern", rel: "nofollow" },
   { href: "/live", label: "Track Activity", rel: "nofollow" },
-  { href: "/demo", label: "Demo" },
+  { href: "/story", label: "Story" },
   { href: "/trust", label: "Trust" },
 ];
 

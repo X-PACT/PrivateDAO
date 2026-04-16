@@ -27,7 +27,7 @@ export function getCompetitionLaneLabel(slug: string) {
     case "adevar-audit-credits":
       return "Hardening Review Workspace";
     case "superteam-poland":
-      return "Regional Poland Workspace";
+      return "Poland Product Leadership Brief";
     case "poland-grants":
       return "Poland Grants Workspace";
     case "startup-accelerator":
@@ -66,7 +66,7 @@ export function getCompetitionLaneSummary(slug: string) {
     case "adevar-audit-credits":
       return "Hardening corridor for authority control, incident readiness, and audit-credit eligibility without overclaiming audit closure.";
     case "superteam-poland":
-      return "Regional-first corridor for Poland-facing judges, growth proof, and product execution on Solana.";
+      return "Poland-facing product leadership corridor for ecosystem support, execution breadth, and infrastructure credibility on Solana.";
     case "poland-grants":
       return "Regional grant corridor for Poland-based funding reviewers who need infrastructure value and product traction.";
     case "startup-accelerator":

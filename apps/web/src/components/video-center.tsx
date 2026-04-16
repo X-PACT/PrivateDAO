@@ -60,8 +60,8 @@ export function VideoCenter({ compact = false }: VideoCenterProps) {
               Open poster
               <ArrowUpRight className="h-3.5 w-3.5" />
             </a>
-            <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href="/tracks">
-              Open track center
+            <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href="/learn">
+              Open learning path
             </Link>
           </div>
         </CardContent>

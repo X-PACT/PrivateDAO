@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Activity, BarChart3, BrainCircuit, BriefcaseBusiness, Compass, FileSearch, FileText, KeyRound, LayoutDashboard, MessageSquareMore, PlayCircle, Rocket, ShieldCheck, Smartphone, Sparkles, SquareTerminal, Trophy } from "lucide-react";
+import { Activity, BarChart3, BrainCircuit, BriefcaseBusiness, Compass, FileSearch, FileText, KeyRound, LayoutDashboard, MessageSquareMore, PlayCircle, Rocket, ShieldCheck, Smartphone, Sparkles, SquareTerminal } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 const operationsNav = [
   { href: "/start", label: "Start", icon: Compass, summary: "Guided onboarding and wallet-first flow" },
   { href: "/assistant", label: "AI Assistant", icon: Sparkles, summary: "Internal AI-style guide across routes, docs, and proof" },
-  { href: "/demo", label: "Demo", icon: PlayCircle, summary: "Product demo and fast explanation" },
+  { href: "/story", label: "Story", icon: PlayCircle, summary: "Live product story and fast explanation" },
   { href: "/community", label: "Community", icon: MessageSquareMore, summary: "Join, updates, pilot interest, and support routing" },
   { href: "/govern", label: "Govern", icon: SquareTerminal, summary: "Create, vote, and execute on Devnet" },
   { href: "/live", label: "Live State", icon: LayoutDashboard, summary: "Proposals, treasury, and action logs" },
@@ -26,7 +26,7 @@ const operationsNav = [
   { href: "/analytics", label: "Analytics", icon: BarChart3, summary: "Votes, proposals, actions" },
   { href: "/services", label: "Services", icon: BriefcaseBusiness, summary: "Pilot, API, commercial packs" },
   { href: "/engage", label: "Engage", icon: Rocket, summary: "Buyer path, pilot motion, mainnet trajectory" },
-  { href: "/tracks", label: "Tracks", icon: Trophy, summary: "Competition readiness and fit" },
+  { href: "/learn", label: "Learn", icon: FileText, summary: "Plain-language guide, proof path, and product understanding" },
   { href: "/search", label: "Search", icon: FileSearch, summary: "Search routes, docs, tracks, and proof" },
   { href: "/documents", label: "Documents", icon: FileText, summary: "Curated reviewer and trust docs" },
 ];
@@ -37,7 +37,7 @@ const guidedNav = [
   { href: "/live", label: "Track Activity", icon: LayoutDashboard, summary: "Follow proposals, treasury state, and action logs" },
   { href: "/services", label: "API & Pricing", icon: BriefcaseBusiness, summary: "Hosted API, plans, and rollout options" },
   { href: "/trust", label: "Security & Proof", icon: ShieldCheck, summary: "Proof, hardening, and operating trust" },
-  { href: "/demo", label: "Demo", icon: PlayCircle, summary: "Watch the product story before using the live flow" },
+  { href: "/story", label: "Story", icon: PlayCircle, summary: "Watch the product story before using the live flow" },
 ];
 
 type OperationsShellProps = {

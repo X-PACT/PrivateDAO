@@ -481,13 +481,13 @@ const assistantIntents: AssistantIntent[] = [
 const fallbackSuggestion: AssistantSuggestion = {
   title: "Start from the product shell",
   summary:
-    "If the goal is unclear, begin at onboarding or the govern flow. That gives the shortest route to a real product flow, wallet action, proof surface, or competition workspace.",
+    "If the goal is unclear, begin at onboarding or the govern flow. That gives the shortest route to a real product flow, wallet action, proof surface, or learning path.",
   primaryActionLabel: "Open start workspace",
   primaryActionHref: "/start",
   relatedRoutes: [
     { label: "Govern", href: "/govern" },
     { label: "Search", href: "/search" },
-    { label: "Tracks", href: "/tracks" },
+      { label: "Learn", href: "/learn" },
   ],
 };
 
@@ -538,11 +538,11 @@ function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
     return {
       title: `Pilot funding route for ${getCompetitionLaneLabel(workspace.slug)}`,
       summary:
-        "Go straight into the profile-aware track. The first three surfaces are ordered for pilot funding: submission path first, then coach and alignment, then trust and proof.",
-      primaryActionLabel: "Open profile-aware track",
+        "Go straight into the strongest product route for pilot funding: start first, then engage, then proof and trust.",
+      primaryActionLabel: "Open product route",
       primaryActionHref: `/tracks/${workspace.slug}?profile=pilot-funding`,
       relatedRoutes: [
-        { label: "1. Track workspace", href: `/tracks/${workspace.slug}?profile=pilot-funding` },
+        { label: "1. Product route", href: `/tracks/${workspace.slug}?profile=pilot-funding` },
         { label: "2. Engage", href: "/engage?profile=pilot-funding" },
         { label: "3. Proof", href: workspace.proofRoute },
       ],
@@ -554,11 +554,11 @@ function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
     return {
       title: `Treasury top-up route for ${getCompetitionLaneLabel(workspace.slug)}`,
       summary:
-        "Go straight into the profile-aware track. The first three surfaces are ordered for treasury capitalization: commercialization first, then investment case and mainnet gates, then supporting metrics.",
-      primaryActionLabel: "Open profile-aware track",
+        "Go straight into the strongest treasury route: services first, then engage, then product proof.",
+      primaryActionLabel: "Open product route",
       primaryActionHref: `/tracks/${workspace.slug}?profile=treasury-top-up`,
       relatedRoutes: [
-        { label: "1. Track workspace", href: `/tracks/${workspace.slug}?profile=treasury-top-up` },
+        { label: "1. Product route", href: `/tracks/${workspace.slug}?profile=treasury-top-up` },
         { label: "2. Engage", href: "/engage?profile=treasury-top-up" },
         { label: "3. Services", href: "/services" },
       ],
@@ -570,11 +570,11 @@ function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
     return {
       title: `Vendor payout route for ${getCompetitionLaneLabel(workspace.slug)}`,
       summary:
-        "Go straight into the profile-aware track. The first three surfaces are ordered for governed vendor execution: submission path first, then metrics and diagnostics, then custody and trust.",
-      primaryActionLabel: "Open profile-aware track",
+        "Go straight into the governed vendor route: product path first, then govern and diagnostics, then trust.",
+      primaryActionLabel: "Open product route",
       primaryActionHref: `/tracks/${workspace.slug}?profile=vendor-payout`,
       relatedRoutes: [
-        { label: "1. Track workspace", href: `/tracks/${workspace.slug}?profile=vendor-payout` },
+        { label: "1. Product route", href: `/tracks/${workspace.slug}?profile=vendor-payout` },
         { label: "2. Govern", href: "/govern" },
         { label: "3. Diagnostics", href: "/diagnostics" },
       ],
@@ -585,11 +585,11 @@ function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
   return {
     title: `Contributor payout route for ${getCompetitionLaneLabel(workspace.slug)}`,
     summary:
-      "Go straight into the profile-aware track. The first three surfaces are ordered for governed contributor funding: submission path first, then metrics, then custody and trust before broader commercial reading.",
-    primaryActionLabel: "Open profile-aware track",
+      "Go straight into the governed contributor route: product path first, then govern, then security and trust.",
+    primaryActionLabel: "Open product route",
     primaryActionHref: `/tracks/${workspace.slug}?profile=contributor-payout`,
     relatedRoutes: [
-      { label: "1. Track workspace", href: `/tracks/${workspace.slug}?profile=contributor-payout` },
+      { label: "1. Product route", href: `/tracks/${workspace.slug}?profile=contributor-payout` },
       { label: "2. Govern", href: "/govern" },
       { label: "3. Security", href: "/security" },
     ],
@@ -1111,12 +1111,12 @@ function getTrackReviewerPacketSuggestion(query: string): AssistantSuggestion | 
   return {
     title: match.title,
     summary:
-      "Open the track-specific proof packet first. It already bundles the judge-first opening, proof closure, the next readiness gate, the best demo route, and the shortest trust links for that track.",
+      "Open the track-specific proof packet first. It already bundles the judge-first opening, proof closure, the next readiness gate, the strongest product route, and the shortest trust links for that lane.",
     primaryActionLabel: "Open track proof packet",
     primaryActionHref: match.route,
     relatedRoutes: [
       { label: "1. Track proof packet", href: match.route },
-      { label: "2. Track workspace", href: match.trackRoute },
+      { label: "2. Product route", href: match.trackRoute },
       { label: "3. Track proof route", href: match.proofRoute },
     ],
     queryBlock: getHighPriorityQueryBlock(normalized),

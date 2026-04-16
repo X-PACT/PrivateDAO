@@ -1,0 +1,46 @@
+<!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
+# Settlement Hardening V3
+
+`Settlement Hardening V3` is an additive confidential-payout execution path. It does not remove or reinterpret legacy payout plans or `V2` settlement evidence.
+
+## What V3 Adds
+
+- DAO-level settlement policy companion account
+- Proposal-level settlement policy snapshot
+- minimum settlement evidence age before execution
+- maximum payout cap per governed payout
+- optional REFHE settlement requirement
+- optional MagicBlock settlement requirement for token payouts
+- `execute_confidential_payout_plan_v3`
+
+## Why It Exists
+
+`V2` already added threshold-attested settlement evidence, freshness windows, and single-use consumption. V3 adds execution policy locking on top of that so a payout can be forced to respect the same economic and integration assumptions it was reviewed under.
+
+## V3 Security Goals
+
+- prevent executing immediately on newly recorded evidence when an operator wants a minimum evidence aging window
+- prevent executing payout amounts above a DAO-defined cap
+- force REFHE settlement when the DAO requires it
+- force MagicBlock settlement for token payouts when the DAO requires it
+- bind those requirements to a proposal-scoped snapshot so later DAO policy changes do not silently reinterpret an existing payout
+
+## Compatibility Boundary
+
+- legacy payout execution remains callable
+- `execute_confidential_payout_plan_v2` remains callable
+- V3 strictness applies only when the operator explicitly initializes the V3 policy, snapshots it for the proposal, and uses the V3 execute path
+
+## Current Verification Status
+
+Implemented, locally verified, and backed by a dedicated Devnet proof packet:
+
+- Rust compile and unit test pass
+- TypeScript typecheck passes
+- live Devnet proof exists in [`docs/test-wallet-live-proof-v3.generated.md`](test-wallet-live-proof-v3.generated.md)
+
+Operational note:
+
+- this is an additive hardening layer
+- `Settlement Hardening V3` now has a dedicated Devnet rehearsal artifact proving the V3 execute path with proposal-scoped settlement policy snapshots and verified settlement evidence
+- that artifact is still a test-wallet Devnet packet, not a production-custody or mainnet claim

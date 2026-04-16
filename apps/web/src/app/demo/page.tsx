@@ -4,11 +4,11 @@ import StoryPage from "@/app/story/page";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
-  title: "Demo",
+  title: "Product Story",
   description:
-    "Hosted product demo for PrivateDAO covering the user flow, Devnet actions, trust surfaces, and rollout story.",
+    "Legacy alias for the live PrivateDAO product story covering user flow, Devnet actions, trust surfaces, and rollout narrative.",
   path: "/demo",
-  keywords: ["demo", "product video", "private dao demo", "devnet demo"],
+  keywords: ["product story", "product video", "private dao story", "devnet product"],
   index: false,
 });
 

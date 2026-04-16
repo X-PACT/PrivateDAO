@@ -3,9 +3,9 @@ import { RouteLoadingShell } from "@/components/route-loading-shell";
 export default function Loading() {
   return (
     <RouteLoadingShell
-      eyebrow="Loading Demo"
-      title="Preparing the product demo"
-      description="The demo route is loading the hosted video and supporting story context."
+      eyebrow="Loading Story"
+      title="Preparing the product story"
+      description="The story route is loading the hosted video and supporting product context."
     />
   );
 }

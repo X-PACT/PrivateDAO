@@ -16,7 +16,7 @@ export default function SearchPage() {
   return (
     <OperationsShell
       eyebrow="Search"
-      title="Find the right route, proof packet, document, or competition workspace fast"
+      title="Find the right product route, proof packet, or document fast"
       description="Search the live PrivateDAO surface without browsing the whole application manually."
       badges={[
         { label: "Fast product search", variant: "cyan" },

@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+
+Host: privatedao.org
+Sitemap: https://privatedao.org/sitemap.xml

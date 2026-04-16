@@ -47,9 +47,9 @@ const assistantPaths = [
     icon: Wallet,
   },
   {
-    title: "I need the best competition workspace",
-    summary: "Open the competition center, then route into the exact track bundle for Colosseum, privacy, RPC, consumer, Ranger, or 100xDevs.",
-    href: "/tracks",
+    title: "I need the clearest product route",
+    summary: "Open the learning path first, then move into start, judge, proof, or services without passing through internal track pages.",
+    href: "/learn",
     icon: Sparkles,
   },
   {

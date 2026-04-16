@@ -1,0 +1,103 @@
+# Reviewer Fast Path
+
+This is the shortest high-signal path for a judge, auditor, or technical reviewer.
+
+## Two-Minute Review
+
+1. Open the live Security surface:
+   - `https://privatedao.org/security/`
+2. Open the live Proof Center:
+   - `https://x-pact.github.io/PrivateDAO/proof/`
+3. Open the dedicated V3 proof packet when you want the additive hardening path specifically:
+   - `docs/test-wallet-live-proof-v3.generated.md`
+   - `docs/governance-hardening-v3.md`
+   - `docs/settlement-hardening-v3.md`
+4. Open the custody truth path:
+   - `docs/canonical-custody-proof.generated.md`
+   - `docs/custody-proof-reviewer-packet.generated.md`
+   - `docs/launch-trust-packet.generated.md`
+5. Open the telemetry truth path when the reviewer needs the infrastructure and data corridor explicitly:
+   - `docs/reviewer-telemetry-packet.generated.md`
+   - `docs/read-node/snapshot.generated.md`
+   - `docs/read-node/ops.generated.md`
+   - `docs/read-node/backend-cutover-packet.generated.md`
+   - `https://privatedao.org/diagnostics/`
+   - `https://privatedao.org/analytics/`
+   - `https://privatedao.org/services/`
+6. Open the treasury reviewer path when the reviewer needs funding rails, payments fit, and exact treasury blocker visibility explicitly:
+   - `docs/treasury-reviewer-packet.generated.md`
+   - `docs/canonical-custody-proof.generated.md`
+   - `docs/custody-proof-reviewer-packet.generated.md`
+   - `https://privatedao.org/services/`
+   - `https://privatedao.org/custody/`
+7. Open the token truth path when the reviewer needs the exact governance mint boundary, token utility, and what PDAO gates:
+   - `docs/pdao-token.md`
+   - `docs/token.md`
+   - `docs/pdao-attestation.generated.json`
+   - `https://privatedao.org/command-center/`
+   - `https://privatedao.org/dashboard/`
+8. Open the payments fast path when the reviewer wants the shortest treasury review corridor only:
+   - `docs/payments-reviewer-fast-path.md`
+   - `docs/treasury-reviewer-packet.generated.md`
+   - `https://privatedao.org/services/`
+   - `https://privatedao.org/command-center/`
+9. Open the reviewer packet directly when you already know the judging corridor:
+   - Frontier reviewer packet:
+     - `docs/track-reviewer-packets/colosseum-frontier.generated.md`
+   - Confidential governance reviewer packet:
+     - `docs/track-reviewer-packets/privacy-track.generated.md`
+   - Runtime infrastructure reviewer packet:
+     - `docs/track-reviewer-packets/rpc-infrastructure.generated.md`
+10. Confirm the canonical devnet identity:
+   - Program ID: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+   - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
+11. Read the audit summary:
+   - `docs/security-review.md`
+
+## Five-Minute Review
+
+1. Read the formal threat framing:
+   - `docs/threat-model.md`
+2. Read the threat-to-test mapping:
+   - `docs/security-coverage-map.md`
+3. Read failure-path expectations:
+   - `docs/failure-modes.md`
+4. Read replay resistance analysis:
+   - `docs/replay-analysis.md`
+5. Inspect the strict custody ingestion route:
+   - `docs/production-custody-ceremony.md`
+   - `docs/multisig-setup-intake.md`
+   - `npm run apply:custody-evidence-intake`
+6. Inspect the strongest lifecycle tests:
+   - `tests/private-dao.ts`
+   - `tests/full-flow-test.ts`
+
+## Verification Commands
+
+If you want one command:
+
+```bash
+npm run verify:all
+```
+
+If you want the verification breakdown:
+
+- `docs/verification-gates.md`
+
+## Live Proof Anchors
+
+- `docs/live-proof.md`
+- `docs/test-wallet-live-proof-v3.generated.md`
+- `docs/governance-hardening-v3.md`
+- `docs/settlement-hardening-v3.md`
+- `docs/devnet-release-manifest.md`
+- `docs/proof-registry.json`
+- `docs/independent-verification.md`
+
+## Reviewer Bundle
+
+If you want a packaged handoff surface:
+
+```bash
+npm run build:review-bundle
+```
