@@ -17,6 +17,7 @@ export type CuratedDocument = {
 const repositoryBlobBase = "https://github.com/X-PACT/PrivateDAO/blob/main";
 
 const indexableDocumentSlugs = new Set<string>([
+  "agentic-treasury-micropayment-rail",
   "solana-developer-tooling-proposal-2026",
   "technical-verification-status-2026",
   "reviewer-fast-path",

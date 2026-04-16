@@ -189,7 +189,12 @@ export function getJudgeRuntimeLogsSnapshot(): JudgeRuntimeLogsSnapshot {
   const micropayments = readOptionalJson<AgenticMicropaymentRailJson>("docs/agentic-treasury-micropayment-rail.generated.json");
 
   return {
-    freshness: formatFreshness(frontier.generatedAt, runtime.generatedAt, v3.generatedAt),
+    freshness: formatFreshness(
+      frontier.generatedAt,
+      runtime.generatedAt,
+      v3.generatedAt,
+      micropayments?.generatedAt ?? "",
+    ),
     reviewerEntry: frontier.reviewerEntry,
     governance: {
       proposal: frontier.simpleGovernance.proposal,

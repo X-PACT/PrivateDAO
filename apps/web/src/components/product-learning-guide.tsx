@@ -28,6 +28,10 @@ type ProductLearningGuideProps = {
   runtimeSnapshot: JudgeRuntimeLogsSnapshot;
 };
 
+function buildSolanaTxUrl(signature: string) {
+  return `https://solscan.io/tx/${signature}?cluster=devnet`;
+}
+
 const productCorridors = [
   {
     title: "Private governance",
@@ -83,7 +87,7 @@ const technologyCards = [
   {
     title: "MagicBlock and REFHE settlement",
     body:
-      "Confidential settlement corridors are used to show how private treasury movement can remain productized, inspectable, and fast on Devnet.",
+      "These technologies shape the confidential settlement direction and explain how private treasury movement can remain usable, inspectable, and fast as the product matures.",
     href: "/security",
     label: "Open security route",
     icon: Zap,
@@ -99,7 +103,7 @@ const technologyCards = [
   {
     title: "Jupiter treasury routing",
     body:
-      "Jupiter is used to shape governed treasury routing, payout funding, and rebalance planning so swaps become part of a reviewable treasury workflow.",
+      "Jupiter shapes the treasury routing design and next execution path so swaps and payout funding can become part of a reviewable treasury workflow.",
     href: "/services/#jupiter-treasury-route",
     label: "Open Jupiter route",
     icon: Waypoints,
@@ -107,7 +111,7 @@ const technologyCards = [
   {
     title: "Kamino capital coordination",
     body:
-      "Kamino helps frame how treasury policy can extend into capital deployment and disciplined yield-aware governance rather than static idle balances.",
+      "Kamino helps frame the next capital-coordination layer so treasury policy can extend into disciplined deployment instead of static idle balances.",
     href: "/services",
     label: "See treasury corridors",
     icon: Blocks,
@@ -127,6 +131,93 @@ const technologyCards = [
     href: "/intelligence",
     label: "Open intelligence route",
     icon: Bot,
+  },
+] as const;
+
+const problemToProductCards = [
+  {
+    title: "Voting used to be exposed too early",
+    problem:
+      "When voting intent is visible before the cycle completes, large holders and fast operators can pressure the outcome or front-run the social process.",
+    response:
+      "PrivateDAO keeps the decision private first, then attaches proof and runtime evidence after the action lands so trust comes from evidence instead of early exposure.",
+  },
+  {
+    title: "Treasury and payroll flows used to be disorderly",
+    problem:
+      "Vendor payouts, contributor rewards, grants, and payroll often degrade into spreadsheets, loose signer coordination, and weak auditability.",
+    response:
+      "PrivateDAO turns treasury operations into governed product rails with clear approval, execution, and post-transaction proof attached to the same flow.",
+  },
+  {
+    title: "Gaming and community DAOs used to be easy to distort",
+    problem:
+      "Gaming reward systems and community treasuries suffer when whales, opaque payouts, or inconsistent execution weaken fairness.",
+    response:
+      "PrivateDAO ties proposals, rewards, and treasury operations to visible policy, privacy rails, and on-chain evidence so outcomes remain easier to inspect and defend.",
+  },
+  {
+    title: "Normal users used to need developer-grade skills",
+    problem:
+      "Too many blockchain tools assume the user can read low-level logs, run scripts, or think like a protocol engineer before doing anything safely.",
+    response:
+      "PrivateDAO is built so a normal visitor can start in the browser, connect a Devnet wallet, follow guided steps, and verify the result without terminal work.",
+  },
+] as const;
+
+const plainLanguageTechnologyCards = [
+  {
+    title: "ZK voting",
+    summary:
+      "Zero-knowledge proofs let the system prove that a vote is valid without exposing the user's choice too early.",
+  },
+  {
+    title: "MagicBlock",
+    summary:
+      "MagicBlock helps sensitive execution paths stay fast enough to feel usable while keeping runtime discipline visible to the operator and reviewer.",
+  },
+  {
+    title: "REFHE",
+    summary:
+      "REFHE is part of the confidential settlement story. It helps explain how sensitive treasury logic can remain usable without becoming a black box.",
+  },
+  {
+    title: "Fast RPC",
+    summary:
+      "RPC is the connection between the product and the blockchain. Fast RPC matters because proposal, vote, and payout state should update quickly and reliably.",
+  },
+  {
+    title: "API services",
+    summary:
+      "APIs let organizations, games, dashboards, and operators connect PrivateDAO into real systems without rebuilding governance or treasury logic from scratch.",
+  },
+  {
+    title: "Jupiter and Kamino",
+    summary:
+      "Jupiter shapes treasury routing and swaps. Kamino frames disciplined capital coordination so treasury policy can evolve beyond idle balances or manual movement.",
+  },
+] as const;
+
+const roadmapMilestones = [
+  {
+    title: "Browser-first Devnet completion",
+    detail:
+      "Every core action should be possible from the UI only: connect, propose, vote, reveal, execute, inspect proof, and inspect logs.",
+  },
+  {
+    title: "Production-grade evidence corridor",
+    detail:
+      "Proof, judge, diagnostics, and reviewer packets should stay synchronized so a user and a judge both see the same truth from different depths.",
+  },
+  {
+    title: "RPC and API service maturity",
+    detail:
+      "PrivateDAO should look like infrastructure as well as a governance product, with hosted-read, export, and low-latency service posture visible to institutions.",
+  },
+  {
+    title: "Production release under Solana",
+    detail:
+      "The path to production release stays explicit: stronger monitoring, custody discipline, audit closure, and community review before mainnet-grade launch.",
   },
 ] as const;
 
@@ -168,16 +259,18 @@ export function ProductLearningGuide({
           <div className="space-y-4">
             <Badge variant="success">Plain-language product guide</Badge>
             <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-              PrivateDAO is a privacy-first governance and treasury product built for real use, not for protocol theater.
+              PrivateDAO helps groups make private decisions and controlled treasury actions on Solana without forcing normal users to behave like protocol engineers.
             </h2>
             <p className="max-w-3xl text-base leading-8 text-white/66 sm:text-lg">
-              The simple version is this: PrivateDAO helps communities, protocols, treasuries, games,
-              and operators make decisions privately, execute them visibly, and prove what happened on
-              Solana Devnet through hashes, logs, runtime packets, and wallet-signed actions.
+              The simple version is this: communities, games, treasuries, and organizations can use one browser product
+              to create proposals, vote privately, execute treasury actions, and verify what happened on Solana Devnet
+              through hashes, logs, and wallet-signed actions.
             </p>
             <p className="max-w-3xl text-sm leading-7 text-white/58">
-              The interface is meant for a non-expert first. The cryptography, settlement paths, RPC
-              discipline, and service rails exist to make that simple experience trustworthy.
+              The interface is meant for a non-expert first. The cryptography, settlement design, RPC layer, and
+              service rails exist to make that simple experience trustworthy. The goal is simple: a visitor should not
+              need scripts, terminal commands, or protocol-engineer habits in order to use governed privacy and treasury
+              flows safely.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link className={buttonVariants({ size: "lg" })} href="/start">
@@ -222,6 +315,23 @@ export function ProductLearningGuide({
 
       <Card>
         <CardHeader>
+          <CardTitle>What was broken before, and what this product changes</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-4 md:grid-cols-2">
+          {problemToProductCards.map((item) => (
+            <div key={item.title} className="rounded-[26px] border border-white/8 bg-white/[0.04] p-5">
+              <div className="text-base font-medium text-white">{item.title}</div>
+              <div className="mt-4 text-[11px] uppercase tracking-[0.24em] text-white/42">Old failure mode</div>
+              <p className="mt-2 text-sm leading-7 text-white/56">{item.problem}</p>
+              <div className="mt-4 text-[11px] uppercase tracking-[0.24em] text-emerald-300/76">PrivateDAO response</div>
+              <p className="mt-2 text-sm leading-7 text-white/64">{item.response}</p>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
           <CardTitle>Why this product exists</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
@@ -246,6 +356,20 @@ export function ProductLearningGuide({
               </div>
             );
           })}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>What the core technologies mean in normal language</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {plainLanguageTechnologyCards.map((item) => (
+            <div key={item.title} className="rounded-[26px] border border-white/8 bg-white/[0.04] p-5">
+              <div className="text-base font-medium text-white">{item.title}</div>
+              <p className="mt-3 text-sm leading-7 text-white/58">{item.summary}</p>
+            </div>
+          ))}
         </CardContent>
       </Card>
 
@@ -319,6 +443,100 @@ export function ProductLearningGuide({
                 Open telemetry packet
               </Link>
             </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {runtimeSnapshot.agenticMicropayments.available ? (
+        <Card className="border-amber-300/16 bg-amber-300/[0.06]">
+          <CardHeader>
+            <CardTitle>Agentic Treasury Micropayment Rail</CardTitle>
+          </CardHeader>
+          <CardContent className="grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
+            <div className="space-y-4">
+              <p className="text-sm leading-7 text-white/64">
+                This rail is the clearest example of what PrivateDAO is becoming: a product where a governed decision
+                can drive many small on-chain treasury actions from one coherent operational flow. Instead of a one-off
+                payout demo, the product shows how approved policy can coordinate repeated micropayments, keep them
+                reviewable, and attach proof and runtime evidence after the fact.
+              </p>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">
+                  <div className="text-[11px] uppercase tracking-[0.18em] text-white/40">Transfer count</div>
+                  <div className="mt-2 text-white">
+                    {runtimeSnapshot.agenticMicropayments.successfulTransferCount}/
+                    {runtimeSnapshot.agenticMicropayments.transferCount}
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">
+                  <div className="text-[11px] uppercase tracking-[0.18em] text-white/40">Settlement asset</div>
+                  <div className="mt-2 text-white">
+                    {runtimeSnapshot.agenticMicropayments.settlementAssetSymbol} ·{" "}
+                    {runtimeSnapshot.agenticMicropayments.assetMode}
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3 sm:col-span-2">
+                  <div className="text-[11px] uppercase tracking-[0.18em] text-white/40">Execution wallet</div>
+                  <div className="mt-2 break-all text-white">{runtimeSnapshot.agenticMicropayments.executionWallet}</div>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <Link href="/judge" className={cn(buttonVariants({ size: "sm" }))}>
+                  Open judge route
+                </Link>
+                <Link href="/documents/agentic-treasury-micropayment-rail" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+                  Open rail brief
+                </Link>
+                <Link href="/viewer/agentic-treasury-micropayment-rail.generated" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                  Open generated proof
+                </Link>
+              </div>
+            </div>
+            <div className="grid gap-3">
+              {runtimeSnapshot.agenticMicropayments.entries.slice(0, 4).map((entry) => (
+                <a
+                  key={`${entry.label}:${entry.signature}`}
+                  href={buildSolanaTxUrl(entry.signature)}
+                  rel="noreferrer"
+                  target="_blank"
+                  className="rounded-[26px] border border-white/8 bg-white/[0.04] p-5 transition hover:border-amber-300/30 hover:bg-white/[0.06]"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="text-base font-medium text-white">{entry.label}</div>
+                    <div className="text-xs text-amber-200/80">{entry.status}</div>
+                  </div>
+                  <div className="mt-3 break-all text-xs leading-6 text-white/55">{entry.signature}</div>
+                  <div className="mt-4 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-amber-200/78">
+                    Open on Solana Devnet
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </div>
+                </a>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      ) : null}
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Public-good roadmap toward production release</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-4 md:grid-cols-2">
+          {roadmapMilestones.map((item, index) => (
+            <div key={item.title} className="rounded-[26px] border border-white/8 bg-white/[0.04] p-5">
+              <div className="flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-2xl border border-white/10 bg-black/25 text-sm font-semibold text-cyan-100">
+                  0{index + 1}
+                </div>
+                <div className="text-base font-medium text-white">{item.title}</div>
+              </div>
+              <p className="mt-3 text-sm leading-7 text-white/58">{item.detail}</p>
+            </div>
+          ))}
+          <div className="rounded-[26px] border border-emerald-300/18 bg-emerald-300/8 p-5 text-sm leading-7 text-white/70 md:col-span-2">
+            PrivateDAO is open source, built in public, and intended to serve the Solana ecosystem as governance and
+            treasury infrastructure. Community testing, technical review, design criticism, and operator feedback are
+            part of the product path, not an inconvenience around it.
           </div>
         </CardContent>
       </Card>

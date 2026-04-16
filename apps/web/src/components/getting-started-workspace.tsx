@@ -34,7 +34,7 @@ export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWor
                 Connect a wallet, create a DAO, submit a proposal, vote, and execute from one guided path.
               </h2>
               <p className="max-w-2xl text-base leading-8 text-white/62 sm:text-lg">
-                This route keeps the first run narrow: connect a Devnet wallet, open govern, and use live state after each real wallet action lands. The goal is not to read about PrivateDAO only, but to experience its privacy, cryptography, and speed yourself in one product path.
+                This route keeps the first run narrow: connect a Devnet wallet, open govern, and use live state after each real wallet action lands. The goal is not to read about PrivateDAO only, but to experience its privacy, cryptography, treasury control, and speed yourself in one product path from the browser only.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -42,11 +42,8 @@ export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWor
                 Open the governance flow
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link className={buttonVariants({ size: "lg", variant: "secondary" })} href="/live">
-                See live state and logs
-              </Link>
-              <Link className={buttonVariants({ size: "lg", variant: "outline" })} href="/story">
-                Watch the product story
+              <Link className={buttonVariants({ size: "lg", variant: "secondary" })} href="/judge">
+                Open judge route
               </Link>
             </div>
           </div>
@@ -158,11 +155,11 @@ export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWor
         <Link className={cn(buttonVariants({ size: "lg" }))} href="/govern">
           Continue to govern
         </Link>
-        <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/live">
-          Open live state
+        <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/judge">
+          Open judge route
         </Link>
-        <Link className={cn(buttonVariants({ size: "lg", variant: "outline" }))} href="/trust">
-          Open trust only if needed
+        <Link className={cn(buttonVariants({ size: "lg", variant: "outline" }))} href="/learn">
+          Return to guide
         </Link>
       </div>
     </div>

@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { GettingStartedWorkspace } from "@/components/getting-started-workspace";
 import { OperationsShell } from "@/components/operations-shell";
 import { ProductLearningGuide } from "@/components/product-learning-guide";
 import { VideoCenter } from "@/components/video-center";
+import { buttonVariants } from "@/components/ui/button";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 import { buildRouteMetadata } from "@/lib/route-metadata";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Learn",
@@ -35,6 +38,23 @@ export default function LearnPage() {
         executionSnapshot={executionSnapshot}
         runtimeSnapshot={runtimeSnapshot}
       />
+      <div className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6">
+        <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/78">Ready to try it?</div>
+        <h2 className="mt-3 text-2xl font-semibold text-white">Use one short path on Devnet</h2>
+        <p className="mt-3 max-w-3xl text-sm leading-7 text-white/64">
+          Start in the browser, connect a Devnet wallet, move into the governance flow, then open the judge route to
+          verify signatures, proof, and runtime evidence. The learning surface stays here for context, but the real
+          product experience starts on the next click.
+        </p>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <Link href="/start" className={cn(buttonVariants({ size: "sm" }))}>
+            Try it on Devnet
+          </Link>
+          <Link href="/judge" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+            Open judge route
+          </Link>
+        </div>
+      </div>
       <GettingStartedWorkspace executionSnapshot={executionSnapshot} />
       <VideoCenter compact />
     </OperationsShell>

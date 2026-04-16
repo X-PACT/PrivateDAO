@@ -18,6 +18,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const PRIORITY_TRUTH_SURFACE_SLUGS = [
+  "agentic-treasury-micropayment-rail",
   "canonical-custody-proof",
   "custody-proof-reviewer-packet",
   "treasury-reviewer-packet",
@@ -91,6 +92,9 @@ export default function DocumentsPage() {
           Start from `/documents` and reach operating truth, treasury rails, the correct reviewer packet, and the shortest demo route in two clicks instead of scanning the full library.
         </div>
         <div className="mt-5 grid gap-3 md:grid-cols-3">
+          <Link href="/documents/agentic-treasury-micropayment-rail" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
+            Open micropayment rail
+          </Link>
           <Link href="/documents/payments-reviewer-fast-path" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
             Open payments fast path
           </Link>
@@ -121,7 +125,7 @@ export default function DocumentsPage() {
         <div className="mb-5">
           <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/76">Priority truth surfaces</div>
           <div className="mt-3 max-w-3xl text-sm leading-7 text-white/60">
-            Open these documents first if the reviewer entered from `/documents`. They establish the operating truth first: canonical custody proof, the reviewer-safe custody packet, the treasury reviewer packet, and the launch trust packet.
+            Open these documents first if the reviewer entered from `/documents`. They establish the operating truth first: the new agentic micropayment rail, canonical custody proof, the reviewer-safe custody packet, the treasury reviewer packet, and the launch trust packet.
           </div>
         </div>
         <DocumentLibrary documents={priorityTruthSurfaces} />

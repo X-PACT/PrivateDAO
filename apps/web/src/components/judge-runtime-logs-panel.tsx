@@ -19,7 +19,7 @@ export function JudgeRuntimeLogsPanel() {
         <div className="flex items-center justify-between gap-4">
           <div>
             <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/75">Judge runtime logs</div>
-            <CardTitle className="mt-2 text-2xl text-white">Real Devnet execution logs, not summary-only proof</CardTitle>
+            <CardTitle className="mt-2 text-2xl text-white">Captured Devnet execution evidence, not summary-only proof</CardTitle>
           </div>
           <div className="rounded-2xl border border-cyan-300/20 bg-black/25 px-3 py-2 text-right">
             <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/70">Freshness</div>
@@ -27,9 +27,9 @@ export function JudgeRuntimeLogsPanel() {
           </div>
         </div>
         <p className="max-w-4xl text-sm leading-7 text-white/62">
-          This route is strongest after a visitor connects a Devnet wallet and runs the product flow. It exposes real
-          proposal and settlement signatures from indexed evidence and the dedicated V3 hardening path, so the review
-          surface stays tied to actual execution instead of packet summaries alone.
+          This route exposes captured Devnet proposal and settlement signatures from indexed evidence and the dedicated
+          V3 hardening path. It is the fastest way to review what PrivateDAO has already executed on Devnet, even when
+          the visitor has not yet produced a fresh wallet-bound run in the current session.
         </p>
       </CardHeader>
       <CardContent className="grid gap-6">
@@ -188,7 +188,7 @@ export function JudgeRuntimeLogsPanel() {
             <div className="flex items-center justify-between gap-4">
               <div>
                 <div className="text-[11px] uppercase tracking-[0.28em] text-amber-200/75">Agentic micropayment rail</div>
-                <div className="mt-2 text-lg font-medium text-white">DAO-approved batch settlement with many real Devnet transfers</div>
+                <div className="mt-2 text-lg font-medium text-white">Captured batch settlement rail with many real Devnet transfers</div>
               </div>
               <div className="rounded-2xl border border-amber-300/20 bg-black/25 px-3 py-2 text-right">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-amber-100/70">Freshness</div>
@@ -198,10 +198,10 @@ export function JudgeRuntimeLogsPanel() {
             <div className="mt-4 grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
               <div className="grid gap-3">
                 <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm text-white/70">
-                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Settlement asset</div>
-                  <div className="mt-1 text-white">
-                    {snapshot.agenticMicropayments.settlementAssetSymbol} · {snapshot.agenticMicropayments.assetMode}
-                  </div>
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Settlement asset</div>
+                <div className="mt-1 text-white">
+                  {snapshot.agenticMicropayments.settlementAssetSymbol} · {snapshot.agenticMicropayments.assetMode}
+                </div>
                 </div>
                 <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm text-white/70">
                   <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Transfer volume</div>
@@ -211,12 +211,23 @@ export function JudgeRuntimeLogsPanel() {
                   </div>
                 </div>
                 <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm text-white/70">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Current public proof run</div>
+                  <div className="mt-1 text-white">
+                    {snapshot.agenticMicropayments.transferCount} captured Devnet transfers; stablecoin settlement is
+                    designed next, but not the public proof run shown here.
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm text-white/70">
                   <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Execution wallet</div>
                   <div className="mt-1 break-all text-white">{snapshot.agenticMicropayments.executionWallet}</div>
                 </div>
                 <div className="flex flex-wrap gap-3">
                   <Link className={cn(buttonVariants({ size: "sm" }), "justify-between")} href="/documents/agentic-treasury-micropayment-rail">
                     Open rail brief
+                    <ExternalLink className="ml-2 h-4 w-4" />
+                  </Link>
+                  <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")} href="/viewer/agentic-treasury-micropayment-rail.generated">
+                    Open generated proof
                     <ExternalLink className="ml-2 h-4 w-4" />
                   </Link>
                   <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")} href="/engage?profile=agentic-micropayment-rail">
@@ -245,6 +256,12 @@ export function JudgeRuntimeLogsPanel() {
                     {entry.slot ? <div className="mt-1 text-[11px] uppercase tracking-[0.22em] text-white/35">slot {entry.slot}</div> : null}
                   </div>
                 ))}
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm text-white/70">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Captured action composition</div>
+                <div className="mt-2 text-white">
+                  10 proposal-approved · 10 vote-settled · 10 reveal-settled · 10 execute-settled · 10 proof-attached
+                </div>
               </div>
             </div>
           </div>

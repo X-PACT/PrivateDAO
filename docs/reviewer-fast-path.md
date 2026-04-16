@@ -22,7 +22,11 @@ The goal is simple: in under two minutes, the reviewer should understand that Pr
    - `https://privatedao.org/trust/`
    - This shows the review posture: hardening, evidence, custody truth, and launch discipline.
 
-5. Open the proof surface:
+5. Open the judge route:
+   - `https://privatedao.org/judge/`
+   - This shows the shortest reviewer-facing path into proposal lifecycle, Devnet signatures, and the agentic micropayment rail.
+
+6. Open the proof surface:
    - `https://privatedao.org/proof/?judge=1`
    - This shows that the product is paired with reviewer-readable evidence rather than unsupported claims.
 
@@ -34,6 +38,7 @@ This path compresses the whole thesis into one readable sequence:
 - `security` proves privacy is part of the workflow
 - `services` proves treasury and payment motion are operational, not decorative
 - `trust` proves the team cares about reviewability and launch discipline
+- `judge` proves that captured Devnet execution is easy to inspect
 - `proof` proves the claims are tied to evidence
 
 ## Five-Minute Review

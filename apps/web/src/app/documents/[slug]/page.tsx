@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   getCuratedDocument,
   getCuratedDocumentContent,
+  getCuratedDocumentsBySlugs,
   getCuratedDocuments,
   isIndexableCuratedDocumentSlug,
 } from "@/lib/curated-documents";
@@ -46,6 +47,11 @@ export default async function DocumentPage({ params }: PageProps) {
   const { slug } = await params;
   const document = getCuratedDocumentContent(slug);
   if (!document) notFound();
+  const relatedSlugs =
+    slug === "agentic-treasury-micropayment-rail"
+      ? ["reviewer-fast-path", "reviewer-telemetry-packet", "capital-readiness-packet"]
+      : ["agentic-treasury-micropayment-rail", "reviewer-fast-path", "reviewer-telemetry-packet"];
+  const relatedDocuments = getCuratedDocumentsBySlugs(relatedSlugs).filter((entry) => entry.slug !== slug);
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
@@ -82,6 +88,26 @@ export default async function DocumentPage({ params }: PageProps) {
             <p>
               Audience: <span className="text-white/82">{document.audience}</span>
             </p>
+            <div className="grid gap-3">
+              <Link
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-4 py-2 text-xs font-medium uppercase tracking-[0.24em] text-white/72 transition hover:bg-white/10"
+                href="/start"
+              >
+                Try in product
+              </Link>
+              <Link
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-4 py-2 text-xs font-medium uppercase tracking-[0.24em] text-white/72 transition hover:bg-white/10"
+                href="/judge"
+              >
+                Open judge route
+              </Link>
+              <Link
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-4 py-2 text-xs font-medium uppercase tracking-[0.24em] text-white/72 transition hover:bg-white/10"
+                href="/viewer/agentic-treasury-micropayment-rail.generated"
+              >
+                Open generated proof
+              </Link>
+            </div>
             <a
               className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-4 py-2 text-xs font-medium uppercase tracking-[0.24em] text-white/72 transition hover:bg-white/10"
               href={document.rawHref}
@@ -98,6 +124,24 @@ export default async function DocumentPage({ params }: PageProps) {
       <Card className="mt-10">
         <CardContent className="p-6 sm:p-8">
           <DocumentRenderer content={document.content} />
+        </CardContent>
+      </Card>
+
+      <Card className="mt-8">
+        <CardHeader>
+          <CardTitle>Related next docs</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-4 md:grid-cols-3">
+          {relatedDocuments.map((entry) => (
+            <Link
+              key={entry.slug}
+              href={`/documents/${entry.slug}`}
+              className="rounded-[24px] border border-white/8 bg-white/[0.04] p-5 transition hover:border-cyan-300/25 hover:bg-white/[0.06]"
+            >
+              <div className="text-base font-medium text-white">{entry.title}</div>
+              <p className="mt-3 text-sm leading-7 text-white/58">{entry.summary}</p>
+            </Link>
+          ))}
         </CardContent>
       </Card>
     </main>
