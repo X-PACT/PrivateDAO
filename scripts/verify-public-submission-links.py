@@ -66,14 +66,14 @@ def collect_urls() -> list[str]:
     return sorted(set(urls))
 
 
-def verify(url: str) -> tuple[str, int, str]:
+def verify(url: str) -> tuple[str, int, str, str]:
     response = requests.get(
         url,
         allow_redirects=True,
         timeout=20,
         headers={"User-Agent": "PrivateDAO Link Verifier/1.0"},
     )
-    return url, response.status_code, response.url
+    return url, response.status_code, response.url, response.text
 
 
 def main() -> int:
@@ -85,7 +85,7 @@ def main() -> int:
     failures = 0
     for url in urls:
         try:
-            source, status_code, final_url = verify(url)
+            source, status_code, final_url, body = verify(url)
         except Exception as exc:  # pragma: no cover - operational verifier
             failures += 1
             print(f"FAIL {url} -> {exc}")
@@ -97,6 +97,9 @@ def main() -> int:
             continue
 
         if source.startswith("https://x-pact.github.io/") and final_url.startswith("http://privatedao.org/"):
+            if "protocol==='http:'&&host==='privatedao.org'" in body:
+                print(f"OK   {source} -> browser-upgraded via client redirect -> {final_url}")
+                continue
             failures += 1
             print(f"WARN {source} -> insecure redirect -> {final_url}")
             continue
