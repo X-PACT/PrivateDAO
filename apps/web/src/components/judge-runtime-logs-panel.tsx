@@ -6,6 +6,10 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 
+function buildSolanaTxUrl(signature: string) {
+  return `https://solscan.io/tx/${signature}?cluster=devnet`;
+}
+
 export function JudgeRuntimeLogsPanel() {
   const snapshot = getJudgeRuntimeLogsSnapshot();
 
@@ -46,6 +50,15 @@ export function JudgeRuntimeLogsPanel() {
                     <div className="text-xs text-cyan-200/80">{entry.status}</div>
                   </div>
                   <div className="mt-2 break-all text-xs leading-6 text-white/55">{entry.signature}</div>
+                  <a
+                    className="mt-2 inline-flex items-center gap-2 text-xs text-cyan-200 transition hover:text-cyan-100"
+                    href={buildSolanaTxUrl(entry.signature)}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    Open Solana transaction
+                    <ExternalLink className="h-3.5 w-3.5" />
+                  </a>
                   {entry.slot ? <div className="mt-1 text-[11px] uppercase tracking-[0.22em] text-white/35">slot {entry.slot}</div> : null}
                 </div>
               ))}
@@ -68,6 +81,15 @@ export function JudgeRuntimeLogsPanel() {
                     <div className="text-xs text-emerald-200/80">{entry.status}</div>
                   </div>
                   <div className="mt-2 break-all text-xs leading-6 text-white/55">{entry.signature}</div>
+                  <a
+                    className="mt-2 inline-flex items-center gap-2 text-xs text-emerald-200 transition hover:text-emerald-100"
+                    href={buildSolanaTxUrl(entry.signature)}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    Open Solana transaction
+                    <ExternalLink className="h-3.5 w-3.5" />
+                  </a>
                   {entry.slot ? <div className="mt-1 text-[11px] uppercase tracking-[0.22em] text-white/35">slot {entry.slot}</div> : null}
                 </div>
               ))}
@@ -93,7 +115,15 @@ export function JudgeRuntimeLogsPanel() {
                 <div className="mt-3 grid gap-2">
                   {snapshot.v3Hardening.governanceEntries.slice(0, 5).map((entry) => (
                     <div key={entry.label} className="text-xs text-white/65">
-                      <span className="text-white">{entry.label}</span> · {entry.signature}
+                      <span className="text-white">{entry.label}</span> ·{" "}
+                      <a
+                        className="text-cyan-200 transition hover:text-cyan-100"
+                        href={buildSolanaTxUrl(entry.signature)}
+                        rel="noreferrer"
+                        target="_blank"
+                      >
+                        {entry.signature}
+                      </a>
                     </div>
                   ))}
                 </div>
@@ -104,7 +134,15 @@ export function JudgeRuntimeLogsPanel() {
                 <div className="mt-3 grid gap-2">
                   {snapshot.v3Hardening.settlementEntries.slice(0, 5).map((entry) => (
                     <div key={entry.label} className="text-xs text-white/65">
-                      <span className="text-white">{entry.label}</span> · {entry.signature}
+                      <span className="text-white">{entry.label}</span> ·{" "}
+                      <a
+                        className="text-emerald-200 transition hover:text-emerald-100"
+                        href={buildSolanaTxUrl(entry.signature)}
+                        rel="noreferrer"
+                        target="_blank"
+                      >
+                        {entry.signature}
+                      </a>
                     </div>
                   ))}
                 </div>
