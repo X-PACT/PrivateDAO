@@ -45,6 +45,9 @@ export default function StartPage() {
           <Link href="/live" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
             Open live state
           </Link>
+          <Link href="/learn" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+            Open the guide
+          </Link>
           <Link href="/trust" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "hidden sm:inline-flex")}>
             Open trust only if needed
           </Link>

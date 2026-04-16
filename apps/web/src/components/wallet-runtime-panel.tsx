@@ -82,9 +82,12 @@ export function WalletRuntimePanel({ executionSnapshot }: WalletRuntimePanelProp
           <div className="rounded-3xl border border-white/8 bg-black/20 p-4">
             <div className="flex items-center gap-3">
               <ShieldAlert className="h-4 w-4 text-fuchsia-300" />
-              <div className="text-sm font-medium text-white">Launch honesty</div>
+              <div className="text-sm font-medium text-white">Community verification</div>
             </div>
-            <div className="mt-3 text-sm leading-7 text-white/58">Mainnet custody, multisig, audit closure, and real-device runtime remain outside this claim boundary until evidence is recorded in the repo.</div>
+            <div className="mt-3 text-sm leading-7 text-white/58">
+              PrivateDAO welcomes community testing, external review, and deeper runtime validation.
+              The current product already gives the visitor a real Devnet flow to use and verify, while the broader ecosystem can help push the release path even further through testing, review, and operational feedback.
+            </div>
           </div>
         </div>
 

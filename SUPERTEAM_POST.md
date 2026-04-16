@@ -9,7 +9,7 @@ It replaces public live tallies with a commit-reveal flow, keeps treasury execut
 Live today:
 
 - repo: https://github.com/X-PACT/PrivateDAO
-- frontend: https://x-pact.github.io/PrivateDAO/
+- frontend: https://privatedao.org/
 - devnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 
 We are looking for feedback from Solana builders, DAO operators, and ecosystem contributors working on governance, Realms integrations, and migration paths.
@@ -45,7 +45,7 @@ What makes this more than a contract demo is the full operating surface around i
 Links:
 
 - GitHub: https://github.com/X-PACT/PrivateDAO
-- Live frontend: https://x-pact.github.io/PrivateDAO/
+- Live frontend: https://privatedao.org/
 - Current PR: https://github.com/X-PACT/PrivateDAO/pull/6
 
 This is presented honestly as a real devnet beta product, not as an audited mainnet governance system.

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 PRIMARY_URL="${1:-https://privatedao.org/}"
-BACKUP_URL="${2:-https://x-pact.github.io/PrivateDAO/}"
+BACKUP_URL="${2:-https://privatedao.org/}"
 STRICT_MODE="${PRIVATE_DAO_STRICT_HOST_TOPOLOGY:-0}"
 
 fetch_headers() {

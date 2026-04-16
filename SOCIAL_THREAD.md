@@ -9,7 +9,7 @@ It replaces public live tallies with a commit-reveal flow, keeps treasury action
 Live now:
 
 - repo: https://github.com/X-PACT/PrivateDAO
-- frontend: https://x-pact.github.io/PrivateDAO/
+- frontend: https://privatedao.org/
 - devnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 
 ## Full Thread
@@ -23,7 +23,7 @@ Repo:
 https://github.com/X-PACT/PrivateDAO
 
 Frontend:
-https://x-pact.github.io/PrivateDAO/
+https://privatedao.org/
 
 ### Post 2
 

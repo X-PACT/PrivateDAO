@@ -19,6 +19,12 @@ export function HomeShell() {
       icon: Compass,
     },
     {
+      title: "Learn the product quickly",
+      description: "A plain-language guide explains governance, payments, gaming, API, RPC, privacy, and how to verify the stack yourself on Devnet.",
+      href: "/learn",
+      icon: LifeBuoy,
+    },
+    {
       title: "Judge path stays explicit",
       description: "Proof, V3, trust packet, and runtime surfaces stay one click away from the product shell.",
       href: "/proof/?judge=1",
@@ -156,6 +162,9 @@ export function HomeShell() {
                 Start in under a minute
                 <ArrowRight className="h-4 w-4" />
               </Link>
+              <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/learn">
+                Learn the product first
+              </Link>
               <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/govern">
                 Open the live governance flow
               </Link>
@@ -183,7 +192,7 @@ export function HomeShell() {
               </div>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
               {storyCards.map((item) => {
                 const Icon = item.icon;
 

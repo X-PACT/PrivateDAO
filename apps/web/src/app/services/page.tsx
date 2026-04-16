@@ -59,6 +59,9 @@ export default function ServicesPage() {
       <div>
         <ServicesSurface />
       </div>
+      <div className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6 text-sm leading-7 text-white/68">
+        If this is your first visit, open <a className="text-cyan-100 underline underline-offset-4" href="/learn">/learn</a> first. It explains what PrivateDAO solves for governance, payments, gaming, API, RPC, and privacy in plain language before you inspect the service rails.
+      </div>
       <div>
         <JupiterTreasuryRouteSurface />
       </div>

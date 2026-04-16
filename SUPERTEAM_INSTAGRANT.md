@@ -52,7 +52,7 @@ Live components include:
 ## Links
 
 - GitHub repository: https://github.com/X-PACT/PrivateDAO
-- Live frontend: https://x-pact.github.io/PrivateDAO/
+- Live frontend: https://privatedao.org/
 - Devnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Current PR: https://github.com/X-PACT/PrivateDAO/pull/6
 

@@ -63,14 +63,14 @@ function main() {
 
   const hasJudgeEntry =
     readme.includes("https://privatedao.org/proof/?judge=1") ||
-    readme.includes("https://x-pact.github.io/PrivateDAO/proof/?judge=1");
+    readme.includes("https://privatedao.org/proof/?judge=1");
   if (!hasJudgeEntry) {
     throw new Error("README is missing Judge Mode entry point");
   }
 
   const hasDiagnosticsEntry =
     readme.includes("https://privatedao.org/diagnostics/") ||
-    readme.includes("https://x-pact.github.io/PrivateDAO/diagnostics/");
+    readme.includes("https://privatedao.org/diagnostics/");
   if (!hasDiagnosticsEntry) {
     throw new Error("README is missing Wallet Diagnostics entry point");
   }

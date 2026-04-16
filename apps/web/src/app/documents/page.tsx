@@ -103,6 +103,9 @@ export default function DocumentsPage() {
           <Link href="/documents/reviewer-fast-path" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
             Open fast path
           </Link>
+          <Link href="/documents/private-dao-guide" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+            Open plain-language guide
+          </Link>
         </div>
         <div className="mt-4 text-sm leading-7 text-white/56">
           Reviewer truth here now includes a payments reviewer fast path explicitly: treasury packet, canonical custody proof, services payments rail, and command-center payout path stay one layer away instead of being reconstructed from separate results.

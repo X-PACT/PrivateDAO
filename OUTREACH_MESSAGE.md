@@ -9,7 +9,7 @@ It replaces public live tallies with a commit-reveal flow, adds `zk_enforced` ha
 Project links:
 
 - repo: https://github.com/X-PACT/PrivateDAO
-- frontend: https://x-pact.github.io/PrivateDAO/
+- frontend: https://privatedao.org/
 - investor reel: https://youtu.be/cwsPpNLiwbo
 - devnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 
@@ -47,7 +47,7 @@ What is live today:
 Links:
 
 - GitHub: https://github.com/X-PACT/PrivateDAO
-- Frontend: https://x-pact.github.io/PrivateDAO/
+- Frontend: https://privatedao.org/
 - Investor reel: https://youtu.be/cwsPpNLiwbo
 - Current PR: https://github.com/X-PACT/PrivateDAO/pull/6
 
