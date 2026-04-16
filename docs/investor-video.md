@@ -53,7 +53,7 @@ The video must communicate:
 - Repo-native rendered asset: `docs/assets/private-dao-frontier-overview.mp4`
 - Repo-native poster: `docs/assets/private-dao-frontier-overview-poster.png`
 - Hosted public story route: `https://privatedao.org/story/`
-- Public YouTube asset: `https://youtu.be/6_wUfawIjhw`
+- Public YouTube asset: `https://youtu.be/HiCz0vb8kgk`
 - Hosted MP4 backup: `https://privatedao.org/assets/private-dao-frontier-overview.mp4`
 
 ## Mainnet Positioning

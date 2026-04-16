@@ -8,7 +8,7 @@ For the public competition posture around the current Colosseum Frontier cycle, 
 
 - Website: `https://privatedao.org/`
 - GitHub: `https://github.com/X-PACT/PrivateDAO`
-- Demo video: `https://youtu.be/6_wUfawIjhw`
+- Demo video: `https://youtu.be/HiCz0vb8kgk`
 - Colosseum project: `https://arena.colosseum.org/projects/explore/praivatedao`
 - Project X link: `https://x.com/i/status/2039742760719151177`
 

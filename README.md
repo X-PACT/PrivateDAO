@@ -696,7 +696,7 @@ Key docs:
 ## Media And Submission Assets
 
 - Public story video: https://privatedao.org/story/
-- Public YouTube reel: https://youtu.be/6_wUfawIjhw
+- Public YouTube reel: https://youtu.be/HiCz0vb8kgk
 - Direct MP4 backup: https://privatedao.org/assets/private-dao-frontier-overview.mp4
 - Upload-ready file: `/home/x-pact/Desktop/PrivateDAO-Frontier-Overview/PrivateDAO - Frontier Overview - Everything We Offer and Why Us.mp4`
 - Canonical lifecycle demo brief: [`docs/demo-video.md`](docs/demo-video.md)

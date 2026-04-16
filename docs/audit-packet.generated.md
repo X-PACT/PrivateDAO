@@ -13,7 +13,7 @@
 - Proof Center: https://privatedao.org/proof/
 - Judge Mode: https://privatedao.org/proof/?judge=1
 - Security page: https://privatedao.org/security/
-- Public story video: https://youtu.be/6_wUfawIjhw
+- Public story video: https://youtu.be/HiCz0vb8kgk
 
 ## Live Devnet Anchors
 
