@@ -29,8 +29,8 @@ const WalletConnectButton = dynamic(
 
 const navItems = [
   { href: "/start", label: "Start" },
-  { href: "/govern", label: "Govern" },
-  { href: "/live", label: "Track Activity" },
+  { href: "/govern", label: "Govern", rel: "nofollow" },
+  { href: "/live", label: "Track Activity", rel: "nofollow" },
   { href: "/demo", label: "Demo" },
   { href: "/trust", label: "Trust" },
 ];
@@ -39,7 +39,8 @@ const utilityNav = [
   { href: "/services", label: "API & Pricing" },
   { href: "/documents", label: "Docs" },
   { href: "/community", label: "Community" },
-  { href: "/assistant", label: "Help" },
+  { href: "/assistant", label: "Help", rel: "nofollow" },
+  { href: "/search", label: "Search", rel: "nofollow" },
 ];
 
 export function SiteHeader() {
@@ -110,11 +111,12 @@ export function SiteHeader() {
             {navItems.map((item) => (
               <Link
                 className={cn(buttonVariants({ size: "sm", variant: "ghost" }), "shrink-0 px-3 text-white/72")}
-              href={item.href}
-              key={item.href}
-            >
-              {item.label}
-            </Link>
+                href={item.href}
+                key={item.href}
+                rel={item.rel}
+              >
+                {item.label}
+              </Link>
           ))}
         </nav>
 
@@ -135,6 +137,7 @@ export function SiteHeader() {
                 className={cn(buttonVariants({ size: "sm", variant: "ghost" }), "shrink-0 px-3 text-white/68")}
                 href={item.href}
                 key={item.href}
+                rel={item.rel}
               >
                 {item.label}
               </Link>

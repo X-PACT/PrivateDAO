@@ -80,7 +80,7 @@ export default function RootLayout({
               id="privatedao-domain-redirect"
               strategy="beforeInteractive"
               dangerouslySetInnerHTML={{
-                __html: `(function(){var target='https://privatedao.org';var host=window.location.hostname;var path=window.location.pathname;var search=window.location.search||'';var hash=window.location.hash||'';if(host==='www.privatedao.org'){window.location.replace(target+path+search+hash);return;}if(host==='x-pact.github.io'&&path.indexOf('/PrivateDAO')===0){var nextPath=path.replace(/^\\/PrivateDAO/,'')||'/';window.location.replace(target+nextPath+search+hash);}})();`,
+                __html: `(function(){var target='https://privatedao.org';var protocol=window.location.protocol;var host=window.location.hostname;var path=window.location.pathname;var search=window.location.search||'';var hash=window.location.hash||'';if(protocol==='http:'&&host==='privatedao.org'){window.location.replace(target+path+search+hash);return;}if(host==='www.privatedao.org'){window.location.replace(target+path+search+hash);return;}if(host==='x-pact.github.io'&&path.indexOf('/PrivateDAO')===0){var nextPath=path.replace(/^\\/PrivateDAO/,'')||'/';window.location.replace(target+nextPath+search+hash);}})();`,
               }}
             />
             <Script

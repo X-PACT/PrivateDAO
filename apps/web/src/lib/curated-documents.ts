@@ -20,19 +20,12 @@ const indexableDocumentSlugs = new Set<string>([
   "solana-developer-tooling-proposal-2026",
   "technical-verification-status-2026",
   "reviewer-fast-path",
-  "payments-reviewer-fast-path",
-  "treasury-reviewer-packet",
   "reviewer-telemetry-packet",
   "launch-trust-packet",
   "trust-package",
   "browser-wallet-runtime",
-  "pdao-token-surface",
-  "confidential-payout-evidence-packet",
   "capital-readiness-packet",
-  "funding-readiness-scorecard",
-  "runtime-operations-readiness-packet",
-  "poland-foundation-grant-application-packet",
-  "startup-accelerator-application-packet",
+  "pdao-token-surface",
 ]);
 
 export function isIndexableCuratedDocumentSlug(slug: string) {
