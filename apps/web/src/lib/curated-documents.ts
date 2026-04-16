@@ -139,6 +139,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/reform-backlog-funding-2026.md`,
   },
   {
+    slug: "engineering-delivery-model",
+    title: "Engineering Delivery Model",
+    category: "Operations",
+    summary: "Shared engineering operating model for how PrivateDAO is designed, reviewed, shipped, and explained as one coordinated product team across governance, payments, proof, infrastructure, and education.",
+    audience: "Community members, contributors, reviewers, operators",
+    boundary: "Operating model only; it explains how the work is organized and reviewed without claiming additional product closure beyond the linked proof and delivery surfaces.",
+    docPath: "docs/engineering-delivery-model.md",
+    rawHref: `${repositoryBlobBase}/docs/engineering-delivery-model.md`,
+  },
+  {
     slug: "superteam-track-submission-matrix-2026",
     title: "Competition Alignment Matrix 2026",
     category: "Strategy",

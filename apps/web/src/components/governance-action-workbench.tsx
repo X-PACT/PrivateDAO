@@ -161,6 +161,53 @@ function describeWalletActionError(error: unknown, fallback: string) {
   return fallback;
 }
 
+type ActionFollowUpLink = {
+  href: string;
+  label: string;
+  helper: string;
+  variant?: "secondary" | "outline";
+};
+
+function ActionFollowUpRail({
+  eyebrow,
+  title,
+  description,
+  links,
+}: {
+  eyebrow: string;
+  title: string;
+  description: string;
+  links: ActionFollowUpLink[];
+}) {
+  return (
+    <div className="mt-4 rounded-[22px] border border-cyan-300/16 bg-cyan-300/[0.06] p-4">
+      <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-100/72">{eyebrow}</div>
+      <div className="mt-2 text-sm font-medium text-white">{title}</div>
+      <div className="mt-2 text-sm leading-7 text-white/62">{description}</div>
+      <div className="mt-4 grid gap-3 md:grid-cols-2">
+        {links.map((link) => (
+          <Link
+            key={`${eyebrow}-${link.href}-${link.label}`}
+            href={link.href}
+            className={cn(buttonVariants({ size: "sm", variant: link.variant ?? "outline" }), "justify-between")}
+          >
+            <span>{link.label}</span>
+            <ArrowUpRight className="h-4 w-4" />
+          </Link>
+        ))}
+      </div>
+      <div className="mt-4 grid gap-2 md:grid-cols-2">
+        {links.map((link) => (
+          <div key={`${eyebrow}-helper-${link.href}`} className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm leading-7 text-white/58">
+            <span className="font-medium text-white/82">{link.label}</span>
+            <span className="text-white/54"> · {link.helper}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function GovernanceActionWorkbench() {
   const [reviewAction, setReviewAction] = useState<CoreGovernanceInstructionName | null>(null);
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -1648,6 +1695,36 @@ export function GovernanceActionWorkbench() {
                     <div className="mt-1 break-all text-white/60">Signature {liveProposalRuntime.signature}</div>
                   </div>
                 ) : null}
+                {effectiveProposalCreated ? (
+                  <ActionFollowUpRail
+                    eyebrow="After proposal create"
+                    title="Move directly into voting, then confirm the proposal lane is visible."
+                    description="The next user action is commit vote. If you want to check what the product now exposes, use the activity lane or the judge route after the wallet signature lands."
+                    links={[
+                      {
+                        href: "/govern#commit-vote-action",
+                        label: "Go to commit vote",
+                        helper: "Continue the browser-only governance cycle without leaving the page.",
+                        variant: "secondary",
+                      },
+                      {
+                        href: "/live",
+                        label: "Open live state",
+                        helper: "Check that the proposal appears in the runtime lane after creation.",
+                      },
+                      {
+                        href: "/judge",
+                        label: "Open judge route",
+                        helper: "Show the captured proof path a reviewer would use to validate the product lane.",
+                      },
+                      {
+                        href: "/documents/reviewer-fast-path",
+                        label: "Open reviewer fast path",
+                        helper: "Jump into the shortest explanation layer if you need the proof story in plain order.",
+                      },
+                    ]}
+                  />
+                ) : null}
               </div>
 
               <div className="space-y-3">
@@ -1876,6 +1953,36 @@ export function GovernanceActionWorkbench() {
                     ) : null}
                   </div>
                 ) : null}
+                {effectiveVoteCommitted ? (
+                  <ActionFollowUpRail
+                    eyebrow="After commit vote"
+                    title="Keep the commit private, then watch for the reveal window and proof lane."
+                    description="Commit writes the hashed intent on Devnet while keeping the vote private until reveal. The next operational check is when the reveal window opens, plus whether the runtime trail and judge lane reflect the commit."
+                    links={[
+                      {
+                        href: "/govern#reveal-vote-action",
+                        label: "Go to reveal vote",
+                        helper: "Return here when the reveal window opens and continue the cycle with the stored salt.",
+                        variant: "secondary",
+                      },
+                      {
+                        href: "/live",
+                        label: "Open live state",
+                        helper: "Inspect the proposal lane and confirm the commit phase is reflected in the runtime surface.",
+                      },
+                      {
+                        href: "/judge",
+                        label: "Open judge route",
+                        helper: "Show captured proof, transaction trail, and execution state in the review-friendly corridor.",
+                      },
+                      {
+                        href: "/documents/reviewer-fast-path",
+                        label: "Open reviewer fast path",
+                        helper: "Use the short explanation route if you want the product and proof story in two minutes.",
+                      },
+                    ]}
+                  />
+                ) : null}
               </div>
           ) : null}
 
@@ -1935,6 +2042,36 @@ export function GovernanceActionWorkbench() {
                     <div className="mt-2 break-all text-white/60">Signature {liveVoteRuntime.revealSignature}</div>
                   </div>
                 ) : null}
+                {effectiveVoteRevealed ? (
+                  <ActionFollowUpRail
+                    eyebrow="After reveal"
+                    title="The private vote is now disclosed on-chain. Finalize next, then inspect proof."
+                    description="Reveal converts the hidden commitment into a reviewer-visible decision path. Continue into finalize, then use proof and judge to confirm the lifecycle stays readable for normal visitors and reviewers."
+                    links={[
+                      {
+                        href: "/govern#finalize-proposal-action",
+                        label: "Go to finalize proposal",
+                        helper: "Close the vote window from the same browser lane before execution.",
+                        variant: "secondary",
+                      },
+                      {
+                        href: "/proof",
+                        label: "Open proof",
+                        helper: "Review freshness, runtime packets, and the broader proof corridor after reveal.",
+                      },
+                      {
+                        href: "/judge",
+                        label: "Open judge route",
+                        helper: "Check the captured execution narrative that explains vote, reveal, and settlement together.",
+                      },
+                      {
+                        href: "/documents/reviewer-fast-path",
+                        label: "Open reviewer fast path",
+                        helper: "Use the plain order of proof surfaces when showing the lifecycle to a non-expert reviewer.",
+                      },
+                    ]}
+                  />
+                ) : null}
               </div>
           ) : null}
 
@@ -1979,6 +2116,36 @@ export function GovernanceActionWorkbench() {
                     <div>Last live finalize cleared from the current proposal lane.</div>
                     <div className="mt-2 break-all text-white/60">Signature {liveVoteRuntime.finalizeSignature}</div>
                   </div>
+                ) : null}
+                {effectiveProposalFinalized ? (
+                  <ActionFollowUpRail
+                    eyebrow="After finalize"
+                    title="The proposal is ready to execute. Use one last wallet action, then review the outcome."
+                    description="Finalize closes the governance decision and unlocks execution. From here the shortest path is execute, then judge and proof for the visible transaction story."
+                    links={[
+                      {
+                        href: "/govern#execute-proposal-action",
+                        label: "Go to execute proposal",
+                        helper: "Submit the final browser-side execution step from the same governance lane.",
+                        variant: "secondary",
+                      },
+                      {
+                        href: "/judge",
+                        label: "Open judge route",
+                        helper: "See the reference execution trail and transaction links that explain why the product path is real.",
+                      },
+                      {
+                        href: "/proof",
+                        label: "Open proof",
+                        helper: "Inspect runtime freshness and proof surfaces after the proposal becomes executable.",
+                      },
+                      {
+                        href: "/documents/reviewer-fast-path",
+                        label: "Open reviewer fast path",
+                        helper: "Show the shortest supporting packet set behind the governance decision and execution lane.",
+                      },
+                    ]}
+                  />
                 ) : null}
               </div>
           ) : null}
@@ -2026,6 +2193,36 @@ export function GovernanceActionWorkbench() {
                     <div>Last live execute cleared from the current web lane.</div>
                     <div className="mt-2 break-all text-white/60">Signature {liveVoteRuntime.executeSignature}</div>
                   </div>
+                ) : null}
+                {effectiveProposalExecuted ? (
+                  <ActionFollowUpRail
+                    eyebrow="After execute"
+                    title="Execution is complete. Now verify the hashes, proof freshness, and reviewer story."
+                    description="This is where the visitor leaves raw action flow and enters evidence flow. Judge, proof, and the reviewer packet should all agree on what happened and why it matters."
+                    links={[
+                      {
+                        href: "/judge",
+                        label: "Open judge route",
+                        helper: "Review proposal lifecycle, captured rail evidence, transaction links, and execution status together.",
+                        variant: "secondary",
+                      },
+                      {
+                        href: "/proof",
+                        label: "Open proof",
+                        helper: "Inspect the broader proof corridor, runtime freshness, and linked packets after execution.",
+                      },
+                      {
+                        href: "/live",
+                        label: "Open live state",
+                        helper: "Confirm the execution surface and current runtime lane reflect the completed proposal.",
+                      },
+                      {
+                        href: "/documents/reviewer-fast-path",
+                        label: "Open reviewer fast path",
+                        helper: "Hand a reviewer the shortest document path that explains what was executed and how to verify it.",
+                      },
+                    ]}
+                  />
                 ) : null}
               </div>
           ) : null}

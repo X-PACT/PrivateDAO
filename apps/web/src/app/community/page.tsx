@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { CommunityHub } from "@/components/community-hub";
 import { EcosystemFocusAlignmentStrip } from "@/components/ecosystem-focus-alignment-strip";
@@ -8,7 +9,9 @@ import { PlatformServiceArchitecture } from "@/components/platform-service-archi
 import { ProductIntakeForms } from "@/components/product-intake-forms";
 import { VideoCenter } from "@/components/video-center";
 import { TrustSurface } from "@/components/trust-surface";
+import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Community",
@@ -63,6 +66,23 @@ export default function CommunityPage({ searchParams }: CommunityPageProps) {
         title="Community and education now grow directly from the live product"
         description="Hosted story, onboarding, trust, and pilot routes already give the community a practical way to support, understand, and extend PrivateDAO through real product use and production-oriented feedback."
       />
+      <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.05] p-5">
+        <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/78">How the product is built</div>
+        <div className="mt-3 max-w-3xl text-sm leading-7 text-white/62">
+          PrivateDAO is built as one coordinated engineering team across governance, payments, proof, infrastructure, education, and release work. The operating model is public because the product is open source and welcomes testing, review, and serious feedback from the ecosystem.
+        </div>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <Link href="/documents/engineering-delivery-model" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
+            Open engineering delivery model
+          </Link>
+          <Link href="/learn" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+            Open learning guide
+          </Link>
+          <Link href="/judge" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+            Open judge route
+          </Link>
+        </div>
+      </div>
       <CommunityHub />
       <LeadSupportIntake mode="community" />
       <ProductIntakeForms mode="community" initialKind={initialKind} initialFundingContext={initialFundingContext} />

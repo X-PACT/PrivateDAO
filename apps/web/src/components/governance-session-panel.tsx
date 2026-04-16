@@ -26,6 +26,68 @@ export function GovernanceSessionPanel({
   title = "Current governance session",
 }: GovernanceSessionPanelProps) {
   const session = useGovernanceSession();
+  const nextReviewLinks = session.proposalExecuted
+    ? [
+        {
+          href: "/judge",
+          label: "Open judge route",
+          helper: "Review the captured Devnet execution corridor and transaction trail.",
+          variant: "secondary" as const,
+        },
+        {
+          href: "/proof",
+          label: "Open proof",
+          helper: "Inspect freshness, runtime proof, and linked verification packets.",
+          variant: "outline" as const,
+        },
+        {
+          href: "/documents/reviewer-fast-path",
+          label: "Open reviewer fast path",
+          helper: "Hand the shortest explanation route to a reviewer or funder.",
+          variant: "outline" as const,
+        },
+      ]
+    : session.voteCommitted || session.voteRevealed || session.proposalFinalized
+      ? [
+          {
+            href: "/govern",
+            label: "Return to govern",
+            helper: "Continue reveal, finalize, or execute from the current browser lane.",
+            variant: "secondary" as const,
+          },
+          {
+            href: "/live",
+            label: "Open live state",
+            helper: "Check the visible runtime lane after the last signed action.",
+            variant: "outline" as const,
+          },
+          {
+            href: "/judge",
+            label: "Open judge route",
+            helper: "Use the review corridor once you want to inspect proof, hashes, and execution status.",
+            variant: "outline" as const,
+          },
+        ]
+      : [
+          {
+            href: "/start",
+            label: "Open start guide",
+            helper: "Use the browser-only entry route if this session still needs wallet and first-run context.",
+            variant: "secondary" as const,
+          },
+          {
+            href: "/learn",
+            label: "Open learning guide",
+            helper: "Explain the product, privacy model, and proof surfaces in plain language.",
+            variant: "outline" as const,
+          },
+          {
+            href: "/govern",
+            label: "Open govern flow",
+            helper: "Continue the DAO lifecycle from create proposal into commit and reveal.",
+            variant: "outline" as const,
+          },
+        ];
 
   return (
     <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,16,32,0.94),rgba(7,11,23,0.98))]">
@@ -152,6 +214,37 @@ export function GovernanceSessionPanel({
             {session.logs[0]?.label
               ? `${session.logs[0].label}: ${session.logs[0].value}`
               : "No action has been staged yet in this governance session."}
+          </div>
+        </div>
+
+        <div className="rounded-[22px] border border-cyan-300/16 bg-cyan-300/[0.06] p-4">
+          <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/72">Next route</div>
+          <div className="mt-2 text-sm leading-7 text-white/62">
+            {session.proposalExecuted
+              ? "Execution is complete. Move from the operator lane into judge, proof, and reviewer packets."
+              : session.voteCommitted || session.voteRevealed || session.proposalFinalized
+                ? "The session has moved beyond setup. Finish the governance cycle, then open the review corridor."
+                : "Use the shortest browser-only path first, then come back for proof and judge once real Devnet actions exist."}
+          </div>
+          <div className="mt-4 grid gap-3 md:grid-cols-3">
+            {nextReviewLinks.map((link) => (
+              <Link
+                key={`next-route-${link.href}`}
+                href={link.href}
+                className={cn(buttonVariants({ size: "sm", variant: link.variant }), "justify-between")}
+              >
+                {link.label}
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            ))}
+          </div>
+          <div className="mt-4 grid gap-2 md:grid-cols-3">
+            {nextReviewLinks.map((link) => (
+              <div key={`next-route-helper-${link.href}`} className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm leading-7 text-white/56">
+                <span className="font-medium text-white/82">{link.label}</span>
+                <span className="text-white/54"> · {link.helper}</span>
+              </div>
+            ))}
           </div>
         </div>
       </CardContent>
