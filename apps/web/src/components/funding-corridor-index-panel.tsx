@@ -9,13 +9,13 @@ const corridors = [
   {
     title: "Startup accelerator",
     summary: "Operating plan, use-of-capital, and release confidence packet for serious capital reviewers.",
-    href: "/tracks/startup-accelerator",
+    href: "/documents/capital-readiness-packet",
     icon: BriefcaseBusiness,
   },
   {
     title: "Poland grants",
     summary: "DAO tooling, payments, decentralisation, and proof-of-work corridor tied to the actual grant philosophy.",
-    href: "/tracks/poland-grants",
+    href: "/documents/reviewer-fast-path",
     icon: ShieldCheck,
   },
   {

@@ -90,18 +90,18 @@ const intakePresets: IntakePreset[] = [
     summary: "For studios, guild operators, or tournament teams exploring reward governance and gaming treasury flows.",
     icon: WalletCards,
     handoff: {
-      lane: "track-demo",
-      owner: "Track and product demo",
-      destination: "Gaming corridor and live demo",
+      lane: "buyer",
+      owner: "Gaming product motion",
+      destination: "Gaming corridor and live product route",
       priority: "Narrative-critical",
-      narrative: "Push the request into the gaming corridor, then use Govern and Ranger routes so the demo stays tied to live governance and competition evidence.",
+      narrative: "Push the request into the gaming corridor, then use Govern and Services so the visitor sees a real product route tied to live governance rather than a staged showcase.",
       primaryAction: { label: "Open gaming corridor", href: "/products" },
-      evidenceAction: { label: "Open Ranger track", href: "/tracks/ranger-main" },
+      evidenceAction: { label: "Open judge proof", href: "/judge" },
     },
     routeSet: [
       { label: "Products", href: "/products" },
       { label: "Govern", href: "/govern" },
-      { label: "Tracks", href: "/tracks/ranger-main" },
+      { label: "Judge", href: "/judge" },
     ],
   },
   {
@@ -171,7 +171,7 @@ const fundingProfileOverrides: Record<string, FundingProfileOverride> = {
       routes: [
         { label: "Services", href: "/services" },
         { label: "Engage", href: "/engage?profile=treasury-top-up" },
-        { label: "RPC track", href: "/tracks/rpc-infrastructure?profile=treasury-top-up" },
+        { label: "Services", href: "/services" },
         { label: "Trust", href: "/trust" },
       ],
     },
@@ -193,12 +193,12 @@ const fundingProfileOverrides: Record<string, FundingProfileOverride> = {
       { label: "Proof", href: "/proof" },
     ],
     commercialBundle: {
-      title: "Pilot and demo bundle",
-      summary: "Move from commercial qualification into the strongest live demo corridor and the startup-grade track narrative.",
+      title: "Pilot and product bundle",
+      summary: "Move from commercial qualification into the strongest live product corridor and the startup-grade narrative.",
       routes: [
         { label: "Engage", href: "/engage?profile=pilot-funding" },
         { label: "Govern", href: "/govern" },
-        { label: "Colosseum Frontier", href: "/tracks/colosseum-frontier?profile=pilot-funding" },
+        { label: "Start", href: "/start" },
       ],
     },
   },
@@ -254,7 +254,7 @@ const fundingProfileOverrides: Record<string, FundingProfileOverride> = {
       routes: [
         { label: "Govern", href: "/govern" },
         { label: "Diagnostics", href: "/diagnostics" },
-        { label: "Live dApp track", href: "/tracks/eitherway-live-dapp?profile=vendor-payout" },
+        { label: "Services", href: "/services" },
         { label: "Services", href: "/services" },
       ],
     },
@@ -282,7 +282,7 @@ const fundingProfileOverrides: Record<string, FundingProfileOverride> = {
       routes: [
         { label: "Govern", href: "/govern" },
         { label: "Diagnostics", href: "/diagnostics" },
-        { label: "Consumer Apps track", href: "/tracks/consumer-apps?profile=contributor-payout" },
+        { label: "Start", href: "/start" },
         { label: "Trust", href: "/trust" },
       ],
     },

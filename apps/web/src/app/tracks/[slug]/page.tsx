@@ -20,17 +20,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const workspace = getCompetitionTrackWorkspace(slug);
   if (!workspace) {
     return buildRouteMetadata({
-      title: "Track Workspace Not Found",
-      description: "Requested competition workspace was not found.",
-      path: `/tracks/${slug}`,
+      title: "Product Route Not Found",
+      description: "Requested product route was not found.",
+      path: "/learn",
     });
   }
 
   return buildRouteMetadata({
-    title: getCompetitionLaneLabel(workspace.slug),
-    description: getCompetitionLaneSummary(workspace.slug),
-    path: `/tracks/${workspace.slug}`,
-    keywords: [workspace.sponsor, "product route", workspace.slug],
+    title: "Redirecting To Product Route",
+    description:
+      "Legacy competition route now redirects into the main product flow, proof path, or learning surface.",
+    path: workspace.liveRoute,
+    keywords: ["PrivateDAO", "product route", "devnet governance", "confidential treasury"],
     index: false,
   });
 }

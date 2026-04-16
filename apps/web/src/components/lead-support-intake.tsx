@@ -77,7 +77,7 @@ export function LeadSupportIntake({ mode }: LeadSupportIntakeProps) {
         related: [
           { label: "Govern", href: "/govern" },
           { label: "Services", href: "/services" },
-          { label: "Tracks", href: "/tracks/ranger-main" },
+          { label: "Judge", href: "/judge" },
         ],
       };
     }

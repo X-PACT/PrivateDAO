@@ -212,7 +212,7 @@ const assistantIntents: AssistantIntent[] = [
     title: "Start a normal-user PrivateDAO flow",
     summary:
       "Use the onboarding path first, connect a wallet, then continue into the govern flow instead of jumping into proof or raw documents.",
-    primaryActionLabel: "Open start workspace",
+    primaryActionLabel: "Open start route",
     primaryActionHref: "/start",
     relatedRoutes: [
       { label: "Govern", href: "/govern" },
@@ -238,7 +238,7 @@ const assistantIntents: AssistantIntent[] = [
     title: "Inspect cryptography and security posture",
     summary:
       "Open the security route when the question is about ZK, REFHE, MagicBlock, Fast RPC, the capability matrix, or the confidence engine.",
-    primaryActionLabel: "Open security workspace",
+    primaryActionLabel: "Open security route",
     primaryActionHref: "/security",
     relatedRoutes: [
       { label: "ZK Capability Matrix", href: "/documents/zk-capability-matrix" },
@@ -264,12 +264,12 @@ const assistantIntents: AssistantIntent[] = [
     title: "Open the Security + Intelligence layer",
     summary:
       "Use the intelligence route when the user wants proposal review, treasury execution review, voting summaries, RPC interpretation, or gaming-governance assistance inside the product.",
-    primaryActionLabel: "Open intelligence workspace",
+    primaryActionLabel: "Open intelligence route",
     primaryActionHref: "/intelligence",
     relatedRoutes: [
       { label: "Security", href: "/security" },
       { label: "Services", href: "/services" },
-      { label: "Runtime infrastructure lane", href: "/tracks/rpc-infrastructure" },
+      { label: "Services", href: "/services" },
     ],
     keywords: [
       "proposal analyzer",
@@ -300,12 +300,12 @@ const assistantIntents: AssistantIntent[] = [
   {
     title: "Open custody truth and proof packet",
     summary:
-      "Use the canonical custody proof and custody packet when the question is about multisig evidence, signer roster, authority transfer signatures, or the strict repo-safe ingestion route.",
+      "Use the canonical custody proof and custody packet when the question is about multisig evidence, signer roster, authority transfer signatures, or the strict repo-safe custody route.",
     primaryActionLabel: "Open custody proof packet",
     primaryActionHref: "/documents/custody-proof-reviewer-packet",
     relatedRoutes: [
       { label: "Canonical custody proof", href: "/documents/canonical-custody-proof" },
-      { label: "Custody workspace", href: "/custody" },
+      { label: "Custody", href: "/custody" },
       { label: "Multisig intake shape", href: "/documents/multisig-setup-intake" },
     ],
     keywords: [
@@ -372,27 +372,27 @@ const assistantIntents: AssistantIntent[] = [
     primaryActionLabel: "Open wallet-first start path",
     primaryActionHref: "/start",
     relatedRoutes: [
-      { label: "Live app corridor", href: "/tracks/eitherway-live-dapp" },
+      { label: "Services", href: "/services" },
       { label: "Live State", href: "/live" },
       { label: "Govern", href: "/govern" },
     ],
     keywords: ["wallet", "solflare", "phantom", "backpack", "kamino", "dflow", "quicknode", "eitherway"],
   },
   {
-    title: "Open the competition-ready workspace",
+    title: "Open the strongest product route",
     summary:
-      "Go to the competition center when the question is about Frontier packaging, confidential governance, runtime infrastructure, or adjacent reviewer positioning. Each workspace keeps live route, review route, proof route, deck route, and validation steps together.",
-    primaryActionLabel: "Open competition center",
-    primaryActionHref: "/tracks",
+      "Go to learning, start, services, or proof when the question is about product fit, confidential governance, runtime infrastructure, or reviewer positioning. Keep the visitor on real product routes instead of isolated competition pages.",
+    primaryActionLabel: "Open learning path",
+    primaryActionHref: "/learn",
     relatedRoutes: [
-      { label: "Confidential governance lane", href: "/tracks/privacy-track" },
-      { label: "Runtime infrastructure lane", href: "/tracks/rpc-infrastructure" },
-      { label: "Wallet-first product lane", href: "/tracks/consumer-apps" },
+      { label: "Start", href: "/start" },
+      { label: "Services", href: "/services" },
+      { label: "Proof", href: "/proof/?judge=1" },
     ],
     keywords: ["competition", "hackathon", "frontier", "colosseum", "privacy", "ranger", "consumer", "100xdevs", "solrouter", "ika", "encrypt"],
   },
   {
-    title: "Open the strategic opportunity readiness map",
+      title: "Open the strategic opportunity readiness map",
     summary:
       "Use the opportunity map when the question is about startup accelerator grants, regional grants, analytics side opportunities, confidential payout fit, or hardening-first bounty posture around the same product thesis.",
     primaryActionLabel: "Open opportunity readiness",
@@ -441,7 +441,7 @@ const assistantIntents: AssistantIntent[] = [
     title: "Package the commercial and API surface",
     summary:
       "Use the services route when the question is about pilots, hosted reads, enterprise governance, sales posture, or infrastructure packaging for buyers and partners.",
-    primaryActionLabel: "Open services workspace",
+    primaryActionLabel: "Open services route",
     primaryActionHref: "/services",
     relatedRoutes: [
       { label: "Products", href: "/products" },
@@ -482,7 +482,7 @@ const fallbackSuggestion: AssistantSuggestion = {
   title: "Start from the product shell",
   summary:
     "If the goal is unclear, begin at onboarding or the govern flow. That gives the shortest route to a real product flow, wallet action, proof surface, or learning path.",
-  primaryActionLabel: "Open start workspace",
+  primaryActionLabel: "Open start route",
   primaryActionHref: "/start",
   relatedRoutes: [
     { label: "Govern", href: "/govern" },
@@ -540,9 +540,9 @@ function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
       summary:
         "Go straight into the strongest product route for pilot funding: start first, then engage, then proof and trust.",
       primaryActionLabel: "Open product route",
-      primaryActionHref: `/tracks/${workspace.slug}?profile=pilot-funding`,
+      primaryActionHref: workspace.liveRoute,
       relatedRoutes: [
-        { label: "1. Product route", href: `/tracks/${workspace.slug}?profile=pilot-funding` },
+        { label: "1. Product route", href: workspace.liveRoute },
         { label: "2. Engage", href: "/engage?profile=pilot-funding" },
         { label: "3. Proof", href: workspace.proofRoute },
       ],
@@ -556,9 +556,9 @@ function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
       summary:
         "Go straight into the strongest treasury route: services first, then engage, then product proof.",
       primaryActionLabel: "Open product route",
-      primaryActionHref: `/tracks/${workspace.slug}?profile=treasury-top-up`,
+      primaryActionHref: workspace.liveRoute,
       relatedRoutes: [
-        { label: "1. Product route", href: `/tracks/${workspace.slug}?profile=treasury-top-up` },
+        { label: "1. Product route", href: workspace.liveRoute },
         { label: "2. Engage", href: "/engage?profile=treasury-top-up" },
         { label: "3. Services", href: "/services" },
       ],
@@ -572,9 +572,9 @@ function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
       summary:
         "Go straight into the governed vendor route: product path first, then govern and diagnostics, then trust.",
       primaryActionLabel: "Open product route",
-      primaryActionHref: `/tracks/${workspace.slug}?profile=vendor-payout`,
+      primaryActionHref: workspace.liveRoute,
       relatedRoutes: [
-        { label: "1. Product route", href: `/tracks/${workspace.slug}?profile=vendor-payout` },
+        { label: "1. Product route", href: workspace.liveRoute },
         { label: "2. Govern", href: "/govern" },
         { label: "3. Diagnostics", href: "/diagnostics" },
       ],
@@ -587,9 +587,9 @@ function getProfileTrackSuggestion(query: string): AssistantSuggestion | null {
     summary:
       "Go straight into the governed contributor route: product path first, then govern, then security and trust.",
     primaryActionLabel: "Open product route",
-    primaryActionHref: `/tracks/${workspace.slug}?profile=contributor-payout`,
+    primaryActionHref: workspace.liveRoute,
     relatedRoutes: [
-      { label: "1. Product route", href: `/tracks/${workspace.slug}?profile=contributor-payout` },
+      { label: "1. Product route", href: workspace.liveRoute },
       { label: "2. Govern", href: "/govern" },
       { label: "3. Security", href: "/security" },
     ],
@@ -618,7 +618,7 @@ function getStrategicOpportunitySuggestion(query: string): AssistantSuggestion |
       keywords: ["poland grant", "regional grant", "poland grants"],
       title: "Open the regional grant corridor",
       summary:
-        "Start from the strategic opportunity map, then use awards, the Frontier primary workspace, and the launch trust packet as the regional proof chain.",
+      "Start from the strategic opportunity map, then use awards, start, and the launch trust packet as the regional proof chain.",
       primaryActionHref: "/documents/strategic-opportunity-readiness-2026",
       relatedRoutes: [
         { label: "1. Strategic opportunity map", href: "/documents/strategic-opportunity-readiness-2026" },
@@ -689,7 +689,7 @@ function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null
       primaryActionHref: "/engage?profile=pilot-funding",
       relatedRoutes: [
         { label: "1. Engage", href: "/engage?profile=pilot-funding" },
-        { label: "2. Frontier primary workspace", href: "/tracks/colosseum-frontier?profile=pilot-funding" },
+        { label: "2. Start", href: "/start" },
         { label: "3. Proof and trust", href: "/documents/frontier-competition-readiness-2026" },
       ],
       queryBlock: getPaymentsTruthBlock(normalized),
@@ -705,7 +705,7 @@ function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null
       primaryActionHref: "/engage?profile=vendor-payout",
       relatedRoutes: [
         { label: "1. Engage", href: "/engage?profile=vendor-payout" },
-        { label: "2. Live app corridor", href: "/tracks/eitherway-live-dapp?profile=vendor-payout" },
+        { label: "2. Services", href: "/services" },
         { label: "3. Govern and diagnostics", href: "/govern" },
       ],
       queryBlock: getPaymentsTruthBlock(normalized),
@@ -721,7 +721,7 @@ function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null
       primaryActionHref: "/engage?profile=contributor-payout",
       relatedRoutes: [
         { label: "1. Engage", href: "/engage?profile=contributor-payout" },
-        { label: "2. Wallet-first product workspace", href: "/tracks/consumer-apps?profile=contributor-payout" },
+        { label: "2. Start", href: "/start" },
         { label: "3. Govern and trust", href: "/govern" },
       ],
       queryBlock: getPaymentsTruthBlock(normalized),
@@ -737,7 +737,7 @@ function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null
       primaryActionHref: "/engage?profile=treasury-top-up",
       relatedRoutes: [
         { label: "1. Engage", href: "/engage?profile=treasury-top-up" },
-        { label: "2. Runtime infrastructure workspace", href: "/tracks/rpc-infrastructure?profile=treasury-top-up" },
+        { label: "2. Services", href: "/services" },
         { label: "3. Services and trust", href: "/services" },
       ],
       queryBlock: getPaymentsTruthBlock(normalized),
@@ -796,8 +796,8 @@ function getTrackAnswer(query: string): AssistantSuggestion | null {
       title: `Mainnet readiness gates for ${workspace.title}`,
       summary:
         `${gates.beforeMainnet[0]} ${gates.beforeMainnet[1] ?? ""}`.trim(),
-      primaryActionLabel: "Open track workspace",
-      primaryActionHref: `/tracks/${workspace.slug}`,
+      primaryActionLabel: "Open product route",
+      primaryActionHref: workspace.liveRoute,
       relatedRoutes: [
         { label: "Mainnet readiness gates", href: "/documents/mainnet-blockers" },
         { label: "Review route", href: workspace.judgeRoute },
@@ -817,9 +817,9 @@ function getTrackAnswer(query: string): AssistantSuggestion | null {
     return {
       title: `Devnet metrics for ${workspace.title}`,
       summary:
-        "Open the track workspace to see measured Devnet metrics for success rate, latency, wallet coverage, proof completion, and reveal or execute health in one panel.",
-      primaryActionLabel: "Open track workspace",
-      primaryActionHref: `/tracks/${workspace.slug}`,
+        "Open the product route to see measured Devnet metrics for success rate, latency, wallet coverage, proof completion, and reveal or execute health in one panel.",
+      primaryActionLabel: "Open product route",
+      primaryActionHref: workspace.liveRoute,
       relatedRoutes: [
         { label: "Diagnostics", href: "/diagnostics" },
         { label: "Services", href: "/services" },
@@ -840,8 +840,8 @@ function getTrackAnswer(query: string): AssistantSuggestion | null {
       title: `Technical evidence for ${workspace.title}`,
       summary:
         `${technical.coreIdentity[0]?.label}: ${technical.coreIdentity[0]?.value}. ${technical.sponsorUsage[0]}`,
-      primaryActionLabel: "Open track workspace",
-      primaryActionHref: `/tracks/${workspace.slug}`,
+      primaryActionLabel: "Open product route",
+      primaryActionHref: workspace.liveRoute,
       relatedRoutes: [
         { label: technical.evidenceRoutes[0]?.label ?? "Proof route", href: technical.evidenceRoutes[0]?.href ?? workspace.proofRoute },
         { label: technical.evidenceRoutes[1]?.label ?? "Wallet matrix", href: technical.evidenceRoutes[1]?.href ?? "/viewer/wallet-compatibility-matrix.generated" },
@@ -861,8 +861,8 @@ function getTrackAnswer(query: string): AssistantSuggestion | null {
     return {
       title: `Strategic case for ${workspace.title}`,
       summary: `${narrative.whySponsorShouldCareNow} ${narrative.futureProblemSolution}`.trim(),
-      primaryActionLabel: "Open track workspace",
-      primaryActionHref: `/tracks/${workspace.slug}`,
+      primaryActionLabel: "Open product route",
+      primaryActionHref: workspace.liveRoute,
       relatedRoutes: [
         { label: "Engage", href: "/engage" },
         { label: "Proof", href: workspace.proofRoute },
@@ -886,7 +886,7 @@ function getTrackAnswer(query: string): AssistantSuggestion | null {
       primaryActionLabel: "Open engage route",
       primaryActionHref: "/engage",
       relatedRoutes: [
-        { label: "Track workspace", href: `/tracks/${workspace.slug}` },
+        { label: "Product route", href: workspace.liveRoute },
         { label: "Services", href: "/services" },
         { label: commercialization.routes[0]?.label ?? "Pilot program", href: commercialization.routes[0]?.href ?? "/documents/pilot-program" },
       ],
@@ -905,8 +905,8 @@ function getTrackAnswer(query: string): AssistantSuggestion | null {
       title: `Submission coach for ${workspace.title}`,
       summary:
         `Readiness ${coach.readinessScore} (${coach.readinessBand}). Weakest gap: ${coach.weakestGap}`,
-      primaryActionLabel: "Open track workspace",
-      primaryActionHref: `/tracks/${workspace.slug}`,
+      primaryActionLabel: "Open product route",
+      primaryActionHref: workspace.liveRoute,
       relatedRoutes: [
         { label: "Live route", href: workspace.liveRoute },
         { label: "Review route", href: workspace.judgeRoute },
@@ -928,8 +928,8 @@ function getCompetitionSuggestion(query: string): AssistantSuggestion | null {
     title: `Open ${top.title}`,
     summary:
       `${top.objective} Lead with ${top.liveRoute}, keep reviewers on ${top.judgeRoute}, and use the proof and deck routes as the submission support bundle.`,
-    primaryActionLabel: "Open track workspace",
-    primaryActionHref: `/tracks/${top.slug}`,
+    primaryActionLabel: "Open product route",
+    primaryActionHref: top.liveRoute,
     relatedRoutes: [
       { label: "Live route", href: top.liveRoute },
       { label: "Review route", href: top.judgeRoute },
@@ -1012,13 +1012,13 @@ function getCustodyTruthSuggestion(query: string): AssistantSuggestion | null {
   return {
     title: "Open custody truth and proof packet",
     summary:
-      "Start from the custody packet, then open the canonical custody proof, then the strict custody workspace. This is the fastest route for multisig truth, authority transfer status, and the remaining ceremony evidence.",
+      "Start from the custody packet, then open the canonical custody proof, then custody. This is the fastest route for multisig truth, authority transfer status, and the remaining ceremony evidence.",
     primaryActionLabel: "Open custody proof packet",
     primaryActionHref: "/documents/custody-proof-reviewer-packet",
     relatedRoutes: [
       { label: "1. Custody proof packet", href: "/documents/custody-proof-reviewer-packet" },
       { label: "2. Canonical custody proof", href: "/documents/canonical-custody-proof" },
-      { label: "3. Custody workspace", href: "/custody" },
+      { label: "3. Custody", href: "/custody" },
     ],
     queryBlock: getHighPriorityQueryBlock(normalized),
   };

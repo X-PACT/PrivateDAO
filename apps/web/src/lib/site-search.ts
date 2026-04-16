@@ -66,7 +66,7 @@ export const siteSearchItems: SiteSearchItem[] = [
     title: "Govern",
     href: "/govern",
     category: "Route",
-    summary: "Create a DAO, submit a proposal, vote, finalize, and execute in one guided workspace.",
+    summary: "Create a DAO, submit a proposal, vote, finalize, and execute in one guided product flow.",
   },
   {
     title: "Proof Center",
@@ -99,16 +99,16 @@ export const siteSearchItems: SiteSearchItem[] = [
     summary: "Pilot, API, RPC, enterprise governance, and hosted operational packages.",
   },
   {
-    title: "Tracks",
-    href: "/tracks",
+    title: "Learn",
+    href: "/learn",
     category: "Track",
-    summary: "Submission corridor center across Frontier, runtime infrastructure, confidential governance, grants, and adjacent reviewer opportunities.",
+    summary: "Learning and product route hub across governance, payments, proof, and operator surfaces.",
   },
   {
-    title: "Frontier Primary Workspace",
-    href: "/tracks/colosseum-frontier",
+    title: "Start Product Route",
+    href: "/start",
     category: "Track",
-    summary: "Primary first-place startup-quality submission chain for the Frontier Hackathon.",
+    summary: "Primary wallet-first product route for real Devnet operations and reviewer verification.",
   },
   {
     title: "Assistant",
@@ -144,7 +144,7 @@ export const siteSearchItems: SiteSearchItem[] = [
     title: "Custody",
     href: "/custody",
     category: "Route",
-    summary: "Strict custody evidence ingestion workspace for multisig, timelock, signer roster, and authority-transfer proof.",
+    summary: "Strict custody evidence route for multisig, timelock, signer roster, and authority-transfer proof.",
   },
   {
     title: "Canonical Custody Proof",
@@ -195,32 +195,32 @@ export const siteSearchItems: SiteSearchItem[] = [
     summary: "Canonical intake shape for signer keys, multisig address, timelock, and authority-transfer evidence.",
   },
   {
-    title: "Confidential Governance Workspace",
-    href: "/tracks/privacy-track",
+    title: "Confidential Governance Route",
+    href: "/security",
     category: "Track",
     summary: "Confidential-governance submission bundle and validation steps.",
   },
   {
-    title: "Live App Workspace",
-    href: "/tracks/eitherway-live-dapp",
+    title: "Live App Route",
+    href: "/services",
     category: "Track",
     summary: "Wallet-first live app corridor for buyer-facing demos and polished product flow.",
   },
   {
-    title: "Runtime Infrastructure Workspace",
-    href: "/tracks/rpc-infrastructure",
+    title: "Runtime Infrastructure Route",
+    href: "/services",
     category: "Track",
     summary: "Hosted read path, diagnostics, runtime evidence, and Fast RPC packaging.",
   },
   {
-    title: "Wallet-First Product Workspace",
-    href: "/tracks/consumer-apps",
+    title: "Wallet-First Product Route",
+    href: "/start",
     category: "Track",
     summary: "Best path for normal users, onboarding, clarity, and consumer-grade UX.",
   },
   {
-    title: "Frontend Execution Workspace",
-    href: "/tracks/100xdevs",
+    title: "Frontend Execution Route",
+    href: "/story",
     category: "Track",
     summary: "Frontend excellence, route architecture, deployment discipline, and polished shell.",
   },
@@ -298,7 +298,7 @@ const profileAwareSearchRules: ProfileAwareSearchRule[] = [
     leadItems: [
       {
         title: "Pilot Funding Bundle",
-        href: "/tracks/colosseum-frontier?profile=pilot-funding",
+        href: "/start",
         category: "Track",
         summary:
           "Start with the Colosseum pilot route. Inside the track, the first surfaces are ordered for pilot funding: submission path, coach and alignment, then trust and proof.",
@@ -317,7 +317,7 @@ const profileAwareSearchRules: ProfileAwareSearchRule[] = [
     leadItems: [
       {
         title: "Treasury Top-up Bundle",
-        href: "/tracks/rpc-infrastructure?profile=treasury-top-up",
+        href: "/services",
         category: "Track",
         summary:
           "Start with the RPC track. Services, commercialization, and mainnet gates are intentionally raised before deeper proof reading for treasury capitalization.",
@@ -336,7 +336,7 @@ const profileAwareSearchRules: ProfileAwareSearchRule[] = [
     leadItems: [
       {
         title: "Vendor Payout Bundle",
-        href: "/tracks/eitherway-live-dapp?profile=vendor-payout",
+        href: "/services",
         category: "Track",
         summary:
           "Start with the live dApp track. The ordered surfaces emphasize submission path, metrics and diagnostics, then custody and trust for governed vendor execution.",
@@ -355,7 +355,7 @@ const profileAwareSearchRules: ProfileAwareSearchRule[] = [
     leadItems: [
       {
         title: "Contributor Payout Bundle",
-        href: "/tracks/consumer-apps?profile=contributor-payout",
+        href: "/start",
         category: "Track",
         summary:
           "Start with the consumer track. The ordered surfaces emphasize submission path, metrics, then custody and trust for governed contributor funding.",
@@ -433,7 +433,7 @@ function getProfileTrackLeadItems(query: string): SiteSearchItem[] {
     return [
       {
         title: `Pilot Funding Route - ${getCompetitionLaneLabel(workspace.slug)}`,
-        href: `/tracks/${workspace.slug}?profile=pilot-funding`,
+        href: workspace.liveRoute,
         category: "Track",
         matchKind: "profile + track",
         summary:
@@ -453,7 +453,7 @@ function getProfileTrackLeadItems(query: string): SiteSearchItem[] {
     return [
       {
         title: `Treasury Top-up Route - ${getCompetitionLaneLabel(workspace.slug)}`,
-        href: `/tracks/${workspace.slug}?profile=treasury-top-up`,
+        href: workspace.liveRoute,
         category: "Track",
         matchKind: "profile + track",
         summary:
@@ -473,7 +473,7 @@ function getProfileTrackLeadItems(query: string): SiteSearchItem[] {
     return [
       {
         title: `Vendor Payout Route - ${getCompetitionLaneLabel(workspace.slug)}`,
-        href: `/tracks/${workspace.slug}?profile=vendor-payout`,
+        href: workspace.liveRoute,
         category: "Track",
         matchKind: "profile + track",
         summary:
@@ -492,7 +492,7 @@ function getProfileTrackLeadItems(query: string): SiteSearchItem[] {
   return [
     {
       title: `Contributor Payout Route - ${getCompetitionLaneLabel(workspace.slug)}`,
-      href: `/tracks/${workspace.slug}?profile=contributor-payout`,
+      href: workspace.liveRoute,
       category: "Track",
       matchKind: "profile + track",
       summary:
@@ -518,11 +518,11 @@ function getTrackAwareLeadItems(query: string): SiteSearchItem[] {
   return [
     {
       title: `${getCompetitionLaneLabel(workspace.slug)} Route`,
-      href: `/tracks/${workspace.slug}`,
+      href: workspace.liveRoute,
       category: "Track",
       matchKind: "track-aware",
       summary:
-        "Track-aware result. Open the matching workspace directly, then follow the track-specific proof, trust, and demo bundle from the top capsule.",
+        "Product-aware result. Open the matching route directly, then continue into proof, trust, and the strongest verification bundle.",
     },
   ];
 }
@@ -550,7 +550,7 @@ function getStrategicOpportunityLeadItems(query: string): SiteSearchItem[] {
         href: "/documents/strategic-opportunity-readiness-2026",
         category: "Document" as const,
         summary:
-          "Open the regional grant corridor first, then use awards, the Frontier primary workspace, and launch trust as the proof chain.",
+          "Open the regional grant corridor first, then use awards, start, and launch trust as the proof chain.",
         matchKind: "track-aware" as const,
       },
     },
@@ -673,7 +673,7 @@ function getCustodyLeadItems(query: string): SiteSearchItem[] {
       href: "/custody",
       category: "Route",
       summary:
-        "Open the strict custody workspace to build the signer and transfer packet in the exact repo-safe intake shape.",
+        "Open the strict custody route to build the signer and transfer packet in the exact repo-safe intake shape.",
     },
   ];
 }
