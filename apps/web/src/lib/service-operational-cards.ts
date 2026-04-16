@@ -125,7 +125,7 @@ export function getServiceOperationalCards(): ServiceOperationalCard[] {
       },
       bestRoute: {
         label: "Open judge proof",
-        href: "/proof?judge=1",
+        href: "/judge",
       },
       profileRoutes: [
         { label: "Services rail", href: "/services#treasury-payment-request" },

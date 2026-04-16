@@ -24,10 +24,12 @@ URL_PATTERN = re.compile(r"https?://[^\s<>()`\"']+")
 ALLOWED_HOSTS = {
     "privatedao.org",
     "www.privatedao.org",
-    "x-pact.github.io",
     "github.com",
     "youtu.be",
     "www.youtube.com",
+}
+LEGACY_HOSTS = {
+    "x-pact.github.io",
 }
 
 
@@ -50,7 +52,7 @@ def normalize(url: str) -> str:
 
 def should_check(url: str) -> bool:
     parsed = urlparse(url)
-    return parsed.scheme in {"http", "https"} and parsed.netloc in ALLOWED_HOSTS
+    return parsed.scheme in {"http", "https"} and parsed.netloc in (ALLOWED_HOSTS | LEGACY_HOSTS)
 
 
 def collect_urls() -> list[str]:
@@ -83,7 +85,14 @@ def main() -> int:
         return 1
 
     failures = 0
+    legacy_hits = 0
     for url in urls:
+        if url.startswith("https://x-pact.github.io/") or url.startswith("http://x-pact.github.io/"):
+            legacy_hits += 1
+            failures += 1
+            print(f"FAIL {url} -> legacy public host should be resynced to https://privatedao.org/")
+            continue
+
         try:
             source, status_code, final_url, body = verify(url)
         except Exception as exc:  # pragma: no cover - operational verifier
@@ -96,17 +105,11 @@ def main() -> int:
             print(f"FAIL {source} -> {status_code} -> {final_url}")
             continue
 
-        if source.startswith("https://x-pact.github.io/") and final_url.startswith("http://privatedao.org/"):
-            if "protocol==='http:'&&host==='privatedao.org'" in body:
-                print(f"OK   {source} -> browser-upgraded via client redirect -> {final_url}")
-                continue
-            failures += 1
-            print(f"WARN {source} -> insecure redirect -> {final_url}")
-            continue
-
         print(f"OK   {source} -> {status_code} -> {final_url}")
 
     if failures:
+        if legacy_hits:
+            print(f"\n{legacy_hits} legacy link(s) still need active resync.")
         print(f"\n{failures} link issue(s) detected.")
         return 2
 

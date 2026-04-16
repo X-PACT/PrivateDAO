@@ -122,7 +122,7 @@ const destinationProfiles = [
     nextRoutes: [
       { label: "Services", href: "/services#jupiter-treasury-route" },
       { label: "Govern", href: "/govern" },
-      { label: "Proof", href: "/proof?judge=1" },
+      { label: "Judge", href: "/judge" },
     ],
   },
   {

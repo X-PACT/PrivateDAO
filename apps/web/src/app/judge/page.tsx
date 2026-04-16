@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { JudgeRuntimeLogsPanel } from "@/components/judge-runtime-logs-panel";
 import { OperationsShell } from "@/components/operations-shell";
+import { DevnetExecutionScreenshotsStrip } from "@/components/devnet-execution-screenshots-strip";
 import { buttonVariants } from "@/components/ui/button";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -86,6 +87,7 @@ export default function JudgePage() {
         </div>
       </div>
 
+      <DevnetExecutionScreenshotsStrip />
       <JudgeRuntimeLogsPanel />
     </OperationsShell>
   );

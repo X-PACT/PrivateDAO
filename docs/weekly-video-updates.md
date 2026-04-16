@@ -2,10 +2,13 @@
 
 These weekly videos are designed for hackathon update submissions on YouTube, Loom, or Vimeo.
 
+For public uploads, the canonical path is the narrated `weekly-youtube-ready` build, not the silent raw weekly card export.
+
 ## Format
 
 - landscape 16:9
-- silent by default
+- silent raw exports for internal progress review
+- narrated YouTube-ready exports for public upload
 - under one minute each
 - direct, judge-friendly update structure
 - 36 seconds each
@@ -30,14 +33,18 @@ These weekly videos are designed for hackathon update submissions on YouTube, Lo
 
 ## Week 2
 
-- file: `docs/assets/weekly-updates/private-dao-week-2-update.mp4`
+- raw file: `docs/assets/weekly-updates/private-dao-week-2-update.mp4`
 - upload title:
-  - `Week 2 - PrivateDAO Frontier Hackathon - Live Private Governance And ZK Hardening`
+  - `Week 2 - PrivateDAO Frontier Hackathon - Guided Governance And Agentic Treasury Rail`
+- narrated upload-ready file:
+  - `docs/assets/weekly-youtube-ready/Week 2 - PrivateDAO Frontier Hackathon - YouTube Ready.mp4`
+- ready script:
+  - [`docs/weekly-update-week-2-colosseum.md`](weekly-update-week-2-colosseum.md)
 - focus:
   - live governance product
   - commit-reveal lifecycle
-  - `zk_enforced` hardening
-  - runtime and backend read path
+  - agentic treasury micropayment rail
+  - judge-first screenshots and runtime proof
   - private governance positioned as a real operating surface
 
 ## Week 3
@@ -73,20 +80,21 @@ The same videos are also copied into:
 
 The Desktop folder contains:
 
-- `Week 1 - PrivateDAO Frontier Hackathon - Private Governance Foundation.mp4`
-- `Week 1 - PrivateDAO Frontier Hackathon - Private Governance Foundation - Poster.png`
-- `Week 2 - PrivateDAO Frontier Hackathon - Live Private Governance And ZK Hardening.mp4`
-- `Week 2 - PrivateDAO Frontier Hackathon - Live Private Governance And ZK Hardening - Poster.png`
-- `Week 3 - PrivateDAO Frontier Hackathon - Confidential Treasury Operations.mp4`
-- `Week 3 - PrivateDAO Frontier Hackathon - Confidential Treasury Operations - Poster.png`
-- `Week 4 - PrivateDAO Frontier Hackathon - Audit Readiness And Mainnet Path.mp4`
-- `Week 4 - PrivateDAO Frontier Hackathon - Audit Readiness And Mainnet Path - Poster.png`
+- `Week 1 - PrivateDAO Frontier Hackathon - YouTube Ready.mp4`
+- `Week 1 - PrivateDAO Frontier Hackathon - YouTube Ready-poster.png`
+- `Week 2 - PrivateDAO Frontier Hackathon - YouTube Ready.mp4`
+- `Week 2 - PrivateDAO Frontier Hackathon - YouTube Ready-poster.png`
+- `Week 3 - PrivateDAO Frontier Hackathon - YouTube Ready.mp4`
+- `Week 3 - PrivateDAO Frontier Hackathon - YouTube Ready-poster.png`
+- `Week 4 - PrivateDAO Frontier Hackathon - YouTube Ready.mp4`
+- `Week 4 - PrivateDAO Frontier Hackathon - YouTube Ready-poster.png`
 
 ## Render Command
 
 ```bash
 cd /home/x-pact/PrivateDAO
 bash scripts/render-weekly-update-videos.sh
+bash scripts/render-weekly-youtube-ready.sh 2
 ```
 
 ## Judge-First Track Openings
@@ -100,4 +108,5 @@ Use this generated document when recording or editing track-specific videos so t
 ```bash
 cd /home/x-pact/PrivateDAO
 npm run verify:weekly-updates
+npm run verify:weekly-youtube-ready
 ```

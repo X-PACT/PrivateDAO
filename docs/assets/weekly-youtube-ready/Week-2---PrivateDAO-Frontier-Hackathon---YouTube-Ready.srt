@@ -1,19 +1,19 @@
 1
 00:00:00,000 --> 00:00:08,000
-Week two focuses on guided governance and private voting.
+Week two turns guided governance into a path normal users can actually run.
 
 2
 00:00:08,000 --> 00:00:18,500
-Proposal flow and command center coherence are stronger.
+Proposal flow, judge proof, and screenshots now work together.
 
 3
 00:00:18,500 --> 00:00:28,500
-Dashboard and private voting remain part of one live product shell.
+Private voting, reveal, execution, and the micropayment rail live inside one product shell.
 
 4
 00:00:28,500 --> 00:00:38,500
-The core wedge stays commit now, reveal later, execute safely.
+The core wedge stays simple: commit now, reveal later, execute safely, then verify the chain.
 
 5
 00:00:38,500 --> 00:00:46,500
-Next comes commercial routing and stronger trust packaging.
+Next comes stable settlement, stronger trust, and wider runtime proof.

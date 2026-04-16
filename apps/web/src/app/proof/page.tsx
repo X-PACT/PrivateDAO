@@ -13,6 +13,7 @@ import { ReadNodeHostReadinessStrip } from "@/components/read-node-host-readines
 import { RuntimeEvidenceContinuityPanel } from "@/components/runtime-evidence-continuity-panel";
 import { AuthoritativeExecutionTrail } from "@/components/authoritative-execution-trail";
 import { ExecutionOperationsStrip } from "@/components/execution-operations-strip";
+import { DevnetExecutionScreenshotsStrip } from "@/components/devnet-execution-screenshots-strip";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
@@ -93,6 +94,7 @@ export default function ProofPage() {
       <div>
         <ProofCenter />
       </div>
+      <DevnetExecutionScreenshotsStrip />
     </OperationsShell>
   );
 }

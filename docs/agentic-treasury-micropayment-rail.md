@@ -39,7 +39,7 @@ This rail closes that gap.
 5. The same batch can be reviewed from:
    - `/services`
    - `/govern`
-   - `/proof?judge=1`
+   - `/judge`
    - `/analytics`
 
 ## Asset model
@@ -71,7 +71,7 @@ Those artifacts are intended to show:
 
 The judge path is simple:
 
-1. Open `/judge/` or `/proof?judge=1`
+1. Open `/judge/`
 2. Inspect the agentic micropayment rail panel
 3. Open transaction links on Solana Devnet
 4. Verify that one governed treasury feature is producing many real settlement events

@@ -68,7 +68,7 @@ export function getCommercialContinuityBundle(
       routes: [
         { label: "Services", href: "/services#treasury-payment-request" },
         { label: "Govern", href: "/govern" },
-        { label: "Proof", href: "/proof?judge=1" },
+        { label: "Judge", href: "/judge" },
         { label: "Telemetry", href: "/analytics" },
       ],
     };

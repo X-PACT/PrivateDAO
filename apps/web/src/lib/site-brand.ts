@@ -51,10 +51,5 @@ export function buildWebSiteJsonLd() {
     alternateName: [siteNameArabic, siteNameArabicAlt, "Private DAO"],
     url: siteUrl,
     inLanguage: ["en", "ar"],
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${siteUrl}/search`,
-      "query-input": "required name=search_term_string",
-    },
   };
 }

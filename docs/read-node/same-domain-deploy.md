@@ -146,10 +146,10 @@ After the stack passes local verification, the remaining external work is:
 5. point `privatedao.org` DNS to that host
 6. run `npm run verify:host-topology:strict`
 
-At that point GitHub Pages should remain only as:
+At that point GitHub Pages should no longer be treated as a public entrypoint.
 
-- `x-pact.github.io/PrivateDAO/`
-- backup-only / non-primary public mirror
+- `privatedao.org/` remains the canonical public surface
+- any historical GitHub Pages mirror should stay unpublished and non-canonical
 
 In the Runtime Panel and operator routes, confirm:
 

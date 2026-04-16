@@ -212,12 +212,12 @@ const fundingProfileOverrides: Record<string, FundingProfileOverride> = {
       narrative:
         "Treat this as a policy-bound execution rail. Keep Services, Govern, Proof, and Analytics in the same loop so the visitor can see that batched micropayments are triggered by DAO policy and verified on Devnet.",
       primaryAction: { label: "Open treasury rail", href: "/services#treasury-payment-request" },
-      evidenceAction: { label: "Open judge proof", href: "/proof?judge=1" },
+      evidenceAction: { label: "Open judge proof", href: "/judge" },
     },
     routeSet: [
       { label: "Services", href: "/services#treasury-payment-request" },
       { label: "Govern", href: "/govern" },
-      { label: "Proof", href: "/proof?judge=1" },
+      { label: "Judge", href: "/judge" },
       { label: "Analytics", href: "/analytics" },
     ],
     commercialBundle: {
@@ -226,7 +226,7 @@ const fundingProfileOverrides: Record<string, FundingProfileOverride> = {
       routes: [
         { label: "Services", href: "/engage?profile=agentic-micropayment-rail" },
         { label: "Govern", href: "/govern" },
-        { label: "Judge proof", href: "/proof?judge=1" },
+        { label: "Judge proof", href: "/judge" },
         { label: "Telemetry", href: "/analytics" },
       ],
     },

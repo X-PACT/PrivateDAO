@@ -18,6 +18,7 @@ const repositoryBlobBase = "https://github.com/X-PACT/PrivateDAO/blob/main";
 
 const indexableDocumentSlugs = new Set<string>([
   "agentic-treasury-micropayment-rail",
+  "devnet-execution-screenshots",
   "solana-developer-tooling-proposal-2026",
   "technical-verification-status-2026",
   "reviewer-fast-path",
@@ -67,6 +68,16 @@ const curatedDocuments: CuratedDocument[] = [
     boundary: "Route brief only; it describes the live product direction and next execution milestones without claiming a fully closed Jupiter production integration ahead of the supporting evidence.",
     docPath: "docs/jupiter-treasury-route.md",
     rawHref: `${repositoryBlobBase}/docs/jupiter-treasury-route.md`,
+  },
+  {
+    slug: "devnet-execution-screenshots",
+    title: "Devnet Execution Screenshots",
+    category: "Reviewer core",
+    summary: "Compact visual proof packet with real Solscan captures from the current Devnet execution wallet and the agentic treasury micropayment rail.",
+    audience: "Judges, grant reviewers, operators, non-technical visitors",
+    boundary: "Screenshots packet only; it visually confirms public Devnet explorer records without replacing the structured rail packet or runtime logs.",
+    docPath: "docs/devnet-execution-screenshots.md",
+    rawHref: `${repositoryBlobBase}/docs/devnet-execution-screenshots.md`,
   },
   {
     slug: "solana-developer-tooling-proposal-2026",

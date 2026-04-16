@@ -8,6 +8,8 @@ OUT_DIR="$ROOT_DIR/docs/assets/weekly-youtube-ready"
 DESKTOP_DIR="/home/x-pact/Desktop/PrivateDAO-Colosseum-Weekly-YouTube"
 FONT_BOLD="/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 FONT_REG="/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
+EDGE_TTS_BIN="${EDGE_TTS_BIN:-/tmp/pdao-media-venv/bin/edge-tts}"
+EDGE_TTS_VOICE="${EDGE_TTS_VOICE:-en-US-JennyNeural}"
 
 mkdir -p "$OUT_DIR" "$DESKTOP_DIR"
 
@@ -47,6 +49,15 @@ render_card_clip() {
 render_voiceover() {
   local textfile="$1"
   local output="$2"
+  if [ -x "$EDGE_TTS_BIN" ]; then
+    local temp_mp3
+    temp_mp3="$(mktemp --suffix=.mp3)"
+    "$EDGE_TTS_BIN" --voice "$EDGE_TTS_VOICE" --file "$textfile" --write-media "$temp_mp3" >/dev/null
+    ffmpeg -y -i "$temp_mp3" -af "volume=1.75,highpass=f=120,lowpass=f=3600,atempo=0.97" "$output" >/dev/null 2>&1
+    rm -f "$temp_mp3"
+    return
+  fi
+
   ffmpeg -y -f lavfi -i "flite=textfile=${textfile}:voice=slt" \
     -af "volume=2.0,highpass=f=120,lowpass=f=3600,atempo=0.94" \
     "$output"
@@ -167,38 +178,38 @@ render_final_video \
   "$CAPTURES_DIR/dashboard.png" \
   "$CAPTURES_DIR/security.png" \
   "WEEK 2" \
-  "Guided governance and private voting" \
-  "Week two focuses on usability and the commit-reveal path." \
-  "The product is becoming easier to trust and easier to review." \
+  "Guided governance plus a real micropayment rail" \
+  "Week two turns the live governance path into a simpler browser-first product." \
+  "The same app now proves private voting and agentic treasury execution." \
   "WHAT IMPROVED" \
-  "Proposal flow, dashboard clarity, and private vote posture" \
-  "PrivateDAO now makes governance actions feel more guided and coherent." \
-  "The privacy wedge stays readable inside the same live app." \
+  "Judge route, screenshots, and chain-visible Devnet proof" \
+  "Users can learn, start, connect, vote, reveal, execute, and verify." \
+  "Reviewers can open judge mode and follow hashes without terminal work." \
   "NEXT BUILD" \
-  "Commercial routing plus stronger trust surfaces" \
-  "The next layer is buyer motion, service packaging, and clearer trust." \
-  "The live product keeps carrying the full story." \
+  "Stable settlement, service rails, and broader runtime proof" \
+  "The next layer expands treasury automation, public-good services, and release confidence." \
+  "The live product keeps carrying the story instead of a slide deck." \
   "0x7E57FF" \
-  "Week two is about making guided governance easier to understand and easier to trust. Proposal flow, private voting, dashboard clarity, and the surrounding product shell are now more coherent inside one live app. PrivateDAO still keeps the same core wedge: commit now, reveal later, and execute with clearer operational boundaries. From here, the next step is stronger commercial routing and stronger trust packaging on top of the same working product." \
+  "Week two is where PrivateDAO becomes easier for normal users to understand and easier for judges to verify. The wallet-connected product now guides proposal creation, private voting, reveal, and execution without asking people to think like protocol engineers. And now the same product also proves an agentic treasury micropayment rail with real Devnet transactions, reviewer-visible logs, and a faster judge path. Learn, start, and judge now reinforce one live governance story. From here, the next step is stable settlement, stronger trust, and broader runtime proof on top of the same working Devnet product." \
   "1
 00:00:00,000 --> 00:00:08,000
-Week two focuses on guided governance and private voting.
+Week two turns guided governance into a path normal users can actually run.
 
 2
 00:00:08,000 --> 00:00:18,500
-Proposal flow and command center coherence are stronger.
+Proposal flow, judge proof, and screenshots now work together.
 
 3
 00:00:18,500 --> 00:00:28,500
-Dashboard and private voting remain part of one live product shell.
+Private voting, reveal, execution, and the micropayment rail live inside one product shell.
 
 4
 00:00:28,500 --> 00:00:38,500
-The core wedge stays commit now, reveal later, execute safely.
+The core wedge stays simple: commit now, reveal later, execute safely, then verify the chain.
 
 5
 00:00:38,500 --> 00:00:46,500
-Next comes commercial routing and stronger trust packaging."
+Next comes stable settlement, stronger trust, and wider runtime proof."
 fi
 
 if should_render_week 3; then

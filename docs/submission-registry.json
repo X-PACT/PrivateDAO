@@ -4,7 +4,7 @@
   "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
   "frontend": "https://privatedao.org/",
   "proofCenter": "https://privatedao.org/proof/",
-  "judgeMode": "https://privatedao.org/proof/?judge=1",
+  "judgeMode": "https://privatedao.org/judge/",
   "securityPage": "https://privatedao.org/security/",
   "youtubePitch": "https://youtu.be/6_wUfawIjhw",
   "androidGuide": "docs/android-native.md",

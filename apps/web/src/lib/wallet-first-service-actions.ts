@@ -260,7 +260,7 @@ function getPayoutRouteOptions(
       stateDetail: treasury.exactBlockerSummary,
       primaryHref: "/engage?profile=agentic-micropayment-rail",
       primaryLabel: "Open agentic micropayment path",
-      proofHref: "/proof?judge=1",
+      proofHref: "/judge",
       proofLabel: "Open judge proof path",
     },
     {

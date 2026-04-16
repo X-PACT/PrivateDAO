@@ -97,7 +97,7 @@
   - `Private governance, confidential operations, and production-grade execution on Solana.`
 - References:
   - `github.com/X-PACT/PrivateDAO`
-  - `x-pact.github.io/PrivateDAO`
+- `privatedao.org`
 - CTA:
   - `Back this future of private organizational infrastructure on Solana.`
 - Goal: leave the viewer with a clean infrastructure thesis and investment invitation
