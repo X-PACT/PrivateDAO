@@ -111,6 +111,21 @@ const handoffLanes = [
 
 const destinationProfiles = [
   {
+    value: "agentic-micropayment-rail",
+    label: "Agentic micropayment rail",
+    summary: "Prepare a governed micropayment batch so one approved treasury action can fan out into reviewer-visible Devnet settlement events.",
+    defaultAsset: "USDC" as const,
+    defaultAmount: "0.01",
+    defaultLane: "operator",
+    defaultPurpose: "Agentic treasury micropayment batch triggered by DAO approval and carried into runtime proof, judge logs, and analytics.",
+    intake: "payments",
+    nextRoutes: [
+      { label: "Services", href: "/services#jupiter-treasury-route" },
+      { label: "Govern", href: "/govern" },
+      { label: "Proof", href: "/proof?judge=1" },
+    ],
+  },
+  {
     value: "treasury-rebalance",
     label: "Treasury rebalance",
     summary: "Prepare a governed asset-motion request so the treasury can rebalance into the right settlement asset with a clear route rationale.",
@@ -260,7 +275,9 @@ function buildTreasuryRoutePlan(params: {
   } = params;
   const normalizedAmount = amount.trim();
   const executionMode =
-    profile.value === "vendor-payout" || profile.value === "contributor-payout"
+    profile.value === "agentic-micropayment-rail"
+      ? "agent-triggered micropayment batch"
+      : profile.value === "vendor-payout" || profile.value === "contributor-payout"
       ? "quote-aware payout funding"
       : profile.value === "treasury-rebalance"
         ? "governed treasury rebalance"
@@ -279,14 +296,24 @@ function buildTreasuryRoutePlan(params: {
     slippageBandBps,
     quotePolicy:
       normalizedAmount.length > 0
-        ? `Prepare route preview for ${normalizedAmount} ${assetSymbol} into ${destinationAsset} under ${quoteReviewMode} before delivery.`
+        ? profile.value === "agentic-micropayment-rail"
+          ? `Prepare a governed micropayment batch for ${normalizedAmount} ${assetSymbol} into ${destinationAsset}, then preserve the route and batch logic before agent execution starts.`
+          : `Prepare route preview for ${normalizedAmount} ${assetSymbol} into ${destinationAsset} under ${quoteReviewMode} before delivery.`
         : `Prepare quote preview once a final ${assetSymbol} amount is attached to the request object.`,
     slippagePolicy:
-      profile.value === "vendor-payout" || profile.value === "contributor-payout"
+      profile.value === "agentic-micropayment-rail"
+        ? `Keep agent execution inside the ${slippageBandBps} bps band so high-frequency settlement stays readable for operators, reviewers, and treasury audit follow-through.`
+        : profile.value === "vendor-payout" || profile.value === "contributor-payout"
         ? `Keep payout funding inside the ${slippageBandBps} bps band and preserve the route rationale beside settlement evidence.`
         : `Use the ${slippageBandBps} bps band with ${executionPreference} preference and preserve the route rationale inside the governed treasury packet.`,
-    routeRationale: `${routeFocus} This route keeps treasury motion readable for operators and reviewers without breaking the governed execution story.`,
-    reviewerPath: "/documents/jupiter-treasury-route",
+    routeRationale:
+      profile.value === "agentic-micropayment-rail"
+        ? `${routeFocus} This route keeps policy approval, batch execution, and per-transfer proof inside one reviewer-visible treasury lane.`
+        : `${routeFocus} This route keeps treasury motion readable for operators and reviewers without breaking the governed execution story.`,
+    reviewerPath:
+      profile.value === "agentic-micropayment-rail"
+        ? "/documents/agentic-treasury-micropayment-rail"
+        : "/documents/jupiter-treasury-route",
     settlementPath: "/documents/settlement-receipt-closure",
   };
 }
@@ -303,6 +330,7 @@ function getAllowedDestinationAssets(
   sourceAsset: ServiceHandoffAssetSymbol,
 ) {
   if (
+    profile === "agentic-micropayment-rail" ||
     profile === "vendor-payout" ||
     profile === "contributor-payout" ||
     profile === "pilot-funding"
@@ -371,9 +399,25 @@ export function TreasuryReceiveSurface() {
     setReference(`${activeProfile.value.toUpperCase()}-REQUEST-PENDING`);
     setAmount(activeProfile.defaultAmount);
     setPurpose(activeProfile.defaultPurpose);
-    setQuoteReviewMode(activeProfile.value === "treasury-rebalance" ? "policy-bound" : "manual-review");
-    setExecutionPreference(activeProfile.value === "treasury-rebalance" ? "best-price" : "stable-settlement");
-    setSlippageBandBps(activeProfile.value === "vendor-payout" || activeProfile.value === "contributor-payout" ? "30" : "75");
+    setQuoteReviewMode(
+      activeProfile.value === "treasury-rebalance" || activeProfile.value === "agentic-micropayment-rail"
+        ? "policy-bound"
+        : "manual-review",
+    );
+    setExecutionPreference(
+      activeProfile.value === "treasury-rebalance"
+        ? "best-price"
+        : activeProfile.value === "agentic-micropayment-rail"
+          ? "fast-execution"
+          : "stable-settlement",
+    );
+    setSlippageBandBps(
+      activeProfile.value === "vendor-payout" ||
+      activeProfile.value === "contributor-payout" ||
+      activeProfile.value === "agentic-micropayment-rail"
+        ? "30"
+        : "75",
+    );
   }, [activeProfile, config.assets, handoff?.payoutProfile]);
 
   useEffect(() => {
@@ -705,7 +749,9 @@ export function TreasuryReceiveSurface() {
         ? `Keep the treasury motion inside ${destinationAsset} while preserving governed review and settlement visibility.`
         : `Move from ${activeAsset.symbol} into ${destinationAsset} with a reviewer-readable route rationale before the treasury request is delivered.`;
     const settlementExpectation =
-      activeProfile.value === "vendor-payout" || activeProfile.value === "contributor-payout"
+      activeProfile.value === "agentic-micropayment-rail"
+        ? "Carry the route and batch assumptions into the same proof corridor so the judge can inspect individual settlement events instead of a single payout summary."
+        : activeProfile.value === "vendor-payout" || activeProfile.value === "contributor-payout"
         ? "Carry the same route assumptions into payout funding so the settlement record can be read without reconstructing the asset-motion path."
         : activeProfile.value === "treasury-rebalance"
           ? "Preserve the same rebalance rationale beside reviewer evidence so operators can explain why the treasury ended in the target asset."
@@ -718,13 +764,17 @@ export function TreasuryReceiveSurface() {
       executionPreferenceLabel: formatSelectionLabel(executionPreferences, executionPreference),
       slippageLabel: formatSelectionLabel(slippageBands, slippageBandBps),
       operatorPosture:
-        quoteReviewMode === "operator-fast-path"
+        activeProfile.value === "agentic-micropayment-rail"
+          ? "Policy-bound operator review before the agent fans one approved treasury instruction into many low-value settlement events."
+          : quoteReviewMode === "operator-fast-path"
           ? "Fast-path operator review with a pre-approved treasury corridor."
           : quoteReviewMode === "policy-bound"
             ? "Policy-bound review that keeps the route inside a governed treasury band."
             : "Manual operator review before the route is delivered into govern.",
       nextAction:
-        normalizedAmount.length > 0
+        activeProfile.value === "agentic-micropayment-rail" && normalizedAmount.length > 0
+          ? `Review the batch assumptions for ${amountDisplay}, then deliver the request so the agent can execute many small transfers inside the same ${slippageBandBps} bps policy band.`
+          : normalizedAmount.length > 0
           ? `Review the route assumptions for ${amountDisplay}, then stage or deliver the treasury request with the same ${slippageBandBps} bps operating band.`
           : `Attach the final ${activeAsset.symbol} amount so the route can move from review posture to an actionable treasury request.`,
       settlementExpectation,
@@ -752,6 +802,8 @@ export function TreasuryReceiveSurface() {
     const profileExecutionSummary =
       activeProfile.value === "treasury-rebalance"
         ? "Treasury rebalance should preserve the asset-motion reason, the policy band, and the post-route settlement story in one governed packet."
+        : activeProfile.value === "agentic-micropayment-rail"
+          ? "Agentic micropayment execution should preserve one approved policy, one route posture, and many reviewer-visible settlement events in the same treasury record."
         : activeProfile.value === "treasury-top-up"
           ? "Treasury top-up should land in an approved treasury asset so incoming capital stays aligned with later governance and payout motions."
           : "Payout-oriented funding should finish in a settlement-friendly asset before the downstream treasury action moves into execution.";
@@ -762,7 +814,9 @@ export function TreasuryReceiveSurface() {
 
     return {
       destinationPolicy:
-        allowedDestinationAssets.length === config.assets.length
+        activeProfile.value === "agentic-micropayment-rail"
+          ? `This profile is intentionally narrowed to ${allowedDestinationAssets.map((asset) => asset.symbol).join(" / ")} so agent settlement stays in a stable-value payout asset.`
+          : allowedDestinationAssets.length === config.assets.length
           ? "This profile can target any supported treasury asset when the operator keeps the route rationale readable."
           : `This profile is narrowed to ${allowedDestinationAssets.map((asset) => asset.symbol).join(" / ")} so the treasury lands in an asset that matches the operating goal.`,
       settlementMode,
@@ -770,6 +824,9 @@ export function TreasuryReceiveSurface() {
       executionChecklist: [
         `Confirm ${normalizedDestinationAsset} is the correct destination asset for ${activeProfile.label.toLowerCase()}.`,
         `Confirm the request should move under ${routePlan.executionPreference} with ${routePlan.quoteReviewMode}.`,
+        activeProfile.value === "agentic-micropayment-rail"
+          ? "Confirm the batch should fan out into many low-value transfers that remain visible in proof, analytics, and judge logs."
+          : "Confirm the request should preserve one settled treasury outcome after delivery.",
         "Confirm the reviewer packet and settlement packet will stay attached to the same treasury request after delivery.",
       ],
     };

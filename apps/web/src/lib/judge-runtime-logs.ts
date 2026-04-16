@@ -65,6 +65,28 @@ type TestWalletProofV3Json = {
   };
 };
 
+type AgenticMicropaymentRailJson = {
+  generatedAt: string;
+  assetMode: "SOL" | "SPL";
+  settlementAssetSymbol: string;
+  transferCount: number;
+  successfulTransferCount: number;
+  targetCount: number;
+  totalAmountDisplay: string;
+  executionWallet: string;
+  reportPath: string;
+  transfers: Array<{
+    batchIndex: number;
+    action: string;
+    recipient: string;
+    amountDisplay: string;
+    signature: string;
+    explorerUrl: string;
+    status: string;
+    slot?: number;
+  }>;
+};
+
 export type JudgeLogEntry = {
   label: string;
   signature: string;
@@ -99,6 +121,19 @@ export type JudgeRuntimeLogsSnapshot = {
     txSuccessRate: string;
     adversarialSummary: string;
   };
+  agenticMicropayments: {
+    available: boolean;
+    freshness?: string;
+    assetMode?: "SOL" | "SPL";
+    settlementAssetSymbol?: string;
+    transferCount?: number;
+    successfulTransferCount?: number;
+    targetCount?: number;
+    totalAmountDisplay?: string;
+    executionWallet?: string;
+    reportPath?: string;
+    entries: JudgeLogEntry[];
+  };
 };
 
 function readJson<T>(relativePath: string): T {
@@ -109,6 +144,14 @@ function readJson<T>(relativePath: string): T {
     relativePath,
   );
   return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
+}
+
+function readOptionalJson<T>(relativePath: string): T | null {
+  try {
+    return readJson<T>(relativePath);
+  } catch {
+    return null;
+  }
 }
 
 function formatFreshness(...isoTimestamps: string[]) {
@@ -143,6 +186,7 @@ export function getJudgeRuntimeLogsSnapshot(): JudgeRuntimeLogsSnapshot {
   const frontier = readJson<FrontierIntegrationsJson>("docs/frontier-integrations.generated.json");
   const runtime = readJson<RuntimeEvidenceJson>("docs/runtime-evidence.generated.json");
   const v3 = readJson<TestWalletProofV3Json>("docs/test-wallet-live-proof-v3.generated.json");
+  const micropayments = readOptionalJson<AgenticMicropaymentRailJson>("docs/agentic-treasury-micropayment-rail.generated.json");
 
   return {
     freshness: formatFreshness(frontier.generatedAt, runtime.generatedAt, v3.generatedAt),
@@ -193,5 +237,31 @@ export function getJudgeRuntimeLogsSnapshot(): JudgeRuntimeLogsSnapshot {
       txSuccessRate: `${runtime.operational.totalTxCount}/${runtime.operational.totalAttemptCount} tx outcomes captured`,
       adversarialSummary: `${runtime.operational.adversarialScenarioCount} adversarial scenarios · ${runtime.operational.unexpectedAdversarialSuccesses} unexpected successes`,
     },
+    agenticMicropayments: micropayments
+      ? {
+          available: true,
+          freshness: formatFreshness(micropayments.generatedAt),
+          assetMode: micropayments.assetMode,
+          settlementAssetSymbol: micropayments.settlementAssetSymbol,
+          transferCount: micropayments.transferCount,
+          successfulTransferCount: micropayments.successfulTransferCount,
+          targetCount: micropayments.targetCount,
+          totalAmountDisplay: micropayments.totalAmountDisplay,
+          executionWallet: micropayments.executionWallet,
+          reportPath: micropayments.reportPath,
+          entries: micropayments.transfers
+            .filter((entry) => entry.action !== "recipient-activation")
+            .slice(0, 8)
+            .map((entry) => ({
+            label: `${entry.action} #${entry.batchIndex + 1}`,
+            signature: entry.signature,
+            status: `${entry.amountDisplay} · ${entry.status}`,
+            slot: entry.slot,
+            })),
+        }
+      : {
+          available: false,
+          entries: [],
+        },
   };
 }

@@ -202,6 +202,35 @@ const fundingProfileOverrides: Record<string, FundingProfileOverride> = {
       ],
     },
   },
+  "agentic-micropayment-rail": {
+    summary: "Agentic micropayment execution tied to DAO approval, batched stablecoin settlement, and reviewer-visible runtime proof.",
+    handoff: {
+      lane: "operator",
+      owner: "Agentic treasury lane",
+      destination: "Governed micropayment execution and proof capture",
+      priority: "Execution-critical",
+      narrative:
+        "Treat this as a policy-bound execution rail. Keep Services, Govern, Proof, and Analytics in the same loop so the visitor can see that batched micropayments are triggered by DAO policy and verified on Devnet.",
+      primaryAction: { label: "Open treasury rail", href: "/services#treasury-payment-request" },
+      evidenceAction: { label: "Open judge proof", href: "/proof?judge=1" },
+    },
+    routeSet: [
+      { label: "Services", href: "/services#treasury-payment-request" },
+      { label: "Govern", href: "/govern" },
+      { label: "Proof", href: "/proof?judge=1" },
+      { label: "Analytics", href: "/analytics" },
+    ],
+    commercialBundle: {
+      title: "Agentic treasury execution bundle",
+      summary: "Position this as a DAO-controlled micropayment engine for reviewers, APIs, operators, and future agent commerce.",
+      routes: [
+        { label: "Services", href: "/engage?profile=agentic-micropayment-rail" },
+        { label: "Govern", href: "/govern" },
+        { label: "Judge proof", href: "/proof?judge=1" },
+        { label: "Telemetry", href: "/analytics" },
+      ],
+    },
+  },
   "vendor-payout": {
     summary: "Vendor payout routed as a governed operational disbursement with validation, diagnostics, and treasury discipline.",
     handoff: {

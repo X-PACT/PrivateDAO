@@ -182,6 +182,73 @@ export function JudgeRuntimeLogsPanel() {
             </div>
           </div>
         </div>
+
+        {snapshot.agenticMicropayments.available ? (
+          <div className="rounded-3xl border border-white/10 bg-white/4 p-5">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <div className="text-[11px] uppercase tracking-[0.28em] text-amber-200/75">Agentic micropayment rail</div>
+                <div className="mt-2 text-lg font-medium text-white">DAO-approved batch settlement with many real Devnet transfers</div>
+              </div>
+              <div className="rounded-2xl border border-amber-300/20 bg-black/25 px-3 py-2 text-right">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-amber-100/70">Freshness</div>
+                <div className="mt-1 text-sm font-medium text-white">{snapshot.agenticMicropayments.freshness}</div>
+              </div>
+            </div>
+            <div className="mt-4 grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
+              <div className="grid gap-3">
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm text-white/70">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Settlement asset</div>
+                  <div className="mt-1 text-white">
+                    {snapshot.agenticMicropayments.settlementAssetSymbol} · {snapshot.agenticMicropayments.assetMode}
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm text-white/70">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Transfer volume</div>
+                  <div className="mt-1 text-white">
+                    {snapshot.agenticMicropayments.successfulTransferCount}/{snapshot.agenticMicropayments.transferCount} transfers ·{" "}
+                    {snapshot.agenticMicropayments.totalAmountDisplay}
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm text-white/70">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Execution wallet</div>
+                  <div className="mt-1 break-all text-white">{snapshot.agenticMicropayments.executionWallet}</div>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  <Link className={cn(buttonVariants({ size: "sm" }), "justify-between")} href="/documents/agentic-treasury-micropayment-rail">
+                    Open rail brief
+                    <ExternalLink className="ml-2 h-4 w-4" />
+                  </Link>
+                  <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")} href="/engage?profile=agentic-micropayment-rail">
+                    Open operator intake
+                    <ExternalLink className="ml-2 h-4 w-4" />
+                  </Link>
+                </div>
+              </div>
+              <div className="grid gap-3">
+                {snapshot.agenticMicropayments.entries.map((entry) => (
+                  <div key={`${entry.label}:${entry.signature}`} className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="text-sm font-medium text-white">{entry.label}</div>
+                      <div className="text-xs text-amber-200/80">{entry.status}</div>
+                    </div>
+                    <div className="mt-2 break-all text-xs leading-6 text-white/55">{entry.signature}</div>
+                    <a
+                      className="mt-2 inline-flex items-center gap-2 text-xs text-amber-200 transition hover:text-amber-100"
+                      href={buildSolanaTxUrl(entry.signature)}
+                      rel="noreferrer"
+                      target="_blank"
+                    >
+                      Open Solana transaction
+                      <ExternalLink className="h-3.5 w-3.5" />
+                    </a>
+                    {entry.slot ? <div className="mt-1 text-[11px] uppercase tracking-[0.22em] text-white/35">slot {entry.slot}</div> : null}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : null}
       </CardContent>
     </Card>
   );

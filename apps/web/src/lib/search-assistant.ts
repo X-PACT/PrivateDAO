@@ -70,6 +70,10 @@ function hasPaymentsTruthIntent(normalized: string) {
     "sender checklist",
     "payment rails",
     "treasury rails",
+    "micropayment",
+    "micropayments",
+    "agentic treasury",
+    "agentic payout",
   ].some((term) => normalized.includes(term));
 }
 
@@ -82,6 +86,9 @@ function hasJupiterRouteIntent(normalized: string) {
     "treasury rebalance",
     "quote preview",
     "slippage",
+    "nanopayment",
+    "micropayment rail",
+    "agentic micropayment",
   ].some((term) => normalized.includes(term));
 }
 
@@ -177,15 +184,16 @@ const assistantIntents: AssistantIntent[] = [
   {
     title: "Open the Jupiter treasury route",
     summary:
-      "Use the services route when the question is about treasury swaps, rebalances, payout funding, route clarity, quote-aware execution, or how PrivateDAO is turning sponsor-grade treasury motion into a governed product lane.",
+      "Use the services route when the question is about treasury swaps, rebalances, payout funding, agentic micropayments, route clarity, quote-aware execution, or how PrivateDAO is turning treasury motion into a governed product lane.",
     primaryActionLabel: "Open Jupiter treasury route",
     primaryActionHref: "/services#jupiter-treasury-route",
     relatedRoutes: [
       { label: "Jupiter route brief", href: "/documents/jupiter-treasury-route" },
       { label: "Treasury routes", href: "/services#payout-route-selection" },
+      { label: "Agentic micropayment rail", href: "/engage?profile=agentic-micropayment-rail" },
       { label: "Govern", href: "/govern#proposal-review-action" },
     ],
-    keywords: ["jupiter", "swap", "rebalance", "treasury swap", "treasury rebalance", "quote preview", "slippage"],
+    keywords: ["jupiter", "swap", "rebalance", "treasury swap", "treasury rebalance", "quote preview", "slippage", "micropayment rail", "agentic micropayment", "nanopayment"],
   },
   {
     title: "Open the PDAO token truth path",

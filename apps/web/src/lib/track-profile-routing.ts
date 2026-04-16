@@ -2,6 +2,7 @@ import type { CompetitionTrackWorkspace } from "@/lib/site-data";
 
 export type CommercialProfile =
   | "pilot-funding"
+  | "agentic-micropayment-rail"
   | "treasury-top-up"
   | "vendor-payout"
   | "contributor-payout";
@@ -25,6 +26,7 @@ export function resolveCommercialProfile(
   intake?: string | null,
 ): CommercialProfile | undefined {
   if (profile === "pilot-funding") return "pilot-funding";
+  if (profile === "agentic-micropayment-rail") return "agentic-micropayment-rail";
   if (profile === "treasury-top-up") return "treasury-top-up";
   if (profile === "vendor-payout") return "vendor-payout";
   if (profile === "contributor-payout") return "contributor-payout";
@@ -54,6 +56,20 @@ export function getCommercialContinuityBundle(
         { label: "Proof", href: workspace.proofRoute },
         { label: "Trust", href: "/security" },
         { label: "Story", href: workspace.videoRoute },
+      ],
+    };
+  }
+
+  if (resolvedProfile === "agentic-micropayment-rail") {
+    return {
+      title: "Agentic micropayment continuity",
+      summary:
+        "Keep the batched payout path tied to govern, proof, and telemetry so agentic execution reads as policy-bound DAO automation rather than an isolated payments demo.",
+      routes: [
+        { label: "Services", href: "/services#treasury-payment-request" },
+        { label: "Govern", href: "/govern" },
+        { label: "Proof", href: "/proof?judge=1" },
+        { label: "Telemetry", href: "/analytics" },
       ],
     };
   }
@@ -109,6 +125,23 @@ export function getWorkspacePanelOrder(
       "trackMainnetGates",
       "authorityHardening",
       "incidentReadiness",
+    ];
+  }
+
+  if (resolvedProfile === "agentic-micropayment-rail") {
+    return [
+      "submissionPath",
+      "devnetServiceMetrics",
+      "trackTechnicalFit",
+      "trackCustodyImpact",
+      "trackCommercialization",
+      "trackInvestmentCase",
+      "trackMainnetGates",
+      "authorityHardening",
+      "incidentReadiness",
+      "submissionCoach",
+      "trackAlignment",
+      "trackNarrative",
     ];
   }
 

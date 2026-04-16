@@ -26,6 +26,13 @@ const quickActions = [
     icon: BriefcaseBusiness,
   },
   {
+    value: "agentic-micropayment-rail",
+    title: "Agentic micropayment rail",
+    summary: "Stage a governed USDC micropayment batch so one approved action can fan out into reviewer-visible settlement events and proof logs.",
+    href: "/engage?profile=agentic-micropayment-rail",
+    icon: Coins,
+  },
+  {
     value: "treasury-rebalance",
     title: "Treasury rebalance",
     summary: "Open the Jupiter-backed treasury route for governed asset-motion planning, quote review, and rebalance-ready execution context.",

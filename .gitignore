@@ -59,6 +59,7 @@ wallets/
 !docs/read-node/snapshot.generated.json
 !docs/read-node/ops.generated.json
 !docs/frontier-integrations.generated.json
+!docs/agentic-treasury-micropayment-rail.generated.json
 !docs/runtime/confidential-manifests/*.enc.json
 !docs/assets/pdao-token.json
 !docs/magicblock/templates/*.json

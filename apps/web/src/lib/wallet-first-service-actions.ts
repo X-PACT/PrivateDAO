@@ -47,7 +47,12 @@ export type ProposalReviewOption = {
 };
 
 export type PayoutRouteOption = {
-  slug: "pilot-funding" | "treasury-top-up" | "vendor-payout" | "contributor-payout";
+  slug:
+    | "pilot-funding"
+    | "agentic-micropayment-rail"
+    | "treasury-top-up"
+    | "vendor-payout"
+    | "contributor-payout";
   title: string;
   summary: string;
   routeFocus: string;
@@ -242,6 +247,21 @@ function getPayoutRouteOptions(
       primaryLabel: "Open pilot funding path",
       proofHref: treasury.reviewerPacketHref,
       proofLabel: treasury.reviewerPacketLabel,
+    },
+    {
+      slug: "agentic-micropayment-rail",
+      title: "Agentic micropayment rail",
+      summary:
+        "Use the agentic rail when DAO approval should unlock a batched stablecoin payout sequence that stays visible in runtime proof, judge logs, and treasury telemetry.",
+      routeFocus: "Governed agentic micropayment corridor",
+      defaultLane: "operator",
+      defaultAssetSymbol: "USDC",
+      state: treasury.paymentsReadiness,
+      stateDetail: treasury.exactBlockerSummary,
+      primaryHref: "/engage?profile=agentic-micropayment-rail",
+      primaryLabel: "Open agentic micropayment path",
+      proofHref: "/proof?judge=1",
+      proofLabel: "Open judge proof path",
     },
     {
       slug: "treasury-top-up",

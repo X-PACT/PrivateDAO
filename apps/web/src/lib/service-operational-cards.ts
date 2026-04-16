@@ -113,6 +113,31 @@ export function getServiceOperationalCards(): ServiceOperationalCard[] {
         "Quote preview, policy thresholds, and post-route settlement evidence need to stay connected before treasury swap claims become production-grade.",
     },
     {
+      title: "Agentic Treasury Micropayments",
+      summary:
+        "Agentic Treasury Micropayments turns an approved DAO action into a stablecoin batch rail where execution, telemetry, and proof remain attached to the same governed request object.",
+      tryNow:
+        "Open Services, switch to the agentic micropayment rail, then continue into govern and proof to see how batched settlement is staged as a single policy-bound execution corridor.",
+      evidence: [payoutCoverage, executeHealth, proofCompletion].filter(Boolean) as MetricPreview[],
+      intakeRoute: {
+        label: "Open agentic rail",
+        href: "/engage?profile=agentic-micropayment-rail",
+      },
+      bestRoute: {
+        label: "Open judge proof",
+        href: "/proof?judge=1",
+      },
+      profileRoutes: [
+        { label: "Services rail", href: "/services#treasury-payment-request" },
+        { label: "Govern", href: "/govern" },
+        { label: "Analytics", href: "/analytics" },
+      ],
+      buyerMotion:
+        "Position the rail as DAO-controlled agentic settlement for reviewer rewards, API usage, operator tasks, and future onchain service commerce.",
+      mainnetGate:
+        "Production rollout depends on stable settlement policy hardening, beneficiary validation, monitoring continuity, and external review for batched micropayment execution.",
+    },
+    {
       title: "Payments DAO",
       summary:
         "Payments DAO extends the treasury model into contributor, vendor, and subscription payouts governed through the same proposal and proof rails.",

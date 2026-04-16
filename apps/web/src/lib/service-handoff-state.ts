@@ -3,6 +3,7 @@ export const SERVICE_HANDOFF_EVENT = "privatedao:service-handoff-updated";
 
 export const SERVICE_HANDOFF_PROFILES = [
   "pilot-funding",
+  "agentic-micropayment-rail",
   "treasury-rebalance",
   "treasury-top-up",
   "vendor-payout",

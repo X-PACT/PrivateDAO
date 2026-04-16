@@ -38,6 +38,16 @@ export function getIndexableCuratedDocuments() {
 
 const curatedDocuments: CuratedDocument[] = [
   {
+    slug: "agentic-treasury-micropayment-rail",
+    title: "Agentic Treasury Micropayment Rail",
+    category: "Strategy",
+    summary: "Operational brief for DAO-controlled micropayment batches, showing how approved policy becomes batched stablecoin settlement with judge-visible runtime proof and telemetry continuity.",
+    audience: "Judges, funders, operators, builders",
+    boundary: "Operating brief only; it describes the live rail and Devnet execution target without claiming production stablecoin settlement closure beyond the linked evidence.",
+    docPath: "docs/agentic-treasury-micropayment-rail.md",
+    rawHref: `${repositoryBlobBase}/docs/agentic-treasury-micropayment-rail.md`,
+  },
+  {
     slug: "encrypted-operations-lane",
     title: "Encrypted Operations Lane",
     category: "Security",

@@ -83,6 +83,7 @@
     "configure:zk-mode": "ts-node scripts/configure-zk-proposal-mode.ts",
     "inspect:zk-proposal": "ts-node scripts/inspect-zk-proposal.ts",
     "execute": "ts-node scripts/execute.ts",
+    "run:agentic-micropayment-rail": "ts-node scripts/run-agentic-treasury-micropayment-rail.ts",
     "live-proof": "ts-node scripts/live-devnet-proof.ts",
     "live-proof:v3": "ts-node scripts/live-devnet-proof-v3.ts",
     "build:test-wallet-live-proof": "ts-node scripts/build-test-wallet-live-proof.ts",
