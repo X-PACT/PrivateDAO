@@ -70,7 +70,7 @@ export function getServiceOperationalCards(): ServiceOperationalCard[] {
       buyerMotion:
         "Sell shared or dedicated DAO-specific RPC plus hosted reads and operator support as the first paid infrastructure motion.",
       mainnetGate:
-        "Dedicated endpoint hardening, quota enforcement, alert routing, and production support commitments must be closed before mainnet RPC promises become customer-grade.",
+        "Dedicated endpoint hardening, quota enforcement, alert routing, and production support commitments should be completed before mainnet RPC promises become customer-grade.",
     },
     {
       title: "Gaming DAO",
@@ -90,7 +90,27 @@ export function getServiceOperationalCards(): ServiceOperationalCard[] {
       buyerMotion:
         "Lead game studios with reward governance, guild treasury control, and tournament payout management as a repeatable premium package.",
       mainnetGate:
-        "Game-specific proposal templates, reward token policy hardening, and studio-grade custody or treasury authority separation must be finalized before production launch.",
+        "Game-specific proposal templates, reward token policy hardening, and studio-grade custody or treasury authority separation should be finalized before production launch.",
+    },
+    {
+      title: "Treasury Swap / Rebalance",
+      summary:
+        "The treasury route is being extended into a Jupiter-backed swap and rebalance corridor so asset moves stay governed, quote-aware, and reviewer-readable.",
+      tryNow:
+        "Open Services, inspect the Jupiter treasury route, then continue into govern and treasury routes to see how asset-motion intent is kept inside the same wallet-first operating path.",
+      evidence: [executeHealth, walletCoverage, proofCompletion].filter(Boolean) as MetricPreview[],
+      intakeRoute: {
+        label: "Open treasury route",
+        href: "/services#jupiter-treasury-route",
+      },
+      bestRoute: {
+        label: "Open route brief",
+        href: "/documents/jupiter-treasury-route",
+      },
+      buyerMotion:
+        "Position treasury swap and rebalance support as a premium corridor for DAOs that need controlled asset motion without leaving the governance shell.",
+      mainnetGate:
+        "Quote preview, policy thresholds, and post-route settlement evidence need to stay connected before treasury swap claims become production-grade.",
     },
     {
       title: "Payments DAO",
@@ -135,7 +155,7 @@ export function getServiceOperationalCards(): ServiceOperationalCard[] {
       buyerMotion:
         "Sell confidential operations, proof-backed governance, and trust packaging as a premium layer for privacy-sensitive organizations.",
       mainnetGate:
-        "Mainnet security promises remain blocked until multisig authority transfer, incident monitoring closure, audit posture, and real-device capture coverage are all complete.",
+        "Mainnet security promises depend on multisig authority transfer, incident monitoring closure, audit posture, and real-device capture coverage reaching full closure.",
     },
   ];
 }

@@ -1,12 +1,8 @@
 # Domain Mirror Strategy
 
-PrivateDAO keeps the current review URL stable:
+PrivateDAO keeps the canonical review URL stable:
 
-- Current review URL: `https://x-pact.github.io/PrivateDAO/`
-
-The production-facing domain can be added as a mirror:
-
-- Planned mirror domain: `https://app.privatedao.xyz/`
+- Current review URL: `https://privatedao.org/`
 
 ## Mirror-Safe Rule
 
@@ -23,10 +19,9 @@ This avoids breaking:
 
 The safe rollout path is:
 
-1. Keep `x-pact.github.io/PrivateDAO/` unchanged as the canonical review URL.
-2. Deploy the same frontend bundle to `.xyz` as a mirror.
-3. Verify that both URLs open the same interface and same asset set.
-4. Only after review, decide whether to promote `.xyz` as the primary production domain.
+1. Keep `https://privatedao.org/` as the canonical review URL.
+2. Only maintain alternate hosts as non-canonical mirrors if they are still needed operationally.
+3. Verify that any alternate host opens the same interface and same asset set.
 
 ## Why This Matters
 
@@ -60,15 +55,10 @@ The repo now includes mirror-safe frontend behavior at the application layer:
 - the repo root now serves the Next.js export directly instead of redirecting into `docs/`
 - the root surface preserves legacy `?page=` entrypoints through the new Next.js compatibility layer
 - the live frontend updates canonical / Open Graph / Twitter URL metadata from the active origin
-- self-links inside the app no longer assume only `x-pact.github.io/PrivateDAO/`
+- self-links inside the app no longer assume a GitHub Pages origin
 - copied evidence packets can now reference the active frontend origin instead of a hardcoded review host
 
-This means the same frontend bundle can be served from:
-
-- `https://x-pact.github.io/PrivateDAO/`
-- `https://app.privatedao.xyz/`
-
-without rewriting the UI logic itself.
+This means the same frontend bundle can be served from the canonical production domain without rewriting the UI logic itself.
 
 Execution checklist:
 
@@ -78,6 +68,6 @@ Execution checklist:
 
 During review:
 
-- keep `https://x-pact.github.io/PrivateDAO/` as the canonical review URL
-- add `.xyz` only as a parallel mirror
-- do not replace the current review URLs in reviewer-facing artifacts until the mirror is verified end-to-end
+- keep `https://privatedao.org/` as the canonical review URL
+- only use alternate mirrors if they are needed for continuity
+- keep reviewer-facing artifacts anchored to the canonical production domain

@@ -51,7 +51,7 @@ npm run start:read-node
 Then open the frontend with:
 
 ```text
-https://x-pact.github.io/PrivateDAO/?readApi=http://127.0.0.1:8787/api/v1
+https://privatedao.org/?readApi=http://127.0.0.1:8787/api/v1
 ```
 
 ## Security shape

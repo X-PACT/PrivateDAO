@@ -1,7 +1,18 @@
+import type { Metadata } from "next";
+
 import { GettingStartedWorkspace } from "@/components/getting-started-workspace";
 import { OperationsShell } from "@/components/operations-shell";
 import { VideoCenter } from "@/components/video-center";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
+import { buildRouteMetadata } from "@/lib/route-metadata";
+
+export const metadata: Metadata = buildRouteMetadata({
+  title: "Learn",
+  description:
+    "Learn PrivateDAO through the shortest onboarding path, wallet-first Devnet flows, and product-guided walkthroughs.",
+  path: "/learn",
+  keywords: ["learn", "onboarding", "devnet", "wallet-first", "walkthrough"],
+});
 
 export default function LearnPage() {
   const executionSnapshot = getExecutionSurfaceSnapshot();

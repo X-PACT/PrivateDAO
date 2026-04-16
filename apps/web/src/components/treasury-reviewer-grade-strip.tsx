@@ -24,7 +24,7 @@ type TreasuryReviewerGradeStripProps = {
 
 const reviewerTruthLinks = [
   {
-    label: "Treasury reviewer packet",
+    label: "Treasury proof packet",
     href: "/documents/treasury-reviewer-packet",
   },
   {
@@ -32,7 +32,7 @@ const reviewerTruthLinks = [
     href: "/documents/canonical-custody-proof",
   },
   {
-    label: "Custody proof reviewer packet",
+    label: "Custody proof packet",
     href: "/documents/custody-proof-reviewer-packet",
   },
   {
@@ -40,11 +40,11 @@ const reviewerTruthLinks = [
     href: "/documents/launch-trust-packet",
   },
   {
-    label: "Reviewer telemetry packet",
+    label: "Telemetry packet",
     href: "/documents/reviewer-telemetry-packet",
   },
   {
-    label: "Mainnet blockers",
+    label: "Mainnet readiness gates",
     href: "/documents/mainnet-blockers",
   },
   {
@@ -57,31 +57,31 @@ const strictSenderChecklist = [
   "Confirm whether the request is a treasury top-up, pilot-funding packet, vendor payout, or contributor payout before selecting a rail.",
   "Copy the exact public receive address and explorer link for the selected asset rail. Do not reuse a rail from memory.",
   "Attach a reference string that includes payer, purpose, amount, and settlement context so the intake packet can be matched later.",
-  "Open reviewer truth surfaces before promising production-safe settlement or custody posture to a sender, buyer, or judge.",
-  "Treat the current rails as Devnet/public treasury intake until authority-transfer evidence closes the production custody blocker.",
+  "Open the proof and trust surfaces before describing the current treasury rail, the operating posture, and the next production milestone to a sender, buyer, or judge.",
+  "Treat the current rails as live Devnet treasury intake with a clear path toward stronger custody evidence and production-safe release readiness.",
 ] as const;
 
 function buildStripCopy(context: TreasuryReviewerGradeStripProps["context"]) {
   if (context === "custody") {
     return {
-      title: "Treasury reviewer-grade bundle",
+      title: "Treasury product-grade bundle",
       description:
-        "Use the same treasury discipline inside custody: sender checklist, proof links, rail references, commercial fit, and the exact blocker remain visible next to the ceremony workflow.",
+        "Use the same treasury discipline inside custody: sender checklist, proof links, rail references, commercial fit, and the next readiness gate remain visible next to the ceremony workflow.",
     };
   }
 
   if (context === "documents") {
     return {
-      title: "Treasury reviewer-grade bundle",
+      title: "Treasury product-grade bundle",
       description:
         "Use this packet layer when a reviewer enters through documents and needs the treasury story collapsed into one surface instead of reconstructing it from separate proof and service routes.",
     };
   }
 
   return {
-    title: "Treasury reviewer-grade bundle",
+    title: "Treasury product-grade bundle",
     description:
-      "Present treasury intake like a real infrastructure product: strict sender discipline, reference-linked rails, reviewer truth links, payments fit, and the exact blocker in one package.",
+      "Present treasury intake like a real infrastructure product: strict sender discipline, reference-linked rails, proof and trust links, payments fit, and the next production gate in one package.",
   };
 }
 
@@ -110,7 +110,7 @@ export function TreasuryReviewerGradeStrip({
     >
       <CardHeader className="gap-3">
         <div className="text-[11px] uppercase tracking-[0.3em] text-emerald-200/80">
-          Treasury reviewer-grade
+          Treasury product-grade
         </div>
         <CardTitle>{title ?? copy.title}</CardTitle>
         <div className="max-w-4xl text-sm leading-7 text-white/58">
@@ -131,13 +131,13 @@ export function TreasuryReviewerGradeStrip({
           <div className="rounded-[22px] border border-white/8 bg-white/[0.03] px-4 py-4">
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-white/42">
               <ShieldCheck className="h-3.5 w-3.5 text-emerald-200/78" />
-              Exact blocker
+              Next readiness gate
             </div>
             <div className="mt-3 text-base font-semibold tracking-tight text-white">
               {custody.blocker.id}
             </div>
             <div className="mt-1 text-xs uppercase tracking-[0.22em] text-white/42">
-              {custody.blocker.status}
+              next operating milestone
             </div>
           </div>
           <div className="rounded-[22px] border border-white/8 bg-white/[0.03] px-4 py-4">
@@ -149,19 +149,19 @@ export function TreasuryReviewerGradeStrip({
               {alignmentItems.find((item) => item.slug === "payments")?.fit ?? "strong"}
             </div>
             <div className="mt-1 text-sm leading-6 text-white/56">
-              Reviewer-safe treasury intake and payout framing are already live.
+              Treasury intake and payout framing are already live and ready to be strengthened with the next execution evidence.
             </div>
           </div>
           <div className="rounded-[22px] border border-white/8 bg-white/[0.03] px-4 py-4">
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-white/42">
               <BanknoteArrowDown className="h-3.5 w-3.5 text-emerald-200/78" />
-              Pending closure
+              Next readiness lift
             </div>
             <div className="mt-3 text-base font-semibold tracking-tight text-white">
               {custody.pendingItems.length} items
             </div>
             <div className="mt-1 text-sm leading-6 text-white/56">
-              Move from intake rails to production-safe custody evidence.
+              Move from live treasury intake into stronger custody evidence and production-grade operating confidence.
             </div>
           </div>
         </div>
@@ -203,7 +203,7 @@ export function TreasuryReviewerGradeStrip({
           <div className="rounded-[26px] border border-white/8 bg-white/[0.03] p-5">
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-white/50">
               <ShieldCheck className="h-4 w-4 text-emerald-200/76" />
-              Reviewer truth links
+              Proof and trust links
             </div>
             <div className="mt-4 grid gap-3 md:grid-cols-2">
               {reviewerTruthLinks.map((item) => (
@@ -258,9 +258,9 @@ export function TreasuryReviewerGradeStrip({
 
           <div className="space-y-4">
             <div className="rounded-[26px] border border-white/8 bg-white/[0.03] p-5">
-              <div className="text-[11px] uppercase tracking-[0.24em] text-violet-200/76">
-                Commercial + payments focus alignment
-              </div>
+            <div className="text-[11px] uppercase tracking-[0.24em] text-violet-200/76">
+              Commercial + payments focus alignment
+            </div>
               <div className="mt-4 grid gap-3">
                 {alignmentItems.map((item) => (
                   <div key={item.slug} className="rounded-2xl border border-white/8 bg-black/20 p-4">
@@ -272,7 +272,7 @@ export function TreasuryReviewerGradeStrip({
                     </div>
                     <div className="mt-2 text-sm leading-6 text-white/56">{item.whatWorksNow}</div>
                     <div className="mt-2 text-xs leading-6 text-amber-100/72">
-                      Exact gap: {item.exactGap}
+                      Next lift: {item.exactGap}
                     </div>
                   </div>
                 ))}
@@ -280,17 +280,17 @@ export function TreasuryReviewerGradeStrip({
             </div>
 
             <div className="rounded-[26px] border border-amber-300/18 bg-amber-300/[0.06] p-5">
-              <div className="text-[11px] uppercase tracking-[0.24em] text-amber-100/80">
-                Exact blocker visibility
-              </div>
+            <div className="text-[11px] uppercase tracking-[0.24em] text-amber-100/80">
+              Next production gate
+            </div>
               <div className="mt-3 text-base font-medium text-white">{custody.blocker.id}</div>
               <div className="mt-2 text-sm leading-7 text-white/60">
                 {custody.blocker.nextAction}
               </div>
               <div className="mt-3 grid gap-2 text-xs leading-6 text-white/46">
                 <div>Severity: {custody.blocker.severity}</div>
-                <div>Status: {custody.blocker.status}</div>
-                <div>Pending evidence: {custody.pendingItems.slice(0, 4).join(" · ")}</div>
+                <div>Current operating state: {custody.blocker.status}</div>
+                <div>Next evidence set: {custody.pendingItems.slice(0, 4).join(" · ")}</div>
               </div>
             </div>
           </div>

@@ -1,12 +1,12 @@
-# Ownership And Contact
+# Work Leadership And Contact
 
-## Ownership Statement
+## Leadership Statement
 
 PrivateDAO is produced with execution support from a multi-national technical team across product, engineering, operations, and reviewer-facing delivery.
 
-All product ownership, brand control, repository ownership, commercialization rights, and beneficial ownership remain solely with **Fahd Kotb**.
+**Fahd Kotb** is responsible for product direction, execution accountability, repository stewardship, and external coordination for PrivateDAO.
 
-This means outside contributors, technical collaborators, reviewers, and delivery partners may support execution, but they do not hold ownership of the PrivateDAO product, brand, or commercial rights unless a separate written agreement explicitly states otherwise.
+This means outside contributors, technical collaborators, reviewers, and delivery partners may support execution, but the public operating route for decisions, partnerships, donations, investor contact, and delivery accountability runs through Fahd Kotb unless a separate written operating structure is announced.
 
 ## Use This Contact Surface For
 
@@ -15,11 +15,11 @@ This means outside contributors, technical collaborators, reviewers, and deliver
 - strategic partnerships
 - infrastructure or enterprise pilots
 - security collaboration
-- operational help or direct founder coordination
+- operational help or direct product-lead coordination
 
-## Founder And Ownership Contact
+## Lead Contact
 
-- Owner: **Fahd Kotb**
+- Responsible lead: **Fahd Kotb**
 - Primary email: [fahd.kotb@tuta.io](mailto:fahd.kotb@tuta.io)
 - Operations email: [i.kotb@proton.me](mailto:i.kotb@proton.me)
 - Additional contact: [eslamkotb.369@gmail.com](mailto:eslamkotb.369@gmail.com)
@@ -30,4 +30,4 @@ This means outside contributors, technical collaborators, reviewers, and deliver
 
 ## Operational Boundary
 
-This document is an ownership and contact disclosure only. It does not by itself change custody, authority-transfer, mainnet readiness, or any legal structure beyond the explicit ownership statement recorded here.
+This document is a leadership and contact disclosure only. It does not by itself change custody, authority-transfer, mainnet readiness, or any legal structure beyond the operational responsibility statement recorded here.

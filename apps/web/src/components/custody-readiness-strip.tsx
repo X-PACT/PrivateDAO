@@ -24,11 +24,11 @@ const contextCopy: Record<NonNullable<CustodyReadinessStripProps["context"]>, { 
   },
   services: {
     label: "Commercial readiness",
-    description: "Buyers and judges should see the custody boundary beside service packaging, not only inside security-only routes.",
+    description: "Buyers and judges should see the custody readiness picture beside service packaging, not only inside security-only routes.",
   },
   security: {
     label: "Security readiness",
-    description: "Trust boundary, custody summary, and mainnet framing should update in the same surface where hardening and launch discipline are reviewed.",
+    description: "Trust posture, custody summary, and mainnet framing should update in the same surface where hardening and launch discipline are reviewed.",
   },
 };
 
@@ -70,9 +70,9 @@ export function CustodyReadinessStrip({ context = "dashboard" }: CustodyReadines
 
   const readinessDetail =
     completion.completed === 0
-      ? "No custody ceremony evidence is recorded yet, so trust and mainnet posture must remain bounded."
+      ? "No custody ceremony evidence is recorded yet, so trust and mainnet posture remain in an early readiness state."
       : completion.completed < completion.total
-        ? "Some ceremony evidence is recorded, which improves reviewer confidence but still leaves launch discipline incomplete."
+        ? "Some ceremony evidence is recorded, which improves reviewer confidence and points clearly to the remaining readiness steps."
         : "Custody evidence is fully recorded in-product, which materially improves trust continuity across buyer, reviewer, and operator paths.";
 
   return (

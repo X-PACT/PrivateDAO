@@ -99,7 +99,7 @@ export function getRuntimeOperationsReadinessSnapshot(): RuntimeOperationsReadin
         {
           label: "Submission proof",
           value: `${runtime.summary.successfulSubmissionCount} captured`,
-          detail: "Real-device submission evidence remains the most visible runtime gap before honest mainnet claims.",
+          detail: "Real-device submission evidence remains the most visible runtime lift before stronger production-release claims.",
         },
         {
           label: "Diagnostics captures",
@@ -123,7 +123,7 @@ export function getRuntimeOperationsReadinessSnapshot(): RuntimeOperationsReadin
         {
           label: "High-pressure rules",
           value: `${criticalCount} critical / ${highCount} high`,
-          detail: "The rulebook is not the blocker. Delivery ownership and tested transcripts are the blocker.",
+          detail: "The rulebook is already defined. Delivery ownership and tested transcripts are the next operating lift.",
         },
         {
           label: "Environment claim",

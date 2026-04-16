@@ -29,7 +29,7 @@ function fitClass(fit: "strong" | "moderate" | "selective") {
 
 export function EcosystemFocusAlignmentStrip({
   title = "Ecosystem focus alignment",
-  description = "Show where PrivateDAO already fits the current ecosystem focus areas, what is already real, and what remains the exact next gap.",
+  description = "Show where PrivateDAO already fits the current ecosystem focus areas, what is already real, and what the next execution uplift looks like.",
 }: EcosystemFocusAlignmentStripProps) {
   const payload = getEcosystemFocusAlignment();
 

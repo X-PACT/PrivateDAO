@@ -9,15 +9,19 @@ import { TelemetryRuntimeFocusStrip } from "@/components/telemetry-runtime-focus
 import { TelemetryModeHandoffStrip } from "@/components/telemetry-mode-handoff-strip";
 import { OperationsShell } from "@/components/operations-shell";
 import { RuntimeEvidenceContinuityPanel } from "@/components/runtime-evidence-continuity-panel";
+import type { Metadata } from "next";
+import { buildRouteMetadata } from "@/lib/route-metadata";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
-import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Network | PrivateDAO",
+export const metadata: Metadata = buildRouteMetadata({
+  title: "Network",
   description:
     "Runtime evidence, diagnostics, proof, and network-grade reviewer surfaces for the live PrivateDAO Devnet system.",
-};
+  path: "/network",
+  keywords: ["network", "runtime evidence", "diagnostics", "proof"],
+  index: false,
+});
 
 export default function NetworkPage() {
   const executionSnapshot = getExecutionSurfaceSnapshot();

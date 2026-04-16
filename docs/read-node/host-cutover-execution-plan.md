@@ -8,7 +8,7 @@ Status: planned, not yet cut over
 As of 2026-04-14:
 
 - `privatedao.org` is still served by GitHub Pages
-- `x-pact.github.io/PrivateDAO/` is also served by GitHub Pages
+- the old GitHub Pages path still exists only as a legacy mirror
 - the current repo contains:
   - `CNAME` -> `privatedao.org`
   - `.github/workflows/pages.yml`
@@ -103,15 +103,14 @@ It should not:
 - keep existing static routes and `/documents/*` intact
 - verify that public routes still work when backend reads are slow
 
-### Stage 3.5: Primary / Backup Split
+### Stage 3.5: Primary / Legacy Split
 
 - point `privatedao.org` to the new independent primary host
-- keep GitHub Pages as backup-only at:
-  - `x-pact.github.io/PrivateDAO/`
+- keep any GitHub Pages surface as legacy-only if still needed
 - make sure GitHub backup bundles do not carry `CNAME`
 - verify:
   - `privatedao.org` is no longer served by `GitHub.com`
-  - `x-pact.github.io/PrivateDAO/` still works as fallback mirror
+  - the canonical reviewer path remains on `https://privatedao.org/`
 
 ### Stage 4: Operational Hardening
 
@@ -161,7 +160,7 @@ unless those claims are separately verified
 6. proof and docs routes remain available without backend dependence
 7. logs show correct upstream status for read failures
 8. `privatedao.org` is no longer served by GitHub Pages headers
-9. GitHub Pages still works as backup-only mirror
+9. any legacy mirror remains non-canonical
 
 ## Repo Guards Added
 

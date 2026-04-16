@@ -18,7 +18,7 @@ const exportChecks = [
   },
   {
     title: "Buyer-safe infrastructure story",
-    detail: "The same corridor explains product value to infrastructure buyers and data judges: API posture, hosted reads, proof, and blocker honesty.",
+    detail: "The same corridor explains product value to infrastructure buyers and data judges: API posture, hosted reads, proof, and disciplined operating transparency.",
     icon: ShieldCheck,
   },
   {
@@ -32,7 +32,7 @@ export function TelemetryExportReadinessPanel() {
   return (
     <Card className="border-cyan-300/16 bg-[linear-gradient(180deg,rgba(9,16,28,0.96),rgba(8,11,20,0.99))]">
       <CardHeader className="space-y-3">
-        <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/78">Telemetry export readiness</div>
+        <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/78">Telemetry export confidence</div>
         <CardTitle className="text-2xl">What a Dune or RPC reviewer can verify in under one minute</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">

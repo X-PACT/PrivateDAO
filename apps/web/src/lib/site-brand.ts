@@ -3,7 +3,7 @@ export const siteNameArabic = "برايفيت داو";
 export const siteNameArabicAlt = "برايفت داو";
 export const siteTitle = "PrivateDAO | Private Governance, Confidential Treasury, and Solana Runtime Trust";
 export const siteDescription =
-  "PrivateDAO is a Solana governance and treasury platform for private voting, confidential payouts, live proof, reviewer-safe trust packets, and operator-grade runtime evidence.";
+  "PrivateDAO is a Solana public-good governance and treasury platform for private voting, confidential payouts, live proof, reviewer-visible trust packets, and operator-grade runtime evidence.";
 export const siteUrl = process.env.NEXT_PUBLIC_LIVE_SITE_URL?.replace(/\/+$/, "") ?? "https://privatedao.org";
 export const defaultOgImage = "/opengraph-image.png";
 

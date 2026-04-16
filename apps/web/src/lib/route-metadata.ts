@@ -7,6 +7,7 @@ type BuildRouteMetadataInput = {
   description: string;
   path: string;
   keywords?: string[];
+  index?: boolean;
 };
 
 export function buildRouteMetadata({
@@ -14,8 +15,10 @@ export function buildRouteMetadata({
   description,
   path,
   keywords = [],
+  index = true,
 }: BuildRouteMetadataInput): Metadata {
   const urlPath = path.startsWith("/") ? path : `/${path}`;
+  const canonicalPath = urlPath === "/" ? "/" : `${urlPath.replace(/\/+$/, "")}/`;
   const fullTitle = `${title} | ${siteName}`;
 
   return {
@@ -26,12 +29,21 @@ export function buildRouteMetadata({
       ...keywords,
     ],
     alternates: {
-      canonical: urlPath,
+      canonical: canonicalPath,
     },
+    robots: index
+      ? {
+          index: true,
+          follow: true,
+        }
+      : {
+          index: false,
+          follow: true,
+        },
     openGraph: {
       title: fullTitle,
       description,
-      url: urlPath,
+      url: canonicalPath,
       siteName,
       type: "website",
       images: [
@@ -61,6 +73,10 @@ export function buildBrandHomeMetadata(): Metadata {
     keywords: siteKeywords,
     alternates: {
       canonical: "/",
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
     openGraph: {
       title: siteName,

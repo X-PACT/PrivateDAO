@@ -12,6 +12,7 @@ export const metadata: Metadata = buildRouteMetadata({
     "Operational intelligence for proposals, treasury execution, voting, RPC, and gaming. Built for decision support inside PrivateDAO instead of a shallow chatbot.",
   path: "/intelligence",
   keywords: ["ai", "proposal review", "treasury review", "voting summary", "rpc analyzer", "gaming ai"],
+  index: false,
 });
 
 export default function IntelligencePage() {

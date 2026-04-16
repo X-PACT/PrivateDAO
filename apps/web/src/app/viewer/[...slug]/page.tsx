@@ -33,6 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description: `${document.relativePath} rendered inside the Next.js repository viewer.`,
     path: document.routePath,
     keywords: [document.category, "repository viewer", "docs parity"],
+    index: false,
   });
 }
 

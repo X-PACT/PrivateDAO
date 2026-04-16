@@ -1,6 +1,6 @@
 # Reviewer Telemetry Packet
 
-This packet is the shortest reviewer-safe route into the data, runtime, and hosted-read story behind PrivateDAO.
+This packet is the shortest reviewer-first route into the data, runtime, and hosted-read story behind PrivateDAO.
 
 It is intentionally evidence-bound:
 
@@ -16,7 +16,7 @@ It is intentionally evidence-bound:
 - indexed proposal registry and read-node snapshot used by the live app
 - runtime evidence, frontier integrations, and launch trust packets already published
 
-## What is externally or operationally proven now
+## What is operationally visible now
 
 - live product routes:
   - `https://privatedao.org/analytics/`
@@ -57,15 +57,17 @@ PrivateDAO is stronger for infrastructure, data, and analytics opportunities whe
 - hosted reads
 - diagnostics
 - export-ready summaries
-- reviewer-safe runtime proof
+- reviewer-visible runtime proof
 
 rather than a governance app that merely mentions RPC.
 
-## Boundaries
+It also matters as public-good infrastructure because it makes telemetry, hosted reads, and runtime evidence easier for the broader ecosystem to inspect and reuse as part of serious governance operations.
+
+## Product boundary
 
 - This packet does not claim live third-party analytics partnerships.
-- It does not claim production mainnet readiness.
-- It does not replace canonical custody, launch-trust, or mainnet-blocker packets.
+- It does not claim completed production release approval.
+- It does not replace canonical custody, launch-trust, or release-readiness packets.
 
 Use this packet when the reviewer wants to inspect:
 

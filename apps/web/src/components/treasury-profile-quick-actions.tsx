@@ -26,6 +26,13 @@ const quickActions = [
     icon: BriefcaseBusiness,
   },
   {
+    value: "treasury-rebalance",
+    title: "Treasury rebalance",
+    summary: "Open the Jupiter-backed treasury route for governed asset-motion planning, quote review, and rebalance-ready execution context.",
+    href: "/services#jupiter-treasury-route",
+    icon: Coins,
+  },
+  {
     value: "treasury-top-up",
     title: "Treasury top-up",
     summary: "Route capital into services, trust, and operating runway with the treasury bundle preselected.",

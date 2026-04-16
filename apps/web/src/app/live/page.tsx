@@ -9,6 +9,7 @@ export const metadata: Metadata = buildRouteMetadata({
     "Live proposals, treasury state, execution history, and governance logs for the current Devnet product surface.",
   path: "/live",
   keywords: ["live state", "treasury", "governance logs", "proposal state"],
+  index: false,
 });
 
 export default DashboardPage;

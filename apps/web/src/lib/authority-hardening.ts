@@ -22,17 +22,17 @@ export const authorityHardeningSections = [
   {
     title: "Launch boundary",
     summary:
-      "Until the ceremony is complete, authority hardening remains part of the explicit Mainnet blocker surface. This is a strength when shown honestly rather than implied away.",
+      "Until the ceremony is complete, authority hardening remains part of the explicit production-gate surface. This is a strength when shown clearly rather than implied away.",
     bullets: [
       "Remove unnecessary single-signer powers.",
-      "Keep pending steps visible to reviewers and buyers.",
+      "Keep the next trust steps visible to reviewers and buyers.",
       "Treat authority transfer as a trust event, not an internal note.",
     ],
   },
 ] as const;
 
 export const authorityHardeningLinks = [
-  { label: "Mainnet blockers", href: "/documents/mainnet-blockers" },
+  { label: "Release readiness register", href: "/documents/mainnet-blockers" },
   { label: "Production custody ceremony", href: "/documents/production-custody-ceremony" },
   { label: "Authority hardening brief", href: "/documents/authority-hardening-mainnet" },
 ] as const;

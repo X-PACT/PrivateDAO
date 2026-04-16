@@ -82,7 +82,7 @@ SLIDES = [
         "eyebrow": "LINKS",
         "title": "Review the product",
         "body": [
-            "Frontend: x-pact.github.io/PrivateDAO/",
+            "Frontend: privatedao.org/",
             "Repo: github.com/X-PACT/PrivateDAO",
             f"Program: {PROGRAM_ID}",
         ],

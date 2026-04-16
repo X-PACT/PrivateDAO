@@ -70,13 +70,13 @@ export function TrustSurface() {
               <div className="text-base font-medium text-white">Recognition tied to evidence</div>
             </div>
             <p className="mt-3 text-sm leading-7 text-white/58">
-              The awards surface should not be vanity-only. It needs to route judges, buyers, and operators directly into proof packets, trust surfaces, and launch boundaries.
+              The awards surface should not be vanity-only. It should route judges, buyers, and operators directly into proof packets, trust surfaces, and production-readiness context.
             </p>
           </div>
           <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
-            <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Boundary discipline</div>
+            <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Readiness discipline</div>
             <p className="mt-3 text-sm leading-7 text-white/58">
-              This Next.js surface keeps the same discipline as the current site: Devnet proof is shown as Devnet proof, and pending-external launch work stays marked as pending-external.
+              This Next.js surface keeps the same discipline as the current site: Devnet proof is shown as Devnet proof, and the remaining launch-critical work stays visible as the next readiness gate rather than hidden behind vague claims.
             </p>
           </div>
         </CardContent>

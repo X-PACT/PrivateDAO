@@ -14,7 +14,7 @@
 <p align="center">
   <a href="https://privatedao.org/"><img src="https://img.shields.io/badge/Live%20Product-Open-14F195?logo=solana" alt="Live product" /></a>
   <a href="https://github.com/X-PACT/PrivateDAO/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/X-PACT/PrivateDAO/ci.yml?branch=main&label=CI" alt="CI status" /></a>
-  <a href="docs/awards.md"><img src="https://img.shields.io/badge/Superteam%20Poland-1st%20Place-gold" alt="Superteam Poland 1st Place" /></a>
+  <a href="docs/awards.md"><img src="https://img.shields.io/badge/Regional%20Recognition-1st%20Place-gold" alt="Regional 1st place recognition" /></a>
   <a href="https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet"><img src="https://img.shields.io/badge/Solana-Devnet%20Program-14F195" alt="Devnet program" /></a>
   <a href="docs/pdao-token.md"><img src="https://img.shields.io/badge/PDAO-Token--2022%20Governance%20Mint-0f766e" alt="PDAO token" /></a>
   <a href="docs/security-hardening-v2.md"><img src="https://img.shields.io/badge/Security-Strict%20V2%20Hardening-1d4ed8" alt="Strict V2 security hardening" /></a>
@@ -26,9 +26,9 @@
 
 ## Winner Signal
 
-**1st Place - Superteam Poland, March 2026.**
+**Regional 1st Place recognition, March 2026.**
 
-PrivateDAO engineering won **1st Place** in the Superteam Poland challenge **"Rebuild production backend systems as on-chain Rust programs"**. That matters here because this repo is built the same way: live protocol code, live Devnet execution, explicit trust boundaries, and machine-checked reviewer evidence. See [`docs/awards.md`](docs/awards.md).
+PrivateDAO engineering already carries a real first-place regional signal. That matters here because this repo is built the same way: live protocol code, live Devnet execution, explicit trust boundaries, and machine-checked reviewer evidence. See [`docs/awards.md`](docs/awards.md).
 
 ## What PrivateDAO Is
 
@@ -41,6 +41,29 @@ It combines:
 - **Execution safety:** timelocks, veto and cancel boundaries, duplicate-execution resistance, and strict treasury account validation.
 - **Evidence and reviewability:** Devnet rehearsals, ZK proof anchors, runtime packets, manifests, and generated audit surfaces.
 - **Operational packaging:** Realms migration, hosted read/API packaging, trust exports, pilot material, and operator docs.
+
+## Why It Matters To The Ecosystem
+
+PrivateDAO is being built as public-good governance and treasury infrastructure for Solana.
+
+The goal is not only to ship one strong product surface. The goal is to make advanced governance, privacy, telemetry, and treasury discipline easier for the ecosystem to adopt, inspect, and build on.
+
+That matters because the same core system can serve:
+
+- grant and allocation committees
+- treasury and payout governance
+- protocol operating councils
+- security-sensitive decisions
+- contributor, vendor, and payroll-style payout workflows
+
+## Clear Product Roadmap
+
+The roadmap is intentionally simple and fundable:
+
+1. make the wallet-first Devnet flow effortless for first-time visitors
+2. keep proof, telemetry, custody, and diagnostics attached to the same product corridor
+3. strengthen audit, monitoring, real-device wallet coverage, and settlement publication
+4. close the remaining production gates and ship the strongest possible release candidate
 
 ## What Is Live Now
 
@@ -98,27 +121,28 @@ The rule is strict:
 - If a normal user needs it, it belongs in the UI.
 - If it is for protocol maintenance, incident handling, migrations, or engineering-only control, it belongs in the public repo and CLI.
 
-## Frontier Fit
+## Colosseum Frontier 2026
 
-PrivateDAO fits Frontier because it sits at the intersection of:
+PrivateDAO is actively being advanced during **Colosseum Frontier, April to May 2026**.
 
-- **Governance / DAO infrastructure**
-- **Privacy-preserving treasury operations**
-- **MagicBlock-integrated confidential payout paths**
-- **RPC Fast-oriented read reliability**
-- **Full-stack Solana product execution**
+The public competition message stays simple:
+
+- one coherent governance product
+- private and confidential treasury operations
+- clear runtime evidence and trust surfaces
+- stronger operator and reviewer readability with each shipping tranche
 
 ## Launch Boundary
 
-PrivateDAO is strong enough for Devnet evaluation, judge review, and pilot packaging, but this repository does **not** claim real-funds mainnet readiness yet. The current boundary is deliberate:
+PrivateDAO is already strong enough for Devnet evaluation, judge review, and pilot packaging, and the current execution strategy is designed to convert that foundation into mainnet-grade readiness with the right support and closure evidence:
 
 | Stage | Current status | Evidence |
 | --- | --- | --- |
 | Product and protocol | Implemented on Devnet | Live frontend, Anchor program, PDAO governance mint, commit-reveal lifecycle, confidential payout flows, Strict V2 hardening. |
 | Reviewer evidence | Implemented and generated | 50-wallet Devnet rehearsal, ZK anchors, operational evidence, audit packet, cryptographic manifest, and `npm run verify:all`. |
-| Launch operations | Repo-defined, externally pending | Multisig intake, authority transfer runbook, launch ops checklist, monitoring rules, wallet E2E plan. |
-| Production custody | Pending external execution | 2-of-3 multisig, 48+ hour timelock, authority transfer signatures, signer backups, and post-transfer authority readouts. |
-| Mainnet real funds | Blocked until closure | External audit, live monitoring, real-device captures, source-verifiable MagicBlock/REFHE receipts, and final cutover ceremony. |
+| Launch operations | Repo-defined and ready for closure | Multisig intake, authority transfer runbook, launch ops checklist, monitoring rules, wallet E2E plan. |
+| Production custody | Structured for execution with recorded evidence next | 2-of-3 multisig, 48+ hour timelock, authority transfer signatures, signer backups, and post-transfer authority readouts. |
+| Mainnet real funds | Final production gate | External audit, live monitoring, real-device captures, source-verifiable MagicBlock/REFHE receipts, and final cutover ceremony. |
 
 Operational launch docs:
 
@@ -180,7 +204,7 @@ Live proof surface:
 - `https://privatedao.org/documents/launch-trust-packet/`
 - `https://privatedao.org/documents/mainnet-blockers/`
 
-This is intentional: the product now exposes the exact custody proof shape and blocker state, but it still does not claim the ceremony happened before the real addresses, signatures, explorer links, and readouts are recorded.
+This is intentional: the product now exposes the exact custody proof shape and the live operating milestones around it, while the transfer ceremony keeps moving toward a reviewer-ready closeout with real addresses, signatures, explorer links, and readouts. The goal is not to overstate readiness. The goal is to keep making the system stronger, more credible, and more defensible with every serious execution tranche.
 
 ## Start Here
 
@@ -205,15 +229,15 @@ This is intentional: the product now exposes the exact custody proof shape and b
 
 The launch boundary is now surfaced in-product through `https://privatedao.org/custody/`, where multisig creation, authority transfer, and evidence requirements are shown as a live operating workflow rather than a hidden note.
 
-## Frontier Review Surfaces
+## Competition Review Surfaces
 
-PrivateDAO is being presented as one coherent product around Frontier Hackathon. The public review lanes stay visible without exposing a long public list of track names.
+PrivateDAO is being presented publicly as one coherent product during the current Colosseum Frontier cycle.
 
 | Reviewer lane | Live workspace | Strongest visible fit |
 | --- | --- | --- |
-| Frontier primary workspace | https://privatedao.org/tracks/colosseum-frontier/ | Startup-quality product shell, trust surfaces, proof continuity, and buyer path |
-| Confidential governance lane | https://privatedao.org/tracks/privacy-track/ | Commit-reveal governance, ZK review posture, REFHE, and privacy-aware settlement |
-| Runtime infrastructure lane | https://privatedao.org/tracks/rpc-infrastructure/ | Hosted reads, diagnostics, API packaging, and runtime evidence |
+| Primary product lane | https://privatedao.org/tracks/colosseum-frontier/ | Product shell, trust surfaces, proof continuity, and buyer path |
+| Confidential operations lane | https://privatedao.org/security/ | Commit-reveal governance, privacy-aware treasury motion, and settlement posture |
+| Runtime and infrastructure lane | https://privatedao.org/analytics/ | Hosted reads, diagnostics, API packaging, and runtime evidence |
 
 The operating rule stays strict:
 
@@ -488,6 +512,7 @@ For navigation inside the large docs and scripts surfaces:
 
 - [`docs/README.md`](docs/README.md)
 - [`scripts/README.md`](scripts/README.md)
+- [`docs/technical-verification-status-2026.md`](docs/technical-verification-status-2026.md)
 
 ## Fast Review Path
 
@@ -498,8 +523,33 @@ If you only have a few minutes:
 3. Read [`docs/reviewer-fast-path.md`](docs/reviewer-fast-path.md)
 4. Read [`docs/security-hardening-v2.md`](docs/security-hardening-v2.md)
 5. Read [`docs/operational-evidence.generated.md`](docs/operational-evidence.generated.md)
-6. Inspect the program: [`programs/private-dao/src/lib.rs`](programs/private-dao/src/lib.rs)
-7. Run the unified gate: `npm run verify:all`
+6. Read [`docs/technical-verification-status-2026.md`](docs/technical-verification-status-2026.md)
+7. Inspect the program: [`programs/private-dao/src/lib.rs`](programs/private-dao/src/lib.rs)
+8. Run the unified gate: `npm run verify:all`
+
+## Community Support
+
+PrivateDAO is being developed as long-horizon governance and treasury infrastructure for the Solana ecosystem rather than a closed demo surface.
+
+The strategy is straightforward:
+
+- ship real wallet-first governance and treasury flows on Devnet
+- keep proof, trust, and technical review surfaces public
+- convert each production milestone into evidenced closure
+- grow the product into infrastructure the ecosystem can actually use and build on
+
+We build for privacy, operational clarity, and long-horizon trust. We keep the work visible, keep the product verifiable, and work with the conviction that PrivateDAO can become stronger, more useful, and more trusted over time as the ecosystem turns support into durable technical, financial, and human momentum.
+
+The most useful forms of community support are:
+
+- runtime testing and wallet feedback on Devnet
+- reviewer scrutiny on trust, proof, and operating-readiness surfaces
+- protocol, frontend, and infrastructure contributions
+- introductions to operators, grants, and security reviewers who can help accelerate production readiness
+
+We invite the community to support this work with real testing, review, introductions, integrations, and amplification. With that kind of support, the product mission becomes practical: PrivateDAO can mature from strong Devnet proof into shared ecosystem infrastructure with higher trust, stronger operations, broader reach, and the staying power needed to keep building for the ecosystem over the long term.
+
+Start from the live product at `https://privatedao.org/`, then use the trust and documents routes to inspect the current evidence boundary directly.
 
 ## Local Development
 
@@ -609,7 +659,7 @@ npm run verify:weekly-updates
 
 ## Mainnet Readiness Status
 
-PrivateDAO is **Devnet / hackathon / audit-readiness candidate** today. It is not yet claiming unrestricted mainnet production readiness for real funds.
+PrivateDAO is a **Devnet-proven, hackathon-ready, audit-forward candidate** today, with a clear execution path toward unrestricted mainnet production readiness for real funds.
 
 Ready now:
 
@@ -621,7 +671,7 @@ Ready now:
 - generated audit packet and cryptographic manifest
 - read-node and RPC reliability path
 
-Still required before production mainnet:
+Next strategic closures before production mainnet:
 
 - external audit or focused independent security review
 - multisig/timelock upgrade authority hardening
@@ -669,9 +719,9 @@ Key docs:
 - Hosted brand avatar: https://privatedao.org/assets/brand/privatedao-avatar-1024.png
 - Technical explainer: [`docs/investor-video.md`](docs/investor-video.md)
 
-## Ownership And Contact
+## Leadership And Contact
 
-PrivateDAO is produced with execution support from a multi-national technical team. Product leadership, brand control, repository ownership, commercialization rights, and beneficial ownership remain solely with **Fahd Kotb**.
+PrivateDAO is produced with execution support from a multi-national technical team. **Fahd Kotb** leads product direction, execution accountability, repository stewardship, and external coordination for the work.
 
 For investment, donation, strategic help, integrations, or direct operator coordination:
 
@@ -682,7 +732,7 @@ For investment, donation, strategic help, integrations, or direct operator coord
 - Telegram: [@Fahdkotb](https://t.me/Fahdkotb)
 - Discord: [PrivateDAO community server](https://discord.gg/dzaVXjkug)
 - X: [@FahdX369](https://x.com/FahdX369)
-- Ownership and contact packet: [`docs/ownership-and-contact.md`](docs/ownership-and-contact.md)
+- Leadership and contact packet: [`docs/ownership-and-contact.md`](docs/ownership-and-contact.md)
 
 ## License
 

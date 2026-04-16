@@ -14,8 +14,8 @@ function buildFallbackTelemetrySelection(mode: "packet" | "snapshot" | "backend"
   if (mode === "backend") {
     return {
       title: "Backend cutover path",
-      summary: "Backend mode keeps diagnostics aligned with host readiness, route binding, and public health/metrics proof.",
-      stateDetail: "Use the deployment and telemetry proof paths while the hosted read corridor is being hardened.",
+      summary: "Backend mode keeps diagnostics aligned with host readiness, route binding, and public health/metrics evidence.",
+      stateDetail: "Use the deployment and telemetry proof paths when the goal is to show how the live product is being prepared for a stronger hosted-read corridor.",
       primaryHref: "/documents/read-node-same-domain-deploy",
       proofHref: "/documents/reviewer-telemetry-packet",
     };
@@ -25,16 +25,16 @@ function buildFallbackTelemetrySelection(mode: "packet" | "snapshot" | "backend"
     return {
       title: "Read-node snapshot",
       summary: "Snapshot mode keeps diagnostics tied to indexed proposal coverage and read-node output.",
-      stateDetail: "Use the snapshot packet when the reviewer needs state coverage and finalized counts without backend claims.",
+      stateDetail: "Use the snapshot packet when the reviewer needs state coverage and finalized counts from the live product without stepping outside the Devnet evidence lane.",
       primaryHref: "/documents/read-node-snapshot",
       proofHref: "/documents/reviewer-telemetry-packet",
     };
   }
 
   return {
-    title: "Reviewer telemetry packet",
-    summary: "Packet mode keeps diagnostics reviewer-safe until a stronger telemetry lane is selected.",
-    stateDetail: "Use the telemetry packet when the goal is proof, freshness, and export-safe diagnostics context.",
+      title: "Reviewer telemetry packet",
+      summary: "Packet mode keeps diagnostics compact, current, and easy to inspect.",
+      stateDetail: "Use the telemetry packet when the goal is to verify freshness, continuity, and export-safe diagnostics context from one clear route.",
     primaryHref: "/documents/reviewer-telemetry-packet",
     proofHref: "/documents/reviewer-telemetry-packet",
   };
@@ -60,6 +60,10 @@ export function DiagnosticsCenter() {
               <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/78">Telemetry execution lane</div>
               <div className="mt-3 text-base font-medium text-white">{activeSelection.title}</div>
               <div className="mt-2 text-sm leading-7 text-white/62">{activeSelection.stateDetail}</div>
+              <div className="mt-2 text-sm leading-7 text-white/62">
+                Best use: connect a Devnet wallet, run a real action, then open this diagnostics lane to inspect how the
+                product records, routes, and explains that action.
+              </div>
               <div className="mt-4 flex flex-wrap gap-3">
                 <Link href={activeSelection.primaryHref} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
                   Open active diagnostics lane
@@ -78,20 +82,20 @@ export function DiagnosticsCenter() {
               <div className="mt-3 text-base font-medium text-white">
                 {handoff.requestPayload?.requestId ?? handoff.proposalId} · {handoff.payoutTitle}
               </div>
-              <div className="mt-2 text-sm leading-7 text-white/62">
-                {handoff.requestPayload?.amountDisplay ?? handoff.payoutIntent.amountDisplay}
+            <div className="mt-2 text-sm leading-7 text-white/62">
+              {handoff.requestPayload?.amountDisplay ?? handoff.payoutIntent.amountDisplay}
                 {" · "}
                 {handoff.requestPayload?.reference ?? handoff.payoutIntent.reference}
                 {" · lane "}
                 {handoff.requestPayload?.lane ?? handoff.payoutIntent.lane}
               </div>
-              <div className="mt-2 text-sm leading-7 text-white/62">
-                {handoff.requestDelivery?.state === "delivered"
+            <div className="mt-2 text-sm leading-7 text-white/62">
+              {handoff.requestDelivery?.state === "delivered"
                   ? `Delivered into command-center${handoff.requestDelivery.deliveredAt ? ` at ${handoff.requestDelivery.deliveredAt}` : ""}.`
                   : handoff.requestDelivery?.state === "staged"
                     ? "Staged in services and ready for governed delivery."
-                    : "Still in draft inside services."}
-              </div>
+                    : "Prepared inside services and ready to become a governed runtime event."}
+            </div>
               {handoff.requestPayload ? (
                 <div className="mt-2 text-sm leading-7 text-white/62">
                   {handoff.requestPayload.kind} · {handoff.requestPayload.executionTarget}

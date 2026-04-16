@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 const corridors = [
   {
     title: "Startup accelerator",
-    summary: "Company-in-formation packet, use-of-capital, and blocker discipline for capital reviewers.",
+    summary: "Operating plan, use-of-capital, and release confidence packet for serious capital reviewers.",
     href: "/tracks/startup-accelerator",
     icon: BriefcaseBusiness,
   },
@@ -26,13 +26,13 @@ const corridors = [
   },
   {
     title: "Confidential payout",
-    summary: "Privacy, payout proof, settlement evidence, and blocker honesty in one governed corridor.",
+    summary: "Privacy, payout proof, and settlement evidence in one governed corridor that already reads like product infrastructure.",
     href: "/services#settlement-receipt-readiness",
     icon: LockKeyhole,
   },
   {
     title: "Runtime operations",
-    summary: "Real-device wallet matrix and monitoring closure presented as the highest-value operational funding gap.",
+    summary: "Real-device wallet matrix and monitoring coverage presented as the highest-value operational acceleration lane.",
     href: "/security#real-device-capture-readiness",
     icon: Smartphone,
   },
@@ -47,7 +47,9 @@ export function FundingCorridorIndexPanel() {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="text-sm leading-7 text-white/66">
-          This compresses the funding story into five routes: capital packet, regional grant fit, telemetry value, confidential payout proof, and the operational blockers that still need closure.
+          This compresses the funding story into five routes: capital packet, regional grant fit, telemetry value,
+          confidential payout proof, and the operating lanes that accelerate the product from strong Devnet delivery to
+          production confidence.
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">

@@ -11,7 +11,7 @@ type CanonicalCustodyProofSurfaceProps = {
   mode?: "operations" | "documents";
 };
 
-function renderValue(value: string | null | undefined, fallback = "Pending external") {
+function renderValue(value: string | null | undefined, fallback = "Awaiting external record") {
   return value && value.trim().length > 0 ? value : fallback;
 }
 
@@ -35,7 +35,7 @@ export function CanonicalCustodyProofSurface({
               Canonical custody proof
             </div>
             <CardTitle className="mt-2">
-              Repo-backed multisig and authority proof, with exact pending items and explorer-linked closure points
+              Repo-backed multisig and authority proof, with active evidence targets and explorer-linked readiness points
             </CardTitle>
           </div>
           <Badge variant={badgeVariant}>
@@ -60,7 +60,7 @@ export function CanonicalCustodyProofSurface({
               <div><span className="text-white/76">Threshold:</span> {snapshot.multisig.threshold}</div>
               <div><span className="text-white/76">Creation signature:</span> {renderValue(snapshot.multisig.creationSignature)}</div>
               <div><span className="text-white/76">Rehearsal signature:</span> {renderValue(snapshot.multisig.rehearsalSignature)}</div>
-              <div><span className="text-white/76">Configured timelock:</span> {snapshot.timelock.configuredHours ?? "Pending external"}{snapshot.timelock.configuredHours ? "h" : ""}</div>
+              <div><span className="text-white/76">Configured timelock:</span> {snapshot.timelock.configuredHours ?? "Awaiting external record"}{snapshot.timelock.configuredHours ? "h" : ""}</div>
               <div><span className="text-white/76">Timelock config proof:</span> {renderValue(snapshot.timelock.configurationSignature)}</div>
             </div>
             <div className="mt-4 flex flex-wrap gap-3">
@@ -154,7 +154,7 @@ export function CanonicalCustodyProofSurface({
         <div className="grid gap-4 xl:grid-cols-[1.05fr_0.95fr]">
           <div className="rounded-3xl border border-amber-300/14 bg-amber-300/[0.06] p-5">
             <div className="text-[11px] uppercase tracking-[0.28em] text-amber-200/78">
-              Exact pending items
+              Active evidence targets
             </div>
             <div className="mt-4 grid gap-2">
               {snapshot.pendingItems.map((item) => (
@@ -167,10 +167,10 @@ export function CanonicalCustodyProofSurface({
 
           <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
             <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/76">
-              Exact blocker and sources
+              Next readiness gate and sources
             </div>
             <div className="mt-4 text-sm leading-7 text-white/62">
-              <div><span className="text-white/78">Blocker:</span> {snapshot.blocker.id}</div>
+              <div><span className="text-white/78">Gate:</span> {snapshot.blocker.id}</div>
               <div><span className="text-white/78">Severity:</span> {snapshot.blocker.severity}</div>
               <div><span className="text-white/78">Status:</span> {snapshot.blocker.status}</div>
               <div className="mt-2">{snapshot.blocker.nextAction}</div>
@@ -198,7 +198,7 @@ export function CanonicalCustodyProofSurface({
             </div>
             {mode === "documents" ? (
               <div className="mt-4 rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/58">
-                This is the reviewer-safe proof surface. It only reflects the canonical repo files and does not promote operator draft capture into official launch truth.
+                This is the canonical proof surface. It reflects the repo-backed custody record directly and keeps operator draft capture separate from official readiness evidence.
               </div>
             ) : null}
           </div>

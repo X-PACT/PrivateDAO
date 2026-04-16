@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 import { DeveloperPlatformSurface } from "@/components/developer-platform-surface";
 import { EcosystemFocusAlignmentStrip } from "@/components/ecosystem-focus-alignment-strip";
 import { OperationsShell } from "@/components/operations-shell";
@@ -5,6 +7,16 @@ import { ProofCenter } from "@/components/proof-center";
 import { SiteSearchPanel } from "@/components/site-search-panel";
 import { PlatformServiceArchitecture } from "@/components/platform-service-architecture";
 import { TrustSurface } from "@/components/trust-surface";
+import { buildRouteMetadata } from "@/lib/route-metadata";
+
+export const metadata: Metadata = buildRouteMetadata({
+  title: "Developers",
+  description:
+    "Developer-facing proof, docs, and service architecture for PrivateDAO operators and integrators.",
+  path: "/developers",
+  keywords: ["developers", "docs", "proof", "service architecture", "integrators"],
+  index: false,
+});
 
 export default function DevelopersPage() {
   return (

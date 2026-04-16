@@ -9,6 +9,7 @@ export const metadata: Metadata = buildRouteMetadata({
     "Hosted product demo for PrivateDAO covering the user flow, Devnet actions, trust surfaces, and rollout story.",
   path: "/demo",
   keywords: ["demo", "product video", "private dao demo", "devnet demo"],
+  index: false,
 });
 
 export default StoryPage;

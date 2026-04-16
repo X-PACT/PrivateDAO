@@ -61,7 +61,7 @@ export function RuntimeEvidenceContinuityPanel({
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <div className="text-[11px] uppercase tracking-[0.28em] text-fuchsia-200/78">Runtime evidence continuity</div>
-            <CardTitle>Real-device and monitoring proof stay attached to the active execution payload</CardTitle>
+            <CardTitle>Real-device and monitoring evidence stay attached to the same live execution object</CardTitle>
           </div>
           <Badge variant="violet">Judge and reviewer live</Badge>
         </div>
@@ -153,7 +153,8 @@ export function RuntimeEvidenceContinuityPanel({
               </div>
             ) : (
               <div className="mt-2 text-sm leading-7 text-white/60">
-                Runtime evidence remains available even when there is no active treasury delivery handoff.
+                Runtime evidence remains available even when there is no active treasury delivery handoff, so a visitor
+                can still verify what the product already executed and inspect how the evidence chain is kept coherent.
               </div>
             )}
           </div>
@@ -193,7 +194,9 @@ export function RuntimeEvidenceContinuityPanel({
               Reviewer-operable controls
             </div>
             <div className="mt-2 text-sm leading-7 text-white/60">
-              Real-device intake, alert rules, and runtime runbooks stay reachable from the same evidence object instead of splitting into unrelated document trails.
+              Real-device intake, alert rules, and runtime runbooks stay reachable from the same evidence object. The
+              product keeps verification, operations, and reviewer visibility in one corridor instead of splitting them
+              into unrelated trails.
             </div>
             <div className="mt-3 flex flex-wrap gap-3">
               <Link href="/documents/real-device-runtime" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")}>

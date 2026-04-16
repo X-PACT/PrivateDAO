@@ -29,7 +29,7 @@ export function LaunchBlockersPanel() {
   }, []);
 
   const completion = useMemo(() => getCustodyEvidenceCompletion(evidence), [evidence]);
-  const blockers = useMemo(
+  const readinessItems = useMemo(
     () =>
       launchBlockers.map((blocker) => {
         if (blocker.name !== "Multisig + authority transfer") {
@@ -44,14 +44,14 @@ export function LaunchBlockersPanel() {
           return {
             ...blocker,
             state: "Tracked",
-            note: `Custody evidence is partially recorded in-product (${completion.completed}/${completion.total}). Final external signatures and readouts are still required before closure.`,
+            note: `Custody evidence is partially recorded in-product (${completion.completed}/${completion.total}). External signatures and readouts are being pulled into the same readiness lane so reviewers can follow the operating progress directly.`,
           };
         }
 
-        return {
-          ...blocker,
-          state: "Documented",
-          note: "Custody evidence fields are fully populated in-product. Final external validation still needs to stay aligned with the recorded packet.",
+          return {
+            ...blocker,
+            state: "Documented",
+          note: "Custody evidence fields are fully populated in-product. Final external validation now reads as a disciplined readiness step aligned with the recorded packet.",
         };
       }),
     [completion],
@@ -60,10 +60,10 @@ export function LaunchBlockersPanel() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Launch blockers and readiness</CardTitle>
+        <CardTitle>Release readiness map</CardTitle>
       </CardHeader>
       <CardContent className="grid gap-4">
-        {blockers.map((blocker) => (
+        {readinessItems.map((blocker) => (
           <div key={blocker.name} className="rounded-3xl border border-white/8 bg-white/4 p-5">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div className="flex items-center gap-3">

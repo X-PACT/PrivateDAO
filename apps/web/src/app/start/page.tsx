@@ -23,7 +23,7 @@ export default function StartPage() {
     <OperationsShell
       eyebrow="Quick start"
       title="Connect a wallet and start the full Devnet flow without learning the product architecture first"
-      description="This page is the easy on-ramp. It explains what PrivateDAO lets you do, points to the exact first action, and keeps deeper proof and trust surfaces one layer away."
+      description="This page is the easy on-ramp. Connect a Devnet wallet, run the real governance flow yourself, and keep proof and trust surfaces one layer away when you want to inspect how the product stays private, fast, and verifiable."
       navigationMode="guided"
       badges={[
         { label: "Consumer-first shell", variant: "success" },
@@ -36,7 +36,7 @@ export default function StartPage() {
         <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/76">Need more after the first run?</div>
         <h2 className="mt-3 text-xl font-semibold text-white">Use only two routes after this page</h2>
         <p className="mt-3 max-w-3xl text-sm leading-7 text-white/64">
-          Go to <strong className="text-white">Govern</strong> to create a DAO, create a proposal, vote, and execute. Open <strong className="text-white">Live State</strong> only after a wallet action when you want to check the result.
+          Go to <strong className="text-white">Govern</strong> to create a DAO, create a proposal, vote, and execute with your own Devnet wallet. Open <strong className="text-white">Live State</strong> after each wallet action when you want to verify the result, inspect the runtime trail, and see how the product keeps privacy, cryptography, and speed inside one real flow.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
           <Link href="/govern" className={cn(buttonVariants({ size: "sm" }))}>

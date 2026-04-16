@@ -13,11 +13,12 @@ export function RealDeviceWalletMatrixPanel() {
     <Card className="border-amber-300/16 bg-[linear-gradient(180deg,rgba(24,18,8,0.96),rgba(12,10,18,0.99))]">
       <CardHeader className="space-y-3">
         <div className="text-[11px] uppercase tracking-[0.3em] text-amber-200/78">Wallet matrix and monitoring</div>
-        <CardTitle className="text-2xl">The two operational blockers that matter most before mainnet claims</CardTitle>
+        <CardTitle className="text-2xl">The two operating systems that turn a strong Devnet product into a confident mainnet candidate</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="text-sm leading-7 text-white/66">
-          This surface uses the generated runtime and alert artifacts directly. It shows the current wallet matrix gap and the current monitoring rule posture without pretending either is already closed.
+          This surface uses generated runtime and alert artifacts directly. It shows how wallet coverage and monitoring
+          discipline are being pushed into the same product story a reviewer can inspect after a real Devnet session.
         </div>
 
         <div className="grid gap-4 xl:grid-cols-2">
@@ -55,7 +56,7 @@ export function RealDeviceWalletMatrixPanel() {
               ))}
             </div>
             <div className="mt-4 rounded-2xl border border-white/8 bg-black/20 px-4 py-3 text-sm leading-7 text-white/64">
-              <span className="text-white/84">Current boundary:</span> {snapshot.monitoring.claimBoundary}
+              <span className="text-white/84">Current operating boundary:</span> {snapshot.monitoring.claimBoundary}
             </div>
           </div>
         </div>
@@ -78,7 +79,7 @@ export function RealDeviceWalletMatrixPanel() {
             <CheckCircle2 className="h-4 w-4" />
           </Link>
           <Link href="/documents/mainnet-blockers" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
-            Mainnet blockers
+            Release readiness map
             <AlertTriangle className="h-4 w-4" />
           </Link>
         </div>
@@ -89,7 +90,8 @@ export function RealDeviceWalletMatrixPanel() {
             Why this matters to funders
           </div>
           <div className="mt-3">
-            These are not speculative roadmap items. They are the exact operational closures that convert a strong Devnet product into a believable mainnet release candidate.
+            These are not abstract roadmap promises. They are the practical operating layers that let funders and judges
+            see a real product gaining the coverage and discipline needed for production release.
           </div>
         </div>
       </CardContent>

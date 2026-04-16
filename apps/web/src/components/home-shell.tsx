@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, Compass, PlayCircle, Shield, Trophy } from "lucide-react";
+import { ArrowRight, CheckCircle2, Compass, LifeBuoy, MessageSquareHeart, PlayCircle, Shield, Trophy } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -95,6 +95,42 @@ export function HomeShell() {
       outcome: "Used to keep Devnet reads, proposal status, and action feedback visible after a wallet action instead of leaving the user guessing.",
     },
   ];
+  const whatChangedCards = [
+    {
+      title: "Program architecture is now split for review",
+      detail: "The Solana program has been broken into domain modules for DAO, voting, treasury, privacy, errors, traits, and utilities so protocol review can happen against smaller surfaces.",
+    },
+    {
+      title: "Wallet-first Devnet proof is now real",
+      detail: "DAO bootstrap, proposal creation, and commit vote have live browser-wallet evidence, and the product flow is being extended through reveal, finalize, and execution closure.",
+    },
+    {
+      title: "Infrastructure and funding surfaces now align",
+      detail: "Telemetry, payout evidence, blocker registers, and grant packets now describe the same product reality instead of drifting into separate narratives.",
+    },
+  ];
+  const faqItems = [
+    {
+      question: "Is PrivateDAO already a real product or only a demo?",
+      answer:
+        "It is already a live Devnet product with wallet-first governance, proof, trust, and telemetry surfaces. The active work now is to keep converting that Devnet proof into stronger production-grade closure.",
+    },
+    {
+      question: "What does the cryptography actually do here?",
+      answer:
+        "ZK, REFHE, MagicBlock, and Fast RPC each map to a concrete product lane: privacy review, confidential payout posture, responsive execution, and reliable live reads. They are presented as service rails, not badge-only theory.",
+    },
+    {
+      question: "What kind of support helps most right now?",
+      answer:
+        "Runtime testing, wallet feedback, security review, operator introductions, infrastructure guidance, and serious ecosystem amplification all help move PrivateDAO from strong Devnet proof toward production-grade mainnet readiness.",
+    },
+  ];
+  const convictionStrip = [
+    "We build privacy, operational clarity, and trust into one production-oriented product path.",
+    "We keep the work verifiable, ship tranche by tranche, and raise the quality bar every cycle.",
+    "With real community support, PrivateDAO can mature into infrastructure that helps protect the ecosystem.",
+  ];
   return (
     <main className="pb-20 sm:pb-24">
       <section className="mx-auto w-full max-w-7xl px-4 pt-8 sm:px-6 sm:pt-12 lg:px-8 lg:pt-18">
@@ -111,7 +147,7 @@ export function HomeShell() {
                 Create a private Solana DAO, submit a proposal, vote, and execute without leaving one guided wallet flow.
               </div>
               <p className="max-w-2xl text-sm leading-7 text-white/62 sm:text-lg sm:leading-8">
-                PrivateDAO turns treasury decisions into a simple Devnet product flow. Start with wallet connection, create a DAO, move into proposals and voting, then inspect live state and proof only when you need more depth.
+                PrivateDAO turns treasury decisions into a simple Devnet product flow. The best way to understand it is to connect a Devnet wallet, create a DAO, move into proposals and voting, and then inspect live state and proof only when you want more depth.
               </p>
             </div>
 
@@ -210,7 +246,7 @@ export function HomeShell() {
                 </div>
                 <div className="mt-2 text-lg font-semibold text-amber-50">1st Place · Superteam Poland</div>
                 <div className="mt-2 text-sm leading-7 text-amber-50/70">
-                  Strong proof remains available for judges and investors, but the homepage now stays focused on what the product lets a user do first.
+                  Strong proof remains available for judges and investors, but the homepage stays focused on what a connected visitor can actually do first with a real Devnet wallet.
                 </div>
               </div>
             </CardContent>
@@ -228,6 +264,45 @@ export function HomeShell() {
           </div>
           <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5 text-sm leading-7 text-white/62">
             Web, Android, and reviewer routes now sit on one product narrative instead of competing shells and mislabeled pages.
+          </div>
+        </div>
+        <div className="mt-6 grid gap-4 xl:grid-cols-3">
+          <div className="rounded-[28px] border border-emerald-300/14 bg-[linear-gradient(180deg,rgba(8,22,20,0.96),rgba(8,12,18,0.99))] p-6">
+            <div className="text-[11px] uppercase tracking-[0.3em] text-emerald-200/78">Public good</div>
+            <div className="mt-3 text-xl font-semibold text-white">Built to help the ecosystem coordinate more safely</div>
+            <p className="mt-3 text-sm leading-7 text-white/62">
+              PrivateDAO is being built as reusable governance and treasury infrastructure for Solana. The value is not only one product instance. The value is a cleaner pattern for privacy, proof, treasury discipline, and operator trust that other teams can inspect and build on.
+            </p>
+          </div>
+          <div className="rounded-[28px] border border-cyan-300/14 bg-[linear-gradient(180deg,rgba(8,18,28,0.96),rgba(8,11,20,0.99))] p-6">
+            <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/78">Clear use cases</div>
+            <div className="mt-3 text-xl font-semibold text-white">Grant committees, DAOs, councils, and confidential payout operations</div>
+            <p className="mt-3 text-sm leading-7 text-white/62">
+              The strongest current use cases are easy to explain: private treasury approvals, grant and allocation committees, protocol operating councils, and payout workflows where privacy and execution discipline must stay together.
+            </p>
+          </div>
+          <div className="rounded-[28px] border border-violet-300/14 bg-[linear-gradient(180deg,rgba(20,14,36,0.96),rgba(10,10,20,0.99))] p-6">
+            <div className="text-[11px] uppercase tracking-[0.3em] text-violet-200/78">Clear milestones</div>
+            <div className="mt-3 text-xl font-semibold text-white">From live Devnet product to stronger production release confidence</div>
+            <p className="mt-3 text-sm leading-7 text-white/62">
+              The roadmap is straightforward: simplify first-use verification, strengthen proof and telemetry continuity, close audit and custody gates, and then ship the strongest possible production release candidate.
+            </p>
+          </div>
+        </div>
+        <div className="mt-6 rounded-[28px] border border-cyan-300/14 bg-[linear-gradient(180deg,rgba(10,19,34,0.96),rgba(6,10,22,0.98))] p-6 sm:p-7">
+          <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/74">Execution conviction</div>
+          <div className="mt-3 max-w-4xl text-xl font-semibold tracking-[-0.03em] text-white sm:text-2xl">
+            We are building PrivateDAO as production-intent governance infrastructure: private by design, verifiable in operation, and easier to trust with every serious execution tranche.
+          </div>
+          <p className="mt-3 max-w-4xl text-sm leading-7 text-white/62 sm:text-base">
+            The ambition is straightforward: earn first-place trust through real product quality, visible proof, and operational discipline, then turn ecosystem support into the technical, financial, and human momentum that carries PrivateDAO from strong Devnet execution toward durable mainnet infrastructure. We want this work to help shape a new generation that protects the ecosystem and the broader blockchain space through stronger governance and safer treasury operations.
+          </p>
+          <div className="mt-5 grid gap-3 md:grid-cols-3">
+            {convictionStrip.map((item) => (
+              <div key={item} className="rounded-[20px] border border-white/8 bg-white/[0.03] px-4 py-3 text-sm leading-7 text-white/62">
+                {item}
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -292,6 +367,83 @@ export function HomeShell() {
               <p className="mt-3 text-sm leading-7 text-white/60">{item.outcome}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="mx-auto mt-14 w-full max-w-7xl px-4 sm:mt-16 sm:px-6 lg:px-8">
+        <div className="max-w-3xl space-y-4">
+          <div className="text-[11px] font-medium uppercase tracking-[0.34em] text-violet-200/80">Execution strategy</div>
+          <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Recent development raised the product, the protocol, and the review posture together</h2>
+          <p className="text-base leading-8 text-white/60 sm:text-lg">
+            The current work is focused on turning PrivateDAO into infrastructure that can be reviewed, tested, funded, and then deployed with confidence. The strategy is to keep shipping real product proof while steadily converting each operational and protocol target into something stronger, clearer, and easier to trust.
+          </p>
+        </div>
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
+          {whatChangedCards.map((item) => (
+            <div key={item.title} className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
+              <div className="text-lg font-semibold text-white">{item.title}</div>
+              <p className="mt-3 text-sm leading-7 text-white/60">{item.detail}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto mt-14 w-full max-w-7xl px-4 sm:mt-16 sm:px-6 lg:px-8">
+        <div className="grid gap-6 xl:grid-cols-[1.08fr_0.92fr]">
+          <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(12,18,34,0.94),rgba(7,10,22,0.99))]">
+            <CardHeader className="space-y-3">
+              <div className="flex items-center gap-3 text-emerald-200">
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-emerald-300/15 bg-emerald-300/10">
+                  <LifeBuoy className="h-5 w-5" />
+                </div>
+                <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-200/80">Support the mission</div>
+              </div>
+              <CardTitle className="text-2xl">We invite the community to help turn PrivateDAO into ecosystem infrastructure through real support, review, and execution</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm leading-7 text-white/62">
+                PrivateDAO is being built as governance and treasury infrastructure that can serve the Solana ecosystem broadly. We are working continuously to make it more capable, safer, and more valuable, and that mission moves faster with practical support: testing, technical review, integrations, operator discipline, and serious ecosystem distribution.
+              </p>
+              <p className="text-sm leading-7 text-white/62">
+                What support accelerates most is not vague enthusiasm. It is the kind of help that turns a strong Devnet product into stronger ecosystem infrastructure: wallet testing, security review, operational introductions, integrations, and funding that maps directly to visible milestones.
+              </p>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="rounded-[20px] border border-white/8 bg-white/[0.03] p-4 text-sm leading-7 text-white/60">Runtime testing, browser-wallet checks, and real-device validation on Devnet</div>
+                <div className="rounded-[20px] border border-white/8 bg-white/[0.03] p-4 text-sm leading-7 text-white/60">Security review, protocol scrutiny, and custody-hardening support</div>
+                <div className="rounded-[20px] border border-white/8 bg-white/[0.03] p-4 text-sm leading-7 text-white/60">Infrastructure guidance for API, RPC, telemetry, monitoring, and recovery</div>
+                <div className="rounded-[20px] border border-white/8 bg-white/[0.03] p-4 text-sm leading-7 text-white/60">Introductions, amplification, and ecosystem trust that help this become shared infrastructure</div>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <Link className={cn(buttonVariants({ size: "lg" }))} href="/community">
+                  Join the community
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/documents/technical-verification-status-2026">
+                  Read technical verification
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,15,30,0.92),rgba(6,9,20,0.98))]">
+            <CardHeader className="space-y-3">
+              <div className="flex items-center gap-3 text-cyan-200">
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-cyan-300/15 bg-cyan-300/10">
+                  <MessageSquareHeart className="h-5 w-5" />
+                </div>
+                <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/80">FAQ</div>
+              </div>
+              <CardTitle className="text-2xl">Short answers for normal users, reviewers, and funders</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {faqItems.map((item) => (
+                <div key={item.question} className="rounded-[20px] border border-white/8 bg-white/[0.03] p-4">
+                  <div className="text-sm font-semibold text-white">{item.question}</div>
+                  <p className="mt-2 text-sm leading-7 text-white/60">{item.answer}</p>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
         </div>
       </section>
 

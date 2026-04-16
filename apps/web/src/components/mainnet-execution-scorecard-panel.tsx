@@ -13,7 +13,7 @@ export function MainnetExecutionScorecardPanel() {
     <Card className="border-amber-300/16 bg-[linear-gradient(180deg,rgba(24,16,8,0.96),rgba(10,10,18,0.99))]">
       <CardHeader className="space-y-3">
         <div className="text-[11px] uppercase tracking-[0.3em] text-amber-200/78">Mainnet execution scorecard</div>
-        <CardTitle className="text-2xl">How much of the mainnet path is already structured vs still blocked externally</CardTitle>
+        <CardTitle className="text-2xl">How much of the mainnet path is already structured vs what still depends on external closure</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -33,13 +33,13 @@ export function MainnetExecutionScorecardPanel() {
           <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-5">
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-amber-200/78">
               <Waypoints className="h-4 w-4" />
-              Pending external
+              External closure
             </div>
             <div className="mt-3 text-2xl font-medium text-white">
               {snapshot.launchOps.pendingExternal + snapshot.blockers.pendingExternal}
             </div>
             <div className="mt-3 text-sm leading-7 text-white/60">
-              External actions still dominate the remaining path: audit, multisig, monitoring delivery, and release ceremony.
+              External actions still define the remaining path: audit, multisig, monitoring delivery, and release ceremony.
             </div>
           </div>
 
@@ -52,20 +52,20 @@ export function MainnetExecutionScorecardPanel() {
               {snapshot.launchOps.pendingRuntimeCaptures + snapshot.blockers.pendingRuntimeCaptures}
             </div>
             <div className="mt-3 text-sm leading-7 text-white/60">
-              Real-device wallet evidence is still one of the clearest funding leverage points because it is bounded and measurable.
+              Real-device wallet evidence remains one of the clearest readiness accelerators because it is bounded and measurable.
             </div>
           </div>
 
           <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-5">
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-fuchsia-200/78">
               <ShieldCheck className="h-4 w-4" />
-              Severity profile
+              Readiness profile
             </div>
             <div className="mt-3 text-2xl font-medium text-white">
               {snapshot.blockers.critical} critical / {snapshot.blockers.high} high
             </div>
             <div className="mt-3 text-sm leading-7 text-white/60">
-              The blocker set is not hidden. It is explicit, countable, and therefore more credible to a serious grant reviewer.
+              The remaining critical and high-severity items are explicit, countable, and therefore more credible to a serious grant reviewer.
             </div>
           </div>
         </div>
@@ -73,10 +73,10 @@ export function MainnetExecutionScorecardPanel() {
         <div className="rounded-3xl border border-fuchsia-300/14 bg-fuchsia-300/[0.06] p-5 text-sm leading-7 text-white/64">
           <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-fuchsia-200/78">
             <AlertTriangle className="h-4 w-4" />
-            Claim boundary
+            Readiness boundary
           </div>
           <div className="mt-3">
-            Production mainnet claim allowed: <span className="text-white/84">{String(snapshot.claimAllowed)}</span>. This surface exists to raise confidence through explicit execution structure, not through inflated readiness language.
+            Production mainnet claim allowed: <span className="text-white/84">{String(snapshot.claimAllowed)}</span>. This surface exists to raise confidence through explicit execution structure and measurable closure, not through inflated readiness language.
           </div>
         </div>
 
@@ -98,7 +98,7 @@ export function MainnetExecutionScorecardPanel() {
             <ArrowUpRight className="h-4 w-4" />
           </Link>
           <Link href="/documents/mainnet-blockers" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
-            Mainnet blockers
+            Mainnet readiness gates
             <ArrowUpRight className="h-4 w-4" />
           </Link>
         </div>

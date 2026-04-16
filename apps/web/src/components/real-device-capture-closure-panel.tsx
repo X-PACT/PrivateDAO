@@ -13,7 +13,7 @@ export function RealDeviceCaptureClosurePanel() {
     <Card className="border-emerald-300/16 bg-[linear-gradient(180deg,rgba(12,18,24,0.96),rgba(10,10,18,0.99))]">
       <CardHeader className="space-y-3">
         <div className="text-[11px] uppercase tracking-[0.3em] text-emerald-200/78">Real-device closure program</div>
-        <CardTitle className="text-2xl">The exact capture board that still separates strong Devnet proof from believable mainnet posture</CardTitle>
+        <CardTitle className="text-2xl">The real-device capture board that expands Devnet proof into release-grade confidence</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid gap-4 md:grid-cols-3">
@@ -24,18 +24,20 @@ export function RealDeviceCaptureClosurePanel() {
             </div>
             <div className="mt-3 text-2xl font-medium text-white">{snapshot.completionLabel}</div>
             <div className="mt-3 text-sm leading-7 text-white/60">
-              This is a capture program, not a speculative roadmap. Every row below maps to a wallet/client that still needs recorded proof.
+              This is a live capture program, not a speculative roadmap. Every row below maps to a wallet/client where
+              recorded proof strengthens the release story and makes the product easier to trust.
             </div>
           </div>
 
           <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-5">
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-cyan-200/78">
               <Smartphone className="h-4 w-4" />
-              Pending targets
+              Active targets
             </div>
             <div className="mt-3 text-2xl font-medium text-white">{snapshot.pendingCount}</div>
             <div className="mt-3 text-sm leading-7 text-white/60">
-              Phantom, Solflare, Backpack, Glow, and Android/mobile still need closure in the same reviewer-visible intake path.
+              Phantom, Solflare, Backpack, Glow, and Android/mobile are all being pulled into the same reviewer-visible
+              intake path so visitors can see the product growing across real wallet conditions.
             </div>
           </div>
 
@@ -46,7 +48,8 @@ export function RealDeviceCaptureClosurePanel() {
             </div>
             <div className="mt-3 text-lg font-medium text-white">connect + sign + submit</div>
             <div className="mt-3 text-sm leading-7 text-white/60">
-              A capture only counts when it shows diagnostics visibility and a signed Devnet outcome or an explicit wallet-side error boundary.
+              A capture counts when it shows diagnostics visibility and a signed Devnet outcome or an explicit wallet-side
+              error boundary. That keeps the evidence honest while still moving the product toward broader production confidence.
             </div>
           </div>
         </div>

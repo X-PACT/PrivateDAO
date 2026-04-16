@@ -36,6 +36,7 @@ const copy = {
 
 const payoutProfileLabels: Record<ServiceHandoffState["payoutProfile"], string> = {
   "pilot-funding": "Pilot funding",
+  "treasury-rebalance": "Treasury rebalance",
   "treasury-top-up": "Treasury top-up",
   "vendor-payout": "Vendor payout",
   "contributor-payout": "Contributor payout",

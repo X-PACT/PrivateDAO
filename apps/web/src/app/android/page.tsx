@@ -23,6 +23,7 @@ export const metadata: Metadata = buildRouteMetadata({
     "Download the current PrivateDAO Android devnet APK, review the parity plan, and follow the mobile branch as it expands toward deeper web-aligned service coverage.",
   path: "/android",
   keywords: ["android app", "apk", "mobile wallet adapter", "android governance app", "privatedao mobile"],
+  index: false,
 });
 
 const parityItems = [

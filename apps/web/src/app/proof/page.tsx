@@ -33,13 +33,16 @@ export default function ProofPage() {
     <OperationsShell
       eyebrow="Proof"
       title="Runtime evidence, reviewer packets, and additive hardening in one surface"
-      description="The Next.js app exposes the same proof story as the current site, but inside a cleaner operational shell: baseline live proof, dedicated V3 hardening proof, integration packets, and explicit launch boundaries."
+      description="The Next.js app exposes the same proof story as the current site, but inside a cleaner operational shell: baseline live proof, dedicated V3 hardening proof, integration packets, and the exact surfaces you use after running the real Devnet flow yourself."
       badges={[
         { label: "Proof Center", variant: "cyan" },
         { label: "Reviewer-ready", variant: "violet" },
         { label: "Baseline + V3", variant: "success" },
       ]}
     >
+      <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-5 text-sm leading-7 text-white/72">
+        Connect a Devnet wallet, run the DAO lifecycle from <strong className="text-white">Govern</strong>, then use this proof surface to verify how the product keeps privacy, cryptography, and execution evidence visible after each real action.
+      </div>
       <div>
         <Suspense fallback={null}>
           <ProofEntryBanner />

@@ -133,7 +133,7 @@ export const frontierOperatingSignals = [
     title: "Drift proved ops failures can beat good code",
     summary:
       "The largest Solana DeFi exploit in history came through signer hygiene, durable nonce exposure, weak admin thresholding, and missing timelocks rather than a contract bug.",
-    action: "Keep signer posture, timelock discipline, launch blockers, and runtime honesty visible in the product.",
+    action: "Keep signer posture, timelock discipline, release gates, and runtime clarity visible in the product.",
   },
   {
     title: "STRIDE and SIRN raised the security bar",
@@ -397,7 +397,7 @@ export const servicePacks = [
   {
     name: "Grant Committee",
     fit: "Private committee decisions and public treasury accountability",
-    cta: "Start reviewer-safe grant governance",
+    cta: "Start reviewer-visible grant governance",
   },
   {
     name: "Fund Governance",
@@ -875,7 +875,7 @@ export const competitionTracks = [
     winningThesis:
       "Win by showing confidential payout, payroll, and treasury motion rehearsal as usable product behavior rather than privacy rhetoric.",
     summary:
-      "Umbra is a natural fit because PrivateDAO already ties confidential treasury operations to governance approval, trust packets, and reviewer-safe evidence.",
+      "Umbra is a natural fit because PrivateDAO already ties confidential treasury operations to governance approval, trust packets, and reviewer-visible evidence.",
     edge: "The product can already tell a credible story around private grants, payroll, and governed payout rails backed by REFHE, ZK, and trust surfaces.",
     gap: "The remaining work is evidence packaging and payout-centric storytelling, not inventing a new privacy primitive.",
     action: "Lead with security, services, custody, and grant-committee proof as the confidential payout bundle.",
@@ -898,7 +898,7 @@ export const competitionTracks = [
     summary:
       "This corridor is strong if we stay precise about what is hardened already and what still awaits external audit closure.",
     edge: "The repo and product already expose authority hardening, incident readiness, reviewer packets, and custody truth as first-class surfaces.",
-    gap: "The missing piece is external audit completion itself, which must remain an explicit blocker rather than hidden.",
+    gap: "The missing piece is external audit completion itself, which should remain an explicit hardening gate rather than hidden.",
     action: "Lead with trust, hardening docs, incident readiness, and custody proof as the audit-credit packet.",
     href: "/trust",
     sourceUrl: "https://superteam.fun/earn/listing/50k-adevarlabs-bounty",
@@ -1028,13 +1028,13 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     ],
     winningMoves: [
       "Open with the problem, the user path, and why this is a real governance product, not with protocol trivia.",
-      "Show signer hygiene, timelock awareness, proof continuity, and launch honesty as first-class product values.",
+      "Show signer hygiene, timelock awareness, proof continuity, and release discipline as first-class product values.",
       "Use the story route to compress the whole thesis, then deepen through govern, proof, and services.",
     ],
     sponsorFit: [
       "Colosseum Frontier now rewards product impact and startup quality more than bounty accumulation.",
       "The root-domain live app, multi-page shell, and route-level workspaces directly serve that judging posture.",
-      "PrivateDAO is strongest when shown as one coherent product company with privacy, infra, and buyer layers connected.",
+      "PrivateDAO is strongest when shown as one coherent product with privacy, infrastructure, and buyer layers connected.",
     ],
     validationSteps: [
       "Run `cd apps/web && npm run lint && npm run build` before recording or final screenshots.",
@@ -1067,7 +1067,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     deliverables: [
       "Use the comprehensive story video as the first-pass demo for judges.",
       "Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet.",
-      "Keep the pitch deck anchored around private governance, confidential payouts, and honest launch boundaries.",
+      "Keep the pitch deck anchored around private governance, confidential payouts, and clear release boundaries.",
     ],
     requirements: [
       "Private problem framing that normal users and judges understand quickly.",
@@ -1503,7 +1503,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winningMoves: [
       "Show that analytics are a product feature for governance buyers, not a vanity dashboard.",
       "Use diagnostics, read-node packaging, and evidence packets as one telemetry corridor.",
-      "Tie every chart or readout back to real Devnet actions and reviewer-safe proof.",
+      "Tie every chart or readout back to real Devnet actions and reviewer-visible proof.",
     ],
     sponsorFit: [
       "Dune fit is strongest when PrivateDAO reads like analyzable infrastructure, not just private voting UX.",
@@ -1587,7 +1587,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     deliverables: [
       "Lead with custody proof, authority control, and incident readiness rather than with a generic security claim.",
       "Keep all hardening evidence aligned across trust, docs, and diagnostics.",
-      "Present audit-credit readiness honestly with explicit remaining blockers.",
+      "Present audit-credit readiness clearly with explicit remaining hardening gates.",
     ],
     requirements: [
       "Clear security and hardening posture.",
@@ -1595,19 +1595,19 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
       "No overclaiming around audit completion or custody readiness.",
     ],
     winningMoves: [
-      "Use reviewer-safe proof and hardening docs as the center of the submission.",
-      "Make explicit that external audit is pending and therefore still a blocker, not a hidden weakness.",
+      "Use reviewer-visible proof and hardening docs as the center of the submission.",
+      "Make explicit that external audit is an active hardening gate, not a hidden weakness.",
       "Show that the team already did the pre-audit operational work seriously.",
     ],
     sponsorFit: [
       "Adevar fit improves when security is shown as a discipline across product, not only code snippets.",
       "PrivateDAO already has unusually strong reviewer and hardening packets for this corridor.",
-      "Honesty about remaining audit blockers is an advantage here, not a liability.",
+      "Clarity about remaining audit gates is an advantage here, not a liability.",
     ],
     validationSteps: [
       "Run `npm run verify:review-bundle` and `npm run verify:runtime-evidence` before final screenshots.",
       "Use `/trust`, `/documents/canonical-custody-proof`, `/documents/authority-hardening-mainnet`, and `/diagnostics` as the packet.",
-      "Keep the external audit blocker visible in every hardening-facing narrative.",
+      "Keep the external audit gate visible in every hardening-facing narrative.",
     ],
   },
   {
@@ -1691,7 +1691,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winningMoves: [
       "Frame PrivateDAO as governance infrastructure with commercial rails, not just a DAO interface.",
       "Use the regional proof signal carefully but anchor the case in current product strength.",
-      "Keep mainnet blockers explicit so grant reviewers trust the roadmap.",
+      "Keep production gates explicit so grant reviewers trust the roadmap.",
     ],
     sponsorFit: [
       "Poland grants fit is strongest when the product reads like durable ecosystem infrastructure.",
@@ -1708,13 +1708,13 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     slug: "startup-accelerator",
     title: "Startup Accelerator Workspace",
     sponsor: "Superteam Startup Accelerator",
-    prizeSummary: "Accelerator corridor for startup-quality products that can convert grant review into company formation momentum.",
+    prizeSummary: "Accelerator corridor for startup-quality products that can convert grant review into real product momentum.",
     winnerAnnouncementBy: "Follow the Startup Accelerator grant page and fast-track support timing.",
     skillsNeeded: ["Frontend", "Backend", "Blockchain", "Design", "Product", "Operations"],
     recommendedWallet: "Solflare for the live demo; capital reviewers care most about coherence, traction posture, and launch discipline.",
     devnetStatus: "Live on Devnet with root-domain product shell, story video, services packaging, trust packet, and track workspaces already in place.",
     objective:
-      "Show that PrivateDAO is already a coherent company-in-formation: product, revenue rails, trust posture, and a disciplined path to mainnet.",
+      "Show that PrivateDAO is already a coherent product: product shell, revenue rails, trust posture, and a disciplined path to production release.",
     whyUs:
       "Few submissions combine live product, commercial surfaces, trust packets, runtime evidence, and competition-grade documentation as cohesively as PrivateDAO now does.",
     primaryCorridor: "Start + Story + Services + Trust",
@@ -1728,27 +1728,27 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     deliverables: [
       "Lead with the live product before the deck.",
       "Use services and trust surfaces to make the business and launch thesis inspectable.",
-      "Keep the roadmap tied to explicit mainnet gates rather than fuzzy ambition.",
+      "Keep the roadmap tied to explicit production gates rather than fuzzy ambition.",
     ],
     requirements: [
       "A startup-quality product narrative.",
       "Clear commercial relevance beyond a hackathon artifact.",
-      "A believable plan to convert Devnet proof into mainnet and company milestones.",
+      "A believable plan to convert Devnet proof into production and operating milestones.",
     ],
     winningMoves: [
       "Use start, story, services, and trust as one accelerator-ready funnel.",
-      "Treat mainnet blockers as execution milestones, not marketing liabilities.",
+      "Treat production gates as execution milestones, not marketing liabilities.",
       "Make the commercial infrastructure thesis explicit: governance, gaming, and confidential payout corridors on one stack.",
     ],
     sponsorFit: [
       "This corridor maps directly to where PrivateDAO is strongest commercially.",
       "The app, deck, story, proof, and trust routes now look more like a company package than a hackathon repo.",
-      "Accelerator reviewers will reward coherence, honesty, and visible execution more than extra feature count.",
+      "Accelerator reviewers will reward coherence, discipline, and visible execution more than extra feature count.",
     ],
     validationSteps: [
       "Use `/start`, `/story`, `/services`, `/trust`, `/documents/startup-accelerator-application-packet`, and `/viewer/investor-pitch-deck` as the capital packet.",
       "Keep `docs/mainnet-blockers.json` and public trust language aligned before any grant submission.",
-      "Do not claim mainnet launch readiness until the blocker set is materially closed.",
+      "Do not claim production launch readiness until the operating gate set is materially closed.",
     ],
   },
 ];
@@ -1818,8 +1818,8 @@ export const securitySurfaces = [
     href: "/documents/settlement-hardening-v3",
   },
   {
-    title: "Mainnet blockers",
-    body: "The app keeps launch boundaries honest: what is live now, what is pending-external, and what still needs custody/audit work.",
+    title: "Release readiness register",
+    body: "The app keeps launch boundaries clear: what is live now, what still needs external evidence, and what still needs custody or audit work.",
     href: "/documents/mainnet-blockers",
   },
 ];
@@ -1878,7 +1878,7 @@ export const confidenceEngineHighlights = [
   },
   {
     factor: "Reviewer confidence",
-    meaning: "Live proof, V3 packet, audit packet, and honest launch-boundary visibility.",
+    meaning: "Live proof, V3 packet, audit packet, and clear release-boundary visibility.",
   },
 ];
 
@@ -1931,7 +1931,7 @@ export const securityTracks = [
     title: "Audit and trust surfaces",
     status: "Reviewer-ready",
     summary:
-      "Audit packet, trust package, launch trust packet, and mainnet blockers stay visible as product-facing security boundaries.",
+      "Audit packet, trust package, launch trust packet, and release-gate packet stay visible as product-facing security boundaries.",
     href: "/documents/audit-packet",
   },
 ];
@@ -1946,13 +1946,13 @@ export const diagnosticsChecks = [
   {
     name: "Readiness gates",
     state: "Tracked",
-    detail: "Mainnet blockers, launch checklist, and release ceremony attestations remain explicit and versioned.",
+    detail: "Release-gate packet, launch checklist, and release ceremony attestations remain explicit and versioned.",
     href: "/documents/mainnet-blockers",
   },
   {
     name: "Wallet runtime",
     state: "Pending external",
-    detail: "Real-device runtime captures are tracked honestly and separated from simulated reviewer proof.",
+    detail: "Real-device runtime captures are tracked clearly and separated from simulated reviewer proof.",
     href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/wallet-runtime.md",
   },
   {
@@ -1974,7 +1974,7 @@ export const diagnosticsEvents = [
   },
   {
     title: "Mainnet gate",
-    body: "Readiness checks force honest launch boundaries instead of implying custody or audit completion that did not happen.",
+    body: "Readiness checks force clear launch boundaries instead of implying custody or audit completion that did not happen.",
   },
 ];
 
@@ -2012,7 +2012,7 @@ export const commandCenterPacks = [
   {
     title: "Private Grant Committee",
     subtitle: "Grant Committee",
-    summary: "Best for proposal review committees that need private signal collection, generated proof packets, and a reviewer-safe grant flow.",
+    summary: "Best for proposal review committees that need private signal collection, generated proof packets, and a reviewer-visible grant flow.",
     technologies: ["ZK", "Fast RPC", "Live proof"],
     readiness: "Reviewer-ready pattern",
   },
@@ -2060,7 +2060,7 @@ export const analyticsSnapshots = [
     detail: "Governance V3 and Settlement V3 have dedicated Devnet proof packets with additive boundaries.",
   },
   {
-    label: "Launch blockers",
+    label: "Release gates",
     value: "6 tracked",
     detail: "Audit, multisig transfer, monitoring, real-device runtime, source-verifiable receipts, and cutover ceremony stay explicit.",
   },
@@ -2084,7 +2084,7 @@ export const analyticsReadiness = [
   },
   {
     title: "Launch truth boundary",
-    body: "Mainnet custody, multisig ceremony, audit closure, and real-device captures remain pending-external until evidenced.",
+    body: "Production custody, multisig ceremony, audit completion, and real-device captures remain active release gates until evidenced.",
     tone: "warning",
   },
 ];
@@ -2092,17 +2092,17 @@ export const analyticsReadiness = [
 export const launchBlockers = [
   {
     name: "Multisig + authority transfer",
-    state: "Pending external",
+    state: "External evidence next",
     note: "Custody workspace and transfer runbooks are live; program authority and operational privileges still need final multisig transaction evidence.",
   },
   {
     name: "External audit closure",
-    state: "Pending external",
-    note: "Security review packet exists, but external sign-off is still an explicit blocker.",
+    state: "External evidence next",
+    note: "Security review packet exists, and external sign-off remains an explicit hardening gate.",
   },
   {
     name: "Real-device runtime captures",
-    state: "Pending external",
+    state: "Capture expansion active",
     note: "Wallet runtime templates are documented; production captures are still separated from claims.",
   },
   {
@@ -2172,8 +2172,8 @@ export const trustLinks = [
     href: "/documents/launch-trust-packet",
   },
   {
-    title: "Mainnet blockers",
-    summary: "Honest list of what still needs custody, audit, and runtime evidence before real-funds launch.",
+    title: "Release readiness register",
+    summary: "Clear list of what still needs custody, audit, and runtime evidence before real-funds launch.",
     href: "/documents/mainnet-blockers",
   },
   {
@@ -2213,7 +2213,7 @@ export const commercialCompare = [
   {
     name: "Enterprise Governance Retainer",
     fit: "Best for organizations that want longer-term support across launch, controls, and operator workflows.",
-    deliverable: "SLA framing, trust package, launch blockers review, and governance operations guidance.",
+    deliverable: "SLA framing, trust package, release-gate review, and governance operations guidance.",
     cta: "Open SLA",
     href: "/documents/service-level-agreement",
   },
@@ -2237,7 +2237,7 @@ export const proofFlowSteps = [
   },
   {
     title: "Audit and launch trust",
-    detail: "Close the loop with audit packet, launch trust packet, and mainnet blockers so proof is not separated from deployment truth.",
+    detail: "Close the loop with audit packet, launch trust packet, and the release-gate packet so proof is not separated from deployment truth.",
     href: "/documents/launch-trust-packet",
   },
 ];
@@ -2248,7 +2248,7 @@ export const heroPersonas = {
     eyebrow: "Pilot-ready product surface",
     title: "Private governance and treasury execution packaged like a serious product.",
     description:
-      "See service packs, pricing language, trust boundaries, launch blockers, and a guided path from product selection to treasury execution.",
+      "See service packs, pricing language, trust boundaries, release gates, and a guided path from product selection to treasury execution.",
     primaryCtaLabel: "Get started",
     primaryCtaHref: "/start",
     secondaryCtaLabel: "Open govern",
@@ -2272,7 +2272,7 @@ export const heroPersonas = {
     eyebrow: "Governance and runtime operations",
     title: "Proposal actions, wallet state, diagnostics, and readiness gates stay connected.",
     description:
-      "Govern, live state, diagnostics, and launch blockers remain available in one operational surface for the team actually running the DAO.",
+      "Govern, live state, diagnostics, and release gates remain available in one operational surface for the team actually running the DAO.",
     primaryCtaLabel: "Open governance dashboard",
     primaryCtaHref: "/dashboard",
     secondaryCtaLabel: "Open diagnostics",

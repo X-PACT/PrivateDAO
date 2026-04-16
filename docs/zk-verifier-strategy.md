@@ -1,6 +1,6 @@
 # ZK Verifier Strategy
 
-This document defines the current verifier posture for PrivateDAO and what still needs to be closed before `zk_enforced` can become the stronger production-grade path.
+This document defines the current verifier posture for PrivateDAO and the next decisions required before `zk_enforced` becomes the stronger production-grade path.
 
 ## Current Strategy
 
@@ -16,7 +16,7 @@ The current model is:
 - on-chain receipt upgrades into `zk_enforced` mode
 - proposal-level `zk_enforced` policy once the required receipts exist
 
-This is intentionally stronger than a pure proof-of-concept, but still not the same as a final production-grade verifier architecture.
+This is already stronger than a pure proof-of-concept and gives the product a usable cryptographic path today, while leaving room for a stricter production-grade verifier architecture.
 
 ## Why This Exists
 
@@ -29,7 +29,7 @@ The current approach keeps the live governance product stable while allowing:
 
 without rewriting the entire commit-reveal lifecycle in one step.
 
-## What Still Needs To Be Decided
+## Next Verifier Decisions
 
 ### Verifier Boundary
 
@@ -74,6 +74,14 @@ Until the verifier boundary is frozen and reviewed:
 - `zk_enforced` is available
 - `zk_enforced` is useful
 - `zk_enforced` is not yet the dominant production recommendation
+
+## Ecosystem Value
+
+This work matters beyond one product surface because it helps the ecosystem:
+
+- understand how advanced verifier choices can be exposed through a usable governance product
+- reuse proof-anchor and receipt patterns instead of rebuilding them from scratch
+- move privacy-oriented governance closer to a repeatable production path on Solana
 
 ## Decision References
 

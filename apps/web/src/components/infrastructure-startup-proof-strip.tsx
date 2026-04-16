@@ -19,14 +19,14 @@ const routeConfig = {
     eyebrow: "Infrastructure startup proof",
     title: "The shortest startup-grade truth layer before the user opens anything else",
     description:
-      "Lead with the live product, reviewer telemetry, custody truth, the exact blocker, and the best demo route in one strip instead of scattering the story across tracks and packets.",
+      "Lead with the live product, reviewer telemetry, custody truth, the exact next readiness gate, and the best demo route in one strip instead of scattering the story across tracks and packets.",
     workspaceSlug: "colosseum-frontier",
   },
   story: {
     eyebrow: "Infrastructure startup proof",
     title: "The story route now opens with startup proof, not just a hosted video",
     description:
-      "Judges and buyers should see the live narrative boundary immediately: what works now, what is externally proven, what stays blocked, and where the fastest valid demo begins.",
+      "Judges and buyers should see the live narrative boundary immediately: what works now, what is externally proven, what the next readiness gate is, and where the fastest valid demo begins.",
     workspaceSlug: "privacy-track",
   },
 } as const;
@@ -108,7 +108,7 @@ export function InfrastructureStartupProofStrip({
           <div className="rounded-[22px] border border-white/8 bg-white/[0.03] px-4 py-4">
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-white/42">
               <TimerReset className="h-3.5 w-3.5 text-cyan-200/78" />
-              Exact blocker
+              Next readiness gate
             </div>
             <div className="mt-3 text-lg font-semibold tracking-tight text-white">
               {judgeFirstCopy.exactBlocker}

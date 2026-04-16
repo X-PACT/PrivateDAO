@@ -10,7 +10,7 @@ from:
 
 - credible live monitoring delivery
 
-It exists because a serious grant reviewer should not confuse a well-written runbook with an actually delivered monitoring posture.
+It exists because a serious reviewer should not confuse a well-written runbook with a delivered monitoring posture.
 
 ## What is already true
 
@@ -23,11 +23,11 @@ PrivateDAO already has:
 
 This means the monitoring problem is already structured.
 
-## What is not yet closed
+## Next operating lift
 
-The blocker is not “we do not know what to monitor.”
+The work is not about discovering what to monitor.
 
-The blocker is:
+The remaining delivery lift is:
 
 - alert destination ownership
 - primary and fallback RPC assignment
@@ -37,7 +37,7 @@ The blocker is:
 
 ## Why this matters
 
-For a mainnet-capable governance and treasury product, monitoring is not optional polish.
+For a production-capable governance and treasury product, monitoring is not optional polish.
 
 It is part of:
 
@@ -60,9 +60,9 @@ This packet is one of the strongest funding justifications in the repo because i
 - the work is bounded
 - the rules already exist
 - the remaining gap is operational execution
-- the outcome directly improves mainnet credibility
+- the outcome directly improves production confidence
 
-## Honest boundary
+## Current delivery boundary
 
 Do not claim:
 
@@ -73,4 +73,12 @@ Claim instead:
 
 - rule coverage is defined
 - incident paths are documented
-- external monitoring delivery is a remaining execution step with clear inputs and outputs
+- external monitoring delivery is an active execution step with clear inputs and outputs
+
+## Public-good value
+
+This monitoring work is useful beyond one team because it helps the ecosystem:
+
+- make governance and treasury operations more legible under real operating pressure
+- turn runtime and alerting practices into reusable infrastructure patterns
+- strengthen trust in products that expose privacy, treasury, and upgrade-critical flows

@@ -42,7 +42,7 @@ export function getCompetitionLaneSummary(slug: string) {
     case "colosseum-frontier":
       return "Primary startup-quality submission corridor for product impact, trust, proof, and buyer readiness.";
     case "privacy-track":
-      return "Confidential governance corridor for private voting, encrypted operations, and reviewer-safe proof.";
+      return "Confidential governance corridor for private voting, encrypted operations, and reviewer-visible proof.";
     case "eitherway-live-dapp":
       return "Wallet-first live app corridor for partner-facing demos and polished operational flow.";
     case "rpc-infrastructure":
@@ -62,7 +62,7 @@ export function getCompetitionLaneSummary(slug: string) {
     case "dune-analytics":
       return "Telemetry corridor for analytics exports, runtime evidence, and hosted-read infrastructure value.";
     case "umbra-confidential-payout":
-      return "Confidential payout corridor for private treasury motions, payroll, and reviewer-safe settlement proof.";
+      return "Confidential payout corridor for private treasury motions, payroll, and reviewer-visible settlement proof.";
     case "adevar-audit-credits":
       return "Hardening corridor for authority control, incident readiness, and audit-credit eligibility without overclaiming audit closure.";
     case "superteam-poland":

@@ -13,7 +13,7 @@ export function MonitoringDeliveryClosurePanel() {
     <Card className="border-cyan-300/16 bg-[linear-gradient(180deg,rgba(10,18,28,0.96),rgba(10,10,18,0.99))]">
       <CardHeader className="space-y-3">
         <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/78">Monitoring delivery closure</div>
-        <CardTitle className="text-2xl">The exact operating gap between defined alert rules and believable live delivery</CardTitle>
+        <CardTitle className="text-2xl">The exact operating path between defined alert rules and believable live delivery</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid gap-4 md:grid-cols-3">
@@ -31,11 +31,11 @@ export function MonitoringDeliveryClosurePanel() {
           <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-5">
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-amber-200/78">
               <AlertTriangle className="h-4 w-4" />
-              Blocker status
+              Delivery status
             </div>
             <div className="mt-3 text-lg font-medium text-white">{snapshot.blockerStatus}</div>
             <div className="mt-3 text-sm leading-7 text-white/60">
-              Owner: {snapshot.blockerOwner}. This remains an execution blocker before honest mainnet real-funds language.
+              Owner: {snapshot.blockerOwner}. This remains a readiness gate before honest mainnet real-funds language.
             </div>
           </div>
 
@@ -95,7 +95,7 @@ export function MonitoringDeliveryClosurePanel() {
         <div className="rounded-3xl border border-fuchsia-300/14 bg-fuchsia-300/[0.06] p-5 text-sm leading-7 text-white/64">
           <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-fuchsia-200/78">
             <ShieldCheck className="h-4 w-4" />
-            Claim boundary
+            Readiness boundary
           </div>
           <div className="mt-3">{snapshot.claimBoundary}</div>
         </div>
@@ -106,7 +106,7 @@ export function MonitoringDeliveryClosurePanel() {
             <ArrowUpRight className="h-4 w-4" />
           </Link>
           <Link href="/documents/monitoring-delivery-closure-packet" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
-            Closure packet
+            Delivery packet
             <ArrowUpRight className="h-4 w-4" />
           </Link>
           <Link href="/documents/monitoring-alert-rules" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
@@ -122,7 +122,7 @@ export function MonitoringDeliveryClosurePanel() {
             <ArrowUpRight className="h-4 w-4" />
           </Link>
           <Link href="/documents/mainnet-blockers" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
-            Mainnet blockers
+            Mainnet readiness gates
             <ArrowUpRight className="h-4 w-4" />
           </Link>
         </div>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, BriefcaseBusiness, Gauge, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, BriefcaseBusiness, Gauge, RefreshCcw, ShieldCheck } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 
 const iconMap = {
   "RPC Infrastructure": Gauge,
+  "Treasury Swap / Rebalance": RefreshCcw,
   "Gaming DAO": BriefcaseBusiness,
   "Payments DAO": BriefcaseBusiness,
   "Security / Encryption": ShieldCheck,
@@ -62,7 +63,7 @@ export function ServiceOperationalCards() {
                   <div className="mt-2">{card.buyerMotion}</div>
                 </div>
                 <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
-                  <div className="text-[11px] uppercase tracking-[0.22em] text-amber-300/76">Mainnet gate</div>
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-amber-300/76">Next readiness lift</div>
                   <div className="mt-2">{card.mainnetGate}</div>
                 </div>
               </div>

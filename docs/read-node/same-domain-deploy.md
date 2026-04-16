@@ -27,8 +27,8 @@ Target runtime shape:
 - public health and metrics
   - `https://privatedao.org/healthz`
   - `https://privatedao.org/api/v1/metrics`
-- backup-only static mirror
-  - `https://x-pact.github.io/PrivateDAO/`
+- any legacy static mirror
+  - non-canonical only if still needed operationally
 
 ## Read Node Process
 

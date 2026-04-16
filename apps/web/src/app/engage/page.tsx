@@ -20,6 +20,7 @@ export const metadata: Metadata = buildRouteMetadata({
     "Customer conversion route for pilots, hosted reads, confidential operations, enterprise governance, and explicit mainnet trajectory.",
   path: "/engage",
   keywords: ["engage", "pilot request", "hosted read api", "enterprise governance", "mainnet trajectory"],
+  index: false,
 });
 
 type EngagePageProps = {
@@ -70,11 +71,11 @@ export default function EngagePage({ searchParams }: EngagePageProps) {
       </Suspense>
       <Card>
         <CardHeader>
-          <CardTitle>Ownership, investor, and donor contact</CardTitle>
+          <CardTitle>Leadership, investor, and donor contact</CardTitle>
         </CardHeader>
         <CardContent className="space-y-5">
           <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-4 text-sm leading-7 text-white/72">
-            PrivateDAO is produced with execution support from a multi-national technical team. Product ownership, brand control, repository ownership, and commercialization rights remain solely with <span className="text-white">Fahd Kotb</span>.
+            PrivateDAO is built with execution support from a multi-national technical team. <span className="text-white">Fahd Kotb</span> leads product direction, execution accountability, and external coordination across investment, partnerships, and operator-facing delivery.
           </div>
           <div className="grid gap-4 lg:grid-cols-[1.3fr_0.9fr]">
             <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
@@ -83,7 +84,7 @@ export default function EngagePage({ searchParams }: EngagePageProps) {
                 Use this contact surface for
               </div>
               <div className="mt-3 space-y-2 text-sm leading-7 text-white/68">
-                <div>Investment discussions, donations, strategic help, enterprise pilots, integrations, and direct founder coordination.</div>
+                <div>Investment discussions, donations, strategic help, enterprise pilots, integrations, and direct product-lead coordination.</div>
                 <div>Primary email: <a className="text-white hover:text-cyan-200" href="mailto:fahd.kotb@tuta.io">fahd.kotb@tuta.io</a></div>
                 <div>Operations email: <a className="text-white hover:text-cyan-200" href="mailto:i.kotb@proton.me">i.kotb@proton.me</a></div>
                 <div>Additional contact: <a className="text-white hover:text-cyan-200" href="mailto:eslamkotb.369@gmail.com">eslamkotb.369@gmail.com</a></div>
@@ -104,7 +105,7 @@ export default function EngagePage({ searchParams }: EngagePageProps) {
           </div>
           <div className="flex flex-wrap gap-3">
             <Link href="/documents/ownership-and-contact" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
-              Open ownership packet
+              Open leadership packet
               <ArrowUpRight className="h-4 w-4" />
             </Link>
             <Link href="/documents/launch-trust-packet" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>

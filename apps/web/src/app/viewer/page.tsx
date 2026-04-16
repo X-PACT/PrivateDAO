@@ -12,6 +12,7 @@ export const metadata: Metadata = buildRouteMetadata({
     "Full repository markdown viewer for PrivateDAO docs, used to preserve legacy docs entrypoints while the curated document library expands.",
   path: "/viewer",
   keywords: ["repository docs", "legacy docs viewer", "markdown viewer"],
+  index: false,
 });
 
 export default function ViewerIndexPage() {

@@ -11,6 +11,7 @@ import {
   readStoredServiceHandoffState,
   type ServiceHandoffAssetSymbol,
   type ServiceHandoffRequestDelivery,
+  type ServiceHandoffTreasuryRoutePlan,
   writeStoredServiceHandoffState,
 } from "@/lib/service-handoff-state";
 import { getProposalById } from "@/lib/site-data";
@@ -23,6 +24,60 @@ const assetIconMap = {
   USDC: Coins,
   USDG: Landmark,
 } as const;
+
+const quoteReviewModes = [
+  {
+    value: "manual-review",
+    label: "Manual review",
+    summary: "Require an explicit operator review of the route and quote before the request moves into governed delivery.",
+  },
+  {
+    value: "policy-bound",
+    label: "Policy-bound review",
+    summary: "Accept the route when treasury policy and slippage thresholds already match the approved operating range.",
+  },
+  {
+    value: "operator-fast-path",
+    label: "Operator fast path",
+    summary: "Use a faster route review when the treasury is moving inside a known operating band and the destination asset is pre-approved.",
+  },
+] as const;
+
+const executionPreferences = [
+  {
+    value: "best-price",
+    label: "Best price",
+    summary: "Optimize for the strongest route outcome when the treasury can tolerate a longer review cycle.",
+  },
+  {
+    value: "stable-settlement",
+    label: "Stable settlement",
+    summary: "Bias the route toward stable funding and clearer payout settlement behavior.",
+  },
+  {
+    value: "fast-execution",
+    label: "Fast execution",
+    summary: "Bias the route toward fast operator completion inside a tighter execution window.",
+  },
+] as const;
+
+const slippageBands = [
+  {
+    value: "30",
+    label: "30 bps",
+    summary: "Tighter treasury discipline for payout funding or narrow rebalance motions.",
+  },
+  {
+    value: "75",
+    label: "75 bps",
+    summary: "Balanced setting for most governed treasury motions.",
+  },
+  {
+    value: "125",
+    label: "125 bps",
+    summary: "Wider operating range for more flexible treasury rebalances when explicitly reviewed.",
+  },
+] as const;
 
 const handoffLanes = [
   {
@@ -55,6 +110,20 @@ const handoffLanes = [
 ] as const;
 
 const destinationProfiles = [
+  {
+    value: "treasury-rebalance",
+    label: "Treasury rebalance",
+    summary: "Prepare a governed asset-motion request so the treasury can rebalance into the right settlement asset with a clear route rationale.",
+    defaultAsset: "SOL" as const,
+    defaultAmount: "0.25",
+    defaultLane: "operator",
+    defaultPurpose: "Treasury rebalance request routed through governed asset-motion policy and reviewer-visible settlement discipline.",
+    intake: "payments",
+    nextRoutes: [
+      { label: "Services", href: "/services#jupiter-treasury-route" },
+      { label: "Govern", href: "/govern" },
+    ],
+  },
   {
     value: "treasury-top-up",
     label: "Treasury top-up",
@@ -169,6 +238,85 @@ function buildProposalBackedPrefill(
   };
 }
 
+function buildTreasuryRoutePlan(params: {
+  profile: (typeof destinationProfiles)[number];
+  assetSymbol: ServiceHandoffAssetSymbol;
+  destinationAsset: ServiceHandoffAssetSymbol;
+  amount: string;
+  routeFocus: string;
+  quoteReviewMode: (typeof quoteReviewModes)[number]["value"];
+  executionPreference: (typeof executionPreferences)[number]["value"];
+  slippageBandBps: string;
+}): ServiceHandoffTreasuryRoutePlan {
+  const {
+    profile,
+    assetSymbol,
+    destinationAsset,
+    amount,
+    routeFocus,
+    quoteReviewMode,
+    executionPreference,
+    slippageBandBps,
+  } = params;
+  const normalizedAmount = amount.trim();
+  const executionMode =
+    profile.value === "vendor-payout" || profile.value === "contributor-payout"
+      ? "quote-aware payout funding"
+      : profile.value === "treasury-rebalance"
+        ? "governed treasury rebalance"
+      : profile.value === "pilot-funding"
+        ? "pilot funding rebalance"
+        : "governed treasury rebalance";
+
+  return {
+    routeProvider: "Jupiter-backed treasury lane",
+    executionMode,
+    sourceAssetHint:
+      assetSymbol === destinationAsset ? "Treasury active asset mix" : `${assetSymbol} treasury position`,
+    destinationAsset,
+    quoteReviewMode,
+    executionPreference,
+    slippageBandBps,
+    quotePolicy:
+      normalizedAmount.length > 0
+        ? `Prepare route preview for ${normalizedAmount} ${assetSymbol} into ${destinationAsset} under ${quoteReviewMode} before delivery.`
+        : `Prepare quote preview once a final ${assetSymbol} amount is attached to the request object.`,
+    slippagePolicy:
+      profile.value === "vendor-payout" || profile.value === "contributor-payout"
+        ? `Keep payout funding inside the ${slippageBandBps} bps band and preserve the route rationale beside settlement evidence.`
+        : `Use the ${slippageBandBps} bps band with ${executionPreference} preference and preserve the route rationale inside the governed treasury packet.`,
+    routeRationale: `${routeFocus} This route keeps treasury motion readable for operators and reviewers without breaking the governed execution story.`,
+    reviewerPath: "/documents/jupiter-treasury-route",
+    settlementPath: "/documents/settlement-receipt-closure",
+  };
+}
+
+function formatSelectionLabel<
+  T extends ReadonlyArray<{ value: string; label: string }>
+>(options: T, value: string) {
+  return options.find((item) => item.value === value)?.label ?? value;
+}
+
+function getAllowedDestinationAssets(
+  profile: (typeof destinationProfiles)[number]["value"],
+  assets: Array<{ symbol: "SOL" | "USDC" | "USDG"; name: string }>,
+  sourceAsset: ServiceHandoffAssetSymbol,
+) {
+  if (
+    profile === "vendor-payout" ||
+    profile === "contributor-payout" ||
+    profile === "pilot-funding"
+  ) {
+    return assets.filter((asset) => asset.symbol === "USDC" || asset.symbol === "USDG");
+  }
+
+  if (profile === "treasury-top-up") {
+    return assets.filter((asset) => asset.symbol === sourceAsset || asset.symbol === "USDC" || asset.symbol === "USDG");
+  }
+
+  return assets;
+}
+
 export function TreasuryReceiveSurface() {
   const config = getTreasuryReceiveConfig();
   const [copied, setCopied] = useState<string | null>(null);
@@ -179,6 +327,10 @@ export function TreasuryReceiveSurface() {
   const [amount, setAmount] = useState("");
   const [purpose, setPurpose] = useState("");
   const [lane, setLane] = useState<(typeof handoffLanes)[number]["value"]>("buyer");
+  const [destinationAsset, setDestinationAsset] = useState<ServiceHandoffAssetSymbol>("USDC");
+  const [quoteReviewMode, setQuoteReviewMode] = useState<(typeof quoteReviewModes)[number]["value"]>("manual-review");
+  const [executionPreference, setExecutionPreference] = useState<(typeof executionPreferences)[number]["value"]>("stable-settlement");
+  const [slippageBandBps, setSlippageBandBps] = useState<(typeof slippageBands)[number]["value"]>("75");
   const [requestPreparedAt, setRequestPreparedAt] = useState<string>("pending-client-hydration");
   const handoff = useServiceHandoffSnapshot("services");
   const appliedHandoffKeyRef = useRef<string | null>(null);
@@ -188,6 +340,17 @@ export function TreasuryReceiveSurface() {
   const activeAsset = config.assets.find((asset) => asset.symbol === selectedAsset) ?? config.assets[0];
   const activeProfile = destinationProfiles.find((item) => item.value === profile) ?? destinationProfiles[0];
   const activeLane = handoffLanes.find((item) => item.value === lane) ?? handoffLanes[0];
+  const allowedDestinationAssets = useMemo(
+    () => getAllowedDestinationAssets(activeProfile.value, config.assets, activeAsset.symbol),
+    [activeAsset.symbol, activeProfile.value, config.assets],
+  );
+  const normalizedDestinationAsset = useMemo(
+    () =>
+      allowedDestinationAssets.some((asset) => asset.symbol === destinationAsset)
+        ? destinationAsset
+        : (allowedDestinationAssets[0]?.symbol ?? activeAsset.symbol),
+    [activeAsset.symbol, allowedDestinationAssets, destinationAsset],
+  );
   const persistedHandoff = handoff ?? readStoredServiceHandoffState();
   const handoffProfile = handoff?.payoutProfile ?? null;
   const allowStoredServicesHydration = Boolean(handoff?.payoutIntent);
@@ -204,9 +367,13 @@ export function TreasuryReceiveSurface() {
     const defaultAsset = resolveSupportedAsset(config.assets, activeProfile.defaultAsset);
     setLane(activeProfile.defaultLane);
     setSelectedAsset(defaultAsset);
+    setDestinationAsset(defaultAsset === "SOL" ? "USDC" : defaultAsset);
     setReference(`${activeProfile.value.toUpperCase()}-REQUEST-PENDING`);
     setAmount(activeProfile.defaultAmount);
     setPurpose(activeProfile.defaultPurpose);
+    setQuoteReviewMode(activeProfile.value === "treasury-rebalance" ? "policy-bound" : "manual-review");
+    setExecutionPreference(activeProfile.value === "treasury-rebalance" ? "best-price" : "stable-settlement");
+    setSlippageBandBps(activeProfile.value === "vendor-payout" || activeProfile.value === "contributor-payout" ? "30" : "75");
   }, [activeProfile, config.assets, handoff?.payoutProfile]);
 
   useEffect(() => {
@@ -238,12 +405,14 @@ export function TreasuryReceiveSurface() {
     if (shouldUseProposalBackedPrefill && proposalBackedPrefill) {
       setSelectedAsset(resolveSupportedAsset(config.assets, proposalBackedPrefill.assetSymbol));
       setLane(proposalBackedPrefill.lane);
+      setDestinationAsset(proposalBackedPrefill.assetSymbol === "SOL" ? "USDC" : proposalBackedPrefill.assetSymbol);
       setReference(proposalBackedPrefill.reference);
       setPurpose(proposalBackedPrefill.purpose);
       setAmount(proposalBackedPrefill.amount);
     } else if (handoff.payoutIntent && allowStoredServicesHydration) {
       setSelectedAsset(resolveSupportedAsset(config.assets, handoff.payoutIntent.assetSymbol));
       setLane(handoff.payoutIntent.lane);
+      setDestinationAsset(handoff.payoutIntent.assetSymbol === "SOL" ? "USDC" : handoff.payoutIntent.assetSymbol);
       setReference(handoff.payoutIntent.reference);
       setPurpose(handoff.payoutIntent.purpose);
       setAmount(handoff.payoutIntent.amount);
@@ -252,6 +421,7 @@ export function TreasuryReceiveSurface() {
         resolveSupportedAsset(config.assets, handoffProfileConfig.defaultAsset),
       );
       setLane(handoffProfileConfig.defaultLane);
+      setDestinationAsset(handoffProfileConfig.defaultAsset === "SOL" ? "USDC" : handoffProfileConfig.defaultAsset);
       setReference(`${handoffProfileConfig.value.toUpperCase()}-REQUEST-PENDING`);
       setAmount(handoffProfileConfig.defaultAmount);
       setPurpose(handoffProfileConfig.defaultPurpose);
@@ -329,46 +499,61 @@ export function TreasuryReceiveSurface() {
   );
   const isRequestReady = Boolean(amount.trim() && purpose.trim() && reference.trim());
   const requestPayloadSeed = useMemo(
-    () => ({
-      kind: "privatedao.treasury.request",
-      state: isRequestReady ? "ready-for-delivery" : "draft-pending-input",
-      requestId: `${activeProfile.value}:${reference || "reference-pending"}`.toUpperCase(),
-      preparedAt: requestPreparedAt,
-      proposalId: persistedHandoff?.proposalId ?? "services-treasury-intake",
-      proposalTitle: persistedHandoff?.proposalTitle ?? activeProfile.label,
-      network: config.network,
-      payoutProfile: activeProfile.value,
-      payoutTitle: activeProfile.label,
-      lane,
-      telemetryMode: persistedHandoff?.telemetryMode ?? "packet",
-      asset: {
-        symbol: activeAsset.symbol,
-        mint: activeAsset.mint ?? "env-configured",
-        receiveAddress: activeAsset.receiveAddress,
-      },
-      amount: amount || null,
-      amountDisplay: amount ? `${amount} ${activeAsset.symbol}` : `${activeAsset.symbol} amount pending`,
-      reference: reference || null,
-      purpose: purpose || null,
-      routeFocus: persistedHandoff?.payoutIntent?.routeFocus ?? activeProfile.summary,
-      executionTarget: persistedHandoff?.payoutIntent?.executionTarget ?? `Treasury receive rail · ${activeAsset.symbol}`,
-      evidenceRoute: persistedHandoff?.payoutIntent?.evidenceRoute ?? "/documents/treasury-reviewer-packet",
-    }),
+    () => {
+      const routeFocus = persistedHandoff?.payoutIntent?.routeFocus ?? activeProfile.summary;
+      return {
+        kind: "privatedao.treasury.request",
+        state: isRequestReady ? "ready-for-delivery" : "draft-pending-input",
+        requestId: `${activeProfile.value}:${reference || "reference-pending"}`.toUpperCase(),
+        preparedAt: requestPreparedAt,
+        proposalId: persistedHandoff?.proposalId ?? "services-treasury-intake",
+        proposalTitle: persistedHandoff?.proposalTitle ?? activeProfile.label,
+        network: config.network,
+        payoutProfile: activeProfile.value,
+        payoutTitle: activeProfile.label,
+        lane,
+        telemetryMode: persistedHandoff?.telemetryMode ?? "packet",
+        asset: {
+          symbol: activeAsset.symbol,
+          mint: activeAsset.mint ?? "env-configured",
+          receiveAddress: activeAsset.receiveAddress,
+        },
+        amount: amount || null,
+        amountDisplay: amount ? `${amount} ${activeAsset.symbol}` : `${activeAsset.symbol} amount pending`,
+        reference: reference || null,
+        purpose: purpose || null,
+        routeFocus,
+        executionTarget: persistedHandoff?.payoutIntent?.executionTarget ?? `Treasury receive rail · ${activeAsset.symbol}`,
+        evidenceRoute: persistedHandoff?.payoutIntent?.evidenceRoute ?? "/documents/treasury-reviewer-packet",
+        treasuryRoutePlan: buildTreasuryRoutePlan({
+          profile: activeProfile,
+          assetSymbol: activeAsset.symbol,
+          destinationAsset: normalizedDestinationAsset,
+          amount,
+          routeFocus,
+          quoteReviewMode,
+          executionPreference,
+          slippageBandBps,
+        }),
+      };
+    },
     [
       activeAsset.mint,
       activeAsset.receiveAddress,
       activeAsset.symbol,
-      activeProfile.label,
-      activeProfile.summary,
-      activeProfile.value,
+      activeProfile,
       amount,
       config.network,
+      destinationAsset,
+      executionPreference,
       isRequestReady,
       lane,
       persistedHandoff,
       purpose,
+      quoteReviewMode,
       reference,
       requestPreparedAt,
+      slippageBandBps,
     ],
   );
   const continueHandoffQuery = useMemo(
@@ -507,6 +692,95 @@ export function TreasuryReceiveSurface() {
       requestPayloadSeed,
     ],
   );
+  const routePlan = structuredRequestObject.treasuryRoutePlan;
+  const quoteReviewSurface = useMemo(() => {
+    if (!routePlan) return null;
+
+    const normalizedAmount = amount.trim();
+    const amountDisplay = normalizedAmount.length > 0
+      ? `${normalizedAmount} ${activeAsset.symbol}`
+      : `${activeAsset.symbol} amount pending`;
+    const destinationSummary =
+      activeAsset.symbol === destinationAsset
+        ? `Keep the treasury motion inside ${destinationAsset} while preserving governed review and settlement visibility.`
+        : `Move from ${activeAsset.symbol} into ${destinationAsset} with a reviewer-readable route rationale before the treasury request is delivered.`;
+    const settlementExpectation =
+      activeProfile.value === "vendor-payout" || activeProfile.value === "contributor-payout"
+        ? "Carry the same route assumptions into payout funding so the settlement record can be read without reconstructing the asset-motion path."
+        : activeProfile.value === "treasury-rebalance"
+          ? "Preserve the same rebalance rationale beside reviewer evidence so operators can explain why the treasury ended in the target asset."
+          : "Keep the route explanation attached to the treasury packet so commercial or pilot funding remains easy to review after execution.";
+
+    return {
+      amountDisplay,
+      destinationSummary,
+      reviewModeLabel: formatSelectionLabel(quoteReviewModes, quoteReviewMode),
+      executionPreferenceLabel: formatSelectionLabel(executionPreferences, executionPreference),
+      slippageLabel: formatSelectionLabel(slippageBands, slippageBandBps),
+      operatorPosture:
+        quoteReviewMode === "operator-fast-path"
+          ? "Fast-path operator review with a pre-approved treasury corridor."
+          : quoteReviewMode === "policy-bound"
+            ? "Policy-bound review that keeps the route inside a governed treasury band."
+            : "Manual operator review before the route is delivered into govern.",
+      nextAction:
+        normalizedAmount.length > 0
+          ? `Review the route assumptions for ${amountDisplay}, then stage or deliver the treasury request with the same ${slippageBandBps} bps operating band.`
+          : `Attach the final ${activeAsset.symbol} amount so the route can move from review posture to an actionable treasury request.`,
+      settlementExpectation,
+      reviewChecklist: [
+        `Confirm the treasury is moving from ${activeAsset.symbol} toward ${normalizedDestinationAsset} for the intended ${activeProfile.label.toLowerCase()} motion.`,
+        `Confirm the route uses ${formatSelectionLabel(quoteReviewModes, quoteReviewMode)} with ${formatSelectionLabel(executionPreferences, executionPreference)} posture.`,
+        `Confirm the ${slippageBandBps} bps band matches the treasury risk tolerance for this request.`,
+        "Confirm the route rationale is readable enough to carry forward into reviewer evidence and settlement follow-through.",
+      ],
+    };
+  }, [
+    activeAsset.symbol,
+    activeProfile.label,
+    activeProfile.value,
+    amount,
+    executionPreference,
+    normalizedDestinationAsset,
+    quoteReviewMode,
+    routePlan,
+    slippageBandBps,
+  ]);
+  const executionPlanningSurface = useMemo(() => {
+    if (!routePlan) return null;
+
+    const profileExecutionSummary =
+      activeProfile.value === "treasury-rebalance"
+        ? "Treasury rebalance should preserve the asset-motion reason, the policy band, and the post-route settlement story in one governed packet."
+        : activeProfile.value === "treasury-top-up"
+          ? "Treasury top-up should land in an approved treasury asset so incoming capital stays aligned with later governance and payout motions."
+          : "Payout-oriented funding should finish in a settlement-friendly asset before the downstream treasury action moves into execution.";
+    const settlementMode =
+      normalizedDestinationAsset === "USDC" || normalizedDestinationAsset === "USDG"
+        ? "Stable-asset settlement posture"
+        : "Treasury-asset rebalance posture";
+
+    return {
+      destinationPolicy:
+        allowedDestinationAssets.length === config.assets.length
+          ? "This profile can target any supported treasury asset when the operator keeps the route rationale readable."
+          : `This profile is narrowed to ${allowedDestinationAssets.map((asset) => asset.symbol).join(" / ")} so the treasury lands in an asset that matches the operating goal.`,
+      settlementMode,
+      profileExecutionSummary,
+      executionChecklist: [
+        `Confirm ${normalizedDestinationAsset} is the correct destination asset for ${activeProfile.label.toLowerCase()}.`,
+        `Confirm the request should move under ${routePlan.executionPreference} with ${routePlan.quoteReviewMode}.`,
+        "Confirm the reviewer packet and settlement packet will stay attached to the same treasury request after delivery.",
+      ],
+    };
+  }, [
+    activeProfile.label,
+    activeProfile.value,
+    allowedDestinationAssets,
+    config.assets.length,
+    normalizedDestinationAsset,
+    routePlan,
+  ]);
 
   useEffect(() => {
     if (!handoff || !persistedPayoutIntent || !persistedStateSignature) return;
@@ -812,6 +1086,27 @@ export function TreasuryReceiveSurface() {
               </label>
 
               <label className="grid gap-2 text-sm text-white/70">
+                <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Destination asset</span>
+                <select
+                  value={normalizedDestinationAsset}
+                  onChange={(event) => setDestinationAsset(event.target.value as ServiceHandoffAssetSymbol)}
+                  className="rounded-2xl border border-white/10 bg-white/4 px-4 py-3 text-white outline-none"
+                >
+                  {allowedDestinationAssets.map((asset) => (
+                    <option key={`destination-${asset.symbol}`} value={asset.symbol} className="bg-[#0b1020]">
+                      {asset.symbol} · {asset.name}
+                    </option>
+                  ))}
+                </select>
+                <span className="text-xs leading-6 text-white/46">
+                  Choose the asset the treasury is trying to reach before the payout or rebalance settles.
+                  {allowedDestinationAssets.length !== config.assets.length
+                    ? ` This profile is narrowed to ${allowedDestinationAssets.map((asset) => asset.symbol).join(" / ")}.`
+                    : ""}
+                </span>
+              </label>
+
+              <label className="grid gap-2 text-sm text-white/70">
                 <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Reference</span>
                 <input
                   value={reference}
@@ -857,6 +1152,60 @@ export function TreasuryReceiveSurface() {
                   ))}
                 </select>
               </label>
+
+              <label className="grid gap-2 text-sm text-white/70">
+                <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Quote review mode</span>
+                <select
+                  value={quoteReviewMode}
+                  onChange={(event) => setQuoteReviewMode(event.target.value as (typeof quoteReviewModes)[number]["value"])}
+                  className="rounded-2xl border border-white/10 bg-white/4 px-4 py-3 text-white outline-none"
+                >
+                  {quoteReviewModes.map((mode) => (
+                    <option key={mode.value} value={mode.value} className="bg-[#0b1020]">
+                      {mode.label}
+                    </option>
+                  ))}
+                </select>
+                <span className="text-xs leading-6 text-white/46">
+                  {quoteReviewModes.find((mode) => mode.value === quoteReviewMode)?.summary}
+                </span>
+              </label>
+
+              <label className="grid gap-2 text-sm text-white/70">
+                <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Execution preference</span>
+                <select
+                  value={executionPreference}
+                  onChange={(event) => setExecutionPreference(event.target.value as (typeof executionPreferences)[number]["value"])}
+                  className="rounded-2xl border border-white/10 bg-white/4 px-4 py-3 text-white outline-none"
+                >
+                  {executionPreferences.map((mode) => (
+                    <option key={mode.value} value={mode.value} className="bg-[#0b1020]">
+                      {mode.label}
+                    </option>
+                  ))}
+                </select>
+                <span className="text-xs leading-6 text-white/46">
+                  {executionPreferences.find((mode) => mode.value === executionPreference)?.summary}
+                </span>
+              </label>
+
+              <label className="grid gap-2 text-sm text-white/70">
+                <span className="text-[11px] uppercase tracking-[0.24em] text-white/46">Slippage band</span>
+                <select
+                  value={slippageBandBps}
+                  onChange={(event) => setSlippageBandBps(event.target.value as (typeof slippageBands)[number]["value"])}
+                  className="rounded-2xl border border-white/10 bg-white/4 px-4 py-3 text-white outline-none"
+                >
+                  {slippageBands.map((band) => (
+                    <option key={band.value} value={band.value} className="bg-[#0b1020]">
+                      {band.label}
+                    </option>
+                  ))}
+                </select>
+                <span className="text-xs leading-6 text-white/46">
+                  {slippageBands.find((band) => band.value === slippageBandBps)?.summary}
+                </span>
+              </label>
             </div>
           </div>
 
@@ -886,6 +1235,112 @@ export function TreasuryReceiveSurface() {
                 </div>
               ) : null}
             </div>
+
+            {routePlan ? (
+              <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-5">
+                <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/76">Jupiter route preview</div>
+                <div className="mt-3 text-base font-medium text-white">{routePlan.executionMode}</div>
+                <div className="mt-2 text-sm leading-7 text-white/62">{routePlan.routeRationale}</div>
+                <div className="mt-4 grid gap-3 md:grid-cols-2">
+                  <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
+                    <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Source asset hint</div>
+                    <div className="mt-2 text-white">{routePlan.sourceAssetHint}</div>
+                  </div>
+                  <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
+                    <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Destination asset</div>
+                    <div className="mt-2 text-white">{routePlan.destinationAsset}</div>
+                  </div>
+                  <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
+                    <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Quote review mode</div>
+                    <div className="mt-2 text-white">{routePlan.quoteReviewMode}</div>
+                  </div>
+                  <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
+                    <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Execution preference</div>
+                    <div className="mt-2 text-white">{routePlan.executionPreference}</div>
+                  </div>
+                  <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
+                    <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Quote policy</div>
+                    <div className="mt-2">{routePlan.quotePolicy}</div>
+                  </div>
+                  <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
+                    <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Slippage policy</div>
+                    <div className="mt-2">{routePlan.slippagePolicy}</div>
+                  </div>
+                  <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62 md:col-span-2">
+                    <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Slippage band</div>
+                    <div className="mt-2 text-white">{routePlan.slippageBandBps} bps</div>
+                  </div>
+                </div>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <Link href={routePlan.reviewerPath} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                    Open route brief
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                  <Link href={routePlan.settlementPath} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                    Open settlement path
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              </div>
+            ) : null}
+
+            {quoteReviewSurface ? (
+              <div className="rounded-3xl border border-sky-300/16 bg-sky-300/[0.08] p-5">
+                <div className="text-[11px] uppercase tracking-[0.24em] text-sky-100/76">Quote-backed review surface</div>
+                <div className="mt-3 text-base font-medium text-white">{quoteReviewSurface.amountDisplay}</div>
+                <div className="mt-2 text-sm leading-7 text-white/62">{quoteReviewSurface.destinationSummary}</div>
+                <div className="mt-4 grid gap-3 md:grid-cols-2">
+                  <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
+                    <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Review posture</div>
+                    <div className="mt-2 text-white">{quoteReviewSurface.reviewModeLabel}</div>
+                    <div className="mt-2">{quoteReviewSurface.operatorPosture}</div>
+                  </div>
+                  <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
+                    <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Execution posture</div>
+                    <div className="mt-2 text-white">{quoteReviewSurface.executionPreferenceLabel}</div>
+                    <div className="mt-2">{quoteReviewSurface.slippageLabel}</div>
+                  </div>
+                  <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62 md:col-span-2">
+                    <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Next operator action</div>
+                    <div className="mt-2">{quoteReviewSurface.nextAction}</div>
+                  </div>
+                  <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62 md:col-span-2">
+                    <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Settlement expectation</div>
+                    <div className="mt-2">{quoteReviewSurface.settlementExpectation}</div>
+                  </div>
+                </div>
+                <div className="mt-4 rounded-2xl border border-white/8 bg-black/20 p-4">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Review checklist</div>
+                  <div className="mt-3 grid gap-2 text-sm leading-7 text-white/62">
+                    {quoteReviewSurface.reviewChecklist.map((item) => (
+                      <div key={item}>{item}</div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : null}
+
+            {executionPlanningSurface ? (
+              <div className="rounded-3xl border border-indigo-300/16 bg-indigo-300/[0.08] p-5">
+                <div className="text-[11px] uppercase tracking-[0.24em] text-indigo-100/76">Execution planning lane</div>
+                <div className="mt-3 text-base font-medium text-white">{executionPlanningSurface.settlementMode}</div>
+                <div className="mt-2 text-sm leading-7 text-white/62">{executionPlanningSurface.profileExecutionSummary}</div>
+                <div className="mt-4 grid gap-3 md:grid-cols-2">
+                  <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62 md:col-span-2">
+                    <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Destination policy</div>
+                    <div className="mt-2">{executionPlanningSurface.destinationPolicy}</div>
+                  </div>
+                </div>
+                <div className="mt-4 rounded-2xl border border-white/8 bg-black/20 p-4">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Execution checklist</div>
+                  <div className="mt-3 grid gap-2 text-sm leading-7 text-white/62">
+                    {executionPlanningSurface.executionChecklist.map((item) => (
+                      <div key={item}>{item}</div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : null}
 
             <div className="rounded-3xl border border-emerald-300/16 bg-emerald-300/[0.08] p-5">
               <div className="text-[11px] uppercase tracking-[0.24em] text-emerald-100/76">Delivery-ready request object</div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode, useMemo } from "react";
+import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { clusterApiUrl } from "@solana/web3.js";
 import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react";
 import { BackpackWalletAdapter } from "@solana/wallet-adapter-backpack";
@@ -14,14 +14,22 @@ type WalletProviderShellProps = {
 
 export function WalletProviderShell({ children }: WalletProviderShellProps) {
   const endpoint = process.env.NEXT_PUBLIC_SOLANA_RPC_URL ?? clusterApiUrl("devnet");
-  const wallets = useMemo(
-    () => [new SolflareWalletAdapter(), new PhantomWalletAdapter(), new BackpackWalletAdapter()],
-    [],
-  );
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const wallets = useMemo(() => {
+    if (!isMounted) {
+      return [];
+    }
+    return [new SolflareWalletAdapter(), new PhantomWalletAdapter(), new BackpackWalletAdapter()];
+  }, [isMounted]);
 
   return (
     <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} autoConnect>
+      <WalletProvider wallets={wallets}>
         <WalletModalProvider>{children}</WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>

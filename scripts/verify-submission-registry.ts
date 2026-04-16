@@ -27,7 +27,7 @@ function main() {
 
   if (
     !registry.frontend.startsWith("https://privatedao.org/") &&
-    !registry.frontend.startsWith("https://x-pact.github.io/PrivateDAO/")
+    !registry.frontend.startsWith("https://privatedao.org/")
   ) {
     throw new Error("submission registry frontend URL is unexpected");
   }

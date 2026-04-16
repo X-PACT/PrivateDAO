@@ -24,9 +24,9 @@ The work demonstrates:
 - Program source: `programs/private-dao/src/lib.rs`
 - Full lifecycle test: `tests/full-flow-test.ts`
 
-## Ownership And Contact
+## Leadership And Contact
 
-PrivateDAO is produced with execution support from a multi-national technical team. Product ownership, brand control, commercialization rights, and beneficial ownership remain solely with **Fahd Kotb**.
+PrivateDAO is produced with execution support from a multi-national technical team. **Fahd Kotb** leads product direction, execution accountability, and external coordination for the work.
 
 - Primary email: [fahd.kotb@tuta.io](mailto:fahd.kotb@tuta.io)
 - Operations email: [i.kotb@proton.me](mailto:i.kotb@proton.me)
@@ -35,4 +35,4 @@ PrivateDAO is produced with execution support from a multi-national technical te
 - Telegram: [@Fahdkotb](https://t.me/Fahdkotb)
 - Discord: [PrivateDAO community server](https://discord.gg/dzaVXjkug)
 - X: [@FahdX369](https://x.com/FahdX369)
-- Ownership packet: [docs/ownership-and-contact.md](ownership-and-contact.md)
+- Leadership packet: [docs/ownership-and-contact.md](ownership-and-contact.md)

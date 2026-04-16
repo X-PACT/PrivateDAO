@@ -41,7 +41,7 @@ export function WalletRuntimePanel({ executionSnapshot }: WalletRuntimePanelProp
             <Badge variant={connected ? "success" : "warning"}>{connected ? "Live" : "Action required"}</Badge>
           </div>
           <p className="mt-3 text-sm leading-7 text-white/56">
-            The Next.js migration keeps wallet state honest. It can open wallet modals and stage product flows, but it does not claim treasury execution has happened unless proof and runtime packets say so.
+            The wallet surface is meant to be used, not only observed. Connect a Devnet wallet, sign the real product actions, and then use proof and runtime packets to confirm what happened.
           </p>
           <div className="mt-4">
             <WalletConnectButton />
@@ -69,7 +69,7 @@ export function WalletRuntimePanel({ executionSnapshot }: WalletRuntimePanelProp
             <div className="mt-3 text-sm leading-7 text-white/58">
               {connected && publicKey
                 ? `${wallet?.adapter.name ?? "Solana wallet"} · ${shortenAddress(publicKey.toBase58())}`
-                : "Connect Solflare, Phantom, or Backpack to activate product actions."}
+                : "Connect Solflare, Phantom, or Backpack on Devnet to activate the full product flow."}
             </div>
           </div>
           <div className="rounded-3xl border border-white/8 bg-black/20 p-4">
@@ -77,7 +77,7 @@ export function WalletRuntimePanel({ executionSnapshot }: WalletRuntimePanelProp
               <CheckCircle2 className="h-4 w-4 text-emerald-300" />
               <div className="text-sm font-medium text-white">Execution boundary</div>
             </div>
-            <div className="mt-3 text-sm leading-7 text-white/58">Proposal actions in this UI remain aligned with proof packets, readiness rails, and wallet state. Nothing in this surface bypasses governance or settlement evidence.</div>
+            <div className="mt-3 text-sm leading-7 text-white/58">Proposal actions in this UI remain aligned with proof packets, readiness rails, and wallet state. The intended experience is to verify the product by using it, not by reading static claims alone.</div>
           </div>
           <div className="rounded-3xl border border-white/8 bg-black/20 p-4">
             <div className="flex items-center gap-3">

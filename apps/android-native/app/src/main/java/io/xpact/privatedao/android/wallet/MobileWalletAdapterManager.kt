@@ -44,8 +44,8 @@ class MobileWalletAdapterManager(
     private val semaphore = Semaphore(1)
 
     private val identity = DappIdentity(
-        uri = Uri.parse("https://x-pact.github.io/PrivateDAO/"),
-        iconRelativeUri = Uri.parse("/PrivateDAO/assets/private-dao-investor-pitch-poster.png"),
+        uri = Uri.parse("https://privatedao.org/"),
+        iconRelativeUri = Uri.parse("/assets/private-dao-investor-pitch-poster.png"),
         name = "PrivateDAO",
     )
 

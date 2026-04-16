@@ -1,6 +1,6 @@
 # Settlement Receipt Closure Packet
 
-This packet exists to isolate the exact privacy-settlement gap that still blocks honest mainnet payout claims.
+This packet exists to isolate the exact privacy-settlement evidence lift required before confidential payout can carry stronger production-release confidence.
 
 ## What is already true
 
@@ -10,13 +10,13 @@ PrivateDAO already has:
 - security and services surfaces that explain settlement evidence and payout discipline
 - payout proof and trust packets that make the current boundary reviewer-visible
 
-## What is not yet closed
+## Next settlement-evidence lift
 
-The remaining blocker is not whether confidential payout matters.
+The remaining work is not about proving that confidential payout matters.
 
-The blocker is whether the payout corridor can point to a source-verifiable settlement receipt path, canonical settlement hash, or verifier-grade source proof instead of a weaker integration boundary alone.
+The remaining lift is whether the payout corridor can point to a source-verifiable settlement receipt path, canonical settlement hash, or verifier-grade source proof instead of a weaker integration boundary alone.
 
-## Exact blocker
+## Exact evidence target
 
 `magicblock-refhe-source-receipts`
 
@@ -24,19 +24,18 @@ The blocker is whether the payout corridor can point to a source-verifiable sett
 
 This gap affects:
 
-- Privacy Track
-- Umbra
-- Encrypt / IKA
-- mainnet commercial credibility
+- the credibility of the confidential payout corridor
+- the strength of treasury-to-payout trust surfaces
+- the product’s release confidence for privacy-sensitive payment flows
 
 It is therefore one of the highest-leverage funding targets still open in the product.
 
-## Required Closure
+## Required evidence package
 
 1. canonical settlement hash or verifier-grade source proof
 2. receipt publication linked to the governed payout object
 3. explicit residual-trust model where source receipts are unavailable
-4. reviewer-visible evidence path that survives mainnet scrutiny
+4. reviewer-visible evidence path that survives production scrutiny
 
 ## Best Supporting Routes
 
@@ -46,15 +45,23 @@ It is therefore one of the highest-leverage funding targets still open in the pr
 4. `/services#payout-route-selection`
 5. `/documents/mainnet-execution-readiness-packet`
 
-## Honest Boundary
+## Current release boundary
 
 Do not claim:
 
 - source-verifiable settlement receipts are already closed
-- confidential payout is already mainnet real-funds ready
+- confidential payout is already production real-funds ready
 
 Claim instead:
 
 - Devnet payout evidence exists
-- the receipt blocker is explicit
-- the remaining closure is bounded and fundable
+- the receipt target is explicit
+- the remaining evidence lift is bounded and fundable
+
+## Public-good value
+
+This work benefits the ecosystem because it helps:
+
+- make privacy-sensitive payout flows easier to inspect and trust
+- turn settlement evidence into a reusable pattern for governed treasury products
+- translate advanced privacy and encryption ideas into product behavior that reviewers and users can actually verify

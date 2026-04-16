@@ -28,7 +28,7 @@ export default function HomePage() {
             <a href="/" style={{ color: "#eaf2ff", textDecoration: "none" }}>
               Home
             </a>
-            <a href="https://x-pact.github.io/PrivateDAO/zk-layer.md" style={{ color: "#eaf2ff", textDecoration: "none" }}>
+            <a href="https://privatedao.org/zk-layer.md" style={{ color: "#eaf2ff", textDecoration: "none" }}>
               ZK Layer
             </a>
             <a href="/awards" style={{ color: "#eaf2ff", textDecoration: "none" }}>

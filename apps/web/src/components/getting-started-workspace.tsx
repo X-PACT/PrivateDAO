@@ -34,7 +34,7 @@ export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWor
                 Connect a wallet, create a DAO, submit a proposal, vote, and execute from one guided path.
               </h2>
               <p className="max-w-2xl text-base leading-8 text-white/62 sm:text-lg">
-                This route keeps the first run narrow: connect a wallet, open govern, and use live state only after a wallet action lands.
+                This route keeps the first run narrow: connect a Devnet wallet, open govern, and use live state after each real wallet action lands. The goal is not to read about PrivateDAO only, but to experience its privacy, cryptography, and speed yourself in one product path.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -108,7 +108,7 @@ export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWor
                     </div>
                   ))}
                   <div className="rounded-[24px] border border-emerald-300/18 bg-emerald-300/8 p-4 text-sm leading-7 text-white/68">
-                    Connect Wallet stays in the top-right shell position and auto-reconnects when possible, so users land in the product instead of redoing wallet setup every visit.
+                    Connect Wallet stays in the top-right shell position and auto-reconnects when possible, so users can return to real Devnet testing instead of redoing wallet setup every visit.
                   </div>
                 </CardContent>
               </Card>
@@ -131,7 +131,7 @@ export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWor
                     </div>
                   ))}
                   <div className="rounded-[26px] border border-cyan-300/16 bg-cyan-300/[0.08] p-5 text-sm leading-7 text-white/68">
-                    The product already tracks live governance health in the background:
+                    The product already tracks live governance health in the background so a connected visitor can confirm the runtime result directly:
                     <div className="mt-3 grid gap-3 sm:grid-cols-3">
                       <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">
                         <div className="text-[11px] uppercase tracking-[0.18em] text-white/40">Proposal flow</div>

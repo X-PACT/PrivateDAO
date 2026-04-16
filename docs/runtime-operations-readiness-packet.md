@@ -2,17 +2,17 @@
 
 ## What this packet is for
 
-This packet gives funders and reviewers one place to inspect the two operational gaps that most clearly separate a live Devnet product from a mainnet-ready release candidate:
+This packet gives funders and reviewers one place to inspect the two operational lifts that most clearly separate a live Devnet product from a stronger production-release candidate:
 
 1. real-device wallet runtime coverage
-2. production monitoring and alerting closure
+2. production monitoring and alerting delivery
 
 ## Why this matters
 
 PrivateDAO is already a live Devnet product.
 
-What still limits credible mainnet claims is not “more ideas.”
-It is operational closure:
+What still limits stronger production-release claims is not “more ideas.”
+It is operational delivery:
 
 - real wallet behavior across supported client environments
 - tested incident visibility and alert ownership
@@ -23,7 +23,7 @@ These two gaps are highly fundable because they are narrow, measurable, and dire
 
 ### Real-device wallet matrix
 
-- status: `pending-real-device-capture`
+- status: `capture-in-progress`
 - target count: `5`
 - completed target count: `0`
 
@@ -37,9 +37,9 @@ Tracked targets:
 
 ### Monitoring and alerting
 
-- status: `pending-external`
+- status: `delivery-in-progress`
 - alert rules are already defined in-repo
-- live delivery and tested ownership still need closure
+- live delivery and tested ownership still need completion
 
 Defined alert families already include:
 
@@ -57,7 +57,7 @@ Funding accelerates:
 1. collection and publication of real-device captures
 2. completion of operator-owned monitoring delivery
 3. tested alert transcripts and incident ownership
-4. a shorter, more believable path from Devnet proof to mainnet release discipline
+4. a shorter, more believable path from Devnet proof to production release discipline
 
 ## What a reviewer should believe
 
@@ -88,4 +88,12 @@ Instead of saying “we still need ops work,” it shows exactly:
 - what is missing
 - why it matters
 - how it is already structured in the repo
-- why capital converts directly into execution closure
+- why capital converts directly into execution acceleration
+
+## Public-good value
+
+This work helps the ecosystem because it makes:
+
+- wallet-runtime evidence easier to inspect and trust
+- monitoring and alerting practices more reusable for governance products
+- production-facing operational discipline easier for other teams to understand and adopt

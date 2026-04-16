@@ -87,7 +87,7 @@ render_week2() {
   scene "$s2" "$ASSETS_DIR/frontend-hero.png" "PRIVATE VOTING" "Commit-reveal stays proposal-bound" "Votes stay hidden during commit, reveal later with salt, and only then reach" "deterministic finalization plus timelocked treasury execution." "Hidden intent, explicit lifecycle, real signatures." "0xFFE48A"
   scene "$s3" "$ASSETS_DIR/frontend-hero.png" "ZK HARDENING" "zk_enforced is now visible in-product" "Proposal-level stronger receipts for vote, delegation, and tally are surfaced" "directly in the UI and operator flows." "The proof path now changes review posture, not just docs." "0x7E57FF"
   scene "$s4" "$ASSETS_DIR/frontend-hero.png" "READ PATH" "Backend-indexed runtime trust" "Diagnostics, backend reads, and runtime evidence reduce direct browser RPC stress" "without moving write authority away from the wallet." "Read infrastructure now supports the governance product itself." "0x22C55E"
-  scene "$s5" "$ASSETS_DIR/frontend-hero.png" "WEEK 2 RESULT" "A real governance operating surface" "Week 2 closes the private governance core, zk hardening surface, and backend" "runtime path into one coherent Solana product." "x-pact.github.io/PrivateDAO  ·  github.com/X-PACT/PrivateDAO" "0xA9F5FF"
+  scene "$s5" "$ASSETS_DIR/frontend-hero.png" "WEEK 2 RESULT" "A real governance operating surface" "Week 2 closes the private governance core, zk hardening surface, and backend" "runtime path into one coherent Solana product." "privatedao.org  ·  github.com/X-PACT/PrivateDAO" "0xA9F5FF"
 
   compose_video "$video" "$poster" "$s1" "$s2" "$s3" "$s4" "$s5"
   copy_upload_asset "$video" "$poster" "Week 2 - PrivateDAO Frontier Hackathon - Live Private Governance And ZK Hardening"
@@ -108,7 +108,7 @@ render_week3() {
   scene "$s2" "$ASSETS_DIR/frontend-hero.png" "CONFIDENTIAL PAYROLL" "Encrypted payout plans are live" "Each proposal can now bind settlement wallet, recipient count, total amount," "ciphertext hash, and immutable manifest hashes." "Sensitive compensation data stays off-chain while governance stays on-chain." "0xFFE48A"
   scene "$s3" "$ASSETS_DIR/frontend-hero.png" "MAGICBLOCK + REFHE" "Two gated payout routes" "MagicBlock corridors harden confidential token payouts, while REFHE envelopes" "gate encrypted evaluation before treasury release." "Sensitive flows now have explicit settlement boundaries." "0x7E57FF"
   scene "$s4" "$ASSETS_DIR/frontend-hero.png" "OPS VISIBILITY" "Runtime evidence grows with the feature set" "Backend snapshots, MagicBlock runtime intake, and operator docs now track" "confidential operations as first-class review surfaces." "Product polish and reviewer trust now advance together." "0x22C55E"
-  scene "$s5" "$ASSETS_DIR/frontend-hero.png" "WEEK 3 RESULT" "Private voting became private operations" "Week 3 closes confidential payroll, bonus approval, MagicBlock corridor, and" "REFHE-gated settlement into one treasury workflow." "x-pact.github.io/PrivateDAO  ·  github.com/X-PACT/PrivateDAO" "0xA9F5FF"
+  scene "$s5" "$ASSETS_DIR/frontend-hero.png" "WEEK 3 RESULT" "Private voting became private operations" "Week 3 closes confidential payroll, bonus approval, MagicBlock corridor, and" "REFHE-gated settlement into one treasury workflow." "privatedao.org  ·  github.com/X-PACT/PrivateDAO" "0xA9F5FF"
 
   compose_video "$video" "$poster" "$s1" "$s2" "$s3" "$s4" "$s5"
   copy_upload_asset "$video" "$poster" "Week 3 - PrivateDAO Frontier Hackathon - Confidential Treasury Operations"
@@ -129,7 +129,7 @@ render_week4() {
   scene "$s2" "$ASSETS_DIR/frontend-hero.png" "350-WALLET PROFILE" "Wave testing is structured, not improvised" "Fifty wallets per wave across seven waves mix happy paths with invalid reveals," "late reveals, replay attempts, and authority mismatch attempts." "Success is measured by clean rejection and recovery under load." "0xFFE48A"
   scene "$s3" "$ASSETS_DIR/frontend-hero.png" "RUNTIME + REVIEW" "Evidence is now a first-class feature" "Runtime attestations, audit packets, read-node snapshots, MagicBlock runtime" "packages, and go-live surfaces all stay machine-verifiable." "Inspection is built into the repo, not deferred to slides." "0x7E57FF"
   scene "$s4" "$ASSETS_DIR/frontend-hero.png" "HONEST BOUNDARY" "External steps are explicit" "Real-device captures, external audit closure, and the final canonical verifier" "boundary decision still sit outside the codebase." "What remains is operational execution, not missing architecture." "0x22C55E"
-  scene "$s5" "$ASSETS_DIR/frontend-hero.png" "WEEK 4 RESULT" "A credible mainnet-path product" "Week 4 shows private governance, confidential treasury operations, reviewer" "artifacts, and scale discipline living in one Solana product." "x-pact.github.io/PrivateDAO  ·  github.com/X-PACT/PrivateDAO" "0xA9F5FF"
+  scene "$s5" "$ASSETS_DIR/frontend-hero.png" "WEEK 4 RESULT" "A credible release-path product" "Week 4 shows private governance, confidential treasury operations, reviewer" "artifacts, and scale discipline living in one Solana product." "privatedao.org  ·  github.com/X-PACT/PrivateDAO" "0xA9F5FF"
 
   compose_video "$video" "$poster" "$s1" "$s2" "$s3" "$s4" "$s5"
   copy_upload_asset "$video" "$poster" "Week 4 - PrivateDAO Frontier Hackathon - Audit Readiness And Mainnet Path"

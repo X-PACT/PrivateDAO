@@ -39,7 +39,7 @@ These changes improve indexability. They do not guarantee first position by them
 ## Exact External Actions
 
 1. keep `privatedao.org` as the only canonical index target
-2. keep `www.privatedao.org` and `x-pact.github.io/PrivateDAO` redirected to the canonical domain
+2. keep `www.privatedao.org` redirected to the canonical domain and treat any legacy mirrors as non-canonical
 3. keep brand-consistent references across:
    - GitHub repo
    - YouTube channel

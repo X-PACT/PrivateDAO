@@ -1,5 +1,16 @@
+import type { Metadata } from "next";
+
 import { InternalAssistantPanel } from "@/components/internal-assistant-panel";
 import { OperationsShell } from "@/components/operations-shell";
+import { buildRouteMetadata } from "@/lib/route-metadata";
+
+export const metadata: Metadata = buildRouteMetadata({
+  title: "Assistant",
+  description: "Built-in guide for users, reviewers, and operators to reach the right PrivateDAO route quickly.",
+  path: "/assistant",
+  keywords: ["assistant", "guide"],
+  index: false,
+});
 
 export default function AssistantPage() {
   return (

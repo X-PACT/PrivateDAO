@@ -14,14 +14,14 @@ export function getTrackMainnetGatePlan(
       beforeMainnet: [
         "External review of the encrypted operations corridor and the exact proposal-to-payout path.",
         "Stronger runtime evidence for wallet, signer, and payout execution across the confidential workflow.",
-        "Explicit signer policy, timelock, and launch-boundary closure for real-funds governance.",
+        "Explicit signer policy, timelock, and launch-boundary completion for real-funds governance.",
       ],
       devnetOnly: [
         "Reviewer packet and proof-first demonstrations of encrypted payroll and grant approvals.",
         "Confidence-engine interpretation used as deterministic guidance, not as a formal proof artifact.",
       ],
       releaseDiscipline:
-        "Keep privacy claims bounded to the exact encrypted workflow that is evidenced, and keep all mainnet statements tied to blocker closure rather than aspiration.",
+        "Keep privacy claims bounded to the exact encrypted workflow that is evidenced, and keep all production statements tied to operating-gate completion rather than aspiration.",
     };
   }
 
@@ -46,7 +46,7 @@ export function getTrackMainnetGatePlan(
       beforeMainnet: [
         "Broader wallet rehearsal on the exact first-run path users will see in production.",
         "A stable operator support path so user onboarding does not rely on reviewer-only documentation.",
-        "Trust and blocker routes that remain understandable to normal users after launch.",
+        "Trust and release-gate routes that remain understandable to normal users after launch.",
       ],
       devnetOnly: [
         "Current judge-first proof routes and technical reviewer shortcuts.",
@@ -60,7 +60,7 @@ export function getTrackMainnetGatePlan(
   if (workspace.slug === "colosseum-frontier" || workspace.slug === "ranger-main") {
     return {
       beforeMainnet: [
-        "Close the launch blockers pack and keep external review and runtime capture expectations explicit.",
+        "Close the launch gate pack and keep external review and runtime capture expectations explicit.",
         "Preserve signer hygiene, timelock posture, and release discipline across the full product shell.",
         "Prove the startup-quality path works end to end with the same routes customers and judges see.",
       ],
@@ -139,13 +139,13 @@ export function getTrackMainnetGatePlan(
 
   return {
     beforeMainnet: [
-      "Close all visible blocker routes that still distinguish reviewer proof from production readiness.",
+      "Close all visible gate routes that still distinguish reviewer proof from production readiness.",
       "Keep signer, timelock, and runtime evidence disciplined across the exact product path used in demos.",
-      "Promote only what the current trust package and blocker surfaces can support.",
+      "Promote only what the current trust package and gate surfaces can support.",
     ],
     devnetOnly: [
       "Reviewer-first packets, demo choreography, and competition-specific framing.",
-      "Evidence surfaces that are designed to prove readiness without implying completed external closure.",
+      "Evidence surfaces that are designed to prove readiness without implying completed external completion.",
     ],
     releaseDiscipline:
       "Mainnet promotion should follow the same product shell and trust routes already visible in the live app.",

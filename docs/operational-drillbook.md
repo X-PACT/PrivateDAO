@@ -18,7 +18,7 @@ Expected safe outcome:
 
 Primary surfaces:
 
-- `https://x-pact.github.io/PrivateDAO/diagnostics/`
+- `https://privatedao.org/diagnostics/`
 - `docs/wallet-runtime.md`
 
 ## Drill 2: Review Surface Rebuild

@@ -2,7 +2,7 @@
 
 This file is the canonical answer pack for manual Colosseum and side-track submission updates. It exists because the repo can be updated directly, while the submission portal itself may require manual copy-paste.
 
-For non-Colosseum Superteam listings, grants, and track-specific posture differences, use [superteam-track-submission-matrix-2026.md](/home/x-pact/PrivateDAO/docs/superteam-track-submission-matrix-2026.md) as the companion source.
+For the public competition posture around the current Colosseum Frontier cycle, use [superteam-track-submission-matrix-2026.md](/home/x-pact/PrivateDAO/docs/superteam-track-submission-matrix-2026.md) as the companion source.
 
 ## Core Links
 

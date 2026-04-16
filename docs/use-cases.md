@@ -10,6 +10,13 @@ Structured pack view:
 
 PrivateDAO is not only a governance contract. It is a governance security system for environments where public intent leakage creates operational and economic risk.
 
+It should also be read as public-good infrastructure for the ecosystem:
+
+- it gives organizations a cleaner path to private-yet-reviewable governance
+- it reduces the need for off-chain coordination hacks around treasury and grants
+- it helps treasury, grants, clubs, guilds, and protocol teams coordinate on Solana without turning every active decision into a public signaling game
+- it creates reusable governance and treasury patterns that other teams can study, adopt, and build on
+
 ## 1. DAO Governance Privacy
 
 ### Private treasury voting

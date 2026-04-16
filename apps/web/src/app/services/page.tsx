@@ -7,6 +7,7 @@ import { CustodyReadinessStrip } from "@/components/custody-readiness-strip";
 import { DataCorridorQuickLinks } from "@/components/data-corridor-quick-links";
 import { DevnetServiceMetricsPanel } from "@/components/devnet-service-metrics-panel";
 import { EcosystemFocusAlignmentStrip } from "@/components/ecosystem-focus-alignment-strip";
+import { EncryptedOperationsWorkbench } from "@/components/encrypted-operations-workbench";
 import { HostedReadProofStrip } from "@/components/hosted-read-proof-strip";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperationsShell } from "@/components/operations-shell";
@@ -16,6 +17,7 @@ import { PdaoTokenStrategyStrip } from "@/components/pdao-token-strategy-strip";
 import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-truth-strip";
 import { ReadNodeActivationStrip } from "@/components/read-node-activation-strip";
 import { ReadNodeHostReadinessStrip } from "@/components/read-node-host-readiness-strip";
+import { JupiterTreasuryRouteSurface } from "@/components/jupiter-treasury-route-surface";
 import { SectionHeader } from "@/components/section-header";
 import { SettlementReceiptSurface } from "@/components/settlement-receipt-surface";
 import { SettlementReceiptClosurePanel } from "@/components/settlement-receipt-closure-panel";
@@ -46,7 +48,7 @@ export default function ServicesPage() {
     <OperationsShell
       eyebrow="Commercial"
       title="Service and pilot surfaces presented like a product, not buried in docs"
-      description="PrivateDAO also needs to sell what it can do: API rails, operator support, pilot onboarding, trust packaging, and pricing language that stays technically honest."
+      description="PrivateDAO also needs to show what it can deliver: API rails, operator support, pilot onboarding, trust packaging, and pricing language that stays technically grounded."
       navigationMode="guided"
       badges={[
         { label: "Services", variant: "warning" },
@@ -56,6 +58,9 @@ export default function ServicesPage() {
     >
       <div>
         <ServicesSurface />
+      </div>
+      <div>
+        <JupiterTreasuryRouteSurface />
       </div>
       <div>
         <CommercialCompareSurface />
@@ -71,8 +76,11 @@ export default function ServicesPage() {
       <div>
         <TreasuryReviewerGradeStrip
           context="services"
-          description="Collapse treasury professionalism into one reviewer-grade surface before the receive rails: sender discipline, proof links, rail references, commercial fit, and the exact blocker stay visible together."
+          description="Collapse treasury professionalism into one product-grade surface before the receive rails: sender discipline, proof links, rail references, commercial fit, and the next readiness gate stay visible together."
         />
+      </div>
+      <div>
+        <EncryptedOperationsWorkbench />
       </div>
       <div>
         <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading treasury receive surface…</div>}>

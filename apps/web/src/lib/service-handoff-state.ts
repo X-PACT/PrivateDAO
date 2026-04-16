@@ -3,6 +3,7 @@ export const SERVICE_HANDOFF_EVENT = "privatedao:service-handoff-updated";
 
 export const SERVICE_HANDOFF_PROFILES = [
   "pilot-funding",
+  "treasury-rebalance",
   "treasury-top-up",
   "vendor-payout",
   "contributor-payout",
@@ -80,6 +81,21 @@ export type ServiceHandoffRequestDelivery = {
   deliveredAt: string | null;
 };
 
+export type ServiceHandoffTreasuryRoutePlan = {
+  routeProvider: string;
+  executionMode: string;
+  sourceAssetHint: string;
+  destinationAsset: string;
+  quoteReviewMode: string;
+  executionPreference: string;
+  slippageBandBps: string;
+  quotePolicy: string;
+  slippagePolicy: string;
+  routeRationale: string;
+  reviewerPath: string;
+  settlementPath: string;
+};
+
 export type ServiceHandoffRequestPayload = {
   kind: string;
   state: string;
@@ -104,6 +120,7 @@ export type ServiceHandoffRequestPayload = {
   routeFocus: string;
   executionTarget: string;
   evidenceRoute: string;
+  treasuryRoutePlan?: ServiceHandoffTreasuryRoutePlan;
   requestRoute: string;
   deliveryRoute: string;
   telemetryRoute: string;
@@ -171,6 +188,7 @@ function toRequestPayloadSeed(
     routeFocus: payload.routeFocus,
     executionTarget: payload.executionTarget,
     evidenceRoute: payload.evidenceRoute,
+    treasuryRoutePlan: payload.treasuryRoutePlan,
   };
 }
 
@@ -247,6 +265,26 @@ function parseRequestPayloadSeed(
       typeof parsed.evidenceRoute !== "string"
     ) {
       return undefined;
+    }
+
+    if (parsed.treasuryRoutePlan) {
+      const plan = parsed.treasuryRoutePlan as Partial<ServiceHandoffTreasuryRoutePlan>;
+      if (
+        typeof plan.routeProvider !== "string" ||
+        typeof plan.executionMode !== "string" ||
+        typeof plan.sourceAssetHint !== "string" ||
+        typeof plan.destinationAsset !== "string" ||
+        typeof plan.quoteReviewMode !== "string" ||
+        typeof plan.executionPreference !== "string" ||
+        typeof plan.slippageBandBps !== "string" ||
+        typeof plan.quotePolicy !== "string" ||
+        typeof plan.slippagePolicy !== "string" ||
+        typeof plan.routeRationale !== "string" ||
+        typeof plan.reviewerPath !== "string" ||
+        typeof plan.settlementPath !== "string"
+      ) {
+        return undefined;
+      }
     }
 
     return parsed as ServiceHandoffRequestPayloadSeed;
@@ -404,6 +442,26 @@ export function parseStoredServiceHandoffState(raw: string | null): ServiceHando
         typeof requestPayload.telemetryRoute !== "string"
       ) {
         return null;
+      }
+
+      if (requestPayload.treasuryRoutePlan) {
+        const plan = requestPayload.treasuryRoutePlan as Partial<ServiceHandoffTreasuryRoutePlan>;
+        if (
+          typeof plan.routeProvider !== "string" ||
+          typeof plan.executionMode !== "string" ||
+          typeof plan.sourceAssetHint !== "string" ||
+          typeof plan.destinationAsset !== "string" ||
+          typeof plan.quoteReviewMode !== "string" ||
+          typeof plan.executionPreference !== "string" ||
+          typeof plan.slippageBandBps !== "string" ||
+          typeof plan.quotePolicy !== "string" ||
+          typeof plan.slippagePolicy !== "string" ||
+          typeof plan.routeRationale !== "string" ||
+          typeof plan.reviewerPath !== "string" ||
+          typeof plan.settlementPath !== "string"
+        ) {
+          return null;
+        }
       }
     }
 

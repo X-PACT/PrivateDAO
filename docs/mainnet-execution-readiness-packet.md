@@ -2,7 +2,7 @@
 
 ## What this packet is for
 
-This packet turns the remaining path to mainnet into a countable execution plan.
+This packet turns the remaining production-release path into a countable execution plan.
 
 It is for reviewers who want to know:
 
@@ -13,12 +13,12 @@ It is for reviewers who want to know:
 
 ## Current posture
 
-PrivateDAO is not blocked by lack of product.
+PrivateDAO is not limited by lack of product.
 
-It is blocked by a narrow execution set:
+It is defined by a narrow execution set:
 
-- audit closure
-- custody and authority closure
+- audit completion
+- custody and authority completion
 - monitoring delivery
 - real-device wallet captures
 - source-verifiable settlement receipts
@@ -30,7 +30,7 @@ This is one of the strongest possible grant and accelerator positions:
 
 - the product already exists
 - the proof of work is already public
-- the blocker set is explicit
+- the execution set is explicit
 - the remaining path is measurable
 
 ## What capital should close
@@ -38,7 +38,7 @@ This is one of the strongest possible grant and accelerator positions:
 The highest-value funding use is:
 
 1. external audit completion
-2. multisig and authority ceremony closure
+2. multisig and authority ceremony completion
 3. production monitoring delivery
 4. real-device wallet matrix completion
 5. source-verifiable settlement receipts
@@ -52,7 +52,7 @@ The highest-value funding use is:
 4. `/documents/launch-ops-checklist`
 5. `/trust`
 
-## Honest boundary
+## Current release boundary
 
 This packet should increase confidence, not exaggerate readiness.
 
@@ -60,7 +60,15 @@ It does not claim:
 
 - finished audit
 - finished production custody ceremony
-- live alert delivery closure
+- live alert delivery completion
 - finished real-device coverage
 - finished receipt integration
-- finished mainnet cutover
+- finished production cutover
+
+## Public-good value
+
+This packet matters beyond one release because it shows how a privacy-aware governance product can move from Devnet proof to production confidence through:
+
+- visible operating gates
+- reusable trust and custody patterns
+- measurable milestones funders and ecosystem supporters can track

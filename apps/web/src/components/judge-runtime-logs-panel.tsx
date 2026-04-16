@@ -23,9 +23,9 @@ export function JudgeRuntimeLogsPanel() {
           </div>
         </div>
         <p className="max-w-4xl text-sm leading-7 text-white/62">
-          The judge route now exposes real proposal and settlement signatures from the indexed Frontier evidence and
-          the dedicated V3 hardening proof. This keeps the review surface tied to actual Devnet execution instead of
-          packet summaries alone.
+          This route is strongest after a visitor connects a Devnet wallet and runs the product flow. It exposes real
+          proposal and settlement signatures from indexed evidence and the dedicated V3 hardening path, so the review
+          surface stays tied to actual execution instead of packet summaries alone.
         </p>
       </CardHeader>
       <CardContent className="grid gap-6">
@@ -131,6 +131,10 @@ export function JudgeRuntimeLogsPanel() {
             <div className="mt-5 flex flex-wrap gap-3">
               <Link className={cn(buttonVariants({ size: "sm" }), "justify-between")} href="/documents/frontier-integrations">
                 Open integration packet
+                <ExternalLink className="ml-2 h-4 w-4" />
+              </Link>
+              <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")} href="/govern">
+                Run the live Devnet flow
                 <ExternalLink className="ml-2 h-4 w-4" />
               </Link>
               <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")} href="/documents/live-proof-v3">

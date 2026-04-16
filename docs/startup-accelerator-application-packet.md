@@ -2,7 +2,7 @@
 
 ## What this packet is for
 
-This packet is for accelerator-style reviewers who are not only asking whether PrivateDAO works on Devnet, but whether it already behaves like a company that can turn capital into a disciplined mainnet release.
+This packet is for accelerator-style reviewers who are not only asking whether PrivateDAO works on Devnet, but whether it already behaves like a serious product that can turn outside support into a disciplined, safer, and more trusted release path.
 
 ## Reviewer expectation
 
@@ -11,9 +11,9 @@ The strongest accelerator posture is not "we have many features."
 It is:
 
 - one coherent product
-- one believable company thesis
+- one believable product thesis
 - one narrow use-of-capital path
-- one honest blocker set
+- one disciplined operating-gate path
 
 This packet is written around that standard.
 
@@ -26,19 +26,21 @@ PrivateDAO is already a live Devnet product with:
 - public proof and trust routes
 - confidential payout and telemetry corridors
 - a commercial services surface
+- public-good value for the ecosystem
+- clear use cases that can already be explained from the live product
 
 The accelerator case is not “fund us so we can start building.”
 
 It is:
 
-**fund us so we can turn a live Devnet governance company into a mainnet-ready release candidate with explicit operational discipline.**
+**support us so we can turn a live Devnet governance product into a stronger release candidate with clearer user protection, better operational discipline, and higher trust.**
 
 ## What is already shipped
 
-- public product routes: `/`, `/start`, `/govern`, `/story`
-- commercial routes: `/services`, `/live`, `/tracks`
-- trust and proof routes: `/trust`, `/proof`, `/documents/launch-trust-packet`, `/documents/mainnet-blockers`
-- competition and reviewer corridors
+- public product routes: `/`, `/start`, `/services`, `/security`, `/trust`, `/story`
+- proof and reviewer routes: `/proof`, `/documents/reviewer-fast-path`, `/documents/launch-trust-packet`
+- capital and funding packets: `/documents/capital-readiness-packet`, `/documents/funding-readiness-scorecard`
+- reviewer-visible telemetry and trust corridors
 - Android governance client branch and runtime evidence work
 
 ## Why this is accelerator-grade now
@@ -56,9 +58,17 @@ The product can be sold as:
 - governance rails for gaming and community operations
 - telemetry and trust-heavy infrastructure for serious operators
 
-### Operational honesty
+### Public-good logic
 
-The project is stronger because the mainnet blockers are explicit, not hidden.
+The product can also be backed as ecosystem infrastructure because it:
+
+- makes private-yet-reviewable governance easier to adopt
+- supports grant, treasury, and payout coordination in a cleaner way
+- turns proof, telemetry, and trust into reusable patterns other teams can inspect and build on
+
+### Operational discipline
+
+The project is stronger because the production gates are explicit, not hidden.
 
 That increases investor trust instead of reducing it.
 
@@ -71,7 +81,14 @@ The cleanest accelerator use of funds is:
 3. monitoring and alerting closure
 4. full real-device wallet matrix
 5. source-verifiable settlement receipts
-6. final mainnet cutover ceremony
+6. final production cutover ceremony
+
+If the accelerator support is DD.xyz credit-based rather than direct capital, the same operating logic still applies:
+
+- stronger user protection
+- safer wallet-facing operations
+- clearer runtime trust
+- faster hardening of the live product
 
 ## 4-week accelerator execution plan
 
@@ -95,58 +112,68 @@ The cleanest accelerator use of funds is:
 
 ### Week 4
 
-- execute mainnet cutover only if the blocker set is truly closed
-- otherwise publish a fully reviewer-safe release candidate with explicit remaining blockers
+- execute production cutover only if the operating gate set is truly closed
+- otherwise publish a fully reviewer-visible release candidate with explicit remaining gates
 
 ## Primary KPI
 
-**Success = a reviewer can verify that PrivateDAO is a coherent product company with a shrinking blocker set and a credible path to mainnet.**
+**Success = a reviewer can verify that PrivateDAO is a coherent product with a strengthening security posture, a shrinking operating-gate set, and a credible path to a higher-trust release.**
 
 Supporting indicators:
 
 - live Devnet governance remains functional
 - trust and telemetry packets remain current
 - payout corridor remains evidence-backed
-- blocker count and ambiguity both decline
+- gate count and ambiguity both decline
 
-## Honest boundary
+## Current release boundary
 
 Do not claim:
 
 - final audit completion
 - finished production custody ceremony
 - finished monitoring closure
-- final real-funds mainnet readiness
+- final production release completion
 
 Claim instead:
 
-- live Devnet company-in-formation
+- live Devnet product with a disciplined release path
 - open-source proof of work
 - buyer-facing routes
-- disciplined blocker management
+- disciplined operating-gate management
 - clear use of capital
+- clear ecosystem value
+- clear use cases and milestones
 
 ## Best reviewer path
 
 1. `/start`
-2. `/story`
-3. `/services`
+2. `/services`
 4. `/trust`
-5. `/documents/startup-accelerator-application-packet`
-6. `/documents/funding-readiness-scorecard`
-7. `/viewer/investor-pitch-deck`
-8. `/documents/mainnet-blockers`
+5. `/documents/reviewer-fast-path`
+6. `/documents/startup-accelerator-application-packet`
+7. `/documents/funding-readiness-scorecard`
+8. `/documents/capital-readiness-packet`
+9. `/story`
 
 ## Why this should be funded
 
 PrivateDAO is already beyond the “idea stage.”
 
-The right framing is not experimentation funding.
-It is execution funding for a live product that already has:
+The right framing is not experimentation support.
+It is execution support for a live product that already has:
 
 - proof of work
 - product surfaces
 - route architecture
 - trust discipline
 - commercial logic
-- a credible mainnet path
+- a credible production-release path
+- public-good infrastructure value
+- clear use cases and measurable milestones
+
+The practical reason to back it is straightforward:
+
+- stronger protection increases user trust
+- stronger trust increases adoption quality
+- stronger adoption quality increases the value of every later release

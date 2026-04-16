@@ -2,12 +2,13 @@
 
 ## Why this packet exists
 
-This packet turns the current Superteam Poland / Solana Foundation grant application into a concise, proof-led version that better fits how the grant is actually judged:
+This packet turns the current Superteam Poland / Solana Foundation grant application into a concise, execution-led version that fits how the grant is actually judged:
 
 - proof of work over credentials
 - speed over perfection
 - clear decentralization and censorship-resistance value
 - DAO tooling, payments, developer tooling, and education relevance
+- simple milestones a credible team can ship without drama
 
 It is written to be copied into the grant form with minimal editing.
 
@@ -35,26 +36,33 @@ This is why the submission should read like a shipped DAO tooling and payments p
 
 ## Recommended one-liner
 
-**Private governance and treasury execution on Solana, packaged as a real product.**
+**Private governance, treasury execution, and confidential payouts on Solana, delivered as a simple Devnet-verifiable product.**
 
 ## Recommended problem and solution
 
-PrivateDAO solves three practical gaps in current Solana DAO operations:
+PrivateDAO is a privacy-first governance and treasury product on Solana for teams and communities that need serious coordination, reviewable treasury execution, and more credible operational privacy.
 
-1. governance decisions are still too public and leak sensitive intent too early
-2. treasury execution is often operationally unsafe or weakly reviewable
-3. mobile and non-technical operators still struggle to use serious governance tooling
+We are building PrivateDAO as a real operating system for governed treasury motion, not as a demo. The product is already live on Devnet with wallet-first governance, proposal flow, commit-reveal voting, trust surfaces, reviewer-visible telemetry, and confidential payout routing.
 
-PrivateDAO solves this by packaging a privacy-first governance and treasury system on Solana Devnet with:
+This grant would help us push the next practical layer of execution: clearer public proof, stronger operator tooling, broader runtime evidence, and a tighter path from live Devnet product quality toward release-grade trust.
 
-- commit-reveal voting for private governance
-- timelock-controlled treasury execution
-- wallet-first web governance
-- Android governance access
-- confidential payout and treasury-motion rehearsal
-- reviewer-safe telemetry, trust, and diagnostics surfaces
+PrivateDAO fits this grant strongly because it sits at the intersection of:
 
-The project is already live on Devnet and open-source. The grant would accelerate the remaining path from strong Devnet proof to mainnet-ready release discipline.
+- DAO tooling: governance, proposal flow, commit-reveal voting, and treasury controls
+- payments: governed payouts, treasury operations, and payout routing
+- developer tooling: telemetry, diagnostics, public proof surfaces, and reviewer-visible documentation
+- decentralisation and censorship resistance: coordination and treasury execution on Solana rails, with less dependence on opaque off-chain process
+
+The project is open source, already visible in production-like public routes, and backed by proof of work. We also already earned **1st Place on Superteam Poland** in the Rebuild Backend challenge, which matters here because this grant is not funding a cold start. It is helping a team that has already shipped, already earned trust once, and is working to compound that trust into a stronger public good for the ecosystem.
+
+## Public-good value to the ecosystem
+
+PrivateDAO fits public-good funding because it helps the ecosystem with:
+
+- clearer DAO tooling for privacy-aware governance
+- better treasury and payout coordination patterns
+- open proof, telemetry, and trust surfaces other builders can study and reuse
+- a simpler product interface over advanced cryptography and governance controls
 
 ## Why this fits the Poland Foundation grant
 
@@ -64,7 +72,7 @@ PrivateDAO gives communities coordination and treasury tooling that reduces depe
 
 ### Censorship resistance
 
-The system keeps governance and treasury logic on Solana rails, with explicit custody and authority hardening toward a production-grade release path.
+The system keeps governance and treasury logic on Solana rails, with a stronger path toward credible operator trust and release discipline.
 
 ### DAO tooling
 
@@ -90,17 +98,26 @@ PrivateDAO already supports treasury-motion and confidential payout corridors on
 
 The public routes, story surface, and documentation already function as onboarding material for judges, builders, and ecosystem participants.
 
+## Clear use cases
+
+The strongest current use cases are:
+
+1. grant and allocation committees
+2. DAO treasury approvals
+3. contributor, payroll, and vendor payout flows
+4. operating councils that need privacy without losing verifiability
+
 ## Strongest proof-of-work links
 
 - Live product: `https://privatedao.org/`
 - Start route: `https://privatedao.org/start/`
-- Govern route: `https://privatedao.org/govern/`
-- Story route: `https://privatedao.org/story/`
-- Analytics route: `https://privatedao.org/analytics/`
-- Security route: `https://privatedao.org/security/`
 - Services route: `https://privatedao.org/services/`
-- Poland grant workspace: `https://privatedao.org/tracks/poland-grants`
-- Canonical custody proof: `https://privatedao.org/documents/canonical-custody-proof/`
+- Security route: `https://privatedao.org/security/`
+- Trust route: `https://privatedao.org/trust/`
+- Story route: `https://privatedao.org/story/`
+- Judge / proof route: `https://privatedao.org/proof/?judge=1`
+- Reviewer fast path: `https://privatedao.org/documents/reviewer-fast-path/`
+- Award proof: `https://privatedao.org/awards/`
 - Reviewer telemetry packet: `https://privatedao.org/documents/reviewer-telemetry-packet/`
 - Capital readiness packet: `https://privatedao.org/documents/capital-readiness-packet/`
 - GitHub: `https://github.com/X-PACT/PrivateDAO`
@@ -109,115 +126,68 @@ The public routes, story surface, and documentation already function as onboardi
 
 **$10,000**
 
-This ask is justified if it is framed as the shortest path from a live Devnet product to a credible mainnet release candidate.
+This ask is justified because it funds a team that already shipped a live product, already earned public trust through a first-place technical result, and can use the capital to move faster through the next execution tranche.
 
 ## Recommended delivery plan
 
-### Milestone 1: reviewer-safe production hardening pack
-
-**Timeline:** Week 1
+### Milestone 1: wallet-first governance and reviewer clarity
 
 **Objectives**
 
-- finalize a production-grade grant packet and trust packet
-- close remaining custody intake and multisig preparation artifacts
-- strengthen telemetry, payout evidence, and wallet/runtime review surfaces
+- tighten the live public route across start, govern, trust, and Poland grant surfaces
+- keep the governance flow easier for reviewers to understand from the product itself
+- strengthen runtime proof for the wallet-first DAO and proposal cycle already under continuous development
 
 **Deliverables**
 
-- updated grant submission packet
-- updated trust and telemetry packets
-- stricter custody and mainnet blocker packet linkage
+- cleaner Poland grant workspace and reviewer path
+- stronger browser-wallet and runtime evidence around the governance cycle
+- refreshed public packet and trust-linked guidance
 
 **Success signal**
 
-- reviewers can inspect product, trust, telemetry, and blockers without leaving the public site
+- a reviewer can open the live product and understand the governance flow and proof of work quickly
 
-### Milestone 2: audit and authority readiness closure
-
-**Timeline:** Week 2
+### Milestone 2: confidential payouts, treasury operations, and release-readiness uplift
 
 **Objectives**
 
-- move the governance program into external review
-- complete authority multisig and custody preparation
-- lock the release checklist around timelock and execution safety
+- strengthen the confidential payout and treasury operations corridor
+- improve the public proof and operating visibility around these flows
+- package the next release-readiness tranche into one simpler, stronger public story
 
 **Deliverables**
 
-- external review intake submitted
-- multisig / custody preparation packet updated
-- release checklist tightened around authority and timelock controls
+- improved payout and treasury operation surfaces
+- stronger settlement and service review paths
+- refreshed release-readiness and ecosystem-facing proof pack
 
 **Success signal**
 
-- no unresolved critical launch blocker without a linked next action and evidence route
+- the product reads clearly as practical DAO tooling, treasury coordination, and payment-capable infrastructure that is advancing through steady execution
 
-### Milestone 3: real-device and settlement evidence closure
+## Why these milestones are strong
 
-**Timeline:** Week 3
+These milestones are intentionally short, practical, and visible:
 
-**Objectives**
-
-- complete the real-device wallet matrix
-- improve source-verifiable settlement receipts
-- publish updated telemetry/export evidence
-
-**Deliverables**
-
-- broader real-device wallet runtime evidence
-- refreshed settlement evidence
-- updated analytics and telemetry export packet
-
-**Success signal**
-
-- judges can inspect runtime and payout evidence as product surfaces, not internal notes
-
-### Milestone 4: mainnet release candidate or audited Devnet completion
-
-**Timeline:** Week 4
-
-**Objectives**
-
-- perform mainnet cutover only if audit and custody closure are complete
-- otherwise publish a fully hardened Devnet-complete release candidate with explicit blockers
-
-**Deliverables**
-
-- mainnet release candidate if conditions are closed
-- otherwise a publicly reviewable, grant-complete Devnet release package
-
-**Success signal**
-
-- the project is either mainnet-ready or truthfully release-candidate-ready with no hidden blockers
+- they improve a live product instead of funding a concept
+- they are easy for reviewers and ecosystem supporters to verify
+- they strengthen public-good value, not only internal team velocity
+- they build toward stronger release confidence without bloating the roadmap
 
 ## Recommended primary KPI
 
-**Success = reviewers can verify a coherent product, proof, telemetry, treasury, and trust corridor from the public site, with the remaining mainnet blockers explicitly bounded and actively shrinking.**
+**Success means PrivateDAO becomes easier for grant reviewers and ecosystem supporters to understand, trust, and support directly from the live product, the public proof surfaces, and the visible pace of execution.**
 
-Supporting metrics:
+## Tone to preserve in the form
 
-- wallet-first governance flow works on Devnet
-- telemetry export corridor remains live and reviewable
-- confidential payout corridor remains evidence-backed
-- custody/mainnet blocker count is reduced with linked evidence
-- product remains accessible on web and Android surfaces
+The application should sound like this:
 
-## Honest boundary
-
-Do not claim:
-
-- finished external audit
-- fully closed production multisig / custody ceremony
-- completed monitoring closure
-- complete mainnet real-funds readiness
-
-Claim instead:
-
-- live Devnet product
-- open-source proof of work
-- strong DAO tooling and payments fit
-- credible mainnet path with explicit blockers
+- we are already building seriously
+- we already earned trust once through a first-place technical result
+- we are using this grant to move faster and make the product more useful and more credible
+- we are building for privacy, credibility, and long-horizon ecosystem value
+- we are not asking the grant to prove whether we can start; we are asking it to accelerate what is already underway
 
 ## Best application posture
 
@@ -226,16 +196,18 @@ The strongest version of this grant application is:
 - concise
 - product-first
 - proof-linked
-- honest about blockers
-- specific about why the capital accelerates decentralization, censorship resistance, DAO tooling, and payments
+- execution-led
+- confident without overstatement
+- explicit that support compounds into stronger public value for the ecosystem
 
 ## Best supporting packet set
 
-1. `/tracks/poland-grants`
+1. `/start`
 2. `/services`
 3. `/trust`
-4. `/documents/poland-foundation-grant-application-packet`
-5. `/documents/funding-readiness-scorecard`
-6. `/documents/mainnet-blockers`
+4. `/documents/reviewer-fast-path`
+5. `/documents/poland-foundation-grant-application-packet`
+6. `/documents/funding-readiness-scorecard`
+7. `/awards`
 
-That is more convincing than a feature list or an overconfident mainnet claim.
+That is more convincing than a feature list or an overconfident launch promise.

@@ -169,7 +169,7 @@ Funding helps accelerate:
 ## Links
 
 - Repository: `https://github.com/X-PACT/PrivateDAO`
-- Live App: `https://x-pact.github.io/PrivateDAO/`
+- Live App: `https://privatedao.org/`
 - Live Proof: `docs/live-proof.md`
 - Live Proof V3: `docs/test-wallet-live-proof-v3.generated.md`
 - Security Review: `docs/security-review.md`

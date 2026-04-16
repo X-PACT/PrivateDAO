@@ -22,9 +22,10 @@ import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 export const metadata: Metadata = buildRouteMetadata({
   title: "Diagnostics",
   description:
-    "Generated artifacts, runtime checks, reviewer bundle health, and launch blockers presented as a product-facing diagnostics surface.",
+    "Generated artifacts, runtime checks, reviewer bundle health, and release-readiness signals presented as a product-facing diagnostics surface.",
   path: "/diagnostics",
   keywords: ["diagnostics", "reviewer bundle", "artifact freshness", "runtime checks"],
+  index: false,
 });
 
 export default function DiagnosticsPage() {
@@ -35,13 +36,16 @@ export default function DiagnosticsPage() {
     <OperationsShell
       eyebrow="Diagnostics"
       title="Generated artifacts, runtime checks, and reviewer bundle health in one place"
-      description="This page keeps the operator story productized: what is packaged, what is proven, what is still pending-external, and how the verification chain stays coherent inside a professional operations shell."
+      description="This page keeps the operator story productized: what is packaged, what is proven, what is actively being strengthened next, and how the verification chain stays coherent inside a professional operations shell."
       badges={[
         { label: "Diagnostics", variant: "warning" },
         { label: "Runtime surfaces", variant: "cyan" },
         { label: "Reviewer bundle aware", variant: "success" },
       ]}
     >
+      <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-5 text-sm leading-7 text-white/72">
+        Use diagnostics after you connect a Devnet wallet and run the product flow. This is where a visitor, reviewer, or operator can confirm the runtime result, inspect the data corridor, and see that the system is doing real work instead of presenting static claims.
+      </div>
       <div>
         <Suspense fallback={null}>
           <TelemetryModeHandoffStrip context="diagnostics" />

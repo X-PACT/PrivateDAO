@@ -16,6 +16,7 @@ export const metadata: Metadata = buildRouteMetadata({
     "Professional submission corridors for Frontier, grants, infrastructure, and adjacent reviewer opportunities without bounty-stacking optics.",
   path: "/tracks",
   keywords: ["submission corridors", "frontier readiness", "runtime infrastructure", "confidential governance", "startup grant"],
+  index: false,
 });
 
 export default function TracksPage() {

@@ -10,6 +10,7 @@ import { CustodyReadinessStrip } from "@/components/custody-readiness-strip";
 import { CustodyWorkspace } from "@/components/custody-workspace";
 import { FrontierSignalBoard } from "@/components/frontier-signal-board";
 import { IntelligenceLayerSurface } from "@/components/intelligence-layer-surface";
+import { EncryptedOperationsWorkbench } from "@/components/encrypted-operations-workbench";
 import { OperationsShell } from "@/components/operations-shell";
 import { RealDeviceWalletMatrixPanel } from "@/components/real-device-wallet-matrix-panel";
 import { RealDeviceCaptureClosurePanel } from "@/components/real-device-capture-closure-panel";
@@ -24,17 +25,17 @@ import { buildRouteMetadata } from "@/lib/route-metadata";
 export const metadata: Metadata = buildRouteMetadata({
   title: "Security",
   description:
-    "Security architecture, additive V3 hardening, integrations, and explicit launch boundaries presented as a first-class product surface.",
+    "Security architecture, additive V3 hardening, integrations, and production-readiness surfaces presented as a first-class product experience.",
   path: "/security",
-  keywords: ["security", "governance hardening v3", "settlement hardening v3", "launch boundary"],
+  keywords: ["security", "governance hardening v3", "settlement hardening v3", "production readiness"],
 });
 
 export default function SecurityPage() {
   return (
     <OperationsShell
       eyebrow="Security"
-      title="A security surface that keeps hardening, proof, and launch boundaries together"
-      description="The security story stays productized without flattening the truth: additive V3 hardening, integration rails, audit packets, launch blockers, and the cryptographic rails behind the protocol."
+      title="A security surface that keeps hardening, proof, and production readiness together"
+      description="The security story stays productized without flattening the truth: additive V3 hardening, integration rails, audit packets, readiness gates, and the cryptographic rails behind the protocol."
       badges={[
         { label: "Security", variant: "violet" },
         { label: "Additive hardening", variant: "success" },
@@ -60,7 +61,7 @@ export default function SecurityPage() {
         <SectionHeader
           eyebrow="2026 operating reality"
           title="Security posture now has to survive real-world signer attacks, not only audit checklists"
-          description="The Drift exploit and STRIDE response changed what serious judges expect. PrivateDAO keeps signer discipline, launch blockers, runtime visibility, and migration-safe hardening in the product surface instead of hiding them in ops notes."
+          description="The Drift exploit and STRIDE response changed what serious judges expect. PrivateDAO keeps signer discipline, readiness gates, runtime visibility, and migration-safe hardening in the product surface instead of hiding them in ops notes."
         />
       </div>
       <div>
@@ -88,6 +89,9 @@ export default function SecurityPage() {
       </div>
       <div>
         <ConfidentialPayoutEvidenceStrip />
+      </div>
+      <div>
+        <EncryptedOperationsWorkbench />
       </div>
       <div>
         <SettlementReceiptSurface />

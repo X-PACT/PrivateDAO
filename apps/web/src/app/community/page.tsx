@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 import { CommunityHub } from "@/components/community-hub";
 import { EcosystemFocusAlignmentStrip } from "@/components/ecosystem-focus-alignment-strip";
 import { LeadSupportIntake } from "@/components/lead-support-intake";
@@ -6,6 +8,15 @@ import { PlatformServiceArchitecture } from "@/components/platform-service-archi
 import { ProductIntakeForms } from "@/components/product-intake-forms";
 import { VideoCenter } from "@/components/video-center";
 import { TrustSurface } from "@/components/trust-surface";
+import { buildRouteMetadata } from "@/lib/route-metadata";
+
+export const metadata: Metadata = buildRouteMetadata({
+  title: "Community",
+  description:
+    "Community, support, and pilot entry route for the public-good governance and treasury infrastructure behind PrivateDAO.",
+  path: "/community",
+  keywords: ["community", "support", "pilot", "public good", "governance infrastructure"],
+});
 
 type CommunityPageProps = {
   searchParams?: { intake?: string; asset?: string; amount?: string; purpose?: string; lane?: string; profile?: string };
@@ -40,17 +51,17 @@ export default function CommunityPage({ searchParams }: CommunityPageProps) {
   return (
     <OperationsShell
       eyebrow="Community"
-      title="Join the community, follow product momentum, and move into pilot or operator paths"
-      description="Community is not a dead-end social page. It is the public entry for Discord, YouTube, product updates, pilot intent, support routing, and the shortest next step into PrivateDAO as a user, buyer, or operator."
+      title="Join the community, follow product momentum, and step directly into pilot or operator paths"
+      description="Community is the public entry for Discord, YouTube, product updates, pilot intent, support routing, and the shortest next step into PrivateDAO as a user, buyer, operator, or ecosystem supporter."
       badges={[
         { label: "Discord live", variant: "success" },
         { label: "YouTube live", variant: "violet" },
-        { label: "Join -> pilot -> operator", variant: "cyan" },
+        { label: "Join -> support -> pilot", variant: "cyan" },
       ]}
     >
       <EcosystemFocusAlignmentStrip
-        title="Community and education fit now starts from the live product"
-        description="Show that education and community alignment already come from hosted story, onboarding, and reviewer-safe trust routes, not from a dead-end social page."
+        title="Community and education now grow directly from the live product"
+        description="Hosted story, onboarding, trust, and pilot routes already give the community a practical way to support, understand, and extend PrivateDAO through real product use and production-oriented feedback."
       />
       <CommunityHub />
       <LeadSupportIntake mode="community" />

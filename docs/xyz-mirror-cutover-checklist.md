@@ -1,14 +1,10 @@
 # `.xyz` Mirror Cutover Checklist
 
-This checklist is for adding `app.privatedao.xyz` as a mirror of the current review surface without breaking the existing GitHub Pages entrypoint.
+This checklist is for preserving the canonical production domain during any future hosting change without breaking the current reviewer surface.
 
-Current review URL:
+Current canonical review URL:
 
-- `https://x-pact.github.io/PrivateDAO/`
-
-Planned mirror:
-
-- `https://app.privatedao.xyz/`
+- `https://privatedao.org/`
 
 ## What Is Already Ready In-Repo
 
@@ -16,22 +12,20 @@ Planned mirror:
 - the live frontend derives canonical and social URL metadata from the active origin
 - self-links inside the app no longer hardcode only the review host
 - copied evidence packets can reference the active frontend origin
-- review artifacts still keep the GitHub Pages URL as the canonical review surface during active judging
+- review artifacts now keep `https://privatedao.org/` as the canonical review surface during active judging
 
 ## External Steps Still Required
 
-1. Create the DNS record for `app.privatedao.xyz`
-2. Point the mirror domain at the same static bundle host used for the review surface
-3. Ensure HTTPS is active and valid
-4. Confirm the mirror serves the same root Next.js export bundle and assets
-5. Verify that reviewer links remain unchanged in public submissions until mirror validation is complete
+1. keep the canonical product domain serving the same root bundle and assets
+2. ensure HTTPS remains active and valid
+3. confirm any alternate host serves the same interface only if needed
+4. verify that reviewer links remain unchanged in public submissions
 
 ## Cutover Validation
 
-Validate both URLs manually:
+Validate the canonical domain manually:
 
-- `https://x-pact.github.io/PrivateDAO/`
-- `https://app.privatedao.xyz/`
+- `https://privatedao.org/`
 
 Check the following at both URLs:
 
@@ -57,20 +51,18 @@ until the mirror has been verified end-to-end.
 
 ## Evidence To Capture
 
-When the mirror is live, capture:
+Capture:
 
-- screenshot of home page on `.xyz`
-- screenshot of `/proof/?judge=1` on `.xyz`
-- screenshot of `/diagnostics/` on `.xyz`
-- browser metadata inspection showing canonical/OG URL on `.xyz`
-- one note confirming GitHub Pages still serves the same surface
+- screenshot of home page on `https://privatedao.org/`
+- screenshot of `/proof/?judge=1`
+- screenshot of `/diagnostics/`
+- browser metadata inspection showing canonical/OG URL on `https://privatedao.org/`
 
 ## Success Condition
 
-The mirror is considered ready when:
+The production domain is considered stable when:
 
-- both domains serve the same UI and same asset set
+- the canonical domain serves the same UI and asset set consistently
 - query-based entrypoints still work
 - metadata follows the active origin
 - no reviewer-facing link is broken
-- no production claims are changed by the mirror itself

@@ -73,6 +73,18 @@ function hasPaymentsTruthIntent(normalized: string) {
   ].some((term) => normalized.includes(term));
 }
 
+function hasJupiterRouteIntent(normalized: string) {
+  return [
+    "jupiter",
+    "swap",
+    "rebalance",
+    "treasury swap",
+    "treasury rebalance",
+    "quote preview",
+    "slippage",
+  ].some((term) => normalized.includes(term));
+}
+
 function hasTokenTruthIntent(normalized: string) {
   return [
     "pdao",
@@ -101,10 +113,10 @@ function getPaymentsTruthBlock(normalized: string): AssistantSuggestion["queryBl
     readiness: "Devnet rails live, production treasury still evidence-gated",
     network: treasury.network,
     rails: `${treasury.assets.length} public rails`,
-    blocker: "upgrade-authority-multisig · pending-external",
+    blocker: "upgrade-authority-multisig · next production gate",
     blockerSummary:
-      "Move production upgrade authority and operational authorities to a documented multisig or governance-owned path and rehearse rotation.",
-    reviewerPacketLabel: "Open treasury reviewer packet",
+      "Move production upgrade authority and operational authorities into a documented multisig or governance-owned path and record the rotation evidence needed for the next operating milestone.",
+    reviewerPacketLabel: "Open treasury proof packet",
     reviewerPacketHref: "/documents/treasury-reviewer-packet",
     bestRouteLabel: isExecutionPath
       ? "Open govern payments path"
@@ -119,7 +131,7 @@ function getTokenTruthBlock(normalized: string): AssistantSuggestion["queryBlock
   const snapshot = getPdaoTokenStrategySnapshot("documents");
   const whatItIs = `${snapshot.network} governance and coordination token with live mint ${snapshot.mint}.`;
   const whatItIsNot =
-    "Not a public mainnet payment coin, not speculative tokenomics, and not a claim that the token itself is the settlement asset.";
+    "Built as a governance and coordination token first, with payment and settlement rails handled through the broader product infrastructure instead of speculative token positioning.";
   const gates = snapshot.gates
     .slice(0, 3)
     .map((item) => item.label)
@@ -138,11 +150,43 @@ function getTokenTruthBlock(normalized: string): AssistantSuggestion["queryBlock
   };
 }
 
+function getJupiterRouteBlock(normalized: string): AssistantSuggestion["queryBlock"] | undefined {
+  if (!hasJupiterRouteIntent(normalized)) return undefined;
+
+  return {
+    kind: "payments-truth",
+    title: "Jupiter treasury route",
+    readiness: "Treasury route active in product and being tightened into a quote-aware swap and rebalance lane",
+    network: "Solana Devnet",
+    rails: "Govern + treasury route + settlement evidence",
+    blocker: "quote-preview-and-receipt-closure · next operating milestone",
+    blockerSummary:
+      "Keep route rationale, treasury policy thresholds, and post-route settlement evidence visible in the same operator path so swaps and rebalances remain easy to review.",
+    reviewerPacketLabel: "Open Jupiter route brief",
+    reviewerPacketHref: "/documents/jupiter-treasury-route",
+    bestRouteLabel: "Open Jupiter treasury route",
+    bestRouteHref: "/services#jupiter-treasury-route",
+  };
+}
+
 function getHighPriorityQueryBlock(normalized: string): AssistantSuggestion["queryBlock"] | undefined {
-  return getTokenTruthBlock(normalized) ?? getPaymentsTruthBlock(normalized);
+  return getJupiterRouteBlock(normalized) ?? getTokenTruthBlock(normalized) ?? getPaymentsTruthBlock(normalized);
 }
 
 const assistantIntents: AssistantIntent[] = [
+  {
+    title: "Open the Jupiter treasury route",
+    summary:
+      "Use the services route when the question is about treasury swaps, rebalances, payout funding, route clarity, quote-aware execution, or how PrivateDAO is turning sponsor-grade treasury motion into a governed product lane.",
+    primaryActionLabel: "Open Jupiter treasury route",
+    primaryActionHref: "/services#jupiter-treasury-route",
+    relatedRoutes: [
+      { label: "Jupiter route brief", href: "/documents/jupiter-treasury-route" },
+      { label: "Treasury routes", href: "/services#payout-route-selection" },
+      { label: "Govern", href: "/govern#proposal-review-action" },
+    ],
+    keywords: ["jupiter", "swap", "rebalance", "treasury swap", "treasury rebalance", "quote preview", "slippage"],
+  },
   {
     title: "Open the PDAO token truth path",
     summary:
@@ -172,13 +216,13 @@ const assistantIntents: AssistantIntent[] = [
   {
     title: "Open the shortest review path",
     summary:
-      "Use the proof route with the judge context first. From there, continue into V3 proof, trust package, and mainnet blockers without digging through the full site.",
+      "Use the proof route with the judge context first. From there, continue into V3 proof, trust package, and mainnet readiness gates without digging through the full site.",
     primaryActionLabel: "Open review proof path",
     primaryActionHref: "/proof/?judge=1",
     relatedRoutes: [
       { label: "Trust Package", href: "/documents/trust-package" },
       { label: "Live Proof V3", href: "/documents/live-proof-v3" },
-      { label: "Mainnet Blockers", href: "/documents/mainnet-blockers" },
+      { label: "Mainnet Readiness Gates", href: "/documents/mainnet-blockers" },
     ],
     keywords: ["judge", "review", "proof", "trust", "packet", "audit", "reviewer", "award"],
   },
@@ -240,16 +284,16 @@ const assistantIntents: AssistantIntent[] = [
     primaryActionHref: "/documents/authority-hardening-mainnet",
     relatedRoutes: [
       { label: "Security", href: "/security" },
-      { label: "Mainnet Blockers", href: "/documents/mainnet-blockers" },
+      { label: "Mainnet Readiness Gates", href: "/documents/mainnet-blockers" },
       { label: "Production Custody Ceremony", href: "/documents/production-custody-ceremony" },
     ],
     keywords: ["multisig", "authority", "upgrade authority", "treasury authority", "admin authority", "ceremony", "mainnet hardening"],
   },
   {
-    title: "Open custody truth and reviewer packet",
+    title: "Open custody truth and proof packet",
     summary:
-      "Use the canonical custody proof and reviewer packet when the question is about multisig evidence, signer roster, authority transfer signatures, or the strict repo-safe ingestion route.",
-    primaryActionLabel: "Open custody reviewer packet",
+      "Use the canonical custody proof and custody packet when the question is about multisig evidence, signer roster, authority transfer signatures, or the strict repo-safe ingestion route.",
+    primaryActionLabel: "Open custody proof packet",
     primaryActionHref: "/documents/custody-proof-reviewer-packet",
     relatedRoutes: [
       { label: "Canonical custody proof", href: "/documents/canonical-custody-proof" },
@@ -280,15 +324,15 @@ const assistantIntents: AssistantIntent[] = [
     keywords: ["incident", "runbook", "monitoring", "alerts", "logs", "rpc failures", "wallet errors", "replay", "duplicate calls"],
   },
   {
-    title: "Open the treasury reviewer packet",
+    title: "Open the treasury proof packet",
     summary:
-      "Use the treasury packet when the question is about public rails, sender discipline, reviewer truth links, payments fit, or the exact treasury blocker instead of general custody flow only.",
-    primaryActionLabel: "Open treasury reviewer packet",
+      "Use the treasury packet when the question is about public rails, sender discipline, proof and trust links, payments fit, or the next treasury readiness gate instead of general custody flow only.",
+    primaryActionLabel: "Open treasury proof packet",
     primaryActionHref: "/documents/treasury-reviewer-packet",
     relatedRoutes: [
       { label: "Services", href: "/services" },
       { label: "Canonical custody proof", href: "/documents/canonical-custody-proof" },
-      { label: "Custody reviewer packet", href: "/documents/custody-proof-reviewer-packet" },
+      { label: "Custody proof packet", href: "/documents/custody-proof-reviewer-packet" },
     ],
     keywords: [
       "treasury reviewer packet",
@@ -301,9 +345,9 @@ const assistantIntents: AssistantIntent[] = [
     ],
   },
   {
-    title: "Open the reviewer telemetry packet",
+    title: "Open the telemetry packet",
     summary:
-      "Use the telemetry packet when the question is about data-side readiness, hosted reads, runtime evidence, analytics posture, or RPC reviewer packaging.",
+      "Use the telemetry packet when the question is about data-side readiness, hosted reads, runtime evidence, analytics posture, or RPC packaging for technical reviewers and operators.",
     primaryActionLabel: "Open telemetry packet",
     primaryActionHref: "/documents/reviewer-telemetry-packet",
     relatedRoutes: [
@@ -554,12 +598,12 @@ function getStrategicOpportunitySuggestion(query: string): AssistantSuggestion |
       keywords: ["startup accelerator", "accelerator grant", "startup grant"],
       title: "Open the startup capital corridor",
       summary:
-        "Start from the strategic opportunity map, then move into services and the custody reviewer packet. This is the shortest evidence-bound route for accelerator and funding reviewers.",
+        "Start from the strategic opportunity map, then move into services and the custody proof packet. This is the shortest evidence-bound route for accelerator and funding reviewers.",
       primaryActionHref: "/documents/strategic-opportunity-readiness-2026",
       relatedRoutes: [
         { label: "1. Strategic opportunity map", href: "/documents/strategic-opportunity-readiness-2026" },
         { label: "2. Services", href: "/services" },
-        { label: "3. Custody reviewer packet", href: "/documents/custody-proof-reviewer-packet" },
+        { label: "3. Custody proof packet", href: "/documents/custody-proof-reviewer-packet" },
       ],
     },
     {
@@ -741,13 +785,13 @@ function getTrackAnswer(query: string): AssistantSuggestion | null {
   ) {
     const gates = getTrackMainnetGatePlan(workspace);
     return {
-      title: `Mainnet blockers for ${workspace.title}`,
+      title: `Mainnet readiness gates for ${workspace.title}`,
       summary:
         `${gates.beforeMainnet[0]} ${gates.beforeMainnet[1] ?? ""}`.trim(),
       primaryActionLabel: "Open track workspace",
       primaryActionHref: `/tracks/${workspace.slug}`,
       relatedRoutes: [
-        { label: "Mainnet blockers", href: "/documents/mainnet-blockers" },
+        { label: "Mainnet readiness gates", href: "/documents/mainnet-blockers" },
         { label: "Review route", href: workspace.judgeRoute },
         { label: "Engage", href: "/engage" },
       ],
@@ -945,6 +989,7 @@ function getCustodyTruthSuggestion(query: string): AssistantSuggestion | null {
   const custodyTerms = [
     "custody proof",
     "reviewer packet",
+    "proof packet",
     "authority transfer",
     "multisig intake",
     "signer roster",
@@ -957,13 +1002,13 @@ function getCustodyTruthSuggestion(query: string): AssistantSuggestion | null {
   }
 
   return {
-    title: "Open custody truth and reviewer packet",
+    title: "Open custody truth and proof packet",
     summary:
-      "Start from the reviewer packet, then open the canonical custody proof, then the strict custody workspace. This is the fastest route for multisig truth, authority transfer status, and exact pending ceremony evidence.",
-    primaryActionLabel: "Open reviewer packet",
+      "Start from the custody packet, then open the canonical custody proof, then the strict custody workspace. This is the fastest route for multisig truth, authority transfer status, and the remaining ceremony evidence.",
+    primaryActionLabel: "Open custody proof packet",
     primaryActionHref: "/documents/custody-proof-reviewer-packet",
     relatedRoutes: [
-      { label: "1. Reviewer packet", href: "/documents/custody-proof-reviewer-packet" },
+      { label: "1. Custody proof packet", href: "/documents/custody-proof-reviewer-packet" },
       { label: "2. Canonical custody proof", href: "/documents/canonical-custody-proof" },
       { label: "3. Custody workspace", href: "/custody" },
     ],
@@ -991,13 +1036,13 @@ function getTelemetrySuggestion(query: string): AssistantSuggestion | null {
   }
 
   return {
-    title: "Open the reviewer telemetry packet",
+    title: "Open the telemetry packet",
     summary:
-      "Start from the telemetry packet, then open diagnostics, analytics, and frontier integrations. This is the shortest route for runtime maturity, hosted-read value, and infrastructure-facing reviewer proof.",
+      "Start from the telemetry packet, then open diagnostics, analytics, and frontier integrations. This is the shortest route for runtime maturity, hosted-read value, and infrastructure-facing proof.",
     primaryActionLabel: "Open telemetry packet",
     primaryActionHref: "/documents/reviewer-telemetry-packet",
     relatedRoutes: [
-      { label: "1. Reviewer telemetry packet", href: "/documents/reviewer-telemetry-packet" },
+      { label: "1. Telemetry packet", href: "/documents/reviewer-telemetry-packet" },
       { label: "2. Diagnostics", href: "/diagnostics" },
       { label: "3. Analytics", href: "/analytics" },
     ],
@@ -1058,11 +1103,11 @@ function getTrackReviewerPacketSuggestion(query: string): AssistantSuggestion | 
   return {
     title: match.title,
     summary:
-      "Open the track-specific reviewer packet first. It already bundles the judge-first opening, proof closure, exact blocker, best demo route, and the shortest reviewer links for that track.",
-    primaryActionLabel: "Open track reviewer packet",
+      "Open the track-specific proof packet first. It already bundles the judge-first opening, proof closure, the next readiness gate, the best demo route, and the shortest trust links for that track.",
+    primaryActionLabel: "Open track proof packet",
     primaryActionHref: match.route,
     relatedRoutes: [
-      { label: "1. Track reviewer packet", href: match.route },
+      { label: "1. Track proof packet", href: match.route },
       { label: "2. Track workspace", href: match.trackRoute },
       { label: "3. Track proof route", href: match.proofRoute },
     ],

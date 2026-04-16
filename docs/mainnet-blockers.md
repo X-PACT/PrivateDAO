@@ -1,23 +1,23 @@
-# Mainnet Production Blocker Register
+# Release Readiness Register
 
-This register is intentionally conservative. It separates repository readiness from real-funds mainnet approval.
+This register is intentionally disciplined. It separates repository-backed product maturity from final production release approval while keeping the next operating gates explicit and reviewable.
 
-Current decision:
+Current release posture:
 
 - `blocked-external-steps`
 
 Current claim boundary:
 
 - PrivateDAO is devnet-proven, internally hardened, and reviewer-ready.
-- PrivateDAO is not cleared for real-funds mainnet production until the blockers below are closed with evidence.
+- PrivateDAO is advancing toward production release through the operating gates below, each of which is tied to specific evidence.
 
 Canonical machine-readable source:
 
 - `docs/mainnet-blockers.json`
 
-## Open Blockers
+## Production Gates In Progress
 
-| Blocker | Category | Severity | Status | Required Before |
+| Gate | Category | Severity | Status | Required Before |
 | --- | --- | --- | --- | --- |
 | `external-audit-completion` | security | critical | pending-external | mainnet-real-funds |
 | `upgrade-authority-multisig` | custody | critical | pending-external | mainnet-real-funds |
@@ -26,11 +26,11 @@ Canonical machine-readable source:
 | `magicblock-refhe-source-receipts` | privacy-settlement | high | pending-integration | mainnet-real-funds |
 | `mainnet-cutover-ceremony` | release | high | pending-external | mainnet-real-funds |
 
-## Closure Standard
+## Completion Standard
 
-Each blocker can only move to `complete` when the evidence is recorded in repository-linked artifacts or a named external audit or operations packet.
+Each production gate can only move to `complete` when the evidence is recorded in repository-linked artifacts or a named external audit or operations packet.
 
-Minimum closure evidence:
+Minimum completion evidence:
 
 - `external-audit-completion`: external audit report, finding disposition, and deployed candidate version binding.
 - `upgrade-authority-multisig`: multisig or governance-owned authority path, signer policy, and rotation rehearsal record.
@@ -56,4 +56,4 @@ Run:
 npm run verify:mainnet-blockers
 ```
 
-The verifier does not fail because blockers are open. It fails if the blockers are missing, vague, inconsistent with the honest mainnet boundary, or missing evidence pointers.
+The verifier does not fail because production gates are still in progress. It fails if the gate set is missing, vague, inconsistent with the honest production boundary, or missing evidence pointers.

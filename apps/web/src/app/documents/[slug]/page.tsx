@@ -6,7 +6,12 @@ import { ArrowLeft, ArrowUpRight, FileText } from "lucide-react";
 import { DocumentRenderer } from "@/components/document-renderer";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getCuratedDocument, getCuratedDocumentContent, getCuratedDocuments } from "@/lib/curated-documents";
+import {
+  getCuratedDocument,
+  getCuratedDocumentContent,
+  getCuratedDocuments,
+  isIndexableCuratedDocumentSlug,
+} from "@/lib/curated-documents";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 type PageProps = {
@@ -33,6 +38,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description: document.summary,
     path: `/documents/${document.slug}`,
     keywords: [document.category, "curated documents", "reviewer documents"],
+    index: isIndexableCuratedDocumentSlug(document.slug),
   });
 }
 

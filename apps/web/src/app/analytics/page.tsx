@@ -22,6 +22,7 @@ export const metadata: Metadata = buildRouteMetadata({
     "Responsive analytics for votes, proposals, treasury actions, readiness summaries, and launch blockers across the PrivateDAO product surface.",
   path: "/analytics",
   keywords: ["analytics", "recharts", "launch blockers", "treasury actions"],
+  index: false,
 });
 
 export default function AnalyticsPage() {

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This packet exists for the Umbra, Encrypt / IKA, and privacy-commercial corridors.
+This packet exists for the confidential-governance and privacy-commercial corridors inside PrivateDAO.
 
 It answers one practical reviewer question:
 
@@ -17,12 +17,12 @@ PrivateDAO already supports:
 - private governance framing
 - commit-reveal voting
 - confidential treasury motion rehearsal
-- reviewer-safe trust and custody packets
+- reviewer-visible trust and custody packets
 - security and privacy surfaces that explain why confidentiality matters operationally
 
 It does **not** yet claim:
 
-- real-funds mainnet payout readiness
+- real-funds production payout readiness
 - closed source-verifiable settlement receipts
 - external audit completion
 
@@ -71,27 +71,29 @@ The product value is the combination of:
 4. Open `/documents/grant-committee-pack`
 5. Open `/documents/launch-trust-packet`
 
-## Best fit tracks
-
-- Umbra Side Track
-- Encrypt / IKA
-- Privacy Track
-
 ## What judges should see
 
 - a practical confidential payout use case
-- reviewer-safe explanation of where privacy sits in the workflow
-- honest blocker visibility before any mainnet or real-funds claim
+- reviewer-visible explanation of where privacy sits in the workflow
+- clear release-boundary visibility before any production or real-funds claim
 
-## Honest boundary
+## Current release boundary
 
-This packet proves confidential payout **rehearsal** and reviewer-safe **evidence** on Devnet.
+This packet proves confidential payout **rehearsal** and reviewer-visible **evidence** on Devnet.
 
 It does not prove:
 
 - production payout custody
-- mainnet-ready confidential settlement
+- production-ready confidential settlement
 - closed external audit and receipt requirements
+
+## Public-good value
+
+This packet helps the ecosystem because it makes:
+
+- private-yet-reviewable payout flows easier to understand
+- governance-linked payout discipline easier to inspect
+- complex privacy and cryptography behavior easier to verify from a product shell instead of a research memo
 
 ## Canonical linked docs
 

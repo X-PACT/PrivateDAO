@@ -50,7 +50,7 @@ const custodySteps = [
   {
     title: "Capture authority transfer evidence",
     summary: "Record the destination authority, transfer signature, and post-transfer readout reference for each operational surface.",
-    state: "External execution pending",
+    state: "External execution next",
   },
   {
     title: "Apply and rebuild canonical proof",
@@ -111,7 +111,7 @@ function getTransferValidation(transfer: CustodyAuthorityTransferEvidence): Vali
 function EvidenceStatus({ validation }: { validation: ValidationState }) {
   return (
     <div className={cn("rounded-full border px-3 py-1 text-xs font-medium", getValidationTone(validation))}>
-      {validation.ok ? "Valid" : "Pending"}
+      {validation.ok ? "Valid" : "Next step"}
     </div>
   );
 }

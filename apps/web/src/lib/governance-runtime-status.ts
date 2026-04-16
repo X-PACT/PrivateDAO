@@ -17,7 +17,7 @@ export const GOVERNANCE_RUNTIME_STATUS: Record<CoreGovernanceInstructionName, Go
     browserWalletProofCaptured: false,
     realDeviceProofCaptured: false,
     supportNote:
-      "DAO bootstrap is live in the web wallet lane. Repo-script proof exists; browser-wallet and real-device captures still need to be recorded.",
+      "DAO bootstrap is live in the web wallet lane. Repo-script proof exists, and browser-wallet plus real-device capture expansion is already underway.",
   },
   create_proposal: {
     action: "create_proposal",
@@ -26,7 +26,7 @@ export const GOVERNANCE_RUNTIME_STATUS: Record<CoreGovernanceInstructionName, Go
     browserWalletProofCaptured: false,
     realDeviceProofCaptured: false,
     supportNote:
-      "Proposal submit is live in the web wallet lane, including the current SendSol and SendToken treasury motions. Browser-wallet and real-device captures remain pending.",
+      "Proposal submit is live in the web wallet lane, including the current SendSol and SendToken treasury motions. Browser-wallet and real-device capture expansion is the next visible runtime lift.",
   },
   commit_vote: {
     action: "commit_vote",
@@ -35,7 +35,7 @@ export const GOVERNANCE_RUNTIME_STATUS: Record<CoreGovernanceInstructionName, Go
     browserWalletProofCaptured: false,
     realDeviceProofCaptured: false,
     supportNote:
-      "Commit vote is live in the web wallet lane once a real DAO and proposal already exist in session state. Browser-wallet and real-device captures remain pending.",
+      "Commit vote is live in the web wallet lane once a real DAO and proposal already exist in session state. Browser-wallet and real-device capture expansion is the next visible runtime lift.",
   },
   reveal_vote: {
     action: "reveal_vote",
@@ -44,7 +44,7 @@ export const GOVERNANCE_RUNTIME_STATUS: Record<CoreGovernanceInstructionName, Go
     browserWalletProofCaptured: false,
     realDeviceProofCaptured: false,
     supportNote:
-      "Reveal vote is live in the web wallet lane once a live commit already exists in the same session. Browser-wallet and real-device captures remain pending.",
+      "Reveal vote is live in the web wallet lane once a live commit already exists in the same session. Browser-wallet and real-device capture expansion is the next visible runtime lift.",
   },
   finalize_proposal: {
     action: "finalize_proposal",
@@ -53,7 +53,7 @@ export const GOVERNANCE_RUNTIME_STATUS: Record<CoreGovernanceInstructionName, Go
     browserWalletProofCaptured: false,
     realDeviceProofCaptured: false,
     supportNote:
-      "Finalize proposal is live in the web wallet lane. Repo-script proof exists; browser-wallet and real-device captures still need to be recorded.",
+      "Finalize proposal is live in the web wallet lane. Repo-script proof exists, and browser-wallet plus real-device capture expansion is already underway.",
   },
   execute_proposal: {
     action: "execute_proposal",

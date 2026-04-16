@@ -43,6 +43,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description: getCompetitionLaneSummary(workspace.slug),
     path: `/tracks/${workspace.slug}`,
     keywords: [workspace.sponsor, "competition workspace", workspace.slug],
+    index: false,
   });
 }
 

@@ -27,6 +27,7 @@ export const metadata: Metadata = buildRouteMetadata({
     "Track proposals, treasury movement, vote timelines, and execution evidence after any wallet action in PrivateDAO.",
   path: "/dashboard",
   keywords: ["track activity", "proposal state", "treasury activity", "execution evidence"],
+  index: false,
 });
 
 const dashboardHighlights = [
@@ -66,7 +67,7 @@ export default function DashboardPage() {
               Track proposals, treasury state, and execution results without leaving the product.
             </h1>
             <p className="max-w-2xl text-base leading-8 text-white/60 sm:text-lg">
-              This route is for checking what happened after a wallet action. Open it when you want to confirm a proposal, inspect treasury posture, or follow execution and logs in one readable place.
+              This route is for checking what happened after a real wallet action. Open it after you connect a Devnet wallet, create a DAO, submit a proposal, vote, or execute so you can confirm the result and inspect the runtime trail in one readable place.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link className={buttonVariants({ size: "lg" })} href="/govern">
@@ -83,7 +84,7 @@ export default function DashboardPage() {
 
           <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,15,30,0.94),rgba(6,9,20,0.98))]">
             <CardHeader>
-              <CardTitle>What this view is for</CardTitle>
+              <CardTitle>How to verify the product here</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4">
               {dashboardHighlights.map((item) => {
@@ -101,6 +102,9 @@ export default function DashboardPage() {
                   </div>
                 );
               })}
+              <div className="rounded-[22px] border border-cyan-300/16 bg-cyan-300/[0.08] p-4 text-sm leading-7 text-white/70">
+                Connect a Devnet wallet, run the govern flow, then come back here after each action. This is the fastest way to verify that the privacy rails, cryptographic flow, and runtime speed are working inside one real product cycle.
+              </div>
             </CardContent>
           </Card>
         </div>

@@ -16,7 +16,7 @@
 ## What Works Now
 
 - Hosted reads expose 41 indexed proposals across 21 DAOs through the backend-indexer path.
-- Diagnostics, analytics, and services remain live reviewer-visible routes starting from https://x-pact.github.io/PrivateDAO/diagnostics/.
+- Diagnostics, analytics, and services remain live reviewer-visible routes starting from https://privatedao.org/diagnostics/.
 - 7/7 canonical governance lifecycle transactions are finalized in the current integrations package.
 - 5/5 confidential settlement corridor transactions are finalized in the current integrations package.
 - 4 REFHE-settled and 3 MagicBlock-settled proposal paths are already reflected in the indexed source.
@@ -41,7 +41,7 @@
 
 ## Runtime Snapshot
 
-- diagnostics page: `https://x-pact.github.io/PrivateDAO/diagnostics/`
+- diagnostics page: `https://privatedao.org/diagnostics/`
 - wallet count: `5`
 - unexpected failures: `0`
 - fallback recovered: `true`

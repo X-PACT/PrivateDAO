@@ -43,7 +43,7 @@ export function AuthorityHardeningPanel() {
               completion.completed === 0
                 ? section.summary
                 : completion.completed < completion.total
-                  ? `Production ceremony evidence is partially recorded (${completion.completed}/${completion.total}). This is stronger than a static plan, but the final signatures and readouts still need closure.`
+                  ? `Production ceremony evidence is partially recorded (${completion.completed}/${completion.total}). This is already stronger than a static plan, and the next step is to complete the remaining signatures and readouts.`
                   : "Production ceremony evidence is fully recorded inside the product surface. The remaining discipline is to keep the packet synchronized with the real source of truth and external validation trail.",
           };
         }
@@ -55,8 +55,8 @@ export function AuthorityHardeningPanel() {
               completion.completed === 0
                 ? section.summary
                 : completion.completed < completion.total
-                  ? "The launch boundary stays explicit, but it is now supported by partially inspectable custody evidence instead of a purely forward-looking blocker note."
-                  : "The launch boundary is now supported by a fully populated custody packet, which materially improves reviewability without collapsing the distinction between recorded evidence and final validation.",
+                  ? "The launch path stays explicit, and it is now supported by partially inspectable custody evidence instead of a purely forward-looking note."
+                  : "The launch path is now supported by a fully populated custody packet, which materially improves reviewability without collapsing the distinction between recorded evidence and final validation.",
           };
         }
 
@@ -71,7 +71,7 @@ export function AuthorityHardeningPanel() {
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/76">Authority hardening</div>
-            <CardTitle className="mt-2">Mainnet authority separation must be explicit, reviewable, and multisig-backed</CardTitle>
+            <CardTitle className="mt-2">Mainnet authority separation should be explicit, reviewable, and multisig-backed</CardTitle>
           </div>
           <Badge variant={completion.completed === 0 ? "warning" : completion.completed < completion.total ? "cyan" : "success"}>
             {narrative.badge}

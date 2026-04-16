@@ -1,12 +1,14 @@
 # PrivateDAO Investor And Competition Pitch Deck
 
-This is the canonical repo-native pitch deck source for investors, grant reviewers, and Frontier hackathon judges. It is intentionally evidence-bound: implemented surfaces are described as implemented, while external launch work remains marked as pending.
+This is the canonical repo-native pitch deck source for investors, grant reviewers, and Frontier hackathon judges. It is intentionally evidence-bound: implemented surfaces are described as implemented, while final production-release gates remain clearly separated from what is already live today.
 
 ## Slide 1 - Title
 
 **PrivateDAO**
 
 Private governance, confidential treasury operations, and audit-grade runtime evidence for Solana organizations.
+
+Public-good governance and treasury infrastructure for the Solana ecosystem.
 
 Proof anchors:
 
@@ -32,6 +34,12 @@ The problem is not only UX. It is governance infrastructure.
 
 PrivateDAO is a Solana governance and treasury product for DAOs, crypto-native teams, grant committees, and on-chain organizations that need privacy without losing auditability.
 
+It should also be understood as public-good infrastructure:
+
+- reusable governance and treasury patterns for the ecosystem
+- privacy and trust rails that other teams can inspect and build on
+- a product that makes advanced cryptography usable from a normal wallet-first interface
+
 It combines:
 
 - commit-reveal private voting
@@ -52,6 +60,15 @@ They need to vote, approve payouts, control treasuries, and coordinate sensitive
 - strong wallet and mobile surfaces
 - growing DAO and treasury tooling
 - a builder ecosystem that rewards real protocol code, not only narrative
+
+## Slide 4A - Public-Good Value
+
+PrivateDAO matters beyond one product surface because it helps the ecosystem:
+
+- coordinate grants and treasury motions with less signaling leakage
+- move sensitive governance into clearer, more reviewable operating paths
+- reuse privacy, telemetry, and trust patterns instead of rebuilding them from scratch
+- understand advanced cryptography through a simpler product interface
 
 ## Slide 5 - What Works Today
 
@@ -131,11 +148,11 @@ Implemented now:
 - settlement evidence and consumption semantics
 - on-chain ZK proof anchors in the Devnet evidence path
 
-Honest boundary:
+Current release boundary:
 
-- external audit is pending
-- real-funds mainnet is blocked until custody, monitoring, real-device captures, and audit closure are complete
-- ZK and external settlement source-verification can be strengthened further through verifier/source receipt integrations
+- external audit remains an active release gate
+- real-funds production release follows custody, monitoring, real-device capture, and audit completion
+- ZK and external settlement source-verification can be strengthened further through verifier and source-receipt integrations
 
 ## Slide 8A - Canonical Custody Proof
 
@@ -143,15 +160,15 @@ PrivateDAO now has a canonical custody proof surface, not only narrative slides.
 
 Official custody state today:
 
-- status: `pending-external`
+- status: `awaiting-external-record`
 - production mainnet claim allowed: `false`
 - network: `mainnet-beta`
 - threshold target: `2-of-3`
 - signer public keys recorded: `0/3`
-- multisig implementation: `pending-selection`
-- multisig address: `pending`
-- authority transfer signatures: `pending`
-- post-transfer readouts: `pending`
+- multisig implementation: `selection-in-progress`
+- multisig address: `record-in-preparation`
+- authority transfer signatures: `record-in-preparation`
+- post-transfer readouts: `record-in-preparation`
 - observed current devnet authority: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - observed target-network program readout: `not found`
 
@@ -201,6 +218,13 @@ Best early users:
 - mobile-first Solana communities
 - strategy or risk committees that need private approval before execution
 
+Clear ecosystem-facing use cases:
+
+- grant and allocation committees
+- treasury approvals and controlled payout routing
+- protocol operating and security councils
+- contributor, vendor, and payroll-style payout governance
+
 Best Frontier review lanes:
 
 - primary Frontier product shell via the live buyer and command path
@@ -209,7 +233,7 @@ Best Frontier review lanes:
 - polished product-execution corridor via route quality, live proof continuity, and reviewer discipline
 - startup-capital corridor via `/start`, `/story`, `/services`, and the custody reviewer packet
 - data-and-telemetry corridor via `/diagnostics`, `/analytics`, and frontier integrations
-- confidential-payout corridor via `/security`, `/services`, `/custody`, and reviewer-safe grant governance
+- confidential-payout corridor via `/security`, `/services`, `/custody`, and reviewer-visible grant governance
 
 Live reviewer workspaces:
 
@@ -235,6 +259,20 @@ Production path:
 - deploy monitoring and alerting
 - perform final cutover ceremony
 
+Trackable milestone logic:
+
+1. governance and proof remain easy to verify from a Devnet wallet session
+2. treasury, payout, and diagnostics paths stay reviewer-visible from the live product
+3. custody, monitoring, and audit evidence continue to harden the release case
+4. production release happens from a strong, legible, ecosystem-useful base
+
+Milestones a funder can track:
+
+1. a new visitor connects a Devnet wallet, runs the core flow, and verifies the result directly
+2. a reviewer can inspect proof, telemetry, custody, and diagnostics without leaving the product shell
+3. audit, custody, monitoring, and wallet coverage become fully evidenced
+4. the release candidate is strong enough for final production cutover
+
 The important discipline is explicit:
 
 - repo truth and live product truth must match
@@ -254,6 +292,14 @@ Use of funds:
 - first pilot deployments with Solana organizations
 - product UX simplification for non-technical operators
 
+The funding case is straightforward:
+
+- the product already exists
+- the ecosystem value is legible
+- the use cases are clear
+- the milestones are trackable
+- support compounds into stronger shared infrastructure for Solana
+
 ## Slide 13 - Closing Line
 
 PrivateDAO makes on-chain organizational operations meaningfully safer on Solana:
@@ -267,17 +313,16 @@ Core links:
 - README: `README.md`
 - Submission dossier: `docs/submission-dossier.md`
 - Live product: `https://privatedao.org/`
-- Command center: `https://privatedao.org/command-center/`
-- Dashboard: `https://privatedao.org/dashboard/`
+- Start route: `https://privatedao.org/start/`
 - Services: `https://privatedao.org/services/`
-- Diagnostics: `https://privatedao.org/diagnostics/`
-- Custody workspace: `https://privatedao.org/custody/`
+- Security: `https://privatedao.org/security/`
+- Trust: `https://privatedao.org/trust/`
+- Judge / proof route: `https://privatedao.org/proof/?judge=1`
+- Reviewer fast path: `https://privatedao.org/documents/reviewer-fast-path/`
+- Reviewer telemetry packet: `https://privatedao.org/documents/reviewer-telemetry-packet/`
+- Capital readiness packet: `https://privatedao.org/documents/capital-readiness-packet/`
 - Launch trust packet: `https://privatedao.org/documents/launch-trust-packet/`
 - Mainnet blockers: `https://privatedao.org/documents/mainnet-blockers/`
-- Track center: `https://privatedao.org/tracks/`
-- Colosseum workspace: `https://privatedao.org/tracks/colosseum-frontier/`
-- Privacy workspace: `https://privatedao.org/tracks/privacy-track/`
-- RPC workspace: `https://privatedao.org/tracks/rpc-infrastructure/`
 - Story video: `https://privatedao.org/story/`
 - YouTube channel: `https://www.youtube.com/@privatedao`
 - Discord: `https://discord.gg/bC76YEcpDa`

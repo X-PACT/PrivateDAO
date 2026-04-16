@@ -10,11 +10,11 @@ This packet exists for:
 
 It answers one practical reviewer question:
 
-**Is PrivateDAO already coherent enough to justify grant or accelerator capital before mainnet?**
+**Is PrivateDAO already coherent enough to justify grant or accelerator capital before production release?**
 
 ## Short answer
 
-Yes, as a Devnet-proven company-in-formation.
+Yes, as a Devnet-proven product with a fundable production path.
 
 PrivateDAO already has:
 
@@ -22,8 +22,8 @@ PrivateDAO already has:
 - wallet-first governance flow
 - commercial services route
 - trust and custody packets
-- reviewer-safe proof and runtime evidence
-- a documented blocker path to mainnet
+- reviewer-visible proof and runtime evidence
+- a documented production path toward release confidence
 
 ## What capital reviewers can verify now
 
@@ -40,28 +40,57 @@ PrivateDAO already has:
 - `/live`
 - `/tracks`
 
-### Trust and launch discipline
+### Trust and release discipline
 
 - `/trust`
 - `/documents/launch-trust-packet`
 - `/documents/mainnet-blockers`
 - `/viewer/investor-pitch-deck`
 
-## Why this is more than a hackathon artifact
+## Why this is more than a submission artifact
 
 The product already combines:
 
 - governance
 - confidential operations
 - hosted-read / RPC infrastructure value
-- reviewer-safe operational truth
+- reviewer-visible operational truth
 - buyer-facing routes
 
-That is the core reason this is capital-ready before mainnet:
+That is the core reason this is capital-worthy before production release:
 
-- the company thesis is already visible
+- the product thesis is already visible
 - the technical moat is already legible
-- the blocker set is already explicit
+- the operating gates are already explicit
+
+## Public-good value to the ecosystem
+
+PrivateDAO is not being positioned as a closed one-off workflow.
+
+It is being built as governance and treasury infrastructure that can help the Solana ecosystem broadly by:
+
+- making private-yet-reviewable decision flows easier to adopt
+- improving how grants, treasury motions, and sensitive payouts are handled
+- creating reusable trust, proof, telemetry, and operating patterns other teams can learn from
+- reducing the gap between advanced cryptography and normal product usability
+
+## Clear use cases
+
+The strongest current use cases are:
+
+1. grant and allocation committees that need private voting and reviewable treasury follow-through
+2. DAOs and protocol teams that need treasury approvals without live tally leakage
+3. contributor, payroll, and confidential payout workflows that still need governance control and settlement visibility
+4. security councils and operating committees that need decision privacy without losing verifiability
+
+## Clear milestone path
+
+The shortest capital-backed path is:
+
+1. strengthen wallet-first governance and Devnet verification so a new visitor can connect, act, and verify within minutes
+2. strengthen confidential payout, settlement publication, and reviewer-visible trust surfaces
+3. close audit, custody, and monitoring gates with recorded evidence
+4. execute the final production cutover as a stronger release candidate
 
 ## Strongest reviewer path
 
@@ -72,19 +101,13 @@ That is the core reason this is capital-ready before mainnet:
 5. Open `/viewer/investor-pitch-deck`
 6. Open `/documents/mainnet-blockers`
 
-## Best fit tracks
+## Product boundary
 
-- Startup Accelerator Grant
-- Poland Grants
-- regional startup-facing ecosystem reviewers
-
-## Honest boundary
-
-This packet argues that PrivateDAO is capital-worthy **because** the team is disciplined about truth.
+This packet argues that PrivateDAO is capital-worthy **because** the product is already live and the release path is disciplined.
 
 It does not claim:
 
-- mainnet real-funds readiness
+- production release completion
 - completed external audit
 - closed custody ceremony
 - closed monitoring matrix
@@ -97,9 +120,9 @@ The cleanest use of grant or accelerator capital is:
 2. close authority multisig and custody ceremony
 3. complete monitoring and real-device runtime matrix
 4. complete source-verifiable settlement receipts
-5. execute final mainnet cutover
+5. execute final production cutover
 
-That is a stronger capital story than “more features.”
+That is a stronger capital story than “more features,” because it turns an already usable product into a stronger release candidate.
 
 ## Canonical linked docs
 

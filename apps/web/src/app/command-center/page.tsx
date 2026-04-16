@@ -31,6 +31,7 @@ export const metadata: Metadata = buildRouteMetadata({
     "Guided PrivateDAO workspace for product-pack selection, proposal actions, wallet runtime, private voting, proof links, and treasury execution rails.",
   path: "/command-center",
   keywords: ["command center", "wallet runtime", "private vote", "treasury execution"],
+  index: false,
 });
 
 export default function CommandCenterPage() {

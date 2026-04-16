@@ -12,7 +12,7 @@ import { PdaoTokenStrategyStrip } from "@/components/pdao-token-strategy-strip";
 import { ReadNodeHostReadinessStrip } from "@/components/read-node-host-readiness-strip";
 import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-truth-strip";
 import { TreasuryReviewerGradeStrip } from "@/components/treasury-reviewer-grade-strip";
-import { getCuratedDocuments, getCuratedDocumentsBySlugs } from "@/lib/curated-documents";
+import { getCuratedDocumentsBySlugs, getIndexableCuratedDocuments } from "@/lib/curated-documents";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -24,12 +24,6 @@ const PRIORITY_TRUTH_SURFACE_SLUGS = [
   "launch-trust-packet",
 ];
 
-const TRACK_REVIEWER_PACKET_SLUGS = [
-  "track-reviewer-packet-colosseum-frontier",
-  "track-reviewer-packet-privacy-track",
-  "track-reviewer-packet-rpc-infrastructure",
-];
-
 export const metadata: Metadata = buildRouteMetadata({
   title: "Curated Documents",
   description:
@@ -39,12 +33,9 @@ export const metadata: Metadata = buildRouteMetadata({
 });
 
 export default function DocumentsPage() {
-  const documents = getCuratedDocuments();
+  const documents = getIndexableCuratedDocuments();
   const priorityTruthSurfaces = getCuratedDocumentsBySlugs(PRIORITY_TRUTH_SURFACE_SLUGS);
-  const trackReviewerPackets = getCuratedDocumentsBySlugs(TRACK_REVIEWER_PACKET_SLUGS);
-  const prioritySlugs = new Set(
-    [...priorityTruthSurfaces, ...trackReviewerPackets].map((document) => document.slug),
-  );
+  const prioritySlugs = new Set(priorityTruthSurfaces.map((document) => document.slug));
   const remainingDocuments = documents.filter((document) => !prioritySlugs.has(document.slug));
 
   return (
@@ -132,20 +123,11 @@ export default function DocumentsPage() {
         </div>
         <DocumentLibrary documents={priorityTruthSurfaces} />
       </div>
-      <div id="track-reviewer-packets">
-        <div className="mb-5">
-          <div className="text-[11px] uppercase tracking-[0.3em] text-violet-200/76">Reviewer packets</div>
-          <div className="mt-3 max-w-3xl text-sm leading-7 text-white/60">
-            After the truth surfaces, open the three reviewer packets for the main Frontier submission, the confidential-governance corridor, and the runtime-infrastructure corridor.
-          </div>
-        </div>
-        <DocumentLibrary documents={trackReviewerPackets} />
-      </div>
       <div>
         <div className="mb-5">
-          <div className="text-[11px] uppercase tracking-[0.3em] text-white/46">All curated documents</div>
+          <div className="text-[11px] uppercase tracking-[0.3em] text-white/46">Public document set</div>
           <div className="mt-3 max-w-3xl text-sm leading-7 text-white/56">
-            The rest of the document center stays below as the broader proof, trust, launch, strategy, and reviewer library.
+            The public document center stays focused on the highest-value trust, proof, runtime, and funding packets so search engines and first-time visitors land on the clearest evidence first.
           </div>
         </div>
         <DocumentLibrary documents={remainingDocuments} />
