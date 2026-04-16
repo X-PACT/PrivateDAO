@@ -4,8 +4,8 @@ import { Geist_Mono, Space_Grotesk } from "next/font/google";
 import Script from "next/script";
 import "@solana/wallet-adapter-react-ui/styles.css";
 import "./globals.css";
+import { AppShellProviders } from "@/components/app-shell-providers";
 import { SiteFooter } from "@/components/site-footer";
-import { GovernanceSessionProvider } from "@/components/governance-session";
 import { SiteHeader } from "@/components/site-header";
 import {
   buildOrganizationJsonLd,
@@ -17,7 +17,6 @@ import {
   siteTitle,
   siteUrl,
 } from "@/lib/site-brand";
-import { WalletProviderShell } from "@/components/wallet-provider";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -76,8 +75,7 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-[#030510] text-white">
-        <WalletProviderShell>
-          <GovernanceSessionProvider>
+        <AppShellProviders>
             <Script
               id="privatedao-domain-redirect"
               strategy="beforeInteractive"
@@ -110,8 +108,7 @@ export default function RootLayout({
               <div className="relative z-10 flex-1">{children}</div>
               <SiteFooter />
             </div>
-          </GovernanceSessionProvider>
-        </WalletProviderShell>
+        </AppShellProviders>
       </body>
     </html>
   );

@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { LockKeyhole, Search, Sparkles } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
@@ -43,6 +44,11 @@ const utilityNav = [
 
 export function SiteHeader() {
   const { liveSiteUrl } = useSiteUrls();
+  const pathname = usePathname() ?? "/";
+  const walletEnabled =
+    pathname === "/start" ||
+    pathname === "/govern" ||
+    pathname === "/command-center";
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/8 bg-[#050816]/75 backdrop-blur-xl">
@@ -87,7 +93,16 @@ export function SiteHeader() {
             >
               Open App
             </a>
-            <WalletConnectButton />
+            {walletEnabled ? (
+              <WalletConnectButton />
+            ) : (
+              <Link
+                href="/start"
+                className={cn(buttonVariants({ size: "sm", variant: "outline" }), "hidden sm:inline-flex")}
+              >
+                Connect on Devnet
+              </Link>
+            )}
           </div>
         </div>
 
