@@ -1,0 +1,438 @@
+export type LearnModuleNavItem = {
+  href: string;
+  label: string;
+  shortLabel: string;
+};
+
+export type LearnLectureSection = {
+  heading: string;
+  body: string;
+};
+
+export type LearnLectureAction = {
+  href: string;
+  label: string;
+};
+
+export type LearnCodeReference = {
+  label: string;
+  href: string;
+};
+
+export type LearnAssignment = {
+  title: string;
+  brief: string;
+  deliverables: string[];
+  liveRoute: string;
+  codeRefs: LearnCodeReference[];
+};
+
+export type LearnQuizQuestion = {
+  question: string;
+  answers: string[];
+};
+
+export type LearnLecture = {
+  slug: string;
+  title: string;
+  strapline: string;
+  summary: string;
+  lectureNumber: number;
+  badges: string[];
+  sections: LearnLectureSection[];
+  actions: LearnLectureAction[];
+  codeRefs: LearnCodeReference[];
+  assignment: LearnAssignment;
+  quiz: LearnQuizQuestion[];
+};
+
+export type LearnToolkitItem = {
+  title: string;
+  summary: string;
+  liveRoute: string;
+  expectedOutcome: string;
+  codeRefs: LearnCodeReference[];
+};
+
+const githubBase = "https://github.com/X-PACT/PrivateDAO/tree/main";
+
+export const learnModuleNav: LearnModuleNavItem[] = [
+  { href: "/learn/lecture-1-web2-to-solana-ui", label: "Lecture 1", shortLabel: "L1" },
+  { href: "/learn/lecture-2-governance-ui", label: "Lecture 2", shortLabel: "L2" },
+  { href: "/learn/lecture-3-rpc-state-and-runtime", label: "Lecture 3", shortLabel: "L3" },
+  { href: "/learn/lecture-4-private-payments-gaming-and-proof", label: "Lecture 4", shortLabel: "L4" },
+  { href: "/learn/toolkit", label: "Toolkit", shortLabel: "Toolkit" },
+  { href: "/learn/assignments", label: "Assignments", shortLabel: "Tasks" },
+  { href: "/learn/quizzes", label: "Quizzes", shortLabel: "Quiz" },
+];
+
+export const learnLectures: LearnLecture[] = [
+  {
+    slug: "lecture-1-web2-to-solana-ui",
+    lectureNumber: 1,
+    title: "From Web2 Frontend to Solana Wallet-First UX",
+    strapline: "Start from one browser shell, not from scripts.",
+    summary:
+      "This lecture takes a normal frontend builder from Web2 assumptions into a real Solana product path: wallet connect, corridor selection, identity-aware onboarding, and command-center navigation.",
+    badges: ["Wallet-first", "Solflare + Phantom", "SNS-aware"],
+    sections: [
+      {
+        heading: "What you’ll learn",
+        body:
+          "How PrivateDAO turns wallet connection, corridor selection, readable signer context, and guided navigation into a usable first-run dApp path for non-experts.",
+      },
+      {
+        heading: "Why this matters on Solana",
+        body:
+          "Solana UX fails when the user lands in raw addresses, unexplained signatures, or disconnected pages. Wallet-first product shells reduce that friction and make the chain feel fast instead of hostile.",
+      },
+      {
+        heading: "How PrivateDAO solves it",
+        body:
+          "PrivateDAO starts from /start, lets the user connect a Devnet wallet, recommends the right corridor, keeps SNS-style readable identity in the product story, and routes into command-center or govern without terminal work.",
+      },
+      {
+        heading: "Try it now",
+        body:
+          "Connect a Devnet wallet, pick the correct corridor, then move into Govern or Command Center. The goal is to feel that a normal operator can start safely in seconds.",
+      },
+      {
+        heading: "Check the code",
+        body:
+          "Review the route shell, onboarding surface, and command-center composition to see how this product path is assembled from reusable UI and wallet-aware logic.",
+      },
+    ],
+    actions: [
+      { href: "/start", label: "Open Start" },
+      { href: "/command-center", label: "Open Command Center" },
+      { href: "/learn/toolkit", label: "Open Toolkit" },
+    ],
+    codeRefs: [
+      { label: "Start route", href: `${githubBase}/apps/web/src/app/start/page.tsx` },
+      { label: "Getting started workspace", href: `${githubBase}/apps/web/src/components/getting-started-workspace.tsx` },
+      { label: "Command Center", href: `${githubBase}/apps/web/src/app/command-center/page.tsx` },
+    ],
+    assignment: {
+      title: "Build a wallet-first entry shell",
+      brief:
+        "Create a page that connects a Devnet wallet, surfaces signer context, and sends the user into the correct PrivateDAO corridor without extra explanation screens.",
+      deliverables: [
+        "Connect wallet button with signer state",
+        "Corridor selector for governance, treasury, or analytics",
+        "One click into the live route",
+      ],
+      liveRoute: "/start",
+      codeRefs: [
+        { label: "Start route", href: `${githubBase}/apps/web/src/app/start/page.tsx` },
+        { label: "Command Center shell", href: `${githubBase}/apps/web/src/components/command-center-live-shell.tsx` },
+      ],
+    },
+    quiz: [
+      {
+        question: "Why is wallet-first UX a core Solana requirement here?",
+        answers: [
+          "Because a signer is part of the product flow, not a backend detail.",
+          "Because it replaces proof entirely.",
+          "Because it avoids Devnet usage.",
+        ],
+      },
+      {
+        question: "What should a normal user do after connecting a wallet?",
+        answers: [
+          "Choose the right corridor and continue into the live route.",
+          "Open the terminal and inspect RPC logs first.",
+          "Read every protocol spec before clicking anything.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "lecture-2-governance-ui",
+    lectureNumber: 2,
+    title: "Building Governance UI: Create, Vote, Reveal, Execute",
+    strapline: "Private voting should feel simple without becoming weak.",
+    summary:
+      "This lecture covers the full governance lifecycle in UI form: DAO creation, proposal drafting, commit-reveal voting, voice-assisted inputs, proof-linked execution, and status visibility.",
+    badges: ["Commit-reveal", "Voice voting", "Judge-linked"],
+    sections: [
+      {
+        heading: "What you’ll learn",
+        body:
+          "How to build a proposal panel, vote controls, reveal and execute states, and voice-assisted commands while preserving the signer boundary and privacy posture.",
+      },
+      {
+        heading: "Why this matters on Solana",
+        body:
+          "Governance UX collapses when voting intent leaks too early or when execution feels like a protocol-debugging ceremony. Users need lifecycle visibility without losing privacy or fairness.",
+      },
+      {
+        heading: "How PrivateDAO solves it",
+        body:
+          "PrivateDAO keeps the entire path in Govern and the workbench: create DAO, draft proposal, commit vote, reveal later, execute, and then inspect the blockchain evidence in Judge and Proof.",
+      },
+      {
+        heading: "Try it now",
+        body:
+          "Open Govern, use typed or voice-assisted commands, create a proposal, run the vote lifecycle, then inspect the resulting signatures on the judge path.",
+      },
+      {
+        heading: "Check the code",
+        body:
+          "Focus on the govern page, workbench client, and the voice command panel. Those files show how normal-language interaction becomes structured governance actions before the wallet signs.",
+      },
+    ],
+    actions: [
+      { href: "/govern", label: "Open Govern" },
+      { href: "/judge", label: "Open Judge" },
+      { href: "/proof?judge=1", label: "Open Proof" },
+    ],
+    codeRefs: [
+      { label: "Govern route", href: `${githubBase}/apps/web/src/app/govern/page.tsx` },
+      { label: "Govern workbench client", href: `${githubBase}/apps/web/src/components/govern/govern-workbench-client.tsx` },
+      { label: "Voice command panel", href: `${githubBase}/apps/web/src/components/governance-voice-command-panel.tsx` },
+    ],
+    assignment: {
+      title: "Ship a minimal governance lifecycle surface",
+      brief:
+        "Build a proposal card that can move through create, vote, reveal, and execute states while keeping the user aware of privacy and signer boundaries.",
+      deliverables: [
+        "Proposal card with state badges",
+        "Commit vote action and reveal action",
+        "Execution status and proof entry CTA",
+      ],
+      liveRoute: "/govern",
+      codeRefs: [
+        { label: "Govern route", href: `${githubBase}/apps/web/src/app/govern/page.tsx` },
+        { label: "Judge route", href: `${githubBase}/apps/web/src/app/judge/page.tsx` },
+      ],
+    },
+    quiz: [
+      {
+        question: "Why does commit-reveal matter in this product?",
+        answers: [
+          "It protects vote intent until the right proof stage.",
+          "It removes the need for wallet signatures.",
+          "It replaces runtime logs.",
+        ],
+      },
+      {
+        question: "What is the role of voice governance here?",
+        answers: [
+          "It reduces friction while keeping the final signer boundary intact.",
+          "It executes on-chain actions without wallet approval.",
+          "It hides every governance state from the user.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "lecture-3-rpc-state-and-runtime",
+    lectureNumber: 3,
+    title: "Solana Runtime UX: Fast RPC, Diagnostics, and Activity Tracking",
+    strapline: "Users trust a dApp when state updates feel honest.",
+    summary:
+      "This lecture explains why Fast RPC, hosted reads, telemetry, analytics, and diagnostics are not backend trivia. They are core UX components that make Devnet activity understandable and trustworthy.",
+    badges: ["Fast RPC", "Diagnostics", "Dune-aware"],
+    sections: [
+      {
+        heading: "What you’ll learn",
+        body:
+          "How to show transaction hashes, proposal freshness, runtime diagnostics, hosted-read state, and analytics summaries after real wallet actions.",
+      },
+      {
+        heading: "Why this matters on Solana",
+        body:
+          "A user does not care about RPC branding. They care that state updates quickly, retries are understandable, and a transaction can be followed into logs and proof after a signature.",
+      },
+      {
+        heading: "How PrivateDAO solves it",
+        body:
+          "PrivateDAO uses dashboard, diagnostics, analytics, and reviewer packets to show the same truth from different depths. Fast RPC and hosted reads become visible through product behavior, not just claims.",
+      },
+      {
+        heading: "Try it now",
+        body:
+          "Run a wallet action, then move into Dashboard, Diagnostics, Analytics, and Reviewer Telemetry to see the state change, proof freshness, and runtime corridor in one flow.",
+      },
+      {
+        heading: "Check the code",
+        body:
+          "The runtime story lives across dashboard, diagnostics, analytics, and the devnet metrics library. That is where product-facing state and infrastructure truth stay synchronized.",
+      },
+    ],
+    actions: [
+      { href: "/dashboard", label: "Open Dashboard" },
+      { href: "/diagnostics", label: "Open Diagnostics" },
+      { href: "/analytics", label: "Open Analytics" },
+    ],
+    codeRefs: [
+      { label: "Dashboard route", href: `${githubBase}/apps/web/src/app/dashboard/page.tsx` },
+      { label: "Diagnostics route", href: `${githubBase}/apps/web/src/app/diagnostics/page.tsx` },
+      { label: "Devnet metrics", href: `${githubBase}/apps/web/src/lib/devnet-service-metrics.ts` },
+      { label: "Reviewer telemetry packet", href: `${githubBase}/docs/reviewer-telemetry-packet.md` },
+    ],
+    assignment: {
+      title: "Build a runtime activity widget",
+      brief:
+        "Create a widget that shows the last action, tx signature, live status, and a recovery hint when runtime state lags or retries are required.",
+      deliverables: [
+        "Last action summary",
+        "Clickable Devnet transaction hash",
+        "Status / retry hint / freshness indicator",
+      ],
+      liveRoute: "/dashboard",
+      codeRefs: [
+        { label: "Dashboard route", href: `${githubBase}/apps/web/src/app/dashboard/page.tsx` },
+        { label: "Analytics route", href: `${githubBase}/apps/web/src/app/analytics/page.tsx` },
+      ],
+    },
+    quiz: [
+      {
+        question: "Why does Fast RPC matter to the user experience here?",
+        answers: [
+          "It makes proposal, proof, and payout state update quickly enough to feel trustworthy.",
+          "It removes the need for analytics.",
+          "It only matters to validators, not to users.",
+        ],
+      },
+      {
+        question: "What should happen after a wallet action lands?",
+        answers: [
+          "The user should be able to follow the hash, status, and logs.",
+          "The UI should stop explaining anything.",
+          "The app should hide runtime state until mainnet.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "lecture-4-private-payments-gaming-and-proof",
+    lectureNumber: 4,
+    title: "Private Payments, Gaming DAO, Proof, and Agentic Rails",
+    strapline: "Complex cryptography becomes simple product behavior.",
+    summary:
+      "This lecture ties the hardest product pieces together: MagicBlock, REFHE, ZK review, Jupiter, Kamino, Torque MCP, Zerion-style agents, gaming rewards, and the Agentic Treasury Micropayment Rail.",
+    badges: ["MagicBlock + REFHE", "Jupiter + Kamino", "Zerion + Torque"],
+    sections: [
+      {
+        heading: "What you’ll learn",
+        body:
+          "How PrivateDAO turns confidential treasury actions, gaming rewards, proof-linked payments, and agentic execution into browser-first product corridors instead of operator-only internals.",
+      },
+      {
+        heading: "Why this matters on Solana",
+        body:
+          "The difference between a novel product and a forgettable one is whether advanced infrastructure becomes usable for a normal operator: private voting, confidential payouts, fast reads, and governed execution all in one surface.",
+      },
+      {
+        heading: "How PrivateDAO solves it",
+        body:
+          "PrivateDAO maps ZK to private review and vote protection, MagicBlock to responsive private execution lanes, REFHE to confidential settlement posture, Jupiter and Kamino to treasury coordination, Torque to MCP-style operator rails, and the existing micropayment engine to agentic execution.",
+      },
+      {
+        heading: "Try it now",
+        body:
+          "Open Security, Services, Intelligence, Judge, and the Agentic Treasury Micropayment Rail packet. The goal is to see how private decisions become reviewable payment and reward actions on Devnet.",
+      },
+      {
+        heading: "Check the code",
+        body:
+          "Use the security route, the micropayment rail packet, the assistant route, and the Solana program / zk / scripts directories to study where the product boundaries meet the protocol and automation layers.",
+      },
+    ],
+    actions: [
+      { href: "/security", label: "Open Security" },
+      { href: "/services", label: "Open Services" },
+      { href: "/documents/agentic-treasury-micropayment-rail", label: "Open Micropayment Rail" },
+    ],
+    codeRefs: [
+      { label: "Security route", href: `${githubBase}/apps/web/src/app/security/page.tsx` },
+      { label: "Micropayment engine", href: `${githubBase}/scripts/lib/micropayment-engine.ts` },
+      { label: "Run micropayment rail", href: `${githubBase}/scripts/run-agentic-treasury-micropayment-rail.ts` },
+      { label: "Solana program", href: `${githubBase}/programs/private-dao` },
+      { label: "ZK folder", href: `${githubBase}/zk` },
+    ],
+    assignment: {
+      title: "Ship one private-payment or gaming reward flow",
+      brief:
+        "Implement either a confidential payout request surface or a gaming reward execution surface that lands in proof and judge routes after a real Devnet action.",
+      deliverables: [
+        "One private-payment or gaming reward UI",
+        "One proof-linked CTA after execution",
+        "One explanation of what stayed private and what became public",
+      ],
+      liveRoute: "/security",
+      codeRefs: [
+        { label: "Security route", href: `${githubBase}/apps/web/src/app/security/page.tsx` },
+        { label: "Agentic rail doc", href: `${githubBase}/docs/agentic-treasury-micropayment-rail.md` },
+      ],
+    },
+    quiz: [
+      {
+        question: "What is the correct product role for ZK here?",
+        answers: [
+          "Protect sensitive intent first, then expose the right proof after execution.",
+          "Hide all blockchain evidence permanently.",
+          "Replace wallets and signatures.",
+        ],
+      },
+      {
+        question: "Why include agentic treasury execution in the learning path?",
+        answers: [
+          "Because it shows how governed policy can drive many real on-chain actions without turning the user into a script operator.",
+          "Because it removes governance from the product.",
+          "Because it only matters for a fake demo.",
+        ],
+      },
+    ],
+  },
+];
+
+export const learnToolkitItems: LearnToolkitItem[] = [
+  {
+    title: "Wallet connect starter",
+    summary: "The minimum shell for connecting a Devnet wallet, surfacing signer state, and moving into the product safely.",
+    liveRoute: "/start",
+    expectedOutcome: "A user can connect, see signer context, and enter the right corridor in seconds.",
+    codeRefs: [
+      { label: "Start route", href: `${githubBase}/apps/web/src/app/start/page.tsx` },
+      { label: "Getting started workspace", href: `${githubBase}/apps/web/src/components/getting-started-workspace.tsx` },
+    ],
+  },
+  {
+    title: "Proposal UI starter",
+    summary: "The governance workbench for creating proposals, voting, revealing, executing, and linking into proof.",
+    liveRoute: "/govern",
+    expectedOutcome: "A user can run the DAO lifecycle from the browser without terminal work.",
+    codeRefs: [
+      { label: "Govern route", href: `${githubBase}/apps/web/src/app/govern/page.tsx` },
+      { label: "Voice command panel", href: `${githubBase}/apps/web/src/components/governance-voice-command-panel.tsx` },
+    ],
+  },
+  {
+    title: "Runtime activity starter",
+    summary: "The runtime visibility layer for hashes, diagnostics, freshness, analytics, and retry-aware state.",
+    liveRoute: "/dashboard",
+    expectedOutcome: "A user can tell what happened after a wallet action and verify it on Devnet.",
+    codeRefs: [
+      { label: "Dashboard route", href: `${githubBase}/apps/web/src/app/dashboard/page.tsx` },
+      { label: "Diagnostics route", href: `${githubBase}/apps/web/src/app/diagnostics/page.tsx` },
+      { label: "Devnet metrics", href: `${githubBase}/apps/web/src/lib/devnet-service-metrics.ts` },
+    ],
+  },
+  {
+    title: "Private payment starter",
+    summary: "The product lane for confidential treasury, payout, reward, and proof-linked payment actions.",
+    liveRoute: "/security",
+    expectedOutcome: "A user can understand what stayed private, what became public, and where the evidence lives.",
+    codeRefs: [
+      { label: "Security route", href: `${githubBase}/apps/web/src/app/security/page.tsx` },
+      { label: "Micropayment rail doc", href: `${githubBase}/docs/agentic-treasury-micropayment-rail.md` },
+      { label: "Micropayment engine", href: `${githubBase}/scripts/lib/micropayment-engine.ts` },
+    ],
+  },
+];
+
+export function getLectureBySlug(slug: string) {
+  return learnLectures.find((lecture) => lecture.slug === slug);
+}
