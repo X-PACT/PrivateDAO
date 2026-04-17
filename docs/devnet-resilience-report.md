@@ -3,7 +3,7 @@
 - network: devnet
 - program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - governance mint: `AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt`
-- source wallet run: `20260407202442`
+- source wallet run: `20260417125017`
 - primary rpc healthy: yes
 - fallback rpc healthy: yes
 - failover recovered: yes
@@ -13,29 +13,29 @@
 
 ## RPC Health Matrix
 
-- primary: `https://api.devnet.solana.com` | version `3.1.10` | blockhash `999yuXkuJAvBSYXJxWS5SAULsVi7MY2zoyz2jDhAPHWF` | version latency 1724 ms | blockhash latency 1086 ms
-- fallback: `https://api.devnet.solana.com` | version `3.1.10` | blockhash `2jMavqixzQawsqZ5swNWftLthRm3EmFEdgnyZY2vCyiW` | version latency 3624 ms | blockhash latency 341 ms
+- primary: `https://api.devnet.solana.com` | version `4.0.0-beta.6` | blockhash `Fo2MZN2a37UtiLStsLPYGQiyoMfmxnQXZxPXXvjG4Ubu` | version latency 2292 ms | blockhash latency 217 ms
+- fallback: `https://api.devnet.solana.com` | version `4.0.0-beta.6` | blockhash `Fo2MZN2a37UtiLStsLPYGQiyoMfmxnQXZxPXXvjG4Ubu` | version latency 1899 ms | blockhash latency 283 ms
 
 ## Failover Recovery
 
 - invalid rpc: `http://127.0.0.1:65535`
 - invalid rpc error: fetch failed
 - fallback rpc: `https://api.devnet.solana.com`
-- fallback blockhash: `BygAd7qt7wwcgpB3cdhV3yrGkBAqPCbPM8QBvfXJA4yZ`
-- fallback latency: 229 ms
+- fallback blockhash: `CUeNZMeZERWcfZ5GNvAMDYNNtviTNVMytkHFGd5sFqFS`
+- fallback latency: 479 ms
 
 ## Stale Blockhash Recovery
 
-- probe wallet: `JDaW1PntvyheypPK963TcjFqq1RzMD3CP9SSWDLkHjNu`
+- probe wallet: `89tMZ52oE88nvYKpPYCG73gxK8k32jGLwUo4chMjShFZ`
 - stale blockhash: `11111111111111111111111111111111`
 - stale error: Simulation failed. 
 Message: Transaction simulation failed: Blockhash not found. 
 Logs: 
 []. 
 Catch the `SendTransactionError` and call `getLogs()` on it for full details.
-- fresh blockhash: `FdJdG9BY8SW8j4cVZrwTezTriWgN4PUwEy5hRAW6EHP1`
-- recovered tx: `2baU3KWmnsM6MRq5uDrjr7WSvQzMvC6BbwsDKyqX4URXoAujdPF1JGsuBimr8YKsCdXBRTKdLYVh9iREAZXgnA17`
-- recovered explorer: https://solscan.io/tx/2baU3KWmnsM6MRq5uDrjr7WSvQzMvC6BbwsDKyqX4URXoAujdPF1JGsuBimr8YKsCdXBRTKdLYVh9iREAZXgnA17?cluster=devnet
+- fresh blockhash: `2EZpHiHFGNwxc7JyGGiMcgGBou6bu5V3ReeULDr41npY`
+- recovered tx: `2Zf7Au24N5AD29cWGUn8E5MQJsGPMvTd4geCeNaYbHcurFJ4M6CkCwXVNwKnmzfrCN8jfkhZTmacid5Z5yoZMNvq`
+- recovered explorer: https://solscan.io/tx/2Zf7Au24N5AD29cWGUn8E5MQJsGPMvTd4geCeNaYbHcurFJ4M6CkCwXVNwKnmzfrCN8jfkhZTmacid5Z5yoZMNvq?cluster=devnet
 - probe balance before: 78006400
 - probe balance after: 78006401
 - probe balance delta: 1

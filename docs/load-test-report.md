@@ -76,7 +76,7 @@
 
 ## Performance Metrics
 
-- total execution time ms: 5795836
+- total execution time ms: 36058082
 - average tx latency ms: 1522.91
 - failure rate: 15.09%
 - retry rate: 0.00%

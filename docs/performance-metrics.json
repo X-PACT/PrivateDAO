@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-17T14:26:53.252Z",
+  "generatedAt": "2026-04-17T22:51:15.498Z",
   "runLabel": "20260417125017",
   "network": "devnet",
   "profile": {
@@ -15,7 +15,7 @@
   "successCount": 180,
   "failureCount": 32,
   "retryCount": 0,
-  "totalExecutionTimeMs": 5795836,
+  "totalExecutionTimeMs": 36058082,
   "averageTxLatencyMs": 1522.908108108108,
   "maxTxLatencyMs": 3347,
   "minTxLatencyMs": 0,
@@ -34,28 +34,33 @@
     },
     "bootstrap": {
       "startedAt": "2026-04-17T12:57:48.114Z",
-      "completedAt": "2026-04-17T14:24:39.736Z",
-      "durationMs": 5211622
+      "completedAt": "2026-04-17T22:47:01.072Z",
+      "durationMs": 35352958
     },
     "commit": {
       "startedAt": "2026-04-17T12:57:53.571Z",
-      "completedAt": "2026-04-17T14:25:57.004Z",
-      "durationMs": 5283433
+      "completedAt": "2026-04-17T22:47:49.555Z",
+      "durationMs": 35395984
     },
     "reveal": {
       "startedAt": "2026-04-17T13:01:06.160Z",
-      "completedAt": "2026-04-17T14:26:26.916Z",
-      "durationMs": 5120756
+      "completedAt": "2026-04-17T22:48:37.925Z",
+      "durationMs": 35251765
     },
     "execute": {
       "startedAt": "2026-04-17T13:28:02.722Z",
-      "completedAt": "2026-04-17T14:26:53.236Z",
-      "durationMs": 3530514
+      "completedAt": "2026-04-17T22:49:25.613Z",
+      "durationMs": 33682891
     },
     "zk": {
       "startedAt": "2026-04-17T13:45:19.030Z",
       "completedAt": "2026-04-17T13:50:53.222Z",
       "durationMs": 334192
+    },
+    "report": {
+      "startedAt": "2026-04-17T22:51:15.444Z",
+      "completedAt": "2026-04-17T22:51:15.486Z",
+      "durationMs": 42
     }
   }
 }
