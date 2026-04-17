@@ -291,13 +291,13 @@ These are the public-facing routes reviewers, users, and buyers should see first
 | Weekly / public YouTube | https://www.youtube.com/@privatedao |
 | Official Discord | https://discord.gg/PbM8BC2A |
 | Public project profile | https://arena.colosseum.org/projects/explore/praivatedao |
-| Guided product flow | [`docs/frontier-guided-flow.md`](docs/frontier-guided-flow.md) |
+| Guided product flow | [`docs/product-guided-flow.md`](docs/product-guided-flow.md) |
 | Live proof V3 | [`docs/test-wallet-live-proof-v3.generated.md`](docs/test-wallet-live-proof-v3.generated.md) |
 | Domain mirror plan | [`docs/domain-mirror.md`](docs/domain-mirror.md) |
 | `.xyz` mirror checklist | [`docs/xyz-mirror-cutover-checklist.md`](docs/xyz-mirror-cutover-checklist.md) |
 | Audit packet | [`docs/audit-packet.generated.md`](docs/audit-packet.generated.md) |
 | Operational evidence | [`docs/operational-evidence.generated.md`](docs/operational-evidence.generated.md) |
-| Integration evidence | [`docs/frontier-integrations.generated.md`](docs/frontier-integrations.generated.md) |
+| Integration evidence | [`docs/integration-evidence.generated.md`](docs/integration-evidence.generated.md) |
 | Reviewer telemetry packet | [`docs/reviewer-telemetry-packet.generated.md`](docs/reviewer-telemetry-packet.generated.md) |
 | Mainnet blockers | [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md) |
 | Trust package | [`docs/trust-package.md`](docs/trust-package.md) |
@@ -693,25 +693,25 @@ Key docs:
 - [`docs/wallet-e2e-test-plan.md`](docs/wallet-e2e-test-plan.md)
 - [`docs/release-ceremony.md`](docs/release-ceremony.md)
 
-## Media And Submission Assets
+## Media And Review Assets
 
 - Public story video: https://privatedao.org/story/
 - Public YouTube reel: https://youtu.be/HiCz0vb8kgk
-- Direct MP4 backup: https://privatedao.org/assets/private-dao-frontier-overview.mp4
-- Upload-ready file: `/home/x-pact/Desktop/PrivateDAO-Frontier-Overview/PrivateDAO - Product Overview - Everything We Offer and Why Us.mp4`
+- Direct MP4 backup: https://privatedao.org/assets/private-dao-product-overview.mp4
+- Upload-ready file: `/home/x-pact/Desktop/PrivateDAO-Product-Overview/PrivateDAO - Product Overview - Everything We Offer and Why Us.mp4`
 - Canonical lifecycle demo brief: [`docs/demo-video.md`](docs/demo-video.md)
 - Hosted lifecycle demo: https://privatedao.org/assets/private-dao-demo-flow.mp4
 - Repo-native lifecycle demo: [`docs/assets/private-dao-demo-flow.mp4`](docs/assets/private-dao-demo-flow.mp4)
 - Upload-ready lifecycle demo: `/home/x-pact/Desktop/PrivateDAO-Demo-Video/PrivateDAO - Real Demo Flow - Create DAO Submit Proposal Private Vote Execute Treasury - Clean.mp4`
 - Investor / reviewer pitch deck: [`docs/investor-pitch-deck.md`](docs/investor-pitch-deck.md)
 - Product overview brief: [`docs/investor-video.md`](docs/investor-video.md)
-- Repo-native product reel: [`docs/assets/private-dao-frontier-overview.mp4`](docs/assets/private-dao-frontier-overview.mp4)
+- Repo-native product reel: [`docs/assets/private-dao-product-overview.mp4`](docs/assets/private-dao-product-overview.mp4)
 - Hosted product reel page: https://privatedao.org/story/
-- Hosted product reel MP4 backup: https://privatedao.org/assets/private-dao-frontier-overview.mp4
-- Poster: [`docs/assets/private-dao-frontier-overview-poster.png`](docs/assets/private-dao-frontier-overview-poster.png)
-- Submission dossier: [`docs/submission-dossier.md`](docs/submission-dossier.md)
+- Hosted product reel MP4 backup: https://privatedao.org/assets/private-dao-product-overview.mp4
+- Poster: [`docs/assets/private-dao-product-overview-poster.png`](docs/assets/private-dao-product-overview-poster.png)
+- Product dossier: [`docs/submission-dossier.md`](docs/submission-dossier.md)
 - Final submission pack: [`SUBMISSION_FINAL.md`](SUBMISSION_FINAL.md)
-- Manual submission answers: [`docs/colosseum-submission-answers.md`](docs/colosseum-submission-answers.md)
+- Operator answer packs: [`docs/colosseum-submission-answers.md`](docs/colosseum-submission-answers.md)
 - Official YouTube channel: https://www.youtube.com/@privatedao
 - Official Discord server: https://discord.gg/PbM8BC2A
 - Brand kit: [`docs/brand-kit.md`](docs/brand-kit.md)

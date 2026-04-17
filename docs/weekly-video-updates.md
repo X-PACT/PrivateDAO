@@ -37,7 +37,7 @@ For public uploads, the canonical path is the narrated `weekly-youtube-ready` bu
 - upload title:
   - `Week 2 - PrivateDAO - Guided Governance And Agentic Treasury Rail`
 - narrated upload-ready file:
-  - `docs/assets/weekly-youtube-ready/Week 2 - PrivateDAO Frontier Hackathon - YouTube Ready.mp4`
+  - `docs/assets/weekly-youtube-ready/Week 2 - PrivateDAO Product Update - YouTube Ready.mp4`
 - ready script:
   - [`docs/weekly-update-week-2-colosseum.md`](weekly-update-week-2-colosseum.md)
 - focus:
@@ -80,14 +80,14 @@ The same videos are also copied into:
 
 The Desktop folder contains:
 
-- `Week 1 - PrivateDAO Frontier Hackathon - YouTube Ready.mp4`
-- `Week 1 - PrivateDAO Frontier Hackathon - YouTube Ready-poster.png`
-- `Week 2 - PrivateDAO Frontier Hackathon - YouTube Ready.mp4`
-- `Week 2 - PrivateDAO Frontier Hackathon - YouTube Ready-poster.png`
-- `Week 3 - PrivateDAO Frontier Hackathon - YouTube Ready.mp4`
-- `Week 3 - PrivateDAO Frontier Hackathon - YouTube Ready-poster.png`
-- `Week 4 - PrivateDAO Frontier Hackathon - YouTube Ready.mp4`
-- `Week 4 - PrivateDAO Frontier Hackathon - YouTube Ready-poster.png`
+- `Week 1 - PrivateDAO Product Update - YouTube Ready.mp4`
+- `Week 1 - PrivateDAO Product Update - YouTube Ready-poster.png`
+- `Week 2 - PrivateDAO Product Update - YouTube Ready.mp4`
+- `Week 2 - PrivateDAO Product Update - YouTube Ready-poster.png`
+- `Week 3 - PrivateDAO Product Update - YouTube Ready.mp4`
+- `Week 3 - PrivateDAO Product Update - YouTube Ready-poster.png`
+- `Week 4 - PrivateDAO Product Update - YouTube Ready.mp4`
+- `Week 4 - PrivateDAO Product Update - YouTube Ready-poster.png`
 
 ## Render Command
 
@@ -97,9 +97,9 @@ bash scripts/render-weekly-update-videos.sh
 bash scripts/render-weekly-youtube-ready.sh 2
 ```
 
-## Judge-First Openings
+## Reviewer Opening Scripts
 
-Use this generated document when recording or editing weekly videos so the opening matches the live judge-first top strip:
+Use this generated document when recording or editing weekly videos so the opening matches the live reviewer strip:
 
 - [`docs/track-judge-first-openings.generated.md`](track-judge-first-openings.generated.md)
 

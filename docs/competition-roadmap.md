@@ -1,4 +1,4 @@
-# Competition Roadmap
+# Product Roadmap
 
 ## Objective
 
@@ -7,15 +7,15 @@ PrivateDAO already has one verified 1st Place result:
 - **🥇 1st Place — Superteam Earn**
 - **Challenge:** Rebuild production backend systems as on-chain Rust programs
 
-The next competitive objective is not vague visibility. It is to keep targeting **1st Place outcomes** in serious Solana engineering competitions by reducing reviewer doubt and increasing proof density.
+The next objective is not vague visibility. It is to keep earning top-tier outcomes in serious Solana engineering reviews by reducing reviewer doubt and increasing proof density.
 
 ## Must Win
 
 These are the highest-leverage improvements for future 1st Place submissions.
 
-### 0. Strategy-track fit before polish
+### 0. Strategy fit before polish
 
-For Ranger-style competitions, the biggest risk is not weak UI. It is weak track fit.
+For reviewer-heavy product cycles, the biggest risk is not weak UI. It is weak product-fit framing.
 
 The project must be presented as:
 
@@ -104,12 +104,12 @@ Extend the current live proof surface so the repo can produce:
 
 The additive V3 path should be surfaced alongside the baseline proof whenever the stricter hardening path matters to judges.
 
-### 2. Track-specific submission packaging
+### 2. Product-lane packaging
 
-Do not use the same narrative for every competition.
+Do not use the same narrative for every review lane.
 
-- Main Track should position PrivateDAO as governance infrastructure
-- Drift Side Track should position PrivateDAO as private decision infrastructure for trading collectives, treasury committees, and strategy execution approvals
+- the core lane should position PrivateDAO as governance infrastructure
+- the capital lane should position PrivateDAO as private decision infrastructure for treasury committees and strategy execution approvals
 
 ### 3. Benchmark and UX proof
 
@@ -127,9 +127,9 @@ Judges respond well to explicit operational clarity:
 - short security animations in the frontend
 - dedicated ecosystem integration note for Realms and treasury tooling
 
-## Track Positioning
+## Product Review Positioning
 
-## Ranger Build-A-Bear Hackathon Main Track
+## Governance Infrastructure Posture
 
 Winning angle:
 
@@ -144,7 +144,7 @@ What to emphasize:
 - production-minded architecture
 - immediate mainnet transition path
 
-## Ranger Build-A-Bear Hackathon Drift Side Track
+## Capital Governance Posture
 
 Winning angle:
 
@@ -168,7 +168,7 @@ For future top-tier submissions, every package should include:
 4. live proof note with tx hashes
 5. 60 to 90 second video
 6. short security note
-7. track-specific narrative
+7. review-specific narrative
 8. explicit statement of what is implemented now versus what belongs to the strategy layer
 
 That is the minimum surface for consistently competing for 1st Place instead of simply being shortlisted.

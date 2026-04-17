@@ -225,7 +225,7 @@ Clear ecosystem-facing use cases:
 - protocol operating and security councils
 - contributor, vendor, and payroll-style payout governance
 
-Best product review lanes:
+Best product corridors:
 
 - primary product shell via the live buyer and command path
 - confidential-governance corridor via commit-reveal governance, ZK posture, REFHE, and privacy-aware settlement
@@ -337,5 +337,5 @@ Core links:
 - Monitoring rules: `docs/monitoring-alert-rules.md`
 - Wallet E2E plan: `docs/wallet-e2e-test-plan.md`
 - Economic model: `docs/economic-model.md`
-- Competition readiness: `docs/competition-readiness.md`
+- Product readiness: `docs/product-readiness.md`
 - Investor video package: `docs/investor-video.md`

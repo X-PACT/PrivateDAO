@@ -13,6 +13,9 @@ import { learnLectures, learnModuleNav, learnToolkitItems } from "@/lib/learn-bo
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { cn } from "@/lib/utils";
 
+const googleSlidesDeckHref =
+  "https://docs.google.com/presentation/d/1ubzMiYvie7f_5viUWpqPJvjL666TEJCPk527suDxyi8/edit?usp=drivesdk";
+
 export const metadata: Metadata = buildRouteMetadata({
   title: "Learn",
   description:
@@ -53,6 +56,12 @@ export default function LearnPage() {
             <Link href="/learn/toolkit" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
               Open toolkit
             </Link>
+            <Link href="/documents/frontend-solana-bootcamp-materials" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+              Open lecture materials
+            </Link>
+            <a href={googleSlidesDeckHref} target="_blank" rel="noreferrer" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+              Open Google Slides
+            </a>
             <Link href="/learn/assignments" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
               Open assignments
             </Link>
@@ -99,20 +108,50 @@ export default function LearnPage() {
             A few simple minutes of learning first, then advanced blockchain operations from the UI without command lines or terminal scripts.
           </p>
         </Link>
-        {learnModuleNav
-          .filter((item) => ["/learn/toolkit", "/learn/assignments", "/learn/quizzes"].includes(item.href))
-          .map((item) => (
-            <Link key={item.href} href={item.href} className="rounded-[26px] border border-white/10 bg-white/[0.04] p-5 transition hover:border-cyan-300/22 hover:bg-white/[0.06]">
+        {[
+          ...learnModuleNav.filter((item) =>
+            ["/documents/frontend-solana-bootcamp-materials", "/learn/toolkit", "/learn/assignments", "/learn/quizzes"].includes(item.href),
+          ),
+          { href: googleSlidesDeckHref, label: "Google Slides", shortLabel: "Slides" },
+        ].map((item) =>
+          item.href.startsWith("https://") ? (
+            <a
+              key={item.href}
+              href={item.href}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-[26px] border border-white/10 bg-white/[0.04] p-5 transition hover:border-cyan-300/22 hover:bg-white/[0.06]"
+            >
               <div className="text-base font-medium text-white">{item.label}</div>
               <p className="mt-3 text-sm leading-7 text-white/60">
-                {item.href === "/learn/toolkit"
+                {item.href === "/documents/frontend-solana-bootcamp-materials"
+                  ? "Open the complete slide-ready lecture pack, toolkit map, assignments, and quizzes."
+                  : item.href === "https://docs.google.com/presentation/d/1ubzMiYvie7f_5viUWpqPJvjL666TEJCPk527suDxyi8/edit?usp=drivesdk"
+                  ? "Open the submission-ready Google Slides deck built from the live product lectures."
+                  : item.href === "/learn/toolkit"
                   ? `Open the live starters built from ${learnToolkitItems.length} real product lanes.`
                   : item.href === "/learn/assignments"
                     ? "Build real UI slices, not toy examples."
                     : "Check whether the builder actually understands the product boundary."}
               </p>
+            </a>
+          ) : (
+            <Link key={item.href} href={item.href} className="rounded-[26px] border border-white/10 bg-white/[0.04] p-5 transition hover:border-cyan-300/22 hover:bg-white/[0.06]">
+              <div className="text-base font-medium text-white">{item.label}</div>
+              <p className="mt-3 text-sm leading-7 text-white/60">
+                {item.href === "/documents/frontend-solana-bootcamp-materials"
+                  ? "Open the complete slide-ready lecture pack, toolkit map, assignments, and quizzes."
+                  : item.href === googleSlidesDeckHref
+                    ? "Open the submission-ready Google Slides deck built from the live product lectures."
+                    : item.href === "/learn/toolkit"
+                      ? `Open the live starters built from ${learnToolkitItems.length} real product lanes.`
+                      : item.href === "/learn/assignments"
+                        ? "Build real UI slices, not toy examples."
+                        : "Check whether the builder actually understands the product boundary."}
+              </p>
             </Link>
-          ))}
+          ),
+        )}
       </div>
       <ProductLearningGuide
         executionSnapshot={executionSnapshot}

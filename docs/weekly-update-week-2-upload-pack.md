@@ -2,17 +2,17 @@
 
 ## Canonical upload file
 
-- Video: `docs/assets/weekly-youtube-ready/Week 2 - PrivateDAO Frontier Hackathon - YouTube Ready.mp4`
-- Poster: `docs/assets/weekly-youtube-ready/Week 2 - PrivateDAO Frontier Hackathon - YouTube Ready-poster.png`
+- Video: `docs/assets/weekly-youtube-ready/Week 2 - PrivateDAO Product Update - YouTube Ready.mp4`
+- Poster: `docs/assets/weekly-youtube-ready/Week 2 - PrivateDAO Product Update - YouTube Ready-poster.png`
 
 Desktop copies:
 
-- `/home/x-pact/Desktop/PrivateDAO-Colosseum-Weekly-YouTube/Week 2 - PrivateDAO Frontier Hackathon - YouTube Ready.mp4`
-- `/home/x-pact/Desktop/PrivateDAO-Colosseum-Weekly-YouTube/Week 2 - PrivateDAO Frontier Hackathon - YouTube Ready - Poster.png`
+- `/home/x-pact/Desktop/PrivateDAO-Colosseum-Weekly-YouTube/Week 2 - PrivateDAO Product Update - YouTube Ready.mp4`
+- `/home/x-pact/Desktop/PrivateDAO-Colosseum-Weekly-YouTube/Week 2 - PrivateDAO Product Update - YouTube Ready - Poster.png`
 
 ## Title
 
-`Week 2 - PrivateDAO Frontier Hackathon - Guided Governance And Agentic Treasury Rail`
+`Week 2 - PrivateDAO Product Update - Guided Governance And Agentic Treasury Rail`
 
 ## Description
 

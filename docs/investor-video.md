@@ -49,12 +49,12 @@ The video must communicate:
 ## Current Explainer Status
 
 - Current known status: the repo-native render is the canonical source of truth in this repo
-- Repo-native render script: `scripts/render-frontier-overview-video.sh`
-- Repo-native rendered asset: `docs/assets/private-dao-frontier-overview.mp4`
-- Repo-native poster: `docs/assets/private-dao-frontier-overview-poster.png`
+- Repo-native render script: `scripts/render-product-overview-video.sh`
+- Repo-native rendered asset: `docs/assets/private-dao-product-overview.mp4`
+- Repo-native poster: `docs/assets/private-dao-product-overview-poster.png`
 - Hosted public story route: `https://privatedao.org/story/`
 - Public YouTube asset: `https://youtu.be/HiCz0vb8kgk`
-- Hosted MP4 backup: `https://privatedao.org/assets/private-dao-frontier-overview.mp4`
+- Hosted MP4 backup: `https://privatedao.org/assets/private-dao-product-overview.mp4`
 
 ## Mainnet Positioning
 
@@ -90,9 +90,9 @@ That means the video should now show:
 
 The repository carries a usable project explainer artifact directly in the repo, but the canonical public watch surface is now the official YouTube upload.
 
-- Primary repo video target: `docs/assets/private-dao-frontier-overview.mp4`
-- Poster target: `docs/assets/private-dao-frontier-overview-poster.png`
-- Render source: `scripts/render-frontier-overview-video.sh`
+- Primary repo video target: `docs/assets/private-dao-product-overview.mp4`
+- Poster target: `docs/assets/private-dao-product-overview-poster.png`
+- Render source: `scripts/render-product-overview-video.sh`
 - README and live site should link to the YouTube upload first, with the hosted MP4 kept as backup
 
 ## Packaging Notes

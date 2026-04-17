@@ -27,7 +27,7 @@ export default function DevelopersPage() {
       badges={[
         { label: "Docs and viewers", variant: "cyan" },
         { label: "Reviewer-ready", variant: "violet" },
-        { label: "Track-aware", variant: "success" },
+        { label: "Product-aware", variant: "success" },
       ]}
     >
       <EcosystemFocusAlignmentStrip

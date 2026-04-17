@@ -60,7 +60,7 @@
 
 - Proposal flow health: 37.5% — 7/7 governance proof steps are finalized. 0 proposal is already executed on devnet, 0 proposal is still in commit mode, and 5 proposal is still waiting on settlement evidence. (Open proof and execution: /proof/?judge=1)
 - Wallet-by-wallet readiness: 80% — 4/5 wallets are review-ready and 5/5 expose diagnostics. Pending real-device targets remain visible in runtime evidence. (Open wallet diagnostics: /diagnostics)
-- Proof freshness: 1d old — Runtime evidence 2d old, Devnet canary 2d old, and frontier integrations 1d old remain published together. (Open trust documents: /documents/live-proof-v3)
+- Proof freshness: 1d old — Runtime evidence 2d old, Devnet canary 2d old, and integration evidence 1d old remain published together. (Open trust documents: /documents/live-proof-v3)
 - Hosted read coverage: 41 — The backend-indexer read path currently exposes 41 indexed proposals across 21 DAOs. (Open services: /services)
 - MagicBlock settlement completion: 100% — 5/5 confidential corridor transactions finalized in the current integration evidence package. (Open diagnostics: /diagnostics)
 - Primary RPC latency: 242 ms — Current blockhash latency from the primary Devnet endpoint. Version latency is 1504 ms. (Open analytics: /analytics)

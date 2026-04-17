@@ -32,7 +32,7 @@ function getProfileAwareDemoSummary(workspace: CompetitionTrackWorkspace, commer
     return `Lead with ${bestDemoRoute}, keep the buyer route visible, then attach proof and custody truth to the same pilot story.`;
   }
   if (commercialProfile === "treasury-top-up") {
-    return `Lead with ${bestDemoRoute}, frame the track as governed runway and visible reliability, then keep mainnet gates explicit.`;
+    return `Lead with ${bestDemoRoute}, frame the product lane as governed runway and visible reliability, then keep mainnet gates explicit.`;
   }
   if (commercialProfile === "vendor-payout" || commercialProfile === "contributor-payout") {
     return `Lead with ${bestDemoRoute}, show governed execution and diagnostics first, then attach custody truth and exact blockers.`;
@@ -56,7 +56,7 @@ export function getTrackJudgeFirstCopy(
     label: "Reviewer telemetry packet",
     href: "/documents/reviewer-telemetry-packet",
     summary:
-      "Generated telemetry truth packet that binds runtime evidence, frontier integrations, read-node snapshot, and devnet service metrics into one reviewer-safe route.",
+      "Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and devnet service metrics into one reviewer-safe route.",
   };
   const externallyProven = [...proofContext.externallyProven, treasuryProof, telemetryProof];
   const whatWorksNow = workspace.deliverables.slice(0, 3);

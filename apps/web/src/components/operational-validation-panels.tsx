@@ -20,7 +20,7 @@ const iconMap = {
   "Proposal flow health": CheckCircle2,
   "Wallet-by-wallet readiness": Wallet,
   "Proof freshness": ShieldCheck,
-  "Track-specific commercial readiness": Sparkles,
+  "Product-lane commercial readiness": Sparkles,
 };
 
 type OperationalValidationPanelsProps = {
@@ -71,7 +71,7 @@ export function OperationalValidationPanels({
       </CardHeader>
       <CardContent className="space-y-5">
         <div className="rounded-3xl border border-white/8 bg-white/4 p-4 text-sm leading-7 text-white/60">
-          These four panels keep live Devnet health, proof recency, wallet readiness, and track-to-market posture visible inside the daily product shell instead of hiding them in reviewer docs alone.
+          These four panels keep live Devnet health, proof recency, wallet readiness, and product-to-market posture visible inside the daily product shell instead of hiding them in reviewer docs alone.
         </div>
         <div className="grid gap-4 xl:grid-cols-2">
           {cards.map((card) => (

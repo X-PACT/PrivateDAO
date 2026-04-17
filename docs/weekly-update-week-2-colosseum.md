@@ -1,8 +1,8 @@
-# Colosseum Weekly Update #2
+# Weekly Product Update #2
 
 ## Goal
 
-This is the second weekly update video for the Solana Frontier Hackathon.
+This is the second weekly product update video for the live PrivateDAO build.
 
 It should be:
 
@@ -16,7 +16,7 @@ This is not the long-form overview video and not the final pitch.
 
 ## Recommended Upload Title
 
-`Week 2 - PrivateDAO Frontier Hackathon - Guided Governance And Agentic Treasury Rail`
+`Week 2 - PrivateDAO Product Update - Guided Governance And Agentic Treasury Rail`
 
 ## Recommended Video Description
 
@@ -120,8 +120,8 @@ bash scripts/render-weekly-youtube-ready.sh 2
 
 Primary file:
 
-- `docs/assets/weekly-youtube-ready/Week 2 - PrivateDAO Frontier Hackathon - YouTube Ready.mp4`
+- `docs/assets/weekly-youtube-ready/Week 2 - PrivateDAO Product Update - YouTube Ready.mp4`
 
 Primary poster:
 
-- `docs/assets/weekly-youtube-ready/Week 2 - PrivateDAO Frontier Hackathon - YouTube Ready-poster.png`
+- `docs/assets/weekly-youtube-ready/Week 2 - PrivateDAO Product Update - YouTube Ready-poster.png`

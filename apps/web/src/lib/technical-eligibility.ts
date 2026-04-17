@@ -212,7 +212,7 @@ const fits: Record<string, TrackTechnicalFit> = {
     sponsorUsage: [
       "Ranger main fit comes from integration quality across product shell, proof, trust, and buyer surfaces rather than any single feature.",
       "The program id, token surface, runtime evidence, and submission routes are all connected in the live app, not hidden in separate docs folders.",
-      "This is what makes the startup read as coherent and investment-worthy rather than hackathon-fragmented.",
+      "This is what makes the startup read as coherent and investment-worthy rather than fragmented across disconnected surfaces.",
     ],
     sponsorEvidence: [
       {
@@ -230,7 +230,7 @@ const fits: Record<string, TrackTechnicalFit> = {
     ],
     evidenceRoutes: [
       { label: "Dashboard", href: "/dashboard" },
-      { label: "Tracks center", href: "/tracks" },
+      { label: "Learning path", href: "/learn" },
       { label: "Trust package", href: "/documents/trust-package" },
       { label: "Investor deck", href: "/viewer/investor-pitch-deck" },
     ],
@@ -277,7 +277,7 @@ const fits: Record<string, TrackTechnicalFit> = {
     coreIdentity,
     sponsorUsage: [
       "The Next.js multi-page shell, static export deployment, in-app docs, and route-level product surfaces make the frontend architecture visible.",
-      "Wallet UX, search, assistant routing, competition center, and product corridors show shipping discipline rather than toy frontend polish.",
+      "Wallet UX, search, assistant routing, and product corridors show shipping discipline rather than toy frontend polish.",
       "The codebase now reads as a product platform with reusable surfaces, not a single demo page.",
     ],
     sponsorEvidence: [
@@ -291,14 +291,14 @@ const fits: Record<string, TrackTechnicalFit> = {
         sponsor: "Shipping discipline",
         status: "Direct live use",
         detail:
-          "Root-domain publishing, verification gates, and route-level productization show serious engineering execution rather than hackathon-only polish.",
+          "Root-domain publishing, verification gates, and route-level productization show serious engineering execution rather than event-only polish.",
       },
     ],
     evidenceRoutes: [
       { label: "Dashboard", href: "/dashboard" },
       { label: "Developers", href: "/developers" },
       { label: "Search", href: "/search" },
-      { label: "Tracks center", href: "/tracks" },
+      { label: "Learning path", href: "/learn" },
     ],
     validationGates: [
       "cd apps/web && npm run lint",

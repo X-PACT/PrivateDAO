@@ -101,7 +101,7 @@ Blocker evidence refs:
 
 Use these exact opening sequences to keep the first 30 to 45 seconds of the track videos aligned with the judge-first top strip and the reviewer packet.
 
-### Frontier Reviewer Packet
+### Core Reviewer Packet
 - best product route: `/start`
 1. What works now: Lead the first 90 seconds from /start into /command-center with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and product learning path perfectly aligned with the live site.
 2. What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet.

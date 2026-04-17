@@ -1,11 +1,11 @@
-# Runtime Infrastructure Reviewer Packet Reviewer Packet
+# Runtime Infrastructure Reviewer Packet
 
 ## Overview
 
 - project: `PrivateDAO`
 - generated at: `2026-04-11T14:36:31.798Z`
 - track slug: `rpc-infrastructure`
-- sponsor: `RPC infrastructure sponsors`
+- sponsor: `Runtime infrastructure reviewers`
 - objective: Make the hosted read path, diagnostics, and runtime trust posture impossible to miss.
 
 ## Judge-First Opening
@@ -31,7 +31,7 @@ What works now: Show diagnostics, runtime evidence, and hosted read/API packagin
 
 - Diagnostics: Latency, success rate, wallet coverage, proof completion, and incident-facing diagnostics are already surfaced live. (/diagnostics)
 - Core integrations: Hosted-read and runtime evidence already prove the infrastructure story on Devnet with reviewer-facing artifacts. (/documents/frontier-integrations)
-- Reviewer telemetry packet: Generated telemetry truth packet that binds runtime evidence, frontier integrations, read-node snapshot, and devnet service metrics into one reviewer-safe route. (/documents/reviewer-telemetry-packet)
+- Reviewer telemetry packet: Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and devnet service metrics into one reviewer-safe route. (/documents/reviewer-telemetry-packet)
 
 ### What Is Still Pending
 
@@ -50,7 +50,7 @@ Custody still matters for buyer trust, and the new /custody ingestion flow reduc
 ## Reviewer Links
 
 - Primary product route: /services
-- Core integrations: /documents/frontier-integrations
+- Integration evidence: /documents/frontier-integrations
 - Diagnostics: /diagnostics
 - Story video: /story
 - Reviewer telemetry packet: /documents/reviewer-telemetry-packet

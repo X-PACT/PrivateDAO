@@ -14,7 +14,7 @@ It is intentionally evidence-bound:
 - analytics surface for proposal, vote, and treasury-operating summaries
 - hosted-read and API packaging inside the services surface
 - indexed proposal registry and read-node snapshot used by the live app
-- runtime evidence, frontier integrations, and launch trust packets already published
+- runtime evidence, integration evidence, and launch trust packets already published
 
 ## What is operationally visible now
 
@@ -24,7 +24,7 @@ It is intentionally evidence-bound:
   - `https://privatedao.org/services/`
 - generated evidence:
   - `docs/runtime-evidence.generated.md`
-  - `docs/frontier-integrations.generated.md`
+- `docs/frontier-integrations.generated.md`
   - `docs/read-node/snapshot.generated.md`
   - `docs/launch-trust-packet.generated.md`
 

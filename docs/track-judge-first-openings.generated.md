@@ -1,17 +1,17 @@
-# Track Judge-First Openings
+# Reviewer Opening Scripts
 
 ## Overview
 
 - project: `PrivateDAO`
 - generated at: `2026-04-11T14:36:30.523Z`
-- purpose: Canonical judge-first copy for product routes, reviewer packets, and the first 30 to 45 seconds of track videos.
+- purpose: Canonical judge-first copy for product routes, reviewer packets, and the first 30 to 45 seconds of reviewer-facing product walkthroughs.
 
-## Frontier Reviewer Packet
+## Core Reviewer Packet
 
-- slug: `colosseum-frontier`
-- sponsor: `Colosseum + Solana Foundation`
+- slug: `core-reviewer`
+- sponsor: `Core ecosystem reviewers`
 - best product route: `/start`
-- proof route: `/documents/frontier-competition-readiness-2026`
+- proof route: `/documents/reviewer-fast-path`
 - video route: `/story`
 
 ### What Works Now
@@ -24,7 +24,7 @@
 
 - Proof center: The full governance lifecycle, proof packets, and reviewer path are already visible inside the live product. (/proof)
 - Launch trust packet: The repo already binds launch truth, blockers, and buyer-safe trust wording into one explicit packet. (/documents/launch-trust-packet)
-- Reviewer telemetry packet: Generated telemetry truth packet that binds runtime evidence, frontier integrations, read-node snapshot, and devnet service metrics into one reviewer-safe route. (/documents/reviewer-telemetry-packet)
+- Reviewer telemetry packet: Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and devnet service metrics into one reviewer-safe route. (/documents/reviewer-telemetry-packet)
 
 ### Exact Blocker
 
@@ -43,8 +43,8 @@ What works now: Lead the first 90 seconds from /start into /command-center with 
 
 ## Confidential Governance Reviewer Packet
 
-- slug: `privacy-track`
-- sponsor: `MagicBlock and privacy-aligned partners`
+- slug: `confidential-governance`
+- sponsor: `Privacy-aligned reviewers`
 - best product route: `/story`
 - proof route: `/documents/live-proof-v3`
 - video route: `/story`
@@ -59,7 +59,7 @@ What works now: Lead the first 90 seconds from /start into /command-center with 
 
 - Live Proof V3: Devnet proposal lifecycle, V3 hardening, and explorer-verifiable proof anchors are already documented. (/documents/live-proof-v3)
 - ZK capability matrix: The repo already states what the privacy layer proves today and what remains outside the claim boundary. (/documents/zk-capability-matrix)
-- Reviewer telemetry packet: Generated telemetry truth packet that binds runtime evidence, frontier integrations, read-node snapshot, and devnet service metrics into one reviewer-safe route. (/documents/reviewer-telemetry-packet)
+- Reviewer telemetry packet: Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and devnet service metrics into one reviewer-safe route. (/documents/reviewer-telemetry-packet)
 
 ### Exact Blocker
 
@@ -78,8 +78,8 @@ What works now: Use the comprehensive story video as the first-pass product walk
 
 ## Runtime Infrastructure Reviewer Packet
 
-- slug: `rpc-infrastructure`
-- sponsor: `RPC infrastructure sponsors`
+- slug: `runtime-infrastructure`
+- sponsor: `Runtime infrastructure reviewers`
 - best product route: `/services`
 - proof route: `/documents/frontier-integrations`
 - video route: `/story`
@@ -94,7 +94,7 @@ What works now: Use the comprehensive story video as the first-pass product walk
 
 - Diagnostics: Latency, success rate, wallet coverage, proof completion, and incident-facing diagnostics are already surfaced live. (/diagnostics)
 - Core integrations: Hosted-read and runtime evidence already prove the infrastructure story on Devnet with reviewer-facing artifacts. (/documents/frontier-integrations)
-- Reviewer telemetry packet: Generated telemetry truth packet that binds runtime evidence, frontier integrations, read-node snapshot, and devnet service metrics into one reviewer-safe route. (/documents/reviewer-telemetry-packet)
+- Reviewer telemetry packet: Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and devnet service metrics into one reviewer-safe route. (/documents/reviewer-telemetry-packet)
 
 ### Exact Blocker
 

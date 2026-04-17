@@ -29,8 +29,8 @@ export const strategicOpportunities: StrategicOpportunity[] = [
     skillsNeeded: ["Frontend", "Backend", "Blockchain", "Product"],
     liveRoutes: ["/start", "/story", "/services", "/documents/custody-proof-reviewer-packet"],
     sourceUrls: [
-      "https://superteam.fun/earn/grants/startup-accelerator-grant",
-      "https://superteam.fun/earn/listing/encrypt-ika-frontier-april-2026",
+      "https://privatedao.org/documents/capital-readiness-packet/",
+      "https://privatedao.org/services/",
     ],
   },
   {
@@ -45,12 +45,12 @@ export const strategicOpportunities: StrategicOpportunity[] = [
     missingFeature:
       "Regional eligibility and deployment value should stay explicit, and the case should remain framed around ecosystem infrastructure rather than generic overlap.",
     action:
-      "Use the awards proof, core product workspace, and trust packet as the regional-review starter bundle.",
+      "Use the awards proof, core product route, and trust packet as the regional-review starter bundle.",
     skillsNeeded: ["Product", "Frontend", "Operations"],
-    liveRoutes: ["/awards", "/tracks/colosseum-frontier", "/documents/launch-trust-packet"],
+    liveRoutes: ["/awards", "/start", "/documents/launch-trust-packet"],
     sourceUrls: [
-      "https://superteam.fun/earn/listing/superteam-poland",
-      "https://superteam.fun/earn/grants/Poland-grants",
+      "https://privatedao.org/awards/",
+      "https://privatedao.org/documents/solana-developer-tooling-proposal-2026/",
     ],
   },
   {
@@ -65,12 +65,12 @@ export const strategicOpportunities: StrategicOpportunity[] = [
     missingFeature:
       "The strongest data submission would add a tighter analyst-facing corridor around exports, evidence summaries, and infrastructure storytelling.",
     action:
-      "Lead from /diagnostics to /analytics to core integrations and read-node evidence as one telemetry-grade infrastructure lane.",
+      "Lead from /diagnostics to /analytics to integration evidence and read-node evidence as one telemetry-grade infrastructure lane.",
     skillsNeeded: ["Backend", "Infrastructure", "Analytics"],
     liveRoutes: ["/diagnostics", "/analytics", "/documents/frontier-integrations"],
     sourceUrls: [
-      "https://superteam.fun/earn/listing/dune-analytics-x-superteam-earn-or-frontier-data-sidetrack",
-      "https://superteam.fun/earn/listing/dollar10000-in-rpc-infrastructure-credits-for-colosseum-frontier-hackathon",
+      "https://privatedao.org/analytics/",
+      "https://privatedao.org/services/",
     ],
   },
   {
@@ -89,8 +89,8 @@ export const strategicOpportunities: StrategicOpportunity[] = [
     skillsNeeded: ["Security", "Blockchain", "Product"],
     liveRoutes: ["/security", "/services", "/custody", "/documents/grant-committee-pack"],
     sourceUrls: [
-      "https://superteam.fun/earn/listing/umbra-side-track",
-      "https://superteam.fun/earn/listing/encrypt-ika-frontier-april-2026",
+      "https://privatedao.org/security/",
+      "https://privatedao.org/services/",
     ],
   },
   {
@@ -114,7 +114,7 @@ export const strategicOpportunities: StrategicOpportunity[] = [
       "/diagnostics",
     ],
     sourceUrls: [
-      "https://superteam.fun/earn/listing/50k-adevarlabs-bounty",
+      "https://privatedao.org/trust/",
     ],
   },
 ];

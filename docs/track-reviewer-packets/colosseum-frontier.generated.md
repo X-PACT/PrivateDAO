@@ -1,11 +1,11 @@
-# Frontier Reviewer Packet Reviewer Packet
+# Core Reviewer Packet
 
 ## Overview
 
 - project: `PrivateDAO`
 - generated at: `2026-04-11T14:36:31.791Z`
 - track slug: `colosseum-frontier`
-- sponsor: `Colosseum + Solana Foundation`
+- sponsor: `Core ecosystem reviewers`
 - objective: Present PrivateDAO as a startup-quality Solana product that already behaves like a pre-mainnet company rather than a hacked-together prototype.
 
 ## Judge-First Opening
@@ -31,7 +31,7 @@ What works now: Lead the first 90 seconds from /start into /command-center with 
 
 - Proof center: The full governance lifecycle, proof packets, and reviewer path are already visible inside the live product. (/proof)
 - Launch trust packet: The repo already binds launch truth, blockers, and buyer-safe trust wording into one explicit packet. (/documents/launch-trust-packet)
-- Reviewer telemetry packet: Generated telemetry truth packet that binds runtime evidence, frontier integrations, read-node snapshot, and devnet service metrics into one reviewer-safe route. (/documents/reviewer-telemetry-packet)
+- Reviewer telemetry packet: Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and devnet service metrics into one reviewer-safe route. (/documents/reviewer-telemetry-packet)
 
 ### What Is Still Pending
 
@@ -50,15 +50,15 @@ For the main submission, custody is not a side detail. It is the exact trust gat
 ## Reviewer Links
 
 - Product route: /start
-- Proof route: /documents/frontier-competition-readiness-2026
+- Proof route: /documents/reviewer-fast-path
 - Judge proof path: /proof/?judge=1
 - Story video: /story
 - Reviewer telemetry packet: /documents/reviewer-telemetry-packet
 - Launch trust packet: /documents/launch-trust-packet
 - Canonical custody proof: /documents/canonical-custody-proof
 - Custody reviewer packet: /documents/custody-proof-reviewer-packet
-- Frontier operating brief: /documents/colosseum-frontier-2026-operating-brief
-- Core integrations: /documents/frontier-integrations
+- Product operating brief: /documents/reviewer-fast-path
+- Integration evidence: /documents/frontier-integrations
 - PDAO attestation: /viewer/pdao-attestation.generated
 - Wallet matrix: /viewer/wallet-compatibility-matrix.generated
 

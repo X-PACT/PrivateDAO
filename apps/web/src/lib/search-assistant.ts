@@ -630,7 +630,7 @@ function getStrategicOpportunitySuggestion(query: string): AssistantSuggestion |
       keywords: ["dune data", "dune analytics", "data sidetrack", "data side track"],
       title: "Open the data and telemetry corridor",
       summary:
-        "Start from the strategic opportunity map, then continue into diagnostics, analytics, and frontier integrations for the clearest runtime-data story.",
+        "Start from the strategic opportunity map, then continue into diagnostics, analytics, and integration evidence for the clearest runtime-data story.",
       primaryActionHref: "/documents/strategic-opportunity-readiness-2026",
       relatedRoutes: [
         { label: "1. Strategic opportunity map", href: "/documents/strategic-opportunity-readiness-2026" },
@@ -1046,7 +1046,7 @@ function getTelemetrySuggestion(query: string): AssistantSuggestion | null {
   return {
     title: "Open the telemetry packet",
     summary:
-      "Start from the telemetry packet, then open diagnostics, analytics, and frontier integrations. This is the shortest route for runtime maturity, hosted-read value, and infrastructure-facing proof.",
+      "Start from the telemetry packet, then open diagnostics, analytics, and integration evidence. This is the shortest route for runtime maturity, hosted-read value, and infrastructure-facing proof.",
     primaryActionLabel: "Open telemetry packet",
     primaryActionHref: "/documents/reviewer-telemetry-packet",
     relatedRoutes: [

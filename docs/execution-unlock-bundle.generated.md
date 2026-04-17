@@ -24,8 +24,8 @@ This bundle compresses the three highest-value remaining operational closures in
 - `/security#real-device-capture-readiness`
 - `/security#monitoring-delivery-readiness`
 - `/services#settlement-receipt-readiness`
-- `/tracks/startup-accelerator`
-- `/tracks/poland-grants`
+- `/start`
+- `/services`
 
 ## Included Documents
 

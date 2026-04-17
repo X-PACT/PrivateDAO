@@ -72,6 +72,7 @@ export const learnModuleNav: LearnModuleNavItem[] = [
   { href: "/learn/lecture-2-governance-ui", label: "Lecture 2", shortLabel: "L2" },
   { href: "/learn/lecture-3-rpc-state-and-runtime", label: "Lecture 3", shortLabel: "L3" },
   { href: "/learn/lecture-4-private-payments-gaming-and-proof", label: "Lecture 4", shortLabel: "L4" },
+  { href: "/documents/frontend-solana-bootcamp-materials", label: "Materials", shortLabel: "Slides" },
   { href: "/learn/toolkit", label: "Toolkit", shortLabel: "Toolkit" },
   { href: "/learn/assignments", label: "Assignments", shortLabel: "Tasks" },
   { href: "/learn/quizzes", label: "Quizzes", shortLabel: "Quiz" },
@@ -122,6 +123,7 @@ export const learnLectures: LearnLecture[] = [
       { label: "Start route", href: `${githubBase}/apps/web/src/app/start/page.tsx` },
       { label: "Getting started workspace", href: `${githubBase}/apps/web/src/components/getting-started-workspace.tsx` },
       { label: "Command Center", href: `${githubBase}/apps/web/src/app/command-center/page.tsx` },
+      { label: "Wallet connect starter template", href: `${githubBase}/templates/frontend-solana-bootcamp/wallet-connect-starter/WalletConnectStarter.tsx` },
     ],
     liveExecution: {
       heading: "Run the wallet-first path now",
@@ -150,6 +152,7 @@ export const learnLectures: LearnLecture[] = [
       codeRefs: [
         { label: "Start route", href: `${githubBase}/apps/web/src/app/start/page.tsx` },
         { label: "Command Center shell", href: `${githubBase}/apps/web/src/components/command-center-live-shell.tsx` },
+        { label: "Wallet connect starter template", href: `${githubBase}/templates/frontend-solana-bootcamp/wallet-connect-starter/WalletConnectStarter.tsx` },
       ],
     },
     quiz: [
@@ -215,6 +218,7 @@ export const learnLectures: LearnLecture[] = [
       { label: "Govern route", href: `${githubBase}/apps/web/src/app/govern/page.tsx` },
       { label: "Govern workbench client", href: `${githubBase}/apps/web/src/components/govern/govern-workbench-client.tsx` },
       { label: "Voice command panel", href: `${githubBase}/apps/web/src/components/governance-voice-command-panel.tsx` },
+      { label: "Proposal UI starter template", href: `${githubBase}/templates/frontend-solana-bootcamp/proposal-ui-starter/ProposalUiStarter.tsx` },
     ],
     liveExecution: {
       heading: "Run one governance cycle now",
@@ -243,6 +247,7 @@ export const learnLectures: LearnLecture[] = [
       codeRefs: [
         { label: "Govern route", href: `${githubBase}/apps/web/src/app/govern/page.tsx` },
         { label: "Judge route", href: `${githubBase}/apps/web/src/app/judge/page.tsx` },
+        { label: "Proposal UI starter template", href: `${githubBase}/templates/frontend-solana-bootcamp/proposal-ui-starter/ProposalUiStarter.tsx` },
       ],
     },
     quiz: [
@@ -309,6 +314,7 @@ export const learnLectures: LearnLecture[] = [
       { label: "Diagnostics route", href: `${githubBase}/apps/web/src/app/diagnostics/page.tsx` },
       { label: "Devnet metrics", href: `${githubBase}/apps/web/src/lib/devnet-service-metrics.ts` },
       { label: "Reviewer telemetry packet", href: `${githubBase}/docs/reviewer-telemetry-packet.md` },
+      { label: "Runtime activity starter template", href: `${githubBase}/templates/frontend-solana-bootcamp/runtime-activity-starter/RuntimeActivityStarter.tsx` },
     ],
     liveExecution: {
       heading: "Run one state-and-proof check now",
@@ -337,6 +343,7 @@ export const learnLectures: LearnLecture[] = [
       codeRefs: [
         { label: "Dashboard route", href: `${githubBase}/apps/web/src/app/dashboard/page.tsx` },
         { label: "Analytics route", href: `${githubBase}/apps/web/src/app/analytics/page.tsx` },
+        { label: "Runtime activity starter template", href: `${githubBase}/templates/frontend-solana-bootcamp/runtime-activity-starter/RuntimeActivityStarter.tsx` },
       ],
     },
     quiz: [
@@ -396,14 +403,17 @@ export const learnLectures: LearnLecture[] = [
     actions: [
       { href: "/security", label: "Open Security" },
       { href: "/services", label: "Open Services" },
+      { href: "/intelligence", label: "Open Gaming + Intelligence" },
       { href: "/documents/agentic-treasury-micropayment-rail", label: "Open Micropayment Rail" },
     ],
     codeRefs: [
       { label: "Security route", href: `${githubBase}/apps/web/src/app/security/page.tsx` },
+      { label: "Gaming and intelligence route", href: `${githubBase}/apps/web/src/app/intelligence/page.tsx` },
       { label: "Micropayment engine", href: `${githubBase}/scripts/lib/micropayment-engine.ts` },
       { label: "Run micropayment rail", href: `${githubBase}/scripts/run-agentic-treasury-micropayment-rail.ts` },
       { label: "Solana program", href: `${githubBase}/programs/private-dao` },
       { label: "ZK folder", href: `${githubBase}/zk` },
+      { label: "Private payment starter template", href: `${githubBase}/templates/frontend-solana-bootcamp/private-payment-starter/PrivatePaymentStarter.tsx` },
     ],
     liveExecution: {
       heading: "Run one private treasury or gaming proof lane now",
@@ -415,6 +425,7 @@ export const learnLectures: LearnLecture[] = [
       verifyLabel: "Open treasury rail proof",
       steps: [
         "Open Security or Services and follow the protected payout or governed reward corridor.",
+        "Open Intelligence when you want to inspect the gaming and reward-facing operator lane.",
         "Continue into the agentic treasury rail to inspect repeated settlement actions.",
         "Use Judge or Proof to open the Devnet transactions and confirm what the chain recorded.",
       ],
@@ -431,7 +442,9 @@ export const learnLectures: LearnLecture[] = [
       liveRoute: "/security",
       codeRefs: [
         { label: "Security route", href: `${githubBase}/apps/web/src/app/security/page.tsx` },
+        { label: "Gaming and intelligence route", href: `${githubBase}/apps/web/src/app/intelligence/page.tsx` },
         { label: "Agentic rail doc", href: `${githubBase}/docs/agentic-treasury-micropayment-rail.md` },
+        { label: "Private payment starter template", href: `${githubBase}/templates/frontend-solana-bootcamp/private-payment-starter/PrivatePaymentStarter.tsx` },
       ],
     },
     quiz: [
@@ -448,7 +461,7 @@ export const learnLectures: LearnLecture[] = [
         answers: [
           "Because it shows how governed policy can drive many real on-chain actions without turning the user into a script operator.",
           "Because it removes governance from the product.",
-          "Because it only matters for a fake demo.",
+          "Because it only matters for a one-off sandbox.",
         ],
       },
     ],
@@ -464,6 +477,7 @@ export const learnToolkitItems: LearnToolkitItem[] = [
     codeRefs: [
       { label: "Start route", href: `${githubBase}/apps/web/src/app/start/page.tsx` },
       { label: "Getting started workspace", href: `${githubBase}/apps/web/src/components/getting-started-workspace.tsx` },
+      { label: "Wallet connect starter template", href: `${githubBase}/templates/frontend-solana-bootcamp/wallet-connect-starter/WalletConnectStarter.tsx` },
     ],
   },
   {
@@ -474,6 +488,7 @@ export const learnToolkitItems: LearnToolkitItem[] = [
     codeRefs: [
       { label: "Govern route", href: `${githubBase}/apps/web/src/app/govern/page.tsx` },
       { label: "Voice command panel", href: `${githubBase}/apps/web/src/components/governance-voice-command-panel.tsx` },
+      { label: "Proposal UI starter template", href: `${githubBase}/templates/frontend-solana-bootcamp/proposal-ui-starter/ProposalUiStarter.tsx` },
     ],
   },
   {
@@ -485,6 +500,7 @@ export const learnToolkitItems: LearnToolkitItem[] = [
       { label: "Dashboard route", href: `${githubBase}/apps/web/src/app/dashboard/page.tsx` },
       { label: "Diagnostics route", href: `${githubBase}/apps/web/src/app/diagnostics/page.tsx` },
       { label: "Devnet metrics", href: `${githubBase}/apps/web/src/lib/devnet-service-metrics.ts` },
+      { label: "Runtime activity starter template", href: `${githubBase}/templates/frontend-solana-bootcamp/runtime-activity-starter/RuntimeActivityStarter.tsx` },
     ],
   },
   {
@@ -496,6 +512,7 @@ export const learnToolkitItems: LearnToolkitItem[] = [
       { label: "Security route", href: `${githubBase}/apps/web/src/app/security/page.tsx` },
       { label: "Micropayment rail doc", href: `${githubBase}/docs/agentic-treasury-micropayment-rail.md` },
       { label: "Micropayment engine", href: `${githubBase}/scripts/lib/micropayment-engine.ts` },
+      { label: "Private payment starter template", href: `${githubBase}/templates/frontend-solana-bootcamp/private-payment-starter/PrivatePaymentStarter.tsx` },
     ],
   },
 ];

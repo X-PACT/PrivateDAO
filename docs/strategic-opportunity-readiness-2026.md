@@ -1,6 +1,6 @@
 # Strategic Opportunity Readiness 2026
 
-This document keeps the non-primary opportunities around Frontier disciplined.
+This document keeps the non-primary ecosystem opportunities around the live product disciplined.
 
 It is intentionally truth-aligned:
 
@@ -17,8 +17,8 @@ The ecosystem-focus packet that complements this opportunity map is:
 ## Startup Capital Corridor
 
 - Sources:
-  - `https://superteam.fun/earn/grants/startup-accelerator-grant`
-  - `https://superteam.fun/earn/listing/encrypt-ika-frontier-april-2026`
+  - startup support programs
+  - ecosystem capital opportunities
 - Fit: strong
 - Why:
   - PrivateDAO already behaves like a startup-quality Devnet product with live onboarding, command, proof, services, custody truth, and reviewer packets.
@@ -35,25 +35,25 @@ The ecosystem-focus packet that complements this opportunity map is:
 ## Regional Grant Corridor
 
 - Sources:
-  - `https://superteam.fun/earn/listing/superteam-poland`
-  - `https://superteam.fun/earn/grants/Poland-grants`
+  - regional ecosystem grants
+  - local support programs
 - Fit: moderate
 - Why:
   - The repo already carries the first-place Poland signal, plus a live product and reviewer-safe proof surfaces.
 - What is already shipped:
   - `/awards`
-  - `/tracks/colosseum-frontier`
+  - `/start`
   - `/documents/launch-trust-packet`
 - Highest-value gap:
-  - keep regional fit and deployment value explicit instead of letting the case become generic hackathon sprawl.
+  - keep regional fit and deployment value explicit instead of letting the case become generic reviewer sprawl.
 - Best submission route:
-  - `/awards` -> `/tracks/colosseum-frontier` -> `/documents/launch-trust-packet`
+  - `/awards` -> `/start` -> `/documents/launch-trust-packet`
 
 ## Data And Telemetry Corridor
 
 - Sources:
-  - `https://superteam.fun/earn/listing/dune-analytics-x-superteam-earn-or-frontier-data-sidetrack`
-  - `https://superteam.fun/earn/listing/dollar10000-in-rpc-infrastructure-credits-for-colosseum-frontier-hackathon`
+  - analytics and observability opportunities
+  - infrastructure and RPC support programs
 - Fit: moderate
 - Why:
   - PrivateDAO already has diagnostics, runtime evidence, indexed proposal state, and hosted-read credibility.
@@ -64,13 +64,13 @@ The ecosystem-focus packet that complements this opportunity map is:
 - Highest-value gap:
   - make the telemetry corridor more analyst-facing through sharper summaries and clearer export-style evidence.
 - Best submission route:
-  - `/diagnostics` -> `/analytics` -> `/documents/frontier-integrations`
+  - `/diagnostics` -> `/analytics` -> `/documents/reviewer-telemetry-packet`
 
 ## Confidential Payout Corridor
 
 - Sources:
-  - `https://superteam.fun/earn/listing/umbra-side-track`
-  - `https://superteam.fun/earn/listing/encrypt-ika-frontier-april-2026`
+  - privacy-focused payout programs
+  - encryption-aligned ecosystem opportunities
 - Fit: strong
 - Why:
   - REFHE framing, treasury intake, reviewer-safe grant governance, and custody truth already support a serious confidential payout story.
@@ -87,7 +87,7 @@ The ecosystem-focus packet that complements this opportunity map is:
 ## Audit And Hardening Corridor
 
 - Source:
-  - `https://superteam.fun/earn/listing/50k-adevarlabs-bounty`
+  - external hardening and review opportunities
 - Fit: selective
 - Why:
   - PrivateDAO already has authority hardening, incident readiness, diagnostics, and canonical custody proof.

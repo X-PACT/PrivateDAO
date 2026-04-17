@@ -106,7 +106,7 @@ For PrivateDAO, this means:
 
 ### Encrypted operations
 
-- Source: `https://superteam.fun/earn/listing/encrypt-ika-frontier-april-2026`
+- Source: `security and confidential operations corridors`
 - Fit: strong
 - Why:
   - PrivateDAO already supports a coherent encrypted-operations story through REFHE, ZK, and explicit trust boundaries.
@@ -115,7 +115,7 @@ For PrivateDAO, this means:
 
 ### Encrypted assistant workflows
 
-- Source: `https://superteam.fun/earn/listing/solrouter-ship-with-encrypted-ai`
+- Source: `deterministic assistant and policy-composer corridors`
 - Fit: partial
 - Gap:
   - The repo does not yet expose a true encrypted AI or assistant flow.
@@ -140,7 +140,7 @@ When adapting the project for any track:
 - Do not overstate custody readiness.
 - Do not claim external audit completion if it has not happened.
 - Do not imply an encrypted AI surface exists unless it is actually shipped.
-- Keep Devnet proof, V3 hardening, trust package, and launch blockers consistent across deck, demo, docs, and UI.
+- Keep Devnet proof, V3 hardening, trust package, and launch blockers consistent across deck, walkthrough, docs, and UI.
 - Treat signer posture, timelocks, and operational security as first-class parts of the product story after the Drift exploit.
 
 ## Adjacent strategic opportunity corridors
@@ -170,7 +170,7 @@ These are worth pursuing only when they strengthen the same commercial governanc
 ### Data and telemetry corridor
 
 - Sources:
-  - `https://superteam.fun/earn/listing/dune-analytics-x-superteam-earn-or-frontier-data-sidetrack`
+  - `analytics and telemetry review corridors`
 - Fit: moderate
 - Why:
   - Diagnostics, runtime evidence, hosted reads, and indexed proposal state already give PrivateDAO a real telemetry story.
@@ -180,7 +180,7 @@ These are worth pursuing only when they strengthen the same commercial governanc
 ### Confidential payout corridor
 
 - Sources:
-  - `https://superteam.fun/earn/listing/umbra-side-track`
+  - `confidential payout and treasury operations corridors`
 - Fit: strong
 - Why:
   - PrivateDAO already supports confidential grant, payroll, and payout governance with reviewer-safe proof and treasury routing.
@@ -190,7 +190,7 @@ These are worth pursuing only when they strengthen the same commercial governanc
 ### Audit and hardening corridor
 
 - Sources:
-  - `https://superteam.fun/earn/listing/50k-adevarlabs-bounty`
+  - `external hardening and security review corridors`
 - Fit: selective
 - Why:
   - Authority hardening, incident readiness, diagnostics, and canonical custody proof are already part of the repo and product.

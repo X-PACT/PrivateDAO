@@ -19,6 +19,7 @@ const repositoryBlobBase = "https://github.com/X-PACT/PrivateDAO/blob/main";
 const indexableDocumentSlugs = new Set<string>([
   "agentic-treasury-micropayment-rail",
   "devnet-execution-screenshots",
+  "frontend-solana-bootcamp-materials",
   "solana-developer-tooling-proposal-2026",
   "technical-verification-status-2026",
   "reviewer-fast-path",
@@ -30,8 +31,24 @@ const indexableDocumentSlugs = new Set<string>([
   "pdao-token-surface",
 ]);
 
+const hiddenCuratedDocumentSlugs = new Set<string>([
+  "superteam-track-submission-matrix-2026",
+  "live-submission-review-2026",
+  "track-judge-first-openings",
+  "track-reviewer-packet-colosseum-frontier",
+  "track-reviewer-packet-privacy-track",
+  "track-reviewer-packet-rpc-infrastructure",
+  "frontier-competition-readiness-2026",
+  "competition-track-requirements-2026",
+  "competition-execution-playbook",
+]);
+
+function isPublicCuratedDocumentSlug(slug: string) {
+  return !hiddenCuratedDocumentSlugs.has(slug);
+}
+
 export function isIndexableCuratedDocumentSlug(slug: string) {
-  return indexableDocumentSlugs.has(slug);
+  return isPublicCuratedDocumentSlug(slug) && indexableDocumentSlugs.has(slug);
 }
 
 export function getIndexableCuratedDocuments() {
@@ -78,6 +95,16 @@ const curatedDocuments: CuratedDocument[] = [
     boundary: "Screenshots packet only; it visually confirms public Devnet explorer records without replacing the structured rail packet or runtime logs.",
     docPath: "docs/devnet-execution-screenshots.md",
     rawHref: `${repositoryBlobBase}/docs/devnet-execution-screenshots.md`,
+  },
+  {
+    slug: "frontend-solana-bootcamp-materials",
+    title: "Frontend Solana Bootcamp Materials",
+    category: "Education",
+    summary: "The complete four-lecture PrivateDAO frontend bootcamp pack: slide-ready materials, starter templates, assignments, quizzes, live routes, and code references for turning a Web2 frontend builder into a Solana dApp operator.",
+    audience: "Frontend developers, judges, ecosystem educators, and product builders",
+    boundary: "Educational pack only; it teaches the live product and references shipped routes and code without overstating hidden internals or unfinished production gates.",
+    docPath: "docs/frontend-solana-bootcamp-materials.md",
+    rawHref: `${repositoryBlobBase}/docs/frontend-solana-bootcamp-materials.md`,
   },
   {
     slug: "solana-developer-tooling-proposal-2026",
@@ -830,7 +857,7 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/competition-execution-playbook.md`,
   },
   {
-    slug: "colosseum-frontier-2026-operating-brief",
+    slug: "ecosystem-operating-brief-2026",
     title: "2026 Operating Brief",
     category: "Strategy",
     summary: "Operating interpretation of the current ecosystem, security, and infrastructure signals shaping PrivateDAO.",
@@ -840,7 +867,7 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/colosseum-frontier-2026-operating-brief.md`,
   },
   {
-    slug: "frontier-overview-video",
+    slug: "product-overview-video",
     title: "Product Overview Video Package",
     category: "Strategy",
     summary: "Canonical brief for the comprehensive product reel that explains everything PrivateDAO offers and why it is positioned to serve the ecosystem well.",
@@ -852,17 +879,18 @@ const curatedDocuments: CuratedDocument[] = [
 ];
 
 export function getCuratedDocuments() {
-  return curatedDocuments;
+  return curatedDocuments.filter((entry) => isPublicCuratedDocumentSlug(entry.slug));
 }
 
 export function getCuratedDocumentsBySlugs(slugs: string[]) {
-  const documentMap = new Map(curatedDocuments.map((entry) => [entry.slug, entry]));
+  const documentMap = new Map(getCuratedDocuments().map((entry) => [entry.slug, entry]));
   return slugs
     .map((slug) => documentMap.get(slug))
     .filter((entry): entry is CuratedDocument => entry !== undefined);
 }
 
 export function getCuratedDocument(slug: string) {
+  if (!isPublicCuratedDocumentSlug(slug)) return null;
   return curatedDocuments.find((entry) => entry.slug === slug) ?? null;
 }
 

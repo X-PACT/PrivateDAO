@@ -57,7 +57,7 @@ function getCustodyWording(mode: NonNullable<CustodyTrustContinuityProps["mode"]
     packetDescription: "Copy a concise custody update that stays aligned with the repo narrative and current trust boundary.",
     packetNote: "Use this packet when you need a README-style update without manually rewriting the trust state.",
     snippetTitle: "Pitch deck snippet",
-    snippetDescription: "Copy a concise custody-and-trust update that fits the investor or competition deck without rewriting the boundary language by hand.",
+    snippetDescription: "Copy a concise custody-and-trust update that fits the investor or product deck without rewriting the boundary language by hand.",
     snippetNote: "This snippet stays aligned with the live product state and is intended for the custody, trust, or mainnet-readiness slides.",
     snippetLabel: "Suggested slide copy:",
     buyerTitle: "Commercial buyer path",

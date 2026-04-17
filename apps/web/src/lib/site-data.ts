@@ -162,10 +162,10 @@ export const storyVideo = {
   runtime: "YouTube-first public story reel · upload-ready MP4 backup",
   youtubeHref: "https://youtu.be/HiCz0vb8kgk",
   embedHref: "https://www.youtube.com/embed/HiCz0vb8kgk",
-  mp4Href: "/assets/private-dao-frontier-overview.mp4",
-  posterHref: "/assets/private-dao-frontier-overview-poster.png",
+  mp4Href: "/assets/private-dao-product-overview.mp4",
+  posterHref: "/assets/private-dao-product-overview-poster.png",
   uploadFile:
-    "/home/x-pact/Desktop/PrivateDAO-Frontier-Overview/PrivateDAO - Frontier Overview - Everything We Offer and Why Us.mp4",
+    "/home/x-pact/Desktop/PrivateDAO-Product-Overview/PrivateDAO - Product Overview - Everything We Offer and Why Us.mp4",
 };
 
 export const walletChoices = [
@@ -670,7 +670,7 @@ export const competitionTracks = [
     gap: "The biggest remaining upside is sharper problem framing and a cleaner end-user story per use case.",
     action: "Lead with PrivateDAO Core, the Gaming DAO corridor, the ZK matrix, and the confidence engine across the product walkthrough and deck.",
     href: "/security",
-    sourceUrl: "https://superteam.fun/earn/listing/privacy-track-colosseum-hackathon-powered-by-magicblock-st-my-and-sns",
+    sourceUrl: "https://privatedao.org/security/",
   },
   {
     slug: "eitherway-live-dapp",
@@ -691,7 +691,7 @@ export const competitionTracks = [
     gap: "The strongest version of this submission is the wallet-first corridor, the hosted story video, and the govern flow working together.",
     action: "Lead with the live app, the story route, and the govern flow as one continuous wallet-first product flow.",
     href: "/services",
-    sourceUrl: "https://superteam.fun/earn/listing/build-a-live-dapp-with-solflare-kamino-dflow-or-quicknode-with-eitherway-app",
+    sourceUrl: "https://privatedao.org/govern/",
   },
   {
     slug: "rpc-infrastructure",
@@ -712,7 +712,7 @@ export const competitionTracks = [
     gap: "The API and RPC buyer journey can be made even more explicit in a dedicated partner section.",
     action: "Lead with the Read API + RPC corridor, diagnostics page, and hosted read commercial surfaces.",
     href: "/services",
-    sourceUrl: "https://superteam.fun/earn/listing/dollar10000-in-rpc-infrastructure-credits-for-colosseum-frontier-hackathon",
+    sourceUrl: "https://privatedao.org/services/",
   },
   {
     slug: "consumer-apps",
@@ -733,7 +733,7 @@ export const competitionTracks = [
     gap: "The strongest version of this submission is the buyer journey, the story video, and the govern flow working as one product path.",
     action: "Lead with the story route, buyer journey, govern flow, and cleaner wallet-first navigation.",
     href: "/govern",
-    sourceUrl: "https://superteam.fun/earn/listing/tokenton26-consumer-apps-track-dollar8500-prize-pool",
+    sourceUrl: "https://privatedao.org/learn/",
   },
   {
     slug: "ranger-main",
@@ -754,7 +754,7 @@ export const competitionTracks = [
     gap: "The winning version foregrounds the product thesis first, then lands into proof, trust, and services with no narrative break.",
     action: "Lead with the operational shell, story route, product corridors, awards, and proof-to-execution continuity.",
     href: "/awards",
-    sourceUrl: "https://superteam.fun/earn/listing/ranger-build-a-bear-hackathon-main-track",
+    sourceUrl: "https://privatedao.org/awards/",
   },
   {
     slug: "ranger-drift",
@@ -775,7 +775,7 @@ export const competitionTracks = [
     gap: "This track is strongest when framed as bounded capital governance instead of generic DeFi trading.",
     action: "Lead with analytics, the confidence engine, and policy-bounded treasury decision quality.",
     href: "/analytics",
-    sourceUrl: "https://superteam.fun/earn/listing/ranger-build-a-bear-hackathon-drift-side-track",
+    sourceUrl: "https://privatedao.org/analytics/",
   },
   {
     slug: "100xdevs",
@@ -796,7 +796,7 @@ export const competitionTracks = [
     gap: "The narrative should emphasize developer execution quality and end-user polish more directly.",
     action: "Lead with the Next.js operational shell, wallet UX, and reviewer-ready documentation stack.",
     href: "/dashboard",
-    sourceUrl: "https://superteam.fun/earn/listing/100xdevs-frontier-hackathon-track",
+    sourceUrl: "https://privatedao.org/learn/",
   },
   {
     slug: "encrypt-ika",
@@ -817,7 +817,7 @@ export const competitionTracks = [
     gap: "The strongest version leans into encrypted operations, deterministic policy logic, and reviewer-visible confidence scoring.",
     action: "Lead with confidential payroll, encrypted envelopes, and the confidence engine as deterministic interpretation.",
     href: "/security",
-    sourceUrl: "https://superteam.fun/earn/listing/encrypt-ika-frontier-april-2026",
+    sourceUrl: "https://privatedao.org/security/",
   },
   {
     slug: "solrouter-encrypted-ai",
@@ -838,7 +838,7 @@ export const competitionTracks = [
     gap: "The strongest version of this track positions the confidence engine as the current assistant-like surface without overstating autonomy.",
     action: "Treat the confidence engine and policy composer as the current encrypted-decision workspace for this track.",
     href: "/security",
-    sourceUrl: "https://superteam.fun/earn/listing/solrouter-ship-with-encrypted-ai",
+    sourceUrl: "https://privatedao.org/security/",
   },
   {
     slug: "dune-analytics",
@@ -859,7 +859,7 @@ export const competitionTracks = [
     gap: "The remaining gap is a cleaner analyst-facing export and narrative layer rather than a new protocol primitive.",
     action: "Lead with diagnostics, runtime evidence, analytics, and read-node value as one telemetry submission bundle.",
     href: "/analytics",
-    sourceUrl: "https://superteam.fun/earn/listing/dune-analytics-x-superteam-earn-or-frontier-data-sidetrack",
+    sourceUrl: "https://privatedao.org/analytics/",
   },
   {
     slug: "umbra-confidential-payout",
@@ -880,7 +880,7 @@ export const competitionTracks = [
     gap: "The remaining work is evidence packaging and payout-centric storytelling, not inventing a new privacy primitive.",
     action: "Lead with security, services, custody, and grant-committee proof as the confidential payout bundle.",
     href: "/services",
-    sourceUrl: "https://superteam.fun/earn/listing/umbra-side-track",
+    sourceUrl: "https://privatedao.org/services/",
   },
   {
     slug: "adevar-audit-credits",
@@ -901,7 +901,7 @@ export const competitionTracks = [
     gap: "The missing piece is external audit completion itself, which should remain an explicit hardening gate rather than hidden.",
     action: "Lead with trust, hardening docs, incident readiness, and custody proof as the audit-credit packet.",
     href: "/trust",
-    sourceUrl: "https://superteam.fun/earn/listing/50k-adevarlabs-bounty",
+    sourceUrl: "https://privatedao.org/trust/",
   },
   {
     slug: "superteam-poland",
@@ -922,7 +922,7 @@ export const competitionTracks = [
     gap: "The only valid gap is continued product hardening and broader human testing, not the absence of ambition or ecosystem relevance.",
     action: "Lead with start, learn, judge, and awards as one product-and-proof bundle that makes support feel catalytic, not corrective.",
     href: "/start",
-    sourceUrl: "https://superteam.fun/earn/listing/superteam-poland",
+    sourceUrl: "https://privatedao.org/awards/",
   },
   {
     slug: "poland-grants",
@@ -943,7 +943,7 @@ export const competitionTracks = [
     gap: "We still need a cleaner explicit grant packet and capital-readiness mapping, not more protocol breadth.",
     action: "Lead with services, awards, start, and trust packet as the regional grant packet.",
     href: "/services",
-    sourceUrl: "https://superteam.fun/earn/grants/Poland-grants",
+    sourceUrl: "https://privatedao.org/documents/solana-developer-tooling-proposal-2026/",
   },
   {
     slug: "startup-accelerator",
@@ -964,7 +964,7 @@ export const competitionTracks = [
     gap: "The highest-value gap is a tighter capital-readiness packet around audits, multisig, monitoring, and source-verifiable settlement proof.",
     action: "Lead with start, story, services, trust, and mainnet gates as one accelerator-ready narrative.",
     href: "/start",
-    sourceUrl: "https://superteam.fun/earn/grants/startup-accelerator-grant",
+    sourceUrl: "https://privatedao.org/documents/capital-readiness-packet/",
   },
 ];
 
@@ -1015,7 +1015,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     deckRoute: "/viewer/investor-pitch-deck",
     videoRoute: "/story",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
-    sourceUrl: "https://blog.colosseum.com/announcing-the-solana-frontier-hackathon/",
+    sourceUrl: "https://privatedao.org/start/",
     deliverables: [
       "Lead the first 90 seconds from /start into /govern with a real wallet-first path.",
       "Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity.",
@@ -1063,7 +1063,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     videoRoute: "/story",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl:
-      "https://superteam.fun/earn/listing/privacy-track-colosseum-hackathon-powered-by-magicblock-st-my-and-sns",
+      "https://privatedao.org/security/",
     deliverables: [
       "Use the comprehensive story video as the first-pass product walkthrough for judges.",
       "Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet.",
@@ -1111,7 +1111,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     videoRoute: "/story",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl:
-      "https://superteam.fun/earn/listing/build-a-live-dapp-with-solflare-kamino-dflow-or-quicknode-with-eitherway-app",
+      "https://privatedao.org/govern/",
     deliverables: [
         "Show a wallet-connected path from overview to govern to treasury execution.",
       "Use the new story video plus the live dApp surface on privatedao.org as the submission core.",
@@ -1159,7 +1159,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     videoRoute: "/story",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl:
-      "https://superteam.fun/earn/listing/dollar10000-in-rpc-infrastructure-credits-for-colosseum-frontier-hackathon",
+      "https://privatedao.org/services/",
     deliverables: [
       "Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path.",
       "Use the service catalog, SLA, pricing, and trust package as the commercial proof layer.",
@@ -1171,7 +1171,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
       "Operational clarity for builders and hosted consumers.",
     ],
     winningMoves: [
-      "Drive reviewers from /services into /diagnostics and the frontier integrations packet.",
+      "Drive reviewers from /services into /diagnostics and the integration-evidence packet.",
       "Treat Fast RPC as an operator and buyer value layer, not only a backend implementation note.",
       "Use the story video to explain why faster indexed reads matter for governance products.",
     ],
@@ -1207,7 +1207,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     videoRoute: "/story",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl:
-      "https://superteam.fun/earn/listing/tokenton26-consumer-apps-track-dollar8500-prize-pool",
+      "https://privatedao.org/learn/",
     deliverables: [
       "Lead the product walk from the home page into a guided pack selection and then into govern.",
       "Keep labels human-readable and buyer-first on the home, story, services, and documents routes.",
@@ -1254,7 +1254,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     deckRoute: "/viewer/investor-pitch-deck",
     videoRoute: "/story",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
-    sourceUrl: "https://superteam.fun/earn/listing/ranger-build-a-bear-hackathon-main-track",
+    sourceUrl: "https://privatedao.org/awards/",
     deliverables: [
       "Lead with the product shell, corridors, govern flow, and trust links rather than protocol detail first.",
       "Use the story route and the product learning path as submission entrypoints.",
@@ -1301,7 +1301,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     deckRoute: "/viewer/investor-pitch-deck",
     videoRoute: "/story",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
-    sourceUrl: "https://superteam.fun/earn/listing/ranger-build-a-bear-hackathon-drift-side-track",
+    sourceUrl: "https://privatedao.org/analytics/",
     deliverables: [
       "Tell a capital-governance story using bounded treasury actions, policy rails, and analytics.",
       "Use the confidence engine as the reasoning layer for risk-sensitive governance decisions.",
@@ -1348,7 +1348,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     deckRoute: "/viewer/investor-pitch-deck",
     videoRoute: "/story",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
-    sourceUrl: "https://superteam.fun/earn/listing/100xdevs-frontier-hackathon-track",
+    sourceUrl: "https://privatedao.org/learn/",
     deliverables: [
       "Use the live site and README to show a polished, reusable frontend system with pre-mainnet operating discipline.",
       "Keep the new story video tied to the product shell and route structure.",
@@ -1395,7 +1395,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     deckRoute: "/viewer/investor-pitch-deck",
     videoRoute: "/story",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
-    sourceUrl: "https://superteam.fun/earn/listing/encrypt-ika-frontier-april-2026",
+    sourceUrl: "https://privatedao.org/security/",
     deliverables: [
       "Lead with confidential payroll, bonus approvals, and REFHE-gated settlement narratives.",
       "Use the confidence engine and ZK matrix to show encrypted decision quality without overclaiming AI magic.",
@@ -1442,7 +1442,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     deckRoute: "/viewer/investor-pitch-deck",
     videoRoute: "/story",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
-    sourceUrl: "https://superteam.fun/earn/listing/solrouter-ship-with-encrypted-ai",
+    sourceUrl: "https://privatedao.org/security/",
     deliverables: [
       "Use the confidence engine and policy composer as the strongest current AI-adjacent surface.",
       "Keep the story bounded to what ships today in the UI and docs.",
@@ -1489,7 +1489,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     deckRoute: "/viewer/investor-pitch-deck",
     videoRoute: "/story",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
-    sourceUrl: "https://superteam.fun/earn/listing/dune-analytics-x-superteam-earn-or-frontier-data-sidetrack",
+    sourceUrl: "https://privatedao.org/analytics/",
     deliverables: [
       "Lead from diagnostics into analytics and then into hosted read/API value so the telemetry story feels monetizable.",
       "Package runtime evidence, proposal state, and analytics summary as a data-grade review corridor.",
@@ -1536,7 +1536,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     deckRoute: "/viewer/investor-pitch-deck",
     videoRoute: "/story",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
-    sourceUrl: "https://superteam.fun/earn/listing/umbra-side-track",
+    sourceUrl: "https://privatedao.org/services/",
     deliverables: [
       "Lead with a confidential payout use case, not a generic privacy slogan.",
       "Route judges through security, services, custody, and the grant-committee packet as one payment corridor.",
@@ -1583,7 +1583,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     deckRoute: "/viewer/investor-pitch-deck",
     videoRoute: "/story",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
-    sourceUrl: "https://superteam.fun/earn/listing/50k-adevarlabs-bounty",
+    sourceUrl: "https://privatedao.org/trust/",
     deliverables: [
       "Lead with custody proof, authority control, and incident readiness rather than with a generic security claim.",
       "Keep all hardening evidence aligned across trust, docs, and diagnostics.",
@@ -1630,7 +1630,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     deckRoute: "/documents/capital-readiness-packet",
     videoRoute: "/story",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
-    sourceUrl: "https://superteam.fun/earn/listing/superteam-poland",
+    sourceUrl: "https://privatedao.org/awards/",
     deliverables: [
       "Lead with the live product, then use the Poland win as proof that execution quality has already been recognized.",
       "Keep the page centered on ecosystem service, wallet usability, private governance, and reviewer-visible proof instead of on regional positioning alone.",
@@ -1677,7 +1677,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     deckRoute: "/viewer/investor-pitch-deck",
     videoRoute: "/story",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
-    sourceUrl: "https://superteam.fun/earn/grants/Poland-grants",
+    sourceUrl: "https://privatedao.org/documents/solana-developer-tooling-proposal-2026/",
     deliverables: [
       "Lead with the product and service surfaces, then attach trust and regional proof.",
       "Keep the grant story tied to real ecosystem infrastructure, not generic startup aspiration.",
@@ -1724,7 +1724,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     deckRoute: "/viewer/investor-pitch-deck",
     videoRoute: "/story",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
-    sourceUrl: "https://superteam.fun/earn/grants/startup-accelerator-grant",
+    sourceUrl: "https://privatedao.org/documents/capital-readiness-packet/",
     deliverables: [
       "Lead with the live product before the deck.",
       "Use services and trust surfaces to make the business and launch thesis inspectable.",
@@ -2074,7 +2074,7 @@ export const analyticsSnapshots = [
 export const analyticsReadiness = [
   {
     title: "Proof coverage",
-    body: "Baseline live proof, dedicated V3 hardening proof, frontier integrations, and audit packet are all reviewer-facing.",
+    body: "Baseline live proof, dedicated V3 hardening proof, integration evidence, and audit packet are all reviewer-facing.",
     tone: "success",
   },
   {

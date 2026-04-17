@@ -2,12 +2,12 @@
 
 This playbook keeps PrivateDAO aligned with the current external review cycle without drifting into inaccurate claims or random feature work.
 
-It is complementary to `frontier-competition-readiness-2026.md`:
+It is complementary to the main product-opportunity readiness note:
 
 - `frontier-competition-readiness-2026.md` answers: which product lanes matter most and why
 - `competition-execution-playbook.md` answers: how development should stay aligned with those lanes
 
-It should now also be read with:
+It should now also be read with the current operating brief:
 
 - `colosseum-frontier-2026-operating-brief.md`
 
@@ -90,7 +90,7 @@ Each surface should answer one of these quickly:
 - why is it hard to copy?
 - what is already live?
 - what still needs external completion?
-- why does this fit the target review lane?
+- why does this fit the target operating lane?
 
 ## Required surface consistency
 
@@ -99,8 +99,6 @@ If the product story changes, consider whether the same change must appear in:
 - Next.js route structure
 - `/story`
 - `/start`
-- `/tracks`
-- `/tracks/[slug]`
 - `/services`
 - `/command-center`
 - `/security`
@@ -122,7 +120,7 @@ When multiple improvements are possible, prefer this order:
 
 ## Product-lane emphasis
 
-### Privacy Track
+### Privacy operations lane
 
 Lead with:
 
@@ -131,7 +129,7 @@ Lead with:
 - `ZK Capability Matrix`
 - `Cryptographic Confidence Engine`
 
-### RPC credits track
+### Runtime infrastructure lane
 
 Lead with:
 
@@ -139,7 +137,7 @@ Lead with:
 - diagnostics
 - hosted read surfaces
 
-### Consumer Apps
+### Consumer governance lane
 
 Lead with:
 
@@ -149,7 +147,7 @@ Lead with:
 - command center
 - wallet-first interaction
 
-### Eitherway / live dApp
+### Wallet-first live application lane
 
 Lead with:
 
@@ -168,7 +166,7 @@ Lead with:
 - proof and trust continuity
 - security posture that survives the post-Drift environment
 
-### Ranger / 100xDevs
+### Product quality lane
 
 Lead with:
 

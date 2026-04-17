@@ -113,19 +113,19 @@ function inferFinalDemoOrder(workspace: CompetitionTrackWorkspace) {
     return ["/story", "/start", "/govern", "/assistant", "/proof/?judge=1"];
   }
   if (workspace.slug === "ranger-main") {
-    return ["/story", "/tracks", "/dashboard", "/documents/trust-package", "/services"];
+    return ["/story", "/learn", "/dashboard", "/documents/trust-package", "/services"];
   }
   if (workspace.slug === "ranger-drift") {
     return ["/analytics", "/security", "/documents/cryptographic-confidence-engine", "/documents/trust-package", "/story"];
   }
   if (workspace.slug === "100xdevs") {
-    return ["/dashboard", "/developers", "/search", "/assistant", "/tracks"];
+    return ["/dashboard", "/developers", "/search", "/assistant", "/learn"];
   }
   if (workspace.slug === "encrypt-ika") {
     return ["/story", "/security", "/viewer/refhe-security-model", "/documents/frontier-integrations", "/proof/?judge=1"];
   }
   if (workspace.slug === "solrouter-encrypted-ai") {
-    return ["/assistant", "/search", "/security", "/documents/cryptographic-confidence-engine", "/tracks/solrouter-encrypted-ai"];
+    return ["/assistant", "/search", "/security", "/documents/cryptographic-confidence-engine", "/learn"];
   }
 
   return [workspace.liveRoute, workspace.judgeRoute, workspace.proofRoute, workspace.deckRoute, workspace.videoRoute];

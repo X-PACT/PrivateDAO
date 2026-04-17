@@ -5,7 +5,7 @@
 - project: `PrivateDAO`
 - generated at: `2026-04-11T14:36:31.796Z`
 - track slug: `privacy-track`
-- sponsor: `MagicBlock and privacy-aligned partners`
+- sponsor: `Privacy-aligned reviewers`
 - objective: Show PrivateDAO as the clearest privacy-native governance and confidential treasury product in the field.
 
 ## Judge-First Opening
@@ -31,7 +31,7 @@ What works now: Use the comprehensive story video as the first-pass product walk
 
 - Live Proof V3: Devnet proposal lifecycle, V3 hardening, and explorer-verifiable proof anchors are already documented. (/documents/live-proof-v3)
 - ZK capability matrix: The repo already states what the privacy layer proves today and what remains outside the claim boundary. (/documents/zk-capability-matrix)
-- Reviewer telemetry packet: Generated telemetry truth packet that binds runtime evidence, frontier integrations, read-node snapshot, and devnet service metrics into one reviewer-safe route. (/documents/reviewer-telemetry-packet)
+- Reviewer telemetry packet: Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and devnet service metrics into one reviewer-safe route. (/documents/reviewer-telemetry-packet)
 
 ### What Is Still Pending
 
@@ -59,7 +59,7 @@ Custody evidence is still required, and the signer or transfer packet can now be
 - Custody reviewer packet: /documents/custody-proof-reviewer-packet
 - ZK capability matrix: /documents/zk-capability-matrix
 - Confidence engine: /documents/cryptographic-confidence-engine
-- Core integrations: /documents/frontier-integrations
+- Integration evidence: /documents/frontier-integrations
 
 ## Validation Gates
 

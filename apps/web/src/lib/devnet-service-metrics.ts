@@ -486,19 +486,19 @@ export function getOperationalValidationSnapshot(): OperationalValidationSnapsho
     proofFreshness: {
       label: "Proof freshness",
       value: formatAgeLabel(freshestTimestamp),
-      detail: `Runtime evidence ${formatAgeLabel(runtimeEvidence.generatedAt)}, Devnet canary ${formatAgeLabel(devnetCanary.generatedAt)}, and frontier integrations ${formatAgeLabel(frontierIntegrations.generatedAt)} remain published together.`,
+      detail: `Runtime evidence ${formatAgeLabel(runtimeEvidence.generatedAt)}, Devnet canary ${formatAgeLabel(devnetCanary.generatedAt)}, and integration evidence ${formatAgeLabel(frontierIntegrations.generatedAt)} remain published together.`,
       routeLabel: "Open trust documents",
       routeHref: "/documents/live-proof-v3",
       tone: "amber",
     },
     commercialReadiness: {
-      label: "Track-specific commercial readiness",
+      label: "Product-lane commercial readiness",
       value: rankedTracks.map((track) => track.title).join(" · "),
-      detail: `Current top conversion-ready tracks combine win probability, commercial upside, and mainnet distance: ${rankedTracks
+      detail: `Current top conversion-ready product lanes combine commercial upside, operating readiness, and mainnet distance: ${rankedTracks
         .map((track) => `${track.title} (${track.compositeScore}/10)`)
         .join(" · ")}.`,
       routeLabel: "Open learning path",
-      routeHref: "/tracks",
+      routeHref: "/learn",
       tone: "fuchsia",
     },
   };

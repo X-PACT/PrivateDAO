@@ -28,7 +28,7 @@ const stages = [
     points: [
       "`verify:frontend-surface`, `verify:browser-smoke`, and `web:verify:live:root` keep the live app honest.",
       "`verify:runtime-surface`, `verify:generated-artifacts`, and wallet/runtime gates keep proof and ops routes synchronized.",
-      "Track validation stays tied to the actual sponsor, proof, and buyer surfaces instead of isolated scripts.",
+      "Validation stays tied to the actual product lane, proof, and buyer surfaces instead of isolated scripts.",
     ],
     links: [
       { label: "Diagnostics", href: "/diagnostics" },
@@ -43,7 +43,7 @@ const stages = [
     eyebrow: "Published evidence",
     points: [
       "Runtime evidence, wallet matrix, PDAO attestation, and live proof packets remain published and inspectable.",
-      "Competition and mainnet claims are backed by generated artifacts, not only UI text.",
+      "Release and mainnet claims are backed by generated artifacts, not only UI text.",
       "The same evidence surfaces support judges, buyers, operators, and future customers.",
     ],
     links: [

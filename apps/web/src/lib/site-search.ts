@@ -561,7 +561,7 @@ function getStrategicOpportunityLeadItems(query: string): SiteSearchItem[] {
         href: "/documents/strategic-opportunity-readiness-2026",
         category: "Document" as const,
         summary:
-          "Open the telemetry corridor first, then continue into diagnostics, analytics, and frontier integrations for the runtime story.",
+          "Open the telemetry corridor first, then continue into diagnostics, analytics, and integration evidence for the runtime story.",
         matchKind: "track-aware" as const,
       },
     },
