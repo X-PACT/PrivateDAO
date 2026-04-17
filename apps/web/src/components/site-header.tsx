@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/start", label: "Start" },
+  { href: "/learn", label: "Learn" },
   { href: "/govern", label: "Govern", rel: "nofollow" },
   { href: "/live", label: "Live State", rel: "nofollow" },
   { href: "/story", label: "Story" },
@@ -17,7 +18,9 @@ const navItems = [
 ];
 
 const utilityNav = [
+  { href: "/products", label: "Products" },
   { href: "/services", label: "API & Pricing" },
+  { href: "/network", label: "Network", rel: "nofollow" },
   { href: "/documents", label: "Docs" },
   { href: "/community", label: "Community" },
   { href: "/assistant", label: "Help", rel: "nofollow" },

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-17T13:01:05.799Z",
+  "generatedAt": "2026-04-17T14:26:53.265Z",
   "runLabel": "20260417125017",
   "network": "devnet",
   "profile": {
@@ -9,8 +9,8 @@
     "fundingWaveSize": 5,
     "targetPdaoUi": 100
   },
-  "total_scenarios": 10,
-  "rejected": 10,
+  "total_scenarios": 33,
+  "rejected": 32,
   "unexpected_successes": 0,
   "scenarios": [
     {
@@ -122,6 +122,277 @@
       "outcome": "rejected",
       "timestamp": "2026-04-17T13:01:00.800Z",
       "error": "AnchorError caused by account: delegation_marker. Error Code: ConstraintSeeds. Error Number: 2006. Error Message: A seeds constraint was violated.\nProgram log: Left:\nProgram log: 4sNFkykUx8F9nzwjMdivH5f6EgrXSfHJ1JM4C7Q32SX5\nProgram log: Right:\nProgram log: F4uVJCdkZNSLHcuvdJ9fE2Ha6iEhFh26N4Z6qYKiUzze"
+    },
+    {
+      "id": "reveal-wrong-revealer-8-1",
+      "phase": "reveal",
+      "walletPubkey": "9xAZMUWVo2EBEeow7WzeyQHc2ygaEHmxpzE9Fcev4dUj",
+      "role": "adversarial",
+      "scenario": "wrong-revealer",
+      "expected": "reveal should be rejected",
+      "outcome": "rejected",
+      "timestamp": "2026-04-17T13:12:54.081Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:1265. Error Code: NotAuthorizedToReveal. Error Number: 6018. Error Message: Not authorized to reveal this vote."
+    },
+    {
+      "id": "reveal-wrong-salt-1-1",
+      "phase": "reveal",
+      "walletPubkey": "2vgwzFTgsfDyLA2BSfzej5F5Zcnmq6j38uXXN9iuLGmW",
+      "role": "voter",
+      "scenario": "wrong-salt",
+      "expected": "reveal should be rejected",
+      "outcome": "rejected",
+      "timestamp": "2026-04-17T13:12:54.862Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:1268. Error Code: CommitmentMismatch. Error Number: 6015. Error Message: Commitment hash does not match."
+    },
+    {
+      "id": "reveal-replay-1-1",
+      "phase": "reveal",
+      "walletPubkey": "2vgwzFTgsfDyLA2BSfzej5F5Zcnmq6j38uXXN9iuLGmW",
+      "role": "voter",
+      "scenario": "replay",
+      "expected": "reveal should be rejected",
+      "outcome": "rejected",
+      "timestamp": "2026-04-17T13:13:27.334Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:1260. Error Code: AlreadyRevealed. Error Number: 6014. Error Message: Vote already revealed."
+    },
+    {
+      "id": "reveal-wrong-revealer-18-14",
+      "phase": "reveal",
+      "walletPubkey": "DNjPJzGsRCpwRYq5tNioveg5sGv77hxVaq7hH1SJ54M2",
+      "role": "adversarial",
+      "scenario": "wrong-revealer",
+      "expected": "reveal should be rejected",
+      "outcome": "rejected",
+      "timestamp": "2026-04-17T13:13:33.640Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:1265. Error Code: NotAuthorizedToReveal. Error Number: 6018. Error Message: Not authorized to reveal this vote."
+    },
+    {
+      "id": "reveal-wrong-salt-14-14",
+      "phase": "reveal",
+      "walletPubkey": "5aZj3iRYW7GQcy3Q9xj28TjhWZp33gt3W38vQU5dFV8S",
+      "role": "voter",
+      "scenario": "wrong-salt",
+      "expected": "reveal should be rejected",
+      "outcome": "rejected",
+      "timestamp": "2026-04-17T13:13:34.435Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:1268. Error Code: CommitmentMismatch. Error Number: 6015. Error Message: Commitment hash does not match."
+    },
+    {
+      "id": "reveal-replay-14-14",
+      "phase": "reveal",
+      "walletPubkey": "5aZj3iRYW7GQcy3Q9xj28TjhWZp33gt3W38vQU5dFV8S",
+      "role": "voter",
+      "scenario": "replay",
+      "expected": "reveal should be rejected",
+      "outcome": "rejected",
+      "timestamp": "2026-04-17T13:14:05.501Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:1260. Error Code: AlreadyRevealed. Error Number: 6014. Error Message: Vote already revealed."
+    },
+    {
+      "id": "reveal-wrong-revealer-28-30",
+      "phase": "reveal",
+      "walletPubkey": "6Bg8E2Tv7kDhHRuwqcjUthwRjzSVA5JVsfywLBsgdBi7",
+      "role": "adversarial",
+      "scenario": "wrong-revealer",
+      "expected": "reveal should be rejected",
+      "outcome": "rejected",
+      "timestamp": "2026-04-17T13:14:11.615Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:1265. Error Code: NotAuthorizedToReveal. Error Number: 6018. Error Message: Not authorized to reveal this vote."
+    },
+    {
+      "id": "reveal-wrong-salt-30-30",
+      "phase": "reveal",
+      "walletPubkey": "JE2in6depHEEY8pzyniMtPWJVZ1zQ3KVGH2jMgkRN8RW",
+      "role": "zk-tester",
+      "scenario": "wrong-salt",
+      "expected": "reveal should be rejected",
+      "outcome": "rejected",
+      "timestamp": "2026-04-17T13:14:12.255Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:1268. Error Code: CommitmentMismatch. Error Number: 6015. Error Message: Commitment hash does not match."
+    },
+    {
+      "id": "reveal-replay-30-30",
+      "phase": "reveal",
+      "walletPubkey": "JE2in6depHEEY8pzyniMtPWJVZ1zQ3KVGH2jMgkRN8RW",
+      "role": "zk-tester",
+      "scenario": "replay",
+      "expected": "reveal should be rejected",
+      "outcome": "rejected",
+      "timestamp": "2026-04-17T13:14:42.964Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:1260. Error Code: AlreadyRevealed. Error Number: 6014. Error Message: Vote already revealed."
+    },
+    {
+      "id": "reveal-wrong-revealer-38-43",
+      "phase": "reveal",
+      "walletPubkey": "EcS8DtXF8AwTqfcdokzk55zbTG7YA1zC8jxLE9aUPUYo",
+      "role": "adversarial",
+      "scenario": "wrong-revealer",
+      "expected": "reveal should be rejected",
+      "outcome": "rejected",
+      "timestamp": "2026-04-17T13:14:49.198Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:1265. Error Code: NotAuthorizedToReveal. Error Number: 6018. Error Message: Not authorized to reveal this vote."
+    },
+    {
+      "id": "reveal-wrong-salt-43-43",
+      "phase": "reveal",
+      "walletPubkey": "AAwpkzuiXZegJLASycJ5nsv78rz6opiyAYCftby7wkqL",
+      "role": "voter",
+      "scenario": "wrong-salt",
+      "expected": "reveal should be rejected",
+      "outcome": "rejected",
+      "timestamp": "2026-04-17T13:14:49.760Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:1268. Error Code: CommitmentMismatch. Error Number: 6015. Error Message: Commitment hash does not match."
+    },
+    {
+      "id": "reveal-replay-43-43",
+      "phase": "reveal",
+      "walletPubkey": "AAwpkzuiXZegJLASycJ5nsv78rz6opiyAYCftby7wkqL",
+      "role": "voter",
+      "scenario": "replay",
+      "expected": "reveal should be rejected",
+      "outcome": "rejected",
+      "timestamp": "2026-04-17T13:15:06.664Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:1260. Error Code: AlreadyRevealed. Error Number: 6014. Error Message: Vote already revealed."
+    },
+    {
+      "id": "finalize-early",
+      "phase": "finalize",
+      "walletPubkey": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+      "role": "adversarial",
+      "scenario": "finalize-before-reveal-end",
+      "expected": "finalize should be rejected before reveal end",
+      "outcome": "rejected",
+      "timestamp": "2026-04-17T13:15:07.723Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:1400. Error Code: RevealStillOpen. Error Number: 6012. Error Message: Reveal phase is still open."
+    },
+    {
+      "id": "reveal-late-7-7",
+      "phase": "reveal",
+      "walletPubkey": "HXdBGXRQvRvF3Ci8zTvU6sXeUm1kLdttBXZq96uaygkZ",
+      "role": "voter",
+      "scenario": "late",
+      "expected": "reveal should be rejected",
+      "outcome": "rejected",
+      "timestamp": "2026-04-17T13:27:53.885Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:1258. Error Code: RevealClosed. Error Number: 6011. Error Message: Reveal window has closed."
+    },
+    {
+      "id": "reveal-late-17-17",
+      "phase": "reveal",
+      "walletPubkey": "9K7msxC4czoBRE33fscCJDv55VyrADYcwM9dYkTTGrJc",
+      "role": "voter",
+      "scenario": "late",
+      "expected": "reveal should be rejected",
+      "outcome": "rejected",
+      "timestamp": "2026-04-17T13:27:55.613Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:1258. Error Code: RevealClosed. Error Number: 6011. Error Message: Reveal window has closed."
+    },
+    {
+      "id": "reveal-late-27-27",
+      "phase": "reveal",
+      "walletPubkey": "56Cont8j33yjsGf3uRdYJoiaX6tXrw7vvPAPrXbqDtDs",
+      "role": "voter",
+      "scenario": "late",
+      "expected": "reveal should be rejected",
+      "outcome": "rejected",
+      "timestamp": "2026-04-17T13:27:57.454Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:1258. Error Code: RevealClosed. Error Number: 6011. Error Message: Reveal window has closed."
+    },
+    {
+      "id": "reveal-late-37-37",
+      "phase": "reveal",
+      "walletPubkey": "66meVj2p8CbeCcEsd3bFE5gHU3bZSXkVmUFjapvZsDP3",
+      "role": "voter",
+      "scenario": "late",
+      "expected": "reveal should be rejected",
+      "outcome": "rejected",
+      "timestamp": "2026-04-17T13:27:59.348Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:1258. Error Code: RevealClosed. Error Number: 6011. Error Message: Reveal window has closed."
+    },
+    {
+      "id": "reveal-late-47-47",
+      "phase": "reveal",
+      "walletPubkey": "5Hwq7RSocQijCshwutkECtboF49FCBR3kJZnjY2yUidX",
+      "role": "voter",
+      "scenario": "late",
+      "expected": "reveal should be rejected",
+      "outcome": "rejected",
+      "timestamp": "2026-04-17T13:28:01.269Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:1258. Error Code: RevealClosed. Error Number: 6011. Error Message: Reveal window has closed."
+    },
+    {
+      "id": "duplicate-finalize",
+      "phase": "finalize",
+      "walletPubkey": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+      "role": "adversarial",
+      "scenario": "duplicate-finalize",
+      "expected": "duplicate finalize should be rejected",
+      "outcome": "rejected",
+      "timestamp": "2026-04-17T13:28:05.506Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:1404. Error Code: AlreadyFinalized. Error Number: 6016. Error Message: Proposal has already been finalized.",
+      "invariantState": {
+        "statusBefore": "Passed",
+        "statusAfter": "Passed"
+      }
+    },
+    {
+      "id": "execute-before-unlock",
+      "phase": "execute",
+      "walletPubkey": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+      "role": "adversarial",
+      "scenario": "execute-before-unlock",
+      "expected": "execute should be rejected before timelock unlock",
+      "outcome": "rejected",
+      "timestamp": "2026-04-17T13:28:06.295Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:1450. Error Code: ExecutionTimelockActive. Error Number: 6024. Error Message: Execution timelock has not yet expired.",
+      "invariantState": {
+        "isExecuted": false
+      }
+    },
+    {
+      "id": "treasury-miswire",
+      "phase": "execute",
+      "walletPubkey": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+      "role": "adversarial",
+      "scenario": "treasury-miswiring",
+      "expected": "execute should reject wrong treasury recipient binding",
+      "outcome": "rejected",
+      "timestamp": "2026-04-17T13:28:07.089Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:1450. Error Code: ExecutionTimelockActive. Error Number: 6024. Error Message: Execution timelock has not yet expired.",
+      "invariantState": {
+        "isExecuted": false
+      }
+    },
+    {
+      "id": "duplicate-execute",
+      "phase": "execute",
+      "walletPubkey": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+      "role": "adversarial",
+      "scenario": "duplicate-execute",
+      "expected": "duplicate execute should be rejected",
+      "outcome": "rejected",
+      "timestamp": "2026-04-17T13:28:37.326Z",
+      "error": "AnchorError thrown in programs/private-dao/src/lib.rs:1449. Error Code: AlreadyExecuted. Error Number: 6023. Error Message: Treasury action already executed.",
+      "invariantState": {
+        "isExecuted": true
+      }
+    },
+    {
+      "id": "finalize-state-before",
+      "phase": "finalize",
+      "walletPubkey": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+      "role": "adversarial",
+      "scenario": "finalize-state-reference",
+      "expected": "reference snapshot",
+      "outcome": "skipped",
+      "timestamp": "2026-04-17T13:28:37.655Z",
+      "error": null,
+      "invariantState": {
+        "statusBeforeFinalize": "Voting",
+        "statusAfterFinalize": "Passed",
+        "statusAfterExecute": "Passed"
+      }
     }
   ]
 }

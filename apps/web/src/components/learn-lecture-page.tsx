@@ -5,6 +5,7 @@ import { OperationsShell } from "@/components/operations-shell";
 import { LearnBootcampNav } from "@/components/learn-bootcamp-nav";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
+import { WalletConnectButton } from "@/components/wallet-connect-button";
 import type { LearnLecture } from "@/lib/learn-bootcamp";
 import { cn } from "@/lib/utils";
 
@@ -69,6 +70,7 @@ export function LearnLecturePage({ lecture }: LearnLecturePageProps) {
             ))}
           </ul>
           <div className="mt-5 flex flex-wrap gap-3">
+            <WalletConnectButton size="sm" variant="default" />
             <Link href={lecture.liveExecution.routeHref} className={cn(buttonVariants({ size: "sm" }))}>
               {lecture.liveExecution.routeLabel}
             </Link>

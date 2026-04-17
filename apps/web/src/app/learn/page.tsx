@@ -5,6 +5,8 @@ import { GettingStartedWorkspace } from "@/components/getting-started-workspace"
 import { LearnBootcampNav } from "@/components/learn-bootcamp-nav";
 import { OperationsShell } from "@/components/operations-shell";
 import { ProductLearningGuide } from "@/components/product-learning-guide";
+import { SolanaInfrastructureStack } from "@/components/solana-infrastructure-stack";
+import { WalletConnectButton } from "@/components/wallet-connect-button";
 import { VideoCenter } from "@/components/video-center";
 import { buttonVariants } from "@/components/ui/button";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
@@ -50,6 +52,7 @@ export default function LearnPage() {
             product surfaces where each layer becomes usable.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
+            <WalletConnectButton size="sm" variant="default" />
             <Link href={`/learn/${learnLectures[0]!.slug}`} className={cn(buttonVariants({ size: "sm" }))}>
               Start Lecture 1
             </Link>
@@ -153,6 +156,11 @@ export default function LearnPage() {
           ),
         )}
       </div>
+      <SolanaInfrastructureStack
+        eyebrow="What powers the learning corridor"
+        title="Every lecture is backed by a real Solana product stack, not abstract slides"
+        description="The goal is not to memorize terms. The goal is to understand why each infrastructure choice exists, then run it from the UI and verify the result on Devnet in the same session."
+      />
       <ProductLearningGuide
         executionSnapshot={executionSnapshot}
         runtimeSnapshot={runtimeSnapshot}
@@ -161,17 +169,18 @@ export default function LearnPage() {
         <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/78">Ready to try it?</div>
         <h2 className="mt-3 text-2xl font-semibold text-white">Use one short path on Devnet</h2>
         <p className="mt-3 max-w-3xl text-sm leading-7 text-white/64">
-          Start in the browser, connect a Devnet wallet, move into the governance flow, then open the judge route to
+          Start in the browser, connect a Devnet wallet, move into the governance flow, then open the verification route to
           verify signatures, proof, runtime evidence, and the blockchain trail itself. The learning surface stays
           here for context, but the real product experience starts on the next click and remains understandable to a
           normal user without scripts or terminal work.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
+          <WalletConnectButton size="sm" variant="default" />
           <Link href="/start" className={cn(buttonVariants({ size: "sm" }))}>
             Try it on Devnet
           </Link>
           <Link href="/judge" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
-            Open judge route
+            Open verification route
           </Link>
         </div>
       </div>

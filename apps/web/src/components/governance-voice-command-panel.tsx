@@ -259,7 +259,7 @@ export function GovernanceVoiceCommandPanel({
               {listening ? "Stop listening" : "Record voice"}
             </Button>
             <Link href="/judge" className={cn(buttonVariants({ size: "default", variant: "outline" }))}>
-              Open judge route
+              Open verification route
             </Link>
             <Link href="/learn" className={cn(buttonVariants({ size: "default", variant: "outline" }))}>
               Open guide

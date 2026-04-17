@@ -55,7 +55,7 @@ export default function CommunityPage({ searchParams }: CommunityPageProps) {
     <OperationsShell
       eyebrow="Community"
       title="Join Discord, learn the product, try Devnet, and verify the result from one public route"
-      description="Community is the public entry for the full onboarding ladder: join the live server, learn what PrivateDAO does, try the browser-first Devnet flow, and verify the real outcome in the judge and proof surfaces."
+      description="Community is the public entry for the full onboarding ladder: join the live server, learn what PrivateDAO does, try the browser-first Devnet flow, and verify the real outcome in the verification and proof surfaces."
       badges={[
         { label: "Discord live", variant: "success" },
         { label: "YouTube live", variant: "violet" },
@@ -79,7 +79,7 @@ export default function CommunityPage({ searchParams }: CommunityPageProps) {
             Open learning guide
           </Link>
           <Link href="/judge" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
-            Open judge route
+            Open verification route
           </Link>
         </div>
       </div>

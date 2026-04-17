@@ -1,37 +1,67 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useWalletModal } from "@solana/wallet-adapter-react-ui";
+import { BaseWalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
-export function WalletConnectButton() {
+import { type ButtonProps, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+type WalletConnectButtonProps = {
+  className?: string;
+  connectLabel?: string;
+  connectedLabelPrefix?: string;
+} & Pick<ButtonProps, "size" | "variant">;
+
+export function WalletConnectButton({
+  className,
+  connectLabel = "Connect Devnet Wallet",
+  connectedLabelPrefix,
+  size = "sm",
+  variant = "default",
+}: WalletConnectButtonProps) {
   const { connected, connecting, disconnecting, publicKey, wallet } = useWallet();
-  const { setVisible } = useWalletModal();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const label = useMemo(() => {
+    if (!isMounted) return "Loading wallets...";
     if (connecting) return "Connecting...";
     if (disconnecting) return "Disconnecting...";
     if (connected && publicKey) {
       const address = publicKey.toBase58();
+      if (connectedLabelPrefix) {
+        return `${connectedLabelPrefix} · ${address.slice(0, 4)}…${address.slice(-4)}`;
+      }
       return `${wallet?.adapter.name ?? "Wallet"} · ${address.slice(0, 4)}…${address.slice(-4)}`;
     }
-    return "Connect Devnet Wallet";
-  }, [connected, connecting, disconnecting, publicKey, wallet]);
+    return connectLabel;
+  }, [connectLabel, connected, connectedLabelPrefix, connecting, disconnecting, isMounted, publicKey, wallet]);
 
   return (
     <div className="wallet-adapter-shell">
-      <button
-        type="button"
-        className="wallet-adapter-button wallet-adapter-button-trigger"
-        aria-label={connected ? "Wallet connected" : "Connect wallet"}
-        onClick={() => {
-          if (!connected && !connecting && !disconnecting) {
-            setVisible(true);
-          }
+      <BaseWalletMultiButton
+        className={cn(
+          "wallet-adapter-button wallet-adapter-button-trigger",
+          buttonVariants({ size, variant }),
+          className,
+        )}
+        disabled={!isMounted || connecting || disconnecting}
+        labels={{
+          "change-wallet": "Change wallet",
+          "copy-address": "Copy address",
+          connecting: "Connecting...",
+          copied: "Copied",
+          disconnect: "Disconnect",
+          "has-wallet": "Connect Devnet Wallet",
+          "no-wallet": connectLabel,
         }}
       >
         {label}
-      </button>
+      </BaseWalletMultiButton>
     </div>
   );
 }

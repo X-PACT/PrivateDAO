@@ -215,7 +215,7 @@ export function RuntimeEvidenceContinuityPanel({
           </div>
           <div className="flex flex-wrap gap-3">
             <Link href={proofHref} className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")}>
-              Open judge route
+              Open verification route
               <ArrowUpRight className="h-4 w-4" />
             </Link>
             <Link href={diagnosticsHref} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>

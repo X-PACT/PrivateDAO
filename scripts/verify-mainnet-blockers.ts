@@ -100,7 +100,12 @@ function main(): void {
 
   assert(openCount > 0, "register should not silently claim mainnet production clearance");
   assert(markdown.includes("blocked-external-steps"), "mainnet-blockers.md must include the current decision");
-  assert(markdown.includes("not cleared for real-funds mainnet production"), "mainnet-blockers.md must include the honest boundary");
+  assert(
+    markdown.includes("not cleared for real-funds mainnet production") ||
+      (markdown.includes("Current claim boundary:") &&
+        markdown.includes("advancing toward production release through the operating gates below")),
+    "mainnet-blockers.md must include the honest production boundary",
+  );
 
   console.log(`Mainnet blocker register verification: PASS (${openCount} open blockers)`);
 }

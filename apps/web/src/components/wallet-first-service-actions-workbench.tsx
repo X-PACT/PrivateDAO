@@ -321,10 +321,12 @@ function ProposalReviewForm({
 function PayoutRouteForm({
   payouts,
   selectedSlug,
+  handoffQuery,
   onChange,
 }: {
   payouts: PayoutRouteOption[];
   selectedSlug: PayoutRouteOption["slug"] | "";
+  handoffQuery: string;
   onChange: (value: PayoutRouteOption["slug"]) => void;
 }) {
   const selected = useMemo(
@@ -333,6 +335,13 @@ function PayoutRouteForm({
   );
 
   if (!selected) return null;
+
+  const continueHref =
+    selected.slug === "pilot-funding"
+      ? `/services${handoffQuery ? `?${handoffQuery}` : ""}#service-handoff`
+      : `/govern${handoffQuery ? `?${handoffQuery}` : ""}#service-handoff`;
+  const continueLabel =
+    selected.slug === "pilot-funding" ? "Continue with funded services flow" : "Continue with governed payout flow";
 
   return (
     <div className="grid gap-4 xl:grid-cols-[0.92fr_1.08fr]">
@@ -375,8 +384,8 @@ function PayoutRouteForm({
           {selected.stateDetail}
         </div>
         <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-          <Link href={selected.primaryHref} className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
-            {selected.primaryLabel}
+          <Link href={continueHref} className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
+            {continueLabel}
             <ArrowRight className="h-4 w-4" />
           </Link>
           <Link href={selected.proofHref} className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
@@ -645,7 +654,12 @@ export function WalletFirstServiceActionsWorkbench({
           <ProposalReviewForm proposals={data.proposals} selectedId={selectedProposalId} onChange={setSelectedProposalId} />
         ) : null}
         {activeLane === "payout-route-selection" ? (
-          <PayoutRouteForm payouts={data.payouts} selectedSlug={selectedPayoutSlug} onChange={setSelectedPayoutSlug} />
+          <PayoutRouteForm
+            payouts={data.payouts}
+            selectedSlug={selectedPayoutSlug}
+            handoffQuery={handoffQuery}
+            onChange={setSelectedPayoutSlug}
+          />
         ) : null}
         {activeLane === "telemetry-inspection" ? (
           <TelemetryInspectorForm modes={data.telemetryModes} selectedSlug={selectedTelemetrySlug} onChange={setSelectedTelemetrySlug} />

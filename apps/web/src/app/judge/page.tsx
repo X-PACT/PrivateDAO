@@ -6,16 +6,17 @@ import { OperationsShell } from "@/components/operations-shell";
 import { DevnetExecutionScreenshotsStrip } from "@/components/devnet-execution-screenshots-strip";
 import { JudgeTechnologyGuide } from "@/components/judge-technology-guide";
 import { buttonVariants } from "@/components/ui/button";
+import { WalletConnectButton } from "@/components/wallet-connect-button";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = buildRouteMetadata({
-  title: "Judge Route",
+  title: "Verification Route",
   description:
-    "Judge-first route for verifying the DAO lifecycle, real Devnet transactions, agentic treasury micropayments, and the fastest proof surfaces inside PrivateDAO.",
+    "Fast verification route for inspecting the DAO lifecycle, real Devnet transactions, agentic treasury micropayments, and the clearest proof surfaces inside PrivateDAO.",
   path: "/judge",
-  keywords: ["judge", "review", "devnet proof", "micropayments", "governance proof"],
+  keywords: ["verification", "devnet proof", "micropayments", "governance proof"],
 });
 
 export default function JudgePage() {
@@ -23,11 +24,11 @@ export default function JudgePage() {
 
   return (
     <OperationsShell
-      eyebrow="Judge"
-      title="Review the real product, the real transactions, and the shortest proof path first"
-      description="This route is built for a fast reviewer or judge. It shows the DAO lifecycle, captured Devnet signatures, the new Agentic Treasury Micropayment Rail, and the shortest route into the deeper proof and document surfaces. A normal visitor can use it too: the chain evidence is public and readable even when the protected parts of the workflow stay private until the correct stage."
+      eyebrow="Verification"
+      title="Inspect the real product, the real transactions, and the shortest proof path first"
+      description="This route is built for fast verification. It shows the DAO lifecycle, captured Devnet signatures, the Agentic Treasury Micropayment Rail, and the shortest route into the deeper proof and document surfaces. A normal visitor can use it too: the chain evidence is public and readable even when the protected parts of the workflow stay private until the correct stage."
       badges={[
-        { label: "Judge-first", variant: "cyan" },
+        { label: "Verification first", variant: "cyan" },
         { label: "Devnet live", variant: "success" },
         { label: "Proof-linked", variant: "violet" },
       ]}
@@ -47,6 +48,7 @@ export default function JudgePage() {
             private for the right reasons instead of disappearing into a black box.
           </div>
           <div className="mt-5 flex flex-wrap gap-3">
+            <WalletConnectButton size="sm" variant="default" />
             <Link href="/proof?judge=1" className={cn(buttonVariants({ size: "sm" }))}>
               Open full proof
             </Link>
@@ -54,7 +56,7 @@ export default function JudgePage() {
               Open learning guide
             </Link>
             <Link href="/documents/reviewer-fast-path" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
-              Open reviewer fast path
+              Open fast path
             </Link>
             <Link href="/viewer/agentic-treasury-micropayment-rail.generated" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
               Open generated rail proof

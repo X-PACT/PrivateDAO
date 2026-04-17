@@ -2086,7 +2086,13 @@ async function anchorZkProofEntry(
   const existing = state.onchainZkAnchors.find((candidate) => candidate.layer === entry.layer);
   if (existing) return existing;
 
-  const existingAccount = await connection.getAccountInfo(anchorPda, COMMITMENT);
+  const { result: existingAccount, retries: anchorReadRetries } = await withRetry(
+    state,
+    `zk-anchor-read:${entry.layer}`,
+    () => connection.getAccountInfo(anchorPda, COMMITMENT),
+    5,
+  );
+  state.metrics.retryCount += anchorReadRetries;
   if (existingAccount) {
     throw new Error(
       `zk proof anchor already exists for ${entry.layer} (${anchorPda.toBase58()}) but no tx signature is recorded in state`,

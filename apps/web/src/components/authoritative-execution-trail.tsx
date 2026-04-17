@@ -101,7 +101,7 @@ export function AuthoritativeExecutionTrail({
               <ArrowUpRight className="h-4 w-4" />
             </Link>
             <Link href={`/proof?${continuityQuery}`} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>
-              Open judge route
+              Open verification route
               <ArrowUpRight className="h-4 w-4" />
             </Link>
             <Link href={`/network?${continuityQuery}#runtime-evidence-continuity`} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "justify-between")}>

@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { GettingStartedWorkspace } from "@/components/getting-started-workspace";
 import { OperationsShell } from "@/components/operations-shell";
+import { WalletConnectButton } from "@/components/wallet-connect-button";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { buttonVariants } from "@/components/ui/button";
@@ -39,6 +40,7 @@ export default function StartPage() {
           Go to <strong className="text-white">Govern</strong> to create a DAO, create a proposal, vote, and execute with your own Devnet wallet. Then open <strong className="text-white">Judge</strong> to verify the captured Devnet evidence, inspect signatures, and compare your flow against the product proof path.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
+          <WalletConnectButton size="sm" variant="default" />
           <Link href="/govern" className={cn(buttonVariants({ size: "sm" }))}>
             Open govern
           </Link>
@@ -46,7 +48,7 @@ export default function StartPage() {
             Open the guide
           </Link>
           <Link href="/judge" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
-            Open judge route
+            Open verification route
           </Link>
         </div>
       </div>

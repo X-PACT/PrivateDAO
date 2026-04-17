@@ -11,11 +11,11 @@ import { awards } from "@/lib/site-data";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
-  title: "Awards and Trust",
+  title: "Recognition and Trust",
   description:
-    "Recognition, reviewer links, launch trust packet, and credibility surfaces for PrivateDAO in a product-facing Next.js page.",
+    "Recognition, trust links, launch trust packet, and credibility surfaces for PrivateDAO in a product-facing Next.js page.",
   path: "/awards",
-  keywords: ["awards", "trust package", "judge links", "reviewer surface"],
+  keywords: ["recognition", "trust package", "trust links", "product credibility"],
 });
 
 export default function AwardsPage() {
@@ -38,7 +38,7 @@ export default function AwardsPage() {
       <div className="mt-10">
         <EcosystemFocusAlignmentStrip
           title="How the current ecosystem focus areas map to the live product"
-          description="Use this layer to show grant and ecosystem reviewers that PrivateDAO already fits decentralisation, DAO tooling, developer tooling, payments, education, and reviewer-safe infrastructure work without pretending every corridor is equally mature."
+          description="Use this layer to show grant partners and ecosystem supporters that PrivateDAO already fits decentralisation, DAO tooling, developer tooling, payments, education, and strong infrastructure work without pretending every corridor is equally mature."
         />
       </div>
       <div className="mt-10 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
@@ -50,7 +50,7 @@ export default function AwardsPage() {
               </div>
               <div>
                 <div className="text-[11px] uppercase tracking-[0.28em] text-amber-200/80">Award banner</div>
-                <CardTitle className="mt-2">1st Place - Superteam Poland</CardTitle>
+                <CardTitle className="mt-2">1st Place · Superteam Poland</CardTitle>
               </div>
             </div>
           </CardHeader>
@@ -59,7 +59,7 @@ export default function AwardsPage() {
               PrivateDAO is being presented as a product that combines private governance, treasury operations, runtime evidence, and commercial packaging. This recognition supports that story, but it is not used to exaggerate live mainnet readiness.
             </p>
             <p>
-              The Next.js migration keeps that same discipline: reviewer-facing proof, operator-facing clarity, and buyer-facing product language all remain intact.
+              The Next.js migration keeps that same discipline: proof clarity, operator clarity, and buyer-facing product language all remain intact.
             </p>
           </CardContent>
         </Card>

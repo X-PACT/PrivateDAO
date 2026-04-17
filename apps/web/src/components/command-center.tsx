@@ -7,7 +7,7 @@ import { ArrowUpRight, Binary, LockKeyhole, ShieldCheck, WalletCards } from "luc
 import { ProposalAnalyzerInline } from "@/components/proposal-analyzer-inline";
 import { StatusBadge } from "@/components/status-badge";
 import { Badge } from "@/components/ui/badge";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buildProposalConfidenceScorecard, confidenceProfiles } from "@/lib/confidence-engine";
 import { buildServiceHandoffQuery } from "@/lib/service-handoff-state";
@@ -41,6 +41,22 @@ export function CommandCenter() {
     tech: featuredProposal.tech,
     summary: featuredProposal.summary,
   });
+  const featuredActionHref =
+    featuredProposal.status === "Live voting"
+      ? `/govern${continuityQuery ? `?${continuityQuery}` : ""}#commit-vote-action`
+      : featuredProposal.status === "Ready to reveal"
+        ? `/govern${continuityQuery ? `?${continuityQuery}` : ""}#reveal-vote-action`
+        : featuredProposal.status === "Execution ready" || featuredProposal.status === "Executed"
+          ? `/govern${continuityQuery ? `?${continuityQuery}` : ""}#execute-proposal-action`
+          : `/command-center${continuityQuery ? `?${continuityQuery}` : ""}#proposal-review-action`;
+  const featuredActionLabel =
+    featuredProposal.status === "Live voting"
+      ? "Run commit vote live"
+      : featuredProposal.status === "Ready to reveal"
+        ? "Run reveal live"
+        : featuredProposal.status === "Execution ready" || featuredProposal.status === "Executed"
+          ? "Open execution action"
+          : "Open live review action";
 
   return (
     <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
@@ -148,10 +164,15 @@ export function CommandCenter() {
           </div>
 
           <div className="flex flex-wrap gap-3">
-            <Button size="sm">Open governance dashboard</Button>
-            <Button size="sm" variant="secondary">
-              Open vote modal
-            </Button>
+            <Link
+              href={continuityQuery ? `/command-center?${continuityQuery}#proposal-review-action` : "/command-center#proposal-review-action"}
+              className={cn(buttonVariants({ size: "sm" }))}
+            >
+              Open governance dashboard
+            </Link>
+            <Link href={featuredActionHref} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+              {featuredActionLabel}
+            </Link>
             <Link href="/documents/reviewer-fast-path" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
               Review curated proof docs
             </Link>

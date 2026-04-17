@@ -74,7 +74,7 @@ function main() {
   if (!hasDiagnosticsEntry) {
     throw new Error("README is missing Wallet Diagnostics entry point");
   }
-  assertContains(homeShell, "Open judge proof view", "Next home shell is missing Judge Mode entry point");
+  assertContains(homeShell, "Open verification view", "Next home shell is missing verification entry point");
   assertContains(proofCenter, "Proof center", "Next proof center is missing");
   assertContains(securityCenter, "Security architecture", "Next security center is missing");
   assertContains(diagnosticsCenter, "Operational diagnostics", "Next diagnostics center is missing");

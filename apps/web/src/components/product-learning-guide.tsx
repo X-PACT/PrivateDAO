@@ -20,6 +20,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { WalletConnectButton } from "@/components/wallet-connect-button";
 import type { ExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import type { JudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 import { cn } from "@/lib/utils";
@@ -346,7 +347,7 @@ const verificationSteps = [
     href: "/proof",
   },
   {
-    title: "Inspect the reviewer packets",
+    title: "Inspect the verification packets",
     detail:
       "If you are technical, the document center exposes fast paths for telemetry, trust, custody, and release confidence without leaving the product shell.",
     href: "/documents/reviewer-fast-path",
@@ -378,10 +379,7 @@ export function ProductLearningGuide({
               flows safely.
             </p>
             <div className="flex flex-wrap gap-3">
-              <Link className={buttonVariants({ size: "lg" })} href="/start">
-                Connect on Devnet
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+              <WalletConnectButton size="lg" variant="default" connectLabel="Connect on Devnet" />
               <Link className={buttonVariants({ size: "lg", variant: "secondary" })} href="/story">
                 Watch the product story
               </Link>
@@ -625,7 +623,7 @@ export function ProductLearningGuide({
               </div>
               <div className="flex flex-wrap gap-3">
                 <Link href="/judge" className={cn(buttonVariants({ size: "sm" }))}>
-                  Open judge route
+                  Open verification route
                 </Link>
                 <Link href="/documents/agentic-treasury-micropayment-rail" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
                   Open rail brief

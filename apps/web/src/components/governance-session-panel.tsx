@@ -30,7 +30,7 @@ export function GovernanceSessionPanel({
     ? [
         {
           href: "/judge",
-          label: "Open judge route",
+          label: "Open verification route",
           helper: "Review the captured Devnet execution corridor and transaction trail.",
           variant: "secondary" as const,
         },
@@ -63,7 +63,7 @@ export function GovernanceSessionPanel({
           },
           {
             href: "/judge",
-            label: "Open judge route",
+            label: "Open verification route",
             helper: "Use the review corridor once you want to inspect proof, hashes, and execution status.",
             variant: "outline" as const,
           },
@@ -221,7 +221,7 @@ export function GovernanceSessionPanel({
           <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/72">Next route</div>
           <div className="mt-2 text-sm leading-7 text-white/62">
             {session.proposalExecuted
-              ? "Execution is complete. Move from the operator lane into judge, proof, and reviewer packets."
+              ? "Execution is complete. Move from the operator lane into verification, proof, and trust packets."
               : session.voteCommitted || session.voteRevealed || session.proposalFinalized
                 ? "The session has moved beyond setup. Finish the governance cycle, then open the review corridor."
                 : "Use the shortest browser-only path first, then come back for proof and judge once real Devnet actions exist."}

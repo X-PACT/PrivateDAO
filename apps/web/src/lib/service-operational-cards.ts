@@ -80,7 +80,7 @@ export function getServiceOperationalCards(): ServiceOperationalCard[] {
         "Use Products for the gaming corridor, then continue into the command center to model reward, clan, or event decisions through the live proposal flow.",
       evidence: [magicblockSettlement, executeHealth, walletCoverage].filter(Boolean) as MetricPreview[],
       intakeRoute: {
-        label: "Request gaming demo",
+        label: "Request gaming workflow",
         href: "/engage?intake=gaming",
       },
       bestRoute: {

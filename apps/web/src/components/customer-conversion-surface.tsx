@@ -3,14 +3,59 @@ import { ArrowUpRight, BriefcaseBusiness, KeyRound, Rocket, ShieldCheck } from "
 
 import { CustodyTrustContinuity } from "@/components/custody-trust-continuity";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  competitionTrackWorkspaces,
-  commercialCompare,
-  servicesJourney,
-} from "@/lib/site-data";
-import { getTrackCommercializationPlan } from "@/lib/track-commercialization";
+import { commercialCompare, servicesJourney } from "@/lib/site-data";
 
 const offerIcons = [Rocket, KeyRound, ShieldCheck, BriefcaseBusiness];
+const productConversionLanes = [
+  {
+    title: "Confidential payroll and grants",
+    byline: "Privacy-preserving treasury motion for contributor, payroll, and grant operations.",
+    firstPaidMotion: "Pilot a governed confidential payout corridor for one team, committee, or grant operator.",
+    customerOffer: "A wallet-first payout system with proof, review surfaces, and a release-ready path toward institutional use.",
+    routeHref: "/security",
+    routeLabel: "Open confidential payout corridor",
+    supportingRoutes: [
+      { href: "/judge", label: "Open verification proof" },
+      { href: "/documents/reviewer-fast-path", label: "Open fast path" },
+    ],
+  },
+  {
+    title: "Private governance operations",
+    byline: "Create, vote, reveal, and execute from one browser-first DAO control surface.",
+    firstPaidMotion: "Operate one real governance committee or treasury council on Devnet with visible proof.",
+    customerOffer: "A normal-user governance product that keeps signing, proof, and execution discipline intact without terminal work.",
+    routeHref: "/govern",
+    routeLabel: "Open governance flow",
+    supportingRoutes: [
+      { href: "/start", label: "Open onboarding path" },
+      { href: "/proof", label: "Open proof surface" },
+    ],
+  },
+  {
+    title: "Runtime API and hosted reads",
+    byline: "Fast state reads, diagnostics, and telemetry for operators, reviewers, and ecosystem analysts.",
+    firstPaidMotion: "Provide hosted governance reads and operator-safe operational telemetry for one partner or pilot customer.",
+    customerOffer: "A production-minded Solana governance read plane that improves trust, latency, and operational visibility.",
+    routeHref: "/services",
+    routeLabel: "Open runtime API corridor",
+    supportingRoutes: [
+      { href: "/network", label: "Open network surface" },
+      { href: "/analytics", label: "Open analytics surface" },
+    ],
+  },
+  {
+    title: "Agentic treasury automation",
+    byline: "Policy-bound micropayments and treasury actions that stay governed, logged, and reviewable.",
+    firstPaidMotion: "Automate reviewer rewards, operator tasks, or API usage settlement under DAO-approved policy.",
+    customerOffer: "A treasury automation lane that keeps payment execution under governance instead of replacing it.",
+    routeHref: "/documents/agentic-treasury-micropayment-rail",
+    routeLabel: "Open treasury automation rail",
+    supportingRoutes: [
+      { href: "/services#treasury-payment-request", label: "Open payment request lane" },
+      { href: "/judge", label: "Open micropayment verification" },
+    ],
+  },
+] as const;
 
 export function CustomerConversionSurface() {
   return (
@@ -52,47 +97,46 @@ export function CustomerConversionSurface() {
           <CardTitle>Product to customer path</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 xl:grid-cols-2">
-          {competitionTrackWorkspaces.map((workspace) => {
-            const plan = getTrackCommercializationPlan(workspace);
+          {productConversionLanes.map((lane) => {
             return (
               <div
-                key={workspace.slug}
+                key={lane.title}
                 className="rounded-3xl border border-white/8 bg-white/4 p-5"
               >
                 <div className="flex flex-wrap items-center gap-3">
-                  <div className="text-base font-medium text-white">{workspace.title}</div>
+                  <div className="text-base font-medium text-white">{lane.title}</div>
                   <div className="rounded-full border border-cyan-300/18 bg-cyan-300/10 px-3 py-1 text-[11px] uppercase tracking-[0.22em] text-cyan-100">
-                    {workspace.sponsor}
+                    Product lane
                   </div>
                 </div>
                 <div className="mt-4 text-sm leading-7 text-white/60">
-                  {plan.commercialNarrative}
+                  {lane.byline}
                 </div>
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
                   <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/68">
                     <div className="text-[11px] uppercase tracking-[0.24em] text-emerald-300/74">
                       First paid motion
                     </div>
-                    <div className="mt-2">{plan.firstPaidMotion}</div>
+                    <div className="mt-2">{lane.firstPaidMotion}</div>
                   </div>
                   <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/68">
                     <div className="text-[11px] uppercase tracking-[0.24em] text-white/46">
                       Customer offer
                     </div>
-                    <div className="mt-2">{plan.customerOffer}</div>
+                    <div className="mt-2">{lane.customerOffer}</div>
                   </div>
                 </div>
                 <div className="mt-4 flex flex-wrap gap-3">
                   <Link
-                    href={workspace.liveRoute}
+                    href={lane.routeHref}
                     className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-4 py-2 text-xs uppercase tracking-[0.18em] text-white/74 transition hover:border-cyan-300/30 hover:text-white"
                   >
-                    Open product route
+                    {lane.routeLabel}
                     <ArrowUpRight className="h-3.5 w-3.5" />
                   </Link>
-                  {plan.routes.slice(0, 2).map((route) => (
+                  {lane.supportingRoutes.map((route) => (
                     <Link
-                      key={`${workspace.slug}-${route.href}`}
+                      key={`${lane.title}-${route.href}`}
                       href={route.href}
                       className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-4 py-2 text-xs uppercase tracking-[0.18em] text-white/62 transition hover:border-emerald-300/28 hover:text-white"
                     >

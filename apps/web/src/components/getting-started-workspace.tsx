@@ -7,6 +7,7 @@ import { ArrowRight, CheckCircle2, Wallet } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { WalletConnectButton } from "@/components/wallet-connect-button";
 import type { ExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { buyerJourneySteps, gettingStartedActions, walletChoices } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
@@ -38,12 +39,13 @@ export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWor
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
+              <WalletConnectButton size="lg" variant="default" />
               <Link className={buttonVariants({ size: "lg" })} href="/govern">
                 Open the governance flow
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link className={buttonVariants({ size: "lg", variant: "secondary" })} href="/judge">
-                Open judge route
+                Open verification route
               </Link>
             </div>
           </div>
@@ -152,11 +154,12 @@ export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWor
       </Card>
 
       <div className="flex flex-wrap gap-3">
+        <WalletConnectButton size="lg" variant="default" />
         <Link className={cn(buttonVariants({ size: "lg" }))} href="/govern">
           Continue to govern
         </Link>
         <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/judge">
-          Open judge route
+          Open verification route
         </Link>
         <Link className={cn(buttonVariants({ size: "lg", variant: "outline" }))} href="/learn">
           Return to guide

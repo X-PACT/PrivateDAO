@@ -104,6 +104,22 @@ export function ProposalWorkspace({ executionSnapshot }: ProposalWorkspaceProps)
   const hasActiveExecutionContinuity =
     handoff?.proposalId === proposal.id && Boolean(handoff.payoutIntent);
   const continuityQuery = handoff ? buildServiceHandoffQuery(handoff) : "";
+  const actionHref =
+    proposal.status === "Live voting"
+      ? `/govern${continuityQuery ? `?${continuityQuery}` : ""}#commit-vote-action`
+      : proposal.status === "Ready to reveal"
+        ? `/govern${continuityQuery ? `?${continuityQuery}` : ""}#reveal-vote-action`
+        : proposal.status === "Execution ready" || proposal.status === "Executed"
+          ? `/govern${continuityQuery ? `?${continuityQuery}` : ""}#execute-proposal-action`
+          : `/govern${continuityQuery ? `?${continuityQuery}` : ""}#proposal-review-action`;
+  const actionLabel =
+    proposal.status === "Live voting"
+      ? "Run commit vote live"
+      : proposal.status === "Ready to reveal"
+        ? "Run reveal live"
+        : proposal.status === "Execution ready" || proposal.status === "Executed"
+          ? "Open execution action"
+          : "Open live review action";
 
   const actions = actionMap[proposal.status];
 
@@ -206,11 +222,11 @@ export function ProposalWorkspace({ executionSnapshot }: ProposalWorkspaceProps)
 
           <div className="flex flex-wrap gap-3">
             <Button onClick={() => setVoteModalOpen(true)}>
-              {connected ? (proposal.status === "Executed" ? "Open execution review" : "Open vote modal") : "Connect wallet to review"}
+              {connected ? (proposal.status === "Executed" ? "Open execution review" : "Open live vote shell") : "Connect wallet to review"}
             </Button>
-            <Button variant="secondary" disabled={!connected || proposal.status === "Live voting" || proposal.status === "Executed"}>
-              {proposal.status === "Executed" ? "Reveal complete" : "Review reveal state"}
-            </Button>
+            <Link href={actionHref} className={cn(buttonVariants({ variant: "secondary" }))}>
+              {actionLabel}
+            </Link>
             <Link
               href={proposal.status === "Execution ready" || proposal.status === "Executed" ? "/documents/live-proof-v3" : "/documents/reviewer-fast-path"}
               className={cn(buttonVariants({ variant: "outline" }))}

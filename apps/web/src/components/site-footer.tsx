@@ -16,7 +16,7 @@ export function SiteFooter() {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-10 text-sm text-white/55 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
         <div className="max-w-3xl space-y-2">
           <div>
-            PrivateDAO is a privacy-focused governance and treasury product on Solana with additive hardening, runtime evidence, and reviewer-ready proof surfaces.
+            PrivateDAO is a privacy-focused governance and treasury product on Solana with additive hardening, runtime evidence, and clear verification surfaces.
           </div>
           <div className="text-xs leading-6 text-white/44">
             Built with execution support from a multi-national technical team. Product direction, execution accountability, and external coordination are led by Fahd Kotb.
@@ -58,13 +58,13 @@ export function SiteFooter() {
             Awards
           </Link>
           <a href={judgeViewUrl} target="_blank" rel="noreferrer" className="hover:text-white">
-            Judge view
+            Verification view
           </a>
           <Link href="/documents/reviewer-fast-path" className="hover:text-white">
-            Reviewer fast path
+            Fast path
           </Link>
           <Link href="/documents/reviewer-telemetry-packet" className="hover:text-white">
-            Reviewer telemetry packet
+            Telemetry packet
           </Link>
           <Link href="/documents/ownership-and-contact" className="hover:text-white">
             Leadership and contact

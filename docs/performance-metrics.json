@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-17T13:01:05.776Z",
+  "generatedAt": "2026-04-17T14:26:53.252Z",
   "runLabel": "20260417125017",
   "network": "devnet",
   "profile": {
@@ -10,37 +10,52 @@
     "targetPdaoUi": 100
   },
   "walletCount": 50,
-  "totalTxCount": 145,
-  "totalAttemptCount": 153,
-  "successCount": 143,
-  "failureCount": 10,
+  "totalTxCount": 185,
+  "totalAttemptCount": 212,
+  "successCount": 180,
+  "failureCount": 32,
   "retryCount": 0,
-  "totalExecutionTimeMs": 648360,
-  "averageTxLatencyMs": 1542.9862068965517,
+  "totalExecutionTimeMs": 5795836,
+  "averageTxLatencyMs": 1522.908108108108,
   "maxTxLatencyMs": 3347,
-  "minTxLatencyMs": 882,
-  "failureRate": 0.06535947712418301,
+  "minTxLatencyMs": 0,
+  "failureRate": 0.1509433962264151,
   "retryRate": 0,
   "phaseTimings": {
     "wallets": {
       "startedAt": "2026-04-17T12:50:17.436Z",
-      "completedAt": "2026-04-17T12:50:17.442Z",
-      "durationMs": 6
+      "completedAt": "2026-04-17T14:23:34.505Z",
+      "durationMs": 5597069
     },
     "fund": {
       "startedAt": "2026-04-17T12:50:17.648Z",
-      "completedAt": "2026-04-17T12:57:47.900Z",
-      "durationMs": 450252
+      "completedAt": "2026-04-17T14:24:09.745Z",
+      "durationMs": 5632097
     },
     "bootstrap": {
       "startedAt": "2026-04-17T12:57:48.114Z",
-      "completedAt": "2026-04-17T12:57:53.353Z",
-      "durationMs": 5239
+      "completedAt": "2026-04-17T14:24:39.736Z",
+      "durationMs": 5211622
     },
     "commit": {
       "startedAt": "2026-04-17T12:57:53.571Z",
-      "completedAt": "2026-04-17T13:01:05.740Z",
-      "durationMs": 192169
+      "completedAt": "2026-04-17T14:25:57.004Z",
+      "durationMs": 5283433
+    },
+    "reveal": {
+      "startedAt": "2026-04-17T13:01:06.160Z",
+      "completedAt": "2026-04-17T14:26:26.916Z",
+      "durationMs": 5120756
+    },
+    "execute": {
+      "startedAt": "2026-04-17T13:28:02.722Z",
+      "completedAt": "2026-04-17T14:26:53.236Z",
+      "durationMs": 3530514
+    },
+    "zk": {
+      "startedAt": "2026-04-17T13:45:19.030Z",
+      "completedAt": "2026-04-17T13:50:53.222Z",
+      "durationMs": 334192
     }
   }
 }

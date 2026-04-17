@@ -25,14 +25,14 @@ export function HomeShell() {
       icon: LifeBuoy,
     },
     {
-      title: "Judge path stays explicit",
-      description: "Proof, V3, trust packet, and runtime surfaces stay one click away from the product shell.",
+      title: "Verification stays simple",
+      description: "Proof, trust, and runtime evidence stay one click away from the product shell when a visitor wants to inspect the system more deeply.",
       href: "/proof/?judge=1",
       icon: Shield,
     },
     {
-      title: "Product story is submission-ready",
-      description: "The public reel explains the product, cryptography, and commercial corridors in one watch surface.",
+      title: "Product story stays clear",
+      description: "The public story explains the product, cryptography, and commercial corridors in one watch surface.",
       href: "/story",
       icon: PlayCircle,
     },
@@ -174,7 +174,7 @@ export function HomeShell() {
                 rel="noreferrer"
                 target="_blank"
               >
-                Open judge proof view
+                Open verification view
               </a>
             </div>
 

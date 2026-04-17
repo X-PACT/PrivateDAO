@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: document.title,
     description: document.summary,
     path: `/documents/${document.slug}`,
-    keywords: [document.category, "curated documents", "reviewer documents"],
+    keywords: [document.category, "curated documents", "product documents"],
     index: isIndexableCuratedDocumentSlug(document.slug),
   });
 }
@@ -99,7 +99,7 @@ export default async function DocumentPage({ params }: PageProps) {
                 className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-4 py-2 text-xs font-medium uppercase tracking-[0.24em] text-white/72 transition hover:bg-white/10"
                 href="/judge"
               >
-                Open judge route
+                Open verification route
               </Link>
               <Link
                 className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-4 py-2 text-xs font-medium uppercase tracking-[0.24em] text-white/72 transition hover:bg-white/10"

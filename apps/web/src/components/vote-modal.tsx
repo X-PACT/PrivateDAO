@@ -8,11 +8,12 @@ import { ProposalAnalyzerInline } from "@/components/proposal-analyzer-inline";
 import { TreasuryRiskInline } from "@/components/treasury-risk-inline";
 import { getConfidenceEngineSummary } from "@/lib/confidence-engine";
 import { buildPreparedActionSummary, type PreparedActionSummary } from "@/lib/onchain-parity";
+import { buildServiceHandoffQuery } from "@/lib/service-handoff-state";
 import type { ServiceHandoffState } from "@/lib/service-handoff-state";
 import type { ProposalCardModel } from "@/lib/site-data";
 
 import { Badge } from "./ui/badge";
-import { Button, buttonVariants } from "./ui/button";
+import { buttonVariants } from "./ui/button";
 
 type VoteModalProps = {
   proposal: ProposalCardModel | null;
@@ -58,6 +59,16 @@ export function VoteModal({ proposal, handoff, onClose }: VoteModalProps) {
       proposalId: proposal.id,
     }),
   ];
+  const handoffQuery = handoff ? buildServiceHandoffQuery(handoff) : "";
+  const commitHref = `/govern${handoffQuery ? `?${handoffQuery}` : ""}#commit-vote-action`;
+  const revealHref = `/govern${handoffQuery ? `?${handoffQuery}` : ""}#reveal-vote-action`;
+  const executeHref = `/govern${handoffQuery ? `?${handoffQuery}` : ""}#${
+    proposal.status === "Execution ready" || proposal.status === "Executed"
+      ? "execute-proposal-action"
+      : proposal.status === "Ready to reveal"
+        ? "reveal-vote-action"
+        : "proposal-review-action"
+  }`;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#03050e]/80 px-4 backdrop-blur-md">
@@ -187,9 +198,15 @@ export function VoteModal({ proposal, handoff, onClose }: VoteModalProps) {
         </div>
 
         <div className="mt-6 flex flex-wrap gap-3">
-          <Button>{isExecuted ? "Review commit trail" : "Commit vote"}</Button>
-          <Button variant="secondary">{isExecuted ? "Review reveal trail" : "Reveal vote"}</Button>
-          <Button variant="outline">{isExecuted ? "Execution confirmed" : "Review execution path"}</Button>
+          <Link href={commitHref} className={buttonVariants()}>
+            {isExecuted ? "Review commit trail" : "Commit vote live"}
+          </Link>
+          <Link href={revealHref} className={buttonVariants({ variant: "secondary" })}>
+            {isExecuted ? "Review reveal trail" : "Reveal vote live"}
+          </Link>
+          <Link href={executeHref} className={buttonVariants({ variant: "outline" })}>
+            {isExecuted ? "Review execution path" : "Continue to execution path"}
+          </Link>
           {handoff?.proposalReview ? (
             <Link href={handoff.proposalReview.proofHref} className={buttonVariants({ variant: "outline" })}>
               {handoff.proposalReview.proofLabel}

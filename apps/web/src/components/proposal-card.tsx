@@ -63,7 +63,7 @@ export function ProposalCard({ proposal, onVote }: ProposalCardProps) {
         <div className="flex items-end justify-between gap-3">
           <div className="max-w-[65%] text-[11px] uppercase tracking-[0.22em] text-white/34">{proposal.quorum}</div>
           <Button variant="secondary" size="sm" onClick={() => onVote(proposal)}>
-            Open vote modal
+            Open live vote shell
           </Button>
         </div>
       </CardContent>

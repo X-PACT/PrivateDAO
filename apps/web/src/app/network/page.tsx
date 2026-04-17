@@ -5,6 +5,7 @@ import { ExecutionOperationsStrip } from "@/components/execution-operations-stri
 import { FrontierSignalBoard } from "@/components/frontier-signal-board";
 import { ProofCenter } from "@/components/proof-center";
 import { SecurityCenter } from "@/components/security-center";
+import { SolanaInfrastructureStack } from "@/components/solana-infrastructure-stack";
 import { TelemetryRuntimeFocusStrip } from "@/components/telemetry-runtime-focus-strip";
 import { TelemetryModeHandoffStrip } from "@/components/telemetry-mode-handoff-strip";
 import { OperationsShell } from "@/components/operations-shell";
@@ -54,6 +55,11 @@ export default function NetworkPage() {
       <Suspense fallback={null}>
         <ExecutionOperationsStrip context="network" />
       </Suspense>
+      <SolanaInfrastructureStack
+        eyebrow="Infrastructure pillars"
+        title="The network-grade layer is only useful when it strengthens the live product"
+        description="These are the pillars that make PrivateDAO feel like a serious Solana product: fast reads, protected governance, confidential settlement, readable identity, policy-bound automation, and open verification."
+      />
       <FrontierSignalBoard />
       <ProofCenter />
       <SecurityCenter />

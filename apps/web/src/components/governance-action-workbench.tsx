@@ -1716,7 +1716,7 @@ export function GovernanceActionWorkbench() {
                   <ActionFollowUpRail
                     eyebrow="After proposal create"
                     title="Move directly into voting, then confirm the proposal lane is visible."
-                    description="The next user action is commit vote. If you want to check what the product now exposes, use the activity lane or the judge route after the wallet signature lands."
+                    description="The next user action is commit vote. If you want to check what the product now exposes, use the activity lane or the verification route after the wallet signature lands."
                     links={[
                       {
                         href: "/govern#commit-vote-action",
@@ -1731,7 +1731,7 @@ export function GovernanceActionWorkbench() {
                       },
                       {
                         href: "/judge",
-                        label: "Open judge route",
+                        label: "Open verification route",
                         helper: "Show the captured proof path a reviewer would use to validate the product lane.",
                       },
                       {
@@ -1989,7 +1989,7 @@ export function GovernanceActionWorkbench() {
                       },
                       {
                         href: "/judge",
-                        label: "Open judge route",
+                        label: "Open verification route",
                         helper: "Show captured proof, transaction trail, and execution state in the review-friendly corridor.",
                       },
                       {
@@ -2063,7 +2063,7 @@ export function GovernanceActionWorkbench() {
                   <ActionFollowUpRail
                     eyebrow="After reveal"
                     title="The private vote is now disclosed on-chain. Finalize next, then inspect proof."
-                    description="Reveal converts the hidden commitment into a reviewer-visible decision path. Continue into finalize, then use proof and judge to confirm the lifecycle stays readable for normal visitors and reviewers."
+                    description="Reveal converts the hidden commitment into a visible decision path. Continue into finalize, then use proof and verification to confirm the lifecycle stays readable for normal visitors and operators."
                     links={[
                       {
                         href: "/govern#finalize-proposal-action",
@@ -2078,7 +2078,7 @@ export function GovernanceActionWorkbench() {
                       },
                       {
                         href: "/judge",
-                        label: "Open judge route",
+                        label: "Open verification route",
                         helper: "Check the captured execution narrative that explains vote, reveal, and settlement together.",
                       },
                       {
@@ -2148,7 +2148,7 @@ export function GovernanceActionWorkbench() {
                       },
                       {
                         href: "/judge",
-                        label: "Open judge route",
+                        label: "Open verification route",
                         helper: "See the reference execution trail and transaction links that explain why the product path is real.",
                       },
                       {
@@ -2215,11 +2215,11 @@ export function GovernanceActionWorkbench() {
                   <ActionFollowUpRail
                     eyebrow="After execute"
                     title="Execution is complete. Now verify the hashes, proof freshness, and reviewer story."
-                    description="This is where the visitor leaves raw action flow and enters evidence flow. Judge, proof, and the reviewer packet should all agree on what happened and why it matters."
+                    description="This is where the visitor leaves raw action flow and enters evidence flow. Verification, proof, and the trust packet should all agree on what happened and why it matters."
                     links={[
                       {
                         href: "/judge",
-                        label: "Open judge route",
+                        label: "Open verification route",
                         helper: "Review proposal lifecycle, captured rail evidence, transaction links, and execution status together.",
                         variant: "secondary",
                       },

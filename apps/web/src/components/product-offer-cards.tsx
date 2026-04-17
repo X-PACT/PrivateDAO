@@ -53,7 +53,7 @@ const offers = [
     title: "Learn and Ship on Devnet",
     byline: "by 4 lectures + starter kits",
     summary:
-      "Take a normal frontend builder from zero to a working Solana product corridor in minutes, then let them practice real wallet, governance, RPC, privacy, and payment flows from the UI.",
+      "A few minutes of simple learning turns a normal builder into an operator who can run real Solana wallet, governance, RPC, privacy, and payment flows from the UI without terminal habits.",
     href: "/learn",
     cta: "Open the live bootcamp",
     icon: BookOpenText,

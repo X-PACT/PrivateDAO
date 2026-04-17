@@ -21,9 +21,9 @@ import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 export const metadata: Metadata = buildRouteMetadata({
   title: "Proof Center",
   description:
-    "Baseline live proof, dedicated V3 hardening proof, integration packets, and launch truth boundaries exposed in one reviewer-friendly surface.",
+    "Baseline live proof, dedicated V3 hardening proof, integration packets, and launch truth boundaries exposed in one clear product verification surface.",
   path: "/proof",
-  keywords: ["proof center", "V3 hardening", "reviewer packets", "live proof"],
+  keywords: ["proof center", "V3 hardening", "verification packets", "live proof"],
 });
 
 export default function ProofPage() {
@@ -33,11 +33,11 @@ export default function ProofPage() {
   return (
     <OperationsShell
       eyebrow="Proof"
-      title="Runtime evidence, reviewer packets, and additive hardening in one surface"
+      title="Runtime evidence, trust packets, and additive hardening in one surface"
       description="The Next.js app exposes the same proof story as the current site, but inside a cleaner operational shell: baseline live proof, dedicated V3 hardening proof, integration packets, and the exact surfaces you use after running the real Devnet flow yourself."
       badges={[
         { label: "Proof Center", variant: "cyan" },
-        { label: "Reviewer-ready", variant: "violet" },
+        { label: "Verification-ready", variant: "violet" },
         { label: "Baseline + V3", variant: "success" },
       ]}
     >

@@ -9,12 +9,12 @@ const SURFACE_DIR = path.resolve(ROOT);
 const REQUIRED_DOM_FRAGMENTS = [
   "PrivateDAO",
   "Private governance on Solana",
-  "ZK + REFHE + MagicBlock + Fast RPC",
-  "Open judge proof view",
-  "The migration keeps the product path obvious for normal users",
-  "The core governance flow stays in one visible product rail",
-  "Baseline proof, V3 hardening, and runtime evidence stay first-class in the new app",
-  "API and operator services presented in the same product language",
+  "Powered by the live stack",
+  "Open verification view",
+  "The shortest path from landing page to a real Devnet action",
+  "Public good",
+  "How the stack maps to services",
+  "Support the mission",
 ];
 
 const CONTENT_TYPES: Record<string, string> = {
