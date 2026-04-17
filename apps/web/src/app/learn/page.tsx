@@ -117,6 +117,40 @@ export default function LearnPage() {
           ))}
         </div>
       </div>
+      <div className="rounded-[30px] border border-emerald-300/18 bg-emerald-300/[0.08] p-6">
+        <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-100/78">Interactive learning loop</div>
+        <h2 className="mt-3 text-2xl font-semibold text-white">Learn → click → test → run</h2>
+        <p className="mt-3 max-w-3xl text-sm leading-7 text-white/68">
+          This corridor is meant to be interactive, not passive. A builder learns one concept, opens the matching live route,
+          tests one real product action, then verifies the blockchain result on Devnet. The learning path stays in the browser,
+          not in shell scripts or terminal-only habits.
+        </p>
+        <div className="mt-5 grid gap-4 md:grid-cols-4">
+          {[
+            {
+              title: "Learn",
+              body: "Read the lecture in plain product language and understand why this Solana pattern exists.",
+            },
+            {
+              title: "Click",
+              body: "Use the lecture CTA to open the matching live route immediately.",
+            },
+            {
+              title: "Test",
+              body: "Connect a Devnet wallet and try the real action from the UI.",
+            },
+            {
+              title: "Run",
+              body: "Verify the resulting signature, logs, and state on Devnet from the same learning corridor.",
+            },
+          ].map((item) => (
+            <div key={item.title} className="rounded-[24px] border border-white/8 bg-black/18 p-5">
+              <div className="text-base font-medium text-white">{item.title}</div>
+              <p className="mt-3 text-sm leading-7 text-white/62">{item.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
       <div className="grid gap-4 xl:grid-cols-2">
         {learnLectures.map((lecture) => (
           <div key={lecture.slug} className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6">
