@@ -35,7 +35,7 @@ export default function NetworkPage() {
       badges={[
         { label: "Proof and runtime", variant: "cyan" },
         { label: "ZK + REFHE + MagicBlock + Fast RPC", variant: "violet" },
-        { label: "Competition-sensitive", variant: "success" },
+        { label: "Reviewer-visible", variant: "success" },
       ]}
     >
       <Suspense fallback={null}>

@@ -25,7 +25,7 @@ export default function ProductsPage() {
       badges={[
         { label: "Commercial-ready", variant: "cyan" },
         { label: "Buyer-first", variant: "success" },
-        { label: "Competition-compatible", variant: "violet" },
+        { label: "Review-ready", variant: "violet" },
       ]}
     >
       <ProductOfferCards />

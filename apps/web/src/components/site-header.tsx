@@ -30,7 +30,7 @@ const WalletConnectButton = dynamic(
 const navItems = [
   { href: "/start", label: "Start" },
   { href: "/govern", label: "Govern", rel: "nofollow" },
-  { href: "/live", label: "Track Activity", rel: "nofollow" },
+  { href: "/live", label: "Live State", rel: "nofollow" },
   { href: "/story", label: "Story" },
   { href: "/trust", label: "Trust" },
 ];

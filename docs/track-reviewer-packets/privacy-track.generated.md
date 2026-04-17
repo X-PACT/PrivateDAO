@@ -59,7 +59,7 @@ Custody evidence is still required, and the signer or transfer packet can now be
 - Custody reviewer packet: /documents/custody-proof-reviewer-packet
 - ZK capability matrix: /documents/zk-capability-matrix
 - Confidence engine: /documents/cryptographic-confidence-engine
-- Frontier integrations: /documents/frontier-integrations
+- Core integrations: /documents/frontier-integrations
 
 ## Validation Gates
 

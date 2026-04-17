@@ -25,7 +25,7 @@ const coreIdentity = [
 ];
 
 const defaultRoutes: TechnicalEvidenceRoute[] = [
-  { label: "Frontier integrations", href: "/documents/frontier-integrations" },
+  { label: "Core integrations", href: "/documents/frontier-integrations" },
   { label: "PDAO attestation", href: "/viewer/pdao-attestation.generated" },
   { label: "Wallet matrix", href: "/viewer/wallet-compatibility-matrix.generated" },
   { label: "Judge proof path", href: "/proof/?judge=1" },
@@ -94,7 +94,7 @@ const fits: Record<string, TrackTechnicalFit> = {
       { label: "ZK capability matrix", href: "/documents/zk-capability-matrix" },
       { label: "Confidence engine", href: "/documents/cryptographic-confidence-engine" },
       { label: "Live proof V3", href: "/documents/live-proof-v3" },
-      { label: "Frontier integrations", href: "/documents/frontier-integrations" },
+      { label: "Core integrations", href: "/documents/frontier-integrations" },
     ],
     validationGates: [
       "npm run verify:test-wallet-live-proof:v3",
@@ -133,7 +133,7 @@ const fits: Record<string, TrackTechnicalFit> = {
       { label: "Start workspace", href: "/start" },
       { label: "Govern", href: "/govern" },
       { label: "Wallet matrix", href: "/viewer/wallet-compatibility-matrix.generated" },
-      { label: "Frontier integrations", href: "/documents/frontier-integrations" },
+      { label: "Core integrations", href: "/documents/frontier-integrations" },
     ],
     validationGates: [
       "npm run verify:browser-smoke",
@@ -164,7 +164,7 @@ const fits: Record<string, TrackTechnicalFit> = {
     ],
     evidenceRoutes: [
       { label: "Diagnostics", href: "/diagnostics" },
-      { label: "Frontier integrations", href: "/documents/frontier-integrations" },
+      { label: "Core integrations", href: "/documents/frontier-integrations" },
       { label: "Runtime evidence", href: "/viewer/runtime-evidence.generated" },
       { label: "Service catalog", href: "/documents/service-catalog" },
     ],
@@ -331,7 +331,7 @@ const fits: Record<string, TrackTechnicalFit> = {
       { label: "Security", href: "/security" },
       { label: "REFHE protocol", href: "/viewer/refhe-protocol" },
       { label: "REFHE security model", href: "/viewer/refhe-security-model" },
-      { label: "Frontier integrations", href: "/documents/frontier-integrations" },
+      { label: "Core integrations", href: "/documents/frontier-integrations" },
     ],
     validationGates: [
       "npm run verify:zk-docs",

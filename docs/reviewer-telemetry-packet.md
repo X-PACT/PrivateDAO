@@ -75,4 +75,4 @@ Use this packet when the reviewer wants to inspect:
 - hosted-read value
 - infrastructure buyer value
 - telemetry clarity
-- data-side competition readiness
+- data-side reviewer readiness

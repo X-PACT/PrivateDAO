@@ -59,7 +59,7 @@ const uiActions = [
     icon: Play,
   },
   {
-    title: "Track Activity",
+    title: "Live Activity",
     detail: "Follow proposals, vote timeline, treasury state, and execution results in the activity view.",
     href: "/live",
     icon: ListChecks,

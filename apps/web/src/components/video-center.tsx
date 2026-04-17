@@ -74,7 +74,7 @@ export function VideoCenter({ compact = false }: VideoCenterProps) {
           </CardHeader>
           <CardContent className="space-y-3 text-sm leading-7 text-white/60">
             <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
-              Private governance, confidential treasury operations, ZK review rails, REFHE settlement logic, MagicBlock corridors, Fast RPC, Android access, buyer corridors, and the reason PrivateDAO is stronger across active Frontier tracks.
+              Private governance, confidential treasury operations, ZK review rails, REFHE settlement logic, MagicBlock corridors, Fast RPC, Android access, buyer corridors, and the reason PrivateDAO is becoming a stronger public-good infrastructure product.
             </div>
             <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
               It is designed to work as the first-pass product story for judges, buyers, infrastructure partners, and YouTube uploads.

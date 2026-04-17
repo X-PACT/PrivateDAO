@@ -9,7 +9,7 @@
 ## Truth Sources
 
 - Runtime evidence: `2026-04-10T01:23:28.015Z` via `docs/runtime-evidence.generated.md`
-- Frontier integrations: `2026-04-10T05:21:06.356Z` via `docs/frontier-integrations.generated.md`
+- Core integrations: `2026-04-10T05:21:06.356Z` via `docs/frontier-integrations.generated.md`
 - Read-node snapshot: `2026-04-11T04:01:57.067Z` via `docs/read-node/snapshot.generated.md`
 - Devnet service metrics: `2026-04-10T05:21:06.356Z` via `apps/web/src/lib/devnet-service-metrics.ts`
 
@@ -24,7 +24,7 @@
 ## What Is Externally Or Operationally Proven Now
 
 - Runtime evidence package generated at 2026-04-10T01:23:28.015Z and published as docs/runtime-evidence.generated.md.
-- Frontier integrations package generated at 2026-04-10T05:21:06.356Z with reviewer entry https://privatedao.org/proof/?judge=1.
+- Core integrations package generated at 2026-04-10T05:21:06.356Z with reviewer entry https://privatedao.org/proof/?judge=1.
 - Read-node snapshot generated at 2026-04-11T04:01:57.067Z on slot 454721049 against https://api.devnet.solana.com.
 - Proposal flow health, wallet readiness, and proof freshness summaries are taken from the same devnet service metrics module used by the live app.
 - Unexpected runtime failures remain 0 and unexpected adversarial successes remain 0.

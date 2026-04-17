@@ -82,7 +82,7 @@ export function InternalAssistantPanel() {
             />
           </div>
           <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
-            This assistant is optimized for routing users, judges, operators, and competition reviewers to the shortest correct path in the product. It keeps the site usable without forcing anyone to understand the whole system first.
+            This assistant is optimized for routing users, judges, operators, and reviewers to the shortest correct path in the product. It keeps the site usable without forcing anyone to understand the whole system first.
           </div>
           <div className="rounded-3xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/58">
             Try: “proposal review”, “treasury review”, “custody proof”, “reviewer packet”, “multisig intake”, “I need pilot funding”, or “what is blocking privacy track mainnet?”.

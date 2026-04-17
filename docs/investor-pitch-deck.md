@@ -1,6 +1,6 @@
-# PrivateDAO Investor And Competition Pitch Deck
+# PrivateDAO Investor And Reviewer Pitch Deck
 
-This is the canonical repo-native pitch deck source for investors, grant reviewers, and Frontier hackathon judges. It is intentionally evidence-bound: implemented surfaces are described as implemented, while final production-release gates remain clearly separated from what is already live today.
+This is the canonical repo-native pitch deck source for investors, grant reviewers, and external technical reviewers. It is intentionally evidence-bound: implemented surfaces are described as implemented, while final production-release gates remain clearly separated from what is already live today.
 
 ## Slide 1 - Title
 
@@ -109,7 +109,7 @@ Evidence:
 - 3 on-chain ZK proof anchors
 - live Devnet operating health inside `/dashboard`, `/command-center`, `/services`, and `/diagnostics`
 - generated audit packet and cryptographic manifest
-- Colosseum competitive analysis and submission package
+- market analysis and reviewer package
 
 Primary references:
 
@@ -225,14 +225,14 @@ Clear ecosystem-facing use cases:
 - protocol operating and security councils
 - contributor, vendor, and payroll-style payout governance
 
-Best Frontier review lanes:
+Best product review lanes:
 
-- primary Frontier product shell via the live buyer and command path
+- primary product shell via the live buyer and command path
 - confidential-governance corridor via commit-reveal governance, ZK posture, REFHE, and privacy-aware settlement
 - runtime-infrastructure corridor via diagnostics, hosted reads, API packaging, and runtime evidence
 - polished product-execution corridor via route quality, live proof continuity, and reviewer discipline
 - startup-capital corridor via `/start`, `/story`, `/services`, and the custody reviewer packet
-- data-and-telemetry corridor via `/diagnostics`, `/analytics`, and frontier integrations
+- data-and-telemetry corridor via `/diagnostics`, `/analytics`, and core integrations
 - confidential-payout corridor via `/security`, `/services`, `/custody`, and reviewer-visible grant governance
 
 Primary reviewer routes:

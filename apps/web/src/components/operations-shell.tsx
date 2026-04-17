@@ -34,7 +34,7 @@ const operationsNav = [
 const guidedNav = [
   { href: "/start", label: "Start", icon: Compass, summary: "Connect a wallet and understand the first move" },
   { href: "/govern", label: "Govern", icon: SquareTerminal, summary: "Create a DAO, propose, vote, and execute" },
-  { href: "/live", label: "Track Activity", icon: LayoutDashboard, summary: "Follow proposals, treasury state, and action logs" },
+  { href: "/live", label: "Live Activity", icon: LayoutDashboard, summary: "Follow proposals, treasury state, and action logs" },
   { href: "/services", label: "API & Pricing", icon: BriefcaseBusiness, summary: "Hosted API, plans, and rollout options" },
   { href: "/trust", label: "Security & Proof", icon: ShieldCheck, summary: "Proof, hardening, and operating trust" },
   { href: "/story", label: "Story", icon: PlayCircle, summary: "Watch the product story before using the live flow" },

@@ -121,11 +121,11 @@ The rule is strict:
 - If a normal user needs it, it belongs in the UI.
 - If it is for protocol maintenance, incident handling, migrations, or engineering-only control, it belongs in the public repo and CLI.
 
-## Colosseum Frontier 2026
+## Current Product Cycle
 
-PrivateDAO is actively being advanced during **Colosseum Frontier, April to May 2026**.
+PrivateDAO is actively being advanced as a live Devnet product under continuous community review.
 
-The public competition message stays simple:
+The public message stays simple:
 
 - one coherent governance product
 - private and confidential treasury operations
@@ -229,30 +229,30 @@ This is intentional: the product now exposes the exact custody proof shape and t
 
 The launch boundary is now surfaced in-product through `https://privatedao.org/custody/`, where multisig creation, authority transfer, and evidence requirements are shown as a live operating workflow rather than a hidden note.
 
-## Competition Review Surfaces
+## Reviewer Surfaces
 
-PrivateDAO is being presented publicly as one coherent product during the current Colosseum Frontier cycle.
+PrivateDAO is presented publicly as one coherent product with multiple reviewer-visible lanes.
 
-| Reviewer lane | Live workspace | Strongest visible fit |
+| Reviewer lane | Live route | Strongest visible fit |
 | --- | --- | --- |
-| Primary product lane | https://privatedao.org/tracks/colosseum-frontier/ | Product shell, trust surfaces, proof continuity, and buyer path |
+| Primary product lane | https://privatedao.org/learn/ | Product shell, trust surfaces, proof continuity, and buyer path |
 | Confidential operations lane | https://privatedao.org/security/ | Commit-reveal governance, privacy-aware treasury motion, and settlement posture |
 | Runtime and infrastructure lane | https://privatedao.org/analytics/ | Hosted reads, diagnostics, API packaging, and runtime evidence |
 
 The operating rule stays strict:
 
 - one product thesis
-- multiple reviewer corridors under the same Frontier narrative
+- multiple reviewer corridors under the same product narrative
 - no contradiction between site, README, deck, demo, or proof
 
-## Strategic Opportunity Corridors
+## External Review Corridors
 
-Beyond the primary Frontier judging posture, PrivateDAO is also being prepared for adjacent opportunities that strengthen the same commercial product thesis instead of fragmenting it.
+Beyond the main product route, PrivateDAO is also packaged through adjacent reviewer and buyer corridors that strengthen the same commercial product thesis instead of fragmenting it.
 
 | Corridor | Current strongest route | What it proves now |
 | --- | --- | --- |
 | Startup capital corridor | `https://privatedao.org/start/` -> `https://privatedao.org/story/` -> `https://privatedao.org/services/` | Startup-quality product shell, buyer corridor, and reviewer-safe trust packaging |
-| Regional grant corridor | `https://privatedao.org/awards/` -> `https://privatedao.org/tracks/colosseum-frontier/` | Ecosystem credibility, product maturity, and proof continuity |
+| Regional grant corridor | `https://privatedao.org/awards/` -> `https://privatedao.org/learn/` | Ecosystem credibility, product maturity, and proof continuity |
 | Data and telemetry corridor | `https://privatedao.org/diagnostics/` -> `https://privatedao.org/analytics/` | Runtime evidence, indexed proposal state, and hosted-read credibility |
 | Confidential payout corridor | `https://privatedao.org/security/` -> `https://privatedao.org/services/` -> `https://privatedao.org/custody/` | Private treasury approvals, encrypted operations framing, and custody-aware payout discipline |
 | Audit and hardening corridor | `https://privatedao.org/documents/canonical-custody-proof/` -> `https://privatedao.org/diagnostics/` | Canonical custody truth, authority hardening, and incident-readiness posture |
@@ -290,19 +290,19 @@ These are the public-facing routes reviewers, users, and buyers should see first
 | Story video route | https://privatedao.org/story/ |
 | Weekly / public YouTube | https://www.youtube.com/@privatedao |
 | Official Discord | https://discord.gg/PbM8BC2A |
-| Colosseum project page | https://arena.colosseum.org/projects/explore/praivatedao |
+| Public project profile | https://arena.colosseum.org/projects/explore/praivatedao |
 | Guided product flow | [`docs/frontier-guided-flow.md`](docs/frontier-guided-flow.md) |
 | Live proof V3 | [`docs/test-wallet-live-proof-v3.generated.md`](docs/test-wallet-live-proof-v3.generated.md) |
 | Domain mirror plan | [`docs/domain-mirror.md`](docs/domain-mirror.md) |
 | `.xyz` mirror checklist | [`docs/xyz-mirror-cutover-checklist.md`](docs/xyz-mirror-cutover-checklist.md) |
 | Audit packet | [`docs/audit-packet.generated.md`](docs/audit-packet.generated.md) |
 | Operational evidence | [`docs/operational-evidence.generated.md`](docs/operational-evidence.generated.md) |
-| Frontier integration evidence | [`docs/frontier-integrations.generated.md`](docs/frontier-integrations.generated.md) |
+| Integration evidence | [`docs/frontier-integrations.generated.md`](docs/frontier-integrations.generated.md) |
 | Reviewer telemetry packet | [`docs/reviewer-telemetry-packet.generated.md`](docs/reviewer-telemetry-packet.generated.md) |
 | Mainnet blockers | [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md) |
 | Trust package | [`docs/trust-package.md`](docs/trust-package.md) |
 | Service catalog | [`docs/service-catalog.md`](docs/service-catalog.md) |
-| Investor / competition pitch deck | [`docs/investor-pitch-deck.md`](docs/investor-pitch-deck.md) |
+| Investor / reviewer pitch deck | [`docs/investor-pitch-deck.md`](docs/investor-pitch-deck.md) |
 
 ## System Diagram
 
@@ -382,7 +382,7 @@ Use only public receive addresses here. Do not place signer keypairs, seed phras
 | Realms migration storefront | The Realms migration page now includes organization-specific migration packs, live command generation, and next-step guidance so operators can move from migration intent to a concrete PrivateDAO bootstrap path faster. | [`apps/web`](apps/web), [`docs/migration-story.md`](docs/migration-story.md), [`docs/grant-committee-pack.md`](docs/grant-committee-pack.md), [`docs/fund-governance-pack.md`](docs/fund-governance-pack.md), [`docs/enterprise-dao-pack.md`](docs/enterprise-dao-pack.md) |
 | REFHE | Proposal-bound encrypted evaluation envelope with settlement gate and explicit trust model. | [`docs/refhe-protocol.md`](docs/refhe-protocol.md), [`docs/refhe-security-model.md`](docs/refhe-security-model.md) |
 | MagicBlock | Private-payment corridor support for confidential token payout flows, with runtime capture/evidence docs. | [`docs/magicblock/private-payments.md`](docs/magicblock/private-payments.md), [`docs/magicblock/runtime-evidence.md`](docs/magicblock/runtime-evidence.md) |
-| Frontier integration gate | One machine-checked package that binds ZK anchors, MagicBlock settlement, REFHE settlement, and backend-indexed RPC state into a single Devnet-verified review surface. | [`docs/frontier-integrations.generated.md`](docs/frontier-integrations.generated.md), [`docs/read-node/ops.generated.md`](docs/read-node/ops.generated.md) |
+| Integration evidence gate | One machine-checked package that binds ZK anchors, MagicBlock settlement, REFHE settlement, and backend-indexed RPC state into a single Devnet-verified review surface. | [`docs/frontier-integrations.generated.md`](docs/frontier-integrations.generated.md), [`docs/read-node/ops.generated.md`](docs/read-node/ops.generated.md) |
 | ZK layer | Groth16 companion proofs, on-chain proof anchors, ZK registry, and `zk_enforced` readiness documentation. | [`docs/zk-proof-registry.json`](docs/zk-proof-registry.json), [`docs/zk-layer.md`](docs/zk-layer.md) |
 | Strict V2 hardening | Additive companion accounts for DAO security policy, proof verification, settlement evidence, consumption, cancellation safety, and voter-weight scope. | [`docs/security-hardening-v2.md`](docs/security-hardening-v2.md), [`docs/protocol-spec.md`](docs/protocol-spec.md) |
 | Governance Hardening V3 | Additive governance-policy snapshots, token-supply participation quorum, dedicated reveal rebate vaults, and V3 finalize/reveal paths that do not reinterpret legacy proposals. | [`docs/governance-hardening-v3.md`](docs/governance-hardening-v3.md), [`docs/test-wallet-live-proof-v3.generated.md`](docs/test-wallet-live-proof-v3.generated.md), [`programs/private-dao/src/lib.rs`](programs/private-dao/src/lib.rs) |
@@ -426,7 +426,7 @@ This section intentionally keeps the reviewer contract visible. The README is co
 | Live proof and release evidence | [`docs/live-proof.md`](docs/live-proof.md), [`docs/test-wallet-live-proof.generated.md`](docs/test-wallet-live-proof.generated.md), [`docs/test-wallet-live-proof-v3.generated.md`](docs/test-wallet-live-proof-v3.generated.md), [`docs/devnet-release-manifest.md`](docs/devnet-release-manifest.md), [`docs/verification-gates.md`](docs/verification-gates.md), [`docs/reviewer-fast-path.md`](docs/reviewer-fast-path.md), [`docs/reviewer-surface-map.md`](docs/reviewer-surface-map.md) |
 | Mainnet readiness | [`docs/mainnet-readiness.md`](docs/mainnet-readiness.md), [`docs/mainnet-readiness.generated.md`](docs/mainnet-readiness.generated.md), [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md), [`docs/deployment-attestation.generated.json`](docs/deployment-attestation.generated.json), [`docs/go-live-criteria.md`](docs/go-live-criteria.md), [`docs/go-live-attestation.generated.json`](docs/go-live-attestation.generated.json) |
 | Operations | [`docs/operational-drillbook.md`](docs/operational-drillbook.md), [`docs/production-operations.md`](docs/production-operations.md), [`docs/authority-transfer-runbook.md`](docs/authority-transfer-runbook.md), [`docs/multisig-setup-intake.md`](docs/multisig-setup-intake.md), [`docs/launch-ops-checklist.md`](docs/launch-ops-checklist.md), [`docs/monitoring-alert-rules.md`](docs/monitoring-alert-rules.md), [`docs/wallet-e2e-test-plan.md`](docs/wallet-e2e-test-plan.md), [`docs/browser-automation-audit.md`](docs/browser-automation-audit.md), [`docs/runtime-attestation.generated.json`](docs/runtime-attestation.generated.json), [`docs/runtime/real-device.md`](docs/runtime/real-device.md), [`docs/runtime/real-device.generated.md`](docs/runtime/real-device.generated.md) |
-| Frontier integrations | [`docs/frontier-integrations.generated.md`](docs/frontier-integrations.generated.md), [`docs/magicblock/runtime.generated.md`](docs/magicblock/runtime.generated.md), [`docs/refhe-protocol.md`](docs/refhe-protocol.md), [`docs/read-node/ops.generated.md`](docs/read-node/ops.generated.md), [`docs/zk-proof-registry.json`](docs/zk-proof-registry.json) |
+| Core integrations | [`docs/frontier-integrations.generated.md`](docs/frontier-integrations.generated.md), [`docs/magicblock/runtime.generated.md`](docs/magicblock/runtime.generated.md), [`docs/refhe-protocol.md`](docs/refhe-protocol.md), [`docs/read-node/ops.generated.md`](docs/read-node/ops.generated.md), [`docs/zk-proof-registry.json`](docs/zk-proof-registry.json) |
 | Product runtime | [`docs/fair-voting.md`](docs/fair-voting.md), [`docs/wallet-runtime.md`](docs/wallet-runtime.md), [`docs/operational-evidence.generated.md`](docs/operational-evidence.generated.md), [`docs/pdao-attestation.generated.json`](docs/pdao-attestation.generated.json), [`docs/strategy-operations.md`](docs/strategy-operations.md) |
 | Product packaging | [`docs/production-simulation-dao.md`](docs/production-simulation-dao.md), [`docs/use-case-packs.md`](docs/use-case-packs.md), [`docs/operator-guide.md`](docs/operator-guide.md), [`docs/trust-package.md`](docs/trust-package.md), [`docs/migration-story.md`](docs/migration-story.md), [`docs/pricing-model.md`](docs/pricing-model.md), [`docs/pilot-program.md`](docs/pilot-program.md), [`docs/service-level-agreement.md`](docs/service-level-agreement.md) |
 | Services and API packaging | [`docs/service-catalog.md`](docs/service-catalog.md), [`docs/pricing-model.md`](docs/pricing-model.md), [`docs/pilot-program.md`](docs/pilot-program.md), [`docs/service-level-agreement.md`](docs/service-level-agreement.md), [`docs/pilot-onboarding-playbook.md`](docs/pilot-onboarding-playbook.md) |
@@ -635,7 +635,7 @@ npm run test:devnet:500
 
 The 50-wallet package is the canonical reviewer baseline. Larger profiles write profile-specific artifacts and should be treated as stress operations, not routine verification.
 
-## Weekly Frontier Updates
+## Weekly Product Updates
 
 Upload-ready weekly update videos are generated from the repository evidence surface:
 
@@ -659,7 +659,7 @@ npm run verify:weekly-updates
 
 ## Mainnet Readiness Status
 
-PrivateDAO is a **Devnet-proven, hackathon-ready, audit-forward candidate** today, with a clear execution path toward unrestricted mainnet production readiness for real funds.
+PrivateDAO is a **Devnet-proven, review-ready, audit-forward candidate** today, with a clear execution path toward unrestricted mainnet production readiness for real funds.
 
 Ready now:
 
@@ -698,21 +698,20 @@ Key docs:
 - Public story video: https://privatedao.org/story/
 - Public YouTube reel: https://youtu.be/HiCz0vb8kgk
 - Direct MP4 backup: https://privatedao.org/assets/private-dao-frontier-overview.mp4
-- Upload-ready file: `/home/x-pact/Desktop/PrivateDAO-Frontier-Overview/PrivateDAO - Frontier Overview - Everything We Offer and Why Us.mp4`
+- Upload-ready file: `/home/x-pact/Desktop/PrivateDAO-Frontier-Overview/PrivateDAO - Product Overview - Everything We Offer and Why Us.mp4`
 - Canonical lifecycle demo brief: [`docs/demo-video.md`](docs/demo-video.md)
 - Hosted lifecycle demo: https://privatedao.org/assets/private-dao-demo-flow.mp4
 - Repo-native lifecycle demo: [`docs/assets/private-dao-demo-flow.mp4`](docs/assets/private-dao-demo-flow.mp4)
 - Upload-ready lifecycle demo: `/home/x-pact/Desktop/PrivateDAO-Demo-Video/PrivateDAO - Real Demo Flow - Create DAO Submit Proposal Private Vote Execute Treasury - Clean.mp4`
-- Investor / competition pitch deck: [`docs/investor-pitch-deck.md`](docs/investor-pitch-deck.md)
-- Frontier overview brief: [`docs/investor-video.md`](docs/investor-video.md)
-- Repo-native frontier reel: [`docs/assets/private-dao-frontier-overview.mp4`](docs/assets/private-dao-frontier-overview.mp4)
-- Hosted frontier reel page: https://privatedao.org/story/
-- Hosted frontier reel MP4 backup: https://privatedao.org/assets/private-dao-frontier-overview.mp4
+- Investor / reviewer pitch deck: [`docs/investor-pitch-deck.md`](docs/investor-pitch-deck.md)
+- Product overview brief: [`docs/investor-video.md`](docs/investor-video.md)
+- Repo-native product reel: [`docs/assets/private-dao-frontier-overview.mp4`](docs/assets/private-dao-frontier-overview.mp4)
+- Hosted product reel page: https://privatedao.org/story/
+- Hosted product reel MP4 backup: https://privatedao.org/assets/private-dao-frontier-overview.mp4
 - Poster: [`docs/assets/private-dao-frontier-overview-poster.png`](docs/assets/private-dao-frontier-overview-poster.png)
 - Submission dossier: [`docs/submission-dossier.md`](docs/submission-dossier.md)
 - Final submission pack: [`SUBMISSION_FINAL.md`](SUBMISSION_FINAL.md)
-- Manual Colosseum answers: [`docs/colosseum-submission-answers.md`](docs/colosseum-submission-answers.md)
-- Colosseum project page: https://arena.colosseum.org/projects/explore/praivatedao
+- Manual submission answers: [`docs/colosseum-submission-answers.md`](docs/colosseum-submission-answers.md)
 - Official YouTube channel: https://www.youtube.com/@privatedao
 - Official Discord server: https://discord.gg/PbM8BC2A
 - Brand kit: [`docs/brand-kit.md`](docs/brand-kit.md)

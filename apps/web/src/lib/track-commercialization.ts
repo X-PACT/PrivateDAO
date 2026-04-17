@@ -195,7 +195,7 @@ export function getTrackCommercializationPlan(
       ],
       routes: [
         { label: "Security", href: "/security" },
-        { label: "Frontier integrations", href: "/documents/frontier-integrations" },
+        { label: "Core integrations", href: "/documents/frontier-integrations" },
         { label: "Pricing model", href: "/documents/pricing-model" },
       ],
     };

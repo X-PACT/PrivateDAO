@@ -56,12 +56,12 @@ export default function EngagePage({ searchParams }: EngagePageProps) {
   return (
     <OperationsShell
       eyebrow="Engage"
-      title="Turn competition-grade product proof into real customer and mainnet motion"
-      description="This route connects every strong track corridor to an actual buyer story: what is sellable now on Devnet, what the first paid motion looks like, and how the rollout graduates toward mainnet without overstating readiness."
+      title="Turn product proof into real customer and mainnet motion"
+      description="This route connects every strong product corridor to an actual buyer story: what is sellable now on Devnet, what the first paid motion looks like, and how the rollout graduates toward mainnet without overstating readiness."
       badges={[
         { label: "Customer-ready", variant: "success" },
         { label: "Mainnet-aware", variant: "warning" },
-        { label: "Track-linked", variant: "cyan" },
+        { label: "Product-linked", variant: "cyan" },
       ]}
     >
       <LeadSupportIntake mode="engage" />

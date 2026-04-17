@@ -1,8 +1,8 @@
-# Competition Alignment Matrix 2026
+# Product Alignment Matrix 2026
 
 ## Purpose
 
-This is the canonical public alignment matrix for PrivateDAO during the active `Colosseum Frontier` cycle running from **April to May 2026**.
+This is the canonical public alignment matrix for PrivateDAO during the current external review cycle.
 
 It keeps the public repo disciplined:
 
@@ -19,7 +19,7 @@ Use this alongside:
 
 ## Global truth rules
 
-Every public competition-facing explanation should stay anchored to these truths:
+Every public reviewer-facing explanation should stay anchored to these truths:
 
 1. lead with live Devnet execution confidently
 2. frame the external audit as an active hardening milestone
@@ -56,7 +56,7 @@ Every public competition-facing explanation should stay anchored to these truths
   - [technical-verification-status-2026.md](/home/x-pact/PrivateDAO/docs/technical-verification-status-2026.md)
   - [funding-readiness-scorecard.md](/home/x-pact/PrivateDAO/docs/funding-readiness-scorecard.md)
 
-## Public competition-writing discipline
+## Public writing discipline
 
 When describing the build publicly:
 

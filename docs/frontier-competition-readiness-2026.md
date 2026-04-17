@@ -1,6 +1,6 @@
-# Frontier Competition Readiness 2026
+# Product Opportunity Readiness 2026
 
-This document is the canonical track-readiness surface for the non-Colosseum competitions currently targeted around the Frontier cycle.
+This document is the canonical opportunity-readiness surface for the current external review and funding cycle.
 
 It is intentionally truth-aligned:
 
@@ -8,7 +8,7 @@ It is intentionally truth-aligned:
 - It distinguishes strong fit from staged or partial fit.
 - It does not claim partner integrations, external audits, or AI behaviors that are not already shipped.
 
-The live product routes that now matter most for competition work are:
+The live product routes that now matter most for external review are:
 
 - `https://privatedao.org/start/`
 - `https://privatedao.org/story/`
@@ -18,9 +18,9 @@ The live product routes that now matter most for competition work are:
 
 ## 2026 ecosystem operating signal
 
-The April 2026 Colosseum operating context changes how we should optimize:
+The April 2026 ecosystem operating context changes how we should optimize:
 
-- Frontier Hackathon is now framed around product impact rather than a bounty-collection posture.
+- The current review cycle is framed around product impact rather than label collection.
 - The Drift exploit shifted serious protocol evaluation toward signer hygiene, timelocks, operational security, and incident readiness.
 - STRIDE and SIRN raised the baseline for what a mature Solana protocol should communicate around operational security.
 - Anchor v1 and Bootcamp 2026 raised the bar for migration discipline, test posture, runtime safety, and full-stack polish.
@@ -35,64 +35,54 @@ For PrivateDAO, this means:
 
 ## Current strategic priority order
 
-1. Privacy Track
-2. RPC / infrastructure credits track
-3. Ranger main track
-4. 100xDevs Frontier track
-5. Consumer apps track
-6. Eitherway live dApp track
-7. Encrypt / IKA Frontier
-8. Ranger Drift side track
-9. SolRouter encrypted AI
+1. Privacy infrastructure
+2. Runtime API and fast reads
+3. Integrated product quality
+4. Product engineering delivery
+5. Consumer governance UX
+6. Wallet-first live application
+7. Encrypted operations
+8. Capital governance operations
+9. Deterministic assistant workflows
 
-## Track matrix
+## Product opportunity matrix
 
-### Privacy Track
-
-- Source: `https://superteam.fun/earn/listing/privacy-track-colosseum-hackathon-powered-by-magicblock-st-my-and-sns`
+### Privacy infrastructure
 - Fit: strong
 - Why:
   - PrivateDAO already has commit-reveal governance, ZK review posture, REFHE-linked confidential operations, MagicBlock-linked execution corridors, and reviewer-facing proof packets.
 - Highest-value move:
   - Lead with `PrivateDAO Core`, `Gaming DAO Corridor`, `ZK Capability Matrix`, and `Cryptographic Confidence Engine`.
 
-### Build a Live dApp with Solflare, Kamino, DFlow, or QuickNode with Eitherway App
-
-- Source: `https://superteam.fun/earn/listing/build-a-live-dapp-with-solflare-kamino-dflow-or-quicknode-with-eitherway-app`
+### Wallet-first live application
 - Fit: strong with a wallet-first submission corridor
 - Why:
   - The app is live, wallet-enabled, and now presented as a professional operational surface.
 - Highest-value move:
   - Lead with the story video, wallet-first operational shell, and the dedicated product route.
 
-### RPC Infrastructure Credits
-
-- Source: `https://superteam.fun/earn/listing/dollar10000-in-rpc-infrastructure-credits-for-colosseum-frontier-hackathon`
+### Runtime API and fast reads
 - Fit: very strong
 - Why:
   - Fast RPC, hosted reads, diagnostics, and reviewer/runtime surfaces already exist in the product and commercial story.
 - Highest-value move:
   - Lead with the `Read API + RPC` corridor, diagnostics, and hosted read service surfaces.
 
-### TokenTon Consumer Apps Track
-
-- Source: `https://superteam.fun/earn/listing/tokenton26-consumer-apps-track-dollar8500-prize-pool`
+### Consumer governance UX
 - Fit: strong with a consumer-first shell
 - Why:
   - The frontend is now much closer to a real product with multi-page routing, wallet UX, and operational shells.
 - Highest-value move:
   - Emphasize the story route, command center, simplified pack entry, and wallet-first onboarding.
 
-### Ranger Main Track
-
-- Source: `https://superteam.fun/earn/listing/ranger-build-a-bear-hackathon-main-track`
+### Integrated product quality
 - Fit: strong
 - Why:
   - PrivateDAO already combines protocol, operations, trust surfaces, reviewer proof, and commercial packaging into one product.
 - Highest-value move:
   - Open with the integrated product story, not isolated technical artifacts.
 
-### Colosseum Frontier
+### Core product lane
 
 - Fit: strong if judged on product impact
 - Why:
@@ -100,25 +90,21 @@ For PrivateDAO, this means:
 - Highest-value move:
   - Lead from `/start`, `/story`, and `/command-center` into `/proof/?judge=1`, then close with services and trust surfaces.
 
-### Ranger Drift Side Track
-
-- Source: `https://superteam.fun/earn/listing/ranger-build-a-bear-hackathon-drift-side-track`
+### Capital governance operations
 - Fit: moderate
 - Gap:
   - The project needs a clearer treasury strategy or capital-allocation corridor rather than only governance language.
 - Highest-value move:
   - Add one bounded treasury-operations story tied to policy and risk boundaries.
 
-### 100xDevs Frontier Track
-
-- Source: `https://superteam.fun/earn/listing/100xdevs-frontier-hackathon-track`
+### Product engineering delivery
 - Fit: strong
 - Why:
   - The operational Next.js shell, wallet integration, reviewer docs, and multi-surface product architecture now read like serious execution quality.
 - Highest-value move:
   - Emphasize build quality, coherence, and end-user polish.
 
-### Encrypt / IKA Frontier
+### Encrypted operations
 
 - Source: `https://superteam.fun/earn/listing/encrypt-ika-frontier-april-2026`
 - Fit: strong
@@ -127,7 +113,7 @@ For PrivateDAO, this means:
 - Highest-value move:
   - Lead with confidential payroll, encrypted envelopes, and the confidence engine as interpretation rather than hype.
 
-### SolRouter Ship with Encrypted AI
+### Encrypted assistant workflows
 
 - Source: `https://superteam.fun/earn/listing/solrouter-ship-with-encrypted-ai`
 - Fit: partial
@@ -164,7 +150,7 @@ These are worth pursuing only when they strengthen the same commercial governanc
 ### Startup capital corridor
 
 - Sources:
-  - `https://superteam.fun/earn/grants/startup-accelerator-grant`
+  - startup grant and acceleration corridors
 - Fit: strong
 - Why:
   - The live product shell, services surface, story route, and custody reviewer packet already support a startup-quality funding narrative.
@@ -174,8 +160,7 @@ These are worth pursuing only when they strengthen the same commercial governanc
 ### Regional grant corridor
 
 - Sources:
-  - `https://superteam.fun/earn/listing/superteam-poland`
-  - `https://superteam.fun/earn/grants/Poland-grants`
+  - regional ecosystem support corridors
 - Fit: moderate
 - Why:
   - The first-place Poland signal plus the live app and reviewer packets already provide regional proof of execution.

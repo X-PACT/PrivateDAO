@@ -1,4 +1,4 @@
-# Frontier Integration Evidence
+# Core Integration Evidence
 
 ## Overview
 

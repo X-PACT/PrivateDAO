@@ -1,8 +1,8 @@
-# Colosseum Weekly Update #1
+# Weekly Product Update #1
 
 ## Goal
 
-This is the first weekly update video for the Solana Frontier Hackathon.
+This is the first weekly update video for the current product cycle.
 
 It should be:
 
@@ -10,17 +10,17 @@ It should be:
 - direct
 - product-first
 - honest about what is already live on Devnet
-- strong enough for judges to understand momentum immediately
+- strong enough for reviewers to understand momentum immediately
 
 This is **not** the full technical demo and **not** the final pitch video.
 
 ## Recommended Upload Title
 
-`Week 1 - PrivateDAO Frontier Hackathon - Live Devnet Governance Progress`
+`Week 1 - PrivateDAO - Live Devnet Governance Progress`
 
 ## Recommended Video Description
 
-`PrivateDAO is building governance infrastructure on Solana for private voting, safer treasury execution, and confidential operational flows. This week we are showing the live Devnet product foundation: wallet-connected flow, DAO creation, proposal creation, commit-reveal voting, execution-safe treasury path, proof surfaces, and the product shell that will keep expanding through the hackathon.`
+`PrivateDAO is building governance infrastructure on Solana for private voting, safer treasury execution, and confidential operational flows. This week we are showing the live Devnet product foundation: wallet-connected flow, DAO creation, proposal creation, commit-reveal voting, execution-safe treasury path, proof surfaces, and the product shell that will keep expanding through the current delivery cycle.`
 
 ## Recommended Link Targets To Mention
 
@@ -41,9 +41,9 @@ So PrivateDAO uses a commit-reveal model to reduce public vote leakage while kee
 
 Around that core flow, we now also have proof, diagnostics, search, assistant, and commercial product surfaces inside one live app.
 
-That means this is already shaping into a real governance infrastructure product, not a hackathon mockup.
+That means this is already shaping into a real governance infrastructure product, not a mockup.
 
-Next week, we will keep sharpening the buyer flow, trust surfaces, and track-specific product packaging on top of the same live Devnet foundation.
+Next week, we will keep sharpening the buyer flow, trust surfaces, and reviewer-facing product packaging on top of the same live Devnet foundation.
 
 ## Shot List
 
@@ -90,7 +90,7 @@ Next week, we will keep sharpening the buyer flow, trust surfaces, and track-spe
 - On-screen text:
   - `Product shell`
   - `Buyer path`
-  - `Track-ready`
+  - `Reviewer-ready`
 
 ### 0:48-0:60
 
@@ -98,7 +98,7 @@ Next week, we will keep sharpening the buyer flow, trust surfaces, and track-spe
 - On-screen text:
   - `Live now on Devnet`
   - `PrivateDAO`
-  - `Frontier Week 1`
+  - `Week 1`
 
 ## Recording Direction
 

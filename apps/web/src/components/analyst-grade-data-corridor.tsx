@@ -13,7 +13,7 @@ const exportSummaries = [
   },
   {
     title: "Hosted-read proof",
-    body: "Frontier integrations, read-node snapshot, and services packaging keep hosted reads visible as buyer and reviewer value.",
+    body: "Core integrations, read-node snapshot, and services packaging keep hosted reads visible as buyer and reviewer value.",
     icon: Database,
   },
   {

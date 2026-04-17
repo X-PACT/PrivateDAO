@@ -49,7 +49,7 @@ export function getTrackSpecificProofContext(workspace: CompetitionTrackWorkspac
           summary: "Latency, success rate, wallet coverage, proof completion, and incident-facing diagnostics are already surfaced live.",
         },
         {
-          label: "Frontier integrations",
+          label: "Core integrations",
           href: "/documents/frontier-integrations",
           summary: "Hosted-read and runtime evidence already prove the infrastructure story on Devnet with reviewer-facing artifacts.",
         },

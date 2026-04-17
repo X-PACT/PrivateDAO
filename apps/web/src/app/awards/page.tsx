@@ -28,7 +28,7 @@ export default function AwardsPage() {
       <div className="mt-6">
         <SectionHeader
           eyebrow="Awards"
-          title="Recognition and submission credibility"
+          title="Recognition and product credibility"
           description="This page carries the recognition story forward into the Next.js surface without losing the product or security context behind it."
         />
       </div>

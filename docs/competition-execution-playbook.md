@@ -1,17 +1,17 @@
-# Competition Execution Playbook
+# Product Execution Playbook
 
-This playbook keeps PrivateDAO aligned with the active Frontier and Superteam tracks without drifting into inaccurate claims or random feature work.
+This playbook keeps PrivateDAO aligned with the current external review cycle without drifting into inaccurate claims or random feature work.
 
 It is complementary to `frontier-competition-readiness-2026.md`:
 
-- `frontier-competition-readiness-2026.md` answers: which tracks matter most and why
-- `competition-execution-playbook.md` answers: how development should stay aligned with those tracks
+- `frontier-competition-readiness-2026.md` answers: which product lanes matter most and why
+- `competition-execution-playbook.md` answers: how development should stay aligned with those lanes
 
 It should now also be read with:
 
 - `colosseum-frontier-2026-operating-brief.md`
 
-because the April 2026 Frontier cycle changed the operating baseline around:
+because the current operating cycle changed the baseline around:
 
 - product impact
 - signer and governance security
@@ -82,7 +82,7 @@ Keep improving:
 - mobile and Android affordances
 - simpler first-run decisions
 
-### 4. Competition clarity
+### 4. Product clarity
 
 Each surface should answer one of these quickly:
 
@@ -90,7 +90,7 @@ Each surface should answer one of these quickly:
 - why is it hard to copy?
 - what is already live?
 - what still needs external completion?
-- why does this fit the target track?
+- why does this fit the target review lane?
 
 ## Required surface consistency
 
@@ -117,10 +117,10 @@ When multiple improvements are possible, prefer this order:
 3. stronger wallet-first experience
 4. stronger operating-security readability
 5. stronger reviewer readability
-6. stronger track-specific positioning
+6. stronger reviewer-specific positioning
 7. only then add new speculative corridors
 
-## Track-specific emphasis
+## Product-lane emphasis
 
 ### Privacy Track
 
@@ -158,7 +158,7 @@ Lead with:
 - infrastructure partner corridor
 - story video, `/start`, and the wallet-first product route
 
-### Colosseum Frontier main judging posture
+### Core judging posture
 
 Lead with:
 
@@ -178,7 +178,7 @@ Lead with:
 
 ## Validation
 
-For competition-facing frontend work, finish with:
+For reviewer-facing frontend work, finish with:
 
 ```bash
 cd /home/x-pact/PrivateDAO/apps/web

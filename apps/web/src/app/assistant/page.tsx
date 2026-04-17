@@ -15,9 +15,9 @@ export const metadata: Metadata = buildRouteMetadata({
 export default function AssistantPage() {
   return (
     <OperationsShell
-      eyebrow="Internal Assistant"
-      title="A built-in guide for users, judges, operators, and competition reviewers"
-      description="Use the internal assistant to jump into the right PrivateDAO route immediately instead of navigating the whole site manually."
+      eyebrow="Product Assistant"
+      title="A built-in guide for users, reviewers, and operators"
+      description="Use the product assistant to jump into the right PrivateDAO route immediately instead of navigating the whole site manually."
       badges={[
         { label: "Built into the product", variant: "cyan" },
         { label: "Wallet and proof aware", variant: "violet" },

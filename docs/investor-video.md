@@ -1,14 +1,14 @@
-# PrivateDAO Frontier Overview Video Package
+# PrivateDAO Product Overview Video Package
 
 ## Objective
 
-Create a premium 50 second frontier-facing explainer video for PrivateDAO that is suitable for:
+Create a premium 50 second product explainer video for PrivateDAO that is suitable for:
 
 - grant reviewers
 - technical partners
 - ecosystem investors
 - infrastructure operators
-- hackathon judges across privacy, RPC, consumer, and product tracks
+- external technical reviewers and ecosystem supporters
 
 The video must communicate:
 
@@ -17,7 +17,7 @@ The video must communicate:
 - The system solves real governance leakage problems
 - The project now combines protocol hardening, proposal-level `zk_enforced` paths, confidential payroll and bonus approvals, REFHE-gated settlement, a backend read node, Android support, and published cryptographic artifact integrity
 - The project has third-party validation through a verified 1st Place achievement
-- The final output is a short product-and-competition explainer with a clear infrastructure thesis
+- The final output is a short product explainer with a clear infrastructure thesis
 
 ## Core Claims To Preserve
 
@@ -100,4 +100,4 @@ The repository carries a usable project explainer artifact directly in the repo,
 - Do not mention any prize amount
 - Keep claims bounded to what the repository and award note support
 - Use premium technical styling rather than generic startup hype
-- Keep the ending concise, technical, investable, and competition-ready
+- Keep the ending concise, technical, and investable

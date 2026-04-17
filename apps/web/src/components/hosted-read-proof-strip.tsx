@@ -19,7 +19,7 @@ const proofLinks: ProofLink[] = [
     icon: FileBarChart2,
   },
   {
-    label: "Frontier integrations",
+    label: "Core integrations",
     href: "/documents/frontier-integrations",
     icon: DatabaseZap,
   },

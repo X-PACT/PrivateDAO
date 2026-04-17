@@ -1,6 +1,6 @@
 # Trust Package
 
-The Trust Package is the shortest serious explanation of why PrivateDAO can be trusted as a Frontier-stage product.
+The Trust Package is the shortest serious explanation of why PrivateDAO can be trusted as a live Devnet-first product under community review.
 
 ## Trust components
 

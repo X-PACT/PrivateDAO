@@ -123,7 +123,7 @@ export function LeadSupportIntake({ mode }: LeadSupportIntakeProps) {
       related: [
         { label: "Services", href: "/services" },
         { label: "Community", href: "/community" },
-        { label: "Track Activity", href: "/live" },
+        { label: "Live Activity", href: "/live" },
       ],
     };
   }, [interest, role, stage]);

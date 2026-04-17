@@ -2,7 +2,7 @@
 
 ## Why this packet exists
 
-This packet turns the current Superteam Poland / Solana Foundation grant application into a concise, execution-led version that fits how the grant is actually judged:
+This packet turns the current regional Solana Foundation grant application into a concise, execution-led version that fits how the grant is actually judged:
 
 - proof of work over credentials
 - speed over perfection

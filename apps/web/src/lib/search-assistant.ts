@@ -361,7 +361,7 @@ const assistantIntents: AssistantIntent[] = [
     relatedRoutes: [
       { label: "Diagnostics", href: "/diagnostics" },
       { label: "Analytics", href: "/analytics" },
-      { label: "Frontier integrations", href: "/documents/frontier-integrations" },
+      { label: "Integration evidence", href: "/documents/frontier-integrations" },
     ],
     keywords: ["telemetry packet", "reviewer telemetry", "hosted read proof", "data corridor", "analytics packet", "rpc packet"],
   },
@@ -381,7 +381,7 @@ const assistantIntents: AssistantIntent[] = [
   {
     title: "Open the strongest product route",
     summary:
-      "Go to learning, start, services, or proof when the question is about product fit, confidential governance, runtime infrastructure, or reviewer positioning. Keep the visitor on real product routes instead of isolated competition pages.",
+      "Go to learning, start, services, or proof when the question is about product fit, confidential governance, runtime infrastructure, or reviewer positioning. Keep the visitor on real product routes instead of isolated legacy workspaces.",
     primaryActionLabel: "Open learning path",
     primaryActionHref: "/learn",
     relatedRoutes: [
@@ -389,7 +389,7 @@ const assistantIntents: AssistantIntent[] = [
       { label: "Services", href: "/services" },
       { label: "Proof", href: "/proof/?judge=1" },
     ],
-    keywords: ["competition", "hackathon", "frontier", "colosseum", "privacy", "ranger", "consumer", "100xdevs", "solrouter", "ika", "encrypt"],
+    keywords: ["product route", "privacy", "operations", "analytics", "learning", "reviewer packet", "confidential payouts", "rpc", "encrypted operations"],
   },
   {
       title: "Open the strategic opportunity readiness map",
@@ -684,13 +684,13 @@ function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null
     return {
       title: "Open the pilot funding bundle",
       summary:
-        "Start with Engage to qualify the buyer path, then open the Colosseum track where the first three surfaces are ordered for pilot funding: submission path, coach and alignment, then trust and proof.",
+        "Start with Engage to qualify the buyer path, then open the product route where the first three surfaces are ordered for pilot funding: start path, buyer context, then trust and proof.",
       primaryActionLabel: "Open pilot funding path",
       primaryActionHref: "/engage?profile=pilot-funding",
       relatedRoutes: [
         { label: "1. Engage", href: "/engage?profile=pilot-funding" },
         { label: "2. Start", href: "/start" },
-        { label: "3. Proof and trust", href: "/documents/frontier-competition-readiness-2026" },
+        { label: "3. Proof and trust", href: "/documents/reviewer-fast-path/" },
       ],
       queryBlock: getPaymentsTruthBlock(normalized),
     };
@@ -700,7 +700,7 @@ function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null
     return {
       title: "Open the vendor payout bundle",
       summary:
-        "Start from the vendor payout lane, then use the live dApp track with execution-first ordering: submission path first, then metrics and diagnostics, then custody and trust.",
+        "Start from the vendor payout lane, then use the live product route with execution-first ordering: services first, then metrics and diagnostics, then custody and trust.",
       primaryActionLabel: "Open vendor payout path",
       primaryActionHref: "/engage?profile=vendor-payout",
       relatedRoutes: [
@@ -716,7 +716,7 @@ function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null
     return {
       title: "Open the contributor payout bundle",
       summary:
-        "Start from the contributor payout lane, then use the consumer track with execution-first ordering: submission path first, then metrics, then custody and trust before broad commercial reading.",
+        "Start from the contributor payout lane, then use the consumer-ready product route with execution-first ordering: start first, then metrics, then custody and trust before broader commercial reading.",
       primaryActionLabel: "Open contributor payout path",
       primaryActionHref: "/engage?profile=contributor-payout",
       relatedRoutes: [
@@ -1084,24 +1084,24 @@ function getTrackReviewerPacketSuggestion(query: string): AssistantSuggestion | 
   const packetRules = [
     {
       keywords: ["privacy reviewer packet", "privacy packet", "privacy judge packet"],
-      title: `Open the ${getTrackReviewerPacketPublicLabel("privacy-track")}`,
+      title: "Open the privacy reviewer packet",
       route: getTrackReviewerPacketRoute("privacy-track"),
       trackRoute: "/security",
       proofRoute: "/documents/live-proof-v3",
     },
     {
       keywords: ["rpc reviewer packet", "rpc packet", "infrastructure reviewer packet", "infrastructure packet"],
-      title: `Open the ${getTrackReviewerPacketPublicLabel("rpc-infrastructure")}`,
+      title: "Open the runtime reviewer packet",
       route: getTrackReviewerPacketRoute("rpc-infrastructure"),
       trackRoute: "/services",
       proofRoute: "/documents/frontier-integrations",
     },
     {
       keywords: ["colosseum packet", "colosseum reviewer packet", "frontier packet", "frontier reviewer packet"],
-      title: `Open the ${getTrackReviewerPacketPublicLabel("colosseum-frontier")}`,
+      title: "Open the core reviewer packet",
       route: getTrackReviewerPacketRoute("colosseum-frontier"),
       trackRoute: "/start",
-      proofRoute: "/documents/frontier-competition-readiness-2026",
+      proofRoute: "/documents/reviewer-fast-path",
     },
   ];
 
@@ -1111,13 +1111,13 @@ function getTrackReviewerPacketSuggestion(query: string): AssistantSuggestion | 
   return {
     title: match.title,
     summary:
-      "Open the track-specific proof packet first. It already bundles the judge-first opening, proof closure, the next readiness gate, the strongest product route, and the shortest trust links for that lane.",
-    primaryActionLabel: "Open track proof packet",
+      "Open the reviewer packet first. It already bundles the judge-first opening, proof closure, the next readiness gate, the strongest product route, and the shortest trust links for that lane.",
+    primaryActionLabel: "Open reviewer packet",
     primaryActionHref: match.route,
     relatedRoutes: [
-      { label: "1. Track proof packet", href: match.route },
+      { label: "1. Reviewer packet", href: match.route },
       { label: "2. Product route", href: match.trackRoute },
-      { label: "3. Track proof route", href: match.proofRoute },
+      { label: "3. Proof route", href: match.proofRoute },
     ],
     queryBlock: getHighPriorityQueryBlock(normalized),
   };

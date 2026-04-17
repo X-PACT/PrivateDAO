@@ -150,7 +150,7 @@ export function TrackJudgeFirstTopStrip({ workspace }: TrackJudgeFirstTopStripPr
               Reviewer packet
             </div>
             <div className="mt-3 text-sm leading-7 text-white/62">
-              Jump directly into custody truth, treasury rails, telemetry truth, and the track packet without leaving the top layer.
+              Jump directly into custody truth, treasury rails, telemetry truth, and the reviewer packet without leaving the top layer.
             </div>
             <div className="mt-4 grid gap-3">
               <Link href="/documents/custody-proof-reviewer-packet" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "w-full justify-between")}>

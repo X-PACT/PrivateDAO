@@ -1,15 +1,15 @@
-# Colosseum Submission Answers
+# Submission Answers
 
-This file is the canonical answer pack for manual Colosseum and side-track submission updates. It exists because the repo can be updated directly, while the submission portal itself may require manual copy-paste.
+This file is the canonical answer pack for manual submission updates. It exists because the repo can be updated directly, while external submission portals may still require manual copy-paste.
 
-For the public competition posture around the current Colosseum Frontier cycle, use [superteam-track-submission-matrix-2026.md](/home/x-pact/PrivateDAO/docs/superteam-track-submission-matrix-2026.md) as the companion source.
+For the public product posture around the current review cycle, use [superteam-track-submission-matrix-2026.md](/home/x-pact/PrivateDAO/docs/superteam-track-submission-matrix-2026.md) as the companion source.
 
 ## Core Links
 
 - Website: `https://privatedao.org/`
 - GitHub: `https://github.com/X-PACT/PrivateDAO`
 - Product video: `https://youtu.be/HiCz0vb8kgk`
-- Colosseum project: `https://arena.colosseum.org/projects/explore/praivatedao`
+- Public project profile: `https://arena.colosseum.org/projects/explore/praivatedao`
 - Project X link: `https://x.com/i/status/2039742760719151177`
 
 ## Corrected Facts
@@ -56,7 +56,7 @@ Solana is now strong enough to support governance infrastructure that goes beyon
 - MagicBlock private payment corridor path
 - backend read node / indexer path
 - runtime, review, and go-live artifacts
-- weekly update video package for hackathon review
+- weekly update video package for reviewer updates
 
 ## Repo Context
 

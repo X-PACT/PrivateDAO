@@ -1,12 +1,12 @@
-# Colosseum Frontier 2026 Operating Brief
+# 2026 Product Operating Brief
 
-This brief folds the April 9, 2026 Colosseum Codex signals into PrivateDAO's competition and product discipline.
+This brief folds current ecosystem signals into PrivateDAO's product and operating discipline.
 
-It is not a generic newsletter summary. It is the operating interpretation for how PrivateDAO should keep improving if the goal is a top-tier Frontier outcome and stronger positioning across adjacent Superteam tracks.
+It is not a generic newsletter summary. It is the operating interpretation for how PrivateDAO should keep improving if the goal is stronger product execution, clearer proof, and better ecosystem usefulness.
 
 ## The new center of gravity
 
-Colosseum Frontier is now framed as a single product-impact sprint.
+The current delivery cycle is framed as a single product-impact sprint.
 
 That matters more than any individual bounty:
 
@@ -107,32 +107,32 @@ PrivateDAO should keep shipping toward this combined standard:
 4. Devnet operation that feels production-disciplined
 5. Trust-aligned proof instead of inflated claims
 
-## Priority translation for our active tracks
+## Priority translation for our current product lanes
 
-### Colosseum Frontier
+### Core product lane
 
 - Lead with product impact, startup quality, and clarity of the live app
 - Treat privacy, proof, services, and diagnostics as one product thesis
 
-### Privacy Track
+### Privacy lane
 
 - Lead with private governance, encrypted operations, ZK matrix, and confidence engine
 
-### RPC / infrastructure credits
+### Runtime API / infrastructure lane
 
 - Lead with hosted reads, diagnostics, runtime evidence, and buyer-facing API language
 
-### Consumer / Eitherway
+### Consumer and wallet UX lane
 
 - Lead with route clarity, onboarding, story video, and natural wallet UX
 
-### Ranger / 100xDevs
+### Product quality and delivery lane
 
 - Lead with product coherence, multi-page shell, proof continuity, and shipping discipline
 
 ## PrivateDAO operating rule for the rest of the cycle
 
-Do not add random features to chase tracks.
+Do not add random features to chase labels.
 
 Do:
 

@@ -6,7 +6,7 @@ This packet exists for:
 
 - Startup Accelerator Grant
 - Poland Grants
-- capital-facing reviewer paths tied to Frontier or regional ecosystems
+- capital-facing reviewer paths tied to real ecosystem adoption and regional funding corridors
 
 It answers one practical reviewer question:
 
@@ -38,7 +38,7 @@ PrivateDAO already has:
 
 - `/services`
 - `/live`
-- `/tracks`
+- `/learn`
 
 ### Trust and release discipline
 

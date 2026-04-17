@@ -1,6 +1,6 @@
-# Frontier Competition Alignment 2026
+# Product Alignment Requirements 2026
 
-This document is the canonical public alignment note for PrivateDAO during the active `Colosseum Frontier` cycle running from **April to May 2026**.
+This document is the canonical public alignment note for PrivateDAO during the current external review cycle.
 
 It is intentionally strict:
 
@@ -132,11 +132,11 @@ Why:
 4. keep the governed treasury route more executable and operator-readable
 5. keep trust and hardening materials aligned as one serious review path
 
-## Immediate competition thesis
+## Immediate product thesis
 
-If PrivateDAO wants first-place probability rather than broad participation optics during this cycle, the strongest public priority stack is:
+If PrivateDAO wants first-place probability rather than broad participation optics during the current review cycle, the strongest public priority stack is:
 
-1. one coherent Colosseum Frontier product story
+1. one coherent product story
 2. stronger privacy and confidential-operations usability
 3. stronger telemetry and infrastructure readability
 4. stronger treasury motion and payments execution planning

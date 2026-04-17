@@ -1,6 +1,6 @@
-# PrivateDAO Weekly Video Updates
+# PrivateDAO Weekly Product Updates
 
-These weekly videos are designed for hackathon update submissions on YouTube, Loom, or Vimeo.
+These weekly videos are designed for product updates on YouTube, Loom, or Vimeo.
 
 For public uploads, the canonical path is the narrated `weekly-youtube-ready` build, not the silent raw weekly card export.
 
@@ -10,10 +10,10 @@ For public uploads, the canonical path is the narrated `weekly-youtube-ready` bu
 - silent raw exports for internal progress review
 - narrated YouTube-ready exports for public upload
 - under one minute each
-- direct, judge-friendly update structure
+- direct, reviewer-friendly update structure
 - 36 seconds each
 - ready for YouTube, Loom, or Vimeo upload
-- for track-specific reels, keep the first 30 to 45 seconds aligned with:
+- for focused weekly reels, keep the first 30 to 45 seconds aligned with:
   - `docs/track-judge-first-openings.generated.md`
   - `docs/custody-proof-reviewer-packet.generated.md`
 
@@ -21,7 +21,7 @@ For public uploads, the canonical path is the narrated `weekly-youtube-ready` bu
 
 - file: `docs/assets/weekly-updates/private-dao-week-1-update.mp4`
 - upload title:
-  - `Week 1 - PrivateDAO Frontier Hackathon - Private Governance Foundation`
+  - `Week 1 - PrivateDAO - Private Governance Foundation`
 - ready script:
   - [`docs/weekly-update-week-1-colosseum.md`](weekly-update-week-1-colosseum.md)
 - focus:
@@ -35,7 +35,7 @@ For public uploads, the canonical path is the narrated `weekly-youtube-ready` bu
 
 - raw file: `docs/assets/weekly-updates/private-dao-week-2-update.mp4`
 - upload title:
-  - `Week 2 - PrivateDAO Frontier Hackathon - Guided Governance And Agentic Treasury Rail`
+  - `Week 2 - PrivateDAO - Guided Governance And Agentic Treasury Rail`
 - narrated upload-ready file:
   - `docs/assets/weekly-youtube-ready/Week 2 - PrivateDAO Frontier Hackathon - YouTube Ready.mp4`
 - ready script:
@@ -51,7 +51,7 @@ For public uploads, the canonical path is the narrated `weekly-youtube-ready` bu
 
 - file: `docs/assets/weekly-updates/private-dao-week-3-update.mp4`
 - upload title:
-  - `Week 3 - PrivateDAO Frontier Hackathon - Confidential Treasury Operations`
+  - `Week 3 - PrivateDAO - Confidential Treasury Operations`
 - focus:
   - confidential payroll and bonus approvals
   - `MagicBlock` private payment corridors
@@ -63,7 +63,7 @@ For public uploads, the canonical path is the narrated `weekly-youtube-ready` bu
 
 - file: `docs/assets/weekly-updates/private-dao-week-4-update.mp4`
 - upload title:
-  - `Week 4 - PrivateDAO Frontier Hackathon - Audit Readiness And Mainnet Path`
+  - `Week 4 - PrivateDAO - Audit Readiness And Mainnet Path`
 - focus:
   - 50-wallet Devnet rehearsal
   - additive Governance Hardening V3 and Settlement Hardening V3 proof
@@ -97,9 +97,9 @@ bash scripts/render-weekly-update-videos.sh
 bash scripts/render-weekly-youtube-ready.sh 2
 ```
 
-## Judge-First Track Openings
+## Judge-First Openings
 
-Use this generated document when recording or editing track-specific videos so the opening matches the live judge-first top strip:
+Use this generated document when recording or editing weekly videos so the opening matches the live judge-first top strip:
 
 - [`docs/track-judge-first-openings.generated.md`](track-judge-first-openings.generated.md)
 

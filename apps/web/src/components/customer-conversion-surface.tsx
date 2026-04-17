@@ -49,7 +49,7 @@ export function CustomerConversionSurface() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Track to customer path</CardTitle>
+          <CardTitle>Product to customer path</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 xl:grid-cols-2">
           {competitionTrackWorkspaces.map((workspace) => {

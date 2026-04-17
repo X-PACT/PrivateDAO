@@ -22,11 +22,11 @@ import { buildRouteMetadata } from "@/lib/route-metadata";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = buildRouteMetadata({
-  title: "Track Activity",
+  title: "Live Activity",
   description:
-    "Track proposals, treasury movement, vote timelines, and execution evidence after any wallet action in PrivateDAO.",
+    "Review proposals, treasury movement, vote timelines, and execution evidence after any wallet action in PrivateDAO.",
   path: "/dashboard",
-  keywords: ["track activity", "proposal state", "treasury activity", "execution evidence"],
+  keywords: ["live activity", "proposal state", "treasury activity", "execution evidence"],
   index: false,
 });
 
@@ -55,7 +55,7 @@ export default function DashboardPage() {
     <main className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <section className="space-y-8">
         <div className="flex flex-wrap gap-3">
-          <Badge variant="cyan">Track Activity</Badge>
+          <Badge variant="cyan">Live Activity</Badge>
           <Badge variant="violet">Treasury + proposals</Badge>
           <Badge variant="success">Live Devnet state</Badge>
         </div>
@@ -64,7 +64,7 @@ export default function DashboardPage() {
           <div className="space-y-5">
             <div className="text-[11px] uppercase tracking-[0.34em] text-emerald-300/80">Activity view</div>
             <h1 className="max-w-3xl text-4xl font-semibold tracking-[-0.045em] text-white sm:text-5xl lg:text-[4rem]">
-              Track proposals, treasury state, and execution results without leaving the product.
+              Review proposals, treasury state, and execution results without leaving the product.
             </h1>
             <p className="max-w-2xl text-base leading-8 text-white/60 sm:text-lg">
               This route is for checking what happened after a real wallet action. Open it after you connect a Devnet wallet, create a DAO, submit a proposal, vote, or execute so you can confirm the result and inspect the runtime trail in one readable place.

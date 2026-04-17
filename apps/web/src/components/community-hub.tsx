@@ -185,7 +185,7 @@ export function CommunityHub() {
               rel="noreferrer"
               className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full")}
             >
-              Open Colosseum project
+              Open public project profile
             </a>
             <a
               href="/assets/brand/privatedao-avatar-1024.png"

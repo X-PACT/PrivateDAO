@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document is the public competition-progress note for PrivateDAO during the active `Colosseum Frontier` cycle running from **April to May 2026**.
+This document is the public product-progress note for PrivateDAO during the current Devnet-first delivery cycle.
 
 It explains the product work now being strengthened in the open build:
 
@@ -14,8 +14,8 @@ It explains the product work now being strengthened in the open build:
 
 Use this with:
 
-- [superteam-track-submission-matrix-2026.md](/home/x-pact/PrivateDAO/docs/superteam-track-submission-matrix-2026.md)
-- [competition-track-requirements-2026.md](/home/x-pact/PrivateDAO/docs/competition-track-requirements-2026.md)
+- [Product alignment matrix 2026](/home/x-pact/PrivateDAO/docs/superteam-track-submission-matrix-2026.md)
+- [Product alignment requirements 2026](/home/x-pact/PrivateDAO/docs/competition-track-requirements-2026.md)
 - [submission-dossier.md](/home/x-pact/PrivateDAO/docs/submission-dossier.md)
 
 Private submission handling remains private. This public note stays focused on the product and why it is becoming easier to review, trust, and adopt.

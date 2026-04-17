@@ -11,13 +11,13 @@
 ## Judge-First Opening
 
 1. What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Fast RPC role explicit in video, deck, README, and services UI.
-2. What is externally proven: Diagnostics via /diagnostics and Frontier integrations via /documents/frontier-integrations and Reviewer telemetry packet via /documents/reviewer-telemetry-packet.
+2. What is externally proven: Diagnostics via /diagnostics and core integrations via /documents/frontier-integrations and Reviewer telemetry packet via /documents/reviewer-telemetry-packet.
 3. Exact blocker: production-monitoring-alerts. RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded.
 4. Best product route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story.
 
 Voiceover script:
 
-What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Fast RPC role explicit in video, deck, README, and services UI. What is externally proven: Diagnostics via /diagnostics and Frontier integrations via /documents/frontier-integrations and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: production-monitoring-alerts. RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded. Best product route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story.
+What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Fast RPC role explicit in video, deck, README, and services UI. What is externally proven: Diagnostics via /diagnostics and core integrations via /documents/frontier-integrations and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: production-monitoring-alerts. RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded. Best product route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story.
 
 ## Proof Closure
 
@@ -30,7 +30,7 @@ What works now: Show diagnostics, runtime evidence, and hosted read/API packagin
 ### What Is Externally Proven
 
 - Diagnostics: Latency, success rate, wallet coverage, proof completion, and incident-facing diagnostics are already surfaced live. (/diagnostics)
-- Frontier integrations: Hosted-read and runtime evidence already prove the infrastructure story on Devnet with reviewer-facing artifacts. (/documents/frontier-integrations)
+- Core integrations: Hosted-read and runtime evidence already prove the infrastructure story on Devnet with reviewer-facing artifacts. (/documents/frontier-integrations)
 - Reviewer telemetry packet: Generated telemetry truth packet that binds runtime evidence, frontier integrations, read-node snapshot, and devnet service metrics into one reviewer-safe route. (/documents/reviewer-telemetry-packet)
 
 ### What Is Still Pending
@@ -50,7 +50,7 @@ Custody still matters for buyer trust, and the new /custody ingestion flow reduc
 ## Reviewer Links
 
 - Primary product route: /services
-- Frontier integrations: /documents/frontier-integrations
+- Core integrations: /documents/frontier-integrations
 - Diagnostics: /diagnostics
 - Story video: /story
 - Reviewer telemetry packet: /documents/reviewer-telemetry-packet

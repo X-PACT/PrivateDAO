@@ -58,7 +58,7 @@ For the main submission, custody is not a side detail. It is the exact trust gat
 - Canonical custody proof: /documents/canonical-custody-proof
 - Custody reviewer packet: /documents/custody-proof-reviewer-packet
 - Frontier operating brief: /documents/colosseum-frontier-2026-operating-brief
-- Frontier integrations: /documents/frontier-integrations
+- Core integrations: /documents/frontier-integrations
 - PDAO attestation: /viewer/pdao-attestation.generated
 - Wallet matrix: /viewer/wallet-compatibility-matrix.generated
 

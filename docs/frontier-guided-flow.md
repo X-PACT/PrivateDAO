@@ -1,4 +1,4 @@
-# PrivateDAO Frontier Guided Flow
+# PrivateDAO Product Guided Flow
 
 PrivateDAO now exposes one reviewer-friendly flow for the core product story:
 
@@ -17,7 +17,7 @@ PrivateDAO now exposes one reviewer-friendly flow for the core product story:
    - the timelock has cleared,
    - and any confidential execution boundary is satisfied.
 
-## Where Each Frontier Layer Fits
+## Where Each Layer Fits
 
 - **ZK**
   ZK companion proofs and proposal-bound proof anchors harden reviewability and the `zk_enforced` finalize path. They do not bypass wallet signatures or governance timing.

@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return buildRouteMetadata({
     title: "Redirecting To Product Route",
     description:
-      "Legacy competition route now redirects into the main product flow, proof path, or learning surface.",
+      "Legacy route now redirects into the main product flow, proof path, or learning surface.",
     path: workspace.liveRoute,
     keywords: ["PrivateDAO", "product route", "devnet governance", "confidential treasury"],
     index: false,

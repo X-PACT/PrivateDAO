@@ -16,7 +16,7 @@ PrivateDAO is already a live Devnet product with:
 - wallet-first governance flows
 - trust, proof, and story surfaces
 - confidential payout and telemetry corridors
-- track-specific reviewer and buyer packets
+- reviewer and buyer packets
 
 The funding ask is not to discover the product.
 It is to accelerate the shortest remaining path from a live Devnet product into a stronger, better-evidenced, production-ready release candidate.
