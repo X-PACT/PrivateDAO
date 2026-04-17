@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-15T15:16:58.719Z`
+- generated at: `2026-04-17T22:16:04.521Z`
 - environment: `mainnet-candidate`
 - status: `pending-delivery-closure`
 - owner assignments: `0/3`

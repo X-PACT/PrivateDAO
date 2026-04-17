@@ -8,7 +8,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-type VoteChoice = "Approve" | "Reject" | "Abstain";
+type VoteChoice = "Approve" | "Reject";
 type TreasuryMode = "standard" | "sol" | "token";
 
 type GovernanceVoiceCommandPanelProps = {
@@ -57,7 +57,6 @@ const EXAMPLES = [
   "Create proposal reviewer payout batch",
   "Vote approve",
   "Vote reject",
-  "Vote abstain",
   "Send SOL to 4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD 0.05",
   "Send token So11111111111111111111111111111111111111112 to 4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD 1000",
 ] as const;
@@ -168,7 +167,7 @@ export function GovernanceVoiceCommandPanel({
       updates.push(`Proposal title -> ${nextProposalTitle}`);
     }
 
-    const voteMatch = source.match(/\bvote\s+(approve|reject|abstain)\b/i);
+    const voteMatch = source.match(/\bvote\s+(approve|reject)\b/i);
     if (voteMatch?.[1]) {
       const nextVoteChoice = `${voteMatch[1][0].toUpperCase()}${voteMatch[1].slice(1).toLowerCase()}` as VoteChoice;
       onVoteChoice(nextVoteChoice);

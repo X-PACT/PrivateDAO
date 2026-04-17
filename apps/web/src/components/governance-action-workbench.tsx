@@ -33,7 +33,10 @@ import { getProposalById, type ProposalCardModel } from "@/lib/site-data";
 import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
 import { cn } from "@/lib/utils";
 
-const voteChoices = ["Approve", "Reject", "Abstain"] as const;
+const voteChoices = ["Approve", "Reject"] as const;
+const LIVE_DEVNET_VOTING_DURATION_SECONDS = 45;
+const LIVE_DEVNET_REVEAL_WINDOW_SECONDS = 45;
+const LIVE_DEVNET_EXECUTION_DELAY_SECONDS = 15;
 
 function resolveStagedReviewAction(proposal: ProposalCardModel | null): CoreGovernanceInstructionName {
   if (!proposal) return "commit_vote";
@@ -294,21 +297,17 @@ export function GovernanceActionWorkbench() {
       liveDaoRuntime?.authority &&
       liveDaoRuntime.authority !== publicKey.toBase58(),
   );
-  const activeLiveDaoRuntime = liveDaoWalletMismatch ? null : liveDaoRuntime;
-  const activeLiveProposalAddress = liveDaoWalletMismatch ? null : liveProposalRuntime?.address;
+  const activeLiveDaoRuntime = liveDaoRuntime;
+  const activeLiveProposalAddress = liveProposalRuntime?.address;
   const hasLiveDaoLane = Boolean(activeLiveDaoRuntime?.address && activeLiveDaoRuntime.governanceMint);
-  const effectiveDaoCreated = !liveDaoWalletMismatch && (daoCreated || hasLiveDaoLane);
-  const effectiveProposalCreated = !liveDaoWalletMismatch && (proposalCreated || Boolean(activeLiveProposalAddress));
-  const effectiveVoteCommitted =
-    !liveDaoWalletMismatch && (voteCommitted || Boolean(liveVoteRuntime?.commitSignature && activeLiveProposalAddress));
-  const effectiveVoteRevealed =
-    !liveDaoWalletMismatch && (voteRevealed || Boolean(liveVoteRuntime?.revealSignature && activeLiveProposalAddress));
+  const effectiveDaoCreated = daoCreated || hasLiveDaoLane;
+  const effectiveProposalCreated = proposalCreated || Boolean(activeLiveProposalAddress);
+  const effectiveVoteCommitted = voteCommitted || Boolean(liveVoteRuntime?.commitSignature && activeLiveProposalAddress);
+  const effectiveVoteRevealed = voteRevealed || Boolean(liveVoteRuntime?.revealSignature && activeLiveProposalAddress);
   const effectiveProposalFinalized =
-    !liveDaoWalletMismatch &&
-    (proposalFinalized || Boolean(liveVoteRuntime?.finalizeSignature && activeLiveProposalAddress));
+    proposalFinalized || Boolean(liveVoteRuntime?.finalizeSignature && activeLiveProposalAddress);
   const effectiveProposalExecuted =
-    !liveDaoWalletMismatch &&
-    (proposalExecuted || Boolean(liveVoteRuntime?.executeSignature && activeLiveProposalAddress));
+    proposalExecuted || Boolean(liveVoteRuntime?.executeSignature && activeLiveProposalAddress);
 
   const canCreateDao =
     connected &&
@@ -767,8 +766,8 @@ export function GovernanceActionWorkbench() {
         connection,
         name: daoName.trim(),
         quorum: 51,
-        revealWindowSeconds: 5,
-        delaySeconds: 5,
+        revealWindowSeconds: LIVE_DEVNET_REVEAL_WINDOW_SECONDS,
+        delaySeconds: LIVE_DEVNET_EXECUTION_DELAY_SECONDS,
         votingMode: "token",
       });
 
@@ -833,9 +832,7 @@ export function GovernanceActionWorkbench() {
     if (!activeLiveDaoRuntime?.address) {
       setCreateProposalRuntime({
         status: "error",
-        message: liveDaoWalletMismatch
-          ? "The current wallet does not own the live DAO in this session. Reset the session and bootstrap a fresh DAO from this wallet."
-          : "Create the DAO live first so the web flow has a real DAO address to target.",
+        message: "Create the DAO live first so the web flow has a real DAO address to target.",
       });
       return;
     }
@@ -881,7 +878,7 @@ export function GovernanceActionWorkbench() {
         title: proposalTitle.trim(),
         description: `${proposalTitle.trim()} submitted from the live web governance surface.`,
         treasuryAction: proposalTreasuryDraft.action,
-        votingDurationSeconds: 3600,
+        votingDurationSeconds: LIVE_DEVNET_VOTING_DURATION_SECONDS,
       });
 
       setCreateProposalRuntime({
@@ -942,9 +939,7 @@ export function GovernanceActionWorkbench() {
     if (!publicKey || !activeLiveDaoRuntime?.address || !activeLiveProposalAddress) {
       setCommitVoteRuntime({
         status: "error",
-        message: liveDaoWalletMismatch
-          ? "The current wallet does not own the live DAO in this session. Reset the session and bootstrap a fresh DAO from this wallet."
-          : "Create the DAO and proposal live first so commit has a real devnet lane to target.",
+        message: "Create the DAO and proposal live first so commit has a real devnet lane to target.",
       });
       return;
     }
@@ -1091,9 +1086,7 @@ export function GovernanceActionWorkbench() {
     if (!publicKey || !activeLiveDaoRuntime?.address || !activeLiveProposalAddress) {
       setFinalizeRuntime({
         status: "error",
-        message: liveDaoWalletMismatch
-          ? "The current wallet does not own the live DAO in this session. Reset the session and bootstrap a fresh DAO from this wallet."
-          : "Create and track a live proposal first so finalize has a real DAO/proposal lane to target.",
+        message: "Create and track a live proposal first so finalize has a real DAO/proposal lane to target.",
       });
       return;
     }
@@ -1149,9 +1142,7 @@ export function GovernanceActionWorkbench() {
     if (!publicKey || !activeLiveDaoRuntime?.address || !activeLiveProposalAddress) {
       setExecuteRuntime({
         status: "error",
-        message: liveDaoWalletMismatch
-          ? "The current wallet does not own the live DAO in this session. Reset the session and bootstrap a fresh DAO from this wallet."
-          : "Create, finalize, and keep a live DAO/proposal lane first so execute has a real target.",
+        message: "Create, finalize, and keep a live DAO/proposal lane first so execute has a real target.",
       });
       return;
     }
@@ -1560,6 +1551,12 @@ export function GovernanceActionWorkbench() {
               className="mt-4 h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
               placeholder="DAO name"
             />
+            <p className="mt-3 text-sm leading-7 text-white/58">
+              The live browser lane creates an accelerated Devnet governance window so a normal user can finish the full cycle from this page:
+              {` ${LIVE_DEVNET_VOTING_DURATION_SECONDS}s`} voting,
+              {` ${LIVE_DEVNET_REVEAL_WINDOW_SECONDS}s`} reveal,
+              {` ${LIVE_DEVNET_EXECUTION_DELAY_SECONDS}s`} execution delay.
+            </p>
             <Button className="mt-4 w-full" disabled={!canCreateDao} onClick={() => openReview("initialize_dao")}>
               {createDaoRuntime.status === "submitting" ? "Awaiting wallet..." : "Create DAO on devnet"}
             </Button>
@@ -1669,6 +1666,9 @@ export function GovernanceActionWorkbench() {
                     : proposalTreasuryMode === "token"
                       ? "SendToken proposals use a recipient wallet plus token mint. Amount is currently entered in raw token units."
                       : "SendSol proposals move SOL from the treasury to the specified recipient when executed."}
+                </p>
+                <p className="mt-3 text-sm leading-7 text-white/58">
+                  This live proposal path is intentionally short-lived on Devnet so reviewers and normal users can reach commit, reveal, finalize, and execute in one session without terminal work.
                 </p>
                 {proposalTreasuryDraft.error ? (
                   <div className="mt-3 rounded-2xl border border-rose-300/20 bg-rose-300/[0.08] p-3 text-sm leading-7 text-rose-100/82">
@@ -1793,7 +1793,7 @@ export function GovernanceActionWorkbench() {
                 <div className="rounded-[22px] border border-white/10 bg-black/20 p-4 text-sm leading-7 text-white/62">
                   <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Before you click</div>
                   <div className="mt-2 text-white/62">
-                    Use the same connected wallet that created the live DAO. The review modal will appear first, then Solflare opens for signature.
+                    Use a governance-holder wallet for proposal and vote actions. The review modal appears first, then Solflare opens for signature. Finalize and execute stay visible even when you reconnect with another wallet to inspect the live lane.
                   </div>
                 </div>
               </div>

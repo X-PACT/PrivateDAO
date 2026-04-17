@@ -17,7 +17,7 @@ import {
   markStoredServiceHandoffExecuted,
 } from "@/lib/service-handoff-state";
 
-type VoteChoice = "Approve" | "Reject" | "Abstain";
+type VoteChoice = "Approve" | "Reject";
 
 type GovernanceLogEntry = {
   label: string;

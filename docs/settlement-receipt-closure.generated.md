@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-15T15:16:57.049Z`
+- generated at: `2026-04-17T22:17:14.270Z`
 - status: `pending-source-receipt-closure`
 - closure requirements: `0/4`
 - supporting artifacts: `4`

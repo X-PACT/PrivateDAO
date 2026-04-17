@@ -45,7 +45,7 @@ export function VoteModal({ proposal, handoff, onClose }: VoteModalProps) {
       action: "commit_vote",
       proposal,
       proposalId: proposal.id,
-      voteChoice: "Approve / Reject / Abstain",
+      voteChoice: "Approve / Reject",
     }),
     buildPreparedActionSummary({
       action: "reveal_vote",

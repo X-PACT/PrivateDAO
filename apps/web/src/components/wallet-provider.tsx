@@ -14,7 +14,10 @@ type WalletProviderShellProps = {
 };
 
 export function WalletProviderShell({ children }: WalletProviderShellProps) {
-  const endpoint = process.env.NEXT_PUBLIC_SOLANA_RPC_URL ?? clusterApiUrl("devnet");
+  const endpoint =
+    process.env.NEXT_PUBLIC_SOLANA_RPC_URL ??
+    process.env.NEXT_PUBLIC_RPC_FAST_DEVNET_RPC ??
+    clusterApiUrl("devnet");
   const network = WalletAdapterNetwork.Devnet;
   const [isMounted, setIsMounted] = useState(false);
 
