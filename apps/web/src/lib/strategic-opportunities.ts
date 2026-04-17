@@ -43,9 +43,9 @@ export const strategicOpportunities: StrategicOpportunity[] = [
     shippedNow:
       "Awards, story video, reviewer packet flow, and the public root-domain product make the regional grant case legible quickly.",
     missingFeature:
-      "Regional eligibility and deployment value should stay explicit, and the case should remain framed around ecosystem infrastructure rather than generic hackathon overlap.",
+      "Regional eligibility and deployment value should stay explicit, and the case should remain framed around ecosystem infrastructure rather than generic overlap.",
     action:
-      "Use the awards proof, Frontier primary workspace, and trust packet as the regional-review starter bundle.",
+      "Use the awards proof, core product workspace, and trust packet as the regional-review starter bundle.",
     skillsNeeded: ["Product", "Frontend", "Operations"],
     liveRoutes: ["/awards", "/tracks/colosseum-frontier", "/documents/launch-trust-packet"],
     sourceUrls: [
@@ -65,7 +65,7 @@ export const strategicOpportunities: StrategicOpportunity[] = [
     missingFeature:
       "The strongest data submission would add a tighter analyst-facing corridor around exports, evidence summaries, and infrastructure storytelling.",
     action:
-      "Lead from /diagnostics to /analytics to frontier integrations and read-node evidence as one telemetry-grade infrastructure lane.",
+      "Lead from /diagnostics to /analytics to core integrations and read-node evidence as one telemetry-grade infrastructure lane.",
     skillsNeeded: ["Backend", "Infrastructure", "Analytics"],
     liveRoutes: ["/diagnostics", "/analytics", "/documents/frontier-integrations"],
     sourceUrls: [

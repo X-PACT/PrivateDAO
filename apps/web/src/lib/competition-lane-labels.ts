@@ -1,7 +1,7 @@
 export function getCompetitionLaneLabel(slug: string) {
   switch (slug) {
     case "colosseum-frontier":
-      return "Frontier Primary Route";
+      return "Core Product Route";
     case "privacy-track":
       return "Privacy Governance Route";
     case "eitherway-live-dapp":
@@ -27,13 +27,13 @@ export function getCompetitionLaneLabel(slug: string) {
     case "adevar-audit-credits":
       return "Hardening Review Route";
     case "superteam-poland":
-      return "Poland Product Leadership Brief";
+      return "Regional Product Leadership Brief";
     case "poland-grants":
-      return "Poland Grants Route";
+      return "Regional Grants Route";
     case "startup-accelerator":
       return "Startup Capital Route";
     default:
-      return "Competition Route";
+      return "Product Route";
   }
 }
 
@@ -66,12 +66,12 @@ export function getCompetitionLaneSummary(slug: string) {
     case "adevar-audit-credits":
       return "Hardening corridor for authority control, incident readiness, and audit-credit eligibility without overclaiming audit closure.";
     case "superteam-poland":
-      return "Poland-facing product leadership corridor for ecosystem support, execution breadth, and infrastructure credibility on Solana.";
+      return "Regional product leadership corridor for ecosystem support, execution breadth, and infrastructure credibility on Solana.";
     case "poland-grants":
-      return "Regional grant corridor for Poland-based funding reviewers who need infrastructure value and product traction.";
+      return "Regional grant corridor for funding reviewers who need infrastructure value and product traction.";
     case "startup-accelerator":
       return "Capital-readiness corridor for startup reviewers who need product proof, commercial rails, and disciplined mainnet boundaries.";
     default:
-      return "Competition corridor aligned with live product, proof, and trust surfaces.";
+      return "Product corridor aligned with live product, proof, and trust surfaces.";
   }
 }

@@ -5,14 +5,14 @@ export const TRACK_REVIEWER_PACKET_SLUGS = new Set([
 ]);
 
 const TRACK_REVIEWER_PACKET_PUBLIC_LABELS: Record<string, string> = {
-  "colosseum-frontier": "Frontier Reviewer Packet",
+  "colosseum-frontier": "Core Reviewer Packet",
   "privacy-track": "Confidential Governance Reviewer Packet",
   "rpc-infrastructure": "Runtime Infrastructure Reviewer Packet",
 };
 
 const TRACK_REVIEWER_PACKET_PUBLIC_SUMMARIES: Record<string, string> = {
   "colosseum-frontier":
-    "Judge packet for the main Frontier submission with the judge-first opening, proof closure, exact blocker, best product route, and reviewer links.",
+    "Judge packet for the core product lane with the judge-first opening, proof closure, exact blocker, best product route, and reviewer links.",
   "privacy-track":
     "Judge packet for the confidential-governance corridor with the judge-first opening, proof closure, exact blocker, best product route, and reviewer links.",
   "rpc-infrastructure":

@@ -16,14 +16,14 @@ export function getTrackNarrativePlan(
       futureProblemSolution:
         "The future problem is not launching more DAOs. It is operating them safely, privately, and credibly. PrivateDAO solves that by turning governance, treasury execution, proof, and operator workflows into one coherent infrastructure product.",
       whySponsorShouldCareNow:
-        "This is exactly the type of startup-quality outcome Frontier should accelerate: a real product with a Program ID, token surface, wallet UX, commercial packaging, and a credible path to mainnet and customers.",
+        "This is exactly the type of startup-quality outcome a strong ecosystem review cycle should accelerate: a real product with a Program ID, token surface, wallet UX, commercial packaging, and a credible path to mainnet and customers.",
     };
   }
 
   if (workspace.slug === "privacy-track") {
     return {
       whyUs:
-        "We already combine ZK, REFHE, MagicBlock, Fast RPC, and proof-backed governance in one live product. That combination is rare, and the integration work behind it usually takes far longer than a single hackathon cycle.",
+        "We already combine ZK, REFHE, MagicBlock, Fast RPC, and proof-backed governance in one live product. That combination is rare, and the integration work behind it usually takes far longer than a short build cycle.",
       futureProblemSolution:
         "The future problem is that sensitive treasury and governance actions still force teams to choose between privacy and trust. PrivateDAO solves that by making confidential workflows reviewable, bounded, and operator-ready.",
       whySponsorShouldCareNow:

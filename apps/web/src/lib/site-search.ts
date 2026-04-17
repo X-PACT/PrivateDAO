@@ -180,7 +180,7 @@ export const siteSearchItems: SiteSearchItem[] = [
     title: "Strategic Opportunity Readiness",
     href: "/documents/strategic-opportunity-readiness-2026",
     category: "Document",
-    summary: "Opportunity map for startup accelerator, regional grants, data and telemetry, confidential payout, and hardening-first corridors around the Frontier cycle.",
+    summary: "Opportunity map for startup acceleration, regional grants, data and telemetry, confidential payout, and hardening-first corridors around the current review cycle.",
   },
   {
     title: "Ecosystem Focus Alignment",
@@ -198,13 +198,13 @@ export const siteSearchItems: SiteSearchItem[] = [
     title: "Confidential Governance Route",
     href: "/security",
     category: "Track",
-    summary: "Confidential-governance submission bundle and validation steps.",
+    summary: "Confidential-governance product bundle and validation steps.",
   },
   {
     title: "Live App Route",
     href: "/services",
     category: "Track",
-    summary: "Wallet-first live app corridor for buyer-facing demos and polished product flow.",
+    summary: "Wallet-first live app corridor for buyer-facing walkthroughs and polished product flow.",
   },
   {
     title: "Runtime Infrastructure Route",

@@ -37,14 +37,14 @@ const fits: Record<string, TrackTechnicalFit> = {
     sponsorUsage: [
       "The live route uses a real wallet adapter path, a real program id, and a real governance mint instead of a staged mock.",
       "The product shell connects onboarding, govern, proof, diagnostics, services, and trust packets into one startup-quality surface.",
-      "The submission path is deliberately product-first after Colosseum shifted Frontier judging toward product impact and business quality.",
+      "The submission path is deliberately product-first because serious external review now rewards product impact and business quality.",
     ],
     sponsorEvidence: [
       {
         sponsor: "Colosseum",
         status: "Direct live use",
         detail:
-          "The app now demonstrates one connected startup-quality product chain across start, govern, proof, diagnostics, services, and trust, which directly matches Frontier's product-impact posture.",
+          "The app now demonstrates one connected startup-quality product chain across start, govern, proof, diagnostics, services, and trust, which directly matches a product-impact review posture.",
       },
       {
         sponsor: "Solana Foundation",
@@ -54,7 +54,7 @@ const fits: Record<string, TrackTechnicalFit> = {
       },
     ],
     evidenceRoutes: [
-      { label: "Frontier operating brief", href: "/documents/colosseum-frontier-2026-operating-brief" },
+      { label: "Product operating brief", href: "/documents/colosseum-frontier-2026-operating-brief" },
       ...defaultRoutes,
     ],
     validationGates: [
