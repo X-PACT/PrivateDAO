@@ -85,7 +85,7 @@ The product already exposes:
 - proof packets
 - telemetry packets
 - diagnostics
-- track workspaces
+- primary product routes
 - open-source repo and docs
 
 These surfaces help other builders understand and build on the same governance stack.

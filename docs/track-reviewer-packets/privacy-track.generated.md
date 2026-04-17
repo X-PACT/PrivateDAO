@@ -42,14 +42,14 @@ Custody evidence is still required, and the signer or transfer packet can now be
 - `magicblock-refhe-source-receipts`
 - Privacy launch remains blocked until settlement receipts or verifier-grade source proof replace the current integration boundary.
 
-## Best Demo Route
+## Best Product Route
 
 - route: `/story`
 - Lead with /story, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story.
 
 ## Reviewer Links
 
-- Track workspace: /tracks/privacy-track
+- Primary product route: /security
 - Live proof V3: /documents/live-proof-v3
 - Judge route: /proof/?judge=1
 - Story video: /story

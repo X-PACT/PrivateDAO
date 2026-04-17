@@ -42,14 +42,14 @@ Custody still matters for buyer trust, and the new /custody ingestion flow reduc
 - `production-monitoring-alerts`
 - RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded.
 
-## Best Demo Route
+## Best Product Route
 
 - route: `/services`
 - Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story.
 
 ## Reviewer Links
 
-- Track workspace: /tracks/rpc-infrastructure
+- Primary product route: /services
 - Frontier integrations: /documents/frontier-integrations
 - Diagnostics: /diagnostics
 - Story video: /story

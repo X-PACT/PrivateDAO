@@ -1044,7 +1044,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
   },
   {
     slug: "privacy-track",
-    title: "Privacy Track Workspace",
+    title: "Privacy Governance Route",
     sponsor: "MagicBlock and privacy-aligned partners",
     prizeSummary: "Privacy sponsor positioning inside Frontier and adjacent ecosystem awards.",
     winnerAnnouncementBy: "Follow the sponsor and Frontier judging window for final decision timing.",
@@ -1092,7 +1092,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
   },
   {
     slug: "eitherway-live-dapp",
-    title: "Eitherway Live dApp Workspace",
+    title: "Eitherway Live dApp Route",
     sponsor: "Eitherway App",
     prizeSummary: "Live dApp sponsor track focused on wallet UX and product realism.",
     winnerAnnouncementBy: "Follow the sponsor track announcement date listed on Superteam Earn.",
@@ -1113,7 +1113,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     sourceUrl:
       "https://superteam.fun/earn/listing/build-a-live-dapp-with-solflare-kamino-dflow-or-quicknode-with-eitherway-app",
     deliverables: [
-      "Demo a wallet-connected path from overview to govern to treasury execution.",
+        "Show a wallet-connected path from overview to govern to treasury execution.",
       "Use the new story video plus the live dApp surface on privatedao.org as the submission core.",
       "Show partner-fit corridors for wallet UX, proof, diagnostics, and infrastructure readiness.",
     ],
@@ -1140,7 +1140,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
   },
   {
     slug: "rpc-infrastructure",
-    title: "RPC Infrastructure Credits Workspace",
+    title: "Runtime Infrastructure Route",
     sponsor: "RPC infrastructure sponsors",
     prizeSummary: "$10,000 in infrastructure credits tied to a credible runtime and API story.",
     winnerAnnouncementBy: "Follow the sponsor track schedule on Superteam Earn.",
@@ -1350,7 +1350,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl: "https://superteam.fun/earn/listing/100xdevs-frontier-hackathon-track",
     deliverables: [
-      "Use the live site and README to show a polished, reusable frontend system rather than a one-off prototype.",
+      "Use the live site and README to show a polished, reusable frontend system with pre-mainnet operating discipline.",
       "Keep the new story video tied to the product shell and route structure.",
       "Show developer discipline through docs, proof, verification gates, and deployment packaging.",
     ],
@@ -1367,7 +1367,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     sponsorFit: [
       "100xDevs fit improves when code quality, route architecture, and reuse are visible in-product.",
       "The move to Next.js, route-level bundles, and root-domain publishing are now first-class proof points.",
-      "Judges can see a real shipping system rather than a patched prototype.",
+      "Judges can see a real shipping system with coherent release discipline.",
     ],
     validationSteps: [
       "Run `cd apps/web && npm run lint && npm run build` before submission screenshots or videos.",

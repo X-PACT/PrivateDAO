@@ -20,7 +20,7 @@ For PrivateDAO, that validates the shift already underway:
 - wallet-first command center
 - curated proof and trust routes
 - hosted story video
-- track workspaces
+- primary product routes
 - service and buyer corridors
 
 ## Drift changed the security baseline

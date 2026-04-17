@@ -1,39 +1,39 @@
 export function getCompetitionLaneLabel(slug: string) {
   switch (slug) {
     case "colosseum-frontier":
-      return "Frontier Primary Workspace";
+      return "Frontier Primary Route";
     case "privacy-track":
-      return "Confidential Governance Workspace";
+      return "Privacy Governance Route";
     case "eitherway-live-dapp":
-      return "Live App Corridor Workspace";
+      return "Eitherway Live dApp Route";
     case "rpc-infrastructure":
-      return "Runtime Infrastructure Workspace";
+      return "Runtime Infrastructure Route";
     case "consumer-apps":
-      return "Wallet-First Product Workspace";
+      return "Wallet-First Product Route";
     case "ranger-main":
-      return "Integrated Product Workspace";
+      return "Integrated Product Route";
     case "ranger-drift":
-      return "Treasury Strategy Workspace";
+      return "Treasury Strategy Route";
     case "100xdevs":
-      return "Frontend Execution Workspace";
+      return "Frontend Execution Route";
     case "encrypt-ika":
-      return "Encrypted Operations Workspace";
+      return "Encrypted Operations Route";
     case "solrouter-encrypted-ai":
-      return "Deterministic Reasoning Workspace";
+      return "Deterministic Reasoning Route";
     case "dune-analytics":
-      return "Telemetry Intelligence Workspace";
+      return "Telemetry Intelligence Route";
     case "umbra-confidential-payout":
-      return "Confidential Payout Workspace";
+      return "Confidential Payout Route";
     case "adevar-audit-credits":
-      return "Hardening Review Workspace";
+      return "Hardening Review Route";
     case "superteam-poland":
       return "Poland Product Leadership Brief";
     case "poland-grants":
-      return "Poland Grants Workspace";
+      return "Poland Grants Route";
     case "startup-accelerator":
-      return "Startup Capital Workspace";
+      return "Startup Capital Route";
     default:
-      return "Competition Workspace";
+      return "Competition Route";
   }
 }
 

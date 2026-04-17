@@ -36,7 +36,7 @@ It is intentionally evidence-bound:
 4. Open `docs/frontier-integrations.generated.md`
 5. Open `docs/runtime-evidence.generated.md`
 
-## Best demo route
+## Best product route
 
 - Start at `https://privatedao.org/services/`
 - move into `https://privatedao.org/diagnostics/`

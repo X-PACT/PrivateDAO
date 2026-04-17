@@ -72,7 +72,7 @@
 3. Open analytics: Inspect export-ready summaries sourced from the same metrics module. (/analytics)
 4. Open services: Confirm the hosted-read and buyer-facing infrastructure route. (/services)
 
-## Best Demo Route
+## Best Product Route
 
 - start: `/services`
 - sequence: `/services` -> `/diagnostics` -> `/analytics` -> `/documents/reviewer-telemetry-packet`

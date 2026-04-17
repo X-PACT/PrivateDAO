@@ -235,11 +235,11 @@ Best Frontier review lanes:
 - data-and-telemetry corridor via `/diagnostics`, `/analytics`, and frontier integrations
 - confidential-payout corridor via `/security`, `/services`, `/custody`, and reviewer-visible grant governance
 
-Live reviewer workspaces:
+Primary reviewer routes:
 
-- `https://privatedao.org/tracks/colosseum-frontier/`
-- `https://privatedao.org/tracks/privacy-track/`
-- `https://privatedao.org/tracks/rpc-infrastructure/`
+- `https://privatedao.org/start/`
+- `https://privatedao.org/security/`
+- `https://privatedao.org/services/`
 
 ## Slide 11 - Roadmap
 

@@ -156,7 +156,7 @@ Lead with:
 - real wallet UX
 - live operational flow
 - infrastructure partner corridor
-- story video, `/start`, and wallet-first track workspace
+- story video, `/start`, and the wallet-first product route
 
 ### Colosseum Frontier main judging posture
 

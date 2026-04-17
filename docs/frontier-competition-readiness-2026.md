@@ -12,9 +12,9 @@ The live product routes that now matter most for competition work are:
 
 - `https://privatedao.org/start/`
 - `https://privatedao.org/story/`
-- `https://privatedao.org/tracks/`
 - `https://privatedao.org/proof/?judge=1`
 - `https://privatedao.org/services/`
+- `https://privatedao.org/learn/`
 
 ## 2026 ecosystem operating signal
 
@@ -63,7 +63,7 @@ For PrivateDAO, this means:
 - Why:
   - The app is live, wallet-enabled, and now presented as a professional operational surface.
 - Highest-value move:
-  - Lead with the story video, wallet-first operational shell, and the dedicated track workspace.
+  - Lead with the story video, wallet-first operational shell, and the dedicated product route.
 
 ### RPC Infrastructure Credits
 
@@ -96,7 +96,7 @@ For PrivateDAO, this means:
 
 - Fit: strong if judged on product impact
 - Why:
-  - The project now has a root-domain live app, command center, buyer corridors, proof center, diagnostics, track workspaces, and a hosted product reel.
+  - The project now has a root-domain live app, command center, buyer corridors, proof center, diagnostics, primary product routes, and a hosted product reel.
 - Highest-value move:
   - Lead from `/start`, `/story`, and `/command-center` into `/proof/?judge=1`, then close with services and trust surfaces.
 
@@ -145,7 +145,7 @@ For PrivateDAO, this means:
 - `Read API + RPC`
 - comprehensive story video
 - quick-start route under `/start`
-- track workspaces under `/tracks/[slug]`
+- primary product routes anchored to `/start`, `/security`, and `/services`
 
 ## Submission discipline
 

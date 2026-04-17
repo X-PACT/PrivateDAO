@@ -117,7 +117,7 @@ export function HomeShell() {
   ];
   const faqItems = [
     {
-      question: "Is PrivateDAO already a real product or only a prototype shell?",
+      question: "What is already live today?",
       answer:
         "It is already a live Devnet product with wallet-first governance, proof, trust, and telemetry surfaces. The active work now is to keep converting that Devnet proof into stronger production-grade closure.",
     },
