@@ -39,7 +39,8 @@ export type LearnLiveExecution = {
 
 export type LearnQuizQuestion = {
   question: string;
-  answers: string[];
+  options: string[];
+  correctAnswerIndex: number;
 };
 
 export type LearnLecture = {
@@ -158,19 +159,48 @@ export const learnLectures: LearnLecture[] = [
     quiz: [
       {
         question: "Why is wallet-first UX a core Solana requirement here?",
-        answers: [
+        options: [
           "Because a signer is part of the product flow, not a backend detail.",
           "Because it replaces proof entirely.",
           "Because it avoids Devnet usage.",
         ],
+        correctAnswerIndex: 0,
       },
       {
         question: "What should a normal user do after connecting a wallet?",
-        answers: [
+        options: [
           "Choose the right corridor and continue into the live route.",
           "Open the terminal and inspect RPC logs first.",
           "Read every protocol spec before clicking anything.",
         ],
+        correctAnswerIndex: 0,
+      },
+      {
+        question: "What is the first practical step in Solana wallet-first UX?",
+        options: [
+          "Connect the wallet and surface signer context.",
+          "Deploy a new program before opening the UI.",
+          "Generate a PDA before showing any interface.",
+        ],
+        correctAnswerIndex: 0,
+      },
+      {
+        question: "Why does PrivateDAO show corridor selection immediately after connect?",
+        options: [
+          "So the user can enter the right governance, treasury, or analytics path without confusion.",
+          "So the user is forced to read all documents first.",
+          "So the wallet can be disconnected faster.",
+        ],
+        correctAnswerIndex: 0,
+      },
+      {
+        question: "What makes the starter shell production-useful instead of tutorial-only?",
+        options: [
+          "It routes directly into real product surfaces like Start and Command Center.",
+          "It hides all runtime state until later lectures.",
+          "It only works with screenshots instead of live routes.",
+        ],
+        correctAnswerIndex: 0,
       },
     ],
   },
@@ -253,19 +283,48 @@ export const learnLectures: LearnLecture[] = [
     quiz: [
       {
         question: "Why does commit-reveal matter in this product?",
-        answers: [
+        options: [
           "It protects vote intent until the right proof stage.",
           "It removes the need for wallet signatures.",
           "It replaces runtime logs.",
         ],
+        correctAnswerIndex: 0,
       },
       {
         question: "What is the role of voice governance here?",
-        answers: [
+        options: [
           "It reduces friction while keeping the final signer boundary intact.",
           "It executes on-chain actions without wallet approval.",
           "It hides every governance state from the user.",
         ],
+        correctAnswerIndex: 0,
+      },
+      {
+        question: "Which governance UI states should stay visible to a normal operator?",
+        options: [
+          "Create, vote, reveal, execute, and final verification state.",
+          "Only the final execute button.",
+          "Only backend logs and raw account data.",
+        ],
+        correctAnswerIndex: 0,
+      },
+      {
+        question: "Why should execution remain wallet-signed even with a smoother UI?",
+        options: [
+          "Because the cryptographic boundary still matters even when the UI is simple.",
+          "Because commit-reveal is not compatible with signatures.",
+          "Because Solana wallets cannot sign governance actions.",
+        ],
+        correctAnswerIndex: 0,
+      },
+      {
+        question: "What is the correct user flow after a proposal is approved?",
+        options: [
+          "Open verification or proof and inspect the resulting signatures and status.",
+          "Close the app because governance is finished.",
+          "Hide the outcome until mainnet.",
+        ],
+        correctAnswerIndex: 0,
       },
     ],
   },
@@ -349,19 +408,48 @@ export const learnLectures: LearnLecture[] = [
     quiz: [
       {
         question: "Why does Fast RPC matter to the user experience here?",
-        answers: [
+        options: [
           "It makes proposal, proof, and payout state update quickly enough to feel trustworthy.",
           "It removes the need for analytics.",
           "It only matters to validators, not to users.",
         ],
+        correctAnswerIndex: 0,
       },
       {
         question: "What should happen after a wallet action lands?",
-        answers: [
+        options: [
           "The user should be able to follow the hash, status, and logs.",
           "The UI should stop explaining anything.",
           "The app should hide runtime state until mainnet.",
         ],
+        correctAnswerIndex: 0,
+      },
+      {
+        question: "What does RPC stand for in this learning path?",
+        options: [
+          "Remote Procedure Call.",
+          "Runtime Privacy Corridor.",
+          "Rapid Program Chain.",
+        ],
+        correctAnswerIndex: 0,
+      },
+      {
+        question: "Why are diagnostics part of product UX instead of backend-only tooling?",
+        options: [
+          "Because they help the user understand freshness, retries, and what the chain actually recorded.",
+          "Because diagnostics replace wallet signatures.",
+          "Because analytics pages should never show transactions.",
+        ],
+        correctAnswerIndex: 0,
+      },
+      {
+        question: "What makes a runtime widget useful for a non-expert?",
+        options: [
+          "It shows the last action, tx hash, current status, and the next recovery hint.",
+          "It only displays raw JSON responses.",
+          "It hides status until the session ends.",
+        ],
+        correctAnswerIndex: 0,
       },
     ],
   },
@@ -450,19 +538,48 @@ export const learnLectures: LearnLecture[] = [
     quiz: [
       {
         question: "What is the correct product role for ZK here?",
-        answers: [
+        options: [
           "Protect sensitive intent first, then expose the right proof after execution.",
           "Hide all blockchain evidence permanently.",
           "Replace wallets and signatures.",
         ],
+        correctAnswerIndex: 0,
       },
       {
         question: "Why include agentic treasury execution in the learning path?",
-        answers: [
+        options: [
           "Because it shows how governed policy can drive many real on-chain actions without turning the user into a script operator.",
           "Because it removes governance from the product.",
           "Because it only matters for a one-off sandbox.",
         ],
+        correctAnswerIndex: 0,
+      },
+      {
+        question: "What should a judge or operator understand after using the private payment lane?",
+        options: [
+          "What stayed private, what became public on-chain, and where the proof lives.",
+          "That all payment details are hidden forever with no verification.",
+          "That privacy eliminates the need for logs.",
+        ],
+        correctAnswerIndex: 0,
+      },
+      {
+        question: "Why is MagicBlock discussed in this lecture?",
+        options: [
+          "Because responsive execution lanes matter when advanced flows must still feel immediate in the browser.",
+          "Because it replaces Solana RPC entirely.",
+          "Because it removes the need for governed execution.",
+        ],
+        correctAnswerIndex: 0,
+      },
+      {
+        question: "Why are Jupiter and Kamino shown inside the same product story?",
+        options: [
+          "Because treasury coordination, routing, and capital posture belong in one practical operator flow.",
+          "Because they are only branding partners with no product role.",
+          "Because gaming rewards cannot use treasury rails.",
+        ],
+        correctAnswerIndex: 0,
       },
     ],
   },

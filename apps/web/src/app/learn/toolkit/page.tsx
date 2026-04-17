@@ -19,8 +19,8 @@ export default function LearnToolkitPage() {
   return (
     <OperationsShell
       eyebrow="Toolkit"
-      title="Starter kits built from the live product"
-      description="These starter kits are not theoretical. Each one maps to a real PrivateDAO route and a real code surface in the repository."
+      title="Plug-and-play starter kits built from the live product"
+      description="These starter kits are not theoretical. Each one maps to a real PrivateDAO route, a real code surface in the repository, and a reusable GitHub template path."
       badges={[
         { label: "Live-route linked", variant: "cyan" },
         { label: "Code-linked", variant: "success" },
@@ -28,6 +28,15 @@ export default function LearnToolkitPage() {
       ]}
     >
       <LearnBootcampNav />
+      <div className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6">
+        <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/76">Starter template map</div>
+        <p className="mt-3 max-w-3xl text-sm leading-7 text-white/66">
+          Use these as the bootcamp template set inside GitHub: <span className="font-semibold text-white">wallet-template</span>,
+          <span className="font-semibold text-white"> governance-template</span>, <span className="font-semibold text-white">dao-ui-template</span>,
+          <span className="font-semibold text-white"> runtime-template</span>, and <span className="font-semibold text-white">payment-template</span>.
+          They all resolve into the live `templates/frontend-solana-bootcamp` directory and are designed to be copied into a real app shell.
+        </p>
+      </div>
       <div className="grid gap-4 xl:grid-cols-2">
         {learnToolkitItems.map((item) => (
           <div key={item.title} className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6">

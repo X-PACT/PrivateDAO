@@ -29,6 +29,28 @@ export const metadata: Metadata = buildRouteMetadata({
 export default function LearnPage() {
   const executionSnapshot = getExecutionSurfaceSnapshot();
   const runtimeSnapshot = getJudgeRuntimeLogsSnapshot();
+  const learningPath = [
+    {
+      label: "Lesson 1 — Wallet UX",
+      summary: "Connect a Devnet wallet, show signer context, and enter the right corridor without confusion.",
+      href: `/learn/${learnLectures[0]!.slug}`,
+    },
+    {
+      label: "Lesson 2 — Governance UI",
+      summary: "Create proposals, commit votes, reveal later, and execute with proof-linked visibility.",
+      href: `/learn/${learnLectures[1]!.slug}`,
+    },
+    {
+      label: "Lesson 3 — RPC Interaction",
+      summary: "Read runtime state, show transaction hashes, and explain diagnostics like a real operator product.",
+      href: `/learn/${learnLectures[2]!.slug}`,
+    },
+    {
+      label: "Lesson 4 — Execution Flow",
+      summary: "Tie private payments, gaming rewards, agentic rails, and proof together in one live flow.",
+      href: `/learn/${learnLectures[3]!.slug}`,
+    },
+  ];
 
   return (
     <OperationsShell
@@ -78,6 +100,21 @@ export default function LearnPage() {
             <li>• Fast RPC, hosted reads, diagnostics, analytics, and blockchain verification.</li>
             <li>• ZK, MagicBlock, REFHE, Jupiter, Kamino, SNS, Torque, and agentic rails explained through the product itself.</li>
           </ul>
+        </div>
+      </div>
+      <div className="rounded-[30px] border border-white/10 bg-white/[0.04] p-6">
+        <div className="text-[11px] uppercase tracking-[0.28em] text-white/42">Learning Path</div>
+        <div className="mt-4 grid gap-4 xl:grid-cols-4">
+          {learningPath.map((item) => (
+            <Link
+              key={item.label}
+              href={item.href}
+              className="rounded-[24px] border border-white/8 bg-black/20 p-5 transition hover:border-cyan-300/24 hover:bg-black/28"
+            >
+              <div className="text-base font-medium text-white">{item.label}</div>
+              <p className="mt-3 text-sm leading-7 text-white/62">{item.summary}</p>
+            </Link>
+          ))}
         </div>
       </div>
       <div className="grid gap-4 xl:grid-cols-2">
