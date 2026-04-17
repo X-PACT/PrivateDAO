@@ -1,30 +1,12 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { LockKeyhole, Search, Sparkles } from "lucide-react";
 
+import { WalletConnectButton } from "@/components/wallet-connect-button";
 import { buttonVariants } from "@/components/ui/button";
 import { useSiteUrls } from "@/lib/site-urls";
 import { cn } from "@/lib/utils";
-
-const WalletConnectButton = dynamic(
-  () => import("@/components/wallet-connect-button").then((mod) => mod.WalletConnectButton),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="wallet-adapter-shell">
-        <button
-          type="button"
-          className="wallet-adapter-button wallet-adapter-button-trigger"
-          aria-label="Connect wallet"
-        >
-          Select Wallet
-        </button>
-      </div>
-    ),
-  },
-);
 
 const navItems = [
   { href: "/start", label: "Start" },
