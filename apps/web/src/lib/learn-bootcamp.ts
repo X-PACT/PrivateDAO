@@ -27,6 +27,16 @@ export type LearnAssignment = {
   codeRefs: LearnCodeReference[];
 };
 
+export type LearnLiveExecution = {
+  heading: string;
+  summary: string;
+  routeHref: string;
+  routeLabel: string;
+  verifyHref: string;
+  verifyLabel: string;
+  steps: string[];
+};
+
 export type LearnQuizQuestion = {
   question: string;
   answers: string[];
@@ -42,6 +52,7 @@ export type LearnLecture = {
   sections: LearnLectureSection[];
   actions: LearnLectureAction[];
   codeRefs: LearnCodeReference[];
+  liveExecution: LearnLiveExecution;
   assignment: LearnAssignment;
   quiz: LearnQuizQuestion[];
 };
@@ -112,6 +123,20 @@ export const learnLectures: LearnLecture[] = [
       { label: "Getting started workspace", href: `${githubBase}/apps/web/src/components/getting-started-workspace.tsx` },
       { label: "Command Center", href: `${githubBase}/apps/web/src/app/command-center/page.tsx` },
     ],
+    liveExecution: {
+      heading: "Run the wallet-first path now",
+      summary:
+        "Connect a Devnet wallet, pick the right corridor, then move into the live shell that prepares the user for governed action instead of dropping them into docs or terminal steps.",
+      routeHref: "/start",
+      routeLabel: "Run wallet-first onboarding",
+      verifyHref: "/dashboard",
+      verifyLabel: "Open live operator state",
+      steps: [
+        "Connect a Devnet wallet from Start.",
+        "Choose the corridor that matches governance, treasury, or analytics work.",
+        "Continue into Command Center and confirm the signer context is visible and usable.",
+      ],
+    },
     assignment: {
       title: "Build a wallet-first entry shell",
       brief:
@@ -191,6 +216,20 @@ export const learnLectures: LearnLecture[] = [
       { label: "Govern workbench client", href: `${githubBase}/apps/web/src/components/govern/govern-workbench-client.tsx` },
       { label: "Voice command panel", href: `${githubBase}/apps/web/src/components/governance-voice-command-panel.tsx` },
     ],
+    liveExecution: {
+      heading: "Run one governance cycle now",
+      summary:
+        "Use the real Govern surface to draft, commit, reveal, and execute from the same product lane, then open Judge to inspect the recorded signatures and proof corridor.",
+      routeHref: "/govern",
+      routeLabel: "Run live governance flow",
+      verifyHref: "/judge",
+      verifyLabel: "Verify lifecycle in Judge",
+      steps: [
+        "Create or review a DAO proposal in Govern.",
+        "Commit a vote, then continue into reveal and execution when the stage is available.",
+        "Open Judge and Proof to inspect the signatures, lifecycle state, and captured evidence.",
+      ],
+    },
     assignment: {
       title: "Ship a minimal governance lifecycle surface",
       brief:
@@ -271,6 +310,20 @@ export const learnLectures: LearnLecture[] = [
       { label: "Devnet metrics", href: `${githubBase}/apps/web/src/lib/devnet-service-metrics.ts` },
       { label: "Reviewer telemetry packet", href: `${githubBase}/docs/reviewer-telemetry-packet.md` },
     ],
+    liveExecution: {
+      heading: "Run one state-and-proof check now",
+      summary:
+        "After a real wallet action, inspect dashboard, diagnostics, analytics, and telemetry so the user sees freshness, status, retries, and proof instead of a shallow success message.",
+      routeHref: "/dashboard",
+      routeLabel: "Open dashboard runtime",
+      verifyHref: "/diagnostics",
+      verifyLabel: "Open diagnostics and logs",
+      steps: [
+        "Perform a real wallet action first from Start or Govern.",
+        "Open Dashboard to inspect the current activity and signatures.",
+        "Continue into Diagnostics and Analytics to confirm runtime behavior and proof freshness.",
+      ],
+    },
     assignment: {
       title: "Build a runtime activity widget",
       brief:
@@ -352,6 +405,20 @@ export const learnLectures: LearnLecture[] = [
       { label: "Solana program", href: `${githubBase}/programs/private-dao` },
       { label: "ZK folder", href: `${githubBase}/zk` },
     ],
+    liveExecution: {
+      heading: "Run one private treasury or gaming proof lane now",
+      summary:
+        "Move from Security or Services into the live payment and proof lanes, then open the agentic rail or judge route to see how complex infrastructure becomes a browser-first user action.",
+      routeHref: "/security",
+      routeLabel: "Run private payment corridor",
+      verifyHref: "/documents/agentic-treasury-micropayment-rail",
+      verifyLabel: "Open treasury rail proof",
+      steps: [
+        "Open Security or Services and follow the protected payout or governed reward corridor.",
+        "Continue into the agentic treasury rail to inspect repeated settlement actions.",
+        "Use Judge or Proof to open the Devnet transactions and confirm what the chain recorded.",
+      ],
+    },
     assignment: {
       title: "Ship one private-payment or gaming reward flow",
       brief:

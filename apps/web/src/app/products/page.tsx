@@ -4,6 +4,7 @@ import { CommercialCompareSurface } from "@/components/commercial-compare-surfac
 import { ServicesSurface } from "@/components/services-surface";
 import { SolutionCorridors } from "@/components/solution-corridors";
 import { OperationsShell } from "@/components/operations-shell";
+import { ProductOfferCards } from "@/components/product-offer-cards";
 import { TrustSurface } from "@/components/trust-surface";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
@@ -27,6 +28,7 @@ export default function ProductsPage() {
         { label: "Competition-compatible", variant: "violet" },
       ]}
     >
+      <ProductOfferCards />
       <SolutionCorridors />
       <CommercialCompareSurface />
       <ServicesSurface />

@@ -58,6 +58,45 @@ export function LearnLecturePage({ lecture }: LearnLecturePageProps) {
         </div>
       </div>
 
+      <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
+        <div className="rounded-[30px] border border-emerald-300/18 bg-emerald-300/[0.08] p-6">
+          <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-100/78">Run this lecture now</div>
+          <h2 className="mt-3 text-2xl font-semibold text-white">{lecture.liveExecution.heading}</h2>
+          <p className="mt-3 max-w-3xl text-sm leading-7 text-white/68">{lecture.liveExecution.summary}</p>
+          <ul className="mt-4 space-y-2 text-sm leading-7 text-white/60">
+            {lecture.liveExecution.steps.map((step) => (
+              <li key={step}>• {step}</li>
+            ))}
+          </ul>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <Link href={lecture.liveExecution.routeHref} className={cn(buttonVariants({ size: "sm" }))}>
+              {lecture.liveExecution.routeLabel}
+            </Link>
+            <Link href={lecture.liveExecution.verifyHref} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+              {lecture.liveExecution.verifyLabel}
+            </Link>
+          </div>
+        </div>
+
+        <div className="rounded-[30px] border border-white/10 bg-white/[0.04] p-6">
+          <div className="text-[11px] uppercase tracking-[0.28em] text-white/42">Why this is production learning</div>
+          <div className="mt-4 grid gap-3">
+            <div className="rounded-[22px] border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
+              This lecture does not end at theory. The primary button takes the user into a live product route where the
+              same concept becomes a real Devnet action from the UI.
+            </div>
+            <div className="rounded-[22px] border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
+              The verification button opens the state, judge, diagnostics, or proof lane needed to confirm what the
+              wallet action produced on-chain.
+            </div>
+            <div className="rounded-[22px] border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
+              The result is stronger than a tutorial: a normal user learns the product and exercises the real system in
+              the same corridor without terminal work.
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {lecture.sections.map((section) => (
           <div key={section.heading} className="rounded-[26px] border border-white/8 bg-white/[0.04] p-5">

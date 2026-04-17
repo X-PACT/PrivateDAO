@@ -93,6 +93,12 @@ export default function LearnPage() {
         ))}
       </div>
       <div className="grid gap-4 md:grid-cols-3">
+        <Link href="/learn" className="rounded-[26px] border border-cyan-300/16 bg-cyan-300/[0.08] p-5 transition hover:border-cyan-300/26 hover:bg-cyan-300/[0.12]">
+          <div className="text-base font-medium text-white">Learn PrivateDAO</div>
+          <p className="mt-3 text-sm leading-7 text-white/66">
+            A few simple minutes of learning first, then advanced blockchain operations from the UI without command lines or terminal scripts.
+          </p>
+        </Link>
         {learnModuleNav
           .filter((item) => ["/learn/toolkit", "/learn/assignments", "/learn/quizzes"].includes(item.href))
           .map((item) => (
