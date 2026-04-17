@@ -497,7 +497,7 @@ export function getOperationalValidationSnapshot(): OperationalValidationSnapsho
       detail: `Current top conversion-ready tracks combine win probability, commercial upside, and mainnet distance: ${rankedTracks
         .map((track) => `${track.title} (${track.compositeScore}/10)`)
         .join(" · ")}.`,
-      routeLabel: "Open competition center",
+      routeLabel: "Open learning path",
       routeHref: "/tracks",
       tone: "fuchsia",
     },

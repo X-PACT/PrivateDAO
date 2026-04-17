@@ -239,8 +239,8 @@ export function InternalAssistantPanel() {
           <Link href="/live" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full")}>
             Open activity
           </Link>
-          <Link href="/tracks" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full")}>
-            Open competition center
+          <Link href="/learn" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full")}>
+            Open learning path
           </Link>
           <div className="rounded-3xl border border-white/10 bg-black/20 p-4 text-sm leading-7 text-white/58">
             Best wallet for the current surface: <span className="text-white">Solflare</span>. Keep Phantom as a fallback for judges who expect it.

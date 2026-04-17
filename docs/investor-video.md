@@ -82,7 +82,7 @@ That means the video should now show:
 - backend read node and runtime operator surfaces
 - Android-native access path
 - service packs and hosted RPC / read surfaces
-- competition workspaces and why PrivateDAO is strongest across privacy, infrastructure, and product-quality tracks
+- product learning paths and why PrivateDAO is strongest across privacy, infrastructure, and product-quality routes
 - mainnet transition readiness
 - a credible path toward investable governance infrastructure
 

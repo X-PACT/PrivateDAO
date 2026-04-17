@@ -67,7 +67,7 @@ export function getTrackNarrativePlan(
   if (workspace.slug === "ranger-main") {
     return {
       whyUs:
-        "We look like a company because we built the full stack: product shell, proof continuity, trust surfaces, services, competition workspaces, and customer conversion routes. That level of completion is what investors and main-track judges reward.",
+        "We look like a company because we built the full stack: product shell, proof continuity, trust surfaces, services, learning/proof routes, and customer conversion paths. That level of completion is what investors and main-track judges reward.",
       futureProblemSolution:
         "The future problem is not lack of governance primitives. It is lack of integrated governance businesses. PrivateDAO solves that by packaging protocol, operations, trust, and commercial delivery into one investable product.",
       whySponsorShouldCareNow:

@@ -38,7 +38,7 @@ function getProfileAwareDemoSummary(workspace: CompetitionTrackWorkspace, commer
     return `Lead with ${bestDemoRoute}, show governed execution and diagnostics first, then attach custody truth and exact blockers.`;
   }
 
-  return `Lead with ${bestDemoRoute}, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes.`;
+  return `Lead with ${bestDemoRoute}, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes.`;
 }
 
 export function getTrackJudgeFirstCopy(
@@ -77,7 +77,7 @@ export function getTrackJudgeFirstCopy(
     `What works now: ${whatWorksNow.join(" ")}`,
     `What is externally proven: ${externallyProven.map((item) => `${item.label} via ${item.href}`).join(" and ")}.`,
     `Exact blocker: ${proofContext.exactBlocker}. ${proofContext.exactBlockerSummary}`,
-    `Best demo route: open ${bestDemoRoute} first. ${bestDemoSummary}`,
+    `Best product route: open ${bestDemoRoute} first. ${bestDemoSummary}`,
   ];
 
   return {

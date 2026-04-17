@@ -32,7 +32,7 @@ const stages = [
     ],
     links: [
       { label: "Diagnostics", href: "/diagnostics" },
-      { label: "Tracks", href: "/tracks" },
+      { label: "Learn", href: "/learn" },
       { label: "Viewer", href: "/viewer/runtime-evidence.generated" },
     ],
   },
@@ -60,7 +60,7 @@ const stages = [
     points: [
       "Pilot, hosted reads, confidential operations, and enterprise governance are presented as real offers.",
       "Trust package, launch trust packet, and mainnet blockers keep sales posture grounded in truth.",
-      "Competition workspaces now connect directly into customer conversion and mainnet trajectory.",
+      "Product learning and proof routes now connect directly into customer conversion and mainnet trajectory.",
     ],
     links: [
       { label: "Products", href: "/products" },

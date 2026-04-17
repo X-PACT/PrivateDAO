@@ -19,7 +19,7 @@ const routeConfig = {
     eyebrow: "Infrastructure startup proof",
     title: "The shortest startup-grade truth layer before the user opens anything else",
     description:
-      "Lead with the live product, reviewer telemetry, custody truth, the exact next readiness gate, and the best demo route in one strip instead of scattering the story across tracks and packets.",
+      "Lead with the live product, reviewer telemetry, custody truth, the exact next readiness gate, and the best product route in one strip instead of scattering the story across packets and secondary labels.",
     workspaceSlug: "colosseum-frontier",
   },
   story: {
@@ -134,7 +134,7 @@ export function InfrastructureStartupProofStrip({
           <div className="rounded-[22px] border border-white/8 bg-white/[0.03] px-4 py-4">
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-white/42">
               <ShieldCheck className="h-3.5 w-3.5 text-cyan-200/78" />
-              Best demo route
+              Best product route
             </div>
             <div className="mt-3 text-lg font-semibold tracking-tight text-white">
               {judgeFirstCopy.bestDemoRoute}
@@ -150,7 +150,7 @@ export function InfrastructureStartupProofStrip({
             href={judgeFirstCopy.bestDemoRoute}
             className={cn(buttonVariants({ variant: "secondary" }), "justify-between sm:min-w-[220px]")}
           >
-            Open best demo route
+            Open best product route
             <ArrowRight className="h-4 w-4" />
           </Link>
           <Link

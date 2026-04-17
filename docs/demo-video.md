@@ -1,12 +1,12 @@
-# Real Demo Video
+# Real Product Walkthrough Video
 
-This is the canonical **single demo video** for PrivateDAO.
+This is the canonical **single product walkthrough video** for PrivateDAO.
 
 It is intentionally different from the investor reel.
 
 The investor reel is a pitch surface.
 
-This demo video is a **product and operator flow** surface.
+This walkthrough video is a **product and operator flow** surface.
 
 ## Required narrative
 
@@ -19,7 +19,7 @@ The video must visibly communicate:
 
 ## Product framing
 
-The demo should show PrivateDAO as a real operating stack:
+The walkthrough should show PrivateDAO as a real operating stack:
 
 - governance product
 - treasury control system
@@ -28,7 +28,7 @@ The demo should show PrivateDAO as a real operating stack:
 
 ## Technology framing
 
-The video should also make the advanced layers understandable:
+The walkthrough should also make the advanced layers understandable:
 
 - `ZK` strengthens the proof and review path
 - `REFHE` can gate encrypted evaluation flows
@@ -37,14 +37,14 @@ The video should also make the advanced layers understandable:
 
 ## Honest boundary
 
-The demo may show:
+The walkthrough may show:
 
 - Devnet operation
 - live product surface
 - real lifecycle steps
 - runtime evidence
 
-The demo must not imply:
+The walkthrough must not imply:
 
 - completed external audit
 - unrestricted real-funds mainnet clearance

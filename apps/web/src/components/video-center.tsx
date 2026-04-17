@@ -98,7 +98,7 @@ export function VideoCenter({ compact = false }: VideoCenterProps) {
               Runtime: <span className="text-white/84">{storyVideo.runtime}</span>
               <div className="mt-2">
                 {compact
-                  ? "Use this asset as the fast submission reel from the track workspaces."
+                  ? "Use this asset as the fast submission reel from the product learning routes."
                   : "The public review link is now the official YouTube upload, while the MP4 stays available as a backup and repo-native artifact."}
               </div>
             </div>

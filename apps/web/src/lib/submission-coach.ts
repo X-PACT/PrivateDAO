@@ -84,7 +84,7 @@ function inferNextFastestImprovement(workspace: CompetitionTrackWorkspace) {
     return "Show one treasury-policy decision through analytics and the confidence engine, then stop before drifting into generic DeFi claims.";
   }
   if (workspace.slug === "100xdevs") {
-    return "Capture the multi-page shell, search/assistant routing, and track workspaces as direct proof of frontend and product engineering quality.";
+    return "Capture the multi-page shell, search/assistant routing, and product learning/proof routes as direct proof of frontend and product engineering quality.";
   }
   if (workspace.slug === "encrypt-ika") {
     return "Keep one encrypted-operations storyline centered on payroll or bonus approvals, backed by the security route and integrations packet.";

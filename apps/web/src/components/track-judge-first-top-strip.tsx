@@ -57,7 +57,7 @@ export function TrackJudgeFirstTopStrip({ workspace }: TrackJudgeFirstTopStripPr
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/76">Judge-first top strip</div>
-            <CardTitle className="mt-2">Track, proof closure, custody truth, and the fastest valid demo path</CardTitle>
+            <CardTitle className="mt-2">Product, proof closure, custody truth, and the strongest valid product path</CardTitle>
           </div>
           <div className="flex flex-wrap gap-2">
             <Badge variant="cyan">{workspace.sponsor}</Badge>
@@ -133,7 +133,7 @@ export function TrackJudgeFirstTopStrip({ workspace }: TrackJudgeFirstTopStripPr
           <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-5">
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-cyan-200/78">
               <Gauge className="h-3.5 w-3.5" />
-              Best demo route
+              Best product route
             </div>
             <div className="mt-3 text-sm leading-7 text-white/62">
               {judgeFirstCopy.bestDemoSummary}
@@ -158,7 +158,7 @@ export function TrackJudgeFirstTopStrip({ workspace }: TrackJudgeFirstTopStripPr
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
               <Link href={getTrackReviewerPacketRoute(workspace.slug)} className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full justify-between")}>
-                Open track reviewer packet
+                Open product reviewer packet
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
               <Link href="/documents/reviewer-telemetry-packet" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full justify-between")}>

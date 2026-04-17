@@ -356,11 +356,11 @@ export function IntelligenceLayerSurface() {
               <Link href="/assistant" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
                 Open assistant
               </Link>
-              <Link href="/tracks/privacy-track" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
-                Privacy track
+              <Link href="/security" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                Privacy route
               </Link>
-              <Link href="/tracks/rpc-infrastructure" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
-                RPC track
+              <Link href="/services" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                RPC route
               </Link>
             </div>
           </CardContent>

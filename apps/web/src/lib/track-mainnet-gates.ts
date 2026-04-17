@@ -65,7 +65,7 @@ export function getTrackMainnetGatePlan(
         "Prove the startup-quality path works end to end with the same routes customers and judges see.",
       ],
       devnetOnly: [
-        "Current award, reviewer packet, and demo-first choreography that compresses the product story for judges.",
+        "Current award, reviewer packet, and product-first choreography that compresses the product story for judges.",
         "Some trust surfaces that still package readiness as evidence rather than as completed external sign-off.",
       ],
       releaseDiscipline:

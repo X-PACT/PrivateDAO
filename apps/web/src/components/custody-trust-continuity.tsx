@@ -45,7 +45,7 @@ function getCustodyWording(mode: NonNullable<CustodyTrustContinuityProps["mode"]
       packetDescription: "Copy a concise judge-facing custody update that explains what is implemented, what is recorded, and what remains explicitly outside the claim boundary.",
       packetNote: "Use this packet when you need submission wording that strengthens trust without overstating mainnet readiness.",
       snippetTitle: "Judge / submission snippet",
-      snippetDescription: "Copy a custody-and-trust snippet that fits the submission route, track workspace, or judge-facing notes.",
+      snippetDescription: "Copy a custody-and-trust snippet that fits the submission route, product route, or judge-facing notes.",
       snippetNote: "This snippet stays aligned with the live product state and is intended for submission trust, mainnet distance, or judge-facing sections.",
       snippetLabel: "Suggested submission copy:",
       buyerTitle: "Submission trust path",

@@ -84,10 +84,10 @@ export function CustomerConversionSurface() {
                 </div>
                 <div className="mt-4 flex flex-wrap gap-3">
                   <Link
-                    href={`/tracks/${workspace.slug}`}
+                    href={workspace.liveRoute}
                     className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-4 py-2 text-xs uppercase tracking-[0.18em] text-white/74 transition hover:border-cyan-300/30 hover:text-white"
                   >
-                    Open workspace
+                    Open product route
                     <ArrowUpRight className="h-3.5 w-3.5" />
                   </Link>
                   {plan.routes.slice(0, 2).map((route) => (

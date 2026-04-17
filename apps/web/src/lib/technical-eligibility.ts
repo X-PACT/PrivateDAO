@@ -219,7 +219,7 @@ const fits: Record<string, TrackTechnicalFit> = {
         sponsor: "Ranger",
         status: "Direct live use",
         detail:
-          "The product shell, trust packets, services, and investor surfaces already behave like a venture-backable infrastructure startup instead of a narrow protocol demo.",
+          "The product shell, trust packets, services, and investor surfaces already behave like a venture-backable infrastructure startup instead of a narrow protocol prototype.",
       },
       {
         sponsor: "Main track",
@@ -276,7 +276,7 @@ const fits: Record<string, TrackTechnicalFit> = {
   "100xdevs": {
     coreIdentity,
     sponsorUsage: [
-      "The Next.js multi-page shell, static export deployment, in-app docs, and route-level workspaces make the frontend architecture visible.",
+      "The Next.js multi-page shell, static export deployment, in-app docs, and route-level product surfaces make the frontend architecture visible.",
       "Wallet UX, search, assistant routing, competition center, and product corridors show shipping discipline rather than toy frontend polish.",
       "The codebase now reads as a product platform with reusable surfaces, not a single demo page.",
     ],
@@ -285,7 +285,7 @@ const fits: Record<string, TrackTechnicalFit> = {
         sponsor: "100xDevs",
         status: "Direct live use",
         detail:
-          "The multi-page Next.js shell, static export discipline, search/assistant routing, and track workspaces make frontend and product engineering quality obvious.",
+          "The multi-page Next.js shell, static export discipline, search/assistant routing, and product learning/proof routes make frontend and product engineering quality obvious.",
       },
       {
         sponsor: "Shipping discipline",

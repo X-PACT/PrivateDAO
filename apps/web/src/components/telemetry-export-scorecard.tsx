@@ -86,8 +86,8 @@ export function TelemetryExportScorecard() {
             Runtime evidence
             <ShieldCheck className="h-4 w-4" />
           </Link>
-          <Link href="/tracks/dune-analytics" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
-            Dune workspace
+          <Link href="/analytics" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+            Analytics route
             <ArrowUpRight className="h-4 w-4" />
           </Link>
         </div>

@@ -75,7 +75,7 @@ export function CompetitionReadinessSurface() {
                   <div className="mt-2 text-sm leading-7 text-white/68">{track.recommendedWallet}</div>
                 </div>
                 <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-4">
-                  <div className="text-[11px] uppercase tracking-[0.24em] text-white/60">Best demo route</div>
+                  <div className="text-[11px] uppercase tracking-[0.24em] text-white/60">Best product route</div>
                   <div className="mt-2 text-sm leading-7 text-white/68">{track.demoRoute}</div>
                 </div>
               </div>
@@ -117,10 +117,10 @@ export function CompetitionReadinessSurface() {
 
               <div className="flex flex-wrap gap-3">
                 <Link
-                  href={`/tracks/${track.slug}`}
+                  href={track.href}
                   className="inline-flex items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-xs font-medium uppercase tracking-[0.22em] text-cyan-100 transition hover:bg-cyan-300/14"
                 >
-                  Open track workspace
+                  Open product route
                   <ArrowUpRight className="h-3.5 w-3.5" />
                 </Link>
                 <Link

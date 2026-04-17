@@ -5,22 +5,22 @@
     "slug": "colosseum-frontier",
     "title": "Frontier Reviewer Packet",
     "sponsor": "Colosseum + Solana Foundation",
-    "objective": "Present PrivateDAO as a startup-quality Solana product that already behaves like a pre-mainnet company rather than a hacked-together protocol demo."
+    "objective": "Present PrivateDAO as a startup-quality Solana product that already behaves like a pre-mainnet company rather than a hacked-together prototype."
   },
   "judgeFirstOpening": {
     "lines": [
-      "What works now: Lead the first 90 seconds from /start into /command-center with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and track center perfectly aligned with the live site.",
+      "What works now: Lead the first 90 seconds from /start into /command-center with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and product learning path perfectly aligned with the live site.",
       "What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet.",
       "Exact blocker: upgrade-authority-multisig. The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded.",
-      "Best demo route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story."
+      "Best product route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story."
     ],
-    "voiceoverScript": "What works now: Lead the first 90 seconds from /start into /command-center with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and track center perfectly aligned with the live site. What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: upgrade-authority-multisig. The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded. Best demo route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story."
+    "voiceoverScript": "What works now: Lead the first 90 seconds from /start into /command-center with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and product learning path perfectly aligned with the live site. What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: upgrade-authority-multisig. The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded. Best product route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story."
   },
   "proofClosure": {
     "whatWorksNow": [
       "Lead the first 90 seconds from /start into /command-center with a real wallet-first path.",
       "Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity.",
-      "Keep the README, deck, story video, and track center perfectly aligned with the live site."
+      "Keep the README, deck, story video, and product learning path perfectly aligned with the live site."
     ],
     "externallyProven": [
       {
@@ -51,8 +51,8 @@
   },
   "reviewerLinks": [
     {
-      "label": "Track workspace",
-      "href": "/tracks/colosseum-frontier"
+      "label": "Product route",
+      "href": "/start"
     },
     {
       "label": "Proof route",
@@ -111,7 +111,7 @@
       "Prove the startup-quality path works end to end with the same routes customers and judges see."
     ],
     "devnetOnly": [
-      "Current award, reviewer packet, and demo-first choreography that compresses the product story for judges.",
+      "Current award, reviewer packet, and product-first choreography that compresses the product story for judges.",
       "Some trust surfaces that still package readiness as evidence rather than as completed external sign-off."
     ],
     "releaseDiscipline": "Mainnet must feel like a disciplined extension of the same product shell, not a separate rushed deployment narrative."

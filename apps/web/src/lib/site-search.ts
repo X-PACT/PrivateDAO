@@ -320,7 +320,7 @@ const profileAwareSearchRules: ProfileAwareSearchRule[] = [
         href: "/services",
         category: "Track",
         summary:
-          "Start with the RPC track. Services, commercialization, and mainnet gates are intentionally raised before deeper proof reading for treasury capitalization.",
+          "Start with the RPC route. Services, commercialization, and mainnet gates are intentionally raised before deeper proof reading for treasury capitalization.",
       },
       {
         title: "Treasury Top-up Intake",

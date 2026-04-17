@@ -732,7 +732,7 @@ function getTreasuryProfileSuggestion(query: string): AssistantSuggestion | null
     return {
       title: "Open the treasury top-up bundle",
       summary:
-        "Start with treasury capitalization in Engage, then open the RPC track where services, commercialization, and mainnet gates are intentionally raised before deeper proof reading.",
+        "Start with treasury capitalization in Engage, then open the RPC route where services, commercialization, and mainnet gates are intentionally raised before deeper proof reading.",
       primaryActionLabel: "Open treasury top-up path",
       primaryActionHref: "/engage?profile=treasury-top-up",
       relatedRoutes: [
@@ -1086,21 +1086,21 @@ function getTrackReviewerPacketSuggestion(query: string): AssistantSuggestion | 
       keywords: ["privacy reviewer packet", "privacy packet", "privacy judge packet"],
       title: `Open the ${getTrackReviewerPacketPublicLabel("privacy-track")}`,
       route: getTrackReviewerPacketRoute("privacy-track"),
-      trackRoute: "/tracks/privacy-track",
+      trackRoute: "/security",
       proofRoute: "/documents/live-proof-v3",
     },
     {
       keywords: ["rpc reviewer packet", "rpc packet", "infrastructure reviewer packet", "infrastructure packet"],
       title: `Open the ${getTrackReviewerPacketPublicLabel("rpc-infrastructure")}`,
       route: getTrackReviewerPacketRoute("rpc-infrastructure"),
-      trackRoute: "/tracks/rpc-infrastructure",
+      trackRoute: "/services",
       proofRoute: "/documents/frontier-integrations",
     },
     {
       keywords: ["colosseum packet", "colosseum reviewer packet", "frontier packet", "frontier reviewer packet"],
       title: `Open the ${getTrackReviewerPacketPublicLabel("colosseum-frontier")}`,
       route: getTrackReviewerPacketRoute("colosseum-frontier"),
-      trackRoute: "/tracks/colosseum-frontier",
+      trackRoute: "/start",
       proofRoute: "/documents/frontier-competition-readiness-2026",
     },
   ];

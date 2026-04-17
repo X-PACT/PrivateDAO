@@ -10,20 +10,20 @@
 
 ## Judge-First Opening
 
-1. What works now: Use the comprehensive story video as the first-pass demo for judges. Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet. Keep the pitch deck anchored around private governance, confidential payouts, and honest launch boundaries.
+1. What works now: Use the comprehensive story video as the first-pass product walkthrough for judges. Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet. Keep the pitch deck anchored around private governance, confidential payouts, and honest launch boundaries.
 2. What is externally proven: Live Proof V3 via /documents/live-proof-v3 and ZK capability matrix via /documents/zk-capability-matrix and Reviewer telemetry packet via /documents/reviewer-telemetry-packet.
 3. Exact blocker: magicblock-refhe-source-receipts. Privacy launch remains blocked until settlement receipts or verifier-grade source proof replace the current integration boundary.
-4. Best demo route: open /story first. Lead with /story, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story.
+4. Best product route: open /story first. Lead with /story, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story.
 
 Voiceover script:
 
-What works now: Use the comprehensive story video as the first-pass demo for judges. Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet. Keep the pitch deck anchored around private governance, confidential payouts, and honest launch boundaries. What is externally proven: Live Proof V3 via /documents/live-proof-v3 and ZK capability matrix via /documents/zk-capability-matrix and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: magicblock-refhe-source-receipts. Privacy launch remains blocked until settlement receipts or verifier-grade source proof replace the current integration boundary. Best demo route: open /story first. Lead with /story, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story.
+What works now: Use the comprehensive story video as the first-pass product walkthrough for judges. Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet. Keep the pitch deck anchored around private governance, confidential payouts, and honest launch boundaries. What is externally proven: Live Proof V3 via /documents/live-proof-v3 and ZK capability matrix via /documents/zk-capability-matrix and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: magicblock-refhe-source-receipts. Privacy launch remains blocked until settlement receipts or verifier-grade source proof replace the current integration boundary. Best product route: open /story first. Lead with /story, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story.
 
 ## Proof Closure
 
 ### What Works Now
 
-- Use the comprehensive story video as the first-pass demo for judges.
+- Use the comprehensive story video as the first-pass product walkthrough for judges.
 - Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet.
 - Keep the pitch deck anchored around private governance, confidential payouts, and honest launch boundaries.
 

@@ -36,7 +36,7 @@ function getCommercialCapsuleContext(workspace: CompetitionTrackWorkspace, comme
         href: "/engage?profile=pilot-funding",
       },
       commercialSummary:
-        "Commercial path: qualify the buyer, run the live demo, then keep trust and proof attached to the same track route.",
+        "Commercial path: qualify the buyer, run the live product walk, then keep trust and proof attached to the same route.",
     };
   }
 
@@ -151,7 +151,7 @@ export function TrackSubmissionCapsule({ workspace, commercialProfile }: TrackSu
           <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-4">
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-cyan-200/76">
               <Gauge className="h-3.5 w-3.5" />
-              Best demo route
+              Best product route
             </div>
             <Link href={bestDemoRoute} className={cn(buttonVariants({ size: "sm" }), "mt-3 w-full justify-between")}>
               Open {bestDemoRoute}
@@ -234,10 +234,10 @@ export function TrackSubmissionCapsule({ workspace, commercialProfile }: TrackSu
             <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-5">
               <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-cyan-200/76">
                 <Gauge className="h-3.5 w-3.5" />
-                Best demo route
+              Best product route
               </div>
               <div className="mt-3 text-sm leading-7 text-white/66">
-                Lead with the live route that best preserves product coherence for this track.
+                Lead with the live route that best preserves product coherence for this product path.
               </div>
               <Link href={bestDemoRoute} className={cn(buttonVariants({ size: "sm" }), "mt-4 w-full justify-between")}>
                 Open {bestDemoRoute}

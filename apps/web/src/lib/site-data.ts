@@ -113,7 +113,7 @@ export const sponsorSignals = [
   {
     name: "MagicBlock",
     accent: "from-[#ffe066] via-[#ff9f43] to-[#ff5f7a]",
-    summary: "Privacy track strength stays tied to responsive settlement corridors and proof-backed execution.",
+    summary: "Privacy route strength stays tied to responsive settlement corridors and proof-backed execution.",
   },
   {
     name: "100xDevs",
@@ -639,13 +639,13 @@ export const competitionTracks = [
     priority: "Priority 1",
     prizeSummary: "$30k grand champion, top-20 startup awards, and accelerator capital upside.",
     winnerAnnouncementBy: "Hackathon runs April 6 to May 11, 2026; judge on product impact first.",
-    recommendedWallet: "Solflare for the live demo, Phantom as fallback for judges.",
+    recommendedWallet: "Solflare for the live product flow, Phantom as fallback for judges.",
     demoRoute: "/start",
     winningThesis:
       "Win by showing one coherent startup-quality product: start flow, govern flow, proof continuity, services, diagnostics, and trust surfaces in one system.",
     summary:
       "PrivateDAO is now strongest where product impact, security posture, wallet UX, proof continuity, and startup-quality packaging meet inside one live surface.",
-    edge: "The project already has a root-domain app, story route, tracks workspace, proof center, diagnostics, and commercial corridors.",
+    edge: "The project already has a root-domain app, story route, learning route, proof center, diagnostics, and commercial corridors.",
     gap: "The highest-value gap is continued tightening of first-run clarity and submission polish, not protocol invention.",
     action: "Lead the full submission from /start to /govern to /proof/?judge=1, then close with services, diagnostics, and trust package.",
     href: "/start",
@@ -681,7 +681,7 @@ export const competitionTracks = [
     priority: "Priority 7",
     prizeSummary: "Live dApp sponsor fit around wallet UX, partner polish, and infrastructure rails.",
     winnerAnnouncementBy: "Follow the Superteam listing for final track timing.",
-    recommendedWallet: "Solflare as the default demo wallet.",
+    recommendedWallet: "Solflare as the default product wallet.",
     demoRoute: "/govern",
     winningThesis:
       "Show one wallet-first product flow that feels live, partner-ready, and infrastructure-aware from the first click.",
@@ -689,7 +689,7 @@ export const competitionTracks = [
       "The app is live and operational already, but this track gets stronger when one concrete partner-facing flow is surfaced around wallet UX, live dApp behavior, and infrastructure.",
     edge: "PrivateDAO already has wallet adapter, operational UI, and live proof surfaces; the highest-value uplift is a tighter partner corridor.",
     gap: "The strongest version of this submission is the wallet-first corridor, the hosted story video, and the govern flow working together.",
-    action: "Lead with the live app, the story route, and the govern flow as one continuous wallet-first demo.",
+    action: "Lead with the live app, the story route, and the govern flow as one continuous wallet-first product flow.",
     href: "/services",
     sourceUrl: "https://superteam.fun/earn/listing/build-a-live-dapp-with-solflare-kamino-dflow-or-quicknode-with-eitherway-app",
   },
@@ -744,7 +744,7 @@ export const competitionTracks = [
     priority: "Priority 4",
     prizeSummary: "Main-track startup quality and integrated-product evaluation.",
     winnerAnnouncementBy: "Follow the Ranger main-track schedule.",
-    recommendedWallet: "Solflare for live demo continuity.",
+    recommendedWallet: "Solflare for live product continuity.",
     demoRoute: "/tracks/ranger-main",
     winningThesis:
       "Present PrivateDAO as a startup-quality product with protocol depth, trust posture, commercial corridors, and operator-grade execution.",
@@ -960,7 +960,7 @@ export const competitionTracks = [
       "Win by showing that PrivateDAO is already a live Devnet governance company with commercial rails, reviewable proof, and a disciplined path to mainnet.",
     summary:
       "This is one of the highest-value corridors because it translates product, infrastructure, and trust work directly into capital readiness.",
-    edge: "The root-domain app, story route, services packaging, trust packet, and track workspaces already make PrivateDAO look like a serious startup candidate.",
+    edge: "The root-domain app, story route, services packaging, trust packet, and learning/proof routes already make PrivateDAO look like a serious startup candidate.",
     gap: "The highest-value gap is a tighter capital-readiness packet around audits, multisig, monitoring, and source-verifiable settlement proof.",
     action: "Lead with start, story, services, trust, and mainnet gates as one accelerator-ready narrative.",
     href: "/start",
@@ -1005,7 +1005,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     recommendedWallet: "Solflare for the main demo, Phantom fallback for judge familiarity.",
     devnetStatus: "Live on Devnet with root-domain product shell, govern flow, proof center, diagnostics, services, and story route.",
     objective:
-      "Present PrivateDAO as a startup-quality Solana product that already behaves like a pre-mainnet company rather than a hacked-together protocol demo.",
+      "Present PrivateDAO as a startup-quality Solana product that already behaves like a pre-mainnet company rather than a hacked-together prototype.",
     whyUs:
       "PrivateDAO now connects onboarding, wallet-first governance, proof continuity, diagnostics, services, trust packets, and competition routes inside one live app.",
     primaryCorridor: "Start → Govern → Proof → Services",
@@ -1019,10 +1019,10 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     deliverables: [
       "Lead the first 90 seconds from /start into /govern with a real wallet-first path.",
       "Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity.",
-      "Keep the README, deck, story video, and track center perfectly aligned with the live site.",
+      "Keep the README, deck, story video, and product learning path perfectly aligned with the live site.",
     ],
     requirements: [
-      "A coherent startup-quality product, not a collection of unrelated track demos.",
+      "A coherent startup-quality product, not a collection of unrelated track fragments.",
       "Visible product impact, trust posture, and security maturity after the Drift exploit context.",
       "A live application that feels disciplined on Devnet and credible for mainnet later.",
     ],
@@ -1033,7 +1033,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     ],
     sponsorFit: [
       "Colosseum Frontier now rewards product impact and startup quality more than bounty accumulation.",
-      "The root-domain live app, multi-page shell, and route-level workspaces directly serve that judging posture.",
+      "The root-domain live app, multi-page shell, and route-level product surfaces directly serve that judging posture.",
       "PrivateDAO is strongest when shown as one coherent product with privacy, infrastructure, and buyer layers connected.",
     ],
     validationSteps: [
@@ -1065,7 +1065,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     sourceUrl:
       "https://superteam.fun/earn/listing/privacy-track-colosseum-hackathon-powered-by-magicblock-st-my-and-sns",
     deliverables: [
-      "Use the comprehensive story video as the first-pass demo for judges.",
+      "Use the comprehensive story video as the first-pass product walkthrough for judges.",
       "Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet.",
       "Keep the pitch deck anchored around private governance, confidential payouts, and clear release boundaries.",
     ],
@@ -1125,7 +1125,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winningMoves: [
       "Lead with the live operational shell and Connect Wallet as the first interaction.",
       "Show that the same app serves judges, operators, and buyers without changing products.",
-      "Use the story route, govern flow, and proof center as one connected demo path.",
+      "Use the story route, govern flow, and proof center as one connected product path.",
     ],
     sponsorFit: [
       "Wallet-native judges care about a clean first-run path more than a dense proof surface on first click.",
@@ -1135,7 +1135,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     validationSteps: [
       "Run `npm run verify:browser-smoke` after UI edits so wallet and route entry remain stable.",
       "Run `npm run verify:frontend-surface` so the live shell stays polished and coherent.",
-      "Use `https://privatedao.org/start/` then `https://privatedao.org/govern/` as the primary demo sequence.",
+      "Use `https://privatedao.org/start/` then `https://privatedao.org/govern/` as the primary product sequence.",
     ],
   },
   {
@@ -1209,7 +1209,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     sourceUrl:
       "https://superteam.fun/earn/listing/tokenton26-consumer-apps-track-dollar8500-prize-pool",
     deliverables: [
-      "Lead the demo from the home page into a guided pack selection and then into govern.",
+      "Lead the product walk from the home page into a guided pack selection and then into govern.",
       "Keep labels human-readable and buyer-first on the home, story, services, and documents routes.",
       "Use the comprehensive story video as the fast first-look asset for non-technical judges.",
     ],
@@ -1249,7 +1249,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
       "PrivateDAO now has a live multi-page app, a complete proof center, a document library, service packaging, and a strong trust posture tied to a real protocol.",
     primaryCorridor: "Operational shell + trust surfaces",
     liveRoute: "/dashboard",
-    judgeRoute: "/tracks",
+    judgeRoute: "/learn",
     proofRoute: "/documents/frontier-competition-readiness-2026",
     deckRoute: "/viewer/investor-pitch-deck",
     videoRoute: "/story",
@@ -1257,7 +1257,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     sourceUrl: "https://superteam.fun/earn/listing/ranger-build-a-bear-hackathon-main-track",
     deliverables: [
       "Lead with the product shell, corridors, govern flow, and trust links rather than protocol detail first.",
-      "Use the story route and the tracks workspace as submission entrypoints.",
+      "Use the story route and the product learning path as submission entrypoints.",
       "Keep the deck and README aligned with the live site and competition center.",
     ],
     requirements: [
@@ -1267,7 +1267,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     ],
     winningMoves: [
       "Open on the operational shell and show that every major function is in-product.",
-      "Use /tracks and /story to show why this is bigger than a single protocol demo.",
+      "Use /learn and /story to show why this is bigger than a single protocol surface.",
       "Lean on the 1st Place Superteam Poland signal without turning it into hype.",
     ],
     sponsorFit: [
@@ -1336,7 +1336,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winnerAnnouncementBy: "May 25, 2026 according to the live listing.",
     skillsNeeded: ["Frontend", "Backend", "Blockchain"],
     recommendedWallet: "Solflare for polished UX, Phantom for common wallet familiarity.",
-    devnetStatus: "Live on Devnet with reusable operational shell, route-level workspaces, story video, and root-domain deployment.",
+    devnetStatus: "Live on Devnet with reusable operational shell, route-level product surfaces, story video, and root-domain deployment.",
     objective:
       "Show professional frontend execution, reusable architecture, strong UX, and end-to-end shipping discipline.",
     whyUs:
@@ -1350,7 +1350,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl: "https://superteam.fun/earn/listing/100xdevs-frontier-hackathon-track",
     deliverables: [
-      "Use the live site and README to show a polished, reusable frontend system rather than a one-off demo.",
+      "Use the live site and README to show a polished, reusable frontend system rather than a one-off prototype.",
       "Keep the new story video tied to the product shell and route structure.",
       "Show developer discipline through docs, proof, verification gates, and deployment packaging.",
     ],
@@ -1361,13 +1361,13 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     ],
     winningMoves: [
       "Emphasize the migration from a docs shell to a professional operational UI.",
-      "Use route-level workspaces, curated docs, and the video center as proof of product maturity.",
+      "Use route-level product surfaces, curated docs, and the video center as proof of product maturity.",
       "Show that the old link still works while the new domain feels premium.",
     ],
     sponsorFit: [
       "100xDevs fit improves when code quality, route architecture, and reuse are visible in-product.",
       "The move to Next.js, route-level bundles, and root-domain publishing are now first-class proof points.",
-      "Judges can see a real shipping system rather than a patched demo.",
+      "Judges can see a real shipping system rather than a patched prototype.",
     ],
     validationSteps: [
       "Run `cd apps/web && npm run lint && npm run build` before submission screenshots or videos.",
@@ -1434,10 +1434,10 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     objective:
       "Keep an AI-adjacent story ready without breaking truth alignment or pretending to ship a full encrypted agent.",
     whyUs:
-      "PrivateDAO now has a deterministic confidence engine, privacy rails, and competition workspaces that can support an assistant-style framing later if needed.",
+      "PrivateDAO now has a deterministic confidence engine, privacy rails, and product surfaces that can support an assistant-style framing later if needed.",
     primaryCorridor: "Security + confidence engine",
     liveRoute: "/security",
-    judgeRoute: "/tracks",
+    judgeRoute: "/security",
     proofRoute: "/documents/cryptographic-confidence-engine",
     deckRoute: "/viewer/investor-pitch-deck",
     videoRoute: "/story",
@@ -1465,7 +1465,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     ],
     validationSteps: [
       "Run `cd apps/web && npm run build` after any confidence-engine or security-route change.",
-      "Use `/security`, `/tracks/solrouter-encrypted-ai`, and `/documents/cryptographic-confidence-engine` as the current AI-adjacent bundle.",
+      "Use `/security`, `/story`, and `/documents/cryptographic-confidence-engine` as the current AI-adjacent bundle.",
       "Keep all submission copy explicitly bounded to deterministic scoring and policy composition.",
     ],
   },
@@ -1570,7 +1570,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     prizeSummary: "$50k in security audit credits distributed across five winners.",
     winnerAnnouncementBy: "June 10, 2026 according to the live listing.",
     skillsNeeded: ["Blockchain"],
-    recommendedWallet: "Wallet is secondary; this workspace is about hardening proof and launch discipline.",
+    recommendedWallet: "Wallet is secondary; this route is about hardening proof and launch discipline.",
     devnetStatus: "Live on Devnet with custody proof, authority hardening, incident readiness, and diagnostics already exposed.",
     objective:
       "Earn audit-credit eligibility by showing that PrivateDAO already behaves like a team preparing for external audit, not a team pretending it is already audited.",
@@ -1711,8 +1711,8 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     prizeSummary: "Accelerator corridor for startup-quality products that can convert grant review into real product momentum.",
     winnerAnnouncementBy: "Follow the Startup Accelerator grant page and fast-track support timing.",
     skillsNeeded: ["Frontend", "Backend", "Blockchain", "Design", "Product", "Operations"],
-    recommendedWallet: "Solflare for the live demo; capital reviewers care most about coherence, traction posture, and launch discipline.",
-    devnetStatus: "Live on Devnet with root-domain product shell, story video, services packaging, trust packet, and track workspaces already in place.",
+    recommendedWallet: "Solflare for the live product flow; capital reviewers care most about coherence, traction posture, and launch discipline.",
+    devnetStatus: "Live on Devnet with root-domain product shell, story video, services packaging, trust packet, and product learning/proof routes already in place.",
     objective:
       "Show that PrivateDAO is already a coherent product: product shell, revenue rails, trust posture, and a disciplined path to production release.",
     whyUs:

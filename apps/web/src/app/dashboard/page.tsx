@@ -170,8 +170,8 @@ export default function DashboardPage() {
         <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} href="/services">
           Open services
         </Link>
-        <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href="/tracks">
-          Open competition center
+        <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href="/learn">
+          Open learning path
           <ArrowRight className="h-4 w-4" />
         </Link>
       </section>

@@ -50,9 +50,9 @@ export function getCommercialContinuityBundle(
     return {
       title: "Pilot continuity bundle",
       summary:
-        "Keep the buyer path tied to the live startup route: demo first, then proof, then trust. This track is now carrying the same commercial context that began in Engage.",
+        "Keep the buyer path tied to the live startup route: product first, then proof, then trust. This path now carries the same commercial context that began in Engage.",
       routes: [
-        { label: "Live demo", href: workspace.liveRoute },
+        { label: "Live product", href: workspace.liveRoute },
         { label: "Proof", href: workspace.proofRoute },
         { label: "Trust", href: "/security" },
         { label: "Story", href: workspace.videoRoute },
@@ -64,7 +64,7 @@ export function getCommercialContinuityBundle(
     return {
       title: "Agentic micropayment continuity",
       summary:
-        "Keep the batched payout path tied to govern, proof, and telemetry so agentic execution reads as policy-bound DAO automation rather than an isolated payments demo.",
+        "Keep the batched payout path tied to govern, proof, and telemetry so agentic execution reads as policy-bound DAO automation rather than an isolated payments surface.",
       routes: [
         { label: "Services", href: "/services#treasury-payment-request" },
         { label: "Govern", href: "/govern" },
