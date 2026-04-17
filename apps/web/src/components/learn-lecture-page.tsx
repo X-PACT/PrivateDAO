@@ -43,8 +43,19 @@ export function LearnLecturePage({ lecture }: LearnLecturePageProps) {
         </div>
 
         <div className="rounded-[30px] border border-white/10 bg-white/[0.04] p-6">
-          <div className="text-[11px] uppercase tracking-[0.28em] text-white/42">Check the code</div>
-          <div className="mt-4 grid gap-3">
+          <div className="text-[11px] uppercase tracking-[0.28em] text-white/42">Lecture assets</div>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Link href="/documents/frontend-solana-bootcamp-materials" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+              Open slides
+            </Link>
+            <Link href="/learn/assignments" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+              Open assignment
+            </Link>
+            <Link href="/learn/quizzes" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+              Open quiz
+            </Link>
+          </div>
+          <div className="mt-5 grid gap-3">
             {lecture.codeRefs.map((ref) => (
               <a
                 key={ref.href}
@@ -52,7 +63,7 @@ export function LearnLecturePage({ lecture }: LearnLecturePageProps) {
                 target="_blank"
                 rel="noreferrer"
                 className="rounded-[22px] border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/64 transition hover:border-cyan-300/24 hover:bg-black/28"
-              >
+                >
                 <div className="font-medium text-white">{ref.label}</div>
                 <div className="mt-2 break-all text-xs text-white/44">{ref.href}</div>
               </a>

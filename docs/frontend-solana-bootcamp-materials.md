@@ -37,6 +37,23 @@ The submission-ready slide deck lives here:
 
 Use the deck as the canonical slide-ready export for Google Slides or Canva conversion.
 
+## Visual evidence pack
+
+Use these real screenshots inside the slide deck so the educational material stays visual and practical:
+
+- `docs/assets/devnet-proof-screenshots/execution-wallet.png`
+- `docs/assets/devnet-proof-screenshots/proposal-approved.png`
+- `docs/assets/devnet-proof-screenshots/vote-settled.png`
+- `docs/assets/devnet-proof-screenshots/execute-settled.png`
+- `docs/assets/devnet-proof-screenshots/recipient-activation.png`
+
+They cover:
+
+- PrivateDAO UI
+- wallet flow
+- Devnet transaction evidence
+- governed execution outcomes
+
 ## Google Slides / Canva-ready structure
 
 Use one deck with these sections:
