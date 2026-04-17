@@ -61,7 +61,9 @@ export type LearnLecture = {
 export type LearnToolkitItem = {
   title: string;
   summary: string;
+  sandboxRoute: string;
   liveRoute: string;
+  verifyRoute: string;
   expectedOutcome: string;
   codeRefs: LearnCodeReference[];
 };
@@ -589,7 +591,9 @@ export const learnToolkitItems: LearnToolkitItem[] = [
   {
     title: "Wallet connect starter",
     summary: "The minimum shell for connecting a Devnet wallet, surfacing signer state, and moving into the product safely.",
+    sandboxRoute: "/wallet-template",
     liveRoute: "/start",
+    verifyRoute: "/dashboard",
     expectedOutcome: "A user can connect, see signer context, and enter the right corridor in seconds.",
     codeRefs: [
       { label: "Start route", href: `${githubBase}/apps/web/src/app/start/page.tsx` },
@@ -600,7 +604,9 @@ export const learnToolkitItems: LearnToolkitItem[] = [
   {
     title: "Proposal UI starter",
     summary: "The governance workbench for creating proposals, voting, revealing, executing, and linking into proof.",
+    sandboxRoute: "/governance-template",
     liveRoute: "/govern",
+    verifyRoute: "/judge",
     expectedOutcome: "A user can run the DAO lifecycle from the browser without terminal work.",
     codeRefs: [
       { label: "Govern route", href: `${githubBase}/apps/web/src/app/govern/page.tsx` },
@@ -611,7 +617,9 @@ export const learnToolkitItems: LearnToolkitItem[] = [
   {
     title: "Runtime activity starter",
     summary: "The runtime visibility layer for hashes, diagnostics, freshness, analytics, and retry-aware state.",
+    sandboxRoute: "/runtime-template",
     liveRoute: "/dashboard",
+    verifyRoute: "/diagnostics",
     expectedOutcome: "A user can tell what happened after a wallet action and verify it on Devnet.",
     codeRefs: [
       { label: "Dashboard route", href: `${githubBase}/apps/web/src/app/dashboard/page.tsx` },
@@ -623,7 +631,9 @@ export const learnToolkitItems: LearnToolkitItem[] = [
   {
     title: "Private payment starter",
     summary: "The product lane for confidential treasury, payout, reward, and proof-linked payment actions.",
+    sandboxRoute: "/payment-template",
     liveRoute: "/security",
+    verifyRoute: "/proof?judge=1",
     expectedOutcome: "A user can understand what stayed private, what became public, and where the evidence lives.",
     codeRefs: [
       { label: "Security route", href: `${githubBase}/apps/web/src/app/security/page.tsx` },

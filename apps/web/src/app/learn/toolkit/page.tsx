@@ -34,7 +34,7 @@ export default function LearnToolkitPage() {
           Use these as the bootcamp template set inside GitHub: <span className="font-semibold text-white">wallet-template</span>,
           <span className="font-semibold text-white"> governance-template</span>, <span className="font-semibold text-white">dao-ui-template</span>,
           <span className="font-semibold text-white"> runtime-template</span>, and <span className="font-semibold text-white">payment-template</span>.
-          They all resolve into the live `templates/frontend-solana-bootcamp` directory and are designed to be copied into a real app shell.
+          They now exist as live routes inside the site, stay linked to the source templates in GitHub, and hand the learner directly into the production Devnet corridors.
         </p>
       </div>
       <div className="grid gap-4 xl:grid-cols-2">
@@ -46,8 +46,14 @@ export default function LearnToolkitPage() {
               Expected outcome: {item.expectedOutcome}
             </div>
             <div className="mt-5 flex flex-wrap gap-3">
-              <Link href={item.liveRoute} className={cn(buttonVariants({ size: "sm" }))}>
-                Open live route
+              <Link href={item.sandboxRoute} className={cn(buttonVariants({ size: "sm" }))}>
+                Open sandbox
+              </Link>
+              <Link href={item.liveRoute} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+                Open production route
+              </Link>
+              <Link href={item.verifyRoute} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                Open verification route
               </Link>
             </div>
             <div className="mt-5 grid gap-3">

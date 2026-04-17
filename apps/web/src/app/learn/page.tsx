@@ -203,7 +203,7 @@ export default function LearnPage() {
                   : item.href === "https://docs.google.com/presentation/d/1ubzMiYvie7f_5viUWpqPJvjL666TEJCPk527suDxyi8/edit?usp=drivesdk"
                   ? "Open the submission-ready Google Slides deck built from the live product lectures."
                   : item.href === "/learn/toolkit"
-                  ? `Open the live starters built from ${learnToolkitItems.length} real product lanes.`
+                  ? `Open ${learnToolkitItems.length} starter sandboxes, each linked to a live product lane and a verification route.`
                   : item.href === "/learn/assignments"
                     ? "Build real UI slices, not toy examples."
                     : "Check whether the builder actually understands the product boundary."}
