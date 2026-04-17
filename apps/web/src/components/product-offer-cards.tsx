@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, Bot, Cable, Gamepad2, LockKeyhole, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, BadgeCheck, BookOpenText, Bot, Cable, Gamepad2, LockKeyhole, ShieldCheck } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -48,6 +48,24 @@ const offers = [
     href: "/services",
     cta: "Open runtime API corridor",
     icon: Cable,
+  },
+  {
+    title: "Learn and Ship on Devnet",
+    byline: "by 4 lectures + starter kits",
+    summary:
+      "Take a normal frontend builder from zero to a working Solana product corridor in minutes, then let them practice real wallet, governance, RPC, privacy, and payment flows from the UI.",
+    href: "/learn",
+    cta: "Open the live bootcamp",
+    icon: BookOpenText,
+  },
+  {
+    title: "Judge and Verify Every Operation",
+    byline: "by proof + explorer logs",
+    summary:
+      "Explain the product to a reviewer in plain language, open the matching Devnet hashes, and let them run the same lifecycle themselves without reading protocol internals first.",
+    href: "/judge",
+    cta: "Open the judge corridor",
+    icon: BadgeCheck,
   },
 ] as const;
 

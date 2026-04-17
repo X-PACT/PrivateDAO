@@ -4509,7 +4509,7 @@ body.judge-mode .judge-banner {
           <div class="hero-proof-title" id="heroProofTitle2">50 wallets, 212 attempts, 3 on-chain ZK anchors, and V3 hardening proof</div>
           <div class="hero-proof-copy" id="heroProofCopy2">The reviewer surface now combines the 50-wallet Devnet rehearsal, expected security rejects, ZK anchors, runtime evidence, and a dedicated V3 live proof packet in one machine-checked package.</div>
           <div class="hero-proof-links">
-            <a class="hero-link" href="frontier-integrations.generated.md" target="_blank">Integration Evidence ↗</a>
+            <a class="hero-link" href="integration-evidence.generated.md" target="_blank">Integration Evidence ↗</a>
             <a class="hero-link" href="launch-trust-packet.generated.md" target="_blank">Launch Trust Packet ↗</a>
           </div>
         </div>
@@ -4890,7 +4890,7 @@ body.judge-mode .judge-banner {
         <div class="treasury-command-actions">
           <button class="action-btn action-execute" type="button" onclick="openConfidentialTreasuryWizard()">Start Guided Flow</button>
           <button class="action-btn action-commit" type="button" onclick="copyConfidentialTreasuryEvidencePacket()">Copy Judge Evidence Packet</button>
-          <a class="proposal-proof-link" href="frontier-guided-flow.md" target="_blank">Open Guided Flow</a>
+          <a class="proposal-proof-link" href="product-guided-flow.md" target="_blank">Open Guided Flow</a>
           <a class="proposal-proof-link" href="confidential-payroll-flow.md" target="_blank">Open Payroll Flow</a>
           <a class="proposal-proof-link" href="magicblock/runtime.generated.md" target="_blank">Open MagicBlock Evidence</a>
           <a class="proposal-proof-link" href="zk/enforced-runtime.generated.md" target="_blank">Open ZK Evidence</a>
@@ -5525,7 +5525,7 @@ body.judge-mode .judge-banner {
         <a class="proposal-proof-link" href="confidential-payments.md" target="_blank">Confidential Payouts</a>
         <a class="proposal-proof-link" href="confidential-payroll-flow.md" target="_blank">Payroll Flow</a>
         <a class="proposal-proof-link" href="confidential-payments-diagram.md" target="_blank">Diagram</a>
-        <a class="proposal-proof-link" href="frontier-guided-flow.md" target="_blank">Guided Flow</a>
+        <a class="proposal-proof-link" href="product-guided-flow.md" target="_blank">Guided Flow</a>
         <a class="proposal-proof-link" href="magicblock/private-payments.md" target="_blank">MagicBlock Private Payments</a>
         <a class="proposal-proof-link" href="refhe-protocol.md" target="_blank">REFHE Protocol</a>
         <a class="proposal-proof-link" href="refhe-operator-flow.md" target="_blank">REFHE Operator Flow</a>
@@ -7217,7 +7217,7 @@ execute() → treasury action
           <div class="proposal-command-box">
             <div class="proposal-detail-label">FRONTIER INTEGRATIONS</div>
             <div class="diagnostic-value" style="color:var(--cyan)">LIVE DEVNET PROOF</div>
-            <div style="color:var(--text3);line-height:1.7;margin-top:8px">The repo now emits one machine-checked package that binds ZK proof anchors, MagicBlock settlement, REFHE settlement, and backend-indexed RPC state into a single reviewer-visible integration surface. See <a class="award-link" href="frontier-integrations.generated.md" target="_blank">Integration Evidence</a>.</div>
+            <div style="color:var(--text3);line-height:1.7;margin-top:8px">The repo now emits one machine-checked package that binds ZK proof anchors, MagicBlock settlement, REFHE settlement, and backend-indexed RPC state into a single reviewer-visible integration surface. See <a class="award-link" href="integration-evidence.generated.md" target="_blank">Integration Evidence</a>.</div>
           </div>
           <div class="proposal-command-box">
             <div class="proposal-detail-label">READ NODE / INDEXER</div>
@@ -7244,7 +7244,7 @@ execute() → treasury action
           <button class="proposal-proof-link" type="button" onclick="openDocument('mainnet-acceptance-matrix.generated.md','Mainnet Acceptance Matrix')">Open Acceptance Matrix</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('mainnet-proof-package.generated.md','Mainnet Proof Package')">Open Mainnet Proof Package</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('runtime-attestation.generated.json','Runtime Attestation')">Open Runtime Attestation</button>
-          <button class="proposal-proof-link" type="button" onclick="openDocument('frontier-integrations.generated.md','Integration Evidence')">Open Integration Evidence</button>
+          <button class="proposal-proof-link" type="button" onclick="openDocument('integration-evidence.generated.md','Integration Evidence')">Open Integration Evidence</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('phase-c-hardening.md','Phase C Hardening')">Open Phase C Hardening</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('zk-verifier-strategy.md','ZK Verifier Strategy')">Open Verifier Strategy</button>
           <button class="proposal-proof-link" type="button" onclick="openDocument('read-node/indexer.md','Read Node And Indexer')">Open Read Node</button>
@@ -13732,8 +13732,8 @@ function copyConfidentialTreasuryEvidencePacket() {
     'Reviewer links:',
     `- Live app: ${getAppBaseUrl()}`,
     `- Payroll flow: ${getAbsoluteDocUrl('confidential-payroll-flow.md')}`,
-    `- Frontier flow: ${getAbsoluteDocUrl('frontier-guided-flow.md')}`,
-    `- Frontier integrations: ${getAbsoluteDocUrl('frontier-integrations.generated.md')}`,
+    `- Product guided flow: ${getAbsoluteDocUrl('product-guided-flow.md')}`,
+    `- Integration evidence: ${getAbsoluteDocUrl('integration-evidence.generated.md')}`,
     `- MagicBlock runtime: ${getAbsoluteDocUrl('magicblock/runtime.generated.md')}`,
     `- ZK-enforced runtime: ${getAbsoluteDocUrl('zk/enforced-runtime.generated.md')}`,
     `- Mainnet blockers: ${getAbsoluteDocUrl('mainnet-blockers.md')}`,

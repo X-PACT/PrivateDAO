@@ -281,6 +281,26 @@ The deck should stay tool-neutral:
 - every lecture must end with one live route and one code reference
 - the deck must explain product choices in plain language before naming lower-level cryptography or infrastructure
 - the live product must remain the proof layer behind the slides, not a separate theoretical appendix
+
+## Google Slides / Canva-ready build pattern
+
+Use the same rhythm for either Google Slides or Canva:
+
+1. problem in plain language
+2. why this matters on Solana
+3. how PrivateDAO solves it
+4. live route to open now
+5. code reference + starter template
+6. assignment + quiz checkpoint
+
+For portability between tools:
+
+- keep every slide in `title / 3 bullets / live route / code ref` format
+- use simple block diagrams that can be rebuilt in Canva quickly
+- limit screenshots to live product routes and Devnet explorer evidence
+- keep one `Try it now` CTA and one `Check the code` CTA in every lecture section
+- avoid sponsor- or competition-specific framing in the public educational deck
+
 6. toolkit
 7. assignments
 8. quizzes

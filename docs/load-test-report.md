@@ -7,32 +7,32 @@
 - network: devnet
 - program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - governance mint: `AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt`
-- total tx count: 185
-- average latency ms: 2573.74
-- zk participation summary: 5 zk tester wallets, 7 zk proof artifacts
+- total tx count: 145
+- average latency ms: 1542.99
+- zk participation summary: 5 zk tester wallets, 0 zk proof artifacts
 
 ## Summary Snapshot
 
 - total wallets: 50
 - successful commits: 40
-- successful reveals: 35
-- rejected invalid reveals: 17
-- finalize success: 1
-- execute success: 1
+- successful reveals: 0
+- rejected invalid reveals: 0
+- finalize success: 0
+- execute success: 0
 - confidential payout success: 0
-- replay rejections: 6
-- authority mismatch rejections: 9
-- total tx count: 185
-- average latency ms: 2573.74
+- replay rejections: 0
+- authority mismatch rejections: 8
+- total tx count: 145
+- average latency ms: 1542.99
 
 ## DAO Bootstrap Results
 
-- DAO: `CC65ZFSQmT1K3ScBFHrtq4Cxpt8y84Yqr3Sq5rGD1TYx`
-- Treasury: `8XV4DUCKH1H8XxK6Kp19Arq533uZCCPEvYm6zqT9GJry`
-- Proposal: `G76rRCe9MXbroK7CPC9jia1JCbuUtcV55S2hd1GCpUzL`
-- create-dao tx: `25xJsSWU9SJY7ewEGvMqX6qjDvAk7y12sPwv8LeQgEaNpQ1bwcnQTNXwBe8hacD4fgurMMwxc1LG3Bcw1QRefw7E`
-- deposit tx: `btQ8QBxszLitToztJvMiu3mTmN3cWivfK63kkNnYibKhpkDnTCZdSQSdSDYMAWi3tVeK525gaWHVKF5R99bhsWK`
-- create-proposal tx: `5t5XmtvrrYjYsJPe4dG4n81NAQTNkLZyWb4tQDnhCbFL31pi1cTJNcfpbdAnebBm2bLXQdTF5Ps89dygD1FHRUy5`
+- DAO: `Ae87EESnJwA6q9okUmemJXSAthynQjvKnxaNKyD4o7qz`
+- Treasury: `GsMD4rTaqsJY9ngn5tw93NRet3U355RGbpVun8Fxnms1`
+- Proposal: `7TKCbcUsrAaQhu3XuCLmXUPo2KCbjDtFF8sxtY6QmuVx`
+- create-dao tx: `32ka4VehdihxUExu7XE2nq3VRNnyygXWDXRz65QwAja8nvtneMSVPeGYZBWesXYUwv2WJngVG4Esd8cZXuVgYsvt`
+- deposit tx: `44h9e5thpBfcH8Tx2Z5EEt8prNWbPbfGqE9FRAmoZuUU8nn5gtymvCrmHYEqYqHN4h1sP9K5hBCtESBEP2pNNwYo`
+- create-proposal tx: `sHcNjRUXfbsocDPoeAqdhhfLgQKZ5BrwaTYiCkqHUnBdvUMnAmagLGi5Czr44hyZ17qLyT2GNupRgbGtCDvuHVy`
 
 ## Commit Wave Results
 
@@ -43,63 +43,57 @@
 
 ## Reveal Results
 
-- successful reveals: 35
+- successful reveals: 0
 - late reveal attempts: 5
-- replay and invalid reveal rejections: 17
+- replay and invalid reveal rejections: 0
 
 ## Finalize Results
 
-- finalize success tx count: 1
-- duplicate finalize rejections: 1
+- finalize success tx count: 0
+- duplicate finalize rejections: 0
 
 ## Execute Results
 
-- execute success tx count: 1
-- pre-unlock execute rejections: 1
-- treasury miswiring rejections: 1
-- duplicate execute rejections: 1
+- execute success tx count: 0
+- pre-unlock execute rejections: 0
+- treasury miswiring rejections: 0
+- duplicate execute rejections: 0
 
 ## ZK Verification Results
 
 - verification mode: off-chain Groth16 companion layer
 - on-chain verifier integration: not present in the current protocol
-- zk proof entries: 7
-- vote proof entries: 5
-- tally proof entries: 1
-- delegation proof entries: 1
+- zk proof entries: 0
+- vote proof entries: 0
+- tally proof entries: 0
+- delegation proof entries: 0
 
 ## Adversarial Results
 
-- total adversarial scenarios: 33
-- rejected as expected: 32
+- total adversarial scenarios: 10
+- rejected as expected: 10
 - unexpected successes: 0
 
 ## Performance Metrics
 
-- total execution time ms: 5682986
-- average tx latency ms: 2573.74
-- failure rate: 15.09%
+- total execution time ms: 648360
+- average tx latency ms: 1542.99
+- failure rate: 6.54%
 - retry rate: 0.00%
 
 ## Explorer Links
 
-- https://solscan.io/account/G76rRCe9MXbroK7CPC9jia1JCbuUtcV55S2hd1GCpUzL?cluster=devnet
-- https://explorer.solana.com/tx/25xJsSWU9SJY7ewEGvMqX6qjDvAk7y12sPwv8LeQgEaNpQ1bwcnQTNXwBe8hacD4fgurMMwxc1LG3Bcw1QRefw7E?cluster=devnet
-- https://explorer.solana.com/tx/btQ8QBxszLitToztJvMiu3mTmN3cWivfK63kkNnYibKhpkDnTCZdSQSdSDYMAWi3tVeK525gaWHVKF5R99bhsWK?cluster=devnet
-- https://explorer.solana.com/tx/5t5XmtvrrYjYsJPe4dG4n81NAQTNkLZyWb4tQDnhCbFL31pi1cTJNcfpbdAnebBm2bLXQdTF5Ps89dygD1FHRUy5?cluster=devnet
-- https://explorer.solana.com/tx/25ELK4ivcB7H4Yh4UrPv7iAfzrPLmzejMvr2ZX5CXmb16RmKURhAe2xj925zjFtiGygDDsHby1cBG3ir9Rb5CKQK?cluster=devnet
-- https://explorer.solana.com/tx/4LRoMeGxwBHJi89tPTGM8CmZPyyqqYD9AkjLumxmcHnMWmtL7ncmhJQ1WJy8rqiGChJU99xrRRaE72JVLgzLZpw?cluster=devnet
+- https://solscan.io/account/7TKCbcUsrAaQhu3XuCLmXUPo2KCbjDtFF8sxtY6QmuVx?cluster=devnet
+- https://explorer.solana.com/tx/32ka4VehdihxUExu7XE2nq3VRNnyygXWDXRz65QwAja8nvtneMSVPeGYZBWesXYUwv2WJngVG4Esd8cZXuVgYsvt?cluster=devnet
+- https://explorer.solana.com/tx/44h9e5thpBfcH8Tx2Z5EEt8prNWbPbfGqE9FRAmoZuUU8nn5gtymvCrmHYEqYqHN4h1sP9K5hBCtESBEP2pNNwYo?cluster=devnet
+- https://explorer.solana.com/tx/sHcNjRUXfbsocDPoeAqdhhfLgQKZ5BrwaTYiCkqHUnBdvUMnAmagLGi5Czr44hyZ17qLyT2GNupRgbGtCDvuHVy?cluster=devnet
 
 ## Failure Causes
 
-- 5 × AnchorError thrown in programs/private-dao/src/lib.rs:870. Error Code: RevealClosed. Error Number: 6011. Error Message:
-- 4 × AnchorError thrown in programs/private-dao/src/lib.rs:877. Error Code: NotAuthorizedToReveal. Error Number: 6018. Error
-- 4 × AnchorError thrown in programs/private-dao/src/lib.rs:880. Error Code: CommitmentMismatch. Error Number: 6015. Error Mes
-- 4 × AnchorError thrown in programs/private-dao/src/lib.rs:872. Error Code: AlreadyRevealed. Error Number: 6014. Error Messag
 - 3 × AnchorError caused by account: voter_record. Error Code: ConstraintSeeds. Error Number: 2006. Error Message: A seeds con
 - 3 × AnchorError caused by account: delegation_marker. Error Code: ConstraintSeeds. Error Number: 2006. Error Message: A seed
 - 2 × AnchorError caused by account: voter_token_account. Error Code: ConstraintRaw. Error Number: 2003. Error Message: A raw
-- 2 × AnchorError thrown in programs/private-dao/src/lib.rs:706. Error Code: DelegationOverlap. Error Number: 6041. Error Mess
+- 2 × AnchorError thrown in programs/private-dao/src/lib.rs:1094. Error Code: DelegationOverlap. Error Number: 6041. Error Mes
 
 ## Interpretation
 

@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-04-07T21:59:25.689Z",
-  "runLabel": "20260407202442",
+  "generatedAt": "2026-04-17T13:01:05.800Z",
+  "runLabel": "20260417125017",
   "network": "devnet",
   "profile": {
     "name": "50",
@@ -11,143 +11,12 @@
   },
   "program_id": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
   "governance_mint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
-  "proposal_public_key": "G76rRCe9MXbroK7CPC9jia1JCbuUtcV55S2hd1GCpUzL",
+  "proposal_public_key": "7TKCbcUsrAaQhu3XuCLmXUPo2KCbjDtFF8sxtY6QmuVx",
   "verification_mode": "offchain-groth16",
   "onchain_verifier": false,
-  "entries": [
-    {
-      "wallet_pubkey": "7LFqXa2TSVxbTta7HAMhwPzk5xXK8MwYRhmAvx8sKvJA",
-      "role": "zk-tester",
-      "layer": "vote",
-      "circuit": "private_dao_vote_overlay",
-      "proof_hash": "bfc2d8f61b7eb63aafb0abbf0dac0d7d4898d7d8e06b3c4dc102034826286e8c",
-      "public_inputs_hash": "dc10254d045a822131d311cb5f8bc10d96c202d2b8af3c6daa65bd15528fe56b",
-      "verification_mode": "offchain-groth16",
-      "verification_tx_signature": null,
-      "verified": true,
-      "generated_at": "2026-04-07T21:07:38.717Z",
-      "input_path": "zk/devnet-load/vote-10.input.json",
-      "proof_path": "zk/devnet-load/vote-10.proof.json",
-      "public_path": "zk/devnet-load/vote-10.public.json"
-    },
-    {
-      "wallet_pubkey": "FQ59hFvDharbbq2bjFjZrxqNZc2ACmit8PimwLABzsbp",
-      "role": "zk-tester",
-      "layer": "vote",
-      "circuit": "private_dao_vote_overlay",
-      "proof_hash": "d0390afcfcf9f5ba64f8afdeecfedb89577fd2285a7429372486b185f449dca1",
-      "public_inputs_hash": "d67be65c79bdb8a424da2b162a81e556c5b943c7efe240193dedf50d28df8897",
-      "verification_mode": "offchain-groth16",
-      "verification_tx_signature": null,
-      "verified": true,
-      "generated_at": "2026-04-07T21:08:00.191Z",
-      "input_path": "zk/devnet-load/vote-20.input.json",
-      "proof_path": "zk/devnet-load/vote-20.proof.json",
-      "public_path": "zk/devnet-load/vote-20.public.json"
-    },
-    {
-      "wallet_pubkey": "C8sjAic5BsgNWJmVaR68X3mNLMMcbvwcVm58Z9TvouwP",
-      "role": "zk-tester",
-      "layer": "vote",
-      "circuit": "private_dao_vote_overlay",
-      "proof_hash": "7b890b4d1c0294b30c795e08a6a7a915291a76749a492a1414f71644039737fe",
-      "public_inputs_hash": "1a04758df26f36b39abb0b3ce1adf3c7ea795284e8ca72f3272f1fcb6618942f",
-      "verification_mode": "offchain-groth16",
-      "verification_tx_signature": null,
-      "verified": true,
-      "generated_at": "2026-04-07T21:08:21.994Z",
-      "input_path": "zk/devnet-load/vote-30.input.json",
-      "proof_path": "zk/devnet-load/vote-30.proof.json",
-      "public_path": "zk/devnet-load/vote-30.public.json"
-    },
-    {
-      "wallet_pubkey": "BBw9LJit4cDvCToMs61mSYZCfjdVWuEUbVT38tLER4Kf",
-      "role": "zk-tester",
-      "layer": "vote",
-      "circuit": "private_dao_vote_overlay",
-      "proof_hash": "7b7d9a58eb1f333740f595ff50bb4e05588b88780bb6c3043cec0ecd5aeaf645",
-      "public_inputs_hash": "ff23adfb76e0aed1466de250bbdbc0f566adb6221a013408aa4e324550a1b9f1",
-      "verification_mode": "offchain-groth16",
-      "verification_tx_signature": null,
-      "verified": true,
-      "generated_at": "2026-04-07T21:08:47.230Z",
-      "input_path": "zk/devnet-load/vote-40.input.json",
-      "proof_path": "zk/devnet-load/vote-40.proof.json",
-      "public_path": "zk/devnet-load/vote-40.public.json"
-    },
-    {
-      "wallet_pubkey": "JDaW1PntvyheypPK963TcjFqq1RzMD3CP9SSWDLkHjNu",
-      "role": "zk-tester",
-      "layer": "vote",
-      "circuit": "private_dao_vote_overlay",
-      "proof_hash": "cbc3dbe9e9036daec5cc22c97439d3449c76820c55ea10dc10020f8b4e5f57a6",
-      "public_inputs_hash": "f973104178b21ad5563eae9bed4c262f827ca8b7389c64380646b67407a94f27",
-      "verification_mode": "offchain-groth16",
-      "verification_tx_signature": null,
-      "verified": true,
-      "generated_at": "2026-04-07T21:09:12.530Z",
-      "input_path": "zk/devnet-load/vote-50.input.json",
-      "proof_path": "zk/devnet-load/vote-50.proof.json",
-      "public_path": "zk/devnet-load/vote-50.public.json"
-    },
-    {
-      "wallet_pubkey": "7LFqXa2TSVxbTta7HAMhwPzk5xXK8MwYRhmAvx8sKvJA,FQ59hFvDharbbq2bjFjZrxqNZc2ACmit8PimwLABzsbp",
-      "role": "zk-tester",
-      "layer": "tally",
-      "circuit": "private_dao_tally_overlay",
-      "proof_hash": "89101cc58f57eaa1059d50bc6346c8501176a5fefe940a315f4a919eddabad01",
-      "public_inputs_hash": "1963536a2095f96053b7d2782b11daa73754dd5ee86ea800865f0428abaff323",
-      "verification_mode": "offchain-groth16",
-      "verification_tx_signature": null,
-      "verified": true,
-      "generated_at": "2026-04-07T21:09:39.847Z",
-      "input_path": "zk/devnet-load/tally.input.json",
-      "proof_path": "zk/devnet-load/tally.proof.json",
-      "public_path": "zk/devnet-load/tally.public.json"
-    },
-    {
-      "wallet_pubkey": "DY8n2vPS7w13xnqZFHqGP8MXYk9BYQuEXPE9mbborhrK",
-      "role": "adversarial",
-      "layer": "delegation",
-      "circuit": "private_dao_delegation_overlay",
-      "proof_hash": "710a778b05764217e50fa104b72a2ddcea231b2af8f93c5384935dc88884b24c",
-      "public_inputs_hash": "dfb4ac9e94972b15cc0d9f84defe6da61cc6a671a05a179a9c51cddc6304066d",
-      "verification_mode": "offchain-groth16",
-      "verification_tx_signature": null,
-      "verified": true,
-      "generated_at": "2026-04-07T21:10:03.384Z",
-      "input_path": "zk/devnet-load/delegation-19.input.json",
-      "proof_path": "zk/devnet-load/delegation-19.proof.json",
-      "public_path": "zk/devnet-load/delegation-19.public.json"
-    }
-  ],
+  "entries": [],
   "onchain_proof_anchors": {
-    "proposal_public_key": "G76rRCe9MXbroK7CPC9jia1JCbuUtcV55S2hd1GCpUzL",
-    "entries": [
-      {
-        "layer": "vote",
-        "circuit": "private_dao_vote_overlay",
-        "anchor_pda": "H3tQqczPKpKBB3Cyg9D8B92K2Lt68id5saLMTTXcYsJp",
-        "tx_signature": "4fLregTXXGC98ba8VKqvbQTeC7JjwakmVv1E3oZzbiJc7Sv5tmmMqSJoCp5eS5eVcq2PXHehwH8CAxeWu4LCeahu",
-        "explorer_url": "https://explorer.solana.com/tx/4fLregTXXGC98ba8VKqvbQTeC7JjwakmVv1E3oZzbiJc7Sv5tmmMqSJoCp5eS5eVcq2PXHehwH8CAxeWu4LCeahu?cluster=devnet",
-        "anchored_at": "2026-04-07T21:25:25.720Z"
-      },
-      {
-        "layer": "delegation",
-        "circuit": "private_dao_delegation_overlay",
-        "anchor_pda": "2XfxWWLuMYyRiNkqBfbiCZF56RsBNQVLQ7Ku4upqmqe6",
-        "tx_signature": "y3nJ5Tu67sikEbgr1zj13iYNT1UhPEmUkuT8fLbbCyir6tJCAAGWue1W8i3nMBobarEdN8jnNsjhiBFK9cbztE2",
-        "explorer_url": "https://explorer.solana.com/tx/y3nJ5Tu67sikEbgr1zj13iYNT1UhPEmUkuT8fLbbCyir6tJCAAGWue1W8i3nMBobarEdN8jnNsjhiBFK9cbztE2?cluster=devnet",
-        "anchored_at": "2026-04-07T21:25:28.614Z"
-      },
-      {
-        "layer": "tally",
-        "circuit": "private_dao_tally_overlay",
-        "anchor_pda": "7i5dJ53Fx3WhdP534C7tEhabPoXZ97e72wzo3uRwDEEr",
-        "tx_signature": "3hwA2kjJQfhTNHANdDdHhJ7AkwuMpDdGbJadUpYKmLJ6UDKgtyBzR5qKbesmP6bDSBYQDZBQ9ygoEH2pZHPJj97m",
-        "explorer_url": "https://explorer.solana.com/tx/3hwA2kjJQfhTNHANdDdHhJ7AkwuMpDdGbJadUpYKmLJ6UDKgtyBzR5qKbesmP6bDSBYQDZBQ9ygoEH2pZHPJj97m?cluster=devnet",
-        "anchored_at": "2026-04-07T21:25:31.776Z"
-      }
-    ]
+    "proposal_public_key": "7TKCbcUsrAaQhu3XuCLmXUPo2KCbjDtFF8sxtY6QmuVx",
+    "entries": []
   }
 }
