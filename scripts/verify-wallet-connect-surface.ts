@@ -131,7 +131,7 @@ async function main() {
     }
 
     await button.click();
-    const modal = page.locator(".wallet-adapter-modal-wrapper");
+    const modal = page.getByRole("heading", { name: /choose a devnet wallet/i });
     await modal.waitFor({ state: "visible", timeout: 5000 });
 
     for (const walletName of ["Solflare", "Phantom", "Backpack"]) {
