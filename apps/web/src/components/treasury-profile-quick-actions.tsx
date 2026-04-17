@@ -21,7 +21,7 @@ const quickActions = [
   {
     value: "pilot-funding",
     title: "Pilot funding",
-    summary: "Open the buyer-facing pilot path with the strongest startup/demo bundle already attached.",
+    summary: "Open the buyer-facing pilot path with the strongest startup and product bundle already attached.",
     href: "/engage?profile=pilot-funding",
     icon: BriefcaseBusiness,
   },

@@ -38,7 +38,7 @@ export default function DiagnosticsPage() {
       title="Generated artifacts, runtime checks, and reviewer bundle health in one place"
       description="This page keeps the operator story productized: what is packaged, what is proven, what is actively being strengthened next, and how the verification chain stays coherent inside a professional operations shell."
       badges={[
-        { label: "Diagnostics", variant: "warning" },
+        { label: "Diagnostics", variant: "violet" },
         { label: "Runtime surfaces", variant: "cyan" },
         { label: "Reviewer bundle aware", variant: "success" },
       ]}

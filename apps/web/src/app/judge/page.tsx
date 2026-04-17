@@ -24,7 +24,7 @@ export default function JudgePage() {
     <OperationsShell
       eyebrow="Judge"
       title="Review the real product, the real transactions, and the shortest proof path first"
-      description="This route is built for a fast reviewer or judge. It shows the DAO lifecycle, captured Devnet signatures, the new Agentic Treasury Micropayment Rail, and the shortest route into the deeper proof and document surfaces."
+      description="This route is built for a fast reviewer or judge. It shows the DAO lifecycle, captured Devnet signatures, the new Agentic Treasury Micropayment Rail, and the shortest route into the deeper proof and document surfaces. A normal visitor can use it too: the chain evidence is public and readable even when the protected parts of the workflow stay private until the correct stage."
       badges={[
         { label: "Judge-first", variant: "cyan" },
         { label: "Devnet live", variant: "success" },
@@ -41,7 +41,9 @@ export default function JudgePage() {
           </ol>
           <div className="mt-4 text-white/62">
             These are captured reference executions on Devnet. When you later run your own wallet flow, use this judge
-            route and the proof center as the comparison point.
+            route and the proof center as the comparison point. The visible blockchain layer should reassure a normal
+            reviewer that governance happened fairly, settlement happened for real, and the protected parts stayed
+            private for the right reasons instead of disappearing into a black box.
           </div>
           <div className="mt-5 flex flex-wrap gap-3">
             <Link href="/proof?judge=1" className={cn(buttonVariants({ size: "sm" }))}>

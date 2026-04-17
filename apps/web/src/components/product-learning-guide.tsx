@@ -11,6 +11,7 @@ import {
   LockKeyhole,
   Radio,
   ShieldCheck,
+  Sparkles,
   Wallet,
   Waypoints,
   Zap,
@@ -64,6 +65,16 @@ const productCorridors = [
     icon: Gamepad2,
   },
   {
+    title: "Identity and operator access",
+    problem:
+      "Organizations need human-readable identity, signer accountability, and a path that helps normal users act safely without memorizing raw blockchain primitives.",
+    solution:
+      "PrivateDAO treats identity as part of the product with wallet-first execution, readable context, and guided operator rails that stay understandable before and after the signature.",
+    href: "/start",
+    label: "Open wallet and identity path",
+    icon: Wallet,
+  },
+  {
     title: "API and RPC visibility",
     problem:
       "Users and reviewers lose trust when blockchain products hide the data path, rely on one RPC, or make evidence impossible to inspect.",
@@ -76,6 +87,14 @@ const productCorridors = [
 ] as const;
 
 const technologyCards = [
+  {
+    title: "Voice-assisted governance",
+    body:
+      "Voice input now works as a real browser command layer. A user can speak or type one command, fill the DAO or vote workbench instantly, and still keep the wallet as the final signing boundary.",
+    href: "/govern",
+    label: "Open voice governance",
+    icon: Sparkles,
+  },
   {
     title: "ZK voting",
     body:
@@ -127,10 +146,34 @@ const technologyCards = [
   {
     title: "AI-assisted product intelligence",
     body:
-      "Proposal review, treasury review, voting compression, RPC interpretation, and gaming assistance live as product tools, not detached demos.",
+      "Proposal review, treasury review, voting compression, RPC interpretation, and gaming assistance live as product tools, not detached prototypes.",
     href: "/intelligence",
     label: "Open intelligence route",
     icon: Bot,
+  },
+  {
+    title: "SNS identity and readable governance",
+    body:
+      "Readable identity lowers the barrier for real teams. Identity-aware governance helps contributors, reviewers, and operators understand who is acting without forcing every user to start from raw addresses only.",
+    href: "/start",
+    label: "Open identity-aware start path",
+    icon: Wallet,
+  },
+  {
+    title: "Torque MCP and autonomous operations",
+    body:
+      "PrivateDAO is being shaped to expose governed operations through MCP-friendly rails so operator tools and AI assistants can inspect delivery state, proof, and execution context without bypassing the product boundary.",
+    href: "/services",
+    label: "Open service automation rails",
+    icon: Cable,
+  },
+  {
+    title: "Agentic treasury execution",
+    body:
+      "The micropayment rail is the first governed onchain agent lane inside PrivateDAO. It turns approved policy into repeated small settlement actions that stay reviewer-visible after execution.",
+    href: "/documents/agentic-treasury-micropayment-rail",
+    label: "Open agentic micropayment rail",
+    icon: Sparkles,
   },
 ] as const;
 
@@ -192,9 +235,65 @@ const plainLanguageTechnologyCards = [
       "APIs let organizations, games, dashboards, and operators connect PrivateDAO into real systems without rebuilding governance or treasury logic from scratch.",
   },
   {
+    title: "SNS identity",
+    summary:
+      "Readable identity lowers the learning barrier. People trust governance more when names, roles, and signer context are easier to understand than raw addresses alone.",
+  },
+  {
+    title: "Voice governance",
+    summary:
+      "Voice governance does not remove wallet security. It removes friction by turning plain language into structured product actions before the wallet signs.",
+  },
+  {
+    title: "Torque MCP and agent tools",
+    summary:
+      "MCP-style rails let operator assistants and automation tools interact with the product through governed interfaces instead of ad hoc scripts or one-off dashboards.",
+  },
+  {
     title: "Jupiter and Kamino",
     summary:
       "Jupiter shapes treasury routing and swaps. Kamino frames disciplined capital coordination so treasury policy can evolve beyond idle balances or manual movement.",
+  },
+] as const;
+
+const complexityToProductCards = [
+  {
+    title: "One browser action replaces a multi-step operator ritual",
+    summary:
+      "What used to require scripts, raw addresses, manual signer coordination, and explorer tabs is now compressed into guided browser actions that still preserve the same chain-level boundaries.",
+  },
+  {
+    title: "Privacy is preserved before execution, not invented after it",
+    summary:
+      "The product keeps intent private during the sensitive phase, then reveals proof, logs, and runtime state after the action lands. That protects fairness without sacrificing accountability.",
+  },
+  {
+    title: "Voice commands reduce friction without weakening trust",
+    summary:
+      "Voice voting and voice treasury commands do not bypass the wallet. They convert plain language into structured actions, then hand final authority back to the signer and the chain.",
+  },
+  {
+    title: "Treasury complexity becomes a normal user workflow",
+    summary:
+      "PrivateDAO turns grants, payroll, vendor payouts, and micropayment execution into one guided route so a normal user can complete them without terminal work or spreadsheet-driven coordination.",
+  },
+] as const;
+
+const publicEvidenceCards = [
+  {
+    title: "What stays private",
+    summary:
+      "Vote intent, sensitive treasury preparation, and protected execution context stay hidden during the stage where early exposure would distort fairness or leak strategy.",
+  },
+  {
+    title: "What becomes public",
+    summary:
+      "Transaction hashes, runtime logs, settlement evidence, and execution status become visible on Devnet so anyone can inspect what really happened after the action lands.",
+  },
+  {
+    title: "Why fast RPC matters",
+    summary:
+      "A fast and reliable RPC layer makes the same user flow feel honest. Proposal state, payout state, and proof freshness should update quickly enough that users trust the product instead of wondering if the chain stalled.",
   },
 ] as const;
 
@@ -202,7 +301,7 @@ const roadmapMilestones = [
   {
     title: "Browser-first Devnet completion",
     detail:
-      "Every core action should be possible from the UI only: connect, propose, vote, reveal, execute, inspect proof, and inspect logs.",
+      "Every core action should be possible from the UI only: connect, propose, vote, reveal, execute, inspect proof, inspect logs, and now drive the flow with voice or typed commands.",
   },
   {
     title: "Production-grade evidence corridor",
@@ -212,7 +311,7 @@ const roadmapMilestones = [
   {
     title: "RPC and API service maturity",
     detail:
-      "PrivateDAO should look like infrastructure as well as a governance product, with hosted-read, export, and low-latency service posture visible to institutions.",
+      "PrivateDAO should look like infrastructure as well as a governance product, with hosted-read, export, low-latency service posture, and identity-aware API rails visible to institutions.",
   },
   {
     title: "Production release under Solana",
@@ -227,6 +326,12 @@ const verificationSteps = [
     detail:
       "Use Solflare, Phantom, or Backpack. The goal is to run the product with a real signer, not browse screenshots only.",
     href: "/start",
+  },
+  {
+    title: "Use the voice-assisted command lane if you want the fastest start",
+    detail:
+      "Open govern and speak or type one command at a time. The workbench converts normal language into DAO, proposal, vote, and treasury inputs without asking the visitor to think like a terminal user.",
+    href: "/govern",
   },
   {
     title: "Create or join a DAO flow",
@@ -315,6 +420,20 @@ export function ProductLearningGuide({
 
       <Card>
         <CardHeader>
+          <CardTitle>What the user can see on-chain, and what remains protected</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-4 md:grid-cols-3">
+          {publicEvidenceCards.map((item) => (
+            <div key={item.title} className="rounded-[26px] border border-white/8 bg-white/[0.04] p-5">
+              <div className="text-base font-medium text-white">{item.title}</div>
+              <p className="mt-3 text-sm leading-7 text-white/58">{item.summary}</p>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
           <CardTitle>What was broken before, and what this product changes</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
@@ -356,6 +475,20 @@ export function ProductLearningGuide({
               </div>
             );
           })}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>How complex blockchain behavior becomes simple product behavior</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-4 md:grid-cols-2">
+          {complexityToProductCards.map((item) => (
+            <div key={item.title} className="rounded-[26px] border border-white/8 bg-[linear-gradient(180deg,rgba(9,14,28,0.96),rgba(6,10,19,0.98))] p-5">
+              <div className="text-base font-medium text-white">{item.title}</div>
+              <p className="mt-3 text-sm leading-7 text-white/60">{item.summary}</p>
+            </div>
+          ))}
         </CardContent>
       </Card>
 
@@ -428,8 +561,10 @@ export function ProductLearningGuide({
             <ul className="mt-4 space-y-3">
               <li>Wallet-signed Devnet actions instead of static screenshots.</li>
               <li>Proposal and settlement signatures that can be followed into proof and runtime views.</li>
+              <li>Public Devnet hashes and logs that show the action really landed without asking the visitor to decode raw blockchain internals alone.</li>
               <li>Telemetry, analytics, and runtime packets that explain what changed after each action.</li>
               <li>Privacy and cryptography described in human language first, with technical depth one click away.</li>
+              <li>Fast RPC behavior that makes proposal state, proof freshness, and treasury state update quickly enough to feel trustworthy.</li>
               <li>A product shell that feels close to production, even while the environment stays safely on Devnet.</li>
             </ul>
             <div className="mt-5 flex flex-wrap gap-3">
@@ -465,7 +600,7 @@ export function ProductLearningGuide({
               <p className="text-sm leading-7 text-white/64">
                 This rail is the clearest example of what PrivateDAO is becoming: a product where a governed decision
                 can drive many small on-chain treasury actions from one coherent operational flow. Instead of a one-off
-                payout demo, the product shows how approved policy can coordinate repeated micropayments, keep them
+                payout lane, the product shows how approved policy can coordinate repeated micropayments, keep them
                 reviewable, and attach proof and runtime evidence after the fact.
               </p>
               <div className="grid gap-3 sm:grid-cols-2">

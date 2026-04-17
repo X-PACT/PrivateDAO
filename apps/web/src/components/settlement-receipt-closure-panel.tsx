@@ -42,7 +42,7 @@ export function SettlementReceiptClosurePanel() {
               Why funders care
             </div>
             <div className="mt-3 text-sm leading-7 text-white/68">
-              This is a bounded integration closure that upgrades privacy demos into a reviewer-safe payment corridor with stronger commercial credibility.
+              This is a bounded integration closure that upgrades privacy workflows into a reviewer-safe payment corridor with stronger commercial credibility.
             </div>
           </div>
         </div>

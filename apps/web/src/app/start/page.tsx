@@ -23,7 +23,7 @@ export default function StartPage() {
     <OperationsShell
       eyebrow="Quick start"
       title="Connect a wallet and start the full Devnet flow without learning the product architecture first"
-      description="This page is the easy on-ramp. Connect a Devnet wallet, run the real governance flow yourself, and keep proof and trust surfaces one layer away when you want to inspect how the product stays private, fast, and verifiable, all from the browser without scripts or terminal work."
+      description="This page is the easy on-ramp. Connect a Devnet wallet, run the real governance flow yourself, and keep proof and trust surfaces one layer away when you want to inspect how the product stays private, fast, and verifiable. The goal is simple: a normal user can complete the flow, then open the blockchain evidence and understand what happened."
       navigationMode="guided"
       badges={[
         { label: "Consumer-first shell", variant: "success" },

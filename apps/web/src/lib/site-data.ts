@@ -127,7 +127,7 @@ export const frontierOperatingSignals = [
     title: "Colosseum now rewards product impact first",
     summary:
       "The single most important meta-shift is that Frontier Hackathon is no longer about stacking tracks. It is about product impact, startup quality, and believable user value.",
-    action: "Lead every demo from the live product shell, not from protocol internals.",
+    action: "Lead every product walkthrough from the live product shell, not from protocol internals.",
   },
   {
     title: "Drift proved ops failures can beat good code",
@@ -171,7 +171,7 @@ export const storyVideo = {
 export const walletChoices = [
   {
     name: "Solflare",
-    fit: "Best first-run choice for live dApp demos, consumer UX, and partner-facing wallet tracks.",
+    fit: "Best first-run choice for live dApps, consumer UX, and partner-facing wallet flows.",
   },
   {
     name: "Phantom",
@@ -214,13 +214,13 @@ export const communityLinks = [
   {
     title: "YouTube",
     href: "https://www.youtube.com/@privatedao",
-    summary: "Official PrivateDAO channel for product videos, demos, and competition reels.",
+    summary: "Official PrivateDAO channel for product videos, weekly updates, and public walkthroughs.",
     cta: "Open channel",
   },
   {
     title: "Discord",
     href: "https://discord.gg/PbM8BC2A",
-    summary: "Join the PrivateDAO server for product updates, community discussion, demo drops, and operator coordination.",
+    summary: "Join the PrivateDAO server for product updates, community discussion, weekly releases, and operator coordination.",
     cta: "Join server",
   },
 ];
@@ -668,7 +668,7 @@ export const competitionTracks = [
       "PrivateDAO is already strongest where private voting, ZK review, REFHE envelopes, MagicBlock corridors, and reviewer-visible evidence converge.",
     edge: "This is the most natural track for the current protocol, security story, and additive V3 hardening posture.",
     gap: "The biggest remaining upside is sharper problem framing and a cleaner end-user story per use case.",
-    action: "Lead with PrivateDAO Core, Gaming DAO Corridor, ZK Matrix, and the confidence engine in the demo and deck.",
+    action: "Lead with PrivateDAO Core, the Gaming DAO corridor, the ZK matrix, and the confidence engine across the product walkthrough and deck.",
     href: "/security",
     sourceUrl: "https://superteam.fun/earn/listing/privacy-track-colosseum-hackathon-powered-by-magicblock-st-my-and-sns",
   },
@@ -933,7 +933,7 @@ export const competitionTracks = [
     priority: "Priority 7",
     prizeSummary: "Regional grant corridor where infrastructure value, ecosystem relevance, and proof of execution matter more than hackathon theatrics.",
     winnerAnnouncementBy: "Follow the Poland grants page for the active funding window and review timing.",
-    recommendedWallet: "Solflare for the main demo; buyer and reviewer materials matter more than wallet novelty here.",
+    recommendedWallet: "Solflare for the main product path; buyer and reviewer materials matter more than wallet novelty here.",
     demoRoute: "/services",
     winningThesis:
       "Position PrivateDAO as regional infrastructure-grade governance product with commercial rails, trust discipline, and shipped proof on Solana.",
@@ -954,7 +954,7 @@ export const competitionTracks = [
     priority: "Priority 4",
     prizeSummary: "Startup grant and acceleration corridor where product coherence, traction narrative, and launch discipline matter more than isolated technical novelty.",
     winnerAnnouncementBy: "Follow the accelerator grant page and Superteam fast-track support timing.",
-    recommendedWallet: "Solflare for the product demo; capital reviewers care more about coherence and commercial readiness than wallet variety.",
+    recommendedWallet: "Solflare for the main product walkthrough; capital reviewers care more about coherence and commercial readiness than wallet variety.",
     demoRoute: "/start",
     winningThesis:
       "Win by showing that PrivateDAO is already a live Devnet governance company with commercial rails, reviewable proof, and a disciplined path to mainnet.",
@@ -1002,7 +1002,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     prizeSummary: "$30k grand champion, top-20 startup awards, and accelerator upside up to $250k pre-seed.",
     winnerAnnouncementBy: "Frontier runs April 6 to May 11, 2026 and judges product impact above bounty stacking.",
     skillsNeeded: ["Frontend", "Backend", "Blockchain", "Design", "Product"],
-    recommendedWallet: "Solflare for the main demo, Phantom fallback for judge familiarity.",
+    recommendedWallet: "Solflare for the main product path, Phantom fallback for judge familiarity.",
     devnetStatus: "Live on Devnet with root-domain product shell, govern flow, proof center, diagnostics, services, and story route.",
     objective:
       "Present PrivateDAO as a startup-quality Solana product that already behaves like a pre-mainnet company rather than a hacked-together prototype.",
@@ -1097,7 +1097,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     prizeSummary: "Live dApp sponsor track focused on wallet UX and product realism.",
     winnerAnnouncementBy: "Follow the sponsor track announcement date listed on Superteam Earn.",
     skillsNeeded: ["Frontend", "Backend", "Blockchain"],
-    recommendedWallet: "Solflare as the default demo wallet, Phantom as the backup judge wallet.",
+    recommendedWallet: "Solflare as the default product wallet, Phantom as the backup judge wallet.",
     devnetStatus: "Live on Devnet with wallet adapter, govern flow, onboarding, and hosted story video.",
     objective:
       "Present PrivateDAO as a wallet-first live dApp with a polished operational UI, clean partner corridor, and concrete usage path.",
@@ -1145,7 +1145,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     prizeSummary: "$10,000 in infrastructure credits tied to a credible runtime and API story.",
     winnerAnnouncementBy: "Follow the sponsor track schedule on Superteam Earn.",
     skillsNeeded: ["Backend", "Blockchain", "Infrastructure"],
-    recommendedWallet: "Solflare for demo continuity; wallet is secondary to diagnostics in this track.",
+    recommendedWallet: "Solflare for route continuity; wallet is secondary to diagnostics in this track.",
     devnetStatus: "Live on Devnet with diagnostics, runtime evidence, service packaging, and integrations packet.",
     objective:
       "Make the hosted read path, diagnostics, and runtime trust posture impossible to miss.",

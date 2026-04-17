@@ -1,15 +1,17 @@
+import { permanentRedirect } from "next/navigation";
 import type { Metadata } from "next";
 
-import StoryPage from "@/app/story/page";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
-  title: "Product Story",
+  title: "Product Story Alias",
   description:
-    "Legacy alias for the live PrivateDAO product story covering user flow, Devnet actions, trust surfaces, and rollout narrative.",
+    "Legacy alias redirected into the main PrivateDAO learning corridor so visitors land on the live product explanation first.",
   path: "/demo",
-  keywords: ["product story", "product video", "private dao story", "devnet product"],
+  keywords: ["private dao", "product story", "learn private dao", "devnet governance"],
   index: false,
 });
 
-export default StoryPage;
+export default function DemoAliasPage() {
+  permanentRedirect("/learn");
+}

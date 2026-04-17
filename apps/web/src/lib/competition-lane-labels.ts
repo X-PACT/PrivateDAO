@@ -44,7 +44,7 @@ export function getCompetitionLaneSummary(slug: string) {
     case "privacy-track":
       return "Confidential governance corridor for private voting, encrypted operations, and reviewer-visible proof.";
     case "eitherway-live-dapp":
-      return "Wallet-first live app corridor for partner-facing demos and polished operational flow.";
+      return "Wallet-first live app corridor for partner-facing product walkthroughs and polished operational flow.";
     case "rpc-infrastructure":
       return "Runtime and hosted-read corridor for diagnostics, API packaging, and infrastructure credibility.";
     case "consumer-apps":

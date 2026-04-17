@@ -18,7 +18,7 @@ export default function GovernPage() {
     <OperationsShell
       eyebrow="Govern"
       title="Create a DAO, submit a proposal, vote, and execute from one simple flow"
-      description="This route is the user-first governance path. Connect a Devnet wallet, run the full DAO lifecycle yourself, and use logs, proof, and diagnostics only when you want to inspect how the product keeps privacy, cryptography, and speed visible in practice."
+      description="This route is the user-first governance path. Connect a Devnet wallet, run the full DAO lifecycle yourself, and use logs, proof, and diagnostics when you want to inspect how the product keeps vote privacy, cryptographic boundaries, execution fairness, and RPC speed visible in practice."
       navigationMode="guided"
       badges={[
         { label: "Wallet-first", variant: "cyan" },

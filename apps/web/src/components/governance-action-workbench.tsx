@@ -7,6 +7,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Activity, ArrowUpRight, ChevronRight, FilePlus2, Flag, FolderPlus, ListChecks, Play, ShieldCheck, Vote, Wallet } from "lucide-react";
 
 import { ActionReviewModal } from "@/components/action-review-modal";
+import { GovernanceVoiceCommandPanel } from "@/components/governance-voice-command-panel";
 import { useGovernanceSession } from "@/components/governance-session";
 import { OnchainParityPanel } from "@/components/onchain-parity-panel";
 import { WalletConnectButton } from "@/components/wallet-connect-button";
@@ -1529,6 +1530,22 @@ export function GovernanceActionWorkbench() {
                 </div>
               ) : null}
             </div>
+          ) : null}
+
+          {showDaoCard ? (
+          <GovernanceVoiceCommandPanel
+            daoName={daoName}
+            proposalTitle={proposalTitle}
+            voteChoice={voteChoice}
+            treasuryMode={proposalTreasuryMode}
+            onDaoName={setDaoName}
+            onProposalTitle={setProposalTitle}
+            onVoteChoice={setVoteChoice}
+            onTreasuryMode={setProposalTreasuryMode}
+            onTreasuryRecipient={setProposalTreasuryRecipient}
+            onTreasuryAmount={setProposalTreasuryAmountSol}
+            onTreasuryTokenMint={setProposalTreasuryTokenMint}
+          />
           ) : null}
 
           {showDaoCard ? (

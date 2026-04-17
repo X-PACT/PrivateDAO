@@ -116,7 +116,7 @@ export function LeadSupportIntake({ mode }: LeadSupportIntakeProps) {
         stage === "operate"
           ? "Go straight into Govern, then keep Live State and Engage close so operation, trust, and buyer posture stay together."
           : stage === "pilot"
-            ? "Use Engage and Services first, then demonstrate the live flow in Govern."
+            ? "Use Engage and Services first, then continue the live flow in Govern."
             : "Start from Community or Start, then continue into Govern when the visitor is ready for a real action.",
       primaryHref: stage === "operate" ? "/govern" : stage === "pilot" ? "/engage" : "/start",
       primaryLabel: stage === "operate" ? "Open govern" : stage === "pilot" ? "Open engage" : "Open start",

@@ -58,7 +58,7 @@ export default async function DocumentPage({ params }: PageProps) {
       <div className="flex flex-wrap items-center gap-3">
         <Badge variant="cyan">{document.category}</Badge>
         <Badge variant="violet">Curated in-app view</Badge>
-        <Badge variant="warning">Raw file remains authoritative</Badge>
+        <Badge variant="success">Source file linked</Badge>
       </div>
 
       <div className="mt-6 flex flex-wrap items-start justify-between gap-6">
@@ -80,7 +80,7 @@ export default async function DocumentPage({ params }: PageProps) {
               <div className="rounded-2xl border border-white/8 bg-white/6 p-3 text-cyan-200">
                 <FileText className="h-4 w-4" />
               </div>
-              <CardTitle className="text-lg">Boundary</CardTitle>
+              <CardTitle className="text-lg">Document context</CardTitle>
             </div>
           </CardHeader>
           <CardContent className="space-y-4 text-sm leading-7 text-white/62">

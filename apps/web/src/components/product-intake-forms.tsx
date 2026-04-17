@@ -18,7 +18,7 @@ type IntakePreset = {
   summary: string;
   icon: typeof Rocket;
   handoff: {
-    lane: "buyer" | "operator" | "support" | "track-demo";
+    lane: "buyer" | "operator" | "support" | "product-brief";
     owner: string;
     destination: string;
     priority: string;
@@ -85,9 +85,9 @@ const intakePresets: IntakePreset[] = [
   },
   {
     kind: "gaming",
-    label: "Request gaming demo",
-    title: "Gaming DAO demo request",
-    summary: "For studios, guild operators, or tournament teams exploring reward governance and gaming treasury flows.",
+    label: "Request gaming workflow",
+    title: "Gaming DAO workflow request",
+    summary: "For studios, guild operators, or tournament teams exploring governed rewards and gaming treasury flows.",
     icon: WalletCards,
     handoff: {
       lane: "buyer",
@@ -652,7 +652,7 @@ export function ProductIntakeForms({ mode, initialKind, initialFundingContext }:
           <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
             <div className="text-[11px] uppercase tracking-[0.24em] text-white/46">Delivery bundle</div>
             <p className="mt-3 text-sm leading-7 text-white/60">
-              Use this route bundle to move from intake to buyer, operator, support, or demo follow-up without dropping the context collected above.
+              Use this route bundle to move from intake to buyer, operator, support, or product follow-up without dropping the context collected above.
             </p>
             <div className="mt-4 flex flex-wrap gap-3">
               {preset.routeSet.map((route) =>

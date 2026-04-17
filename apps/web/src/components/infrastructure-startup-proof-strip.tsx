@@ -26,7 +26,7 @@ const routeConfig = {
     eyebrow: "Infrastructure startup proof",
     title: "The story route now opens with startup proof, not just a hosted video",
     description:
-      "Judges and buyers should see the live narrative boundary immediately: what works now, what is externally proven, what the next readiness gate is, and where the fastest valid demo begins.",
+      "Judges and buyers should see the live narrative boundary immediately: what works now, what is externally proven, what the next readiness gate is, and where the fastest valid product route begins.",
     workspaceSlug: "privacy-track",
   },
 } as const;

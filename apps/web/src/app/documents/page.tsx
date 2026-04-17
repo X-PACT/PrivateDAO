@@ -28,7 +28,7 @@ const PRIORITY_TRUTH_SURFACE_SLUGS = [
 export const metadata: Metadata = buildRouteMetadata({
   title: "Curated Documents",
   description:
-    "Curated reviewer, trust, and launch documents available inside the Next.js surface without claiming full docs-viewer parity yet.",
+    "Curated reviewer, trust, and launch documents available inside the product documentation surface for fast verification and deeper technical review.",
   path: "/documents",
   keywords: ["documents", "reviewer docs", "trust package", "audit packet"],
 });
@@ -42,12 +42,12 @@ export default function DocumentsPage() {
   return (
     <OperationsShell
       eyebrow="Document library"
-      title="Reviewer, trust, and launch documents inside the Next.js surface"
-      description="This is the curated in-app document layer for the highest-value reviewer and trust surfaces. It complements the raw viewer, but already behaves like a proper product documentation center."
+      title="Reviewer, trust, and launch documents inside the product documentation surface"
+      description="This is the curated document layer for the highest-value reviewer and trust surfaces. It behaves like a real product documentation center while keeping source files one click away."
       badges={[
         { label: "Documents", variant: "cyan" },
         { label: "Curated in-app library", variant: "violet" },
-        { label: "Raw viewer included", variant: "warning" },
+        { label: "Source file included", variant: "success" },
       ]}
     >
       <div>
@@ -59,13 +59,13 @@ export default function DocumentsPage() {
       <div>
         <CustodyTruthQuickActions
           title="Custody truth quick actions"
-          description="Reviewer and operator fast path into the custody truth surfaces: reviewer packet, canonical proof, intake shape, and the strict apply route."
+          description="Reviewer and operator fast path into the custody truth surfaces: reviewer packet, canonical proof, intake shape, and the product application route."
         />
       </div>
       <div>
         <TreasuryReviewerGradeStrip
           context="documents"
-          description="Open the treasury story as one reviewer-grade packet from the document center: strict sender checklist, linked rails, truth surfaces, payments fit, and exact blocker visibility."
+          description="Open the treasury story as one reviewer-grade packet from the document center: sender checklist, linked rails, truth surfaces, payments fit, and release-readiness visibility."
         />
       </div>
       <div>
@@ -89,7 +89,7 @@ export default function DocumentsPage() {
       <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.05] p-5">
         <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/78">Reviewer fast path strip</div>
         <div className="mt-3 max-w-3xl text-sm leading-7 text-white/60">
-          Start from `/documents` and reach operating truth, treasury rails, the correct reviewer packet, and the shortest demo route in two clicks instead of scanning the full library.
+          Start from `/documents` and reach operating truth, treasury rails, the correct reviewer packet, and the strongest product route in two clicks instead of scanning the full library.
         </div>
         <div className="mt-5 grid gap-3 md:grid-cols-3">
           <Link href="/documents/agentic-treasury-micropayment-rail" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>

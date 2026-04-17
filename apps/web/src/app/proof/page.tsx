@@ -42,7 +42,11 @@ export default function ProofPage() {
       ]}
     >
       <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-5 text-sm leading-7 text-white/72">
-        Connect a Devnet wallet, run the DAO lifecycle from <strong className="text-white">Govern</strong>, then use this proof surface to inspect transaction signatures, captured logs, runtime freshness, and the privacy evidence that stays attached to each real action.
+        Connect a Devnet wallet, run the DAO lifecycle from <strong className="text-white">Govern</strong>, then use
+        this proof surface to inspect transaction signatures, captured logs, runtime freshness, and the privacy
+        evidence that stays attached to each real action. The public evidence is easy to follow: hashes and logs are
+        visible on Devnet, while vote intent and sensitive treasury behavior stay protected until the correct proof
+        stage exposes what should be reviewed.
       </div>
       <div>
         <Suspense fallback={null}>

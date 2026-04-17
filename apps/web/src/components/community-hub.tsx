@@ -33,7 +33,7 @@ export function CommunityHub() {
             </div>
             <div className="mt-4 text-lg font-medium text-white">Join Discord</div>
             <div className="mt-3 text-sm leading-7 text-white/62">
-              Enter the live server for onboarding help, announcements, demos, feedback, and real-time operator discussion.
+              Enter the live server for onboarding help, announcements, walkthroughs, feedback, and real-time operator discussion.
             </div>
           </a>
 

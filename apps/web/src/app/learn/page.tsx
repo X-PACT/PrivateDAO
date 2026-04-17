@@ -43,8 +43,9 @@ export default function LearnPage() {
         <h2 className="mt-3 text-2xl font-semibold text-white">Use one short path on Devnet</h2>
         <p className="mt-3 max-w-3xl text-sm leading-7 text-white/64">
           Start in the browser, connect a Devnet wallet, move into the governance flow, then open the judge route to
-          verify signatures, proof, and runtime evidence. The learning surface stays here for context, but the real
-          product experience starts on the next click.
+          verify signatures, proof, runtime evidence, and the blockchain trail itself. The learning surface stays
+          here for context, but the real product experience starts on the next click and remains understandable to a
+          normal user without scripts or terminal work.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
           <Link href="/start" className={cn(buttonVariants({ size: "sm" }))}>
