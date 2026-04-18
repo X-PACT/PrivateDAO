@@ -1,6 +1,6 @@
 # Testnet Migration Report - 2026-04-18
 
-This report records the current Testnet migration state for PrivateDAO. It is intentionally factual: Devnet evidence remains the verified product proof until the Testnet deployment and lifecycle rehearsal complete.
+This report records the current Testnet migration state for PrivateDAO. It is intentionally factual: Devnet browser-wallet evidence remains the mobile/product proof, while Testnet now has a deployed program and a completed standard governance treasury lifecycle rehearsal.
 
 ## Current Network Ladder
 
@@ -88,9 +88,44 @@ Post-deploy program readout:
 - Deployer wallet balance after deploy readout: `10.0050118 SOL`
 - Remaining buffers for deploy authority: none shown by `solana program show --buffers --buffer-authority 4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD --url testnet`
 
+## Testnet Lifecycle Rehearsal Completion
+
+Standard governance and SOL treasury execution completed on Testnet.
+
+- Rehearsal report: `docs/testnet-lifecycle-rehearsal-2026-04-18.md`
+- Rehearsal JSON: `docs/testnet-lifecycle-rehearsal-2026-04-18.json`
+- DAO: `HZkVYf1bizstbEonRr7AS8HRQdR6sAgTB5Av9EuJFvGa`
+- Proposal: `HXMsqWWKosqgTM1PnPTeHrzq1i5ZygtrKZ5kjozH3T4A`
+- Treasury: `9iyaSYfLNXbf99zcUfuoUDZLSQvui8dQP598wgKwX3pa`
+- Recipient: `61NFdkAfRbF1V6qTNnRoj5weRDvXSjDYzeBoRpJ8kS6K`
+- Result: `Passed`
+- Executed: `true`
+- Treasury delta: `5000000` lamports
+- Recipient delta: `5000000` lamports
+
+Lifecycle transaction hashes:
+
+- mint governance voting power: `66RML9rzsbBGT2ZGXjsXh4gJbLZvT6e8pwjeiXbBLBBt8TeyasSh9Rqj6tXpJSB5w7iGm6Ac9bUQbNfvbNmhiEob`
+- fund recipient system account: `64ZeVQjJLRRpf4myVtWtJj5okNrjXCwvBFmvxYJCmBwom1obZ5yz1imGdmTgvCDb94ZnoNM2TXf4UKGoc3Hvcwox`
+- create DAO: `5kDcY9hBdCboSs3Hivijhzt9NZFJc2jzYFqwcJuRTCKTHBtLJAMinq8pGqiSadP4F7tdPn5dfkapZffh178JvNbo`
+- create treasury proposal: `XNg9X14NTh1MBfGGoR2JFnEZ93UZswFyQUeZ5Ca4r2c4UqViJoTgBXTM7sUQassGjhqT5mAF2KGnxvRQxbBAm6f`
+- deposit treasury: `2jX5S19NvhbfPPJUxSg1GofVMPJPSmXbo4vkjWaShNYGgwXN57fVzX4MuWBzhv24MB9MePUVbnDvBMJK4DGrqAV2`
+- commit vote: `2g7VgBcDQWGRj53p3ZHjqJphA5tRj4YxmuTA8u14JQ3KSaq4AonMB2tDnaBWcNpEDpQuFmHjKaZegBbHgTP2G33b`
+- reveal vote: `4tBdoy1FcTc8ZPRouhNAkkoZ77gsw5MVrZ27ANW8EG3TkDrcquY9CHsBEDiugjwciT2GjDedJRLtELN3Fj5w9WnX`
+- finalize proposal: `5dWoDDCGKUVtYG8tu1ZJt6MoqEefapLAyVDXw7fJBpAMBgjb1Rcut7vepev5AAQHp7tqyP3yN4shdKcKxiyMHg9u`
+- execute proposal: `5rLufq61qfdtgcaWtorYCy7CzDuxsYt13McxBi5MwgmHEKVmmdsxXqA6FMzz9ZxzQJGrdXj3iG6CbJpS59uMmFeD`
+
+Observed operational note:
+
+- The first reveal submission hit a transient retry and the second attempt succeeded. This is recorded as a public Testnet RPC/timing resilience event, not as a failed lifecycle.
+
+Current deployer Testnet balance after rehearsal:
+
+- `9.95454956 SOL`
+
 ## Immediate Next Step
 
-Testnet deployment is complete. The next step is Testnet lifecycle rehearsal.
+Testnet deployment and the standard lifecycle rehearsal are complete. The next step is to refresh reviewer/business/security packets and external submissions against this new Testnet truth boundary.
 
 ## Commands To Resume
 
@@ -110,17 +145,13 @@ npm run deploy:testnet
 
 No RPC API keys should be committed to Git.
 
-## Testnet Lifecycle Rehearsal Still Pending
+## Remaining Boundary
 
-Do not refresh external submissions as Testnet-proven until these actions are actually complete and linked:
+These items are still separate and should not be implied by the standard lifecycle rehearsal:
 
-- regenerate and sync IDL/types after final deploy
-- recreate required DAO/governance state on Testnet
-- create DAO
-- create proposal
-- commit vote
-- reveal vote
-- execute proposal
-- verify treasury action
-- capture transaction hashes and explorer links
-- refresh reviewer/business/security packets against the new Testnet truth
+- browser-wallet Testnet capture
+- custody/multisig authority transfer
+- confidential payout settlement receipt closure
+- external audit/security review closure
+- monitoring alert delivery destination proof
+- mainnet-beta readiness

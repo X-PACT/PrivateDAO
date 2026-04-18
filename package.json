@@ -95,6 +95,7 @@
     "run:agentic-micropayment-rail": "ts-node scripts/run-agentic-treasury-micropayment-rail.ts",
     "live-proof": "ts-node scripts/live-devnet-proof.ts",
     "live-proof:v3": "ts-node scripts/live-devnet-proof-v3.ts",
+    "live-proof:testnet": "ANCHOR_PROVIDER_URL=${ANCHOR_PROVIDER_URL:-https://api.testnet.solana.com} ANCHOR_WALLET=${ANCHOR_WALLET:-$HOME/.config/solana/id.json} ts-node scripts/live-testnet-lifecycle-rehearsal.ts",
     "build:test-wallet-live-proof": "ts-node scripts/build-test-wallet-live-proof.ts",
     "build:test-wallet-live-proof:v3": "ts-node scripts/build-test-wallet-live-proof-v3.ts",
     "test:devnet:wallets": "ts-node scripts/devnet-load-test.ts wallets",
