@@ -42,6 +42,15 @@ ${line("production mainnet claim allowed", payload.productionMainnetClaimAllowed
 ${line("network", payload.network)}
 ${line("completion", `${payload.completedItems}/${payload.totalItems}`)}
 
+## Existing Devnet Rehearsal
+
+${line("network", payload.multisig.rehearsalSource.network)}
+${line("implementation", payload.multisig.rehearsalSource.implementation)}
+${line("rehearsal multisig address", payload.multisig.rehearsalSource.address)}
+${line("rehearsal multisig creation signature", payload.multisig.rehearsalSource.creationSignature)}
+${line("rehearsal multisig explorer", payload.multisig.rehearsalSource.addressExplorerUrl)}
+${line("rehearsal creation explorer", payload.multisig.rehearsalSource.creationExplorerUrl)}
+
 ## Multisig And Timelock
 
 ${line("implementation", payload.multisig.implementation)}

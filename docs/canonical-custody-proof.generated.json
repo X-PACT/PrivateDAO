@@ -1,12 +1,20 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-11T05:09:59.189Z",
+  "generatedAt": "2026-04-18T04:40:07.143Z",
   "status": "pending-external",
   "productionMainnetClaimAllowed": false,
   "network": "mainnet-beta",
   "summary": "PrivateDAO is devnet-proven and internally hardened, but real-funds mainnet production remains blocked until external audit, custody, monitoring, runtime, settlement-receipt, and release-ceremony items are closed with evidence.",
   "multisig": {
-    "implementation": "pending-selection",
+    "rehearsalSource": {
+      "network": "devnet",
+      "implementation": "Squads Protocol",
+      "address": "EqbW1xQRABPNmPM4TMkdygp6j94i7A3DSbgFKTpqXvJE",
+      "addressExplorerUrl": "https://explorer.solana.com/address/EqbW1xQRABPNmPM4TMkdygp6j94i7A3DSbgFKTpqXvJE?cluster=devnet",
+      "creationSignature": "4KSyTYQTzeNpBDWou7GFLmvUpAhLgmNKkNdd4PZqndLpCWmUnArffYRQUwe6zrTmQD5uCbBfBR6pakf9Gz8dviRp",
+      "creationExplorerUrl": "https://explorer.solana.com/tx/4KSyTYQTzeNpBDWou7GFLmvUpAhLgmNKkNdd4PZqndLpCWmUnArffYRQUwe6zrTmQD5uCbBfBR6pakf9Gz8dviRp?cluster=devnet"
+    },
+    "implementation": "Squads Protocol",
     "address": null,
     "addressExplorerUrl": null,
     "threshold": "2-of-3",
@@ -175,10 +183,9 @@
       "note": "Target-network treasury visibility is required before claiming real-funds mainnet readiness."
     }
   ],
-  "completedItems": 1,
+  "completedItems": 2,
   "totalItems": 25,
   "pendingItems": [
-    "chosen multisig implementation",
     "multisig public address",
     "multisig creation signature",
     "rehearsal signature",
@@ -236,6 +243,14 @@
     {
       "label": "Production custody ceremony",
       "href": "https://github.com/X-PACT/PrivateDAO/blob/main/docs/production-custody-ceremony.md"
+    },
+    {
+      "label": "Squads devnet ceremony",
+      "href": "https://github.com/X-PACT/PrivateDAO/blob/main/docs/squads-devnet-multisig-ceremony.md"
+    },
+    {
+      "label": "Custody intake template",
+      "href": "https://github.com/X-PACT/PrivateDAO/blob/main/docs/custody-evidence-intake.template.json"
     },
     {
       "label": "Authority transfer runbook",

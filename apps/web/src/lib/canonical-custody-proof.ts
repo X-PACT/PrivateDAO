@@ -5,6 +5,12 @@ type MultisigSetupIntake = {
   status: string;
   productionMainnetClaimAllowed: boolean;
   network: string;
+  rehearsalSource?: {
+    network: string;
+    implementation?: string | null;
+    multisigAddress: string | null;
+    creationSignature: string | null;
+  };
   multisig: {
     requiredThreshold: number;
     requiredSignerCount: number;
@@ -84,6 +90,14 @@ export type CanonicalCustodyProofSnapshot = {
   network: string;
   summary: string;
   multisig: {
+    rehearsalSource: {
+      network: string | null;
+      implementation: string | null;
+      address: string | null;
+      addressExplorerUrl: string | null;
+      creationSignature: string | null;
+      creationExplorerUrl: string | null;
+    };
     implementation: string | null;
     address: string | null;
     addressExplorerUrl: string | null;
@@ -245,6 +259,20 @@ export function getCanonicalCustodyProofSnapshot(): CanonicalCustodyProofSnapsho
     network: intake.network,
     summary: blockers.summary,
     multisig: {
+      rehearsalSource: {
+        network: intake.rehearsalSource?.network ?? null,
+        implementation: intake.rehearsalSource?.implementation ?? intake.multisig.implementation,
+        address: intake.rehearsalSource?.multisigAddress ?? null,
+        addressExplorerUrl: buildExplorerAccountUrl(
+          intake.rehearsalSource?.multisigAddress ?? null,
+          intake.rehearsalSource?.network ?? "devnet",
+        ),
+        creationSignature: intake.rehearsalSource?.creationSignature ?? null,
+        creationExplorerUrl: buildExplorerTxUrl(
+          intake.rehearsalSource?.creationSignature ?? null,
+          intake.rehearsalSource?.network ?? "devnet",
+        ),
+      },
       implementation: intake.multisig.implementation,
       address: intake.multisig.address,
       addressExplorerUrl: buildExplorerAccountUrl(intake.multisig.address, intake.network),
@@ -305,6 +333,14 @@ export function getCanonicalCustodyProofSnapshot(): CanonicalCustodyProofSnapsho
       {
         label: "Production custody ceremony",
         href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/production-custody-ceremony.md",
+      },
+      {
+        label: "Squads devnet ceremony",
+        href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/squads-devnet-multisig-ceremony.md",
+      },
+      {
+        label: "Custody intake template",
+        href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/custody-evidence-intake.template.json",
       },
       {
         label: "Authority transfer runbook",

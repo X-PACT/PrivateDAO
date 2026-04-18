@@ -3,15 +3,24 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-11T05:09:59.189Z`
+- generated at: `2026-04-18T04:40:07.143Z`
 - status: `pending-external`
 - production mainnet claim allowed: `false`
 - network: `mainnet-beta`
-- completion: `1/25`
+- completion: `2/25`
+
+## Existing Devnet Rehearsal
+
+- network: `devnet`
+- implementation: `Squads Protocol`
+- rehearsal multisig address: `EqbW1xQRABPNmPM4TMkdygp6j94i7A3DSbgFKTpqXvJE`
+- rehearsal multisig creation signature: `4KSyTYQTzeNpBDWou7GFLmvUpAhLgmNKkNdd4PZqndLpCWmUnArffYRQUwe6zrTmQD5uCbBfBR6pakf9Gz8dviRp`
+- rehearsal multisig explorer: `https://explorer.solana.com/address/EqbW1xQRABPNmPM4TMkdygp6j94i7A3DSbgFKTpqXvJE?cluster=devnet`
+- rehearsal creation explorer: `https://explorer.solana.com/tx/4KSyTYQTzeNpBDWou7GFLmvUpAhLgmNKkNdd4PZqndLpCWmUnArffYRQUwe6zrTmQD5uCbBfBR6pakf9Gz8dviRp?cluster=devnet`
 
 ## Multisig And Timelock
 
-- implementation: `pending-selection`
+- implementation: `Squads Protocol`
 - multisig address: `pending`
 - threshold: `2-of-3`
 - creation signature: `pending`
@@ -173,7 +182,6 @@ Explorer links:
 
 ## Exact Pending Items
 
-- chosen multisig implementation
 - multisig public address
 - multisig creation signature
 - rehearsal signature
@@ -226,6 +234,8 @@ Evidence references:
 - [Observed custody readouts](https://github.com/X-PACT/PrivateDAO/blob/main/docs/custody-observed-readouts.json)
 - [Canonical custody proof packet](https://github.com/X-PACT/PrivateDAO/blob/main/docs/canonical-custody-proof.generated.md)
 - [Production custody ceremony](https://github.com/X-PACT/PrivateDAO/blob/main/docs/production-custody-ceremony.md)
+- [Squads devnet ceremony](https://github.com/X-PACT/PrivateDAO/blob/main/docs/squads-devnet-multisig-ceremony.md)
+- [Custody intake template](https://github.com/X-PACT/PrivateDAO/blob/main/docs/custody-evidence-intake.template.json)
 - [Authority transfer runbook](https://github.com/X-PACT/PrivateDAO/blob/main/docs/authority-transfer-runbook.md)
 - [Launch trust packet](https://github.com/X-PACT/PrivateDAO/blob/main/docs/launch-trust-packet.generated.md)
 - [Mainnet blocker register](https://github.com/X-PACT/PrivateDAO/blob/main/docs/mainnet-blockers.md)

@@ -36,7 +36,10 @@ function main() {
   assert(packet.productionMainnetClaimAllowed === false, "canonical custody proof must not allow production mainnet claims");
   assert(packet.network === "mainnet-beta", "canonical custody proof must target mainnet-beta");
   assert(packet.multisig.threshold === "2-of-3", "canonical custody proof threshold mismatch");
-  assert(packet.multisig.implementation === "pending-selection", "canonical custody proof implementation boundary drifted");
+  assert(
+    packet.multisig.implementation === "pending-selection" || packet.multisig.implementation === "Squads Protocol",
+    "canonical custody proof implementation boundary drifted",
+  );
   assert(packet.pendingItems.includes("multisig public address"), "canonical custody proof must keep multisig address pending");
   assert(packet.pendingItems.includes("program upgrade authority transfer signature"), "canonical custody proof must keep upgrade transfer pending");
   assert(packet.pendingItems.includes("program upgrade authority post-transfer readout reference"), "canonical custody proof must require readout reference");

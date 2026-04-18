@@ -4,6 +4,12 @@ import path from "path";
 type MultisigIntake = {
   status: string;
   productionMainnetClaimAllowed: boolean;
+  rehearsalSource?: {
+    network: string;
+    implementation?: string | null;
+    multisigAddress: string | null;
+    creationSignature: string | null;
+  };
   multisig: {
     requiredThreshold: number;
     requiredSignerCount: number;
@@ -65,6 +71,10 @@ function main() {
     custody: {
       status: multisig.status,
       implementation: multisig.multisig.implementation,
+      rehearsalImplementation: multisig.rehearsalSource?.implementation ?? multisig.multisig.implementation,
+      rehearsalNetwork: multisig.rehearsalSource?.network ?? "devnet",
+      rehearsalMultisigAddress: multisig.rehearsalSource?.multisigAddress ?? null,
+      rehearsalCreationSignature: multisig.rehearsalSource?.creationSignature ?? null,
       threshold: `${multisig.multisig.requiredThreshold}-of-${multisig.multisig.requiredSignerCount}`,
       multisigAddress: multisig.multisig.address,
       signerSlotsConfigured: multisig.signers.filter((entry) => Boolean(entry.publicKey)).length,
@@ -153,10 +163,14 @@ function buildMarkdown(payload: {
   generatedAt: string;
   decision: string;
   productionMainnetClaimAllowed: boolean;
-  custody: {
-    status: string;
-    implementation: string;
-    threshold: string;
+    custody: {
+      status: string;
+      implementation: string;
+      rehearsalImplementation: string;
+      rehearsalNetwork: string;
+      rehearsalMultisigAddress: string | null;
+      rehearsalCreationSignature: string | null;
+      threshold: string;
     multisigAddress: string | null;
     signerSlotsConfigured: number;
     pendingAuthorityTransfers: string[];
@@ -197,6 +211,10 @@ function buildMarkdown(payload: {
 
 - custody status: \`${payload.custody.status}\`
 - multisig implementation: \`${payload.custody.implementation}\`
+- rehearsal implementation: \`${payload.custody.rehearsalImplementation}\`
+- rehearsal network: \`${payload.custody.rehearsalNetwork}\`
+- rehearsal multisig address: \`${payload.custody.rehearsalMultisigAddress ?? "pending"}\`
+- rehearsal creation signature: \`${payload.custody.rehearsalCreationSignature ?? "pending"}\`
 - threshold target: \`${payload.custody.threshold}\`
 - multisig address: \`${payload.custody.multisigAddress ?? "pending"}\`
 - signer slots configured: \`${payload.custody.signerSlotsConfigured}\`

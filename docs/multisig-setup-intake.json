@@ -7,16 +7,22 @@
   "custodyTarget": "program-upgrade-authority-and-production-ops-authorities",
   "rehearsalSource": {
     "network": "devnet",
+    "implementation": "Squads Protocol",
     "multisigAddress": "EqbW1xQRABPNmPM4TMkdygp6j94i7A3DSbgFKTpqXvJE",
     "creationSignature": "4KSyTYQTzeNpBDWou7GFLmvUpAhLgmNKkNdd4PZqndLpCWmUnArffYRQUwe6zrTmQD5uCbBfBR6pakf9Gz8dviRp"
   },
   "multisig": {
     "requiredThreshold": 2,
     "requiredSignerCount": 3,
-    "implementation": "pending-selection",
+    "implementation": "Squads Protocol",
     "address": null,
     "creationSignature": null,
     "rehearsalSignature": null
+  },
+  "implementationSelection": {
+    "status": "chosen",
+    "chosenAt": "2026-04-18T00:00:00.000Z",
+    "reason": "Squads Protocol is the fastest reviewer-comprehensible multisig path on Solana for a 2-of-3 Devnet-first ceremony with explorer-verifiable approvals."
   },
   "candidateSignerModel": [
     {

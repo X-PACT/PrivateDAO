@@ -16,6 +16,17 @@ Strict operator ingestion path:
 npm run apply:custody-evidence-intake
 ```
 
+## Chosen Path
+
+- Implementation: `Squads Protocol`
+- Live ceremony lane: `Devnet first, then production custody once signer posture and authority transfer evidence are ready`
+- Why this path: Squads is the clearest Solana-native multisig surface for reviewer-visible approval history, signer roles, and explorer-verifiable transfer evidence.
+
+Supporting operator docs:
+
+- `docs/squads-devnet-multisig-ceremony.md`
+- `docs/custody-evidence-intake.template.json`
+
 ## Required Target
 
 - Network: `mainnet-beta`
@@ -27,6 +38,7 @@ npm run apply:custody-evidence-intake
 ## Live Rehearsal Source
 
 - Devnet rehearsal multisig:
+  - implementation: `Squads Protocol`
   - address: `EqbW1xQRABPNmPM4TMkdygp6j94i7A3DSbgFKTpqXvJE`
   - creation signature: `4KSyTYQTzeNpBDWou7GFLmvUpAhLgmNKkNdd4PZqndLpCWmUnArffYRQUwe6zrTmQD5uCbBfBR6pakf9Gz8dviRp`
 - Rehearsal proved:
@@ -57,6 +69,7 @@ These are the current rehearsal wallets and may be promoted only if they are mov
 ## Required Evidence Before Completion
 
 - multisig implementation selection
+- chosen Solana-native operator surface for the live ceremony
 - multisig address
 - 3 distinct public signer keys
 - threshold set to exactly `2`
@@ -88,6 +101,7 @@ Canonical reviewer-safe packet:
 
 - `docs/canonical-custody-proof.generated.md`
 - `docs/custody-observed-readouts.json`
+- `docs/squads-devnet-multisig-ceremony.md`
 
 ## Verification
 

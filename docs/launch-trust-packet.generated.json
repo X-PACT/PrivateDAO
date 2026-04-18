@@ -1,11 +1,15 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-11T05:22:29.482Z",
+  "generatedAt": "2026-04-18T04:40:05.774Z",
   "decision": "blocked-external-steps",
   "productionMainnetClaimAllowed": false,
   "custody": {
     "status": "pending-external",
-    "implementation": "pending-selection",
+    "implementation": "Squads Protocol",
+    "rehearsalImplementation": "Squads Protocol",
+    "rehearsalNetwork": "devnet",
+    "rehearsalMultisigAddress": "EqbW1xQRABPNmPM4TMkdygp6j94i7A3DSbgFKTpqXvJE",
+    "rehearsalCreationSignature": "4KSyTYQTzeNpBDWou7GFLmvUpAhLgmNKkNdd4PZqndLpCWmUnArffYRQUwe6zrTmQD5uCbBfBR6pakf9Gz8dviRp",
     "threshold": "2-of-3",
     "multisigAddress": null,
     "signerSlotsConfigured": 0,
@@ -21,14 +25,13 @@
   },
   "runtime": {
     "status": "pending-real-device-capture",
-    "completedTargetCount": 0,
+    "completedTargetCount": 1,
     "targetCount": 5,
     "pendingTargets": [
       "Phantom",
       "Solflare",
       "Backpack",
-      "Glow",
-      "Android Native / Mobile"
+      "Glow"
     ]
   },
   "audit": {

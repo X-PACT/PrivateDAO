@@ -60,10 +60,24 @@ export function CanonicalCustodyProofSurface({
               <div><span className="text-white/76">Threshold:</span> {snapshot.multisig.threshold}</div>
               <div><span className="text-white/76">Creation signature:</span> {renderValue(snapshot.multisig.creationSignature)}</div>
               <div><span className="text-white/76">Rehearsal signature:</span> {renderValue(snapshot.multisig.rehearsalSignature)}</div>
+              <div><span className="text-white/76">Existing devnet rehearsal:</span> {renderValue(snapshot.multisig.rehearsalSource.address)}</div>
+              <div><span className="text-white/76">Rehearsal creation proof:</span> {renderValue(snapshot.multisig.rehearsalSource.creationSignature)}</div>
               <div><span className="text-white/76">Configured timelock:</span> {snapshot.timelock.configuredHours ?? "Awaiting external record"}{snapshot.timelock.configuredHours ? "h" : ""}</div>
               <div><span className="text-white/76">Timelock config proof:</span> {renderValue(snapshot.timelock.configurationSignature)}</div>
             </div>
             <div className="mt-4 flex flex-wrap gap-3">
+              {snapshot.multisig.rehearsalSource.addressExplorerUrl ? (
+                <a className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={snapshot.multisig.rehearsalSource.addressExplorerUrl} target="_blank" rel="noreferrer">
+                  Rehearsal multisig
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+              ) : null}
+              {snapshot.multisig.rehearsalSource.creationExplorerUrl ? (
+                <a className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={snapshot.multisig.rehearsalSource.creationExplorerUrl} target="_blank" rel="noreferrer">
+                  Rehearsal creation tx
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+              ) : null}
               {snapshot.multisig.addressExplorerUrl ? (
                 <a className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={snapshot.multisig.addressExplorerUrl} target="_blank" rel="noreferrer">
                   Multisig explorer
@@ -182,6 +196,9 @@ export function CanonicalCustodyProofSurface({
               </Link>
               <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href="/documents/multisig-setup-intake">
                 Intake shape
+              </Link>
+              <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href="/documents/squads-devnet-multisig-ceremony">
+                Squads ceremony
               </Link>
               {snapshot.rawSources.map((source) => (
                 <a
