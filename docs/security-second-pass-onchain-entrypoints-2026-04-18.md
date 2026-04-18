@@ -84,7 +84,7 @@ This pass ranks the still-uncovered on-chain entrypoints by security value and e
 
 ## Immediate execution order
 
-1. add direct regression coverage for `finalize_zk_enforced_proposal_v3`
-2. add direct regression coverage for `update_dao_settlement_policy_v3`
-3. add direct regression coverage for `update_dao_governance_policy_v3`
-4. deepen direct regression coverage for `execute_confidential_payout_plan_v2`
+1. deepen direct regression coverage for `execute_confidential_payout_plan_v2`
+2. add a full runtime `anchor test` pass that executes the new V3 governance / settlement / ZK-finalization scenarios end-to-end
+3. extend negative-path coverage for `finalize_zk_enforced_proposal_v3` beyond the existing success-path direct test
+4. extend negative-path coverage for `update_dao_governance_policy_v3` and `update_dao_settlement_policy_v3` beyond the current rollback / invalid-config cases

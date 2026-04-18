@@ -566,6 +566,40 @@ describe("PrivateDAO", () => {
     };
   }
 
+  async function createIsolatedDaoScenario(
+    prefix: string,
+    options?: {
+      quorumPercentage?: number;
+      revealWindowSeconds?: number;
+      executionDelaySeconds?: number;
+    },
+  ) {
+    const daoName = `${prefix}-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
+    const [scenarioDaoPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("dao"), authority.publicKey.toBuffer(), Buffer.from(daoName)],
+      program.programId,
+    );
+
+    await program.methods
+      .initializeDao(
+        daoName,
+        options?.quorumPercentage ?? 51,
+        new BN(0),
+        new BN(options?.revealWindowSeconds ?? 5),
+        new BN(options?.executionDelaySeconds ?? 0),
+        { tokenWeighted: {} },
+      )
+      .accounts({
+        dao: scenarioDaoPda,
+        governanceToken: governanceMint,
+        authority: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    return scenarioDaoPda;
+  }
+
   before(async () => {
     async function fundWallet(pubkey: PublicKey, sol: number): Promise<void> {
       const tx = new Transaction().add(
@@ -4067,6 +4101,371 @@ describe("PrivateDAO", () => {
     assert.deepEqual(finalized.status, { failed: {} });
     assert.equal(finalized.executionUnlocksAt.toString(), "0");
     console.log("  ✓ V3 uses dedicated rebate vault and rejects low participation under token-supply quorum");
+  });
+
+  it("updates DAO governance policy V3 and snapshots the hardened configuration", async () => {
+    const scenarioDaoPda = await createIsolatedDaoScenario("GovernancePolicyV3");
+    const [governancePolicyPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("dao-governance-policy-v3"), scenarioDaoPda.toBuffer()],
+      program.programId,
+    );
+
+    await program.methods
+      .initializeDaoGovernancePolicyV3(
+        { legacyRevealParticipation: {} },
+        { disabled: {} },
+        new BN(0),
+      )
+      .accounts({
+        dao: scenarioDaoPda,
+        daoGovernancePolicyV3: governancePolicyPda,
+        authority: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    await program.methods
+      .updateDaoGovernancePolicyV3(
+        { tokenSupplyParticipation: {} },
+        { dedicatedVaultRequired: {} },
+        new BN(1_500_000),
+      )
+      .accounts({
+        dao: scenarioDaoPda,
+        daoGovernancePolicyV3: governancePolicyPda,
+        authority: authority.publicKey,
+      })
+      .rpc();
+
+    const hardenedPolicy = await program.account["daoGovernancePolicyV3"].fetch(governancePolicyPda);
+    assert.deepEqual(hardenedPolicy.quorumPolicy, { tokenSupplyParticipation: {} });
+    assert.deepEqual(hardenedPolicy.revealRebatePolicy, { dedicatedVaultRequired: {} });
+    assert.equal(hardenedPolicy.revealRebateLamports.toString(), "1500000");
+
+    try {
+      await program.methods
+        .updateDaoGovernancePolicyV3(
+          { legacyRevealParticipation: {} },
+          { disabled: {} },
+          new BN(1),
+        )
+        .accounts({
+          dao: scenarioDaoPda,
+          daoGovernancePolicyV3: governancePolicyPda,
+          authority: authority.publicKey,
+        })
+        .rpc();
+      assert.fail("Governance policy V3 must reject non-zero rebate amounts when rebates are disabled");
+    } catch (err: any) {
+      assert.include(err.toString(), "InvalidRevealRebateConfig");
+    }
+
+    const scenarioDao = await program.account["dao"].fetch(scenarioDaoPda);
+    const [proposalV3Pda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), scenarioDaoPda.toBuffer(), scenarioDao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal(
+        "Governance V3 hardened snapshot",
+        "A new proposal should bind the latest governance policy V3 settings into its snapshot.",
+        new BN(5),
+        null,
+      )
+      .accounts({
+        dao: scenarioDaoPda,
+        proposal: proposalV3Pda,
+        proposerTokenAccount: authorityTokenAta,
+        proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [governanceSnapshotPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal-governance-snapshot-v3"), proposalV3Pda.toBuffer()],
+      program.programId,
+    );
+
+    await program.methods
+      .snapshotProposalGovernancePolicyV3()
+      .accounts({
+        dao: scenarioDaoPda,
+        daoGovernancePolicyV3: governancePolicyPda,
+        proposal: proposalV3Pda,
+        governanceToken: governanceMint,
+        proposalGovernancePolicySnapshotV3: governanceSnapshotPda,
+        operator: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const snapshot = await program.account["proposalGovernancePolicySnapshotV3"].fetch(governanceSnapshotPda);
+    assert.deepEqual(snapshot.quorumPolicy, { tokenSupplyParticipation: {} });
+    assert.deepEqual(snapshot.revealRebatePolicy, { dedicatedVaultRequired: {} });
+    assert.equal(snapshot.revealRebateLamports.toString(), "1500000");
+    assert.equal(snapshot.objectVersion, 3);
+    console.log("  ✓ Governance policy V3 updates, rejects invalid rebate configs, and snapshots the hardened policy");
+  });
+
+  it("updates DAO settlement policy V3, blocks rollback, and records the hardened policy", async () => {
+    const scenarioDaoPda = await createIsolatedDaoScenario("SettlementPolicyV3");
+    const [settlementPolicyPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("dao-settlement-policy-v3"), scenarioDaoPda.toBuffer()],
+      program.programId,
+    );
+
+    await program.methods
+      .initializeDaoSettlementPolicyV3(
+        new BN(60),
+        new BN(100_000_000),
+        true,
+        false,
+      )
+      .accounts({
+        dao: scenarioDaoPda,
+        daoSettlementPolicyV3: settlementPolicyPda,
+        authority: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    await program.methods
+      .updateDaoSettlementPolicyV3(
+        new BN(120),
+        new BN(90_000_000),
+        true,
+        true,
+      )
+      .accounts({
+        dao: scenarioDaoPda,
+        daoSettlementPolicyV3: settlementPolicyPda,
+        authority: authority.publicKey,
+      })
+      .rpc();
+
+    const hardenedPolicy = await program.account["daoSettlementPolicyV3"].fetch(settlementPolicyPda);
+    assert.equal(hardenedPolicy.minEvidenceAgeSeconds.toString(), "120");
+    assert.equal(hardenedPolicy.maxPayoutAmount.toString(), "90000000");
+    assert.isTrue(hardenedPolicy.requireRefheSettlement);
+    assert.isTrue(hardenedPolicy.requireMagicblockSettlement);
+
+    try {
+      await program.methods
+        .updateDaoSettlementPolicyV3(
+          new BN(30),
+          new BN(95_000_000),
+          true,
+          false,
+        )
+        .accounts({
+          dao: scenarioDaoPda,
+          daoSettlementPolicyV3: settlementPolicyPda,
+          authority: authority.publicKey,
+        })
+        .rpc();
+      assert.fail("Settlement policy V3 must reject rollback to looser evidence, cap, or corridor requirements");
+    } catch (err: any) {
+      assert.include(err.toString(), "SettlementPolicyRollbackNotAllowed");
+    }
+
+    const afterRejectedRollback = await program.account["daoSettlementPolicyV3"].fetch(settlementPolicyPda);
+    assert.equal(afterRejectedRollback.minEvidenceAgeSeconds.toString(), "120");
+    assert.equal(afterRejectedRollback.maxPayoutAmount.toString(), "90000000");
+    assert.isTrue(afterRejectedRollback.requireRefheSettlement);
+    assert.isTrue(afterRejectedRollback.requireMagicblockSettlement);
+    console.log("  ✓ Settlement policy V3 hardens forward and rejects rollback");
+  });
+
+  it("finalizes a ZK-enforced proposal V3 with matching proof and governance snapshots", async () => {
+    const scenarioDaoPda = await createIsolatedDaoScenario("ZkFinalizeV3");
+    const [securityPolicyPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("dao-security-policy"), scenarioDaoPda.toBuffer()],
+      program.programId,
+    );
+    const [governancePolicyPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("dao-governance-policy-v3"), scenarioDaoPda.toBuffer()],
+      program.programId,
+    );
+    const attestors = [
+      authority.publicKey,
+      ZERO_PUBKEY,
+      ZERO_PUBKEY,
+      ZERO_PUBKEY,
+      ZERO_PUBKEY,
+    ];
+
+    await program.methods
+      .initializeDaoSecurityPolicy(
+        { strictRequired: {} },
+        { thresholdAttestedRequired: {} },
+        { thresholdAttestedRequired: {} },
+        { noCancelAfterParticipation: {} },
+        attestors,
+        1,
+        1,
+        attestors,
+        1,
+        1,
+        new BN(3600),
+        new BN(3600),
+      )
+      .accounts({
+        dao: scenarioDaoPda,
+        daoSecurityPolicy: securityPolicyPda,
+        authority: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    await program.methods
+      .initializeDaoGovernancePolicyV3(
+        { legacyRevealParticipation: {} },
+        { disabled: {} },
+        new BN(0),
+      )
+      .accounts({
+        dao: scenarioDaoPda,
+        daoGovernancePolicyV3: governancePolicyPda,
+        authority: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const scenarioDao = await program.account["dao"].fetch(scenarioDaoPda);
+    const [proposalV3Pda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), scenarioDaoPda.toBuffer(), scenarioDao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal(
+        "Finalize ZK enforced proposal V3",
+        "A verified proof plus the governance snapshot should unlock the V3 strict finalization path.",
+        new BN(5),
+        null,
+      )
+      .accounts({
+        dao: scenarioDaoPda,
+        proposal: proposalV3Pda,
+        proposerTokenAccount: authorityTokenAta,
+        proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [executionSnapshotPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal-policy-snapshot"), proposalV3Pda.toBuffer()],
+      program.programId,
+    );
+    const [governanceSnapshotPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal-governance-snapshot-v3"), proposalV3Pda.toBuffer()],
+      program.programId,
+    );
+    const [proofVerificationPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal-proof-verification"), proposalV3Pda.toBuffer()],
+      program.programId,
+    );
+    const [voteRecordPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), proposalV3Pda.toBuffer(), authority.publicKey.toBuffer()],
+      program.programId,
+    );
+    const [delegationMarkerPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("delegation"), proposalV3Pda.toBuffer(), authority.publicKey.toBuffer()],
+      program.programId,
+    );
+    const salt = randomSalt();
+
+    await program.methods
+      .snapshotProposalExecutionPolicy()
+      .accounts({
+        dao: scenarioDaoPda,
+        daoSecurityPolicy: securityPolicyPda,
+        proposal: proposalV3Pda,
+        proposalExecutionPolicySnapshot: executionSnapshotPda,
+        operator: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    await program.methods
+      .snapshotProposalGovernancePolicyV3()
+      .accounts({
+        dao: scenarioDaoPda,
+        daoGovernancePolicyV3: governancePolicyPda,
+        proposal: proposalV3Pda,
+        governanceToken: governanceMint,
+        proposalGovernancePolicySnapshotV3: governanceSnapshotPda,
+        operator: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    await program.methods
+      .commitVote([...computeCommitment(true, salt, authority.publicKey, proposalV3Pda)], null)
+      .accounts({
+        dao: scenarioDaoPda,
+        proposal: proposalV3Pda,
+        voterRecord: voteRecordPda,
+        delegationMarker: delegationMarkerPda,
+        voterTokenAccount: authorityTokenAta,
+        voter: authority.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const created = await program.account["proposal"].fetch(proposalV3Pda);
+    await waitUntilUnix(created.votingEnd);
+
+    await program.methods
+      .revealVote(true, [...salt])
+      .accounts({
+        proposal: proposalV3Pda,
+        voterRecord: voteRecordPda,
+        revealer: authority.publicKey,
+      })
+      .rpc();
+
+    await program.methods
+      .recordProofVerificationV2(
+        { thresholdAttestation: {} },
+        [...canonicalProposalPayloadHash(scenarioDaoPda, proposalV3Pda)],
+        [...crypto.randomBytes(32)],
+        [...crypto.randomBytes(32)],
+        [...crypto.randomBytes(32)],
+        [...canonicalProofDomain(scenarioDaoPda, proposalV3Pda)],
+      )
+      .accounts({
+        dao: scenarioDaoPda,
+        daoSecurityPolicy: securityPolicyPda,
+        proposal: proposalV3Pda,
+        proposalProofVerification: proofVerificationPda,
+        recorder: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const revealed = await program.account["proposal"].fetch(proposalV3Pda);
+    await waitUntilUnix(revealed.revealEnd);
+
+    await program.methods
+      .finalizeZkEnforcedProposalV3()
+      .accounts({
+        dao: scenarioDaoPda,
+        proposal: proposalV3Pda,
+        proposalExecutionPolicySnapshot: executionSnapshotPda,
+        proposalGovernancePolicySnapshotV3: governanceSnapshotPda,
+        proposalProofVerification: proofVerificationPda,
+        finalizer: authority.publicKey,
+      })
+      .rpc();
+
+    const finalized = await program.account["proposal"].fetch(proposalV3Pda);
+    assert.deepEqual(finalized.status, { passed: {} });
+    assert.equal(finalized.revealCount.toString(), "1");
+    assert.equal(finalized.executionUnlocksAt.toString(), finalized.revealEnd.toString());
+    console.log("  ✓ ZK-enforced proposal V3 finalizes only after matching proof and governance snapshots");
   });
 
   it("executes a confidential payout through Settlement Hardening V3 with policy snapshots and verified evidence", async () => {

@@ -18,6 +18,10 @@ This document tracks the current security-audit execution lane for PrivateDAO.
 - `zk_enforced` receipts now require a verifier-program boundary.
 - receipt validation now rejects `zk_enforced` receipts with no verifier-program boundary.
 - `verify:security-remediation` now checks the real legacy cancel implementation location.
+- direct Anchor integration tests were added for:
+  - `finalize_zk_enforced_proposal_v3`
+  - `update_dao_settlement_policy_v3`
+  - `update_dao_governance_policy_v3`
 
 ## Current Tooling Lane
 
@@ -92,6 +96,7 @@ This document tracks the current security-audit execution lane for PrivateDAO.
 - TypeScript test execution was moved from `ts-node` to `tsx` because the old runner stalled on `apps/web` imports.
 - `cargo-fuzz` now requires the nightly toolchain on this machine and is wired for smoke runs through the repo scripts.
 - The focused TS lane is now the most relevant short-loop metric for the current tranche because it measures the three files explicitly requested for uplift instead of the full frontend/helpers surface.
+- The three new Anchor integration tests were verified through `mocha --dry-run` with `ANCHOR_PROVIDER_URL` and `ANCHOR_WALLET` set, which confirms the test file registers the new scenarios correctly before the heavier local-validator runtime pass.
 
 ## Truth Boundary
 
@@ -103,3 +108,5 @@ Coverage and fuzzing are now wired into the repo, but no public `>80%` claim sho
 4. the current baselines are lifted materially beyond helper-only coverage
 
 The current tranche clears smoke fuzzing across all three targets and lifts focused TypeScript functions above `80%`, but it still does not justify a broad public `>80% coverage` claim across the repository or the full Solana instruction surface.
+
+The new direct integration scenarios are present in `tests/private-dao.ts`, but a full `anchor test --run tests/private-dao.ts` runtime pass was not allowed to finish in this tranche because the host-side dependency warm build remained expensive. The registration-level proof and the existing Anchor workspace build both succeeded.
