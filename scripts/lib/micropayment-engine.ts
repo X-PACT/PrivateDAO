@@ -64,6 +64,7 @@ export type MicropaymentRunOptions = {
 
 const DEFAULT_DEVNET_RPC =
   process.env.ANCHOR_PROVIDER_URL ||
+  process.env.SOLANA_RPC_URL ||
   process.env.SOLANA_URL ||
   "https://api.devnet.solana.com";
 const DEFAULT_WALLET_PATH =

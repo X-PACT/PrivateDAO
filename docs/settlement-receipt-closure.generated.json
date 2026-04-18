@@ -1,10 +1,10 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-17T22:17:14.270Z",
-  "status": "pending-source-receipt-closure",
+  "generatedAt": "2026-04-18T00:07:16.670Z",
+  "status": "partial-source-receipt-closure",
   "summary": {
     "requirementCount": 4,
-    "closedRequirementCount": 0,
+    "closedRequirementCount": 2,
     "supportingArtifactCount": 4
   },
   "closureRequirements": [
@@ -23,14 +23,14 @@
     {
       "id": "residual-trust-model",
       "label": "Residual trust model",
-      "status": "pending",
-      "evidence": "explicit written boundary when source receipts are unavailable"
+      "status": "closed",
+      "evidence": "explicit written boundary published in docs/canonical-verifier-boundary-decision.md"
     },
     {
       "id": "reviewer-proof-route",
       "label": "Reviewer proof route",
-      "status": "pending",
-      "evidence": "reviewer-visible publication path for receipt evidence"
+      "status": "closed",
+      "evidence": "reviewer-visible route published through docs/settlement-receipt-closure-packet.md and /documents/settlement-receipt-closure-packet"
     }
   ],
   "supportingArtifacts": [

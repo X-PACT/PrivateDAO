@@ -85,8 +85,16 @@ const COMMITMENT: Commitment = "confirmed";
 const PROGRAM_ID = "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx";
 const PDAO_MINT = "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt";
 const DEFAULT_COORDINATOR_WALLET = "/home/x-pact/Desktop/wallet-keypair.json";
-const DEFAULT_DEVNET_RPC = process.env.ANCHOR_PROVIDER_URL || process.env.SOLANA_URL || "https://api.devnet.solana.com";
-const DEFAULT_FALLBACK_RPC = process.env.DEVNET_FALLBACK_RPC || "https://api.devnet.solana.com";
+const DEFAULT_DEVNET_RPC =
+  process.env.ANCHOR_PROVIDER_URL ||
+  process.env.SOLANA_RPC_URL ||
+  process.env.SOLANA_URL ||
+  "https://api.devnet.solana.com";
+const DEFAULT_FALLBACK_RPC =
+  process.env.DEVNET_FALLBACK_RPC ||
+  process.env.RPC_FAST_DEVNET_RPC ||
+  process.env.EXTRA_DEVNET_RPCS?.split(",").map((item) => item.trim()).find(Boolean) ||
+  "https://api.devnet.solana.com";
 const INVALID_RPC = "http://127.0.0.1:65535";
 const STALE_BLOCKHASH = "11111111111111111111111111111111";
 

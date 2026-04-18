@@ -25,8 +25,16 @@ type AnchorCheck = {
   dataLength?: number;
 };
 
-const DEFAULT_PRIMARY_RPC = process.env.ANCHOR_PROVIDER_URL || process.env.SOLANA_URL || "https://api.devnet.solana.com";
-const DEFAULT_FALLBACK_RPC = process.env.DEVNET_FALLBACK_RPC || "https://api.devnet.solana.com";
+const DEFAULT_PRIMARY_RPC =
+  process.env.ANCHOR_PROVIDER_URL ||
+  process.env.SOLANA_RPC_URL ||
+  process.env.SOLANA_URL ||
+  "https://api.devnet.solana.com";
+const DEFAULT_FALLBACK_RPC =
+  process.env.DEVNET_FALLBACK_RPC ||
+  process.env.RPC_FAST_DEVNET_RPC ||
+  process.env.EXTRA_DEVNET_RPCS?.split(",").map((item) => item.trim()).find(Boolean) ||
+  "https://api.devnet.solana.com";
 
 async function main() {
   const proof = readJson<ProofRegistry>("docs/proof-registry.json");
@@ -49,7 +57,7 @@ async function main() {
     ...(proof.pdaoToken?.tokenAccount ? [inspectAccount(primary, "pdao-token-account", proof.pdaoToken.tokenAccount)] : []),
   ]);
 
-  const tokenSupply = await primary.getTokenSupply(new PublicKey(proof.governanceMint));
+  const tokenSupply = await readTokenSupply(primary, proof.governanceMint);
 
   const report = {
     project: "PrivateDAO",
@@ -61,15 +69,16 @@ async function main() {
     anchors: anchorChecks,
     tokenSupply: {
       mint: proof.governanceMint,
-      amount: tokenSupply.value.amount,
-      decimals: tokenSupply.value.decimals,
-      uiAmountString: tokenSupply.value.uiAmountString,
+      amount: tokenSupply?.value.amount ?? null,
+      decimals: tokenSupply?.value.decimals ?? null,
+      uiAmountString: tokenSupply?.value.uiAmountString ?? null,
+      status: tokenSupply ? "captured" : "unavailable-from-primary-rpc",
     },
     summary: {
       primaryHealthy: true,
       fallbackHealthy: true,
       anchorAccountsPresent: anchorChecks.every((entry) => entry.exists),
-      unexpectedFailures: 0,
+      unexpectedFailures: tokenSupply ? 0 : 1,
     },
   };
 
@@ -107,8 +116,9 @@ ${anchorChecks
 ## Governance Mint Supply
 
 - mint: \`${report.tokenSupply.mint}\`
-- ui amount: \`${report.tokenSupply.uiAmountString}\`
-- decimals: \`${report.tokenSupply.decimals}\`
+- ui amount: \`${report.tokenSupply.uiAmountString ?? "unavailable"}\`
+- decimals: \`${report.tokenSupply.decimals ?? "unavailable"}\`
+- status: \`${report.tokenSupply.status}\`
 
 ## Interpretation
 
@@ -162,6 +172,14 @@ function readJson<T>(relativePath: string): T {
 
 function writeJson(relativePath: string, value: unknown) {
   fs.writeFileSync(path.resolve(relativePath), JSON.stringify(value, null, 2) + "\n");
+}
+
+async function readTokenSupply(connection: Connection, mint: string) {
+  try {
+    return await connection.getTokenSupply(new PublicKey(mint));
+  } catch {
+    return null;
+  }
 }
 
 main().catch((error) => {

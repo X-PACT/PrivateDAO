@@ -1,27 +1,27 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-09T19:06:32.953Z",
+  "generatedAt": "2026-04-18T00:09:24.892Z",
   "network": "devnet",
   "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
   "primaryRpc": {
     "label": "primary",
     "url": "https://api.devnet.solana.com",
     "version": "4.0.0-beta.6",
-    "slot": 454407670,
-    "blockhash": "C6F7ETgpEkikX5hWWPeukMJN8jpGgiw74KdFiqUkcA45",
-    "lastValidBlockHeight": 442284764,
-    "versionLatencyMs": 1504,
-    "blockhashLatencyMs": 242
+    "slot": 456264535,
+    "blockhash": "zxawcsCjdZHf6i5nAEyaasiv67SiLWfpiMFa7tWMsEe",
+    "lastValidBlockHeight": 444133528,
+    "versionLatencyMs": 2364,
+    "blockhashLatencyMs": 289
   },
   "fallbackRpc": {
     "label": "fallback",
-    "url": "https://api.devnet.solana.com",
-    "version": "4.0.0-beta.6",
-    "slot": 454407670,
-    "blockhash": "C6F7ETgpEkikX5hWWPeukMJN8jpGgiw74KdFiqUkcA45",
-    "lastValidBlockHeight": 442284764,
-    "versionLatencyMs": 1324,
-    "blockhashLatencyMs": 231
+    "url": "https://solana-rpc.rpcfast.com?api_key=ejQYiCn3yUFJUYyG3yw6C72hZNDzxoSFLy7VX9ETQOJOSFwQK2eh0Dl0XXAdU2uv",
+    "version": "3.1.12",
+    "slot": 413925430,
+    "blockhash": "3WMnqqFkM9yfyYtkLK3bLNP4kkF7S4ycmNdwsD5RQNtm",
+    "lastValidBlockHeight": 392020945,
+    "versionLatencyMs": 1155,
+    "blockhashLatencyMs": 767
   },
   "anchors": [
     {
@@ -37,7 +37,7 @@
       "label": "verification-wallet",
       "address": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
       "exists": true,
-      "lamports": 22863104717,
+      "lamports": 18402128396,
       "owner": "11111111111111111111111111111111",
       "executable": false,
       "dataLength": 0
@@ -76,7 +76,7 @@
       "lamports": 3563520,
       "owner": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
       "executable": false,
-      "dataLength": 384
+      "dataLength": 371
     },
     {
       "label": "pdao-token-account",
@@ -92,7 +92,8 @@
     "mint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
     "amount": "1000000000000000",
     "decimals": 9,
-    "uiAmountString": "1000000"
+    "uiAmountString": "1000000",
+    "status": "captured"
   },
   "summary": {
     "primaryHealthy": true,

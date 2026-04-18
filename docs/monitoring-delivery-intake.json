@@ -6,17 +6,17 @@
     {
       "role": "operations-lead",
       "scope": "alert destination ownership and response windows",
-      "status": "pending-assignment"
+      "status": "assigned"
     },
     {
       "role": "rpc-operator",
       "scope": "primary and fallback RPC probe routing",
-      "status": "pending-assignment"
+      "status": "assigned"
     },
     {
       "role": "release-manager",
       "scope": "incident acknowledgment transcript retention",
-      "status": "pending-assignment"
+      "status": "assigned"
     }
   ],
   "deliveryRequirements": [
@@ -30,7 +30,7 @@
       "id": "rpc-probe-routing",
       "label": "Primary and fallback RPC probes",
       "status": "pending",
-      "evidence": "probe route and provider assignment"
+      "evidence": "provider assignment documented; active primary path remains public Devnet until RPCFast passes devnet truth validation"
     },
     {
       "id": "proposal-lifecycle-monitor",
@@ -57,6 +57,13 @@
       "evidence": "upgrade-authority or deployment activity alert transcript"
     }
   ],
+  "providerAssignments": {
+    "candidatePrimaryRpc": "https://solana-rpc.rpcfast.com?api_key=ejQYiCn3yUFJUYyG3yw6C72hZNDzxoSFLy7VX9ETQOJOSFwQK2eh0Dl0XXAdU2uv",
+    "activePrimaryRpc": "https://api.devnet.solana.com",
+    "fallbackRpc": "https://solana-rpc.rpcfast.com?api_key=ejQYiCn3yUFJUYyG3yw6C72hZNDzxoSFLy7VX9ETQOJOSFwQK2eh0Dl0XXAdU2uv",
+    "readPath": "backend-indexer",
+    "status": "candidate-documented-awaiting-devnet-validation"
+  },
   "transcriptRequirements": [
     "trigger source and timestamp",
     "alert destination and delivery result",

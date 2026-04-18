@@ -291,7 +291,6 @@ export function resolveDevnetRpcEndpoints(): string[] {
   add(process.env.SOLANA_RPC_URL);
   add(buildAlchemyDevnetRpc());
   add(buildHeliusDevnetRpc());
-  add(process.env.RPC_FAST_DEVNET_RPC);
   add(process.env.QUICKNODE_DEVNET_RPC);
   const extra = trimValue(process.env.EXTRA_DEVNET_RPCS);
   if (extra) {
@@ -299,6 +298,7 @@ export function resolveDevnetRpcEndpoints(): string[] {
   }
   add(clusterApiUrl("devnet"));
   add("https://api.devnet.solana.com");
+  add(process.env.RPC_FAST_DEVNET_RPC);
   return endpoints;
 }
 

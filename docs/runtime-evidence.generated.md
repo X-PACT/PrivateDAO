@@ -2,7 +2,7 @@
 
 ## Overview
 
-- Generated at: `2026-04-15T17:38:01.501Z`
+- Generated at: `2026-04-18T00:16:30.293Z`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - Diagnostics page: `https://privatedao.org/diagnostics/`
@@ -51,6 +51,24 @@
 - Diagnostics capture count: `2`
 - Action coverage count: `4`
 - Pending targets: `Backpack, Glow`
+
+## Evidence-Backed Wallet Readiness
+
+- Browser wallet targets: `4`
+- Browser wallet evidence-backed: `1`
+- Browser wallet evidence-backed labels: `Solflare`
+- Browser connect-only captures: `1`
+- Browser connect-only labels: `Phantom`
+- Browser diagnostics captures: `2`
+- Browser diagnostics labels: `Phantom, Solflare`
+- Real-device targets: `5`
+- Real-device evidence-backed: `0`
+- Real-device evidence-backed labels: `none`
+- Real-device pending targets: `5`
+- Support matrix wallet count: `5`
+- Support matrix selector-visible count: `5`
+- Support matrix diagnostics-visible count: `5`
+- Support matrix review-ready count: `4`
 
 ## MagicBlock Runtime Intake
 
@@ -169,6 +187,7 @@
 - This runtime evidence package is Devnet-focused and reviewer-visible.
 - It does not replace real device QA across every wallet release and browser combination.
 - It binds browser/runtime behavior to diagnostics, wallet matrix, canary, resilience evidence, and real-device capture intake in one summary.
+- Wallet support matrix status is not treated as review-readiness by itself; browser-wallet and real-device captures drive the evidence-backed readiness counts.
 - It includes a dedicated governance runtime proof packet so reviewers can see the difference between shipped wallet-first lanes and still-pending browser or device captures.
 - It now carries a separate browser-wallet runtime intake so live web governance claims stay tied to actual injected-wallet captures instead of code paths alone.
 - It exposes the MagicBlock confidential payout corridor as a separate runtime track instead of burying it inside generic payout claims.

@@ -89,6 +89,19 @@ type RuntimeEvidenceJson = {
   realDevice: {
     pendingTargets: string[];
   };
+  walletEvidence: {
+    browserTargetCount: number;
+    browserEvidenceBackedWalletCount: number;
+    browserConnectOnlyWalletCount: number;
+    browserDiagnosticsWalletCount: number;
+    realDeviceTargetCount: number;
+    realDeviceEvidenceBackedWalletCount: number;
+    realDevicePendingTargetCount: number;
+    supportMatrixWalletCount: number;
+    supportMatrixSelectorVisibleCount: number;
+    supportMatrixDiagnosticsVisibleCount: number;
+    supportMatrixReviewReadyCount: number;
+  };
   operational: {
     totalTxCount: number;
     totalAttemptCount: number;
@@ -164,9 +177,11 @@ export function getDevnetServiceMetrics(): DevnetServiceMetricsSnapshot {
   const runtimeEvidence = readJson<RuntimeEvidenceJson>("docs/runtime-evidence.generated.json");
   const devnetCanary = readJson<DevnetCanaryJson>("docs/devnet-canary.generated.json");
   const frontierIntegrations = readJson<FrontierIntegrationsJson>("docs/frontier-integrations.generated.json");
-  const walletReviewReadyCount = runtimeEvidence.matrixStatuses.filter(
-    (item) => item.status === "devnet-review-ready",
-  ).length;
+  const walletReviewReadyCount = runtimeEvidence.walletEvidence.browserEvidenceBackedWalletCount;
+  const walletReviewTargetCount = runtimeEvidence.walletEvidence.browserTargetCount;
+  const walletConnectOnlyCount = runtimeEvidence.walletEvidence.browserConnectOnlyWalletCount;
+  const walletSupportReviewReadyCount =
+    runtimeEvidence.walletEvidence.supportMatrixReviewReadyCount;
   const walletSelectorCoverageCount = runtimeEvidence.matrixStatuses.filter(
     (item) => item.selectorVisible,
   ).length;
@@ -214,7 +229,7 @@ export function getDevnetServiceMetrics(): DevnetServiceMetricsSnapshot {
     confidentialLifecycleCount,
   );
   const zkProofCompletion = percent(zkAnchorConfirmedCount, zkAnchorCount);
-  const walletCoverage = percent(walletReviewReadyCount, runtimeEvidence.walletCount);
+  const walletCoverage = percent(walletReviewReadyCount, walletReviewTargetCount);
   const walletSelectorCoverage = percent(
     walletSelectorCoverageCount,
     runtimeEvidence.walletCount,
@@ -241,7 +256,7 @@ export function getDevnetServiceMetrics(): DevnetServiceMetricsSnapshot {
     {
       label: "Wallet coverage",
       value: walletCoverage,
-      detail: `${walletReviewReadyCount}/${runtimeEvidence.walletCount} wallet classes are review-ready. Selector coverage is ${walletSelectorCoverage}.`,
+      detail: `${walletReviewReadyCount}/${walletReviewTargetCount} browser wallet targets have completed connect + sign + submit on Devnet. ${walletConnectOnlyCount} connect-only captures still need a successful signed submission. Selector coverage remains ${walletSelectorCoverage} across the support matrix.`,
       tone: "fuchsia",
     },
     {
@@ -331,7 +346,7 @@ export function getDevnetServiceMetrics(): DevnetServiceMetricsSnapshot {
     {
       label: "Wallet review readiness",
       value: walletCoverage,
-      detail: `${walletReviewReadyCount} review-ready wallets and ${runtimeEvidence.realDevice.pendingTargets.length} pending real-device targets remain visible and measurable.`,
+      detail: `${walletReviewReadyCount}/${walletReviewTargetCount} browser wallet targets are evidence-backed today. ${runtimeEvidence.walletEvidence.realDevicePendingTargetCount}/${runtimeEvidence.walletEvidence.realDeviceTargetCount} real-device targets are still pending, and the support matrix still exposes ${walletSupportReviewReadyCount}/${runtimeEvidence.walletEvidence.supportMatrixWalletCount} wallet classes as implementation-ready.`,
       tone: "emerald",
     },
     {
@@ -369,7 +384,7 @@ export function getDevnetServiceMetrics(): DevnetServiceMetricsSnapshot {
       {
         label: "Wallet review coverage",
         value: walletCoverage,
-        detail: `${walletReviewReadyCount}/${runtimeEvidence.walletCount} wallet classes are currently review-ready in the live shell.`,
+        detail: `${walletReviewReadyCount}/${walletReviewTargetCount} browser wallet targets are currently evidence-backed in the live shell.`,
         tone: "emerald",
       },
       {
@@ -397,7 +412,7 @@ export function getDevnetServiceMetrics(): DevnetServiceMetricsSnapshot {
       {
         label: "Review-ready wallets",
         value: walletCoverage,
-        detail: `${walletReviewReadyCount}/${runtimeEvidence.walletCount} wallets are currently review-ready for guided consumer demos.`,
+        detail: `${walletReviewReadyCount}/${walletReviewTargetCount} browser wallet targets are currently evidence-backed for guided consumer onboarding, while ${runtimeEvidence.walletEvidence.realDevicePendingTargetCount} real-device targets remain open.`,
         tone: "emerald",
       },
       overview[3],
@@ -440,9 +455,8 @@ export function getOperationalValidationSnapshot(): OperationalValidationSnapsho
   const executedCount = proposalCards.filter((proposal) => proposal.status === "Executed").length;
   const proposalFlowHealthyCount = executionReadyCount + revealReadyCount + executedCount;
 
-  const walletReviewReadyCount = runtimeEvidence.matrixStatuses.filter(
-    (item) => item.status === "devnet-review-ready",
-  ).length;
+  const walletReviewReadyCount = runtimeEvidence.walletEvidence.browserEvidenceBackedWalletCount;
+  const walletReviewTargetCount = runtimeEvidence.walletEvidence.browserTargetCount;
   const walletDiagnosticsCoverageCount = runtimeEvidence.matrixStatuses.filter(
     (item) => item.diagnosticsVisible,
   ).length;
@@ -477,8 +491,8 @@ export function getOperationalValidationSnapshot(): OperationalValidationSnapsho
     },
     walletReadiness: {
       label: "Wallet-by-wallet readiness",
-      value: percent(walletReviewReadyCount, runtimeEvidence.walletCount),
-      detail: `${walletReviewReadyCount}/${runtimeEvidence.walletCount} wallets are review-ready and ${walletDiagnosticsCoverageCount}/${runtimeEvidence.walletCount} expose diagnostics. Pending real-device targets remain visible in runtime evidence.`,
+      value: percent(walletReviewReadyCount, walletReviewTargetCount),
+      detail: `${walletReviewReadyCount}/${walletReviewTargetCount} browser wallet targets have completed connect + sign + submit on Devnet. Diagnostics are visible for ${walletDiagnosticsCoverageCount}/${runtimeEvidence.walletCount} support-matrix entries, and pending real-device targets remain explicit in runtime evidence.`,
       routeLabel: "Open wallet diagnostics",
       routeHref: "/diagnostics",
       tone: "cyan",

@@ -1,6 +1,17 @@
 import fs from "fs";
 import path from "path";
 
+function allowedTelemetryRpcEndpoints() {
+  return new Set(
+    [
+      process.env.PRIVATE_DAO_RPC_URL,
+      process.env.SOLANA_RPC_URL,
+      process.env.RPC_FAST_DEVNET_RPC,
+      "https://api.devnet.solana.com",
+    ].filter((value): value is string => Boolean(value)),
+  );
+}
+
 type ReviewerTelemetryPacket = {
   project: string;
   truthSources: Array<{ label: string; href: string }>;
@@ -52,7 +63,7 @@ function main() {
   assert(packet.truthSources.some((entry) => entry.label === "Read-node snapshot"), "telemetry packet missing read-node snapshot source");
   assert(packet.truthSources.some((entry) => entry.label === "Devnet service metrics"), "telemetry packet missing devnet service metrics source");
   assert(packet.hostedReadProof.readPath === "backend-indexer", "telemetry packet read path drifted");
-  assert(packet.hostedReadProof.rpcEndpoint === "https://api.devnet.solana.com", "telemetry packet rpc endpoint drifted");
+  assert(allowedTelemetryRpcEndpoints().has(packet.hostedReadProof.rpcEndpoint), "telemetry packet rpc endpoint drifted");
   assert(packet.hostedReadProof.proposals > 0, "telemetry packet must include indexed proposals");
   assert(packet.hostedReadProof.uniqueDaos > 0, "telemetry packet must include indexed daos");
   assert(packet.runtimeSnapshot.unexpectedFailures === 0, "telemetry packet unexpected failures mismatch");

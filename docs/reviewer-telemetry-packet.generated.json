@@ -1,11 +1,11 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-11T14:20:29.957Z",
+  "generatedAt": "2026-04-18T00:17:33.918Z",
   "reviewerIntent": "Show the shortest truth-synced route into runtime maturity, hosted reads, indexed governance, and infrastructure-facing reviewer value without claiming unsupported partnerships or mainnet readiness.",
   "truthSources": [
     {
       "label": "Runtime evidence",
-      "generatedAt": "2026-04-10T01:23:28.015Z",
+      "generatedAt": "2026-04-18T00:16:30.293Z",
       "href": "docs/runtime-evidence.generated.md"
     },
     {
@@ -15,26 +15,26 @@
     },
     {
       "label": "Read-node snapshot",
-      "generatedAt": "2026-04-11T04:01:57.067Z",
+      "generatedAt": "2026-04-18T00:09:33.941Z",
       "href": "docs/read-node/snapshot.generated.md"
     },
     {
       "label": "Devnet service metrics",
-      "generatedAt": "2026-04-10T05:21:06.356Z",
+      "generatedAt": "2026-04-18T00:16:30.293Z",
       "href": "apps/web/src/lib/devnet-service-metrics.ts"
     }
   ],
   "whatWorksNow": [
-    "Hosted reads expose 41 indexed proposals across 21 DAOs through the backend-indexer path.",
+    "Hosted reads expose 43 indexed proposals across 23 DAOs through the backend-indexer path.",
     "Diagnostics, analytics, and services remain live reviewer-visible routes starting from https://privatedao.org/diagnostics/.",
     "7/7 canonical governance lifecycle transactions are finalized in the current integrations package.",
     "5/5 confidential settlement corridor transactions are finalized in the current integrations package.",
     "4 REFHE-settled and 3 MagicBlock-settled proposal paths are already reflected in the indexed source."
   ],
   "externallyProvenNow": [
-    "Runtime evidence package generated at 2026-04-10T01:23:28.015Z and published as docs/runtime-evidence.generated.md.",
+    "Runtime evidence package generated at 2026-04-18T00:16:30.293Z and published as docs/runtime-evidence.generated.md.",
     "Frontier integrations package generated at 2026-04-10T05:21:06.356Z with reviewer entry https://privatedao.org/proof/?judge=1.",
-    "Read-node snapshot generated at 2026-04-11T04:01:57.067Z on slot 454721049 against https://api.devnet.solana.com.",
+    "Read-node snapshot generated at 2026-04-18T00:09:33.941Z on slot 456264549 against https://api.devnet.solana.com.",
     "Proposal flow health, wallet readiness, and proof freshness summaries are taken from the same devnet service metrics module used by the live app.",
     "Unexpected runtime failures remain 0 and unexpected adversarial successes remain 0."
   ],
@@ -47,11 +47,11 @@
   "hostedReadProof": {
     "readPath": "backend-indexer",
     "rpcEndpoint": "https://api.devnet.solana.com",
-    "slot": 454721049,
+    "slot": 456264549,
     "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
     "commitment": "confirmed",
-    "proposals": 41,
-    "uniqueDaos": 21
+    "proposals": 43,
+    "uniqueDaos": 23
   },
   "runtimeSnapshot": {
     "diagnosticsPage": "https://privatedao.org/diagnostics/",
@@ -82,16 +82,16 @@
     },
     {
       "label": "Wallet-by-wallet readiness",
-      "value": "80%",
-      "detail": "4/5 wallets are review-ready and 5/5 expose diagnostics. Pending real-device targets remain visible in runtime evidence.",
+      "value": "25%",
+      "detail": "1/4 browser wallet targets have completed connect + sign + submit on Devnet. Diagnostics are visible for 5/5 support-matrix entries, and pending real-device targets remain explicit in runtime evidence.",
       "routeLabel": "Open wallet diagnostics",
       "routeHref": "/diagnostics",
       "tone": "cyan"
     },
     {
       "label": "Proof freshness",
-      "value": "1d old",
-      "detail": "Runtime evidence 2d old, Devnet canary 2d old, and frontier integrations 1d old remain published together.",
+      "value": "fresh this hour",
+      "detail": "Runtime evidence fresh this hour, Devnet canary fresh this hour, and integration evidence 8d old remain published together.",
       "routeLabel": "Open trust documents",
       "routeHref": "/documents/live-proof-v3",
       "tone": "amber"
@@ -114,8 +114,8 @@
     },
     {
       "label": "Primary RPC latency",
-      "value": "242 ms",
-      "detail": "Current blockhash latency from the primary Devnet endpoint. Version latency is 1504 ms.",
+      "value": "289 ms",
+      "detail": "Current blockhash latency from the primary Devnet endpoint. Version latency is 2364 ms.",
       "tone": "cyan",
       "routeLabel": "Open analytics",
       "routeHref": "/analytics"

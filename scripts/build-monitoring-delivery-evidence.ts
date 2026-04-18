@@ -16,6 +16,13 @@ type MonitoringDeliveryIntake = {
     status: string;
     evidence: string;
   }>;
+  providerAssignments?: {
+    candidatePrimaryRpc?: string;
+    activePrimaryRpc?: string;
+    fallbackRpc: string;
+    readPath: string;
+    status: string;
+  };
   transcriptRequirements: string[];
 };
 
@@ -49,6 +56,7 @@ function main() {
     },
     owners: intake.owners,
     deliveryRequirements: intake.deliveryRequirements,
+    providerAssignments: intake.providerAssignments,
     transcriptRequirements: intake.transcriptRequirements,
     claimBoundary: rules.claimBoundary,
     commands: [
@@ -79,6 +87,7 @@ function buildMarkdown(payload: {
   };
   owners: MonitoringDeliveryIntake["owners"];
   deliveryRequirements: MonitoringDeliveryIntake["deliveryRequirements"];
+  providerAssignments?: MonitoringDeliveryIntake["providerAssignments"];
   transcriptRequirements: string[];
   claimBoundary: string;
   commands: string[];
@@ -103,6 +112,18 @@ ${payload.owners.map((item) => `- ${item.role} | ${item.status} | ${item.scope}`
 ## Delivery Requirements
 
 ${payload.deliveryRequirements.map((item) => `- ${item.label} | ${item.status} | evidence: ${item.evidence}`).join("\n")}
+
+## Provider Assignments
+
+${
+  payload.providerAssignments
+    ? `- candidate primary RPC: \`${payload.providerAssignments.candidatePrimaryRpc || "not documented"}\`
+- active primary RPC: \`${payload.providerAssignments.activePrimaryRpc || "not documented"}\`
+- fallback RPC: \`${payload.providerAssignments.fallbackRpc}\`
+- read path: \`${payload.providerAssignments.readPath}\`
+- status: \`${payload.providerAssignments.status}\``
+    : "- not yet configured"
+}
 
 ## Transcript Requirements
 

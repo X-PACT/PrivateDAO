@@ -1,6 +1,6 @@
 1:"$Sreact.fragment"
 3:I[897367,["/_next/static/chunks/0yhv0m0mevr89.js","/_next/static/chunks/0c15ld-hq~4he.js","/_next/static/chunks/0r5dixx5-c3v..js","/_next/static/chunks/03g85241n.d8h.js","/_next/static/chunks/0i.l9589uvx0j.js"],"OutletBoundary"]
 4:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":["$L2",null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"RKHUb0MOqYHlRyns4RCFx"}
+0:{"rsc":["$","$1","c",{"children":["$L2",null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"04VK0x0lp234ZUBHDb7Id"}
 5:null
 2:E{"digest":"NEXT_REDIRECT;replace;/governance-template;308;"}

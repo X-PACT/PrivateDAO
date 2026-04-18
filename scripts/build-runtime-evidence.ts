@@ -83,6 +83,12 @@ type RealDeviceRuntimeEvidence = {
     diagnosticsCaptureCount: number;
     pendingTargets: string[];
   };
+  captures?: Array<{
+    walletLabel: string;
+    connectResult?: string;
+    submissionResult?: string;
+    diagnosticsSnapshotCaptured?: boolean;
+  }>;
 };
 
 type BrowserWalletRuntimeEvidence = {
@@ -96,6 +102,13 @@ type BrowserWalletRuntimeEvidence = {
     actionCoverageCount: number;
     pendingTargets: string[];
   };
+  captures: Array<{
+    walletLabel: string;
+    connectResult: string;
+    signingResult: string;
+    submissionResult: string;
+    diagnosticsSnapshotCaptured: boolean;
+  }>;
 };
 
 type ZkEnforcedRuntimeEvidence = {
@@ -141,6 +154,43 @@ function main() {
   const magicBlock = readJson<MagicBlockRuntimeEvidence>("docs/magicblock/runtime.generated.json");
   const zkEnforced = readJson<ZkEnforcedRuntimeEvidence>("docs/zk/enforced-runtime.generated.json");
   const zkExternalClosure = readJson<ZkExternalClosure>("docs/zk/external-closure.generated.json");
+  const browserEvidenceBackedWalletLabels = Array.from(
+    new Set(
+      browserWallet.captures
+        .filter(
+          (capture) =>
+            capture.connectResult === "success" && capture.submissionResult === "success",
+        )
+        .map((capture) => capture.walletLabel),
+    ),
+  );
+  const browserConnectOnlyWalletLabels = Array.from(
+    new Set(
+      browserWallet.captures
+        .filter(
+          (capture) =>
+            capture.connectResult === "success" && capture.submissionResult !== "success",
+        )
+        .map((capture) => capture.walletLabel),
+    ),
+  );
+  const browserDiagnosticsWalletLabels = Array.from(
+    new Set(
+      browserWallet.captures
+        .filter((capture) => capture.diagnosticsSnapshotCaptured)
+        .map((capture) => capture.walletLabel),
+    ),
+  );
+  const realDeviceEvidenceBackedWalletLabels = Array.from(
+    new Set(
+      (realDevice.captures ?? [])
+        .filter(
+          (capture) =>
+            capture.connectResult === "success" && capture.submissionResult === "success",
+        )
+        .map((capture) => capture.walletLabel),
+    ),
+  );
 
   const runtimeEvidence = {
     project: runtime.project,
@@ -188,6 +238,29 @@ function main() {
       diagnosticsCaptureCount: browserWallet.summary.diagnosticsCaptureCount,
       actionCoverageCount: browserWallet.summary.actionCoverageCount,
       pendingTargets: browserWallet.summary.pendingTargets,
+    },
+    walletEvidence: {
+      browserTargetCount: browserWallet.summary.targetCount,
+      browserEvidenceBackedWalletCount: browserEvidenceBackedWalletLabels.length,
+      browserEvidenceBackedWalletLabels,
+      browserConnectOnlyWalletCount: browserConnectOnlyWalletLabels.length,
+      browserConnectOnlyWalletLabels,
+      browserDiagnosticsWalletCount: browserDiagnosticsWalletLabels.length,
+      browserDiagnosticsWalletLabels,
+      realDeviceTargetCount: realDevice.summary.targetCount,
+      realDeviceEvidenceBackedWalletCount: realDeviceEvidenceBackedWalletLabels.length,
+      realDeviceEvidenceBackedWalletLabels,
+      realDevicePendingTargetCount: realDevice.summary.pendingTargets.length,
+      supportMatrixWalletCount: walletMatrix.entries.length,
+      supportMatrixSelectorVisibleCount: walletMatrix.entries.filter(
+        (entry) => entry.selectorVisible,
+      ).length,
+      supportMatrixDiagnosticsVisibleCount: walletMatrix.entries.filter(
+        (entry) => entry.diagnosticsVisible,
+      ).length,
+      supportMatrixReviewReadyCount: walletMatrix.entries.filter(
+        (entry) => entry.status === "devnet-review-ready",
+      ).length,
     },
     magicBlock: {
       status: magicBlock.status,
@@ -298,6 +371,7 @@ function main() {
       "This runtime evidence package is Devnet-focused and reviewer-visible.",
       "It does not replace real device QA across every wallet release and browser combination.",
       "It binds browser/runtime behavior to diagnostics, wallet matrix, canary, resilience evidence, and real-device capture intake in one summary.",
+      "Wallet support matrix status is not treated as review-readiness by itself; browser-wallet and real-device captures drive the evidence-backed readiness counts.",
       "It includes a dedicated governance runtime proof packet so reviewers can see the difference between shipped wallet-first lanes and still-pending browser or device captures.",
       "It now carries a separate browser-wallet runtime intake so live web governance claims stay tied to actual injected-wallet captures instead of code paths alone.",
       "It exposes the MagicBlock confidential payout corridor as a separate runtime track instead of burying it inside generic payout claims.",
@@ -342,6 +416,23 @@ function buildMarkdown(evidence: {
     diagnosticsCaptureCount: number;
     actionCoverageCount: number;
     pendingTargets: string[];
+  };
+  walletEvidence: {
+    browserTargetCount: number;
+    browserEvidenceBackedWalletCount: number;
+    browserEvidenceBackedWalletLabels: string[];
+    browserConnectOnlyWalletCount: number;
+    browserConnectOnlyWalletLabels: string[];
+    browserDiagnosticsWalletCount: number;
+    browserDiagnosticsWalletLabels: string[];
+    realDeviceTargetCount: number;
+    realDeviceEvidenceBackedWalletCount: number;
+    realDeviceEvidenceBackedWalletLabels: string[];
+    realDevicePendingTargetCount: number;
+    supportMatrixWalletCount: number;
+    supportMatrixSelectorVisibleCount: number;
+    supportMatrixDiagnosticsVisibleCount: number;
+    supportMatrixReviewReadyCount: number;
   };
   magicBlock: {
     status: string;
@@ -437,6 +528,24 @@ ${evidence.matrixStatuses
 - Diagnostics capture count: \`${evidence.browserWallet.diagnosticsCaptureCount}\`
 - Action coverage count: \`${evidence.browserWallet.actionCoverageCount}\`
 - Pending targets: \`${evidence.browserWallet.pendingTargets.join(", ") || "none"}\`
+
+## Evidence-Backed Wallet Readiness
+
+- Browser wallet targets: \`${evidence.walletEvidence.browserTargetCount}\`
+- Browser wallet evidence-backed: \`${evidence.walletEvidence.browserEvidenceBackedWalletCount}\`
+- Browser wallet evidence-backed labels: \`${evidence.walletEvidence.browserEvidenceBackedWalletLabels.join(", ") || "none"}\`
+- Browser connect-only captures: \`${evidence.walletEvidence.browserConnectOnlyWalletCount}\`
+- Browser connect-only labels: \`${evidence.walletEvidence.browserConnectOnlyWalletLabels.join(", ") || "none"}\`
+- Browser diagnostics captures: \`${evidence.walletEvidence.browserDiagnosticsWalletCount}\`
+- Browser diagnostics labels: \`${evidence.walletEvidence.browserDiagnosticsWalletLabels.join(", ") || "none"}\`
+- Real-device targets: \`${evidence.walletEvidence.realDeviceTargetCount}\`
+- Real-device evidence-backed: \`${evidence.walletEvidence.realDeviceEvidenceBackedWalletCount}\`
+- Real-device evidence-backed labels: \`${evidence.walletEvidence.realDeviceEvidenceBackedWalletLabels.join(", ") || "none"}\`
+- Real-device pending targets: \`${evidence.walletEvidence.realDevicePendingTargetCount}\`
+- Support matrix wallet count: \`${evidence.walletEvidence.supportMatrixWalletCount}\`
+- Support matrix selector-visible count: \`${evidence.walletEvidence.supportMatrixSelectorVisibleCount}\`
+- Support matrix diagnostics-visible count: \`${evidence.walletEvidence.supportMatrixDiagnosticsVisibleCount}\`
+- Support matrix review-ready count: \`${evidence.walletEvidence.supportMatrixReviewReadyCount}\`
 
 ## MagicBlock Runtime Intake
 
