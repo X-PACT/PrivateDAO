@@ -1,3 +1,5 @@
+import { supportedLocales } from "@/lib/i18n";
+
 export const siteName = "PrivateDAO";
 export const siteNameArabic = "برايفيت داو";
 export const siteNameArabicAlt = "برايفت داو";
@@ -50,6 +52,6 @@ export function buildWebSiteJsonLd() {
     name: siteName,
     alternateName: [siteNameArabic, siteNameArabicAlt, "Private DAO"],
     url: siteUrl,
-    inLanguage: ["en", "ar"],
+    inLanguage: supportedLocales.map((locale) => locale.code),
   };
 }

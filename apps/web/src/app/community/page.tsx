@@ -4,6 +4,7 @@ import Link from "next/link";
 import { CommunityHub } from "@/components/community-hub";
 import { EcosystemFocusAlignmentStrip } from "@/components/ecosystem-focus-alignment-strip";
 import { LeadSupportIntake } from "@/components/lead-support-intake";
+import { LocalizedRouteBrief } from "@/components/localized-route-brief";
 import { OperationsShell } from "@/components/operations-shell";
 import { PlatformServiceArchitecture } from "@/components/platform-service-architecture";
 import { ProductIntakeForms } from "@/components/product-intake-forms";
@@ -62,6 +63,7 @@ export default function CommunityPage({ searchParams }: CommunityPageProps) {
         { label: "Join -> learn -> try -> verify", variant: "cyan" },
       ]}
     >
+      <LocalizedRouteBrief routeKey="community" />
       <EcosystemFocusAlignmentStrip
         title="Community and education now grow directly from the live product"
         description="Hosted story, onboarding, trust, and pilot routes already give the community a practical way to support, understand, and extend PrivateDAO through real product use and production-oriented feedback."

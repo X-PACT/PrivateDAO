@@ -3,7 +3,7 @@
 import { useI18n } from "@/components/i18n-provider";
 
 type LocalizedRouteBriefProps = {
-  routeKey: "security" | "products" | "learn" | "servicesStarter";
+  routeKey: "security" | "products" | "learn" | "servicesStarter" | "servicesCore" | "community" | "story";
 };
 
 export function LocalizedRouteBrief({ routeKey }: LocalizedRouteBriefProps) {

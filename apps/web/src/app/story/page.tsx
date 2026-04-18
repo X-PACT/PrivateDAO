@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { InfrastructureStartupProofStrip } from "@/components/infrastructure-startup-proof-strip";
+import { LocalizedRouteBrief } from "@/components/localized-route-brief";
 import { OperationsShell } from "@/components/operations-shell";
 import { SectionHeader } from "@/components/section-header";
 import { VideoCenter } from "@/components/video-center";
@@ -27,6 +28,7 @@ export default function StoryPage() {
       ]}
     >
       <InfrastructureStartupProofStrip route="story" />
+      <LocalizedRouteBrief routeKey="story" />
       <div>
         <VideoCenter />
       </div>

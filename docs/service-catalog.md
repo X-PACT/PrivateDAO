@@ -23,6 +23,7 @@ These are service-style offerings that build on the implemented product:
 - reviewer export and evidence packaging
 - runtime diagnostics and operator snapshots
 - governance proof-center support for audits, grants, and internal reviews
+- Devnet billing rehearsal that lets a visitor sign a small service charge and inspect the resulting hash and logs on-chain
 
 Current boundary:
 
@@ -70,6 +71,7 @@ The current commercial model is organized as:
 - hosted operator layer
 - confidential operations premium
 - enterprise governance retainer
+- Devnet billing rehearsal for public-facing product and revenue proof
 
 See:
 

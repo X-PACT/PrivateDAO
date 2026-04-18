@@ -139,14 +139,28 @@ type SelectiveDisclosureTranslations = {
   publicItems: string[];
 };
 
+type StatusBannerTranslations = {
+  label: string;
+  title: string;
+  body: string;
+  retry: string;
+  until: string;
+  openTrust: string;
+  openCommunity: string;
+};
+
 type LocalizedCopy = {
   chrome: ChromeTranslations;
   shell: ShellTranslations;
   routeSummaries: Record<"start" | "services" | "products" | "learn" | "judge" | "proof", RouteSummaryTranslations>;
   privacySelector: PrivacyPolicyTranslations;
   sdkStarter: SdkStarterTranslations;
-  routeBriefs: Record<"security" | "products" | "learn" | "servicesStarter", RouteBriefTranslations>;
+  routeBriefs: Record<
+    "security" | "products" | "learn" | "servicesStarter" | "servicesCore" | "community" | "story",
+    RouteBriefTranslations
+  >;
   selectiveDisclosure: SelectiveDisclosureTranslations;
+  statusBanner: StatusBannerTranslations;
 };
 
 const routeSummaryHrefByKey: Record<keyof LocalizedCopy["routeSummaries"], string> = {
@@ -351,6 +365,39 @@ const englishCopy: LocalizedCopy = {
         "Use selective disclosure when the partner must review sensitive execution without opening the full internal workflow.",
       ],
     },
+    servicesCore: {
+      eyebrow: "Services route brief",
+      title: "Services should show the business model, the operating lane, and the live Devnet proof in one commercial surface",
+      description:
+        "This route works best when pricing, billing rehearsal, treasury routing, trust packets, and hosted-read packaging are kept together instead of being split across static documents.",
+      bullets: [
+        "Lead with the product lane a buyer can try immediately from a Devnet wallet.",
+        "Keep pricing and billing language tied to the current public-good Devnet boundary, not to unshipped mainnet claims.",
+        "Use the commercial surface to show that PrivateDAO can evolve into a sustainable infrastructure company.",
+      ],
+    },
+    community: {
+      eyebrow: "Community route brief",
+      title: "Community is where product education, support, and adoption pressure become one public operating loop",
+      description:
+        "This route should help normal users join the server, understand what the product does, open the right learning or execution corridor, and return with useful feedback instead of getting lost in scattered links.",
+      bullets: [
+        "Keep the onboarding ladder clear: join, learn, run, verify.",
+        "Use community as the feedback intake for usability, language clarity, and real user friction.",
+        "Treat community growth as product evidence, not as a side channel detached from the live system.",
+      ],
+    },
+    story: {
+      eyebrow: "Story route brief",
+      title: "Story should convert explanation into action without forcing the visitor back to a generic homepage",
+      description:
+        "This route works best when the reel, the business model, the learn corridor, and the live Devnet actions stay directly connected so a buyer, judge, or student can move from narrative to proof in one sitting.",
+      bullets: [
+        "Use story to compress the full product thesis into one fast route.",
+        "Keep every major claim linked to a live route, a document packet, or a public Devnet artifact.",
+        "End the story with an actionable next step, not with a passive media wall.",
+      ],
+    },
   },
   selectiveDisclosure: {
     eyebrow: "Selective disclosure",
@@ -401,6 +448,15 @@ const englishCopy: LocalizedCopy = {
       "runtime logs, proof packets, and reviewer summaries",
       "custody and authority state when that proof is required",
     ],
+  },
+  statusBanner: {
+    label: "Live development notice",
+    title: "Core development, testing, and service hardening continue through April 30, 2026.",
+    body: "Some routes may change while verification, billing rehearsal, localization, and wallet flows are being tightened. If something looks inconsistent, retry in a few minutes and open the trust or community route for the latest operating truth.",
+    retry: "Retry in a few minutes",
+    until: "Core development window through April 30, 2026",
+    openTrust: "Open trust",
+    openCommunity: "Open community",
   },
 };
 
@@ -555,6 +611,39 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
           "استخدم الكشف الانتقائي إذا كان يحتاج مراجعة حساسة بدون فتح كامل المسار الداخلي.",
         ],
       },
+      servicesCore: {
+        eyebrow: "ملخص مسار الخدمات",
+        title: "الخدمات يجب أن تعرض النموذج التجاري ومسار التشغيل والدليل الحي في سطح واحد",
+        description:
+          "هذا المسار يكون أقوى عندما تبقى الأسعار وتجربة الفوترة على Devnet ومسارات الخزانة وحزم الثقة وتغليف hosted reads في مكان واحد بدل أن تتوزع بين وثائق جامدة.",
+        bullets: [
+          "ابدأ بالمسار الذي يستطيع الممول أو المستخدم تجربته فورًا بمحفظة Devnet.",
+          "اربط الأسعار والفوترة بحدود Devnet الحالية، لا بادعاءات Mainnet غير المشحونة.",
+          "استخدم هذا السطح لإظهار أن PrivateDAO يمكن أن تتحول إلى شركة بنية تحتية مستدامة.",
+        ],
+      },
+      community: {
+        eyebrow: "ملخص مسار المجتمع",
+        title: "المجتمع هو حلقة التشغيل العامة التي تجمع التعلّم والدعم والتبنّي",
+        description:
+          "هذا المسار يجب أن يساعد المستخدم العادي على دخول السيرفر وفهم المنتج وفتح مسار التعلّم أو التنفيذ المناسب ثم العودة بتغذية راجعة عملية بدل الضياع بين الروابط.",
+        bullets: [
+          "اجعل سلم الدخول واضحًا: انضم، تعلّم، نفّذ، تحقّق.",
+          "استخدم المجتمع كمدخل لتحسين سهولة الاستخدام واللغة وإغلاق الاحتكاك الحقيقي.",
+          "اعتبر نمو المجتمع دليلاً على المنتج، لا مسارًا جانبيًا منفصلًا عن النظام الحي.",
+        ],
+      },
+      story: {
+        eyebrow: "ملخص مسار القصة",
+        title: "القصة يجب أن تحول الشرح إلى فعل بدون إعادة الزائر إلى صفحة عامة ضائعة",
+        description:
+          "هذا المسار يكون أفضل عندما تبقى القصة والنموذج التجاري ومسار التعلّم والتنفيذ الحي متصلة مباشرة حتى ينتقل المشتري أو المراجع أو المتعلم من السرد إلى الإثبات في جلسة واحدة.",
+        bullets: [
+          "استخدم القصة لاختصار أطروحة المنتج كاملة في مسار سريع.",
+          "اربط كل claim رئيسية بمسار حي أو حزمة وثائق أو أثر Devnet عام.",
+          "اختم القصة بخطوة عملية تالية، لا بجدار وسائط سلبي.",
+        ],
+      },
     },
     selectiveDisclosure: {
       eyebrow: "الكشف الانتقائي",
@@ -589,6 +678,15 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
         "اللوجز التشغيلية وحزم الإثبات وملخصات المراجعة",
         "حالة الحفظ والصلاحيات عندما يتطلب الإثبات ذلك",
       ],
+    },
+    statusBanner: {
+      label: "تنبيه تطوير حي",
+      title: "التطوير الأساسي والاختبارات وتقوية الخدمات مستمرة حتى 30 أبريل 2026.",
+      body: "قد تتغير بعض المسارات بينما نغلق التحقق والفوترة التجريبية والترجمة ومسارات المحافظ. إذا ظهر تعارض أو تعطل مؤقت، أعد المحاولة بعد دقائق وافتح مسار الثقة أو المجتمع لمعرفة الحقيقة التشغيلية الأحدث.",
+      retry: "أعد المحاولة بعد دقائق",
+      until: "نافذة التطوير الأساسية حتى 30 أبريل 2026",
+      openTrust: "افتح الثقة",
+      openCommunity: "افتح المجتمع",
     },
   },
   ru: {

@@ -16,6 +16,7 @@
   <a href="https://github.com/X-PACT/PrivateDAO/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/X-PACT/PrivateDAO/ci.yml?branch=main&label=CI" alt="CI status" /></a>
   <a href="docs/awards.md"><img src="https://img.shields.io/badge/Regional%20Recognition-1st%20Place-gold" alt="Regional 1st place recognition" /></a>
   <a href="https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet"><img src="https://img.shields.io/badge/Solana-Devnet%20Program-14F195" alt="Devnet program" /></a>
+  <a href="https://privatedao.org/trust/"><img src="https://img.shields.io/badge/Build%20Window-Through%202026--04--30-f59e0b" alt="Build window through 2026-04-30" /></a>
   <a href="docs/pdao-token.md"><img src="https://img.shields.io/badge/PDAO-Token--2022%20Governance%20Mint-0f766e" alt="PDAO token" /></a>
   <a href="docs/security-hardening-v2.md"><img src="https://img.shields.io/badge/Security-Strict%20V2%20Hardening-1d4ed8" alt="Strict V2 security hardening" /></a>
   <a href="docs/operational-evidence.generated.md"><img src="https://img.shields.io/badge/Devnet-50%20Wallet%20Rehearsal-7c3aed" alt="Devnet rehearsal" /></a>
@@ -29,6 +30,18 @@
 **Regional 1st Place recognition, March 2026.**
 
 PrivateDAO engineering already carries a real first-place regional signal. That matters here because this repo is built the same way: live protocol code, live Devnet execution, explicit trust boundaries, and machine-checked reviewer evidence. See [`docs/awards.md`](docs/awards.md).
+
+## Live Development Notice
+
+Core development, testing, wallet hardening, localization, and service packaging continue through **April 30, 2026**.
+
+If a route looks inconsistent or temporarily degraded:
+
+- retry in a few minutes
+- check `https://privatedao.org/trust/`
+- check `https://privatedao.org/community/`
+
+This is intentional. PrivateDAO is being advanced in public as a real Devnet-first infrastructure product, and the site stays aligned with the newest verified operating truth rather than pretending the release cycle is already over.
 
 ## What PrivateDAO Is
 
@@ -81,6 +94,7 @@ PrivateDAO is already a live Devnet product, not a concept deck:
 - `Governance Hardening V3` for token-supply quorum snapshots and dedicated reveal rebate vaults
 - `Settlement Hardening V3` for payout caps, evidence-aging windows, and explicit REFHE/MagicBlock execution requirements
 - Backend read node and RPC Fast-oriented evidence path
+- Devnet billing rehearsal route with wallet-signed on-chain service charge proof
 - Reviewer-facing runtime, security, and launch packets
 
 ## Product Surface Split

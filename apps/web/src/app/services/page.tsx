@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 
 import { AnalystGradeDataCorridor } from "@/components/analyst-grade-data-corridor";
+import { BusinessModelSurface } from "@/components/business-model-surface";
 import { CommercialCompareSurface } from "@/components/commercial-compare-surface";
 import { CustodyReadinessStrip } from "@/components/custody-readiness-strip";
 import { DataCorridorQuickLinks } from "@/components/data-corridor-quick-links";
@@ -18,6 +19,7 @@ import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-tru
 import { ReadNodeActivationStrip } from "@/components/read-node-activation-strip";
 import { ReadNodeHostReadinessStrip } from "@/components/read-node-host-readiness-strip";
 import { JupiterTreasuryRouteSurface } from "@/components/jupiter-treasury-route-surface";
+import { LocalizedRouteBrief } from "@/components/localized-route-brief";
 import { LocalizedRouteSummary } from "@/components/localized-route-summary";
 import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
 import { PrivacySdkApiStarter } from "@/components/privacy-sdk-api-starter";
@@ -60,6 +62,7 @@ export default function ServicesPage() {
       ]}
     >
       <LocalizedRouteSummary routeKey="services" />
+      <LocalizedRouteBrief routeKey="servicesCore" />
       <div>
         <ServicesSurface />
       </div>
@@ -71,6 +74,9 @@ export default function ServicesPage() {
       </div>
       <div>
         <CommercialCompareSurface />
+      </div>
+      <div>
+        <BusinessModelSurface />
       </div>
       <div>
         <WalletFirstServiceActionsStrip context="services" />
