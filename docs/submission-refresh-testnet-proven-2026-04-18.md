@@ -41,7 +41,9 @@ The following listings were refreshed through the authenticated Superteam sessio
 | Umbra Side Track | Privacy-preserving governance and confidential payout corridor | `https://privatedao.org/security/` |
 | Solana Foundation Poland Grants | Production-hardening grant for a live Devnet/Testnet product | `https://privatedao.org/start/` |
 
-## Colosseum Update Fields
+## Colosseum Update Submitted
+
+The Colosseum project editor was updated from the authenticated browser session and submitted successfully.
 
 ### Live product link
 
@@ -83,6 +85,12 @@ No
 
 ```text
 Yes
+```
+
+### Fundraising details
+
+```text
+PrivateDAO is fundraising through ecosystem grants, infrastructure credits, security support, and aligned pre-seed conversations. The immediate use of funds is production hardening: custody ceremony, monitoring, wallet/device evidence, audit-forward review, confidential settlement receipt closure, and mainnet release preparation.
 ```
 
 ### Live token
