@@ -38,7 +38,7 @@ This pass ranks the still-uncovered on-chain entrypoints by security value and e
      - `tests/private-dao.ts:3985`
 
 4. `execute_confidential_payout_plan_v2`
-   - why fourth: moves treasury assets under settlement-evidence gates; it now has direct success + stale-evidence regression coverage, but still needs a full runtime validator pass on an AVX2-capable host
+   - why fourth: moves treasury assets under settlement-evidence gates; it now has direct success + stale-evidence regression coverage plus explicit token-asset negative-path coverage, but still needs a full runtime validator pass on an AVX2-capable host
    - source: `programs/private-dao/src/treasury.rs`
    - review focus:
      - stale or mismatched evidence rejection
@@ -87,4 +87,4 @@ This pass ranks the still-uncovered on-chain entrypoints by security value and e
 1. run the new direct integration suite on an AVX2-capable host so the local-validator runtime path actually executes
 2. extend negative-path coverage for `finalize_zk_enforced_proposal_v3` beyond the existing success-path direct test
 3. extend negative-path coverage for `update_dao_governance_policy_v3` and `update_dao_settlement_policy_v3` beyond the current rollback / invalid-config cases
-4. deepen token-asset coverage for `execute_confidential_payout_plan_v2`, which is still only exercised here on the SOL branch
+4. keep the token-asset branch green on AVX2 runtime and then move to V3 token settlement coverage

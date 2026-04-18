@@ -690,6 +690,288 @@ describe("PrivateDAO", () => {
     };
   }
 
+  async function prepareSettlementV2TokenScenario(options?: {
+    settlementTtlSeconds?: number;
+    totalAmount?: number;
+  }) {
+    const settlementTtlSeconds = options?.settlementTtlSeconds ?? 3600;
+    const totalAmount = options?.totalAmount ?? 250_000_000;
+    const payoutDaoName = `SettlementV2TokenDAO-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
+    const [payoutDaoPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("dao"), authority.publicKey.toBuffer(), Buffer.from(payoutDaoName)],
+      program.programId,
+    );
+
+    await program.methods
+      .initializeDao(
+        payoutDaoName,
+        51,
+        new BN(0),
+        new BN(5),
+        new BN(0),
+        { tokenWeighted: {} },
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        governanceToken: governanceMint,
+        authority: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [securityPolicyPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("dao-security-policy"), payoutDaoPda.toBuffer()],
+      program.programId,
+    );
+    const attestors = [
+      authority.publicKey,
+      ZERO_PUBKEY,
+      ZERO_PUBKEY,
+      ZERO_PUBKEY,
+      ZERO_PUBKEY,
+    ];
+
+    await program.methods
+      .initializeDaoSecurityPolicy(
+        { strictRequired: {} },
+        { thresholdAttestedRequired: {} },
+        { thresholdAttestedRequired: {} },
+        { noCancelAfterParticipation: {} },
+        attestors,
+        1,
+        1,
+        attestors,
+        1,
+        1,
+        new BN(3600),
+        new BN(settlementTtlSeconds),
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        daoSecurityPolicy: securityPolicyPda,
+        authority: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const payoutDao = await program.account["dao"].fetch(payoutDaoPda);
+    const [payoutProposalPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), payoutDaoPda.toBuffer(), payoutDao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal(
+        "Settlement hardening V2 token payout",
+        "Execute a confidential token payout only after a strict execution policy snapshot and verified settlement evidence.",
+        new BN(5),
+        null,
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        proposerTokenAccount: authorityTokenAta,
+        proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [payoutPlanPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("payout-plan"), payoutProposalPda.toBuffer()],
+      program.programId,
+    );
+    const [executionSnapshotPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal-policy-snapshot"), payoutProposalPda.toBuffer()],
+      program.programId,
+    );
+    const [treasuryPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("treasury"), payoutDaoPda.toBuffer()],
+      program.programId,
+    );
+
+    const settlementRecipient = Keypair.generate();
+    const wrongRecipientOwner = Keypair.generate();
+    await provider.sendAndConfirm(new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: authority.publicKey,
+        toPubkey: settlementRecipient.publicKey,
+        lamports: Math.round(0.005 * LAMPORTS_PER_SOL),
+      }),
+      SystemProgram.transfer({
+        fromPubkey: authority.publicKey,
+        toPubkey: wrongRecipientOwner.publicKey,
+        lamports: Math.round(0.005 * LAMPORTS_PER_SOL),
+      }),
+    ), []);
+
+    const manifestHash = [...crypto.randomBytes(32)];
+    const ciphertextHash = [...crypto.randomBytes(32)];
+
+    await program.methods
+      .configureConfidentialPayoutPlan(
+        { payroll: {} },
+        { token: {} },
+        settlementRecipient.publicKey,
+        governanceMint,
+        3,
+        new BN(totalAmount),
+        "box://privatedao/payroll/settlement-v2-token-epoch-1",
+        manifestHash,
+        ciphertextHash,
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        confidentialPayoutPlan: payoutPlanPda,
+        operator: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    await program.methods
+      .snapshotProposalExecutionPolicy()
+      .accounts({
+        dao: payoutDaoPda,
+        daoSecurityPolicy: securityPolicyPda,
+        proposal: payoutProposalPda,
+        proposalExecutionPolicySnapshot: executionSnapshotPda,
+        operator: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const treasuryAta = getAssociatedTokenAddressSync(governanceMint, treasuryPda, true);
+    const recipientAta = getAssociatedTokenAddressSync(governanceMint, settlementRecipient.publicKey);
+    const wrongOwnerRecipientAta = getAssociatedTokenAddressSync(governanceMint, wrongRecipientOwner.publicKey);
+    await provider.sendAndConfirm(new Transaction().add(
+      createAssociatedTokenAccountInstruction(authority.publicKey, treasuryAta, treasuryPda, governanceMint),
+      createAssociatedTokenAccountInstruction(authority.publicKey, recipientAta, settlementRecipient.publicKey, governanceMint),
+      createAssociatedTokenAccountInstruction(authority.publicKey, wrongOwnerRecipientAta, wrongRecipientOwner.publicKey, governanceMint),
+    ), []);
+    await mintTo(provider.connection, authority.payer, governanceMint, treasuryAta, authority.payer, BigInt(totalAmount + 100_000_000));
+
+    const wrongMint = await createMint(provider.connection, authority.payer, authority.publicKey, null, 6);
+    const wrongMintRecipientAta = getAssociatedTokenAddressSync(wrongMint, settlementRecipient.publicKey);
+    await provider.sendAndConfirm(new Transaction().add(
+      createAssociatedTokenAccountInstruction(authority.publicKey, wrongMintRecipientAta, settlementRecipient.publicKey, wrongMint),
+    ), []);
+    await mintTo(provider.connection, authority.payer, wrongMint, wrongMintRecipientAta, authority.payer, 10_000_000n);
+
+    const [votePda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), payoutProposalPda.toBuffer(), authority.publicKey.toBuffer()],
+      program.programId,
+    );
+    const [delegationMarkerPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("delegation"), payoutProposalPda.toBuffer(), authority.publicKey.toBuffer()],
+      program.programId,
+    );
+    const payrollSalt = randomSalt();
+
+    await program.methods
+      .commitVote([...computeCommitment(true, payrollSalt, authority.publicKey, payoutProposalPda)], null)
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        voterRecord: votePda,
+        delegationMarker: delegationMarkerPda,
+        voterTokenAccount: authorityTokenAta,
+        voter: authority.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const created = await program.account["proposal"].fetch(payoutProposalPda);
+    await waitUntilUnix(created.votingEnd);
+
+    await program.methods
+      .revealVote(true, [...payrollSalt])
+      .accounts({
+        proposal: payoutProposalPda,
+        voterRecord: votePda,
+        revealer: authority.publicKey,
+      })
+      .rpc();
+
+    const revealed = await program.account["proposal"].fetch(payoutProposalPda);
+    await waitUntilUnix(revealed.revealEnd);
+
+    await program.methods
+      .finalizeProposal()
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        finalizer: authority.publicKey,
+      })
+      .rpc();
+
+    const settlementId = [...crypto.randomBytes(32)];
+    const evidenceHash = [...crypto.randomBytes(32)];
+    const payoutFieldsHash = [
+      ...canonicalPayoutFieldsHash(
+        payoutDaoPda,
+        payoutProposalPda,
+        payoutPlanPda,
+        { payroll: {} },
+        { token: {} },
+        settlementRecipient.publicKey,
+        governanceMint,
+        3,
+        new BN(totalAmount),
+        manifestHash,
+        ciphertextHash,
+      ),
+    ];
+    const [settlementEvidencePda] = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("settlement-evidence"),
+        payoutProposalPda.toBuffer(),
+        payoutPlanPda.toBuffer(),
+        Buffer.from(settlementId),
+      ],
+      program.programId,
+    );
+    const [settlementConsumptionPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("settlement-consumption"), settlementEvidencePda.toBuffer()],
+      program.programId,
+    );
+
+    await program.methods
+      .recordSettlementEvidenceV2(
+        { thresholdAttestation: {} },
+        settlementId,
+        evidenceHash,
+        payoutFieldsHash,
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        daoSecurityPolicy: securityPolicyPda,
+        proposal: payoutProposalPda,
+        confidentialPayoutPlan: payoutPlanPda,
+        settlementEvidence: settlementEvidencePda,
+        recorder: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    return {
+      payoutDaoPda,
+      payoutProposalPda,
+      payoutPlanPda,
+      executionSnapshotPda,
+      settlementEvidencePda,
+      settlementConsumptionPda,
+      treasuryPda,
+      treasuryAta,
+      recipientAta,
+      wrongOwnerRecipientAta,
+      wrongMintRecipientAta,
+      settlementRecipient,
+      wrongRecipientOwner,
+      totalAmount,
+    };
+  }
+
   async function waitUntilUnix(target: BN | number, cushionMs = 1_200) {
     const targetSeconds = typeof target === "number" ? target : target.toNumber();
     const delayMs = Math.max(targetSeconds - Math.floor(Date.now() / 1000), 0) * 1000 + cushionMs;
@@ -4821,6 +5103,168 @@ describe("PrivateDAO", () => {
     }
 
     console.log("  ✓ Settlement Hardening V2 rejects stale settlement evidence");
+  });
+
+  it("rejects Settlement Hardening V2 token execution when the treasury token account is not treasury-owned", async () => {
+    const {
+      payoutDaoPda,
+      payoutProposalPda,
+      payoutPlanPda,
+      executionSnapshotPda,
+      settlementEvidencePda,
+      settlementConsumptionPda,
+      treasuryPda,
+      recipientAta,
+      settlementRecipient,
+    } = await prepareSettlementV2TokenScenario();
+
+    try {
+      await program.methods
+        .executeConfidentialPayoutPlanV2()
+        .accounts({
+          dao: payoutDaoPda,
+          proposal: payoutProposalPda,
+          proposalExecutionPolicySnapshot: executionSnapshotPda,
+          confidentialPayoutPlan: payoutPlanPda,
+          settlementEvidence: settlementEvidencePda,
+          settlementConsumptionRecord: settlementConsumptionPda,
+          treasury: treasuryPda,
+          executor: authority.publicKey,
+          settlementRecipient: settlementRecipient.publicKey,
+          treasuryTokenAccount: authorityTokenAta,
+          recipientTokenAccount: recipientAta,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("V2 token execution must reject a treasury token account that is not owned by the treasury PDA");
+    } catch (err: any) {
+      assert.include(err.toString(), "InvalidTreasuryTokenAuthority");
+    }
+
+    console.log("  ✓ Settlement Hardening V2 token path rejects non-treasury token authority");
+  });
+
+  it("rejects Settlement Hardening V2 token execution when the recipient token mint does not match the payout mint", async () => {
+    const {
+      payoutDaoPda,
+      payoutProposalPda,
+      payoutPlanPda,
+      executionSnapshotPda,
+      settlementEvidencePda,
+      settlementConsumptionPda,
+      treasuryPda,
+      treasuryAta,
+      wrongMintRecipientAta,
+      settlementRecipient,
+    } = await prepareSettlementV2TokenScenario();
+
+    try {
+      await program.methods
+        .executeConfidentialPayoutPlanV2()
+        .accounts({
+          dao: payoutDaoPda,
+          proposal: payoutProposalPda,
+          proposalExecutionPolicySnapshot: executionSnapshotPda,
+          confidentialPayoutPlan: payoutPlanPda,
+          settlementEvidence: settlementEvidencePda,
+          settlementConsumptionRecord: settlementConsumptionPda,
+          treasury: treasuryPda,
+          executor: authority.publicKey,
+          settlementRecipient: settlementRecipient.publicKey,
+          treasuryTokenAccount: treasuryAta,
+          recipientTokenAccount: wrongMintRecipientAta,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("V2 token execution must reject recipient token accounts that use the wrong mint");
+    } catch (err: any) {
+      assert.include(err.toString(), "InvalidTokenMint");
+    }
+
+    console.log("  ✓ Settlement Hardening V2 token path rejects mismatched recipient mint");
+  });
+
+  it("rejects Settlement Hardening V2 token execution when treasury and recipient token accounts are the same", async () => {
+    const {
+      payoutDaoPda,
+      payoutProposalPda,
+      payoutPlanPda,
+      executionSnapshotPda,
+      settlementEvidencePda,
+      settlementConsumptionPda,
+      treasuryPda,
+      treasuryAta,
+      settlementRecipient,
+    } = await prepareSettlementV2TokenScenario();
+
+    try {
+      await program.methods
+        .executeConfidentialPayoutPlanV2()
+        .accounts({
+          dao: payoutDaoPda,
+          proposal: payoutProposalPda,
+          proposalExecutionPolicySnapshot: executionSnapshotPda,
+          confidentialPayoutPlan: payoutPlanPda,
+          settlementEvidence: settlementEvidencePda,
+          settlementConsumptionRecord: settlementConsumptionPda,
+          treasury: treasuryPda,
+          executor: authority.publicKey,
+          settlementRecipient: settlementRecipient.publicKey,
+          treasuryTokenAccount: treasuryAta,
+          recipientTokenAccount: treasuryAta,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("V2 token execution must reject duplicate treasury and recipient token accounts");
+    } catch (err: any) {
+      assert.include(err.toString(), "DuplicateTokenAccounts");
+    }
+
+    console.log("  ✓ Settlement Hardening V2 token path rejects duplicate token accounts");
+  });
+
+  it("rejects Settlement Hardening V2 token execution when the recipient token account belongs to another owner", async () => {
+    const {
+      payoutDaoPda,
+      payoutProposalPda,
+      payoutPlanPda,
+      executionSnapshotPda,
+      settlementEvidencePda,
+      settlementConsumptionPda,
+      treasuryPda,
+      treasuryAta,
+      wrongOwnerRecipientAta,
+      settlementRecipient,
+    } = await prepareSettlementV2TokenScenario();
+
+    try {
+      await program.methods
+        .executeConfidentialPayoutPlanV2()
+        .accounts({
+          dao: payoutDaoPda,
+          proposal: payoutProposalPda,
+          proposalExecutionPolicySnapshot: executionSnapshotPda,
+          confidentialPayoutPlan: payoutPlanPda,
+          settlementEvidence: settlementEvidencePda,
+          settlementConsumptionRecord: settlementConsumptionPda,
+          treasury: treasuryPda,
+          executor: authority.publicKey,
+          settlementRecipient: settlementRecipient.publicKey,
+          treasuryTokenAccount: treasuryAta,
+          recipientTokenAccount: wrongOwnerRecipientAta,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("V2 token execution must reject recipient token accounts owned by a different wallet");
+    } catch (err: any) {
+      assert.include(err.toString(), "RecipientOwnerMismatch");
+    }
+
+    console.log("  ✓ Settlement Hardening V2 token path rejects recipient owner mismatch");
   });
 
   it("executes a confidential payout through Settlement Hardening V3 with policy snapshots and verified evidence", async () => {

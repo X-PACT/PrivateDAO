@@ -98,12 +98,16 @@ This document tracks the current security-audit execution lane for PrivateDAO.
 - `cargo-fuzz` now requires the nightly toolchain on this machine and is wired for smoke runs through the repo scripts.
 - The focused TS lane is now the most relevant short-loop metric for the current tranche because it measures the three files explicitly requested for uplift instead of the full frontend/helpers surface.
 - The three new Anchor integration tests were verified through `mocha --dry-run` with `ANCHOR_PROVIDER_URL` and `ANCHOR_WALLET` set, which confirms the test file registers the new scenarios correctly before the heavier local-validator runtime pass.
-- The direct integration lane now registers 5 targeted scenarios in `tests/private-dao.ts`:
+- The direct integration lane now registers 9 targeted scenarios in `tests/private-dao.ts`:
   - V3 governance policy hardening + snapshot
   - V3 settlement policy hardening + rollback rejection
   - V3 ZK finalization success path
   - V2 settlement execution success path
   - V2 stale-evidence rejection
+  - V2 token path rejects non-treasury token authority
+  - V2 token path rejects mismatched recipient mint
+  - V2 token path rejects duplicate token accounts
+  - V2 token path rejects recipient-owner mismatch
 - A full `anchor test --run tests/private-dao.ts` runtime pass reaches validator startup on this machine but fails before test execution because `solana-test-validator 3.1.8` requires `AVX2` and this host does not provide it.
 
 ## Truth Boundary
@@ -117,4 +121,4 @@ Coverage and fuzzing are now wired into the repo, but no public `>80%` claim sho
 
 The current tranche clears smoke fuzzing across all three targets and lifts focused TypeScript functions above `80%`, but it still does not justify a broad public `>80% coverage` claim across the repository or the full Solana instruction surface.
 
-The new direct integration scenarios are present in `tests/private-dao.ts`, and registration-level proof succeeded. The remaining blocker for a full local runtime pass is environmental: `solana-test-validator` on this machine aborts at startup because the CPU lacks `AVX2`.
+The new direct integration scenarios are present in `tests/private-dao.ts`, and registration-level proof succeeded. The remaining blocker for a full local runtime pass is environmental: `solana-test-validator` on this machine aborts at startup because the CPU lacks `AVX2`. The correct runtime closure path is now a GitHub-hosted `CI` runner or another AVX2-capable machine, not further retries on this host.
