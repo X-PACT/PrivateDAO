@@ -426,6 +426,270 @@ describe("PrivateDAO", () => {
     };
   }
 
+  async function prepareSettlementV2Scenario(options?: {
+    settlementTtlSeconds?: number;
+    totalAmount?: number;
+  }) {
+    const settlementTtlSeconds = options?.settlementTtlSeconds ?? 3600;
+    const totalAmount = options?.totalAmount ?? 50_000_000;
+    const payoutDaoName = `SettlementV2DAO-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
+    const [payoutDaoPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("dao"), authority.publicKey.toBuffer(), Buffer.from(payoutDaoName)],
+      program.programId,
+    );
+
+    await program.methods
+      .initializeDao(
+        payoutDaoName,
+        51,
+        new BN(0),
+        new BN(5),
+        new BN(0),
+        { tokenWeighted: {} },
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        governanceToken: governanceMint,
+        authority: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [securityPolicyPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("dao-security-policy"), payoutDaoPda.toBuffer()],
+      program.programId,
+    );
+    const attestors = [
+      authority.publicKey,
+      ZERO_PUBKEY,
+      ZERO_PUBKEY,
+      ZERO_PUBKEY,
+      ZERO_PUBKEY,
+    ];
+
+    await program.methods
+      .initializeDaoSecurityPolicy(
+        { strictRequired: {} },
+        { thresholdAttestedRequired: {} },
+        { thresholdAttestedRequired: {} },
+        { noCancelAfterParticipation: {} },
+        attestors,
+        1,
+        1,
+        attestors,
+        1,
+        1,
+        new BN(3600),
+        new BN(settlementTtlSeconds),
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        daoSecurityPolicy: securityPolicyPda,
+        authority: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const payoutDao = await program.account["dao"].fetch(payoutDaoPda);
+    const [payoutProposalPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal"), payoutDaoPda.toBuffer(), payoutDao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      program.programId,
+    );
+
+    await program.methods
+      .createProposal(
+        "Settlement hardening V2 payout",
+        "Execute a confidential payout only after a strict execution policy snapshot and verified settlement evidence.",
+        new BN(5),
+        null,
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        proposerTokenAccount: authorityTokenAta,
+        proposer: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [payoutPlanPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("payout-plan"), payoutProposalPda.toBuffer()],
+      program.programId,
+    );
+    const [executionSnapshotPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("proposal-policy-snapshot"), payoutProposalPda.toBuffer()],
+      program.programId,
+    );
+    const [treasuryPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("treasury"), payoutDaoPda.toBuffer()],
+      program.programId,
+    );
+
+    const settlementRecipient = Keypair.generate();
+    await provider.sendAndConfirm(new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: authority.publicKey,
+        toPubkey: settlementRecipient.publicKey,
+        lamports: Math.round(0.005 * LAMPORTS_PER_SOL),
+      }),
+    ), []);
+
+    const manifestHash = [...crypto.randomBytes(32)];
+    const ciphertextHash = [...crypto.randomBytes(32)];
+
+    await program.methods
+      .configureConfidentialPayoutPlan(
+        { salary: {} },
+        { sol: {} },
+        settlementRecipient.publicKey,
+        null,
+        2,
+        new BN(totalAmount),
+        "box://privatedao/payroll/settlement-v2-epoch-1",
+        manifestHash,
+        ciphertextHash,
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        confidentialPayoutPlan: payoutPlanPda,
+        operator: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    await program.methods
+      .snapshotProposalExecutionPolicy()
+      .accounts({
+        dao: payoutDaoPda,
+        daoSecurityPolicy: securityPolicyPda,
+        proposal: payoutProposalPda,
+        proposalExecutionPolicySnapshot: executionSnapshotPda,
+        operator: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    await program.methods
+      .depositTreasury(new BN(100_000_000))
+      .accounts({
+        dao: payoutDaoPda,
+        treasury: treasuryPda,
+        depositor: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const [votePda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), payoutProposalPda.toBuffer(), authority.publicKey.toBuffer()],
+      program.programId,
+    );
+    const [delegationMarkerPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("delegation"), payoutProposalPda.toBuffer(), authority.publicKey.toBuffer()],
+      program.programId,
+    );
+    const salarySalt = randomSalt();
+
+    await program.methods
+      .commitVote([...computeCommitment(true, salarySalt, authority.publicKey, payoutProposalPda)], null)
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        voterRecord: votePda,
+        delegationMarker: delegationMarkerPda,
+        voterTokenAccount: authorityTokenAta,
+        voter: authority.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const created = await program.account["proposal"].fetch(payoutProposalPda);
+    await waitUntilUnix(created.votingEnd);
+
+    await program.methods
+      .revealVote(true, [...salarySalt])
+      .accounts({
+        proposal: payoutProposalPda,
+        voterRecord: votePda,
+        revealer: authority.publicKey,
+      })
+      .rpc();
+
+    const revealed = await program.account["proposal"].fetch(payoutProposalPda);
+    await waitUntilUnix(revealed.revealEnd);
+
+    await program.methods
+      .finalizeProposal()
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        finalizer: authority.publicKey,
+      })
+      .rpc();
+
+    const settlementId = [...crypto.randomBytes(32)];
+    const evidenceHash = [...crypto.randomBytes(32)];
+    const payoutFieldsHash = [
+      ...canonicalPayoutFieldsHash(
+        payoutDaoPda,
+        payoutProposalPda,
+        payoutPlanPda,
+        { salary: {} },
+        { sol: {} },
+        settlementRecipient.publicKey,
+        null,
+        2,
+        new BN(totalAmount),
+        manifestHash,
+        ciphertextHash,
+      ),
+    ];
+    const [settlementEvidencePda] = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("settlement-evidence"),
+        payoutProposalPda.toBuffer(),
+        payoutPlanPda.toBuffer(),
+        Buffer.from(settlementId),
+      ],
+      program.programId,
+    );
+    const [settlementConsumptionPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("settlement-consumption"), settlementEvidencePda.toBuffer()],
+      program.programId,
+    );
+
+    await program.methods
+      .recordSettlementEvidenceV2(
+        { thresholdAttestation: {} },
+        settlementId,
+        evidenceHash,
+        payoutFieldsHash,
+      )
+      .accounts({
+        dao: payoutDaoPda,
+        daoSecurityPolicy: securityPolicyPda,
+        proposal: payoutProposalPda,
+        confidentialPayoutPlan: payoutPlanPda,
+        settlementEvidence: settlementEvidencePda,
+        recorder: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    return {
+      payoutDaoPda,
+      payoutProposalPda,
+      payoutPlanPda,
+      executionSnapshotPda,
+      settlementEvidencePda,
+      settlementConsumptionPda,
+      treasuryPda,
+      settlementRecipient,
+      totalAmount,
+    };
+  }
+
   async function waitUntilUnix(target: BN | number, cushionMs = 1_200) {
     const targetSeconds = typeof target === "number" ? target : target.toNumber();
     const delayMs = Math.max(targetSeconds - Math.floor(Date.now() / 1000), 0) * 1000 + cushionMs;
@@ -4466,6 +4730,97 @@ describe("PrivateDAO", () => {
     assert.equal(finalized.revealCount.toString(), "1");
     assert.equal(finalized.executionUnlocksAt.toString(), finalized.revealEnd.toString());
     console.log("  ✓ ZK-enforced proposal V3 finalizes only after matching proof and governance snapshots");
+  });
+
+  it("executes a confidential payout through Settlement Hardening V2 with strict snapshot and verified evidence", async () => {
+    const {
+      payoutDaoPda,
+      payoutProposalPda,
+      payoutPlanPda,
+      executionSnapshotPda,
+      settlementEvidencePda,
+      settlementConsumptionPda,
+      treasuryPda,
+      settlementRecipient,
+      totalAmount,
+    } = await prepareSettlementV2Scenario();
+
+    const treasuryBefore = await provider.connection.getBalance(treasuryPda);
+    const recipientBefore = await provider.connection.getBalance(settlementRecipient.publicKey);
+
+    await program.methods
+      .executeConfidentialPayoutPlanV2()
+      .accounts({
+        dao: payoutDaoPda,
+        proposal: payoutProposalPda,
+        proposalExecutionPolicySnapshot: executionSnapshotPda,
+        confidentialPayoutPlan: payoutPlanPda,
+        settlementEvidence: settlementEvidencePda,
+        settlementConsumptionRecord: settlementConsumptionPda,
+        treasury: treasuryPda,
+        executor: authority.publicKey,
+        settlementRecipient: settlementRecipient.publicKey,
+        treasuryTokenAccount: treasuryPda,
+        recipientTokenAccount: treasuryPda,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const treasuryAfter = await provider.connection.getBalance(treasuryPda);
+    const recipientAfter = await provider.connection.getBalance(settlementRecipient.publicKey);
+    const executedPlan = await program.account["confidentialPayoutPlan"].fetch(payoutPlanPda);
+    const executedProposal = await program.account["proposal"].fetch(payoutProposalPda);
+    const consumptionRecord = await program.account["settlementConsumptionRecord"].fetch(settlementConsumptionPda);
+
+    assert.equal(treasuryBefore - treasuryAfter, totalAmount);
+    assert.equal(recipientAfter - recipientBefore, totalAmount);
+    assert.deepEqual(executedPlan.status, { funded: {} });
+    assert.isTrue(executedProposal.isExecuted);
+    assert.equal(consumptionRecord.evidence.toBase58(), settlementEvidencePda.toBase58());
+    assert.equal(consumptionRecord.consumedByProposal.toBase58(), payoutProposalPda.toBase58());
+    console.log("  ✓ Settlement Hardening V2 executes only after strict snapshot and verified settlement evidence");
+  });
+
+  it("rejects Settlement Hardening V2 execution when settlement evidence is stale", async () => {
+    const {
+      payoutDaoPda,
+      payoutProposalPda,
+      payoutPlanPda,
+      executionSnapshotPda,
+      settlementEvidencePda,
+      settlementConsumptionPda,
+      treasuryPda,
+      settlementRecipient,
+    } = await prepareSettlementV2Scenario({ settlementTtlSeconds: 1 });
+
+    await new Promise((resolve) => setTimeout(resolve, 2200));
+
+    try {
+      await program.methods
+        .executeConfidentialPayoutPlanV2()
+        .accounts({
+          dao: payoutDaoPda,
+          proposal: payoutProposalPda,
+          proposalExecutionPolicySnapshot: executionSnapshotPda,
+          confidentialPayoutPlan: payoutPlanPda,
+          settlementEvidence: settlementEvidencePda,
+          settlementConsumptionRecord: settlementConsumptionPda,
+          treasury: treasuryPda,
+          executor: authority.publicKey,
+          settlementRecipient: settlementRecipient.publicKey,
+          treasuryTokenAccount: treasuryPda,
+          recipientTokenAccount: treasuryPda,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      assert.fail("V2 execution should reject settlement evidence after the TTL expires");
+    } catch (err: any) {
+      assert.include(err.toString(), "StaleSettlementEvidence");
+    }
+
+    console.log("  ✓ Settlement Hardening V2 rejects stale settlement evidence");
   });
 
   it("executes a confidential payout through Settlement Hardening V3 with policy snapshots and verified evidence", async () => {
