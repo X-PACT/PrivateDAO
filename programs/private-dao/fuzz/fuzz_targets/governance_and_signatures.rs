@@ -5,18 +5,9 @@ use libfuzzer_sys::fuzz_target;
 
 use anchor_lang::prelude::Pubkey;
 use private_dao::{
-    utils::{
-        compute_vote_commitment,
-        validate_attestor_policy,
-        validate_governance_policy_v3,
-        validate_magicblock_tx_signature,
-        validate_voting_config,
-    },
-    QuorumPolicyV3,
-    RevealRebatePolicyV3,
-    VotingConfig,
-    MAX_POLICY_ATTESTORS,
-    MAX_REVEAL_REBATE_V3_LAMPORTS,
+    compute_vote_commitment, validate_attestor_policy, validate_governance_policy_v3,
+    validate_magicblock_tx_signature, validate_voting_config, QuorumPolicyV3,
+    RevealRebatePolicyV3, VotingConfig, MAX_POLICY_ATTESTORS, MAX_REVEAL_REBATE_V3_LAMPORTS,
 };
 
 #[derive(Arbitrary, Debug)]

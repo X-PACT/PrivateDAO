@@ -12,6 +12,12 @@ mod voting;
 
 pub use error::Error;
 pub use traits::{ProposalLifecycle, Sha256VoteCommitment, TreasuryActionPolicy, VoteCommitment};
+pub use utils::{
+    compute_vote_commitment, validate_attestor_policy, validate_confidential_payout_plan,
+    validate_governance_policy_v3, validate_magicblock_corridor, validate_magicblock_tx_signature,
+    validate_refhe_envelope, validate_settlement_policy_v3, validate_treasury_action,
+    validate_voting_config,
+};
 
 declare_id!("5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx");
 

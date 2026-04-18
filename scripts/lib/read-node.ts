@@ -969,3 +969,28 @@ export class PrivateDaoReadNode {
     return balances;
   }
 }
+
+export const __testables = {
+  trimValue,
+  isPlaceholderValue,
+  isValidRpcUrl,
+  rpcTimeoutMs,
+  buildAlchemyDevnetRpc,
+  buildHeliusDevnetRpc,
+  actionTypeLabel,
+  statusLabel,
+  proofSystemLabel,
+  computePhase,
+  deriveProposalZkPolicyPda,
+  deriveConfidentialPayoutPlanPda,
+  deriveRefheEnvelopePda,
+  deriveMagicBlockPrivatePaymentCorridorPda,
+  deriveZkReceiptPda,
+  mapDaoAccount,
+  mapProposalAccount,
+  mapPolicyAccount,
+  mapConfidentialPayoutPlan,
+  mapRefheEnvelope,
+  mapMagicBlockCorridor,
+  mapReceipt,
+};

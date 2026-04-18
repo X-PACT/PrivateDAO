@@ -5,9 +5,7 @@ use libfuzzer_sys::fuzz_target;
 
 use anchor_lang::prelude::Pubkey;
 use private_dao::{
-    utils::validate_treasury_action,
-    TreasuryAction,
-    TreasuryActionType,
+    validate_treasury_action, TreasuryAction, TreasuryActionType,
 };
 
 #[derive(Arbitrary, Debug)]

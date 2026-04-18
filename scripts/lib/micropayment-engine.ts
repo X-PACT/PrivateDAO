@@ -115,6 +115,37 @@ function formatAmount(value: bigint, decimals: number, symbol: string) {
     : `${whole.toString()} ${symbol}`;
 }
 
+type MicropaymentPlanInput = {
+  assetMode: MicropaymentExecutionMode;
+  targetCount: number;
+  transferTarget: number;
+};
+
+export type MicropaymentPlan = {
+  assetMode: MicropaymentExecutionMode;
+  targetCount: number;
+  transferTarget: number;
+  batchActionCount: number;
+  batchCount: number;
+  actionsPerBatch: string[];
+};
+
+function buildMicropaymentPlan({
+  assetMode,
+  targetCount,
+  transferTarget,
+}: MicropaymentPlanInput): MicropaymentPlan {
+  const actions = assetMode === "SPL" ? SPL_MICROPAYMENT_ACTIONS : SOL_MICROPAYMENT_ACTIONS;
+  return {
+    assetMode,
+    targetCount,
+    transferTarget,
+    batchActionCount: actions.length,
+    batchCount: Math.ceil(transferTarget / actions.length),
+    actionsPerBatch: actions.map((item) => item.action),
+  };
+}
+
 async function sendAndFinalize(
   connection: Connection,
   transaction: Transaction,
@@ -191,6 +222,11 @@ function writeReportArtifacts(report: MicropaymentRailReport) {
 
   fs.writeFileSync(jsonPath, JSON.stringify(report, null, 2) + "\n", "utf8");
 
+  const markdown = buildMicropaymentMarkdown(report);
+  fs.writeFileSync(markdownPath, markdown, "utf8");
+}
+
+function buildMicropaymentMarkdown(report: MicropaymentRailReport) {
   const lines = [
     "# Agentic Treasury Micropayment Rail Evidence",
     "",
@@ -215,7 +251,7 @@ function writeReportArtifacts(report: MicropaymentRailReport) {
   }
 
   lines.push("", "## Machine-readable source", "", "- `docs/agentic-treasury-micropayment-rail.generated.json`");
-  fs.writeFileSync(markdownPath, lines.join("\n") + "\n", "utf8");
+  return lines.join("\n") + "\n";
 }
 
 export async function runAgenticMicropaymentRail(
@@ -239,10 +275,12 @@ export async function runAgenticMicropaymentRail(
   const stableContext = await detectStableExecutionMode(connection, signer, stableMint);
   const assetMode: MicropaymentExecutionMode = stableContext ? "SPL" : "SOL";
   const settlementAssetSymbol = stableContext ? stableSymbol : "SOL";
-  const batchActionCount = stableContext
-    ? SPL_MICROPAYMENT_ACTIONS.length
-    : SOL_MICROPAYMENT_ACTIONS.length;
-  const batchCount = Math.ceil(transferTarget / batchActionCount);
+  const plan = buildMicropaymentPlan({
+    assetMode: stableContext ? "SPL" : "SOL",
+    targetCount,
+    transferTarget,
+  });
+  const batchCount = plan.batchCount;
   const transfers: MicropaymentTransferRecord[] = [];
   let totalAmountRaw = 0n;
 
@@ -369,9 +407,7 @@ export async function runAgenticMicropaymentRail(
       stableContext ? stableContext.decimals : 9,
       settlementAssetSymbol,
     ),
-    actionsPerBatch: stableContext
-      ? SPL_MICROPAYMENT_ACTIONS.map((item) => item.action)
-      : SOL_MICROPAYMENT_ACTIONS.map((item) => item.action),
+    actionsPerBatch: plan.actionsPerBatch,
     reportPath: "docs/agentic-treasury-micropayment-rail.generated.json",
     transfers,
   };
@@ -379,3 +415,10 @@ export async function runAgenticMicropaymentRail(
   writeReportArtifacts(report);
   return report;
 }
+
+export const __testables = {
+  buildMicropaymentPlan,
+  buildMicropaymentMarkdown,
+  formatAmount,
+  writeReportArtifacts,
+};

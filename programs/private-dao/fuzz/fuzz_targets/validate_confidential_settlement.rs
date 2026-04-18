@@ -5,13 +5,8 @@ use libfuzzer_sys::fuzz_target;
 
 use anchor_lang::prelude::Pubkey;
 use private_dao::{
-    utils::{
-        validate_confidential_payout_plan,
-        validate_magicblock_corridor,
-        validate_refhe_envelope,
-        validate_settlement_policy_v3,
-    },
-    ConfidentialAssetType,
+    validate_confidential_payout_plan, validate_magicblock_corridor, validate_refhe_envelope,
+    validate_settlement_policy_v3, ConfidentialAssetType,
 };
 
 #[derive(Arbitrary, Debug)]

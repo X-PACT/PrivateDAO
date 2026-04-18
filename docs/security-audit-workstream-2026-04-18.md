@@ -23,6 +23,7 @@ This document tracks the current security-audit execution lane for PrivateDAO.
 
 - TS unit tests: `npm run test:unit:ts`
 - TS coverage: `npm run coverage:ts`
+- TS ops coverage: `npm run coverage:ts:ops`
 - Rust lib coverage: `npm run coverage:rust`
 - Rust lib coverage LCOV: `npm run coverage:rust:lcov`
 - Fuzz:
@@ -32,12 +33,25 @@ This document tracks the current security-audit execution lane for PrivateDAO.
 
 ## Current Baselines
 
-- TS unit tests: `9 passing`
+- TS unit tests: `22 passing`
 - TS coverage baseline:
   - statements: `64.04%`
   - branches: `68.23%`
   - functions: `67.69%`
   - lines: `64.04%`
+- TS ops coverage baseline:
+  - total statements: `76.19%`
+  - total branches: `62.67%`
+  - total functions: `80.51%`
+  - total lines: `76.19%`
+  - `scripts/lib/read-node.ts`
+    - statements/lines: `73.29%`
+    - functions: `75.86%`
+    - branches: `62.76%`
+  - `scripts/lib/micropayment-engine.ts`
+    - statements/lines: `83.01%`
+    - functions: `94.73%`
+    - branches: `62.50%`
 - Rust lib coverage baseline:
   - regions: `17.05%`
   - functions: `14.80%`

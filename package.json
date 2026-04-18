@@ -54,6 +54,7 @@
     "test:full:anchor": "anchor test --run tests/full-flow-test.ts",
     "test:unit:ts": "TSX_TSCONFIG_PATH=apps/web/tsconfig.scripts.json node --import tsx ./node_modules/mocha/bin/mocha --timeout 10000 --exit test/unit/**/*.ts",
     "coverage:ts": "TSX_TSCONFIG_PATH=apps/web/tsconfig.scripts.json c8 --reporter=text-summary --reporter=lcov --include apps/web/src/lib/dao-bootstrap.ts --include apps/web/src/lib/privacy-proof-snapshot.ts node --import tsx ./node_modules/mocha/bin/mocha --timeout 10000 --exit test/unit/**/*.ts",
+    "coverage:ts:ops": "TSX_TSCONFIG_PATH=apps/web/tsconfig.scripts.json c8 --reporter=text-summary --reporter=json-summary --reports-dir coverage-ops --temp-directory .c8-tmp-ops --include scripts/lib/read-node.ts --include scripts/lib/micropayment-engine.ts node --import tsx ./node_modules/mocha/bin/mocha --timeout 10000 --exit test/unit/**/*.ts",
     "coverage:rust": "cargo llvm-cov -p private-dao --lib --summary-only",
     "coverage:rust:lcov": "cargo llvm-cov -p private-dao --lib --lcov --output-path target/llvm-cov-private-dao.lcov",
     "fuzz:validate-treasury-action": "bash -lc 'cd programs/private-dao/fuzz && cargo +nightly fuzz run validate_treasury_action -- -max_total_time=30'",
