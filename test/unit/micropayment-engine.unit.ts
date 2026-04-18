@@ -194,4 +194,43 @@ describe("micropayment engine unit coverage", () => {
       fs.rmSync(tempDir, { recursive: true, force: true });
     }
   });
+
+  it("clamps undersized targets to a single recipient and five transfers", async () => {
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "pdao-micropayment-clamp-"));
+    const wallet = Keypair.generate();
+    const walletPath = path.join(tempDir, "wallet.json");
+    fs.writeFileSync(walletPath, JSON.stringify(Array.from(wallet.secretKey)), "utf8");
+
+    let signatureIndex = 0;
+    const fakeConnection = {
+      getMinimumBalanceForRentExemption: async () => 0,
+      getLatestBlockhash: async () => ({
+        blockhash: Keypair.generate().publicKey.toBase58(),
+        lastValidBlockHeight: 1,
+      }),
+      sendRawTransaction: async () => `sig-min-${++signatureIndex}`,
+      confirmTransaction: async () => ({ value: { err: null } }),
+      getTransaction: async () => ({ slot: signatureIndex }),
+    };
+    const cwd = process.cwd();
+
+    try {
+      process.chdir(tempDir);
+      const report = await runAgenticMicropaymentRail({
+        connection: fakeConnection as any,
+        walletPath,
+        targetCount: 0,
+        transferTarget: 1,
+      });
+
+      assert.equal(report.targetCount, 1);
+      assert.equal(report.batchCount, 1);
+      assert.equal(report.transferCount, 5);
+      assert.equal(report.successfulTransferCount, 5);
+      assert.equal(report.transfers[0]?.action, "recipient-activation");
+    } finally {
+      process.chdir(cwd);
+      fs.rmSync(tempDir, { recursive: true, force: true });
+    }
+  });
 });

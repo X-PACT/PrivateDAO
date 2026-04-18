@@ -45,6 +45,15 @@ describe("read node unit coverage", () => {
     assert.equal(__testables.rpcTimeoutMs(), 8000);
   });
 
+  it("prefers explicit Alchemy RPC URLs and ignores placeholder Helius keys", () => {
+    process.env.ALCHEMY_DEVNET_RPC_URL = "https://alchemy-explicit.example";
+    process.env.ALCHEMY_API_KEY = "alchemy-key";
+    process.env.HELIUS_API_KEY = "your_helius_api_key_here";
+
+    assert.equal(__testables.buildAlchemyDevnetRpc(), "https://alchemy-explicit.example");
+    assert.equal(__testables.buildHeliusDevnetRpc(), null);
+  });
+
   it("maps DAO and proposal accounts into reviewer-safe views", () => {
     const dao = Keypair.generate().publicKey;
     const authority = Keypair.generate().publicKey;
@@ -269,5 +278,180 @@ describe("read node unit coverage", () => {
 
     assert.equal(profiles.some((profile) => profile.name === "50"), true);
     assert.equal(profiles.some((profile) => profile.name === "500"), true);
+  });
+
+  it("computes proposal phases across commit, reveal, timelock, executable, and final states", () => {
+    const now = Math.floor(Date.now() / 1000);
+
+    assert.equal(
+      __testables.computePhase(
+        {
+          status: "Voting",
+          isExecuted: false,
+          votingEnd: now + 60,
+          revealEnd: now + 120,
+          executionUnlocksAt: now + 180,
+        },
+        now,
+      ),
+      "Commit",
+    );
+    assert.equal(
+      __testables.computePhase(
+        {
+          status: "Voting",
+          isExecuted: false,
+          votingEnd: now - 10,
+          revealEnd: now + 60,
+          executionUnlocksAt: now + 120,
+        },
+        now,
+      ),
+      "Reveal",
+    );
+    assert.equal(
+      __testables.computePhase(
+        {
+          status: "Passed",
+          isExecuted: false,
+          votingEnd: now - 20,
+          revealEnd: now - 10,
+          executionUnlocksAt: now + 120,
+        },
+        now,
+      ),
+      "Timelocked",
+    );
+    assert.equal(
+      __testables.computePhase(
+        {
+          status: "Passed",
+          isExecuted: false,
+          votingEnd: now - 20,
+          revealEnd: now - 10,
+          executionUnlocksAt: now - 1,
+        },
+        now,
+      ),
+      "Executable",
+    );
+    assert.equal(
+      __testables.computePhase(
+        {
+          status: "Cancelled",
+          isExecuted: false,
+          votingEnd: now - 20,
+          revealEnd: now - 10,
+          executionUnlocksAt: now - 1,
+        },
+        now,
+      ),
+      "Cancelled",
+    );
+    assert.equal(
+      __testables.computePhase(
+        {
+          status: "Passed",
+          isExecuted: true,
+          votingEnd: now - 20,
+          revealEnd: now - 10,
+          executionUnlocksAt: now - 1,
+        },
+        now,
+      ),
+      "Executed",
+    );
+    assert.equal(
+      __testables.computePhase(
+        {
+          status: "Unknown",
+          isExecuted: false,
+          votingEnd: now - 20,
+          revealEnd: now - 10,
+          executionUnlocksAt: now - 1,
+        },
+        now,
+      ),
+      "Finalized",
+    );
+  });
+
+  it("does not rotate RPC endpoints on unrecoverable RPC failures", async () => {
+    const node = new PrivateDaoReadNode({
+      rpcEndpoints: ["https://rpc-a.example", "https://rpc-b.example"],
+    });
+
+    try {
+      await node.withRpcFallback(async () => {
+        throw new Error("invalid instruction data");
+      });
+      assert.fail("expected unrecoverable error");
+    } catch (error) {
+      assert.match(String(error), /invalid instruction data/);
+      assert.equal(node.currentRpcEndpoint(), "https://rpc-a.example");
+    }
+  });
+
+  it("derives wallet readiness and ops overview from live-shaped runtime data", async () => {
+    const node = new PrivateDaoReadNode({
+      rpcEndpoints: ["https://rpc-a.example"],
+    }) as any;
+
+    node.fetchDao = async () => ({
+      governanceToken: Keypair.generate().publicKey.toBase58(),
+    });
+    node.withRpcFallback = async () => ({
+      value: [
+        {
+          account: {
+            data: {
+              parsed: {
+                info: {
+                  tokenAmount: { uiAmount: 3.5 },
+                },
+              },
+            },
+          },
+        },
+      ],
+    });
+
+    const readiness = await node.fetchWalletReadiness(
+      Keypair.generate().publicKey.toBase58(),
+      Keypair.generate().publicKey.toBase58(),
+    );
+
+    assert.equal(readiness.readiness, "READY");
+    assert.equal(readiness.balanceUi, 3.5);
+
+    node.fetchProposals = async () => [
+      {
+        dao: "dao-a",
+        zkMode: "ZkEnforced",
+        confidentialPayoutPlan: { status: "Configured" },
+        magicblockCorridor: { status: "Settled" },
+        refheEnvelope: { status: "Settled", verifierProgram: "Verifier1111111111111111111111111111111111" },
+        phase: "Executable",
+      },
+      {
+        dao: "dao-b",
+        zkMode: "Companion",
+        confidentialPayoutPlan: null,
+        magicblockCorridor: null,
+        refheEnvelope: null,
+        phase: "Finalized",
+      },
+    ];
+
+    const overview = await node.getOpsOverview(true);
+
+    assert.equal(overview.proposals, 2);
+    assert.equal(overview.uniqueDaos, 2);
+    assert.equal(overview.zkEnforced, 1);
+    assert.equal(overview.confidentialPayouts, 1);
+    assert.equal(overview.magicblockSettled, 1);
+    assert.equal(overview.refheSettled, 1);
+    assert.equal(overview.refheWithVerifier, 1);
+    assert.equal(overview.executableConfidential, 1);
   });
 });
