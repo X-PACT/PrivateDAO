@@ -34,9 +34,11 @@ import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
 import { cn } from "@/lib/utils";
 
 const voteChoices = ["Approve", "Reject"] as const;
-const LIVE_DEVNET_VOTING_DURATION_SECONDS = 45;
-const LIVE_DEVNET_REVEAL_WINDOW_SECONDS = 45;
-const LIVE_DEVNET_EXECUTION_DELAY_SECONDS = 15;
+// The browser-first governance lane needs enough time for a human wallet prompt
+// and one review pass without falling out of the live Devnet window.
+const LIVE_DEVNET_VOTING_DURATION_SECONDS = 180;
+const LIVE_DEVNET_REVEAL_WINDOW_SECONDS = 180;
+const LIVE_DEVNET_EXECUTION_DELAY_SECONDS = 30;
 
 function resolveStagedReviewAction(proposal: ProposalCardModel | null): CoreGovernanceInstructionName {
   if (!proposal) return "commit_vote";
