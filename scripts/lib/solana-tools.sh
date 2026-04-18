@@ -89,8 +89,9 @@ SOLANA_KEYGEN_BIN="${SOLANA_KEYGEN_BIN:-$(resolve_tool solana-keygen \
   "/usr/local/bin/solana-keygen" 2>/dev/null || true)}"
 
 ANCHOR_BIN="${ANCHOR_BIN:-$(resolve_tool_prefer_candidates anchor \
-  "$HOME/.local/bin/anchor" \
   "$HOME/.avm/bin/anchor" \
+  "$HOME/.avm/bin/anchor-0.32.1" \
+  "$HOME/.local/bin/anchor" \
   "$HOME/.cargo/bin/anchor" \
   "/usr/local/bin/anchor" 2>/dev/null || true)}"
 
@@ -218,6 +219,25 @@ select_devnet_rpc() {
   fi
 
   printf '%s\n' "https://api.devnet.solana.com"
+}
+
+select_testnet_rpc() {
+  if ! is_placeholder_value "${TESTNET_RPC_URL:-}"; then
+    printf '%s\n' "$(trim_value "${TESTNET_RPC_URL}")"
+    return 0
+  fi
+
+  if ! is_placeholder_value "${RPCFAST_TESTNET_RPC_URL:-}"; then
+    printf '%s\n' "$(trim_value "${RPCFAST_TESTNET_RPC_URL}")"
+    return 0
+  fi
+
+  if ! is_placeholder_value "${SOLANA_TESTNET_RPC_URL:-}"; then
+    printf '%s\n' "$(trim_value "${SOLANA_TESTNET_RPC_URL}")"
+    return 0
+  fi
+
+  printf '%s\n' "https://api.testnet.solana.com"
 }
 
 collect_devnet_rpcs() {

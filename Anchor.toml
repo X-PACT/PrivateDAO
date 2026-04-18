@@ -1,11 +1,14 @@
 [toolchain]
-anchor_version = "0.31.1"
+anchor_version = "0.32.1"
 
 [features]
 resolution = true
 skip-lint = false
 
 [programs.devnet]
+private_dao = "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx"
+
+[programs.testnet]
 private_dao = "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx"
 
 [programs.localnet]
@@ -15,7 +18,7 @@ private_dao = "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
+cluster = "testnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]

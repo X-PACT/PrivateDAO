@@ -189,6 +189,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/rpcfast-hackathon-infrastructure-plan.md`,
   },
   {
+    slug: "testnet-migration-report-2026-04-18",
+    title: "Testnet Migration Report",
+    category: "Infrastructure",
+    summary: "Factual migration packet for the Anchor 0.32.1 upgrade, preserved program ID, Testnet funding state, deploy buffer, and remaining lifecycle rehearsal gates.",
+    audience: "Infrastructure reviewers, operators, funders, judges",
+    boundary: "Migration report only; it does not claim Testnet lifecycle completion until the deployment, account recreation, and explorer-linked actions are recorded.",
+    docPath: "docs/testnet-migration-report-2026-04-18.md",
+    rawHref: `${repositoryBlobBase}/docs/testnet-migration-report-2026-04-18.md`,
+  },
+  {
     slug: "reform-backlog-product-ux-2026",
     title: "Product UX Reform Backlog 2026",
     category: "Strategy",

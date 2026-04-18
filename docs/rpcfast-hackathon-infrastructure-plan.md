@@ -55,6 +55,14 @@ Outputs:
 
 Goal: run the same read and streaming checks against Testnet before any mainnet execution claim.
 
+Current migration record:
+
+- See `docs/testnet-migration-report-2026-04-18.md`.
+- Anchor workspace migration to Testnet has reached deployed-program state.
+- Anchor 0.32.1 build has completed.
+- Testnet deployment completed with program ID `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx` and deploy signature `4a2gsFSJ6EpgqZjVaMSZx72LVvz2o1XfXBzJ8PHLz5Q8YStNYmdhk6YBDoMe2fjxb6TPrr8s5mydqeFQwPgHnqdy`.
+- Testnet lifecycle rehearsal is the next required gate before external submissions should be refreshed as Testnet-proven.
+
 Required checks:
 
 - Testnet RPC connectivity
@@ -102,4 +110,3 @@ This support improves PrivateDAO's track value because it turns the runtime stor
 - stronger analytics and monitoring
 - future mainnet data-plane readiness
 - measurable Testnet transition before production claims
-

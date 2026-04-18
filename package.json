@@ -3,7 +3,7 @@
   "version": "0.3.0",
   "description": "Solana private governance system with commit-reveal voting, confidential payroll and bonus batches, timelocked execution, Groth16 companion proofs, and reviewer-visible security evidence",
   "scripts": {
-    "build": "anchor build",
+    "build": "PATH=\"$HOME/.avm/bin:$PATH\" anchor build",
     "web:dev": "npm --prefix apps/web run dev",
     "web:build": "npm --prefix apps/web run build",
     "web:build:github": "npm --prefix apps/web run build:github",
@@ -49,9 +49,9 @@
     "typecheck": "tsc --noEmit",
     "demo": "bash scripts/run-local-anchor-suite.sh demo tests/demo.ts",
     "test:core": "bash scripts/run-local-anchor-suite.sh core tests/private-dao.ts",
-    "test:core:anchor": "anchor test --run tests/private-dao.ts",
+    "test:core:anchor": "PATH=\"$HOME/.avm/bin:$PATH\" anchor test --run tests/private-dao.ts",
     "test:full": "bash scripts/run-local-anchor-suite.sh full tests/full-flow-test.ts",
-    "test:full:anchor": "anchor test --run tests/full-flow-test.ts",
+    "test:full:anchor": "PATH=\"$HOME/.avm/bin:$PATH\" anchor test --run tests/full-flow-test.ts",
     "test:unit:ts": "TSX_TSCONFIG_PATH=apps/web/tsconfig.scripts.json node --import tsx ./node_modules/mocha/bin/mocha --timeout 10000 --exit test/unit/**/*.ts",
     "coverage:ts": "TSX_TSCONFIG_PATH=apps/web/tsconfig.scripts.json c8 --reporter=text-summary --reporter=lcov --include apps/web/src/lib/dao-bootstrap.ts --include apps/web/src/lib/privacy-proof-snapshot.ts node --import tsx ./node_modules/mocha/bin/mocha --timeout 10000 --exit test/unit/**/*.ts",
     "coverage:ts:ops": "TSX_TSCONFIG_PATH=apps/web/tsconfig.scripts.json c8 --reporter=text-summary --reporter=json-summary --reports-dir coverage-ops --temp-directory .c8-tmp-ops --include scripts/lib/read-node.ts --include scripts/lib/micropayment-engine.ts node --import tsx ./node_modules/mocha/bin/mocha --timeout 10000 --exit test/unit/**/*.ts",
@@ -61,7 +61,7 @@
     "fuzz:validate-treasury-action": "bash -lc 'cd programs/private-dao/fuzz && cargo +nightly fuzz run validate_treasury_action -- -max_total_time=30'",
     "fuzz:validate-confidential-settlement": "bash -lc 'cd programs/private-dao/fuzz && cargo +nightly fuzz run validate_confidential_settlement -- -max_total_time=30'",
     "fuzz:governance-and-signatures": "bash -lc 'cd programs/private-dao/fuzz && cargo +nightly fuzz run governance_and_signatures -- -max_total_time=30'",
-    "deploy": "anchor deploy --provider.cluster devnet",
+    "deploy": "npm run deploy:testnet",
     "setup": "bash scripts/setup-devnet.sh",
     "check:contracts": "bash scripts/check-contracts.sh",
     "localnet": "solana-test-validator --reset",
@@ -272,10 +272,14 @@
     "check:mainnet": "bash scripts/check-mainnet-readiness.sh",
     "verify:review-surface": "bash scripts/verify-review-surface.sh",
     "ops:canary": "npm run build:wallet-matrix && npm run build:devnet-canary && npm run verify:wallet-matrix && npm run verify:devnet-canary",
-    "migrate": "ts-node migrations/migrate-realms-dao.ts"
+    "migrate": "ts-node migrations/migrate-realms-dao.ts",
+    "anchor:version": "PATH=\"$HOME/.avm/bin:$PATH\" anchor --version",
+    "deploy:devnet": "PATH=\"$HOME/.avm/bin:$PATH\" anchor deploy --provider.cluster devnet",
+    "deploy:testnet": "PATH=\"$HOME/.avm/bin:$PATH\" anchor deploy --provider.cluster testnet",
+    "setup:testnet": "bash scripts/setup-testnet.sh"
   },
   "dependencies": {
-    "@coral-xyz/anchor": "^0.31.1",
+    "@coral-xyz/anchor": "^0.32.1",
     "@solana/spl-token": "^0.4.9",
     "@solana/web3.js": "^1.98.0",
     "dotenv": "^16.4.5"
