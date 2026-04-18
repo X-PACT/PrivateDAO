@@ -4,7 +4,9 @@ import { Suspense } from "react";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { JudgeRuntimeLogsPanel } from "@/components/judge-runtime-logs-panel";
 import { JudgeExecutionContinuityPanel } from "@/components/judge-execution-continuity-panel";
+import { LocalizedRouteSummary } from "@/components/localized-route-summary";
 import { OperationsShell } from "@/components/operations-shell";
+import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
 import { ProofEntryBanner } from "@/components/proof-entry-banner";
 import { ProofFlowRail } from "@/components/proof-flow-rail";
 import { ProofCenter } from "@/components/proof-center";
@@ -42,6 +44,7 @@ export default function ProofPage() {
         { label: "Baseline + V3", variant: "success" },
       ]}
     >
+      <LocalizedRouteSummary routeKey="proof" />
       <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-5 text-sm leading-7 text-white/72">
         Connect a Devnet wallet, run the DAO lifecycle from <strong className="text-white">Govern</strong>, then use
         this proof surface to inspect transaction signatures, captured logs, runtime freshness, and the privacy
@@ -56,6 +59,9 @@ export default function ProofPage() {
       </div>
       <div>
         <PrivacyProofExplainer compact />
+      </div>
+      <div>
+        <PrivacyPolicySelector compact />
       </div>
       <div>
         <JudgeRuntimeLogsPanel />

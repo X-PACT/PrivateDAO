@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Activity, BarChart3, BrainCircuit, BriefcaseBusiness, Compass, FileSearch, FileText, KeyRound, LayoutDashboard, MessageSquareMore, PlayCircle, Rocket, ShieldCheck, Smartphone, Sparkles, SquareTerminal } from "lucide-react";
 
+import { useI18n } from "@/components/i18n-provider";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
@@ -61,7 +62,40 @@ export function OperationsShell({
   children,
 }: OperationsShellProps) {
   const pathname = usePathname();
+  const { copy } = useI18n();
   const navItems = navigationMode === "guided" ? guidedNav : operationsNav;
+  const getNavLabel = (href: string, fallback: string) => {
+    switch (href) {
+      case "/start":
+        return copy.chrome.start;
+      case "/learn":
+        return copy.chrome.learn;
+      case "/govern":
+        return copy.chrome.govern;
+      case "/live":
+        return copy.chrome.liveState;
+      case "/story":
+        return copy.chrome.story;
+      case "/trust":
+        return copy.chrome.trust;
+      case "/services":
+        return copy.chrome.apiPricing;
+      case "/products":
+        return copy.chrome.products;
+      case "/network":
+        return copy.chrome.network;
+      case "/documents":
+        return copy.chrome.docs;
+      case "/community":
+        return copy.chrome.community;
+      case "/assistant":
+        return copy.chrome.help;
+      case "/search":
+        return copy.chrome.search;
+      default:
+        return fallback;
+    }
+  };
   const useMinimalGuidedChrome = navigationMode === "guided";
   const isGovernRoute = pathname === "/govern" || pathname.startsWith("/govern/");
   const isGuidedRoute = navigationMode === "guided";
@@ -77,8 +111,8 @@ export function OperationsShell({
       {!useMinimalGuidedChrome ? <div className="mb-6 xl:hidden">
         <Card className="border-white/10 bg-[#07101d]/88">
           <CardHeader className="space-y-3">
-            <div className="text-[11px] uppercase tracking-[0.34em] text-cyan-200/78">Explore</div>
-            <CardTitle className="text-lg">Quick route navigation</CardTitle>
+            <div className="text-[11px] uppercase tracking-[0.34em] text-cyan-200/78">{copy.shell.explore}</div>
+            <CardTitle className="text-lg">{copy.shell.productNavigation}</CardTitle>
           </CardHeader>
           <CardContent className="no-scrollbar flex gap-3 overflow-x-auto pb-1">
             {navItems.map((item) => {
@@ -104,7 +138,7 @@ export function OperationsShell({
                     <Icon className="h-4 w-4" />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-sm font-medium">{item.label}</div>
+                    <div className="text-sm font-medium">{getNavLabel(item.href, item.label)}</div>
                     <div className="mt-1 line-clamp-2 text-xs leading-5 text-white/45">{item.summary}</div>
                   </div>
                 </Link>
@@ -124,11 +158,11 @@ export function OperationsShell({
           <Card className="border-white/10 bg-[#07101d]/88">
             <CardHeader className="space-y-4">
               <div className="space-y-2">
-                <div className="text-[11px] uppercase tracking-[0.34em] text-cyan-200/78">Explore</div>
-                <CardTitle className="text-xl">Product navigation</CardTitle>
+                <div className="text-[11px] uppercase tracking-[0.34em] text-cyan-200/78">{copy.shell.explore}</div>
+                <CardTitle className="text-xl">{copy.shell.productNavigation}</CardTitle>
               </div>
               <p className="text-sm leading-7 text-white/56">
-                User-first routes for onboarding, governance, proof, support, and live product state.
+                {copy.shell.userFirstRoutes}
               </p>
             </CardHeader>
             <CardContent className="space-y-2">
@@ -155,7 +189,7 @@ export function OperationsShell({
                       <Icon className="h-4 w-4" />
                     </div>
                     <div className="min-w-0">
-                      <div className="text-sm font-medium">{item.label}</div>
+                      <div className="text-sm font-medium">{getNavLabel(item.href, item.label)}</div>
                       <div className="mt-1 text-xs leading-6 text-white/45">{item.summary}</div>
                     </div>
                   </Link>
@@ -166,7 +200,7 @@ export function OperationsShell({
 
           <Card className="mt-4 border-white/10 bg-white/[0.03]">
             <CardHeader>
-              <CardTitle className="text-base">System rails</CardTitle>
+              <CardTitle className="text-base">{copy.shell.systemRails}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-sm text-white/58">
               <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">ZK: privacy review and proof anchors</div>
@@ -200,31 +234,31 @@ export function OperationsShell({
                 {isGovernRoute ? (
                   <>
                     <a className={buttonVariants({ size: "sm" })} href="#proposal-review-action">
-                      Start the flow
+                      {copy.shell.startTheFlow}
                     </a>
                     <Link className={buttonVariants({ size: "sm", variant: "secondary" })} href="/live">
-                      Open live state
+                      {copy.shell.openLiveState}
                     </Link>
                     <Link className={buttonVariants({ size: "sm", variant: "outline" })} href="/trust">
-                      <span className="hidden sm:inline">Open trust only if needed</span>
-                      <span className="sm:hidden">Trust</span>
+                      <span className="hidden sm:inline">{copy.shell.openTrustOnlyIfNeeded}</span>
+                      <span className="sm:hidden">{copy.chrome.trust}</span>
                     </Link>
                   </>
                 ) : (
                   <>
                     <Link className={buttonVariants({ size: "sm" })} href="/govern">
-                      Open govern
+                      {copy.shell.openGovern}
                     </Link>
                     <Link className={buttonVariants({ size: "sm", variant: "secondary" })} href="/live">
-                      Open live state
+                      {copy.shell.openLiveState}
                     </Link>
                     {isGuidedRoute ? (
                       <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }), "hidden sm:inline-flex")} href="/trust">
-                        Open trust only if needed
+                        {copy.shell.openTrustOnlyIfNeeded}
                       </Link>
                     ) : (
                       <Link className={buttonVariants({ size: "sm", variant: "outline" })} href="/documents">
-                        Open curated docs
+                        {copy.shell.openCuratedDocs}
                       </Link>
                     )}
                   </>

@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { GettingStartedWorkspace } from "@/components/getting-started-workspace";
+import { LocalizedRouteSummary } from "@/components/localized-route-summary";
 import { OperationsShell } from "@/components/operations-shell";
+import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
 import { WalletConnectButton } from "@/components/wallet-connect-button";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -32,7 +34,9 @@ export default function StartPage() {
         { label: "Proof still connected", variant: "violet" },
       ]}
     >
+      <LocalizedRouteSummary routeKey="start" />
       <GettingStartedWorkspace executionSnapshot={executionSnapshot} />
+      <PrivacyPolicySelector compact />
       <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-6">
         <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/76">Need more after the first run?</div>
         <h2 className="mt-3 text-xl font-semibold text-white">Use one action route and one check route after this page</h2>

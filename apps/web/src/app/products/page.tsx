@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 
 import { CommercialCompareSurface } from "@/components/commercial-compare-surface";
+import { LocalizedRouteSummary } from "@/components/localized-route-summary";
 import { ServicesSurface } from "@/components/services-surface";
 import { SolutionCorridors } from "@/components/solution-corridors";
 import { OperationsShell } from "@/components/operations-shell";
+import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
 import { ProductOfferCards } from "@/components/product-offer-cards";
+import { PrivacySdkApiStarter } from "@/components/privacy-sdk-api-starter";
 import { SolanaInfrastructureStack } from "@/components/solana-infrastructure-stack";
 import { TrustSurface } from "@/components/trust-surface";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -29,7 +32,10 @@ export default function ProductsPage() {
         { label: "Review-ready", variant: "violet" },
       ]}
     >
+      <LocalizedRouteSummary routeKey="products" />
       <ProductOfferCards />
+      <PrivacyPolicySelector />
+      <PrivacySdkApiStarter compact />
       <SolanaInfrastructureStack />
       <SolutionCorridors />
       <CommercialCompareSurface />

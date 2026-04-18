@@ -18,6 +18,9 @@ import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-tru
 import { ReadNodeActivationStrip } from "@/components/read-node-activation-strip";
 import { ReadNodeHostReadinessStrip } from "@/components/read-node-host-readiness-strip";
 import { JupiterTreasuryRouteSurface } from "@/components/jupiter-treasury-route-surface";
+import { LocalizedRouteSummary } from "@/components/localized-route-summary";
+import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
+import { PrivacySdkApiStarter } from "@/components/privacy-sdk-api-starter";
 import { SectionHeader } from "@/components/section-header";
 import { SettlementReceiptSurface } from "@/components/settlement-receipt-surface";
 import { SettlementReceiptClosurePanel } from "@/components/settlement-receipt-closure-panel";
@@ -56,6 +59,7 @@ export default function ServicesPage() {
         { label: "Pilot-ready", variant: "success" },
       ]}
     >
+      <LocalizedRouteSummary routeKey="services" />
       <div>
         <ServicesSurface />
       </div>
@@ -70,6 +74,12 @@ export default function ServicesPage() {
       </div>
       <div>
         <WalletFirstServiceActionsStrip context="services" />
+      </div>
+      <div>
+        <PrivacyPolicySelector compact />
+      </div>
+      <div>
+        <PrivacySdkApiStarter compact />
       </div>
       <div>
         <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading treasury routes…</div>}>

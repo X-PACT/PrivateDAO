@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { LockKeyhole, Search, Sparkles } from "lucide-react";
 
+import { LanguageSwitcher } from "@/components/language-switcher";
 import { WalletConnectButton } from "@/components/wallet-connect-button";
+import { useI18n } from "@/components/i18n-provider";
 import { buttonVariants } from "@/components/ui/button";
 import { useSiteUrls } from "@/lib/site-urls";
 import { cn } from "@/lib/utils";
@@ -29,6 +31,7 @@ const utilityNav = [
 
 export function SiteHeader() {
   const { liveSiteUrl } = useSiteUrls();
+  const { copy } = useI18n();
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/8 bg-[#050816]/75 backdrop-blur-xl">
@@ -45,23 +48,24 @@ export function SiteHeader() {
               </div>
               <div className="mt-1 hidden items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-white/42 lg:flex">
                 <LockKeyhole className="h-3.5 w-3.5 text-cyan-200/80" />
-                <span>Create a private Solana DAO, propose, vote, and execute in one wallet-first flow</span>
+                <span>{copy.chrome.createPrivateDaoTagline}</span>
               </div>
             </div>
           </Link>
 
           <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+            <LanguageSwitcher />
             <Link
               href="/search"
               className={cn(buttonVariants({ size: "sm", variant: "ghost" }), "h-10 w-10 rounded-full p-0 text-white/72")}
-              aria-label="Search site"
+              aria-label={copy.chrome.search}
             >
               <Search className="h-4 w-4" />
             </Link>
             <Link
               href="/assistant"
               className={cn(buttonVariants({ size: "sm", variant: "ghost" }), "h-10 w-10 rounded-full p-0 text-white/72")}
-              aria-label="Open assistant"
+              aria-label={copy.chrome.help}
             >
               <Sparkles className="h-4 w-4" />
             </Link>
@@ -71,30 +75,45 @@ export function SiteHeader() {
               rel="noreferrer"
               target="_blank"
             >
-              Open App
+              {copy.chrome.openApp}
             </a>
             <WalletConnectButton />
           </div>
         </div>
 
           <nav className="no-scrollbar flex items-center gap-1.5 overflow-x-auto border-t border-white/6 pt-3 pb-1">
-            {navItems.map((item) => (
+            {navItems.map((item) => {
+              const label =
+                item.href === "/start"
+                  ? copy.chrome.start
+                  : item.href === "/learn"
+                    ? copy.chrome.learn
+                    : item.href === "/govern"
+                      ? copy.chrome.govern
+                      : item.href === "/live"
+                        ? copy.chrome.liveState
+                        : item.href === "/story"
+                          ? copy.chrome.story
+                          : copy.chrome.trust;
+
+              return (
               <Link
                 className={cn(buttonVariants({ size: "sm", variant: "ghost" }), "shrink-0 px-3 text-white/72")}
                 href={item.href}
                 key={item.href}
                 rel={item.rel}
               >
-                {item.label}
+                {label}
               </Link>
-          ))}
+              );
+            })}
         </nav>
 
         <div className="hidden border-t border-white/6 pt-3 lg:flex lg:flex-row lg:items-center lg:justify-between lg:gap-3">
           <div className="flex min-w-0 items-center gap-2 rounded-full border border-white/10 bg-white/4 px-4 py-2 text-sm text-white/62">
             <Search className="h-4 w-4 text-cyan-200" />
             <Link href="/search" className="truncate">
-              Search the app, docs, or live proof
+              {copy.chrome.searchSite}
             </Link>
             <span className="ml-auto hidden rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[11px] uppercase tracking-[0.18em] text-white/38 sm:inline-flex">
               ⌘K
@@ -102,16 +121,33 @@ export function SiteHeader() {
           </div>
 
           <nav className="no-scrollbar flex items-center gap-1.5 overflow-x-auto pb-1">
-            {utilityNav.map((item) => (
+            {utilityNav.map((item) => {
+              const label =
+                item.href === "/products"
+                  ? copy.chrome.products
+                  : item.href === "/services"
+                    ? copy.chrome.apiPricing
+                    : item.href === "/network"
+                      ? copy.chrome.network
+                      : item.href === "/documents"
+                        ? copy.chrome.docs
+                        : item.href === "/community"
+                          ? copy.chrome.community
+                          : item.href === "/assistant"
+                            ? copy.chrome.help
+                            : copy.chrome.search;
+
+              return (
               <Link
                 className={cn(buttonVariants({ size: "sm", variant: "ghost" }), "shrink-0 px-3 text-white/68")}
                 href={item.href}
                 key={item.href}
                 rel={item.rel}
               >
-                {item.label}
+                {label}
               </Link>
-            ))}
+              );
+            })}
           </nav>
         </div>
       </div>

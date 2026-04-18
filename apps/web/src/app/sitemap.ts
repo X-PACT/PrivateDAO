@@ -11,6 +11,7 @@ const coreRoutes = [
   "/judge",
   "/trust",
   "/services",
+  "/services/privacy-sdk-api-starter",
   "/proof",
   "/security",
   "/products",

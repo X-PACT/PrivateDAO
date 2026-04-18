@@ -36,6 +36,14 @@ export default function LearnToolkitPage() {
           <span className="font-semibold text-white"> runtime-template</span>, and <span className="font-semibold text-white">payment-template</span>.
           They now exist as live routes inside the site, stay linked to the source templates in GitHub, and hand the learner directly into the production Devnet corridors.
         </p>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <Link href="/services/privacy-sdk-api-starter" className={cn(buttonVariants({ size: "sm" }))}>
+            Open privacy SDK / API starter
+          </Link>
+          <Link href="/products" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+            Open product privacy policies
+          </Link>
+        </div>
       </div>
       <div className="grid gap-4 xl:grid-cols-2">
         {learnToolkitItems.map((item) => (

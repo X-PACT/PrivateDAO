@@ -5,6 +5,8 @@ import { JudgeRuntimeLogsPanel } from "@/components/judge-runtime-logs-panel";
 import { OperationsShell } from "@/components/operations-shell";
 import { DevnetExecutionScreenshotsStrip } from "@/components/devnet-execution-screenshots-strip";
 import { JudgeTechnologyGuide } from "@/components/judge-technology-guide";
+import { LocalizedRouteSummary } from "@/components/localized-route-summary";
+import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
 import { PrivacyProofExplainer } from "@/components/privacy-proof-explainer";
 import { buttonVariants } from "@/components/ui/button";
 import { WalletConnectButton } from "@/components/wallet-connect-button";
@@ -34,6 +36,7 @@ export default function JudgePage() {
         { label: "Proof-linked", variant: "violet" },
       ]}
     >
+      <LocalizedRouteSummary routeKey="judge" />
       <div className="grid gap-4 xl:grid-cols-[0.95fr_1.05fr]">
         <div className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6 text-sm leading-7 text-white/72">
           <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/78">What to verify first</div>
@@ -97,6 +100,7 @@ export default function JudgePage() {
       </div>
 
       <DevnetExecutionScreenshotsStrip />
+      <PrivacyPolicySelector compact />
       <PrivacyProofExplainer />
       <JudgeTechnologyGuide />
       <JudgeRuntimeLogsPanel />

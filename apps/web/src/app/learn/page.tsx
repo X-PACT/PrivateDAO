@@ -3,7 +3,10 @@ import Link from "next/link";
 
 import { GettingStartedWorkspace } from "@/components/getting-started-workspace";
 import { LearnBootcampNav } from "@/components/learn-bootcamp-nav";
+import { LocalizedRouteSummary } from "@/components/localized-route-summary";
 import { OperationsShell } from "@/components/operations-shell";
+import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
+import { PrivacySdkApiStarter } from "@/components/privacy-sdk-api-starter";
 import { ProductLearningGuide } from "@/components/product-learning-guide";
 import { SolanaInfrastructureStack } from "@/components/solana-infrastructure-stack";
 import { WalletConnectButton } from "@/components/wallet-connect-button";
@@ -64,6 +67,7 @@ export default function LearnPage() {
       ]}
     >
       <LearnBootcampNav />
+      <LocalizedRouteSummary routeKey="learn" />
       <div className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
         <div className="rounded-[30px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6">
           <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/76">PrivateDAO Frontend Bootcamp</div>
@@ -154,6 +158,8 @@ export default function LearnPage() {
           ))}
         </div>
       </div>
+      <PrivacyPolicySelector />
+      <PrivacySdkApiStarter compact />
       <div className="grid gap-4 xl:grid-cols-2">
         {learnLectures.map((lecture) => (
           <div key={lecture.slug} className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6">
