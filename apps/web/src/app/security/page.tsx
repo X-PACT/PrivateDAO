@@ -12,12 +12,12 @@ import { CustodyWorkspace } from "@/components/custody-workspace";
 import { FrontierSignalBoard } from "@/components/frontier-signal-board";
 import { IntelligenceLayerSurface } from "@/components/intelligence-layer-surface";
 import { EncryptedOperationsWorkbench } from "@/components/encrypted-operations-workbench";
+import { LocalizedSecurityDeepDive } from "@/components/localized-security-deep-dive";
 import { OperationsShell } from "@/components/operations-shell";
 import { RealDeviceWalletMatrixPanel } from "@/components/real-device-wallet-matrix-panel";
 import { RealDeviceCaptureClosurePanel } from "@/components/real-device-capture-closure-panel";
 import { RuntimeOperationsReadinessPanel } from "@/components/runtime-operations-readiness-panel";
 import { SecurityCenter } from "@/components/security-center";
-import { SectionHeader } from "@/components/section-header";
 import { SelectiveDisclosureSurface } from "@/components/selective-disclosure-surface";
 import { ZkMatrixSurface } from "@/components/zk-matrix-surface";
 import { ConfidentialPayoutEvidenceStrip } from "@/components/confidential-payout-evidence-strip";
@@ -60,11 +60,7 @@ export default function SecurityPage() {
         <AuthorityHardeningPanel />
       </div>
       <div>
-        <SectionHeader
-          eyebrow="Selective disclosure"
-          title="Selective disclosure turns privacy into an institutional review lane"
-          description="This is where PrivateDAO explains the narrow window between protected operator intent and reviewer-visible proof. The goal is not full public exposure. The goal is bounded, product-safe disclosure."
-        />
+        <LocalizedSecurityDeepDive section="selectiveDisclosure" />
       </div>
       <div>
         <SelectiveDisclosureSurface />
@@ -73,31 +69,19 @@ export default function SecurityPage() {
         <CustodyWorkspace />
       </div>
       <div>
-        <SectionHeader
-          eyebrow="2026 operating reality"
-          title="Security posture now has to survive real-world signer attacks, not only audit checklists"
-          description="The Drift exploit and STRIDE response changed what serious judges expect. PrivateDAO keeps signer discipline, readiness gates, runtime visibility, and migration-safe hardening in the product surface instead of hiding them in ops notes."
-        />
+        <LocalizedSecurityDeepDive section="operatingReality" />
       </div>
       <div>
         <FrontierSignalBoard />
       </div>
       <div>
-        <SectionHeader
-          eyebrow="ZK Matrix"
-          title="A PrivateDAO-specific matrix for what ZK proves now and what it does not claim"
-          description="This matrix turns the ZK story into a reviewer-friendly surface: live proofs, proposal-bound anchors, attestation, and zk_enforced posture on one side, with explicit non-claims on the other."
-        />
+        <LocalizedSecurityDeepDive section="zkMatrix" />
       </div>
       <div>
         <ZkMatrixSurface />
       </div>
       <div>
-        <SectionHeader
-          eyebrow="Confidence Engine"
-          title="A deterministic scoring engine for ZK, REFHE, MagicBlock, and Fast RPC"
-          description="This surface does not claim magical security. It explains, with explicit weights, why one proposal pattern has stronger privacy depth, enforcement depth, execution integrity, or reviewer confidence than another."
-        />
+        <LocalizedSecurityDeepDive section="confidence" />
       </div>
       <div>
         <ConfidenceEngineSurface />
@@ -130,11 +114,7 @@ export default function SecurityPage() {
         <MonitoringDeliveryEvidencePanel />
       </div>
       <div>
-        <SectionHeader
-          eyebrow="Security + Intelligence"
-          title="Proposal, treasury, voting, RPC, and gaming analysis belong inside the security story"
-          description="PrivateDAO should help users detect abnormal treasury motions, summarize governance discussion, and interpret runtime health before signatures happen. This is where AI-style assistance becomes operational instead of cosmetic."
-        />
+        <LocalizedSecurityDeepDive section="intelligence" />
       </div>
       <div>
         <IntelligenceLayerSurface />

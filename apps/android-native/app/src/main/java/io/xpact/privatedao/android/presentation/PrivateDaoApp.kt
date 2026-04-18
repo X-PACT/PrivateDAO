@@ -89,6 +89,7 @@ fun PrivateDaoApp(
     onSubmitCreateProposal: () -> Unit,
     onSubmitCreateDao: () -> Unit,
     onSubmitDepositTreasury: () -> Unit,
+    onSubmitBillingRehearsal: (BillingSku) -> Unit,
     onSubmitCommitVote: () -> Unit,
     onSubmitRevealVote: () -> Unit,
     onSubmitFinalize: () -> Unit,
@@ -138,6 +139,7 @@ fun PrivateDaoApp(
                 onRevealVoteChange = onRevealVoteChange,
                 onSubmitCreateDao = onSubmitCreateDao,
                 onSubmitDepositTreasury = onSubmitDepositTreasury,
+                onSubmitBillingRehearsal = onSubmitBillingRehearsal,
                 onSubmitCreateProposal = onSubmitCreateProposal,
                 onSubmitCommitVote = onSubmitCommitVote,
                 onSubmitRevealVote = onSubmitRevealVote,
@@ -165,6 +167,7 @@ private fun AppNavHost(
     onSubmitCreateProposal: () -> Unit,
     onSubmitCreateDao: () -> Unit,
     onSubmitDepositTreasury: () -> Unit,
+    onSubmitBillingRehearsal: (BillingSku) -> Unit,
     onSubmitCommitVote: () -> Unit,
     onSubmitRevealVote: () -> Unit,
     onSubmitFinalize: () -> Unit,
@@ -195,6 +198,7 @@ private fun AppNavHost(
                 uiState = uiState,
                 onRefresh = onRefresh,
                 onWalletAction = if (uiState.wallet == null) onConnectWallet else onDisconnectWallet,
+                onSubmitBillingRehearsal = onSubmitBillingRehearsal,
                 modifier = Modifier.padding(padding),
             )
         }
@@ -288,7 +292,13 @@ private fun WalletScreen(uiState: UiState, onConnect: () -> Unit, onContinue: ()
 }
 
 @Composable
-private fun HomeScreen(uiState: UiState, onRefresh: () -> Unit, onWalletAction: () -> Unit, modifier: Modifier = Modifier) {
+private fun HomeScreen(
+    uiState: UiState,
+    onRefresh: () -> Unit,
+    onWalletAction: () -> Unit,
+    onSubmitBillingRehearsal: (BillingSku) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(20.dp),
@@ -356,11 +366,32 @@ private fun HomeScreen(uiState: UiState, onRefresh: () -> Unit, onWalletAction: 
         item {
             HeroCard(
                 title = "Devnet billing SKU model",
-                body = "The Android source now inherits the same billing SKU model as the web rehearsal route, so pricing language and payment signaling stay coherent across clients.",
+                body = "The Android source now inherits the same billing SKU model as the web rehearsal route, and each SKU can now be executed as a wallet-signed Devnet SOL transfer with a memo-coded business event.",
             )
         }
         items(uiState.billingSkus) { sku ->
-            BillingSkuCard(sku = sku)
+            BillingSkuCard(
+                sku = sku,
+                enabled = uiState.wallet != null && !uiState.walletBusy,
+                onRun = { onSubmitBillingRehearsal(sku) },
+            )
+        }
+        item {
+            when (val billingState = uiState.billingSubmissionState) {
+                is SubmissionState.Success -> HeroCard(
+                    title = "Latest billing rehearsal",
+                    body = "The latest billing rehearsal was signed from the connected wallet and published on Devnet. Explorer proof: ${billingState.result.explorerUrl}",
+                )
+                is SubmissionState.Failure -> HeroCard(
+                    title = "Billing rehearsal failed",
+                    body = billingState.message,
+                )
+                SubmissionState.InFlight -> HeroCard(
+                    title = "Billing rehearsal in flight",
+                    body = "The wallet request is active. Sign the transfer to record the SKU event and inspect the resulting hash on Devnet.",
+                )
+                SubmissionState.Idle -> Unit
+            }
         }
     }
 }
@@ -607,12 +638,15 @@ private fun PrivacyPolicyCard(policy: PrivacyPolicyOption) {
 }
 
 @Composable
-private fun BillingSkuCard(sku: BillingSku) {
+private fun BillingSkuCard(sku: BillingSku, enabled: Boolean, onRun: () -> Unit) {
     Card(shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFF0D1118))) {
         Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text("${sku.amountSol} SOL · ${sku.memoLabel}", color = Color(0xFFFFD76B), style = MaterialTheme.typography.labelSmall)
             Text(sku.title, color = Color.White, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             Text(sku.summary, color = Color(0xFFADB8C7))
+            Button(onClick = onRun, enabled = enabled, modifier = Modifier.fillMaxWidth()) {
+                Text("Run billing rehearsal in wallet")
+            }
         }
     }
 }

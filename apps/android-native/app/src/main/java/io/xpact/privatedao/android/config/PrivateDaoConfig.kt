@@ -14,6 +14,7 @@ object PrivateDaoConfig {
     const val devnetBillingReceiveAddress = "AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c"
 
     const val systemProgramId = "11111111111111111111111111111111"
+    const val memoProgramId = "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"
     const val tokenProgramId = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
     const val associatedTokenProgramId = "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
     const val rentSysvarId = "SysvarRent111111111111111111111111111111111"

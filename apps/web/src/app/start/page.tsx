@@ -2,14 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { GettingStartedWorkspace } from "@/components/getting-started-workspace";
+import { LocalizedStartGuidanceSurface } from "@/components/localized-start-guidance-surface";
 import { LocalizedRouteSummary } from "@/components/localized-route-summary";
 import { OperationsShell } from "@/components/operations-shell";
 import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
-import { WalletConnectButton } from "@/components/wallet-connect-button";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { buildRouteMetadata } from "@/lib/route-metadata";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Get Started",
@@ -37,25 +35,7 @@ export default function StartPage() {
       <LocalizedRouteSummary routeKey="start" />
       <GettingStartedWorkspace executionSnapshot={executionSnapshot} />
       <PrivacyPolicySelector compact />
-      <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-6">
-        <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/76">Need more after the first run?</div>
-        <h2 className="mt-3 text-xl font-semibold text-white">Use one action route and one check route after this page</h2>
-        <p className="mt-3 max-w-3xl text-sm leading-7 text-white/64">
-          Go to <strong className="text-white">Govern</strong> to create a DAO, create a proposal, vote, and execute with your own Devnet wallet. Then open <strong className="text-white">Judge</strong> to verify the captured Devnet evidence, inspect signatures, and compare your flow against the product proof path.
-        </p>
-        <div className="mt-5 flex flex-wrap gap-3">
-          <WalletConnectButton size="sm" variant="default" />
-          <Link href="/govern" className={cn(buttonVariants({ size: "sm" }))}>
-            Open govern
-          </Link>
-          <Link href="/learn" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
-            Open the guide
-          </Link>
-          <Link href="/judge" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
-            Open verification route
-          </Link>
-        </div>
-      </div>
+      <LocalizedStartGuidanceSurface />
     </OperationsShell>
   );
 }

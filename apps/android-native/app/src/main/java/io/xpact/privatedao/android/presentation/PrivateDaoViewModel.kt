@@ -259,6 +259,19 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
 
+    fun submitBillingRehearsal(
+        launcher: ActivityResultLauncher<MobileWalletAdapterManager.StartMobileWalletAdapterActivity.CreateParams>,
+        sku: BillingSku,
+    ) {
+        val wallet = uiState.value.wallet ?: return setError("Connect a wallet first.")
+        viewModelScope.launch {
+            runBillingSubmission {
+                val tx = repository.buildBillingRehearsalTransaction(wallet.publicKeyBase58, sku)
+                walletManager.signAndSendSingleTransaction(launcher, wallet, tx).toResult()
+            }
+        }
+    }
+
     private suspend fun runWalletOperation(block: suspend () -> Unit) {
         _uiState.update { it.copy(walletBusy = true, errorMessage = null) }
         try {
@@ -283,6 +296,26 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
             _uiState.update {
                 it.copy(
                     submissionState = SubmissionState.Failure(error.message ?: "Transaction failed"),
+                    errorMessage = error.message,
+                )
+            }
+        }
+    }
+
+    private suspend fun runBillingSubmission(block: suspend () -> ProposalActionResult) {
+        _uiState.update { it.copy(billingSubmissionState = SubmissionState.InFlight, errorMessage = null) }
+        try {
+            val result = block()
+            _uiState.update {
+                it.copy(
+                    billingSubmissionState = SubmissionState.Success(result),
+                    bannerMessage = "Billing rehearsal submitted: ${result.signature.take(6)}…${result.signature.takeLast(6)}",
+                )
+            }
+        } catch (error: Throwable) {
+            _uiState.update {
+                it.copy(
+                    billingSubmissionState = SubmissionState.Failure(error.message ?: "Billing rehearsal failed"),
                     errorMessage = error.message,
                 )
             }
@@ -316,6 +349,7 @@ data class UiState(
     val commitVoteForm: CommitVoteForm = CommitVoteForm(),
     val revealVoteForm: RevealVoteForm = RevealVoteForm(),
     val submissionState: SubmissionState = SubmissionState.Idle,
+    val billingSubmissionState: SubmissionState = SubmissionState.Idle,
     val errorMessage: String? = null,
     val bannerMessage: String? = null,
     val awards: List<AwardEntry> = listOf(

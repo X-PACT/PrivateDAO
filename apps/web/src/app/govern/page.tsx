@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { GovernWorkbenchClient } from "@/components/govern/govern-workbench-client";
+import { LocalizedGovernIntroSurface } from "@/components/localized-govern-intro-surface";
 import { OperationsShell } from "@/components/operations-shell";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
@@ -26,6 +27,7 @@ export default function GovernPage() {
         { label: "User-first flow", variant: "violet" },
       ]}
     >
+      <LocalizedGovernIntroSurface />
       <GovernWorkbenchClient />
     </OperationsShell>
   );

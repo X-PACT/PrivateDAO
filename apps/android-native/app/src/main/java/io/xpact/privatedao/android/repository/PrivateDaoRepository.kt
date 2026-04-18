@@ -8,6 +8,7 @@ import io.xpact.privatedao.android.model.DaoSummary
 import io.xpact.privatedao.android.model.DaoMode
 import io.xpact.privatedao.android.model.DashboardSnapshot
 import io.xpact.privatedao.android.model.DepositTreasuryForm
+import io.xpact.privatedao.android.model.BillingSku
 import io.xpact.privatedao.android.model.ProposalActionResult
 import io.xpact.privatedao.android.model.ProposalActivity
 import io.xpact.privatedao.android.model.ProposalPhase
@@ -327,6 +328,28 @@ class PrivateDaoRepository(
             data = data,
         )
         return LegacyTransactionBuilder.build(walletPubkey, rpcClient.getLatestBlockhash(), listOf(instruction)) to dao.treasuryPda
+    }
+
+    suspend fun buildBillingRehearsalTransaction(
+        walletPubkey: String,
+        sku: BillingSku,
+    ): ByteArray {
+        val lamports = (sku.amountSol * 1_000_000_000L).toLong()
+        require(lamports > 0) { "Billing rehearsal amount must be greater than zero" }
+        val memo = "PRIVATE_DAO_DEVNET_BILLING:${sku.memoLabel}:${walletPubkey.take(8)}".encodeToByteArray()
+        val instructions = listOf(
+            SystemAndTokenInstructions.transfer(
+                from = walletPubkey,
+                to = PrivateDaoConfig.devnetBillingReceiveAddress,
+                lamports = lamports,
+            ),
+            TransactionInstruction(
+                programId = PrivateDaoConfig.memoProgramId,
+                accounts = listOf(AccountMeta(walletPubkey, isSigner = true, isWritable = false)),
+                data = memo,
+            ),
+        )
+        return LegacyTransactionBuilder.build(walletPubkey, rpcClient.getLatestBlockhash(), instructions)
     }
 
     fun computeProposalPhase(proposal: ProposalSummary, nowSeconds: Long = System.currentTimeMillis() / 1000): ProposalPhase {

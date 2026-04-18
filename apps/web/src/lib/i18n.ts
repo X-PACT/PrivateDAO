@@ -150,6 +150,40 @@ type StatusBannerTranslations = {
 };
 
 type PageContentTranslations = {
+  startGuidance: {
+    eyebrow: string;
+    title: string;
+    body: string;
+    openGovern: string;
+    openGuide: string;
+    openVerificationRoute: string;
+  };
+  governIntro: {
+    eyebrow: string;
+    title: string;
+    body: string;
+    bullets: string[];
+    openLiveState: string;
+    openProofRoute: string;
+    openSecurityRoute: string;
+  };
+  securityDeepDive: {
+    selectiveDisclosureEyebrow: string;
+    selectiveDisclosureTitle: string;
+    selectiveDisclosureBody: string;
+    operatingRealityEyebrow: string;
+    operatingRealityTitle: string;
+    operatingRealityBody: string;
+    zkMatrixEyebrow: string;
+    zkMatrixTitle: string;
+    zkMatrixBody: string;
+    confidenceEyebrow: string;
+    confidenceTitle: string;
+    confidenceBody: string;
+    intelligenceEyebrow: string;
+    intelligenceTitle: string;
+    intelligenceBody: string;
+  };
   communityBuild: {
     eyebrow: string;
     title: string;
@@ -491,6 +525,44 @@ const englishCopy: LocalizedCopy = {
     openCommunity: "Open community",
   },
   pageContent: {
+    startGuidance: {
+      eyebrow: "Next action",
+      title: "After the first wallet connection, move to one live action route and one check route",
+      body: "Start is intentionally the shallowest path. Connect a Devnet wallet here, then move to Govern to create a DAO and submit a proposal. After the action completes, open Judge or Proof to inspect the hash, logs, and privacy boundary with the same context still attached.",
+      openGovern: "Open govern",
+      openGuide: "Open the guide",
+      openVerificationRoute: "Open verification route",
+    },
+    governIntro: {
+      eyebrow: "Governance runtime",
+      title: "This route keeps the full DAO lifecycle in one wallet-first surface instead of scattering it across separate tools",
+      body: "Govern is where a normal user proves the product is real. Create the DAO, submit the proposal, commit the vote, reveal it, finalize, and execute from one route. Then open live state, proof, or security only when you want to inspect what the blockchain and the cryptographic rails just recorded.",
+      bullets: [
+        "Create and execute from one route with the same connected wallet.",
+        "Use proof and security after the action, not before the first click.",
+        "Treat the chain hash and logs as the final explanation layer for the user and the reviewer.",
+      ],
+      openLiveState: "Open live state",
+      openProofRoute: "Open proof route",
+      openSecurityRoute: "Open security route",
+    },
+    securityDeepDive: {
+      selectiveDisclosureEyebrow: "Selective disclosure",
+      selectiveDisclosureTitle: "Selective disclosure turns privacy into an institutional review lane",
+      selectiveDisclosureBody: "This is where PrivateDAO explains the narrow window between protected operator intent and reviewer-visible proof. The goal is not full public exposure. The goal is bounded, product-safe disclosure.",
+      operatingRealityEyebrow: "2026 operating reality",
+      operatingRealityTitle: "Security posture now has to survive real-world signer attacks, not only audit checklists",
+      operatingRealityBody: "The Drift exploit and STRIDE response changed what serious judges expect. PrivateDAO keeps signer discipline, readiness gates, runtime visibility, and migration-safe hardening in the product surface instead of hiding them in ops notes.",
+      zkMatrixEyebrow: "ZK Matrix",
+      zkMatrixTitle: "A PrivateDAO-specific matrix for what ZK proves now and what it does not claim",
+      zkMatrixBody: "This matrix turns the ZK story into a reviewer-friendly surface: live proofs, proposal-bound anchors, attestation, and zk_enforced posture on one side, with explicit non-claims on the other.",
+      confidenceEyebrow: "Confidence Engine",
+      confidenceTitle: "A deterministic scoring engine for ZK, REFHE, MagicBlock, and Fast RPC",
+      confidenceBody: "This surface does not claim magical security. It explains, with explicit weights, why one proposal pattern has stronger privacy depth, enforcement depth, execution integrity, or reviewer confidence than another.",
+      intelligenceEyebrow: "Security + Intelligence",
+      intelligenceTitle: "Proposal, treasury, voting, RPC, and gaming analysis belong inside the security story",
+      intelligenceBody: "PrivateDAO should help users detect abnormal treasury motions, summarize governance discussion, and interpret runtime health before signatures happen. This is where AI-style assistance becomes operational instead of cosmetic.",
+    },
     communityBuild: {
       eyebrow: "How the product is built",
       title: "One coordinated engineering team turns governance, payments, proof, infrastructure, and education into one public operating system",
@@ -771,6 +843,44 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
       openCommunity: "افتح المجتمع",
     },
     pageContent: {
+      startGuidance: {
+        eyebrow: "الخطوة التالية",
+        title: "بعد ربط المحفظة لأول مرة، انتقل إلى مسار تنفيذ حي واحد ومسار تحقق واحد",
+        body: "صفحة Start هي أبسط مدخل مقصود. اربط محفظة Devnet هنا، ثم انتقل إلى Govern لإنشاء DAO وتقديم proposal. بعد اكتمال الحركة افتح Judge أو Proof لترى الهاش واللوجز وحدود الخصوصية مع بقاء نفس السياق محفوظًا.",
+        openGovern: "افتح الحوكمة",
+        openGuide: "افتح الدليل",
+        openVerificationRoute: "افتح مسار التحقق",
+      },
+      governIntro: {
+        eyebrow: "تشغيل الحوكمة",
+        title: "هذا المسار يبقي دورة DAO الكاملة داخل سطح واحد يبدأ بالمحفظة بدل توزيعها على أدوات منفصلة",
+        body: "Govern هو المكان الذي يثبت فيه المستخدم العادي أن المنتج حقيقي. أنشئ الـ DAO، قدّم الـ proposal، اعمل commit للتصويت، ثم reveal ثم finalize ثم execute من نفس المسار. وبعد ذلك فقط افتح live state أو proof أو security عندما تريد فهم ما سجله البلوك تشين وما حفظته الطبقات التشفيرية.",
+        bullets: [
+          "أنشئ ونفّذ من نفس المسار وبنفس المحفظة المتصلة.",
+          "افتح proof وsecurity بعد الحركة، لا قبل أول ضغطة.",
+          "اعتبر الهاش واللوجز طبقة الشرح النهائية للمستخدم وللمراجع.",
+        ],
+        openLiveState: "افتح الحالة الحية",
+        openProofRoute: "افتح مسار الإثبات",
+        openSecurityRoute: "افتح مسار الأمان",
+      },
+      securityDeepDive: {
+        selectiveDisclosureEyebrow: "الكشف الانتقائي",
+        selectiveDisclosureTitle: "الكشف الانتقائي يحول الخصوصية إلى مسار مراجعة مؤسسي",
+        selectiveDisclosureBody: "هنا تشرح PrivateDAO النافذة الضيقة بين نية المشغل المحمية وبين الإثبات الذي يراه المراجع. الهدف ليس كشفًا عامًا كاملًا، بل كشفًا منضبطًا وآمنًا على مستوى المنتج.",
+        operatingRealityEyebrow: "واقع التشغيل 2026",
+        operatingRealityTitle: "وضع الأمان اليوم يجب أن يصمد أمام هجمات الموقّعين الحقيقية لا أمام checklists التدقيق فقط",
+        operatingRealityBody: "حادثة Drift واستجابة STRIDE غيرتا ما يتوقعه الحكام الجادون. PrivateDAO تبقي انضباط الموقّعين readiness gates ووضوح runtime والتقوية الآمنة للترحيل داخل المنتج نفسه بدل دفنها في ملاحظات تشغيلية.",
+        zkMatrixEyebrow: "مصفوفة ZK",
+        zkMatrixTitle: "مصفوفة خاصة بـ PrivateDAO تشرح ما الذي تثبته ZK الآن وما الذي لا تدّعيه",
+        zkMatrixBody: "هذه المصفوفة تحول قصة ZK إلى سطح سهل للمراجع: proofs حية وanchors مرتبطة بالمقترح وattestation ووضع zk_enforced من جهة، ولا-ادعاءات واضحة من الجهة الأخرى.",
+        confidenceEyebrow: "محرك الثقة",
+        confidenceTitle: "محرك حتمي لقياس ZK وREFHE وMagicBlock وFast RPC",
+        confidenceBody: "هذا السطح لا يدّعي أمانًا سحريًا. هو يشرح بأوزان واضحة لماذا يملك نمط proposal معين عمق خصوصية أو عمق enforce أو سلامة تنفيذ أو ثقة مراجعة أعلى من غيره.",
+        intelligenceEyebrow: "الأمان + الذكاء",
+        intelligenceTitle: "تحليل proposal والخزانة والتصويت وRPC والجيمينج يجب أن يبقى داخل قصة الأمان",
+        intelligenceBody: "يجب أن تساعد PrivateDAO المستخدم على اكتشاف الحركات الشاذة في الخزانة وتلخيص نقاش الحوكمة وتفسير صحة runtime قبل التوقيع. هنا يصبح الذكاء التشغيلي جزءًا عمليًا من الأمان لا مجرد واجهة تجميلية.",
+      },
       communityBuild: {
         eyebrow: "كيف يُبنى المنتج",
         title: "فريق هندسي منسق يحول الحوكمة والمدفوعات والإثبات والبنية التحتية والتعليم إلى نظام تشغيل عام واحد",

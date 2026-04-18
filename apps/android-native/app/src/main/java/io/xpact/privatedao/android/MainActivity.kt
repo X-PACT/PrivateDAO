@@ -43,6 +43,7 @@ class MainActivity : ComponentActivity() {
                     onRevealVoteChange = vm::updateRevealVoteForm,
                     onSubmitCreateDao = { vm.submitCreateDao(launcher) },
                     onSubmitDepositTreasury = { vm.submitDepositTreasury(launcher) },
+                    onSubmitBillingRehearsal = { sku -> vm.submitBillingRehearsal(launcher, sku) },
                     onSubmitCreateProposal = { vm.submitCreateProposal(launcher) },
                     onSubmitCommitVote = { vm.submitCommitVote(launcher) },
                     onSubmitRevealVote = { vm.submitRevealVote(launcher) },
