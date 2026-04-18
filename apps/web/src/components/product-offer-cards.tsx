@@ -1,10 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowUpRight, BadgeCheck, BookOpenText, Bot, Cable, Gamepad2, LockKeyhole, ShieldCheck } from "lucide-react";
 
+import { useI18n } from "@/components/i18n-provider";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const offers = [
   {
+    key: "payroll",
     title: "Confidential Payroll and Grants",
     byline: "by REFHE + MagicBlock",
     summary:
@@ -14,6 +18,7 @@ const offers = [
     icon: LockKeyhole,
   },
   {
+    key: "gaming",
     title: "Gaming Rewards and Treasury Control",
     byline: "by Fast RPC + governed rewards",
     summary:
@@ -23,6 +28,7 @@ const offers = [
     icon: Gamepad2,
   },
   {
+    key: "governance",
     title: "Private Governance Operations",
     byline: "by commit-reveal + voice governance",
     summary:
@@ -32,6 +38,7 @@ const offers = [
     icon: ShieldCheck,
   },
   {
+    key: "agenticTreasury",
     title: "Agentic Treasury Automation",
     byline: "by policy-bound micropayments",
     summary:
@@ -41,6 +48,7 @@ const offers = [
     icon: Bot,
   },
   {
+    key: "runtimeApi",
     title: "Runtime API and Fast Reads",
     byline: "by hosted reads + telemetry",
     summary:
@@ -50,6 +58,7 @@ const offers = [
     icon: Cable,
   },
   {
+    key: "learn",
     title: "Learn and Ship on Devnet",
     byline: "by 4 lectures + starter kits",
     summary:
@@ -59,6 +68,7 @@ const offers = [
     icon: BookOpenText,
   },
   {
+    key: "judge",
     title: "Judge and Verify Every Operation",
     byline: "by proof + explorer logs",
     summary:
@@ -70,9 +80,23 @@ const offers = [
 ] as const;
 
 export function ProductOfferCards() {
+  const { copy } = useI18n();
+  const content = copy.pageContent.productOffers;
+  const localizedOffers = offers.map((offer) => {
+    const localized = content.cards.find((card) => card.key === offer.key)!;
+
+    return {
+      ...offer,
+      title: localized.title,
+      byline: localized.byline,
+      summary: localized.summary,
+      cta: localized.cta,
+    };
+  });
+
   return (
     <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-3">
-      {offers.map((offer) => {
+      {localizedOffers.map((offer) => {
         const Icon = offer.icon;
 
         return (

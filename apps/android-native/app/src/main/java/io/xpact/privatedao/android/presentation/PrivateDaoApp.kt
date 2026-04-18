@@ -43,7 +43,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -377,21 +380,7 @@ private fun HomeScreen(
             )
         }
         item {
-            when (val billingState = uiState.billingSubmissionState) {
-                is SubmissionState.Success -> HeroCard(
-                    title = "Latest billing rehearsal",
-                    body = "The latest billing rehearsal was signed from the connected wallet and published on Devnet. Explorer proof: ${billingState.result.explorerUrl}",
-                )
-                is SubmissionState.Failure -> HeroCard(
-                    title = "Billing rehearsal failed",
-                    body = billingState.message,
-                )
-                SubmissionState.InFlight -> HeroCard(
-                    title = "Billing rehearsal in flight",
-                    body = "The wallet request is active. Sign the transfer to record the SKU event and inspect the resulting hash on Devnet.",
-                )
-                SubmissionState.Idle -> Unit
-            }
+            BillingProofCard(uiState.billingSubmissionState)
         }
     }
 }
@@ -623,26 +612,46 @@ private fun SettingsScreen(uiState: UiState, modifier: Modifier = Modifier) {
         item { SettingsRow("Billing receive", PrivateDaoConfig.devnetBillingReceiveAddress) }
         item { SettingsRow("Privacy policies", uiState.privacyPolicies.size.toString()) }
         item { SettingsRow("Billing SKUs", uiState.billingSkus.size.toString()) }
-        item {
-            when (val billingState = uiState.billingSubmissionState) {
-                is SubmissionState.Success -> HeroCard(
-                    title = "Latest billing rehearsal",
-                    body = "Last signed billing rehearsal hash: ${billingState.result.signature}. Explorer proof: ${billingState.result.explorerUrl}",
-                )
-                is SubmissionState.Failure -> HeroCard(
-                    title = "Billing rehearsal status",
-                    body = "Last attempt failed: ${billingState.message}",
-                )
-                SubmissionState.InFlight -> HeroCard(
-                    title = "Billing rehearsal status",
-                    body = "A wallet-signed billing rehearsal is still in flight. Approve it in the wallet, then return here to inspect the resulting explorer link.",
-                )
-                SubmissionState.Idle -> HeroCard(
-                    title = "Billing rehearsal status",
-                    body = "Run any billing SKU from Home to create a real Devnet transfer, then return here to inspect the signature and explorer proof.",
-                )
-            }
-        }
+        item { BillingProofCard(uiState.billingSubmissionState) }
+    }
+}
+
+@Composable
+private fun BillingProofCard(state: SubmissionState) {
+    val clipboardManager = LocalClipboardManager.current
+    val uriHandler = LocalUriHandler.current
+
+    when (state) {
+        is SubmissionState.Success -> HeroCard(
+            title = "Latest billing rehearsal",
+            body = "Last signed billing rehearsal hash: ${state.result.signature}. Explorer proof: ${state.result.explorerUrl}",
+            actions = {
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    TextButton(onClick = {
+                        clipboardManager.setText(AnnotatedString(state.result.signature))
+                    }) {
+                        Text("Copy signature")
+                    }
+                    TextButton(onClick = {
+                        uriHandler.openUri(state.result.explorerUrl)
+                    }) {
+                        Text("Open explorer")
+                    }
+                }
+            },
+        )
+        is SubmissionState.Failure -> HeroCard(
+            title = "Billing rehearsal status",
+            body = "Last attempt failed: ${state.message}",
+        )
+        SubmissionState.InFlight -> HeroCard(
+            title = "Billing rehearsal status",
+            body = "A wallet-signed billing rehearsal is still in flight. Approve it in the wallet, then return here to inspect the resulting explorer link.",
+        )
+        SubmissionState.Idle -> HeroCard(
+            title = "Billing rehearsal status",
+            body = "Run any billing SKU from Home to create a real Devnet transfer, then return here to inspect the signature and explorer proof.",
+        )
     }
 }
 

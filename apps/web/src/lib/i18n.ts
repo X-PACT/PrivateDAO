@@ -150,6 +150,44 @@ type StatusBannerTranslations = {
 };
 
 type PageContentTranslations = {
+  productOffers: {
+    eyebrow: string;
+    labels: {
+      openRoute: string;
+    };
+    cards: Array<{
+      key:
+        | "payroll"
+        | "gaming"
+        | "governance"
+        | "agenticTreasury"
+        | "runtimeApi"
+        | "learn"
+        | "judge";
+      title: string;
+      byline: string;
+      summary: string;
+      cta: string;
+    }>;
+  };
+  privacyProofExplainer: {
+    eyebrow: string;
+    title: string;
+    body: string;
+    protectedLabel: string;
+    publicProofLabel: string;
+    cards: Array<{
+      key: "voting" | "settlement" | "browser";
+      title: string;
+      byline: string;
+      privateUntil: string;
+      publicProof: string;
+      routeLabel: string;
+      docLabel: string;
+      explorerLabel: string;
+      extraLabel: string;
+    }>;
+  };
   productsPrimer: {
     eyebrow: string;
     title: string;
@@ -555,6 +593,112 @@ const englishCopy: LocalizedCopy = {
     openCommunity: "Open community",
   },
   pageContent: {
+    productOffers: {
+      eyebrow: "Production lanes",
+      labels: {
+        openRoute: "Open route",
+      },
+      cards: [
+        {
+          key: "payroll",
+          title: "Confidential Payroll and Grants",
+          byline: "by REFHE + MagicBlock",
+          summary:
+            "Run sensitive payroll, grant, and treasury payouts from a protected corridor first, then expose the right proof and settlement trail for operators and reviewers.",
+          cta: "Open confidential payroll corridor",
+        },
+        {
+          key: "gaming",
+          title: "Gaming Rewards and Treasury Control",
+          byline: "by Fast RPC + governed rewards",
+          summary:
+            "Coordinate rewards, approvals, and treasury-linked gaming operations from one browser flow that stays fast, fair, and easy to review on-chain.",
+          cta: "Open gaming reward corridor",
+        },
+        {
+          key: "governance",
+          title: "Private Governance Operations",
+          byline: "by commit-reveal + voice governance",
+          summary:
+            "Create proposals, vote privately, reveal at the right stage, and execute from one guided flow so a normal user can complete serious DAO actions without terminal habits.",
+          cta: "Open governance flow",
+        },
+        {
+          key: "agenticTreasury",
+          title: "Agentic Treasury Automation",
+          byline: "by policy-bound micropayments",
+          summary:
+            "Turn approved treasury policy into repeated on-chain settlement actions with runtime evidence attached, so automated execution remains governed and auditable.",
+          cta: "Open agentic treasury rail",
+        },
+        {
+          key: "runtimeApi",
+          title: "Runtime API and Fast Reads",
+          byline: "by hosted reads + telemetry",
+          summary:
+            "Deliver fast state updates, diagnostics, analytics, and reviewer packets so operators can trust what the chain is doing in real time.",
+          cta: "Open runtime API corridor",
+        },
+        {
+          key: "learn",
+          title: "Learn and Ship on Devnet",
+          byline: "by 4 lectures + starter kits",
+          summary:
+            "A few minutes of simple learning turns a normal builder into an operator who can run real Solana wallet, governance, RPC, privacy, and payment flows from the UI without terminal habits.",
+          cta: "Open the live bootcamp",
+        },
+        {
+          key: "judge",
+          title: "Judge and Verify Every Operation",
+          byline: "by proof + explorer logs",
+          summary:
+            "Explain the product to a reviewer in plain language, open the matching Devnet hashes, and let them run the same lifecycle themselves without reading protocol internals first.",
+          cta: "Open the judge corridor",
+        },
+      ],
+    },
+    privacyProofExplainer: {
+      eyebrow: "Privacy and encryption, explained simply",
+      title: "The secret parts stay hidden. The proof that the operation happened stays public.",
+      body: "PrivateDAO does not treat privacy as “nothing is visible.” It treats privacy as stage control. Sensitive vote intent and payout context stay protected until the correct step, while the blockchain still records the commitment, reveal, settlement, execute, and proof-anchor transactions that a reviewer can inspect.",
+      protectedLabel: "What stays protected",
+      publicProofLabel: "What the reviewer can still verify",
+      cards: [
+        {
+          key: "voting",
+          title: "Fair voting without early vote leakage",
+          byline: "Commit-reveal + ZK proof anchors",
+          privateUntil: "The vote choice stays hidden during the commit stage. The chain records a commitment first, then the reveal later.",
+          publicProof: "The reveal and execute signatures are public, and the proof-anchor transaction shows that the review surface is tied to real proposal context.",
+          routeLabel: "Run governance flow",
+          docLabel: "Open plain-language proof guide",
+          explorerLabel: "Open reveal transaction",
+          extraLabel: "Open ZK matrix",
+        },
+        {
+          key: "settlement",
+          title: "Confidential settlement with public execution proof",
+          byline: "REFHE + MagicBlock corridor",
+          privateUntil: "Sensitive payout intent, recipient context, and settlement posture stay protected until the right review stage.",
+          publicProof: "The chain still records deposit, private-transfer, settle, and execute hashes so a reviewer can see the corridor land on Devnet without reading the hidden payload itself.",
+          routeLabel: "Open confidential operations",
+          docLabel: "Open payout evidence packet",
+          explorerLabel: "Open settle transaction",
+          extraLabel: "Open receipt closure packet",
+        },
+        {
+          key: "browser",
+          title: "Normal users can verify the result from the browser",
+          byline: "Fast RPC + logs + wallet-native proof",
+          privateUntil: "Nothing secret is forced into plaintext just to make the UI understandable.",
+          publicProof: "The product exposes signatures, logs, status, screenshots, and mobile wallet evidence so the same workflow can be checked from a browser, a wallet app, or Solscan.",
+          routeLabel: "Open verification route",
+          docLabel: "Open mobile runtime evidence",
+          explorerLabel: "Open execute transaction",
+          extraLabel: "Open proof center",
+        },
+      ],
+    },
     productsPrimer: {
       eyebrow: "Commercial operating layer",
       title: "Products should read like a live infrastructure catalog, not a static feature list",
@@ -915,6 +1059,112 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
       openCommunity: "افتح المجتمع",
     },
     pageContent: {
+      productOffers: {
+        eyebrow: "المسارات الإنتاجية",
+        labels: {
+          openRoute: "افتح المسار",
+        },
+        cards: [
+          {
+            key: "payroll",
+            title: "الرواتب والمنح السرية",
+            byline: "بواسطة REFHE + MagicBlock",
+            summary:
+              "نفّذ الرواتب والمنح ومدفوعات الخزانة الحساسة من مسار محمي أولًا، ثم اكشف للمشغلين والمراجعين مسار الإثبات والتسوية المناسب فقط.",
+            cta: "افتح مسار الرواتب السرية",
+          },
+          {
+            key: "gaming",
+            title: "مكافآت الجيمينج والتحكم في الخزانة",
+            byline: "بواسطة Fast RPC + rewards محكومة",
+            summary:
+              "نسّق المكافآت والموافقات والعمليات المرتبطة بالخزانة داخل تدفق متصفح واحد سريع وعادل وسهل المراجعة على السلسلة.",
+            cta: "افتح مسار مكافآت الجيمينج",
+          },
+          {
+            key: "governance",
+            title: "عمليات الحوكمة الخاصة",
+            byline: "بواسطة commit-reveal + الحوكمة الصوتية",
+            summary:
+              "أنشئ المقترحات وصوّت بسرية ثم اكشف في المرحلة الصحيحة ونفّذ من تدفق موجّه واحد حتى يكمل المستخدم العادي أعمال DAO الجادة بلا طرفية.",
+            cta: "افتح مسار الحوكمة",
+          },
+          {
+            key: "agenticTreasury",
+            title: "أتمتة الخزانة الوكيلية",
+            byline: "بواسطة micropayments مرتبطة بالسياسة",
+            summary:
+              "حوّل سياسة الخزانة المعتمدة إلى عمليات تسوية متكررة على السلسلة مع أدلة تشغيلية مرفقة، حتى يبقى التنفيذ الآلي محكومًا وقابلًا للمراجعة.",
+            cta: "افتح مسار الخزانة الوكيلية",
+          },
+          {
+            key: "runtimeApi",
+            title: "واجهات Runtime والقراءات السريعة",
+            byline: "بواسطة hosted reads + telemetry",
+            summary:
+              "قدّم تحديثات حالة سريعة وتشخيصًا وتحليلات وحزم مراجعة حتى يثق المشغل بما تفعله السلسلة لحظة بلحظة.",
+            cta: "افتح مسار Runtime API",
+          },
+          {
+            key: "learn",
+            title: "تعلّم وابدأ الإطلاق على Devnet",
+            byline: "بواسطة 4 محاضرات + starter kits",
+            summary:
+              "بضع دقائق من التعلّم البسيط تحول أي باني عادي إلى مشغّل قادر على تنفيذ تدفقات المحافظ والحوكمة وRPC والخصوصية والمدفوعات من الواجهة مباشرة.",
+            cta: "افتح المعسكر الحي",
+          },
+          {
+            key: "judge",
+            title: "راجع وتحقق من كل عملية",
+            byline: "بواسطة proof + explorer logs",
+            summary:
+              "اشرح المنتج للمراجع بلغة سهلة، وافتح له هاشات Devnet المطابقة، ودعه يكرر الدورة بنفسه دون البدء من تفاصيل البروتوكول الداخلية.",
+            cta: "افتح مسار المراجع",
+          },
+        ],
+      },
+      privacyProofExplainer: {
+        eyebrow: "الخصوصية والتشفير، بشرح بسيط",
+        title: "الأجزاء السرية تبقى مخفية، وإثبات حدوث العملية يبقى عامًا.",
+        body: "PrivateDAO لا تتعامل مع الخصوصية على أنها اختفاء كامل للرؤية. بل تتعامل معها كتحكم في المراحل. نية التصويت الحساسة وسياق المدفوعات يبقيان محميين حتى المرحلة الصحيحة، بينما تسجل السلسلة معاملات commit وreveal وsettlement وexecute وproof-anchor التي يستطيع المراجع فحصها.",
+        protectedLabel: "ما الذي يبقى محميًا",
+        publicProofLabel: "ما الذي يستطيع المراجع التحقق منه",
+        cards: [
+          {
+            key: "voting",
+            title: "تصويت عادل دون تسريب مبكر لنية التصويت",
+            byline: "بواسطة Commit-reveal + ZK proof anchors",
+            privateUntil: "خيار التصويت يبقى مخفيًا خلال مرحلة commit. السلسلة تسجل commitment أولًا ثم reveal لاحقًا.",
+            publicProof: "تواقيع reveal وexecute عامة، ومعاملة proof-anchor تثبت أن سطح المراجعة مرتبط بسياق proposal حقيقي.",
+            routeLabel: "نفّذ مسار الحوكمة",
+            docLabel: "افتح دليل الإثبات المبسّط",
+            explorerLabel: "افتح معاملة reveal",
+            extraLabel: "افتح مصفوفة ZK",
+          },
+          {
+            key: "settlement",
+            title: "تسوية سرية مع إثبات تنفيذ عام",
+            byline: "بواسطة REFHE + MagicBlock corridor",
+            privateUntil: "نية الدفع الحساسة وسياق المستفيد ووضعية التسوية تبقى محمية حتى مرحلة المراجعة الصحيحة.",
+            publicProof: "رغم ذلك تسجل السلسلة هاشات الإيداع والتحويل الخاص والتسوية والتنفيذ حتى يرى المراجع أن corridor وصلت إلى Devnet دون قراءة الحمولة المخفية نفسها.",
+            routeLabel: "افتح العمليات السرية",
+            docLabel: "افتح حزمة إثبات المدفوعات",
+            explorerLabel: "افتح معاملة التسوية",
+            extraLabel: "افتح حزمة إغلاق الإيصال",
+          },
+          {
+            key: "browser",
+            title: "المستخدم العادي يستطيع التحقق من النتيجة من المتصفح",
+            byline: "بواسطة Fast RPC + logs + wallet-native proof",
+            privateUntil: "لا يُجبر أي جزء سري على التحول إلى نص مكشوف فقط حتى تصبح الواجهة مفهومة.",
+            publicProof: "المنتج يعرض التواقيع واللوجز والحالة ولقطات الشاشة وأدلة المحافظ على الجوال حتى يمكن فحص نفس التدفق من المتصفح أو تطبيق المحفظة أو Solscan.",
+            routeLabel: "افتح مسار التحقق",
+            docLabel: "افتح أدلة runtime على الجوال",
+            explorerLabel: "افتح معاملة التنفيذ",
+            extraLabel: "افتح مركز الإثبات",
+          },
+        ],
+      },
       productsPrimer: {
         eyebrow: "الطبقة التجارية التشغيلية",
         title: "يجب أن يقرأ مسار المنتجات ككتالوج بنية تحتية حي لا كقائمة مزايا جامدة",
