@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 
 import { InfrastructureStartupProofStrip } from "@/components/infrastructure-startup-proof-strip";
 import { LocalizedRouteBrief } from "@/components/localized-route-brief";
+import { LocalizedStoryAssetSurface } from "@/components/localized-story-asset-surface";
 import { OperationsShell } from "@/components/operations-shell";
-import { SectionHeader } from "@/components/section-header";
 import { VideoCenter } from "@/components/video-center";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
@@ -33,11 +33,7 @@ export default function StoryPage() {
         <VideoCenter />
       </div>
       <div>
-        <SectionHeader
-          eyebrow="Why this matters"
-          title="The reel is an integrated product asset, not a stand-alone media surface"
-          description="It is hosted on the live site, available as a direct MP4, and aligned with the learn, start, trust, proof, and services routes so a visitor can go from explanation to live Devnet use without losing context."
-        />
+        <LocalizedStoryAssetSurface />
       </div>
     </OperationsShell>
   );

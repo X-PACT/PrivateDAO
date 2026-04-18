@@ -64,6 +64,28 @@ data class TreasuryActionView(
     val tokenMint: String?,
 )
 
+enum class PrivacyPolicyKey {
+    ReviewerVisible,
+    CommitteePrivate,
+    ConfidentialPayout,
+    SelectiveDisclosure,
+}
+
+data class PrivacyPolicyOption(
+    val key: PrivacyPolicyKey,
+    val title: String,
+    val tech: String,
+    val summary: String,
+)
+
+data class BillingSku(
+    val key: String,
+    val title: String,
+    val amountSol: Double,
+    val memoLabel: String,
+    val summary: String,
+)
+
 data class ProposalSummary(
     val pubkey: String,
     val dao: String,

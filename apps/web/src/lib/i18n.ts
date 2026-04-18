@@ -149,6 +149,37 @@ type StatusBannerTranslations = {
   openCommunity: string;
 };
 
+type PageContentTranslations = {
+  communityBuild: {
+    eyebrow: string;
+    title: string;
+    body: string;
+    openEngineeringModel: string;
+    openLearningGuide: string;
+    openVerificationRoute: string;
+  };
+  storyAsset: {
+    eyebrow: string;
+    title: string;
+    body: string;
+  };
+  servicesPrimer: {
+    learnFirst: string;
+    intelligenceNext: string;
+  };
+  judgeDisclosure: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    openScenario: string;
+    scenarios: Array<{
+      key: "auditor" | "committee" | "partner" | "incident";
+      title: string;
+      summary: string;
+    }>;
+  };
+};
+
 type LocalizedCopy = {
   chrome: ChromeTranslations;
   shell: ShellTranslations;
@@ -161,6 +192,7 @@ type LocalizedCopy = {
   >;
   selectiveDisclosure: SelectiveDisclosureTranslations;
   statusBanner: StatusBannerTranslations;
+  pageContent: PageContentTranslations;
 };
 
 const routeSummaryHrefByKey: Record<keyof LocalizedCopy["routeSummaries"], string> = {
@@ -458,6 +490,56 @@ const englishCopy: LocalizedCopy = {
     openTrust: "Open trust",
     openCommunity: "Open community",
   },
+  pageContent: {
+    communityBuild: {
+      eyebrow: "How the product is built",
+      title: "One coordinated engineering team turns governance, payments, proof, infrastructure, and education into one public operating system",
+      body: "PrivateDAO is built as one coordinated engineering team across governance, payments, proof, infrastructure, education, and release work. The operating model is public because the product is open source and welcomes testing, review, and serious feedback from the ecosystem.",
+      openEngineeringModel: "Open engineering delivery model",
+      openLearningGuide: "Open learning guide",
+      openVerificationRoute: "Open verification route",
+    },
+    storyAsset: {
+      eyebrow: "Why this matters",
+      title: "The story route is a working product asset tied to live proof, not passive media",
+      body: "The reel is hosted on the live site, available as a direct MP4, and connected to learn, start, trust, proof, and services so a buyer, judge, or student can move from explanation to live Devnet use without losing context.",
+    },
+    servicesPrimer: {
+      learnFirst:
+        "If this is your first visit, open /learn first. It explains what PrivateDAO solves for governance, payments, gaming, API, RPC, and privacy in plain language before you inspect the service rails.",
+      intelligenceNext:
+        "Open /intelligence to try the live Security + Intelligence layer. It is where proposal analysis, treasury warnings, voting compression, RPC interpretation, and gaming-governance assistance become user-visible.",
+    },
+    judgeDisclosure: {
+      eyebrow: "Selective disclosure for reviewers",
+      title: "Choose the narrow review lane that fits the scenario instead of opening every internal detail at once",
+      description:
+        "The reviewer does not need the full internal operating view every time. Pick the scenario, open the matching packet, and inspect only the hashes, custody state, and proof needed for that review window.",
+      openScenario: "Open this review lane",
+      scenarios: [
+        {
+          key: "auditor",
+          title: "Auditor evidence",
+          summary: "Open custody proof and reviewer-grade documents when the reviewer needs authority and control-chain evidence.",
+        },
+        {
+          key: "committee",
+          title: "Committee oversight",
+          summary: "Use the privacy guide and trust route when a committee needs bounded visibility into governance correctness without flattening internal intent.",
+        },
+        {
+          key: "partner",
+          title: "Partner diligence",
+          summary: "Use the SDK/API and proof routes when a grant partner or infrastructure backer needs product-fit and operating evidence.",
+        },
+        {
+          key: "incident",
+          title: "Incident review",
+          summary: "Use the privacy guide and proof route when a signer, payout, or governance incident needs a narrow but defensible evidence package.",
+        },
+      ],
+    },
+  },
 };
 
 export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
@@ -687,6 +769,56 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
       until: "نافذة التطوير الأساسية حتى 30 أبريل 2026",
       openTrust: "افتح الثقة",
       openCommunity: "افتح المجتمع",
+    },
+    pageContent: {
+      communityBuild: {
+        eyebrow: "كيف يُبنى المنتج",
+        title: "فريق هندسي منسق يحول الحوكمة والمدفوعات والإثبات والبنية التحتية والتعليم إلى نظام تشغيل عام واحد",
+        body: "يُبنى PrivateDAO كفريق هندسي منسق عبر الحوكمة والمدفوعات والإثبات والبنية التحتية والتعليم والإطلاق. هذا النموذج التشغيلي عام لأن المنتج مفتوح المصدر ويرحب بالاختبار والمراجعة والتغذية الراجعة الجادة من المجتمع.",
+        openEngineeringModel: "افتح نموذج التنفيذ الهندسي",
+        openLearningGuide: "افتح دليل التعلّم",
+        openVerificationRoute: "افتح مسار التحقق",
+      },
+      storyAsset: {
+        eyebrow: "لماذا يهم هذا",
+        title: "مسار القصة أصل تشغيلي مرتبط بإثبات حي، لا وسائط سلبية",
+        body: "الفيديو مستضاف على الموقع الحي ومتاح كملف MP4 مباشر ومربوط بمسارات learn وstart وtrust وproof وservices حتى ينتقل المشتري أو المراجع أو المتعلم من الشرح إلى الاستخدام الحي على Devnet دون فقدان السياق.",
+      },
+      servicesPrimer: {
+        learnFirst:
+          "إذا كانت هذه زيارتك الأولى، افتح /learn أولًا. هناك ستفهم ما الذي تحله PrivateDAO في الحوكمة والمدفوعات والجيمينج والواجهات وRPC والخصوصية بلغة بسيطة قبل أن تفحص مسارات الخدمات.",
+        intelligenceNext:
+          "افتح /intelligence لتجربة طبقة Security + Intelligence الحية. هنا تصبح مراجعة المقترحات وتحذيرات الخزانة وضغط التصويت وتفسير RPC ومساعدة حوكمة الجيمينج مرئية للمستخدم.",
+      },
+      judgeDisclosure: {
+        eyebrow: "الكشف الانتقائي للمراجعين",
+        title: "اختر مسار المراجعة الضيق المناسب للسيناريو بدل فتح كل التفاصيل الداخلية دفعة واحدة",
+        description:
+          "المراجع لا يحتاج كل السجل الداخلي في كل مرة. اختر السيناريو وافتح الحزمة المطابقة وراجع فقط الهاشات وحالة الحفظ والإثباتات اللازمة لتلك النافذة.",
+        openScenario: "افتح مسار المراجعة هذا",
+        scenarios: [
+          {
+            key: "auditor",
+            title: "أدلة المدقق",
+            summary: "افتح دليل الحفظ والوثائق المرجعية عندما يحتاج المراجع إلى إثبات صلاحيات وسلسلة التحكم.",
+          },
+          {
+            key: "committee",
+            title: "إشراف اللجنة",
+            summary: "استخدم دليل الخصوصية ومسار الثقة عندما تحتاج اللجنة إلى رؤية محدودة لصحة الحوكمة دون كشف النوايا الداخلية بالكامل.",
+          },
+          {
+            key: "partner",
+            title: "فحص الشريك",
+            summary: "استخدم مسارات SDK/API والإثبات عندما يحتاج شريك منح أو داعم بنية تحتية إلى ملاءمة المنتج والدليل التشغيلي.",
+          },
+          {
+            key: "incident",
+            title: "مراجعة حادثة",
+            summary: "استخدم دليل الخصوصية ومسار الإثبات عندما تحتاج حادثة توقيع أو دفع أو حوكمة إلى حزمة أدلة ضيقة لكنها صلبة.",
+          },
+        ],
+      },
     },
   },
   ru: {

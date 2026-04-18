@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { JudgeRuntimeLogsPanel } from "@/components/judge-runtime-logs-panel";
-import { OperationsShell } from "@/components/operations-shell";
 import { DevnetExecutionScreenshotsStrip } from "@/components/devnet-execution-screenshots-strip";
+import { JudgeSelectiveDisclosureCta } from "@/components/judge-selective-disclosure-cta";
+import { JudgeRuntimeLogsPanel } from "@/components/judge-runtime-logs-panel";
 import { JudgeTechnologyGuide } from "@/components/judge-technology-guide";
 import { LocalizedRouteSummary } from "@/components/localized-route-summary";
+import { OperationsShell } from "@/components/operations-shell";
 import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
 import { PrivacyProofExplainer } from "@/components/privacy-proof-explainer";
 import { buttonVariants } from "@/components/ui/button";
@@ -99,6 +100,7 @@ export default function JudgePage() {
         </div>
       </div>
 
+      <JudgeSelectiveDisclosureCta />
       <DevnetExecutionScreenshotsStrip />
       <PrivacyPolicySelector compact />
       <PrivacyProofExplainer />

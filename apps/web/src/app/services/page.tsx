@@ -20,6 +20,7 @@ import { ReadNodeActivationStrip } from "@/components/read-node-activation-strip
 import { ReadNodeHostReadinessStrip } from "@/components/read-node-host-readiness-strip";
 import { JupiterTreasuryRouteSurface } from "@/components/jupiter-treasury-route-surface";
 import { LocalizedRouteBrief } from "@/components/localized-route-brief";
+import { LocalizedServicesPrimer } from "@/components/localized-services-primer";
 import { LocalizedRouteSummary } from "@/components/localized-route-summary";
 import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
 import { PrivacySdkApiStarter } from "@/components/privacy-sdk-api-starter";
@@ -66,9 +67,7 @@ export default function ServicesPage() {
       <div>
         <ServicesSurface />
       </div>
-      <div className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6 text-sm leading-7 text-white/68">
-        If this is your first visit, open <a className="text-cyan-100 underline underline-offset-4" href="/learn">/learn</a> first. It explains what PrivateDAO solves for governance, payments, gaming, API, RPC, and privacy in plain language before you inspect the service rails.
-      </div>
+      <LocalizedServicesPrimer />
       <div>
         <JupiterTreasuryRouteSurface />
       </div>
@@ -111,9 +110,6 @@ export default function ServicesPage() {
       </div>
       <div id="settlement-receipt-readiness">
         <SettlementReceiptClosurePanel />
-      </div>
-      <div className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6 text-sm leading-7 text-white/66">
-        Open <a className="text-cyan-100 underline underline-offset-4" href="/intelligence">/intelligence</a> to try the live Security + Intelligence layer. It is where proposal analysis, treasury warnings, voting compression, RPC interpretation, and gaming-governance assistance become user-visible.
       </div>
       <details className="rounded-[28px] border border-white/10 bg-white/[0.03] p-1">
         <summary className="cursor-pointer list-none rounded-[24px] px-5 py-4 text-sm font-medium text-white/78">

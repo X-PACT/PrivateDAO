@@ -8,6 +8,7 @@ import io.xpact.privatedao.android.config.PrivateDaoConfig
 import io.xpact.privatedao.android.data.StoredVoteEnvelope
 import io.xpact.privatedao.android.data.VoteEnvelopeStore
 import io.xpact.privatedao.android.model.AwardEntry
+import io.xpact.privatedao.android.model.BillingSku
 import io.xpact.privatedao.android.model.CommitVoteForm
 import io.xpact.privatedao.android.model.ConnectedWallet
 import io.xpact.privatedao.android.model.CreateDaoForm
@@ -19,6 +20,7 @@ import io.xpact.privatedao.android.model.ProposalActionResult
 import io.xpact.privatedao.android.model.ProposalPhase
 import io.xpact.privatedao.android.model.ProposalStatus
 import io.xpact.privatedao.android.model.ProposalSummary
+import io.xpact.privatedao.android.model.PrivacyPolicyOption
 import io.xpact.privatedao.android.model.RevealVoteForm
 import io.xpact.privatedao.android.model.SubmissionState
 import io.xpact.privatedao.android.repository.PrivateDaoRepository
@@ -324,6 +326,8 @@ data class UiState(
             dateLabel = "March 2026",
         )
     ),
+    val privacyPolicies: List<PrivacyPolicyOption> = PrivateDaoConfig.privacyPolicies,
+    val billingSkus: List<BillingSku> = PrivateDaoConfig.devnetBillingSkus,
 ) {
     fun proposalPhase(proposal: ProposalSummary): ProposalPhase {
         val now = System.currentTimeMillis() / 1000

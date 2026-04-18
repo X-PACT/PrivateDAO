@@ -56,10 +56,12 @@ import io.xpact.privatedao.android.model.CommitVoteForm
 import io.xpact.privatedao.android.model.CreateProposalForm
 import io.xpact.privatedao.android.model.CreateDaoForm
 import io.xpact.privatedao.android.model.DaoMode
+import io.xpact.privatedao.android.model.BillingSku
+import io.xpact.privatedao.android.model.DepositTreasuryForm
+import io.xpact.privatedao.android.model.PrivacyPolicyOption
 import io.xpact.privatedao.android.model.ProposalPhase
 import io.xpact.privatedao.android.model.ProposalSummary
 import io.xpact.privatedao.android.model.RevealVoteForm
-import io.xpact.privatedao.android.model.DepositTreasuryForm
 import io.xpact.privatedao.android.model.TreasuryActionType
 
 private enum class Destination(val route: String, val label: String) {
@@ -342,6 +344,24 @@ private fun HomeScreen(uiState: UiState, onRefresh: () -> Unit, onWalletAction: 
                 } ?: "Select a proposal to see phase-specific governance actions and transaction proofs.",
             )
         }
+        item {
+            HeroCard(
+                title = "Privacy policy selector parity",
+                body = "Android now carries the same four policy lanes as the web product. Reviewer-visible proof, committee-private voting, confidential payouts, and selective disclosure stay aligned across both surfaces.",
+            )
+        }
+        items(uiState.privacyPolicies) { policy ->
+            PrivacyPolicyCard(policy = policy)
+        }
+        item {
+            HeroCard(
+                title = "Devnet billing SKU model",
+                body = "The Android source now inherits the same billing SKU model as the web rehearsal route, so pricing language and payment signaling stay coherent across clients.",
+            )
+        }
+        items(uiState.billingSkus) { sku ->
+            BillingSkuCard(sku = sku)
+        }
     }
 }
 
@@ -569,6 +589,31 @@ private fun SettingsScreen(uiState: UiState, modifier: Modifier = Modifier) {
         item { SettingsRow("RPC", PrivateDaoConfig.rpcUrl) }
         item { SettingsRow("Explorer", "Solscan devnet links") }
         item { SettingsRow("Wallet", uiState.wallet?.publicKeyBase58 ?: "Not connected") }
+        item { SettingsRow("Billing receive", PrivateDaoConfig.devnetBillingReceiveAddress) }
+        item { SettingsRow("Privacy policies", uiState.privacyPolicies.size.toString()) }
+        item { SettingsRow("Billing SKUs", uiState.billingSkus.size.toString()) }
+    }
+}
+
+@Composable
+private fun PrivacyPolicyCard(policy: PrivacyPolicyOption) {
+    Card(shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFF0D1118))) {
+        Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(policy.tech.uppercase(), color = Color(0xFFFFD76B), style = MaterialTheme.typography.labelSmall)
+            Text(policy.title, color = Color.White, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Text(policy.summary, color = Color(0xFFADB8C7))
+        }
+    }
+}
+
+@Composable
+private fun BillingSkuCard(sku: BillingSku) {
+    Card(shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFF0D1118))) {
+        Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text("${sku.amountSol} SOL · ${sku.memoLabel}", color = Color(0xFFFFD76B), style = MaterialTheme.typography.labelSmall)
+            Text(sku.title, color = Color.White, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Text(sku.summary, color = Color(0xFFADB8C7))
+        }
     }
 }
 
