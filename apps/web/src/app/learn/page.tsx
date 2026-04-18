@@ -90,6 +90,9 @@ export default function LearnPage() {
             <Link href="/learn/assignments" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
               Open assignments
             </Link>
+            <Link href="/documents/privacy-and-encryption-proof-guide" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+              Open privacy proof guide
+            </Link>
           </div>
         </div>
         <div className="rounded-[30px] border border-white/10 bg-white/[0.04] p-6">

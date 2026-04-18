@@ -42,27 +42,21 @@ function main() {
   assert(packet.programId === "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx", "program id mismatch");
   assert(packet.liveWalletLaneCount === 6, "live wallet lane count mismatch");
   assert(packet.repoScriptProofCount === 6, "repo-script proof count mismatch");
-  assert(packet.browserWalletProofCount === 0, "browser-wallet proof count should remain honest");
-  assert(packet.realDeviceProofCount === 0, "real-device proof count should remain honest");
+  assert(packet.browserWalletProofCount === 6, "browser-wallet proof count should match the captured Solflare cycle");
+  assert(packet.realDeviceProofCount === 3, "real-device proof count should match the captured Android stages");
   assert(packet.actions.length === 6, "action count mismatch");
-  assert(packet.pendingBrowserWalletProofActions.length === 6, "pending browser proof list mismatch");
-  assert(packet.pendingRealDeviceProofActions.length === 6, "pending real-device proof list mismatch");
+  assert(packet.pendingBrowserWalletProofActions.length === 0, "pending browser proof list mismatch");
+  assert(packet.pendingRealDeviceProofActions.length === 3, "pending real-device proof list mismatch");
   assert(
     packet.unsupportedExecutionBoundary.includes("CustomCPI"),
     "unsupported execution boundary must mention CustomCPI",
   );
 
-  for (const action of [
-    "Create DAO",
-    "Create Proposal",
-    "Commit Vote",
-    "Reveal Vote",
-    "Finalize Proposal",
-    "Execute Proposal",
-  ]) {
-    assert(packet.pendingBrowserWalletProofActions.includes(action), `missing browser-wallet pending action: ${action}`);
-    assert(packet.pendingRealDeviceProofActions.includes(action), `missing real-device pending action: ${action}`);
+  for (const action of ["Create DAO", "Create Proposal", "Commit Vote", "Reveal Vote", "Finalize Proposal", "Execute Proposal"]) {
     assert(markdown.includes(`### ${action}`), `markdown missing action section: ${action}`);
+  }
+  for (const action of ["Reveal Vote", "Finalize Proposal", "Execute Proposal"]) {
+    assert(packet.pendingRealDeviceProofActions.includes(action), `missing real-device pending action: ${action}`);
   }
 
   for (const doc of [
@@ -86,6 +80,8 @@ function main() {
   assert(markdown.includes("# Governance Runtime Proof Status"), "markdown missing title");
   assert(markdown.includes("Pending browser-wallet captures"), "markdown missing pending browser section");
   assert(markdown.includes("Pending real-device captures"), "markdown missing pending device section");
+  assert(markdown.includes("Pending browser-wallet captures: none"), "markdown should show no pending browser captures");
+  assert(markdown.includes("Real-device proofs captured: `3`"), "markdown should show Android progress");
 
   console.log("Governance runtime proof verification: PASS");
 }

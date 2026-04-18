@@ -71,7 +71,7 @@ function main() {
     ],
     notes: [
       "This packet separates live web wallet capability from runtime proof capture so the product does not overclaim based on shipped code alone.",
-      "Repo-script proof exists for the governance core lifecycle, but browser-wallet proof on the web and real-device action proof on Android remain pending until captures are recorded in their runtime registries.",
+      "Repo-script proof exists for the governance core lifecycle, the full Solflare browser cycle is captured on the live web route, and Android Solflare now proves the mobile path through Create DAO, Create Proposal, and Commit Vote.",
       "The web wallet lane currently covers Create DAO, Create Proposal, Commit Vote, Reveal Vote, Finalize Proposal, and Execute Proposal for standard, SendSol, and SendToken proposals.",
     ],
   };
@@ -139,8 +139,8 @@ function buildMarkdown(payload: {
 ## Current Boundary
 
 - Unsupported executable boundary: ${payload.unsupportedExecutionBoundary}
-- Pending browser-wallet captures: ${payload.pendingBrowserWalletProofActions.join(", ")}
-- Pending real-device captures: ${payload.pendingRealDeviceProofActions.join(", ")}
+- Pending browser-wallet captures: ${payload.pendingBrowserWalletProofActions.length ? payload.pendingBrowserWalletProofActions.join(", ") : "none"}
+- Pending real-device captures: ${payload.pendingRealDeviceProofActions.length ? payload.pendingRealDeviceProofActions.join(", ") : "none"}
 
 ## Action Status
 

@@ -14,55 +14,55 @@ export const GOVERNANCE_RUNTIME_STATUS: Record<CoreGovernanceInstructionName, Go
     action: "initialize_dao",
     liveWalletLane: true,
     repoScriptProofCaptured: true,
-    browserWalletProofCaptured: false,
-    realDeviceProofCaptured: false,
+    browserWalletProofCaptured: true,
+    realDeviceProofCaptured: true,
     supportNote:
-      "DAO bootstrap is live in the web wallet lane. Repo-script proof exists, and browser-wallet plus real-device capture expansion is already underway.",
+      "DAO bootstrap is live in the web wallet lane. Repo-script proof exists, the full Solflare browser cycle is captured, and Android Solflare now proves the mobile path through DAO bootstrap on Devnet.",
   },
   create_proposal: {
     action: "create_proposal",
     liveWalletLane: true,
     repoScriptProofCaptured: true,
-    browserWalletProofCaptured: false,
-    realDeviceProofCaptured: false,
+    browserWalletProofCaptured: true,
+    realDeviceProofCaptured: true,
     supportNote:
-      "Proposal submit is live in the web wallet lane, including the current SendSol and SendToken treasury motions. Browser-wallet and real-device capture expansion is the next visible runtime lift.",
+      "Proposal submit is live in the web wallet lane, including the current SendSol and SendToken treasury motions. The full Solflare browser cycle is captured, and Android Solflare now proves proposal creation on Devnet.",
   },
   commit_vote: {
     action: "commit_vote",
     liveWalletLane: true,
     repoScriptProofCaptured: true,
-    browserWalletProofCaptured: false,
-    realDeviceProofCaptured: false,
+    browserWalletProofCaptured: true,
+    realDeviceProofCaptured: true,
     supportNote:
-      "Commit vote is live in the web wallet lane once a real DAO and proposal already exist in session state. Browser-wallet and real-device capture expansion is the next visible runtime lift.",
+      "Commit vote is live in the web wallet lane once a real DAO and proposal already exist in session state. The full Solflare browser cycle is captured, and Android Solflare now proves commit-vote submission on Devnet.",
   },
   reveal_vote: {
     action: "reveal_vote",
     liveWalletLane: true,
     repoScriptProofCaptured: true,
-    browserWalletProofCaptured: false,
+    browserWalletProofCaptured: true,
     realDeviceProofCaptured: false,
     supportNote:
-      "Reveal vote is live in the web wallet lane once a live commit already exists in the same session. Browser-wallet and real-device capture expansion is the next visible runtime lift.",
+      "Reveal vote is live in the web wallet lane once a live commit already exists in the same session. The full Solflare browser cycle is captured; Android capture expansion is still pending for this stage.",
   },
   finalize_proposal: {
     action: "finalize_proposal",
     liveWalletLane: true,
     repoScriptProofCaptured: true,
-    browserWalletProofCaptured: false,
+    browserWalletProofCaptured: true,
     realDeviceProofCaptured: false,
     supportNote:
-      "Finalize proposal is live in the web wallet lane. Repo-script proof exists, and browser-wallet plus real-device capture expansion is already underway.",
+      "Finalize proposal is live in the web wallet lane. Repo-script proof exists and the full Solflare browser cycle is captured; Android capture expansion is still pending for this stage.",
   },
   execute_proposal: {
     action: "execute_proposal",
     liveWalletLane: true,
     repoScriptProofCaptured: true,
-    browserWalletProofCaptured: false,
+    browserWalletProofCaptured: true,
     realDeviceProofCaptured: false,
     supportNote:
-      "Execute proposal is live in the web wallet lane for standard, SendSol, and SendToken proposals. CustomCPI remains outside the current executable release boundary.",
+      "Execute proposal is live in the web wallet lane for standard, SendSol, and SendToken proposals. The full Solflare browser cycle is captured; Android capture expansion remains pending and CustomCPI stays outside the current executable release boundary.",
   },
 };
 

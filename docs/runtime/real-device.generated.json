@@ -1,19 +1,18 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-17T22:18:44.694Z",
+  "generatedAt": "2026-04-18T03:51:20.220Z",
   "network": "devnet",
   "summary": {
     "targetCount": 5,
-    "completedTargetCount": 0,
-    "successfulConnectCount": 0,
-    "successfulSubmissionCount": 0,
-    "diagnosticsCaptureCount": 0,
+    "completedTargetCount": 1,
+    "successfulConnectCount": 1,
+    "successfulSubmissionCount": 1,
+    "diagnosticsCaptureCount": 1,
     "pendingTargets": [
       "Phantom",
       "Solflare",
       "Backpack",
-      "Glow",
-      "Android Native / Mobile"
+      "Glow"
     ]
   },
   "targets": [
@@ -45,13 +44,46 @@
       "id": "android-runtime",
       "walletLabel": "Android Native / Mobile",
       "environmentType": "android-or-mobile",
-      "status": "pending-capture"
+      "status": "captured"
     }
   ],
-  "captures": [],
+  "captures": [
+    {
+      "id": "android-runtime",
+      "walletLabel": "Android Native / Mobile",
+      "walletVersion": "Solflare mobile in-app browser",
+      "environmentType": "android-or-mobile",
+      "os": "Android",
+      "browserOrClient": "Solflare in-app browser",
+      "network": "devnet",
+      "connectResult": "success",
+      "signingResult": "success",
+      "submissionResult": "success",
+      "diagnosticsSnapshotCaptured": true,
+      "txSignature": "5ZQfvJxU7QvKakZvS1JkDNJLBZVzTesQk7g1NhzAXGBzKYYsPcSzUbiNiDa9Xc2wq5K7yfeJm3uT2qY5aWW9cMV2",
+      "errorMessage": null,
+      "evidenceRefs": [
+        "docs/assets/runtime/real-device/android-solflare-2026-04-18/contact-sheet.jpg",
+        "docs/assets/runtime/real-device/android-solflare-2026-04-18/01-886d95f3-ef78-41bf-89c9-d447a7275263.jpeg",
+        "docs/assets/runtime/real-device/android-solflare-2026-04-18/02-c86c9c4e-3a9f-44cc-b742-7c8245ecf0a6.jpeg",
+        "docs/assets/runtime/real-device/android-solflare-2026-04-18/05-9c9df6be-9603-429d-8f7e-a8fdaea7d710.jpeg",
+        "docs/assets/runtime/real-device/android-solflare-2026-04-18/06-9be1d06e-926e-4e88-84ce-dd9b771b9420.jpeg",
+        "docs/assets/runtime/real-device/android-solflare-2026-04-18/09-9c9ffd20-286d-4052-be09-353b58c68ed7.jpeg",
+        "docs/assets/runtime/real-device/android-solflare-2026-04-18/10-cfdf02c1-64ee-48e4-a28b-2cd25a7d0276.jpeg",
+        "docs/assets/runtime/real-device/android-solflare-2026-04-18/14-b0cfbffb-5a88-497c-9f40-b9b51b9e5e2f.jpeg",
+        "docs/assets/runtime/real-device/android-solflare-2026-04-18/15-6ee4e9f2-f547-4b0f-9828-d575090c0e16.jpeg",
+        "docs/assets/runtime/real-device/android-solflare-2026-04-18/17-e809dd01-ad75-42f7-8381-e89bfd0a5c25.jpeg",
+        "docs/assets/runtime/real-device/android-solflare-2026-04-18/18-30ec562e-b718-48ed-bd17-f782f8655e66.jpeg",
+        "docs/assets/runtime/real-device/android-solflare-2026-04-18/19-73445239-88cc-4719-9528-743fa32a8a42.jpeg"
+      ],
+      "capturedAt": "2026-04-18T03:25:57.000Z",
+      "explorerUrl": "https://explorer.solana.com/tx/5ZQfvJxU7QvKakZvS1JkDNJLBZVzTesQk7g1NhzAXGBzKYYsPcSzUbiNiDa9Xc2wq5K7yfeJm3uT2qY5aWW9cMV2?cluster=devnet"
+    }
+  ],
   "requiredDocs": [
     "docs/runtime/real-device.md",
     "docs/runtime/real-device-captures.json",
+    "docs/android-solflare-real-device-capture-2026-04-18.md",
     "docs/runtime-attestation.generated.json",
     "docs/external-readiness-intake.md"
   ],

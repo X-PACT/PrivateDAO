@@ -65,6 +65,7 @@ function main() {
     requiredDocs: [
       "docs/runtime/real-device.md",
       "docs/runtime/real-device-captures.json",
+      "docs/android-solflare-real-device-capture-2026-04-18.md",
       "docs/runtime-attestation.generated.json",
       "docs/external-readiness-intake.md",
     ],

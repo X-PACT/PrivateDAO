@@ -1,11 +1,11 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-18T02:52:05.953Z",
+  "generatedAt": "2026-04-18T03:52:30.405Z",
   "reviewerIntent": "Show the shortest truth-synced route into runtime maturity, hosted reads, indexed governance, and infrastructure-facing reviewer value without claiming unsupported partnerships or mainnet readiness.",
   "truthSources": [
     {
       "label": "Runtime evidence",
-      "generatedAt": "2026-04-18T02:51:20.278Z",
+      "generatedAt": "2026-04-18T03:51:55.276Z",
       "href": "docs/runtime-evidence.generated.md"
     },
     {
@@ -20,7 +20,7 @@
     },
     {
       "label": "Devnet service metrics",
-      "generatedAt": "2026-04-18T02:51:20.278Z",
+      "generatedAt": "2026-04-18T03:51:55.276Z",
       "href": "apps/web/src/lib/devnet-service-metrics.ts"
     }
   ],
@@ -32,7 +32,7 @@
     "4 REFHE-settled and 3 MagicBlock-settled proposal paths are already reflected in the indexed source."
   ],
   "externallyProvenNow": [
-    "Runtime evidence package generated at 2026-04-18T02:51:20.278Z and published as docs/runtime-evidence.generated.md.",
+    "Runtime evidence package generated at 2026-04-18T03:51:55.276Z and published as docs/runtime-evidence.generated.md.",
     "Frontier integrations package generated at 2026-04-10T05:21:06.356Z with reviewer entry https://privatedao.org/proof/?judge=1.",
     "Read-node snapshot generated at 2026-04-18T00:09:33.941Z on slot 456264549 against https://api.devnet.solana.com.",
     "Proposal flow health, wallet readiness, and proof freshness summaries are taken from the same devnet service metrics module used by the live app.",
@@ -59,7 +59,7 @@
     "unexpectedFailures": 0,
     "fallbackRecovered": true,
     "staleBlockhashRecovered": true,
-    "pendingRealDeviceTargets": 5
+    "pendingRealDeviceTargets": 4
   },
   "integrationsSnapshot": {
     "governanceStatus": "verified-devnet-governance-path",
@@ -91,7 +91,7 @@
     {
       "label": "Proof freshness",
       "value": "fresh this hour",
-      "detail": "Runtime evidence fresh this hour, Devnet canary 3h old, and integration evidence 8d old remain published together.",
+      "detail": "Runtime evidence fresh this hour, Devnet canary 4h old, and integration evidence 8d old remain published together.",
       "routeLabel": "Open trust documents",
       "routeHref": "/documents/live-proof-v3",
       "tone": "amber"

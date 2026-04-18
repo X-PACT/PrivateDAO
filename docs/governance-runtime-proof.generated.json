@@ -1,24 +1,14 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-18T02:53:01.097Z",
+  "generatedAt": "2026-04-18T03:48:08.057Z",
   "network": "devnet",
   "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
   "liveWalletLaneCount": 6,
   "repoScriptProofCount": 6,
-  "browserWalletProofCount": 0,
-  "realDeviceProofCount": 0,
-  "pendingBrowserWalletProofActions": [
-    "Create DAO",
-    "Create Proposal",
-    "Commit Vote",
-    "Reveal Vote",
-    "Finalize Proposal",
-    "Execute Proposal"
-  ],
+  "browserWalletProofCount": 6,
+  "realDeviceProofCount": 3,
+  "pendingBrowserWalletProofActions": [],
   "pendingRealDeviceProofActions": [
-    "Create DAO",
-    "Create Proposal",
-    "Commit Vote",
     "Reveal Vote",
     "Finalize Proposal",
     "Execute Proposal"
@@ -31,9 +21,9 @@
       "instructionName": "initialize_dao",
       "liveWalletLane": true,
       "repoScriptProofCaptured": true,
-      "browserWalletProofCaptured": false,
-      "realDeviceProofCaptured": false,
-      "supportNote": "DAO bootstrap is live in the web wallet lane. Repo-script proof exists, and browser-wallet plus real-device capture expansion is already underway."
+      "browserWalletProofCaptured": true,
+      "realDeviceProofCaptured": true,
+      "supportNote": "DAO bootstrap is live in the web wallet lane. Repo-script proof exists, the full Solflare browser cycle is captured, and Android Solflare now proves the mobile path through DAO bootstrap on Devnet."
     },
     {
       "action": "create_proposal",
@@ -41,9 +31,9 @@
       "instructionName": "create_proposal",
       "liveWalletLane": true,
       "repoScriptProofCaptured": true,
-      "browserWalletProofCaptured": false,
-      "realDeviceProofCaptured": false,
-      "supportNote": "Proposal submit is live in the web wallet lane, including the current SendSol and SendToken treasury motions. Browser-wallet and real-device capture expansion is the next visible runtime lift."
+      "browserWalletProofCaptured": true,
+      "realDeviceProofCaptured": true,
+      "supportNote": "Proposal submit is live in the web wallet lane, including the current SendSol and SendToken treasury motions. The full Solflare browser cycle is captured, and Android Solflare now proves proposal creation on Devnet."
     },
     {
       "action": "commit_vote",
@@ -51,9 +41,9 @@
       "instructionName": "commit_vote",
       "liveWalletLane": true,
       "repoScriptProofCaptured": true,
-      "browserWalletProofCaptured": false,
-      "realDeviceProofCaptured": false,
-      "supportNote": "Commit vote is live in the web wallet lane once a real DAO and proposal already exist in session state. Browser-wallet and real-device capture expansion is the next visible runtime lift."
+      "browserWalletProofCaptured": true,
+      "realDeviceProofCaptured": true,
+      "supportNote": "Commit vote is live in the web wallet lane once a real DAO and proposal already exist in session state. The full Solflare browser cycle is captured, and Android Solflare now proves commit-vote submission on Devnet."
     },
     {
       "action": "reveal_vote",
@@ -61,9 +51,9 @@
       "instructionName": "reveal_vote",
       "liveWalletLane": true,
       "repoScriptProofCaptured": true,
-      "browserWalletProofCaptured": false,
+      "browserWalletProofCaptured": true,
       "realDeviceProofCaptured": false,
-      "supportNote": "Reveal vote is live in the web wallet lane once a live commit already exists in the same session. Browser-wallet and real-device capture expansion is the next visible runtime lift."
+      "supportNote": "Reveal vote is live in the web wallet lane once a live commit already exists in the same session. The full Solflare browser cycle is captured; Android capture expansion is still pending for this stage."
     },
     {
       "action": "finalize_proposal",
@@ -71,9 +61,9 @@
       "instructionName": "finalize_proposal",
       "liveWalletLane": true,
       "repoScriptProofCaptured": true,
-      "browserWalletProofCaptured": false,
+      "browserWalletProofCaptured": true,
       "realDeviceProofCaptured": false,
-      "supportNote": "Finalize proposal is live in the web wallet lane. Repo-script proof exists, and browser-wallet plus real-device capture expansion is already underway."
+      "supportNote": "Finalize proposal is live in the web wallet lane. Repo-script proof exists and the full Solflare browser cycle is captured; Android capture expansion is still pending for this stage."
     },
     {
       "action": "execute_proposal",
@@ -81,9 +71,9 @@
       "instructionName": "execute_proposal",
       "liveWalletLane": true,
       "repoScriptProofCaptured": true,
-      "browserWalletProofCaptured": false,
+      "browserWalletProofCaptured": true,
       "realDeviceProofCaptured": false,
-      "supportNote": "Execute proposal is live in the web wallet lane for standard, SendSol, and SendToken proposals. CustomCPI remains outside the current executable release boundary."
+      "supportNote": "Execute proposal is live in the web wallet lane for standard, SendSol, and SendToken proposals. The full Solflare browser cycle is captured; Android capture expansion remains pending and CustomCPI stays outside the current executable release boundary."
     }
   ],
   "linkedDocs": [
@@ -109,7 +99,7 @@
   ],
   "notes": [
     "This packet separates live web wallet capability from runtime proof capture so the product does not overclaim based on shipped code alone.",
-    "Repo-script proof exists for the governance core lifecycle, but browser-wallet proof on the web and real-device action proof on Android remain pending until captures are recorded in their runtime registries.",
+    "Repo-script proof exists for the governance core lifecycle, the full Solflare browser cycle is captured on the live web route, and Android Solflare now proves the mobile path through Create DAO, Create Proposal, and Commit Vote.",
     "The web wallet lane currently covers Create DAO, Create Proposal, Commit Vote, Reveal Vote, Finalize Proposal, and Execute Proposal for standard, SendSol, and SendToken proposals."
   ]
 }

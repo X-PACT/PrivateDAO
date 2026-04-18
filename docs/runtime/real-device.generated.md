@@ -3,14 +3,14 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-17T22:18:44.694Z`
+- generated at: `2026-04-18T03:51:20.220Z`
 - network: `devnet`
 - status: `pending-real-device-capture`
 - target count: `5`
-- completed target count: `0`
-- successful connect count: `0`
-- successful submission count: `0`
-- diagnostics snapshot count: `0`
+- completed target count: `1`
+- successful connect count: `1`
+- successful submission count: `1`
+- diagnostics snapshot count: `1`
 
 ## Target Matrix
 
@@ -18,7 +18,7 @@
 - Solflare (`solflare-desktop`) | environment: `desktop-browser` | status: `pending-capture`
 - Backpack (`backpack-desktop`) | environment: `desktop-browser` | status: `pending-capture`
 - Glow (`glow-desktop`) | environment: `desktop-browser` | status: `pending-capture`
-- Android Native / Mobile (`android-runtime`) | environment: `android-or-mobile` | status: `pending-capture`
+- Android Native / Mobile (`android-runtime`) | environment: `android-or-mobile` | status: `captured`
 
 ## Pending Targets
 
@@ -26,16 +26,28 @@
 - Solflare
 - Backpack
 - Glow
-- Android Native / Mobile
 
 ## Captures
 
-No real-device captures have been committed yet. The intake and verification path is now in place so these runs can be added without changing the reviewer surface.
+### Android Native / Mobile
+
+- captured at: `2026-04-18T03:25:57.000Z`
+- environment: `android-or-mobile`
+- os: `Android`
+- browser or client: `Solflare in-app browser`
+- connect result: `success`
+- signing result: `success`
+- submission result: `success`
+- diagnostics snapshot captured: `true`
+- tx signature: `5ZQfvJxU7QvKakZvS1JkDNJLBZVzTesQk7g1NhzAXGBzKYYsPcSzUbiNiDa9Xc2wq5K7yfeJm3uT2qY5aWW9cMV2`
+- explorer url: `https://explorer.solana.com/tx/5ZQfvJxU7QvKakZvS1JkDNJLBZVzTesQk7g1NhzAXGBzKYYsPcSzUbiNiDa9Xc2wq5K7yfeJm3uT2qY5aWW9cMV2?cluster=devnet`
+- error message: `none`
 
 ## Required Docs
 
 - `docs/runtime/real-device.md`
 - `docs/runtime/real-device-captures.json`
+- `docs/android-solflare-real-device-capture-2026-04-18.md`
 - `docs/runtime-attestation.generated.json`
 - `docs/external-readiness-intake.md`
 

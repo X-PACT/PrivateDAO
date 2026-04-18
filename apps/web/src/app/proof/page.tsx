@@ -14,6 +14,7 @@ import { RuntimeEvidenceContinuityPanel } from "@/components/runtime-evidence-co
 import { AuthoritativeExecutionTrail } from "@/components/authoritative-execution-trail";
 import { ExecutionOperationsStrip } from "@/components/execution-operations-strip";
 import { DevnetExecutionScreenshotsStrip } from "@/components/devnet-execution-screenshots-strip";
+import { PrivacyProofExplainer } from "@/components/privacy-proof-explainer";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
@@ -52,6 +53,9 @@ export default function ProofPage() {
         <Suspense fallback={null}>
           <ProofEntryBanner />
         </Suspense>
+      </div>
+      <div>
+        <PrivacyProofExplainer compact />
       </div>
       <div>
         <JudgeRuntimeLogsPanel />

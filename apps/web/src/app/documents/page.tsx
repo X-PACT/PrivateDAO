@@ -98,6 +98,9 @@ export default function DocumentsPage() {
           <Link href="/documents/payments-reviewer-fast-path" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
             Open payments fast path
           </Link>
+          <Link href="/documents/privacy-and-encryption-proof-guide" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
+            Open privacy proof guide
+          </Link>
           <Link href="/documents/canonical-custody-proof" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
             Open truth
           </Link>

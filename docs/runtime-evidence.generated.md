@@ -2,7 +2,7 @@
 
 ## Overview
 
-- Generated at: `2026-04-18T02:51:20.278Z`
+- Generated at: `2026-04-18T03:51:55.276Z`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - Diagnostics page: `https://privatedao.org/diagnostics/`
@@ -35,11 +35,11 @@
 
 - Status: `pending-real-device-capture`
 - Target count: `5`
-- Completed target count: `0`
-- Successful connect count: `0`
-- Successful submission count: `0`
-- Diagnostics capture count: `0`
-- Pending targets: `Phantom, Solflare, Backpack, Glow, Android Native / Mobile`
+- Completed target count: `1`
+- Successful connect count: `1`
+- Successful submission count: `1`
+- Diagnostics capture count: `1`
+- Pending targets: `Phantom, Solflare, Backpack, Glow`
 
 ## Browser-Wallet Runtime Intake
 
@@ -62,9 +62,9 @@
 - Browser diagnostics captures: `2`
 - Browser diagnostics labels: `Phantom, Solflare`
 - Real-device targets: `5`
-- Real-device evidence-backed: `0`
-- Real-device evidence-backed labels: `none`
-- Real-device pending targets: `5`
+- Real-device evidence-backed: `1`
+- Real-device evidence-backed labels: `Android Native / Mobile`
+- Real-device pending targets: `4`
 - Support matrix wallet count: `5`
 - Support matrix selector-visible count: `5`
 - Support matrix diagnostics-visible count: `5`

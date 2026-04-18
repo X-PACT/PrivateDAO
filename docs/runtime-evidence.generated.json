@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-18T02:51:20.278Z",
+  "generatedAt": "2026-04-18T03:51:55.276Z",
   "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
   "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
   "diagnosticsPage": "https://privatedao.org/diagnostics/",
@@ -65,16 +65,15 @@
   "realDevice": {
     "status": "pending-real-device-capture",
     "targetCount": 5,
-    "completedTargetCount": 0,
-    "successfulConnectCount": 0,
-    "successfulSubmissionCount": 0,
-    "diagnosticsCaptureCount": 0,
+    "completedTargetCount": 1,
+    "successfulConnectCount": 1,
+    "successfulSubmissionCount": 1,
+    "diagnosticsCaptureCount": 1,
     "pendingTargets": [
       "Phantom",
       "Solflare",
       "Backpack",
-      "Glow",
-      "Android Native / Mobile"
+      "Glow"
     ]
   },
   "browserWallet": {
@@ -106,9 +105,11 @@
       "Solflare"
     ],
     "realDeviceTargetCount": 5,
-    "realDeviceEvidenceBackedWalletCount": 0,
-    "realDeviceEvidenceBackedWalletLabels": [],
-    "realDevicePendingTargetCount": 5,
+    "realDeviceEvidenceBackedWalletCount": 1,
+    "realDeviceEvidenceBackedWalletLabels": [
+      "Android Native / Mobile"
+    ],
+    "realDevicePendingTargetCount": 4,
     "supportMatrixWalletCount": 5,
     "supportMatrixSelectorVisibleCount": 5,
     "supportMatrixDiagnosticsVisibleCount": 5,

@@ -5,6 +5,7 @@ import { JudgeRuntimeLogsPanel } from "@/components/judge-runtime-logs-panel";
 import { OperationsShell } from "@/components/operations-shell";
 import { DevnetExecutionScreenshotsStrip } from "@/components/devnet-execution-screenshots-strip";
 import { JudgeTechnologyGuide } from "@/components/judge-technology-guide";
+import { PrivacyProofExplainer } from "@/components/privacy-proof-explainer";
 import { buttonVariants } from "@/components/ui/button";
 import { WalletConnectButton } from "@/components/wallet-connect-button";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
@@ -58,6 +59,9 @@ export default function JudgePage() {
             <Link href="/documents/reviewer-fast-path" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
               Open fast path
             </Link>
+            <Link href="/documents/privacy-and-encryption-proof-guide" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+              Open privacy proof guide
+            </Link>
             <Link href="/viewer/agentic-treasury-micropayment-rail.generated" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
               Open generated rail proof
             </Link>
@@ -93,6 +97,7 @@ export default function JudgePage() {
       </div>
 
       <DevnetExecutionScreenshotsStrip />
+      <PrivacyProofExplainer />
       <JudgeTechnologyGuide />
       <JudgeRuntimeLogsPanel />
     </OperationsShell>

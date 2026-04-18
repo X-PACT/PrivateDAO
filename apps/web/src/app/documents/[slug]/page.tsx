@@ -50,6 +50,8 @@ export default async function DocumentPage({ params }: PageProps) {
   const relatedSlugs =
     slug === "agentic-treasury-micropayment-rail"
       ? ["reviewer-fast-path", "reviewer-telemetry-packet", "capital-readiness-packet"]
+      : slug === "privacy-and-encryption-proof-guide"
+        ? ["zk-capability-matrix", "confidential-payout-evidence-packet", "frontier-integrations"]
       : ["agentic-treasury-micropayment-rail", "reviewer-fast-path", "reviewer-telemetry-packet"];
   const relatedDocuments = getCuratedDocumentsBySlugs(relatedSlugs).filter((entry) => entry.slug !== slug);
 
