@@ -86,6 +86,10 @@ function formatRemainingSeconds(seconds: number) {
   return `${hours}h ${minuteRemainder}m`;
 }
 
+function getUtf8ByteLength(value: string) {
+  return new TextEncoder().encode(value).length;
+}
+
 function getActionAnchorId(action: CoreGovernanceInstructionName | null) {
   switch (action) {
     case "create_proposal":
@@ -308,12 +312,16 @@ export function GovernanceActionWorkbench() {
     proposalFinalized || Boolean(liveVoteRuntime?.finalizeSignature && activeLiveProposalAddress);
   const effectiveProposalExecuted =
     proposalExecuted || Boolean(liveVoteRuntime?.executeSignature && activeLiveProposalAddress);
+  const trimmedDaoName = daoName.trim();
+  const daoNameByteLength = getUtf8ByteLength(trimmedDaoName);
+  const daoNameFitsPdaSeed = daoNameByteLength <= 32;
 
   const canCreateDao =
     connected &&
     Boolean(publicKey) &&
     !effectiveDaoCreated &&
-    daoName.trim().length >= 3 &&
+    trimmedDaoName.length >= 3 &&
+    daoNameFitsPdaSeed &&
     createDaoRuntime.status !== "submitting";
   const canCreateProposal = effectiveDaoCreated && !effectiveProposalCreated && proposalTitle.trim().length >= 6;
   const proposalTreasuryDraft = useMemo(() => {
@@ -764,7 +772,7 @@ export function GovernanceActionWorkbench() {
       const bootstrap = await buildCreateDaoBootstrapTransaction({
         authority: publicKey,
         connection,
-        name: daoName.trim(),
+        name: trimmedDaoName,
         quorum: 51,
         revealWindowSeconds: LIVE_DEVNET_REVEAL_WINDOW_SECONDS,
         delaySeconds: LIVE_DEVNET_EXECUTION_DELAY_SECONDS,
@@ -794,7 +802,7 @@ export function GovernanceActionWorkbench() {
       });
       recordLog(
         "DAO bootstrap submitted",
-        `${daoName.trim()} · ${bootstrap.dao.toBase58()} · ${signature}`,
+        `${trimmedDaoName} · ${bootstrap.dao.toBase58()} · ${signature}`,
       );
       recordLog(
         "Governance mint provisioned",
@@ -1557,6 +1565,21 @@ export function GovernanceActionWorkbench() {
               {` ${LIVE_DEVNET_REVEAL_WINDOW_SECONDS}s`} reveal,
               {` ${LIVE_DEVNET_EXECUTION_DELAY_SECONDS}s`} execution delay.
             </p>
+            <div
+              className={cn(
+                "mt-3 rounded-2xl border p-3 text-xs leading-6",
+                daoNameFitsPdaSeed
+                  ? "border-white/8 bg-black/20 text-white/56"
+                  : "border-amber-300/18 bg-amber-300/[0.08] text-amber-100/84",
+              )}
+            >
+              <div>DAO name seed usage: {daoNameByteLength}/32 bytes for the on-chain PDA.</div>
+              {!daoNameFitsPdaSeed ? (
+                <div className="mt-1">
+                  Shorten the DAO name before signing. The current program derives the DAO PDA directly from the UTF-8 DAO name, so anything above 32 bytes fails before the wallet can submit.
+                </div>
+              ) : null}
+            </div>
             <Button className="mt-4 w-full" disabled={!canCreateDao} onClick={() => openReview("initialize_dao")}>
               {createDaoRuntime.status === "submitting" ? "Awaiting wallet..." : "Create DAO on devnet"}
             </Button>

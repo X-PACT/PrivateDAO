@@ -575,8 +575,15 @@ export async function buildCreateDaoBootstrapTransaction({
   revealWindowSeconds = 5,
   votingMode = "token",
 }: CreateDaoBootstrapInput): Promise<CreateDaoBootstrapResult> {
-  if (!name.trim()) {
+  const trimmedName = name.trim();
+  if (!trimmedName) {
     throw new Error("DAO name is required.");
+  }
+  const daoNameBytes = new TextEncoder().encode(trimmedName);
+  if (daoNameBytes.length > 32) {
+    throw new Error(
+      `DAO name is ${daoNameBytes.length} bytes. The current on-chain PDA seed limit is 32 bytes, so shorten the DAO name before signing.`,
+    );
   }
   if (!Number.isFinite(quorum) || quorum < 1 || quorum > 100) {
     throw new Error("Quorum must stay between 1 and 100.");
@@ -584,13 +591,13 @@ export async function buildCreateDaoBootstrapTransaction({
 
   const mintSigner = Keypair.generate();
   const [dao] = PublicKey.findProgramAddressSync(
-    [Buffer.from("dao"), authority.toBuffer(), Buffer.from(name)],
+    [Buffer.from("dao"), authority.toBuffer(), Buffer.from(trimmedName)],
     PRIVATE_DAO_PROGRAM_ID,
   );
   const existingDaoInfo = await connection.getAccountInfo(dao, "confirmed");
   if (existingDaoInfo) {
     throw new Error(
-      `A DAO named "${name}" already exists for this wallet on devnet (${dao.toBase58()}). Change the DAO name or continue from the existing DAO.`,
+      `A DAO named "${trimmedName}" already exists for this wallet on devnet (${dao.toBase58()}). Change the DAO name or continue from the existing DAO.`,
     );
   }
 
@@ -629,7 +636,7 @@ export async function buildCreateDaoBootstrapTransaction({
 
   const daoData = concatBytes(
     await anchorMethodDiscriminator("initialize_dao"),
-    encodeAnchorString(name),
+    encodeAnchorString(trimmedName),
     new Uint8Array([quorum]),
     encodeU64LE(0),
     encodeI64LE(revealWindowSeconds),
