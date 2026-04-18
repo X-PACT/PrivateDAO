@@ -2,7 +2,7 @@
 
 ## Overview
 
-- Generated at: `2026-04-14T01:51:19.448Z`
+- Generated at: `2026-04-18T02:53:01.097Z`
 - Project: `PrivateDAO`
 - Network: `devnet`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
@@ -26,7 +26,7 @@
 - Repo-script proof captured: `true`
 - Browser-wallet proof captured: `false`
 - Real-device proof captured: `false`
-- Note: DAO bootstrap is live in the web wallet lane. Repo-script proof exists; browser-wallet and real-device captures still need to be recorded.
+- Note: DAO bootstrap is live in the web wallet lane. Repo-script proof exists, and browser-wallet plus real-device capture expansion is already underway.
 
 ### Create Proposal
 
@@ -35,7 +35,7 @@
 - Repo-script proof captured: `true`
 - Browser-wallet proof captured: `false`
 - Real-device proof captured: `false`
-- Note: Proposal submit is live in the web wallet lane, including the current SendSol and SendToken treasury motions. Browser-wallet and real-device captures remain pending.
+- Note: Proposal submit is live in the web wallet lane, including the current SendSol and SendToken treasury motions. Browser-wallet and real-device capture expansion is the next visible runtime lift.
 
 ### Commit Vote
 
@@ -44,7 +44,7 @@
 - Repo-script proof captured: `true`
 - Browser-wallet proof captured: `false`
 - Real-device proof captured: `false`
-- Note: Commit vote is live in the web wallet lane once a real DAO and proposal already exist in session state. Browser-wallet and real-device captures remain pending.
+- Note: Commit vote is live in the web wallet lane once a real DAO and proposal already exist in session state. Browser-wallet and real-device capture expansion is the next visible runtime lift.
 
 ### Reveal Vote
 
@@ -53,7 +53,7 @@
 - Repo-script proof captured: `true`
 - Browser-wallet proof captured: `false`
 - Real-device proof captured: `false`
-- Note: Reveal vote is live in the web wallet lane once a live commit already exists in the same session. Browser-wallet and real-device captures remain pending.
+- Note: Reveal vote is live in the web wallet lane once a live commit already exists in the same session. Browser-wallet and real-device capture expansion is the next visible runtime lift.
 
 ### Finalize Proposal
 
@@ -62,7 +62,7 @@
 - Repo-script proof captured: `true`
 - Browser-wallet proof captured: `false`
 - Real-device proof captured: `false`
-- Note: Finalize proposal is live in the web wallet lane. Repo-script proof exists; browser-wallet and real-device captures still need to be recorded.
+- Note: Finalize proposal is live in the web wallet lane. Repo-script proof exists, and browser-wallet plus real-device capture expansion is already underway.
 
 ### Execute Proposal
 

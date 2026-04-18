@@ -3,15 +3,15 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-18T00:17:33.918Z`
+- generated at: `2026-04-18T02:52:05.953Z`
 - reviewer intent: Show the shortest truth-synced route into runtime maturity, hosted reads, indexed governance, and infrastructure-facing reviewer value without claiming unsupported partnerships or mainnet readiness.
 
 ## Truth Sources
 
-- Runtime evidence: `2026-04-18T00:16:30.293Z` via `docs/runtime-evidence.generated.md`
+- Runtime evidence: `2026-04-18T02:51:20.278Z` via `docs/runtime-evidence.generated.md`
 - Frontier integrations: `2026-04-10T05:21:06.356Z` via `docs/frontier-integrations.generated.md`
 - Read-node snapshot: `2026-04-18T00:09:33.941Z` via `docs/read-node/snapshot.generated.md`
-- Devnet service metrics: `2026-04-18T00:16:30.293Z` via `apps/web/src/lib/devnet-service-metrics.ts`
+- Devnet service metrics: `2026-04-18T02:51:20.278Z` via `apps/web/src/lib/devnet-service-metrics.ts`
 
 ## What Works Now
 
@@ -23,7 +23,7 @@
 
 ## What Is Externally Or Operationally Proven Now
 
-- Runtime evidence package generated at 2026-04-18T00:16:30.293Z and published as docs/runtime-evidence.generated.md.
+- Runtime evidence package generated at 2026-04-18T02:51:20.278Z and published as docs/runtime-evidence.generated.md.
 - Frontier integrations package generated at 2026-04-10T05:21:06.356Z with reviewer entry https://privatedao.org/proof/?judge=1.
 - Read-node snapshot generated at 2026-04-18T00:09:33.941Z on slot 456264549 against https://api.devnet.solana.com.
 - Proposal flow health, wallet readiness, and proof freshness summaries are taken from the same devnet service metrics module used by the live app.
@@ -60,7 +60,7 @@
 
 - Proposal flow health: 37.5% — 7/7 governance proof steps are finalized. 0 proposal is already executed on devnet, 0 proposal is still in commit mode, and 5 proposal is still waiting on settlement evidence. (Open proof and execution: /proof/?judge=1)
 - Wallet-by-wallet readiness: 25% — 1/4 browser wallet targets have completed connect + sign + submit on Devnet. Diagnostics are visible for 5/5 support-matrix entries, and pending real-device targets remain explicit in runtime evidence. (Open wallet diagnostics: /diagnostics)
-- Proof freshness: fresh this hour — Runtime evidence fresh this hour, Devnet canary fresh this hour, and integration evidence 8d old remain published together. (Open trust documents: /documents/live-proof-v3)
+- Proof freshness: fresh this hour — Runtime evidence fresh this hour, Devnet canary 3h old, and integration evidence 8d old remain published together. (Open trust documents: /documents/live-proof-v3)
 - Hosted read coverage: 41 — The backend-indexer read path currently exposes 41 indexed proposals across 21 DAOs. (Open services: /services)
 - MagicBlock settlement completion: 100% — 5/5 confidential corridor transactions finalized in the current integration evidence package. (Open diagnostics: /diagnostics)
 - Primary RPC latency: 289 ms — Current blockhash latency from the primary Devnet endpoint. Version latency is 2364 ms. (Open analytics: /analytics)

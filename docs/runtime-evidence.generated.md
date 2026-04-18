@@ -2,7 +2,7 @@
 
 ## Overview
 
-- Generated at: `2026-04-18T00:16:30.293Z`
+- Generated at: `2026-04-18T02:51:20.278Z`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - Diagnostics page: `https://privatedao.org/diagnostics/`
@@ -49,7 +49,7 @@
 - Successful connect count: `2`
 - Successful submission count: `1`
 - Diagnostics capture count: `2`
-- Action coverage count: `4`
+- Action coverage count: `7`
 - Pending targets: `Backpack, Glow`
 
 ## Evidence-Backed Wallet Readiness

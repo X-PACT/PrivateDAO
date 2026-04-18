@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-18T00:16:30.293Z",
+  "generatedAt": "2026-04-18T02:51:20.278Z",
   "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
   "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
   "diagnosticsPage": "https://privatedao.org/diagnostics/",
@@ -84,7 +84,7 @@
     "successfulConnectCount": 2,
     "successfulSubmissionCount": 1,
     "diagnosticsCaptureCount": 2,
-    "actionCoverageCount": 4,
+    "actionCoverageCount": 7,
     "pendingTargets": [
       "Backpack",
       "Glow"

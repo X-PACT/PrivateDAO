@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-15T17:37:59.290Z",
+  "generatedAt": "2026-04-18T02:50:46.809Z",
   "network": "devnet",
   "summary": {
     "targetCount": 4,
@@ -8,7 +8,7 @@
     "successfulConnectCount": 2,
     "successfulSubmissionCount": 1,
     "diagnosticsCaptureCount": 2,
-    "actionCoverageCount": 4,
+    "actionCoverageCount": 7,
     "pendingTargets": [
       "Backpack",
       "Glow"
@@ -71,25 +71,28 @@
       "walletVersion": "unknown",
       "environmentType": "desktop-browser",
       "os": "Linux",
-      "browserOrClient": "Brave",
+      "browserOrClient": "Playwright Chromium",
       "network": "devnet",
       "actionsCovered": [
         "Connect Wallet",
         "Create DAO",
         "Create Proposal",
-        "Commit Vote"
+        "Commit Vote",
+        "Reveal Vote",
+        "Finalize Proposal",
+        "Execute Proposal"
       ],
       "connectResult": "success",
       "signingResult": "success",
       "submissionResult": "success",
       "diagnosticsSnapshotCaptured": true,
-      "txSignature": "4zDfzZ9DBcfGmDf2ogeX2Z6UTUJYhxxY8zYNFBLQHMeFXzDhpmaegYm6aPMfEBvHiBKZ2b1rW3G8Hi3iWX1WPYie",
+      "txSignature": "4VcbB1ABpJvU4qiP9vPU5VcGfQDvwLNPnJCU9k74zUrm2o1WcPCKX5VV9AiFA6LNjsgrsvD674kQk2Y7qeEtkjJ4",
       "errorMessage": null,
       "evidenceRefs": [
-        "docs/assets/runtime/browser-wallet/solflare-create-dao-success.png"
+        "docs/assets/runtime/browser-wallet/solflare-full-governance-cycle-success-2026-04-18.png"
       ],
-      "capturedAt": "2026-04-15T17:36:14.000Z",
-      "explorerUrl": "https://explorer.solana.com/tx/4zDfzZ9DBcfGmDf2ogeX2Z6UTUJYhxxY8zYNFBLQHMeFXzDhpmaegYm6aPMfEBvHiBKZ2b1rW3G8Hi3iWX1WPYie?cluster=devnet"
+      "capturedAt": "2026-04-18T02:49:35Z",
+      "explorerUrl": "https://explorer.solana.com/tx/4VcbB1ABpJvU4qiP9vPU5VcGfQDvwLNPnJCU9k74zUrm2o1WcPCKX5VV9AiFA6LNjsgrsvD674kQk2Y7qeEtkjJ4?cluster=devnet"
     }
   ],
   "requiredDocs": [
