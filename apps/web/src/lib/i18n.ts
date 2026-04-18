@@ -150,6 +150,43 @@ type StatusBannerTranslations = {
 };
 
 type PageContentTranslations = {
+  commercialCompare: {
+    eyebrow: string;
+    cards: Array<{
+      key: "pilot" | "hostedRead" | "confidential" | "enterprise";
+      name: string;
+      fit: string;
+      deliverable: string;
+      cta: string;
+    }>;
+  };
+  servicesSurface: {
+    commercialTitle: string;
+    journeyTitle: string;
+    services: Array<{
+      key: "hostedRead" | "pilot" | "confidential";
+      title: string;
+      summary: string;
+    }>;
+    journey: Array<{
+      key: "pilotProgram" | "sla" | "pricing" | "trust";
+      title: string;
+      detail: string;
+    }>;
+  };
+  judgeTechnologyGuide: {
+    eyebrow: string;
+    title: string;
+    body: string;
+    cards: Array<{
+      key: "voting" | "payments" | "runtime" | "treasury";
+      title: string;
+      byline: string;
+      summary: string;
+      routeLabel: string;
+      explorerLabel: string;
+    }>;
+  };
   productOffers: {
     eyebrow: string;
     labels: {
@@ -593,6 +630,121 @@ const englishCopy: LocalizedCopy = {
     openCommunity: "Open community",
   },
   pageContent: {
+    commercialCompare: {
+      eyebrow: "Commercial comparison",
+      cards: [
+        {
+          key: "pilot",
+          name: "Pilot Package",
+          fit: "Best for teams validating private governance and treasury operations before a longer rollout.",
+          deliverable: "Week-by-week onboarding, trust packet, readiness framing, and guided operating plan.",
+          cta: "Open pilot program",
+        },
+        {
+          key: "hostedRead",
+          name: "Hosted Read API + Ops",
+          fit: "Best for apps or teams that need cleaner governance data, evidence reads, and reviewer exports.",
+          deliverable: "Hosted read surfaces, ops guidance, reviewer packet alignment, and product-facing API framing.",
+          cta: "Open service catalog",
+        },
+        {
+          key: "confidential",
+          name: "Confidential Operations Premium",
+          fit: "Best for payroll, bonus, and private treasury teams that need stronger confidentiality boundaries.",
+          deliverable: "REFHE paths, V3 hardening, evidence-gated treasury flows, and operator trust surfaces.",
+          cta: "Open pricing model",
+        },
+        {
+          key: "enterprise",
+          name: "Enterprise Governance Retainer",
+          fit: "Best for organizations that want longer-term support across launch, controls, and operator workflows.",
+          deliverable: "SLA framing, trust package, release-gate review, and governance operations guidance.",
+          cta: "Open SLA",
+        },
+      ],
+    },
+    servicesSurface: {
+      commercialTitle: "Commercial services",
+      journeyTitle: "Pilot and trust journey",
+      services: [
+        {
+          key: "hostedRead",
+          title: "Hosted Read API + Ops",
+          summary: "Serve governance state, runtime evidence, and diagnostics through a cleaner operational API layer.",
+        },
+        {
+          key: "pilot",
+          title: "Pilot Package",
+          summary: "Week-by-week rollout with trust packet, SLA framing, and buyer-friendly onboarding.",
+        },
+        {
+          key: "confidential",
+          title: "Confidential Operations Premium",
+          summary: "Add encrypted payout boundaries, V3 hardening, and reviewer-ready execution evidence.",
+        },
+      ],
+      journey: [
+        {
+          key: "pilotProgram",
+          title: "Pilot Program",
+          detail: "Week-by-week rollout packet for teams that want guided adoption rather than a raw protocol integration.",
+        },
+        {
+          key: "sla",
+          title: "Service Level Agreement",
+          detail: "Operational framing for hosted reads, response expectations, and trust boundaries.",
+        },
+        {
+          key: "pricing",
+          title: "Pricing Model",
+          detail: "Commercial packaging for API, ops, and confidential governance support without hiding the technical stack.",
+        },
+        {
+          key: "trust",
+          title: "Trust Package",
+          detail: "A buyer-readable path into proof packets, runtime evidence, and launch readiness boundaries.",
+        },
+      ],
+    },
+    judgeTechnologyGuide: {
+      eyebrow: "Judge technology guide",
+      title: "Read the technology in plain language, then open the live route and the on-chain proof yourself",
+      body: "This guide is intentionally simple. It explains what each production lane does for a real user, which PrivateDAO route lets you try it, and which Devnet transaction lets you verify that the chain recorded the action.",
+      cards: [
+        {
+          key: "voting",
+          title: "Keep voting fair before execution",
+          byline: "with ZK + commit-reveal",
+          summary: "The governance flow protects vote intent during the sensitive stage, then exposes the public execution trail when the DAO action is ready to verify.",
+          routeLabel: "Run the governance flow",
+          explorerLabel: "Open vote or reveal transaction",
+        },
+        {
+          key: "payments",
+          title: "Settle sensitive payments without exposing the whole workflow",
+          byline: "with REFHE + MagicBlock",
+          summary: "PrivateDAO keeps payout intent and sensitive settlement context protected, then exposes the blockchain proof a reviewer needs after settlement lands.",
+          routeLabel: "Open confidential payment corridor",
+          explorerLabel: "Open confidential payout transaction",
+        },
+        {
+          key: "runtime",
+          title: "Read live state quickly enough to trust it",
+          byline: "with Fast RPC + hosted reads",
+          summary: "Users see fresh state, signatures, logs, and action status quickly enough to trust what happened instead of guessing from a wallet popup or stale status.",
+          routeLabel: "Open runtime API corridor",
+          explorerLabel: "Open a captured runtime transaction",
+        },
+        {
+          key: "treasury",
+          title: "Automate treasury actions under policy control",
+          byline: "with the policy engine + micropayments",
+          summary: "Approved DAO policy can drive repeated on-chain settlement actions, so the judge can inspect a real batch settlement trail instead of a single isolated transfer.",
+          routeLabel: "Open the treasury rail brief",
+          explorerLabel: "Open a micropayment transaction",
+        },
+      ],
+    },
     productOffers: {
       eyebrow: "Production lanes",
       labels: {
@@ -1059,6 +1211,121 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
       openCommunity: "افتح المجتمع",
     },
     pageContent: {
+      commercialCompare: {
+        eyebrow: "المقارنة التجارية",
+        cards: [
+          {
+            key: "pilot",
+            name: "حزمة الإطلاق التجريبي",
+            fit: "الأفضل للفرق التي تريد اختبار الحوكمة الخاصة وعمليات الخزانة قبل إطلاق أطول.",
+            deliverable: "تهيئة أسبوعية، حزمة ثقة، صياغة readiness، وخطة تشغيل موجّهة.",
+            cta: "افتح برنامج الإطلاق",
+          },
+          {
+            key: "hostedRead",
+            name: "Hosted Read API + Ops",
+            fit: "الأفضل للتطبيقات أو الفرق التي تحتاج بيانات حوكمة أوضح وقراءات إثبات وتصدير للمراجعين.",
+            deliverable: "أسطح Hosted read، إرشاد تشغيلي، مواءمة مع حزم المراجعة، وصياغة API موجهة للمنتج.",
+            cta: "افتح كتالوج الخدمات",
+          },
+          {
+            key: "confidential",
+            name: "عمليات سرية بريميوم",
+            fit: "الأفضل للرواتب والمكافآت وفرق الخزانة الخاصة التي تحتاج حدود سرية أقوى.",
+            deliverable: "مسارات REFHE، وتقوية V3، وتدفقات خزانة gated بالأدلة، وأسـطح ثقة للمشغّل.",
+            cta: "افتح نموذج التسعير",
+          },
+          {
+            key: "enterprise",
+            name: "Retainer لحوكمة المؤسسات",
+            fit: "الأفضل للجهات التي تريد دعمًا أطول عبر الإطلاق والضوابط وتدفقات المشغلين.",
+            deliverable: "صياغة SLA، وحزمة الثقة، ومراجعة release-gate، وإرشاد عمليات الحوكمة.",
+            cta: "افتح SLA",
+          },
+        ],
+      },
+      servicesSurface: {
+        commercialTitle: "الخدمات التجارية",
+        journeyTitle: "رحلة الإطلاق والثقة",
+        services: [
+          {
+            key: "hostedRead",
+            title: "Hosted Read API + Ops",
+            summary: "قدّم حالة الحوكمة وأدلة التشغيل والتشخيص عبر طبقة API تشغيلية أوضح.",
+          },
+          {
+            key: "pilot",
+            title: "حزمة الإطلاق التجريبي",
+            summary: "تنفيذ أسبوعي مع trust packet وصياغة SLA وتهيئة مناسبة للمشتري.",
+          },
+          {
+            key: "confidential",
+            title: "عمليات سرية بريميوم",
+            summary: "أضف حدود دفع مشفّرة وتقوية V3 وأدلة تنفيذ جاهزة للمراجعين.",
+          },
+        ],
+        journey: [
+          {
+            key: "pilotProgram",
+            title: "برنامج الإطلاق التجريبي",
+            detail: "حزمة rollout أسبوعية للفرق التي تريد اعتمادًا موجّهًا بدل تكامل بروتوكولي خام.",
+          },
+          {
+            key: "sla",
+            title: "اتفاقية مستوى الخدمة",
+            detail: "صياغة تشغيلية للقراءات المستضافة وتوقعات الاستجابة وحدود الثقة.",
+          },
+          {
+            key: "pricing",
+            title: "نموذج التسعير",
+            detail: "تغليف تجاري للـ API والعمليات ودعم الحوكمة السرية بدون إخفاء الطبقة التقنية.",
+          },
+          {
+            key: "trust",
+            title: "حزمة الثقة",
+            detail: "مسار سهل للمشتري نحو حزم الإثبات وأدلة التشغيل وحدود readiness.",
+          },
+        ],
+      },
+      judgeTechnologyGuide: {
+        eyebrow: "دليل التقنية للمراجع",
+        title: "افهم التقنية بلغة بسيطة ثم افتح المسار الحي والإثبات على السلسلة بنفسك",
+        body: "هذا الدليل مقصود أن يكون بسيطًا. يشرح ما الذي تفعله كل طبقة إنتاجية للمستخدم الحقيقي، وأي مسار في PrivateDAO يجعلك تجربها، وأي معاملة على Devnet تجعلك تتحقق أن السلسلة سجلت العملية فعلًا.",
+        cards: [
+          {
+            key: "voting",
+            title: "احفظ عدالة التصويت قبل التنفيذ",
+            byline: "بواسطة ZK + commit-reveal",
+            summary: "مسار الحوكمة يحمي نية التصويت في المرحلة الحساسة، ثم يكشف أثر التنفيذ العام عندما تصبح حركة الـ DAO جاهزة للمراجعة.",
+            routeLabel: "نفّذ مسار الحوكمة",
+            explorerLabel: "افتح معاملة التصويت أو الكشف",
+          },
+          {
+            key: "payments",
+            title: "سوِّ المدفوعات الحساسة دون كشف كل سير العمل",
+            byline: "بواسطة REFHE + MagicBlock",
+            summary: "تحافظ PrivateDAO على نية الدفع والسياق الحساس للتسوية، ثم تعرض للمراجع الإثبات الذي يحتاجه بعد أن تصل التسوية إلى السلسلة.",
+            routeLabel: "افتح مسار المدفوعات السرية",
+            explorerLabel: "افتح معاملة الدفع السرية",
+          },
+          {
+            key: "runtime",
+            title: "اقرأ الحالة الحية بسرعة كافية لتثق بها",
+            byline: "بواسطة Fast RPC + hosted reads",
+            summary: "يرى المستخدم الحالة الجديدة والتواقيع واللوجز ووضع العملية بسرعة كافية ليثق بما حدث بدل التخمين من نافذة محفظة أو حالة stale.",
+            routeLabel: "افتح مسار Runtime API",
+            explorerLabel: "افتح معاملة runtime ملتقطة",
+          },
+          {
+            key: "treasury",
+            title: "أتمت إجراءات الخزانة تحت تحكم السياسة",
+            byline: "بواسطة policy engine + micropayments",
+            summary: "يمكن لسياسة DAO المعتمدة أن تقود تسويات متكررة على السلسلة، حتى يراجع الحكم أثر batch حقيقي بدل تحويلة واحدة معزولة.",
+            routeLabel: "افتح ملخص treasury rail",
+            explorerLabel: "افتح معاملة micropayment",
+          },
+        ],
+      },
       productOffers: {
         eyebrow: "المسارات الإنتاجية",
         labels: {

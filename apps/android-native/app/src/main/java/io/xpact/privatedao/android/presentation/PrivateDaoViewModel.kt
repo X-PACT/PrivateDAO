@@ -267,7 +267,7 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
         viewModelScope.launch {
             runBillingSubmission {
                 val tx = repository.buildBillingRehearsalTransaction(wallet.publicKeyBase58, sku)
-                walletManager.signAndSendSingleTransaction(launcher, wallet, tx).toResult()
+                walletManager.signAndSendSingleTransaction(launcher, wallet, tx).toBillingResult(sku)
             }
         }
     }
@@ -329,6 +329,14 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
     private fun String.toResult(): ProposalActionResult = ProposalActionResult(
         signature = this,
         explorerUrl = PrivateDaoConfig.txExplorer(this),
+    )
+
+    private fun String.toBillingResult(sku: BillingSku): ProposalActionResult = ProposalActionResult(
+        signature = this,
+        explorerUrl = PrivateDaoConfig.txExplorer(this),
+        skuKey = sku.key,
+        memoLabel = sku.memoLabel,
+        submittedAtEpochMs = System.currentTimeMillis(),
     )
 }
 

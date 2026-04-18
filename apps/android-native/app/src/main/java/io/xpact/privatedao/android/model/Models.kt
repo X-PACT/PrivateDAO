@@ -111,6 +111,9 @@ data class ProposalSummary(
 data class ProposalActionResult(
     val signature: String,
     val explorerUrl: String,
+    val skuKey: String? = null,
+    val memoLabel: String? = null,
+    val submittedAtEpochMs: Long? = null,
 )
 
 data class ProposalActivity(

@@ -48,7 +48,7 @@ function main() {
     [proofCenter, "Proof center", "proof center surface is missing"],
     [securityCenter, "Security architecture", "security center surface is missing"],
     [diagnosticsCenter, "Operational diagnostics", "diagnostics center surface is missing"],
-    [servicesSurface, "Commercial services", "services surface is missing"],
+    [servicesSurface, "content.commercialTitle", "services surface is missing"],
     [siteData, "Governance Hardening V3", "site data is missing Governance V3"],
     [siteData, "Settlement Hardening V3", "site data is missing Settlement V3"],
     [siteData, "Core integrations", "site data is missing the integrations packet surface"],

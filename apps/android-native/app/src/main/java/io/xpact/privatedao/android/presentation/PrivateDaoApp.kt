@@ -66,6 +66,9 @@ import io.xpact.privatedao.android.model.ProposalPhase
 import io.xpact.privatedao.android.model.ProposalSummary
 import io.xpact.privatedao.android.model.RevealVoteForm
 import io.xpact.privatedao.android.model.TreasuryActionType
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 private enum class Destination(val route: String, val label: String) {
     Splash("splash", "Splash"),
@@ -622,24 +625,35 @@ private fun BillingProofCard(state: SubmissionState) {
     val uriHandler = LocalUriHandler.current
 
     when (state) {
-        is SubmissionState.Success -> HeroCard(
-            title = "Latest billing rehearsal",
-            body = "Last signed billing rehearsal hash: ${state.result.signature}. Explorer proof: ${state.result.explorerUrl}",
-            actions = {
-                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    TextButton(onClick = {
-                        clipboardManager.setText(AnnotatedString(state.result.signature))
-                    }) {
-                        Text("Copy signature")
+        is SubmissionState.Success -> {
+            val timestamp = state.result.submittedAtEpochMs?.let(::formatBillingTimestamp)
+            val body = buildString {
+                append("Last signed billing rehearsal hash: ${state.result.signature}.")
+                state.result.skuKey?.let { append(" SKU: $it.") }
+                state.result.memoLabel?.let { append(" Memo: $it.") }
+                timestamp?.let { append(" Submitted: $it.") }
+                append(" Explorer proof: ${state.result.explorerUrl}")
+            }
+
+            HeroCard(
+                title = "Latest billing rehearsal",
+                body = body,
+                actions = {
+                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        TextButton(onClick = {
+                            clipboardManager.setText(AnnotatedString(state.result.signature))
+                        }) {
+                            Text("Copy signature")
+                        }
+                        TextButton(onClick = {
+                            uriHandler.openUri(state.result.explorerUrl)
+                        }) {
+                            Text("Open explorer")
+                        }
                     }
-                    TextButton(onClick = {
-                        uriHandler.openUri(state.result.explorerUrl)
-                    }) {
-                        Text("Open explorer")
-                    }
-                }
-            },
-        )
+                },
+            )
+        }
         is SubmissionState.Failure -> HeroCard(
             title = "Billing rehearsal status",
             body = "Last attempt failed: ${state.message}",
@@ -653,6 +667,11 @@ private fun BillingProofCard(state: SubmissionState) {
             body = "Run any billing SKU from Home to create a real Devnet transfer, then return here to inspect the signature and explorer proof.",
         )
     }
+}
+
+private fun formatBillingTimestamp(epochMs: Long): String {
+    val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+    return formatter.format(Date(epochMs))
 }
 
 @Composable
