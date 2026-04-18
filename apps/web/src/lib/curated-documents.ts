@@ -179,6 +179,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/reform-backlog-runtime-infra-2026.md`,
   },
   {
+    slug: "rpcfast-hackathon-infrastructure-plan",
+    title: "RPCFast Hackathon Infrastructure Plan",
+    category: "Infrastructure",
+    summary: "Operating plan for RPCFast Hackathon/Aperture support, Devnet Yellowstone gRPC, Testnet release-candidate rehearsal, and mainnet data-plane readiness.",
+    audience: "Infrastructure reviewers, operators, funders, judges",
+    boundary: "Infrastructure activation plan only; it records supported RPC/gRPC capability and rollout stages without exposing API keys or claiming mainnet custody closure.",
+    docPath: "docs/rpcfast-hackathon-infrastructure-plan.md",
+    rawHref: `${repositoryBlobBase}/docs/rpcfast-hackathon-infrastructure-plan.md`,
+  },
+  {
     slug: "reform-backlog-product-ux-2026",
     title: "Product UX Reform Backlog 2026",
     category: "Strategy",
