@@ -19,11 +19,12 @@ npm run apply:custody-evidence-intake
 ## Chosen Path
 
 - Implementation: `Squads Protocol`
-- Live ceremony lane: `Devnet first, then production custody once signer posture and authority transfer evidence are ready`
-- Why this path: Squads is the clearest Solana-native multisig surface for reviewer-visible approval history, signer roles, and explorer-verifiable transfer evidence.
+- Live ceremony lane: `mainnet-beta production custody once signer posture, timelock, and authority-transfer evidence are ready`
+- Why this path: Squads is the clearest Solana-native multisig surface for reviewer-visible approval history, signer roles, and explorer-verifiable transfer evidence on the real production custody path.
 
 Supporting operator docs:
 
+- `docs/production-custody-ceremony.md`
 - `docs/squads-devnet-multisig-ceremony.md`
 - `docs/custody-evidence-intake.template.json`
 
@@ -38,13 +39,13 @@ Supporting operator docs:
 ## Live Rehearsal Source
 
 - Devnet rehearsal multisig:
-  - implementation: `Squads Protocol`
+  - implementation: `spl-token-2022-multisig`
   - address: `EqbW1xQRABPNmPM4TMkdygp6j94i7A3DSbgFKTpqXvJE`
   - creation signature: `4KSyTYQTzeNpBDWou7GFLmvUpAhLgmNKkNdd4PZqndLpCWmUnArffYRQUwe6zrTmQD5uCbBfBR6pakf9Gz8dviRp`
 - Rehearsal proved:
   - the `2-of-3` model is live
   - the 3-role signer shape is workable
-  - the production closure can keep the same conceptual structure with minimal change
+  - the production closure can keep the same signer model with a stricter mainnet ceremony
 
 This rehearsal is real evidence. It is not itself the production custody closure.
 
@@ -101,6 +102,7 @@ Canonical reviewer-safe packet:
 
 - `docs/canonical-custody-proof.generated.md`
 - `docs/custody-observed-readouts.json`
+- `docs/production-custody-ceremony.md`
 - `docs/squads-devnet-multisig-ceremony.md`
 
 ## Verification

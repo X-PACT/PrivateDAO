@@ -335,7 +335,7 @@ export function getCanonicalCustodyProofSnapshot(): CanonicalCustodyProofSnapsho
         href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/production-custody-ceremony.md",
       },
       {
-        label: "Squads devnet ceremony",
+        label: "Squads custody ceremony reference",
         href: "https://github.com/X-PACT/PrivateDAO/blob/main/docs/squads-devnet-multisig-ceremony.md",
       },
       {

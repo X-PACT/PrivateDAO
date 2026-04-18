@@ -1,20 +1,22 @@
-# Squads Devnet Multisig Ceremony
+# Squads Mainnet Custody Ceremony Reference
 
-This is the shortest honest path for closing the `upgrade-authority-multisig` blocker with real custody evidence.
+This file exists to define the exact `Squads Protocol` ceremony for the real production custody closure.
 
-It is intentionally Devnet-first. The product already works on Devnet. This ceremony adds institutional proof, not basic functionality.
+It is not the same artifact as the existing Devnet rehearsal multisig. The product already works on Devnet. This ceremony adds institutional proof, not basic functionality.
 
 ## Current Facts
 
 - program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - currently observed devnet upgrade authority: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - selected multisig implementation: `Squads Protocol`
+- existing devnet rehearsal implementation: `spl-token-2022-multisig`
 - existing devnet rehearsal multisig: `EqbW1xQRABPNmPM4TMkdygp6j94i7A3DSbgFKTpqXvJE`
 - existing devnet rehearsal creation signature: `4KSyTYQTzeNpBDWou7GFLmvUpAhLgmNKkNdd4PZqndLpCWmUnArffYRQUwe6zrTmQD5uCbBfBR6pakf9Gz8dviRp`
+- Squads web and SDK flows currently target `mainnet-beta`, not Devnet rehearsal custody
 
 ## Required Ceremony Shape
 
-- network: `devnet`
+- network: `mainnet-beta`
 - signers: `3`
 - threshold: `2-of-3`
 - timelock: `48+ hours`
@@ -32,7 +34,7 @@ These public keys may only be promoted if the signer posture is documented and t
 
 ## Exact Operator Sequence
 
-1. Open `https://app.squads.so/squads?cluster=devnet`
+1. Open `https://app.squads.so/squads`
 2. Connect the current authority wallet or the designated signer wallet.
 3. Create a new Squads multisig.
 4. Enter the `3` signer public keys.
@@ -44,7 +46,7 @@ These public keys may only be promoted if the signer posture is documented and t
    - timelock configuration transaction signature
    - approval history screenshot if available
 8. Submit a low-risk rehearsal transaction inside Squads and record its signature.
-9. Transfer the program upgrade authority from `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD` to the new multisig.
+9. Transfer the program upgrade authority from `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD` to the new multisig on the target production surface.
 10. Record:
    - transfer transaction signature
    - `solana program show 5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx --url devnet`

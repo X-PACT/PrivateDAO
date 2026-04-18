@@ -3,17 +3,17 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-11T14:36:24.610Z`
+- generated at: `2026-04-18T19:08:39.566Z`
 - reviewer intent: Explain the current custody truth, show what is externally proven now, and make the missing external ceremony evidence explicit without narrative drift.
 - custody status: `pending-external`
 - trust decision: `blocked-external-steps`
 - production mainnet claim allowed: `false`
-- custody completion: `1/25`
+- custody completion: `2/25`
 
 ## Current Truth
 
 - summary: PrivateDAO is devnet-proven and internally hardened, but real-funds mainnet production remains blocked until external audit, custody, monitoring, runtime, settlement-receipt, and release-ceremony items are closed with evidence.
-- multisig implementation: `pending-selection`
+- multisig implementation: `Squads Protocol`
 - multisig address: `pending`
 - threshold: `2-of-3`
 - configured timelock hours: `pending`
@@ -46,7 +46,6 @@ Explorer-linked artifacts:
 
 ## Exact Pending Items
 
-- chosen multisig implementation
 - multisig public address
 - multisig creation signature
 - rehearsal signature
@@ -101,29 +100,29 @@ Blocker evidence refs:
 
 Use these exact opening sequences to keep the first 30 to 45 seconds of the track videos aligned with the judge-first top strip and the reviewer packet.
 
-### Core Reviewer Packet
-- best product route: `/start`
+### Frontier Reviewer Packet
+- best demo route: `/start`
 1. What works now: Lead the first 90 seconds from /start into /command-center with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and product learning path perfectly aligned with the live site.
-2. What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet.
+2. What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet.
 3. Exact blocker: upgrade-authority-multisig. The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded.
-4. Best product route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes.
-- voiceover: What works now: Lead the first 90 seconds from /start into /command-center with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and product learning path perfectly aligned with the live site. What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet. Exact blocker: upgrade-authority-multisig. The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded. Best product route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes.
+4. Best product route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story.
+- voiceover: What works now: Lead the first 90 seconds from /start into /command-center with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and product learning path perfectly aligned with the live site. What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: upgrade-authority-multisig. The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded. Best product route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story.
 
 ### Confidential Governance Reviewer Packet
-- best product route: `/story`
+- best demo route: `/story`
 1. What works now: Use the comprehensive story video as the first-pass product walkthrough for judges. Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet. Keep the pitch deck anchored around private governance, confidential payouts, and honest launch boundaries.
-2. What is externally proven: Live Proof V3 via /documents/live-proof-v3 and ZK capability matrix via /documents/zk-capability-matrix.
+2. What is externally proven: Live Proof V3 via /documents/live-proof-v3 and ZK capability matrix via /documents/zk-capability-matrix and Reviewer telemetry packet via /documents/reviewer-telemetry-packet.
 3. Exact blocker: magicblock-refhe-source-receipts. Privacy launch remains blocked until settlement receipts or verifier-grade source proof replace the current integration boundary.
-4. Best product route: open /story first. Lead with /story, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes.
-- voiceover: What works now: Use the comprehensive story video as the first-pass product walkthrough for judges. Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet. Keep the pitch deck anchored around private governance, confidential payouts, and honest launch boundaries. What is externally proven: Live Proof V3 via /documents/live-proof-v3 and ZK capability matrix via /documents/zk-capability-matrix. Exact blocker: magicblock-refhe-source-receipts. Privacy launch remains blocked until settlement receipts or verifier-grade source proof replace the current integration boundary. Best product route: open /story first. Lead with /story, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes.
+4. Best product route: open /story first. Lead with /story, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story.
+- voiceover: What works now: Use the comprehensive story video as the first-pass product walkthrough for judges. Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet. Keep the pitch deck anchored around private governance, confidential payouts, and honest launch boundaries. What is externally proven: Live Proof V3 via /documents/live-proof-v3 and ZK capability matrix via /documents/zk-capability-matrix and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: magicblock-refhe-source-receipts. Privacy launch remains blocked until settlement receipts or verifier-grade source proof replace the current integration boundary. Best product route: open /story first. Lead with /story, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story.
 
 ### Runtime Infrastructure Reviewer Packet
-- best product route: `/services`
+- best demo route: `/services`
 1. What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Fast RPC role explicit in video, deck, README, and services UI.
-2. What is externally proven: Diagnostics via /diagnostics and core integrations via /documents/frontier-integrations.
+2. What is externally proven: Diagnostics via /diagnostics and Frontier integrations via /documents/frontier-integrations and Reviewer telemetry packet via /documents/reviewer-telemetry-packet.
 3. Exact blocker: production-monitoring-alerts. RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded.
-4. Best product route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes.
-- voiceover: What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Fast RPC role explicit in video, deck, README, and services UI. What is externally proven: Diagnostics via /diagnostics and core integrations via /documents/frontier-integrations. Exact blocker: production-monitoring-alerts. RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded. Best product route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes.
+4. Best product route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story.
+- voiceover: What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Fast RPC role explicit in video, deck, README, and services UI. What is externally proven: Diagnostics via /diagnostics and Frontier integrations via /documents/frontier-integrations and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: production-monitoring-alerts. RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded. Best product route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story.
 
 ## Required External Inputs
 

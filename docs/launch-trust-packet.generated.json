@@ -1,12 +1,12 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-18T04:40:05.774Z",
+  "generatedAt": "2026-04-18T19:08:37.983Z",
   "decision": "blocked-external-steps",
   "productionMainnetClaimAllowed": false,
   "custody": {
     "status": "pending-external",
     "implementation": "Squads Protocol",
-    "rehearsalImplementation": "Squads Protocol",
+    "rehearsalImplementation": "spl-token-2022-multisig",
     "rehearsalNetwork": "devnet",
     "rehearsalMultisigAddress": "EqbW1xQRABPNmPM4TMkdygp6j94i7A3DSbgFKTpqXvJE",
     "rehearsalCreationSignature": "4KSyTYQTzeNpBDWou7GFLmvUpAhLgmNKkNdd4PZqndLpCWmUnArffYRQUwe6zrTmQD5uCbBfBR6pakf9Gz8dviRp",

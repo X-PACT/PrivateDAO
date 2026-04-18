@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-18T04:40:05.774Z`
+- generated at: `2026-04-18T19:08:37.983Z`
 - current decision: `blocked-external-steps`
 - production mainnet claim allowed: `false`
 
@@ -11,7 +11,7 @@
 
 - custody status: `pending-external`
 - multisig implementation: `Squads Protocol`
-- rehearsal implementation: `Squads Protocol`
+- rehearsal implementation: `spl-token-2022-multisig`
 - rehearsal network: `devnet`
 - rehearsal multisig address: `EqbW1xQRABPNmPM4TMkdygp6j94i7A3DSbgFKTpqXvJE`
 - rehearsal creation signature: `4KSyTYQTzeNpBDWou7GFLmvUpAhLgmNKkNdd4PZqndLpCWmUnArffYRQUwe6zrTmQD5uCbBfBR6pakf9Gz8dviRp`
