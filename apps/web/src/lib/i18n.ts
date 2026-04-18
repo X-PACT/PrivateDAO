@@ -150,6 +150,36 @@ type StatusBannerTranslations = {
 };
 
 type PageContentTranslations = {
+  productsPrimer: {
+    eyebrow: string;
+    title: string;
+    body: string;
+    bullets: string[];
+    openServices: string;
+    openSdkStarter: string;
+    openTrustRoute: string;
+  };
+  proofPrimer: {
+    eyebrow: string;
+    title: string;
+    body: string;
+    bullets: string[];
+    openGovern: string;
+    openJudge: string;
+    openPrivacyGuide: string;
+  };
+  judgePrimer: {
+    eyebrow: string;
+    title: string;
+    body: string;
+    steps: string[];
+    compareRun: string;
+    openProof: string;
+    openLearningGuide: string;
+    openFastPath: string;
+    openPrivacyGuide: string;
+    openRailProof: string;
+  };
   startGuidance: {
     eyebrow: string;
     title: string;
@@ -525,6 +555,48 @@ const englishCopy: LocalizedCopy = {
     openCommunity: "Open community",
   },
   pageContent: {
+    productsPrimer: {
+      eyebrow: "Commercial operating layer",
+      title: "Products should read like a live infrastructure catalog, not a static feature list",
+      body: "This route is where buyers, operators, and grant reviewers see what PrivateDAO already packages into usable lanes: confidential payroll, gaming treasury control, private governance, agentic treasury routing, and reusable privacy infrastructure. The goal is clarity first, then the matching live route and proof packet.",
+      bullets: [
+        "Each product lane should point to a route a normal user can try on Devnet.",
+        "Pricing, policy selection, and proof should stay close to the service story.",
+        "The same corridor should help a buyer understand the offer and a reviewer verify the chain evidence.",
+      ],
+      openServices: "Open services",
+      openSdkStarter: "Open privacy SDK starter",
+      openTrustRoute: "Open trust route",
+    },
+    proofPrimer: {
+      eyebrow: "Proof operating model",
+      title: "Run one real action first, then use Proof to inspect what stayed private and what the chain exposed",
+      body: "Proof is not a theory page. It is the operating surface that turns live Devnet execution into something readable. Create a DAO, submit a proposal, vote, reveal, finalize, or execute. Then open this route to inspect signatures, runtime freshness, screenshots, privacy evidence, and the narrow boundary between public verification and protected intent.",
+      bullets: [
+        "Govern first, then use Proof as the inspection layer.",
+        "Hashes, explorer links, and logs should always be easy to follow.",
+        "The protected part of the workflow should stay private until the correct proof stage reveals only what must be reviewed.",
+      ],
+      openGovern: "Open govern",
+      openJudge: "Open verification route",
+      openPrivacyGuide: "Open privacy guide",
+    },
+    judgePrimer: {
+      eyebrow: "Verification fast lane",
+      title: "Start with the smallest review surface that still proves the product is real",
+      body: "The fastest review path is operational, not theoretical. Inspect one governance cycle, one privacy explanation, and one treasury execution lane before opening the deeper packets. A normal reviewer should be able to understand what happened, run a comparable Devnet action, and verify the public hashes without reading internal engineering notes.",
+      steps: [
+        "Proposal lifecycle from create to execute.",
+        "Vote, reveal, and execution signatures on Solana Devnet.",
+        "Agentic Treasury Micropayment Rail with many real Devnet transfers.",
+      ],
+      compareRun: "These are captured reference executions on Devnet. When you later run your own wallet flow, use this verification route and the proof center as the comparison point. The visible blockchain layer should reassure a normal reviewer that governance happened fairly, settlement happened for real, and the protected parts stayed private for the right reasons instead of disappearing into a black box.",
+      openProof: "Open full proof",
+      openLearningGuide: "Open learning guide",
+      openFastPath: "Open fast path",
+      openPrivacyGuide: "Open privacy proof guide",
+      openRailProof: "Open generated rail proof",
+    },
     startGuidance: {
       eyebrow: "Next action",
       title: "After the first wallet connection, move to one live action route and one check route",
@@ -843,6 +915,48 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
       openCommunity: "افتح المجتمع",
     },
     pageContent: {
+      productsPrimer: {
+        eyebrow: "الطبقة التجارية التشغيلية",
+        title: "يجب أن يقرأ مسار المنتجات ككتالوج بنية تحتية حي لا كقائمة مزايا جامدة",
+        body: "هنا يرى الممول أو المشغّل أو المراجع ما الذي حُزم بالفعل داخل مسارات قابلة للاستخدام: رواتب ومنح سرية، تحكم في خزانة الجيمينج، حوكمة خاصة، توجيه خزينة وكيل، وبنية خصوصية قابلة لإعادة الاستخدام. الهدف أولًا هو الوضوح ثم المسار الحي والحزمة المطابقة.",
+        bullets: [
+          "كل مسار منتج يجب أن يشير إلى route يمكن لمستخدم عادي تجربتها على Devnet.",
+          "السعر وسياسة الخصوصية والإثبات يجب أن يبقوا قريبين من قصة الخدمة نفسها.",
+          "نفس المسار يجب أن يساعد المشتري على الفهم والمراجع على التحقق من أدلة السلسلة.",
+        ],
+        openServices: "افتح الخدمات",
+        openSdkStarter: "افتح بداية Privacy SDK",
+        openTrustRoute: "افتح مسار الثقة",
+      },
+      proofPrimer: {
+        eyebrow: "نموذج عمل الإثبات",
+        title: "نفّذ عملية حقيقية أولًا ثم استخدم مسار الإثبات لفهم ما بقي سريًا وما كشفته السلسلة",
+        body: "مسار الإثبات ليس صفحة نظرية. إنه السطح الذي يحول تنفيذ Devnet الحي إلى شيء يمكن قراءته. أنشئ DAO أو مقترحًا أو صوّت أو اكشف أو أنهِ أو نفّذ، ثم افتح هذا المسار لتفحص التواقيع وحداثة التشغيل ولقطات الشاشة وأدلة الخصوصية والحد الفاصل بين التحقق العام والنية المحمية.",
+        bullets: [
+          "ابدأ من الحوكمة أولًا ثم استخدم الإثبات كطبقة فحص.",
+          "الهاشات وروابط المستكشف واللوجز يجب أن تبقى سهلة القراءة دائمًا.",
+          "الجزء المحمي من الدورة يجب أن يبقى سريًا حتى مرحلة الإثبات الصحيحة التي تكشف فقط ما يجب مراجعته.",
+        ],
+        openGovern: "افتح الحوكمة",
+        openJudge: "افتح مسار التحقق",
+        openPrivacyGuide: "افتح دليل الخصوصية",
+      },
+      judgePrimer: {
+        eyebrow: "المسار السريع للمراجعة",
+        title: "ابدأ بأصغر سطح مراجعة ما زال يثبت أن المنتج حقيقي",
+        body: "أسرع مسار للمراجعة هو مسار تشغيلي لا نظري. افحص دورة حوكمة واحدة وشرح خصوصية واحد ومسار تنفيذ خزينة واحد قبل فتح الحزم الأعمق. يجب أن يستطيع أي مراجع عادي فهم ما حدث، ثم تنفيذ تجربة Devnet مشابهة، ثم التحقق من الهاشات العامة بدون قراءة ملاحظات هندسية داخلية.",
+        steps: [
+          "دورة المقترح من الإنشاء حتى التنفيذ.",
+          "تواقيع التصويت والكشف والتنفيذ على Solana Devnet.",
+          "مسار Agentic Treasury Micropayment Rail مع تحويلات حقيقية متعددة.",
+        ],
+        compareRun: "هذه تنفيذات مرجعية ملتقطة على Devnet. عندما تنفّذ تدفّقك بمحفظتك، استخدم مسار التحقق هذا ومركز الإثبات كنقطة مقارنة. الطبقة العامة على البلوك تشين يجب أن تطمئن المراجع أن الحوكمة كانت عادلة والتسوية حدثت فعلًا وأن الأجزاء المحمية بقيت سرية للسبب الصحيح.",
+        openProof: "افتح الإثبات الكامل",
+        openLearningGuide: "افتح دليل التعلّم",
+        openFastPath: "افتح المسار السريع",
+        openPrivacyGuide: "افتح دليل إثبات الخصوصية",
+        openRailProof: "افتح إثبات rail المولد",
+      },
       startGuidance: {
         eyebrow: "الخطوة التالية",
         title: "بعد ربط المحفظة لأول مرة، انتقل إلى مسار تنفيذ حي واحد ومسار تحقق واحد",

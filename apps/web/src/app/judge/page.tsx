@@ -1,19 +1,15 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-
 import { DevnetExecutionScreenshotsStrip } from "@/components/devnet-execution-screenshots-strip";
 import { JudgeSelectiveDisclosureCta } from "@/components/judge-selective-disclosure-cta";
 import { JudgeRuntimeLogsPanel } from "@/components/judge-runtime-logs-panel";
 import { JudgeTechnologyGuide } from "@/components/judge-technology-guide";
+import { LocalizedJudgePrimer } from "@/components/localized-judge-primer";
 import { LocalizedRouteSummary } from "@/components/localized-route-summary";
 import { OperationsShell } from "@/components/operations-shell";
 import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
 import { PrivacyProofExplainer } from "@/components/privacy-proof-explainer";
-import { buttonVariants } from "@/components/ui/button";
-import { WalletConnectButton } from "@/components/wallet-connect-button";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 import { buildRouteMetadata } from "@/lib/route-metadata";
-import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Verification Route",
@@ -39,38 +35,7 @@ export default function JudgePage() {
     >
       <LocalizedRouteSummary routeKey="judge" />
       <div className="grid gap-4 xl:grid-cols-[0.95fr_1.05fr]">
-        <div className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6 text-sm leading-7 text-white/72">
-          <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/78">What to verify first</div>
-          <ol className="mt-4 space-y-3">
-            <li>1. Proposal lifecycle from create to execute.</li>
-            <li>2. Vote, reveal, and execution signatures on Solana Devnet.</li>
-            <li>3. Agentic Treasury Micropayment Rail with many real Devnet transfers.</li>
-          </ol>
-          <div className="mt-4 text-white/62">
-            These are captured reference executions on Devnet. When you later run your own wallet flow, use this judge
-            route and the proof center as the comparison point. The visible blockchain layer should reassure a normal
-            reviewer that governance happened fairly, settlement happened for real, and the protected parts stayed
-            private for the right reasons instead of disappearing into a black box.
-          </div>
-          <div className="mt-5 flex flex-wrap gap-3">
-            <WalletConnectButton size="sm" variant="default" />
-            <Link href="/proof?judge=1" className={cn(buttonVariants({ size: "sm" }))}>
-              Open full proof
-            </Link>
-            <Link href="/learn" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
-              Open learning guide
-            </Link>
-            <Link href="/documents/reviewer-fast-path" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
-              Open fast path
-            </Link>
-            <Link href="/documents/privacy-and-encryption-proof-guide" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
-              Open privacy proof guide
-            </Link>
-            <Link href="/viewer/agentic-treasury-micropayment-rail.generated" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
-              Open generated rail proof
-            </Link>
-          </div>
-        </div>
+        <LocalizedJudgePrimer />
 
         <div className="grid gap-3">
           <div className="rounded-[26px] border border-white/8 bg-white/[0.04] p-5">

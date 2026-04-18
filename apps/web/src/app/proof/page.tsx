@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { JudgeRuntimeLogsPanel } from "@/components/judge-runtime-logs-panel";
 import { JudgeExecutionContinuityPanel } from "@/components/judge-execution-continuity-panel";
+import { LocalizedProofPrimer } from "@/components/localized-proof-primer";
 import { LocalizedRouteSummary } from "@/components/localized-route-summary";
 import { OperationsShell } from "@/components/operations-shell";
 import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
@@ -45,13 +46,7 @@ export default function ProofPage() {
       ]}
     >
       <LocalizedRouteSummary routeKey="proof" />
-      <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-5 text-sm leading-7 text-white/72">
-        Connect a Devnet wallet, run the DAO lifecycle from <strong className="text-white">Govern</strong>, then use
-        this proof surface to inspect transaction signatures, captured logs, runtime freshness, and the privacy
-        evidence that stays attached to each real action. The public evidence is easy to follow: hashes and logs are
-        visible on Devnet, while vote intent and sensitive treasury behavior stay protected until the correct proof
-        stage exposes what should be reviewed.
-      </div>
+      <LocalizedProofPrimer />
       <div>
         <Suspense fallback={null}>
           <ProofEntryBanner />

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { CommercialCompareSurface } from "@/components/commercial-compare-surface";
+import { LocalizedProductsPrimer } from "@/components/localized-products-primer";
 import { LocalizedRouteBrief } from "@/components/localized-route-brief";
 import { LocalizedRouteSummary } from "@/components/localized-route-summary";
 import { ServicesSurface } from "@/components/services-surface";
@@ -35,6 +36,7 @@ export default function ProductsPage() {
     >
       <LocalizedRouteSummary routeKey="products" />
       <LocalizedRouteBrief routeKey="products" />
+      <LocalizedProductsPrimer />
       <ProductOfferCards />
       <PrivacyPolicySelector />
       <PrivacySdkApiStarter compact />

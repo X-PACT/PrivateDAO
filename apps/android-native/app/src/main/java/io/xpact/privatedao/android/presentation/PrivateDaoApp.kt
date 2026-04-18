@@ -623,6 +623,26 @@ private fun SettingsScreen(uiState: UiState, modifier: Modifier = Modifier) {
         item { SettingsRow("Billing receive", PrivateDaoConfig.devnetBillingReceiveAddress) }
         item { SettingsRow("Privacy policies", uiState.privacyPolicies.size.toString()) }
         item { SettingsRow("Billing SKUs", uiState.billingSkus.size.toString()) }
+        item {
+            when (val billingState = uiState.billingSubmissionState) {
+                is SubmissionState.Success -> HeroCard(
+                    title = "Latest billing rehearsal",
+                    body = "Last signed billing rehearsal hash: ${billingState.result.signature}. Explorer proof: ${billingState.result.explorerUrl}",
+                )
+                is SubmissionState.Failure -> HeroCard(
+                    title = "Billing rehearsal status",
+                    body = "Last attempt failed: ${billingState.message}",
+                )
+                SubmissionState.InFlight -> HeroCard(
+                    title = "Billing rehearsal status",
+                    body = "A wallet-signed billing rehearsal is still in flight. Approve it in the wallet, then return here to inspect the resulting explorer link.",
+                )
+                SubmissionState.Idle -> HeroCard(
+                    title = "Billing rehearsal status",
+                    body = "Run any billing SKU from Home to create a real Devnet transfer, then return here to inspect the signature and explorer proof.",
+                )
+            }
+        }
     }
 }
 
