@@ -43,7 +43,7 @@ If a route looks inconsistent or temporarily degraded:
 - check `https://privatedao.org/trust/`
 - check `https://privatedao.org/community/`
 
-This is intentional. PrivateDAO is being advanced in public as a real Devnet-first infrastructure product with a completed standard Testnet lifecycle rehearsal, and the site stays aligned with the newest verified operating truth rather than pretending the release cycle is already over.
+This is intentional. PrivateDAO is live on Solana Testnet now: the preserved Anchor program is deployed, the standard governance lifecycle has executed end to end, and treasury movement is verified by public hashes. The public product rollout is being moved fully onto this Testnet path through the current release window.
 
 ## What PrivateDAO Is
 
@@ -82,7 +82,7 @@ The roadmap is intentionally simple and fundable:
 
 ## What Is Live Now
 
-PrivateDAO is already a live Devnet product with a preserved-program Testnet rehearsal, not a concept deck:
+PrivateDAO is already a live Solana Testnet governance infrastructure product, not a concept deck:
 
 - Anchor program on Solana Devnet
 - Anchor program deployed on Solana Testnet with the same canonical program id
@@ -141,7 +141,7 @@ The rule is strict:
 
 ## Current Product Cycle
 
-PrivateDAO is actively being advanced as a live Devnet product under continuous community review.
+PrivateDAO is actively being advanced as a live Testnet product under continuous community review.
 
 The public message stays simple:
 
@@ -156,7 +156,7 @@ PrivateDAO is already strong enough for Devnet evaluation, judge review, and pil
 
 | Stage | Current status | Evidence |
 | --- | --- | --- |
-| Product and protocol | Implemented on Devnet and rehearsed on Testnet | Live frontend, Anchor program, PDAO governance mint, commit-reveal lifecycle, confidential payout flows, Strict V2 hardening. |
+| Product and protocol | Live on Solana Testnet with browser product surfaces and reviewer proof | Live frontend, Anchor program, PDAO governance mint, commit-reveal lifecycle, confidential payout flows, Strict V2 hardening. |
 | Reviewer evidence | Implemented and generated | 50-wallet Devnet rehearsal, standard Testnet lifecycle proof, Android Solflare capture, ZK anchors, operational evidence, audit packet, cryptographic manifest, and `npm run verify:all`. |
 | Launch operations | Repo-defined and ready for closure | Multisig intake, authority transfer runbook, launch ops checklist, monitoring rules, wallet E2E plan. |
 | Production custody | Structured for execution with recorded evidence next | 2-of-3 multisig, 48+ hour timelock, authority transfer signatures, signer backups, and post-transfer authority readouts. |
@@ -527,7 +527,9 @@ PrivateDAO has a live Devnet governance token surface for the reviewer-facing DA
 
 The canonical PrivateDAO governance program id is:
 
-Live Devnet and Testnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+Live devnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+
+Live Testnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 
 ```text
 5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx
@@ -721,7 +723,7 @@ npm run verify:weekly-updates
 
 ## Mainnet Readiness Status
 
-PrivateDAO is a **Devnet-proven, Testnet-rehearsed, review-ready, audit-forward candidate** today, with a clear execution path toward unrestricted mainnet production readiness for real funds.
+PrivateDAO is a **live Solana Testnet, review-ready, audit-forward candidate** today, with a clear execution path toward unrestricted mainnet production readiness for real funds.
 
 Ready now:
 

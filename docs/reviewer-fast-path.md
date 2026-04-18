@@ -76,7 +76,7 @@ If the reviewer wants the breakdown:
 
 ## Canonical live anchors
 
-- program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- Program ID: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - live product: `https://privatedao.org/`
 - docs viewer: `https://privatedao.org/documents/`

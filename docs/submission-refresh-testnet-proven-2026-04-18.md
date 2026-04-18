@@ -6,7 +6,7 @@ Date: 2026-04-18
 
 This packet keeps current external submission language aligned with the verified product state:
 
-- PrivateDAO is live on Solana Devnet.
+- PrivateDAO is live on Solana Testnet: the preserved Anchor program is deployed, the standard governance lifecycle has executed end to end, and the treasury movement is verified by public transaction hashes.
 - The canonical program id is deployed on Solana Testnet.
 - A standard Testnet lifecycle rehearsal is complete.
 - Browser and mobile wallet evidence are product proof, not theory.
@@ -19,9 +19,9 @@ This packet keeps current external submission language aligned with the verified
 | Program | `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx` |
 | ProgramData | `CeggEn3sNVbiuJHLKDaCPMH4uLczu1Dr3ZGKKcaKBqeN` |
 | IDL account | `BKV4bWESswfKteav82yZWPdN6wCd172UryGkaN8mxfGR` |
-| DAO | `HZkVYf1bizstbEonRr7AS8HRQdR6sAgTB5Av9EuJFvGa` |
-| Proposal | `HXMsqWWKosqgTM1PnPTeHrzq1i5ZygtrKZ5kjozH3T4A` |
-| Execute transaction | `5rLufq61qfdtgcaWtorYCy7CzDuxsYt13McxBi5MwgmHEKVmmdsxXqA6FMzz9ZxzQJGrdXj3iG6CbJpS59uMmFeD` |
+| DAO | `2Vg9J8a3cvkXyj8WNsezq4Pv7e8PpZTreq6K9NU34Unx` |
+| Proposal | `HgbBNNbVfJmKhfRHRdJ53LjRCgW8HiA6tNygkfyraY7V` |
+| Execute transaction | `2YrCUkXPNLiwSLrFpXWjSwXQANPCvTZgRvZfeTXDpY8Uvzmx7pEjN8WnZFqJiHgfSuEPkzKyueUjhGh8s1LdeoWN` |
 
 Primary evidence:
 
@@ -30,7 +30,7 @@ Primary evidence:
 
 ## Superteam Updates Completed In Browser
 
-The following listings were refreshed through the authenticated Superteam session:
+The following listings were refreshed through the authenticated Superteam session. The browser network log showed five successful `POST https://superteam.fun/api/submission/update/` responses with status `200`, followed by one successful Poland grant update at `POST https://superteam.fun/api/grant-application/update/` with status `200`.
 
 | Listing | Updated product angle | Primary link |
 | --- | --- | --- |
@@ -39,7 +39,7 @@ The following listings were refreshed through the authenticated Superteam sessio
 | Dune / Frontier Data Sidetrack | Governance telemetry and runtime data corridor | `https://privatedao.org/analytics/` |
 | Adevar Security Audit Credits | Audit-forward Anchor governance and confidential treasury infrastructure | `https://privatedao.org/security/` |
 | Umbra Side Track | Privacy-preserving governance and confidential payout corridor | `https://privatedao.org/security/` |
-| Solana Foundation Poland Grants | Production-hardening grant for a live Devnet/Testnet product | `https://privatedao.org/start/` |
+| Solana Foundation Poland Grants | Production-hardening grant for a live Solana Testnet governance infrastructure product | `https://privatedao.org/start/` |
 
 ## Colosseum Update Submitted
 
@@ -54,19 +54,19 @@ https://privatedao.org/start/
 ### Access instructions
 
 ```text
-No login is required. Start at https://privatedao.org/start/ for wallet-first onboarding. Judges can verify the product through https://privatedao.org/judge/ and https://privatedao.org/proof/?judge=1. Connect a Devnet wallet for browser execution, and review the completed Testnet lifecycle proof at https://github.com/X-PACT/PrivateDAO/blob/main/docs/testnet-lifecycle-rehearsal-2026-04-18.md.
+No login required. Open https://privatedao.org/start/ for the product path, then https://privatedao.org/judge/ and https://privatedao.org/proof/?judge=1. PrivateDAO is live on Solana Testnet now: deployment and full lifecycle proof are recorded in docs/testnet-lifecycle-rehearsal-2026-04-18.md on GitHub. Judges can inspect tx hashes, logs, treasury deltas, and proof packets.
 ```
 
 ### Anything else judges should know
 
 ```text
-PrivateDAO is a live Solana governance and treasury infrastructure product. The browser flow covers DAO creation, proposals, private commit/reveal voting, finalize, execute, proof, logs, and reviewer packets. The program is deployed on Testnet and has a completed standard lifecycle rehearsal with explorer-linked hashes and verified treasury movement. Roadmap to near release: wallet/device coverage, custody ceremony, monitoring, confidential settlement receipt closure, and mainnet cutover.
+PrivateDAO is live on Solana Testnet now: the preserved Anchor program is deployed and has completed DAO creation, proposal creation, commit, reveal, finalize, execute, and verified treasury movement. The public product route is moving fully onto this Testnet path while custody, monitoring, wallet/device evidence, and confidential settlement receipts are tightened. It is a real governance and treasury infrastructure product, not a concept demo.
 ```
 
 ### How far along are you? Do you have users?
 
 ```text
-PrivateDAO is live on Solana Devnet with a browser-first governance and treasury product, wallet-connected action lanes, telemetry, reviewer packets, custody surfaces, a learn corridor, and Android Solflare mobile proof. Users can already run the core DAO lifecycle from the public site with Solflare on Devnet and verify signatures and logs onchain. The Anchor program is also deployed on Testnet with a completed standard lifecycle rehearsal: create DAO, create proposal, commit, reveal, finalize, execute, and verify treasury movement. We are in production hardening now: authority custody ceremony, broader wallet/device evidence, monitoring delivery, confidential settlement receipt closure, and mainnet release gates.
+PrivateDAO is live on Solana Testnet with a browser-first governance and treasury product, wallet-connected action lanes, telemetry, reviewer packets, custody surfaces, learn corridor, and Android Solflare proof. The preserved Anchor program completed a full Testnet lifecycle: create DAO, create proposal, commit vote, reveal vote, finalize, execute, and verify treasury movement by public hashes. We already have a live public site, GitHub evidence, Testnet migration report, security/trust surfaces, pricing/billing rehearsal, and educational bootcamp. Current hardening focus: full public Testnet rollout, authority custody ceremony, broader wallet/device evidence, monitoring delivery, confidential settlement receipt closure, and mainnet release gates.
 ```
 
 ### Legal entity
@@ -90,7 +90,7 @@ Yes
 ### Fundraising details
 
 ```text
-PrivateDAO is fundraising through ecosystem grants, infrastructure credits, security support, and aligned pre-seed conversations. The immediate use of funds is production hardening: custody ceremony, monitoring, wallet/device evidence, audit-forward review, confidential settlement receipt closure, and mainnet release preparation.
+PrivateDAO is fundraising through ecosystem grants, infrastructure credits, security support, and aligned pre-seed conversations. Immediate use of funds: full public Testnet rollout, custody ceremony, monitoring, wallet/device evidence, audit-forward review, confidential settlement receipt closure, and mainnet release preparation.
 ```
 
 ### Live token
@@ -102,21 +102,21 @@ Yes
 ### Live token details
 
 ```text
-PDAO is live as the Devnet governance mint used by the current PrivateDAO governance flow. It coordinates proposal lifecycle, voting, and treasury-facing governance actions in the reviewer environment. It is not presented as a public mainnet market token; it is a Devnet governance utility surface for testing, review, and ecosystem validation.
+PDAO is live as the Devnet governance mint used by the current PrivateDAO governance flow while the protocol itself is now live on Solana Testnet. It coordinates proposal lifecycle, voting, and treasury-facing governance actions in the reviewer environment. It is not presented as a public mainnet market token.
 ```
 
 ## Grant Milestones Used For Poland
 
 ```text
-1. Testnet release candidate: keep the program, IDL, frontend bindings, and public proof packets aligned; preserve the completed Testnet lifecycle rehearsal and expand browser-wallet execution evidence.
+1. Testnet product rollout and proof refresh: move the public product route onto the live Testnet path, keep program/IDL/frontend bindings aligned, refresh judge/proof/security packets, and publish the latest lifecycle evidence.
 
 2. Trust and security hardening: complete authority custody ceremony, monitoring delivery, reviewer/security packets, and audit-forward evidence so the project is easier to review before mainnet funds.
 
-3. Ecosystem adoption: ship clear Learn, Toolkit, Judge, and Proof routes so founders, committees, and non-terminal users can understand and run sophisticated Solana governance flows from the browser.
+3. Ecosystem adoption and education: ship Learn, Toolkit, Judge, and Proof routes so founders, committees, and non-terminal users can understand and run sophisticated Solana governance flows from the browser.
 ```
 
 ## Grant KPI Used For Poland
 
 ```text
-Success is a public, repeatable Solana Testnet/Devnet product path: at least 5 verified wallet/device execution captures, one completed custody evidence packet, updated reviewer packets, and a normal user able to create DAO, create proposal, vote, execute, and verify hashes from the browser.
+Success means a public, repeatable Solana Testnet product path: full wallet-first Testnet rollout, at least 5 verified wallet/device execution captures, one completed custody evidence packet, refreshed reviewer packets, and a normal user able to create DAO, create proposal, vote, execute, and verify hashes from the product surface.
 ```

@@ -622,8 +622,8 @@ const englishCopy: LocalizedCopy = {
   },
   statusBanner: {
     label: "Live development notice",
-    title: "Testnet deployment and standard lifecycle rehearsal are complete while core development continues through April 30, 2026.",
-    body: "PrivateDAO is now Devnet-proven and Testnet-rehearsed for the standard governance treasury path: DAO creation, proposal creation, commit, reveal, finalize, execute, and treasury delta verification. Some routes may still change while browser-wallet captures, custody proof, billing rehearsal, localization, and confidential settlement packets are tightened. If something looks inconsistent, retry in a few minutes and open the trust or community route for the latest operating truth.",
+    title: "PrivateDAO is live on Solana Testnet while core development continues through April 30, 2026.",
+    body: "PrivateDAO is live on Solana Testnet now: the preserved Anchor program is deployed, the standard governance treasury lifecycle has executed end to end, and treasury delta verification is recorded by public hashes. The full public product route is moving onto this Testnet path through the current release window while custody proof, billing rehearsal, localization, and confidential settlement packets are tightened.",
     retry: "Retry in a few minutes",
     until: "Testnet standard lifecycle complete; mainnet is not claimed yet",
     openTrust: "Open trust",
@@ -1203,8 +1203,8 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
     },
     statusBanner: {
       label: "تنبيه تطوير حي",
-      title: "تم نشر Testnet وتشغيل بروفة lifecycle القياسية مع استمرار التطوير الأساسي حتى 30 أبريل 2026.",
-      body: "PrivateDAO مثبت على Devnet وتمت بروفة Testnet للمسار القياسي: إنشاء DAO، إنشاء proposal، commit، reveal، finalize، execute، والتحقق من فرق الخزانة. قد تتغير بعض المسارات بينما نغلق لقطات المحافظ من المتصفح، إثبات الحفظ، الفوترة التجريبية، الترجمة، وحزم التسوية السرية. إذا ظهر تعارض أو تعطل مؤقت، أعد المحاولة بعد دقائق وافتح مسار الثقة أو المجتمع لمعرفة الحقيقة التشغيلية الأحدث.",
+      title: "PrivateDAO live الآن على Solana Testnet مع استمرار التطوير الأساسي حتى 30 أبريل 2026.",
+      body: "PrivateDAO live الآن على Solana Testnet: البرنامج محفوظ العنوان ومنشور، دورة الحوكمة القياسية نُفذت كاملة، والتحقق من فرق الخزانة مسجل بهاشات عامة. ننقل مسار المنتج العام بالكامل إلى هذا المسار خلال نافذة الإصدار الحالية بينما نغلق إثبات الحفظ، الفوترة التجريبية، الترجمة، وحزم التسوية السرية.",
       retry: "أعد المحاولة بعد دقائق",
       until: "اكتملت بروفة Testnet القياسية؛ لا ندعي Mainnet بعد",
       openTrust: "افتح الثقة",
