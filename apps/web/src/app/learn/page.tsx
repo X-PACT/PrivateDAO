@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { GettingStartedWorkspace } from "@/components/getting-started-workspace";
 import { LearnBootcampNav } from "@/components/learn-bootcamp-nav";
+import { LocalizedRouteBrief } from "@/components/localized-route-brief";
 import { LocalizedRouteSummary } from "@/components/localized-route-summary";
 import { OperationsShell } from "@/components/operations-shell";
 import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
@@ -68,6 +69,7 @@ export default function LearnPage() {
     >
       <LearnBootcampNav />
       <LocalizedRouteSummary routeKey="learn" />
+      <LocalizedRouteBrief routeKey="learn" />
       <div className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
         <div className="rounded-[30px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6">
           <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/76">PrivateDAO Frontend Bootcamp</div>

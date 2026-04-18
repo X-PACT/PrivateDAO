@@ -112,12 +112,41 @@ type SdkStarterTranslations = {
   }>;
 };
 
+type RouteBriefTranslations = {
+  eyebrow: string;
+  title: string;
+  description: string;
+  bullets: string[];
+};
+
+type SelectiveDisclosureTranslations = {
+  eyebrow: string;
+  title: string;
+  description: string;
+  stepsLabel: string;
+  privateLabel: string;
+  publicLabel: string;
+  openTrust: string;
+  openGuide: string;
+  openReviewLane: string;
+  scenarios: Array<{
+    key: "auditor" | "committee" | "partner" | "incident";
+    title: string;
+    summary: string;
+  }>;
+  steps: string[];
+  privateItems: string[];
+  publicItems: string[];
+};
+
 type LocalizedCopy = {
   chrome: ChromeTranslations;
   shell: ShellTranslations;
   routeSummaries: Record<"start" | "services" | "products" | "learn" | "judge" | "proof", RouteSummaryTranslations>;
   privacySelector: PrivacyPolicyTranslations;
   sdkStarter: SdkStarterTranslations;
+  routeBriefs: Record<"security" | "products" | "learn" | "servicesStarter", RouteBriefTranslations>;
+  selectiveDisclosure: SelectiveDisclosureTranslations;
 };
 
 const routeSummaryHrefByKey: Record<keyof LocalizedCopy["routeSummaries"], string> = {
@@ -277,6 +306,102 @@ const englishCopy: LocalizedCopy = {
       },
     ],
   },
+  routeBriefs: {
+    security: {
+      eyebrow: "Security route brief",
+      title: "Security is where privacy claims, custody discipline, and runtime evidence meet one operating surface",
+      description:
+        "This route is not an audit appendix. It is the operator view for how PrivateDAO protects proposal intent, payout execution, wallet signing, custody posture, and reviewer visibility without flattening the product into a spreadsheet.",
+      bullets: [
+        "Use it to explain the cryptographic stack in plain language before a reviewer opens packets.",
+        "Use it to choose the right privacy posture before a treasury or governance action starts.",
+        "Use it to show what is proven now on Devnet and what still remains gated for institutional closure.",
+      ],
+    },
+    products: {
+      eyebrow: "Product route brief",
+      title: "Products are grouped by the operational pain they remove, not by internal protocol modules",
+      description:
+        "This route should read like a real infrastructure catalog: private governance, confidential payouts, gaming operations, reviewer-safe disclosure, and reusable read/API surfaces.",
+      bullets: [
+        "Open this route when a buyer needs the shortest explanation of what PrivateDAO sells.",
+        "Keep the explanation tied to live Devnet flows, not abstract architecture diagrams.",
+        "Use the privacy selector and SDK starter here as the bridge from product story to implementation.",
+      ],
+    },
+    learn: {
+      eyebrow: "Learning route brief",
+      title: "The learning corridor should move a normal builder into live Devnet action in the same session",
+      description:
+        "This route now teaches the stack through product surfaces: wallet-first UX, governance lifecycle, runtime reads, private payouts, selective disclosure, and proof-linked verification.",
+      bullets: [
+        "Every lecture should end in a real route and a real verification path.",
+        "The student should learn what stays private, what becomes public, and why.",
+        "The same route should stay useful for judges, operators, and non-terminal users.",
+      ],
+    },
+    servicesStarter: {
+      eyebrow: "Integration route brief",
+      title: "The starter route should feel like an integration contract, not a vague ecosystem page",
+      description:
+        "This route packages the current live product into integration-ready building blocks: browser wallet entry, hosted reads, privacy policy selection, and selective disclosure handoff for audit or enterprise review.",
+      bullets: [
+        "Start with the browser starter if the partner needs a wallet-first front end.",
+        "Use the hosted read contract when the partner needs runtime state and telemetry without parsing raw chain data.",
+        "Use selective disclosure when the partner must review sensitive execution without opening the full internal workflow.",
+      ],
+    },
+  },
+  selectiveDisclosure: {
+    eyebrow: "Selective disclosure",
+    title: "Give reviewers a narrow window into the operation without turning private work into public exposure",
+    description:
+      "Selective disclosure is the bridge between strong privacy and institutional review. It decides what the operator can keep private, what the reviewer can inspect, and which links are enough to prove the action happened correctly on Devnet.",
+    stepsLabel: "How the handoff works",
+    privateLabel: "Private until the right boundary",
+    publicLabel: "Visible for review and verification",
+    openTrust: "Open trust route",
+    openGuide: "Open privacy guide",
+    openReviewLane: "Open matching review lane",
+    scenarios: [
+      {
+        key: "auditor",
+        title: "Auditor review",
+        summary: "Use this when an external reviewer needs a bounded proof path for governance or treasury actions without reading the full internal operating log.",
+      },
+      {
+        key: "committee",
+        title: "Committee oversight",
+        summary: "Use this when a DAO committee needs evidence that a decision path stayed valid while vote intent or payout details remained protected until the approved stage.",
+      },
+      {
+        key: "partner",
+        title: "Partner due diligence",
+        summary: "Use this when a grant partner, buyer, or infrastructure supporter needs enough visibility to trust the flow without receiving every operational detail.",
+      },
+      {
+        key: "incident",
+        title: "Incident response lane",
+        summary: "Use this when a signer, payout, or governance incident needs a narrow evidence packet that preserves operational privacy while still showing the chain trail.",
+      },
+    ],
+    steps: [
+      "Choose the privacy posture before the wallet signs.",
+      "Run the governance or treasury action on Devnet.",
+      "Open the proof and custody routes that match that action.",
+      "Disclose only the hashes, logs, and reviewer packet needed for that review window.",
+    ],
+    privateItems: [
+      "vote intent before reveal",
+      "sensitive payout reasoning and internal operator notes",
+      "committee-only context that does not need public distribution",
+    ],
+    publicItems: [
+      "transaction signatures and explorer-visible hashes",
+      "runtime logs, proof packets, and reviewer summaries",
+      "custody and authority state when that proof is required",
+    ],
+  },
 };
 
 export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
@@ -383,6 +508,86 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
         { key: "readApi", title: "عقد Hosted Read API", summary: "استخدم أنماط read-node والقياس لإظهار حالة الحوكمة والمدفوعات والتشخيص دون إجبار العميل على تحليل السلسلة الخام وحده." },
         { key: "policy", title: "ربط سياسة الخصوصية", summary: "اربط أفعال المستخدم بسياسات reviewer-visible أو committee-private أو confidential payout قبل التوقيع." },
         { key: "disclosure", title: "تسليم الكشف الانتقائي", summary: "جهّز مسار مراجعة محدود للتدقيق والحفظ المؤسسي دون تحويل العمل المحمي إلى ملف عام مسطح." },
+      ],
+    },
+    routeBriefs: {
+      security: {
+        eyebrow: "ملخص مسار الأمان",
+        title: "الأمان هو المكان الذي تلتقي فيه الخصوصية والانضباط المؤسسي وأدلة التشغيل في سطح واحد",
+        description:
+          "هذا المسار ليس ملحق تدقيق فقط، بل هو واجهة المشغّل لفهم كيف تحمي PrivateDAO نية المقترح وتنفيذ المدفوعات وتوقيع المحافظ ومسار الحفظ وإثباتات المراجعة دون تبسيط المنتج إلى ملف جامد.",
+        bullets: [
+          "استخدمه لشرح الطبقة التشفيرية بلغة بسيطة قبل أن يفتح المراجع الحزم.",
+          "استخدمه لاختيار وضع الخصوصية الصحيح قبل أي حركة خزانة أو حوكمة.",
+          "استخدمه لإظهار ما أُثبت فعليًا على Devnet وما بقي مغلقًا حتى الإقفال المؤسسي.",
+        ],
+      },
+      products: {
+        eyebrow: "ملخص مسار المنتجات",
+        title: "المنتجات تُعرض حسب المشكلة التشغيلية التي تحلها لا حسب الوحدات الداخلية فقط",
+        description:
+          "هذا المسار يجب أن يقرأ ككتالوج بنية تحتية حقيقي: حوكمة خاصة، مدفوعات سرية، عمليات الجيمينج، كشف انتقائي للمراجعة، وواجهات قراءة وتكامل قابلة لإعادة الاستخدام.",
+        bullets: [
+          "افتح هذا المسار عندما يحتاج الممول أو المشتري أسرع شرح لما نبيعه.",
+          "اربط الشرح دائمًا بمسارات Devnet الحية لا برسومات معمارية مجردة.",
+          "استخدم محدد الخصوصية وStarter الـ SDK هنا للانتقال من القصة إلى التنفيذ.",
+        ],
+      },
+      learn: {
+        eyebrow: "ملخص مسار التعلّم",
+        title: "مسار التعلّم يجب أن ينقل المستخدم العادي إلى فعل حقيقي على Devnet في نفس الجلسة",
+        description:
+          "هذا المسار يشرح الطبقات عبر المنتج نفسه: wallet-first UX، دورة الحوكمة، القراءة الحية، المدفوعات الخاصة، الكشف الانتقائي، والإثبات المرتبط بالتحقق.",
+        bullets: [
+          "كل محاضرة يجب أن تنتهي بمسار حي وبمسار تحقق حقيقي.",
+          "المتعلم يجب أن يفهم ما يبقى سريًا وما يصبح عامًا ولماذا.",
+          "نفس المسار يجب أن يخدم المتعلم والمراجع والمشغل بدون طرفية.",
+        ],
+      },
+      servicesStarter: {
+        eyebrow: "ملخص مسار التكامل",
+        title: "مسار البداية يجب أن يبدو كعقد تكامل واضح لا كصفحة عامة ضبابية",
+        description:
+          "هذا المسار يجمع المنتج الحي في وحدات قابلة للدمج: دخول من المتصفح، hosted reads، اختيار سياسة الخصوصية، ومسار الكشف الانتقائي للتدقيق أو المراجعة المؤسسية.",
+        bullets: [
+          "ابدأ بـ browser starter إذا كان الشريك يحتاج واجهة wallet-first.",
+          "استخدم hosted read contract إذا كان يحتاج حالة وتشخيصًا دون تحليل السلسلة الخام.",
+          "استخدم الكشف الانتقائي إذا كان يحتاج مراجعة حساسة بدون فتح كامل المسار الداخلي.",
+        ],
+      },
+    },
+    selectiveDisclosure: {
+      eyebrow: "الكشف الانتقائي",
+      title: "امنح المراجع نافذة ضيقة على العملية دون تحويل العمل الخاص إلى كشف عام",
+      description:
+        "الكشف الانتقائي هو الجسر بين الخصوصية القوية والمراجعة المؤسسية. هو الذي يحدد ما يبقى خاصًا للمشغل وما يراه المراجع وما يكفي من روابط لإثبات صحة التنفيذ على Devnet.",
+      stepsLabel: "كيف يعمل التسليم",
+      privateLabel: "يبقى سريًا حتى الحد الصحيح",
+      publicLabel: "يصبح مرئيًا للمراجعة والتحقق",
+      openTrust: "افتح مسار الثقة",
+      openGuide: "افتح دليل الخصوصية",
+      openReviewLane: "افتح مسار المراجعة المطابق",
+      scenarios: [
+        { key: "auditor", title: "مراجعة مدقق", summary: "استخدمه عندما يحتاج مراجع خارجي إلى مسار إثبات محدود لحوكمة أو خزانة دون قراءة كل السجل الداخلي." },
+        { key: "committee", title: "إشراف اللجنة", summary: "استخدمه عندما تحتاج اللجنة إلى التأكد من سلامة القرار مع بقاء نية التصويت أو تفاصيل الدفع محمية حتى المرحلة المعتمدة." },
+        { key: "partner", title: "فحص شريك أو ممول", summary: "استخدمه عندما يحتاج شريك أو ممول أو داعم بنية تحتية إلى قدر كافٍ من الوضوح لبناء الثقة دون استلام كل التفاصيل التشغيلية." },
+        { key: "incident", title: "مسار استجابة للحوادث", summary: "استخدمه عندما تحتاج حادثة توقيع أو دفع أو حوكمة إلى حزمة أدلة ضيقة تحفظ الخصوصية التشغيلية وتُظهر الأثر على السلسلة." },
+      ],
+      steps: [
+        "اختر وضع الخصوصية قبل توقيع المحفظة.",
+        "نفّذ حركة الحوكمة أو الخزانة على Devnet.",
+        "افتح مسارات proof وcustody المطابقة لتلك الحركة.",
+        "اكشف فقط الهاشات واللوجز وحزمة المراجعة اللازمة لتلك النافذة.",
+      ],
+      privateItems: [
+        "نية التصويت قبل reveal",
+        "منطق الدفع الحساس وملاحظات التشغيل الداخلية",
+        "سياق اللجنة الذي لا يحتاج إلى نشر عام",
+      ],
+      publicItems: [
+        "تواقيع المعاملات والهاشات العامة",
+        "اللوجز التشغيلية وحزم الإثبات وملخصات المراجعة",
+        "حالة الحفظ والصلاحيات عندما يتطلب الإثبات ذلك",
       ],
     },
   },

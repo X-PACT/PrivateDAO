@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { LocalizedRouteBrief } from "@/components/localized-route-brief";
 import { LocalizedRouteSummary } from "@/components/localized-route-summary";
 import { OperationsShell } from "@/components/operations-shell";
 import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
@@ -30,6 +31,7 @@ export default function PrivacySdkApiStarterPage() {
       ]}
     >
       <LocalizedRouteSummary routeKey="services" />
+      <LocalizedRouteBrief routeKey="servicesStarter" />
       <div className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6 text-sm leading-7 text-white/68">
         This starter route is deliberately grounded: it shows how to integrate the existing live product surfaces and read patterns first, then widen toward institutional disclosure or broader API packaging once those closures are proven.
         <div className="mt-5 flex flex-wrap gap-3">

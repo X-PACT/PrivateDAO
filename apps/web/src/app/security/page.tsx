@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { MetricsStrip } from "@/components/metrics-strip";
+import { LocalizedRouteBrief } from "@/components/localized-route-brief";
 import { MainnetExecutionScorecardPanel } from "@/components/mainnet-execution-scorecard-panel";
 import { MonitoringDeliveryEvidencePanel } from "@/components/monitoring-delivery-evidence-panel";
 import { MonitoringDeliveryClosurePanel } from "@/components/monitoring-delivery-closure-panel";
@@ -17,6 +18,7 @@ import { RealDeviceCaptureClosurePanel } from "@/components/real-device-capture-
 import { RuntimeOperationsReadinessPanel } from "@/components/runtime-operations-readiness-panel";
 import { SecurityCenter } from "@/components/security-center";
 import { SectionHeader } from "@/components/section-header";
+import { SelectiveDisclosureSurface } from "@/components/selective-disclosure-surface";
 import { ZkMatrixSurface } from "@/components/zk-matrix-surface";
 import { ConfidentialPayoutEvidenceStrip } from "@/components/confidential-payout-evidence-strip";
 import { SettlementReceiptSurface } from "@/components/settlement-receipt-surface";
@@ -46,6 +48,9 @@ export default function SecurityPage() {
         <MetricsStrip />
       </div>
       <div>
+        <LocalizedRouteBrief routeKey="security" />
+      </div>
+      <div>
         <CustodyReadinessStrip context="security" />
       </div>
       <div>
@@ -53,6 +58,16 @@ export default function SecurityPage() {
       </div>
       <div>
         <AuthorityHardeningPanel />
+      </div>
+      <div>
+        <SectionHeader
+          eyebrow="Selective disclosure"
+          title="Selective disclosure turns privacy into an institutional review lane"
+          description="This is where PrivateDAO explains the narrow window between protected operator intent and reviewer-visible proof. The goal is not full public exposure. The goal is bounded, product-safe disclosure."
+        />
+      </div>
+      <div>
+        <SelectiveDisclosureSurface />
       </div>
       <div>
         <CustodyWorkspace />
