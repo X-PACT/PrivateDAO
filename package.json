@@ -52,6 +52,13 @@
     "test:core:anchor": "anchor test --run tests/private-dao.ts",
     "test:full": "bash scripts/run-local-anchor-suite.sh full tests/full-flow-test.ts",
     "test:full:anchor": "anchor test --run tests/full-flow-test.ts",
+    "test:unit:ts": "TSX_TSCONFIG_PATH=apps/web/tsconfig.scripts.json node --import tsx ./node_modules/mocha/bin/mocha --timeout 10000 --exit test/unit/**/*.ts",
+    "coverage:ts": "TSX_TSCONFIG_PATH=apps/web/tsconfig.scripts.json c8 --reporter=text-summary --reporter=lcov --include apps/web/src/lib/dao-bootstrap.ts --include apps/web/src/lib/privacy-proof-snapshot.ts node --import tsx ./node_modules/mocha/bin/mocha --timeout 10000 --exit test/unit/**/*.ts",
+    "coverage:rust": "cargo llvm-cov -p private-dao --lib --summary-only",
+    "coverage:rust:lcov": "cargo llvm-cov -p private-dao --lib --lcov --output-path target/llvm-cov-private-dao.lcov",
+    "fuzz:validate-treasury-action": "bash -lc 'cd programs/private-dao/fuzz && cargo +nightly fuzz run validate_treasury_action -- -max_total_time=30'",
+    "fuzz:validate-confidential-settlement": "bash -lc 'cd programs/private-dao/fuzz && cargo +nightly fuzz run validate_confidential_settlement -- -max_total_time=30'",
+    "fuzz:governance-and-signatures": "bash -lc 'cd programs/private-dao/fuzz && cargo +nightly fuzz run governance_and_signatures -- -max_total_time=30'",
     "deploy": "anchor deploy --provider.cluster devnet",
     "setup": "bash scripts/setup-devnet.sh",
     "check:contracts": "bash scripts/check-contracts.sh",
@@ -275,6 +282,7 @@
     "@types/chai": "^4.3.0",
     "@types/mocha": "^10.0.0",
     "@types/node": "^20.0.0",
+    "c8": "^11.0.0",
     "chai": "^4.3.6",
     "circomlib": "^2.0.5",
     "circomlibjs": "^0.1.7",
@@ -283,6 +291,7 @@
     "snarkjs": "^0.7.6",
     "ts-mocha": "^10.0.0",
     "ts-node": "^10.9.0",
+    "tsx": "^4.21.0",
     "typescript": "^5.0.0"
   }
 }

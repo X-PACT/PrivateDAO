@@ -2,6 +2,7 @@
 members = [
     "programs/private-dao",
 ]
+exclude = ["programs/private-dao/fuzz"]
 resolver = "2"
 
 [workspace.dependencies]

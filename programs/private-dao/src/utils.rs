@@ -348,6 +348,12 @@ pub fn validate_zk_receipt(
             receipt.verification_mode == mode,
             Error::InsufficientZkVerificationMode
         );
+        if mode == ZkVerificationMode::ZkEnforced {
+            require!(
+                receipt.verifier_program.is_some(),
+                Error::ZkVerifierProgramRequired
+            );
+        }
     }
     Ok(())
 }

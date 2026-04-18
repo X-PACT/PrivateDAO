@@ -68,10 +68,21 @@ pub fn verify_zk_proof_on_chain(
             || verification_mode == ZkVerificationMode::ZkEnforced,
         Error::InvalidZkVerificationMode
     );
-    require!(
-        verifier == ctx.accounts.dao.authority || verifier == ctx.accounts.proposal.proposer,
-        Error::UnauthorizedZkVerifier
-    );
+    if verification_mode == ZkVerificationMode::ZkEnforced {
+        require!(
+            verifier == ctx.accounts.dao.authority,
+            Error::UnauthorizedZkVerifier
+        );
+        require!(
+            verifier_program.is_some(),
+            Error::ZkVerifierProgramRequired
+        );
+    } else {
+        require!(
+            verifier == ctx.accounts.dao.authority || verifier == ctx.accounts.proposal.proposer,
+            Error::UnauthorizedZkVerifier
+        );
+    }
 
     let anchor = &ctx.accounts.zk_proof_anchor;
     require!(
@@ -129,10 +140,16 @@ pub fn configure_proposal_zk_mode(
     mode: ProposalZkMode,
 ) -> Result<()> {
     let operator = ctx.accounts.operator.key();
-    require!(
-        operator == ctx.accounts.dao.authority || operator == ctx.accounts.proposal.proposer,
-        Error::UnauthorizedZkModeConfig
-    );
+    match mode {
+        ProposalZkMode::Companion | ProposalZkMode::Parallel => require!(
+            operator == ctx.accounts.dao.authority || operator == ctx.accounts.proposal.proposer,
+            Error::UnauthorizedZkModeConfig
+        ),
+        ProposalZkMode::ZkEnforced => require!(
+            operator == ctx.accounts.dao.authority,
+            Error::UnauthorizedZkModeConfig
+        ),
+    }
     require!(
         ctx.accounts.proposal.status == ProposalStatus::Voting
             && ctx.accounts.proposal.commit_count == 0

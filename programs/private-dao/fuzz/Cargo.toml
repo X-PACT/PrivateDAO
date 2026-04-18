@@ -1,0 +1,37 @@
+[package]
+name = "private-dao-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2021"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+arbitrary = { version = "1", features = ["derive"] }
+libfuzzer-sys = "0.4"
+private-dao = { path = "..", features = ["no-entrypoint"] }
+anchor-lang = { version = "0.31.1" }
+
+[[bin]]
+name = "validate_treasury_action"
+path = "fuzz_targets/validate_treasury_action.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "validate_confidential_settlement"
+path = "fuzz_targets/validate_confidential_settlement.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "governance_and_signatures"
+path = "fuzz_targets/governance_and_signatures.rs"
+test = false
+doc = false
+bench = false
+
+[workspace]

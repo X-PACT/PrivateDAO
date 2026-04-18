@@ -38,6 +38,16 @@ This note records the verified fixes from the latest security review pass. It is
 - Reported issue: `isqrt` used native-width addition.
 - Fix: the Newton step now performs the intermediate addition in `u128`.
 
+### Zk-Enforced Authority Boundary
+
+- Reported issue: proposers could create `zk_enforced` receipts and enable `zk_enforced` mode even though the public policy described this path as authority-controlled.
+- Fix: `verify_zk_proof_on_chain` now allows proposers to record `parallel` receipts only. `zk_enforced` receipts require the DAO authority, and proposal activation of `zk_enforced` mode is authority-only.
+
+### Zk-Enforced Verifier Program Boundary
+
+- Reported issue: a `zk_enforced` receipt could be stored without any verifier program boundary, making the mode look stronger than the evidence attached to it.
+- Fix: `zk_enforced` receipts now require `verifier_program: Some(pubkey)`, and receipt validation rejects `zk_enforced` receipts that do not carry that boundary.
+
 ## Reviewed But Not Claimed As Fully Solved
 
 ### Quorum Semantics

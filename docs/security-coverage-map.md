@@ -1,6 +1,8 @@
 # Security Coverage Map
 
-| Threat Class | Mitigation | Test File | Coverage Status |
+This table is a scenario map, not a measured `>80%` coverage report. It shows where threat classes already have explicit regression scenarios. Measured baselines currently live in [security-audit-workstream-2026-04-18.md](/home/x-pact/PrivateDAO/docs/security-audit-workstream-2026-04-18.md).
+
+| Threat Class | Mitigation | Test File | Scenario Status |
 | --- | --- | --- | --- |
 | Lifecycle bypass | `status` and timing guards on commit, reveal, finalize, execute | `tests/full-flow-test.ts`, `tests/private-dao.ts` | Covered |
 | Replay | `AlreadyCommitted`, `AlreadyRevealed`, `AlreadyFinalized`, `AlreadyExecuted` checks | `tests/private-dao.ts`, `tests/full-flow-test.ts` | Covered |
