@@ -169,6 +169,38 @@ function describeWalletActionError(error: unknown, fallback: string) {
   return fallback;
 }
 
+async function submitWalletTransactionWithFallback({
+  transaction,
+  connection,
+  sendTransaction,
+  signTransaction,
+  extraSigners = [],
+}: {
+  transaction: import("@solana/web3.js").Transaction;
+  connection: ReturnType<typeof useConnection>["connection"];
+  sendTransaction: ReturnType<typeof useWallet>["sendTransaction"];
+  signTransaction?: ReturnType<typeof useWallet>["signTransaction"];
+  extraSigners?: import("@solana/web3.js").Signer[];
+}) {
+  if (signTransaction) {
+    const transactionForManualSend = transaction;
+    if (extraSigners.length > 0) {
+      transactionForManualSend.partialSign(...extraSigners);
+    }
+    const signedTransaction = await signTransaction(transactionForManualSend);
+    return connection.sendRawTransaction(signedTransaction.serialize(), {
+      maxRetries: 3,
+      preflightCommitment: "confirmed",
+      skipPreflight: false,
+    });
+  }
+
+  return sendTransaction(transaction, connection, {
+    preflightCommitment: "confirmed",
+    signers: extraSigners,
+  });
+}
+
 type ActionFollowUpLink = {
   href: string;
   label: string;
@@ -266,7 +298,7 @@ export function GovernanceActionWorkbench() {
   } | null>(null);
   const [nowSeconds, setNowSeconds] = useState(() => Math.floor(Date.now() / 1000));
   const { connection } = useConnection();
-  const { connected, wallet, publicKey, sendTransaction } = useWallet();
+  const { connected, wallet, publicKey, sendTransaction, signTransaction } = useWallet();
   const {
     daoName,
     daoCreated,
@@ -787,9 +819,12 @@ export function GovernanceActionWorkbench() {
         governanceMint: bootstrap.governanceMint.toBase58(),
       });
 
-      const signature = await sendTransaction(bootstrap.transaction, connection, {
-        preflightCommitment: "confirmed",
-        signers: [bootstrap.mintSigner],
+      const signature = await submitWalletTransactionWithFallback({
+        transaction: bootstrap.transaction,
+        connection,
+        sendTransaction,
+        signTransaction,
+        extraSigners: [bootstrap.mintSigner],
       });
 
       await awaitLiveSignatureOnCluster({ connection, signature });
@@ -895,8 +930,11 @@ export function GovernanceActionWorkbench() {
         proposalAddress: proposalSubmission.proposal.toBase58(),
       });
 
-      const signature = await sendTransaction(proposalSubmission.transaction, connection, {
-        preflightCommitment: "confirmed",
+      const signature = await submitWalletTransactionWithFallback({
+        transaction: proposalSubmission.transaction,
+        connection,
+        sendTransaction,
+        signTransaction,
       });
 
       await awaitLiveSignatureOnCluster({ connection, signature });
@@ -994,8 +1032,11 @@ export function GovernanceActionWorkbench() {
         saltHex: toHex(salt),
       });
 
-      const signature = await sendTransaction(commitSubmission.transaction, connection, {
-        preflightCommitment: "confirmed",
+      const signature = await submitWalletTransactionWithFallback({
+        transaction: commitSubmission.transaction,
+        connection,
+        sendTransaction,
+        signTransaction,
       });
 
       await awaitLiveSignatureOnCluster({ connection, signature });
@@ -1063,8 +1104,11 @@ export function GovernanceActionWorkbench() {
         message: "Awaiting wallet signature for the live reveal transaction...",
       });
 
-      const signature = await sendTransaction(revealSubmission.transaction, connection, {
-        preflightCommitment: "confirmed",
+      const signature = await submitWalletTransactionWithFallback({
+        transaction: revealSubmission.transaction,
+        connection,
+        sendTransaction,
+        signTransaction,
       });
 
       await awaitLiveSignatureOnCluster({ connection, signature });
@@ -1124,8 +1168,11 @@ export function GovernanceActionWorkbench() {
         message: "Awaiting wallet signature for the live finalize transaction...",
       });
 
-      const signature = await sendTransaction(finalizeSubmission.transaction, connection, {
-        preflightCommitment: "confirmed",
+      const signature = await submitWalletTransactionWithFallback({
+        transaction: finalizeSubmission.transaction,
+        connection,
+        sendTransaction,
+        signTransaction,
       });
 
       await awaitLiveSignatureOnCluster({ connection, signature });
@@ -1203,8 +1250,11 @@ export function GovernanceActionWorkbench() {
         message: "Awaiting wallet signature for the execute transaction...",
       });
 
-      const signature = await sendTransaction(executeSubmission.transaction, connection, {
-        preflightCommitment: "confirmed",
+      const signature = await submitWalletTransactionWithFallback({
+        transaction: executeSubmission.transaction,
+        connection,
+        sendTransaction,
+        signTransaction,
       });
 
       await awaitLiveSignatureOnCluster({ connection, signature });
