@@ -23,8 +23,14 @@ verify_tools() {
 }
 
 verify_build() {
-  echo "[verify] anchor build"
-  "$ANCHOR_BIN" build
+  if [[ "${PRIVATE_DAO_RUN_ANCHOR_BUILD:-0}" == "1" ]]; then
+    echo "[verify] anchor build"
+    "$ANCHOR_BIN" build
+    return
+  fi
+
+  echo "[verify] portable Rust program build (set PRIVATE_DAO_RUN_ANCHOR_BUILD=1 for full Anchor SBF build)"
+  "$CARGO_BIN" build -p private-dao --lib
 }
 
 verify_fmt() {
@@ -123,7 +129,10 @@ case "$mode" in
     verify_lint
     ;;
   build)
-    ensure_required_tools "ANCHOR_BIN:anchor"
+    ensure_required_tools "CARGO_BIN:cargo"
+    if [[ "${PRIVATE_DAO_RUN_ANCHOR_BUILD:-0}" == "1" ]]; then
+      ensure_required_tools "ANCHOR_BIN:anchor"
+    fi
     verify_build
     ;;
   test)
