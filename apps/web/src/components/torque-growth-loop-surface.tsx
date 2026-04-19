@@ -46,14 +46,14 @@ type TorqueEventRecord = {
   timestamp: string;
 };
 
-function buildTorquePayload(template: (typeof torqueEventTemplates)[number]) {
+function buildTorquePayload(template: (typeof torqueEventTemplates)[number], timestamp = "client-generated-on-record") {
   return {
     project: "PrivateDAO",
     integration: "torque-mcp-growth-loop",
     custom_event: template.id,
     reward_intent: template.rewardIntent,
     route: `https://privatedao.org${template.route}/`.replace("//.", "/"),
-    timestamp: new Date().toISOString(),
+    timestamp,
     metadata: {
       network: "solana-testnet",
       product: "private-governance-and-stablecoin-treasury",
@@ -78,6 +78,7 @@ export function TorqueGrowthLoopSurface() {
       route: activeTemplate.route,
       timestamp: new Date().toISOString(),
     };
+    const livePayload = buildTorquePayload(activeTemplate, record.timestamp);
     setRecords((current) => [record, ...current].slice(0, 6));
 
     const endpoint = process.env.NEXT_PUBLIC_TORQUE_CUSTOM_EVENT_ENDPOINT;
@@ -90,7 +91,7 @@ export function TorqueGrowthLoopSurface() {
       const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(livePayload),
       });
       setDeliveryState(response.ok ? "Torque custom_event delivered" : `Torque endpoint responded ${response.status}`);
     } catch (error) {
@@ -182,4 +183,3 @@ export function TorqueGrowthLoopSurface() {
     </section>
   );
 }
-
