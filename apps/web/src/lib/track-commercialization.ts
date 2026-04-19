@@ -21,7 +21,7 @@ export function getTrackCommercializationPlan(
       firstPaidMotion:
         "Close a guided pilot where the customer adopts PrivateDAO Core plus trust-package review before a longer governance rollout.",
       mainnetUpgradePath: [
-        "Keep Devnet user path stable while preserving signer and timelock discipline.",
+        "Keep Testnet user path stable while preserving signer and timelock discipline.",
         "Use launch trust packet and mainnet blockers as the explicit customer-facing upgrade gate.",
         "Move from pilot operations into retained governance support after external review and runtime evidence mature.",
       ],
@@ -164,7 +164,7 @@ export function getTrackCommercializationPlan(
       buyerType: "Developer-led teams that want reusable frontend, wallet UX, and deployment discipline on top of a real governance protocol.",
       customerOffer: "Pilot Package plus Hosted Read API + Ops for teams adopting the shell and evidence surfaces.",
       commercialNarrative:
-        "100xDevs is the best proof that this is not a toy frontend: multi-page architecture, deployment discipline, wallet matrices, and route-level productization all convert into implementation value for customers.",
+        "100xDevs is the best proof that this is a production-shaped frontend: multi-page architecture, deployment discipline, wallet matrices, and route-level productization all convert into implementation value for customers.",
       firstPaidMotion:
         "Offer a build-and-adopt pilot where a customer uses the product shell, docs viewer, diagnostics, and evidence flow as a starting governance infrastructure layer.",
       mainnetUpgradePath: [

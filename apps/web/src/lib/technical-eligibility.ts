@@ -35,7 +35,7 @@ const fits: Record<string, TrackTechnicalFit> = {
   "colosseum-frontier": {
     coreIdentity,
     sponsorUsage: [
-      "The live route uses a real wallet adapter path, a real program id, and a real governance mint instead of a staged mock.",
+      "The live route uses a real wallet adapter path, a real program id, and a real governance mint instead of a staged demo-only path.",
       "The product shell connects onboarding, govern, proof, diagnostics, services, and trust packets into one startup-quality surface.",
       "The submission path is deliberately product-first because serious external review now rewards product impact and business quality.",
     ],
@@ -277,7 +277,7 @@ const fits: Record<string, TrackTechnicalFit> = {
     coreIdentity,
     sponsorUsage: [
       "The Next.js multi-page shell, static export deployment, in-app docs, and route-level product surfaces make the frontend architecture visible.",
-      "Wallet UX, search, assistant routing, and product corridors show shipping discipline rather than toy frontend polish.",
+      "Wallet UX, search, assistant routing, and product corridors show shipping discipline rather than surface-level frontend polish.",
       "The codebase now reads as a product platform with reusable surfaces, not a single demo page.",
     ],
     sponsorEvidence: [

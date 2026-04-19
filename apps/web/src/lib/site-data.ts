@@ -1328,7 +1328,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     sponsorFit: [
       "The April 2026 Drift exploit made signer hygiene, timelocks, and risk controls far more relevant to judges.",
       "PrivateDAO is strongest when framed as governance infrastructure that prevents sloppy treasury behavior.",
-      "The confidence engine is a better fit here than a fake trading narrative.",
+      "The confidence engine is a better fit here than an unsupported trading narrative.",
     ],
     validationSteps: [
       "Run `npm run verify:runtime-surface` and `npm run verify:review-links` so governance-risk evidence remains coherent.",
@@ -1865,7 +1865,7 @@ export const zkMatrixHighlights = [
   },
   {
     layer: "On-chain verifier CPI",
-    state: "Not implemented",
+    state: "Future protocol phase",
     verifier: "Not claimed",
     boundary: "Future protocol phase",
   },

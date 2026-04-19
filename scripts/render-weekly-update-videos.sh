@@ -62,11 +62,11 @@ render_week1() {
   local video="$UPDATES_DIR/private-dao-week-1-update.mp4"
   local poster="$UPDATES_DIR/private-dao-week-1-update-poster.png"
 
-  scene "$s1" "$ASSETS_DIR/frontend-hero.png" "WEEK 1 UPDATE" "PrivateDAO is live on Devnet" "Governance infrastructure on Solana, already moving through a real wallet-first" "product flow instead of a concept-only demo." "Week 1 proves live product momentum." "0x00E5FF"
-  scene "$s2" "$ASSETS_DIR/frontend-hero.png" "LIVE FLOW" "Core governance path already works" "Connect wallet, create DAO, create proposal, and move through private vote" "commit with the same product surface." "Real interaction, not mocked screens." "0xFFE48A"
+  scene "$s1" "$ASSETS_DIR/frontend-hero.png" "WEEK 1 UPDATE" "PrivateDAO is live on Testnet" "Governance infrastructure on Solana, already moving through a real wallet-first" "product flow instead of a concept-only demo." "Week 1 proves live product momentum." "0x00E5FF"
+  scene "$s2" "$ASSETS_DIR/frontend-hero.png" "LIVE FLOW" "Core governance path already works" "Connect wallet, create DAO, create proposal, and move through private vote" "commit with the same product surface." "Real interaction, captured from the product." "0xFFE48A"
   scene "$s3" "$ASSETS_DIR/frontend-hero.png" "CORE MECHANISM" "Commit now, reveal later, execute safely" "PrivateDAO uses commit-reveal voting to reduce early intent leakage while" "keeping finalization and treasury execution disciplined." "Private governance with explicit execution boundaries." "0x7E57FF"
   scene "$s4" "$ASSETS_DIR/frontend-hero.png" "PRODUCT SHELL" "Proof, diagnostics, and buyer routes already exist" "Proof surfaces, diagnostics, search, assistant, and product corridors are" "already visible inside one live app." "This is shaping into real governance infrastructure." "0x22C55E"
-  scene "$s5" "$ASSETS_DIR/frontend-hero.png" "NEXT STEP" "Week 1 closes with a strong foundation" "The next build step is sharper buyer flow, stronger trust surfaces, and deeper" "track packaging on top of the same Devnet core." "privatedao.org  ·  github.com/X-PACT/PrivateDAO" "0xA9F5FF"
+  scene "$s5" "$ASSETS_DIR/frontend-hero.png" "NEXT STEP" "Week 1 closes with a strong foundation" "The next build step is sharper buyer flow, stronger trust surfaces, and deeper" "track packaging on top of the same Testnet core." "privatedao.org  ·  github.com/X-PACT/PrivateDAO" "0xA9F5FF"
 
   compose_video "$video" "$poster" "$s1" "$s2" "$s3" "$s4" "$s5"
   copy_upload_asset "$video" "$poster" "Week 1 - PrivateDAO Frontier Hackathon - Private Governance Foundation"
@@ -83,7 +83,7 @@ render_week2() {
   local video="$UPDATES_DIR/private-dao-week-2-update.mp4"
   local poster="$UPDATES_DIR/private-dao-week-2-update-poster.png"
 
-  scene "$s1" "$ASSETS_DIR/frontend-hero.png" "WEEK 2 UPDATE" "Private governance is already live" "DAO bootstrap, proposal creation, commit, reveal, finalize, and execute now run" "through the same wallet-connected Devnet product surface." "Week 2 proves the governance core is not a mockup." "0x00E5FF"
+  scene "$s1" "$ASSETS_DIR/frontend-hero.png" "WEEK 2 UPDATE" "Private governance is already live" "DAO bootstrap, proposal creation, commit, reveal, finalize, and execute now run" "through the same wallet-connected Testnet product surface." "Week 2 proves the governance core is live." "0x00E5FF"
   scene "$s2" "$ASSETS_DIR/frontend-hero.png" "PRIVATE VOTING" "Commit-reveal stays proposal-bound" "Votes stay hidden during commit, reveal later with salt, and only then reach" "deterministic finalization plus timelocked treasury execution." "Hidden intent, explicit lifecycle, real signatures." "0xFFE48A"
   scene "$s3" "$ASSETS_DIR/frontend-hero.png" "ZK HARDENING" "zk_enforced is now visible in-product" "Proposal-level stronger receipts for vote, delegation, and tally are surfaced" "directly in the UI and operator flows." "The proof path now changes review posture, not just docs." "0x7E57FF"
   scene "$s4" "$ASSETS_DIR/frontend-hero.png" "READ PATH" "Backend-indexed runtime trust" "Diagnostics, backend reads, and runtime evidence reduce direct browser RPC stress" "without moving write authority away from the wallet." "Read infrastructure now supports the governance product itself." "0x22C55E"

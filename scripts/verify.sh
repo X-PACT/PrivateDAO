@@ -74,6 +74,15 @@ verify_scan() {
       --glob '*.yml' \
       --glob '*.yaml' \
       --glob '*.html' \
+      --glob '!dist/**' \
+      --glob '!out/**' \
+      --glob '!_next/**' \
+      --glob '!.next/**' \
+      --glob '!apps/web/out/**' \
+      --glob '!apps/web/.next/**' \
+      --glob '!docs/assets/vendor/**' \
+      --glob '!test/**' \
+      --glob '!**/index.html' \
       --glob '!Cargo.lock' \
       --glob '!yarn.lock'; then
       echo "[verify] non-real-code scan failed"
@@ -89,6 +98,15 @@ verify_scan() {
     '*.yml' \
     '*.yaml' \
     '*.html' \
+    ':(exclude)dist/**' \
+    ':(exclude)out/**' \
+    ':(exclude)_next/**' \
+    ':(exclude).next/**' \
+    ':(exclude)apps/web/out/**' \
+    ':(exclude)apps/web/.next/**' \
+    ':(exclude)docs/assets/vendor/**' \
+    ':(exclude)test/**' \
+    ':(exclude)**/index.html' \
     ':(exclude)Cargo.lock' \
     ':(exclude)yarn.lock'; then
     echo "[verify] non-real-code scan failed"

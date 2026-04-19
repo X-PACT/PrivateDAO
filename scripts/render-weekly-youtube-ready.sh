@@ -98,7 +98,7 @@ render_final_video() {
 
   render_card_clip "$intro_clip" "$intro_bg" "$intro_header" "$intro_title" "$intro_l1" "$intro_l2" "PrivateDAO weekly build update" "$accent" "8"
   render_card_clip "$mid_clip" "$mid_bg" "$mid_header" "$mid_title" "$mid_l1" "$mid_l2" "Live product footage and evidence stay aligned" "$accent" "10"
-  render_card_clip "$outro_clip" "$outro_bg" "$outro_header" "$outro_title" "$outro_l1" "$outro_l2" "privatedao.org  ·  Solana Devnet  ·  Frontier 2026" "$accent" "10"
+  render_card_clip "$outro_clip" "$outro_bg" "$outro_header" "$outro_title" "$outro_l1" "$outro_l2" "privatedao.org  ·  Solana Testnet  ·  Frontier 2026" "$accent" "10"
 
   ffmpeg -y \
     -i "$intro_clip" \
@@ -131,12 +131,12 @@ EOF
 if should_render_week 1; then
 render_final_video \
   "Week 1 - PrivateDAO Frontier Hackathon - YouTube Ready" \
-  "$SRC_DIR/Week 1 - PrivateDAO Frontier Hackathon - Live Devnet Governance Progress.mp4" \
+    "$SRC_DIR/Week 1 - PrivateDAO Frontier Hackathon - Live Testnet Governance Progress.mp4" \
   "$CAPTURES_DIR/home.png" \
   "$CAPTURES_DIR/command-center.png" \
   "$CAPTURES_DIR/dashboard.png" \
   "WEEK 1" \
-  "Live Devnet governance progress" \
+    "Live Testnet governance progress" \
   "PrivateDAO is already a wallet-first governance product on Solana." \
   "Week one proves the foundation is live, not theoretical." \
   "WHAT WORKS NOW" \
@@ -148,14 +148,14 @@ render_final_video \
   "The next step is sharpening trust surfaces and commercial routes." \
   "The live product remains the center of the story." \
   "0x00E5FF" \
-  "PrivateDAO is already live on Solana Devnet as a wallet-first governance product. In week one, the important proof is simple. The command center is real, the governance path is visible, and the product already reads like infrastructure instead of a mockup. This week is about showing product momentum clearly. Next, we keep building trust surfaces, buyer routes, and sharper competition packaging on top of the same live core." \
+  "PrivateDAO is already live on Solana Testnet as a wallet-first governance product. In week one, the important proof is simple. The command center is real, the governance path is visible, and the product already reads like infrastructure instead of a static concept. This week is about showing product momentum clearly. Next, we keep building trust surfaces, buyer routes, and sharper competition packaging on top of the same live core." \
   "1
 00:00:00,000 --> 00:00:08,000
-PrivateDAO is already live on Solana Devnet.
+PrivateDAO is already live on Solana Testnet.
 
 2
 00:00:08,000 --> 00:00:18,500
-Week one shows a real product shell, not a mockup.
+Week one shows a real product shell, not a static concept.
 
 3
 00:00:18,500 --> 00:00:28,500
@@ -182,7 +182,7 @@ render_final_video \
   "Week two turns the live governance path into a simpler browser-first product." \
   "The same app now proves private voting and agentic treasury execution." \
   "WHAT IMPROVED" \
-  "Judge route, screenshots, and chain-visible Devnet proof" \
+  "Judge route, screenshots, and chain-visible Testnet proof" \
   "Users can learn, start, connect, vote, reveal, execute, and verify." \
   "Reviewers can open judge mode and follow hashes without terminal work." \
   "NEXT BUILD" \
@@ -190,7 +190,7 @@ render_final_video \
   "The next layer expands treasury automation, public-good services, and release confidence." \
   "The live product keeps carrying the story instead of a slide deck." \
   "0x7E57FF" \
-  "Week two is where PrivateDAO becomes easier for normal users to understand and easier for judges to verify. The wallet-connected product now guides proposal creation, private voting, reveal, and execution without asking people to think like protocol engineers. And now the same product also proves an agentic treasury micropayment rail with real Devnet transactions, reviewer-visible logs, and a faster judge path. Learn, start, and judge now reinforce one live governance story. From here, the next step is stable settlement, stronger trust, and broader runtime proof on top of the same working Devnet product." \
+  "Week two is where PrivateDAO becomes easier for normal users to understand and easier for judges to verify. The wallet-connected product now guides proposal creation, private voting, reveal, and execution without asking people to think like protocol engineers. And now the same product also proves an agentic treasury micropayment rail with real Testnet transactions, reviewer-visible logs, and a faster judge path. Learn, start, and judge now reinforce one live governance story. From here, the next step is stable settlement, stronger trust, and broader runtime proof on top of the same working Testnet product." \
   "1
 00:00:00,000 --> 00:00:08,000
 Week two turns guided governance into a path normal users can actually run.
@@ -232,7 +232,7 @@ render_final_video \
   "The next step is more explicit readiness and launch credibility." \
   "PrivateDAO should read like a serious company-grade product." \
   "0x22C55E" \
-  "Week three pushes PrivateDAO beyond protocol-only framing. Governance, treasury execution, security posture, and trust boundaries now read together as one product. The point is not to narrate complexity. The point is to make sensitive governance and treasury behavior easier to trust for judges, buyers, and operators. From here, the next step is sharper launch trust and clearer mainnet discipline around the same live Solana Devnet product." \
+  "Week three pushes PrivateDAO beyond protocol-only framing. Governance, treasury execution, security posture, and trust boundaries now read together as one product. The point is not to narrate complexity. The point is to make sensitive governance and treasury behavior easier to trust for judges, buyers, and operators. From here, the next step is sharper launch trust and clearer mainnet discipline around the same live Solana Testnet product." \
   "1
 00:00:00,000 --> 00:00:08,000
 Week three connects treasury and trust more clearly.

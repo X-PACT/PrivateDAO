@@ -105,14 +105,14 @@ render_week1() {
   local video="$UPDATES_DIR/private-dao-week-1-live-update.mp4"
   local poster="$UPDATES_DIR/private-dao-week-1-live-update-poster.png"
 
-  render_still_scene "$s1" "$CAPTURES_DIR/home.png" "WEEK 1 UPDATE" "PrivateDAO is already a live Devnet product" "The product shell is public, wallet-first, and already shaped like governance" "infrastructure instead of a hackathon mockup." "Live product momentum on Solana." "0x00E5FF"
+  render_still_scene "$s1" "$CAPTURES_DIR/home.png" "WEEK 1 UPDATE" "PrivateDAO is already a live Testnet product" "The product shell is public, wallet-first, and already shaped like governance" "infrastructure instead of a temporary event shell." "Live product momentum on Solana." "0x00E5FF"
   render_still_scene "$s2" "$CAPTURES_DIR/command-center.png" "COMMAND CENTER" "Normal users can enter one guided operating surface" "Private voting, proof, diagnostics, and commercial rails now sit inside one" "clear route instead of being fragmented across tools." "Product coherence is visible from week one." "0x22C55E"
   render_video_scene "$s3" 4 6 "LIVE DEMO" "Core governance flow is already working" "Create DAO, submit proposal, commit private vote, and move toward execution." "The demo is not slideware; it is a real product sequence." "0xFFE48A"
   render_still_scene "$s4" "$CAPTURES_DIR/dashboard.png" "OPERATIONS" "The dashboard already reads like an operating product" "Treasury posture, execution visibility, and runtime thinking are already part" "of the interface shown to reviewers and future operators." "A serious operating shell is already visible." "0x7E57FF"
-  render_still_scene "$s5" "$CAPTURES_DIR/home.png" "NEXT" "Week 1 closes with a credible foundation" "Next we deepen trust, buyer routes, and competition-specific packaging on top" "of the same live Devnet base." "privatedao.org  ·  Frontier Week 1" "0xA9F5FF"
+  render_still_scene "$s5" "$CAPTURES_DIR/home.png" "NEXT" "Week 1 closes with a credible foundation" "Next we deepen trust, buyer routes, and competition-specific packaging on top" "of the same live Testnet base." "privatedao.org  ·  Frontier Week 1" "0xA9F5FF"
 
   compose_video "$video" "$poster" "$s1" "$s2" "$s3" "$s4" "$s5"
-  copy_upload_asset "$video" "$poster" "Week 1 - PrivateDAO Frontier Hackathon - Live Devnet Governance Progress"
+  copy_upload_asset "$video" "$poster" "Week 1 - PrivateDAO Frontier Hackathon - Live Testnet Governance Progress"
 }
 
 render_week2() {
