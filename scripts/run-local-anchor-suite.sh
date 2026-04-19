@@ -37,9 +37,9 @@ run_portable_core_checks() {
 if supports_avx2; then
   echo "[local-anchor-suite] running anchor suite on AVX2-capable host (${suite_name})"
   if [[ "$suite_name" == "all" ]]; then
-    anchor test
+    anchor test --provider.cluster localnet
   else
-    anchor test --run "$test_file"
+    anchor test --provider.cluster localnet --run "$test_file"
   fi
   exit 0
 fi
