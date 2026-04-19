@@ -661,7 +661,9 @@ npm run verify:generated-artifacts
 npm run verify:all
 ```
 
-## Devnet Operations
+## Preserved Devnet Evidence Operations
+
+The current public product path is Testnet-first. Use the commands below only when intentionally regenerating the preserved Devnet reviewer evidence package.
 
 Set wallet and RPC:
 

@@ -72,7 +72,7 @@ class PrivateDaoViewModel(application: Application) : AndroidViewModel(applicati
                     uiState.value.selectedProposalPubkey?.let(::selectProposal)
                 }
                 .onFailure { error ->
-                    _uiState.update { it.copy(isLoading = false, errorMessage = error.message ?: "Failed loading devnet data") }
+                    _uiState.update { it.copy(isLoading = false, errorMessage = error.message ?: "Failed loading Testnet data") }
                 }
         }
     }
@@ -369,7 +369,7 @@ data class UiState(
         )
     ),
     val privacyPolicies: List<PrivacyPolicyOption> = PrivateDaoConfig.privacyPolicies,
-    val billingSkus: List<BillingSku> = PrivateDaoConfig.devnetBillingSkus,
+    val billingSkus: List<BillingSku> = PrivateDaoConfig.billingSkus,
 ) {
     fun proposalPhase(proposal: ProposalSummary): ProposalPhase {
         val now = System.currentTimeMillis() / 1000

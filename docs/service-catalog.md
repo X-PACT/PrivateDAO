@@ -71,7 +71,7 @@ The current commercial model is organized as:
 - hosted operator layer
 - confidential operations premium
 - enterprise governance retainer
-- Devnet billing rehearsal for public-facing product and revenue proof
+- Testnet billing rehearsal for public-facing product and revenue proof
 
 See:
 

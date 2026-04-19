@@ -38,7 +38,7 @@ export default function AnalyticsPage() {
       ]}
     >
       <div className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6 text-sm leading-7 text-white/68">
-        Start with <a className="text-cyan-100 underline underline-offset-4" href="/learn">/learn</a> if you are new. Use this route after a real Devnet action to understand the product through counts, freshness, and treasury movement before going deeper into proof or diagnostics.
+        Start with <a className="text-cyan-100 underline underline-offset-4" href="/learn">/learn</a> if you are new. Use this route after a real Testnet action to understand the product through counts, freshness, and treasury movement before going deeper into proof or diagnostics.
       </div>
       <div>
         <Suspense fallback={null}>

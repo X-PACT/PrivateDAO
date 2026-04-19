@@ -17,8 +17,8 @@ import com.solana.mobilewalletadapter.clientlib.protocol.MobileWalletAdapterClie
 import com.solana.mobilewalletadapter.clientlib.scenario.LocalAssociationIntentCreator
 import com.solana.mobilewalletadapter.clientlib.scenario.LocalAssociationScenario
 import com.solana.mobilewalletadapter.clientlib.scenario.Scenario
-import com.solana.mobilewalletadapter.common.ProtocolContract
 import com.solana.mobilewalletadapter.common.protocol.SessionProperties
+import io.xpact.privatedao.android.config.PrivateDaoConfig
 import io.xpact.privatedao.android.model.ConnectedWallet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -59,7 +59,7 @@ class MobileWalletAdapterManager(
         launcher: ActivityResultLauncher<StartMobileWalletAdapterActivity.CreateParams>,
     ): ConnectedWallet {
         val auth = localAssociateAndExecute(launcher) { client, session ->
-            client.authorize(identity, ProtocolContract.CHAIN_SOLANA_DEVNET, null, null, session.protocolVersion)
+            client.authorize(identity, PrivateDaoConfig.chain, null, null, session.protocolVersion)
         }
         val account = auth.accounts.firstOrNull() ?: error("Wallet returned no authorized accounts")
         val wallet = ConnectedWallet(
@@ -154,7 +154,7 @@ class MobileWalletAdapterManager(
                         null,
                     ).get()!!
                 } else {
-                    client.authorize(identity.uri, identity.iconRelativeUri, identity.name, ProtocolContract.CLUSTER_DEVNET).get()!!
+                    client.authorize(identity.uri, identity.iconRelativeUri, identity.name, PrivateDaoConfig.walletCluster).get()!!
                 }
             }
         } catch (e: ExecutionException) {

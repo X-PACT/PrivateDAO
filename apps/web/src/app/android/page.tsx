@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = buildRouteMetadata({
   title: "Android App",
   description:
-    "Download the current PrivateDAO Android devnet APK, review the parity plan, and follow the mobile branch as it expands toward deeper web-aligned service coverage.",
+    "Download the current PrivateDAO Android APK, review the Testnet parity plan, and follow the mobile branch as it expands toward deeper web-aligned service coverage.",
   path: "/android",
   keywords: ["android app", "apk", "mobile wallet adapter", "android governance app", "privatedao mobile"],
   index: false,
@@ -40,7 +40,7 @@ export default function AndroidPage() {
       description="PrivateDAO Android is being built as a first-class operating surface for the same governance product already served by the web app. This route gives reviewers, operators, and testers a direct APK download, the current branch guide, and the parity direction in one place."
       badges={[
         { label: "APK available", variant: "success" },
-        { label: "Devnet-operable", variant: "cyan" },
+        { label: "Testnet-operable", variant: "cyan" },
         { label: "Web parity in progress", variant: "violet" },
       ]}
     >
@@ -51,7 +51,7 @@ export default function AndroidPage() {
           </CardHeader>
           <CardContent className="space-y-5">
             <div className="rounded-3xl border border-emerald-300/16 bg-emerald-300/[0.08] p-4 text-sm leading-7 text-white/72">
-              The current downloadable APK is a branch-packaged devnet build for review, testing, and mobile governance walkthroughs. It is suitable for active product evaluation while release hardening continues.
+              The current Android source is Testnet-configured for review, testing, and mobile governance walkthroughs. The downloadable debug APK remains the active evaluator artifact while release hardening continues.
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
@@ -60,7 +60,7 @@ export default function AndroidPage() {
                   Download
                 </div>
                 <div className="mt-3 space-y-2 text-sm leading-7 text-white/68">
-                  <div>Artifact: <span className="text-white">PrivateDAO Android devnet debug APK</span></div>
+                  <div>Artifact: <span className="text-white">PrivateDAO Android debug APK</span></div>
                   <div>Size: <span className="text-white">{androidApkSizeLabel}</span></div>
                   <div>SHA-256: <span className="break-all text-white">{androidApkSha256}</span></div>
                 </div>
@@ -72,7 +72,7 @@ export default function AndroidPage() {
                 </div>
                 <div className="mt-3 space-y-2 text-sm leading-7 text-white/68">
                   <div>Working branch: <span className="text-white">{androidBranchName}</span></div>
-                  <div>Channel: <span className="text-white">Android-native devnet surface</span></div>
+                  <div>Channel: <span className="text-white">Android-native Testnet surface</span></div>
                   <div>Direction: <span className="text-white">broader service parity with web</span></div>
                 </div>
               </div>
@@ -110,7 +110,7 @@ export default function AndroidPage() {
               </div>
             ))}
             <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-4 text-sm leading-7 text-white/72">
-              Mobile is already usable for the core governance lifecycle on devnet. The remaining roadmap is focused on deeper native proof, monitoring, treasury previewing, and release hardening until the mobile surface reaches fuller operational alignment with the web app.
+              Mobile is already usable for the core governance lifecycle on Testnet. The remaining roadmap is focused on deeper native proof, monitoring, treasury previewing, and release hardening until the mobile surface reaches fuller operational alignment with the web app.
             </div>
           </CardContent>
         </Card>
@@ -133,7 +133,7 @@ export default function AndroidPage() {
               <CheckCircle2 className="h-3.5 w-3.5" />
               2. Operate
             </div>
-            <div className="mt-3">Run DAO, proposal, voting, finalize, authority, and execution flows against the same devnet program used by the web app.</div>
+            <div className="mt-3">Run DAO, proposal, voting, finalize, authority, and execution flows against the same Testnet program used by the web app.</div>
           </div>
           <div className="rounded-3xl border border-white/8 bg-white/4 p-4 text-sm leading-7 text-white/68">
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-emerald-200/76">
@@ -151,7 +151,7 @@ export default function AndroidPage() {
         </CardHeader>
         <CardContent className="space-y-4 text-sm leading-7 text-white/68">
           <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
-            The next engineering steps are focused on AVD/device runtime proof, richer treasury execution previews, denser in-app reviewer evidence, and release hardening so the Android surface moves from strong devnet operations into a cleaner release-grade product lane.
+            The next engineering steps are focused on AVD/device runtime proof, richer treasury execution previews, denser in-app reviewer evidence, and release hardening so the Android surface moves from strong Testnet operations into a cleaner release-grade product lane.
           </div>
           <div className="flex flex-wrap gap-3">
             <Link href="/proof" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>

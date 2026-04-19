@@ -333,7 +333,7 @@ private fun HomeScreen(
         }
         item {
             HeroCard(
-                title = "Devnet governance surface",
+                title = "Testnet governance surface",
                 body = "The Android app mirrors the current web product: live DAO/proposal reads, commit-reveal voting, finalize, execute, tx signatures, and explorer links.",
                 actions = {
                     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -371,8 +371,8 @@ private fun HomeScreen(
         }
         item {
             HeroCard(
-                title = "Devnet billing SKU model",
-                body = "The Android source now inherits the same billing SKU model as the web rehearsal route, and each SKU can now be executed as a wallet-signed Devnet SOL transfer with a memo-coded business event.",
+                title = "Testnet billing SKU model",
+                body = "The Android source now inherits the same billing SKU model as the web rehearsal route, and each SKU can now be executed as a wallet-signed Testnet SOL transfer with a memo-coded business event.",
             )
         }
         items(uiState.billingSkus) { sku ->
@@ -408,7 +408,7 @@ private fun ProposalScreen(
         item {
             HeroCard(
                 title = "Live proposal feed",
-                body = "This is the Android-native counterpart of the current product. Proposal accounts are read directly from the same devnet program and decoded with the same account layout.",
+                body = "This is the Android-native counterpart of the current product. Proposal accounts are read directly from the same Testnet program and decoded with the same account layout.",
             )
         }
         items(uiState.proposals) { proposal ->
@@ -456,7 +456,7 @@ private fun CreateProposalScreen(
         item {
             HeroCard(
                 title = "Create DAO",
-                body = "This Android-native path bootstraps the governance mint and initializes the DAO from the same wallet, matching the repo’s devnet-first bootstrap flow.",
+                body = "This Android-native path bootstraps the governance mint and initializes the DAO from the same wallet, matching the repo's Testnet-first bootstrap flow.",
             )
         }
         item {
@@ -577,7 +577,7 @@ private fun AwardsScreen(uiState: UiState, modifier: Modifier = Modifier) {
         item {
             HeroCard(
                 title = "Awards & credibility",
-                body = "The Android app keeps the same proof surface as the main project, including verified recognition and live devnet explorer references.",
+                body = "The Android app keeps the same proof surface as the main project, including verified recognition and live Testnet explorer references.",
             )
         }
         items(uiState.awards) { award ->
@@ -605,14 +605,14 @@ private fun SettingsScreen(uiState: UiState, modifier: Modifier = Modifier) {
         item {
             HeroCard(
                 title = "Environment",
-                body = "Devnet is the default mobile environment. The app is structured for a future mainnet switch without changing protocol semantics.",
+                body = "Testnet is the default mobile environment. The app is structured for a future mainnet switch without changing protocol semantics.",
             )
         }
         item { SettingsRow("Program ID", PrivateDaoConfig.programId) }
         item { SettingsRow("RPC", PrivateDaoConfig.rpcUrl) }
-        item { SettingsRow("Explorer", "Solscan devnet links") }
+        item { SettingsRow("Explorer", "Solscan Testnet links") }
         item { SettingsRow("Wallet", uiState.wallet?.publicKeyBase58 ?: "Not connected") }
-        item { SettingsRow("Billing receive", PrivateDaoConfig.devnetBillingReceiveAddress) }
+        item { SettingsRow("Billing receive", PrivateDaoConfig.billingReceiveAddress) }
         item { SettingsRow("Privacy policies", uiState.privacyPolicies.size.toString()) }
         item { SettingsRow("Billing SKUs", uiState.billingSkus.size.toString()) }
         item { BillingProofCard(uiState.billingSubmissionState) }
@@ -664,7 +664,7 @@ private fun BillingProofCard(state: SubmissionState) {
         )
         SubmissionState.Idle -> HeroCard(
             title = "Billing rehearsal status",
-            body = "Run any billing SKU from Home to create a real Devnet transfer, then return here to inspect the signature and explorer proof.",
+            body = "Run any billing SKU from Home to create a real Testnet transfer, then return here to inspect the signature and explorer proof.",
         )
     }
 }

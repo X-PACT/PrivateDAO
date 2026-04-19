@@ -27,7 +27,7 @@ export default function PrivacySdkApiStarterPage() {
       badges={[
         { label: "Integration-ready", variant: "cyan" },
         { label: "Privacy policy aware", variant: "violet" },
-        { label: "Devnet-linked", variant: "success" },
+        { label: "Testnet-linked", variant: "success" },
       ]}
     >
       <LocalizedRouteSummary routeKey="services" />

@@ -8,10 +8,11 @@ object PrivateDaoConfig {
     const val appName = "PrivateDAO"
     const val tagline = "Vote Without Fear"
     const val programId = "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx"
-    const val rpcUrl = "https://api.devnet.solana.com"
-    const val chain = "solana:devnet"
-    const val clusterLabel = "Devnet"
-    const val devnetBillingReceiveAddress = "AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c"
+    const val rpcUrl = "https://api.testnet.solana.com"
+    const val chain = "solana:testnet"
+    const val walletCluster = "testnet"
+    const val clusterLabel = "Testnet"
+    const val billingReceiveAddress = "AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c"
 
     const val systemProgramId = "11111111111111111111111111111111"
     const val memoProgramId = "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"
@@ -30,7 +31,7 @@ object PrivateDaoConfig {
             key = PrivacyPolicyKey.CommitteePrivate,
             title = "Committee-private voting",
             tech = "Commit-reveal + ZK voting",
-            summary = "Best when vote intent should stay hidden until reveal while final execution remains auditable on Devnet.",
+            summary = "Best when vote intent should stay hidden until reveal while final execution remains auditable on Testnet.",
         ),
         PrivacyPolicyOption(
             key = PrivacyPolicyKey.ConfidentialPayout,
@@ -46,13 +47,13 @@ object PrivateDaoConfig {
         ),
     )
 
-    val devnetBillingSkus = listOf(
+    val billingSkus = listOf(
         BillingSku(
             key = "wallet-onboarding",
             title = "Wallet-first onboarding lane",
             amountSol = 0.003,
             memoLabel = "WALLET_ONBOARDING",
-            summary = "A small Devnet charge that proves a normal visitor can pay from the wallet and inspect the chain result.",
+            summary = "A small Testnet charge that proves a normal visitor can pay from the wallet and inspect the chain result.",
         ),
         BillingSku(
             key = "governance-cycle",
@@ -66,17 +67,17 @@ object PrivateDaoConfig {
             title = "Privacy packet lane",
             amountSol = 0.007,
             memoLabel = "PRIVACY_PACKET",
-            summary = "A Devnet signal that reviewer-grade privacy and proof can be tied to an on-chain payment event.",
+            summary = "A Testnet signal that reviewer-grade privacy and proof can be tied to an on-chain payment event.",
         ),
         BillingSku(
             key = "confidential-payout",
             title = "Confidential payout rehearsal",
             amountSol = 0.01,
             memoLabel = "CONFIDENTIAL_PAYOUT",
-            summary = "A larger Devnet rehearsal for the confidential treasury path before later contractized billing rails are introduced.",
+            summary = "A larger Testnet rehearsal for the confidential treasury path before later contractized billing rails are introduced.",
         ),
     )
 
-    fun accountExplorer(address: String): String = "https://solscan.io/account/$address?cluster=devnet"
-    fun txExplorer(signature: String): String = "https://solscan.io/tx/$signature?cluster=devnet"
+    fun accountExplorer(address: String): String = "https://solscan.io/account/$address?cluster=testnet"
+    fun txExplorer(signature: String): String = "https://solscan.io/tx/$signature?cluster=testnet"
 }

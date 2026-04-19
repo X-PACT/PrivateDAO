@@ -336,11 +336,11 @@ class PrivateDaoRepository(
     ): ByteArray {
         val lamports = (sku.amountSol * 1_000_000_000L).toLong()
         require(lamports > 0) { "Billing rehearsal amount must be greater than zero" }
-        val memo = "PRIVATE_DAO_DEVNET_BILLING:${sku.memoLabel}:${walletPubkey.take(8)}".encodeToByteArray()
+        val memo = "PRIVATE_DAO_TESTNET_BILLING:${sku.memoLabel}:${walletPubkey.take(8)}".encodeToByteArray()
         val instructions = listOf(
             SystemAndTokenInstructions.transfer(
                 from = walletPubkey,
-                to = PrivateDaoConfig.devnetBillingReceiveAddress,
+                to = PrivateDaoConfig.billingReceiveAddress,
                 lamports = lamports,
             ),
             TransactionInstruction(

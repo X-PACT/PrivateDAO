@@ -11,7 +11,7 @@ PrivateDAO is Android-first on mobile because Solana Mobile Wallet Adapter is th
 - Kotlin native
 - Jetpack Compose
 - Solana Mobile Wallet Adapter
-- Devnet by default
+- Testnet by default
 
 Seed Vault is intentionally not used for the dApp transaction flow. Seed Vault is the wallet-app path; PrivateDAO is implemented here as a mobile dApp.
 
@@ -26,7 +26,7 @@ apps/android-native/
 The Android app is derived from the existing repository and mirrors these repo-native truths:
 
 - program ID: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
-- devnet explorer conventions from `scripts/utils.ts`
+- Testnet explorer conventions from `scripts/utils.ts`
 - PDA derivations from the program/tests:
   - DAO PDA
   - Proposal PDA
@@ -50,7 +50,7 @@ The Android app is intentionally separated from the current web frontend.
 High-level layers:
 
 - `config/`
-  - devnet RPC
+  - Testnet RPC
   - program ID
   - explorer links
 - `model/`
@@ -99,7 +99,7 @@ Compose + ViewModel layer
 
 Domain / repository layer
   -> PrivateDaoRepository
-     - devnet RPC reads
+     - Testnet RPC reads
      - DAO / proposal decoding
      - PDA derivation
      - instruction payload building
@@ -113,7 +113,7 @@ Wallet layer
      - auth token persistence
 
 Solana layer
-  -> live PrivateDAO program on devnet
+  -> live PrivateDAO program on Testnet
   -> DAO PDA
   -> Proposal PDA
   -> VoteRecord PDA
@@ -122,7 +122,7 @@ Solana layer
 
 Verification surface
   -> tx signature returned to app
-  -> Solscan devnet link
+  -> Solscan Testnet link
   -> same lifecycle and terminology as the current web product
 ```
 
@@ -159,7 +159,7 @@ This means the Android app is designed to work with compatible Android wallets s
 
 ## Real On-Chain Coverage In Android
 
-The current Android app is wired for real devnet interaction, not mock state.
+The current Android app is wired for real Testnet interaction, not mock state.
 
 Implemented mobile transaction paths:
 
@@ -173,8 +173,8 @@ Implemented mobile transaction paths:
 
 Implemented mobile read paths:
 
-- load DAO accounts from the live devnet program
-- load proposal accounts from the live devnet program
+- load DAO accounts from the live Testnet program
+- load proposal accounts from the live Testnet program
 - decode proposal state and phase
 - fetch recent proposal transaction signatures
 - generate explorer links
@@ -212,10 +212,10 @@ Recommended review path for judges:
 1. Install an Android wallet that supports Mobile Wallet Adapter
 2. Launch the PrivateDAO Android app
 3. Connect wallet
-4. Load live proposals from devnet
+4. Load live proposals from Testnet
 5. Select a proposal
 6. Run one of the lifecycle actions that matches the current phase
-7. Verify the resulting signature in Solscan devnet explorer
+7. Verify the resulting signature in Solscan Testnet explorer
 
 ## Relation To The Current Web Product
 
