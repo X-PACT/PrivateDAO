@@ -43,7 +43,7 @@ function main() {
     [homeShell, "Open verification view", "home shell is missing the verification CTA"],
     [homeShell, "Public good", "home shell is missing the Solana-style value section"],
     [homeShell, "The public story explains the product, cryptography, and commercial corridors in one watch surface.", "home shell is missing the hosted story video section"],
-    [homeShell, "The shortest path from landing page to a real Devnet action", "home shell is missing the focused route-entry narrative"],
+    [homeShell, "The shortest path from landing page to a real Testnet action", "home shell is missing the focused route-entry narrative"],
     [commandCenter, "Command Center", "command center surface is missing"],
     [proofCenter, "Proof center", "proof center surface is missing"],
     [securityCenter, "Security architecture", "security center surface is missing"],
