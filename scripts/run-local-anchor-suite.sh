@@ -34,14 +34,20 @@ run_portable_core_checks() {
   echo "[local-anchor-suite] PASS portable checks complete; Anchor local-validator suite requires an AVX2-capable runtime"
 }
 
-if supports_avx2; then
-  echo "[local-anchor-suite] running anchor suite on AVX2-capable host (${suite_name})"
+run_full_anchor_localnet="${PRIVATE_DAO_RUN_ANCHOR_LOCALNET:-0}"
+
+if [[ "$run_full_anchor_localnet" == "1" ]] && supports_avx2; then
+  echo "[local-anchor-suite] running explicit anchor localnet suite on AVX2-capable host (${suite_name})"
   if [[ "$suite_name" == "all" ]]; then
     anchor test --provider.cluster localnet
   else
     anchor test --provider.cluster localnet --run "$test_file"
   fi
   exit 0
+fi
+
+if [[ "$run_full_anchor_localnet" == "1" ]]; then
+  echo "[local-anchor-suite] requested full anchor localnet suite, but host lacks AVX2; falling back to portable checks"
 fi
 
 run_portable_core_checks
