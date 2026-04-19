@@ -1,18 +1,18 @@
 # Trust Package
 
-The Trust Package is the shortest serious explanation of why PrivateDAO can be trusted as a live Devnet-first product under community review.
+The Trust Package is the shortest serious explanation of why PrivateDAO can be trusted as a live Solana Testnet product under community review, with Devnet preserved as rehearsal evidence.
 
 ## Trust components
 
 ### 1. Live protocol surface
 
-- deployed Devnet program
+- deployed Testnet program
 - live frontend
 - wallet-connected flow
 
 ### 2. Runtime evidence
 
-- Devnet rehearsal
+- preserved Devnet rehearsal
 - generated artifacts
 - ZK anchors
 - operational evidence

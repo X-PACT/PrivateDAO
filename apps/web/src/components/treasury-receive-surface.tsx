@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils";
 const assetIconMap = {
   SOL: Wallet,
   USDC: Coins,
+  PUSD: ShieldCheck,
   USDG: Landmark,
 } as const;
 
@@ -113,7 +114,7 @@ const destinationProfiles = [
   {
     value: "agentic-micropayment-rail",
     label: "Agentic micropayment rail",
-    summary: "Prepare a governed micropayment batch so one approved treasury action can fan out into reviewer-visible Devnet settlement events.",
+    summary: "Prepare a governed micropayment batch so one approved treasury action can fan out into reviewer-visible Testnet settlement events.",
     defaultAsset: "USDC" as const,
     defaultAmount: "0.01",
     defaultLane: "operator",
@@ -146,7 +147,7 @@ const destinationProfiles = [
     defaultAsset: "SOL" as const,
     defaultAmount: "0.02",
     defaultLane: "buyer",
-    defaultPurpose: "Treasury top-up for governance runway and shared Devnet operations.",
+    defaultPurpose: "Treasury top-up for governance runway and shared Testnet operations.",
     intake: "payments",
     nextRoutes: [
       { label: "Services", href: "/services" },
@@ -156,15 +157,45 @@ const destinationProfiles = [
   {
     value: "pilot-funding",
     label: "Pilot funding",
-    summary: "Fund a time-boxed pilot so the buyer path stays tied to a real product and measurable Devnet execution.",
+    summary: "Fund a time-boxed pilot so the buyer path stays tied to a real product and measurable Testnet execution.",
     defaultAsset: "USDC" as const,
     defaultAmount: "250",
     defaultLane: "buyer",
-    defaultPurpose: "Pilot funding for PrivateDAO rollout, buyer onboarding, and measured Devnet validation.",
+    defaultPurpose: "Pilot funding for PrivateDAO rollout, buyer onboarding, and measured Testnet validation.",
     intake: "pilot",
     nextRoutes: [
       { label: "Engage", href: "/engage" },
       { label: "Services", href: "/services" },
+    ],
+  },
+  {
+    value: "pusd-confidential-payroll",
+    label: "PUSD confidential payroll",
+    summary: "Prepare a governed Palm USD payroll or contributor payment request with stablecoin settlement and privacy-aware approval context.",
+    defaultAsset: "PUSD" as const,
+    defaultAmount: "25",
+    defaultLane: "operator",
+    defaultPurpose: "PUSD confidential payroll request approved by DAO governance and attached to proof, privacy, and settlement evidence.",
+    intake: "payments",
+    nextRoutes: [
+      { label: "Govern", href: "/govern" },
+      { label: "Services", href: "/services#treasury-payment-request" },
+      { label: "Judge", href: "/judge" },
+    ],
+  },
+  {
+    value: "pusd-gaming-reward-pool",
+    label: "PUSD gaming reward pool",
+    summary: "Prepare a governed Palm USD reward distribution request for gaming DAOs, guilds, tournaments, and creator economies.",
+    defaultAsset: "PUSD" as const,
+    defaultAmount: "100",
+    defaultLane: "operator",
+    defaultPurpose: "PUSD gaming DAO reward pool funded through governance approval, confidential review, and explorer-visible settlement.",
+    intake: "payments",
+    nextRoutes: [
+      { label: "Products", href: "/products" },
+      { label: "Govern", href: "/govern" },
+      { label: "Proof", href: "/proof?judge=1" },
     ],
   },
   {
@@ -212,12 +243,16 @@ const treasurySendingChecklist = [
 ] as const;
 
 function buildSolanaExplorerHref(address: string, network: string) {
-  const cluster = network.toLowerCase().includes("devnet") ? "?cluster=devnet" : "";
+  const cluster = network.toLowerCase().includes("testnet")
+    ? "?cluster=testnet"
+    : network.toLowerCase().includes("devnet")
+      ? "?cluster=devnet"
+      : "";
   return `https://solscan.io/account/${address}${cluster}`;
 }
 
 function resolveSupportedAsset(
-  assets: Array<{ symbol: "SOL" | "USDC" | "USDG" }>,
+  assets: Array<{ symbol: "SOL" | "USDC" | "PUSD" | "USDG" }>,
   requestedAsset: ServiceHandoffAssetSymbol,
 ) {
   return assets.some((asset) => asset.symbol === requestedAsset)
@@ -236,6 +271,7 @@ function buildProposalBackedPrefill(
   const supportedMint =
     proposal.execution.mintSymbol === "SOL" ||
     proposal.execution.mintSymbol === "USDC" ||
+    proposal.execution.mintSymbol === "PUSD" ||
     proposal.execution.mintSymbol === "USDG"
       ? proposal.execution.mintSymbol
       : null;
@@ -277,6 +313,10 @@ function buildTreasuryRoutePlan(params: {
   const executionMode =
     profile.value === "agentic-micropayment-rail"
       ? "agent-triggered micropayment batch"
+      : profile.value === "pusd-confidential-payroll"
+        ? "PUSD confidential payroll settlement"
+      : profile.value === "pusd-gaming-reward-pool"
+        ? "PUSD gaming DAO reward settlement"
       : profile.value === "vendor-payout" || profile.value === "contributor-payout"
       ? "quote-aware payout funding"
       : profile.value === "treasury-rebalance"
@@ -286,7 +326,7 @@ function buildTreasuryRoutePlan(params: {
         : "governed treasury rebalance";
 
   return {
-    routeProvider: "Jupiter-backed treasury lane",
+    routeProvider: destinationAsset === "PUSD" ? "Palm USD treasury lane" : "Jupiter-backed treasury lane",
     executionMode,
     sourceAssetHint:
       assetSymbol === destinationAsset ? "Treasury active asset mix" : `${assetSymbol} treasury position`,
@@ -298,6 +338,8 @@ function buildTreasuryRoutePlan(params: {
       normalizedAmount.length > 0
         ? profile.value === "agentic-micropayment-rail"
           ? `Prepare a governed micropayment batch for ${normalizedAmount} ${assetSymbol} into ${destinationAsset}, then preserve the route and batch logic before agent execution starts.`
+          : destinationAsset === "PUSD"
+            ? `Prepare a governed PUSD settlement request for ${normalizedAmount} ${assetSymbol} into Palm USD, then attach privacy, payroll, or reward context before execution.`
           : `Prepare route preview for ${normalizedAmount} ${assetSymbol} into ${destinationAsset} under ${quoteReviewMode} before delivery.`
         : `Prepare quote preview once a final ${assetSymbol} amount is attached to the request object.`,
     slippagePolicy:
@@ -309,10 +351,14 @@ function buildTreasuryRoutePlan(params: {
     routeRationale:
       profile.value === "agentic-micropayment-rail"
         ? `${routeFocus} This route keeps policy approval, batch execution, and per-transfer proof inside one reviewer-visible treasury lane.`
+        : destinationAsset === "PUSD"
+          ? `${routeFocus} This route turns PUSD into a governed stablecoin settlement rail for payroll, grants, commerce, and gaming DAO rewards.`
         : `${routeFocus} This route keeps treasury motion readable for operators and reviewers without breaking the governed execution story.`,
     reviewerPath:
       profile.value === "agentic-micropayment-rail"
         ? "/documents/agentic-treasury-micropayment-rail"
+        : destinationAsset === "PUSD"
+          ? "/documents/pusd-stablecoin-treasury-layer"
         : "/documents/jupiter-treasury-route",
     settlementPath: "/documents/settlement-receipt-closure",
   };
@@ -326,20 +372,22 @@ function formatSelectionLabel<
 
 function getAllowedDestinationAssets(
   profile: (typeof destinationProfiles)[number]["value"],
-  assets: Array<{ symbol: "SOL" | "USDC" | "USDG"; name: string }>,
+  assets: Array<{ symbol: "SOL" | "USDC" | "PUSD" | "USDG"; name: string }>,
   sourceAsset: ServiceHandoffAssetSymbol,
 ) {
   if (
     profile === "agentic-micropayment-rail" ||
+    profile === "pusd-confidential-payroll" ||
+    profile === "pusd-gaming-reward-pool" ||
     profile === "vendor-payout" ||
     profile === "contributor-payout" ||
     profile === "pilot-funding"
   ) {
-    return assets.filter((asset) => asset.symbol === "USDC" || asset.symbol === "USDG");
+    return assets.filter((asset) => asset.symbol === "USDC" || asset.symbol === "PUSD" || asset.symbol === "USDG");
   }
 
   if (profile === "treasury-top-up") {
-    return assets.filter((asset) => asset.symbol === sourceAsset || asset.symbol === "USDC" || asset.symbol === "USDG");
+    return assets.filter((asset) => asset.symbol === sourceAsset || asset.symbol === "USDC" || asset.symbol === "PUSD" || asset.symbol === "USDG");
   }
 
   return assets;
@@ -808,7 +856,7 @@ export function TreasuryReceiveSurface() {
           ? "Treasury top-up should land in an approved treasury asset so incoming capital stays aligned with later governance and payout motions."
           : "Payout-oriented funding should finish in a settlement-friendly asset before the downstream treasury action moves into execution.";
     const settlementMode =
-      normalizedDestinationAsset === "USDC" || normalizedDestinationAsset === "USDG"
+      normalizedDestinationAsset === "USDC" || normalizedDestinationAsset === "PUSD" || normalizedDestinationAsset === "USDG"
         ? "Stable-asset settlement posture"
         : "Treasury-asset rebalance posture";
 
@@ -816,6 +864,8 @@ export function TreasuryReceiveSurface() {
       destinationPolicy:
         activeProfile.value === "agentic-micropayment-rail"
           ? `This profile is intentionally narrowed to ${allowedDestinationAssets.map((asset) => asset.symbol).join(" / ")} so agent settlement stays in a stable-value payout asset.`
+          : activeProfile.value === "pusd-confidential-payroll" || activeProfile.value === "pusd-gaming-reward-pool"
+            ? "This profile is PUSD-first because the track fit is strongest when Palm USD is the core settlement asset, not a secondary display option."
           : allowedDestinationAssets.length === config.assets.length
           ? "This profile can target any supported treasury asset when the operator keeps the route rationale readable."
           : `This profile is narrowed to ${allowedDestinationAssets.map((asset) => asset.symbol).join(" / ")} so the treasury lands in an asset that matches the operating goal.`,
@@ -927,7 +977,7 @@ export function TreasuryReceiveSurface() {
         </CardHeader>
         <CardContent className="grid gap-4">
           <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-5 text-sm leading-7 text-white/62">
-            Interactive treasury controls are mounting client-side so the request payload, wallet continuity, and governed delivery state stay aligned with live Devnet execution.
+            Interactive treasury controls are mounting client-side so the request payload, wallet continuity, and governed delivery state stay aligned with live Testnet execution.
           </div>
           <div className="grid gap-4 xl:grid-cols-3">
             {config.assets.map((asset) => {
@@ -963,7 +1013,7 @@ export function TreasuryReceiveSurface() {
       <CardHeader>
         <CardTitle>Treasury receive surface</CardTitle>
         <p className="mt-2 text-sm leading-7 text-white/60">
-          Accept public treasury support and pilot funding through explicit Devnet rails. This surface exposes only public receive addresses and asset metadata.
+          Accept public treasury support and pilot funding through explicit Testnet rails. This surface exposes only public receive addresses and asset metadata.
         </p>
       </CardHeader>
       <CardContent className="grid gap-6">
@@ -983,7 +1033,7 @@ export function TreasuryReceiveSurface() {
               <ArrowUpRight className="h-4 w-4" />
             </Link>
             <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-4 py-2 text-xs uppercase tracking-[0.18em] text-white/62">
-              Accepted assets: SOL / USDC / USDG
+              Accepted assets: SOL / USDC / PUSD / USDG
             </div>
           </div>
         </div>

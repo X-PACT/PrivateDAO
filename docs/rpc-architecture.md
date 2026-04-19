@@ -16,20 +16,22 @@ PrivateDAO does not treat one browser RPC endpoint as a sufficient production ar
 ### Read path
 
 - preferred: backend read node and indexer
-- fallback: direct browser RPC
+- fallback: direct browser public cluster RPC
+- authenticated RPCFast and gRPC credentials stay backend-only
 
 ## RPC pool
 
-The read node resolves a Devnet pool from:
+The read node resolves a Testnet-first pool from:
 
-- `RPCFAST_DEVNET_RPC_URL`
-- `RPC_FAST_DEVNET_RPC` (legacy alias)
+- `RPC_FAST_TESTNET_RPC`
+- `RPC_FAST_TESTNET_WSS`
 - `SOLANA_RPC_URL`
+- `RPC_FAST_DEVNET_RPC` (legacy rehearsal alias)
 - `ALCHEMY_DEVNET_RPC_URL` or `ALCHEMY_API_KEY`
 - `HELIUS_API_KEY`
 - `QUICKNODE_DEVNET_RPC`
 - `EXTRA_DEVNET_RPCS`
-- public Devnet RPC
+- public Testnet RPC
 
 ## RPCFast Hackathon/Aperture lane
 

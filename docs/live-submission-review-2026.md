@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document is the public product-progress note for PrivateDAO during the current Devnet-first delivery cycle.
+This document is the public product-progress note for PrivateDAO during the current Testnet delivery cycle, with Devnet preserved as transition evidence.
 
 It explains the product work now being strengthened in the open build:
 

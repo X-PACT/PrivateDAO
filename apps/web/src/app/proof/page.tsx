@@ -6,6 +6,7 @@ import { JudgeRuntimeLogsPanel } from "@/components/judge-runtime-logs-panel";
 import { JudgeExecutionContinuityPanel } from "@/components/judge-execution-continuity-panel";
 import { LocalizedProofPrimer } from "@/components/localized-proof-primer";
 import { LocalizedRouteSummary } from "@/components/localized-route-summary";
+import { NormalUserOperationPath } from "@/components/normal-user-operation-path";
 import { OperationsShell } from "@/components/operations-shell";
 import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
 import { ProofEntryBanner } from "@/components/proof-entry-banner";
@@ -18,6 +19,7 @@ import { AuthoritativeExecutionTrail } from "@/components/authoritative-executio
 import { ExecutionOperationsStrip } from "@/components/execution-operations-strip";
 import { DevnetExecutionScreenshotsStrip } from "@/components/devnet-execution-screenshots-strip";
 import { PrivacyProofExplainer } from "@/components/privacy-proof-explainer";
+import { TestnetProofMatrix } from "@/components/testnet-proof-matrix";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
@@ -38,7 +40,7 @@ export default function ProofPage() {
     <OperationsShell
       eyebrow="Proof"
       title="Runtime evidence, trust packets, and additive hardening in one surface"
-      description="The Next.js app exposes the same proof story as the current site, but inside a cleaner operational shell: baseline live proof, dedicated V3 hardening proof, integration packets, and the exact surfaces you use after running the real Devnet flow yourself."
+      description="The Next.js app exposes the same proof story as the current site, but inside a cleaner operational shell: baseline live proof, dedicated V3 hardening proof, integration packets, and the exact surfaces you use after running the real Testnet flow yourself."
       badges={[
         { label: "Proof Center", variant: "cyan" },
         { label: "Verification-ready", variant: "violet" },
@@ -55,6 +57,8 @@ export default function ProofPage() {
       <div>
         <PrivacyProofExplainer compact />
       </div>
+      <NormalUserOperationPath />
+      <TestnetProofMatrix />
       <div>
         <PrivacyPolicySelector compact />
       </div>

@@ -27,9 +27,9 @@ function getGrantPanelModel(workspace: CompetitionTrackWorkspace): GrantPanelMod
       eyebrow: "Grant execution readiness",
       title: "This Poland grant now reads like a fast, executable funding ask",
       summary:
-        "The Poland grant corridor is strongest when it looks concise, open-source, and ship-fast. The funded work is now framed as the shortest path from live Devnet proof to a grant-complete release candidate.",
+        "The Poland grant corridor is strongest when it looks concise, open-source, and ship-fast. The funded work is now framed as the shortest path from live Testnet proof to a grant-complete release candidate.",
       shippedNow: [
-        "live Devnet product with start, govern, services, trust, and story routes",
+        "live Testnet product with start, govern, services, trust, and story routes",
         "public proof, telemetry, custody, and blocker packets",
         "regional credibility from the Poland win and open-source repo",
       ],
@@ -42,7 +42,7 @@ function getGrantPanelModel(workspace: CompetitionTrackWorkspace): GrantPanelMod
         "Week 1: hardening and reviewer packet closure",
         "Week 2: audit and custody preparation closure",
         "Week 3: runtime and settlement evidence closure",
-        "Week 4: mainnet candidate or hardened Devnet release candidate",
+        "Week 4: mainnet candidate or hardened Testnet release candidate",
       ],
       primaryPacketHref: "/documents/poland-foundation-grant-application-packet",
       primaryPacketLabel: "Open Poland grant packet",

@@ -38,6 +38,7 @@ export function ServicesSurface() {
 
       <Card>
         <CardHeader>
+          <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-200/70">Pilot and trust journey</div>
           <CardTitle>{content.journeyTitle}</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4">

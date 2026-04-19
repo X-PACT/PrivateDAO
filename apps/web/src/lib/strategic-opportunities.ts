@@ -19,7 +19,7 @@ export const strategicOpportunities: StrategicOpportunity[] = [
     sponsor: "Accelerator and ecosystem funding",
     fit: "Strong",
     summary:
-      "PrivateDAO already reads like a startup-quality Devnet product with trust packets, reviewer paths, and commercial surfaces that can support accelerator and grant review.",
+      "PrivateDAO already reads like a startup-quality Testnet product with trust packets, reviewer paths, and commercial surfaces that can support accelerator and grant review.",
     shippedNow:
       "Root-domain product shell, story route, command center, services, custody truth, reviewer packets, and launch-trust surfaces are live.",
     missingFeature:

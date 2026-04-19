@@ -20,7 +20,7 @@ export function ServiceOperationalCards() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Try these services now on Devnet</CardTitle>
+        <CardTitle>Try these services now on Testnet</CardTitle>
       </CardHeader>
       <CardContent className="grid gap-4 xl:grid-cols-2">
         {cards.map((card) => {
@@ -41,12 +41,12 @@ export function ServiceOperationalCards() {
               </div>
 
               <div className="mt-5 rounded-2xl border border-cyan-300/16 bg-cyan-300/[0.08] p-4">
-                <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/74">Try now on Devnet</div>
+                <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/74">Try now on Testnet</div>
                 <div className="mt-2 text-sm leading-7 text-white/70">{card.tryNow}</div>
               </div>
 
               <div className="mt-4 rounded-2xl border border-emerald-300/16 bg-emerald-300/[0.08] p-4 text-sm leading-7 text-white/70">
-                Start with <span className="text-white">/learn</span> if you are new, then run the service path on Devnet and verify the result through analytics, proof, or trust packets instead of trusting the copy alone.
+                Start with <span className="text-white">/learn</span> if you are new, then run the service path on Testnet and verify the result through analytics, proof, or trust packets instead of trusting the copy alone.
               </div>
 
               <div className="mt-4 grid gap-3">

@@ -23,7 +23,7 @@ export function RuntimeTemplateSandbox({
         <div className="text-[11px] uppercase tracking-[0.28em] text-white/42">Runtime visibility</div>
         <h3 className="mt-3 text-xl font-semibold text-white">Show the post-signature truth, not a toast only</h3>
         <p className="mt-3 text-sm leading-7 text-white/62">
-          This starter teaches the UI pattern. The values shown here are pulled from the generated Devnet evidence so
+          This starter teaches the UI pattern. The values shown here are pulled from the current Testnet evidence so
           the learner can open a real signature and see how PrivateDAO reports status, freshness, and verification.
         </p>
         <div className="mt-5 grid gap-3 md:grid-cols-2">

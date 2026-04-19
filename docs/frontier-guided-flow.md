@@ -40,7 +40,7 @@ PrivateDAO now exposes one reviewer-friendly flow for the core product story:
 
 ## Honest Boundary
 
-This flow is live on Devnet and reviewer-ready. It does **not** claim:
+This flow is live on Solana Testnet and reviewer-ready. The Devnet packets remain preserved as historical rehearsal evidence, while the current operating path is Testnet. It does **not** claim:
 
 - real-funds mainnet clearance,
 - completed external audit,
@@ -51,7 +51,7 @@ Those remain documented launch blockers until they are actually closed with evid
 
 ## Dedicated V3 Proof
 
-The original lifecycle proof remains live, and the repository now also carries a dedicated V3 Devnet packet for:
+The original lifecycle proof remains preserved, and the repository now also carries a dedicated V3 packet for:
 
 - `Governance Hardening V3`
 - `Settlement Hardening V3`

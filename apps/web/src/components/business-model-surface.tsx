@@ -51,7 +51,7 @@ export function BusinessModelSurface() {
     <section className="rounded-[32px] border border-white/10 bg-white/[0.04] p-6 sm:p-7">
       <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-200/82">Business model</div>
       <h2 className="mt-3 max-w-4xl text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-        Turn the live Devnet product into a sustainable infrastructure business without faking mainnet maturity
+        Turn the live Testnet product into a sustainable infrastructure business without faking mainnet maturity
       </h2>
       <p className="mt-4 max-w-4xl text-sm leading-7 text-white/66">
         The commercial model stays simple and defensible: charge for privacy-heavy execution, sell organization-grade
@@ -69,8 +69,8 @@ export function BusinessModelSurface() {
       </div>
 
       <div className="mt-6 rounded-[24px] border border-cyan-300/16 bg-cyan-300/[0.08] p-5 text-sm leading-7 text-white/70">
-        The current truthful commercial rail is a <span className="font-semibold text-white">Devnet billing rehearsal</span>:
-        a visitor with Devnet SOL can pay a small on-chain amount from the same wallet-first product, then inspect the
+        The current truthful commercial rail is a <span className="font-semibold text-white">Testnet billing rehearsal</span>:
+        a visitor with Testnet SOL can pay a small on-chain amount from the same wallet-first product, then inspect the
         signature and logs in the explorer. That proves the business logic on-chain without pretending there is already
         a finished mainnet checkout stack.
       </div>
@@ -85,8 +85,8 @@ export function BusinessModelSurface() {
       </div>
 
       <div className="mt-6 flex flex-wrap gap-3">
-        <Link href="/services/devnet-billing-rehearsal" className={cn(buttonVariants({ size: "sm" }))}>
-          Open Devnet billing rehearsal
+        <Link href="/services/testnet-billing-rehearsal" className={cn(buttonVariants({ size: "sm" }))}>
+          Open Testnet billing rehearsal
         </Link>
         <Link href="/documents/pricing-model" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
           Open pricing model

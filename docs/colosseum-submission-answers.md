@@ -18,17 +18,17 @@ For the public product posture around the current review cycle, use [superteam-t
 - Primary role: `Founder & Lead Protocol Engineer`
 - Team size: `solo founder`
 - Open source: `Yes`
-- Live token: `Yes`
-- Live token details:
+- Live token: `No`, if the form means a public mainnet market token.
+- Governance mint evidence:
   - token: `PDAO`
   - network: `Solana Devnet`
   - mint: `AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt`
   - token program: `Token-2022`
   - initial supply: `1,000,000 PDAO`
   - mint authority: `disabled`
-  - role: live governance voting token for the canonical reviewer-facing DAO
+  - role: preserved governance voting-token evidence attached to the current Testnet review path
 - Important honesty boundary:
-  - this is a live Devnet token and live Devnet governance surface
+  - this is preserved Devnet governance-token evidence attached to the current Testnet governance path
   - it is not presented as a mainnet market token or speculative token launch
 
 ## Short Project Description
@@ -45,9 +45,9 @@ Solana is now strong enough to support governance infrastructure that goes beyon
 
 ## What Works Today
 
-- deployed Solana Devnet program
+- deployed Solana Testnet program with preserved canonical program id
 - live wallet-connected frontend
-- live Devnet governance token surface (`PDAO`)
+- preserved Devnet governance token evidence (`PDAO`) attached to the Testnet reviewer path
 - commit-reveal governance
 - proposal-level `zk_enforced` hardening
 - additive `Governance Hardening V3` and `Settlement Hardening V3` paths with dedicated Devnet proof
@@ -60,7 +60,7 @@ Solana is now strong enough to support governance infrastructure that goes beyon
 
 ## Repo Context
 
-This repo contains the core product, not just one contract. It includes the on-chain program, live frontend, backend read node, Devnet automation, confidential payout and privacy paths, submission and review artifacts, and operational readiness surfaces. It is Devnet-first today, with some final production steps still external by nature, such as expanded real-device captures, external audit closure, and final mainnet operational sign-off.
+This repo contains the core product, not just one contract. It includes the on-chain program, live frontend, backend read node, Testnet lifecycle automation, preserved Devnet evidence, confidential payout and privacy paths, submission and review artifacts, and operational readiness surfaces. It is live on Testnet today, with final production steps still external by nature, such as expanded real-device captures, external audit closure, custody ceremony, and final mainnet operational sign-off.
 
 ## Technical Stack
 
@@ -98,11 +98,11 @@ Existing governance and treasury tools often separate governance, treasury contr
 
 If a form asks `Do you have a live token?`, the correct answer is:
 
-`Yes`
+`No`, if the form means a public mainnet market token.
 
 Suggested details:
 
-`Yes. PrivateDAO has a live Devnet governance token surface called PDAO. Mint: AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt on Token-2022, with 1,000,000 initial supply and disabled mint authority. It serves as the live governance voting token for the canonical reviewer-facing Devnet DAO. This is a live Devnet governance token, not a public mainnet market token.`
+`PrivateDAO has preserved non-market governance-mint evidence called PDAO. Mint: AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt on Token-2022, with 1,000,000 initial supply and disabled mint authority. It is used as reviewer evidence for governance voting power and remains attached to the current Testnet governance path. It is not a public mainnet market token.`
 
 ## Contact
 

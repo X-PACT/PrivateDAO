@@ -40,7 +40,7 @@ PrivateDAO now exposes one reviewer-friendly flow for the core product story:
 
 ## Honest Boundary
 
-This flow is live on Devnet and reviewer-ready. It does **not** claim:
+This flow is live on Solana Testnet and reviewer-ready. Devnet remains preserved as transition evidence. It does **not** claim:
 
 - real-funds mainnet clearance,
 - completed external audit,

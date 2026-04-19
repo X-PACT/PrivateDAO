@@ -3,7 +3,7 @@
 - network: devnet
 - program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - primary rpc: `https://api.devnet.solana.com`
-- fallback rpc: `https://solana-rpc.rpcfast.com?api_key=ejQYiCn3yUFJUYyG3yw6C72hZNDzxoSFLy7VX9ETQOJOSFwQK2eh0Dl0XXAdU2uv`
+- fallback rpc: `RPC_FAST_DEVNET_RPC` host secret
 - primary healthy: yes
 - fallback healthy: yes
 - anchor accounts present: yes

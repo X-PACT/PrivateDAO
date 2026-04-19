@@ -12,7 +12,7 @@ export function getTrackNarrativePlan(
   if (workspace.slug === "colosseum-frontier") {
     return {
       whyUs:
-        "We are not presenting a one-week prototype. We are presenting a live governance company already operating on Devnet with product shell, proof, diagnostics, services, and trust continuity under one root domain.",
+        "We are not presenting a one-week prototype. We are presenting a live governance company already operating on Testnet with product shell, proof, diagnostics, services, and trust continuity under one root domain.",
       futureProblemSolution:
         "The future problem is not launching more DAOs. It is operating them safely, privately, and credibly. PrivateDAO solves that by turning governance, treasury execution, proof, and operator workflows into one coherent infrastructure product.",
       whySponsorShouldCareNow:
@@ -38,7 +38,7 @@ export function getTrackNarrativePlan(
       futureProblemSolution:
         "The future problem is that crypto apps still feel like tools for experts. PrivateDAO solves that by turning complex governance and proof flows into guided product routes with clear next actions.",
       whySponsorShouldCareNow:
-        "Solflare, QuickNode, and the live dApp corridor are not superficial sponsor badges here. They are part of a route that already looks commercial and is close to customer adoption on Devnet.",
+        "Solflare, QuickNode, and the live dApp corridor are not superficial sponsor badges here. They are part of a route that already looks commercial and is close to customer adoption on Testnet.",
     };
   }
 

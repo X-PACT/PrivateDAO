@@ -49,7 +49,7 @@ const privacyModes = [
   {
     value: "refhe-gated-settlement",
     label: "REFHE-gated settlement",
-    summary: "Keep the operation tied to the confidential settlement corridor used in the current Devnet proof and review surfaces.",
+    summary: "Keep the operation tied to the confidential settlement corridor used in the current Testnet proof and review surfaces.",
   },
 ] as const;
 

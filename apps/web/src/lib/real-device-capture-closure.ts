@@ -54,11 +54,11 @@ function getTargetPlan(targetId: string) {
   switch (targetId) {
     case "phantom-desktop":
       return {
-        nextAction: "Capture connect, diagnostics, and one signed Devnet submission from Phantom on desktop.",
+        nextAction: "Capture connect, diagnostics, and one signed Testnet submission from Phantom on desktop.",
         requiredEvidence: [
           "wallet version visible in extension or popup",
           "connect result and diagnostics visibility",
-          "signed Devnet transaction signature or explicit wallet error",
+          "signed Testnet transaction signature or explicit wallet error",
           "screenshot or short recording reference",
         ],
       };
@@ -74,7 +74,7 @@ function getTargetPlan(targetId: string) {
       };
     case "backpack-desktop":
       return {
-        nextAction: "Capture Backpack desktop connect and one governed wallet action on Devnet.",
+        nextAction: "Capture Backpack desktop connect and one governed wallet action on Testnet.",
         requiredEvidence: [
           "connect result",
           "signing result",
@@ -84,7 +84,7 @@ function getTargetPlan(targetId: string) {
       };
     case "glow-desktop":
       return {
-        nextAction: "Capture Glow desktop compatibility for the same minimum Devnet flow used elsewhere.",
+        nextAction: "Capture Glow desktop compatibility for the same minimum Testnet flow used elsewhere.",
         requiredEvidence: [
           "wallet and browser identification",
           "connect and signing result",

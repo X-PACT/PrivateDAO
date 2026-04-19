@@ -1,6 +1,6 @@
 # Pricing Model
 
-PrivateDAO is being packaged as public-good governance and treasury infrastructure with a commercial model that can stay honest on Devnet today and scale into institutional operations later.
+PrivateDAO is being packaged as public-good governance and treasury infrastructure with a commercial model that is now testable on Solana Testnet and can scale into institutional operations later.
 
 The rule is simple:
 
@@ -42,13 +42,13 @@ Current boundary:
 - the repo does not claim that PDAO is already the universal billing token for every operation
 - the repo does claim that PDAO can become part of the pricing and governance posture without breaking the wallet-first product model
 
-## 2. Devnet billing rehearsal
+## 2. Testnet billing rehearsal
 
-The current truthful billing lane is a Devnet rehearsal:
+The current billing lane is a Testnet rehearsal:
 
-- the visitor connects a Devnet wallet
+- the visitor connects a Solana Testnet wallet
 - the visitor selects a small service SKU
-- the visitor signs a SOL transfer to the Devnet treasury receive address
+- the visitor signs a SOL transfer, or a configured PUSD SPL transfer, to the Testnet treasury receive address
 - the chain records the signature and memo
 - the visitor opens the explorer link and runtime proof
 
@@ -61,7 +61,7 @@ This matters because it proves that the product can already connect:
 
 Live route:
 
-- `https://privatedao.org/services/devnet-billing-rehearsal/`
+- `https://privatedao.org/services/testnet-billing-rehearsal/`
 
 This is not yet presented as:
 
@@ -77,6 +77,7 @@ This is not yet presented as:
 | Hosted reads and telemetry | usage + support | free entry threshold, then usage-priced or bundled into plans |
 | Reviewer-safe privacy packet | per packet | charge when a team needs buyer, auditor, or committee-ready exports |
 | Confidential treasury or payout rail | per action or premium plan | charge when REFHE / MagicBlock-backed operation support is requested |
+| PUSD payroll, grants, and gaming rewards | per transfer lane or premium plan | use Palm USD as the institutional stablecoin corridor through the prepared SPL transfer lane once the official Solana mint and treasury receive address are set |
 | Operator support and launch coordination | monthly or milestone retainer | for teams that need higher-touch release help |
 
 ## 4. Internal commercial modules
@@ -116,9 +117,9 @@ The business model only remains credible if these assurance surfaces keep improv
 PrivateDAO can already show:
 
 - a live browser product
-- a live Devnet governance path
+- a live Solana Testnet governance path
 - a live proof and trust path
-- a live Devnet billing rehearsal
+- a live Testnet billing rehearsal with SOL and PUSD SPL transfer construction
 - a plausible pricing and services structure
 
 That is enough to argue that the project is not only technically interesting. It is a credible infrastructure company in formation.
@@ -132,4 +133,4 @@ This document does not claim:
 - recurring subscription automation on-chain
 - completed enterprise contracts
 
-It documents the commercial model and the currently live Devnet billing rehearsal that make the model testable today.
+It documents the commercial model and the currently live Testnet billing rehearsal that make the model testable today.

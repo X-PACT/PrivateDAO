@@ -33,7 +33,7 @@ export function RuntimeOperationsReadinessPanel() {
     <Card className="border-amber-300/16 bg-[linear-gradient(180deg,rgba(26,18,10,0.96),rgba(12,10,18,0.99))]">
       <CardHeader className="space-y-3">
         <div className="text-[11px] uppercase tracking-[0.3em] text-amber-200/78">Runtime operations readiness</div>
-        <CardTitle className="text-2xl">The last operational gap between live Devnet proof and a credible mainnet release path</CardTitle>
+        <CardTitle className="text-2xl">The last operational gap between live Testnet proof and a credible mainnet release path</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="text-sm leading-7 text-white/66">

@@ -24,7 +24,7 @@ export default function LearnAssignmentsPage() {
       badges={[
         { label: "Route-linked", variant: "cyan" },
         { label: "UI-first", variant: "success" },
-        { label: "Devnet-verifiable", variant: "violet" },
+        { label: "Testnet-verifiable", variant: "violet" },
       ]}
     >
       <LearnBootcampNav />

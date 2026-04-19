@@ -57,7 +57,7 @@ export default function EngagePage({ searchParams }: EngagePageProps) {
     <OperationsShell
       eyebrow="Engage"
       title="Turn product proof into real customer and mainnet motion"
-      description="This route connects every strong product corridor to an actual buyer story: what is sellable now on Devnet, what the first paid motion looks like, and how the rollout graduates toward mainnet without overstating readiness."
+      description="This route connects every strong product corridor to an actual buyer story: what is sellable now on Testnet, what the first paid motion looks like, and how the rollout graduates toward mainnet without overstating readiness."
       badges={[
         { label: "Customer-ready", variant: "success" },
         { label: "Mainnet-aware", variant: "warning" },

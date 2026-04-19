@@ -6,6 +6,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { Check, ChevronDown, Copy, LogOut, Wallet } from "lucide-react";
 
 import { type ButtonProps, buttonVariants } from "@/components/ui/button";
+import { SOLANA_NETWORK_LABEL } from "@/lib/solana-network";
 import { cn } from "@/lib/utils";
 
 type WalletConnectButtonProps = {
@@ -16,7 +17,7 @@ type WalletConnectButtonProps = {
 
 export function WalletConnectButton({
   className,
-  connectLabel = "Connect Devnet Wallet",
+  connectLabel = `Connect ${SOLANA_NETWORK_LABEL} Wallet`,
   connectedLabelPrefix,
   size = "sm",
   variant = "default",
@@ -206,9 +207,9 @@ export function WalletConnectButton({
             <div className="flex items-start justify-between gap-4">
               <div>
                 <div className="text-[11px] uppercase tracking-[0.24em] text-white/44">Wallet-first connect</div>
-                <h3 className="mt-3 text-2xl font-semibold text-white">Choose a Devnet wallet</h3>
+                <h3 className="mt-3 text-2xl font-semibold text-white">Choose a {SOLANA_NETWORK_LABEL} wallet</h3>
                 <p className="mt-3 text-sm leading-7 text-white/62">
-                  Pick the wallet you want to use for real Devnet actions. After connect, continue directly into DAO
+                  Pick the wallet you want to use for real {SOLANA_NETWORK_LABEL} actions. After connect, continue directly into DAO
                   creation, proposals, voting, execution, and proof review from the same browser surface.
                 </p>
               </div>
@@ -245,8 +246,9 @@ export function WalletConnectButton({
               })}
             </div>
             <div className="mt-5 rounded-[24px] border border-emerald-300/15 bg-emerald-300/[0.08] p-4 text-sm leading-7 text-white/72">
-              Solflare is the recommended first path for guided Devnet execution. Phantom and Backpack remain available
-              for reviewers and operators who already use them.
+              Solflare is the recommended first path for guided Testnet execution. Phantom, Glow, and Backpack are
+              available as real adapters, and wallet-standard support lets compatible wallets such as Jupiter surface
+              in the same production wallet layer when installed.
             </div>
           </div>
         </div>

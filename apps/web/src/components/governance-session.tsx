@@ -16,6 +16,7 @@ import {
   clearStoredServiceHandoffState,
   markStoredServiceHandoffExecuted,
 } from "@/lib/service-handoff-state";
+import { SOLANA_NETWORK_LABEL } from "@/lib/solana-network";
 
 type VoteChoice = "Approve" | "Reject";
 
@@ -331,7 +332,7 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
             },
             "DAO created",
             liveRuntime
-              ? `${current.daoName} bootstrapped live on devnet at ${liveRuntime.address}.`
+              ? `${current.daoName} bootstrapped live on ${SOLANA_NETWORK_LABEL} at ${liveRuntime.address}.`
               : `${current.daoName} staged in the product shell and ready for proposal creation.`,
           ),
         ),
@@ -349,7 +350,7 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
             },
             "Proposal created",
             liveRuntime
-              ? `${current.proposalTitle} submitted live on devnet at ${liveRuntime.address}.`
+              ? `${current.proposalTitle} submitted live on ${SOLANA_NETWORK_LABEL} at ${liveRuntime.address}.`
               : `${current.proposalTitle} is now the active proposal in the UI flow.`,
           ),
         ),
@@ -406,7 +407,7 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
             },
             "Proposal finalized",
             signature
-              ? `${current.proposalTitle} finalized live on devnet and is now waiting on execution timing.`
+              ? `${current.proposalTitle} finalized live on ${SOLANA_NETWORK_LABEL} and is now waiting on execution timing.`
               : `${current.proposalTitle} has been finalized in the staged UI flow and is now waiting on execution timing.`,
           ),
         ),
@@ -454,7 +455,7 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
             current.executionIntent?.requestPayload
               ? `${current.executionIntent.requestPayload.requestId} · ${current.executionIntent.requestPayload.amountDisplay} · ${current.executionIntent.requestPayload.reference ?? "reference pending"} submitted from the payload-driven signing shell into ${current.executionIntent.requestPayload.deliveryRoute}.`
               : signature
-                ? `${current.proposalTitle} executed live on devnet from the current standard proposal lane.`
+                ? `${current.proposalTitle} executed live on ${SOLANA_NETWORK_LABEL} from the current standard proposal lane.`
                 : `${current.proposalTitle} advanced to the execute stage in the product workflow.`,
           );
 

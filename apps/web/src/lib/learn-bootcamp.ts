@@ -104,12 +104,12 @@ export const learnLectures: LearnLecture[] = [
       {
         heading: "How PrivateDAO solves it",
         body:
-          "PrivateDAO starts from /start, lets the user connect a Devnet wallet, recommends the right corridor, keeps SNS-style readable identity in the product story, and routes into command-center or govern without terminal work.",
+          "PrivateDAO starts from /start, lets the user connect a Testnet wallet, recommends the right corridor, keeps SNS-style readable identity in the product story, and routes into command-center or govern without terminal work.",
       },
       {
         heading: "Try it now",
         body:
-          "Connect a Devnet wallet, pick the correct corridor, then move into Govern or Command Center. The goal is to feel that a normal operator can start safely in seconds.",
+          "Connect a Testnet wallet, pick the correct corridor, then move into Govern or Command Center. The goal is to feel that a normal operator can start safely in seconds.",
       },
       {
         heading: "Check the code",
@@ -131,13 +131,13 @@ export const learnLectures: LearnLecture[] = [
     liveExecution: {
       heading: "Run the wallet-first path now",
       summary:
-        "Connect a Devnet wallet, pick the right corridor, then move into the live shell that prepares the user for governed action instead of dropping them into docs or terminal steps.",
+        "Connect a Testnet wallet, pick the right corridor, then move into the live shell that prepares the user for governed action instead of dropping them into docs or terminal steps.",
       routeHref: "/start",
       routeLabel: "Run wallet-first onboarding",
       verifyHref: "/dashboard",
       verifyLabel: "Open live operator state",
       steps: [
-        "Connect a Devnet wallet from Start.",
+        "Connect a Testnet wallet from Start.",
         "Choose the corridor that matches governance, treasury, or analytics work.",
         "Continue into Command Center and confirm the signer context is visible and usable.",
       ],
@@ -145,7 +145,7 @@ export const learnLectures: LearnLecture[] = [
     assignment: {
       title: "Build a wallet-first entry shell",
       brief:
-        "Create a page that connects a Devnet wallet, surfaces signer context, and sends the user into the correct PrivateDAO corridor without extra explanation screens.",
+        "Create a page that connects a Testnet wallet, surfaces signer context, and sends the user into the correct PrivateDAO corridor without extra explanation screens.",
       deliverables: [
         "Connect wallet button with signer state",
         "Corridor selector for governance, treasury, or analytics",
@@ -164,7 +164,7 @@ export const learnLectures: LearnLecture[] = [
         options: [
           "Because a signer is part of the product flow, not a backend detail.",
           "Because it replaces proof entirely.",
-          "Because it avoids Devnet usage.",
+          "Because it avoids Testnet usage.",
         ],
         correctAnswerIndex: 0,
       },
@@ -336,7 +336,7 @@ export const learnLectures: LearnLecture[] = [
     title: "Solana Runtime UX: Fast RPC, Diagnostics, and Activity Tracking",
     strapline: "Users trust a dApp when state updates feel honest.",
     summary:
-      "This lecture explains why Fast RPC, hosted reads, telemetry, analytics, and diagnostics are not backend trivia. They are core UX components that make Devnet activity understandable and trustworthy.",
+      "This lecture explains why Fast RPC, hosted reads, telemetry, analytics, and diagnostics are not backend trivia. They are core UX components that make Testnet activity understandable and trustworthy.",
     badges: ["Fast RPC", "Diagnostics", "Dune-aware"],
     sections: [
       {
@@ -373,7 +373,7 @@ export const learnLectures: LearnLecture[] = [
     codeRefs: [
       { label: "Dashboard route", href: `${githubBase}/apps/web/src/app/dashboard/page.tsx` },
       { label: "Diagnostics route", href: `${githubBase}/apps/web/src/app/diagnostics/page.tsx` },
-      { label: "Devnet metrics", href: `${githubBase}/apps/web/src/lib/devnet-service-metrics.ts` },
+      { label: "Testnet metrics", href: `${githubBase}/apps/web/src/lib/devnet-service-metrics.ts` },
       { label: "Reviewer telemetry packet", href: `${githubBase}/docs/reviewer-telemetry-packet.md` },
       { label: "Runtime activity starter template", href: `${githubBase}/templates/frontend-solana-bootcamp/runtime-activity-starter/RuntimeActivityStarter.tsx` },
     ],
@@ -397,7 +397,7 @@ export const learnLectures: LearnLecture[] = [
         "Create a widget that shows the last action, tx signature, live status, and a recovery hint when runtime state lags or retries are required.",
       deliverables: [
         "Last action summary",
-        "Clickable Devnet transaction hash",
+        "Clickable Testnet transaction hash",
         "Status / retry hint / freshness indicator",
       ],
       liveRoute: "/dashboard",
@@ -461,8 +461,8 @@ export const learnLectures: LearnLecture[] = [
     title: "Private Payments, Gaming DAO, Proof, and Agentic Rails",
     strapline: "Complex cryptography becomes simple product behavior.",
     summary:
-      "This lecture ties the hardest product pieces together: MagicBlock, REFHE, ZK review, Jupiter, Kamino, Torque MCP, Zerion-style agents, gaming rewards, and the Agentic Treasury Micropayment Rail.",
-    badges: ["MagicBlock + REFHE", "Jupiter + Kamino", "Zerion + Torque"],
+      "This lecture ties the hardest product pieces together: MagicBlock, REFHE, ZK review, PUSD, Jupiter, Kamino, Torque MCP, Zerion-style agents, gaming rewards, and the Agentic Treasury Micropayment Rail.",
+    badges: ["MagicBlock + REFHE", "PUSD + Stablecoin Treasury", "Jupiter + Kamino"],
     sections: [
       {
         heading: "What you’ll learn",
@@ -477,12 +477,12 @@ export const learnLectures: LearnLecture[] = [
       {
         heading: "How PrivateDAO solves it",
         body:
-          "PrivateDAO maps ZK to private review and vote protection, MagicBlock to responsive private execution lanes, REFHE to confidential settlement posture, Jupiter and Kamino to treasury coordination, Torque to MCP-style operator rails, and the existing micropayment engine to agentic execution.",
+          "PrivateDAO maps ZK to private review and vote protection, MagicBlock to responsive private execution lanes, REFHE to confidential settlement posture, PUSD and adjacent stablecoins to payroll, grants, commerce, and gaming rewards, Jupiter and Kamino to treasury coordination, Torque to MCP-style operator rails, and the existing micropayment engine to agentic execution.",
       },
       {
         heading: "Try it now",
         body:
-          "Open Security, Services, Intelligence, Judge, and the Agentic Treasury Micropayment Rail packet. The goal is to see how private decisions become reviewable payment and reward actions on Devnet.",
+          "Open Security, Services, Intelligence, Judge, the PUSD stablecoin treasury layer, and the Agentic Treasury Micropayment Rail packet. The goal is to see how private decisions become reviewable payment and reward actions on Testnet.",
       },
       {
         heading: "Check the code",
@@ -494,12 +494,14 @@ export const learnLectures: LearnLecture[] = [
       { href: "/security", label: "Open Security" },
       { href: "/services", label: "Open Services" },
       { href: "/intelligence", label: "Open Gaming + Intelligence" },
+      { href: "/documents/pusd-stablecoin-treasury-layer", label: "Open PUSD Treasury Layer" },
       { href: "/documents/agentic-treasury-micropayment-rail", label: "Open Micropayment Rail" },
     ],
     codeRefs: [
       { label: "Security route", href: `${githubBase}/apps/web/src/app/security/page.tsx` },
       { label: "Gaming and intelligence route", href: `${githubBase}/apps/web/src/app/intelligence/page.tsx` },
       { label: "Micropayment engine", href: `${githubBase}/scripts/lib/micropayment-engine.ts` },
+      { label: "PUSD treasury layer", href: `${githubBase}/docs/pusd-stablecoin-treasury-layer.md` },
       { label: "Run micropayment rail", href: `${githubBase}/scripts/run-agentic-treasury-micropayment-rail.ts` },
       { label: "Solana program", href: `${githubBase}/programs/private-dao` },
       { label: "ZK folder", href: `${githubBase}/zk` },
@@ -517,13 +519,13 @@ export const learnLectures: LearnLecture[] = [
         "Open Security or Services and follow the protected payout or governed reward corridor.",
         "Open Intelligence when you want to inspect the gaming and reward-facing operator lane.",
         "Continue into the agentic treasury rail to inspect repeated settlement actions.",
-        "Use Judge or Proof to open the Devnet transactions and confirm what the chain recorded.",
+        "Use Judge or Proof to open the Testnet transactions and confirm what the chain recorded.",
       ],
     },
     assignment: {
       title: "Ship one private-payment or gaming reward flow",
       brief:
-        "Implement either a confidential payout request surface or a gaming reward execution surface that lands in proof and judge routes after a real Devnet action.",
+        "Implement either a confidential payout request surface or a gaming reward execution surface that lands in proof and judge routes after a real Testnet action.",
       deliverables: [
         "One private-payment or gaming reward UI",
         "One proof-linked CTA after execution",
@@ -590,7 +592,7 @@ export const learnLectures: LearnLecture[] = [
 export const learnToolkitItems: LearnToolkitItem[] = [
   {
     title: "Wallet connect starter",
-    summary: "The minimum shell for connecting a Devnet wallet, surfacing signer state, and moving into the product safely.",
+    summary: "The minimum shell for connecting a Testnet wallet, surfacing signer state, and moving into the product safely.",
     sandboxRoute: "/wallet-template",
     liveRoute: "/start",
     verifyRoute: "/dashboard",
@@ -620,11 +622,11 @@ export const learnToolkitItems: LearnToolkitItem[] = [
     sandboxRoute: "/runtime-template",
     liveRoute: "/dashboard",
     verifyRoute: "/diagnostics",
-    expectedOutcome: "A user can tell what happened after a wallet action and verify it on Devnet.",
+    expectedOutcome: "A user can tell what happened after a wallet action and verify it on Testnet.",
     codeRefs: [
       { label: "Dashboard route", href: `${githubBase}/apps/web/src/app/dashboard/page.tsx` },
       { label: "Diagnostics route", href: `${githubBase}/apps/web/src/app/diagnostics/page.tsx` },
-      { label: "Devnet metrics", href: `${githubBase}/apps/web/src/lib/devnet-service-metrics.ts` },
+      { label: "Testnet metrics", href: `${githubBase}/apps/web/src/lib/devnet-service-metrics.ts` },
       { label: "Runtime activity starter template", href: `${githubBase}/templates/frontend-solana-bootcamp/runtime-activity-starter/RuntimeActivityStarter.tsx` },
     ],
   },

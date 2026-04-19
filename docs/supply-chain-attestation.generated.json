@@ -1,63 +1,63 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-09T21:03:58+02:00",
+  "generatedAt": "2026-04-19T00:16:38+02:00",
   "algorithm": "sha256",
   "packageManager": "npm+yarn",
   "topLevel": {
     "name": "private-dao",
     "version": "0.3.0",
     "dependencies": 4,
-    "devDependencies": 11,
-    "scripts": 185
+    "devDependencies": 14,
+    "scripts": 275
   },
   "lockfiles": {
     "cargo": {
       "path": "Cargo.lock",
-      "packageCount": 261
+      "packageCount": 263
     },
     "npm": {
       "path": "package-lock.json",
       "lockfileVersion": 3,
-      "packageCount": 282
+      "packageCount": 346
     },
     "yarn": {
       "path": "yarn.lock",
-      "entryCount": 279
+      "entryCount": 317
     }
   },
   "files": [
     {
       "path": "Cargo.toml",
-      "sha256": "640c9cc62126b4941cfaac25948b97fe0b647d222fa536c0fa7552dd63020397",
-      "bytes": 293
+      "sha256": "911d37f026a1616571de0831ef09e21db0dc88cdf0e04155a1088a4e09ff4824",
+      "bytes": 333
     },
     {
       "path": "Cargo.lock",
-      "sha256": "73278757b13fe13b970c0bd43762c2f4892bbbdc7b6dcb83cd804a3cc060a30f",
-      "bytes": 72270
+      "sha256": "3e1012b11909a5583f43c7d8c8110e71c4c8b363bf2b15b2553971e7074bbc8d",
+      "bytes": 74468
     },
     {
       "path": "Anchor.toml",
-      "sha256": "d84e132434198b94422709ae488fde7eb7ed6f1b52fca77d09723cc9faa8e8d0",
-      "bytes": 472
+      "sha256": "457f9d356ca7532f52ec730f89e780624d6b2c840e139f04e3a1ec926ec94bf5",
+      "bytes": 552
     },
     {
       "path": "package.json",
-      "sha256": "701f425f97b5418e42ac408f3f969a1bc1477cf58b8ac6d8e6e773959dfb3baa",
-      "bytes": 16529
+      "sha256": "a2175a7c4d1e6c5b0a812c938a337a164077e375435a689c6ba5db79a803385d",
+      "bytes": 26521
     },
     {
       "path": "package-lock.json",
-      "sha256": "ff5a59452c1ac405f4814e3ba1302fbf57f5c84a3b0d99055292ae220e232fbf",
-      "bytes": 135402
+      "sha256": "e853eb2bdcb98bb4b6fcf9d25ca77c131348dfd3311f579455f9a73c9be9c261",
+      "bytes": 166992
     },
     {
       "path": "yarn.lock",
-      "sha256": "52e1e1eebdc84fa4c4a44cd520638f3fd6daaf3eb1d7fd310ea70b310dc20b6b",
-      "bytes": 82517
+      "sha256": "58a2660a02495e975f9ded2f5b71d585707c9b2ce86587b8fcab95cd80f163e6",
+      "bytes": 94061
     }
   ],
-  "aggregateSha256": "1f990e19e8a0d6bb655575ec930bc20b37931d05fdca7301fae9d65134939199",
+  "aggregateSha256": "b97a8dd651701f68e1fad914822bcd828a0aec34b32643ddf6facce7600eddeb",
   "reviewCommands": [
     "npm run build:supply-chain-attestation",
     "npm run verify:supply-chain-attestation",

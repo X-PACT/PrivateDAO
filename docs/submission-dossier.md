@@ -14,6 +14,7 @@ It ties together:
 - what the strategy framing is
 - what the security evidence is
 - what the live proof is
+- what the stablecoin treasury layer is
 - what additive V3 hardening proves
 - what remains outside the repo
 
@@ -21,9 +22,9 @@ It ties together:
 
 PrivateDAO is a governance security system for private, replay-resistant, treasury-safe decision flow on Solana.
 
-For Ranger and Drift, its strongest role is:
+Its strongest commercial role is:
 
-the confidential risk-approval and treasury-control layer for a serious USDC strategy stack.
+the confidential governance, stablecoin treasury, and reviewer-readable execution layer for organizations that need payments, grants, payroll, gaming rewards, and treasury decisions to stay governed from the browser.
 
 ## What Is Proven Today
 
@@ -32,7 +33,8 @@ the confidential risk-approval and treasury-control layer for a serious USDC str
 - timelocked execution
 - treasury validation
 - replay and failure-mode reasoning
-- live devnet proof
+- live Solana Testnet proof
+- PUSD stablecoin treasury and billing lanes
 - dedicated Devnet proof for Governance Hardening V3 and Settlement Hardening V3
 - canonical release manifest
 - reviewer and operations verification gates
@@ -66,6 +68,13 @@ the confidential risk-approval and treasury-control layer for a serious USDC str
 - [devnet-release-manifest.md](/home/x-pact/PrivateDAO/docs/devnet-release-manifest.md)
 - [proof-registry.json](/home/x-pact/PrivateDAO/docs/proof-registry.json)
 - [independent-verification.md](/home/x-pact/PrivateDAO/docs/independent-verification.md)
+
+## Stablecoin Treasury Package
+
+- [pusd-stablecoin-treasury-layer.md](/home/x-pact/PrivateDAO/docs/pusd-stablecoin-treasury-layer.md)
+- [pricing-model.md](/home/x-pact/PrivateDAO/docs/pricing-model.md)
+- [agentic-treasury-micropayment-rail.md](/home/x-pact/PrivateDAO/docs/agentic-treasury-micropayment-rail.md)
+- [treasury-reviewer-packet.generated.md](/home/x-pact/PrivateDAO/docs/treasury-reviewer-packet.generated.md)
 
 ## Operations Package
 

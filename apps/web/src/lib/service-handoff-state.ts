@@ -4,6 +4,8 @@ export const SERVICE_HANDOFF_EVENT = "privatedao:service-handoff-updated";
 export const SERVICE_HANDOFF_PROFILES = [
   "pilot-funding",
   "agentic-micropayment-rail",
+  "pusd-confidential-payroll",
+  "pusd-gaming-reward-pool",
   "treasury-rebalance",
   "treasury-top-up",
   "vendor-payout",
@@ -19,6 +21,7 @@ export const SERVICE_HANDOFF_LANES = [
 export const SERVICE_HANDOFF_ASSET_SYMBOLS = [
   "SOL",
   "USDC",
+  "PUSD",
   "USDG",
 ] as const;
 

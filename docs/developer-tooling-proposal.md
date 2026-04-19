@@ -12,6 +12,7 @@ PrivateDAO turns that problem into a developer tooling surface by providing:
 - a wallet-connected operating surface for DAO creation, treasury funding, proposal creation, commit, reveal, finalize, execute, and confidential payout orchestration
 - a cryptographic companion layer for proposal-bound proof generation, on-chain proof anchoring, and stronger `zk_enforced` runtime surfaces
 - a review and operations layer with reproducible Devnet evidence, runtime diagnostics, MagicBlock runtime capture intake, stress harnesses, and generated attestations
+- a Testnet lifecycle package proving the standard governance and treasury path with public explorer links
 
 ## Problem Statement
 
@@ -44,7 +45,7 @@ PrivateDAO should be evaluated not only as an application, but as governance dev
 - canonical commitment scheme
 - Groth16 companion proof stack for vote, delegation, and tally reasoning
 - proposal-bound proof registries
-- on-chain proof anchoring for the canonical Devnet path
+- on-chain proof anchoring for the preserved Devnet evidence path and current Testnet review path
 - machine-readable cryptographic manifests and attestations
 
 ### 3. Runtime And Operational Tooling
@@ -70,10 +71,10 @@ PrivateDAO should be evaluated not only as an application, but as governance dev
 
 PrivateDAO already includes:
 
-- a live Devnet deployment
+- a live Testnet deployment
 - a live web interface
 - a backend read node and pooled RPC read path
-- a Devnet governance token surface
+- preserved Devnet governance token evidence attached to the Testnet reviewer path
 - on-chain proposal lifecycle execution
 - confidential payroll and bonus flows with MagicBlock and REFHE operator paths
 - proof registries and explorer-visible transaction evidence
@@ -140,7 +141,7 @@ The deliverables from the next funding-backed phase are:
 - expanded runtime evidence with real-device captures
 - stronger proof-path and prover-oriented tooling surfaces
 - clearer operator documentation for production custody and incident handling
-- continued Devnet evidence and reviewer-facing artifact generation
+- continued Testnet evidence and reviewer-facing artifact generation, with Devnet preserved as historical rehearsal evidence
 
 ## Technical Architecture
 
@@ -179,4 +180,4 @@ Funding helps accelerate:
 
 ## Short Submission Blurb
 
-PrivateDAO is a Solana governance tooling stack for teams that need private voting without losing execution safety. It combines commit-reveal governance, treasury protections, proposal-bound proof anchoring, wallet-connected operations, Devnet stress harnesses, and reviewer-visible release evidence into one reusable system. The project is already live on Devnet and is structured to mature from a governance application into production-grade Solana developer tooling.
+PrivateDAO is a Solana governance tooling stack for teams that need private voting without losing execution safety. It combines commit-reveal governance, treasury protections, proposal-bound proof anchoring, wallet-connected operations, Testnet lifecycle proof, preserved Devnet stress harnesses, and reviewer-visible release evidence into one reusable system. The project is already live on Testnet and is structured to mature from a governance application into production-grade Solana developer tooling.

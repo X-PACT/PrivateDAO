@@ -7,24 +7,24 @@ PrivateDAO completed a full Solana Testnet lifecycle rehearsal from the deployed
 - Network: `testnet`
 - Program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Operator: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
-- DAO: `2Vg9J8a3cvkXyj8WNsezq4Pv7e8PpZTreq6K9NU34Unx`
-- Proposal: `HgbBNNbVfJmKhfRHRdJ53LjRCgW8HiA6tNygkfyraY7V`
-- Treasury: `5H2zGsA2mKXuot9RUHHhNMZLb7RMyHqYG9ASAFkZcZkx`
-- Recipient: `Gx5ui7CWrfWDoiUxWhZiCu5DCpPmKm1Vd66pJRdeXzx9`
+- DAO: `CNMCCzP1U7yXoK6CYcTbJuXBbagv9EJoGL3qHuYvS3QG`
+- Proposal: `iqrj3bPTBN1LYKY7rvRnYj3aPE267p7zfjzaJqGD7Je`
+- Treasury: `HkAkqL2mzeGTXfMm8etc8BmXTqgW3YHffn8wjjRkPEsA`
+- Recipient: `FgSYUYaiTSnd64Hjpqjpk3EiXBipQz7CoBkmHsgig66R`
 - Result: `Passed`
 - Executed: `true`
 
 ## Transaction Hashes
 
-- mint governance voting power: [`3LWXV241nNb9xc2KsyyRcmsYRb5Sv5aJx9mFQgtWgPG9upauhoLP4gqYJAWdX828LDVXhY4prknQ5osQSteLdPtk`](https://solscan.io/tx/3LWXV241nNb9xc2KsyyRcmsYRb5Sv5aJx9mFQgtWgPG9upauhoLP4gqYJAWdX828LDVXhY4prknQ5osQSteLdPtk?cluster=testnet)
-- fund recipient system account: [`5eNBtwfauwrA1GAoueDysCQA3py2Rh4qL4kznNnWQMiJ2E8dyf288cvcL3tB4B3ZyMWS3jYf6rnyWJxJvpun4h2g`](https://solscan.io/tx/5eNBtwfauwrA1GAoueDysCQA3py2Rh4qL4kznNnWQMiJ2E8dyf288cvcL3tB4B3ZyMWS3jYf6rnyWJxJvpun4h2g?cluster=testnet)
-- create DAO: [`25GqEiWPHPjkxnMEnBH8fr4CMxJW4LgXeNXz6p4gEJXJqE9TYDhmAWbiNcDoN1WAtBspVn97y8zmjXVCnnbpuB7u`](https://solscan.io/tx/25GqEiWPHPjkxnMEnBH8fr4CMxJW4LgXeNXz6p4gEJXJqE9TYDhmAWbiNcDoN1WAtBspVn97y8zmjXVCnnbpuB7u?cluster=testnet)
-- create treasury proposal: [`4Godc6UfWBzFAFcpL9sRBTNbRmcrvfAwgW8W6taoW4p6iCWoY5xsZW1keBg6qujLdujqKLwDYYk1zBRqGTvT6za9`](https://solscan.io/tx/4Godc6UfWBzFAFcpL9sRBTNbRmcrvfAwgW8W6taoW4p6iCWoY5xsZW1keBg6qujLdujqKLwDYYk1zBRqGTvT6za9?cluster=testnet)
-- deposit treasury: [`3X9AcfhZHN6DJfnVHtp3HkNVBRLB6Zaz3K8KeJWrpz3Xss69SLkT8pS4k952n5vAJhCz6so9TCgnP4J87gdMwPgo`](https://solscan.io/tx/3X9AcfhZHN6DJfnVHtp3HkNVBRLB6Zaz3K8KeJWrpz3Xss69SLkT8pS4k952n5vAJhCz6so9TCgnP4J87gdMwPgo?cluster=testnet)
-- commit vote: [`3VQow51w1tF1p9Aa6Xg55DLPiptfpC4mA9uuVzWTteLBBXifZKcJLzR2EN6gd67NDVD6wByiwUAVqSWotPxpUCz7`](https://solscan.io/tx/3VQow51w1tF1p9Aa6Xg55DLPiptfpC4mA9uuVzWTteLBBXifZKcJLzR2EN6gd67NDVD6wByiwUAVqSWotPxpUCz7?cluster=testnet)
-- reveal vote: [`2zQxX2Dy7aqGSthke2D9wA5dVpQUpVePAVAv1Mt4q54yog1NE8LyZeMTBXRDv7fWP1WwjQhKVawCJyEwXFQzZMHb`](https://solscan.io/tx/2zQxX2Dy7aqGSthke2D9wA5dVpQUpVePAVAv1Mt4q54yog1NE8LyZeMTBXRDv7fWP1WwjQhKVawCJyEwXFQzZMHb?cluster=testnet)
-- finalize proposal: [`2dADjDaAa4pA1Wa8qWH22tbMXW7KLUWEqACLoiwDCHi3iVtRsaoh7G2SvrLUEhyPBUFCba5dS7bx7huZjcEc2wn9`](https://solscan.io/tx/2dADjDaAa4pA1Wa8qWH22tbMXW7KLUWEqACLoiwDCHi3iVtRsaoh7G2SvrLUEhyPBUFCba5dS7bx7huZjcEc2wn9?cluster=testnet)
-- execute proposal: [`2YrCUkXPNLiwSLrFpXWjSwXQANPCvTZgRvZfeTXDpY8Uvzmx7pEjN8WnZFqJiHgfSuEPkzKyueUjhGh8s1LdeoWN`](https://solscan.io/tx/2YrCUkXPNLiwSLrFpXWjSwXQANPCvTZgRvZfeTXDpY8Uvzmx7pEjN8WnZFqJiHgfSuEPkzKyueUjhGh8s1LdeoWN?cluster=testnet)
+- mint governance voting power: [`3nYU7kwoq5MAwZAgkGhGKUg8v4sFWv6ErazbtoAvJEpvqsCeYG1h57DeFD5Rc8uk7sRKZ7w5CENJYb56WdAQFKty`](https://solscan.io/tx/3nYU7kwoq5MAwZAgkGhGKUg8v4sFWv6ErazbtoAvJEpvqsCeYG1h57DeFD5Rc8uk7sRKZ7w5CENJYb56WdAQFKty?cluster=testnet)
+- fund recipient system account: [`qkMHQDkxVmt24osijAFodMrYB84J2wyB6PNq8n5j3PRTojAc3EZaQaeAQAf4hAMZXEKePdaaVq975gbor8moGiD`](https://solscan.io/tx/qkMHQDkxVmt24osijAFodMrYB84J2wyB6PNq8n5j3PRTojAc3EZaQaeAQAf4hAMZXEKePdaaVq975gbor8moGiD?cluster=testnet)
+- create DAO: [`2hTHk9eEqZMnbJDtnjhxd53NGdZZDbp4qvUSUCTonimHqZ4bP9c2bkyrqXWdX9Qxur4UzpoNv8VbWTDYPfp12VTq`](https://solscan.io/tx/2hTHk9eEqZMnbJDtnjhxd53NGdZZDbp4qvUSUCTonimHqZ4bP9c2bkyrqXWdX9Qxur4UzpoNv8VbWTDYPfp12VTq?cluster=testnet)
+- create treasury proposal: [`5knGopcpqFYSr4bJFK99YMaFv2W87w9mHP4mbZ44W4hzX7GeXvBbnU7drYjUr4FB7grBgrSkUjwudNBp6cA8zb5W`](https://solscan.io/tx/5knGopcpqFYSr4bJFK99YMaFv2W87w9mHP4mbZ44W4hzX7GeXvBbnU7drYjUr4FB7grBgrSkUjwudNBp6cA8zb5W?cluster=testnet)
+- deposit treasury: [`46WdhaQrze2QWNEbqTnqGpBZ289xiyhhvejwyQKoKFvcJGFohQV1GqihAnZHPUUVKaJEx25coBMGMMumKM2tePdk`](https://solscan.io/tx/46WdhaQrze2QWNEbqTnqGpBZ289xiyhhvejwyQKoKFvcJGFohQV1GqihAnZHPUUVKaJEx25coBMGMMumKM2tePdk?cluster=testnet)
+- commit vote: [`3xWoF9jrmw1oxeHwnCMqRudzJ5HrrinmFcscmMMkRj3P9mi3GqEKvuR7N8jFcriix2dhHFeR5SQwCXnT5aaUARCn`](https://solscan.io/tx/3xWoF9jrmw1oxeHwnCMqRudzJ5HrrinmFcscmMMkRj3P9mi3GqEKvuR7N8jFcriix2dhHFeR5SQwCXnT5aaUARCn?cluster=testnet)
+- reveal vote: [`2mTPDTPoQ4ixDMNUK1VuYJAjA95U43H84iUHtnvkLUy7GBTr1LBaTXGY8A5fLDwNuadUmWQpkujJYULYR2hWsuNV`](https://solscan.io/tx/2mTPDTPoQ4ixDMNUK1VuYJAjA95U43H84iUHtnvkLUy7GBTr1LBaTXGY8A5fLDwNuadUmWQpkujJYULYR2hWsuNV?cluster=testnet)
+- finalize proposal: [`4i2Qn4jBb6pwFDD2oxFyHvs5eJ4kR3kX6Qs1vegxzTwJd31NfQJaMMaxkiYqV4WvtXz2M3HhMusiVpYpbFgtHfPb`](https://solscan.io/tx/4i2Qn4jBb6pwFDD2oxFyHvs5eJ4kR3kX6Qs1vegxzTwJd31NfQJaMMaxkiYqV4WvtXz2M3HhMusiVpYpbFgtHfPb?cluster=testnet)
+- execute proposal: [`3aZxjo6oPF1ARZropXzxGzfRnargqW5Q6mjVHkpiVWCAZU7cKRtNxoVCf3h5mcnbSrq5huTyE6g8ofEAjBLMeHsF`](https://solscan.io/tx/3aZxjo6oPF1ARZropXzxGzfRnargqW5Q6mjVHkpiVWCAZU7cKRtNxoVCf3h5mcnbSrq5huTyE6g8ofEAjBLMeHsF?cluster=testnet)
 
 ## Treasury Verification
 
@@ -38,10 +38,10 @@ PrivateDAO completed a full Solana Testnet lifecycle rehearsal from the deployed
 
 ## Explorer Links
 
-- DAO: https://solscan.io/account/2Vg9J8a3cvkXyj8WNsezq4Pv7e8PpZTreq6K9NU34Unx?cluster=testnet
-- Proposal: https://solscan.io/account/HgbBNNbVfJmKhfRHRdJ53LjRCgW8HiA6tNygkfyraY7V?cluster=testnet
-- Treasury: https://solscan.io/account/5H2zGsA2mKXuot9RUHHhNMZLb7RMyHqYG9ASAFkZcZkx?cluster=testnet
-- Recipient: https://solscan.io/account/Gx5ui7CWrfWDoiUxWhZiCu5DCpPmKm1Vd66pJRdeXzx9?cluster=testnet
+- DAO: https://solscan.io/account/CNMCCzP1U7yXoK6CYcTbJuXBbagv9EJoGL3qHuYvS3QG?cluster=testnet
+- Proposal: https://solscan.io/account/iqrj3bPTBN1LYKY7rvRnYj3aPE267p7zfjzaJqGD7Je?cluster=testnet
+- Treasury: https://solscan.io/account/HkAkqL2mzeGTXfMm8etc8BmXTqgW3YHffn8wjjRkPEsA?cluster=testnet
+- Recipient: https://solscan.io/account/FgSYUYaiTSnd64Hjpqjpk3EiXBipQz7CoBkmHsgig66R?cluster=testnet
 
 ## Verification Boundary
 

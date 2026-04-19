@@ -10,6 +10,8 @@ import {
   TransactionInstruction,
 } from "@solana/web3.js";
 
+import { SOLANA_NETWORK_LABEL } from "@/lib/solana-network";
+
 export const PRIVATE_DAO_PROGRAM_ID = new PublicKey("5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx");
 export const TOKEN_PROGRAM_ID = new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
 export const TOKEN_2022_PROGRAM_ID = new PublicKey("TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb");
@@ -372,7 +374,7 @@ async function resolveLatestBlockhash(connection: Connection) {
 
   throw latestError instanceof Error
     ? latestError
-    : new Error("Unable to resolve a devnet blockhash for DAO bootstrap.");
+    : new Error(`Unable to resolve a ${SOLANA_NETWORK_LABEL} blockhash for DAO bootstrap.`);
 }
 
 export async function awaitLiveSignatureOnCluster({
@@ -396,7 +398,7 @@ export async function awaitLiveSignatureOnCluster({
 
     if (status) {
       if (status.err) {
-        throw new Error(`Devnet rejected the submitted transaction: ${JSON.stringify(status.err)}`);
+        throw new Error(`${SOLANA_NETWORK_LABEL} rejected the submitted transaction: ${JSON.stringify(status.err)}`);
       }
 
       if (status.confirmationStatus === "confirmed" || status.confirmationStatus === "finalized") {
@@ -412,7 +414,7 @@ export async function awaitLiveSignatureOnCluster({
     maxSupportedTransactionVersion: 0,
   });
   if (transaction?.meta?.err) {
-    throw new Error(`Devnet returned an on-chain execution error: ${JSON.stringify(transaction.meta.err)}`);
+    throw new Error(`${SOLANA_NETWORK_LABEL} returned an on-chain execution error: ${JSON.stringify(transaction.meta.err)}`);
   }
   if (transaction) {
     return {
@@ -425,7 +427,7 @@ export async function awaitLiveSignatureOnCluster({
   }
 
   throw new Error(
-    "The wallet returned a signature, but the transaction is not visible on Devnet. Confirm the wallet is on Devnet, then retry once.",
+    `The wallet returned a signature, but the transaction is not visible on ${SOLANA_NETWORK_LABEL}. Confirm the wallet is on ${SOLANA_NETWORK_LABEL}, then retry once.`,
   );
 }
 
@@ -551,7 +553,7 @@ function decodeProposalAccount(data: Uint8Array): ProposalAccountDetails {
 export async function fetchDaoAccountDetails(connection: Connection, daoAddress: PublicKey) {
   const info = await connection.getAccountInfo(daoAddress, "confirmed");
   if (!info) {
-    throw new Error("DAO account was not found on devnet.");
+    throw new Error(`DAO account was not found on ${SOLANA_NETWORK_LABEL}.`);
   }
 
   return decodeDaoAccount(info.data);
@@ -560,7 +562,7 @@ export async function fetchDaoAccountDetails(connection: Connection, daoAddress:
 export async function fetchProposalAccountDetails(connection: Connection, proposalAddress: PublicKey) {
   const info = await connection.getAccountInfo(proposalAddress, "confirmed");
   if (!info) {
-    throw new Error("Proposal account was not found on devnet.");
+    throw new Error(`Proposal account was not found on ${SOLANA_NETWORK_LABEL}.`);
   }
 
   return decodeProposalAccount(info.data);
@@ -597,7 +599,7 @@ export async function buildCreateDaoBootstrapTransaction({
   const existingDaoInfo = await connection.getAccountInfo(dao, "confirmed");
   if (existingDaoInfo) {
     throw new Error(
-      `A DAO named "${trimmedName}" already exists for this wallet on devnet (${dao.toBase58()}). Change the DAO name or continue from the existing DAO.`,
+      `A DAO named "${trimmedName}" already exists for this wallet on ${SOLANA_NETWORK_LABEL} (${dao.toBase58()}). Change the DAO name or continue from the existing DAO.`,
     );
   }
 

@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
+import { buildSolanaTxUrl } from "@/lib/solana-network";
 
 type ProofRegistryJson = {
   zkProofAnchors?: {
@@ -22,10 +23,6 @@ function readJson<T>(relativePath: string): T {
     relativePath,
   );
   return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
-
-function buildSolscanTxUrl(signature: string) {
-  return `https://solscan.io/tx/${signature}?cluster=devnet`;
 }
 
 export type PrivacyProofSnapshot = {
@@ -108,10 +105,10 @@ export function getPrivacyProofSnapshot(): PrivacyProofSnapshot {
       docHref: "/documents/android-solflare-real-device-capture-2026-04-18",
     },
     explorer: {
-      governanceRevealHref: revealTx ? buildSolscanTxUrl(revealTx) : undefined,
-      governanceExecuteHref: executeTx ? buildSolscanTxUrl(executeTx) : undefined,
-      confidentialSettleHref: settleTx ? buildSolscanTxUrl(settleTx) : undefined,
-      confidentialExecuteHref: confidentialExecuteTx ? buildSolscanTxUrl(confidentialExecuteTx) : undefined,
+      governanceRevealHref: revealTx ? buildSolanaTxUrl(revealTx) : undefined,
+      governanceExecuteHref: executeTx ? buildSolanaTxUrl(executeTx) : undefined,
+      confidentialSettleHref: settleTx ? buildSolanaTxUrl(settleTx) : undefined,
+      confidentialExecuteHref: confidentialExecuteTx ? buildSolanaTxUrl(confidentialExecuteTx) : undefined,
       zkVoteHref: voteAnchor?.explorerUrl,
       zkTallyHref: tallyAnchor?.explorerUrl,
     },

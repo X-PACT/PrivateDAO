@@ -28,9 +28,9 @@
 
 ## Provider Assignments
 
-- candidate primary RPC: `https://solana-rpc.rpcfast.com?api_key=ejQYiCn3yUFJUYyG3yw6C72hZNDzxoSFLy7VX9ETQOJOSFwQK2eh0Dl0XXAdU2uv`
+- candidate primary RPC: `RPC_FAST_TESTNET_RPC` or `SOLANA_RPC_URL` host secret
 - active primary RPC: `https://api.devnet.solana.com`
-- fallback RPC: `https://solana-rpc.rpcfast.com?api_key=ejQYiCn3yUFJUYyG3yw6C72hZNDzxoSFLy7VX9ETQOJOSFwQK2eh0Dl0XXAdU2uv`
+- fallback RPC: `RPC_FAST_TESTNET_FALLBACK_RPC` host secret
 - read path: `backend-indexer`
 - status: `candidate-documented-awaiting-devnet-validation`
 

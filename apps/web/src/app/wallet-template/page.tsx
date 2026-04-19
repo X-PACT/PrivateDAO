@@ -9,7 +9,7 @@ const templateHref =
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Wallet Template",
-  description: "Wallet-first starter sandbox for connecting a Devnet wallet and entering the PrivateDAO product corridor.",
+  description: "Wallet-first starter sandbox for connecting a Testnet wallet and entering the PrivateDAO product corridor.",
   path: "/wallet-template",
   keywords: ["wallet template", "solana wallet ux", "private dao toolkit"],
   index: false,
@@ -19,18 +19,18 @@ export default function WalletTemplatePage() {
   return (
     <TemplateSandboxShell
       eyebrow="Wallet Template"
-      title="A wallet-first sandbox that opens the real Devnet entry lane"
+      title="A wallet-first sandbox that opens the real Testnet entry lane"
       description="Use this route to test the starter shell, connect a real wallet, understand signer context, and move into the live Start or Govern product surfaces without leaving the learning corridor."
       badges={[
         { label: "Starter sandbox", variant: "cyan" },
         { label: "Wallet-first", variant: "success" },
-        { label: "Devnet ready", variant: "violet" },
+        { label: "Testnet ready", variant: "violet" },
       ]}
       templateAlias="wallet-template"
       lessonHref="/learn/lecture-1-web2-to-solana-ui"
       lessonLabel="Open Lesson 1"
       liveHref="/start"
-      liveLabel="Run Start on Devnet"
+      liveLabel="Run Start on Testnet"
       verifyHref="/dashboard"
       verifyLabel="Open live operator state"
       templateHref={templateHref}

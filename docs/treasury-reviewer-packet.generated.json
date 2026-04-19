@@ -1,8 +1,8 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-11T15:53:20.536Z",
+  "generatedAt": "2026-04-19T16:54:38.261Z",
   "reviewerIntent": "Explain the treasury intake and payout posture as a reviewer-grade infrastructure surface, with strict sender discipline, public rails, proof links, commercial fit, and exact blocker visibility.",
-  "treasuryNetwork": "Solana Devnet",
+  "treasuryNetwork": "Solana Testnet",
   "treasuryAddress": "AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c",
   "custodyStatus": "pending-external",
   "productionMainnetClaimAllowed": false,
@@ -29,23 +29,23 @@
     "Copy the exact public receive address and explorer link for the chosen asset rail instead of reusing a previous address.",
     "Attach a reference string that includes payer, purpose, amount, and settlement context so the packet can be matched later.",
     "Open reviewer truth surfaces before implying production-safe settlement or custody posture to a buyer, sender, or judge.",
-    "Treat the current rails as public Devnet treasury intake until authority-transfer evidence closes the production custody blocker."
+    "Treat the current rails as public Testnet treasury intake until authority-transfer evidence closes the production custody blocker."
   ],
   "referenceLinkedRails": [
     {
       "symbol": "SOL",
       "name": "Native SOL",
       "receiveAddress": "AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c",
-      "explorerUrl": "https://solscan.io/account/AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c?cluster=devnet",
+      "explorerUrl": "https://solscan.io/account/AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c?cluster=testnet",
       "mint": null,
       "decimals": 9,
-      "note": "Use this rail for treasury top-ups, operator funding, and governed SOL transfers on Devnet."
+      "note": "Use this rail for treasury top-ups, operator funding, and governed SOL transfers on Testnet."
     },
     {
       "symbol": "USDC",
       "name": "USDC",
       "receiveAddress": "AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c",
-      "explorerUrl": "https://solscan.io/account/AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c?cluster=devnet",
+      "explorerUrl": "https://solscan.io/account/AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c?cluster=testnet",
       "mint": null,
       "decimals": 6,
       "note": "Use this rail for governed payouts, vendor settlement, and stable-value treasury requests when USDC is the active stable asset."
@@ -54,7 +54,7 @@
       "symbol": "USDG",
       "name": "USDG",
       "receiveAddress": "AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c",
-      "explorerUrl": "https://solscan.io/account/AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c?cluster=devnet",
+      "explorerUrl": "https://solscan.io/account/AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c?cluster=testnet",
       "mint": null,
       "decimals": 6,
       "note": "Use this rail for alternative stable settlement when the team or customer operates with USDG-compatible treasury flows."
@@ -107,7 +107,6 @@
     }
   ],
   "exactPendingItems": [
-    "chosen multisig implementation",
     "multisig public address",
     "multisig creation signature",
     "rehearsal signature",

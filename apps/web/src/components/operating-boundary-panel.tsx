@@ -98,7 +98,7 @@ export function OperatingBoundaryPanel({
             <div className="rounded-[22px] border border-white/8 bg-black/20 p-4">
               <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Live now in product UI</div>
               <div className="mt-2 text-sm leading-7 text-white/72">
-                Create DAO, Create Proposal, Commit, Reveal, Finalize, and Execute are wired through the live wallet-first lane on Devnet.
+                Create DAO, Create Proposal, Commit, Reveal, Finalize, and Execute are wired through the live wallet-first lane on Testnet.
               </div>
             </div>
             <div className="rounded-[22px] border border-white/8 bg-black/20 p-4">

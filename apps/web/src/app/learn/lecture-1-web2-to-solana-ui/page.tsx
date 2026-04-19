@@ -10,7 +10,7 @@ export const metadata: Metadata = buildRouteMetadata({
   title: lecture.title,
   description: lecture.summary,
   path: `/learn/${lecture.slug}`,
-  keywords: ["learn", "solana frontend", "wallet-first", "devnet onboarding"],
+  keywords: ["learn", "solana frontend", "wallet-first", "testnet onboarding"],
 });
 
 export default function LearnLectureOnePage() {

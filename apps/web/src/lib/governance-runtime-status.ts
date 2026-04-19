@@ -17,7 +17,7 @@ export const GOVERNANCE_RUNTIME_STATUS: Record<CoreGovernanceInstructionName, Go
     browserWalletProofCaptured: true,
     realDeviceProofCaptured: true,
     supportNote:
-      "DAO bootstrap is live in the web wallet lane. Repo-script proof exists, the full Solflare browser cycle is captured, and Android Solflare now proves the mobile path through DAO bootstrap on Devnet.",
+      "DAO bootstrap is live in the web wallet lane. Repo-script proof exists, the full Solflare browser cycle is captured, and Android Solflare now proves the mobile path through DAO bootstrap on Testnet.",
   },
   create_proposal: {
     action: "create_proposal",
@@ -26,7 +26,7 @@ export const GOVERNANCE_RUNTIME_STATUS: Record<CoreGovernanceInstructionName, Go
     browserWalletProofCaptured: true,
     realDeviceProofCaptured: true,
     supportNote:
-      "Proposal submit is live in the web wallet lane, including the current SendSol and SendToken treasury motions. The full Solflare browser cycle is captured, and Android Solflare now proves proposal creation on Devnet.",
+      "Proposal submit is live in the web wallet lane, including the current SendSol and SendToken treasury motions. The full Solflare browser cycle is captured, and Android Solflare now proves proposal creation on Testnet.",
   },
   commit_vote: {
     action: "commit_vote",
@@ -35,7 +35,7 @@ export const GOVERNANCE_RUNTIME_STATUS: Record<CoreGovernanceInstructionName, Go
     browserWalletProofCaptured: true,
     realDeviceProofCaptured: true,
     supportNote:
-      "Commit vote is live in the web wallet lane once a real DAO and proposal already exist in session state. The full Solflare browser cycle is captured, and Android Solflare now proves commit-vote submission on Devnet.",
+      "Commit vote is live in the web wallet lane once a real DAO and proposal already exist in session state. The full Solflare browser cycle is captured, and Android Solflare now proves commit-vote submission on Testnet.",
   },
   reveal_vote: {
     action: "reveal_vote",

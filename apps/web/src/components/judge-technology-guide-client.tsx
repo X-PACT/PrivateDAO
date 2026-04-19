@@ -6,14 +6,11 @@ import { ArrowUpRight, LockKeyhole, Radio, ShieldCheck, WalletCards } from "luci
 import { useI18n } from "@/components/i18n-provider";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { JudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
+import { buildSolanaTxUrl } from "@/lib/solana-network";
 
 type JudgeTechnologyGuideClientProps = {
   snapshot: JudgeRuntimeLogsSnapshot;
 };
-
-function buildSolanaTxUrl(signature: string) {
-  return `https://solscan.io/tx/${signature}?cluster=devnet`;
-}
 
 export function JudgeTechnologyGuideClient({ snapshot }: JudgeTechnologyGuideClientProps) {
   const { copy } = useI18n();

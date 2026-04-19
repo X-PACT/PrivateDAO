@@ -19,7 +19,7 @@ export function PaymentTemplateSandbox({
   const submittedLabel = useMemo(
     () =>
       submitted
-        ? "The payment request is staged. Continue into the live security and proof corridor to inspect the current Devnet evidence."
+        ? "The payment request is staged. Continue into the live security and proof corridor to inspect the current Testnet evidence."
         : "Submit the starter request first, then open the proof lane or the production security route to continue.",
     [submitted],
   );
@@ -31,14 +31,14 @@ export function PaymentTemplateSandbox({
         <h3 className="mt-3 text-xl font-semibold text-white">Explain privacy in normal language, then verify the result</h3>
         <p className="mt-3 text-sm leading-7 text-white/62">
           The sandbox teaches the operator-facing wording: what stays confidential, what becomes public, and where the
-          reviewer should click next. The verification link below points to a real Devnet signature from the current
+          reviewer should click next. The verification link below points to a real Testnet signature from the current
           payment evidence set.
         </p>
         <div className="mt-5 rounded-[24px] border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/68">
           <div className="text-[11px] uppercase tracking-[0.22em] text-white/42">Current proof reference</div>
           <div className="mt-2 break-all text-white">{proofSignature}</div>
           <a className="mt-3 inline-flex text-cyan-200 transition hover:text-cyan-100" href={explorerUrl} target="_blank" rel="noreferrer">
-            Open Devnet payment evidence
+            Open Testnet payment evidence
           </a>
         </div>
         <div className="mt-5 rounded-[24px] border border-cyan-300/16 bg-cyan-300/[0.08] p-4 text-sm leading-7 text-white/68">

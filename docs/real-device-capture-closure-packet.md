@@ -6,7 +6,7 @@ This packet exists for one reason: turn the remaining wallet-matrix gap into an 
 
 PrivateDAO already has:
 
-- live Devnet governance surfaces
+- preserved Devnet governance surfaces and current Testnet governance path
 - browser-wallet proof intake
 - read-node and telemetry surfaces
 - payout and settlement evidence surfaces

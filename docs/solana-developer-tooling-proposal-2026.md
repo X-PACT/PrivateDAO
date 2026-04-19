@@ -2,7 +2,7 @@
 
 ## Overview
 
-PrivateDAO is a live Solana Devnet product for private governance, treasury execution, and confidential payout coordination. The core problem it addresses is not only governance logic. It is the lack of operational tooling that helps teams move from complex protocol behavior to simple, reviewable product flows.
+PrivateDAO is a live Solana Testnet product for private governance, treasury execution, and confidential payout coordination. The core problem it addresses is not only governance logic. It is the lack of operational tooling that helps teams move from complex protocol behavior to simple, reviewable product flows.
 
 PrivateDAO is being built as governance infrastructure for the ecosystem: a product that makes proposal creation, vote commitment and reveal, treasury actions, confidential payout planning, runtime proof, and reviewer verification easier to understand and safer to operate.
 
@@ -14,7 +14,7 @@ PrivateDAO combines several layers into one operating product:
 
 - A Solana program for private governance and treasury execution.
 - A wallet-first web interface that exposes the next action clearly instead of forcing operators through raw protocol details.
-- Public proof and trust surfaces that help reviewers verify what is live on Devnet.
+- Public proof and trust surfaces that help reviewers verify the current Testnet path and the preserved Devnet evidence trail.
 - Treasury planning lanes for payout routing, governed treasury motion, and future integration quality.
 - Reviewer-facing document surfaces that explain the system in minutes instead of requiring a deep repository crawl first.
 
@@ -35,19 +35,19 @@ This makes PrivateDAO more than a private voting experiment. It is being shaped 
 
 ## Current State
 
-PrivateDAO already operates as a live Devnet product. The current state includes:
+PrivateDAO already operates as a live Solana Testnet product. The current state includes:
 
-- a deployed Solana Devnet program,
-- live DAO bootstrap, proposal, commit, and reveal flow evidence,
+- a deployed Solana Testnet program with a completed standard lifecycle rehearsal,
+- live DAO bootstrap, proposal, commit, reveal, finalize, execute, and treasury-delta evidence,
 - public routes for governance, services, analytics, security, and trust,
 - reviewer-friendly documentation and evidence packets,
 - and ongoing product work that turns hard backend logic into simpler operating lanes.
 
-This is important because the funding request is not for an idea from zero. It is for a live product that is already under active execution and already proving product direction on Devnet.
+This is important because the funding request is not for an idea from zero. It is for a live product that is already under active execution and already proving product direction on Testnet.
 
 ## Funding Use
 
-The funding is intended to move PrivateDAO from strong Devnet maturity toward mainnet-ready infrastructure quality. The work it supports includes:
+The funding is intended to move PrivateDAO from live Testnet execution toward mainnet-ready infrastructure quality. The work it supports includes:
 
 - protocol hardening and audit-readiness uplift,
 - stronger treasury execution and confidential payout surfaces,

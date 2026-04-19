@@ -7,18 +7,29 @@ No API keys belong in Git. This document records capability, rollout order, and 
 ## Activated Capability
 
 - Devnet Yellowstone gRPC
+- Testnet RPC and WebSocket release-candidate path
+- Testnet Yellowstone gRPC when provisioned
 - Mainnet Aperture gRPC
 - Mainnet ShredStream gRPC
 - Mainnet Yellowstone gRPC
 - high-performance Solana RPC access
 - real-time streaming APIs for monitoring, analytics, and reviewer telemetry
 
+## Activated Application Groups
+
+Keep the concrete keys in the deployment host only. The public project records the capability groups without committing credentials:
+
+- `devnet / yellowstone / grpc`: Devnet Yellowstone gRPC for rehearsal stream comparison and historical Devnet evidence.
+- `mainnet / aperture / grpc`: Mainnet Aperture gRPC for production-candidate account and transaction observation after release gates.
+- `mainnet / shredstream / grpc`: Mainnet ShredStream gRPC for low-latency data-plane monitoring after custody and audit closure.
+- `mainnet / yellowstone / grpc`: Mainnet Yellowstone gRPC for production telemetry and analytics after the mainnet ceremony.
+
 ## Required Network Ladder
 
 PrivateDAO should move in this order:
 
-1. `Devnet` for product execution, wallet UX, governance lifecycle, and encrypted-operation evidence.
-2. `Testnet` for public stress rehearsal, streaming validation, endpoint failover, and release-candidate monitoring.
+1. `Devnet` for completed rehearsal evidence and historical wallet-runtime proof.
+2. `Testnet` for live product execution, public stress rehearsal, streaming validation, endpoint failover, and release-candidate monitoring.
 3. `Mainnet-beta` only after custody, audit, monitoring delivery, settlement receipts, and release ceremony evidence are closed.
 
 Testnet is now a required transition stage, not an optional appendix.
@@ -27,18 +38,18 @@ Testnet is now a required transition stage, not an optional appendix.
 
 Use host secrets, not committed credentials:
 
-- `RPCFAST_DEVNET_RPC_URL`
-- `RPCFAST_TESTNET_RPC_URL`
-- `RPCFAST_DEVNET_YELLOWSTONE_GRPC_ENDPOINT`
-- `RPCFAST_DEVNET_YELLOWSTONE_GRPC_API_KEY`
-- `RPCFAST_TESTNET_YELLOWSTONE_GRPC_ENDPOINT`
-- `RPCFAST_TESTNET_YELLOWSTONE_GRPC_API_KEY`
-- `RPCFAST_MAINNET_APERTURE_GRPC_ENDPOINT`
-- `RPCFAST_MAINNET_APERTURE_GRPC_API_KEY`
-- `RPCFAST_MAINNET_SHREDSTREAM_GRPC_ENDPOINT`
-- `RPCFAST_MAINNET_SHREDSTREAM_GRPC_API_KEY`
-- `RPCFAST_MAINNET_YELLOWSTONE_GRPC_ENDPOINT`
-- `RPCFAST_MAINNET_YELLOWSTONE_GRPC_API_KEY`
+- `RPC_FAST_TESTNET_RPC`
+- `RPC_FAST_TESTNET_WSS`
+- `RPC_FAST_DEVNET_YELLOWSTONE_GRPC_ENDPOINT`
+- `RPC_FAST_DEVNET_YELLOWSTONE_GRPC_API_KEY`
+- `RPC_FAST_TESTNET_YELLOWSTONE_GRPC_ENDPOINT`
+- `RPC_FAST_TESTNET_YELLOWSTONE_GRPC_API_KEY`
+- `RPC_FAST_MAINNET_APERTURE_GRPC_ENDPOINT`
+- `RPC_FAST_MAINNET_APERTURE_GRPC_API_KEY`
+- `RPC_FAST_MAINNET_SHREDSTREAM_GRPC_ENDPOINT`
+- `RPC_FAST_MAINNET_SHREDSTREAM_GRPC_API_KEY`
+- `RPC_FAST_MAINNET_YELLOWSTONE_GRPC_ENDPOINT`
+- `RPC_FAST_MAINNET_YELLOWSTONE_GRPC_API_KEY`
 
 ## Stage 1 — Devnet Streaming Truth
 
@@ -61,12 +72,14 @@ Current migration record:
 - Anchor workspace migration to Testnet has reached deployed-program state.
 - Anchor 0.32.1 build has completed.
 - Testnet deployment completed with program ID `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx` and deploy signature `4a2gsFSJ6EpgqZjVaMSZx72LVvz2o1XfXBzJ8PHLz5Q8YStNYmdhk6YBDoMe2fjxb6TPrr8s5mydqeFQwPgHnqdy`.
-- Testnet lifecycle rehearsal is the next required gate before external submissions should be refreshed as Testnet-proven.
+- Testnet lifecycle rehearsal has executable proof and remains the release-candidate network for the public product.
 
 Required checks:
 
 - Testnet RPC connectivity
 - Yellowstone stream connectivity if available
+- server-side stream relay posture for browser-safe health, slot lag, account updates, and reviewer telemetry
+- SSE or WebSocket bridge design for browser-safe telemetry
 - proposal/governance read simulation where supported
 - endpoint failover drill
 - latency and slot-lag baseline

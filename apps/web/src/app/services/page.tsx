@@ -9,6 +9,7 @@ import { DataCorridorQuickLinks } from "@/components/data-corridor-quick-links";
 import { DevnetServiceMetricsPanel } from "@/components/devnet-service-metrics-panel";
 import { EcosystemFocusAlignmentStrip } from "@/components/ecosystem-focus-alignment-strip";
 import { EncryptedOperationsWorkbench } from "@/components/encrypted-operations-workbench";
+import { ExecutionSpineSurface } from "@/components/execution-spine-surface";
 import { HostedReadProofStrip } from "@/components/hosted-read-proof-strip";
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperationsShell } from "@/components/operations-shell";
@@ -64,6 +65,7 @@ export default function ServicesPage() {
     >
       <LocalizedRouteSummary routeKey="services" />
       <LocalizedRouteBrief routeKey="servicesCore" />
+      <ExecutionSpineSurface context="services" compact />
       <div>
         <ServicesSurface />
       </div>

@@ -59,7 +59,7 @@ const offers = [
   },
   {
     key: "learn",
-    title: "Learn and Ship on Devnet",
+    title: "Learn and Ship on Testnet",
     byline: "by 4 lectures + starter kits",
     summary:
       "A few minutes of simple learning turns a normal builder into an operator who can run real Solana wallet, governance, RPC, privacy, and payment flows from the UI without terminal habits.",
@@ -72,7 +72,7 @@ const offers = [
     title: "Judge and Verify Every Operation",
     byline: "by proof + explorer logs",
     summary:
-      "Explain the product to a reviewer in plain language, open the matching Devnet hashes, and let them run the same lifecycle themselves without reading protocol internals first.",
+      "Explain the product to a reviewer in plain language, open the matching Testnet hashes, and let them run the same lifecycle themselves without reading protocol internals first.",
     href: "/judge",
     cta: "Open the judge corridor",
     icon: BadgeCheck,

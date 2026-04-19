@@ -41,6 +41,7 @@ Initial activation loops:
 - launch a proposal that clearly affects community budget or work allocation
 - use token-gated proposal creation to reduce spam
 - use wallet-native participation instead of off-chain polling
+- emit product events for real actions: DAO created, proposal created, billing signed, and learning completed
 
 Why this is meaningful:
 
@@ -62,6 +63,28 @@ The retention thesis is not “speculation first.”
 It is:
 
 - communities return because the product solves repeated decision friction
+- growth incentives attach to completed product actions instead of passive page visits
+
+## Torque Growth Loop
+
+PrivateDAO now has a Torque-facing growth loop surface:
+
+- route: `https://privatedao.org/services/torque-growth-loop/`
+- packet: `docs/torque-growth-loop.md`
+- events: `dao_created`, `proposal_created`, `billing_signed`, `learn_completed`
+- reward intent: onboarding rebates, builder activation points, operator rebates, and education completion raffles
+
+This keeps growth measurable and tied to product behavior.
+
+## Zerion Agent Policy
+
+PrivateDAO also has a Zerion-facing policy surface:
+
+- route: `https://privatedao.org/services/zerion-agent-policy/`
+- packet: `docs/zerion-autonomous-agent-policy.md`
+- policy controls: Solana chain lock, spend caps, expiry windows, allowed actions, blocked actions, and approve-before-execute treasury control
+
+This lets PrivateDAO pursue autonomous execution without presenting an unsafe, unrestricted agent.
 
 ## Phase 4: Token Utility Growth
 
@@ -80,7 +103,7 @@ Adoption improves when communities can verify that the product is not just a pro
 
 PrivateDAO already supports that through:
 
-- live Devnet proof
+- preserved Devnet proof plus current Testnet proof
 - dedicated additive hardening proof
 - security review surface
 - wallet diagnostics

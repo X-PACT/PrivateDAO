@@ -25,7 +25,7 @@ function buildFallbackTelemetrySelection(mode: "packet" | "snapshot" | "backend"
     return {
       title: "Read-node snapshot",
       summary: "Snapshot mode keeps diagnostics tied to indexed proposal coverage and read-node output.",
-      stateDetail: "Use the snapshot packet when the reviewer needs state coverage and finalized counts from the live product without stepping outside the Devnet evidence lane.",
+      stateDetail: "Use the snapshot packet when the reviewer needs state coverage and finalized counts from the live product without stepping outside the Testnet evidence lane.",
       primaryHref: "/documents/read-node-snapshot",
       proofHref: "/documents/reviewer-telemetry-packet",
     };
@@ -61,7 +61,7 @@ export function DiagnosticsCenter() {
               <div className="mt-3 text-base font-medium text-white">{activeSelection.title}</div>
               <div className="mt-2 text-sm leading-7 text-white/62">{activeSelection.stateDetail}</div>
               <div className="mt-2 text-sm leading-7 text-white/62">
-                Best use: connect a Devnet wallet, run a real action, then open this diagnostics lane to inspect how the
+                Best use: connect a Testnet wallet, run a real action, then open this diagnostics lane to inspect how the
                 product records, routes, and explains that action.
               </div>
               <div className="mt-4 flex flex-wrap gap-3">

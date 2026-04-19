@@ -397,7 +397,7 @@ const englishCopy: LocalizedCopy = {
   routeSummaries: {
     start: {
       label: "Route summary",
-      title: "Connect a Devnet wallet, run one real flow, then inspect the evidence",
+      title: "Connect a Testnet wallet, run one real flow, then inspect the evidence",
       body: "This start route is the shortest path for a normal user: connect a wallet, move into governance, then open proof and logs without terminal work.",
     },
     services: {
@@ -413,7 +413,7 @@ const englishCopy: LocalizedCopy = {
     learn: {
       label: "Route summary",
       title: "Learn in minutes, then run advanced blockchain operations from the UI",
-      body: "This learning route is a live bootcamp: understand the wallet-first model, test the matching route, and verify the resulting Devnet hashes and logs immediately.",
+      body: "This learning route is a live bootcamp: understand the wallet-first model, test the matching route, and verify the resulting Testnet hashes and logs immediately.",
     },
     judge: {
       label: "Route summary",
@@ -445,7 +445,7 @@ const englishCopy: LocalizedCopy = {
         key: "committee",
         title: "Committee-private voting",
         tech: "by commit-reveal + ZK voting",
-        summary: "Best when vote intent should stay hidden until reveal, while final execution remains auditable on Devnet.",
+        summary: "Best when vote intent should stay hidden until reveal, while final execution remains auditable on Testnet.",
       },
       {
         key: "payout",
@@ -500,7 +500,7 @@ const englishCopy: LocalizedCopy = {
       bullets: [
         "Use it to explain the cryptographic stack in plain language before a reviewer opens packets.",
         "Use it to choose the right privacy posture before a treasury or governance action starts.",
-        "Use it to show what is proven now on Devnet and what still remains gated for institutional closure.",
+        "Use it to show what is proven now on Testnet and what still remains gated for institutional closure.",
       ],
     },
     products: {
@@ -510,13 +510,13 @@ const englishCopy: LocalizedCopy = {
         "This route should read like a real infrastructure catalog: private governance, confidential payouts, gaming operations, reviewer-safe disclosure, and reusable read/API surfaces.",
       bullets: [
         "Open this route when a buyer needs the shortest explanation of what PrivateDAO sells.",
-        "Keep the explanation tied to live Devnet flows, not abstract architecture diagrams.",
+        "Keep the explanation tied to live Testnet flows, not abstract architecture diagrams.",
         "Use the privacy selector and SDK starter here as the bridge from product story to implementation.",
       ],
     },
     learn: {
       eyebrow: "Learning route brief",
-      title: "The learning corridor should move a normal builder into live Devnet action in the same session",
+      title: "The learning corridor should move a normal builder into live Testnet action in the same session",
       description:
         "This route now teaches the stack through product surfaces: wallet-first UX, governance lifecycle, runtime reads, private payouts, selective disclosure, and proof-linked verification.",
       bullets: [
@@ -538,12 +538,12 @@ const englishCopy: LocalizedCopy = {
     },
     servicesCore: {
       eyebrow: "Services route brief",
-      title: "Services should show the business model, the operating lane, and the live Devnet proof in one commercial surface",
+      title: "Services should show the business model, the operating lane, and the live Testnet proof in one commercial surface",
       description:
         "This route works best when pricing, billing rehearsal, treasury routing, trust packets, and hosted-read packaging are kept together instead of being split across static documents.",
       bullets: [
-        "Lead with the product lane a buyer can try immediately from a Devnet wallet.",
-        "Keep pricing and billing language tied to the current public-good Devnet boundary, not to unshipped mainnet claims.",
+        "Lead with the product lane a buyer can try immediately from a Testnet wallet.",
+        "Keep pricing and billing language tied to the current public-good Testnet boundary, not to unshipped mainnet claims.",
         "Use the commercial surface to show that PrivateDAO can evolve into a sustainable infrastructure company.",
       ],
     },
@@ -562,10 +562,10 @@ const englishCopy: LocalizedCopy = {
       eyebrow: "Story route brief",
       title: "Story should convert explanation into action without forcing the visitor back to a generic homepage",
       description:
-        "This route works best when the reel, the business model, the learn corridor, and the live Devnet actions stay directly connected so a buyer, judge, or student can move from narrative to proof in one sitting.",
+        "This route works best when the reel, the business model, the learn corridor, and the live Testnet actions stay directly connected so a buyer, judge, or student can move from narrative to proof in one sitting.",
       bullets: [
         "Use story to compress the full product thesis into one fast route.",
-        "Keep every major claim linked to a live route, a document packet, or a public Devnet artifact.",
+        "Keep every major claim linked to a live route, a document packet, or a public Testnet artifact.",
         "End the story with an actionable next step, not with a passive media wall.",
       ],
     },
@@ -574,7 +574,7 @@ const englishCopy: LocalizedCopy = {
     eyebrow: "Selective disclosure",
     title: "Give reviewers a narrow window into the operation without turning private work into public exposure",
     description:
-      "Selective disclosure is the bridge between strong privacy and institutional review. It decides what the operator can keep private, what the reviewer can inspect, and which links are enough to prove the action happened correctly on Devnet.",
+      "Selective disclosure is the bridge between strong privacy and institutional review. It decides what the operator can keep private, what the reviewer can inspect, and which links are enough to prove the action happened correctly on Testnet.",
     stepsLabel: "How the handoff works",
     privateLabel: "Private until the right boundary",
     publicLabel: "Visible for review and verification",
@@ -605,7 +605,7 @@ const englishCopy: LocalizedCopy = {
     ],
     steps: [
       "Choose the privacy posture before the wallet signs.",
-      "Run the governance or treasury action on Devnet.",
+      "Run the governance or treasury action on Testnet.",
       "Open the proof and custody routes that match that action.",
       "Disclose only the hashes, logs, and reviewer packet needed for that review window.",
     ],
@@ -709,7 +709,7 @@ const englishCopy: LocalizedCopy = {
     judgeTechnologyGuide: {
       eyebrow: "Judge technology guide",
       title: "Read the technology in plain language, then open the live route and the on-chain proof yourself",
-      body: "This guide is intentionally simple. It explains what each production lane does for a real user, which PrivateDAO route lets you try it, and which Devnet transaction lets you verify that the chain recorded the action.",
+      body: "This guide is intentionally simple. It explains what each production lane does for a real user, which PrivateDAO route lets you try it, and which Testnet transaction lets you verify that the chain recorded the action.",
       cards: [
         {
           key: "voting",
@@ -793,7 +793,7 @@ const englishCopy: LocalizedCopy = {
         },
         {
           key: "learn",
-          title: "Learn and Ship on Devnet",
+          title: "Learn and Ship on Testnet",
           byline: "by 4 lectures + starter kits",
           summary:
             "A few minutes of simple learning turns a normal builder into an operator who can run real Solana wallet, governance, RPC, privacy, and payment flows from the UI without terminal habits.",
@@ -804,7 +804,7 @@ const englishCopy: LocalizedCopy = {
           title: "Judge and Verify Every Operation",
           byline: "by proof + explorer logs",
           summary:
-            "Explain the product to a reviewer in plain language, open the matching Devnet hashes, and let them run the same lifecycle themselves without reading protocol internals first.",
+            "Explain the product to a reviewer in plain language, open the matching Testnet hashes, and let them run the same lifecycle themselves without reading protocol internals first.",
           cta: "Open the judge corridor",
         },
       ],
@@ -832,7 +832,7 @@ const englishCopy: LocalizedCopy = {
           title: "Confidential settlement with public execution proof",
           byline: "REFHE + MagicBlock corridor",
           privateUntil: "Sensitive payout intent, recipient context, and settlement posture stay protected until the right review stage.",
-          publicProof: "The chain still records deposit, private-transfer, settle, and execute hashes so a reviewer can see the corridor land on Devnet without reading the hidden payload itself.",
+          publicProof: "The chain still records deposit, private-transfer, settle, and execute hashes so a reviewer can see the corridor land on Testnet without reading the hidden payload itself.",
           routeLabel: "Open confidential operations",
           docLabel: "Open payout evidence packet",
           explorerLabel: "Open settle transaction",
@@ -856,7 +856,7 @@ const englishCopy: LocalizedCopy = {
       title: "Products should read like a live infrastructure catalog, not a static feature list",
       body: "This route is where buyers, operators, and grant reviewers see what PrivateDAO already packages into usable lanes: confidential payroll, gaming treasury control, private governance, agentic treasury routing, and reusable privacy infrastructure. The goal is clarity first, then the matching live route and proof packet.",
       bullets: [
-        "Each product lane should point to a route a normal user can try on Devnet.",
+        "Each product lane should point to a route a normal user can try on Testnet.",
         "Pricing, policy selection, and proof should stay close to the service story.",
         "The same corridor should help a buyer understand the offer and a reviewer verify the chain evidence.",
       ],
@@ -867,7 +867,7 @@ const englishCopy: LocalizedCopy = {
     proofPrimer: {
       eyebrow: "Proof operating model",
       title: "Run one real action first, then use Proof to inspect what stayed private and what the chain exposed",
-      body: "Proof is not a theory page. It is the operating surface that turns live Devnet execution into something readable. Create a DAO, submit a proposal, vote, reveal, finalize, or execute. Then open this route to inspect signatures, runtime freshness, screenshots, privacy evidence, and the narrow boundary between public verification and protected intent.",
+      body: "Proof is not a theory page. It is the operating surface that turns live Testnet execution into something readable. Create a DAO, submit a proposal, vote, reveal, finalize, or execute. Then open this route to inspect signatures, runtime freshness, screenshots, privacy evidence, and the narrow boundary between public verification and protected intent.",
       bullets: [
         "Govern first, then use Proof as the inspection layer.",
         "Hashes, explorer links, and logs should always be easy to follow.",
@@ -880,13 +880,13 @@ const englishCopy: LocalizedCopy = {
     judgePrimer: {
       eyebrow: "Verification fast lane",
       title: "Start with the smallest review surface that still proves the product is real",
-      body: "The fastest review path is operational, not theoretical. Inspect one governance cycle, one privacy explanation, and one treasury execution lane before opening the deeper packets. A normal reviewer should be able to understand what happened, run a comparable Devnet action, and verify the public hashes without reading internal engineering notes.",
+      body: "The fastest review path is operational, not theoretical. Inspect one governance cycle, one privacy explanation, and one treasury execution lane before opening the deeper packets. A normal reviewer should be able to understand what happened, run a comparable Testnet action, and verify the public hashes without reading internal engineering notes.",
       steps: [
         "Proposal lifecycle from create to execute.",
-        "Vote, reveal, and execution signatures on Solana Devnet.",
-        "Agentic Treasury Micropayment Rail with many real Devnet transfers.",
+        "Vote, reveal, and execution signatures on Solana Testnet.",
+        "Agentic Treasury Micropayment Rail with real Testnet transfer rehearsal.",
       ],
-      compareRun: "These are captured reference executions on Devnet. When you later run your own wallet flow, use this verification route and the proof center as the comparison point. The visible blockchain layer should reassure a normal reviewer that governance happened fairly, settlement happened for real, and the protected parts stayed private for the right reasons instead of disappearing into a black box.",
+      compareRun: "These are captured reference executions on Testnet. When you later run your own wallet flow, use this verification route and the proof center as the comparison point. The visible blockchain layer should reassure a normal reviewer that governance happened fairly, settlement happened for real, and the protected parts stayed private for the right reasons instead of disappearing into a black box.",
       openProof: "Open full proof",
       openLearningGuide: "Open learning guide",
       openFastPath: "Open fast path",
@@ -896,7 +896,7 @@ const englishCopy: LocalizedCopy = {
     startGuidance: {
       eyebrow: "Next action",
       title: "After the first wallet connection, move to one live action route and one check route",
-      body: "Start is intentionally the shallowest path. Connect a Devnet wallet here, then move to Govern to create a DAO and submit a proposal. After the action completes, open Judge or Proof to inspect the hash, logs, and privacy boundary with the same context still attached.",
+      body: "Start is intentionally the shallowest path. Connect a Testnet wallet here, then move to Govern to create a DAO and submit a proposal. After the action completes, open Judge or Proof to inspect the hash, logs, and privacy boundary with the same context still attached.",
       openGovern: "Open govern",
       openGuide: "Open the guide",
       openVerificationRoute: "Open verification route",
@@ -942,7 +942,7 @@ const englishCopy: LocalizedCopy = {
     storyAsset: {
       eyebrow: "Why this matters",
       title: "The story route is a working product asset tied to live proof, not passive media",
-      body: "The reel is hosted on the live site, available as a direct MP4, and connected to learn, start, trust, proof, and services so a buyer, judge, or student can move from explanation to live Devnet use without losing context.",
+      body: "The reel is hosted on the live site, available as a direct MP4, and connected to learn, start, trust, proof, and services so a buyer, judge, or student can move from explanation to live Testnet use without losing context.",
     },
     servicesPrimer: {
       learnFirst:
@@ -1032,7 +1032,7 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
     routeSummaries: {
       start: {
         label: "ملخص المسار",
-        title: "اربط محفظة Devnet ونفّذ دورة حقيقية ثم راجع الدليل",
+        title: "اربط محفظة Testnet ونفّذ دورة حقيقية ثم راجع الدليل",
         body: "هذا أقصر مسار لمستخدم عادي: ربط المحفظة ثم الدخول إلى الحوكمة ثم فتح الإثبات واللوجز بدون طرفية.",
       },
       services: {
@@ -1048,7 +1048,7 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
       learn: {
         label: "ملخص المسار",
         title: "تعلّم خلال دقائق ثم نفّذ عمليات بلوك تشين معقدة من الواجهة",
-        body: "هذا معسكر حي: افهم الفكرة، افتح المسار المطابق، ثم راجع الهاشات واللوجز على Devnet فورًا.",
+        body: "هذا معسكر حي: افهم الفكرة، افتح المسار المطابق، ثم راجع الهاشات واللوجز على Testnet فورًا.",
       },
       judge: {
         label: "ملخص المسار",
@@ -1097,7 +1097,7 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
         bullets: [
           "استخدمه لشرح الطبقة التشفيرية بلغة بسيطة قبل أن يفتح المراجع الحزم.",
           "استخدمه لاختيار وضع الخصوصية الصحيح قبل أي حركة خزانة أو حوكمة.",
-          "استخدمه لإظهار ما أُثبت فعليًا على Devnet وما بقي مغلقًا حتى الإقفال المؤسسي.",
+          "استخدمه لإظهار ما أُثبت فعليًا على Testnet وما بقي مغلقًا حتى الإقفال المؤسسي.",
         ],
       },
       products: {
@@ -1107,13 +1107,13 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
           "هذا المسار يجب أن يقرأ ككتالوج بنية تحتية حقيقي: حوكمة خاصة، مدفوعات سرية، عمليات الجيمينج، كشف انتقائي للمراجعة، وواجهات قراءة وتكامل قابلة لإعادة الاستخدام.",
         bullets: [
           "افتح هذا المسار عندما يحتاج الممول أو المشتري أسرع شرح لما نبيعه.",
-          "اربط الشرح دائمًا بمسارات Devnet الحية لا برسومات معمارية مجردة.",
+          "اربط الشرح دائمًا بمسارات Testnet الحية لا برسومات معمارية مجردة.",
           "استخدم محدد الخصوصية وStarter الـ SDK هنا للانتقال من القصة إلى التنفيذ.",
         ],
       },
       learn: {
         eyebrow: "ملخص مسار التعلّم",
-        title: "مسار التعلّم يجب أن ينقل المستخدم العادي إلى فعل حقيقي على Devnet في نفس الجلسة",
+        title: "مسار التعلّم يجب أن ينقل المستخدم العادي إلى فعل حقيقي على Testnet في نفس الجلسة",
         description:
           "هذا المسار يشرح الطبقات عبر المنتج نفسه: wallet-first UX، دورة الحوكمة، القراءة الحية، المدفوعات الخاصة، الكشف الانتقائي، والإثبات المرتبط بالتحقق.",
         bullets: [
@@ -1137,10 +1137,10 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
         eyebrow: "ملخص مسار الخدمات",
         title: "الخدمات يجب أن تعرض النموذج التجاري ومسار التشغيل والدليل الحي في سطح واحد",
         description:
-          "هذا المسار يكون أقوى عندما تبقى الأسعار وتجربة الفوترة على Devnet ومسارات الخزانة وحزم الثقة وتغليف hosted reads في مكان واحد بدل أن تتوزع بين وثائق جامدة.",
+          "هذا المسار يكون أقوى عندما تبقى الأسعار وتجربة الفوترة على Testnet ومسارات الخزانة وحزم الثقة وتغليف hosted reads في مكان واحد بدل أن تتوزع بين وثائق جامدة.",
         bullets: [
-          "ابدأ بالمسار الذي يستطيع الممول أو المستخدم تجربته فورًا بمحفظة Devnet.",
-          "اربط الأسعار والفوترة بحدود Devnet الحالية، لا بادعاءات Mainnet غير المشحونة.",
+          "ابدأ بالمسار الذي يستطيع الممول أو المستخدم تجربته فورًا بمحفظة Testnet.",
+          "اربط الأسعار والفوترة بحدود Testnet الحالية، لا بادعاءات Mainnet غير المشحونة.",
           "استخدم هذا السطح لإظهار أن PrivateDAO يمكن أن تتحول إلى شركة بنية تحتية مستدامة.",
         ],
       },
@@ -1162,7 +1162,7 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
           "هذا المسار يكون أفضل عندما تبقى القصة والنموذج التجاري ومسار التعلّم والتنفيذ الحي متصلة مباشرة حتى ينتقل المشتري أو المراجع أو المتعلم من السرد إلى الإثبات في جلسة واحدة.",
         bullets: [
           "استخدم القصة لاختصار أطروحة المنتج كاملة في مسار سريع.",
-          "اربط كل claim رئيسية بمسار حي أو حزمة وثائق أو أثر Devnet عام.",
+          "اربط كل claim رئيسية بمسار حي أو حزمة وثائق أو أثر Testnet عام.",
           "اختم القصة بخطوة عملية تالية، لا بجدار وسائط سلبي.",
         ],
       },
@@ -1171,7 +1171,7 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
       eyebrow: "الكشف الانتقائي",
       title: "امنح المراجع نافذة ضيقة على العملية دون تحويل العمل الخاص إلى كشف عام",
       description:
-        "الكشف الانتقائي هو الجسر بين الخصوصية القوية والمراجعة المؤسسية. هو الذي يحدد ما يبقى خاصًا للمشغل وما يراه المراجع وما يكفي من روابط لإثبات صحة التنفيذ على Devnet.",
+        "الكشف الانتقائي هو الجسر بين الخصوصية القوية والمراجعة المؤسسية. هو الذي يحدد ما يبقى خاصًا للمشغل وما يراه المراجع وما يكفي من روابط لإثبات صحة التنفيذ على Testnet.",
       stepsLabel: "كيف يعمل التسليم",
       privateLabel: "يبقى سريًا حتى الحد الصحيح",
       publicLabel: "يصبح مرئيًا للمراجعة والتحقق",
@@ -1186,7 +1186,7 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
       ],
       steps: [
         "اختر وضع الخصوصية قبل توقيع المحفظة.",
-        "نفّذ حركة الحوكمة أو الخزانة على Devnet.",
+        "نفّذ حركة الحوكمة أو الخزانة على Testnet.",
         "افتح مسارات proof وcustody المطابقة لتلك الحركة.",
         "اكشف فقط الهاشات واللوجز وحزمة المراجعة اللازمة لتلك النافذة.",
       ],
@@ -1290,7 +1290,7 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
       judgeTechnologyGuide: {
         eyebrow: "دليل التقنية للمراجع",
         title: "افهم التقنية بلغة بسيطة ثم افتح المسار الحي والإثبات على السلسلة بنفسك",
-        body: "هذا الدليل مقصود أن يكون بسيطًا. يشرح ما الذي تفعله كل طبقة إنتاجية للمستخدم الحقيقي، وأي مسار في PrivateDAO يجعلك تجربها، وأي معاملة على Devnet تجعلك تتحقق أن السلسلة سجلت العملية فعلًا.",
+        body: "هذا الدليل مقصود أن يكون بسيطًا. يشرح ما الذي تفعله كل طبقة إنتاجية للمستخدم الحقيقي، وأي مسار في PrivateDAO يجعلك تجربها، وأي معاملة على Testnet تجعلك تتحقق أن السلسلة سجلت العملية فعلًا.",
         cards: [
           {
             key: "voting",
@@ -1374,7 +1374,7 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
           },
           {
             key: "learn",
-            title: "تعلّم وابدأ الإطلاق على Devnet",
+            title: "تعلّم وابدأ الإطلاق على Testnet",
             byline: "بواسطة 4 محاضرات + starter kits",
             summary:
               "بضع دقائق من التعلّم البسيط تحول أي باني عادي إلى مشغّل قادر على تنفيذ تدفقات المحافظ والحوكمة وRPC والخصوصية والمدفوعات من الواجهة مباشرة.",
@@ -1385,7 +1385,7 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
             title: "راجع وتحقق من كل عملية",
             byline: "بواسطة proof + explorer logs",
             summary:
-              "اشرح المنتج للمراجع بلغة سهلة، وافتح له هاشات Devnet المطابقة، ودعه يكرر الدورة بنفسه دون البدء من تفاصيل البروتوكول الداخلية.",
+              "اشرح المنتج للمراجع بلغة سهلة، وافتح له هاشات Testnet المطابقة، ودعه يكرر الدورة بنفسه دون البدء من تفاصيل البروتوكول الداخلية.",
             cta: "افتح مسار المراجع",
           },
         ],
@@ -1413,7 +1413,7 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
             title: "تسوية سرية مع إثبات تنفيذ عام",
             byline: "بواسطة REFHE + MagicBlock corridor",
             privateUntil: "نية الدفع الحساسة وسياق المستفيد ووضعية التسوية تبقى محمية حتى مرحلة المراجعة الصحيحة.",
-            publicProof: "رغم ذلك تسجل السلسلة هاشات الإيداع والتحويل الخاص والتسوية والتنفيذ حتى يرى المراجع أن corridor وصلت إلى Devnet دون قراءة الحمولة المخفية نفسها.",
+            publicProof: "رغم ذلك تسجل السلسلة هاشات الإيداع والتحويل الخاص والتسوية والتنفيذ حتى يرى المراجع أن corridor وصلت إلى Testnet دون قراءة الحمولة المخفية نفسها.",
             routeLabel: "افتح العمليات السرية",
             docLabel: "افتح حزمة إثبات المدفوعات",
             explorerLabel: "افتح معاملة التسوية",
@@ -1437,7 +1437,7 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
         title: "يجب أن يقرأ مسار المنتجات ككتالوج بنية تحتية حي لا كقائمة مزايا جامدة",
         body: "هنا يرى الممول أو المشغّل أو المراجع ما الذي حُزم بالفعل داخل مسارات قابلة للاستخدام: رواتب ومنح سرية، تحكم في خزانة الجيمينج، حوكمة خاصة، توجيه خزينة وكيل، وبنية خصوصية قابلة لإعادة الاستخدام. الهدف أولًا هو الوضوح ثم المسار الحي والحزمة المطابقة.",
         bullets: [
-          "كل مسار منتج يجب أن يشير إلى route يمكن لمستخدم عادي تجربتها على Devnet.",
+          "كل مسار منتج يجب أن يشير إلى route يمكن لمستخدم عادي تجربتها على Testnet.",
           "السعر وسياسة الخصوصية والإثبات يجب أن يبقوا قريبين من قصة الخدمة نفسها.",
           "نفس المسار يجب أن يساعد المشتري على الفهم والمراجع على التحقق من أدلة السلسلة.",
         ],
@@ -1448,7 +1448,7 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
       proofPrimer: {
         eyebrow: "نموذج عمل الإثبات",
         title: "نفّذ عملية حقيقية أولًا ثم استخدم مسار الإثبات لفهم ما بقي سريًا وما كشفته السلسلة",
-        body: "مسار الإثبات ليس صفحة نظرية. إنه السطح الذي يحول تنفيذ Devnet الحي إلى شيء يمكن قراءته. أنشئ DAO أو مقترحًا أو صوّت أو اكشف أو أنهِ أو نفّذ، ثم افتح هذا المسار لتفحص التواقيع وحداثة التشغيل ولقطات الشاشة وأدلة الخصوصية والحد الفاصل بين التحقق العام والنية المحمية.",
+        body: "مسار الإثبات ليس صفحة نظرية. إنه السطح الذي يحول تنفيذ Testnet الحي إلى شيء يمكن قراءته. أنشئ DAO أو مقترحًا أو صوّت أو اكشف أو أنهِ أو نفّذ، ثم افتح هذا المسار لتفحص التواقيع وحداثة التشغيل ولقطات الشاشة وأدلة الخصوصية والحد الفاصل بين التحقق العام والنية المحمية.",
         bullets: [
           "ابدأ من الحوكمة أولًا ثم استخدم الإثبات كطبقة فحص.",
           "الهاشات وروابط المستكشف واللوجز يجب أن تبقى سهلة القراءة دائمًا.",
@@ -1461,13 +1461,13 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
       judgePrimer: {
         eyebrow: "المسار السريع للمراجعة",
         title: "ابدأ بأصغر سطح مراجعة ما زال يثبت أن المنتج حقيقي",
-        body: "أسرع مسار للمراجعة هو مسار تشغيلي لا نظري. افحص دورة حوكمة واحدة وشرح خصوصية واحد ومسار تنفيذ خزينة واحد قبل فتح الحزم الأعمق. يجب أن يستطيع أي مراجع عادي فهم ما حدث، ثم تنفيذ تجربة Devnet مشابهة، ثم التحقق من الهاشات العامة بدون قراءة ملاحظات هندسية داخلية.",
+        body: "أسرع مسار للمراجعة هو مسار تشغيلي لا نظري. افحص دورة حوكمة واحدة وشرح خصوصية واحد ومسار تنفيذ خزينة واحد قبل فتح الحزم الأعمق. يجب أن يستطيع أي مراجع عادي فهم ما حدث، ثم تنفيذ تجربة Testnet مشابهة، ثم التحقق من الهاشات العامة بدون قراءة ملاحظات هندسية داخلية.",
         steps: [
           "دورة المقترح من الإنشاء حتى التنفيذ.",
-          "تواقيع التصويت والكشف والتنفيذ على Solana Devnet.",
+          "تواقيع التصويت والكشف والتنفيذ على Solana Testnet.",
           "مسار Agentic Treasury Micropayment Rail مع تحويلات حقيقية متعددة.",
         ],
-        compareRun: "هذه تنفيذات مرجعية ملتقطة على Devnet. عندما تنفّذ تدفّقك بمحفظتك، استخدم مسار التحقق هذا ومركز الإثبات كنقطة مقارنة. الطبقة العامة على البلوك تشين يجب أن تطمئن المراجع أن الحوكمة كانت عادلة والتسوية حدثت فعلًا وأن الأجزاء المحمية بقيت سرية للسبب الصحيح.",
+        compareRun: "هذه تنفيذات مرجعية ملتقطة على Testnet. عندما تنفّذ تدفّقك بمحفظتك، استخدم مسار التحقق هذا ومركز الإثبات كنقطة مقارنة. الطبقة العامة على البلوك تشين يجب أن تطمئن المراجع أن الحوكمة كانت عادلة والتسوية حدثت فعلًا وأن الأجزاء المحمية بقيت سرية للسبب الصحيح.",
         openProof: "افتح الإثبات الكامل",
         openLearningGuide: "افتح دليل التعلّم",
         openFastPath: "افتح المسار السريع",
@@ -1477,7 +1477,7 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
       startGuidance: {
         eyebrow: "الخطوة التالية",
         title: "بعد ربط المحفظة لأول مرة، انتقل إلى مسار تنفيذ حي واحد ومسار تحقق واحد",
-        body: "صفحة Start هي أبسط مدخل مقصود. اربط محفظة Devnet هنا، ثم انتقل إلى Govern لإنشاء DAO وتقديم proposal. بعد اكتمال الحركة افتح Judge أو Proof لترى الهاش واللوجز وحدود الخصوصية مع بقاء نفس السياق محفوظًا.",
+        body: "صفحة Start هي أبسط مدخل مقصود. اربط محفظة Testnet هنا، ثم انتقل إلى Govern لإنشاء DAO وتقديم proposal. بعد اكتمال الحركة افتح Judge أو Proof لترى الهاش واللوجز وحدود الخصوصية مع بقاء نفس السياق محفوظًا.",
         openGovern: "افتح الحوكمة",
         openGuide: "افتح الدليل",
         openVerificationRoute: "افتح مسار التحقق",
@@ -1523,7 +1523,7 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
       storyAsset: {
         eyebrow: "لماذا يهم هذا",
         title: "مسار القصة أصل تشغيلي مرتبط بإثبات حي، لا وسائط سلبية",
-        body: "الفيديو مستضاف على الموقع الحي ومتاح كملف MP4 مباشر ومربوط بمسارات learn وstart وtrust وproof وservices حتى ينتقل المشتري أو المراجع أو المتعلم من الشرح إلى الاستخدام الحي على Devnet دون فقدان السياق.",
+        body: "الفيديو مستضاف على الموقع الحي ومتاح كملف MP4 مباشر ومربوط بمسارات learn وstart وtrust وproof وservices حتى ينتقل المشتري أو المراجع أو المتعلم من الشرح إلى الاستخدام الحي على Testnet دون فقدان السياق.",
       },
       servicesPrimer: {
         learnFirst:
@@ -1597,10 +1597,10 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
       openTrustOnlyIfNeeded: "Открыть trust только при необходимости",
     },
     routeSummaries: {
-      start: { label: "Кратко о маршруте", title: "Подключите Devnet-кошелек, выполните реальный поток и проверьте доказательства", body: "Это самый короткий путь для обычного пользователя: кошелек, управление, затем proof и логи без терминала." },
+      start: { label: "Кратко о маршруте", title: "Подключите Testnet-кошелек, выполните реальный поток и проверьте доказательства", body: "Это самый короткий путь для обычного пользователя: кошелек, управление, затем proof и логи без терминала." },
       services: { label: "Кратко о маршруте", title: "Используйте PrivateDAO как инфраструктуру, а не как статичную витрину", body: "Здесь собраны hosted reads, политики приватности, payout-маршруты и starter для интеграций." },
       products: { label: "Кратко о маршруте", title: "Изучите продуктовые коридоры, готовые к продаже, интеграции и ревью", body: "Маршрут объединяет приватное управление, конфиденциальные выплаты, gaming-контроль, агентные treasury-операции и runtime API." },
-      learn: { label: "Кратко о маршруте", title: "Учитесь несколько минут, затем запускайте сложные onchain-операции из UI", body: "Это живой bootcamp: понять концепцию, открыть соответствующий маршрут и сразу проверить Devnet-хэши и логи." },
+      learn: { label: "Кратко о маршруте", title: "Учитесь несколько минут, затем запускайте сложные onchain-операции из UI", body: "Это живой bootcamp: понять концепцию, открыть соответствующий маршрут и сразу проверить Testnet-хэши и логи." },
       judge: { label: "Кратко о маршруте", title: "Поймите систему простым языком и откройте те же доказательства сами", body: "Маршрут judge создан для быстрой проверки: lifecycle, приватность, транзакции и reviewer-пакеты находятся рядом." },
       proof: { label: "Кратко о маршруте", title: "Узнайте, что остается приватным, что становится публичным и как это доказывает сеть", body: "Маршрут proof делает приватность проверяемой: публичные хэши, runtime-логи и proof-пакеты видимы, пока чувствительное намерение остается защищенным." },
     },
@@ -1639,10 +1639,10 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
     chrome: { ...englishCopy.chrome, start: "Старт", learn: "Навчання", govern: "Керування", liveState: "Живий стан", story: "Історія", trust: "Довіра", products: "Продукти", apiPricing: "API і ціни", network: "Мережа", docs: "Документи", community: "Спільнота", help: "Допомога", search: "Пошук", openApp: "Відкрити застосунок", searchSite: "Шукати в застосунку, документах або proof", createPrivateDaoTagline: "Створіть приватний DAO на Solana, запропонуйте, проголосуйте та виконайте в одному wallet-first потоці", language: "Мова" },
     shell: { ...englishCopy.shell, explore: "Навігація", productNavigation: "Навігація продуктом", userFirstRoutes: "Маршрути для онбордингу, керування, proof, підтримки та живого стану.", systemRails: "Системні шари", openGovern: "Відкрити керування", openLiveState: "Відкрити live state", openCuratedDocs: "Відкрити документи", startTheFlow: "Запустити потік", openTrustOnlyIfNeeded: "Відкрити trust лише за потреби" },
     routeSummaries: {
-      start: { label: "Коротко про маршрут", title: "Підключіть Devnet-гаманець, виконайте реальний потік і перевірте докази", body: "Це найкоротший шлях для звичайного користувача: гаманець, керування, потім proof і логи без терміналу." },
+      start: { label: "Коротко про маршрут", title: "Підключіть Testnet-гаманець, виконайте реальний потік і перевірте докази", body: "Це найкоротший шлях для звичайного користувача: гаманець, керування, потім proof і логи без терміналу." },
       services: { label: "Коротко про маршрут", title: "Використовуйте PrivateDAO як інфраструктуру, а не як статичну вітрину", body: "Тут зібрані hosted reads, політики приватності, payout-маршрути та starter для інтеграцій." },
       products: { label: "Коротко про маршрут", title: "Перегляньте продуктові коридори для продажу, інтеграції та рев'ю", body: "Маршрут поєднує приватне керування, конфіденційні виплати, gaming-контроль, агентне treasury-виконання та runtime API." },
-      learn: { label: "Коротко про маршрут", title: "Навчіться за хвилини, а потім запускайте складні onchain-операції з UI", body: "Це живий bootcamp: зрозуміти концепцію, відкрити відповідний маршрут і одразу перевірити Devnet-хеші та логи." },
+      learn: { label: "Коротко про маршрут", title: "Навчіться за хвилини, а потім запускайте складні onchain-операції з UI", body: "Це живий bootcamp: зрозуміти концепцію, відкрити відповідний маршрут і одразу перевірити Testnet-хеші та логи." },
       judge: { label: "Коротко про маршрут", title: "Зрозумійте систему простою мовою та відкрийте ті самі докази самі", body: "Маршрут judge створений для швидкої перевірки: lifecycle, приватність, транзакції та reviewer-пакети поруч." },
       proof: { label: "Коротко про маршрут", title: "Побачте, що залишається приватним, що стає публічним і як це доводить мережа", body: "Маршрут proof робить приватність перевірюваною: публічні хеші, runtime-логи та proof-пакети видимі, а чутливий намір захищений до правильної стадії." },
     },
@@ -1681,10 +1681,10 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
     chrome: { ...englishCopy.chrome, start: "Start", learn: "Nauka", govern: "Governance", liveState: "Stan live", story: "Historia", trust: "Zaufanie", products: "Produkty", apiPricing: "API i ceny", network: "Sieć", docs: "Dokumenty", community: "Społeczność", help: "Pomoc", search: "Szukaj", openApp: "Otwórz aplikację", searchSite: "Szukaj w aplikacji, dokumentach lub proof", createPrivateDaoTagline: "Stwórz prywatne DAO na Solanie, proponuj, głosuj i wykonuj w jednym wallet-first flow", language: "Język" },
     shell: { ...englishCopy.shell, explore: "Nawigacja", productNavigation: "Nawigacja produktu", userFirstRoutes: "Trasy dla onboardingu, governance, proof, wsparcia i live state produktu.", systemRails: "Warstwy systemu", openGovern: "Otwórz governance", openLiveState: "Otwórz live state", openCuratedDocs: "Otwórz dokumenty", startTheFlow: "Uruchom flow", openTrustOnlyIfNeeded: "Otwórz trust tylko w razie potrzeby" },
     routeSummaries: {
-      start: { label: "Skrót trasy", title: "Podłącz portfel Devnet, uruchom realny flow i sprawdź dowody", body: "To najkrótsza ścieżka dla zwykłego użytkownika: portfel, governance, a potem proof i logi bez terminala." },
+      start: { label: "Skrót trasy", title: "Podłącz portfel Testnet, uruchom realny flow i sprawdź dowody", body: "To najkrótsza ścieżka dla zwykłego użytkownika: portfel, governance, a potem proof i logi bez terminala." },
       services: { label: "Skrót trasy", title: "Używaj PrivateDAO jako infrastruktury, nie jako statycznej prezentacji", body: "Ta trasa pokazuje hosted reads, polityki prywatności, payout corridors i starter integracyjny dla realnych organizacji." },
       products: { label: "Skrót trasy", title: "Przeglądaj korytarze produktowe gotowe do sprzedaży, integracji i review", body: "Trasa łączy prywatne governance, poufne wypłaty, gaming control, agentic treasury execution i runtime API." },
-      learn: { label: "Skrót trasy", title: "Ucz się przez kilka minut, a potem wykonuj złożone operacje blockchain z UI", body: "To żywy bootcamp: zrozum koncepcję, otwórz pasującą trasę i od razu sprawdź hashe i logi na Devnet." },
+      learn: { label: "Skrót trasy", title: "Ucz się przez kilka minut, a potem wykonuj złożone operacje blockchain z UI", body: "To żywy bootcamp: zrozum koncepcję, otwórz pasującą trasę i od razu sprawdź hashe i logi na Testnet." },
       judge: { label: "Skrót trasy", title: "Zrozum produkt prostym językiem i otwórz te same proof samodzielnie", body: "Ta trasa jest zbudowana do szybkiej weryfikacji: lifecycle governance, prywatność, dowody transakcji i reviewer packets są obok siebie." },
       proof: { label: "Skrót trasy", title: "Zobacz, co pozostaje prywatne, co staje się publiczne i jak potwierdza to chain", body: "Ta trasa robi z prywatności coś weryfikowalnego: publiczne hashe, runtime logs i packets są widoczne, a wrażliwy intent pozostaje chroniony do właściwego etapu." },
     },
@@ -1723,10 +1723,10 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
     chrome: { ...englishCopy.chrome, start: "शुरू करें", learn: "सीखें", govern: "गवर्न", liveState: "लाइव स्टेट", story: "स्टोरी", trust: "ट्रस्ट", products: "प्रोडक्ट्स", apiPricing: "API और प्राइसिंग", network: "नेटवर्क", docs: "डॉक्स", community: "कम्युनिटी", help: "मदद", search: "खोजें", openApp: "ऐप खोलें", searchSite: "ऐप, डॉक्स या लाइव प्रूफ में खोजें", createPrivateDaoTagline: "एक private Solana DAO बनाएं, propose करें, vote करें, और execute करें — एक ही wallet-first flow में", language: "भाषा" },
     shell: { ...englishCopy.shell, explore: "एक्सप्लोर", productNavigation: "प्रोडक्ट नेविगेशन", userFirstRoutes: "ऑनबोर्डिंग, governance, proof, support और live product state के लिए user-first routes।", systemRails: "सिस्टम रेल्स", openGovern: "गवर्न खोलें", openLiveState: "लाइव स्टेट खोलें", openCuratedDocs: "क्यूरेटेड डॉक्स खोलें", startTheFlow: "फ्लो शुरू करें", openTrustOnlyIfNeeded: "ज़रूरत पर ही trust खोलें" },
     routeSummaries: {
-      start: { label: "रूट सारांश", title: "Devnet wallet जोड़ें, एक real flow चलाएँ, फिर evidence देखें", body: "यह सामान्य यूज़र के लिए सबसे छोटा रास्ता है: wallet, governance, फिर proof और logs — बिना terminal के." },
+      start: { label: "रूट सारांश", title: "Testnet wallet जोड़ें, एक real flow चलाएँ, फिर evidence देखें", body: "यह सामान्य यूज़र के लिए सबसे छोटा रास्ता है: wallet, governance, फिर proof और logs — बिना terminal के." },
       services: { label: "रूट सारांश", title: "PrivateDAO को infrastructure की तरह इस्तेमाल करें, brochure की तरह नहीं", body: "यह route hosted reads, privacy policies, payout corridors और integration starter को एक साथ दिखाता है." },
       products: { label: "रूट सारांश", title: "वे product corridors देखें जिन्हें बेचा, integrate और review किया जा सकता है", body: "यह route private governance, confidential payouts, gaming control, agentic treasury execution और runtime APIs को जोड़ता है." },
-      learn: { label: "रूट सारांश", title: "कुछ मिनट में सीखें, फिर UI से complex blockchain operations चलाएँ", body: "यह live bootcamp है: concept समझें, matching route खोलें, और Devnet hashes व logs तुरंत verify करें." },
+      learn: { label: "रूट सारांश", title: "कुछ मिनट में सीखें, फिर UI से complex blockchain operations चलाएँ", body: "यह live bootcamp है: concept समझें, matching route खोलें, और Testnet hashes व logs तुरंत verify करें." },
       judge: { label: "रूट सारांश", title: "टेक्नोलॉजी को आसान भाषा में समझें और वही proofs खुद खोलें", body: "यह judge route fast verification के लिए बना है: governance lifecycle, privacy explanation, transaction evidence और reviewer packets एक क्लिक दूर हैं." },
       proof: { label: "रूट सारांश", title: "देखें क्या private रहता है, क्या public बनता है, और chain इसे कैसे साबित करती है", body: "यह proof route privacy को inspectable बनाता है: public hashes, runtime logs और proof packets दिखते हैं जबकि sensitive intent सही stage तक protected रहता है." },
     },
@@ -1765,10 +1765,10 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
     chrome: { ...englishCopy.chrome, start: "시작", learn: "학습", govern: "거버넌스", liveState: "실시간 상태", story: "스토리", trust: "신뢰", products: "제품", apiPricing: "API 및 가격", network: "네트워크", docs: "문서", community: "커뮤니티", help: "도움말", search: "검색", openApp: "앱 열기", searchSite: "앱, 문서, 라이브 증거 검색", createPrivateDaoTagline: "하나의 wallet-first 흐름에서 프라이빗 Solana DAO를 만들고 제안하고 투표하고 실행하세요", language: "언어" },
     shell: { ...englishCopy.shell, explore: "탐색", productNavigation: "제품 탐색", userFirstRoutes: "온보딩, 거버넌스, 증거, 지원, 실시간 상태를 위한 사용자 우선 경로.", systemRails: "시스템 레일", openGovern: "거버넌스 열기", openLiveState: "실시간 상태 열기", openCuratedDocs: "선별 문서 열기", startTheFlow: "플로우 시작", openTrustOnlyIfNeeded: "필요할 때만 trust 열기" },
     routeSummaries: {
-      start: { label: "경로 요약", title: "Devnet 지갑을 연결하고 실제 플로우를 실행한 뒤 증거를 확인하세요", body: "일반 사용자를 위한 가장 짧은 경로입니다: 지갑 연결, 거버넌스 실행, 그리고 proof/log 확인까지 터미널 없이 진행됩니다." },
+      start: { label: "경로 요약", title: "Testnet 지갑을 연결하고 실제 플로우를 실행한 뒤 증거를 확인하세요", body: "일반 사용자를 위한 가장 짧은 경로입니다: 지갑 연결, 거버넌스 실행, 그리고 proof/log 확인까지 터미널 없이 진행됩니다." },
       services: { label: "경로 요약", title: "PrivateDAO를 정적인 소개가 아니라 인프라처럼 사용하세요", body: "이 경로는 hosted reads, 프라이버시 정책, payout corridor, integration starter를 한곳에 모읍니다." },
       products: { label: "경로 요약", title: "판매, 통합, 검토가 가능한 제품 경로를 살펴보세요", body: "이 경로는 프라이빗 거버넌스, 기밀 지급, 게임 제어, 에이전트 treasury 실행, 런타임 API를 묶어 보여줍니다." },
-      learn: { label: "경로 요약", title: "몇 분 안에 배우고 UI에서 고급 블록체인 작업을 실행하세요", body: "이곳은 라이브 부트캠프입니다. 개념을 이해하고 해당 경로를 열고 Devnet 해시와 로그를 즉시 검증할 수 있습니다." },
+      learn: { label: "경로 요약", title: "몇 분 안에 배우고 UI에서 고급 블록체인 작업을 실행하세요", body: "이곳은 라이브 부트캠프입니다. 개념을 이해하고 해당 경로를 열고 Testnet 해시와 로그를 즉시 검증할 수 있습니다." },
       judge: { label: "경로 요약", title: "기술을 쉬운 언어로 이해한 뒤 같은 증거를 직접 열어보세요", body: "judge 경로는 빠른 검증을 위해 설계되었습니다. 거버넌스 수명주기, 프라이버시 설명, 트랜잭션 증거, reviewer 패킷이 모두 가깝게 배치됩니다." },
       proof: { label: "경로 요약", title: "무엇이 비공개로 남고 무엇이 공개되며 체인이 이를 어떻게 증명하는지 확인하세요", body: "proof 경로는 프라이버시를 검토 가능한 형태로 바꿉니다. 공개 해시, 런타임 로그, proof 패킷이 보이고 민감한 의도는 올바른 시점까지 보호됩니다." },
     },
@@ -1807,10 +1807,10 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
     chrome: { ...englishCopy.chrome, start: "Inicio", learn: "Aprender", govern: "Gobernar", liveState: "Estado en vivo", story: "Historia", trust: "Confianza", products: "Productos", apiPricing: "API y precios", network: "Red", docs: "Docs", community: "Comunidad", help: "Ayuda", search: "Buscar", openApp: "Abrir app", searchSite: "Buscar en la app, docs o proof en vivo", createPrivateDaoTagline: "Crea un DAO privado en Solana, propone, vota y ejecuta en un solo flujo wallet-first", language: "Idioma" },
     shell: { ...englishCopy.shell, explore: "Explorar", productNavigation: "Navegación del producto", userFirstRoutes: "Rutas centradas en el usuario para onboarding, governance, proof, soporte y estado en vivo.", systemRails: "Capas del sistema", openGovern: "Abrir governance", openLiveState: "Abrir estado en vivo", openCuratedDocs: "Abrir docs", startTheFlow: "Iniciar flujo", openTrustOnlyIfNeeded: "Abrir trust solo si hace falta" },
     routeSummaries: {
-      start: { label: "Resumen de ruta", title: "Conecta una wallet Devnet, ejecuta un flujo real y revisa la evidencia", body: "Es la ruta más corta para un usuario normal: wallet, governance y luego proof y logs sin terminal." },
+      start: { label: "Resumen de ruta", title: "Conecta una wallet Testnet, ejecuta un flujo real y revisa la evidencia", body: "Es la ruta más corta para un usuario normal: wallet, governance y luego proof y logs sin terminal." },
       services: { label: "Resumen de ruta", title: "Usa PrivateDAO como infraestructura, no como un folleto estático", body: "Esta ruta reúne hosted reads, políticas de privacidad, payout corridors y un starter de integración." },
       products: { label: "Resumen de ruta", title: "Explora los corredores de producto que se pueden vender, integrar y auditar", body: "La ruta agrupa governance privada, payouts confidenciales, control gaming, ejecución treasury agentic y APIs de runtime." },
-      learn: { label: "Resumen de ruta", title: "Aprende en minutos y luego ejecuta operaciones complejas desde la UI", body: "Es un bootcamp vivo: entiende el concepto, abre la ruta correspondiente y verifica hashes y logs de Devnet al instante." },
+      learn: { label: "Resumen de ruta", title: "Aprende en minutos y luego ejecuta operaciones complejas desde la UI", body: "Es un bootcamp vivo: entiende el concepto, abre la ruta correspondiente y verifica hashes y logs de Testnet al instante." },
       judge: { label: "Resumen de ruta", title: "Entiende la tecnología en lenguaje simple y abre las mismas pruebas tú mismo", body: "La ruta judge está hecha para verificación rápida: lifecycle, privacidad, evidencia de transacciones y reviewer packets a un clic." },
       proof: { label: "Resumen de ruta", title: "Ve qué permanece privado, qué se vuelve público y cómo la cadena lo prueba", body: "La ruta proof vuelve la privacidad inspeccionable: hashes públicos, runtime logs y proof packets visibles mientras la intención sensible queda protegida hasta la etapa correcta." },
     },
@@ -1849,10 +1849,10 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
     chrome: { ...englishCopy.chrome, start: "Inizio", learn: "Impara", govern: "Governance", liveState: "Stato live", story: "Storia", trust: "Trust", products: "Prodotti", apiPricing: "API e prezzi", network: "Rete", docs: "Documenti", community: "Community", help: "Aiuto", search: "Cerca", openApp: "Apri app", searchSite: "Cerca nell'app, nei documenti o nel proof live", createPrivateDaoTagline: "Crea un DAO privato su Solana, proponi, vota ed esegui in un unico flusso wallet-first", language: "Lingua" },
     shell: { ...englishCopy.shell, explore: "Esplora", productNavigation: "Navigazione prodotto", userFirstRoutes: "Percorsi user-first per onboarding, governance, proof, supporto e stato live del prodotto.", systemRails: "Layer di sistema", openGovern: "Apri governance", openLiveState: "Apri stato live", openCuratedDocs: "Apri documenti", startTheFlow: "Avvia il flusso", openTrustOnlyIfNeeded: "Apri trust solo se serve" },
     routeSummaries: {
-      start: { label: "Riassunto percorso", title: "Collega un wallet Devnet, esegui un flusso reale e controlla le prove", body: "È il percorso più corto per un utente normale: wallet, governance e poi proof e log senza terminale." },
+      start: { label: "Riassunto percorso", title: "Collega un wallet Testnet, esegui un flusso reale e controlla le prove", body: "È il percorso più corto per un utente normale: wallet, governance e poi proof e log senza terminale." },
       services: { label: "Riassunto percorso", title: "Usa PrivateDAO come infrastruttura, non come una brochure statica", body: "Questo percorso raccoglie hosted reads, policy di privacy, payout corridors e uno starter di integrazione." },
       products: { label: "Riassunto percorso", title: "Esplora i corridoi prodotto pronti per vendita, integrazione e review", body: "Il percorso unisce governance privata, payout confidenziali, controllo gaming, esecuzione treasury agentic e runtime API." },
-      learn: { label: "Riassunto percorso", title: "Impara in pochi minuti e poi esegui operazioni blockchain complesse dalla UI", body: "È un bootcamp vivo: capisci il concetto, apri il percorso giusto e verifica subito hash e log su Devnet." },
+      learn: { label: "Riassunto percorso", title: "Impara in pochi minuti e poi esegui operazioni blockchain complesse dalla UI", body: "È un bootcamp vivo: capisci il concetto, apri il percorso giusto e verifica subito hash e log su Testnet." },
       judge: { label: "Riassunto percorso", title: "Capisci la tecnologia in modo semplice e apri le stesse prove da solo", body: "Il percorso judge è pensato per la verifica rapida: lifecycle, privacy, prove di transazione e reviewer packet sono tutti vicini." },
       proof: { label: "Riassunto percorso", title: "Vedi cosa resta privato, cosa diventa pubblico e come la chain lo prova", body: "Il percorso proof rende la privacy ispezionabile: hash pubblici, runtime log e proof packet restano visibili mentre l'intento sensibile è protetto fino allo stadio corretto." },
     },

@@ -35,7 +35,7 @@ export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWor
                 Connect a wallet, create a DAO, submit a proposal, vote, and execute from one guided path.
               </h2>
               <p className="max-w-2xl text-base leading-8 text-white/62 sm:text-lg">
-                This route keeps the first run narrow: connect a Devnet wallet, open govern, and use live state after each real wallet action lands. The goal is not to read about PrivateDAO only, but to experience its privacy, cryptography, treasury control, and speed yourself in one product path from the browser only.
+                This route keeps the first run narrow: connect a Testnet wallet, open govern, and use live state after each real wallet action lands. The goal is not to read about PrivateDAO only, but to experience its privacy, cryptography, treasury control, and speed yourself in one product path from the browser only.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -107,7 +107,7 @@ export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWor
                     </div>
                   ))}
                   <div className="rounded-[24px] border border-emerald-300/18 bg-emerald-300/8 p-4 text-sm leading-7 text-white/68">
-                    Connect Wallet stays in the top-right shell position and auto-reconnects when possible, so users can return to real Devnet testing instead of redoing wallet setup every visit.
+                    Connect Wallet stays in the top-right shell position and auto-reconnects when possible, so users can return to real Testnet testing instead of redoing wallet setup every visit.
                   </div>
                 </CardContent>
               </Card>

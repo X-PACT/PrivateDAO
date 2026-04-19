@@ -20,7 +20,7 @@ export function ConfidentialPayoutEvidenceStrip() {
             </div>
             <div className="mt-4 text-lg font-medium text-white">What it proves</div>
             <div className="mt-3 text-sm leading-7 text-white/60">
-              PrivateDAO can already connect private governance to confidential payout rehearsal, grant releases, and payroll-style treasury motions on Devnet.
+              PrivateDAO can already connect private governance to confidential payout rehearsal, grant releases, and payroll-style treasury motions on Testnet.
             </div>
           </div>
 
@@ -40,7 +40,7 @@ export function ConfidentialPayoutEvidenceStrip() {
             </div>
             <div className="mt-4 text-lg font-medium text-white">Boundary</div>
             <div className="mt-3 text-sm leading-7 text-white/60">
-              This is Devnet and evidence-backed. It is not a real-funds mainnet claim until audit, custody, and settlement-receipt blockers are closed.
+              This is Testnet and evidence-backed. It is not a real-funds mainnet claim until audit, custody, and settlement-receipt blockers are closed.
             </div>
           </div>
         </div>

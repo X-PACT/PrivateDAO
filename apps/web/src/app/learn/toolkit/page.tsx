@@ -24,7 +24,7 @@ export default function LearnToolkitPage() {
       badges={[
         { label: "Live-route linked", variant: "cyan" },
         { label: "Code-linked", variant: "success" },
-        { label: "Devnet-ready", variant: "violet" },
+        { label: "Testnet-ready", variant: "violet" },
       ]}
     >
       <LearnBootcampNav />
@@ -34,7 +34,7 @@ export default function LearnToolkitPage() {
           Use these as the bootcamp template set inside GitHub: <span className="font-semibold text-white">wallet-template</span>,
           <span className="font-semibold text-white"> governance-template</span>, <span className="font-semibold text-white">dao-ui-template</span>,
           <span className="font-semibold text-white"> runtime-template</span>, and <span className="font-semibold text-white">payment-template</span>.
-          They now exist as live routes inside the site, stay linked to the source templates in GitHub, and hand the learner directly into the production Devnet corridors.
+          They now exist as live routes inside the site, stay linked to the source templates in GitHub, and hand the learner directly into the production Testnet corridors.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
           <Link href="/services/privacy-sdk-api-starter" className={cn(buttonVariants({ size: "sm" }))}>

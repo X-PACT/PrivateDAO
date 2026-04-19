@@ -57,7 +57,7 @@ export default function DashboardPage() {
         <div className="flex flex-wrap gap-3">
           <Badge variant="cyan">Live Activity</Badge>
           <Badge variant="violet">Treasury + proposals</Badge>
-          <Badge variant="success">Live Devnet state</Badge>
+          <Badge variant="success">Live Testnet state</Badge>
         </div>
 
         <div className="grid gap-8 xl:grid-cols-[1.1fr_0.9fr]">
@@ -67,7 +67,7 @@ export default function DashboardPage() {
               Review proposals, treasury state, and execution results without leaving the product.
             </h1>
             <p className="max-w-2xl text-base leading-8 text-white/60 sm:text-lg">
-              This route is for checking what happened after a real wallet action. Open it after you connect a Devnet wallet, create a DAO, submit a proposal, vote, or execute so you can confirm the result and inspect the runtime trail in one readable place.
+              This route is for checking what happened after a real wallet action. Open it after you connect a Testnet wallet, create a DAO, submit a proposal, vote, or execute so you can confirm the result and inspect the runtime trail in one readable place.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link className={buttonVariants({ size: "lg" })} href="/govern">
@@ -103,7 +103,7 @@ export default function DashboardPage() {
                 );
               })}
               <div className="rounded-[22px] border border-cyan-300/16 bg-cyan-300/[0.08] p-4 text-sm leading-7 text-white/70">
-                Connect a Devnet wallet, run the govern flow, then come back here after each action. This is the fastest way to verify that the privacy rails, cryptographic flow, and runtime speed are working inside one real product cycle.
+                Connect a Testnet wallet, run the govern flow, then come back here after each action. This is the fastest way to verify that the privacy rails, cryptographic flow, and runtime speed are working inside one real product cycle.
               </div>
             </CardContent>
           </Card>

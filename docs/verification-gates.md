@@ -222,7 +222,7 @@ Builds and verifies a generated operational-evidence package that consolidates:
 - finalize and execute race behavior
 - RPC interruption and stale-blockhash recovery
 
-This package is the shortest reviewer-facing path for the project's live Devnet execution evidence.
+This package is the shortest reviewer-facing path for the project's preserved Devnet execution evidence, while the current operating path is Testnet.
 
 ### Extended Devnet Profiles
 
@@ -403,7 +403,7 @@ npm run verify:pdao-attestation
 npm run verify:pdao-live
 ```
 
-Checks that the published PDAO token docs, local metadata asset, generated attestation, reviewer-facing surfaces, and live Devnet token state stay aligned with the canonical proof registry.
+Checks that the published PDAO token docs, local metadata asset, generated attestation, reviewer-facing surfaces, and preserved Devnet token state stay aligned with the canonical proof registry.
 
 ### Review Links
 

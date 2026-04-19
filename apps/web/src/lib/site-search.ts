@@ -99,6 +99,20 @@ export const siteSearchItems: SiteSearchItem[] = [
     summary: "Pilot, API, RPC, enterprise governance, and hosted operational packages.",
   },
   {
+    title: "Zerion Agent Policy",
+    href: "/services/zerion-agent-policy",
+    category: "Service",
+    summary:
+      "Policy-bound autonomous execution surface with Solana chain lock, spend caps, expiry windows, blocked actions, and approve-before-execute treasury controls.",
+  },
+  {
+    title: "Torque Growth Loop",
+    href: "/services/torque-growth-loop",
+    category: "Service",
+    summary:
+      "Custom event workbench for turning DAO creation, proposal creation, billing signatures, and learning completion into measurable retention loops.",
+  },
+  {
     title: "Learn",
     href: "/learn",
     category: "Track",
@@ -126,7 +140,21 @@ export const siteSearchItems: SiteSearchItem[] = [
     title: "PDAO Token Surface",
     href: "/documents/pdao-token-surface",
     category: "Document",
-    summary: "Reviewer-safe token truth for the live Devnet governance mint, including mint details, attestation, and what PDAO does now.",
+    summary: "Reviewer-safe token truth for preserved PDAO governance-token evidence, including mint details, attestation, and how it connects to the current Testnet path.",
+  },
+  {
+    title: "Zerion Autonomous Agent Policy",
+    href: "/documents/zerion-autonomous-agent-policy",
+    category: "Document",
+    summary:
+      "Agent policy packet for safe Zerion CLI fork execution: no god-mode agent, no unbounded treasury movement, and explicit DAO approval before wallet execution.",
+  },
+  {
+    title: "Torque Growth Loop",
+    href: "/documents/torque-growth-loop",
+    category: "Document",
+    summary:
+      "Growth packet for emitting PrivateDAO product actions as Torque-style custom_events tied to real governance, billing, and learning activity.",
   },
   {
     title: "Token Architecture",

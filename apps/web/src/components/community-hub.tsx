@@ -63,9 +63,9 @@ export function CommunityHub() {
               </div>
               <ArrowRight className="mt-1 h-4 w-4 text-emerald-200 transition group-hover:translate-x-0.5" />
             </div>
-            <div className="mt-4 text-lg font-medium text-white">Try Devnet</div>
+            <div className="mt-4 text-lg font-medium text-white">Try Testnet</div>
             <div className="mt-3 text-sm leading-7 text-white/62">
-              Connect a Devnet wallet, create a DAO, submit a proposal, vote, reveal, and execute from the browser without terminal work.
+              Connect a Testnet wallet, create a DAO, submit a proposal, vote, reveal, and execute from the browser without terminal work.
             </div>
           </Link>
 
@@ -143,7 +143,7 @@ export function CommunityHub() {
               Open the learning guide
             </Link>
             <Link href="/start" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "w-full")}>
-              Open the Devnet start route
+              Open the Testnet start route
             </Link>
             <Link href="/assistant" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full")}>
               Open support routing
@@ -158,7 +158,7 @@ export function CommunityHub() {
               Open pilot and buyer path
             </Link>
             <div className="rounded-3xl border border-white/10 bg-black/20 p-4 text-sm leading-7 text-white/58">
-              If a visitor gets blocked, the recovery path should stay obvious: ask in Discord, reopen the learning guide, or return to the browser-first Devnet flow.
+              If a visitor gets blocked, the recovery path should stay obvious: ask in Discord, reopen the learning guide, or return to the browser-first Testnet flow.
             </div>
           </CardContent>
         </Card>

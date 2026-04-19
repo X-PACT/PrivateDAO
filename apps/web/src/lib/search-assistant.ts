@@ -92,6 +92,21 @@ function hasJupiterRouteIntent(normalized: string) {
   ].some((term) => normalized.includes(term));
 }
 
+function hasPusdTreasuryIntent(normalized: string) {
+  return [
+    "pusd",
+    "palm usd",
+    "biconomy",
+    "stablecoin treasury",
+    "stable coin treasury",
+    "confidential payroll",
+    "grant distribution",
+    "gaming reward",
+    "stable rewards",
+    "usd stablecoin",
+  ].some((term) => normalized.includes(term));
+}
+
 function hasTokenTruthIntent(normalized: string) {
   return [
     "pdao",
@@ -101,10 +116,29 @@ function hasTokenTruthIntent(normalized: string) {
     "payment token",
     "token strategy",
     "token surface",
-    "devnet token",
+    "testnet token",
     "live token",
     "governance mint",
   ].some((term) => normalized.includes(term));
+}
+
+function getPusdTreasuryBlock(normalized: string): AssistantSuggestion["queryBlock"] | undefined {
+  if (!hasPusdTreasuryIntent(normalized)) return undefined;
+
+  return {
+    kind: "payments-truth",
+    title: "PUSD stablecoin treasury",
+    readiness: "PUSD stablecoin treasury lane active in the product, with browser-signed SPL TransferChecked execution bound to the official Solana mint configuration",
+    network: "Solana Testnet",
+    rails: "PUSD payroll + grant distribution + gaming rewards + stablecoin treasury proof",
+    blocker: "official PUSD mint + funded wallet · activation input",
+    blockerSummary:
+      "Configure the official Solana PUSD mint and use a funded PUSD wallet to execute the browser-signed TransferChecked path with memo-coded proof.",
+    reviewerPacketLabel: "Open PUSD layer brief",
+    reviewerPacketHref: "/documents/pusd-stablecoin-treasury-layer",
+    bestRouteLabel: "Run stablecoin billing rehearsal",
+    bestRouteHref: "/services/testnet-billing-rehearsal",
+  };
 }
 
 function getPaymentsTruthBlock(normalized: string): AssistantSuggestion["queryBlock"] | undefined {
@@ -117,7 +151,7 @@ function getPaymentsTruthBlock(normalized: string): AssistantSuggestion["queryBl
   return {
     kind: "payments-truth",
     title: "Payments truth",
-    readiness: "Devnet rails live, production treasury still evidence-gated",
+    readiness: "Testnet rails live, production treasury still evidence-gated",
     network: treasury.network,
     rails: `${treasury.assets.length} public rails`,
     blocker: "upgrade-authority-multisig · next production gate",
@@ -164,7 +198,7 @@ function getJupiterRouteBlock(normalized: string): AssistantSuggestion["queryBlo
     kind: "payments-truth",
     title: "Jupiter treasury route",
     readiness: "Treasury route active in product and being tightened into a quote-aware swap and rebalance lane",
-    network: "Solana Devnet",
+    network: "Solana Testnet",
     rails: "Govern + treasury route + settlement evidence",
     blocker: "quote-preview-and-receipt-closure · next operating milestone",
     blockerSummary:
@@ -177,10 +211,24 @@ function getJupiterRouteBlock(normalized: string): AssistantSuggestion["queryBlo
 }
 
 function getHighPriorityQueryBlock(normalized: string): AssistantSuggestion["queryBlock"] | undefined {
-  return getJupiterRouteBlock(normalized) ?? getTokenTruthBlock(normalized) ?? getPaymentsTruthBlock(normalized);
+  return getPusdTreasuryBlock(normalized) ?? getJupiterRouteBlock(normalized) ?? getTokenTruthBlock(normalized) ?? getPaymentsTruthBlock(normalized);
 }
 
 const assistantIntents: AssistantIntent[] = [
+  {
+    title: "Open the PUSD stablecoin treasury lane",
+    summary:
+      "Use the PUSD treasury layer when the question is about Palm USD, institutional stablecoin settlement, confidential payroll, grant distribution, gaming reward pools, or Biconomy PUSD market access.",
+    primaryActionLabel: "Run PUSD billing rehearsal",
+    primaryActionHref: "/services/testnet-billing-rehearsal",
+    relatedRoutes: [
+      { label: "PUSD treasury layer", href: "/documents/pusd-stablecoin-treasury-layer" },
+      { label: "PUSD payroll intake", href: "/engage?profile=pusd-confidential-payroll" },
+      { label: "PUSD gaming rewards", href: "/engage?profile=pusd-gaming-reward-pool" },
+      { label: "Treasury payment request", href: "/services#treasury-payment-request" },
+    ],
+    keywords: ["pusd", "palm usd", "biconomy", "stablecoin", "stable coin", "confidential payroll", "grant distribution", "gaming reward", "stable rewards"],
+  },
   {
     title: "Open the Jupiter treasury route",
     summary:
@@ -815,9 +863,9 @@ function getTrackAnswer(query: string): AssistantSuggestion | null {
     normalized.includes("reveal health")
   ) {
     return {
-      title: `Devnet metrics for ${workspace.title}`,
+      title: `Testnet metrics for ${workspace.title}`,
       summary:
-        "Open the product route to see measured Devnet metrics for success rate, latency, wallet coverage, proof completion, and reveal or execute health in one panel.",
+        "Open the product route to see measured Testnet metrics for success rate, latency, wallet coverage, proof completion, and reveal or execute health in one panel.",
       primaryActionLabel: "Open product route",
       primaryActionHref: workspace.liveRoute,
       relatedRoutes: [

@@ -25,7 +25,7 @@ This packet keeps current external submission language aligned with the verified
 
 Primary evidence:
 
-- [Testnet lifecycle rehearsal](testnet-lifecycle-rehearsal-2026-04-18.md)
+- [Testnet lifecycle rehearsal](testnet-lifecycle-rehearsal-2026-04-19.md)
 - [Testnet migration report](testnet-migration-report-2026-04-18.md)
 
 ## Superteam Updates Completed In Browser
@@ -54,7 +54,7 @@ https://privatedao.org/start/
 ### Access instructions
 
 ```text
-No login required. Open https://privatedao.org/start/ for the product path, then https://privatedao.org/judge/ and https://privatedao.org/proof/?judge=1. PrivateDAO is live on Solana Testnet now: deployment and full lifecycle proof are recorded in docs/testnet-lifecycle-rehearsal-2026-04-18.md on GitHub. Judges can inspect tx hashes, logs, treasury deltas, and proof packets.
+No login required. Open https://privatedao.org/start/ for the product path, then https://privatedao.org/judge/ and https://privatedao.org/proof/?judge=1. PrivateDAO is live on Solana Testnet now: deployment and full lifecycle proof are recorded in docs/testnet-lifecycle-rehearsal-2026-04-19.md on GitHub. Judges can inspect tx hashes, logs, treasury deltas, and proof packets.
 ```
 
 ### Anything else judges should know

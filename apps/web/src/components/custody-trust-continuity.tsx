@@ -117,7 +117,7 @@ function getBuyerSummary(
 ) {
   if (mode === "track") {
     if (completed === 0) {
-      return "Submission trust remains strong on Devnet, but custody readiness still needs recorded multisig and authority-transfer evidence before mainnet distance can be described as materially shortened.";
+      return "Submission trust remains strong on Testnet, but custody readiness still needs recorded multisig and authority-transfer evidence before mainnet distance can be described as materially shortened.";
     }
     if (completed < total) {
       return "Submission trust improves because custody evidence is becoming inspectable, but judge-facing mainnet claims should stay bounded until the remaining ceremony artifacts exist.";
@@ -136,7 +136,7 @@ function getBuyerSummary(
   }
 
   if (completed === 0) {
-    return "Buyer posture remains pilot-ready on Devnet, but production custody still needs recorded multisig and authority-transfer evidence.";
+    return "Buyer posture remains pilot-ready on Testnet, but production custody still needs recorded multisig and authority-transfer evidence.";
   }
   if (completed < total) {
     return "Buyer posture improves because custody evidence is starting to become inspectable, but mainnet promises should stay bounded until the remaining ceremony artifacts exist.";

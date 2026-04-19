@@ -8,15 +8,16 @@ import { LocalizedRouteSummary } from "@/components/localized-route-summary";
 import { OperationsShell } from "@/components/operations-shell";
 import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
 import { PrivacyProofExplainer } from "@/components/privacy-proof-explainer";
+import { TestnetProofMatrix } from "@/components/testnet-proof-matrix";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Verification Route",
   description:
-    "Fast verification route for inspecting the DAO lifecycle, real Devnet transactions, agentic treasury micropayments, and the clearest proof surfaces inside PrivateDAO.",
+    "Fast verification route for inspecting the DAO lifecycle, real Testnet transactions, agentic treasury micropayments, and the clearest proof surfaces inside PrivateDAO.",
   path: "/judge",
-  keywords: ["verification", "devnet proof", "micropayments", "governance proof"],
+  keywords: ["verification", "testnet proof", "micropayments", "governance proof"],
 });
 
 export default function JudgePage() {
@@ -26,10 +27,10 @@ export default function JudgePage() {
     <OperationsShell
       eyebrow="Verification"
       title="Inspect the real product, the real transactions, and the shortest proof path first"
-      description="This route is built for fast verification. It shows the DAO lifecycle, captured Devnet signatures, the Agentic Treasury Micropayment Rail, and the shortest route into the deeper proof and document surfaces. A normal visitor can use it too: the chain evidence is public and readable even when the protected parts of the workflow stay private until the correct stage."
+      description="This route is built for fast verification. It shows the DAO lifecycle, captured Testnet signatures, the Agentic Treasury Micropayment Rail, and the shortest route into the deeper proof and document surfaces. A normal visitor can use it too: the chain evidence is public and readable even when the protected parts of the workflow stay private until the correct stage."
       badges={[
         { label: "Verification first", variant: "cyan" },
-        { label: "Devnet live", variant: "success" },
+        { label: "Testnet live", variant: "success" },
         { label: "Proof-linked", variant: "violet" },
       ]}
     >
@@ -66,6 +67,7 @@ export default function JudgePage() {
       </div>
 
       <JudgeSelectiveDisclosureCta />
+      <TestnetProofMatrix />
       <DevnetExecutionScreenshotsStrip />
       <PrivacyPolicySelector compact />
       <PrivacyProofExplainer />

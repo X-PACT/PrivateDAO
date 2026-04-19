@@ -43,7 +43,7 @@ const SIGNER_ROLE_LABELS: Record<CoreGovernanceInstructionName, string> = {
   execute_proposal: "executor",
 };
 
-export const PRIVATE_DAO_NETWORK = "Solana Devnet" as const;
+export const PRIVATE_DAO_NETWORK = "Solana Testnet" as const;
 
 export function getCoreInstructionParity(action: CoreGovernanceInstructionName) {
   return PRIVATE_DAO_CORE_INSTRUCTION_PARITY[action];

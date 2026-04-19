@@ -20,7 +20,7 @@ export function GovernanceTemplateSandbox({
     if (status === "Draft") return "Start with a proposal, then commit the vote from the live corridor.";
     if (status === "Committed") return "The vote stays hidden until reveal. Continue into the reveal step when the window opens.";
     if (status === "Reveal ready") return "The vote can now be revealed and audited before execution.";
-    return "The proposal is ready for final execution in the live Devnet route.";
+    return "The proposal is ready for final execution in the live Testnet route.";
   }, [status]);
 
   return (
@@ -30,7 +30,7 @@ export function GovernanceTemplateSandbox({
         <h3 className="mt-3 text-xl font-semibold text-white">Practice the UI state, then run the real vote cycle</h3>
         <p className="mt-3 text-sm leading-7 text-white/62">
           This sandbox teaches the sequence. The real signatures still happen in Govern, where the connected wallet
-          creates the proposal, commits the vote, reveals it later, and executes on Devnet.
+          creates the proposal, commits the vote, reveals it later, and executes on Testnet.
         </p>
         <div className="mt-5 rounded-[24px] border border-cyan-300/16 bg-cyan-300/[0.08] p-4 text-sm leading-7 text-white/70">
           <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-100/78">Current sandbox state</div>
@@ -46,7 +46,7 @@ export function GovernanceTemplateSandbox({
             target="_blank"
             rel="noreferrer"
           >
-            Open this transaction on Devnet
+            Open this transaction on Testnet
           </a>
         </div>
       </div>

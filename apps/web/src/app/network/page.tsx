@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 
 import { DiagnosticsCenter } from "@/components/diagnostics-center";
+import { ExecutionSpineSurface } from "@/components/execution-spine-surface";
 import { ExecutionOperationsStrip } from "@/components/execution-operations-strip";
 import { FrontierSignalBoard } from "@/components/frontier-signal-board";
 import { ProofCenter } from "@/components/proof-center";
@@ -10,6 +11,7 @@ import { TelemetryRuntimeFocusStrip } from "@/components/telemetry-runtime-focus
 import { TelemetryModeHandoffStrip } from "@/components/telemetry-mode-handoff-strip";
 import { OperationsShell } from "@/components/operations-shell";
 import { RuntimeEvidenceContinuityPanel } from "@/components/runtime-evidence-continuity-panel";
+import { RpcFastApertureSurface } from "@/components/rpcfast-aperture-surface";
 import type { Metadata } from "next";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
@@ -18,7 +20,7 @@ import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 export const metadata: Metadata = buildRouteMetadata({
   title: "Network",
   description:
-    "Runtime evidence, diagnostics, proof, and network-grade reviewer surfaces for the live PrivateDAO Devnet system.",
+    "Runtime evidence, diagnostics, proof, and network-grade reviewer surfaces for the live PrivateDAO Testnet system.",
   path: "/network",
   keywords: ["network", "runtime evidence", "diagnostics", "proof"],
   index: false,
@@ -31,7 +33,7 @@ export default function NetworkPage() {
   return (
     <OperationsShell
       eyebrow="Network"
-      title="Proof, security, diagnostics, and runtime surfaces for the live Devnet system"
+      title="Proof, security, diagnostics, and runtime surfaces for the live Testnet system"
       description="This route groups the network-grade layer: proof, security, diagnostics, reviewer paths, and runtime trust surfaces across the PrivateDAO stack."
       badges={[
         { label: "Proof and runtime", variant: "cyan" },
@@ -52,6 +54,8 @@ export default function NetworkPage() {
           runtimeSnapshot={runtimeSnapshot}
         />
       </Suspense>
+      <ExecutionSpineSurface context="network" />
+      <RpcFastApertureSurface />
       <Suspense fallback={null}>
         <ExecutionOperationsStrip context="network" />
       </Suspense>

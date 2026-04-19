@@ -32,7 +32,7 @@ export function DevnetServiceMetricsPanel({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Devnet service metrics</CardTitle>
+        <CardTitle>Runtime service metrics</CardTitle>
       </CardHeader>
       <CardContent className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {cards.map((metric) => {

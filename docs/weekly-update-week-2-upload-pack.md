@@ -38,7 +38,7 @@ Desktop copies:
 
 ## Pinned comment
 
-`PrivateDAO is not a slide deck. It is a live Devnet product for private governance, treasury execution, and reviewer-visible proof on Solana.`  
+`PrivateDAO is not a slide deck. It is live on Solana Testnet for private governance, treasury execution, and reviewer-visible proof.`
 `Open /learn first if you are new, then /start to run the flow, then /judge to inspect the live chain evidence:`  
 `https://privatedao.org/learn/`  
 `https://privatedao.org/start/`  

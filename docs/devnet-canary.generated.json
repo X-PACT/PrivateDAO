@@ -15,7 +15,7 @@
   },
   "fallbackRpc": {
     "label": "fallback",
-    "url": "https://solana-rpc.rpcfast.com?api_key=ejQYiCn3yUFJUYyG3yw6C72hZNDzxoSFLy7VX9ETQOJOSFwQK2eh0Dl0XXAdU2uv",
+    "url": "RPC_FAST_DEVNET_RPC",
     "version": "3.1.12",
     "slot": 413925430,
     "blockhash": "3WMnqqFkM9yfyYtkLK3bLNP4kkF7S4ycmNdwsD5RQNtm",

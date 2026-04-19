@@ -20,7 +20,7 @@ export function ProofEntryBanner() {
         This proof route was opened through the legacy reviewer query entrypoint. The Next.js surface keeps the reviewer path intact and routes you directly into the proof and hardening materials without sending you back to the old docs shell.
       </p>
       <p className="mt-3 max-w-3xl text-sm leading-7 text-cyan-50/78">
-        The strongest way to use it is to connect a Devnet wallet, run the live flow, then inspect this page after each action instead of treating proof as a detached reading exercise.
+        The strongest way to use it is to connect a Testnet wallet, run the live flow, then inspect this page after each action instead of treating proof as a detached reading exercise.
       </p>
     </div>
   );

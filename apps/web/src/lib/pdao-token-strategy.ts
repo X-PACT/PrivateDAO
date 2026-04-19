@@ -29,7 +29,7 @@ export type PdaoTokenStrategySnapshot = {
 
 const sharedSnapshot = {
   boundary:
-    "PDAO is a live Devnet governance and coordination token. It is not presented as a public mainnet payment coin or speculative market token.",
+    "PDAO is preserved Devnet governance-token evidence attached to the current PrivateDAO Testnet path. It is not presented as a public mainnet payment coin or speculative market token.",
   mint: "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
   network: "Solana Devnet",
   tokenProgram: "Token-2022",

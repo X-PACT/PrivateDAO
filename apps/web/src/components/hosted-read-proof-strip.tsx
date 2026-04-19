@@ -46,7 +46,7 @@ export function HostedReadProofStrip() {
         <p className="text-sm leading-7 text-white/60">
           This strip keeps the RPC and telemetry story concrete: hosted reads, runtime evidence, integration proof, and
           trust surfaces remain linked so the infrastructure case reads like product value rather than hidden backend
-          detail. A visitor should be able to connect a Devnet wallet, run the flow, and then use these routes to see
+          detail. A visitor should be able to connect a Testnet wallet, run the flow, and then use these routes to see
           why the system already behaves like production-intent infrastructure.
         </p>
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">

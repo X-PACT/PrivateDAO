@@ -13,12 +13,12 @@ export function RealDeviceWalletMatrixPanel() {
     <Card className="border-amber-300/16 bg-[linear-gradient(180deg,rgba(24,18,8,0.96),rgba(12,10,18,0.99))]">
       <CardHeader className="space-y-3">
         <div className="text-[11px] uppercase tracking-[0.3em] text-amber-200/78">Wallet matrix and monitoring</div>
-        <CardTitle className="text-2xl">The two operating systems that turn a strong Devnet product into a confident mainnet candidate</CardTitle>
+        <CardTitle className="text-2xl">The two operating systems that turn a strong Testnet product into a confident mainnet candidate</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="text-sm leading-7 text-white/66">
           This surface uses generated runtime and alert artifacts directly. It shows how wallet coverage and monitoring
-          discipline are being pushed into the same product story a reviewer can inspect after a real Devnet session.
+          discipline are being pushed into the same product story a reviewer can inspect after a real Testnet session.
         </div>
 
         <div className="grid gap-4 xl:grid-cols-2">

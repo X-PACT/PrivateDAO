@@ -24,7 +24,7 @@ export function WalletTemplateSandbox() {
         <h3 className="mt-3 text-xl font-semibold text-white">Open the same wallet lane the live product uses</h3>
         <p className="mt-3 text-sm leading-7 text-white/62">
           This button opens the real wallet adapter modal used across Start, Govern, and the rest of the site. Connect
-          Solflare or another Devnet wallet here, then use the starter below to move directly into the governance flow.
+          Solflare or another Testnet wallet here, then use the starter below to move directly into the governance flow.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
           <WalletConnectButton size="sm" />
@@ -45,7 +45,7 @@ export function WalletTemplateSandbox() {
             <h2 className="mt-2 text-2xl font-semibold text-white">Connect first, then enter the product corridor</h2>
           </div>
           <p className="text-sm leading-7 text-white/80">
-            This starter keeps the first Solana action simple: connect a Devnet wallet, display signer context, then
+            This starter keeps the first Solana action simple: connect a Testnet wallet, display signer context, then
             move into governance or treasury work from one browser shell.
           </p>
           <div className="rounded-2xl bg-[#0c1e30] p-4">

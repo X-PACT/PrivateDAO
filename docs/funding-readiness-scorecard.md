@@ -10,7 +10,7 @@ It is intentionally direct.
 
 ## Current posture
 
-PrivateDAO is already a live Devnet product with:
+PrivateDAO is already a live Testnet product with:
 
 - root-domain web product routes
 - wallet-first governance flows
@@ -19,7 +19,7 @@ PrivateDAO is already a live Devnet product with:
 - reviewer and buyer packets
 
 The funding ask is not to discover the product.
-It is to accelerate the shortest remaining path from a live Devnet product into a stronger, better-evidenced, production-ready release candidate.
+It is to accelerate the shortest remaining path from a live Testnet product into a stronger, better-evidenced, production-ready release candidate.
 
 ## Why this is a public-good funding case
 
@@ -44,8 +44,8 @@ The strongest funding-facing use cases are:
 | Area | Current state | Funding impact | Boundary |
 | --- | --- | --- | --- |
 | Product shell | Shipped | Tighten and keep current | Already live |
-| Wallet-first governance | Shipped on Devnet | Extend runtime matrix and polish | Real-device coverage still expanding |
-| Confidential payout corridor | Shipped on Devnet evidence boundary | Improve receipts and settlement publication | Production release still benefits from stronger settlement publication |
+| Wallet-first governance | Shipped on Testnet | Extend runtime matrix and polish | Real-device coverage still expanding |
+| Confidential payout corridor | Shipped on Testnet evidence boundary | Improve receipts and settlement publication | Production release still benefits from stronger settlement publication |
 | Trust and proof surfaces | Shipped | Keep current and refresh with new evidence | Already live |
 | Telemetry / analytics corridor | Shipped | Improve export and reviewer clarity | Already live but can get stronger |
 | External audit | Next strategic lift | Direct funding unlock | External dependency |
@@ -68,7 +68,7 @@ The strongest use of grant or accelerator capital is:
 
 ## Milestones a serious funder can track
 
-1. visitor can connect a Devnet wallet, run the core flow, and verify the result directly
+1. visitor can connect a Testnet wallet, run the core flow, and verify the result directly
 2. reviewer can inspect proof, telemetry, and custody continuity without leaving the product shell
 3. operator gates for audit, custody, monitoring, and wallet coverage become fully evidenced
 4. release candidate is strong enough for final production cutover

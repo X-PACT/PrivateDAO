@@ -44,7 +44,7 @@ export function ExecutionSurfaceInline({ mode, snapshot }: ExecutionSurfaceInlin
   const headers = {
     proposal: {
       title: "Live proposal execution health",
-      description: "These metrics are shown here so commit, reveal, finalize, and execute stay tied to the live Devnet proof boundary.",
+      description: "These metrics are shown here so commit, reveal, finalize, and execute stay tied to the live Testnet proof boundary.",
       icon: Activity,
     },
     wallet: {

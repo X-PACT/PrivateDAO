@@ -59,7 +59,7 @@ export type ProposalExecutionContext = {
 
 export const daoSummary = {
   name: "PrivateDAO Governance Council",
-  network: "Solana Devnet",
+  network: "Solana Testnet",
   treasuryValue: "$2.84M",
   activeMembers: "164",
   livePolicies: "Governance V3 + Settlement V3",
@@ -75,12 +75,12 @@ export const topMetrics = [
   {
     label: "ZK anchors",
     value: "3",
-    detail: "On-chain proof anchors exposed in the Devnet evidence path",
+    detail: "On-chain proof anchors exposed in the Testnet evidence path",
   },
   {
     label: "Wallets",
     value: "50",
-    detail: "Multi-wallet Devnet rehearsal already captured and packaged",
+    detail: "Multi-wallet Testnet rehearsal already captured and packaged",
   },
   {
     label: "Commercial rails",
@@ -175,11 +175,19 @@ export const walletChoices = [
   },
   {
     name: "Phantom",
-    fit: "Fastest path for mainstream Solana users who want familiar wallet behavior on devnet.",
+    fit: "Fastest path for mainstream Solana users who want familiar wallet behavior on Testnet.",
+  },
+  {
+    name: "Glow",
+    fit: "Additional adapter-backed wallet path for reviewers who want to test compatibility beyond the primary wallets.",
   },
   {
     name: "Backpack",
     fit: "Best for users who want a more advanced signer posture without leaving the product shell.",
+  },
+  {
+    name: "Jupiter Unified Wallet Kit",
+    fit: "Wallet-standard and mobile-first UX foundation used to keep the wallet layer extensible without replacing Solflare, Phantom, Glow, or Backpack.",
   },
 ];
 
@@ -342,7 +350,7 @@ export const timelineEvents = [
   },
   {
     title: "Execution and review",
-    detail: "Execution log, Devnet proof packets, and reviewer bundles update together.",
+    detail: "Execution log, Testnet proof packets, and reviewer bundles update together.",
     state: "Live",
   },
 ];
@@ -538,14 +546,14 @@ export const rpcPlans = [
   {
     name: "Free",
     requests: "100K requests",
-    network: "Devnet",
+    network: "Testnet",
     price: "Free",
-    fit: "Builders evaluating PrivateDAO RPC and diagnostics on Devnet.",
+    fit: "Builders evaluating PrivateDAO RPC and diagnostics on Testnet.",
   },
   {
     name: "Pro",
     requests: "5M requests",
-    network: "Devnet + hosted reads",
+    network: "Testnet + hosted reads",
     price: "Subscription",
     fit: "Teams running governance, payouts, and app reads on a shared product rail.",
   },
@@ -912,13 +920,13 @@ export const competitionTracks = [
     priority: "Priority 7",
     prizeSummary: "Regional support corridor where product clarity, shipped proof, and ecosystem usefulness matter most.",
     winnerAnnouncementBy: "Regional review timing varies with the active funding window.",
-    recommendedWallet: "Solflare for the live Devnet product; regional judges should see accessible execution, product clarity, and ecosystem usefulness first.",
+    recommendedWallet: "Solflare for the live Testnet product; regional judges should see accessible execution, product clarity, and ecosystem usefulness first.",
     demoRoute: "/start",
     winningThesis:
-      "Win by showing PrivateDAO as a live Solana governance product company: easy Devnet use, private execution value, ecosystem relevance, and a credible path from current usage to production release.",
+      "Win by showing PrivateDAO as a live Solana governance product company: easy Testnet use, private execution value, ecosystem relevance, and a credible path from current usage to production release.",
     summary:
       "This route should read as a product-leadership page for a team already shipping real governance infrastructure on Solana, not as a trophy shelf or regional vanity page.",
-    edge: "PrivateDAO already has a real Poland win, live Devnet product routes, reviewer-visible proof, Android and wallet runtime work, and a product thesis that serves institutions, DAOs, and ecosystem builders.",
+    edge: "PrivateDAO already has a real Poland win, live Testnet product routes, reviewer-visible proof, Android and wallet runtime work, and a product thesis that serves institutions, DAOs, and ecosystem builders.",
     gap: "The only valid gap is continued product hardening and broader human testing, not the absence of ambition or ecosystem relevance.",
     action: "Lead with start, learn, judge, and awards as one product-and-proof bundle that makes support feel catalytic, not corrective.",
     href: "/start",
@@ -957,7 +965,7 @@ export const competitionTracks = [
     recommendedWallet: "Solflare for the main product walkthrough; capital reviewers care more about coherence and commercial readiness than wallet variety.",
     demoRoute: "/start",
     winningThesis:
-      "Win by showing that PrivateDAO is already a live Devnet governance company with commercial rails, reviewable proof, and a disciplined path to mainnet.",
+      "Win by showing that PrivateDAO is already a live Testnet governance company with commercial rails, reviewable proof, and a disciplined path to mainnet.",
     summary:
       "This is one of the highest-value corridors because it translates product, infrastructure, and trust work directly into capital readiness.",
     edge: "The root-domain app, story route, services packaging, trust packet, and learning/proof routes already make PrivateDAO look like a serious startup candidate.",
@@ -1003,7 +1011,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winnerAnnouncementBy: "Current review favors product impact and execution quality above label stacking.",
     skillsNeeded: ["Frontend", "Backend", "Blockchain", "Design", "Product"],
     recommendedWallet: "Solflare for the main product path, Phantom fallback for judge familiarity.",
-    devnetStatus: "Live on Devnet with root-domain product shell, govern flow, proof center, diagnostics, services, and story route.",
+    devnetStatus: "Live on Testnet with root-domain product shell, govern flow, proof center, diagnostics, services, and story route.",
     objective:
       "Present PrivateDAO as a startup-quality Solana product that already behaves like a pre-mainnet company rather than a hacked-together prototype.",
     whyUs:
@@ -1024,7 +1032,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     requirements: [
       "A coherent startup-quality product, not a collection of unrelated fragments.",
       "Visible product impact, trust posture, and security maturity after the Drift exploit context.",
-      "A live application that feels disciplined on Devnet and credible for mainnet later.",
+      "A live application that feels disciplined on Testnet and credible for mainnet later.",
     ],
     winningMoves: [
       "Open with the problem, the user path, and why this is a real governance product, not with protocol trivia.",
@@ -1050,7 +1058,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winnerAnnouncementBy: "Follow the live product and proof surfaces for current review timing.",
     skillsNeeded: ["Frontend", "Backend", "Blockchain", "Design"],
     recommendedWallet: "Solflare first, Phantom second for judge familiarity.",
-    devnetStatus: "Live on Devnet with V3 proof, ZK matrix, and security corridors already exposed.",
+    devnetStatus: "Live on Testnet with V3 proof, ZK matrix, and security corridors already exposed.",
     objective:
       "Show PrivateDAO as the clearest privacy-native governance and confidential treasury product in the field.",
     whyUs:
@@ -1098,7 +1106,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winnerAnnouncementBy: "This workspace improves as the live wallet flow becomes faster and clearer.",
     skillsNeeded: ["Frontend", "Backend", "Blockchain"],
     recommendedWallet: "Solflare as the default product wallet, Phantom as the backup judge wallet.",
-    devnetStatus: "Live on Devnet with wallet adapter, govern flow, onboarding, and hosted story video.",
+    devnetStatus: "Live on Testnet with wallet adapter, govern flow, onboarding, and hosted story video.",
     objective:
       "Present PrivateDAO as a wallet-first live dApp with a polished operational UI, clean partner corridor, and concrete usage path.",
     whyUs:
@@ -1146,7 +1154,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winnerAnnouncementBy: "This workspace improves as runtime and API verification become easier.",
     skillsNeeded: ["Backend", "Blockchain", "Infrastructure"],
     recommendedWallet: "Solflare for route continuity; wallet is secondary to diagnostics in this workspace.",
-    devnetStatus: "Live on Devnet with diagnostics, runtime evidence, service packaging, and integrations packet.",
+    devnetStatus: "Live on Testnet with diagnostics, runtime evidence, service packaging, and integrations packet.",
     objective:
       "Make the hosted read path, diagnostics, and runtime trust posture impossible to miss.",
     whyUs:
@@ -1194,7 +1202,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winnerAnnouncementBy: "April 2, 2026 according to the live listing.",
     skillsNeeded: ["Frontend", "Backend", "Blockchain", "Design"],
     recommendedWallet: "Solflare for first-run clarity, Phantom as the mainstream fallback.",
-    devnetStatus: "Live on Devnet with guided onboarding, story route, buyer journey rail, and govern flow.",
+    devnetStatus: "Live on Testnet with guided onboarding, story route, buyer journey rail, and govern flow.",
     objective:
       "Show that a governance system can feel intuitive, guided, and non-intimidating to a normal user.",
     whyUs:
@@ -1242,7 +1250,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winnerAnnouncementBy: "Follow the Ranger listing schedule and final event timeline.",
     skillsNeeded: ["Frontend", "Backend", "Blockchain", "Product"],
     recommendedWallet: "Solflare for the live path, Phantom for judge fallback.",
-    devnetStatus: "Live on Devnet with multi-page app, docs viewer, proof center, trust routes, and service packaging.",
+    devnetStatus: "Live on Testnet with multi-page app, docs viewer, proof center, trust routes, and service packaging.",
     objective:
       "Win on integrated product quality across protocol, product shell, proof, trust, and commercial layers.",
     whyUs:
@@ -1289,7 +1297,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winnerAnnouncementBy: "This workspace improves as treasury policy and analytics become easier to inspect.",
     skillsNeeded: ["Backend", "Blockchain", "Product", "Analytics"],
     recommendedWallet: "Phantom or Solflare; wallet is secondary to treasury and risk story.",
-    devnetStatus: "Live on Devnet with analytics, confidence engine, and bounded treasury governance story.",
+    devnetStatus: "Live on Testnet with analytics, confidence engine, and bounded treasury governance story.",
     objective:
       "Frame PrivateDAO as bounded capital-governance infrastructure instead of pretending to be a live trading terminal.",
     whyUs:
@@ -1336,7 +1344,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winnerAnnouncementBy: "May 25, 2026 according to the live listing.",
     skillsNeeded: ["Frontend", "Backend", "Blockchain"],
     recommendedWallet: "Solflare for polished UX, Phantom for common wallet familiarity.",
-    devnetStatus: "Live on Devnet with reusable operational shell, route-level product surfaces, story video, and root-domain deployment.",
+    devnetStatus: "Live on Testnet with reusable operational shell, route-level product surfaces, story video, and root-domain deployment.",
     objective:
       "Show professional frontend execution, reusable architecture, strong UX, and end-to-end shipping discipline.",
     whyUs:
@@ -1383,7 +1391,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winnerAnnouncementBy: "Follow the listing schedule and sponsor communication.",
     skillsNeeded: ["Frontend", "Backend", "Blockchain", "Security"],
     recommendedWallet: "Solflare for guided flow; wallet is secondary to encrypted-ops framing.",
-    devnetStatus: "Live on Devnet with REFHE settlement framing, ZK matrix, confidence engine, and security/story routes.",
+    devnetStatus: "Live on Testnet with REFHE settlement framing, ZK matrix, confidence engine, and security/story routes.",
     objective:
       "Present PrivateDAO as encrypted operational infrastructure rather than only a private voting tool.",
     whyUs:
@@ -1430,7 +1438,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winnerAnnouncementBy: "Follow the listing schedule and sponsor communication.",
     skillsNeeded: ["Frontend", "Backend", "Blockchain", "AI product framing"],
     recommendedWallet: "Solflare for flow continuity; wallet is secondary to the reasoning surface here.",
-    devnetStatus: "Live on Devnet with deterministic confidence engine and interactive policy composer in-product.",
+    devnetStatus: "Live on Testnet with deterministic confidence engine and interactive policy composer in-product.",
     objective:
       "Keep an AI-adjacent story ready without breaking truth alignment or pretending to ship a full encrypted agent.",
     whyUs:
@@ -1477,7 +1485,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winnerAnnouncementBy: "May 27, 2026 according to the live listing.",
     skillsNeeded: ["Backend"],
     recommendedWallet: "Solflare only for continuity; the judging focus is telemetry and data value.",
-    devnetStatus: "Live on Devnet with diagnostics, runtime evidence, proposal registry, and hosted-read positioning already in product.",
+    devnetStatus: "Live on Testnet with diagnostics, runtime evidence, proposal registry, and hosted-read positioning already in product.",
     objective:
       "Present PrivateDAO as analyzable governance infrastructure with exportable evidence, readable proposal state, and runtime telemetry that matters commercially.",
     whyUs:
@@ -1493,7 +1501,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     deliverables: [
       "Lead from diagnostics into analytics and then into hosted read/API value so the telemetry story feels monetizable.",
       "Package runtime evidence, proposal state, and analytics summary as a data-grade review corridor.",
-      "Keep the story tied to real governance actions already captured on Devnet.",
+      "Keep the story tied to real governance actions already captured on Testnet.",
     ],
     requirements: [
       "A credible backend/data thesis, not only frontend polish.",
@@ -1503,7 +1511,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winningMoves: [
       "Show that analytics are a product feature for governance buyers, not a vanity dashboard.",
       "Use diagnostics, read-node packaging, and evidence packets as one telemetry corridor.",
-      "Tie every chart or readout back to real Devnet actions and reviewer-visible proof.",
+      "Tie every chart or readout back to real Testnet actions and reviewer-visible proof.",
     ],
     sponsorFit: [
       "Dune fit is strongest when PrivateDAO reads like analyzable infrastructure, not just private voting UX.",
@@ -1524,7 +1532,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winnerAnnouncementBy: "May 26, 2026 according to the live listing.",
     skillsNeeded: ["Blockchain", "Backend", "Frontend"],
     recommendedWallet: "Solflare for the live product path and reviewer continuity.",
-    devnetStatus: "Live on Devnet with confidential treasury motion framing, security route, services, and trust packets already visible.",
+    devnetStatus: "Live on Testnet with confidential treasury motion framing, security route, services, and trust packets already visible.",
     objective:
       "Show confidential payout and payroll governance as a real product corridor with privacy, reviewability, and treasury discipline.",
     whyUs:
@@ -1550,7 +1558,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winningMoves: [
       "Show payroll, grants, or contributor disbursement as governed confidential operations.",
       "Use REFHE and ZK as enablers of a business workflow, not abstract primitives.",
-      "Keep every claim inside the Devnet/evidence boundary to preserve trust.",
+      "Keep every claim inside the Testnet/evidence boundary to preserve trust.",
     ],
     sponsorFit: [
       "Umbra fit is strongest when private payout is shown as a user-meaningful treasury operation.",
@@ -1571,7 +1579,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winnerAnnouncementBy: "June 10, 2026 according to the live listing.",
     skillsNeeded: ["Blockchain"],
     recommendedWallet: "Wallet is secondary; this route is about hardening proof and launch discipline.",
-    devnetStatus: "Live on Devnet with custody proof, authority hardening, incident readiness, and diagnostics already exposed.",
+    devnetStatus: "Live on Testnet with custody proof, authority hardening, incident readiness, and diagnostics already exposed.",
     objective:
       "Earn audit-credit eligibility by showing that PrivateDAO already behaves like a team preparing for external audit, not a team pretending it is already audited.",
     whyUs:
@@ -1618,7 +1626,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winnerAnnouncementBy: "May 26, 2026 according to the live listing.",
     skillsNeeded: ["Frontend", "Backend", "Blockchain", "Mobile", "Other", "Growth"],
     recommendedWallet: "Solflare for the live product flow, with Android and browser-wallet evidence reinforcing that the experience is usable beyond developer tooling.",
-    devnetStatus: "Live on Devnet with a root-domain app, wallet-first execution, judge-visible proof, Android runtime work, and public evidence packets already available.",
+    devnetStatus: "Live on Testnet with a root-domain app, wallet-first execution, judge-visible proof, Android runtime work, and public evidence packets already available.",
     objective:
       "Present PrivateDAO as a Poland-based governance infrastructure product that deserves support because it already turns complex private operations into a clear user-facing Solana experience.",
     whyUs:
@@ -1644,16 +1652,16 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winningMoves: [
       "Open with start and learn, then move directly into judge and proof so the product feels usable before it feels technical.",
       "Use Android and browser-wallet evidence to show that ordinary users can operate private governance flows without scripts or terminal work.",
-      "Frame support as a way to accelerate ecosystem infrastructure already working on Devnet, not as a request to rescue an incomplete idea.",
+      "Frame support as a way to accelerate ecosystem infrastructure already working on Testnet, not as a request to rescue an incomplete idea.",
     ],
     sponsorFit: [
-      "This workspace rewards visible execution breadth, and PrivateDAO now spans product, mobile, runtime evidence, Devnet execution, and trust surfaces.",
+      "This workspace rewards visible execution breadth, and PrivateDAO now spans product, mobile, runtime evidence, Testnet execution, and trust surfaces.",
       "The prior Poland win gives immediate credibility, but the current page must prove that the team is building toward a durable Solana company, not repeating old success.",
       "Regional judges are more likely to back a team that already serves the ecosystem and clearly knows how support turns current execution into broader adoption.",
     ],
     validationSteps: [
       "Use `/start`, `/learn`, `/judge`, and `/awards` as the opening packet.",
-      "Keep screenshots and copy aligned with the current live site and live Devnet transactions, not stale prior builds.",
+      "Keep screenshots and copy aligned with the current live site and live Testnet transactions, not stale prior builds.",
       "Do not let the page read like a track memo; it must read like a support-worthy product brief.",
     ],
   },
@@ -1665,7 +1673,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winnerAnnouncementBy: "Follow the active grants page for current review timing.",
     skillsNeeded: ["Frontend", "Backend", "Blockchain", "Product", "Operations"],
     recommendedWallet: "Solflare for continuity; commercial and trust surfaces carry most of the grant weight.",
-    devnetStatus: "Live on Devnet with services packaging, trust packets, awards proof, and story route already usable in grant review.",
+    devnetStatus: "Live on Testnet with services packaging, trust packets, awards proof, and story route already usable in grant review.",
     objective:
       "Present PrivateDAO as regionally valuable governance infrastructure with a clear commercial path and disciplined launch boundaries.",
     whyUs:
@@ -1712,7 +1720,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winnerAnnouncementBy: "Follow the accelerator review window and support timing.",
     skillsNeeded: ["Frontend", "Backend", "Blockchain", "Design", "Product", "Operations"],
     recommendedWallet: "Solflare for the live product flow; capital reviewers care most about coherence, traction posture, and launch discipline.",
-    devnetStatus: "Live on Devnet with root-domain product shell, story video, services packaging, trust packet, and product learning/proof routes already in place.",
+    devnetStatus: "Live on Testnet with root-domain product shell, story video, services packaging, trust packet, and product learning/proof routes already in place.",
     objective:
       "Show that PrivateDAO is already a coherent product: product shell, revenue rails, trust posture, and a disciplined path to production release.",
     whyUs:
@@ -1733,7 +1741,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     requirements: [
       "A startup-quality product narrative.",
       "Clear commercial relevance beyond a short-lived artifact.",
-      "A believable plan to convert Devnet proof into production and operating milestones.",
+      "A believable plan to convert Testnet proof into production and operating milestones.",
     ],
     winningMoves: [
       "Use start, story, services, and trust as one accelerator-ready funnel.",
@@ -1760,7 +1768,7 @@ export function getCompetitionTrackWorkspace(slug: string) {
 export const proofPackets = [
   {
     title: "Live proof",
-    summary: "Canonical Devnet create → vote → execute flow with public reviewer links.",
+    summary: "Canonical Testnet create → vote → execute flow with public reviewer links.",
     href: "/proof/?judge=1",
     cta: "Open judge view",
   },
@@ -1908,14 +1916,14 @@ export const servicesJourney = [
 export const securityTracks = [
   {
     title: "Governance Hardening V3",
-    status: "Devnet-proven",
+    status: "Testnet-proven",
     summary:
       "Proposal-level governance snapshots, supply-based quorum mode, and reveal rebate vaults keep the path additive instead of reinterpreting legacy objects.",
     href: "/documents/governance-hardening-v3",
   },
   {
     title: "Settlement Hardening V3",
-    status: "Devnet-proven",
+    status: "Testnet-proven",
     summary:
       "Payout caps, evidence aging, and proposal-scoped settlement policy snapshots keep confidential execution bounded and versioned.",
     href: "/documents/settlement-hardening-v3",
@@ -2052,12 +2060,12 @@ export const analyticsSnapshots = [
   {
     label: "Baseline live proof",
     value: "Healthy",
-    detail: "Create → submit → private vote → execute treasury is already packaged as reviewer-facing Devnet evidence.",
+    detail: "Create → submit → private vote → execute treasury is already packaged as reviewer-facing Testnet evidence.",
   },
   {
     label: "V3 hardening proof",
     value: "Healthy",
-    detail: "Governance V3 and Settlement V3 have dedicated Devnet proof packets with additive boundaries.",
+    detail: "Governance V3 and Settlement V3 have dedicated Testnet proof packets with additive boundaries.",
   },
   {
     label: "Release gates",
@@ -2222,7 +2230,7 @@ export const commercialCompare = [
 export const proofFlowSteps = [
   {
     title: "Live proof",
-    detail: "Open the canonical Devnet flow that proves create → submit → private vote → execute treasury happened.",
+    detail: "Open the canonical Testnet flow that proves create → submit → private vote → execute treasury happened.",
     href: "/proof/?judge=1",
   },
   {

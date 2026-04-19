@@ -20,7 +20,7 @@ export function HomeShell() {
     },
     {
       title: "Learn the product quickly",
-      description: "A plain-language guide explains governance, payments, gaming, API, RPC, privacy, and how to verify the stack yourself on Devnet.",
+      description: "A plain-language guide explains governance, payments, gaming, API, RPC, privacy, and how to verify the stack yourself on Testnet.",
       href: "/learn",
       icon: LifeBuoy,
     },
@@ -40,7 +40,7 @@ export function HomeShell() {
   const fastActionSteps = [
     {
       title: "1. Connect a wallet",
-      description: "Start from the onboarding flow and connect a Devnet-ready wallet without guessing which route to open.",
+      description: "Start from the onboarding flow and connect a Testnet-ready wallet without guessing which route to open.",
       href: "/start",
       cta: "Open start",
     },
@@ -98,7 +98,7 @@ export function HomeShell() {
     {
       technology: "Fast RPC",
       service: "Live state, logs, and signature confirmation",
-      outcome: "Used to keep Devnet reads, proposal status, and action feedback visible after a wallet action instead of leaving the user guessing.",
+      outcome: "Used to keep Testnet reads, proposal status, and action feedback visible after a wallet action instead of leaving the user guessing.",
     },
   ];
   const whatChangedCards = [
@@ -107,7 +107,7 @@ export function HomeShell() {
       detail: "The Solana program has been broken into domain modules for DAO, voting, treasury, privacy, errors, traits, and utilities so protocol review can happen against smaller surfaces.",
     },
     {
-      title: "Wallet-first Devnet proof is now real",
+      title: "Wallet-first Testnet proof is now real",
       detail: "DAO bootstrap, proposal creation, and commit vote have live browser-wallet evidence, and the product flow is being extended through reveal, finalize, and execution closure.",
     },
     {
@@ -119,7 +119,7 @@ export function HomeShell() {
     {
       question: "What is already live today?",
       answer:
-        "It is already a live Devnet product with wallet-first governance, proof, trust, and telemetry surfaces. The active work now is to keep converting that Devnet proof into stronger production-grade closure.",
+        "It is already a live Testnet product with wallet-first governance, proof, trust, and telemetry surfaces. The active work now is to keep converting that Testnet proof into stronger production-grade closure.",
     },
     {
       question: "What does the cryptography actually do here?",
@@ -129,7 +129,7 @@ export function HomeShell() {
     {
       question: "What kind of support helps most right now?",
       answer:
-        "Runtime testing, wallet feedback, security review, operator introductions, infrastructure guidance, and serious ecosystem amplification all help move PrivateDAO from strong Devnet proof toward production-grade mainnet readiness.",
+        "Runtime testing, wallet feedback, security review, operator introductions, infrastructure guidance, and serious ecosystem amplification all help move PrivateDAO from strong Testnet proof toward production-grade mainnet readiness.",
     },
   ];
   const convictionStrip = [
@@ -144,7 +144,7 @@ export function HomeShell() {
           <div className="space-y-6 sm:space-y-8">
             <div className="flex flex-wrap gap-3">
               <Badge variant="cyan">Private governance on Solana</Badge>
-              <Badge variant="violet">Devnet live flow</Badge>
+              <Badge variant="violet">Testnet live flow</Badge>
               <Badge variant="success">User-first start</Badge>
             </div>
             <div className="space-y-4 sm:space-y-5">
@@ -153,7 +153,7 @@ export function HomeShell() {
                 Create a private Solana DAO, submit a proposal, vote, and execute without leaving one guided wallet flow.
               </div>
               <p className="max-w-2xl text-sm leading-7 text-white/62 sm:text-lg sm:leading-8">
-                PrivateDAO turns treasury decisions into a simple Devnet product flow. The best way to understand it is to connect a Devnet wallet, create a DAO, move into proposals and voting, and then inspect live state and proof only when you want more depth.
+                PrivateDAO turns treasury decisions into a simple Testnet product flow. The best way to understand it is to connect a Testnet wallet, create a DAO, move into proposals and voting, and then inspect live state and proof only when you want more depth.
               </p>
             </div>
 
@@ -219,14 +219,14 @@ export function HomeShell() {
                   </div>
                   <div>
                   <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Try it now</div>
-                  <CardTitle className="mt-2">The shortest path from landing page to a real Devnet action</CardTitle>
+                  <CardTitle className="mt-2">The shortest path from landing page to a real Testnet action</CardTitle>
                   </div>
                 </div>
               </CardHeader>
             <CardContent className="space-y-6">
               <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
                 <div className="text-[11px] uppercase tracking-[0.28em] text-white/42">Use case</div>
-                <div className="mt-2 text-2xl font-semibold text-white">Solana Devnet</div>
+                <div className="mt-2 text-2xl font-semibold text-white">Solana Testnet</div>
                 <div className="mt-2 text-sm leading-7 text-white/56">
                   Use it when you want a team or community to create a DAO, propose an action, vote privately, and execute from one surface.
                 </div>
@@ -255,7 +255,7 @@ export function HomeShell() {
                 </div>
                 <div className="mt-2 text-lg font-semibold text-amber-50">1st Place · Superteam Poland</div>
                 <div className="mt-2 text-sm leading-7 text-amber-50/70">
-                  Strong proof remains available for judges and investors, but the homepage stays focused on what a connected visitor can actually do first with a real Devnet wallet.
+                  Strong proof remains available for judges and investors, but the homepage stays focused on what a connected visitor can actually do first with a real Testnet wallet.
                 </div>
               </div>
             </CardContent>
@@ -266,7 +266,7 @@ export function HomeShell() {
       <section className="mx-auto mt-14 w-full max-w-7xl px-4 sm:mt-16 sm:px-6 lg:px-8">
         <div className="grid gap-4 md:grid-cols-3">
           <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5 text-sm leading-7 text-white/62">
-            PrivateDAO is a wallet-first Solana product for private governance, live Devnet execution, and treasury motion rehearsal.
+            PrivateDAO is a wallet-first Solana product for private governance, live Testnet execution, and treasury motion rehearsal.
           </div>
           <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5 text-sm leading-7 text-white/62">
             The public surface explains the product first, then opens proof, diagnostics, and trust only when the user asks for them.
@@ -292,7 +292,7 @@ export function HomeShell() {
           </div>
           <div className="rounded-[28px] border border-violet-300/14 bg-[linear-gradient(180deg,rgba(20,14,36,0.96),rgba(10,10,20,0.99))] p-6">
             <div className="text-[11px] uppercase tracking-[0.3em] text-violet-200/78">Clear milestones</div>
-            <div className="mt-3 text-xl font-semibold text-white">From live Devnet product to stronger production release confidence</div>
+            <div className="mt-3 text-xl font-semibold text-white">From live Testnet product to stronger production release confidence</div>
             <p className="mt-3 text-sm leading-7 text-white/62">
               The roadmap is straightforward: simplify first-use verification, strengthen proof and telemetry continuity, close audit and custody gates, and then ship the strongest possible production release candidate.
             </p>
@@ -304,7 +304,7 @@ export function HomeShell() {
             We are building PrivateDAO as production-intent governance infrastructure: private by design, verifiable in operation, and easier to trust with every serious execution tranche.
           </div>
           <p className="mt-3 max-w-4xl text-sm leading-7 text-white/62 sm:text-base">
-            The ambition is straightforward: earn first-place trust through real product quality, visible proof, and operational discipline, then turn ecosystem support into the technical, financial, and human momentum that carries PrivateDAO from strong Devnet execution toward durable mainnet infrastructure. We want this work to help shape a new generation that protects the ecosystem and the broader blockchain space through stronger governance and safer treasury operations.
+            The ambition is straightforward: earn first-place trust through real product quality, visible proof, and operational discipline, then turn ecosystem support into the technical, financial, and human momentum that carries PrivateDAO from strong Testnet execution toward durable mainnet infrastructure. We want this work to help shape a new generation that protects the ecosystem and the broader blockchain space through stronger governance and safer treasury operations.
           </p>
           <div className="mt-5 grid gap-3 md:grid-cols-3">
             {convictionStrip.map((item) => (
@@ -321,7 +321,7 @@ export function HomeShell() {
           <div className="text-[11px] font-medium uppercase tracking-[0.34em] text-cyan-200/78">Why it works</div>
           <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Four systems make the product usable, private, and fast</h2>
           <p className="text-base leading-8 text-white/60 sm:text-lg">
-            PrivateDAO is not just a UI shell. It combines privacy, responsive execution, and reliable reads so a real Devnet governance action can move from wallet click to visible result without forcing the user to learn the architecture first.
+            PrivateDAO is not just a UI shell. It combines privacy, responsive execution, and reliable reads so a real Testnet governance action can move from wallet click to visible result without forcing the user to learn the architecture first.
           </p>
         </div>
         <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -414,10 +414,10 @@ export function HomeShell() {
                 PrivateDAO is being built as governance and treasury infrastructure that can serve the Solana ecosystem broadly. We are working continuously to make it more capable, safer, and more valuable, and that mission moves faster with practical support: testing, technical review, integrations, operator discipline, and serious ecosystem distribution.
               </p>
               <p className="text-sm leading-7 text-white/62">
-                What support accelerates most is not vague enthusiasm. It is the kind of help that turns a strong Devnet product into stronger ecosystem infrastructure: wallet testing, security review, operational introductions, integrations, and funding that maps directly to visible milestones.
+                What support accelerates most is not vague enthusiasm. It is the kind of help that turns a strong Testnet product into stronger ecosystem infrastructure: wallet testing, security review, operational introductions, integrations, and funding that maps directly to visible milestones.
               </p>
               <div className="grid gap-3 sm:grid-cols-2">
-                <div className="rounded-[20px] border border-white/8 bg-white/[0.03] p-4 text-sm leading-7 text-white/60">Runtime testing, browser-wallet checks, and real-device validation on Devnet</div>
+                <div className="rounded-[20px] border border-white/8 bg-white/[0.03] p-4 text-sm leading-7 text-white/60">Runtime testing, browser-wallet checks, and real-device validation on Testnet</div>
                 <div className="rounded-[20px] border border-white/8 bg-white/[0.03] p-4 text-sm leading-7 text-white/60">Security review, protocol scrutiny, and custody-hardening support</div>
                 <div className="rounded-[20px] border border-white/8 bg-white/[0.03] p-4 text-sm leading-7 text-white/60">Infrastructure guidance for API, RPC, telemetry, monitoring, and recovery</div>
                 <div className="rounded-[20px] border border-white/8 bg-white/[0.03] p-4 text-sm leading-7 text-white/60">Introductions, amplification, and ecosystem trust that help this become shared infrastructure</div>

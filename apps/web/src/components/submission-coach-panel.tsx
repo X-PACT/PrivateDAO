@@ -59,7 +59,7 @@ export function SubmissionCoachPanel({ workspace }: SubmissionCoachPanelProps) {
         <div className="rounded-3xl border border-white/8 bg-black/20 p-4">
           <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-white/46">
             <ListOrdered className="h-3.5 w-3.5" />
-            Final demo order
+            Final product route order
           </div>
           <div className="mt-4 grid gap-3">
             {plan.finalDemoOrder.map((route, index) => (

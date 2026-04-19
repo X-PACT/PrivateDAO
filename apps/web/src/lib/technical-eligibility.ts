@@ -66,7 +66,7 @@ const fits: Record<string, TrackTechnicalFit> = {
   "privacy-track": {
     coreIdentity,
     sponsorUsage: [
-      "MagicBlock is not a badge only: confidential settlement corridors and runtime evidence are already exposed on Devnet.",
+      "MagicBlock is not a badge only: confidential settlement corridors and runtime evidence are already exposed on Testnet.",
       "REFHE is tied to confidential payout plans and proposal-bound settlement, not positioned as a vague future primitive.",
       "ZK proof anchors, reviewer packets, and the confidence engine together show privacy, reviewability, and execution integrity in one flow.",
     ],

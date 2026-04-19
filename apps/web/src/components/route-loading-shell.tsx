@@ -27,7 +27,7 @@ export function RouteLoadingShell({
           <div className="grid gap-4 md:grid-cols-3">
             {[
               "Preparing wallet-aware controls",
-              "Loading live Devnet context",
+              "Loading live Testnet context",
               "Attaching proof and action rails",
             ].map((item) => (
               <div

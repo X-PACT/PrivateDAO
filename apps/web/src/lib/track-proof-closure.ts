@@ -24,7 +24,7 @@ export function getTrackSpecificProofContext(workspace: CompetitionTrackWorkspac
         {
           label: "Live Proof V3",
           href: "/documents/live-proof-v3",
-          summary: "Devnet proposal lifecycle, V3 hardening, and explorer-verifiable proof anchors are already documented.",
+          summary: "Testnet proposal lifecycle, V3 hardening, and explorer-verifiable proof anchors are already documented.",
         },
         {
           label: "ZK capability matrix",
@@ -51,7 +51,7 @@ export function getTrackSpecificProofContext(workspace: CompetitionTrackWorkspac
         {
           label: "Core integrations",
           href: "/documents/frontier-integrations",
-          summary: "Hosted-read and runtime evidence already prove the infrastructure story on Devnet with reviewer-facing artifacts.",
+          summary: "Hosted-read and runtime evidence already prove the infrastructure story on Testnet with reviewer-facing artifacts.",
         },
       ],
       exactBlocker: "production-monitoring-alerts",
@@ -79,6 +79,6 @@ export function getTrackSpecificProofContext(workspace: CompetitionTrackWorkspac
     exactBlockerSummary:
       "The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded.",
     pendingSummary:
-      "For the main submission, custody is not a side detail. It is the exact trust gate that separates a strong Devnet product from a real-funds launch claim, and the strict ingestion route now makes that ceremony packet reproducible instead of manual.",
+      "For the main submission, custody is not a side detail. It is the exact trust gate that separates a strong Testnet product from a real-funds launch claim, and the strict ingestion route now makes that ceremony packet reproducible instead of manual.",
   };
 }

@@ -44,7 +44,7 @@ export default function DiagnosticsPage() {
       ]}
     >
       <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-5 text-sm leading-7 text-white/72">
-        Use diagnostics after you connect a Devnet wallet and run the product flow. This is where a visitor, reviewer, or operator can confirm the runtime result, inspect the data corridor, and see that the system is doing real work instead of presenting static claims.
+        Use diagnostics after you connect a Testnet wallet and run the product flow. This is where a visitor, reviewer, or operator can confirm the runtime result, inspect the data corridor, and see that the system is doing real work instead of presenting static claims.
       </div>
       <div>
         <Suspense fallback={null}>

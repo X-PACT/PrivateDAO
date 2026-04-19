@@ -4,13 +4,10 @@ import { RuntimeTemplateSandbox } from "@/components/runtime-template-sandbox";
 import { TemplateSandboxShell } from "@/components/template-sandbox-shell";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 import { buildRouteMetadata } from "@/lib/route-metadata";
+import { buildSolanaTxUrl } from "@/lib/solana-network";
 
 const templateHref =
   "https://github.com/X-PACT/PrivateDAO/tree/main/templates/frontend-solana-bootcamp/runtime-activity-starter/RuntimeActivityStarter.tsx";
-
-function buildSolanaTxUrl(signature: string) {
-  return `https://solscan.io/tx/${signature}?cluster=devnet`;
-}
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Runtime Template",

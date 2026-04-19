@@ -5,10 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
-
-function buildSolanaTxUrl(signature: string) {
-  return `https://solscan.io/tx/${signature}?cluster=devnet`;
-}
+import { buildSolanaTxUrl } from "@/lib/solana-network";
 
 export function JudgeRuntimeLogsPanel() {
   const snapshot = getJudgeRuntimeLogsSnapshot();
@@ -19,7 +16,7 @@ export function JudgeRuntimeLogsPanel() {
         <div className="flex items-center justify-between gap-4">
           <div>
             <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/75">Judge runtime logs</div>
-            <CardTitle className="mt-2 text-2xl text-white">Captured Devnet execution evidence, not summary-only proof</CardTitle>
+            <CardTitle className="mt-2 text-2xl text-white">Captured Testnet execution evidence, not summary-only proof</CardTitle>
           </div>
           <div className="rounded-2xl border border-cyan-300/20 bg-black/25 px-3 py-2 text-right">
             <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/70">Freshness</div>
@@ -27,8 +24,8 @@ export function JudgeRuntimeLogsPanel() {
           </div>
         </div>
         <p className="max-w-4xl text-sm leading-7 text-white/62">
-          This route exposes captured Devnet proposal and settlement signatures from indexed evidence and the dedicated
-          V3 hardening path. It is the fastest way to review what PrivateDAO has already executed on Devnet, even when
+          This route exposes captured Testnet proposal and settlement signatures from indexed evidence and the dedicated
+          V3 hardening path. It is the fastest way to review what PrivateDAO has already executed on Testnet, even when
           the visitor has not yet produced a fresh wallet-bound run in the current session.
         </p>
       </CardHeader>
@@ -172,7 +169,7 @@ export function JudgeRuntimeLogsPanel() {
                 <ExternalLink className="ml-2 h-4 w-4" />
               </Link>
               <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")} href="/govern">
-                Run the live Devnet flow
+                Run the live Testnet flow
                 <ExternalLink className="ml-2 h-4 w-4" />
               </Link>
               <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")} href="/documents/live-proof-v3">

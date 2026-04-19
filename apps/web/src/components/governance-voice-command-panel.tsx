@@ -223,7 +223,7 @@ export function GovernanceVoiceCommandPanel({
       </p>
       <p className="mt-3 max-w-4xl text-sm leading-7 text-white/60">
         The visible action is simple on purpose. Under the UI, the product still preserves private-vote posture,
-        policy-bound execution preparation, and reviewer-visible proof after the transaction lands on Devnet.
+        policy-bound execution preparation, and reviewer-visible proof after the transaction lands on Testnet.
       </p>
 
       <div className="mt-4 flex flex-wrap gap-2">

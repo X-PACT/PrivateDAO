@@ -8,7 +8,8 @@ Current release posture:
 
 Current claim boundary:
 
-- PrivateDAO is devnet-proven, internally hardened, and reviewer-ready.
+- PrivateDAO is Testnet-live, internally hardened, and reviewer-ready.
+- The earlier Devnet phase remains preserved as rehearsal evidence, while current public operating language should point reviewers to the Testnet program, Testnet lifecycle proof, and Testnet wallet-first path.
 - PrivateDAO is advancing toward production release through the operating gates below, each of which is tied to specific evidence.
 
 Canonical machine-readable source:

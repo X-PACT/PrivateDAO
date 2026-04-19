@@ -55,7 +55,7 @@ export function TemplateSandboxShell({
         <h2 className="mt-3 text-2xl font-semibold text-white">{templateAlias}</h2>
         <p className="mt-3 max-w-3xl text-sm leading-7 text-white/66">
           This route turns the starter into a live in-product sandbox. Use it to understand the UI pattern quickly,
-          then move directly into the production Devnet corridor and verify the blockchain result from the linked proof
+          then move directly into the production Testnet corridor and verify the blockchain result from the linked proof
           route.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">

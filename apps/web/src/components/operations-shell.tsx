@@ -16,7 +16,7 @@ const operationsNav = [
   { href: "/assistant", label: "AI Assistant", icon: Sparkles, summary: "Internal AI-style guide across routes, docs, and proof" },
   { href: "/story", label: "Story", icon: PlayCircle, summary: "Live product story and fast explanation" },
   { href: "/community", label: "Community", icon: MessageSquareMore, summary: "Join, updates, pilot interest, and support routing" },
-  { href: "/govern", label: "Govern", icon: SquareTerminal, summary: "Create, vote, and execute on Devnet" },
+  { href: "/govern", label: "Govern", icon: SquareTerminal, summary: "Create, vote, and execute on Testnet" },
   { href: "/live", label: "Live State", icon: LayoutDashboard, summary: "Proposals, treasury, and action logs" },
   { href: "/android", label: "Android", icon: Smartphone, summary: "Mobile app, APK download, parity plan" },
   { href: "/proof", label: "Proof", icon: Sparkles, summary: "Baseline and V3 evidence" },

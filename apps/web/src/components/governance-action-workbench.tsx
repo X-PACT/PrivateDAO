@@ -30,15 +30,16 @@ import {
 } from "@/lib/dao-bootstrap";
 import { buildServiceHandoffQuery } from "@/lib/service-handoff-state";
 import { getProposalById, type ProposalCardModel } from "@/lib/site-data";
+import { SOLANA_NETWORK_LABEL } from "@/lib/solana-network";
 import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
 import { cn } from "@/lib/utils";
 
 const voteChoices = ["Approve", "Reject"] as const;
 // The browser-first governance lane needs enough time for a human wallet prompt
-// and one review pass without falling out of the live Devnet window.
-const LIVE_DEVNET_VOTING_DURATION_SECONDS = 180;
-const LIVE_DEVNET_REVEAL_WINDOW_SECONDS = 180;
-const LIVE_DEVNET_EXECUTION_DELAY_SECONDS = 30;
+// and one review pass without falling out of the live Testnet window.
+const LIVE_TESTNET_VOTING_DURATION_SECONDS = 180;
+const LIVE_TESTNET_REVEAL_WINDOW_SECONDS = 180;
+const LIVE_TESTNET_EXECUTION_DELAY_SECONDS = 30;
 
 function resolveStagedReviewAction(proposal: ProposalCardModel | null): CoreGovernanceInstructionName {
   if (!proposal) return "commit_vote";
@@ -792,7 +793,7 @@ export function GovernanceActionWorkbench() {
     if (!publicKey) {
       setCreateDaoRuntime({
         status: "error",
-        message: "Connect a wallet before creating the DAO on devnet.",
+        message: `Connect a wallet before creating the DAO on ${SOLANA_NETWORK_LABEL}.`,
       });
       return;
     }
@@ -808,8 +809,8 @@ export function GovernanceActionWorkbench() {
         connection,
         name: trimmedDaoName,
         quorum: 51,
-        revealWindowSeconds: LIVE_DEVNET_REVEAL_WINDOW_SECONDS,
-        delaySeconds: LIVE_DEVNET_EXECUTION_DELAY_SECONDS,
+        revealWindowSeconds: LIVE_TESTNET_REVEAL_WINDOW_SECONDS,
+        delaySeconds: LIVE_TESTNET_EXECUTION_DELAY_SECONDS,
         votingMode: "token",
       });
 
@@ -843,12 +844,12 @@ export function GovernanceActionWorkbench() {
       );
       recordLog(
         "Governance mint provisioned",
-        `${bootstrap.governanceMint.toBase58()} minted as the DAO governance token for the live devnet bootstrap.`,
+        `${bootstrap.governanceMint.toBase58()} minted as the DAO governance token for the live ${SOLANA_NETWORK_LABEL} bootstrap.`,
       );
 
       setCreateDaoRuntime({
         status: "success",
-        message: "DAO bootstrap submitted to devnet from the web wallet flow.",
+        message: `DAO bootstrap submitted to ${SOLANA_NETWORK_LABEL} from the web wallet flow.`,
         daoAddress: bootstrap.dao.toBase58(),
         authority: publicKey.toBase58(),
         governanceMint: bootstrap.governanceMint.toBase58(),
@@ -870,7 +871,7 @@ export function GovernanceActionWorkbench() {
     if (!publicKey) {
       setCreateProposalRuntime({
         status: "error",
-        message: "Connect a wallet before submitting the proposal on devnet.",
+        message: `Connect a wallet before submitting the proposal on ${SOLANA_NETWORK_LABEL}.`,
       });
       return;
     }
@@ -923,7 +924,7 @@ export function GovernanceActionWorkbench() {
         title: proposalTitle.trim(),
         description: `${proposalTitle.trim()} submitted from the live web governance surface.`,
         treasuryAction: proposalTreasuryDraft.action,
-        votingDurationSeconds: LIVE_DEVNET_VOTING_DURATION_SECONDS,
+        votingDurationSeconds: LIVE_TESTNET_VOTING_DURATION_SECONDS,
       });
 
       setCreateProposalRuntime({
@@ -965,8 +966,8 @@ export function GovernanceActionWorkbench() {
       setCreateProposalRuntime({
         status: "success",
         message: proposalTreasuryDraft.action
-          ? "Treasury proposal submitted to devnet from the web wallet flow."
-          : "Proposal submitted to devnet from the web wallet flow.",
+          ? `Treasury proposal submitted to ${SOLANA_NETWORK_LABEL} from the web wallet flow.`
+          : `Proposal submitted to ${SOLANA_NETWORK_LABEL} from the web wallet flow.`,
         proposalAddress: proposalSubmission.proposal.toBase58(),
         signature,
       });
@@ -987,7 +988,7 @@ export function GovernanceActionWorkbench() {
     if (!publicKey || !activeLiveDaoRuntime?.address || !activeLiveProposalAddress) {
       setCommitVoteRuntime({
         status: "error",
-        message: "Create the DAO and proposal live first so commit has a real devnet lane to target.",
+        message: `Create the DAO and proposal live first so commit has a real ${SOLANA_NETWORK_LABEL} lane to target.`,
       });
       return;
     }
@@ -1054,7 +1055,7 @@ export function GovernanceActionWorkbench() {
 
       setCommitVoteRuntime({
         status: "success",
-        message: "Commit submitted live on devnet. Preserve the reveal salt before moving to reveal.",
+        message: `Commit submitted live on ${SOLANA_NETWORK_LABEL}. Preserve the reveal salt before moving to reveal.`,
         commitmentHex: toHex(commitment),
         saltHex: toHex(salt),
         signature,
@@ -1125,7 +1126,7 @@ export function GovernanceActionWorkbench() {
 
       setRevealVoteRuntime({
         status: "success",
-        message: "Reveal submitted live on devnet from the stored vote preimage.",
+        message: `Reveal submitted live on ${SOLANA_NETWORK_LABEL} from the stored vote preimage.`,
         signature,
       });
     } catch (error) {
@@ -1184,7 +1185,7 @@ export function GovernanceActionWorkbench() {
 
       setFinalizeRuntime({
         status: "success",
-        message: "Finalize submitted live on devnet for the current proposal lane.",
+        message: `Finalize submitted live on ${SOLANA_NETWORK_LABEL} for the current proposal lane.`,
         signature,
       });
     } catch (error) {
@@ -1218,7 +1219,7 @@ export function GovernanceActionWorkbench() {
         throw new Error("Only passed proposals can execute. Finalize the live proposal first and re-check its outcome.");
       }
       if (proposalDetails.isExecuted) {
-        throw new Error("This live proposal is already executed on devnet.");
+        throw new Error(`This live proposal is already executed on ${SOLANA_NETWORK_LABEL}.`);
       }
       if (nowTs < proposalDetails.executionUnlocksAt) {
         throw new Error("Execution timelock is still active for this live proposal.");
@@ -1268,10 +1269,10 @@ export function GovernanceActionWorkbench() {
         status: "success",
         message:
           proposalDetails.treasuryAction?.actionType === "SendToken"
-            ? `Token treasury execute submitted live on devnet. ${proposalDetails.treasuryAction.amountLamports.toString()} raw units of ${proposalDetails.treasuryAction.tokenMint} will settle to ${proposalDetails.treasuryAction.recipient}.`
+            ? `Token treasury execute submitted live on ${SOLANA_NETWORK_LABEL}. ${proposalDetails.treasuryAction.amountLamports.toString()} raw units of ${proposalDetails.treasuryAction.tokenMint} will settle to ${proposalDetails.treasuryAction.recipient}.`
             : proposalDetails.treasuryAction
-              ? `Treasury execute submitted live on devnet. ${proposalDetails.treasuryAction.amountSol} SOL will settle to ${proposalDetails.treasuryAction.recipient}.`
-          : "Standard execute submitted live on devnet. This current web proposal lane carries no treasury action, so execute closes the lifecycle without moving treasury funds.",
+              ? `Treasury execute submitted live on ${SOLANA_NETWORK_LABEL}. ${proposalDetails.treasuryAction.amountSol} SOL will settle to ${proposalDetails.treasuryAction.recipient}.`
+          : `Standard execute submitted live on ${SOLANA_NETWORK_LABEL}. This current web proposal lane carries no treasury action, so execute closes the lifecycle without moving treasury funds.`,
         signature,
       });
     } catch (error) {
@@ -1329,7 +1330,7 @@ export function GovernanceActionWorkbench() {
         <CardHeader className="space-y-3 pb-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/72">Guided Devnet flow</div>
+              <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/72">Guided Testnet flow</div>
               <CardTitle className="mt-2 text-2xl sm:text-3xl">Run the whole governance cycle without leaving the product</CardTitle>
             </div>
             <Badge variant="success">User-first wallet lane</Badge>
@@ -1612,10 +1613,10 @@ export function GovernanceActionWorkbench() {
               placeholder="DAO name"
             />
             <p className="mt-3 text-sm leading-7 text-white/58">
-              The live browser lane creates an accelerated Devnet governance window so a normal user can finish the full cycle from this page:
-              {` ${LIVE_DEVNET_VOTING_DURATION_SECONDS}s`} voting,
-              {` ${LIVE_DEVNET_REVEAL_WINDOW_SECONDS}s`} reveal,
-              {` ${LIVE_DEVNET_EXECUTION_DELAY_SECONDS}s`} execution delay.
+              The live browser lane creates an accelerated Testnet governance window so a normal user can finish the full cycle from this page:
+              {` ${LIVE_TESTNET_VOTING_DURATION_SECONDS}s`} voting,
+              {` ${LIVE_TESTNET_REVEAL_WINDOW_SECONDS}s`} reveal,
+              {` ${LIVE_TESTNET_EXECUTION_DELAY_SECONDS}s`} execution delay.
             </p>
             <div
               className={cn(
@@ -1633,7 +1634,7 @@ export function GovernanceActionWorkbench() {
               ) : null}
             </div>
             <Button className="mt-4 w-full" disabled={!canCreateDao} onClick={() => openReview("initialize_dao")}>
-              {createDaoRuntime.status === "submitting" ? "Awaiting wallet..." : "Create DAO on devnet"}
+              {createDaoRuntime.status === "submitting" ? "Awaiting wallet..." : "Create DAO on Testnet"}
             </Button>
             {createDaoRuntime.message ? (
               <div
@@ -1743,7 +1744,7 @@ export function GovernanceActionWorkbench() {
                       : "SendSol proposals move SOL from the treasury to the specified recipient when executed."}
                 </p>
                 <p className="mt-3 text-sm leading-7 text-white/58">
-                  This live proposal path is intentionally short-lived on Devnet so reviewers and normal users can reach commit, reveal, finalize, and execute in one session without terminal work.
+                  This live proposal path is intentionally short-lived on Testnet so reviewers and normal users can reach commit, reveal, finalize, and execute in one session without terminal work.
                 </p>
                 {proposalTreasuryDraft.error ? (
                   <div className="mt-3 rounded-2xl border border-rose-300/20 bg-rose-300/[0.08] p-3 text-sm leading-7 text-rose-100/82">
@@ -1984,7 +1985,7 @@ export function GovernanceActionWorkbench() {
                 </div>
                 {!hasLiveCommitLane ? (
                   <p className="mt-4 text-sm leading-7 text-amber-100/70">
-                    Live commit unlocks only after a live DAO bootstrap and live proposal submit. The web surface will not fake a commit lane without a real devnet proposal address.
+                    Live commit unlocks only after a live DAO bootstrap and live proposal submit. The web surface will not fake a commit lane without a real Testnet proposal address.
                   </p>
                 ) : (
                   <div className="mt-4 rounded-2xl border border-fuchsia-300/18 bg-fuchsia-300/[0.08] p-3 text-sm text-white/72">
@@ -2049,7 +2050,7 @@ export function GovernanceActionWorkbench() {
                   <ActionFollowUpRail
                     eyebrow="After commit vote"
                     title="Keep the commit private, then watch for the reveal window and proof lane."
-                    description="Commit writes the hashed intent on Devnet while keeping the vote private until reveal. The next operational check is when the reveal window opens, plus whether the runtime trail and judge lane reflect the commit."
+                    description="Commit writes the hashed intent on Testnet while keeping the vote private until reveal. The next operational check is when the reveal window opens, plus whether the runtime trail and judge lane reflect the commit."
                     links={[
                       {
                         href: "/govern#reveal-vote-action",

@@ -28,7 +28,7 @@ export default function IntelligencePage() {
       ]}
     >
       <div className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6 text-sm leading-7 text-white/68">
-        This route is easiest to understand after <a className="text-cyan-100 underline underline-offset-4" href="/learn">/learn</a> and a real Devnet action from <a className="text-cyan-100 underline underline-offset-4" href="/govern">/govern</a>. The goal is simple: help the signer understand risk, treasury context, RPC quality, and gaming consequences before pressing approve.
+        This route is easiest to understand after <a className="text-cyan-100 underline underline-offset-4" href="/learn">/learn</a> and a real Testnet action from <a className="text-cyan-100 underline underline-offset-4" href="/govern">/govern</a>. The goal is simple: help the signer understand risk, treasury context, RPC quality, and gaming consequences before pressing approve.
       </div>
       <div>
         <MetricsStrip />

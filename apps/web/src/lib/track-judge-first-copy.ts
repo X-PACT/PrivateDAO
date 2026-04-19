@@ -63,7 +63,7 @@ export function getTrackJudgeFirstCopy(
   const bestDemoRoute = getProfileAwareDemoRoute(workspace, commercialProfile);
   const paymentsReadiness =
     commercialProfile === "treasury-top-up"
-      ? "Treasury capitalization route is live on public Devnet rails, but production-safe custody still depends on authority-transfer evidence."
+      ? "Treasury capitalization route is live on public Testnet rails, but production-safe custody still depends on authority-transfer evidence."
       : commercialProfile === "vendor-payout" || commercialProfile === "contributor-payout"
         ? "Governed payout framing is live, with rails, trust links, and diagnostics visible before any real-funds claim."
         : "Treasury rails, reviewer-safe packet, and custody truth are already live as part of the startup-grade payments story.";

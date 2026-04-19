@@ -22,7 +22,7 @@ const productConversionLanes = [
   {
     title: "Private governance operations",
     byline: "Create, vote, reveal, and execute from one browser-first DAO control surface.",
-    firstPaidMotion: "Operate one real governance committee or treasury council on Devnet with visible proof.",
+    firstPaidMotion: "Operate one real governance committee or treasury council on Testnet with visible proof.",
     customerOffer: "A normal-user governance product that keeps signing, proof, and execution discipline intact without terminal work.",
     routeHref: "/govern",
     routeLabel: "Open governance flow",

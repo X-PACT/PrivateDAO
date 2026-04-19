@@ -129,7 +129,7 @@ export function CompetitionWorkspace({ workspace }: CompetitionWorkspaceProps) {
             <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
               <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-fuchsia-200/76">
                 <ShieldCheck className="h-3.5 w-3.5" />
-                Devnet status
+                Testnet status
               </div>
               <div className="mt-2 text-sm leading-7 text-white/68">{workspace.devnetStatus}</div>
             </div>

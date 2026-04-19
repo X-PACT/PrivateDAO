@@ -58,7 +58,7 @@ const strictSenderChecklist = [
   "Copy the exact public receive address and explorer link for the selected asset rail. Do not reuse a rail from memory.",
   "Attach a reference string that includes payer, purpose, amount, and settlement context so the intake packet can be matched later.",
   "Open the proof and trust surfaces before describing the current treasury rail, the operating posture, and the next production milestone to a sender, buyer, or judge.",
-  "Treat the current rails as live Devnet treasury intake with a clear path toward stronger custody evidence and production-safe release readiness.",
+  "Treat the current rails as live Testnet treasury intake with a clear path toward stronger custody evidence and production-safe release readiness.",
 ] as const;
 
 function buildStripCopy(context: TreasuryReviewerGradeStripProps["context"]) {
@@ -86,7 +86,11 @@ function buildStripCopy(context: TreasuryReviewerGradeStripProps["context"]) {
 }
 
 function buildExplorerHref(address: string, network: string) {
-  const cluster = network.toLowerCase().includes("devnet") ? "?cluster=devnet" : "";
+  const cluster = network.toLowerCase().includes("testnet")
+    ? "?cluster=testnet"
+    : network.toLowerCase().includes("devnet")
+      ? "?cluster=devnet"
+      : "";
   return `https://solscan.io/account/${address}${cluster}`;
 }
 

@@ -4,7 +4,7 @@ PrivateDAO can be packaged as product software, operator tooling, and launch sup
 
 ## 1. Product surfaces
 
-These are already implemented in the repository and live on Devnet:
+These are already implemented in the repository and live on Solana Testnet:
 
 - wallet-connected governance frontend
 - DAO bootstrap and treasury funding
@@ -23,7 +23,7 @@ These are service-style offerings that build on the implemented product:
 - reviewer export and evidence packaging
 - runtime diagnostics and operator snapshots
 - governance proof-center support for audits, grants, and internal reviews
-- Devnet billing rehearsal that lets a visitor sign a small service charge and inspect the resulting hash and logs on-chain
+- Testnet billing rehearsal that lets a visitor sign a small service charge and inspect the resulting hash and logs on-chain
 
 Current boundary:
 
@@ -38,7 +38,7 @@ PrivateDAO can also be delivered as a guided migration and rollout package:
 - governance token mapping and custody planning
 - operator onboarding
 - launch blocker tracking
-- pilot-run simulation on Devnet
+- pilot-run rehearsal on Solana Testnet
 
 Supporting docs:
 

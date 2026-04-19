@@ -17,7 +17,7 @@ const serviceMap = [
   },
   {
     title: "2. Govern",
-    description: "Create a DAO, create a proposal, vote, and execute from one live Devnet flow.",
+    description: "Create a DAO, create a proposal, vote, and execute from one live Testnet flow.",
     href: "/govern",
     cta: "Open govern",
     icon: ArrowRight,

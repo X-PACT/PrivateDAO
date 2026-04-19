@@ -53,8 +53,8 @@ export default function CommunityPage({ searchParams }: CommunityPageProps) {
   return (
     <OperationsShell
       eyebrow="Community"
-      title="Join Discord, learn the product, try Devnet, and verify the result from one public route"
-      description="Community is the public entry for the full onboarding ladder: join the live server, learn what PrivateDAO does, try the browser-first Devnet flow, and verify the real outcome in the verification and proof surfaces."
+      title="Join Discord, learn the product, try Testnet, and verify the result from one public route"
+      description="Community is the public entry for the full onboarding ladder: join the live server, learn what PrivateDAO does, try the browser-first Testnet flow, and verify the real outcome in the verification and proof surfaces."
       badges={[
         { label: "Discord live", variant: "success" },
         { label: "YouTube live", variant: "violet" },

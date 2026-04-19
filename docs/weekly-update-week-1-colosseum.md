@@ -20,7 +20,7 @@ This is **not** the full technical demo and **not** the final pitch video.
 
 ## Recommended Video Description
 
-`PrivateDAO is building governance infrastructure on Solana for private voting, safer treasury execution, and confidential operational flows. This week we are showing the live Devnet product foundation: wallet-connected flow, DAO creation, proposal creation, commit-reveal voting, execution-safe treasury path, proof surfaces, and the product shell that will keep expanding through the current delivery cycle.`
+`PrivateDAO is building governance infrastructure on Solana for private voting, safer treasury execution, and confidential operational flows. This week we are showing the preserved Devnet product foundation that led into the current Testnet path: wallet-connected flow, DAO creation, proposal creation, commit-reveal voting, execution-safe treasury path, proof surfaces, and the product shell that keeps expanding through the current delivery cycle.`
 
 ## Recommended Link Targets To Mention
 
@@ -33,7 +33,7 @@ This is **not** the full technical demo and **not** the final pitch video.
 
 PrivateDAO is building governance infrastructure on Solana, not just a simple DAO interface.
 
-This week, the live Devnet product already supports the core governance path end to end: connect wallet, create a DAO, create a proposal, commit a vote privately, reveal it later, and execute through a safer treasury flow.
+This week, the preserved Devnet product foundation already supports the core governance path end to end: connect wallet, create a DAO, create a proposal, commit a vote privately, reveal it later, and execute through a safer treasury flow. That foundation is now being carried into the current Testnet operating path.
 
 The core idea is simple: governance should not leak intent too early.
 

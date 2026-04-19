@@ -72,15 +72,15 @@ PrivateDAO matters beyond one product surface because it helps the ecosystem:
 
 ## Slide 5 - What Works Today
 
-PrivateDAO is beyond concept stage and already runs as a Devnet product.
+PrivateDAO is beyond concept stage and already runs as a Testnet product.
 
 Implemented and evidenced today:
 
 - live wallet-connected frontend
 - live operational routes for `/start`, `/command-center`, `/dashboard`, `/proof`, `/diagnostics`, and `/services`
 - live custody route for `/custody` covering multisig and authority-transfer workflow
-- Anchor program and PDA account model
-- PDAO Token-2022 governance mint surface
+- Anchor program and PDA account model on the current Testnet path
+- preserved PDAO Token-2022 governance mint evidence for reviewer continuity
 - commit, reveal, finalize, veto, cancel, execute lifecycle
 - treasury SOL and token execution checks
 - confidential payout and encrypted manifest surfaces
@@ -103,11 +103,12 @@ Evidence:
 
 - 1st Place - Superteam Poland
 - 50-wallet Devnet rehearsal
+- standard Testnet lifecycle proof
 - 212 total attempts
 - 180 successful attempts
 - 32 expected security rejections
 - 3 on-chain ZK proof anchors
-- live Devnet operating health inside `/dashboard`, `/command-center`, `/services`, and `/diagnostics`
+- live Testnet operating path inside `/start`, `/judge`, `/proof`, `/services`, and `/diagnostics`
 - generated audit packet and cryptographic manifest
 - market analysis and reviewer package
 
@@ -281,7 +282,7 @@ The important discipline is explicit:
 
 ## Slide 12 - The Ask
 
-PrivateDAO is seeking ecosystem funding, grants, and direct investment to move from advanced Devnet product and audit-readiness candidate into production-grade launch readiness.
+PrivateDAO is seeking ecosystem funding, grants, and direct investment to move from live Testnet product and audit-readiness candidate into production-grade launch readiness.
 
 Use of funds:
 

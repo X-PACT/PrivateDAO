@@ -50,6 +50,8 @@ export type PayoutRouteOption = {
   slug:
     | "pilot-funding"
     | "agentic-micropayment-rail"
+    | "pusd-confidential-payroll"
+    | "pusd-gaming-reward-pool"
     | "treasury-top-up"
     | "vendor-payout"
     | "contributor-payout";
@@ -57,7 +59,7 @@ export type PayoutRouteOption = {
   summary: string;
   routeFocus: string;
   defaultLane: "buyer" | "operator" | "support";
-  defaultAssetSymbol: "SOL" | "USDC" | "USDG";
+  defaultAssetSymbol: "SOL" | "USDC" | "PUSD" | "USDG";
   state: string;
   stateDetail: string;
   primaryHref: string;
@@ -262,6 +264,36 @@ function getPayoutRouteOptions(
       primaryLabel: "Open agentic micropayment path",
       proofHref: "/judge",
       proofLabel: "Open judge proof path",
+    },
+    {
+      slug: "pusd-confidential-payroll",
+      title: "PUSD confidential payroll",
+      summary:
+        "Use the Palm USD lane when a DAO needs stable, non-freezable payroll or contributor settlement attached to governance approval and proof continuity.",
+      routeFocus: "PUSD confidential payroll corridor",
+      defaultLane: "operator",
+      defaultAssetSymbol: "PUSD",
+      state: treasury.paymentsReadiness,
+      stateDetail: treasury.exactBlockerSummary,
+      primaryHref: "/engage?profile=pusd-confidential-payroll",
+      primaryLabel: "Open PUSD payroll path",
+      proofHref: "/services#treasury-payment-request",
+      proofLabel: "Open PUSD treasury request",
+    },
+    {
+      slug: "pusd-gaming-reward-pool",
+      title: "PUSD gaming reward pool",
+      summary:
+        "Use the Palm USD gaming lane when a guild or tournament treasury needs governed stablecoin rewards with privacy-aware approval and explorer-visible settlement.",
+      routeFocus: "PUSD gaming DAO reward corridor",
+      defaultLane: "operator",
+      defaultAssetSymbol: "PUSD",
+      state: treasury.paymentsReadiness,
+      stateDetail: treasury.exactBlockerSummary,
+      primaryHref: "/engage?profile=pusd-gaming-reward-pool",
+      primaryLabel: "Open PUSD gaming path",
+      proofHref: "/products",
+      proofLabel: "Open product map",
     },
     {
       slug: "treasury-top-up",

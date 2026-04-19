@@ -36,15 +36,15 @@ This is why the submission should read like a shipped DAO tooling and payments p
 
 ## Recommended one-liner
 
-**Private governance, treasury execution, and confidential payouts on Solana, delivered as a simple Devnet-verifiable product.**
+**Private governance, treasury execution, and confidential payouts on Solana, delivered as a simple Testnet-verifiable product.**
 
 ## Recommended problem and solution
 
 PrivateDAO is a privacy-first governance and treasury product on Solana for teams and communities that need serious coordination, reviewable treasury execution, and more credible operational privacy.
 
-We are building PrivateDAO as a real operating system for governed treasury motion, not as a demo. The product is already live on Devnet with wallet-first governance, proposal flow, commit-reveal voting, trust surfaces, reviewer-visible telemetry, and confidential payout routing.
+We are building PrivateDAO as a real operating system for governed treasury motion, not as a throwaway prototype. The product is live on Solana Testnet with wallet-first governance, proposal flow, commit-reveal voting, trust surfaces, reviewer-visible telemetry, and confidential payout routing. Devnet evidence remains preserved as the transition history that proved the early browser-wallet and mobile execution path.
 
-This grant would help us push the next practical layer of execution: clearer public proof, stronger operator tooling, broader runtime evidence, and a tighter path from live Devnet product quality toward release-grade trust.
+This grant would help us push the next practical layer of execution: clearer public proof, stronger operator tooling, broader runtime evidence, and a tighter path from live Testnet product quality toward release-grade trust.
 
 PrivateDAO fits this grant strongly because it sits at the intersection of:
 

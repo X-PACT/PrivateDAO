@@ -2,14 +2,14 @@
 
 ## What this packet is for
 
-This packet gives funders and reviewers one place to inspect the two operational lifts that most clearly separate a live Devnet product from a stronger production-release candidate:
+This packet gives funders and reviewers one place to inspect the two operational lifts that most clearly separate the live Testnet product from a stronger production-release candidate:
 
 1. real-device wallet runtime coverage
 2. production monitoring and alerting delivery
 
 ## Why this matters
 
-PrivateDAO is already a live Devnet product.
+PrivateDAO is already live on Solana Testnet.
 
 What still limits stronger production-release claims is not “more ideas.”
 It is operational delivery:

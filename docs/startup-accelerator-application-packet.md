@@ -2,7 +2,7 @@
 
 ## What this packet is for
 
-This packet is for accelerator-style reviewers who are not only asking whether PrivateDAO works on Devnet, but whether it already behaves like a serious product that can turn outside support into a disciplined, safer, and more trusted release path.
+This packet is for accelerator-style reviewers who are not only asking whether PrivateDAO works on Testnet, but whether it already behaves like a serious product that can turn outside support into a disciplined, safer, and more trusted release path.
 
 ## Reviewer expectation
 
@@ -19,7 +19,7 @@ This packet is written around that standard.
 
 ## Short position
 
-PrivateDAO is already a live Devnet product with:
+PrivateDAO is already live on Solana Testnet with:
 
 - a root-domain application
 - wallet-first governance
@@ -33,7 +33,7 @@ The accelerator case is not “fund us so we can start building.”
 
 It is:
 
-**support us so we can turn a live Devnet governance product into a stronger release candidate with clearer user protection, better operational discipline, and higher trust.**
+**support us so we can turn a live Testnet governance product into a stronger release candidate with clearer user protection, better operational discipline, and higher trust.**
 
 ## What is already shipped
 
@@ -121,7 +121,7 @@ If the accelerator support is DD.xyz credit-based rather than direct capital, th
 
 Supporting indicators:
 
-- live Devnet governance remains functional
+- live Testnet governance remains functional
 - trust and telemetry packets remain current
 - payout corridor remains evidence-backed
 - gate count and ambiguity both decline
@@ -137,7 +137,7 @@ Do not claim:
 
 Claim instead:
 
-- live Devnet product with a disciplined release path
+- live Testnet product with a disciplined release path
 - open-source proof of work
 - buyer-facing routes
 - disciplined operating-gate management

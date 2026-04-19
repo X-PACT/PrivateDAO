@@ -57,7 +57,7 @@ export function getServiceOperationalCards(): ServiceOperationalCard[] {
       summary:
         "PrivateDAO RPC is the infrastructure rail behind reads, writes, diagnostics, and buyer-facing hosted governance access.",
       tryNow:
-        "Open Services and Diagnostics, inspect hosted read coverage, and route into the command center to see the same infrastructure powering live DAO actions on Devnet.",
+        "Open Services and Diagnostics, inspect hosted read coverage, and route into the command center to see the same infrastructure powering live DAO actions on Testnet.",
       evidence: [rpcCoverage, rpcLatency, fallbackRecovery].filter(Boolean) as MetricPreview[],
       intakeRoute: {
         label: "Request RPC access",
@@ -136,6 +136,81 @@ export function getServiceOperationalCards(): ServiceOperationalCard[] {
         "Position the rail as DAO-controlled agentic settlement for reviewer rewards, API usage, operator tasks, and future onchain service commerce.",
       mainnetGate:
         "Production rollout depends on stable settlement policy hardening, beneficiary validation, monitoring continuity, and external review for batched micropayment execution.",
+    },
+    {
+      title: "PUSD Stablecoin Treasury",
+      summary:
+        "PUSD Stablecoin Treasury turns Palm USD, USDC, and adjacent stablecoin rails into governed payroll, grant distribution, commerce settlement, and gaming reward products.",
+      tryNow:
+        "Open the Testnet billing rehearsal, select a PUSD lane, then continue into services, judge, and proof to keep the stablecoin payment, memo, and reviewer path in one flow.",
+      evidence: [payoutCoverage, executeHealth, proofCompletion].filter(Boolean) as MetricPreview[],
+      intakeRoute: {
+        label: "Open PUSD payroll",
+        href: "/engage?profile=pusd-confidential-payroll",
+      },
+      bestRoute: {
+        label: "Run billing rehearsal",
+        href: "/services/testnet-billing-rehearsal",
+      },
+      profileRoutes: [
+        { label: "PUSD payroll", href: "/engage?profile=pusd-confidential-payroll" },
+        { label: "PUSD gaming rewards", href: "/engage?profile=pusd-gaming-reward-pool" },
+        { label: "PUSD layer brief", href: "/documents/pusd-stablecoin-treasury-layer" },
+      ],
+      buyerMotion:
+        "Lead with confidential payroll, grant distribution, gaming reward pools, and institutional stablecoin settlement as the first high-value commercial stablecoin package.",
+      mainnetGate:
+        "The production activation path binds the official PUSD mint, treasury receive account, beneficiary policy, and custody ceremony for real-funds mainnet settlement.",
+    },
+    {
+      title: "Zerion Agent Policy",
+      summary:
+        "Zerion Agent Policy turns autonomous execution into a governed treasury assistant with chain locks, spend caps, expiry windows, and approve-before-execute safety.",
+      tryNow:
+        "Open the Zerion policy surface, choose a payroll, rebalance, or gaming-reward policy, copy the policy payload, and route the action into govern or billing.",
+      evidence: [executeHealth, walletCoverage, proofCompletion].filter(Boolean) as MetricPreview[],
+      intakeRoute: {
+        label: "Open agent policy",
+        href: "/services/zerion-agent-policy",
+      },
+      bestRoute: {
+        label: "Open agent packet",
+        href: "/documents/zerion-autonomous-agent-policy",
+      },
+      profileRoutes: [
+        { label: "Govern", href: "/govern" },
+        { label: "Billing", href: "/services/testnet-billing-rehearsal" },
+        { label: "Judge", href: "/judge" },
+      ],
+      buyerMotion:
+        "Position the agent as a bounded treasury operations assistant for teams that need automation without handing an AI bot unchecked wallet authority.",
+      mainnetGate:
+        "Production execution should bind the Zerion CLI fork, API routing, final wallet signing, and policy audit evidence before any real-funds automated treasury motion.",
+    },
+    {
+      title: "Torque Growth Loop",
+      summary:
+        "Torque Growth Loop converts real product actions into measurable custom_events for onboarding, governance activation, billing proof, and learning completion.",
+      tryNow:
+        "Open the Torque growth surface, select an event, record it locally, copy the custom_event payload, then connect it to the live action route that created the event.",
+      evidence: [walletCoverage, executeHealth, proofFreshness].filter(Boolean) as MetricPreview[],
+      intakeRoute: {
+        label: "Open growth loop",
+        href: "/services/torque-growth-loop",
+      },
+      bestRoute: {
+        label: "Open growth packet",
+        href: "/documents/torque-growth-loop",
+      },
+      profileRoutes: [
+        { label: "Learn", href: "/learn" },
+        { label: "Govern", href: "/govern" },
+        { label: "Billing", href: "/services/testnet-billing-rehearsal" },
+      ],
+      buyerMotion:
+        "Sell retention and activation as measurable product growth: teams can reward real DAO setup, proposal creation, billing signatures, and learning completion.",
+      mainnetGate:
+        "Production delivery should use a server-side Torque event relay or MCP runner with scoped credentials, campaign IDs, and abuse-resistant reward policy.",
     },
     {
       title: "Payments DAO",

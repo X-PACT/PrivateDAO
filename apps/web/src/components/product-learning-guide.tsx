@@ -23,16 +23,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WalletConnectButton } from "@/components/wallet-connect-button";
 import type { ExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import type { JudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
+import { buildSolanaTxUrl } from "@/lib/solana-network";
 import { cn } from "@/lib/utils";
 
 type ProductLearningGuideProps = {
   executionSnapshot: ExecutionSurfaceSnapshot;
   runtimeSnapshot: JudgeRuntimeLogsSnapshot;
 };
-
-function buildSolanaTxUrl(signature: string) {
-  return `https://solscan.io/tx/${signature}?cluster=devnet`;
-}
 
 const productCorridors = [
   {
@@ -117,7 +114,7 @@ const technologyCards = [
     body:
       "Solflare, Phantom, Backpack, and other Solana wallets are part of the actual user flow. The visitor can connect, sign, and verify from the same shell.",
     href: "/start",
-    label: "Connect on Devnet",
+    label: "Connect on Testnet",
     icon: Wallet,
   },
   {
@@ -205,7 +202,7 @@ const problemToProductCards = [
     problem:
       "Too many blockchain tools assume the user can read low-level logs, run scripts, or think like a protocol engineer before doing anything safely.",
     response:
-      "PrivateDAO is built so a normal visitor can start in the browser, connect a Devnet wallet, follow guided steps, and verify the result without terminal work.",
+      "PrivateDAO is built so a normal visitor can start in the browser, connect a Testnet wallet, follow guided steps, and verify the result without terminal work.",
   },
 ] as const;
 
@@ -289,7 +286,7 @@ const publicEvidenceCards = [
   {
     title: "What becomes public",
     summary:
-      "Transaction hashes, runtime logs, settlement evidence, and execution status become visible on Devnet so anyone can inspect what really happened after the action lands.",
+      "Transaction hashes, runtime logs, settlement evidence, and execution status become visible on Testnet so anyone can inspect what really happened after the action lands.",
   },
   {
     title: "Why fast RPC matters",
@@ -300,7 +297,7 @@ const publicEvidenceCards = [
 
 const roadmapMilestones = [
   {
-    title: "Browser-first Devnet completion",
+    title: "Browser-first Testnet completion",
     detail:
       "Every core action should be possible from the UI only: connect, propose, vote, reveal, execute, inspect proof, inspect logs, and now drive the flow with voice or typed commands.",
   },
@@ -323,7 +320,7 @@ const roadmapMilestones = [
 
 const verificationSteps = [
   {
-    title: "Connect a real Devnet wallet",
+    title: "Connect a real Testnet wallet",
     detail:
       "Use Solflare, Phantom, or Backpack. The goal is to run the product with a real signer, not browse screenshots only.",
     href: "/start",
@@ -369,7 +366,7 @@ export function ProductLearningGuide({
             </h2>
             <p className="max-w-3xl text-base leading-8 text-white/66 sm:text-lg">
               The simple version is this: communities, games, treasuries, and organizations can use one browser product
-              to create proposals, vote privately, execute treasury actions, and verify what happened on Solana Devnet
+              to create proposals, vote privately, execute treasury actions, and verify what happened on Solana Testnet
               through hashes, logs, and wallet-signed actions.
             </p>
             <p className="max-w-3xl text-sm leading-7 text-white/58">
@@ -379,7 +376,7 @@ export function ProductLearningGuide({
               flows safely.
             </p>
             <div className="flex flex-wrap gap-3">
-              <WalletConnectButton size="lg" variant="default" connectLabel="Connect on Devnet" />
+              <WalletConnectButton size="lg" variant="default" connectLabel="Connect on Testnet" />
               <Link className={buttonVariants({ size: "lg", variant: "secondary" })} href="/story">
                 Watch the product story
               </Link>
@@ -533,7 +530,7 @@ export function ProductLearningGuide({
 
       <Card>
         <CardHeader>
-          <CardTitle>How to verify the product yourself on Devnet</CardTitle>
+          <CardTitle>How to verify the product yourself on Testnet</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 xl:grid-cols-[0.95fr_1.05fr]">
           <div className="grid gap-4">
@@ -557,13 +554,13 @@ export function ProductLearningGuide({
           <div className="rounded-[26px] border border-cyan-300/16 bg-cyan-300/[0.08] p-5 text-sm leading-7 text-white/68">
             <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/78">What you should expect to see</div>
             <ul className="mt-4 space-y-3">
-              <li>Wallet-signed Devnet actions instead of static screenshots.</li>
+              <li>Wallet-signed Testnet actions instead of static screenshots.</li>
               <li>Proposal and settlement signatures that can be followed into proof and runtime views.</li>
-              <li>Public Devnet hashes and logs that show the action really landed without asking the visitor to decode raw blockchain internals alone.</li>
+              <li>Public Testnet hashes and logs that show the action really landed without asking the visitor to decode raw blockchain internals alone.</li>
               <li>Telemetry, analytics, and runtime packets that explain what changed after each action.</li>
               <li>Privacy and cryptography described in human language first, with technical depth one click away.</li>
               <li>Fast RPC behavior that makes proposal state, proof freshness, and treasury state update quickly enough to feel trustworthy.</li>
-              <li>A product shell that feels close to production, even while the environment stays safely on Devnet.</li>
+              <li>A product shell that feels close to production, even while the environment stays safely on Testnet.</li>
             </ul>
             <div className="mt-5 flex flex-wrap gap-3">
               <Link href="/analytics" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
@@ -648,7 +645,7 @@ export function ProductLearningGuide({
                   </div>
                   <div className="mt-3 break-all text-xs leading-6 text-white/55">{entry.signature}</div>
                   <div className="mt-4 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-amber-200/78">
-                    Open on Solana Devnet
+                    Open on Solana Testnet
                     <ArrowRight className="h-3.5 w-3.5" />
                   </div>
                 </a>

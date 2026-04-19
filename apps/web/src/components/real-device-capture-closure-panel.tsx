@@ -13,7 +13,7 @@ export function RealDeviceCaptureClosurePanel() {
     <Card className="border-emerald-300/16 bg-[linear-gradient(180deg,rgba(12,18,24,0.96),rgba(10,10,18,0.99))]">
       <CardHeader className="space-y-3">
         <div className="text-[11px] uppercase tracking-[0.3em] text-emerald-200/78">Real-device closure program</div>
-        <CardTitle className="text-2xl">The real-device capture board that expands Devnet proof into release-grade confidence</CardTitle>
+        <CardTitle className="text-2xl">The real-device capture board that expands Testnet proof into release-grade confidence</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid gap-4 md:grid-cols-3">
@@ -48,7 +48,7 @@ export function RealDeviceCaptureClosurePanel() {
             </div>
             <div className="mt-3 text-lg font-medium text-white">connect + sign + submit</div>
             <div className="mt-3 text-sm leading-7 text-white/60">
-              A capture counts when it shows diagnostics visibility and a signed Devnet outcome or an explicit wallet-side
+              A capture counts when it shows diagnostics visibility and a signed Testnet outcome or an explicit wallet-side
               error boundary. That keeps the evidence honest while still moving the product toward broader production confidence.
             </div>
           </div>

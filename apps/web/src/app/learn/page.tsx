@@ -25,9 +25,9 @@ const googleSlidesDeckHref =
 export const metadata: Metadata = buildRouteMetadata({
   title: "Learn",
   description:
-    "Learn PrivateDAO through the shortest onboarding path, wallet-first Devnet flows, and product-guided walkthroughs.",
+    "Learn PrivateDAO through the shortest onboarding path, wallet-first Testnet flows, and product-guided walkthroughs.",
   path: "/learn",
-  keywords: ["learn", "onboarding", "devnet", "wallet-first", "walkthrough"],
+  keywords: ["learn", "onboarding", "testnet", "wallet-first", "walkthrough"],
 });
 
 export default function LearnPage() {
@@ -36,7 +36,7 @@ export default function LearnPage() {
   const learningPath = [
     {
       label: "Lesson 1 — Wallet UX",
-      summary: "Connect a Devnet wallet, show signer context, and enter the right corridor without confusion.",
+      summary: "Connect a Testnet wallet, show signer context, and enter the right corridor without confusion.",
       href: `/learn/${learnLectures[0]!.slug}`,
     },
     {
@@ -60,10 +60,10 @@ export default function LearnPage() {
     <OperationsShell
       eyebrow="Learn"
       title="Learn PrivateDAO through the shortest onboarding path and a plain-language product guide"
-      description="This route packages onboarding, wallet-first entry, product explanation, real Devnet verification steps, and the clearest way to understand how governance, payments, gaming, privacy, API, and RPC fit together."
+      description="This route packages onboarding, wallet-first entry, product explanation, real Testnet verification steps, and the clearest way to understand how governance, payments, gaming, privacy, API, and RPC fit together."
       badges={[
         { label: "Wallet-first", variant: "cyan" },
-        { label: "Devnet live", variant: "success" },
+        { label: "Testnet live", variant: "success" },
         { label: "Bootcamp + proof", variant: "violet" },
       ]}
     >
@@ -104,7 +104,7 @@ export default function LearnPage() {
         <div className="rounded-[30px] border border-white/10 bg-white/[0.04] p-6">
           <div className="text-[11px] uppercase tracking-[0.28em] text-white/42">What this section covers</div>
           <ul className="mt-4 space-y-3 text-sm leading-7 text-white/62">
-            <li>• Wallet-first Devnet onboarding that starts from the browser.</li>
+            <li>• Wallet-first Testnet onboarding that starts from the browser.</li>
             <li>• Governance lifecycle UI with voice-assisted commands and private voting posture.</li>
             <li>• Fast RPC, hosted reads, diagnostics, analytics, and blockchain verification.</li>
             <li>• ZK, MagicBlock, REFHE, Jupiter, Kamino, SNS, Torque, and agentic rails explained through the product itself.</li>
@@ -131,7 +131,7 @@ export default function LearnPage() {
         <h2 className="mt-3 text-2xl font-semibold text-white">Learn → click → test → run</h2>
         <p className="mt-3 max-w-3xl text-sm leading-7 text-white/68">
           This corridor is meant to be interactive, not passive. A builder learns one concept, opens the matching live route,
-          tests one real product action, then verifies the blockchain result on Devnet. The learning path stays in the browser,
+          tests one real product action, then verifies the blockchain result on Testnet. The learning path stays in the browser,
           not in shell scripts or terminal-only habits.
         </p>
         <div className="mt-5 grid gap-4 md:grid-cols-4">
@@ -146,11 +146,11 @@ export default function LearnPage() {
             },
             {
               title: "Test",
-              body: "Connect a Devnet wallet and try the real action from the UI.",
+              body: "Connect a Testnet wallet and try the real action from the UI.",
             },
             {
               title: "Run",
-              body: "Verify the resulting signature, logs, and state on Devnet from the same learning corridor.",
+              body: "Verify the resulting signature, logs, and state on Testnet from the same learning corridor.",
             },
           ].map((item) => (
             <div key={item.title} className="rounded-[24px] border border-white/8 bg-black/18 p-5">
@@ -241,7 +241,7 @@ export default function LearnPage() {
       <SolanaInfrastructureStack
         eyebrow="What powers the learning corridor"
         title="Every lecture is backed by a real Solana product stack, not abstract slides"
-        description="The goal is not to memorize terms. The goal is to understand why each infrastructure choice exists, then run it from the UI and verify the result on Devnet in the same session."
+        description="The goal is not to memorize terms. The goal is to understand why each infrastructure choice exists, then run it from the UI and verify the result on Testnet in the same session."
       />
       <ProductLearningGuide
         executionSnapshot={executionSnapshot}
@@ -249,9 +249,9 @@ export default function LearnPage() {
       />
       <div className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6">
         <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/78">Ready to try it?</div>
-        <h2 className="mt-3 text-2xl font-semibold text-white">Use one short path on Devnet</h2>
+        <h2 className="mt-3 text-2xl font-semibold text-white">Use one short path on Testnet</h2>
         <p className="mt-3 max-w-3xl text-sm leading-7 text-white/64">
-          Start in the browser, connect a Devnet wallet, move into the governance flow, then open the verification route to
+          Start in the browser, connect a Testnet wallet, move into the governance flow, then open the verification route to
           verify signatures, proof, runtime evidence, and the blockchain trail itself. The learning surface stays
           here for context, but the real product experience starts on the next click and remains understandable to a
           normal user without scripts or terminal work.
@@ -259,7 +259,7 @@ export default function LearnPage() {
         <div className="mt-5 flex flex-wrap gap-3">
           <WalletConnectButton size="sm" variant="default" />
           <Link href="/start" className={cn(buttonVariants({ size: "sm" }))}>
-            Try it on Devnet
+            Try it on Testnet
           </Link>
           <Link href="/judge" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
             Open verification route
