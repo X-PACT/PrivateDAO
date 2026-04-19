@@ -26,9 +26,13 @@ run_portable_core_checks() {
 
   if [[ "$suite_name" == "core" || "$suite_name" == "all" ]]; then
     ./node_modules/.bin/ts-node scripts/verify-frontend-surface.ts >/dev/null
-    MAGICBLOCK_HTTP_TIMEOUT_MS="${MAGICBLOCK_HTTP_TIMEOUT_MS:-2500}" \
-      PRIVATE_DAO_RPC_TIMEOUT_MS="${PRIVATE_DAO_RPC_TIMEOUT_MS:-12000}" \
-      ./node_modules/.bin/ts-node scripts/verify-read-node.ts >/dev/null
+    if [[ -f "$ROOT_DIR/target/idl/private_dao.json" ]]; then
+      MAGICBLOCK_HTTP_TIMEOUT_MS="${MAGICBLOCK_HTTP_TIMEOUT_MS:-2500}" \
+        PRIVATE_DAO_RPC_TIMEOUT_MS="${PRIVATE_DAO_RPC_TIMEOUT_MS:-12000}" \
+        ./node_modules/.bin/ts-node scripts/verify-read-node.ts >/dev/null
+    else
+      echo "[local-anchor-suite] skipping read-node verification; generated Anchor IDL is absent"
+    fi
   fi
 
   echo "[local-anchor-suite] PASS portable checks complete; Anchor local-validator suite requires an AVX2-capable runtime"
