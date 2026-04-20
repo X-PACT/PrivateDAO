@@ -11,7 +11,7 @@ const REQUIRED_DOM_FRAGMENTS = [
   "Private governance on Solana",
   "Powered by the live stack",
   "Open verification view",
-  "PrivateDAO is live on Solana Testnet now",
+  "Preparing the live product surface",
   "Public good",
   "How the stack maps to services",
   "Support the mission",

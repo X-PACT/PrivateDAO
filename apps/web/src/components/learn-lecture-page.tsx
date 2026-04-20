@@ -98,7 +98,7 @@ export function LearnLecturePage({ lecture }: LearnLecturePageProps) {
           <div className="mt-4 grid gap-3">
             <div className="rounded-[22px] border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
               This lecture does not end at theory. The primary button takes the user into a live product route where the
-              same concept becomes a real Devnet action from the UI.
+              same concept becomes a real Testnet action from the UI.
             </div>
             <div className="rounded-[22px] border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/62">
               The verification button opens the state, judge, diagnostics, or proof lane needed to confirm what the

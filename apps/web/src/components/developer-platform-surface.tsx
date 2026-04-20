@@ -136,7 +136,7 @@ export function DeveloperPlatformSurface() {
                 <div className="text-base font-medium text-white">Access model</div>
               </div>
               <div className="mt-4 text-sm leading-7 text-white/62">
-                PrivateDAO presents the commercial surface now and keeps the launch boundary honest: API key issuance posture, metered quotas, and usage billing belong to the product strategy and services layer while Devnet operation and proof stay visible in the app today.
+                PrivateDAO presents the commercial surface now and keeps the launch boundary honest: API key issuance posture, metered quotas, and usage billing belong to the product strategy and services layer while Testnet operation and proof stay visible in the app today.
               </div>
               <div className="mt-4 flex flex-wrap gap-3">
                 <Link href="/engage" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>

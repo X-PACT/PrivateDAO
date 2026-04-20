@@ -112,7 +112,7 @@ export function ExecutionSurfaceInline({ mode, snapshot }: ExecutionSurfaceInlin
               <div className="text-sm font-medium text-white">Buyer path stays connected</div>
             </div>
             <p className="mt-3 text-sm leading-7 text-white/62">
-              Devnet operation is not isolated from the commercial surface. The same execution evidence that helps reviewers also supports pilot, hosted API, and enterprise governance conversations.
+              Testnet operation is not isolated from the commercial surface. The same execution evidence that helps reviewers also supports pilot, hosted API, and enterprise governance conversations.
             </p>
             <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "mt-3")} href="/engage">
               Open engage

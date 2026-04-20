@@ -48,9 +48,9 @@ const actionMap: Record<ProposalCardModel["status"], { commit: string; reveal: s
     execute: "Settlement evidence still required",
   },
   Executed: {
-    commit: "Commit trail already recorded on devnet",
-    reveal: "Reveal trail already recorded on devnet",
-    execute: "Treasury motion already executed on devnet",
+    commit: "Commit trail already recorded on Testnet",
+    reveal: "Reveal trail already recorded on Testnet",
+    execute: "Treasury motion already executed on Testnet",
   },
 };
 

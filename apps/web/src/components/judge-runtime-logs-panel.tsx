@@ -185,7 +185,7 @@ export function JudgeRuntimeLogsPanel() {
             <div className="flex items-center justify-between gap-4">
               <div>
                 <div className="text-[11px] uppercase tracking-[0.28em] text-amber-200/75">Agentic micropayment rail</div>
-                <div className="mt-2 text-lg font-medium text-white">Captured batch settlement rail with many real Devnet transfers</div>
+                <div className="mt-2 text-lg font-medium text-white">Captured batch settlement rail with many real Testnet transfers</div>
               </div>
               <div className="rounded-2xl border border-amber-300/20 bg-black/25 px-3 py-2 text-right">
                 <div className="text-[11px] uppercase tracking-[0.22em] text-amber-100/70">Freshness</div>
@@ -210,7 +210,7 @@ export function JudgeRuntimeLogsPanel() {
                 <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm text-white/70">
                   <div className="text-[11px] uppercase tracking-[0.22em] text-white/40">Current public proof run</div>
                   <div className="mt-1 text-white">
-                    {snapshot.agenticMicropayments.transferCount} captured Devnet transfers; stablecoin settlement is
+                    {snapshot.agenticMicropayments.transferCount} captured Testnet transfers; stablecoin settlement is
                     designed next, but not the public proof run shown here.
                   </div>
                 </div>

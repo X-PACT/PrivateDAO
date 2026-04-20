@@ -484,7 +484,7 @@ export function getOperationalValidationSnapshot(): OperationalValidationSnapsho
         proposalFlowHealthyCount + executionSuccessCount,
         proposalCards.length + 2,
       ),
-      detail: `${verifiedGovernanceTxCount}/${verifiedGovernanceLifecycleCount} governance proof steps are finalized. ${executedCount} proposal is already executed on devnet, ${liveVotingCount} proposal is still in commit mode, and ${evidenceGatedCount} proposal is still waiting on settlement evidence.`,
+      detail: `${verifiedGovernanceTxCount}/${verifiedGovernanceLifecycleCount} governance proof steps are finalized. ${executedCount} proposal is already executed on Testnet, ${liveVotingCount} proposal is still in commit mode, and ${evidenceGatedCount} proposal is still waiting on settlement evidence.`,
       routeLabel: "Open proof and execution",
       routeHref: "/proof/?judge=1",
       tone: "emerald",
@@ -492,7 +492,7 @@ export function getOperationalValidationSnapshot(): OperationalValidationSnapsho
     walletReadiness: {
       label: "Wallet-by-wallet readiness",
       value: percent(walletReviewReadyCount, walletReviewTargetCount),
-      detail: `${walletReviewReadyCount}/${walletReviewTargetCount} browser wallet targets have completed connect + sign + submit on Devnet. Diagnostics are visible for ${walletDiagnosticsCoverageCount}/${runtimeEvidence.walletCount} support-matrix entries, and pending real-device targets remain explicit in runtime evidence.`,
+      detail: `${walletReviewReadyCount}/${walletReviewTargetCount} browser wallet targets have completed connect + sign + submit on Testnet. Diagnostics are visible for ${walletDiagnosticsCoverageCount}/${runtimeEvidence.walletCount} support-matrix entries, and pending real-device targets remain explicit in runtime evidence.`,
       routeLabel: "Open wallet diagnostics",
       routeHref: "/diagnostics",
       tone: "cyan",

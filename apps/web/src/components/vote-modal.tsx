@@ -107,7 +107,7 @@ export function VoteModal({ proposal, handoff, onClose }: VoteModalProps) {
           <div className="rounded-3xl border border-white/8 bg-white/4 p-4 sm:col-span-2">
             <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Current boundary</div>
               <div className="mt-2 text-sm leading-7 text-white/65">
-              {proposal.privacy}. {isExecuted ? "The indexed record shows that treasury execution already cleared the governance path on devnet." : "Treasury execution remains blocked until voting, reveal, timelock, and evidence gates align with the selected hardening path."}
+              {proposal.privacy}. {isExecuted ? "The indexed record shows that treasury execution already cleared the governance path on Testnet." : "Treasury execution remains blocked until voting, reveal, timelock, and evidence gates align with the selected hardening path."}
             </div>
           </div>
           {handoff?.proposalReview ? (

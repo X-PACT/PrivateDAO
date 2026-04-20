@@ -48,7 +48,7 @@ export function FundingCorridorIndexPanel() {
       <CardContent className="space-y-6">
         <div className="text-sm leading-7 text-white/66">
           This compresses the funding story into five routes: capital packet, regional grant fit, telemetry value,
-          confidential payout proof, and the operating lanes that accelerate the product from strong Devnet delivery to
+          confidential payout proof, and the operating lanes that accelerate the product from strong Testnet delivery to
           production confidence.
         </div>
 

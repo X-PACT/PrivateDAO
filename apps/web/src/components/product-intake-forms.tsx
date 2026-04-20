@@ -177,7 +177,7 @@ const fundingProfileOverrides: Record<string, FundingProfileOverride> = {
     },
   },
   "pilot-funding": {
-    summary: "Pilot funding tied to a time-boxed buyer rollout, measurable Devnet validation, and mainnet-aware next steps.",
+    summary: "Pilot funding tied to a time-boxed buyer rollout, measurable Testnet validation, and mainnet-aware next steps.",
     handoff: {
       owner: "Pilot buyer motion",
       destination: "Pilot funding and buyer onboarding",

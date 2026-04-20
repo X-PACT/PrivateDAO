@@ -60,7 +60,7 @@ function getContextCopy(context: TreasuryReviewerTruthContext) {
     return {
       title: "Payments truth strip",
       description:
-        "Give buyers the treasury truth at first glance: public Devnet rails, reviewer packet, commercial fit, and the exact blocker stay visible before deeper service sections.",
+        "Give buyers the treasury truth at first glance: public Testnet rails, reviewer packet, commercial fit, and the exact blocker stay visible before deeper service sections.",
       bestDemoRouteHref: "/services#treasury-reviewer-grade",
       bestDemoRouteLabel: "Open services treasury rail",
     };
@@ -99,7 +99,7 @@ export function getTreasuryReviewerTruthSnapshot(
     description: copy.description,
     paymentsReadiness: packet.productionMainnetClaimAllowed
       ? "Production-safe treasury proof closed"
-      : "Devnet rails live, production treasury still evidence-gated",
+      : "Testnet rails live, production treasury still evidence-gated",
     treasuryNetwork: packet.treasuryNetwork,
     publicRails: `${packet.referenceLinkedRails.length} public rails`,
     exactBlocker: `${packet.exactBlocker.id} · ${packet.exactBlocker.status}`,

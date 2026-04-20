@@ -90,7 +90,7 @@ export const siteSearchItems: SiteSearchItem[] = [
     title: "Diagnostics",
     href: "/diagnostics",
     category: "Route",
-    summary: "Runtime health, readiness, reviewer bundle, and devnet operational evidence.",
+    summary: "Runtime health, readiness, reviewer bundle, and live Testnet operational evidence.",
   },
   {
     title: "Services",
@@ -122,7 +122,7 @@ export const siteSearchItems: SiteSearchItem[] = [
     title: "Start Product Route",
     href: "/start",
     category: "Track",
-    summary: "Primary wallet-first product route for real Devnet operations and reviewer verification.",
+    summary: "Primary wallet-first product route for real Testnet operations and reviewer verification.",
   },
   {
     title: "Assistant",
@@ -829,7 +829,7 @@ function getPaymentsTruthLeadItems(query: string): SiteSearchItem[] {
       category: "Document",
       matchKind: "payments-truth",
       summary:
-        `Readiness: Devnet rails live, production treasury still evidence-gated. ` +
+        `Readiness: Testnet rails live, production treasury still evidence-gated. ` +
         `Network: ${treasury.network}. Rails: ${treasury.assets.length}. ` +
         `Blocker: upgrade-authority-multisig · pending-external. ` +
         `Open treasury reviewer packet first, then continue into ${bestRouteLabel} for the best route.`,

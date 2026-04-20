@@ -31,7 +31,7 @@ export function GovernanceSessionPanel({
         {
           href: "/judge",
           label: "Open verification route",
-          helper: "Review the captured Devnet execution corridor and transaction trail.",
+          helper: "Review the captured Testnet execution corridor and transaction trail.",
           variant: "secondary" as const,
         },
         {
@@ -224,7 +224,7 @@ export function GovernanceSessionPanel({
               ? "Execution is complete. Move from the operator lane into verification, proof, and trust packets."
               : session.voteCommitted || session.voteRevealed || session.proposalFinalized
                 ? "The session has moved beyond setup. Finish the governance cycle, then open the review corridor."
-                : "Use the shortest browser-only path first, then come back for proof and judge once real Devnet actions exist."}
+                : "Use the shortest browser-only path first, then come back for proof and judge once real Testnet actions exist."}
           </div>
           <div className="mt-4 grid gap-3 md:grid-cols-3">
             {nextReviewLinks.map((link) => (
