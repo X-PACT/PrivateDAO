@@ -2,7 +2,7 @@
 
 ## Overview
 
-- Generated at: `2026-04-18T03:48:08.057Z`
+- Generated at: `2026-04-20T11:38:28.425Z`
 - Project: `PrivateDAO`
 - Network: `devnet`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
@@ -26,7 +26,7 @@
 - Repo-script proof captured: `true`
 - Browser-wallet proof captured: `true`
 - Real-device proof captured: `true`
-- Note: DAO bootstrap is live in the web wallet lane. Repo-script proof exists, the full Solflare browser cycle is captured, and Android Solflare now proves the mobile path through DAO bootstrap on Devnet.
+- Note: DAO bootstrap is live in the web wallet lane. Repo-script proof exists, the full Solflare browser cycle is captured, and Android Solflare now proves the mobile path through DAO bootstrap on Testnet.
 
 ### Create Proposal
 
@@ -35,7 +35,7 @@
 - Repo-script proof captured: `true`
 - Browser-wallet proof captured: `true`
 - Real-device proof captured: `true`
-- Note: Proposal submit is live in the web wallet lane, including the current SendSol and SendToken treasury motions. The full Solflare browser cycle is captured, and Android Solflare now proves proposal creation on Devnet.
+- Note: Proposal submit is live in the web wallet lane, including the current SendSol and SendToken treasury motions. The full Solflare browser cycle is captured, and Android Solflare now proves proposal creation on Testnet.
 
 ### Commit Vote
 
@@ -44,7 +44,7 @@
 - Repo-script proof captured: `true`
 - Browser-wallet proof captured: `true`
 - Real-device proof captured: `true`
-- Note: Commit vote is live in the web wallet lane once a real DAO and proposal already exist in session state. The full Solflare browser cycle is captured, and Android Solflare now proves commit-vote submission on Devnet.
+- Note: Commit vote is live in the web wallet lane once a real DAO and proposal already exist in session state. The full Solflare browser cycle is captured, and Android Solflare now proves commit-vote submission on Testnet.
 
 ### Reveal Vote
 

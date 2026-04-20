@@ -1412,6 +1412,92 @@ export const READ_NODE_PROPOSAL_REGISTRY = [
     }
   },
   {
+    "id": "PDAO-000-CMXW",
+    "title": "Confidential payroll batch / April",
+    "type": "Enterprise DAO",
+    "status": "Timelocked",
+    "quorum": "51% quorum · governance token requirement 0",
+    "window": "Voting closed · Finalized on devnet · Timelock still active",
+    "treasury": "Treasury action is still pending explicit indexing in the current proposal record",
+    "privacy": "Commit-reveal governance path",
+    "tech": [
+      "ZK",
+      "Fast RPC"
+    ],
+    "summary": "Confidential payroll batch / April submitted from the live web governance surface.",
+    "execution": {
+      "sourceType": "runtime-indexed",
+      "sourceLabel": "Backend-indexed proposal record: Confidential payroll batch / April (Finalized)",
+      "indexedPhase": "Finalized",
+      "proposalAccount": "6KZi37jEGvxnmk7m3ETJ1psSEa9pMMhDtp1T2A1WeZ2A",
+      "daoAccount": "CmXWC82DG7g4cSkmMPW87qQ3n1S9PWFKYtrpuAJovuhB",
+      "executionTarget": "Execution target remains governed by the indexed proposal account and current DAO phase.",
+      "recipient": null,
+      "recipientLabel": "Execution target pending index evidence",
+      "recipientKnown": false,
+      "amount": null,
+      "amountDisplay": "Pending exact amount from the indexed proposal record",
+      "mintSymbol": null,
+      "mintAddress": null,
+      "timelockHours": 0.008333,
+      "timelockLabel": "30 second on-chain execution delay from the indexed DAO record",
+      "historicalUseCount": 1,
+      "repeatedAttempts": 0,
+      "baselineAmount": null,
+      "presentationStatus": "Timelocked",
+      "presentationWindow": "Voting closed · Finalized on devnet · Timelock still active",
+      "presentationTreasury": "Treasury action is still pending explicit indexing in the current proposal record",
+      "phaseMappingLabel": "Finalized indexed phase maps to Timelocked in the product surface",
+      "txContext": {
+        "proofStatus": "runtime-indexed-governance-path",
+        "evidenceRoute": "/documents/reviewer-fast-path"
+      }
+    }
+  },
+  {
+    "id": "PDAO-000-6WZZ",
+    "title": "Confidential payroll batch / April",
+    "type": "Enterprise DAO",
+    "status": "Timelocked",
+    "quorum": "51% quorum · governance token requirement 0",
+    "window": "Voting closed · Finalized on devnet · Timelock still active",
+    "treasury": "Treasury action is still pending explicit indexing in the current proposal record",
+    "privacy": "Commit-reveal governance path",
+    "tech": [
+      "ZK",
+      "Fast RPC"
+    ],
+    "summary": "Confidential payroll batch / April submitted from the live web governance surface.",
+    "execution": {
+      "sourceType": "runtime-indexed",
+      "sourceLabel": "Backend-indexed proposal record: Confidential payroll batch / April (Finalized)",
+      "indexedPhase": "Finalized",
+      "proposalAccount": "5WrjCD4KyJ3oNsFP8gjJvZhEWB3Ln1EHXUfjj9EB4FsU",
+      "daoAccount": "6WZZ2r8nypPWXrTxwjwD6ShgLfdn58aZVEZWQSTnCeoK",
+      "executionTarget": "Execution target remains governed by the indexed proposal account and current DAO phase.",
+      "recipient": null,
+      "recipientLabel": "Execution target pending index evidence",
+      "recipientKnown": false,
+      "amount": null,
+      "amountDisplay": "Pending exact amount from the indexed proposal record",
+      "mintSymbol": null,
+      "mintAddress": null,
+      "timelockHours": 0.008333,
+      "timelockLabel": "30 second on-chain execution delay from the indexed DAO record",
+      "historicalUseCount": 1,
+      "repeatedAttempts": 0,
+      "baselineAmount": null,
+      "presentationStatus": "Timelocked",
+      "presentationWindow": "Voting closed · Finalized on devnet · Timelock still active",
+      "presentationTreasury": "Treasury action is still pending explicit indexing in the current proposal record",
+      "phaseMappingLabel": "Finalized indexed phase maps to Timelocked in the product surface",
+      "txContext": {
+        "proofStatus": "runtime-indexed-governance-path",
+        "evidenceRoute": "/documents/reviewer-fast-path"
+      }
+    }
+  },
+  {
     "id": "PDAO-000-EGK9",
     "title": "Multi proposal A",
     "type": "Treasury Committee",
@@ -1756,6 +1842,92 @@ export const READ_NODE_PROPOSAL_REGISTRY = [
     }
   },
   {
+    "id": "PDAO-000-3WFE",
+    "title": "Confidential payroll batch / April",
+    "type": "Enterprise DAO",
+    "status": "Timelocked",
+    "quorum": "51% quorum · governance token requirement 0",
+    "window": "Voting closed · Finalized on devnet · Timelock still active",
+    "treasury": "Treasury action is still pending explicit indexing in the current proposal record",
+    "privacy": "Commit-reveal governance path",
+    "tech": [
+      "ZK",
+      "Fast RPC"
+    ],
+    "summary": "Confidential payroll batch / April submitted from the live web governance surface.",
+    "execution": {
+      "sourceType": "runtime-indexed",
+      "sourceLabel": "Backend-indexed proposal record: Confidential payroll batch / April (Finalized)",
+      "indexedPhase": "Finalized",
+      "proposalAccount": "4Du1xRCKSBNFMgxCrX7LrWtttY1vSWXV3phatG3thd6P",
+      "daoAccount": "3wfE4zMpNHtxw2mtf2pYCRYQUpAhhhBMKnDGUEnqUV8U",
+      "executionTarget": "Execution target remains governed by the indexed proposal account and current DAO phase.",
+      "recipient": null,
+      "recipientLabel": "Execution target pending index evidence",
+      "recipientKnown": false,
+      "amount": null,
+      "amountDisplay": "Pending exact amount from the indexed proposal record",
+      "mintSymbol": null,
+      "mintAddress": null,
+      "timelockHours": 0.004167,
+      "timelockLabel": "15 second on-chain execution delay from the indexed DAO record",
+      "historicalUseCount": 1,
+      "repeatedAttempts": 0,
+      "baselineAmount": null,
+      "presentationStatus": "Timelocked",
+      "presentationWindow": "Voting closed · Finalized on devnet · Timelock still active",
+      "presentationTreasury": "Treasury action is still pending explicit indexing in the current proposal record",
+      "phaseMappingLabel": "Finalized indexed phase maps to Timelocked in the product surface",
+      "txContext": {
+        "proofStatus": "runtime-indexed-governance-path",
+        "evidenceRoute": "/documents/reviewer-fast-path"
+      }
+    }
+  },
+  {
+    "id": "PDAO-000-CJIZ",
+    "title": "Confidential payroll batch / April",
+    "type": "Enterprise DAO",
+    "status": "Executed",
+    "quorum": "51% quorum · governance token requirement 0",
+    "window": "Commit closed · Reveal complete · Executed on devnet",
+    "treasury": "Treasury action is still pending explicit indexing in the current proposal record",
+    "privacy": "Commit-reveal governance path",
+    "tech": [
+      "ZK",
+      "Fast RPC"
+    ],
+    "summary": "Confidential payroll batch / April submitted from the live web governance surface. This indexed proposal already executed on devnet and should be reviewed as proof, not as a pending signature flow.",
+    "execution": {
+      "sourceType": "runtime-indexed",
+      "sourceLabel": "Backend-indexed proposal record: Confidential payroll batch / April (Executed)",
+      "indexedPhase": "Executed",
+      "proposalAccount": "Gz2Q51SP4fvHG6rnP8n6XsytXQNFrBuUQEzjkcDTBjzP",
+      "daoAccount": "CjiZpxABppcGufWCgUtzXwWE7XLpkJPjrzdtdm7XSHxV",
+      "executionTarget": "Execution target remains governed by the indexed proposal account and current DAO phase.",
+      "recipient": null,
+      "recipientLabel": "Execution target pending index evidence",
+      "recipientKnown": false,
+      "amount": null,
+      "amountDisplay": "Pending exact amount from the indexed proposal record",
+      "mintSymbol": null,
+      "mintAddress": null,
+      "timelockHours": 0.008333,
+      "timelockLabel": "30 second on-chain execution delay from the indexed DAO record",
+      "historicalUseCount": 1,
+      "repeatedAttempts": 0,
+      "baselineAmount": null,
+      "presentationStatus": "Executed",
+      "presentationWindow": "Commit closed · Reveal complete · Executed on devnet",
+      "presentationTreasury": "Treasury action is still pending explicit indexing in the current proposal record",
+      "phaseMappingLabel": "Executed indexed phase maps to Executed in the product surface",
+      "txContext": {
+        "proofStatus": "runtime-indexed-governance-path",
+        "evidenceRoute": "/documents/reviewer-fast-path"
+      }
+    }
+  },
+  {
     "id": "PDAO-000-GGHU",
     "title": "50-wallet devnet stress run",
     "type": "Treasury Committee",
@@ -1877,6 +2049,49 @@ export const READ_NODE_PROPOSAL_REGISTRY = [
       "presentationStatus": "Timelocked",
       "presentationWindow": "Voting closed · Finalized on devnet · Timelock still active",
       "presentationTreasury": "0.02 SOL queued to send to HR4X…NEXm",
+      "phaseMappingLabel": "Finalized indexed phase maps to Timelocked in the product surface",
+      "txContext": {
+        "proofStatus": "runtime-indexed-governance-path",
+        "evidenceRoute": "/documents/reviewer-fast-path"
+      }
+    }
+  },
+  {
+    "id": "PDAO-000-ANMI",
+    "title": "Confidential payroll batch / April",
+    "type": "Enterprise DAO",
+    "status": "Timelocked",
+    "quorum": "51% quorum · governance token requirement 0",
+    "window": "Voting closed · Finalized on devnet · Timelock still active",
+    "treasury": "Treasury action is still pending explicit indexing in the current proposal record",
+    "privacy": "Commit-reveal governance path",
+    "tech": [
+      "ZK",
+      "Fast RPC"
+    ],
+    "summary": "Confidential payroll batch / April submitted from the live web governance surface.",
+    "execution": {
+      "sourceType": "runtime-indexed",
+      "sourceLabel": "Backend-indexed proposal record: Confidential payroll batch / April (Finalized)",
+      "indexedPhase": "Finalized",
+      "proposalAccount": "2VWzTyxcZVvFHkpaisfSV6ZaZdzLvu5FGLSMT7xLHDLN",
+      "daoAccount": "ANMi4PWRs3AkKkWyW3sUdACFXEiKir77eoX2uyzb7Tsc",
+      "executionTarget": "Execution target remains governed by the indexed proposal account and current DAO phase.",
+      "recipient": null,
+      "recipientLabel": "Execution target pending index evidence",
+      "recipientKnown": false,
+      "amount": null,
+      "amountDisplay": "Pending exact amount from the indexed proposal record",
+      "mintSymbol": null,
+      "mintAddress": null,
+      "timelockHours": 0.004167,
+      "timelockLabel": "15 second on-chain execution delay from the indexed DAO record",
+      "historicalUseCount": 1,
+      "repeatedAttempts": 0,
+      "baselineAmount": null,
+      "presentationStatus": "Timelocked",
+      "presentationWindow": "Voting closed · Finalized on devnet · Timelock still active",
+      "presentationTreasury": "Treasury action is still pending explicit indexing in the current proposal record",
       "phaseMappingLabel": "Finalized indexed phase maps to Timelocked in the product surface",
       "txContext": {
         "proofStatus": "runtime-indexed-governance-path",

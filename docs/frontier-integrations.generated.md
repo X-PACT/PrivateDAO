@@ -1,9 +1,9 @@
-# Core Integration Evidence
+# Frontier Integration Evidence
 
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-10T05:21:06.356Z`
+- generated at: `2026-04-20T11:36:35.258Z`
 - network: `devnet`
 - program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
@@ -13,11 +13,11 @@
 
 - read path: `backend-indexer`
 - rpc endpoint: `https://api.devnet.solana.com`
-- rpc pool size: `1`
+- rpc pool size: `2`
 - rpc provider class: `public-devnet`
 - MagicBlock API base: `https://payments.magicblock.app`
 - MagicBlock health: `ok`
-- indexed proposals: `41`
+- indexed proposals: `48`
 - indexed zk_enforced proposals: `0`
 - indexed confidential payout proposals: `8`
 - indexed MagicBlock-settled proposals: `3`
@@ -61,13 +61,13 @@
 
 - verification mode: `offchain-groth16`
 - on-chain verifier CPI: `false`
-- proposal: `G76rRCe9MXbroK7CPC9jia1JCbuUtcV55S2hd1GCpUzL`
+- proposal: `7TKCbcUsrAaQhu3XuCLmXUPo2KCbjDtFF8sxtY6QmuVx`
 - anchor count: `3`
 - verification status: `proof-anchors-recorded-on-devnet`
 
-- vote: tx=`4fLregTXXGC98ba8VKqvbQTeC7JjwakmVv1E3oZzbiJc7Sv5tmmMqSJoCp5eS5eVcq2PXHehwH8CAxeWu4LCeahu` | anchor=`H3tQqczPKpKBB3Cyg9D8B92K2Lt68id5saLMTTXcYsJp` | tx-status=`finalized` | anchor-exists=`true`
-- delegation: tx=`y3nJ5Tu67sikEbgr1zj13iYNT1UhPEmUkuT8fLbbCyir6tJCAAGWue1W8i3nMBobarEdN8jnNsjhiBFK9cbztE2` | anchor=`2XfxWWLuMYyRiNkqBfbiCZF56RsBNQVLQ7Ku4upqmqe6` | tx-status=`finalized` | anchor-exists=`true`
-- tally: tx=`3hwA2kjJQfhTNHANdDdHhJ7AkwuMpDdGbJadUpYKmLJ6UDKgtyBzR5qKbesmP6bDSBYQDZBQ9ygoEH2pZHPJj97m` | anchor=`7i5dJ53Fx3WhdP534C7tEhabPoXZ97e72wzo3uRwDEEr` | tx-status=`finalized` | anchor-exists=`true`
+- vote: tx=`3KBK6bai1g1iR4w7zyWGcpegJg2hqYUGAvnzjKK15FjvaJgfg9N5CPeAc8xFdzJC9gMSKSqwgrX7SNXg5BM18pUw` | anchor=`J7PfXeZxu6V4iixevD3jgMVZ9PAp6XjZWsQH78Tvn4zo` | tx-status=`finalized` | anchor-exists=`true`
+- delegation: tx=`mSuC2AKhiNBawKRdBBvECW1VGJ6uWM5YaDU2YUL1xjt8DzSLJwWTMTCmYpN4XAreDxdXeaUaaesYCe1Dsi225U1` | anchor=`AqyT4w4Va2KU68LXy1k6ku6SW761iSvGLZaKbst14xeK` | tx-status=`finalized` | anchor-exists=`true`
+- tally: tx=`3bMEgCMRc8pswjPDTYKw6Cd7hvHKeuVo4vvjqQ95JpPsfDNVuLBfSFzEgjowqGvvn2et6oW9HrMM716UJ1Bgr4Mu` | anchor=`6YmgboGvYP6k5hzq1BfSJFN9PgheV1q52uipfLqnT8tt` | tx-status=`finalized` | anchor-exists=`true`
 
 ## Required Docs
 
@@ -94,7 +94,7 @@
 
 ## Honest Boundary
 
-- This package verifies live Devnet transaction and account evidence for the current integration surfaces.
+- This package verifies live Devnet transaction and account evidence for the current Frontier-facing integrations.
 - ZK remains proof-anchored and threshold-attested rather than verifier-CPI complete.
 - MagicBlock and REFHE are proposal-bound and runtime-evidenced on Devnet; source-verifiable external receipts remain a mainnet blocker.
 - RPC Fast readiness is shown through backend-indexer mode, pooled RPC endpoints, and the current managed-provider classification when present.

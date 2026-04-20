@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-18T19:08:38.527Z`
+- generated at: `2026-04-20T11:39:29.293Z`
 - status: `pending-external`
 - production mainnet claim allowed: `false`
 - network: `mainnet-beta`
@@ -110,7 +110,7 @@ Explorer links:
 - last deploy slot: `454368825`
 - balance sol: `9.82850136`
 - explorer: `https://explorer.solana.com/address/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet`
-- observed at: `2026-04-11T05:09:24.120Z`
+- observed at: `2026-04-20T11:39:13.895Z`
 - command: `solana program show 5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx --url devnet`
 - error: `pending`
 - note: `This is the currently observed live deployment readout. It is external chain evidence, but it is not mainnet custody proof by itself.`
@@ -126,7 +126,7 @@ Explorer links:
 - last deploy slot: `pending`
 - balance sol: `0.00235248`
 - explorer: `https://explorer.solana.com/address/FZV9KmpeY1B31XvszQypp5T6nQN5C44JDLM4QWBEDvhx?cluster=devnet`
-- observed at: `2026-04-11T05:09:24.989Z`
+- observed at: `2026-04-20T11:39:14.665Z`
 - command: `solana account FZV9KmpeY1B31XvszQypp5T6nQN5C44JDLM4QWBEDvhx --url devnet --output json`
 - error: `pending`
 - note: `Current DAO PDA visibility on devnet.`
@@ -142,7 +142,7 @@ Explorer links:
 - last deploy slot: `pending`
 - balance sol: `0.15`
 - explorer: `https://explorer.solana.com/address/AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c?cluster=devnet`
-- observed at: `2026-04-11T05:09:25.832Z`
+- observed at: `2026-04-20T11:39:15.307Z`
 - command: `solana account AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c --url devnet --output json`
 - error: `pending`
 - note: `Current treasury PDA visibility on devnet.`
@@ -158,7 +158,7 @@ Explorer links:
 - last deploy slot: `pending`
 - balance sol: `pending`
 - explorer: `https://explorer.solana.com/address/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
-- observed at: `2026-04-11T05:09:26.819Z`
+- observed at: `2026-04-20T11:39:16.637Z`
 - command: `solana program show 5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx --url mainnet-beta`
 - error: `Error: Unable to find the account 5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - note: `If this stays not-found, mainnet custody transfer is not merely pending multisig evidence; there is no current mainnet program readout for this program id.`
@@ -174,7 +174,7 @@ Explorer links:
 - last deploy slot: `pending`
 - balance sol: `pending`
 - explorer: `https://explorer.solana.com/address/AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c`
-- observed at: `2026-04-11T05:09:27.744Z`
+- observed at: `2026-04-20T11:39:17.367Z`
 - command: `solana account AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c --url mainnet-beta --output json`
 - error: `Error: AccountNotFound: pubkey=AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c`
 - note: `Target-network treasury visibility is required before claiming real-funds mainnet readiness.`

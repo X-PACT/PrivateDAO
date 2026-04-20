@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-11T14:36:31.796Z",
+  "generatedAt": "2026-04-20T11:40:01.799Z",
   "track": {
     "slug": "privacy-track",
     "title": "Confidential Governance Reviewer Packet",
@@ -9,24 +9,24 @@
   },
   "judgeFirstOpening": {
     "lines": [
-      "What works now: Use the comprehensive story video as the first-pass product walkthrough for judges. Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet. Keep the pitch deck anchored around private governance, confidential payouts, and honest launch boundaries.",
-      "What is externally proven: Live Proof V3 via /documents/live-proof-v3 and ZK capability matrix via /documents/zk-capability-matrix and Reviewer telemetry packet via /documents/reviewer-telemetry-packet.",
+      "What works now: Use the comprehensive story video as the first-pass product walkthrough for judges. Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet. Keep the pitch deck anchored around private governance, confidential payouts, and clear release boundaries.",
+      "What is externally proven: Live Proof V3 via /documents/live-proof-v3 and ZK capability matrix via /documents/zk-capability-matrix and Treasury reviewer packet via /documents/treasury-reviewer-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet.",
       "Exact blocker: magicblock-refhe-source-receipts. Privacy launch remains blocked until settlement receipts or verifier-grade source proof replace the current integration boundary.",
-      "Best product route: open /story first. Lead with /story, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story."
+      "Best product route: open /story first. Lead with /story, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story."
     ],
-    "voiceoverScript": "What works now: Use the comprehensive story video as the first-pass product walkthrough for judges. Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet. Keep the pitch deck anchored around private governance, confidential payouts, and honest launch boundaries. What is externally proven: Live Proof V3 via /documents/live-proof-v3 and ZK capability matrix via /documents/zk-capability-matrix and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: magicblock-refhe-source-receipts. Privacy launch remains blocked until settlement receipts or verifier-grade source proof replace the current integration boundary. Best product route: open /story first. Lead with /story, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story."
+    "voiceoverScript": "What works now: Use the comprehensive story video as the first-pass product walkthrough for judges. Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet. Keep the pitch deck anchored around private governance, confidential payouts, and clear release boundaries. What is externally proven: Live Proof V3 via /documents/live-proof-v3 and ZK capability matrix via /documents/zk-capability-matrix and Treasury reviewer packet via /documents/treasury-reviewer-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: magicblock-refhe-source-receipts. Privacy launch remains blocked until settlement receipts or verifier-grade source proof replace the current integration boundary. Best product route: open /story first. Lead with /story, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story."
   },
   "proofClosure": {
     "whatWorksNow": [
       "Use the comprehensive story video as the first-pass product walkthrough for judges.",
       "Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet.",
-      "Keep the pitch deck anchored around private governance, confidential payouts, and honest launch boundaries."
+      "Keep the pitch deck anchored around private governance, confidential payouts, and clear release boundaries."
     ],
     "externallyProven": [
       {
         "label": "Live Proof V3",
         "href": "/documents/live-proof-v3",
-        "summary": "Devnet proposal lifecycle, V3 hardening, and explorer-verifiable proof anchors are already documented."
+        "summary": "Testnet proposal lifecycle, V3 hardening, and explorer-verifiable proof anchors are already documented."
       },
       {
         "label": "ZK capability matrix",
@@ -34,9 +34,14 @@
         "summary": "The repo already states what the privacy layer proves today and what remains outside the claim boundary."
       },
       {
+        "label": "Treasury reviewer packet",
+        "href": "/documents/treasury-reviewer-packet",
+        "summary": "Generated treasury packet that makes sender discipline, reference-linked rails, payments fit, and the exact treasury blocker reviewer-visible."
+      },
+      {
         "label": "Reviewer telemetry packet",
         "href": "/documents/reviewer-telemetry-packet",
-        "summary": "Generated telemetry truth packet that binds runtime evidence, frontier integrations, read-node snapshot, and devnet service metrics into one reviewer-safe route."
+        "summary": "Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and devnet service metrics into one reviewer-safe route."
       }
     ],
     "pendingSummary": "Custody evidence is still required, and the signer or transfer packet can now be ingested through /custody in a strict repo-safe shape. The exact privacy-side blocker still remains the source-verifiable receipt path, not generic wording."
@@ -47,7 +52,7 @@
   },
   "bestDemoRoute": {
     "route": "/story",
-    "summary": "Lead with /story, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story."
+    "summary": "Lead with /story, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story."
   },
   "reviewerLinks": [
     {
@@ -91,7 +96,7 @@
       "href": "/documents/cryptographic-confidence-engine"
     },
     {
-      "label": "Frontier integrations",
+      "label": "Core integrations",
       "href": "/documents/frontier-integrations"
     }
   ],
@@ -104,12 +109,12 @@
     "beforeMainnet": [
       "External review of the encrypted operations corridor and the exact proposal-to-payout path.",
       "Stronger runtime evidence for wallet, signer, and payout execution across the confidential workflow.",
-      "Explicit signer policy, timelock, and launch-boundary closure for real-funds governance."
+      "Explicit signer policy, timelock, and launch-boundary completion for real-funds governance."
     ],
     "devnetOnly": [
       "Reviewer packet and proof-first demonstrations of encrypted payroll and grant approvals.",
       "Confidence-engine interpretation used as deterministic guidance, not as a formal proof artifact."
     ],
-    "releaseDiscipline": "Keep privacy claims bounded to the exact encrypted workflow that is evidenced, and keep all mainnet statements tied to blocker closure rather than aspiration."
+    "releaseDiscipline": "Keep privacy claims bounded to the exact encrypted workflow that is evidenced, and keep all production statements tied to operating-gate completion rather than aspiration."
   }
 }

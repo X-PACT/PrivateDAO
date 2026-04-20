@@ -10,6 +10,7 @@ Close the `upgrade-authority-multisig` blocker with a real custody event that is
 
 ## Minimum Inputs
 
+- chosen Solana-native multisig implementation: `Squads Protocol`
 - chosen multisig implementation
 - network: `mainnet-beta`
 - exactly 3 public signer keys
@@ -32,7 +33,7 @@ The custody ceremony must cover:
 
 1. Confirm the exact release commit and build artifact hash.
 2. Confirm the signer roles and public keys out-of-band.
-3. Create the multisig and record the multisig address.
+3. Create the Squads multisig and record the multisig address.
 4. Configure the timelock and record the timelock transaction or configuration output.
 5. Run a zero-value or low-risk rehearsal transaction.
 6. Transfer the program upgrade authority.

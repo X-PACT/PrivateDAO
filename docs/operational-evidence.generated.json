@@ -1,12 +1,12 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-09T19:10:24.314Z",
+  "generatedAt": "2026-04-20T11:38:02.519Z",
   "network": "devnet",
   "runLabels": {
-    "canonical": "20260407202442",
+    "canonical": "20260417125017",
     "multiProposal": "20260407211024",
     "race": "20260407211024",
-    "resilience": "20260407211358"
+    "resilience": "20260417225004"
   },
   "transactionSummary": {
     "walletCount": 50,
@@ -15,8 +15,8 @@
     "successCount": 180,
     "failureCount": 32,
     "retryCount": 0,
-    "averageTxLatencyMs": 2573.7351,
-    "totalExecutionTimeMs": 5682986,
+    "averageTxLatencyMs": 1522.9081,
+    "totalExecutionTimeMs": 36058082,
     "failureRate": 0.1509,
     "retryRate": 0,
     "phaseCounts": {
@@ -46,7 +46,7 @@
     "verificationMode": "offchain-groth16",
     "onchainVerifier": false,
     "onchainAnchorCount": 3,
-    "onchainAnchorProposal": "G76rRCe9MXbroK7CPC9jia1JCbuUtcV55S2hd1GCpUzL",
+    "onchainAnchorProposal": "7TKCbcUsrAaQhu3XuCLmXUPo2KCbjDtFF8sxtY6QmuVx",
     "proofCount": 7,
     "verifiedProofCount": 7,
     "layerCounts": {

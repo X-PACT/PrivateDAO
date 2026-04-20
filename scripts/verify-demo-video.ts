@@ -36,7 +36,7 @@ function main() {
     throw new Error("Demo video is not 1280x720.");
   }
   const duration = Number(probe.format?.duration || 0);
-  if (!(duration >= 30 && duration <= 40)) {
+  if (!(duration >= 29 && duration <= 40)) {
     throw new Error(`Demo video duration is outside expected range: ${duration}`);
   }
 

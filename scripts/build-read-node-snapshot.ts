@@ -530,6 +530,19 @@ async function main() {
     readNode.getRuntimeSnapshot(false),
     readNode.fetchProposals({ force: false }),
   ]);
+
+  if (
+    proposals.length === 0 &&
+    fs.existsSync(JSON_PATH) &&
+    fs.existsSync(MD_PATH) &&
+    fs.existsSync(FRONTEND_TS_PATH)
+  ) {
+    console.log(
+      "No indexed proposals returned from the current cluster; preserving committed read-node snapshot artifacts.",
+    );
+    return;
+  }
+
   const report = readJson<DevnetMultiProposalReport>("docs/devnet-multi-proposal-report.json");
   const integrations = readJson<FrontierIntegrations>("docs/frontier-integrations.generated.json");
   const profiles = readNode.getLoadProfiles();

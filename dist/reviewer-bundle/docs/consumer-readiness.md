@@ -64,9 +64,9 @@ This is not framed as speculative tokenomics. It is framed as useful product beh
 
 ## Current Consumer-Ready Surfaces
 
-- live web frontend: `https://x-pact.github.io/PrivateDAO/`
+- live web frontend: `https://privatedao.org/`
 - mobile-native surface: `docs/android-native.md`
-- wallet diagnostics: `https://x-pact.github.io/PrivateDAO/diagnostics/`
+- wallet diagnostics: `https://privatedao.org/diagnostics/`
 - governance token surface: `docs/pdao-token.md`
 - independent verification guide: `docs/independent-verification.md`
 - additive hardening proof: `docs/test-wallet-live-proof-v3.generated.md`

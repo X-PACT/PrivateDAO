@@ -2,12 +2,12 @@
 
 ## Overview
 
-- Generated at: `2026-04-09T19:10:24.314Z`
+- Generated at: `2026-04-20T11:38:02.519Z`
 - Network: `devnet`
-- Canonical run label: `20260407202442`
+- Canonical run label: `20260417125017`
 - Multi-proposal run label: `20260407211024`
 - Race run label: `20260407211024`
-- Resilience run label: `20260407211358`
+- Resilience run label: `20260417225004`
 
 ## Transaction Summary
 
@@ -17,8 +17,8 @@
 - Success count: `180`
 - Failure count: `32`
 - Retry count: `0`
-- Average tx latency ms: `2573.7351`
-- Total execution time ms: `5682986`
+- Average tx latency ms: `1522.9081`
+- Total execution time ms: `36058082`
 - Failure rate: `0.1509`
 - Retry rate: `0`
 

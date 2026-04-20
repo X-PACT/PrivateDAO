@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-11T14:36:31.798Z",
+  "generatedAt": "2026-04-20T11:40:01.801Z",
   "track": {
     "slug": "rpc-infrastructure",
     "title": "Runtime Infrastructure Reviewer Packet",
@@ -10,11 +10,11 @@
   "judgeFirstOpening": {
     "lines": [
       "What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Fast RPC role explicit in video, deck, README, and services UI.",
-      "What is externally proven: Diagnostics via /diagnostics and Frontier integrations via /documents/frontier-integrations and Reviewer telemetry packet via /documents/reviewer-telemetry-packet.",
+      "What is externally proven: Diagnostics via /diagnostics and Core integrations via /documents/frontier-integrations and Treasury reviewer packet via /documents/treasury-reviewer-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet.",
       "Exact blocker: production-monitoring-alerts. RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded.",
-      "Best product route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story."
+      "Best product route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story."
     ],
-    "voiceoverScript": "What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Fast RPC role explicit in video, deck, README, and services UI. What is externally proven: Diagnostics via /diagnostics and Frontier integrations via /documents/frontier-integrations and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: production-monitoring-alerts. RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded. Best product route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story."
+    "voiceoverScript": "What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Fast RPC role explicit in video, deck, README, and services UI. What is externally proven: Diagnostics via /diagnostics and Core integrations via /documents/frontier-integrations and Treasury reviewer packet via /documents/treasury-reviewer-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: production-monitoring-alerts. RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded. Best product route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story."
   },
   "proofClosure": {
     "whatWorksNow": [
@@ -29,14 +29,19 @@
         "summary": "Latency, success rate, wallet coverage, proof completion, and incident-facing diagnostics are already surfaced live."
       },
       {
-        "label": "Frontier integrations",
+        "label": "Core integrations",
         "href": "/documents/frontier-integrations",
-        "summary": "Hosted-read and runtime evidence already prove the infrastructure story on Devnet with reviewer-facing artifacts."
+        "summary": "Hosted-read and runtime evidence already prove the infrastructure story on Testnet with reviewer-facing artifacts."
+      },
+      {
+        "label": "Treasury reviewer packet",
+        "href": "/documents/treasury-reviewer-packet",
+        "summary": "Generated treasury packet that makes sender discipline, reference-linked rails, payments fit, and the exact treasury blocker reviewer-visible."
       },
       {
         "label": "Reviewer telemetry packet",
         "href": "/documents/reviewer-telemetry-packet",
-        "summary": "Generated telemetry truth packet that binds runtime evidence, frontier integrations, read-node snapshot, and devnet service metrics into one reviewer-safe route."
+        "summary": "Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and devnet service metrics into one reviewer-safe route."
       }
     ],
     "pendingSummary": "Custody still matters for buyer trust, and the new /custody ingestion flow reduces operator drift when the real signer and transfer data arrives. The exact infrastructure blocker remains monitored operations, not generic product maturity."
@@ -47,7 +52,7 @@
   },
   "bestDemoRoute": {
     "route": "/services",
-    "summary": "Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story."
+    "summary": "Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story."
   },
   "reviewerLinks": [
     {
@@ -55,7 +60,7 @@
       "href": "/tracks/rpc-infrastructure"
     },
     {
-      "label": "Frontier integrations",
+      "label": "Core integrations",
       "href": "/documents/frontier-integrations"
     },
     {

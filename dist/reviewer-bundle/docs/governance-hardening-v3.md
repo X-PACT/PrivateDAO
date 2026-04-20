@@ -49,7 +49,7 @@ Implemented, locally verified, and backed by a dedicated Devnet proof packet:
 - Rust compile and unit test pass
 - TypeScript typecheck passes
 - portable core checks pass
-- live Devnet proof exists in [`docs/test-wallet-live-proof-v3.generated.md`](test-wallet-live-proof-v3.generated.md)
+- preserved Devnet proof exists in [`docs/test-wallet-live-proof-v3.generated.md`](test-wallet-live-proof-v3.generated.md)
 
 Operational note:
 

@@ -1,12 +1,12 @@
 # Treasury Reviewer Packet
 
-Generated: 2026-04-11T15:53:20.536Z
+Generated: 2026-04-20T11:40:24.770Z
 
 Explain the treasury intake and payout posture as a reviewer-grade infrastructure surface, with strict sender discipline, public rails, proof links, commercial fit, and exact blocker visibility.
 
 ## Current Treasury Truth
 
-- treasury network: Solana Devnet
+- treasury network: Solana Testnet
 - treasury address: AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c
 - custody status: pending-external
 - production mainnet claim allowed: false
@@ -22,22 +22,22 @@ PrivateDAO is devnet-proven and internally hardened, but real-funds mainnet prod
 - Copy the exact public receive address and explorer link for the chosen asset rail instead of reusing a previous address.
 - Attach a reference string that includes payer, purpose, amount, and settlement context so the packet can be matched later.
 - Open reviewer truth surfaces before implying production-safe settlement or custody posture to a buyer, sender, or judge.
-- Treat the current rails as public Devnet treasury intake until authority-transfer evidence closes the production custody blocker.
+- Treat the current rails as public Testnet treasury intake until authority-transfer evidence closes the production custody blocker.
 
 ## Reference-Linked Rails
 
 ### SOL
 - name: Native SOL
 - receive address: AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c
-- explorer: https://solscan.io/account/AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c?cluster=devnet
+- explorer: https://solscan.io/account/AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c?cluster=testnet
 - mint: configured publicly at deployment
 - decimals: 9
-- note: Use this rail for treasury top-ups, operator funding, and governed SOL transfers on Devnet.
+- note: Use this rail for treasury top-ups, operator funding, and governed SOL transfers on Testnet.
 
 ### USDC
 - name: USDC
 - receive address: AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c
-- explorer: https://solscan.io/account/AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c?cluster=devnet
+- explorer: https://solscan.io/account/AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c?cluster=testnet
 - mint: configured publicly at deployment
 - decimals: 6
 - note: Use this rail for governed payouts, vendor settlement, and stable-value treasury requests when USDC is the active stable asset.
@@ -45,7 +45,7 @@ PrivateDAO is devnet-proven and internally hardened, but real-funds mainnet prod
 ### USDG
 - name: USDG
 - receive address: AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c
-- explorer: https://solscan.io/account/AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c?cluster=devnet
+- explorer: https://solscan.io/account/AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c?cluster=testnet
 - mint: configured publicly at deployment
 - decimals: 6
 - note: Use this rail for alternative stable settlement when the team or customer operates with USDG-compatible treasury flows.
@@ -100,7 +100,6 @@ PrivateDAO is devnet-proven and internally hardened, but real-funds mainnet prod
 
 ## Exact Pending Items
 
-- chosen multisig implementation
 - multisig public address
 - multisig creation signature
 - rehearsal signature

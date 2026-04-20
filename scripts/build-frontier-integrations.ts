@@ -67,6 +67,9 @@ type AccountCheck = {
   executable: boolean;
 };
 
+const JSON_PATH = path.resolve("docs/frontier-integrations.generated.json");
+const MD_PATH = path.resolve("docs/frontier-integrations.generated.md");
+
 async function main() {
   const proof = readJson<ProofRegistry>("docs/proof-registry.json");
   const zkProof = readJson<ZkProofRegistry>("docs/zk-proof-registry.json");
@@ -74,6 +77,14 @@ async function main() {
   const submission = readJson<SubmissionRegistry>("docs/submission-registry.json");
 
   const readNode = new PrivateDaoReadNode();
+  const proposals = await readNode.fetchProposals({ force: false });
+  if (proposals.length === 0 && fs.existsSync(JSON_PATH) && fs.existsSync(MD_PATH)) {
+    console.log(
+      "No indexed proposals returned from the current cluster; preserving committed Frontier integration artifacts.",
+    );
+    return;
+  }
+
   const [runtime, overview, magicblock, simpleProposal] = await Promise.all([
     readNode.getRuntimeSnapshot(false),
     readNode.getOpsOverview(false),
@@ -210,8 +221,8 @@ async function main() {
     ],
   };
 
-  fs.writeFileSync(path.resolve("docs/frontier-integrations.generated.json"), JSON.stringify(payload, null, 2) + "\n");
-  fs.writeFileSync(path.resolve("docs/frontier-integrations.generated.md"), buildMarkdown(payload));
+  fs.writeFileSync(JSON_PATH, JSON.stringify(payload, null, 2) + "\n");
+  fs.writeFileSync(MD_PATH, buildMarkdown(payload));
   console.log("Wrote Frontier integration evidence package");
 }
 

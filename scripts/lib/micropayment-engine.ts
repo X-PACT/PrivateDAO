@@ -264,12 +264,13 @@ export async function runAgenticMicropaymentRail(
   const stableMint =
     options.stableMint ??
     process.env.PRIVATE_DAO_MICROPAYMENT_MINT ??
+    process.env.NEXT_PUBLIC_TREASURY_PUSD_MINT ??
     process.env.NEXT_PUBLIC_TREASURY_USDC_MINT ??
     null;
   const stableSymbol =
     options.stableSymbol ??
     process.env.PRIVATE_DAO_MICROPAYMENT_SYMBOL ??
-    "USDC";
+    (process.env.NEXT_PUBLIC_TREASURY_PUSD_MINT ? "PUSD" : "USDC");
 
   const recipients = Array.from({ length: targetCount }, () => Keypair.generate());
   const stableContext = await detectStableExecutionMode(connection, signer, stableMint);

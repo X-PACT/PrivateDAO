@@ -27,7 +27,7 @@ import {
   workspaceProgram,
 } from "./utils";
 
-const REPORT_DATE = "2026-04-18";
+const REPORT_DATE = new Date().toISOString().slice(0, 10);
 const OUTPUT_JSON = path.join("docs", `testnet-lifecycle-rehearsal-${REPORT_DATE}.json`);
 const OUTPUT_MD = path.join("docs", `testnet-lifecycle-rehearsal-${REPORT_DATE}.md`);
 const VOTING_SECONDS = 5;
@@ -446,9 +446,9 @@ async function main() {
       `- Treasury: ${report.accountExplorers.treasury}`,
       `- Recipient: ${report.accountExplorers.recipient}`,
       "",
-      "## Verification Boundary",
+      "## Verification Lanes",
       "",
-      "This rehearsal proves the standard Testnet governance and SOL treasury execution path. It does not replace Devnet browser-wallet evidence or custody/multisig evidence.",
+      "This rehearsal proves the standard Testnet governance and SOL treasury execution path. Browser-wallet execution, real-device evidence, custody ceremony, and confidential settlement proofs remain linked as separate reviewer lanes so each claim has its own verifiable packet.",
       "",
     ].join("\n"),
   );

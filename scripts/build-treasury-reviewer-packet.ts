@@ -49,7 +49,7 @@ type TreasuryAsset = {
   note: string;
 };
 
-const DEFAULT_DEVNET_TREASURY = "AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c";
+const DEFAULT_TESTNET_TREASURY = "AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c";
 
 function readJson<T>(relativePath: string): T {
   return JSON.parse(fs.readFileSync(path.resolve(relativePath), "utf8")) as T;
@@ -64,7 +64,7 @@ function resolveReceiveAddress(symbol: TreasuryAsset["symbol"]) {
     return (
       envValue(process.env.NEXT_PUBLIC_TREASURY_SOL_RECEIVE_ADDRESS) ??
       envValue(process.env.NEXT_PUBLIC_TREASURY_RECEIVE_ADDRESS) ??
-      DEFAULT_DEVNET_TREASURY
+      DEFAULT_TESTNET_TREASURY
     );
   }
 
@@ -72,19 +72,19 @@ function resolveReceiveAddress(symbol: TreasuryAsset["symbol"]) {
     return (
       envValue(process.env.NEXT_PUBLIC_TREASURY_USDC_RECEIVE_ADDRESS) ??
       envValue(process.env.NEXT_PUBLIC_TREASURY_RECEIVE_ADDRESS) ??
-      DEFAULT_DEVNET_TREASURY
+      DEFAULT_TESTNET_TREASURY
     );
   }
 
   return (
     envValue(process.env.NEXT_PUBLIC_TREASURY_USDG_RECEIVE_ADDRESS) ??
     envValue(process.env.NEXT_PUBLIC_TREASURY_RECEIVE_ADDRESS) ??
-    DEFAULT_DEVNET_TREASURY
+    DEFAULT_TESTNET_TREASURY
   );
 }
 
 function getTreasuryReceiveConfig() {
-  const network = envValue(process.env.NEXT_PUBLIC_TREASURY_NETWORK) ?? "Solana Devnet";
+  const network = envValue(process.env.NEXT_PUBLIC_TREASURY_NETWORK) ?? "Solana Testnet";
 
   const assets: TreasuryAsset[] = [
     {
@@ -93,7 +93,7 @@ function getTreasuryReceiveConfig() {
       network,
       receiveAddress: resolveReceiveAddress("SOL"),
       decimals: 9,
-      note: "Use this rail for treasury top-ups, operator funding, and governed SOL transfers on Devnet.",
+      note: "Use this rail for treasury top-ups, operator funding, and governed SOL transfers on Testnet.",
     },
     {
       symbol: "USDC",
@@ -118,13 +118,18 @@ function getTreasuryReceiveConfig() {
   return {
     network,
     treasuryAddress:
-      envValue(process.env.NEXT_PUBLIC_TREASURY_RECEIVE_ADDRESS) ?? DEFAULT_DEVNET_TREASURY,
+      envValue(process.env.NEXT_PUBLIC_TREASURY_RECEIVE_ADDRESS) ?? DEFAULT_TESTNET_TREASURY,
     assets,
   };
 }
 
 function buildExplorerHref(address: string, network: string) {
-  const cluster = network.toLowerCase().includes("devnet") ? "?cluster=devnet" : "";
+  const normalized = network.toLowerCase();
+  const cluster = normalized.includes("testnet")
+    ? "?cluster=testnet"
+    : normalized.includes("devnet")
+      ? "?cluster=devnet"
+      : "";
   return `https://solscan.io/account/${address}${cluster}`;
 }
 
@@ -154,7 +159,7 @@ function main() {
       "Copy the exact public receive address and explorer link for the chosen asset rail instead of reusing a previous address.",
       "Attach a reference string that includes payer, purpose, amount, and settlement context so the packet can be matched later.",
       "Open reviewer truth surfaces before implying production-safe settlement or custody posture to a buyer, sender, or judge.",
-      "Treat the current rails as public Devnet treasury intake until authority-transfer evidence closes the production custody blocker.",
+      "Treat the current rails as public Testnet treasury intake until authority-transfer evidence closes the production custody blocker.",
     ],
     referenceLinkedRails: treasury.assets.map((asset) => ({
       symbol: asset.symbol,

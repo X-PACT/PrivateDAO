@@ -14,11 +14,13 @@
 <p align="center">
   <a href="https://privatedao.org/"><img src="https://img.shields.io/badge/Live%20Product-Open-14F195?logo=solana" alt="Live product" /></a>
   <a href="https://github.com/X-PACT/PrivateDAO/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/X-PACT/PrivateDAO/ci.yml?branch=main&label=CI" alt="CI status" /></a>
-  <a href="docs/awards.md"><img src="https://img.shields.io/badge/Superteam%20Poland-1st%20Place-gold" alt="Superteam Poland 1st Place" /></a>
-  <a href="https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet"><img src="https://img.shields.io/badge/Solana-Devnet%20Program-14F195" alt="Devnet program" /></a>
+  <a href="docs/awards.md"><img src="https://img.shields.io/badge/Regional%20Recognition-1st%20Place-gold" alt="Regional 1st place recognition" /></a>
+  <a href="https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=testnet"><img src="https://img.shields.io/badge/Solana-Testnet%20Program-38bdf8" alt="Testnet program" /></a>
+  <a href="https://privatedao.org/trust/"><img src="https://img.shields.io/badge/Build%20Window-Through%202026--04--30-f59e0b" alt="Build window through 2026-04-30" /></a>
   <a href="docs/pdao-token.md"><img src="https://img.shields.io/badge/PDAO-Token--2022%20Governance%20Mint-0f766e" alt="PDAO token" /></a>
   <a href="docs/security-hardening-v2.md"><img src="https://img.shields.io/badge/Security-Strict%20V2%20Hardening-1d4ed8" alt="Strict V2 security hardening" /></a>
   <a href="docs/operational-evidence.generated.md"><img src="https://img.shields.io/badge/Devnet-50%20Wallet%20Rehearsal-7c3aed" alt="Devnet rehearsal" /></a>
+  <a href="docs/testnet-lifecycle-rehearsal-2026-04-19.md"><img src="https://img.shields.io/badge/Testnet-Lifecycle%20Rehearsal-0ea5e9" alt="Testnet lifecycle rehearsal" /></a>
   <a href="docs/magicblock/private-payments.md"><img src="https://img.shields.io/badge/MagicBlock-Private%20Payments-06b6d4" alt="MagicBlock private payments" /></a>
   <a href="docs/rpc-architecture.md"><img src="https://img.shields.io/badge/RPC%20Fast-Read%20Node%20Ready-f97316" alt="RPC Fast ready" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-AGPLv3%2B%20%7C%20Apache--2.0%20%7C%20MIT-green" alt="License" /></a>
@@ -26,9 +28,21 @@
 
 ## Winner Signal
 
-**1st Place - Superteam Poland, March 2026.**
+**Regional 1st Place recognition, March 2026.**
 
-PrivateDAO engineering won **1st Place** in the Superteam Poland challenge **"Rebuild production backend systems as on-chain Rust programs"**. That matters here because this repo is built the same way: live protocol code, live Devnet execution, explicit trust boundaries, and machine-checked reviewer evidence. See [`docs/awards.md`](docs/awards.md).
+PrivateDAO engineering already carries a real first-place regional signal. That matters here because this repo is built the same way: live protocol code, live Testnet execution, explicit trust boundaries, and machine-checked reviewer evidence. See [`docs/awards.md`](docs/awards.md).
+
+## Live Development Notice
+
+Core development, testing, wallet hardening, localization, and service packaging continue through **April 30, 2026**.
+
+If a route looks inconsistent or temporarily degraded:
+
+- retry in a few minutes
+- check `https://privatedao.org/trust/`
+- check `https://privatedao.org/community/`
+
+This is intentional. PrivateDAO is live on Solana Testnet now: the preserved Anchor program is deployed, the standard governance lifecycle has executed end to end, and treasury movement is verified by public hashes. The public product rollout is being moved fully onto this Testnet path through the current release window.
 
 ## What PrivateDAO Is
 
@@ -39,25 +53,51 @@ It combines:
 - **Private voting:** commit-reveal governance with proposal-bound commitments.
 - **Confidential treasury operations:** payroll, bonus, and payout flows with aggregate on-chain settlement state.
 - **Execution safety:** timelocks, veto and cancel boundaries, duplicate-execution resistance, and strict treasury account validation.
-- **Evidence and reviewability:** Devnet rehearsals, ZK proof anchors, runtime packets, manifests, and generated audit surfaces.
+- **Evidence and reviewability:** Devnet rehearsals, Testnet lifecycle proof, ZK proof anchors, runtime packets, manifests, and generated audit surfaces.
 - **Operational packaging:** Realms migration, hosted read/API packaging, trust exports, pilot material, and operator docs.
+
+## Why It Matters To The Ecosystem
+
+PrivateDAO is being built as public-good governance and treasury infrastructure for Solana.
+
+The goal is not only to ship one strong product surface. The goal is to make advanced governance, privacy, telemetry, and treasury discipline easier for the ecosystem to adopt, inspect, and build on.
+
+That matters because the same core system can serve:
+
+- grant and allocation committees
+- treasury and payout governance
+- protocol operating councils
+- security-sensitive decisions
+- contributor, vendor, and payroll-style payout workflows
+
+## Clear Product Roadmap
+
+The roadmap is intentionally simple and fundable:
+
+1. make the wallet-first Testnet flow effortless for first-time visitors
+2. keep proof, telemetry, custody, and diagnostics attached to the same product corridor
+3. strengthen audit, monitoring, real-device wallet coverage, and settlement publication
+4. close the remaining production gates and ship the strongest possible release candidate
 
 ## What Is Live Now
 
-PrivateDAO is already a live Devnet product, not a concept deck:
+PrivateDAO is already a live Solana Testnet governance infrastructure product, not a concept deck:
 
-- Anchor program on Solana Devnet
+- Anchor program deployed on Solana Testnet with the same canonical program id
+- Devnet rehearsal history preserved as the transition evidence base
 - Wallet-connected frontend
 - Operational routes for onboarding, command, dashboard, proof, diagnostics, and services
 - PDAO governance token surface
-- Web wallet DAO bootstrap on Devnet
-- Web wallet proposal submit on Devnet
+- Web wallet DAO bootstrap on Testnet
+- Web wallet proposal submit on Testnet
 - Repo-native and device-native proof paths for the broader governance lifecycle
 - Confidential payout paths with `REFHE` and `MagicBlock` integration surfaces
 - `Strict V2` hardening for proof, settlement, cancellation, and policy snapshots
 - `Governance Hardening V3` for token-supply quorum snapshots and dedicated reveal rebate vaults
 - `Settlement Hardening V3` for payout caps, evidence-aging windows, and explicit REFHE/MagicBlock execution requirements
 - Backend read node and RPC Fast-oriented evidence path
+- Testnet billing rehearsal route with wallet-signed on-chain service charge proof
+- Standard Testnet lifecycle rehearsal with create DAO, proposal, commit, reveal, finalize, execute, and treasury delta verification
 - Reviewer-facing runtime, security, and launch packets
 
 ## Product Surface Split
@@ -65,8 +105,8 @@ PrivateDAO is already a live Devnet product, not a concept deck:
 The public product UI is intentionally responsible for:
 
 - Connect Wallet
-- Create DAO on Devnet from the connected web wallet
-- Create Proposal on Devnet from the connected web wallet after live DAO bootstrap
+- Create DAO on Testnet from the connected web wallet
+- Create Proposal on Testnet from the connected web wallet after live DAO bootstrap
 - Commit Vote
 - Reveal Vote
 - Finalize Proposal
@@ -84,13 +124,25 @@ The public repo and CLI remain available for:
 
 This keeps the buyer-facing product clean while preserving engineering and protocol discipline in the repo.
 
+## Normal User Browser Run
+
+The non-terminal path is now explicit:
+
+1. Open [`https://privatedao.org/start/`](https://privatedao.org/start/).
+2. Connect a Testnet wallet. Solflare, Phantom, Glow, Backpack, and Wallet Standard wallets are surfaced from the browser product.
+3. Continue to [`https://privatedao.org/govern/`](https://privatedao.org/govern/) and run the flow: create DAO, create proposal, commit, reveal, finalize, and execute.
+4. Open [`https://privatedao.org/proof/?judge=1`](https://privatedao.org/proof/?judge=1) and [`docs/testnet-lifecycle-rehearsal-2026-04-19.md`](docs/testnet-lifecycle-rehearsal-2026-04-19.md) to verify the public signatures, accounts, treasury delta, and explorer links.
+5. Use [`https://privatedao.org/learn/`](https://privatedao.org/learn/) for the lecture, code, quiz, and assignment corridor that explains what the user just executed.
+
+Repo scripts remain the reproducible reviewer path, but the ordinary product path is browser-first: click, sign, run, verify.
+
 Current web/runtime boundary:
 
-- `Create DAO` now has a live wallet-first Devnet bootstrap path in the web action workbench.
-- `Create Proposal` now has a live wallet-first Devnet submit path in the same workbench once a live DAO bootstrap has already established the DAO lane, including the current live `SendSol` and `SendToken` treasury-motion lanes.
+- `Create DAO` now has a live wallet-first Testnet bootstrap path in the web action workbench.
+- `Create Proposal` now has a live wallet-first Testnet submit path in the same workbench once a live DAO bootstrap has already established the DAO lane, including the current live `SendSol` and `SendToken` treasury-motion lanes.
 - `Commit Vote`, `Reveal Vote`, and `Finalize Proposal` now use the same live wallet-first workbench lane once a real DAO and proposal already exist in session state.
 - `Execute Proposal` now also has a live wallet-first path for standard proposals and the current live `SendSol` and `SendToken` treasury-motion lanes.
-- Repo-script lifecycle proof exists for the governance core, while browser-wallet proof on the web and real-device action proof on Android remain explicitly pending until they are captured in runtime evidence.
+- Repo-script lifecycle proof, browser-wallet execution proof, Android Solflare mobile capture, and standard Testnet lifecycle proof are now recorded as separate evidence packets.
 - `CustomCPI` still requires the richer payout path; the current live web builder now carries the supported treasury transfer variants, but it does not claim arbitrary treasury action coverage.
 
 The rule is strict:
@@ -98,27 +150,28 @@ The rule is strict:
 - If a normal user needs it, it belongs in the UI.
 - If it is for protocol maintenance, incident handling, migrations, or engineering-only control, it belongs in the public repo and CLI.
 
-## Frontier Fit
+## Current Product Cycle
 
-PrivateDAO fits Frontier because it sits at the intersection of:
+PrivateDAO is actively being advanced as a live Testnet product under continuous community review.
 
-- **Governance / DAO infrastructure**
-- **Privacy-preserving treasury operations**
-- **MagicBlock-integrated confidential payout paths**
-- **RPC Fast-oriented read reliability**
-- **Full-stack Solana product execution**
+The public message stays simple:
+
+- one coherent governance product
+- private and confidential treasury operations
+- clear runtime evidence and trust surfaces
+- stronger operator and reviewer readability with each shipping tranche
 
 ## Launch Boundary
 
-PrivateDAO is strong enough for Devnet evaluation, judge review, and pilot packaging, but this repository does **not** claim real-funds mainnet readiness yet. The current boundary is deliberate:
+PrivateDAO is already strong enough for Testnet evaluation, judge review, and pilot packaging, and the current execution strategy is designed to convert that foundation into mainnet-grade readiness with the right support and closure evidence:
 
 | Stage | Current status | Evidence |
 | --- | --- | --- |
-| Product and protocol | Implemented on Devnet | Live frontend, Anchor program, PDAO governance mint, commit-reveal lifecycle, confidential payout flows, Strict V2 hardening. |
-| Reviewer evidence | Implemented and generated | 50-wallet Devnet rehearsal, ZK anchors, operational evidence, audit packet, cryptographic manifest, and `npm run verify:all`. |
-| Launch operations | Repo-defined, externally pending | Multisig intake, authority transfer runbook, launch ops checklist, monitoring rules, wallet E2E plan. |
-| Production custody | Pending external execution | 2-of-3 multisig, 48+ hour timelock, authority transfer signatures, signer backups, and post-transfer authority readouts. |
-| Mainnet real funds | Blocked until closure | External audit, live monitoring, real-device captures, source-verifiable MagicBlock/REFHE receipts, and final cutover ceremony. |
+| Product and protocol | Live on Solana Testnet with browser product surfaces and reviewer proof | Live frontend, Anchor program, PDAO governance mint, commit-reveal lifecycle, confidential payout flows, Strict V2 hardening. |
+| Reviewer evidence | Implemented and generated | 50-wallet Devnet rehearsal, standard Testnet lifecycle proof, Android Solflare capture, ZK anchors, operational evidence, audit packet, cryptographic manifest, and `npm run verify:all`. |
+| Launch operations | Repo-defined and ready for closure | Multisig intake, authority transfer runbook, launch ops checklist, monitoring rules, wallet E2E plan. |
+| Production custody | Structured for execution with recorded evidence next | 2-of-3 multisig, 48+ hour timelock, authority transfer signatures, signer backups, and post-transfer authority readouts. |
+| Mainnet real funds | Final production gate | External audit, live monitoring, real-device captures, source-verifiable MagicBlock/REFHE receipts, and final cutover ceremony. |
 
 Operational launch docs:
 
@@ -129,6 +182,8 @@ Operational launch docs:
 - [`docs/monitoring-alert-rules.md`](docs/monitoring-alert-rules.md)
 - [`docs/wallet-e2e-test-plan.md`](docs/wallet-e2e-test-plan.md)
 - [`docs/launch-trust-packet.generated.md`](docs/launch-trust-packet.generated.md)
+- [`docs/final-closure-workplan-2026-04-19.md`](docs/final-closure-workplan-2026-04-19.md)
+- [`docs/track-funding-integration-closure-plan-2026-04-19.md`](docs/track-funding-integration-closure-plan-2026-04-19.md)
 - [`docs/production-custody-ceremony.md`](docs/production-custody-ceremony.md)
 - [`docs/external-audit-engagement.md`](docs/external-audit-engagement.md)
 - [`docs/pilot-onboarding-playbook.md`](docs/pilot-onboarding-playbook.md)
@@ -180,7 +235,7 @@ Live proof surface:
 - `https://privatedao.org/documents/launch-trust-packet/`
 - `https://privatedao.org/documents/mainnet-blockers/`
 
-This is intentional: the product now exposes the exact custody proof shape and blocker state, but it still does not claim the ceremony happened before the real addresses, signatures, explorer links, and readouts are recorded.
+This is intentional: the product now exposes the exact custody proof shape and the live operating milestones around it, while the transfer ceremony keeps moving toward a reviewer-ready closeout with real addresses, signatures, explorer links, and readouts. The goal is not to overstate readiness. The goal is to keep making the system stronger, more credible, and more defensible with every serious execution tranche.
 
 ## Start Here
 
@@ -199,36 +254,38 @@ This is intentional: the product now exposes the exact custody proof shape and b
 | Wallet diagnostics | https://privatedao.org/diagnostics/ |
 | Services and buyer path | https://privatedao.org/services/ |
 | Treasury receive surface | https://privatedao.org/services/ |
-| Demo video MP4 | https://privatedao.org/assets/private-dao-demo-flow.mp4 |
-| Devnet program | https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet |
+| Lifecycle product video | https://privatedao.org/assets/private-dao-demo-flow.mp4 |
+| Testnet program | https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=testnet |
+| Testnet lifecycle proof | [`docs/testnet-lifecycle-rehearsal-2026-04-19.md`](docs/testnet-lifecycle-rehearsal-2026-04-19.md) |
+| Final closure workplan | [`docs/final-closure-workplan-2026-04-19.md`](docs/final-closure-workplan-2026-04-19.md) |
 | Canonical custody intake | [`docs/multisig-setup-intake.json`](docs/multisig-setup-intake.json) |
 
 The launch boundary is now surfaced in-product through `https://privatedao.org/custody/`, where multisig creation, authority transfer, and evidence requirements are shown as a live operating workflow rather than a hidden note.
 
-## Frontier Review Surfaces
+## Reviewer Surfaces
 
-PrivateDAO is being presented as one coherent product around Frontier Hackathon. The public review lanes stay visible without exposing a long public list of track names.
+PrivateDAO is presented publicly as one coherent product with multiple reviewer-visible lanes.
 
-| Reviewer lane | Live workspace | Strongest visible fit |
+| Reviewer lane | Live route | Strongest visible fit |
 | --- | --- | --- |
-| Frontier primary workspace | https://privatedao.org/tracks/colosseum-frontier/ | Startup-quality product shell, trust surfaces, proof continuity, and buyer path |
-| Confidential governance lane | https://privatedao.org/tracks/privacy-track/ | Commit-reveal governance, ZK review posture, REFHE, and privacy-aware settlement |
-| Runtime infrastructure lane | https://privatedao.org/tracks/rpc-infrastructure/ | Hosted reads, diagnostics, API packaging, and runtime evidence |
+| Primary product lane | https://privatedao.org/learn/ | Product shell, trust surfaces, proof continuity, and buyer path |
+| Confidential operations lane | https://privatedao.org/security/ | Commit-reveal governance, privacy-aware treasury motion, and settlement posture |
+| Runtime and infrastructure lane | https://privatedao.org/analytics/ | Hosted reads, diagnostics, API packaging, and runtime evidence |
 
 The operating rule stays strict:
 
 - one product thesis
-- multiple reviewer corridors under the same Frontier narrative
-- no contradiction between site, README, deck, demo, or proof
+- multiple reviewer corridors under the same product narrative
+- no contradiction between site, README, deck, product walkthrough, or proof
 
-## Strategic Opportunity Corridors
+## External Review Corridors
 
-Beyond the primary Frontier judging posture, PrivateDAO is also being prepared for adjacent opportunities that strengthen the same commercial product thesis instead of fragmenting it.
+Beyond the main product route, PrivateDAO is also packaged through adjacent reviewer and buyer corridors that strengthen the same commercial product thesis instead of fragmenting it.
 
 | Corridor | Current strongest route | What it proves now |
 | --- | --- | --- |
 | Startup capital corridor | `https://privatedao.org/start/` -> `https://privatedao.org/story/` -> `https://privatedao.org/services/` | Startup-quality product shell, buyer corridor, and reviewer-safe trust packaging |
-| Regional grant corridor | `https://privatedao.org/awards/` -> `https://privatedao.org/tracks/colosseum-frontier/` | Ecosystem credibility, product maturity, and proof continuity |
+| Regional grant corridor | `https://privatedao.org/awards/` -> `https://privatedao.org/learn/` | Ecosystem credibility, product maturity, and proof continuity |
 | Data and telemetry corridor | `https://privatedao.org/diagnostics/` -> `https://privatedao.org/analytics/` | Runtime evidence, indexed proposal state, and hosted-read credibility |
 | Confidential payout corridor | `https://privatedao.org/security/` -> `https://privatedao.org/services/` -> `https://privatedao.org/custody/` | Private treasury approvals, encrypted operations framing, and custody-aware payout discipline |
 | Audit and hardening corridor | `https://privatedao.org/documents/canonical-custody-proof/` -> `https://privatedao.org/diagnostics/` | Canonical custody truth, authority hardening, and incident-readiness posture |
@@ -265,20 +322,20 @@ These are the public-facing routes reviewers, users, and buyers should see first
 | --- | --- |
 | Story video route | https://privatedao.org/story/ |
 | Weekly / public YouTube | https://www.youtube.com/@privatedao |
-| Official Discord | https://discord.gg/bC76YEcpDa |
-| Colosseum project page | https://arena.colosseum.org/projects/explore/praivatedao |
-| Guided product flow | [`docs/frontier-guided-flow.md`](docs/frontier-guided-flow.md) |
+| Official Discord | https://discord.gg/PbM8BC2A |
+| Public project profile | https://arena.colosseum.org/projects/explore/praivatedao |
+| Guided product flow | [`docs/product-guided-flow.md`](docs/product-guided-flow.md) |
 | Live proof V3 | [`docs/test-wallet-live-proof-v3.generated.md`](docs/test-wallet-live-proof-v3.generated.md) |
 | Domain mirror plan | [`docs/domain-mirror.md`](docs/domain-mirror.md) |
 | `.xyz` mirror checklist | [`docs/xyz-mirror-cutover-checklist.md`](docs/xyz-mirror-cutover-checklist.md) |
 | Audit packet | [`docs/audit-packet.generated.md`](docs/audit-packet.generated.md) |
 | Operational evidence | [`docs/operational-evidence.generated.md`](docs/operational-evidence.generated.md) |
-| Frontier integration evidence | [`docs/frontier-integrations.generated.md`](docs/frontier-integrations.generated.md) |
+| Integration evidence | [`docs/integration-evidence.generated.md`](docs/integration-evidence.generated.md) |
 | Reviewer telemetry packet | [`docs/reviewer-telemetry-packet.generated.md`](docs/reviewer-telemetry-packet.generated.md) |
 | Mainnet blockers | [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md) |
 | Trust package | [`docs/trust-package.md`](docs/trust-package.md) |
 | Service catalog | [`docs/service-catalog.md`](docs/service-catalog.md) |
-| Investor / competition pitch deck | [`docs/investor-pitch-deck.md`](docs/investor-pitch-deck.md) |
+| Investor / reviewer pitch deck | [`docs/investor-pitch-deck.md`](docs/investor-pitch-deck.md) |
 
 ## System Diagram
 
@@ -288,7 +345,7 @@ flowchart LR
   User --> Android["Android native path - Solana MWA"]
   Frontend --> Wallet["Wallet signing - Phantom / Solflare"]
   Android --> Wallet
-  Wallet --> Program["PrivateDAO Anchor program - Solana Devnet"]
+  Wallet --> Program["PrivateDAO Anchor program - Solana Testnet"]
   Program --> DAO["DAO PDA"]
   Program --> Proposal["Proposal PDA"]
   Program --> Treasury["Treasury PDA"]
@@ -351,14 +408,14 @@ Use only public receive addresses here. Do not place signer keypairs, seed phras
 | Commercial buyer surface | The homepage now also frames the commercial buying path directly in-product: pilot package, hosted read API + ops, confidential operations premium, and enterprise governance retainer, each linked to the exact pricing, SLA, trust, and onboarding documents behind it. | [`apps/web`](apps/web), [`docs/pricing-model.md`](docs/pricing-model.md), [`docs/pilot-program.md`](docs/pilot-program.md), [`docs/service-level-agreement.md`](docs/service-level-agreement.md) |
 | Buyer journey narrative | The homepage now explains who should buy PrivateDAO, why it exists beyond Realms or Squads alone, what happens in the first 30 days of a pilot, and what is live now versus still pending-external for real-funds launch. | [`apps/web`](apps/web), [`docs/trust-package.md`](docs/trust-package.md), [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md), [`docs/pilot-program.md`](docs/pilot-program.md) |
 | Conversion-ready pilot rail | The homepage now includes a commercial checkout rail for weeks 1-4 of a pilot plus a `Request Pilot Packet` action that copies the exact buyer-facing packet from the current repo truth surface. | [`apps/web`](apps/web), [`docs/pilot-program.md`](docs/pilot-program.md), [`docs/pricing-model.md`](docs/pricing-model.md), [`docs/trust-package.md`](docs/trust-package.md) |
-| Demo-closing hero proof strip | The hero now includes quick-switches for judge, buyer, and operator views plus a prominent live-success proof strip that surfaces the latest real Devnet execution, the new V3 hardening proof packet, the reviewer packet, and the explicit mainnet boundary from the first screen. | [`apps/web`](apps/web), [`docs/test-wallet-live-proof.generated.md`](docs/test-wallet-live-proof.generated.md), [`docs/test-wallet-live-proof-v3.generated.md`](docs/test-wallet-live-proof-v3.generated.md), [`docs/operational-evidence.generated.md`](docs/operational-evidence.generated.md), [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md) |
+| Product-proof hero strip | The hero now includes quick-switches for judge, buyer, and operator views plus a prominent live-success proof strip that surfaces Testnet lifecycle proof, V3 hardening packets, reviewer packets, and the explicit mainnet boundary from the first screen. | [`apps/web`](apps/web), [`docs/testnet-lifecycle-rehearsal-2026-04-19.md`](docs/testnet-lifecycle-rehearsal-2026-04-19.md), [`docs/test-wallet-live-proof-v3.generated.md`](docs/test-wallet-live-proof-v3.generated.md), [`docs/operational-evidence.generated.md`](docs/operational-evidence.generated.md), [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md) |
 | Persona-adaptive landing surface | The hero now shifts between buyer, judge, and operator narratives without changing the underlying proof links, and the proposals page now carries a sticky pack summary that turns the active preset into a clear operator and buyer brief. | [`apps/web`](apps/web), [`docs/grant-committee-pack.md`](docs/grant-committee-pack.md), [`docs/fund-governance-pack.md`](docs/fund-governance-pack.md), [`docs/enterprise-dao-pack.md`](docs/enterprise-dao-pack.md) |
 | Commercial decision surface | The proposals page now includes a dedicated conversion layer: compare plans, open the API and operations surface, inspect the live-versus-pending boundary, and copy a buyer-ready service packet directly from the active pack. | [`apps/web`](apps/web), [`docs/service-catalog.md`](docs/service-catalog.md), [`docs/trust-package.md`](docs/trust-package.md), [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md) |
 | Proposal-aware commercial guidance | The selected proposal panel now adapts its buyer, operator, judge, and launch-boundary guidance to the live proposal itself, including pack inference, proposal packet copy, and proof-bound next steps tied to the actual on-chain phase. | [`apps/web`](apps/web), [`docs/trust-package.md`](docs/trust-package.md), [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md), [`docs/test-wallet-live-proof.generated.md`](docs/test-wallet-live-proof.generated.md) |
 | Realms migration storefront | The Realms migration page now includes organization-specific migration packs, live command generation, and next-step guidance so operators can move from migration intent to a concrete PrivateDAO bootstrap path faster. | [`apps/web`](apps/web), [`docs/migration-story.md`](docs/migration-story.md), [`docs/grant-committee-pack.md`](docs/grant-committee-pack.md), [`docs/fund-governance-pack.md`](docs/fund-governance-pack.md), [`docs/enterprise-dao-pack.md`](docs/enterprise-dao-pack.md) |
 | REFHE | Proposal-bound encrypted evaluation envelope with settlement gate and explicit trust model. | [`docs/refhe-protocol.md`](docs/refhe-protocol.md), [`docs/refhe-security-model.md`](docs/refhe-security-model.md) |
 | MagicBlock | Private-payment corridor support for confidential token payout flows, with runtime capture/evidence docs. | [`docs/magicblock/private-payments.md`](docs/magicblock/private-payments.md), [`docs/magicblock/runtime-evidence.md`](docs/magicblock/runtime-evidence.md) |
-| Frontier integration gate | One machine-checked package that binds ZK anchors, MagicBlock settlement, REFHE settlement, and backend-indexed RPC state into a single Devnet-verified review surface. | [`docs/frontier-integrations.generated.md`](docs/frontier-integrations.generated.md), [`docs/read-node/ops.generated.md`](docs/read-node/ops.generated.md) |
+| Integration evidence gate | One machine-checked package that binds ZK anchors, MagicBlock settlement, REFHE settlement, and backend-indexed RPC state into a single Devnet-verified review surface. | [`docs/frontier-integrations.generated.md`](docs/frontier-integrations.generated.md), [`docs/read-node/ops.generated.md`](docs/read-node/ops.generated.md) |
 | ZK layer | Groth16 companion proofs, on-chain proof anchors, ZK registry, and `zk_enforced` readiness documentation. | [`docs/zk-proof-registry.json`](docs/zk-proof-registry.json), [`docs/zk-layer.md`](docs/zk-layer.md) |
 | Strict V2 hardening | Additive companion accounts for DAO security policy, proof verification, settlement evidence, consumption, cancellation safety, and voter-weight scope. | [`docs/security-hardening-v2.md`](docs/security-hardening-v2.md), [`docs/protocol-spec.md`](docs/protocol-spec.md) |
 | Governance Hardening V3 | Additive governance-policy snapshots, token-supply participation quorum, dedicated reveal rebate vaults, and V3 finalize/reveal paths that do not reinterpret legacy proposals. | [`docs/governance-hardening-v3.md`](docs/governance-hardening-v3.md), [`docs/test-wallet-live-proof-v3.generated.md`](docs/test-wallet-live-proof-v3.generated.md), [`programs/private-dao/src/lib.rs`](programs/private-dao/src/lib.rs) |
@@ -367,9 +424,9 @@ Use only public receive addresses here. Do not place signer keypairs, seed phras
 | Mobile surface | Android-native path with Kotlin, Jetpack Compose, and Solana Mobile Wallet Adapter. | [`apps/android-native/`](apps/android-native/), [`docs/android-native.md`](docs/android-native.md) |
 | Review automation | Generated audit packet, runtime evidence, operational evidence, cryptographic manifest, and release drill artifacts. | [`docs/audit-packet.generated.md`](docs/audit-packet.generated.md), [`docs/cryptographic-manifest.generated.json`](docs/cryptographic-manifest.generated.json) |
 
-## Evidence From The Latest Devnet Rehearsal
+## Evidence From The Preserved Devnet Rehearsal
 
-The current reviewer evidence package includes a live Devnet rehearsal with persistent wallets, adversarial checks, ZK artifacts, and generated runtime evidence.
+The preserved reviewer evidence package includes the completed Devnet rehearsal with persistent wallets, adversarial checks, ZK artifacts, and generated runtime evidence. The current public operating path is Solana Testnet.
 
 | Metric | Value |
 | --- | --- |
@@ -392,6 +449,28 @@ Primary artifacts:
 - [`docs/zk-proof-registry.json`](docs/zk-proof-registry.json)
 - [`docs/performance-metrics.json`](docs/performance-metrics.json)
 
+## Evidence From The Standard Testnet Rehearsal
+
+The current Testnet packet proves the standard governance and treasury lifecycle on Solana Testnet with the preserved canonical program id.
+
+| Metric | Value |
+| --- | --- |
+| Network | Testnet |
+| Program | `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx` |
+| ProgramData | `CeggEn3sNVbiuJHLKDaCPMH4uLczu1Dr3ZGKKcaKBqeN` |
+| IDL account | `BKV4bWESswfKteav82yZWPdN6wCd172UryGkaN8mxfGR` |
+| DAO | `HZkVYf1bizstbEonRr7AS8HRQdR6sAgTB5Av9EuJFvGa` |
+| Proposal | `HXMsqWWKosqgTM1PnPTeHrzq1i5ZygtrKZ5kjozH3T4A` |
+| Result | Passed and executed |
+| Treasury delta | `5,000,000` lamports |
+| Execute transaction | `5rLufq61qfdtgcaWtorYCy7CzDuxsYt13McxBi5MwgmHEKVmmdsxXqA6FMzz9ZxzQJGrdXj3iG6CbJpS59uMmFeD` |
+
+Primary artifacts:
+
+- [`docs/testnet-lifecycle-rehearsal-2026-04-19.md`](docs/testnet-lifecycle-rehearsal-2026-04-19.md)
+- [`docs/testnet-lifecycle-rehearsal-2026-04-19.json`](docs/testnet-lifecycle-rehearsal-2026-04-19.json)
+- [`docs/testnet-migration-report-2026-04-18.md`](docs/testnet-migration-report-2026-04-18.md)
+
 ## Review Evidence Index
 
 This section intentionally keeps the reviewer contract visible. The README is concise, but every core review surface stays one click away.
@@ -402,7 +481,7 @@ This section intentionally keeps the reviewer contract visible. The README is co
 | Live proof and release evidence | [`docs/live-proof.md`](docs/live-proof.md), [`docs/test-wallet-live-proof.generated.md`](docs/test-wallet-live-proof.generated.md), [`docs/test-wallet-live-proof-v3.generated.md`](docs/test-wallet-live-proof-v3.generated.md), [`docs/devnet-release-manifest.md`](docs/devnet-release-manifest.md), [`docs/verification-gates.md`](docs/verification-gates.md), [`docs/reviewer-fast-path.md`](docs/reviewer-fast-path.md), [`docs/reviewer-surface-map.md`](docs/reviewer-surface-map.md) |
 | Mainnet readiness | [`docs/mainnet-readiness.md`](docs/mainnet-readiness.md), [`docs/mainnet-readiness.generated.md`](docs/mainnet-readiness.generated.md), [`docs/mainnet-blockers.md`](docs/mainnet-blockers.md), [`docs/deployment-attestation.generated.json`](docs/deployment-attestation.generated.json), [`docs/go-live-criteria.md`](docs/go-live-criteria.md), [`docs/go-live-attestation.generated.json`](docs/go-live-attestation.generated.json) |
 | Operations | [`docs/operational-drillbook.md`](docs/operational-drillbook.md), [`docs/production-operations.md`](docs/production-operations.md), [`docs/authority-transfer-runbook.md`](docs/authority-transfer-runbook.md), [`docs/multisig-setup-intake.md`](docs/multisig-setup-intake.md), [`docs/launch-ops-checklist.md`](docs/launch-ops-checklist.md), [`docs/monitoring-alert-rules.md`](docs/monitoring-alert-rules.md), [`docs/wallet-e2e-test-plan.md`](docs/wallet-e2e-test-plan.md), [`docs/browser-automation-audit.md`](docs/browser-automation-audit.md), [`docs/runtime-attestation.generated.json`](docs/runtime-attestation.generated.json), [`docs/runtime/real-device.md`](docs/runtime/real-device.md), [`docs/runtime/real-device.generated.md`](docs/runtime/real-device.generated.md) |
-| Frontier integrations | [`docs/frontier-integrations.generated.md`](docs/frontier-integrations.generated.md), [`docs/magicblock/runtime.generated.md`](docs/magicblock/runtime.generated.md), [`docs/refhe-protocol.md`](docs/refhe-protocol.md), [`docs/read-node/ops.generated.md`](docs/read-node/ops.generated.md), [`docs/zk-proof-registry.json`](docs/zk-proof-registry.json) |
+| Core integrations | [`docs/frontier-integrations.generated.md`](docs/frontier-integrations.generated.md), [`docs/magicblock/runtime.generated.md`](docs/magicblock/runtime.generated.md), [`docs/refhe-protocol.md`](docs/refhe-protocol.md), [`docs/read-node/ops.generated.md`](docs/read-node/ops.generated.md), [`docs/zk-proof-registry.json`](docs/zk-proof-registry.json) |
 | Product runtime | [`docs/fair-voting.md`](docs/fair-voting.md), [`docs/wallet-runtime.md`](docs/wallet-runtime.md), [`docs/operational-evidence.generated.md`](docs/operational-evidence.generated.md), [`docs/pdao-attestation.generated.json`](docs/pdao-attestation.generated.json), [`docs/strategy-operations.md`](docs/strategy-operations.md) |
 | Product packaging | [`docs/production-simulation-dao.md`](docs/production-simulation-dao.md), [`docs/use-case-packs.md`](docs/use-case-packs.md), [`docs/operator-guide.md`](docs/operator-guide.md), [`docs/trust-package.md`](docs/trust-package.md), [`docs/migration-story.md`](docs/migration-story.md), [`docs/pricing-model.md`](docs/pricing-model.md), [`docs/pilot-program.md`](docs/pilot-program.md), [`docs/service-level-agreement.md`](docs/service-level-agreement.md) |
 | Services and API packaging | [`docs/service-catalog.md`](docs/service-catalog.md), [`docs/pricing-model.md`](docs/pricing-model.md), [`docs/pilot-program.md`](docs/pilot-program.md), [`docs/service-level-agreement.md`](docs/service-level-agreement.md), [`docs/pilot-onboarding-playbook.md`](docs/pilot-onboarding-playbook.md) |
@@ -432,7 +511,7 @@ PrivateDAO is explicit about the difference between implemented enforcement, att
 - Treasury execution is timelocked and checks recipient, mint, owner, source/destination, and executed-state invariants.
 - Strict V2 paths are additive and do not reorder old account layouts or remove legacy instructions.
 - Settlement evidence is proposal/payout-bound and single-use under the V2 model.
-- ZK proof artifacts are generated and verified off-chain today, with representative proof anchors recorded on-chain for the current Devnet evidence path.
+- ZK proof artifacts are generated and verified off-chain today, with representative proof anchors recorded on-chain for the preserved Devnet evidence path and current Testnet review path.
 - Full mainnet production still requires external audit, production authority hardening, monitoring, and stronger source-verifiable receipt paths for external systems.
 
 Important security docs:
@@ -447,7 +526,7 @@ Important security docs:
 
 ## Token Surface
 
-PrivateDAO has a live Devnet governance token surface for the reviewer-facing DAO.
+PrivateDAO preserves the Devnet PDAO governance-token evidence for reviewer continuity, while the governance program now has a preserved-id Testnet deployment and standard lifecycle proof.
 
 | Field | Value |
 | --- | --- |
@@ -462,6 +541,8 @@ PrivateDAO has a live Devnet governance token surface for the reviewer-facing DA
 The canonical PrivateDAO governance program id is:
 
 Live devnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+
+Live Testnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 
 ```text
 5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx
@@ -488,6 +569,7 @@ For navigation inside the large docs and scripts surfaces:
 
 - [`docs/README.md`](docs/README.md)
 - [`scripts/README.md`](scripts/README.md)
+- [`docs/technical-verification-status-2026.md`](docs/technical-verification-status-2026.md)
 
 ## Fast Review Path
 
@@ -497,9 +579,35 @@ If you only have a few minutes:
 2. Open judge mode: https://privatedao.org/proof/?judge=1
 3. Read [`docs/reviewer-fast-path.md`](docs/reviewer-fast-path.md)
 4. Read [`docs/security-hardening-v2.md`](docs/security-hardening-v2.md)
-5. Read [`docs/operational-evidence.generated.md`](docs/operational-evidence.generated.md)
-6. Inspect the program: [`programs/private-dao/src/lib.rs`](programs/private-dao/src/lib.rs)
-7. Run the unified gate: `npm run verify:all`
+5. Read [`docs/testnet-lifecycle-rehearsal-2026-04-19.md`](docs/testnet-lifecycle-rehearsal-2026-04-19.md)
+6. Read [`docs/operational-evidence.generated.md`](docs/operational-evidence.generated.md)
+7. Read [`docs/technical-verification-status-2026.md`](docs/technical-verification-status-2026.md)
+8. Inspect the program: [`programs/private-dao/src/lib.rs`](programs/private-dao/src/lib.rs)
+9. Run the unified gate: `npm run verify:all`
+
+## Community Support
+
+PrivateDAO is being developed as long-horizon governance and treasury infrastructure for the Solana ecosystem rather than a closed showcase surface.
+
+The strategy is straightforward:
+
+- ship real wallet-first governance and treasury flows on Testnet
+- keep proof, trust, and technical review surfaces public
+- convert each production milestone into evidenced closure
+- grow the product into infrastructure the ecosystem can actually use and build on
+
+We build for privacy, operational clarity, and long-horizon trust. We keep the work visible, keep the product verifiable, and work with the conviction that PrivateDAO can become stronger, more useful, and more trusted over time as the ecosystem turns support into durable technical, financial, and human momentum.
+
+The most useful forms of community support are:
+
+- runtime testing and wallet feedback on Testnet
+- reviewer scrutiny on trust, proof, and operating-readiness surfaces
+- protocol, frontend, and infrastructure contributions
+- introductions to operators, grants, and security reviewers who can help accelerate production readiness
+
+We invite the community to support this work with real testing, review, introductions, integrations, and amplification. With that kind of support, the product mission becomes practical: PrivateDAO can mature from live Testnet proof into shared ecosystem infrastructure with higher trust, stronger operations, broader reach, and the staying power needed to keep building for the ecosystem over the long term.
+
+Start from the live product at `https://privatedao.org/`, then use the trust and documents routes to inspect the current evidence boundary directly.
 
 ## Local Development
 
@@ -507,7 +615,7 @@ Prerequisites:
 
 - Rust stable
 - Solana CLI
-- Anchor CLI `0.31.1`
+- Anchor CLI `0.32.1`
 - Node.js 20+
 - npm or Yarn
 
@@ -553,7 +661,9 @@ npm run verify:generated-artifacts
 npm run verify:all
 ```
 
-## Devnet Operations
+## Preserved Devnet Evidence Operations
+
+The current public product path is Testnet-first. Use the commands below only when intentionally regenerating the preserved Devnet reviewer evidence package.
 
 Set wallet and RPC:
 
@@ -585,7 +695,26 @@ npm run test:devnet:500
 
 The 50-wallet package is the canonical reviewer baseline. Larger profiles write profile-specific artifacts and should be treated as stress operations, not routine verification.
 
-## Weekly Frontier Updates
+## Testnet Operations
+
+Set wallet and RPC:
+
+```bash
+export ANCHOR_WALLET=~/.config/solana/id.json
+export ANCHOR_PROVIDER_URL=https://api.testnet.solana.com
+```
+
+Run the Testnet setup, deployment, and standard lifecycle proof path:
+
+```bash
+npm run setup:testnet
+npm run deploy:testnet
+npm run live-proof:testnet
+```
+
+The current Testnet proof keeps the canonical program id aligned with the frontend, IDL, reviewer packets, and public migration report. Use Testnet as the final public rehearsal layer before any mainnet release ceremony.
+
+## Weekly Product Updates
 
 Upload-ready weekly update videos are generated from the repository evidence surface:
 
@@ -609,19 +738,20 @@ npm run verify:weekly-updates
 
 ## Mainnet Readiness Status
 
-PrivateDAO is **Devnet / hackathon / audit-readiness candidate** today. It is not yet claiming unrestricted mainnet production readiness for real funds.
+PrivateDAO is **live on Solana Testnet** today as a review-ready, audit-forward candidate, with a clear execution path toward unrestricted mainnet production readiness for real funds.
 
 Ready now:
 
-- live Devnet program and product surface
-- PDAO Devnet governance token surface
+- live Solana Testnet program and product surface
+- preserved-id Testnet deployment and standard lifecycle proof
+- preserved PDAO Devnet governance-token evidence
 - full governance lifecycle evidence
 - Strict V2 additive hardening model
 - Devnet rehearsal and adversarial reports
 - generated audit packet and cryptographic manifest
 - read-node and RPC reliability path
 
-Still required before production mainnet:
+Next strategic closures before production mainnet:
 
 - external audit or focused independent security review
 - multisig/timelock upgrade authority hardening
@@ -643,35 +773,34 @@ Key docs:
 - [`docs/wallet-e2e-test-plan.md`](docs/wallet-e2e-test-plan.md)
 - [`docs/release-ceremony.md`](docs/release-ceremony.md)
 
-## Media And Submission Assets
+## Media And Review Assets
 
 - Public story video: https://privatedao.org/story/
-- Public YouTube reel: https://youtu.be/6_wUfawIjhw
-- Direct MP4 backup: https://privatedao.org/assets/private-dao-frontier-overview.mp4
-- Upload-ready file: `/home/x-pact/Desktop/PrivateDAO-Frontier-Overview/PrivateDAO - Frontier Overview - Everything We Offer and Why Us.mp4`
-- Canonical lifecycle demo brief: [`docs/demo-video.md`](docs/demo-video.md)
-- Hosted lifecycle demo: https://privatedao.org/assets/private-dao-demo-flow.mp4
-- Repo-native lifecycle demo: [`docs/assets/private-dao-demo-flow.mp4`](docs/assets/private-dao-demo-flow.mp4)
-- Upload-ready lifecycle demo: `/home/x-pact/Desktop/PrivateDAO-Demo-Video/PrivateDAO - Real Demo Flow - Create DAO Submit Proposal Private Vote Execute Treasury - Clean.mp4`
-- Investor / competition pitch deck: [`docs/investor-pitch-deck.md`](docs/investor-pitch-deck.md)
-- Frontier overview brief: [`docs/investor-video.md`](docs/investor-video.md)
-- Repo-native frontier reel: [`docs/assets/private-dao-frontier-overview.mp4`](docs/assets/private-dao-frontier-overview.mp4)
-- Hosted frontier reel page: https://privatedao.org/story/
-- Hosted frontier reel MP4 backup: https://privatedao.org/assets/private-dao-frontier-overview.mp4
-- Poster: [`docs/assets/private-dao-frontier-overview-poster.png`](docs/assets/private-dao-frontier-overview-poster.png)
-- Submission dossier: [`docs/submission-dossier.md`](docs/submission-dossier.md)
+- Public YouTube reel: https://youtu.be/HiCz0vb8kgk
+- Direct MP4 backup: https://privatedao.org/assets/private-dao-product-overview.mp4
+- Upload-ready file: `/home/x-pact/Desktop/PrivateDAO-Product-Overview/PrivateDAO - Product Overview - Everything We Offer and Why Us.mp4`
+- Canonical lifecycle video brief: [`docs/demo-video.md`](docs/demo-video.md)
+- Hosted lifecycle video: https://privatedao.org/assets/private-dao-demo-flow.mp4
+- Repo-native lifecycle video: [`docs/assets/private-dao-demo-flow.mp4`](docs/assets/private-dao-demo-flow.mp4)
+- Upload-ready lifecycle video: `/home/x-pact/Desktop/PrivateDAO-Demo-Video/PrivateDAO - Real Demo Flow - Create DAO Submit Proposal Private Vote Execute Treasury - Clean.mp4`
+- Investor / reviewer pitch deck: [`docs/investor-pitch-deck.md`](docs/investor-pitch-deck.md)
+- Product overview brief: [`docs/investor-video.md`](docs/investor-video.md)
+- Repo-native product reel: [`docs/assets/private-dao-product-overview.mp4`](docs/assets/private-dao-product-overview.mp4)
+- Hosted product reel page: https://privatedao.org/story/
+- Hosted product reel MP4 backup: https://privatedao.org/assets/private-dao-product-overview.mp4
+- Poster: [`docs/assets/private-dao-product-overview-poster.png`](docs/assets/private-dao-product-overview-poster.png)
+- Product dossier: [`docs/submission-dossier.md`](docs/submission-dossier.md)
 - Final submission pack: [`SUBMISSION_FINAL.md`](SUBMISSION_FINAL.md)
-- Manual Colosseum answers: [`docs/colosseum-submission-answers.md`](docs/colosseum-submission-answers.md)
-- Colosseum project page: https://arena.colosseum.org/projects/explore/praivatedao
+- Operator answer packs: [`docs/colosseum-submission-answers.md`](docs/colosseum-submission-answers.md)
 - Official YouTube channel: https://www.youtube.com/@privatedao
-- Official Discord server: https://discord.gg/bC76YEcpDa
+- Official Discord server: https://discord.gg/PbM8BC2A
 - Brand kit: [`docs/brand-kit.md`](docs/brand-kit.md)
 - Hosted brand avatar: https://privatedao.org/assets/brand/privatedao-avatar-1024.png
 - Technical explainer: [`docs/investor-video.md`](docs/investor-video.md)
 
-## Ownership And Contact
+## Leadership And Contact
 
-PrivateDAO is produced with execution support from a multi-national technical team. Product leadership, brand control, repository ownership, commercialization rights, and beneficial ownership remain solely with **Fahd Kotb**.
+PrivateDAO is produced with execution support from a multi-national technical team. **Fahd Kotb** leads product direction, execution accountability, repository stewardship, and external coordination for the work.
 
 For investment, donation, strategic help, integrations, or direct operator coordination:
 
@@ -680,9 +809,9 @@ For investment, donation, strategic help, integrations, or direct operator coord
 - Additional contact: [eslamkotb.369@gmail.com](mailto:eslamkotb.369@gmail.com)
 - WhatsApp: [+20 112 403 0209](https://wa.me/201124030209)
 - Telegram: [@Fahdkotb](https://t.me/Fahdkotb)
-- Discord: [PrivateDAO community server](https://discord.gg/dzaVXjkug)
+- Discord: [PrivateDAO community server](https://discord.gg/PbM8BC2A)
 - X: [@FahdX369](https://x.com/FahdX369)
-- Ownership and contact packet: [`docs/ownership-and-contact.md`](docs/ownership-and-contact.md)
+- Leadership and contact packet: [`docs/ownership-and-contact.md`](docs/ownership-and-contact.md)
 
 ## License
 

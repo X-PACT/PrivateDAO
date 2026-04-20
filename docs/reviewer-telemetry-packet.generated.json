@@ -1,40 +1,40 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-18T03:52:30.405Z",
+  "generatedAt": "2026-04-20T11:40:44.689Z",
   "reviewerIntent": "Show the shortest truth-synced route into runtime maturity, hosted reads, indexed governance, and infrastructure-facing reviewer value without claiming unsupported partnerships or mainnet readiness.",
   "truthSources": [
     {
       "label": "Runtime evidence",
-      "generatedAt": "2026-04-18T03:51:55.276Z",
+      "generatedAt": "2026-04-20T11:38:14.190Z",
       "href": "docs/runtime-evidence.generated.md"
     },
     {
       "label": "Frontier integrations",
-      "generatedAt": "2026-04-10T05:21:06.356Z",
+      "generatedAt": "2026-04-20T11:36:35.258Z",
       "href": "docs/frontier-integrations.generated.md"
     },
     {
       "label": "Read-node snapshot",
-      "generatedAt": "2026-04-18T00:09:33.941Z",
+      "generatedAt": "2026-04-20T11:35:32.016Z",
       "href": "docs/read-node/snapshot.generated.md"
     },
     {
       "label": "Devnet service metrics",
-      "generatedAt": "2026-04-18T03:51:55.276Z",
+      "generatedAt": "2026-04-20T11:38:14.190Z",
       "href": "apps/web/src/lib/devnet-service-metrics.ts"
     }
   ],
   "whatWorksNow": [
-    "Hosted reads expose 43 indexed proposals across 23 DAOs through the backend-indexer path.",
+    "Hosted reads expose 48 indexed proposals across 28 DAOs through the backend-indexer path.",
     "Diagnostics, analytics, and services remain live reviewer-visible routes starting from https://privatedao.org/diagnostics/.",
     "7/7 canonical governance lifecycle transactions are finalized in the current integrations package.",
     "5/5 confidential settlement corridor transactions are finalized in the current integrations package.",
     "4 REFHE-settled and 3 MagicBlock-settled proposal paths are already reflected in the indexed source."
   ],
   "externallyProvenNow": [
-    "Runtime evidence package generated at 2026-04-18T03:51:55.276Z and published as docs/runtime-evidence.generated.md.",
-    "Frontier integrations package generated at 2026-04-10T05:21:06.356Z with reviewer entry https://privatedao.org/proof/?judge=1.",
-    "Read-node snapshot generated at 2026-04-18T00:09:33.941Z on slot 456264549 against https://api.devnet.solana.com.",
+    "Runtime evidence package generated at 2026-04-20T11:38:14.190Z and published as docs/runtime-evidence.generated.md.",
+    "Frontier integrations package generated at 2026-04-20T11:36:35.258Z with reviewer entry https://privatedao.org/proof/?judge=1.",
+    "Read-node snapshot generated at 2026-04-20T11:35:32.016Z on slot 456829506 against https://api.devnet.solana.com.",
     "Proposal flow health, wallet readiness, and proof freshness summaries are taken from the same devnet service metrics module used by the live app.",
     "Unexpected runtime failures remain 0 and unexpected adversarial successes remain 0."
   ],
@@ -47,11 +47,11 @@
   "hostedReadProof": {
     "readPath": "backend-indexer",
     "rpcEndpoint": "https://api.devnet.solana.com",
-    "slot": 456264549,
+    "slot": 456829506,
     "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
     "commitment": "confirmed",
-    "proposals": 43,
-    "uniqueDaos": 23
+    "proposals": 48,
+    "uniqueDaos": 28
   },
   "runtimeSnapshot": {
     "diagnosticsPage": "https://privatedao.org/diagnostics/",
@@ -91,15 +91,15 @@
     {
       "label": "Proof freshness",
       "value": "fresh this hour",
-      "detail": "Runtime evidence fresh this hour, Devnet canary 4h old, and integration evidence 8d old remain published together.",
+      "detail": "Runtime evidence fresh this hour, Devnet canary fresh this hour, and integration evidence fresh this hour remain published together.",
       "routeLabel": "Open trust documents",
       "routeHref": "/documents/live-proof-v3",
       "tone": "amber"
     },
     {
       "label": "Hosted read coverage",
-      "value": "41",
-      "detail": "The backend-indexer read path currently exposes 41 indexed proposals across 21 DAOs.",
+      "value": "48",
+      "detail": "The backend-indexer read path currently exposes 48 indexed proposals across 28 DAOs.",
       "tone": "cyan",
       "routeLabel": "Open services",
       "routeHref": "/services"
@@ -114,8 +114,8 @@
     },
     {
       "label": "Primary RPC latency",
-      "value": "289 ms",
-      "detail": "Current blockhash latency from the primary Devnet endpoint. Version latency is 2364 ms.",
+      "value": "213 ms",
+      "detail": "Current blockhash latency from the primary Devnet endpoint. Version latency is 1290 ms.",
       "tone": "cyan",
       "routeLabel": "Open analytics",
       "routeHref": "/analytics"

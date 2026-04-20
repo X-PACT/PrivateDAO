@@ -11,7 +11,7 @@ const REQUIRED_DOM_FRAGMENTS = [
   "Private governance on Solana",
   "Powered by the live stack",
   "Open verification view",
-  "The shortest path from landing page to a real Devnet action",
+  "The shortest path from landing page to a real Testnet action",
   "Public good",
   "How the stack maps to services",
   "Support the mission",

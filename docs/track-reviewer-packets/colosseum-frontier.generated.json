@@ -1,24 +1,24 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-11T14:36:31.791Z",
+  "generatedAt": "2026-04-20T11:40:01.794Z",
   "track": {
     "slug": "colosseum-frontier",
-    "title": "Frontier Reviewer Packet",
-    "sponsor": "Colosseum + Solana Foundation",
+    "title": "Core Reviewer Packet",
+    "sponsor": "Public-good governance infrastructure",
     "objective": "Present PrivateDAO as a startup-quality Solana product that already behaves like a pre-mainnet company rather than a hacked-together prototype."
   },
   "judgeFirstOpening": {
     "lines": [
-      "What works now: Lead the first 90 seconds from /start into /command-center with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and product learning path perfectly aligned with the live site.",
-      "What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet.",
+      "What works now: Lead the first 90 seconds from /start into /govern with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and product learning path perfectly aligned with the live site.",
+      "What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet and Treasury reviewer packet via /documents/treasury-reviewer-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet.",
       "Exact blocker: upgrade-authority-multisig. The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded.",
-      "Best product route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story."
+      "Best product route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story."
     ],
-    "voiceoverScript": "What works now: Lead the first 90 seconds from /start into /command-center with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and product learning path perfectly aligned with the live site. What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: upgrade-authority-multisig. The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded. Best product route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story."
+    "voiceoverScript": "What works now: Lead the first 90 seconds from /start into /govern with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and product learning path perfectly aligned with the live site. What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet and Treasury reviewer packet via /documents/treasury-reviewer-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: upgrade-authority-multisig. The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded. Best product route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story."
   },
   "proofClosure": {
     "whatWorksNow": [
-      "Lead the first 90 seconds from /start into /command-center with a real wallet-first path.",
+      "Lead the first 90 seconds from /start into /govern with a real wallet-first path.",
       "Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity.",
       "Keep the README, deck, story video, and product learning path perfectly aligned with the live site."
     ],
@@ -34,12 +34,17 @@
         "summary": "The repo already binds launch truth, blockers, and buyer-safe trust wording into one explicit packet."
       },
       {
+        "label": "Treasury reviewer packet",
+        "href": "/documents/treasury-reviewer-packet",
+        "summary": "Generated treasury packet that makes sender discipline, reference-linked rails, payments fit, and the exact treasury blocker reviewer-visible."
+      },
+      {
         "label": "Reviewer telemetry packet",
         "href": "/documents/reviewer-telemetry-packet",
-        "summary": "Generated telemetry truth packet that binds runtime evidence, frontier integrations, read-node snapshot, and devnet service metrics into one reviewer-safe route."
+        "summary": "Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and devnet service metrics into one reviewer-safe route."
       }
     ],
-    "pendingSummary": "For the main submission, custody is not a side detail. It is the exact trust gate that separates a strong Devnet product from a real-funds launch claim, and the strict ingestion route now makes that ceremony packet reproducible instead of manual."
+    "pendingSummary": "For the main submission, custody is not a side detail. It is the exact trust gate that separates a strong Testnet product from a real-funds launch claim, and the strict ingestion route now makes that ceremony packet reproducible instead of manual."
   },
   "exactBlocker": {
     "id": "upgrade-authority-multisig",
@@ -47,16 +52,16 @@
   },
   "bestDemoRoute": {
     "route": "/start",
-    "summary": "Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the story across routes. Close the route by opening /documents/reviewer-telemetry-packet so the data corridor stays part of the same proof story."
+    "summary": "Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story."
   },
   "reviewerLinks": [
     {
-      "label": "Product route",
-      "href": "/start"
+      "label": "Track workspace",
+      "href": "/tracks/colosseum-frontier"
     },
     {
       "label": "Proof route",
-      "href": "/documents/frontier-competition-readiness-2026"
+      "href": "/documents/reviewer-fast-path"
     },
     {
       "label": "Judge proof path",
@@ -83,11 +88,11 @@
       "href": "/documents/custody-proof-reviewer-packet"
     },
     {
-      "label": "Frontier operating brief",
+      "label": "Product operating brief",
       "href": "/documents/colosseum-frontier-2026-operating-brief"
     },
     {
-      "label": "Frontier integrations",
+      "label": "Core integrations",
       "href": "/documents/frontier-integrations"
     },
     {
@@ -106,7 +111,7 @@
   ],
   "mainnetDiscipline": {
     "beforeMainnet": [
-      "Close the launch blockers pack and keep external review and runtime capture expectations explicit.",
+      "Close the launch gate pack and keep external review and runtime capture expectations explicit.",
       "Preserve signer hygiene, timelock posture, and release discipline across the full product shell.",
       "Prove the startup-quality path works end to end with the same routes customers and judges see."
     ],

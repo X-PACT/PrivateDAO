@@ -22,11 +22,21 @@ function requireRegex(haystack: string, regex: RegExp, rel: string, label: strin
 
 function main(): void {
   const libRel = "programs/private-dao/src/lib.rs";
+  const sourceRels = [
+    "programs/private-dao/src/lib.rs",
+    "programs/private-dao/src/dao.rs",
+    "programs/private-dao/src/privacy.rs",
+    "programs/private-dao/src/treasury.rs",
+    "programs/private-dao/src/voting.rs",
+    "programs/private-dao/src/utils.rs",
+    "programs/private-dao/src/error.rs",
+  ];
   const hardeningRel = "docs/security-hardening-v2.md";
   const specRel = "docs/protocol-spec.md";
   const goLiveRel = "docs/mainnet-go-live-checklist.md";
 
   const lib = read(libRel);
+  const programSource = sourceRels.map((rel) => read(rel)).join("\n");
   const hardening = read(hardeningRel);
   const spec = read(specRel);
   const goLive = read(goLiveRel);
@@ -63,72 +73,72 @@ function main(): void {
     "SettlementEvidenceAlreadyRecorded",
   ];
 
-  for (const marker of libMarkers) requireIncludes(lib, marker, libRel);
+  for (const marker of libMarkers) requireIncludes(programSource, marker, "programs/private-dao/src");
 
   requireRegex(
-    lib,
+    programSource,
     /seeds = \[\s*b"settlement-consumption",\s*settlement_evidence\.key\(\)\.as_ref\(\)\s*\]/s,
-    libRel,
+    "programs/private-dao/src",
     "single-use settlement-consumption PDA derived from settlement evidence",
   );
   requireRegex(
-    lib,
+    programSource,
     /verification\.status == VerificationStatus::Verified/s,
-    libRel,
+    "programs/private-dao/src",
     "strict ZK status check",
   );
   requireRegex(
-    lib,
+    programSource,
     /verification\.proposal != Pubkey::default\(\)/s,
-    libRel,
+    "programs/private-dao/src",
     "strict proof verification no-overwrite guard",
   );
   requireRegex(
-    lib,
+    programSource,
     /evidence\.status == EvidenceStatus::Verified/s,
-    libRel,
+    "programs/private-dao/src",
     "strict settlement status check",
   );
   requireRegex(
-    lib,
+    programSource,
     /evidence\.proposal != Pubkey::default\(\)/s,
-    libRel,
+    "programs/private-dao/src",
     "strict settlement evidence no-overwrite guard",
   );
   requireRegex(
-    lib,
+    programSource,
     /domain_separator\s*==\s*proof_domain_separator/s,
-    libRel,
+    "programs/private-dao/src",
     "domain-separated proof verification",
   );
   requireRegex(
-    lib,
+    programSource,
     /policy_snapshot\.zk_policy\s*==\s*FeaturePolicy::StrictRequired\s*\|\|\s*policy_snapshot\.zk_policy\s*==\s*FeaturePolicy::ThresholdAttestedRequired/s,
-    libRel,
+    "programs/private-dao/src",
     "object-level ZK policy snapshot gate",
   );
   requireRegex(
-    lib,
+    programSource,
     /policy_snapshot\.settlement_policy\s*==\s*FeaturePolicy::StrictRequired\s*\|\|\s*policy_snapshot\.settlement_policy\s*==\s*FeaturePolicy::ThresholdAttestedRequired/s,
-    libRel,
+    "programs/private-dao/src",
     "object-level settlement policy snapshot gate",
   );
   requireRegex(
-    lib,
+    programSource,
     /snapshot\.proposal != Pubkey::default\(\)/s,
-    libRel,
+    "programs/private-dao/src",
     "strict proposal policy snapshot no-overwrite guard",
   );
   requireRegex(
-    lib,
+    programSource,
     /enforcement_rank\(&mode\) >= enforcement_rank\(&policy\.mode\)/s,
-    libRel,
+    "programs/private-dao/src",
     "monotonic DAO policy update gate",
   );
   requireRegex(
-    lib,
+    programSource,
     /p\.status == ProposalStatus::Voting\s*&&\s*now < p\.voting_end\s*&&\s*p\.commit_count == 0\s*&&\s*p\.reveal_count == 0/s,
-    libRel,
+    "programs/private-dao/src",
     "strict no-cancel-after-participation gate",
   );
 

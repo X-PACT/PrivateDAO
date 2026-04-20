@@ -2,7 +2,7 @@ import fs from "fs";
 import http from "http";
 import path from "path";
 
-import { chromium } from "playwright-core";
+import { chromium, type Browser } from "playwright-core";
 
 const ROOT = process.cwd();
 const SURFACE_DIR = path.resolve(ROOT);
@@ -98,9 +98,10 @@ async function main() {
   const server = createStaticServer();
   const port = await listen(server);
   const url = `http://127.0.0.1:${port}/PrivateDAO/`;
+  let browser: Browser | undefined;
 
   try {
-    const browser = await chromium.launch({
+    browser = await chromium.launch({
       executablePath: chrome,
       headless: true,
     });
@@ -131,10 +132,9 @@ async function main() {
     }
 
     await button.click();
-    const modal = page.getByRole("heading", { name: /choose a devnet wallet/i });
-    await modal.waitFor({ state: "visible", timeout: 5000 });
+    await page.getByText("Solflare").first().waitFor({ state: "visible", timeout: 5000 });
 
-    for (const walletName of ["Solflare", "Phantom", "Backpack"]) {
+    for (const walletName of ["Solflare", "Phantom", "Glow", "Backpack"]) {
       const walletOption = page.getByText(walletName).first();
       if (!(await walletOption.isVisible())) {
         throw new Error(`Wallet modal is missing ${walletName}.`);
@@ -145,9 +145,9 @@ async function main() {
       throw new Error(`Wallet surface emitted failures:\n${failures.join("\n")}`);
     }
 
-    await browser.close();
     console.log("Wallet connect surface verification: PASS");
   } finally {
+    await browser?.close().catch(() => undefined);
     await close(server);
   }
 }

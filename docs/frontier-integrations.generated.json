@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-10T05:21:06.356Z",
+  "generatedAt": "2026-04-20T11:36:35.258Z",
   "network": "devnet",
   "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
   "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
@@ -8,14 +8,14 @@
   "readNode": {
     "readPath": "backend-indexer",
     "rpcEndpoint": "https://api.devnet.solana.com",
-    "rpcPoolSize": 1,
+    "rpcPoolSize": 2,
     "rpcProviderClass": "public-devnet",
     "magicBlockApiBase": "https://payments.magicblock.app",
     "magicBlockHealth": "ok",
     "overview": {
-      "generatedAt": "2026-04-10T05:20:58.276Z",
-      "proposals": 41,
-      "uniqueDaos": 21,
+      "generatedAt": "2026-04-20T11:36:28.609Z",
+      "proposals": 48,
+      "uniqueDaos": 28,
       "zkEnforced": 0,
       "confidentialPayouts": 8,
       "magicblockConfigured": 4,
@@ -209,20 +209,20 @@
   "zk": {
     "verificationMode": "offchain-groth16",
     "onchainVerifier": false,
-    "proposal": "G76rRCe9MXbroK7CPC9jia1JCbuUtcV55S2hd1GCpUzL",
+    "proposal": "7TKCbcUsrAaQhu3XuCLmXUPo2KCbjDtFF8sxtY6QmuVx",
     "anchorChecks": [
       {
         "label": "zk-anchor-vote",
-        "signature": "4fLregTXXGC98ba8VKqvbQTeC7JjwakmVv1E3oZzbiJc7Sv5tmmMqSJoCp5eS5eVcq2PXHehwH8CAxeWu4LCeahu",
+        "signature": "3KBK6bai1g1iR4w7zyWGcpegJg2hqYUGAvnzjKK15FjvaJgfg9N5CPeAc8xFdzJC9gMSKSqwgrX7SNXg5BM18pUw",
         "endpoint": "https://api.devnet.solana.com",
         "status": "finalized",
-        "slot": 453973243,
+        "slot": 456166473,
         "confirmed": true,
         "layer": "vote",
-        "anchorPda": "H3tQqczPKpKBB3Cyg9D8B92K2Lt68id5saLMTTXcYsJp",
+        "anchorPda": "J7PfXeZxu6V4iixevD3jgMVZ9PAp6XjZWsQH78Tvn4zo",
         "account": {
           "label": "zk-anchor-account-vote",
-          "pubkey": "H3tQqczPKpKBB3Cyg9D8B92K2Lt68id5saLMTTXcYsJp",
+          "pubkey": "J7PfXeZxu6V4iixevD3jgMVZ9PAp6XjZWsQH78Tvn4zo",
           "endpoint": "https://api.devnet.solana.com",
           "exists": true,
           "executable": false
@@ -230,16 +230,16 @@
       },
       {
         "label": "zk-anchor-delegation",
-        "signature": "y3nJ5Tu67sikEbgr1zj13iYNT1UhPEmUkuT8fLbbCyir6tJCAAGWue1W8i3nMBobarEdN8jnNsjhiBFK9cbztE2",
+        "signature": "mSuC2AKhiNBawKRdBBvECW1VGJ6uWM5YaDU2YUL1xjt8DzSLJwWTMTCmYpN4XAreDxdXeaUaaesYCe1Dsi225U1",
         "endpoint": "https://api.devnet.solana.com",
         "status": "finalized",
-        "slot": 453973251,
+        "slot": 456166484,
         "confirmed": true,
         "layer": "delegation",
-        "anchorPda": "2XfxWWLuMYyRiNkqBfbiCZF56RsBNQVLQ7Ku4upqmqe6",
+        "anchorPda": "AqyT4w4Va2KU68LXy1k6ku6SW761iSvGLZaKbst14xeK",
         "account": {
           "label": "zk-anchor-account-delegation",
-          "pubkey": "2XfxWWLuMYyRiNkqBfbiCZF56RsBNQVLQ7Ku4upqmqe6",
+          "pubkey": "AqyT4w4Va2KU68LXy1k6ku6SW761iSvGLZaKbst14xeK",
           "endpoint": "https://api.devnet.solana.com",
           "exists": true,
           "executable": false
@@ -247,16 +247,16 @@
       },
       {
         "label": "zk-anchor-tally",
-        "signature": "3hwA2kjJQfhTNHANdDdHhJ7AkwuMpDdGbJadUpYKmLJ6UDKgtyBzR5qKbesmP6bDSBYQDZBQ9ygoEH2pZHPJj97m",
+        "signature": "3bMEgCMRc8pswjPDTYKw6Cd7hvHKeuVo4vvjqQ95JpPsfDNVuLBfSFzEgjowqGvvn2et6oW9HrMM716UJ1Bgr4Mu",
         "endpoint": "https://api.devnet.solana.com",
         "status": "finalized",
-        "slot": 453973260,
+        "slot": 456166492,
         "confirmed": true,
         "layer": "tally",
-        "anchorPda": "7i5dJ53Fx3WhdP534C7tEhabPoXZ97e72wzo3uRwDEEr",
+        "anchorPda": "6YmgboGvYP6k5hzq1BfSJFN9PgheV1q52uipfLqnT8tt",
         "account": {
           "label": "zk-anchor-account-tally",
-          "pubkey": "7i5dJ53Fx3WhdP534C7tEhabPoXZ97e72wzo3uRwDEEr",
+          "pubkey": "6YmgboGvYP6k5hzq1BfSJFN9PgheV1q52uipfLqnT8tt",
           "endpoint": "https://api.devnet.solana.com",
           "exists": true,
           "executable": false

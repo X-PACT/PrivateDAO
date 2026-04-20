@@ -39,7 +39,7 @@ function main() {
   const markdown = fs.readFileSync(mdPath, "utf8");
 
   assert(packet.project === "PrivateDAO", "treasury reviewer packet project mismatch");
-  assert(packet.treasuryNetwork === "Solana Devnet", "treasury reviewer packet network mismatch");
+  assert(packet.treasuryNetwork === "Solana Testnet", "treasury reviewer packet network mismatch");
   assert(packet.custodyStatus === "pending-external", "treasury reviewer packet custody status drifted");
   assert(packet.productionMainnetClaimAllowed === false, "treasury reviewer packet must not allow mainnet claim");
   assert(packet.trustDecision === "blocked-external-steps", "treasury reviewer packet trust decision mismatch");

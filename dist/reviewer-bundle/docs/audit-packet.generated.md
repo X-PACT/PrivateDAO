@@ -13,7 +13,7 @@
 - Proof Center: https://privatedao.org/proof/
 - Judge Mode: https://privatedao.org/proof/?judge=1
 - Security page: https://privatedao.org/security/
-- Public story video: https://youtu.be/6_wUfawIjhw
+- YouTube pitch: https://youtu.be/HiCz0vb8kgk
 
 ## Live Devnet Anchors
 
@@ -98,7 +98,7 @@
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
 - Manifest entries: `143`
-- Aggregate sha256: `f43cde0b926f8ab2c3c4d75eab371674025d65ba911168cc479a37b837569720`
+- Aggregate sha256: `6c2f39b81517519a3f47524b209b48e5169fb0e4674948285b9de060c4871226`
 
 ## ZK Package
 

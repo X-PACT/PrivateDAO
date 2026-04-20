@@ -1,21 +1,21 @@
 # Read Node Snapshot
 
-- Generated at: `2026-04-18T00:09:33.941Z`
+- Generated at: `2026-04-20T11:35:32.016Z`
 - Read path: `backend-indexer`
 - RPC endpoint: `https://api.devnet.solana.com`
 - RPC pool size: `2`
 - Cache entries: `2`
 - Cache TTL ms: `15000`
 - Program ID: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
-- Slot: `456264549`
+- Slot: `456829506`
 - Solana core: `4.0.0-beta.6`
 - Feature set: `2475355604`
 
 ## Proposal Coverage
 
-- Proposals indexed: `43`
-- Unique DAOs: `23`
-- Executed proposals: `25`
+- Proposals indexed: `48`
+- Unique DAOs: `28`
+- Executed proposals: `26`
 - Executable proposals: `1`
 - Timelocked proposals: `0`
 - ZK-enforced proposals: `0`
@@ -42,8 +42,8 @@
 
 ## Proposal Registry
 
-- Registry entries: `43`
-- Executed: `25`
+- Registry entries: `48`
+- Executed: `26`
 - Evidence gated: `6`
 - Execution ready: `1`
 

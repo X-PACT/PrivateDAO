@@ -1,4 +1,4 @@
-# PrivateDAO Investor And Reviewer Pitch Deck
+# PrivateDAO Investor And Competition Pitch Deck
 
 This is the canonical repo-native pitch deck source for investors, grant reviewers, and external technical reviewers. It is intentionally evidence-bound: implemented surfaces are described as implemented, while final production-release gates remain clearly separated from what is already live today.
 
@@ -14,8 +14,8 @@ Proof anchors:
 
 - 1st Place - Superteam Poland, March 2026: `docs/awards.md`
 - Live product: `https://privatedao.org/`
-- Devnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
-- PDAO Devnet governance mint: `AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt`
+- Testnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- PDAO governance mint evidence: `AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt`
 
 ## Slide 2 - The Problem
 
@@ -102,7 +102,7 @@ Current traction is technical and ecosystem validation, not claimed production r
 Evidence:
 
 - 1st Place - Superteam Poland
-- 50-wallet Devnet rehearsal
+- 50-wallet Testnet rehearsal
 - standard Testnet lifecycle proof
 - 212 total attempts
 - 180 successful attempts
@@ -151,8 +151,8 @@ Implemented now:
 
 Current release boundary:
 
-- external audit remains an active release gate
-- real-funds production release follows custody, monitoring, real-device capture, and audit completion
+- external audit is pending as an active release gate
+- real-funds mainnet is blocked until custody, monitoring, real-device capture, and audit completion are closed
 - ZK and external settlement source-verification can be strengthened further through verifier and source-receipt integrations
 
 ## Slide 8A - Canonical Custody Proof
@@ -262,14 +262,14 @@ Production path:
 
 Trackable milestone logic:
 
-1. governance and proof remain easy to verify from a Devnet wallet session
+1. governance and proof remain easy to verify from a Testnet wallet session
 2. treasury, payout, and diagnostics paths stay reviewer-visible from the live product
 3. custody, monitoring, and audit evidence continue to harden the release case
 4. production release happens from a strong, legible, ecosystem-useful base
 
 Milestones a funder can track:
 
-1. a new visitor connects a Devnet wallet, runs the core flow, and verifies the result directly
+1. a new visitor connects a Testnet wallet, runs the core flow, and verifies the result directly
 2. a reviewer can inspect proof, telemetry, custody, and diagnostics without leaving the product shell
 3. audit, custody, monitoring, and wallet coverage become fully evidenced
 4. the release candidate is strong enough for final production cutover

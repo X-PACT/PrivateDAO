@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-15T17:37:59.290Z`
+- generated at: `2026-04-20T11:37:18.766Z`
 - network: `devnet`
 - status: `pending-browser-wallet-capture`
 - target count: `4`
@@ -11,7 +11,7 @@
 - successful connect count: `2`
 - successful submission count: `1`
 - diagnostics snapshot count: `2`
-- action coverage count: `4`
+- action coverage count: `7`
 
 ## Target Matrix
 
@@ -44,17 +44,17 @@
 
 ### Solflare
 
-- captured at: `2026-04-15T17:36:14.000Z`
+- captured at: `2026-04-18T02:49:35Z`
 - environment: `desktop-browser`
 - os: `Linux`
-- browser or client: `Brave`
-- actions covered: `Connect Wallet, Create DAO, Create Proposal, Commit Vote`
+- browser or client: `Playwright Chromium`
+- actions covered: `Connect Wallet, Create DAO, Create Proposal, Commit Vote, Reveal Vote, Finalize Proposal, Execute Proposal`
 - connect result: `success`
 - signing result: `success`
 - submission result: `success`
 - diagnostics snapshot captured: `true`
-- tx signature: `4zDfzZ9DBcfGmDf2ogeX2Z6UTUJYhxxY8zYNFBLQHMeFXzDhpmaegYm6aPMfEBvHiBKZ2b1rW3G8Hi3iWX1WPYie`
-- explorer url: `https://explorer.solana.com/tx/4zDfzZ9DBcfGmDf2ogeX2Z6UTUJYhxxY8zYNFBLQHMeFXzDhpmaegYm6aPMfEBvHiBKZ2b1rW3G8Hi3iWX1WPYie?cluster=devnet`
+- tx signature: `4VcbB1ABpJvU4qiP9vPU5VcGfQDvwLNPnJCU9k74zUrm2o1WcPCKX5VV9AiFA6LNjsgrsvD674kQk2Y7qeEtkjJ4`
+- explorer url: `https://explorer.solana.com/tx/4VcbB1ABpJvU4qiP9vPU5VcGfQDvwLNPnJCU9k74zUrm2o1WcPCKX5VV9AiFA6LNjsgrsvD674kQk2Y7qeEtkjJ4?cluster=devnet`
 - error message: `none`
 
 ## Required Docs

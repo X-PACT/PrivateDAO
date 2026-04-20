@@ -3,7 +3,7 @@
 - network: devnet
 - program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - primary rpc: `https://api.devnet.solana.com`
-- fallback rpc: `RPC_FAST_DEVNET_RPC` host secret
+- fallback rpc: `https://solana-rpc.rpcfast.com?api_key=ejQYiCn3yUFJUYyG3yw6C72hZNDzxoSFLy7VX9ETQOJOSFwQK2eh0Dl0XXAdU2uv`
 - primary healthy: yes
 - fallback healthy: yes
 - anchor accounts present: yes
@@ -11,14 +11,14 @@
 
 ## RPC Health
 
-- primary slot: 456264535
-- primary blockhash: `zxawcsCjdZHf6i5nAEyaasiv67SiLWfpiMFa7tWMsEe`
-- primary version latency: 2364 ms
-- primary blockhash latency: 289 ms
-- fallback slot: 413925430
-- fallback blockhash: `3WMnqqFkM9yfyYtkLK3bLNP4kkF7S4ycmNdwsD5RQNtm`
-- fallback version latency: 1155 ms
-- fallback blockhash latency: 767 ms
+- primary slot: 456829438
+- primary blockhash: `71Y68V3UiXZpwDNQ8VAo8VVDEfhEkCNhSNHqtFHpPdWr`
+- primary version latency: 1290 ms
+- primary blockhash latency: 213 ms
+- fallback slot: 414466460
+- fallback blockhash: `Dk6jfB9ZdTHt3hzyAGSj76638Pbs8bXTKvucoRjFeHne`
+- fallback version latency: 770 ms
+- fallback blockhash latency: 343 ms
 
 ## Anchor Checks
 

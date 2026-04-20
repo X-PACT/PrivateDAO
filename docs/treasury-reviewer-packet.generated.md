@@ -1,6 +1,6 @@
 # Treasury Reviewer Packet
 
-Generated: 2026-04-19T16:54:38.261Z
+Generated: 2026-04-20T11:40:24.770Z
 
 Explain the treasury intake and payout posture as a reviewer-grade infrastructure surface, with strict sender discipline, public rails, proof links, commercial fit, and exact blocker visibility.
 

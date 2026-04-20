@@ -38,7 +38,7 @@ The current frontend hardening includes:
 
 Use the live diagnostics page:
 
-- `https://x-pact.github.io/PrivateDAO/diagnostics/`
+- `https://privatedao.org/diagnostics/`
 
 This surface exposes:
 

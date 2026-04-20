@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-19T00:16:38+02:00",
+  "generatedAt": "2026-04-20T01:24:20+02:00",
   "algorithm": "sha256",
   "packageManager": "npm+yarn",
   "topLevel": {
@@ -8,7 +8,7 @@
     "version": "0.3.0",
     "dependencies": 4,
     "devDependencies": 14,
-    "scripts": 275
+    "scripts": 276
   },
   "lockfiles": {
     "cargo": {
@@ -43,8 +43,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "a2175a7c4d1e6c5b0a812c938a337a164077e375435a689c6ba5db79a803385d",
-      "bytes": 26521
+      "sha256": "1e8ef221ca78e2e57a8921cbc85eedac79709e2667e10f1ca00c5334c43d4b33",
+      "bytes": 26620
     },
     {
       "path": "package-lock.json",
@@ -57,7 +57,7 @@
       "bytes": 94061
     }
   ],
-  "aggregateSha256": "b97a8dd651701f68e1fad914822bcd828a0aec34b32643ddf6facce7600eddeb",
+  "aggregateSha256": "6332c32952797fece01b67b03267ebf6f620d114bcd2682faf7dd88d4ff763fd",
   "reviewCommands": [
     "npm run build:supply-chain-attestation",
     "npm run verify:supply-chain-attestation",

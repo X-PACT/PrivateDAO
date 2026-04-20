@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-18T19:08:37.983Z`
+- generated at: `2026-04-20T11:41:40.658Z`
 - current decision: `blocked-external-steps`
 - production mainnet claim allowed: `false`
 

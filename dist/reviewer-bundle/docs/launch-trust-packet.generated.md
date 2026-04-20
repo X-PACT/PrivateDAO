@@ -3,14 +3,18 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-11T05:22:29.482Z`
+- generated at: `2026-04-20T11:41:40.658Z`
 - current decision: `blocked-external-steps`
 - production mainnet claim allowed: `false`
 
 ## Custody Snapshot
 
 - custody status: `pending-external`
-- multisig implementation: `pending-selection`
+- multisig implementation: `Squads Protocol`
+- rehearsal implementation: `spl-token-2022-multisig`
+- rehearsal network: `devnet`
+- rehearsal multisig address: `EqbW1xQRABPNmPM4TMkdygp6j94i7A3DSbgFKTpqXvJE`
+- rehearsal creation signature: `4KSyTYQTzeNpBDWou7GFLmvUpAhLgmNKkNdd4PZqndLpCWmUnArffYRQUwe6zrTmQD5uCbBfBR6pakf9Gz8dviRp`
 - threshold target: `2-of-3`
 - multisig address: `pending`
 - signer slots configured: `0`
@@ -28,7 +32,7 @@ Pending authority transfers:
 ## Runtime Snapshot
 
 - runtime status: `pending-real-device-capture`
-- completed targets: `0/5`
+- completed targets: `1/5`
 
 Pending real-device targets:
 
@@ -36,7 +40,6 @@ Pending real-device targets:
 - Solflare
 - Backpack
 - Glow
-- Android Native / Mobile
 
 ## Audit Snapshot
 
