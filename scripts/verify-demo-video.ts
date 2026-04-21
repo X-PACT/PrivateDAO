@@ -5,11 +5,9 @@ import path from "path";
 const ROOT = process.cwd();
 const VIDEO = path.resolve(ROOT, "docs/assets/private-dao-demo-flow.mp4");
 const POSTER = path.resolve(ROOT, "docs/assets/private-dao-demo-flow-poster.png");
-const DESKTOP_DIR = "/home/x-pact/Desktop/PrivateDAO-Demo-Video";
-const DESKTOP_VIDEO = path.join(
-  DESKTOP_DIR,
-  "PrivateDAO - Real Demo Flow - Create DAO Submit Proposal Private Vote Execute Treasury.mp4"
-);
+const OPTIONAL_LOCAL_VIDEO = process.env.PRIVATE_DAO_LOCAL_DEMO_VIDEO?.trim()
+  ? path.resolve(process.env.PRIVATE_DAO_LOCAL_DEMO_VIDEO)
+  : null;
 
 function ffprobe(file: string) {
   const probe = spawnSync(
@@ -24,10 +22,14 @@ function ffprobe(file: string) {
 }
 
 function main() {
-  for (const file of [VIDEO, POSTER, DESKTOP_VIDEO]) {
+  for (const file of [VIDEO, POSTER]) {
     if (!fs.existsSync(file)) {
       throw new Error(`Missing expected demo asset: ${file}`);
     }
+  }
+
+  if (OPTIONAL_LOCAL_VIDEO && !fs.existsSync(OPTIONAL_LOCAL_VIDEO)) {
+    throw new Error(`Configured local demo asset is missing: ${OPTIONAL_LOCAL_VIDEO}`);
   }
 
   const probe = ffprobe(VIDEO);
