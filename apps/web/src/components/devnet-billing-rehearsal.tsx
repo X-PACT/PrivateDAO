@@ -18,7 +18,7 @@ const ASSOCIATED_TOKEN_PROGRAM_ID = new PublicKey("ATokenGPvbdGVxr1b2hvZbsiqW5xW
 type BillingSku = {
   key: string;
   title: string;
-  assetSymbol: "SOL" | "PUSD";
+  assetSymbol: "SOL" | "PUSD" | "AUDD";
   amount: number;
   memoLabel: string;
   summary: string;
@@ -40,6 +40,22 @@ const testnetBillingSkus = [
     amount: 0.005,
     memoLabel: "GOVERNANCE_REHEARSAL",
     summary: "Use this when testing the commercial logic for proposal creation, vote operations, and proof-linked review.",
+  },
+  {
+    key: "audd-merchant-settlement",
+    title: "AUDD merchant settlement lane",
+    assetSymbol: "AUDD",
+    amount: 3,
+    memoLabel: "AUDD_MERCHANT_SETTLEMENT",
+    summary: "Use this when testing AUDD as the governed Australian-dollar rail for merchant invoices, service billing, and settlement.",
+  },
+  {
+    key: "audd-treasury-settlement",
+    title: "AUDD treasury management lane",
+    assetSymbol: "AUDD",
+    amount: 5,
+    memoLabel: "AUDD_TREASURY_SETTLEMENT",
+    summary: "Use this when testing AUDD for treasury reserves, supplier settlement, and programmable Australian-dollar finance.",
   },
   {
     key: "pusd-payroll",
@@ -148,8 +164,8 @@ export function TestnetBillingRehearsal() {
   const selectedSku = testnetBillingSkus.find((item) => item.key === selectedSkuKey) ?? testnetBillingSkus[0];
   const selectedAsset = treasuryConfig.assets.find((asset) => asset.symbol === selectedSku.assetSymbol);
   const treasuryAddress = selectedAsset?.receiveAddress ?? treasuryConfig.treasuryAddress;
-  const pusdConfigured = Boolean(
-    selectedSku.assetSymbol !== "PUSD" ||
+  const stableAssetConfigured = Boolean(
+    selectedSku.assetSymbol === "SOL" ||
       (selectedAsset?.mint && selectedAsset?.receiveAddress && selectedAsset?.tokenProgram),
   );
 
@@ -181,9 +197,11 @@ export function TestnetBillingRehearsal() {
         }),
       );
 
-      if (selectedSku.assetSymbol === "PUSD") {
+      if (selectedSku.assetSymbol !== "SOL") {
         if (!selectedAsset?.mint || !selectedAsset.tokenProgram) {
-          setStatus("PUSD rail is ready for the official Solana mint. Set NEXT_PUBLIC_TREASURY_PUSD_MINT and NEXT_PUBLIC_TREASURY_PUSD_RECEIVE_ADDRESS to run the browser-signed Palm USD transfer.");
+          setStatus(
+            `${selectedAsset?.name ?? selectedSku.assetSymbol} rail is ready for the official Solana mint. Set NEXT_PUBLIC_TREASURY_${selectedSku.assetSymbol}_MINT and NEXT_PUBLIC_TREASURY_${selectedSku.assetSymbol}_RECEIVE_ADDRESS to run the browser-signed ${selectedAsset?.name ?? selectedSku.assetSymbol} transfer.`,
+          );
           return;
         }
         const mint = new PublicKey(selectedAsset.mint);
@@ -197,7 +215,7 @@ export function TestnetBillingRehearsal() {
         const currentAmount = BigInt(balance?.value.amount ?? "0");
         if (currentAmount < amountRaw) {
           setStatus(
-            `Connected wallet needs at least ${selectedSku.amount.toFixed(decimals)} PUSD on ${SOLANA_NETWORK_LABEL}. Current detected PUSD balance is ${balance?.value.uiAmountString ?? "0"}.`,
+            `Connected wallet needs at least ${selectedSku.amount.toFixed(decimals)} ${selectedSku.assetSymbol} on ${SOLANA_NETWORK_LABEL}. Current detected ${selectedSku.assetSymbol} balance is ${balance?.value.uiAmountString ?? "0"}.`,
           );
           return;
         }
@@ -274,10 +292,10 @@ export function TestnetBillingRehearsal() {
           Charge a small Testnet fee from the same wallet-first product, then inspect the proof on-chain
         </h2>
         <p className="mt-4 max-w-3xl text-sm leading-7 text-white/66">
-          This is the current truthful commercial lane. The visitor signs a small SOL or configured PUSD transfer from
-          the wallet, the chain records the memo and transfer, and the resulting signature becomes part of the business
-          proof. The Palm USD lane is designed for confidential payroll, grant distribution, commerce, and gaming DAO
-          reward settlement.
+          This is the current truthful commercial lane. The visitor signs a small SOL transfer or a configured stablecoin
+          transfer from the wallet, the chain records the memo and transfer, and the resulting signature becomes part of
+          the business proof. The PUSD and AUDD lanes are designed for governed payroll, merchant settlement, treasury
+          management, grant distribution, commerce, and gaming reward settlement.
         </p>
 
         <div className="mt-6 grid gap-3">
@@ -310,9 +328,9 @@ export function TestnetBillingRehearsal() {
         <div className="mt-6 rounded-[24px] border border-emerald-300/16 bg-emerald-300/[0.08] p-5 text-sm leading-7 text-white/72">
           <div className="text-[11px] uppercase tracking-[0.2em] text-emerald-200/82">Current boundary</div>
           <div className="mt-2">
-            The live rehearsal uses a wallet-signed SOL transfer, or a PUSD SPL transfer when the Palm USD mint is
-            configured, to the Testnet treasury address with a memo-coded SKU. Contractized subscription logic, fiat
-            gateways, and institutional invoicing remain later layers.
+            The live rehearsal uses a wallet-signed SOL transfer, or a configured stablecoin SPL transfer when the
+            selected mint is set, to the Testnet treasury address with a memo-coded SKU. Contractized subscription
+            logic, fiat gateways, and institutional invoicing remain later layers.
           </div>
         </div>
       </section>
@@ -340,8 +358,8 @@ export function TestnetBillingRehearsal() {
             </div>
             <div className="mt-1">
               Asset rail: <span className="text-white">{selectedSku.assetSymbol}</span>
-              {selectedSku.assetSymbol === "PUSD" ? (
-                <span className="text-white/58"> · {pusdConfigured ? "Palm USD mint configured" : "Ready for official Palm USD mint"}</span>
+              {selectedSku.assetSymbol !== "SOL" ? (
+                <span className="text-white/58"> · {stableAssetConfigured ? `${selectedAsset?.name ?? selectedSku.assetSymbol} mint configured` : `Ready for official ${selectedAsset?.name ?? selectedSku.assetSymbol} mint`}</span>
               ) : null}
             </div>
             <div className="mt-1">

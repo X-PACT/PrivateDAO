@@ -37,6 +37,8 @@ const copy = {
 const payoutProfileLabels: Record<ServiceHandoffState["payoutProfile"], string> = {
   "pilot-funding": "Pilot funding",
   "agentic-micropayment-rail": "Agentic micropayment rail",
+  "audd-merchant-settlement": "AUDD merchant settlement",
+  "audd-treasury-settlement": "AUDD treasury settlement",
   "pusd-confidential-payroll": "PUSD confidential payroll",
   "pusd-gaming-reward-pool": "PUSD gaming reward pool",
   "treasury-rebalance": "Treasury rebalance",

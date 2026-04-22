@@ -21,6 +21,7 @@ const indexableDocumentSlugs = new Set<string>([
   "devnet-execution-screenshots",
   "frontend-solana-bootcamp-materials",
   "privacy-and-encryption-proof-guide",
+  "audd-stablecoin-treasury-layer",
   "pusd-stablecoin-treasury-layer",
   "selective-disclosure-operating-surface",
   "torque-growth-loop",
@@ -73,6 +74,18 @@ const curatedDocuments: CuratedDocument[] = [
     boundary: "Operating brief only; it describes the live rail and Devnet execution target without claiming production stablecoin settlement closure beyond the linked evidence.",
     docPath: "docs/agentic-treasury-micropayment-rail.md",
     rawHref: `${repositoryBlobBase}/docs/agentic-treasury-micropayment-rail.md`,
+  },
+  {
+    slug: "audd-stablecoin-treasury-layer",
+    title: "AUDD Stablecoin Treasury Layer",
+    category: "Payments",
+    summary:
+      "Product brief for AUDD merchant settlement, treasury management, invoice collection, programmable Australian-dollar finance, and browser-signed stablecoin billing across the PrivateDAO treasury layer.",
+    audience: "Grant reviewers, treasury operators, merchant builders, finance teams, institutional stablecoin partners",
+    boundary:
+      "Stablecoin operating brief only; it ships route logic, SPL transfer construction, and the official AUDD mint plus funded-wallet activation path.",
+    docPath: "docs/audd-stablecoin-treasury-layer.md",
+    rawHref: `${repositoryBlobBase}/docs/audd-stablecoin-treasury-layer.md`,
   },
   {
     slug: "pusd-stablecoin-treasury-layer",

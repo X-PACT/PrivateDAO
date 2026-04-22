@@ -1,5 +1,5 @@
 type TreasuryAsset = {
-  symbol: "SOL" | "USDC" | "USDG" | "PUSD";
+  symbol: "SOL" | "USDC" | "USDG" | "PUSD" | "AUDD";
   name: string;
   network: string;
   receiveAddress: string;
@@ -27,6 +27,14 @@ function resolveReceiveAddress(symbol: TreasuryAsset["symbol"]) {
   if (symbol === "USDC") {
     return (
       envValue(process.env.NEXT_PUBLIC_TREASURY_USDC_RECEIVE_ADDRESS) ??
+      envValue(process.env.NEXT_PUBLIC_TREASURY_RECEIVE_ADDRESS) ??
+      DEFAULT_TESTNET_TREASURY
+    );
+  }
+
+  if (symbol === "AUDD") {
+    return (
+      envValue(process.env.NEXT_PUBLIC_TREASURY_AUDD_RECEIVE_ADDRESS) ??
       envValue(process.env.NEXT_PUBLIC_TREASURY_RECEIVE_ADDRESS) ??
       DEFAULT_TESTNET_TREASURY
     );
@@ -67,6 +75,18 @@ export function getTreasuryReceiveConfig() {
       mint: envValue(process.env.NEXT_PUBLIC_TREASURY_USDC_MINT),
       decimals: 6,
       note: "Use this rail for governed payouts, vendor settlement, and stable-value treasury requests when USDC is the active stable asset.",
+    },
+    {
+      symbol: "AUDD",
+      name: "AUDD",
+      network,
+      receiveAddress: resolveReceiveAddress("AUDD"),
+      mint: envValue(process.env.NEXT_PUBLIC_TREASURY_AUDD_MINT),
+      tokenProgram:
+        envValue(process.env.NEXT_PUBLIC_TREASURY_AUDD_TOKEN_PROGRAM) ??
+        "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      decimals: Number(envValue(process.env.NEXT_PUBLIC_TREASURY_AUDD_DECIMALS) ?? "6"),
+      note: "Use this rail for Australian-dollar merchant settlement, treasury reserves, invoice collection, and governed AUD-denominated payout flows.",
     },
     {
       symbol: "PUSD",

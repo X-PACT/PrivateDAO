@@ -50,6 +50,8 @@ export type PayoutRouteOption = {
   slug:
     | "pilot-funding"
     | "agentic-micropayment-rail"
+    | "audd-merchant-settlement"
+    | "audd-treasury-settlement"
     | "pusd-confidential-payroll"
     | "pusd-gaming-reward-pool"
     | "treasury-top-up"
@@ -59,7 +61,7 @@ export type PayoutRouteOption = {
   summary: string;
   routeFocus: string;
   defaultLane: "buyer" | "operator" | "support";
-  defaultAssetSymbol: "SOL" | "USDC" | "PUSD" | "USDG";
+  defaultAssetSymbol: "SOL" | "USDC" | "AUDD" | "PUSD" | "USDG";
   state: string;
   stateDetail: string;
   primaryHref: string;
@@ -264,6 +266,36 @@ function getPayoutRouteOptions(
       primaryLabel: "Open agentic micropayment path",
       proofHref: "/judge",
       proofLabel: "Open judge proof path",
+    },
+    {
+      slug: "audd-merchant-settlement",
+      title: "AUDD merchant settlement",
+      summary:
+        "Use the AUDD merchant lane when a treasury, merchant, or service operator needs governed Australian-dollar settlement with route clarity and proof continuity.",
+      routeFocus: "AUDD merchant settlement corridor",
+      defaultLane: "buyer",
+      defaultAssetSymbol: "AUDD",
+      state: treasury.paymentsReadiness,
+      stateDetail: treasury.exactBlockerSummary,
+      primaryHref: "/engage?profile=audd-merchant-settlement",
+      primaryLabel: "Open AUDD merchant path",
+      proofHref: "/documents/audd-stablecoin-treasury-layer",
+      proofLabel: "Open AUDD treasury brief",
+    },
+    {
+      slug: "audd-treasury-settlement",
+      title: "AUDD treasury settlement",
+      summary:
+        "Use the AUDD treasury lane when a DAO or operator needs AUD reserve management, invoice settlement, or programmable Australian-dollar payout handling.",
+      routeFocus: "AUDD treasury management corridor",
+      defaultLane: "operator",
+      defaultAssetSymbol: "AUDD",
+      state: treasury.paymentsReadiness,
+      stateDetail: treasury.exactBlockerSummary,
+      primaryHref: "/engage?profile=audd-treasury-settlement",
+      primaryLabel: "Open AUDD treasury path",
+      proofHref: "/services#treasury-payment-request",
+      proofLabel: "Open AUDD treasury request",
     },
     {
       slug: "pusd-confidential-payroll",

@@ -107,6 +107,20 @@ function hasPusdTreasuryIntent(normalized: string) {
   ].some((term) => normalized.includes(term));
 }
 
+function hasAuddTreasuryIntent(normalized: string) {
+  return [
+    "audd",
+    "australian digital dollar",
+    "australian dollar stablecoin",
+    "australian dollar",
+    "merchant settlement",
+    "invoice settlement",
+    "treasury management",
+    "programmable finance",
+    "merchant tools",
+  ].some((term) => normalized.includes(term));
+}
+
 function hasTokenTruthIntent(normalized: string) {
   return [
     "pdao",
@@ -136,6 +150,25 @@ function getPusdTreasuryBlock(normalized: string): AssistantSuggestion["queryBlo
       "Configure the official Solana PUSD mint and use a funded PUSD wallet to execute the browser-signed TransferChecked path with memo-coded proof.",
     reviewerPacketLabel: "Open PUSD layer brief",
     reviewerPacketHref: "/documents/pusd-stablecoin-treasury-layer",
+    bestRouteLabel: "Run stablecoin billing rehearsal",
+    bestRouteHref: "/services/testnet-billing-rehearsal",
+  };
+}
+
+function getAuddTreasuryBlock(normalized: string): AssistantSuggestion["queryBlock"] | undefined {
+  if (!hasAuddTreasuryIntent(normalized)) return undefined;
+
+  return {
+    kind: "payments-truth",
+    title: "AUDD stablecoin treasury",
+    readiness: "AUDD stablecoin treasury lane active in the product, with browser-signed SPL TransferChecked execution bound to the official Solana mint configuration",
+    network: "Solana Testnet",
+    rails: "AUDD merchant settlement + treasury management + invoice collection + programmable finance proof",
+    blocker: "official AUDD mint + funded wallet · activation input",
+    blockerSummary:
+      "Configure the official Solana AUDD mint and use a funded AUDD wallet to execute the browser-signed TransferChecked path with memo-coded proof.",
+    reviewerPacketLabel: "Open AUDD layer brief",
+    reviewerPacketHref: "/documents/audd-stablecoin-treasury-layer",
     bestRouteLabel: "Run stablecoin billing rehearsal",
     bestRouteHref: "/services/testnet-billing-rehearsal",
   };
@@ -211,10 +244,24 @@ function getJupiterRouteBlock(normalized: string): AssistantSuggestion["queryBlo
 }
 
 function getHighPriorityQueryBlock(normalized: string): AssistantSuggestion["queryBlock"] | undefined {
-  return getPusdTreasuryBlock(normalized) ?? getJupiterRouteBlock(normalized) ?? getTokenTruthBlock(normalized) ?? getPaymentsTruthBlock(normalized);
+  return getAuddTreasuryBlock(normalized) ?? getPusdTreasuryBlock(normalized) ?? getJupiterRouteBlock(normalized) ?? getTokenTruthBlock(normalized) ?? getPaymentsTruthBlock(normalized);
 }
 
 const assistantIntents: AssistantIntent[] = [
+  {
+    title: "Open the AUDD stablecoin treasury lane",
+    summary:
+      "Use the AUDD treasury layer when the question is about Australian-dollar settlement, merchant tools, invoice collection, treasury reserves, or programmable finance on Solana.",
+    primaryActionLabel: "Run AUDD billing rehearsal",
+    primaryActionHref: "/services/testnet-billing-rehearsal",
+    relatedRoutes: [
+      { label: "AUDD treasury layer", href: "/documents/audd-stablecoin-treasury-layer" },
+      { label: "AUDD merchant settlement", href: "/engage?profile=audd-merchant-settlement" },
+      { label: "AUDD treasury settlement", href: "/engage?profile=audd-treasury-settlement" },
+      { label: "Treasury payment request", href: "/services#treasury-payment-request" },
+    ],
+    keywords: ["audd", "australian digital dollar", "australian dollar stablecoin", "merchant settlement", "invoice collection", "programmable finance", "treasury management"],
+  },
   {
     title: "Open the PUSD stablecoin treasury lane",
     summary:

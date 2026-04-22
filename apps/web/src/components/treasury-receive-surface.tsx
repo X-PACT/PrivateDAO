@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils";
 const assetIconMap = {
   SOL: Wallet,
   USDC: Coins,
+  AUDD: Landmark,
   PUSD: ShieldCheck,
   USDG: Landmark,
 } as const;
@@ -169,6 +170,36 @@ const destinationProfiles = [
     ],
   },
   {
+    value: "audd-merchant-settlement",
+    label: "AUDD merchant settlement",
+    summary: "Prepare a governed AUDD settlement request for merchant flows, service billing, or Australian-dollar invoice collection.",
+    defaultAsset: "AUDD" as const,
+    defaultAmount: "150",
+    defaultLane: "buyer",
+    defaultPurpose: "AUDD merchant settlement request tied to governance review, service delivery, and reviewer-visible payment proof.",
+    intake: "payments",
+    nextRoutes: [
+      { label: "Services", href: "/services#treasury-payment-request" },
+      { label: "Judge", href: "/judge" },
+      { label: "Proof", href: "/proof?judge=1" },
+    ],
+  },
+  {
+    value: "audd-treasury-settlement",
+    label: "AUDD treasury settlement",
+    summary: "Prepare a governed AUDD treasury request for reserve management, supplier settlement, or programmable Australian-dollar finance.",
+    defaultAsset: "AUDD" as const,
+    defaultAmount: "500",
+    defaultLane: "operator",
+    defaultPurpose: "AUDD treasury settlement request approved by governance and attached to routing, settlement, and treasury evidence.",
+    intake: "payments",
+    nextRoutes: [
+      { label: "Govern", href: "/govern" },
+      { label: "Services", href: "/services#jupiter-treasury-route" },
+      { label: "Documents", href: "/documents/audd-stablecoin-treasury-layer" },
+    ],
+  },
+  {
     value: "pusd-confidential-payroll",
     label: "PUSD confidential payroll",
     summary: "Prepare a governed Palm USD payroll or contributor payment request with stablecoin settlement and privacy-aware approval context.",
@@ -252,7 +283,7 @@ function buildSolanaExplorerHref(address: string, network: string) {
 }
 
 function resolveSupportedAsset(
-  assets: Array<{ symbol: "SOL" | "USDC" | "PUSD" | "USDG" }>,
+  assets: Array<{ symbol: "SOL" | "USDC" | "AUDD" | "PUSD" | "USDG" }>,
   requestedAsset: ServiceHandoffAssetSymbol,
 ) {
   return assets.some((asset) => asset.symbol === requestedAsset)
@@ -271,6 +302,7 @@ function buildProposalBackedPrefill(
   const supportedMint =
     proposal.execution.mintSymbol === "SOL" ||
     proposal.execution.mintSymbol === "USDC" ||
+    proposal.execution.mintSymbol === "AUDD" ||
     proposal.execution.mintSymbol === "PUSD" ||
     proposal.execution.mintSymbol === "USDG"
       ? proposal.execution.mintSymbol
@@ -313,6 +345,10 @@ function buildTreasuryRoutePlan(params: {
   const executionMode =
     profile.value === "agentic-micropayment-rail"
       ? "agent-triggered micropayment batch"
+      : profile.value === "audd-merchant-settlement"
+        ? "AUDD merchant settlement"
+      : profile.value === "audd-treasury-settlement"
+        ? "AUDD treasury management settlement"
       : profile.value === "pusd-confidential-payroll"
         ? "PUSD confidential payroll settlement"
       : profile.value === "pusd-gaming-reward-pool"
@@ -326,7 +362,12 @@ function buildTreasuryRoutePlan(params: {
         : "governed treasury rebalance";
 
   return {
-    routeProvider: destinationAsset === "PUSD" ? "Palm USD treasury lane" : "Jupiter-backed treasury lane",
+    routeProvider:
+      destinationAsset === "PUSD"
+        ? "Palm USD treasury lane"
+        : destinationAsset === "AUDD"
+          ? "AUDD treasury lane"
+          : "Jupiter-backed treasury lane",
     executionMode,
     sourceAssetHint:
       assetSymbol === destinationAsset ? "Treasury active asset mix" : `${assetSymbol} treasury position`,
@@ -340,6 +381,8 @@ function buildTreasuryRoutePlan(params: {
           ? `Prepare a governed micropayment batch for ${normalizedAmount} ${assetSymbol} into ${destinationAsset}, then preserve the route and batch logic before agent execution starts.`
           : destinationAsset === "PUSD"
             ? `Prepare a governed PUSD settlement request for ${normalizedAmount} ${assetSymbol} into Palm USD, then attach privacy, payroll, or reward context before execution.`
+            : destinationAsset === "AUDD"
+              ? `Prepare a governed AUDD settlement request for ${normalizedAmount} ${assetSymbol} into Australian-dollar stable settlement, then attach merchant, treasury, or invoicing context before execution.`
           : `Prepare route preview for ${normalizedAmount} ${assetSymbol} into ${destinationAsset} under ${quoteReviewMode} before delivery.`
         : `Prepare quote preview once a final ${assetSymbol} amount is attached to the request object.`,
     slippagePolicy:
@@ -353,12 +396,16 @@ function buildTreasuryRoutePlan(params: {
         ? `${routeFocus} This route keeps policy approval, batch execution, and per-transfer proof inside one reviewer-visible treasury lane.`
         : destinationAsset === "PUSD"
           ? `${routeFocus} This route turns PUSD into a governed stablecoin settlement rail for payroll, grants, commerce, and gaming DAO rewards.`
+          : destinationAsset === "AUDD"
+            ? `${routeFocus} This route turns AUDD into a governed Australian-dollar settlement rail for merchant tools, treasury reserves, invoices, and programmable finance.`
         : `${routeFocus} This route keeps treasury motion readable for operators and reviewers without breaking the governed execution story.`,
     reviewerPath:
       profile.value === "agentic-micropayment-rail"
         ? "/documents/agentic-treasury-micropayment-rail"
         : destinationAsset === "PUSD"
           ? "/documents/pusd-stablecoin-treasury-layer"
+          : destinationAsset === "AUDD"
+            ? "/documents/audd-stablecoin-treasury-layer"
         : "/documents/jupiter-treasury-route",
     settlementPath: "/documents/settlement-receipt-closure",
   };
@@ -372,22 +419,27 @@ function formatSelectionLabel<
 
 function getAllowedDestinationAssets(
   profile: (typeof destinationProfiles)[number]["value"],
-  assets: Array<{ symbol: "SOL" | "USDC" | "PUSD" | "USDG"; name: string }>,
+  assets: Array<{ symbol: "SOL" | "USDC" | "AUDD" | "PUSD" | "USDG"; name: string }>,
   sourceAsset: ServiceHandoffAssetSymbol,
 ) {
   if (
     profile === "agentic-micropayment-rail" ||
+    profile === "audd-merchant-settlement" ||
+    profile === "audd-treasury-settlement" ||
     profile === "pusd-confidential-payroll" ||
     profile === "pusd-gaming-reward-pool" ||
     profile === "vendor-payout" ||
     profile === "contributor-payout" ||
     profile === "pilot-funding"
   ) {
-    return assets.filter((asset) => asset.symbol === "USDC" || asset.symbol === "PUSD" || asset.symbol === "USDG");
+    return assets.filter((asset) => asset.symbol === "USDC" || asset.symbol === "AUDD" || asset.symbol === "PUSD" || asset.symbol === "USDG");
   }
 
   if (profile === "treasury-top-up") {
-    return assets.filter((asset) => asset.symbol === sourceAsset || asset.symbol === "USDC" || asset.symbol === "PUSD" || asset.symbol === "USDG");
+    return assets.filter(
+      (asset) =>
+        asset.symbol === sourceAsset || asset.symbol === "USDC" || asset.symbol === "AUDD" || asset.symbol === "PUSD" || asset.symbol === "USDG",
+    );
   }
 
   return assets;
@@ -856,7 +908,10 @@ export function TreasuryReceiveSurface() {
           ? "Treasury top-up should land in an approved treasury asset so incoming capital stays aligned with later governance and payout motions."
           : "Payout-oriented funding should finish in a settlement-friendly asset before the downstream treasury action moves into execution.";
     const settlementMode =
-      normalizedDestinationAsset === "USDC" || normalizedDestinationAsset === "PUSD" || normalizedDestinationAsset === "USDG"
+      normalizedDestinationAsset === "USDC" ||
+      normalizedDestinationAsset === "AUDD" ||
+      normalizedDestinationAsset === "PUSD" ||
+      normalizedDestinationAsset === "USDG"
         ? "Stable-asset settlement posture"
         : "Treasury-asset rebalance posture";
 
@@ -866,8 +921,10 @@ export function TreasuryReceiveSurface() {
           ? `This profile is intentionally narrowed to ${allowedDestinationAssets.map((asset) => asset.symbol).join(" / ")} so agent settlement stays in a stable-value payout asset.`
           : activeProfile.value === "pusd-confidential-payroll" || activeProfile.value === "pusd-gaming-reward-pool"
             ? "This profile is PUSD-first because the track fit is strongest when Palm USD is the core settlement asset, not a secondary display option."
+          : activeProfile.value === "audd-merchant-settlement" || activeProfile.value === "audd-treasury-settlement"
+            ? "This profile is AUDD-first because the operating goal is Australian-dollar settlement, merchant tooling, and treasury finance rather than a generic USD payout rail."
           : allowedDestinationAssets.length === config.assets.length
-          ? "This profile can target any supported treasury asset when the operator keeps the route rationale readable."
+            ? "This profile can target any supported treasury asset when the operator keeps the route rationale readable."
           : `This profile is narrowed to ${allowedDestinationAssets.map((asset) => asset.symbol).join(" / ")} so the treasury lands in an asset that matches the operating goal.`,
       settlementMode,
       profileExecutionSummary,
@@ -1033,7 +1090,7 @@ export function TreasuryReceiveSurface() {
               <ArrowUpRight className="h-4 w-4" />
             </Link>
             <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-4 py-2 text-xs uppercase tracking-[0.18em] text-white/62">
-              Accepted assets: SOL / USDC / PUSD / USDG
+              Accepted assets: SOL / USDC / AUDD / PUSD / USDG
             </div>
           </div>
         </div>
