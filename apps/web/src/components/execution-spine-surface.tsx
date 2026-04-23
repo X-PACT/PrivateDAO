@@ -7,11 +7,11 @@ import {
   PRIVATE_DAO_PROGRAM_ID,
 } from "@/lib/onchain-parity.generated";
 import { getRpcFastInfrastructureSnapshot } from "@/lib/rpcfast-infrastructure";
-import { buildSolanaAccountUrl, SOLANA_NETWORK_LABEL } from "@/lib/solana-network";
+import { buildSolanaAccountUrl } from "@/lib/solana-network";
 
 type ExecutionSpineSurfaceProps = {
   compact?: boolean;
-  context?: "start" | "govern" | "services" | "network";
+  context?: "start" | "govern" | "services" | "network" | "execute";
 };
 
 const contextCopy: Record<NonNullable<ExecutionSpineSurfaceProps["context"]>, {
@@ -23,13 +23,13 @@ const contextCopy: Record<NonNullable<ExecutionSpineSurfaceProps["context"]>, {
     eyebrow: "Execution spine",
     title: "The simple path is backed by the full Testnet stack",
     description:
-      "A normal user starts with a wallet button, but the same flow lands on the preserved Anchor program, FastRPC-backed Testnet access, explorer-visible hashes, and reviewer proof.",
+      "A normal user starts with a wallet button, then moves through review, signer approval, explorer-visible hashes, and reviewer proof without leaving the product shell.",
   },
   govern: {
     eyebrow: "Governance runtime",
     title: "Every governance action stays attached to the chain evidence",
     description:
-      "Create DAO, proposal, commit, reveal, finalize, and execute all sit on the same Testnet execution spine so the UI, signer, program, and proof packet remain aligned.",
+      "Create DAO, proposal, commit, reveal, finalize, and execute all sit on the same Testnet execution spine so the UI, review gate, signer, program, and proof packet remain aligned.",
   },
   services: {
     eyebrow: "Commercial execution spine",
@@ -37,11 +37,17 @@ const contextCopy: Record<NonNullable<ExecutionSpineSurfaceProps["context"]>, {
     description:
       "Billing rehearsal, treasury intake, encrypted operations, and hosted read services share one operational spine instead of becoming disconnected product cards.",
   },
+  execute: {
+    eyebrow: "Execution center spine",
+    title: "Every execution mode still lands on one on-chain operational spine",
+    description:
+      "Payroll, vendor settlement, treasury rebalances, and reward corridors use one signer flow: connect, review, sign, verify, and keep proof continuity visible for operators and reviewers.",
+  },
   network: {
     eyebrow: "Network spine",
     title: "Infrastructure is visible because it supports real product execution",
     description:
-      "RPC, streaming, diagnostics, and proof surfaces are ordered around the user action path: sign, submit, observe, verify, and escalate toward release readiness.",
+      "RPC, streaming, diagnostics, and proof surfaces are ordered around the user action path: review, sign, observe, verify, and escalate toward release readiness.",
   },
 };
 
@@ -63,18 +69,18 @@ export function ExecutionSpineSurface({ compact = false, context = "start" }: Ex
       cta: "Open wallet sandbox",
     },
     {
-      title: "Submit on Testnet",
-      detail: `${SOLANA_NETWORK_LABEL} execution uses the configured RPC path, with RPCFast selected when the environment provides it.`,
+      title: "Review the route",
+      detail: "Use Intelligence, network health, and policy context to understand risk, privacy posture, and execution quality before any wallet approval appears.",
       icon: RadioTower,
-      href: "/network",
-      cta: "Open network",
+      href: "/intelligence",
+      cta: "Open review route",
     },
     {
-      title: "Execute program",
-      detail: `Program ${shorten(PRIVATE_DAO_PROGRAM_ID)} and governance mint ${shorten(PRIVATE_DAO_GOVERNANCE_MINT)} stay visible for reviewer inspection.`,
+      title: "Sign the action",
+      detail: `The signer still lands on program ${shorten(PRIVATE_DAO_PROGRAM_ID)} and governance mint ${shorten(PRIVATE_DAO_GOVERNANCE_MINT)} while the product keeps the approval flow readable.`,
       icon: BadgeCheck,
       href: buildSolanaAccountUrl(PRIVATE_DAO_PROGRAM_ID),
-      cta: "Open program",
+      cta: "Inspect program",
     },
     {
       title: "Verify proof",
