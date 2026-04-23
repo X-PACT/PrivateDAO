@@ -262,6 +262,13 @@ function rpcTimeoutMs(): number {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : 8000;
 }
 
+type RuntimeCluster = "devnet" | "testnet";
+
+function resolveRuntimeCluster(): RuntimeCluster {
+  const raw = trimValue(process.env.SOLANA_CLUSTER || process.env.NEXT_PUBLIC_SOLANA_NETWORK).toLowerCase();
+  return raw === "devnet" ? "devnet" : "testnet";
+}
+
 function buildAlchemyDevnetRpc(): string | null {
   if (isValidRpcUrl(process.env.ALCHEMY_DEVNET_RPC_URL)) {
     return trimValue(process.env.ALCHEMY_DEVNET_RPC_URL);
@@ -279,7 +286,17 @@ function buildHeliusDevnetRpc(): string | null {
   return null;
 }
 
-export function resolveDevnetRpcEndpoints(): string[] {
+function collectExtraRpcs(cluster: RuntimeCluster) {
+  const source = cluster === "devnet" ? process.env.EXTRA_DEVNET_RPCS : process.env.EXTRA_TESTNET_RPCS;
+  const raw = trimValue(source);
+  if (!raw) return [];
+  return raw
+    .split(",")
+    .map((item) => trimValue(item))
+    .filter((item) => item.length > 0);
+}
+
+export function resolveClusterRpcEndpoints(cluster: RuntimeCluster = resolveRuntimeCluster()): string[] {
   const endpoints: string[] = [];
   const add = (rpc?: string | null) => {
     const candidate = rpc ?? undefined;
@@ -289,20 +306,47 @@ export function resolveDevnetRpcEndpoints(): string[] {
   };
 
   add(process.env.SOLANA_RPC_URL);
-  add(buildAlchemyDevnetRpc());
-  add(buildHeliusDevnetRpc());
-  add(process.env.QUICKNODE_DEVNET_RPC);
-  const extra = trimValue(process.env.EXTRA_DEVNET_RPCS);
-  if (extra) {
-    for (const item of extra.split(",")) add(item);
+  if (cluster === "devnet") {
+    add(buildAlchemyDevnetRpc());
+    add(buildHeliusDevnetRpc());
+    add(process.env.QUICKNODE_DEVNET_RPC);
+    for (const rpc of collectExtraRpcs("devnet")) add(rpc);
+    add(process.env.RPC_FAST_DEVNET_RPC);
+    add(clusterApiUrl("devnet"));
+    add("https://api.devnet.solana.com");
+    return endpoints;
   }
-  add(clusterApiUrl("devnet"));
-  add("https://api.devnet.solana.com");
-  add(process.env.RPC_FAST_DEVNET_RPC);
+
+  add(process.env.QUICKNODE_TESTNET_RPC);
+  for (const rpc of collectExtraRpcs("testnet")) add(rpc);
+  add(process.env.RPC_FAST_TESTNET_RPC);
+  add(clusterApiUrl("testnet"));
+  add("https://api.testnet.solana.com");
   return endpoints;
 }
 
-const IDL_PATH = path.resolve(__dirname, "..", "..", "target", "idl", "private_dao.json");
+export function resolveRuntimeRpcEndpoints(): string[] {
+  return resolveClusterRpcEndpoints(resolveRuntimeCluster());
+}
+
+export function resolveDevnetRpcEndpoints(): string[] {
+  return resolveClusterRpcEndpoints("devnet");
+}
+
+const IDL_CANDIDATE_PATHS = [
+  path.resolve(__dirname, "..", "..", "target", "idl", "private_dao.json"),
+  path.resolve(__dirname, "..", "..", "deploy", "primary-host", "target", "idl", "private_dao.json"),
+];
+
+function resolveIdlPath() {
+  const match = IDL_CANDIDATE_PATHS.find((candidate) => fs.existsSync(candidate));
+  if (!match) {
+    throw new Error(`Unable to resolve private_dao IDL. Checked: ${IDL_CANDIDATE_PATHS.join(", ")}`);
+  }
+  return match;
+}
+
+const IDL_PATH = resolveIdlPath();
 const rawIdl = JSON.parse(fs.readFileSync(IDL_PATH, "utf8"));
 const coder = new anchor.BorshCoder(rawIdl as anchor.Idl);
 
@@ -624,7 +668,7 @@ export class PrivateDaoReadNode {
     commitment = "confirmed",
     cacheTtlMs = Number(process.env.PRIVATE_DAO_READ_CACHE_TTL_MS || 15000),
     programId = new PublicKey(process.env.PRIVATE_DAO_PROGRAM_ID || rawIdl.address),
-    rpcEndpoints = resolveDevnetRpcEndpoints(),
+    rpcEndpoints = resolveRuntimeRpcEndpoints(),
   }: {
     commitment?: Commitment;
     cacheTtlMs?: number;

@@ -97,6 +97,16 @@ export type JudgeLogEntry = {
 export type JudgeRuntimeLogsSnapshot = {
   freshness: string;
   reviewerEntry: string;
+  nextStep: {
+    label: string;
+    href: string;
+    detail: string;
+  };
+  operatingJourney: Array<{
+    label: string;
+    status: "verified" | "partial" | "pending";
+    detail: string;
+  }>;
   governance: {
     proposal: string;
     verificationStatus: string;
@@ -187,6 +197,83 @@ export function getJudgeRuntimeLogsSnapshot(): JudgeRuntimeLogsSnapshot {
   const runtime = readJson<RuntimeEvidenceJson>("docs/runtime-evidence.generated.json");
   const v3 = readJson<TestWalletProofV3Json>("docs/test-wallet-live-proof-v3.generated.json");
   const micropayments = readOptionalJson<AgenticMicropaymentRailJson>("docs/agentic-treasury-micropayment-rail.generated.json");
+  const governanceEntries = pickEntries(frontier.simpleGovernance.txChecks, [
+    "create-dao",
+    "deposit",
+    "create-proposal",
+    "commit",
+    "reveal",
+    "finalize",
+    "execute",
+  ]);
+  const confidentialEntries = pickEntries(frontier.confidentialOperations.txChecks, [
+    "magicblock-deposit",
+    "magicblock-private-transfer",
+    "magicblock-withdraw",
+    "magicblock-settle",
+    "magicblock-execute",
+  ]);
+  const hasGovernanceCreate = governanceEntries.some((entry) => entry.label === "create-dao");
+  const hasProposalCreate = governanceEntries.some((entry) => entry.label === "create-proposal");
+  const hasCommit = governanceEntries.some((entry) => entry.label === "commit");
+  const hasReveal = governanceEntries.some((entry) => entry.label === "reveal");
+  const hasFinalize = governanceEntries.some((entry) => entry.label === "finalize");
+  const hasExecute = governanceEntries.some((entry) => entry.label === "execute");
+  const realDeviceComplete = runtime.realDevice.completedTargetCount >= runtime.realDevice.targetCount;
+  const txOutcomeComplete = runtime.operational.totalTxCount >= runtime.operational.totalAttemptCount;
+  const nextStep = !hasGovernanceCreate
+    ? {
+        label: "Open govern and create a DAO",
+        href: "/govern",
+        detail: "The next useful move is to bootstrap a fresh wallet-driven DAO lane before expecting proposal or vote evidence.",
+      }
+    : !hasProposalCreate
+      ? {
+          label: "Open govern and submit a proposal",
+          href: "/govern#proposal-review-action",
+          detail: "DAO bootstrap is visible, but proposal creation should be completed before the rest of the lifecycle can be verified cleanly.",
+        }
+      : !hasCommit
+        ? {
+            label: "Open govern and commit a vote",
+            href: "/govern#commit-vote-action",
+            detail: "Proposal review exists, but commit-reveal evidence is not complete without the first vote commit.",
+          }
+        : !hasReveal
+          ? {
+              label: "Open govern and reveal the vote",
+              href: "/govern#reveal-vote-action",
+              detail: "The commit exists. The next missing step is reveal, so the governance path becomes visible end to end.",
+            }
+          : !hasFinalize
+            ? {
+                label: "Open govern and finalize the proposal",
+                href: "/govern#finalize-proposal-action",
+                detail: "Reveal is captured. Finalize is the next gate before execution and final proof continuity.",
+              }
+            : !hasExecute
+              ? {
+                  label: "Open govern and execute the proposal",
+                  href: "/govern#execute-proposal-action",
+                  detail: "Governance reached finalize. Execution is the remaining runtime step before full proof closure.",
+                }
+              : !realDeviceComplete
+                ? {
+                    label: "Expand wallet/device evidence",
+                    href: "/documents/real-device-runtime",
+                    detail: "On-chain lifecycle is captured, but broader device and wallet evidence is still جاري الانهاء.",
+                  }
+                : !txOutcomeComplete
+                  ? {
+                      label: "Open proof and inspect runtime evidence",
+                      href: "/proof",
+                      detail: "Execution exists, but runtime evidence still needs tighter outcome coverage before the lane is fully closed.",
+                    }
+                  : {
+                      label: "Open proof and judge",
+                      href: "/proof",
+                      detail: "The current operating journey is verified. The next move is reviewer-facing verification, not another product action.",
+                    };
 
   return {
     freshness: formatFreshness(
@@ -196,29 +283,46 @@ export function getJudgeRuntimeLogsSnapshot(): JudgeRuntimeLogsSnapshot {
       micropayments?.generatedAt ?? "",
     ),
     reviewerEntry: frontier.reviewerEntry,
+    nextStep,
+    operatingJourney: [
+      {
+        label: "Connect",
+        status: realDeviceComplete ? "verified" : "partial",
+        detail: realDeviceComplete
+          ? `${runtime.realDevice.completedTargetCount}/${runtime.realDevice.targetCount} real-device wallet targets completed`
+          : `${runtime.realDevice.completedTargetCount}/${runtime.realDevice.targetCount} real-device wallet targets completed · remaining evidence is جاري الانهاء`,
+      },
+      {
+        label: "Review",
+        status: hasGovernanceCreate && hasProposalCreate ? "verified" : "partial",
+        detail: hasGovernanceCreate && hasProposalCreate
+          ? "DAO bootstrap and proposal creation are captured in the governance evidence lane"
+          : "DAO/proposal review lane is not fully evidenced yet",
+      },
+      {
+        label: "Sign",
+        status: hasCommit && hasReveal && hasFinalize && hasExecute ? "verified" : "partial",
+        detail: hasCommit && hasReveal && hasFinalize && hasExecute
+          ? "Commit, reveal, finalize, and execute signatures are all captured in the wallet-driven lifecycle"
+          : "Some signing stages still need broader capture coverage",
+      },
+      {
+        label: "Verify",
+        status: txOutcomeComplete && confidentialEntries.length > 0 ? "verified" : "partial",
+        detail: txOutcomeComplete && confidentialEntries.length > 0
+          ? "Governance and confidential execution both resolve into public proof and runtime evidence"
+          : "Verification continuity exists, but some evidence lanes are still being expanded",
+      },
+    ],
     governance: {
       proposal: frontier.simpleGovernance.proposal,
       verificationStatus: frontier.simpleGovernance.verificationStatus,
-      entries: pickEntries(frontier.simpleGovernance.txChecks, [
-        "create-dao",
-        "deposit",
-        "create-proposal",
-        "commit",
-        "reveal",
-        "finalize",
-        "execute",
-      ]),
+      entries: governanceEntries,
     },
     confidential: {
       proposal: frontier.confidentialOperations.proposal,
       verificationStatus: frontier.confidentialOperations.verificationStatus,
-      entries: pickEntries(frontier.confidentialOperations.txChecks, [
-        "magicblock-deposit",
-        "magicblock-private-transfer",
-        "magicblock-withdraw",
-        "magicblock-settle",
-        "magicblock-execute",
-      ]),
+      entries: confidentialEntries,
     },
     v3Hardening: {
       mode: v3.mode,
