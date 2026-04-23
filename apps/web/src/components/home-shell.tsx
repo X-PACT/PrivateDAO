@@ -6,55 +6,53 @@ import { ArrowRight, CheckCircle2, Compass, LifeBuoy, MessageSquareHeart, PlayCi
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useSiteUrls } from "@/lib/site-urls";
 import { cn } from "@/lib/utils";
 
 export function HomeShell() {
-  const { judgeViewUrl } = useSiteUrls();
   const storyCards = [
     {
-      title: "Start in under a minute",
-      description: "Normal users begin from onboarding and wallet connection instead of raw governance controls.",
-      href: "/start",
+      title: "Private Treasury & Payroll",
+      description: "Run governed private payouts and stablecoin settlement lanes from one wallet-first operation flow.",
+      href: "/execute#private-payroll",
       icon: Compass,
     },
     {
-      title: "Learn the product quickly",
-      description: "A plain-language guide explains governance, payments, gaming, API, RPC, privacy, and how to verify the stack yourself on Testnet.",
-      href: "/learn",
-      icon: LifeBuoy,
-    },
-    {
-      title: "Verification stays simple",
-      description: "Proof, trust, and runtime evidence stay one click away from the product shell when a visitor wants to inspect the system more deeply.",
-      href: "/proof/?judge=1",
+      title: "Market Ops DAO",
+      description: "Review risk context, run treasury rebalance routes, and keep execution and verification connected.",
+      href: "/execute#treasury-rebalance",
       icon: Shield,
     },
     {
-      title: "Product story stays clear",
-      description: "The public story explains the product, cryptography, and commercial corridors in one watch surface.",
-      href: "/story",
+      title: "Gaming & Agentic Rewards",
+      description: "Attach contributor and gaming rewards to governed actions, then validate outcomes through proof lanes.",
+      href: "/execute#rewards-gaming",
       icon: PlayCircle,
     },
   ];
   const fastActionSteps = [
     {
-      title: "1. Connect a wallet",
-      description: "Start from the onboarding flow and connect a Testnet-ready wallet without guessing which route to open.",
-      href: "/start",
-      cta: "Open start",
+      title: "1. Connect and orient",
+      description: "Start from Learn or Start, connect a Testnet wallet, and confirm the right account before any approval flow begins.",
+      href: "/learn",
+      cta: "Open learn",
     },
     {
-      title: "2. Create and govern",
-      description: "Create a DAO, submit a proposal, vote, and execute from one guided governance surface.",
-      href: "/govern",
-      cta: "Open govern",
+      title: "2. Review the decision",
+      description: "Use Intelligence to read policy, privacy mode, route quality, and execution risk before the signer sees a wallet prompt.",
+      href: "/intelligence",
+      cta: "Open intelligence",
     },
     {
-      title: "3. Verify the result",
-      description: "Check live state, logs, and proof without leaving the product corridor.",
-      href: "/live",
-      cta: "Open live state",
+      title: "3. Sign and execute",
+      description: "Use Govern and Execute to create the proposal, commit or reveal when needed, then approve the exact wallet action on Testnet.",
+      href: "/execute",
+      cta: "Open execute",
+    },
+    {
+      title: "4. Verify the receipt",
+      description: "Open Proof and Judge to inspect the signature, receipt, runtime logs, and the current blockchain continuity from the same product shell.",
+      href: "/proof",
+      cta: "Open proof",
     },
   ];
   const techBadges = [
@@ -119,7 +117,7 @@ export function HomeShell() {
     {
       question: "What is already live today?",
       answer:
-        "It is already a live Testnet product with wallet-first governance, proof, trust, and telemetry surfaces. The active work now is to keep converting that Testnet proof into stronger production-grade closure.",
+        "It is already a live Solana Testnet product with wallet-first governance, proof, trust, telemetry, and service rails. The current phase is final security hardening, broader device coverage, and release certification ahead of mainnet publication.",
     },
     {
       question: "What does the cryptography actually do here?",
@@ -129,7 +127,7 @@ export function HomeShell() {
     {
       question: "What kind of support helps most right now?",
       answer:
-        "Runtime testing, wallet feedback, security review, operator introductions, infrastructure guidance, and serious ecosystem amplification all help move PrivateDAO from strong Testnet proof toward production-grade mainnet readiness.",
+        "Runtime testing, wallet feedback, security review, infrastructure support, and aligned funding all help accelerate the path from strong Testnet operation into a hardened production release.",
     },
   ];
   const convictionStrip = [
@@ -143,39 +141,43 @@ export function HomeShell() {
         <div className="grid items-start gap-8 xl:grid-cols-[1.14fr_0.86fr] xl:gap-10">
           <div className="space-y-6 sm:space-y-8">
             <div className="flex flex-wrap gap-3">
-              <Badge variant="cyan">Private governance on Solana</Badge>
-              <Badge variant="violet">Testnet live flow</Badge>
-              <Badge variant="success">User-first start</Badge>
+              <Badge variant="cyan">Governed</Badge>
+              <Badge variant="violet">Risk-scored</Badge>
+              <Badge variant="success">Private by default</Badge>
             </div>
             <div className="space-y-4 sm:space-y-5">
-              <div className="text-[11px] uppercase tracking-[0.34em] text-emerald-300/80">What PrivateDAO does</div>
+              <div className="text-[11px] uppercase tracking-[0.34em] text-emerald-300/80">PrivateDAO OS</div>
               <div className="max-w-3xl text-3xl font-semibold tracking-[-0.045em] text-white sm:text-5xl lg:text-[4rem] xl:text-[4.35rem]">
-                Create a private Solana DAO, submit a proposal, vote, and execute without leaving one guided wallet flow.
+                Confidential treasury and market operations on Solana.
               </div>
               <p className="max-w-2xl text-sm leading-7 text-white/62 sm:text-lg sm:leading-8">
-                PrivateDAO turns treasury decisions into a simple Testnet product flow. The best way to understand it is to connect a Testnet wallet, create a DAO, move into proposals and voting, and then inspect live state and proof only when you want more depth.
+                PrivateDAO turns treasury and governance intent into one premium operating path: frame the workflow, govern the policy, review intelligence, execute from a connected wallet, then verify receipts and runtime evidence without leaving the product shell.
               </p>
+              <div className="flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.24em] text-white/50">
+                <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Connect</span>
+                <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Review</span>
+                <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Sign</span>
+                <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Verify</span>
+              </div>
             </div>
 
             <div className="flex flex-wrap gap-3">
-              <Link className={cn(buttonVariants({ size: "lg" }))} href="/start">
-                Start in under a minute
+              <Link className={cn(buttonVariants({ size: "lg" }))} href="/execute">
+                Launch OS
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/learn">
-                Learn the product first
+              <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/android">
+                Android App
               </Link>
-              <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/govern">
-                Open the live governance flow
+              <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/proof">
+                Review Proof
               </Link>
-              <a
-                className={cn(buttonVariants({ size: "lg", variant: "outline" }))}
-                href={judgeViewUrl}
-                rel="noreferrer"
-                target="_blank"
-              >
-                Open verification view
-              </a>
+              <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/judge">
+                Open Judge
+              </Link>
+              <Link className={cn(buttonVariants({ size: "lg", variant: "outline" }))} href="/learn">
+                View Workflow
+              </Link>
             </div>
 
             <div className="space-y-3">
@@ -218,8 +220,8 @@ export function HomeShell() {
                     <Shield className="h-5 w-5" />
                   </div>
                   <div>
-                  <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Try it now</div>
-                  <CardTitle className="mt-2">The shortest path from landing page to a real Testnet action</CardTitle>
+                  <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Operator launch path</div>
+                  <CardTitle className="mt-2">The fastest path from landing page to a credible on-chain operating flow</CardTitle>
                   </div>
                 </div>
               </CardHeader>
@@ -228,7 +230,7 @@ export function HomeShell() {
                 <div className="text-[11px] uppercase tracking-[0.28em] text-white/42">Use case</div>
                 <div className="mt-2 text-2xl font-semibold text-white">Solana Testnet</div>
                 <div className="mt-2 text-sm leading-7 text-white/56">
-                  Use it when you want a team or community to create a DAO, propose an action, vote privately, and execute from one surface.
+                  Use it when a team, treasury council, or on-chain community needs to create a DAO, approve an action, keep the sensitive path controlled, and execute from one surface.
                 </div>
               </div>
 
@@ -257,6 +259,9 @@ export function HomeShell() {
                 <div className="mt-2 text-sm leading-7 text-amber-50/70">
                   Strong proof remains available for judges and investors, but the homepage stays focused on what a connected visitor can actually do first with a real Testnet wallet.
                 </div>
+                <div className="mt-2 text-xs leading-6 text-amber-100/60">
+                  FastRPC is supporting PrivateDAO throughout the hackathon with RPC infrastructure, and we appreciate that support.
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -264,15 +269,18 @@ export function HomeShell() {
       </section>
 
       <section className="mx-auto mt-14 w-full max-w-7xl px-4 sm:mt-16 sm:px-6 lg:px-8">
+        <div className="mb-6 rounded-[24px] border border-cyan-300/14 bg-[linear-gradient(180deg,rgba(9,20,36,0.95),rgba(7,12,22,0.98))] p-5 text-sm leading-7 text-white/70">
+          PrivateDAO is aligned across web and Android: normal users can run advanced DAO operations from mobile with wallet-first steps, privacy-preserving governance, encrypted operation lanes, and verifiable on-chain receipts.
+        </div>
         <div className="grid gap-4 md:grid-cols-3">
           <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5 text-sm leading-7 text-white/62">
-            PrivateDAO is a wallet-first Solana product for private governance, live Testnet execution, and treasury motion rehearsal.
+            Wallet-first operations keep signer control clear from governance to settlement.
           </div>
           <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5 text-sm leading-7 text-white/62">
-            The public surface explains the product first, then opens proof, diagnostics, and trust only when the user asks for them.
+            Private execution keeps sensitive treasury context hidden while preserving verifiable proof lanes.
           </div>
           <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5 text-sm leading-7 text-white/62">
-            Web, Android, and reviewer routes now sit on one product narrative instead of competing shells and mislabeled pages.
+            Proof and runtime surfaces remain open for judges, operators, and partners after every action.
           </div>
         </div>
         <div className="mt-6 grid gap-4 xl:grid-cols-3">
@@ -294,7 +302,7 @@ export function HomeShell() {
             <div className="text-[11px] uppercase tracking-[0.3em] text-violet-200/78">Clear milestones</div>
             <div className="mt-3 text-xl font-semibold text-white">From live Testnet product to stronger production release confidence</div>
             <p className="mt-3 text-sm leading-7 text-white/62">
-              The roadmap is straightforward: simplify first-use verification, strengthen proof and telemetry continuity, close audit and custody gates, and then ship the strongest possible production release candidate.
+              The roadmap is straightforward: simplify first-use verification, strengthen proof and telemetry continuity, complete final security hardening, and then publish the strongest possible production release candidate.
             </p>
           </div>
         </div>
@@ -304,7 +312,7 @@ export function HomeShell() {
             We are building PrivateDAO as production-intent governance infrastructure: private by design, verifiable in operation, and easier to trust with every serious execution tranche.
           </div>
           <p className="mt-3 max-w-4xl text-sm leading-7 text-white/62 sm:text-base">
-            The ambition is straightforward: earn first-place trust through real product quality, visible proof, and operational discipline, then turn ecosystem support into the technical, financial, and human momentum that carries PrivateDAO from strong Testnet execution toward durable mainnet infrastructure. We want this work to help shape a new generation that protects the ecosystem and the broader blockchain space through stronger governance and safer treasury operations.
+            The ambition is straightforward: earn trust through real product quality, visible proof, and operational discipline, then turn ecosystem support into the technical and financial momentum that carries PrivateDAO from strong Testnet execution into durable mainnet infrastructure.
           </p>
           <div className="mt-5 grid gap-3 md:grid-cols-3">
             {convictionStrip.map((item) => (

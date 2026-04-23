@@ -14,11 +14,13 @@ const TRACKED_FILES = [
   "Cargo.lock",
   "Anchor.toml",
   "package.json",
-  "package-lock.json",
   "yarn.lock",
 ];
 
+const NPM_LOCK_CANDIDATES = ["package-lock.json", "apps/web/package-lock.json"] as const;
+
 function main() {
+  const npmLockPath = resolveFirstExistingPath(NPM_LOCK_CANDIDATES);
   const packageJson = readJson<{
     name: string;
     version: string;
@@ -30,12 +32,12 @@ function main() {
   const packageLock = readJson<{
     lockfileVersion: number;
     packages?: Record<string, unknown>;
-  }>("package-lock.json");
+  }>(npmLockPath);
 
   const yarnLock = fs.readFileSync(path.resolve("yarn.lock"), "utf8");
   const cargoLock = fs.readFileSync(path.resolve("Cargo.lock"), "utf8");
 
-  const files = TRACKED_FILES.map(hashFile);
+  const files = [...TRACKED_FILES, npmLockPath].map(hashFile);
   const packageLockEntries = Object.keys(packageLock.packages ?? {}).length;
   const yarnEntryCount = countYarnEntries(yarnLock);
   const cargoPackageCount = (cargoLock.match(/^\[\[package\]\]$/gm) ?? []).length;
@@ -58,7 +60,7 @@ function main() {
         packageCount: cargoPackageCount,
       },
       npm: {
-        path: "package-lock.json",
+        path: npmLockPath,
         lockfileVersion: packageLock.lockfileVersion,
         packageCount: packageLockEntries,
       },
@@ -172,6 +174,16 @@ function sha256(input: crypto.BinaryLike) {
 
 function readJson<T>(relativePath: string): T {
   return JSON.parse(fs.readFileSync(path.resolve(relativePath), "utf8")) as T;
+}
+
+function resolveFirstExistingPath(paths: readonly string[]) {
+  for (const candidate of paths) {
+    if (fs.existsSync(path.resolve(candidate))) {
+      return candidate;
+    }
+  }
+
+  throw new Error(`Missing required file. Tried: ${paths.join(", ")}`);
 }
 
 function deterministicGeneratedAt() {

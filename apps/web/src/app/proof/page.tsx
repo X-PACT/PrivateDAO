@@ -6,7 +6,10 @@ import { JudgeRuntimeLogsPanel } from "@/components/judge-runtime-logs-panel";
 import { JudgeExecutionContinuityPanel } from "@/components/judge-execution-continuity-panel";
 import { LocalizedProofPrimer } from "@/components/localized-proof-primer";
 import { LocalizedRouteSummary } from "@/components/localized-route-summary";
+import { GuidedOperationRail } from "@/components/guided-operation-rail";
 import { NormalUserOperationPath } from "@/components/normal-user-operation-path";
+import { OperatingJourneyStrip } from "@/components/operating-journey-strip";
+import { OperationReceiptLedger } from "@/components/operation-receipt-ledger";
 import { OperationsShell } from "@/components/operations-shell";
 import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
 import { ProofEntryBanner } from "@/components/proof-entry-banner";
@@ -18,6 +21,7 @@ import { RuntimeEvidenceContinuityPanel } from "@/components/runtime-evidence-co
 import { AuthoritativeExecutionTrail } from "@/components/authoritative-execution-trail";
 import { ExecutionOperationsStrip } from "@/components/execution-operations-strip";
 import { DevnetExecutionScreenshotsStrip } from "@/components/devnet-execution-screenshots-strip";
+import { SupabaseOperationTimeline } from "@/components/supabase-operation-timeline";
 import { PrivacyProofExplainer } from "@/components/privacy-proof-explainer";
 import { TestnetProofMatrix } from "@/components/testnet-proof-matrix";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -39,16 +43,28 @@ export default function ProofPage() {
   return (
     <OperationsShell
       eyebrow="Proof"
-      title="Runtime evidence, trust packets, and additive hardening in one surface"
-      description="The Next.js app exposes the same proof story as the current site, but inside a cleaner operational shell: baseline live proof, dedicated V3 hardening proof, integration packets, and the exact surfaces you use after running the real Testnet flow yourself."
+      title="Operation receipts, runtime evidence, and trust packets in one premium verification surface"
+      description="This surface is the receipt layer for executed operations: baseline live proof, dedicated V3 hardening proof, integration packets, and the exact routes used after running real Testnet flow through the public product."
       badges={[
         { label: "Proof Center", variant: "cyan" },
         { label: "Verification-ready", variant: "violet" },
         { label: "Baseline + V3", variant: "success" },
       ]}
     >
+      <GuidedOperationRail
+        current="verify"
+        reviewHref="/govern"
+        verifyHref="/proof"
+        compact
+        pendingNote="Where proof expansion is still not fully captured on every device lane, the status is treated as جاري الانهاء rather than hidden."
+      />
       <LocalizedRouteSummary routeKey="proof" />
       <LocalizedProofPrimer />
+      <OperatingJourneyStrip
+        snapshot={runtimeSnapshot}
+        title="Proof-side operating journey"
+        description="Before opening detailed packets, read the current Testnet operating journey here: what is verified, what is partially evidenced, and what still remains under جاري الانهاء."
+      />
       <div>
         <Suspense fallback={null}>
           <ProofEntryBanner />
@@ -107,6 +123,8 @@ export default function ProofPage() {
       <div>
         <ProofCenter />
       </div>
+      <OperationReceiptLedger snapshot={runtimeSnapshot} />
+      <SupabaseOperationTimeline />
       <DevnetExecutionScreenshotsStrip />
     </OperationsShell>
   );

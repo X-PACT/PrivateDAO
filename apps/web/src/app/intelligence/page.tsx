@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
 
+import { GuidedOperationRail } from "@/components/guided-operation-rail";
+import { GoldRushIntelligenceSurface } from "@/components/goldrush-intelligence-surface";
 import { IntelligenceLayerSurface } from "@/components/intelligence-layer-surface";
 import { MetricsStrip } from "@/components/metrics-strip";
+import { OperatingJourneyStrip } from "@/components/operating-journey-strip";
 import { OperationsShell } from "@/components/operations-shell";
 import { SectionHeader } from "@/components/section-header";
+import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
@@ -16,19 +20,52 @@ export const metadata: Metadata = buildRouteMetadata({
 });
 
 export default function IntelligencePage() {
+  const runtimeSnapshot = getJudgeRuntimeLogsSnapshot();
+
   return (
     <OperationsShell
       eyebrow="Intelligence"
       title="Operational intelligence that helps a normal user make safer governance and treasury decisions"
-      description="PrivateDAO uses intelligence where it actually matters: proposal review, treasury execution review, voting compression, RPC health interpretation, and gaming-governance decision support tied to real product flows."
+      description="PrivateDAO uses intelligence where it actually matters: proposal review, treasury execution review, voting compression, RPC health interpretation, and gaming-governance decision support tied to real product flows before execution."
+      navigationMode="guided"
       badges={[
         { label: "Security + Intelligence", variant: "cyan" },
         { label: "Decision support", variant: "success" },
         { label: "Hugging Face free-ready", variant: "warning" },
       ]}
     >
+      <GuidedOperationRail current="review" reviewHref="/intelligence" verifyHref="/proof" />
+      <OperatingJourneyStrip
+        snapshot={runtimeSnapshot}
+        title="Review is the decision gate before any signer approves treasury or governance actions"
+        description="This route exists between wallet connection and signature approval. Read the risk context here, then move to execution only when the policy, route quality, and proof path are clear."
+      />
       <div className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6 text-sm leading-7 text-white/68">
-        This route is easiest to understand after <a className="text-cyan-100 underline underline-offset-4" href="/learn">/learn</a> and a real Testnet action from <a className="text-cyan-100 underline underline-offset-4" href="/govern">/govern</a>. The goal is simple: help the signer understand risk, treasury context, RPC quality, and gaming consequences before pressing approve.
+        This route is easiest to understand after <a className="text-cyan-100 underline underline-offset-4" href="/learn">/learn</a> and a real Testnet action from <a className="text-cyan-100 underline underline-offset-4" href="/govern">/govern</a>. The goal is simple: help the signer understand risk, treasury context, RPC quality, and gaming consequences before pressing approve and moving to <a className="text-cyan-100 underline underline-offset-4" href="/execute">/execute</a>.
+      </div>
+      <div className="rounded-[28px] border border-emerald-300/18 bg-emerald-300/[0.08] p-6">
+        <div className="text-[11px] uppercase tracking-[0.24em] text-emerald-100/76">Pre-execution gate</div>
+        <h2 className="mt-3 text-xl font-semibold text-white">Execution should not run before this gate is clear</h2>
+        <div className="mt-4 grid gap-3 md:grid-cols-2">
+          {[
+            "Proposal risk score reviewed",
+            "Counterparty context checked",
+            "Liquidity and route quality reviewed",
+            "Proof and audit path prepared",
+          ].map((item) => (
+            <div key={item} className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3 text-sm text-white/72">
+              {item}
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <a className="inline-flex h-9 items-center justify-center rounded-md bg-white px-4 text-sm font-medium text-black transition hover:bg-white/90" href="/execute">
+            Continue to execute
+          </a>
+          <a className="inline-flex h-9 items-center justify-center rounded-md border border-white/15 bg-transparent px-4 text-sm font-medium text-white transition hover:bg-white/10" href="/proof">
+            Open proof path
+          </a>
+        </div>
       </div>
       <div>
         <MetricsStrip />
@@ -42,6 +79,9 @@ export default function IntelligencePage() {
       </div>
       <div>
         <IntelligenceLayerSurface />
+      </div>
+      <div>
+        <GoldRushIntelligenceSurface />
       </div>
     </OperationsShell>
   );

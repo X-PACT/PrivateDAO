@@ -44,7 +44,7 @@ function main() {
   assert(attestation.lockfiles.npm.packageCount > 0, "npm package count is unexpectedly low");
   assert(attestation.lockfiles.yarn.entryCount > 0, "yarn entry count is unexpectedly low");
 
-  const requiredFiles = ["Cargo.toml", "Cargo.lock", "Anchor.toml", "package.json", "package-lock.json", "yarn.lock"];
+  const requiredFiles = ["Cargo.toml", "Cargo.lock", "Anchor.toml", "package.json", attestation.lockfiles.npm.path, "yarn.lock"];
   for (const file of requiredFiles) {
     const entry = attestation.files.find((item) => item.path === file);
     assert(Boolean(entry), `missing hashed file entry: ${file}`);
@@ -69,7 +69,7 @@ function main() {
 
   assert(markdown.includes("# Supply-Chain Attestation"), "markdown is missing title");
   assert(markdown.includes("Cargo.lock"), "markdown is missing Cargo.lock coverage");
-  assert(markdown.includes("package-lock.json"), "markdown is missing npm lock coverage");
+  assert(markdown.includes(attestation.lockfiles.npm.path), "markdown is missing npm lock coverage");
   assert(markdown.includes("yarn.lock"), "markdown is missing yarn lock coverage");
   assert(markdown.includes("Aggregate sha256"), "markdown is missing aggregate sha256 summary");
 

@@ -9,8 +9,12 @@ import { OperationsShell } from "@/components/operations-shell";
 import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
 import { PrivacyProofExplainer } from "@/components/privacy-proof-explainer";
 import { TestnetProofMatrix } from "@/components/testnet-proof-matrix";
+import { PlatformCapabilityStack } from "@/components/platform-capability-stack";
+import Link from "next/link";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 import { buildRouteMetadata } from "@/lib/route-metadata";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Verification Route",
@@ -26,7 +30,7 @@ export default function JudgePage() {
   return (
     <OperationsShell
       eyebrow="Verification"
-      title="Inspect the real product, the real transactions, and the shortest proof path first"
+      title="Inspect the real product, the real transactions, and the fastest trust path first"
       description="This route is built for fast verification. It shows the DAO lifecycle, captured Testnet signatures, the Agentic Treasury Micropayment Rail, and the shortest route into the deeper proof and document surfaces. A normal visitor can use it too: the chain evidence is public and readable even when the protected parts of the workflow stay private until the correct stage."
       badges={[
         { label: "Verification first", variant: "cyan" },
@@ -65,6 +69,44 @@ export default function JudgePage() {
           </div>
         </div>
       </div>
+
+      <div className="rounded-[26px] border border-cyan-300/14 bg-cyan-300/[0.06] p-5">
+        <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/76">Capability map</div>
+        <div className="mt-2 max-w-4xl text-sm leading-7 text-white/68">
+          The platform also exposes a compact map showing how recurring ecosystem requirements were translated into product capabilities across private governance, treasury rails, analytics, growth loops, wallet UX, and runtime infrastructure.
+        </div>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <Link href="/documents/ecosystem-capability-map-2026" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
+            Open capability map
+          </Link>
+          <Link href="/learn" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
+            Open learn route
+          </Link>
+        </div>
+      </div>
+
+      <div className="rounded-[26px] border border-white/10 bg-white/[0.04] p-5">
+        <div className="text-[11px] uppercase tracking-[0.24em] text-white/42">Trust path</div>
+        <div className="mt-3 grid gap-3 md:grid-cols-3">
+          {[
+            "What was approved: proposal policy and governance state",
+            "What was analyzed: intelligence and runtime context",
+            "What was executed: on-chain signatures and receipt lanes",
+            "What stayed private: recipient and payout sensitivity",
+            "What stayed verifiable: hashes, logs, and proof artifacts",
+            "Why each rail exists: governance, privacy, market, proof",
+          ].map((item) => (
+            <div key={item} className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm text-white/68">
+              {item}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <PlatformCapabilityStack
+        title="What the product surface unlocks underneath"
+        description="This view is for reviewers who want the shortest bridge from a visible route into the underlying execution core, proof path, learning path, and productized service lane."
+      />
 
       <JudgeSelectiveDisclosureCta />
       <TestnetProofMatrix />

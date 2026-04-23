@@ -1,7 +1,13 @@
 import fs from "fs";
 import path from "path";
 
+function resolveExpectedCluster() {
+  const raw = (process.env.SOLANA_CLUSTER || process.env.NEXT_PUBLIC_SOLANA_NETWORK || "testnet").toLowerCase();
+  return raw === "devnet" ? "devnet" : "testnet";
+}
+
 function main() {
+  const expectedCluster = resolveExpectedCluster();
   const auditPacketPath = path.resolve("docs/audit-packet.generated.md");
   const attestationPath = path.resolve("docs/review-attestation.generated.json");
   const cryptographicManifestPath = path.resolve("docs/cryptographic-manifest.generated.json");
@@ -304,6 +310,7 @@ function main() {
   const readNodeSnapshotMd = fs.readFileSync(readNodeSnapshotMdPath, "utf8");
   const frontierIntegrations = JSON.parse(fs.readFileSync(frontierIntegrationsJsonPath, "utf8")) as {
     project: string;
+    network?: string;
     programId: string;
     verificationWallet: string;
     readNode: {
@@ -1238,6 +1245,20 @@ function main() {
   if (frontierIntegrations.readNode.readPath !== "backend-indexer" || !frontierIntegrations.readNode.rpcEndpoint || frontierIntegrations.readNode.rpcPoolSize < 1) {
     throw new Error("Frontier integration evidence read-node surface is incomplete");
   }
+  const artifactCluster =
+    frontierIntegrations.network === "devnet"
+      ? "devnet"
+      : frontierIntegrations.network === "testnet"
+        ? "testnet"
+        : null;
+  if (!artifactCluster) {
+    throw new Error("Frontier integration evidence network mismatch");
+  }
+  if (artifactCluster !== expectedCluster) {
+    console.warn(
+      `Frontier integration evidence cluster (${artifactCluster}) differs from expected runtime (${expectedCluster}); validating against artifact cluster.`,
+    );
+  }
   if (frontierIntegrations.readNode.overview.confidentialPayouts < 1 || frontierIntegrations.readNode.overview.magicblockSettled < 1 || frontierIntegrations.readNode.overview.refheSettled < 1) {
     throw new Error("Frontier integration evidence backend coverage is unexpectedly weak");
   }
@@ -1247,7 +1268,7 @@ function main() {
   if (!frontierIntegrations.simpleGovernance.lifecycleStatus) {
     throw new Error("Frontier integration evidence simple governance lifecycle status is missing");
   }
-  if (frontierIntegrations.simpleGovernance.verificationStatus !== "verified-devnet-governance-path") {
+  if (frontierIntegrations.simpleGovernance.verificationStatus !== `verified-${artifactCluster}-governance-path`) {
     throw new Error("Frontier integration evidence simple governance path is degraded");
   }
   if (
@@ -1255,14 +1276,14 @@ function main() {
     !frontierIntegrations.confidentialOperations.txChecks.every((entry) => entry.confirmed) ||
     frontierIntegrations.confidentialOperations.refheStatus !== "Settled" ||
     frontierIntegrations.confidentialOperations.magicblockStatus !== "Settled" ||
-    frontierIntegrations.confidentialOperations.status !== "verified-devnet-confidential-path"
+    frontierIntegrations.confidentialOperations.status !== `verified-${artifactCluster}-confidential-path`
   ) {
     throw new Error("Frontier integration evidence confidential path is degraded");
   }
   if (
     frontierIntegrations.zk.anchorCount < 3 ||
     !frontierIntegrations.zk.anchorChecks.every((entry) => entry.confirmed && entry.account.exists) ||
-    frontierIntegrations.zk.status !== "proof-anchors-recorded-on-devnet"
+    frontierIntegrations.zk.status !== `proof-anchors-recorded-on-${artifactCluster}`
   ) {
     throw new Error("Frontier integration evidence zk anchor path is degraded");
   }
@@ -1750,7 +1771,7 @@ function main() {
   if (supplyChain.lockfiles.cargo.path !== "Cargo.lock" || supplyChain.lockfiles.cargo.packageCount <= 0) {
     throw new Error("generated supply-chain attestation cargo summary is incomplete");
   }
-  if (supplyChain.lockfiles.npm.path !== "package-lock.json" || supplyChain.lockfiles.npm.packageCount <= 0) {
+  if (!supplyChain.lockfiles.npm.path.endsWith("package-lock.json") || supplyChain.lockfiles.npm.packageCount <= 0) {
     throw new Error("generated supply-chain attestation npm summary is incomplete");
   }
   if (supplyChain.lockfiles.yarn.path !== "yarn.lock" || supplyChain.lockfiles.yarn.entryCount <= 0) {
@@ -1759,7 +1780,7 @@ function main() {
   if (!supplyChain.files.some((entry) => entry.path === "Cargo.lock")) {
     throw new Error("generated supply-chain attestation is missing Cargo.lock");
   }
-  if (!supplyChain.files.some((entry) => entry.path === "package-lock.json")) {
+  if (!supplyChain.files.some((entry) => entry.path === supplyChain.lockfiles.npm.path)) {
     throw new Error("generated supply-chain attestation is missing package-lock.json");
   }
   if (!supplyChain.files.some((entry) => entry.path === "yarn.lock")) {

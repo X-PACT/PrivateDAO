@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowUpRight, CheckCircle2, Download, Github, ShieldCheck, Smartphone } from "lucide-react";
+import { ArrowUpRight, CheckCircle2, Download, Github, QrCode, ShieldCheck, Smartphone, Wallet } from "lucide-react";
 
 import { OperationsShell } from "@/components/operations-shell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,28 +20,51 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = buildRouteMetadata({
   title: "Android App",
   description:
-    "Download the current PrivateDAO Android APK, review the Testnet parity plan, and follow the mobile branch as it expands toward deeper web-aligned service coverage.",
+    "Download the PrivateDAO Android APK and run wallet-first DAO governance, private execution lanes, and proof-linked on-chain verification from mobile.",
   path: "/android",
   keywords: ["android app", "apk", "mobile wallet adapter", "android governance app", "privatedao mobile"],
   index: false,
 });
 
 const parityItems = [
-  "Create DAO, deposit treasury, create proposal, commit, reveal, finalize, and execute are already wired in Android.",
-  "Authority-only cancel and veto now exist in the mobile product surface, not just the web surface.",
-  "Reviewer, proof, monitoring, and incident continuity are exposed from inside the app while deeper native parity continues to expand.",
+  "Create DAO, deposit treasury, create proposal, commit, reveal, finalize, execute, cancel, and veto are available from Android.",
+  "Wallet-first mobile operations run on the same Solana Testnet program and verification path used by the web surface.",
+  "Proof, runtime logs, monitoring, and reviewer routes stay linked so mobile execution remains auditable and easy to validate.",
+];
+
+const mobileFlowItems = [
+  {
+    title: "1. Connect",
+    detail: "Open the Android app, connect a Mobile Wallet Adapter-compatible wallet, and keep the current account and Testnet network visible before any action starts.",
+    icon: Wallet,
+  },
+  {
+    title: "2. Review",
+    detail: "Review the governance or execution intent first. The app should explain what will happen before the wallet prompt appears.",
+    icon: Smartphone,
+  },
+  {
+    title: "3. Sign",
+    detail: "Approve the wallet action from the mobile wallet layer, then return to the app without losing the operation context.",
+    icon: QrCode,
+  },
+  {
+    title: "4. Verify",
+    detail: "Open the same proof, explorer, and runtime continuity surfaces used by the web product so the mobile flow stays trustable end to end.",
+    icon: ShieldCheck,
+  },
 ];
 
 export default function AndroidPage() {
   return (
     <OperationsShell
       eyebrow="Android"
-      title="Download the Android app and track the mobile parity path"
-      description="PrivateDAO Android is being built as a first-class operating surface for the same governance product already served by the web app. This route gives reviewers, operators, and testers a direct APK download, the current branch guide, and the parity direction in one place."
+      title="PrivateDAO Android: premium mobile DAO operations with privacy, proof, and wallet-first execution"
+      description="This is a wallet-first Android operating surface for real Solana Testnet execution. Users can run serious DAO and treasury actions from mobile with privacy-preserving voting, encrypted operation lanes, and on-chain proof continuity, without terminal complexity."
       badges={[
         { label: "APK available", variant: "success" },
-        { label: "Testnet-operable", variant: "cyan" },
-        { label: "Web parity in progress", variant: "violet" },
+        { label: "Mobile-first execution", variant: "cyan" },
+        { label: "Web + Android aligned", variant: "violet" },
       ]}
     >
       <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
@@ -51,7 +74,7 @@ export default function AndroidPage() {
           </CardHeader>
           <CardContent className="space-y-5">
             <div className="rounded-3xl border border-emerald-300/16 bg-emerald-300/[0.08] p-4 text-sm leading-7 text-white/72">
-              The current Android source is Testnet-configured for review, testing, and mobile governance walkthroughs. The downloadable debug APK remains the active evaluator artifact while release hardening continues.
+              Android is a direct product surface for PrivateDAO operations: connect wallet, run governance lifecycle actions, and verify signatures and proof from mobile against Solana Testnet.
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
@@ -73,7 +96,7 @@ export default function AndroidPage() {
                 <div className="mt-3 space-y-2 text-sm leading-7 text-white/68">
                   <div>Working branch: <span className="text-white">{androidBranchName}</span></div>
                   <div>Channel: <span className="text-white">Android-native Testnet surface</span></div>
-                  <div>Direction: <span className="text-white">broader service parity with web</span></div>
+                  <div>Product scope: <span className="text-white">governance, treasury actions, proof-linked verification</span></div>
                 </div>
               </div>
             </div>
@@ -110,7 +133,10 @@ export default function AndroidPage() {
               </div>
             ))}
             <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-4 text-sm leading-7 text-white/72">
-              Mobile is already usable for the core governance lifecycle on Testnet. The remaining roadmap is focused on deeper native proof, monitoring, treasury previewing, and release hardening until the mobile surface reaches fuller operational alignment with the web app.
+              This Android surface is designed to feel like a category shift: complex DAO logic is reduced to guided wallet actions, while privacy, cryptographic guarantees, and on-chain verification stay visible to operators, partners, and reviewers.
+            </div>
+            <div className="rounded-3xl border border-amber-300/16 bg-amber-300/[0.08] p-4 text-sm leading-7 text-white/72">
+              Android capture expansion for the full reveal, finalize, and execute evidence lane is <span className="text-white">جاري الانهاء</span>. The product surface and build are live now; the remaining task is deeper evidence coverage, not a missing mobile app shell.
             </div>
           </CardContent>
         </Card>
@@ -118,40 +144,31 @@ export default function AndroidPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Recommended review path</CardTitle>
+          <CardTitle>Recommended mobile wallet flow</CardTitle>
         </CardHeader>
-        <CardContent className="grid gap-4 lg:grid-cols-3">
-          <div className="rounded-3xl border border-white/8 bg-white/4 p-4 text-sm leading-7 text-white/68">
-            <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-cyan-200/76">
-              <Smartphone className="h-3.5 w-3.5" />
-              1. Install
-            </div>
-            <div className="mt-3">Download the APK, install it on Android, and connect through a Mobile Wallet Adapter-compatible wallet.</div>
-          </div>
-          <div className="rounded-3xl border border-white/8 bg-white/4 p-4 text-sm leading-7 text-white/68">
-            <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-violet-200/76">
-              <CheckCircle2 className="h-3.5 w-3.5" />
-              2. Operate
-            </div>
-            <div className="mt-3">Run DAO, proposal, voting, finalize, authority, and execution flows against the same Testnet program used by the web app.</div>
-          </div>
-          <div className="rounded-3xl border border-white/8 bg-white/4 p-4 text-sm leading-7 text-white/68">
-            <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-emerald-200/76">
-              <ShieldCheck className="h-3.5 w-3.5" />
-              3. Verify
-            </div>
-            <div className="mt-3">Follow explorer, proof, monitoring, and reviewer continuity from the app into the same trust surfaces already used on the web side.</div>
-          </div>
+        <CardContent className="grid gap-4 lg:grid-cols-2">
+          {mobileFlowItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <div key={item.title} className="rounded-3xl border border-white/8 bg-white/4 p-4 text-sm leading-7 text-white/68">
+                <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-cyan-200/76">
+                  <Icon className="h-3.5 w-3.5" />
+                  {item.title}
+                </div>
+                <div className="mt-3">{item.detail}</div>
+              </div>
+            );
+          })}
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle>Next delivery direction</CardTitle>
+          <CardTitle>Android product positioning</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4 text-sm leading-7 text-white/68">
           <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
-            The next engineering steps are focused on AVD/device runtime proof, richer treasury execution previews, denser in-app reviewer evidence, and release hardening so the Android surface moves from strong Testnet operations into a cleaner release-grade product lane.
+            PrivateDAO Android is positioned as a category shift for DAO operations: privacy-preserving governance and treasury execution from mobile, with cryptographic trust and on-chain verification accessible to ordinary users.
           </div>
           <div className="flex flex-wrap gap-3">
             <Link href="/proof" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>

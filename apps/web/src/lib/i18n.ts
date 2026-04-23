@@ -368,7 +368,7 @@ const englishCopy: LocalizedCopy = {
     footerSummary:
       "PrivateDAO is a privacy-focused governance and treasury product on Solana with additive hardening, runtime evidence, and clear verification surfaces.",
     footerSupport:
-      "Built with execution support from a multi-national technical team. Product direction, execution accountability, and external coordination are led by Fahd Kotb.",
+      "Developed in public through github.com/X-PACT/PrivateDAO with product proof, runtime evidence, and final security hardening moving in parallel.",
     verificationView: "Verification view",
     fastPath: "Fast path",
     telemetryPacket: "Telemetry packet",
@@ -622,8 +622,8 @@ const englishCopy: LocalizedCopy = {
   },
   statusBanner: {
     label: "Live development notice",
-    title: "PrivateDAO is live on Solana Testnet while core development continues through April 30, 2026.",
-    body: "PrivateDAO is live on Solana Testnet now: the preserved Anchor program is deployed, the standard governance treasury lifecycle has executed end to end, and treasury delta verification is recorded by public hashes. The full public product route is moving onto this Testnet path through the current release window while custody proof, billing rehearsal, localization, and confidential settlement packets are tightened.",
+    title: "PrivateDAO is live on Solana Testnet and advancing as a next-generation operating system for private treasury and market execution.",
+    body: "The live Testnet path is already active: governance lifecycle execution, treasury delta verification, wallet-first operation flow, and public proof continuity are in place. PrivateDAO is now evolving through continuous product expansion across custody proof, billing rehearsal, localization, confidential settlement, and reviewer-grade operating surfaces.",
     retry: "Retry in a few minutes",
     until: "Testnet standard lifecycle complete; mainnet is not claimed yet",
     openTrust: "Open trust",
