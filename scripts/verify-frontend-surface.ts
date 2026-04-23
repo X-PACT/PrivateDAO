@@ -30,6 +30,8 @@ function main() {
     throw new Error("home shell is missing the achievement surface for Superteam Poland");
   }
 
+  const includesAny = (body: string, fragments: string[]) => fragments.some((fragment) => body.includes(fragment));
+
   const checks: Array<[string, string, string]> = [
     [rootIndex, "__next_f.push", "root live surface is missing the exported Next.js app payload"],
     [siteHeader, 'href: "/documents"', "site header is missing the Documents route"],
@@ -38,11 +40,8 @@ function main() {
     [siteHeader, 'href: "/community"', "site header is missing the Community route"],
     [siteHeader, 'href: "/products"', "site header is missing the Products route"],
     [siteHeader, 'href: "/network"', "site header is missing the Network route"],
-    [homeShell, "Private governance on Solana", "home shell is missing the Solana product badge"],
     [homeShell, "Powered by the live stack", "home shell is missing the integrated tech section"],
-    [homeShell, "Open verification view", "home shell is missing the verification CTA"],
     [homeShell, "Public good", "home shell is missing the Solana-style value section"],
-    [homeShell, "The public story explains the product, cryptography, and commercial corridors in one watch surface.", "home shell is missing the hosted story video section"],
     [homeShell, "The shortest path from landing page to a real Testnet action", "home shell is missing the focused route-entry narrative"],
     [commandCenter, "Command Center", "command center surface is missing"],
     [proofCenter, "Proof center", "proof center surface is missing"],
@@ -78,6 +77,23 @@ function main() {
     if (!body.includes(fragment)) {
       throw new Error(message);
     }
+  }
+
+  if (!includesAny(homeShell, ["Private governance on Solana", "Governed"])) {
+    throw new Error("home shell is missing the primary product badge surface");
+  }
+
+  if (!includesAny(homeShell, ["Open verification view", "Review Proof"])) {
+    throw new Error("home shell is missing the verification CTA");
+  }
+
+  if (
+    !includesAny(homeShell, [
+      "The public story explains the product, cryptography, and commercial corridors in one watch surface.",
+      "Proof and runtime surfaces remain open for judges, operators, and partners after every action.",
+    ])
+  ) {
+    throw new Error("home shell is missing the hosted story and verification narrative section");
   }
 
   console.log("Frontend surface verification: PASS");

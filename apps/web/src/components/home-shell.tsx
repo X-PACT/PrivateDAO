@@ -272,6 +272,9 @@ export function HomeShell() {
         <div className="mb-6 rounded-[24px] border border-cyan-300/14 bg-[linear-gradient(180deg,rgba(9,20,36,0.95),rgba(7,12,22,0.98))] p-5 text-sm leading-7 text-white/70">
           PrivateDAO is aligned across web and Android: normal users can run advanced DAO operations from mobile with wallet-first steps, privacy-preserving governance, encrypted operation lanes, and verifiable on-chain receipts.
         </div>
+        <div className="mb-6 rounded-[24px] border border-white/8 bg-white/[0.03] p-5 text-sm leading-7 text-white/68">
+          The shortest path from landing page to a real Testnet action now stays inside one product shell: connect a wallet, review the policy and risk context, sign the exact action, then verify the resulting receipt and runtime proof.
+        </div>
         <div className="grid gap-4 md:grid-cols-3">
           <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5 text-sm leading-7 text-white/62">
             Wallet-first operations keep signer control clear from governance to settlement.

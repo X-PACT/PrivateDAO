@@ -1,0 +1,251 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import Link from "next/link";
+import { ArrowUpRight, LockKeyhole, Send, ShieldCheck } from "lucide-react";
+
+import { persistOperationReceipt } from "@/lib/supabase/operation-receipts";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+type PrivateRail = "cloak" | "umbra";
+type SettlementAsset = "PUSD" | "AUDD" | "USDC" | "USDT" | "SOL";
+
+const railProfiles: Record<
+  PrivateRail,
+  {
+    title: string;
+    summary: string;
+    auditMode: string;
+    visibility: string;
+    proofHref: string;
+    docsHref: string;
+  }
+> = {
+  cloak: {
+    title: "Cloak private treasury lane",
+    summary:
+      "Use Cloak posture when payroll, vendor settlement, or treasury motion needs selective disclosure and a tighter private execution story.",
+    auditMode: "selective-disclosure",
+    visibility: "private-by-default",
+    proofHref: "/proof",
+    docsHref: "/documents/live-proof-v3",
+  },
+  umbra: {
+    title: "Umbra confidential payout lane",
+    summary:
+      "Use Umbra posture when recipient privacy, claim-style flows, and public-facing confidential payout UX are the main product requirement.",
+    auditMode: "confidential-payout",
+    visibility: "recipient-private",
+    proofHref: "/judge",
+    docsHref: "/documents/privacy-and-encryption-proof-guide",
+  },
+};
+
+function getRailEndpoint(rail: PrivateRail) {
+  return rail === "cloak"
+    ? process.env.NEXT_PUBLIC_CLOAK_PROXY_ENDPOINT
+    : process.env.NEXT_PUBLIC_UMBRA_PROXY_ENDPOINT;
+}
+
+export function PrivateSettlementRailWorkbench() {
+  const [rail, setRail] = useState<PrivateRail>("cloak");
+  const [operationType, setOperationType] = useState("private-payroll");
+  const [asset, setAsset] = useState<SettlementAsset>("USDC");
+  const [amount, setAmount] = useState("250");
+  const [recipient, setRecipient] = useState("RecipientWalletxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+  const [memo, setMemo] = useState("Payroll tranche / reviewer-safe memo");
+  const [status, setStatus] = useState("Prepare a private settlement intent, then forward it to a rail-specific proxy when available.");
+  const [preview, setPreview] = useState("");
+  const [running, setRunning] = useState(false);
+
+  const profile = railProfiles[rail];
+  const payload = useMemo(
+    () => ({
+      rail,
+      operationType,
+      asset,
+      amount,
+      recipient,
+      memo,
+      auditMode: profile.auditMode,
+      recipientVisibility: profile.visibility,
+      createdAt: new Date().toISOString(),
+    }),
+    [amount, asset, memo, operationType, profile.auditMode, profile.visibility, rail, recipient],
+  );
+
+  async function handleForward() {
+    const endpoint = getRailEndpoint(rail);
+    const reference = `${rail}-${Date.now()}`;
+
+    setPreview(JSON.stringify(payload, null, 2));
+
+    if (!endpoint) {
+      setStatus(
+        `${profile.title} is ready in-product. Add ${rail === "cloak" ? "NEXT_PUBLIC_CLOAK_PROXY_ENDPOINT" : "NEXT_PUBLIC_UMBRA_PROXY_ENDPOINT"} to forward live requests.`,
+      );
+      await persistOperationReceipt({
+        operationType,
+        proposalId: `${rail}:${operationType}`,
+        approvalState: "prepared",
+        executionReference: reference,
+        privateSettlementRail: rail,
+        stablecoinSymbol: asset,
+        auditMode: profile.auditMode,
+        recipientVisibility: profile.visibility,
+        metadata: payload,
+      });
+      return;
+    }
+
+    setRunning(true);
+    setStatus(`Forwarding ${profile.title} request...`);
+
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      const body = await response.json().catch(() => null);
+      const executionReference =
+        typeof body?.signature === "string"
+          ? body.signature
+          : typeof body?.reference === "string"
+            ? body.reference
+            : reference;
+
+      setPreview(JSON.stringify(body ?? payload, null, 2));
+      setStatus(response.ok ? `${profile.title} request delivered.` : `${profile.title} endpoint responded ${response.status}.`);
+
+      await persistOperationReceipt({
+        operationType,
+        proposalId: `${rail}:${operationType}`,
+        approvalState: response.ok ? "forwarded" : "prepared",
+        executionReference,
+        privateSettlementRail: rail,
+        stablecoinSymbol: asset,
+        auditMode: profile.auditMode,
+        recipientVisibility: profile.visibility,
+        metadata: payload,
+      });
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Private settlement request failed.");
+    } finally {
+      setRunning(false);
+    }
+  }
+
+  return (
+    <section className="rounded-[28px] border border-violet-300/16 bg-violet-300/[0.08] p-6">
+      <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-violet-100/78">
+        <LockKeyhole className="h-4 w-4" />
+        Private settlement rail workbench
+      </div>
+      <h2 className="mt-3 text-2xl font-semibold text-white">Prepare and forward rail-specific private settlement intents</h2>
+      <p className="mt-3 max-w-4xl text-sm leading-7 text-white/68">
+        This workbench turns private settlement into a real operator action surface. It prepares a Cloak or Umbra execution
+        intent, forwards it through a rail-specific proxy when available, and records the resulting receipt path.
+      </p>
+
+      <div className="mt-5 grid gap-4 xl:grid-cols-[0.95fr_1.05fr]">
+        <div className="space-y-4">
+          <div className="rounded-[24px] border border-white/10 bg-black/20 p-4">
+            <div className="text-[11px] uppercase tracking-[0.22em] text-white/44">Settlement rail</div>
+            <div className="mt-3 grid gap-3 md:grid-cols-2">
+              {(["cloak", "umbra"] as PrivateRail[]).map((entry) => (
+                <button
+                  key={entry}
+                  type="button"
+                  onClick={() => setRail(entry)}
+                  className={cn(
+                    "rounded-2xl border px-4 py-3 text-left transition",
+                    rail === entry
+                      ? "border-violet-300/24 bg-violet-300/[0.12] text-white"
+                      : "border-white/10 bg-black/20 text-white/68 hover:border-white/16 hover:bg-white/[0.04]",
+                  )}
+                >
+                  <div className="text-sm font-medium text-white">{railProfiles[entry].title}</div>
+                  <div className="mt-1 text-sm leading-6 text-white/60">{railProfiles[entry].summary}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-[24px] border border-white/10 bg-black/20 p-4">
+            <div className="grid gap-4 md:grid-cols-2">
+              <label className="space-y-2 text-sm text-white/70">
+                <div>Operation type</div>
+                <input value={operationType} onChange={(event) => setOperationType(event.target.value)} className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none" />
+              </label>
+              <label className="space-y-2 text-sm text-white/70">
+                <div>Asset</div>
+                <select value={asset} onChange={(event) => setAsset(event.target.value as SettlementAsset)} className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none">
+                  <option value="PUSD">PUSD</option>
+                  <option value="AUDD">AUDD</option>
+                  <option value="USDC">USDC</option>
+                  <option value="USDT">USDT</option>
+                  <option value="SOL">SOL</option>
+                </select>
+              </label>
+              <label className="space-y-2 text-sm text-white/70">
+                <div>Amount</div>
+                <input value={amount} onChange={(event) => setAmount(event.target.value)} className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none" />
+              </label>
+              <label className="space-y-2 text-sm text-white/70">
+                <div>Recipient</div>
+                <input value={recipient} onChange={(event) => setRecipient(event.target.value)} className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none" />
+              </label>
+            </div>
+            <label className="mt-4 block space-y-2 text-sm text-white/70">
+              <div>Operator memo</div>
+              <textarea value={memo} onChange={(event) => setMemo(event.target.value)} rows={4} className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none" />
+            </label>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <button type="button" className={cn(buttonVariants({ size: "sm" }))} onClick={() => void handleForward()} disabled={running}>
+                {running ? "Forwarding..." : "Prepare / forward intent"}
+              </button>
+              <Link href={profile.proofHref} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+                Open proof route
+              </Link>
+              <Link href={profile.docsHref} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                Open packet
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <div className="rounded-[24px] border border-emerald-300/16 bg-emerald-300/[0.08] p-4">
+            <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-emerald-100/76">
+              <ShieldCheck className="h-4 w-4" />
+              Delivery state
+            </div>
+            <div className="mt-3 text-sm leading-7 text-white/72">{status}</div>
+          </div>
+
+          <div className="rounded-[24px] border border-white/10 bg-black/20 p-4">
+            <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-white/44">
+              <Send className="h-4 w-4 text-violet-100/78" />
+              Prepared intent
+            </div>
+            <pre className="mt-3 overflow-x-auto rounded-2xl border border-white/10 bg-black/30 p-4 text-xs leading-6 text-white/70">
+              {JSON.stringify(payload, null, 2)}
+            </pre>
+          </div>
+
+          <div className="rounded-[24px] border border-white/10 bg-black/20 p-4">
+            <div className="text-[11px] uppercase tracking-[0.22em] text-white/44">Latest response preview</div>
+            <pre className="mt-3 overflow-x-auto rounded-2xl border border-white/10 bg-black/30 p-4 text-xs leading-6 text-white/70">
+              {preview || "No response yet. Prepare the intent or connect a live proxy endpoint first."}
+            </pre>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
