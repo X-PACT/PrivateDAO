@@ -288,6 +288,31 @@ export function getServiceOperationalCards(): ServiceOperationalCard[] {
         "Real payment rails need stricter beneficiary validation, payout policy closure, production custody ceremony, and external audit evidence before mainnet claims.",
     },
     {
+      title: "SolRouter Encrypted AI",
+      summary:
+        "SolRouter Encrypted AI turns proposal and treasury analysis into deterministic decision briefs, then encrypts output client-side before sharing.",
+      tryNow:
+        "Open the SolRouter lane, select a live proposal, generate deterministic AI brief, encrypt it locally, then continue to proof continuity.",
+      evidence: [proofFreshness, executeHealth, proofCompletion].filter(Boolean) as MetricPreview[],
+      intakeRoute: {
+        label: "Open encrypted AI lane",
+        href: "/services/solrouter-encrypted-ai",
+      },
+      bestRoute: {
+        label: "Open intelligence route",
+        href: "/intelligence",
+      },
+      profileRoutes: [
+        { label: "Govern", href: "/govern" },
+        { label: "Proof", href: "/proof" },
+        { label: "Assistant", href: "/assistant" },
+      ],
+      buyerMotion:
+        "Position deterministic encrypted decision support as a premium operator feature for teams that need fast governance analysis without leaking sensitive planning context.",
+      mainnetGate:
+        "Mainnet rollout should include stricter model-bounding policy, evidence retention standards, and reviewed cryptographic envelope handling for encrypted brief exports.",
+    },
+    {
       title: "Security / Encryption",
       summary:
         "Security is a product layer here: ZK, REFHE, MagicBlock, trust packets, and runtime diagnostics are visible to users, buyers, and reviewers.",

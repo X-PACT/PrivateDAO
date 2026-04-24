@@ -52,6 +52,10 @@ This folder is the canonical track-by-track submission path.
 - Submission: [`track-11-encrypt-ika.md`](./track-11-encrypt-ika.md)
 - Video script: [`video-scripts/track-11-encrypt-ika-video-script.md`](./video-scripts/track-11-encrypt-ika-video-script.md)
 
+12. SolRouter Encrypted AI
+- Submission: [`track-12-solrouter-encrypted-ai.md`](./track-12-solrouter-encrypted-ai.md)
+- Video script: [`video-scripts/track-12-solrouter-encrypted-ai-video-script.md`](./video-scripts/track-12-solrouter-encrypted-ai-video-script.md)
+
 ## Publish Rule
 
 Each track is considered closed only after:

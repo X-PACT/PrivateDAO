@@ -109,6 +109,12 @@ export default function ProofPage() {
       featureHref: "/services/encrypt-ika-operations",
       proofHref: "/documents/encrypted-operations-lane",
     },
+    {
+      title: "SolRouter encrypted AI",
+      summary: "Deterministic proposal intelligence with encrypted brief export and receipt continuity.",
+      featureHref: "/services/solrouter-encrypted-ai",
+      proofHref: "/proof",
+    },
   ] as const;
 
   return (

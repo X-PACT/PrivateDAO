@@ -19,6 +19,7 @@ const technologyLanes = [
   { key: "eitherway", label: "Wallet-first UX", summary: "Live dApp user flow with clear wallet action boundaries.", href: "/services/eitherway-live-dapp" },
   { key: "magicblock", label: "Responsive execution", summary: "Low-latency corridor for sensitive execution flows.", href: "/security" },
   { key: "encrypt", label: "Encrypted ops layer", summary: "Confidential planning and policy-bound execution support.", href: "/services/encrypt-ika-operations" },
+  { key: "solrouter", label: "Encrypted AI lane", summary: "Deterministic governance intelligence with encrypted brief export.", href: "/services/solrouter-encrypted-ai" },
   { key: "rpc", label: "Runtime infrastructure", summary: "Fast reads, diagnostics, and reviewer-facing runtime evidence.", href: "/services/runtime-infrastructure" },
   { key: "proof", label: "Proof continuity", summary: "One verification surface for feature, receipt, and trust checks.", href: "/proof" },
 ] as const;
@@ -34,7 +35,7 @@ export function TrackTechnologyGrid() {
             Pick any card and jump directly to its live route. This keeps the product simple for users and fast for reviewers.
           </p>
         </div>
-        <Badge variant="cyan">14 active lanes</Badge>
+        <Badge variant="cyan">15 active lanes</Badge>
       </div>
 
       <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">

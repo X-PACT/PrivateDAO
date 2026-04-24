@@ -15,6 +15,7 @@ const iconMap = {
   "Security / Encryption": ShieldCheck,
   "PUSD Stablecoin Treasury": Coins,
   "Eitherway Wallet-First Live dApp": WalletCards,
+  "SolRouter Encrypted AI": ShieldCheck,
   "Zerion Agent Policy": ShieldCheck,
   "Torque Growth Loop": BriefcaseBusiness,
   "Agentic Treasury Micropayments": ShieldCheck,
