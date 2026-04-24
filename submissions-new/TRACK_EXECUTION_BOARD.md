@@ -28,3 +28,22 @@ Do not start the next track before the current one has:
 3. Proof route
 4. Submission file
 5. Video script file
+
+## Live Route Links
+
+| Track | Product | Judge | Proof |
+|---|---|---|---|
+| 01 GoldRush | `/intelligence` | `/judge` | `/proof` |
+| 02 Cloak | `/services/cloak-private-settlement` | `/judge` | `/proof` |
+| 03 Jupiter | `/services/jupiter-treasury-route` | `/judge` | `/proof` |
+| 04 Zerion | `/services/zerion-agent-policy` | `/judge` | `/proof` |
+| 05 Torque | `/services/torque-growth-loop` | `/judge` | `/proof` |
+| 06 AUDD | `/services/audd-stablecoin` | `/judge` | `/proof` |
+| 07 PUSD | `/services/pusd-stablecoin` | `/judge` | `/proof` |
+| 08 Umbra | `/services/umbra-confidential-payout` | `/judge` | `/proof` |
+| 09 Eitherway | `/services/eitherway-live-dapp` | `/judge` | `/proof` |
+| 10 Runtime | `/services/runtime-infrastructure` | `/judge` | `/proof` |
+| 11 Encrypt / IKA | `/services/encrypt-ika-operations` | `/judge` | `/proof` |
+| 12 SolRouter | `/services/solrouter-encrypted-ai` | `/judge` | `/proof` |
+| 13 Consumer UX | `/services/consumer-governance-ux` | `/judge` | `/proof` |
+| 14 Main Frontier | `/services/main-frontier-closure` | `/judge` | `/proof` |

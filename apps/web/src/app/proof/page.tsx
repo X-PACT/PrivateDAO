@@ -15,6 +15,7 @@ import { OperationsShell } from "@/components/operations-shell";
 import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
 import { ProofEntryBanner } from "@/components/proof-entry-banner";
 import { ProofFlowRail } from "@/components/proof-flow-rail";
+import { ProofMatrix } from "@/components/proof-matrix";
 import { ProofCenter } from "@/components/proof-center";
 import { ReadNodeActivationStrip } from "@/components/read-node-activation-strip";
 import { ReadNodeHostReadinessStrip } from "@/components/read-node-host-readiness-strip";
@@ -235,6 +236,7 @@ export default function ProofPage() {
         <ProofCenter />
       </div>
       <OperationReceiptLedger snapshot={runtimeSnapshot} />
+      <ProofMatrix />
       <SupabaseOperationTimeline />
       <DevnetExecutionScreenshotsStrip />
     </OperationsShell>
