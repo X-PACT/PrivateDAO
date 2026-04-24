@@ -40,6 +40,7 @@ export default function JudgePage() {
     ["Runtime infrastructure", "Fast RPC and telemetry lane with reviewer-facing diagnostics continuity.", "/services/runtime-infrastructure", "/analytics"],
     ["Encrypt / IKA operations", "Client-side encrypted payload lane with commitment-safe proof continuity.", "/services/encrypt-ika-operations", "/documents/encrypted-operations-lane"],
     ["SolRouter encrypted AI", "Deterministic proposal intelligence with encrypted brief output and receipt continuity.", "/services/solrouter-encrypted-ai", "/proof"],
+    ["Main Frontier closure", "Integrated product route connecting all shipped operational lanes.", "/services/main-frontier-closure", "/proof"],
   ] as const;
 
   return (

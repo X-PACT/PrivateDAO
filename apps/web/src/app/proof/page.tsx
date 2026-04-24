@@ -121,6 +121,12 @@ export default function ProofPage() {
       featureHref: "/services/solrouter-encrypted-ai",
       proofHref: "/proof",
     },
+    {
+      title: "Main Frontier closure",
+      summary: "Integrated route that composes all shipped lanes into one judge-ready product surface.",
+      featureHref: "/services/main-frontier-closure",
+      proofHref: "/proof",
+    },
   ] as const;
 
   return (

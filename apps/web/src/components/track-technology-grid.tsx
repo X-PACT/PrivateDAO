@@ -23,6 +23,7 @@ const technologyLanes = [
   { key: "solrouter", label: "Encrypted AI lane", summary: "Deterministic governance intelligence with encrypted brief export.", href: "/services/solrouter-encrypted-ai" },
   { key: "rpc", label: "Runtime infrastructure", summary: "Fast reads, diagnostics, and reviewer-facing runtime evidence.", href: "/services/runtime-infrastructure" },
   { key: "proof", label: "Proof continuity", summary: "One verification surface for feature, receipt, and trust checks.", href: "/proof" },
+  { key: "frontier", label: "Main Frontier closure", summary: "Unified integrated route across all shipped lanes.", href: "/services/main-frontier-closure" },
 ] as const;
 
 export function TrackTechnologyGrid() {
@@ -36,7 +37,7 @@ export function TrackTechnologyGrid() {
             Pick any card and jump directly to its live route. This keeps the product simple for users and fast for reviewers.
           </p>
         </div>
-        <Badge variant="cyan">16 active lanes</Badge>
+        <Badge variant="cyan">17 active lanes</Badge>
       </div>
 
       <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">

@@ -338,6 +338,31 @@ export function getServiceOperationalCards(): ServiceOperationalCard[] {
         "Mainnet rollout should include stricter model-bounding policy, evidence retention standards, and reviewed cryptographic envelope handling for encrypted brief exports.",
     },
     {
+      title: "Main Frontier Closure",
+      summary:
+        "Main Frontier Closure packages all shipped tracks as one integrated operating system route for judges, users, and buyers.",
+      tryNow:
+        "Open the main closure route, walk through the integrated lane cards, and validate that each lane stays one click away from judge/proof surfaces.",
+      evidence: [proofFreshness, executeHealth, proofCompletion].filter(Boolean) as MetricPreview[],
+      intakeRoute: {
+        label: "Open main closure",
+        href: "/services/main-frontier-closure",
+      },
+      bestRoute: {
+        label: "Open judge",
+        href: "/judge",
+      },
+      profileRoutes: [
+        { label: "Proof", href: "/proof" },
+        { label: "Execute", href: "/execute" },
+        { label: "Services", href: "/services" },
+      ],
+      buyerMotion:
+        "Position PrivateDAO as a unified treasury and governance operating system instead of fragmented sponsor demos.",
+      mainnetGate:
+        "Mainnet closure depends on keeping each lane operationally tested, auditable, and consistently linked to proof continuity under one release discipline.",
+    },
+    {
       title: "Security / Encryption",
       summary:
         "Security is a product layer here: ZK, REFHE, MagicBlock, trust packets, and runtime diagnostics are visible to users, buyers, and reviewers.",

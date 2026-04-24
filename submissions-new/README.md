@@ -60,6 +60,10 @@ This folder is the canonical track-by-track submission path.
 - Submission: [`track-13-consumer-governance-ux.md`](./track-13-consumer-governance-ux.md)
 - Video script: [`video-scripts/track-13-consumer-governance-ux-video-script.md`](./video-scripts/track-13-consumer-governance-ux-video-script.md)
 
+14. Main Frontier
+- Submission: [`track-14-main-frontier.md`](./track-14-main-frontier.md)
+- Video script: [`video-scripts/track-14-main-frontier-video-script.md`](./video-scripts/track-14-main-frontier-video-script.md)
+
 ## Publish Rule
 
 Each track is considered closed only after:
