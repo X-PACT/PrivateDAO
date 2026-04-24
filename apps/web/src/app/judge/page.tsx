@@ -30,7 +30,7 @@ export default function JudgePage() {
     ["Cloak private settlement", "Confidential treasury and payroll execution lane with receipt continuity.", "/services/cloak-private-settlement", "/proof"],
     ["Intelligence evidence", "GoldRush + Dune Sim treasury and counterparty review surface.", "/intelligence", "/proof"],
     ["AUDD treasury mode", "AUD settlement, invoice, and merchant-facing stablecoin lane.", "/services/audd-stablecoin", "/documents/audd-stablecoin-treasury-layer"],
-    ["PUSD treasury mode", "Stable reserve, grants, payroll, and reward-pool lane.", "/services/testnet-billing-rehearsal", "/documents/pusd-stablecoin-treasury-layer"],
+    ["PUSD treasury mode", "Stable reserve, grants, payroll, and reward-pool lane.", "/services/pusd-stablecoin", "/documents/pusd-stablecoin-treasury-layer"],
     ["Jupiter treasury route", "Governed route preview for rebalance and payout funding.", "/services/jupiter-treasury-route", "/documents/jupiter-treasury-route"],
     ["Zerion policy lane", "Bounded agent execution with wallet-safe policy framing.", "/services/zerion-agent-policy", "/documents/zerion-autonomous-agent-policy"],
     ["Torque growth loop", "Retention and reward surfaces tied to product activity.", "/services/torque-growth-loop", "/documents/torque-growth-loop"],

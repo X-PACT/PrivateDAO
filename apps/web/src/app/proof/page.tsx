@@ -64,7 +64,7 @@ export default function ProofPage() {
     {
       title: "PUSD treasury mode",
       summary: "Stable reserve, payroll, and reward-pool lane with treasury packet continuity.",
-      featureHref: "/services/testnet-billing-rehearsal",
+      featureHref: "/services/pusd-stablecoin",
       proofHref: "/documents/pusd-stablecoin-treasury-layer",
     },
     {

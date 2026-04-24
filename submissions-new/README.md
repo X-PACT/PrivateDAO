@@ -32,6 +32,10 @@ This folder is the canonical track-by-track submission path.
 - Submission: [`track-06-audd.md`](./track-06-audd.md)
 - Video script: [`video-scripts/track-06-audd-video-script.md`](./video-scripts/track-06-audd-video-script.md)
 
+7. PUSD Stablecoin
+- Submission: [`track-07-pusd.md`](./track-07-pusd.md)
+- Video script: [`video-scripts/track-07-pusd-video-script.md`](./video-scripts/track-07-pusd-video-script.md)
+
 ## Publish Rule
 
 Each track is considered closed only after:
