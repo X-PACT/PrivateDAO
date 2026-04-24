@@ -97,6 +97,12 @@ export default function ProofPage() {
       featureHref: "/services/eitherway-live-dapp",
       proofHref: "/proof",
     },
+    {
+      title: "Runtime infrastructure",
+      summary: "Fast RPC, host readiness, and telemetry lane with operational evidence continuity.",
+      featureHref: "/services/runtime-infrastructure",
+      proofHref: "/analytics",
+    },
   ] as const;
 
   return (

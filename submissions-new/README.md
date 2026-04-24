@@ -44,6 +44,10 @@ This folder is the canonical track-by-track submission path.
 - Submission: [`track-09-eitherway.md`](./track-09-eitherway.md)
 - Video script: [`video-scripts/track-09-eitherway-video-script.md`](./video-scripts/track-09-eitherway-video-script.md)
 
+10. Runtime Infrastructure
+- Submission: [`track-10-runtime-infrastructure.md`](./track-10-runtime-infrastructure.md)
+- Video script: [`video-scripts/track-10-runtime-infrastructure-video-script.md`](./video-scripts/track-10-runtime-infrastructure-video-script.md)
+
 ## Publish Rule
 
 Each track is considered closed only after:

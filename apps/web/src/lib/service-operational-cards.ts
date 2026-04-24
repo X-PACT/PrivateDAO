@@ -65,7 +65,7 @@ export function getServiceOperationalCards(): ServiceOperationalCard[] {
       },
       bestRoute: {
         label: "Open RPC surface",
-        href: "/services",
+        href: "/services/runtime-infrastructure",
       },
       buyerMotion:
         "Sell shared or dedicated DAO-specific RPC plus hosted reads and operator support as the first paid infrastructure motion.",
