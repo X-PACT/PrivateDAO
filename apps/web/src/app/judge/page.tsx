@@ -36,6 +36,7 @@ export default function JudgePage() {
     ["Zerion policy lane", "Bounded agent execution with wallet-safe policy framing.", "/services/zerion-agent-policy", "/documents/zerion-autonomous-agent-policy"],
     ["Torque growth loop", "Retention and reward surfaces tied to product activity.", "/services/torque-growth-loop", "/documents/torque-growth-loop"],
     ["Eitherway live dApp", "Wallet-first connect/sign/verify lane with partner-ready UX boundaries.", "/services/eitherway-live-dapp", "/proof"],
+    ["Consumer governance UX", "Normal-user path across web and Android with wallet-first signing clarity.", "/services/consumer-governance-ux", "/android"],
     ["Runtime infrastructure", "Fast RPC and telemetry lane with reviewer-facing diagnostics continuity.", "/services/runtime-infrastructure", "/analytics"],
     ["Encrypt / IKA operations", "Client-side encrypted payload lane with commitment-safe proof continuity.", "/services/encrypt-ika-operations", "/documents/encrypted-operations-lane"],
     ["SolRouter encrypted AI", "Deterministic proposal intelligence with encrypted brief output and receipt continuity.", "/services/solrouter-encrypted-ai", "/proof"],

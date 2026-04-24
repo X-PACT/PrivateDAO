@@ -17,6 +17,7 @@ const technologyLanes = [
   { key: "audd", label: "AUDD treasury mode", summary: "AUD-denominated merchant and treasury settlement lane.", href: "/services/audd-stablecoin" },
   { key: "pusd", label: "PUSD treasury mode", summary: "Stable reserve, payroll, grants, and reward pool lane.", href: "/services/pusd-stablecoin" },
   { key: "eitherway", label: "Wallet-first UX", summary: "Live dApp user flow with clear wallet action boundaries.", href: "/services/eitherway-live-dapp" },
+  { key: "consumer", label: "Consumer governance UX", summary: "Normal-user operation path across web and Android surfaces.", href: "/services/consumer-governance-ux" },
   { key: "magicblock", label: "Responsive execution", summary: "Low-latency corridor for sensitive execution flows.", href: "/security" },
   { key: "encrypt", label: "Encrypted ops layer", summary: "Confidential planning and policy-bound execution support.", href: "/services/encrypt-ika-operations" },
   { key: "solrouter", label: "Encrypted AI lane", summary: "Deterministic governance intelligence with encrypted brief export.", href: "/services/solrouter-encrypted-ai" },
@@ -35,7 +36,7 @@ export function TrackTechnologyGrid() {
             Pick any card and jump directly to its live route. This keeps the product simple for users and fast for reviewers.
           </p>
         </div>
-        <Badge variant="cyan">15 active lanes</Badge>
+        <Badge variant="cyan">16 active lanes</Badge>
       </div>
 
       <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">

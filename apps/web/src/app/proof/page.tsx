@@ -98,6 +98,12 @@ export default function ProofPage() {
       proofHref: "/proof",
     },
     {
+      title: "Consumer governance UX",
+      summary: "Normal-user path with wallet-first onboarding and cross-surface continuity (web + Android).",
+      featureHref: "/services/consumer-governance-ux",
+      proofHref: "/android",
+    },
+    {
       title: "Runtime infrastructure",
       summary: "Fast RPC, host readiness, and telemetry lane with operational evidence continuity.",
       featureHref: "/services/runtime-infrastructure",

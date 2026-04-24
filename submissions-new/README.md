@@ -56,6 +56,10 @@ This folder is the canonical track-by-track submission path.
 - Submission: [`track-12-solrouter-encrypted-ai.md`](./track-12-solrouter-encrypted-ai.md)
 - Video script: [`video-scripts/track-12-solrouter-encrypted-ai-video-script.md`](./video-scripts/track-12-solrouter-encrypted-ai-video-script.md)
 
+13. Consumer Governance UX
+- Submission: [`track-13-consumer-governance-ux.md`](./track-13-consumer-governance-ux.md)
+- Video script: [`video-scripts/track-13-consumer-governance-ux-video-script.md`](./video-scripts/track-13-consumer-governance-ux-video-script.md)
+
 ## Publish Rule
 
 Each track is considered closed only after:

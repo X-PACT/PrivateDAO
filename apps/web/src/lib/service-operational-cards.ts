@@ -288,6 +288,31 @@ export function getServiceOperationalCards(): ServiceOperationalCard[] {
         "Real payment rails need stricter beneficiary validation, payout policy closure, production custody ceremony, and external audit evidence before mainnet claims.",
     },
     {
+      title: "Consumer Governance UX",
+      summary:
+        "Consumer Governance UX converts advanced DAO execution into a guided normal-user corridor with wallet-first onboarding and proof continuity.",
+      tryNow:
+        "Open the consumer UX lane, run wallet sandbox actions, follow connect/review/sign/verify path, then check proof and Android parity surfaces.",
+      evidence: [walletCoverage, executeHealth, proofCompletion].filter(Boolean) as MetricPreview[],
+      intakeRoute: {
+        label: "Open consumer UX lane",
+        href: "/services/consumer-governance-ux",
+      },
+      bestRoute: {
+        label: "Open start route",
+        href: "/start",
+      },
+      profileRoutes: [
+        { label: "Android app", href: "/android" },
+        { label: "Govern", href: "/govern" },
+        { label: "Proof", href: "/proof" },
+      ],
+      buyerMotion:
+        "Position the lane as onboarding and activation infrastructure for teams that need real users to complete governed operations without expert support.",
+      mainnetGate:
+        "Mainnet closure requires final mobile deep-link resilience, signing clarity on edge wallets, and proof continuity parity between web and Android routes.",
+    },
+    {
       title: "SolRouter Encrypted AI",
       summary:
         "SolRouter Encrypted AI turns proposal and treasury analysis into deterministic decision briefs, then encrypts output client-side before sharing.",
