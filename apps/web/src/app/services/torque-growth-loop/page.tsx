@@ -33,7 +33,8 @@ export default function TorqueGrowthLoopPage() {
       <LocalizedRouteBrief routeKey="servicesCore" />
       <div className="rounded-[28px] border border-emerald-300/16 bg-emerald-300/[0.08] p-6 text-sm leading-7 text-white/68">
         The correct Torque integration is not a separate bounty mechanic. It is the product growth layer: reward the
-        actions that prove a user is learning, governing, paying, or returning.
+        actions that prove a user is learning, governing, paying, or returning. Private settlement execution now emits
+        `private_treasury_execution` through the same relay path.
         <div className="mt-5 flex flex-wrap gap-3">
           <Link href="/documents/torque-growth-loop" className={cn(buttonVariants({ size: "sm" }))}>
             Open growth packet
@@ -50,4 +51,3 @@ export default function TorqueGrowthLoopPage() {
     </OperationsShell>
   );
 }
-

@@ -121,11 +121,7 @@ export function TorqueGrowthLoopSurface() {
     };
     setRecords((current) => [record, ...current].slice(0, 6));
 
-    const endpoint = process.env.NEXT_PUBLIC_TORQUE_CUSTOM_EVENT_ENDPOINT;
-    if (!endpoint) {
-      setDeliveryState("Event recorded locally. Add NEXT_PUBLIC_TORQUE_CUSTOM_EVENT_ENDPOINT to forward live Torque custom_events.");
-      return;
-    }
+    const endpoint = process.env.NEXT_PUBLIC_TORQUE_CUSTOM_EVENT_ENDPOINT?.trim() || "/api/torque/custom-event";
 
     try {
       const response = await fetch(endpoint, {

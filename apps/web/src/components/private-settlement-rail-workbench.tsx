@@ -116,6 +116,24 @@ export function PrivateSettlementRailWorkbench() {
         recipientVisibility: profile.visibility,
         metadata: payload,
       });
+
+      const torqueEndpoint = process.env.NEXT_PUBLIC_TORQUE_CUSTOM_EVENT_ENDPOINT?.trim() || "/api/torque/custom-event";
+      try {
+        await fetch(torqueEndpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            eventName: "private_treasury_execution",
+            data: {
+              amount: Number(amount),
+              type: `${rail}_${operationType}_${asset}`.toLowerCase(),
+              success: response.ok,
+            },
+          }),
+        });
+      } catch {
+        // Keep settlement execution non-blocking if growth relay fails.
+      }
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Private settlement request failed.");
     } finally {

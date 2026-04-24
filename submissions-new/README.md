@@ -24,6 +24,10 @@ This folder is the canonical track-by-track submission path.
 - Submission: [`track-04-zerion.md`](./track-04-zerion.md)
 - Video script: [`video-scripts/track-04-zerion-video-script.md`](./video-scripts/track-04-zerion-video-script.md)
 
+5. Torque Growth Loop
+- Submission: [`track-05-torque.md`](./track-05-torque.md)
+- Video script: [`video-scripts/track-05-torque-video-script.md`](./video-scripts/track-05-torque-video-script.md)
+
 ## Publish Rule
 
 Each track is considered closed only after:
