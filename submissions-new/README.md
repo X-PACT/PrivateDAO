@@ -28,6 +28,10 @@ This folder is the canonical track-by-track submission path.
 - Submission: [`track-05-torque.md`](./track-05-torque.md)
 - Video script: [`video-scripts/track-05-torque-video-script.md`](./video-scripts/track-05-torque-video-script.md)
 
+6. AUDD Stablecoin
+- Submission: [`track-06-audd.md`](./track-06-audd.md)
+- Video script: [`video-scripts/track-06-audd-video-script.md`](./video-scripts/track-06-audd-video-script.md)
+
 ## Publish Rule
 
 Each track is considered closed only after:

@@ -9,7 +9,7 @@ Execution mode: one track at a time.
 - Track 03 — Jupiter Treasury Route: `done`
 - Track 04 — Zerion Agent Policy: `done`
 - Track 05 — Torque Growth Loop: `done`
-- Track 06 — AUDD Stablecoin: `pending`
+- Track 06 — AUDD Stablecoin: `done`
 - Track 07 — PUSD Stablecoin: `pending`
 - Track 08 — Umbra Confidential Payout: `pending`
 - Track 09 — Eitherway Wallet-First Live dApp: `pending`

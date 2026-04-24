@@ -58,7 +58,7 @@ export default function ProofPage() {
     {
       title: "AUDD treasury mode",
       summary: "AUD-denominated treasury and merchant settlement lane with stablecoin proof path.",
-      featureHref: "/services/testnet-billing-rehearsal",
+      featureHref: "/services/audd-stablecoin",
       proofHref: "/documents/audd-stablecoin-treasury-layer",
     },
     {

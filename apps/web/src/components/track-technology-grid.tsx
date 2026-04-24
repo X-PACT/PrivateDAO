@@ -14,7 +14,7 @@ const technologyLanes = [
   { key: "jupiter", label: "Treasury route preview", summary: "Quote-aware rebalance and payout-funding route checks.", href: "/services/jupiter-treasury-route" },
   { key: "zerion", label: "Bounded agent policy", summary: "Policy-scoped automation with wallet-safe controls.", href: "/services/zerion-agent-policy" },
   { key: "torque", label: "Growth event loop", summary: "Real custom events tied to real product actions.", href: "/services/torque-growth-loop" },
-  { key: "audd", label: "AUDD treasury mode", summary: "AUD-denominated merchant and treasury settlement lane.", href: "/services/testnet-billing-rehearsal" },
+  { key: "audd", label: "AUDD treasury mode", summary: "AUD-denominated merchant and treasury settlement lane.", href: "/services/audd-stablecoin" },
   { key: "pusd", label: "PUSD treasury mode", summary: "Stable reserve, payroll, grants, and reward pool lane.", href: "/services/testnet-billing-rehearsal" },
   { key: "eitherway", label: "Wallet-first UX", summary: "Live dApp user flow with clear wallet action boundaries.", href: "/start" },
   { key: "magicblock", label: "Responsive execution", summary: "Low-latency corridor for sensitive execution flows.", href: "/security" },
