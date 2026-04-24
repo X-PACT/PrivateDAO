@@ -40,6 +40,10 @@ This folder is the canonical track-by-track submission path.
 - Submission: [`track-08-umbra.md`](./track-08-umbra.md)
 - Video script: [`video-scripts/track-08-umbra-video-script.md`](./video-scripts/track-08-umbra-video-script.md)
 
+9. Eitherway Wallet-First Live dApp
+- Submission: [`track-09-eitherway.md`](./track-09-eitherway.md)
+- Video script: [`video-scripts/track-09-eitherway-video-script.md`](./video-scripts/track-09-eitherway-video-script.md)
+
 ## Publish Rule
 
 Each track is considered closed only after:

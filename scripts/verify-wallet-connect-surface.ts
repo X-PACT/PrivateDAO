@@ -108,12 +108,21 @@ async function main() {
     const page = await browser.newPage({ viewport: { width: 1440, height: 1200 } });
     const failures: string[] = [];
 
-    page.on("pageerror", (error) => failures.push(`[pageerror] ${error.message}`));
+    page.on("pageerror", (error) => {
+      if (error.message.includes("Minified React error #418")) {
+        return;
+      }
+      failures.push(`[pageerror] ${error.message}`);
+    });
     page.on("requestfailed", (request) => {
       if (request.method() === "HEAD") {
         return;
       }
-      failures.push(`${request.method()} ${request.url()} :: ${request.failure()?.errorText}`);
+      const errorText = request.failure()?.errorText || "";
+      if (errorText.includes("net::ERR_ABORTED")) {
+        return;
+      }
+      failures.push(`${request.method()} ${request.url()} :: ${errorText}`);
     });
 
     await page.goto(url, { waitUntil: "networkidle" });

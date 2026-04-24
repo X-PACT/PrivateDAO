@@ -91,6 +91,12 @@ export default function ProofPage() {
       featureHref: "/services/torque-growth-loop",
       proofHref: "/documents/torque-growth-loop",
     },
+    {
+      title: "Eitherway live dApp",
+      summary: "Wallet-first product lane with connect, profile signing, and continuation into governed execution.",
+      featureHref: "/services/eitherway-live-dapp",
+      proofHref: "/proof",
+    },
   ] as const;
 
   return (

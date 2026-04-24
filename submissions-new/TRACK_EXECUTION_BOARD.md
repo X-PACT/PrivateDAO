@@ -12,7 +12,7 @@ Execution mode: one track at a time.
 - Track 06 — AUDD Stablecoin: `done`
 - Track 07 — PUSD Stablecoin: `done`
 - Track 08 — Umbra Confidential Payout: `done`
-- Track 09 — Eitherway Wallet-First Live dApp: `pending`
+- Track 09 — Eitherway Wallet-First Live dApp: `done`
 - Track 10 — Runtime Infrastructure: `pending`
 - Track 11 — Encrypt / IKA: `pending`
 - Track 12 — SolRouter Encrypted AI: `pending`

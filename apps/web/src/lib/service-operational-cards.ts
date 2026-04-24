@@ -138,6 +138,31 @@ export function getServiceOperationalCards(): ServiceOperationalCard[] {
         "Production rollout depends on stable settlement policy hardening, beneficiary validation, monitoring continuity, and external review for batched micropayment execution.",
     },
     {
+      title: "AUDD Stablecoin Treasury",
+      summary:
+        "AUDD Stablecoin Treasury turns Australian-dollar stable settlement into governed merchant billing, treasury reserve management, supplier settlement, and programmable finance.",
+      tryNow:
+        "Open the Testnet billing rehearsal, select an AUDD lane, then continue into services, judge, and proof so the treasury request, billing memo, and reviewer path stay connected.",
+      evidence: [payoutCoverage, executeHealth, proofCompletion].filter(Boolean) as MetricPreview[],
+      intakeRoute: {
+        label: "Open AUDD settlement",
+        href: "/engage?profile=audd-merchant-settlement",
+      },
+      bestRoute: {
+        label: "Run AUDD rehearsal",
+        href: "/services/testnet-billing-rehearsal",
+      },
+      profileRoutes: [
+        { label: "AUDD merchant path", href: "/engage?profile=audd-merchant-settlement" },
+        { label: "AUDD treasury path", href: "/engage?profile=audd-treasury-settlement" },
+        { label: "AUDD layer brief", href: "/documents/audd-stablecoin-treasury-layer" },
+      ],
+      buyerMotion:
+        "Lead with governed Australian-dollar merchant settlement, reserve management, invoice collection, and programmable treasury finance as the first AUDD-native commercial package.",
+      mainnetGate:
+        "The production activation path binds the official AUDD mint, treasury receive account, beneficiary policy, and custody ceremony for real-funds mainnet settlement.",
+    },
+    {
       title: "PUSD Stablecoin Treasury",
       summary:
         "PUSD Stablecoin Treasury turns Palm USD, USDC, and adjacent stablecoin rails into governed payroll, grant distribution, commerce settlement, and gaming reward products.",
@@ -211,6 +236,31 @@ export function getServiceOperationalCards(): ServiceOperationalCard[] {
         "Sell retention and activation as measurable product growth: teams can reward real DAO setup, proposal creation, billing signatures, and learning completion.",
       mainnetGate:
         "Production delivery should use a server-side Torque event relay or MCP runner with scoped credentials, campaign IDs, and abuse-resistant reward policy.",
+    },
+    {
+      title: "Eitherway Wallet-First Live dApp",
+      summary:
+        "Eitherway Wallet-First Live dApp turns partner integrations into one guided user corridor: connect wallet, sign profile challenge, then continue to governed operations.",
+      tryNow:
+        "Open the Eitherway route, connect wallet, sign the profile challenge, then continue to govern, execute, and proof from the same browser flow.",
+      evidence: [walletCoverage, executeHealth, proofCompletion].filter(Boolean) as MetricPreview[],
+      intakeRoute: {
+        label: "Open Eitherway lane",
+        href: "/services/eitherway-live-dapp",
+      },
+      bestRoute: {
+        label: "Open start flow",
+        href: "/start",
+      },
+      profileRoutes: [
+        { label: "Govern", href: "/govern" },
+        { label: "Execute", href: "/execute" },
+        { label: "Proof", href: "/proof" },
+      ],
+      buyerMotion:
+        "Position the corridor as a consumer-grade entrypoint that hides protocol complexity while preserving wallet safety and proof-linked transparency.",
+      mainnetGate:
+        "Production rollout should bind audited wallet-session handling, receipt persistence, and stable return-to-app behavior across browser and Android wallet contexts.",
     },
     {
       title: "Payments DAO",

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, BriefcaseBusiness, Gauge, RefreshCcw, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, BriefcaseBusiness, Coins, Gauge, RefreshCcw, ShieldCheck, WalletCards } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
@@ -8,10 +8,16 @@ import { cn } from "@/lib/utils";
 
 const iconMap = {
   "RPC Infrastructure": Gauge,
+  "AUDD Stablecoin Treasury": Coins,
   "Treasury Swap / Rebalance": RefreshCcw,
   "Gaming DAO": BriefcaseBusiness,
   "Payments DAO": BriefcaseBusiness,
   "Security / Encryption": ShieldCheck,
+  "PUSD Stablecoin Treasury": Coins,
+  "Eitherway Wallet-First Live dApp": WalletCards,
+  "Zerion Agent Policy": ShieldCheck,
+  "Torque Growth Loop": BriefcaseBusiness,
+  "Agentic Treasury Micropayments": ShieldCheck,
 } as const;
 
 export function ServiceOperationalCards() {
@@ -47,6 +53,13 @@ export function ServiceOperationalCards() {
 
               <div className="mt-4 rounded-2xl border border-emerald-300/16 bg-emerald-300/[0.08] p-4 text-sm leading-7 text-white/70">
                 Start with <span className="text-white">/learn</span> if you are new, then run the service path on Testnet and verify the result through analytics, proof, or trust packets instead of trusting the copy alone.
+              </div>
+
+              <div className="mt-4 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.22em] text-white/54">
+                <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Connect</span>
+                <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Review</span>
+                <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Sign</span>
+                <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Verify</span>
               </div>
 
               <div className="mt-4 grid gap-3">

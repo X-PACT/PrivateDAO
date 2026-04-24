@@ -8,13 +8,13 @@ const ROOT = process.cwd();
 const SURFACE_DIR = path.resolve(ROOT);
 const REQUIRED_DOM_FRAGMENTS = [
   "PrivateDAO",
-  "Private governance on Solana",
+  "Confidential treasury and market operations on Solana",
   "Powered by the live stack",
-  "Open verification view",
+  "Open Judge",
   "Preparing the live product surface",
-  "Public good",
-  "How the stack maps to services",
-  "Support the mission",
+  "Launch OS",
+  "Review Proof",
+  "PrivateDAO OS",
 ];
 
 const CONTENT_TYPES: Record<string, string> = {
