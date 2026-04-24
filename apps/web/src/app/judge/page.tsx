@@ -28,6 +28,7 @@ export default function JudgePage() {
   const runtimeSnapshot = getJudgeRuntimeLogsSnapshot();
   const integrationFastPaths = [
     ["Cloak private settlement", "Confidential treasury and payroll execution lane with receipt continuity.", "/services/cloak-private-settlement", "/proof"],
+    ["Umbra confidential payout", "Recipient-private payout lane with claim-style flow and settlement continuity.", "/services/umbra-confidential-payout", "/documents/privacy-and-encryption-proof-guide"],
     ["Intelligence evidence", "GoldRush + Dune Sim treasury and counterparty review surface.", "/intelligence", "/proof"],
     ["AUDD treasury mode", "AUD settlement, invoice, and merchant-facing stablecoin lane.", "/services/audd-stablecoin", "/documents/audd-stablecoin-treasury-layer"],
     ["PUSD treasury mode", "Stable reserve, grants, payroll, and reward-pool lane.", "/services/pusd-stablecoin", "/documents/pusd-stablecoin-treasury-layer"],

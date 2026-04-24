@@ -36,6 +36,10 @@ This folder is the canonical track-by-track submission path.
 - Submission: [`track-07-pusd.md`](./track-07-pusd.md)
 - Video script: [`video-scripts/track-07-pusd-video-script.md`](./video-scripts/track-07-pusd-video-script.md)
 
+8. Umbra Confidential Payout
+- Submission: [`track-08-umbra.md`](./track-08-umbra.md)
+- Video script: [`video-scripts/track-08-umbra-video-script.md`](./video-scripts/track-08-umbra-video-script.md)
+
 ## Publish Rule
 
 Each track is considered closed only after:

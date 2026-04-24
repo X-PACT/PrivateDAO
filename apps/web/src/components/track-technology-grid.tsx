@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 const technologyLanes = [
   { key: "cloak", label: "Private settlement", summary: "Confidential payroll and treasury settlement rails.", href: "/services/cloak-private-settlement" },
-  { key: "umbra", label: "Private payout UX", summary: "Confidential payout-first operating lane.", href: "/services" },
+  { key: "umbra", label: "Private payout UX", summary: "Confidential payout-first operating lane.", href: "/services/umbra-confidential-payout" },
   { key: "goldrush", label: "Onchain intelligence", summary: "Structured wallet, stablecoin, and counterparty review.", href: "/intelligence" },
   { key: "dune", label: "Transaction preview", summary: "Supplemental Solana transaction visibility in the same review lane.", href: "/intelligence" },
   { key: "jupiter", label: "Treasury route preview", summary: "Quote-aware rebalance and payout-funding route checks.", href: "/services/jupiter-treasury-route" },

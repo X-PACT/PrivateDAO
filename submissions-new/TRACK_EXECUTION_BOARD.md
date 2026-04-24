@@ -11,7 +11,7 @@ Execution mode: one track at a time.
 - Track 05 — Torque Growth Loop: `done`
 - Track 06 — AUDD Stablecoin: `done`
 - Track 07 — PUSD Stablecoin: `done`
-- Track 08 — Umbra Confidential Payout: `pending`
+- Track 08 — Umbra Confidential Payout: `done`
 - Track 09 — Eitherway Wallet-First Live dApp: `pending`
 - Track 10 — Runtime Infrastructure: `pending`
 - Track 11 — Encrypt / IKA: `pending`

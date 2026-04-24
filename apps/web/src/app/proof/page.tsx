@@ -50,6 +50,12 @@ export default function ProofPage() {
       proofHref: "/proof",
     },
     {
+      title: "Umbra confidential payout",
+      summary: "Claim-link payout and recipient-private settlement lane with proof-linked continuity.",
+      featureHref: "/services/umbra-confidential-payout",
+      proofHref: "/documents/privacy-and-encryption-proof-guide",
+    },
+    {
       title: "Intelligence evidence",
       summary: "GoldRush and Dune Sim reviewer-facing intelligence lane for wallet history, stablecoin review, and counterparty screening.",
       featureHref: "/intelligence",

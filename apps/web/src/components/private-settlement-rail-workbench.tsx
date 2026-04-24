@@ -50,8 +50,16 @@ function getRailEndpoint(rail: PrivateRail) {
   return configured?.trim() || "/api/private-settlement/intent";
 }
 
-export function PrivateSettlementRailWorkbench() {
-  const [rail, setRail] = useState<PrivateRail>("cloak");
+type PrivateSettlementRailWorkbenchProps = {
+  initialRail?: PrivateRail;
+  lockRail?: boolean;
+};
+
+export function PrivateSettlementRailWorkbench({
+  initialRail = "cloak",
+  lockRail = false,
+}: PrivateSettlementRailWorkbenchProps = {}) {
+  const [rail, setRail] = useState<PrivateRail>(initialRail);
   const [operationType, setOperationType] = useState("private-payroll");
   const [asset, setAsset] = useState<SettlementAsset>("USDC");
   const [amount, setAmount] = useState("250");
@@ -157,24 +165,31 @@ export function PrivateSettlementRailWorkbench() {
         <div className="space-y-4">
           <div className="rounded-[24px] border border-white/10 bg-black/20 p-4">
             <div className="text-[11px] uppercase tracking-[0.22em] text-white/44">Settlement rail</div>
-            <div className="mt-3 grid gap-3 md:grid-cols-2">
-              {(["cloak", "umbra"] as PrivateRail[]).map((entry) => (
-                <button
-                  key={entry}
-                  type="button"
-                  onClick={() => setRail(entry)}
-                  className={cn(
-                    "rounded-2xl border px-4 py-3 text-left transition",
-                    rail === entry
-                      ? "border-violet-300/24 bg-violet-300/[0.12] text-white"
-                      : "border-white/10 bg-black/20 text-white/68 hover:border-white/16 hover:bg-white/[0.04]",
-                  )}
-                >
-                  <div className="text-sm font-medium text-white">{railProfiles[entry].title}</div>
-                  <div className="mt-1 text-sm leading-6 text-white/60">{railProfiles[entry].summary}</div>
-                </button>
-              ))}
-            </div>
+            {lockRail ? (
+              <div className="mt-3 rounded-2xl border border-violet-300/24 bg-violet-300/[0.12] px-4 py-3">
+                <div className="text-sm font-medium text-white">{railProfiles[rail].title}</div>
+                <div className="mt-1 text-sm leading-6 text-white/60">{railProfiles[rail].summary}</div>
+              </div>
+            ) : (
+              <div className="mt-3 grid gap-3 md:grid-cols-2">
+                {(["cloak", "umbra"] as PrivateRail[]).map((entry) => (
+                  <button
+                    key={entry}
+                    type="button"
+                    onClick={() => setRail(entry)}
+                    className={cn(
+                      "rounded-2xl border px-4 py-3 text-left transition",
+                      rail === entry
+                        ? "border-violet-300/24 bg-violet-300/[0.12] text-white"
+                        : "border-white/10 bg-black/20 text-white/68 hover:border-white/16 hover:bg-white/[0.04]",
+                    )}
+                  >
+                    <div className="text-sm font-medium text-white">{railProfiles[entry].title}</div>
+                    <div className="mt-1 text-sm leading-6 text-white/60">{railProfiles[entry].summary}</div>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="rounded-[24px] border border-white/10 bg-black/20 p-4">
