@@ -20,6 +20,10 @@ This folder is the canonical track-by-track submission path.
 - Submission: [`track-03-jupiter.md`](./track-03-jupiter.md)
 - Video script: [`video-scripts/track-03-jupiter-video-script.md`](./video-scripts/track-03-jupiter-video-script.md)
 
+4. Zerion Agent Policy
+- Submission: [`track-04-zerion.md`](./track-04-zerion.md)
+- Video script: [`video-scripts/track-04-zerion-video-script.md`](./video-scripts/track-04-zerion-video-script.md)
+
 ## Publish Rule
 
 Each track is considered closed only after:

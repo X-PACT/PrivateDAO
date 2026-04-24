@@ -41,6 +41,9 @@ export default function ZerionAgentPolicyPage() {
           <Link href="/services" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
             Open services
           </Link>
+          <Link href="/proof" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+            Open proof
+          </Link>
           <Link href="/judge" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
             Open judge
           </Link>
@@ -50,4 +53,3 @@ export default function ZerionAgentPolicyPage() {
     </OperationsShell>
   );
 }
-

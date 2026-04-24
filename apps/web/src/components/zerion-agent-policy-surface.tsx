@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
+import { persistOperationReceipt } from "@/lib/supabase/operation-receipts";
 import { cn } from "@/lib/utils";
 
 const policyTemplates = [
@@ -59,11 +60,111 @@ function buildPolicyPayload(template: (typeof policyTemplates)[number]) {
   };
 }
 
+type ZerionPortfolioResponse = {
+  walletAddress?: string;
+  currency?: string;
+  positionsFilter?: string;
+  summary?: {
+    totalPositionsUsd?: number | null;
+    absoluteChange1d?: number | null;
+    percentChange1d?: number | null;
+  };
+  positionsDistributionByType?: Record<string, number>;
+  positionsDistributionByChain?: Record<string, number>;
+  error?: string;
+};
+
+function formatUsd(value: number | null | undefined) {
+  if (typeof value !== "number" || Number.isNaN(value)) return "N/A";
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: value >= 1000 ? 0 : 2,
+  }).format(value);
+}
+
 export function ZerionAgentPolicySurface() {
   const [activeId, setActiveId] = useState(policyTemplates[0].id);
+  const [walletAddress, setWalletAddress] = useState("");
+  const [portfolioState, setPortfolioState] = useState(
+    "Load a live wallet portfolio summary here before allowing an autonomous agent lane to be treated as safe enough for operator review.",
+  );
+  const [portfolio, setPortfolio] = useState<ZerionPortfolioResponse | null>(null);
+  const [loadingPortfolio, setLoadingPortfolio] = useState(false);
   const activePolicy = policyTemplates.find((policy) => policy.id === activeId) ?? policyTemplates[0];
   const payload = useMemo(() => buildPolicyPayload(activePolicy), [activePolicy]);
   const payloadText = JSON.stringify(payload, null, 2);
+  const topChains = Object.entries(portfolio?.positionsDistributionByChain ?? {})
+    .sort((left, right) => right[1] - left[1])
+    .slice(0, 4);
+  const topTypes = Object.entries(portfolio?.positionsDistributionByType ?? {})
+    .sort((left, right) => right[1] - left[1])
+    .slice(0, 4);
+
+  async function handleLoadPortfolio() {
+    const endpoint = process.env.NEXT_PUBLIC_ZERION_PORTFOLIO_ENDPOINT?.trim() || "/api/zerion/portfolio";
+    const walletRef = walletAddress.trim() || "project-wallet";
+    const reference = `zerion-${Date.now()}`;
+
+    setLoadingPortfolio(true);
+    setPortfolioState("Requesting Zerion wallet portfolio...");
+
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          walletAddress: walletAddress.trim() || undefined,
+          currency: "usd",
+          positionsFilter: "only_simple",
+          sync: false,
+        }),
+      });
+      const body = (await response.json().catch(() => null)) as ZerionPortfolioResponse | null;
+      setPortfolio(body);
+      setPortfolioState(response.ok ? "Zerion portfolio summary received." : body?.error ?? `Zerion endpoint responded ${response.status}.`);
+
+      await persistOperationReceipt({
+        operationType: "zerion-policy-portfolio-check",
+        proposalId: `zerion:${activePolicy.id}`,
+        approvalState: response.ok ? "verified" : "failed",
+        executionReference: reference,
+        privateSettlementRail: "zerion-policy",
+        stablecoinSymbol: "USDC",
+        auditMode: "policy-bound-check",
+        recipientVisibility: "n/a",
+        metadata: {
+          wallet: walletRef,
+          endpoint,
+          policyId: activePolicy.id,
+          responseStatus: response.ok ? "ok" : "failed",
+        },
+      });
+    } catch (error) {
+      setPortfolio(null);
+      setPortfolioState(error instanceof Error ? error.message : "Zerion portfolio request failed.");
+
+      await persistOperationReceipt({
+        operationType: "zerion-policy-portfolio-check",
+        proposalId: `zerion:${activePolicy.id}`,
+        approvalState: "failed",
+        executionReference: reference,
+        privateSettlementRail: "zerion-policy",
+        stablecoinSymbol: "USDC",
+        auditMode: "policy-bound-check",
+        recipientVisibility: "n/a",
+        metadata: {
+          wallet: walletRef,
+          endpoint,
+          policyId: activePolicy.id,
+          responseStatus: "error",
+          error: error instanceof Error ? error.message : "unknown error",
+        },
+      });
+    } finally {
+      setLoadingPortfolio(false);
+    }
+  }
 
   return (
     <section className="rounded-[32px] border border-white/10 bg-[#06111f]/88 p-6 shadow-2xl shadow-cyan-950/20">
@@ -136,7 +237,74 @@ export function ZerionAgentPolicySurface() {
           </div>
         </div>
 
-        <div className="rounded-3xl border border-white/10 bg-black/24 p-5">
+        <div className="space-y-5">
+          <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-5">
+            <div className="text-sm font-semibold text-cyan-100">Live wallet portfolio check</div>
+            <div className="mt-2 text-sm leading-7 text-white/64">
+              Before treating the agent as operationally useful, review the live wallet portfolio that the policy is supposed to protect.
+            </div>
+            <input
+              value={walletAddress}
+              onChange={(event) => setWalletAddress(event.target.value)}
+              className="mt-4 w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none"
+              placeholder="Solana wallet address or leave empty to use project wallet"
+            />
+            <div className="mt-4 flex flex-wrap gap-3">
+              <button type="button" onClick={() => void handleLoadPortfolio()} className={cn(buttonVariants({ size: "sm" }))} disabled={loadingPortfolio}>
+                {loadingPortfolio ? "Loading..." : "Load Zerion portfolio"}
+              </button>
+              <Link href="/documents/zerion-autonomous-agent-policy" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                Open policy packet
+              </Link>
+            </div>
+            <div className="mt-4 text-sm leading-7 text-white/68">{portfolioState}</div>
+            {portfolio ? (
+              <div className="mt-4 grid gap-3 md:grid-cols-3">
+                <div className="rounded-2xl border border-white/10 bg-black/20 p-4 text-sm text-white/68">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Total portfolio</div>
+                  <div className="mt-2 text-base font-medium text-white">{formatUsd(portfolio.summary?.totalPositionsUsd)}</div>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-black/20 p-4 text-sm text-white/68">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">1d absolute</div>
+                  <div className="mt-2 text-base font-medium text-white">{formatUsd(portfolio.summary?.absoluteChange1d)}</div>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-black/20 p-4 text-sm text-white/68">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">1d percent</div>
+                  <div className="mt-2 text-base font-medium text-white">
+                    {typeof portfolio.summary?.percentChange1d === "number" ? `${portfolio.summary.percentChange1d.toFixed(2)}%` : "N/A"}
+                  </div>
+                </div>
+              </div>
+            ) : null}
+            {portfolio ? (
+              <div className="mt-4 grid gap-3 md:grid-cols-2">
+                <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Top chains</div>
+                  <div className="mt-3 space-y-2 text-sm text-white/68">
+                    {topChains.map(([chain, value]) => (
+                      <div key={chain} className="flex items-center justify-between gap-4 rounded-2xl border border-white/8 bg-black/20 px-3 py-2">
+                        <span className="text-white">{chain}</span>
+                        <span>{formatUsd(value)}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Position types</div>
+                  <div className="mt-3 space-y-2 text-sm text-white/68">
+                    {topTypes.map(([label, value]) => (
+                      <div key={label} className="flex items-center justify-between gap-4 rounded-2xl border border-white/8 bg-black/20 px-3 py-2">
+                        <span className="text-white">{label}</span>
+                        <span>{formatUsd(value)}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : null}
+          </div>
+
+          <div className="rounded-3xl border border-white/10 bg-black/24 p-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <div className="text-sm font-semibold text-white">Policy payload for Zerion CLI fork</div>
@@ -154,8 +322,8 @@ export function ZerionAgentPolicySurface() {
             {payloadText}
           </pre>
         </div>
+        </div>
       </div>
     </section>
   );
 }
-
