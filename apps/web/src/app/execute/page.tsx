@@ -83,7 +83,7 @@ export default function ExecutePage() {
         current="sign"
         reviewHref="/intelligence"
         verifyHref="/proof"
-        pendingNote="Some deeper mobile evidence coverage is جاري الانهاء, but the wallet-first execution surface and proof routes are already live."
+        pendingNote="Wallet-first execution, rail proxy forwarding, and proof routes are live on one continuous operating surface."
       />
       <div className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6">
         <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/74">Operating flow</div>

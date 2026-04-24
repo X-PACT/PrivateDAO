@@ -1,6 +1,12 @@
 node_modules/
 target/
 .env
+.env.local
+.env.*
+!.env.example
+apps/web/.env.local
+apps/web/.env.*
+!apps/web/.env.example
 test-ledger/
 *.so
 migration-report-*.json

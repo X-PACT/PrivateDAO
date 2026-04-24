@@ -42,7 +42,7 @@ export function OperatingJourneyStrip({
                       : "border-white/10 bg-white/[0.05] text-white/60",
                 )}
               >
-                {entry.status === "verified" ? "Verified" : entry.status === "partial" ? "جاري الانهاء" : "Pending"}
+                {entry.status === "verified" ? "Verified" : entry.status === "partial" ? "Scaling" : "Pending"}
               </div>
             </div>
             <div className="mt-3 text-sm leading-7 text-white/60">{entry.detail}</div>

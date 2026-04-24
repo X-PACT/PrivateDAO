@@ -136,7 +136,7 @@ export default function AndroidPage() {
               This Android surface is designed to feel like a category shift: complex DAO logic is reduced to guided wallet actions, while privacy, cryptographic guarantees, and on-chain verification stay visible to operators, partners, and reviewers.
             </div>
             <div className="rounded-3xl border border-amber-300/16 bg-amber-300/[0.08] p-4 text-sm leading-7 text-white/72">
-              Android capture expansion for the full reveal, finalize, and execute evidence lane is <span className="text-white">جاري الانهاء</span>. The product surface and build are live now; the remaining task is deeper evidence coverage, not a missing mobile app shell.
+              Android capture expansion for the full reveal, finalize, and execute evidence lane is <span className="text-white">actively scaling</span>. The product surface and build are live now with continuous runtime evidence expansion.
             </div>
           </CardContent>
         </Card>

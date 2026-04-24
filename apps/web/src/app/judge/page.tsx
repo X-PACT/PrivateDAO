@@ -26,6 +26,15 @@ export const metadata: Metadata = buildRouteMetadata({
 
 export default function JudgePage() {
   const runtimeSnapshot = getJudgeRuntimeLogsSnapshot();
+  const integrationFastPaths = [
+    ["Cloak private settlement", "Confidential treasury and payroll execution lane with receipt continuity.", "/services/cloak-private-settlement", "/proof"],
+    ["Intelligence evidence", "GoldRush + Dune Sim treasury and counterparty review surface.", "/intelligence", "/proof"],
+    ["AUDD treasury mode", "AUD settlement, invoice, and merchant-facing stablecoin lane.", "/services/testnet-billing-rehearsal", "/documents/audd-stablecoin-treasury-layer"],
+    ["PUSD treasury mode", "Stable reserve, grants, payroll, and reward-pool lane.", "/services/testnet-billing-rehearsal", "/documents/pusd-stablecoin-treasury-layer"],
+    ["Jupiter treasury route", "Governed route preview for rebalance and payout funding.", "/services/jupiter-treasury-route", "/documents/jupiter-treasury-route"],
+    ["Zerion policy lane", "Bounded agent execution with wallet-safe policy framing.", "/services/zerion-agent-policy", "/documents/zerion-autonomous-agent-policy"],
+    ["Torque growth loop", "Retention and reward surfaces tied to product activity.", "/services/torque-growth-loop", "/documents/torque-growth-loop"],
+  ] as const;
 
   return (
     <OperationsShell
@@ -82,6 +91,29 @@ export default function JudgePage() {
           <Link href="/learn" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
             Open learn route
           </Link>
+        </div>
+      </div>
+
+      <div className="rounded-[26px] border border-white/10 bg-white/[0.04] p-5">
+        <div className="text-[11px] uppercase tracking-[0.24em] text-white/42">Integration fast paths</div>
+        <div className="mt-2 max-w-4xl text-sm leading-7 text-white/68">
+          Each lane below opens the live feature and the closest proof packet directly, so a reviewer can validate the implementation without digging through the entire site.
+        </div>
+        <div className="mt-4 grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
+          {integrationFastPaths.map(([title, summary, liveHref, proofHref]) => (
+            <div key={title} className="rounded-[22px] border border-white/8 bg-black/20 p-4">
+              <div className="text-base font-medium text-white">{title}</div>
+              <div className="mt-2 text-sm leading-6 text-white/62">{summary}</div>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <Link href={liveHref} className={cn(buttonVariants({ size: "sm" }))}>
+                  Open feature
+                </Link>
+                <Link href={proofHref} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                  Open proof
+                </Link>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 

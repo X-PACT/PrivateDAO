@@ -16,7 +16,7 @@
   <a href="https://github.com/X-PACT/PrivateDAO/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/X-PACT/PrivateDAO/ci.yml?branch=main&label=CI" alt="CI status" /></a>
   <a href="docs/awards.md"><img src="https://img.shields.io/badge/Regional%20Recognition-1st%20Place-gold" alt="Regional 1st place recognition" /></a>
   <a href="https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=testnet"><img src="https://img.shields.io/badge/Solana-Testnet%20Program-38bdf8" alt="Testnet program" /></a>
-  <a href="https://privatedao.org/trust/"><img src="https://img.shields.io/badge/Build%20Window-Through%202026--04--30-f59e0b" alt="Build window through 2026-04-30" /></a>
+  <a href="https://privatedao.org/trust/"><img src="https://img.shields.io/badge/Release%20Mode-Continuous%20Delivery-f59e0b" alt="Continuous delivery mode" /></a>
   <a href="docs/pdao-token.md"><img src="https://img.shields.io/badge/PDAO-Token--2022%20Governance%20Mint-0f766e" alt="PDAO token" /></a>
   <a href="docs/security-hardening-v2.md"><img src="https://img.shields.io/badge/Security-Strict%20V2%20Hardening-1d4ed8" alt="Strict V2 security hardening" /></a>
   <a href="docs/operational-evidence.generated.md"><img src="https://img.shields.io/badge/Devnet-50%20Wallet%20Rehearsal-7c3aed" alt="Devnet rehearsal" /></a>
@@ -32,17 +32,23 @@
 
 PrivateDAO engineering already carries a real first-place regional signal. That matters here because this repo is built the same way: live protocol code, live Testnet execution, explicit trust boundaries, and machine-checked reviewer evidence. See [`docs/awards.md`](docs/awards.md).
 
-## Live Development Notice
+## Continuous Delivery Notice
 
-Core development, testing, wallet hardening, localization, and service packaging continue through **April 30, 2026**.
+Core development, wallet hardening, localization, and service packaging run in continuous release cycles.
 
-If a route looks inconsistent or temporarily degraded:
+If a route is being refreshed:
 
 - retry in a few minutes
 - check `https://privatedao.org/trust/`
 - check `https://privatedao.org/community/`
 
-This is intentional. PrivateDAO is live on Solana Testnet now: the preserved Anchor program is deployed, the standard governance lifecycle has executed end to end, and treasury movement is verified by public hashes. The public product rollout is being moved fully onto this Testnet path through the current release window.
+PrivateDAO is live on Solana Testnet: the preserved Anchor program is deployed, the standard governance lifecycle has executed end to end, and treasury movement is verified by public hashes.
+
+## Track Delivery And Security Baseline
+
+- Track-by-track delivery board and submission artifacts: [`submissions-new/TRACK_EXECUTION_BOARD.md`](submissions-new/TRACK_EXECUTION_BOARD.md)
+- Submission index and publish log: [`submissions-new/README.md`](submissions-new/README.md)
+- Security baseline snapshot (current gate findings and mitigations): [`docs/security-baseline-2026-04-24.md`](docs/security-baseline-2026-04-24.md)
 
 ## What PrivateDAO Is
 
@@ -394,6 +400,19 @@ These are configured through public environment variables only:
 - `NEXT_PUBLIC_TREASURY_NETWORK`
 
 Use only public receive addresses here. Do not place signer keypairs, seed phrases, or treasury secrets in the frontend or this repository.
+
+## Supabase Operation Timeline Setup
+
+`/proof` now includes a live operation timeline backed by Supabase table `public.operation_receipts`.
+
+1. Set public env values in `.env.local`:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+2. Open Supabase SQL editor and run:
+   - [`docs/supabase-operation-receipts.sql`](docs/supabase-operation-receipts.sql)
+3. Run the normal flow in `/govern` (create, commit, reveal, finalize, execute) or `/execute` billing rehearsal, then open `/proof` to confirm receipt rows.
+
+The timeline remains non-blocking: on-chain actions still run even if Supabase is not configured, and recent browser receipts are shown as local fallback.
 
 ## Feature Map
 
@@ -798,11 +817,11 @@ Key docs:
 - Hosted brand avatar: https://privatedao.org/assets/brand/privatedao-avatar-1024.png
 - Technical explainer: [`docs/investor-video.md`](docs/investor-video.md)
 
-## Leadership And Contact
+## Operating Contact
 
-PrivateDAO is produced with execution support from a multi-national technical team. **Fahd Kotb** leads product direction, execution accountability, repository stewardship, and external coordination for the work.
+PrivateDAO development is maintained in public through **[X-PACT/PrivateDAO](https://github.com/X-PACT/PrivateDAO)**. Use the contact surface below for investment, strategic help, integrations, pilots, or direct operator coordination around the live Testnet product and its path to mainnet release.
 
-For investment, donation, strategic help, integrations, or direct operator coordination:
+For investment, strategic help, integrations, pilots, or direct operator coordination:
 
 - Primary email: [fahd.kotb@tuta.io](mailto:fahd.kotb@tuta.io)
 - Operations email: [i.kotb@proton.me](mailto:i.kotb@proton.me)
@@ -810,8 +829,7 @@ For investment, donation, strategic help, integrations, or direct operator coord
 - WhatsApp: [+20 112 403 0209](https://wa.me/201124030209)
 - Telegram: [@Fahdkotb](https://t.me/Fahdkotb)
 - Discord: [PrivateDAO community server](https://discord.gg/PbM8BC2A)
-- X: [@FahdX369](https://x.com/FahdX369)
-- Leadership and contact packet: [`docs/ownership-and-contact.md`](docs/ownership-and-contact.md)
+- Operating contact packet: [`docs/ownership-and-contact.md`](docs/ownership-and-contact.md)
 
 ## License
 

@@ -43,9 +43,11 @@ const railProfiles: Record<
 };
 
 function getRailEndpoint(rail: PrivateRail) {
-  return rail === "cloak"
-    ? process.env.NEXT_PUBLIC_CLOAK_PROXY_ENDPOINT
-    : process.env.NEXT_PUBLIC_UMBRA_PROXY_ENDPOINT;
+  const configured =
+    rail === "cloak"
+      ? process.env.NEXT_PUBLIC_CLOAK_PROXY_ENDPOINT
+      : process.env.NEXT_PUBLIC_UMBRA_PROXY_ENDPOINT;
+  return configured?.trim() || "/api/private-settlement/intent";
 }
 
 export function PrivateSettlementRailWorkbench() {
@@ -81,26 +83,8 @@ export function PrivateSettlementRailWorkbench() {
 
     setPreview(JSON.stringify(payload, null, 2));
 
-    if (!endpoint) {
-      setStatus(
-        `${profile.title} is ready in-product. Add ${rail === "cloak" ? "NEXT_PUBLIC_CLOAK_PROXY_ENDPOINT" : "NEXT_PUBLIC_UMBRA_PROXY_ENDPOINT"} to forward live requests.`,
-      );
-      await persistOperationReceipt({
-        operationType,
-        proposalId: `${rail}:${operationType}`,
-        approvalState: "prepared",
-        executionReference: reference,
-        privateSettlementRail: rail,
-        stablecoinSymbol: asset,
-        auditMode: profile.auditMode,
-        recipientVisibility: profile.visibility,
-        metadata: payload,
-      });
-      return;
-    }
-
     setRunning(true);
-    setStatus(`Forwarding ${profile.title} request...`);
+    setStatus(`Forwarding ${profile.title} request through private settlement proxy...`);
 
     try {
       const response = await fetch(endpoint, {

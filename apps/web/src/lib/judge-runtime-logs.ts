@@ -261,7 +261,7 @@ export function getJudgeRuntimeLogsSnapshot(): JudgeRuntimeLogsSnapshot {
                 ? {
                     label: "Expand wallet/device evidence",
                     href: "/documents/real-device-runtime",
-                    detail: "On-chain lifecycle is captured, but broader device and wallet evidence is still جاري الانهاء.",
+                    detail: "On-chain lifecycle is captured, and device plus wallet evidence coverage is expanding continuously.",
                   }
                 : !txOutcomeComplete
                   ? {
@@ -290,7 +290,7 @@ export function getJudgeRuntimeLogsSnapshot(): JudgeRuntimeLogsSnapshot {
         status: realDeviceComplete ? "verified" : "partial",
         detail: realDeviceComplete
           ? `${runtime.realDevice.completedTargetCount}/${runtime.realDevice.targetCount} real-device wallet targets completed`
-          : `${runtime.realDevice.completedTargetCount}/${runtime.realDevice.targetCount} real-device wallet targets completed · remaining evidence is جاري الانهاء`,
+          : `${runtime.realDevice.completedTargetCount}/${runtime.realDevice.targetCount} real-device wallet targets completed · evidence coverage scaling in progress`,
       },
       {
         label: "Review",

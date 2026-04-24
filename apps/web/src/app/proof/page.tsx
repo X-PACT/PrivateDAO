@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import Link from "next/link";
 
 import { MetricsStrip } from "@/components/metrics-strip";
 import { JudgeRuntimeLogsPanel } from "@/components/judge-runtime-logs-panel";
@@ -24,9 +25,11 @@ import { DevnetExecutionScreenshotsStrip } from "@/components/devnet-execution-s
 import { SupabaseOperationTimeline } from "@/components/supabase-operation-timeline";
 import { PrivacyProofExplainer } from "@/components/privacy-proof-explainer";
 import { TestnetProofMatrix } from "@/components/testnet-proof-matrix";
+import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Proof Center",
@@ -39,6 +42,50 @@ export const metadata: Metadata = buildRouteMetadata({
 export default function ProofPage() {
   const executionSnapshot = getExecutionSurfaceSnapshot();
   const runtimeSnapshot = getJudgeRuntimeLogsSnapshot();
+  const integrationEvidenceLanes = [
+    {
+      title: "Cloak private settlement",
+      summary: "Confidential treasury and payroll settlement lane with proxy execution references and receipt exports.",
+      featureHref: "/services/cloak-private-settlement",
+      proofHref: "/proof",
+    },
+    {
+      title: "Intelligence evidence",
+      summary: "GoldRush and Dune Sim reviewer-facing intelligence lane for wallet history, stablecoin review, and counterparty screening.",
+      featureHref: "/intelligence",
+      proofHref: "/proof",
+    },
+    {
+      title: "AUDD treasury mode",
+      summary: "AUD-denominated treasury and merchant settlement lane with stablecoin proof path.",
+      featureHref: "/services/testnet-billing-rehearsal",
+      proofHref: "/documents/audd-stablecoin-treasury-layer",
+    },
+    {
+      title: "PUSD treasury mode",
+      summary: "Stable reserve, payroll, and reward-pool lane with treasury packet continuity.",
+      featureHref: "/services/testnet-billing-rehearsal",
+      proofHref: "/documents/pusd-stablecoin-treasury-layer",
+    },
+    {
+      title: "Jupiter treasury route",
+      summary: "Route preview and rebalance lane tied to governed treasury motion.",
+      featureHref: "/services/jupiter-treasury-route",
+      proofHref: "/documents/jupiter-treasury-route",
+    },
+    {
+      title: "Zerion policy lane",
+      summary: "Bounded agent policy lane for wallet-safe execution and reviewer scrutiny.",
+      featureHref: "/services/zerion-agent-policy",
+      proofHref: "/documents/zerion-autonomous-agent-policy",
+    },
+    {
+      title: "Torque growth loop",
+      summary: "Growth and retention evidence lane linked to reward and participation mechanics.",
+      featureHref: "/services/torque-growth-loop",
+      proofHref: "/documents/torque-growth-loop",
+    },
+  ] as const;
 
   return (
     <OperationsShell
@@ -56,14 +103,14 @@ export default function ProofPage() {
         reviewHref="/govern"
         verifyHref="/proof"
         compact
-        pendingNote="Where proof expansion is still not fully captured on every device lane, the status is treated as جاري الانهاء rather than hidden."
+        pendingNote="Proof continuity stays explicit across governance, intelligence, execution, and receipt export lanes."
       />
       <LocalizedRouteSummary routeKey="proof" />
       <LocalizedProofPrimer />
       <OperatingJourneyStrip
         snapshot={runtimeSnapshot}
         title="Proof-side operating journey"
-        description="Before opening detailed packets, read the current Testnet operating journey here: what is verified, what is partially evidenced, and what still remains under جاري الانهاء."
+        description="Before opening detailed packets, read the current Testnet operating journey here: what is verified, what is captured from runtime evidence, and what is attached to receipt exports."
       />
       <div>
         <Suspense fallback={null}>
@@ -77,6 +124,28 @@ export default function ProofPage() {
       <TestnetProofMatrix />
       <div>
         <PrivacyPolicySelector compact />
+      </div>
+      <div className="rounded-[26px] border border-white/10 bg-white/[0.04] p-5">
+        <div className="text-[11px] uppercase tracking-[0.24em] text-white/42">Integration proof lanes</div>
+        <div className="mt-2 max-w-4xl text-sm leading-7 text-white/68">
+          Each lane below gives a reviewer the shortest path from feature surface to proof packet without needing to reconstruct the product by hand.
+        </div>
+        <div className="mt-4 grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
+          {integrationEvidenceLanes.map((lane) => (
+            <div key={lane.title} className="rounded-[22px] border border-white/8 bg-black/20 p-4">
+              <div className="text-base font-medium text-white">{lane.title}</div>
+              <div className="mt-2 text-sm leading-6 text-white/62">{lane.summary}</div>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <Link href={lane.featureHref} className={cn(buttonVariants({ size: "sm" }))}>
+                  Open feature
+                </Link>
+                <Link href={lane.proofHref} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                  Open proof
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
       <div>
         <JudgeRuntimeLogsPanel />

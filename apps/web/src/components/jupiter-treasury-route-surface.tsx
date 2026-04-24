@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 import { ArrowRight, ArrowUpRight, RefreshCcw, ShieldCheck, WalletCards } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -23,14 +26,88 @@ const routeMoments = [
   },
 ] as const;
 
-const nextMilestones = [
-  "Attach a quote preview and route rationale to the treasury request object.",
-  "Carry an execution-planning lane that keeps destination policy and settlement posture readable before governed delivery.",
-  "Preserve swap and rebalance policy thresholds inside the govern flow.",
-  "Publish post-route settlement receipts beside the same payout or treasury packet.",
-] as const;
+type JupiterPreviewResponse = {
+  request?: {
+    inputMint?: string;
+    outputMint?: string;
+    amount?: string;
+    taker?: string | null;
+    slippageBps?: number | null;
+  };
+  summary?: {
+    mode?: string | null;
+    router?: string | null;
+    inAmount?: string | null;
+    outAmount?: string | null;
+    inUsdValue?: number | null;
+    outUsdValue?: number | null;
+    priceImpact?: number | null;
+    slippageBps?: number | null;
+    gasless?: boolean | null;
+    requestId?: string | null;
+    totalTime?: number | null;
+    transactionAvailable?: boolean | null;
+  };
+  topRoutes?: Array<{
+    label?: string | null;
+    inAmount?: string | null;
+    outAmount?: string | null;
+    percent?: number | null;
+  }>;
+  error?: string;
+};
+
+const DEFAULT_INPUT_MINT = "So11111111111111111111111111111111111111112";
+const DEFAULT_OUTPUT_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+
+function formatUsd(value: number | null | undefined) {
+  if (typeof value !== "number" || Number.isNaN(value)) return "N/A";
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: value >= 1000 ? 0 : 2,
+  }).format(value);
+}
 
 export function JupiterTreasuryRouteSurface() {
+  const [inputMint, setInputMint] = useState(DEFAULT_INPUT_MINT);
+  const [outputMint, setOutputMint] = useState(DEFAULT_OUTPUT_MINT);
+  const [amount, setAmount] = useState("1000000");
+  const [slippageBps, setSlippageBps] = useState("50");
+  const [deliveryState, setDeliveryState] = useState(
+    "Prepare a governed treasury route preview here, then attach the quote logic to rebalance and payout-funding actions.",
+  );
+  const [preview, setPreview] = useState<JupiterPreviewResponse | null>(null);
+  const [running, setRunning] = useState(false);
+
+  async function handlePreview() {
+    const endpoint = process.env.NEXT_PUBLIC_JUPITER_ORDER_ENDPOINT?.trim() || "/api/jupiter/order";
+
+    setRunning(true);
+    setDeliveryState("Requesting Jupiter route preview...");
+
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          inputMint,
+          outputMint,
+          amount,
+          slippageBps: Number(slippageBps),
+        }),
+      });
+      const body = (await response.json().catch(() => null)) as JupiterPreviewResponse | null;
+      setPreview(body);
+      setDeliveryState(response.ok ? "Jupiter route preview received." : body?.error ?? `Jupiter endpoint responded ${response.status}.`);
+    } catch (error) {
+      setPreview(null);
+      setDeliveryState(error instanceof Error ? error.message : "Jupiter route preview failed.");
+    } finally {
+      setRunning(false);
+    }
+  }
+
   return (
     <Card
       id="jupiter-treasury-route"
@@ -40,9 +117,9 @@ export function JupiterTreasuryRouteSurface() {
         <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-100/78">
           Jupiter-backed treasury route
         </div>
-        <CardTitle>Treasury swaps and rebalances are being turned into a governed product lane</CardTitle>
+        <CardTitle>Treasury swaps and rebalances now have a live preview lane</CardTitle>
         <div className="max-w-4xl text-sm leading-7 text-white/60">
-          PrivateDAO is extending the treasury corridor so a DAO-approved swap, rebalance, or payout-funding move can stay inside the same wallet-first operating story instead of breaking into a disconnected trading flow.
+          PrivateDAO is turning treasury routing into a governed operator flow: review the route, inspect price and slippage posture, then carry the same context into treasury action and proof.
         </div>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -54,7 +131,7 @@ export function JupiterTreasuryRouteSurface() {
             </div>
             <div className="mt-3 text-base font-semibold tracking-tight text-white">Swap and rebalance policy</div>
             <div className="mt-2 text-sm leading-6 text-white/56">
-              The route is being shaped around treasury-approved asset moves, not speculative trading language.
+              The route stays framed as treasury motion, not speculative trading.
             </div>
           </div>
           <div className="rounded-[22px] border border-white/8 bg-white/[0.03] px-4 py-4">
@@ -64,7 +141,7 @@ export function JupiterTreasuryRouteSurface() {
             </div>
             <div className="mt-3 text-base font-semibold tracking-tight text-white">Same signer, same govern shell</div>
             <div className="mt-2 text-sm leading-6 text-white/56">
-              The operator should be able to inspect the request, confirm the route, and sign from the same product shell already used for DAO actions.
+              Review and sign should happen in the same product path already used for DAO actions.
             </div>
           </div>
           <div className="rounded-[22px] border border-white/8 bg-white/[0.03] px-4 py-4">
@@ -74,53 +151,119 @@ export function JupiterTreasuryRouteSurface() {
             </div>
             <div className="mt-3 text-base font-semibold tracking-tight text-white">Quote, policy, and receipt together</div>
             <div className="mt-2 text-sm leading-6 text-white/56">
-              The route is designed so a reviewer can follow intent, route choice, and settlement evidence without reconstructing the story from scattered screens.
+              A reviewer should be able to see why the route was chosen and what it implied before funds moved.
             </div>
           </div>
         </div>
 
-        <div className="grid gap-4 xl:grid-cols-[1.05fr_0.95fr]">
-          <div className="rounded-[26px] border border-white/8 bg-white/[0.03] p-5">
-            <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/78">What this route is for</div>
-            <div className="mt-4 grid gap-3">
-              {routeMoments.map((item) => (
-                <div key={item.title} className="rounded-2xl border border-white/8 bg-black/20 p-4">
-                  <div className="text-base font-medium text-white">{item.title}</div>
-                  <div className="mt-2 text-sm leading-7 text-white/60">{item.detail}</div>
+        <div className="grid gap-4 xl:grid-cols-[0.96fr_1.04fr]">
+          <div className="space-y-4">
+            <div className="rounded-[26px] border border-white/8 bg-white/[0.03] p-5">
+              <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/78">Live route preview</div>
+              <div className="mt-4 grid gap-3">
+                <label className="space-y-2">
+                  <div className="text-[11px] uppercase tracking-[0.18em] text-white/42">Input mint</div>
+                  <input value={inputMint} onChange={(event) => setInputMint(event.target.value)} className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none" />
+                </label>
+                <label className="space-y-2">
+                  <div className="text-[11px] uppercase tracking-[0.18em] text-white/42">Output mint</div>
+                  <input value={outputMint} onChange={(event) => setOutputMint(event.target.value)} className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none" />
+                </label>
+                <div className="grid gap-3 md:grid-cols-2">
+                  <label className="space-y-2">
+                    <div className="text-[11px] uppercase tracking-[0.18em] text-white/42">Amount</div>
+                    <input value={amount} onChange={(event) => setAmount(event.target.value)} className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none" />
+                  </label>
+                  <label className="space-y-2">
+                    <div className="text-[11px] uppercase tracking-[0.18em] text-white/42">Slippage bps</div>
+                    <input value={slippageBps} onChange={(event) => setSlippageBps(event.target.value)} className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none" />
+                  </label>
                 </div>
-              ))}
+                <div className="flex flex-wrap gap-3">
+                  <button type="button" className={cn(buttonVariants({ size: "sm" }))} onClick={() => void handlePreview()} disabled={running}>
+                    {running ? "Loading..." : "Run route preview"}
+                  </button>
+                  <Link href="/govern#proposal-review-action" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+                    Open govern flow
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-[26px] border border-cyan-300/18 bg-cyan-300/[0.08] p-5">
+              <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/80">Current route state</div>
+              <div className="mt-3 text-sm leading-7 text-white/68">{deliveryState}</div>
             </div>
           </div>
 
           <div className="space-y-4">
-            <div className="rounded-[26px] border border-cyan-300/18 bg-cyan-300/[0.08] p-5">
-              <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/80">Current operating posture</div>
-              <div className="mt-3 text-base font-medium text-white">
-                The treasury route is already legible in the product and now carries route-plan continuity, quote-backed review, and execution-planning context inside the same product shell.
-              </div>
-              <div className="mt-3 text-sm leading-7 text-white/64">
-                The immediate goal is not to add sponsor logos. It is to make treasury swaps, rebalances, and payout-funding motions feel controlled, reviewable, and easy to understand from the first operator click.
+            <div className="rounded-[26px] border border-white/8 bg-white/[0.03] p-5">
+              <div className="text-[11px] uppercase tracking-[0.24em] text-white/48">Quote summary</div>
+              <div className="mt-4 grid gap-3 md:grid-cols-2">
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm text-white/62">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Router</div>
+                  <div className="mt-2 text-white">{preview?.summary?.router ?? "—"}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm text-white/62">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Mode</div>
+                  <div className="mt-2 text-white">{preview?.summary?.mode ?? "—"}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm text-white/62">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Input value</div>
+                  <div className="mt-2 text-white">{formatUsd(preview?.summary?.inUsdValue)}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm text-white/62">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Output value</div>
+                  <div className="mt-2 text-white">{formatUsd(preview?.summary?.outUsdValue)}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm text-white/62">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Price impact</div>
+                  <div className="mt-2 text-white">
+                    {typeof preview?.summary?.priceImpact === "number" ? `${preview.summary.priceImpact}` : "—"}
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm text-white/62">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Gasless</div>
+                  <div className="mt-2 text-white">
+                    {typeof preview?.summary?.gasless === "boolean" ? (preview.summary.gasless ? "Yes" : "No") : "—"}
+                  </div>
+                </div>
               </div>
             </div>
 
             <div className="rounded-[26px] border border-white/8 bg-white/[0.03] p-5">
-              <div className="text-[11px] uppercase tracking-[0.24em] text-white/48">Next operating milestones</div>
+              <div className="text-[11px] uppercase tracking-[0.24em] text-white/48">Top route plan</div>
               <div className="mt-4 grid gap-3">
-                {nextMilestones.map((item) => (
-                  <div key={item} className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3 text-sm leading-7 text-white/60">
-                    {item}
+                {(preview?.topRoutes ?? []).length > 0 ? (
+                  preview?.topRoutes?.map((route, index) => (
+                    <div key={`${route.label ?? "route"}-${index}`} className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3 text-sm leading-7 text-white/60">
+                      <div className="font-medium text-white">{route.label ?? "Unknown venue"}</div>
+                      <div className="mt-1">
+                        {route.percent ?? "—"}% · in {route.inAmount ?? "—"} · out {route.outAmount ?? "—"}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3 text-sm leading-7 text-white/60">
+                    Run a live preview to populate route venues and split plan.
                   </div>
-                ))}
+                )}
               </div>
             </div>
           </div>
         </div>
 
+        <div className="grid gap-3">
+          {routeMoments.map((item) => (
+            <div key={item.title} className="rounded-2xl border border-white/8 bg-black/20 p-4">
+              <div className="text-base font-medium text-white">{item.title}</div>
+              <div className="mt-2 text-sm leading-7 text-white/60">{item.detail}</div>
+            </div>
+          ))}
+        </div>
+
         <div className="flex flex-wrap gap-3">
-          <Link href="/govern#proposal-review-action" className={cn(buttonVariants({ size: "sm" }))}>
-            Open govern flow
-            <ArrowRight className="h-4 w-4" />
-          </Link>
           <Link href="/services#payout-route-selection" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
             Open treasury routes
             <ArrowRight className="h-4 w-4" />

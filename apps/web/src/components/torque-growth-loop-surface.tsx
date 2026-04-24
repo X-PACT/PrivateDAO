@@ -36,6 +36,13 @@ const torqueEventTemplates = [
     rewardIntent: "education completion raffle",
     route: "/learn",
   },
+  {
+    id: "private_treasury_execution",
+    title: "Private treasury execution",
+    description: "Track private treasury execution outcomes with amount, type, and success fields.",
+    rewardIntent: "treasury execution incentive",
+    route: "/execute",
+  },
 ];
 
 type TorqueEventRecord = {
@@ -44,30 +51,59 @@ type TorqueEventRecord = {
   rewardIntent: string;
   route: string;
   timestamp: string;
+  delivery: "local-only" | "forwarded" | "failed";
+  detail?: string;
 };
 
 function buildTorquePayload(template: (typeof torqueEventTemplates)[number], timestamp = "client-generated-on-record") {
+  const isPrivateTreasuryEvent = template.id === "private_treasury_execution";
   return {
-    project: "PrivateDAO",
-    integration: "torque-mcp-growth-loop",
-    custom_event: template.id,
-    reward_intent: template.rewardIntent,
-    route: `https://privatedao.org${template.route}/`.replace("//.", "/"),
+    userPubkey: "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
     timestamp,
-    metadata: {
-      network: "solana-testnet",
-      product: "private-governance-and-stablecoin-treasury",
-      proofRoutes: ["https://privatedao.org/judge/", "https://privatedao.org/proof/?judge=1"],
-    },
+    eventName: template.id,
+    data: isPrivateTreasuryEvent
+      ? {
+          amount: 1250,
+          type: "audd_pusd_rebalance",
+          success: true,
+        }
+      : {
+          reward_intent: template.rewardIntent,
+          route: `https://privatedao.org${template.route}/`.replace("//.", "/"),
+          network: "solana-testnet",
+          product: "private-governance-and-stablecoin-treasury",
+          proofRoutes: ["https://privatedao.org/judge/", "https://privatedao.org/proof/?judge=1"],
+        },
   };
 }
 
 export function TorqueGrowthLoopSurface() {
   const [activeId, setActiveId] = useState(torqueEventTemplates[0].id);
+  const [eventWallet, setEventWallet] = useState("4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD");
+  const [treasuryAmount, setTreasuryAmount] = useState("1250");
+  const [treasuryType, setTreasuryType] = useState("audd_pusd_rebalance");
+  const [treasurySuccess, setTreasurySuccess] = useState(true);
   const [records, setRecords] = useState<TorqueEventRecord[]>([]);
   const [deliveryState, setDeliveryState] = useState<string>("Local event log ready");
   const activeTemplate = torqueEventTemplates.find((event) => event.id === activeId) ?? torqueEventTemplates[0];
-  const payload = useMemo(() => buildTorquePayload(activeTemplate), [activeTemplate]);
+  const payload = useMemo(() => {
+    const basePayload = buildTorquePayload(activeTemplate);
+    if (activeTemplate.id !== "private_treasury_execution") {
+      return {
+        ...basePayload,
+        userPubkey: eventWallet,
+      };
+    }
+    return {
+      ...basePayload,
+      userPubkey: eventWallet,
+      data: {
+        amount: Number(treasuryAmount),
+        type: treasuryType,
+        success: treasurySuccess,
+      },
+    };
+  }, [activeTemplate, eventWallet, treasuryAmount, treasuryType, treasurySuccess]);
   const payloadText = JSON.stringify(payload, null, 2);
 
   async function recordEvent() {
@@ -77,8 +113,12 @@ export function TorqueGrowthLoopSurface() {
       rewardIntent: activeTemplate.rewardIntent,
       route: activeTemplate.route,
       timestamp: new Date().toISOString(),
+      delivery: "local-only",
     };
-    const livePayload = buildTorquePayload(activeTemplate, record.timestamp);
+    const livePayload = {
+      ...payload,
+      timestamp: record.timestamp,
+    };
     setRecords((current) => [record, ...current].slice(0, 6));
 
     const endpoint = process.env.NEXT_PUBLIC_TORQUE_CUSTOM_EVENT_ENDPOINT;
@@ -93,9 +133,28 @@ export function TorqueGrowthLoopSurface() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(livePayload),
       });
-      setDeliveryState(response.ok ? "Torque custom_event delivered" : `Torque endpoint responded ${response.status}`);
+      const body = (await response.json().catch(() => null)) as { error?: string; forwardUrl?: string } | null;
+      const detail = response.ok
+        ? body?.forwardUrl ?? "forwarded through configured torque endpoint"
+        : body?.error ?? `endpoint responded ${response.status}`;
+      setRecords((current) =>
+        current.map((item) =>
+          item.id === record.id
+            ? { ...item, delivery: response.ok ? "forwarded" : "failed", detail }
+            : item,
+        ),
+      );
+      setDeliveryState(
+        response.ok ? `Torque custom_event delivered via ${detail}` : `Torque delivery failed: ${detail}`,
+      );
     } catch (error) {
-      setDeliveryState(error instanceof Error ? error.message : "Torque delivery failed");
+      const detail = error instanceof Error ? error.message : "Torque delivery failed";
+      setRecords((current) =>
+        current.map((item) =>
+          item.id === record.id ? { ...item, delivery: "failed", detail } : item,
+        ),
+      );
+      setDeliveryState(detail);
     }
   }
 
@@ -144,6 +203,48 @@ export function TorqueGrowthLoopSurface() {
             MCP/API endpoint is configured. This keeps the growth loop tied to product behavior rather than detached
             campaign copy.
           </p>
+          <div className="mt-4 space-y-3">
+            <label className="space-y-2">
+              <div className="text-[11px] uppercase tracking-[0.2em] text-white/44">User wallet</div>
+              <input
+                value={eventWallet}
+                onChange={(event) => setEventWallet(event.target.value)}
+                className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none"
+                placeholder="wallet address"
+              />
+            </label>
+            {activeTemplate.id === "private_treasury_execution" ? (
+              <div className="grid gap-3 md:grid-cols-2">
+                <label className="space-y-2">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/44">Amount</div>
+                  <input
+                    value={treasuryAmount}
+                    onChange={(event) => setTreasuryAmount(event.target.value)}
+                    className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none"
+                    placeholder="1250"
+                  />
+                </label>
+                <label className="space-y-2">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/44">Type</div>
+                  <input
+                    value={treasuryType}
+                    onChange={(event) => setTreasuryType(event.target.value)}
+                    className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none"
+                    placeholder="audd_pusd_rebalance"
+                  />
+                </label>
+                <label className="md:col-span-2 flex items-center gap-2 rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white/72">
+                  <input
+                    type="checkbox"
+                    checked={treasurySuccess}
+                    onChange={(event) => setTreasurySuccess(event.target.checked)}
+                    className="h-4 w-4 rounded border-white/20 bg-black/20"
+                  />
+                  success
+                </label>
+              </div>
+            ) : null}
+          </div>
           <div className="mt-5 flex flex-wrap gap-3">
             <button type="button" onClick={() => void recordEvent()} className={cn(buttonVariants({ size: "sm" }))}>
               Record event
@@ -166,7 +267,13 @@ export function TorqueGrowthLoopSurface() {
             <div className="mt-4 space-y-2">
               {records.map((record) => (
                 <div key={record.id} className="rounded-2xl border border-white/8 bg-white/[0.03] p-3 text-xs text-white/58">
-                  {record.event} · {record.rewardIntent} · {record.timestamp}
+                  <div>
+                    {record.event} · {record.rewardIntent} · {record.timestamp}
+                  </div>
+                  <div className="mt-1 uppercase tracking-[0.18em] text-[10px] text-white/44">
+                    {record.delivery}
+                  </div>
+                  {record.detail ? <div className="mt-1 text-white/50">{record.detail}</div> : null}
                 </div>
               ))}
             </div>

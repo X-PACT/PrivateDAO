@@ -9,6 +9,7 @@ import { CustodyTruthQuickActions } from "@/components/custody-truth-quick-actio
 import { GovernanceDashboard } from "@/components/governance-dashboard";
 import { OnchainParityPanel } from "@/components/onchain-parity-panel";
 import { GovernanceSessionPanel } from "@/components/governance-session-panel";
+import { OperatingJourneyStrip } from "@/components/operating-journey-strip";
 import { OperationalValidationPanels } from "@/components/operational-validation-panels";
 import { PaymentsTruthStrip } from "@/components/payments-truth-strip";
 import { PdaoTokenStrategyStrip } from "@/components/pdao-token-strategy-strip";
@@ -18,6 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
+import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { cn } from "@/lib/utils";
 
@@ -50,6 +52,7 @@ const dashboardHighlights = [
 
 export default function DashboardPage() {
   const executionSnapshot = getExecutionSurfaceSnapshot();
+  const runtimeSnapshot = getJudgeRuntimeLogsSnapshot();
 
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
@@ -131,6 +134,14 @@ export default function DashboardPage() {
 
       <section className="mt-12">
         <OperationalValidationPanels title="Dashboard operating health" />
+      </section>
+
+      <section className="mt-12">
+        <OperatingJourneyStrip
+          snapshot={runtimeSnapshot}
+          title="Live operating journey"
+          description="Use this as the first answer to: what stage of the real wallet-first product cycle is already verified on Testnet, and where evidence coverage is currently scaling."
+        />
       </section>
 
       <section className="mt-12">
