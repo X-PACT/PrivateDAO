@@ -18,7 +18,7 @@ const technologyLanes = [
   { key: "pusd", label: "PUSD treasury mode", summary: "Stable reserve, payroll, grants, and reward pool lane.", href: "/services/pusd-stablecoin" },
   { key: "eitherway", label: "Wallet-first UX", summary: "Live dApp user flow with clear wallet action boundaries.", href: "/services/eitherway-live-dapp" },
   { key: "magicblock", label: "Responsive execution", summary: "Low-latency corridor for sensitive execution flows.", href: "/security" },
-  { key: "encrypt", label: "Encrypted ops layer", summary: "Confidential planning and policy-bound execution support.", href: "/security" },
+  { key: "encrypt", label: "Encrypted ops layer", summary: "Confidential planning and policy-bound execution support.", href: "/services/encrypt-ika-operations" },
   { key: "rpc", label: "Runtime infrastructure", summary: "Fast reads, diagnostics, and reviewer-facing runtime evidence.", href: "/services/runtime-infrastructure" },
   { key: "proof", label: "Proof continuity", summary: "One verification surface for feature, receipt, and trust checks.", href: "/proof" },
 ] as const;

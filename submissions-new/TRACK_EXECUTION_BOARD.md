@@ -14,7 +14,7 @@ Execution mode: one track at a time.
 - Track 08 — Umbra Confidential Payout: `done`
 - Track 09 — Eitherway Wallet-First Live dApp: `done`
 - Track 10 — Runtime Infrastructure: `done`
-- Track 11 — Encrypt / IKA: `pending`
+- Track 11 — Encrypt / IKA: `done`
 - Track 12 — SolRouter Encrypted AI: `pending`
 - Track 13 — Consumer Governance UX: `pending`
 - Track 14 — Main Frontier: `pending`

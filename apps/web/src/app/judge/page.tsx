@@ -37,6 +37,7 @@ export default function JudgePage() {
     ["Torque growth loop", "Retention and reward surfaces tied to product activity.", "/services/torque-growth-loop", "/documents/torque-growth-loop"],
     ["Eitherway live dApp", "Wallet-first connect/sign/verify lane with partner-ready UX boundaries.", "/services/eitherway-live-dapp", "/proof"],
     ["Runtime infrastructure", "Fast RPC and telemetry lane with reviewer-facing diagnostics continuity.", "/services/runtime-infrastructure", "/analytics"],
+    ["Encrypt / IKA operations", "Client-side encrypted payload lane with commitment-safe proof continuity.", "/services/encrypt-ika-operations", "/documents/encrypted-operations-lane"],
   ] as const;
 
   return (

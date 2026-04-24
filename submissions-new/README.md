@@ -48,6 +48,10 @@ This folder is the canonical track-by-track submission path.
 - Submission: [`track-10-runtime-infrastructure.md`](./track-10-runtime-infrastructure.md)
 - Video script: [`video-scripts/track-10-runtime-infrastructure-video-script.md`](./video-scripts/track-10-runtime-infrastructure-video-script.md)
 
+11. Encrypt / IKA
+- Submission: [`track-11-encrypt-ika.md`](./track-11-encrypt-ika.md)
+- Video script: [`video-scripts/track-11-encrypt-ika-video-script.md`](./video-scripts/track-11-encrypt-ika-video-script.md)
+
 ## Publish Rule
 
 Each track is considered closed only after:

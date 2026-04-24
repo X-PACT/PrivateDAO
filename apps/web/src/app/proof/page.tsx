@@ -103,6 +103,12 @@ export default function ProofPage() {
       featureHref: "/services/runtime-infrastructure",
       proofHref: "/analytics",
     },
+    {
+      title: "Encrypt / IKA operations",
+      summary: "Encrypted payload preparation and commitment-safe planning lane tied to proof continuity.",
+      featureHref: "/services/encrypt-ika-operations",
+      proofHref: "/documents/encrypted-operations-lane",
+    },
   ] as const;
 
   return (

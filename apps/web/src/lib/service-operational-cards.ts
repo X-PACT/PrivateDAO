@@ -292,16 +292,21 @@ export function getServiceOperationalCards(): ServiceOperationalCard[] {
       summary:
         "Security is a product layer here: ZK, REFHE, MagicBlock, trust packets, and runtime diagnostics are visible to users, buyers, and reviewers.",
       tryNow:
-        "Open Security, inspect the ZK matrix and confidence engine, then jump into Proof and Diagnostics to see the encrypted and reviewer-facing path stay connected.",
+        "Open Encrypt / IKA operations, run client-side encryption for a payload, then jump into Proof and Diagnostics to keep encrypted execution and reviewer continuity aligned.",
       evidence: [proofFreshness, walletCoverage, proofCompletion].filter(Boolean) as MetricPreview[],
       intakeRoute: {
         label: "Start a pilot",
         href: "/engage?profile=pilot-funding",
       },
       bestRoute: {
-        label: "Open trust layer",
-        href: "/security",
+        label: "Open encrypted lane",
+        href: "/services/encrypt-ika-operations",
       },
+      profileRoutes: [
+        { label: "Security route", href: "/security" },
+        { label: "Proof route", href: "/proof" },
+        { label: "Encrypted ops brief", href: "/documents/encrypted-operations-lane" },
+      ],
       buyerMotion:
         "Sell confidential operations, proof-backed governance, and trust packaging as a premium layer for privacy-sensitive organizations.",
       mainnetGate:
