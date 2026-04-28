@@ -280,7 +280,7 @@ private fun SplashScreen(onDone: () -> Unit) {
             Spacer(Modifier.height(12.dp))
             Text("PrivateDAO", color = Color.White, style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
             Spacer(Modifier.height(8.dp))
-            Text("Vote Without Fear", color = SolanaGreen, style = MaterialTheme.typography.titleMedium)
+            Text("Private DAO Ops From Mobile", color = SolanaGreen, style = MaterialTheme.typography.titleMedium)
         }
     }
 }
@@ -306,8 +306,8 @@ private fun WalletScreen(uiState: UiState, onConnect: () -> Unit, onContinue: ()
             verticalArrangement = Arrangement.spacedBy(18.dp),
         ) {
             HeroCard(
-                title = "Android-first by design",
-                body = "PrivateDAO uses Kotlin native + Solana Mobile Wallet Adapter because Android is the official mobile dApp path for Solana wallets today.",
+                title = "Android-native operating surface",
+                body = "PrivateDAO on Android turns complex DAO actions into a wallet-first mobile flow with privacy-preserving voting and on-chain verification.",
             )
             SolanaStatusStrip()
             HeroCard(
@@ -351,15 +351,15 @@ private fun HomeScreen(uiState: UiState, onRefresh: () -> Unit, onWalletAction: 
                 ) {
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         Text("🏆 1st Place — Superteam Earn", color = Color(0xFF091410), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleLarge)
-                        Text("Rebuild production backend systems as on-chain Rust programs", color = Color(0xFF0F1722))
+                        Text("Category-defining DAO infrastructure with mobile-first execution", color = Color(0xFF0F1722))
                     }
                 }
             }
         }
         item {
             HeroCard(
-                title = "Devnet governance surface",
-                body = "The Android app mirrors the current web product: live DAO/proposal reads, commit-reveal voting, finalize, execute, tx signatures, and explorer links.",
+                title = "Web + Android unified execution",
+                body = "The Android app runs the same product lifecycle as web: DAO creation, proposal flow, commit-reveal voting, finalize, execute, signatures, and explorer verification.",
                 actions = {
                     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         Button(onClick = onRefresh, colors = primaryButtonColors()) { Text("Refresh") }
@@ -379,17 +379,20 @@ private fun HomeScreen(uiState: UiState, onRefresh: () -> Unit, onWalletAction: 
         }
         item {
             HeroCard(
-                title = "Current live proof",
+                title = "Live mobile proof",
                 body = uiState.selectedProposal?.let {
-                    "Selected proposal ${it.proposalId} is in ${uiState.proposalPhase(it)} phase with ${it.commitCount} commits and ${it.revealCount} reveals."
-                } ?: "Select a proposal to see phase-specific governance actions and transaction proofs.",
+                    "Selected proposal ${it.proposalId} is in ${uiState.proposalPhase(it)} phase with ${it.commitCount} commits and ${it.revealCount} reveals, all verifiable on-chain."
+                } ?: "Select a proposal to inspect phase-specific actions and wallet-signed transaction proofs.",
             )
         }
         item {
             ReviewerOpsCard(
                 title = "Reviewer and runtime ops",
-                body = "Open the same reviewer surfaces used by the web product: proof center, judge mode, monitoring alerts, incident response, and the reviewer fast path.",
+                body = "Open the same reviewer surfaces used by web: proof center, judge mode, monitoring routes, and runtime continuity.",
             )
+        }
+        item {
+            QvacSovereignAiCard()
         }
         item {
             SubmissionStateCard(uiState = uiState)
@@ -419,7 +422,7 @@ private fun ProposalScreen(
         item {
             HeroCard(
                 title = "Live proposal feed",
-                body = "This is the Android-native counterpart of the current product. Proposal accounts are read directly from the same devnet program and decoded with the same account layout.",
+                body = "This is the Android-native counterpart of the web product. Proposal accounts are read from the same Solana program and decoded with the same account layout.",
             )
         }
         items(uiState.proposals) { proposal ->
@@ -474,7 +477,7 @@ private fun CreateProposalScreen(
         item {
             HeroCard(
                 title = "Create and treasury ops",
-                body = "Choose one clear path at a time: bootstrap a DAO, fund its treasury, or create a proposal from an existing DAO.",
+                body = "Choose one path at a time: bootstrap a DAO, fund treasury, or create proposal, all from mobile wallet signatures.",
             )
         }
         item {
@@ -500,7 +503,7 @@ private fun CreateProposalScreen(
             item {
                 HeroCard(
                     title = "Create DAO",
-                    body = "Bootstrap a fresh DAO and governance mint from the connected wallet. This path now starts with a unique devnet-safe DAO name by default.",
+                    body = "Bootstrap a fresh DAO and governance mint from the connected wallet. This path now starts with a unique Testnet-safe DAO name by default.",
                 )
             }
             item {
@@ -510,7 +513,7 @@ private fun CreateProposalScreen(
             }
             item {
                 Text(
-                    "Use a unique DAO name on devnet. The app now suggests a fresh name by default.",
+                    "Use a unique DAO name on Testnet. The app now suggests a fresh name by default.",
                     color = BodyMuted,
                     style = MaterialTheme.typography.bodySmall,
                 )
@@ -692,7 +695,7 @@ private fun AwardsScreen(uiState: UiState, modifier: Modifier = Modifier) {
         item {
             HeroCard(
                 title = "Awards & credibility",
-                body = "The Android app keeps the same proof surface as the main project, including verified recognition and live devnet explorer references.",
+                body = "The Android app keeps the same proof surface as the main project, including verified recognition and live Testnet explorer references.",
             )
         }
         items(uiState.awards) { award ->
@@ -720,13 +723,13 @@ private fun SettingsScreen(uiState: UiState, modifier: Modifier = Modifier) {
         item {
             HeroCard(
                 title = "Environment",
-                body = "Devnet is the default mobile environment. The app is structured for a future mainnet switch without changing protocol semantics, but production cutover still requires reviewer evidence, monitoring, and explicit custody closure.",
+                body = "Testnet is the default mobile environment. The app is structured for a future mainnet switch without changing protocol semantics, but production cutover still requires reviewer evidence, monitoring, and explicit custody closure.",
             )
         }
         item { SettingsRow("Program ID", PrivateDaoConfig.programId) }
         item { SettingsRow("RPC primary", PrivateDaoConfig.rpcUrl) }
         item { SettingsRow("RPC route", PrivateDaoConfig.rpcRouteSummary) }
-        item { SettingsRow("Explorer", "Solscan devnet links") }
+        item { SettingsRow("Explorer", "Solscan Testnet links") }
         item { SettingsRow("Wallet", uiState.wallet?.publicKeyBase58 ?: "Not connected") }
         item {
             ReviewerOpsCard(
@@ -1000,6 +1003,28 @@ private fun LinkButton(label: String, url: String, modifier: Modifier = Modifier
 }
 
 @Composable
+private fun QvacSovereignAiCard() {
+    val localBrief = "Operation private_treasury_execution stays on device before signing. Amount 1250 USDT. Privacy mode shielded. Local alert: new recipient requires counterparty review."
+
+    Card(shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = SurfaceSecondary)) {
+        Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Text("QVAC sovereign AI", color = SolanaGreen, style = MaterialTheme.typography.labelSmall)
+            Text("On-device operation brief", color = Color.White, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Text(
+                "Sensitive treasury context is prepared locally before wallet signing, matching the web QVAC lane and preserving the same review to sign to proof path.",
+                color = BodyMuted,
+            )
+            SettingsRow("Local brief", localBrief)
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.horizontalScroll(rememberScrollState())) {
+                StatusChip("local-first", SolanaGreen, Color(0xFF0E2A22))
+                StatusChip("pre-sign", SolanaBlue, Color(0xFF10243A))
+                StatusChip("private ops", SolanaPurple, Color(0xFF211633))
+            }
+        }
+    }
+}
+
+@Composable
 private fun ValidationCard(message: String) {
     Card(shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFF221128))) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -1122,7 +1147,7 @@ private fun SolanaStatusStrip() {
         horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         StatusChip("Solana", SolanaGreen, SolanaPurple)
-        StatusChip("Devnet", SolanaBlue, SolanaGreen)
+        StatusChip("Testnet", SolanaBlue, SolanaGreen)
         StatusChip("MWA", SolanaPurple, SolanaBlue)
     }
 }
