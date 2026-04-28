@@ -338,6 +338,31 @@ export function getServiceOperationalCards(): ServiceOperationalCard[] {
         "Mainnet rollout should include stricter model-bounding policy, evidence retention standards, and reviewed cryptographic envelope handling for encrypted brief exports.",
     },
     {
+      title: "QVAC Sovereign AI",
+      summary:
+        "QVAC Sovereign AI brings local-first intelligence into the operation path so governance and treasury context can be processed on device before signing.",
+      tryNow:
+        "Open the QVAC lane, run a local operational brief, validate capability state on your current device, then continue to execute and proof.",
+      evidence: [walletCoverage, executeHealth, proofFreshness].filter(Boolean) as MetricPreview[],
+      intakeRoute: {
+        label: "Open QVAC lane",
+        href: "/services/qvac-sovereign-ai",
+      },
+      bestRoute: {
+        label: "Open intelligence route",
+        href: "/intelligence",
+      },
+      profileRoutes: [
+        { label: "Execute", href: "/execute" },
+        { label: "Proof", href: "/proof" },
+        { label: "Services", href: "/services" },
+      ],
+      buyerMotion:
+        "Position local-first AI as a compliance-friendly advantage for teams that cannot route sensitive treasury intent into centralized model clouds.",
+      mainnetGate:
+        "Mainnet rollout should bind model packaging, deterministic local policy checks, and explicit failure handling when device capability is below required thresholds.",
+    },
+    {
       title: "Main Frontier Closure",
       summary:
         "Main Frontier Closure packages all shipped tracks as one integrated operating system route for judges, users, and buyers.",

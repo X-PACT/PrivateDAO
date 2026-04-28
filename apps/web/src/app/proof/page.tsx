@@ -123,6 +123,12 @@ export default function ProofPage() {
       proofHref: "/proof",
     },
     {
+      title: "QVAC sovereign AI",
+      summary: "On-device AI decision layer for private operations: local briefing, local context transformation, and privacy-preserving operator assistance.",
+      featureHref: "/services/qvac-sovereign-ai",
+      proofHref: "/proof",
+    },
+    {
       title: "Main Frontier closure",
       summary: "Integrated route that composes all shipped lanes into one judge-ready product surface.",
       featureHref: "/services/main-frontier-closure",

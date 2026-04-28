@@ -64,6 +64,10 @@ This folder is the canonical track-by-track submission path.
 - Submission: [`track-14-main-frontier.md`](./track-14-main-frontier.md)
 - Video script: [`video-scripts/track-14-main-frontier-video-script.md`](./video-scripts/track-14-main-frontier-video-script.md)
 
+15. QVAC Sovereign AI
+- Submission: [`track-15-qvac-sovereign-ai.md`](./track-15-qvac-sovereign-ai.md)
+- Video script: [`video-scripts/track-15-qvac-sovereign-ai-video-script.md`](./video-scripts/track-15-qvac-sovereign-ai-video-script.md)
+
 ## Publish Rule
 
 Each track is considered closed only after:

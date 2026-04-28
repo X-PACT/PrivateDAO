@@ -17,6 +17,7 @@ const iconMap = {
   "Eitherway Wallet-First Live dApp": WalletCards,
   "Consumer Governance UX": WalletCards,
   "SolRouter Encrypted AI": ShieldCheck,
+  "QVAC Sovereign AI": ShieldCheck,
   "Main Frontier Closure": BriefcaseBusiness,
   "Zerion Agent Policy": ShieldCheck,
   "Torque Growth Loop": BriefcaseBusiness,

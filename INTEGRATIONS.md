@@ -22,4 +22,4 @@ This file maps each track technology to the live product lane.
 | 12 | SolRouter AI | Deterministic AI briefs with encrypted export | `/services/solrouter-encrypted-ai` | `/judge` | `/proof` | Encrypted AI brief receipts |
 | 13 | Consumer UX | Normal-user governance flow (web + android) | `/services/consumer-governance-ux` | `/judge` | `/proof` | Wallet flow receipts in proof |
 | 14 | Main Frontier | Unified integrated operating route | `/services/main-frontier-closure` | `/judge` | `/proof` | Aggregated proof continuity |
-
+| 15 | QVAC | Local-first on-device AI operation briefing layer | `/services/qvac-sovereign-ai` | `/judge` | `/proof` | Local brief + operation continuity in proof |

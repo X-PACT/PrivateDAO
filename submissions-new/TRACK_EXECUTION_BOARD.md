@@ -18,6 +18,7 @@ Execution mode: one track at a time.
 - Track 12 — SolRouter Encrypted AI: `done`
 - Track 13 — Consumer Governance UX: `done`
 - Track 14 — Main Frontier: `done`
+- Track 15 — QVAC Sovereign AI: `done`
 
 ## Rule
 
@@ -47,3 +48,4 @@ Do not start the next track before the current one has:
 | 12 SolRouter | `/services/solrouter-encrypted-ai` | `/judge` | `/proof` |
 | 13 Consumer UX | `/services/consumer-governance-ux` | `/judge` | `/proof` |
 | 14 Main Frontier | `/services/main-frontier-closure` | `/judge` | `/proof` |
+| 15 QVAC | `/services/qvac-sovereign-ai` | `/judge` | `/proof` |

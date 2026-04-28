@@ -14,6 +14,7 @@ import { PrivateSettlementRailWorkbench } from "@/components/private-settlement-
 import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
 import { PrivacySdkApiStarter } from "@/components/privacy-sdk-api-starter";
 import { PrivatePayrollEncryptionWorkbench } from "@/components/private-payroll-encryption-workbench";
+import { QvacSovereignAiSurface } from "@/components/qvac-sovereign-ai-surface";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -112,6 +113,7 @@ export default function ExecutePage() {
       <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
         <div className="space-y-5">
           <ExecutionSpineSurface context="execute" compact />
+          <QvacSovereignAiSurface compact />
 
           <section id="private-payroll" className="space-y-4">
             <div className="rounded-[24px] border border-emerald-300/16 bg-emerald-300/[0.08] p-5">

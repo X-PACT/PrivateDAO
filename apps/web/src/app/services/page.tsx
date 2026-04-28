@@ -10,10 +10,13 @@ import { DevnetServiceMetricsPanel } from "@/components/devnet-service-metrics-p
 import { EcosystemFocusAlignmentStrip } from "@/components/ecosystem-focus-alignment-strip";
 import { EncryptedOperationsWorkbench } from "@/components/encrypted-operations-workbench";
 import { ExecutionSpineSurface } from "@/components/execution-spine-surface";
+import { GuidedOperationRail } from "@/components/guided-operation-rail";
 import { HostedReadProofStrip } from "@/components/hosted-read-proof-strip";
 import { MetricsStrip } from "@/components/metrics-strip";
+import { OperatingJourneyStrip } from "@/components/operating-journey-strip";
 import { OperationsShell } from "@/components/operations-shell";
 import { PlatformServiceArchitecture } from "@/components/platform-service-architecture";
+import { PlatformCapabilityStack } from "@/components/platform-capability-stack";
 import { PaymentsTruthStrip } from "@/components/payments-truth-strip";
 import { PdaoTokenStrategyStrip } from "@/components/pdao-token-strategy-strip";
 import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-truth-strip";
@@ -32,6 +35,7 @@ import { ServiceOperationalCards } from "@/components/service-operational-cards"
 import { ServiceReadinessLadder } from "@/components/service-readiness-ladder";
 import { ServiceHandoffStrip } from "@/components/service-handoff-strip";
 import { ServicesSurface } from "@/components/services-surface";
+import { QvacSovereignAiSurface } from "@/components/qvac-sovereign-ai-surface";
 import { SolutionCorridors } from "@/components/solution-corridors";
 import { TreasuryReceiveSurface } from "@/components/treasury-receive-surface";
 import { TreasuryProfileQuickActions } from "@/components/treasury-profile-quick-actions";
@@ -65,6 +69,12 @@ export default function ServicesPage() {
     >
       <LocalizedRouteSummary routeKey="services" />
       <LocalizedRouteBrief routeKey="servicesCore" />
+      <GuidedOperationRail current="verify" reviewHref="/intelligence" verifyHref="/proof" />
+      <OperatingJourneyStrip
+        snapshot={runtimeSnapshot}
+        title="Service buyers should see the same operating truth a signer sees"
+        description="Commercial packaging stays grounded only when it reflects the live wallet-first cycle: connect, review, sign, and verify with the same Testnet evidence and proof continuity."
+      />
       <ExecutionSpineSurface context="services" compact />
       <div>
         <ServicesSurface />
@@ -177,6 +187,12 @@ export default function ServicesPage() {
             <HostedReadProofStrip />
           </div>
           <div>
+            <PlatformCapabilityStack
+              title="How the visible product routes connect to the real service core"
+              description="Use this layer when a reviewer, buyer, or partner needs to see how each public surface maps to a live execution engine, a proof route, and a service lane inside PrivateDAO."
+            />
+          </div>
+          <div>
             <AnalystGradeDataCorridor />
           </div>
           <div>
@@ -188,6 +204,9 @@ export default function ServicesPage() {
               title="Operational intelligence is now part of the commercial surface"
               description="Proposal Review AI, Treasury Review AI, Voting Summary, RPC Analyzer, and Gaming AI strengthen how buyers understand PrivateDAO. They are part of the product story because they improve real decisions."
             />
+          </div>
+          <div>
+            <QvacSovereignAiSurface compact />
           </div>
           <div>
             <PlatformServiceArchitecture />
