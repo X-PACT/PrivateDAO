@@ -143,6 +143,54 @@ async function fetchUmbraRelayerInfo() {
   };
 }
 
+async function fetchUmbraRelayerHealth() {
+  const endpoint = getUmbraRelayerEndpoint();
+  const response = await fetch(`${endpoint}/v1/health`, {
+    method: "GET",
+    headers: { Accept: "application/json" },
+  });
+  const raw = (await response.json().catch(() => null)) as Record<string, unknown> | null;
+  if (!response.ok) {
+    throw new Error(
+      (typeof raw?.error === "string" && raw.error) ||
+        (typeof raw?.message === "string" && raw.message) ||
+        `Umbra relayer health responded ${response.status}`,
+    );
+  }
+  return {
+    endpoint,
+    status: typeof raw?.status === "string" ? raw.status : "unknown",
+    raw,
+  };
+}
+
+async function fetchUmbraClaimStatus(requestId: string) {
+  const endpoint = getUmbraRelayerEndpoint();
+  const response = await fetch(`${endpoint}/v1/claims/${requestId}`, {
+    method: "GET",
+    headers: { Accept: "application/json" },
+  });
+  const raw = (await response.json().catch(() => null)) as Record<string, unknown> | null;
+  if (!response.ok) {
+    throw new Error(
+      (typeof raw?.error === "string" && raw.error) ||
+        (typeof raw?.message === "string" && raw.message) ||
+        `Umbra claim status responded ${response.status}`,
+    );
+  }
+
+  const status = typeof raw?.status === "string" ? raw.status : "unknown";
+  return {
+    endpoint,
+    requestId,
+    status,
+    isTerminal: status === "completed" || status === "failed" || status === "timed_out",
+    pollEveryMs: 3000,
+    recommendedTimeoutMs: 120000,
+    raw,
+  };
+}
+
 async function handlePrivateSettlementIntent(body: Record<string, unknown>) {
   const rail = stringField(body, "rail", "umbra");
   if (rail !== "umbra" && rail !== "cloak") throw new Error("rail must be umbra or cloak");
@@ -308,6 +356,24 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           terminalStatuses: ["completed", "failed", "timed_out"],
         },
       });
+      return;
+    }
+
+    if (pathname === "/api/v1/umbra/relayer/health") {
+      const health = await fetchUmbraRelayerHealth();
+      writeJson(res, 200, { ok: true, source: "umbra-relayer", health });
+      return;
+    }
+
+    const umbraClaimStatusMatch = pathname.match(/^\/api\/v1\/umbra\/claims\/([^/]+)$/);
+    if (umbraClaimStatusMatch) {
+      const requestId = umbraClaimStatusMatch[1];
+      if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(requestId)) {
+        writeJson(res, 400, { ok: false, source: "umbra-relayer", error: "Invalid Umbra claim request_id UUID." });
+        return;
+      }
+      const claim = await fetchUmbraClaimStatus(requestId);
+      writeJson(res, 200, { ok: true, source: "umbra-relayer", claim });
       return;
     }
 

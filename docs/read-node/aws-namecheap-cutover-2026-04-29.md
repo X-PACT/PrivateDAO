@@ -11,6 +11,8 @@ This is the shortest production-style path for making `/api/v1` real while keepi
 - Health: `https://api.privatedao.org/healthz`
 - Metrics: `https://api.privatedao.org/api/v1/metrics`
 - Private settlement endpoint: `POST https://api.privatedao.org/api/v1/private-settlement/intent`
+- Umbra relayer health: `GET https://api.privatedao.org/api/v1/umbra/relayer/health`
+- Umbra claim status proxy: `GET https://api.privatedao.org/api/v1/umbra/claims/{request_id}`
 - QVAC proof endpoint: `GET https://api.privatedao.org/api/v1/qvac/runtime-proof`
 
 ## AWS Host
@@ -94,10 +96,19 @@ curl -fsS https://api.privatedao.org/api/v1/runtime
 curl -fsS https://api.privatedao.org/api/v1/metrics
 curl -fsS https://api.privatedao.org/api/v1/qvac/runtime-proof
 curl -fsS https://api.privatedao.org/api/v1/umbra/relayer/info
+curl -fsS https://api.privatedao.org/api/v1/umbra/relayer/health
 curl -fsS -X POST https://api.privatedao.org/api/v1/private-settlement/intent \
   -H 'Content-Type: application/json' \
   -d '{"rail":"umbra","operationType":"private-payroll","asset":"USDC","amount":"1","recipient":"RecipientWalletxxxxxxxxxxxxxxxxxxxxxxxxxxxx"}'
 ```
+
+After a real SDK-generated claim returns a `request_id`, poll:
+
+```bash
+curl -fsS https://api.privatedao.org/api/v1/umbra/claims/<request_id>
+```
+
+Polling policy: every 3 seconds, stop at `completed`, `failed`, or `timed_out`, and use a 120-second operator timeout.
 
 ## Web Environment
 
