@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -122,19 +122,20 @@ function dedupeRows(rows: MatrixRow[]) {
 }
 
 export function ProofMatrix() {
-  const [rows] = useState<MatrixRow[]>(() => {
-    if (typeof window === "undefined") return [];
+  const [rows, setRows] = useState<MatrixRow[]>([]);
+
+  useEffect(() => {
     try {
       const receiptRaw = window.localStorage.getItem("pdao.operation_receipts.v1");
       const receiptRows = receiptRaw
         ? (JSON.parse(receiptRaw) as unknown[]).map(normalizeReceipt).filter((row): row is MatrixRow => Boolean(row))
         : [];
       const governanceRows = normalizeGovernanceSession(window.localStorage.getItem("privatedao-governance-session"));
-      return dedupeRows([...governanceRows, ...receiptRows]);
+      setRows(dedupeRows([...governanceRows, ...receiptRows]));
     } catch {
-      return [];
+      setRows([]);
     }
-  });
+  }, []);
 
   return (
     <Card className="border-white/10 bg-white/[0.03] text-white">
