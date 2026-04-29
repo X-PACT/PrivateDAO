@@ -6,6 +6,7 @@ import { ArrowRight, CheckCircle2, Compass, LifeBuoy, MessageSquareHeart, PlayCi
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { TrackTechnologyGrid } from "@/components/track-technology-grid";
 import { cn } from "@/lib/utils";
 
 export function HomeShell() {
@@ -170,7 +171,7 @@ export function HomeShell() {
                 Android App
               </Link>
               <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/proof">
-                Review Proof
+                Open verification view
               </Link>
               <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/judge">
                 Open Judge
@@ -211,6 +212,8 @@ export function HomeShell() {
                 );
               })}
             </div>
+
+            <TrackTechnologyGrid />
           </div>
 
           <Card className="overflow-hidden border-white/12 bg-[linear-gradient(180deg,rgba(13,18,34,0.94),rgba(7,10,22,0.98))] xl:mt-1">

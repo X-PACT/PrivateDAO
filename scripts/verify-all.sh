@@ -86,7 +86,13 @@ echo "[verify-all] checking PDAO token surface"
 npm run verify:pdao-surface >/dev/null
 
 echo "[verify-all] rebuilding reviewer artifacts"
-run_with_retry 3 npm run build:devnet:review-artifacts >/dev/null
+if [[ "${CI:-}" == "true" ]]; then
+  echo "[verify-all] CI detected; using committed reviewer artifacts to avoid public RPC rate limits"
+  npm run build:cryptographic-manifest >/dev/null
+  npm run build:review-attestation >/dev/null
+else
+  run_with_retry 3 npm run build:devnet:review-artifacts >/dev/null
+fi
 
 echo "[verify-all] checking submission registry"
 npm run verify:submission-registry >/dev/null
