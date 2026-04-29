@@ -16,6 +16,7 @@ wallets/
 .env
 *.json
 !idl/private_dao.json
+!package-lock.json
 !apps/web/package.json
 !apps/web/package-lock.json
 !apps/web/components.json
