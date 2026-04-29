@@ -291,6 +291,167 @@ async function handlePrivateSettlementIntent(body: Record<string, unknown>) {
   };
 }
 
+function getApiKey(name: string) {
+  return process.env[name]?.trim() || "";
+}
+
+function getStringParam(url: URL, name: string, fallback = "") {
+  return url.searchParams.get(name)?.trim() || fallback;
+}
+
+async function fetchDuneSim(path: "balances" | "transactions", wallet: string) {
+  const apiKey = getApiKey("DUNE_SIM_API_KEY");
+  if (!apiKey) {
+    return {
+      ok: false,
+      source: "dune-sim",
+      configured: false,
+      error: "DUNE_SIM_API_KEY is not configured on the read node.",
+    };
+  }
+  const response = await fetch(`https://api.sim.dune.com/beta/svm/${path}/${encodeURIComponent(wallet)}`, {
+    headers: {
+      Accept: "application/json",
+      "X-Sim-Api-Key": apiKey,
+    },
+  });
+  const raw = (await response.json().catch(() => null)) as unknown;
+  return {
+    ok: response.ok,
+    source: "dune-sim",
+    configured: true,
+    status: response.status,
+    wallet,
+    raw,
+  };
+}
+
+async function fetchGoldRushQuery(body: Record<string, unknown>) {
+  const apiKey = getApiKey("GOLDRUSH_API_KEY");
+  const walletAddress = typeof body.walletAddress === "string" ? body.walletAddress : "";
+  const chainName = typeof body.chainName === "string" ? body.chainName : "solana-mainnet";
+  const queryType = typeof body.queryType === "string" ? body.queryType : "wallet-history";
+  if (!walletAddress) {
+    return { ok: false, source: "goldrush", error: "walletAddress is required." };
+  }
+  if (!apiKey) {
+    return {
+      ok: false,
+      source: "goldrush",
+      configured: false,
+      error: "GOLDRUSH_API_KEY is not configured on the read node.",
+    };
+  }
+
+  const [balancesResponse, txResponse] = await Promise.all([
+    fetch(`https://api.covalenthq.com/v1/${encodeURIComponent(chainName)}/address/${encodeURIComponent(walletAddress)}/balances_v2/?key=${encodeURIComponent(apiKey)}`, {
+      headers: { Accept: "application/json" },
+    }),
+    fetch(`https://api.covalenthq.com/v1/${encodeURIComponent(chainName)}/address/${encodeURIComponent(walletAddress)}/transactions_v3/?key=${encodeURIComponent(apiKey)}`, {
+      headers: { Accept: "application/json" },
+    }),
+  ]);
+
+  const balancesRaw = (await balancesResponse.json().catch(() => null)) as Record<string, unknown> | null;
+  const txRaw = (await txResponse.json().catch(() => null)) as Record<string, unknown> | null;
+  const balanceItems = Array.isArray((balancesRaw?.data as Record<string, unknown> | undefined)?.items)
+    ? ((balancesRaw?.data as Record<string, unknown>).items as Array<Record<string, unknown>>)
+    : [];
+  const txItems = Array.isArray((txRaw?.data as Record<string, unknown> | undefined)?.items)
+    ? ((txRaw?.data as Record<string, unknown>).items as Array<Record<string, unknown>>)
+    : [];
+  const balances = balanceItems.slice(0, 12).map((item) => ({
+    symbol: typeof item.contract_ticker_symbol === "string" ? item.contract_ticker_symbol : undefined,
+    name: typeof item.contract_name === "string" ? item.contract_name : undefined,
+    quote: typeof item.quote === "number" ? item.quote : null,
+    prettyBalance: typeof item.pretty_quote === "string" ? item.pretty_quote : null,
+  }));
+  const stablecoinHoldings = balances.filter((item) => ["USDC", "USDT", "PUSD", "AUDD"].includes(item.symbol || ""));
+  const totalQuoteUsd = balances.reduce((sum, item) => sum + (typeof item.quote === "number" ? item.quote : 0), 0);
+
+  return {
+    ok: balancesResponse.ok || txResponse.ok,
+    queryType,
+    chainName,
+    walletAddress,
+    sources: {
+      goldRush: balancesResponse.ok || txResponse.ok ? "live" : "degraded",
+      duneSim: "available-through-/api/v1/dune/*",
+    },
+    summary: {
+      assetCount: balances.length,
+      stableAssetCount: stablecoinHoldings.length,
+      totalQuoteUsd,
+      previewTransactionCount: txItems.length,
+    },
+    riskSignals: txItems.length === 0 ? ["No recent transaction preview returned by GoldRush for this wallet."] : [],
+    balances,
+    stablecoinHoldings,
+    transactions: txItems.slice(0, 8),
+    stablecoinFlowPreview: txItems.slice(0, 8),
+    raw: {
+      balanceStatus: balancesResponse.status,
+      transactionStatus: txResponse.status,
+    },
+  };
+}
+
+async function forwardTorqueEvent(body: Record<string, unknown>) {
+  const apiKey = getApiKey("TORQUE_API_KEY");
+  const configuredEndpoint = process.env.TORQUE_CUSTOM_EVENT_API_URL?.trim() || process.env.TORQUE_INGESTER_URL?.trim() || "https://ingest.torque.so/events";
+  const endpoint = configuredEndpoint.endsWith("/events") ? configuredEndpoint : `${configuredEndpoint.replace(/\/+$/, "")}/events`;
+  if (!apiKey) {
+    return {
+      ok: false,
+      source: "torque",
+      configured: false,
+      error: "TORQUE_API_KEY is not configured on the read node.",
+    };
+  }
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": apiKey,
+    },
+    body: JSON.stringify(body),
+  });
+  const raw = (await response.json().catch(() => null)) as unknown;
+  return {
+    ok: response.ok,
+    source: "torque",
+    endpoint,
+    status: response.status,
+    raw,
+  };
+}
+
+async function fetchZerionPortfolio(wallet: string) {
+  const apiKey = getApiKey("ZERION_API_KEY");
+  if (!apiKey) {
+    return {
+      ok: false,
+      source: "zerion",
+      configured: false,
+      error: "ZERION_API_KEY is not configured on the read node.",
+    };
+  }
+  const response = await fetch(`https://api.zerion.io/v1/wallets/${encodeURIComponent(wallet)}/portfolio/?currency=usd`, {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Basic ${Buffer.from(`${apiKey}:`).toString("base64")}`,
+    },
+  });
+  const raw = (await response.json().catch(() => null)) as unknown;
+  return {
+    ok: response.ok,
+    source: "zerion",
+    status: response.status,
+    wallet,
+    raw,
+  };
+}
+
 async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
   if (req.method === "OPTIONS") {
     writeJson(res, 200, { ok: true });
@@ -318,6 +479,20 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
       const body = await readRequestJson(req);
       const receipt = await handlePrivateSettlementIntent(body);
       writeJson(res, 200, receipt);
+      return;
+    }
+
+    if (req.method === "POST" && (pathname === "/api/goldrush/query" || pathname === "/api/v1/goldrush/query")) {
+      const body = await readRequestJson(req);
+      const query = await fetchGoldRushQuery(body);
+      writeJson(res, query.ok ? 200 : 502, query);
+      return;
+    }
+
+    if (req.method === "POST" && (pathname === "/api/torque/custom-event" || pathname === "/api/v1/torque/custom-event")) {
+      const body = await readRequestJson(req);
+      const result = await forwardTorqueEvent(body);
+      writeJson(res, result.ok ? 200 : 502, result);
       return;
     }
 
@@ -362,6 +537,61 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
     if (pathname === "/api/v1/umbra/relayer/health") {
       const health = await fetchUmbraRelayerHealth();
       writeJson(res, 200, { ok: true, source: "umbra-relayer", health });
+      return;
+    }
+
+    if (pathname === "/api/goldrush/query" || pathname === "/api/v1/goldrush/query") {
+      if ((req.method as string) !== "POST") {
+        writeJson(res, 405, { ok: false, error: "GoldRush query requires POST." });
+        return;
+      }
+      const body = await readRequestJson(req);
+      const query = await fetchGoldRushQuery(body);
+      writeJson(res, query.ok ? 200 : 502, query);
+      return;
+    }
+
+    if (pathname === "/api/dune/balances" || pathname === "/api/v1/dune/balances") {
+      const wallet = getStringParam(url, "wallet");
+      if (!wallet) {
+        writeJson(res, 400, { ok: false, error: "wallet query parameter is required." });
+        return;
+      }
+      const result = await fetchDuneSim("balances", wallet);
+      writeJson(res, result.ok ? 200 : 502, result);
+      return;
+    }
+
+    if (pathname === "/api/dune/transactions" || pathname === "/api/v1/dune/transactions") {
+      const wallet = getStringParam(url, "wallet");
+      if (!wallet) {
+        writeJson(res, 400, { ok: false, error: "wallet query parameter is required." });
+        return;
+      }
+      const result = await fetchDuneSim("transactions", wallet);
+      writeJson(res, result.ok ? 200 : 502, result);
+      return;
+    }
+
+    if (pathname === "/api/torque/custom-event" || pathname === "/api/v1/torque/custom-event") {
+      if ((req.method as string) !== "POST") {
+        writeJson(res, 405, { ok: false, error: "Torque custom event requires POST." });
+        return;
+      }
+      const body = await readRequestJson(req);
+      const result = await forwardTorqueEvent(body);
+      writeJson(res, result.ok ? 200 : 502, result);
+      return;
+    }
+
+    if (pathname === "/api/zerion/portfolio" || pathname === "/api/v1/zerion/portfolio") {
+      const wallet = getStringParam(url, "wallet");
+      if (!wallet) {
+        writeJson(res, 400, { ok: false, error: "wallet query parameter is required." });
+        return;
+      }
+      const result = await fetchZerionPortfolio(wallet);
+      writeJson(res, result.ok ? 200 : 502, result);
       return;
     }
 

@@ -6,7 +6,8 @@ async function safeJson<T>(response: Response): Promise<T | null> {
 }
 
 export async function fetchBalances(walletAddress: string): Promise<DuneBalanceSnapshot> {
-  const response = await fetch(`/api/dune/balances?wallet=${encodeURIComponent(walletAddress)}`);
+  const endpoint = process.env.NEXT_PUBLIC_DUNE_BALANCES_ENDPOINT?.trim() || "https://api.privatedao.org/api/v1/dune/balances";
+  const response = await fetch(`${endpoint}?wallet=${encodeURIComponent(walletAddress)}`);
   const body = await safeJson<DuneBalanceSnapshot & { error?: string }>(response);
   if (!response.ok) {
     throw new Error((body as { error?: string } | null)?.error ?? `Dune balances failed (${response.status}).`);
@@ -15,7 +16,8 @@ export async function fetchBalances(walletAddress: string): Promise<DuneBalanceS
 }
 
 export async function fetchTransactions(walletAddress: string): Promise<DuneTransactionSnapshot> {
-  const response = await fetch(`/api/dune/transactions?wallet=${encodeURIComponent(walletAddress)}`);
+  const endpoint = process.env.NEXT_PUBLIC_DUNE_TRANSACTIONS_ENDPOINT?.trim() || "https://api.privatedao.org/api/v1/dune/transactions";
+  const response = await fetch(`${endpoint}?wallet=${encodeURIComponent(walletAddress)}`);
   const body = await safeJson<DuneTransactionSnapshot & { error?: string }>(response);
   if (!response.ok) {
     throw new Error((body as { error?: string } | null)?.error ?? `Dune transactions failed (${response.status}).`);

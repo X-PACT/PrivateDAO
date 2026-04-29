@@ -128,7 +128,7 @@ export function PrivateSettlementRailWorkbench({
         metadata: payload,
       });
 
-      const torqueEndpoint = process.env.NEXT_PUBLIC_TORQUE_CUSTOM_EVENT_ENDPOINT?.trim() || "/api/torque/custom-event";
+      const torqueEndpoint = process.env.NEXT_PUBLIC_TORQUE_CUSTOM_EVENT_ENDPOINT?.trim() || "https://api.privatedao.org/api/v1/torque/custom-event";
       try {
         await fetch(torqueEndpoint, {
           method: "POST",

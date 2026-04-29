@@ -121,7 +121,7 @@ export function TorqueGrowthLoopSurface() {
     };
     setRecords((current) => [record, ...current].slice(0, 6));
 
-    const endpoint = process.env.NEXT_PUBLIC_TORQUE_CUSTOM_EVENT_ENDPOINT?.trim() || "/api/torque/custom-event";
+    const endpoint = process.env.NEXT_PUBLIC_TORQUE_CUSTOM_EVENT_ENDPOINT?.trim() || "https://api.privatedao.org/api/v1/torque/custom-event";
 
     try {
       const response = await fetch(endpoint, {

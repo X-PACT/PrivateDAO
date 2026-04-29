@@ -47,7 +47,8 @@ export type GoldRushQueryResponse = {
 };
 
 export async function runGoldRushQuery(payload: GoldRushQueryRequest): Promise<GoldRushQueryResponse> {
-  const response = await fetch("/api/goldrush/query", {
+  const endpoint = process.env.NEXT_PUBLIC_GOLDRUSH_PROXY_ENDPOINT?.trim() || "https://api.privatedao.org/api/v1/goldrush/query";
+  const response = await fetch(endpoint, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

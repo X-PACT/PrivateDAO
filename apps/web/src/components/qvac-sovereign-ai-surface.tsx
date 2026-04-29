@@ -29,9 +29,19 @@ const defaultRuntime: QvacRuntime = {
   capabilities: ["deterministic-local-brief"],
 };
 
+type QvacBackendProof = {
+  sdkPackage?: string;
+  sdkVersion?: string;
+  sdkLoaded?: boolean;
+  exportedCapabilities?: string[];
+  generatedAt?: string;
+  productUse?: string[];
+};
+
 export function QvacSovereignAiSurface({ compact = false }: { compact?: boolean }) {
   const [capability, setCapability] = useState<QvacCapabilityState>(defaultCapability);
   const [runtime, setRuntime] = useState<QvacRuntime>(defaultRuntime);
+  const [backendProof, setBackendProof] = useState<QvacBackendProof | null>(null);
   const [operationType, setOperationType] = useState("private_treasury_execution");
   const [amount, setAmount] = useState("1250");
   const [asset, setAsset] = useState("USDT");
@@ -45,7 +55,24 @@ export function QvacSovereignAiSurface({ compact = false }: { compact?: boolean 
     void loadQvacRuntime().then(setRuntime).catch(() => {
       setRuntime(defaultRuntime);
     });
+    void fetch("https://api.privatedao.org/api/v1/qvac/runtime-proof", { cache: "no-store" })
+      .then((response) => response.json())
+      .then((body: unknown) => {
+        if (typeof body === "object" && body !== null) {
+          const record = body as { proof?: QvacBackendProof } & QvacBackendProof;
+          setBackendProof(record.proof ?? record);
+        }
+      })
+      .catch(() => {
+        setBackendProof(null);
+      });
   }, []);
+
+  const qvacSdkStatus = backendProof?.sdkLoaded ? "loaded via runtime proof" : runtime.sdkState;
+  const qvacCapabilities =
+    backendProof?.sdkLoaded && backendProof.exportedCapabilities?.length
+      ? backendProof.exportedCapabilities.slice(0, 12)
+      : runtime.capabilities;
 
   const brief = useMemo(
     () =>
@@ -80,7 +107,9 @@ export function QvacSovereignAiSurface({ compact = false }: { compact?: boolean 
             <div className="flex items-center justify-between"><span>WASM</span><span className="font-medium text-white">{capability.wasm ? "available" : "not detected"}</span></div>
             <div className="flex items-center justify-between"><span>Workers</span><span className="font-medium text-white">{capability.workers ? "available" : "not detected"}</span></div>
             <div className="flex items-center justify-between"><span>Language</span><span className="font-medium text-white">{capability.language}</span></div>
-            <div className="flex items-center justify-between"><span>QVAC SDK</span><span className="font-medium text-white">{runtime.sdkState}</span></div>
+            <div className="flex items-center justify-between"><span>QVAC SDK</span><span className="font-medium text-white">{qvacSdkStatus}</span></div>
+            <div className="flex items-center justify-between"><span>Runtime package</span><span className="font-medium text-white">{backendProof?.sdkPackage ?? "@qvac/sdk"}</span></div>
+            <div className="flex items-center justify-between"><span>Runtime version</span><span className="font-medium text-white">{backendProof?.sdkVersion ?? "pending"}</span></div>
           </div>
         </div>
 
@@ -116,12 +145,15 @@ export function QvacSovereignAiSurface({ compact = false }: { compact?: boolean 
       <div className="mt-4 rounded-[22px] border border-white/10 bg-black/20 p-4">
         <div className="text-[11px] uppercase tracking-[0.2em] text-white/46">Runtime capabilities</div>
         <div className="mt-3 flex flex-wrap gap-2">
-          {runtime.capabilities.map((item) => (
+          {qvacCapabilities.map((item) => (
             <span key={item} className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-[11px] uppercase tracking-[0.16em] text-white/62">
               {item}
             </span>
           ))}
         </div>
+        {backendProof?.generatedAt ? (
+          <div className="mt-3 text-xs text-white/45">Runtime proof generated at {new Date(backendProof.generatedAt).toLocaleString()}</div>
+        ) : null}
       </div>
 
       <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">

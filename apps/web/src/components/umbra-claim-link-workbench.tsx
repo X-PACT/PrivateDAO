@@ -56,7 +56,10 @@ export function UmbraClaimLinkWorkbench() {
     setRunning(true);
     setStatus("Submitting Umbra claim intent...");
     try {
-      const response = await fetch("/api/private-settlement/intent", {
+      const endpoint =
+        process.env.NEXT_PUBLIC_PRIVATE_SETTLEMENT_ENDPOINT?.trim() ||
+        "https://api.privatedao.org/api/v1/private-settlement/intent";
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

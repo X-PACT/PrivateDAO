@@ -102,7 +102,7 @@ export function ZerionAgentPolicySurface() {
     .slice(0, 4);
 
   async function handleLoadPortfolio() {
-    const endpoint = process.env.NEXT_PUBLIC_ZERION_PORTFOLIO_ENDPOINT?.trim() || "/api/zerion/portfolio";
+    const endpoint = process.env.NEXT_PUBLIC_ZERION_PORTFOLIO_ENDPOINT?.trim() || "https://api.privatedao.org/api/v1/zerion/portfolio";
     const walletRef = walletAddress.trim() || "project-wallet";
     const reference = `zerion-${Date.now()}`;
 
