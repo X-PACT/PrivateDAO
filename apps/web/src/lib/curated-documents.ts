@@ -136,6 +136,18 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/track-funding-integration-closure-plan-2026-04-19.md`,
   },
   {
+    slug: "themiracle-benefit-proposal",
+    title: "theMiracle Benefit Proposal",
+    category: "Growth",
+    summary:
+      "Wallet-placement benefit design for theMiracle: targeted DeFi-active Solana governance wallets, one clear PrivateDAO proposal action, $5,000+ perceived incentive value, and conversion analytics tied to wallet-level behavior.",
+    audience: "theMiracle reviewers, wallet-growth partners, DAO operators, treasury teams",
+    boundary:
+      "Submission proposal only; it defines the audience, action, incentive, value, and campaign success criteria without claiming a live theMiracle wallet placement before award selection.",
+    docPath: "docs/themiracle-benefit-proposal.md",
+    rawHref: `${repositoryBlobBase}/docs/themiracle-benefit-proposal.md`,
+  },
+  {
     slug: "encrypted-operations-lane",
     title: "Encrypted Operations Lane",
     category: "Security",

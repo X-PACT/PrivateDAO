@@ -48,6 +48,7 @@ PrivateDAO is live on Solana Testnet with the Anchor 1.0.1 program deployed, web
 
 - Track-by-track delivery board and submission artifacts: [`submissions-new/TRACK_EXECUTION_BOARD.md`](submissions-new/TRACK_EXECUTION_BOARD.md)
 - Submission index and publish log: [`submissions-new/README.md`](submissions-new/README.md)
+- theMiracle wallet-placement benefit proposal: [`docs/themiracle-benefit-proposal.md`](docs/themiracle-benefit-proposal.md) and `https://privatedao.org/documents/themiracle-benefit-proposal/`
 - Security baseline snapshot (current gate findings and mitigations): [`docs/security-baseline-2026-04-24.md`](docs/security-baseline-2026-04-24.md)
 
 ## What PrivateDAO Is Now
