@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "project": "PrivateDAO",
+  "track": "qvac-sovereign-ai",
+  "source": "qvac-runtime-proof-bootstrap",
+  "sdkLoaded": false,
+  "runtimeMode": "browser-local-first",
+  "model": "qvac/fabric-llm-finetune",
+  "note": "Bootstrap proof file kept so the AWS read-node image can build deterministically. Browser QVAC inference remains exposed through the QVAC Sovereign AI product route."
+}
