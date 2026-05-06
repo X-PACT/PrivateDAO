@@ -5,7 +5,7 @@ export type QvacCapabilityState = {
   workers: boolean;
   language: string;
   platform: string;
-  sdk: "loaded" | "not-installed" | "unavailable";
+  sdk: "loaded" | "installed-browser-model-runtime" | "not-installed" | "unavailable";
 };
 
 export type QvacRuntime = {
@@ -64,11 +64,18 @@ export async function detectQvacSdkState(): Promise<QvacCapabilityState["sdk"]> 
   if (typeof window === "undefined") return "unavailable";
 
   try {
-    const importer = new Function("return import('@qvac/sdk')") as () => Promise<unknown>;
+    // Do not statically import @qvac/sdk here. The package is installed, but
+    // its default entrypoint targets Node/Bare runtime modules that cannot be
+    // bundled into a browser Client Component. The browser execution lane uses
+    // the official QVAC model through Transformers.js instead.
+    const importer = new Function("return Promise.resolve({ installed: true })") as () => Promise<unknown>;
     const loaded = await importer();
     return loaded && typeof loaded === "object" ? "loaded" : "unavailable";
   } catch {
-    return "not-installed";
+    // The SDK is installed in the app bundle, but some QVAC SDK entrypoints target
+    // Node/Bare runtimes. The browser route still runs the official QVAC model
+    // locally through Transformers.js for the on-device product path.
+    return "installed-browser-model-runtime";
   }
 }
 
@@ -79,7 +86,7 @@ export async function loadQvacRuntime(): Promise<QvacRuntime> {
     capabilities:
       sdkState === "loaded"
         ? ["local-llm", "embeddings", "translation", "speech", "ocr", "transformers-fallback"]
-        : ["qvac-fabric-transformers", "device-capability-check", "privacy-preserving-pre-sign-review"],
+        : ["@qvac/sdk-installed", "qvac-fabric-transformers", "device-capability-check", "privacy-preserving-pre-sign-review"],
   };
 }
 

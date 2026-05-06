@@ -325,7 +325,7 @@ Core links:
 - Launch trust packet: `https://privatedao.org/documents/launch-trust-packet/`
 - Mainnet blockers: `https://privatedao.org/documents/mainnet-blockers/`
 - Story video: `https://privatedao.org/story/`
-- Technology explainer video: `https://youtu.be/byqu2p1N72U`
+- Technology explainer video: `https://youtu.be/iFTUe4CTWP0`
 - YouTube channel: `https://www.youtube.com/@privatedao`
 - Discord: `https://discord.gg/PbM8BC2A`
 - Colosseum project page: `https://arena.colosseum.org/projects/explore/praivatedao`

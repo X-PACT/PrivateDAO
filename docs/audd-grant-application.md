@@ -22,7 +22,7 @@ The user-facing product already exposes this as:
 - `https://privatedao.org/services#treasury-payment-request`
 - `https://privatedao.org/documents/audd-stablecoin-treasury-layer/`
 
-The practical user benefit is direct: AUDD becomes the settlement asset inside a real governance and treasury workflow, not just a logo added to a landing page.
+The practical user benefit is direct: AUDD becomes the settlement asset inside a real governance and treasury workflow, not just a logo added to a first product view.
 
 ## How we plan to build it on Solana
 

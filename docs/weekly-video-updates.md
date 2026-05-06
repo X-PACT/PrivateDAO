@@ -72,13 +72,13 @@ For public uploads, the canonical path is the narrated `weekly-youtube-ready` bu
   - mainnet direction and product maturity
   - honest boundary between in-repo completion and external execution
 
-## Desktop Export
+## Hosted Export
 
 The same videos are also copied into:
 
-- `/home/x-pact/Desktop/PrivateDAO-Weekly-Updates`
+- public hosted asset listed above
 
-The Desktop folder contains:
+The hosted asset folder contains:
 
 - `Week 1 - PrivateDAO Product Update - YouTube Ready.mp4`
 - `Week 1 - PrivateDAO Product Update - YouTube Ready-poster.png`
@@ -92,7 +92,7 @@ The Desktop folder contains:
 ## Render Command
 
 ```bash
-cd /home/x-pact/PrivateDAO
+cd PrivateDAO
 bash scripts/render-weekly-update-videos.sh
 bash scripts/render-weekly-youtube-ready.sh 2
 ```
@@ -106,7 +106,7 @@ Use this generated document when recording or editing weekly videos so the openi
 ## Verification Command
 
 ```bash
-cd /home/x-pact/PrivateDAO
+cd PrivateDAO
 npm run verify:weekly-updates
 npm run verify:weekly-youtube-ready
 ```

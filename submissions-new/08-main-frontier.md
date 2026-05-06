@@ -22,7 +22,7 @@ PrivateDAO OS: Wallet-First Governance, Treasury, Intelligence, and Proof on Sol
 
 ## Pitch / Demo
 
-- Story reel: `https://youtu.be/HiCz0vb8kgk`
+- Story reel: `https://youtu.be/iFTUe4CTWP0`
 - Proof center: `https://privatedao.org/proof/?judge=1`
 
 ## Project description

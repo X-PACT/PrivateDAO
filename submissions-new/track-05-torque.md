@@ -26,7 +26,7 @@ PrivateDAO Torque Lane: Product-Native Growth Events with Live Relay Delivery
 
 ## Demo / presentation link
 
-`https://youtu.be/HiCz0vb8kgk`
+`https://youtu.be/iFTUe4CTWP0`
 
 ## Short pitch
 

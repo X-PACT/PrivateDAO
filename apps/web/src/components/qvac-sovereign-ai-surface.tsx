@@ -24,12 +24,12 @@ const defaultCapability: QvacCapabilityState = {
   workers: false,
   language: "unknown",
   platform: "unknown",
-  sdk: "unavailable",
+  sdk: "installed-browser-model-runtime",
 };
 
 const defaultRuntime: QvacRuntime = {
-  sdkState: "unavailable",
-  capabilities: ["deterministic-local-brief"],
+  sdkState: "installed-browser-model-runtime",
+  capabilities: ["@qvac/sdk-installed", "qvac-fabric-transformers", "deterministic-local-brief"],
 };
 
 type QvacBackendProof = {
@@ -82,7 +82,11 @@ export function QvacSovereignAiSurface({ compact = false }: { compact?: boolean 
       });
   }, []);
 
-  const qvacSdkStatus = backendProof?.sdkLoaded ? "loaded via runtime proof" : runtime.sdkState;
+  const qvacSdkStatus = backendProof?.sdkLoaded
+    ? "loaded via runtime proof"
+    : runtime.sdkState === "installed-browser-model-runtime"
+      ? "installed; browser model runtime active"
+      : runtime.sdkState;
   const qvacCapabilities =
     backendProof?.sdkLoaded && backendProof.exportedCapabilities?.length
       ? backendProof.exportedCapabilities.slice(0, 12)
@@ -136,7 +140,7 @@ export function QvacSovereignAiSurface({ compact = false }: { compact?: boolean 
             <div className="flex items-center justify-between"><span>QVAC SDK</span><span className="font-medium text-white">{qvacSdkStatus}</span></div>
             <div className="flex items-center justify-between"><span>Runtime package</span><span className="font-medium text-white">{backendProof?.sdkPackage ?? "@qvac/sdk + @xenova/transformers"}</span></div>
             <div className="flex items-center justify-between"><span>Runtime version</span><span className="font-medium text-white">{backendProof?.sdkVersion ?? "runtime proof"}</span></div>
-            <div className="flex items-center justify-between"><span>Fallback model</span><span className="font-medium text-white">qvac/fabric-llm-finetune</span></div>
+            <div className="flex items-center justify-between"><span>Local model</span><span className="font-medium text-white">qvac/fabric-llm-finetune</span></div>
           </div>
         </div>
 

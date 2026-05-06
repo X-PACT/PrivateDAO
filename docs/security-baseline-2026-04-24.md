@@ -3,7 +3,7 @@
 ## Scope
 
 - Repository: `X-PACT/PrivateDAO`
-- Gate run: `~/.codex/ops/bin/codex-security-gate.sh /home/x-pact/PrivateDAO`
+- Gate run: `~/.codex/ops/bin/codex-security-gate.sh <repo>`
 - Date: 2026-04-24
 
 ## Current Findings

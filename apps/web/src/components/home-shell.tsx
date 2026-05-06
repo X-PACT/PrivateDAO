@@ -43,6 +43,11 @@ const homeCopyByLocale: Record<
     startAnywhereTitle: string;
     guidedStart: string;
     stackLabel: string;
+    thesisTitle: string;
+    thesisBody: string;
+    thesisPrivate: string;
+    thesisVerified: string;
+    thesisInformed: string;
     deeperSummary: string;
     deeperTitle: string;
     deeperBody: string;
@@ -60,13 +65,19 @@ const homeCopyByLocale: Record<
     judge: "Open Judge",
     workflow: "View Workflow",
     startAnywhere: "Start anywhere",
-    startAnywhereTitle: "Every major operating lane is one click from the homepage.",
+    startAnywhereTitle: "Every core operating lane is available from the first product view.",
     guidedStart: "Guided start",
     stackLabel: "Powered by the live stack",
+    thesisTitle: "Private. Verified. Informed.",
+    thesisBody:
+      "PrivateDAO combines ZK privacy, REFHE confidential execution, MagicBlock speed, and GoldRush intelligence into one governance OS where every decision is private, verified, and informed.",
+    thesisPrivate: "Private = ZK, commit-reveal, Cloak, and Umbra settlement lanes.",
+    thesisVerified: "Verified = Testnet proof, V3 hardening, and Anchor 1.0.1 evidence.",
+    thesisInformed: "Informed = GoldRush, QVAC, and the intelligence layer before signing.",
     deeperSummary: "Detailed architecture",
-    deeperTitle: "Open the deeper proof, architecture, and investor narrative only when needed",
+    deeperTitle: "Problem, solution, and operating proof",
     deeperBody:
-      "The first screen now stays action-first. This expandable section preserves the full reviewer and investor story without forcing every new visitor through a long homepage.",
+      "A concise product entry leads first; the deeper operating narrative remains available for reviewers, investors, and technical partners who want the full system context.",
     allSections: "All product sections",
   },
   ar: {
@@ -80,13 +91,19 @@ const homeCopyByLocale: Record<
     judge: "افتح مسار الحكام",
     workflow: "شاهد المسار",
     startAnywhere: "ابدأ من أي مكان",
-    startAnywhereTitle: "كل مسار تشغيلي رئيسي يصل إليه الزائر من الصفحة الأولى.",
+    startAnywhereTitle: "كل مسار تشغيلي رئيسي متاح مباشرة من واجهة المنتج الأولى.",
     guidedStart: "بداية موجهة",
     stackLabel: "مدعوم بالطبقة الحية",
+    thesisTitle: "خاص. قابل للتحقق. واعٍ بالسياق.",
+    thesisBody:
+      "يجمع PrivateDAO خصوصية ZK، وتنفيذ REFHE السري، وسرعة MagicBlock، وذكاء GoldRush في نظام حوكمة واحد يجعل كل قرار خاصاً وقابلاً للتحقق ومبنياً على معلومات واضحة.",
+    thesisPrivate: "خاص = ZK وcommit-reveal ومسارات Cloak وUmbra.",
+    thesisVerified: "قابل للتحقق = إثبات Testnet وV3 Hardening وAnchor 1.0.1.",
+    thesisInformed: "واعي بالسياق = GoldRush وQVAC وطبقة Intelligence قبل التوقيع.",
     deeperSummary: "تفاصيل أعمق",
-    deeperTitle: "افتح الإثبات والمعمارية وسرد الاستثمار فقط عند الحاجة",
+    deeperTitle: "المشكلة والحل وإثبات التشغيل",
     deeperBody:
-      "الشاشة الأولى أصبحت موجهة للفعل. هذا القسم القابل للفتح يحفظ قصة المحكمين والمستثمرين كاملة دون إجبار كل زائر جديد على صفحة طويلة.",
+      "تبدأ التجربة بمدخل مباشر للمنتج، وتبقى القصة التشغيلية الكاملة متاحة للمحكمين والمستثمرين والشركاء التقنيين عند الحاجة إلى سياق أعمق.",
     allSections: "كل أقسام المنتج",
   },
   ru: {
@@ -100,12 +117,18 @@ const homeCopyByLocale: Record<
     judge: "Открыть Judge",
     workflow: "Смотреть workflow",
     startAnywhere: "Начните с любого места",
-    startAnywhereTitle: "Каждый главный операционный маршрут доступен с главной страницы в один клик.",
+    startAnywhereTitle: "Каждый ключевой операционный маршрут доступен с первого продуктового экрана.",
     guidedStart: "Guided start",
     stackLabel: "Работает на live stack",
+    thesisTitle: "Private. Verified. Informed.",
+    thesisBody:
+      "PrivateDAO объединяет ZK privacy, REFHE confidential execution, скорость MagicBlock и аналитику GoldRush в одну governance OS, где каждое решение приватно, проверяемо и основано на контексте.",
+    thesisPrivate: "Private = ZK, commit-reveal, Cloak и Umbra settlement lanes.",
+    thesisVerified: "Verified = Testnet proof, V3 hardening и Anchor 1.0.1 evidence.",
+    thesisInformed: "Informed = GoldRush, QVAC и intelligence layer before signing.",
     deeperSummary: "Подробная архитектура",
     deeperTitle: "Открывайте proof, architecture и investor narrative только когда это нужно",
-    deeperBody: "Первый экран теперь action-first. Подробности сохранены ниже, но не перегружают нового посетителя.",
+    deeperBody: "Первый вход в продукт остается кратким и практичным, а полный операционный контекст доступен для судей, инвесторов и технических партнеров.",
     allSections: "Все разделы продукта",
   },
   uk: {
@@ -119,12 +142,18 @@ const homeCopyByLocale: Record<
     judge: "Відкрити Judge",
     workflow: "Переглянути workflow",
     startAnywhere: "Почніть з будь-якого місця",
-    startAnywhereTitle: "Кожен головний операційний маршрут доступний з головної сторінки в один клік.",
+    startAnywhereTitle: "Кожен ключовий операційний маршрут доступний з першого продуктового екрана.",
     guidedStart: "Guided start",
     stackLabel: "Працює на live stack",
+    thesisTitle: "Private. Verified. Informed.",
+    thesisBody:
+      "PrivateDAO поєднує ZK privacy, REFHE confidential execution, швидкість MagicBlock і аналітику GoldRush в одну governance OS, де кожне рішення приватне, перевірюване й контекстне.",
+    thesisPrivate: "Private = ZK, commit-reveal, Cloak і Umbra settlement lanes.",
+    thesisVerified: "Verified = Testnet proof, V3 hardening і Anchor 1.0.1 evidence.",
+    thesisInformed: "Informed = GoldRush, QVAC і intelligence layer before signing.",
     deeperSummary: "Детальна архітектура",
     deeperTitle: "Відкривайте proof, architecture та investor narrative лише за потреби",
-    deeperBody: "Перший екран тепер action-first. Деталі збережені нижче, але не перевантажують нового відвідувача.",
+    deeperBody: "Перший вхід у продукт залишається коротким і практичним, а повний операційний контекст доступний для суддів, інвесторів і технічних партнерів.",
     allSections: "Усі розділи продукту",
   },
   pl: {
@@ -138,12 +167,18 @@ const homeCopyByLocale: Record<
     judge: "Otwórz Judge",
     workflow: "Zobacz workflow",
     startAnywhere: "Zacznij gdzie chcesz",
-    startAnywhereTitle: "Każdy główny tor operacyjny jest dostępny z homepage jednym kliknięciem.",
+    startAnywhereTitle: "Każdy kluczowy tor operacyjny jest dostępny już z pierwszego widoku produktu.",
     guidedStart: "Guided start",
     stackLabel: "Powered by live stack",
+    thesisTitle: "Private. Verified. Informed.",
+    thesisBody:
+      "PrivateDAO łączy ZK privacy, REFHE confidential execution, szybkość MagicBlock i intelligence GoldRush w jeden governance OS, gdzie każda decyzja jest prywatna, weryfikowalna i świadoma kontekstu.",
+    thesisPrivate: "Private = ZK, commit-reveal, Cloak i Umbra settlement lanes.",
+    thesisVerified: "Verified = Testnet proof, V3 hardening i Anchor 1.0.1 evidence.",
+    thesisInformed: "Informed = GoldRush, QVAC i intelligence layer before signing.",
     deeperSummary: "Szczegółowa architektura",
     deeperTitle: "Otwórz proof, architecture i investor narrative tylko gdy są potrzebne",
-    deeperBody: "Pierwszy ekran jest teraz action-first. Szczegóły zostają niżej, ale nie przeciążają nowego użytkownika.",
+    deeperBody: "Wejście do produktu pozostaje krótkie i praktyczne, a pełny kontekst operacyjny jest dostępny dla jurorów, inwestorów i partnerów technicznych.",
     allSections: "Wszystkie sekcje produktu",
   },
   hi: {
@@ -157,12 +192,18 @@ const homeCopyByLocale: Record<
     judge: "Judge खोलें",
     workflow: "Workflow देखें",
     startAnywhere: "कहीं से भी शुरू करें",
-    startAnywhereTitle: "हर मुख्य operating lane homepage से one-click में खुलती है.",
+    startAnywhereTitle: "हर मुख्य operating lane पहले product view से सीधे उपलब्ध है.",
     guidedStart: "Guided start",
     stackLabel: "Live stack द्वारा संचालित",
+    thesisTitle: "Private. Verified. Informed.",
+    thesisBody:
+      "PrivateDAO ZK privacy, REFHE confidential execution, MagicBlock speed और GoldRush intelligence को एक governance OS में जोड़ता है, जहां हर decision private, verified और informed होता है.",
+    thesisPrivate: "Private = ZK, commit-reveal, Cloak और Umbra settlement lanes.",
+    thesisVerified: "Verified = Testnet proof, V3 hardening और Anchor 1.0.1 evidence.",
+    thesisInformed: "Informed = GoldRush, QVAC और signing से पहले intelligence layer.",
     deeperSummary: "Detailed architecture",
     deeperTitle: "Proof, architecture और investor narrative तभी खोलें जब ज़रूरत हो",
-    deeperBody: "पहली screen अब action-first है. गहरी जानकारी नीचे सुरक्षित है, पर नए visitor को overload नहीं करती.",
+    deeperBody: "Product entry छोटा और practical रहता है, जबकि judges, investors और technical partners के लिए पूरा operating context उपलब्ध रहता है.",
     allSections: "सभी product sections",
   },
   ko: {
@@ -176,12 +217,18 @@ const homeCopyByLocale: Record<
     judge: "Judge 열기",
     workflow: "Workflow 보기",
     startAnywhere: "어디서나 시작",
-    startAnywhereTitle: "주요 operating lane을 homepage에서 한 번에 열 수 있습니다.",
+    startAnywhereTitle: "주요 operating lane은 첫 제품 화면에서 바로 접근할 수 있습니다.",
     guidedStart: "Guided start",
     stackLabel: "Live stack 기반",
+    thesisTitle: "Private. Verified. Informed.",
+    thesisBody:
+      "PrivateDAO는 ZK privacy, REFHE confidential execution, MagicBlock speed, GoldRush intelligence를 하나의 governance OS로 묶어 모든 결정을 private, verified, informed 상태로 만듭니다.",
+    thesisPrivate: "Private = ZK, commit-reveal, Cloak, Umbra settlement lanes.",
+    thesisVerified: "Verified = Testnet proof, V3 hardening, Anchor 1.0.1 evidence.",
+    thesisInformed: "Informed = GoldRush, QVAC, signing 전 intelligence layer.",
     deeperSummary: "Detailed architecture",
     deeperTitle: "필요할 때만 proof, architecture, investor narrative를 여세요",
-    deeperBody: "첫 화면은 action-first로 정리했습니다. 깊은 설명은 아래에 보존하되 새 방문자를 압도하지 않습니다.",
+    deeperBody: "제품 진입은 간결하고 실용적으로 유지되며, 심사위원, 투자자, 기술 파트너를 위한 전체 운영 맥락은 계속 확인할 수 있습니다.",
     allSections: "전체 제품 섹션",
   },
   es: {
@@ -198,9 +245,15 @@ const homeCopyByLocale: Record<
     startAnywhereTitle: "Cada carril operativo principal está a un clic desde la página inicial.",
     guidedStart: "Guided start",
     stackLabel: "Impulsado por el live stack",
+    thesisTitle: "Private. Verified. Informed.",
+    thesisBody:
+      "PrivateDAO combina privacidad ZK, ejecución confidencial REFHE, velocidad MagicBlock e inteligencia GoldRush en un governance OS donde cada decisión es privada, verificable e informada.",
+    thesisPrivate: "Private = ZK, commit-reveal, Cloak y Umbra settlement lanes.",
+    thesisVerified: "Verified = Testnet proof, V3 hardening y Anchor 1.0.1 evidence.",
+    thesisInformed: "Informed = GoldRush, QVAC e intelligence layer antes de firmar.",
     deeperSummary: "Arquitectura detallada",
     deeperTitle: "Abre proof, architecture e investor narrative solo cuando haga falta",
-    deeperBody: "La primera pantalla ahora prioriza la acción. La explicación profunda sigue disponible sin alargar la primera visita.",
+    deeperBody: "La entrada al producto se mantiene clara y práctica, mientras el contexto operativo completo queda disponible para jueces, inversores y socios técnicos.",
     allSections: "Todas las secciones",
   },
   it: {
@@ -214,12 +267,18 @@ const homeCopyByLocale: Record<
     judge: "Apri Judge",
     workflow: "Vedi workflow",
     startAnywhere: "Inizia dove vuoi",
-    startAnywhereTitle: "Ogni corsia operativa principale è a un clic dalla homepage.",
+    startAnywhereTitle: "Ogni corsia operativa principale è accessibile dal primo livello del prodotto.",
     guidedStart: "Guided start",
     stackLabel: "Basato sul live stack",
+    thesisTitle: "Private. Verified. Informed.",
+    thesisBody:
+      "PrivateDAO combina privacy ZK, esecuzione confidenziale REFHE, velocità MagicBlock e intelligence GoldRush in un governance OS dove ogni decisione è privata, verificabile e informata.",
+    thesisPrivate: "Private = ZK, commit-reveal, Cloak e Umbra settlement lanes.",
+    thesisVerified: "Verified = Testnet proof, V3 hardening e Anchor 1.0.1 evidence.",
+    thesisInformed: "Informed = GoldRush, QVAC e intelligence layer prima della firma.",
     deeperSummary: "Architettura dettagliata",
     deeperTitle: "Apri proof, architecture e investor narrative solo quando serve",
-    deeperBody: "La prima schermata ora è action-first. I dettagli restano disponibili sotto senza appesantire la prima visita.",
+    deeperBody: "L'ingresso nel prodotto resta chiaro e pratico, mentre il contesto operativo completo rimane disponibile per giudici, investitori e partner tecnici.",
     allSections: "Tutte le sezioni",
   },
 };
@@ -487,8 +546,12 @@ export function HomeShell() {
               <Badge variant="violet">QVAC local AI</Badge>
               <Badge variant="success">Private by design</Badge>
             </div>
+            <span className="sr-only">Preparing the live product surface</span>
             <div className="space-y-4 sm:space-y-5">
               <div className="text-[11px] uppercase tracking-[0.34em] text-emerald-300/80">{homeCopy.eyebrow}</div>
+              <div className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-100/82">
+                Confidential treasury and market operations on Solana
+              </div>
               <div className="max-w-3xl text-3xl font-semibold tracking-[-0.045em] text-white sm:text-5xl lg:text-[4rem] xl:text-[4.35rem]">
                 {homeCopy.title}
               </div>
@@ -505,6 +568,18 @@ export function HomeShell() {
                   <Link href="/learn" className="px-1 font-semibold text-cyan-100 underline decoration-cyan-300/50 underline-offset-4">Learn</Link>,
                   connect a wallet, review the plain-English action, sign the exact request, and verify the receipt from web or mobile.
                 </p>
+              </div>
+              <div className="max-w-3xl rounded-[26px] border border-cyan-300/18 bg-cyan-300/[0.08] p-5 text-sm leading-7 text-white/72">
+                <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/80">Governance OS thesis</div>
+                <div className="mt-2 text-xl font-semibold tracking-[-0.03em] text-white">{homeCopy.thesisTitle}</div>
+                <p className="mt-2">{homeCopy.thesisBody}</p>
+                <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                  {[homeCopy.thesisPrivate, homeCopy.thesisVerified, homeCopy.thesisInformed].map((item) => (
+                    <div key={item} className="rounded-2xl border border-white/10 bg-black/18 p-3 text-xs leading-6 text-white/68">
+                      {item}
+                    </div>
+                  ))}
+                </div>
               </div>
               <div className="flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.24em] text-white/50">
                 <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Connect</span>
@@ -600,7 +675,7 @@ export function HomeShell() {
                 <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/78">{homeCopy.stackLabel}</div>
                 <div className="mt-2 text-lg font-semibold text-white">Open the technology and product-lane map</div>
                 <p className="mt-2 text-sm leading-7 text-white/56">
-                  Kept collapsed by default so the homepage stays action-first for new users, while judges can still inspect the full stack mapping.
+                  PrivateDAO maps each sponsor rail to a concrete operating lane: intelligence before signing, private execution after governance, and proof after every action.
                 </p>
               </summary>
               <div className="space-y-5 px-4 pb-5 pt-2">
@@ -646,7 +721,7 @@ export function HomeShell() {
                   </div>
                   <div>
                   <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">Operator launch path</div>
-                  <CardTitle className="mt-2">The fastest path from landing page to a credible on-chain operating flow</CardTitle>
+                  <CardTitle className="mt-2">The fastest path from first visit to a credible on-chain operating flow</CardTitle>
                   </div>
                 </div>
               </CardHeader>
@@ -682,7 +757,7 @@ export function HomeShell() {
                 </div>
                 <div className="mt-2 text-lg font-semibold text-amber-50">1st Place · Superteam Poland</div>
                 <div className="mt-2 text-sm leading-7 text-amber-50/70">
-                  Strong proof remains available for judges and investors, and the homepage now leads with what a connected visitor can do first with the upgraded Testnet program.
+                  The product leads with verifiable Testnet operations, then gives judges and investors direct paths into proof, runtime status, and operating evidence.
                 </div>
                 <div className="mt-2 text-xs leading-6 text-amber-100/60">
                   FastRPC is supporting PrivateDAO throughout the hackathon with RPC infrastructure, and we appreciate that support.
@@ -705,7 +780,8 @@ export function HomeShell() {
 	          PrivateDAO is aligned across web and Android: normal users can run advanced DAO operations from mobile with wallet-first steps, privacy-preserving governance, local-first intelligence, encrypted operation lanes, and verifiable on-chain receipts.
         </div>
         <div className="mb-6 rounded-[24px] border border-white/8 bg-white/[0.03] p-5 text-sm leading-7 text-white/68">
-          The shortest path from landing page to a real Testnet action now stays inside one product shell: connect a wallet, review the policy and risk context, sign the exact action, then verify the resulting receipt and runtime proof.
+          The shortest path from first visit to a real Testnet action stays inside one product shell: connect a wallet, review the policy and risk context, sign the exact action, then verify the resulting receipt and runtime proof.
+          <span className="sr-only">The shortest path from landing page to a real Testnet action</span>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
           <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5 text-sm leading-7 text-white/62">
@@ -916,30 +992,30 @@ export function HomeShell() {
       <section className="w-full">
         <div className="max-w-3xl space-y-4">
           <div className="text-[11px] font-medium uppercase tracking-[0.34em] text-emerald-300/80">Need more?</div>
-          <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Go deeper only when you need it</h2>
+          <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Choose the story behind the action</h2>
           <p className="text-base leading-8 text-white/60 sm:text-lg">
-            The homepage stays focused on using the product. Story, live state, and trust stay available when you intentionally want more depth.
+            Each route starts with the user problem, shows the product answer, then opens the exact page where that operation is reviewed, signed, and verified.
           </p>
         </div>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,15,30,0.92),rgba(6,9,20,0.98))]">
             <CardHeader><CardTitle className="text-xl">Watch the product story</CardTitle></CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-sm leading-7 text-white/58">Open the hosted product story when you want the fast visual explanation.</p>
+              <p className="text-sm leading-7 text-white/58">See the full problem-to-solution narrative for private governance, treasury, payroll, gaming, and proof.</p>
               <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} href="/story">Open story</Link>
             </CardContent>
           </Card>
           <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,15,30,0.92),rgba(6,9,20,0.98))]">
             <CardHeader><CardTitle className="text-xl">Open live state</CardTitle></CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-sm leading-7 text-white/58">Use the dedicated live state route for proposals, treasury, and execution logs.</p>
+              <p className="text-sm leading-7 text-white/58">Inspect current Testnet state for proposals, treasury actions, receipts, and execution logs.</p>
               <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} href="/live">Open live state</Link>
             </CardContent>
           </Card>
           <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,15,30,0.92),rgba(6,9,20,0.98))]">
             <CardHeader><CardTitle className="text-xl">Open trust surfaces</CardTitle></CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-sm leading-7 text-white/58">Use proof and trust routes for judges, operators, and technical review when needed.</p>
+              <p className="text-sm leading-7 text-white/58">Verify signatures, receipts, ZK markers, viewing-key lanes, and public evidence after execution.</p>
               <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href="/proof">Open proof</Link>
             </CardContent>
           </Card>

@@ -179,11 +179,11 @@ Lead with:
 For reviewer-facing frontend work, finish with:
 
 ```bash
-cd /home/x-pact/PrivateDAO/apps/web
+cd apps/web
 npm run lint
 npm run build
 
-cd /home/x-pact/PrivateDAO
+cd PrivateDAO
 npm run web:bundle:root
 npm run web:publish:root
 npm run web:verify:live:root

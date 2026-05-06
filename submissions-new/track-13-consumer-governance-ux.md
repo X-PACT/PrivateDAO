@@ -26,7 +26,7 @@ PrivateDAO Consumer Lane: Wallet-First Governance UX Across Web and Android
 
 ## Demo / presentation link
 
-`https://youtu.be/HiCz0vb8kgk`
+`https://youtu.be/iFTUe4CTWP0`
 
 ## Short pitch
 

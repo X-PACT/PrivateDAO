@@ -497,7 +497,6 @@ export function getOperationalValidationSnapshot(): OperationalValidationSnapsho
   const freshestTimestamp = [
     runtimeEvidence.generatedAt,
     devnetCanary.generatedAt,
-    frontierIntegrations.generatedAt,
     latestTestnetRehearsal?.generatedAt,
   ]
     .filter((timestamp): timestamp is string => typeof timestamp === "string")
@@ -531,7 +530,7 @@ export function getOperationalValidationSnapshot(): OperationalValidationSnapsho
     proofFreshness: {
       label: "Proof freshness",
       value: formatAgeLabel(freshestTimestamp),
-      detail: `Runtime evidence ${formatAgeLabel(runtimeEvidence.generatedAt)}, Testnet canary ${formatAgeLabel(devnetCanary.generatedAt)}, and integration evidence ${formatAgeLabel(frontierIntegrations.generatedAt)} remain published together.${latestRehearsalDetail}`,
+      detail: `Runtime evidence ${formatAgeLabel(runtimeEvidence.generatedAt)} and Testnet canary ${formatAgeLabel(devnetCanary.generatedAt)} remain published together. The integration packet remains linked as the reviewer baseline without turning an archived source packet into the freshness score.${latestRehearsalDetail}`,
       routeLabel: "Open trust documents",
       routeHref: "/documents/live-proof-v3",
       tone: "amber",

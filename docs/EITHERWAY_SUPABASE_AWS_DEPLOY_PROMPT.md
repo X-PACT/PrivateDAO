@@ -60,7 +60,7 @@ Deliver exactly these backend items:
 - No endpoint returns 405 or 502 for the expected health method.
 - Jupiter route preview uses `https://lite-api.jup.ag/swap/v1/quote` with `inputMint=So11111111111111111111111111111111111111112`, `outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v`, `amount=20000000`, and `slippageBps=75`.
    - No secret is exposed in browser HTML or GitHub.
-   - `/proof/` shows receipt timeline rows, never `0 of 0`.
+   - `/proof/` shows receipt timeline rows, never an empty timeline.
    - `/services/qvac-sovereign-ai/` loads and exposes local model progress for `qvac/fabric-llm-finetune`.
    - `/services/jupiter-treasury-route/` auto-loads a live Jupiter quote with router and output amount.
    - `/intelligence/` includes GoldRush and `.sol` lookup entry points.

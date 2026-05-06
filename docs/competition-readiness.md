@@ -64,6 +64,6 @@ npm run verify:all
 
 And the shortest evidence pack is:
 
-- [submission-dossier.md](/home/x-pact/PrivateDAO/docs/submission-dossier.md)
-- [submission-registry.json](/home/x-pact/PrivateDAO/docs/submission-registry.json)
-- [test-wallet-live-proof-v3.generated.md](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.md)
+- [submission-dossier.md](docs/submission-dossier.md)
+- [submission-registry.json](docs/submission-registry.json)
+- [test-wallet-live-proof-v3.generated.md](docs/test-wallet-live-proof-v3.generated.md)

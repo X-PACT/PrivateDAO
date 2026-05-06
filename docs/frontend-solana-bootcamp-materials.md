@@ -79,7 +79,7 @@ From Web2 Frontend to Solana Wallet-First UX
 - why wallet-first UX changes frontend architecture on Solana
 - how PrivateDAO handles Devnet wallet connection without terminal work
 - signer context, corridor selection, and safe first-run routing
-- how to move from a homepage into a usable product lane in seconds
+- how to move from a first product view into a usable product lane in seconds
 
 ### Slide outline
 

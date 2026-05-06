@@ -13,12 +13,12 @@ The repo now contains the rest.
 
 ## Files
 
-- [bootstrap-primary-host-ubuntu.sh](/home/x-pact/PrivateDAO/scripts/bootstrap-primary-host-ubuntu.sh)
-- [install-primary-host-stack.sh](/home/x-pact/PrivateDAO/scripts/install-primary-host-stack.sh)
-- [verify-remote-primary-host.sh](/home/x-pact/PrivateDAO/scripts/verify-remote-primary-host.sh)
-- [docker-compose.yml](/home/x-pact/PrivateDAO/deploy/primary-host/docker-compose.yml)
-- [Caddyfile](/home/x-pact/PrivateDAO/deploy/primary-host/Caddyfile)
-- [.env.example](/home/x-pact/PrivateDAO/deploy/primary-host/.env.example)
+- [bootstrap-primary-host-ubuntu.sh](../../scripts/bootstrap-primary-host-ubuntu.sh)
+- [install-primary-host-stack.sh](../../scripts/install-primary-host-stack.sh)
+- [verify-remote-primary-host.sh](../../scripts/verify-remote-primary-host.sh)
+- [docker-compose.yml](../../deploy/primary-host/docker-compose.yml)
+- [Caddyfile](../../deploy/primary-host/Caddyfile)
+- [.env.example](../../deploy/primary-host/.env.example)
 
 ## Ubuntu bootstrap
 

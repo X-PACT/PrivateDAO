@@ -26,7 +26,7 @@ PrivateDAO PUSD Lane: Payroll, Grants, and Reward Pools as Governed Treasury Ope
 
 ## Demo / presentation link
 
-`https://youtu.be/HiCz0vb8kgk`
+`https://youtu.be/iFTUe4CTWP0`
 
 ## Short pitch
 

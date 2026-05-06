@@ -92,7 +92,7 @@ Target:
 Minimum:
 
 ```bash
-cd /home/x-pact/PrivateDAO
+cd PrivateDAO
 git diff --check
 ```
 

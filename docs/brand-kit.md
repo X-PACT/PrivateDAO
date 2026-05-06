@@ -20,11 +20,11 @@ Official PrivateDAO avatar pack for Discord, X, Telegram, YouTube, Colosseum, an
 
 ## Local Export Pack
 
-- `/home/x-pact/Desktop/PrivateDAO-Brand-Pack/privatedao-avatar.svg`
-- `/home/x-pact/Desktop/PrivateDAO-Brand-Pack/privatedao-avatar-1024.png`
-- `/home/x-pact/Desktop/PrivateDAO-Brand-Pack/privatedao-avatar-512.png`
-- `/home/x-pact/Desktop/PrivateDAO-Brand-Pack/privatedao-avatar-256.png`
-- `/home/x-pact/Desktop/PrivateDAO-Brand-Pack/privatedao-avatar-128.png`
+- public hosted asset listed above
+- public hosted asset listed above
+- public hosted asset listed above
+- public hosted asset listed above
+- public hosted asset listed above
 
 ## Usage Guidance
 

@@ -22,7 +22,7 @@ PrivateDAO Growth Loop: Real Product Actions as Incentive Events
 
 ## Pitch / Demo
 
-- Story reel: `https://youtu.be/HiCz0vb8kgk`
+- Story reel: `https://youtu.be/iFTUe4CTWP0`
 - Proof route: `https://privatedao.org/proof/`
 
 ## Project description
@@ -39,6 +39,6 @@ PrivateDAO uses Torque as a measurable retention layer attached to real actions,
 
 - Torque route: `https://privatedao.org/services/torque-growth-loop/`
 - Torque packet: `https://privatedao.org/documents/torque-growth-loop/`
-- Ingestion evidence: [torque-events-2026-04-24.md](/home/x-pact/PrivateDAO/docs/torque-events-2026-04-24.md)
+- Ingestion evidence: [torque-events-2026-04-24.md](docs/torque-events-2026-04-24.md)
 - Relay API source: `/apps/web/src/app/api/torque/custom-event/route.ts`
 

@@ -49,7 +49,7 @@ Next week, we will keep sharpening the buyer flow, trust surfaces, and reviewer-
 
 ### 0:00-0:05
 
-- Show homepage hero
+- Show first product view hero
 - On-screen text:
   - `PrivateDAO`
   - `Governance infrastructure on Solana`

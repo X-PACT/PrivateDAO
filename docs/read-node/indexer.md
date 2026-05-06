@@ -44,7 +44,7 @@ PrivateDAO now includes a backend read path so proposal discovery, DAO inspectio
 ## Run it locally
 
 ```bash
-cd /home/x-pact/PrivateDAO
+cd PrivateDAO
 npm run start:read-node
 ```
 
@@ -72,7 +72,7 @@ https://privatedao.org/?readApi=http://127.0.0.1:8787/api/v1
 The repository can also generate a reviewer-facing backend snapshot:
 
 ```bash
-cd /home/x-pact/PrivateDAO
+cd PrivateDAO
 npm run build:read-node-snapshot
 npm run verify:read-node-snapshot
 ```

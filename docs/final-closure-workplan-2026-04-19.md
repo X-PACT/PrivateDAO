@@ -286,7 +286,7 @@ Validation:
 - Project Twitter fields use the official project profile `https://x.com/PrivateDAO`; personal X is not used as the project address.
 - Latest root bundle/publish/verify passed after the RPCFast secret cleanup and the fresh Testnet lifecycle packet. Colosseum editor still needs an authenticated Arena session before live field update.
 - Secret scan after publish found no inline RPCFast credentials; only redaction code references to the query-string credential marker remain in the Testnet rehearsal script.
-- Colosseum editor is blocked by Arena authentication in the current browser session; prepared fields are stored at `/home/x-pact/Desktop/PrivateDAO-Colosseum-Editor-Fields-2026-04-19.md`.
+- Colosseum editor is blocked by Arena authentication in the current browser session; prepared fields are stored at public hosted asset listed above.
 - Focused TypeScript coverage passed after aligning the DAO bootstrap tests with the Testnet operating label: `35 passing`, statements `76.35%`, branches `72.86%`, functions `81.2%`, lines `76.35%` across `dao-bootstrap`, `read-node`, and `micropayment-engine`.
 - Audit readiness V2 now verifies the modular Anchor program layout across `lib.rs`, `dao.rs`, `privacy.rs`, `treasury.rs`, `voting.rs`, `utils.rs`, and `error.rs`: `npm run verify:audit-readiness:v2` PASS.
 - Fuzz smoke pass completed one target at a time after warm build:

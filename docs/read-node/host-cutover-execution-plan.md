@@ -177,12 +177,12 @@ And `scripts/build-web-mirror-bundle.sh` only copies `CNAME` in `root` mode, not
 
 The repo now also ships a concrete candidate primary-host stack:
 
-- [deploy/primary-host/docker-compose.yml](/home/x-pact/PrivateDAO/deploy/primary-host/docker-compose.yml)
-- [deploy/primary-host/Caddyfile](/home/x-pact/PrivateDAO/deploy/primary-host/Caddyfile)
-- [deploy/primary-host/read-node.Dockerfile](/home/x-pact/PrivateDAO/deploy/primary-host/read-node.Dockerfile)
-- [deploy/primary-host/.env.example](/home/x-pact/PrivateDAO/deploy/primary-host/.env.example)
-- [scripts/prepare-primary-host-stack.sh](/home/x-pact/PrivateDAO/scripts/prepare-primary-host-stack.sh)
-- [scripts/verify-primary-host-stack.sh](/home/x-pact/PrivateDAO/scripts/verify-primary-host-stack.sh)
+- [deploy/primary-host/docker-compose.yml](../../deploy/primary-host/docker-compose.yml)
+- [deploy/primary-host/Caddyfile](../../deploy/primary-host/Caddyfile)
+- [deploy/primary-host/read-node.Dockerfile](../../deploy/primary-host/read-node.Dockerfile)
+- [deploy/primary-host/.env.example](../../deploy/primary-host/.env.example)
+- [scripts/prepare-primary-host-stack.sh](../../scripts/prepare-primary-host-stack.sh)
+- [scripts/verify-primary-host-stack.sh](../../scripts/verify-primary-host-stack.sh)
 
 This makes the remaining external dependency explicit:
 
@@ -192,6 +192,6 @@ This makes the remaining external dependency explicit:
 
 ## Linked Sources
 
-- [backend-cutover-packet.generated.md](/home/x-pact/PrivateDAO/docs/read-node/backend-cutover-packet.generated.md)
-- [same-domain-deploy.md](/home/x-pact/PrivateDAO/docs/read-node/same-domain-deploy.md)
-- [reviewer-telemetry-packet.generated.md](/home/x-pact/PrivateDAO/docs/reviewer-telemetry-packet.generated.md)
+- [backend-cutover-packet.generated.md](./backend-cutover-packet.generated.md)
+- [same-domain-deploy.md](./same-domain-deploy.md)
+- [reviewer-telemetry-packet.generated.md](../reviewer-telemetry-packet.generated.md)

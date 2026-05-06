@@ -38,7 +38,7 @@ import { cn } from "@/lib/utils";
 const operationsNav = [
   { href: "/start", label: "Start", icon: Compass, summary: "Guided onboarding and wallet-first flow" },
   { href: "/learn", label: "Learn", icon: FileText, summary: "Workflow-first onboarding and product operating guide" },
-  { href: "/assistant", label: "AI Assistant", icon: Sparkles, summary: "Internal AI-style guide across routes, docs, and proof" },
+  { href: "/assistant", label: "AI Assistant", icon: Sparkles, summary: "Product guide across routes, docs, and proof" },
   { href: "/govern", label: "Govern", icon: SquareTerminal, summary: "Create, vote, and execute on Solana Testnet" },
   { href: "/intelligence", label: "Intelligence", icon: BrainCircuit, summary: "Risk scoring, market context, and signer decision support" },
   { href: "/treasury", label: "Treasury", icon: Gauge, summary: "Treasury health, solvency context, and agent policy routes" },

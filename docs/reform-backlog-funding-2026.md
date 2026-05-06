@@ -70,13 +70,13 @@ Target:
 Minimum:
 
 ```bash
-cd /home/x-pact/PrivateDAO
+cd PrivateDAO
 git diff --check
 ```
 
 If a change touches docs viewer routing:
 
 ```bash
-cd /home/x-pact/PrivateDAO/apps/web
+cd apps/web
 npx tsc --noEmit --pretty false
 ```

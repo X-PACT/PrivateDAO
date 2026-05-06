@@ -26,7 +26,7 @@ PrivateDAO Jupiter Lane: Governed Treasury Route Preview and Execution Context
 
 ## Demo / presentation link
 
-`https://youtu.be/HiCz0vb8kgk`
+`https://youtu.be/iFTUe4CTWP0`
 
 ## Short pitch
 

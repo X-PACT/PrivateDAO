@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, BanknoteArrowDown, BrainCircuit, Coins, Compass, FileText, LockKeyhole, Search, ShieldCheck, Sparkles, Wallet, WalletCards } from "lucide-react";
 
@@ -60,16 +60,109 @@ const assistantPaths = [
   },
 ];
 
+type OpenRouterMessage = {
+  role: "system" | "user";
+  content: string;
+};
+
+type OpenRouterChoice = {
+  message?: {
+    content?: string;
+  };
+};
+
+type OpenRouterResponse = {
+  choices?: OpenRouterChoice[];
+  error?: {
+    message?: string;
+  };
+};
+
 export function InternalAssistantPanel() {
   const [query, setQuery] = useState("");
+  const [apiKey, setApiKey] = useState("");
+  const [liveAnswer, setLiveAnswer] = useState("");
+  const [liveStatus, setLiveStatus] = useState<"idle" | "running" | "ready" | "error">("idle");
+  const [liveError, setLiveError] = useState("");
   const suggestion = useMemo(() => getAssistantSuggestion(query), [query]);
   const primaryIsExternal = suggestion.primaryActionHref.startsWith("http");
+  const liveAiEnabled = apiKey.trim().length > 12;
+
+  useEffect(() => {
+    const stored = window.sessionStorage.getItem("privatedao-openrouter-key");
+    if (stored) setApiKey(stored);
+  }, []);
+
+  function updateApiKey(value: string) {
+    setApiKey(value);
+    if (value.trim()) {
+      window.sessionStorage.setItem("privatedao-openrouter-key", value.trim());
+    } else {
+      window.sessionStorage.removeItem("privatedao-openrouter-key");
+    }
+  }
+
+  async function askLiveAssistant() {
+    const prompt = query.trim();
+    if (!prompt || !liveAiEnabled) return;
+
+    setLiveStatus("running");
+    setLiveError("");
+    setLiveAnswer("");
+
+    const messages: OpenRouterMessage[] = [
+      {
+        role: "system",
+        content:
+          "You are PrivateDAO's product guide. Answer in clear product language. Start with Problem, then Solution, then Next click. Never claim mainnet readiness, real custody closure, or completed wallet signatures unless the user provides proof. Prefer routes: /start, /learn, /govern, /intelligence, /treasury, /payroll, /gaming, /compliance, /proof, /services, /assistant.",
+      },
+      {
+        role: "user",
+        content: `User question: ${prompt}\nDeterministic route suggestion: ${suggestion.title} - ${suggestion.summary}\nPrimary route: ${suggestion.primaryActionHref}`,
+      },
+    ];
+
+    try {
+      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey.trim()}`,
+          "Content-Type": "application/json",
+          "HTTP-Referer": "https://privatedao.org",
+          "X-Title": "PrivateDAO Product Assistant",
+        },
+        body: JSON.stringify({
+          model: "openai/gpt-4.1-mini",
+          messages,
+          temperature: 0.2,
+          max_tokens: 420,
+        }),
+      });
+
+      const data = (await response.json()) as OpenRouterResponse;
+      if (!response.ok) {
+        throw new Error(data.error?.message ?? `OpenRouter returned HTTP ${response.status}`);
+      }
+
+      const content = data.choices?.[0]?.message?.content?.trim();
+      if (!content) throw new Error("OpenRouter returned an empty assistant response.");
+      setLiveAnswer(content);
+      setLiveStatus("ready");
+    } catch (error) {
+      setLiveStatus("error");
+      setLiveError(error instanceof Error ? error.message : "Live assistant failed.");
+    }
+  }
+
+  const deterministicProblem = query.trim()
+    ? "The user needs the right PrivateDAO route without understanding the full Solana, privacy, proof, and treasury stack first."
+    : "A new visitor needs a safe starting point before choosing governance, treasury, payroll, gaming, compliance, or proof.";
 
   return (
     <div className="grid gap-6 xl:grid-cols-[1.02fr_0.98fr]">
       <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,16,32,0.94),rgba(7,11,23,0.98))]">
         <CardHeader>
-          <CardTitle>PrivateDAO internal assistant</CardTitle>
+          <CardTitle>PrivateDAO product assistant</CardTitle>
         </CardHeader>
         <CardContent className="space-y-5 text-sm leading-7 text-white/62">
           <div className="flex items-center gap-3 rounded-3xl border border-white/10 bg-white/4 px-4 py-3">
@@ -77,15 +170,53 @@ export function InternalAssistantPanel() {
             <input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Ask AI where to go: proposal review, treasury review, fast RPC, wallet setup, privacy, review path..."
+              placeholder="Describe the problem: private payroll, DAO vote, treasury risk, QVAC AI, proof, wallet setup..."
               className="w-full bg-transparent text-sm text-white outline-none placeholder:text-white/34"
             />
           </div>
           <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
-            This assistant is optimized for routing users, judges, operators, and reviewers to the shortest correct path in the product. It keeps the site usable without forcing anyone to understand the whole system first.
+            <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/72">Problem</div>
+            <p className="mt-2 text-sm leading-7 text-white/62">{deterministicProblem}</p>
+            <div className="mt-4 text-[11px] uppercase tracking-[0.28em] text-emerald-100/72">Solution</div>
+            <p className="mt-2 text-sm leading-7 text-white/62">
+              PrivateDAO turns that intent into a route-aware answer, then sends the user to the exact page where the action can be reviewed, signed, and verified.
+            </p>
           </div>
           <div className="rounded-3xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/58">
-            Try: “proposal review”, “treasury review”, “custody proof”, “reviewer packet”, “multisig intake”, “I need pilot funding”, or “what is the next privacy release gate?”.
+            Try: “I need to pay payroll privately”, “explain QVAC”, “show proof after a vote”, “treasury review”, “custody proof”, “reviewer packet”, or “what should a judge click first?”.
+          </div>
+          <div className="rounded-3xl border border-violet-300/16 bg-violet-300/[0.07] p-5">
+            <div className="text-[11px] uppercase tracking-[0.28em] text-violet-100/72">Optional live AI guide</div>
+            <p className="mt-2 text-sm leading-7 text-white/60">
+              For production demos, add an OpenRouter key in this browser session. The key is stored only in sessionStorage and is never committed to the repository.
+            </p>
+            <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+              <input
+                value={apiKey}
+                onChange={(event) => updateApiKey(event.target.value)}
+                placeholder="OpenRouter API key for this browser session"
+                type="password"
+                className="min-h-11 flex-1 rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/34"
+              />
+              <button
+                type="button"
+                onClick={askLiveAssistant}
+                disabled={!query.trim() || !liveAiEnabled || liveStatus === "running"}
+                className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "min-h-11 disabled:cursor-not-allowed disabled:opacity-50")}
+              >
+                {liveStatus === "running" ? "Thinking..." : "Ask live AI"}
+              </button>
+            </div>
+            {liveStatus === "ready" ? (
+              <div className="mt-4 whitespace-pre-wrap rounded-2xl border border-white/10 bg-black/25 p-4 text-sm leading-7 text-white/70">
+                {liveAnswer}
+              </div>
+            ) : null}
+            {liveStatus === "error" ? (
+              <div className="mt-4 rounded-2xl border border-red-300/20 bg-red-300/[0.08] p-4 text-sm leading-7 text-red-100/80">
+                {liveError}
+              </div>
+            ) : null}
           </div>
           <div className="grid gap-4">
             {assistantPaths.map((path) => {

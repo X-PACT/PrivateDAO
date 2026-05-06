@@ -185,10 +185,10 @@ The engine does **not** convert the project into any of the following if they ar
 
 Use this engine together with:
 
-1. [ZK Capability Matrix](/home/x-pact/PrivateDAO/docs/zk-capability-matrix.md)
-2. [Governance Hardening V3](/home/x-pact/PrivateDAO/docs/governance-hardening-v3.md)
-3. [Settlement Hardening V3](/home/x-pact/PrivateDAO/docs/settlement-hardening-v3.md)
-4. [Live Proof V3](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.md)
-5. [Launch Trust Packet](/home/x-pact/PrivateDAO/docs/launch-trust-packet.generated.md)
+1. [ZK Capability Matrix](docs/zk-capability-matrix.md)
+2. [Governance Hardening V3](docs/governance-hardening-v3.md)
+3. [Settlement Hardening V3](docs/settlement-hardening-v3.md)
+4. [Live Proof V3](docs/test-wallet-live-proof-v3.generated.md)
+5. [Launch Trust Packet](docs/launch-trust-packet.generated.md)
 
 The engine is useful because it turns those surfaces into a single, explainable reading model instead of leaving them as disconnected documents.

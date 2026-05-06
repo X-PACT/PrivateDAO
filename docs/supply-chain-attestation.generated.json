@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-20T01:24:20+02:00",
+  "generatedAt": "2026-05-06T10:17:56+03:00",
   "algorithm": "sha256",
   "packageManager": "npm+yarn",
   "topLevel": {
@@ -8,12 +8,12 @@
     "version": "0.3.0",
     "dependencies": 4,
     "devDependencies": 14,
-    "scripts": 276
+    "scripts": 281
   },
   "lockfiles": {
     "cargo": {
       "path": "Cargo.lock",
-      "packageCount": 263
+      "packageCount": 217
     },
     "npm": {
       "path": "package-lock.json",
@@ -28,36 +28,36 @@
   "files": [
     {
       "path": "Cargo.toml",
-      "sha256": "911d37f026a1616571de0831ef09e21db0dc88cdf0e04155a1088a4e09ff4824",
-      "bytes": 333
+      "sha256": "6183b506b7f0e0e9ba1a97b2597f218a96ec1c9924bcc3dc78f94f08601ff1b2",
+      "bytes": 331
     },
     {
       "path": "Cargo.lock",
-      "sha256": "3e1012b11909a5583f43c7d8c8110e71c4c8b363bf2b15b2553971e7074bbc8d",
-      "bytes": 74468
+      "sha256": "7531013dda172fc3faf015a98acf0cef1b8fa7f393024cbf23b6f998371315f1",
+      "bytes": 57835
     },
     {
       "path": "Anchor.toml",
-      "sha256": "457f9d356ca7532f52ec730f89e780624d6b2c840e139f04e3a1ec926ec94bf5",
+      "sha256": "bf5a0ec9663df3f2c7c655c697495a7a77dac6a03361cb8ff7950752cf1ddab3",
       "bytes": 552
     },
     {
       "path": "package.json",
-      "sha256": "1e8ef221ca78e2e57a8921cbc85eedac79709e2667e10f1ca00c5334c43d4b33",
-      "bytes": 26620
-    },
-    {
-      "path": "package-lock.json",
-      "sha256": "e853eb2bdcb98bb4b6fcf9d25ca77c131348dfd3311f579455f9a73c9be9c261",
-      "bytes": 166992
+      "sha256": "75341cf4d6b1d1656c740113ba83abc7c545ff898745e993ae50b76d1856864d",
+      "bytes": 27018
     },
     {
       "path": "yarn.lock",
-      "sha256": "58a2660a02495e975f9ded2f5b71d585707c9b2ce86587b8fcab95cd80f163e6",
-      "bytes": 94061
+      "sha256": "4fc221a0c2d51012b568cf69840581756506c220c3d86601307325c294c1c57f",
+      "bytes": 94062
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "c38ddfe1742f190f9c83c58ff4bfee6f9ba74bc6eaf1153484eebc1031bb8db1",
+      "bytes": 166993
     }
   ],
-  "aggregateSha256": "6332c32952797fece01b67b03267ebf6f620d114bcd2682faf7dd88d4ff763fd",
+  "aggregateSha256": "f37a12e6ee754afb11b008d309b77ebf2722a3f0cbb26492ed46c0da60a93457",
   "reviewCommands": [
     "npm run build:supply-chain-attestation",
     "npm run verify:supply-chain-attestation",

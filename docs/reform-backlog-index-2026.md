@@ -11,7 +11,7 @@ Use it when deciding the next tranche of work across:
 
 Canonical external planning note:
 
-- `/home/x-pact/Desktop/PrivateDAO-reform-execution-plan-2026.md`
+- public hosted asset listed above
 
 ## Backlog set
 

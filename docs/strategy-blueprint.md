@@ -113,10 +113,10 @@ That is stronger than presenting it as a generic DAO tool because it ties govern
 
 To make this blueprint fully submission-complete, pair it with:
 
-- [performance-evidence.md](/home/x-pact/PrivateDAO/docs/performance-evidence.md)
-- [risk-policy.md](/home/x-pact/PrivateDAO/docs/risk-policy.md)
-- [strategy-operations.md](/home/x-pact/PrivateDAO/docs/strategy-operations.md)
-- [ranger-submission-bundle.generated.md](/home/x-pact/PrivateDAO/docs/ranger-submission-bundle.generated.md)
+- [performance-evidence.md](docs/performance-evidence.md)
+- [risk-policy.md](docs/risk-policy.md)
+- [strategy-operations.md](docs/strategy-operations.md)
+- [ranger-submission-bundle.generated.md](docs/ranger-submission-bundle.generated.md)
 
 ## Honest Boundary
 

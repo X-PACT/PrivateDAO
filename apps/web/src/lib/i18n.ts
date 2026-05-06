@@ -560,7 +560,7 @@ const englishCopy: LocalizedCopy = {
     },
     story: {
       eyebrow: "Story route brief",
-      title: "Story should convert explanation into action without forcing the visitor back to a generic homepage",
+      title: "Story should convert explanation into action without forcing the visitor back to a generic first product view",
       description:
         "This route works best when the reel, the business model, the learn corridor, and the live Testnet actions stay directly connected so a buyer, judge, or student can move from narrative to proof in one sitting.",
       bullets: [

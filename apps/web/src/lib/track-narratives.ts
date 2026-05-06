@@ -56,7 +56,7 @@ export function getTrackNarrativePlan(
   if (workspace.slug === "consumer-apps") {
     return {
       whyUs:
-        "We already turned a complex governance stack into a guided experience with onboarding, wallet flow, search, assistant routing, and clear trust surfaces. That is much harder than simply shipping a beautiful landing page.",
+        "We already turned a complex governance stack into a guided experience with onboarding, wallet flow, search, assistant routing, and clear trust surfaces. That is much harder than simply shipping a beautiful first product view.",
       futureProblemSolution:
         "The future problem is that governance remains inaccessible to normal users. PrivateDAO solves that by making participation, proof, and treasury actions understandable without hiding the underlying rigor.",
       whySponsorShouldCareNow:

@@ -22,7 +22,7 @@ PrivateDAO Bounded Autonomous Agent Lane
 
 ## Pitch / Demo
 
-- Story reel: `https://youtu.be/HiCz0vb8kgk`
+- Story reel: `https://youtu.be/iFTUe4CTWP0`
 - Proof route: `https://privatedao.org/proof/`
 
 ## Project description

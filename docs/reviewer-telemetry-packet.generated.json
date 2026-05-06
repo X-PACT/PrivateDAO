@@ -1,11 +1,11 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-22T00:25:43.751Z",
+  "generatedAt": "2026-05-06T09:10:29.254Z",
   "reviewerIntent": "Show the shortest truth-synced route into runtime maturity, hosted reads, indexed governance, and infrastructure-facing reviewer value without claiming unsupported partnerships or mainnet readiness.",
   "truthSources": [
     {
       "label": "Runtime evidence",
-      "generatedAt": "2026-04-22T00:21:39.664Z",
+      "generatedAt": "2026-05-06T09:07:34.282Z",
       "href": "docs/runtime-evidence.generated.md"
     },
     {
@@ -15,12 +15,12 @@
     },
     {
       "label": "Read-node snapshot",
-      "generatedAt": "2026-04-22T00:18:08.075Z",
+      "generatedAt": "2026-04-28T23:33:45.971Z",
       "href": "docs/read-node/snapshot.generated.md"
     },
     {
       "label": "Devnet service metrics",
-      "generatedAt": "2026-04-22T00:21:39.664Z",
+      "generatedAt": "2026-05-06T09:07:34.282Z",
       "href": "apps/web/src/lib/devnet-service-metrics.ts"
     }
   ],
@@ -32,9 +32,9 @@
     "4 REFHE-settled and 3 MagicBlock-settled proposal paths are already reflected in the indexed source."
   ],
   "externallyProvenNow": [
-    "Runtime evidence package generated at 2026-04-22T00:21:39.664Z and published as docs/runtime-evidence.generated.md.",
+    "Runtime evidence package generated at 2026-05-06T09:07:34.282Z and published as docs/runtime-evidence.generated.md.",
     "Frontier integrations package generated at 2026-04-22T00:19:16.435Z with reviewer entry https://privatedao.org/proof/?judge=1.",
-    "Read-node snapshot generated at 2026-04-22T00:18:08.075Z on slot 457178030 against https://api.devnet.solana.com.",
+    "Read-node snapshot generated at 2026-04-28T23:33:45.971Z on slot 458767709 against https://api.devnet.solana.com.",
     "Proposal flow health, wallet readiness, and proof freshness summaries are taken from the same devnet service metrics module used by the live app.",
     "Unexpected runtime failures remain 0 and unexpected adversarial successes remain 0."
   ],
@@ -47,7 +47,7 @@
   "hostedReadProof": {
     "readPath": "backend-indexer",
     "rpcEndpoint": "https://api.devnet.solana.com",
-    "slot": 457178030,
+    "slot": 458767709,
     "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
     "commitment": "confirmed",
     "proposals": 48,
@@ -91,7 +91,7 @@
     {
       "label": "Proof freshness",
       "value": "fresh this hour",
-      "detail": "Runtime evidence fresh this hour, Devnet canary fresh this hour, and integration evidence fresh this hour remain published together.",
+      "detail": "Runtime evidence fresh this hour and Testnet canary 1h old remain published together. The integration packet remains linked as the reviewer baseline without turning an archived source packet into the freshness score. Latest Testnet rehearsal is 5h old with 9 confirmed lifecycle signatures.",
       "routeLabel": "Open trust documents",
       "routeHref": "/documents/live-proof-v3",
       "tone": "amber"
@@ -114,8 +114,8 @@
     },
     {
       "label": "Primary RPC latency",
-      "value": "210 ms",
-      "detail": "Current blockhash latency from the primary Devnet endpoint. Version latency is 1218 ms.",
+      "value": "305 ms",
+      "detail": "Current blockhash latency from the primary Testnet endpoint. Version latency is 1249 ms.",
       "tone": "cyan",
       "routeLabel": "Open analytics",
       "routeHref": "/analytics"

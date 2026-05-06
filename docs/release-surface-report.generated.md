@@ -22,7 +22,7 @@ Date: 2026-04-22 18:53:12 UTC
 
 - Primary closure target: `web runtime`
 - Current tranche reference:
-  - [release-tranche-plan.generated.md](/home/x-pact/PrivateDAO/docs/release-tranche-plan.generated.md)
+  - [release-tranche-plan.generated.md](docs/release-tranche-plan.generated.md)
 - Practical next move:
   - close the `apps/web` surface first
   - then close ops/verification files

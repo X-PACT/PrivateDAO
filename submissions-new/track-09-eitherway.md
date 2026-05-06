@@ -26,7 +26,7 @@ PrivateDAO Eitherway Lane: Wallet-Orchestrated Live dApp for Connect â†’ Sign â†
 
 ## Demo / presentation link
 
-`https://youtu.be/HiCz0vb8kgk`
+`https://youtu.be/iFTUe4CTWP0`
 
 ## Short pitch
 

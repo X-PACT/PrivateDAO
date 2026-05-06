@@ -4,7 +4,7 @@
 
 This document is the shortest serious handoff for a judge, grant reviewer, investor, or diligence process.
 
-For public competition routing and packet choice during the current cycle, pair this file with [superteam-track-submission-matrix-2026.md](/home/x-pact/PrivateDAO/docs/superteam-track-submission-matrix-2026.md).
+For public competition routing and packet choice during the current cycle, pair this file with [superteam-track-submission-matrix-2026.md](docs/superteam-track-submission-matrix-2026.md).
 
 PrivateDAO now combines protocol hardening, zero-knowledge proof surfaces, and a published cryptographic artifact integrity layer so reviewers can validate not only the protocol logic, but also the integrity of the evidence package itself.
 
@@ -42,50 +42,50 @@ the confidential governance, stablecoin treasury, and reviewer-readable executio
 
 ## Strategy Package
 
-- [investor-pitch-deck.md](/home/x-pact/PrivateDAO/docs/investor-pitch-deck.md)
-- [ranger-strategy-documentation.md](/home/x-pact/PrivateDAO/docs/ranger-strategy-documentation.md)
-- [strategy-blueprint.md](/home/x-pact/PrivateDAO/docs/strategy-blueprint.md)
-- [strategy-adaptor-interface.md](/home/x-pact/PrivateDAO/docs/strategy-adaptor-interface.md)
-- [strategy-operations.md](/home/x-pact/PrivateDAO/docs/strategy-operations.md)
-- [risk-policy.md](/home/x-pact/PrivateDAO/docs/risk-policy.md)
-- [performance-evidence.md](/home/x-pact/PrivateDAO/docs/performance-evidence.md)
+- [investor-pitch-deck.md](docs/investor-pitch-deck.md)
+- [ranger-strategy-documentation.md](docs/ranger-strategy-documentation.md)
+- [strategy-blueprint.md](docs/strategy-blueprint.md)
+- [strategy-adaptor-interface.md](docs/strategy-adaptor-interface.md)
+- [strategy-operations.md](docs/strategy-operations.md)
+- [risk-policy.md](docs/risk-policy.md)
+- [performance-evidence.md](docs/performance-evidence.md)
 
 ## Security Package
 
-- [security-review.md](/home/x-pact/PrivateDAO/docs/security-review.md)
-- [threat-model.md](/home/x-pact/PrivateDAO/docs/threat-model.md)
-- [security-coverage-map.md](/home/x-pact/PrivateDAO/docs/security-coverage-map.md)
-- [failure-modes.md](/home/x-pact/PrivateDAO/docs/failure-modes.md)
-- [replay-analysis.md](/home/x-pact/PrivateDAO/docs/replay-analysis.md)
-- [governance-hardening-v3.md](/home/x-pact/PrivateDAO/docs/governance-hardening-v3.md)
-- [settlement-hardening-v3.md](/home/x-pact/PrivateDAO/docs/settlement-hardening-v3.md)
+- [security-review.md](docs/security-review.md)
+- [threat-model.md](docs/threat-model.md)
+- [security-coverage-map.md](docs/security-coverage-map.md)
+- [failure-modes.md](docs/failure-modes.md)
+- [replay-analysis.md](docs/replay-analysis.md)
+- [governance-hardening-v3.md](docs/governance-hardening-v3.md)
+- [settlement-hardening-v3.md](docs/settlement-hardening-v3.md)
 
 ## Live Proof Package
 
-- [live-proof.md](/home/x-pact/PrivateDAO/docs/live-proof.md)
-- [test-wallet-live-proof-v3.generated.md](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.md)
-- [test-wallet-live-proof-v3.generated.json](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.json)
-- [devnet-release-manifest.md](/home/x-pact/PrivateDAO/docs/devnet-release-manifest.md)
-- [proof-registry.json](/home/x-pact/PrivateDAO/docs/proof-registry.json)
-- [independent-verification.md](/home/x-pact/PrivateDAO/docs/independent-verification.md)
+- [live-proof.md](docs/live-proof.md)
+- [test-wallet-live-proof-v3.generated.md](docs/test-wallet-live-proof-v3.generated.md)
+- [test-wallet-live-proof-v3.generated.json](docs/test-wallet-live-proof-v3.generated.json)
+- [devnet-release-manifest.md](docs/devnet-release-manifest.md)
+- [proof-registry.json](docs/proof-registry.json)
+- [independent-verification.md](docs/independent-verification.md)
 
 ## Stablecoin Treasury Package
 
-- [pusd-stablecoin-treasury-layer.md](/home/x-pact/PrivateDAO/docs/pusd-stablecoin-treasury-layer.md)
-- [pricing-model.md](/home/x-pact/PrivateDAO/docs/pricing-model.md)
-- [agentic-treasury-micropayment-rail.md](/home/x-pact/PrivateDAO/docs/agentic-treasury-micropayment-rail.md)
-- [treasury-reviewer-packet.generated.md](/home/x-pact/PrivateDAO/docs/treasury-reviewer-packet.generated.md)
+- [pusd-stablecoin-treasury-layer.md](docs/pusd-stablecoin-treasury-layer.md)
+- [pricing-model.md](docs/pricing-model.md)
+- [agentic-treasury-micropayment-rail.md](docs/agentic-treasury-micropayment-rail.md)
+- [treasury-reviewer-packet.generated.md](docs/treasury-reviewer-packet.generated.md)
 
 ## Operations Package
 
-- [mainnet-readiness.md](/home/x-pact/PrivateDAO/docs/mainnet-readiness.md)
-- [production-operations.md](/home/x-pact/PrivateDAO/docs/production-operations.md)
-- [monitoring-alerts.md](/home/x-pact/PrivateDAO/docs/monitoring-alerts.md)
-- [incident-response.md](/home/x-pact/PrivateDAO/docs/incident-response.md)
-- [mainnet-cutover-runbook.md](/home/x-pact/PrivateDAO/docs/mainnet-cutover-runbook.md)
-- [operator-checklist.md](/home/x-pact/PrivateDAO/docs/operator-checklist.md)
-- [risk-register.md](/home/x-pact/PrivateDAO/docs/risk-register.md)
-- [audit-handoff.md](/home/x-pact/PrivateDAO/docs/audit-handoff.md)
+- [mainnet-readiness.md](docs/mainnet-readiness.md)
+- [production-operations.md](docs/production-operations.md)
+- [monitoring-alerts.md](docs/monitoring-alerts.md)
+- [incident-response.md](docs/incident-response.md)
+- [mainnet-cutover-runbook.md](docs/mainnet-cutover-runbook.md)
+- [operator-checklist.md](docs/operator-checklist.md)
+- [risk-register.md](docs/risk-register.md)
+- [audit-handoff.md](docs/audit-handoff.md)
 
 ## Unified Verification
 

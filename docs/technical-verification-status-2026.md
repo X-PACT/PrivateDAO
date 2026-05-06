@@ -30,23 +30,23 @@ This verification covers:
 ### Implemented And Verified
 
 - Solana program modularization is real:
-  - [`programs/private-dao/src/dao.rs`](/home/x-pact/PrivateDAO/programs/private-dao/src/dao.rs)
-  - [`programs/private-dao/src/voting.rs`](/home/x-pact/PrivateDAO/programs/private-dao/src/voting.rs)
-  - [`programs/private-dao/src/treasury.rs`](/home/x-pact/PrivateDAO/programs/private-dao/src/treasury.rs)
-  - [`programs/private-dao/src/privacy.rs`](/home/x-pact/PrivateDAO/programs/private-dao/src/privacy.rs)
-  - [`programs/private-dao/src/error.rs`](/home/x-pact/PrivateDAO/programs/private-dao/src/error.rs)
-  - [`programs/private-dao/src/utils.rs`](/home/x-pact/PrivateDAO/programs/private-dao/src/utils.rs)
-  - [`programs/private-dao/src/traits.rs`](/home/x-pact/PrivateDAO/programs/private-dao/src/traits.rs)
+  - [`programs/private-dao/src/dao.rs`](programs/private-dao/src/dao.rs)
+  - [`programs/private-dao/src/voting.rs`](programs/private-dao/src/voting.rs)
+  - [`programs/private-dao/src/treasury.rs`](programs/private-dao/src/treasury.rs)
+  - [`programs/private-dao/src/privacy.rs`](programs/private-dao/src/privacy.rs)
+  - [`programs/private-dao/src/error.rs`](programs/private-dao/src/error.rs)
+  - [`programs/private-dao/src/utils.rs`](programs/private-dao/src/utils.rs)
+  - [`programs/private-dao/src/traits.rs`](programs/private-dao/src/traits.rs)
 - The Anchor program compiles after the modularization refactor.
 - Pure protocol helpers now have direct Rust unit coverage and pass.
 - Browser-wallet Devnet proof exists for create DAO, create proposal, commit vote, and related lifecycle captures.
 - The public Next.js surface is live and wallet-first on `/`, `/start`, and `/govern`.
 - The SDK already contains Poseidon-based commitment and nullifier helpers:
-  - [`sdk/src/index.ts`](/home/x-pact/PrivateDAO/sdk/src/index.ts)
+  - [`sdk/src/index.ts`](sdk/src/index.ts)
 
 ### Implemented And Moving Toward Stronger Closure
 
-- ZK circuits exist in [`zk/`](/home/x-pact/PrivateDAO/zk), with Circom artifacts, setup files, proofs, and sample inputs.
+- ZK circuits exist in [`zk/`](zk), with Circom artifacts, setup files, proofs, and sample inputs.
 - Confidential settlement and REFHE/MagicBlock rails exist in the program and reviewer surfaces.
 - Solflare is present in runtime evidence, product copy, and wallet-path guidance.
 - Multisig readiness packets, intake files, and review surfaces exist, but they still explicitly preserve a `pending-external` boundary.
@@ -74,9 +74,9 @@ These are not abstract wishes. They are the active execution lanes through which
 ### Verified
 
 - `lib.rs` is no longer the only source of instruction bodies.
-- Error definitions are centralized in [`error.rs`](/home/x-pact/PrivateDAO/programs/private-dao/src/error.rs).
-- helper and validation logic are centralized in [`utils.rs`](/home/x-pact/PrivateDAO/programs/private-dao/src/utils.rs).
-- traits are defined in [`traits.rs`](/home/x-pact/PrivateDAO/programs/private-dao/src/traits.rs):
+- Error definitions are centralized in [`error.rs`](programs/private-dao/src/error.rs).
+- helper and validation logic are centralized in [`utils.rs`](programs/private-dao/src/utils.rs).
+- traits are defined in [`traits.rs`](programs/private-dao/src/traits.rs):
   - `VoteCommitment`
   - `ProposalLifecycle`
   - `TreasuryActionPolicy`
@@ -92,10 +92,10 @@ These are not abstract wishes. They are the active execution lanes through which
 ### Verified
 
 - Custody and multisig evidence scaffolding is real:
-  - [`docs/multisig-setup-intake.json`](/home/x-pact/PrivateDAO/docs/multisig-setup-intake.json)
-  - [`docs/multisig-setup-intake.md`](/home/x-pact/PrivateDAO/docs/multisig-setup-intake.md)
-  - [`docs/canonical-custody-proof.generated.md`](/home/x-pact/PrivateDAO/docs/canonical-custody-proof.generated.md)
-  - [`docs/production-custody-ceremony.md`](/home/x-pact/PrivateDAO/docs/production-custody-ceremony.md)
+  - [`docs/multisig-setup-intake.json`](docs/multisig-setup-intake.json)
+  - [`docs/multisig-setup-intake.md`](docs/multisig-setup-intake.md)
+  - [`docs/canonical-custody-proof.generated.md`](docs/canonical-custody-proof.generated.md)
+  - [`docs/production-custody-ceremony.md`](docs/production-custody-ceremony.md)
 - Verification scripts exist for these evidence surfaces.
 
 ### Current Closure Boundary
@@ -110,18 +110,18 @@ These are not abstract wishes. They are the active execution lanes through which
 ### Verified
 
 - Nullifier logic exists in the SDK:
-  - [`sdk/src/index.ts`](/home/x-pact/PrivateDAO/sdk/src/index.ts)
-- ZK assets exist in [`zk/`](/home/x-pact/PrivateDAO/zk):
+  - [`sdk/src/index.ts`](sdk/src/index.ts)
+- ZK assets exist in [`zk/`](zk):
   - Circom circuits
   - proving keys
   - verification keys
   - sample inputs
   - generated proof files
-- Privacy and proof-verification instruction paths exist in [`privacy.rs`](/home/x-pact/PrivateDAO/programs/private-dao/src/privacy.rs).
+- Privacy and proof-verification instruction paths exist in [`privacy.rs`](programs/private-dao/src/privacy.rs).
 
 ### Current Closure Boundary
 
-- The current on-chain vote commitment function in [`utils.rs`](/home/x-pact/PrivateDAO/programs/private-dao/src/utils.rs) still uses:
+- The current on-chain vote commitment function in [`utils.rs`](programs/private-dao/src/utils.rs) still uses:
   - `sha256(vote || salt || proposal || voter)`
   - not the requested `sha256(vote || salt || nullifier || proposal_id)`
 - The immediate development target is to push nullifier semantics from SDK and proof artifacts into the live on-chain commitment path.
@@ -145,12 +145,12 @@ These are not abstract wishes. They are the active execution lanes through which
 ### Verified
 
 - There is a TypeScript SDK entrypoint:
-  - [`sdk/src/index.ts`](/home/x-pact/PrivateDAO/sdk/src/index.ts)
+  - [`sdk/src/index.ts`](sdk/src/index.ts)
 - Hosted-read and telemetry reviewer surfaces exist in docs and UI.
 
 ### Current Closure Boundary
 
-- The current top-level [`services/`](/home/x-pact/PrivateDAO/services/) path is being used as a static exported site artifact, while the backend API lane remains the next build target.
+- The current top-level [`services/`](services/) path is being used as a static exported site artifact, while the backend API lane remains the next build target.
 - The repository is ready for a real `services/api/` implementation, but that service has not yet been cut over into a live backend project.
 - gRPC, WebSocket, and authenticated API delivery remain part of the next backend tranche rather than a closed repository service today.
 - The current SDK posture is a top-level TypeScript SDK; the next step is to split that into productized JS and Rust SDK surfaces once the backend API contract is fixed.
@@ -177,12 +177,12 @@ These are not abstract wishes. They are the active execution lanes through which
 ### Verified
 
 - Rust unit tests now exist in:
-  - [`programs/private-dao/src/utils.rs`](/home/x-pact/PrivateDAO/programs/private-dao/src/utils.rs)
-  - [`programs/private-dao/src/traits.rs`](/home/x-pact/PrivateDAO/programs/private-dao/src/traits.rs)
+  - [`programs/private-dao/src/utils.rs`](programs/private-dao/src/utils.rs)
+  - [`programs/private-dao/src/traits.rs`](programs/private-dao/src/traits.rs)
 - TypeScript integration suites exist in:
-  - [`tests/private-dao.ts`](/home/x-pact/PrivateDAO/tests/private-dao.ts)
-  - [`tests/full-flow-test.ts`](/home/x-pact/PrivateDAO/tests/full-flow-test.ts)
-- GitHub Actions exist under [`.github/`](/home/x-pact/PrivateDAO/.github).
+  - [`tests/private-dao.ts`](tests/private-dao.ts)
+  - [`tests/full-flow-test.ts`](tests/full-flow-test.ts)
+- GitHub Actions exist under [`.github/`](.github).
 
 ### Current Closure Boundary
 
@@ -194,11 +194,11 @@ These are not abstract wishes. They are the active execution lanes through which
 ### Verified
 
 - The public product is already structured around:
-  - homepage
+  - first product view
   - start flow
   - govern flow
   - proof / trust / live state
-- The homepage already explains:
+- The first product view already explains:
   - FHE / REFHE
   - ZK
   - MagicBlock
@@ -216,7 +216,7 @@ These are not abstract wishes. They are the active execution lanes through which
 The following were executed successfully during the current reform work:
 
 ```bash
-cd /home/x-pact/PrivateDAO
+cd PrivateDAO
 cargo test -p private-dao --lib -- --nocapture
 cargo check -p private-dao
 git diff --check

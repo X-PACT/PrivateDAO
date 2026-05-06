@@ -39,8 +39,8 @@ Based on the tracked strategy config:
 
 See:
 
-- [ranger-strategy-config.devnet.json](/home/x-pact/PrivateDAO/docs/ranger-strategy-config.devnet.json)
-- [ranger-submission-bundle.generated.md](/home/x-pact/PrivateDAO/docs/ranger-submission-bundle.generated.md)
+- [ranger-strategy-config.devnet.json](docs/ranger-strategy-config.devnet.json)
+- [ranger-submission-bundle.generated.md](docs/ranger-submission-bundle.generated.md)
 
 ## What A Complete Strategy Evidence Pack Should Add
 
@@ -68,9 +68,9 @@ It makes the review distinction explicit:
 
 Reviewers should read this note together with:
 
-- [strategy-blueprint.md](/home/x-pact/PrivateDAO/docs/strategy-blueprint.md)
-- [strategy-adaptor-interface.md](/home/x-pact/PrivateDAO/docs/strategy-adaptor-interface.md)
-- [ranger-strategy-documentation.md](/home/x-pact/PrivateDAO/docs/ranger-strategy-documentation.md)
+- [strategy-blueprint.md](docs/strategy-blueprint.md)
+- [strategy-adaptor-interface.md](docs/strategy-adaptor-interface.md)
+- [ranger-strategy-documentation.md](docs/ranger-strategy-documentation.md)
 
 ## Honest Boundary
 

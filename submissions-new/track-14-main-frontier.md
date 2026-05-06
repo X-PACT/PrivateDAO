@@ -26,7 +26,7 @@ PrivateDAO OS Main Closure: Integrated Confidential Governance and Treasury Oper
 
 ## Demo / presentation link
 
-`https://youtu.be/HiCz0vb8kgk`
+`https://youtu.be/iFTUe4CTWP0`
 
 ## Short pitch
 

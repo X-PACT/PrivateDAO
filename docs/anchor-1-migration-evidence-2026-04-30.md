@@ -43,7 +43,7 @@ Deployment completed on Testnet after the successful Anchor 1.0.1 build.
 
 - `2oq56CUPwsnxbHAdmbQswFR3DWAQ3EBinrNDNSAJMTTS` could not be used as the program address because it was already created as a funded System account.
 - A fresh unused program keypair was generated for `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`.
-- The final deployment used `/home/x-pact/Desktop/wallet-keypair.json` as fee payer and upgrade authority.
+- The final deployment used public hosted asset listed above as fee payer and upgrade authority.
 - RPC write mode hit retry limits during buffer writes, so the successful deployment used QUIC transport.
 
 Successful command:
@@ -52,9 +52,9 @@ Successful command:
 solana program deploy target/deploy/private_dao.so \
   --program-id target/deploy/private_dao-keypair.json \
   --buffer target/deploy/private_dao-buffer-keypair.json \
-  --keypair /home/x-pact/Desktop/wallet-keypair.json \
-  --fee-payer /home/x-pact/Desktop/wallet-keypair.json \
-  --upgrade-authority /home/x-pact/Desktop/wallet-keypair.json \
+  --keypair local Testnet operator keypair (not committed) \
+  --fee-payer local Testnet operator keypair (not committed) \
+  --upgrade-authority local Testnet operator keypair (not committed) \
   --url testnet \
   --use-quic \
   --skip-feature-verify \

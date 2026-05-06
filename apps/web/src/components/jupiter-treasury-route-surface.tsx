@@ -97,7 +97,7 @@ function mapJupiterQuoteToPreview(raw: JupiterQuoteResponse, request: { inputMin
     request,
     summary: {
       mode: raw.swapMode ?? "ExactIn",
-      router: "Jupiter Quote API v6",
+      router: "Jupiter Lite Swap API v1",
       inAmount: raw.inAmount ?? null,
       outAmount: raw.outAmount ?? null,
       inUsdValue: null,

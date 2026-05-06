@@ -21,7 +21,7 @@ export function SiteSearchPanel() {
     <div className="grid gap-6">
       <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,16,32,0.94),rgba(7,11,23,0.98))]">
         <CardHeader>
-          <CardTitle>Search or ask AI</CardTitle>
+          <CardTitle>Find the problem, open the solution, verify the action</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-5 xl:grid-cols-[1.06fr_0.94fr]">
           <div className="space-y-4">
@@ -30,7 +30,7 @@ export function SiteSearchPanel() {
               <input
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Search routes, docs, tracks, proof packets, wallets, or services"
+                placeholder="Describe the problem: private payroll, DAO vote, treasury risk, QVAC AI, proof, wallet setup..."
                 className="w-full bg-transparent text-sm text-white outline-none placeholder:text-white/34"
               />
             </div>
@@ -38,7 +38,7 @@ export function SiteSearchPanel() {
               {results.length} result{results.length === 1 ? "" : "s"}
             </div>
             <div className="rounded-3xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/58">
-              Ask in natural language: “I need pilot funding”, “vendor payout”, “treasury top-up”, “custody proof”, “reviewer packet”, “multisig intake”, “best wallet for consumer onboarding”, or “what is the next privacy release gate?”.
+              Search works like a product guide: describe the problem, then open the page where PrivateDAO shows the solution, the signing path, and the proof route.
             </div>
           </div>
 
@@ -48,7 +48,7 @@ export function SiteSearchPanel() {
                 <Sparkles className="h-4 w-4" />
               </div>
               <div>
-                <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/75">AI routing answer</div>
+                <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/75">Route-aware answer</div>
                 <div className="mt-2 text-lg font-medium text-white">{suggestion.title}</div>
               </div>
             </div>

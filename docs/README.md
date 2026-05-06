@@ -15,7 +15,7 @@ PrivateDAO keeps long-form review and operations material in `docs/`, but the re
 - `zk/`
   - ZK-enforced runtime evidence, operator flow, external-closure package, and runtime capture templates.
 - `assets/`
-  - Media, icons, diagrams, and visual assets used by the landing page and submission surfaces.
+  - Media, icons, diagrams, and visual assets used by the first product view and submission surfaces.
 
 ## Root-Level Docs
 

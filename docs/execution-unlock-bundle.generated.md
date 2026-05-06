@@ -3,13 +3,13 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-15T15:20:24.235Z`
+- generated at: `2026-05-06T09:11:31.631Z`
 - real-device status: `pending-real-device-capture`
-- real-device completion: `0/5`
+- real-device completion: `1/5`
 - monitoring status: `pending-delivery-closure`
 - monitoring completion: `0/6`
-- settlement receipt status: `pending-source-receipt-closure`
-- settlement receipt completion: `0/4`
+- settlement receipt status: `partial-source-receipt-closure`
+- settlement receipt completion: `2/4`
 
 ## Why This Bundle Exists
 
@@ -24,8 +24,8 @@ This bundle compresses the three highest-value remaining operational closures in
 - `/security#real-device-capture-readiness`
 - `/security#monitoring-delivery-readiness`
 - `/services#settlement-receipt-readiness`
-- `/start`
-- `/services`
+- `/tracks/startup-accelerator`
+- `/tracks/poland-grants`
 
 ## Included Documents
 

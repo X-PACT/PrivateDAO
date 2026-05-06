@@ -12,11 +12,11 @@ Serve the static PrivateDAO frontend and the read node behind the same origin so
 
 The repo now carries a concrete primary-host target in:
 
-- [deploy/primary-host/docker-compose.yml](/home/x-pact/PrivateDAO/deploy/primary-host/docker-compose.yml)
-- [deploy/primary-host/Caddyfile](/home/x-pact/PrivateDAO/deploy/primary-host/Caddyfile)
-- [deploy/primary-host/read-node.Dockerfile](/home/x-pact/PrivateDAO/deploy/primary-host/read-node.Dockerfile)
-- [deploy/primary-host/.env.example](/home/x-pact/PrivateDAO/deploy/primary-host/.env.example)
-- [primary-host-bootstrap.md](/home/x-pact/PrivateDAO/docs/read-node/primary-host-bootstrap.md)
+- [deploy/primary-host/docker-compose.yml](../../deploy/primary-host/docker-compose.yml)
+- [deploy/primary-host/Caddyfile](../../deploy/primary-host/Caddyfile)
+- [deploy/primary-host/read-node.Dockerfile](../../deploy/primary-host/read-node.Dockerfile)
+- [deploy/primary-host/.env.example](../../deploy/primary-host/.env.example)
+- [primary-host-bootstrap.md](./primary-host-bootstrap.md)
 
 Target runtime shape:
 
@@ -86,7 +86,7 @@ For rehearsal the stack exposes:
 ## Commands
 
 ```bash
-cd /home/x-pact/PrivateDAO
+cd PrivateDAO
 npm run deploy:primary-host:prepare
 npm run deploy:primary-host:up
 npm run install:primary-host-stack
@@ -95,14 +95,14 @@ npm run install:primary-host-stack
 To stop it:
 
 ```bash
-cd /home/x-pact/PrivateDAO
+cd PrivateDAO
 npm run deploy:primary-host:down
 ```
 
 To verify the whole stack locally:
 
 ```bash
-cd /home/x-pact/PrivateDAO
+cd PrivateDAO
 npm run verify:primary-host-stack
 npm run verify:remote-primary-host -- https://privatedao.org
 ```

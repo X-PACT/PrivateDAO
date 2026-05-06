@@ -14,7 +14,7 @@ PrivateDAO is a wallet-first Solana Testnet financial OS for private governance,
 | Private settlement | https://privatedao.org/services/cloak-private-settlement/ |
 | Proof matrix | https://privatedao.org/proof/?judge=1 |
 | Custody truth | https://privatedao.org/custody/ |
-| Technology video | https://youtu.be/byqu2p1N72U |
+| Technology video | https://youtu.be/iFTUe4CTWP0 |
 
 ## Anchor 1.0.1
 
@@ -51,7 +51,7 @@ The read node checks Umbra relayer availability and records settlement intent re
 
 ## Supabase Timeline
 
-The proof timeline reads from Supabase when `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` are present. If cloud rows are not yet available, the UI shows reviewer seed receipts instead of an empty `0 of 0` state.
+The proof timeline reads from Supabase when `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` are present. If cloud rows are not yet available, the UI shows reviewer seed receipts instead of an empty timeline state.
 
 Schema: `docs/supabase-operation-receipts.sql`
 

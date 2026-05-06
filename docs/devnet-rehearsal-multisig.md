@@ -26,6 +26,18 @@ It is intentionally bounded:
 | 2 | Phantom | `BBBPcpUnnBi3CWUhcv6vLTqaY9pugAGuhgw2Axjpvcr2` |
 | 3 | Backpack | `2KpA69UB55tfWUSkKj5j7Tvebd3eG22hEs9hjXUq7pf5` |
 
+## Local Devnet Signer Roster
+
+These public keys were generated on 2026-05-06 for Devnet-only rehearsal work. Private key files remain outside Git and must not be committed.
+
+| Role | Public Key |
+| --- | --- |
+| squads-signer-1 | `BSvk7r9jbo4unrGm2d3qLztSRRAsTemDuEgHcHzxMRao` |
+| squads-signer-2 | `E8phwky7u4VZmp4AoPrgGf8ViX7SWMQkE66UEDSfkHLo` |
+| squads-signer-3 | `9tmBAJm4V6B6gbWeYckb7h3gZiyZp6hT2hVzAeFstZNo` |
+| devnet-operator | `Dve1eYmVxkJLv6Jtv27ry77r73ZoyawdNQ9YoXruh3hM` |
+| devnet-relayer | `35CNDGaYpZbFUDLeU46RjDCpdLJeQAwjrtc3dGwFKuoj` |
+
 ## What This Closes
 
 - a real `2-of-3` multisig account now exists on Devnet

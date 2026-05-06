@@ -26,7 +26,7 @@ PrivateDAO Encrypt/IKA Lane: Client-Side Encrypted Operations with Proof-Linked 
 
 ## Demo / presentation link
 
-`https://youtu.be/HiCz0vb8kgk`
+`https://youtu.be/iFTUe4CTWP0`
 
 ## Short pitch
 

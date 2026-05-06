@@ -61,11 +61,11 @@ The most important signals for judges, grant reviewers, or auditors are:
 
 ## Related Repository Surfaces
 
-- [live-proof.md](/home/x-pact/PrivateDAO/docs/live-proof.md)
-- [test-wallet-live-proof-v3.generated.md](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.md)
-- [governance-hardening-v3.md](/home/x-pact/PrivateDAO/docs/governance-hardening-v3.md)
-- [settlement-hardening-v3.md](/home/x-pact/PrivateDAO/docs/settlement-hardening-v3.md)
-- [production-operations.md](/home/x-pact/PrivateDAO/docs/production-operations.md)
-- [incident-response.md](/home/x-pact/PrivateDAO/docs/incident-response.md)
-- [security-review.md](/home/x-pact/PrivateDAO/docs/security-review.md)
-- [check-rpc-health.sh](/home/x-pact/PrivateDAO/scripts/check-rpc-health.sh)
+- [live-proof.md](docs/live-proof.md)
+- [test-wallet-live-proof-v3.generated.md](docs/test-wallet-live-proof-v3.generated.md)
+- [governance-hardening-v3.md](docs/governance-hardening-v3.md)
+- [settlement-hardening-v3.md](docs/settlement-hardening-v3.md)
+- [production-operations.md](docs/production-operations.md)
+- [incident-response.md](docs/incident-response.md)
+- [security-review.md](docs/security-review.md)
+- [check-rpc-health.sh](scripts/check-rpc-health.sh)

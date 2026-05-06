@@ -84,13 +84,13 @@ Target:
 Minimum:
 
 ```bash
-cd /home/x-pact/PrivateDAO
+cd PrivateDAO
 git diff --check
 ```
 
 For generated runtime or reviewer evidence:
 
 ```bash
-cd /home/x-pact/PrivateDAO
+cd PrivateDAO
 npm run verify:review-bundle
 ```

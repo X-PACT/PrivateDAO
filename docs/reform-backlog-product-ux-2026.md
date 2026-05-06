@@ -2,7 +2,7 @@
 
 ## Scope
 
-This backlog covers homepage clarity, guided governance flow, mobile/operator usability, Arabic UX, and wallet-first execution surfaces.
+This backlog covers first product view clarity, guided governance flow, mobile/operator usability, Arabic UX, and wallet-first execution surfaces.
 
 ## Now
 
@@ -72,14 +72,14 @@ Target:
 Minimum:
 
 ```bash
-cd /home/x-pact/PrivateDAO
+cd PrivateDAO
 git diff --check
 ```
 
 For public route changes:
 
 ```bash
-cd /home/x-pact/PrivateDAO/apps/web
+cd apps/web
 npx tsc --noEmit --pretty false
 ```
 

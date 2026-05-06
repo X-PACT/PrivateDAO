@@ -26,7 +26,7 @@ PrivateDAO SolRouter Lane: Deterministic AI Governance Briefs with Encrypted Exp
 
 ## Demo / presentation link
 
-`https://youtu.be/HiCz0vb8kgk`
+`https://youtu.be/iFTUe4CTWP0`
 
 ## Short pitch
 

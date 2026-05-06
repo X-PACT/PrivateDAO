@@ -1,27 +1,27 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-28T23:33:17.291Z",
+  "generatedAt": "2026-05-06T08:10:25.890Z",
   "network": "devnet",
   "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
   "primaryRpc": {
     "label": "primary",
     "url": "https://api.devnet.solana.com",
-    "version": "4.0.0-beta.6",
-    "slot": 458767640,
-    "blockhash": "Fw2eSkKmRNgyAy69ZkGmGvBmPpMepAJxmV4QR5g9FVZZ",
-    "lastValidBlockHeight": 446634238,
-    "versionLatencyMs": 1147,
-    "blockhashLatencyMs": 197
+    "version": "4.0.0-rc.0",
+    "slot": 460443170,
+    "blockhash": "CbjcAdznFSMPgcJ4NSz7dho7rGDF2QYQFN91bmMhmA2S",
+    "lastValidBlockHeight": 448308874,
+    "versionLatencyMs": 1249,
+    "blockhashLatencyMs": 305
   },
   "fallbackRpc": {
     "label": "fallback",
     "url": "https://solana-rpc.rpcfast.com?api_key=ejQYiCn3yUFJUYyG3yw6C72hZNDzxoSFLy7VX9ETQOJOSFwQK2eh0Dl0XXAdU2uv",
     "version": "3.1.12",
-    "slot": 416319805,
-    "blockhash": "4rWxrX7qG8LPfwvJPV86dXJh872bTjRhJkNgnjXXGX3w",
-    "lastValidBlockHeight": 394413500,
-    "versionLatencyMs": 828,
-    "blockhashLatencyMs": 455
+    "slot": 417926595,
+    "blockhash": "GRfkHmTqR65vVbXPTgENqaCKmFssZcssoLTPdqUBT2PG",
+    "lastValidBlockHeight": 396019038,
+    "versionLatencyMs": 955,
+    "blockhashLatencyMs": 468
   },
   "anchors": [
     {

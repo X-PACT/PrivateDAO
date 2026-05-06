@@ -33,6 +33,18 @@ It is not the same artifact as the existing Devnet rehearsal multisig. The produ
 
 These public keys may only be promoted if the signer posture is documented and the repository never stores seed phrases or private keys.
 
+## Devnet-Only Generated Roster
+
+The following public keys are generated for Devnet rehearsal and relayer work only. They do not close production custody, and private key files remain outside the repository.
+
+| Role | Public Key |
+| --- | --- |
+| squads-signer-1 | `BSvk7r9jbo4unrGm2d3qLztSRRAsTemDuEgHcHzxMRao` |
+| squads-signer-2 | `E8phwky7u4VZmp4AoPrgGf8ViX7SWMQkE66UEDSfkHLo` |
+| squads-signer-3 | `9tmBAJm4V6B6gbWeYckb7h3gZiyZp6hT2hVzAeFstZNo` |
+| devnet-operator | `Dve1eYmVxkJLv6Jtv27ry77r73ZoyawdNQ9YoXruh3hM` |
+| devnet-relayer | `35CNDGaYpZbFUDLeU46RjDCpdLJeQAwjrtc3dGwFKuoj` |
+
 ## Exact Operator Sequence
 
 1. Open `https://app.squads.so/squads`

@@ -22,7 +22,7 @@ PrivateDAO OS: Private Treasury and Governance Execution on Solana
 
 ## Pitch / Demo
 
-- Story reel: `https://youtu.be/HiCz0vb8kgk`
+- Story reel: `https://youtu.be/iFTUe4CTWP0`
 - Fast verification route: `https://privatedao.org/judge/`
 
 ## Project description

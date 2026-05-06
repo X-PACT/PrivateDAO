@@ -5,10 +5,10 @@
 - Video: `docs/assets/weekly-youtube-ready/Week 2 - PrivateDAO Product Update - YouTube Ready.mp4`
 - Poster: `docs/assets/weekly-youtube-ready/Week 2 - PrivateDAO Product Update - YouTube Ready-poster.png`
 
-Desktop copies:
+Hosted copies:
 
-- `/home/x-pact/Desktop/PrivateDAO-Colosseum-Weekly-YouTube/Week 2 - PrivateDAO Product Update - YouTube Ready.mp4`
-- `/home/x-pact/Desktop/PrivateDAO-Colosseum-Weekly-YouTube/Week 2 - PrivateDAO Product Update - YouTube Ready - Poster.png`
+- public hosted asset listed above
+- public hosted asset listed above
 
 ## Title
 

@@ -74,23 +74,23 @@ export function VideoCenter({ compact = false }: VideoCenterProps) {
           </CardHeader>
           <CardContent className="space-y-3 text-sm leading-7 text-white/60">
             <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
-              Private governance, confidential treasury operations, ZK review rails, REFHE settlement logic, MagicBlock corridors, Fast RPC, Android access, buyer corridors, and the reason PrivateDAO is becoming a stronger public-good infrastructure product.
+              A direct website walkthrough: private governance, treasury intelligence, confidential payroll, gaming DAO flows, compliance, proof, QVAC guidance, and how the user moves without code or terminal work.
             </div>
             <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
-              It is designed to work as the first-pass product story for judges, buyers, infrastructure partners, and YouTube uploads.
+              It is designed to work as the first-pass demo for users, judges, buyers, infrastructure partners, and YouTube review.
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Upload-ready file</CardTitle>
+            <CardTitle>Hosted review asset</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 text-sm leading-7 text-white/60">
             <div className="flex items-start gap-3 rounded-3xl border border-white/8 bg-white/4 p-4">
               <Upload className="mt-1 h-4 w-4 shrink-0 text-emerald-200" />
               <div>
-                <div className="font-medium text-white">Desktop export</div>
+                <div className="font-medium text-white">Public MP4 mirror</div>
                 <div className="mt-1 break-all">{storyVideo.uploadFile}</div>
               </div>
             </div>

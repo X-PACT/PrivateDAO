@@ -26,7 +26,7 @@ PrivateDAO Cloak Lane: Confidential Treasury Settlement with Proof Continuity
 
 ## Demo / presentation link
 
-`https://youtu.be/HiCz0vb8kgk`
+`https://youtu.be/iFTUe4CTWP0`
 
 ## Short pitch
 

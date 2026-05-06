@@ -178,7 +178,7 @@ const fits: Record<string, TrackTechnicalFit> = {
     coreIdentity,
     sponsorUsage: [
       "The user path is explicit: start, connect wallet, enter govern, then reach proof or services only when needed.",
-      "Search or ask AI and the internal assistant remove repo-level complexity for normal users and judges.",
+      "Search and the product assistant convert user problems into the right route, proof packet, and execution surface without exposing repo-level complexity.",
       "The same product shell stays coherent for users, judges, buyers, and operators rather than fragmenting into different demos.",
     ],
     sponsorEvidence: [
@@ -342,7 +342,7 @@ const fits: Record<string, TrackTechnicalFit> = {
   "solrouter-encrypted-ai": {
     coreIdentity,
     sponsorUsage: [
-      "The assistant and Search or ask AI are deterministic routing layers tied to proof, docs, tracks, and operations rather than hallucinated autonomy.",
+      "The assistant and search surfaces are route-aware guidance layers tied to proof, docs, tracks, and operations rather than hallucinated autonomy.",
       "The confidence engine gives encrypted-decision posture with explicit product rails and sponsor-aware track routing.",
       "This keeps the AI angle grounded in execution and privacy instead of over-claiming a fully autonomous agent.",
     ],
@@ -362,7 +362,7 @@ const fits: Record<string, TrackTechnicalFit> = {
     ],
     evidenceRoutes: [
       { label: "Assistant", href: "/assistant" },
-      { label: "Search or ask AI", href: "/search" },
+      { label: "Problem-to-route search", href: "/search" },
       { label: "Confidence engine", href: "/documents/cryptographic-confidence-engine" },
       { label: "Security", href: "/security" },
     ],

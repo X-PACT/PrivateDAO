@@ -10,10 +10,10 @@ It is a release discipline document, not a claim that cutover has already occurr
 
 Do not begin a cutover unless all of the following are true:
 
-- [mainnet-readiness.md](/home/x-pact/PrivateDAO/docs/mainnet-readiness.md) is reviewed
-- [production-operations.md](/home/x-pact/PrivateDAO/docs/production-operations.md) is reviewed
-- [incident-response.md](/home/x-pact/PrivateDAO/docs/incident-response.md) is reviewed
-- [risk-register.md](/home/x-pact/PrivateDAO/docs/risk-register.md) is reviewed
+- [mainnet-readiness.md](docs/mainnet-readiness.md) is reviewed
+- [production-operations.md](docs/production-operations.md) is reviewed
+- [incident-response.md](docs/incident-response.md) is reviewed
+- [risk-register.md](docs/risk-register.md) is reviewed
 - internal review gates pass
 - external review requirements are satisfied for the chosen release bar
 

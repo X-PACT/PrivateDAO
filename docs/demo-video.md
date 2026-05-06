@@ -6,7 +6,7 @@ It is intentionally different from the investor reel.
 
 The investor reel is a pitch surface.
 
-Current public technology explainer: `https://youtu.be/byqu2p1N72U`
+Current public technology explainer: `https://youtu.be/iFTUe4CTWP0`
 
 This walkthrough video is a **product and operator flow** surface.
 
@@ -58,11 +58,11 @@ The walkthrough must not imply:
 - Poster: `docs/assets/private-dao-demo-flow-poster.png`
 - Render script: `scripts/render-demo-video.sh`
 
-## Desktop upload copy
+## Hosted upload copy
 
 The render script also copies an upload-ready version to:
 
-- `/home/x-pact/Desktop/PrivateDAO-Demo-Video`
+- public hosted asset listed above
 
 ## Slide order
 

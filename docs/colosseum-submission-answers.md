@@ -2,13 +2,13 @@
 
 This file is the canonical answer pack for manual submission updates. It exists because the repo can be updated directly, while external submission portals may still require manual copy-paste.
 
-For the public product posture around the current review cycle, use [superteam-track-submission-matrix-2026.md](/home/x-pact/PrivateDAO/docs/superteam-track-submission-matrix-2026.md) as the companion source.
+For the public product posture around the current review cycle, use [superteam-track-submission-matrix-2026.md](docs/superteam-track-submission-matrix-2026.md) as the companion source.
 
 ## Core Links
 
 - Website: `https://privatedao.org/`
 - GitHub: `https://github.com/X-PACT/PrivateDAO`
-- Product video: `https://youtu.be/HiCz0vb8kgk`
+- Product video: `https://youtu.be/iFTUe4CTWP0`
 - Public project profile: `https://arena.colosseum.org/projects/explore/praivatedao`
 - Project X link: `https://x.com/i/status/2039742760719151177`
 

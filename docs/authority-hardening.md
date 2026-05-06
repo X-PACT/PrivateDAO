@@ -68,11 +68,11 @@ Do not describe PrivateDAO as ready for mainnet cutover if any of the following 
 
 ## Repository Links
 
-- [mainnet-go-live-checklist.md](/home/x-pact/PrivateDAO/docs/mainnet-go-live-checklist.md)
-- [production-operations.md](/home/x-pact/PrivateDAO/docs/production-operations.md)
-- [mainnet-cutover-runbook.md](/home/x-pact/PrivateDAO/docs/mainnet-cutover-runbook.md)
-- [incident-response.md](/home/x-pact/PrivateDAO/docs/incident-response.md)
-- [operator-checklist.md](/home/x-pact/PrivateDAO/docs/operator-checklist.md)
+- [mainnet-go-live-checklist.md](docs/mainnet-go-live-checklist.md)
+- [production-operations.md](docs/production-operations.md)
+- [mainnet-cutover-runbook.md](docs/mainnet-cutover-runbook.md)
+- [incident-response.md](docs/incident-response.md)
+- [operator-checklist.md](docs/operator-checklist.md)
 
 ## Honest Boundary
 

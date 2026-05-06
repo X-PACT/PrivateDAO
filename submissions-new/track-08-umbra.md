@@ -26,7 +26,7 @@ PrivateDAO Umbra Lane: Claim-Link Confidential Payout with Proof-Linked Settleme
 
 ## Demo / presentation link
 
-`https://youtu.be/HiCz0vb8kgk`
+`https://youtu.be/iFTUe4CTWP0`
 
 ## Short pitch
 
