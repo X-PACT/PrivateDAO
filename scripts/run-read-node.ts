@@ -19,8 +19,18 @@ const metrics = {
   requestsTotal: 0,
   requestsFailed: 0,
   rateLimited: 0,
+  blockedProbes: 0,
   routeHits: new Map<string, number>(),
 };
+
+const suspiciousPathPatterns = [
+  /^\/\.env(?:$|[/?#])/,
+  /^\/\.git(?:$|[/?#])/,
+  /^\/wp-admin(?:$|[/?#])/,
+  /^\/wp-login\.php(?:$|[/?#])/,
+  /^\/phpmyadmin(?:$|[/?#])/,
+  /^\/admin(?:$|[/?#])/,
+];
 
 function writeJson(res: http.ServerResponse, statusCode: number, payload: unknown) {
   res.writeHead(statusCode, {
@@ -59,6 +69,11 @@ function enforceRateLimit(req: http.IncomingMessage): string | null {
 }
 
 function routeNotFound(res: http.ServerResponse, pathname: string) {
+  if (suspiciousPathPatterns.some((pattern) => pattern.test(pathname))) {
+    metrics.blockedProbes += 1;
+    writeJson(res, 404, { ok: false, error: "Route not found", source: "blocked-probe" });
+    return;
+  }
   writeJson(res, 404, { ok: false, error: `Unknown route: ${pathname}` });
 }
 
@@ -695,6 +710,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
             requestsTotal: metrics.requestsTotal,
             requestsFailed: metrics.requestsFailed,
             rateLimited: metrics.rateLimited,
+            blockedProbes: metrics.blockedProbes,
             routeHits: Object.fromEntries(metrics.routeHits.entries()),
           },
           deployment: {
@@ -721,6 +737,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           requestsTotal: metrics.requestsTotal,
           requestsFailed: metrics.requestsFailed,
           rateLimited: metrics.rateLimited,
+          blockedProbes: metrics.blockedProbes,
           routeHits: Object.fromEntries(metrics.routeHits.entries()),
           rpcPoolSize: readNode.rpcEndpoints.length,
           cache: readNode.cacheStats(),

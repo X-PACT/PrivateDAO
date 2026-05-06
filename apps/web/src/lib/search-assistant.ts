@@ -345,15 +345,15 @@ const assistantIntents: AssistantIntent[] = [
   {
     title: "Open the hosted-read backend cutover path",
     summary:
-      "Use the read-node cutover packet when the question is about same-domain `/api/v1`, backend hosting, route binding, public health and metrics proof, or the exact gap between static Pages and a real hosted read service.",
-    primaryActionLabel: "Open read-node backend cutover packet",
-    primaryActionHref: "/documents/read-node-backend-cutover",
+      "Use the read-node cutover runbook when the question is about `api.privatedao.org`, AWS, Namecheap DNS, `/api/v1`, public health checks, or Anchor program alignment on the hosted backend.",
+    primaryActionLabel: "Open AWS read-node cutover",
+    primaryActionHref: "/documents/aws-namecheap-read-node-cutover-2026-04-29",
     relatedRoutes: [
+      { label: "AWS Cutover", href: "/documents/aws-namecheap-read-node-cutover-2026-04-29" },
       { label: "Read-Node Snapshot", href: "/documents/read-node-snapshot" },
       { label: "Read-Node Ops", href: "/documents/read-node-ops" },
-      { label: "Services", href: "/services" },
     ],
-    keywords: ["read node", "read-node", "backend cutover", "same-domain", "api v1", "hosted reads", "metrics", "healthz"],
+    keywords: ["read node", "read-node", "backend cutover", "same-domain", "api v1", "hosted reads", "metrics", "healthz", "aws", "namecheap", "program drift"],
   },
   {
     title: "Open the Security + Intelligence layer",
