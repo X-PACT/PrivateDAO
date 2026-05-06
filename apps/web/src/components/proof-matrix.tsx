@@ -125,16 +125,18 @@ export function ProofMatrix() {
   const [rows, setRows] = useState<MatrixRow[]>([]);
 
   useEffect(() => {
-    try {
-      const receiptRaw = window.localStorage.getItem("pdao.operation_receipts.v1");
-      const receiptRows = receiptRaw
-        ? (JSON.parse(receiptRaw) as unknown[]).map(normalizeReceipt).filter((row): row is MatrixRow => Boolean(row))
-        : [];
-      const governanceRows = normalizeGovernanceSession(window.localStorage.getItem("privatedao-governance-session"));
-      setRows(dedupeRows([...governanceRows, ...receiptRows]));
-    } catch {
-      setRows([]);
-    }
+    queueMicrotask(() => {
+      try {
+        const receiptRaw = window.localStorage.getItem("pdao.operation_receipts.v1");
+        const receiptRows = receiptRaw
+          ? (JSON.parse(receiptRaw) as unknown[]).map(normalizeReceipt).filter((row): row is MatrixRow => Boolean(row))
+          : [];
+        const governanceRows = normalizeGovernanceSession(window.localStorage.getItem("privatedao-governance-session"));
+        setRows(dedupeRows([...governanceRows, ...receiptRows]));
+      } catch {
+        setRows([]);
+      }
+    });
   }, []);
 
   return (

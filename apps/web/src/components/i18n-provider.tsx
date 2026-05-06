@@ -37,18 +37,18 @@ function applyLocaleToDocument(locale: SupportedLocale) {
 }
 
 export function I18nProvider({ children }: I18nProviderProps) {
-  const [locale, setLocaleState] = useState<SupportedLocale>(defaultLocale);
+  const [locale, setLocaleState] = useState<SupportedLocale>(() => {
+    if (typeof window === "undefined") return defaultLocale;
+    try {
+      return resolveLocale(window.localStorage.getItem(localeStorageKey));
+    } catch {
+      return defaultLocale;
+    }
+  });
 
   useEffect(() => {
-    try {
-      const storedLocale = window.localStorage.getItem(localeStorageKey);
-      const nextLocale = resolveLocale(storedLocale);
-      setLocaleState(nextLocale);
-      applyLocaleToDocument(nextLocale);
-    } catch {
-      applyLocaleToDocument(defaultLocale);
-    }
-  }, []);
+    applyLocaleToDocument(locale);
+  }, [locale]);
 
   const setLocale = (nextLocale: SupportedLocale) => {
     setLocaleState(nextLocale);

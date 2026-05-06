@@ -24,7 +24,7 @@ export function WalletProviderShell({ children }: WalletProviderShellProps) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
+    queueMicrotask(() => setIsMounted(true));
   }, []);
 
   const configuredWallets = useMemo(() => {

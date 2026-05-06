@@ -34,8 +34,13 @@ assert config["config"]["programId"] == expected_program_id, f"remote /api/v1/co
 assert metrics["ok"] is True and "requestsTotal" in metrics["metrics"], "remote /api/v1/metrics missing requestsTotal"
 assert metrics["metrics"]["programId"] == expected_program_id, f"remote /api/v1/metrics program drift: {metrics['metrics']['programId']} != {expected_program_id}"
 assert qvac["ok"] is True and qvac["source"] == "qvac-runtime", "remote QVAC runtime endpoint failed"
+assert qvac["proof"].get("sdkLoaded") is True, "remote QVAC runtime proof did not load @qvac/sdk"
+assert qvac["proof"].get("sdkVersion") == "0.10.0", f"remote QVAC SDK version drift: {qvac['proof'].get('sdkVersion')}"
 assert qvac["proof"].get("model") == "qvac/fabric-llm-finetune", "remote QVAC runtime proof missing qvac/fabric-llm-finetune"
 assert qvac["proof"].get("runtimeMode") == "browser-local-first", "remote QVAC runtime proof missing browser-local-first mode"
+assert "completion" in qvac["proof"].get("exportedCapabilities", []), "remote QVAC runtime proof missing completion capability"
+assert "translate" in qvac["proof"].get("exportedCapabilities", []), "remote QVAC runtime proof missing translation capability"
+assert "ocr" in qvac["proof"].get("exportedCapabilities", []), "remote QVAC runtime proof missing OCR capability"
 assert umbra["ok"] is True and umbra["source"] == "umbra-relayer", "remote Umbra relayer endpoint failed"
 assert umbra["health"].get("status") == "ok", f"remote Umbra relayer unhealthy: {umbra['health']}"
 print("Remote primary host verification: PASS")

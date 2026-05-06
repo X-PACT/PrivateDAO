@@ -209,7 +209,9 @@ PrivateDAO uses the official QVAC model `qvac/fabric-llm-finetune` as the local 
 
 - Route: `https://privatedao.org/services/qvac-sovereign-ai/`
 - Product use: local execution brief for DAO proposals, private treasury movement, counterparty review, and privacy-mode recommendation before signing.
+- SDK proof: `npm run probe:qvac-runtime` imports `@qvac/sdk`, records SDK version `0.10.0`, and publishes the runtime proof through `https://api.privatedao.org/api/v1/qvac/runtime-proof`.
 - Runtime: browser-side Transformers.js using `@xenova/transformers`, with browser cache enabled after first model load.
+- Capability surface: the runtime proof verifies QVAC SDK exports used by the product lane, including `loadModel`, `completion`, `embed`, `translate`, `transcribe`, and `ocr`.
 - Privacy posture: no API key, no centralized model endpoint, no wallet intent sent to a hosted LLM.
 - Fallback boundary: if a device cannot load the model, the page falls back to deterministic local policy analysis and labels that state explicitly.
 

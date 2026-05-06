@@ -484,7 +484,7 @@ export function TreasuryReceiveSurface() {
   const allowStoredServicesHydration = Boolean(handoff?.payoutIntent);
 
   useEffect(() => {
-    setIsMounted(true);
+    queueMicrotask(() => setIsMounted(true));
   }, []);
 
   useEffect(() => {
@@ -492,36 +492,38 @@ export function TreasuryReceiveSurface() {
       return;
     }
 
-    const defaultAsset = resolveSupportedAsset(config.assets, activeProfile.defaultAsset);
-    setLane(activeProfile.defaultLane);
-    setSelectedAsset(defaultAsset);
-    setDestinationAsset(defaultAsset === "SOL" ? "USDC" : defaultAsset);
-    setReference(`${activeProfile.value.toUpperCase()}-REQUEST-READY`);
-    setAmount(activeProfile.defaultAmount);
-    setPurpose(activeProfile.defaultPurpose);
-    setQuoteReviewMode(
-      activeProfile.value === "treasury-rebalance" || activeProfile.value === "agentic-micropayment-rail"
-        ? "policy-bound"
-        : "manual-review",
-    );
-    setExecutionPreference(
-      activeProfile.value === "treasury-rebalance"
-        ? "best-price"
-        : activeProfile.value === "agentic-micropayment-rail"
-          ? "fast-execution"
-          : "stable-settlement",
-    );
-    setSlippageBandBps(
-      activeProfile.value === "vendor-payout" ||
-      activeProfile.value === "contributor-payout" ||
-      activeProfile.value === "agentic-micropayment-rail"
-        ? "30"
-        : "75",
-    );
+    queueMicrotask(() => {
+      const defaultAsset = resolveSupportedAsset(config.assets, activeProfile.defaultAsset);
+      setLane(activeProfile.defaultLane);
+      setSelectedAsset(defaultAsset);
+      setDestinationAsset(defaultAsset === "SOL" ? "USDC" : defaultAsset);
+      setReference(`${activeProfile.value.toUpperCase()}-REQUEST-READY`);
+      setAmount(activeProfile.defaultAmount);
+      setPurpose(activeProfile.defaultPurpose);
+      setQuoteReviewMode(
+        activeProfile.value === "treasury-rebalance" || activeProfile.value === "agentic-micropayment-rail"
+          ? "policy-bound"
+          : "manual-review",
+      );
+      setExecutionPreference(
+        activeProfile.value === "treasury-rebalance"
+          ? "best-price"
+          : activeProfile.value === "agentic-micropayment-rail"
+            ? "fast-execution"
+            : "stable-settlement",
+      );
+      setSlippageBandBps(
+        activeProfile.value === "vendor-payout" ||
+        activeProfile.value === "contributor-payout" ||
+        activeProfile.value === "agentic-micropayment-rail"
+          ? "30"
+          : "75",
+      );
+    });
   }, [activeProfile, config.assets, handoff?.payoutProfile]);
 
   useEffect(() => {
-    setRequestPreparedAt(new Date().toISOString());
+    queueMicrotask(() => setRequestPreparedAt(new Date().toISOString()));
   }, []);
 
   useEffect(() => {
@@ -534,47 +536,49 @@ export function TreasuryReceiveSurface() {
       destinationProfiles.find((item) => item.value === handoff.payoutProfile) ??
       destinationProfiles[0];
 
-    setProfile(handoff.payoutProfile);
+    queueMicrotask(() => {
+      setProfile(handoff.payoutProfile);
 
-    const shouldUseProposalBackedPrefill =
-      Boolean(proposalBackedPrefill) &&
-      (
-        !handoff.payoutIntent ||
-        handoff.payoutIntent.reference.endsWith("REQUEST-PENDING") ||
-        handoff.payoutIntent.reference.endsWith("REQUEST-READY") ||
-        !handoff.payoutIntent.amount ||
-        handoff.payoutIntent.purpose === handoffProfileConfig.defaultPurpose ||
-        handoff.payoutIntent.executionTarget.startsWith("Treasury receive rail")
-      );
+      const shouldUseProposalBackedPrefill =
+        Boolean(proposalBackedPrefill) &&
+        (
+          !handoff.payoutIntent ||
+          handoff.payoutIntent.reference.endsWith("REQUEST-PENDING") ||
+          handoff.payoutIntent.reference.endsWith("REQUEST-READY") ||
+          !handoff.payoutIntent.amount ||
+          handoff.payoutIntent.purpose === handoffProfileConfig.defaultPurpose ||
+          handoff.payoutIntent.executionTarget.startsWith("Treasury receive rail")
+        );
 
-    if (shouldUseProposalBackedPrefill && proposalBackedPrefill) {
-      setSelectedAsset(resolveSupportedAsset(config.assets, proposalBackedPrefill.assetSymbol));
-      setLane(proposalBackedPrefill.lane);
-      setDestinationAsset(proposalBackedPrefill.assetSymbol === "SOL" ? "USDC" : proposalBackedPrefill.assetSymbol);
-      setReference(proposalBackedPrefill.reference);
-      setPurpose(proposalBackedPrefill.purpose);
-      setAmount(proposalBackedPrefill.amount);
-    } else if (handoff.payoutIntent && allowStoredServicesHydration) {
-      setSelectedAsset(resolveSupportedAsset(config.assets, handoff.payoutIntent.assetSymbol));
-      setLane(handoff.payoutIntent.lane);
-      setDestinationAsset(handoff.payoutIntent.assetSymbol === "SOL" ? "USDC" : handoff.payoutIntent.assetSymbol);
-      setReference(handoff.payoutIntent.reference);
-      setPurpose(handoff.payoutIntent.purpose);
-      setAmount(handoff.payoutIntent.amount);
-    } else {
-      setSelectedAsset(
-        resolveSupportedAsset(config.assets, handoffProfileConfig.defaultAsset),
-      );
-      setLane(handoffProfileConfig.defaultLane);
-      setDestinationAsset(handoffProfileConfig.defaultAsset === "SOL" ? "USDC" : handoffProfileConfig.defaultAsset);
-      setReference(`${handoffProfileConfig.value.toUpperCase()}-REQUEST-READY`);
-      setAmount(handoffProfileConfig.defaultAmount);
-      setPurpose(handoffProfileConfig.defaultPurpose);
-    }
+      if (shouldUseProposalBackedPrefill && proposalBackedPrefill) {
+        setSelectedAsset(resolveSupportedAsset(config.assets, proposalBackedPrefill.assetSymbol));
+        setLane(proposalBackedPrefill.lane);
+        setDestinationAsset(proposalBackedPrefill.assetSymbol === "SOL" ? "USDC" : proposalBackedPrefill.assetSymbol);
+        setReference(proposalBackedPrefill.reference);
+        setPurpose(proposalBackedPrefill.purpose);
+        setAmount(proposalBackedPrefill.amount);
+      } else if (handoff.payoutIntent && allowStoredServicesHydration) {
+        setSelectedAsset(resolveSupportedAsset(config.assets, handoff.payoutIntent.assetSymbol));
+        setLane(handoff.payoutIntent.lane);
+        setDestinationAsset(handoff.payoutIntent.assetSymbol === "SOL" ? "USDC" : handoff.payoutIntent.assetSymbol);
+        setReference(handoff.payoutIntent.reference);
+        setPurpose(handoff.payoutIntent.purpose);
+        setAmount(handoff.payoutIntent.amount);
+      } else {
+        setSelectedAsset(
+          resolveSupportedAsset(config.assets, handoffProfileConfig.defaultAsset),
+        );
+        setLane(handoffProfileConfig.defaultLane);
+        setDestinationAsset(handoffProfileConfig.defaultAsset === "SOL" ? "USDC" : handoffProfileConfig.defaultAsset);
+        setReference(`${handoffProfileConfig.value.toUpperCase()}-REQUEST-READY`);
+        setAmount(handoffProfileConfig.defaultAmount);
+        setPurpose(handoffProfileConfig.defaultPurpose);
+      }
 
-    persistedPayloadSignatureRef.current = null;
-    setLocalDeliveryState(null);
-    appliedHandoffKeyRef.current = handoffKey;
+      persistedPayloadSignatureRef.current = null;
+      setLocalDeliveryState(null);
+      appliedHandoffKeyRef.current = handoffKey;
+    });
   }, [allowStoredServicesHydration, config.assets, handoff]);
 
   const requestPacket = useMemo(
@@ -689,10 +693,10 @@ export function TreasuryReceiveSurface() {
       activeProfile,
       amount,
       config.network,
-      destinationAsset,
       executionPreference,
       isRequestReady,
       lane,
+      normalizedDestinationAsset,
       persistedHandoff,
       purpose,
       quoteReviewMode,
@@ -749,7 +753,7 @@ export function TreasuryReceiveSurface() {
 
   useEffect(() => {
     if (isRequestReady) return;
-    setLocalDeliveryState(null);
+    queueMicrotask(() => setLocalDeliveryState(null));
   }, [isRequestReady]);
 
   const buildRequestDelivery = useCallback((
@@ -823,20 +827,12 @@ export function TreasuryReceiveSurface() {
   const encodedAmount = encodeURIComponent(amount);
   const encodedProfile = encodeURIComponent(activeProfile.value);
   const engagePrimaryHref = `/engage?intake=${activeProfile.intake}&asset=${activeAsset.symbol}&amount=${encodedAmount}&purpose=${encodedPurpose}&lane=${lane}&profile=${encodedProfile}`;
-  const structuredRequestObject = useMemo(
-    () => ({
-      ...requestPayloadSeed,
-      requestRoute: activeRequestDelivery.requestRoute,
-      deliveryRoute: activeRequestDelivery.deliveryRoute,
-      telemetryRoute: activeRequestDelivery.telemetryRoute,
-    }),
-    [
-      activeRequestDelivery.deliveryRoute,
-      activeRequestDelivery.requestRoute,
-      activeRequestDelivery.telemetryRoute,
-      requestPayloadSeed,
-    ],
-  );
+  const structuredRequestObject = {
+    ...requestPayloadSeed,
+    requestRoute: activeRequestDelivery.requestRoute,
+    deliveryRoute: activeRequestDelivery.deliveryRoute,
+    telemetryRoute: activeRequestDelivery.telemetryRoute,
+  };
   const routePlan = structuredRequestObject.treasuryRoutePlan;
   const quoteReviewSurface = useMemo(() => {
     if (!routePlan) return null;

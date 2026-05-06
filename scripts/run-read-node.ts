@@ -666,7 +666,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
 	    }
 
     if (pathname === "/api/v1/qvac/runtime-proof") {
-      const proofPath = join(process.cwd(), "services/qvac-runtime/qvac-runtime-proof.generated.json");
+      const proofPath = join(process.cwd(), "docs/qvac-runtime-proof.generated.json");
       const proof = await readFile(proofPath, "utf8")
         .then((content) => JSON.parse(content) as unknown)
         .catch((error) => ({
@@ -675,7 +675,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           track: "qvac-sovereign-ai",
           sdkLoaded: false,
           source: "qvac-runtime-proof-missing",
-          nextAction: "Run npm install and npm run probe inside services/qvac-runtime with Node.js >=22.17.",
+          nextAction: "Run npm install and npm run probe:qvac-runtime before publishing the read node.",
           error: String((error as Error)?.message || error),
         }));
       writeJson(res, 200, { ok: true, source: "qvac-runtime", proof });

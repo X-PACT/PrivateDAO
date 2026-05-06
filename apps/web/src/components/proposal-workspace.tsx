@@ -77,7 +77,7 @@ export function ProposalWorkspace({ executionSnapshot }: ProposalWorkspaceProps)
 
   useEffect(() => {
     if (!handoff?.proposalId) return;
-    setSelectedId(handoff.proposalId);
+    queueMicrotask(() => setSelectedId(handoff.proposalId));
   }, [handoff?.proposalId]);
 
   const proposal = useMemo(

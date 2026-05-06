@@ -93,7 +93,10 @@ export async function persistOperationReceipt(input: OperationReceiptInsert) {
   persistLocalReceiptRow(input);
 
   const supabase = createOptionalSupabaseBrowserClient();
-  if (!supabase) return;
+  if (!supabase) {
+    await persistGovernanceReceipt(toGovernanceReceipt(input));
+    return;
+  }
 
   const { error } = await supabase.from("operation_receipts").insert({
     operation_type: input.operationType,
@@ -109,8 +112,11 @@ export async function persistOperationReceipt(input: OperationReceiptInsert) {
   });
 
   if (error) {
-    // Keep on-chain flow non-blocking even when DB schema is not ready.
-    console.warn("[operation_receipts] persist failed:", error.message);
+    const legacyError = await persistLegacyOperationReceipt(input);
+    if (legacyError) {
+      // Keep on-chain flow non-blocking even when DB schema is not ready.
+      console.warn("[operation_receipts] persist failed:", legacyError);
+    }
   }
 
   await persistGovernanceReceipt(toGovernanceReceipt(input));
@@ -133,7 +139,10 @@ export async function persistCloakDeliveryState(input: CloakDeliveryStateInsert)
   });
 
   if (error) {
-    console.warn("[cloak_delivery_state] persist failed:", error.message);
+    const legacyError = await persistLegacyCloakDeliveryState(input);
+    if (legacyError) {
+      console.warn("[cloak_delivery_state] persist failed:", legacyError);
+    }
   }
 }
 
@@ -156,7 +165,24 @@ export async function persistGovernanceReceipt(input: GovernanceReceiptInsert | 
   });
 
   if (error) {
-    console.warn("[governance_receipts] persist failed:", error.message);
+    const legacyError = await persistLegacyOperationReceipt({
+      operationType: input.operationType,
+      proposalId: input.proposalId,
+      approvalState: input.status,
+      executionReference: input.txHash,
+      privateSettlementRail: input.rail,
+      stablecoinSymbol: input.asset,
+      auditMode: "governance-receipt",
+      recipientVisibility: input.recipient,
+      metadata: {
+        amount: input.amount,
+        recipient: input.recipient,
+        source: "governance_receipts_legacy_fallback",
+      },
+    });
+    if (legacyError) {
+      console.warn("[governance_receipts] persist failed:", legacyError);
+    }
   }
 }
 
@@ -184,6 +210,20 @@ type GovernanceReceiptTimelineRow = {
   recipient: string;
   rail: string;
   tx_hash: string;
+  status: string;
+};
+
+type LegacyOperationReceiptTimelineRow = {
+  id: string;
+  created_at: string;
+  operation_type: string;
+  audit_mode: string;
+  recipient_visibility: string;
+  rail: string;
+  asset: string;
+  amount: string;
+  recipient: string;
+  memo: string;
   status: string;
 };
 
@@ -339,7 +379,7 @@ export async function fetchOperationReceiptTimeline(limit = 20): Promise<Operati
     };
   }
 
-  const operationRows = error ? [] : ((data ?? []) as OperationReceiptTimelineRow[]);
+  const operationRows = error ? await fetchLegacyOperationReceiptRows(limit) : ((data ?? []) as OperationReceiptTimelineRow[]);
   const governanceRows = governanceError
     ? []
     : ((governanceData ?? []) as GovernanceReceiptTimelineRow[]).map(mapGovernanceReceiptToTimelineRow);
@@ -360,6 +400,76 @@ export async function fetchOperationReceiptTimeline(limit = 20): Promise<Operati
     error: null as string | null,
     source: "supabase",
   };
+}
+
+async function persistLegacyOperationReceipt(input: OperationReceiptInsert) {
+  const supabase = createOptionalSupabaseBrowserClient();
+  if (!supabase) return null;
+
+  const { error } = await supabase.from("operation_receipts").insert({
+    operation_type: input.operationType,
+    audit_mode: input.auditMode,
+    recipient_visibility: input.recipientVisibility,
+    rail: input.privateSettlementRail,
+    asset: input.stablecoinSymbol,
+    amount: metadataString(input.metadata, "amount") ?? metadataString(input.metadata, "amountSol") ?? "0",
+    recipient: metadataString(input.metadata, "recipient") ?? input.daoAddress ?? input.proposalId,
+    memo: input.executionReference,
+    status: input.approvalState,
+  });
+
+  return error?.message ?? null;
+}
+
+async function persistLegacyCloakDeliveryState(input: CloakDeliveryStateInsert) {
+  const supabase = createOptionalSupabaseBrowserClient();
+  if (!supabase) return null;
+
+  const { error } = await supabase.from("cloak_delivery_state").insert({
+    stealth_address: input.recipient,
+    cloak_status: "queued",
+    relayer_endpoint: input.rail,
+    relayer_response: {
+      operationType: input.operationType,
+      asset: input.asset,
+      amount: input.amount,
+      auditMode: input.auditMode,
+      recipientVisibility: input.recipientVisibility,
+    },
+  });
+
+  return error?.message ?? null;
+}
+
+async function fetchLegacyOperationReceiptRows(limit: number): Promise<OperationReceiptTimelineRow[]> {
+  const supabase = createOptionalSupabaseBrowserClient();
+  if (!supabase) return [];
+
+  const { data, error } = await supabase
+    .from("operation_receipts")
+    .select("id, created_at, operation_type, audit_mode, recipient_visibility, rail, asset, amount, recipient, memo, status")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error) return [];
+
+  return ((data ?? []) as LegacyOperationReceiptTimelineRow[]).map((row) => ({
+    id: `legacy-operation-${row.id}`,
+    created_at: row.created_at,
+    operation_type: row.operation_type,
+    proposal_id: row.memo || row.id,
+    approval_state: row.status,
+    execution_reference: row.memo,
+    private_settlement_rail: row.rail,
+    stablecoin_symbol: row.asset,
+    audit_mode: row.audit_mode,
+    recipient_visibility: row.recipient_visibility,
+    metadata: {
+      amount: row.amount,
+      recipient: row.recipient,
+      source: "operation_receipts_legacy",
+    },
+  }));
 }
 
 export function subscribeOperationReceiptTimeline(
