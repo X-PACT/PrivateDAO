@@ -35,6 +35,15 @@ export function SiteFooter() {
             <Link href="/services" className="hover:text-white">
               {copy.chrome.apiPricing}
             </Link>
+            <Link href="/about" className="hover:text-white">
+              About
+            </Link>
+            <Link href="/intelligence" className="hover:text-white">
+              Intelligence
+            </Link>
+            <Link href="/payroll" className="hover:text-white">
+              Payroll
+            </Link>
             <Link href="/trust" className="hover:text-white">
               {copy.chrome.trust}
             </Link>
@@ -55,6 +64,21 @@ export function SiteFooter() {
           </Link>
           <Link href="/documents" className="hover:text-white">
             {copy.chrome.docs}
+          </Link>
+          <Link href="/gaming" className="hover:text-white">
+            Gaming
+          </Link>
+          <Link href="/compliance" className="hover:text-white">
+            Compliance
+          </Link>
+          <Link href="/developers" className="hover:text-white">
+            Developers
+          </Link>
+          <Link href="/rpc-services" className="hover:text-white">
+            RPC Services
+          </Link>
+          <Link href="/command-center" className="hover:text-white">
+            Command Center
           </Link>
           <Link href="/awards" className="hover:text-white">
             Awards

@@ -14,7 +14,7 @@ Proof anchors:
 
 - 1st Place - Superteam Poland, March 2026: `docs/awards.md`
 - Live product: `https://privatedao.org/`
-- Testnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- Testnet program: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
 - PDAO governance mint evidence: `AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt`
 
 ## Slide 2 - The Problem
@@ -325,6 +325,7 @@ Core links:
 - Launch trust packet: `https://privatedao.org/documents/launch-trust-packet/`
 - Mainnet blockers: `https://privatedao.org/documents/mainnet-blockers/`
 - Story video: `https://privatedao.org/story/`
+- Technology explainer video: `https://youtu.be/byqu2p1N72U`
 - YouTube channel: `https://www.youtube.com/@privatedao`
 - Discord: `https://discord.gg/PbM8BC2A`
 - Colosseum project page: `https://arena.colosseum.org/projects/explore/praivatedao`

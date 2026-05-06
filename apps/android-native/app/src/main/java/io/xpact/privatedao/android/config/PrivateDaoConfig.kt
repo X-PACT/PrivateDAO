@@ -7,7 +7,7 @@ import io.xpact.privatedao.android.model.PrivacyPolicyOption
 object PrivateDaoConfig {
     const val appName = "PrivateDAO"
     const val tagline = "Vote Without Fear"
-    const val programId = "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx"
+    const val programId = "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva"
     const val rpcUrl = "https://api.testnet.solana.com"
     const val chain = "solana:testnet"
     const val walletCluster = "testnet"

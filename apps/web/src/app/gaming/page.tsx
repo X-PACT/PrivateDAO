@@ -9,9 +9,9 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = buildRouteMetadata({
   title: "Gaming Guild Hub",
   description:
-    "Guild governance hub for tournament operations, rewards, and treasury-linked game economy flow.",
+    "Gaming DAO hub for guild creation, tournament reward governance, private winner payouts, inventory proposals, and proof-linked treasury operations.",
   path: "/gaming",
-  keywords: ["gaming dao", "guild", "tournament", "rewards", "solana"],
+  keywords: ["gaming dao", "guild", "tournament", "private rewards", "inventory", "solana"],
 });
 
 export default function GamingPage() {
@@ -66,4 +66,3 @@ export default function GamingPage() {
     </OperationsShell>
   );
 }
-

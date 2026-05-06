@@ -16,7 +16,7 @@ export function getTrackNarrativePlan(
       futureProblemSolution:
         "The future problem is not launching more DAOs. It is operating them safely, privately, and credibly. PrivateDAO solves that by turning governance, treasury execution, proof, and operator workflows into one coherent infrastructure product.",
       whySponsorShouldCareNow:
-        "This is exactly the type of startup-quality outcome a strong ecosystem review cycle should accelerate: a real product with a Program ID, token surface, wallet UX, commercial packaging, and a credible path to mainnet and customers.",
+        "This is exactly the kind of startup-quality outcome a strong ecosystem should accelerate: a real product with a Program ID, token surface, wallet UX, commercial packaging, and a credible path to mainnet and customers.",
     };
   }
 
@@ -38,7 +38,7 @@ export function getTrackNarrativePlan(
       futureProblemSolution:
         "The future problem is that crypto apps still feel like tools for experts. PrivateDAO solves that by turning complex governance and proof flows into guided product routes with clear next actions.",
       whySponsorShouldCareNow:
-        "Solflare, QuickNode, and the live dApp corridor are not superficial sponsor badges here. They are part of a route that already looks commercial and is close to customer adoption on Testnet.",
+        "The wallet, infrastructure, and live-dApp corridor are not superficial badges here. They are part of a route that already looks commercial and is close to customer adoption on Testnet.",
     };
   }
 
@@ -49,7 +49,7 @@ export function getTrackNarrativePlan(
       futureProblemSolution:
         "The future problem is that governance products fail when read paths, diagnostics, and operational visibility are weak. PrivateDAO solves that by making infra value directly visible to operators, reviewers, and buyers.",
       whySponsorShouldCareNow:
-        "QuickNode or any RPC sponsor should care because this is an infrastructure-backed governance product that turns low-level performance into clear buyer value and long-term commercial demand.",
+        "This matters because it is an infrastructure-backed governance product that turns low-level performance into clear buyer value and long-term commercial demand.",
     };
   }
 
@@ -60,7 +60,7 @@ export function getTrackNarrativePlan(
       futureProblemSolution:
         "The future problem is that governance remains inaccessible to normal users. PrivateDAO solves that by making participation, proof, and treasury actions understandable without hiding the underlying rigor.",
       whySponsorShouldCareNow:
-        "Consumer judges and partners should care because this is one of the few governance products that can be both technically serious and easy for a normal user to navigate.",
+        "This matters because it is one of the few governance products that can be both technically serious and easy for a normal user to navigate.",
     };
   }
 
@@ -71,7 +71,7 @@ export function getTrackNarrativePlan(
       futureProblemSolution:
         "The future problem is not lack of governance primitives. It is lack of integrated governance businesses. PrivateDAO solves that by packaging protocol, operations, trust, and commercial delivery into one investable product.",
       whySponsorShouldCareNow:
-        "Ranger should care because this reads like infrastructure with startup velocity: a real product now, a commercial surface now, and a believable path to retained governance revenue later.",
+        "This matters because it reads like infrastructure with startup velocity: a real product now, a commercial surface now, and a believable path to retained governance revenue later.",
     };
   }
 
@@ -82,7 +82,7 @@ export function getTrackNarrativePlan(
       futureProblemSolution:
         "The future problem is that treasury decisions become dangerous when policy, execution, and review are disconnected. PrivateDAO solves that by making capital governance bounded, inspectable, and backed by evidence.",
       whySponsorShouldCareNow:
-        "This matters now because post-Drift teams need governance-grade treasury discipline, not another speculative trading interface. That makes this corridor commercially credible beyond the track itself.",
+        "This matters now because post-Drift teams need governance-grade treasury discipline, not another speculative trading interface. That makes this corridor commercially credible beyond any one track.",
     };
   }
 
@@ -93,7 +93,7 @@ export function getTrackNarrativePlan(
       futureProblemSolution:
         "The future problem is that strong protocols still fail to become great products. PrivateDAO solves that by turning serious blockchain and privacy infrastructure into a product people can actually navigate and adopt.",
       whySponsorShouldCareNow:
-        "100xDevs should care because this is proof of shipping discipline at speed: years of product and infra integration compressed into a coherent live surface with commercial relevance.",
+        "This matters because it is proof of shipping discipline at speed: years of product and infrastructure integration compressed into a coherent live surface with commercial relevance.",
     };
   }
 
@@ -104,7 +104,7 @@ export function getTrackNarrativePlan(
       futureProblemSolution:
         "The future problem is that private operations remain too opaque or too brittle for real teams. PrivateDAO solves that by making encrypted governance and payout workflows inspectable, bounded, and ready for commercial packaging.",
       whySponsorShouldCareNow:
-        "Encrypt and IKA should care because this is not theory. It is a live governance product where advanced cryptographic rails already shape how the product behaves for real users and buyers.",
+        "This matters because it is not theory. It is a live governance product where advanced cryptographic rails already shape how the product behaves for real users and buyers.",
     };
   }
 
@@ -115,7 +115,7 @@ export function getTrackNarrativePlan(
       futureProblemSolution:
         "The future problem is that governance systems need AI-like guidance without surrendering trust and control. PrivateDAO solves that by combining deterministic assistant routing with cryptographic and policy evidence.",
       whySponsorShouldCareNow:
-        "SolRouter should care because this is an early but credible foundation for an encrypted-governance assistant that remains honest about what is live today and what still belongs to the future roadmap.",
+        "This matters because it is an early but credible foundation for an encrypted-governance assistant that remains grounded in what is already live today.",
     };
   }
 
@@ -125,6 +125,6 @@ export function getTrackNarrativePlan(
     futureProblemSolution:
       "The future problem is disconnected governance infrastructure. PrivateDAO solves that by connecting product, security, proof, and operations into one company-grade platform.",
     whySponsorShouldCareNow:
-      "This sponsor should care because the product already turns serious technical rails into visible, investable, and commercially meaningful user value.",
+      "This matters because the product already turns serious technical rails into visible, investable, and commercially meaningful user value.",
   };
 }

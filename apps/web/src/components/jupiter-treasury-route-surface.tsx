@@ -57,6 +57,31 @@ type JupiterPreviewResponse = {
   error?: string;
 };
 
+type JupiterQuoteResponse = {
+  inputMint?: string;
+  outputMint?: string;
+  inAmount?: string;
+  outAmount?: string;
+  otherAmountThreshold?: string;
+  swapMode?: string;
+  slippageBps?: number;
+  priceImpactPct?: string;
+  routePlan?: Array<{
+    percent?: number;
+    bps?: number;
+    swapInfo?: {
+      label?: string;
+      inputMint?: string;
+      outputMint?: string;
+      inAmount?: string;
+      outAmount?: string;
+    };
+  }>;
+  contextSlot?: number;
+  timeTaken?: number;
+  error?: string;
+};
+
 const DEFAULT_INPUT_MINT = "So11111111111111111111111111111111111111112";
 const DEFAULT_OUTPUT_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
 
@@ -67,6 +92,34 @@ function formatUsd(value: number | null | undefined) {
     currency: "USD",
     maximumFractionDigits: value >= 1000 ? 0 : 2,
   }).format(value);
+}
+
+function mapJupiterQuoteToPreview(raw: JupiterQuoteResponse, request: { inputMint: string; outputMint: string; amount: string; slippageBps: number | null }): JupiterPreviewResponse {
+  const routePlan = Array.isArray(raw.routePlan) ? raw.routePlan : [];
+
+  return {
+    request,
+    summary: {
+      mode: raw.swapMode ?? "ExactIn",
+      router: "Jupiter Quote API v6",
+      inAmount: raw.inAmount ?? null,
+      outAmount: raw.outAmount ?? null,
+      inUsdValue: null,
+      outUsdValue: null,
+      priceImpact: typeof raw.priceImpactPct === "string" ? Number(raw.priceImpactPct) : null,
+      slippageBps: typeof raw.slippageBps === "number" ? raw.slippageBps : request.slippageBps,
+      gasless: null,
+      requestId: typeof raw.contextSlot === "number" ? `slot-${raw.contextSlot}` : null,
+      totalTime: typeof raw.timeTaken === "number" ? raw.timeTaken : null,
+      transactionAvailable: false,
+    },
+    topRoutes: routePlan.slice(0, 4).map((entry, index) => ({
+      label: entry.swapInfo?.label ?? `Route ${index + 1}`,
+      inAmount: entry.swapInfo?.inAmount ?? null,
+      outAmount: entry.swapInfo?.outAmount ?? null,
+      percent: typeof entry.percent === "number" ? entry.percent : null,
+    })),
+  };
 }
 
 export function JupiterTreasuryRouteSurface() {
@@ -81,25 +134,37 @@ export function JupiterTreasuryRouteSurface() {
   const [running, setRunning] = useState(false);
 
   async function handlePreview() {
-    const endpoint = process.env.NEXT_PUBLIC_JUPITER_ORDER_ENDPOINT?.trim() || "/api/jupiter/order";
+    const configuredEndpoint = process.env.NEXT_PUBLIC_JUPITER_QUOTE_ENDPOINT?.trim();
+    const endpoint = configuredEndpoint || "https://quote-api.jup.ag/v6/quote";
+    const normalizedSlippage = Number(slippageBps);
+    const query = new URLSearchParams({
+      inputMint,
+      outputMint,
+      amount,
+      slippageBps: Number.isFinite(normalizedSlippage) ? String(Math.round(normalizedSlippage)) : "50",
+    });
 
     setRunning(true);
     setDeliveryState("Requesting Jupiter route preview...");
 
     try {
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          inputMint,
-          outputMint,
-          amount,
-          slippageBps: Number(slippageBps),
-        }),
+      const response = await fetch(`${endpoint}?${query.toString()}`, {
+        method: "GET",
+        headers: { Accept: "application/json" },
+        cache: "no-store",
       });
-      const body = (await response.json().catch(() => null)) as JupiterPreviewResponse | null;
-      setPreview(body);
-      setDeliveryState(response.ok ? "Jupiter route preview received." : body?.error ?? `Jupiter endpoint responded ${response.status}.`);
+      const body = (await response.json().catch(() => null)) as JupiterQuoteResponse | null;
+      const mapped = body
+        ? mapJupiterQuoteToPreview(body, {
+            inputMint,
+            outputMint,
+            amount,
+            slippageBps: Number.isFinite(normalizedSlippage) ? Math.round(normalizedSlippage) : null,
+          })
+        : null;
+
+      setPreview(mapped);
+      setDeliveryState(response.ok ? "Jupiter Quote API preview received." : body?.error ?? `Jupiter endpoint responded ${response.status}.`);
     } catch (error) {
       setPreview(null);
       setDeliveryState(error instanceof Error ? error.message : "Jupiter route preview failed.");

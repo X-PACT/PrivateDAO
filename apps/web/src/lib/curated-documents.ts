@@ -16,31 +16,6 @@ export type CuratedDocument = {
 
 const repositoryBlobBase = "https://github.com/X-PACT/PrivateDAO/blob/main";
 
-const indexableDocumentSlugs = new Set<string>([
-  "agentic-treasury-micropayment-rail",
-  "devnet-execution-screenshots",
-  "frontend-solana-bootcamp-materials",
-  "privacy-and-encryption-proof-guide",
-  "audd-stablecoin-treasury-layer",
-  "pusd-stablecoin-treasury-layer",
-  "selective-disclosure-operating-surface",
-  "torque-growth-loop",
-  "zerion-autonomous-agent-policy",
-  "solana-developer-tooling-proposal-2026",
-  "technical-verification-status-2026",
-  "testnet-architecture-migration-2026-04-19",
-  "final-closure-workplan-2026-04-19",
-  "ecosystem-capability-map-2026",
-  "track-funding-integration-closure-plan-2026-04-19",
-  "reviewer-fast-path",
-  "reviewer-telemetry-packet",
-  "launch-trust-packet",
-  "trust-package",
-  "browser-wallet-runtime",
-  "capital-readiness-packet",
-  "pdao-token-surface",
-]);
-
 const hiddenCuratedDocumentSlugs = new Set<string>([
   "superteam-track-submission-matrix-2026",
   "live-submission-review-2026",
@@ -58,7 +33,7 @@ function isPublicCuratedDocumentSlug(slug: string) {
 }
 
 export function isIndexableCuratedDocumentSlug(slug: string) {
-  return isPublicCuratedDocumentSlug(slug) && indexableDocumentSlugs.has(slug);
+  return isPublicCuratedDocumentSlug(slug);
 }
 
 export function getIndexableCuratedDocuments() {
@@ -281,10 +256,22 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/rpcfast-hackathon-infrastructure-plan.md`,
   },
   {
+    slug: "anchor-1-migration-evidence-2026-04-30",
+    title: "Anchor 1 Migration Evidence",
+    category: "Infrastructure",
+    summary:
+      "Current Testnet evidence for the Anchor 1.0.1 migration, upgraded program ID, deploy signature, ProgramData account, web and Android constants, and remaining hardening notes.",
+    audience: "Judges, infrastructure reviewers, operators, investors",
+    boundary:
+      "Anchor 1 Testnet deployment evidence only; it does not claim production mainnet custody, external audit completion, or real-funds release.",
+    docPath: "docs/anchor-1-migration-evidence-2026-04-30.md",
+    rawHref: `${repositoryBlobBase}/docs/anchor-1-migration-evidence-2026-04-30.md`,
+  },
+  {
     slug: "testnet-migration-report-2026-04-18",
     title: "Testnet Migration Report",
     category: "Infrastructure",
-    summary: "Factual migration packet for the Anchor 0.32.1 upgrade, preserved program ID, Testnet deployment, lifecycle rehearsal, and remaining release boundaries.",
+    summary: "Historical Testnet migration packet for the pre-Anchor-1 deployment, lifecycle rehearsal, and remaining release boundaries.",
     audience: "Infrastructure reviewers, operators, funders, judges",
     boundary: "Testnet standard governance and SOL treasury lifecycle proof only; it does not claim custody transfer, confidential settlement closure, audit completion, or mainnet readiness.",
     docPath: "docs/testnet-migration-report-2026-04-18.md",
@@ -409,6 +396,26 @@ const curatedDocuments: CuratedDocument[] = [
     boundary: "Curated in-app view only. The canonical query-driven docs viewer remains in docs/ until full parity exists.",
     docPath: "docs/reviewer-fast-path.md",
     rawHref: `${repositoryBlobBase}/docs/reviewer-fast-path.md`,
+  },
+  {
+    slug: "reviewer-fast-path-2026-05-06",
+    title: "Reviewer Fast Path 2026-05-06",
+    category: "Reviewer core",
+    summary: "Current judge-first route map for Anchor 1.0.1, QVAC local inference, Umbra relayer readiness, Supabase timeline behavior, AWS read-node paths, and mainnet truth boundary.",
+    audience: "Judges, auditors, infrastructure reviewers, operators",
+    boundary: "Current fast-path only; it records live Testnet and hosted-read truth without claiming completed mainnet custody ceremony.",
+    docPath: "docs/reviewer-fast-path-2026-05-06.md",
+    rawHref: `${repositoryBlobBase}/docs/reviewer-fast-path-2026-05-06.md`,
+  },
+  {
+    slug: "umbra-devnet-relayer-receipt-2026-05-06",
+    title: "Umbra Devnet Relayer Receipt",
+    category: "Reviewer core",
+    summary: "Hosted AWS read-node evidence for Umbra Devnet relayer health, relayer info, supported mints, and a private settlement intent receipt.",
+    audience: "Judges, privacy reviewers, infrastructure reviewers, operators",
+    boundary: "Relayer readiness and receipt evidence only; full Umbra claim submission still requires SDK-generated ZK proof data and UTXO slot data.",
+    docPath: "docs/umbra-devnet-relayer-receipt-2026-05-06.md",
+    rawHref: `${repositoryBlobBase}/docs/umbra-devnet-relayer-receipt-2026-05-06.md`,
   },
   {
     slug: "treasury-reviewer-packet",

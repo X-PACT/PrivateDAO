@@ -34,8 +34,8 @@ Each capture should record:
 - signing result
 - submission result
 - diagnostics snapshot presence
-- transaction signature when a Devnet transaction was successfully submitted
-- explorer URL when a Devnet transaction was successfully submitted
+- transaction signature when a runtime transaction was successfully submitted
+- explorer URL when a runtime transaction was successfully submitted
 - error message when any step fails
 - evidence refs for screenshots or recordings when available
 
@@ -45,7 +45,7 @@ Each runtime target should attempt:
 
 1. connect wallet
 2. confirm diagnostics visibility
-3. sign or send a transaction on Devnet
+3. sign or send a transaction on the active runtime network
 4. record explorer-visible outcome or error
 
 ## Registry Source
@@ -70,7 +70,7 @@ The generated reviewer-facing outputs are:
 
 ## Fast Capture Workflow
 
-1. Run the wallet flow on Devnet in a real client.
+1. Run the wallet flow on the active runtime network in a real client.
 2. Save a small JSON payload for the target.
 3. Record it with:
 
@@ -96,12 +96,12 @@ bash scripts/real-device-capture.sh phantom-desktop --tx "<REAL_DEVNET_SIGNATURE
   "environmentType": "desktop-browser",
   "os": "macOS 15",
   "browserOrClient": "Chrome 135",
-  "network": "devnet",
+  "network": "testnet",
   "connectResult": "success",
   "signingResult": "success",
   "submissionResult": "success",
   "diagnosticsSnapshotCaptured": true,
-  "txSignature": "example-devnet-signature-from-wallet-run",
+  "txSignature": "example-runtime-signature-from-wallet-run",
   "errorMessage": null,
   "evidenceRefs": [
     "screenshots/phantom-desktop-connect.png"
@@ -112,6 +112,6 @@ bash scripts/real-device-capture.sh phantom-desktop --tx "<REAL_DEVNET_SIGNATURE
 
 ## Honest Boundary
 
-The repository now provides a formal intake, builder, verifier, and reviewer surface for real-device wallet QA.
+The repository now provides a formal intake, builder, verifier, and reviewer surface for real-device wallet QA across the currently selected runtime rail.
 
 It does not fabricate successful device runs that were not actually captured.

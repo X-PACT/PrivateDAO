@@ -5,7 +5,7 @@
   "environmentType": "desktop-browser",
   "os": "macOS 15",
   "browserOrClient": "Chrome 136",
-  "network": "devnet",
+  "network": "testnet",
   "actionsCovered": [
     "Create DAO"
   ],

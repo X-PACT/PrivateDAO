@@ -28,10 +28,9 @@ import { buildRouteMetadata } from "@/lib/route-metadata";
 export const metadata: Metadata = buildRouteMetadata({
   title: "Command Center",
   description:
-    "Guided PrivateDAO workspace for product-pack selection, proposal actions, wallet runtime, private voting, proof links, and treasury execution rails.",
+    "PrivateDAO command center for live operations, indexed proposal context, treasury routes, custody readiness, runtime proof, and Anchor 1 Testnet status.",
   path: "/command-center",
-  keywords: ["command center", "wallet runtime", "private vote", "treasury execution"],
-  index: false,
+  keywords: ["command center", "wallet runtime", "private vote", "treasury execution", "custody readiness", "Anchor 1"],
 });
 
 export default function CommandCenterPage() {

@@ -41,11 +41,17 @@ export function CompetitionWorkspace({ workspace }: CompetitionWorkspaceProps) {
     authorityHardening: <AuthorityHardeningPanel />,
     incidentReadiness: <IncidentReadinessPanel />,
     submissionPath: (
-      <Card>
-        <CardHeader>
-          <CardTitle>Submission path</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Submission path</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+          <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.22em] text-white/52">
+            <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Connect</span>
+            <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Review</span>
+            <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Sign</span>
+            <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Verify</span>
+          </div>
           <div className="grid gap-3 sm:grid-cols-2">
             <Link className={cn(buttonVariants({ size: "sm" }))} href={workspace.liveRoute}>
               Live route
@@ -105,7 +111,7 @@ export function CompetitionWorkspace({ workspace }: CompetitionWorkspaceProps) {
 
         <Card>
           <CardHeader>
-            <CardTitle>Submission bundle snapshot</CardTitle>
+            <CardTitle>Capability bundle snapshot</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-4 sm:grid-cols-2">
             <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
@@ -138,7 +144,7 @@ export function CompetitionWorkspace({ workspace }: CompetitionWorkspaceProps) {
 
         <Card>
           <CardHeader>
-            <CardTitle>Submission objective</CardTitle>
+            <CardTitle>Capability objective</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 text-sm leading-7 text-white/60">
             <div className="rounded-3xl border border-white/8 bg-white/4 p-4">{workspace.objective}</div>
@@ -155,7 +161,7 @@ export function CompetitionWorkspace({ workspace }: CompetitionWorkspaceProps) {
 
         <Card>
           <CardHeader>
-            <CardTitle>Winning moves</CardTitle>
+            <CardTitle>Execution advantages</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-4">
             {workspace.winningMoves.map((move) => (
@@ -169,7 +175,7 @@ export function CompetitionWorkspace({ workspace }: CompetitionWorkspaceProps) {
 
         <Card>
           <CardHeader>
-            <CardTitle>Sponsor fit</CardTitle>
+            <CardTitle>Ecosystem fit</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-4">
             {workspace.sponsorFit.map((item) => (
@@ -188,7 +194,7 @@ export function CompetitionWorkspace({ workspace }: CompetitionWorkspaceProps) {
         </Suspense>
         <Card>
           <CardHeader>
-            <CardTitle>Track requirements in product terms</CardTitle>
+            <CardTitle>Ecosystem requirements in platform terms</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-4">
             {workspace.requirements.map((requirement) => (
@@ -224,7 +230,7 @@ export function CompetitionWorkspace({ workspace }: CompetitionWorkspaceProps) {
 
         <Card>
           <CardHeader>
-            <CardTitle>Validation before submit</CardTitle>
+            <CardTitle>Validation before review</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-3">
             {workspace.validationSteps.map((step) => (

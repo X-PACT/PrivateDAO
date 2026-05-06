@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 
 import { ExecutionSpineSurface } from "@/components/execution-spine-surface";
+import { GovernPolicyControlRoom } from "@/components/govern-policy-control-room";
 import { GovernWorkbenchClient } from "@/components/govern/govern-workbench-client";
+import { GuidedOperationRail } from "@/components/guided-operation-rail";
 import { LocalizedGovernIntroSurface } from "@/components/localized-govern-intro-surface";
 import { NormalUserOperationPath } from "@/components/normal-user-operation-path";
 import { OperationsShell } from "@/components/operations-shell";
@@ -13,7 +15,6 @@ export const metadata: Metadata = buildRouteMetadata({
     "Simple wallet-first governance flow for creating a DAO, creating proposals, voting, and executing on Testnet.",
   path: "/govern",
   keywords: ["govern", "create dao", "create proposal", "vote", "execute", "testnet governance"],
-  index: false,
 });
 
 export default function GovernPage() {
@@ -29,7 +30,9 @@ export default function GovernPage() {
         { label: "User-first flow", variant: "violet" },
       ]}
     >
+      <GuidedOperationRail current="review" reviewHref="/intelligence" verifyHref="/proof" />
       <LocalizedGovernIntroSurface />
+      <GovernPolicyControlRoom />
       <NormalUserOperationPath />
       <ExecutionSpineSurface context="govern" compact />
       <GovernWorkbenchClient />

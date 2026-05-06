@@ -10,6 +10,7 @@ import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
 import { PrivacyProofExplainer } from "@/components/privacy-proof-explainer";
 import { TestnetProofMatrix } from "@/components/testnet-proof-matrix";
 import { PlatformCapabilityStack } from "@/components/platform-capability-stack";
+import { VideoCenter } from "@/components/video-center";
 import Link from "next/link";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -55,6 +56,7 @@ export default function JudgePage() {
       ]}
     >
       <LocalizedRouteSummary routeKey="judge" />
+      <VideoCenter compact />
       <div className="grid gap-4 xl:grid-cols-[0.95fr_1.05fr]">
         <LocalizedJudgePrimer />
 

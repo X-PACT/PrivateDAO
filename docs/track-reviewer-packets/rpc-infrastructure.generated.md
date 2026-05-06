@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-20T11:40:01.801Z`
+- generated at: `2026-04-22T00:24:58.695Z`
 - track slug: `rpc-infrastructure`
 - sponsor: `RPC infrastructure sponsors`
 - objective: Make the hosted read path, diagnostics, and runtime trust posture impossible to miss.

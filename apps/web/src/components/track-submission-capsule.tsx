@@ -136,7 +136,7 @@ export function TrackSubmissionCapsule({ workspace, commercialProfile }: TrackSu
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/76">Submission capsule</div>
-            <CardTitle className="mt-2">What works, why trust is justified, and what still separates Devnet from mainnet</CardTitle>
+            <CardTitle className="mt-2">What works, why trust is justified, and what still separates Testnet from mainnet</CardTitle>
           </div>
           <div className="flex flex-wrap gap-2">
             <Badge variant="cyan">{workspace.sponsor}</Badge>

@@ -12,10 +12,9 @@ import { buildRouteMetadata } from "@/lib/route-metadata";
 export const metadata: Metadata = buildRouteMetadata({
   title: "Developers",
   description:
-    "Developer-facing proof, docs, and service architecture for PrivateDAO operators and integrators.",
+    "PrivateDAO developer portal for Anchor 1 Testnet evidence, SDK starters, API surfaces, read-node proof, privacy integrations, and reviewer packets.",
   path: "/developers",
-  keywords: ["developers", "docs", "proof", "service architecture", "integrators"],
-  index: false,
+  keywords: ["developers", "Anchor 1", "SDK", "API", "read node", "privacy integrations", "integrators"],
 });
 
 export default function DevelopersPage() {

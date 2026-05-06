@@ -94,7 +94,7 @@ function getTargetPlan(targetId: string) {
       };
     case "android-runtime":
       return {
-        nextAction: "Capture Android-native or mobile browser wallet flow with diagnostics and one signed Devnet transaction.",
+        nextAction: "Capture Android-native or mobile browser wallet flow with diagnostics and one signed Testnet transaction.",
         requiredEvidence: [
           "device and OS build",
           "wallet client name",
@@ -104,7 +104,7 @@ function getTargetPlan(targetId: string) {
       };
     default:
       return {
-        nextAction: "Capture connect, diagnostics, and one signed Devnet transaction for this target.",
+        nextAction: "Capture connect, diagnostics, and one signed Testnet transaction for this target.",
         requiredEvidence: [
           "connect result",
           "signing result",

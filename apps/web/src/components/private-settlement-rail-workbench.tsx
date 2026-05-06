@@ -50,7 +50,7 @@ function getRailEndpoint(rail: PrivateRail) {
   const readNode = process.env.NEXT_PUBLIC_PRIVATE_DAO_READ_NODE_ENDPOINT?.trim();
   if (configured?.trim()) return configured.trim();
   if (readNode) return `${readNode.replace(/\/+$/, "")}/api/v1/private-settlement/intent`;
-  return "/api/v1/private-settlement/intent";
+  return "https://api.privatedao.org/api/v1/private-settlement/intent";
 }
 
 type PrivateSettlementRailWorkbenchProps = {

@@ -139,7 +139,7 @@ export function getSettlementReceiptClosureSnapshot(): SettlementReceiptClosureS
     blockerNextAction: blocker.nextAction,
     severity: blocker.severity,
     currentTruth: [
-      "Devnet confidential payout rehearsal exists inside the governed treasury corridor.",
+      "Testnet confidential payout rehearsal exists inside the governed treasury corridor.",
       "Settlement evidence and execution hardening are already part of the product and security surfaces.",
       "Reviewer-safe payout evidence exists, but it is not yet a source-verifiable receipt closure.",
     ],

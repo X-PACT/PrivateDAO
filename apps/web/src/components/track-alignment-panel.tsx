@@ -23,14 +23,14 @@ export function TrackAlignmentPanel({ workspace }: TrackAlignmentPanelProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Track alignment at a glance</CardTitle>
+        <CardTitle>Ecosystem alignment at a glance</CardTitle>
       </CardHeader>
       <CardContent className="space-y-5">
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-4">
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-cyan-100/76">
               <Target className="h-3.5 w-3.5" />
-              Sponsor evidence
+              Partner evidence
             </div>
             <div className="mt-3 text-sm font-medium text-white">
               {technical.sponsorEvidence[0]?.sponsor ?? workspace.sponsor}
@@ -53,7 +53,7 @@ export function TrackAlignmentPanel({ workspace }: TrackAlignmentPanelProps) {
           <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-emerald-300/76">
               <BriefcaseBusiness className="h-3.5 w-3.5" />
-              Fastest paid motion
+              Fastest monetization motion
             </div>
             <div className="mt-3 text-sm leading-7 text-white/72">
               {commercial.firstPaidMotion}
@@ -73,11 +73,11 @@ export function TrackAlignmentPanel({ workspace }: TrackAlignmentPanelProps) {
 
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           <Link className={cn(buttonVariants({ size: "sm" }))} href={workspace.proofRoute}>
-            Proof
+            Verify
             <ArrowUpRight className="h-3.5 w-3.5" />
           </Link>
           <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} href={workspace.judgeRoute}>
-            Review
+            Judge
             <ArrowUpRight className="h-3.5 w-3.5" />
           </Link>
           <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href="/documents/trust-package">
@@ -90,8 +90,15 @@ export function TrackAlignmentPanel({ workspace }: TrackAlignmentPanelProps) {
           </Link>
         </div>
 
+        <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.22em] text-white/52">
+          <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Connect</span>
+          <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Review</span>
+          <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Sign</span>
+          <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Verify</span>
+        </div>
+
         <div className="rounded-3xl border border-white/8 bg-black/20 p-4 text-sm leading-7 text-white/66">
-          Readiness {coach.readinessScore} ({coach.readinessBand}). Next fastest improvement: {coach.nextFastestImprovement}
+          Readiness {coach.readinessScore} ({coach.readinessBand}). Next highest-leverage improvement: {coach.nextFastestImprovement}
         </div>
       </CardContent>
     </Card>

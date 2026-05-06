@@ -108,6 +108,11 @@ const FEATURED_PROPOSAL_KEYS = {
   grant: "A5Hd89vpCTVPALhuwurLQvyAkHyrNGhvZtAcJvBmuJ9U",
 } as const;
 
+function resolveActiveCluster() {
+  const raw = (process.env.SOLANA_CLUSTER || process.env.NEXT_PUBLIC_SOLANA_NETWORK || "testnet").toLowerCase();
+  return raw === "devnet" ? "devnet" : "testnet";
+}
+
 function readJson<T>(filePath: string): T {
   return JSON.parse(fs.readFileSync(path.join(ROOT, filePath), "utf8")) as T;
 }
@@ -369,6 +374,7 @@ function buildProposalContext(
   reportEntry: ProposalReportEntry | undefined,
   integrations: FrontierIntegrations,
 ): ProposalContext {
+  const activeCluster = resolveActiveCluster();
   const hasConfidentialPayout = Boolean(proposal.confidentialPayoutPlan);
   const confidentialPlan = proposal.confidentialPayoutPlan;
   const treasuryAction = proposal.treasuryAction;
@@ -451,7 +457,7 @@ function buildProposalContext(
           ? "runtime-indexed-confidential-path"
           : "runtime-indexed-settlement-pending"
         : reportEntry?.executeTx
-          ? "verified-devnet-governance-path"
+          ? `verified-${activeCluster}-governance-path`
           : hasConfidentialPayout
             ? integrations.confidentialOperations?.status ?? "runtime-indexed-confidential-path"
             : "runtime-indexed-governance-path",

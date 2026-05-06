@@ -37,6 +37,8 @@ type Evidence = {
   status: string;
 };
 
+const SUPPORTED_RUNTIME_NETWORKS = new Set(["devnet", "testnet"]);
+
 function main() {
   const jsonPath = path.resolve("docs/runtime/browser-wallet.generated.json");
   const mdPath = path.resolve("docs/runtime/browser-wallet.generated.md");
@@ -50,7 +52,7 @@ function main() {
   const markdown = fs.readFileSync(mdPath, "utf8");
 
   assert(evidence.project === "PrivateDAO", "browser-wallet runtime evidence project mismatch");
-  assert(evidence.network === "devnet", "browser-wallet runtime evidence network mismatch");
+  assert(SUPPORTED_RUNTIME_NETWORKS.has(evidence.network), "browser-wallet runtime evidence network mismatch");
   assert(evidence.summary.targetCount >= 4, "browser-wallet runtime evidence target count is unexpectedly low");
   assert(
     evidence.targets.some((target) => target.walletLabel === "Phantom"),
@@ -80,11 +82,14 @@ function main() {
   );
 
   for (const capture of evidence.captures) {
-    assert(capture.network === "devnet", "browser-wallet runtime capture must remain devnet-scoped");
+    assert(capture.network === evidence.network, "browser-wallet runtime capture network mismatch");
     assert(capture.actionsCovered.length >= 1, "browser-wallet runtime capture must record action coverage");
     if (capture.submissionResult === "success") {
       assert(Boolean(capture.txSignature), "browser-wallet runtime capture success is missing tx signature");
-      assert(Boolean(capture.explorerUrl?.includes("devnet")), "browser-wallet runtime capture success is missing devnet explorer url");
+      assert(
+        Boolean(capture.explorerUrl?.includes(`cluster=${capture.network}`)),
+        "browser-wallet runtime capture success is missing explorer url for the capture network",
+      );
     }
   }
 

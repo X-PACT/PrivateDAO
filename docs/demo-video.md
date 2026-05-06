@@ -6,6 +6,8 @@ It is intentionally different from the investor reel.
 
 The investor reel is a pitch surface.
 
+Current public technology explainer: `https://youtu.be/byqu2p1N72U`
+
 This walkthrough video is a **product and operator flow** surface.
 
 ## Required narrative

@@ -23,7 +23,7 @@ export function DevnetExecutionScreenshotsStrip() {
           href="/documents/devnet-execution-screenshots"
           className={cn(buttonVariants({ size: "sm", variant: "outline" }))}
         >
-          Preserved Devnet captures
+          Historical capture archive
         </Link>
         <Link
           href="/documents/agentic-treasury-micropayment-rail"

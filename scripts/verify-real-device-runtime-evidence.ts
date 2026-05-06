@@ -35,6 +35,8 @@ type Evidence = {
   status: string;
 };
 
+const SUPPORTED_RUNTIME_NETWORKS = new Set(["devnet", "testnet"]);
+
 function main() {
   const jsonPath = path.resolve("docs/runtime/real-device.generated.json");
   const mdPath = path.resolve("docs/runtime/real-device.generated.md");
@@ -48,7 +50,7 @@ function main() {
   const markdown = fs.readFileSync(mdPath, "utf8");
 
   assert(evidence.project === "PrivateDAO", "real-device runtime evidence project mismatch");
-  assert(evidence.network === "devnet", "real-device runtime evidence network mismatch");
+  assert(SUPPORTED_RUNTIME_NETWORKS.has(evidence.network), "real-device runtime evidence network mismatch");
   assert(evidence.summary.targetCount >= 5, "real-device runtime evidence target count is unexpectedly low");
   assert(evidence.targets.some((target) => target.walletLabel === "Phantom"), "real-device runtime evidence missing Phantom target");
   assert(evidence.targets.some((target) => target.walletLabel === "Solflare"), "real-device runtime evidence missing Solflare target");
@@ -61,10 +63,13 @@ function main() {
   assert(evidence.commands.includes("npm run verify:real-device-runtime"), "real-device runtime evidence missing verify command");
 
   for (const capture of evidence.captures) {
-    assert(capture.network === "devnet", "real-device runtime capture must remain devnet-scoped");
+    assert(capture.network === evidence.network, "real-device runtime capture network mismatch");
     if (capture.submissionResult === "success") {
       assert(Boolean(capture.txSignature), "real-device runtime capture success is missing tx signature");
-      assert(Boolean(capture.explorerUrl?.includes("devnet")), "real-device runtime capture success is missing devnet explorer url");
+      assert(
+        Boolean(capture.explorerUrl?.includes(`cluster=${capture.network}`)),
+        "real-device runtime capture success is missing explorer url for the capture network",
+      );
     }
   }
 

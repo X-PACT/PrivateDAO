@@ -56,7 +56,7 @@ export function getTrackJudgeFirstCopy(
     label: "Reviewer telemetry packet",
     href: "/documents/reviewer-telemetry-packet",
     summary:
-      "Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and devnet service metrics into one reviewer-safe route.",
+      "Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and testnet service metrics into one reviewer-safe route.",
   };
   const externallyProven = [...proofContext.externallyProven, treasuryProof, telemetryProof];
   const whatWorksNow = workspace.deliverables.slice(0, 3);

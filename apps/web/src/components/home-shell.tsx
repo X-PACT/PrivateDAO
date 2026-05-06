@@ -1,32 +1,239 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, Compass, LifeBuoy, MessageSquareHeart, PlayCircle, Shield, Trophy } from "lucide-react";
+import {
+  ArrowRight,
+  BrainCircuit,
+  CheckCircle2,
+  Code2,
+  Coins,
+  Compass,
+  FileCheck2,
+  Gamepad2,
+  Gavel,
+  Gauge,
+  LifeBuoy,
+  MessageSquareHeart,
+  PlayCircle,
+  ReceiptText,
+  Shield,
+  Trophy,
+} from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrackTechnologyGrid } from "@/components/track-technology-grid";
+import { useI18n } from "@/components/i18n-provider";
+import type { SupportedLocale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
+const homeCopyByLocale: Record<
+  SupportedLocale,
+  {
+    eyebrow: string;
+    title: string;
+    body: string;
+    launch: string;
+    android: string;
+    verify: string;
+    judge: string;
+    workflow: string;
+    startAnywhere: string;
+    startAnywhereTitle: string;
+    guidedStart: string;
+    stackLabel: string;
+    deeperSummary: string;
+    deeperTitle: string;
+    deeperBody: string;
+  }
+> = {
+  en: {
+    eyebrow: "PrivateDAO OS",
+    title: "The private financial OS for Solana organizations.",
+    body:
+      "PrivateDAO turns DAO governance, payroll, B2B settlement, gaming rewards, compliance, local-first AI, and proof into one wallet-first operating path: connect, review, sign, execute, and verify from the same product shell.",
+    launch: "Launch OS",
+    android: "Android App",
+    verify: "Open verification view",
+    judge: "Open Judge",
+    workflow: "View Workflow",
+    startAnywhere: "Start anywhere",
+    startAnywhereTitle: "Every major operating lane is one click from the homepage.",
+    guidedStart: "Guided start",
+    stackLabel: "Powered by the live stack",
+    deeperSummary: "Detailed architecture",
+    deeperTitle: "Open the deeper proof, architecture, and investor narrative only when needed",
+    deeperBody:
+      "The first screen now stays action-first. This expandable section preserves the full reviewer and investor story without forcing every new visitor through a long homepage.",
+  },
+  ar: {
+    eyebrow: "نظام PrivateDAO",
+    title: "نظام تشغيل مالي خاص لمؤسسات سولانا.",
+    body:
+      "يجمع PrivateDAO الحوكمة والرواتب والتسويات ومكافآت الألعاب والامتثال والذكاء المحلي والإثبات في مسار واحد يبدأ بالمحفظة: اتصال، مراجعة، توقيع، تنفيذ، ثم تحقق.",
+    launch: "افتح النظام",
+    android: "تطبيق أندرويد",
+    verify: "افتح التحقق",
+    judge: "افتح مسار الحكام",
+    workflow: "شاهد المسار",
+    startAnywhere: "ابدأ من أي مكان",
+    startAnywhereTitle: "كل مسار تشغيلي رئيسي يصل إليه الزائر من الصفحة الأولى.",
+    guidedStart: "بداية موجهة",
+    stackLabel: "مدعوم بالطبقة الحية",
+    deeperSummary: "تفاصيل أعمق",
+    deeperTitle: "افتح الإثبات والمعمارية وسرد الاستثمار فقط عند الحاجة",
+    deeperBody:
+      "الشاشة الأولى أصبحت موجهة للفعل. هذا القسم القابل للفتح يحفظ قصة المحكمين والمستثمرين كاملة دون إجبار كل زائر جديد على صفحة طويلة.",
+  },
+  ru: {
+    eyebrow: "PrivateDAO OS",
+    title: "Приватная финансовая ОС для организаций Solana.",
+    body:
+      "PrivateDAO объединяет DAO-управление, payroll, B2B settlement, gaming rewards, compliance, local-first AI и proof в один wallet-first путь: connect, review, sign, execute, verify.",
+    launch: "Запустить ОС",
+    android: "Android",
+    verify: "Открыть proof",
+    judge: "Открыть Judge",
+    workflow: "Смотреть workflow",
+    startAnywhere: "Начните с любого места",
+    startAnywhereTitle: "Каждый главный операционный маршрут доступен с главной страницы в один клик.",
+    guidedStart: "Guided start",
+    stackLabel: "Работает на live stack",
+    deeperSummary: "Подробная архитектура",
+    deeperTitle: "Открывайте proof, architecture и investor narrative только когда это нужно",
+    deeperBody: "Первый экран теперь action-first. Подробности сохранены ниже, но не перегружают нового посетителя.",
+  },
+  uk: {
+    eyebrow: "PrivateDAO OS",
+    title: "Приватна фінансова ОС для організацій Solana.",
+    body:
+      "PrivateDAO поєднує DAO-управління, payroll, B2B settlement, gaming rewards, compliance, local-first AI і proof в один wallet-first шлях: connect, review, sign, execute, verify.",
+    launch: "Запустити ОС",
+    android: "Android",
+    verify: "Відкрити proof",
+    judge: "Відкрити Judge",
+    workflow: "Переглянути workflow",
+    startAnywhere: "Почніть з будь-якого місця",
+    startAnywhereTitle: "Кожен головний операційний маршрут доступний з головної сторінки в один клік.",
+    guidedStart: "Guided start",
+    stackLabel: "Працює на live stack",
+    deeperSummary: "Детальна архітектура",
+    deeperTitle: "Відкривайте proof, architecture та investor narrative лише за потреби",
+    deeperBody: "Перший екран тепер action-first. Деталі збережені нижче, але не перевантажують нового відвідувача.",
+  },
+  pl: {
+    eyebrow: "PrivateDAO OS",
+    title: "Prywatny finansowy OS dla organizacji Solana.",
+    body:
+      "PrivateDAO łączy DAO governance, payroll, B2B settlement, gaming rewards, compliance, local-first AI i proof w jedną ścieżkę wallet-first: connect, review, sign, execute, verify.",
+    launch: "Uruchom OS",
+    android: "Android",
+    verify: "Otwórz proof",
+    judge: "Otwórz Judge",
+    workflow: "Zobacz workflow",
+    startAnywhere: "Zacznij gdzie chcesz",
+    startAnywhereTitle: "Każdy główny tor operacyjny jest dostępny z homepage jednym kliknięciem.",
+    guidedStart: "Guided start",
+    stackLabel: "Powered by live stack",
+    deeperSummary: "Szczegółowa architektura",
+    deeperTitle: "Otwórz proof, architecture i investor narrative tylko gdy są potrzebne",
+    deeperBody: "Pierwszy ekran jest teraz action-first. Szczegóły zostają niżej, ale nie przeciążają nowego użytkownika.",
+  },
+  hi: {
+    eyebrow: "PrivateDAO OS",
+    title: "Solana organizations के लिए private financial OS.",
+    body:
+      "PrivateDAO DAO governance, payroll, B2B settlement, gaming rewards, compliance, local-first AI और proof को एक wallet-first path में जोड़ता है: connect, review, sign, execute, verify.",
+    launch: "OS खोलें",
+    android: "Android",
+    verify: "Proof खोलें",
+    judge: "Judge खोलें",
+    workflow: "Workflow देखें",
+    startAnywhere: "कहीं से भी शुरू करें",
+    startAnywhereTitle: "हर मुख्य operating lane homepage से one-click में खुलती है.",
+    guidedStart: "Guided start",
+    stackLabel: "Live stack द्वारा संचालित",
+    deeperSummary: "Detailed architecture",
+    deeperTitle: "Proof, architecture और investor narrative तभी खोलें जब ज़रूरत हो",
+    deeperBody: "पहली screen अब action-first है. गहरी जानकारी नीचे सुरक्षित है, पर नए visitor को overload नहीं करती.",
+  },
+  ko: {
+    eyebrow: "PrivateDAO OS",
+    title: "Solana 조직을 위한 private financial OS.",
+    body:
+      "PrivateDAO는 DAO governance, payroll, B2B settlement, gaming rewards, compliance, local-first AI, proof를 하나의 wallet-first 경로로 묶습니다: connect, review, sign, execute, verify.",
+    launch: "OS 실행",
+    android: "Android",
+    verify: "Proof 열기",
+    judge: "Judge 열기",
+    workflow: "Workflow 보기",
+    startAnywhere: "어디서나 시작",
+    startAnywhereTitle: "주요 operating lane을 homepage에서 한 번에 열 수 있습니다.",
+    guidedStart: "Guided start",
+    stackLabel: "Live stack 기반",
+    deeperSummary: "Detailed architecture",
+    deeperTitle: "필요할 때만 proof, architecture, investor narrative를 여세요",
+    deeperBody: "첫 화면은 action-first로 정리했습니다. 깊은 설명은 아래에 보존하되 새 방문자를 압도하지 않습니다.",
+  },
+  es: {
+    eyebrow: "PrivateDAO OS",
+    title: "El sistema financiero privado para organizaciones de Solana.",
+    body:
+      "PrivateDAO une gobernanza DAO, nómina, pagos B2B, recompensas gaming, cumplimiento, IA local-first y proof en una ruta wallet-first: connect, review, sign, execute, verify.",
+    launch: "Abrir OS",
+    android: "Android",
+    verify: "Abrir proof",
+    judge: "Abrir Judge",
+    workflow: "Ver workflow",
+    startAnywhere: "Empieza donde quieras",
+    startAnywhereTitle: "Cada carril operativo principal está a un clic desde la página inicial.",
+    guidedStart: "Guided start",
+    stackLabel: "Impulsado por el live stack",
+    deeperSummary: "Arquitectura detallada",
+    deeperTitle: "Abre proof, architecture e investor narrative solo cuando haga falta",
+    deeperBody: "La primera pantalla ahora prioriza la acción. La explicación profunda sigue disponible sin alargar la primera visita.",
+  },
+  it: {
+    eyebrow: "PrivateDAO OS",
+    title: "Il sistema finanziario privato per organizzazioni Solana.",
+    body:
+      "PrivateDAO unisce governance DAO, payroll, B2B settlement, gaming rewards, compliance, AI local-first e proof in un percorso wallet-first: connect, review, sign, execute, verify.",
+    launch: "Apri OS",
+    android: "Android",
+    verify: "Apri proof",
+    judge: "Apri Judge",
+    workflow: "Vedi workflow",
+    startAnywhere: "Inizia dove vuoi",
+    startAnywhereTitle: "Ogni corsia operativa principale è a un clic dalla homepage.",
+    guidedStart: "Guided start",
+    stackLabel: "Basato sul live stack",
+    deeperSummary: "Architettura dettagliata",
+    deeperTitle: "Apri proof, architecture e investor narrative solo quando serve",
+    deeperBody: "La prima schermata ora è action-first. I dettagli restano disponibili sotto senza appesantire la prima visita.",
+  },
+};
+
 export function HomeShell() {
+  const { locale } = useI18n();
+  const homeCopy = homeCopyByLocale[locale] ?? homeCopyByLocale.en;
   const storyCards = [
     {
       title: "Private Treasury & Payroll",
-      description: "Run governed private payouts and stablecoin settlement lanes from one wallet-first operation flow.",
-      href: "/execute#private-payroll",
+      description: "Upload payroll, choose USDC/PUSD/AUDD, prepare privacy receipts, and keep audit context bounded.",
+      href: "/payroll",
       icon: Compass,
     },
     {
       title: "Market Ops DAO",
-      description: "Review risk context, run treasury rebalance routes, and keep execution and verification connected.",
-      href: "/execute#treasury-rebalance",
+      description: "Review GoldRush/Dune context, policy limits, and treasury routes before the wallet signs.",
+      href: "/treasury",
       icon: Shield,
     },
     {
       title: "Gaming & Agentic Rewards",
-      description: "Attach contributor and gaming rewards to governed actions, then validate outcomes through proof lanes.",
-      href: "/execute#rewards-gaming",
+      description: "Create guilds, tournaments, and inventory proposals with reward settlement linked back to proof.",
+      href: "/gaming",
       icon: PlayCircle,
     },
   ];
@@ -56,6 +263,88 @@ export function HomeShell() {
       cta: "Open proof",
     },
   ];
+  const commandTabs = [
+    {
+      title: "Intelligence",
+      eyebrow: "AI + data",
+      description: "GoldRush, Dune, QVAC, counterparty trust, and proposal context before signing.",
+      href: "/intelligence",
+      icon: BrainCircuit,
+      badge: "Review first",
+    },
+    {
+      title: "Govern",
+      eyebrow: "DAO lifecycle",
+      description: "Create DAO, create proposal, vote, reveal, finalize, and execute from the wallet.",
+      href: "/govern",
+      icon: Gavel,
+      badge: "Core flow",
+    },
+    {
+      title: "Treasury",
+      eyebrow: "Risk + policy",
+      description: "Health scoring, rebalancing context, solvency posture, and agent policy lanes.",
+      href: "/treasury",
+      icon: Gauge,
+      badge: "Operator",
+    },
+    {
+      title: "Payroll",
+      eyebrow: "Private payouts",
+      description: "CSV preview, stablecoin selection, Umbra/Cloak receipts, and auditor views.",
+      href: "/payroll",
+      icon: Coins,
+      badge: "Finance",
+    },
+    {
+      title: "Gaming DAO",
+      eyebrow: "Guild ops",
+      description: "Guild hub, tournament rewards, inventory proposals, and private winner payouts.",
+      href: "/gaming",
+      icon: Gamepad2,
+      badge: "Community",
+    },
+    {
+      title: "Compliance",
+      eyebrow: "Audit pack",
+      description: "Scoped viewing keys, date-windowed report flow, and dWallet-signed evidence.",
+      href: "/compliance",
+      icon: FileCheck2,
+      badge: "Trust",
+    },
+    {
+      title: "Proof",
+      eyebrow: "Judge view",
+      description: "Proof Matrix, ZK badges, viewing-key evidence, Solscan links, and runtime logs.",
+      href: "/proof",
+      icon: ReceiptText,
+      badge: "Verify",
+    },
+    {
+      title: "Developers",
+      eyebrow: "API + SDK",
+      description: "Integration docs, privacy SDK starter, read-node lanes, and builder entry points.",
+      href: "/developers",
+      icon: Code2,
+      badge: "Build",
+    },
+    {
+      title: "RPC Services",
+      eyebrow: "Hosted reads",
+      description: "Read-node health, relayer evidence, QVAC runtime checks, and infrastructure proof.",
+      href: "/rpc-services",
+      icon: Shield,
+      badge: "Infra",
+    },
+    {
+      title: "Command Center",
+      eyebrow: "Ops dashboard",
+      description: "Live operating status, treasury routes, indexed proposal context, and readiness gates.",
+      href: "/command-center",
+      icon: Compass,
+      badge: "Control",
+    },
+  ];
   const techBadges = [
     {
       label: "FHE / REFHE",
@@ -76,6 +365,16 @@ export function HomeShell() {
       label: "Fast RPC",
       badgeClass: "border-amber-300/25 bg-amber-300/[0.14] text-amber-100",
       detail: "Reliable live reads, signatures, and action logs.",
+    },
+    {
+      label: "QVAC",
+      badgeClass: "border-sky-300/25 bg-sky-300/[0.14] text-sky-100",
+      detail: "Local-first AI context without routing sensitive operating data to a cloud model.",
+    },
+    {
+      label: "Anchor 1",
+      badgeClass: "border-rose-300/25 bg-rose-300/[0.14] text-rose-100",
+      detail: "Latest upgraded Testnet program with reviewer-visible deployment evidence.",
     },
   ];
   const technologyServiceMap = [
@@ -99,19 +398,29 @@ export function HomeShell() {
       service: "Live state, logs, and signature confirmation",
       outcome: "Used to keep Testnet reads, proposal status, and action feedback visible after a wallet action instead of leaving the user guessing.",
     },
+    {
+      technology: "QVAC",
+      service: "Sovereign local intelligence",
+      outcome: "Used where proposal summaries, compliance context, OCR, translation, and operating guidance should stay on-device or local-first before signing.",
+    },
+    {
+      technology: "Anchor 1",
+      service: "Current Testnet protocol base",
+      outcome: "Used to keep the Solana program, IDL, web client constants, Android config, and reviewer evidence aligned around the upgraded Testnet deployment.",
+    },
   ];
   const whatChangedCards = [
     {
-      title: "Program architecture is now split for review",
-      detail: "The Solana program has been broken into domain modules for DAO, voting, treasury, privacy, errors, traits, and utilities so protocol review can happen against smaller surfaces.",
+      title: "Anchor 1 upgrade is now documented and deployed",
+      detail: "The active Testnet program now runs from the Anchor 1.0.1 migration path, with matching web, Android, IDL, README, and reviewer evidence updates.",
     },
     {
-      title: "Wallet-first Testnet proof is now real",
-      detail: "DAO bootstrap, proposal creation, and commit vote have live browser-wallet evidence, and the product flow is being extended through reveal, finalize, and execution closure.",
+      title: "QVAC is presented as a core intelligence layer",
+      detail: "Local-first AI is framed around proposal context, compliance explanation, translation, OCR, and private operating assistance instead of a decorative chatbot.",
     },
     {
       title: "Infrastructure and funding surfaces now align",
-      detail: "Telemetry, payout evidence, blocker registers, and grant packets now describe the same product reality instead of drifting into separate narratives.",
+      detail: "Payroll, gaming, compliance, developers, RPC, command center, proof, and services routes now tell one Testnet-ready product story with explicit mainnet gates.",
     },
   ];
   const faqItems = [
@@ -142,17 +451,17 @@ export function HomeShell() {
         <div className="grid items-start gap-8 xl:grid-cols-[1.14fr_0.86fr] xl:gap-10">
           <div className="space-y-6 sm:space-y-8">
             <div className="flex flex-wrap gap-3">
-              <Badge variant="cyan">Governed</Badge>
-              <Badge variant="violet">Risk-scored</Badge>
-              <Badge variant="success">Private by default</Badge>
+              <Badge variant="cyan">Anchor 1 Testnet</Badge>
+              <Badge variant="violet">QVAC local AI</Badge>
+              <Badge variant="success">Private by design</Badge>
             </div>
             <div className="space-y-4 sm:space-y-5">
-              <div className="text-[11px] uppercase tracking-[0.34em] text-emerald-300/80">PrivateDAO OS</div>
+              <div className="text-[11px] uppercase tracking-[0.34em] text-emerald-300/80">{homeCopy.eyebrow}</div>
               <div className="max-w-3xl text-3xl font-semibold tracking-[-0.045em] text-white sm:text-5xl lg:text-[4rem] xl:text-[4.35rem]">
-                Confidential treasury and market operations on Solana.
+                {homeCopy.title}
               </div>
               <p className="max-w-2xl text-sm leading-7 text-white/62 sm:text-lg sm:leading-8">
-                PrivateDAO turns treasury and governance intent into one premium operating path: frame the workflow, govern the policy, review intelligence, execute from a connected wallet, then verify receipts and runtime evidence without leaving the product shell.
+                {homeCopy.body}
               </p>
               <div className="flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.24em] text-white/50">
                 <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Connect</span>
@@ -164,56 +473,104 @@ export function HomeShell() {
 
             <div className="flex flex-wrap gap-3">
               <Link className={cn(buttonVariants({ size: "lg" }))} href="/execute">
-                Launch OS
+                {homeCopy.launch}
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/android">
-                Android App
+                {homeCopy.android}
               </Link>
               <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/proof">
-                Open verification view
+                {homeCopy.verify}
               </Link>
               <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/judge">
-                Open Judge
+                {homeCopy.judge}
               </Link>
               <Link className={cn(buttonVariants({ size: "lg", variant: "outline" }))} href="/learn">
-                View Workflow
+                {homeCopy.workflow}
               </Link>
             </div>
 
-            <div className="space-y-3">
-              <div className="text-[11px] uppercase tracking-[0.28em] text-white/38">Powered by the live stack</div>
-              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-              {techBadges.map((item) => (
-                <div key={item.label} className="rounded-[20px] border border-white/10 bg-white/[0.03] px-4 py-3">
-                  <Badge className={cn("border text-[10px] uppercase tracking-[0.22em]", item.badgeClass)}>
-                    {item.label}
-                  </Badge>
-                  <div className="mt-2 text-sm leading-6 text-white/62">{item.detail}</div>
+            <div className="rounded-[28px] border border-cyan-300/14 bg-[linear-gradient(180deg,rgba(8,19,34,0.96),rgba(6,10,22,0.99))] p-4 sm:p-5">
+              <div className="flex flex-wrap items-end justify-between gap-3">
+                <div>
+                  <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/78">{homeCopy.startAnywhere}</div>
+                  <div className="mt-2 text-xl font-semibold tracking-[-0.03em] text-white">
+                    {homeCopy.startAnywhereTitle}
+                  </div>
                 </div>
-              ))}
+                <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href="/start">
+                  {homeCopy.guidedStart}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+                {commandTabs.map((item) => {
+                  const Icon = item.icon;
+
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="group rounded-[22px] border border-white/8 bg-white/[0.035] p-4 transition hover:-translate-y-0.5 hover:border-cyan-300/24 hover:bg-white/[0.06]"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.045] text-cyan-100">
+                          <Icon className="h-5 w-5" />
+                        </div>
+                        <span className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-white/48">
+                          {item.badge}
+                        </span>
+                      </div>
+                      <div className="mt-4 text-[10px] uppercase tracking-[0.24em] text-cyan-200/62">{item.eyebrow}</div>
+                      <div className="mt-2 text-base font-semibold text-white group-hover:text-cyan-50">{item.title}</div>
+                      <p className="mt-2 text-sm leading-6 text-white/56">{item.description}</p>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-              {storyCards.map((item) => {
-                const Icon = item.icon;
-
-                return (
-                  <Link key={item.title} href={item.href} className="group">
-                    <div className="h-full rounded-[24px] border border-white/10 bg-[linear-gradient(180deg,rgba(10,15,29,0.94),rgba(6,9,20,0.98))] p-5 transition hover:border-cyan-300/22 hover:bg-[linear-gradient(180deg,rgba(15,22,40,0.95),rgba(8,11,24,0.99))]">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-[18px] border border-white/10 bg-white/[0.04] text-cyan-200">
-                        <Icon className="h-5 w-5" />
-                      </div>
-                      <div className="mt-4 text-base font-medium text-white">{item.title}</div>
-                      <p className="mt-2 text-sm leading-7 text-white/56">{item.description}</p>
+            <details className="rounded-[28px] border border-white/10 bg-white/[0.03] p-1">
+              <summary className="cursor-pointer list-none rounded-[24px] px-5 py-4">
+                <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-200/78">{homeCopy.stackLabel}</div>
+                <div className="mt-2 text-lg font-semibold text-white">Open the technology and product-lane map</div>
+                <p className="mt-2 text-sm leading-7 text-white/56">
+                  Kept collapsed by default so the homepage stays action-first for new users, while judges can still inspect the full stack mapping.
+                </p>
+              </summary>
+              <div className="space-y-5 px-4 pb-5 pt-2">
+                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                  {techBadges.map((item) => (
+                    <div key={item.label} className="rounded-[20px] border border-white/10 bg-white/[0.03] px-4 py-3">
+                      <Badge className={cn("border text-[10px] uppercase tracking-[0.22em]", item.badgeClass)}>
+                        {item.label}
+                      </Badge>
+                      <div className="mt-2 text-sm leading-6 text-white/62">{item.detail}</div>
                     </div>
-                  </Link>
-                );
-              })}
-            </div>
+                  ))}
+                </div>
 
-            <TrackTechnologyGrid />
+                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                  {storyCards.map((item) => {
+                    const Icon = item.icon;
+
+                    return (
+                      <Link key={item.title} href={item.href} className="group">
+                        <div className="h-full rounded-[24px] border border-white/10 bg-[linear-gradient(180deg,rgba(10,15,29,0.94),rgba(6,9,20,0.98))] p-5 transition hover:border-cyan-300/22 hover:bg-[linear-gradient(180deg,rgba(15,22,40,0.95),rgba(8,11,24,0.99))]">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-[18px] border border-white/10 bg-white/[0.04] text-cyan-200">
+                            <Icon className="h-5 w-5" />
+                          </div>
+                          <div className="mt-4 text-base font-medium text-white">{item.title}</div>
+                          <p className="mt-2 text-sm leading-7 text-white/56">{item.description}</p>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+
+                <TrackTechnologyGrid />
+              </div>
+            </details>
           </div>
 
           <Card className="overflow-hidden border-white/12 bg-[linear-gradient(180deg,rgba(13,18,34,0.94),rgba(7,10,22,0.98))] xl:mt-1">
@@ -230,10 +587,10 @@ export function HomeShell() {
               </CardHeader>
             <CardContent className="space-y-6">
               <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
-                <div className="text-[11px] uppercase tracking-[0.28em] text-white/42">Use case</div>
-                <div className="mt-2 text-2xl font-semibold text-white">Solana Testnet</div>
+                <div className="text-[11px] uppercase tracking-[0.28em] text-white/42">Current proof</div>
+                <div className="mt-2 text-2xl font-semibold text-white">Anchor 1 on Solana Testnet</div>
                 <div className="mt-2 text-sm leading-7 text-white/56">
-                  Use it when a team, treasury council, or on-chain community needs to create a DAO, approve an action, keep the sensitive path controlled, and execute from one surface.
+                  Use it when a team, treasury council, on-chain community, or judge needs to see the current program, wallet flow, privacy posture, and proof routes line up in one operating surface.
                 </div>
               </div>
 
@@ -260,7 +617,7 @@ export function HomeShell() {
                 </div>
                 <div className="mt-2 text-lg font-semibold text-amber-50">1st Place · Superteam Poland</div>
                 <div className="mt-2 text-sm leading-7 text-amber-50/70">
-                  Strong proof remains available for judges and investors, but the homepage stays focused on what a connected visitor can actually do first with a real Testnet wallet.
+                  Strong proof remains available for judges and investors, and the homepage now leads with what a connected visitor can do first with the upgraded Testnet program.
                 </div>
                 <div className="mt-2 text-xs leading-6 text-amber-100/60">
                   FastRPC is supporting PrivateDAO throughout the hackathon with RPC infrastructure, and we appreciate that support.
@@ -271,9 +628,16 @@ export function HomeShell() {
         </div>
       </section>
 
-      <section className="mx-auto mt-14 w-full max-w-7xl px-4 sm:mt-16 sm:px-6 lg:px-8">
+      <details className="mx-auto mt-10 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <summary className="cursor-pointer list-none rounded-[28px] border border-white/10 bg-white/[0.035] p-5 transition hover:border-cyan-300/20 hover:bg-white/[0.055]">
+          <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/78">{homeCopy.deeperSummary}</div>
+          <div className="mt-2 text-xl font-semibold tracking-[-0.03em] text-white">{homeCopy.deeperTitle}</div>
+          <p className="mt-2 max-w-4xl text-sm leading-7 text-white/60">{homeCopy.deeperBody}</p>
+        </summary>
+        <div className="space-y-14 sm:space-y-16">
+      <section className="mt-8 w-full">
         <div className="mb-6 rounded-[24px] border border-cyan-300/14 bg-[linear-gradient(180deg,rgba(9,20,36,0.95),rgba(7,12,22,0.98))] p-5 text-sm leading-7 text-white/70">
-          PrivateDAO is aligned across web and Android: normal users can run advanced DAO operations from mobile with wallet-first steps, privacy-preserving governance, encrypted operation lanes, and verifiable on-chain receipts.
+	          PrivateDAO is aligned across web and Android: normal users can run advanced DAO operations from mobile with wallet-first steps, privacy-preserving governance, local-first intelligence, encrypted operation lanes, and verifiable on-chain receipts.
         </div>
         <div className="mb-6 rounded-[24px] border border-white/8 bg-white/[0.03] p-5 text-sm leading-7 text-white/68">
           The shortest path from landing page to a real Testnet action now stays inside one product shell: connect a wallet, review the policy and risk context, sign the exact action, then verify the resulting receipt and runtime proof.
@@ -308,7 +672,7 @@ export function HomeShell() {
             <div className="text-[11px] uppercase tracking-[0.3em] text-violet-200/78">Clear milestones</div>
             <div className="mt-3 text-xl font-semibold text-white">From live Testnet product to stronger production release confidence</div>
             <p className="mt-3 text-sm leading-7 text-white/62">
-              The roadmap is straightforward: simplify first-use verification, strengthen proof and telemetry continuity, complete final security hardening, and then publish the strongest possible production release candidate.
+	          The roadmap is straightforward: simplify first-use verification, strengthen proof and telemetry continuity, complete custody and audit gates, and then publish the strongest possible production release candidate.
             </p>
           </div>
         </div>
@@ -318,7 +682,7 @@ export function HomeShell() {
             We are building PrivateDAO as production-intent governance infrastructure: private by design, verifiable in operation, and easier to trust with every serious execution tranche.
           </div>
           <p className="mt-3 max-w-4xl text-sm leading-7 text-white/62 sm:text-base">
-            The ambition is straightforward: earn trust through real product quality, visible proof, and operational discipline, then turn ecosystem support into the technical and financial momentum that carries PrivateDAO from strong Testnet execution into durable mainnet infrastructure.
+	            The ambition is straightforward: earn trust through real product quality, visible proof, and operational discipline, then turn ecosystem support into the technical and financial momentum that carries PrivateDAO from upgraded Testnet execution into durable mainnet infrastructure.
           </p>
           <div className="mt-5 grid gap-3 md:grid-cols-3">
             {convictionStrip.map((item) => (
@@ -330,15 +694,15 @@ export function HomeShell() {
         </div>
       </section>
 
-      <section className="mx-auto mt-14 w-full max-w-7xl px-4 sm:mt-16 sm:px-6 lg:px-8">
+      <section className="w-full">
         <div className="max-w-3xl space-y-4">
           <div className="text-[11px] font-medium uppercase tracking-[0.34em] text-cyan-200/78">Why it works</div>
-          <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Four systems make the product usable, private, and fast</h2>
+          <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Six systems make the product usable, private, intelligent, and verifiable</h2>
           <p className="text-base leading-8 text-white/60 sm:text-lg">
-            PrivateDAO is not just a UI shell. It combines privacy, responsive execution, and reliable reads so a real Testnet governance action can move from wallet click to visible result without forcing the user to learn the architecture first.
+            PrivateDAO is not just a UI shell. It combines privacy, local intelligence, responsive execution, reliable reads, and a current Anchor 1 program so a real Testnet action can move from wallet click to visible result without forcing the user to learn the architecture first.
           </p>
         </div>
-        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
             <div className="text-[11px] uppercase tracking-[0.24em] text-emerald-300/80">REFHE</div>
             <div className="mt-3 text-lg font-semibold text-white">Confidential settlement posture</div>
@@ -360,17 +724,31 @@ export function HomeShell() {
               MagicBlock gives the product a faster action corridor for treasury and governance execution where slow, clumsy wallet UX would otherwise kill momentum.
             </p>
           </div>
-          <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
-            <div className="text-[11px] uppercase tracking-[0.24em] text-amber-200/80">Fast RPC</div>
-            <div className="mt-3 text-lg font-semibold text-white">Reliable live state and logs</div>
-            <p className="mt-3 text-sm leading-7 text-white/58">
-              Fast RPC and hosted reads keep live state, signatures, proposal progress, and execution logs visible so users can tell what really happened after a wallet action.
-            </p>
-          </div>
+	          <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
+	            <div className="text-[11px] uppercase tracking-[0.24em] text-amber-200/80">Fast RPC</div>
+	            <div className="mt-3 text-lg font-semibold text-white">Reliable live state and logs</div>
+	            <p className="mt-3 text-sm leading-7 text-white/58">
+	              Fast RPC and hosted reads keep live state, signatures, proposal progress, and execution logs visible so users can tell what really happened after a wallet action.
+	            </p>
+	          </div>
+	          <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
+	            <div className="text-[11px] uppercase tracking-[0.24em] text-sky-200/80">QVAC</div>
+	            <div className="mt-3 text-lg font-semibold text-white">Local-first intelligence</div>
+	            <p className="mt-3 text-sm leading-7 text-white/58">
+	              QVAC frames proposal context, translation, OCR, and operational guidance as sovereign AI that can run near the user instead of centralizing sensitive DAO data.
+	            </p>
+	          </div>
+	          <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
+	            <div className="text-[11px] uppercase tracking-[0.24em] text-rose-200/80">Anchor 1</div>
+	            <div className="mt-3 text-lg font-semibold text-white">Current deployed program</div>
+	            <p className="mt-3 text-sm leading-7 text-white/58">
+	              The active Testnet program, ProgramData, deploy signature, web constants, Android config, and reviewer docs now point to the Anchor 1.0.1 migration evidence.
+	            </p>
+	          </div>
         </div>
       </section>
 
-      <section className="mx-auto mt-14 w-full max-w-7xl px-4 sm:mt-16 sm:px-6 lg:px-8">
+      <section className="w-full">
         <div className="max-w-3xl space-y-4">
           <div className="text-[11px] font-medium uppercase tracking-[0.34em] text-emerald-300/80">How the stack maps to services</div>
           <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">These technologies are tied to real product lanes, not a theory slide</h2>
@@ -382,7 +760,7 @@ export function HomeShell() {
           {technologyServiceMap.map((item) => (
             <div key={item.technology} className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
               <div className="flex flex-wrap items-center gap-3">
-                <Badge variant={item.technology === "ZK" ? "violet" : item.technology === "Fast RPC" ? "warning" : item.technology === "MagicBlock" ? "cyan" : "success"}>
+                <Badge variant={item.technology === "ZK" ? "violet" : item.technology === "Fast RPC" ? "warning" : item.technology === "MagicBlock" || item.technology === "QVAC" ? "cyan" : "success"}>
                   {item.technology}
                 </Badge>
                 <div className="text-base font-medium text-white">{item.service}</div>
@@ -393,7 +771,7 @@ export function HomeShell() {
         </div>
       </section>
 
-      <section className="mx-auto mt-14 w-full max-w-7xl px-4 sm:mt-16 sm:px-6 lg:px-8">
+      <section className="w-full">
         <div className="max-w-3xl space-y-4">
           <div className="text-[11px] font-medium uppercase tracking-[0.34em] text-violet-200/80">Execution strategy</div>
           <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Recent development raised the product, the protocol, and the review posture together</h2>
@@ -411,7 +789,7 @@ export function HomeShell() {
         </div>
       </section>
 
-      <section className="mx-auto mt-14 w-full max-w-7xl px-4 sm:mt-16 sm:px-6 lg:px-8">
+      <section className="w-full">
         <div className="grid gap-6 xl:grid-cols-[1.08fr_0.92fr]">
           <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(12,18,34,0.94),rgba(7,10,22,0.99))]">
             <CardHeader className="space-y-3">
@@ -470,7 +848,7 @@ export function HomeShell() {
         </div>
       </section>
 
-      <section className="mx-auto mt-18 w-full max-w-7xl px-4 sm:mt-24 sm:px-6 lg:px-8">
+      <section className="w-full">
         <div className="max-w-3xl space-y-4">
           <div className="text-[11px] font-medium uppercase tracking-[0.34em] text-emerald-300/80">Need more?</div>
           <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Go deeper only when you need it</h2>
@@ -502,6 +880,8 @@ export function HomeShell() {
           </Card>
         </div>
       </section>
+        </div>
+      </details>
     </main>
   );
 }

@@ -7,7 +7,7 @@ const REQUIRED_FRAGMENTS = [
   "# PrivateDAO Investor And Competition Pitch Deck",
   "1st Place - Superteam Poland",
   "Private governance, confidential treasury operations, and audit-grade runtime evidence",
-  "Testnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`",
+  "Testnet program: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`",
   "PDAO governance mint evidence: `AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt`",
   "## Slide 2 - The Problem",
   "## Slide 3 - The Product",

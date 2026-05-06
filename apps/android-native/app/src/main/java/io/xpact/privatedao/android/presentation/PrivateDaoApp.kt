@@ -370,6 +370,9 @@ private fun HomeScreen(
             PrivacyPolicyCard(policy = policy)
         }
         item {
+            QvacSovereignAiCard()
+        }
+        item {
             HeroCard(
                 title = "Testnet billing SKU model",
                 body = "The Android source now inherits the same billing SKU model as the web rehearsal route, and each SKU can now be executed as a wallet-signed Testnet SOL transfer with a memo-coded business event.",
@@ -681,6 +684,28 @@ private fun PrivacyPolicyCard(policy: PrivacyPolicyOption) {
             Text(policy.tech.uppercase(), color = Color(0xFFFFD76B), style = MaterialTheme.typography.labelSmall)
             Text(policy.title, color = Color.White, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             Text(policy.summary, color = Color(0xFFADB8C7))
+        }
+    }
+}
+
+@Composable
+private fun QvacSovereignAiCard() {
+    val localBrief = "Operation private_treasury_execution stays on device before signing. Amount 1250 USDT. Privacy mode shielded. Local alerts: new recipient requires counterparty review."
+
+    Card(shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFF0D1118))) {
+        Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Text("QVAC sovereign AI", color = Color(0xFFFFD76B), style = MaterialTheme.typography.labelSmall)
+            Text("On-device operation brief", color = Color.White, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Text(
+                "The Android surface mirrors the web QVAC lane: sensitive treasury context is prepared locally before wallet signing and proof review.",
+                color = Color(0xFFADB8C7),
+            )
+            SettingsRow("Local brief", localBrief)
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                AssistChip(onClick = {}, label = { Text("local-first") })
+                AssistChip(onClick = {}, label = { Text("pre-sign") })
+                AssistChip(onClick = {}, label = { Text("private ops") })
+            }
         }
     }
 }

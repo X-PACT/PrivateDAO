@@ -25,6 +25,11 @@
     "verify:host-topology": "bash scripts/verify-host-topology.sh",
     "verify:host-topology:strict": "PRIVATE_DAO_STRICT_HOST_TOPOLOGY=1 bash scripts/verify-host-topology.sh",
     "status:source": "bash scripts/status-source-tree.sh",
+    "status:triage": "bash scripts/worktree-triage-report.sh",
+    "build:release-surface-report": "bash scripts/build-release-surface-report.sh",
+    "build:release-tranche-plan": "bash scripts/build-release-tranche-plan.sh",
+    "build:web-runtime-buckets": "bash scripts/build-web-runtime-buckets.sh",
+    "build:web-release-tranche-report": "bash scripts/build-web-release-tranche-report.sh",
     "verify:source-preflight": "bash scripts/verify-source-preflight.sh",
     "verify:source-worktree": "bash scripts/verify-source-worktree.sh",
     "verify:rapid-work-preflight": "npm run verify:source-preflight && npm run verify:source-worktree",
@@ -282,8 +287,8 @@
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.32.1",
-    "@solana/spl-token": "^0.4.9",
-    "@solana/web3.js": "^1.98.0",
+    "@solana/spl-token": "^0.4.14",
+    "@solana/web3.js": "^1.98.4",
     "dotenv": "^16.4.5"
   },
   "devDependencies": {

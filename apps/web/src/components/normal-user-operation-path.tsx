@@ -9,30 +9,30 @@ const operationSteps = [
   {
     icon: WalletCards,
     title: "1. Connect",
-    detail: "Open the wallet button, choose Solflare first or Phantom, Glow, Backpack, or a Wallet Standard wallet, then approve Testnet.",
+    detail: "Open the wallet button, choose Solflare first or Phantom, Glow, Backpack, or a Wallet Standard wallet, then confirm the Testnet account you want to operate from.",
     href: "/wallet-template",
     cta: "Wallet sandbox",
   },
   {
     icon: MousePointerClick,
-    title: "2. Run",
-    detail: "Continue to Govern, create the DAO, submit the treasury proposal, then commit, reveal, finalize, and execute from the same browser session.",
+    title: "2. Review",
+    detail: "Open Intelligence to inspect policy, risk, treasury context, and privacy posture before the wallet prompt appears.",
+    href: "/intelligence",
+    cta: "Open Intelligence",
+  },
+  {
+    icon: ReceiptText,
+    title: "3. Sign",
+    detail: "Continue to Govern and Execute, then approve the exact wallet request for the DAO action, proposal flow, or treasury movement from the same browser session.",
     href: "/govern",
     cta: "Open Govern",
   },
   {
-    icon: ReceiptText,
-    title: "3. Verify",
-    detail: "Open the Testnet lifecycle packet and inspect signatures, accounts, treasury delta, and Solscan links without touching the terminal.",
-    href: "/documents/testnet-lifecycle-rehearsal-2026-04-19",
-    cta: "Open Testnet proof",
-  },
-  {
     icon: ShieldCheck,
-    title: "4. Understand",
-    detail: "Use Proof and Learn to see why commit-reveal, ZK policy checks, confidential settlement gates, and reviewer lanes matter.",
-    href: "/learn",
-    cta: "Open Learn",
+    title: "4. Verify",
+    detail: "Open Proof or the Testnet lifecycle packet and inspect signatures, accounts, treasury delta, and proof continuity without touching the terminal.",
+    href: "/proof",
+    cta: "Open Proof",
   },
 ] as const;
 
@@ -52,8 +52,8 @@ export function NormalUserOperationPath() {
           The product flow is meant to be clicked, signed, executed, and verified by a normal visitor
         </CardTitle>
         <p className="max-w-4xl text-sm leading-7 text-white/62">
-          This route turns the technical stack into a simple operating loop: connect a Testnet wallet, run the governance
-          lifecycle, inspect the hash, then learn why the privacy and treasury controls are trustworthy.
+          This route turns the technical stack into a simple operating loop: connect a Testnet wallet, review the decision,
+          sign the exact action, then verify the hash and proof continuity from the same product shell.
         </p>
       </CardHeader>
       <CardContent className="px-6 pb-6 md:px-8 md:pb-8">

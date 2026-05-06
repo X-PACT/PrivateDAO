@@ -26,6 +26,7 @@ import { DevnetExecutionScreenshotsStrip } from "@/components/devnet-execution-s
 import { SupabaseOperationTimeline } from "@/components/supabase-operation-timeline";
 import { PrivacyProofExplainer } from "@/components/privacy-proof-explainer";
 import { TestnetProofMatrix } from "@/components/testnet-proof-matrix";
+import { VideoCenter } from "@/components/video-center";
 import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
@@ -156,6 +157,7 @@ export default function ProofPage() {
       />
       <LocalizedRouteSummary routeKey="proof" />
       <LocalizedProofPrimer />
+      <VideoCenter compact />
       <OperatingJourneyStrip
         snapshot={runtimeSnapshot}
         title="Proof-side operating journey"

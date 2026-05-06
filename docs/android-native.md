@@ -25,7 +25,7 @@ apps/android-native/
 
 The Android app is derived from the existing repository and mirrors these repo-native truths:
 
-- program ID: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- program ID: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
 - Testnet explorer conventions from `scripts/utils.ts`
 - PDA derivations from the program/tests:
   - DAO PDA

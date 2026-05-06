@@ -8,6 +8,7 @@ import { Buffer } from "buffer";
 
 import { buttonVariants } from "@/components/ui/button";
 import { buildSolanaTxUrl, SOLANA_NETWORK_LABEL } from "@/lib/solana-network";
+import { persistOperationReceipt } from "@/lib/supabase/operation-receipts";
 import { getTreasuryReceiveConfig } from "@/lib/treasury-receive-config";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +21,7 @@ type BillingSku = {
   title: string;
   assetSymbol: "SOL" | "PUSD" | "AUDD";
   amount: number;
+  fallbackSolAmount: number;
   memoLabel: string;
   summary: string;
 };
@@ -30,6 +32,7 @@ const testnetBillingSkus = [
     title: "Wallet-first onboarding lane",
     assetSymbol: "SOL",
     amount: 0.003,
+    fallbackSolAmount: 0.003,
     memoLabel: "WALLET_ONBOARDING",
     summary: "A small Testnet charge that proves a normal visitor can pay from the browser and inspect the chain result.",
   },
@@ -38,6 +41,7 @@ const testnetBillingSkus = [
     title: "Governance cycle rehearsal",
     assetSymbol: "SOL",
     amount: 0.005,
+    fallbackSolAmount: 0.005,
     memoLabel: "GOVERNANCE_REHEARSAL",
     summary: "Use this when testing the commercial logic for proposal creation, vote operations, and proof-linked review.",
   },
@@ -46,6 +50,7 @@ const testnetBillingSkus = [
     title: "AUDD merchant settlement lane",
     assetSymbol: "AUDD",
     amount: 3,
+    fallbackSolAmount: 0.004,
     memoLabel: "AUDD_MERCHANT_SETTLEMENT",
     summary: "Use this when testing AUDD as the governed Australian-dollar rail for merchant invoices, service billing, and settlement.",
   },
@@ -54,6 +59,7 @@ const testnetBillingSkus = [
     title: "AUDD treasury management lane",
     assetSymbol: "AUDD",
     amount: 5,
+    fallbackSolAmount: 0.005,
     memoLabel: "AUDD_TREASURY_SETTLEMENT",
     summary: "Use this when testing AUDD for treasury reserves, supplier settlement, and programmable Australian-dollar finance.",
   },
@@ -62,6 +68,7 @@ const testnetBillingSkus = [
     title: "PUSD confidential payroll lane",
     assetSymbol: "PUSD",
     amount: 1,
+    fallbackSolAmount: 0.004,
     memoLabel: "PUSD_CONFIDENTIAL_PAYROLL",
     summary: "Use this when testing Palm USD as the governed stablecoin rail for payroll, grants, and contributor settlement.",
   },
@@ -70,6 +77,7 @@ const testnetBillingSkus = [
     title: "PUSD gaming reward lane",
     assetSymbol: "PUSD",
     amount: 2,
+    fallbackSolAmount: 0.005,
     memoLabel: "PUSD_GAMING_REWARD",
     summary: "Use this when testing Palm USD as the stable reward asset for gaming DAO payouts and tournament pools.",
   },
@@ -78,6 +86,7 @@ const testnetBillingSkus = [
     title: "Privacy packet lane",
     assetSymbol: "SOL",
     amount: 0.007,
+    fallbackSolAmount: 0.007,
     memoLabel: "PRIVACY_PACKET",
     summary: "Use this when a visitor wants to see that reviewer-grade privacy and proof can be tied to an on-chain payment signal.",
   },
@@ -86,6 +95,7 @@ const testnetBillingSkus = [
     title: "Confidential payout rehearsal",
     assetSymbol: "SOL",
     amount: 0.01,
+    fallbackSolAmount: 0.01,
     memoLabel: "CONFIDENTIAL_PAYOUT",
     summary: "A larger Testnet rehearsal for the confidential treasury path before later contractized billing rails are introduced.",
   },
@@ -159,6 +169,7 @@ export function TestnetBillingRehearsal() {
   const [signature, setSignature] = useState<string | null>(null);
   const [logs, setLogs] = useState<string[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [copyFeedback, setCopyFeedback] = useState<string | null>(null);
 
   const treasuryConfig = useMemo(() => getTreasuryReceiveConfig(), []);
   const selectedSku = testnetBillingSkus.find((item) => item.key === selectedSkuKey) ?? testnetBillingSkus[0];
@@ -168,6 +179,23 @@ export function TestnetBillingRehearsal() {
     selectedSku.assetSymbol === "SOL" ||
       (selectedAsset?.mint && selectedAsset?.receiveAddress && selectedAsset?.tokenProgram),
   );
+  const usesStablecoinRail = selectedSku.assetSymbol !== "SOL" && stableAssetConfigured;
+  const canRunBilling = connected && !isProcessing;
+  const runCtaLabel = !connected
+    ? `Connect ${SOLANA_NETWORK_LABEL} wallet to run`
+    : isProcessing
+      ? "Processing..."
+      : "Run billing rehearsal";
+
+  async function handleCopySignature() {
+    if (!signature) return;
+    try {
+      await navigator.clipboard.writeText(signature);
+      setCopyFeedback("Signature copied.");
+    } catch (error) {
+      setCopyFeedback(error instanceof Error ? error.message : "Unable to copy signature.");
+    }
+  }
 
   async function handleSendBillingRehearsal() {
     if (!connected || !publicKey) {
@@ -182,7 +210,8 @@ export function TestnetBillingRehearsal() {
 
     try {
       const latestBlockhash = await connection.getLatestBlockhash("confirmed");
-      const memo = `PDAO:${selectedSku.memoLabel}:${Date.now()}`;
+      const memoMode = usesStablecoinRail ? "SPL" : "SOL";
+      const memo = `PDAO:${selectedSku.memoLabel}:${memoMode}:${Date.now()}`;
       const transaction = new Transaction({
         feePayer: publicKey,
         blockhash: latestBlockhash.blockhash,
@@ -197,12 +226,9 @@ export function TestnetBillingRehearsal() {
         }),
       );
 
-      if (selectedSku.assetSymbol !== "SOL") {
+      if (usesStablecoinRail) {
         if (!selectedAsset?.mint || !selectedAsset.tokenProgram) {
-          setStatus(
-            `${selectedAsset?.name ?? selectedSku.assetSymbol} rail is ready for the official Solana mint. Set NEXT_PUBLIC_TREASURY_${selectedSku.assetSymbol}_MINT and NEXT_PUBLIC_TREASURY_${selectedSku.assetSymbol}_RECEIVE_ADDRESS to run the browser-signed ${selectedAsset?.name ?? selectedSku.assetSymbol} transfer.`,
-          );
-          return;
+          throw new Error("Stablecoin rail configuration changed during transaction preparation. Reload and try again.");
         }
         const mint = new PublicKey(selectedAsset.mint);
         const tokenProgram = new PublicKey(selectedAsset.tokenProgram);
@@ -238,7 +264,7 @@ export function TestnetBillingRehearsal() {
           }),
         );
       } else {
-        const lamports = Math.max(1, Math.round(selectedSku.amount * LAMPORTS_PER_SOL));
+        const lamports = Math.max(1, Math.round(selectedSku.fallbackSolAmount * LAMPORTS_PER_SOL));
         transaction.add(
           SystemProgram.transfer({
             fromPubkey: publicKey,
@@ -272,8 +298,27 @@ export function TestnetBillingRehearsal() {
       });
 
       setLogs(confirmedTransaction?.meta?.logMessages?.slice(0, 8) ?? []);
+      void persistOperationReceipt({
+        operationType: "billing_rehearsal",
+        proposalId: `billing:${selectedSku.key}`,
+        daoAddress: treasuryConfig.treasuryAddress,
+        approvalState: "wallet-confirmed",
+        executionReference: nextSignature,
+        privateSettlementRail: usesStablecoinRail ? "stablecoin-transferchecked" : "sol-fallback",
+        stablecoinSymbol: selectedSku.assetSymbol,
+        auditMode: "proof-linked-billing",
+        recipientVisibility: "public-treasury-receive",
+        metadata: {
+          sku: selectedSku.key,
+          memoLabel: selectedSku.memoLabel,
+          wallet: publicKey.toBase58(),
+          treasuryAddress,
+          network: treasuryConfig.network,
+          rail: usesStablecoinRail ? "spl" : "sol",
+        },
+      });
       setStatus(
-        `Billing rehearsal confirmed on ${SOLANA_NETWORK_LABEL}. Open the explorer link or the proof route to inspect the hash, memo, and runtime logs.`,
+        `Billing rehearsal confirmed on ${SOLANA_NETWORK_LABEL}. Open the explorer link or the proof route to inspect the hash, memo mode, and runtime logs.`,
       );
     } catch (error) {
       const message = error instanceof Error ? error.message : `${SOLANA_NETWORK_LABEL} billing rehearsal failed.`;
@@ -292,15 +337,19 @@ export function TestnetBillingRehearsal() {
           Charge a small Testnet fee from the same wallet-first product, then inspect the proof on-chain
         </h2>
         <p className="mt-4 max-w-3xl text-sm leading-7 text-white/66">
-          This is the current truthful commercial lane. The visitor signs a small SOL transfer or a configured stablecoin
-          transfer from the wallet, the chain records the memo and transfer, and the resulting signature becomes part of
-          the business proof. The PUSD and AUDD lanes are designed for governed payroll, merchant settlement, treasury
-          management, grant distribution, commerce, and gaming reward settlement.
+          This is the current truthful commercial lane. Every visitor can run the flow immediately with a wallet-signed
+          transaction on Testnet. When official stablecoin mint rails are configured, the lane executes as SPL
+          TransferChecked; otherwise the same lane executes as a memo-coded SOL rehearsal so the service stays testable
+          end-to-end.
         </p>
 
         <div className="mt-6 grid gap-3">
           {testnetBillingSkus.map((sku) => {
             const selected = sku.key === selectedSkuKey;
+            const skuAsset = treasuryConfig.assets.find((asset) => asset.symbol === sku.assetSymbol);
+            const skuStableConfigured =
+              sku.assetSymbol === "SOL" ||
+              Boolean(skuAsset?.mint && skuAsset?.receiveAddress && skuAsset?.tokenProgram);
             return (
               <button
                 key={sku.key}
@@ -320,19 +369,23 @@ export function TestnetBillingRehearsal() {
                   </div>
                 </div>
                 <div className="mt-3 text-sm leading-7 text-white/60">{sku.summary}</div>
+                {sku.assetSymbol !== "SOL" ? (
+                  <div className="mt-3 inline-flex rounded-full border border-white/10 bg-black/20 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-white/68">
+                    {skuStableConfigured ? "SPL rail active" : "SOL fallback active"}
+                  </div>
+                ) : null}
               </button>
             );
           })}
         </div>
 
-        <div className="mt-6 rounded-[24px] border border-emerald-300/16 bg-emerald-300/[0.08] p-5 text-sm leading-7 text-white/72">
-          <div className="text-[11px] uppercase tracking-[0.2em] text-emerald-200/82">Current boundary</div>
-          <div className="mt-2">
-            The live rehearsal uses a wallet-signed SOL transfer, or a configured stablecoin SPL transfer when the
-            selected mint is set, to the Testnet treasury address with a memo-coded SKU. Contractized subscription
-            logic, fiat gateways, and institutional invoicing remain later layers.
+          <div className="mt-6 rounded-[24px] border border-emerald-300/16 bg-emerald-300/[0.08] p-5 text-sm leading-7 text-white/72">
+            <div className="text-[11px] uppercase tracking-[0.2em] text-emerald-200/82">Current boundary</div>
+            <div className="mt-2">
+            The live rehearsal always stays executable for visitors: SOL fallback is active by default and stablecoin
+            rails upgrade in-place to SPL TransferChecked as soon as official mint configuration is set.
+            </div>
           </div>
-        </div>
       </section>
 
       <section className="rounded-[30px] border border-white/10 bg-black/20 p-6">
@@ -359,8 +412,18 @@ export function TestnetBillingRehearsal() {
             <div className="mt-1">
               Asset rail: <span className="text-white">{selectedSku.assetSymbol}</span>
               {selectedSku.assetSymbol !== "SOL" ? (
-                <span className="text-white/58"> · {stableAssetConfigured ? `${selectedAsset?.name ?? selectedSku.assetSymbol} mint configured` : `Ready for official ${selectedAsset?.name ?? selectedSku.assetSymbol} mint`}</span>
+                <span className="text-white/58">
+                  {" "}
+                  ·{" "}
+                  {stableAssetConfigured
+                    ? `${selectedAsset?.name ?? selectedSku.assetSymbol} SPL rail active`
+                    : `${selectedAsset?.name ?? selectedSku.assetSymbol} lane running in SOL fallback mode`}
+                </span>
               ) : null}
+            </div>
+            <div className="mt-1">
+              Execution mode:{" "}
+              <span className="text-white">{usesStablecoinRail ? "SPL TransferChecked" : "SOL transfer fallback"}</span>
             </div>
             <div className="mt-1">
               Network: <span className="text-white">{treasuryConfig.network}</span>
@@ -384,10 +447,22 @@ export function TestnetBillingRehearsal() {
                 >
                   Open explorer
                 </a>
+                <button
+                  type="button"
+                  className={cn(buttonVariants({ size: "sm", variant: "outline" }))}
+                  onClick={() => void handleCopySignature()}
+                >
+                  Copy signature
+                </button>
                 <Link href="/proof?judge=1" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
                   Open proof route
                 </Link>
               </div>
+              {copyFeedback ? (
+                <div className="mt-3 rounded-2xl border border-white/10 bg-black/20 px-3 py-2 text-xs text-white/70">
+                  {copyFeedback}
+                </div>
+              ) : null}
             </div>
           ) : null}
 
@@ -408,11 +483,16 @@ export function TestnetBillingRehearsal() {
             <button
               type="button"
               className={cn(buttonVariants({ size: "sm" }))}
-              disabled={isProcessing}
+              disabled={!canRunBilling}
               onClick={() => void handleSendBillingRehearsal()}
             >
-              {isProcessing ? "Processing..." : "Run billing rehearsal"}
+              {runCtaLabel}
             </button>
+            {!connected ? (
+              <Link href="/govern" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                Open wallet-first govern route
+              </Link>
+            ) : null}
             <Link href="/documents/pricing-model" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
               Open pricing model
             </Link>

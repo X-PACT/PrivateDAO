@@ -24,8 +24,7 @@ export const metadata: Metadata = buildRouteMetadata({
   description:
     "Generated artifacts, runtime checks, reviewer bundle health, and release-readiness signals presented as a product-facing diagnostics surface.",
   path: "/diagnostics",
-  keywords: ["diagnostics", "reviewer bundle", "artifact freshness", "runtime checks"],
-  index: false,
+  keywords: ["diagnostics", "reviewer bundle", "artifact freshness", "runtime checks", "Solana Testnet proof"],
 });
 
 export default function DiagnosticsPage() {

@@ -630,7 +630,7 @@ mod tests {
         let owner = Box::leak(Box::new(Pubkey::default()));
         let lamports = Box::leak(Box::new(1u64));
         let data = Box::leak(Vec::<u8>::new().into_boxed_slice());
-        AccountInfo::new(key, is_signer, false, lamports, data, owner, false, 0)
+        AccountInfo::new(key, is_signer, false, lamports, data, owner, false)
     }
 
     #[test]

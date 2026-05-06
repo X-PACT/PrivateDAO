@@ -25,7 +25,6 @@ export const metadata: Metadata = buildRouteMetadata({
     "Run PrivateDAO operations from one wallet-first surface: private payroll rehearsal, vendor settlement, treasury rebalance lanes, and proof-linked execution.",
   path: "/execute",
   keywords: ["execute", "private payroll", "treasury rebalance", "vendor payment", "wallet-first", "testnet"],
-  index: false,
 });
 
 const executionModes = [

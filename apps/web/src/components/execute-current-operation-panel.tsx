@@ -191,6 +191,14 @@ export function ExecuteCurrentOperationPanel({
         <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={selectedRailProfile.routeHref}>
           {selectedRailProfile.routeLabel}
         </Link>
+        <a
+          className={cn(buttonVariants({ size: "sm", variant: "outline" }))}
+          href="https://faucet.solana.com/"
+          rel="noreferrer"
+          target="_blank"
+        >
+          Get Testnet SOL
+        </a>
       </div>
     </aside>
   );

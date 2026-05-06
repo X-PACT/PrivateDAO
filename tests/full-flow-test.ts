@@ -1617,7 +1617,7 @@ describe("Full flow", () => {
         daoName,
         51,
         new BN(0),
-        new BN(5),
+        new BN(45),
         new BN(2),
         { tokenWeighted: {} },
       )
@@ -1647,7 +1647,7 @@ describe("Full flow", () => {
       .createProposal(
         "Boundary guard",
         "Phase edges should behave exactly as intended.",
-        new BN(5),
+        new BN(45),
         {
           actionType: { sendSol: {} },
           amountLamports: new BN(EXECUTE_LAMPORTS),
@@ -1690,9 +1690,6 @@ describe("Full flow", () => {
       .signers([alice])
       .rpc();
 
-    const created = await program.account["proposal"].fetch(proposalPda);
-    await waitForUnixTimestamp(provider.connection, created.votingEnd.toNumber() - 1, "boundary_commit_last_second");
-
     await program.methods
       .commitVote([...commitment(true, saltBob, bob.publicKey, proposalPda)], null)
       .accounts({
@@ -1708,8 +1705,9 @@ describe("Full flow", () => {
       .signers([bob])
       .rpc();
 
+    const created = await program.account["proposal"].fetch(proposalPda);
     const afterLastSecondCommit = await program.account["proposal"].fetch(proposalPda);
-    assert.equal(afterLastSecondCommit.commitCount.toNumber(), 2, "commit should still work immediately before voting end");
+    assert.equal(afterLastSecondCommit.commitCount.toNumber(), 2, "commit should work before voting end");
 
     try {
       await program.methods

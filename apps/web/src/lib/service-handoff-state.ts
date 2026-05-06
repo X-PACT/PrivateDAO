@@ -172,33 +172,6 @@ type ServiceHandoffQueryState = {
   requestPayload?: ServiceHandoffRequestPayloadSeed;
 };
 
-function toRequestPayloadSeed(
-  payload: ServiceHandoffRequestPayloadSeed | ServiceHandoffRequestPayload,
-): ServiceHandoffRequestPayloadSeed {
-  return {
-    kind: payload.kind,
-    state: payload.state,
-    requestId: payload.requestId,
-    preparedAt: payload.preparedAt,
-    proposalId: payload.proposalId,
-    proposalTitle: payload.proposalTitle,
-    network: payload.network,
-    payoutProfile: payload.payoutProfile,
-    payoutTitle: payload.payoutTitle,
-    lane: payload.lane,
-    telemetryMode: payload.telemetryMode,
-    asset: payload.asset,
-    amount: payload.amount,
-    amountDisplay: payload.amountDisplay,
-    reference: payload.reference,
-    purpose: payload.purpose,
-    routeFocus: payload.routeFocus,
-    executionTarget: payload.executionTarget,
-    evidenceRoute: payload.evidenceRoute,
-    treasuryRoutePlan: payload.treasuryRoutePlan,
-  };
-}
-
 let storedServiceHandoffRawCache: string | null = null;
 let storedServiceHandoffParsedCache: ServiceHandoffState | null = null;
 
@@ -210,11 +183,6 @@ function updateStoredServiceHandoffCache(raw: string | null) {
 
 export function buildServiceHandoffQuery(state: ServiceHandoffQueryState) {
   const params = new URLSearchParams();
-  const requestPayloadSeed = state.requestPayloadSeed
-    ? toRequestPayloadSeed(state.requestPayloadSeed)
-    : state.requestPayload
-      ? toRequestPayloadSeed(state.requestPayload)
-      : undefined;
   params.set("proposal", state.proposalId);
   params.set("profile", state.payoutProfile);
   params.set("telemetryMode", state.telemetryMode);
@@ -229,13 +197,10 @@ export function buildServiceHandoffQuery(state: ServiceHandoffQueryState) {
   if (
     (state.requestDelivery?.state === "delivered" ||
       state.requestDelivery?.state === "executed") &&
-    typeof state.requestDelivery.deliveredAt === "string" &&
+      typeof state.requestDelivery.deliveredAt === "string" &&
     state.requestDelivery.deliveredAt.length > 0
   ) {
     params.set("deliveredAt", state.requestDelivery.deliveredAt);
-  }
-  if (requestPayloadSeed) {
-    params.set("requestPayload", JSON.stringify(requestPayloadSeed));
   }
   return params.toString();
 }

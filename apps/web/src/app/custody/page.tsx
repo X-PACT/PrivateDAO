@@ -12,8 +12,7 @@ export const metadata: Metadata = buildRouteMetadata({
   description:
     "Live execution surface for multisig creation, authority transfer, and evidence capture before any mainnet custody claims.",
   path: "/custody",
-  keywords: ["custody workspace", "multisig", "authority transfer", "mainnet launch"],
-  index: false,
+  keywords: ["custody workspace", "multisig", "authority transfer", "mainnet launch", "reviewer evidence"],
 });
 
 export default function CustodyPage() {

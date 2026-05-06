@@ -5,12 +5,12 @@
   "environmentType": "android-or-mobile",
   "os": "fill-with-real-os",
   "browserOrClient": "fill-with-real-client",
-  "network": "devnet",
+  "network": "testnet",
   "connectResult": "success",
   "signingResult": "success",
   "submissionResult": "success",
   "diagnosticsSnapshotCaptured": true,
-  "txSignature": "fill-with-real-devnet-signature",
+  "txSignature": "fill-with-real-runtime-signature",
   "errorMessage": null,
   "evidenceRefs": [
     "screenshots/android-runtime-connect.png"

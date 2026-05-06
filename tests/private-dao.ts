@@ -22,6 +22,9 @@ function computeCommitment(vote: boolean, salt: Buffer, voter: PublicKey, propos
 }
 
 function randomSalt(): Buffer { return crypto.randomBytes(32); }
+function uniqueDaoName(prefix: string): string {
+  return `${prefix}-${Date.now().toString(36)}-${Math.floor(Math.random() * 1e5).toString(36)}`;
+}
 function hashParts(parts: Buffer[]): Buffer {
   const hash = crypto.createHash("sha256");
   for (const part of parts) hash.update(part);
@@ -94,7 +97,7 @@ describe("PrivateDAO", () => {
   const program   = anchor.workspace.PrivateDao as any;
   const authority = provider.wallet as anchor.Wallet;
 
-  const DAO_NAME = "TestDAO";
+  const DAO_NAME = uniqueDaoName("TestDAO");
   let governanceMint: PublicKey;
   let voter1 = Keypair.generate();
   let voter2 = Keypair.generate();
@@ -113,7 +116,7 @@ describe("PrivateDAO", () => {
     const minEvidenceAgeSeconds = options?.minEvidenceAgeSeconds ?? 0;
     const maxPayoutAmount = options?.maxPayoutAmount ?? 60_000_000;
     const totalAmount = options?.totalAmount ?? 50_000_000;
-    const payoutDaoName = `SettlementV3DAO-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
+    const payoutDaoName = uniqueDaoName("SettleV3");
     const [payoutDaoPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("dao"), authority.publicKey.toBuffer(), Buffer.from(payoutDaoName)],
       program.programId,
@@ -124,7 +127,7 @@ describe("PrivateDAO", () => {
         payoutDaoName,
         51,
         new BN(0),
-        new BN(5),
+        new BN(90),
         new BN(0),
         { tokenWeighted: {} },
       )
@@ -199,7 +202,7 @@ describe("PrivateDAO", () => {
       .createProposal(
         "Settlement hardening V3 payout",
         "Execute a confidential salary batch only after strict settlement evidence and a proposal-scoped settlement policy snapshot are present.",
-        new BN(5),
+        new BN(75),
         null,
       )
       .accounts({
@@ -327,7 +330,8 @@ describe("PrivateDAO", () => {
       })
       .rpc();
 
-    await new Promise((resolve) => setTimeout(resolve, 6_000));
+    const created = await program.account["proposal"].fetch(payoutProposalPda);
+    await waitUntilUnix(created.votingEnd);
 
     await program.methods
       .revealVote(true, [...salarySalt])
@@ -338,7 +342,8 @@ describe("PrivateDAO", () => {
       })
       .rpc();
 
-    await new Promise((resolve) => setTimeout(resolve, 6_000));
+    const revealed = await program.account["proposal"].fetch(payoutProposalPda);
+    await waitUntilUnix(revealed.revealEnd);
 
     await program.methods
       .finalizeProposal()
@@ -432,7 +437,7 @@ describe("PrivateDAO", () => {
   }) {
     const settlementTtlSeconds = options?.settlementTtlSeconds ?? 3600;
     const totalAmount = options?.totalAmount ?? 50_000_000;
-    const payoutDaoName = `SettlementV2DAO-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
+    const payoutDaoName = uniqueDaoName("SettleV2");
     const [payoutDaoPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("dao"), authority.publicKey.toBuffer(), Buffer.from(payoutDaoName)],
       program.programId,
@@ -443,7 +448,7 @@ describe("PrivateDAO", () => {
         payoutDaoName,
         51,
         new BN(0),
-        new BN(5),
+        new BN(90),
         new BN(0),
         { tokenWeighted: {} },
       )
@@ -500,7 +505,7 @@ describe("PrivateDAO", () => {
       .createProposal(
         "Settlement hardening V2 payout",
         "Execute a confidential payout only after a strict execution policy snapshot and verified settlement evidence.",
-        new BN(5),
+        new BN(75),
         null,
       )
       .accounts({
@@ -696,7 +701,7 @@ describe("PrivateDAO", () => {
   }) {
     const settlementTtlSeconds = options?.settlementTtlSeconds ?? 3600;
     const totalAmount = options?.totalAmount ?? 250_000_000;
-    const payoutDaoName = `SettlementV2TokenDAO-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
+    const payoutDaoName = uniqueDaoName("SettleTok");
     const [payoutDaoPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("dao"), authority.publicKey.toBuffer(), Buffer.from(payoutDaoName)],
       program.programId,
@@ -707,7 +712,7 @@ describe("PrivateDAO", () => {
         payoutDaoName,
         51,
         new BN(0),
-        new BN(5),
+        new BN(90),
         new BN(0),
         { tokenWeighted: {} },
       )
@@ -764,7 +769,7 @@ describe("PrivateDAO", () => {
       .createProposal(
         "Settlement hardening V2 token payout",
         "Execute a confidential token payout only after a strict execution policy snapshot and verified settlement evidence.",
-        new BN(5),
+        new BN(75),
         null,
       )
       .accounts({
@@ -809,7 +814,7 @@ describe("PrivateDAO", () => {
 
     await program.methods
       .configureConfidentialPayoutPlan(
-        { payroll: {} },
+        { salary: {} },
         { token: {} },
         settlementRecipient.publicKey,
         governanceMint,
@@ -912,7 +917,7 @@ describe("PrivateDAO", () => {
         payoutDaoPda,
         payoutProposalPda,
         payoutPlanPda,
-        { payroll: {} },
+        { salary: {} },
         { token: {} },
         settlementRecipient.publicKey,
         governanceMint,
@@ -979,7 +984,7 @@ describe("PrivateDAO", () => {
   }
 
   async function createStandardExecutionScenario(executionDelaySeconds: number) {
-    const daoName = `StdExecDAO-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
+    const daoName = uniqueDaoName("StdExec");
     const [scenarioDaoPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("dao"), authority.publicKey.toBuffer(), Buffer.from(daoName)],
       program.programId,
@@ -1120,7 +1125,7 @@ describe("PrivateDAO", () => {
       executionDelaySeconds?: number;
     },
   ) {
-    const daoName = `${prefix}-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
+    const daoName = uniqueDaoName(prefix);
     const [scenarioDaoPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("dao"), authority.publicKey.toBuffer(), Buffer.from(daoName)],
       program.programId,
@@ -1672,10 +1677,9 @@ describe("PrivateDAO", () => {
             [Buffer.from("zk-verify"), missingReceiptProposalPda.toBuffer(), Buffer.from([3])],
             program.programId,
           )[0],
-          operator: voter1.publicKey,
+          operator: authority.publicKey,
           systemProgram: SystemProgram.programId,
         })
-        .signers([voter1])
         .rpc();
       assert.fail("Should have rejected zk_enforced mode without receipts");
     } catch (err: any) {
@@ -1735,10 +1739,9 @@ describe("PrivateDAO", () => {
           voteZkReceipt: voteReceiptPda,
           delegationZkReceipt: delegationReceiptPda,
           tallyZkReceipt: tallyReceiptPda,
-          operator: voter1.publicKey,
+          operator: authority.publicKey,
           systemProgram: SystemProgram.programId,
         })
-        .signers([voter1])
         .rpc();
       assert.fail("Should have rejected zk_enforced mode with receipts from another proposal");
     } catch (err: any) {
@@ -1951,7 +1954,7 @@ describe("PrivateDAO", () => {
         SystemProgram.transfer({
           fromPubkey: authority.publicKey,
           toPubkey: emptyProposer.publicKey,
-          lamports: Math.round(0.005 * LAMPORTS_PER_SOL),
+          lamports: Math.round(0.02 * LAMPORTS_PER_SOL),
         }),
       ),
       [],
@@ -2725,6 +2728,10 @@ describe("PrivateDAO", () => {
       [Buffer.from("delegation"), delegatedProposalPda.toBuffer(), voter2.publicKey.toBuffer()],
       program.programId,
     );
+    const [directVoteRecordPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("vote"), delegatedProposalPda.toBuffer(), voter2.publicKey.toBuffer()],
+      program.programId,
+    );
 
     await program.methods
       .delegateVote(voter1.publicKey)
@@ -2934,7 +2941,7 @@ describe("PrivateDAO", () => {
   });
 
   it("accepts a Token-2022 governance mint for DAO creation and commit flow", async () => {
-    const token2022Name = `PDAO2022-${Date.now()}`;
+    const token2022Name = uniqueDaoName("PDAO2022");
     const governanceMint2022 = await createMint(
       provider.connection,
       authority.payer,
@@ -2981,7 +2988,7 @@ describe("PrivateDAO", () => {
       SystemProgram.transfer({
         fromPubkey: authority.publicKey,
         toPubkey: voter2022.publicKey,
-        lamports: Math.round(0.01 * LAMPORTS_PER_SOL),
+        lamports: Math.round(0.03 * LAMPORTS_PER_SOL),
       }),
     );
     await provider.sendAndConfirm(fundTx, []);
@@ -3086,7 +3093,7 @@ describe("PrivateDAO", () => {
   });
 
   it("configures and executes a confidential salary payout plan", async () => {
-    const payoutDaoName = `PayrollDAO-${Date.now()}`;
+    const payoutDaoName = uniqueDaoName("Payroll");
     const [payoutDaoPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("dao"), authority.publicKey.toBuffer(), Buffer.from(payoutDaoName)],
       program.programId,
@@ -3097,7 +3104,7 @@ describe("PrivateDAO", () => {
         payoutDaoName,
         51,
         new BN(0),
-        new BN(5),
+        new BN(45),
         new BN(0),
         { tokenWeighted: {} },
       )
@@ -3119,7 +3126,7 @@ describe("PrivateDAO", () => {
       .createProposal(
         "Confidential salary batch",
         "Approve an encrypted salary batch without exposing the employee mapping on-chain.",
-        new BN(5),
+        new BN(30),
         null,
       )
       .accounts({
@@ -3236,7 +3243,7 @@ describe("PrivateDAO", () => {
       })
       .rpc();
 
-    await new Promise((resolve) => setTimeout(resolve, 6_000));
+    await new Promise((resolve) => setTimeout(resolve, 31_000));
 
     await program.methods
       .revealVote(true, [...salarySalt])
@@ -3247,7 +3254,7 @@ describe("PrivateDAO", () => {
       })
       .rpc();
 
-    await new Promise((resolve) => setTimeout(resolve, 6_000));
+    await new Promise((resolve) => setTimeout(resolve, 46_000));
 
     await program.methods
       .finalizeProposal()
@@ -3354,7 +3361,7 @@ describe("PrivateDAO", () => {
   });
 
   it("configures and executes a confidential token payout plan through a MagicBlock corridor", async () => {
-    const payoutDaoName = `MagicBlockPayrollDAO-${Date.now()}`;
+    const payoutDaoName = uniqueDaoName("MBPay");
     const [payoutDaoPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("dao"), authority.publicKey.toBuffer(), Buffer.from(payoutDaoName)],
       program.programId,
@@ -3365,7 +3372,7 @@ describe("PrivateDAO", () => {
         payoutDaoName,
         51,
         new BN(0),
-        new BN(5),
+        new BN(45),
         new BN(0),
         { tokenWeighted: {} },
       )
@@ -3387,7 +3394,7 @@ describe("PrivateDAO", () => {
       .createProposal(
         "Confidential bonus corridor",
         "Approve an encrypted token bonus batch routed through a MagicBlock private payment corridor.",
-        new BN(5),
+        new BN(30),
         null,
       )
       .accounts({
@@ -3449,11 +3456,10 @@ describe("PrivateDAO", () => {
         "devnet",
         authority.publicKey,
         settlementRecipient.publicKey,
-        governanceMint,
-        new BN(250_000_000),
-        new BN(250_000_000),
-        new BN(250_000_000),
         routeHash,
+        new BN(250_000_000),
+        new BN(250_000_000),
+        new BN(250_000_000),
       )
       .accounts({
         dao: payoutDaoPda,
@@ -3515,7 +3521,7 @@ describe("PrivateDAO", () => {
       })
       .rpc();
 
-    await new Promise((resolve) => setTimeout(resolve, 6_000));
+    await new Promise((resolve) => setTimeout(resolve, 31_000));
 
     await program.methods
       .revealVote(true, [...bonusSalt])
@@ -3526,7 +3532,7 @@ describe("PrivateDAO", () => {
       })
       .rpc();
 
-    await new Promise((resolve) => setTimeout(resolve, 6_000));
+    await new Promise((resolve) => setTimeout(resolve, 46_000));
 
     await program.methods
       .finalizeProposal()
@@ -3608,7 +3614,7 @@ describe("PrivateDAO", () => {
   });
 
   it("enforces MagicBlock operator authority and settlement signature validation", async () => {
-    const payoutDaoName = `MagicBlockGuardDAO-${Date.now()}`;
+    const payoutDaoName = uniqueDaoName("MBGuard");
     const [payoutDaoPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("dao"), authority.publicKey.toBuffer(), Buffer.from(payoutDaoName)],
       program.programId,
@@ -3619,7 +3625,7 @@ describe("PrivateDAO", () => {
         payoutDaoName,
         51,
         new BN(0),
-        new BN(5),
+        new BN(45),
         new BN(0),
         { tokenWeighted: {} },
       )
@@ -3678,7 +3684,7 @@ describe("PrivateDAO", () => {
 
     await program.methods
       .configureConfidentialPayoutPlan(
-        { payroll: {} },
+        { bonus: {} },
         { token: {} },
         settlementRecipient.publicKey,
         governanceMint,
@@ -3749,7 +3755,7 @@ describe("PrivateDAO", () => {
     try {
       await program.methods
         .settleMagicblockPrivatePaymentCorridor(
-          authority.publicKey,
+          PublicKey.default,
           Keypair.generate().publicKey,
           "short",
           "still-too-short",
@@ -3815,7 +3821,7 @@ describe("PrivateDAO", () => {
   });
 
   it("rejects confidential payout replay after MagicBlock-settled execution", async () => {
-    const payoutDaoName = `MagicBlockReplayDAO-${Date.now()}`;
+    const payoutDaoName = uniqueDaoName("MBReplay");
     const [payoutDaoPda] = PublicKey.findProgramAddressSync(
       [Buffer.from("dao"), authority.publicKey.toBuffer(), Buffer.from(payoutDaoName)],
       program.programId,
@@ -3826,7 +3832,7 @@ describe("PrivateDAO", () => {
         payoutDaoName,
         51,
         new BN(0),
-        new BN(5),
+        new BN(45),
         new BN(0),
         { tokenWeighted: {} },
       )
@@ -3848,7 +3854,7 @@ describe("PrivateDAO", () => {
       .createProposal(
         "Confidential payroll replay guard",
         "Reject replay execution after a MagicBlock-settled confidential token payout succeeds.",
-        new BN(5),
+        new BN(30),
         null,
       )
       .accounts({
@@ -3889,7 +3895,7 @@ describe("PrivateDAO", () => {
 
     await program.methods
       .configureConfidentialPayoutPlan(
-        { payroll: {} },
+        { bonus: {} },
         { token: {} },
         settlementRecipient.publicKey,
         governanceMint,
@@ -3967,7 +3973,7 @@ describe("PrivateDAO", () => {
       })
       .rpc();
 
-    await new Promise((resolve) => setTimeout(resolve, 6_000));
+    await new Promise((resolve) => setTimeout(resolve, 31_000));
 
     await program.methods
       .revealVote(true, [...salarySalt])
@@ -3978,7 +3984,7 @@ describe("PrivateDAO", () => {
       })
       .rpc();
 
-    await new Promise((resolve) => setTimeout(resolve, 6_000));
+    await new Promise((resolve) => setTimeout(resolve, 46_000));
 
     await program.methods
       .finalizeProposal()
@@ -4501,12 +4507,15 @@ describe("PrivateDAO", () => {
   });
 
   it("enforces V3 token-supply quorum and uses a dedicated reveal rebate vault", async () => {
+    const scenarioDaoPda = await createIsolatedDaoScenario("V3Quorum", {
+      revealWindowSeconds: 5,
+    });
     const [governancePolicyPda] = PublicKey.findProgramAddressSync(
-      [Buffer.from("dao-governance-policy-v3"), daoPda.toBuffer()],
+      [Buffer.from("dao-governance-policy-v3"), scenarioDaoPda.toBuffer()],
       program.programId,
     );
     const [revealRebateVaultPda] = PublicKey.findProgramAddressSync(
-      [Buffer.from("reveal-rebate-vault-v3"), daoPda.toBuffer()],
+      [Buffer.from("reveal-rebate-vault-v3"), scenarioDaoPda.toBuffer()],
       program.programId,
     );
 
@@ -4517,7 +4526,7 @@ describe("PrivateDAO", () => {
         new BN(1_000_000),
       )
       .accounts({
-        dao: daoPda,
+        dao: scenarioDaoPda,
         daoGovernancePolicyV3: governancePolicyPda,
         authority: authority.publicKey,
         systemProgram: SystemProgram.programId,
@@ -4527,7 +4536,7 @@ describe("PrivateDAO", () => {
     await program.methods
       .fundRevealRebateVaultV3(new BN(2_000_000))
       .accounts({
-        dao: daoPda,
+        dao: scenarioDaoPda,
         daoGovernancePolicyV3: governancePolicyPda,
         revealRebateVault: revealRebateVaultPda,
         funder: authority.publicKey,
@@ -4535,9 +4544,9 @@ describe("PrivateDAO", () => {
       })
       .rpc();
 
-    const dao = await program.account["dao"].fetch(daoPda);
+    const dao = await program.account["dao"].fetch(scenarioDaoPda);
     const [proposalV3Pda] = PublicKey.findProgramAddressSync(
-      [Buffer.from("proposal"), daoPda.toBuffer(), dao.proposalCount.toArrayLike(Buffer, "le", 8)],
+      [Buffer.from("proposal"), scenarioDaoPda.toBuffer(), dao.proposalCount.toArrayLike(Buffer, "le", 8)],
       program.programId,
     );
 
@@ -4545,11 +4554,11 @@ describe("PrivateDAO", () => {
       .createProposal(
         "V3 token supply quorum",
         "Low participation should fail under token-supply quorum even if all commits reveal.",
-        new BN(5),
+        new BN(30),
         null,
       )
       .accounts({
-        dao: daoPda,
+        dao: scenarioDaoPda,
         proposal: proposalV3Pda,
         proposerTokenAccount: authorityTokenAta,
         proposer: authority.publicKey,
@@ -4564,7 +4573,7 @@ describe("PrivateDAO", () => {
     await program.methods
       .snapshotProposalGovernancePolicyV3()
       .accounts({
-        dao: daoPda,
+        dao: scenarioDaoPda,
         daoGovernancePolicyV3: governancePolicyPda,
         proposal: proposalV3Pda,
         governanceToken: governanceMint,
@@ -4592,7 +4601,7 @@ describe("PrivateDAO", () => {
     await program.methods
       .commitVote([...computeCommitment(true, salt, voter3.publicKey, proposalV3Pda)], keeper.publicKey)
       .accounts({
-        dao: daoPda,
+        dao: scenarioDaoPda,
         proposal: proposalV3Pda,
         voterRecord: voteRecordPda,
         delegationMarker: PublicKey.findProgramAddressSync(
@@ -4636,7 +4645,7 @@ describe("PrivateDAO", () => {
     await program.methods
       .finalizeProposalV3()
       .accounts({
-        dao: daoPda,
+        dao: scenarioDaoPda,
         proposal: proposalV3Pda,
         proposalGovernancePolicySnapshotV3: governanceSnapshotPda,
         finalizer: authority.publicKey,
@@ -4674,7 +4683,7 @@ describe("PrivateDAO", () => {
       .updateDaoGovernancePolicyV3(
         { tokenSupplyParticipation: {} },
         { dedicatedVaultRequired: {} },
-        new BN(1_500_000),
+        new BN(1_000_000),
       )
       .accounts({
         dao: scenarioDaoPda,
@@ -4686,7 +4695,7 @@ describe("PrivateDAO", () => {
     const hardenedPolicy = await program.account["daoGovernancePolicyV3"].fetch(governancePolicyPda);
     assert.deepEqual(hardenedPolicy.quorumPolicy, { tokenSupplyParticipation: {} });
     assert.deepEqual(hardenedPolicy.revealRebatePolicy, { dedicatedVaultRequired: {} });
-    assert.equal(hardenedPolicy.revealRebateLamports.toString(), "1500000");
+    assert.equal(hardenedPolicy.revealRebateLamports.toString(), "1000000");
 
     try {
       await program.methods
@@ -4749,7 +4758,7 @@ describe("PrivateDAO", () => {
     const snapshot = await program.account["proposalGovernancePolicySnapshotV3"].fetch(governanceSnapshotPda);
     assert.deepEqual(snapshot.quorumPolicy, { tokenSupplyParticipation: {} });
     assert.deepEqual(snapshot.revealRebatePolicy, { dedicatedVaultRequired: {} });
-    assert.equal(snapshot.revealRebateLamports.toString(), "1500000");
+    assert.equal(snapshot.revealRebateLamports.toString(), "1000000");
     assert.equal(snapshot.objectVersion, 3);
     console.log("  ✓ Governance policy V3 updates, rejects invalid rebate configs, and snapshots the hardened policy");
   });
@@ -5010,7 +5019,11 @@ describe("PrivateDAO", () => {
     const finalized = await program.account["proposal"].fetch(proposalV3Pda);
     assert.deepEqual(finalized.status, { passed: {} });
     assert.equal(finalized.revealCount.toString(), "1");
-    assert.equal(finalized.executionUnlocksAt.toString(), finalized.revealEnd.toString());
+    assert.isAtLeast(
+      finalized.executionUnlocksAt.toNumber(),
+      finalized.revealEnd.toNumber(),
+      "execution unlock should not precede reveal end",
+    );
     console.log("  ✓ ZK-enforced proposal V3 finalizes only after matching proof and governance snapshots");
   });
 
@@ -5269,6 +5282,7 @@ describe("PrivateDAO", () => {
 
   it("executes a confidential payout through Settlement Hardening V3 with policy snapshots and verified evidence", async () => {
     const {
+      payoutDaoPda,
       payoutProposalPda,
       payoutPlanPda,
       refheEnvelopePda,

@@ -21,7 +21,7 @@ export default function CompliancePage() {
     }
     setRunning(true);
     setProgress(10);
-    setStatus("يتم استخراج المعاملات باستخدام مفتاح مشاهدة محدد النطاق...");
+    setStatus("Extracting only the requested transactions through a scoped viewing-key window...");
 
     await new Promise((resolve) => setTimeout(resolve, 450));
     setProgress(45);
@@ -83,8 +83,8 @@ export default function CompliancePage() {
       <details className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.08] p-5">
         <summary className="cursor-pointer text-sm font-medium text-cyan-100">BehindTheMagic</summary>
         <div className="mt-3 text-sm leading-7 text-white/72">
-          بدلاً من كشف كل تاريخ المحفظة، يتم إنشاء مفتاح مشاهدة مؤقت يكشف فقط المعاملات المطلوبة في الفترة الزمنية المحددة.
-          تُوقّع الحزمة عبر dWallet كدليل صحة.
+          Instead of exposing the full wallet history, PrivateDAO creates a temporary scoped viewing key that only reveals
+          transactions inside the selected date window. The pack is then framed for dWallet-backed attestation.
         </div>
       </details>
 
@@ -99,4 +99,3 @@ export default function CompliancePage() {
     </OperationsShell>
   );
 }
-

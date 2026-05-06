@@ -3,7 +3,31 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Activity, BarChart3, BrainCircuit, BriefcaseBusiness, Compass, FileSearch, FileText, KeyRound, LayoutDashboard, MessageSquareMore, PlayCircle, Rocket, ShieldCheck, Smartphone, Sparkles, SquareTerminal } from "lucide-react";
+import {
+  Activity,
+  ArrowUpRight,
+  BarChart3,
+  BrainCircuit,
+  BriefcaseBusiness,
+  Code2,
+  Coins,
+  Compass,
+  FileCheck2,
+  FileSearch,
+  FileText,
+  Gamepad2,
+  Gauge,
+  KeyRound,
+  LayoutDashboard,
+  MessageSquareMore,
+  PlayCircle,
+  Rocket,
+  Router,
+  ShieldCheck,
+  Smartphone,
+  Sparkles,
+  SquareTerminal,
+} from "lucide-react";
 
 import { useI18n } from "@/components/i18n-provider";
 import { Badge } from "@/components/ui/badge";
@@ -13,32 +37,42 @@ import { cn } from "@/lib/utils";
 
 const operationsNav = [
   { href: "/start", label: "Start", icon: Compass, summary: "Guided onboarding and wallet-first flow" },
+  { href: "/learn", label: "Learn", icon: FileText, summary: "Workflow-first onboarding and product operating guide" },
   { href: "/assistant", label: "AI Assistant", icon: Sparkles, summary: "Internal AI-style guide across routes, docs, and proof" },
+  { href: "/govern", label: "Govern", icon: SquareTerminal, summary: "Create, vote, and execute on Solana Testnet" },
+  { href: "/intelligence", label: "Intelligence", icon: BrainCircuit, summary: "Risk scoring, market context, and signer decision support" },
+  { href: "/treasury", label: "Treasury", icon: Gauge, summary: "Treasury health, solvency context, and agent policy routes" },
+  { href: "/payroll", label: "Payroll", icon: Coins, summary: "Private payroll CSV, stablecoin choice, and auditor receipt flow" },
+  { href: "/gaming", label: "Gaming", icon: Gamepad2, summary: "Guilds, tournaments, inventory proposals, and reward operations" },
+  { href: "/compliance", label: "Compliance", icon: FileCheck2, summary: "Scoped compliance packs and bounded viewing-key evidence" },
+  { href: "/execute", label: "Execute", icon: Rocket, summary: "Private payroll, vendor settlement, and treasury actions" },
+  { href: "/proof", label: "Proof", icon: Sparkles, summary: "Operation receipts, runtime logs, and verification routes" },
+  { href: "/developers", label: "Developers", icon: Code2, summary: "API docs, SDK starters, and integration surfaces" },
+  { href: "/rpc-services", label: "RPC Services", icon: Router, summary: "Hosted reads, relayer checks, QVAC status, and runtime endpoints" },
+  { href: "/command-center", label: "Command Center", icon: LayoutDashboard, summary: "Ops dashboard, indexed proposals, and readiness gates" },
+  { href: "/live", label: "Live State", icon: LayoutDashboard, summary: "Proposals, treasury, and action logs" },
   { href: "/story", label: "Story", icon: PlayCircle, summary: "Live product story and fast explanation" },
   { href: "/community", label: "Community", icon: MessageSquareMore, summary: "Join, updates, pilot interest, and support routing" },
-  { href: "/govern", label: "Govern", icon: SquareTerminal, summary: "Create, vote, and execute on Testnet" },
-  { href: "/live", label: "Live State", icon: LayoutDashboard, summary: "Proposals, treasury, and action logs" },
   { href: "/android", label: "Android", icon: Smartphone, summary: "Mobile app, APK download, parity plan" },
-  { href: "/proof", label: "Proof", icon: Sparkles, summary: "Baseline and V3 evidence" },
   { href: "/trust", label: "Trust", icon: ShieldCheck, summary: "Security, proof, and operating boundaries" },
-  { href: "/intelligence", label: "Intelligence", icon: BrainCircuit, summary: "Proposal, treasury, voting, RPC, and gaming analysis" },
   { href: "/diagnostics", label: "Health", icon: Activity, summary: "Runtime status and verification health" },
   { href: "/custody", label: "Custody", icon: KeyRound, summary: "Multisig, authority transfer, and custody evidence" },
   { href: "/analytics", label: "Analytics", icon: BarChart3, summary: "Votes, proposals, actions" },
   { href: "/services", label: "Services", icon: BriefcaseBusiness, summary: "Pilot, API, commercial packs" },
-  { href: "/engage", label: "Engage", icon: Rocket, summary: "Buyer path, pilot motion, mainnet trajectory" },
-  { href: "/learn", label: "Learn", icon: FileText, summary: "Plain-language guide, proof path, and product understanding" },
+  { href: "/engage", label: "Engage", icon: ArrowUpRight, summary: "Buyer path, pilot motion, mainnet trajectory" },
   { href: "/search", label: "Search", icon: FileSearch, summary: "Search routes, docs, tracks, and proof" },
   { href: "/documents", label: "Documents", icon: FileText, summary: "Curated reviewer and trust docs" },
 ];
 
 const guidedNav = [
   { href: "/start", label: "Start", icon: Compass, summary: "Connect a wallet and understand the first move" },
+  { href: "/learn", label: "Learn", icon: FileText, summary: "Pick the right workflow before signing anything" },
   { href: "/govern", label: "Govern", icon: SquareTerminal, summary: "Create a DAO, propose, vote, and execute" },
-  { href: "/live", label: "Live Activity", icon: LayoutDashboard, summary: "Follow proposals, treasury state, and action logs" },
-  { href: "/services", label: "API & Pricing", icon: BriefcaseBusiness, summary: "Hosted API, plans, and rollout options" },
-  { href: "/trust", label: "Security & Proof", icon: ShieldCheck, summary: "Proof, hardening, and operating trust" },
-  { href: "/story", label: "Story", icon: PlayCircle, summary: "Watch the product story before using the live flow" },
+  { href: "/intelligence", label: "Intelligence", icon: BrainCircuit, summary: "Review proposal and treasury risk context" },
+  { href: "/treasury", label: "Treasury", icon: Gauge, summary: "Read treasury health and agent policy context" },
+  { href: "/payroll", label: "Payroll", icon: Coins, summary: "Prepare private payroll and audit receipts" },
+  { href: "/execute", label: "Execute", icon: Rocket, summary: "Run private and market-linked operations" },
+  { href: "/proof", label: "Proof", icon: Sparkles, summary: "Verify receipt, signature, and runtime continuity" },
 ];
 
 type OperationsShellProps = {
@@ -72,6 +106,26 @@ export function OperationsShell({
         return copy.chrome.learn;
       case "/govern":
         return copy.chrome.govern;
+      case "/intelligence":
+        return "Intelligence";
+      case "/treasury":
+        return "Treasury";
+      case "/payroll":
+        return "Payroll";
+      case "/gaming":
+        return "Gaming";
+      case "/compliance":
+        return "Compliance";
+      case "/execute":
+        return "Execute";
+      case "/proof":
+        return "Proof";
+      case "/developers":
+        return "Developers";
+      case "/rpc-services":
+        return "RPC Services";
+      case "/command-center":
+        return "Command Center";
       case "/live":
         return copy.chrome.liveState;
       case "/story":
@@ -207,6 +261,8 @@ export function OperationsShell({
               <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">REFHE: confidential settlement and payout posture</div>
               <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">MagicBlock: execution corridor for responsive paths</div>
               <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">Fast RPC: operational speed, diagnostics, and runtime readiness</div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">QVAC: local-first intelligence before signing</div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">Anchor 1: current Testnet program and IDL posture</div>
             </CardContent>
           </Card>
         </aside> : null}
@@ -228,6 +284,14 @@ export function OperationsShell({
                 <div className="text-[11px] uppercase tracking-[0.34em] text-emerald-300/80">{eyebrow}</div>
                 <div className={heroTitleClass}>{title}</div>
                 <p className={heroDescriptionClass}>{description}</p>
+                {isGuidedRoute ? (
+                  <div className="flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.22em] text-white/48">
+                    <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Connect</span>
+                    <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Review</span>
+                    <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Sign</span>
+                    <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Verify</span>
+                  </div>
+                ) : null}
               </div>
 
               <div className={cn("flex flex-wrap gap-3", useMinimalGuidedChrome ? "mt-6" : "mt-8")}>
@@ -236,12 +300,12 @@ export function OperationsShell({
                     <a className={buttonVariants({ size: "sm" })} href="#proposal-review-action">
                       {copy.shell.startTheFlow}
                     </a>
-                    <Link className={buttonVariants({ size: "sm", variant: "secondary" })} href="/live">
-                      {copy.shell.openLiveState}
+                    <Link className={buttonVariants({ size: "sm", variant: "secondary" })} href="/execute">
+                      Open execute
                     </Link>
-                    <Link className={buttonVariants({ size: "sm", variant: "outline" })} href="/trust">
-                      <span className="hidden sm:inline">{copy.shell.openTrustOnlyIfNeeded}</span>
-                      <span className="sm:hidden">{copy.chrome.trust}</span>
+                    <Link className={buttonVariants({ size: "sm", variant: "outline" })} href="/proof">
+                      <span className="hidden sm:inline">Open proof</span>
+                      <span className="sm:hidden">Proof</span>
                     </Link>
                   </>
                 ) : (
@@ -249,12 +313,12 @@ export function OperationsShell({
                     <Link className={buttonVariants({ size: "sm" })} href="/govern">
                       {copy.shell.openGovern}
                     </Link>
-                    <Link className={buttonVariants({ size: "sm", variant: "secondary" })} href="/live">
-                      {copy.shell.openLiveState}
+                    <Link className={buttonVariants({ size: "sm", variant: "secondary" })} href="/execute">
+                      Open execute
                     </Link>
                     {isGuidedRoute ? (
-                      <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }), "hidden sm:inline-flex")} href="/trust">
-                        {copy.shell.openTrustOnlyIfNeeded}
+                      <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }), "hidden sm:inline-flex")} href="/proof">
+                        Open proof
                       </Link>
                     ) : (
                       <Link className={buttonVariants({ size: "sm", variant: "outline" })} href="/documents">

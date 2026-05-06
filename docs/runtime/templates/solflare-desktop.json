@@ -5,12 +5,12 @@
   "environmentType": "desktop-browser",
   "os": "fill-with-real-os",
   "browserOrClient": "fill-with-real-browser",
-  "network": "devnet",
+  "network": "testnet",
   "connectResult": "success",
   "signingResult": "success",
   "submissionResult": "success",
   "diagnosticsSnapshotCaptured": true,
-  "txSignature": "fill-with-real-devnet-signature",
+  "txSignature": "fill-with-real-runtime-signature",
   "errorMessage": null,
   "evidenceRefs": [
     "screenshots/solflare-desktop-connect.png"

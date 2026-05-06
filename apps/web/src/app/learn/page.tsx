@@ -2,13 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { GettingStartedWorkspace } from "@/components/getting-started-workspace";
+import { GuidedOperationRail } from "@/components/guided-operation-rail";
 import { LearnBootcampNav } from "@/components/learn-bootcamp-nav";
 import { LocalizedRouteBrief } from "@/components/localized-route-brief";
 import { LocalizedRouteSummary } from "@/components/localized-route-summary";
+import { OperatingJourneyStrip } from "@/components/operating-journey-strip";
 import { OperationsShell } from "@/components/operations-shell";
 import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
 import { PrivacySdkApiStarter } from "@/components/privacy-sdk-api-starter";
 import { ProductLearningGuide } from "@/components/product-learning-guide";
+import { PlatformCapabilityStack } from "@/components/platform-capability-stack";
 import { SolanaInfrastructureStack } from "@/components/solana-infrastructure-stack";
 import { WalletConnectButton } from "@/components/wallet-connect-button";
 import { VideoCenter } from "@/components/video-center";
@@ -70,6 +73,12 @@ export default function LearnPage() {
       <LearnBootcampNav />
       <LocalizedRouteSummary routeKey="learn" />
       <LocalizedRouteBrief routeKey="learn" />
+      <GuidedOperationRail current="connect" reviewHref="/intelligence" verifyHref="/proof" />
+      <OperatingJourneyStrip
+        snapshot={runtimeSnapshot}
+        title="Learn the wallet-first cycle before trying the live Testnet routes"
+        description="This learning corridor should end in real product use. Start by understanding the wallet flow, then move through review, signing, and proof from the same browser-first surface."
+      />
       <div className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
         <div className="rounded-[30px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6">
           <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/76">PrivateDAO Frontend Bootcamp</div>
@@ -126,6 +135,38 @@ export default function LearnPage() {
           ))}
         </div>
       </div>
+      <div className="rounded-[30px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6">
+        <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/78">Operating workflows</div>
+        <h2 className="mt-3 text-2xl font-semibold text-white">Three real workflows, one product shell</h2>
+        <p className="mt-3 max-w-4xl text-sm leading-7 text-white/66">
+          Learn should always end in action. Pick a workflow, move to Govern, pass through Intelligence when needed,
+          execute from the wallet, then validate in Proof.
+        </p>
+        <div className="mt-5 grid gap-4 xl:grid-cols-3">
+          {[
+            {
+              title: "Private Treasury & Payroll",
+              detail: "Governed payout operations with stablecoin-aware settlement and verification continuity.",
+              href: "/execute#private-payroll",
+            },
+            {
+              title: "Market Ops DAO",
+              detail: "Treasury rebalance and execution-quality flows linked to route and policy context.",
+              href: "/execute#treasury-rebalance",
+            },
+            {
+              title: "Gaming / Agentic Rewards",
+              detail: "Reward corridors with governance controls and proof-linked runtime traces.",
+              href: "/execute#rewards-gaming",
+            },
+          ].map((workflow) => (
+            <Link key={workflow.title} href={workflow.href} className="rounded-[24px] border border-white/10 bg-black/20 p-5 transition hover:border-cyan-300/24 hover:bg-black/30">
+              <div className="text-base font-medium text-white">{workflow.title}</div>
+              <p className="mt-3 text-sm leading-7 text-white/62">{workflow.detail}</p>
+            </Link>
+          ))}
+        </div>
+      </div>
       <div className="rounded-[30px] border border-emerald-300/18 bg-emerald-300/[0.08] p-6">
         <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-100/78">Interactive learning loop</div>
         <h2 className="mt-3 text-2xl font-semibold text-white">Learn → click → test → run</h2>
@@ -160,6 +201,10 @@ export default function LearnPage() {
           ))}
         </div>
       </div>
+      <PlatformCapabilityStack
+        title="How each lesson maps into a real service layer"
+        description="The learning route should end in product execution, proof, and reusable service understanding. This layer shows exactly where each capability becomes real inside PrivateDAO."
+      />
       <PrivacyPolicySelector />
       <PrivacySdkApiStarter compact />
       <div className="grid gap-4 xl:grid-cols-2">

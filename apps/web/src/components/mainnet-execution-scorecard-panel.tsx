@@ -26,7 +26,7 @@ export function MainnetExecutionScorecardPanel() {
               {snapshot.launchOps.repoDocumented + snapshot.launchOps.repoDefined + snapshot.launchOps.devnetProven}/{snapshot.launchOps.total}
             </div>
             <div className="mt-3 text-sm leading-7 text-white/60">
-              Documented, defined, or Devnet-proven launch steps already exist in the repo and can be reviewed now.
+              Documented, defined, or Testnet-proven launch steps already exist in the repo and can be reviewed now.
             </div>
           </div>
 

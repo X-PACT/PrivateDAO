@@ -425,7 +425,7 @@ pub fn fund_reveal_rebate_vault_v3(
     }
     transfer(
         CpiContext::new(
-            ctx.accounts.system_program.to_account_info(),
+            ctx.accounts.system_program.key(),
             Transfer {
                 from: ctx.accounts.funder.to_account_info(),
                 to: ctx.accounts.reveal_rebate_vault.to_account_info(),

@@ -24,9 +24,9 @@ The work demonstrates:
 - Program source: `programs/private-dao/src/lib.rs`
 - Full lifecycle test: `tests/full-flow-test.ts`
 
-## Leadership And Contact
+## Operating Contact
 
-PrivateDAO is produced with execution support from a multi-national technical team. **Fahd Kotb** leads product direction, execution accountability, and external coordination for the work.
+PrivateDAO development is maintained in public through **[X-PACT/PrivateDAO](https://github.com/X-PACT/PrivateDAO)**. Use the contact surface below for investment, strategic help, integrations, pilots, or operator coordination around the live product.
 
 - Primary email: [fahd.kotb@tuta.io](mailto:fahd.kotb@tuta.io)
 - Operations email: [i.kotb@proton.me](mailto:i.kotb@proton.me)
@@ -34,5 +34,4 @@ PrivateDAO is produced with execution support from a multi-national technical te
 - WhatsApp: [+20 112 403 0209](https://wa.me/201124030209)
 - Telegram: [@Fahdkotb](https://t.me/Fahdkotb)
 - Discord: [PrivateDAO community server](https://discord.gg/PbM8BC2A)
-- X: [@FahdX369](https://x.com/FahdX369)
-- Leadership packet: [docs/ownership-and-contact.md](ownership-and-contact.md)
+- Operating contact packet: [docs/ownership-and-contact.md](ownership-and-contact.md)

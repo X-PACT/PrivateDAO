@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-20T11:40:01.799Z`
+- generated at: `2026-04-22T00:24:58.693Z`
 - track slug: `privacy-track`
 - sponsor: `MagicBlock and privacy-aligned partners`
 - objective: Show PrivateDAO as the clearest privacy-native governance and confidential treasury product in the field.

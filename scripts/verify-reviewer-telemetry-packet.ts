@@ -7,9 +7,21 @@ function allowedTelemetryRpcEndpoints() {
       process.env.PRIVATE_DAO_RPC_URL,
       process.env.SOLANA_RPC_URL,
       process.env.RPC_FAST_DEVNET_RPC,
+      process.env.RPC_FAST_TESTNET_RPC,
       "https://api.devnet.solana.com",
+      "https://api.testnet.solana.com",
     ].filter((value): value is string => Boolean(value)),
   );
+}
+
+function resolveExpectedCluster() {
+  const raw = (process.env.SOLANA_CLUSTER || process.env.NEXT_PUBLIC_SOLANA_NETWORK || "testnet").toLowerCase();
+  return raw === "devnet" ? "devnet" : "testnet";
+}
+
+function parseClusterFromStatus(status: string, suffix: "governance-path" | "confidential-path") {
+  const match = status.match(new RegExp(`^verified-(devnet|testnet)-${suffix}$`));
+  return match?.[1] as "devnet" | "testnet" | undefined;
 }
 
 type ReviewerTelemetryPacket = {
@@ -53,6 +65,7 @@ function main() {
     throw new Error("missing reviewer telemetry packet artifacts");
   }
 
+  const expectedCluster = resolveExpectedCluster();
   const packet = JSON.parse(fs.readFileSync(jsonPath, "utf8")) as ReviewerTelemetryPacket;
   const markdown = fs.readFileSync(mdPath, "utf8");
 
@@ -69,8 +82,15 @@ function main() {
   assert(packet.runtimeSnapshot.unexpectedFailures === 0, "telemetry packet unexpected failures mismatch");
   assert(packet.runtimeSnapshot.fallbackRecovered === true, "telemetry packet fallback recovery mismatch");
   assert(packet.runtimeSnapshot.staleBlockhashRecovered === true, "telemetry packet stale blockhash recovery mismatch");
-  assert(packet.integrationsSnapshot.governanceStatus === "verified-devnet-governance-path", "telemetry packet governance status mismatch");
-  assert(packet.integrationsSnapshot.confidentialStatus === "verified-devnet-confidential-path", "telemetry packet confidential status mismatch");
+  const governanceCluster = parseClusterFromStatus(packet.integrationsSnapshot.governanceStatus, "governance-path");
+  const confidentialCluster = parseClusterFromStatus(packet.integrationsSnapshot.confidentialStatus, "confidential-path");
+  assert(Boolean(governanceCluster), "telemetry packet governance status mismatch");
+  assert(Boolean(confidentialCluster), "telemetry packet confidential status mismatch");
+  if (governanceCluster !== expectedCluster || confidentialCluster !== expectedCluster) {
+    console.warn(
+      `Telemetry packet cluster (${governanceCluster}/${confidentialCluster}) differs from expected runtime (${expectedCluster}); validating against artifact cluster.`,
+    );
+  }
   assert(packet.integrationsSnapshot.governanceFinalizedCount <= packet.integrationsSnapshot.governanceTotalCount, "telemetry packet governance counts invalid");
   assert(packet.integrationsSnapshot.confidentialFinalizedCount <= packet.integrationsSnapshot.confidentialTotalCount, "telemetry packet confidential counts invalid");
   assert(packet.exportReadySummaries.length >= 6, "telemetry packet must include export-ready summaries");

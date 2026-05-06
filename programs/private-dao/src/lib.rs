@@ -19,7 +19,7 @@ pub use utils::{
     validate_voting_config,
 };
 
-declare_id!("5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx");
+declare_id!("EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva");
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  PrivateDAO — Commit-reveal governance for Solana

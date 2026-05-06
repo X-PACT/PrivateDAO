@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-04-20T11:35:32.016Z",
+  "generatedAt": "2026-04-28T23:33:45.971Z",
   "readPath": "backend-indexer",
   "runtime": {
-    "generatedAt": "2026-04-20T11:35:28.506Z",
+    "generatedAt": "2026-04-28T23:33:42.327Z",
     "readPath": "backend-indexer",
     "rpcEndpoint": "https://api.devnet.solana.com",
     "rpcPoolSize": 2,
     "commitment": "confirmed",
     "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
-    "slot": 456829506,
+    "slot": 458767709,
     "solanaCore": "4.0.0-beta.6",
     "featureSet": 2475355604,
-    "latestBlockhash": "9E21SXuUkz8G9NsPNEStzfbToRMry4bgpSCk4miKyXLx",
-    "lastValidBlockHeight": 444698168,
+    "latestBlockhash": "HAuebzN7xk39N8wJWJDeqFTPyLtVbNzcbsHXPMppHcgP",
+    "lastValidBlockHeight": 446634308,
     "programExecutable": true,
     "programOwner": "BPFLoaderUpgradeab1e11111111111111111111111",
     "cacheTtlMs": 15000
@@ -31,7 +31,7 @@
     "uniqueDaos": 28
   },
   "overview": {
-    "generatedAt": "2026-04-20T11:35:31.901Z",
+    "generatedAt": "2026-04-28T23:33:45.851Z",
     "proposals": 48,
     "uniqueDaos": 28,
     "zkEnforced": 0,
@@ -911,7 +911,7 @@
       "presentationTreasury": "0.02 SOL sent to AbF9…FWDy",
       "phaseMappingLabel": "Executed indexed phase maps to Executed in the product surface",
       "txContext": {
-        "proofStatus": "verified-devnet-governance-path",
+        "proofStatus": "verified-testnet-governance-path",
         "evidenceRoute": "/documents/reviewer-fast-path",
         "createProposalSignature": "u7V1B5cUx91KY69pE9JSMfkAt9SFcVZbDrP9Nsv3XqatNHfr1P2jZwKkaCHCZuPyqm4WJgmH8w8SDUQoJQc938S",
         "commitSignature": "67fRsWN8qcndxA8Cb7navZ77BnnLwj4msbNnffcYrwfiv924LKW8vyWu31GRi7AXVfMjGuHytkt8JN5jFKNzCwoR",
@@ -1397,7 +1397,7 @@
         "presentationTreasury": "0.02 SOL sent to 63Y4…bzDp",
         "phaseMappingLabel": "Executed indexed phase maps to Executed in the product surface",
         "txContext": {
-          "proofStatus": "verified-devnet-governance-path",
+          "proofStatus": "verified-testnet-governance-path",
           "evidenceRoute": "/documents/reviewer-fast-path",
           "createProposalSignature": "4imUGYMcq9qvSBB62kdv5mUTwkmqs5umcDNcRX7QozGbJFwhqdyL4U6Xjy8n1MAvrarD6zp6FNNqQudV8VFRKx4B",
           "commitSignature": "3tJAvoQBMtL4F9F5yokNisJ79LFLWNm3oFTiUmzHXQ7o39UYSd1ZFFLtECwYKJsGyvkWWbkGu2vDeLPk9odYaqKM",
@@ -1576,7 +1576,7 @@
         "presentationTreasury": "0.02 SOL sent to ALho…oSjm",
         "phaseMappingLabel": "Executed indexed phase maps to Executed in the product surface",
         "txContext": {
-          "proofStatus": "verified-devnet-governance-path",
+          "proofStatus": "verified-testnet-governance-path",
           "evidenceRoute": "/documents/reviewer-fast-path",
           "createProposalSignature": "2WyVybfgZhf46oXR3SyJ9Wqry6cChX2vMkPukoywSgPURg5WqBLqFzqWrq7BnaRwGFSGrqGLv9vPyWQAkKbyguSz",
           "commitSignature": "5sBeCvzxDkn6Bbs2LzGDn3XAC2KyX4WA17k4xR2kgnYo7PeKLMGmo6fD3j4HJ49hdsWKkd4ctf6YRRYFSuQbvkCy",
@@ -2142,7 +2142,7 @@
         "presentationTreasury": "0.02 SOL sent to AbF9…FWDy",
         "phaseMappingLabel": "Executed indexed phase maps to Executed in the product surface",
         "txContext": {
-          "proofStatus": "verified-devnet-governance-path",
+          "proofStatus": "verified-testnet-governance-path",
           "evidenceRoute": "/documents/reviewer-fast-path",
           "createProposalSignature": "u7V1B5cUx91KY69pE9JSMfkAt9SFcVZbDrP9Nsv3XqatNHfr1P2jZwKkaCHCZuPyqm4WJgmH8w8SDUQoJQc938S",
           "commitSignature": "67fRsWN8qcndxA8Cb7navZ77BnnLwj4msbNnffcYrwfiv924LKW8vyWu31GRi7AXVfMjGuHytkt8JN5jFKNzCwoR",
@@ -3143,7 +3143,7 @@
         "presentationTreasury": "0.02 SOL sent to AbF9…FWDy",
         "phaseMappingLabel": "Executed indexed phase maps to Executed in the product surface",
         "txContext": {
-          "proofStatus": "verified-devnet-governance-path",
+          "proofStatus": "verified-testnet-governance-path",
           "evidenceRoute": "/documents/reviewer-fast-path",
           "createProposalSignature": "u7V1B5cUx91KY69pE9JSMfkAt9SFcVZbDrP9Nsv3XqatNHfr1P2jZwKkaCHCZuPyqm4WJgmH8w8SDUQoJQc938S",
           "commitSignature": "67fRsWN8qcndxA8Cb7navZ77BnnLwj4msbNnffcYrwfiv924LKW8vyWu31GRi7AXVfMjGuHytkt8JN5jFKNzCwoR",

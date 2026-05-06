@@ -446,7 +446,7 @@ pub fn execute_proposal(ctx: Context<ExecuteProposal>) -> Result<()> {
                 );
                 transfer(
                     CpiContext::new_with_signer(
-                        ctx.accounts.system_program.to_account_info(),
+                        ctx.accounts.system_program.key(),
                         Transfer {
                             from: ctx.accounts.treasury.to_account_info(),
                             to: ctx.accounts.treasury_recipient.to_account_info(),
@@ -510,7 +510,7 @@ pub fn execute_proposal(ctx: Context<ExecuteProposal>) -> Result<()> {
                 #[allow(deprecated)]
                 token_interface::transfer(
                     CpiContext::new_with_signer(
-                        ctx.accounts.token_program.to_account_info(),
+                        ctx.accounts.token_program.key(),
                         TokenTransfer {
                             from: ctx.accounts.treasury_token_account.to_account_info(),
                             to: ctx.accounts.recipient_token_account.to_account_info(),
@@ -626,7 +626,7 @@ pub fn execute_confidential_payout_plan(
             );
             transfer(
                 CpiContext::new_with_signer(
-                    ctx.accounts.system_program.to_account_info(),
+                    ctx.accounts.system_program.key(),
                     Transfer {
                         from: ctx.accounts.treasury.to_account_info(),
                         to: ctx.accounts.settlement_recipient.to_account_info(),
@@ -688,7 +688,7 @@ pub fn execute_confidential_payout_plan(
             #[allow(deprecated)]
             token_interface::transfer(
                 CpiContext::new_with_signer(
-                    ctx.accounts.token_program.to_account_info(),
+                    ctx.accounts.token_program.key(),
                     TokenTransfer {
                         from: ctx.accounts.treasury_token_account.to_account_info(),
                         to: ctx.accounts.recipient_token_account.to_account_info(),
@@ -789,7 +789,7 @@ pub fn execute_confidential_payout_plan_v2(
             );
             transfer(
                 CpiContext::new_with_signer(
-                    ctx.accounts.system_program.to_account_info(),
+                    ctx.accounts.system_program.key(),
                     Transfer {
                         from: ctx.accounts.treasury.to_account_info(),
                         to: ctx.accounts.settlement_recipient.to_account_info(),
@@ -851,7 +851,7 @@ pub fn execute_confidential_payout_plan_v2(
             #[allow(deprecated)]
             token_interface::transfer(
                 CpiContext::new_with_signer(
-                    ctx.accounts.token_program.to_account_info(),
+                    ctx.accounts.token_program.key(),
                     TokenTransfer {
                         from: ctx.accounts.treasury_token_account.to_account_info(),
                         to: ctx.accounts.recipient_token_account.to_account_info(),
@@ -1037,7 +1037,7 @@ pub fn execute_confidential_payout_plan_v3(
             );
             transfer(
                 CpiContext::new_with_signer(
-                    ctx.accounts.system_program.to_account_info(),
+                    ctx.accounts.system_program.key(),
                     Transfer {
                         from: ctx.accounts.treasury.to_account_info(),
                         to: ctx.accounts.settlement_recipient.to_account_info(),
@@ -1099,7 +1099,7 @@ pub fn execute_confidential_payout_plan_v3(
             #[allow(deprecated)]
             token_interface::transfer(
                 CpiContext::new_with_signer(
-                    ctx.accounts.token_program.to_account_info(),
+                    ctx.accounts.token_program.key(),
                     TokenTransfer {
                         from: ctx.accounts.treasury_token_account.to_account_info(),
                         to: ctx.accounts.recipient_token_account.to_account_info(),
@@ -1148,7 +1148,7 @@ pub fn deposit_treasury(ctx: Context<DepositTreasury>, amount: u64) -> Result<()
     require!(amount > 0, Error::InvalidTreasuryAction);
     transfer(
         CpiContext::new(
-            ctx.accounts.system_program.to_account_info(),
+            ctx.accounts.system_program.key(),
             Transfer {
                 from: ctx.accounts.depositor.to_account_info(),
                 to: ctx.accounts.treasury.to_account_info(),

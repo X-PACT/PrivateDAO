@@ -2,6 +2,7 @@
 
 import { startTransition, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Activity, ArrowUpRight, ChevronRight, FilePlus2, Flag, FolderPlus, ListChecks, Play, ShieldCheck, Vote, Wallet } from "lucide-react";
@@ -31,6 +32,8 @@ import {
 import { buildServiceHandoffQuery } from "@/lib/service-handoff-state";
 import { getProposalById, type ProposalCardModel } from "@/lib/site-data";
 import { SOLANA_NETWORK_LABEL } from "@/lib/solana-network";
+import { persistOperationReceipt } from "@/lib/supabase/operation-receipts";
+import { getTreasuryReceiveConfig } from "@/lib/treasury-receive-config";
 import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
 import { cn } from "@/lib/utils";
 
@@ -40,6 +43,99 @@ const voteChoices = ["Approve", "Reject"] as const;
 const LIVE_TESTNET_VOTING_DURATION_SECONDS = 180;
 const LIVE_TESTNET_REVEAL_WINDOW_SECONDS = 180;
 const LIVE_TESTNET_EXECUTION_DELAY_SECONDS = 30;
+type GovernPackKey =
+  | "payroll-pack"
+  | "vendor-pack"
+  | "treasury-rebalance-pack"
+  | "market-execution-pack"
+  | "rewards-pack";
+
+type GovernPackPreset = {
+  proposalTitle: string;
+  treasuryMode: "standard" | "sol" | "token";
+  treasuryRecipient: string;
+  treasuryAmount: string;
+  treasuryTokenMint: string;
+};
+
+function resolveGovernPackPreset(pack: GovernPackKey): GovernPackPreset {
+  const treasuryConfig = getTreasuryReceiveConfig();
+  const solAsset = treasuryConfig.assets.find((asset) => asset.symbol === "SOL");
+  const pusdAsset = treasuryConfig.assets.find((asset) => asset.symbol === "PUSD");
+  const auddAsset = treasuryConfig.assets.find((asset) => asset.symbol === "AUDD");
+
+  if (pack === "payroll-pack") {
+    if (pusdAsset?.mint) {
+      return {
+        proposalTitle: "Payroll Pack · Confidential contributor cycle",
+        treasuryMode: "token",
+        treasuryRecipient: pusdAsset.receiveAddress,
+        treasuryAmount: "1000000",
+        treasuryTokenMint: pusdAsset.mint,
+      };
+    }
+    return {
+      proposalTitle: "Payroll Pack · Confidential contributor cycle",
+      treasuryMode: "sol",
+      treasuryRecipient: solAsset?.receiveAddress ?? treasuryConfig.treasuryAddress,
+      treasuryAmount: "0.005",
+      treasuryTokenMint: "",
+    };
+  }
+
+  if (pack === "vendor-pack") {
+    if (auddAsset?.mint) {
+      return {
+        proposalTitle: "Vendor Pack · Invoice-linked settlement",
+        treasuryMode: "token",
+        treasuryRecipient: auddAsset.receiveAddress,
+        treasuryAmount: "3000000",
+        treasuryTokenMint: auddAsset.mint,
+      };
+    }
+    return {
+      proposalTitle: "Vendor Pack · Invoice-linked settlement",
+      treasuryMode: "sol",
+      treasuryRecipient: solAsset?.receiveAddress ?? treasuryConfig.treasuryAddress,
+      treasuryAmount: "0.004",
+      treasuryTokenMint: "",
+    };
+  }
+
+  if (pack === "treasury-rebalance-pack") {
+    return {
+      proposalTitle: "Treasury Rebalance Pack · Route-quality controlled shift",
+      treasuryMode: "standard",
+      treasuryRecipient: "",
+      treasuryAmount: "",
+      treasuryTokenMint: "",
+    };
+  }
+
+  if (pack === "market-execution-pack") {
+    return {
+      proposalTitle: "Market Execution Pack · Policy-constrained route",
+      treasuryMode: "standard",
+      treasuryRecipient: "",
+      treasuryAmount: "",
+      treasuryTokenMint: "",
+    };
+  }
+
+  return {
+    proposalTitle: "Rewards Pack · Gaming and operator incentives",
+    treasuryMode: "sol",
+    treasuryRecipient: solAsset?.receiveAddress ?? treasuryConfig.treasuryAddress,
+    treasuryAmount: "0.003",
+    treasuryTokenMint: "",
+  };
+}
+
+function inferStablecoinSymbol(tokenMint: string) {
+  const normalized = tokenMint.trim();
+  if (!normalized) return "SOL";
+  return "TOKEN";
+}
 
 function resolveStagedReviewAction(proposal: ProposalCardModel | null): CoreGovernanceInstructionName {
   if (!proposal) return "commit_vote";
@@ -251,7 +347,63 @@ function ActionFollowUpRail({
   );
 }
 
+function RuntimeStatusPanel({
+  status,
+  message,
+  signature,
+  lines = [],
+  reviewHref = "/proof",
+  reviewLabel = "Open proof",
+  nextHref = "/judge",
+  nextLabel = "Open verification route",
+}: {
+  status: "idle" | "submitting" | "success" | "error";
+  message: string;
+  signature?: string;
+  lines?: string[];
+  reviewHref?: string;
+  reviewLabel?: string;
+  nextHref?: string;
+  nextLabel?: string;
+}) {
+  if (status === "idle" || !message) return null;
+
+  return (
+    <div
+      className={cn(
+        "mt-4 rounded-2xl border p-4 text-sm leading-7",
+        status === "error"
+          ? "border-rose-300/18 bg-rose-300/10 text-rose-100/84"
+          : status === "success"
+            ? "border-emerald-300/18 bg-emerald-300/[0.08] text-emerald-100/84"
+            : "border-cyan-300/16 bg-cyan-300/[0.08] text-cyan-100/84",
+      )}
+    >
+      <div>{message}</div>
+      {lines.map((line) => (
+        <div key={line} className="mt-2 break-all text-xs text-white/70">
+          {line}
+        </div>
+      ))}
+      {signature ? (
+        <div className="mt-1 break-all text-xs text-white/70">
+          Signature: {signature}
+        </div>
+      ) : null}
+      <div className="mt-3 flex flex-wrap gap-3">
+        <Link href={reviewHref} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+          {reviewLabel}
+        </Link>
+        <Link href={nextHref} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+          {nextLabel}
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 export function GovernanceActionWorkbench() {
+  const searchParams = useSearchParams();
   const [reviewAction, setReviewAction] = useState<CoreGovernanceInstructionName | null>(null);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [createDaoRuntime, setCreateDaoRuntime] = useState<{
@@ -423,6 +575,7 @@ export function GovernanceActionWorkbench() {
   const handoff = useServiceHandoffSnapshot("command-center");
   const appliedReviewRef = useRef<string | null>(null);
   const autoOpenReviewRef = useRef<string | null>(null);
+  const appliedPackRef = useRef<string | null>(null);
   const stagedProposal = handoff?.proposalId ? getProposalById(handoff.proposalId) ?? null : null;
   const continuityRequestPayload = handoff?.requestPayload ?? null;
   const stagedReviewAction = resolveStagedReviewAction(stagedProposal);
@@ -577,6 +730,40 @@ export function GovernanceActionWorkbench() {
     effectiveVoteRevealed,
     finalizeRuntime.status,
     revealVoteRuntime.status,
+  ]);
+
+  useEffect(() => {
+    const packParam = searchParams.get("pack") as GovernPackKey | null;
+    if (!packParam || proposalCreated || appliedPackRef.current === packParam) return;
+    if (
+      packParam !== "payroll-pack" &&
+      packParam !== "vendor-pack" &&
+      packParam !== "treasury-rebalance-pack" &&
+      packParam !== "market-execution-pack" &&
+      packParam !== "rewards-pack"
+    ) {
+      return;
+    }
+
+    const preset = resolveGovernPackPreset(packParam);
+    setProposalTitle(preset.proposalTitle);
+    setProposalTreasuryMode(preset.treasuryMode);
+    setProposalTreasuryRecipient(preset.treasuryRecipient);
+    setProposalTreasuryAmountSol(preset.treasuryAmount);
+    setProposalTreasuryTokenMint(preset.treasuryTokenMint);
+    setVoteChoice("Approve");
+    recordLog("Policy pack applied", `${packParam} loaded into the govern form preset lane.`);
+    appliedPackRef.current = packParam;
+  }, [
+    proposalCreated,
+    recordLog,
+    searchParams,
+    setProposalTitle,
+    setProposalTreasuryAmountSol,
+    setProposalTreasuryMode,
+    setProposalTreasuryRecipient,
+    setProposalTreasuryTokenMint,
+    setVoteChoice,
   ]);
 
   useEffect(() => {
@@ -855,6 +1042,21 @@ export function GovernanceActionWorkbench() {
         governanceMint: bootstrap.governanceMint.toBase58(),
         signature,
       });
+      void persistOperationReceipt({
+        operationType: "create_dao",
+        proposalId: "dao-bootstrap",
+        daoAddress: bootstrap.dao.toBase58(),
+        approvalState: "dao-created",
+        executionReference: signature,
+        privateSettlementRail: "standard",
+        stablecoinSymbol: "SOL",
+        auditMode: "admin",
+        recipientVisibility: "public-governance",
+        metadata: {
+          network: SOLANA_NETWORK_LABEL,
+          governanceMint: bootstrap.governanceMint.toBase58(),
+        },
+      });
     } catch (error) {
       const message =
         error instanceof Error && error.message
@@ -971,6 +1173,26 @@ export function GovernanceActionWorkbench() {
         proposalAddress: proposalSubmission.proposal.toBase58(),
         signature,
       });
+      void persistOperationReceipt({
+        operationType: "create_proposal",
+        proposalId: proposalSubmission.proposal.toBase58(),
+        daoAddress: proposalSubmission.dao.toBase58(),
+        approvalState: "proposal-created",
+        executionReference: signature,
+        privateSettlementRail: proposalTreasuryDraft.action ? "proposal-treasury" : "standard",
+        stablecoinSymbol:
+          proposalTreasuryDraft.action?.actionType === "SendToken"
+            ? inferStablecoinSymbol(proposalTreasuryTokenMint)
+            : "SOL",
+        auditMode: "admin",
+        recipientVisibility: proposalTreasuryDraft.action ? "policy-bound" : "public-governance",
+        metadata: {
+          network: SOLANA_NETWORK_LABEL,
+          proposalTitle: proposalTitle.trim(),
+          treasuryMode: proposalTreasuryMode,
+          treasuryRecipient: proposalTreasuryRecipient.trim() || null,
+        },
+      });
     } catch (error) {
       const message = describeWalletActionError(
         error,
@@ -1060,6 +1282,22 @@ export function GovernanceActionWorkbench() {
         saltHex: toHex(salt),
         signature,
       });
+      void persistOperationReceipt({
+        operationType: "commit_vote",
+        proposalId: proposalAddress.toBase58(),
+        daoAddress: activeLiveDaoRuntime.address,
+        approvalState: "commit-recorded",
+        executionReference: signature,
+        privateSettlementRail: "commit-reveal",
+        stablecoinSymbol: "SOL",
+        auditMode: "admin",
+        recipientVisibility: "private-vote",
+        metadata: {
+          network: SOLANA_NETWORK_LABEL,
+          voteChoice,
+          commitmentHex: toHex(commitment),
+        },
+      });
     } catch (error) {
       setCommitVoteRuntime({
         status: "error",
@@ -1129,6 +1367,21 @@ export function GovernanceActionWorkbench() {
         message: `Reveal submitted live on ${SOLANA_NETWORK_LABEL} from the stored vote preimage.`,
         signature,
       });
+      void persistOperationReceipt({
+        operationType: "reveal_vote",
+        proposalId: proposalAddress.toBase58(),
+        daoAddress: activeLiveDaoRuntime?.address,
+        approvalState: "reveal-recorded",
+        executionReference: signature,
+        privateSettlementRail: "commit-reveal",
+        stablecoinSymbol: "SOL",
+        auditMode: "admin",
+        recipientVisibility: "private-vote",
+        metadata: {
+          network: SOLANA_NETWORK_LABEL,
+          voteChoice: liveVoteRuntime.voteChoice,
+        },
+      });
     } catch (error) {
       setRevealVoteRuntime({
         status: "error",
@@ -1187,6 +1440,20 @@ export function GovernanceActionWorkbench() {
         status: "success",
         message: `Finalize submitted live on ${SOLANA_NETWORK_LABEL} for the current proposal lane.`,
         signature,
+      });
+      void persistOperationReceipt({
+        operationType: "finalize_proposal",
+        proposalId: proposalAddress.toBase58(),
+        daoAddress: activeLiveDaoRuntime.address,
+        approvalState: "proposal-finalized",
+        executionReference: signature,
+        privateSettlementRail: "standard",
+        stablecoinSymbol: "SOL",
+        auditMode: "admin",
+        recipientVisibility: "public-governance",
+        metadata: {
+          network: SOLANA_NETWORK_LABEL,
+        },
       });
     } catch (error) {
       setFinalizeRuntime({
@@ -1274,6 +1541,30 @@ export function GovernanceActionWorkbench() {
               ? `Treasury execute submitted live on ${SOLANA_NETWORK_LABEL}. ${proposalDetails.treasuryAction.amountSol} SOL will settle to ${proposalDetails.treasuryAction.recipient}.`
           : `Standard execute submitted live on ${SOLANA_NETWORK_LABEL}. This current web proposal lane carries no treasury action, so execute closes the lifecycle without moving treasury funds.`,
         signature,
+      });
+      void persistOperationReceipt({
+        operationType: "execute_proposal",
+        proposalId: proposalAddress.toBase58(),
+        daoAddress: activeLiveDaoRuntime.address,
+        approvalState: proposalDetails.status,
+        executionReference: signature,
+        privateSettlementRail:
+          proposalDetails.treasuryAction?.actionType === "SendToken"
+            ? "token-treasury"
+            : proposalDetails.treasuryAction
+              ? "sol-treasury"
+              : "standard",
+        stablecoinSymbol:
+          proposalDetails.treasuryAction?.actionType === "SendToken" && proposalDetails.treasuryAction.tokenMint
+            ? inferStablecoinSymbol(proposalDetails.treasuryAction.tokenMint)
+            : "SOL",
+        auditMode: "selective-disclosure",
+        recipientVisibility: proposalDetails.treasuryAction ? "private-by-default" : "public-governance",
+        metadata: {
+          network: SOLANA_NETWORK_LABEL,
+          timelockUnlocksAt: proposalDetails.executionUnlocksAt,
+          treasuryAction: proposalDetails.treasuryAction ?? null,
+        },
       });
     } catch (error) {
       setExecuteRuntime({
@@ -1636,40 +1927,20 @@ export function GovernanceActionWorkbench() {
             <Button className="mt-4 w-full" disabled={!canCreateDao} onClick={() => openReview("initialize_dao")}>
               {createDaoRuntime.status === "submitting" ? "Awaiting wallet..." : "Create DAO on Testnet"}
             </Button>
-            {createDaoRuntime.message ? (
-              <div
-                className={cn(
-                  "mt-4 rounded-2xl border p-4 text-sm leading-7",
-                  createDaoRuntime.status === "error"
-                    ? "border-rose-300/18 bg-rose-300/10 text-rose-100/84"
-                    : createDaoRuntime.status === "success"
-                      ? "border-emerald-300/18 bg-emerald-300/[0.08] text-emerald-100/84"
-                      : "border-cyan-300/16 bg-cyan-300/[0.08] text-cyan-100/84",
-                )}
-              >
-                <div>{createDaoRuntime.message}</div>
-                {createDaoRuntime.daoAddress ? (
-                  <div className="mt-2 break-all text-xs text-white/70">
-                    DAO: {createDaoRuntime.daoAddress}
-                  </div>
-                ) : null}
-                {createDaoRuntime.governanceMint ? (
-                  <div className="mt-1 break-all text-xs text-white/70">
-                    Governance mint: {createDaoRuntime.governanceMint}
-                  </div>
-                ) : null}
-                {createDaoRuntime.authority ? (
-                  <div className="mt-1 break-all text-xs text-white/55">
-                    Wallet: {createDaoRuntime.authority}
-                  </div>
-                ) : null}
-                {createDaoRuntime.signature ? (
-                  <div className="mt-1 break-all text-xs text-white/70">
-                    Signature: {createDaoRuntime.signature}
-                  </div>
-                ) : null}
-              </div>
-            ) : null}
+            <RuntimeStatusPanel
+              status={createDaoRuntime.status}
+              message={createDaoRuntime.message}
+              signature={createDaoRuntime.signature}
+              lines={[
+                createDaoRuntime.daoAddress ? `DAO: ${createDaoRuntime.daoAddress}` : "",
+                createDaoRuntime.governanceMint ? `Governance mint: ${createDaoRuntime.governanceMint}` : "",
+                createDaoRuntime.authority ? `Wallet: ${createDaoRuntime.authority}` : "",
+              ].filter(Boolean)}
+              reviewHref="/live"
+              reviewLabel="Open live state"
+              nextHref="/proof"
+              nextLabel="Open proof"
+            />
           </div>
           ) : null}
 
@@ -1755,24 +2026,16 @@ export function GovernanceActionWorkbench() {
                   Create Proposal
                 </Button>
                 {createProposalRuntime.status !== "idle" ? (
-                  <div
-                    className={cn(
-                      "mt-4 rounded-2xl border p-3 text-sm leading-7",
-                      createProposalRuntime.status === "error"
-                        ? "border-rose-300/20 bg-rose-300/[0.08] text-rose-100/82"
-                        : createProposalRuntime.status === "success"
-                          ? "border-emerald-300/18 bg-emerald-300/[0.08] text-emerald-100/82"
-                          : "border-cyan-300/18 bg-cyan-300/[0.08] text-cyan-100/82",
-                    )}
-                  >
-                    <div>{createProposalRuntime.message}</div>
-                    {createProposalRuntime.proposalAddress ? (
-                      <div className="mt-2 break-all text-white/70">Proposal {createProposalRuntime.proposalAddress}</div>
-                    ) : null}
-                    {createProposalRuntime.signature ? (
-                      <div className="mt-1 break-all text-white/60">Signature {createProposalRuntime.signature}</div>
-                    ) : null}
-                  </div>
+                  <RuntimeStatusPanel
+                    status={createProposalRuntime.status}
+                    message={createProposalRuntime.message}
+                    signature={createProposalRuntime.signature}
+                    lines={[createProposalRuntime.proposalAddress ? `Proposal: ${createProposalRuntime.proposalAddress}` : ""].filter(Boolean)}
+                    reviewHref="/live"
+                    reviewLabel="Open live state"
+                    nextHref="/proof"
+                    nextLabel="Open proof"
+                  />
                 ) : liveDaoWalletMismatch ? (
                   <div className="mt-4 rounded-2xl border border-amber-300/20 bg-amber-300/[0.08] p-3 text-sm leading-7 text-amber-100/82">
                     <div>This session is carrying a DAO created by another wallet.</div>
@@ -2015,27 +2278,19 @@ export function GovernanceActionWorkbench() {
                   {commitVoteRuntime.status === "submitting" ? "Awaiting wallet..." : "Commit Vote"}
                 </Button>
                 {commitVoteRuntime.status !== "idle" ? (
-                  <div
-                    className={cn(
-                      "mt-4 rounded-2xl border p-3 text-sm leading-7",
-                      commitVoteRuntime.status === "error"
-                        ? "border-rose-300/20 bg-rose-300/[0.08] text-rose-100/82"
-                        : commitVoteRuntime.status === "success"
-                          ? "border-emerald-300/18 bg-emerald-300/[0.08] text-emerald-100/82"
-                          : "border-fuchsia-300/18 bg-fuchsia-300/[0.08] text-fuchsia-100/82",
-                    )}
-                  >
-                    <div>{commitVoteRuntime.message}</div>
-                    {commitVoteRuntime.commitmentHex ? (
-                      <div className="mt-2 break-all text-white/70">Commitment {commitVoteRuntime.commitmentHex}</div>
-                    ) : null}
-                    {commitVoteRuntime.saltHex ? (
-                      <div className="mt-1 break-all text-white/60">Reveal salt {commitVoteRuntime.saltHex}</div>
-                    ) : null}
-                    {commitVoteRuntime.signature ? (
-                      <div className="mt-1 break-all text-white/60">Signature {commitVoteRuntime.signature}</div>
-                    ) : null}
-                  </div>
+                  <RuntimeStatusPanel
+                    status={commitVoteRuntime.status}
+                    message={commitVoteRuntime.message}
+                    signature={commitVoteRuntime.signature}
+                    lines={[
+                      commitVoteRuntime.commitmentHex ? `Commitment: ${commitVoteRuntime.commitmentHex}` : "",
+                      commitVoteRuntime.saltHex ? `Reveal salt: ${commitVoteRuntime.saltHex}` : "",
+                    ].filter(Boolean)}
+                    reviewHref="/proof"
+                    reviewLabel="Open proof"
+                    nextHref="/govern#reveal-vote-action"
+                    nextLabel="Go to reveal"
+                  />
                 ) : liveVoteRuntime ? (
                   <div className="mt-4 rounded-2xl border border-emerald-300/18 bg-emerald-300/[0.08] p-3 text-sm leading-7 text-emerald-100/82">
                     <div>Last live commit is preserved in the session for the reveal lane.</div>
@@ -2114,21 +2369,15 @@ export function GovernanceActionWorkbench() {
                   {revealVoteRuntime.status === "submitting" ? "Awaiting wallet..." : "Reveal Vote"}
                 </Button>
                 {revealVoteRuntime.status !== "idle" ? (
-                  <div
-                    className={cn(
-                      "mt-4 rounded-2xl border p-3 text-sm leading-7",
-                      revealVoteRuntime.status === "error"
-                        ? "border-rose-300/20 bg-rose-300/[0.08] text-rose-100/82"
-                        : revealVoteRuntime.status === "success"
-                          ? "border-emerald-300/18 bg-emerald-300/[0.08] text-emerald-100/82"
-                          : "border-cyan-300/18 bg-cyan-300/[0.08] text-cyan-100/82",
-                    )}
-                  >
-                    <div>{revealVoteRuntime.message}</div>
-                    {revealVoteRuntime.signature ? (
-                      <div className="mt-2 break-all text-white/60">Signature {revealVoteRuntime.signature}</div>
-                    ) : null}
-                  </div>
+                  <RuntimeStatusPanel
+                    status={revealVoteRuntime.status}
+                    message={revealVoteRuntime.message}
+                    signature={revealVoteRuntime.signature}
+                    reviewHref="/proof"
+                    reviewLabel="Open proof"
+                    nextHref="/govern#finalize-proposal-action"
+                    nextLabel="Go to finalize"
+                  />
                 ) : liveVoteRuntime?.revealSignature ? (
                   <div className="mt-4 rounded-2xl border border-emerald-300/18 bg-emerald-300/[0.08] p-3 text-sm leading-7 text-emerald-100/82">
                     <div>Last live reveal cleared from this same web lane.</div>
@@ -2189,21 +2438,15 @@ export function GovernanceActionWorkbench() {
                   {finalizeRuntime.status === "submitting" ? "Awaiting wallet..." : "Finalize Proposal"}
                 </Button>
                 {finalizeRuntime.status !== "idle" ? (
-                  <div
-                    className={cn(
-                      "mt-4 rounded-2xl border p-3 text-sm leading-7",
-                      finalizeRuntime.status === "error"
-                        ? "border-rose-300/20 bg-rose-300/[0.08] text-rose-100/82"
-                        : finalizeRuntime.status === "success"
-                          ? "border-emerald-300/18 bg-emerald-300/[0.08] text-emerald-100/82"
-                          : "border-cyan-300/18 bg-cyan-300/[0.08] text-cyan-100/82",
-                    )}
-                  >
-                    <div>{finalizeRuntime.message}</div>
-                    {finalizeRuntime.signature ? (
-                      <div className="mt-2 break-all text-white/60">Signature {finalizeRuntime.signature}</div>
-                    ) : null}
-                  </div>
+                  <RuntimeStatusPanel
+                    status={finalizeRuntime.status}
+                    message={finalizeRuntime.message}
+                    signature={finalizeRuntime.signature}
+                    reviewHref="/proof"
+                    reviewLabel="Open proof"
+                    nextHref="/govern#execute-proposal-action"
+                    nextLabel="Go to execute"
+                  />
                 ) : liveVoteRuntime?.finalizeSignature ? (
                   <div className="mt-4 rounded-2xl border border-emerald-300/18 bg-emerald-300/[0.08] p-3 text-sm leading-7 text-emerald-100/82">
                     <div>Last live finalize cleared from the current proposal lane.</div>
@@ -2266,21 +2509,15 @@ export function GovernanceActionWorkbench() {
                   {executeRuntime.status === "submitting" ? "Awaiting wallet..." : "Execute Proposal"}
                 </Button>
                 {executeRuntime.status !== "idle" ? (
-                  <div
-                    className={cn(
-                      "mt-4 rounded-2xl border p-3 text-sm leading-7",
-                      executeRuntime.status === "error"
-                        ? "border-rose-300/20 bg-rose-300/[0.08] text-rose-100/82"
-                        : executeRuntime.status === "success"
-                          ? "border-emerald-300/18 bg-emerald-300/[0.08] text-emerald-100/82"
-                          : "border-amber-300/18 bg-amber-300/[0.08] text-amber-100/82",
-                    )}
-                  >
-                    <div>{executeRuntime.message}</div>
-                    {executeRuntime.signature ? (
-                      <div className="mt-2 break-all text-white/60">Signature {executeRuntime.signature}</div>
-                    ) : null}
-                  </div>
+                  <RuntimeStatusPanel
+                    status={executeRuntime.status}
+                    message={executeRuntime.message}
+                    signature={executeRuntime.signature}
+                    reviewHref="/proof"
+                    reviewLabel="Open proof"
+                    nextHref="/judge"
+                    nextLabel="Open verification route"
+                  />
                 ) : liveVoteRuntime?.executeSignature ? (
                   <div className="mt-4 rounded-2xl border border-emerald-300/18 bg-emerald-300/[0.08] p-3 text-sm leading-7 text-emerald-100/82">
                     <div>Last live execute cleared from the current web lane.</div>

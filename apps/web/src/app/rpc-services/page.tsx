@@ -6,13 +6,16 @@ import { OperationsShell } from "@/components/operations-shell";
 import { RpcServicesLivePanel } from "@/components/rpc-services-live-panel";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
+import { buildRouteMetadata } from "@/lib/route-metadata";
 import { cn } from "@/lib/utils";
 
-export const metadata: Metadata = {
-  title: "RPC Services | PrivateDAO",
+export const metadata: Metadata = buildRouteMetadata({
+  title: "RPC Services",
   description:
-    "Public read-node, RPC health, Umbra relayer proxy, and QVAC runtime evidence for PrivateDAO Testnet operations.",
-};
+    "PrivateDAO RPC services, read-node health, Umbra relayer readiness, QVAC runtime proof, and backend evidence for Testnet operations.",
+  path: "/rpc-services",
+  keywords: ["RPC services", "read node", "Umbra relayer", "QVAC runtime proof", "Testnet operations"],
+});
 
 const serviceCards = [
   {

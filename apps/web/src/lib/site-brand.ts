@@ -3,9 +3,9 @@ import { supportedLocales } from "@/lib/i18n";
 export const siteName = "PrivateDAO";
 export const siteNameArabic = "برايفيت داو";
 export const siteNameArabicAlt = "برايفت داو";
-export const siteTitle = "PrivateDAO | Private Governance, Confidential Treasury, and Solana Runtime Trust";
+export const siteTitle = "PrivateDAO | Private Financial OS for Solana DAOs";
 export const siteDescription =
-  "PrivateDAO is a Solana public-good governance and treasury platform for private voting, confidential payouts, live proof, reviewer-visible trust packets, and operator-grade runtime evidence.";
+  "PrivateDAO is a wallet-first Solana financial OS for private governance, confidential treasury execution, local-first QVAC intelligence, live Testnet proof, and reviewer-visible trust packets.";
 export const siteUrl = process.env.NEXT_PUBLIC_LIVE_SITE_URL?.replace(/\/+$/, "") ?? "https://privatedao.org";
 export const defaultOgImage = "/opengraph-image.png";
 
@@ -22,6 +22,8 @@ export const siteKeywords = [
   "Solana governance",
   "Solana treasury",
   "Token-2022",
+  "Anchor 1",
+  "QVAC",
   "MagicBlock",
   "REFHE",
   "ZK",

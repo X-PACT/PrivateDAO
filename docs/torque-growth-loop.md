@@ -38,18 +38,13 @@ Reward intent: education completion raffle.
 
 ```json
 {
-  "project": "PrivateDAO",
-  "integration": "torque-mcp-growth-loop",
-  "custom_event": "billing_signed",
-  "reward_intent": "operator rebate",
-  "route": "https://privatedao.org/services/testnet-billing-rehearsal/",
-  "metadata": {
-    "network": "solana-testnet",
-    "product": "private-governance-and-stablecoin-treasury",
-    "proofRoutes": [
-      "https://privatedao.org/judge/",
-      "https://privatedao.org/proof/?judge=1"
-    ]
+  "userPubkey": "<wallet address>",
+  "timestamp": 1713939035000,
+  "eventName": "private_treasury_execution",
+  "data": {
+    "amount": 1250,
+    "type": "audd_pusd_rebalance",
+    "success": true
   }
 }
 ```
@@ -80,4 +75,3 @@ Torque rewards measurable acquisition and retention loops. PrivateDAO can create
 - billing proof
 - learning completion
 - return visits to execute or verify product actions
-

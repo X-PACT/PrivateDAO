@@ -1,6 +1,6 @@
 # Real-Device Capture Templates
 
-Use these templates when collecting real wallet and device evidence on Devnet:
+Use these templates when collecting real wallet and device evidence on the active runtime network.
 
 - `phantom-desktop.json`
 - `solflare-desktop.json`
@@ -19,7 +19,7 @@ bash scripts/real-device-capture.sh phantom-desktop \
   --wallet-version "24.11.0" \
   --os "Windows 11" \
   --client "Chrome 135" \
-  --tx "<REAL_DEVNET_SIGNATURE>"
+  --tx "<REAL_RUNTIME_SIGNATURE>"
 ```
 
 Template only:

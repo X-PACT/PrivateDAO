@@ -14,10 +14,9 @@ import { buildRouteMetadata } from "@/lib/route-metadata";
 export const metadata: Metadata = buildRouteMetadata({
   title: "Intelligence",
   description:
-    "Operational intelligence for proposals, treasury execution, voting, RPC, and gaming. Built for decision support inside PrivateDAO instead of a shallow chatbot.",
+    "QVAC local-first AI, GoldRush, Dune, proposal context, counterparty trust, RPC quality, and treasury risk review before a PrivateDAO wallet signs.",
   path: "/intelligence",
-  keywords: ["ai", "proposal review", "treasury review", "voting summary", "rpc analyzer", "gaming ai"],
-  index: false,
+  keywords: ["QVAC", "local AI", "GoldRush", "Dune", "proposal review", "treasury review", "rpc analyzer"],
 });
 
 export default function IntelligencePage() {

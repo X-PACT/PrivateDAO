@@ -37,7 +37,7 @@ export type MicropaymentRailReport = {
   project: "PrivateDAO";
   feature: "Agentic Treasury Micropayment Rail";
   generatedAt: string;
-  network: "devnet";
+  network: "devnet" | "testnet";
   assetMode: MicropaymentExecutionMode;
   settlementAssetSymbol: string;
   settlementMint: string | null;
@@ -62,11 +62,32 @@ export type MicropaymentRunOptions = {
   stableSymbol?: string;
 };
 
-const DEFAULT_DEVNET_RPC =
-  process.env.ANCHOR_PROVIDER_URL ||
-  process.env.SOLANA_RPC_URL ||
-  process.env.SOLANA_URL ||
-  "https://api.devnet.solana.com";
+type RuntimeCluster = "devnet" | "testnet";
+
+function resolveRuntimeCluster(): RuntimeCluster {
+  const raw = (process.env.SOLANA_CLUSTER || process.env.NEXT_PUBLIC_SOLANA_NETWORK || "testnet").toLowerCase();
+  return raw === "devnet" ? "devnet" : "testnet";
+}
+
+function resolveDefaultRpcEndpoint(cluster: RuntimeCluster) {
+  if (cluster === "devnet") {
+    return (
+      process.env.ANCHOR_PROVIDER_URL ||
+      process.env.SOLANA_RPC_URL ||
+      process.env.RPC_FAST_DEVNET_RPC ||
+      process.env.SOLANA_URL ||
+      "https://api.devnet.solana.com"
+    );
+  }
+  return (
+    process.env.ANCHOR_PROVIDER_URL ||
+    process.env.SOLANA_RPC_URL ||
+    process.env.RPC_FAST_TESTNET_RPC ||
+    process.env.SOLANA_URL ||
+    "https://api.testnet.solana.com"
+  );
+}
+
 const DEFAULT_WALLET_PATH =
   process.env.DEVNET_COORDINATOR_WALLET ||
   process.env.ANCHOR_WALLET ||
@@ -94,7 +115,7 @@ function loadKeypair(filePath: string) {
 }
 
 function createConnection() {
-  return new Connection(DEFAULT_DEVNET_RPC, "confirmed");
+  return new Connection(resolveDefaultRpcEndpoint(resolveRuntimeCluster()), "confirmed");
 }
 
 function ensureDir(dirPath: string) {
@@ -406,7 +427,7 @@ export async function runAgenticMicropaymentRail(
     project: "PrivateDAO",
     feature: "Agentic Treasury Micropayment Rail",
     generatedAt: nowIso(),
-    network: "devnet",
+    network: resolveRuntimeCluster(),
     assetMode,
     settlementAssetSymbol,
     settlementMint: stableContext?.mint.toBase58() ?? null,

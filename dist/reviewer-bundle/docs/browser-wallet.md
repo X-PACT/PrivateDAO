@@ -36,8 +36,8 @@ Each capture should record:
 - signing result
 - submission result
 - diagnostics snapshot presence
-- transaction signature when a Devnet transaction was successfully submitted
-- explorer URL when a Devnet transaction was successfully submitted
+- transaction signature when a runtime transaction was successfully submitted
+- explorer URL when a runtime transaction was successfully submitted
 - error message when any step fails
 - evidence refs for screenshots or recordings when available
 
@@ -47,7 +47,7 @@ Each browser-wallet target should attempt:
 
 1. connect wallet
 2. confirm diagnostics visibility
-3. run at least one live governance action on Devnet
+3. run at least one live governance action on the active runtime network
 4. record explorer-visible outcome or error
 
 ## Registry Source
@@ -71,7 +71,7 @@ The generated reviewer-facing outputs are:
 
 ## Fast Capture Workflow
 
-1. Run the wallet flow in the live web app on Devnet.
+1. Run the wallet flow in the live web app on the active runtime network.
 2. Save a small JSON payload for the target.
 3. Record it with:
 
@@ -140,7 +140,7 @@ The reveal step remained correctly blocked at that moment because the commit win
   "environmentType": "desktop-browser",
   "os": "macOS 15",
   "browserOrClient": "Chrome 136",
-  "network": "devnet",
+  "network": "testnet",
   "actionsCovered": [
     "Create DAO"
   ],
@@ -148,7 +148,7 @@ The reveal step remained correctly blocked at that moment because the commit win
   "signingResult": "success",
   "submissionResult": "success",
   "diagnosticsSnapshotCaptured": true,
-  "txSignature": "example-devnet-signature-from-browser-wallet-run",
+  "txSignature": "example-runtime-signature-from-browser-wallet-run",
   "errorMessage": null,
   "evidenceRefs": [
     "screenshots/phantom-browser-wallet-create-dao.png"
@@ -159,6 +159,6 @@ The reveal step remained correctly blocked at that moment because the commit win
 
 ## Honest Boundary
 
-The repository now provides a formal intake, builder, verifier, and reviewer surface for browser-wallet runtime QA.
+The repository now provides a formal intake, builder, verifier, and reviewer surface for browser-wallet runtime QA across the currently selected runtime rail.
 
 It does not fabricate successful browser-wallet runs that were not actually captured.

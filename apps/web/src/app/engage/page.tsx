@@ -4,13 +4,16 @@ import { Suspense } from "react";
 import { ArrowUpRight, Mail, MessageCircleMore, ShieldCheck } from "lucide-react";
 
 import { CustomerConversionSurface } from "@/components/customer-conversion-surface";
+import { GuidedOperationRail } from "@/components/guided-operation-rail";
 import { LeadSupportIntake } from "@/components/lead-support-intake";
+import { OperatingJourneyStrip } from "@/components/operating-journey-strip";
 import { OperationsShell } from "@/components/operations-shell";
 import { PlatformServiceArchitecture } from "@/components/platform-service-architecture";
 import { ProductIntakeForms } from "@/components/product-intake-forms";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TreasuryReceiveSurface } from "@/components/treasury-receive-surface";
 import { buttonVariants } from "@/components/ui/button";
+import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { cn } from "@/lib/utils";
 
@@ -45,6 +48,7 @@ function normalizeIntake(value?: string, profile?: string) {
 
 export default function EngagePage({ searchParams }: EngagePageProps) {
   const initialKind = normalizeIntake(searchParams?.intake, searchParams?.profile);
+  const runtimeSnapshot = getJudgeRuntimeLogsSnapshot();
   const initialFundingContext = {
     asset: searchParams?.asset,
     amount: searchParams?.amount,
@@ -58,12 +62,19 @@ export default function EngagePage({ searchParams }: EngagePageProps) {
       eyebrow="Engage"
       title="Turn product proof into real customer and mainnet motion"
       description="This route connects every strong product corridor to an actual buyer story: what is sellable now on Testnet, what the first paid motion looks like, and how the rollout graduates toward mainnet without overstating readiness."
+      navigationMode="guided"
       badges={[
         { label: "Customer-ready", variant: "success" },
         { label: "Mainnet-aware", variant: "warning" },
         { label: "Product-linked", variant: "cyan" },
       ]}
     >
+      <GuidedOperationRail current="verify" reviewHref="/intelligence" verifyHref="/proof" />
+      <OperatingJourneyStrip
+        snapshot={runtimeSnapshot}
+        title="Commercial motion should inherit the same Testnet truth as the product"
+        description="Pilot and buyer conversations are stronger when they point to the live wallet-first operating cycle, the current proof surface, and the exact next route a reviewer or partner should open."
+      />
       <LeadSupportIntake mode="engage" />
       <ProductIntakeForms mode="engage" initialKind={initialKind} initialFundingContext={initialFundingContext} />
       <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading treasury receive surface…</div>}>
@@ -71,11 +82,11 @@ export default function EngagePage({ searchParams }: EngagePageProps) {
       </Suspense>
       <Card>
         <CardHeader>
-          <CardTitle>Leadership, investor, and donor contact</CardTitle>
+          <CardTitle>Operating contact surface</CardTitle>
         </CardHeader>
         <CardContent className="space-y-5">
           <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-4 text-sm leading-7 text-white/72">
-            PrivateDAO is built with execution support from a multi-national technical team. <span className="text-white">Fahd Kotb</span> leads product direction, execution accountability, and external coordination across investment, partnerships, and operator-facing delivery.
+            PrivateDAO development is maintained in public through <span className="text-white">github.com/X-PACT/PrivateDAO</span>. Use this surface for investment, partnership, pilot, and operator coordination around the live Testnet product and the path to mainnet release.
           </div>
           <div className="grid gap-4 lg:grid-cols-[1.3fr_0.9fr]">
             <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
@@ -84,7 +95,7 @@ export default function EngagePage({ searchParams }: EngagePageProps) {
                 Use this contact surface for
               </div>
               <div className="mt-3 space-y-2 text-sm leading-7 text-white/68">
-                <div>Investment discussions, donations, strategic help, enterprise pilots, integrations, and direct product-lead coordination.</div>
+                <div>Investment discussions, strategic help, enterprise pilots, integrations, and direct operating coordination.</div>
                 <div>Primary email: <a className="text-white hover:text-cyan-200" href="mailto:fahd.kotb@tuta.io">fahd.kotb@tuta.io</a></div>
                 <div>Operations email: <a className="text-white hover:text-cyan-200" href="mailto:i.kotb@proton.me">i.kotb@proton.me</a></div>
                 <div>Additional contact: <a className="text-white hover:text-cyan-200" href="mailto:eslamkotb.369@gmail.com">eslamkotb.369@gmail.com</a></div>
@@ -99,13 +110,12 @@ export default function EngagePage({ searchParams }: EngagePageProps) {
               <div className="mt-3 space-y-3 text-sm leading-7 text-white/68">
                 <div>Telegram: <a className="text-white hover:text-cyan-200" href="https://t.me/Fahdkotb" target="_blank" rel="noreferrer">@Fahdkotb</a></div>
                 <div>Discord: <a className="text-white hover:text-cyan-200" href="https://discord.gg/PbM8BC2A" target="_blank" rel="noreferrer">discord.gg/PbM8BC2A</a></div>
-                <div>X: <a className="text-white hover:text-cyan-200" href="https://x.com/FahdX369" target="_blank" rel="noreferrer">@FahdX369</a></div>
               </div>
             </div>
           </div>
           <div className="flex flex-wrap gap-3">
             <Link href="/documents/ownership-and-contact" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
-              Open leadership packet
+              Open operating contact packet
               <ArrowUpRight className="h-4 w-4" />
             </Link>
             <Link href="/documents/launch-trust-packet" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>

@@ -13,7 +13,7 @@ export function SettlementReceiptClosurePanel() {
     <Card className="border-fuchsia-300/16 bg-[linear-gradient(180deg,rgba(18,12,26,0.96),rgba(10,10,18,0.99))]">
       <CardHeader className="space-y-3">
         <div className="text-[11px] uppercase tracking-[0.3em] text-fuchsia-200/78">Settlement receipt closure</div>
-        <CardTitle className="text-2xl">The exact privacy-settlement blocker that still separates Devnet evidence from believable mainnet payout posture</CardTitle>
+        <CardTitle className="text-2xl">The exact privacy-settlement blocker that still separates Testnet evidence from believable mainnet payout posture</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid gap-4 md:grid-cols-3">

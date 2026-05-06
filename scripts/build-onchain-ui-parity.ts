@@ -29,7 +29,7 @@ type ManualInstructionMeta = {
 const ROOT = path.resolve(__dirname, "..");
 const IDL_PATH = path.join(ROOT, "target/idl/private_dao.json");
 const OUTPUT_PATH = path.join(ROOT, "apps/web/src/lib/onchain-parity.generated.ts");
-const PROGRAM_ID = "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx";
+const PROGRAM_ID = "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva";
 const GOVERNANCE_MINT = "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt";
 const TOKEN_2022_PROGRAM = "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb";
 

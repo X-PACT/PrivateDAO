@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-20T11:39:45.317Z`
+- generated at: `2026-04-22T00:24:33.909Z`
 - purpose: Canonical judge-first copy for track workspaces, reviewer packets, and the first 30 to 45 seconds of track videos.
 
 ## Core Reviewer Packet

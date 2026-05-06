@@ -101,7 +101,7 @@ export function getReadNodeHostReadinessSnapshot(
   return {
     title: copy.title,
     description: copy.description,
-    readinessState: "Host-ready lane defined; public same-domain serving is the next release-infrastructure lift",
+    readinessState: "Host-ready lane defined; same-domain public serving is in final security hardening before release cutover",
     exactBoundary: packet.exactBoundary,
     deploymentTarget: `${packet.deploymentTarget.frontendHost} → ${packet.deploymentTarget.readApiPath}`,
     publicHealthPath: packet.deploymentTarget.healthPath,

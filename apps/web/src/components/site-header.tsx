@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { LockKeyhole, Search, Sparkles } from "lucide-react";
 
 import { LanguageSwitcher } from "@/components/language-switcher";
@@ -14,15 +15,26 @@ const navItems = [
   { href: "/start", label: "Start" },
   { href: "/learn", label: "Learn" },
   { href: "/govern", label: "Govern", rel: "nofollow" },
-  { href: "/live", label: "Live State", rel: "nofollow" },
-  { href: "/story", label: "Story" },
-  { href: "/trust", label: "Trust" },
+  { href: "/intelligence", label: "Intelligence", rel: "nofollow" },
+  { href: "/treasury", label: "Treasury", rel: "nofollow" },
+  { href: "/payroll", label: "Payroll", rel: "nofollow" },
+  { href: "/execute", label: "Execute", rel: "nofollow" },
+  { href: "/proof", label: "Proof" },
 ];
 
 const utilityNav = [
+  { href: "/about", label: "About" },
   { href: "/products", label: "Products" },
+  { href: "/gaming", label: "Gaming", rel: "nofollow" },
+  { href: "/compliance", label: "Compliance", rel: "nofollow" },
+  { href: "/developers", label: "Developers" },
+  { href: "/rpc-services", label: "RPC" },
+  { href: "/command-center", label: "Command" },
+  { href: "/live", label: "Live State", rel: "nofollow" },
   { href: "/services", label: "API & Pricing" },
   { href: "/network", label: "Network", rel: "nofollow" },
+  { href: "/story", label: "Story" },
+  { href: "/trust", label: "Trust" },
   { href: "/documents", label: "Docs" },
   { href: "/community", label: "Community" },
   { href: "/assistant", label: "Help", rel: "nofollow" },
@@ -32,6 +44,74 @@ const utilityNav = [
 export function SiteHeader() {
   const { liveSiteUrl } = useSiteUrls();
   const { copy } = useI18n();
+  const pathname = usePathname();
+  const resolvePrimaryLabel = (href: string, fallback: string) => {
+    switch (href) {
+      case "/start":
+        return copy.chrome.start;
+      case "/learn":
+        return copy.chrome.learn;
+      case "/govern":
+        return copy.chrome.govern;
+      case "/intelligence":
+        return "Intelligence";
+      case "/treasury":
+        return "Treasury";
+      case "/payroll":
+        return "Payroll";
+      case "/execute":
+        return "Execute";
+      case "/proof":
+        return "Proof";
+      default:
+        return fallback;
+    }
+  };
+  const resolveUtilityLabel = (href: string, fallback: string) => {
+    switch (href) {
+      case "/about":
+        return "About";
+      case "/products":
+        return copy.chrome.products;
+      case "/gaming":
+        return "Gaming";
+      case "/compliance":
+        return "Compliance";
+      case "/developers":
+        return "Developers";
+      case "/rpc-services":
+        return "RPC";
+      case "/command-center":
+        return "Command";
+      case "/live":
+        return copy.chrome.liveState;
+      case "/services":
+        return copy.chrome.apiPricing;
+      case "/network":
+        return copy.chrome.network;
+      case "/story":
+        return copy.chrome.story;
+      case "/trust":
+        return copy.chrome.trust;
+      case "/documents":
+        return copy.chrome.docs;
+      case "/community":
+        return copy.chrome.community;
+      case "/assistant":
+        return copy.chrome.help;
+      case "/search":
+        return copy.chrome.search;
+      default:
+        return fallback;
+    }
+  };
+  const operationSteps = [
+    { label: "Connect", href: "/learn" },
+    { label: "Review", href: "/intelligence" },
+    { label: "Sign", href: "/execute" },
+    { label: "Verify", href: "/proof" },
+  ] as const;
+  const isStepActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/8 bg-[#050816]/75 backdrop-blur-xl">
@@ -49,6 +129,22 @@ export function SiteHeader() {
               <div className="mt-1 hidden items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-white/42 lg:flex">
                 <LockKeyhole className="h-3.5 w-3.5 text-cyan-200/80" />
                 <span>{copy.chrome.createPrivateDaoTagline}</span>
+              </div>
+              <div className="mt-2 hidden flex-wrap gap-2 xl:flex">
+                {operationSteps.map((step) => (
+                  <Link
+                    key={step.label}
+                    href={step.href}
+                    className={cn(
+                      "rounded-full border px-3 py-1 text-[10px] uppercase tracking-[0.22em] transition",
+                      isStepActive(step.href)
+                        ? "border-cyan-300/26 bg-cyan-300/[0.12] text-cyan-100"
+                        : "border-white/10 bg-white/[0.04] text-white/48 hover:text-white/72",
+                    )}
+                  >
+                    {step.label}
+                  </Link>
+                ))}
               </div>
             </div>
           </Link>
@@ -83,19 +179,6 @@ export function SiteHeader() {
 
           <nav className="no-scrollbar flex items-center gap-1.5 overflow-x-auto border-t border-white/6 pt-3 pb-1">
             {navItems.map((item) => {
-              const label =
-                item.href === "/start"
-                  ? copy.chrome.start
-                  : item.href === "/learn"
-                    ? copy.chrome.learn
-                    : item.href === "/govern"
-                      ? copy.chrome.govern
-                      : item.href === "/live"
-                        ? copy.chrome.liveState
-                        : item.href === "/story"
-                          ? copy.chrome.story
-                          : copy.chrome.trust;
-
               return (
               <Link
                 className={cn(buttonVariants({ size: "sm", variant: "ghost" }), "shrink-0 px-3 text-white/72")}
@@ -103,11 +186,28 @@ export function SiteHeader() {
                 key={item.href}
                 rel={item.rel}
               >
-                {label}
+                {resolvePrimaryLabel(item.href, item.label)}
               </Link>
               );
             })}
         </nav>
+
+        <div className="flex flex-wrap items-center gap-2 border-t border-white/6 pt-3 text-[10px] uppercase tracking-[0.22em] text-white/46 xl:hidden">
+          {operationSteps.map((step) => (
+            <Link
+              key={step.label}
+              href={step.href}
+              className={cn(
+                "rounded-full border px-3 py-1 transition",
+                isStepActive(step.href)
+                  ? "border-cyan-300/26 bg-cyan-300/[0.12] text-cyan-100"
+                  : "border-white/10 bg-white/[0.04] text-white/50",
+              )}
+            >
+              {step.label}
+            </Link>
+          ))}
+        </div>
 
         <div className="hidden border-t border-white/6 pt-3 lg:flex lg:flex-row lg:items-center lg:justify-between lg:gap-3">
           <div className="flex min-w-0 items-center gap-2 rounded-full border border-white/10 bg-white/4 px-4 py-2 text-sm text-white/62">
@@ -122,21 +222,6 @@ export function SiteHeader() {
 
           <nav className="no-scrollbar flex items-center gap-1.5 overflow-x-auto pb-1">
             {utilityNav.map((item) => {
-              const label =
-                item.href === "/products"
-                  ? copy.chrome.products
-                  : item.href === "/services"
-                    ? copy.chrome.apiPricing
-                    : item.href === "/network"
-                      ? copy.chrome.network
-                      : item.href === "/documents"
-                        ? copy.chrome.docs
-                        : item.href === "/community"
-                          ? copy.chrome.community
-                          : item.href === "/assistant"
-                            ? copy.chrome.help
-                            : copy.chrome.search;
-
               return (
               <Link
                 className={cn(buttonVariants({ size: "sm", variant: "ghost" }), "shrink-0 px-3 text-white/68")}
@@ -144,7 +229,7 @@ export function SiteHeader() {
                 key={item.href}
                 rel={item.rel}
               >
-                {label}
+                {resolveUtilityLabel(item.href, item.label)}
               </Link>
               );
             })}

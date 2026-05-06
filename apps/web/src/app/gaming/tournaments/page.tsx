@@ -103,11 +103,10 @@ export default function GamingTournamentsPage() {
       <details className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.08] p-5">
         <summary className="cursor-pointer text-sm font-medium text-cyan-100">BehindTheMagic</summary>
         <div className="mt-3 text-sm leading-7 text-white/72">
-          بعد انتهاء البطولة، يتم إنشاء مقترح توزيع الجوائز في الحوكمة. بعد التصويت والتنفيذ، تتحرك المكافآت عبر مسار دفع خاص
-          مع إثبات قابل للتحقق.
+          After a tournament ends, the prize distribution becomes a governance proposal. Once voting and execution finish,
+          rewards move through a private payment lane with proof that reviewers can verify.
         </div>
       </details>
     </OperationsShell>
   );
 }
-

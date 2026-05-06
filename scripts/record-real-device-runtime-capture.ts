@@ -35,6 +35,8 @@ type CaptureRegistry = {
   captures: Capture[];
 };
 
+const SUPPORTED_RUNTIME_NETWORKS = new Set(["devnet", "testnet"]);
+
 function main() {
   const inputPath = process.argv[2];
   if (!inputPath) {
@@ -44,9 +46,13 @@ function main() {
   const registryPath = path.resolve("docs/runtime/real-device-captures.json");
   const registry = readJson<CaptureRegistry>(registryPath);
   const incoming = readJson<Capture>(inputPath);
+  const registryNetwork = assertRuntimeNetwork(registry.network, "real-device registry");
+  const captureNetwork = assertRuntimeNetwork(incoming.network, "real-device capture");
 
-  if (incoming.network !== "devnet") {
-    throw new Error("real-device capture must remain on devnet");
+  if (captureNetwork !== registryNetwork) {
+    throw new Error(
+      `real-device capture network mismatch: registry is ${registryNetwork} but incoming capture is ${captureNetwork}`,
+    );
   }
 
   const target = registry.targets.find((entry) => entry.id === incoming.id);
@@ -66,7 +72,7 @@ function main() {
     ...incoming,
     explorerUrl:
       incoming.txSignature && incoming.submissionResult === "success"
-        ? `https://explorer.solana.com/tx/${incoming.txSignature}?cluster=devnet`
+        ? `https://explorer.solana.com/tx/${incoming.txSignature}?cluster=${captureNetwork}`
         : null,
     evidenceRefs: incoming.evidenceRefs ?? [],
   };
@@ -102,6 +108,13 @@ function deriveTargetStatus(capture: Capture): string {
 
 function readJson<T>(relativePath: string): T {
   return JSON.parse(fs.readFileSync(path.resolve(relativePath), "utf8")) as T;
+}
+
+function assertRuntimeNetwork(network: string, label: string): string {
+  if (!SUPPORTED_RUNTIME_NETWORKS.has(network)) {
+    throw new Error(`${label} network must be one of: ${Array.from(SUPPORTED_RUNTIME_NETWORKS).join(", ")}`);
+  }
+  return network;
 }
 
 main();

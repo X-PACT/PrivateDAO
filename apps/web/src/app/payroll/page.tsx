@@ -165,8 +165,8 @@ export default function PayrollPage() {
       <details className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.08] p-5">
         <summary className="cursor-pointer text-sm font-medium text-cyan-100">BehindTheMagic</summary>
         <div className="mt-3 text-sm leading-7 text-white/72">
-          يتم تجهيز الدفعات كحزمة خاصة. كل مستلم يحصل على مسار استلام خاص، والمدقق يحصل على صلاحية مشاهدة محددة النطاق
-          بدل كشف تاريخ الخزينة بالكامل.
+          Payments are prepared as a private batch. Each recipient receives a private receipt path, while the auditor gets
+          a scoped viewing window instead of full treasury-history exposure.
         </div>
       </details>
 
@@ -184,4 +184,3 @@ export default function PayrollPage() {
     </OperationsShell>
   );
 }
-

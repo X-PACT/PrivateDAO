@@ -15,7 +15,7 @@
   <a href="https://privatedao.org/"><img src="https://img.shields.io/badge/Live%20Product-Open-14F195?logo=solana" alt="Live product" /></a>
   <a href="https://github.com/X-PACT/PrivateDAO/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/X-PACT/PrivateDAO/ci.yml?branch=main&label=CI" alt="CI status" /></a>
   <a href="docs/awards.md"><img src="https://img.shields.io/badge/Regional%20Recognition-1st%20Place-gold" alt="Regional 1st place recognition" /></a>
-  <a href="https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=testnet"><img src="https://img.shields.io/badge/Solana-Testnet%20Program-38bdf8" alt="Testnet program" /></a>
+  <a href="https://solscan.io/account/EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva?cluster=testnet"><img src="https://img.shields.io/badge/Solana-Testnet%20Program-38bdf8" alt="Testnet program" /></a>
   <a href="https://privatedao.org/trust/"><img src="https://img.shields.io/badge/Release%20Mode-Continuous%20Delivery-f59e0b" alt="Continuous delivery mode" /></a>
   <a href="docs/pdao-token.md"><img src="https://img.shields.io/badge/PDAO-Token--2022%20Governance%20Mint-0f766e" alt="PDAO token" /></a>
   <a href="docs/security-hardening-v2.md"><img src="https://img.shields.io/badge/Security-Strict%20V2%20Hardening-1d4ed8" alt="Strict V2 security hardening" /></a>
@@ -42,7 +42,7 @@ If a route is being refreshed:
 - check `https://privatedao.org/trust/`
 - check `https://privatedao.org/community/`
 
-PrivateDAO is live on Solana Testnet: the preserved Anchor program is deployed, the standard governance lifecycle has executed end to end, and treasury movement is verified by public hashes.
+PrivateDAO is live on Solana Testnet with the Anchor 1.0.1 program deployed, web and Android constants aligned, and the standard governance lifecycle preserved as reviewer-visible evidence.
 
 ## Track Delivery And Security Baseline
 
@@ -50,16 +50,17 @@ PrivateDAO is live on Solana Testnet: the preserved Anchor program is deployed, 
 - Submission index and publish log: [`submissions-new/README.md`](submissions-new/README.md)
 - Security baseline snapshot (current gate findings and mitigations): [`docs/security-baseline-2026-04-24.md`](docs/security-baseline-2026-04-24.md)
 
-## What PrivateDAO Is
+## What PrivateDAO Is Now
 
-PrivateDAO is a Solana governance and treasury product for organizations that need privacy without losing operational discipline.
+PrivateDAO is a wallet-first Solana Testnet financial OS for organizations that need private governance, confidential treasury execution, local-first intelligence, and reviewer-visible proof without forcing normal users into terminal workflows.
 
 It combines:
 
 - **Private voting:** commit-reveal governance with proposal-bound commitments.
 - **Confidential treasury operations:** payroll, bonus, and payout flows with aggregate on-chain settlement state.
+- **Local-first intelligence:** QVAC-positioned proposal context, translation, OCR, and operator guidance that keeps sensitive organizational data close to the user instead of routing it through a centralized AI workflow.
 - **Execution safety:** timelocks, veto and cancel boundaries, duplicate-execution resistance, and strict treasury account validation.
-- **Evidence and reviewability:** Devnet rehearsals, Testnet lifecycle proof, ZK proof anchors, runtime packets, manifests, and generated audit surfaces.
+- **Evidence and reviewability:** Anchor 1 Testnet deployment proof, Devnet rehearsals, Testnet lifecycle proof, ZK proof anchors, runtime packets, manifests, and generated audit surfaces.
 - **Operational packaging:** Realms migration, hosted read/API packaging, trust exports, pilot material, and operator docs.
 
 ## Why It Matters To The Ecosystem
@@ -89,7 +90,7 @@ The roadmap is intentionally simple and fundable:
 
 PrivateDAO is already a live Solana Testnet governance infrastructure product, not a concept deck:
 
-- Anchor program deployed on Solana Testnet with the same canonical program id
+- Anchor 1.0.1 program deployed on Solana Testnet with active web, Android, IDL, README, and reviewer evidence aligned
 - Devnet rehearsal history preserved as the transition evidence base
 - Wallet-connected frontend
 - Operational routes for onboarding, command, dashboard, proof, diagnostics, and services
@@ -129,6 +130,59 @@ The public repo and CLI remain available for:
 - Stress tests
 
 This keeps the buyer-facing product clean while preserving engineering and protocol discipline in the repo.
+
+## First-Visit Operating Lanes
+
+The homepage now exposes the highest-value product lanes immediately so a judge, investor, user, or builder can start from the right surface without hunting through docs:
+
+| Lane | Route | Why it matters |
+| --- | --- | --- |
+| Intelligence | `https://privatedao.org/intelligence/` | QVAC, GoldRush, Dune, counterparty trust, proposal context, and RPC quality before signing. |
+| Governance | `https://privatedao.org/govern/` | DAO creation, proposal creation, voting, reveal, finalize, and execution path. |
+| Treasury | `https://privatedao.org/treasury/` | Treasury health, policy, solvency posture, and agent context. |
+| Payroll | `https://privatedao.org/payroll/` | Private CSV payroll, stablecoin selection, Umbra/Cloak posture, and audit receipts. |
+| Gaming | `https://privatedao.org/gaming/` | Guilds, tournaments, inventory proposals, and private reward operations. |
+| Compliance | `https://privatedao.org/compliance/` | Scoped compliance packs, bounded viewing keys, and dWallet-signed evidence framing. |
+| Proof | `https://privatedao.org/proof/` | Proof Matrix, Solscan links, ZK badges, viewing-key evidence, and judge mode. |
+| Developers | `https://privatedao.org/developers/` | SDK/API surface, Anchor 1 evidence, privacy integration, and read-node entry points. |
+| RPC Services | `https://privatedao.org/rpc-services/` | Hosted reads, relayer health, QVAC runtime proof, and backend evidence. |
+| Command Center | `https://privatedao.org/command-center/` | Live ops dashboard, indexed proposal context, custody readiness, and execution gates. |
+
+The public about route now carries the short executive narrative for reviewers and non-technical visitors:
+
+- About: `https://privatedao.org/about/`
+- Anchor 1 evidence: `https://privatedao.org/documents/anchor-1-migration-evidence-2026-04-30/`
+- Live proof V3: `https://privatedao.org/documents/live-proof-v3/`
+- ZK capability matrix: `https://privatedao.org/documents/zk-capability-matrix/`
+
+## Anchor 1.0.1 Toolchain Status
+
+PrivateDAO has been upgraded at the Solana program layer to Anchor `1.0.1`.
+
+| Layer | Current value | Evidence |
+| --- | --- | --- |
+| `Anchor.toml` | `anchor_version = "1.0.1"` | [`Anchor.toml`](Anchor.toml) |
+| Rust program crates | `anchor-lang = "1.0.1"`, `anchor-spl = "1.0.1"` | [`Cargo.toml`](Cargo.toml), [`Cargo.lock`](Cargo.lock) |
+| Deployed Testnet program | `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva` | [`docs/anchor-1-migration-evidence-2026-04-30.md`](docs/anchor-1-migration-evidence-2026-04-30.md) |
+| TypeScript Anchor client | `@coral-xyz/anchor@0.32.1` | npm latest is still `0.32.1`, so the web client stays on the latest published npm package instead of pretending a `1.0.1` npm client exists. |
+
+This is the exact reviewer boundary: Anchor Rust program/toolchain is on `1.0.1`; the TypeScript client uses the latest package currently published to npm.
+
+## QVAC Integration
+
+PrivateDAO uses the official QVAC model `qvac/fabric-llm-finetune` as the local sovereign AI path for proposal and treasury briefs.
+
+- Route: `https://privatedao.org/services/qvac-sovereign-ai/`
+- Product use: local execution brief for DAO proposals, private treasury movement, counterparty review, and privacy-mode recommendation before signing.
+- Runtime: browser-side Transformers.js using `@xenova/transformers`, with browser cache enabled after first model load.
+- Privacy posture: no API key, no centralized model endpoint, no wallet intent sent to a hosted LLM.
+- Fallback boundary: if a device cannot load the model, the page falls back to deterministic local policy analysis and labels that state explicitly.
+
+The QVAC lane is core product functionality, not a wrapper demo: it sits in the pre-sign review path used by `/intelligence/`, `/execute/`, and `/services/qvac-sovereign-ai/`.
+
+## Replay Pressure Note
+
+Reviewer telemetry may show replay pressure or extra attempts. That is expected evidence from adversarial and retry-path testing, not hidden product failure. The repo records replay pressure so judges can see that PrivateDAO tests duplicate execution, retry behavior, and evidence aging instead of presenting only happy-path screenshots.
 
 ## Normal User Browser Run
 
@@ -229,7 +283,7 @@ Current official custody state from the canonical intake:
 - rehearsal signature: `pending`
 - upgrade / DAO / treasury transfer signatures: `pending`
 - post-transfer authority readouts: `pending`
-- current deployed authority readout observed on `devnet`: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
+- current deployed authority readout observed on `testnet`: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - target-network program readout on `mainnet-beta`: `not found`
 
 Live proof surface:
@@ -255,13 +309,14 @@ This is intentional: the product now exposes the exact custody proof shape and t
 | Reviewer telemetry packet | https://privatedao.org/documents/reviewer-telemetry-packet/ |
 | Mainnet blockers | https://privatedao.org/documents/mainnet-blockers/ |
 | Story video | https://privatedao.org/story/ |
+| Technology explainer video | https://youtu.be/byqu2p1N72U |
 | Community | https://privatedao.org/community/ |
 | Judge / proof view | https://privatedao.org/proof/?judge=1 |
 | Wallet diagnostics | https://privatedao.org/diagnostics/ |
 | Services and buyer path | https://privatedao.org/services/ |
 | Treasury receive surface | https://privatedao.org/services/ |
 | Lifecycle product video | https://privatedao.org/assets/private-dao-demo-flow.mp4 |
-| Testnet program | https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=testnet |
+| Testnet program | https://solscan.io/account/EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva?cluster=testnet |
 | Testnet lifecycle proof | [`docs/testnet-lifecycle-rehearsal-2026-04-19.md`](docs/testnet-lifecycle-rehearsal-2026-04-19.md) |
 | Final closure workplan | [`docs/final-closure-workplan-2026-04-19.md`](docs/final-closure-workplan-2026-04-19.md) |
 | Canonical custody intake | [`docs/multisig-setup-intake.json`](docs/multisig-setup-intake.json) |
@@ -327,6 +382,7 @@ These are the public-facing routes reviewers, users, and buyers should see first
 | Surface | Link |
 | --- | --- |
 | Story video route | https://privatedao.org/story/ |
+| Technology explainer video | https://youtu.be/byqu2p1N72U |
 | Weekly / public YouTube | https://www.youtube.com/@privatedao |
 | Official Discord | https://discord.gg/PbM8BC2A |
 | Public project profile | https://arena.colosseum.org/projects/explore/praivatedao |
@@ -470,13 +526,16 @@ Primary artifacts:
 
 ## Evidence From The Standard Testnet Rehearsal
 
-The current Testnet packet proves the standard governance and treasury lifecycle on Solana Testnet with the preserved canonical program id.
+The previous Testnet packet proves the standard governance and treasury lifecycle on Solana Testnet for the pre-Anchor-1 program. The current Anchor 1.0.1 deployment target is tracked in [`docs/anchor-1-migration-evidence-2026-04-30.md`](docs/anchor-1-migration-evidence-2026-04-30.md).
 
 | Metric | Value |
 | --- | --- |
 | Network | Testnet |
-| Program | `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx` |
-| ProgramData | `CeggEn3sNVbiuJHLKDaCPMH4uLczu1Dr3ZGKKcaKBqeN` |
+| Current Anchor 1 program | `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva` |
+| Current Anchor 1 ProgramData | `FKyt5DcmRQcCF8kzMGjCvfGb3ZPHMQnH1SqiG9Mi8xEc` |
+| Current Anchor 1 deploy signature | `2HucNtqnL3fxAvW911b6poj3hJWTUg2EN344EhRruhPyxxHmt8P4ba3gnnHxmRnjBU3Kps3V1hevt61W9Lik1bvm` |
+| Previous rehearsal program | `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx` |
+| Previous rehearsal ProgramData | `CeggEn3sNVbiuJHLKDaCPMH4uLczu1Dr3ZGKKcaKBqeN` |
 | IDL account | `BKV4bWESswfKteav82yZWPdN6wCd172UryGkaN8mxfGR` |
 | DAO | `HZkVYf1bizstbEonRr7AS8HRQdR6sAgTB5Av9EuJFvGa` |
 | Proposal | `HXMsqWWKosqgTM1PnPTeHrzq1i5ZygtrKZ5kjozH3T4A` |
@@ -557,14 +616,12 @@ PrivateDAO preserves the Devnet PDAO governance-token evidence for reviewer cont
 | Program | Token-2022 |
 | Initial supply | `1,000,000 PDAO` |
 
-The canonical PrivateDAO governance program id is:
+The current PrivateDAO governance program id is:
 
-Live devnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
-
-Live Testnet program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+Live Testnet program: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
 
 ```text
-5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx
+EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva
 ```
 
 The Token-2022 program id belongs to the governance token mint surface; it is not a second PrivateDAO governance program.
@@ -634,7 +691,7 @@ Prerequisites:
 
 - Rust stable
 - Solana CLI
-- Anchor CLI `0.32.1`
+- Anchor CLI `1.0.1`
 - Node.js 20+
 - npm or Yarn
 
@@ -731,7 +788,7 @@ npm run deploy:testnet
 npm run live-proof:testnet
 ```
 
-The current Testnet proof keeps the canonical program id aligned with the frontend, IDL, reviewer packets, and public migration report. Use Testnet as the final public rehearsal layer before any mainnet release ceremony.
+The current Testnet proof keeps the Anchor 1 program id aligned with the frontend, Android app, IDL, reviewer packets, and public migration report. Use Testnet as the final public rehearsal layer before any mainnet release ceremony.
 
 ## Weekly Product Updates
 
@@ -795,6 +852,7 @@ Key docs:
 ## Media And Review Assets
 
 - Public story video: https://privatedao.org/story/
+- Technology explainer video: https://youtu.be/byqu2p1N72U
 - Public YouTube reel: https://youtu.be/HiCz0vb8kgk
 - Direct MP4 backup: https://privatedao.org/assets/private-dao-product-overview.mp4
 - Upload-ready file: `/home/x-pact/Desktop/PrivateDAO-Product-Overview/PrivateDAO - Product Overview - Everything We Offer and Why Us.mp4`
@@ -804,6 +862,7 @@ Key docs:
 - Upload-ready lifecycle video: `/home/x-pact/Desktop/PrivateDAO-Demo-Video/PrivateDAO - Real Demo Flow - Create DAO Submit Proposal Private Vote Execute Treasury - Clean.mp4`
 - Investor / reviewer pitch deck: [`docs/investor-pitch-deck.md`](docs/investor-pitch-deck.md)
 - Product overview brief: [`docs/investor-video.md`](docs/investor-video.md)
+- Anchor toolchain status: [`docs/anchor-toolchain-status-2026-04-30.md`](docs/anchor-toolchain-status-2026-04-30.md)
 - Repo-native product reel: [`docs/assets/private-dao-product-overview.mp4`](docs/assets/private-dao-product-overview.mp4)
 - Hosted product reel page: https://privatedao.org/story/
 - Hosted product reel MP4 backup: https://privatedao.org/assets/private-dao-product-overview.mp4

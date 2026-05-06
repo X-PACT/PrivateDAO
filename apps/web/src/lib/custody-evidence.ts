@@ -1,7 +1,7 @@
 export const custodyEvidenceStorageKey = "privatedao.custody.evidence";
 export const custodyEvidenceUpdatedEvent = "privatedao:custody-evidence-updated";
 
-export const custodyProgramId = "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx";
+export const custodyProgramId = "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva";
 export const custodySignerSlots = [
   { slot: 1, role: "founder-operator" },
   { slot: 2, role: "independent-security-or-ops-signer" },

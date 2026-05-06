@@ -29,9 +29,9 @@ export type PdaoTokenStrategySnapshot = {
 
 const sharedSnapshot = {
   boundary:
-    "PDAO is preserved Devnet governance-token evidence attached to the current PrivateDAO Testnet path. It is not presented as a public mainnet payment coin or speculative market token.",
+    "PDAO is preserved Testnet governance-token evidence attached to the current PrivateDAO Testnet path. It is not presented as a public mainnet payment coin or speculative market token.",
   mint: "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
-  network: "Solana Devnet",
+  network: "Solana Testnet",
   tokenProgram: "Token-2022",
   supply: "1,000,000 PDAO",
   tokenArchitectureHref: "/documents/token-architecture",
@@ -40,7 +40,7 @@ const sharedSnapshot = {
     {
       label: "Governance participation",
       detail:
-        "PDAO is the live governance mint for the canonical reviewer-facing Devnet DAO and anchors proposal participation and voting.",
+        "PDAO is the live governance mint for the canonical reviewer-facing Testnet DAO and anchors proposal participation and voting.",
     },
     {
       label: "Proposal discipline",
@@ -161,7 +161,7 @@ export function getPdaoTokenStrategySnapshot(
         ...sharedSnapshot,
         title: "PDAO token strategy for operator and execution paths",
         description:
-          "Show the token where operators act: proposal creation, voting, treasury-sensitive motions, and payout governance stay tied to a visible Devnet governance mint with an explicit reviewer boundary.",
+          "Show the token where operators act: proposal creation, voting, treasury-sensitive motions, and payout governance stay tied to a visible Testnet governance mint with an explicit reviewer boundary.",
         bestRouteLabel: "Open command-center payout path",
         bestRouteHref: "/command-center",
       };

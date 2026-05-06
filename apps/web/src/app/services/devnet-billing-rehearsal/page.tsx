@@ -9,7 +9,6 @@ export const metadata: Metadata = buildRouteMetadata({
     "Legacy billing route redirected to the current PrivateDAO Testnet billing rehearsal.",
   path: "/services/devnet-billing-rehearsal",
   keywords: ["testnet billing", "solana payment rehearsal", "web3 business model", "wallet billing"],
-  index: false,
 });
 
 export default function DevnetBillingRehearsalAliasPage() {

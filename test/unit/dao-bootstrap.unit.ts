@@ -203,12 +203,12 @@ describe("dao bootstrap unit coverage", () => {
 
     await expectRejected(
       fetchDaoAccountDetails(connection as never, Keypair.generate().publicKey),
-      /DAO account was not found on devnet/,
+      /DAO account was not found on Testnet/,
     );
 
     await expectRejected(
       fetchProposalAccountDetails(connection as never, Keypair.generate().publicKey),
-      /Proposal account was not found on devnet/,
+      /Proposal account was not found on Testnet/,
     );
   });
 
@@ -419,7 +419,7 @@ describe("dao bootstrap unit coverage", () => {
     assert.equal(status.slot, 12);
   });
 
-  it("surfaces explicit Devnet execution errors during signature polling", async () => {
+  it("surfaces explicit Testnet execution errors during signature polling", async () => {
     await expectRejected(
       awaitLiveSignatureOnCluster({
         connection: createConnection({
@@ -434,7 +434,7 @@ describe("dao bootstrap unit coverage", () => {
         timeoutMs: 5,
         pollIntervalMs: 0,
       }),
-      /Devnet rejected the submitted transaction/,
+      /Testnet rejected the submitted transaction/,
     );
   });
 });

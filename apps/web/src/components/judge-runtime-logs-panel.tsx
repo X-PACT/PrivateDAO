@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ExternalLink, FileText, ShieldCheck, TerminalSquare } from "lucide-react";
 
+import { OperatingJourneyStrip } from "@/components/operating-journey-strip";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -30,6 +31,12 @@ export function JudgeRuntimeLogsPanel() {
         </p>
       </CardHeader>
       <CardContent className="grid gap-6">
+        <OperatingJourneyStrip
+          snapshot={snapshot}
+          title="Judge-facing operating journey"
+          description="This compresses the current evidence into one readable operating status before the raw governance and confidential transaction logs below."
+        />
+
         <div className="grid gap-4 xl:grid-cols-2">
           <div className="rounded-3xl border border-white/10 bg-white/4 p-5">
             <div className="flex items-center gap-3 text-white">

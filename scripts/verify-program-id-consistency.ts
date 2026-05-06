@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-const CANONICAL_PROGRAM_ID = "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx";
+const CANONICAL_PROGRAM_ID = "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva";
 
 function main() {
   verifyAnchorToml();
@@ -31,9 +31,8 @@ function verifyProgramSource() {
 
 function verifyDocs() {
   const checks: Array<[string, RegExp]> = [
-    ["README.md", /Live devnet program: `([^`]+)`/],
-    ["docs/live-proof.md", /Program ID: `([^`]+)`/],
-    ["docs/devnet-release-manifest.md", /Program ID: `([^`]+)`/],
+    ["README.md", /Live Testnet program: `([^`]+)`/],
+    ["docs/anchor-1-migration-evidence-2026-04-30.md", /Program ID: `([^`]+)`/],
     ["docs/android-native.md", /program ID: `([^`]+)`/],
     ["docs/reviewer-fast-path.md", /Program ID: `([^`]+)`/],
     ["docs/pdao-token.md", /PrivateDAO governance program: `([^`]+)`/],

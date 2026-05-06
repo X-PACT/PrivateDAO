@@ -8,8 +8,7 @@ export const metadata: Metadata = buildRouteMetadata({
   title: "Assistant",
   description: "Built-in guide for users, reviewers, and operators to reach the right PrivateDAO route quickly.",
   path: "/assistant",
-  keywords: ["assistant", "guide"],
-  index: false,
+  keywords: ["assistant", "guide", "PrivateDAO navigation", "reviewer guide"],
 });
 
 export default function AssistantPage() {

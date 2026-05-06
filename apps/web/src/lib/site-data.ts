@@ -1,4 +1,5 @@
 import { READ_NODE_PROPOSAL_REGISTRY } from "@/lib/read-node-proposal-context.generated";
+import { SOLANA_NETWORK_LABEL } from "@/lib/solana-network";
 
 export type ProposalStatus =
   | "Live voting"
@@ -93,7 +94,7 @@ export const sponsorSignals = [
   {
     name: "Solana",
     accent: "from-[#14f195] via-[#00c2ff] to-[#9945ff]",
-    summary: "The core governance, wallet, and devnet posture stays unmistakably Solana-native.",
+    summary: "The core governance, wallet, and Testnet posture stays unmistakably Solana-native.",
   },
   {
     name: "Solflare",
@@ -156,16 +157,16 @@ export const frontierOperatingSignals = [
 ];
 
 export const storyVideo = {
-  title: "PrivateDAO Product Overview",
+  title: "PrivateDAO OS Technology Explainer",
   summary:
-    "A single product story that explains everything PrivateDAO ships today: private governance, confidential treasury operations, live proof, V3 hardening, RPC surfaces, Android access, and browser-first product corridors.",
-  runtime: "YouTube-first public story reel · upload-ready MP4 backup",
-  youtubeHref: "https://youtu.be/HiCz0vb8kgk",
-  embedHref: "https://www.youtube.com/embed/HiCz0vb8kgk",
+    "A judge-ready product explainer that shows where every core technology is used inside PrivateDAO OS: governance, intelligence, private settlement, stablecoins, QVAC, proof, security, and Android parity.",
+  runtime: "YouTube-first technology explainer · upload-ready MP4 backup",
+  youtubeHref: "https://youtu.be/byqu2p1N72U",
+  embedHref: "https://www.youtube.com/embed/byqu2p1N72U",
   mp4Href: "/assets/private-dao-product-overview.mp4",
   posterHref: "/assets/private-dao-product-overview-poster.png",
   uploadFile:
-    "/home/x-pact/Desktop/PrivateDAO-Product-Overview/PrivateDAO - Product Overview - Everything We Offer and Why Us.mp4",
+    "/home/x-pact/Desktop/PrivateDAO-Marketing-Video-2026-04-30/PrivateDAO_OS_Technology_Explainer_2026-04-30.mp4",
 };
 
 export const walletChoices = [
@@ -213,7 +214,7 @@ export const achievements = [
   {
     title: "1st Place · Superteam Poland",
     detail:
-      "The backend win is now presented as proof of execution discipline, not repeated decor across the interface.",
+      "This recognition is presented as an execution signal while the platform stays product-first across governance, proof, and services.",
     meta: "March 2026",
   },
 ];
@@ -234,11 +235,23 @@ export const communityLinks = [
 ];
 
 function cloneProposalCard(proposal: (typeof READ_NODE_PROPOSAL_REGISTRY)[number]): ProposalCardModel {
+  const normalizeNetworkCopy = (value?: string | null) => {
+    if (!value) return value ?? undefined;
+    if (SOLANA_NETWORK_LABEL === "Devnet") return value;
+    return value.replace(/\bdevnet\b/gi, SOLANA_NETWORK_LABEL.toLowerCase());
+  };
+
   return {
     ...proposal,
+    title: normalizeNetworkCopy(proposal.title) ?? proposal.title,
+    window: normalizeNetworkCopy(proposal.window) ?? proposal.window,
+    summary: normalizeNetworkCopy(proposal.summary) ?? proposal.summary,
     tech: [...proposal.tech],
     execution: {
       ...proposal.execution,
+      sourceLabel: normalizeNetworkCopy(proposal.execution.sourceLabel) ?? proposal.execution.sourceLabel,
+      presentationWindow:
+        normalizeNetworkCopy(proposal.execution.presentationWindow) ?? proposal.execution.presentationWindow,
       txContext: {
         ...proposal.execution.txContext,
       },
@@ -373,7 +386,7 @@ export const executionLog = [
   },
   {
     label: "Execute treasury",
-    value: "0.05 SOL devnet execution completed with explicit proof and settlement packet linkage.",
+    value: "0.05 SOL Testnet execution completed with explicit proof and settlement packet linkage.",
     status: "confirmed",
   },
 ];
