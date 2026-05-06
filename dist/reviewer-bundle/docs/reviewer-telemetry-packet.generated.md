@@ -3,15 +3,15 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-22T00:25:43.751Z`
+- generated at: `2026-05-06T09:10:29.254Z`
 - reviewer intent: Show the shortest truth-synced route into runtime maturity, hosted reads, indexed governance, and infrastructure-facing reviewer value without claiming unsupported partnerships or mainnet readiness.
 
 ## Truth Sources
 
-- Runtime evidence: `2026-04-22T00:21:39.664Z` via `docs/runtime-evidence.generated.md`
+- Runtime evidence: `2026-05-06T09:07:34.282Z` via `docs/runtime-evidence.generated.md`
 - Frontier integrations: `2026-04-22T00:19:16.435Z` via `docs/frontier-integrations.generated.md`
-- Read-node snapshot: `2026-04-22T00:18:08.075Z` via `docs/read-node/snapshot.generated.md`
-- Devnet service metrics: `2026-04-22T00:21:39.664Z` via `apps/web/src/lib/devnet-service-metrics.ts`
+- Read-node snapshot: `2026-04-28T23:33:45.971Z` via `docs/read-node/snapshot.generated.md`
+- Devnet service metrics: `2026-05-06T09:07:34.282Z` via `apps/web/src/lib/devnet-service-metrics.ts`
 
 ## What Works Now
 
@@ -23,9 +23,9 @@
 
 ## What Is Externally Or Operationally Proven Now
 
-- Runtime evidence package generated at 2026-04-22T00:21:39.664Z and published as docs/runtime-evidence.generated.md.
+- Runtime evidence package generated at 2026-05-06T09:07:34.282Z and published as docs/runtime-evidence.generated.md.
 - Frontier integrations package generated at 2026-04-22T00:19:16.435Z with reviewer entry https://privatedao.org/proof/?judge=1.
-- Read-node snapshot generated at 2026-04-22T00:18:08.075Z on slot 457178030 against https://api.devnet.solana.com.
+- Read-node snapshot generated at 2026-04-28T23:33:45.971Z on slot 458767709 against https://api.devnet.solana.com.
 - Proposal flow health, wallet readiness, and proof freshness summaries are taken from the same devnet service metrics module used by the live app.
 - Unexpected runtime failures remain 0 and unexpected adversarial successes remain 0.
 
@@ -33,8 +33,9 @@
 
 - read path: `backend-indexer`
 - rpc endpoint: `https://api.devnet.solana.com`
-- slot: `457178030`
-- program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- slot: `458767709`
+- legacy Devnet program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- current Anchor 1.0.1 Testnet program id: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
 - commitment: `confirmed`
 - indexed proposals: `48`
 - indexed DAOs: `28`
@@ -60,10 +61,10 @@
 
 - Proposal flow health: 37.5% — 7/7 governance proof steps are finalized. 0 proposal is already executed on Testnet, 0 proposal is still in commit mode, and 5 proposal is still waiting on settlement evidence. (Open proof and execution: /proof/?judge=1)
 - Wallet-by-wallet readiness: 25% — 1/4 browser wallet targets have completed connect + sign + submit on Testnet. Diagnostics are visible for 5/5 support-matrix entries, and pending real-device targets remain explicit in runtime evidence. (Open wallet diagnostics: /diagnostics)
-- Proof freshness: fresh this hour — Runtime evidence fresh this hour, Devnet canary fresh this hour, and integration evidence fresh this hour remain published together. (Open trust documents: /documents/live-proof-v3)
+- Proof freshness: fresh this hour — Runtime evidence fresh this hour and Testnet canary 1h old remain published together. The integration packet remains linked as the reviewer baseline without turning an archived source packet into the freshness score. Latest Testnet rehearsal is 5h old with 9 confirmed lifecycle signatures. (Open trust documents: /documents/live-proof-v3)
 - Hosted read coverage: 48 — The backend-indexer read path currently exposes 48 indexed proposals across 28 DAOs. (Open services: /services)
 - MagicBlock settlement completion: 100% — 5/5 confidential corridor transactions finalized in the current integration evidence package. (Open diagnostics: /diagnostics)
-- Primary RPC latency: 210 ms — Current blockhash latency from the primary Devnet endpoint. Version latency is 1218 ms. (Open analytics: /analytics)
+- Primary RPC latency: 305 ms — Current blockhash latency from the primary Testnet endpoint. Version latency is 1249 ms. (Open analytics: /analytics)
 
 ## Reviewer-First Path
 

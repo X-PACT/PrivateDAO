@@ -24,53 +24,53 @@ Provide the following in this order:
 
 ### Protocol and security reasoning
 
-- [protocol-spec.md](/home/x-pact/PrivateDAO/docs/protocol-spec.md)
-- [threat-model.md](/home/x-pact/PrivateDAO/docs/threat-model.md)
-- [security-review.md](/home/x-pact/PrivateDAO/docs/security-review.md)
-- [security-coverage-map.md](/home/x-pact/PrivateDAO/docs/security-coverage-map.md)
-- [failure-modes.md](/home/x-pact/PrivateDAO/docs/failure-modes.md)
-- [replay-analysis.md](/home/x-pact/PrivateDAO/docs/replay-analysis.md)
+- [protocol-spec.md](docs/protocol-spec.md)
+- [threat-model.md](docs/threat-model.md)
+- [security-review.md](docs/security-review.md)
+- [security-coverage-map.md](docs/security-coverage-map.md)
+- [failure-modes.md](docs/failure-modes.md)
+- [replay-analysis.md](docs/replay-analysis.md)
 
 ### Live proof and release references
 
-- [live-proof.md](/home/x-pact/PrivateDAO/docs/live-proof.md)
-- [test-wallet-live-proof-v3.generated.md](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.md)
-- [devnet-release-manifest.md](/home/x-pact/PrivateDAO/docs/devnet-release-manifest.md)
-- [proof-registry.json](/home/x-pact/PrivateDAO/docs/proof-registry.json)
+- [live-proof.md](docs/live-proof.md)
+- [test-wallet-live-proof-v3.generated.md](docs/test-wallet-live-proof-v3.generated.md)
+- [devnet-release-manifest.md](docs/devnet-release-manifest.md)
+- [proof-registry.json](docs/proof-registry.json)
 
 ### Additive hardening V3 references
 
-- [governance-hardening-v3.md](/home/x-pact/PrivateDAO/docs/governance-hardening-v3.md)
-- [settlement-hardening-v3.md](/home/x-pact/PrivateDAO/docs/settlement-hardening-v3.md)
-- [test-wallet-live-proof-v3.generated.json](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.json)
+- [governance-hardening-v3.md](docs/governance-hardening-v3.md)
+- [settlement-hardening-v3.md](docs/settlement-hardening-v3.md)
+- [test-wallet-live-proof-v3.generated.json](docs/test-wallet-live-proof-v3.generated.json)
 
 ### Verification and test surfaces
 
-- [independent-verification.md](/home/x-pact/PrivateDAO/docs/independent-verification.md)
-- [private-dao.ts](/home/x-pact/PrivateDAO/tests/private-dao.ts)
-- [full-flow-test.ts](/home/x-pact/PrivateDAO/tests/full-flow-test.ts)
-- [demo.ts](/home/x-pact/PrivateDAO/tests/demo.ts)
+- [independent-verification.md](docs/independent-verification.md)
+- [private-dao.ts](tests/private-dao.ts)
+- [full-flow-test.ts](tests/full-flow-test.ts)
+- [demo.ts](tests/demo.ts)
 
 ### ZK-enforced escalation package
 
-- [phase-c-hardening.md](/home/x-pact/PrivateDAO/docs/phase-c-hardening.md)
-- [zk-verifier-strategy.md](/home/x-pact/PrivateDAO/docs/zk-verifier-strategy.md)
-- [zk-enforced-threat-review.md](/home/x-pact/PrivateDAO/docs/zk-enforced-threat-review.md)
-- [zk/enforced-runtime-evidence.md](/home/x-pact/PrivateDAO/docs/zk/enforced-runtime-evidence.md)
-- [zk/enforced-runtime.generated.md](/home/x-pact/PrivateDAO/docs/zk/enforced-runtime.generated.md)
-- [zk/enforced-operator-flow.md](/home/x-pact/PrivateDAO/docs/zk/enforced-operator-flow.md)
-- [zk-external-audit-scope.md](/home/x-pact/PrivateDAO/docs/zk-external-audit-scope.md)
-- [canonical-verifier-boundary-decision.md](/home/x-pact/PrivateDAO/docs/canonical-verifier-boundary-decision.md)
+- [phase-c-hardening.md](docs/phase-c-hardening.md)
+- [zk-verifier-strategy.md](docs/zk-verifier-strategy.md)
+- [zk-enforced-threat-review.md](docs/zk-enforced-threat-review.md)
+- [zk/enforced-runtime-evidence.md](docs/zk/enforced-runtime-evidence.md)
+- [zk/enforced-runtime.generated.md](docs/zk/enforced-runtime.generated.md)
+- [zk/enforced-operator-flow.md](docs/zk/enforced-operator-flow.md)
+- [zk-external-audit-scope.md](docs/zk-external-audit-scope.md)
+- [canonical-verifier-boundary-decision.md](docs/canonical-verifier-boundary-decision.md)
 
 ### Operations and production surfaces
 
-- [mainnet-readiness.md](/home/x-pact/PrivateDAO/docs/mainnet-readiness.md)
-- [production-operations.md](/home/x-pact/PrivateDAO/docs/production-operations.md)
-- [monitoring-alerts.md](/home/x-pact/PrivateDAO/docs/monitoring-alerts.md)
-- [incident-response.md](/home/x-pact/PrivateDAO/docs/incident-response.md)
-- [mainnet-cutover-runbook.md](/home/x-pact/PrivateDAO/docs/mainnet-cutover-runbook.md)
-- [operator-checklist.md](/home/x-pact/PrivateDAO/docs/operator-checklist.md)
-- [risk-register.md](/home/x-pact/PrivateDAO/docs/risk-register.md)
+- [mainnet-readiness.md](docs/mainnet-readiness.md)
+- [production-operations.md](docs/production-operations.md)
+- [monitoring-alerts.md](docs/monitoring-alerts.md)
+- [incident-response.md](docs/incident-response.md)
+- [mainnet-cutover-runbook.md](docs/mainnet-cutover-runbook.md)
+- [operator-checklist.md](docs/operator-checklist.md)
+- [risk-register.md](docs/risk-register.md)
 
 ## Questions The Handoff Should Answer
 

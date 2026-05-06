@@ -13,7 +13,7 @@
 - Proof Center: https://privatedao.org/proof/
 - Judge Mode: https://privatedao.org/proof/?judge=1
 - Security page: https://privatedao.org/security/
-- YouTube pitch: https://youtu.be/HiCz0vb8kgk
+- YouTube pitch: https://youtu.be/iFTUe4CTWP0
 
 ## Live Devnet Anchors
 

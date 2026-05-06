@@ -13,10 +13,10 @@ This checklist is the shortest operational path for a human operator preparing t
 
 ## Evidence Surfaces To Check First
 
-- [live-proof.md](/home/x-pact/PrivateDAO/docs/live-proof.md)
-- [test-wallet-live-proof-v3.generated.md](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.md)
-- [devnet-release-manifest.md](/home/x-pact/PrivateDAO/docs/devnet-release-manifest.md)
-- [proof-registry.json](/home/x-pact/PrivateDAO/docs/proof-registry.json)
+- [live-proof.md](docs/live-proof.md)
+- [test-wallet-live-proof-v3.generated.md](docs/test-wallet-live-proof-v3.generated.md)
+- [devnet-release-manifest.md](docs/devnet-release-manifest.md)
+- [proof-registry.json](docs/proof-registry.json)
 
 ## Verification Commands
 
@@ -53,7 +53,7 @@ Before creating or executing a proposal:
 ## If Something Looks Wrong
 
 - stop non-essential actions
-- consult [incident-response.md](/home/x-pact/PrivateDAO/docs/incident-response.md)
+- consult [incident-response.md](docs/incident-response.md)
 - capture signatures and current account state
 - avoid performing treasury actions under uncertain RPC conditions
 

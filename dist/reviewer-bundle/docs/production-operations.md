@@ -70,9 +70,9 @@ Baseline:
 
 Relevant repository surfaces:
 
-- [check-mainnet-readiness.sh](/home/x-pact/PrivateDAO/scripts/check-mainnet-readiness.sh)
-- [independent-verification.md](/home/x-pact/PrivateDAO/docs/independent-verification.md)
-- [test-wallet-live-proof-v3.generated.md](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.md)
+- [check-mainnet-readiness.sh](scripts/check-mainnet-readiness.sh)
+- [independent-verification.md](docs/independent-verification.md)
+- [test-wallet-live-proof-v3.generated.md](docs/test-wallet-live-proof-v3.generated.md)
 
 ## Monitoring and Alerting
 
@@ -106,11 +106,11 @@ Minimum expectations:
 
 Relevant repository evidence:
 
-- [security-review.md](/home/x-pact/PrivateDAO/docs/security-review.md)
-- [failure-modes.md](/home/x-pact/PrivateDAO/docs/failure-modes.md)
-- [live-proof.md](/home/x-pact/PrivateDAO/docs/live-proof.md)
-- [governance-hardening-v3.md](/home/x-pact/PrivateDAO/docs/governance-hardening-v3.md)
-- [settlement-hardening-v3.md](/home/x-pact/PrivateDAO/docs/settlement-hardening-v3.md)
+- [security-review.md](docs/security-review.md)
+- [failure-modes.md](docs/failure-modes.md)
+- [live-proof.md](docs/live-proof.md)
+- [governance-hardening-v3.md](docs/governance-hardening-v3.md)
+- [settlement-hardening-v3.md](docs/settlement-hardening-v3.md)
 
 ## Incident Response
 
@@ -128,10 +128,10 @@ The repository should not pretend incidents are impossible. It should prove they
 
 Before claiming production readiness, operators should complete:
 
-1. [mainnet-readiness.md](/home/x-pact/PrivateDAO/docs/mainnet-readiness.md)
-2. [security-review.md](/home/x-pact/PrivateDAO/docs/security-review.md)
-3. [independent-verification.md](/home/x-pact/PrivateDAO/docs/independent-verification.md)
-4. [protocol-spec.md](/home/x-pact/PrivateDAO/docs/protocol-spec.md)
+1. [mainnet-readiness.md](docs/mainnet-readiness.md)
+2. [security-review.md](docs/security-review.md)
+3. [independent-verification.md](docs/independent-verification.md)
+4. [protocol-spec.md](docs/protocol-spec.md)
 5. external review or audit
 
 ## Honest Boundary

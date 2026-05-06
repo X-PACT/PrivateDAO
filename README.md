@@ -661,6 +661,8 @@ The current PrivateDAO governance program id is:
 
 Live Testnet program: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
 
+Legacy Devnet proof-registry program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+
 ```text
 EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva
 ```

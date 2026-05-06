@@ -1,6 +1,6 @@
 # Security Coverage Map
 
-This table is a scenario map, not a measured `>80%` coverage report. It shows where threat classes already have explicit regression scenarios. Measured baselines currently live in [security-audit-workstream-2026-04-18.md](/home/x-pact/PrivateDAO/docs/security-audit-workstream-2026-04-18.md).
+This table is a scenario map, not a measured `>80%` coverage report. It shows where threat classes already have explicit regression scenarios. Measured baselines currently live in [security-audit-workstream-2026-04-18.md](docs/security-audit-workstream-2026-04-18.md).
 
 | Threat Class | Mitigation | Test File | Scenario Status |
 | --- | --- | --- | --- |

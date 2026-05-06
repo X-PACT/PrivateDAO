@@ -2,7 +2,7 @@
 
 This note captures a real end-to-end governance run executed on Solana devnet from the repository surface using the verification wallet.
 
-Use this file as the canonical baseline lifecycle proof.
+Use this file as the canonical legacy Devnet baseline lifecycle proof. The current reviewer-facing Anchor 1.0.1 Testnet program is `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`; see [`testnet-lifecycle-rehearsal-2026-05-06.md`](testnet-lifecycle-rehearsal-2026-05-06.md) and [`anchor-1-migration-evidence-2026-04-30.md`](anchor-1-migration-evidence-2026-04-30.md).
 
 For the stricter additive hardening path, open:
 
@@ -12,7 +12,7 @@ For the stricter additive hardening path, open:
 
 That packet proves the dedicated `Governance Hardening V3` and `Settlement Hardening V3` flows separately from this baseline note.
 
-## Program Deployment
+## Legacy Devnet Program Deployment
 
 - Program ID: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Deploy transaction: `2CMEujY1CKnC8rH8BuLy4GvwYk3zfqMfAKaUjybcAvRhS1dnzg3Zd3GeMttBp4vkUbu69GkQtr3TWgbmBqGY8cyC`
@@ -79,6 +79,6 @@ The current Groth16 stack still generates and verifies proofs off-chain, but the
 
 ```bash
 ANCHOR_PROVIDER_URL="https://api.devnet.solana.com" \
-ANCHOR_WALLET="/path/to/wallet-keypair.json" \
+ANCHOR_WALLET="operator-keypair.json" \
 npm run live-proof -- --name PDAOCanonical20260404 --governance-mint AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt
 ```

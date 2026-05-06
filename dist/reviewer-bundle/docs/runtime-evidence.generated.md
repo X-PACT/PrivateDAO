@@ -2,8 +2,9 @@
 
 ## Overview
 
-- Generated at: `2026-04-22T07:47:54.307Z`
-- Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- Generated at: `2026-05-06T09:07:34.282Z`
+- Legacy Devnet program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- Current Anchor 1.0.1 Testnet program id: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - Diagnostics page: `https://privatedao.org/diagnostics/`
 - Supported wallet classes: `5`

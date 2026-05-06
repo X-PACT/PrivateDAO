@@ -36,42 +36,42 @@ If a reviewer has only a few minutes, the strongest order is:
 
 ### Product and proof
 
-- [live-proof.md](/home/x-pact/PrivateDAO/docs/live-proof.md)
-- [test-wallet-live-proof-v3.generated.md](/home/x-pact/PrivateDAO/docs/test-wallet-live-proof-v3.generated.md)
-- [devnet-release-manifest.md](/home/x-pact/PrivateDAO/docs/devnet-release-manifest.md)
-- [independent-verification.md](/home/x-pact/PrivateDAO/docs/independent-verification.md)
-- [governance-hardening-v3.md](/home/x-pact/PrivateDAO/docs/governance-hardening-v3.md)
-- [settlement-hardening-v3.md](/home/x-pact/PrivateDAO/docs/settlement-hardening-v3.md)
+- [live-proof.md](docs/live-proof.md)
+- [test-wallet-live-proof-v3.generated.md](docs/test-wallet-live-proof-v3.generated.md)
+- [devnet-release-manifest.md](docs/devnet-release-manifest.md)
+- [independent-verification.md](docs/independent-verification.md)
+- [governance-hardening-v3.md](docs/governance-hardening-v3.md)
+- [settlement-hardening-v3.md](docs/settlement-hardening-v3.md)
 
 ### Security and audit
 
-- [security-review.md](/home/x-pact/PrivateDAO/docs/security-review.md)
-- [threat-model.md](/home/x-pact/PrivateDAO/docs/threat-model.md)
-- [security-coverage-map.md](/home/x-pact/PrivateDAO/docs/security-coverage-map.md)
-- [failure-modes.md](/home/x-pact/PrivateDAO/docs/failure-modes.md)
-- [replay-analysis.md](/home/x-pact/PrivateDAO/docs/replay-analysis.md)
-- [judge-technical-audit.md](/home/x-pact/PrivateDAO/docs/judge-technical-audit.md)
+- [security-review.md](docs/security-review.md)
+- [threat-model.md](docs/threat-model.md)
+- [security-coverage-map.md](docs/security-coverage-map.md)
+- [failure-modes.md](docs/failure-modes.md)
+- [replay-analysis.md](docs/replay-analysis.md)
+- [judge-technical-audit.md](docs/judge-technical-audit.md)
 
 ### Operations and production discipline
 
-- [mainnet-readiness.md](/home/x-pact/PrivateDAO/docs/mainnet-readiness.md)
-- [production-operations.md](/home/x-pact/PrivateDAO/docs/production-operations.md)
-- [monitoring-alerts.md](/home/x-pact/PrivateDAO/docs/monitoring-alerts.md)
-- [incident-response.md](/home/x-pact/PrivateDAO/docs/incident-response.md)
+- [mainnet-readiness.md](docs/mainnet-readiness.md)
+- [production-operations.md](docs/production-operations.md)
+- [monitoring-alerts.md](docs/monitoring-alerts.md)
+- [incident-response.md](docs/incident-response.md)
 
 ### Strategy and submission fit
 
-- [ranger-strategy-documentation.md](/home/x-pact/PrivateDAO/docs/ranger-strategy-documentation.md)
-- [strategy-operations.md](/home/x-pact/PrivateDAO/docs/strategy-operations.md)
-- [risk-policy.md](/home/x-pact/PrivateDAO/docs/risk-policy.md)
-- [ranger-submission-bundle.generated.md](/home/x-pact/PrivateDAO/docs/ranger-submission-bundle.generated.md)
+- [ranger-strategy-documentation.md](docs/ranger-strategy-documentation.md)
+- [strategy-operations.md](docs/strategy-operations.md)
+- [risk-policy.md](docs/risk-policy.md)
+- [ranger-submission-bundle.generated.md](docs/ranger-submission-bundle.generated.md)
 
 ## Source Code Surfaces
 
-- [lib.rs](/home/x-pact/PrivateDAO/programs/private-dao/src/lib.rs)
-- [private-dao.ts](/home/x-pact/PrivateDAO/tests/private-dao.ts)
-- [full-flow-test.ts](/home/x-pact/PrivateDAO/tests/full-flow-test.ts)
-- [demo.ts](/home/x-pact/PrivateDAO/tests/demo.ts)
+- [lib.rs](programs/private-dao/src/lib.rs)
+- [private-dao.ts](tests/private-dao.ts)
+- [full-flow-test.ts](tests/full-flow-test.ts)
+- [demo.ts](tests/demo.ts)
 
 ## Verification Gates
 
