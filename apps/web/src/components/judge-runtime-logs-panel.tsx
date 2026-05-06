@@ -195,8 +195,8 @@ export function JudgeRuntimeLogsPanel() {
                 <div className="mt-2 text-lg font-medium text-white">Captured batch settlement rail with many real Testnet transfers</div>
               </div>
               <div className="rounded-2xl border border-amber-300/20 bg-black/25 px-3 py-2 text-right">
-                <div className="text-[11px] uppercase tracking-[0.22em] text-amber-100/70">Freshness</div>
-                <div className="mt-1 text-sm font-medium text-white">{snapshot.agenticMicropayments.freshness}</div>
+                <div className="text-[11px] uppercase tracking-[0.22em] text-amber-100/70">Packet status</div>
+                <div className="mt-1 text-sm font-medium text-white">Archived Devnet packet</div>
               </div>
             </div>
             <div className="mt-4 grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">

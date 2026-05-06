@@ -11,11 +11,7 @@ export default function HomePage() {
   return (
     <>
       <Suspense
-        fallback={
-          <div className="mx-auto w-full max-w-7xl px-4 pt-6 text-sm text-cyan-100/80 sm:px-6 lg:px-8">
-            Preparing the right PrivateDAO entry path…
-          </div>
-        }
+        fallback={null}
       >
         <LegacyEntryBridge />
       </Suspense>

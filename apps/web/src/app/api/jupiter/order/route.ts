@@ -23,7 +23,7 @@ function normalizeMint(value: string | undefined, fallback: string) {
 }
 
 function normalizeAmount(value: string | undefined) {
-  const amount = value?.trim() ?? "1000000";
+  const amount = value?.trim() ?? "20000000";
   if (!/^\d+$/.test(amount)) {
     throw new Error("Amount must be an integer string in base units.");
   }

@@ -91,7 +91,7 @@ export function WalletConnectButton({
   }, [connect, connected, connecting, selectedWalletName, wallet]);
 
   const label = useMemo(() => {
-    if (!isMounted) return "Loading wallets...";
+    if (!isMounted) return connectLabel;
     if (connecting) return "Connecting...";
     if (disconnecting) return "Disconnecting...";
     if (connected && publicKey) {

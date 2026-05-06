@@ -2,10 +2,13 @@
 
 This report is generated from the canonical PrivateDAO registries and reviewer artifacts. It exists to summarize what is already verified inside the repository and what still remains outside repository scope before any production cutover.
 
+> Status note, 2026-05-06: this generated report includes legacy Devnet evidence from the pre-Anchor-1 migration surface. The current reviewer-facing Testnet program is `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`; see `docs/anchor-1-migration-evidence-2026-04-30.md` and `docs/testnet-lifecycle-rehearsal-2026-05-06.md`. Production mainnet remains blocked until custody, audit, monitoring, and cutover evidence are recorded.
+
 ## Current Identity
 
 - Project: `PrivateDAO`
-- Program ID: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- Legacy Devnet Program ID: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- Current Testnet Program ID: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - Deploy transaction: `2CMEujY1CKnC8rH8BuLy4GvwYk3zfqMfAKaUjybcAvRhS1dnzg3Zd3GeMttBp4vkUbu69GkQtr3TWgbmBqGY8cyC`
 - DAO PDA: `FZV9KmpeY1B31XvszQypp5T6nQN5C44JDLM4QWBEDvhx`

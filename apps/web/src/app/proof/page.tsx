@@ -234,6 +234,13 @@ export default function ProofPage() {
       <div>
         <ReadNodeHostReadinessStrip context="proof" />
       </div>
+      <div className="rounded-[26px] border border-emerald-300/16 bg-emerald-300/[0.08] p-5 text-sm leading-7 text-white/72">
+        Supabase receipt continuity is browser-direct: confirmed operations write to
+        <span className="font-semibold text-white"> governance_receipts</span>,
+        <span className="font-semibold text-white"> operation_receipts</span>, and
+        <span className="font-semibold text-white"> cloak_delivery_state</span> without relying on static-export API routes.
+        Realtime subscriptions refresh this proof surface when new rows land.
+      </div>
       <div>
         <MetricsStrip />
       </div>

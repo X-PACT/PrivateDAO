@@ -501,7 +501,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
       return;
     }
 
-	    if (pathname === "/healthz") {
+	    if (pathname === "/healthz" || pathname === "/api/health" || pathname === "/api/v1/health") {
       const runtime = await readNode.getRuntimeSnapshot();
       writeJson(res, 200, { ok: true, health: "healthy", runtime });
       return;

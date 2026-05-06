@@ -349,7 +349,7 @@ export function getJudgeRuntimeLogsSnapshot(): JudgeRuntimeLogsSnapshot {
     agenticMicropayments: micropayments
       ? {
           available: true,
-          freshness: formatFreshness(micropayments.generatedAt),
+          freshness: "archived Devnet packet",
           assetMode: micropayments.assetMode,
           settlementAssetSymbol: micropayments.settlementAssetSymbol,
           transferCount: micropayments.transferCount,

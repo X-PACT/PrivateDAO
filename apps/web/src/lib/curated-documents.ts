@@ -288,6 +288,18 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/testnet-architecture-migration-2026-04-19.md`,
   },
   {
+    slug: "testnet-lifecycle-rehearsal-2026-05-06",
+    title: "Testnet Lifecycle Rehearsal 2026-05-06",
+    category: "Infrastructure",
+    summary:
+      "Fresh Solana Testnet proof for DAO creation, proposal creation, treasury deposit, commit, reveal, finalize, execute, Supabase receipt intake, and treasury delta verification.",
+    audience: "Judges, infrastructure reviewers, operators, funders",
+    boundary:
+      "Standard Testnet governance and SOL treasury execution proof only; custody/multisig and full Umbra claim proof remain separate gated evidence lanes.",
+    docPath: "docs/testnet-lifecycle-rehearsal-2026-05-06.md",
+    rawHref: `${repositoryBlobBase}/docs/testnet-lifecycle-rehearsal-2026-05-06.md`,
+  },
+  {
     slug: "testnet-lifecycle-rehearsal-2026-04-19",
     title: "Testnet Lifecycle Rehearsal",
     category: "Infrastructure",

@@ -1,0 +1,88 @@
+{
+  "generatedAt": "2026-05-06T04:12:50.122Z",
+  "startedAt": "2026-05-06T04:12:20.334Z",
+  "network": "testnet",
+  "rpcEndpoint": "https://api.testnet.solana.com/",
+  "programId": "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva",
+  "operator": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+  "daoName": "TestnetDAO-tjjzam",
+  "accounts": {
+    "dao": "4LRzc2PvGzaro2osYYAbTDDaz3c8tq3hpGY2ju7iZxuX",
+    "governanceMint": "2kn7mJKsyTK843eYy49onUHNui5oPx5W8veUYGCgaUL4",
+    "authorityTokenAccount": "GDVuuHWLxEiN2PuB2gv5kJbCMCmKBqBeAt6YsTZTXt6f",
+    "proposal": "JByRyjBab7QT5cEhpTC4GuN5ahQvoDbkBWriGDfhb9Mx",
+    "voteRecord": "3tM19ofPpZMjMeRVZEv1kRa1iGzjaE2Wa98w1aABjXTv",
+    "delegationMarker": "3CLTz7L7F8fEskdFHbdP61pwtTAYfrTBAksuVUoPtckU",
+    "treasury": "J1rhUP2EHFDcYYXbZnLZZ7Na1zQcWGDsq74G2ZUwv7VF",
+    "recipient": "6yPmwo8b3ekHwDjBcQUWZuZxY56YY7ZqqXfGE655PaiM"
+  },
+  "accountExplorers": {
+    "dao": "https://solscan.io/account/4LRzc2PvGzaro2osYYAbTDDaz3c8tq3hpGY2ju7iZxuX?cluster=testnet",
+    "proposal": "https://solscan.io/account/JByRyjBab7QT5cEhpTC4GuN5ahQvoDbkBWriGDfhb9Mx?cluster=testnet",
+    "treasury": "https://solscan.io/account/J1rhUP2EHFDcYYXbZnLZZ7Na1zQcWGDsq74G2ZUwv7VF?cluster=testnet",
+    "recipient": "https://solscan.io/account/6yPmwo8b3ekHwDjBcQUWZuZxY56YY7ZqqXfGE655PaiM?cluster=testnet"
+  },
+  "transactions": [
+    {
+      "label": "mint governance voting power",
+      "signature": "3FNuTuaqQ2FP9N2wT5aPPz3AJTQ8HgKsyY9aRXjah35XVEkiUbUKxAMq3HiJfPBUd1ELQygwWLY4Qz5GVdHw2J62",
+      "explorer": "https://solscan.io/tx/3FNuTuaqQ2FP9N2wT5aPPz3AJTQ8HgKsyY9aRXjah35XVEkiUbUKxAMq3HiJfPBUd1ELQygwWLY4Qz5GVdHw2J62?cluster=testnet"
+    },
+    {
+      "label": "fund recipient system account",
+      "signature": "LV5YY7UeMjeiwmEfPTNSB5YFoZS8yC6ZrtHibKAJqWS6a4JLjFyPHFWd8nEB6wQudWXExGcikRSVP5sKRKHuFav",
+      "explorer": "https://solscan.io/tx/LV5YY7UeMjeiwmEfPTNSB5YFoZS8yC6ZrtHibKAJqWS6a4JLjFyPHFWd8nEB6wQudWXExGcikRSVP5sKRKHuFav?cluster=testnet"
+    },
+    {
+      "label": "create DAO",
+      "signature": "3JzUTnsG7qMDPB4Xx83EmxW5Q5EtLyEFfAs6cj2gvDoXeZCcmEJNwo9p3KBnTXn7aJRvd6auKeHDTMVbNNobKyWd",
+      "explorer": "https://solscan.io/tx/3JzUTnsG7qMDPB4Xx83EmxW5Q5EtLyEFfAs6cj2gvDoXeZCcmEJNwo9p3KBnTXn7aJRvd6auKeHDTMVbNNobKyWd?cluster=testnet"
+    },
+    {
+      "label": "create treasury proposal",
+      "signature": "5h7Frh9iL8qcJESCDFs2ovU2SzCDETgCgY32qtrQbWoWqqfor64amENzqzVpyAQY1xLFKj9Qh7yBWEX9Hd7MhnLk",
+      "explorer": "https://solscan.io/tx/5h7Frh9iL8qcJESCDFs2ovU2SzCDETgCgY32qtrQbWoWqqfor64amENzqzVpyAQY1xLFKj9Qh7yBWEX9Hd7MhnLk?cluster=testnet"
+    },
+    {
+      "label": "deposit treasury",
+      "signature": "TWLNPgbv8817tN5tWjCeA36e9gk2nzPV4GffxYoYKtkxcbdK2c3bhwQ71p56ivJmtoBuEKWKFMYumPbT4m9E4pn",
+      "explorer": "https://solscan.io/tx/TWLNPgbv8817tN5tWjCeA36e9gk2nzPV4GffxYoYKtkxcbdK2c3bhwQ71p56ivJmtoBuEKWKFMYumPbT4m9E4pn?cluster=testnet"
+    },
+    {
+      "label": "commit vote",
+      "signature": "25X92Bq1imCGwJwqkn7W4V5wc7D9NK9UrsBBZ7jWydfeuBenQrHcfssJT8y97nyX78f3NyniJUy1Q54xxTNwmcb4",
+      "explorer": "https://solscan.io/tx/25X92Bq1imCGwJwqkn7W4V5wc7D9NK9UrsBBZ7jWydfeuBenQrHcfssJT8y97nyX78f3NyniJUy1Q54xxTNwmcb4?cluster=testnet"
+    },
+    {
+      "label": "reveal vote",
+      "signature": "5de1s4t3ePHHC2rdFTdS4fChm5ZmXTtKcojz2xQQd25zsc2qZFCeSGZP9WaBZZJisN2y5RRjJvT4tyu5HgxhEeAc",
+      "explorer": "https://solscan.io/tx/5de1s4t3ePHHC2rdFTdS4fChm5ZmXTtKcojz2xQQd25zsc2qZFCeSGZP9WaBZZJisN2y5RRjJvT4tyu5HgxhEeAc?cluster=testnet"
+    },
+    {
+      "label": "finalize proposal",
+      "signature": "4onLh84wk1euXmMGe2m6PRRDcBWqwuXa5PnWLr5vJaMmREJLjHCdReFn7C5r4ZzMZGfrwtMiJp8VzLMh5LpqyVKa",
+      "explorer": "https://solscan.io/tx/4onLh84wk1euXmMGe2m6PRRDcBWqwuXa5PnWLr5vJaMmREJLjHCdReFn7C5r4ZzMZGfrwtMiJp8VzLMh5LpqyVKa?cluster=testnet"
+    },
+    {
+      "label": "execute proposal",
+      "signature": "zAFdbqz7FS4zaB48VjQ7KSsmstv7fyaaP7sqrs3LToryXu1zZF6GN4xiSvUBmtvTMcXqGa7VAnmaRHUQmCuC9Vz",
+      "explorer": "https://solscan.io/tx/zAFdbqz7FS4zaB48VjQ7KSsmstv7fyaaP7sqrs3LToryXu1zZF6GN4xiSvUBmtvTMcXqGa7VAnmaRHUQmCuC9Vz?cluster=testnet"
+    }
+  ],
+  "verification": {
+    "proposalStatus": "Passed",
+    "isExecuted": true,
+    "commitCount": "1",
+    "revealCount": "1",
+    "yesCapital": "1000000000",
+    "treasuryBeforeExecuteLamports": 30000000,
+    "treasuryAfterExecuteLamports": 25000000,
+    "treasuryDeltaLamports": 5000000,
+    "recipientBeforeExecuteLamports": 2000000,
+    "recipientAfterExecuteLamports": 7000000,
+    "recipientDeltaLamports": 5000000,
+    "expectedTransferLamports": 5000000,
+    "operatorBalanceBeforeLamports": 8632787041,
+    "operatorBalanceAfterLamports": 8582324801
+  }
+}

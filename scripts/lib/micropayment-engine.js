@@ -1,0 +1,274 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.__testables = void 0;
+exports.runAgenticMicropaymentRail = runAgenticMicropaymentRail;
+const node_fs_1 = __importDefault(require("node:fs"));
+const node_path_1 = __importDefault(require("node:path"));
+const web3_js_1 = require("@solana/web3.js");
+const spl_token_1 = require("@solana/spl-token");
+const utils_1 = require("../utils");
+const DEFAULT_DEVNET_RPC = process.env.ANCHOR_PROVIDER_URL ||
+    process.env.SOLANA_RPC_URL ||
+    process.env.SOLANA_URL ||
+    "https://api.devnet.solana.com";
+const DEFAULT_WALLET_PATH = process.env.DEVNET_COORDINATOR_WALLET ||
+    process.env.ANCHOR_WALLET ||
+    "/home/x-pact/Desktop/wallet-keypair.json";
+const DEFAULT_TARGET_COUNT = 10;
+const DEFAULT_TRANSFER_TARGET = 50;
+const SOL_MICROPAYMENT_ACTIONS = [
+    { action: "proposal-approved", lamports: 20000n },
+    { action: "vote-settled", lamports: 20000n },
+    { action: "reveal-settled", lamports: 20000n },
+    { action: "execute-settled", lamports: 50000n },
+    { action: "proof-attached", lamports: 10000n },
+];
+const SPL_MICROPAYMENT_ACTIONS = [
+    { action: "proposal-approved", amountRaw: 10000n },
+    { action: "vote-settled", amountRaw: 10000n },
+    { action: "reveal-settled", amountRaw: 10000n },
+    { action: "execute-settled", amountRaw: 50000n },
+    { action: "proof-attached", amountRaw: 10000n },
+];
+function loadKeypair(filePath) {
+    const secret = Uint8Array.from(JSON.parse(node_fs_1.default.readFileSync(filePath, "utf8")));
+    return web3_js_1.Keypair.fromSecretKey(secret);
+}
+function createConnection() {
+    return new web3_js_1.Connection(DEFAULT_DEVNET_RPC, "confirmed");
+}
+function ensureDir(dirPath) {
+    node_fs_1.default.mkdirSync(dirPath, { recursive: true });
+}
+function nowIso() {
+    return new Date().toISOString();
+}
+function formatAmount(value, decimals, symbol) {
+    const divisor = 10n ** BigInt(decimals);
+    const whole = value / divisor;
+    const fraction = value % divisor;
+    const fractionString = fraction.toString().padStart(decimals, "0").replace(/0+$/, "");
+    return fractionString.length > 0
+        ? `${whole.toString()}.${fractionString} ${symbol}`
+        : `${whole.toString()} ${symbol}`;
+}
+function buildMicropaymentPlan({ assetMode, targetCount, transferTarget, }) {
+    const actions = assetMode === "SPL" ? SPL_MICROPAYMENT_ACTIONS : SOL_MICROPAYMENT_ACTIONS;
+    return {
+        assetMode,
+        targetCount,
+        transferTarget,
+        batchActionCount: actions.length,
+        batchCount: Math.ceil(transferTarget / actions.length),
+        actionsPerBatch: actions.map((item) => item.action),
+    };
+}
+async function sendAndFinalize(connection, transaction, signer) {
+    const latestBlockhash = await connection.getLatestBlockhash("confirmed");
+    transaction.feePayer = signer.publicKey;
+    transaction.recentBlockhash = latestBlockhash.blockhash;
+    transaction.sign(signer);
+    const signature = await connection.sendRawTransaction(transaction.serialize(), {
+        preflightCommitment: "confirmed",
+        skipPreflight: false,
+    });
+    const confirmation = await connection.confirmTransaction({
+        signature,
+        blockhash: latestBlockhash.blockhash,
+        lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+    }, "confirmed");
+    if (confirmation.value.err) {
+        throw new Error(`transaction failed: ${JSON.stringify(confirmation.value.err)}`);
+    }
+    const tx = await connection.getTransaction(signature, {
+        commitment: "confirmed",
+        maxSupportedTransactionVersion: 0,
+    });
+    return {
+        signature,
+        slot: tx?.slot ?? 0,
+    };
+}
+async function detectStableExecutionMode(connection, signer, stableMint) {
+    if (!stableMint) {
+        return null;
+    }
+    const mint = new web3_js_1.PublicKey(stableMint);
+    const tokenProgram = await (0, utils_1.resolveTokenProgramForMint)(connection, mint);
+    const mintInfo = await (0, spl_token_1.getMint)(connection, mint, "confirmed", tokenProgram);
+    const sourceAta = await (0, spl_token_1.getOrCreateAssociatedTokenAccount)(connection, signer, mint, signer.publicKey, false, "confirmed", undefined, tokenProgram);
+    const sourceBalance = await (0, spl_token_1.getAccount)(connection, sourceAta.address, "confirmed", tokenProgram);
+    const minimumNeeded = SPL_MICROPAYMENT_ACTIONS.reduce((sum, item) => sum + item.amountRaw, 0n);
+    return sourceBalance.amount >= minimumNeeded
+        ? {
+            mint,
+            tokenProgram,
+            decimals: mintInfo.decimals,
+            sourceAta: sourceAta.address,
+        }
+        : null;
+}
+function writeReportArtifacts(report) {
+    const jsonPath = node_path_1.default.resolve("docs/agentic-treasury-micropayment-rail.generated.json");
+    const markdownPath = node_path_1.default.resolve("docs/agentic-treasury-micropayment-rail.generated.md");
+    ensureDir(node_path_1.default.dirname(jsonPath));
+    node_fs_1.default.writeFileSync(jsonPath, JSON.stringify(report, null, 2) + "\n", "utf8");
+    const markdown = buildMicropaymentMarkdown(report);
+    node_fs_1.default.writeFileSync(markdownPath, markdown, "utf8");
+}
+function buildMicropaymentMarkdown(report) {
+    const lines = [
+        "# Agentic Treasury Micropayment Rail Evidence",
+        "",
+        `- Generated at: \`${report.generatedAt}\``,
+        `- Network: \`${report.network}\``,
+        `- Asset mode: \`${report.assetMode}\``,
+        `- Settlement asset: \`${report.settlementAssetSymbol}\``,
+        `- Transfer count: \`${report.successfulTransferCount}/${report.transferCount}\``,
+        `- Batch count: \`${report.batchCount}\``,
+        `- Target count: \`${report.targetCount}\``,
+        `- Total amount: \`${report.totalAmountDisplay}\``,
+        `- Execution wallet: \`${report.executionWallet}\``,
+        "",
+        "## Transfer samples",
+        "",
+    ];
+    for (const transfer of report.transfers.slice(0, 20)) {
+        lines.push(`- Batch ${transfer.batchIndex + 1} · ${transfer.action} · \`${transfer.amountDisplay}\` · [${transfer.signature}](${transfer.explorerUrl})`);
+    }
+    lines.push("", "## Machine-readable source", "", "- `docs/agentic-treasury-micropayment-rail.generated.json`");
+    return lines.join("\n") + "\n";
+}
+async function runAgenticMicropaymentRail(options = {}) {
+    const connection = options.connection ?? createConnection();
+    const signer = loadKeypair(options.walletPath ?? DEFAULT_WALLET_PATH);
+    const targetCount = Math.max(1, options.targetCount ?? DEFAULT_TARGET_COUNT);
+    const transferTarget = Math.max(5, options.transferTarget ?? DEFAULT_TRANSFER_TARGET);
+    const stableMint = options.stableMint ??
+        process.env.PRIVATE_DAO_MICROPAYMENT_MINT ??
+        process.env.NEXT_PUBLIC_TREASURY_USDC_MINT ??
+        null;
+    const stableSymbol = options.stableSymbol ??
+        process.env.PRIVATE_DAO_MICROPAYMENT_SYMBOL ??
+        "USDC";
+    const recipients = Array.from({ length: targetCount }, () => web3_js_1.Keypair.generate());
+    const stableContext = await detectStableExecutionMode(connection, signer, stableMint);
+    const assetMode = stableContext ? "SPL" : "SOL";
+    const settlementAssetSymbol = stableContext ? stableSymbol : "SOL";
+    const plan = buildMicropaymentPlan({
+        assetMode: stableContext ? "SPL" : "SOL",
+        targetCount,
+        transferTarget,
+    });
+    const batchCount = plan.batchCount;
+    const transfers = [];
+    let totalAmountRaw = 0n;
+    if (!stableContext) {
+        const rentActivationLamports = BigInt(await connection.getMinimumBalanceForRentExemption(0)) + 50000n;
+        for (const [recipientIndex, recipient] of recipients.entries()) {
+            const tx = new web3_js_1.Transaction().add(web3_js_1.SystemProgram.transfer({
+                fromPubkey: signer.publicKey,
+                toPubkey: recipient.publicKey,
+                lamports: Number(rentActivationLamports),
+            }));
+            const { signature, slot } = await sendAndFinalize(connection, tx, signer);
+            totalAmountRaw += rentActivationLamports;
+            transfers.push({
+                batchIndex: recipientIndex,
+                action: "recipient-activation",
+                recipient: recipient.publicKey.toBase58(),
+                amountRaw: rentActivationLamports.toString(),
+                amountDisplay: formatAmount(rentActivationLamports, 9, "SOL"),
+                signature,
+                explorerUrl: (0, utils_1.solscanTxUrl)(signature),
+                status: "finalized",
+                slot,
+                settledAt: nowIso(),
+            });
+        }
+    }
+    for (let batchIndex = 0; batchIndex < batchCount; batchIndex += 1) {
+        const recipient = recipients[batchIndex % recipients.length];
+        if (stableContext) {
+            for (const actionConfig of SPL_MICROPAYMENT_ACTIONS) {
+                if (transfers.length >= transferTarget) {
+                    break;
+                }
+                const recipientAta = await (0, spl_token_1.getOrCreateAssociatedTokenAccount)(connection, signer, stableContext.mint, recipient.publicKey, false, "confirmed", undefined, stableContext.tokenProgram);
+                const amountRaw = actionConfig.amountRaw;
+                const tx = new web3_js_1.Transaction().add((0, spl_token_1.createTransferCheckedInstruction)(stableContext.sourceAta, stableContext.mint, recipientAta.address, signer.publicKey, amountRaw, stableContext.decimals, [], stableContext.tokenProgram));
+                const { signature, slot } = await sendAndFinalize(connection, tx, signer);
+                totalAmountRaw += amountRaw;
+                transfers.push({
+                    batchIndex,
+                    action: actionConfig.action,
+                    recipient: recipient.publicKey.toBase58(),
+                    amountRaw: amountRaw.toString(),
+                    amountDisplay: formatAmount(amountRaw, stableContext.decimals, stableSymbol),
+                    signature,
+                    explorerUrl: (0, utils_1.solscanTxUrl)(signature),
+                    status: "finalized",
+                    slot,
+                    settledAt: nowIso(),
+                });
+            }
+        }
+        else {
+            for (const actionConfig of SOL_MICROPAYMENT_ACTIONS) {
+                if (transfers.length >= transferTarget) {
+                    break;
+                }
+                const lamports = actionConfig.lamports;
+                const tx = new web3_js_1.Transaction().add(web3_js_1.SystemProgram.transfer({
+                    fromPubkey: signer.publicKey,
+                    toPubkey: recipient.publicKey,
+                    lamports: Number(lamports),
+                }));
+                const { signature, slot } = await sendAndFinalize(connection, tx, signer);
+                totalAmountRaw += lamports;
+                transfers.push({
+                    batchIndex,
+                    action: actionConfig.action,
+                    recipient: recipient.publicKey.toBase58(),
+                    amountRaw: lamports.toString(),
+                    amountDisplay: formatAmount(lamports, 9, "SOL"),
+                    signature,
+                    explorerUrl: (0, utils_1.solscanTxUrl)(signature),
+                    status: "finalized",
+                    slot,
+                    settledAt: nowIso(),
+                });
+            }
+        }
+    }
+    const report = {
+        project: "PrivateDAO",
+        feature: "Agentic Treasury Micropayment Rail",
+        generatedAt: nowIso(),
+        network: "devnet",
+        assetMode,
+        settlementAssetSymbol,
+        settlementMint: stableContext?.mint.toBase58() ?? null,
+        targetCount,
+        batchCount,
+        transferCount: transfers.length,
+        successfulTransferCount: transfers.length,
+        executionWallet: signer.publicKey.toBase58(),
+        totalAmountRaw: totalAmountRaw.toString(),
+        totalAmountDisplay: formatAmount(totalAmountRaw, stableContext ? stableContext.decimals : 9, settlementAssetSymbol),
+        actionsPerBatch: plan.actionsPerBatch,
+        reportPath: "docs/agentic-treasury-micropayment-rail.generated.json",
+        transfers,
+    };
+    writeReportArtifacts(report);
+    return report;
+}
+exports.__testables = {
+    buildMicropaymentPlan,
+    buildMicropaymentMarkdown,
+    formatAmount,
+    writeReportArtifacts,
+};

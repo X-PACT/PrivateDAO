@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import {
   fetchOperationReceiptTimeline,
+  subscribeOperationReceiptTimeline,
   type OperationReceiptTimelineRow,
 } from "@/lib/supabase/operation-receipts";
 
@@ -46,8 +47,22 @@ export function SupabaseOperationTimeline() {
     }
 
     void loadTimeline();
+    const unsubscribe = subscribeOperationReceiptTimeline(
+      24,
+      (nextRows) => {
+        if (!active) return;
+        setRows(nextRows);
+        setStatus("ready");
+        setMessage(`${nextRows.length} receipt entries loaded from Supabase realtime.`);
+      },
+      (nextMessage) => {
+        if (!active) return;
+        setMessage(`Timeline note: ${nextMessage}`);
+      },
+    );
     return () => {
       active = false;
+      unsubscribe();
     };
   }, []);
 

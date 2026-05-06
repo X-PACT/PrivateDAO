@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, LockKeyhole, Send, ShieldCheck } from "lucide-react";
 
-import { persistOperationReceipt } from "@/lib/supabase/operation-receipts";
+import { persistCloakDeliveryState, persistOperationReceipt } from "@/lib/supabase/operation-receipts";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -126,6 +126,18 @@ export function PrivateSettlementRailWorkbench({
         auditMode: profile.auditMode,
         recipientVisibility: profile.visibility,
         metadata: payload,
+      });
+
+      await persistCloakDeliveryState({
+        rail,
+        operationType,
+        asset,
+        amount,
+        recipient,
+        memo,
+        auditMode: profile.auditMode,
+        recipientVisibility: profile.visibility,
+        responseStatus: response.ok ? "delivered" : `http-${response.status}`,
       });
 
       const torqueEndpoint = process.env.NEXT_PUBLIC_TORQUE_CUSTOM_EVENT_ENDPOINT?.trim() || "https://api.privatedao.org/api/v1/torque/custom-event";

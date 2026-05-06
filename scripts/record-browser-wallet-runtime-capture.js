@@ -1,0 +1,67 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
+function main() {
+    const inputPath = process.argv[2];
+    if (!inputPath) {
+        throw new Error("usage: npm run record:browser-wallet-runtime -- <capture-json-path>");
+    }
+    const registryPath = path_1.default.resolve("docs/runtime/browser-wallet-captures.json");
+    const registry = readJson(registryPath);
+    const incoming = readJson(inputPath);
+    if (incoming.network !== "devnet") {
+        throw new Error("browser-wallet capture must remain on devnet");
+    }
+    const target = registry.targets.find((entry) => entry.id === incoming.id);
+    if (!target) {
+        throw new Error(`unknown target id: ${incoming.id}`);
+    }
+    if (incoming.walletLabel !== target.walletLabel) {
+        throw new Error(`wallet label mismatch for target ${incoming.id}`);
+    }
+    if (incoming.environmentType !== target.environmentType) {
+        throw new Error(`environment type mismatch for target ${incoming.id}`);
+    }
+    if (!incoming.actionsCovered?.length) {
+        throw new Error("browser-wallet capture must record at least one covered action");
+    }
+    const normalized = {
+        ...incoming,
+        explorerUrl: incoming.txSignature && incoming.submissionResult === "success"
+            ? `https://explorer.solana.com/tx/${incoming.txSignature}?cluster=devnet`
+            : null,
+        evidenceRefs: incoming.evidenceRefs ?? [],
+    };
+    if (normalized.submissionResult === "success" && !normalized.txSignature) {
+        throw new Error("successful browser-wallet submission must include txSignature");
+    }
+    const captureIndex = registry.captures.findIndex((entry) => entry.id === normalized.id);
+    if (captureIndex >= 0) {
+        registry.captures[captureIndex] = normalized;
+    }
+    else {
+        registry.captures.push(normalized);
+    }
+    target.status = deriveTargetStatus(normalized);
+    registry.generatedAt = new Date().toISOString();
+    registry.captures.sort((a, b) => a.id.localeCompare(b.id));
+    fs_1.default.writeFileSync(registryPath, JSON.stringify(registry, null, 2) + "\n");
+    console.log(`Recorded browser-wallet capture for ${normalized.walletLabel} (${normalized.id})`);
+}
+function deriveTargetStatus(capture) {
+    if (capture.submissionResult === "success" && capture.diagnosticsSnapshotCaptured) {
+        return "captured";
+    }
+    if (capture.connectResult === "success" || capture.signingResult === "success") {
+        return "captured-with-failures";
+    }
+    return "attempted-no-success";
+}
+function readJson(relativePath) {
+    return JSON.parse(fs_1.default.readFileSync(path_1.default.resolve(relativePath), "utf8"));
+}
+main();

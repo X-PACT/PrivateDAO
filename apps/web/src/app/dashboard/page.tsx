@@ -117,6 +117,27 @@ export default function DashboardPage() {
         <PaymentsTruthStrip context="dashboard" />
       </section>
 
+      <section className="mt-10 rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6">
+        <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/78">Live infrastructure state</div>
+        <h2 className="mt-3 text-2xl font-semibold text-white">Supabase, Eitherway, and Amazon are connected as separate runtime layers</h2>
+        <p className="mt-3 max-w-4xl text-sm leading-7 text-white/68">
+          The static site stays on GitHub Pages, Supabase stores browser-direct operation receipts, Eitherway previews the wallet-first
+          dApp shell, and Amazon EC2 serves the read-node API at <span className="text-white">api.privatedao.org</span>. Direct Solana
+          Testnet RPC remains the primary chain path so a failing AWS RPC proxy cannot block the product.
+        </p>
+        <div className="mt-4 grid gap-3 md:grid-cols-3">
+          <Link className={cn(buttonVariants({ size: "sm" }))} href="/proof">
+            Open Supabase receipt timeline
+          </Link>
+          <Link className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} href="/services/eitherway-live-dapp">
+            Open Eitherway lane
+          </Link>
+          <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href="/rpc-services">
+            Open AWS read-node checks
+          </Link>
+        </div>
+      </section>
+
       <section className="mt-10">
         <PdaoTokenStrategyStrip context="dashboard" />
       </section>

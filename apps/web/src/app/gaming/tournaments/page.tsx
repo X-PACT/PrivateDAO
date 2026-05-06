@@ -72,6 +72,21 @@ export default function GamingTournamentsPage() {
       </div>
 
       <div className="grid gap-3">
+        {items.length === 0 ? (
+          <div className="rounded-[24px] border border-emerald-300/16 bg-emerald-300/[0.08] p-5">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <div className="text-base font-medium text-white">Reviewer demo tournament</div>
+                <div className="text-sm text-white/65">
+                  Prize: 100 USDC · Status: ended · Distribution proposal ready
+                </div>
+              </div>
+              <Link href="/govern" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                Propose distribution
+              </Link>
+            </div>
+          </div>
+        ) : null}
         {items.map((item) => (
           <div key={item.id} className="rounded-[24px] border border-white/10 bg-white/[0.04] p-5">
             <div className="flex flex-wrap items-center justify-between gap-3">

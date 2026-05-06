@@ -1,0 +1,58 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
+const CANONICAL_PROGRAM_ID = "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva";
+function main() {
+    verifyAnchorToml();
+    verifyProgramSource();
+    verifyDocs();
+    verifySupportingScripts();
+    console.log("Program ID consistency verification: PASS");
+}
+function verifyAnchorToml() {
+    const body = fs_1.default.readFileSync(path_1.default.resolve("Anchor.toml"), "utf8");
+    const matches = [...body.matchAll(/private_dao = "([^"]+)"/g)].map((match) => match[1]);
+    if (matches.length === 0) {
+        throw new Error("Anchor.toml is missing private_dao program entries");
+    }
+    for (const entry of matches) {
+        assert(entry === CANONICAL_PROGRAM_ID, `Anchor.toml contains unexpected private_dao id: ${entry}`);
+    }
+}
+function verifyProgramSource() {
+    const body = fs_1.default.readFileSync(path_1.default.resolve("programs/private-dao/src/lib.rs"), "utf8");
+    const match = body.match(/declare_id!\("([^"]+)"\)/);
+    assert(Boolean(match), "lib.rs is missing declare_id!");
+    assert(match?.[1] === CANONICAL_PROGRAM_ID, `program source declare_id drifted: ${match?.[1] || "missing"}`);
+}
+function verifyDocs() {
+    const checks = [
+        ["README.md", /Live Testnet program: `([^`]+)`/],
+        ["docs/anchor-1-migration-evidence-2026-04-30.md", /Program ID: `([^`]+)`/],
+        ["docs/android-native.md", /program ID: `([^`]+)`/],
+        ["docs/reviewer-fast-path.md", /Program ID: `([^`]+)`/],
+        ["docs/pdao-token.md", /PrivateDAO governance program: `([^`]+)`/],
+    ];
+    for (const [file, pattern] of checks) {
+        const body = fs_1.default.readFileSync(path_1.default.resolve(file), "utf8");
+        const match = body.match(pattern);
+        assert(Boolean(match), `${file} is missing its program-id anchor`);
+        assert(match?.[1] === CANONICAL_PROGRAM_ID, `${file} drifted to a different program id: ${match?.[1] || "missing"}`);
+    }
+}
+function verifySupportingScripts() {
+    const body = fs_1.default.readFileSync(path_1.default.resolve("scripts/generate-demo-reel.py"), "utf8");
+    const match = body.match(/PROGRAM_ID = "([^"]+)"/);
+    assert(Boolean(match), "generate-demo-reel.py is missing PROGRAM_ID");
+    assert(match?.[1] === CANONICAL_PROGRAM_ID, `generate-demo-reel.py drifted: ${match?.[1] || "missing"}`);
+}
+function assert(condition, message) {
+    if (!condition) {
+        throw new Error(message);
+    }
+}
+main();

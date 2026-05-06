@@ -46,6 +46,7 @@ const homeCopyByLocale: Record<
     deeperSummary: string;
     deeperTitle: string;
     deeperBody: string;
+    allSections: string;
   }
 > = {
   en: {
@@ -66,6 +67,7 @@ const homeCopyByLocale: Record<
     deeperTitle: "Open the deeper proof, architecture, and investor narrative only when needed",
     deeperBody:
       "The first screen now stays action-first. This expandable section preserves the full reviewer and investor story without forcing every new visitor through a long homepage.",
+    allSections: "All product sections",
   },
   ar: {
     eyebrow: "نظام PrivateDAO",
@@ -85,6 +87,7 @@ const homeCopyByLocale: Record<
     deeperTitle: "افتح الإثبات والمعمارية وسرد الاستثمار فقط عند الحاجة",
     deeperBody:
       "الشاشة الأولى أصبحت موجهة للفعل. هذا القسم القابل للفتح يحفظ قصة المحكمين والمستثمرين كاملة دون إجبار كل زائر جديد على صفحة طويلة.",
+    allSections: "كل أقسام المنتج",
   },
   ru: {
     eyebrow: "PrivateDAO OS",
@@ -103,6 +106,7 @@ const homeCopyByLocale: Record<
     deeperSummary: "Подробная архитектура",
     deeperTitle: "Открывайте proof, architecture и investor narrative только когда это нужно",
     deeperBody: "Первый экран теперь action-first. Подробности сохранены ниже, но не перегружают нового посетителя.",
+    allSections: "Все разделы продукта",
   },
   uk: {
     eyebrow: "PrivateDAO OS",
@@ -121,6 +125,7 @@ const homeCopyByLocale: Record<
     deeperSummary: "Детальна архітектура",
     deeperTitle: "Відкривайте proof, architecture та investor narrative лише за потреби",
     deeperBody: "Перший екран тепер action-first. Деталі збережені нижче, але не перевантажують нового відвідувача.",
+    allSections: "Усі розділи продукту",
   },
   pl: {
     eyebrow: "PrivateDAO OS",
@@ -139,6 +144,7 @@ const homeCopyByLocale: Record<
     deeperSummary: "Szczegółowa architektura",
     deeperTitle: "Otwórz proof, architecture i investor narrative tylko gdy są potrzebne",
     deeperBody: "Pierwszy ekran jest teraz action-first. Szczegóły zostają niżej, ale nie przeciążają nowego użytkownika.",
+    allSections: "Wszystkie sekcje produktu",
   },
   hi: {
     eyebrow: "PrivateDAO OS",
@@ -157,6 +163,7 @@ const homeCopyByLocale: Record<
     deeperSummary: "Detailed architecture",
     deeperTitle: "Proof, architecture और investor narrative तभी खोलें जब ज़रूरत हो",
     deeperBody: "पहली screen अब action-first है. गहरी जानकारी नीचे सुरक्षित है, पर नए visitor को overload नहीं करती.",
+    allSections: "सभी product sections",
   },
   ko: {
     eyebrow: "PrivateDAO OS",
@@ -175,6 +182,7 @@ const homeCopyByLocale: Record<
     deeperSummary: "Detailed architecture",
     deeperTitle: "필요할 때만 proof, architecture, investor narrative를 여세요",
     deeperBody: "첫 화면은 action-first로 정리했습니다. 깊은 설명은 아래에 보존하되 새 방문자를 압도하지 않습니다.",
+    allSections: "전체 제품 섹션",
   },
   es: {
     eyebrow: "PrivateDAO OS",
@@ -193,6 +201,7 @@ const homeCopyByLocale: Record<
     deeperSummary: "Arquitectura detallada",
     deeperTitle: "Abre proof, architecture e investor narrative solo cuando haga falta",
     deeperBody: "La primera pantalla ahora prioriza la acción. La explicación profunda sigue disponible sin alargar la primera visita.",
+    allSections: "Todas las secciones",
   },
   it: {
     eyebrow: "PrivateDAO OS",
@@ -211,6 +220,7 @@ const homeCopyByLocale: Record<
     deeperSummary: "Architettura dettagliata",
     deeperTitle: "Apri proof, architecture e investor narrative solo quando serve",
     deeperBody: "La prima schermata ora è action-first. I dettagli restano disponibili sotto senza appesantire la prima visita.",
+    allSections: "Tutte le sezioni",
   },
 };
 
@@ -345,6 +355,27 @@ export function HomeShell() {
       badge: "Control",
     },
   ];
+  const sectionLinks = [
+    { label: "Start", href: "/start" },
+    { label: "Learn", href: "/learn" },
+    { label: "Intelligence", href: "/intelligence" },
+    { label: "Govern", href: "/govern" },
+    { label: "Treasury", href: "/treasury" },
+    { label: "Payroll", href: "/payroll" },
+    { label: "Execute", href: "/execute" },
+    { label: "Gaming", href: "/gaming" },
+    { label: "Tournaments", href: "/gaming/tournaments" },
+    { label: "Inventory", href: "/gaming/inventory" },
+    { label: "Compliance", href: "/compliance" },
+    { label: "Proof", href: "/proof" },
+    { label: "Trust", href: "/trust" },
+    { label: "Security", href: "/security" },
+    { label: "Developers", href: "/developers" },
+    { label: "RPC", href: "/rpc-services" },
+    { label: "Command", href: "/command-center" },
+    { label: "Services", href: "/services" },
+    { label: "About", href: "/about" },
+  ];
   const techBadges = [
     {
       label: "FHE / REFHE",
@@ -463,6 +494,17 @@ export function HomeShell() {
               <p className="max-w-2xl text-sm leading-7 text-white/62 sm:text-lg sm:leading-8">
                 {homeCopy.body}
               </p>
+              <div className="max-w-3xl rounded-[26px] border border-emerald-300/18 bg-emerald-300/[0.08] p-5 text-sm leading-7 text-white/72">
+                <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-100/80">No code operating layer</div>
+                <div className="mt-2 text-lg font-semibold text-white">
+                  Complex DAO, privacy, treasury, payroll, compliance, gaming, and AI workflows now run from the interface.
+                </div>
+                <p className="mt-2">
+                  A normal user does not need a terminal, SDK setup, or deep cryptography background. They can learn the concepts in
+                  <Link href="/learn" className="px-1 font-semibold text-cyan-100 underline decoration-cyan-300/50 underline-offset-4">Learn</Link>,
+                  connect a wallet, review the plain-English action, sign the exact request, and verify the receipt from web or mobile.
+                </p>
+              </div>
               <div className="flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.24em] text-white/50">
                 <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Connect</span>
                 <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Review</span>
@@ -488,6 +530,14 @@ export function HomeShell() {
               <Link className={cn(buttonVariants({ size: "lg", variant: "outline" }))} href="/learn">
                 {homeCopy.workflow}
               </Link>
+              <a
+                className={cn(buttonVariants({ size: "lg", variant: "outline" }))}
+                href="https://faucet.solana.com/"
+                rel="noreferrer"
+                target="_blank"
+              >
+                Get Testnet SOL
+              </a>
             </div>
 
             <div className="rounded-[28px] border border-cyan-300/14 bg-[linear-gradient(180deg,rgba(8,19,34,0.96),rgba(6,10,22,0.99))] p-4 sm:p-5">
@@ -527,6 +577,20 @@ export function HomeShell() {
                     </Link>
                   );
                 })}
+              </div>
+              <div className="mt-5 rounded-[22px] border border-white/8 bg-black/20 p-4">
+                <div className="text-[10px] uppercase tracking-[0.28em] text-white/42">{homeCopy.allSections}</div>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {sectionLinks.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="rounded-full border border-white/10 bg-white/[0.035] px-3 py-1.5 text-xs font-medium text-white/68 transition hover:border-cyan-300/30 hover:bg-cyan-300/10 hover:text-cyan-50"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
 

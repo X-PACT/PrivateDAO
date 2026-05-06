@@ -159,8 +159,26 @@ type FrontierIntegrationsJson = {
   };
 };
 
+type TestnetLifecycleRehearsalJson = {
+  generatedAt: string;
+  transactions: Array<{
+    label: string;
+    signature: string;
+  }>;
+  verification: {
+    proposalStatus: string;
+    isExecuted: boolean;
+  };
+};
+
 function readJson<T>(relativePath: string): T {
   const filePath = path.resolve(process.cwd(), "..", "..", relativePath);
+  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
+}
+
+function readOptionalJson<T>(relativePath: string): T | null {
+  const filePath = path.resolve(process.cwd(), "..", "..", relativePath);
+  if (!fs.existsSync(filePath)) return null;
   return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
 }
 
@@ -447,6 +465,9 @@ export function getOperationalValidationSnapshot(): OperationalValidationSnapsho
   const runtimeEvidence = readJson<RuntimeEvidenceJson>("docs/runtime-evidence.generated.json");
   const devnetCanary = readJson<DevnetCanaryJson>("docs/devnet-canary.generated.json");
   const frontierIntegrations = readJson<FrontierIntegrationsJson>("docs/frontier-integrations.generated.json");
+  const latestTestnetRehearsal = readOptionalJson<TestnetLifecycleRehearsalJson>(
+    "docs/testnet-lifecycle-rehearsal-2026-05-06.json",
+  );
 
   const liveVotingCount = proposalCards.filter((proposal) => proposal.status === "Live voting").length;
   const revealReadyCount = proposalCards.filter((proposal) => proposal.status === "Ready to reveal").length;
@@ -473,8 +494,18 @@ export function getOperationalValidationSnapshot(): OperationalValidationSnapsho
   ].filter((item) => item?.confirmed && item.status === "finalized").length;
 
   const rankedTracks = getRankedCompetitionTracks().slice(0, 3);
-  const freshestTimestamp = [runtimeEvidence.generatedAt, devnetCanary.generatedAt, frontierIntegrations.generatedAt]
+  const freshestTimestamp = [
+    runtimeEvidence.generatedAt,
+    devnetCanary.generatedAt,
+    frontierIntegrations.generatedAt,
+    latestTestnetRehearsal?.generatedAt,
+  ]
+    .filter((timestamp): timestamp is string => typeof timestamp === "string")
     .sort((left, right) => new Date(right).getTime() - new Date(left).getTime())[0];
+  const latestRehearsalDetail =
+    latestTestnetRehearsal && latestTestnetRehearsal.verification.isExecuted
+      ? ` Latest Testnet rehearsal is ${formatAgeLabel(latestTestnetRehearsal.generatedAt)} with ${latestTestnetRehearsal.transactions.length} confirmed lifecycle signatures.`
+      : "";
 
   return {
     generatedAt: freshestTimestamp,
@@ -500,7 +531,7 @@ export function getOperationalValidationSnapshot(): OperationalValidationSnapsho
     proofFreshness: {
       label: "Proof freshness",
       value: formatAgeLabel(freshestTimestamp),
-      detail: `Runtime evidence ${formatAgeLabel(runtimeEvidence.generatedAt)}, Testnet canary ${formatAgeLabel(devnetCanary.generatedAt)}, and integration evidence ${formatAgeLabel(frontierIntegrations.generatedAt)} remain published together.`,
+      detail: `Runtime evidence ${formatAgeLabel(runtimeEvidence.generatedAt)}, Testnet canary ${formatAgeLabel(devnetCanary.generatedAt)}, and integration evidence ${formatAgeLabel(frontierIntegrations.generatedAt)} remain published together.${latestRehearsalDetail}`,
       routeLabel: "Open trust documents",
       routeHref: "/documents/live-proof-v3",
       tone: "amber",

@@ -1,0 +1,49 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const child_process_1 = require("child_process");
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
+const ROOT = path_1.default.resolve("docs/assets/weekly-updates");
+const EXPECTED = [
+    "private-dao-week-1-update.mp4",
+    "private-dao-week-1-update-poster.png",
+    "private-dao-week-2-update.mp4",
+    "private-dao-week-2-update-poster.png",
+    "private-dao-week-3-update.mp4",
+    "private-dao-week-3-update-poster.png",
+    "private-dao-week-4-update.mp4",
+    "private-dao-week-4-update-poster.png",
+];
+function main() {
+    for (const file of EXPECTED) {
+        const full = path_1.default.join(ROOT, file);
+        if (!fs_1.default.existsSync(full)) {
+            throw new Error(`Missing weekly update asset: ${file}`);
+        }
+        const stat = fs_1.default.statSync(full);
+        if (stat.size <= 1024) {
+            throw new Error(`Weekly update asset is unexpectedly small: ${file}`);
+        }
+    }
+    for (const file of EXPECTED.filter((name) => name.endsWith(".mp4"))) {
+        const full = path_1.default.join(ROOT, file);
+        const probe = probeMedia(full);
+        const videoStream = (probe.streams || []).find((stream) => stream.codec_type === "video");
+        if (!videoStream || videoStream.width !== 1280 || videoStream.height !== 720) {
+            throw new Error(`Weekly update video is not 1280x720: ${file}`);
+        }
+        const duration = Number(probe.format?.duration || "0");
+        if (!Number.isFinite(duration) || duration < 34 || duration > 38) {
+            throw new Error(`Weekly update video duration is outside the expected range for ${file}: ${duration}`);
+        }
+    }
+    console.log("Weekly update video verification: PASS");
+}
+function probeMedia(file) {
+    const output = (0, child_process_1.execFileSync)("ffprobe", ["-v", "error", "-show_streams", "-show_format", "-of", "json", file], { encoding: "utf8" });
+    return JSON.parse(output);
+}
+main();

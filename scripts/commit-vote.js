@@ -1,0 +1,166 @@
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+// SPDX-License-Identifier: AGPL-3.0-or-later
+/**
+ * commit-vote.ts
+ * Phase 1: Commit a private vote to a proposal.
+ *
+ * Your vote is sealed in a sha256 hash. Nobody — not validators, not
+ * explorers, not the DAO admin — can see how you voted until reveal phase.
+ *
+ * Your salt is saved to ~/.privatedao/salts/<proposal_pda>-<voter_pubkey>.json
+ * Keep this file safe. You need it to reveal later.
+ *
+ * Usage:
+ *   yarn ts-node scripts/commit-vote.ts --proposal <PDA> --vote yes
+ *   # With a keeper authorized to reveal on your behalf:
+ *   yarn ts-node scripts/commit-vote.ts --proposal <PDA> --vote no --keeper <KEEPER_PUBKEY>
+ *   # Commit with delegated weight (you are the delegatee):
+ *   yarn ts-node scripts/commit-vote.ts --proposal <PDA> --vote yes --delegator <DELEGATOR_PUBKEY>
+ */
+const anchor = __importStar(require("@coral-xyz/anchor"));
+const web3_js_1 = require("@solana/web3.js");
+const crypto = __importStar(require("crypto"));
+const fs = __importStar(require("fs"));
+const utils_1 = require("./utils");
+async function main() {
+    const { proposal: proposalStr, vote: voteStr = "yes", keeper: keeperStr, delegator: delegatorStr, } = (0, utils_1.parseArgs)();
+    if (!proposalStr) {
+        console.error("Usage: yarn ts-node scripts/commit-vote.ts --proposal <PDA> --vote yes|no");
+        process.exit(1);
+    }
+    const vote = voteStr.toString().toLowerCase() === "yes";
+    const provider = anchor.AnchorProvider.env();
+    anchor.setProvider(provider);
+    const program = (0, utils_1.workspaceProgram)();
+    const proposalPda = new web3_js_1.PublicKey(proposalStr);
+    const proposal = await program.account["proposal"].fetch(proposalPda);
+    const dao = await program.account["dao"].fetch(proposal.dao);
+    const now = Math.floor(Date.now() / 1000);
+    if (now >= proposal.votingEnd.toNumber()) {
+        console.error("❌ Voting period has ended.");
+        process.exit(1);
+    }
+    const keeperPk = keeperStr ? new web3_js_1.PublicKey(keeperStr) : null;
+    const delegatorPk = delegatorStr ? new web3_js_1.PublicKey(delegatorStr) : null;
+    // Get voter's token account
+    const { address: voterAta, tokenProgram } = await (0, utils_1.associatedTokenAddressForMint)(provider.connection, dao.governanceToken, provider.wallet.publicKey);
+    // Generate random salt
+    const salt = crypto.randomBytes(32);
+    const commitment = (0, utils_1.computeProposalCommitment)(vote, salt, provider.wallet.publicKey, proposalPda);
+    console.log(`\n🔐 Committing private vote`);
+    console.log(`   Proposal: "${proposal.title}"`);
+    console.log(`   Vote:     ${vote ? "✅ YES" : "❌ NO"} (hidden until reveal)`);
+    console.log(`   Voter:    ${provider.wallet.publicKey.toBase58()}`);
+    if (keeperPk)
+        console.log(`   Keeper:   ${keeperPk.toBase58()} (can reveal on your behalf)`);
+    if (delegatorPk)
+        console.log(`   Delegator: ${delegatorPk.toBase58()} (combining weights)`);
+    console.log(`   Voting closes: ${(0, utils_1.formatTimestamp)(proposal.votingEnd.toNumber())}`);
+    const [voterRecordPda] = web3_js_1.PublicKey.findProgramAddressSync([Buffer.from("vote"), proposalPda.toBuffer(), provider.wallet.publicKey.toBuffer()], program.programId);
+    let tx;
+    if (delegatorPk) {
+        // Commit with delegated weight (commit_delegated_vote)
+        const [delegationPda] = web3_js_1.PublicKey.findProgramAddressSync([Buffer.from("delegation"), proposalPda.toBuffer(), delegatorPk.toBuffer()], program.programId);
+        const [delegatorDirectVoteRecordPda] = web3_js_1.PublicKey.findProgramAddressSync([Buffer.from("vote"), proposalPda.toBuffer(), delegatorPk.toBuffer()], program.programId);
+        const delegatorDirectVoteRecord = await provider.connection.getAccountInfo(delegatorDirectVoteRecordPda, "confirmed");
+        if (delegatorDirectVoteRecord) {
+            console.error("❌ The delegator already has a direct vote record for this proposal. Refusing delegated commit to avoid double-counting risk.");
+            process.exit(1);
+        }
+        tx = await program.methods
+            .commitDelegatedVote([...commitment], keeperPk)
+            .accounts({
+            dao: proposal.dao,
+            proposal: proposalPda,
+            delegation: delegationPda,
+            delegatorVoteMarker: delegatorDirectVoteRecordPda,
+            voterRecord: voterRecordPda,
+            delegateeTokenAccount: voterAta,
+            delegatee: provider.wallet.publicKey,
+            systemProgram: web3_js_1.SystemProgram.programId,
+        })
+            .rpc();
+    }
+    else {
+        const [delegationPda] = web3_js_1.PublicKey.findProgramAddressSync([Buffer.from("delegation"), proposalPda.toBuffer(), provider.wallet.publicKey.toBuffer()], program.programId);
+        const delegationAccount = await provider.connection.getAccountInfo(delegationPda, "confirmed");
+        if (delegationAccount) {
+            console.error("❌ This wallet already delegated its voting weight for this proposal. Refusing direct commit to avoid double-counting risk.");
+            process.exit(1);
+        }
+        // Standard commit
+        tx = await program.methods
+            .commitVote([...commitment], keeperPk)
+            .accounts({
+            dao: proposal.dao,
+            proposal: proposalPda,
+            voterRecord: voterRecordPda,
+            delegationMarker: delegationPda,
+            voterTokenAccount: voterAta,
+            voter: provider.wallet.publicKey,
+            tokenProgram,
+            systemProgram: web3_js_1.SystemProgram.programId,
+        })
+            .rpc();
+    }
+    // Save salt to disk — required for reveal
+    (0, utils_1.ensureSaltDir)();
+    const canonicalSaltFile = (0, utils_1.saltPath)(proposalStr, provider.wallet.publicKey);
+    const legacySaltFile = (0, utils_1.legacySaltPath)(proposalStr);
+    const saltPayload = JSON.stringify({
+        proposal: proposalStr,
+        voter: provider.wallet.publicKey.toBase58(),
+        vote,
+        salt: salt.toString("hex"),
+        commitment: commitment.toString("hex"),
+        timestamp: new Date().toISOString(),
+    }, null, 2);
+    fs.writeFileSync(canonicalSaltFile, saltPayload);
+    fs.writeFileSync(legacySaltFile, saltPayload);
+    const updated = await program.account["proposal"].fetch(proposalPda);
+    console.log(`\n✅ Vote committed!`);
+    console.log(`   Transaction:  ${tx}`);
+    console.log(`   Tx link:      ${(0, utils_1.solscanTxUrl)(tx)}`);
+    console.log(`   Salt saved:   ${canonicalSaltFile}`);
+    console.log(`   Total commits: ${updated.commitCount}`);
+    console.log(`   Tally visible: NO — ${updated.yesCapital} YES / ${updated.noCapital} NO (all zeros until reveal ✓)`);
+    console.log(`\n   Reveal after: ${(0, utils_1.formatTimestamp)(updated.votingEnd.toNumber())}`);
+    console.log(`   yarn ts-node scripts/reveal-vote.ts --proposal ${proposalStr}`);
+    console.log(`\n   ⚠️  Keep your salt file safe. Without it you cannot reveal!`);
+    console.log(`   Legacy backup: ${legacySaltFile}`);
+}
+main().catch(console.error);

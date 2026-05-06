@@ -154,7 +154,7 @@ export function QvacSovereignAiSurface({ compact = false }: { compact?: boolean 
               {inferenceState === "loading" ? "Loading local QVAC model..." : "Run local QVAC brief"}
             </button>
             <div className="rounded-2xl border border-cyan-300/18 bg-cyan-300/[0.08] px-3 py-2 text-xs leading-6 text-cyan-50/76">
-              Powered by QVAC fabric-llm running locally via Transformers.js. No API key. No centralized model call.
+              Powered by QVAC fabric-llm running locally — zero cloud dependency. No API key. No centralized model call.
               {modelProgress ? (
                 <span className="mt-1 block text-cyan-50/62">
                   {modelProgress.status}

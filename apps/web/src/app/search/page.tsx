@@ -9,7 +9,6 @@ export const metadata: Metadata = buildRouteMetadata({
   description: "Search the live PrivateDAO surface without browsing the whole application manually.",
   path: "/search",
   keywords: ["site search", "navigation"],
-  index: false,
 });
 
 export default function SearchPage() {

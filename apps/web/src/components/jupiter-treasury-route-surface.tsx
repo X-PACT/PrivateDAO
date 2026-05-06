@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowRight, ArrowUpRight, RefreshCcw, ShieldCheck, WalletCards } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -85,13 +85,9 @@ type JupiterQuoteResponse = {
 const DEFAULT_INPUT_MINT = "So11111111111111111111111111111111111111112";
 const DEFAULT_OUTPUT_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
 
-function formatUsd(value: number | null | undefined) {
-  if (typeof value !== "number" || Number.isNaN(value)) return "N/A";
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: value >= 1000 ? 0 : 2,
-  }).format(value);
+function formatRawAmount(value: string | null | undefined) {
+  if (!value) return "Waiting for quote";
+  return value;
 }
 
 function mapJupiterQuoteToPreview(raw: JupiterQuoteResponse, request: { inputMint: string; outputMint: string; amount: string; slippageBps: number | null }): JupiterPreviewResponse {
@@ -125,8 +121,8 @@ function mapJupiterQuoteToPreview(raw: JupiterQuoteResponse, request: { inputMin
 export function JupiterTreasuryRouteSurface() {
   const [inputMint, setInputMint] = useState(DEFAULT_INPUT_MINT);
   const [outputMint, setOutputMint] = useState(DEFAULT_OUTPUT_MINT);
-  const [amount, setAmount] = useState("1000000");
-  const [slippageBps, setSlippageBps] = useState("50");
+  const [amount, setAmount] = useState("20000000");
+  const [slippageBps, setSlippageBps] = useState("75");
   const [deliveryState, setDeliveryState] = useState(
     "Prepare a governed treasury route preview here, then attach the quote logic to rebalance and payout-funding actions.",
   );
@@ -135,13 +131,13 @@ export function JupiterTreasuryRouteSurface() {
 
   async function handlePreview() {
     const configuredEndpoint = process.env.NEXT_PUBLIC_JUPITER_QUOTE_ENDPOINT?.trim();
-    const endpoint = configuredEndpoint || "https://quote-api.jup.ag/v6/quote";
+    const endpoint = configuredEndpoint || "https://lite-api.jup.ag/swap/v1/quote";
     const normalizedSlippage = Number(slippageBps);
     const query = new URLSearchParams({
       inputMint,
       outputMint,
       amount,
-      slippageBps: Number.isFinite(normalizedSlippage) ? String(Math.round(normalizedSlippage)) : "50",
+      slippageBps: Number.isFinite(normalizedSlippage) ? String(Math.round(normalizedSlippage)) : "75",
     });
 
     setRunning(true);
@@ -172,6 +168,12 @@ export function JupiterTreasuryRouteSurface() {
       setRunning(false);
     }
   }
+
+  useEffect(() => {
+    void handlePreview();
+    // Run once on first paint so judges see real Jupiter route data without hunting for the button.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Card
@@ -268,19 +270,19 @@ export function JupiterTreasuryRouteSurface() {
               <div className="mt-4 grid gap-3 md:grid-cols-2">
                 <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm text-white/62">
                   <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Router</div>
-                  <div className="mt-2 text-white">{preview?.summary?.router ?? "—"}</div>
+                  <div className="mt-2 text-white">{preview?.summary?.router ?? "Requesting live quote"}</div>
                 </div>
                 <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm text-white/62">
                   <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Mode</div>
-                  <div className="mt-2 text-white">{preview?.summary?.mode ?? "—"}</div>
+                  <div className="mt-2 text-white">{preview?.summary?.mode ?? "Requesting live quote"}</div>
                 </div>
                 <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm text-white/62">
-                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Input value</div>
-                  <div className="mt-2 text-white">{formatUsd(preview?.summary?.inUsdValue)}</div>
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Input amount</div>
+                  <div className="mt-2 break-all text-white">{formatRawAmount(preview?.summary?.inAmount)}</div>
                 </div>
                 <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm text-white/62">
-                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Output value</div>
-                  <div className="mt-2 text-white">{formatUsd(preview?.summary?.outUsdValue)}</div>
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Output amount</div>
+                  <div className="mt-2 break-all text-white">{formatRawAmount(preview?.summary?.outAmount)}</div>
                 </div>
                 <div className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm text-white/62">
                   <div className="text-[11px] uppercase tracking-[0.22em] text-white/46">Price impact</div>

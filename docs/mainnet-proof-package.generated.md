@@ -1,11 +1,14 @@
 # Mainnet Proof Package
 
+> Status note, 2026-05-06: this package is an archived generated readiness packet. The current Testnet reviewer surface is the Anchor 1.0.1 program `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva` plus the 2026-05-06 lifecycle rehearsal. It is not a production mainnet claim.
+
 ## Overview
 
 - project: `PrivateDAO`
 - generated at: `2026-04-22T00:26:24.617Z`
 - package decision: `repository-strong-but-external-blockers-remain`
-- program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- legacy program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- current Testnet program id: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
 - verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - accepted in repo: `9`
 - pending external: `3`

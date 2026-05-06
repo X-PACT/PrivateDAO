@@ -8,6 +8,7 @@ import { OperatingJourneyStrip } from "@/components/operating-journey-strip";
 import { OperationsShell } from "@/components/operations-shell";
 import { QvacSovereignAiSurface } from "@/components/qvac-sovereign-ai-surface";
 import { SectionHeader } from "@/components/section-header";
+import { SnsDomainLookup } from "@/components/sns-domain-lookup";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
@@ -82,6 +83,9 @@ export default function IntelligencePage() {
       </div>
       <div>
         <GoldRushIntelligenceSurface />
+      </div>
+      <div>
+        <SnsDomainLookup />
       </div>
       <div>
         <QvacSovereignAiSurface compact />

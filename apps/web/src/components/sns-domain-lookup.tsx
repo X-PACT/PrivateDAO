@@ -1,0 +1,71 @@
+"use client";
+
+import { useState } from "react";
+import { Connection, clusterApiUrl } from "@solana/web3.js";
+
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+function normalizeDomain(input: string) {
+  const trimmed = input.trim().toLowerCase();
+  if (!trimmed) return "";
+  return trimmed.endsWith(".sol") ? trimmed : `${trimmed}.sol`;
+}
+
+export function SnsDomainLookup() {
+  const [domain, setDomain] = useState("bonfida.sol");
+  const [resolvedAddress, setResolvedAddress] = useState("");
+  const [status, setStatus] = useState("Enter a .sol name to resolve it before using a raw wallet address.");
+  const [running, setRunning] = useState(false);
+
+  async function resolveDomainName() {
+    const normalizedDomain = normalizeDomain(domain);
+    if (!normalizedDomain) {
+      setStatus("Enter a .sol domain first.");
+      return;
+    }
+
+    setRunning(true);
+    setResolvedAddress("");
+    setStatus(`Resolving ${normalizedDomain} through SNS on Solana mainnet...`);
+
+    try {
+      const [{ resolve }] = await Promise.all([import("@bonfida/spl-name-service")]);
+      const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_MAINNET_RPC_URL?.trim() || clusterApiUrl("mainnet-beta"), "confirmed");
+      const publicKey = await resolve(connection, normalizedDomain);
+      const address = publicKey.toBase58();
+      setResolvedAddress(address);
+      setStatus(`${normalizedDomain} resolved to a Solana wallet address. Use this address in Intelligence, Execute, or private settlement inputs.`);
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "SNS lookup failed.");
+    } finally {
+      setRunning(false);
+    }
+  }
+
+  return (
+    <section className="rounded-[28px] border border-fuchsia-300/16 bg-fuchsia-300/[0.08] p-6">
+      <div className="text-[11px] uppercase tracking-[0.28em] text-fuchsia-100/78">SNS identity lookup</div>
+      <h2 className="mt-3 text-2xl font-semibold text-white">Use a name.sol identity instead of forcing raw wallet input</h2>
+      <p className="mt-3 max-w-4xl text-sm leading-7 text-white/66">
+        PrivateDAO resolves Solana Name Service domains locally from the browser before a user moves into counterparty review,
+        treasury settlement, or proof. The resolved address is still shown before signing.
+      </p>
+      <div className="mt-5 grid gap-3 md:grid-cols-[minmax(0,1fr)_auto]">
+        <input
+          value={domain}
+          onChange={(event) => setDomain(event.target.value)}
+          className="w-full rounded-2xl border border-white/10 bg-black/25 px-4 py-3 text-sm text-white outline-none"
+          placeholder="example.sol"
+        />
+        <button type="button" className={cn(buttonVariants({ size: "sm" }))} onClick={() => void resolveDomainName()} disabled={running}>
+          {running ? "Resolving..." : "Resolve .sol"}
+        </button>
+      </div>
+      <div className="mt-4 rounded-2xl border border-white/10 bg-black/20 p-4 text-sm leading-7 text-white/70">
+        <div>{status}</div>
+        {resolvedAddress ? <div className="mt-2 break-all font-mono text-cyan-100">{resolvedAddress}</div> : null}
+      </div>
+    </section>
+  );
+}

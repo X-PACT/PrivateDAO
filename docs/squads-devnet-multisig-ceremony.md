@@ -6,7 +6,8 @@ It is not the same artifact as the existing Devnet rehearsal multisig. The produ
 
 ## Current Facts
 
-- program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- legacy devnet program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- current Testnet program id: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
 - currently observed devnet upgrade authority: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - selected multisig implementation: `Squads Protocol`
 - existing devnet rehearsal implementation: `spl-token-2022-multisig`
@@ -49,7 +50,7 @@ These public keys may only be promoted if the signer posture is documented and t
 9. Transfer the program upgrade authority from `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD` to the new multisig on the target production surface.
 10. Record:
    - transfer transaction signature
-   - `solana program show 5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx --url devnet`
+   - `solana program show EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva --url testnet`
    - explorer links
 11. If DAO and treasury authorities are also transferred, record those signatures and post-transfer readouts in the same intake.
 12. Save the captured fields into `docs/custody-evidence-intake.json`.
