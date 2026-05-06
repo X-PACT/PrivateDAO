@@ -524,6 +524,7 @@ The read node must report the current Anchor 1.0.1 Testnet program before it is 
 
 - Expected program: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
 - Verification command: `npm run verify:remote-primary-host -- https://api.privatedao.org`
+- EC2 repair command: `scripts/fix-primary-host-program-alignment.sh`
 - Operator runbook: [`docs/read-node/aws-namecheap-cutover-2026-04-29.md`](docs/read-node/aws-namecheap-cutover-2026-04-29.md)
 
 This gate prevents a healthy-looking API from silently serving stale program metadata after an AWS or DNS cutover.

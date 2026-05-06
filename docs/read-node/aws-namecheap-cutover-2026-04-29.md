@@ -126,6 +126,13 @@ PRIVATE_DAO_SKIP_SOURCE_PREFLIGHT=1 npm run deploy:primary-host:up
 npm run verify:remote-primary-host -- https://api.privatedao.org
 ```
 
+The same repair is available as one checked-in operator command on the EC2 host:
+
+```bash
+PRIVATE_DAO_PRIMARY_HOST_REPO_DIR="$HOME/PrivateDAO" \
+  scripts/fix-primary-host-program-alignment.sh
+```
+
 After a real SDK-generated claim returns a `request_id`, poll:
 
 ```bash
