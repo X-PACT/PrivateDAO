@@ -120,8 +120,8 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 border-b border-white/8 bg-[#050816]/75 backdrop-blur-xl">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex items-start justify-between gap-4 sm:items-center">
-          <Link href="/" className="group flex min-w-0 items-center gap-0">
-            <div className="min-w-0">
+          <div className="group flex min-w-0 flex-col gap-0">
+            <Link href="/" className="min-w-0">
               <div className="flex flex-nowrap items-center gap-0.5 whitespace-nowrap text-lg font-semibold tracking-tight text-white sm:text-2xl">
                 <span>PrivateD</span>
                 <span className="inline-block bg-[linear-gradient(135deg,#14f195,#00c2ff,#9945ff)] bg-clip-text text-[1.3rem] font-black text-transparent drop-shadow-[0_0_20px_rgba(20,241,149,0.42)] animate-pulse sm:text-[1.7rem]">
@@ -133,24 +133,24 @@ export function SiteHeader() {
                 <LockKeyhole className="h-3.5 w-3.5 text-cyan-200/80" />
                 <span>{copy.chrome.createPrivateDaoTagline}</span>
               </div>
-              <div className="mt-2 hidden flex-wrap gap-2 xl:flex">
-                {operationSteps.map((step) => (
-                  <Link
-                    key={step.label}
-                    href={step.href}
-                    className={cn(
-                      "rounded-full border px-3 py-1 text-[10px] uppercase tracking-[0.22em] transition",
-                      isStepActive(step.href)
-                        ? "border-cyan-300/26 bg-cyan-300/[0.12] text-cyan-100"
-                        : "border-white/10 bg-white/[0.04] text-white/48 hover:text-white/72",
-                    )}
-                  >
-                    {step.label}
-                  </Link>
-                ))}
-              </div>
+            </Link>
+            <div className="mt-2 hidden flex-wrap gap-2 xl:flex">
+              {operationSteps.map((step) => (
+                <Link
+                  key={step.label}
+                  href={step.href}
+                  className={cn(
+                    "rounded-full border px-3 py-1 text-[10px] uppercase tracking-[0.22em] transition",
+                    isStepActive(step.href)
+                      ? "border-cyan-300/26 bg-cyan-300/[0.12] text-cyan-100"
+                      : "border-white/10 bg-white/[0.04] text-white/48 hover:text-white/72",
+                  )}
+                >
+                  {step.label}
+                </Link>
+              ))}
             </div>
-          </Link>
+          </div>
 
           <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
             <LanguageSwitcher />
