@@ -1,4 +1,3 @@
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { clusterApiUrl } from "@solana/web3.js";
 
 type SupportedSolanaNetwork = "mainnet-beta" | "testnet" | "devnet";
@@ -17,13 +16,6 @@ export const SOLANA_NETWORK_LABEL =
 
 export const SOLANA_EXPLORER_CLUSTER =
   SOLANA_NETWORK === "mainnet-beta" ? "" : `?cluster=${SOLANA_NETWORK}`;
-
-export const SOLANA_WALLET_ADAPTER_NETWORK =
-  SOLANA_NETWORK === "mainnet-beta"
-    ? WalletAdapterNetwork.Mainnet
-    : SOLANA_NETWORK === "devnet"
-      ? WalletAdapterNetwork.Devnet
-      : WalletAdapterNetwork.Testnet;
 
 export function getSolanaRpcEndpoint() {
   // Keep authenticated RPCFast/Aperture credentials out of browser bundles.

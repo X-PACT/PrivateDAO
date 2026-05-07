@@ -1,6 +1,7 @@
 "use client";
 
 import { type ReactNode, useEffect, useMemo, useState } from "react";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react";
 import { BackpackWalletAdapter } from "@solana/wallet-adapter-backpack";
 import { GlowWalletAdapter } from "@solana/wallet-adapter-glow";
@@ -11,7 +12,7 @@ import { useStandardWalletAdapters } from "@solana/wallet-standard-wallet-adapte
 
 import {
   getSolanaRpcEndpoint,
-  SOLANA_WALLET_ADAPTER_NETWORK,
+  SOLANA_NETWORK,
 } from "@/lib/solana-network";
 
 type WalletProviderShellProps = {
@@ -20,7 +21,12 @@ type WalletProviderShellProps = {
 
 export function WalletProviderShell({ children }: WalletProviderShellProps) {
   const endpoint = getSolanaRpcEndpoint();
-  const network = SOLANA_WALLET_ADAPTER_NETWORK;
+  const network =
+    SOLANA_NETWORK === "mainnet-beta"
+      ? WalletAdapterNetwork.Mainnet
+      : SOLANA_NETWORK === "devnet"
+        ? WalletAdapterNetwork.Devnet
+        : WalletAdapterNetwork.Testnet;
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
