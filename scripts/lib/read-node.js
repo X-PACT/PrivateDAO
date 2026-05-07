@@ -115,7 +115,19 @@ function resolveDevnetRpcEndpoints() {
     add(process.env.RPC_FAST_DEVNET_RPC);
     return endpoints;
 }
-const IDL_PATH = path.resolve(__dirname, "..", "..", "target", "idl", "private_dao.json");
+const IDL_CANDIDATE_PATHS = [
+    path.resolve(__dirname, "..", "..", "target", "idl", "private_dao.json"),
+    path.resolve(__dirname, "..", "..", "deploy", "primary-host", "target", "idl", "private_dao.json"),
+    path.resolve(__dirname, "..", "..", "idl", "private_dao.json"),
+];
+function resolveIdlPath() {
+    const match = IDL_CANDIDATE_PATHS.find((candidate) => fs.existsSync(candidate));
+    if (!match) {
+        throw new Error(`Unable to resolve private_dao IDL. Checked: ${IDL_CANDIDATE_PATHS.join(", ")}`);
+    }
+    return match;
+}
+const IDL_PATH = resolveIdlPath();
 const rawIdl = JSON.parse(fs.readFileSync(IDL_PATH, "utf8"));
 const coder = new anchor.BorshCoder(rawIdl);
 const LOAD_PROFILE_SUMMARIES = [
