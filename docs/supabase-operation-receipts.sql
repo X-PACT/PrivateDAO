@@ -57,6 +57,20 @@ alter table public.governance_receipts
   add column if not exists tx_hash text not null default 'pending-testnet-signature',
   add column if not exists status text not null default 'confirmed';
 
+alter table public.governance_receipts
+  alter column proposal_id set default 'unknown-proposal',
+  alter column operation_type set default 'governance_operation',
+  alter column asset set default 'SOL',
+  alter column amount set default '0',
+  alter column recipient set default 'testnet-recipient',
+  alter column rail set default 'browser-direct-supabase',
+  alter column tx_hash set default 'pending-testnet-signature',
+  alter column status set default 'confirmed';
+
+alter table public.governance_receipts
+  alter column voter set default 'browser-direct-supabase',
+  alter column vote_direction set default 'abstain';
+
 create table if not exists public.cloak_delivery_state (
   id uuid primary key default gen_random_uuid(),
   rail text not null,
