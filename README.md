@@ -81,6 +81,12 @@ PrivateDAO engineering already carries a real first-place regional signal. That 
 
 Core development, wallet hardening, localization, and service packaging run in continuous release cycles.
 
+Current web polish:
+
+- The public site defaults to English unless a visitor explicitly selects another language or opens a `?lang=` link; stale browser language storage is cleared back to English for new review sessions.
+- Legacy or mistyped routes render a reviewer-grade route recovery surface that preserves judging history and points to the closest live proof, QVAC, Cloak, trust, whiteprint, or services route.
+- No submitted judging links are deleted during route maintenance; links are repaired, bridged, or recovered into the best live section.
+
 If a route is being refreshed:
 
 - retry in a few minutes

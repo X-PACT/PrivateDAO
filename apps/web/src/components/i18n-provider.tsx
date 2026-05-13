@@ -5,6 +5,8 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 import {
   defaultLocale,
   getLocaleDefinition,
+  isSupportedLocale,
+  localeExplicitStorageKey,
   localizedCopy,
   localeStorageKey,
   resolveLocale,
@@ -36,14 +38,32 @@ function applyLocaleToDocument(locale: SupportedLocale) {
   document.body.dir = definition.dir;
 }
 
-export function I18nProvider({ children }: I18nProviderProps) {
-  const [locale, setLocaleState] = useState<SupportedLocale>(() => {
-    if (typeof window === "undefined") return defaultLocale;
-    try {
-      return resolveLocale(window.localStorage.getItem(localeStorageKey));
-    } catch {
+function resolveExplicitBrowserLocale(): SupportedLocale {
+  if (typeof window === "undefined") return defaultLocale;
+
+  try {
+    const searchLocale = new URLSearchParams(window.location.search).get("lang");
+    if (searchLocale && isSupportedLocale(searchLocale)) {
+      window.localStorage.setItem(localeStorageKey, searchLocale);
+      window.localStorage.setItem(localeExplicitStorageKey, "1");
+      return searchLocale;
+    }
+
+    const hasExplicitSelection = window.localStorage.getItem(localeExplicitStorageKey) === "1";
+    if (!hasExplicitSelection) {
+      window.localStorage.removeItem(localeStorageKey);
       return defaultLocale;
     }
+
+    return resolveLocale(window.localStorage.getItem(localeStorageKey));
+  } catch {
+    return defaultLocale;
+  }
+}
+
+export function I18nProvider({ children }: I18nProviderProps) {
+  const [locale, setLocaleState] = useState<SupportedLocale>(() => {
+    return resolveExplicitBrowserLocale();
   });
 
   useEffect(() => {
@@ -55,6 +75,7 @@ export function I18nProvider({ children }: I18nProviderProps) {
     applyLocaleToDocument(nextLocale);
     try {
       window.localStorage.setItem(localeStorageKey, nextLocale);
+      window.localStorage.setItem(localeExplicitStorageKey, "1");
     } catch {
       // ignore storage failure
     }

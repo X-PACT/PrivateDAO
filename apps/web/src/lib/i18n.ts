@@ -15,6 +15,7 @@ export type LocaleDirection = (typeof supportedLocales)[number]["dir"];
 
 export const defaultLocale: SupportedLocale = "en";
 export const localeStorageKey = "privatedao.locale";
+export const localeExplicitStorageKey = "privatedao.locale.explicit";
 
 export function isSupportedLocale(value: string): value is SupportedLocale {
   return supportedLocales.some((locale) => locale.code === value);

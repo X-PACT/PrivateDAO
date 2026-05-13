@@ -20,7 +20,7 @@ export function LanguageSwitcher() {
       >
         {locales.map((item) => (
           <option key={item.code} value={item.code} className="bg-[#050816] text-white">
-            {item.nativeLabel}
+            {item.code === locale ? item.nativeLabel : item.label}
           </option>
         ))}
       </select>
