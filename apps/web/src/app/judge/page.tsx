@@ -97,6 +97,9 @@ export default function JudgePage() {
           <Link href="/documents/ecosystem-capability-map-2026" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
             Open capability map
           </Link>
+          <Link href="/whiteprint" className={cn(buttonVariants({ variant: "outline" }), "justify-between border-amber-300/24 bg-amber-300/[0.08] text-amber-50 hover:bg-amber-300/[0.13]")}>
+            Founder Whiteprint
+          </Link>
           <Link href="/learn" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
             Open learn route
           </Link>

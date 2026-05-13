@@ -162,6 +162,15 @@ export default function ProofPage() {
         compact
         pendingNote="Proof continuity stays explicit across governance, intelligence, execution, and receipt export lanes."
       />
+      <div className="rounded-[26px] border border-amber-300/16 bg-amber-300/[0.07] p-5">
+        <div className="text-[11px] uppercase tracking-[0.24em] text-amber-100/76">Founder roadmap</div>
+        <div className="mt-2 max-w-4xl text-sm leading-7 text-white/68">
+          Review the Founder Whiteprint for the post-judging encrypted delivery lane, Mainnet security review, and Phase 3 cross-chain roadmap anchored by Solana.
+        </div>
+        <Link href="/whiteprint" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "mt-4 border-amber-300/24 bg-amber-300/[0.08] text-amber-50 hover:bg-amber-300/[0.13]")}>
+          Open Founder Whiteprint
+        </Link>
+      </div>
       <LocalizedRouteSummary routeKey="proof" />
       <LocalizedProofPrimer />
       <LiveSiteActivityPanel />

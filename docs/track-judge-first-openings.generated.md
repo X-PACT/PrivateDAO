@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-04-22T00:24:33.909Z`
+- generated at: `2026-05-07T07:36:27.563Z`
 - purpose: Canonical judge-first copy for track workspaces, reviewer packets, and the first 30 to 45 seconds of track videos.
 
 ## Core Reviewer Packet
@@ -25,7 +25,7 @@
 - Proof center: The full governance lifecycle, proof packets, and reviewer path are already visible inside the live product. (/proof)
 - Launch trust packet: The repo already binds launch truth, blockers, and buyer-safe trust wording into one explicit packet. (/documents/launch-trust-packet)
 - Treasury reviewer packet: Generated treasury packet that makes sender discipline, reference-linked rails, payments fit, and the exact treasury blocker reviewer-visible. (/documents/treasury-reviewer-packet)
-- Reviewer telemetry packet: Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and devnet service metrics into one reviewer-safe route. (/documents/reviewer-telemetry-packet)
+- Reviewer telemetry packet: Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and testnet service metrics into one reviewer-safe route. (/documents/reviewer-telemetry-packet)
 
 ### Exact Blocker
 
@@ -61,7 +61,7 @@ What works now: Lead the first 90 seconds from /start into /govern with a real w
 - Live Proof V3: Testnet proposal lifecycle, V3 hardening, and explorer-verifiable proof anchors are already documented. (/documents/live-proof-v3)
 - ZK capability matrix: The repo already states what the privacy layer proves today and what remains outside the claim boundary. (/documents/zk-capability-matrix)
 - Treasury reviewer packet: Generated treasury packet that makes sender discipline, reference-linked rails, payments fit, and the exact treasury blocker reviewer-visible. (/documents/treasury-reviewer-packet)
-- Reviewer telemetry packet: Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and devnet service metrics into one reviewer-safe route. (/documents/reviewer-telemetry-packet)
+- Reviewer telemetry packet: Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and testnet service metrics into one reviewer-safe route. (/documents/reviewer-telemetry-packet)
 
 ### Exact Blocker
 
@@ -97,7 +97,7 @@ What works now: Use the comprehensive story video as the first-pass product walk
 - Diagnostics: Latency, success rate, wallet coverage, proof completion, and incident-facing diagnostics are already surfaced live. (/diagnostics)
 - Core integrations: Hosted-read and runtime evidence already prove the infrastructure story on Testnet with reviewer-facing artifacts. (/documents/frontier-integrations)
 - Treasury reviewer packet: Generated treasury packet that makes sender discipline, reference-linked rails, payments fit, and the exact treasury blocker reviewer-visible. (/documents/treasury-reviewer-packet)
-- Reviewer telemetry packet: Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and devnet service metrics into one reviewer-safe route. (/documents/reviewer-telemetry-packet)
+- Reviewer telemetry packet: Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and testnet service metrics into one reviewer-safe route. (/documents/reviewer-telemetry-packet)
 
 ### Exact Blocker
 

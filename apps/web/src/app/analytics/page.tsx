@@ -23,7 +23,6 @@ export const metadata: Metadata = buildRouteMetadata({
     "Responsive analytics for votes, proposals, treasury actions, hashes, telemetry, and runtime visibility across the PrivateDAO product surface.",
   path: "/analytics",
   keywords: ["analytics", "recharts", "runtime telemetry", "treasury actions", "proposal evidence"],
-  index: false,
 });
 
 export default function AnalyticsPage() {
@@ -62,7 +61,7 @@ export default function AnalyticsPage() {
         />
       </div>
       <div>
-        <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading telemetry runtime focus…</div>}>
+        <Suspense fallback={null}>
           <TelemetryRuntimeFocusStrip context="analytics" />
         </Suspense>
       </div>
@@ -79,7 +78,7 @@ export default function AnalyticsPage() {
         <TelemetryExportScorecard />
       </div>
       <div>
-        <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading analytics summary…</div>}>
+        <Suspense fallback={null}>
           <AnalyticsSummary />
         </Suspense>
       </div>
@@ -87,7 +86,7 @@ export default function AnalyticsPage() {
         <HostedReadProofStrip />
       </div>
       <div>
-        <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading analytics charts…</div>}>
+        <Suspense fallback={null}>
           <AnalyticsCharts />
         </Suspense>
       </div>

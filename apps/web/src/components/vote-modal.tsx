@@ -71,8 +71,8 @@ export function VoteModal({ proposal, handoff, onClose }: VoteModalProps) {
   }`;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#03050e]/80 px-4 backdrop-blur-md">
-      <div className="w-full max-w-2xl rounded-[32px] border border-white/12 bg-[linear-gradient(180deg,rgba(12,16,30,0.96),rgba(6,8,20,0.98))] p-6 shadow-[0_30px_120px_rgba(0,0,0,0.45)] sm:p-8">
+    <div className="fixed inset-0 z-[70] overflow-y-auto bg-[#03050e]/80 px-4 py-4 backdrop-blur-md sm:flex sm:items-center sm:justify-center">
+      <div className="mx-auto w-full max-w-2xl rounded-[32px] border border-white/12 bg-[linear-gradient(180deg,rgba(12,16,30,0.96),rgba(6,8,20,0.98))] p-6 shadow-[0_30px_120px_rgba(0,0,0,0.45)] sm:p-8">
         <div className="flex items-start justify-between gap-4">
           <div>
             <div className="text-[11px] uppercase tracking-[0.32em] text-emerald-300/80">Vote Modal</div>

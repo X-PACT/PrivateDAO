@@ -23,6 +23,7 @@ import {
   MessageSquareMore,
   PlayCircle,
   Scale,
+  ScrollText,
   Rocket,
   Router,
   ShieldCheck,
@@ -36,11 +37,13 @@ import {
 import { useI18n } from "@/components/i18n-provider";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PhaseTwoSovereignRoadmap } from "@/components/phase-two-sovereign-roadmap";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const operationsNav = [
   { href: "/judges", label: "Judges", icon: Trophy, summary: "60-second judge fast path with demo, proof, repo, and contact" },
+  { href: "/whiteprint", label: "Whiteprint", icon: ScrollText, summary: "Founder roadmap for encrypted delivery, Mainnet review, and cross-chain expansion" },
   { href: "/start", label: "Start", icon: Compass, summary: "Guided onboarding and wallet-first flow" },
   { href: "/learn", label: "Learn", icon: FileText, summary: "Workflow-first onboarding and product operating guide" },
   { href: "/assistant", label: "AI Assistant", icon: Sparkles, summary: "Product guide across routes, docs, and proof" },
@@ -54,6 +57,7 @@ const operationsNav = [
   { href: "/proof", label: "Proof", icon: Sparkles, summary: "Operation receipts, runtime logs, and verification routes" },
   { href: "/developers", label: "Developers", icon: Code2, summary: "API docs, SDK starters, and integration surfaces" },
   { href: "/rpc-services", label: "RPC Services", icon: Router, summary: "Hosted reads, relayer checks, QVAC status, and runtime endpoints" },
+  { href: "/api-status", label: "API Status", icon: Activity, summary: "Backend health, visitor counters, and freshness endpoints" },
   { href: "/command-center", label: "Command Center", icon: LayoutDashboard, summary: "Ops dashboard, indexed proposals, and readiness gates" },
   { href: "/live", label: "Live State", icon: LayoutDashboard, summary: "Proposals, treasury, and action logs" },
   { href: "/story", label: "Story", icon: PlayCircle, summary: "Live product story and fast explanation" },
@@ -132,6 +136,8 @@ export function OperationsShell({
         return "Developers";
       case "/rpc-services":
         return "RPC Services";
+      case "/api-status":
+        return "API Status";
       case "/command-center":
         return "Command Center";
       case "/live":
@@ -140,6 +146,8 @@ export function OperationsShell({
         return copy.chrome.story;
       case "/trust":
         return copy.chrome.trust;
+      case "/whiteprint":
+        return "Whiteprint";
       case "/services":
         return copy.chrome.apiPricing;
       case "/benefit":
@@ -343,9 +351,20 @@ export function OperationsShell({
                     )}
                   </>
                 )}
+                <Link
+                  className={cn(
+                    buttonVariants({ size: "sm", variant: "outline" }),
+                    "border-amber-300/20 bg-amber-300/[0.08] text-amber-50 hover:bg-amber-300/[0.13]",
+                  )}
+                  href="/whiteprint"
+                >
+                  Founder Whiteprint
+                </Link>
               </div>
             </CardContent>
           </Card>
+
+          <PhaseTwoSovereignRoadmap />
 
           <div className="space-y-8">{children}</div>
         </div>

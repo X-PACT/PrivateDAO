@@ -17,7 +17,7 @@ function formatTime(value: string) {
 export function SupabaseOperationTimeline() {
   const [rows, setRows] = useState<OperationReceiptTimelineRow[]>([]);
   const [status, setStatus] = useState<"loading" | "ready">("loading");
-  const [message, setMessage] = useState<string>("Loading Supabase operation receipts...");
+  const [message, setMessage] = useState<string>("Receipt timeline is connecting to Supabase in the background.");
   const [operationFilter, setOperationFilter] = useState("all");
   const [assetFilter, setAssetFilter] = useState("all");
   const [railFilter, setRailFilter] = useState("all");
@@ -128,7 +128,7 @@ export function SupabaseOperationTimeline() {
       <div className="mt-4 grid gap-3">
         {status === "loading" ? (
           <div className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white/62">
-            Loading timeline...
+            Receipt timeline is readying the live query without blocking the page.
           </div>
         ) : null}
         {status === "ready" && rows.length === 0 ? (

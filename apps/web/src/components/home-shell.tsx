@@ -546,7 +546,6 @@ export function HomeShell() {
               <Badge variant="violet">QVAC local AI</Badge>
               <Badge variant="success">Private by design</Badge>
             </div>
-            <span className="sr-only">Preparing the live product surface</span>
             <div className="space-y-4 sm:space-y-5">
               <div className="text-[11px] uppercase tracking-[0.34em] text-emerald-300/80">{homeCopy.eyebrow}</div>
               <div className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-100/82">

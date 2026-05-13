@@ -57,7 +57,7 @@ export default function DiagnosticsPage() {
         />
       </div>
       <div>
-        <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading telemetry runtime focus…</div>}>
+        <Suspense fallback={null}>
           <TelemetryRuntimeFocusStrip context="diagnostics" />
         </Suspense>
       </div>
@@ -74,7 +74,7 @@ export default function DiagnosticsPage() {
         <MetricsStrip />
       </div>
       <div>
-        <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading diagnostics center…</div>}>
+        <Suspense fallback={null}>
           <DiagnosticsCenter />
         </Suspense>
       </div>
@@ -91,7 +91,7 @@ export default function DiagnosticsPage() {
         <IncidentReadinessPanel />
       </div>
       <div>
-        <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading diagnostics metrics…</div>}>
+        <Suspense fallback={null}>
           <DevnetServiceMetricsPanel scope="diagnostics" />
         </Suspense>
       </div>

@@ -53,6 +53,9 @@ export function SiteFooter() {
             <Link href="/trust" className="hover:text-white">
               {copy.chrome.trust}
             </Link>
+            <Link href="/whiteprint" className="text-amber-100 hover:text-white">
+              Founder Whiteprint
+            </Link>
             <Link href="/story" className="hover:text-white">
               {copy.chrome.story}
             </Link>
@@ -113,6 +116,9 @@ export function SiteFooter() {
           <Link href="/documents/ownership-and-contact" className="hover:text-white">
             {copy.chrome.leadershipContact}
           </Link>
+          <Link href="/legal" className="hover:text-white">
+            Legal notice
+          </Link>
           <a href="https://github.com/X-PACT/PrivateDAO" target="_blank" rel="noreferrer" className="hover:text-white">
             {copy.chrome.repository}
           </a>
@@ -155,6 +161,11 @@ export function SiteFooter() {
           </a>
           </div>
         </div>
+      </div>
+      <div className="border-t border-white/8 px-4 py-4 text-center text-xs leading-6 text-white/42">
+        © PrivateDAO. Core source remains open where the repository license applies. Brand, product design,
+        documentation, digital evidence, and official deployments are reserved; official-looking derivative deployments,
+        service packaging, or commercial use require written coordination through official PrivateDAO channels.
       </div>
     </footer>
   );

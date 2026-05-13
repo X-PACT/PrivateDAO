@@ -29,7 +29,6 @@ export const metadata: Metadata = buildRouteMetadata({
     "Review proposals, treasury movement, vote timelines, and execution evidence after any wallet action in PrivateDAO.",
   path: "/dashboard",
   keywords: ["live activity", "proposal state", "treasury activity", "execution evidence"],
-  index: false,
 });
 
 const dashboardHighlights = [
@@ -182,7 +181,7 @@ export default function DashboardPage() {
       </section>
 
       <section className="mt-12">
-        <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading treasury routes…</div>}>
+        <Suspense fallback={null}>
           <TreasuryProfileQuickActions title="Commercial actions from the dashboard" />
         </Suspense>
       </section>

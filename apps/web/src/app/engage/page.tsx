@@ -23,7 +23,6 @@ export const metadata: Metadata = buildRouteMetadata({
     "Customer conversion route for pilots, hosted reads, confidential operations, enterprise governance, and explicit mainnet trajectory.",
   path: "/engage",
   keywords: ["engage", "pilot request", "hosted read api", "enterprise governance", "mainnet trajectory"],
-  index: false,
 });
 
 type EngagePageProps = {
@@ -77,7 +76,7 @@ export default function EngagePage({ searchParams }: EngagePageProps) {
       />
       <LeadSupportIntake mode="engage" />
       <ProductIntakeForms mode="engage" initialKind={initialKind} initialFundingContext={initialFundingContext} />
-      <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading treasury receive surface…</div>}>
+      <Suspense fallback={null}>
         <TreasuryReceiveSurface />
       </Suspense>
       <Card>

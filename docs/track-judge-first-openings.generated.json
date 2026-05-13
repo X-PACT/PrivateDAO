@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-04-22T00:24:33.909Z",
+  "generatedAt": "2026-05-07T07:36:27.563Z",
   "purpose": "Canonical judge-first copy for track workspaces, reviewer packets, and the first 30 to 45 seconds of track videos.",
   "tracks": [
     {
@@ -34,7 +34,7 @@
         {
           "label": "Reviewer telemetry packet",
           "href": "/documents/reviewer-telemetry-packet",
-          "summary": "Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and devnet service metrics into one reviewer-safe route."
+          "summary": "Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and testnet service metrics into one reviewer-safe route."
         }
       ],
       "exactBlocker": "upgrade-authority-multisig",
@@ -80,7 +80,7 @@
         {
           "label": "Reviewer telemetry packet",
           "href": "/documents/reviewer-telemetry-packet",
-          "summary": "Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and devnet service metrics into one reviewer-safe route."
+          "summary": "Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and testnet service metrics into one reviewer-safe route."
         }
       ],
       "exactBlocker": "magicblock-refhe-source-receipts",
@@ -126,7 +126,7 @@
         {
           "label": "Reviewer telemetry packet",
           "href": "/documents/reviewer-telemetry-packet",
-          "summary": "Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and devnet service metrics into one reviewer-safe route."
+          "summary": "Generated telemetry truth packet that binds runtime evidence, integration evidence, read-node snapshot, and testnet service metrics into one reviewer-safe route."
         }
       ],
       "exactBlocker": "production-monitoring-alerts",

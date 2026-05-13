@@ -1038,6 +1038,15 @@ export function GovernanceActionWorkbench() {
         extraSigners: [bootstrap.mintSigner],
       });
 
+      setCreateDaoRuntime({
+        status: "submitting",
+        message: `Signature received. Confirming DAO bootstrap on ${SOLANA_NETWORK_LABEL}...`,
+        daoAddress: bootstrap.dao.toBase58(),
+        authority: publicKey.toBase58(),
+        governanceMint: bootstrap.governanceMint.toBase58(),
+        signature,
+      });
+
       await awaitLiveSignatureOnCluster({ connection, signature });
 
       createDao({
@@ -1166,6 +1175,13 @@ export function GovernanceActionWorkbench() {
         walletName: wallet?.adapter.name,
       });
 
+      setCreateProposalRuntime({
+        status: "submitting",
+        message: `Signature received. Confirming proposal create on ${SOLANA_NETWORK_LABEL}...`,
+        proposalAddress: proposalSubmission.proposal.toBase58(),
+        signature,
+      });
+
       await awaitLiveSignatureOnCluster({ connection, signature });
 
       createProposal({
@@ -1291,6 +1307,14 @@ export function GovernanceActionWorkbench() {
         walletName: wallet?.adapter.name,
       });
 
+      setCommitVoteRuntime({
+        status: "submitting",
+        message: `Signature received. Confirming vote commit on ${SOLANA_NETWORK_LABEL}...`,
+        commitmentHex: toHex(commitment),
+        saltHex: toHex(salt),
+        signature,
+      });
+
       await awaitLiveSignatureOnCluster({ connection, signature });
 
       commitVote({
@@ -1382,6 +1406,12 @@ export function GovernanceActionWorkbench() {
         walletName: wallet?.adapter.name,
       });
 
+      setRevealVoteRuntime({
+        status: "submitting",
+        message: `Signature received. Confirming vote reveal on ${SOLANA_NETWORK_LABEL}...`,
+        signature,
+      });
+
       await awaitLiveSignatureOnCluster({ connection, signature });
 
       revealVote({
@@ -1462,6 +1492,12 @@ export function GovernanceActionWorkbench() {
         action: "finalize-proposal",
         walletAddress: publicKey.toBase58(),
         walletName: wallet?.adapter.name,
+      });
+
+      setFinalizeRuntime({
+        status: "submitting",
+        message: `Signature received. Confirming proposal finalize on ${SOLANA_NETWORK_LABEL}...`,
+        signature,
       });
 
       await awaitLiveSignatureOnCluster({ connection, signature });
@@ -1561,6 +1597,12 @@ export function GovernanceActionWorkbench() {
         action: "execute-proposal",
         walletAddress: publicKey.toBase58(),
         walletName: wallet?.adapter.name,
+      });
+
+      setExecuteRuntime({
+        status: "submitting",
+        message: `Signature received. Confirming proposal execute on ${SOLANA_NETWORK_LABEL}...`,
+        signature,
       });
 
       await awaitLiveSignatureOnCluster({ connection, signature });

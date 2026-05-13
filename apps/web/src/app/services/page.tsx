@@ -99,7 +99,7 @@ export default function ServicesPage() {
         <PrivacySdkApiStarter compact />
       </div>
       <div>
-        <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading treasury routes…</div>}>
+        <Suspense fallback={null}>
           <TreasuryProfileQuickActions title="Fast commercial treasury routes" />
         </Suspense>
       </div>
@@ -113,7 +113,7 @@ export default function ServicesPage() {
         <EncryptedOperationsWorkbench />
       </div>
       <div>
-        <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading treasury receive surface…</div>}>
+        <Suspense fallback={null}>
           <TreasuryReceiveSurface />
         </Suspense>
       </div>
@@ -179,7 +179,7 @@ export default function ServicesPage() {
             <SolutionCorridors />
           </div>
           <div>
-            <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading service metrics…</div>}>
+            <Suspense fallback={null}>
               <DevnetServiceMetricsPanel scope="services" />
             </Suspense>
           </div>

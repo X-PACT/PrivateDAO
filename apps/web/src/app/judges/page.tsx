@@ -88,6 +88,10 @@ export default function JudgesPage() {
                 Video
                 <PlayCircle className="h-4 w-4" />
               </a>
+              <Link href="/whiteprint" className={cn(buttonVariants({ size: "lg", variant: "outline" }), "border-amber-300/24 bg-amber-300/[0.08] text-amber-50 hover:bg-amber-300/[0.13]")}>
+                Founder Whiteprint
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
             </div>
           </div>
 
@@ -150,7 +154,7 @@ export default function JudgesPage() {
           <div className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3">
             <div className="flex items-center gap-2 text-white">
               <Mail className="h-4 w-4 text-cyan-100" />
-              Fahd Kotb · Founder · Telegram
+              Founder signature · PrivateDAO · Telegram
             </div>
             <div className="mt-1 text-white/54">Founder contact for reviewer follow-up and pilot coordination.</div>
           </div>

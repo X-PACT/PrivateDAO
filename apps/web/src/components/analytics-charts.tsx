@@ -41,7 +41,7 @@ export function AnalyticsCharts() {
             </CardHeader>
             <CardContent className="h-[320px] xl:min-h-[340px]">
               <div className="flex h-full items-center justify-center rounded-[28px] border border-dashed border-white/10 bg-white/[0.03] text-sm text-white/40">
-                Loading analytics canvas...
+                Analytics canvas is preparing without blocking the page.
               </div>
             </CardContent>
           </Card>

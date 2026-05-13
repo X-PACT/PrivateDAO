@@ -15,13 +15,7 @@ export function WalletFirstServiceActionsStrip({ context }: WalletFirstServiceAc
   const data = getWalletFirstServiceWorkbenchData(context);
 
   return (
-    <Suspense
-      fallback={
-        <div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">
-          Loading execution workbench…
-        </div>
-      }
-    >
+    <Suspense fallback={null}>
       <WalletFirstServiceActionsWorkbench context={context} data={data} />
     </Suspense>
   );

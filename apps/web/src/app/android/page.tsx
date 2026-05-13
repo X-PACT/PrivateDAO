@@ -23,7 +23,6 @@ export const metadata: Metadata = buildRouteMetadata({
     "Download the PrivateDAO Android APK and run wallet-first DAO governance, private execution lanes, and proof-linked on-chain verification from mobile.",
   path: "/android",
   keywords: ["android app", "apk", "mobile wallet adapter", "android governance app", "privatedao mobile"],
-  index: false,
 });
 
 const parityItems = [

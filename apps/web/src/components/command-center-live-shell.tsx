@@ -8,7 +8,7 @@ const GovernanceSessionPanel = dynamic(
   () => import("@/components/governance-session-panel").then((mod) => mod.GovernanceSessionPanel),
   {
     ssr: false,
-    loading: () => <div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading execution session…</div>,
+    loading: () => null,
   },
 );
 
@@ -16,7 +16,7 @@ const GovernanceActionWorkbench = dynamic(
   () => import("@/components/governance-action-workbench").then((mod) => mod.GovernanceActionWorkbench),
   {
     ssr: false,
-    loading: () => <div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading governance workbench…</div>,
+    loading: () => null,
   },
 );
 
@@ -24,7 +24,7 @@ const ProposalWorkspace = dynamic(
   () => import("@/components/proposal-workspace").then((mod) => mod.ProposalWorkspace),
   {
     ssr: false,
-    loading: () => <div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading proposal workspace…</div>,
+    loading: () => null,
   },
 );
 
@@ -32,7 +32,7 @@ const WalletRuntimePanel = dynamic(
   () => import("@/components/wallet-runtime-panel").then((mod) => mod.WalletRuntimePanel),
   {
     ssr: false,
-    loading: () => <div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading wallet runtime…</div>,
+    loading: () => null,
   },
 );
 

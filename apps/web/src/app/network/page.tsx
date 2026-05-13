@@ -23,7 +23,6 @@ export const metadata: Metadata = buildRouteMetadata({
     "Runtime evidence, diagnostics, proof, and network-grade reviewer surfaces for the live PrivateDAO Testnet system.",
   path: "/network",
   keywords: ["network", "runtime evidence", "diagnostics", "proof"],
-  index: false,
 });
 
 export default function NetworkPage() {
@@ -44,7 +43,7 @@ export default function NetworkPage() {
       <Suspense fallback={null}>
         <TelemetryModeHandoffStrip context="network" />
       </Suspense>
-      <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading telemetry runtime focus…</div>}>
+      <Suspense fallback={null}>
         <TelemetryRuntimeFocusStrip context="network" />
       </Suspense>
       <Suspense fallback={null}>
@@ -67,7 +66,7 @@ export default function NetworkPage() {
       <FrontierSignalBoard />
       <ProofCenter />
       <SecurityCenter />
-      <Suspense fallback={<div className="rounded-3xl border border-white/8 bg-white/4 p-6 text-sm text-white/60">Loading network diagnostics…</div>}>
+      <Suspense fallback={null}>
         <DiagnosticsCenter />
       </Suspense>
     </OperationsShell>

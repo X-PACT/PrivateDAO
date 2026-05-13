@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Cpu, Languages, Mic, ScanText, ShieldCheck, Sparkles } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
+import { persistOperationReceipt } from "@/lib/supabase/operation-receipts";
 import {
   buildQvacOperationalBrief,
   detectQvacCapabilityState,
@@ -41,6 +42,8 @@ type QvacBackendProof = {
   productUse?: string[];
 };
 
+type QvacReceiptState = "idle" | "saved" | "failed";
+
 export function QvacSovereignAiSurface({ compact = false }: { compact?: boolean }) {
   const [capability, setCapability] = useState<QvacCapabilityState>(defaultCapability);
   const [runtime, setRuntime] = useState<QvacRuntime>(defaultRuntime);
@@ -61,6 +64,7 @@ export function QvacSovereignAiSurface({ compact = false }: { compact?: boolean 
   );
   const [modelProgress, setModelProgress] = useState<QvacModelProgress | null>(null);
   const [inferenceState, setInferenceState] = useState<"idle" | "loading" | "ready" | "fallback">("idle");
+  const [receiptState, setReceiptState] = useState<QvacReceiptState>("idle");
 
   useEffect(() => {
     void detectQvacCapabilityState().then(setCapability).catch(() => {
@@ -112,6 +116,36 @@ export function QvacSovereignAiSurface({ compact = false }: { compact?: boolean 
     );
     setLocalBrief(generated);
     setInferenceState(generated.provider === "qvac-fabric-transformers" ? "ready" : "fallback");
+    try {
+      await persistOperationReceipt({
+        operationType: "qvac-local-ai-brief",
+        proposalId: `qvac:${operationType}`,
+        approvalState: generated.provider === "qvac-fabric-transformers" ? "local-inference" : "local-fallback",
+        executionReference: `${generated.model}:${Date.now()}`,
+        privateSettlementRail: "qvac",
+        stablecoinSymbol: asset,
+        auditMode: "local-pre-sign-intelligence",
+        recipientVisibility: privacyMode,
+        metadata: {
+          provider: generated.provider,
+          model: generated.model,
+          operationType,
+          amount,
+          asset,
+          privacyMode,
+          riskNotes,
+          runtimeProof: {
+            sdkLoaded: backendProof?.sdkLoaded ?? null,
+            sdkPackage: backendProof?.sdkPackage ?? "@qvac/sdk",
+            sdkVersion: backendProof?.sdkVersion ?? null,
+            capabilities: qvacCapabilities,
+          },
+        },
+      });
+      setReceiptState("saved");
+    } catch {
+      setReceiptState("failed");
+    }
   }
 
   const activeBrief = inferenceState === "idle" ? deterministicBrief : localBrief;
@@ -165,6 +199,11 @@ export function QvacSovereignAiSurface({ compact = false }: { compact?: boolean 
                   {modelProgress.status}
                   {typeof modelProgress.progress === "number" ? ` · ${Math.round(modelProgress.progress)}%` : ""}
                   {modelProgress.file ? ` · ${modelProgress.file}` : ""}
+                </span>
+              ) : null}
+              {receiptState !== "idle" ? (
+                <span className="mt-1 block text-cyan-50/62">
+                  Receipt {receiptState === "saved" ? "saved to Supabase proof timeline" : "could not be saved; local brief remains visible"}
                 </span>
               ) : null}
             </div>

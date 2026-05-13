@@ -1,9 +1,11 @@
 <!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
 # PrivateDAO
 
+> **Open-source review notice:** PrivateDAO keeps its core source open for the hackathon, judging, security review, ecosystem diligence, and official collaboration. Source files under AGPL-3.0-or-later keep the rights and duties of that license. PrivateDAO brand identity, official deployments, product design, media, evidence packets, roadmap language, commercial service packaging, and Founder Whiteprint material are reserved. Open-source forks must respect the applicable license and must not impersonate PrivateDAO, reuse official branding, commercialize PrivateDAO service packages, or present derivative deployments as official without written coordination. See [`NOTICE.md`](NOTICE.md) and [`TERMS_OF_REVIEW.md`](TERMS_OF_REVIEW.md).
+
 <p align="center">
   <a href="https://privatedao.org/" target="_blank">
-    <img src="docs/assets/frontend-hero.png" alt="PrivateDAO live Solana governance frontend" width="920" />
+    <img src="docs/assets/privatedao-sovereign-infrastructure-map.svg" alt="PrivateDAO sovereign infrastructure map" width="920" />
   </a>
 </p>
 
@@ -23,8 +25,51 @@
   <a href="docs/testnet-lifecycle-rehearsal-2026-05-07.md"><img src="https://img.shields.io/badge/Testnet-Lifecycle%20Rehearsal%202026--05--07-0ea5e9" alt="Fresh Testnet lifecycle rehearsal" /></a>
   <a href="docs/magicblock/private-payments.md"><img src="https://img.shields.io/badge/MagicBlock-Private%20Payments-06b6d4" alt="MagicBlock private payments" /></a>
   <a href="docs/rpc-architecture.md"><img src="https://img.shields.io/badge/RPC%20Fast-Read%20Node%20Ready-f97316" alt="RPC Fast ready" /></a>
+  <a href="https://api.privatedao.org/healthz"><img src="https://img.shields.io/badge/AWS%20Read--Node-Live-232f3e?logo=amazonaws" alt="AWS read-node live" /></a>
+  <a href="https://api.privatedao.org/api/v1/qvac/runtime-proof"><img src="https://img.shields.io/badge/QVAC%20SDK-0.10.0-22d3ee" alt="QVAC SDK runtime proof" /></a>
+  <a href="https://privatedao.org/api-status/"><img src="https://img.shields.io/badge/Supabase-Receipts%20%2B%20Visitors-3ecf8e?logo=supabase" alt="Supabase receipts and visitors" /></a>
+  <a href="https://privatedao.org/services/cloak-private-settlement/"><img src="https://img.shields.io/badge/Cloak-Private%20Settlement-8b5cf6" alt="Cloak private settlement" /></a>
+  <a href="https://privatedao.org/services/umbra-private-payments/"><img src="https://img.shields.io/badge/Umbra-Private%20Payments-10b981" alt="Umbra private payments" /></a>
+  <a href="https://privatedao.org/intelligence/"><img src="https://img.shields.io/badge/GoldRush%20%2B%20Dune-Intelligence-fbbf24" alt="GoldRush and Dune intelligence" /></a>
+  <a href="https://privatedao.org/services/zerion-agent-policy/"><img src="https://img.shields.io/badge/Zerion-Agent%20Policy-8b5cf6" alt="Zerion agent policy" /></a>
+  <a href="https://privatedao.org/services/jupiter-treasury-route/"><img src="https://img.shields.io/badge/Jupiter-Treasury%20Route-f97316" alt="Jupiter treasury route" /></a>
+  <a href="https://privatedao.org/services/torque-growth-loop/"><img src="https://img.shields.io/badge/Torque-Growth%20Loop-ef4444" alt="Torque growth loop" /></a>
+  <a href="https://privatedao.org/services/audd-stablecoin/"><img src="https://img.shields.io/badge/AUDD-Stablecoin%20Lane-0ea5e9" alt="AUDD stablecoin lane" /></a>
+  <a href="https://privatedao.org/services/pusd-stablecoin/"><img src="https://img.shields.io/badge/PUSD-Stablecoin%20Lane-14f195" alt="PUSD stablecoin lane" /></a>
+  <a href="https://privatedao.org/services/encrypt-ika-operations/"><img src="https://img.shields.io/badge/Encrypt%20%2F%20IKA-Confidential%20Ops-6366f1" alt="Encrypt IKA confidential operations" /></a>
+  <a href="https://privatedao.org/services/runtime-infrastructure/"><img src="https://img.shields.io/badge/Runtime-Infrastructure-06b6d4" alt="Runtime infrastructure" /></a>
+  <a href="https://privatedao.org/whiteprint/"><img src="https://img.shields.io/badge/Founder%20Whiteprint-Ecosystem%20Roadmap-f59e0b" alt="Founder Whiteprint" /></a>
+  <a href="NOTICE.md"><img src="https://img.shields.io/badge/Public%20Review-Official%20Use%20Reserved-991b1b" alt="Public review notice" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-AGPLv3%2B%20%7C%20Apache--2.0%20%7C%20MIT-green" alt="License" /></a>
 </p>
+
+## Founder Whiteprint And Review Rights
+
+- Founder Whiteprint: `https://privatedao.org/whiteprint/`
+- Downloadable whiteprint: `https://privatedao.org/assets/private-dao-founder-whiteprint.md`
+- Legal notice: `https://privatedao.org/legal/`
+- Repository notice: [`NOTICE.md`](NOTICE.md)
+- Terms of public source review: [`TERMS_OF_REVIEW.md`](TERMS_OF_REVIEW.md)
+
+PrivateDAO remains open source where the repository license applies because the hackathon, auditors, and ecosystem need verifiable evidence. The official product identity is separate: brand use, official-looking derivative deployments, commercial packaging, institutional pilots, or reuse of official evidence and service materials require formal coordination.
+
+The Whiteprint is intentionally split into four layers:
+
+- **Whitepaper:** technical architecture, encryption layers, QVAC/local intelligence, ZK direction, treasury logic, emergency continuity, and wallet-first execution.
+- **Vision Paper:** founder philosophy, ecosystem mission, why privacy matters, and why blockchain should preserve more than financial transfers.
+- **Roadmap:** Phase 1 core proof, Phase 2 encrypted customer infrastructure, Mainnet/security reviews, and Phase 3 cross-chain expansion.
+- **Founder Letter:** a quiet founder signature on an ecosystem-first commitment: the delivered core was the hardest part, while the remaining protection matrices are designed to improve continuously.
+
+## Program ID Lineage
+
+PrivateDAO preserves both the old Devnet proof path and the current Anchor 1.0.1 Testnet deployment as migration evidence:
+
+| Stage | Program ID | Evidence |
+| --- | --- | --- |
+| Legacy Devnet baseline | `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx` | [`docs/live-proof.md`](docs/live-proof.md), [`docs/testnet-migration-report-2026-04-18.md`](docs/testnet-migration-report-2026-04-18.md) |
+| Current Anchor 1.0.1 Testnet | `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva` | [`docs/anchor-1-migration-evidence-2026-04-30.md`](docs/anchor-1-migration-evidence-2026-04-30.md), [`docs/testnet-lifecycle-rehearsal-2026-05-07.md`](docs/testnet-lifecycle-rehearsal-2026-05-07.md) |
+
+The program ID change is part of the documented Anchor 1.0.1 migration and clean Testnet deployment. It is preserved as provenance for reviewers, not treated as a loss of continuity.
 
 ## Winner Signal
 
