@@ -1,0 +1,157 @@
+{
+  "generatedAt": "2026-05-14T12:24:19.591Z",
+  "api": {
+    "payments": "https://payments.magicblock.app",
+    "docsIndex": "https://docs.magicblock.gg/llms.txt",
+    "status": "https://status.magicblock.app/api/services",
+    "privateDaoHealth": "https://api.privatedao.org/api/v1/magicblock/health",
+    "privateDaoChallenge": "https://api.privatedao.org/api/v1/magicblock/challenge"
+  },
+  "capabilityMatrix": [
+    {
+      "group": "Private Payments health",
+      "status": "used",
+      "reason": "The probe checks https://payments.magicblock.app/health and the PrivateDAO read-node health proxy."
+    },
+    {
+      "group": "Challenge/login",
+      "status": "used for readiness",
+      "reason": "The probe requests a challenge for a public test wallet. It does not sign or print bearer tokens."
+    },
+    {
+      "group": "Private balance",
+      "status": "auth-bound",
+      "reason": "Private balance reads require a bearer token from the wallet-signed challenge/login flow."
+    },
+    {
+      "group": "Unsigned transaction builders",
+      "status": "available",
+      "reason": "Deposit, transfer, and withdraw builders are wired in repo code; live signing/submission remains wallet-side."
+    },
+    {
+      "group": "Ephemeral Rollup regions",
+      "status": "used",
+      "reason": "The probe reads the MagicBlock status API and records live devnet services for reviewer evidence."
+    },
+    {
+      "group": "MagicBlock Dev Skill",
+      "status": "installed",
+      "reason": "The skill is installed under ~/.codex/skills/magicblock and was used to align the challenge/login and bearer-token boundary."
+    }
+  ],
+  "docsIndex": {
+    "ok": true,
+    "status": 200,
+    "containsPrivatePayments": true,
+    "containsChallengeLogin": true
+  },
+  "live": {
+    "paymentsHealth": {
+      "ok": true,
+      "status": 200,
+      "payload": {
+        "status": "ok"
+      }
+    },
+    "privateDaoHealth": {
+      "ok": true,
+      "status": 200,
+      "payload": {
+        "ok": true,
+        "source": "backend-indexer",
+        "magicblock": {
+          "apiBase": "https://payments.magicblock.app",
+          "cluster": "devnet",
+          "health": "ok"
+        }
+      }
+    },
+    "directChallenge": {
+      "ok": true,
+      "status": 200,
+      "payloadShape": {
+        "hasChallenge": true,
+        "hasMessage": false,
+        "keys": [
+          "challenge"
+        ]
+      }
+    },
+    "privateDaoChallenge": {
+      "ok": false,
+      "status": 404,
+      "note": "PrivateDAO challenge proxy is implemented in this repo and will be live after the read-node deployment is refreshed."
+    },
+    "mintInitialization": {
+      "ok": true,
+      "status": 200,
+      "mint": "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU",
+      "payload": {
+        "mint": "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU",
+        "validator": "MAS1Dt9qreoRMQ14YQuhg8UTZMMzDdKhmkZMECCzk57",
+        "transferQueue": "6wkXce7uhZ5B5uwuCxMy5qRQXXMV158Px5yqneLAY3JB",
+        "initialized": true
+      }
+    },
+    "devnetStatus": [
+      {
+        "region": "asia",
+        "server": "devnet-as.magicblock.app",
+        "name": "Asia",
+        "live": true,
+        "services": {
+          "er": true,
+          "rpc_router": true,
+          "pricing_oracle": true,
+          "vrf_oracle": true
+        }
+      },
+      {
+        "region": "europe",
+        "server": "devnet-eu.magicblock.app",
+        "name": "Europe",
+        "live": true,
+        "services": {
+          "er": true,
+          "rpc_router": true,
+          "pricing_oracle": true,
+          "vrf_oracle": true
+        }
+      },
+      {
+        "region": "tee",
+        "server": "devnet-tee-as.magicblock.app",
+        "name": "TEE",
+        "live": true,
+        "services": {
+          "er": true,
+          "vrf_oracle": true,
+          "rpc_router": false,
+          "pricing_oracle": false
+        }
+      },
+      {
+        "region": "usa",
+        "server": "devnet-us.magicblock.app",
+        "name": "USA",
+        "live": true,
+        "services": {
+          "er": true,
+          "rpc_router": true,
+          "pricing_oracle": true,
+          "vrf_oracle": true
+        }
+      }
+    ]
+  },
+  "safety": {
+    "secretsPrinted": false,
+    "omittedFields": [
+      "wallet signatures",
+      "bearer tokens",
+      "private balances",
+      "private keys"
+    ],
+    "boundary": "The probe verifies public health, status, and challenge readiness. Private balance reads and transaction submission require a wallet-signed login token and user-side transaction signing."
+  }
+}

@@ -41,6 +41,17 @@ export type MagicBlockHealthResponse = {
   status: "ok" | string;
 };
 
+export type MagicBlockChallengeResponse = {
+  challenge: string;
+  message?: string;
+  expiresAt?: string;
+};
+
+export type MagicBlockLoginResponse = {
+  token: string;
+  expiresAt?: string;
+};
+
 export type MagicBlockCluster = "devnet" | "mainnet-beta";
 export type MagicBlockTransferVisibility = "public" | "private";
 export type MagicBlockBalanceLocation = "base" | "ephemeral";
@@ -49,6 +60,7 @@ type MagicBlockRequestOptions = {
   method?: "GET" | "POST";
   query?: Record<string, string | number | boolean | undefined | null>;
   body?: unknown;
+  headers?: Record<string, string | undefined>;
 };
 
 type MagicBlockRequestBase = {
@@ -149,7 +161,7 @@ export function magicBlockCluster(): MagicBlockCluster {
 
 async function magicBlockFetch<T>(
   pathname: string,
-  { method = "GET", query, body }: MagicBlockRequestOptions = {},
+  { method = "GET", query, body, headers }: MagicBlockRequestOptions = {},
   apiBase = magicBlockApiBase(),
 ): Promise<T> {
   const url = new URL(`${normalizeApiBase(apiBase)}${pathname}`);
@@ -165,7 +177,10 @@ async function magicBlockFetch<T>(
   try {
     response = await fetch(url, {
       method,
-      headers: body ? { "Content-Type": "application/json" } : undefined,
+      headers: {
+        ...(body ? { "Content-Type": "application/json" } : {}),
+        ...Object.fromEntries(Object.entries(headers || {}).filter(([, value]) => Boolean(value))),
+      },
       body: body ? JSON.stringify(body) : undefined,
       signal: controller.signal,
     });
@@ -188,6 +203,42 @@ export async function getMagicBlockHealth(apiBase?: string): Promise<MagicBlockH
   return magicBlockFetch<MagicBlockHealthResponse>("/health", {}, apiBase);
 }
 
+export async function getMagicBlockChallenge(
+  pubkey: string,
+  apiBase?: string,
+  cluster: MagicBlockCluster = magicBlockCluster(),
+): Promise<MagicBlockChallengeResponse> {
+  return magicBlockFetch<MagicBlockChallengeResponse>(
+    "/v1/spl/challenge",
+    {
+      query: {
+        pubkey,
+        cluster,
+      },
+    },
+    apiBase,
+  );
+}
+
+export async function loginMagicBlockPrivatePayments(
+  request: { pubkey: string; challenge: string; signature: string; cluster?: MagicBlockCluster },
+  apiBase?: string,
+): Promise<MagicBlockLoginResponse> {
+  return magicBlockFetch<MagicBlockLoginResponse>(
+    "/v1/spl/login",
+    {
+      method: "POST",
+      body: {
+        pubkey: request.pubkey,
+        challenge: request.challenge,
+        signature: request.signature,
+        cluster: request.cluster || magicBlockCluster(),
+      },
+    },
+    apiBase,
+  );
+}
+
 export async function getMagicBlockBalance(
   request: MagicBlockBalanceRequest,
   apiBase?: string,
@@ -208,10 +259,17 @@ export async function getMagicBlockBalance(
 export async function getMagicBlockPrivateBalance(
   request: MagicBlockBalanceRequest,
   apiBase?: string,
+  bearerToken?: string,
 ): Promise<MagicBlockBalanceResponse> {
+  if (!bearerToken) {
+    throw new Error("MagicBlock private balance requires a bearer token from the challenge/login flow.");
+  }
   return magicBlockFetch<MagicBlockBalanceResponse>(
     "/v1/spl/private-balance",
     {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+      },
       query: {
         address: request.address,
         mint: request.mint,

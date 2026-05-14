@@ -5,6 +5,7 @@ import { LocalizedRouteSummary } from "@/components/localized-route-summary";
 import { OperationsShell } from "@/components/operations-shell";
 import { PrivateSettlementRailWorkbench } from "@/components/private-settlement-rail-workbench";
 import { UmbraClaimLinkWorkbench } from "@/components/umbra-claim-link-workbench";
+import { UmbraSdkIntegrationStatus } from "@/components/umbra-sdk-integration-status";
 import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { cn } from "@/lib/utils";
@@ -52,8 +53,8 @@ export default function UmbraConfidentialPayoutPage() {
       </div>
 
       <UmbraClaimLinkWorkbench />
+      <UmbraSdkIntegrationStatus />
       <PrivateSettlementRailWorkbench initialRail="umbra" lockRail />
     </OperationsShell>
   );
 }
-

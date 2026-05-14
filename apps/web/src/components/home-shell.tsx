@@ -755,8 +755,13 @@ export function HomeShell() {
                   <div className="text-[11px] uppercase tracking-[0.28em]">Recognition</div>
                 </div>
                 <div className="mt-2 text-lg font-semibold text-amber-50">1st Place · Superteam Poland</div>
+                <div className="mt-1 text-sm font-medium text-amber-100/85">3rd Place · Superteam UAE Frontier Hackathon</div>
                 <div className="mt-2 text-sm leading-7 text-amber-50/70">
                   The product leads with verifiable Testnet operations, then gives judges and investors direct paths into proof, runtime status, and operating evidence.
+                </div>
+                <div className="mt-3 rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-3">
+                  <div className="text-[11px] uppercase tracking-[0.24em] text-amber-100/64">Ecosystem signal</div>
+                  <div className="mt-1 text-base font-semibold text-white">Top 1% in Solana</div>
                 </div>
                 <div className="mt-2 text-xs leading-6 text-amber-100/60">
                   FastRPC is supporting PrivateDAO throughout the hackathon with RPC infrastructure, and we appreciate that support.

@@ -1152,6 +1152,25 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
 	      return;
 	    }
 
+    if (pathname === "/api/v1/magicblock/challenge") {
+      const pubkey = getStringParam(url, "pubkey");
+      if (!pubkey) {
+        writeJson(res, 400, { ok: false, error: "pubkey query parameter is required.", source: "backend-indexer" });
+        return;
+      }
+      const challenge = await readNode.getMagicBlockChallenge(pubkey, url.searchParams.get("refresh") === "1");
+      writeJson(res, 200, {
+        ok: true,
+        source: "magicblock-private-payments",
+        challenge,
+        next: {
+          login: "POST https://payments.magicblock.app/v1/spl/login with the wallet-signed challenge",
+          privateBalance: "GET /api/v1/magicblock/balances/{wallet}?mint={mint} with Authorization: Bearer <token>",
+        },
+      });
+      return;
+    }
+
     if (pathname === "/api/v1/umbra/relayer/info") {
       const relayer = await fetchUmbraRelayerInfo();
       writeJson(res, 200, {
@@ -1262,6 +1281,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
         magicBlockBalanceMatch[1],
         mint,
         url.searchParams.get("refresh") === "1",
+        String(req.headers.authorization || "").replace(/^Bearer\s+/i, "").trim() || undefined,
       );
       writeJson(res, 200, { ok: true, source: "backend-indexer", balances });
       return;

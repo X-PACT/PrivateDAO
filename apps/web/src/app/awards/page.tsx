@@ -95,13 +95,13 @@ export default function AwardsPage() {
               </div>
               <div>
                 <div className="text-[11px] uppercase tracking-[0.28em] text-amber-200/80">Recognition signal</div>
-                <CardTitle className="mt-2">Regional first-place recognition</CardTitle>
+                <CardTitle className="mt-2">Regional and Frontier recognition</CardTitle>
               </div>
             </div>
           </CardHeader>
           <CardContent className="space-y-4 text-sm leading-8 text-white/62">
             <p>
-              PrivateDAO is presented as a product that combines private governance, treasury operations, runtime evidence, and commercial packaging. This recognition supports that story without replacing the product proof itself.
+              PrivateDAO is presented as a product that combines private governance, treasury operations, runtime evidence, and commercial packaging. The Superteam Poland first-place result and Superteam UAE Frontier Hackathon third-place result support that story without replacing the product proof itself.
             </p>
             <p>
               The public surface keeps that same discipline: proof clarity, operator clarity, and buyer-facing product language remain intact.
@@ -109,6 +109,13 @@ export default function AwardsPage() {
             <p className="text-white/52">
               FastRPC supports the infrastructure narrative, while the live product keeps the proof path centered on Testnet execution, hosted reads, and reviewer-visible receipt continuity.
             </p>
+            <div className="rounded-[24px] border border-cyan-300/16 bg-cyan-300/[0.07] p-4">
+              <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/72">Ecosystem signal</div>
+              <div className="mt-2 text-2xl font-semibold text-white">Top 1% in Solana</div>
+              <p className="mt-2 text-sm leading-7 text-white/60">
+                This is shown as a credibility signal beside the live product, proof routes, and reviewer evidence.
+              </p>
+            </div>
             <div className="flex flex-wrap gap-3 pt-2">
               <Link href="/benefit" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
                 Open theMiracle benefit

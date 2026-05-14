@@ -217,6 +217,18 @@ export const achievements = [
       "This recognition is presented as an execution signal while the platform stays product-first across governance, proof, and services.",
     meta: "March 2026",
   },
+  {
+    title: "3rd Place · Superteam UAE Frontier Hackathon",
+    detail:
+      "A current Frontier recognition signal that sits beside the Poland result while the product keeps proof, runtime, and service routes visible.",
+    meta: "May 2026",
+  },
+  {
+    title: "Top 1% in Solana",
+    detail:
+      "Founder/community credibility signal used carefully as context for execution quality, not as a substitute for live product proof.",
+    meta: "Solana ecosystem",
+  },
 ];
 
 export const communityLinks = [
@@ -2159,7 +2171,11 @@ export const analyticsSeries = {
 export const awards = [
   {
     label: "Recognition",
-    value: "1st Place - Superteam Poland, March 2026",
+    value: "1st Place - Superteam Poland, March 2026; 3rd Place - Superteam UAE Frontier Hackathon, May 2026",
+  },
+  {
+    label: "Ecosystem signal",
+    value: "Top 1% in Solana recognition, presented as a credibility signal alongside live Testnet proof and reviewer-visible operating evidence",
   },
   {
     label: "Live hosting",

@@ -8,6 +8,16 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 type ClaimAsset = "PUSD" | "AUDD" | "USDC" | "USDT" | "SOL";
+type IntentResponse = {
+  executionReference?: string;
+  signature?: string;
+  reference?: string;
+  receipt?: {
+    executionReference?: string;
+    receiptHash?: string;
+    note?: string;
+  };
+};
 
 function toBase64(value: string) {
   if (typeof window === "undefined") return "";
@@ -23,7 +33,7 @@ export function UmbraClaimLinkWorkbench() {
   const [asset, setAsset] = useState<ClaimAsset>("USDC");
   const [amount, setAmount] = useState("25");
   const [recipientHint, setRecipientHint] = useState("contractor-01");
-  const [recipientWallet, setRecipientWallet] = useState("RecipientWalletxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+  const [recipientWallet, setRecipientWallet] = useState("B3STL1akxLGLvPpKd6Grz19jjVySkWrGgHFwGNK8yEZ");
   const [memo, setMemo] = useState("Umbra claim payout rehearsal");
   const [claimLink, setClaimLink] = useState("");
   const [status, setStatus] = useState("Build a claim link, then execute the claim settlement intent.");
@@ -34,8 +44,8 @@ export function UmbraClaimLinkWorkbench() {
       rail: "umbra",
       operationType: "payment-link-claim",
       asset,
-      amount,
-      recipient: recipientWallet,
+      amount: amount.trim(),
+      recipient: recipientWallet.trim(),
       memo,
       recipientHint,
       auditMode: "confidential-payout",
@@ -56,6 +66,10 @@ export function UmbraClaimLinkWorkbench() {
     setRunning(true);
     setStatus("Submitting Umbra claim intent...");
     try {
+      if (payload.recipient.length < 32 || payload.amount.length === 0 || Number(payload.amount) <= 0) {
+        setStatus("Enter a valid Solana recipient and a positive amount before executing the Umbra intent.");
+        return;
+      }
       const endpoint =
         process.env.NEXT_PUBLIC_PRIVATE_SETTLEMENT_ENDPOINT?.trim() ||
         "https://api.privatedao.org/api/v1/private-settlement/intent";
@@ -64,9 +78,13 @@ export function UmbraClaimLinkWorkbench() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const body = (await response.json().catch(() => null)) as { executionReference?: string } | null;
+      const body = (await response.json().catch(() => null)) as IntentResponse | null;
       const executionReference =
-        (body && typeof body.executionReference === "string" && body.executionReference) || `umbra-${Date.now()}`;
+        body?.executionReference ||
+        body?.receipt?.executionReference ||
+        body?.signature ||
+        body?.reference ||
+        `umbra-${Date.now()}`;
 
       await persistOperationReceipt({
         operationType: "umbra-payment-link-claim",
@@ -80,7 +98,11 @@ export function UmbraClaimLinkWorkbench() {
         metadata: payload,
       });
 
-      setStatus(response.ok ? "Umbra claim intent delivered and receipt recorded." : `Umbra proxy responded ${response.status}.`);
+      setStatus(
+        response.ok
+          ? `Umbra claim intent delivered. Reference: ${executionReference}`
+          : `Umbra proxy responded ${response.status}. ${body?.receipt?.note || ""}`.trim(),
+      );
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Umbra claim intent failed.");
     } finally {

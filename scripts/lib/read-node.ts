@@ -5,6 +5,7 @@ import * as anchor from "@coral-xyz/anchor";
 import { clusterApiUrl, Commitment, Connection, PublicKey } from "@solana/web3.js";
 import {
   getMagicBlockBalance,
+  getMagicBlockChallenge,
   getMagicBlockHealth,
   getMagicBlockMintInitializationStatus,
   getMagicBlockPrivateBalance,
@@ -214,6 +215,12 @@ export type MagicBlockRuntimeView = {
   apiBase: string;
   cluster: string;
   health: string;
+  privatePayments: {
+    challengePath: string;
+    loginPath: string;
+    privateBalancePath: string;
+    bearerTokenRequired: boolean;
+  };
 };
 
 export type ReadNodeCacheStats = {
@@ -979,6 +986,12 @@ export class PrivateDaoReadNode {
       apiBase: magicBlockApiBase(),
       cluster: magicBlockCluster(),
       health,
+      privatePayments: {
+        challengePath: "/v1/spl/challenge",
+        loginPath: "/v1/spl/login",
+        privateBalancePath: "/v1/spl/private-balance",
+        bearerTokenRequired: true,
+      },
     };
     this.setCached(key, runtime);
     return runtime;
@@ -999,16 +1012,42 @@ export class PrivateDaoReadNode {
     return status;
   }
 
-  async getMagicBlockBalances(address: string, mint: string, force = false) {
-    const key = this.cacheKey("magicblock-balances", `${address}:${mint}`);
+  async getMagicBlockChallenge(pubkey: string, force = false) {
+    const key = this.cacheKey("magicblock-challenge", pubkey);
     if (!force) {
       const cached = this.getCached<any>(key);
       if (cached) return cached;
     }
-    const [baseBalance, privateBalance] = await Promise.all([
-      getMagicBlockBalance({ address, mint, cluster: magicBlockCluster() }, magicBlockApiBase()),
-      getMagicBlockPrivateBalance({ address, mint, cluster: magicBlockCluster() }, magicBlockApiBase()),
-    ]);
+    const challenge = await getMagicBlockChallenge(pubkey, magicBlockApiBase(), magicBlockCluster());
+    this.setCached(key, challenge);
+    return challenge;
+  }
+
+  async getMagicBlockBalances(address: string, mint: string, force = false, bearerToken?: string) {
+    const authCacheKey = bearerToken ? "with-auth" : "public-only";
+    const key = this.cacheKey("magicblock-balances", `${address}:${mint}:${authCacheKey}`);
+    if (!force) {
+      const cached = this.getCached<any>(key);
+      if (cached) return cached;
+    }
+    const baseBalance = await getMagicBlockBalance({ address, mint, cluster: magicBlockCluster() }, magicBlockApiBase());
+    const privateBalance = bearerToken
+      ? await getMagicBlockPrivateBalance(
+          { address, mint, cluster: magicBlockCluster() },
+          magicBlockApiBase(),
+          bearerToken,
+        )
+      : {
+          address,
+          mint,
+          ata: "",
+          location: "ephemeral",
+          balance: "auth-required",
+          authRequired: true,
+          challengePath: "/api/v1/magicblock/challenge?pubkey=<wallet>",
+          loginPath: "/v1/spl/login",
+          note: "Private balances require the MagicBlock challenge/login bearer-token flow and are not fetched anonymously.",
+        };
     const balances = { baseBalance, privateBalance };
     this.setCached(key, balances);
     return balances;

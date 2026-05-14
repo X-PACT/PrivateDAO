@@ -17,6 +17,7 @@ const MAIN_FRONTIER_LANES = [
   ["AUDD stablecoin", "/services/audd-stablecoin"],
   ["PUSD stablecoin", "/services/pusd-stablecoin"],
   ["Umbra payout", "/services/umbra-confidential-payout"],
+  ["MagicBlock private payments", "/services/magicblock-private-payments"],
   ["Eitherway wallet UX", "/services/eitherway-live-dapp"],
   ["Runtime infrastructure", "/services/runtime-infrastructure"],
   ["Encrypt / IKA", "/services/encrypt-ika-operations"],
@@ -76,4 +77,3 @@ export default function MainFrontierClosurePage() {
     </OperationsShell>
   );
 }
-

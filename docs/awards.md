@@ -10,6 +10,20 @@
 
 This recognition documents 1st Place in the challenge **"Rebuild production backend systems as on-chain Rust programs"** on Superteam Poland.
 
+## 🥉 3rd Place — Superteam UAE Frontier Hackathon
+
+- **Track:** Frontier Hackathon
+- **Platform:** Superteam UAE
+- **Date:** May 2026
+
+This recognition is presented beside the Poland result as current execution credibility. It should be read with the live product, proof routes, and reviewer-visible runtime evidence rather than as a standalone claim.
+
+## Ecosystem Signal
+
+- **Signal:** Top 1% in Solana
+
+This is included as an ecosystem credibility signal for the founder/operator context. The product proof remains the live Testnet surface, repository evidence, and public verification links.
+
 The work demonstrates:
 
 - Backend logic transformation into on-chain execution
