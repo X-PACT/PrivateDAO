@@ -58,6 +58,8 @@ type PrivateSettlementRailWorkbenchProps = {
   lockRail?: boolean;
 };
 
+const DEFAULT_REVIEWER_RECIPIENT = "B3STL1akxLGLvPpKd6Grz19jjVySkWrGgHFwGNK8yEZ";
+
 export function PrivateSettlementRailWorkbench({
   initialRail = "cloak",
   lockRail = false,
@@ -66,7 +68,7 @@ export function PrivateSettlementRailWorkbench({
   const [operationType, setOperationType] = useState("private-payroll");
   const [asset, setAsset] = useState<SettlementAsset>("USDC");
   const [amount, setAmount] = useState("250");
-  const [recipient, setRecipient] = useState("RecipientWalletxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+  const [recipient, setRecipient] = useState(DEFAULT_REVIEWER_RECIPIENT);
   const [memo, setMemo] = useState("Payroll tranche / reviewer-safe memo");
   const [status, setStatus] = useState("Prepare a private settlement intent, forward it through the read-node rail endpoint, and store the receipt.");
   const [preview, setPreview] = useState("");
@@ -79,7 +81,7 @@ export function PrivateSettlementRailWorkbench({
       operationType,
       asset,
       amount,
-      recipient,
+      recipient: recipient.trim(),
       memo,
       auditMode: profile.auditMode,
       recipientVisibility: profile.visibility,
@@ -91,6 +93,20 @@ export function PrivateSettlementRailWorkbench({
   async function handleForward() {
     const endpoint = getRailEndpoint(rail);
     const reference = `${rail}-${Date.now()}`;
+    const normalizedRecipient = recipient.trim();
+    const normalizedAmount = amount.trim();
+
+    if (normalizedRecipient.length < 32) {
+      setStatus("Enter a valid recipient public key before forwarding the private settlement intent.");
+      setPreview(JSON.stringify({ ok: false, reason: "recipient-public-key-required" }, null, 2));
+      return;
+    }
+
+    if (!normalizedAmount || Number.isNaN(Number(normalizedAmount)) || Number(normalizedAmount) <= 0) {
+      setStatus("Enter a positive settlement amount before forwarding the private settlement intent.");
+      setPreview(JSON.stringify({ ok: false, reason: "positive-amount-required" }, null, 2));
+      return;
+    }
 
     setPreview(JSON.stringify(payload, null, 2));
 

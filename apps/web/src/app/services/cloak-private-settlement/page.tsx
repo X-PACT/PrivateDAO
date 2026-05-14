@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { CloakSdkIntegrationStatus } from "@/components/cloak-sdk-integration-status";
 import { LocalizedRouteSummary } from "@/components/localized-route-summary";
 import { OperationsShell } from "@/components/operations-shell";
 import { PrivateSettlementRailWorkbench } from "@/components/private-settlement-rail-workbench";
@@ -53,8 +54,8 @@ export default function CloakPrivateSettlementPage() {
       </div>
 
       <PrivacyPolicySelector compact />
+      <CloakSdkIntegrationStatus />
       <PrivateSettlementRailWorkbench />
     </OperationsShell>
   );
 }
-

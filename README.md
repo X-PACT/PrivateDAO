@@ -285,6 +285,17 @@ These packets are the shortest judge path for the cryptography-heavy layers:
 
 Normal users see simple route names: `Review with QVAC`, `Check wallet with GoldRush`, `Prepare private settlement`, and `Verify proof`. Judges get direct Solana Testnet transaction links and JSON/Markdown evidence packets.
 
+### Cloak SDK Devnet Probe
+
+PrivateDAO now carries an explicit Cloak SDK probe for the official devnet package:
+
+- SDK: `@cloak.dev/sdk-devnet`
+- Probe: `npm run probe:cloak-devnet-sdk`
+- Packet: [`docs/cloak-devnet-sdk-live-probe.generated.md`](docs/cloak-devnet-sdk-live-probe.generated.md)
+- JSON: [`docs/generated/cloak-devnet-sdk-probe.generated.json`](docs/generated/cloak-devnet-sdk-probe.generated.json)
+
+The default probe checks the official Cloak docs index, exported UTXO SDK contract, devnet relay health, executable devnet program account, and the hosted PrivateDAO read-node intent receipt. A funded live devnet deposit is opt-in via `PRIVATE_DAO_CLOAK_E2E=1 npm run probe:cloak-devnet-sdk`; the probe never prints private keys, viewing keys, UTXO private keys, seed material, or raw note payloads.
+
 ## Replay Pressure Note
 
 Reviewer telemetry may show replay pressure or extra attempts. That is expected evidence from adversarial and retry-path testing, not hidden product failure. The repo records replay pressure so judges can see that PrivateDAO tests duplicate execution, retry behavior, and evidence aging instead of presenting only happy-path screenshots.
@@ -593,13 +604,14 @@ Visitor notifications are privacy-preserving. They include page, timestamp, coun
 
 ## Umbra / Cloak Settlement Boundary
 
-The hosted read node at `https://api.privatedao.org` now exposes reviewer-verifiable Umbra Devnet relayer readiness:
+The hosted read node at `https://api.privatedao.org` now exposes reviewer-verifiable Umbra Devnet relayer readiness and Cloak-labelled private-settlement intent receipts:
 
 - Health: `https://api.privatedao.org/api/v1/umbra/relayer/health`
 - Info: `https://api.privatedao.org/api/v1/umbra/relayer/info`
 - Private settlement intent receipt: `POST https://api.privatedao.org/api/v1/private-settlement/intent`
+- Cloak devnet SDK probe: `npm run probe:cloak-devnet-sdk`
 
-Current boundary: PrivateDAO verifies relayer health, supported mints, and testnet settlement intent receipts. It does not fabricate a full Umbra claim. A full claim still requires SDK-generated ZK `proof_account_data` and UTXO slot data produced by the Umbra SDK path.
+Current boundary: PrivateDAO verifies relayer health, supported mints, the Cloak devnet SDK contract, the Cloak devnet program account, and testnet settlement intent receipts. It does not fabricate a full Umbra claim. A full Umbra claim still requires SDK-generated ZK `proof_account_data` and UTXO slot data produced by the Umbra SDK path. A funded Cloak devnet UTXO deposit is available as an opt-in live probe because it creates a real devnet transaction.
 
 ## Read-Node Program Alignment Gate
 

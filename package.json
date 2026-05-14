@@ -52,6 +52,7 @@
     "start:read-node": "ts-node scripts/run-read-node.ts",
     "start:chain-watcher": "ts-node scripts/chain-watcher.ts",
     "probe:qvac-runtime": "node scripts/probe-qvac-sdk.mjs",
+    "probe:cloak-devnet-sdk": "node scripts/probe-cloak-devnet-sdk.mjs",
     "build:solrouter-encrypted-ai-evidence": "node scripts/generate-solrouter-encrypted-ai-evidence.mjs",
     "verify:supabase-receipts": "node scripts/verify-supabase-receipts.mjs",
     "test": "bash scripts/run-local-anchor-suite.sh all",
