@@ -1,8 +1,6 @@
 import { supportedLocales } from "@/lib/i18n";
 
 export const siteName = "PrivateDAO";
-export const siteNameArabic = "برايفيت داو";
-export const siteNameArabicAlt = "برايفت داو";
 export const siteTitle = "PrivateDAO | Private Financial OS for Solana DAOs";
 export const siteDescription =
   "PrivateDAO is a wallet-first Solana financial OS for private governance, confidential treasury execution, local-first QVAC intelligence, live Testnet proof, and reviewer-visible trust packets.";
@@ -12,10 +10,6 @@ export const defaultOgImage = "/opengraph-image.png";
 export const siteKeywords = [
   "PrivateDAO",
   "Private DAO",
-  "برايفيت داو",
-  "برايفت داو",
-  "حوكمة خاصة",
-  "خزانة سرية",
   "private governance",
   "confidential treasury",
   "private voting",
@@ -35,7 +29,7 @@ export function buildOrganizationJsonLd() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: siteName,
-    alternateName: [siteNameArabic, siteNameArabicAlt, "Private DAO"],
+    alternateName: ["Private DAO"],
     url: siteUrl,
     logo: `${siteUrl}/assets/logo.png`,
     sameAs: [
@@ -52,7 +46,7 @@ export function buildWebSiteJsonLd() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: siteName,
-    alternateName: [siteNameArabic, siteNameArabicAlt, "Private DAO"],
+    alternateName: ["Private DAO"],
     url: siteUrl,
     inLanguage: supportedLocales.map((locale) => locale.code),
   };
