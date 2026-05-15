@@ -42,7 +42,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const operationsNav = [
-  { href: "/judges", label: "Judges", icon: Trophy, summary: "60-second judge fast path with demo, proof, repo, and contact" },
+  { href: "/judge", label: "Judge Route", icon: Trophy, summary: "Canonical reviewer path with product proof, integrations, awards context, and runtime evidence" },
   { href: "/whiteprint", label: "Whiteprint", icon: ScrollText, summary: "Founder roadmap for encrypted delivery, Mainnet review, and cross-chain expansion" },
   { href: "/start", label: "Start", icon: Compass, summary: "Guided onboarding and wallet-first flow" },
   { href: "/learn", label: "Learn", icon: FileText, summary: "Workflow-first onboarding and product operating guide" },
@@ -152,8 +152,8 @@ export function OperationsShell({
         return copy.chrome.apiPricing;
       case "/benefit":
         return "Benefit";
-      case "/judges":
-        return "Judges";
+      case "/judge":
+        return "Judge Route";
       case "/versus":
         return "Versus";
       case "/revenue":

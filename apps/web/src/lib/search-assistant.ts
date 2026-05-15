@@ -319,10 +319,11 @@ const assistantIntents: AssistantIntent[] = [
   {
     title: "Open the shortest review path",
     summary:
-      "Use the proof route with the judge context first. From there, continue into V3 proof, trust package, and mainnet readiness gates without digging through the full site.",
-    primaryActionLabel: "Open review proof path",
-    primaryActionHref: "/proof/?judge=1",
+      "Use the canonical judge route first. It now combines product proof, integrations, recognition context, runtime evidence, and the direct handoff into proof packets without digging through the full site.",
+    primaryActionLabel: "Open canonical judge route",
+    primaryActionHref: "/judge",
     relatedRoutes: [
+      { label: "Proof Mode", href: "/proof/?judge=1" },
       { label: "Trust Package", href: "/documents/trust-package" },
       { label: "Live Proof V3", href: "/documents/live-proof-v3" },
       { label: "Mainnet Readiness Gates", href: "/documents/mainnet-blockers" },
@@ -482,7 +483,7 @@ const assistantIntents: AssistantIntent[] = [
     relatedRoutes: [
       { label: "Start", href: "/start" },
       { label: "Services", href: "/services" },
-      { label: "Proof", href: "/proof/?judge=1" },
+      { label: "Judge Route", href: "/judge" },
     ],
     keywords: ["product route", "privacy", "operations", "analytics", "learning", "reviewer packet", "confidential payouts", "rpc", "encrypted operations"],
   },

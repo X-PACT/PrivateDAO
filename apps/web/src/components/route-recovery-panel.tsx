@@ -9,11 +9,18 @@ import { cn } from "@/lib/utils";
 
 const recoveryRoutes = [
   {
-    href: "/proof/?judge=1",
-    title: "Judge proof lane",
-    body: "Fast review path, receipts, runtime proof, and submitted-hackathon evidence.",
+    href: "/judge",
+    title: "Canonical judge route",
+    body: "Fast review path with product proof, integrations, awards context, and runtime evidence.",
     icon: ShieldCheck,
-    keywords: ["judge", "judges", "proof", "review", "receipt", "frontier", "colosseum"],
+    keywords: ["judge", "judges", "review", "frontier", "colosseum", "award", "uae", "poland"],
+  },
+  {
+    href: "/proof/?judge=1",
+    title: "Legacy proof mode",
+    body: "Preserved judge-query entrypoint for receipts, runtime logs, and submitted proof links.",
+    icon: FileText,
+    keywords: ["proof", "receipt", "runtime", "evidence", "judge=1"],
   },
   {
     href: "/services/qvac-sovereign-ai/",

@@ -92,8 +92,8 @@ export function SiteFooter() {
           <Link href="/awards" className="hover:text-white">
             Awards
           </Link>
-          <Link href="/judges" className="hover:text-white">
-            Judges
+          <Link href="/judge" className="hover:text-white">
+            Judge Route
           </Link>
           <Link href="/benefit" className="hover:text-white">
             Benefit

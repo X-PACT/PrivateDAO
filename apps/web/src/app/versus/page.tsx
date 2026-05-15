@@ -105,8 +105,8 @@ export default function VersusPage() {
       </div>
 
       <div className="flex flex-wrap gap-3">
-        <Link href="/judges" className={cn(buttonVariants({ size: "lg" }))}>
-          Open judges fast path
+        <Link href="/judge" className={cn(buttonVariants({ size: "lg" }))}>
+          Open judge route
           <ArrowUpRight className="h-4 w-4" />
         </Link>
         <Link href="/proof" className={cn(buttonVariants({ size: "lg", variant: "outline" }))}>

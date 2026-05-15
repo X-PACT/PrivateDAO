@@ -2060,9 +2060,9 @@ export const commandCenterPacks = [
 
 export const commandCenterReferences = [
   {
-    title: "Judge proof view",
-    description: "Fastest reviewer path into the live proof surface.",
-    href: "/proof/?judge=1",
+    title: "Canonical judge route",
+    description: "Fastest reviewer path into the live product, integration map, recognition context, and proof handoff.",
+    href: "/judge",
   },
   {
     title: "Dedicated V3 proof",
@@ -2194,9 +2194,9 @@ export const trustLinks = [
     href: "/story",
   },
   {
-    title: "Judge proof view",
-    summary: "Fastest reviewer path into the live product proof surface.",
-    href: "/proof/?judge=1",
+    title: "Canonical judge route",
+    summary: "Fastest reviewer path into the live product, proof handoff, integration map, and recognition context.",
+    href: "/judge",
   },
   {
     title: "Audit packet",

@@ -116,8 +116,8 @@ export default function RevenuePage() {
               Open services
               <ArrowUpRight className="h-4 w-4" />
             </Link>
-            <Link href="/judges" className={cn(buttonVariants({ size: "lg", variant: "outline" }))}>
-              Open judges path
+            <Link href="/judge" className={cn(buttonVariants({ size: "lg", variant: "outline" }))}>
+              Open judge route
               <ArrowUpRight className="h-4 w-4" />
             </Link>
           </div>

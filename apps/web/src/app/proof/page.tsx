@@ -208,9 +208,9 @@ export default function ProofPage() {
         </div>
       </div>
       <div className="rounded-[26px] border border-white/10 bg-white/[0.04] p-5">
-        <div className="text-[11px] uppercase tracking-[0.24em] text-white/42">Integration proof lanes</div>
+        <div className="text-[11px] uppercase tracking-[0.24em] text-white/42">Feature-to-proof lanes</div>
         <div className="mt-2 max-w-4xl text-sm leading-7 text-white/68">
-          Each lane below gives a reviewer the shortest path from feature surface to proof packet without needing to reconstruct the product by hand.
+          Each card links first to the live feature it describes, then to the closest proof packet or evidence surface for that exact lane. Use `/judge` when you need the full reviewer map; use this proof center when you need receipts and runtime evidence.
         </div>
         <div className="mt-4 grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
           {integrationEvidenceLanes.map((lane) => (

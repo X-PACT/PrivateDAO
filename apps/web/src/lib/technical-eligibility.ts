@@ -28,7 +28,8 @@ const defaultRoutes: TechnicalEvidenceRoute[] = [
   { label: "Core integrations", href: "/documents/frontier-integrations" },
   { label: "PDAO attestation", href: "/viewer/pdao-attestation.generated" },
   { label: "Wallet matrix", href: "/viewer/wallet-compatibility-matrix.generated" },
-  { label: "Judge proof path", href: "/proof/?judge=1" },
+  { label: "Canonical judge route", href: "/judge" },
+  { label: "Legacy proof mode", href: "/proof/?judge=1" },
 ];
 
 const fits: Record<string, TrackTechnicalFit> = {

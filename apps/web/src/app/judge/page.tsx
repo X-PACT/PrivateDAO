@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ArrowUpRight, Award } from "lucide-react";
 import { DevnetExecutionScreenshotsStrip } from "@/components/devnet-execution-screenshots-strip";
 import { JudgeSelectiveDisclosureCta } from "@/components/judge-selective-disclosure-cta";
 import { JudgeRuntimeLogsPanel } from "@/components/judge-runtime-logs-panel";
@@ -27,6 +28,23 @@ export const metadata: Metadata = buildRouteMetadata({
 
 export default function JudgePage() {
   const runtimeSnapshot = getJudgeRuntimeLogsSnapshot();
+  const recognitionSignals = [
+    {
+      label: "1st Place",
+      value: "Superteam Poland",
+      detail: "Regional recognition attached to proof, product clarity, and operating discipline.",
+    },
+    {
+      label: "3rd Place",
+      value: "Superteam UAE Frontier Hackathon",
+      detail: "Frontier recognition for the integrated private-governance, payments, AI, and infrastructure surface.",
+    },
+    {
+      label: "Top 1%",
+      value: "Solana ecosystem signal",
+      detail: "Credibility signal shown beside live Testnet proof rather than replacing technical verification.",
+    },
+  ];
   const integrationFastPaths = [
     ["Cloak private settlement", "Confidential treasury and payroll execution lane with receipt continuity.", "/services/cloak-private-settlement", "/proof"],
     ["Umbra confidential payout", "Recipient-private payout lane with claim-style flow and settlement continuity.", "/services/umbra-confidential-payout", "/documents/privacy-and-encryption-proof-guide"],
@@ -57,6 +75,34 @@ export default function JudgePage() {
     >
       <LocalizedRouteSummary routeKey="judge" />
       <VideoCenter compact />
+      <div className="rounded-[26px] border border-amber-300/18 bg-[linear-gradient(135deg,rgba(251,191,36,0.12),rgba(20,241,149,0.07),rgba(8,13,28,0.92))] p-5">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 text-amber-100">
+              <Award className="h-4 w-4" />
+              <div className="text-[11px] uppercase tracking-[0.28em]">Recognition attached to proof</div>
+            </div>
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-white/66">
+              Awards are shown here only as review context. The primary judge path remains the live product, Testnet
+              proof, runtime status, and integration map across QVAC, Cloak, Umbra, MagicBlock, GoldRush, Dune Sim,
+              Jupiter, Zerion, Torque, Eitherway, Supabase, and the AWS read-node.
+            </p>
+          </div>
+          <Link href="/awards" className={cn(buttonVariants({ variant: "outline" }), "border-amber-300/24 bg-amber-300/[0.08] text-amber-50 hover:bg-amber-300/[0.13]")}>
+            Open awards context
+            <ArrowUpRight className="h-4 w-4" />
+          </Link>
+        </div>
+        <div className="mt-4 grid gap-3 md:grid-cols-3">
+          {recognitionSignals.map((item) => (
+            <div key={item.value} className="rounded-2xl border border-white/10 bg-black/22 p-4">
+              <div className="text-[11px] uppercase tracking-[0.24em] text-amber-100/62">{item.label}</div>
+              <div className="mt-2 text-lg font-semibold text-white">{item.value}</div>
+              <p className="mt-2 text-sm leading-6 text-white/56">{item.detail}</p>
+            </div>
+          ))}
+        </div>
+      </div>
       <div className="grid gap-4 xl:grid-cols-[0.95fr_1.05fr]">
         <LocalizedJudgePrimer />
 
