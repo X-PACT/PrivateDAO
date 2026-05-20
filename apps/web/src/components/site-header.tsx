@@ -36,6 +36,7 @@ const utilityNav = [
   { href: "/network", label: "Network", rel: "nofollow" },
   { href: "/story", label: "Story" },
   { href: "/trust", label: "Trust" },
+  { href: "/whitepaper", label: "Whitepaper" },
   { href: "/documents", label: "Docs" },
   { href: "/community", label: "Community" },
   { href: "/assistant", label: "Help", rel: "nofollow" },
@@ -98,6 +99,8 @@ export function SiteHeader() {
         return copy.chrome.trust;
       case "/documents":
         return copy.chrome.docs;
+      case "/whitepaper":
+        return "Whitepaper";
       case "/community":
         return copy.chrome.community;
       case "/assistant":

@@ -11,6 +11,7 @@ const coreRoutes = [
   "/about",
   "/judge",
   "/trust",
+  "/whitepaper",
   "/whiteprint",
   "/govern",
   "/execute",

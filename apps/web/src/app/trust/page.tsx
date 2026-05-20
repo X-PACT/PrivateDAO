@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { OperationsShell } from "@/components/operations-shell";
+import { ProjectOperatingMap } from "@/components/project-operating-map";
 import { JudgeFoundationMessageCard } from "@/components/judge-foundation-message-card";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -21,14 +22,14 @@ const trustPackets = [
     title: "Whitepaper",
     body:
       "Architecture, encryption layers, local-first intelligence, ZK direction, treasury logic, threat boundaries, and wallet-first execution design.",
-    href: "/whiteprint",
+    href: "/whitepaper",
     cta: "Open Whitepaper",
   },
   {
     title: "Roadmap",
     body:
       "Phase 1 core proof, Phase 2 encrypted customer delivery, Mainnet security reviews, and Phase 3 cross-chain expansion anchored by Solana.",
-    href: "/whiteprint#phase-roadmap",
+    href: "/whitepaper#phase-roadmap",
     cta: "Open Roadmap",
   },
   {
@@ -76,6 +77,11 @@ export default function TrustPage() {
       </section>
 
       <JudgeFoundationMessageCard />
+      <ProjectOperatingMap
+        compact
+        title="Trust should point into the real product, not away from it"
+        description="Whitepaper and roadmap belong here, but trust is completed only when they connect directly to governance, intelligence, execution, confidential payment rails, and proof. This route is the narrative bridge into those live sections."
+      />
 
       <div className="flex flex-wrap gap-3">
         <Link className={cn(buttonVariants({ size: "sm" }))} href="/judge">
@@ -83,6 +89,9 @@ export default function TrustPage() {
         </Link>
         <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href="/proof">
           Open proof
+        </Link>
+        <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href="/intelligence">
+          Open intelligence
         </Link>
       </div>
     </OperationsShell>

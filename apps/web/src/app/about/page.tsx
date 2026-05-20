@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { OperationsShell } from "@/components/operations-shell";
+import { ProjectOperatingMap } from "@/components/project-operating-map";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -58,9 +59,9 @@ export default function AboutPage() {
           </p>
           <p>
             The product breakthrough is usability: the hard parts no longer require code, terminal commands, or a deep
-            cryptography background. PrivateDAO turns proposal context, local AI review, private payroll, B2B settlement,
-            gaming rewards, compliance packs, and proof exports into guided interface steps that can be learned in the
-            Learn section and operated from web or mobile.
+            cryptography background. PrivateDAO turns proposal context, local AI review, private payroll, confidential
+            payouts, B2B settlement, gaming rewards, treasury routing, compliance packs, and proof exports into guided
+            interface steps that can be learned in Learn and operated from web or mobile.
           </p>
           <p>
             The current release is Testnet-first with real wallet actions, real public signatures, real proof packets, and
@@ -82,6 +83,10 @@ export default function AboutPage() {
         ))}
       </div>
 
+      <ProjectOperatingMap
+        description="About should explain the whole operating system clearly: governance creates the decision, intelligence informs it, execute handles the signed action, confidential payment rails settle privately, payroll and treasury remain structured, and proof preserves trust afterward."
+      />
+
       <Card>
         <CardHeader>
           <CardTitle>Current proof boundary</CardTitle>
@@ -99,7 +104,7 @@ export default function AboutPage() {
       </Card>
 
       <div className="flex flex-wrap gap-3">
-        <Link className={cn(buttonVariants({ size: "lg", variant: "outline" }))} href="/trust#whitepaper">
+        <Link className={cn(buttonVariants({ size: "lg", variant: "outline" }))} href="/whitepaper">
           Open Whitepaper
         </Link>
         <Link className={cn(buttonVariants({ size: "lg" }))} href="/proof">

@@ -5,6 +5,7 @@ import { HomeShell } from "@/components/home-shell";
 import { HomeVisitorCounter } from "@/components/home-visitor-counter";
 import { LegacyEntryBridge } from "@/components/legacy-entry-bridge";
 import { LiveSiteActivityPanel } from "@/components/live-site-activity-panel";
+import { ProjectOperatingMap } from "@/components/project-operating-map";
 import { buildBrandHomeMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildBrandHomeMetadata();
@@ -19,6 +20,9 @@ export default function HomePage() {
       </Suspense>
       <HomeShell />
       <div className="mx-auto w-full max-w-7xl space-y-5 px-4 pb-12 sm:px-6 lg:px-8">
+        <ProjectOperatingMap
+          description="PrivateDAO should read as one connected system from the first viewport: governance creates decisions, intelligence explains them, treasury and payroll prepare execution, confidential payment rails move value privately, wallet-first execution keeps the signer in control, and proof makes the result inspectable."
+        />
         <HomeVisitorCounter />
         <LiveSiteActivityPanel />
       </div>

@@ -8,6 +8,7 @@ import { GuidedOperationRail } from "@/components/guided-operation-rail";
 import { LocalizedGovernIntroSurface } from "@/components/localized-govern-intro-surface";
 import { NormalUserOperationPath } from "@/components/normal-user-operation-path";
 import { OperationsShell } from "@/components/operations-shell";
+import { ProjectOperatingMap } from "@/components/project-operating-map";
 import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { cn } from "@/lib/utils";
@@ -51,6 +52,11 @@ export default function GovernPage() {
       </div>
       <GovernPolicyControlRoom />
       <NormalUserOperationPath />
+      <ProjectOperatingMap
+        compact
+        title="Governance is the first lane, not the only lane"
+        description="Governance creates the policy state. Intelligence reviews the proposal and treasury context before signing, execution turns approved actions into private payroll or settlement flow, and proof records the result. This keeps governance connected to the rest of the product instead of isolated as a voting-only screen."
+      />
       <ExecutionSpineSurface context="govern" compact />
       <GovernWorkbenchClient />
     </OperationsShell>

@@ -127,6 +127,12 @@ export default function WhitepaperPage() {
             Download whitepaper
             <ArrowDownToLine className="h-4 w-4" />
           </a>
+          <Link href="/trust#whitepaper" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+            Open trust route
+          </Link>
+          <Link href="/intelligence" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+            Open intelligence
+          </Link>
           <Link href="/services/qvac-sovereign-ai" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
             Open QVAC proof
           </Link>
@@ -138,6 +144,24 @@ export default function WhitepaperPage() {
       </section>
 
       <JudgeFoundationMessageCard />
+
+      <section id="phase-roadmap" className="rounded-[30px] border border-emerald-300/18 bg-emerald-300/[0.07] p-6">
+        <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-100/78">Connected roadmap</div>
+        <h2 className="mt-3 text-2xl font-semibold text-white">Each roadmap phase already maps to a live section of the product</h2>
+        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          {[
+            ["Phase 1: governance and proof", "/govern", "Wallet-first governance, execution continuity, and reviewer-visible proof already define the current system core."],
+            ["Phase 2: encrypted customer delivery", "/services/confidential-payments", "Confidential payroll, recipient-private payouts, and protected settlement rails express the customer delivery path."],
+            ["Mainnet and external review", "/trust", "Trust, security, proof, and reviewer routes keep the release boundaries and audit posture explicit."],
+            ["Phase 3: cross-chain expansion", "/services/encrypt-ika-operations", "Encrypted coordination, 2PC-MPC, and protected execution prep show how the system expands without losing Solana as the decision home."],
+          ].map(([title, href, body]) => (
+            <Link key={title} href={href} className="rounded-[22px] border border-white/10 bg-black/20 p-4 transition hover:border-emerald-200/30">
+              <div className="text-base font-medium text-white">{title}</div>
+              <div className="mt-2 text-sm leading-6 text-white/62">{body}</div>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       <section className="rounded-[30px] border border-violet-300/18 bg-violet-300/[0.07] p-6">
         <div className="text-[11px] uppercase tracking-[0.28em] text-violet-100/78">Project letter</div>

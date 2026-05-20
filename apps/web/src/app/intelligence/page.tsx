@@ -7,6 +7,7 @@ import { IntelligenceLayerSurface } from "@/components/intelligence-layer-surfac
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperatingJourneyStrip } from "@/components/operating-journey-strip";
 import { OperationsShell } from "@/components/operations-shell";
+import { ProjectOperatingMap } from "@/components/project-operating-map";
 import { QvacSovereignAiSurface } from "@/components/qvac-sovereign-ai-surface";
 import { SectionHeader } from "@/components/section-header";
 import { SnsDomainLookup } from "@/components/sns-domain-lookup";
@@ -90,6 +91,11 @@ export default function IntelligencePage() {
       <div>
         <IntelligenceLayerSurface />
       </div>
+      <ProjectOperatingMap
+        compact
+        title="Intelligence feeds every operating lane"
+        description="This is not a detached analytics page. Intelligence feeds governance review, treasury route choice, payroll preparation, confidential payment rail selection, compliance posture, and wallet-first execution clarity before the user signs."
+      />
       <div>
         <GoldRushIntelligenceSurface />
       </div>
