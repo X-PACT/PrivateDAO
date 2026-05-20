@@ -7,7 +7,9 @@ import { JudgeTechnologyGuide } from "@/components/judge-technology-guide";
 import { JudgeFoundationMessageCard } from "@/components/judge-foundation-message-card";
 import { LocalizedJudgePrimer } from "@/components/localized-judge-primer";
 import { LocalizedRouteSummary } from "@/components/localized-route-summary";
+import { MagicBlockPrivatePaymentsStatus } from "@/components/magicblock-private-payments-status";
 import { OperationsShell } from "@/components/operations-shell";
+import { ProjectOperatingMap } from "@/components/project-operating-map";
 import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
 import { PrivacyProofExplainer } from "@/components/privacy-proof-explainer";
 import { TestnetProofMatrix } from "@/components/testnet-proof-matrix";
@@ -47,8 +49,9 @@ export default function JudgePage() {
     },
   ];
   const integrationFastPaths = [
+    ["MagicBlock private payments", "Primary Frontier track lane with challenge/login auth, private balance boundary, and wallet-signed execution path.", "/services/magicblock-private-payments", "/proof"],
     ["Cloak private settlement", "Confidential treasury and payroll execution lane with receipt continuity.", "/services/cloak-private-settlement", "/proof"],
-    ["Umbra confidential payout", "Recipient-private payout lane with claim-style flow and settlement continuity.", "/services/umbra-confidential-payout", "/documents/privacy-and-encryption-proof-guide"],
+    ["Umbra confidential payout", "Recipient-private payout lane with claim-style flow, relayer visibility, and settlement continuity.", "/services/umbra-confidential-payout", "/proof"],
     ["Intelligence evidence", "GoldRush + Dune Sim treasury and counterparty review surface.", "/intelligence", "/proof"],
     ["AUDD treasury mode", "AUD settlement, invoice, and merchant-facing stablecoin lane.", "/services/audd-stablecoin", "/documents/audd-stablecoin-treasury-layer"],
     ["PUSD treasury mode", "Stable reserve, grants, payroll, and reward-pool lane.", "/services/pusd-stablecoin", "/documents/pusd-stablecoin-treasury-layer"],
@@ -58,7 +61,7 @@ export default function JudgePage() {
     ["Eitherway live dApp", "Wallet-first connect/sign/verify lane with partner-ready UX boundaries.", "/services/eitherway-live-dapp", "/proof"],
     ["Consumer governance UX", "Normal-user path across web and Android with wallet-first signing clarity.", "/services/consumer-governance-ux", "/android"],
     ["Runtime infrastructure", "Fast RPC and telemetry lane with reviewer-facing diagnostics continuity.", "/services/runtime-infrastructure", "/analytics"],
-    ["Encrypt / IKA operations", "Client-side encrypted payload lane with commitment-safe proof continuity.", "/services/encrypt-ika-operations", "/documents/encrypted-operations-lane"],
+    ["Encrypt / IKA operations", "Client-side encrypted payload lane with commitment-safe proof continuity and payroll-safe preparation.", "/services/encrypt-ika-operations", "/proof"],
     ["SolRouter encrypted AI", "Deterministic proposal intelligence with encrypted brief output and receipt continuity.", "/services/solrouter-encrypted-ai", "/proof"],
     ["Main Frontier closure", "Integrated product route connecting all shipped operational lanes.", "/services/main-frontier-closure", "/proof"],
   ] as const;
@@ -153,7 +156,32 @@ export default function JudgePage() {
         </div>
       </div>
 
+      <div className="rounded-[26px] border border-sky-300/16 bg-sky-300/[0.07] p-5">
+        <div className="text-[11px] uppercase tracking-[0.24em] text-sky-100/78">Current advanced track</div>
+        <div className="mt-2 max-w-4xl text-sm leading-7 text-white/68">
+          The most current reviewer lane starts with MagicBlock private payments, then branches into Umbra recipient privacy,
+          Cloak settlement, and Encrypt / IKA operational privacy. Intelligence is not separate from these lanes; it
+          prepares governance, treasury, payroll, and wallet-first action before any signature is requested.
+        </div>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <Link href="/services/magicblock-private-payments" className={cn(buttonVariants({ size: "sm" }))}>
+            Open MagicBlock lane
+          </Link>
+          <Link href="/services/encrypt-ika-operations" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+            Open Encrypt / IKA lane
+          </Link>
+          <Link href="/services/umbra-confidential-payout" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+            Open Umbra lane
+          </Link>
+        </div>
+      </div>
+
+      <MagicBlockPrivatePaymentsStatus />
+
       <JudgeFoundationMessageCard />
+      <ProjectOperatingMap
+        description="Reviewers need a clean system view: governance sets policy, intelligence prepares the decision, treasury selects the route, confidential rails execute private value movement, payroll remains encrypted, and wallet-first UX preserves user control at the final signing edge."
+      />
 
       <div className="rounded-[26px] border border-white/10 bg-white/[0.04] p-5">
         <div className="text-[11px] uppercase tracking-[0.24em] text-white/42">Integration fast paths</div>

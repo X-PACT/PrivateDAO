@@ -20,6 +20,7 @@ import { ProofMatrix } from "@/components/proof-matrix";
 import { ProofCenter } from "@/components/proof-center";
 import { ReadNodeActivationStrip } from "@/components/read-node-activation-strip";
 import { ReadNodeHostReadinessStrip } from "@/components/read-node-host-readiness-strip";
+import { ProjectOperatingMap } from "@/components/project-operating-map";
 import { RuntimeEvidenceContinuityPanel } from "@/components/runtime-evidence-continuity-panel";
 import { AuthoritativeExecutionTrail } from "@/components/authoritative-execution-trail";
 import { ExecutionOperationsStrip } from "@/components/execution-operations-strip";
@@ -28,6 +29,7 @@ import { SupabaseOperationTimeline } from "@/components/supabase-operation-timel
 import { PrivacyProofExplainer } from "@/components/privacy-proof-explainer";
 import { TestnetProofMatrix } from "@/components/testnet-proof-matrix";
 import { VideoCenter } from "@/components/video-center";
+import { MagicBlockPrivatePaymentsStatus } from "@/components/magicblock-private-payments-status";
 import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
@@ -47,6 +49,12 @@ export default function ProofPage() {
   const runtimeSnapshot = getJudgeRuntimeLogsSnapshot();
   const integrationEvidenceLanes = [
     {
+      title: "MagicBlock private payments",
+      summary: "Current Frontier track lane: challenge/login private reads, unsigned payment builders, and wallet-signed execution continuity for judges.",
+      featureHref: "/services/magicblock-private-payments",
+      proofHref: "/proof",
+    },
+    {
       title: "Cloak private settlement",
       summary: "For users: prepare a private payroll or treasury settlement. For judges: inspect the live receipt path and current relay boundary.",
       featureHref: "/services/cloak-private-settlement",
@@ -56,7 +64,7 @@ export default function ProofPage() {
       title: "Umbra confidential payout",
       summary: "For users: route recipient-private payouts. For judges: verify the Umbra relayer health and intent receipt evidence.",
       featureHref: "/services/umbra-confidential-payout",
-      proofHref: "/documents/testnet-integration-runtime-closure-2026-05-07",
+      proofHref: "/proof",
     },
     {
       title: "Intelligence evidence",
@@ -116,7 +124,7 @@ export default function ProofPage() {
       title: "Encrypt / IKA operations",
       summary: "For users: confidential execution commitments stay behind a simple proof badge. For judges: inspect the settled Testnet REFHE envelope.",
       featureHref: "/services/encrypt-ika-operations",
-      proofHref: "/documents/testnet-refhe-encrypt-ika-commitment-2026-05-07",
+      proofHref: "/proof",
     },
     {
       title: "SolRouter encrypted AI",
@@ -184,6 +192,29 @@ export default function ProofPage() {
       <div>
         <PrivacyPolicySelector compact />
       </div>
+      <div className="rounded-[26px] border border-sky-300/16 bg-sky-300/[0.07] p-5">
+        <div className="text-[11px] uppercase tracking-[0.24em] text-sky-100/78">Current Frontier reviewer path</div>
+        <div className="mt-2 max-w-4xl text-sm leading-7 text-white/68">
+          The clearest current competition path starts with MagicBlock private payments, then expands into Umbra,
+          Cloak, Encrypt / IKA, and the intelligence and governance rails that explain why each execution lane exists.
+          Reviewers should not have to infer the current track from older pages.
+        </div>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <Link href="/services/magicblock-private-payments" className={cn(buttonVariants({ size: "sm" }))}>
+            Open MagicBlock track lane
+          </Link>
+          <Link href="/services/confidential-payments" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+            Open encrypted payments system
+          </Link>
+          <Link href="/judge" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+            Open judge route
+          </Link>
+        </div>
+      </div>
+      <MagicBlockPrivatePaymentsStatus />
+      <ProjectOperatingMap
+        description="The proof route should expose the full operating system behind the screenshots and transactions. Governance decides, intelligence explains, treasury prepares, confidential rails execute, payroll stays encrypted, and wallet-first execution keeps the final approval in the signer’s hands."
+      />
       <div className="rounded-[26px] border border-white/10 bg-white/[0.04] p-5">
         <div className="grid gap-3 lg:grid-cols-3">
           {[

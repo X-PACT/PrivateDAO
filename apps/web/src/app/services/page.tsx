@@ -20,6 +20,7 @@ import { PlatformServiceArchitecture } from "@/components/platform-service-archi
 import { PlatformCapabilityStack } from "@/components/platform-capability-stack";
 import { PaymentsTruthStrip } from "@/components/payments-truth-strip";
 import { PdaoTokenStrategyStrip } from "@/components/pdao-token-strategy-strip";
+import { ProjectOperatingMap } from "@/components/project-operating-map";
 import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-truth-strip";
 import { ReadNodeActivationStrip } from "@/components/read-node-activation-strip";
 import { ReadNodeHostReadinessStrip } from "@/components/read-node-host-readiness-strip";
@@ -101,6 +102,10 @@ export default function ServicesPage() {
         </div>
       </div>
       <ConfidentialPaymentsSystemSurface compact />
+      <ProjectOperatingMap
+        compact
+        description="From the services surface, the system should read clearly: governance creates the decision, intelligence explains it, treasury selects the route, confidential rails execute payouts and payroll privately, and wallet-first UX keeps the final approval simple for operators."
+      />
       <div>
         <JupiterTreasuryRouteSurface />
       </div>
