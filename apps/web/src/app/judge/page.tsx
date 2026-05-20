@@ -4,6 +4,7 @@ import { DevnetExecutionScreenshotsStrip } from "@/components/devnet-execution-s
 import { JudgeSelectiveDisclosureCta } from "@/components/judge-selective-disclosure-cta";
 import { JudgeRuntimeLogsPanel } from "@/components/judge-runtime-logs-panel";
 import { JudgeTechnologyGuide } from "@/components/judge-technology-guide";
+import { JudgeFoundationMessageCard } from "@/components/judge-foundation-message-card";
 import { LocalizedJudgePrimer } from "@/components/localized-judge-primer";
 import { LocalizedRouteSummary } from "@/components/localized-route-summary";
 import { OperationsShell } from "@/components/operations-shell";
@@ -143,14 +144,16 @@ export default function JudgePage() {
           <Link href="/documents/ecosystem-capability-map-2026" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
             Open capability map
           </Link>
-          <Link href="/whiteprint" className={cn(buttonVariants({ variant: "outline" }), "justify-between border-amber-300/24 bg-amber-300/[0.08] text-amber-50 hover:bg-amber-300/[0.13]")}>
-            Founder Whiteprint
+          <Link href="/trust#whitepaper" className={cn(buttonVariants({ variant: "outline" }), "justify-between border-amber-300/24 bg-amber-300/[0.08] text-amber-50 hover:bg-amber-300/[0.13]")}>
+            Open Whitepaper
           </Link>
           <Link href="/learn" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
             Open learn route
           </Link>
         </div>
       </div>
+
+      <JudgeFoundationMessageCard />
 
       <div className="rounded-[26px] border border-white/10 bg-white/[0.04] p-5">
         <div className="text-[11px] uppercase tracking-[0.24em] text-white/42">Integration fast paths</div>

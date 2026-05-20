@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowUpRight, FileCheck2, Scale, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, Scale, ShieldCheck } from "lucide-react";
 
 import { OperationsShell } from "@/components/operations-shell";
 import { Badge } from "@/components/ui/badge";
@@ -40,7 +40,7 @@ export default function LegalNoticePage() {
     <OperationsShell
       eyebrow="Legal Notice"
       title="Public review is open; official use requires coordination"
-      description="PrivateDAO remains open source where the license applies and visible for judges and ecosystem reviewers while protecting founder authorship, brand identity, digital proof artifacts, and sensitive product packaging."
+      description="PrivateDAO remains open source where the license applies and visible for judges and ecosystem reviewers while protecting project authorship, brand identity, digital proof artifacts, and sensitive product packaging."
       badges={[
         { label: "Open-source core", variant: "cyan" },
         { label: "Review access", variant: "success" },
@@ -70,12 +70,7 @@ export default function LegalNoticePage() {
         ))}
       </section>
 
-      <section className="grid gap-4 md:grid-cols-3">
-        <Link href="/whiteprint" className="rounded-[22px] border border-white/10 bg-black/20 p-5 transition hover:border-cyan-200/40">
-          <FileCheck2 className="h-5 w-5 text-cyan-100" />
-          <div className="mt-4 text-base font-semibold text-white">Founder Whiteprint</div>
-          <div className="mt-2 text-sm leading-6 text-white/58">Open the roadmap and download the reviewer whiteprint.</div>
-        </Link>
+      <section className="grid gap-4 md:grid-cols-2">
         <Link href="/trust" className="rounded-[22px] border border-white/10 bg-black/20 p-5 transition hover:border-emerald-200/40">
           <ShieldCheck className="h-5 w-5 text-emerald-100" />
           <div className="mt-4 text-base font-semibold text-white">Trust surface</div>
@@ -89,8 +84,8 @@ export default function LegalNoticePage() {
       </section>
 
       <div className="flex flex-wrap gap-3">
-        <Link href="/whiteprint" className={cn(buttonVariants({ size: "sm" }))}>
-          Open Founder Whiteprint
+        <Link href="/trust" className={cn(buttonVariants({ size: "sm" }))}>
+          Open trust
         </Link>
         <Link href="/proof" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
           Open proof

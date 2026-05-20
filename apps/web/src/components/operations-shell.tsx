@@ -23,7 +23,6 @@ import {
   MessageSquareMore,
   PlayCircle,
   Scale,
-  ScrollText,
   Rocket,
   Router,
   ShieldCheck,
@@ -37,13 +36,11 @@ import {
 import { useI18n } from "@/components/i18n-provider";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PhaseTwoSovereignRoadmap } from "@/components/phase-two-sovereign-roadmap";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const operationsNav = [
   { href: "/judge", label: "Judge Route", icon: Trophy, summary: "Canonical reviewer path with product proof, integrations, awards context, and runtime evidence" },
-  { href: "/whiteprint", label: "Whiteprint", icon: ScrollText, summary: "Founder roadmap for encrypted delivery, Mainnet review, and cross-chain expansion" },
   { href: "/start", label: "Start", icon: Compass, summary: "Guided onboarding and wallet-first flow" },
   { href: "/learn", label: "Learn", icon: FileText, summary: "Workflow-first onboarding and product operating guide" },
   { href: "/assistant", label: "AI Assistant", icon: Sparkles, summary: "Product guide across routes, docs, and proof" },
@@ -146,8 +143,6 @@ export function OperationsShell({
         return copy.chrome.story;
       case "/trust":
         return copy.chrome.trust;
-      case "/whiteprint":
-        return "Whiteprint";
       case "/services":
         return copy.chrome.apiPricing;
       case "/benefit":
@@ -351,20 +346,9 @@ export function OperationsShell({
                     )}
                   </>
                 )}
-                <Link
-                  className={cn(
-                    buttonVariants({ size: "sm", variant: "outline" }),
-                    "border-amber-300/20 bg-amber-300/[0.08] text-amber-50 hover:bg-amber-300/[0.13]",
-                  )}
-                  href="/whiteprint"
-                >
-                  Founder Whiteprint
-                </Link>
               </div>
             </CardContent>
           </Card>
-
-          <PhaseTwoSovereignRoadmap />
 
           <div className="space-y-8">{children}</div>
         </div>

@@ -99,6 +99,9 @@ export default function AboutPage() {
       </Card>
 
       <div className="flex flex-wrap gap-3">
+        <Link className={cn(buttonVariants({ size: "lg", variant: "outline" }))} href="/trust#whitepaper">
+          Open Whitepaper
+        </Link>
         <Link className={cn(buttonVariants({ size: "lg" }))} href="/proof">
           Open proof
         </Link>

@@ -38,8 +38,8 @@ const recoveryRoutes = [
   },
   {
     href: "/whiteprint/",
-    title: "Whiteprint and roadmap",
-    body: "Phase 2 privacy infrastructure, phase 3 cross-chain roadmap, and ecosystem thesis.",
+    title: "Whitepaper and roadmap",
+    body: "Phase 2 privacy infrastructure, Phase 3 cross-chain roadmap, and ecosystem thesis.",
     icon: FileText,
     keywords: ["whitepaper", "whiteprint", "roadmap", "vision", "phase", "founder"],
   },

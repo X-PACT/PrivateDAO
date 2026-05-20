@@ -53,9 +53,6 @@ export function SiteFooter() {
             <Link href="/trust" className="hover:text-white">
               {copy.chrome.trust}
             </Link>
-            <Link href="/whiteprint" className="text-amber-100 hover:text-white">
-              Founder Whiteprint
-            </Link>
             <Link href="/story" className="hover:text-white">
               {copy.chrome.story}
             </Link>

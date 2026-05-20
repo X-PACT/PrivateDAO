@@ -3,17 +3,18 @@ import Link from "next/link";
 import { ArrowDownToLine, ArrowUpRight, Globe2, KeyRound, LockKeyhole, Network, ShieldCheck, Sparkles } from "lucide-react";
 
 import { OperationsShell } from "@/components/operations-shell";
+import { JudgeFoundationMessageCard } from "@/components/judge-foundation-message-card";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = buildRouteMetadata({
-  title: "Founder Whiteprint",
+  title: "Whitepaper",
   description:
-    "PrivateDAO founder whiteprint: sovereign infrastructure roadmap for encrypted governance, private settlement, QVAC intelligence, Mainnet review, and cross-chain expansion.",
+    "PrivateDAO whitepaper: sovereign infrastructure roadmap for encrypted governance, private settlement, QVAC intelligence, Mainnet review, and cross-chain expansion.",
   path: "/whiteprint",
-  keywords: ["Founder Whiteprint", "PrivateDAO roadmap", "Solana governance", "encrypted infrastructure"],
+  keywords: ["Whitepaper", "PrivateDAO roadmap", "Solana governance", "encrypted infrastructure"],
 });
 
 const downloadHref = "/assets/private-dao-founder-whiteprint.md";
@@ -21,8 +22,8 @@ const downloadHref = "/assets/private-dao-founder-whiteprint.md";
 const languages = [
   {
     code: "EN",
-    title: "Founder Whiteprint",
-    founder: "Founder signature",
+    title: "Whitepaper",
+    founder: "Project signature",
     thesis:
       "PrivateDAO treats blockchain as durable civilization infrastructure: governance, payments, supply-chain records, institutional proof, and treaty-grade coordination become credible only when privacy and verification advance together.",
     phase2:
@@ -47,8 +48,8 @@ const languages = [
   },
   {
     code: "ES",
-    title: "Founder Whiteprint",
-    founder: "Firma del fundador",
+    title: "Whitepaper",
+    founder: "Firma del proyecto",
     thesis:
       "PrivateDAO ve blockchain como infraestructura duradera para gobernanza, pagos, registros de suministro, prueba institucional y coordinación internacional cuando privacidad y verificación avanzan juntas.",
     phase2:
@@ -60,8 +61,8 @@ const languages = [
   },
   {
     code: "KO",
-    title: "Founder Whiteprint",
-    founder: "Founder signature",
+    title: "Whitepaper",
+    founder: "Project signature",
     thesis:
       "PrivateDAO는 블록체인을 단순한 디지털 자산이 아니라 거버넌스, 결제, 공급망, 기관 증명, 국제 조정의 지속 가능한 기록 인프라로 봅니다.",
     phase2:
@@ -86,7 +87,7 @@ const documentStack = [
   ["Whitepaper", "How the system works: encryption layers, QVAC/local intelligence, ZK direction, treasury logic, emergency continuity, wallet-first execution, and threat-aware operations."],
   ["Vision Paper", "Why the system exists: privacy as the condition for honest coordination, blockchain as civilization record, and Solana as the first guardian chain."],
   ["Roadmap", "How execution unfolds: Phase 1 core proof, Phase 2 encrypted customer infrastructure, Mainnet/security reviews, then Phase 3 cross-chain expansion."],
-  ["Founder Letter", "A quiet founder signature on an ecosystem-first commitment: the delivered core was the hardest psychological and technical part; the remaining work is a continuously improving protection matrix."],
+  ["Project Letter", "A quiet project signature on an ecosystem-first commitment: the delivered core was the hardest psychological and technical part; the remaining work is a continuously improving protection matrix."],
 ] as const;
 
 const programLineage = [
@@ -94,12 +95,12 @@ const programLineage = [
   ["Current Anchor 1.0.1 Testnet program", "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva", "Current reviewer-facing deployment, web constants, Android constants, IDL posture, and read-node checks."],
 ] as const;
 
-export default function FounderWhiteprintPage() {
+export default function WhitepaperPage() {
   return (
     <OperationsShell
-      eyebrow="Founder Whiteprint"
+      eyebrow="Whitepaper"
       title="PrivateDAO Sovereign Infrastructure Roadmap"
-      description="A founder-authored technical whiteprint for reviewers, partners, and ecosystem decision makers: why PrivateDAO exists, what is live now, and how the encrypted customer delivery, Mainnet review, and cross-chain roadmap will unfold."
+      description="A technical whitepaper for reviewers, partners, and ecosystem decision makers: why PrivateDAO exists, what is live now, and how the encrypted customer delivery, Mainnet review, and cross-chain roadmap will unfold."
       badges={[
         { label: "Ecosystem-first", variant: "cyan" },
         { label: "Solana guardian chain", variant: "success" },
@@ -108,8 +109,8 @@ export default function FounderWhiteprintPage() {
     >
       <section className="rounded-[30px] border border-cyan-300/18 bg-cyan-300/[0.07] p-6">
         <div className="flex flex-wrap gap-2">
-          <Badge variant="cyan">Founder signature</Badge>
-          <Badge variant="warning">Whiteprint, not marketing copy</Badge>
+          <Badge variant="cyan">Project signature</Badge>
+          <Badge variant="warning">Whitepaper, not marketing copy</Badge>
           <Badge variant="success">Reviewer-downloadable</Badge>
         </div>
         <h2 className="mt-5 max-w-4xl text-3xl font-semibold tracking-tight text-white">
@@ -123,7 +124,7 @@ export default function FounderWhiteprintPage() {
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <a href={downloadHref} download className={cn(buttonVariants({ size: "sm" }))}>
-            Download whiteprint
+            Download whitepaper
             <ArrowDownToLine className="h-4 w-4" />
           </a>
           <Link href="/services/qvac-sovereign-ai" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
@@ -136,8 +137,10 @@ export default function FounderWhiteprintPage() {
         </div>
       </section>
 
+      <JudgeFoundationMessageCard />
+
       <section className="rounded-[30px] border border-violet-300/18 bg-violet-300/[0.07] p-6">
-        <div className="text-[11px] uppercase tracking-[0.28em] text-violet-100/78">Founder letter</div>
+        <div className="text-[11px] uppercase tracking-[0.28em] text-violet-100/78">Project letter</div>
         <h2 className="mt-3 text-2xl font-semibold text-white">PrivateDAO is a privacy protocol civilization narrative, not only an app</h2>
         <div className="mt-4 space-y-3 text-sm leading-7 text-white/66">
           <p>
@@ -157,14 +160,14 @@ export default function FounderWhiteprintPage() {
             or non-renewed packages are actually disabled and locally sealed material is erased.
           </p>
           <p>
-            The founder treats PrivateDAO as a public-good system before a personal asset. The mission is to serve the
+            PrivateDAO is treated as a public-good system before a personal asset. The mission is to serve the
             Solana ecosystem with a privacy product strong enough for developers, startups, organizations, governments,
             sensitive institutions, and future cross-chain infrastructure. This is a quiet signature on a larger duty:
             help the ecosystem repair a hidden structural gap before it becomes harder and more expensive to correct.
-            When the founder&apos;s personal mission is complete, PrivateDAO should be able to protect itself through its
+            When the current mission is complete, PrivateDAO should be able to protect itself through its
             community, review process, protocol rules, and guardian-chain proof.
           </p>
-          <p className="text-right text-sm text-white/52">Fahd Kotb</p>
+          <p className="text-right text-sm text-white/52">PrivateDAO Project Signature</p>
         </div>
       </section>
 

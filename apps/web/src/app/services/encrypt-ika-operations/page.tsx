@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { EncryptedOperationsWorkbench } from "@/components/encrypted-operations-workbench";
+import { ConfidentialPaymentsSystemSurface } from "@/components/confidential-payments-system-surface";
+import { IkaUserShareOpsGuardrail } from "@/components/ika-user-share-ops-guardrail";
 import { LocalizedRouteBrief } from "@/components/localized-route-brief";
 import { LocalizedRouteSummary } from "@/components/localized-route-summary";
 import { OperationsShell } from "@/components/operations-shell";
@@ -49,7 +51,8 @@ export default function EncryptIkaOperationsPage() {
       </div>
       <PrivatePayrollEncryptionWorkbench />
       <EncryptedOperationsWorkbench />
+      <IkaUserShareOpsGuardrail />
+      <ConfidentialPaymentsSystemSurface compact />
     </OperationsShell>
   );
 }
-

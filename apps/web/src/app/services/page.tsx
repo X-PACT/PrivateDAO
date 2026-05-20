@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { AnalystGradeDataCorridor } from "@/components/analyst-grade-data-corridor";
 import { BusinessModelSurface } from "@/components/business-model-surface";
@@ -26,6 +27,7 @@ import { JupiterTreasuryRouteSurface } from "@/components/jupiter-treasury-route
 import { LocalizedRouteBrief } from "@/components/localized-route-brief";
 import { LocalizedServicesPrimer } from "@/components/localized-services-primer";
 import { LocalizedRouteSummary } from "@/components/localized-route-summary";
+import { ConfidentialPaymentsSystemSurface } from "@/components/confidential-payments-system-surface";
 import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
 import { PrivacySdkApiStarter } from "@/components/privacy-sdk-api-starter";
 import { SectionHeader } from "@/components/section-header";
@@ -40,10 +42,12 @@ import { SolutionCorridors } from "@/components/solution-corridors";
 import { TreasuryReceiveSurface } from "@/components/treasury-receive-surface";
 import { TreasuryProfileQuickActions } from "@/components/treasury-profile-quick-actions";
 import { buildRouteMetadata } from "@/lib/route-metadata";
+import { buttonVariants } from "@/components/ui/button";
 import { TreasuryReviewerGradeStrip } from "@/components/treasury-reviewer-grade-strip";
 import { WalletFirstServiceActionsStrip } from "@/components/wallet-first-service-actions-strip";
 import { AuthoritativeExecutionTrail } from "@/components/authoritative-execution-trail";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Services",
@@ -80,6 +84,23 @@ export default function ServicesPage() {
         <ServicesSurface />
       </div>
       <LocalizedServicesPrimer />
+      <div className="rounded-[28px] border border-emerald-300/16 bg-emerald-300/[0.07] p-5">
+        <div className="text-[11px] uppercase tracking-[0.24em] text-emerald-100/76">New section</div>
+        <h2 className="mt-3 text-2xl font-semibold text-white">Fully encrypted payments section</h2>
+        <p className="mt-2 max-w-4xl text-sm leading-7 text-white/66">
+          A dedicated confidential payments surface is now available with Cloak, Umbra, MagicBlock, and Encrypt/IKA
+          coordination, connected to payroll, intelligence, and proof continuity lanes.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <Link href="/services/confidential-payments" className={cn(buttonVariants({ size: "sm" }))}>
+            Open confidential payments
+          </Link>
+          <Link href="/services/encrypt-ika-operations" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+            Open Encrypt / IKA operations
+          </Link>
+        </div>
+      </div>
+      <ConfidentialPaymentsSystemSurface compact />
       <div>
         <JupiterTreasuryRouteSurface />
       </div>

@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
 # PrivateDAO
 
-> **Open-source review notice:** PrivateDAO keeps its core source open for the hackathon, judging, security review, ecosystem diligence, and official collaboration. Source files under AGPL-3.0-or-later keep the rights and duties of that license. PrivateDAO brand identity, official deployments, product design, media, evidence packets, roadmap language, commercial service packaging, and Founder Whiteprint material are reserved. Open-source forks must respect the applicable license and must not impersonate PrivateDAO, reuse official branding, commercialize PrivateDAO service packages, or present derivative deployments as official without written coordination. See [`NOTICE.md`](NOTICE.md) and [`TERMS_OF_REVIEW.md`](TERMS_OF_REVIEW.md).
+> **Open-source review notice:** PrivateDAO keeps its core source open for the hackathon, judging, security review, ecosystem diligence, and official collaboration. Source files under AGPL-3.0-or-later keep the rights and duties of that license. PrivateDAO brand identity, official deployments, product design, media, evidence packets, roadmap language, commercial service packaging, and Whitepaper material are reserved. Open-source forks must respect the applicable license and must not impersonate PrivateDAO, reuse official branding, commercialize PrivateDAO service packages, or present derivative deployments as official without written coordination. See [`NOTICE.md`](NOTICE.md) and [`TERMS_OF_REVIEW.md`](TERMS_OF_REVIEW.md).
 
 <p align="center">
   <a href="https://privatedao.org/" target="_blank">
@@ -38,27 +38,31 @@
   <a href="https://privatedao.org/services/pusd-stablecoin/"><img src="https://img.shields.io/badge/PUSD-Stablecoin%20Lane-14f195" alt="PUSD stablecoin lane" /></a>
   <a href="https://privatedao.org/services/encrypt-ika-operations/"><img src="https://img.shields.io/badge/Encrypt%20%2F%20IKA-Confidential%20Ops-6366f1" alt="Encrypt IKA confidential operations" /></a>
   <a href="https://privatedao.org/services/runtime-infrastructure/"><img src="https://img.shields.io/badge/Runtime-Infrastructure-06b6d4" alt="Runtime infrastructure" /></a>
-  <a href="https://privatedao.org/whiteprint/"><img src="https://img.shields.io/badge/Founder%20Whiteprint-Ecosystem%20Roadmap-f59e0b" alt="Founder Whiteprint" /></a>
+  <a href="https://privatedao.org/trust/#whitepaper"><img src="https://img.shields.io/badge/Whitepaper-Ecosystem%20Roadmap-f59e0b" alt="Whitepaper" /></a>
   <a href="NOTICE.md"><img src="https://img.shields.io/badge/Public%20Review-Official%20Use%20Reserved-991b1b" alt="Public review notice" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-AGPLv3%2B%20%7C%20Apache--2.0%20%7C%20MIT-green" alt="License" /></a>
 </p>
 
-## Founder Whiteprint And Review Rights
+## Whitepaper And Review Rights
 
-- Founder Whiteprint: `https://privatedao.org/whiteprint/`
-- Downloadable whiteprint: `https://privatedao.org/assets/private-dao-founder-whiteprint.md`
+- Whitepaper: `https://privatedao.org/trust/#whitepaper`
+- Downloadable whitepaper: `https://privatedao.org/assets/private-dao-founder-whiteprint.md`
 - Legal notice: `https://privatedao.org/legal/`
 - Repository notice: [`NOTICE.md`](NOTICE.md)
 - Terms of public source review: [`TERMS_OF_REVIEW.md`](TERMS_OF_REVIEW.md)
 
 PrivateDAO remains open source where the repository license applies because the hackathon, auditors, and ecosystem need verifiable evidence. The official product identity is separate: brand use, official-looking derivative deployments, commercial packaging, institutional pilots, or reuse of official evidence and service materials require formal coordination.
 
-The Whiteprint is intentionally split into four layers:
+The Whitepaper is intentionally split into four layers:
 
 - **Whitepaper:** technical architecture, encryption layers, QVAC/local intelligence, ZK direction, treasury logic, emergency continuity, and wallet-first execution.
 - **Vision Paper:** founder philosophy, ecosystem mission, why privacy matters, and why blockchain should preserve more than financial transfers.
 - **Roadmap:** Phase 1 core proof, Phase 2 encrypted customer infrastructure, Mainnet/security reviews, and Phase 3 cross-chain expansion.
-- **Founder Letter:** a quiet founder signature on an ecosystem-first commitment: the delivered core was the hardest part, while the remaining protection matrices are designed to improve continuously.
+- **Project Letter:** a quiet project signature on an ecosystem-first commitment: the delivered core was the hardest part, while the remaining protection matrices are designed to improve continuously.
+
+### Ecosystem Message
+
+This product was not built as a hackathon showcase. It was built to address real ecosystem pain points through operational infrastructure that organizations, DAOs, and AI-native systems can use in production. Support from trusted reviewers, ecosystem catalysts, and foundational supporters accelerates this mission and strengthens confidence in the next generation of Solana builders.
 
 ## Program ID Lineage
 
@@ -84,7 +88,7 @@ Core development, wallet hardening, localization, and service packaging run in c
 Current web polish:
 
 - The public site defaults to English unless a visitor explicitly selects another language or opens a `?lang=` link; stale browser language storage is cleared back to English for new review sessions.
-- Legacy or mistyped routes render a reviewer-grade route recovery surface that preserves judging history and points to the closest live proof, QVAC, Cloak, trust, whiteprint, or services route.
+- Legacy or mistyped routes render a reviewer-grade route recovery surface that preserves judging history and points to the closest live proof, QVAC, Cloak, trust, whitepaper, or services route.
 - No submitted judging links are deleted during route maintenance; links are repaired, bridged, or recovered into the best live section.
 
 If a route is being refreshed:
