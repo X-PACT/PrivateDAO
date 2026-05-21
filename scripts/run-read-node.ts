@@ -1271,6 +1271,82 @@ async function handleIkaCustodyPrepare(body: Record<string, unknown>) {
   };
 }
 
+
+async function handleIkaSuiReadiness(body: Record<string, unknown>) {
+  const network = stringField(body, "network", "testnet") === "mainnet" ? "mainnet" : "testnet";
+  const ika = requireFromWebApp("@ika.xyz/sdk") as Record<string, unknown>;
+  const sui = requireFromWebApp("@mysten/sui/jsonRpc") as Record<string, unknown>;
+  const getNetworkConfig = ika.getNetworkConfig as (target: string) => Record<string, unknown>;
+  const IkaClient = ika.IkaClient as new (args: Record<string, unknown>) => {
+    initialize: () => Promise<void>;
+    getLatestNetworkEncryptionKey: () => Promise<Record<string, unknown>>;
+  };
+  const SuiJsonRpcClient = sui.SuiJsonRpcClient as new (args: Record<string, unknown>) => unknown;
+  const getJsonRpcFullnodeUrl = sui.getJsonRpcFullnodeUrl as (target: string) => string;
+  const suiClient = new SuiJsonRpcClient({ url: getJsonRpcFullnodeUrl(network), network });
+  const config = getNetworkConfig(network);
+  const ikaClient = new IkaClient({ suiClient, config, cache: true });
+  await ikaClient.initialize();
+  const networkEncryptionKey = await ikaClient.getLatestNetworkEncryptionKey();
+  return {
+    ok: true,
+    source: "ika-sui-sdk-readiness",
+    network,
+    sdk: {
+      package: "@ika.xyz/sdk",
+      initialized: true,
+      exportsUsed: ["IkaClient", "getNetworkConfig"],
+    },
+    liveNetwork: {
+      latestNetworkEncryptionKey: networkEncryptionKey,
+      packages: (config.packages as Record<string, unknown>) || null,
+      coordinator: ((config.objects as Record<string, unknown>)?.ikaDWalletCoordinator as Record<string, unknown>) || null,
+    },
+    executionBoundary: "readiness-only-requires-funded-sui-ika-signer-for-dkg-submit",
+  };
+}
+
+async function handleIkaSolanaPreAlphaReadiness() {
+  const solanaPreAlpha = await readIkaSolanaPreAlphaStatus();
+  return {
+    ok: true,
+    source: "ika-solana-prealpha-readiness",
+    solanaPreAlpha,
+  };
+}
+
+async function handleIkaSolanaPreAlphaApprovalPrepare(body: Record<string, unknown>) {
+  const message = stringField(body, "message", "PrivateDAO governed confidential payroll approval");
+  const operationType = stringField(body, "operationType", "confidential-payroll").slice(0, 80);
+  const curve = stringField(body, "curve", "ED25519").toUpperCase();
+  const signatureScheme = stringField(body, "signatureScheme", curve === "ED25519" ? "EddsaSha512" : "EcdsaKeccak256");
+  const solanaPreAlpha = await readIkaSolanaPreAlphaStatus();
+  const messageDigestSha256 = sha256Hex(message);
+  const routeId = sha256Hex(JSON.stringify({ messageDigestSha256, operationType, curve, signatureScheme })).slice(0, 24);
+  return {
+    ok: true,
+    source: "ika-solana-prealpha-approval-intent",
+    status: "approval-plan-ready",
+    routeId: `ika-approval-${routeId}`,
+    operationType,
+    curve,
+    signatureScheme,
+    messageDigest: {
+      sha256: messageDigestSha256,
+      note: "The full dWallet approve_message transaction must derive the canonical Ika pre-alpha message digest/PDA before submit.",
+    },
+    solanaPreAlpha,
+    nextTransactions: [
+      "load or create an active dWallet",
+      "derive MessageApproval PDA for the dWallet, signature scheme, and canonical message digest",
+      "submit approve_message on Solana devnet",
+      "request Ika pre-alpha presign/sign through gRPC",
+      "read and verify the committed signature",
+    ],
+    executionBoundary: "intent-only-dwallet-dkg-and-sign-submit-not-yet-executed",
+  };
+}
+
 async function handleRefhePayrollProof(body: Record<string, unknown>) {
   const ciphertext = stringField(body, "ciphertext");
   const inputCommitment = stringField(body, "inputCommitment");
@@ -1522,6 +1598,26 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
     if (req.method === "POST" && pathname === "/api/v1/ika/custody/prepare") {
       const body = await readRequestJson(req);
       const result = await handleIkaCustodyPrepare(body);
+      writeJson(res, 200, result);
+      return;
+    }
+
+    if (req.method === "POST" && pathname === "/api/v1/ika/sui/readiness") {
+      const body = await readRequestJson(req);
+      const result = await handleIkaSuiReadiness(body);
+      writeJson(res, 200, result);
+      return;
+    }
+
+    if (req.method === "GET" && pathname === "/api/v1/ika/solana-prealpha/readiness") {
+      const result = await handleIkaSolanaPreAlphaReadiness();
+      writeJson(res, 200, result);
+      return;
+    }
+
+    if (req.method === "POST" && pathname === "/api/v1/ika/solana-prealpha/approval/prepare") {
+      const body = await readRequestJson(req);
+      const result = await handleIkaSolanaPreAlphaApprovalPrepare(body);
       writeJson(res, 200, result);
       return;
     }
