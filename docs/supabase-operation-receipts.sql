@@ -150,6 +150,42 @@ create table if not exists public.onboarding_requests (
   status text not null default 'new'
 );
 
+
+create table if not exists public.operation_execution_events (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  operation_id text not null,
+  operation_label text not null,
+  session_id text not null,
+  page text not null default '/',
+  status text not null default 'success',
+  source text not null default 'visitor-browser',
+  receipt_hash text,
+  network text,
+  metadata jsonb not null default '{}'::jsonb
+);
+
+alter table public.operation_execution_events
+  add column if not exists created_at timestamptz not null default now(),
+  add column if not exists operation_id text not null default 'unknown-operation',
+  add column if not exists operation_label text not null default 'Unknown operation',
+  add column if not exists session_id text not null default 'anonymous-session',
+  add column if not exists page text not null default '/',
+  add column if not exists status text not null default 'success',
+  add column if not exists source text not null default 'visitor-browser',
+  add column if not exists receipt_hash text,
+  add column if not exists network text,
+  add column if not exists metadata jsonb not null default '{}'::jsonb;
+
+create index if not exists operation_execution_events_created_at_idx
+  on public.operation_execution_events (created_at desc);
+
+create index if not exists operation_execution_events_operation_idx
+  on public.operation_execution_events (operation_id);
+
+create index if not exists operation_execution_events_session_idx
+  on public.operation_execution_events (session_id);
+
 create table if not exists public.proof_stats (
   id text primary key default 'global',
   last_tx_signature text,
@@ -277,6 +313,14 @@ begin
     when undefined_object then null;
   end;
 
+
+  begin
+    alter publication supabase_realtime add table public.operation_execution_events;
+  exception
+    when duplicate_object then null;
+    when undefined_object then null;
+  end;
+
   begin
     alter publication supabase_realtime add table public.proof_stats;
   exception
@@ -305,6 +349,7 @@ alter table public.cloak_delivery_state enable row level security;
 alter table public.freshness_pings enable row level security;
 alter table public.visitor_sessions enable row level security;
 alter table public.live_transactions enable row level security;
+alter table public.operation_execution_events enable row level security;
 alter table public.proof_stats enable row level security;
 alter table public.visitor_transactions enable row level security;
 alter table public.onboarding_requests enable row level security;
@@ -315,6 +360,7 @@ grant select, insert on public.cloak_delivery_state to anon;
 grant select, insert on public.freshness_pings to anon;
 grant select, insert on public.visitor_sessions to anon;
 grant select, insert on public.live_transactions to anon;
+grant select, insert on public.operation_execution_events to anon;
 grant select, update on public.proof_stats to anon;
 grant select, insert on public.visitor_transactions to anon;
 grant select, insert on public.onboarding_requests to anon;
@@ -364,6 +410,41 @@ begin
   ) then
     create policy live_transactions_insert
       on public.live_transactions
+      for insert
+      to anon, authenticated
+      with check (true);
+  end if;
+end $$;
+
+
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_policies
+    where schemaname = 'public'
+      and tablename = 'operation_execution_events'
+      and policyname = 'operation_execution_events_select'
+  ) then
+    create policy operation_execution_events_select
+      on public.operation_execution_events
+      for select
+      to anon, authenticated
+      using (true);
+  end if;
+end $$;
+
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_policies
+    where schemaname = 'public'
+      and tablename = 'operation_execution_events'
+      and policyname = 'operation_execution_events_insert'
+  ) then
+    create policy operation_execution_events_insert
+      on public.operation_execution_events
       for insert
       to anon, authenticated
       with check (true);

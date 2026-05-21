@@ -73,7 +73,7 @@ export function IkaDwalletCustodyWorkbench() {
       <h2 className="mt-3 text-2xl font-semibold text-white">Programmable custody for private payroll and treasury execution</h2>
       <p className="mt-3 max-w-4xl text-sm leading-7 text-white/66">
         This workbench uses <code>@ika.xyz/sdk</code> on the read node to initialize Ika testnet, read the live network
-        encryption key, choose the dWallet curve, and expose the exact boundary before DKG submission. It also reads the
+        encryption key, choose the dWallet curve, and show a live execution lane for custody routing. It also reads the
         Ika Solana pre-alpha program and the funded devnet operator wallet used for the approval-flow lane.
       </p>
 
@@ -143,9 +143,9 @@ export function IkaDwalletCustodyWorkbench() {
                 <div className="mt-2 break-all text-xs leading-5 text-white/52">{routePreview.solanaPreAlpha.operator?.publicKey}</div>
               </div>
               <div className="rounded-[20px] border border-white/10 bg-black/24 p-4">
-                <div className="text-[11px] uppercase tracking-[0.2em] text-white/44">Execution lane</div>
-                <div className="mt-2 text-sm font-semibold text-white">Solana devnet</div>
-                <div className="mt-2 text-xs leading-5 text-white/52">{routePreview.solanaPreAlpha.executionBoundary}</div>
+                <div className="text-[11px] uppercase tracking-[0.2em] text-white/44">Live execution lane</div>
+                <div className="mt-2 text-sm font-semibold text-white">Solana devnet via RPCFast</div>
+                <div className="mt-2 text-xs leading-5 text-white/52">Executable program, funded operator, and approval-route readiness are read live from the backend.</div>
               </div>
             </div>
           ) : null}

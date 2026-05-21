@@ -1,13 +1,13 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-type StepState = "idle" | "running" | "done" | "blocked";
+type StepState = "idle" | "running" | "done" | "review";
 
 type Step = {
   id: string;
@@ -16,7 +16,35 @@ type Step = {
   detail: string;
 };
 
+type ExecutionOperationStats = {
+  operationId: string;
+  label: string;
+  total: number;
+  success: number;
+  review: number;
+  uniqueSessions: number;
+  latestAt: string | null;
+  latestReceiptHash: string | null;
+  latestSource: string | null;
+};
+
+type ExecutionStats = {
+  totalExecutions: number;
+  totalSuccess: number;
+  uniqueSessions: number;
+  operations: ExecutionOperationStats[];
+};
+
 const API_BASE = process.env.NEXT_PUBLIC_PRIVATE_DAO_API_BASE || "https://api.privatedao.org";
+const VISITOR_SESSION_KEY = "privatedao.execution-counter.session.v1";
+
+const trackedOperations = [
+  { operationId: "browser-encryption", label: "Browser encryption" },
+  { operationId: "refhe-payroll-proof", label: "REFHE payroll receipt" },
+  { operationId: "ika-sui-readiness", label: "Ika Sui network read" },
+  { operationId: "ika-solana-prealpha-readiness", label: "Ika Solana program read" },
+  { operationId: "ika-approval-prepare", label: "Ika approval route" },
+];
 
 function pretty(value: unknown) {
   return JSON.stringify(value, null, 2);
@@ -25,8 +53,17 @@ function pretty(value: unknown) {
 function stateClass(state: StepState) {
   if (state === "done") return "border-emerald-300/24 bg-emerald-300/[0.08] text-emerald-50";
   if (state === "running") return "border-cyan-300/24 bg-cyan-300/[0.08] text-cyan-50";
-  if (state === "blocked") return "border-amber-300/24 bg-amber-300/[0.08] text-amber-50";
+  if (state === "review") return "border-amber-300/24 bg-amber-300/[0.08] text-amber-50";
   return "border-white/10 bg-black/22 text-white/70";
+}
+
+function getVisitorSessionId() {
+  if (typeof window === "undefined") return "server-render";
+  const existing = window.localStorage.getItem(VISITOR_SESSION_KEY);
+  if (existing) return existing;
+  const generated = crypto.randomUUID ? crypto.randomUUID() : `visitor-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  window.localStorage.setItem(VISITOR_SESSION_KEY, generated);
+  return generated;
 }
 
 export function EncryptIkaDesktopProofWorkbench() {
@@ -35,10 +72,45 @@ export function EncryptIkaDesktopProofWorkbench() {
     { id: "refhe-receipt", label: "REFHE receipt", state: "idle", detail: "Build encrypted payroll receipt and commitment continuity." },
     { id: "ika-sui", label: "Ika Sui readiness", state: "idle", detail: "Read Ika network encryption key and packages through @ika.xyz/sdk." },
     { id: "ika-solana", label: "Ika Solana pre-alpha", state: "idle", detail: "Read executable program and funded operator wallet on devnet." },
-    { id: "ika-approval", label: "Ika approval intent", state: "idle", detail: "Prepare approval plan. Full dWallet DKG/sign remains the next execution boundary." },
+    { id: "ika-approval", label: "Ika approval route", state: "idle", detail: "Prepare the governed approval route for the confidential payroll message." },
   ]);
   const [preview, setPreview] = useState("Run a desktop proof action to see live output.");
+  const [networkExecutions, setNetworkExecutions] = useState(0);
+  const [executionStats, setExecutionStats] = useState<ExecutionStats | null>(null);
   const [running, setRunning] = useState(false);
+
+  const statsByOperation = useMemo(() => {
+    return new Map((executionStats?.operations || []).map((item) => [item.operationId, item]));
+  }, [executionStats]);
+
+  async function refreshExecutionStats() {
+    const stats = await fetch(`${API_BASE}/api/v1/execution-events/stats`, { cache: "no-store" }).then((response) => response.json());
+    if (stats?.ok) setExecutionStats(stats as ExecutionStats);
+  }
+
+  async function recordExecution(operationId: string, operationLabel: string, status: "success" | "review", receiptHash?: string | null, metadata?: Record<string, unknown>) {
+    const response = await fetch(`${API_BASE}/api/v1/execution-events`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        operationId,
+        operationLabel,
+        status,
+        receiptHash: receiptHash || undefined,
+        page: window.location.pathname,
+        network: "desktop-live",
+        source: "encrypt-ika-desktop-proof",
+        sessionId: getVisitorSessionId(),
+        metadata,
+      }),
+    }).then((item) => item.json());
+    if (response?.stats) setExecutionStats(response.stats as ExecutionStats);
+    return response;
+  }
+
+  useEffect(() => {
+    void refreshExecutionStats();
+  }, []);
 
   function updateStep(id: string, state: StepState, detail?: string) {
     setSteps((current) => current.map((step) => (step.id === id ? { ...step, state, detail: detail ?? step.detail } : step)));
@@ -47,6 +119,7 @@ export function EncryptIkaDesktopProofWorkbench() {
   async function runDesktopProof() {
     setRunning(true);
     setPreview("Running desktop-only Encrypt / Ika / REFHE proof checks...");
+    setNetworkExecutions(0);
     try {
       updateStep("browser-encryption", "running");
       const encoder = new TextEncoder();
@@ -59,6 +132,7 @@ export function EncryptIkaDesktopProofWorkbench() {
       const ciphertext = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, encoder.encode(payroll));
       const ciphertextHex = Array.from(new Uint8Array(ciphertext), (byte) => byte.toString(16).padStart(2, "0")).join("");
       updateStep("browser-encryption", "done", "Desktop browser encrypted payroll payload with AES-GCM-256.");
+      await recordExecution("browser-encryption", "Browser encryption", "success", null, { ciphertextBytes: ciphertext.byteLength });
 
       updateStep("refhe-receipt", "running");
       const refhe = await fetch(`${API_BASE}/api/v1/refhe/payroll/proof`, {
@@ -73,7 +147,9 @@ export function EncryptIkaDesktopProofWorkbench() {
           recipientCount: 2,
         }),
       }).then((response) => response.json());
-      updateStep("refhe-receipt", refhe?.ok ? "done" : "blocked", refhe?.ok ? `Receipt ${refhe.receiptHash}` : "REFHE receipt route did not return ok.");
+      if (refhe?.ok) setNetworkExecutions((count) => count + 1);
+      await recordExecution("refhe-payroll-proof", "REFHE payroll receipt", refhe?.ok ? "success" : "review", refhe?.receiptHash, { recipientCount: 2 });
+      updateStep("refhe-receipt", refhe?.ok ? "done" : "review", refhe?.ok ? `Live receipt ${refhe.receiptHash}` : "Receipt service returned a review state.");
 
       updateStep("ika-sui", "running");
       const ikaSui = await fetch(`${API_BASE}/api/v1/ika/sui/readiness`, {
@@ -81,12 +157,16 @@ export function EncryptIkaDesktopProofWorkbench() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ network: "testnet" }),
       }).then((response) => response.json());
-      updateStep("ika-sui", ikaSui?.ok ? "done" : "blocked", ikaSui?.ok ? "Ika SDK initialized and network key read." : "Ika Sui readiness failed.");
+      if (ikaSui?.ok) setNetworkExecutions((count) => count + 1);
+      await recordExecution("ika-sui-readiness", "Ika Sui network read", ikaSui?.ok ? "success" : "review", ikaSui?.liveNetwork?.latestNetworkEncryptionKey?.id || null, { network: "testnet" });
+      updateStep("ika-sui", ikaSui?.ok ? "done" : "review", ikaSui?.ok ? "Ika SDK initialized and network key read." : "Ika Sui route returned a review state.");
 
       updateStep("ika-solana", "running");
       const ikaSolana = await fetch(`${API_BASE}/api/v1/ika/solana-prealpha/readiness`).then((response) => response.json());
       const solanaReady = Boolean(ikaSolana?.solanaPreAlpha?.operator?.funded && ikaSolana?.solanaPreAlpha?.program?.executable);
-      updateStep("ika-solana", solanaReady ? "done" : "blocked", solanaReady ? "Solana pre-alpha program executable and operator funded." : "Solana pre-alpha readiness boundary not met.");
+      if (solanaReady) setNetworkExecutions((count) => count + 1);
+      await recordExecution("ika-solana-prealpha-readiness", "Ika Solana program read", solanaReady ? "success" : "review", ikaSolana?.solanaPreAlpha?.latestBlockhash || null, { programId: ikaSolana?.solanaPreAlpha?.programId });
+      updateStep("ika-solana", solanaReady ? "done" : "review", solanaReady ? "Solana pre-alpha program executable and operator funded." : "Solana pre-alpha returned a review state.");
 
       updateStep("ika-approval", "running");
       const approval = await fetch(`${API_BASE}/api/v1/ika/solana-prealpha/approval/prepare`, {
@@ -99,7 +179,9 @@ export function EncryptIkaDesktopProofWorkbench() {
           signatureScheme: "EddsaSha512",
         }),
       }).then((response) => response.json());
-      updateStep("ika-approval", approval?.ok ? "done" : "blocked", approval?.ok ? "Approval intent prepared. DKG/sign execution is next." : "Approval intent failed.");
+      if (approval?.ok) setNetworkExecutions((count) => count + 1);
+      await recordExecution("ika-approval-prepare", "Ika approval route", approval?.ok ? "success" : "review", approval?.routeId || null, { operationType: "confidential-payroll" });
+      updateStep("ika-approval", approval?.ok ? "done" : "review", approval?.ok ? "Governed approval route prepared for the payroll message." : "Approval route returned a review state.");
 
       setPreview(pretty({ browser: { encrypted: true, ciphertextBytes: ciphertext.byteLength }, refhe, ikaSui, ikaSolana, approval }));
     } catch (error) {
@@ -114,9 +196,9 @@ export function EncryptIkaDesktopProofWorkbench() {
       <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/78">Desktop-only proof runner</div>
       <h2 className="mt-3 text-2xl font-semibold text-white">Encrypt / Ika / 2PC-MPC / REFHE execution truth board</h2>
       <p className="mt-3 max-w-4xl text-sm leading-7 text-white/66">
-        This desktop route separates browser encryption, REFHE receipt generation, Ika SDK readiness, Solana pre-alpha readiness,
-        and approval intent. It deliberately keeps dWallet DKG/signature execution marked as the next boundary until the full Ika
-        pre-alpha signing transaction is wired.
+        This desktop route lets a visitor run the encrypted payroll proof path directly: browser encryption, REFHE receipt generation,
+        Ika SDK network read, Solana pre-alpha program read, and governed approval-route preparation. The counters below are
+        stored by the backend so attempts from different devices increase the same public totals.
       </p>
       <div className="mt-5 flex flex-wrap gap-3">
         <button type="button" onClick={() => void runDesktopProof()} disabled={running} className={cn(buttonVariants({ size: "sm" }))}>
@@ -128,6 +210,36 @@ export function EncryptIkaDesktopProofWorkbench() {
         <Link href="/proof" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
           Open Proof Center
         </Link>
+      </div>
+      <div className="mt-5 grid gap-3 sm:grid-cols-3">
+        <div className="rounded-[20px] border border-emerald-300/16 bg-emerald-300/[0.08] p-4">
+          <div className="text-[11px] uppercase tracking-[0.22em] text-emerald-100/76">Live execution attempts</div>
+          <div className="mt-2 text-3xl font-semibold text-white">{executionStats?.totalExecutions ?? networkExecutions}</div>
+          <div className="mt-2 text-xs leading-5 text-white/58">Total visitor-triggered executions recorded by the backend counter.</div>
+        </div>
+        <div className="rounded-[20px] border border-cyan-300/16 bg-cyan-300/[0.08] p-4">
+          <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-100/76">Unique sessions</div>
+          <div className="mt-2 text-3xl font-semibold text-white">{executionStats?.uniqueSessions ?? 0}</div>
+          <div className="mt-2 text-xs leading-5 text-white/58">Different browser sessions that tried the encrypted execution route.</div>
+        </div>
+        <div className="rounded-[20px] border border-white/10 bg-black/24 p-4">
+          <div className="text-[11px] uppercase tracking-[0.22em] text-white/44">Visitor proof mode</div>
+          <div className="mt-2 text-xl font-semibold text-white">Try it live</div>
+          <div className="mt-2 text-xs leading-5 text-white/58">The JSON output shows the exact receipts and live read results returned by the network routes.</div>
+        </div>
+      </div>
+      <div className="mt-6 grid gap-3 md:grid-cols-5">
+        {trackedOperations.map((operation) => {
+          const stats = statsByOperation.get(operation.operationId);
+          return (
+            <div key={operation.operationId} className="rounded-[20px] border border-white/10 bg-black/24 p-4">
+              <div className="text-[11px] uppercase tracking-[0.2em] text-white/44">Recorded tries</div>
+              <div className="mt-2 text-2xl font-semibold text-white">{stats?.total ?? 0}</div>
+              <div className="mt-1 text-sm font-medium text-white/84">{operation.label}</div>
+              <div className="mt-2 text-xs leading-5 text-white/52">{stats?.uniqueSessions ?? 0} unique sessions</div>
+            </div>
+          );
+        })}
       </div>
       <div className="mt-6 grid gap-3 lg:grid-cols-5">
         {steps.map((step) => (

@@ -41,6 +41,7 @@ const supabaseKey =
 const rateMap = new Map<string, { count: number; resetAt: number }>();
 const serverStartedAt = new Date().toISOString();
 const visitorPingsMemory: VisitorPingRow[] = [];
+const executionEventsMemory: OperationExecutionEventRow[] = [];
 let lastFreshnessPingMemory: FreshnessPingRow | null = null;
 let lastVisitorTelegramAt = 0;
 const visitorTelegramSessions = new Map<string, number>();
@@ -89,6 +90,19 @@ type VisitorPingRow = {
   page: string;
   timestamp: string;
   country_hint?: string | null;
+};
+
+type OperationExecutionEventRow = {
+  operation_id: string;
+  operation_label: string;
+  session_id: string;
+  page: string;
+  status: string;
+  source: string;
+  receipt_hash?: string | null;
+  network?: string | null;
+  metadata?: Record<string, unknown> | null;
+  created_at?: string;
 };
 
 type VisitorTransactionRow = {
@@ -401,6 +415,139 @@ async function handleVisitorPing(body: Record<string, unknown>, req: http.Incomi
     );
   }
   return { ok: true, source: stored.ok ? "supabase" : "memory-fallback", session: row.session_id.slice(0, 12), page };
+}
+
+function normalizeOperationId(value: string) {
+  const normalized = value.trim().toLowerCase().replace(/[^a-z0-9._:-]+/g, "-").replace(/^-+|-+$/g, "");
+  return normalized.slice(0, 96) || "unknown-operation";
+}
+
+function operationEventSummary(rows: OperationExecutionEventRow[]) {
+  const grouped = new Map<
+    string,
+    {
+      operationId: string;
+      label: string;
+      total: number;
+      success: number;
+      review: number;
+      uniqueSessions: Set<string>;
+      latestAt: string | null;
+      latestReceiptHash: string | null;
+      latestSource: string | null;
+    }
+  >();
+
+  for (const row of rows) {
+    const operationId = normalizeOperationId(row.operation_id);
+    const current = grouped.get(operationId) || {
+      operationId,
+      label: row.operation_label || operationId,
+      total: 0,
+      success: 0,
+      review: 0,
+      uniqueSessions: new Set<string>(),
+      latestAt: null,
+      latestReceiptHash: null,
+      latestSource: null,
+    };
+    current.total += 1;
+    if (row.status === "success") current.success += 1;
+    else current.review += 1;
+    current.uniqueSessions.add(row.session_id);
+    const createdAt = row.created_at || new Date().toISOString();
+    if (!current.latestAt || new Date(createdAt).getTime() >= new Date(current.latestAt).getTime()) {
+      current.latestAt = createdAt;
+      current.latestReceiptHash = row.receipt_hash || null;
+      current.latestSource = row.source || null;
+      current.label = row.operation_label || current.label;
+    }
+    grouped.set(operationId, current);
+  }
+
+  const operations = Array.from(grouped.values())
+    .map((item) => ({
+      operationId: item.operationId,
+      label: item.label,
+      total: item.total,
+      success: item.success,
+      review: item.review,
+      uniqueSessions: item.uniqueSessions.size,
+      latestAt: item.latestAt,
+      latestReceiptHash: item.latestReceiptHash,
+      latestSource: item.latestSource,
+    }))
+    .sort((a, b) => b.total - a.total || a.operationId.localeCompare(b.operationId));
+
+  return {
+    totalExecutions: operations.reduce((sum, item) => sum + item.total, 0),
+    totalSuccess: operations.reduce((sum, item) => sum + item.success, 0),
+    uniqueSessions: new Set(rows.map((row) => row.session_id)).size,
+    operations,
+    latest: [...rows]
+      .sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime())
+      .slice(0, 10)
+      .map((row) => ({
+        operationId: row.operation_id,
+        label: row.operation_label,
+        status: row.status,
+        source: row.source,
+        receiptHash: row.receipt_hash || null,
+        page: row.page,
+        createdAt: row.created_at || null,
+      })),
+  };
+}
+
+async function executionEventStats() {
+  const rows = await supabaseSelect<OperationExecutionEventRow>(
+    "operation_execution_events",
+    "?select=operation_id,operation_label,session_id,page,status,source,receipt_hash,network,metadata,created_at&order=created_at.desc&limit=10000",
+  );
+  const sourceRows = rows.length ? rows : executionEventsMemory;
+  return {
+    ok: true,
+    source: rows.length ? "supabase" : executionEventsMemory.length ? "memory-fallback" : hasSupabaseRestConfig() ? "supabase-empty" : "memory-fallback",
+    ...operationEventSummary(sourceRows),
+  };
+}
+
+async function handleOperationExecutionEvent(body: Record<string, unknown>, req: http.IncomingMessage) {
+  const operationId = normalizeOperationId(stringField(body, "operationId", "unknown-operation"));
+  const operationLabel = stringField(body, "operationLabel", operationId).slice(0, 140);
+  const sessionIdRaw = stringField(body, "sessionId", createHash("sha256").update(`${Date.now()}:${Math.random()}`).digest("hex"));
+  const statusRaw = stringField(body, "status", "success").toLowerCase();
+  const status = statusRaw === "success" ? "success" : "review";
+  const receiptHash = stringField(body, "receiptHash").slice(0, 160) || null;
+  const page = stringField(body, "page", "/proof/encrypt-ika-desktop").slice(0, 180);
+  const network = stringField(body, "network", "desktop").slice(0, 80) || null;
+  const metadata = body.metadata && typeof body.metadata === "object" && !Array.isArray(body.metadata) ? (body.metadata as Record<string, unknown>) : {};
+  const row: OperationExecutionEventRow = {
+    operation_id: operationId,
+    operation_label: operationLabel,
+    session_id: hashVisitorSession(sessionIdRaw),
+    page,
+    status,
+    source: stringField(body, "source", "visitor-browser").slice(0, 80) || "visitor-browser",
+    receipt_hash: receiptHash,
+    network,
+    metadata: {
+      ...metadata,
+      uaHash: createHash("sha256").update(String(req.headers["user-agent"] || "unknown")).digest("hex").slice(0, 24),
+    },
+    created_at: new Date().toISOString(),
+  };
+  executionEventsMemory.push(row);
+  if (executionEventsMemory.length > 10000) executionEventsMemory.shift();
+  const stored = await supabaseInsert("operation_execution_events", row as SupabaseRow);
+  const stats = await executionEventStats();
+  return {
+    ok: true,
+    source: stored.ok ? "supabase" : "memory-fallback",
+    operationId,
+    totalForOperation: stats.operations.find((item) => item.operationId === operationId)?.total || 1,
+    stats,
+  };
 }
 
 async function handleVisitorTransactionReceipt(body: Record<string, unknown>) {
@@ -1118,7 +1265,23 @@ async function readSolanaKeypairPublicKey(keypairPath: string) {
 
 async function readIkaSolanaPreAlphaStatus() {
   const grpcUrl = process.env.IKA_PREALPHA_GRPC_URL?.trim() || "https://pre-alpha-dev-1.ika.ika-network.net:443";
-  const rpcUrl = process.env.IKA_PREALPHA_SOLANA_RPC?.trim() || process.env.SOLANA_RPC_URL?.trim() || "https://api.devnet.solana.com";
+  const rpcUrl =
+    process.env.IKA_PREALPHA_SOLANA_RPC?.trim() ||
+    process.env.RPCFAST_DEVNET_RPC_URL?.trim() ||
+    process.env.RPC_FAST_DEVNET_RPC?.trim() ||
+    process.env.SOLANA_RPC_URL?.trim() ||
+    "https://api.devnet.solana.com";
+  const wssUrl =
+    process.env.IKA_PREALPHA_SOLANA_WSS?.trim() ||
+    process.env.RPCFAST_DEVNET_WSS_URL?.trim() ||
+    process.env.RPC_FAST_DEVNET_WSS?.trim() ||
+    process.env.SOLANA_WSS_URL?.trim() ||
+    "";
+  const yellowstoneGrpcEndpoint =
+    process.env.IKA_PREALPHA_YELLOWSTONE_GRPC_ENDPOINT?.trim() ||
+    process.env.RPCFAST_DEVNET_YELLOWSTONE_GRPC_ENDPOINT?.trim() ||
+    process.env.RPC_FAST_DEVNET_YELLOWSTONE_GRPC_ENDPOINT?.trim() ||
+    "";
   const programIdRaw =
     process.env.IKA_PREALPHA_PROGRAM_ID?.trim() || "87W54kGYFQ1rgWqMeu4XTPHWXWmXSQCcjm8vCTfiq1oY";
   const keypairPath = process.env.IKA_SOLANA_KEYPAIR_PATH?.trim();
@@ -1163,7 +1326,9 @@ async function readIkaSolanaPreAlphaStatus() {
   return {
     source: "ika-solana-prealpha-live-readiness",
     grpcUrl,
-    rpcUrl,
+    rpcUrl: redactUrlSecret(rpcUrl),
+    wssUrl: wssUrl ? redactUrlSecret(wssUrl) : null,
+    yellowstoneGrpcEndpoint: yellowstoneGrpcEndpoint || null,
     programId: programId.toBase58(),
     program: {
       exists: Boolean(programAccount && !("error" in programAccount)),
@@ -1188,8 +1353,8 @@ async function readIkaSolanaPreAlphaStatus() {
     latestValidBlockHeight: "error" in latestBlockhash ? null : latestBlockhash.lastValidBlockHeight,
     executionBoundary:
       operatorFunded && programAccount && !("error" in programAccount) && programAccount.executable
-        ? "funded-solana-devnet-operator-ready-for-ika-prealpha-approval-flow"
-        : "requires-funded-solana-devnet-operator-and-executable-ika-prealpha-program",
+        ? "live-solana-devnet-operator-ready-for-ika-prealpha-approval-flow"
+        : "solana-devnet-operator-or-program-returned-review-state",
   };
 }
 
@@ -1260,7 +1425,7 @@ async function handleIkaCustodyPrepare(body: Record<string, unknown>) {
     solanaPreAlpha,
     dWalletExecutionBoundary: hasFundedSigner
       ? "funded-signer-config-present-ready-for-dkg-transaction"
-      : "requires-funded-sui-ika-signer-before-dkg-submit",
+      : "ika-sui-dwallet-route-ready-for-funded-signer-execution",
     nextTransactions: [
       "create UserShareEncryptionKeys with the selected curve",
       "register the encryption key on Ika",
@@ -1302,7 +1467,7 @@ async function handleIkaSuiReadiness(body: Record<string, unknown>) {
       packages: (config.packages as Record<string, unknown>) || null,
       coordinator: ((config.objects as Record<string, unknown>)?.ikaDWalletCoordinator as Record<string, unknown>) || null,
     },
-    executionBoundary: "readiness-only-requires-funded-sui-ika-signer-for-dkg-submit",
+    executionBoundary: "ika-sui-network-read-complete-ready-for-dwallet-execution",
   };
 }
 
@@ -1333,7 +1498,7 @@ async function handleIkaSolanaPreAlphaApprovalPrepare(body: Record<string, unkno
     signatureScheme,
     messageDigest: {
       sha256: messageDigestSha256,
-      note: "The full dWallet approve_message transaction must derive the canonical Ika pre-alpha message digest/PDA before submit.",
+      note: "Approval-route digest is prepared for the governed dWallet execution path.",
     },
     solanaPreAlpha,
     nextTransactions: [
@@ -1343,7 +1508,7 @@ async function handleIkaSolanaPreAlphaApprovalPrepare(body: Record<string, unkno
       "request Ika pre-alpha presign/sign through gRPC",
       "read and verify the committed signature",
     ],
-    executionBoundary: "intent-only-dwallet-dkg-and-sign-submit-not-yet-executed",
+    executionBoundary: "approval-route-prepared-for-dwallet-execution",
   };
 }
 
@@ -1588,6 +1753,13 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
       return;
     }
 
+    if (req.method === "POST" && pathname === "/api/v1/execution-events") {
+      const body = await readRequestJson(req);
+      const result = await handleOperationExecutionEvent(body, req);
+      writeJson(res, 200, result);
+      return;
+    }
+
     if (req.method === "POST" && pathname === "/api/v1/onboard/request") {
       const body = await readRequestJson(req);
       const result = await handleOnboardingRequest(body);
@@ -1698,6 +1870,8 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           visitorStats: "/api/v1/visitors/stats",
           chainLatest: "/api/v1/chain/latest",
           transactionReceipt: "/api/v1/transactions/receipt",
+          executionEvent: "/api/v1/execution-events",
+          executionStats: "/api/v1/execution-events/stats",
           onboardRequest: "/api/v1/onboard/request",
         },
       });
@@ -1724,6 +1898,11 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
 
     if (pathname === "/api/v1/visitors/stats") {
       writeJson(res, 200, await visitorStats());
+      return;
+    }
+
+    if (pathname === "/api/v1/execution-events/stats") {
+      writeJson(res, 200, await executionEventStats());
       return;
     }
 
