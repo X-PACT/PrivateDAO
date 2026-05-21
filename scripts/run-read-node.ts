@@ -1917,6 +1917,20 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
 	      return;
 	    }
 
+    if (pathname === "/api/v1/magicblock/onchain-proof") {
+      const proof = await readNode.getMagicBlockOnchainProof(url.searchParams.get("refresh") === "1");
+      writeJson(res, 200, {
+        ok: true,
+        source: "magicblock-onchain-proof",
+        proof,
+        next: {
+          service: "https://privatedao.org/services/magicblock-private-payments/",
+          proofCenter: "https://privatedao.org/proof/",
+        },
+      });
+      return;
+    }
+
     if (pathname === "/api/v1/magicblock/challenge") {
       const pubkey = getStringParam(url, "pubkey");
       if (!pubkey) {

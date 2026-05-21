@@ -51,7 +51,7 @@ export default function ProofPage() {
   const integrationEvidenceLanes = [
     {
       title: "MagicBlock private payments",
-      summary: "Current Frontier track lane: challenge/login private reads, unsigned payment builders, and wallet-signed execution continuity for judges.",
+      summary: "Current Frontier track lane: live corridor PDA check, finalized Devnet private payment receipts, challenge/login private reads, and wallet-signed execution continuity for judges.",
       featureHref: "/services/magicblock-private-payments",
       proofHref: "/proof",
     },

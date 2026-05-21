@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = buildRouteMetadata({
   title: "MagicBlock Private Payments",
   description:
-    "MagicBlock private payment corridor for challenge/login authenticated private balance reads and unsigned deposit, transfer, and withdraw transactions.",
+    "MagicBlock private payment corridor with on-chain Devnet proof, challenge/login authenticated private reads, and wallet-signed deposit, transfer, withdraw, settle, and execute receipts.",
   path: "/services/magicblock-private-payments",
   keywords: ["magicblock", "private payments", "ephemeral rollups", "solana payments", "private balance"],
 });
@@ -20,23 +20,23 @@ export default function MagicBlockPrivatePaymentsPage() {
   return (
     <OperationsShell
       eyebrow="MagicBlock track"
-      title="Private payment corridor with wallet-signed access control"
-      description="This route keeps MagicBlock Private Payments visible as an execution lane: health, challenge initiation, bearer-token boundary, unsigned transaction builders, and reviewer proof in one place."
+      title="On-chain private payment corridor for MagicBlock execution"
+      description="This route exposes MagicBlock as an execution lane: live Solana RPC proof for the corridor, finalized private payment receipts, challenge initiation, bearer-token private reads, and wallet-signed continuation in one place."
       badges={[
         { label: "Private Payments API", variant: "cyan" },
         { label: "Challenge/login", variant: "success" },
-        { label: "Unsigned tx builders", variant: "violet" },
+        { label: "On-chain receipts", variant: "violet" },
       ]}
     >
       <LocalizedRouteSummary routeKey="services" />
 
       <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6">
         <div className="text-[11px] uppercase tracking-[0.28em] text-white/44">Reviewer route</div>
-        <h2 className="mt-3 text-2xl font-semibold text-white">Fast payments stay explicit about who can read private state</h2>
+        <h2 className="mt-3 text-2xl font-semibold text-white">MagicBlock proof starts on-chain, then protects private reads</h2>
         <p className="mt-3 max-w-4xl text-sm leading-7 text-white/66">
-          The public API health and challenge paths can be checked live. Private balances and private transfers must
-          pass through the MagicBlock login flow, then the returned unsigned transaction is signed by the user's wallet
-          and submitted to the target connection indicated by the API response.
+          The public proof endpoint checks the corridor PDA and finalized Devnet receipts live through Solana RPC. Private
+          balances remain behind MagicBlock challenge/login, then the user wallet signs and submits any payment
+          transaction to the connection returned by the payments API.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
           <Link href="/services/umbra-confidential-payout" className={cn(buttonVariants({ size: "sm" }))}>

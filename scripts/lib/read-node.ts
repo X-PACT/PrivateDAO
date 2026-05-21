@@ -223,6 +223,36 @@ export type MagicBlockRuntimeView = {
   };
 };
 
+export type MagicBlockOnchainProofView = {
+  generatedAt: string;
+  network: string;
+  rpcEndpoint: string;
+  proposal: string;
+  corridorPda: string;
+  corridorAccount: {
+    exists: boolean;
+    executable: boolean;
+    lamports: number;
+    owner: string | null;
+  };
+  settlementWallet: string;
+  runtime: MagicBlockRuntimeView;
+  transactions: Array<{
+    label: string;
+    signature: string;
+    status: string | null;
+    slot: number | null;
+    confirmed: boolean;
+    err: unknown;
+    explorerUrl: string;
+  }>;
+  summary: {
+    checked: number;
+    finalized: number;
+    allFinalized: boolean;
+  };
+};
+
 export type ReadNodeCacheStats = {
   entryCount: number;
   ttlMs: number;
@@ -268,6 +298,11 @@ function rpcTimeoutMs(): number {
   const parsed = Number(process.env.PRIVATE_DAO_RPC_TIMEOUT_MS || 8000);
   return Number.isFinite(parsed) && parsed > 0 ? parsed : 8000;
 }
+
+function devnetExplorerTx(signature: string) {
+  return `https://explorer.solana.com/tx/${signature}?cluster=devnet`;
+}
+
 
 type RuntimeCluster = "devnet" | "testnet";
 
@@ -995,6 +1030,98 @@ export class PrivateDaoReadNode {
     };
     this.setCached(key, runtime);
     return runtime;
+  }
+
+  async getMagicBlockOnchainProof(force = false): Promise<MagicBlockOnchainProofView> {
+    const key = this.cacheKey("magicblock-onchain-proof", "devnet-corridor");
+    if (!force) {
+      const cached = this.getCached<MagicBlockOnchainProofView>(key);
+      if (cached) return cached;
+    }
+
+    const evidencePath = path.resolve(process.cwd(), "docs", "frontier-integrations.generated.json");
+    const evidence = JSON.parse(fs.readFileSync(evidencePath, "utf8")) as any;
+    const confidential = evidence.confidentialOperations || {};
+    const txInputs: Array<any> = (confidential.txChecks || []).filter((entry: any) =>
+      typeof entry?.label === "string" && entry.label.startsWith("magicblock-"),
+    );
+    const signatures = txInputs.map((entry: any) => String(entry.signature));
+    const runtime = await this.getMagicBlockRuntime(force);
+    const corridorPk = new PublicKey(confidential.magicblockCorridor);
+
+    let lastError: unknown = null;
+    const devnetEndpoints = Array.from(
+      new Set([
+        ...resolveDevnetRpcEndpoints().filter((endpoint) =>
+          endpoint.includes("devnet") || endpoint.includes("sol-devnet") || endpoint.includes("api.devnet.solana.com"),
+        ),
+        "https://api.devnet.solana.com",
+      ]),
+    );
+    let chain: { endpoint: string; statuses: Awaited<ReturnType<Connection["getSignatureStatuses"]>>["value"]; corridorInfo: any } | null = null;
+    for (const endpoint of devnetEndpoints) {
+      try {
+        const connection = new Connection(endpoint, this.commitment);
+        const [statusResponse, corridorInfo] = await Promise.all([
+          Promise.race([
+            connection.getSignatureStatuses(signatures, { searchTransactionHistory: true }),
+            new Promise<never>((_, reject) =>
+              setTimeout(() => reject(new Error(`RPC request timed out after ${rpcTimeoutMs()}ms`)), rpcTimeoutMs()),
+            ),
+          ]),
+          Promise.race([
+            connection.getAccountInfo(corridorPk, this.commitment),
+            new Promise<never>((_, reject) =>
+              setTimeout(() => reject(new Error(`RPC request timed out after ${rpcTimeoutMs()}ms`)), rpcTimeoutMs()),
+            ),
+          ]),
+        ]);
+        chain = { endpoint, statuses: statusResponse.value, corridorInfo };
+        break;
+      } catch (error) {
+        lastError = error;
+      }
+    }
+    if (!chain) throw lastError;
+
+    const transactions: MagicBlockOnchainProofView["transactions"] = txInputs.map((entry: any, index: number) => {
+      const status = chain.statuses[index];
+      const confirmationStatus = status?.confirmationStatus ?? (status?.confirmations === null ? "finalized" : null);
+      return {
+        label: String(entry.label),
+        signature: String(entry.signature),
+        status: confirmationStatus,
+        slot: typeof status?.slot === "number" ? status.slot : typeof entry.slot === "number" ? entry.slot : null,
+        confirmed: Boolean(status && !status.err && confirmationStatus === "finalized"),
+        err: status?.err ?? null,
+        explorerUrl: devnetExplorerTx(String(entry.signature)),
+      };
+    });
+
+    const finalized = transactions.filter((entry: MagicBlockOnchainProofView["transactions"][number]) => entry.confirmed).length;
+    const proof: MagicBlockOnchainProofView = {
+      generatedAt: new Date().toISOString(),
+      network: evidence.network || "devnet",
+      rpcEndpoint: chain.endpoint,
+      proposal: confidential.proposal,
+      corridorPda: confidential.magicblockCorridor,
+      corridorAccount: {
+        exists: Boolean(chain.corridorInfo),
+        executable: Boolean(chain.corridorInfo?.executable),
+        lamports: chain.corridorInfo?.lamports ?? 0,
+        owner: chain.corridorInfo?.owner?.toBase58() ?? null,
+      },
+      settlementWallet: confidential.settlementWallet,
+      runtime,
+      transactions,
+      summary: {
+        checked: transactions.length,
+        finalized,
+        allFinalized: finalized === transactions.length && transactions.length > 0,
+      },
+    };
+    this.setCached(key, proof);
+    return proof;
   }
 
   async getMagicBlockMintStatus(mint: string, validator?: string, force = false) {
