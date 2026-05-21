@@ -8,7 +8,7 @@ PrivateDAO is presented as a sovereign operational intelligence layer for encryp
 - Judge route: https://privatedao.org/judge/
 - Updated judges route: https://privatedao.org/judges/
 - Proof center: https://privatedao.org/proof/
-- Encrypt / Ika / 2PC-MPC / REFHE desktop proof: https://privatedao.org/proof/encrypt-ika-desktop/
+- Encrypted capital markets proof: https://privatedao.org/proof/encrypted-capital-markets/
 - Trust center: https://privatedao.org/trust/
 - Whitepaper: https://privatedao.org/whitepaper/
 - Legacy whiteprint redirect surface: https://privatedao.org/whiteprint/

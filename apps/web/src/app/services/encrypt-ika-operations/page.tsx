@@ -57,8 +57,8 @@ export default function EncryptIkaOperationsPage() {
           <Link href="/services/cloak-private-settlement" className={cn(buttonVariants({ size: "sm" }))}>
             Open private settlement
           </Link>
-          <Link href="/proof/encrypt-ika-desktop" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
-            Open desktop proof
+          <Link href="/proof/encrypted-capital-markets" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+            Open encrypted capital markets proof
           </Link>
           <Link href="/proof" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
             Open proof

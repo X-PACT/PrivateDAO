@@ -68,13 +68,13 @@ function getVisitorSessionId() {
 
 export function EncryptIkaDesktopProofWorkbench() {
   const [steps, setSteps] = useState<Step[]>([
-    { id: "browser-encryption", label: "Browser encryption", state: "idle", detail: "Desktop WebCrypto payload encryption runs locally before proof." },
+    { id: "browser-encryption", label: "Browser encryption", state: "idle", detail: "WebCrypto payload encryption runs locally before proof." },
     { id: "refhe-receipt", label: "REFHE receipt", state: "idle", detail: "Build encrypted payroll receipt and commitment continuity." },
     { id: "ika-sui", label: "Ika Sui readiness", state: "idle", detail: "Read Ika network encryption key and packages through @ika.xyz/sdk." },
     { id: "ika-solana", label: "Ika Solana pre-alpha", state: "idle", detail: "Read executable program and funded operator wallet on devnet." },
     { id: "ika-approval", label: "Ika approval route", state: "idle", detail: "Prepare the governed approval route for the confidential payroll message." },
   ]);
-  const [preview, setPreview] = useState("Run a desktop proof action to see live output.");
+  const [preview, setPreview] = useState("Run an encrypted proof action to see live output.");
   const [networkExecutions, setNetworkExecutions] = useState(0);
   const [executionStats, setExecutionStats] = useState<ExecutionStats | null>(null);
   const [running, setRunning] = useState(false);
@@ -98,8 +98,8 @@ export function EncryptIkaDesktopProofWorkbench() {
         status,
         receiptHash: receiptHash || undefined,
         page: window.location.pathname,
-        network: "desktop-live",
-        source: "encrypt-ika-desktop-proof",
+        network: "review-live",
+        source: "encrypted-capital-markets-proof",
         sessionId: getVisitorSessionId(),
         metadata,
       }),
@@ -118,7 +118,7 @@ export function EncryptIkaDesktopProofWorkbench() {
 
   async function runDesktopProof() {
     setRunning(true);
-    setPreview("Running desktop-only Encrypt / Ika / REFHE proof checks...");
+    setPreview("Running Encrypt / Ika / REFHE proof checks...");
     setNetworkExecutions(0);
     try {
       updateStep("browser-encryption", "running");
@@ -131,7 +131,7 @@ export function EncryptIkaDesktopProofWorkbench() {
       const iv = crypto.getRandomValues(new Uint8Array(12));
       const ciphertext = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, encoder.encode(payroll));
       const ciphertextHex = Array.from(new Uint8Array(ciphertext), (byte) => byte.toString(16).padStart(2, "0")).join("");
-      updateStep("browser-encryption", "done", "Desktop browser encrypted payroll payload with AES-GCM-256.");
+      updateStep("browser-encryption", "done", "Browser encrypted payroll payload with AES-GCM-256.");
       await recordExecution("browser-encryption", "Browser encryption", "success", null, { ciphertextBytes: ciphertext.byteLength });
 
       updateStep("refhe-receipt", "running");
@@ -140,10 +140,10 @@ export function EncryptIkaDesktopProofWorkbench() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ciphertext: ciphertextHex,
-          inputCommitment: "desktop-input-commitment",
-          computationCommitment: "desktop-sum-2200-usdc",
-          policyHash: "desktop-policy-confidential-payroll",
-          totalAmountCommitment: "desktop-total-2200",
+          inputCommitment: "review-input-commitment",
+          computationCommitment: "review-sum-2200-usdc",
+          policyHash: "review-policy-confidential-payroll",
+          totalAmountCommitment: "review-total-2200",
           recipientCount: 2,
         }),
       }).then((response) => response.json());
@@ -173,7 +173,7 @@ export function EncryptIkaDesktopProofWorkbench() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          message: "PrivateDAO desktop confidential payroll approval",
+          message: "PrivateDAO confidential payroll approval",
           operationType: "confidential-payroll",
           curve: "ED25519",
           signatureScheme: "EddsaSha512",
@@ -185,7 +185,7 @@ export function EncryptIkaDesktopProofWorkbench() {
 
       setPreview(pretty({ browser: { encrypted: true, ciphertextBytes: ciphertext.byteLength }, refhe, ikaSui, ikaSolana, approval }));
     } catch (error) {
-      setPreview(error instanceof Error ? error.message : "Desktop proof run failed.");
+      setPreview(error instanceof Error ? error.message : "Encrypted proof run failed.");
     } finally {
       setRunning(false);
     }
@@ -193,16 +193,16 @@ export function EncryptIkaDesktopProofWorkbench() {
 
   return (
     <section className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.07] p-6">
-      <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/78">Desktop-only proof runner</div>
+      <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/78">Encrypted execution proof runner</div>
       <h2 className="mt-3 text-2xl font-semibold text-white">Encrypt / Ika / 2PC-MPC / REFHE execution truth board</h2>
       <p className="mt-3 max-w-4xl text-sm leading-7 text-white/66">
-        This desktop route lets a visitor run the encrypted payroll proof path directly: browser encryption, REFHE receipt generation,
+        This route lets a visitor run the encrypted payroll proof path directly: browser encryption, REFHE receipt generation,
         Ika SDK network read, Solana pre-alpha program read, and governed approval-route preparation. The counters below are
         stored by the backend so attempts from different devices increase the same public totals.
       </p>
       <div className="mt-5 flex flex-wrap gap-3">
         <button type="button" onClick={() => void runDesktopProof()} disabled={running} className={cn(buttonVariants({ size: "sm" }))}>
-          {running ? "Running..." : "Run desktop proof"}
+          {running ? "Running..." : "Run encrypted proof"}
         </button>
         <Link href="/services/encrypt-ika-operations" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
           Open Encrypt / Ika
