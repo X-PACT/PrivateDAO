@@ -57,5 +57,5 @@ Ideal pilot organizations:
 
 - convert to managed operations starting at `$750/month`
 - proceed to stronger security and launch readiness
-- continue on Devnet for another cycle
+- continue on Solana Testnet for another cycle
 - or stop before mainnet if the operating fit is not yet strong enough

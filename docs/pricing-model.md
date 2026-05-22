@@ -140,7 +140,7 @@ The commercial model is not only pricing. It also depends on four internal modul
 
 ### Pricing and economics module
 
-- track which Devnet actions justify usage-based pricing
+- track which Testnet actions justify usage-based pricing while preserving older Devnet evidence as rehearsal history
 - keep the free path generous enough for ecosystem learning
 - protect the later enterprise lane from underpricing technical support and trust work
 
