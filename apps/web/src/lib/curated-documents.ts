@@ -596,6 +596,18 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/testnet-zk-verification-receipts-2026-05-07.md`,
   },
   {
+    slug: "zk-local-groth16-verification-2026-05-22",
+    title: "ZK Local Groth16 Verification 2026-05-22",
+    category: "Reviewer core",
+    summary:
+      "Fresh snarkJS verification packet for the shipped vote, delegation, and tally Groth16 proof artifacts, with the on-chain verifier boundary stated explicitly.",
+    audience: "Judges, ZK reviewers, privacy reviewers, security reviewers",
+    boundary:
+      "Local Groth16 verification evidence only; it proves shipped circuit artifacts verify successfully without claiming completed Solana on-chain verifier CPI enforcement.",
+    docPath: "docs/zk-local-groth16-verification-2026-05-22.md",
+    rawHref: `${repositoryBlobBase}/docs/zk-local-groth16-verification-2026-05-22.md`,
+  },
+  {
     slug: "solrouter-encrypted-ai-evidence-2026-05-07",
     title: "SolRouter Encrypted AI Evidence 2026-05-07",
     category: "Reviewer core",
