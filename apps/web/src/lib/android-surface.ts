@@ -7,5 +7,5 @@ export const androidGuideUrl = `${androidBlobBaseUrl}/docs/android-native.md`;
 export const androidReviewerRunbookUrl = `${androidBlobBaseUrl}/docs/android-native-reviewer-runbook.md`;
 export const androidApkDownloadUrl =
   `${androidRawBaseUrl}/artifacts/android/PrivateDAO-android-devnet-debug.apk`;
-export const androidApkSha256 = "32d5b07cf29b703d57537b0a6d2746a9ce34b6665fd3c90a597f0d3fd77048a4";
-export const androidApkSizeLabel = "20 MB";
+export const androidApkSha256 = "fbfa980d273d1ee519abdf8024be3fe2b0ee1b88ff149c3824151b401ecaf3e9";
+export const androidApkSizeLabel = "17 MB";

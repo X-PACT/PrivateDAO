@@ -26,6 +26,7 @@ export const metadata: Metadata = buildRouteMetadata({
 });
 
 const parityItems = [
+  "The Android APK now promotes the live web product as the primary mobile route, while native screens keep wallet-signed governance actions available on Solana Testnet.",
   "Create DAO, deposit treasury, create proposal, commit, reveal, finalize, execute, cancel, and veto are available from Android.",
   "Wallet-first mobile operations run on the same Solana Testnet program and verification path used by the web surface.",
   "Proof, runtime logs, monitoring, and reviewer routes stay linked so mobile execution remains auditable and easy to validate.",
@@ -59,11 +60,11 @@ export default function AndroidPage() {
     <OperationsShell
       eyebrow="Android"
       title="PrivateDAO Android: premium mobile DAO operations with privacy, proof, and wallet-first execution"
-      description="This is a wallet-first Android operating surface for real Solana Testnet execution. Users can run serious DAO and treasury actions from mobile with privacy-preserving voting, encrypted operation lanes, and on-chain proof continuity, without terminal complexity."
+      description="This APK turns PrivateDAO from a web app into a mobile Solana product: ordinary users can open the same live web experience, then continue into native wallet-signed governance, confidential operations, service lanes, and on-chain proof without terminal complexity."
       badges={[
-        { label: "APK available", variant: "success" },
+        { label: "Updated APK live", variant: "success" },
         { label: "Mobile-first execution", variant: "cyan" },
-        { label: "Web + Android aligned", variant: "violet" },
+        { label: "Live web + native signing", variant: "violet" },
       ]}
     >
       <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
@@ -73,7 +74,9 @@ export default function AndroidPage() {
           </CardHeader>
           <CardContent className="space-y-5">
             <div className="rounded-3xl border border-emerald-300/16 bg-emerald-300/[0.08] p-4 text-sm leading-7 text-white/72">
-              Android is a direct product surface for PrivateDAO operations: connect wallet, run governance lifecycle actions, and verify signatures and proof from mobile against Solana Testnet.
+              Android is now the mobile proof of the full PrivateDAO thesis: the same live web product for normal users,
+              plus native Solana Testnet execution for governance, services, confidential payroll, encrypted payments,
+              gaming rewards, diagnostics, and proof continuity.
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
@@ -95,7 +98,7 @@ export default function AndroidPage() {
                 <div className="mt-3 space-y-2 text-sm leading-7 text-white/68">
                   <div>Working branch: <span className="text-white">{androidBranchName}</span></div>
                   <div>Channel: <span className="text-white">Android-native Testnet surface</span></div>
-                  <div>Product scope: <span className="text-white">governance, treasury actions, proof-linked verification</span></div>
+                  <div>Product scope: <span className="text-white">live web parity, native governance, services, proof-linked verification</span></div>
                 </div>
               </div>
             </div>
@@ -132,7 +135,9 @@ export default function AndroidPage() {
               </div>
             ))}
             <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-4 text-sm leading-7 text-white/72">
-              This Android surface is designed to feel like a category shift: complex DAO logic is reduced to guided wallet actions, while privacy, cryptographic guarantees, and on-chain verification stay visible to operators, partners, and reviewers.
+              This Android surface is designed to feel like a category shift: the judge can see a live web-grade product,
+              then see the same project become a mobile app that participates on-chain through guided wallet actions.
+              Privacy, service value, cryptographic guarantees, and verification stay visible to operators, partners, and reviewers.
             </div>
             <div className="rounded-3xl border border-amber-300/16 bg-amber-300/[0.08] p-4 text-sm leading-7 text-white/72">
               Android capture expansion for the full reveal, finalize, and execute evidence lane is <span className="text-white">actively scaling</span>. The product surface and build are live now with continuous runtime evidence expansion.
