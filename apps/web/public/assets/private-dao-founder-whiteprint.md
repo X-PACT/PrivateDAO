@@ -2,9 +2,17 @@
 
 Project signature: PrivateDAO
 
+Authorship boundary: PrivateDAO is founder-built work by a solo founder-builder. It is not presented as the output of a development team, studio, or lab. The hackathon ecosystem tools, wallets, SDKs, read-node infrastructure, and partner integrations are product rails used by the founder to build and verify the system on Solana Testnet.
+
 Subtitle: Sovereign Infrastructure Roadmap for encrypted governance, private settlement, local intelligence, Mainnet review, and cross-chain expansion.
 
 PrivateDAO treats blockchain as more than digital money. It treats blockchains as a durable public record for governance, supply chains, institutions, treaties, public accountability, and human coordination, as long as privacy and verification keep improving together.
+
+## Founder-built execution
+
+PrivateDAO should be evaluated with a clear authorship boundary: the strategy, product architecture, implementation direction, documentation, and public Testnet product surface are the work of one founder-builder.
+
+The project uses ecosystem rails and hackathon integrations as tools inside the product. They make the build stronger, more verifiable, and more useful, but they do not mean PrivateDAO is a separate internal team, development lab, or studio. The current proof is therefore both a product proof and an individual execution proof: one founder used the available Solana and partner tooling to assemble a complete, reviewer-visible Testnet operating system.
 
 ## Phase 1: Frontier proof
 

@@ -1,10 +1,18 @@
-# PrivateDAO Founder Whiteprint
+# PrivateDAO Whitepaper
 
-Founder signature: Fahd Kotb
+Project signature: PrivateDAO
+
+Authorship boundary: PrivateDAO is founder-built work by a solo founder-builder. It is not presented as the output of a development team, studio, or lab. The hackathon ecosystem tools, wallets, SDKs, read-node infrastructure, and partner integrations are product rails used by the founder to build and verify the system on Solana Testnet.
 
 Subtitle: Sovereign Infrastructure Roadmap for encrypted governance, private settlement, local intelligence, Mainnet review, and cross-chain expansion.
 
 PrivateDAO treats blockchain as more than digital money. It treats blockchains as a durable public record for governance, supply chains, institutions, treaties, public accountability, and human coordination, as long as privacy and verification keep improving together.
+
+## Founder-built execution
+
+PrivateDAO should be evaluated with a clear authorship boundary: the strategy, product architecture, implementation direction, documentation, and public Testnet product surface are the work of one founder-builder.
+
+The project uses ecosystem rails and hackathon integrations as tools inside the product. They make the build stronger, more verifiable, and more useful, but they do not mean PrivateDAO is a separate internal team, development lab, or studio. The current proof is therefore both a product proof and an individual execution proof: one founder used the available Solana and partner tooling to assemble a complete, reviewer-visible Testnet operating system.
 
 ## Phase 1: Frontier proof
 
@@ -42,11 +50,11 @@ The program ID change is documented as part of the Anchor 1.0.1 migration and cl
 
 PrivateDAO expands cross-chain so sensitive institutions can use broader blockchain infrastructure while Solana remains the guardian chain, first proof home, and decision layer that anchors the system.
 
-## Founder note
+## Project note
 
 PrivateDAO is built from the belief that privacy is not optional infrastructure. It is the condition that lets governments, institutions, supply chains, developers, and normal users coordinate on public rails without exposing everything they need to protect.
 
-## Founder letter
+## Project letter
 
 Blockchain is not only a rail for trading value. It can become the strongest civilizational record we have: governance, agreements, payroll, supply-chain truth, institutional decisions, treaties, and public memory that cannot be quietly erased, altered, or stolen when the privacy layer is strong enough.
 
@@ -54,9 +62,9 @@ Private governance lets people decide without pressure. The right to reveal inte
 
 The core shipped today is the hardest part: psychologically first, then technically. The remaining phases are not a dream; they are a protection matrix that can evolve forever: encrypted intake, local QVAC emergency intelligence, external data rails when selected, security reviews, license continuity, and proof that expired or non-renewed packages are actually disabled and locally sealed material is erased.
 
-The founder treats PrivateDAO as a public-good system before a personal asset. The mission is to serve the Solana ecosystem with a privacy product strong enough for developers, startups, organizations, governments, sensitive institutions, and future cross-chain infrastructure. This is a quiet signature on a larger duty: help the ecosystem repair a hidden structural gap before it becomes harder and more expensive to correct. When the founder's personal mission is complete, PrivateDAO should be able to protect itself through its community, review process, protocol rules, and guardian-chain proof.
+PrivateDAO is treated as a public-good system before a personal asset. The mission is to serve the Solana ecosystem with a privacy product strong enough for developers, startups, organizations, governments, sensitive institutions, and future cross-chain infrastructure. This is a quiet signature on a larger duty: help the ecosystem repair a hidden structural gap before it becomes harder and more expensive to correct. When the current mission is complete, PrivateDAO should be able to protect itself through its community, review process, protocol rules, and guardian-chain proof.
 
-Fahd Kotb
+PrivateDAO Project Signature
 
 ## Document architecture
 
@@ -65,4 +73,4 @@ PrivateDAO separates the narrative into four reviewer-friendly documents:
 - Whitepaper: how the system works.
 - Vision Paper: why the system exists.
 - Roadmap: how execution unfolds.
-- Founder Letter: why the founder is personally committed to the ecosystem mission.
+- Project Letter: why this mission remains committed to ecosystem outcomes.

@@ -23,9 +23,11 @@ const languages = [
   {
     code: "EN",
     title: "Whitepaper",
-    founder: "Project signature",
+    founder: "Founder-built project",
     thesis:
       "PrivateDAO treats blockchain as durable civilization infrastructure: governance, payments, supply-chain records, institutional proof, and treaty-grade coordination become credible only when privacy and verification advance together.",
+    authorship:
+      "PrivateDAO is the work of a solo founder-builder. It is not presented as the output of a development team, studio, or lab; the integrations and infrastructure partners are acknowledged as ecosystem rails used by one founder to build a complete Testnet product.",
     phase2:
       "After judging, Phase 2 turns every customer request into an encrypted lane: intake, package selection, provider routing, on-chain payment reference, time-bound license key, delivery, renewal, and upgrade controls.",
     mainnet:
@@ -36,9 +38,11 @@ const languages = [
   {
     code: "AR",
     title: "وثيقة المؤسس التقنية",
-    founder: "إمضاء المؤسس",
+    founder: "مشروع بناه مؤسس واحد",
     thesis:
       "PrivateDAO لا يرى البلوك تشين كأموال رقمية فقط، بل كبنية دائمة لتسجيل الحوكمة، المدفوعات، سلاسل الإمداد، التوثيق الدولي، والمعاهدات عندما تتطور الخصوصية والإثبات معا.",
+    authorship:
+      "PrivateDAO عمل فردي من مؤسس واحد، وليس مخرجا لفريق تطوير أو معمل أو استوديو. التكاملات والبنية الداعمة هي أدوات منظومة استخدمها المؤسس لبناء منتج Testnet مكتمل وقابل للمراجعة.",
     phase2:
       "بعد التحكيم، تحول Phase 2 كل طلب عميل إلى مسار مشفر: إدخال المتطلبات، اختيار الباقة، توجيه المزودين، مرجع دفع على السلسلة، مفتاح محدود المدة، التسليم، التجديد، والترقية.",
     mainnet:
@@ -49,9 +53,11 @@ const languages = [
   {
     code: "ES",
     title: "Whitepaper",
-    founder: "Firma del proyecto",
+    founder: "Proyecto construido por un fundador",
     thesis:
       "PrivateDAO ve blockchain como infraestructura duradera para gobernanza, pagos, registros de suministro, prueba institucional y coordinación internacional cuando privacidad y verificación avanzan juntas.",
+    authorship:
+      "PrivateDAO is founder-built work, not the output of a separate development team, studio, or lab.",
     phase2:
       "Después del jurado, Phase 2 convierte cada solicitud del cliente en un carril cifrado con intake, paquete, proveedores, pago on-chain, licencia temporal, entrega, renovación y upgrades.",
     mainnet:
@@ -62,9 +68,11 @@ const languages = [
   {
     code: "KO",
     title: "Whitepaper",
-    founder: "Project signature",
+    founder: "Founder-built project",
     thesis:
       "PrivateDAO는 블록체인을 단순한 디지털 자산이 아니라 거버넌스, 결제, 공급망, 기관 증명, 국제 조정의 지속 가능한 기록 인프라로 봅니다.",
+    authorship:
+      "PrivateDAO is founder-built work, not the output of a separate development team, studio, or lab.",
     phase2:
       "심사 이후 Phase 2는 모든 고객 요청을 암호화된 전달 경로로 전환합니다: 입력, 패키지, 제공자 라우팅, 온체인 결제 참조, 기간 제한 키, 전달, 갱신, 업그레이드.",
     mainnet:
@@ -90,6 +98,12 @@ const documentStack = [
   ["Project Letter", "A quiet project signature on an ecosystem-first commitment: the delivered core was the hardest psychological and technical part; the remaining work is a continuously improving protection matrix."],
 ] as const;
 
+const founderBuildNotes = [
+  "PrivateDAO is built and directed by a solo founder-builder.",
+  "The project uses hackathon ecosystem rails, SDKs, read nodes, wallets, and partner infrastructure as integrations, not as a claim of a larger internal team.",
+  "Reviewers should read the shipped Testnet product as individual execution with public proof, open-source review, and community feedback around it.",
+] as const;
+
 const programLineage = [
   ["Legacy Devnet program", "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx", "Preserved evidence baseline before the Anchor 1.0.1 migration."],
   ["Current Anchor 1.0.1 Testnet program", "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva", "Current reviewer-facing deployment, web constants, Android constants, IDL posture, and read-node checks."],
@@ -109,7 +123,7 @@ export default function WhitepaperPage() {
     >
       <section className="rounded-[30px] border border-cyan-300/18 bg-cyan-300/[0.07] p-6">
         <div className="flex flex-wrap gap-2">
-          <Badge variant="cyan">Project signature</Badge>
+          <Badge variant="cyan">Founder-built</Badge>
           <Badge variant="warning">Whitepaper, not marketing copy</Badge>
           <Badge variant="success">Reviewer-downloadable</Badge>
         </div>
@@ -140,6 +154,24 @@ export default function WhitepaperPage() {
             Open runtime proof
             <ArrowUpRight className="h-4 w-4" />
           </Link>
+        </div>
+      </section>
+
+      <section className="rounded-[30px] border border-amber-300/18 bg-amber-300/[0.07] p-6">
+        <div className="text-[11px] uppercase tracking-[0.28em] text-amber-100/78">Authorship boundary</div>
+        <h2 className="mt-3 text-2xl font-semibold text-white">PrivateDAO is a founder-built project, not a team or lab output</h2>
+        <p className="mt-3 max-w-5xl text-sm leading-7 text-white/66">
+          This whitepaper should be read with a clear authorship boundary: the strategy, product structure, implementation
+          direction, documentation, and public Testnet surface are the work of one founder-builder. The ecosystem tools,
+          wallets, SDKs, read-node infrastructure, and hackathon integrations are real product rails used inside the build;
+          they do not imply that PrivateDAO is backed by a separate internal development team, studio, or research lab.
+        </p>
+        <div className="mt-5 grid gap-3 md:grid-cols-3">
+          {founderBuildNotes.map((item) => (
+            <div key={item} className="rounded-2xl border border-white/10 bg-black/20 p-4 text-sm leading-7 text-white/64">
+              {item}
+            </div>
+          ))}
         </div>
       </section>
 
@@ -214,6 +246,7 @@ export default function WhitepaperPage() {
             <h3 className="mt-4 text-xl font-semibold text-white">{item.title}</h3>
             <div className="mt-4 space-y-3 text-sm leading-7 text-white/66">
               <p>{item.thesis}</p>
+              <p>{item.authorship}</p>
               <p>{item.phase2}</p>
               <p>{item.mainnet}</p>
               <p>{item.phase3}</p>
