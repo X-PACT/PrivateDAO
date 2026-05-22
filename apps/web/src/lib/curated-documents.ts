@@ -480,6 +480,18 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/frontier-adjacent-project-completion-map-2026-05-22.md`,
   },
   {
+    slug: "grand-champion-10-level-improvement-map-2026-05-22",
+    title: "Grand Champion 10-Level Improvement Map",
+    category: "Reviewer core",
+    summary:
+      "Ten-level execution map for strengthening PrivateDAO across first-minute UX, wallet execution, Android parity, proof continuity, confidential operations, intelligence, business conversion, security, repository reviewability, and judging narrative.",
+    audience: "Judges, reviewers, operators, buyers, technical diligence teams",
+    boundary:
+      "Execution map only; it defines improvement standards and review paths without claiming external audit completion or mainnet real-funds readiness.",
+    docPath: "docs/grand-champion-10-level-improvement-map-2026-05-22.md",
+    rawHref: `${repositoryBlobBase}/docs/grand-champion-10-level-improvement-map-2026-05-22.md`,
+  },
+  {
     slug: "reviewer-fast-path-2026-05-06",
     title: "Reviewer Fast Path 2026-05-06",
     category: "Reviewer core",

@@ -120,6 +120,25 @@ PrivateDAO is a wallet-first Solana Testnet financial OS for organizations that 
 
 The core product narrative is simple: PrivateDAO turns operations that used to require developers, command lines, custom scripts, and cryptography specialists into guided interface workflows. A user can learn the idea in `/learn`, connect a wallet, review the action in normal product language, sign the exact request, and verify the receipt from the web app or Android surface.
 
+## Grand Champion Improvement Map
+
+The active improvement plan is organized into ten execution levels:
+
+| Level | Focus | Shortest surface |
+| --- | --- | --- |
+| 1 | First-minute understanding | `https://privatedao.org/start/` |
+| 2 | Wallet-first execution | `https://privatedao.org/govern/` |
+| 3 | Android parity | `https://privatedao.org/android/` |
+| 4 | Proof continuity | `https://privatedao.org/proof/?judge=1` |
+| 5 | Confidential operations | `https://privatedao.org/payroll/` |
+| 6 | Intelligence before signing | `https://privatedao.org/intelligence/` |
+| 7 | Business conversion | `https://privatedao.org/pricing/` |
+| 8 | Security and release discipline | `https://privatedao.org/security/` |
+| 9 | Repository reviewability | `README.md` and `scripts/` |
+| 10 | Judging-grade narrative | `https://privatedao.org/judge/` |
+
+Canonical map: [`docs/grand-champion-10-level-improvement-map-2026-05-22.md`](docs/grand-champion-10-level-improvement-map-2026-05-22.md).
+
 ## Business Model In One Minute
 
 PrivateDAO is not only a technical privacy system. It has a buyer-readable commercial path tied to the live Testnet product:

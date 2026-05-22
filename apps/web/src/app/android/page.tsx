@@ -110,6 +110,26 @@ export default function AndroidPage() {
         </CardContent>
       </Card>
 
+      <Card className="border-cyan-300/16 bg-[radial-gradient(circle_at_top_right,rgba(0,194,255,0.16),transparent_34%),rgba(255,255,255,0.04)]">
+        <CardHeader>
+          <CardTitle>Judge-speed Android trial</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-3 md:grid-cols-4">
+          {[
+            ["01", "Download", "Install the APK and confirm the SHA-256 shown on this page."],
+            ["02", "Connect", "Use a Mobile Wallet Adapter-compatible Testnet wallet."],
+            ["03", "Operate", "Open the same live product lanes: govern, payroll, services, and proof."],
+            ["04", "Verify", "Return to Proof, Solscan, runtime logs, and the parity manifest."],
+          ].map(([step, title, detail]) => (
+            <div key={title} className="rounded-[22px] border border-white/8 bg-black/20 p-4">
+              <div className="text-[10px] uppercase tracking-[0.22em] text-cyan-100/70">{step}</div>
+              <div className="mt-2 text-base font-semibold text-white">{title}</div>
+              <p className="mt-2 text-sm leading-6 text-white/58">{detail}</p>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+
       <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
         <Card>
           <CardHeader>

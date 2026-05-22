@@ -200,6 +200,26 @@ export default function JudgePage() {
         </div>
       </div>
 
+      <div className="rounded-[26px] border border-emerald-300/16 bg-[linear-gradient(135deg,rgba(20,241,149,0.10),rgba(0,194,255,0.07),rgba(8,13,28,0.92))] p-5">
+        <div className="text-[11px] uppercase tracking-[0.24em] text-emerald-100/78">10-level improvement map</div>
+        <div className="mt-2 max-w-4xl text-sm leading-7 text-white/68">
+          The current upgrade path is organized as ten product levels: first-minute understanding, wallet execution,
+          Android parity, proof continuity, confidential operations, intelligence before signing, business conversion,
+          security discipline, repository reviewability, and judging-grade narrative.
+        </div>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <Link href="/documents/grand-champion-10-level-improvement-map-2026-05-22" className={cn(buttonVariants({ size: "sm" }))}>
+            Open 10-level map
+          </Link>
+          <Link href="/start" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+            Open start route
+          </Link>
+          <Link href="/pricing" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+            Open business path
+          </Link>
+        </div>
+      </div>
+
       <div className="rounded-[26px] border border-sky-300/16 bg-sky-300/[0.07] p-5">
         <div className="text-[11px] uppercase tracking-[0.24em] text-sky-100/78">Current advanced track</div>
         <div className="mt-2 max-w-4xl text-sm leading-7 text-white/68">
