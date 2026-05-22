@@ -2,6 +2,9 @@
 
 const API_BASE = process.env.NEXT_PUBLIC_PRIVATE_DAO_API_BASE || "https://api.privatedao.org";
 const SESSION_KEY = "privatedao.visitor_session_id.v1";
+const SOLANA_SIGNATURE_PATTERN = /^[1-9A-HJ-NP-Za-km-z]{64,96}$/;
+const SOLANA_PUBLIC_KEY_PATTERN = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/;
+const allowedStatuses = new Set(["submitted", "confirmed", "finalized"]);
 
 function getSessionId() {
   try {
@@ -29,11 +32,18 @@ export type VisitorTransactionCaptureInput = {
 
 export function captureVisitorTransaction(input: VisitorTransactionCaptureInput) {
   if (typeof window === "undefined") return;
+  const txSignature = input.txSignature.trim();
+  if (!SOLANA_SIGNATURE_PATTERN.test(txSignature)) return;
+  const walletAddress = input.walletAddress?.trim();
+  if (walletAddress && !SOLANA_PUBLIC_KEY_PATTERN.test(walletAddress)) return;
+  const status = input.status && allowedStatuses.has(input.status) ? input.status : "confirmed";
   const payload = {
     ...input,
+    txSignature,
+    walletAddress,
     sessionId: getSessionId(),
     page: window.location.pathname || "/",
-    status: input.status || "confirmed",
+    status,
   };
   void fetch(`${API_BASE}/api/v1/transactions/receipt`, {
     method: "POST",

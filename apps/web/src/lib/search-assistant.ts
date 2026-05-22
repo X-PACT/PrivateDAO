@@ -6,7 +6,7 @@ import { getTreasuryReceiveConfig } from "@/lib/treasury-receive-config";
 import { getTrackCommercializationPlan } from "@/lib/track-commercialization";
 import { getTrackMainnetGatePlan } from "@/lib/track-mainnet-gates";
 import { getTrackNarrativePlan } from "@/lib/track-narratives";
-import { getTrackReviewerPacketPublicLabel, getTrackReviewerPacketRoute } from "@/lib/track-reviewer-packets";
+import { getTrackReviewerPacketRoute } from "@/lib/track-reviewer-packets";
 import { getTrackTechnicalFit } from "@/lib/technical-eligibility";
 
 export type AssistantSuggestion = {

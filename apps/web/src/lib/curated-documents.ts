@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-import { getTrackReviewerPacketPublicLabel, getTrackReviewerPacketPublicSummary } from "@/lib/track-reviewer-packets";
+import { getTrackReviewerPacketPublicSummary } from "@/lib/track-reviewer-packets";
 
 export type CuratedDocument = {
   slug: string;
@@ -456,6 +456,16 @@ const curatedDocuments: CuratedDocument[] = [
     boundary: "Curated in-app view only. The canonical query-driven docs viewer remains in docs/ until full parity exists.",
     docPath: "docs/reviewer-fast-path.md",
     rawHref: `${repositoryBlobBase}/docs/reviewer-fast-path.md`,
+  },
+  {
+    slug: "grand-champion-technical-review-2026-05-22",
+    title: "Grand Champion Technical Review",
+    category: "Reviewer core",
+    summary: "Judging-stage technical review covering wallet execution boundaries, visitor transaction counters, compliance UX clarity, treasury handoff stability, and the founder-built business narrative.",
+    audience: "Judges, technical reviewers, grant reviewers, operators",
+    boundary: "Technical review and judging narrative; it documents live Devnet evidence and production gates without claiming completed mainnet release.",
+    docPath: "docs/grand-champion-technical-review-2026-05-22.md",
+    rawHref: `${repositoryBlobBase}/docs/grand-champion-technical-review-2026-05-22.md`,
   },
   {
     slug: "reviewer-fast-path-2026-05-06",

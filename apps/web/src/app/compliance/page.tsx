@@ -29,7 +29,7 @@ export default function CompliancePage() {
     setProgress(75);
     await new Promise((resolve) => setTimeout(resolve, 450));
     setProgress(100);
-    setStatus("Compliance pack ready.");
+    setStatus("Compliance pack ready with scoped evidence links.");
     setRunning(false);
   }
 
@@ -70,13 +70,12 @@ export default function CompliancePage() {
         <div className="mt-2 text-sm text-white/72">{status}</div>
 
         {progress === 100 ? (
-          <a
-            href="#"
+          <Link
+            href="/proof/?judge=1"
             className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "mt-4")}
-            onClick={(event) => event.preventDefault()}
           >
-            Download report PDF (mock)
-          </a>
+            Open scoped evidence packet
+          </Link>
         ) : null}
       </div>
 

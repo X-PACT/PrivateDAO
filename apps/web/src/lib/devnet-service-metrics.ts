@@ -195,11 +195,6 @@ export function getDevnetServiceMetrics(): DevnetServiceMetricsSnapshot {
   const runtimeEvidence = readJson<RuntimeEvidenceJson>("docs/runtime-evidence.generated.json");
   const devnetCanary = readJson<DevnetCanaryJson>("docs/devnet-canary.generated.json");
   const frontierIntegrations = readJson<FrontierIntegrationsJson>("docs/frontier-integrations.generated.json");
-  const walletReviewReadyCount = runtimeEvidence.walletEvidence.browserEvidenceBackedWalletCount;
-  const walletReviewTargetCount = runtimeEvidence.walletEvidence.browserTargetCount;
-  const walletConnectOnlyCount = runtimeEvidence.walletEvidence.browserConnectOnlyWalletCount;
-  const walletSupportReviewReadyCount =
-    runtimeEvidence.walletEvidence.supportMatrixReviewReadyCount;
   const walletSelectorCoverageCount = runtimeEvidence.matrixStatuses.filter(
     (item) => item.selectorVisible,
   ).length;
@@ -475,12 +470,6 @@ export function getOperationalValidationSnapshot(): OperationalValidationSnapsho
   const evidenceGatedCount = proposalCards.filter((proposal) => proposal.status === "Evidence gated").length;
   const executedCount = proposalCards.filter((proposal) => proposal.status === "Executed").length;
   const proposalFlowHealthyCount = executionReadyCount + revealReadyCount + executedCount;
-
-  const walletReviewReadyCount = runtimeEvidence.walletEvidence.browserEvidenceBackedWalletCount;
-  const walletReviewTargetCount = runtimeEvidence.walletEvidence.browserTargetCount;
-  const walletDiagnosticsCoverageCount = runtimeEvidence.matrixStatuses.filter(
-    (item) => item.diagnosticsVisible,
-  ).length;
 
   const verifiedGovernanceTxCount = frontierIntegrations.simpleGovernance.txChecks.filter(
     (item) => item.confirmed && item.status === "finalized",

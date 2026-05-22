@@ -833,7 +833,7 @@ export function TreasuryReceiveSurface() {
     deliveryRoute: activeRequestDelivery.deliveryRoute,
     telemetryRoute: activeRequestDelivery.telemetryRoute,
   };
-  const routePlan = structuredRequestObject.treasuryRoutePlan;
+  const routePlan = requestPayloadSeed.treasuryRoutePlan;
   const quoteReviewSurface = useMemo(() => {
     if (!routePlan) return null;
 
@@ -887,6 +887,7 @@ export function TreasuryReceiveSurface() {
     activeProfile.label,
     activeProfile.value,
     amount,
+    destinationAsset,
     executionPreference,
     normalizedDestinationAsset,
     quoteReviewMode,
@@ -984,7 +985,12 @@ export function TreasuryReceiveSurface() {
       source: "services",
       payoutIntent: persistedPayoutIntent,
       requestDelivery,
-      requestPayload: structuredRequestObject,
+      requestPayload: {
+        ...requestPayloadSeed,
+        requestRoute: activeRequestDelivery.requestRoute,
+        deliveryRoute: activeRequestDelivery.deliveryRoute,
+        telemetryRoute: activeRequestDelivery.telemetryRoute,
+      },
     });
     if (deliveryOverride && requestDelivery.state === deliveryOverride) {
       requestDeliveryOverrideRef.current = null;
@@ -993,12 +999,15 @@ export function TreasuryReceiveSurface() {
   }, [
     activeProfile.label,
     activeProfile.value,
+    activeRequestDelivery.deliveryRoute,
+    activeRequestDelivery.requestRoute,
+    activeRequestDelivery.telemetryRoute,
     buildRequestDelivery,
     buildRouteWithDelivery,
     handoff,
     persistedPayoutIntent,
     persistedStateSignature,
-    structuredRequestObject,
+    requestPayloadSeed,
   ]);
 
   function handleDeliveryNavigation(state: "staged" | "delivered") {

@@ -62,11 +62,6 @@ function readJson<T>(relativePath: string): T {
   return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
 }
 
-function percent(numerator: number, denominator: number) {
-  if (!denominator) return "0%";
-  return `${Math.round((numerator / denominator) * 100)}%`;
-}
-
 export function getRuntimeOperationsReadinessSnapshot(): RuntimeOperationsReadinessSnapshot {
   const runtime = readJson<RealDeviceRuntimeJson>("docs/runtime/real-device.generated.json");
   const monitoring = readJson<MonitoringAlertRulesJson>("docs/monitoring-alert-rules.json");

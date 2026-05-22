@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, BriefcaseBusiness, CircleCheckBig, Coins, ShieldCheck, TimerReset } from "lucide-react";
+import { ArrowUpRight, BriefcaseBusiness, CircleCheckBig, Coins, TimerReset } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";

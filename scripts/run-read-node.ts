@@ -134,6 +134,26 @@ const suspiciousPathPatterns = [
   /^\/phpmyadmin(?:$|[/?#])/,
   /^\/admin(?:$|[/?#])/,
 ];
+const visitorTransactionStatuses = new Set(["submitted", "confirmed", "finalized"]);
+const visitorTransactionActions = new Set([
+  "audd-billing-rehearsal",
+  "billing-rehearsal",
+  "commit-vote",
+  "create-dao",
+  "create-proposal",
+  "devnet-billing-rehearsal",
+  "devnet-governance",
+  "devnet-vote",
+  "execute-proposal",
+  "finalize-proposal",
+  "freshness-memo",
+  "governance-action",
+  "reveal-vote",
+  "service-request",
+  "testnet-transaction",
+  "treasury-receive",
+  "wallet-onboarding",
+]);
 
 function writeJson(res: http.ServerResponse, statusCode: number, payload: unknown) {
   res.writeHead(statusCode, {
@@ -215,6 +235,15 @@ function readRequestJson(req: http.IncomingMessage): Promise<Record<string, unkn
 function stringField(body: Record<string, unknown>, key: string, fallback = "") {
   const value = body[key];
   return typeof value === "string" && value.trim() ? value.trim() : fallback;
+}
+
+function optionalSolanaPublicKey(value: string) {
+  if (!value) return null;
+  try {
+    return new PublicKey(value).toBase58();
+  } catch {
+    throw new Error("walletAddress must be a valid Solana public key.");
+  }
 }
 
 function hasSupabaseRestConfig() {
@@ -556,10 +585,13 @@ async function handleVisitorTransactionReceipt(body: Record<string, unknown>) {
     throw new Error("txSignature must be a Solana base58 signature.");
   }
   const sessionIdRaw = stringField(body, "sessionId", "anonymous-session");
-  const walletAddress = stringField(body, "walletAddress").slice(0, 64) || null;
+  const walletAddress = optionalSolanaPublicKey(stringField(body, "walletAddress"));
   const walletName = stringField(body, "walletName", "unknown-wallet").slice(0, 80);
-  const action = stringField(body, "action", "testnet-transaction").slice(0, 80);
+  const requestedAction = stringField(body, "action", "testnet-transaction").slice(0, 80);
+  const action = visitorTransactionActions.has(requestedAction) ? requestedAction : "testnet-transaction";
   const page = stringField(body, "page", "/").slice(0, 180);
+  const requestedStatus = stringField(body, "status", "confirmed").slice(0, 40);
+  const status = visitorTransactionStatuses.has(requestedStatus) ? requestedStatus : "confirmed";
   const row: VisitorTransactionRow = {
     tx_signature: txSignature,
     session_id: hashVisitorSession(sessionIdRaw),
@@ -567,7 +599,7 @@ async function handleVisitorTransactionReceipt(body: Record<string, unknown>) {
     wallet_name: walletName,
     action,
     page,
-    status: stringField(body, "status", "confirmed").slice(0, 40),
+    status,
     slot: typeof body.slot === "number" && Number.isFinite(body.slot) ? Math.round(body.slot) : null,
   };
   const stored = await supabaseInsert("visitor_transactions", row as SupabaseRow);
