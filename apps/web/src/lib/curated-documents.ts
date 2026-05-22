@@ -640,6 +640,16 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/audit-packet.generated.md`,
   },
   {
+    slug: "gpt-5-5-agent-security-review-ar",
+    title: "مراجعة أمنية بفريق وكلاء GPT-5.5",
+    category: "Security",
+    summary: "AI-assisted security review covering the PrivateDAO web app and Android app, with validated findings, release gates, and Testnet boundary decisions.",
+    audience: "Judges, security reviewers, operators, Android reviewers",
+    boundary: "Internal GPT-5.5 agent-team review only; it does not replace external audit, custody sign-off, or mainnet production certification.",
+    docPath: "docs/gpt-5-5-agent-security-review-ar.md",
+    rawHref: `${repositoryBlobBase}/docs/gpt-5-5-agent-security-review-ar.md`,
+  },
+  {
     slug: "live-proof-v3",
     title: "Live Proof V3",
     category: "Reviewer core",
