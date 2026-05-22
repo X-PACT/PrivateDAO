@@ -468,6 +468,18 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/grand-champion-technical-review-2026-05-22.md`,
   },
   {
+    slug: "frontier-competitor-intelligence-2026-05-22",
+    title: "Frontier Competitor Intelligence 2026-05-22",
+    category: "Reviewer core",
+    summary:
+      "Competition-directory analysis of 2,857 Frontier entries, showing why PrivateDAO should be judged as integrated encrypted governance, treasury, mobile, intelligence, proof, and business infrastructure rather than a single-feature DAO.",
+    audience: "Judges, reviewers, funders, operators",
+    boundary:
+      "Directional competitive intelligence only; it uses the local project directory to clarify positioning without claiming final rankings or making unsupported claims about individual competitors.",
+    docPath: "docs/frontier-competitor-intelligence-2026-05-22.md",
+    rawHref: `${repositoryBlobBase}/docs/frontier-competitor-intelligence-2026-05-22.md`,
+  },
+  {
     slug: "reviewer-fast-path-2026-05-06",
     title: "Reviewer Fast Path 2026-05-06",
     category: "Reviewer core",
