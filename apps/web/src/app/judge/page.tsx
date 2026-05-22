@@ -156,6 +156,27 @@ export default function JudgePage() {
         </div>
       </div>
 
+      <div className="rounded-[26px] border border-emerald-300/16 bg-[linear-gradient(135deg,rgba(20,241,149,0.11),rgba(8,13,28,0.92))] p-5">
+        <div className="text-[11px] uppercase tracking-[0.24em] text-emerald-100/78">Business model judges can inspect</div>
+        <div className="mt-2 max-w-4xl text-sm leading-7 text-white/68">
+          PrivateDAO monetizes without overstating mainnet maturity: open-source Testnet adoption builds trust, a
+          <span className="font-semibold text-white"> $2,500 four-week pilot</span> proves one buyer workflow, a
+          <span className="font-semibold text-white"> $750/month managed plan</span> supports recurring private operations,
+          and sovereign deployments capture teams that need dedicated infrastructure and controls.
+        </div>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <Link href="/pricing" className={cn(buttonVariants({ size: "sm" }))}>
+            Open pricing
+          </Link>
+          <Link href="/revenue" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+            Open revenue model
+          </Link>
+          <Link href="/documents/pilot-program" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+            Open pilot program
+          </Link>
+        </div>
+      </div>
+
       <div className="rounded-[26px] border border-sky-300/16 bg-sky-300/[0.07] p-5">
         <div className="text-[11px] uppercase tracking-[0.24em] text-sky-100/78">Current advanced track</div>
         <div className="mt-2 max-w-4xl text-sm leading-7 text-white/68">

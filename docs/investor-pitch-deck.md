@@ -199,15 +199,19 @@ Reviewer-facing condensation:
 
 PrivateDAO does not claim live protocol revenue today.
 
-Plausible monetization surfaces:
+The commercial model is now specific enough to judge:
 
-- managed deployments for DAOs and crypto-native organizations
-- premium governance and treasury operations tooling
-- hosted read node, monitoring, and reviewer evidence services
-- confidential payroll, bonus, and approval workflows
-- enterprise or ecosystem integration support for security-sensitive governance
+1. **Open protocol** - free Testnet product access, source inspection, and proof review build trust and developer adoption.
+2. **Fixed pilot** - `$2,500 setup` for a four-week pilot that proves one governance, payout, payroll, or treasury workflow with a buyer-readable proof packet.
+3. **Managed operations** - `$750/month` starting point for hosted reads, telemetry, proof exports, operator support, and monthly readiness reviews after a successful pilot.
+4. **Sovereign deployment** - custom pricing for customer-cloud installs, dedicated controls, white-label posture, retention policy, and high-touch support.
 
-The near-term value is adoption and trust. The long-term value is recurring governance infrastructure.
+The near-term value is adoption, trust, and paid pilot conversion. The long-term value is recurring governance infrastructure plus high-value sovereign deployment work.
+
+Boundary:
+
+- the Testnet billing rehearsal proves wallet-signed payment logic and receipt continuity
+- the project does not claim live mainnet revenue or finished card subscription automation today
 
 ## Slide 10 - Go-To-Market Wedge
 
