@@ -26,22 +26,28 @@ The buffer was uploaded on Testnet, dumped back from chain, and matched byte-for
 - vault transaction PDA: `FZ56P6riCUzRW6J4CrfjgxhPwGB3xgKtuUzgSiC2t9WR`
 - proposal PDA: `5FQaNUH5U83SNKWPx57mUd5KzpFYzwk39WKUz9BmNp3s`
 - proposal status at creation: `Active`
-- approved signer recorded: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
+- proposal status after second signer approval: `Approved`
+- approved signers recorded:
+  - `2KpA69UB55tfWUSkKj5j7Tvebd3eG22hEs9hjXUq7pf5`
+  - `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
+- timelock release target: `2026-05-25T00:31:05Z`
 
 ## Signatures
 
 - vault transaction create: `5ReTxu2kBC2UvQvXg2xEzD73PGBn4fvi5mAHWnX9dxX2Hc1N9KazkErrc2oBukEUKqZWrG619qy7Kc4euUDqs291`
 - proposal create: `DWBzzVqzUs4jgsqQrMzCDdM85RT77ewcG4Yz9yoD9XCdPjutNnNx1nAfkyVMRoG9cWZUWC7ZxeVT3jVgdL4w7vk`
 - first approval: `2qZJR2X4tFCpgJRSfGF9vJHCUozkhB6fr4jVRUQpuisb29R8Qpq5ZvtSfdWiaWv4WFFKn8iFqEwHvC6xWVYTRqv5`
+- second approval: `2wpJ27Mkb5CffngRx9U6upPjB8jbzWHoFrDLnxhB5NSCiiXCFGt5HVDYU8U7FtwYusynRCcWhy1T6av22VzCC7MY`
 
 ## Remaining Execution Gate
 
-The proposal is intentionally not marked executed yet. Squads threshold is `2-of-3`, and only the local member `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD` has approved. Execution requires one more approval from either:
+The proposal is intentionally not marked executed yet. Squads threshold is now satisfied at `2-of-3`. Execution was simulated after the second approval and rejected only by the Squads timelock:
 
-- `2KpA69UB55tfWUSkKj5j7Tvebd3eG22hEs9hjXUq7pf5`
-- `BBBPcpUnnBi3CWUhcv6vLTqaY9pugAGuhgw2Axjpvcr2`
+- error code: `TimeLockNotReleased`
+- custom error: `6021`
+- release target: `2026-05-25T00:31:05Z`
 
-After the second approval and timelock, execute the vault transaction, then verify:
+After the timelock releases, execute the vault transaction, then verify:
 
 ```bash
 solana program show EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva --url https://api.testnet.solana.com

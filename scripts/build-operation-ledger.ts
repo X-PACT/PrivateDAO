@@ -4,7 +4,7 @@ import path from "path";
 type LedgerEntry = {
   id: string;
   lane: "custody" | "zk" | "refhe-fhe" | "runtime";
-  status: "verified" | "code-ready" | "pending-signature" | "pending-runtime-capture";
+  status: "verified" | "code-ready" | "pending-signature" | "pending-timelock" | "pending-runtime-capture";
   title: string;
   evidence: string[];
   verification: string[];
@@ -29,8 +29,8 @@ function main() {
     {
       id: "dao-authority-handoff",
       lane: "custody",
-      status: "pending-signature",
-      title: "DAO operating authority handoff instruction is implemented and packaged in an active Squads upgrade proposal",
+      status: "pending-timelock",
+      title: "DAO operating authority handoff upgrade has reached Squads 2-of-3 approval and is waiting for timelock release",
       evidence: [
         "docs/dao-treasury-authority-handoff-2026-05-23.md",
         "docs/squads-testnet-upgrade-proposal-2026-05-23.md",
@@ -40,6 +40,8 @@ function main() {
       verification: [
         "anchor build",
         "solana program dump HSX3ZK3BzueJnVy4EmrQ5xHUPq3LtXxxaVWuuZqew1Mz /tmp/privatedao-buffer-final.so --url https://api.testnet.solana.com",
+        "Squads proposal approval signature: 2wpJ27Mkb5CffngRx9U6upPjB8jbzWHoFrDLnxhB5NSCiiXCFGt5HVDYU8U7FtwYusynRCcWhy1T6av22VzCC7MY",
+        "Timelock release target: 2026-05-25T00:31:05Z",
         "node --import tsx ./node_modules/mocha/bin/mocha --timeout 20000 --exit test/unit/anonymous-governance-primitive.unit.ts",
       ],
     },
