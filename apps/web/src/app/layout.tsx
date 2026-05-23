@@ -10,6 +10,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteActivityBeacon } from "@/components/site-activity-beacon";
 import {
   buildOrganizationJsonLd,
+  buildSoftwareApplicationJsonLd,
   buildWebSiteJsonLd,
   defaultOgImage,
   siteDescription,
@@ -102,6 +103,12 @@ export default function RootLayout({
               type="application/ld+json"
               strategy="afterInteractive"
               dangerouslySetInnerHTML={{ __html: JSON.stringify(buildWebSiteJsonLd()) }}
+            />
+            <Script
+              id="privatedao-software-jsonld"
+              type="application/ld+json"
+              strategy="afterInteractive"
+              dangerouslySetInnerHTML={{ __html: JSON.stringify(buildSoftwareApplicationJsonLd()) }}
             />
             <div className="relative flex min-h-full flex-col overflow-x-hidden">
               <div className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(circle_at_top,rgba(153,69,255,0.28),transparent_44%),radial-gradient(circle_at_20%_20%,rgba(20,241,149,0.2),transparent_26%),radial-gradient(circle_at_80%_0%,rgba(0,194,255,0.18),transparent_28%)]" />

@@ -12,6 +12,7 @@ export const metadata: Metadata = buildRouteMetadata({
     "Legacy judges URL that points reviewers to the canonical PrivateDAO verification route with live proof, integrations, awards, and runtime evidence.",
   path: "/judges",
   keywords: ["judges", "fast path", "verification", "PrivateDAO"],
+  index: false,
 });
 
 export default function JudgesPage() {

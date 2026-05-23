@@ -11,6 +11,7 @@ import { OperationsShell } from "@/components/operations-shell";
 import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
 import { PrivacySdkApiStarter } from "@/components/privacy-sdk-api-starter";
 import { ProductLearningGuide } from "@/components/product-learning-guide";
+import { ProductCommandCenter } from "@/components/product-command-center";
 import { PlatformCapabilityStack } from "@/components/platform-capability-stack";
 import { SolanaInfrastructureStack } from "@/components/solana-infrastructure-stack";
 import { WalletConnectButton } from "@/components/wallet-connect-button";
@@ -73,6 +74,7 @@ export default function LearnPage() {
       <LearnBootcampNav />
       <LocalizedRouteSummary routeKey="learn" />
       <LocalizedRouteBrief routeKey="learn" />
+      <ProductCommandCenter compact />
       <GuidedOperationRail current="connect" reviewHref="/intelligence" verifyHref="/proof" />
       <OperatingJourneyStrip
         snapshot={runtimeSnapshot}
@@ -113,10 +115,10 @@ export default function LearnPage() {
         <div className="rounded-[30px] border border-white/10 bg-white/[0.04] p-6">
           <div className="text-[11px] uppercase tracking-[0.28em] text-white/42">What this section covers</div>
           <ul className="mt-4 space-y-3 text-sm leading-7 text-white/62">
-            <li>• Wallet-first Testnet onboarding that starts from the browser.</li>
-            <li>• Governance lifecycle UI with voice-assisted commands and private voting posture.</li>
-            <li>• Fast RPC, hosted reads, diagnostics, analytics, and blockchain verification.</li>
-            <li>• ZK, MagicBlock, REFHE, Jupiter, Kamino, SNS, Torque, and agentic rails explained through the product itself.</li>
+            <li>• Wallet-first Testnet onboarding that starts from web or Android.</li>
+            <li>• Governance, intelligence, treasury policy, confidential payroll, encrypted payments, and GamingDAO rewards.</li>
+            <li>• Fast RPC, hosted reads, diagnostics, analytics, visitor counters, execution counters, and blockchain verification.</li>
+            <li>• ZK, MagicBlock, REFHE, IKA, GoldRush, Torque, and agentic decision files explained through live product routes.</li>
           </ul>
         </div>
       </div>

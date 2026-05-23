@@ -8,6 +8,7 @@ import { LocalizedRouteSummary } from "@/components/localized-route-summary";
 import { NormalUserOperationPath } from "@/components/normal-user-operation-path";
 import { OperationsShell } from "@/components/operations-shell";
 import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
+import { ProductCommandCenter } from "@/components/product-command-center";
 import { buttonVariants } from "@/components/ui/button";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -37,6 +38,7 @@ export default function StartPage() {
       ]}
     >
       <LocalizedRouteSummary routeKey="start" />
+      <ProductCommandCenter compact />
       <section className="rounded-[30px] border border-emerald-300/18 bg-[radial-gradient(circle_at_12%_0%,rgba(20,241,149,0.20),transparent_34%),radial-gradient(circle_at_92%_10%,rgba(0,194,255,0.16),transparent_30%),linear-gradient(180deg,rgba(7,14,27,0.96),rgba(4,7,16,0.98))] p-5 md:p-6">
         <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
           <div>
