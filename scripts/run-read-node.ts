@@ -2,6 +2,7 @@
 import * as http from "http";
 import { createHash, timingSafeEqual } from "crypto";
 import { createRequire } from "module";
+import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "fs";
 import { readFile } from "fs/promises";
 import { join, resolve } from "path";
 import { URL } from "url";
@@ -30,6 +31,8 @@ const telegramVisitorNotifications =
   process.env.PRIVATE_DAO_TELEGRAM_VISITOR_NOTIFICATIONS?.toLowerCase() !== "false";
 const telegramVisitorMinIntervalMs = Number(process.env.PRIVATE_DAO_TELEGRAM_VISITOR_MIN_INTERVAL_MS || 60_000);
 const telegramVisitorSessionTtlMs = Number(process.env.PRIVATE_DAO_TELEGRAM_VISITOR_SESSION_TTL_MS || 30 * 60_000);
+const runtimeStateDir = process.env.PRIVATE_DAO_RUNTIME_STATE_DIR || "/srv/privatedao/runtime";
+const quickNodeStreamStatePath = join(runtimeStateDir, "quicknode-stream-telemetry.json");
 const supabaseUrl = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "").replace(/\/+$/, "");
 const supabaseKey =
   process.env.SUPABASE_SERVICE_ROLE_KEY ||
@@ -397,7 +400,47 @@ function recordQuickNodeStreamSummary(summary: ReturnType<typeof summarizeQuickN
   quickNodeStreamTelemetry.totals.failedTransactionCount += summary.failedTransactionCount;
   quickNodeStreamTelemetry.totals.privateDaoTransactionCount += summary.privateDaoTransactionCount;
   quickNodeStreamTelemetry.totals.computeUnitsConsumed += summary.computeUnitsConsumed;
+  persistQuickNodeStreamTelemetry();
 }
+
+function mergeQuickNodeStreamTelemetry(value: unknown) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return;
+  const record = value as Partial<typeof quickNodeStreamTelemetry>;
+  const totals = (record.totals || {}) as Partial<typeof quickNodeStreamTelemetry.totals>;
+  quickNodeStreamTelemetry.acceptedPayloads = Number(record.acceptedPayloads || 0);
+  quickNodeStreamTelemetry.lastAcceptedAt = typeof record.lastAcceptedAt === "string" ? record.lastAcceptedAt : null;
+  quickNodeStreamTelemetry.lastSummary =
+    record.lastSummary && typeof record.lastSummary === "object"
+      ? (record.lastSummary as typeof quickNodeStreamTelemetry.lastSummary)
+      : null;
+  quickNodeStreamTelemetry.totals.blockCount = Number(totals.blockCount || 0);
+  quickNodeStreamTelemetry.totals.transactionCount = Number(totals.transactionCount || 0);
+  quickNodeStreamTelemetry.totals.failedTransactionCount = Number(totals.failedTransactionCount || 0);
+  quickNodeStreamTelemetry.totals.privateDaoTransactionCount = Number(totals.privateDaoTransactionCount || 0);
+  quickNodeStreamTelemetry.totals.computeUnitsConsumed = Number(totals.computeUnitsConsumed || 0);
+}
+
+function loadQuickNodeStreamTelemetry() {
+  try {
+    if (!existsSync(quickNodeStreamStatePath)) return;
+    mergeQuickNodeStreamTelemetry(JSON.parse(readFileSync(quickNodeStreamStatePath, "utf8")) as unknown);
+  } catch (error) {
+    console.warn(`QuickNode telemetry state load skipped: ${error instanceof Error ? error.message : String(error)}`);
+  }
+}
+
+function persistQuickNodeStreamTelemetry() {
+  try {
+    mkdirSync(runtimeStateDir, { recursive: true });
+    const tmpPath = `${quickNodeStreamStatePath}.${process.pid}.tmp`;
+    writeFileSync(tmpPath, JSON.stringify(quickNodeStreamTelemetry, null, 2) + "\n");
+    renameSync(tmpPath, quickNodeStreamStatePath);
+  } catch (error) {
+    console.warn(`QuickNode telemetry state persist skipped: ${error instanceof Error ? error.message : String(error)}`);
+  }
+}
+
+loadQuickNodeStreamTelemetry();
 
 function readRequestJsonWithLimit(req: http.IncomingMessage, maxBytes: number): Promise<unknown> {
   return new Promise((resolve, reject) => {

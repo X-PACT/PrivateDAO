@@ -52,6 +52,12 @@ This closes the previous zero-metrics condition: production API traffic now exer
 
 The stats endpoint never returns stream tokens and never stores raw block payloads.
 
+On the primary host, these counters persist across read-node restarts in the runtime volume:
+
+- container path: `/srv/privatedao/runtime/quicknode-stream-telemetry.json`
+- compose mount: `deploy/primary-host/volumes/runtime`
+- environment override: `PRIVATE_DAO_RUNTIME_STATE_DIR`
+
 ## Recommended QuickNode Settings
 
 - network: Solana Testnet

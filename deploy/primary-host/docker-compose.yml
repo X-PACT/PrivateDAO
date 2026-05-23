@@ -12,6 +12,7 @@ services:
       - "8787"
     volumes:
       - ./secrets:/srv/privatedao/deploy/primary-host/secrets:ro
+      - ./volumes/runtime:/srv/privatedao/runtime
     healthcheck:
       test:
         [
@@ -35,6 +36,7 @@ services:
     command: ["npm", "run", "start:chain-watcher"]
     volumes:
       - ./secrets:/srv/privatedao/deploy/primary-host/secrets:ro
+      - ./volumes/runtime:/srv/privatedao/runtime
 
   edge:
     image: caddy:2.10.2-alpine
