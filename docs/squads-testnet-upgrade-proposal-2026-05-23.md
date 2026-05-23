@@ -47,6 +47,20 @@ The proposal is intentionally not marked executed yet. Squads threshold is now s
 - custom error: `6021`
 - release target: `2026-05-25T00:31:05Z`
 
+## Timelock Reduction Attempt
+
+An emergency Testnet config transaction was created to reduce the Squads timelock to `0` and close the approved upgrade immediately. This was also approved by `2-of-3`, but Squads correctly applies the existing timelock to config transactions too.
+
+- config transaction index: `2`
+- config transaction create: `3pz8zYrCFdK61JWdeSztTYEcJKKFEHRmyj93rdmkvsTiegbVbp3qBvp7TvJ4nSuwqcXi67WWiqT2VhcfpuNqdqEM`
+- config proposal create: `cV4RfuwZxWDn1hcof1jw87LePfqEF36V6C1vP37PrWLYkqRWJQsHsvCTHc2E6kUyHsWjTdQLzQEoEpwygnJQurF`
+- config approval by `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`: `4Y8a2c2egEnNs1XUJqxEKie8wTi8m85EzZyqf5VcCKMLrB1UBDvskKH1TDkwXcpCfrt7P1PtHeYaVQDJxwAJGtkG`
+- config approval by `2KpA69UB55tfWUSkKj5j7Tvebd3eG22hEs9hjXUq7pf5`: `2VH24vsTta1mDwmbN4cFmi2UdM9FNXtrzXjGzSdqSejm75ygek92BjLzYcwyGLmcfakMLyoGHuf3E9ppcd8FhdqY`
+- config execution simulation result: `TimeLockNotReleased`
+- custom error: `6021`
+
+This proves the current remaining delay is enforced by the Squads program itself. It cannot be honestly bypassed with the available multisig member keys.
+
 After the timelock releases, execute the vault transaction, then verify:
 
 ```bash
