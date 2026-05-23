@@ -54,6 +54,45 @@ export default function SecurityPage() {
       <div>
         <LocalizedRouteBrief routeKey="security" />
       </div>
+      <div className="rounded-[28px] border border-emerald-300/22 bg-[linear-gradient(135deg,rgba(20,241,149,0.12),rgba(0,194,255,0.07),rgba(8,13,28,0.94))] p-5">
+        <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-100/78">Custody evidence corrected</div>
+        <h2 className="mt-3 text-2xl font-semibold text-white">Squads custody now shows 4/6 gates passed on Testnet</h2>
+        <p className="mt-3 max-w-4xl text-sm leading-7 text-white/66">
+          The security route now reflects the actual public evidence: Squads vault authority, 2-of-3 threshold,
+          signer roster, canonical program-upgrade authority transfer, ZK verifier authority transfer, and enforced
+          timelock behavior. DAO and treasury authority transfers remain the two post-unlock gates after the Squads
+          execution window opens.
+        </p>
+        <div className="mt-4 grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
+          {[
+            ["Passed", "Multisig vault", "CALHrBqx6jbzcPn2NVcinqSAHeod65v9LcDuTxsdPqBv"],
+            ["Passed", "Threshold", "2-of-3 with 48h timelock"],
+            ["Passed", "Signer roster", "4Mm5... · BBBP... · 2Kp..."],
+            ["Passed", "Upgrade authority", "Canonical program authority transferred to Squads vault"],
+            ["Pending", "DAO authority", "Scheduled after 2026-05-25T00:31:05Z unlock"],
+            ["Pending", "Treasury authority", "Scheduled after upgrade execution and readouts"],
+          ].map(([state, label, detail]) => (
+            <div key={label} className="rounded-2xl border border-white/10 bg-black/22 p-4">
+              <div className={cn("text-[10px] uppercase tracking-[0.22em]", state === "Passed" ? "text-emerald-100/76" : "text-amber-100/76")}>
+                {state}
+              </div>
+              <div className="mt-2 text-base font-semibold text-white">{label}</div>
+              <div className="mt-2 break-words text-sm leading-6 text-white/58">{detail}</div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <Link href="/documents/timelock-enforcement-proof-2026-05-23" className={cn(buttonVariants({ size: "sm" }))}>
+            Open timelock proof
+          </Link>
+          <Link href="/documents/squads-testnet-upgrade-proposal-2026-05-23" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+            Open Squads proposal proof
+          </Link>
+          <Link href="/documents/zk-standalone-verifier-testnet-2026-05-23" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+            Open ZK verifier proof
+          </Link>
+        </div>
+      </div>
       <div className="rounded-[28px] border border-rose-300/18 bg-rose-300/[0.08] p-5">
         <div className="text-[11px] uppercase tracking-[0.28em] text-rose-100/76">Security remediation</div>
         <h2 className="mt-3 text-2xl font-semibold text-white">Browser vote salts are no longer persisted</h2>

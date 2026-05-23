@@ -600,6 +600,18 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/timelock-enforcement-proof-2026-05-23.md`,
   },
   {
+    slug: "arena-frontier-submission-2026-05-23",
+    title: "Arena Frontier Submission 2026-05-23",
+    category: "Reviewer core",
+    summary:
+      "Single submission packet for the current Testnet product: Anchor 1.0.1 governance program, ZK verifier, Squads custody, PDAO Token-2022, security story, and judge links.",
+    audience: "Colosseum judges, Solana reviewers, investors, ecosystem partners",
+    boundary:
+      "Current Testnet submission packet. Historical Devnet evidence remains archived, and DAO/treasury authority handoff remains post-timelock execution work.",
+    docPath: "docs/arena-frontier-submission-2026-05-23.md",
+    rawHref: `${repositoryBlobBase}/docs/arena-frontier-submission-2026-05-23.md`,
+  },
+  {
     slug: "reviewer-fast-path-2026-05-06",
     title: "Reviewer Fast Path 2026-05-06",
     category: "Reviewer core",

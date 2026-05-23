@@ -42,14 +42,14 @@ export default function JudgePage() {
     {
       label: "Squads 2/2 approved",
       value: "Vault CALHr...PqBv",
-      detail: "Upgrade proposal reached threshold. Config-bypass attempt also reached approval and was still blocked by timelock enforcement.",
+      detail: "Upgrade proposal reached threshold. Config-bypass approvals: 4Y8a2c2eg... and 2VH24vs...; timelock release 2026-05-25T00:31:05Z.",
       href: "/documents/squads-testnet-upgrade-proposal-2026-05-23",
       cta: "Open proposal proof",
     },
     {
       label: "Timelock enforcement demonstrated",
       value: "6021 TimeLockNotReleased",
-      detail: "Even valid multisig owners cannot bypass the active 48-hour delay. Execution unlocks 2026-05-25T00:31:05Z.",
+      detail: "Even valid 2/2 multisig signers cannot bypass the active 48-hour delay. Recorded in commit 2eccecb60 and the proof packet.",
       href: "/documents/timelock-enforcement-proof-2026-05-23",
       cta: "Open timelock proof",
     },

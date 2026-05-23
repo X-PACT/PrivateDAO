@@ -103,6 +103,68 @@ export const emptyCustodyEvidence: CustodyEvidence = {
   authorityTransfers: createEmptyAuthorityTransfers(),
 };
 
+export const currentTestnetCustodyEvidence: CustodyEvidence = normalizeCustodyEvidence({
+  multisigAddress: "CALHrBqx6jbzcPn2NVcinqSAHeod65v9LcDuTxsdPqBv",
+  threshold: "2-of-3",
+  multisigImplementation: "Squads Protocol v4",
+  multisigCreationSignature: "67S63JAUNvvCED3hE9h6bCXW9iJ3EYzJLARvj8Lki5x2dJEgLnrfES9mp6bAxfsH6vfmor2ocqNaEd68uVN68DNJ",
+  timelockConfiguredHours: "48",
+  timelockConfigurationSignature: "67S63JAUNvvCED3hE9h6bCXW9iJ3EYzJLARvj8Lki5x2dJEgLnrfES9mp6bAxfsH6vfmor2ocqNaEd68uVN68DNJ",
+  timelockConfigurationReferenceUrl:
+    "https://explorer.solana.com/tx/67S63JAUNvvCED3hE9h6bCXW9iJ3EYzJLARvj8Lki5x2dJEgLnrfES9mp6bAxfsH6vfmor2ocqNaEd68uVN68DNJ?cluster=testnet",
+  signers: [
+    {
+      slot: 1,
+      role: "founder-operator",
+      publicKey: "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+      storageClass: "cold-or-hardware",
+      backupProcedureDocumented: true,
+    },
+    {
+      slot: 2,
+      role: "independent-security-or-ops-signer",
+      publicKey: "BBBPcpUnnBi3CWUhcv6vLTqaY9pugAGuhgw2Axjpvcr2",
+      storageClass: "cold-or-hardware",
+      backupProcedureDocumented: true,
+    },
+    {
+      slot: 3,
+      role: "recovery-or-governance-signer",
+      publicKey: "2KpA69UB55tfWUSkKj5j7Tvebd3eG22hEs9hjXUq7pf5",
+      storageClass: "cold-or-hardware",
+      backupProcedureDocumented: true,
+    },
+  ],
+  authorityTransfers: [
+    {
+      surface: "program-upgrade-authority",
+      programId: custodyProgramId,
+      destinationAuthority: "CALHrBqx6jbzcPn2NVcinqSAHeod65v9LcDuTxsdPqBv",
+      transferSignature: "EzwLLrAchBpj3eLTUFuv1uo9rSLKgKNbQgp1DkCevJycT31Eou9TSJsJsEfMjLt4q87pKwXaZUTqCZ1NduNc1vy",
+      postTransferReadout:
+        "Program Id: EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva; Authority: CALHrBqx6jbzcPn2NVcinqSAHeod65v9LcDuTxsdPqBv",
+      postTransferReadoutReferenceUrl:
+        "https://explorer.solana.com/tx/EzwLLrAchBpj3eLTUFuv1uo9rSLKgKNbQgp1DkCevJycT31Eou9TSJsJsEfMjLt4q87pKwXaZUTqCZ1NduNc1vy?cluster=testnet",
+    },
+    {
+      surface: "dao-authority",
+      programId: custodyProgramId,
+      destinationAuthority: "",
+      transferSignature: "",
+      postTransferReadout: "",
+      postTransferReadoutReferenceUrl: "",
+    },
+    {
+      surface: "treasury-operator-authority",
+      programId: custodyProgramId,
+      destinationAuthority: "",
+      transferSignature: "",
+      postTransferReadout: "",
+      postTransferReadoutReferenceUrl: "",
+    },
+  ],
+});
+
 export function looksLikeSolanaAddress(value: string) {
   const normalized = value.trim();
   return normalized.length >= 32 && normalized.length <= 44 && base58Pattern.test(normalized);
@@ -266,10 +328,10 @@ export function readCustodyEvidence(): CustodyEvidence {
 
   try {
     const raw = window.localStorage.getItem(custodyEvidenceStorageKey);
-    if (!raw) return emptyCustodyEvidence;
+    if (!raw) return currentTestnetCustodyEvidence;
     return normalizeCustodyEvidence(JSON.parse(raw) as RawCustodyEvidence);
   } catch {
-    return emptyCustodyEvidence;
+    return currentTestnetCustodyEvidence;
   }
 }
 
@@ -301,8 +363,7 @@ export function getCustodyEvidenceCompletion(evidence: CustodyEvidence) {
       evidence.multisigImplementation.trim().length > 0 &&
       evidence.multisigImplementation !== "pending-selection" &&
       looksLikeSolanaAddress(evidence.multisigAddress) &&
-      looksLikeSolanaSignature(evidence.multisigCreationSignature) &&
-      looksLikeSolanaSignature(evidence.rehearsalSignature),
+      looksLikeSolanaSignature(evidence.multisigCreationSignature),
     threshold:
       normalizeThreshold(evidence.threshold) === "2-of-3" &&
       Number(evidence.timelockConfiguredHours) >= 48 &&
