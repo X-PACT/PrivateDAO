@@ -54,6 +54,18 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/dao-treasury-authority-handoff-2026-05-23.md`,
   },
   {
+    slug: "operation-ledger.generated",
+    title: "Operation Ledger",
+    category: "Proof",
+    summary:
+      "Machine-generated ledger that records custody, ZK, REFHE/FHE, and runtime evidence status with the exact files and verification commands behind each claim.",
+    audience: "Judges, operators, security reviewers, ecosystem partners",
+    boundary:
+      "Generated proof index only; it separates verified, code-ready, pending-signature, and pending-runtime-capture states without upgrading unfinished claims.",
+    docPath: "docs/operation-ledger.generated.md",
+    rawHref: `${repositoryBlobBase}/docs/operation-ledger.generated.md`,
+  },
+  {
     slug: "solana-anonymous-governance-primitive",
     title: "Solana Anonymous Governance Primitive",
     category: "ZK",
@@ -562,6 +574,18 @@ const curatedDocuments: CuratedDocument[] = [
       "Testnet custody-transfer packet only; it proves program-upgrade authority hardening on Testnet without claiming DAO authority, treasury authority, external audit, or mainnet real-funds readiness.",
     docPath: "docs/squads-testnet-custody-transfer-2026-05-22.md",
     rawHref: `${repositoryBlobBase}/docs/squads-testnet-custody-transfer-2026-05-22.md`,
+  },
+  {
+    slug: "squads-testnet-upgrade-proposal-2026-05-23",
+    title: "Squads Testnet Upgrade Proposal 2026-05-23",
+    category: "Security",
+    summary:
+      "Explorer-verifiable packet for the active Squads proposal that upgrades the Testnet program to the DAO authority handoff build, including buffer hash match and first approval signature.",
+    audience: "Judges, security reviewers, Solana operators, technical diligence teams",
+    boundary:
+      "Upgrade proposal packet only; it records the uploaded buffer and first approval while keeping execution blocked until the second signer and timelock close.",
+    docPath: "docs/squads-testnet-upgrade-proposal-2026-05-23.md",
+    rawHref: `${repositoryBlobBase}/docs/squads-testnet-upgrade-proposal-2026-05-23.md`,
   },
   {
     slug: "reviewer-fast-path-2026-05-06",
