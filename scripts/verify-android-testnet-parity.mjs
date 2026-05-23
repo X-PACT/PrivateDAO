@@ -9,10 +9,10 @@ const expected = {
   packageName: "io.xpact.privatedao.android",
   programId: "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva",
   network: "Solana Testnet",
-  versionName: "1.1.0-testnet",
-  versionCode: "2",
+  versionName: "1.2.0-testnet",
+  versionCode: "3",
   walletAdapter: "2.1.0",
-  sha256: "bcd7d3b0007eb5906cef4aaee3926c9d78798d67d93852e85d4e1794cb2426f8",
+  sha256: "00b55e1b0db3696a6aaae4bd418affe35e7c56fea9929c121c3cf3c9b91a8869",
 };
 
 const files = {
@@ -64,7 +64,8 @@ assertIncludes(files.androidBuild, `versionCode = ${expected.versionCode}`, "And
 assertIncludes(files.androidBuild, `versionName = "${expected.versionName}"`, "Android version name");
 assertIncludes(files.androidBuild, `mobile-wallet-adapter-clientlib-ktx:${expected.walletAdapter}`, "Solana Mobile Wallet Adapter version");
 assertIncludes(files.androidManifest, 'android:allowBackup="false"', "Android backup disabled");
-assertIncludes(files.androidUi, `SettingsRow("Version", "${expected.versionName}")`, "visible Android app version");
+assertIncludes(files.androidConfig, `appVersion = "${expected.versionName}"`, "Android config app version");
+assertIncludes(files.androidUi, `SettingsRow("Version", PrivateDaoConfig.appVersion)`, "visible Android app version");
 assertIncludes(files.webAndroidSurface, `androidProgramId = "${expected.programId}"`, "web Android program constant");
 assertIncludes(files.webAndroidSurface, `androidAppVersion = "${expected.versionName}"`, "web Android app version constant");
 assertIncludes(files.webAndroidSurface, `androidVersionCode = "${expected.versionCode}"`, "web Android version code constant");

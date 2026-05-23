@@ -13,8 +13,8 @@ export const androidParityManifestUrl =
   "https://privatedao.org/android-testnet-parity-manifest.json";
 export const androidProgramId = "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva";
 export const androidNetworkLabel = "Solana Testnet";
-export const androidAppVersion = "1.1.0-testnet";
-export const androidVersionCode = "2";
+export const androidAppVersion = "1.2.0-testnet";
+export const androidVersionCode = "3";
 export const androidWalletAdapterVersion = "2.1.0";
-export const androidApkSha256 = "bcd7d3b0007eb5906cef4aaee3926c9d78798d67d93852e85d4e1794cb2426f8";
-export const androidApkSizeLabel = "17 MB";
+export const androidApkSha256 = "00b55e1b0db3696a6aaae4bd418affe35e7c56fea9929c121c3cf3c9b91a8869";
+export const androidApkSizeLabel = "16 MB";

@@ -644,7 +644,7 @@ private fun SettingsScreen(uiState: UiState, modifier: Modifier = Modifier) {
         }
         item { SettingsRow("Program ID", PrivateDaoConfig.programId) }
         item { SettingsRow("RPC", PrivateDaoConfig.rpcUrl) }
-        item { SettingsRow("Version", "1.1.0-testnet") }
+        item { SettingsRow("Version", PrivateDaoConfig.appVersion) }
         item { SettingsRow("Explorer", "Solscan Testnet links") }
         item { SettingsRow("Live web", PrivateDaoConfig.liveSiteUrl) }
         item { SettingsRow("Wallet", uiState.wallet?.publicKeyBase58 ?: "Not connected") }

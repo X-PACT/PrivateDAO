@@ -12,6 +12,7 @@ object PrivateDaoConfig {
     const val chain = "solana:testnet"
     const val walletCluster = "testnet"
     const val clusterLabel = "Testnet"
+    const val appVersion = "1.2.0-testnet"
     const val billingReceiveAddress = "AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c"
     const val liveSiteUrl = "https://privatedao.org"
     const val androidPageUrl = "$liveSiteUrl/android"
@@ -94,6 +95,10 @@ object PrivateDaoConfig {
         "Payroll" to "$liveSiteUrl/payroll",
         "Execute" to "$liveSiteUrl/execute",
         "Proof" to "$liveSiteUrl/proof",
+        "API Status" to "$liveSiteUrl/api-status",
+        "RPC Services" to "$liveSiteUrl/rpc-services",
+        "QuickNode Stream" to "$liveSiteUrl/documents/quicknode-stream-intelligence",
+        "GoldRush Intelligence" to "$liveSiteUrl/services/goldrush-decision-intelligence",
         "Services" to "$liveSiteUrl/services",
         "Security" to "$liveSiteUrl/security",
         "Documents" to "$liveSiteUrl/documents",

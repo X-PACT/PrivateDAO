@@ -12,11 +12,11 @@ PrivateDAO is Android-first on mobile because Solana Mobile Wallet Adapter is th
 - Jetpack Compose
 - Solana Mobile Wallet Adapter
 - Testnet by default
-- app version `1.1.0-testnet`
+- app version `1.2.0-testnet`
 - downloadable artifact `artifacts/android/PrivateDAO-android-testnet-debug.apk`
 - site download URL `https://privatedao.org/downloads/PrivateDAO-android-testnet-debug.apk`
 - parity manifest `apps/web/public/android-testnet-parity-manifest.json`
-- APK SHA-256 `bcd7d3b0007eb5906cef4aaee3926c9d78798d67d93852e85d4e1794cb2426f8`
+- APK SHA-256 `00b55e1b0db3696a6aaae4bd418affe35e7c56fea9929c121c3cf3c9b91a8869`
 
 Seed Vault is intentionally not used for the dApp transaction flow. Seed Vault is the wallet-app path; PrivateDAO is implemented here as a mobile dApp.
 
@@ -160,6 +160,7 @@ This means the Android app is designed to work with compatible Android wallets s
 - finalize flow
 - execute flow
 - intelligence, services, proof, and social links
+- API Status, RPC Services, QuickNode stream intelligence, and GoldRush decision intelligence links
 - settings / network info
 
 ## Real On-Chain Coverage In Android
@@ -207,7 +208,7 @@ Verification checks performed for the current published artifact:
 
 - Gradle APK build completed successfully
 - `apksigner verify --verbose` confirmed the APK signature verifies
-- package metadata confirms package `io.xpact.privatedao.android`, version code `2`, version name `1.1.0-testnet`, min SDK `26`, and target SDK `36`
+- package metadata confirms package `io.xpact.privatedao.android`, version code `3`, version name `1.2.0-testnet`, min SDK `26`, and target SDK `36`
 - SHA-256 matches the site and repository artifact checksum
 - `npm run verify:android-testnet-parity` checks the Android config, web constants, public manifest, repository APK, and site APK copy against the same Testnet values
 
