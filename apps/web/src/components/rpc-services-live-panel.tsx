@@ -38,6 +38,13 @@ const initialEndpoints: EndpointState[] = [
     status: "checking",
     detail: "Checking sovereign AI proof endpoint...",
   },
+  {
+    label: "QuickNode stream stats",
+    href: "https://api.privatedao.org/api/v1/quicknode/stream/stats",
+    purpose: "Shows accepted Solana Testnet stream payloads, PrivateDAO program matches, and compute telemetry.",
+    status: "checking",
+    detail: "Checking QuickNode stream telemetry...",
+  },
 ];
 
 function summarizePayload(payload: unknown) {
@@ -94,7 +101,7 @@ export function RpcServicesLivePanel() {
           Umbra relayer reachability, and QVAC runtime proof from the public product surface.
         </p>
       </CardHeader>
-      <CardContent className="grid gap-4 lg:grid-cols-3">
+      <CardContent className="grid gap-4 lg:grid-cols-4">
         {endpoints.map((endpoint) => {
           const online = endpoint.status === "online";
           return (

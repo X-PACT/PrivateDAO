@@ -39,8 +39,8 @@ const quickChecks = [
   },
   {
     title: "QuickNode stream intake",
-    body: "Authenticated Solana Testnet stream webhook that turns block and program-log payloads into runtime evidence summaries.",
-    href: "https://api.privatedao.org/api/v1/quicknode/stream",
+    body: "Live Solana Testnet stream telemetry: accepted payloads, PrivateDAO program hits, compute units, and latest stream summary.",
+    href: "https://api.privatedao.org/api/v1/quicknode/stream/stats",
     icon: RadioTower,
   },
   {

@@ -52,6 +52,18 @@ const metrics = {
   blockedProbes: 0,
   routeHits: new Map<string, number>(),
 };
+const quickNodeStreamTelemetry = {
+  acceptedPayloads: 0,
+  lastAcceptedAt: null as string | null,
+  lastSummary: null as ReturnType<typeof summarizeQuickNodeStreamPayload> | null,
+  totals: {
+    blockCount: 0,
+    transactionCount: 0,
+    failedTransactionCount: 0,
+    privateDaoTransactionCount: 0,
+    computeUnitsConsumed: 0,
+  },
+};
 const requireFromWebApp = createRequire(join(process.cwd(), "apps/web/package.json"));
 const onboardingIntakeKeyId = "pd-intake-rsa-2026-05-20";
 const onboardingIntakePublicKeyPem = `-----BEGIN PUBLIC KEY-----
@@ -323,6 +335,10 @@ function getQuickNodeProgramIds(transaction: QuickNodeStreamTransaction) {
   for (const instruction of transaction.transaction?.message?.instructions ?? []) {
     if (instruction.programId) ids.add(instruction.programId);
   }
+  for (const account of transaction.transaction?.message?.accountKeys ?? []) {
+    if (typeof account === "string") ids.add(account);
+    else if (account.pubkey) ids.add(account.pubkey);
+  }
   for (const log of transaction.meta?.logMessages ?? []) {
     const match = log.match(/^Program\s+([1-9A-HJ-NP-Za-km-z]{32,44})\s+/);
     if (match?.[1]) ids.add(match[1]);
@@ -370,6 +386,17 @@ function summarizeQuickNodeStreamPayload(payload: QuickNodeStreamPayload) {
     dataUse:
       "QuickNode Streams feed PrivateDAO runtime intelligence, proof freshness, and reviewer-visible operational telemetry. Raw payloads are not persisted by this endpoint.",
   };
+}
+
+function recordQuickNodeStreamSummary(summary: ReturnType<typeof summarizeQuickNodeStreamPayload>) {
+  quickNodeStreamTelemetry.acceptedPayloads += 1;
+  quickNodeStreamTelemetry.lastAcceptedAt = summary.acceptedAt;
+  quickNodeStreamTelemetry.lastSummary = summary;
+  quickNodeStreamTelemetry.totals.blockCount += summary.blockCount;
+  quickNodeStreamTelemetry.totals.transactionCount += summary.transactionCount;
+  quickNodeStreamTelemetry.totals.failedTransactionCount += summary.failedTransactionCount;
+  quickNodeStreamTelemetry.totals.privateDaoTransactionCount += summary.privateDaoTransactionCount;
+  quickNodeStreamTelemetry.totals.computeUnitsConsumed += summary.computeUnitsConsumed;
 }
 
 function readRequestJsonWithLimit(req: http.IncomingMessage, maxBytes: number): Promise<unknown> {
@@ -2026,7 +2053,27 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
       }
       const body = await readQuickNodeStreamJson(req);
       const summary = summarizeQuickNodeStreamPayload(body);
+      recordQuickNodeStreamSummary(summary);
       writeJson(res, 202, { ok: true, summary });
+      return;
+    }
+
+    if (req.method === "GET" && (pathname === "/api/quicknode/stream/stats" || pathname === "/api/v1/quicknode/stream/stats")) {
+      writeJson(res, 200, {
+        ok: true,
+        source: "quicknode-stream",
+        stats: {
+          ...quickNodeStreamTelemetry,
+          auth: process.env.QUICKNODE_STREAM_TOKEN ? "configured" : "missing-env",
+          network: "solana-testnet",
+          rawPayloadStorage: "disabled",
+          acceptedAuthHeaders: [
+            "Authorization: Bearer <token>",
+            "x-quicknode-security-token",
+            "x-private-dao-stream-token",
+          ],
+        },
+      });
       return;
     }
 
@@ -2361,6 +2408,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
             rateLimited: metrics.rateLimited,
             blockedProbes: metrics.blockedProbes,
             routeHits: Object.fromEntries(metrics.routeHits.entries()),
+            quickNodeStream: quickNodeStreamTelemetry,
           },
           deployment: {
             sameDomainRecommended: true,
@@ -2388,6 +2436,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           rateLimited: metrics.rateLimited,
           blockedProbes: metrics.blockedProbes,
           routeHits: Object.fromEntries(metrics.routeHits.entries()),
+          quickNodeStream: quickNodeStreamTelemetry,
           rpcPoolSize: readNode.rpcEndpoints.length,
           cache: readNode.cacheStats(),
           programId: readNode.programId.toBase58(),

@@ -32,12 +32,25 @@ The hosted read-node was redeployed with QuickNode Testnet as the first RPC prov
 - live health: `https://api.privatedao.org/healthz`
 - live config: `https://api.privatedao.org/api/v1/config`
 - live stream intake: `https://api.privatedao.org/api/v1/quicknode/stream`
+- live stream stats: `https://api.privatedao.org/api/v1/quicknode/stream/stats`
 - RPC pool: `QuickNode Testnet [redacted]` -> `https://api.testnet.solana.com`
 - stream auth: configured
 - smoke result: POST accepted with `privateDaoTransactionCount=1`, `blockCount=1`, and `computeUnitsConsumed=8888`
 - raw payload storage: disabled; only reviewer-safe summaries are returned
 
 This closes the previous zero-metrics condition: production API traffic now exercises the QuickNode RPC endpoint, and QuickNode Streams can deliver authenticated Solana Testnet payloads to the read-node instead of the static site root.
+
+## Live Stats Endpoint
+
+`GET /api/v1/quicknode/stream/stats` exposes reviewer-safe operational counters:
+
+- accepted stream payloads
+- last accepted timestamp
+- latest summary
+- cumulative blocks, transactions, failed transactions, PrivateDAO program matches, and compute units
+- auth posture and accepted header names
+
+The stats endpoint never returns stream tokens and never stores raw block payloads.
 
 ## Recommended QuickNode Settings
 

@@ -12,8 +12,8 @@ const streamFacts = [
   },
   {
     label: "Payload posture",
-    value: "summarized",
-    detail: "Large raw blocks become transaction counts, program hits, compute usage, and proof freshness signals.",
+    value: "live stats",
+    detail: "Large raw blocks become accepted-payload counters, program hits, compute usage, and proof freshness signals.",
   },
   {
     label: "Security",
@@ -61,6 +61,9 @@ export function QuickNodeStreamIntelligenceSurface({ compact = false }: { compac
           <div className="mt-5 flex flex-wrap gap-3">
             <Link href="/documents/quicknode-stream-intelligence" className={cn(buttonVariants({ size: "sm" }))}>
               Open stream runbook
+            </Link>
+            <Link href="https://api.privatedao.org/api/v1/quicknode/stream/stats" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))} target="_blank">
+              Open live stream stats
             </Link>
             <Link href="/intelligence" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
               Open intelligence
