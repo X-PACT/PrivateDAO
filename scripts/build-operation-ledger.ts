@@ -59,6 +59,24 @@ function main() {
       ],
     },
     {
+      id: "pdao-token-2022-testnet",
+      lane: "runtime",
+      status: "verified",
+      title: "PDAO Token-2022 governance mint is live on Solana Testnet with disabled mint authority",
+      evidence: [
+        "docs/pdao-token.md",
+        "docs/pdao-attestation.generated.json",
+        "docs/assets/pdao-token.json",
+        "docs/proof-registry.json",
+      ],
+      verification: [
+        "spl-token display --program-2022 DFYvBdivHCe4bSErgCiKm2RhwGEcZYbBPFQzLNr37Bie --url https://api.testnet.solana.com --output json-compact",
+        "npm run verify:pdao-surface",
+        "npm run verify:pdao-attestation",
+        "npm run verify:pdao-live",
+      ],
+    },
+    {
       id: "zk-enforced-runtime",
       lane: "zk",
       status: "pending-runtime-capture",

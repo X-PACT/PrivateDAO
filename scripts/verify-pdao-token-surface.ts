@@ -32,12 +32,19 @@ function main() {
   const tokenDoc = fs.readFileSync(path.resolve("docs/token.md"), "utf8");
   const pdaoDoc = fs.readFileSync(path.resolve("docs/pdao-token.md"), "utf8");
 
-  assert(metadata.name === "PDAO", "PDAO metadata name mismatch");
+  assert(metadata.name === "PrivateDAO Governance Token", "PDAO metadata name mismatch");
   assert(metadata.symbol === "PDAO", "PDAO metadata symbol mismatch");
   assert(metadata.image === "https://privatedao.org/assets/logo.png", "PDAO metadata image mismatch");
   assert(metadata.external_url === "https://privatedao.org/security/", "PDAO metadata external URL mismatch");
+  const privateDaoProgramId = proof.pdaoToken.privateDaoProgramId ?? proof.programId;
+  const pdaoNetwork = proof.pdaoToken.network ?? "Devnet";
+
   assert(
-    metadata.attributes.some((entry) => entry.trait_type === "PrivateDAO Program ID" && entry.value === proof.programId),
+    metadata.attributes.some((entry) => entry.trait_type === "Network" && entry.value === pdaoNetwork),
+    "PDAO metadata is missing the expected network",
+  );
+  assert(
+    metadata.attributes.some((entry) => entry.trait_type === "PrivateDAO Program ID" && entry.value === privateDaoProgramId),
     "PDAO metadata is missing the canonical PrivateDAO program id",
   );
   assert(
@@ -73,7 +80,8 @@ function main() {
     proof.pdaoToken.tokenAccount,
     proof.pdaoToken.metadataUri,
     proof.verificationWallet,
-    `PrivateDAO governance program: \`${proof.programId}\``,
+    "Name: `PrivateDAO Governance Token`",
+    `PrivateDAO governance program: \`${privateDaoProgramId}\``,
     "Token-2022 program:",
     "Program Identity Boundary",
     "docs/assets/pdao-token.json",

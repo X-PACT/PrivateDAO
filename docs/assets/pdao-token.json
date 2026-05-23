@@ -1,13 +1,13 @@
 {
-  "name": "PDAO",
+  "name": "PrivateDAO Governance Token",
   "symbol": "PDAO",
-  "description": "PDAO is the Devnet governance voting token profile for PrivateDAO. It represents structured governance participation across proposal creation, commit-reveal voting, and treasury-sensitive decision flows without changing the deployed protocol interfaces.",
+  "description": "PDAO is the Testnet Token-2022 governance voting token profile for PrivateDAO. It represents structured governance participation across proposal creation, commit-reveal voting, and treasury-sensitive decision flows without changing the deployed protocol interfaces.",
   "image": "https://privatedao.org/assets/logo.png",
   "external_url": "https://privatedao.org/security/",
   "attributes": [
     {
       "trait_type": "Network",
-      "value": "Devnet"
+      "value": "Testnet"
     },
     {
       "trait_type": "Utility",
@@ -23,11 +23,11 @@
     },
     {
       "trait_type": "PrivateDAO Program ID",
-      "value": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx"
+      "value": "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva"
     },
     {
       "trait_type": "Mint",
-      "value": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt"
+      "value": "DFYvBdivHCe4bSErgCiKm2RhwGEcZYbBPFQzLNr37Bie"
     },
     {
       "trait_type": "Mint Authority",
@@ -35,7 +35,7 @@
     },
     {
       "trait_type": "Canonical Governance DAO",
-      "value": "FZV9KmpeY1B31XvszQypp5T6nQN5C44JDLM4QWBEDvhx"
+      "value": "FEz2hCLGpDhJ3cdAm5CCWFzrKv8vDDzmmt9UjdF2fApZ"
     }
   ],
   "properties": {

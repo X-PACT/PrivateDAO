@@ -822,16 +822,17 @@ Important security docs:
 
 ## Token Surface
 
-PrivateDAO preserves the Devnet PDAO governance-token evidence for reviewer continuity, while the governance program now has a preserved-id Testnet deployment and standard lifecycle proof.
+PrivateDAO now publishes a live Testnet PDAO Token-2022 governance mint for reviewer continuity and product execution. The older Devnet mint remains archived in [`docs/pdao-token.md`](docs/pdao-token.md) only as historical evidence.
 
 | Field | Value |
 | --- | --- |
-| Token | `PDAO` |
-| Network | Devnet |
+| Token | `PrivateDAO Governance Token` (`PDAO`) |
+| Network | Testnet |
 | Utility | Governance voting token |
 | Platform | DeAura |
-| Mint | `AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt` |
+| Mint | `DFYvBdivHCe4bSErgCiKm2RhwGEcZYbBPFQzLNr37Bie` |
 | Program | Token-2022 |
+| Token account | `CeXqKvdjrVYsPZEX2ysBNs6jubofEXEk4emE2qdS4pVg` |
 | Initial supply | `1,000,000 PDAO` |
 
 The current PrivateDAO governance program id is:
@@ -1040,7 +1041,7 @@ Ready now:
 
 - live Solana Testnet program and product surface
 - preserved-id Testnet deployment and standard lifecycle proof
-- preserved PDAO Devnet governance-token evidence
+- live PDAO Testnet Token-2022 governance-token evidence
 - full governance lifecycle evidence
 - Strict V2 additive hardening model
 - Devnet rehearsal and adversarial reports

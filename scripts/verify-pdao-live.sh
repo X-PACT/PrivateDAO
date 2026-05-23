@@ -8,18 +8,20 @@ MINT="$(node -e 'const proof=require("./docs/proof-registry.json"); process.stdo
 TOKEN_PROGRAM="$(node -e 'const proof=require("./docs/proof-registry.json"); process.stdout.write(proof.pdaoToken.programId)')"
 TOKEN_ACCOUNT="$(node -e 'const proof=require("./docs/proof-registry.json"); process.stdout.write(proof.pdaoToken.tokenAccount)')"
 METADATA_URI="$(node -e 'const proof=require("./docs/proof-registry.json"); process.stdout.write(proof.pdaoToken.metadataUri)')"
+TOKEN_NETWORK="$(node -e 'const proof=require("./docs/proof-registry.json"); process.stdout.write((proof.pdaoToken.network || "Devnet").toLowerCase())')"
 MINT_AUTHORITY_STATUS="$(node -e 'const proof=require("./docs/proof-registry.json"); process.stdout.write(proof.pdaoToken.mintAuthorityStatus || "")')"
-DISABLE_MINT_AUTHORITY_TX="$(node -e 'const proof=require("./docs/proof-registry.json"); process.stdout.write(proof.pdaoToken.transactions["disable-mint-authority"] || "")')"
+
+RPC_URL="https://api.${TOKEN_NETWORK}.solana.com"
 
 echo "[pdao-live] checking live mint account"
-solana account "$MINT" --output json >/dev/null
+solana account "$MINT" --url "$RPC_URL" --output json >/dev/null
 
 echo "[pdao-live] checking live token account"
-solana account "$TOKEN_ACCOUNT" --output json >/dev/null
+solana account "$TOKEN_ACCOUNT" --url "$RPC_URL" --output json >/dev/null
 
 echo "[pdao-live] checking token-2022 metadata"
 TMP_JSON="$(mktemp)"
-spl-token display --program-2022 "$MINT" --output json-compact >"$TMP_JSON"
+spl-token display --program-2022 "$MINT" --url "$RPC_URL" --output json-compact >"$TMP_JSON"
 node -e '
   const fs = require("fs");
   const body = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
@@ -33,7 +35,7 @@ node -e '
   if (body.address !== process.argv[3]) throw new Error("live PDAO mint mismatch");
   if (String(body.decimals) !== "9") throw new Error("live PDAO decimals mismatch");
   if (process.argv[5] === "disabled" && body.mintAuthority !== null) throw new Error("live PDAO mint authority should be disabled");
-  if (tokenMetadata.name !== "PDAO") throw new Error("live PDAO name mismatch");
+  if (tokenMetadata.name !== "PrivateDAO Governance Token") throw new Error("live PDAO name mismatch");
   if (tokenMetadata.symbol !== "PDAO") throw new Error("live PDAO symbol mismatch");
   if (tokenMetadata.uri !== process.argv[4]) {
     console.error(`[pdao-live] on-chain metadata URI: ${tokenMetadata.uri || "<missing>"}`);
@@ -49,12 +51,9 @@ echo "[pdao-live] checking published metadata asset"
 curl -fsSL "$METADATA_URI" >/dev/null
 
 echo "[pdao-live] checking finalized token transactions"
-solana confirm --url devnet 5zGeSePpx2q3dFTNBi8Vmn8ucd9B3jEW6MKqrCUWtQQa3FipwDPFVKRrAoWQhJagBVqKMfUcWxVfpA6Q2vymanA6 >/dev/null
-solana confirm --url devnet 45gM6Jo3SSbwxzqyGRSMhTmz47r8wsaAMikdkbSQ2AyoXMEA3JAJM9X6eufjwnKY5QYU6QCFTjAfR9cVExKu2rhn >/dev/null
-solana confirm --url devnet 4kgVoRGATdVAWVoYAYGqWnJBpDHiiRmFyQ3rgRz2uWEGdsx3Hosg5Ro7JGY7xSygD1vUUsGCduseCMWYx4MbXgur >/dev/null
-solana confirm --url devnet 7LF3U3kooWfnRwaziceyRzKrHKhFQ6q6hfYeR6vU5gudjTPKYbw6kmXCxvvfurnQBnCBTCWH54rabcDqx1TBbLA >/dev/null
-if [[ -n "$DISABLE_MINT_AUTHORITY_TX" ]]; then
-  solana confirm --url devnet "$DISABLE_MINT_AUTHORITY_TX" >/dev/null
-fi
+while IFS= read -r tx; do
+  [[ -z "$tx" ]] && continue
+  solana confirm --url "$RPC_URL" "$tx" >/dev/null
+done < <(node -e 'const proof=require("./docs/proof-registry.json"); console.log(Object.values(proof.pdaoToken.transactions).filter(Boolean).join("\n"))')
 
 echo "[pdao-live] PASS"

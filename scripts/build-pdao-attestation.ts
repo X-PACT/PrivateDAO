@@ -33,12 +33,12 @@ function main() {
 
   const attestation = {
     project: "PrivateDAO",
-    privateDaoProgramId: proof.programId,
+    privateDaoProgramId: proof.pdaoToken.privateDaoProgramId ?? proof.programId,
     verificationWallet: proof.verificationWallet,
     pdaoToken: {
       name: metadata.name,
       symbol: metadata.symbol,
-      network: "Devnet",
+      network: proof.pdaoToken.network ?? "Devnet",
       utility: "Governance Voting Token",
       platform: "DeAura",
       mint: proof.pdaoToken.mint,
@@ -56,7 +56,7 @@ function main() {
       transactionLabels: Object.keys(proof.pdaoToken.transactions),
     },
     programBoundary: {
-      privateDaoProgramId: proof.programId,
+      privateDaoProgramId: proof.pdaoToken.privateDaoProgramId ?? proof.programId,
       tokenProgramId: proof.pdaoToken.programId,
       explanation:
         "PrivateDAO has one canonical governance program id. The separate Token-2022 program id belongs to the PDAO mint surface and is expected.",

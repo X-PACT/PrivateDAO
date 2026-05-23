@@ -19,6 +19,8 @@ export type ProofRegistry = {
     }>;
   };
   pdaoToken?: {
+    network?: string;
+    privateDaoProgramId?: string;
     mint: string;
     programId: string;
     tokenAccount: string;

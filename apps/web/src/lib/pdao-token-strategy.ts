@@ -30,7 +30,7 @@ export type PdaoTokenStrategySnapshot = {
 const sharedSnapshot = {
   boundary:
     "PDAO is preserved Testnet governance-token evidence attached to the current PrivateDAO Testnet path. It is not presented as a public mainnet payment coin or speculative market token.",
-  mint: "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
+  mint: "DFYvBdivHCe4bSErgCiKm2RhwGEcZYbBPFQzLNr37Bie",
   network: "Solana Testnet",
   tokenProgram: "Token-2022",
   supply: "1,000,000 PDAO",
@@ -40,7 +40,7 @@ const sharedSnapshot = {
     {
       label: "Governance participation",
       detail:
-        "PDAO is the live governance mint for the canonical reviewer-facing Testnet DAO and anchors proposal participation and voting.",
+        "PDAO is the live Token-2022 governance mint for the canonical reviewer-facing Testnet path and anchors proposal participation and voting.",
     },
     {
       label: "Proposal discipline",

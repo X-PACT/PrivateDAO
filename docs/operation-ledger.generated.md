@@ -1,7 +1,7 @@
 # Operation Ledger
 
 - project: `PrivateDAO`
-- generated at: `2026-05-22T23:59:09.627Z`
+- generated at: `2026-05-23T00:13:56.189Z`
 - purpose: Machine-readable operation ledger for custody, ZK, and REFHE/FHE evidence surfaced on the reviewer site.
 
 ## Entries
@@ -45,6 +45,22 @@
 - verification:
   - `node --import tsx ./node_modules/mocha/bin/mocha --timeout 20000 --exit test/unit/anonymous-governance-primitive.unit.ts`
   - `npm run zk:verify:sample`
+
+### PDAO Token-2022 governance mint is live on Solana Testnet with disabled mint authority
+
+- id: `pdao-token-2022-testnet`
+- lane: `runtime`
+- status: `verified`
+- evidence:
+  - `docs/pdao-token.md`
+  - `docs/pdao-attestation.generated.json`
+  - `docs/assets/pdao-token.json`
+  - `docs/proof-registry.json`
+- verification:
+  - `spl-token display --program-2022 DFYvBdivHCe4bSErgCiKm2RhwGEcZYbBPFQzLNr37Bie --url https://api.testnet.solana.com --output json-compact`
+  - `npm run verify:pdao-surface`
+  - `npm run verify:pdao-attestation`
+  - `npm run verify:pdao-live`
 
 ### ZK-enforced runtime captures remain machine-tracked until wallet evidence closes them
 

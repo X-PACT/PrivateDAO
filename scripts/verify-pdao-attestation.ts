@@ -54,11 +54,14 @@ function main() {
   const metadataBody = fs.readFileSync(metadataPath);
 
   assert(attestation.project === "PrivateDAO", "PDAO attestation project mismatch");
-  assert(attestation.privateDaoProgramId === proof.programId, "PDAO attestation governance program mismatch");
+  const privateDaoProgramId = proof.pdaoToken.privateDaoProgramId ?? proof.programId;
+  const pdaoNetwork = proof.pdaoToken.network ?? "Devnet";
+
+  assert(attestation.privateDaoProgramId === privateDaoProgramId, "PDAO attestation governance program mismatch");
   assert(attestation.verificationWallet === proof.verificationWallet, "PDAO attestation verification wallet mismatch");
-  assert(attestation.pdaoToken.name === "PDAO", "PDAO attestation name mismatch");
+  assert(attestation.pdaoToken.name === "PrivateDAO Governance Token", "PDAO attestation name mismatch");
   assert(attestation.pdaoToken.symbol === "PDAO", "PDAO attestation symbol mismatch");
-  assert(attestation.pdaoToken.network === "Devnet", "PDAO attestation network mismatch");
+  assert(attestation.pdaoToken.network === pdaoNetwork, "PDAO attestation network mismatch");
   assert(attestation.pdaoToken.utility === "Governance Voting Token", "PDAO attestation utility mismatch");
   assert(attestation.pdaoToken.platform === "DeAura", "PDAO attestation platform mismatch");
   assert(attestation.pdaoToken.mint === proof.pdaoToken.mint, "PDAO attestation mint mismatch");
@@ -72,7 +75,7 @@ function main() {
   assert(attestation.pdaoToken.image === "https://privatedao.org/assets/logo.png", "PDAO attestation image mismatch");
   assert(attestation.pdaoToken.externalUrl === "https://privatedao.org/security/", "PDAO attestation external URL mismatch");
   assert(attestation.pdaoToken.transactionLabels.length >= 4, "PDAO attestation transaction labels are incomplete");
-  assert(attestation.programBoundary.privateDaoProgramId === proof.programId, "PDAO attestation program boundary governance mismatch");
+  assert(attestation.programBoundary.privateDaoProgramId === privateDaoProgramId, "PDAO attestation program boundary governance mismatch");
   assert(attestation.programBoundary.tokenProgramId === proof.pdaoToken.programId, "PDAO attestation program boundary token mismatch");
   assert(attestation.programBoundary.explanation.includes("Token-2022"), "PDAO attestation boundary explanation is incomplete");
 

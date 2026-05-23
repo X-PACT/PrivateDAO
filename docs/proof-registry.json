@@ -30,20 +30,22 @@
     ]
   },
   "pdaoToken": {
-    "mint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
+    "network": "Testnet",
+    "privateDaoProgramId": "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva",
+    "mint": "DFYvBdivHCe4bSErgCiKm2RhwGEcZYbBPFQzLNr37Bie",
     "programId": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
-    "tokenAccount": "F4q77ZMJdC7eoEUw3CCR7DbKGTggyExjuMGKBEiM2ct4",
+    "tokenAccount": "CeXqKvdjrVYsPZEX2ysBNs6jubofEXEk4emE2qdS4pVg",
     "metadataUri": "https://privatedao.org/assets/pdao-token.json",
     "decimals": 9,
     "supplyUi": "1000000",
     "mintAuthorityStatus": "disabled",
-    "canonicalGovernanceDao": "FZV9KmpeY1B31XvszQypp5T6nQN5C44JDLM4QWBEDvhx",
+    "canonicalGovernanceDao": "FEz2hCLGpDhJ3cdAm5CCWFzrKv8vDDzmmt9UjdF2fApZ",
     "transactions": {
-      "create-token": "5zGeSePpx2q3dFTNBi8Vmn8ucd9B3jEW6MKqrCUWtQQa3FipwDPFVKRrAoWQhJagBVqKMfUcWxVfpA6Q2vymanA6",
-      "create-account": "45gM6Jo3SSbwxzqyGRSMhTmz47r8wsaAMikdkbSQ2AyoXMEA3JAJM9X6eufjwnKY5QYU6QCFTjAfR9cVExKu2rhn",
-      "initialize-metadata": "4kgVoRGATdVAWVoYAYGqWnJBpDHiiRmFyQ3rgRz2uWEGdsx3Hosg5Ro7JGY7xSygD1vUUsGCduseCMWYx4MbXgur",
-      "mint-initial-supply": "7LF3U3kooWfnRwaziceyRzKrHKhFQ6q6hfYeR6vU5gudjTPKYbw6kmXCxvvfurnQBnCBTCWH54rabcDqx1TBbLA",
-      "disable-mint-authority": "dnv2vXPkFRM5fd42vgA4Cjkx85UCDTvFssYcS97ArZFQNGRVDd3DRzAUuvUVX1QFUAYcTpayJhbnomLCgjp2jj2"
+      "create-token": "5hYpAkcK7h7sQBP8zCtejDi4F6z7wiurbuqDvgFbGNqjB6bPVu9BGab7iXiXUbBqLYT71VjCPwRjNyeVhqU7sCVE",
+      "initialize-metadata": "5uH1aCevn3GCcrzAUdtWxdQ8e8DngYsFB49nQxNvebB9abzGaMR4e3i2V18jophnuaHEaYGwxgFVUKYJ5cn7jWKN",
+      "create-account": "4TX4uB1YDYFPqyqA3krngaPNA8XWffWBU5gq5bEjAmWg7kv1ZoVFiZ8SdKyQewJGR2GqNxnj6fyYvzFMHs4EuizA",
+      "mint-initial-supply": "2aCsyLrFy2myKd4YR1Sqg6SigvH2F6ivaw86CnRDtHUPoAAFeENkVCAKLVbZM9rsKaH7tPsmWc8JsjMN5G6KB4To",
+      "disable-mint-authority": "2qFb2dKVEmD2hzmN9d6bajHuxLrk5aqKBvqM1Xb71VNTCfY39XgVV49koPigjoa2Vn41PNMmhp7qxK5KMBxNYvj4"
     }
   },
   "transactions": {

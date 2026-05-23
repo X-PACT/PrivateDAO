@@ -20,7 +20,7 @@ export type TrackTechnicalFit = {
 const coreIdentity = [
   { label: "Program ID", value: "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva" },
   { label: "Verification Wallet", value: "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD" },
-  { label: "Governance Mint", value: "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt" },
+  { label: "Governance Mint", value: "DFYvBdivHCe4bSErgCiKm2RhwGEcZYbBPFQzLNr37Bie" },
   { label: "Token Program", value: "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb" },
 ];
 
