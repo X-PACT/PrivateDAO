@@ -6,8 +6,7 @@ const ALT_BN128_PAIRING: u64 = 3;
 const ALT_BN128_PAIRING_ELEMENT_LEN: usize = 192;
 const ALT_BN128_PAIRING_OUTPUT_LEN: usize = 32;
 const PAIRING_TRUE: [u8; ALT_BN128_PAIRING_OUTPUT_LEN] = [
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 ];
 
 #[program]

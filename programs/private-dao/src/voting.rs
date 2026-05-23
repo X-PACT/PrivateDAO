@@ -1,7 +1,7 @@
 use anchor_lang::prelude::{Clock, Context, Pubkey, Rent, Result};
 
-use crate::*;
 use crate::utils::*;
+use crate::*;
 
 pub fn create_proposal(
     ctx: Context<CreateProposal>,
@@ -147,7 +147,10 @@ pub fn commit_vote(
     require!(raw > 0, Error::InsufficientTokens);
 
     if dao.governance_token_required > 0 {
-        require!(raw >= dao.governance_token_required, Error::InsufficientTokens);
+        require!(
+            raw >= dao.governance_token_required,
+            Error::InsufficientTokens
+        );
     }
     require!(
         !account_exists(&ctx.accounts.delegation_marker.to_account_info()),
@@ -194,7 +197,10 @@ pub fn delegate_vote(ctx: Context<DelegateVote>, delegatee: Pubkey) -> Result<()
     let raw = ctx.accounts.delegator_token_account.amount;
     require!(raw > 0, Error::InsufficientTokens);
     if dao.governance_token_required > 0 {
-        require!(raw >= dao.governance_token_required, Error::InsufficientTokens);
+        require!(
+            raw >= dao.governance_token_required,
+            Error::InsufficientTokens
+        );
     }
     require!(
         !account_exists(&ctx.accounts.direct_vote_marker.to_account_info()),
@@ -395,8 +401,7 @@ pub fn reveal_vote_v3(ctx: Context<RevealVoteV3>, vote: bool, salt: [u8; 32]) ->
             .ok_or(Error::Overflow)?;
         if vault_lamports > rebate_floor {
             **vault_info.try_borrow_mut_lamports()? -= snapshot.reveal_rebate_lamports;
-            **ctx.accounts.revealer.try_borrow_mut_lamports()? +=
-                snapshot.reveal_rebate_lamports;
+            **ctx.accounts.revealer.try_borrow_mut_lamports()? += snapshot.reveal_rebate_lamports;
             rebate_issued = snapshot.reveal_rebate_lamports;
         }
     }
@@ -413,7 +418,10 @@ pub fn reveal_vote_v3(ctx: Context<RevealVoteV3>, vote: bool, salt: [u8; 32]) ->
 
 pub fn finalize_proposal(ctx: Context<FinalizeProposal>) -> Result<()> {
     let now = Clock::get()?.unix_timestamp;
-    require!(now >= ctx.accounts.proposal.reveal_end, Error::RevealStillOpen);
+    require!(
+        now >= ctx.accounts.proposal.reveal_end,
+        Error::RevealStillOpen
+    );
     require!(
         ctx.accounts.proposal.status == ProposalStatus::Voting,
         Error::AlreadyFinalized
@@ -423,7 +431,10 @@ pub fn finalize_proposal(ctx: Context<FinalizeProposal>) -> Result<()> {
 
 pub fn finalize_proposal_v3(ctx: Context<FinalizeProposalV3>) -> Result<()> {
     let now = Clock::get()?.unix_timestamp;
-    require!(now >= ctx.accounts.proposal.reveal_end, Error::RevealStillOpen);
+    require!(
+        now >= ctx.accounts.proposal.reveal_end,
+        Error::RevealStillOpen
+    );
     require!(
         ctx.accounts.proposal.status == ProposalStatus::Voting,
         Error::AlreadyFinalized

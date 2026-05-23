@@ -1,8 +1,8 @@
 use anchor_lang::prelude::{Clock, Context, Pubkey, Result};
 use anchor_lang::system_program::{transfer, Transfer};
 
-use crate::*;
 use crate::utils::*;
+use crate::*;
 
 pub fn anchor_zk_proof(
     ctx: Context<AnchorZkProof>,
@@ -73,10 +73,7 @@ pub fn verify_zk_proof_on_chain(
             verifier == ctx.accounts.dao.authority,
             Error::UnauthorizedZkVerifier
         );
-        require!(
-            verifier_program.is_some(),
-            Error::ZkVerifierProgramRequired
-        );
+        require!(verifier_program.is_some(), Error::ZkVerifierProgramRequired);
     } else {
         require!(
             verifier == ctx.accounts.dao.authority || verifier == ctx.accounts.proposal.proposer,
@@ -161,8 +158,7 @@ pub fn configure_proposal_zk_mode(
     let policy_initialized = policy.proposal != Pubkey::default();
     if policy_initialized {
         require!(
-            policy.dao == ctx.accounts.dao.key()
-                && policy.proposal == ctx.accounts.proposal.key(),
+            policy.dao == ctx.accounts.dao.key() && policy.proposal == ctx.accounts.proposal.key(),
             Error::ZkVerificationReceiptMismatch
         );
         require!(
@@ -470,7 +466,8 @@ pub fn record_proof_verification_v2(
         Error::InvalidZkArtifactHash
     );
     require!(
-        domain_separator == proof_domain_separator(&ctx.accounts.dao.key(), &ctx.accounts.proposal.key()),
+        domain_separator
+            == proof_domain_separator(&ctx.accounts.dao.key(), &ctx.accounts.proposal.key()),
         Error::PayloadHashMismatch
     );
     require!(
@@ -538,9 +535,7 @@ pub fn record_proof_verification_v2(
     Ok(())
 }
 
-pub fn finalize_zk_enforced_proposal_v2(
-    ctx: Context<FinalizeZkEnforcedProposalV2>,
-) -> Result<()> {
+pub fn finalize_zk_enforced_proposal_v2(ctx: Context<FinalizeZkEnforcedProposalV2>) -> Result<()> {
     let now = Clock::get()?.unix_timestamp;
     let policy_snapshot = &ctx.accounts.proposal_execution_policy_snapshot;
     let verification = &ctx.accounts.proposal_proof_verification;
@@ -563,7 +558,10 @@ pub fn finalize_zk_enforced_proposal_v2(
         verification.status == VerificationStatus::Verified,
         Error::ProofVerificationNotVerified
     );
-    require!(now <= verification.expires_at, Error::StaleProofVerification);
+    require!(
+        now <= verification.expires_at,
+        Error::StaleProofVerification
+    );
     require!(
         verification.payload_hash
             == canonical_proposal_payload_hash(
@@ -586,9 +584,7 @@ pub fn finalize_zk_enforced_proposal_v2(
     finalize_proposal_state(&ctx.accounts.dao, &mut ctx.accounts.proposal, now)
 }
 
-pub fn finalize_zk_enforced_proposal_v3(
-    ctx: Context<FinalizeZkEnforcedProposalV3>,
-) -> Result<()> {
+pub fn finalize_zk_enforced_proposal_v3(ctx: Context<FinalizeZkEnforcedProposalV3>) -> Result<()> {
     let now = Clock::get()?.unix_timestamp;
     let policy_snapshot = &ctx.accounts.proposal_execution_policy_snapshot;
     let governance_snapshot = &ctx.accounts.proposal_governance_policy_snapshot_v3;
@@ -617,7 +613,10 @@ pub fn finalize_zk_enforced_proposal_v3(
         verification.status == VerificationStatus::Verified,
         Error::ProofVerificationNotVerified
     );
-    require!(now <= verification.expires_at, Error::StaleProofVerification);
+    require!(
+        now <= verification.expires_at,
+        Error::StaleProofVerification
+    );
     require!(
         verification.payload_hash
             == canonical_proposal_payload_hash(

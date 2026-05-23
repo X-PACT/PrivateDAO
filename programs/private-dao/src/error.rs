@@ -40,10 +40,16 @@ pub enum Error {
     InsufficientTokens,
     #[msg("Not authorized to reveal this vote")]
     NotAuthorizedToReveal,
-    #[msg("New DAO authority must differ from the current authority and cannot be the default pubkey")]
+    #[msg(
+        "New DAO authority must differ from the current authority and cannot be the default pubkey"
+    )]
     InvalidDaoAuthorityTransfer,
     #[msg("Only the current DAO authority may transfer DAO operating authority")]
     UnauthorizedDaoAuthorityTransfer,
+    #[msg("New treasury operator authority must differ from the current authority and cannot be the default pubkey")]
+    InvalidTreasuryOperatorAuthorityTransfer,
+    #[msg("Only the current treasury operator authority may transfer treasury operator authority")]
+    UnauthorizedTreasuryOperatorAuthorityTransfer,
     #[msg("Threshold must be 1–100")]
     InvalidThreshold,
     #[msg("Arithmetic overflow")]

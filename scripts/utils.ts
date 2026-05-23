@@ -193,6 +193,13 @@ export function deriveDaoSettlementPolicyV3Pda(dao: PublicKey, programId: Public
   )[0];
 }
 
+export function deriveTreasuryOperatorAuthorityPda(dao: PublicKey, programId: PublicKey): PublicKey {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("treasury-operator-authority"), dao.toBuffer()],
+    programId,
+  )[0];
+}
+
 export function deriveProposalExecutionPolicySnapshotPda(proposal: PublicKey, programId: PublicKey): PublicKey {
   return PublicKey.findProgramAddressSync(
     [Buffer.from("proposal-policy-snapshot"), proposal.toBuffer()],

@@ -2,11 +2,11 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token_interface::{Mint, TokenAccount, TokenInterface};
 
-mod error;
 mod dao;
+mod error;
 mod privacy;
-mod treasury;
 mod traits;
+mod treasury;
 mod utils;
 mod voting;
 
@@ -133,6 +133,19 @@ pub mod private_dao {
         new_authority: Pubkey,
     ) -> Result<()> {
         dao::transfer_dao_authority(ctx, new_authority)
+    }
+
+    pub fn initialize_treasury_operator_authority(
+        ctx: Context<InitializeTreasuryOperatorAuthority>,
+    ) -> Result<()> {
+        dao::initialize_treasury_operator_authority(ctx)
+    }
+
+    pub fn transfer_treasury_operator_authority(
+        ctx: Context<TransferTreasuryOperatorAuthority>,
+        new_authority: Pubkey,
+    ) -> Result<()> {
+        dao::transfer_treasury_operator_authority(ctx, new_authority)
     }
 
     // ── Additive V2 security policy ──────────────────────────────────────────
@@ -602,12 +615,7 @@ pub mod private_dao {
         verification_mode: ZkVerificationMode,
         verifier_program: Option<Pubkey>,
     ) -> Result<()> {
-        privacy::verify_zk_proof_on_chain(
-            ctx,
-            layer,
-            verification_mode,
-            verifier_program,
-        )
+        privacy::verify_zk_proof_on_chain(ctx, layer, verification_mode, verifier_program)
     }
 
     pub fn configure_proposal_zk_mode(
@@ -732,6 +740,37 @@ pub struct TransferDaoAuthority<'info> {
         constraint = dao.authority == authority.key() @ Error::UnauthorizedDaoAuthorityTransfer
     )]
     pub dao: Account<'info, Dao>,
+    pub authority: Signer<'info>,
+}
+
+#[derive(Accounts)]
+pub struct InitializeTreasuryOperatorAuthority<'info> {
+    #[account(has_one = authority)]
+    pub dao: Account<'info, Dao>,
+    #[account(
+        init_if_needed,
+        payer = authority,
+        space = TreasuryOperatorAuthority::LEN,
+        seeds = [b"treasury-operator-authority", dao.key().as_ref()],
+        bump
+    )]
+    pub treasury_operator_authority: Account<'info, TreasuryOperatorAuthority>,
+    #[account(mut)]
+    pub authority: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct TransferTreasuryOperatorAuthority<'info> {
+    pub dao: Account<'info, Dao>,
+    #[account(
+        mut,
+        seeds = [b"treasury-operator-authority", dao.key().as_ref()],
+        bump = treasury_operator_authority.bump,
+        constraint = treasury_operator_authority.dao == dao.key() @ Error::UnauthorizedTreasuryOperatorAuthorityTransfer,
+        constraint = treasury_operator_authority.authority == authority.key() @ Error::UnauthorizedTreasuryOperatorAuthorityTransfer
+    )]
+    pub treasury_operator_authority: Account<'info, TreasuryOperatorAuthority>,
     pub authority: Signer<'info>,
 }
 
@@ -2074,6 +2113,19 @@ impl Dao {
 }
 
 #[account]
+pub struct TreasuryOperatorAuthority {
+    pub dao: Pubkey,       // 32
+    pub authority: Pubkey, // 32
+    pub created_at: i64,   // 8
+    pub updated_at: i64,   // 8
+    pub bump: u8,          // 1
+}
+
+impl TreasuryOperatorAuthority {
+    pub const LEN: usize = 8 + 32 + 32 + 8 + 8 + 1;
+}
+
+#[account]
 pub struct Proposal {
     pub dao: Pubkey,                             // 32
     pub proposer: Pubkey,                        // 32
@@ -2552,6 +2604,21 @@ pub struct DaoAuthorityTransferred {
     pub dao: Pubkey,
     pub previous_authority: Pubkey,
     pub new_authority: Pubkey,
+}
+
+#[event]
+pub struct TreasuryOperatorAuthorityInitialized {
+    pub dao: Pubkey,
+    pub authority: Pubkey,
+    pub created_at: i64,
+}
+
+#[event]
+pub struct TreasuryOperatorAuthorityTransferred {
+    pub dao: Pubkey,
+    pub previous_authority: Pubkey,
+    pub new_authority: Pubkey,
+    pub updated_at: i64,
 }
 
 #[event]

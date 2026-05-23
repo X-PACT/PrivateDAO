@@ -46,10 +46,10 @@ const curatedDocuments: CuratedDocument[] = [
     title: "DAO And Treasury Authority Handoff",
     category: "Custody",
     summary:
-      "Reviewer-safe custody packet showing the live Squads upgrade-authority transfer, the latest Testnet DAO readout, the derived treasury PDA, and the code-ready DAO authority handoff path.",
+      "Reviewer-safe custody packet showing the live Squads upgrade-authority transfer, the latest Testnet DAO readout, the derived treasury PDA, and the executable DAO plus treasury-operator authority handoff path.",
     audience: "Judges, security reviewers, operators, ecosystem partners",
     boundary:
-      "Custody evidence packet only; it states that DAO operating authority transfer is code-ready and requires a Squads-governed program upgrade before a live Testnet transfer can be claimed.",
+      "Custody evidence packet only; DAO and treasury-operator authority transfers become live claims only after the Squads-governed upgrade executes and the post-transfer signatures/readouts are recorded.",
     docPath: "docs/dao-treasury-authority-handoff-2026-05-23.md",
     rawHref: `${repositoryBlobBase}/docs/dao-treasury-authority-handoff-2026-05-23.md`,
   },

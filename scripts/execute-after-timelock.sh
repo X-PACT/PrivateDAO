@@ -19,7 +19,8 @@ if [[ "${EXECUTE_TIMELOCK}" != "1" ]]; then
   echo "Planned commands:"
   echo "squads-cli vault-transaction execute --multisig ${MULTISIG} --vault ${VAULT} --transaction-index ${PROPOSAL_INDEX} --cluster testnet"
   echo "npm run transfer:dao-authority -- --dao <DAO_PDA> --new-authority ${VAULT}"
-  echo "Treasury SOL/SPL execution is proposal/PDA-bound in the current Anchor program; no separate transfer_treasury_authority instruction exists in this build."
+  echo "npm run initialize:treasury-operator-authority -- --dao <DAO_PDA>"
+  echo "npm run transfer:treasury-operator-authority -- --dao <DAO_PDA> --new-authority ${VAULT}"
   echo "Record the resulting tx/readout in docs/multisig-setup-intake.json or the custody intake flow."
   exit 0
 fi
@@ -39,4 +40,6 @@ fi
 solana config set --url "${CLUSTER}"
 squads-cli vault-transaction execute --multisig "${MULTISIG}" --vault "${VAULT}" --transaction-index "${PROPOSAL_INDEX}" --cluster testnet
 npm run transfer:dao-authority -- --dao "${DAO_PDA}" --new-authority "${VAULT}"
-echo "Done. Squads upgrade execution and DAO authority handoff submitted. Record signatures and post-transfer readouts before changing custody gates."
+npm run initialize:treasury-operator-authority -- --dao "${DAO_PDA}"
+npm run transfer:treasury-operator-authority -- --dao "${DAO_PDA}" --new-authority "${VAULT}"
+echo "Done. Squads upgrade execution, DAO authority handoff, and treasury operator authority handoff submitted. Record signatures and post-transfer readouts before changing custody gates."

@@ -107,6 +107,8 @@
     "inspect:zk-proposal": "ts-node scripts/inspect-zk-proposal.ts",
     "execute": "ts-node scripts/execute.ts",
     "transfer:dao-authority": "ts-node scripts/transfer-dao-authority.ts",
+    "initialize:treasury-operator-authority": "ts-node scripts/initialize-treasury-operator-authority.ts",
+    "transfer:treasury-operator-authority": "ts-node scripts/transfer-treasury-operator-authority.ts",
     "run:agentic-micropayment-rail": "ts-node scripts/run-agentic-treasury-micropayment-rail.ts",
     "live-proof": "npm run live-proof:testnet",
     "live-proof:v3": "ts-node scripts/live-devnet-proof-v3.ts",

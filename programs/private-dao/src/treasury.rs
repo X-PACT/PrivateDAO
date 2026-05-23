@@ -2,8 +2,8 @@ use anchor_lang::prelude::{Clock, Context, Pubkey, Result};
 use anchor_lang::system_program::{transfer, Transfer};
 use anchor_spl::token_interface::{self as token_interface, Transfer as TokenTransfer};
 
-use crate::*;
 use crate::utils::*;
+use crate::*;
 
 pub fn configure_confidential_payout_plan(
     ctx: Context<ConfigureConfidentialPayoutPlan>,
@@ -425,7 +425,10 @@ pub fn execute_proposal(ctx: Context<ExecuteProposal>) -> Result<()> {
 
     require!(p.status == ProposalStatus::Passed, Error::ProposalNotPassed);
     require!(!p.is_executed, Error::AlreadyExecuted);
-    require!(now >= p.execution_unlocks_at, Error::ExecutionTimelockActive);
+    require!(
+        now >= p.execution_unlocks_at,
+        Error::ExecutionTimelockActive
+    );
     require!(
         !account_exists(&ctx.accounts.confidential_payout_plan),
         Error::UseConfidentialPayoutExecution
@@ -535,15 +538,16 @@ pub fn execute_proposal(ctx: Context<ExecuteProposal>) -> Result<()> {
     Ok(())
 }
 
-pub fn execute_confidential_payout_plan(
-    ctx: Context<ExecuteConfidentialPayoutPlan>,
-) -> Result<()> {
+pub fn execute_confidential_payout_plan(ctx: Context<ExecuteConfidentialPayoutPlan>) -> Result<()> {
     let now = Clock::get()?.unix_timestamp;
     let p = &mut ctx.accounts.proposal;
 
     require!(p.status == ProposalStatus::Passed, Error::ProposalNotPassed);
     require!(!p.is_executed, Error::AlreadyExecuted);
-    require!(now >= p.execution_unlocks_at, Error::ExecutionTimelockActive);
+    require!(
+        now >= p.execution_unlocks_at,
+        Error::ExecutionTimelockActive
+    );
     require!(
         p.treasury_action.is_none(),
         Error::ConfidentialPayoutConflictsWithTreasuryAction
@@ -586,7 +590,11 @@ pub fn execute_confidential_payout_plan(
             *ctx.accounts.magicblock_private_payment_corridor.owner == crate::ID,
             Error::MagicBlockCorridorMismatch
         );
-        let mut data: &[u8] = &ctx.accounts.magicblock_private_payment_corridor.data.borrow();
+        let mut data: &[u8] = &ctx
+            .accounts
+            .magicblock_private_payment_corridor
+            .data
+            .borrow();
         let corridor = MagicBlockPrivatePaymentCorridor::try_deserialize(&mut data)
             .map_err(|_| error!(Error::MagicBlockCorridorMismatch))?;
         require!(
@@ -760,7 +768,10 @@ pub fn execute_confidential_payout_plan_v2(
     let p = &mut ctx.accounts.proposal;
     require!(p.status == ProposalStatus::Passed, Error::ProposalNotPassed);
     require!(!p.is_executed, Error::AlreadyExecuted);
-    require!(now >= p.execution_unlocks_at, Error::ExecutionTimelockActive);
+    require!(
+        now >= p.execution_unlocks_at,
+        Error::ExecutionTimelockActive
+    );
     require!(
         p.treasury_action.is_none(),
         Error::ConfidentialPayoutConflictsWithTreasuryAction
@@ -938,7 +949,10 @@ pub fn execute_confidential_payout_plan_v3(
     let p = &mut ctx.accounts.proposal;
     require!(p.status == ProposalStatus::Passed, Error::ProposalNotPassed);
     require!(!p.is_executed, Error::AlreadyExecuted);
-    require!(now >= p.execution_unlocks_at, Error::ExecutionTimelockActive);
+    require!(
+        now >= p.execution_unlocks_at,
+        Error::ExecutionTimelockActive
+    );
     require!(
         p.treasury_action.is_none(),
         Error::ConfidentialPayoutConflictsWithTreasuryAction
@@ -997,7 +1011,11 @@ pub fn execute_confidential_payout_plan_v3(
             *ctx.accounts.magicblock_private_payment_corridor.owner == crate::ID,
             Error::MagicBlockCorridorMismatch
         );
-        let mut data: &[u8] = &ctx.accounts.magicblock_private_payment_corridor.data.borrow();
+        let mut data: &[u8] = &ctx
+            .accounts
+            .magicblock_private_payment_corridor
+            .data
+            .borrow();
         let corridor = MagicBlockPrivatePaymentCorridor::try_deserialize(&mut data)
             .map_err(|_| error!(Error::MagicBlockCorridorMismatch))?;
         require!(

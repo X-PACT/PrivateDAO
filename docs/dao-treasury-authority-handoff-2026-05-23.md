@@ -2,7 +2,7 @@
 
 Date: 2026-05-23
 
-This note records the exact custody state after the Squads Testnet program-upgrade transfer and the code-level remediation added for DAO operating authority.
+This note records the exact custody state after the Squads Testnet program-upgrade transfer and the code-level remediation added for DAO operating authority plus the new Treasury Operator Authority PDA.
 
 ## Verified Live Custody State
 
@@ -30,11 +30,37 @@ The program now includes `transfer_dao_authority(new_authority)` guarded by the 
 
 This authority is the operator authority for security policy, ZK-enforced mode, confidential payout configuration, REFHE envelopes, and MagicBlock settlement corridors. SOL/SPL treasury movement remains proposal/PDA-bound; the treasury PDA is derived from the DAO and is not a standalone signer key that can be "moved" like a wallet.
 
+The program now also includes a separate `TreasuryOperatorAuthority` account:
+
+- PDA seeds: `["treasury-operator-authority", dao]`
+- Initializer: `initialize_treasury_operator_authority()`
+- Transfer instruction: `transfer_treasury_operator_authority(new_authority)`
+- Transfer guard: current `TreasuryOperatorAuthority.authority` must sign
+- Event: `TreasuryOperatorAuthorityTransferred`
+
+This turns the previous runbook boundary into executable protocol state. The post-timelock closure now creates the treasury operator authority PDA and transfers it to the Squads vault, producing an on-chain signature and readout that can be recorded in custody evidence.
+
+## Operator Commands
+
+Dry-run the full post-timelock sequence:
+
+```bash
+scripts/execute-after-timelock.sh
+```
+
+After the Squads timelock releases, set the target DAO and execute:
+
+```bash
+EXECUTE_TIMELOCK=1 DAO_PDA=<DAO_PDA> scripts/execute-after-timelock.sh
+```
+
+The sequence executes the Squads upgrade proposal, transfers DAO operating authority to the Squads vault, initializes the treasury operator authority PDA, then transfers treasury operator authority to the same Squads vault.
+
 ## PDA Continuity Fix
 
 `CreateProposal` previously constrained the DAO account with seeds that included `dao.authority`. That made authority rotation unsafe: once authority changed, existing DAO PDA validation would no longer match the original seed authority.
 
-The fix removes authority-derived PDA validation from `CreateProposal` and keeps proposal creation bound to a program-owned `Dao` account plus governance-token ownership constraints. A regression test now transfers DAO authority and then creates a proposal against the same DAO.
+The fix removes authority-derived PDA validation from `CreateProposal` and keeps proposal creation bound to a program-owned `Dao` account plus governance-token ownership constraints. A regression test now transfers DAO authority and then creates a proposal against the same DAO. A second regression test initializes and transfers the treasury operator authority PDA independently.
 
 ## Deployment Boundary
 
@@ -44,6 +70,8 @@ The live Testnet program is now upgrade-controlled by Squads. That is the desire
 2. Create a Squads upgrade proposal from the 2-of-3 multisig.
 3. Execute the upgrade after threshold approval and timelock.
 4. Call `transfer_dao_authority` on the target DAO.
-5. Record the resulting `DaoAuthorityTransferred` signature in custody evidence.
+5. Call `initialize_treasury_operator_authority` on the target DAO.
+6. Call `transfer_treasury_operator_authority` to the Squads vault.
+7. Record the resulting `DaoAuthorityTransferred` and `TreasuryOperatorAuthorityTransferred` signatures in custody evidence.
 
-No document should claim the DAO operating authority has already moved on Testnet until steps 3-5 are complete.
+No document should claim the DAO operating authority or treasury operator authority has already moved on Testnet until the corresponding post-timelock signatures and readouts are recorded.

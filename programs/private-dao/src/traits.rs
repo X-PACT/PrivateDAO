@@ -30,7 +30,9 @@ impl ProposalLifecycle for Proposal {
     }
 
     fn is_execution_ready_at(&self, now: i64) -> bool {
-        self.status == ProposalStatus::Passed && now >= self.execution_unlocks_at && !self.is_executed
+        self.status == ProposalStatus::Passed
+            && now >= self.execution_unlocks_at
+            && !self.is_executed
     }
 }
 

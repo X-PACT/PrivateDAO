@@ -1285,6 +1285,74 @@ describe("PrivateDAO", () => {
     assert.equal(handoffProposal.proposalId.toString(), "0");
   });
 
+  it("initializes and transfers treasury operator authority independently", async () => {
+    const treasuryAuthorityDaoName = uniqueDaoName("TreasuryAuthority");
+    const [treasuryAuthorityDaoPda] = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("dao"),
+        authority.publicKey.toBuffer(),
+        Buffer.from(treasuryAuthorityDaoName),
+      ],
+      program.programId,
+    );
+    const [treasuryOperatorAuthorityPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("treasury-operator-authority"), treasuryAuthorityDaoPda.toBuffer()],
+      program.programId,
+    );
+    const newTreasuryOperator = Keypair.generate();
+
+    await program.methods
+      .initializeDao(
+        treasuryAuthorityDaoName,
+        51,
+        new BN(0),
+        new BN(3600),
+        new BN(86400),
+        { tokenWeighted: {} },
+      )
+      .accounts({
+        dao: treasuryAuthorityDaoPda,
+        governanceToken: governanceMint,
+        authority: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    await program.methods
+      .initializeTreasuryOperatorAuthority()
+      .accounts({
+        dao: treasuryAuthorityDaoPda,
+        treasuryOperatorAuthority: treasuryOperatorAuthorityPda,
+        authority: authority.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    const initializedAuthority = await program.account["treasuryOperatorAuthority"].fetch(
+      treasuryOperatorAuthorityPda,
+    );
+    assert.equal(initializedAuthority.dao.toBase58(), treasuryAuthorityDaoPda.toBase58());
+    assert.equal(initializedAuthority.authority.toBase58(), authority.publicKey.toBase58());
+
+    await program.methods
+      .transferTreasuryOperatorAuthority(newTreasuryOperator.publicKey)
+      .accounts({
+        dao: treasuryAuthorityDaoPda,
+        treasuryOperatorAuthority: treasuryOperatorAuthorityPda,
+        authority: authority.publicKey,
+      })
+      .rpc();
+
+    const transferredAuthority = await program.account["treasuryOperatorAuthority"].fetch(
+      treasuryOperatorAuthorityPda,
+    );
+    assert.equal(
+      transferredAuthority.authority.toBase58(),
+      newTreasuryOperator.publicKey.toBase58(),
+    );
+    console.log("  ✓ treasury operator authority transferred through independent PDA");
+  });
+
   it("allows a governance token holder to create a proposal", async () => {
     const dao = await program.account["dao"].fetch(daoPda);
 

@@ -3,13 +3,12 @@ use anchor_spl::token_interface::TokenAccount;
 use sha2::{Digest, Sha256};
 
 use crate::{
-    traits::TreasuryActionPolicy, CancelPolicy, ConfidentialAssetType, ConfidentialPayoutPlan,
-    Dao, EnforcementMode, Error, FeaturePolicy, MagicBlockPrivatePaymentCorridor, Proposal,
+    traits::TreasuryActionPolicy, CancelPolicy, ConfidentialAssetType, ConfidentialPayoutPlan, Dao,
+    EnforcementMode, Error, FeaturePolicy, MagicBlockPrivatePaymentCorridor, Proposal,
     ProposalGovernancePolicySnapshotV3, ProposalStatus, QuorumPolicyV3, RefheEnvelope,
     RevealRebatePolicyV3, TreasuryAction, TreasuryActionType, VotingConfig, ZkProofLayer,
-    ZkVerificationMode, ZkVerificationReceipt,
-    MAX_POLICY_ATTESTORS, MAX_REVEAL_REBATE_V3_LAMPORTS, PAYOUT_PAYLOAD_DOMAIN_V1,
-    PROOF_PAYLOAD_DOMAIN_V1,
+    ZkVerificationMode, ZkVerificationReceipt, MAX_POLICY_ATTESTORS, MAX_REVEAL_REBATE_V3_LAMPORTS,
+    PAYOUT_PAYLOAD_DOMAIN_V1, PROOF_PAYLOAD_DOMAIN_V1,
 };
 
 pub fn isqrt(n: u64) -> u64 {
@@ -358,7 +357,11 @@ pub fn validate_zk_receipt(
     Ok(())
 }
 
-pub fn finalize_proposal_state(dao: &Account<Dao>, p: &mut Account<Proposal>, now: i64) -> Result<()> {
+pub fn finalize_proposal_state(
+    dao: &Account<Dao>,
+    p: &mut Account<Proposal>,
+    now: i64,
+) -> Result<()> {
     let quorum_met = p.commit_count > 0
         && (p.reveal_count as u128) * 100
             >= (p.commit_count as u128) * (dao.quorum_percentage as u128);
@@ -772,7 +775,12 @@ mod tests {
         let unsigned_third = signer_account_info(third, false);
         let outsider_signer = signer_account_info(outsider, true);
 
-        let remaining = vec![duplicate_primary, second_signer, unsigned_third, outsider_signer];
+        let remaining = vec![
+            duplicate_primary,
+            second_signer,
+            unsigned_third,
+            outsider_signer,
+        ];
 
         assert_eq!(
             count_matching_signers(Some(first), &remaining, &attestors, 3),

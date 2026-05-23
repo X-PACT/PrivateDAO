@@ -51,6 +51,7 @@ exports.deriveMagicBlockPrivatePaymentCorridorPda = deriveMagicBlockPrivatePayme
 exports.deriveDaoSecurityPolicyPda = deriveDaoSecurityPolicyPda;
 exports.deriveDaoGovernancePolicyV3Pda = deriveDaoGovernancePolicyV3Pda;
 exports.deriveDaoSettlementPolicyV3Pda = deriveDaoSettlementPolicyV3Pda;
+exports.deriveTreasuryOperatorAuthorityPda = deriveTreasuryOperatorAuthorityPda;
 exports.deriveProposalExecutionPolicySnapshotPda = deriveProposalExecutionPolicySnapshotPda;
 exports.deriveProposalGovernancePolicySnapshotV3Pda = deriveProposalGovernancePolicySnapshotV3Pda;
 exports.deriveProposalSettlementPolicySnapshotV3Pda = deriveProposalSettlementPolicySnapshotV3Pda;
@@ -221,6 +222,9 @@ function deriveDaoGovernancePolicyV3Pda(dao, programId) {
 }
 function deriveDaoSettlementPolicyV3Pda(dao, programId) {
     return web3_js_1.PublicKey.findProgramAddressSync([Buffer.from("dao-settlement-policy-v3"), dao.toBuffer()], programId)[0];
+}
+function deriveTreasuryOperatorAuthorityPda(dao, programId) {
+    return web3_js_1.PublicKey.findProgramAddressSync([Buffer.from("treasury-operator-authority"), dao.toBuffer()], programId)[0];
 }
 function deriveProposalExecutionPolicySnapshotPda(proposal, programId) {
     return web3_js_1.PublicKey.findProgramAddressSync([Buffer.from("proposal-policy-snapshot"), proposal.toBuffer()], programId)[0];

@@ -1,7 +1,7 @@
 use anchor_lang::prelude::{Clock, Context, Pubkey, Result};
 
-use crate::*;
 use crate::utils::*;
+use crate::*;
 
 pub fn initialize_dao(
     ctx: Context<InitializeDao>,
@@ -105,6 +105,63 @@ pub fn transfer_dao_authority(
         dao: dao.key(),
         previous_authority,
         new_authority,
+    });
+    Ok(())
+}
+
+pub fn initialize_treasury_operator_authority(
+    ctx: Context<InitializeTreasuryOperatorAuthority>,
+) -> Result<()> {
+    let treasury_operator_authority = &mut ctx.accounts.treasury_operator_authority;
+    if treasury_operator_authority.dao != Pubkey::default() {
+        require!(
+            treasury_operator_authority.dao == ctx.accounts.dao.key()
+                && treasury_operator_authority.authority == ctx.accounts.authority.key(),
+            Error::UnauthorizedTreasuryOperatorAuthorityTransfer
+        );
+        emit!(TreasuryOperatorAuthorityInitialized {
+            dao: treasury_operator_authority.dao,
+            authority: treasury_operator_authority.authority,
+            created_at: treasury_operator_authority.created_at,
+        });
+        return Ok(());
+    }
+
+    let now = Clock::get()?.unix_timestamp;
+    treasury_operator_authority.dao = ctx.accounts.dao.key();
+    treasury_operator_authority.authority = ctx.accounts.authority.key();
+    treasury_operator_authority.created_at = now;
+    treasury_operator_authority.updated_at = now;
+    treasury_operator_authority.bump = ctx.bumps.treasury_operator_authority;
+
+    emit!(TreasuryOperatorAuthorityInitialized {
+        dao: treasury_operator_authority.dao,
+        authority: treasury_operator_authority.authority,
+        created_at: now,
+    });
+    Ok(())
+}
+
+pub fn transfer_treasury_operator_authority(
+    ctx: Context<TransferTreasuryOperatorAuthority>,
+    new_authority: Pubkey,
+) -> Result<()> {
+    require!(
+        new_authority != Pubkey::default()
+            && new_authority != ctx.accounts.treasury_operator_authority.authority,
+        Error::InvalidTreasuryOperatorAuthorityTransfer
+    );
+
+    let treasury_operator_authority = &mut ctx.accounts.treasury_operator_authority;
+    let previous_authority = treasury_operator_authority.authority;
+    treasury_operator_authority.authority = new_authority;
+    treasury_operator_authority.updated_at = Clock::get()?.unix_timestamp;
+
+    emit!(TreasuryOperatorAuthorityTransferred {
+        dao: treasury_operator_authority.dao,
+        previous_authority,
+        new_authority,
+        updated_at: treasury_operator_authority.updated_at,
     });
     Ok(())
 }
