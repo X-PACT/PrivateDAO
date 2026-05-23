@@ -33,6 +33,7 @@ The hosted read-node was redeployed with QuickNode Testnet as the first RPC prov
 - live config: `https://api.privatedao.org/api/v1/config`
 - live stream intake: `https://api.privatedao.org/api/v1/quicknode/stream`
 - live stream stats: `https://api.privatedao.org/api/v1/quicknode/stream/stats`
+- live readiness aggregate: `https://api.privatedao.org/api/v1/readiness`
 - RPC pool: `QuickNode Testnet [redacted]` -> `https://api.testnet.solana.com`
 - stream auth: configured
 - smoke result: POST accepted with `privateDaoTransactionCount=1`, `blockCount=1`, and `computeUnitsConsumed=8888`
@@ -51,6 +52,8 @@ This closes the previous zero-metrics condition: production API traffic now exer
 - auth posture and accepted header names
 
 The stats endpoint never returns stream tokens and never stores raw block payloads.
+
+For reviewers who need one fast JSON surface, `GET /api/v1/readiness` aggregates runtime health, QuickNode stream counters, visitor stats, execution counters, freshness evidence, latest chain event, and public route links.
 
 On the primary host, these counters persist across read-node restarts in the runtime volume:
 

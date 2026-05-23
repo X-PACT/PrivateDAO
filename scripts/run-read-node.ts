@@ -2193,6 +2193,44 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           executionStats: "/api/v1/execution-events/stats",
           onboardRequest: "/api/v1/onboard/request",
           quickNodeStream: "/api/v1/quicknode/stream",
+          quickNodeStreamStats: "/api/v1/quicknode/stream/stats",
+          readiness: "/api/v1/readiness",
+        },
+      });
+      return;
+    }
+
+    if (pathname === "/api/v1/readiness") {
+      const [runtime, visitors, execution, freshness, chain] = await Promise.all([
+        readNode.getRuntimeSnapshot(url.searchParams.get("refresh") === "1"),
+        visitorStats().catch((error) => ({ ok: false, error: error instanceof Error ? error.message : String(error) })),
+        executionEventStats().catch((error) => ({ ok: false, error: error instanceof Error ? error.message : String(error) })),
+        latestFreshnessPing().catch(() => null),
+        latestLiveTransactions().catch(() => ({ count: 0, transactions: [] })),
+      ]);
+      writeJson(res, 200, {
+        ok: true,
+        source: "privatedao-readiness",
+        generatedAt: new Date().toISOString(),
+        posture: "solana-testnet-production-candidate",
+        runtime,
+        quickNodeStream: {
+          ...quickNodeStreamTelemetry,
+          auth: process.env.QUICKNODE_STREAM_TOKEN ? "configured" : "missing-env",
+          rawPayloadStorage: "disabled",
+          statePersistence: "runtime-volume",
+        },
+        visitors,
+        execution,
+        latestFreshness: freshness,
+        latestChainEvent: "transactions" in chain ? chain.transactions[0] || null : null,
+        publicRoutes: {
+          site: "https://privatedao.org/",
+          api: "https://api.privatedao.org/api/v1",
+          quickNodeStats: "https://api.privatedao.org/api/v1/quicknode/stream/stats",
+          judge: "https://privatedao.org/judge/",
+          proof: "https://privatedao.org/proof/",
+          security: "https://privatedao.org/security/",
         },
       });
       return;
