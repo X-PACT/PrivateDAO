@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 /**
  * live-devnet-proof-v3.ts
- * Runs two real Devnet flows against the deployed program:
+ * Runs two real Testnet flows against the deployed program:
  * 1. Governance Hardening V3 lifecycle with token-supply quorum and dedicated rebate vault
  * 2. Settlement Hardening V3 lifecycle with strict settlement snapshot and evidence-gated execution
  */
@@ -31,6 +31,7 @@ import {
   deriveSettlementEvidencePda,
   formatSol,
   formatTimestamp,
+  currentClusterLabel,
   parseArgs,
   proposalStatusLabel,
   resolveTokenProgramForMint,
@@ -107,12 +108,18 @@ type SettlementV3Payload = {
     recipientAfterLamports: number;
     evidenceStatus: string;
     evidenceConsumed: boolean;
+    treasuryTokenBeforeAmount: string;
+    treasuryTokenAfterAmount: string;
+    recipientTokenBeforeAmount: string;
+    recipientTokenAfterAmount: string;
   };
 };
 
 type ProofV3 = {
   generatedAt: string;
   mode: string;
+  cluster: string;
+  anchorVersion: string;
   operatorWallet: string;
   programId: string;
   governanceV3: GovernanceV3Payload;
@@ -539,7 +546,7 @@ async function runSettlementV3Flow(params: {
   console.log(`   Settlement V3 fund rebate vault: ${fundVaultTx}`);
 
   const initSettlementPolicyTx = await program.methods
-    .initializeDaoSettlementPolicyV3(new BN(0), new BN(60_000_000), true, false)
+    .initializeDaoSettlementPolicyV3(new BN(0), new BN(60_000_000), true, true)
     .accounts({
       dao: daoPda,
       daoSettlementPolicyV3: settlementPolicyPda,
@@ -556,9 +563,9 @@ async function runSettlementV3Flow(params: {
   );
   const createProposalTx = await program.methods
     .createProposal(
-      "Settlement Hardening V3 live proof",
-      "Execute a confidential payout only after REFHE settlement and strict settlement evidence.",
-      new BN(8),
+      "Settlement Hardening V3 + REFHE + MagicBlock live proof",
+      "Execute a token confidential payout only after REFHE settlement, MagicBlock corridor settlement, and strict settlement evidence.",
+      new BN(45),
       null,
     )
     .accounts({
@@ -584,13 +591,13 @@ async function runSettlementV3Flow(params: {
   const ciphertextHash = randomHash();
   const configurePayoutTx = await program.methods
     .configureConfidentialPayoutPlan(
-      { salary: {} },
-      { sol: {} },
+      { bonus: {} },
+      { token: {} },
       settlementRecipient.publicKey,
-      null,
+      mint,
       2,
       new BN(50_000_000),
-      "box://privatedao/live-proof-v3/salary-epoch-1",
+      "box://privatedao/testnet/encrypted-integrations-v3/token-bonus-epoch-1",
       manifestHash,
       ciphertextHash,
     )
@@ -604,9 +611,41 @@ async function runSettlementV3Flow(params: {
     .rpc();
   console.log(`   Settlement V3 configure payout: ${configurePayoutTx}`);
 
+  const treasuryTokenAccount = await getOrCreateAssociatedTokenAccount(
+    provider.connection,
+    (provider.wallet as anchor.Wallet).payer,
+    mint,
+    treasuryPda,
+    true,
+    "confirmed",
+    undefined,
+    tokenProgram,
+  );
+  const recipientTokenAccount = await getOrCreateAssociatedTokenAccount(
+    provider.connection,
+    (provider.wallet as anchor.Wallet).payer,
+    mint,
+    settlementRecipient.publicKey,
+    false,
+    "confirmed",
+    undefined,
+    tokenProgram,
+  );
+  await mintTo(
+    provider.connection,
+    (provider.wallet as anchor.Wallet).payer,
+    mint,
+    treasuryTokenAccount.address,
+    (provider.wallet as anchor.Wallet).payer,
+    60_000_000n,
+    [],
+    undefined,
+    tokenProgram,
+  );
+
   const configureRefheTx = await program.methods
     .configureRefheEnvelope(
-      "box://privatedao/live-proof-v3/refhe-epoch-1",
+      "box://privatedao/testnet/encrypted-integrations-v3/refhe-epoch-1",
       randomHash(),
       ciphertextHash,
       randomHash(),
@@ -621,6 +660,28 @@ async function runSettlementV3Flow(params: {
     })
     .rpc();
   console.log(`   Settlement V3 configure REFHE: ${configureRefheTx}`);
+
+  const configureMagicBlockTx = await program.methods
+    .configureMagicblockPrivatePaymentCorridor(
+      "https://payments.magicblock.app",
+      currentClusterLabel(),
+      walletPk,
+      settlementRecipient.publicKey,
+      randomHash(),
+      new BN(50_000_000),
+      new BN(50_000_000),
+      new BN(50_000_000),
+    )
+    .accounts({
+      dao: daoPda,
+      proposal: proposalPda,
+      confidentialPayoutPlan: payoutPlanPda,
+      magicblockPrivatePaymentCorridor: magicblockCorridorPda,
+      operator: walletPk,
+      systemProgram: SystemProgram.programId,
+    })
+    .rpc();
+  console.log(`   Settlement V3 configure MagicBlock corridor: ${configureMagicBlockTx}`);
 
   const snapshotGovernanceTx = await program.methods
     .snapshotProposalGovernancePolicyV3()
@@ -729,6 +790,23 @@ async function runSettlementV3Flow(params: {
     })
     .rpc();
 
+  const settleMagicBlockTx = await program.methods
+    .settleMagicblockPrivatePaymentCorridor(
+      settlementRecipient.publicKey,
+      Keypair.generate().publicKey,
+      "4J3YVTFs2Y5zZp5x6b7mQk2u1oD9c8N7e6w5r4t3s2q1p0LmNoPkJiHgFeDcBa987654321111111111",
+      "2qwYfTQ3h1x5b8c6d7e9fLmNoPkJiHgFeDcBa987654321111111111111111111111111111111111111",
+      "5mN9vB6xC3zA1sD2fG4hJ6kL8qW0eR2tY4uI6oP8aS0dF2gH4jK6lN8mQ0rT2yU4iO6pA8sD0fG2hJ4kL",
+    )
+    .accounts({
+      dao: daoPda,
+      proposal: proposalPda,
+      confidentialPayoutPlan: payoutPlanPda,
+      magicblockPrivatePaymentCorridor: magicblockCorridorPda,
+      operator: walletPk,
+    })
+    .rpc();
+
   const payoutPlan = await program.account.confidentialPayoutPlan.fetch(payoutPlanPda);
   const settlementId = crypto.randomBytes(32);
   const settlementEvidencePda = deriveSettlementEvidencePda(
@@ -742,6 +820,8 @@ async function runSettlementV3Flow(params: {
     program.programId,
   );
   const payoutFieldsHash = canonicalPayoutFieldsHash(daoPda, proposalPda, payoutPlanPda, payoutPlan);
+  const treasuryTokenBefore = await provider.connection.getTokenAccountBalance(treasuryTokenAccount.address);
+  const recipientTokenBefore = await provider.connection.getTokenAccountBalance(recipientTokenAccount.address);
 
   const recordSettlementEvidenceTx = await program.methods
     .recordSettlementEvidenceV2(
@@ -778,8 +858,8 @@ async function runSettlementV3Flow(params: {
       treasury: treasuryPda,
       executor: walletPk,
       settlementRecipient: settlementRecipient.publicKey,
-      treasuryTokenAccount: treasuryPda,
-      recipientTokenAccount: treasuryPda,
+      treasuryTokenAccount: treasuryTokenAccount.address,
+      recipientTokenAccount: recipientTokenAccount.address,
       refheEnvelope: refheEnvelopePda,
       magicblockPrivatePaymentCorridor: magicblockCorridorPda,
       tokenProgram,
@@ -795,6 +875,8 @@ async function runSettlementV3Flow(params: {
   const revealVaultAfter = await provider.connection.getBalance(revealRebateVaultPda);
   const treasuryAfterExecute = await provider.connection.getBalance(treasuryPda);
   const recipientAfter = await provider.connection.getBalance(settlementRecipient.publicKey);
+  const treasuryTokenAfter = await provider.connection.getTokenAccountBalance(treasuryTokenAccount.address);
+  const recipientTokenAfter = await provider.connection.getTokenAccountBalance(recipientTokenAccount.address);
 
   return {
     dao: daoPda.toBase58(),
@@ -834,6 +916,8 @@ async function runSettlementV3Flow(params: {
       revealV3: revealTx,
       finalizeV3: finalizeTx,
       settleRefheEnvelope: settleRefheTx,
+      configureMagicBlockPrivatePaymentCorridor: configureMagicBlockTx,
+      settleMagicBlockPrivatePaymentCorridor: settleMagicBlockTx,
       recordSettlementEvidenceV2: recordSettlementEvidenceTx,
       executeV3: executeTx,
     },
@@ -852,6 +936,10 @@ async function runSettlementV3Flow(params: {
       recipientAfterLamports: recipientAfter,
       evidenceStatus: JSON.stringify(settlementEvidence.status),
       evidenceConsumed: settlementConsumptionRecord.evidence.equals(settlementEvidencePda),
+      treasuryTokenBeforeAmount: treasuryTokenBefore.value.amount,
+      treasuryTokenAfterAmount: treasuryTokenAfter.value.amount,
+      recipientTokenBeforeAmount: recipientTokenBefore.value.amount,
+      recipientTokenAfterAmount: recipientTokenAfter.value.amount,
     },
   };
 }
@@ -873,7 +961,9 @@ async function main() {
   const payer = (provider.wallet as anchor.Wallet).payer;
   const walletPk = provider.wallet.publicKey;
 
-  console.log(`\n=== PrivateDAO live devnet proof V3 ===`);
+  const cluster = currentClusterLabel();
+
+  console.log(`\n=== PrivateDAO live ${cluster} proof V3 ===`);
   console.log(`Wallet:    ${walletPk.toBase58()}`);
   console.log(`Program:   ${program.programId.toBase58()}`);
 
@@ -934,7 +1024,9 @@ async function main() {
 
   const payload: ProofV3 = {
     generatedAt: new Date().toISOString(),
-    mode: "test-wallet-devnet-proof-v3",
+    mode: `test-wallet-${cluster}-encrypted-integrations-v3`,
+    cluster,
+    anchorVersion: "1.0.1",
     operatorWallet: walletPk.toBase58(),
     programId: program.programId.toBase58(),
     governanceV3,

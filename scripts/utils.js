@@ -42,6 +42,7 @@ exports.formatTimestamp = formatTimestamp;
 exports.formatDuration = formatDuration;
 exports.proposalStatusLabel = proposalStatusLabel;
 exports.proposalPhaseLabel = proposalPhaseLabel;
+exports.currentClusterLabel = currentClusterLabel;
 exports.solscanAccountUrl = solscanAccountUrl;
 exports.solscanTxUrl = solscanTxUrl;
 exports.deriveConfidentialPayoutPlanPda = deriveConfidentialPayoutPlanPda;
@@ -179,11 +180,29 @@ function proposalPhaseLabel(proposal, now) {
         return "Reveal";
     return "ReadyToFinalize";
 }
+function currentClusterLabel() {
+    const raw = process.env.ANCHOR_PROVIDER_URL ||
+        process.env.SOLANA_RPC_URL ||
+        process.env.SOLANA_URL ||
+        "testnet";
+    const normalized = raw.toLowerCase();
+    if (normalized.includes("mainnet"))
+        return "mainnet";
+    if (normalized.includes("devnet"))
+        return "devnet";
+    if (normalized.includes("local"))
+        return "custom";
+    return "testnet";
+}
 function solscanAccountUrl(address) {
-    return `https://solscan.io/account/${address}?cluster=devnet`;
+    const cluster = currentClusterLabel();
+    const suffix = cluster === "mainnet" ? "" : `?cluster=${cluster}`;
+    return `https://solscan.io/account/${address}${suffix}`;
 }
 function solscanTxUrl(signature) {
-    return `https://solscan.io/tx/${signature}?cluster=devnet`;
+    const cluster = currentClusterLabel();
+    const suffix = cluster === "mainnet" ? "" : `?cluster=${cluster}`;
+    return `https://solscan.io/tx/${signature}${suffix}`;
 }
 function deriveConfidentialPayoutPlanPda(proposal, programId) {
     return web3_js_1.PublicKey.findProgramAddressSync([Buffer.from("payout-plan"), proposal.toBuffer()], programId)[0];

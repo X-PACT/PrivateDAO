@@ -1,6 +1,6 @@
 # MagicBlock Private Payments Live Probe
 
-Generated: `2026-05-14T13:27:57.043Z`
+Generated: `2026-05-23T02:52:23.193Z`
 
 This packet verifies the MagicBlock Private Payments lane used by PrivateDAO without printing signatures, bearer tokens, private balances, or private keys.
 
@@ -31,7 +31,7 @@ This packet verifies the MagicBlock Private Payments lane used by PrivateDAO wit
 | devnet-as.magicblock.app | yes | er:live, rpc_router:live, pricing_oracle:live, vrf_oracle:live |
 | devnet-eu.magicblock.app | yes | er:live, rpc_router:live, pricing_oracle:live, vrf_oracle:live |
 | devnet-tee-as.magicblock.app | yes | er:live, vrf_oracle:live, rpc_router:off, pricing_oracle:off |
-| devnet-us.magicblock.app | yes | er:live, rpc_router:live, pricing_oracle:off, vrf_oracle:live |
+| devnet-us.magicblock.app | yes | er:live, rpc_router:live, pricing_oracle:live, vrf_oracle:live |
 
 ## Auth Boundary
 

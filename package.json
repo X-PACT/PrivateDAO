@@ -288,6 +288,7 @@
     "verify:live-proof": "ts-node scripts/verify-live-proof.ts",
     "verify:test-wallet-live-proof": "ts-node scripts/verify-test-wallet-live-proof.ts",
     "verify:test-wallet-live-proof:v3": "ts-node scripts/verify-test-wallet-live-proof-v3.ts",
+    "verify:encrypted-integrations-activation": "ts-node scripts/verify-encrypted-integrations-activation.ts",
     "verify:release-manifest": "ts-node scripts/verify-release-manifest.ts",
     "verify:review-links": "ts-node scripts/verify-review-links.ts",
     "verify:mirror-readiness": "ts-node scripts/verify-mirror-readiness.ts",

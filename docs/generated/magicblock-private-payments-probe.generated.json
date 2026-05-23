@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-14T13:27:57.043Z",
+  "generatedAt": "2026-05-23T02:52:23.193Z",
   "api": {
     "payments": "https://payments.magicblock.app",
     "docsIndex": "https://docs.magicblock.gg/llms.txt",
@@ -144,7 +144,7 @@
         "services": {
           "er": true,
           "rpc_router": true,
-          "pricing_oracle": false,
+          "pricing_oracle": true,
           "vrf_oracle": true
         }
       }

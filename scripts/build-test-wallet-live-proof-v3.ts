@@ -4,6 +4,8 @@ import path from "path";
 type ProofV3 = {
   generatedAt: string;
   mode: string;
+  cluster?: string;
+  anchorVersion?: string;
   operatorWallet: string;
   programId: string;
   governanceV3: {
@@ -73,6 +75,10 @@ type ProofV3 = {
       recipientAfterLamports: number;
       evidenceStatus: string;
       evidenceConsumed: boolean;
+      treasuryTokenBeforeAmount?: string;
+      treasuryTokenAfterAmount?: string;
+      recipientTokenBeforeAmount?: string;
+      recipientTokenAfterAmount?: string;
     };
   };
 };
@@ -80,12 +86,16 @@ type ProofV3 = {
 const INPUT = path.resolve("docs/test-wallet-live-proof-v3.generated.json");
 const OUTPUT = path.resolve("docs/test-wallet-live-proof-v3.generated.md");
 
-function solscanAccount(address: string) {
-  return `https://solscan.io/account/${address}?cluster=devnet`;
+function explorerSuffix(cluster = "testnet") {
+  return cluster === "mainnet" ? "" : `?cluster=${cluster}`;
 }
 
-function solscanTx(signature: string) {
-  return `https://solscan.io/tx/${signature}?cluster=devnet`;
+function solscanAccount(address: string, cluster = "testnet") {
+  return `https://solscan.io/account/${address}${explorerSuffix(cluster)}`;
+}
+
+function solscanTx(signature: string, cluster = "testnet") {
+  return `https://solscan.io/tx/${signature}${explorerSuffix(cluster)}`;
 }
 
 function formatSol(lamports: number) {
@@ -96,25 +106,28 @@ function formatTimestamp(unix: number) {
   return new Date(unix * 1000).toISOString().replace("T", " ").slice(0, 19) + " UTC";
 }
 
-function txList(transactions: Record<string, string>) {
+function txList(transactions: Record<string, string>, cluster: string) {
   return Object.entries(transactions)
-    .map(([label, signature]) => `- \`${label}\`: \`${signature}\`\n- Explorer: \`${solscanTx(signature)}\``)
+    .map(([label, signature]) => `- \`${label}\`: \`${signature}\`\n- Explorer: \`${solscanTx(signature, cluster)}\``)
     .join("\n");
 }
 
 function main() {
   const payload = JSON.parse(fs.readFileSync(INPUT, "utf8")) as ProofV3;
+  const cluster = payload.cluster ?? "testnet";
   const markdown = `# Test Wallet Live Proof V3
 
-This packet captures two real Devnet flows executed with local test-only wallets outside git:
+This packet captures two real ${cluster} flows executed with local test-only wallets outside git:
 
 1. \`Governance Hardening V3\` with token-supply quorum and a dedicated reveal rebate vault
-2. \`Settlement Hardening V3\` with a proposal-scoped settlement snapshot, REFHE settlement, and verified settlement evidence
+2. \`Settlement Hardening V3\` with a proposal-scoped settlement snapshot, REFHE settlement, MagicBlock corridor settlement, verified settlement evidence, and token payout execution
 
 ## Context
 
 - generated at: \`${payload.generatedAt}\`
 - mode: \`${payload.mode}\`
+- cluster: \`${cluster}\`
+- Anchor version: \`${payload.anchorVersion ?? "1.0.1"}\`
 - operator wallet: \`${payload.operatorWallet}\`
 - program id: \`${payload.programId}\`
 
@@ -133,14 +146,14 @@ This packet captures two real Devnet flows executed with local test-only wallets
 
 ### Explorer links
 
-- DAO: \`${solscanAccount(payload.governanceV3.dao)}\`
-- Mint: \`${solscanAccount(payload.governanceV3.governanceMint)}\`
-- Treasury: \`${solscanAccount(payload.governanceV3.treasury)}\`
-- Proposal: \`${solscanAccount(payload.governanceV3.proposal)}\`
+- DAO: \`${solscanAccount(payload.governanceV3.dao, cluster)}\`
+- Mint: \`${solscanAccount(payload.governanceV3.governanceMint, cluster)}\`
+- Treasury: \`${solscanAccount(payload.governanceV3.treasury, cluster)}\`
+- Proposal: \`${solscanAccount(payload.governanceV3.proposal, cluster)}\`
 
 ### Transactions
 
-${txList(payload.governanceV3.transactions)}
+${txList(payload.governanceV3.transactions, cluster)}
 
 ### Observed invariants
 
@@ -180,15 +193,17 @@ ${txList(payload.governanceV3.transactions)}
 
 ### Explorer links
 
-- DAO: \`${solscanAccount(payload.settlementV3.dao)}\`
-- Treasury: \`${solscanAccount(payload.settlementV3.treasury)}\`
-- Proposal: \`${solscanAccount(payload.settlementV3.proposal)}\`
-- Settlement evidence: \`${solscanAccount(payload.settlementV3.settlementEvidence)}\`
-- Payout plan: \`${solscanAccount(payload.settlementV3.payoutPlan)}\`
+- DAO: \`${solscanAccount(payload.settlementV3.dao, cluster)}\`
+- Treasury: \`${solscanAccount(payload.settlementV3.treasury, cluster)}\`
+- Proposal: \`${solscanAccount(payload.settlementV3.proposal, cluster)}\`
+- Settlement evidence: \`${solscanAccount(payload.settlementV3.settlementEvidence, cluster)}\`
+- Payout plan: \`${solscanAccount(payload.settlementV3.payoutPlan, cluster)}\`
+- REFHE envelope: \`${solscanAccount(payload.settlementV3.refheEnvelope, cluster)}\`
+- MagicBlock corridor: \`${solscanAccount(payload.settlementV3.magicblockCorridor, cluster)}\`
 
 ### Transactions
 
-${txList(payload.settlementV3.transactions)}
+${txList(payload.settlementV3.transactions, cluster)}
 
 ### Observed invariants
 
@@ -208,10 +223,14 @@ ${txList(payload.settlementV3.transactions)}
 - treasury after execute: \`${formatSol(payload.settlementV3.invariants.treasuryAfterExecuteLamports)}\`
 - recipient before: \`${formatSol(payload.settlementV3.invariants.recipientBeforeLamports)}\`
 - recipient after: \`${formatSol(payload.settlementV3.invariants.recipientAfterLamports)}\`
+- treasury token before: \`${payload.settlementV3.invariants.treasuryTokenBeforeAmount ?? "n/a"}\`
+- treasury token after: \`${payload.settlementV3.invariants.treasuryTokenAfterAmount ?? "n/a"}\`
+- recipient token before: \`${payload.settlementV3.invariants.recipientTokenBeforeAmount ?? "n/a"}\`
+- recipient token after: \`${payload.settlementV3.invariants.recipientTokenAfterAmount ?? "n/a"}\`
 
 ## Purpose
 
-This artifact proves that the repository now carries a real Devnet proof for both \`Governance Hardening V3\` and \`Settlement Hardening V3\`. It is still a test-wallet Devnet artifact, not a production-custody or mainnet claim.
+This artifact proves that the repository now carries a real ${cluster} proof for \`Governance Hardening V3\` plus the encrypted settlement path: REFHE envelope settlement, MagicBlock corridor settlement, evidence recording, evidence consumption, and token payout execution. It is still a test-wallet ${cluster} artifact, not a production-custody or mainnet claim.
 `;
 
   fs.writeFileSync(OUTPUT, markdown);

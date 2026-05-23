@@ -2,6 +2,9 @@ import fs from "fs";
 import path from "path";
 
 type ProofV3 = {
+  mode: string;
+  cluster?: string;
+  anchorVersion?: string;
   programId: string;
   operatorWallet: string;
   governanceV3: {
@@ -45,6 +48,10 @@ type ProofV3 = {
       evidenceConsumed: boolean;
       recipientBeforeLamports: number;
       recipientAfterLamports: number;
+      treasuryTokenBeforeAmount?: string;
+      treasuryTokenAfterAmount?: string;
+      recipientTokenBeforeAmount?: string;
+      recipientTokenAfterAmount?: string;
     };
   };
 };
@@ -64,7 +71,10 @@ function main() {
   const json = JSON.parse(fs.readFileSync(JSON_PATH, "utf8")) as ProofV3;
   const markdown = fs.readFileSync(MD_PATH, "utf8");
 
-  assert(json.programId === "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx", "unexpected program id in V3 live proof");
+  assert(json.programId === "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva", "unexpected program id in V3 live proof");
+  assert(json.cluster === "testnet", "V3 live proof must be Testnet-scoped");
+  assert(json.anchorVersion === "1.0.1", "V3 live proof must record Anchor 1.0.1");
+  assert(json.mode === "test-wallet-testnet-encrypted-integrations-v3", "unexpected V3 live proof mode");
 
   assert(json.governanceV3.invariants.status === "Passed", "governance V3 proof must show Passed");
   assert(json.governanceV3.invariants.isExecuted === true, "governance V3 proof must show executed proposal");
@@ -74,7 +84,24 @@ function main() {
   assert(json.settlementV3.invariants.status === "Passed", "settlement V3 proof must show Passed");
   assert(json.settlementV3.invariants.isExecuted === true, "settlement V3 proof must show executed proposal");
   assert(json.settlementV3.invariants.evidenceConsumed === true, "settlement V3 proof must consume settlement evidence");
-  assert(json.settlementV3.invariants.recipientAfterLamports > json.settlementV3.invariants.recipientBeforeLamports, "settlement V3 recipient balance must increase");
+  assert(
+    BigInt(json.settlementV3.invariants.recipientTokenAfterAmount ?? "0") >
+      BigInt(json.settlementV3.invariants.recipientTokenBeforeAmount ?? "0"),
+    "settlement V3 recipient token balance must increase",
+  );
+  assert(
+    BigInt(json.settlementV3.invariants.treasuryTokenBeforeAmount ?? "0") >
+      BigInt(json.settlementV3.invariants.treasuryTokenAfterAmount ?? "0"),
+    "settlement V3 treasury token balance must decrease",
+  );
+  assert(
+    Boolean(json.settlementV3.transactions.configureMagicBlockPrivatePaymentCorridor),
+    "settlement V3 proof must include MagicBlock corridor configuration tx",
+  );
+  assert(
+    Boolean(json.settlementV3.transactions.settleMagicBlockPrivatePaymentCorridor),
+    "settlement V3 proof must include MagicBlock corridor settlement tx",
+  );
 
   for (const value of [
     json.operatorWallet,
@@ -100,6 +127,8 @@ function main() {
     json.settlementV3.settlementEvidence,
     json.settlementV3.settlementConsumptionRecord,
     json.settlementV3.settlementRecipient,
+    json.cluster,
+    json.anchorVersion,
   ]) {
     assertMarkdownHas(markdown, value, "address");
   }

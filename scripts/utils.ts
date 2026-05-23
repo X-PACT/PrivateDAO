@@ -117,12 +117,29 @@ export function proposalPhaseLabel(proposal: any, now: number): string {
   return "ReadyToFinalize";
 }
 
+export function currentClusterLabel(): string {
+  const raw =
+    process.env.ANCHOR_PROVIDER_URL ||
+    process.env.SOLANA_RPC_URL ||
+    process.env.SOLANA_URL ||
+    "testnet";
+  const normalized = raw.toLowerCase();
+  if (normalized.includes("mainnet")) return "mainnet";
+  if (normalized.includes("devnet")) return "devnet";
+  if (normalized.includes("local")) return "custom";
+  return "testnet";
+}
+
 export function solscanAccountUrl(address: string): string {
-  return `https://solscan.io/account/${address}?cluster=devnet`;
+  const cluster = currentClusterLabel();
+  const suffix = cluster === "mainnet" ? "" : `?cluster=${cluster}`;
+  return `https://solscan.io/account/${address}${suffix}`;
 }
 
 export function solscanTxUrl(signature: string): string {
-  return `https://solscan.io/tx/${signature}?cluster=devnet`;
+  const cluster = currentClusterLabel();
+  const suffix = cluster === "mainnet" ? "" : `?cluster=${cluster}`;
+  return `https://solscan.io/tx/${signature}${suffix}`;
 }
 
 export function deriveConfidentialPayoutPlanPda(
