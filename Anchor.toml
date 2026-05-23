@@ -7,12 +7,15 @@ skip-lint = false
 
 [programs.devnet]
 private_dao = "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva"
+zk_groth16_verifier = "5H7Afyqdh5yPekkZJ5UM2j3HNB2bRvU8aVv8XoqeAW1j"
 
 [programs.localnet]
 private_dao = "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva"
+zk_groth16_verifier = "5H7Afyqdh5yPekkZJ5UM2j3HNB2bRvU8aVv8XoqeAW1j"
 
 [programs.testnet]
 private_dao = "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva"
+zk_groth16_verifier = "5H7Afyqdh5yPekkZJ5UM2j3HNB2bRvU8aVv8XoqeAW1j"
 
 [provider]
 cluster = "testnet"

@@ -59,6 +59,7 @@ What is now safe to say:
 - The browser storage boundary was fixed in code.
 - A repo gate now prevents regression of the same class of claim and storage drift.
 - The ZK lane is presented as commit/reveal plus off-chain proof review today, not as a shipped on-chain verifier CPI.
+- A standalone Testnet ZK verifier program now emits a live BN254 pairing receipt, while full circuit verification-key enforcement remains a separate production gate.
 
 What is not claimed by this packet:
 
@@ -90,3 +91,12 @@ Transfer evidence:
 - upgrade transfer signature: `EzwLLrAchBpj3eLTUFuv1uo9rSLKgKNbQgp1DkCevJycT31Eou9TSJsJsEfMjLt4q87pKwXaZUTqCZ1NduNc1vy`
 
 This closes the Testnet program-upgrade single-key authority gap. DAO authority, treasury-operator authority, external audit, and mainnet real-funds readiness remain separate gated items.
+
+## Follow-On Response Evidence
+
+After the browser privacy remediation, PrivateDAO added two further reviewer-visible hardening signals:
+
+- Squads upgrade proposal `1` reached `2-of-3` approval with second approval signature `2wpJ27Mkb5CffngRx9U6upPjB8jbzWHoFrDLnxhB5NSCiiXCFGt5HVDYU8U7FtwYusynRCcWhy1T6av22VzCC7MY`.
+- Standalone Testnet ZK verifier program `5H7Afyqdh5yPekkZJ5UM2j3HNB2bRvU8aVv8XoqeAW1j` emitted receipt signature `zwqNsA3kNP1mgcaS6zNdR92LLdssFULXfsRdkMK3UxraKLM6wYDoPaWCwV3J9PqApK5xJJH8TpxsGyCRcdEah67`.
+
+These do not remove the remaining timelock and full-circuit verifier-key gates. They do show the operating pattern expected from a security-capable founder-built infrastructure project: disclose the boundary, close what can be closed immediately, and convert every serious claim into a transaction, gate, or receipt.

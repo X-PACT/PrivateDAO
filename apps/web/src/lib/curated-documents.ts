@@ -656,6 +656,18 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/zk-local-groth16-verification-2026-05-22.md`,
   },
   {
+    slug: "zk-standalone-verifier-testnet-2026-05-23",
+    title: "ZK Standalone Verifier Testnet 2026-05-23",
+    category: "Reviewer core",
+    summary:
+      "Live Solana Testnet receipt for a standalone Anchor verifier program that calls the native BN254 pairing syscall and emits a reviewer-visible ZK receipt event.",
+    audience: "Judges, ZK reviewers, privacy reviewers, security reviewers",
+    boundary:
+      "Standalone on-chain pairing verifier receipt only; it does not claim the canonical governance program already embeds the full vote/delegation/tally verification keys.",
+    docPath: "docs/zk-standalone-verifier-testnet-2026-05-23.md",
+    rawHref: `${repositoryBlobBase}/docs/zk-standalone-verifier-testnet-2026-05-23.md`,
+  },
+  {
     slug: "solrouter-encrypted-ai-evidence-2026-05-07",
     title: "SolRouter Encrypted AI Evidence 2026-05-07",
     category: "Reviewer core",

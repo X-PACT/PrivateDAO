@@ -29,6 +29,8 @@ function main() {
   assertIncludes(response, "What is not claimed by this packet", "response claim boundary");
   assertIncludes(response, "Authority: CALHrBqx6jbzcPn2NVcinqSAHeod65v9LcDuTxsdPqBv", "response authority readout");
   assertIncludes(response, "EzwLLrAchBpj3eLTUFuv1uo9rSLKgKNbQgp1DkCevJycT31Eou9TSJsJsEfMjLt4q87pKwXaZUTqCZ1NduNc1vy", "response transfer signature");
+  assertIncludes(response, "2wpJ27Mkb5CffngRx9U6upPjB8jbzWHoFrDLnxhB5NSCiiXCFGt5HVDYU8U7FtwYusynRCcWhy1T6av22VzCC7MY", "response second approval signature");
+  assertIncludes(response, "zwqNsA3kNP1mgcaS6zNdR92LLdssFULXfsRdkMK3UxraKLM6wYDoPaWCwV3J9PqApK5xJJH8TpxsGyCRcdEah67", "response zk verifier receipt signature");
   assertIncludes(remediation, "# Security Remediation 2026-05-22", "remediation packet title");
   assertIncludes(curated, "security-response-capability-2026-05-22", "curated document route");
   assertIncludes(securityPage, "/documents/security-response-capability-2026-05-22", "security page link");

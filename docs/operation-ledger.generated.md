@@ -1,7 +1,7 @@
 # Operation Ledger
 
 - project: `PrivateDAO`
-- generated at: `2026-05-23T00:33:58.138Z`
+- generated at: `2026-05-23T00:57:31.813Z`
 - purpose: Machine-readable operation ledger for custody, ZK, and REFHE/FHE evidence surfaced on the reviewer site.
 
 ## Entries
@@ -47,6 +47,21 @@
 - verification:
   - `node --import tsx ./node_modules/mocha/bin/mocha --timeout 20000 --exit test/unit/anonymous-governance-primitive.unit.ts`
   - `npm run zk:verify:sample`
+
+### Standalone ZK verifier program is deployed on Testnet and emits a BN254 pairing receipt
+
+- id: `zk-standalone-verifier-testnet`
+- lane: `zk`
+- status: `verified`
+- evidence:
+  - `programs/zk-groth16-verifier/src/lib.rs`
+  - `docs/zk-standalone-verifier-testnet-2026-05-23.md`
+  - `docs/zk-standalone-verifier-testnet-2026-05-23.json`
+- verification:
+  - `solana program show 5H7Afyqdh5yPekkZJ5UM2j3HNB2bRvU8aVv8XoqeAW1j --url https://api.testnet.solana.com`
+  - `solana confirm --url https://api.testnet.solana.com 3g24JACSz3AyAmeV6qU3kaZsMowfTq3KbJMDZ7ATZ3NbAzDK1USjBkzzPEwPA7tqQTMSXxLbT7gsVrF5yvLTFrhg`
+  - `solana confirm --url https://api.testnet.solana.com zwqNsA3kNP1mgcaS6zNdR92LLdssFULXfsRdkMK3UxraKLM6wYDoPaWCwV3J9PqApK5xJJH8TpxsGyCRcdEah67`
+  - `npm run verify:zk-standalone-verifier`
 
 ### PDAO Token-2022 governance mint is live on Solana Testnet with disabled mint authority
 

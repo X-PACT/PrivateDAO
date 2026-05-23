@@ -1,0 +1,19 @@
+{
+  "project": "PrivateDAO",
+  "network": "testnet",
+  "verifierProgramId": "5H7Afyqdh5yPekkZJ5UM2j3HNB2bRvU8aVv8XoqeAW1j",
+  "deploySignature": "4cNDHe5dNkKH7V3CFyPu6devXF8wPuTruwjVj2tQWvfy57DVzPyyKiVn7MifBDZAP9Swr22vaQUakBzNKASka9rF",
+  "upgradeAuthority": "CALHrBqx6jbzcPn2NVcinqSAHeod65v9LcDuTxsdPqBv",
+  "upgradeAuthorityTransferSignature": "3g24JACSz3AyAmeV6qU3kaZsMowfTq3KbJMDZ7ATZ3NbAzDK1USjBkzzPEwPA7tqQTMSXxLbT7gsVrF5yvLTFrhg",
+  "receiptSignature": "zwqNsA3kNP1mgcaS6zNdR92LLdssFULXfsRdkMK3UxraKLM6wYDoPaWCwV3J9PqApK5xJJH8TpxsGyCRcdEah67",
+  "receiptId": "faf71fd6c69be3a9ff79cee17305285b80c6f14ef7f4477416df6e12f61d2dd6",
+  "publicInputsHash": "4601ac22de7524b4f1f0ad1e5612e8f4f3f7615b4a4e31554a8cc89067895671",
+  "pairingInputLength": 384,
+  "pairingEncoding": "G1(x,y) + G2(x.c1,x.c0,y.c1,y.c0), big-endian field elements",
+  "event": "Groth16ReceiptVerified",
+  "syscall": "sol_alt_bn128_group_op",
+  "syscallOperation": "ALT_BN128_PAIRING",
+  "computeUnitLimit": 300000,
+  "observedComputeUnits": 50335,
+  "truthBoundary": "This is a live Solana Testnet BN254 pairing-verifier receipt emitted by a standalone Anchor program whose upgrade authority was transferred to the Squads vault. It proves the on-chain verifier syscall path works. It is not yet the final embedded verification-key verifier for the full PrivateDAO vote/delegation/tally circuits."
+}
