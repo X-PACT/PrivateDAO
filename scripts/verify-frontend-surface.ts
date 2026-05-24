@@ -63,8 +63,12 @@ function main() {
     [curatedDocuments, 'slug: "trust-package"', "curated documents are missing trust package"],
     [curatedDocuments, 'slug: "service-catalog"', "curated documents are missing service catalog"],
     [curatedDocuments, 'slug: "frontier-integrations"', "curated documents are missing frontier integrations"],
-    [siteFooter, "https://discord.gg/PbM8BC2A", "site footer is missing the Discord server link"],
-    [siteFooter, "https://www.youtube.com/@privatedao", "site footer is missing the YouTube channel"],
+    [siteData, "https://discord.gg/GjJykUtTTt", "site data is missing the Discord server link"],
+    [siteData, "https://arena.colosseum.org/projects/explore/praivatedao", "site data is missing the Colosseum project link"],
+    [siteData, "https://superteam.fun/earn/t/Private-dao-1", "site data is missing the Superteam Earn profile link"],
+    [siteData, "https://x.com/privateDAOOS", "site data is missing the X profile link"],
+    [siteData, "https://t.me/Fahdkotb", "site data is missing the Telegram contact link"],
+    [siteFooter, "communityLinks.map", "site footer is missing centralized community link rendering"],
   ];
 
   const hasGithubPagesPrefix = rootIndex.includes("/PrivateDAO/_next/");
