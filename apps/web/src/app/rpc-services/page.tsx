@@ -38,6 +38,12 @@ const serviceCards = [
   },
   {
     icon: DatabaseZap,
+    title: "Provider readiness packet",
+    body: "AWS host, QuickNode Testnet RPC, QuickNode Streams, Supabase counters, QVAC, Umbra, and chain watcher are bound into one generated backend gate.",
+    href: "/documents/backend-provider-readiness-2026-05-24",
+  },
+  {
+    icon: DatabaseZap,
     title: "Runtime proof export",
     body: "QVAC runtime proof and operational diagnostics are available as JSON for judges and future automation.",
     href: "https://api.privatedao.org/api/v1/qvac/runtime-proof",

@@ -50,6 +50,12 @@ const quickChecks = [
     icon: RadioTower,
   },
   {
+    title: "Backend provider readiness",
+    body: "AWS, QuickNode RPC, QuickNode Streams, Supabase counters, QVAC proof, Umbra relayer, and chain watcher in one verification packet.",
+    href: "/documents/backend-provider-readiness-2026-05-24",
+    icon: DatabaseZap,
+  },
+  {
     title: "QVAC proof",
     body: "Runtime proof endpoint for the sovereign AI lane.",
     href: "https://api.privatedao.org/api/v1/qvac/runtime-proof",

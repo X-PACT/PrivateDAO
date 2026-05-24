@@ -1,0 +1,81 @@
+{
+  "project": "PrivateDAO",
+  "generatedAt": "2026-05-24T16:23:59.381Z",
+  "baseUrl": "https://api.privatedao.org",
+  "cluster": "solana-testnet",
+  "expectedProgramId": "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva",
+  "posture": "backend-production-candidate",
+  "endpointChecks": [
+    {
+      "label": "AWS same-domain read node",
+      "provider": "AWS EC2 + Docker edge",
+      "path": "/healthz",
+      "httpStatus": 200,
+      "status": "pass",
+      "summary": "Program EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva executable=true"
+    },
+    {
+      "label": "QuickNode Testnet RPC",
+      "provider": "QuickNode Solana Testnet",
+      "path": "/api/v1/readiness",
+      "httpStatus": 200,
+      "status": "pass",
+      "summary": "RPC https://cosmological-hidden-water.solana-testnet.quiknode.pro/[redacted]"
+    },
+    {
+      "label": "QuickNode stream intake",
+      "provider": "QuickNode Streams",
+      "path": "/api/v1/quicknode/stream/stats",
+      "httpStatus": 200,
+      "status": "pass",
+      "summary": "1 accepted payload(s), raw storage disabled"
+    },
+    {
+      "label": "Supabase visitor counters",
+      "provider": "Supabase",
+      "path": "/api/v1/visitors/stats",
+      "httpStatus": 200,
+      "status": "pass",
+      "summary": "735 total sessions, 57 visitor txs"
+    },
+    {
+      "label": "Supabase freshness memo",
+      "provider": "Supabase + Solana Testnet",
+      "path": "/api/v1/freshness/latest",
+      "httpStatus": 200,
+      "status": "pass",
+      "summary": "Latest tx 2vxAjYuh...Y2Zx6v at 2026-05-21T08:26:33.728+00:00"
+    },
+    {
+      "label": "QVAC sovereign AI proof",
+      "provider": "QVAC local-first runtime",
+      "path": "/api/v1/qvac/runtime-proof",
+      "httpStatus": 200,
+      "status": "pass",
+      "summary": "SDK 0.10.0, model qvac/fabric-llm-finetune"
+    },
+    {
+      "label": "Umbra relayer health",
+      "provider": "Umbra devnet relayer",
+      "path": "/api/v1/umbra/relayer/health",
+      "httpStatus": 200,
+      "status": "pass",
+      "summary": "Relayer ok"
+    },
+    {
+      "label": "Chain watcher",
+      "provider": "Solana Testnet indexed chain events",
+      "path": "/api/v1/chain/latest",
+      "httpStatus": 200,
+      "status": "pass",
+      "summary": "10 latest indexed transactions"
+    }
+  ],
+  "operatorInterpretation": [
+    "The public backend is live on the same API host used by the product.",
+    "QuickNode RPC is active and redacted in public payloads.",
+    "QuickNode stream intake is configured with raw payload storage disabled.",
+    "Supabase counters are live without IP or personal-data collection.",
+    "QVAC and Umbra are exposed as proof/health endpoints, not secret-bearing client code."
+  ]
+}

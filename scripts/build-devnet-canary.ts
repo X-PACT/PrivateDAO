@@ -10,6 +10,7 @@ type ProofRegistry = {
   treasury: string;
   proposal: string;
   pdaoToken?: {
+    network?: string;
     tokenAccount: string;
     mint: string;
   };
@@ -46,6 +47,8 @@ async function main() {
     measureRpc("primary", DEFAULT_PRIMARY_RPC, primary),
     measureRpc("fallback", DEFAULT_FALLBACK_RPC, fallback),
   ]);
+  const pdaoTokenNetwork = (proof.pdaoToken?.network ?? "Devnet").toLowerCase();
+  const includePdaoTokenAccount = Boolean(proof.pdaoToken?.tokenAccount && pdaoTokenNetwork === "devnet");
 
   const anchorChecks = await Promise.all([
     inspectAccount(primary, "program", proof.programId),
@@ -54,7 +57,7 @@ async function main() {
     inspectAccount(primary, "treasury", proof.treasury),
     inspectAccount(primary, "proposal", proof.proposal),
     inspectAccount(primary, "governance-mint", proof.governanceMint),
-    ...(proof.pdaoToken?.tokenAccount ? [inspectAccount(primary, "pdao-token-account", proof.pdaoToken.tokenAccount)] : []),
+    ...(includePdaoTokenAccount ? [inspectAccount(primary, "pdao-token-account", proof.pdaoToken!.tokenAccount)] : []),
   ]);
 
   const tokenSupply = await readTokenSupply(primary, proof.governanceMint);
@@ -122,7 +125,7 @@ ${anchorChecks
 
 ## Interpretation
 
-This read-only canary checks live Devnet RPC health and canonical PrivateDAO anchors without mutating protocol state. It exists to provide a sustainable operational signal between heavier multi-wallet stress runs.
+This read-only canary checks live legacy Devnet RPC health and canonical archived PrivateDAO anchors without mutating protocol state. The current PDAO Token-2022 mint is on Testnet, so it is intentionally excluded from this legacy Devnet account-presence gate.
 `;
 
   writeJson("docs/devnet-canary.generated.json", report);

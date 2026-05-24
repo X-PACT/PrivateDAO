@@ -44,6 +44,8 @@ const MANIFEST_FILES = [
   "docs/backend-operator-flow.md",
   "docs/read-node/snapshot.generated.md",
   "docs/read-node/snapshot.generated.json",
+  "docs/backend-provider-readiness-2026-05-24.md",
+  "docs/backend-provider-readiness-2026-05-24.json",
   "docs/competitive/source.json",
   "docs/competitive/analysis.generated.md",
   "docs/competitive/analysis.generated.json",

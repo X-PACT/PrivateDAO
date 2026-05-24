@@ -540,6 +540,18 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/grand-champion-10-level-improvement-map-2026-05-22.md`,
   },
   {
+    slug: "backend-provider-readiness-2026-05-24",
+    title: "Backend Provider Readiness",
+    category: "Infrastructure",
+    summary:
+      "Live provider-readiness packet binding AWS hosting, QuickNode Testnet RPC, QuickNode Streams, Supabase counters, QVAC runtime proof, Umbra relayer health, and Solana Testnet chain indexing into one verified backend gate.",
+    audience: "Judges, operators, infrastructure partners, technical diligence teams",
+    boundary:
+      "Testnet backend readiness packet only; it verifies public health and proof endpoints while keeping RPC keys, stream secrets, Supabase credentials, and wallet keys server-side.",
+    docPath: "docs/backend-provider-readiness-2026-05-24.md",
+    rawHref: `${repositoryBlobBase}/docs/backend-provider-readiness-2026-05-24.md`,
+  },
+  {
     slug: "quicknode-stream-intelligence",
     title: "QuickNode Stream Intelligence",
     category: "Infrastructure",
