@@ -573,7 +573,7 @@ export function ProductLearningGuide({
                 Open telemetry packet
               </Link>
               <a
-                href="https://discord.gg/PbM8BC2A"
+                href="https://discord.gg/GjJykUtTTt"
                 target="_blank"
                 rel="noreferrer"
                 className={cn(buttonVariants({ size: "sm", variant: "outline" }))}

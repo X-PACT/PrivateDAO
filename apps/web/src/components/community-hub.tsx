@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Download, LifeBuoy, MessageSquareMore, Rocket, Trophy, Youtube } from "lucide-react";
+import { ArrowRight, Download, LifeBuoy, MessageSquareMore, Rocket, Send, Trophy, Youtube } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { communityLinks } from "@/lib/site-data";
@@ -9,7 +9,17 @@ import { cn } from "@/lib/utils";
 const iconMap = {
   YouTube: Youtube,
   Discord: MessageSquareMore,
+  Colosseum: Trophy,
+  "Superteam Earn": Rocket,
+  Telegram: Send,
 } as const;
+
+function CommunityIcon({ title }: { title: string }) {
+  const Icon = iconMap[title as keyof typeof iconMap];
+  if (Icon) return <Icon className="h-5 w-5" />;
+  if (title === "X") return <span className="text-base font-black leading-none text-white">X</span>;
+  return <MessageSquareMore className="h-5 w-5" />;
+}
 
 export function CommunityHub() {
   return (
@@ -20,7 +30,7 @@ export function CommunityHub() {
         </CardHeader>
         <CardContent className="grid gap-4 xl:grid-cols-4">
           <a
-            href="https://discord.gg/PbM8BC2A"
+            href="https://discord.gg/GjJykUtTTt"
             target="_blank"
             rel="noreferrer"
             className="group rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.08] p-5 transition hover:border-cyan-300/30 hover:bg-cyan-300/[0.12]"
@@ -94,7 +104,6 @@ export function CommunityHub() {
         </CardHeader>
         <CardContent className="grid gap-4">
           {communityLinks.map((item) => {
-            const Icon = iconMap[item.title as keyof typeof iconMap] ?? MessageSquareMore;
             const isExternal = item.href.startsWith("http");
 
             const button = isExternal ? (
@@ -116,7 +125,7 @@ export function CommunityHub() {
               <div key={item.title} className="rounded-3xl border border-white/10 bg-white/4 p-5">
                 <div className="flex items-center gap-3">
                   <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/8 bg-black/20 text-cyan-200">
-                    <Icon className="h-5 w-5" />
+                    <CommunityIcon title={item.title} />
                   </div>
                   <div className="text-lg font-medium text-white">{item.title}</div>
                 </div>

@@ -98,5 +98,5 @@ This framing matters strategically. It means the repository is already demonstra
 - i.kotb@proton.me
 - WhatsApp: 00201124030209
 - WhatsApp: 00201070004967
-- X: https://x.com/FahdX369
+- X: https://x.com/privateDAOOS
 - Telegram: @Fahdkotb

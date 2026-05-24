@@ -2,11 +2,24 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Download, MessageSquareMore, Youtube } from "lucide-react";
+import { Download, MessageSquareMore, Rocket, Send, Trophy, Youtube } from "lucide-react";
 
 import { androidApkDownloadUrl } from "@/lib/android-surface";
+import { communityLinks } from "@/lib/site-data";
 import { useSiteUrls } from "@/lib/site-urls";
 import { useI18n } from "@/components/i18n-provider";
+
+const footerCommunityIconClass = "h-4 w-4";
+
+function FooterCommunityIcon({ title }: { title: string }) {
+  if (title === "YouTube") return <Youtube className={`${footerCommunityIconClass} text-red-300`} />;
+  if (title === "Discord") return <MessageSquareMore className={`${footerCommunityIconClass} text-cyan-200`} />;
+  if (title === "Colosseum") return <Trophy className={`${footerCommunityIconClass} text-amber-200`} />;
+  if (title === "Superteam Earn") return <Rocket className={`${footerCommunityIconClass} text-emerald-200`} />;
+  if (title === "Telegram") return <Send className={`${footerCommunityIconClass} text-sky-200`} />;
+  if (title === "X") return <span className="text-sm font-black leading-none text-white">X</span>;
+  return <MessageSquareMore className={`${footerCommunityIconClass} text-cyan-200`} />;
+}
 
 export function SiteFooter() {
   const [showMore, setShowMore] = useState(false);
@@ -138,24 +151,19 @@ export function SiteFooter() {
             <Youtube className="h-4 w-4 text-violet-200" />
             <span>{copy.chrome.storyVideo}</span>
           </Link>
-          <a
-            href="https://www.youtube.com/@privatedao"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-red-400/18 bg-red-400/8 px-3 py-1.5 text-white/76 transition hover:border-red-300/30 hover:text-white"
-          >
-            <Youtube className="h-4 w-4 text-red-300" />
-            <span>{copy.chrome.youtube}</span>
-          </a>
-          <a
-            href="https://discord.gg/PbM8BC2A"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-cyan-400/18 bg-cyan-400/8 px-3 py-1.5 text-white/76 transition hover:border-cyan-300/30 hover:text-white"
-          >
-            <MessageSquareMore className="h-4 w-4 text-cyan-200" />
-            <span>{copy.chrome.discord}</span>
-          </a>
+          {communityLinks.map((item) => (
+            <a
+              key={item.title}
+              href={item.href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={item.title}
+              className="inline-flex items-center gap-2 rounded-full border border-cyan-400/18 bg-cyan-400/8 px-3 py-1.5 text-white/76 transition hover:border-cyan-300/30 hover:text-white"
+            >
+              <FooterCommunityIcon title={item.title} />
+              <span>{item.title === "Discord" ? copy.chrome.discord : item.title}</span>
+            </a>
+          ))}
           </div>
         </div>
       </div>

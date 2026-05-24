@@ -80,8 +80,11 @@ export function buildOrganizationJsonLd() {
     sameAs: [
       "https://github.com/X-PACT/PrivateDAO",
       "https://www.youtube.com/@privatedao",
-      "https://discord.gg/PbM8BC2A",
-      "https://x.com/FahdX369",
+      "https://discord.gg/GjJykUtTTt",
+      "https://arena.colosseum.org/projects/explore/praivatedao",
+      "https://superteam.fun/earn/t/Private-dao-1",
+      "https://x.com/privateDAOOS",
+      "https://t.me/Fahdkotb",
     ],
   };
 }
@@ -134,8 +137,12 @@ export function buildSoftwareApplicationJsonLd() {
     ],
     sameAs: [
       "https://github.com/X-PACT/PrivateDAO",
-      "https://x.com/FahdX369",
+      "https://x.com/privateDAOOS",
       "https://www.youtube.com/@privatedao",
+      "https://discord.gg/GjJykUtTTt",
+      "https://arena.colosseum.org/projects/explore/praivatedao",
+      "https://superteam.fun/earn/t/Private-dao-1",
+      "https://t.me/Fahdkotb",
     ],
   };
 }

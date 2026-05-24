@@ -580,8 +580,12 @@ const assistantIntents: AssistantIntent[] = [
     primaryActionLabel: "Open community hub",
     primaryActionHref: "/community",
     relatedRoutes: [
-      { label: "Discord", href: "https://discord.gg/PbM8BC2A" },
+      { label: "Discord", href: "https://discord.gg/GjJykUtTTt" },
       { label: "YouTube", href: "https://www.youtube.com/@privatedao" },
+      { label: "Colosseum", href: "https://arena.colosseum.org/projects/explore/praivatedao" },
+      { label: "Superteam Earn", href: "https://superteam.fun/earn/t/Private-dao-1" },
+      { label: "X", href: "https://x.com/privateDAOOS" },
+      { label: "Telegram", href: "https://t.me/Fahdkotb" },
       { label: "Story Video", href: "/story" },
     ],
     keywords: ["community", "discord", "join", "server", "youtube", "channel", "social", "telegram", "x"],

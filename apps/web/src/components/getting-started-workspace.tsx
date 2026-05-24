@@ -166,7 +166,7 @@ export function GettingStartedWorkspace({ executionSnapshot }: GettingStartedWor
         </Link>
         <a
           className={cn(buttonVariants({ size: "lg", variant: "outline" }))}
-          href="https://discord.gg/PbM8BC2A"
+          href="https://discord.gg/GjJykUtTTt"
           target="_blank"
           rel="noreferrer"
         >

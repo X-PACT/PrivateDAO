@@ -109,4 +109,4 @@ Suggested details:
 - Email: `fahd.kotb@tuta.io`
 - Email: `i.kotb@proton.me`
 - Telegram: `@Fahdkotb`
-- X: `@FahdX369`
+- X: `@privateDAOOS`

@@ -108,7 +108,7 @@ export default function EngagePage({ searchParams }: EngagePageProps) {
               </div>
               <div className="mt-3 space-y-3 text-sm leading-7 text-white/68">
                 <div>Telegram: <a className="text-white hover:text-cyan-200" href="https://t.me/Fahdkotb" target="_blank" rel="noreferrer">@Fahdkotb</a></div>
-                <div>Discord: <a className="text-white hover:text-cyan-200" href="https://discord.gg/PbM8BC2A" target="_blank" rel="noreferrer">discord.gg/PbM8BC2A</a></div>
+                <div>Discord: <a className="text-white hover:text-cyan-200" href="https://discord.gg/GjJykUtTTt" target="_blank" rel="noreferrer">discord.gg/GjJykUtTTt</a></div>
               </div>
             </div>
           </div>

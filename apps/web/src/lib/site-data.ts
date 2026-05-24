@@ -240,9 +240,33 @@ export const communityLinks = [
   },
   {
     title: "Discord",
-    href: "https://discord.gg/PbM8BC2A",
+    href: "https://discord.gg/GjJykUtTTt",
     summary: "Join the PrivateDAO server for product updates, community discussion, weekly releases, and operator coordination.",
     cta: "Join server",
+  },
+  {
+    title: "Colosseum",
+    href: "https://arena.colosseum.org/projects/explore/praivatedao",
+    summary: "Open the public Arena project profile for the current PrivateDAO Frontier review surface.",
+    cta: "Open Arena profile",
+  },
+  {
+    title: "Superteam Earn",
+    href: "https://superteam.fun/earn/t/Private-dao-1",
+    summary: "Open the Superteam Earn profile that routes reviewers and ecosystem partners into the public project track.",
+    cta: "Open Superteam profile",
+  },
+  {
+    title: "X",
+    href: "https://x.com/privateDAOOS",
+    summary: "Follow the public PrivateDAO product account for proof drops, release notes, and ecosystem updates.",
+    cta: "Follow @privateDAOOS",
+  },
+  {
+    title: "Telegram",
+    href: "https://t.me/Fahdkotb",
+    summary: "Contact the founder/operator directly on Telegram for pilot, partnership, and review coordination.",
+    cta: "Message @Fahdkotb",
   },
 ];
 

@@ -331,7 +331,7 @@ Core links:
 - Story video: `https://privatedao.org/story/`
 - Technology explainer video: `https://youtu.be/iFTUe4CTWP0`
 - YouTube channel: `https://www.youtube.com/@privatedao`
-- Discord: `https://discord.gg/PbM8BC2A`
+- Discord: `https://discord.gg/GjJykUtTTt`
 - Colosseum project page: `https://arena.colosseum.org/projects/explore/praivatedao`
 - Security hardening: `docs/security-hardening-v2.md`
 - Mainnet blockers: `docs/mainnet-blockers.md`
