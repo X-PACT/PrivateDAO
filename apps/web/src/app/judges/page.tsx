@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Script from "next/script";
 import { ArrowRight, Award, ShieldCheck } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
@@ -18,6 +19,9 @@ export const metadata: Metadata = buildRouteMetadata({
 export default function JudgesPage() {
   return (
     <main className="mx-auto flex min-h-[72vh] w-full max-w-5xl items-center px-4 py-14 sm:px-6 lg:px-8">
+      <Script id="privatedao-judges-legacy-redirect" strategy="afterInteractive">
+        {`window.setTimeout(function(){window.location.replace('/judge');}, 250);`}
+      </Script>
       <section className="w-full rounded-[34px] border border-cyan-300/18 bg-[radial-gradient(circle_at_8%_0%,rgba(34,211,238,0.18),transparent_34%),radial-gradient(circle_at_92%_10%,rgba(20,241,149,0.16),transparent_30%),linear-gradient(180deg,rgba(7,12,24,0.96),rgba(4,7,16,0.99))] p-6 shadow-[0_30px_120px_rgba(0,0,0,0.35)] sm:p-8">
         <div className="flex flex-wrap items-center gap-2">
           {["Canonical judge route", "All integrations", "Awards attached to proof"].map((label) => (
@@ -31,10 +35,10 @@ export default function JudgesPage() {
           <div>
             <div className="text-[11px] uppercase tracking-[0.32em] text-emerald-100/78">Judges URL cleaned</div>
             <h1 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-white sm:text-5xl">
-              Use the updated verification route.
+              Redirecting to the updated verification route.
             </h1>
             <p className="mt-4 text-sm leading-7 text-white/66">
-              This `/judges` URL is kept alive for older links, but the canonical reviewer route is now `/judge`.
+              This `/judges` URL is kept alive for older links and now forwards reviewers to `/judge`.
               It carries the fuller technical map: QVAC, Cloak, Umbra, MagicBlock, Covalent GoldRush, Jupiter,
               Zerion, Torque, Eitherway, Supabase, AWS read-node, Testnet proof, and recognition context.
             </p>
