@@ -59,7 +59,7 @@ function main() {
       privateDaoProgramId: proof.pdaoToken.privateDaoProgramId ?? proof.programId,
       tokenProgramId: proof.pdaoToken.programId,
       explanation:
-        "PrivateDAO has one canonical governance program id. The separate Token-2022 program id belongs to the PDAO mint surface and is expected.",
+        "Current reviewer-facing PrivateDAO governance uses the Anchor 1.0.1 Testnet program id. Legacy Devnet program ids remain archived as provenance only. The separate Token-2022 program id belongs to the PDAO mint surface and is expected.",
     },
     verificationDocs: [
       "docs/token.md",

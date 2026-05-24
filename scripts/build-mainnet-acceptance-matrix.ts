@@ -8,6 +8,12 @@ type SubmissionRegistry = {
   status: Record<string, string>;
 };
 
+type ProofRegistry = {
+  pdaoToken?: {
+    privateDaoProgramId?: string;
+  };
+};
+
 type RuntimeEvidence = {
   walletCount: number;
   devnetCanary: {
@@ -38,8 +44,10 @@ type MatrixRow = {
 
 function main() {
   const submission = readJson<SubmissionRegistry>("docs/submission-registry.json");
+  const proof = readJson<ProofRegistry>("docs/proof-registry.json");
   const runtimeEvidence = readJson<RuntimeEvidence>("docs/runtime-evidence.generated.json");
   const goLive = readJson<GoLiveAttestation>("docs/go-live-attestation.generated.json");
+  const currentProgramId = proof.pdaoToken?.privateDaoProgramId ?? submission.programId;
 
   const rows: MatrixRow[] = [
     {
@@ -70,7 +78,7 @@ function main() {
       layer: "token-surface",
       status: "accepted-in-repo",
       evidence: ["docs/pdao-token.md", "docs/pdao-attestation.generated.json", "docs/assets/pdao-token.json"],
-      rationale: "The PDAO token surface is attested, metadata-backed, and aligned with the canonical Devnet proof package.",
+      rationale: "The PDAO token surface is attested, metadata-backed, and aligned with the current Testnet Token-2022 mint while legacy Devnet mint evidence remains archived.",
     },
     {
       layer: "runtime-and-resilience",
@@ -147,6 +155,7 @@ function main() {
   const matrix = {
     project: submission.project,
     programId: submission.programId,
+    currentTestnetProgramId: currentProgramId,
     verificationWallet: submission.verificationWallet,
     generatedAt: new Date().toISOString(),
     acceptanceDecision: pendingCount === 0 && notInRepoCount === 0 ? "repository-ready-without-external-blockers" : "repository-strong-but-external-blockers-remain",
@@ -170,6 +179,7 @@ function main() {
 function buildMarkdown(matrix: {
   project: string;
   programId: string;
+  currentTestnetProgramId: string;
   verificationWallet: string;
   generatedAt: string;
   acceptanceDecision: string;
@@ -186,7 +196,8 @@ function buildMarkdown(matrix: {
 ## Overview
 
 - project: \`${matrix.project}\`
-- program id: \`${matrix.programId}\`
+- current Testnet program id: \`${matrix.currentTestnetProgramId}\`
+- legacy Devnet program id: \`${matrix.programId}\`
 - verification wallet: \`${matrix.verificationWallet}\`
 - generated at: \`${matrix.generatedAt}\`
 - acceptance decision: \`${matrix.acceptanceDecision}\`

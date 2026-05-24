@@ -11,11 +11,15 @@ type SubmissionRegistry = {
 };
 
 type ProofRegistry = {
+  programId?: string;
   deployTx: string;
   dao: string;
   governanceMint: string;
   treasury: string;
   proposal: string;
+  pdaoToken?: {
+    privateDaoProgramId?: string;
+  };
 };
 
 type DeploymentAttestation = {
@@ -39,6 +43,7 @@ function main() {
 
   const commit = safeGit("git rev-parse HEAD");
   const branch = safeGit("git rev-parse --abbrev-ref HEAD");
+  const currentProgramId = proof.pdaoToken?.privateDaoProgramId ?? submission.programId;
 
   const mandatoryGates = [
     "npm run verify:live-proof",
@@ -54,6 +59,7 @@ function main() {
     generatedAt: deterministicGeneratedAt(),
     releaseCommit: commit,
     releaseBranch: branch,
+    currentTestnetProgramId: currentProgramId,
     programId: submission.programId,
     verificationWallet: submission.verificationWallet,
     deployTx: proof.deployTx,
@@ -99,6 +105,7 @@ function buildMarkdown(attestation: {
   releaseCommit: string;
   releaseBranch: string;
   programId: string;
+  currentTestnetProgramId: string;
   verificationWallet: string;
   deployTx: string;
   anchors: Record<string, string>;
@@ -117,7 +124,8 @@ function buildMarkdown(attestation: {
 - Generated at: \`${attestation.generatedAt}\`
 - Release commit: \`${attestation.releaseCommit}\`
 - Release branch: \`${attestation.releaseBranch}\`
-- Program id: \`${attestation.programId}\`
+- Current Testnet program id: \`${attestation.currentTestnetProgramId}\`
+- Legacy Devnet release program id: \`${attestation.programId}\`
 - Verification wallet: \`${attestation.verificationWallet}\`
 - Deploy transaction: \`${attestation.deployTx}\`
 

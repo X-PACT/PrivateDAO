@@ -26,6 +26,7 @@ type ProofRegistry = {
   treasury: string;
   proposal: string;
   pdaoToken?: {
+    privateDaoProgramId?: string;
     mint: string;
     programId: string;
     tokenAccount: string;
@@ -64,13 +65,15 @@ function main() {
   const cryptographicManifest = readJson<CryptographicManifest>("docs/cryptographic-manifest.generated.json");
   const zkRegistry = readJson<ZkRegistry>("docs/zk-registry.generated.json");
   const outPath = path.resolve("docs/audit-packet.generated.md");
+  const currentProgramId = proof.pdaoToken?.privateDaoProgramId ?? proof.programId;
 
   const markdown = `# Audit Packet
 
 ## Identity
 
 - Project: ${submission.project}
-- Program ID: \`${proof.programId}\`
+- Current Testnet Program ID: \`${currentProgramId}\`
+- Legacy Devnet Program ID: \`${proof.programId}\`
 - Deploy transaction: \`${proof.deployTx}\`
 - Verification wallet: \`${proof.verificationWallet}\`
 
@@ -82,7 +85,7 @@ function main() {
 - Security page: ${submission.securityPage}
 - YouTube pitch: ${submission.youtubePitch}
 
-## Live Devnet Anchors
+## Legacy Devnet Anchors
 
 - DAO PDA: \`${proof.dao}\`
 - Governance mint: \`${proof.governanceMint}\`
@@ -92,7 +95,8 @@ function main() {
 ${proof.pdaoToken
   ? `## PDAO Token Surface
 
-- PDAO mint: \`${proof.pdaoToken.mint}\`
+- Current PDAO mint: \`${proof.pdaoToken.mint}\`
+- Legacy Devnet PDAO mint: \`${proof.governanceMint}\`
 - PDAO program: \`${proof.pdaoToken.programId}\`
 - PDAO token account: \`${proof.pdaoToken.tokenAccount}\`
 - PDAO metadata URI: \`${proof.pdaoToken.metadataUri}\`
@@ -102,7 +106,8 @@ ${proof.pdaoToken
 
 ### Program Boundary
 
-- PrivateDAO governance program: \`${proof.programId}\`
+- Current PrivateDAO governance program: \`${currentProgramId}\`
+- Legacy Devnet governance program: \`${proof.programId}\`
 - PDAO token program: \`${proof.pdaoToken.programId}\`
 - Boundary note: the Token-2022 program id belongs to the PDAO mint surface and does not indicate a second PrivateDAO governance program.
 

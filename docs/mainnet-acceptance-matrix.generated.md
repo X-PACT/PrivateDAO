@@ -3,9 +3,10 @@
 ## Overview
 
 - project: `PrivateDAO`
-- program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- current Testnet program id: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
+- legacy Devnet program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
-- generated at: `2026-04-22T00:26:14.271Z`
+- generated at: `2026-05-24T15:29:25.377Z`
 - acceptance decision: `repository-strong-but-external-blockers-remain`
 - accepted in repo: `9`
 - pending external: `3`
@@ -53,7 +54,7 @@
 ### token-surface
 
 - status: `accepted-in-repo`
-- rationale: The PDAO token surface is attested, metadata-backed, and aligned with the canonical Devnet proof package.
+- rationale: The PDAO token surface is attested, metadata-backed, and aligned with the current Testnet Token-2022 mint while legacy Devnet mint evidence remains archived.
 - evidence:
   - `docs/pdao-token.md`
   - `docs/pdao-attestation.generated.json`

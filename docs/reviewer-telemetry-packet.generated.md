@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-05-22T19:34:06.346Z`
+- generated at: `2026-05-24T15:29:38.106Z`
 - reviewer intent: Show the shortest truth-synced route into runtime maturity, hosted reads, indexed governance, and infrastructure-facing reviewer value without claiming unsupported partnerships or mainnet readiness.
 
 ## Truth Sources
@@ -34,7 +34,8 @@
 - read path: `backend-indexer`
 - rpc endpoint: `https://api.devnet.solana.com`
 - slot: `458767709`
-- program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- current Testnet program id: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
+- legacy Devnet hosted-read program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - commitment: `confirmed`
 - indexed proposals: `48`
 - indexed DAOs: `28`
@@ -60,7 +61,7 @@
 
 - Proposal flow health: 37.5% — 7/7 governance proof steps are finalized. 0 proposal is already executed on Testnet, 0 proposal is still in commit mode, and 5 proposal is still waiting on settlement evidence. (Open proof and execution: /proof/?judge=1)
 - Wallet-by-wallet readiness: Runtime capture live — Wallet diagnostics, connect/sign/submit evidence, and real-device intake are surfaced as a living runtime program with proof packets attached for each supported wallet path. (Open wallet diagnostics: /diagnostics)
-- Proof freshness: 2d old — Runtime evidence 16d old and Testnet canary 2d old remain published together. The integration packet remains linked as the reviewer baseline without turning an archived source packet into the freshness score. Latest Testnet rehearsal is 16d old with 9 confirmed lifecycle signatures. (Open trust documents: /documents/live-proof-v3)
+- Proof freshness: 4d old — Runtime evidence 18d old and Testnet canary 4d old remain published together. The integration packet remains linked as the reviewer baseline without turning an archived source packet into the freshness score. Latest Testnet rehearsal is 18d old with 9 confirmed lifecycle signatures. (Open trust documents: /documents/live-proof-v3)
 - Hosted read coverage: 48 — The backend-indexer read path currently exposes 48 indexed proposals across 28 DAOs. (Open services: /services)
 - MagicBlock settlement completion: 100% — 5/5 confidential corridor transactions finalized in the current integration evidence package. (Open diagnostics: /diagnostics)
 - Primary RPC latency: 153 ms — Current blockhash latency from the primary Testnet endpoint. Version latency is 998 ms. (Open analytics: /analytics)

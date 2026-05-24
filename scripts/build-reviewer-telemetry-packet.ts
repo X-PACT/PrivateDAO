@@ -83,6 +83,13 @@ type ReadNodeSnapshot = {
   };
 };
 
+type ProofRegistry = {
+  programId: string;
+  pdaoToken?: {
+    privateDaoProgramId?: string;
+  };
+};
+
 type DevnetMetricCard = {
   label: string;
   value: string;
@@ -126,6 +133,7 @@ type ReviewerTelemetryPacket = {
     readPath: string;
     rpcEndpoint: string;
     slot: number;
+    currentTestnetProgramId: string;
     programId: string;
     commitment: string;
     proposals: number;
@@ -173,6 +181,8 @@ function main() {
   const runtimeEvidence = readJson<RuntimeEvidence>("docs/runtime-evidence.generated.json");
   const frontierIntegrations = readJson<FrontierIntegrations>("docs/frontier-integrations.generated.json");
   const readNodeSnapshot = readJson<ReadNodeSnapshot>("docs/read-node/snapshot.generated.json");
+  const proof = readJson<ProofRegistry>("docs/proof-registry.json");
+  const currentProgramId = proof.pdaoToken?.privateDaoProgramId ?? readNodeSnapshot.runtime.programId;
 
   const repoRoot = process.cwd();
   process.chdir(path.resolve(repoRoot, "apps/web"));
@@ -263,6 +273,7 @@ function main() {
       readPath: readNodeSnapshot.readPath,
       rpcEndpoint: readNodeSnapshot.runtime.rpcEndpoint,
       slot: readNodeSnapshot.runtime.slot,
+      currentTestnetProgramId: currentProgramId,
       programId: readNodeSnapshot.runtime.programId,
       commitment: readNodeSnapshot.runtime.commitment,
       proposals: readNodeSnapshot.counts.proposals,
@@ -379,7 +390,8 @@ ${payload.externallyProvenNow.map((entry) => `- ${entry}`).join("\n")}
 - read path: \`${payload.hostedReadProof.readPath}\`
 - rpc endpoint: \`${payload.hostedReadProof.rpcEndpoint}\`
 - slot: \`${payload.hostedReadProof.slot}\`
-- program id: \`${payload.hostedReadProof.programId}\`
+- current Testnet program id: \`${payload.hostedReadProof.currentTestnetProgramId}\`
+- legacy Devnet hosted-read program id: \`${payload.hostedReadProof.programId}\`
 - commitment: \`${payload.hostedReadProof.commitment}\`
 - indexed proposals: \`${payload.hostedReadProof.proposals}\`
 - indexed DAOs: \`${payload.hostedReadProof.uniqueDaos}\`

@@ -5244,7 +5244,7 @@ body.judge-mode .judge-banner {
           <span class="proposal-id">DEVNET · LIVE DATA</span>
           <span class="phase-pill pill-commit">LOADING</span>
         </div>
-        <div class="proposal-title">Loading live proposals from Solana Devnet</div>
+        <div class="proposal-title">Loading live proposals from Solana Testnet</div>
         <div class="proposal-desc">The app is reading real on-chain proposal accounts from the configured program. If nothing is live yet, this panel will switch to the bootstrap guidance state.</div>
         <div class="proposal-phase-copy">
           <strong>Current task</strong>
@@ -5658,11 +5658,11 @@ body.judge-mode .judge-banner {
         <div class="curation-card">
           <div class="curation-kicker">LIVE PRODUCT</div>
           <div class="curation-title">Operate and verify the system</div>
-          <div class="curation-copy">Start from the live app, inspect the program on Solscan, and use the Devnet lifecycle proof as the canonical operational path.</div>
+          <div class="curation-copy">Start from the live app, inspect the current Testnet program on Solscan, and use the Devnet lifecycle proof only as archived provenance.</div>
           <div class="curation-links">
             <a class="award-link" href="./" target="_blank">Live App</a>
             <a class="award-link" href="?page=proof&judge=1" target="_blank">Review Surface</a>
-            <a class="award-link" href="https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet" target="_blank">Program on Solscan</a>
+            <a class="award-link" href="https://solscan.io/account/EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva?cluster=testnet" target="_blank">Current Testnet Program</a>
             <a class="award-link" href="live-proof.md" target="_blank">Live Devnet Proof</a>
             <a class="award-link" href="confidential-payments.md" target="_blank">Confidential Payouts</a>
             <a class="award-link" href="confidential-payroll-flow.md" target="_blank">Payroll Flow</a>
@@ -5748,8 +5748,8 @@ body.judge-mode .judge-banner {
         <div class="award-meta-card-value">Private voting · confidential payouts · runtime assurance</div>
       </div>
       <div class="award-meta-card">
-        <div class="award-meta-card-label">PROGRAM ID</div>
-        <div class="award-meta-card-value" style="word-break:break-all">5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx</div>
+        <div class="award-meta-card-label">CURRENT TESTNET PROGRAM ID</div>
+        <div class="award-meta-card-value" style="word-break:break-all">EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva</div>
       </div>
       <div class="award-meta-card">
         <div class="award-meta-card-label">DEVNET LOAD TEST</div>
@@ -6598,7 +6598,7 @@ execute() → treasury action
       <div class="proposal-command-grid">
         <div class="proposal-command-box">
           <div class="proposal-detail-label">PROGRAM ID</div>
-          <div style="color:var(--text2);line-height:1.8">PrivateDAO keeps one canonical governance program id: <code>5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx</code>. The separate <code>Token-2022</code> id belongs to the live PDAO mint surface only.</div>
+          <div style="color:var(--text2);line-height:1.8">Current reviewer-facing PrivateDAO governance uses the Anchor 1.0.1 Testnet program id: <code>EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva</code>. Legacy Devnet evidence remains archived under <code>5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx</code>. The separate <code>Token-2022</code> id belongs to the live PDAO mint surface only.</div>
         </div>
         <div class="proposal-command-box">
           <div class="proposal-detail-label">BROWSER SALTS</div>
@@ -6739,7 +6739,7 @@ execute() → treasury action
         </div>
         <div class="proposal-command-box">
           <div class="proposal-detail-label">NETWORK</div>
-          <div style="color:var(--text2);line-height:1.8">Devnet</div>
+          <div style="color:var(--text2);line-height:1.8">Solana Testnet</div>
         </div>
         <div class="proposal-command-box">
           <div class="proposal-detail-label">UTILITY</div>
@@ -6751,7 +6751,7 @@ execute() → treasury action
         </div>
         <div class="proposal-command-box">
           <div class="proposal-detail-label">MINT</div>
-          <div style="color:var(--text2);line-height:1.8"><code>AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt</code></div>
+          <div style="color:var(--text2);line-height:1.8"><code>DFYvBdivHCe4bSErgCiKm2RhwGEcZYbBPFQzLNr37Bie</code></div>
         </div>
         <div class="proposal-command-box">
           <div class="proposal-detail-label">PROGRAM</div>
@@ -7099,12 +7099,12 @@ execute() → treasury action
           <div class="diagnostic-value" id="diagReadNodeMetrics">Pending refresh</div>
         </div>
         <div class="proposal-command-box">
-          <div class="proposal-detail-label">PROGRAM ID</div>
-          <div class="diagnostic-value"><code>5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx</code></div>
+          <div class="proposal-detail-label">CURRENT TESTNET PROGRAM ID</div>
+          <div class="diagnostic-value"><code>EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva</code></div>
         </div>
         <div class="proposal-command-box">
-          <div class="proposal-detail-label">PDAO MINT</div>
-          <div class="diagnostic-value"><code>AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt</code></div>
+          <div class="proposal-detail-label">CURRENT TESTNET PDAO MINT</div>
+          <div class="diagnostic-value"><code>DFYvBdivHCe4bSErgCiKm2RhwGEcZYbBPFQzLNr37Bie</code></div>
         </div>
         <div class="proposal-command-box">
           <div class="proposal-detail-label">GO-LIVE CHECKLIST</div>
@@ -7519,10 +7519,10 @@ execute() → treasury action
         </svg>
       </span><em>O</em></div>
       <div class="footer-meta">
-        Program: 5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx · Core AGPLv3+ · SDK Apache-2.0 · Docs MIT
+        Current Testnet program: EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva · Core AGPLv3+ · SDK Apache-2.0 · Docs MIT
       </div>
       <div class="footer-links">
-        <a href="https://solscan.io/account/5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx?cluster=devnet" class="footer-link" target="_blank">Solscan</a>
+        <a href="https://solscan.io/account/EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva?cluster=testnet" class="footer-link" target="_blank">Solscan</a>
         <a href="?page=proof" class="footer-link">Proof Center</a>
         <a href="?page=security" class="footer-link">Security</a>
         <a href="?page=diagnostics" class="footer-link">Diagnostics</a>
@@ -7553,8 +7553,8 @@ execute() → treasury action
     <div class="network-indicator">
       <span class="net-dot"></span>
       <span>Connected to</span>
-      <span class="net-name">Solana Devnet</span>
-      <span style="margin-left:auto">Program: 5AhUsbQ4...</span>
+      <span class="net-name">Solana Testnet</span>
+      <span style="margin-left:auto">Program: EP9xE8...</span>
     </div>
 
     <div class="commit-preview">
@@ -8155,8 +8155,8 @@ async function updateDiagnostics() {
       };
     }),
     anchors: {
-      programId: '5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx',
-      pdaoMint: 'AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt',
+      programId: 'EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva',
+      pdaoMint: 'DFYvBdivHCe4bSErgCiKm2RhwGEcZYbBPFQzLNr37Bie',
     },
     goLive: {
       repositoryGates: 'internal-pass',
@@ -9037,9 +9037,8 @@ function copyFinalizeCommand() {
 }
 
 const DEVNET_RPC_ENDPOINTS = [
-  solanaWeb3.clusterApiUrl('devnet'),
-  "https://api.devnet.solana.com",
-  "https://solana-devnet.g.alchemy.com/v2/L4dlywEyiBJLg8Ey0bFof",
+  solanaWeb3.clusterApiUrl('testnet'),
+  "https://api.testnet.solana.com",
 ];
 const READ_API_BASE = (() => {
   const query = new URLSearchParams(window.location.search).get('readApi');
@@ -9053,7 +9052,7 @@ const READ_API_BASE = (() => {
   }
   return '';
 })();
-const PROGRAM_ID = "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx";
+const PROGRAM_ID = "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva";
 const TOKEN_PROGRAM_ID = new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
 const TOKEN_2022_PROGRAM_ID = new solanaWeb3.PublicKey("TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb");
 const ASSOCIATED_TOKEN_PROGRAM_ID = new solanaWeb3.PublicKey("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL");
@@ -10204,7 +10203,7 @@ async function signAndBroadcastTransaction(instruction, successLabel, extraSigne
 
   const tx = new solanaWeb3.Transaction().add(instruction);
   const signature = await sendPreparedTransaction(tx, extraSigners);
-  const explorer = `https://solscan.io/tx/${signature}?cluster=devnet`;
+  const explorer = `https://solscan.io/tx/${signature}?cluster=testnet`;
   showToast(`${successLabel}: ${shortPk(signature)}`, 'success');
   setTimeout(() => window.open(explorer, '_blank', 'noopener'), 180);
   loadLiveProposals();
@@ -10502,7 +10501,7 @@ async function submitCreateDaoInWallet() {
     syncDepositCommand(daoPk.toBase58());
     syncCreateProposalCommand(daoPk.toBase58());
     showToast(`DAO created and funded with governance tokens: ${shortPk(daoPk.toBase58())}`, 'success');
-    setTimeout(() => window.open(`https://solscan.io/tx/${signature}?cluster=devnet`, '_blank', 'noopener'), 180);
+    setTimeout(() => window.open(`https://solscan.io/tx/${signature}?cluster=testnet`, '_blank', 'noopener'), 180);
   } catch (error) {
     console.error(error);
     showToast(describeOperationError(error, 'create-dao'), 'error');
@@ -10872,7 +10871,7 @@ async function loadProposalHistory(p) {
           ${detailLines}<br>
           Signature: ${sig.signature}
         </div>
-        <div style="margin-top:12px"><a class="award-link" href="https://solscan.io/tx/${sig.signature}?cluster=devnet" target="_blank">Open Transaction</a></div>
+        <div style="margin-top:12px"><a class="award-link" href="https://solscan.io/tx/${sig.signature}?cluster=testnet" target="_blank">Open Transaction</a></div>
       </div>
     `;
     }).join('');
@@ -11213,7 +11212,7 @@ async function executeSelectedProposalInWallet() {
     tx.add(ix);
 
     const signature = await sendPreparedTransaction(tx);
-    const explorer = `https://solscan.io/tx/${signature}?cluster=devnet`;
+    const explorer = `https://solscan.io/tx/${signature}?cluster=testnet`;
     showToast(`Execute submitted: ${shortPk(signature)}`, 'success');
     setTimeout(() => window.open(explorer, '_blank', 'noopener'), 180);
     loadLiveProposals();
@@ -11613,11 +11612,11 @@ function computePhase(p, nowTs) {
 }
 
 function solscanAccount(address) {
-  return `https://solscan.io/account/${address}?cluster=devnet`;
+  return `https://solscan.io/account/${address}?cluster=testnet`;
 }
 
 function solscanTx(signature) {
-  return `https://solscan.io/tx/${signature}?cluster=devnet`;
+  return `https://solscan.io/tx/${signature}?cluster=testnet`;
 }
 
 function formatExplorerTxLink(signature, label) {
