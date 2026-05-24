@@ -72,7 +72,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: withCanonicalSlash(path),
     lastModified: now,
     changeFrequency: path === "" ? "daily" : "weekly",
-    priority: path === "" ? 1 : path === "/start" || path === "/services" || path === "/proof" ? 0.9 : 0.7,
+    priority:
+      path === ""
+        ? 1
+        : path === "/start" ||
+            path === "/services" ||
+            path === "/proof" ||
+            path === "/judge" ||
+            path === "/rpc-services" ||
+            path === "/api-status" ||
+            path === "/intelligence" ||
+            path === "/android"
+          ? 0.9
+          : 0.7,
   }));
 
   const documentEntries: MetadataRoute.Sitemap = getCuratedDocuments()

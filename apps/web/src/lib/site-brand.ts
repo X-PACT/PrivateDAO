@@ -3,7 +3,7 @@ import { supportedLocales } from "@/lib/i18n";
 export const siteName = "PrivateDAO";
 export const siteTitle = "PrivateDAO | Sovereign Encrypted Intelligence Infrastructure for Solana";
 export const siteDescription =
-  "PrivateDAO is sovereign encrypted intelligence and operational infrastructure for Solana: live web and Android execution for private governance, confidential payroll, encrypted payments, treasury policy, GamingDAO rewards, local-first AI decision support, Testnet proof, and on-chain verification.";
+  "PrivateDAO is sovereign encrypted intelligence and operational infrastructure for Solana: live web and Android execution for private governance, confidential payroll, encrypted payments, treasury policy, GamingDAO rewards, QuickNode-backed Testnet telemetry, local-first AI decision support, Testnet proof, and on-chain verification.";
 export const siteUrl = process.env.NEXT_PUBLIC_LIVE_SITE_URL?.replace(/\/+$/, "") ?? "https://privatedao.org";
 export const defaultOgImage = `${siteUrl}/opengraph-image.png`;
 
@@ -34,6 +34,21 @@ export const siteKeywords = [
   "Solana treasury",
   "Solana DAO infrastructure",
   "DAO treasury infrastructure",
+  "Solana operational infrastructure",
+  "Solana production readiness",
+  "Solana Testnet readiness",
+  "Solana RPC services",
+  "Solana read node",
+  "QuickNode Streams",
+  "QuickNode Solana Testnet",
+  "readiness aggregate",
+  "backend telemetry",
+  "runtime telemetry",
+  "proof freshness",
+  "API health",
+  "AWS read node",
+  "Supabase receipts",
+  "Covalent data intelligence",
   "on-chain verification",
   "ZK verifier",
   "Squads multisig",
@@ -108,6 +123,10 @@ export function buildSoftwareApplicationJsonLd() {
       "Treasury policy review and execution",
       "GamingDAO rewards and tournaments",
       "Local-first decision intelligence",
+      "QuickNode-backed Solana Testnet telemetry",
+      "Reviewer-safe readiness aggregate API",
+      "Hosted read-node health and metrics",
+      "Supabase-backed operation receipt posture",
       "Reviewer-visible proof and runtime evidence",
       "Standalone Testnet ZK verifier receipt",
       "Squads multisig timelock enforcement proof",
