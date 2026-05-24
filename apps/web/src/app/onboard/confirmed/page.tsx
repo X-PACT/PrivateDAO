@@ -54,8 +54,8 @@ export default function OnboardConfirmedPage() {
           Open proof center
           <ArrowRight className="h-4 w-4" />
         </Link>
-        <Link href="/demo/" className={cn(buttonVariants({ size: "lg", variant: "secondary" }))}>
-          Watch product demo
+        <Link href="/story/" className={cn(buttonVariants({ size: "lg", variant: "secondary" }))}>
+          Watch product story
           <PlayCircle className="h-4 w-4" />
         </Link>
       </div>
