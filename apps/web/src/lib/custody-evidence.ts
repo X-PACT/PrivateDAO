@@ -323,7 +323,7 @@ function normalizeCustodyEvidence(parsed?: RawCustodyEvidence) {
 
 export function readCustodyEvidence(): CustodyEvidence {
   if (typeof window === "undefined") {
-    return emptyCustodyEvidence;
+    return currentTestnetCustodyEvidence;
   }
 
   try {

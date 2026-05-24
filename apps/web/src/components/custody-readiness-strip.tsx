@@ -6,7 +6,7 @@ import { AlertTriangle, ArrowRight, KeyRound, ShieldCheck, WalletCards } from "l
 
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
-import { buildCustodyNarrative, custodyEvidenceUpdatedEvent, emptyCustodyEvidence, getCustodyEvidenceCompletion, readCustodyEvidence, type CustodyEvidence } from "@/lib/custody-evidence";
+import { buildCustodyNarrative, currentTestnetCustodyEvidence, custodyEvidenceUpdatedEvent, getCustodyEvidenceCompletion, readCustodyEvidence, type CustodyEvidence } from "@/lib/custody-evidence";
 import { cn } from "@/lib/utils";
 
 type CustodyReadinessStripProps = {
@@ -33,7 +33,7 @@ const contextCopy: Record<NonNullable<CustodyReadinessStripProps["context"]>, { 
 };
 
 export function CustodyReadinessStrip({ context = "dashboard" }: CustodyReadinessStripProps) {
-  const [evidence, setEvidence] = useState<CustodyEvidence>(emptyCustodyEvidence);
+  const [evidence, setEvidence] = useState<CustodyEvidence>(currentTestnetCustodyEvidence);
 
   useEffect(() => {
     const syncEvidence = () => setEvidence(readCustodyEvidence());
