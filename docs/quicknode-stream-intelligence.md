@@ -19,8 +19,9 @@ This is not a public secret store and it is not a raw block archive. The product
 - static-site advisory route: `apps/web/src/app/api/quicknode/stream/route.ts`
 - read-node route: `scripts/run-read-node.ts`
 - required secret: `QUICKNODE_STREAM_TOKEN`
-- accepted auth headers: `Authorization: Bearer <token>`, `x-quicknode-security-token`, or `x-private-dao-stream-token`
+- accepted auth modes: QuickNode HMAC headers `X-QN-Nonce`, `X-QN-Timestamp`, `X-QN-Signature`; or fallback direct-token headers `Authorization: Bearer <token>`, `x-quicknode-security-token`, `x-private-dao-stream-token`
 - token mode: single token or comma-separated rotation list
+- root POST compatibility: `POST https://api.privatedao.org/` is rewritten by Caddy to `/api/v1/quicknode/stream` for dashboard configurations that were initially pointed at the domain root
 - RPC evidence redaction: `healthz` and `/api/v1/config` expose QuickNode as `https://*.solana-testnet.quiknode.pro/[redacted]`
 
 Never commit the token. Rotate any token that was pasted into chat, screenshots, issue bodies, build logs, or public notes.
@@ -70,7 +71,9 @@ On the primary host, these counters persist across read-node restarts in the run
 - timeout: `30s`
 - retry delay: `1s`
 - terminate after: `3` retries
-- destination URL: `https://api.privatedao.org/api/v1/quicknode/stream`
+- preferred destination URL: `https://api.privatedao.org/api/v1/quicknode/stream`
+- compatible destination URL if already configured in QuickNode: `https://api.privatedao.org/`
+- security token: keep QuickNode's generated security token in the dashboard and mirror it only as `QUICKNODE_STREAM_TOKEN` on the read-node; the server verifies QuickNode's HMAC signature over `nonce + timestamp + decoded JSON payload`
 
 ## Why It Matters
 

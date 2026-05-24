@@ -32,7 +32,7 @@
 - endpoint: `https://api.privatedao.org/api/v1/quicknode/stream/stats`
 - status: `pass`
 - http: `200`
-- summary: 1 accepted payload(s), raw storage disabled
+- summary: HMAC-compatible stream intake is active; root POST fallback rewrites to `/api/v1/quicknode/stream`; raw storage disabled
 
 ### Supabase visitor counters
 

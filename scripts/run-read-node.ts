@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import * as http from "http";
-import { createHash, timingSafeEqual } from "crypto";
+import { createHash, createHmac, timingSafeEqual } from "crypto";
 import { createRequire } from "module";
 import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "fs";
 import { readFile } from "fs/promises";
 import { join, resolve } from "path";
 import { URL } from "url";
+import { gunzipSync } from "zlib";
 import {
   Connection,
   Keypair,
@@ -300,7 +301,31 @@ function safeTokenEquals(received: string, expected: string) {
   return receivedBuffer.length === expectedBuffer.length && timingSafeEqual(receivedBuffer, expectedBuffer);
 }
 
-function requireQuickNodeStreamAuth(req: http.IncomingMessage) {
+function getQuickNodeSignatureHeaders(req: http.IncomingMessage) {
+  return {
+    nonce: String(req.headers["x-qn-nonce"] || "").trim(),
+    timestamp: String(req.headers["x-qn-timestamp"] || "").trim(),
+    signature: String(req.headers["x-qn-signature"] || "").trim(),
+  };
+}
+
+function safeHexEquals(receivedHex: string, expectedHex: string) {
+  if (!/^[a-f0-9]{64}$/i.test(receivedHex) || !/^[a-f0-9]{64}$/i.test(expectedHex)) return false;
+  const receivedBuffer = Buffer.from(receivedHex, "hex");
+  const expectedBuffer = Buffer.from(expectedHex, "hex");
+  return receivedBuffer.length === expectedBuffer.length && timingSafeEqual(receivedBuffer, expectedBuffer);
+}
+
+function verifyQuickNodeHmacSignature(secret: string, payload: string, nonce: string, timestamp: string, signature: string) {
+  if (!nonce || !timestamp || !signature) return false;
+  const maxAgeMs = Number(process.env.QUICKNODE_STREAM_MAX_SIGNATURE_AGE_MS || 10 * 60_000);
+  const timestampMs = Number(timestamp) * 1000;
+  if (!Number.isFinite(timestampMs) || Math.abs(Date.now() - timestampMs) > maxAgeMs) return false;
+  const expected = createHmac("sha256", Buffer.from(secret)).update(nonce + timestamp + payload).digest("hex");
+  return safeHexEquals(signature, expected);
+}
+
+function requireQuickNodeStreamAuth(req: http.IncomingMessage, rawPayload = "") {
   const expectedTokens = String(process.env.QUICKNODE_STREAM_TOKEN || "")
     .split(",")
     .map((token) => token.trim())
@@ -310,7 +335,21 @@ function requireQuickNodeStreamAuth(req: http.IncomingMessage) {
   }
 
   const receivedToken = getQuickNodeAuthToken(req);
-  if (!receivedToken || !expectedTokens.some((token) => safeTokenEquals(receivedToken, token))) {
+  if (receivedToken && expectedTokens.some((token) => safeTokenEquals(receivedToken, token))) {
+    return { ok: true as const };
+  }
+
+  const signatureHeaders = getQuickNodeSignatureHeaders(req);
+  const hmacValid = expectedTokens.some((token) =>
+    verifyQuickNodeHmacSignature(
+      token,
+      rawPayload,
+      signatureHeaders.nonce,
+      signatureHeaders.timestamp,
+      signatureHeaders.signature,
+    ),
+  );
+  if (!hmacValid) {
     return { ok: false as const, status: 401, error: "Unauthorized QuickNode stream payload." };
   }
 
@@ -453,6 +492,7 @@ function quickNodeStreamStats() {
     rawPayloadStorage: "disabled",
     statePersistence: "runtime-volume",
     acceptedAuthHeaders: [
+      "X-QN-Nonce + X-QN-Timestamp + X-QN-Signature",
       "Authorization: Bearer <token>",
       "x-quicknode-security-token",
       "x-private-dao-stream-token",
@@ -473,7 +513,7 @@ function persistQuickNodeStreamTelemetry() {
 
 loadQuickNodeStreamTelemetry();
 
-function readRequestJsonWithLimit(req: http.IncomingMessage, maxBytes: number): Promise<unknown> {
+function readRequestBodyWithLimit(req: http.IncomingMessage, maxBytes: number): Promise<Buffer> {
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = [];
     let bytes = 0;
@@ -485,20 +525,28 @@ function readRequestJsonWithLimit(req: http.IncomingMessage, maxBytes: number): 
       }
     });
     req.on("end", () => {
-      try {
-        const raw = Buffer.concat(chunks).toString("utf8") || "{}";
-        const parsed = JSON.parse(raw) as unknown;
-        if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
-          reject(new Error("JSON body must be an object"));
-          return;
-        }
-        resolve(parsed);
-      } catch (error) {
-        reject(error);
-      }
+      resolve(Buffer.concat(chunks));
     });
     req.on("error", reject);
   });
+}
+
+function decodeRequestBody(req: http.IncomingMessage, body: Buffer) {
+  const encoding = String(req.headers["content-encoding"] || "").toLowerCase();
+  return encoding.includes("gzip") ? gunzipSync(body).toString("utf8") : body.toString("utf8");
+}
+
+function parseJsonObject(raw: string, label: string): unknown {
+  const parsed = JSON.parse(raw || "{}") as unknown;
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+    throw new Error(`${label} must be a JSON object`);
+  }
+  return parsed;
+}
+
+async function readRequestJsonWithLimit(req: http.IncomingMessage, maxBytes: number): Promise<unknown> {
+  const body = await readRequestBodyWithLimit(req, maxBytes);
+  return parseJsonObject(decodeRequestBody(req, body), "JSON body");
 }
 
 async function readRequestJson(req: http.IncomingMessage): Promise<Record<string, unknown>> {
@@ -509,13 +557,15 @@ async function readRequestJson(req: http.IncomingMessage): Promise<Record<string
   return parsed as Record<string, unknown>;
 }
 
-async function readQuickNodeStreamJson(req: http.IncomingMessage): Promise<QuickNodeStreamPayload> {
+async function readQuickNodeStreamJson(req: http.IncomingMessage): Promise<{ payload: QuickNodeStreamPayload; rawPayload: string }> {
   const maxBytes = Number(process.env.QUICKNODE_STREAM_MAX_BYTES || 6_000_000);
-  const parsed = await readRequestJsonWithLimit(req, maxBytes);
+  const body = await readRequestBodyWithLimit(req, maxBytes);
+  const rawPayload = decodeRequestBody(req, body);
+  const parsed = parseJsonObject(rawPayload, "QuickNode stream payload");
   if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
     throw new Error("QuickNode stream payload must be a JSON object");
   }
-  return parsed as QuickNodeStreamPayload;
+  return { payload: parsed as QuickNodeStreamPayload, rawPayload };
 }
 
 function stringField(body: Record<string, unknown>, key: string, fallback = "") {
@@ -2120,13 +2170,13 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
     }
 
     if (req.method === "POST" && (pathname === "/api/quicknode/stream" || pathname === "/api/v1/quicknode/stream")) {
-      const auth = requireQuickNodeStreamAuth(req);
+      const { payload, rawPayload } = await readQuickNodeStreamJson(req);
+      const auth = requireQuickNodeStreamAuth(req, rawPayload);
       if (!auth.ok) {
         writeJson(res, auth.status, { ok: false, error: auth.error });
         return;
       }
-      const body = await readQuickNodeStreamJson(req);
-      const summary = summarizeQuickNodeStreamPayload(body);
+      const summary = summarizeQuickNodeStreamPayload(payload);
       recordQuickNodeStreamSummary(summary);
       writeJson(res, 202, { ok: true, summary });
       return;
@@ -2260,7 +2310,12 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
         dataset: "Programs + Logs / Block",
         auth: process.env.QUICKNODE_STREAM_TOKEN ? "configured" : "missing-env",
         destination: "/api/v1/quicknode/stream",
-        acceptedAuthHeaders: ["Authorization: Bearer <token>", "x-quicknode-security-token", "x-private-dao-stream-token"],
+        acceptedAuthHeaders: [
+          "X-QN-Nonce + X-QN-Timestamp + X-QN-Signature",
+          "Authorization: Bearer <token>",
+          "x-quicknode-security-token",
+          "x-private-dao-stream-token",
+        ],
       });
       return;
     }

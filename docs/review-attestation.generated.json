@@ -75,7 +75,7 @@
   "cryptographicIntegrity": {
     "algorithm": "sha256",
     "entryCount": 145,
-    "aggregateSha256": "fb103355e9e8092e1b9c5792d57065ba8d2a4e8c99df0b307e7cf9e6ad3bc868"
+    "aggregateSha256": "c435c3d669ce94218791806e22189f0aa41db28ddc697f45667e8154901b388a"
   },
   "runtimeDocs": [
     "docs/governance-hardening-v3.md",

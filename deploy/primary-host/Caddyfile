@@ -21,6 +21,15 @@
 		reverse_proxy read-node:8787
 	}
 
+	@quicknode_root {
+		method POST
+		path /
+	}
+	handle @quicknode_root {
+		rewrite * /api/v1/quicknode/stream
+		reverse_proxy read-node:8787
+	}
+
 	handle {
 		try_files {path} {path}/ /index.html
 		file_server
