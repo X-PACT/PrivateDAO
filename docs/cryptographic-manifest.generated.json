@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-05-24T15:37:34.068Z",
+  "generatedAt": "2026-05-24T15:55:48.091Z",
   "algorithm": "sha256",
   "entryCount": 143,
-  "aggregateSha256": "5c20e88dc3cff0adf1f028309eb3f05e46cd7af972486ce1d61b478d3e261dc3",
+  "aggregateSha256": "aa6c0754b7014adb4bfebdde414bdb90f2d6df7fecffe817512f8f60f01cdca9",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -507,12 +507,12 @@
     },
     {
       "path": "docs/supply-chain-attestation.generated.md",
-      "sha256": "8939e72fc0ca2eb0dc72e04daf65d5a609710ae914c2a995e303196bbd692f22",
+      "sha256": "1a9b6c90f7a698665e2550e3724656df534634f4e4ddfdefbdba590e6690b845",
       "bytes": 1695
     },
     {
       "path": "docs/supply-chain-attestation.generated.json",
-      "sha256": "86f85ed00fea675f4b37db0632556b6ad1be2112091d645677353a81724cf1fb",
+      "sha256": "36a4e5c224f629692f4f81f812eaa5f97ed98675c1cd393674767a1e696bcb5c",
       "bytes": 2021
     },
     {
