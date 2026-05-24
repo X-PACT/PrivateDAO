@@ -8,7 +8,7 @@ import { ArrowUpRight, Gauge, KeyRound, ShieldCheck, TimerReset, WalletCards } f
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { buildCustodyNarrative, custodyEvidenceUpdatedEvent, emptyCustodyEvidence, getCustodyEvidenceCompletion, readCustodyEvidence, type CustodyEvidence } from "@/lib/custody-evidence";
+import { buildCustodyNarrative, currentTestnetCustodyEvidence, custodyEvidenceUpdatedEvent, getCustodyEvidenceCompletion, readCustodyEvidence, type CustodyEvidence } from "@/lib/custody-evidence";
 import type { CompetitionTrackWorkspace } from "@/lib/site-data";
 import { getTrackJudgeFirstCopy } from "@/lib/track-judge-first-copy";
 import { getTrackReviewerPacketRoute } from "@/lib/track-reviewer-packets";
@@ -26,7 +26,7 @@ function getMainnetDistance(completed: number, total: number) {
 
 export function TrackJudgeFirstTopStrip({ workspace }: TrackJudgeFirstTopStripProps) {
   const searchParams = useSearchParams();
-  const [evidence, setEvidence] = useState<CustodyEvidence>(emptyCustodyEvidence);
+  const [evidence, setEvidence] = useState<CustodyEvidence>(currentTestnetCustodyEvidence);
 
   useEffect(() => {
     const syncEvidence = () => setEvidence(readCustodyEvidence());

@@ -7,7 +7,7 @@ import { FileText, ShieldCheck, WalletCards } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { buildCustodyNarrative, custodyEvidenceUpdatedEvent, emptyCustodyEvidence, getCustodyEvidenceCompletion, readCustodyEvidence, type CustodyEvidence } from "@/lib/custody-evidence";
+import { buildCustodyNarrative, currentTestnetCustodyEvidence, custodyEvidenceUpdatedEvent, getCustodyEvidenceCompletion, readCustodyEvidence, type CustodyEvidence } from "@/lib/custody-evidence";
 import { cn } from "@/lib/utils";
 
 type CustodyTrustContinuityProps = {
@@ -157,7 +157,7 @@ function downloadPacket(filename: string, contents: string) {
 }
 
 export function CustodyTrustContinuity({ mode = "buyer" }: CustodyTrustContinuityProps) {
-  const [evidence, setEvidence] = useState<CustodyEvidence>(emptyCustodyEvidence);
+  const [evidence, setEvidence] = useState<CustodyEvidence>(currentTestnetCustodyEvidence);
   const [copyState, setCopyState] = useState<"idle" | "copied">("idle");
   const [pitchCopyState, setPitchCopyState] = useState<"idle" | "copied">("idle");
 

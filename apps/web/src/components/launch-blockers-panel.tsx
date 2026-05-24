@@ -6,10 +6,10 @@ import { AlertTriangle, CheckCircle2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { launchBlockers } from "@/lib/site-data";
-import { custodyEvidenceUpdatedEvent, emptyCustodyEvidence, getCustodyEvidenceCompletion, readCustodyEvidence, type CustodyEvidence } from "@/lib/custody-evidence";
+import { currentTestnetCustodyEvidence, custodyEvidenceUpdatedEvent, getCustodyEvidenceCompletion, readCustodyEvidence, type CustodyEvidence } from "@/lib/custody-evidence";
 
 export function LaunchBlockersPanel() {
-  const [evidence, setEvidence] = useState<CustodyEvidence>(emptyCustodyEvidence);
+  const [evidence, setEvidence] = useState<CustodyEvidence>(currentTestnetCustodyEvidence);
 
   useEffect(() => {
     const syncEvidence = () => setEvidence(readCustodyEvidence());

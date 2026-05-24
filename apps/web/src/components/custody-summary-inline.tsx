@@ -4,10 +4,10 @@ import { useEffect, useMemo, useState } from "react";
 import { KeyRound } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import { buildCustodyNarrative, custodyEvidenceUpdatedEvent, emptyCustodyEvidence, getCustodyEvidenceCompletion, readCustodyEvidence, type CustodyEvidence } from "@/lib/custody-evidence";
+import { buildCustodyNarrative, currentTestnetCustodyEvidence, custodyEvidenceUpdatedEvent, getCustodyEvidenceCompletion, readCustodyEvidence, type CustodyEvidence } from "@/lib/custody-evidence";
 
 export function CustodySummaryInline() {
-  const [evidence, setEvidence] = useState<CustodyEvidence>(emptyCustodyEvidence);
+  const [evidence, setEvidence] = useState<CustodyEvidence>(currentTestnetCustodyEvidence);
 
   useEffect(() => {
     const syncEvidence = () => setEvidence(readCustodyEvidence());

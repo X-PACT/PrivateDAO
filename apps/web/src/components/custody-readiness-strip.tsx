@@ -70,7 +70,7 @@ export function CustodyReadinessStrip({ context = "dashboard" }: CustodyReadines
 
   const readinessDetail =
     completion.completed === 0
-      ? "No custody ceremony evidence is recorded yet, so trust and mainnet posture remain in an early readiness state."
+      ? "The public surface reloads to the published Testnet custody baseline before reviewer-facing readiness is evaluated."
       : completion.completed < completion.total
         ? "Some ceremony evidence is recorded, which improves reviewer confidence and points clearly to the remaining readiness steps."
         : "Custody evidence is fully recorded in-product, which materially improves trust continuity across buyer, reviewer, and operator paths.";

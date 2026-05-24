@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CustodyTrustContinuity } from "@/components/custody-trust-continuity";
-import { buildCustodyNarrative, custodyEvidenceUpdatedEvent, emptyCustodyEvidence, getCustodyEvidenceCompletion, readCustodyEvidence, type CustodyEvidence } from "@/lib/custody-evidence";
+import { buildCustodyNarrative, currentTestnetCustodyEvidence, custodyEvidenceUpdatedEvent, getCustodyEvidenceCompletion, readCustodyEvidence, type CustodyEvidence } from "@/lib/custody-evidence";
 import type { CompetitionTrackWorkspace } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
@@ -57,7 +57,7 @@ function buildTrackImpact(workspace: CompetitionTrackWorkspace, completionRatio:
 }
 
 export function TrackCustodyImpactPanel({ workspace }: TrackCustodyImpactPanelProps) {
-  const [evidence, setEvidence] = useState<CustodyEvidence>(emptyCustodyEvidence);
+  const [evidence, setEvidence] = useState<CustodyEvidence>(currentTestnetCustodyEvidence);
 
   useEffect(() => {
     const syncEvidence = () => setEvidence(readCustodyEvidence());

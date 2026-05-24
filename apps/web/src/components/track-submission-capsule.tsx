@@ -8,7 +8,7 @@ import { ArrowUpRight, Gauge, KeyRound, ShieldCheck, TimerReset, Zap } from "luc
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
-import { buildCustodyNarrative, custodyEvidenceUpdatedEvent, emptyCustodyEvidence, getCustodyEvidenceCompletion, readCustodyEvidence, type CustodyEvidence } from "@/lib/custody-evidence";
+import { buildCustodyNarrative, currentTestnetCustodyEvidence, custodyEvidenceUpdatedEvent, getCustodyEvidenceCompletion, readCustodyEvidence, type CustodyEvidence } from "@/lib/custody-evidence";
 import type { CompetitionTrackWorkspace } from "@/lib/site-data";
 import { getSubmissionCoachPlan } from "@/lib/submission-coach";
 import { cn } from "@/lib/utils";
@@ -101,7 +101,7 @@ function getCommercialCapsuleContext(workspace: CompetitionTrackWorkspace, comme
 
 export function TrackSubmissionCapsule({ workspace, commercialProfile }: TrackSubmissionCapsuleProps) {
   const searchParams = useSearchParams();
-  const [evidence, setEvidence] = useState<CustodyEvidence>(emptyCustodyEvidence);
+  const [evidence, setEvidence] = useState<CustodyEvidence>(currentTestnetCustodyEvidence);
 
   useEffect(() => {
     const syncEvidence = () => setEvidence(readCustodyEvidence());
