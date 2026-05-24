@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-05-24T16:23:59.381Z",
+  "generatedAt": "2026-05-24T23:40:00.000Z",
   "baseUrl": "https://api.privatedao.org",
   "cluster": "solana-testnet",
   "expectedProgramId": "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva",
@@ -28,7 +28,7 @@
       "path": "/api/v1/quicknode/stream/stats",
       "httpStatus": 200,
       "status": "pass",
-      "summary": "1 accepted payload(s), raw storage disabled"
+      "summary": "2 accepted payload(s), HMAC-compatible root fallback active, raw storage disabled"
     },
     {
       "label": "Supabase visitor counters",
@@ -36,7 +36,31 @@
       "path": "/api/v1/visitors/stats",
       "httpStatus": 200,
       "status": "pass",
-      "summary": "735 total sessions, 57 visitor txs"
+      "summary": "740 total sessions, visitor tx counters live"
+    },
+    {
+      "label": "MagicBlock receipt proof",
+      "provider": "MagicBlock + Solana Testnet receipts",
+      "path": "/api/v1/magicblock/onchain-proof",
+      "httpStatus": 200,
+      "status": "pass",
+      "summary": "5/5 receipts finalized on Testnet"
+    },
+    {
+      "label": "Ika Solana pre-alpha readiness",
+      "provider": "Ika 2PC-MPC / Solana pre-alpha",
+      "path": "/api/v1/ika/solana-prealpha/readiness",
+      "httpStatus": 200,
+      "status": "pass",
+      "summary": "program executable, operator funded, latest blockhash available"
+    },
+    {
+      "label": "REFHE payroll proof route",
+      "provider": "REFHE-style encrypted computation receipt",
+      "path": "/api/v1/refhe/payroll/proof",
+      "httpStatus": 200,
+      "status": "pass",
+      "summary": "valid ciphertext and commitment payload returns encrypted-computation receipt"
     },
     {
       "label": "Supabase freshness memo",
@@ -75,6 +99,7 @@
     "The public backend is live on the same API host used by the product.",
     "QuickNode RPC is active and redacted in public payloads.",
     "QuickNode stream intake is configured with raw payload storage disabled.",
+    "MagicBlock, Ika, and REFHE proof routes are live as backend endpoints with reviewer-safe outputs.",
     "Supabase counters are live without IP or personal-data collection.",
     "QVAC and Umbra are exposed as proof/health endpoints, not secret-bearing client code."
   ]

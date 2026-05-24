@@ -5,7 +5,7 @@
 - Base URL: `https://api.privatedao.org`
 - Cluster: `solana-testnet`
 - Current program: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
-- Generated at: `2026-05-24T16:23:59.381Z`
+- Generated at: `2026-05-24T23:40:00.000Z`
 - Posture: `backend-production-candidate`
 
 ## Provider Checks
@@ -40,7 +40,31 @@
 - endpoint: `https://api.privatedao.org/api/v1/visitors/stats`
 - status: `pass`
 - http: `200`
-- summary: 735 total sessions, 57 visitor txs
+- summary: 740 total sessions, visitor tx counters live
+
+### MagicBlock receipt proof
+
+- provider: `MagicBlock + Solana Testnet receipts`
+- endpoint: `https://api.privatedao.org/api/v1/magicblock/onchain-proof`
+- status: `pass`
+- http: `200`
+- summary: 5/5 receipts finalized on Testnet
+
+### Ika Solana pre-alpha readiness
+
+- provider: `Ika 2PC-MPC / Solana pre-alpha`
+- endpoint: `https://api.privatedao.org/api/v1/ika/solana-prealpha/readiness`
+- status: `pass`
+- http: `200`
+- summary: program executable, operator funded, latest blockhash available
+
+### REFHE payroll proof route
+
+- provider: `REFHE-style encrypted computation receipt`
+- endpoint: `https://api.privatedao.org/api/v1/refhe/payroll/proof`
+- status: `pass`
+- http: `200`
+- summary: valid ciphertext and commitment payload returns encrypted-computation receipt
 
 ### Supabase freshness memo
 
@@ -79,6 +103,7 @@
 - The public backend is live on the same API host used by the product.
 - QuickNode RPC is active and redacted in public payloads.
 - QuickNode stream intake is configured with raw payload storage disabled.
+- MagicBlock, Ika, and REFHE proof routes are live as backend endpoints with reviewer-safe outputs.
 - Supabase counters are live without IP or personal-data collection.
 - QVAC and Umbra are exposed as proof/health endpoints, not secret-bearing client code.
 

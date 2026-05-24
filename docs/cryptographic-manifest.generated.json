@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-05-24T23:28:22.806Z",
+  "generatedAt": "2026-05-24T23:38:24.728Z",
   "algorithm": "sha256",
   "entryCount": 145,
-  "aggregateSha256": "a62280900570df5f1b18e3ddc04b616e2e407ab66a43090355ab55c296891342",
+  "aggregateSha256": "33285f78fb5e0f2313193a0ed38f92e2885b3c4c5b6441c5e896d8747f9513c1",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -182,13 +182,13 @@
     },
     {
       "path": "docs/backend-provider-readiness-2026-05-24.md",
-      "sha256": "3fe0f0aa3e1cbbff88520be57b8df622e721c3116c60d5aab9e3a1f99440f6c8",
-      "bytes": 2654
+      "sha256": "f79ad4b10ba5be6a1f05d84ebdaba1ead55758f105b81fc55f7b453bd2a5640e",
+      "bytes": 3537
     },
     {
       "path": "docs/backend-provider-readiness-2026-05-24.json",
-      "sha256": "3f4f767db6068d6af24e2455267ab14eddcb93674faa503125e187072736d2bf",
-      "bytes": 2725
+      "sha256": "7ccf6d54421b8536ae23e77abf25a32213ae2c6ecc57f6d5f7f2f444f0d9a9a0",
+      "bytes": 3756
     },
     {
       "path": "docs/competitive/source.json",
@@ -517,12 +517,12 @@
     },
     {
       "path": "docs/supply-chain-attestation.generated.md",
-      "sha256": "41c2213e32444a82df991f96b463aac1e65a1ff61312317dd7a1a4ed245a47dc",
+      "sha256": "b2dc78b6925d86978fabb2a25c772fc919ade59e5d8dc18d4eed1e68b4698f7c",
       "bytes": 1695
     },
     {
       "path": "docs/supply-chain-attestation.generated.json",
-      "sha256": "6f33230acce76dc268c2bdf3b354f1e12036eeb2d7003bcdf39e679302e20530",
+      "sha256": "4828d2bb8d8c9442eabe2f61721d4ed46fb543f022d8b9068273bd4e62825edd",
       "bytes": 2021
     },
     {
