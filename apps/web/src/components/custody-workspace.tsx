@@ -22,7 +22,7 @@ import {
   buildCustodyEvidenceIntakePayload,
   custodyAuthorityTransferSurfaces,
   custodyProgramId,
-  emptyCustodyEvidence,
+  currentTestnetCustodyEvidence,
   getCustodyEvidenceCompletion,
   looksLikeReference,
   looksLikeSolanaAddress,
@@ -117,20 +117,26 @@ function EvidenceStatus({ validation }: { validation: ValidationState }) {
 }
 
 export function CustodyWorkspace() {
-  const [draftEvidence, setDraftEvidence] = useState<CustodyEvidence>(emptyCustodyEvidence);
+  const [draftEvidence, setDraftEvidence] = useState<CustodyEvidence>(currentTestnetCustodyEvidence);
+  const [hasLoadedEvidence, setHasLoadedEvidence] = useState(false);
   const [copyState, setCopyState] = useState<"idle" | "json" | "markdown">("idle");
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
       setDraftEvidence(readCustodyEvidence());
+      setHasLoadedEvidence(true);
     }, 0);
 
     return () => window.clearTimeout(timer);
   }, []);
 
   useEffect(() => {
+    if (!hasLoadedEvidence) {
+      return;
+    }
+
     writeCustodyEvidence(draftEvidence);
-  }, [draftEvidence]);
+  }, [draftEvidence, hasLoadedEvidence]);
 
   function updateDraftEvidence<K extends keyof CustodyEvidence>(
     key: K,
