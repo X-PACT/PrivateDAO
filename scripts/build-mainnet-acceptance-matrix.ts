@@ -54,7 +54,8 @@ function main() {
       layer: "governance-lifecycle",
       status: "accepted-in-repo",
       evidence: ["docs/live-proof.md", "docs/test-wallet-live-proof-v3.generated.md", "docs/load-test-report.md", "tests/full-flow-test.ts"],
-      rationale: "The lifecycle is live on Devnet across both the baseline path and the additive V3 path, and is covered by deterministic tests and published proof surfaces.",
+      rationale:
+        "The lifecycle is now presented through the current Testnet program path, while older Devnet lifecycle evidence remains preserved as historical regression proof.",
     },
     {
       layer: "security-reasoning",
@@ -92,7 +93,8 @@ function main() {
           ? "accepted-in-repo"
           : "pending-external",
       evidence: ["docs/operational-evidence.generated.md", "docs/runtime-evidence.generated.md", "docs/devnet-canary.generated.md", "docs/devnet-resilience-report.md", "docs/test-wallet-live-proof-v3.generated.md"],
-      rationale: "The repository proves runtime diagnostics, full lifecycle execution, RPC fallback, stale-blockhash recovery, and collision handling on Devnet.",
+      rationale:
+        "The repository preserves runtime diagnostics, full lifecycle execution, RPC fallback, stale-blockhash recovery, and collision handling evidence while the reviewer-facing operating path now leads with Testnet.",
     },
     {
       layer: "additive-v3-hardening",
@@ -108,7 +110,8 @@ function main() {
         "docs/test-wallet-live-proof-v3.generated.md",
         "docs/test-wallet-live-proof-v3.generated.json",
       ],
-      rationale: "The stricter additive hardening path is documented, machine-checked, and proven on Devnet without reinterpreting legacy objects.",
+      rationale:
+        "The stricter additive hardening path is documented, machine-checked, and carried forward into the current Testnet proof posture without reinterpreting legacy objects.",
     },
     {
       layer: "release-discipline",

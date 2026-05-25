@@ -6,7 +6,7 @@
 - current Testnet program id: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
 - legacy Devnet program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
-- generated at: `2026-05-24T20:50:28.725Z`
+- generated at: `2026-05-25T10:34:41.220Z`
 - acceptance decision: `repository-strong-but-external-blockers-remain`
 - accepted in repo: `9`
 - pending external: `3`
@@ -18,7 +18,7 @@
 ### governance-lifecycle
 
 - status: `accepted-in-repo`
-- rationale: The lifecycle is live on Devnet across both the baseline path and the additive V3 path, and is covered by deterministic tests and published proof surfaces.
+- rationale: The lifecycle is now presented through the current Testnet program path, while older Devnet lifecycle evidence remains preserved as historical regression proof.
 - evidence:
   - `docs/live-proof.md`
   - `docs/test-wallet-live-proof-v3.generated.md`
@@ -63,7 +63,7 @@
 ### runtime-and-resilience
 
 - status: `accepted-in-repo`
-- rationale: The repository proves runtime diagnostics, full lifecycle execution, RPC fallback, stale-blockhash recovery, and collision handling on Devnet.
+- rationale: The repository preserves runtime diagnostics, full lifecycle execution, RPC fallback, stale-blockhash recovery, and collision handling evidence while the reviewer-facing operating path now leads with Testnet.
 - evidence:
   - `docs/operational-evidence.generated.md`
   - `docs/runtime-evidence.generated.md`
@@ -74,7 +74,7 @@
 ### additive-v3-hardening
 
 - status: `accepted-in-repo`
-- rationale: The stricter additive hardening path is documented, machine-checked, and proven on Devnet without reinterpreting legacy objects.
+- rationale: The stricter additive hardening path is documented, machine-checked, and carried forward into the current Testnet proof posture without reinterpreting legacy objects.
 - evidence:
   - `docs/governance-hardening-v3.md`
   - `docs/settlement-hardening-v3.md`
