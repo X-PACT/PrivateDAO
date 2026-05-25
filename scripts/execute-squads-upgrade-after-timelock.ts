@@ -6,7 +6,7 @@ import * as multisig from "@sqds/multisig";
 const RPC_URL = process.env.SOLANA_RPC_URL ?? "https://api.testnet.solana.com";
 const MULTISIG = new PublicKey(process.env.MULTISIG ?? "thHmF7VYNtxE1MaDzYXbfPCiq13RF6JwuWnjvDZuSmF");
 const PROGRAM_ID = new PublicKey("EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva");
-const TRANSACTION_INDEX = BigInt(process.env.PROPOSAL_INDEX ?? "1");
+const TRANSACTION_INDEX = BigInt(process.env.PROPOSAL_INDEX ?? "3");
 
 function redactRpcUrl(url: string): string {
   if (url.includes("quiknode.pro")) return "quicknode-testnet-redacted";

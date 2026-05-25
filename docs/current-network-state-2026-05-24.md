@@ -32,6 +32,6 @@ PrivateDAO is currently evaluated through the `EP9x...Jzsecuva` Anchor 1.0.1 pro
 ```bash
 solana program show EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva --url https://api.testnet.solana.com
 spl-token display --program-2022 DFYvBdivHCe4bSErgCiKm2RhwGEcZYbBPFQzLNr37Bie --url https://api.testnet.solana.com --output json-compact
-npm run check:squads-timelock
+PROPOSAL_INDEX=3 RELEASE_AT=2026-05-27T02:25:39Z npm run check:squads-timelock
 PROPOSAL_INDEX=3 npm run execute:squads-upgrade
 ```

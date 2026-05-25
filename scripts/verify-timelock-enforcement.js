@@ -38,12 +38,15 @@ for (const fragment of requiredFragments) {
   assert(combined.includes(fragment), `timelock evidence is missing fragment: ${fragment}`);
 }
 
-const releaseAt = new Date("2026-05-25T00:31:05Z");
-const msRemaining = releaseAt.getTime() - Date.now();
+const historicalReleaseAt = new Date("2026-05-25T00:31:05Z");
+const currentReleaseAt = new Date("2026-05-27T02:25:39Z");
+const msRemaining = currentReleaseAt.getTime() - Date.now();
 const status =
   msRemaining > 0
-    ? `Release in approximately ${Math.ceil(msRemaining / 3_600_000)} hours`
-    : "Timelock release window is open; execute the approved upgrade path now";
+    ? `Historical proof release ${historicalReleaseAt.toISOString()} verified; current proposal index 3 release in approximately ${Math.ceil(
+        msRemaining / 3_600_000,
+      )} hours`
+    : "Historical proof verified; current proposal index 3 timelock release window is open";
 
 console.log("Timelock enforcement verified.");
 console.log(status);

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const releaseAtIso = process.env.RELEASE_AT ?? "2026-05-25T00:31:05Z";
+const releaseAtIso = process.env.RELEASE_AT ?? "2026-05-27T02:25:39Z";
 const releaseAt = new Date(releaseAtIso);
 
 if (Number.isNaN(releaseAt.getTime())) {
@@ -12,7 +12,7 @@ const now = new Date();
 const remainingMs = releaseAt.getTime() - now.getTime();
 const vault = process.env.VAULT ?? "CALHrBqx6jbzcPn2NVcinqSAHeod65v9LcDuTxsdPqBv";
 const multisig = process.env.MULTISIG ?? "thHmF7VYNtxE1MaDzYXbfPCiq13RF6JwuWnjvDZuSmF";
-const proposalIndex = process.env.PROPOSAL_INDEX ?? "1";
+const proposalIndex = process.env.PROPOSAL_INDEX ?? "3";
 
 function formatDuration(ms) {
   const totalMinutes = Math.max(0, Math.ceil(ms / 60_000));
