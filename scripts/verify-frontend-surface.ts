@@ -12,6 +12,8 @@ const SERVICES_SURFACE = path.resolve("apps/web/src/components/services-surface.
 const PROOF_PAGE = path.resolve("apps/web/src/app/proof/page.tsx");
 const JUDGE_PAGE = path.resolve("apps/web/src/app/judge/page.tsx");
 const SECURITY_PAGE = path.resolve("apps/web/src/app/security/page.tsx");
+const API_STATUS_PAGE = path.resolve("apps/web/src/app/api-status/page.tsx");
+const RPC_SERVICES_LIVE_PANEL = path.resolve("apps/web/src/components/rpc-services-live-panel.tsx");
 const CURATED_DOCUMENTS = path.resolve("apps/web/src/lib/curated-documents.ts");
 const SITE_DATA = path.resolve("apps/web/src/lib/site-data.ts");
 const SITE_FOOTER = path.resolve("apps/web/src/components/site-footer.tsx");
@@ -37,6 +39,8 @@ function main() {
   const proofPage = fs.readFileSync(PROOF_PAGE, "utf8");
   const judgePage = fs.readFileSync(JUDGE_PAGE, "utf8");
   const securityPage = fs.readFileSync(SECURITY_PAGE, "utf8");
+  const apiStatusPage = fs.readFileSync(API_STATUS_PAGE, "utf8");
+  const rpcServicesLivePanel = fs.readFileSync(RPC_SERVICES_LIVE_PANEL, "utf8");
   const curatedDocuments = fs.readFileSync(CURATED_DOCUMENTS, "utf8");
   const siteData = fs.readFileSync(SITE_DATA, "utf8");
   const siteFooter = fs.readFileSync(SITE_FOOTER, "utf8");
@@ -112,6 +116,15 @@ function main() {
     [securityPage, "2026-05-27T02:25:39Z", "security route is missing the current Squads proposal 3 timelock release"],
     [securityPage, "/documents/squads-current-binary-upgrade-proposal-2026-05-25", "security route is not linked to the current Squads proposal packet"],
     [proofPage, "finalized Testnet private payment receipts", "proof route is missing Testnet private-payment receipt language"],
+    [apiStatusPage, "MagicBlock receipts", "API status route is missing MagicBlock receipt evidence"],
+    [apiStatusPage, "Ika readiness", "API status route is missing Ika readiness evidence"],
+    [apiStatusPage, "REFHE proof", "API status route is missing REFHE proof evidence"],
+    [rpcServicesLivePanel, "MagicBlock receipts", "RPC services panel is missing MagicBlock receipt checks"],
+    [rpcServicesLivePanel, "Ika readiness", "RPC services panel is missing Ika readiness checks"],
+    [rpcServicesLivePanel, "REFHE payroll route", "RPC services panel is missing the REFHE payroll proof route"],
+    [rpcServicesLivePanel, "accepted stream payloads", "RPC services panel is missing QuickNode stream ingestion detail"],
+    [rpcServicesLivePanel, "receipts finalized", "RPC services panel is missing MagicBlock receipt finality detail"],
+    [rpcServicesLivePanel, "program executable", "RPC services panel is missing Ika executable-readiness detail"],
     [curatedDocuments, "archived canary evidence", "runtime evidence document summary still presents old canary language as current"],
     [oldSquadsProposalDoc, "This is a historical custody packet", "old Squads proposal doc is missing historical status"],
     [oldSquadsProposalDoc, "Current proposal index `3`", "old Squads proposal doc is missing the current proposal index 3 pointer"],
