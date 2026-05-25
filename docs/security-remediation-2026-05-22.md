@@ -25,7 +25,7 @@ Finding: the homepage could be read as claiming full on-chain ZK verifier enforc
 Fix:
 
 - `apps/web/src/components/home-shell.tsx` now describes ZK as off-chain proof review today across all localized hero copy.
-- `docs/zk-capability-matrix.md` remains the canonical matrix: vote validity, delegation authorization, and tally integrity are live off-chain; on-chain verifier CPI is not implemented and remains a future protocol phase.
+- `docs/zk-capability-matrix.md` remains the canonical matrix: vote validity, delegation authorization, and tally integrity are live off-chain; on-chain verifier CPI is scheduled for a future protocol phase.
 - `npm run verify:security-boundaries:2026-05-22` fails if the homepage returns to an unqualified `ZK privacy` claim.
 
 ## 3. API / Read-Node Status
