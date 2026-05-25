@@ -32,7 +32,19 @@ jobs:
           echo "$HOME/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
 
       - name: Install Anchor CLI
-        run: cargo install --git https://github.com/coral-xyz/anchor avm --locked --force && avm install 1.0.1 && avm use 1.0.1
+        run: |
+          cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
+          for attempt in 1 2 3; do
+            if avm install 1.0.1; then
+              avm use 1.0.1
+              anchor --version
+              exit 0
+            fi
+            echo "avm install 1.0.1 failed on attempt ${attempt}; retrying after backoff" >&2
+            sleep $((attempt * 10))
+          done
+          echo "Failed to install Anchor CLI 1.0.1 after retries" >&2
+          exit 1
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
