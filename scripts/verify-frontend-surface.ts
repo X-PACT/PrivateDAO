@@ -15,6 +15,7 @@ const SECURITY_PAGE = path.resolve("apps/web/src/app/security/page.tsx");
 const API_STATUS_PAGE = path.resolve("apps/web/src/app/api-status/page.tsx");
 const RPC_SERVICES_LIVE_PANEL = path.resolve("apps/web/src/components/rpc-services-live-panel.tsx");
 const JUPITER_TREASURY_ROUTE_SURFACE = path.resolve("apps/web/src/components/jupiter-treasury-route-surface.tsx");
+const CONSUMER_GOVERNANCE_UX_PAGE = path.resolve("apps/web/src/app/services/consumer-governance-ux/page.tsx");
 const CURATED_DOCUMENTS = path.resolve("apps/web/src/lib/curated-documents.ts");
 const SITE_DATA = path.resolve("apps/web/src/lib/site-data.ts");
 const SITE_FOOTER = path.resolve("apps/web/src/components/site-footer.tsx");
@@ -43,6 +44,7 @@ function main() {
   const apiStatusPage = fs.readFileSync(API_STATUS_PAGE, "utf8");
   const rpcServicesLivePanel = fs.readFileSync(RPC_SERVICES_LIVE_PANEL, "utf8");
   const jupiterTreasuryRouteSurface = fs.readFileSync(JUPITER_TREASURY_ROUTE_SURFACE, "utf8");
+  const consumerGovernanceUxPage = fs.readFileSync(CONSUMER_GOVERNANCE_UX_PAGE, "utf8");
   const curatedDocuments = fs.readFileSync(CURATED_DOCUMENTS, "utf8");
   const siteData = fs.readFileSync(SITE_DATA, "utf8");
   const siteFooter = fs.readFileSync(SITE_FOOTER, "utf8");
@@ -142,6 +144,10 @@ function main() {
     [jupiterTreasuryRouteSurface, "NEXT_PUBLIC_JUPITER_ORDER_ENDPOINT", "Jupiter treasury route is missing server order endpoint support"],
     [jupiterTreasuryRouteSurface, "Developer Platform /order", "Jupiter treasury route is missing Developer Platform order mode copy"],
     [jupiterTreasuryRouteSurface, "Lite Quote fallback", "Jupiter treasury route is missing public quote fallback copy"],
+    [consumerGovernanceUxPage, "DAO infrastructure is powerful, but the first user session is usually broken.", "consumer governance UX page is missing the user problem framing"],
+    [consumerGovernanceUxPage, "One guided operating path replaces scattered tools", "consumer governance UX page is missing the solution framing"],
+    [consumerGovernanceUxPage, "The ecosystem needs private governance that feels like a product", "consumer governance UX page is missing the ecosystem-value framing"],
+    [consumerGovernanceUxPage, "/documents/frontier-track-closure-matrix-2026-05-25", "consumer governance UX page is missing the track closure matrix link"],
     [curatedDocuments, "archived canary evidence", "runtime evidence document summary still presents old canary language as current"],
     [oldSquadsProposalDoc, "This is a historical custody packet", "old Squads proposal doc is missing historical status"],
     [oldSquadsProposalDoc, "Current proposal index `3`", "old Squads proposal doc is missing the current proposal index 3 pointer"],
