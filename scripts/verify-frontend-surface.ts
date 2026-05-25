@@ -29,6 +29,8 @@ const OLD_TIMELOCK_DOC = path.resolve("docs/timelock-enforcement-proof-2026-05-2
 const OLD_ARENA_SUBMISSION_DOC = path.resolve("docs/arena-frontier-submission-2026-05-23.md");
 const PUBLIC_OPENGRAPH_IMAGE = path.resolve("apps/web/public/opengraph-image.png");
 const PUBLIC_TWITTER_IMAGE = path.resolve("apps/web/public/twitter-image.png");
+const PUBLIC_JUDGE_READINESS_VIDEO = path.resolve("apps/web/public/assets/private-dao-judge-readiness-3min.mp4");
+const PUBLIC_JUDGE_READINESS_POSTER = path.resolve("apps/web/public/assets/private-dao-judge-readiness-3min-poster.png");
 
 function main() {
   const rootIndex = fs.readFileSync(ROOT_INDEX, "utf8");
@@ -64,6 +66,14 @@ function main() {
 
   if (!fs.existsSync(PUBLIC_TWITTER_IMAGE)) {
     throw new Error("public Twitter image is missing at /twitter-image.png");
+  }
+
+  if (!fs.existsSync(PUBLIC_JUDGE_READINESS_VIDEO)) {
+    throw new Error("public judge readiness video is missing at /assets/private-dao-judge-readiness-3min.mp4");
+  }
+
+  if (!fs.existsSync(PUBLIC_JUDGE_READINESS_POSTER)) {
+    throw new Error("public judge readiness video poster is missing at /assets/private-dao-judge-readiness-3min-poster.png");
   }
 
   const opengraphSize = fs.statSync(PUBLIC_OPENGRAPH_IMAGE).size;
@@ -122,6 +132,14 @@ function main() {
     [siteData, "https://t.me/Fahdkotb", "site data is missing the Telegram contact link"],
     [siteFooter, "communityLinks.map", "site footer is missing centralized community link rendering"],
     [judgePage, "2026-05-27T02:25:39Z", "judge route is missing the current Squads proposal 3 timelock release"],
+    [judgePage, "PrivateDAO in three minutes", "judge route is missing the simplified product entry"],
+    [judgePage, "PrivateDAO automatic judge demo video", "judge route is missing the embedded judge demo video"],
+    [judgePage, "autoplay=1&mute=1", "judge route is missing muted autoplay video parameters"],
+    [judgePage, "New narrated readiness cut", "judge route is missing the new narrated readiness video"],
+    [judgePage, "/assets/private-dao-judge-readiness-3min.mp4", "judge route is missing the hosted readiness MP4"],
+    [judgePage, "Run the track, then verify it", "judge route is missing the track run/proof router"],
+    [judgePage, "Encryption status notes", "judge route is missing compact encryption status notes"],
+    [judgePage, "Legacy review paths consolidated", "judge route is missing legacy path consolidation"],
     [judgePage, "Current proposal index 3", "judge route is missing the current Squads proposal index"],
     [judgePage, "/documents/squads-current-binary-upgrade-proposal-2026-05-25", "judge route is not linked to the current Squads proposal packet"],
     [judgePage, "/documents/mainnet-proof-package", "judge route is missing the release proof package link"],

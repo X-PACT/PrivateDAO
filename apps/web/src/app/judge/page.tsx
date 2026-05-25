@@ -6,7 +6,6 @@ import { JudgeRuntimeLogsPanel } from "@/components/judge-runtime-logs-panel";
 import { JudgeTechnologyGuide } from "@/components/judge-technology-guide";
 import { JudgeFoundationMessageCard } from "@/components/judge-foundation-message-card";
 import { LocalizedJudgePrimer } from "@/components/localized-judge-primer";
-import { LocalizedRouteSummary } from "@/components/localized-route-summary";
 import { MagicBlockPrivatePaymentsStatus } from "@/components/magicblock-private-payments-status";
 import { OperationsShell } from "@/components/operations-shell";
 import { ProjectOperatingMap } from "@/components/project-operating-map";
@@ -14,10 +13,10 @@ import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
 import { PrivacyProofExplainer } from "@/components/privacy-proof-explainer";
 import { TestnetProofMatrix } from "@/components/testnet-proof-matrix";
 import { PlatformCapabilityStack } from "@/components/platform-capability-stack";
-import { VideoCenter } from "@/components/video-center";
 import Link from "next/link";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 import { buildRouteMetadata } from "@/lib/route-metadata";
+import { storyVideo } from "@/lib/site-data";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -78,6 +77,63 @@ const SUBMISSION_LINKS = [
     href: "https://privatedao.org/services/encrypt-ika-operations/",
     detail: "Encrypted operations, REFHE proof receipts, Ika readiness, and confidential payroll preparation.",
   },
+] as const;
+
+const judgeTrackLaunchPaths = [
+  {
+    track: "Encrypt / Ika",
+    status: "REFHE Testnet receipts live; Ika readiness route live; final funded dWallet signature not claimed yet.",
+    runHref: "/services/encrypt-ika-operations",
+    proofHref: "/documents/mainnet-cryptographic-readiness-ladder-2026-05-25",
+  },
+  {
+    track: "MagicBlock private payments",
+    status: "Private corridor configured, settled, and consumed before V3 payout execution.",
+    runHref: "/services/magicblock-private-payments",
+    proofHref: "/documents/testnet-encrypted-integrations-activation-2026-05-23",
+  },
+  {
+    track: "Umbra confidential payout",
+    status: "Recipient-private claim lane is productized; full claim settlement remains proof-account gated.",
+    runHref: "/services/umbra-confidential-payout",
+    proofHref: "/documents/frontier-track-closure-matrix-2026-05-25",
+  },
+  {
+    track: "Jupiter treasury route",
+    status: "Developer Platform /order mode and Lite Quote fallback are visible in the treasury route.",
+    runHref: "/services/jupiter-treasury-route",
+    proofHref: "/documents/frontier-track-closure-matrix-2026-05-25",
+  },
+  {
+    track: "QuickNode / backend data",
+    status: "Readiness, stream stats, and cryptographic rail map are exposed as backend JSON surfaces.",
+    runHref: "/api-status",
+    proofHref: "https://api.privatedao.org/api/v1/cryptographic-readiness",
+  },
+  {
+    track: "Consumer governance UX",
+    status: "Normal-user route explains the problem, connect-review-sign-verify flow, and Android continuity.",
+    runHref: "/services/consumer-governance-ux",
+    proofHref: "/proof",
+  },
+] as const;
+
+const encryptionStatusNotes = [
+  "REFHE envelope: configured and settled on Solana Testnet.",
+  "MagicBlock corridor: configured, settled, and consumed before payout.",
+  "ZK verifier: standalone BN254/Groth16 receipt is live; integrated path waits for Squads proposal 3.",
+  "Ika / 2PC-MPC: readiness route is live; final funded dWallet signature is not claimed.",
+  "Umbra: recipient-private product lane is live; full claim settlement waits for SDK proof account data.",
+] as const;
+
+const canonicalReviewPaths = [
+  ["/judge", "Canonical hub"],
+  ["/judges", "Legacy URL redirects here"],
+  ["/proof/?judge=1", "Proof mode"],
+  ["/services/main-frontier-closure", "Integrated operating route"],
+  ["/proof/encrypted-capital-markets", "Encrypted capital markets proof"],
+  ["/proof/encrypt-ika-desktop", "Encrypt / Ika desktop proof"],
+  ["/services/refhe-payroll-proof", "REFHE payroll proof route"],
 ] as const;
 
 export const metadata: Metadata = buildRouteMetadata({
@@ -198,15 +254,178 @@ export default function JudgePage() {
   return (
     <OperationsShell
       eyebrow="Verification"
-      title="Inspect the real product, the real transactions, and the fastest trust path first"
-      description="This route is built for fast verification. It shows the DAO lifecycle, captured Testnet signatures, the Agentic Treasury Micropayment Rail, and the shortest route into the deeper proof and document surfaces. A normal visitor can use it too: the chain evidence is public and readable even when the protected parts of the workflow stay private until the correct stage."
+      title="PrivateDAO judge hub: demo, live tracks, and Testnet proof in one route"
+      description="Start with the three-minute demo, then open a live track and verify the exact Testnet evidence. This page consolidates old judge links, proof routes, and partner submissions into one clean review path."
+      navigationMode="guided"
       badges={[
         { label: "Verification first", variant: "cyan" },
         { label: "Testnet live", variant: "success" },
         { label: "Proof-linked", variant: "violet" },
       ]}
     >
-      <LocalizedRouteSummary routeKey="judge" />
+      <section className="overflow-hidden rounded-[34px] border border-cyan-300/20 bg-[radial-gradient(circle_at_12%_0%,rgba(34,211,238,0.24),transparent_32%),radial-gradient(circle_at_92%_12%,rgba(20,241,149,0.18),transparent_30%),linear-gradient(135deg,rgba(8,13,28,0.98),rgba(2,6,23,0.96))] p-5 shadow-[0_30px_120px_rgba(0,0,0,0.34)] sm:p-6">
+        <div className="grid gap-6 xl:grid-cols-[1.08fr_0.92fr]">
+          <div className="min-w-0">
+            <div className="text-[11px] uppercase tracking-[0.32em] text-cyan-100/78">Canonical judge hub</div>
+            <h2 className="mt-3 max-w-4xl text-3xl font-semibold tracking-[-0.04em] text-white sm:text-5xl">
+              PrivateDAO in three minutes: understand, connect, sign, and verify real Testnet privacy rails.
+            </h2>
+            <p className="mt-4 max-w-4xl text-sm leading-7 text-white/66 sm:text-base">
+              PrivateDAO is a wallet-first Solana operating system for private governance, confidential treasury,
+              encrypted payroll, private payments, intelligence-assisted decisions, and proof-linked execution. Start
+              with the video, then open any track below to run the live route instead of reading disconnected pages.
+            </p>
+            <div className="mt-5 grid gap-3 sm:grid-cols-3">
+              {[
+                ["Problem", "DAOs expose sensitive votes, payroll, treasury intent, and contributor data too early."],
+                ["Solution", "Governance, intelligence, encryption gates, wallet signing, and proof are one guided flow."],
+                ["Proof", "REFHE, MagicBlock, ZK verifier, Token-2022, Squads, and backend JSON are Testnet-linked."],
+              ].map(([label, detail]) => (
+                <div key={label} className="rounded-2xl border border-white/10 bg-black/22 p-4">
+                  <div className="text-[10px] uppercase tracking-[0.24em] text-cyan-100/62">{label}</div>
+                  <p className="mt-2 text-sm leading-6 text-white/60">{detail}</p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link href="/start" className={cn(buttonVariants({ size: "lg" }))}>
+                Start live flow
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+              <Link href="/services/main-frontier-closure" className={cn(buttonVariants({ size: "lg", variant: "secondary" }))}>
+                Open track router
+              </Link>
+              <Link href="/proof" className={cn(buttonVariants({ size: "lg", variant: "outline" }))}>
+                Verify proof
+              </Link>
+            </div>
+          </div>
+
+          <div className="min-w-0 rounded-[28px] border border-white/10 bg-black/28 p-3">
+            <div className="aspect-video overflow-hidden rounded-[22px] border border-white/10 bg-black shadow-[0_20px_80px_rgba(0,0,0,0.35)]">
+              <iframe
+                className="h-full w-full"
+                src={`${storyVideo.embedHref}?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1`}
+                title="PrivateDAO automatic judge demo video"
+                loading="eager"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
+            </div>
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-3 px-1">
+              <div className="text-xs leading-5 text-white/54">Autoplay is muted by browser policy. Use sound controls if needed.</div>
+              <a href={storyVideo.youtubeHref} target="_blank" rel="noreferrer" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+                Open YouTube
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </a>
+            </div>
+            <div className="mt-4 rounded-[22px] border border-cyan-300/18 bg-cyan-300/[0.07] p-3">
+              <div className="mb-2 flex flex-wrap items-center justify-between gap-2 px-1">
+                <div>
+                  <div className="text-[10px] uppercase tracking-[0.24em] text-cyan-100/62">New narrated readiness cut</div>
+                  <div className="mt-1 text-sm font-semibold text-white">3-minute English local render with voiceover</div>
+                </div>
+                <a href="/assets/private-dao-judge-readiness-3min.mp4" className="text-xs font-medium text-cyan-100 hover:text-white">
+                  Open MP4
+                </a>
+              </div>
+              <video
+                className="aspect-video w-full rounded-[18px] border border-white/10 bg-black"
+                controls
+                preload="metadata"
+                poster="/assets/private-dao-judge-readiness-3min-poster.png"
+              >
+                <source src="/assets/private-dao-judge-readiness-3min.mp4" type="video/mp4" />
+              </video>
+              <p className="mt-2 px-1 text-xs leading-5 text-white/50">
+                Generated from the repo render script for judges who need the newest awards, backend rebuild,
+                encryption, intelligence, and launch-gate story in one asset.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="rounded-[30px] border border-emerald-300/18 bg-[linear-gradient(135deg,rgba(20,241,149,0.12),rgba(34,211,238,0.07),rgba(8,13,28,0.95))] p-5">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <div className="text-[11px] uppercase tracking-[0.3em] text-emerald-100/78">Run the track, then verify it</div>
+            <h2 className="mt-3 max-w-4xl text-2xl font-semibold text-white">One clean operating path replaces the old scattered judging links</h2>
+            <p className="mt-3 max-w-4xl text-sm leading-7 text-white/64">
+              Old judge links remain alive, but this page is the canonical hub. Each card opens the product route first
+              and the closest proof route second.
+            </p>
+          </div>
+          <a href="https://api.privatedao.org/api/v1/cryptographic-readiness" target="_blank" rel="noreferrer" className={cn(buttonVariants({ variant: "secondary" }), "shrink-0")}>
+            Open readiness JSON
+            <ArrowUpRight className="h-4 w-4" />
+          </a>
+        </div>
+        <div className="mt-5 grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
+          {judgeTrackLaunchPaths.map((track) => {
+            const proofIsExternal = track.proofHref.startsWith("http");
+            return (
+              <div key={track.track} className="rounded-[24px] border border-white/10 bg-black/24 p-4">
+                <div className="text-base font-semibold text-white">{track.track}</div>
+                <p className="mt-2 text-sm leading-6 text-white/58">{track.status}</p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Link href={track.runHref} className={cn(buttonVariants({ size: "sm" }))}>
+                    Run track
+                  </Link>
+                  {proofIsExternal ? (
+                    <a href={track.proofHref} target="_blank" rel="noreferrer" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                      Open proof
+                    </a>
+                  ) : (
+                    <Link href={track.proofHref} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                      Open proof
+                    </Link>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="grid gap-4 xl:grid-cols-[0.92fr_1.08fr]">
+        <div className="rounded-[30px] border border-cyan-300/18 bg-cyan-300/[0.07] p-5">
+          <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-100/78">Encryption status notes</div>
+          <h2 className="mt-3 text-2xl font-semibold text-white">Current cryptographic activation state</h2>
+          <div className="mt-4 grid gap-3">
+            {encryptionStatusNotes.map((note) => (
+              <div key={note} className="rounded-2xl border border-white/10 bg-black/22 p-3 text-sm leading-6 text-white/62">
+                {note}
+              </div>
+            ))}
+          </div>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Link href="/services/encrypt-ika-operations" className={cn(buttonVariants({ size: "sm" }))}>
+              Encrypt / Ika
+            </Link>
+            <Link href="/services/magicblock-private-payments" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+              MagicBlock
+            </Link>
+            <Link href="/documents/zk-standalone-verifier-testnet-2026-05-23" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+              ZK verifier
+            </Link>
+          </div>
+        </div>
+        <div className="rounded-[30px] border border-white/10 bg-white/[0.04] p-5">
+          <div className="text-[11px] uppercase tracking-[0.3em] text-white/46">Legacy review paths consolidated</div>
+          <h2 className="mt-3 text-2xl font-semibold text-white">All old judge paths now point back to this route map</h2>
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
+            {canonicalReviewPaths.map(([href, label]) => (
+              <Link key={href} href={href} className="rounded-2xl border border-white/10 bg-black/22 p-3 text-sm text-white/62 transition hover:border-cyan-300/30 hover:text-white">
+                <span className="font-medium text-white">{label}</span>
+                <span className="mt-1 block font-mono text-xs text-white/42">{href}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="rounded-[30px] border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.08),rgba(34,211,238,0.07),rgba(8,13,28,0.95))] p-5">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
@@ -331,7 +550,6 @@ export default function JudgePage() {
           })}
         </div>
       </div>
-      <VideoCenter compact />
       <div className="rounded-[26px] border border-amber-300/18 bg-[linear-gradient(135deg,rgba(251,191,36,0.12),rgba(20,241,149,0.07),rgba(8,13,28,0.92))] p-5">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
