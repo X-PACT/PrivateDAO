@@ -21,6 +21,8 @@ const RPCFAST_INFRASTRUCTURE = path.resolve("apps/web/src/lib/rpcfast-infrastruc
 const OLD_SQUADS_PROPOSAL_DOC = path.resolve("docs/squads-testnet-upgrade-proposal-2026-05-23.md");
 const OLD_TIMELOCK_DOC = path.resolve("docs/timelock-enforcement-proof-2026-05-23.md");
 const OLD_ARENA_SUBMISSION_DOC = path.resolve("docs/arena-frontier-submission-2026-05-23.md");
+const PUBLIC_OPENGRAPH_IMAGE = path.resolve("apps/web/public/opengraph-image.png");
+const PUBLIC_TWITTER_IMAGE = path.resolve("apps/web/public/twitter-image.png");
 
 function main() {
   const rootIndex = fs.readFileSync(ROOT_INDEX, "utf8");
@@ -43,6 +45,19 @@ function main() {
   const oldSquadsProposalDoc = fs.readFileSync(OLD_SQUADS_PROPOSAL_DOC, "utf8");
   const oldTimelockDoc = fs.readFileSync(OLD_TIMELOCK_DOC, "utf8");
   const oldArenaSubmissionDoc = fs.readFileSync(OLD_ARENA_SUBMISSION_DOC, "utf8");
+
+  if (!fs.existsSync(PUBLIC_OPENGRAPH_IMAGE)) {
+    throw new Error("public OpenGraph image is missing at /opengraph-image.png");
+  }
+
+  if (!fs.existsSync(PUBLIC_TWITTER_IMAGE)) {
+    throw new Error("public Twitter image is missing at /twitter-image.png");
+  }
+
+  const opengraphSize = fs.statSync(PUBLIC_OPENGRAPH_IMAGE).size;
+  if (opengraphSize < 100_000) {
+    throw new Error("public OpenGraph image is unexpectedly small and may render blank in link previews");
+  }
 
   if (!homeShell.includes("Superteam Poland") && !homeShell.includes('eyebrow="Why PrivateDAO"')) {
     throw new Error("home shell is missing the achievement surface for Superteam Poland");
