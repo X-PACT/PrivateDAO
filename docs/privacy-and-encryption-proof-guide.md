@@ -4,6 +4,13 @@
 
 This is the simplest explanation of how PrivateDAO proves privacy and encryption **without** turning the product into a black box.
 
+The current operating state is Solana Testnet under Anchor `1.0.1`, with the canonical proof route now recorded in:
+
+- `docs/cryptographic-onchain-matrix-2026-05-25.md`
+- `docs/testnet-encrypted-integrations-activation-2026-05-23.md`
+- `docs/test-wallet-live-proof-v3.generated.md`
+- `docs/operation-ledger.generated.md`
+
 The core idea is:
 
 - the sensitive part stays protected
@@ -37,9 +44,9 @@ For PrivateDAO, the answer is yes.
 | Product lane | What stays protected first | What becomes public later | Where to verify |
 | --- | --- | --- | --- |
 | Governance vote | vote intent before reveal | commit, reveal, finalize, execute signatures | `/govern`, `/judge`, `/proof` |
-| ZK review layer | proof logic and witness details | proposal-bound proof anchors and reviewer artifacts | `/documents/zk-capability-matrix`, `/documents/frontier-integrations` |
-| Confidential settlement | payout intent, recipient context, settlement posture | deposit, settle, and execute transactions | `/security`, `/documents/confidential-payout-evidence-packet`, `/documents/settlement-receipt-closure-packet` |
-| Mobile wallet usage | wallet-native browser flow and user approvals | the same Devnet signatures and explorer checks | `/documents/real-device-runtime` |
+| ZK review layer | proof logic and witness details | local Groth16 verification, standalone Testnet verifier receipt, and staged Squads-governed integration path | `/documents/zk-capability-matrix`, `/documents/cryptographic-onchain-matrix-2026-05-25` |
+| Confidential settlement | payout intent, recipient context, REFHE/MagicBlock settlement posture | REFHE configure/settle, MagicBlock configure/settle, evidence-gated payout execution | `/security`, `/documents/testnet-encrypted-integrations-activation-2026-05-23`, `/documents/cryptographic-onchain-matrix-2026-05-25` |
+| Mobile wallet usage | wallet-native browser flow and user approvals | the same Testnet signatures and explorer checks | `/documents/real-device-runtime` |
 
 ## 1. Governance secrecy: commit first, reveal later
 
@@ -59,11 +66,12 @@ This protects fairness during the sensitive decision window.
 - Verification route: [Open judge route](https://privatedao.org/judge/)
 - Proof center: [Open proof center](https://privatedao.org/proof/)
 
-Live Devnet references:
+Current Testnet references live in the V3 packet and cryptographic matrix:
 
-- Reveal transaction: [5L3cxZZgwMRnJTxNXLQCyjQMXSAi6bwoskFoKsfaQ7JycYUPuGCkWAkr7qA18WkddfNdSPB5qHt3FVSiHq2eDGh5](https://solscan.io/tx/5L3cxZZgwMRnJTxNXLQCyjQMXSAi6bwoskFoKsfaQ7JycYUPuGCkWAkr7qA18WkddfNdSPB5qHt3FVSiHq2eDGh5?cluster=devnet)
-- Finalize transaction: [4JSPRJQuSY5es74TcChBTzuGMMCr4RknHkmr6vFmtmbav4TRABDAnapmtgipYioEZzh4wmKfg2PMzZHCfJ7UruLG](https://solscan.io/tx/4JSPRJQuSY5es74TcChBTzuGMMCr4RknHkmr6vFmtmbav4TRABDAnapmtgipYioEZzh4wmKfg2PMzZHCfJ7UruLG?cluster=devnet)
-- Execute transaction: [x1vhP6H3Regi6WHYx6LUGbeo4CCbJxWwtUVucPVjonnymyccpM8mpb7t3UpQpqksXBU7PYGPd86cPnZLYwRzBn9](https://solscan.io/tx/x1vhP6H3Regi6WHYx6LUGbeo4CCbJxWwtUVucPVjonnymyccpM8mpb7t3UpQpqksXBU7PYGPd86cPnZLYwRzBn9?cluster=devnet)
+- Program: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
+- Reveal V3: `4M37eyDYdQQtEpGpneKoTXT3g24ocN7CCsNvJLKkmRYEmS1DnN9oJWhVejmMjhmmJpztavMcxSY6fYKkBv5KnuSh`
+- Finalize V3: `5NNZVNo7Yho9BZfZZ7PSXjc8NtBfTurJLHnoB79JMdTJUwPsEk45y3YK1ZfX9ennXGxV9ZSWpTGo18RDzYwdTXBy`
+- Execute V3: `2a8sHWgiVCZkstybMff2M9R6DVU4Y96Rfsg8mqYs7K3xcYSEG1zMcq2iSTNwLD6FgfXvxxxWpwEP9Tbyin47RXvE`
 
 ### What this proves
 
@@ -85,7 +93,8 @@ What is true today:
 
 - the repository contains real circuits and proofs
 - the reviewer path contains real verification commands and artifacts
-- proposal-bound proof anchors are recorded on Devnet
+- a standalone ZK verifier program is deployed on Solana Testnet
+- program-integrated verifier work is staged behind Squads proposal index `3`
 
 What is **not** claimed:
 
@@ -98,11 +107,12 @@ What is **not** claimed:
 - ZK matrix: [Open ZK capability matrix](https://privatedao.org/documents/zk-capability-matrix/)
 - Integration packet: [Open integration evidence](https://privatedao.org/documents/frontier-integrations/)
 
-Devnet anchor references:
+Testnet verifier references:
 
-- Vote proof anchor: [4fLregTXXGC98ba8VKqvbQTeC7JjwakmVv1E3oZzbiJc7Sv5tmmMqSJoCp5eS5eVcq2PXHehwH8CAxeWu4LCeahu](https://explorer.solana.com/tx/4fLregTXXGC98ba8VKqvbQTeC7JjwakmVv1E3oZzbiJc7Sv5tmmMqSJoCp5eS5eVcq2PXHehwH8CAxeWu4LCeahu?cluster=devnet)
-- Delegation proof anchor: [y3nJ5Tu67sikEbgr1zj13iYNT1UhPEmUkuT8fLbbCyir6tJCAAGWue1W8i3nMBobarEdN8jnNsjhiBFK9cbztE2](https://explorer.solana.com/tx/y3nJ5Tu67sikEbgr1zj13iYNT1UhPEmUkuT8fLbbCyir6tJCAAGWue1W8i3nMBobarEdN8jnNsjhiBFK9cbztE2?cluster=devnet)
-- Tally proof anchor: [3hwA2kjJQfhTNHANdDdHhJ7AkwuMpDdGbJadUpYKmLJ6UDKgtyBzR5qKbesmP6bDSBYQDZBQ9ygoEH2pZHPJj97m](https://explorer.solana.com/tx/3hwA2kjJQfhTNHANdDdHhJ7AkwuMpDdGbJadUpYKmLJ6UDKgtyBzR5qKbesmP6bDSBYQDZBQ9ygoEH2pZHPJj97m?cluster=devnet)
+- Standalone verifier program: `5H7Afyqdh5yPekkZJ5UM2j3HNB2bRvU8aVv8XoqeAW1j`
+- Standalone verifier receipt: `zwqNsA3kNP1mgcaS6zNdR92LLdssFULXfsRdkMK3UxraKLM6wYDoPaWCwV3J9PqApK5xJJH8TpxsGyCRcdEah67`
+- Current integrated binary buffer: `HXcaUbT7Q8euufUbDKuhoRkSSYQPwUwmhw69TdePV6uY`
+- Squads timelock release target: `2026-05-27T02:25:39Z`
 
 ### What this proves
 
@@ -133,12 +143,13 @@ The public part is:
 - Payout packet: [Open confidential payout evidence packet](https://privatedao.org/documents/confidential-payout-evidence-packet/)
 - Receipt boundary: [Open settlement receipt closure packet](https://privatedao.org/documents/settlement-receipt-closure-packet/)
 
-Devnet settlement references:
+Current Testnet settlement references:
 
-- MagicBlock deposit: [3FV1LENXhfzktPUQh6rK1mRhEk4aJf2snFhfMSK3nLM4au2y4n1smbEGCEWr5x8kJ7t86ZcAivB5HhsMqMWpkRJC](https://solscan.io/tx/3FV1LENXhfzktPUQh6rK1mRhEk4aJf2snFhfMSK3nLM4au2y4n1smbEGCEWr5x8kJ7t86ZcAivB5HhsMqMWpkRJC?cluster=devnet)
-- MagicBlock private-transfer corridor: [662meytSDxGaCpkkkvMwqo6ZLFNvbC8jswHUw4sCaJmaYpov1995Xoik97CoWUHu6vvYigNdvfWSGBMfktzwbRr4](https://solscan.io/tx/662meytSDxGaCpkkkvMwqo6ZLFNvbC8jswHUw4sCaJmaYpov1995Xoik97CoWUHu6vvYigNdvfWSGBMfktzwbRr4?cluster=devnet)
-- MagicBlock settle: [56zD3JYxYssgAkSsmxoh2zGzs11SakCXmUviMF53rdHy1HHcNQGqq72Jo9cbww2m67k7XsD5gqTB42HXMC8YEHHM](https://solscan.io/tx/56zD3JYxYssgAkSsmxoh2zGzs11SakCXmUviMF53rdHy1HHcNQGqq72Jo9cbww2m67k7XsD5gqTB42HXMC8YEHHM?cluster=devnet)
-- MagicBlock execute: [LoNED2YKkYWxaQbFV4y8fCzqGi5YrpPSruJYppqfvcTyAJ2zU5HM92QEsPNydQb26abE7qp2kB7hCNPJFbVUUPA](https://solscan.io/tx/LoNED2YKkYWxaQbFV4y8fCzqGi5YrpPSruJYppqfvcTyAJ2zU5HM92QEsPNydQb26abE7qp2kB7hCNPJFbVUUPA?cluster=devnet)
+- Configure REFHE envelope: `3fygnmHzFpRQEbHq9q6u3djBnkTEcYz9y1TSwxDmbnuemshrMwLmy9CqpjifjRb7SmW3DbmXrkyq35cnjU7mMSPi`
+- Settle REFHE envelope: `5TmS2AcpAmifcoG97U63Unzy7wt7B2NfyhBRs8Z6C4r1eqcWthEqf3GLcZXQ33sVYHf9YwfvBNhZD8ZZdt4HRwEY`
+- Configure MagicBlock corridor: `4UiUumtuGeDciojDA26PkQby7RFiTNb12UG4ACcvGMGfQj24PUPxK5Apeno7EY8mbCvq8nR6h6nfxDcBpjPvGvPj`
+- Settle MagicBlock corridor: `22XW8XVhWwQtChNQK2aEqXv5BVBbckxUmu4NsisoZQW21KA5ii87gVNUTcNoZ9e1vYKnHmm62qP1girpzVXWN1WY`
+- Execute evidence-gated payout V3: `2a8sHWgiVCZkstybMff2M9R6DVU4Y96Rfsg8mqYs7K3xcYSEG1zMcq2iSTNwLD6FgfXvxxxWpwEP9Tbyin47RXvE`
 
 ### What this proves
 
@@ -188,8 +199,8 @@ That is enough to understand the model:
 
 This guide does not claim:
 
-- that all privacy logic is enforced by an on-chain verifier CPI today
-- that external source-verifiable settlement receipts are fully closed
+- that all privacy logic is enforced by an integrated on-chain verifier CPI today
+- that funded IKA dWallet DKG or final 2PC-MPC signing has executed in this run
 - that mainnet custody and launch gates are already finished
 
 It does claim, truthfully, that:
@@ -206,6 +217,8 @@ It does claim, truthfully, that:
 - `/govern`
 - `/security`
 - `/documents/zk-capability-matrix`
+- `/documents/cryptographic-onchain-matrix-2026-05-25`
+- `/documents/testnet-encrypted-integrations-activation-2026-05-23`
 - `/documents/frontier-integrations`
 - `/documents/confidential-payout-evidence-packet`
 - `/documents/settlement-receipt-closure-packet`

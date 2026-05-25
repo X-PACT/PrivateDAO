@@ -56,8 +56,10 @@ function main() {
     "Delegation authorization proof",
     "Tally integrity proof",
     "ZK attestation",
-    "On-chain verifier integration",
-    "Not imp" + "lemented",
+    "Standalone on-chain verifier",
+    "Program-integrated verifier path",
+    "proposal index `3`",
+    "2026-05-27T02:25:39Z",
   ]) {
     assertContains(capability, token, "zk capability matrix");
   }

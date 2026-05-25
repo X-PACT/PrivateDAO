@@ -1,7 +1,7 @@
 # Operation Ledger
 
 - project: `PrivateDAO`
-- generated at: `2026-05-24T21:26:32.102Z`
+- generated at: `2026-05-25T02:52:24.585Z`
 - purpose: Machine-readable operation ledger for custody, ZK, and REFHE/FHE evidence surfaced on the reviewer site.
 
 ## Entries
@@ -18,22 +18,26 @@
   - `solana program show EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva --url https://api.testnet.solana.com`
   - `npm run verify:canonical-custody-proof`
 
-### DAO operating authority handoff upgrade has reached Squads 2-of-3 approval and is waiting for timelock release
+### Current Anchor 1.0.1 binary upgrade is Squads-approved 2-of-3 and waiting for enforced timelock release
 
 - id: `dao-authority-handoff`
 - lane: `custody`
 - status: `pending-timelock`
 - evidence:
-  - `docs/dao-treasury-authority-handoff-2026-05-23.md`
-  - `docs/squads-testnet-upgrade-proposal-2026-05-23.md`
+  - `docs/current-network-state-2026-05-24.md`
+  - `docs/squads-current-binary-upgrade-proposal-2026-05-25.md`
+  - `docs/cryptographic-onchain-matrix-2026-05-25.md`
   - `programs/private-dao/src/dao.rs`
   - `tests/private-dao.ts`
 - verification:
   - `anchor build`
-  - `solana program dump HSX3ZK3BzueJnVy4EmrQ5xHUPq3LtXxxaVWuuZqew1Mz /tmp/privatedao-buffer-final.so --url https://api.testnet.solana.com`
-  - `Squads proposal approval signature: 2wpJ27Mkb5CffngRx9U6upPjB8jbzWHoFrDLnxhB5NSCiiXCFGt5HVDYU8U7FtwYusynRCcWhy1T6av22VzCC7MY`
-  - `Timelock reduction attempt approved 2-of-3 but execution is also gated by TimeLockNotReleased: 2VH24vsTta1mDwmbN4cFmi2UdM9FNXtrzXjGzSdqSejm75ygek92BjLzYcwyGLmcfakMLyoGHuf3E9ppcd8FhdqY`
-  - `Timelock release target: 2026-05-25T00:31:05Z`
+  - `solana program dump HXcaUbT7Q8euufUbDKuhoRkSSYQPwUwmhw69TdePV6uY /tmp/privatedao-current-buffer.so --url https://api.testnet.solana.com`
+  - `Squads proposal index: 3`
+  - `Signer 4Mm approval: 4rcv9EyfZpP8UmjNx6qfSL1GwiC5Wy9Ypxyg36e49QbmJCLxbhgka1vbYxen9oH566QkGqKmCEmez7zYvogGR85J`
+  - `Signer 2Kp approval: 3giWXofHsD8Aau7qJbym3pfE6MMT2ZhdWCvZZq3C7M4zp8GFbC1LDqbnFro9ovKREf8ME1rNjE5VDN4xnh2s4JNi`
+  - `Buffer authority transfer: 4g7SaVf6yXNouGCvxqDnSsQGD7yuPgJr9fLCSWhd3BaN1uQJgZy5LQ8iZZhMozSy83X8CBKjXfsjZTgdiZVq6fqB`
+  - `Execution before release is gated by TimeLockNotReleased / 6021`
+  - `Timelock release target: 2026-05-27T02:25:39Z`
   - `node --import tsx ./node_modules/mocha/bin/mocha --timeout 20000 --exit test/unit/anonymous-governance-primitive.unit.ts`
 
 ### Solana anonymous governance primitive packaged with frozen roots, nullifiers, and tally modes
@@ -93,21 +97,42 @@
   - `npm run build:zk-enforced-runtime`
   - `npm run verify:zk-enforced-runtime`
 
-### REFHE/FHE confidential operations are documented with explicit runtime and audit boundaries
+### REFHE envelope and MagicBlock private corridor executed as Testnet settlement gates
 
 - id: `refhe-fhe-confidential-ops`
 - lane: `refhe-fhe`
-- status: `pending-runtime-capture`
+- status: `verified`
 - evidence:
+  - `docs/testnet-encrypted-integrations-activation-2026-05-23.md`
+  - `docs/test-wallet-live-proof-v3.generated.json`
+  - `docs/test-wallet-live-proof-v3.generated.md`
+  - `docs/cryptographic-onchain-matrix-2026-05-25.md`
   - `docs/refhe-protocol.md`
   - `docs/refhe-security-model.md`
-  - `docs/refhe-operator-flow.md`
+- verification:
+  - `npm run verify:encrypted-integrations-activation`
+  - `npm run verify:test-wallet-live-proof:v3`
+  - `REFHE configure: 3fygnmHzFpRQEbHq9q6u3djBnkTEcYz9y1TSwxDmbnuemshrMwLmy9CqpjifjRb7SmW3DbmXrkyq35cnjU7mMSPi`
+  - `REFHE settle: 5TmS2AcpAmifcoG97U63Unzy7wt7B2NfyhBRs8Z6C4r1eqcWthEqf3GLcZXQ33sVYHf9YwfvBNhZD8ZZdt4HRwEY`
+  - `MagicBlock configure: 4UiUumtuGeDciojDA26PkQby7RFiTNb12UG4ACcvGMGfQj24PUPxK5Apeno7EY8mbCvq8nR6h6nfxDcBpjPvGvPj`
+  - `MagicBlock settle: 22XW8XVhWwQtChNQK2aEqXv5BVBbckxUmu4NsisoZQW21KA5ii87gVNUTcNoZ9e1vYKnHmm62qP1girpzVXWN1WY`
+  - `Evidence-gated payout execution: 2a8sHWgiVCZkstybMff2M9R6DVU4Y96Rfsg8mqYs7K3xcYSEG1zMcq2iSTNwLD6FgfXvxxxWpwEP9Tbyin47RXvE`
+
+### IKA / 2PC-MPC route is live-readiness verified and explicitly separated from final dWallet execution
+
+- id: `ika-2pcmpc-readiness`
+- lane: `refhe-fhe`
+- status: `code-ready`
+- evidence:
+  - `docs/testnet-encrypted-integrations-activation-2026-05-23.md`
+  - `docs/cryptographic-onchain-matrix-2026-05-25.md`
   - `docs/encrypt-ika-2pcmpc-refhe-desktop-report-2026-05-21.md`
 - verification:
-  - `npm run configure:refhe`
-  - `npm run settle:refhe`
-  - `npm run inspect:refhe`
+  - `Sui Testnet network encryption key: 0xe7c79a60931299e110297554fc02e0a0e095e96778775092c97f07a1bd1337cc`
+  - `Solana pre-alpha program executable: 87W54kGYFQ1rgWqMeu4XTPHWXWmXSQCcjm8vCTfiq1oY`
+  - `Approval route prepared: ika-approval-e58f98a89fa650dcc587a848`
+  - `No funded IKA dWallet DKG or final 2PC-MPC signature is claimed in this run`
 
 ## Boundary
 
-This ledger records what is verified, what is code-ready, and what still needs runtime signatures or wallet captures. It must not be used to claim a DAO authority transfer, treasury authority handoff, ZK-enforced runtime close, or REFHE/FHE production close until the corresponding signature or capture exists in the evidence files above.
+This ledger records what is verified, what is code-ready, and what still needs runtime signatures or wallet captures. It must not be used to claim proposal index 3 execution, DAO authority handoff, treasury authority handoff, ZK-enforced runtime close, funded IKA dWallet DKG, or mainnet REFHE/FHE production close until the corresponding signature or capture exists in the evidence files above.

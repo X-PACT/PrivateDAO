@@ -42,6 +42,18 @@ export function getIndexableCuratedDocuments() {
 
 const curatedDocuments: CuratedDocument[] = [
   {
+    slug: "cryptographic-onchain-matrix-2026-05-25",
+    title: "Cryptographic On-Chain Matrix",
+    category: "Security",
+    summary:
+      "Canonical Testnet matrix for custody, ZK, REFHE, MagicBlock, IKA, Token-2022, read-node telemetry, and intelligence-provider proof boundaries.",
+    audience: "Judges, security reviewers, Solana builders, treasury operators, ecosystem partners",
+    boundary:
+      "Current Testnet operating matrix only; it separates executed settlement gates from Squads-timelocked protocol upgrades and IKA readiness work.",
+    docPath: "docs/cryptographic-onchain-matrix-2026-05-25.md",
+    rawHref: `${repositoryBlobBase}/docs/cryptographic-onchain-matrix-2026-05-25.md`,
+  },
+  {
     slug: "three-minute-product-entry-2026-05-23",
     title: "Three-Minute Product Entry",
     category: "Product",
