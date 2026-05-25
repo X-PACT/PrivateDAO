@@ -3,9 +3,9 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-05-24T20:50:38.492Z`
+- generated at: `2026-05-25T10:31:37.776Z`
 - package decision: `repository-strong-but-external-blockers-remain`
-- program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- program id: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
 - verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
 - accepted in repo: `9`
 - pending external: `3`

@@ -427,6 +427,7 @@ function main() {
   const mainnetAcceptance = JSON.parse(fs.readFileSync(mainnetAcceptanceJsonPath, "utf8")) as {
     project: string;
     programId: string;
+    currentTestnetProgramId?: string;
     verificationWallet: string;
     acceptanceDecision: string;
     summary: { acceptedInRepo: number; pendingExternal: number; notInRepo: number; runtimeWalletCount: number };
@@ -1132,10 +1133,11 @@ function main() {
   if (mainnetProofPackage.project !== "PrivateDAO") {
     throw new Error("generated mainnet proof package project mismatch");
   }
-  if (mainnetProofPackage.readinessAnchor.programId !== attestation.programId) {
+  const expectedMainnetProofProgramId = mainnetAcceptance.currentTestnetProgramId ?? mainnetAcceptance.programId;
+  if (mainnetProofPackage.readinessAnchor.programId !== expectedMainnetProofProgramId) {
     throw new Error("generated mainnet proof package program mismatch");
   }
-  if (mainnetProofPackage.readinessAnchor.verificationWallet !== attestation.verificationWallet) {
+  if (mainnetProofPackage.readinessAnchor.verificationWallet !== mainnetAcceptance.verificationWallet) {
     throw new Error("generated mainnet proof package verification wallet mismatch");
   }
   if (!mainnetProofPackage.coreArtifacts.includes("docs/mainnet-acceptance-matrix.generated.md")) {

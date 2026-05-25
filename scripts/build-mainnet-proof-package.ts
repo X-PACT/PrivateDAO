@@ -103,7 +103,7 @@ function readJson<T>(relativePath: string): T {
 function readMarkdown(relativePath: string) {
   const body = fs.readFileSync(path.resolve(relativePath), "utf8");
   const project = /Project: `([^`]+)`/.exec(body)?.[1] ?? "PrivateDAO";
-  const programId = /Program ID: `([^`]+)`/.exec(body)?.[1] ?? "";
+  const programId = /(?:Current Testnet Program ID|Program ID): `([^`]+)`/.exec(body)?.[1] ?? "";
   const verificationWallet = /Verification wallet: `([^`]+)`/.exec(body)?.[1] ?? "";
   return { body, anchor: { project, programId, verificationWallet } };
 }

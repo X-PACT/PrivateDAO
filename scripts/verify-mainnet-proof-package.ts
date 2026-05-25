@@ -10,6 +10,8 @@ type Package = {
   commands: string[];
 };
 
+const EXPECTED_CURRENT_TESTNET_PROGRAM_ID = "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva";
+
 function main() {
   const jsonPath = path.resolve("docs/mainnet-proof-package.generated.json");
   const mdPath = path.resolve("docs/mainnet-proof-package.generated.md");
@@ -21,7 +23,7 @@ function main() {
   const markdown = fs.readFileSync(mdPath, "utf8");
 
   assert(pkg.project === "PrivateDAO", "mainnet proof package project mismatch");
-  assert(pkg.readinessAnchor.programId === "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx", "mainnet proof package program mismatch");
+  assert(pkg.readinessAnchor.programId === EXPECTED_CURRENT_TESTNET_PROGRAM_ID, "mainnet proof package program mismatch");
   assert(pkg.readinessAnchor.verificationWallet === "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD", "mainnet proof package verification wallet mismatch");
   assert(pkg.coreArtifacts.includes("docs/mainnet-acceptance-matrix.generated.md"), "mainnet proof package missing acceptance matrix");
   assert(pkg.coreArtifacts.includes("docs/external-readiness-intake.md"), "mainnet proof package missing external readiness intake");
