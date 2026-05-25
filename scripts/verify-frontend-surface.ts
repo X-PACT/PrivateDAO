@@ -12,6 +12,7 @@ const SERVICES_SURFACE = path.resolve("apps/web/src/components/services-surface.
 const CURATED_DOCUMENTS = path.resolve("apps/web/src/lib/curated-documents.ts");
 const SITE_DATA = path.resolve("apps/web/src/lib/site-data.ts");
 const SITE_FOOTER = path.resolve("apps/web/src/components/site-footer.tsx");
+const DOCUMENT_RENDERER = path.resolve("apps/web/src/components/document-renderer.tsx");
 
 function main() {
   const rootIndex = fs.readFileSync(ROOT_INDEX, "utf8");
@@ -25,6 +26,7 @@ function main() {
   const curatedDocuments = fs.readFileSync(CURATED_DOCUMENTS, "utf8");
   const siteData = fs.readFileSync(SITE_DATA, "utf8");
   const siteFooter = fs.readFileSync(SITE_FOOTER, "utf8");
+  const documentRenderer = fs.readFileSync(DOCUMENT_RENDERER, "utf8");
 
   if (!homeShell.includes("Superteam Poland") && !homeShell.includes('eyebrow="Why PrivateDAO"')) {
     throw new Error("home shell is missing the achievement surface for Superteam Poland");
@@ -69,6 +71,11 @@ function main() {
     [siteData, "https://x.com/privateDAOOS", "site data is missing the X profile link"],
     [siteData, "https://t.me/Fahdkotb", "site data is missing the Telegram contact link"],
     [siteFooter, "communityLinks.map", "site footer is missing centralized community link rendering"],
+    [documentRenderer, "function parseInline", "document renderer is missing inline markdown support"],
+    [documentRenderer, "function flushOrderedList", "document renderer is missing ordered-list support"],
+    [documentRenderer, "function flushTable", "document renderer is missing markdown table support"],
+    [documentRenderer, 'target={isExternal ? "_blank" : undefined}', "document renderer is missing safe external link handling"],
+    [documentRenderer, "rounded-3xl border border-white/10", "document renderer is missing readable table styling"],
   ];
 
   const hasGithubPagesPrefix = rootIndex.includes("/PrivateDAO/_next/");
