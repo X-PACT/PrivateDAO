@@ -16,6 +16,7 @@ This is not a public secret store and it is not a raw block archive. The product
 ## Webhook
 
 - production destination: `https://api.privatedao.org/api/v1/quicknode/stream`
+- do not use: `https://privatedao.org/` as a QuickNode destination. That host serves the static web app and will not increment read-node stream counters.
 - static-site advisory route: `apps/web/src/app/api/quicknode/stream/route.ts`
 - read-node route: `scripts/run-read-node.ts`
 - required secret: `QUICKNODE_STREAM_TOKEN`
@@ -73,6 +74,7 @@ On the primary host, these counters persist across read-node restarts in the run
 - terminate after: `3` retries
 - preferred destination URL: `https://api.privatedao.org/api/v1/quicknode/stream`
 - compatible destination URL if already configured in QuickNode: `https://api.privatedao.org/`
+- incorrect destination URL: `https://privatedao.org/` because the root product domain is static and does not terminate the stream webhook
 - security token: keep QuickNode's generated security token in the dashboard and mirror it only as `QUICKNODE_STREAM_TOKEN` on the read-node; the server verifies QuickNode's HMAC signature over `nonce + timestamp + decoded JSON payload`
 
 ## Why It Matters

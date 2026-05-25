@@ -72,6 +72,12 @@ function assert(condition: unknown, message: string): asserts condition {
 }
 
 async function main() {
+  const runbook = fs.readFileSync("docs/quicknode-stream-intelligence.md", "utf8");
+  const surface = fs.readFileSync("apps/web/src/components/quicknode-stream-intelligence-surface.tsx", "utf8");
+  assert(runbook.includes("production destination: `https://api.privatedao.org/api/v1/quicknode/stream`"), "QuickNode runbook is missing the API stream destination");
+  assert(runbook.includes("do not use: `https://privatedao.org/`"), "QuickNode runbook must warn against posting streams to the static root domain");
+  assert(surface.includes("Do not point QuickNode at privatedao.org; use the api subdomain."), "QuickNode surface is missing the static-root warning");
+
   const caddyfile = fs.readFileSync("deploy/primary-host/Caddyfile", "utf8");
   assert(caddyfile.includes("@quicknode_root"), "Caddyfile is missing QuickNode root POST matcher");
   assert(caddyfile.includes("rewrite * /api/v1/quicknode/stream"), "Caddyfile is missing QuickNode stream rewrite");

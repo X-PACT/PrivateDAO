@@ -8,7 +8,7 @@ const streamFacts = [
   {
     label: "Stream endpoint",
     value: "api.privatedao.org/api/v1/quicknode/stream",
-    detail: "Authenticated webhook for Solana Testnet Programs + Logs or Block datasets.",
+    detail: "Authenticated webhook for Solana Testnet Programs + Logs or Block datasets. Do not point QuickNode at privatedao.org; use the api subdomain.",
   },
   {
     label: "Payload posture",
