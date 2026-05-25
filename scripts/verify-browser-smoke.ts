@@ -12,7 +12,7 @@ const REQUIRED_DOM_FRAGMENT_GROUPS = [
   ["Powered by the live stack"],
   ["Open Judge"],
   ["Create a private Solana DAO", "Private governance on Solana"],
-  ["Launch OS"],
+  ["PrivateDAO OS", "Launch OS"],
   ["Review Proof", "Open verification view", "Open proof"],
   ["PrivateDAO OS"],
 ];
