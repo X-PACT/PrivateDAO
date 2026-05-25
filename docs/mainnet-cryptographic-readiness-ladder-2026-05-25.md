@@ -21,6 +21,12 @@ The old readiness question was "do not overstate operational truth." That is sti
 3. User-facing route
 4. Mainnet cutover gate
 
+The same ladder is exposed as backend-readable JSON at:
+
+- `https://api.privatedao.org/api/v1/cryptographic-readiness`
+
+That endpoint is intentionally secret-free. It lets reviewers, operators, and future monitoring jobs inspect the live rail map without scraping the website.
+
 ## Ladder
 
 | Rail | Current core | Current proof | Public route | Mainnet cutover gate |
@@ -83,10 +89,11 @@ Forbidden until recorded:
 Open these in order:
 
 1. `/documents/mainnet-cryptographic-readiness-ladder-2026-05-25`
-2. `/documents/cryptographic-onchain-matrix-2026-05-25`
-3. `/judge`
-4. `/security`
-5. `/services/encrypt-ika-operations`
-6. `/services/magicblock-private-payments`
+2. `https://api.privatedao.org/api/v1/cryptographic-readiness`
+3. `/documents/cryptographic-onchain-matrix-2026-05-25`
+4. `/judge`
+5. `/security`
+6. `/services/encrypt-ika-operations`
+7. `/services/magicblock-private-payments`
 
 The intended reading is simple: PrivateDAO has real Testnet encrypted execution, real custody controls, real proof surfaces, and a precise cutover ladder to mainnet without overstating unfinished external rails.

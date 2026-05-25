@@ -136,6 +136,14 @@ export default function JudgePage() {
       cta: "Open ladder",
     },
     {
+      label: "Cryptographic readiness API",
+      value: "Machine-readable rail map",
+      detail:
+        "The backend exposes the same Testnet-to-mainnet ladder as secret-free JSON for reviewers, operators, and future monitoring jobs.",
+      href: "https://api.privatedao.org/api/v1/cryptographic-readiness",
+      cta: "Open JSON",
+    },
+    {
       label: "Release proof package",
       value: "Testnet -> mainnet gates",
       detail:

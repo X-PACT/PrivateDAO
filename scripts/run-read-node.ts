@@ -2055,6 +2055,130 @@ async function fetchZerionPortfolio(wallet: string) {
   };
 }
 
+function cryptographicReadinessStatus() {
+  return {
+    ok: true,
+    source: "privatedao-cryptographic-readiness",
+    posture: "solana-testnet-production-candidate",
+    generatedAt: new Date().toISOString(),
+    cluster: "testnet",
+    anchorVersion: "1.0.1",
+    programId: "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva",
+    programData: "FKyt5DcmRQcCF8kzMGjCvfGb3ZPHMQnH1SqiG9Mi8xEc",
+    custody: {
+      squadsVault: "CALHrBqx6jbzcPn2NVcinqSAHeod65v9LcDuTxsdPqBv",
+      squadsMultisig: "thHmF7VYNtxE1MaDzYXbfPCiq13RF6JwuWnjvDZuSmF",
+      currentProposalIndex: 3,
+      timelockReleaseAt: "2026-05-27T02:25:39Z",
+      status: "waiting-for-timelock-release",
+      nextExecutableCommand: "EXECUTE_TIMELOCK=1 DAO_PDA=<DAO_PDA> scripts/execute-after-timelock.sh",
+    },
+    rails: [
+      {
+        id: "squads-custody",
+        status: "testnet-live",
+        core: "program-upgrade authority protected by Squads vault and timelock",
+        proof: "/documents/squads-current-binary-upgrade-proposal-2026-05-25",
+        route: "/security",
+        mainnetGate: "execute proposal index 3, record DAO authority and treasury-operator authority readouts",
+      },
+      {
+        id: "zk-verifier",
+        status: "testnet-live-standalone",
+        core: "BN254/Groth16 standalone verifier receipt path",
+        programId: "5H7Afyqdh5yPekkZJ5UM2j3HNB2bRvU8aVv8XoqeAW1j",
+        receiptTx: "zwqNsA3kNP1mgcaS6zNdR92LLdssFULXfsRdkMK3UxraKLM6wYDoPaWCwV3J9PqApK5xJJH8TpxsGyCRcdEah67",
+        proof: "/documents/zk-standalone-verifier-testnet-2026-05-23",
+        route: "/judge",
+        mainnetGate: "integrated governance verifier receipt after Squads binary execution",
+      },
+      {
+        id: "refhe-envelope",
+        status: "testnet-live",
+        core: "configure_refhe_envelope and settle_refhe_envelope",
+        configureTx: "3fygnmHzFpRQEbHq9q6u3djBnkTEcYz9y1TSwxDmbnuemshrMwLmy9CqpjifjRb7SmW3DbmXrkyq35cnjU7mMSPi",
+        settleTx: "5TmS2AcpAmifcoG97U63Unzy7wt7B2NfyhBRs8Z6C4r1eqcWthEqf3GLcZXQ33sVYHf9YwfvBNhZD8ZZdt4HRwEY",
+        proof: "/documents/testnet-encrypted-integrations-activation-2026-05-23",
+        route: "/services/encrypt-ika-operations",
+        mainnetGate: "production verifier boundary, audit notes, and live payout policy",
+      },
+      {
+        id: "magicblock-private-corridor",
+        status: "testnet-live",
+        core: "configure_magicblock_private_payment_corridor and settle_magicblock_private_payment_corridor",
+        configureTx: "4UiUumtuGeDciojDA26PkQby7RFiTNb12UG4ACcvGMGfQj24PUPxK5Apeno7EY8mbCvq8nR6h6nfxDcBpjPvGvPj",
+        settleTx: "22XW8XVhWwQtChNQK2aEqXv5BVBbckxUmu4NsisoZQW21KA5ii87gVNUTcNoZ9e1vYKnHmm62qP1girpzVXWN1WY",
+        proof: "/documents/testnet-encrypted-integrations-activation-2026-05-23",
+        route: "/services/magicblock-private-payments",
+        mainnetGate: "production endpoint policy, monitoring, and incident response transcript",
+      },
+      {
+        id: "evidence-gated-payout",
+        status: "testnet-executed",
+        core: "executeConfidentialPayoutPlanV3 consumed REFHE and MagicBlock evidence before token motion",
+        executeTx: "2a8sHWgiVCZkstybMff2M9R6DVU4Y96Rfsg8mqYs7K3xcYSEG1zMcq2iSTNwLD6FgfXvxxxWpwEP9Tbyin47RXvE",
+        treasuryTokenDelta: "60000000 -> 10000000",
+        recipientTokenDelta: "0 -> 50000000",
+        proof: "/judge",
+        route: "/proof",
+        mainnetGate: "asset allowlist, real payroll policy, monitoring alerts, and selective-disclosure export",
+      },
+      {
+        id: "ika-2pc-mpc",
+        status: "readiness-live-final-signature-not-claimed",
+        core: "Ika SDK and Solana pre-alpha approval route",
+        proof: "/api/v1/ika/solana-prealpha/readiness",
+        route: "/services/encrypt-ika-operations",
+        mainnetGate: "funded dWallet DKG, final 2PC-MPC signature, and cross-chain policy proof",
+      },
+      {
+        id: "umbra-private-payout",
+        status: "productized-claim-boundary",
+        core: "recipient-private claim-style payout lane and relayer health route",
+        proof: "/api/v1/umbra/relayer/health",
+        route: "/services/umbra-confidential-payout",
+        mainnetGate: "SDK-generated proof account data, UTXO slot data, claim submission, and viewing-key workflow",
+      },
+      {
+        id: "jupiter-treasury-route",
+        status: "developer-platform-order-mode",
+        core: "Developer Platform /order route with Lite Quote fallback",
+        proof: "docs/DX-REPORT-JUPITER.md",
+        route: "/services/jupiter-treasury-route",
+        mainnetGate: "governed signing, execution signature, slippage policy, and production key vaulting",
+      },
+      {
+        id: "torque-growth-relay",
+        status: "server-relay-ready",
+        core: "/api/v1/torque/custom-event forwards only when scoped server credentials exist",
+        proof: "/documents/torque-growth-loop",
+        route: "/services/torque-growth-loop",
+        mainnetGate: "campaign IDs, abuse checks, reward policy, and delivery transcript",
+      },
+      {
+        id: "pusd-stablecoin-treasury",
+        status: "configuration-gated",
+        core: "wallet-reviewed SPL TransferChecked treasury lane without hardcoded unverified mint",
+        proof: "/documents/pusd-stablecoin-treasury-layer",
+        route: "/services/pusd-stablecoin",
+        mainnetGate: "official PUSD mint, funded receive account, and policy-approved wallet",
+      },
+    ],
+    publicRoutes: {
+      ladder: "https://privatedao.org/documents/mainnet-cryptographic-readiness-ladder-2026-05-25/",
+      judge: "https://privatedao.org/judge/",
+      security: "https://privatedao.org/security/",
+      proof: "https://privatedao.org/proof/",
+    },
+    claimBoundary: {
+      mainnetFundsLive: false,
+      finalIka2pcMpcSignatureClaimed: false,
+      umbraFullClaimSettlementClaimed: false,
+      externalAuditCompleted: false,
+    },
+  };
+}
+
 async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
   if (req.method === "OPTIONS") {
     writeJson(res, 200, { ok: true });
@@ -2265,9 +2389,15 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           onboardRequest: "/api/v1/onboard/request",
           quickNodeStream: "/api/v1/quicknode/stream",
           quickNodeStreamStats: "/api/v1/quicknode/stream/stats",
+          cryptographicReadiness: "/api/v1/cryptographic-readiness",
           readiness: "/api/v1/readiness",
         },
       });
+      return;
+    }
+
+    if (pathname === "/api/v1/cryptographic-readiness") {
+      writeJson(res, 200, cryptographicReadinessStatus());
       return;
     }
 
@@ -2294,6 +2424,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           site: "https://privatedao.org/",
           api: "https://api.privatedao.org/api/v1",
           quickNodeStats: "https://api.privatedao.org/api/v1/quicknode/stream/stats",
+          cryptographicReadiness: "https://api.privatedao.org/api/v1/cryptographic-readiness",
           judge: "https://privatedao.org/judge/",
           proof: "https://privatedao.org/proof/",
           security: "https://privatedao.org/security/",

@@ -6,6 +6,7 @@ const CURATED_DOCUMENTS = path.resolve("apps/web/src/lib/curated-documents.ts");
 const JUDGE_PAGE = path.resolve("apps/web/src/app/judge/page.tsx");
 const SECURITY_PAGE = path.resolve("apps/web/src/app/security/page.tsx");
 const CRYPTO_MATRIX = path.resolve("docs/cryptographic-onchain-matrix-2026-05-25.md");
+const READ_NODE = path.resolve("scripts/run-read-node.ts");
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
@@ -23,6 +24,7 @@ function main() {
   const judgePage = fs.readFileSync(JUDGE_PAGE, "utf8");
   const securityPage = fs.readFileSync(SECURITY_PAGE, "utf8");
   const cryptoMatrix = fs.readFileSync(CRYPTO_MATRIX, "utf8");
+  const readNode = fs.readFileSync(READ_NODE, "utf8");
 
   for (const required of [
     "Mainnet Cryptographic Readiness Ladder",
@@ -49,6 +51,7 @@ function main() {
     "SDK-generated proof account data",
     "Developer Platform `/order` mode",
     "QuickNode read-node and stream",
+    "https://api.privatedao.org/api/v1/cryptographic-readiness",
     "Monitoring is production-delivering incidents to named owners",
     "npm run verify:mainnet-cryptographic-readiness",
     "Forbidden until recorded",
@@ -71,8 +74,14 @@ function main() {
 
   includes(curatedDocuments, 'slug: "mainnet-cryptographic-readiness-ladder-2026-05-25"', "curated documents");
   includes(judgePage, "/documents/mainnet-cryptographic-readiness-ladder-2026-05-25", "judge page");
+  includes(judgePage, "https://api.privatedao.org/api/v1/cryptographic-readiness", "judge page");
   includes(securityPage, "/documents/mainnet-cryptographic-readiness-ladder-2026-05-25", "security page");
+  includes(securityPage, "https://api.privatedao.org/api/v1/cryptographic-readiness", "security page");
   includes(cryptoMatrix, "Cryptographic On-Chain Matrix", "cryptographic on-chain matrix");
+  includes(readNode, 'pathname === "/api/v1/cryptographic-readiness"', "read node");
+  includes(readNode, "cryptographicReadinessStatus()", "read node");
+  includes(readNode, "mainnetFundsLive: false", "read node claim boundary");
+  includes(readNode, "finalIka2pcMpcSignatureClaimed: false", "read node claim boundary");
 
   console.log("Mainnet cryptographic readiness verification: PASS");
 }
