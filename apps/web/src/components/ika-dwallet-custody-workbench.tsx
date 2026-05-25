@@ -144,7 +144,7 @@ export function IkaDwalletCustodyWorkbench() {
               </div>
               <div className="rounded-[20px] border border-white/10 bg-black/24 p-4">
                 <div className="text-[11px] uppercase tracking-[0.2em] text-white/44">Live execution lane</div>
-                <div className="mt-2 text-sm font-semibold text-white">Solana devnet via RPCFast</div>
+                <div className="mt-2 text-sm font-semibold text-white">Solana Testnet via RPCFast</div>
                 <div className="mt-2 text-xs leading-5 text-white/52">Executable program, funded operator, and approval-route readiness are read live from the backend.</div>
               </div>
             </div>

@@ -9,6 +9,7 @@ const PROOF_CENTER = path.resolve("apps/web/src/components/proof-center.tsx");
 const SECURITY_CENTER = path.resolve("apps/web/src/components/security-center.tsx");
 const DIAGNOSTICS_CENTER = path.resolve("apps/web/src/components/diagnostics-center.tsx");
 const SERVICES_SURFACE = path.resolve("apps/web/src/components/services-surface.tsx");
+const PROOF_PAGE = path.resolve("apps/web/src/app/proof/page.tsx");
 const JUDGE_PAGE = path.resolve("apps/web/src/app/judge/page.tsx");
 const SECURITY_PAGE = path.resolve("apps/web/src/app/security/page.tsx");
 const CURATED_DOCUMENTS = path.resolve("apps/web/src/lib/curated-documents.ts");
@@ -33,6 +34,7 @@ function main() {
   const securityCenter = fs.readFileSync(SECURITY_CENTER, "utf8");
   const diagnosticsCenter = fs.readFileSync(DIAGNOSTICS_CENTER, "utf8");
   const servicesSurface = fs.readFileSync(SERVICES_SURFACE, "utf8");
+  const proofPage = fs.readFileSync(PROOF_PAGE, "utf8");
   const judgePage = fs.readFileSync(JUDGE_PAGE, "utf8");
   const securityPage = fs.readFileSync(SECURITY_PAGE, "utf8");
   const curatedDocuments = fs.readFileSync(CURATED_DOCUMENTS, "utf8");
@@ -109,6 +111,8 @@ function main() {
     [securityPage, "Squads proposal index 3", "security route is missing the current Squads proposal index"],
     [securityPage, "2026-05-27T02:25:39Z", "security route is missing the current Squads proposal 3 timelock release"],
     [securityPage, "/documents/squads-current-binary-upgrade-proposal-2026-05-25", "security route is not linked to the current Squads proposal packet"],
+    [proofPage, "finalized Testnet private payment receipts", "proof route is missing Testnet private-payment receipt language"],
+    [curatedDocuments, "archived canary evidence", "runtime evidence document summary still presents old canary language as current"],
     [oldSquadsProposalDoc, "This is a historical custody packet", "old Squads proposal doc is missing historical status"],
     [oldSquadsProposalDoc, "Current proposal index `3`", "old Squads proposal doc is missing the current proposal index 3 pointer"],
     [oldSquadsProposalDoc, "2026-05-27T02:25:39Z", "old Squads proposal doc is missing the current proposal 3 timelock release"],

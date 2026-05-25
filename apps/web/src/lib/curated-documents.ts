@@ -1394,7 +1394,7 @@ const curatedDocuments: CuratedDocument[] = [
     title: "Runtime Evidence",
     category: "Runtime",
     summary:
-      "Generated runtime package consolidating runtime attestation, wallet compatibility, Devnet canary, resilience evidence, MagicBlock runtime notes, and ZK-enforced runtime references.",
+      "Generated runtime package consolidating runtime attestation, wallet compatibility, archived canary evidence, resilience evidence, MagicBlock runtime notes, and ZK-enforced runtime references.",
     audience: "Judges, reviewers, operators, infrastructure partners",
     boundary:
       "Generated evidence package only; it reports the captured runtime posture and linked verification commands without upgrading unclosed production or mainnet gates.",
