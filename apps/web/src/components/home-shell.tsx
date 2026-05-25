@@ -70,7 +70,7 @@ const homeCopyByLocale: Record<
     stackLabel: "Powered by the live stack",
     thesisTitle: "Private. Verified. Informed.",
     thesisBody:
-      "PrivateDAO combines commit-reveal privacy, ZK review proofs, REFHE confidential-execution posture, MagicBlock speed, and GoldRush intelligence into one governance OS where every decision is private, verified, and informed.",
+      "PrivateDAO combines commit-reveal privacy, ZK review proofs, REFHE proof receipts, MagicBlock execution receipts, and GoldRush intelligence into one governance OS where every decision is private, verified, and informed.",
     thesisPrivate: "Private = commit-reveal first, ZK proofs off-chain today, and Cloak / Umbra settlement lanes.",
     thesisVerified: "Verified = Testnet proof, V3 hardening, and Anchor 1.0.1 evidence.",
     thesisInformed: "Informed = GoldRush, QVAC, and the intelligence layer before signing.",
@@ -96,7 +96,7 @@ const homeCopyByLocale: Record<
     stackLabel: "مدعوم بالطبقة الحية",
     thesisTitle: "خاص. قابل للتحقق. واعٍ بالسياق.",
     thesisBody:
-      "يجمع PrivateDAO خصوصية commit-reveal، وبراهين ZK خارج السلسلة حالياً، ووضع REFHE السري، وسرعة MagicBlock، وذكاء GoldRush في نظام حوكمة واحد يجعل كل قرار خاصاً وقابلاً للتحقق ومبنياً على معلومات واضحة.",
+      "يجمع PrivateDAO خصوصية commit-reveal، وبراهين ZK خارج السلسلة حالياً، وإيصالات REFHE، وإيصالات تنفيذ MagicBlock، وذكاء GoldRush في نظام حوكمة واحد يجعل كل قرار خاصاً وقابلاً للتحقق ومبنياً على معلومات واضحة.",
     thesisPrivate: "خاص = commit-reveal أولاً، وبراهين ZK خارج السلسلة الآن، ومسارات Cloak وUmbra.",
     thesisVerified: "قابل للتحقق = إثبات Testnet وV3 Hardening وAnchor 1.0.1.",
     thesisInformed: "واعي بالسياق = GoldRush وQVAC وطبقة Intelligence قبل التوقيع.",
@@ -122,7 +122,7 @@ const homeCopyByLocale: Record<
     stackLabel: "Работает на live stack",
     thesisTitle: "Private. Verified. Informed.",
     thesisBody:
-      "PrivateDAO объединяет commit-reveal privacy, off-chain ZK proofs today, REFHE confidential-execution posture, скорость MagicBlock и аналитику GoldRush в одну governance OS, где каждое решение приватно, проверяемо и основано на контексте.",
+      "PrivateDAO объединяет commit-reveal privacy, off-chain ZK proofs today, REFHE proof receipts, MagicBlock execution receipts и аналитику GoldRush в одну governance OS, где каждое решение приватно, проверяемо и основано на контексте.",
     thesisPrivate: "Private = commit-reveal first, ZK proofs off-chain today, Cloak и Umbra settlement lanes.",
     thesisVerified: "Verified = Testnet proof, V3 hardening и Anchor 1.0.1 evidence.",
     thesisInformed: "Informed = GoldRush, QVAC и intelligence layer before signing.",
@@ -147,7 +147,7 @@ const homeCopyByLocale: Record<
     stackLabel: "Працює на live stack",
     thesisTitle: "Private. Verified. Informed.",
     thesisBody:
-      "PrivateDAO поєднує commit-reveal privacy, off-chain ZK proofs today, REFHE confidential-execution posture, швидкість MagicBlock і аналітику GoldRush в одну governance OS, де кожне рішення приватне, перевірюване й контекстне.",
+      "PrivateDAO поєднує commit-reveal privacy, off-chain ZK proofs today, REFHE proof receipts, MagicBlock execution receipts і аналітику GoldRush в одну governance OS, де кожне рішення приватне, перевірюване й контекстне.",
     thesisPrivate: "Private = commit-reveal first, ZK proofs off-chain today, Cloak і Umbra settlement lanes.",
     thesisVerified: "Verified = Testnet proof, V3 hardening і Anchor 1.0.1 evidence.",
     thesisInformed: "Informed = GoldRush, QVAC і intelligence layer before signing.",
@@ -172,7 +172,7 @@ const homeCopyByLocale: Record<
     stackLabel: "Powered by live stack",
     thesisTitle: "Private. Verified. Informed.",
     thesisBody:
-      "PrivateDAO łączy commit-reveal privacy, off-chain ZK proofs today, REFHE confidential-execution posture, szybkość MagicBlock i intelligence GoldRush w jeden governance OS, gdzie każda decyzja jest prywatna, weryfikowalna i świadoma kontekstu.",
+      "PrivateDAO łączy commit-reveal privacy, off-chain ZK proofs today, REFHE proof receipts, MagicBlock execution receipts i intelligence GoldRush w jeden governance OS, gdzie każda decyzja jest prywatna, weryfikowalna i świadoma kontekstu.",
     thesisPrivate: "Private = commit-reveal first, ZK proofs off-chain today, Cloak i Umbra settlement lanes.",
     thesisVerified: "Verified = Testnet proof, V3 hardening i Anchor 1.0.1 evidence.",
     thesisInformed: "Informed = GoldRush, QVAC i intelligence layer before signing.",
@@ -197,7 +197,7 @@ const homeCopyByLocale: Record<
     stackLabel: "Live stack द्वारा संचालित",
     thesisTitle: "Private. Verified. Informed.",
     thesisBody:
-      "PrivateDAO commit-reveal privacy, off-chain ZK proofs today, REFHE confidential-execution posture, MagicBlock speed और GoldRush intelligence को एक governance OS में जोड़ता है, जहां हर decision private, verified और informed होता है.",
+      "PrivateDAO commit-reveal privacy, off-chain ZK proofs today, REFHE proof receipts, MagicBlock execution receipts और GoldRush intelligence को एक governance OS में जोड़ता है, जहां हर decision private, verified और informed होता है.",
     thesisPrivate: "Private = commit-reveal first, ZK proofs off-chain today, Cloak और Umbra settlement lanes.",
     thesisVerified: "Verified = Testnet proof, V3 hardening और Anchor 1.0.1 evidence.",
     thesisInformed: "Informed = GoldRush, QVAC और signing से पहले intelligence layer.",
@@ -222,7 +222,7 @@ const homeCopyByLocale: Record<
     stackLabel: "Live stack 기반",
     thesisTitle: "Private. Verified. Informed.",
     thesisBody:
-      "PrivateDAO는 commit-reveal privacy, off-chain ZK proofs today, REFHE confidential-execution posture, MagicBlock speed, GoldRush intelligence를 하나의 governance OS로 묶어 모든 결정을 private, verified, informed 상태로 만듭니다.",
+      "PrivateDAO는 commit-reveal privacy, off-chain ZK proofs today, REFHE proof receipts, MagicBlock execution receipts, GoldRush intelligence를 하나의 governance OS로 묶어 모든 결정을 private, verified, informed 상태로 만듭니다.",
     thesisPrivate: "Private = commit-reveal first, ZK proofs off-chain today, Cloak, Umbra settlement lanes.",
     thesisVerified: "Verified = Testnet proof, V3 hardening, Anchor 1.0.1 evidence.",
     thesisInformed: "Informed = GoldRush, QVAC, signing 전 intelligence layer.",
@@ -247,7 +247,7 @@ const homeCopyByLocale: Record<
     stackLabel: "Impulsado por el live stack",
     thesisTitle: "Private. Verified. Informed.",
     thesisBody:
-      "PrivateDAO combina privacidad commit-reveal, pruebas ZK off-chain hoy, postura de ejecución confidencial REFHE, velocidad MagicBlock e inteligencia GoldRush en un governance OS donde cada decisión es privada, verificable e informada.",
+      "PrivateDAO combina privacidad commit-reveal, pruebas ZK off-chain hoy, recibos de prueba REFHE, recibos de ejecución MagicBlock e inteligencia GoldRush en un governance OS donde cada decisión es privada, verificable e informada.",
     thesisPrivate: "Private = commit-reveal first, ZK proofs off-chain today, Cloak y Umbra settlement lanes.",
     thesisVerified: "Verified = Testnet proof, V3 hardening y Anchor 1.0.1 evidence.",
     thesisInformed: "Informed = GoldRush, QVAC e intelligence layer antes de firmar.",
@@ -272,7 +272,7 @@ const homeCopyByLocale: Record<
     stackLabel: "Basato sul live stack",
     thesisTitle: "Private. Verified. Informed.",
     thesisBody:
-      "PrivateDAO combina privacy commit-reveal, prove ZK off-chain oggi, postura REFHE confidential execution, velocità MagicBlock e intelligence GoldRush in un governance OS dove ogni decisione è privata, verificabile e informata.",
+      "PrivateDAO combina privacy commit-reveal, prove ZK off-chain oggi, ricevute di prova REFHE, ricevute di esecuzione MagicBlock e intelligence GoldRush in un governance OS dove ogni decisione è privata, verificabile e informata.",
     thesisPrivate: "Private = commit-reveal first, ZK proofs off-chain today, Cloak e Umbra settlement lanes.",
     thesisVerified: "Verified = Testnet proof, V3 hardening e Anchor 1.0.1 evidence.",
     thesisInformed: "Informed = GoldRush, QVAC e intelligence layer prima della firma.",
@@ -532,7 +532,7 @@ export function HomeShell() {
     {
       question: "What does the cryptography actually do here?",
       answer:
-        "ZK, REFHE, MagicBlock, and Fast RPC each map to a concrete product lane: privacy review, confidential payout posture, responsive execution, and reliable live reads. They are presented as service rails, not badge-only theory.",
+        "ZK, REFHE, MagicBlock, and Fast RPC each map to a concrete product lane: privacy review, confidential payout proof receipts, responsive execution receipts, and reliable live reads. They are presented as service rails, not badge-only theory.",
     },
     {
       question: "What kind of support helps most right now?",

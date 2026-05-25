@@ -80,6 +80,8 @@ function main() {
     [siteHeader, 'href: "/products"', "site header is missing the Products route"],
     [siteHeader, 'href: "/network"', "site header is missing the Network route"],
     [homeShell, "Powered by the live stack", "home shell is missing the integrated tech section"],
+    [homeShell, "REFHE proof receipts", "home shell is missing REFHE proof-receipt language"],
+    [homeShell, "MagicBlock execution receipts", "home shell is missing MagicBlock execution-receipt language"],
     [homeShell, "Public good", "home shell is missing the Solana-style value section"],
     [homeShell, "The shortest path from landing page to a real Testnet action", "home shell is missing the focused route-entry narrative"],
     [commandCenter, "Command Center", "command center surface is missing"],
@@ -145,6 +147,7 @@ function main() {
   const forbiddenChecks: Array<[string, string, string]> = [
     [siteData, "live devnet", "site data still presents Devnet as the live operating route"],
     [homeShell, "live devnet", "home shell still presents Devnet as the live operating route"],
+    [homeShell, "REFHE confidential-execution posture", "home shell still presents REFHE as posture instead of proof receipts"],
     [servicesSurface, "live devnet", "services surface still presents Devnet as the live operating route"],
     [documentRenderer, "live devnet", "document renderer should not encode stale network copy"],
     [judgePage, "timelock release 2026-05-25T00:31:05Z", "judge route still shows the old Squads timelock release"],
