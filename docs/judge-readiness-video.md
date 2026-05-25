@@ -2,7 +2,7 @@
 
 This is a narrow repo-native render asset for a new **3-minute English demo video** focused on PrivateDAO readiness.
 
-It reuses the existing terminal render pattern from `scripts/render-demo-video.sh`, `scripts/render-frontier-overview-video.sh`, and `scripts/render-private-dao-3min-product-video.sh`: static 1280x720 ffmpeg scenes, 5 fps slide-video MP4 output, and poster generation.
+It reuses the existing terminal render pattern from `scripts/render-demo-video.sh`, `scripts/render-frontier-overview-video.sh`, and `scripts/render-private-dao-3min-product-video.sh`: static 1280x720 ffmpeg scenes, 5 fps slide-video MP4 output, generated motivational music, and poster generation.
 
 ## Render Targets
 
@@ -12,6 +12,12 @@ It reuses the existing terminal render pattern from `scripts/render-demo-video.s
 - Hosted MP4 asset: `apps/web/public/assets/private-dao-judge-readiness-3min.mp4`
 - Hosted poster asset: `apps/web/public/assets/private-dao-judge-readiness-3min-poster.png`
 - Desktop copy: `/home/x-pact/Desktop/PrivateDAO-Judge-Readiness-Video/PrivateDAO - Judge Readiness 3 Minute Demo.mp4`
+
+## Hosting Policy
+
+Use YouTube as the primary judge-page embed after upload. This keeps bandwidth away from GitHub Pages, Supabase, AWS, and mirrors during judging spikes.
+
+Keep the hosted MP4 as a fallback/download artifact only. The site should use `preload="none"` for the local MP4 unless it is the only available playback path.
 
 ## Render Command
 
@@ -25,7 +31,6 @@ Required local tools:
 
 - `ffmpeg`
 - DejaVu fonts at `/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf` and `/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf`
-- Optional: `edge-tts` at `/tmp/pdao-media-venv/bin/edge-tts`; otherwise the script uses the local `ffmpeg` `flite` filter for English voiceover.
 
 Ubuntu/Debian install command:
 
@@ -41,7 +46,7 @@ Latest local render:
 
 - duration: `180.000000` seconds
 - video: `h264`, `1280x720`, `5 fps`
-- audio: `aac`, mono voiceover generated locally through `ffmpeg flite`
+- audio: `aac`, generated motivational music bed from local `ffmpeg` oscillators
 - web path after build/deploy: `/assets/private-dao-judge-readiness-3min.mp4`
 
 ## Narrative Boundaries
@@ -79,22 +84,12 @@ The video must not imply:
 11. Why it matters: private operations need public confidence.
 12. Close: awards, Testnet proof, backend rebuild, encryption, intelligence, Arena selection, and explicit mainnet path.
 
-## Voiceover Draft
+## Upload Notes
 
-PrivateDAO is now ready for a serious three minute judge review. The story is no longer just private governance. It is a product, a backend, a proof surface, and a launch discipline.
+Suggested YouTube title:
 
-The project already has real external signal: first place at Superteam Poland, third place at the UAE Frontier Hackathon, and current Arena selection. That signal matters, but the demo still leads with what can be inspected.
+`PrivateDAO Judge Readiness: Confidential Governance, Encrypted Operations, Testnet Proof`
 
-Start with the product path. A normal operator can connect a Testnet wallet, review the action, sign, and verify the result. Create DAO, submit proposal, private vote, and execute treasury remain part of one operating shell.
+Suggested description:
 
-The backend has been rebuilt around API readiness, indexed evidence, diagnostics, telemetry, and service corridors. That makes PrivateDAO easier to judge, easier to operate, and easier to package for partners.
-
-Privacy is handled as a service boundary. Governance, payroll, rewards, compliance, confidential payments, and viewing-key style disclosure each explain what stays private and what becomes reviewable evidence.
-
-The intelligence layer supports human approval before the wallet prompt. Local reasoning, wallet context, route previews, and policy checks help the signer understand risk before funds or authority move.
-
-The proof path stays visible. Testnet evidence, proof documents, runtime packets, diagnostics, and reviewer routes show where claims can be checked.
-
-PrivateDAO is mainnet-candidate in architecture and product readiness, but it does not overclaim. Real-funds launch still needs external audit, production authority transfer, monitoring, and operator ownership.
-
-That is the readiness story: awards prove signal, Testnet proof proves motion, the rebuilt backend proves operating direction, and explicit launch gates prove discipline.
+`PrivateDAO is a Solana Testnet product for private governance, confidential treasury operations, encrypted payroll, intelligence-assisted signing, and reviewer-visible proof. Awards: Superteam Poland 1st place, UAE Frontier Hackathon 3rd place, selected in Arena. Inspect the live proof path at https://privatedao.org/judge/`

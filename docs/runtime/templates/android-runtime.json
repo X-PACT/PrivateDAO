@@ -13,7 +13,7 @@
   "txSignature": "fill-with-real-runtime-signature",
   "errorMessage": null,
   "evidenceRefs": [
-    "screenshots/android-runtime-connect.png"
+    "docs/assets/runtime/real-device/android-solflare-2026-04-18/contact-sheet.jpg"
   ],
   "capturedAt": "2026-04-05T00:00:00.000Z"
 }

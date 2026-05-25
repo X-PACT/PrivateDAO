@@ -431,5 +431,5 @@ Validation:
   - `npm run build:cryptographic-manifest`: PASS.
   - `npm run verify:cryptographic-manifest`: PASS.
   - `npm run web:bundle:root && npm run web:publish:root && npm run web:verify:bundle:root`: PASS; root static export regenerated with 415 routes.
-  - `npm run verify:browser-smoke`: PASS; screenshot `privatedao-browser-smoke-1776626437999.png`, `549875` bytes.
+  - `npm run verify:browser-smoke`: PASS; browser-smoke screenshot artifact recorded by the verifier output, `549875` bytes.
   - Static output check confirmed the proof matrix text in `/proof` and `/judge` generated HTML.

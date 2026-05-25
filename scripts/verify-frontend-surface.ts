@@ -11,6 +11,7 @@ const DIAGNOSTICS_CENTER = path.resolve("apps/web/src/components/diagnostics-cen
 const SERVICES_SURFACE = path.resolve("apps/web/src/components/services-surface.tsx");
 const PROOF_PAGE = path.resolve("apps/web/src/app/proof/page.tsx");
 const JUPITER_TREASURY_ROUTE_PAGE = path.resolve("apps/web/src/app/services/jupiter-treasury-route/page.tsx");
+const ENCRYPT_IKA_OPERATIONS_PAGE = path.resolve("apps/web/src/app/services/encrypt-ika-operations/page.tsx");
 const JUDGE_PAGE = path.resolve("apps/web/src/app/judge/page.tsx");
 const SECURITY_PAGE = path.resolve("apps/web/src/app/security/page.tsx");
 const API_STATUS_PAGE = path.resolve("apps/web/src/app/api-status/page.tsx");
@@ -24,6 +25,7 @@ const DOCUMENT_RENDERER = path.resolve("apps/web/src/components/document-rendere
 const TRACK_COMMERCIALIZATION = path.resolve("apps/web/src/lib/track-commercialization.ts");
 const TECHNICAL_ELIGIBILITY = path.resolve("apps/web/src/lib/technical-eligibility.ts");
 const RPCFAST_INFRASTRUCTURE = path.resolve("apps/web/src/lib/rpcfast-infrastructure.ts");
+const LEGACY_ROUTE_REDIRECT = path.resolve("apps/web/src/components/legacy-route-redirect.tsx");
 const OLD_SQUADS_PROPOSAL_DOC = path.resolve("docs/squads-testnet-upgrade-proposal-2026-05-23.md");
 const OLD_TIMELOCK_DOC = path.resolve("docs/timelock-enforcement-proof-2026-05-23.md");
 const OLD_ARENA_SUBMISSION_DOC = path.resolve("docs/arena-frontier-submission-2026-05-23.md");
@@ -43,6 +45,7 @@ function main() {
   const servicesSurface = fs.readFileSync(SERVICES_SURFACE, "utf8");
   const proofPage = fs.readFileSync(PROOF_PAGE, "utf8");
   const jupiterTreasuryRoutePage = fs.readFileSync(JUPITER_TREASURY_ROUTE_PAGE, "utf8");
+  const encryptIkaOperationsPage = fs.readFileSync(ENCRYPT_IKA_OPERATIONS_PAGE, "utf8");
   const judgePage = fs.readFileSync(JUDGE_PAGE, "utf8");
   const securityPage = fs.readFileSync(SECURITY_PAGE, "utf8");
   const apiStatusPage = fs.readFileSync(API_STATUS_PAGE, "utf8");
@@ -56,6 +59,7 @@ function main() {
   const trackCommercialization = fs.readFileSync(TRACK_COMMERCIALIZATION, "utf8");
   const technicalEligibility = fs.readFileSync(TECHNICAL_ELIGIBILITY, "utf8");
   const rpcfastInfrastructure = fs.readFileSync(RPCFAST_INFRASTRUCTURE, "utf8");
+  const legacyRouteRedirect = fs.readFileSync(LEGACY_ROUTE_REDIRECT, "utf8");
   const oldSquadsProposalDoc = fs.readFileSync(OLD_SQUADS_PROPOSAL_DOC, "utf8");
   const oldTimelockDoc = fs.readFileSync(OLD_TIMELOCK_DOC, "utf8");
   const oldArenaSubmissionDoc = fs.readFileSync(OLD_ARENA_SUBMISSION_DOC, "utf8");
@@ -135,7 +139,7 @@ function main() {
     [judgePage, "PrivateDAO in three minutes", "judge route is missing the simplified product entry"],
     [judgePage, "PrivateDAO automatic judge demo video", "judge route is missing the embedded judge demo video"],
     [judgePage, "autoplay=1&mute=1", "judge route is missing muted autoplay video parameters"],
-    [judgePage, "New narrated readiness cut", "judge route is missing the new narrated readiness video"],
+    [judgePage, "New music-backed readiness cut", "judge route is missing the new music-backed readiness video"],
     [judgePage, "/assets/private-dao-judge-readiness-3min.mp4", "judge route is missing the hosted readiness MP4"],
     [judgePage, "Run the track, then verify it", "judge route is missing the track run/proof router"],
     [judgePage, "Encryption status notes", "judge route is missing compact encryption status notes"],
@@ -144,7 +148,7 @@ function main() {
     [judgePage, "/documents/squads-current-binary-upgrade-proposal-2026-05-25", "judge route is not linked to the current Squads proposal packet"],
     [judgePage, "/documents/mainnet-proof-package", "judge route is missing the release proof package link"],
     [judgePage, "/documents/mainnet-cryptographic-readiness-ladder-2026-05-25", "judge route is missing the mainnet cryptographic readiness ladder link"],
-    [judgePage, "https://api.privatedao.org/api/v1/cryptographic-readiness", "judge route is missing the cryptographic readiness API link"],
+    [judgePage, "https://api.privatedao.org/api/v1/readiness", "judge route is missing the stable readiness API link"],
     [judgePage, "/documents/frontier-track-closure-matrix-2026-05-25", "judge route is missing the Frontier track closure matrix link"],
     [judgePage, "https://privatedao.org/services/jupiter-treasury-route/", "judge route is missing the Jupiter submission link"],
     [judgePage, "https://privatedao.org/services/umbra-confidential-payout/", "judge route is missing the Umbra submission link"],
@@ -154,10 +158,15 @@ function main() {
     [securityPage, "2026-05-27T02:25:39Z", "security route is missing the current Squads proposal 3 timelock release"],
     [securityPage, "/documents/squads-current-binary-upgrade-proposal-2026-05-25", "security route is not linked to the current Squads proposal packet"],
     [securityPage, "/documents/mainnet-cryptographic-readiness-ladder-2026-05-25", "security route is missing the mainnet cryptographic readiness ladder link"],
-    [securityPage, "https://api.privatedao.org/api/v1/cryptographic-readiness", "security route is missing the cryptographic readiness API link"],
+    [securityPage, "https://api.privatedao.org/api/v1/readiness", "security route is missing the stable readiness API link"],
     [proofPage, "finalized Testnet private payment receipts", "proof route is missing Testnet private-payment receipt language"],
     [proofPage, "/documents/frontier-track-closure-matrix-2026-05-25", "proof route is missing the Frontier track closure matrix link"],
     [jupiterTreasuryRoutePage, "Jupiter Developer Platform /order", "Jupiter service page is missing static Developer Platform order copy"],
+    [encryptIkaOperationsPage, "Run the encrypted operations stack from one Testnet page", "Encrypt/Ika page is missing the runnable Testnet entry title"],
+    [encryptIkaOperationsPage, "One-click Testnet truth board", "Encrypt/Ika page is missing the one-click truth board rail"],
+    [encryptIkaOperationsPage, "EncryptIkaDesktopProofWorkbench", "Encrypt/Ika page is missing the live execution truth board component"],
+    [encryptIkaOperationsPage, "funded dWallet DKG and final 2PC-MPC signing remain the named production gate", "Encrypt/Ika page is missing the Ika truth boundary"],
+    [encryptIkaOperationsPage, "https://api.privatedao.org/api/v1/ika/solana-prealpha/readiness", "Encrypt/Ika page is missing the live Ika readiness endpoint"],
     [apiStatusPage, "MagicBlock receipts", "API status route is missing MagicBlock receipt evidence"],
     [apiStatusPage, "Ika readiness", "API status route is missing Ika readiness evidence"],
     [apiStatusPage, "REFHE proof", "API status route is missing REFHE proof evidence"],
@@ -193,6 +202,17 @@ function main() {
     [documentRenderer, "function flushTable", "document renderer is missing markdown table support"],
     [documentRenderer, 'target={isExternal ? "_blank" : undefined}', "document renderer is missing safe external link handling"],
     [documentRenderer, "rounded-3xl border border-white/10", "document renderer is missing readable table styling"],
+    [legacyRouteRedirect, "Preserved legacy link", "legacy route redirect component is missing preserved-link copy"],
+    [fs.readFileSync(path.resolve("apps/web/src/app/review/page.tsx"), "utf8"), 'target="/judge"', "legacy /review route is not preserved"],
+    [fs.readFileSync(path.resolve("apps/web/src/app/reviewer/page.tsx"), "utf8"), 'target="/judge"', "legacy /reviewer route is not preserved"],
+    [fs.readFileSync(path.resolve("apps/web/src/app/submission/page.tsx"), "utf8"), 'target="/judge"', "legacy /submission route is not preserved"],
+    [fs.readFileSync(path.resolve("apps/web/src/app/arena/page.tsx"), "utf8"), 'target="/judge"', "legacy /arena route is not preserved"],
+    [fs.readFileSync(path.resolve("apps/web/src/app/colosseum/page.tsx"), "utf8"), 'target="/judge"', "legacy /colosseum route is not preserved"],
+    [fs.readFileSync(path.resolve("apps/web/src/app/frontier/page.tsx"), "utf8"), 'target="/services/main-frontier-closure"', "legacy /frontier route is not preserved"],
+    [fs.readFileSync(path.resolve("apps/web/src/app/privacy/page.tsx"), "utf8"), 'target="/services/encrypt-ika-operations"', "legacy /privacy route is not preserved"],
+    [fs.readFileSync(path.resolve("apps/web/src/app/payments/page.tsx"), "utf8"), 'target="/services/confidential-payments"', "legacy /payments route is not preserved"],
+    [fs.readFileSync(path.resolve("apps/web/src/app/business-model/page.tsx"), "utf8"), 'target="/revenue"', "legacy /business-model route is not preserved"],
+    [fs.readFileSync(path.resolve("apps/web/src/app/integrations/page.tsx"), "utf8"), 'target="/services"', "legacy /integrations route is not preserved"],
   ];
 
   const forbiddenChecks: Array<[string, string, string]> = [

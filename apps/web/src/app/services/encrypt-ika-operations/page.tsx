@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { CryptographicExecutionSpine } from "@/components/cryptographic-execution-spine";
+import { EncryptIkaDesktopProofWorkbench } from "@/components/encrypt-ika-desktop-proof-workbench";
 import { EncryptedOperationsWorkbench } from "@/components/encrypted-operations-workbench";
 import { ConfidentialPaymentsSystemSurface } from "@/components/confidential-payments-system-surface";
 import { IkaDwalletCustodyWorkbench } from "@/components/ika-dwallet-custody-workbench";
@@ -18,34 +19,71 @@ import { buildRouteMetadata } from "@/lib/route-metadata";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = buildRouteMetadata({
-  title: "Encrypt / IKA Operations",
+  title: "Encrypt / IKA Testnet Operations",
   description:
-    "Encrypted operations route for client-side payload encryption, confidential planning, and proof-linked execution continuity.",
+    "Runnable Encrypt, Ika, REFHE, and 2PC-MPC readiness route for PrivateDAO encrypted operations on Solana Testnet.",
   path: "/services/encrypt-ika-operations",
-  keywords: ["encrypt", "ika", "encrypted operations", "private payroll", "refhe"],
+  keywords: ["encrypt", "ika", "2pc-mpc", "encrypted operations", "private payroll", "refhe", "solana testnet"],
 });
+
+const executionRails = [
+  {
+    title: "REFHE payroll proof",
+    status: "Runnable now",
+    description: "Encrypt a payroll payload in the browser, submit commitment-safe proof data, and receive a backend receipt hash.",
+    action: "#refhe-payroll-proof",
+    proof: "/documents/testnet-encrypted-integrations-activation-2026-05-23",
+  },
+  {
+    title: "Ika / 2PC-MPC readiness",
+    status: "Live readiness",
+    description:
+      "Read the Ika SDK network route, Solana pre-alpha executable program, funded operator boundary, and approval-preparation path.",
+    action: "#ika-readiness",
+    proof: "https://api.privatedao.org/api/v1/ika/solana-prealpha/readiness",
+  },
+  {
+    title: "Browser encrypted manifest",
+    status: "Runnable now",
+    description: "Create an AES-GCM encrypted operation manifest locally before anything enters a shared review or execution lane.",
+    action: "#client-encryption",
+    proof: "/documents/privacy-and-encryption-proof-guide",
+  },
+  {
+    title: "One-click Testnet truth board",
+    status: "Runnable now",
+    description: "Run browser encryption, REFHE receipt, Ika Sui read, Ika Solana read, and approval preparation from one page.",
+    action: "#execution-truth-board",
+    proof: "/proof/encrypted-capital-markets",
+  },
+];
 
 export default function EncryptIkaOperationsPage() {
   return (
     <OperationsShell
-      eyebrow="Encrypted operations"
-      title="Turn confidential operations into a real user workflow instead of abstract cryptography claims"
-      description="This lane packages Encrypt/IKA fit in an operational way: plan encrypted operations, produce client-side encrypted payloads, keep commitment hashes, protect payroll and operational instructions, and carry continuity into proof."
+      eyebrow="Encrypted operations on Solana Testnet"
+      title="Run the encrypted operations stack from one Testnet page"
+      description="This is the canonical Encrypt / Ika route: a visitor can run browser encryption, REFHE payroll proof receipts, Ika readiness reads, 2PC-MPC approval preparation, and proof-linked confidential operation flows without a terminal."
       badges={[
         { label: "Encrypt / IKA", variant: "cyan" },
-        { label: "Client-side encryption", variant: "success" },
-        { label: "Proof-linked", variant: "violet" },
+        { label: "REFHE receipts", variant: "success" },
+        { label: "2PC-MPC readiness", variant: "violet" },
+        { label: "Testnet runnable", variant: "warning" },
       ]}
     >
       <LocalizedRouteSummary routeKey="services" />
       <LocalizedRouteBrief routeKey="servicesCore" />
       <OperationStateLegend
-        description="This route is the encryption preparation lane. It makes clear what is encrypted locally, what becomes a receipt, and which downstream rail is responsible for final private settlement."
+        description="This route separates what is runnable today from the final production gates: REFHE and client encryption execute now; Ika/2PC-MPC is a live readiness and approval-preparation lane until funded dWallet DKG and final 2PC-MPC signatures are recorded."
       />
       <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5 text-sm leading-7 text-white/68">
-        The product value here is simple: operations become encrypted before execution, and only commitment-safe
-        artifacts move into shared review lanes. This keeps privacy load-bearing while preserving audit continuity.
+        The product value here is direct: sensitive DAO operations are encrypted before execution, receipts are generated
+        with commitment-safe data, and every claim routes to a visible Testnet action or readiness endpoint. This page is
+        intentionally built as a judge and partner entry point, not a passive explainer.
         <div className="mt-4 flex flex-wrap gap-3">
+          <a href="#execution-truth-board" className={cn(buttonVariants({ size: "sm" }))}>
+            Run one-click proof
+          </a>
           <Link href="/services/confidential-payments" className={cn(buttonVariants({ size: "sm" }))}>
             Open confidential payments
           </Link>
@@ -69,15 +107,66 @@ export default function EncryptIkaOperationsPage() {
           </Link>
         </div>
       </div>
+      <section className="rounded-[30px] border border-cyan-300/18 bg-[linear-gradient(135deg,rgba(34,211,238,0.12),rgba(20,241,149,0.07),rgba(5,10,20,0.96))] p-5">
+        <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-100/78">Start here</div>
+        <h2 className="mt-3 text-2xl font-semibold text-white">Four concrete execution rails, one truth boundary</h2>
+        <p className="mt-3 max-w-4xl text-sm leading-7 text-white/64">
+          REFHE, browser encryption, and receipt generation are runnable from the page. Ika/2PC-MPC is exposed as a live
+          readiness and approval-preparation rail: executable program and funded operator checks are visible, while final
+          funded dWallet DKG and final 2PC-MPC signing remain the named production gate instead of being overclaimed.
+        </p>
+        <div className="mt-5 grid gap-3 md:grid-cols-2">
+          {executionRails.map((rail) => (
+            <div key={rail.title} className="rounded-[24px] border border-white/10 bg-black/24 p-4">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h3 className="text-lg font-semibold text-white">{rail.title}</h3>
+                <span className="rounded-full border border-emerald-300/20 bg-emerald-300/[0.08] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-100">
+                  {rail.status}
+                </span>
+              </div>
+              <p className="mt-3 text-sm leading-6 text-white/62">{rail.description}</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {rail.action.startsWith("#") ? (
+                  <a href={rail.action} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+                    Run rail
+                  </a>
+                ) : (
+                  <Link href={rail.action} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+                    Run rail
+                  </Link>
+                )}
+                {rail.proof.startsWith("http") ? (
+                  <a href={rail.proof} target="_blank" rel="noreferrer" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                    Verify proof
+                  </a>
+                ) : (
+                  <Link href={rail.proof} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                    Verify proof
+                  </Link>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+      <div id="execution-truth-board" className="scroll-mt-24">
+        <EncryptIkaDesktopProofWorkbench />
+      </div>
       <ProjectOperatingMap
         compact
         title="How encrypted operations feed the rest of the product"
         description="Encrypt / IKA is the privacy preparation layer. It protects payroll instructions, sensitive treasury operations, and confidential governance payloads before Cloak, Umbra, or MagicBlock take over as execution rails. Intelligence still feeds this lane by narrowing what should be signed and what must remain encrypted."
       />
       <CryptographicExecutionSpine compact context="encrypt-ika" />
-      <RefhePayrollProofWorkbench />
-      <IkaDwalletCustodyWorkbench />
-      <PrivatePayrollEncryptionWorkbench />
+      <div id="refhe-payroll-proof" className="scroll-mt-24">
+        <RefhePayrollProofWorkbench />
+      </div>
+      <div id="ika-readiness" className="scroll-mt-24">
+        <IkaDwalletCustodyWorkbench />
+      </div>
+      <div id="client-encryption" className="scroll-mt-24">
+        <PrivatePayrollEncryptionWorkbench />
+      </div>
       <EncryptedOperationsWorkbench />
       <IkaUserShareOpsGuardrail />
       <ConfidentialPaymentsSystemSurface compact />

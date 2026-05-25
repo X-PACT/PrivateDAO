@@ -48,6 +48,28 @@ async function main() {
     const magicblock = await getJson<{ ok: boolean; source: string; magicblock: { apiBase: string; health: string } }>(
       "/api/v1/magicblock/health",
     );
+    const readiness = await getJson<{
+      ok: boolean;
+      source: string;
+      posture: string;
+      runtime: { programId: string };
+      execution: { ok?: boolean; totalExecutions?: number };
+    }>("/api/v1/readiness");
+    const cryptographicReadiness = await getJson<{
+      ok: boolean;
+      source: string;
+      cluster: string;
+      rails: Array<{ id: string; status: string }>;
+      claimBoundary: { finalIka2pcMpcSignatureClaimed: boolean; mainnetFundsLive: boolean };
+    }>("/api/v1/cryptographic-readiness");
+    const ikaSolana = await getJson<{
+      ok: boolean;
+      solanaPreAlpha?: {
+        programId?: string;
+        program?: { exists: boolean; executable: boolean };
+        operator?: { funded: boolean };
+      };
+    }>("/api/v1/ika/solana-prealpha/readiness");
     const metrics = await getJson<{ ok: boolean; metrics: { requestsTotal: number; routeHits: Record<string, number> } }>(
       "/api/v1/metrics",
     );
@@ -79,12 +101,52 @@ async function main() {
     assert(magicblock.ok && magicblock.source === "backend-indexer", "HTTP MagicBlock health missing backend source");
     assert(Boolean(magicblock.magicblock.apiBase), "HTTP MagicBlock health missing api base");
 
+    assert(readiness.ok && readiness.source === "privatedao-readiness", "HTTP readiness route did not return the current readiness payload");
+    assert(readiness.posture === "solana-testnet-production-candidate", "HTTP readiness route did not report Testnet production-candidate posture");
+    assert(Boolean(readiness.runtime.programId), "HTTP readiness route missing runtime program id");
+
+    assert(cryptographicReadiness.ok, "HTTP cryptographic readiness route did not return ok");
+    assert(cryptographicReadiness.source === "privatedao-cryptographic-readiness", "HTTP cryptographic readiness source mismatch");
+    assert(cryptographicReadiness.cluster === "testnet", "HTTP cryptographic readiness did not report Testnet");
+    assert(cryptographicReadiness.rails.some((rail) => rail.id === "ika-2pc-mpc"), "HTTP cryptographic readiness missing Ika 2PC-MPC rail");
+    assert(cryptographicReadiness.claimBoundary.finalIka2pcMpcSignatureClaimed === false, "HTTP cryptographic readiness overclaims final Ika signature");
+    assert(cryptographicReadiness.claimBoundary.mainnetFundsLive === false, "HTTP cryptographic readiness overclaims mainnet funds live");
+
+    assert(ikaSolana.ok, "HTTP Ika Solana readiness route did not return ok");
+    assert(Boolean(ikaSolana.solanaPreAlpha?.programId), "HTTP Ika Solana readiness missing program id");
+    assert(ikaSolana.solanaPreAlpha?.program?.exists === true, "HTTP Ika Solana readiness did not find the program account");
+
     assert(metrics.ok, "HTTP metrics route did not return ok");
     assert(metrics.metrics.requestsTotal >= 1, "HTTP metrics did not record requests");
     assert(Object.keys(metrics.metrics.routeHits).length >= 1, "HTTP metrics route did not track route hits");
 
     assert(proposals.ok && Array.isArray(proposals.proposals), "HTTP proposals route did not return a proposal array");
     assert(proposals.count === proposals.proposals.length, "HTTP proposals count mismatch");
+
+    const refhe = await postJson<{
+      ok: boolean;
+      receiptHash?: string;
+      executionBoundary?: string;
+    }>("/api/v1/refhe/payroll/proof", {
+      ciphertext: "verify-read-node-http-ciphertext",
+      inputCommitment: "verify-input",
+      computationCommitment: "verify-computation",
+      policyHash: "verify-policy",
+      totalAmountCommitment: "verify-total",
+      recipientCount: 1,
+    });
+    assert(refhe.ok && Boolean(refhe.receiptHash), "HTTP REFHE payroll proof route did not return a receipt hash");
+
+    const ikaApproval = await postJson<{ ok: boolean; routeId?: string; status?: string }>(
+      "/api/v1/ika/solana-prealpha/approval/prepare",
+      {
+        message: "PrivateDAO read node HTTP verification",
+        operationType: "confidential-payroll",
+        curve: "ED25519",
+        signatureScheme: "EddsaSha512",
+      },
+    );
+    assert(ikaApproval.ok && Boolean(ikaApproval.routeId), "HTTP Ika approval preparation route did not return a route id");
 
     console.log("Read node HTTP verification: PASS");
   } finally {
@@ -106,6 +168,7 @@ function startServer() {
       PRIVATE_DAO_GET_MULTIPLE_ACCOUNTS_CHUNK_SIZE: process.env.PRIVATE_DAO_GET_MULTIPLE_ACCOUNTS_CHUNK_SIZE || "5",
       PRIVATE_DAO_READ_CACHE_TTL_MS: process.env.PRIVATE_DAO_READ_CACHE_TTL_MS || "60000",
       MAGICBLOCK_HTTP_TIMEOUT_MS: process.env.MAGICBLOCK_HTTP_TIMEOUT_MS || "2500",
+      TS_NODE_TRANSPILE_ONLY: "1",
     },
     stdio: ["ignore", "pipe", "pipe"],
   });
@@ -132,6 +195,18 @@ async function waitForServer(): Promise<ReadNodeConfigResponse> {
 
 async function getJson<T>(route: string): Promise<T> {
   const response = await fetch(`${base}${route}`);
+  if (!response.ok) {
+    throw new Error(`HTTP read node route failed: ${route} -> ${response.status}`);
+  }
+  return (await response.json()) as T;
+}
+
+async function postJson<T>(route: string, body: unknown): Promise<T> {
+  const response = await fetch(`${base}${route}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
   if (!response.ok) {
     throw new Error(`HTTP read node route failed: ${route} -> ${response.status}`);
   }

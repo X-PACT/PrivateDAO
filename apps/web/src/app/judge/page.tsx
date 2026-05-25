@@ -106,9 +106,9 @@ const judgeTrackLaunchPaths = [
   },
   {
     track: "QuickNode / backend data",
-    status: "Readiness, stream stats, and cryptographic rail map are exposed as backend JSON surfaces.",
+    status: "Readiness, stream stats, and live API health are exposed as backend JSON surfaces.",
     runHref: "/api-status",
-    proofHref: "https://api.privatedao.org/api/v1/cryptographic-readiness",
+    proofHref: "https://api.privatedao.org/api/v1/readiness",
   },
   {
     track: "Consumer governance UX",
@@ -323,8 +323,8 @@ export default function JudgePage() {
             <div className="mt-4 rounded-[22px] border border-cyan-300/18 bg-cyan-300/[0.07] p-3">
               <div className="mb-2 flex flex-wrap items-center justify-between gap-2 px-1">
                 <div>
-                  <div className="text-[10px] uppercase tracking-[0.24em] text-cyan-100/62">New narrated readiness cut</div>
-                  <div className="mt-1 text-sm font-semibold text-white">3-minute English local render with voiceover</div>
+                  <div className="text-[10px] uppercase tracking-[0.24em] text-cyan-100/62">New music-backed readiness cut</div>
+                  <div className="mt-1 text-sm font-semibold text-white">3-minute English local render with motivational music</div>
                 </div>
                 <a href="/assets/private-dao-judge-readiness-3min.mp4" className="text-xs font-medium text-cyan-100 hover:text-white">
                   Open MP4
@@ -333,14 +333,14 @@ export default function JudgePage() {
               <video
                 className="aspect-video w-full rounded-[18px] border border-white/10 bg-black"
                 controls
-                preload="metadata"
+                preload="none"
                 poster="/assets/private-dao-judge-readiness-3min-poster.png"
               >
                 <source src="/assets/private-dao-judge-readiness-3min.mp4" type="video/mp4" />
               </video>
               <p className="mt-2 px-1 text-xs leading-5 text-white/50">
-                Generated from the repo render script for judges who need the newest awards, backend rebuild,
-                encryption, intelligence, and launch-gate story in one asset.
+                Generated from the repo render script with safe text margins and a music bed for judges who need the
+                newest awards, backend rebuild, encryption, intelligence, and launch-gate story in one asset.
               </p>
             </div>
           </div>
@@ -357,7 +357,7 @@ export default function JudgePage() {
               and the closest proof route second.
             </p>
           </div>
-          <a href="https://api.privatedao.org/api/v1/cryptographic-readiness" target="_blank" rel="noreferrer" className={cn(buttonVariants({ variant: "secondary" }), "shrink-0")}>
+          <a href="https://api.privatedao.org/api/v1/readiness" target="_blank" rel="noreferrer" className={cn(buttonVariants({ variant: "secondary" }), "shrink-0")}>
             Open readiness JSON
             <ArrowUpRight className="h-4 w-4" />
           </a>

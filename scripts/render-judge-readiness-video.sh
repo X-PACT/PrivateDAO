@@ -8,21 +8,17 @@ FONT_BOLD="/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 FONT_REG="/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
 OUTPUT="$ASSETS_DIR/private-dao-judge-readiness-3min.mp4"
 POSTER="$ASSETS_DIR/private-dao-judge-readiness-3min-poster.png"
-VOICE_TEXT="$ASSETS_DIR/private-dao-judge-readiness-3min-voice.txt"
-VOICE_WAV="$ASSETS_DIR/private-dao-judge-readiness-3min-voice.wav"
-SILENT_OUTPUT="$ASSETS_DIR/private-dao-judge-readiness-3min-silent.mp4"
+VIDEO_ONLY="$ASSETS_DIR/private-dao-judge-readiness-3min-video-only.mp4"
+MUSIC_WAV="$ASSETS_DIR/private-dao-judge-readiness-3min-music.wav"
 PUBLIC_ASSETS_DIR="$ROOT_DIR/apps/web/public/assets"
 PUBLIC_OUTPUT="$PUBLIC_ASSETS_DIR/private-dao-judge-readiness-3min.mp4"
 PUBLIC_POSTER="$PUBLIC_ASSETS_DIR/private-dao-judge-readiness-3min-poster.png"
 DESKTOP_OUTPUT="$DESKTOP_DIR/PrivateDAO - Judge Readiness 3 Minute Demo.mp4"
 DESKTOP_POSTER="$DESKTOP_DIR/PrivateDAO - Judge Readiness 3 Minute Demo - Poster.png"
-EDGE_TTS_BIN="${EDGE_TTS_BIN:-/tmp/pdao-media-venv/bin/edge-tts}"
-EDGE_TTS_VOICE="${EDGE_TTS_VOICE:-en-US-JennyNeural}"
 
 if ! command -v ffmpeg >/dev/null 2>&1; then
   echo "Missing dependency: ffmpeg" >&2
   echo "Install on Ubuntu/Debian: sudo apt-get update && sudo apt-get install -y ffmpeg fonts-dejavu-core" >&2
-  echo "Fallback: use docs/judge-readiness-video.md as the shot list and record the live app manually." >&2
   exit 1
 fi
 
@@ -47,76 +43,41 @@ create_scene() {
   local scene="$ASSETS_DIR/judge-readiness-scene-${index}.png"
 
   ffmpeg -y -f lavfi -i "color=c=#040712:s=1280x720" \
-    -vf "drawbox=x=0:y=0:w=1280:h=720:color=0x040712:t=fill,drawbox=x=34:y=32:w=1212:h=656:color=0x0A1220@0.96:t=fill,drawbox=x=34:y=32:w=1212:h=10:color=${accent}@0.95:t=fill,drawbox=x=82:y=82:w=320:h=44:color=${accent}@0.18:t=fill,drawtext=fontfile=$FONT_BOLD:text='${kicker}':fontsize=24:fontcolor=${accent}:x=98:y=92,drawtext=fontfile=$FONT_BOLD:text='${title}':fontsize=54:fontcolor=white:x=82:y=166,drawtext=fontfile=$FONT_REG:text='${subtitle}':fontsize=27:fontcolor=0xCFE8FF:x=86:y=240,drawbox=x=86:y=336:w=1098:h=214:color=0x111827@0.98:t=fill,drawtext=fontfile=$FONT_BOLD:text='${line1}':fontsize=33:fontcolor=${accent}:x=118:y=372,drawtext=fontfile=$FONT_REG:text='${line2}':fontsize=27:fontcolor=white:x=118:y=434,drawtext=fontfile=$FONT_REG:text='${line3}':fontsize=27:fontcolor=white:x=118:y=492,drawtext=fontfile=$FONT_REG:text='${footer}':fontsize=23:fontcolor=0xB8C7D9:x=86:y=628" \
+    -vf "drawbox=x=0:y=0:w=1280:h=720:color=0x040712:t=fill,drawbox=x=40:y=34:w=1200:h=652:color=0x0A1220@0.96:t=fill,drawbox=x=40:y=34:w=1200:h=10:color=${accent}@0.95:t=fill,drawbox=x=86:y=82:w=430:h=44:color=${accent}@0.16:t=fill,drawtext=fontfile=$FONT_BOLD:text='${kicker}':fontsize=22:fontcolor=${accent}:x=104:y=93,drawtext=fontfile=$FONT_BOLD:text='${title}':fontsize=45:fontcolor=white:x=86:y=160,drawtext=fontfile=$FONT_REG:text='${subtitle}':fontsize=23:fontcolor=0xCFE8FF:x=90:y=226,drawbox=x=86:y=318:w=1108:h=224:color=0x111827@0.98:t=fill,drawtext=fontfile=$FONT_BOLD:text='${line1}':fontsize=28:fontcolor=${accent}:x=118:y=356,drawtext=fontfile=$FONT_REG:text='${line2}':fontsize=24:fontcolor=white:x=118:y=424,drawtext=fontfile=$FONT_REG:text='${line3}':fontsize=24:fontcolor=white:x=118:y=482,drawtext=fontfile=$FONT_REG:text='${footer}':fontsize=21:fontcolor=0xB8C7D9:x=86:y=628" \
     -frames:v 1 -update 1 "$scene"
 }
 
-render_voiceover() {
-  local textfile="$1"
-  local output="$2"
-
-  if [ -x "$EDGE_TTS_BIN" ]; then
-    local temp_mp3
-    temp_mp3="$(mktemp --suffix=.mp3)"
-    "$EDGE_TTS_BIN" --voice "$EDGE_TTS_VOICE" --file "$textfile" --write-media "$temp_mp3" >/dev/null
-    ffmpeg -y -i "$temp_mp3" -af "volume=1.55,highpass=f=120,lowpass=f=3800,atempo=0.97" "$output" >/dev/null 2>&1
-    rm -f "$temp_mp3"
-    return
-  fi
-
-  ffmpeg -y -f lavfi -i "flite=textfile=${textfile}:voice=slt" \
-    -af "volume=1.9,highpass=f=120,lowpass=f=3600,atempo=0.94" \
-    "$output"
+create_music() {
+  ffmpeg -y \
+    -f lavfi -i "sine=frequency=110:duration=180" \
+    -f lavfi -i "sine=frequency=220:duration=180" \
+    -f lavfi -i "sine=frequency=330:duration=180" \
+    -f lavfi -i "sine=frequency=440:duration=180" \
+    -filter_complex "[0:a]volume=0.13[a0];[1:a]volume=0.055[a1];[2:a]volume=0.03[a2];[3:a]volume=0.018[a3];[a0][a1][a2][a3]amix=inputs=4:duration=longest,highpass=f=70,lowpass=f=5800,afade=t=in:st=0:d=3,afade=t=out:st=176:d=4[a]" \
+    -map "[a]" "$MUSIC_WAV"
 }
 
-create_scene "01" "PRIVATEDAO READINESS" "Three minute judge demo" "A concise English readiness asset for judges, partners, and Arena reviewers." "What changed is not only UI polish." "The stack now connects awards, proof, backend rebuild, privacy services, and mainnet-candidate discipline." "This reel stays honest: Testnet proof now, real-funds launch after external gates." "PrivateDAO | private governance, confidential treasury, verifiable execution" "0x14F195"
-create_scene "02" "AWARDS AND SIGNAL" "External validation" "PrivateDAO has earned real competition signal while continuing to harden the product." "Superteam Poland: 1st place." "UAE Frontier Hackathon: 3rd place." "Currently selected in Arena, with the product and proof story still moving." "Award signal is context, not a substitute for runtime evidence." "0xFFE48A"
-create_scene "03" "PRODUCT ENTRY" "Wallet first operating shell" "The demo path starts where a normal operator starts: connect, review, sign, verify." "Create DAO, submit proposal, private vote, and execute treasury stay in one product path." "No terminal is required for the judge story." "The interface points users toward proof instead of asking for trust." "Route focus: /start, /govern, /proof, /story" "0x00E5FF"
-create_scene "04" "BACKEND REBUILD" "From prototype to service spine" "The backend has been rebuilt around API readiness, indexed evidence, and operational telemetry." "Hosted read surfaces and service pages make PrivateDAO understandable beyond a hackathon demo." "Diagnostics, freshness, and runtime packets reduce reviewer ambiguity." "The product can now explain what happened, when, and where the proof lives." "Backend claim boundary: readiness and Testnet proof, not production SLA until monitored live." "0x38BDF8"
-create_scene "05" "ENCRYPTION EVERYWHERE" "Privacy across services" "PrivateDAO frames privacy as a service boundary, not a marketing badge." "Governance, payroll, rewards, compliance, and confidential payments each get scoped disclosure." "ZK, REFHE, MagicBlock, Umbra style lanes, and viewing-key logic are kept legible." "The user sees what stays private and what becomes reviewable evidence." "Privacy posture: disclose only what the operation requires." "0xA78BFA"
-create_scene "06" "INTELLIGENCE LAYER" "Before the wallet prompt" "The intelligence layer helps operators understand risk and context before they sign." "QVAC local reasoning, GoldRush style wallet context, route previews, and policy checks support the review step." "The goal is not autonomous funds movement." "The goal is clear human approval with bounded automation and visible guardrails." "Review first, sign second, verify after execution." "0x06B6D4"
-create_scene "07" "TESTNET PROOF" "Evidence, not slideware" "PrivateDAO keeps the proof path visible through Testnet artifacts and reviewer packets." "DAO lifecycle, vote phases, treasury gates, and receipt continuity are documented as proof surfaces." "Judges can inspect the proof center, documents, diagnostics, and runtime evidence." "The demo should show receipts and boundaries side by side." "Proof route: /proof/?judge=1" "0x22C55E"
-create_scene "08" "MAINNET CANDIDATE" "Ready without overclaiming" "The system is mainnet-candidate in architecture and product readiness." "Real-funds launch still depends on external audit, production authority transfer, monitoring, and operator ownership." "That boundary is a strength." "It shows PrivateDAO is serious enough to say what remains before unrestricted mainnet use." "Candidate does not mean externally audited or unrestricted real-funds clearance." "0xF59E0B"
-create_scene "09" "SERVICE CORRIDORS" "Commercial paths are now visible" "PrivateDAO now explains how the same stack becomes usable services." "Confidential payments, hosted reads, reviewer evidence, diagnostics, and encrypted execution corridors can be inspected." "Services are connected to proof and pricing language." "The buyer route no longer depends on a founder narrating every detail." "Route focus: /services, /pricing, /documents" "0x60A5FA"
-create_scene "10" "JUDGE STORY" "What to show in three minutes" "Lead with readiness, then show the product path, then prove the boundary." "Open the app, connect the Testnet wallet, review an operation, then move to proof." "Close on awards, Arena selection, backend rebuild, privacy services, and mainnet-candidate gates." "Every claim should map to a visible route or document." "Narrative rule: product first, evidence second, honest boundary always." "0xFB7185"
-create_scene "11" "WHY IT MATTERS" "Private operations need public confidence" "DAOs need private voting and confidential treasury execution without losing accountability." "PrivateDAO turns that tension into a product workflow." "The operator gets privacy. The reviewer gets evidence. The ecosystem gets a safer launch path." "That is the readiness story." "Private governance should be usable, inspectable, and launch disciplined." "0x14F195"
-create_scene "12" "CLOSE" "PrivateDAO is ready for serious review" "Awards prove signal. Testnet proof proves motion. The rebuilt backend proves operational direction." "Encryption and intelligence now span the service story." "The remaining launch gates are explicit, which makes the project stronger." "Watch live at privatedao.org and inspect the proof path before judging." "PrivateDAO | selected in Arena | Testnet proof live | mainnet-candidate path explicit" "0x00E5FF"
-
-cat >"$VOICE_TEXT" <<'EOF'
-PrivateDAO is ready for a serious three minute judge review.
-The story is no longer just private governance. It is a product, a backend, a proof surface, and a launch discipline.
-
-The project already has real external signal: first place at Superteam Poland, third place at the UAE Frontier Hackathon, and current Arena selection.
-That signal matters, but the demo still leads with what can be inspected.
-
-Start with the product path. A normal operator can connect a Testnet wallet, review the action, sign, and verify the result.
-Create DAO, submit proposal, private vote, and execute treasury remain part of one operating shell.
-
-The backend has been rebuilt around API readiness, indexed evidence, diagnostics, telemetry, and service corridors.
-That makes PrivateDAO easier to judge, easier to operate, and easier to package for partners.
-
-Privacy is handled as a service boundary. Governance, payroll, rewards, compliance, confidential payments, and scoped disclosure each explain what stays private and what becomes reviewable evidence.
-
-The intelligence layer supports human approval before the wallet prompt.
-Local reasoning, wallet context, route previews, and policy checks help the signer understand risk before funds or authority move.
-
-The proof path stays visible. Testnet evidence, proof documents, runtime packets, diagnostics, and reviewer routes show where claims can be checked.
-
-PrivateDAO is mainnet-candidate in architecture and product readiness, but it does not overclaim.
-Real-funds launch still needs external audit, production authority transfer, monitoring, and operator ownership.
-
-That is the readiness story: awards prove signal, Testnet proof proves motion, the rebuilt backend proves operating direction, and explicit launch gates prove discipline.
-EOF
+create_scene "01" "PRIVATEDAO READINESS" "Three minute judge demo" "Product, proof, backend, privacy, and launch discipline." "Not only a DAO interface." "Private operations now connect to proof, APIs, services, and Testnet evidence." "The reel stays honest: Testnet proof now, mainnet after gates." "PrivateDAO | confidential governance | verifiable execution" "0x14F195"
+create_scene "02" "AWARDS AND SIGNAL" "External validation" "Competition signal plus active hardening." "Superteam Poland: first place." "UAE Frontier Hackathon: third place." "Arena selection: product and proof story still moving." "Awards are context. Runtime evidence remains the proof." "0xFFE48A"
+create_scene "03" "PRODUCT ENTRY" "Wallet first operating shell" "The user path is connect, review, sign, verify." "Governance, payroll, rewards, and proof stay in one product." "No terminal is needed for the judge story." "Every major action points back to a proof surface." "Routes: /start /govern /services /proof /judge" "0x00E5FF"
+create_scene "04" "BACKEND REBUILD" "Service spine is visible" "APIs, readiness, telemetry, and evidence now support the UI." "Hosted read routes explain what happened and where proof lives." "Freshness and diagnostics reduce reviewer ambiguity." "The backend is part of the product, not a hidden demo script." "Readiness route: /api/v1/readiness" "0x38BDF8"
+create_scene "05" "ENCRYPTION ROUTE" "Run privacy from the page" "Encrypt / Ika is now a runnable operating lane." "Browser encryption and REFHE payroll receipts execute from the UI." "Ika readiness and 2PC-MPC approval prep are visible as gates." "Final Ika funded dWallet signing is named, not overclaimed." "Route: /services/encrypt-ika-operations" "0xA78BFA"
+create_scene "06" "INTELLIGENCE LAYER" "Before the wallet prompt" "The signer sees risk, context, and policy before approval." "Local reasoning, wallet context, and route previews guide decisions." "Automation remains bounded by human review." "The goal is better signing, not blind fund movement." "Review first. Sign second. Verify after execution." "0x06B6D4"
+create_scene "07" "TESTNET PROOF" "Evidence, not slideware" "Receipts, transactions, documents, and counters stay reachable." "ZK, REFHE, MagicBlock, Token-2022, and Squads proof routes are visible." "Judges can inspect the proof center and runtime packets." "Claims map to routes, receipts, or explicit remaining gates." "Proof route: /proof/?judge=1" "0x22C55E"
+create_scene "08" "MAINNET CANDIDATE" "Ready without overclaiming" "Architecture and product are shaped for mainnet readiness." "External audit, monitoring, authority closure, and operator ownership remain gates." "That boundary protects users and reviewers." "Serious launch discipline is part of the product story." "Candidate means prepared, not unrestricted real-funds clearance." "0xF59E0B"
+create_scene "09" "SERVICE CORRIDORS" "Commercial paths are clear" "Confidential payments, payroll, intelligence, and proof are packaged." "Each service explains the problem, workflow, and evidence route." "The buyer path no longer needs founder narration." "The site can sell the operating system by itself." "Routes: /services /pricing /documents" "0x60A5FA"
+create_scene "10" "JUDGE STORY" "What to inspect first" "Start with the product, then run a track, then verify proof." "Open Judge, choose a service, connect wallet where needed, inspect receipts." "Close on awards, encryption, backend, and launch gates." "The page is designed for a three minute evaluation window." "Canonical route: /judge" "0xFB7185"
+create_scene "11" "WHY IT MATTERS" "Private operations need public confidence" "DAOs need private decisions without losing accountability." "Operators get privacy. Reviewers get evidence." "The ecosystem gets a safer launch path." "PrivateDAO turns that tension into a product workflow." "Usable. Inspectable. Launch disciplined." "0x14F195"
+create_scene "12" "CLOSE" "PrivateDAO is ready for serious review" "Awards prove signal. Testnet proof proves motion." "The rebuilt backend proves operational direction." "Encryption and intelligence now span the service story." "Inspect the live product and proof path before judging." "PrivateDAO | Arena selected | Testnet proof live" "0x00E5FF"
 
 ffmpeg -y \
   -framerate 1/15 -start_number 1 -i "$ASSETS_DIR/judge-readiness-scene-%02d.png" \
   -vf "fps=5,format=yuv420p" \
-  -c:v libx264 -preset veryfast -movflags +faststart "$SILENT_OUTPUT"
+  -c:v libx264 -preset veryfast -movflags +faststart "$VIDEO_ONLY"
 
-render_voiceover "$VOICE_TEXT" "$VOICE_WAV"
+create_music
 
-ffmpeg -y -i "$SILENT_OUTPUT" -i "$VOICE_WAV" \
-  -af "apad=pad_dur=180" \
+ffmpeg -y -i "$VIDEO_ONLY" -i "$MUSIC_WAV" \
   -map 0:v -map 1:a -c:v copy -c:a aac -b:a 160k -shortest -movflags +faststart "$OUTPUT"
 
 cp "$ASSETS_DIR/judge-readiness-scene-12.png" "$POSTER"
@@ -124,7 +85,7 @@ cp "$OUTPUT" "$PUBLIC_OUTPUT"
 cp "$POSTER" "$PUBLIC_POSTER"
 cp "$OUTPUT" "$DESKTOP_OUTPUT"
 cp "$POSTER" "$DESKTOP_POSTER"
-rm -f "$ASSETS_DIR"/judge-readiness-scene-*.png "$SILENT_OUTPUT" "$VOICE_TEXT" "$VOICE_WAV"
+rm -f "$ASSETS_DIR"/judge-readiness-scene-*.png "$VIDEO_ONLY" "$MUSIC_WAV"
 
 echo "Rendered judge readiness video:"
 echo "  $OUTPUT"

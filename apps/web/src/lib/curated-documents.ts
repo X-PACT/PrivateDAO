@@ -185,6 +185,18 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/pusd-stablecoin-treasury-layer.md`,
   },
   {
+    slug: "confidential-payroll-flow",
+    title: "Confidential Payroll Flow",
+    category: "Payments",
+    summary:
+      "Operational flow for confidential compensation batches: encrypted manifest authoring, governance binding, approval, aggregate release, and the current REFHE/zk upgrade path.",
+    audience: "Judges, payroll operators, treasury reviewers, contributors, privacy reviewers",
+    boundary:
+      "Payroll flow note only; it explains the encrypted manifest and governed aggregate release model while keeping per-recipient private distribution and zk payout correctness as explicit upgrade gates.",
+    docPath: "docs/confidential-payroll-flow.md",
+    rawHref: `${repositoryBlobBase}/docs/confidential-payroll-flow.md`,
+  },
+  {
     slug: "zerion-autonomous-agent-policy",
     title: "Zerion Autonomous Agent Policy",
     category: "Agent",

@@ -74,9 +74,9 @@ function main() {
 
   includes(curatedDocuments, 'slug: "mainnet-cryptographic-readiness-ladder-2026-05-25"', "curated documents");
   includes(judgePage, "/documents/mainnet-cryptographic-readiness-ladder-2026-05-25", "judge page");
-  includes(judgePage, "https://api.privatedao.org/api/v1/cryptographic-readiness", "judge page");
+  includes(judgePage, "https://api.privatedao.org/api/v1/readiness", "judge page");
   includes(securityPage, "/documents/mainnet-cryptographic-readiness-ladder-2026-05-25", "security page");
-  includes(securityPage, "https://api.privatedao.org/api/v1/cryptographic-readiness", "security page");
+  includes(securityPage, "https://api.privatedao.org/api/v1/readiness", "security page");
   includes(cryptoMatrix, "Cryptographic On-Chain Matrix", "cryptographic on-chain matrix");
   includes(readNode, 'pathname === "/api/v1/cryptographic-readiness"', "read node");
   includes(readNode, "cryptographicReadinessStatus()", "read node");

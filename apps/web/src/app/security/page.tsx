@@ -109,7 +109,7 @@ export default function SecurityPage() {
           <Link href="/documents/mainnet-cryptographic-readiness-ladder-2026-05-25" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
             Open mainnet ladder
           </Link>
-          <a href="https://api.privatedao.org/api/v1/cryptographic-readiness" target="_blank" rel="noreferrer" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+          <a href="https://api.privatedao.org/api/v1/readiness" target="_blank" rel="noreferrer" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
             Open readiness JSON
           </a>
           <Link href="/documents/live-proof-v3" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>

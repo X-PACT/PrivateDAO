@@ -19,11 +19,12 @@ visitors_json="$(fetch_json /api/v1/visitors/stats)"
 chain_json="$(fetch_json /api/v1/chain/latest)"
 quicknode_json="$(fetch_json /api/v1/quicknode/stream/stats)"
 readiness_json="$(fetch_json /api/v1/readiness)"
+cryptographic_json="$(fetch_json /api/v1/cryptographic-readiness)"
 
-python3 - <<'PY' "$EXPECTED_PROGRAM_ID" "$health_json" "$config_json" "$metrics_json" "$qvac_json" "$umbra_json" "$freshness_json" "$visitors_json" "$chain_json" "$quicknode_json" "$readiness_json"
+python3 - <<'PY' "$EXPECTED_PROGRAM_ID" "$health_json" "$config_json" "$metrics_json" "$qvac_json" "$umbra_json" "$freshness_json" "$visitors_json" "$chain_json" "$quicknode_json" "$readiness_json" "$cryptographic_json"
 import json, sys
 
-expected_program_id, health_json, config_json, metrics_json, qvac_json, umbra_json, freshness_json, visitors_json, chain_json, quicknode_json, readiness_json = sys.argv[1:]
+expected_program_id, health_json, config_json, metrics_json, qvac_json, umbra_json, freshness_json, visitors_json, chain_json, quicknode_json, readiness_json, cryptographic_json = sys.argv[1:]
 health = json.loads(health_json)
 config = json.loads(config_json)
 metrics = json.loads(metrics_json)
@@ -34,6 +35,7 @@ visitors = json.loads(visitors_json)
 chain = json.loads(chain_json)
 quicknode = json.loads(quicknode_json)
 readiness = json.loads(readiness_json)
+cryptographic = json.loads(cryptographic_json)
 
 assert health["ok"] is True and health["health"] == "healthy", "remote /healthz failed"
 assert health["runtime"]["programId"] == expected_program_id, f"remote /healthz program drift: {health['runtime']['programId']} != {expected_program_id}"
@@ -69,5 +71,8 @@ assert quicknode["ok"] is True and quicknode["stats"]["auth"] == "configured", "
 assert quicknode["stats"]["rawPayloadStorage"] == "disabled", "remote QuickNode stream raw payload storage boundary drifted"
 assert readiness["ok"] is True and readiness["posture"] == "solana-testnet-production-candidate", "remote readiness aggregate failed"
 assert readiness["quickNodeStream"]["statePersistence"] == "runtime-volume", "remote readiness missing persistent QuickNode telemetry"
+assert cryptographic["ok"] is True and cryptographic["source"] == "privatedao-cryptographic-readiness", "remote cryptographic readiness API failed"
+assert cryptographic["cluster"] == "testnet", "remote cryptographic readiness API is not pinned to Testnet"
+assert any(rail["id"] == "ika-2pc-mpc" for rail in cryptographic["rails"]), "remote cryptographic readiness missing Ika 2PC-MPC rail"
 print("Remote primary host verification: PASS")
 PY

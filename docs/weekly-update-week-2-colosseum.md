@@ -120,8 +120,8 @@ bash scripts/render-weekly-youtube-ready.sh 2
 
 Primary file:
 
-- `docs/assets/weekly-youtube-ready/Week 2 - PrivateDAO Product Update - YouTube Ready.mp4`
+- `docs/assets/weekly-youtube-ready/Week 2 - PrivateDAO Frontier Hackathon - YouTube Ready.mp4`
 
 Primary poster:
 
-- `docs/assets/weekly-youtube-ready/Week 2 - PrivateDAO Product Update - YouTube Ready-poster.png`
+- `docs/assets/weekly-youtube-ready/Week 2 - PrivateDAO Frontier Hackathon - YouTube Ready-poster.png`

@@ -27,6 +27,8 @@
     "verify:remote-primary-host": "bash scripts/verify-remote-primary-host.sh",
     "verify:host-topology": "bash scripts/verify-host-topology.sh",
     "verify:host-topology:strict": "PRIVATE_DAO_STRICT_HOST_TOPOLOGY=1 bash scripts/verify-host-topology.sh",
+    "verify:public-edge-health": "bash scripts/check-public-edge-health.sh",
+    "verify:public-image-assets": "node scripts/verify-public-image-assets.js",
     "status:source": "bash scripts/status-source-tree.sh",
     "status:triage": "bash scripts/worktree-triage-report.sh",
     "build:release-surface-report": "bash scripts/build-release-surface-report.sh",

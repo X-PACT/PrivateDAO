@@ -13,7 +13,7 @@
   "txSignature": "fill-with-real-runtime-signature",
   "errorMessage": null,
   "evidenceRefs": [
-    "screenshots/solflare-desktop-connect.png"
+    "docs/assets/runtime/browser-wallet/solflare-create-dao-success.png"
   ],
   "capturedAt": "2026-04-05T00:00:00.000Z"
 }
