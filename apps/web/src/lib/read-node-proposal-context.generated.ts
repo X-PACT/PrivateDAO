@@ -189,7 +189,7 @@ export const READ_NODE_PROPOSAL_REGISTRY = [
       "ZK",
       "Fast RPC"
     ],
-    "summary": "Live Testnet proof for token-supply quorum, dedicated reveal rebate vault, and V3 finalize path. This indexed proposal already executed on Testnet and should be reviewed as proof, not as a pending signature flow.",
+    "summary": "Live Devnet proof for token-supply quorum, dedicated reveal rebate vault, and V3 finalize path. This indexed proposal already executed on Testnet and should be reviewed as proof, not as a pending signature flow.",
     "execution": {
       "sourceType": "runtime-indexed",
       "sourceLabel": "Backend-indexed proposal record: Governance Hardening V3 live proof (Executed)",
@@ -275,7 +275,7 @@ export const READ_NODE_PROPOSAL_REGISTRY = [
       "ZK",
       "Fast RPC"
     ],
-    "summary": "Live Testnet proof for token-supply quorum, dedicated reveal rebate vault, and V3 finalize path. This indexed proposal already executed on Testnet and should be reviewed as proof, not as a pending signature flow.",
+    "summary": "Live Devnet proof for token-supply quorum, dedicated reveal rebate vault, and V3 finalize path. This indexed proposal already executed on Testnet and should be reviewed as proof, not as a pending signature flow.",
     "execution": {
       "sourceType": "runtime-indexed",
       "sourceLabel": "Backend-indexed proposal record: Governance Hardening V3 live proof (Executed)",
@@ -884,7 +884,7 @@ export const READ_NODE_FEATURED_PROPOSAL_REGISTRY = [
       "ZK",
       "Fast RPC"
     ],
-    "summary": "Live Testnet proof for token-supply quorum, dedicated reveal rebate vault, and V3 finalize path. This indexed proposal already executed on Testnet and should be reviewed as proof, not as a pending signature flow.",
+    "summary": "Live Devnet proof for token-supply quorum, dedicated reveal rebate vault, and V3 finalize path. This indexed proposal already executed on Testnet and should be reviewed as proof, not as a pending signature flow.",
     "execution": {
       "sourceType": "runtime-indexed",
       "sourceLabel": "Backend-indexed proposal record: Governance Hardening V3 live proof (Executed)",

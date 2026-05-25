@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-05-24T20:44:54.358Z",
+  "generatedAt": "2026-05-25T10:38:22.318Z",
   "readPath": "backend-indexer",
   "runtime": {
-    "generatedAt": "2026-05-24T20:44:52.727Z",
+    "generatedAt": "2026-05-25T10:38:20.516Z",
     "readPath": "backend-indexer",
     "rpcEndpoint": "https://api.testnet.solana.com",
     "rpcPoolSize": 1,
     "commitment": "confirmed",
     "programId": "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva",
-    "slot": 410652948,
+    "slot": 410783136,
     "solanaCore": "4.0.0-rc.0",
     "featureSet": 767961353,
-    "latestBlockhash": "63SkC3874PgmCXoPpRCcmN6pYvbDL3oEDgDoVgob26Zu",
-    "lastValidBlockHeight": 363177037,
+    "latestBlockhash": "7w8NyCmehsoTUssPSBJhGGQZpcqtEB861i9kujUQQsY3",
+    "lastValidBlockHeight": 363303440,
     "programExecutable": true,
     "programOwner": "BPFLoaderUpgradeab1e11111111111111111111111",
     "cacheTtlMs": 15000
@@ -31,7 +31,7 @@
     "uniqueDaos": 16
   },
   "overview": {
-    "generatedAt": "2026-05-24T20:44:54.216Z",
+    "generatedAt": "2026-05-25T10:38:22.176Z",
     "proposals": 17,
     "uniqueDaos": 16,
     "zkEnforced": 0,
@@ -547,7 +547,7 @@
         "ZK",
         "Fast RPC"
       ],
-      "summary": "Live Testnet proof for token-supply quorum, dedicated reveal rebate vault, and V3 finalize path. This indexed proposal already executed on Testnet and should be reviewed as proof, not as a pending signature flow.",
+      "summary": "Live Devnet proof for token-supply quorum, dedicated reveal rebate vault, and V3 finalize path. This indexed proposal already executed on Testnet and should be reviewed as proof, not as a pending signature flow.",
       "execution": {
         "sourceType": "runtime-indexed",
         "sourceLabel": "Backend-indexed proposal record: Governance Hardening V3 live proof (Executed)",
@@ -633,7 +633,7 @@
         "ZK",
         "Fast RPC"
       ],
-      "summary": "Live Testnet proof for token-supply quorum, dedicated reveal rebate vault, and V3 finalize path. This indexed proposal already executed on Testnet and should be reviewed as proof, not as a pending signature flow.",
+      "summary": "Live Devnet proof for token-supply quorum, dedicated reveal rebate vault, and V3 finalize path. This indexed proposal already executed on Testnet and should be reviewed as proof, not as a pending signature flow.",
       "execution": {
         "sourceType": "runtime-indexed",
         "sourceLabel": "Backend-indexed proposal record: Governance Hardening V3 live proof (Executed)",
@@ -1242,7 +1242,7 @@
         "ZK",
         "Fast RPC"
       ],
-      "summary": "Live Testnet proof for token-supply quorum, dedicated reveal rebate vault, and V3 finalize path. This indexed proposal already executed on Testnet and should be reviewed as proof, not as a pending signature flow.",
+      "summary": "Live Devnet proof for token-supply quorum, dedicated reveal rebate vault, and V3 finalize path. This indexed proposal already executed on Testnet and should be reviewed as proof, not as a pending signature flow.",
       "execution": {
         "sourceType": "runtime-indexed",
         "sourceLabel": "Backend-indexed proposal record: Governance Hardening V3 live proof (Executed)",

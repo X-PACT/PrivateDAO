@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-05-24T22:31:25.498Z",
+  "generatedAt": "2026-05-25T10:43:04.636Z",
   "reviewerIntent": "Explain the current custody truth, show what is externally proven now, and make the missing external ceremony evidence explicit without narrative drift.",
   "custodyStatus": "ready-for-transfer",
   "productionMainnetClaimAllowed": false,
@@ -24,7 +24,7 @@
     ]
   },
   "currentTruth": {
-    "summary": "PrivateDAO is devnet-proven and internally hardened, but real-funds mainnet production remains blocked until external audit, custody, monitoring, runtime, settlement-receipt, and release-ceremony items are closed with evidence.",
+    "summary": "PrivateDAO is Testnet-live and internally hardened; real-funds mainnet production remains gated on external audit, custody completion, monitoring, runtime wallet captures, verifier-CPI or audited residual-trust acceptance for privacy settlement, and the final release ceremony.",
     "multisigImplementation": "Squads Protocol",
     "multisigAddress": "thHmF7VYNtxE1MaDzYXbfPCiq13RF6JwuWnjvDZuSmF",
     "threshold": "2-of-3",
@@ -40,7 +40,7 @@
         "explorerUrl": "https://explorer.solana.com/address/EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva?cluster=testnet",
         "authority": "CALHrBqx6jbzcPn2NVcinqSAHeod65v9LcDuTxsdPqBv",
         "programDataAddress": "FKyt5DcmRQcCF8kzMGjCvfGb3ZPHMQnH1SqiG9Mi8xEc",
-        "lastDeploySlot": 405189011
+        "lastDeploySlot": 410689759
       },
       {
         "label": "Current Testnet DAO anchor readout",

@@ -1,6 +1,6 @@
 # Treasury Reviewer Packet
 
-Generated: 2026-05-24T20:49:41.433Z
+Generated: 2026-05-25T10:43:15.417Z
 
 Explain the treasury intake and payout posture as a reviewer-grade infrastructure surface, with strict sender discipline, public rails, proof links, commercial fit, and exact blocker visibility.
 
@@ -14,7 +14,7 @@ Explain the treasury intake and payout posture as a reviewer-grade infrastructur
 - threshold: 2-of-3
 - multisig address: thHmF7VYNtxE1MaDzYXbfPCiq13RF6JwuWnjvDZuSmF
 
-PrivateDAO is devnet-proven and internally hardened, but real-funds mainnet production remains blocked until external audit, custody, monitoring, runtime, settlement-receipt, and release-ceremony items are closed with evidence.
+PrivateDAO is Testnet-live and internally hardened; real-funds mainnet production remains gated on external audit, custody completion, monitoring, runtime wallet captures, verifier-CPI or audited residual-trust acceptance for privacy settlement, and the final release ceremony.
 
 ## Strict Sender Checklist
 
