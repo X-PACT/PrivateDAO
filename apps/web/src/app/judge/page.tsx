@@ -140,7 +140,8 @@ const canonicalReviewPaths = [
 
 const liveServiceGate = {
   command: "npm run verify:live-service-execution",
-  completedAt: "2026-05-26T07:29:25Z",
+  completedAt: "2026-05-26T07:33:47Z",
+  hostsChecked: 3,
   pagesChecked: 46,
   apisChecked: 16,
   failures: 0,
@@ -429,7 +430,7 @@ export default function JudgePage() {
           <div>
             <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-100/78">Live service gate</div>
             <h2 className="mt-3 max-w-4xl text-2xl font-semibold text-white">
-              The judge route is backed by a live 11-page / 16-API execution check.
+              The judge route is backed by a live host / 46-page / 16-API execution check.
             </h2>
             <p className="mt-3 max-w-4xl text-sm leading-7 text-white/64">
               This is the operational gate used after each backend change. It verifies the public pages, provider
@@ -441,7 +442,7 @@ export default function JudgePage() {
             <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-cyan-100/62">{liveServiceGate.command}</div>
             <div className="mt-2 text-3xl font-semibold text-white">{liveServiceGate.failures} failures</div>
             <div className="mt-1 text-xs leading-5 text-white/50">
-              {liveServiceGate.pagesChecked} pages · {liveServiceGate.apisChecked} APIs · {liveServiceGate.completedAt}
+              {liveServiceGate.hostsChecked} hosts · {liveServiceGate.pagesChecked} pages · {liveServiceGate.apisChecked} APIs · {liveServiceGate.completedAt}
             </div>
           </div>
         </div>

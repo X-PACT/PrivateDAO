@@ -13,11 +13,42 @@ type ApiCheck = {
   validate: (payload: any) => string | null;
 };
 
+type HostCheck = {
+  name: string;
+  url: string;
+  redirect?: RequestRedirect;
+  validate: (response: Response) => string | null;
+};
+
 const ROOT_DOMAIN = process.env.PRIVATE_DAO_ROOT_DOMAIN || "privatedao.org";
 const API_DOMAIN = process.env.PRIVATE_DAO_API_DOMAIN || "api.privatedao.org";
 const ROOT = `https://${ROOT_DOMAIN}`;
 const API = `https://${API_DOMAIN}`;
 const REQUEST_TIMEOUT_MS = Number(process.env.PRIVATE_DAO_LIVE_EXECUTION_TIMEOUT_MS || 20_000);
+
+const HOST_CHECKS: HostCheck[] = [
+  {
+    name: "canonical-root",
+    url: `${ROOT}/`,
+    validate: (response) => (response.status === 200 ? null : `canonical root returned HTTP ${response.status}`),
+  },
+  {
+    name: "www-canonical-redirect",
+    url: `https://www.${ROOT_DOMAIN}/`,
+    redirect: "manual",
+    validate: (response) => {
+      const location = response.headers.get("location");
+      if (![301, 308].includes(response.status)) return `www host returned HTTP ${response.status}, expected permanent redirect`;
+      if (location !== `${ROOT}/`) return `www host redirect mismatch: ${location}`;
+      return null;
+    },
+  },
+  {
+    name: "api-readiness-host",
+    url: `${API}/api/v1/readiness`,
+    validate: (response) => (response.status === 200 ? null : `API readiness host returned HTTP ${response.status}`),
+  },
+];
 
 const PAGE_CHECKS: PageCheck[] = [
   {
@@ -506,8 +537,13 @@ const API_CHECKS: ApiCheck[] = [
 
 async function main() {
   const startedAt = new Date().toISOString();
+  const hostResults = [];
   const pageResults = [];
   const apiResults = [];
+
+  for (const check of HOST_CHECKS) {
+    hostResults.push(await runHostCheck(check));
+  }
 
   for (const check of PAGE_CHECKS) {
     pageResults.push(await runPageCheck(check));
@@ -517,16 +553,18 @@ async function main() {
     apiResults.push(await runApiCheck(check));
   }
 
-  const failures = [...pageResults, ...apiResults].filter((result) => !result.ok);
+  const failures = [...hostResults, ...pageResults, ...apiResults].filter((result) => !result.ok);
   const payload = {
     project: "PrivateDAO",
     startedAt,
     completedAt: new Date().toISOString(),
     rootDomain: ROOT_DOMAIN,
     apiDomain: API_DOMAIN,
+    hostResults,
     pageResults,
     apiResults,
     summary: {
+      hostsChecked: hostResults.length,
       pagesChecked: pageResults.length,
       apisChecked: apiResults.length,
       failures: failures.length,
@@ -536,6 +574,26 @@ async function main() {
   console.log(JSON.stringify(payload, null, 2));
   if (failures.length > 0) {
     process.exit(1);
+  }
+}
+
+async function runHostCheck(check: HostCheck) {
+  const started = Date.now();
+  try {
+    const response = await fetchWithTimeout(check.url, { redirect: check.redirect });
+    const validationError = check.validate(response);
+    return {
+      kind: "host",
+      name: check.name,
+      url: check.url,
+      status: response.status,
+      ok: !validationError,
+      ms: Date.now() - started,
+      location: response.headers.get("location"),
+      validationError,
+    };
+  } catch (error) {
+    return failure("host", check.name, check.url, started, error);
   }
 }
 
@@ -614,7 +672,7 @@ async function fetchWithTimeout(url: string, init?: RequestInit) {
   }
 }
 
-function failure(kind: "page" | "api", name: string, url: string, started: number, error: unknown) {
+function failure(kind: "host" | "page" | "api", name: string, url: string, started: number, error: unknown) {
   return {
     kind,
     name,
