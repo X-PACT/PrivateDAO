@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey, Transaction, TransactionInstruction } from "@solana/web3.js";
 
@@ -197,6 +197,8 @@ const privacyClaims: PrivacyClaim[] = [
   },
 ];
 
+const privacyClaimIds = new Set(privacyClaims.map((claim) => claim.id));
+
 export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: boolean }) {
   const { connection } = useConnection();
   const { connected, publicKey, sendTransaction, wallet } = useWallet();
@@ -211,6 +213,14 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
     () => privacyClaims.find((claim) => claim.id === selectedClaimId) ?? privacyClaims[0],
     [selectedClaimId],
   );
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const requestedClaim = params.get("claim") ?? params.get("rail");
+    if (requestedClaim && privacyClaimIds.has(requestedClaim)) {
+      setSelectedClaimId(requestedClaim);
+    }
+  }, []);
 
   async function anchorSelectedClaim() {
     if (!connected || !publicKey) {
@@ -329,7 +339,7 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
   }
 
   return (
-    <section className="rounded-[30px] border border-cyan-300/18 bg-cyan-300/[0.07] p-5">
+    <section id="privacy-claim-console" className="rounded-[30px] border border-cyan-300/18 bg-cyan-300/[0.07] p-5">
       <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-100/78">On-chain claim console</div>
       <div className={cn("mt-3 grid gap-5", compact ? "lg:grid-cols-[0.95fr_1.05fr]" : "xl:grid-cols-[0.9fr_1.1fr]")}>
         <div>

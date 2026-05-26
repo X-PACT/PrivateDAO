@@ -150,7 +150,17 @@ const PAGE_CHECKS: PageCheck[] = [
   {
     name: "services-claim-console",
     url: `${ROOT}/services/`,
-    requiredFragments: ["On-chain claim console", "Encrypt + anchor on-chain", "Verify receipt locally", "Copy public attestation", "Get Testnet SOL"],
+    requiredFragments: ["privacy-claim-console", "On-chain claim console", "Encrypt + anchor on-chain", "Verify receipt locally", "Copy public attestation", "Get Testnet SOL"],
+  },
+  {
+    name: "judge-claim-fast-paths",
+    url: `${ROOT}/judge/`,
+    requiredFragments: [
+      "/services?claim=private-payments#privacy-claim-console",
+      "/services?claim=umbra-confidential-payout#privacy-claim-console",
+      "/services?claim=ika-custody-and-interoperability#privacy-claim-console",
+      "/services?claim=treasury-routing-and-growth#privacy-claim-console",
+    ],
   },
   {
     name: "runtime-infrastructure",
