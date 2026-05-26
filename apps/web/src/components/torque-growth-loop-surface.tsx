@@ -129,9 +129,16 @@ export function TorqueGrowthLoopSurface() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(livePayload),
       });
-      const body = (await response.json().catch(() => null)) as { error?: string; forwardUrl?: string } | null;
+      const body = (await response.json().catch(() => null)) as {
+        error?: string;
+        forwardUrl?: string;
+        raw?: { ingestionId?: string; status?: string; receivedAt?: string };
+        status?: number;
+      } | null;
       const detail = response.ok
-        ? body?.forwardUrl ?? "forwarded through configured torque endpoint"
+        ? body?.raw?.ingestionId
+          ? `accepted by Torque · ingestion ${body.raw.ingestionId}`
+          : body?.forwardUrl ?? "forwarded through configured torque endpoint"
         : body?.error ?? `endpoint responded ${response.status}`;
       setRecords((current) =>
         current.map((item) =>
@@ -195,9 +202,9 @@ export function TorqueGrowthLoopSurface() {
         <div className="rounded-3xl border border-emerald-300/14 bg-emerald-300/[0.06] p-5">
           <div className="text-sm font-semibold text-emerald-100">Live activity path</div>
           <p className="mt-3 text-sm leading-7 text-white/62">
-            The event workbench records local activity immediately and can forward the same payload to Torque when the
-            MCP/API endpoint is configured. This keeps the growth loop tied to product behavior rather than detached
-            campaign copy.
+            The event workbench records local activity immediately and forwards the same payload to Torque through the
+            verified read-node relay. This keeps the growth loop tied to product behavior rather than detached campaign
+            copy.
           </p>
           <div className="mt-4 space-y-3">
             <label className="space-y-2">

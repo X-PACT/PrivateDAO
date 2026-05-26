@@ -18,6 +18,13 @@ export const metadata: Metadata = buildRouteMetadata({
 });
 
 export default function TorqueGrowthLoopPage() {
+  const activationEvidence = [
+    ["Delivery", "Verified server-side relay"],
+    ["Project", "cmpm5lnzt00hujq1jd9imtp2o"],
+    ["Event", "private_treasury_execution"],
+    ["Event ID", "cmpm5lolt00iajq1jjluy5a3m"],
+    ["Ingestion proof", "4e660492-af75-4a28-9cb2-a81f7779be38"],
+  ] as const;
   const operatingSteps = [
     ["Action", "A user creates a DAO, creates a proposal, signs a billing route, finishes learning, or executes a private treasury event."],
     ["Event", "The browser builds a Torque-style custom_event payload with wallet, route, network, reward intent, and proof routes."],
@@ -45,6 +52,31 @@ export default function TorqueGrowthLoopPage() {
     >
       <LocalizedRouteSummary routeKey="services" />
       <LocalizedRouteBrief routeKey="servicesCore" />
+      <section className="rounded-[32px] border border-emerald-300/28 bg-[radial-gradient(circle_at_top_left,rgba(20,241,149,0.22),rgba(8,13,28,0.94)_45%,rgba(5,11,24,0.98))] p-6 shadow-2xl shadow-emerald-950/30">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <div className="text-[11px] uppercase tracking-[0.3em] text-emerald-100/80">Live Torque delivery verified</div>
+            <h2 className="mt-3 max-w-4xl text-2xl font-semibold tracking-[-0.03em] text-white">
+              PrivateDAO now sends real product actions into Torque from the protected read-node
+            </h2>
+            <p className="mt-3 max-w-4xl text-sm leading-7 text-white/66">
+              The browser never receives the Torque key. It prepares the action payload, the read-node signs the delivery
+              boundary with server-only credentials, and Torque returns an accepted ingestion receipt.
+            </p>
+          </div>
+          <Link href="https://api.privatedao.org/api/v1/provider-integrations/status" className={cn(buttonVariants({ size: "sm" }))}>
+            Open live status
+          </Link>
+        </div>
+        <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+          {activationEvidence.map(([label, value]) => (
+            <div key={label} className="rounded-2xl border border-white/10 bg-black/24 p-4">
+              <div className="text-[10px] uppercase tracking-[0.22em] text-emerald-100/58">{label}</div>
+              <div className="mt-2 break-all font-mono text-xs leading-5 text-white/78">{value}</div>
+            </div>
+          ))}
+        </div>
+      </section>
       <div className="rounded-[28px] border border-emerald-300/16 bg-emerald-300/[0.08] p-6 text-sm leading-7 text-white/68">
         The correct Torque integration is not a separate bounty mechanic. It is the product growth layer: reward the
         actions that prove a user is learning, governing, paying, or returning. Private settlement execution now emits
