@@ -2,6 +2,7 @@ type PageCheck = {
   name: string;
   url: string;
   requiredFragments: string[];
+  forbiddenFragments?: string[];
 };
 
 type ApiCheck = {
@@ -143,6 +144,12 @@ const PAGE_CHECKS: PageCheck[] = [
     name: "privacy-execution-matrix-document",
     url: `${ROOT}/documents/privacy-execution-matrix-2026-05-26/`,
     requiredFragments: ["privacy", "execution", "matrix"],
+  },
+  {
+    name: "read-node-backend-cutover-document",
+    url: `${ROOT}/documents/read-node-backend-cutover/`,
+    requiredFragments: ["https://api.privatedao.org/api/v1", "https://privatedao.org/", "Read-Node Backend Cutover Packet"],
+    forbiddenFragments: ["app.privatedao.xyz"],
   },
   {
     name: "qvac-sovereign-ai",
@@ -538,8 +545,9 @@ async function runPageCheck(check: PageCheck) {
     const response = await fetchWithTimeout(check.url);
     const body = await response.text();
     const missingFragments = check.requiredFragments.filter((fragment) => !body.includes(fragment));
+    const forbiddenFragments = (check.forbiddenFragments || []).filter((fragment) => body.includes(fragment));
     const hasNotFound = /\b404\b|not found/i.test(body);
-    const ok = response.ok && missingFragments.length === 0 && !hasNotFound;
+    const ok = response.ok && missingFragments.length === 0 && forbiddenFragments.length === 0 && !hasNotFound;
     return {
       kind: "page",
       name: check.name,
@@ -549,6 +557,7 @@ async function runPageCheck(check: PageCheck) {
       ms: Date.now() - started,
       bytes: body.length,
       missingFragments,
+      forbiddenFragments,
       hasNotFound,
     };
   } catch (error) {
