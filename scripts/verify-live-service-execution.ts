@@ -59,7 +59,7 @@ const PAGE_CHECKS: PageCheck[] = [
   {
     name: "judge",
     url: `${ROOT}/judge/`,
-    requiredFragments: ["PrivateDAO", "Testnet", "REFHE"],
+    requiredFragments: ["PrivateDAO", "Testnet", "REFHE", "hosts"],
   },
   {
     name: "encrypt-ika",
