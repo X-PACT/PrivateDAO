@@ -35,9 +35,29 @@ const PAGE_CHECKS: PageCheck[] = [
     requiredFragments: ["Encrypt", "Ika", "REFHE"],
   },
   {
+    name: "magicblock",
+    url: `${ROOT}/services/magicblock-private-payments/`,
+    requiredFragments: ["MagicBlock", "Testnet", "challenge/login"],
+  },
+  {
     name: "umbra",
     url: `${ROOT}/services/umbra-confidential-payout/`,
     requiredFragments: ["Umbra", "PrivateDAO"],
+  },
+  {
+    name: "eitherway",
+    url: `${ROOT}/services/eitherway-live-dapp/`,
+    requiredFragments: ["Eitherway", "wallet-first", "Testnet"],
+  },
+  {
+    name: "consumer-governance-ux",
+    url: `${ROOT}/services/consumer-governance-ux/`,
+    requiredFragments: ["Consumer", "wallet-first", "Android"],
+  },
+  {
+    name: "pusd-stablecoin",
+    url: `${ROOT}/services/pusd-stablecoin/`,
+    requiredFragments: ["PUSD", "payroll", "treasury"],
   },
   {
     name: "jupiter",
@@ -58,6 +78,11 @@ const PAGE_CHECKS: PageCheck[] = [
     name: "torque",
     url: `${ROOT}/services/torque-growth-loop/`,
     requiredFragments: ["Torque", "custom_events", "read-node"],
+  },
+  {
+    name: "proof",
+    url: `${ROOT}/proof/`,
+    requiredFragments: ["Proof", "Testnet", "MagicBlock"],
   },
   {
     name: "legacy-review",
