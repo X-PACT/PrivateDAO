@@ -152,6 +152,38 @@ const API_CHECKS: ApiCheck[] = [
     validate: (payload) => (payload?.ok === true ? null : "QVAC runtime proof did not return ok=true"),
   },
   {
+    name: "zerion-portfolio-post",
+    method: "POST",
+    url: `${API}/api/v1/zerion/portfolio`,
+    body: {
+      walletAddress: "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+    },
+    validate: (payload) => {
+      if (payload?.ok !== true) return "Zerion portfolio POST did not return ok=true";
+      if (payload?.source !== "zerion") return `Zerion source mismatch: ${payload?.source}`;
+      if (payload?.status !== 200) return `Zerion upstream status mismatch: ${payload?.status}`;
+      return null;
+    },
+  },
+  {
+    name: "jupiter-order-preview",
+    method: "POST",
+    url: `${API}/api/v1/jupiter/order`,
+    body: {
+      inputMint: "So11111111111111111111111111111111111111112",
+      outputMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      amount: "1000000",
+      slippageBps: 50,
+    },
+    validate: (payload) => {
+      if (payload?.ok !== true) return "Jupiter order preview did not return ok=true";
+      if (payload?.configured !== true) return "Jupiter order preview is not configured";
+      if (typeof payload?.summary?.router !== "string" || payload.summary.router.length === 0) return "Jupiter order preview missing router";
+      if (typeof payload?.summary?.requestId !== "string") return "Jupiter order preview missing request id";
+      return null;
+    },
+  },
+  {
     name: "quicknode-stream-stats",
     method: "GET",
     url: `${API}/api/v1/quicknode/stream/stats`,
@@ -335,6 +367,24 @@ function summarizeApiPayload(name: string, payload: any) {
       network: payload?.stats?.network,
       acceptedPayloads: payload?.stats?.acceptedPayloads,
       privateDaoTransactionCount: payload?.stats?.totals?.privateDaoTransactionCount,
+    };
+  }
+  if (name === "zerion-portfolio-post") {
+    return {
+      ok: payload?.ok,
+      source: payload?.source,
+      status: payload?.status,
+      wallet: payload?.wallet,
+    };
+  }
+  if (name === "jupiter-order-preview") {
+    return {
+      ok: payload?.ok,
+      configured: payload?.configured,
+      status: payload?.status,
+      router: payload?.summary?.router,
+      requestId: payload?.summary?.requestId,
+      transactionAvailable: payload?.summary?.transactionAvailable,
     };
   }
   if (name === "provider-integrations-status") {
