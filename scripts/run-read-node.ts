@@ -2112,6 +2112,68 @@ async function fetchZerionPortfolio(wallet: string) {
   };
 }
 
+function providerIntegrationStatus() {
+  const torqueEndpoint =
+    process.env.TORQUE_CUSTOM_EVENT_API_URL?.trim() ||
+    process.env.TORQUE_INGESTER_URL?.trim() ||
+    "https://ingest.torque.so/events";
+  const qvacSdkAvailable =
+    existsSync(join(process.cwd(), "apps/web/node_modules/@qvac/sdk")) ||
+    existsSync(join(process.cwd(), "node_modules/@qvac/sdk"));
+  const qvacProofAvailable = existsSync(join(process.cwd(), "docs/qvac-runtime-proof.generated.json"));
+  return {
+    ok: true,
+    source: "privatedao-provider-integration-status",
+    generatedAt: new Date().toISOString(),
+    cluster: "testnet",
+    providers: {
+      goldrush: {
+        configured: Boolean(getApiKey("GOLDRUSH_API_KEY")),
+        proofEndpoint: "/api/v1/goldrush/query",
+        route: "https://privatedao.org/services/goldrush-decision-intelligence/",
+        executionMode: "server-side wallet intelligence proxy",
+        privacyBoundary: "Pre-sign risk context only; no private strategy text is written on-chain.",
+      },
+      zerion: {
+        configured: Boolean(getApiKey("ZERION_API_KEY")),
+        proofEndpoint: "/api/v1/zerion/portfolio",
+        route: "https://privatedao.org/services/zerion-agent-policy/",
+        executionMode: "policy-bound portfolio context before agent execution",
+        privacyBoundary: "Portfolio data is used to scope policy review; wallet execution remains approve-before-execute.",
+      },
+      torque: {
+        configured: Boolean(getApiKey("TORQUE_API_KEY")),
+        proofEndpoint: "/api/v1/torque/custom-event",
+        route: "https://privatedao.org/services/torque-growth-loop/",
+        executionMode: "server-side custom_event relay",
+        endpoint: redactUrlSecret(torqueEndpoint.endsWith("/events") ? torqueEndpoint : `${torqueEndpoint.replace(/\/+$/, "")}/events`),
+        privacyBoundary: "Only product-action events are relayed; secrets and reward credentials stay server-side.",
+      },
+      jupiter: {
+        configured: Boolean(getApiKey("JUPITER_API_KEY") || getApiKey("JUPITER_DEVELOPER_API_KEY")),
+        proofEndpoint: "/api/v1/jupiter/order",
+        route: "https://privatedao.org/services/jupiter-treasury-route/",
+        executionMode: "order preview and wallet-reviewed treasury route",
+        privacyBoundary: "The read-node prepares order context; final signing stays in the user's wallet.",
+      },
+      qvac: {
+        configured: qvacSdkAvailable || qvacProofAvailable,
+        sdkAvailable: qvacSdkAvailable,
+        proofAvailable: qvacProofAvailable,
+        proofEndpoint: "/api/v1/qvac/runtime-proof",
+        route: "https://privatedao.org/services/qvac-sovereign-ai/",
+        executionMode: "local-first pre-sign intelligence proof",
+        privacyBoundary: "Sensitive briefs are generated client-side or from deterministic fallback, not uploaded as raw private strategy.",
+      },
+    },
+    controls: [
+      "Provider API keys are never exposed to the static website.",
+      "Every provider route is status-checkable without requiring a private key in the browser.",
+      "Execution surfaces preserve Review -> Sign -> Verify before value movement.",
+    ],
+  };
+}
+
 function cryptographicReadinessStatus() {
   return {
     ok: true,
@@ -2319,7 +2381,7 @@ function privacyExecutionMatrixStatus() {
         route: "https://privatedao.org/intelligence/",
         executionMode: "provider intelligence before private execution",
         privacyRails: ["GoldRush wallet intelligence", "Zerion portfolio policy", "QVAC runtime proof", "QuickNode stream telemetry"],
-        proofEndpoints: ["/api/v1/goldrush/query", "/api/v1/zerion/portfolio", "/api/v1/qvac/runtime-proof", "/api/v1/quicknode/stream/stats"],
+        proofEndpoints: ["/api/v1/provider-integrations/status", "/api/v1/goldrush/query", "/api/v1/zerion/portfolio", "/api/v1/qvac/runtime-proof", "/api/v1/quicknode/stream/stats"],
         onchainEvidence: {
           streamNetwork: "solana-testnet",
         },
@@ -2331,7 +2393,7 @@ function privacyExecutionMatrixStatus() {
         route: "https://privatedao.org/services/jupiter-treasury-route/",
         executionMode: "Jupiter order preview and Torque event relay around governed execution",
         privacyRails: ["Jupiter Developer Platform order mode", "Torque custom event relay", "policy-scoped execution receipts"],
-        proofEndpoints: ["/api/v1/jupiter/order", "/api/v1/torque/custom-event", "/api/v1/execution-events/stats"],
+        proofEndpoints: ["/api/v1/provider-integrations/status", "/api/v1/jupiter/order", "/api/v1/torque/custom-event", "/api/v1/execution-events/stats"],
         onchainEvidence: {
           signingBoundary: "wallet-reviewed execution, not server-held user funds",
         },
@@ -2404,6 +2466,18 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
     if (req.method === "POST" && (pathname === "/api/jupiter/order" || pathname === "/api/v1/jupiter/order")) {
       const body = await readRequestJson(req);
       const result = await fetchJupiterOrder(body);
+      writeJson(res, result.ok ? 200 : 502, result);
+      return;
+    }
+
+    if (req.method === "POST" && (pathname === "/api/zerion/portfolio" || pathname === "/api/v1/zerion/portfolio")) {
+      const body = await readRequestJson(req);
+      const wallet = stringField(body, "walletAddress", stringField(body, "wallet", ""));
+      if (!wallet) {
+        writeJson(res, 400, { ok: false, source: "zerion", error: "walletAddress is required." });
+        return;
+      }
+      const result = await fetchZerionPortfolio(wallet);
       writeJson(res, result.ok ? 200 : 502, result);
       return;
     }
@@ -2576,6 +2650,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           quickNodeStreamStats: "/api/v1/quicknode/stream/stats",
           cryptographicReadiness: "/api/v1/cryptographic-readiness",
           privacyExecutionMatrix: "/api/v1/privacy-execution-matrix",
+          providerIntegrationStatus: "/api/v1/provider-integrations/status",
           jupiterOrder: "/api/v1/jupiter/order",
           readiness: "/api/v1/readiness",
         },
@@ -2590,6 +2665,11 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
 
     if (pathname === "/api/v1/privacy-execution-matrix") {
       writeJson(res, 200, privacyExecutionMatrixStatus());
+      return;
+    }
+
+    if (pathname === "/api/v1/provider-integrations/status") {
+      writeJson(res, 200, providerIntegrationStatus());
       return;
     }
 
@@ -2618,6 +2698,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           quickNodeStats: "https://api.privatedao.org/api/v1/quicknode/stream/stats",
           cryptographicReadiness: "https://api.privatedao.org/api/v1/cryptographic-readiness",
           privacyExecutionMatrix: "https://api.privatedao.org/api/v1/privacy-execution-matrix",
+          providerIntegrationStatus: "https://api.privatedao.org/api/v1/provider-integrations/status",
           judge: "https://privatedao.org/judge/",
           proof: "https://privatedao.org/proof/",
           security: "https://privatedao.org/security/",

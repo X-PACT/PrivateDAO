@@ -45,6 +45,21 @@ const PAGE_CHECKS: PageCheck[] = [
     requiredFragments: ["Jupiter", "PrivateDAO"],
   },
   {
+    name: "goldrush",
+    url: `${ROOT}/services/goldrush-decision-intelligence/`,
+    requiredFragments: ["GoldRush", "intelligence", "Encrypt"],
+  },
+  {
+    name: "zerion",
+    url: `${ROOT}/services/zerion-agent-policy/`,
+    requiredFragments: ["Zerion", "Policy", "Solana"],
+  },
+  {
+    name: "torque",
+    url: `${ROOT}/services/torque-growth-loop/`,
+    requiredFragments: ["Torque", "custom_events", "read-node"],
+  },
+  {
     name: "legacy-review",
     url: `${ROOT}/review/`,
     requiredFragments: ["PrivateDAO", "Testnet"],
@@ -93,6 +108,21 @@ const API_CHECKS: ApiCheck[] = [
       const missing = required.filter((service) => !services.some((entry: any) => entry?.service === service));
       if (missing.length) return `privacy execution matrix missing ${missing.join(", ")}`;
       if (payload?.cluster !== "testnet") return `privacy execution matrix cluster mismatch: ${payload?.cluster}`;
+      return null;
+    },
+  },
+  {
+    name: "provider-integrations-status",
+    method: "GET",
+    url: `${API}/api/v1/provider-integrations/status`,
+    validate: (payload) => {
+      if (payload?.ok !== true) return "provider integrations status did not return ok=true";
+      const providers = payload?.providers || {};
+      for (const provider of ["goldrush", "zerion", "torque", "jupiter", "qvac"]) {
+        if (!providers?.[provider]?.proofEndpoint) return `provider status missing proof endpoint for ${provider}`;
+        if (!providers?.[provider]?.route) return `provider status missing route for ${provider}`;
+      }
+      if (payload?.cluster !== "testnet") return `provider status cluster mismatch: ${payload?.cluster}`;
       return null;
     },
   },
@@ -305,6 +335,17 @@ function summarizeApiPayload(name: string, payload: any) {
       network: payload?.stats?.network,
       acceptedPayloads: payload?.stats?.acceptedPayloads,
       privateDaoTransactionCount: payload?.stats?.totals?.privateDaoTransactionCount,
+    };
+  }
+  if (name === "provider-integrations-status") {
+    const providers = payload?.providers || {};
+    return {
+      source: payload?.source,
+      goldrush: providers?.goldrush?.configured,
+      zerion: providers?.zerion?.configured,
+      torque: providers?.torque?.configured,
+      jupiter: providers?.jupiter?.configured,
+      qvac: providers?.qvac?.configured,
     };
   }
   if (name === "refhe-payroll-proof") {

@@ -4,6 +4,10 @@ PrivateDAO now exposes a single backend-readable matrix for every privacy and in
 
 `https://api.privatedao.org/api/v1/privacy-execution-matrix`
 
+Provider health for GoldRush, Zerion, Torque, Jupiter, and QVAC is exposed separately:
+
+`https://api.privatedao.org/api/v1/provider-integrations/status`
+
 This endpoint exists so the product, reviewers, and operators can see how sensitive services move through:
 
 `Review -> Sign -> Verify`
@@ -29,8 +33,12 @@ without exposing private payroll rows, private balances, strategy text, provider
 | Private payments | MagicBlock private corridor and receipt proof | `/services/magicblock-private-payments/` | `/api/v1/magicblock/onchain-proof?refresh=1` |
 | Umbra payout | recipient-private claim intent and relayer health | `/services/umbra-confidential-payout/` | `/api/v1/umbra/relayer/info`, `/api/v1/umbra/relayer/health` |
 | Ika custody | Solana approval preparation for Ika dWallet / 2PC-MPC route | `/services/encrypt-ika-operations/` | `/api/v1/ika/solana-prealpha/readiness`, `/api/v1/ika/solana-prealpha/approval/prepare` |
-| Intelligence | GoldRush, Zerion, QVAC, QuickNode Stream telemetry | `/intelligence/` | `/api/v1/goldrush/query`, `/api/v1/zerion/portfolio`, `/api/v1/qvac/runtime-proof`, `/api/v1/quicknode/stream/stats` |
-| Treasury / growth | Jupiter order preview and Torque custom event relay | `/services/jupiter-treasury-route/`, `/services/torque-growth-loop/` | `/api/v1/jupiter/order`, `/api/v1/torque/custom-event` |
+| Intelligence | GoldRush, Zerion, QVAC, QuickNode Stream telemetry | `/intelligence/` | `/api/v1/provider-integrations/status`, `/api/v1/goldrush/query`, `/api/v1/zerion/portfolio`, `/api/v1/qvac/runtime-proof`, `/api/v1/quicknode/stream/stats` |
+| Treasury / growth | Jupiter order preview and Torque custom event relay | `/services/jupiter-treasury-route/`, `/services/torque-growth-loop/` | `/api/v1/provider-integrations/status`, `/api/v1/jupiter/order`, `/api/v1/torque/custom-event` |
+
+## Provider Execution Gate
+
+`/api/v1/provider-integrations/status` is intentionally safe to call without secrets. It reports whether each server-side credential is configured, which public product route uses it, which proof endpoint exercises it, and which privacy boundary prevents provider data from becoming leaked strategy text.
 
 ## Boundary
 

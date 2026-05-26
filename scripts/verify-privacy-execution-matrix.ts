@@ -25,6 +25,8 @@ function main() {
   for (const required of [
     "function privacyExecutionMatrixStatus()",
     'pathname === "/api/v1/privacy-execution-matrix"',
+    'pathname === "/api/v1/provider-integrations/status"',
+    "function providerIntegrationStatus()",
     "wallet-first-private-operations",
     "private-governance",
     "confidential-payroll",
@@ -34,7 +36,9 @@ function main() {
     "intelligence-and-risk",
     "treasury-routing-and-growth",
     "/api/v1/jupiter/order",
+    "/api/v1/provider-integrations/status",
     "fetchJupiterOrder",
+    "fetchZerionPortfolio",
   ]) {
     includes(readNode, required, "read-node privacy matrix");
   }
