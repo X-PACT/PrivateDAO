@@ -34,7 +34,7 @@ const initialEndpoints: EndpointState[] = [
   {
     label: "Umbra relayer proxy",
     href: "https://api.privatedao.org/api/v1/umbra/relayer/health",
-    purpose: "Verifies the private payout rail can reach the Umbra devnet relayer through the read node.",
+    purpose: "Verifies the private payout rail can reach Umbra's public relayer boundary through the Testnet read node.",
     status: "checking",
     detail: "Checking private rail endpoint...",
   },

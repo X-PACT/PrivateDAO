@@ -29,15 +29,16 @@ export function UmbraSdkIntegrationStatus() {
       <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/78">Umbra SDK runtime</div>
       <div className="mt-3 grid gap-6 lg:grid-cols-[1fr_0.9fr]">
         <div>
-          <h2 className="text-2xl font-semibold text-white">Devnet relayer, SDK contract, and claim lifecycle are exposed for review</h2>
+          <h2 className="text-2xl font-semibold text-white">Umbra relayer boundary, SDK contract, and claim lifecycle are exposed for review</h2>
           <p className="mt-3 max-w-4xl text-sm leading-7 text-white/66">
-            The live lane checks the Umbra devnet relayer through the PrivateDAO read-node and keeps the exact claim
-            boundary visible: browser clients still need wallet signing, SDK-generated proof account data, UTXO slot
-            data, and relayer polling before a real claim is submitted.
+            The live lane reaches Umbra's public relayer endpoint through the PrivateDAO read-node and keeps the exact
+            claim boundary visible: browser clients still need wallet signing, SDK-generated proof account data, UTXO
+            slot data, and relayer polling before a real claim is submitted. The upstream hostname is preserved as
+            evidence; the PrivateDAO operating surface remains routed through the Testnet read-node.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Link href="/viewer/umbra-devnet-sdk-live-probe.generated" className={cn(buttonVariants({ size: "sm" }))}>
-              Open Umbra live probe
+              Open Umbra boundary probe
             </Link>
             <a href="https://api.privatedao.org/api/v1/umbra/relayer/info" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
               Read relayer info
