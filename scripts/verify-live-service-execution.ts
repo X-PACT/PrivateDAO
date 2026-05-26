@@ -85,6 +85,21 @@ const PAGE_CHECKS: PageCheck[] = [
     requiredFragments: ["Proof", "Testnet", "MagicBlock"],
   },
   {
+    name: "security",
+    url: `${ROOT}/security/`,
+    requiredFragments: ["Security", "Testnet", "4/6"],
+  },
+  {
+    name: "android",
+    url: `${ROOT}/android/`,
+    requiredFragments: ["Android", "Testnet", "PrivateDAO"],
+  },
+  {
+    name: "api-status",
+    url: `${ROOT}/api-status/`,
+    requiredFragments: ["API Status", "QuickNode", "Testnet"],
+  },
+  {
     name: "legacy-review",
     url: `${ROOT}/review/`,
     requiredFragments: ["PrivateDAO", "Testnet"],
