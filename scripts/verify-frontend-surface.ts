@@ -167,6 +167,7 @@ function main() {
     [encryptIkaOperationsPage, "EncryptIkaDesktopProofWorkbench", "Encrypt/Ika page is missing the live execution truth board component"],
     [encryptIkaOperationsPage, "funded dWallet DKG and final 2PC-MPC signing remain the named production gate", "Encrypt/Ika page is missing the Ika truth boundary"],
     [encryptIkaOperationsPage, "https://api.privatedao.org/api/v1/ika/solana-prealpha/readiness", "Encrypt/Ika page is missing the live Ika readiness endpoint"],
+    [encryptIkaOperationsPage, "https://api.privatedao.org/api/v1/ika/custody/prepare", "Encrypt/Ika page is missing the live Ika custody endpoint"],
     [apiStatusPage, "MagicBlock receipts", "API status route is missing MagicBlock receipt evidence"],
     [apiStatusPage, "Ika readiness", "API status route is missing Ika readiness evidence"],
     [apiStatusPage, "REFHE proof", "API status route is missing REFHE proof evidence"],

@@ -35,12 +35,12 @@ const executionRails = [
     proof: "/documents/testnet-encrypted-integrations-activation-2026-05-23",
   },
   {
-    title: "Ika / 2PC-MPC readiness",
-    status: "Live readiness",
+    title: "Ika / 2PC-MPC custody preparation",
+    status: "Live custody route",
     description:
-      "Read the Ika SDK network route, Solana pre-alpha executable program, funded operator boundary, and approval-preparation path.",
+      "Read the Ika SDK network route, Solana pre-alpha executable program, funded operator boundary, approval-preparation path, and custody-preparation route.",
     action: "#ika-readiness",
-    proof: "https://api.privatedao.org/api/v1/ika/solana-prealpha/readiness",
+    proof: "https://api.privatedao.org/api/v1/ika/custody/prepare",
   },
   {
     title: "Browser encrypted manifest",
@@ -52,7 +52,7 @@ const executionRails = [
   {
     title: "One-click Testnet truth board",
     status: "Runnable now",
-    description: "Run browser encryption, REFHE receipt, Ika Sui read, Ika Solana read, and approval preparation from one page.",
+    description: "Run browser encryption, REFHE receipt, Ika Sui read, Ika Solana read, approval preparation, and custody preparation from one page.",
     action: "#execution-truth-board",
     proof: "/proof/encrypted-capital-markets",
   },
@@ -63,7 +63,7 @@ export default function EncryptIkaOperationsPage() {
     <OperationsShell
       eyebrow="Encrypted operations on Solana Testnet"
       title="Run the encrypted operations stack from one Testnet page"
-      description="This is the canonical Encrypt / Ika route: a visitor can run browser encryption, REFHE payroll proof receipts, Ika readiness reads, 2PC-MPC approval preparation, and proof-linked confidential operation flows without a terminal."
+      description="This is the canonical Encrypt / Ika route: a visitor can run browser encryption, REFHE payroll proof receipts, Ika readiness reads, 2PC-MPC approval preparation, Ika custody preparation, and proof-linked confidential operation flows without a terminal."
       badges={[
         { label: "Encrypt / IKA", variant: "cyan" },
         { label: "REFHE receipts", variant: "success" },
@@ -74,7 +74,7 @@ export default function EncryptIkaOperationsPage() {
       <LocalizedRouteSummary routeKey="services" />
       <LocalizedRouteBrief routeKey="servicesCore" />
       <OperationStateLegend
-        description="This route separates what is runnable today from the final production gates: REFHE and client encryption execute now; Ika/2PC-MPC is a live readiness and approval-preparation lane until funded dWallet DKG and final 2PC-MPC signatures are recorded."
+        description="This route separates what is runnable today from the final production gates: REFHE and client encryption execute now; Ika/2PC-MPC is a live readiness, approval-preparation, and custody-preparation lane until funded dWallet DKG and final 2PC-MPC signatures are recorded."
       />
       <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5 text-sm leading-7 text-white/68">
         The product value here is direct: sensitive DAO operations are encrypted before execution, receipts are generated
@@ -90,6 +90,12 @@ export default function EncryptIkaOperationsPage() {
           <Link href="/services/refhe-payroll-proof" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
             Open REFHE payroll proof
           </Link>
+          <a href="https://api.privatedao.org/api/v1/ika/solana-prealpha/readiness" target="_blank" rel="noreferrer" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+            Open Ika readiness JSON
+          </a>
+          <a href="https://api.privatedao.org/api/v1/ika/custody/prepare" target="_blank" rel="noreferrer" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+            Open Ika custody JSON
+          </a>
           <Link href="/services/magicblock-private-payments" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
             Open MagicBlock lane
           </Link>
@@ -112,8 +118,9 @@ export default function EncryptIkaOperationsPage() {
         <h2 className="mt-3 text-2xl font-semibold text-white">Four concrete execution rails, one truth boundary</h2>
         <p className="mt-3 max-w-4xl text-sm leading-7 text-white/64">
           REFHE, browser encryption, and receipt generation are runnable from the page. Ika/2PC-MPC is exposed as a live
-          readiness and approval-preparation rail: executable program and funded operator checks are visible, while final
-          funded dWallet DKG and final 2PC-MPC signing remain the named production gate instead of being overclaimed.
+          readiness, approval-preparation, and custody-preparation rail: executable program and funded operator checks are
+          visible, while final funded dWallet DKG and final 2PC-MPC signing remain the named production gate instead of
+          being overclaimed.
         </p>
         <div className="mt-5 grid gap-3 md:grid-cols-2">
           {executionRails.map((rail) => (

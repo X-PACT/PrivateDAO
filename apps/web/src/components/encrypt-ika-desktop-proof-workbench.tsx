@@ -44,6 +44,7 @@ const trackedOperations = [
   { operationId: "ika-sui-readiness", label: "Ika Sui network read" },
   { operationId: "ika-solana-prealpha-readiness", label: "Ika Solana program read" },
   { operationId: "ika-approval-prepare", label: "Ika approval route" },
+  { operationId: "ika-custody-prepare", label: "Ika custody route" },
 ];
 
 function pretty(value: unknown) {
@@ -73,6 +74,7 @@ export function EncryptIkaDesktopProofWorkbench() {
     { id: "ika-sui", label: "Ika Sui readiness", state: "idle", detail: "Read Ika network encryption key and packages through @ika.xyz/sdk." },
     { id: "ika-solana", label: "Ika Solana pre-alpha", state: "idle", detail: "Read executable program and funded Testnet/pre-alpha operator wallet." },
     { id: "ika-approval", label: "Ika approval route", state: "idle", detail: "Prepare the governed approval route for the confidential payroll message." },
+    { id: "ika-custody", label: "Ika custody route", state: "idle", detail: "Initialize Ika SDK custody preparation and return a route id for governed dWallet execution." },
   ]);
   const [preview, setPreview] = useState("Run an encrypted proof action to see live output.");
   const [networkExecutions, setNetworkExecutions] = useState(0);
@@ -183,7 +185,29 @@ export function EncryptIkaDesktopProofWorkbench() {
       await recordExecution("ika-approval-prepare", "Ika approval route", approval?.ok ? "success" : "review", approval?.routeId || null, { operationType: "confidential-payroll" });
       updateStep("ika-approval", approval?.ok ? "done" : "review", approval?.ok ? "Governed approval route prepared for the payroll message." : "Approval route returned a review state.");
 
-      setPreview(pretty({ browser: { encrypted: true, ciphertextBytes: ciphertext.byteLength }, refhe, ikaSui, ikaSolana, approval }));
+      updateStep("ika-custody", "running");
+      const custody = await fetch(`${API_BASE}/api/v1/ika/custody/prepare`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          network: "testnet",
+          curve: "SECP256K1",
+          custodyMode: "shared-dwallet",
+          operationLabel: "PrivateDAO confidential payroll custody route",
+        }),
+      }).then((response) => response.json());
+      if (custody?.ok) setNetworkExecutions((count) => count + 1);
+      await recordExecution("ika-custody-prepare", "Ika custody route", custody?.ok ? "success" : "review", custody?.routeId || null, {
+        network: custody?.network || "testnet",
+        custodyMode: "shared-dwallet",
+      });
+      updateStep(
+        "ika-custody",
+        custody?.ok ? "done" : "review",
+        custody?.ok ? `Ika custody route prepared: ${custody.routeId}` : "Custody route returned a review state.",
+      );
+
+      setPreview(pretty({ browser: { encrypted: true, ciphertextBytes: ciphertext.byteLength }, refhe, ikaSui, ikaSolana, approval, custody }));
     } catch (error) {
       setPreview(error instanceof Error ? error.message : "Encrypted proof run failed.");
     } finally {
@@ -197,7 +221,8 @@ export function EncryptIkaDesktopProofWorkbench() {
       <h2 className="mt-3 text-2xl font-semibold text-white">Encrypt / Ika / 2PC-MPC / REFHE execution truth board</h2>
       <p className="mt-3 max-w-4xl text-sm leading-7 text-white/66">
         This route lets a visitor run the encrypted payroll proof path directly: browser encryption, REFHE receipt generation,
-        Ika SDK network read, Solana pre-alpha program read, and governed approval-route preparation. The counters below are
+        Ika SDK network read, Solana pre-alpha program read, governed approval-route preparation, and Ika custody route
+        preparation. The counters below are
         stored by the backend so attempts from different devices increase the same public totals.
       </p>
       <div className="mt-5 flex flex-wrap gap-3">
@@ -228,7 +253,7 @@ export function EncryptIkaDesktopProofWorkbench() {
           <div className="mt-2 text-xs leading-5 text-white/58">The JSON output shows the exact receipts and live read results returned by the network routes.</div>
         </div>
       </div>
-      <div className="mt-6 grid gap-3 md:grid-cols-5">
+      <div className="mt-6 grid gap-3 md:grid-cols-3 xl:grid-cols-6">
         {trackedOperations.map((operation) => {
           const stats = statsByOperation.get(operation.operationId);
           return (
@@ -241,7 +266,7 @@ export function EncryptIkaDesktopProofWorkbench() {
           );
         })}
       </div>
-      <div className="mt-6 grid gap-3 lg:grid-cols-5">
+      <div className="mt-6 grid gap-3 md:grid-cols-3 xl:grid-cols-6">
         {steps.map((step) => (
           <div key={step.id} className={cn("rounded-[20px] border p-4", stateClass(step.state))}>
             <div className="text-[11px] uppercase tracking-[0.2em] opacity-70">{step.state}</div>
