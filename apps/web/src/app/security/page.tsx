@@ -118,6 +118,9 @@ export default function SecurityPage() {
           <a href="https://api.privatedao.org/api/v1/privacy-execution-matrix" target="_blank" rel="noreferrer" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
             Open privacy JSON
           </a>
+          <a href="https://api.privatedao.org/api/v1/provider-integrations/status" target="_blank" rel="noreferrer" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+            Open provider status
+          </a>
           <Link href="/documents/live-proof-v3" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
             Open live proof V3
           </Link>

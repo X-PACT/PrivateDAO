@@ -208,6 +208,14 @@ export default function JudgePage() {
       cta: "Open matrix JSON",
     },
     {
+      label: "Provider integration status",
+      value: "GoldRush + Zerion + QVAC live",
+      detail:
+        "A dedicated status route now reports which provider rails are configured, which proof endpoint exercises each rail, and which privacy boundary keeps credentials and strategy text out of the browser.",
+      href: "https://api.privatedao.org/api/v1/provider-integrations/status",
+      cta: "Open provider JSON",
+    },
+    {
       label: "Release proof package",
       value: "Testnet -> mainnet gates",
       detail:
