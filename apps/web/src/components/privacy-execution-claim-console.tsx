@@ -127,6 +127,24 @@ async function verifyEncryptedClaimPacket(packet: EncryptedClaimPacket) {
   };
 }
 
+function buildPublicAttestation(input: {
+  packet: EncryptedClaimPacket;
+  signature: string | null;
+}) {
+  return {
+    version: "pdao-public-claim-attestation-v1",
+    network: input.packet.plaintextPreview.network,
+    rail: input.packet.plaintextPreview.rail,
+    proofClass: input.packet.plaintextPreview.proofClass,
+    digest: input.packet.digest,
+    commitmentMemo: input.packet.commitmentMemo,
+    memoProgram: input.packet.memoProgram,
+    signature: input.signature,
+    explorerUrl: input.signature ? buildSolanaTxUrl(input.signature) : null,
+    disclosureBoundary: "No AES key, ciphertext plaintext, or private claim payload is included in this public attestation.",
+  };
+}
+
 const privacyClaims: PrivacyClaim[] = [
   {
     id: "private-governance",
@@ -265,7 +283,13 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
   async function copyEncryptedReceipt() {
     if (!encryptedPacket) return;
     await navigator.clipboard.writeText(JSON.stringify({ signature, packet: encryptedPacket }, null, 2));
-    setReceiptStatus("Encrypted receipt copied locally. It is not uploaded by this page.");
+    setReceiptStatus("Private disclosure receipt copied locally. It includes the AES key; share it only with a party allowed to decrypt the claim.");
+  }
+
+  async function copyPublicAttestation() {
+    if (!encryptedPacket) return;
+    await navigator.clipboard.writeText(JSON.stringify(buildPublicAttestation({ packet: encryptedPacket, signature }), null, 2));
+    setReceiptStatus("Public attestation copied. It proves the digest and on-chain memo without exposing the AES key.");
   }
 
   function downloadEncryptedReceipt() {
@@ -279,6 +303,19 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
     anchor.click();
     URL.revokeObjectURL(url);
     setReceiptStatus("Encrypted receipt downloaded from this browser session.");
+  }
+
+  function downloadPublicAttestation() {
+    if (!encryptedPacket) return;
+    const payload = JSON.stringify(buildPublicAttestation({ packet: encryptedPacket, signature }), null, 2);
+    const blob = new Blob([payload], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `privatedao-${encryptedPacket.plaintextPreview.rail}-public-attestation.json`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+    setReceiptStatus("Public attestation downloaded without the AES key.");
   }
 
   async function verifyReceiptLocally() {
@@ -369,18 +406,24 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
           <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-3">
             <div className="text-[11px] uppercase tracking-[0.22em] text-white/50">Selective disclosure receipt</div>
             <div className="mt-2 text-xs leading-6 text-white/56">
-              After anchoring, verify the encrypted packet locally, copy it, or download it without uploading private
-              claim context.
+              After anchoring, verify the encrypted packet locally, export a public attestation without the AES key, or
+              export a private disclosure receipt for an allowed reviewer.
             </div>
             <div className="mt-3 flex flex-wrap gap-2">
               <button type="button" onClick={() => void verifyReceiptLocally()} disabled={!encryptedPacket} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
                 Verify receipt locally
               </button>
-              <button type="button" onClick={() => void copyEncryptedReceipt()} disabled={!encryptedPacket} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
-                Copy encrypted receipt
+              <button type="button" onClick={() => void copyPublicAttestation()} disabled={!encryptedPacket} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                Copy public attestation
               </button>
-              <button type="button" onClick={downloadEncryptedReceipt} disabled={!encryptedPacket} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
-                Download receipt
+              <button type="button" onClick={downloadPublicAttestation} disabled={!encryptedPacket} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                Download public attestation
+              </button>
+              <button type="button" onClick={() => void copyEncryptedReceipt()} disabled={!encryptedPacket} className={cn(buttonVariants({ size: "sm", variant: "ghost" }))}>
+                Copy private disclosure
+              </button>
+              <button type="button" onClick={downloadEncryptedReceipt} disabled={!encryptedPacket} className={cn(buttonVariants({ size: "sm", variant: "ghost" }))}>
+                Download private disclosure
               </button>
             </div>
             {receiptStatus ? <div className="mt-3 rounded-xl border border-white/10 bg-black/20 p-3 text-xs text-white/62">{receiptStatus}</div> : null}

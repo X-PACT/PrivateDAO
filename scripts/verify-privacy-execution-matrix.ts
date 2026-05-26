@@ -45,6 +45,8 @@ function main() {
     "PDAO_ENCRYPTED_CLAIM_V1",
     "AES-GCM",
     "selective-disclosure receipt",
+    "public attestation",
+    "private disclosure",
     "/api/v1/jupiter/order",
     "/api/v1/provider-integrations/status",
     "fetchJupiterOrder",
@@ -75,6 +77,8 @@ function main() {
     "AES-GCM encrypted claim packet",
     "PDAO_ENCRYPTED_CLAIM_V1",
     "selective-disclosure receipt",
+    "public attestation",
+    "private disclosure receipt",
     "No private keys, provider API keys, RPC tokens, PEM contents, or wallet secret keys are included",
   ]) {
     includes(doc, required, "privacy execution matrix doc");

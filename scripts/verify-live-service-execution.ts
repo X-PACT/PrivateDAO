@@ -150,7 +150,7 @@ const PAGE_CHECKS: PageCheck[] = [
   {
     name: "services-claim-console",
     url: `${ROOT}/services/`,
-    requiredFragments: ["On-chain claim console", "Encrypt + anchor on-chain", "Verify receipt locally", "Get Testnet SOL"],
+    requiredFragments: ["On-chain claim console", "Encrypt + anchor on-chain", "Verify receipt locally", "Copy public attestation", "Get Testnet SOL"],
   },
   {
     name: "runtime-infrastructure",
@@ -371,6 +371,9 @@ const API_CHECKS: ApiCheck[] = [
       }
       if (!Array.isArray(payload?.mustPass) || !payload.mustPass.some((entry: string) => entry.includes("selective-disclosure receipt"))) {
         return "privacy execution claims must expose selective-disclosure receipt verification";
+      }
+      if (!Array.isArray(payload?.mustPass) || !payload.mustPass.some((entry: string) => entry.includes("public attestation"))) {
+        return "privacy execution claims must separate public attestation from private disclosure";
       }
       for (const claim of claims) {
         if (claim?.visitorRepeatable !== true) return `${claim?.service} claim is not visitor-repeatable`;

@@ -49,6 +49,7 @@ Every service row in the live API now carries `executionProofClass`, `visitorRep
 5. The visitor signs from their own wallet.
 6. The page returns a new Testnet signature, Explorer link, and local encrypted packet for inspection.
 7. The visitor can verify the encrypted receipt locally, copy it, or download it as a selective-disclosure receipt without uploading private claim context.
+8. The visitor can export a public attestation that contains the digest, memo, memo program, signature, and Explorer URL without the AES key, then keep the private disclosure receipt separate for allowed reviewers only.
 
 This gives every rail a live visitor-generated encrypted on-chain claim path today, while the stronger native rails continue to carry their own evidence: REFHE signatures, MagicBlock signatures, ZK verifier receipts, Ika readiness receipts, Umbra claim-intent receipts, Jupiter route previews, Torque delivery receipts, and intelligence-provider proofs.
 
