@@ -1726,6 +1726,63 @@ async function readIkaSolanaPreAlphaStatus() {
   };
 }
 
+async function fetchJupiterOrder(body: Record<string, unknown>) {
+  const apiKey = getApiKey("JUP_API_KEY") || getApiKey("JUPITER_API_KEY");
+  const inputMint = stringField(body, "inputMint", "So11111111111111111111111111111111111111112");
+  const outputMint = stringField(body, "outputMint", "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
+  const amount = stringField(body, "amount", "20000000");
+  const taker = stringField(body, "taker");
+  const slippageBps = Number(body.slippageBps ?? 50);
+
+  if (!/^\d+$/.test(amount)) {
+    return { ok: false, source: "jupiter", error: "amount must be an integer string in base units." };
+  }
+  if (!apiKey) {
+    return {
+      ok: false,
+      source: "jupiter",
+      configured: false,
+      error: "JUP_API_KEY is not configured on the read node.",
+      executionBoundary: "order-preview-route-ready-awaiting-server-key",
+    };
+  }
+
+  const params = new URLSearchParams({ inputMint, outputMint, amount });
+  if (taker) params.set("taker", taker);
+  if (Number.isFinite(slippageBps)) params.set("slippageBps", String(Math.max(0, Math.min(10_000, Math.round(slippageBps)))));
+
+  const response = await fetch(`https://api.jup.ag/swap/v2/order?${params.toString()}`, {
+    headers: {
+      Accept: "application/json",
+      "x-api-key": apiKey,
+    },
+  });
+  const raw = (await response.json().catch(() => null)) as Record<string, unknown> | null;
+  return {
+    ok: response.ok,
+    source: "jupiter",
+    configured: true,
+    status: response.status,
+    request: {
+      inputMint,
+      outputMint,
+      amount,
+      taker: taker || null,
+      slippageBps: Number.isFinite(slippageBps) ? slippageBps : null,
+    },
+    summary: {
+      mode: typeof raw?.mode === "string" ? raw.mode : null,
+      router: typeof raw?.router === "string" ? raw.router : null,
+      inAmount: typeof raw?.inAmount === "string" ? raw.inAmount : null,
+      outAmount: typeof raw?.outAmount === "string" ? raw.outAmount : null,
+      priceImpact: typeof raw?.priceImpact === "number" ? raw.priceImpact : null,
+      requestId: typeof raw?.requestId === "string" ? raw.requestId : null,
+      transactionAvailable: typeof raw?.transaction === "string" && raw.transaction.length > 0,
+    },
+    raw,
+  };
+}
+
 async function handleIkaCustodyPrepare(body: Record<string, unknown>) {
   const network = stringField(body, "network", "testnet") === "mainnet" ? "mainnet" : "testnet";
   const curveInput = stringField(body, "curve", "SECP256K1").toUpperCase();
@@ -2179,6 +2236,127 @@ function cryptographicReadinessStatus() {
   };
 }
 
+function privacyExecutionMatrixStatus() {
+  const cryptographicReadiness = cryptographicReadinessStatus();
+  const generatedAt = new Date().toISOString();
+  return {
+    ok: true,
+    source: "privatedao-privacy-execution-matrix",
+    generatedAt,
+    cluster: "testnet",
+    programId: cryptographicReadiness.programId,
+    posture: "wallet-first-private-operations",
+    summary:
+      "PrivateDAO routes every sensitive service through review, encryption or privacy intent, wallet execution, and public-safe verification. Public outputs prove state transitions without exposing payroll rows, recipient context, private balances, or strategy intent.",
+    serviceMatrix: [
+      {
+        service: "private-governance",
+        route: "https://privatedao.org/govern/",
+        executionMode: "wallet-signed Solana Testnet governance",
+        privacyRails: ["commit-reveal", "ZK verifier companion", "nullifier-ready governance primitive"],
+        proofEndpoints: ["/api/v1/runtime", "/api/v1/proposals", "/api/v1/cryptographic-readiness"],
+        onchainEvidence: {
+          programId: cryptographicReadiness.programId,
+          zkVerifierProgramId: "5H7Afyqdh5yPekkZJ5UM2j3HNB2bRvU8aVv8XoqeAW1j",
+          zkReceiptTx: "zwqNsA3kNP1mgcaS6zNdR92LLdssFULXfsRdkMK3UxraKLM6wYDoPaWCwV3J9PqApK5xJJH8TpxsGyCRcdEah67",
+        },
+        testnetExecutable: true,
+        privacyBoundary: "Votes and proof receipts are separated from public identity claims; full Semaphore-style governance remains a release-gated primitive.",
+      },
+      {
+        service: "confidential-payroll",
+        route: "https://privatedao.org/payroll/",
+        executionMode: "encrypted manifest plus evidence-gated payout",
+        privacyRails: ["REFHE envelope", "encrypted manifest hash", "selective-disclosure receipt"],
+        proofEndpoints: ["/api/v1/refhe/payroll/proof", "/api/v1/cryptographic-readiness"],
+        onchainEvidence: {
+          configureTx: "3fygnmHzFpRQEbHq9q6u3djBnkTEcYz9y1TSwxDmbnuemshrMwLmy9CqpjifjRb7SmW3DbmXrkyq35cnjU7mMSPi",
+          settleTx: "5TmS2AcpAmifcoG97U63Unzy7wt7B2NfyhBRs8Z6C4r1eqcWthEqf3GLcZXQ33sVYHf9YwfvBNhZD8ZZdt4HRwEY",
+          executeTx: "2a8sHWgiVCZkstybMff2M9R6DVU4Y96Rfsg8mqYs7K3xcYSEG1zMcq2iSTNwLD6FgfXvxxxWpwEP9Tbyin47RXvE",
+        },
+        testnetExecutable: true,
+        privacyBoundary: "Payroll row content stays in encrypted manifest/proof inputs; public chain evidence shows commitments and token movement.",
+      },
+      {
+        service: "private-payments",
+        route: "https://privatedao.org/services/magicblock-private-payments/",
+        executionMode: "MagicBlock corridor and private payment proof lane",
+        privacyRails: ["MagicBlock private corridor", "private balance challenge", "private transfer receipt"],
+        proofEndpoints: ["/api/v1/magicblock/onchain-proof?refresh=1", "/api/v1/magicblock/health"],
+        onchainEvidence: {
+          configureTx: "4UiUumtuGeDciojDA26PkQby7RFiTNb12UG4ACcvGMGfQj24PUPxK5Apeno7EY8mbCvq8nR6h6nfxDcBpjPvGvPj",
+          settleTx: "22XW8XVhWwQtChNQK2aEqXv5BVBbckxUmu4NsisoZQW21KA5ii87gVNUTcNoZ9e1vYKnHmm62qP1girpzVXWN1WY",
+        },
+        testnetExecutable: true,
+        privacyBoundary: "Payment corridor proves execution receipts while keeping private balance/login operations behind wallet-authenticated payment API flows.",
+      },
+      {
+        service: "umbra-confidential-payout",
+        route: "https://privatedao.org/services/umbra-confidential-payout/",
+        executionMode: "recipient-private claim intent and relayer health corridor",
+        privacyRails: ["Umbra relayer health", "claim request", "viewing-key-ready disclosure pattern"],
+        proofEndpoints: ["/api/v1/umbra/relayer/info", "/api/v1/umbra/relayer/health", "/api/v1/private-settlement/intent"],
+        onchainEvidence: {
+          relayer: "server-side relay endpoint when configured",
+        },
+        testnetExecutable: true,
+        privacyBoundary: "The live surface prepares private settlement intent and relayer checks; full claim settlement is not claimed until SDK proof account data is recorded.",
+      },
+      {
+        service: "ika-custody-and-interoperability",
+        route: "https://privatedao.org/services/encrypt-ika-operations/",
+        executionMode: "Ika approval preparation for dWallet/2PC-MPC custody",
+        privacyRails: ["Ika Sui readiness", "Solana pre-alpha approval route", "2PC-MPC policy boundary"],
+        proofEndpoints: ["/api/v1/ika/solana-prealpha/readiness", "/api/v1/ika/solana-prealpha/approval/prepare", "/api/v1/ika/custody/prepare"],
+        onchainEvidence: {
+          custodyRoute: "approval-route-prepared-for-dwallet-execution",
+        },
+        testnetExecutable: true,
+        privacyBoundary: "The approval/custody route is executable as a preparation lane; final funded Ika dWallet DKG and final 2PC-MPC signature remain explicit release gates.",
+      },
+      {
+        service: "intelligence-and-risk",
+        route: "https://privatedao.org/intelligence/",
+        executionMode: "provider intelligence before private execution",
+        privacyRails: ["GoldRush wallet intelligence", "Zerion portfolio policy", "QVAC runtime proof", "QuickNode stream telemetry"],
+        proofEndpoints: ["/api/v1/goldrush/query", "/api/v1/zerion/portfolio", "/api/v1/qvac/runtime-proof", "/api/v1/quicknode/stream/stats"],
+        onchainEvidence: {
+          streamNetwork: "solana-testnet",
+        },
+        testnetExecutable: true,
+        privacyBoundary: "Provider data is converted into pre-sign risk context; sensitive decisions are not posted as raw strategy text on-chain.",
+      },
+      {
+        service: "treasury-routing-and-growth",
+        route: "https://privatedao.org/services/jupiter-treasury-route/",
+        executionMode: "Jupiter order preview and Torque event relay around governed execution",
+        privacyRails: ["Jupiter Developer Platform order mode", "Torque custom event relay", "policy-scoped execution receipts"],
+        proofEndpoints: ["/api/v1/jupiter/order", "/api/v1/torque/custom-event", "/api/v1/execution-events/stats"],
+        onchainEvidence: {
+          signingBoundary: "wallet-reviewed execution, not server-held user funds",
+        },
+        testnetExecutable: true,
+        privacyBoundary: "Treasury route preparation is separated from final wallet signing; growth events are relayed only with scoped server credentials.",
+      },
+    ],
+    crossServiceControls: [
+      "No browser localStorage vote salt is required for the private voting remediation path.",
+      "Provider keys are read from server environment only.",
+      "QuickNode stream auth accepts scoped headers and does not persist raw payloads.",
+      "Public pages receive proof endpoints and receipts, not private manifests or private keys.",
+      "Every sensitive operation should preserve Review -> Sign -> Verify.",
+    ],
+    liveProofLinks: {
+      readiness: "https://api.privatedao.org/api/v1/readiness",
+      cryptographicReadiness: "https://api.privatedao.org/api/v1/cryptographic-readiness",
+      privacyExecutionMatrix: "https://api.privatedao.org/api/v1/privacy-execution-matrix",
+      judge: "https://privatedao.org/judge/",
+      proof: "https://privatedao.org/proof/",
+    },
+    claimBoundary: cryptographicReadiness.claimBoundary,
+  };
+}
+
 async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
   if (req.method === "OPTIONS") {
     writeJson(res, 200, { ok: true });
@@ -2219,6 +2397,13 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
     if (req.method === "POST" && (pathname === "/api/torque/custom-event" || pathname === "/api/v1/torque/custom-event")) {
       const body = await readRequestJson(req);
       const result = await forwardTorqueEvent(body);
+      writeJson(res, result.ok ? 200 : 502, result);
+      return;
+    }
+
+    if (req.method === "POST" && (pathname === "/api/jupiter/order" || pathname === "/api/v1/jupiter/order")) {
+      const body = await readRequestJson(req);
+      const result = await fetchJupiterOrder(body);
       writeJson(res, result.ok ? 200 : 502, result);
       return;
     }
@@ -2390,6 +2575,8 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           quickNodeStream: "/api/v1/quicknode/stream",
           quickNodeStreamStats: "/api/v1/quicknode/stream/stats",
           cryptographicReadiness: "/api/v1/cryptographic-readiness",
+          privacyExecutionMatrix: "/api/v1/privacy-execution-matrix",
+          jupiterOrder: "/api/v1/jupiter/order",
           readiness: "/api/v1/readiness",
         },
       });
@@ -2398,6 +2585,11 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
 
     if (pathname === "/api/v1/cryptographic-readiness") {
       writeJson(res, 200, cryptographicReadinessStatus());
+      return;
+    }
+
+    if (pathname === "/api/v1/privacy-execution-matrix") {
+      writeJson(res, 200, privacyExecutionMatrixStatus());
       return;
     }
 
@@ -2425,6 +2617,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           api: "https://api.privatedao.org/api/v1",
           quickNodeStats: "https://api.privatedao.org/api/v1/quicknode/stream/stats",
           cryptographicReadiness: "https://api.privatedao.org/api/v1/cryptographic-readiness",
+          privacyExecutionMatrix: "https://api.privatedao.org/api/v1/privacy-execution-matrix",
           judge: "https://privatedao.org/judge/",
           proof: "https://privatedao.org/proof/",
           security: "https://privatedao.org/security/",
@@ -2584,6 +2777,17 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
       }
       const body = await readRequestJson(req);
       const result = await forwardTorqueEvent(body);
+      writeJson(res, result.ok ? 200 : 502, result);
+      return;
+    }
+
+    if (pathname === "/api/jupiter/order" || pathname === "/api/v1/jupiter/order") {
+      if ((req.method as string) !== "POST") {
+        writeJson(res, 405, { ok: false, error: "Jupiter order preview requires POST." });
+        return;
+      }
+      const body = await readRequestJson(req);
+      const result = await fetchJupiterOrder(body);
       writeJson(res, result.ok ? 200 : 502, result);
       return;
     }

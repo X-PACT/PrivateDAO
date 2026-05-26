@@ -200,6 +200,14 @@ export default function JudgePage() {
       cta: "Open JSON",
     },
     {
+      label: "Privacy execution matrix",
+      value: "Every service -> rail -> proof",
+      detail:
+        "A dedicated backend route now maps governance, payroll, MagicBlock, Umbra, Ika, GoldRush, Zerion, QVAC, QuickNode, Jupiter, and Torque to their privacy rail, execution mode, proof endpoint, and boundary.",
+      href: "https://api.privatedao.org/api/v1/privacy-execution-matrix",
+      cta: "Open matrix JSON",
+    },
+    {
       label: "Release proof package",
       value: "Testnet -> mainnet gates",
       detail:
@@ -404,11 +412,17 @@ export default function JudgePage() {
             <Link href="/services/encrypt-ika-operations" className={cn(buttonVariants({ size: "sm" }))}>
               Encrypt / Ika
             </Link>
+            <a href="https://api.privatedao.org/api/v1/privacy-execution-matrix" target="_blank" rel="noreferrer" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+              Privacy matrix JSON
+            </a>
             <Link href="/services/magicblock-private-payments" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
               MagicBlock
             </Link>
             <Link href="/documents/zk-standalone-verifier-testnet-2026-05-23" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
               ZK verifier
+            </Link>
+            <Link href="/documents/privacy-execution-matrix-2026-05-26" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+              Privacy execution doc
             </Link>
           </div>
         </div>

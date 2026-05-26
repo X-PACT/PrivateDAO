@@ -218,6 +218,7 @@
     "verify:frontier-track-closure": "ts-node scripts/verify-frontier-track-closure.ts",
     "verify:cryptographic-onchain-matrix": "ts-node scripts/verify-cryptographic-onchain-matrix.ts",
     "verify:mainnet-cryptographic-readiness": "ts-node scripts/verify-mainnet-cryptographic-readiness.ts",
+    "verify:privacy-execution-matrix": "ts-node scripts/verify-privacy-execution-matrix.ts",
     "verify:colosseum-competitive": "ts-node scripts/verify-colosseum-competitive-analysis.ts",
     "verify:weekly-updates": "ts-node scripts/verify-weekly-update-videos.ts",
     "verify:weekly-youtube-ready": "ts-node scripts/verify-weekly-youtube-ready.ts",

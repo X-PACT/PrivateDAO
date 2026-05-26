@@ -1,0 +1,41 @@
+# Privacy Execution Matrix — 2026-05-26
+
+PrivateDAO now exposes a single backend-readable matrix for every privacy and intelligence rail:
+
+`https://api.privatedao.org/api/v1/privacy-execution-matrix`
+
+This endpoint exists so the product, reviewers, and operators can see how sensitive services move through:
+
+`Review -> Sign -> Verify`
+
+without exposing private payroll rows, private balances, strategy text, provider API keys, RPC tokens, PEM contents, wallet secret keys, or private manifests.
+
+## Public Testnet Anchors
+
+- PrivateDAO program: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
+- ZK verifier program: `5H7Afyqdh5yPekkZJ5UM2j3HNB2bRvU8aVv8XoqeAW1j`
+- REFHE configure: `3fygnmHzFpRQEbHq9q6u3djBnkTEcYz9y1TSwxDmbnuemshrMwLmy9CqpjifjRb7SmW3DbmXrkyq35cnjU7mMSPi`
+- REFHE settle: `5TmS2AcpAmifcoG97U63Unzy7wt7B2NfyhBRs8Z6C4r1eqcWthEqf3GLcZXQ33sVYHf9YwfvBNhZD8ZZdt4HRwEY`
+- MagicBlock configure: `4UiUumtuGeDciojDA26PkQby7RFiTNb12UG4ACcvGMGfQj24PUPxK5Apeno7EY8mbCvq8nR6h6nfxDcBpjPvGvPj`
+- MagicBlock settle: `22XW8XVhWwQtChNQK2aEqXv5BVBbckxUmu4NsisoZQW21KA5ii87gVNUTcNoZ9e1vYKnHmm62qP1girpzVXWN1WY`
+- Evidence-gated payout execution: `2a8sHWgiVCZkstybMff2M9R6DVU4Y96Rfsg8mqYs7K3xcYSEG1zMcq2iSTNwLD6FgfXvxxxWpwEP9Tbyin47RXvE`
+
+## Service Coverage
+
+| Service | Privacy / intelligence rail | Public route | Backend proof |
+| --- | --- | --- | --- |
+| Private governance | commit-reveal, ZK verifier companion, nullifier-ready primitive | `/govern/` | `/api/v1/runtime`, `/api/v1/cryptographic-readiness` |
+| Confidential payroll | REFHE envelope, encrypted manifest hash, selective disclosure receipt | `/payroll/` | `/api/v1/refhe/payroll/proof` |
+| Private payments | MagicBlock private corridor and receipt proof | `/services/magicblock-private-payments/` | `/api/v1/magicblock/onchain-proof?refresh=1` |
+| Umbra payout | recipient-private claim intent and relayer health | `/services/umbra-confidential-payout/` | `/api/v1/umbra/relayer/info`, `/api/v1/umbra/relayer/health` |
+| Ika custody | Solana approval preparation for Ika dWallet / 2PC-MPC route | `/services/encrypt-ika-operations/` | `/api/v1/ika/solana-prealpha/readiness`, `/api/v1/ika/solana-prealpha/approval/prepare` |
+| Intelligence | GoldRush, Zerion, QVAC, QuickNode Stream telemetry | `/intelligence/` | `/api/v1/goldrush/query`, `/api/v1/zerion/portfolio`, `/api/v1/qvac/runtime-proof`, `/api/v1/quicknode/stream/stats` |
+| Treasury / growth | Jupiter order preview and Torque custom event relay | `/services/jupiter-treasury-route/`, `/services/torque-growth-loop/` | `/api/v1/jupiter/order`, `/api/v1/torque/custom-event` |
+
+## Boundary
+
+This matrix does not claim mainnet funds are live. It does not claim final funded Ika dWallet DKG, final Ika 2PC-MPC signatures, or full Umbra claim settlement unless those are separately recorded with execution evidence.
+
+It does prove the operating shape of the product: sensitive services are routed through private/intelligent preparation, wallet-controlled execution, and public-safe proof.
+
+No private keys, provider API keys, RPC tokens, PEM contents, or wallet secret keys are included.

@@ -78,6 +78,18 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/cryptographic-onchain-matrix-2026-05-25.md`,
   },
   {
+    slug: "privacy-execution-matrix-2026-05-26",
+    title: "Privacy Execution Matrix",
+    category: "Security",
+    summary:
+      "Backend-readable map that binds governance, payroll, private payments, Umbra, Ika, intelligence, Jupiter, Torque, GoldRush, Zerion, QVAC, and QuickNode to the exact privacy rail, route, proof endpoint, and boundary.",
+    audience: "Judges, operators, security reviewers, Solana builders, ecosystem partners",
+    boundary:
+      "Execution matrix only; it shows how every sensitive service routes through privacy or intelligence controls on Testnet without claiming mainnet funds, final Ika 2PC-MPC signatures, or full Umbra claim settlement.",
+    docPath: "docs/privacy-execution-matrix-2026-05-26.md",
+    rawHref: `${repositoryBlobBase}/docs/privacy-execution-matrix-2026-05-26.md`,
+  },
+  {
     slug: "frontier-track-closure-matrix-2026-05-25",
     title: "Frontier Track Closure Matrix",
     category: "Reviewer core",

@@ -20,11 +20,12 @@ chain_json="$(fetch_json /api/v1/chain/latest)"
 quicknode_json="$(fetch_json /api/v1/quicknode/stream/stats)"
 readiness_json="$(fetch_json /api/v1/readiness)"
 cryptographic_json="$(fetch_json /api/v1/cryptographic-readiness)"
+privacy_matrix_json="$(fetch_json /api/v1/privacy-execution-matrix)"
 
-python3 - <<'PY' "$EXPECTED_PROGRAM_ID" "$health_json" "$config_json" "$metrics_json" "$qvac_json" "$umbra_json" "$freshness_json" "$visitors_json" "$chain_json" "$quicknode_json" "$readiness_json" "$cryptographic_json"
+python3 - <<'PY' "$EXPECTED_PROGRAM_ID" "$health_json" "$config_json" "$metrics_json" "$qvac_json" "$umbra_json" "$freshness_json" "$visitors_json" "$chain_json" "$quicknode_json" "$readiness_json" "$cryptographic_json" "$privacy_matrix_json"
 import json, sys
 
-expected_program_id, health_json, config_json, metrics_json, qvac_json, umbra_json, freshness_json, visitors_json, chain_json, quicknode_json, readiness_json, cryptographic_json = sys.argv[1:]
+expected_program_id, health_json, config_json, metrics_json, qvac_json, umbra_json, freshness_json, visitors_json, chain_json, quicknode_json, readiness_json, cryptographic_json, privacy_matrix_json = sys.argv[1:]
 health = json.loads(health_json)
 config = json.loads(config_json)
 metrics = json.loads(metrics_json)
@@ -36,6 +37,7 @@ chain = json.loads(chain_json)
 quicknode = json.loads(quicknode_json)
 readiness = json.loads(readiness_json)
 cryptographic = json.loads(cryptographic_json)
+privacy_matrix = json.loads(privacy_matrix_json)
 
 assert health["ok"] is True and health["health"] == "healthy", "remote /healthz failed"
 assert health["runtime"]["programId"] == expected_program_id, f"remote /healthz program drift: {health['runtime']['programId']} != {expected_program_id}"
@@ -74,5 +76,18 @@ assert readiness["quickNodeStream"]["statePersistence"] == "runtime-volume", "re
 assert cryptographic["ok"] is True and cryptographic["source"] == "privatedao-cryptographic-readiness", "remote cryptographic readiness API failed"
 assert cryptographic["cluster"] == "testnet", "remote cryptographic readiness API is not pinned to Testnet"
 assert any(rail["id"] == "ika-2pc-mpc" for rail in cryptographic["rails"]), "remote cryptographic readiness missing Ika 2PC-MPC rail"
+assert privacy_matrix["ok"] is True and privacy_matrix["source"] == "privatedao-privacy-execution-matrix", "remote privacy execution matrix failed"
+assert privacy_matrix["cluster"] == "testnet", "remote privacy execution matrix is not pinned to Testnet"
+services = {entry["service"] for entry in privacy_matrix["serviceMatrix"]}
+for required in [
+    "private-governance",
+    "confidential-payroll",
+    "private-payments",
+    "umbra-confidential-payout",
+    "ika-custody-and-interoperability",
+    "intelligence-and-risk",
+    "treasury-routing-and-growth",
+]:
+    assert required in services, f"remote privacy execution matrix missing {required}"
 print("Remote primary host verification: PASS")
 PY

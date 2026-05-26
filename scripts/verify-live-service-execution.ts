@@ -75,6 +75,28 @@ const API_CHECKS: ApiCheck[] = [
     validate: (payload) => (payload?.ok === true ? null : "cryptographic readiness did not return ok=true"),
   },
   {
+    name: "privacy-execution-matrix",
+    method: "GET",
+    url: `${API}/api/v1/privacy-execution-matrix`,
+    validate: (payload) => {
+      if (payload?.ok !== true) return "privacy execution matrix did not return ok=true";
+      const services = Array.isArray(payload?.serviceMatrix) ? payload.serviceMatrix : [];
+      const required = [
+        "private-governance",
+        "confidential-payroll",
+        "private-payments",
+        "umbra-confidential-payout",
+        "ika-custody-and-interoperability",
+        "intelligence-and-risk",
+        "treasury-routing-and-growth",
+      ];
+      const missing = required.filter((service) => !services.some((entry: any) => entry?.service === service));
+      if (missing.length) return `privacy execution matrix missing ${missing.join(", ")}`;
+      if (payload?.cluster !== "testnet") return `privacy execution matrix cluster mismatch: ${payload?.cluster}`;
+      return null;
+    },
+  },
+  {
     name: "magicblock-onchain-proof",
     method: "GET",
     url: `${API}/api/v1/magicblock/onchain-proof?refresh=1`,
