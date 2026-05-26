@@ -48,6 +48,7 @@ Every service row in the live API now carries `executionProofClass`, `visitorRep
 4. The browser hashes the ciphertext and builds a Memo Program transaction containing `PDAO_ENCRYPTED_CLAIM_V1`, the selected rail, the proof class, and the digest prefix.
 5. The visitor signs from their own wallet.
 6. The page returns a new Testnet signature, Explorer link, and local encrypted packet for inspection.
+7. The visitor can verify the encrypted receipt locally, copy it, or download it as a selective-disclosure receipt without uploading private claim context.
 
 This gives every rail a live visitor-generated encrypted on-chain claim path today, while the stronger native rails continue to carry their own evidence: REFHE signatures, MagicBlock signatures, ZK verifier receipts, Ika readiness receipts, Umbra claim-intent receipts, Jupiter route previews, Torque delivery receipts, and intelligence-provider proofs.
 

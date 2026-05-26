@@ -26,6 +26,9 @@ type EncryptedClaimPacket = {
   iv: string;
   key: string;
   ciphertext: string;
+  commitmentMemo: string;
+  memoProgram: string;
+  disclosureMode: "local-selective-disclosure";
   plaintextPreview: {
     rail: string;
     proofClass: string;
@@ -49,6 +52,11 @@ function bytesToHex(bytes: Uint8Array) {
     .join("");
 }
 
+function base64ToBytes(value: string) {
+  const binary = window.atob(value);
+  return Uint8Array.from(binary, (char) => char.charCodeAt(0));
+}
+
 async function buildEncryptedClaimPacket(input: {
   claim: PrivacyClaim;
   visitor: string;
@@ -70,14 +78,24 @@ async function buildEncryptedClaimPacket(input: {
   const ciphertext = new Uint8Array(await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, encoded));
   const rawKey = new Uint8Array(await crypto.subtle.exportKey("raw", key));
   const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", ciphertext));
+  const digestHex = bytesToHex(digest);
+  const commitmentMemo = [
+    "PDAO_ENCRYPTED_CLAIM_V1",
+    input.claim.id,
+    input.claim.proofClass,
+    digestHex.slice(0, 40),
+  ].join(":");
 
   return {
     version: "pdao-encrypted-claim-v1",
     algorithm: "AES-GCM-256",
-    digest: bytesToHex(digest),
+    digest: digestHex,
     iv: bytesToBase64(iv),
     key: bytesToBase64(rawKey),
     ciphertext: bytesToBase64(ciphertext),
+    commitmentMemo,
+    memoProgram: MEMO_PROGRAM_ID.toBase58(),
+    disclosureMode: "local-selective-disclosure",
     plaintextPreview: {
       rail: input.claim.id,
       proofClass: input.claim.proofClass,
@@ -85,6 +103,27 @@ async function buildEncryptedClaimPacket(input: {
       visitor: `${input.visitor.slice(0, 6)}...${input.visitor.slice(-6)}`,
       createdAt: input.createdAt,
     },
+  };
+}
+
+async function verifyEncryptedClaimPacket(packet: EncryptedClaimPacket) {
+  const ciphertext = base64ToBytes(packet.ciphertext);
+  const digest = bytesToHex(new Uint8Array(await crypto.subtle.digest("SHA-256", ciphertext)));
+  if (digest !== packet.digest) {
+    throw new Error("Encrypted receipt digest mismatch.");
+  }
+
+  const key = await crypto.subtle.importKey("raw", base64ToBytes(packet.key), { name: "AES-GCM" }, false, ["decrypt"]);
+  const plaintextBytes = await crypto.subtle.decrypt({ name: "AES-GCM", iv: base64ToBytes(packet.iv) }, key, ciphertext);
+  return JSON.parse(new TextDecoder().decode(plaintextBytes)) as {
+    rail: string;
+    label: string;
+    proofClass: string;
+    claim: string;
+    route: string;
+    network: string;
+    visitor: string;
+    createdAt: string;
   };
 }
 
@@ -147,6 +186,7 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
   const [status, setStatus] = useState(`Connect a ${SOLANA_NETWORK_LABEL} wallet, pick a privacy rail, and anchor the claim on-chain.`);
   const [signature, setSignature] = useState<string | null>(null);
   const [encryptedPacket, setEncryptedPacket] = useState<EncryptedClaimPacket | null>(null);
+  const [receiptStatus, setReceiptStatus] = useState<string | null>(null);
   const [isRunning, setIsRunning] = useState(false);
 
   const selectedClaim = useMemo(
@@ -163,6 +203,7 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
     setIsRunning(true);
     setSignature(null);
     setEncryptedPacket(null);
+    setReceiptStatus(null);
     setStatus(`Encrypting ${selectedClaim.label} claim locally before anchoring it on ${SOLANA_NETWORK_LABEL}...`);
 
     try {
@@ -174,12 +215,6 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
         createdAt,
       });
       setEncryptedPacket(packet);
-      const memo = [
-        "PDAO_ENCRYPTED_CLAIM_V1",
-        selectedClaim.id,
-        selectedClaim.proofClass,
-        packet.digest.slice(0, 40),
-      ].join(":");
 
       const transaction = new Transaction({
         feePayer: publicKey,
@@ -189,7 +224,7 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
         new TransactionInstruction({
           keys: [],
           programId: MEMO_PROGRAM_ID,
-          data: Buffer.from(memo, "utf8"),
+          data: Buffer.from(packet.commitmentMemo, "utf8"),
         }),
       );
 
@@ -227,6 +262,35 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
     }
   }
 
+  async function copyEncryptedReceipt() {
+    if (!encryptedPacket) return;
+    await navigator.clipboard.writeText(JSON.stringify({ signature, packet: encryptedPacket }, null, 2));
+    setReceiptStatus("Encrypted receipt copied locally. It is not uploaded by this page.");
+  }
+
+  function downloadEncryptedReceipt() {
+    if (!encryptedPacket) return;
+    const payload = JSON.stringify({ signature, explorerUrl: signature ? buildSolanaTxUrl(signature) : null, packet: encryptedPacket }, null, 2);
+    const blob = new Blob([payload], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `privatedao-${encryptedPacket.plaintextPreview.rail}-encrypted-claim.json`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+    setReceiptStatus("Encrypted receipt downloaded from this browser session.");
+  }
+
+  async function verifyReceiptLocally() {
+    if (!encryptedPacket) return;
+    try {
+      const plaintext = await verifyEncryptedClaimPacket(encryptedPacket);
+      setReceiptStatus(`Local verification passed: ${plaintext.label} / ${plaintext.network} / ${plaintext.createdAt}`);
+    } catch (error) {
+      setReceiptStatus(error instanceof Error ? error.message : "Local receipt verification failed.");
+    }
+  }
+
   return (
     <section className="rounded-[30px] border border-cyan-300/18 bg-cyan-300/[0.07] p-5">
       <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-100/78">On-chain claim console</div>
@@ -244,6 +308,14 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
             claim packet and a new wallet-signed Testnet commitment from that visitor wallet, not a replay of an old
             project signature.
           </p>
+          <div className="mt-4 grid gap-3 sm:grid-cols-3">
+            {["Encrypt locally", "Anchor digest", "Verify receipt"].map((step, index) => (
+              <div key={step} className="rounded-2xl border border-cyan-300/14 bg-black/20 px-4 py-3">
+                <div className="text-[10px] uppercase tracking-[0.22em] text-cyan-100/58">Step {index + 1}</div>
+                <div className="mt-1 text-sm font-semibold text-white">{step}</div>
+              </div>
+            ))}
+          </div>
           <div className="mt-4 flex flex-wrap gap-3">
             <a href="https://faucet.solana.com/" target="_blank" rel="noreferrer" className={cn(buttonVariants({ size: "sm" }))}>
               Get Testnet SOL
@@ -301,6 +373,18 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
                 Only the digest is anchored on-chain. The key and ciphertext are shown locally so the visitor can inspect
                 what was committed without publishing private claim context.
               </div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <button type="button" onClick={() => void verifyReceiptLocally()} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+                  Verify receipt locally
+                </button>
+                <button type="button" onClick={() => void copyEncryptedReceipt()} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                  Copy encrypted receipt
+                </button>
+                <button type="button" onClick={downloadEncryptedReceipt} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                  Download receipt
+                </button>
+              </div>
+              {receiptStatus ? <div className="mt-3 rounded-xl border border-white/10 bg-black/20 p-3 text-xs text-white/62">{receiptStatus}</div> : null}
               <pre className="mt-3 max-h-52 overflow-auto rounded-xl border border-white/10 bg-black/30 p-3 text-[11px] leading-5 text-white/66">
                 {JSON.stringify(encryptedPacket, null, 2)}
               </pre>
