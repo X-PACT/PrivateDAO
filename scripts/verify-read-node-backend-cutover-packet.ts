@@ -39,10 +39,10 @@ function main() {
   const markdown = fs.readFileSync(mdPath, "utf8");
 
   assert(packet.project === "PrivateDAO", "cutover packet project mismatch");
-  assert(packet.deploymentTarget.frontendHost === "https://app.privatedao.xyz/", "cutover packet frontend host drifted");
-  assert(packet.deploymentTarget.readApiPath === "/api/v1", "cutover packet read API path drifted");
-  assert(packet.deploymentTarget.healthPath === "/healthz", "cutover packet health path drifted");
-  assert(packet.deploymentTarget.metricsPath === "/api/v1/metrics", "cutover packet metrics path drifted");
+  assert(packet.deploymentTarget.frontendHost === "https://privatedao.org/", "cutover packet frontend host drifted");
+  assert(packet.deploymentTarget.readApiPath === "https://api.privatedao.org/api/v1", "cutover packet read API path drifted");
+  assert(packet.deploymentTarget.healthPath === "https://api.privatedao.org/healthz", "cutover packet health path drifted");
+  assert(packet.deploymentTarget.metricsPath === "https://api.privatedao.org/api/v1/metrics", "cutover packet metrics path drifted");
   assert(packet.deploymentTarget.sameDomainRecommended === true, "cutover packet same-domain flag drifted");
   assert(packet.publicProof.indexedProposalCount > 0, "cutover packet missing indexed proposals");
   assert(packet.publicProof.uniqueDaos > 0, "cutover packet missing unique DAOs");

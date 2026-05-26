@@ -18,14 +18,14 @@ function main() {
     const readme = fs_1.default.readFileSync(README, "utf8");
     const domainMirror = fs_1.default.readFileSync(DOMAIN_MIRROR, "utf8");
     const cutoverChecklist = fs_1.default.readFileSync(CUTOVER_CHECKLIST, "utf8");
-    assertContains(rootIndex, "/PrivateDAO/_next/", "Root live surface is missing the GitHub Pages asset prefix.");
+    assertContains(rootIndex, "/_next/static/", "Root live surface is missing the canonical Next.js asset path.");
     assertContains(webConfig, 'output: "export"', "Next config lost static export mode.");
     assertContains(webConfig, "trailingSlash: true", "Next config lost trailing slash support.");
     assertContains(webConfig, "basePath", "Next config lost basePath support.");
     assertContains(siteUrls, "buildJudgeViewUrl", "site URLs helper is missing judge URL support.");
-    assertContains(siteUrls, "/proof/?judge=1", "site URLs helper is missing the proof judge route.");
+    assertContains(siteUrls, "/judge/", "site URLs helper is missing the canonical judge route.");
     assertContains(domainMirror, "Application-Layer Hardening Already Applied", "Domain mirror strategy is missing app-layer hardening section.");
-    assertContains(cutoverChecklist, "app.privatedao.xyz", "Cutover checklist is missing the `.xyz` mirror target.");
+    assertContains(cutoverChecklist, "https://privatedao.org/", "Cutover checklist is missing the canonical production target.");
     assertContains(cutoverChecklist, "/proof/?judge=1", "Cutover checklist is missing proof view validation.");
     assertContains(cutoverChecklist, "/diagnostics/", "Cutover checklist is missing diagnostics validation.");
     assertContains(readme, "docs/domain-mirror.md", "README is missing domain mirror strategy link.");
