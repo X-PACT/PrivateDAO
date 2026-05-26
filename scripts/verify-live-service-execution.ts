@@ -174,6 +174,76 @@ const PAGE_CHECKS: PageCheck[] = [
     url: `${ROOT}/business-model/`,
     requiredFragments: ["PrivateDAO"],
   },
+  {
+    name: "legacy-judges",
+    url: `${ROOT}/judges/`,
+    requiredFragments: ["PrivateDAO"],
+  },
+  {
+    name: "legacy-reviewer",
+    url: `${ROOT}/reviewer/`,
+    requiredFragments: ["PrivateDAO"],
+  },
+  {
+    name: "legacy-arena",
+    url: `${ROOT}/arena/`,
+    requiredFragments: ["PrivateDAO"],
+  },
+  {
+    name: "legacy-colosseum",
+    url: `${ROOT}/colosseum/`,
+    requiredFragments: ["PrivateDAO"],
+  },
+  {
+    name: "legacy-tracks",
+    url: `${ROOT}/tracks/`,
+    requiredFragments: ["PrivateDAO"],
+  },
+  {
+    name: "legacy-demo",
+    url: `${ROOT}/demo/`,
+    requiredFragments: ["PrivateDAO"],
+  },
+  {
+    name: "legacy-whiteprint",
+    url: `${ROOT}/whiteprint/`,
+    requiredFragments: ["PrivateDAO"],
+  },
+  {
+    name: "legacy-dao-ui-template",
+    url: `${ROOT}/dao-ui-template/`,
+    requiredFragments: ["PrivateDAO"],
+  },
+  {
+    name: "legacy-governance-template",
+    url: `${ROOT}/governance-template/`,
+    requiredFragments: ["PrivateDAO"],
+  },
+  {
+    name: "legacy-payment-template",
+    url: `${ROOT}/payment-template/`,
+    requiredFragments: ["PrivateDAO"],
+  },
+  {
+    name: "legacy-runtime-template",
+    url: `${ROOT}/runtime-template/`,
+    requiredFragments: ["PrivateDAO"],
+  },
+  {
+    name: "legacy-wallet-template",
+    url: `${ROOT}/wallet-template/`,
+    requiredFragments: ["PrivateDAO"],
+  },
+  {
+    name: "legacy-devnet-billing-rehearsal",
+    url: `${ROOT}/services/devnet-billing-rehearsal/`,
+    requiredFragments: ["PrivateDAO"],
+  },
+  {
+    name: "legacy-testnet-billing-rehearsal",
+    url: `${ROOT}/services/testnet-billing-rehearsal/`,
+    requiredFragments: ["PrivateDAO"],
+  },
 ];
 
 const API_CHECKS: ApiCheck[] = [
