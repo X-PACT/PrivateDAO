@@ -45,6 +45,8 @@ function main() {
     "protocol-native-first-with-visitor-repeatable-onchain-claim",
     "magicblock-private-payments-per",
     "ika-2pc-mpc-dwallet-custody",
+    "IKA_SOLANA_FINAL_APPROVAL_V1",
+    "ikaSolanaFinalApprovalStatus",
     "visitorClaimRepeatable",
     "claimPrepareUrl",
     "claimMemoTemplate",
@@ -101,6 +103,8 @@ function main() {
     "Frontier Protocol Spine",
     "https://api.privatedao.org/api/v1/frontier/privacy-protocol-spine",
     "Building and development continue without interruption",
+    "Ika Solana final approval signature",
+    "3hvwNpfrUxdkt44VEEuXDXuhgcseVZxBhnZEBnWCCQYbsd9rv3eQe9JiCGZPc63Fa3CptQET5qkr7UKLQ1Ev4xki",
   ]) {
     includes(doc, required, "privacy execution matrix doc");
   }

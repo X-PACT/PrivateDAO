@@ -362,7 +362,10 @@ const API_CHECKS: ApiCheck[] = [
         if (typeof entry?.executionProofClass !== "string" || entry.executionProofClass.length < 8) {
           return `${entry?.service} missing executionProofClass`;
         }
-        if (typeof entry?.blockchainVerificationUrl !== "string" || !entry.blockchainVerificationUrl.includes("cluster=testnet")) {
+        if (
+          typeof entry?.blockchainVerificationUrl !== "string" ||
+          (!entry.blockchainVerificationUrl.includes("cluster=testnet") && !entry.blockchainVerificationUrl.includes("cluster=devnet"))
+        ) {
           return `${entry?.service} missing Testnet blockchainVerificationUrl`;
         }
         if (typeof entry?.currentOnchainStatus !== "string" || entry.currentOnchainStatus.length < 8) {
@@ -409,7 +412,10 @@ const API_CHECKS: ApiCheck[] = [
         if (typeof claim?.repeatabilityModel !== "string" || !claim.repeatabilityModel.includes("Every visitor creates a fresh")) {
           return `${claim?.service} missing fresh visitor repeatability model`;
         }
-        if (typeof claim?.blockchainVerificationUrl !== "string" || !claim.blockchainVerificationUrl.includes("cluster=testnet")) {
+        if (
+          typeof claim?.blockchainVerificationUrl !== "string" ||
+          (!claim.blockchainVerificationUrl.includes("cluster=testnet") && !claim.blockchainVerificationUrl.includes("cluster=devnet"))
+        ) {
           return `${claim?.service} missing Testnet blockchain verification URL`;
         }
         if (claim.nativeProofClass === "onchain-signature") {
@@ -459,7 +465,7 @@ const API_CHECKS: ApiCheck[] = [
       for (const protocol of protocols) {
         if (protocol?.visitorRepeatableOnchainClaim !== true) return `${protocol?.id} is not visitor-repeatable on-chain`;
         if (!Array.isArray(protocol?.nativeProofEndpoints) || protocol.nativeProofEndpoints.length === 0) return `${protocol?.id} missing native proof endpoints`;
-        if (!Array.isArray(protocol?.blockchainVerificationUrls) || !protocol.blockchainVerificationUrls.some((url: string) => url.includes("cluster=testnet"))) {
+        if (!Array.isArray(protocol?.blockchainVerificationUrls) || !protocol.blockchainVerificationUrls.some((url: string) => url.includes("cluster=testnet") || url.includes("cluster=devnet"))) {
           return `${protocol?.id} missing Testnet blockchain verification URL`;
         }
         if (typeof protocol?.nativeProofClass !== "string" || protocol.nativeProofClass.length < 8) return `${protocol?.id} missing native proof class`;
@@ -469,7 +475,9 @@ const API_CHECKS: ApiCheck[] = [
       const refhe = protocols.find((entry: any) => entry?.id === "encrypt-refhe-confidential-payroll");
       if (!refhe?.blockchainVerificationUrls?.some((url: string) => url.includes("2a8sHWgi"))) return "REFHE spine must include payout execution signature";
       const ika = protocols.find((entry: any) => entry?.id === "ika-2pc-mpc-dwallet-custody");
-      if (typeof ika?.boundary !== "string" || !ika.boundary.includes("not claimed")) return "Ika spine must preserve final-signature boundary";
+      if (ika?.nativeProofClass !== "onchain-signature") return "Ika spine must use onchain-signature after Solana final approval";
+      if (!ika?.nativeProofEndpoints?.some((endpoint: string) => endpoint.includes("/api/v1/ika/solana-prealpha/final-approval"))) return "Ika spine must include final approval endpoint";
+      if (!ika?.blockchainVerificationUrls?.some((url: string) => url.includes("3hvwNpfr"))) return "Ika spine must include final approval signature";
       if (!Array.isArray(payload?.mustPass) || !payload.mustPass.some((entry: string) => entry.includes("PDAO_ENCRYPTED_CLAIM_V1"))) {
         return "Frontier privacy spine must enforce visitor Memo claim route";
       }
@@ -643,6 +651,18 @@ const API_CHECKS: ApiCheck[] = [
       const receiptHash = payload?.receiptHash || payload?.receipt?.receiptHash;
       if (payload?.ok !== true) return "REFHE payroll proof did not return ok=true";
       if (typeof receiptHash !== "string" || receiptHash.length < 32) return "REFHE payroll proof missing receipt hash";
+      return null;
+    },
+  },
+  {
+    name: "ika-solana-final-approval",
+    method: "GET",
+    url: `${API}/api/v1/ika/solana-prealpha/final-approval`,
+    validate: (payload) => {
+      if (payload?.ok !== true) return "Ika Solana final approval did not return ok=true";
+      if (payload?.protocol !== "IKA_SOLANA_FINAL_APPROVAL_V1") return "Ika Solana final approval protocol mismatch";
+      if (payload?.signature !== "3hvwNpfrUxdkt44VEEuXDXuhgcseVZxBhnZEBnWCCQYbsd9rv3eQe9JiCGZPc63Fa3CptQET5qkr7UKLQ1Ev4xki") return "Ika Solana final approval signature mismatch";
+      if (typeof payload?.explorerUrl !== "string" || !payload.explorerUrl.includes("cluster=devnet")) return "Ika Solana final approval missing devnet explorer URL";
       return null;
     },
   },

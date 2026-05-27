@@ -1,0 +1,16 @@
+{
+  "ok": true,
+  "source": "privatedao-ika-solana-final-approval",
+  "generatedAt": "2026-05-27T13:17:06.880Z",
+  "network": "devnet",
+  "clusterLabel": "ika-solana-prealpha",
+  "protocol": "IKA_SOLANA_FINAL_APPROVAL_V1",
+  "programId": "87W54kGYFQ1rgWqMeu4XTPHWXWmXSQCcjm8vCTfiq1oY",
+  "memoProgram": "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr",
+  "operator": "EFpoUvDwHwQJDW1dY2otjRbeH8todKSe8kJK9M2U5g2P",
+  "routeDigest": "61ee0b81a0b58f8426f8d1bb1c92db5dc91959ee29acbc8fdf764f920b5f11bf",
+  "memo": "IKA_SOLANA_FINAL_APPROVAL_V1:87W54kGYFQ1rgWqMeu4XTPHWXWmXSQCcjm8vCTfiq1oY:EFpoUvDwHwQJDW1dY2otjRbeH8todKSe8kJK9M2U5g2P:61ee0b81a0b58f8426f8d1bb1c92db5dc91959ee",
+  "signature": "3hvwNpfrUxdkt44VEEuXDXuhgcseVZxBhnZEBnWCCQYbsd9rv3eQe9JiCGZPc63Fa3CptQET5qkr7UKLQ1Ev4xki",
+  "explorerUrl": "https://explorer.solana.com/tx/3hvwNpfrUxdkt44VEEuXDXuhgcseVZxBhnZEBnWCCQYbsd9rv3eQe9JiCGZPc63Fa3CptQET5qkr7UKLQ1Ev4xki?cluster=devnet",
+  "boundary": "This is a real Solana operator-signed final approval attestation for the Ika pre-alpha custody route. It does not claim a Sui dWallet DKG transaction unless a separate Ika dWallet receipt is recorded."
+}

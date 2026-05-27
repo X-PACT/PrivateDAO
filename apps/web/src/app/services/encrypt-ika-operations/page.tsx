@@ -36,11 +36,11 @@ const executionRails = [
   },
   {
     title: "Ika / 2PC-MPC custody preparation",
-    status: "Live custody route",
+    status: "Solana final approval signed",
     description:
-      "Read the Ika SDK network route, Solana pre-alpha executable program, funded operator boundary, approval-preparation path, and custody-preparation route.",
+      "Open the Ika Solana final approval signature, then read the Ika SDK network route, executable pre-alpha program, funded operator boundary, and custody-preparation route.",
     action: "#ika-readiness",
-    proof: "https://api.privatedao.org/api/v1/ika/custody/prepare",
+    proof: "https://api.privatedao.org/api/v1/ika/solana-prealpha/final-approval",
   },
   {
     title: "Browser encrypted manifest",
@@ -78,7 +78,7 @@ export default function EncryptIkaOperationsPage() {
         <h2 className="mt-3 text-2xl font-semibold text-white">REFHE, MagicBlock, and Ika are tracked as protocol-native rails</h2>
         <p className="mt-3 max-w-4xl text-sm leading-7 text-white/66">
           The live read-node now exposes one spine for the Frontier privacy stack: REFHE finalized Testnet receipts,
-          MagicBlock private corridor receipts, Ika SDK and pre-alpha custody readiness, and the visitor-repeatable
+          MagicBlock private corridor receipts, Ika Solana final approval, Ika SDK and pre-alpha custody readiness, and the visitor-repeatable
           Solana Memo claim that every reviewer can create fresh from their own wallet. Building and development continue without interruption while each rail moves toward deeper native execution.
         </p>
         <div className="mt-4 flex flex-wrap gap-3">
@@ -94,7 +94,7 @@ export default function EncryptIkaOperationsPage() {
         </div>
       </section>
       <OperationStateLegend
-        description="This route separates what is runnable today from the final production gates: REFHE and client encryption execute now; Ika/2PC-MPC is a live readiness, approval-preparation, and custody-preparation lane until funded dWallet DKG and final 2PC-MPC signatures are recorded."
+        description="This route separates what is runnable today from the final production gates: REFHE and client encryption execute now; Ika has a real Solana pre-alpha final approval signature plus readiness, approval-preparation, and custody-preparation lanes while Ika-network dWallet DKG remains separately recorded when available."
       />
       <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5 text-sm leading-7 text-white/68">
         The product value here is direct: sensitive DAO operations are encrypted before execution, receipts are generated
@@ -137,10 +137,10 @@ export default function EncryptIkaOperationsPage() {
         <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-100/78">Start here</div>
         <h2 className="mt-3 text-2xl font-semibold text-white">Four concrete execution rails, one truth boundary</h2>
         <p className="mt-3 max-w-4xl text-sm leading-7 text-white/64">
-          REFHE, browser encryption, and receipt generation are runnable from the page. Ika/2PC-MPC is exposed as a live
-          readiness, approval-preparation, and custody-preparation rail: executable program and funded operator checks are
-          visible, while final funded dWallet DKG and final 2PC-MPC signing remain the named production gate instead of
-          being overclaimed.
+          REFHE, browser encryption, and receipt generation are runnable from the page. Ika/2PC-MPC now includes a real
+          Solana pre-alpha final approval signature, plus readiness, approval-preparation, and custody-preparation rails:
+          executable program and funded operator checks are visible, while Ika-network dWallet DKG remains a separately
+          recorded receipt class.
         </p>
         <div className="mt-5 grid gap-3 md:grid-cols-2">
           {executionRails.map((rail) => (

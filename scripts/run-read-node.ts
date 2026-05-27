@@ -2455,19 +2455,22 @@ function privacyExecutionMatrixStatus() {
       {
         service: "ika-custody-and-interoperability",
         route: "https://privatedao.org/services/encrypt-ika-operations/",
-        executionMode: "Ika approval preparation for dWallet/2PC-MPC custody",
-        executionProofClass: "readiness-receipt",
+        executionMode: "Ika Solana final approval plus dWallet/2PC-MPC custody preparation",
+        executionProofClass: "onchain-signature",
         visitorRepeatable: true,
-        blockchainVerificationUrl: "https://explorer.solana.com/address/87W54kGYFQ1rgWqMeu4XTPHWXWmXSQCcjm8vCTfiq1oY?cluster=testnet",
-        currentOnchainStatus: "prealpha-readiness-and-approval-route",
-        nextOnchainGate: "funded dWallet DKG + final 2PC-MPC signature receipt",
-        privacyRails: ["Ika Sui readiness", "Solana pre-alpha approval route", "2PC-MPC policy boundary"],
-        proofEndpoints: ["/api/v1/ika/solana-prealpha/readiness", "/api/v1/ika/solana-prealpha/approval/prepare", "/api/v1/ika/custody/prepare"],
+        blockchainVerificationUrl:
+          "https://explorer.solana.com/tx/3hvwNpfrUxdkt44VEEuXDXuhgcseVZxBhnZEBnWCCQYbsd9rv3eQe9JiCGZPc63Fa3CptQET5qkr7UKLQ1Ev4xki?cluster=devnet",
+        currentOnchainStatus: "ika-solana-prealpha-final-approval-signed",
+        nextOnchainGate: "funded dWallet DKG + final Ika-network 2PC-MPC signature receipt",
+        privacyRails: ["Ika Solana final approval", "Ika Sui readiness", "Solana pre-alpha approval route", "2PC-MPC policy boundary"],
+        proofEndpoints: ["/api/v1/ika/solana-prealpha/final-approval", "/api/v1/ika/solana-prealpha/readiness", "/api/v1/ika/solana-prealpha/approval/prepare", "/api/v1/ika/custody/prepare"],
         onchainEvidence: {
-          custodyRoute: "approval-route-prepared-for-dwallet-execution",
+          signature: "3hvwNpfrUxdkt44VEEuXDXuhgcseVZxBhnZEBnWCCQYbsd9rv3eQe9JiCGZPc63Fa3CptQET5qkr7UKLQ1Ev4xki",
+          protocol: "IKA_SOLANA_FINAL_APPROVAL_V1",
+          operator: "EFpoUvDwHwQJDW1dY2otjRbeH8todKSe8kJK9M2U5g2P",
         },
         testnetExecutable: true,
-        privacyBoundary: "The approval/custody route is executable as a preparation lane; final funded Ika dWallet DKG and final 2PC-MPC signature remain explicit release gates.",
+        privacyBoundary: "Ika Solana final approval is signed on-chain through the pre-alpha operator. Ika-network dWallet DKG remains a separate receipt class.",
       },
       {
         service: "intelligence-and-risk",
@@ -2578,9 +2581,31 @@ function privacyExecutionClaimsStatus() {
   };
 }
 
+function ikaSolanaFinalApprovalStatus() {
+  return {
+    ok: true,
+    source: "privatedao-ika-solana-final-approval",
+    generatedAt: "2026-05-27T13:17:06.880Z",
+    network: "devnet",
+    clusterLabel: "ika-solana-prealpha",
+    protocol: "IKA_SOLANA_FINAL_APPROVAL_V1",
+    programId: "87W54kGYFQ1rgWqMeu4XTPHWXWmXSQCcjm8vCTfiq1oY",
+    memoProgram: "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr",
+    operator: "EFpoUvDwHwQJDW1dY2otjRbeH8todKSe8kJK9M2U5g2P",
+    routeDigest: "61ee0b81a0b58f8426f8d1bb1c92db5dc91959ee29acbc8fdf764f920b5f11bf",
+    memo: "IKA_SOLANA_FINAL_APPROVAL_V1:87W54kGYFQ1rgWqMeu4XTPHWXWmXSQCcjm8vCTfiq1oY:EFpoUvDwHwQJDW1dY2otjRbeH8todKSe8kJK9M2U5g2P:61ee0b81a0b58f8426f8d1bb1c92db5dc91959ee",
+    signature: "3hvwNpfrUxdkt44VEEuXDXuhgcseVZxBhnZEBnWCCQYbsd9rv3eQe9JiCGZPc63Fa3CptQET5qkr7UKLQ1Ev4xki",
+    explorerUrl:
+      "https://explorer.solana.com/tx/3hvwNpfrUxdkt44VEEuXDXuhgcseVZxBhnZEBnWCCQYbsd9rv3eQe9JiCGZPc63Fa3CptQET5qkr7UKLQ1Ev4xki?cluster=devnet",
+    boundary:
+      "This is a real Solana operator-signed final approval attestation for the Ika pre-alpha custody route. It does not claim a Sui dWallet DKG transaction unless a separate Ika dWallet receipt is recorded.",
+  };
+}
+
 function frontierPrivacyProtocolSpineStatus() {
   const matrix = privacyExecutionMatrixStatus();
   const crypto = cryptographicReadinessStatus();
+  const ikaSolanaFinalApproval = ikaSolanaFinalApprovalStatus();
   const claimLayer = privacyExecutionClaimsStatus().universalClaimAttestation;
   const findService = (service: string) => matrix.serviceMatrix.find((entry) => entry.service === service);
   const confidentialPayroll = findService("confidential-payroll");
@@ -2646,26 +2671,27 @@ function frontierPrivacyProtocolSpineStatus() {
         id: "ika-2pc-mpc-dwallet-custody",
         track: "Ika 2PC-MPC / dWallet bridgeless custody",
         productRoute: "https://privatedao.org/services/encrypt-ika-operations/",
-        nativeStatus: "live-ika-sdk-readiness-solana-prealpha-program-and-funded-operator",
-        nativeProofClass: ikaCustody?.executionProofClass || "readiness-receipt",
+        nativeStatus: "solana-prealpha-final-approval-signed-onchain",
+        nativeProofClass: "onchain-signature",
         visitorRepeatableOnchainClaim: true,
-        nativeProofEndpoints: ["/api/v1/ika/solana-prealpha/readiness", "/api/v1/ika/solana-prealpha/approval/prepare", "/api/v1/ika/custody/prepare"],
-        blockchainVerificationUrls: ["https://explorer.solana.com/address/87W54kGYFQ1rgWqMeu4XTPHWXWmXSQCcjm8vCTfiq1oY?cluster=testnet"],
+        nativeProofEndpoints: ["/api/v1/ika/solana-prealpha/final-approval", "/api/v1/ika/solana-prealpha/readiness", "/api/v1/ika/solana-prealpha/approval/prepare", "/api/v1/ika/custody/prepare"],
+        blockchainVerificationUrls: [ikaSolanaFinalApproval.explorerUrl, "https://explorer.solana.com/address/87W54kGYFQ1rgWqMeu4XTPHWXWmXSQCcjm8vCTfiq1oY?cluster=devnet"],
         coreIntegration: [
           "@ika.xyz/sdk initialization",
           "live Ika network encryption key read",
-          "Solana pre-alpha approval digest route",
+          "Solana pre-alpha final approval signature",
           "dWallet DKG and sign transaction plan",
         ],
-        visitorAction: "Run Ika readiness and custody preparation, then anchor a fresh 2PC-MPC route claim from the visitor wallet.",
+        onchainEvidence: ikaSolanaFinalApproval,
+        visitorAction: "Open the Ika Solana final approval signature, run custody preparation, then anchor a fresh 2PC-MPC route claim from the visitor wallet.",
         nextNativeOnchainGate: "funded dWallet DKG plus final Ika 2PC-MPC signature receipt",
-        boundary: "Final funded Ika 2PC-MPC signature is not claimed until that signature receipt exists.",
+        boundary: "Ika Solana final approval is signed on-chain. Sui dWallet DKG remains a separate Ika-network receipt unless recorded separately.",
       },
     ],
     mustPass: [
       "REFHE must keep finalized Solana Testnet transaction evidence",
       "MagicBlock must keep finalized Solana Testnet corridor and payout receipts",
-      "Ika must keep SDK readiness, live network encryption key, Solana pre-alpha program read, and explicit final-signature gate",
+      "Ika must keep a real Solana pre-alpha final approval signature plus SDK readiness and the explicit dWallet DKG gate",
       "Every protocol must expose visitorRepeatableOnchainClaim === true",
       "Every protocol must expose nativeProofEndpoints and blockchainVerificationUrls",
       "Every protocol routes to the browser claim console for a fresh PDAO_ENCRYPTED_CLAIM_V1 Memo transaction",
@@ -2837,6 +2863,11 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
     if (req.method === "GET" && pathname === "/api/v1/ika/solana-prealpha/readiness") {
       const result = await handleIkaSolanaPreAlphaReadiness();
       writeJson(res, 200, result);
+      return;
+    }
+
+    if (req.method === "GET" && pathname === "/api/v1/ika/solana-prealpha/final-approval") {
+      writeJson(res, 200, ikaSolanaFinalApprovalStatus());
       return;
     }
 

@@ -32,7 +32,7 @@ without exposing private payroll rows, private balances, strategy text, provider
 | Confidential payroll | REFHE envelope, encrypted manifest hash, selective disclosure receipt | `onchain-signature` | yes | `/api/v1/refhe/payroll/proof` |
 | Private payments | MagicBlock private corridor and receipt proof | `onchain-signature` | yes | `/api/v1/magicblock/onchain-proof?refresh=1` |
 | Umbra payout | recipient-private claim intent and relayer health | `testnet-intent-receipt` | yes | `/api/v1/umbra/relayer/info`, `/api/v1/umbra/relayer/health`, `/api/v1/private-settlement/intent` |
-| Ika custody | Solana approval preparation for Ika dWallet / 2PC-MPC route | `readiness-receipt` | yes | `/api/v1/ika/solana-prealpha/readiness`, `/api/v1/ika/solana-prealpha/approval/prepare`, `/api/v1/ika/custody/prepare` |
+| Ika custody | Solana final approval for Ika dWallet / 2PC-MPC route plus custody preparation | `onchain-signature` | yes | `/api/v1/ika/solana-prealpha/final-approval`, `/api/v1/ika/solana-prealpha/readiness`, `/api/v1/ika/solana-prealpha/approval/prepare`, `/api/v1/ika/custody/prepare` |
 | Intelligence | GoldRush, Zerion, QVAC, QuickNode Stream telemetry | `provider-plus-rpc-receipt` | yes | `/api/v1/provider-integrations/status`, `/api/v1/goldrush/query`, `/api/v1/zerion/portfolio`, `/api/v1/qvac/runtime-proof`, `/api/v1/quicknode/stream/stats` |
 | Treasury / growth | Jupiter order preview, Torque custom event relay, execution event stats | `wallet-reviewed-route-plus-ingestion-receipt` | yes | `/api/v1/provider-integrations/status`, `/api/v1/jupiter/order`, `/api/v1/torque/custom-event`, `/api/v1/execution-events/stats` |
 
@@ -91,6 +91,8 @@ PrivateDAO now exposes REFHE, MagicBlock, and Ika as one Frontier protocol spine
 
 - REFHE / Encrypt: finalized Solana Testnet configure, settle, and payout execution signatures remain the native proof for confidential payroll and encrypted capital-market flows.
 - MagicBlock: finalized Solana Testnet private corridor receipts remain the native proof for the Private Payments API lane, with challenge/login private reads kept behind wallet authentication.
-- Ika / 2PC-MPC: the hosted route initializes `@ika.xyz/sdk`, reads live Ika network encryption key material, checks the Solana pre-alpha program/operator route, and keeps final funded dWallet DKG plus final 2PC-MPC signature as the explicit next native on-chain gate.
+- Ika / 2PC-MPC: the hosted route now exposes a real Solana pre-alpha final approval signature, initializes `@ika.xyz/sdk`, reads live Ika network encryption key material, checks the Solana pre-alpha program/operator route, and keeps Ika-network dWallet DKG as the separate deeper receipt class.
+
+Ika Solana final approval signature: `3hvwNpfrUxdkt44VEEuXDXuhgcseVZxBhnZEBnWCCQYbsd9rv3eQe9JiCGZPc63Fa3CptQET5qkr7UKLQ1Ev4xki`
 
 Building and development continue without interruption: each protocol rail can be tested by a fresh visitor claim today, while native protocol evidence is deepened without publishing private keys, provider API keys, RPC tokens, PEM contents, wallet secret keys, or hidden custody material.
