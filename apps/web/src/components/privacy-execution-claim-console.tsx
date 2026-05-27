@@ -15,7 +15,8 @@ type PrivacyClaim = {
   id: string;
   label: string;
   route: string;
-  proofClass: string;
+  nativeProofClass: string;
+  claimProofClass: "visitor-wallet-memo-attestation";
   claim: string;
 };
 
@@ -65,7 +66,7 @@ async function buildEncryptedClaimPacket(input: {
   const plaintext = {
     rail: input.claim.id,
     label: input.claim.label,
-    proofClass: input.claim.proofClass,
+    proofClass: input.claim.claimProofClass,
     claim: input.claim.claim,
     route: input.claim.route,
     network: SOLANA_NETWORK_LABEL,
@@ -82,7 +83,7 @@ async function buildEncryptedClaimPacket(input: {
   const commitmentMemo = [
     "PDAO_ENCRYPTED_CLAIM_V1",
     input.claim.id,
-    input.claim.proofClass,
+    input.claim.claimProofClass,
     digestHex.slice(0, 40),
   ].join(":");
 
@@ -98,7 +99,7 @@ async function buildEncryptedClaimPacket(input: {
     disclosureMode: "local-selective-disclosure",
     plaintextPreview: {
       rail: input.claim.id,
-      proofClass: input.claim.proofClass,
+      proofClass: input.claim.claimProofClass,
       network: SOLANA_NETWORK_LABEL,
       visitor: `${input.visitor.slice(0, 6)}...${input.visitor.slice(-6)}`,
       createdAt: input.createdAt,
@@ -150,49 +151,56 @@ const privacyClaims: PrivacyClaim[] = [
     id: "private-governance",
     label: "Private governance",
     route: "/govern",
-    proofClass: "wallet-signed-onchain",
+    nativeProofClass: "wallet-signed-onchain",
+    claimProofClass: "visitor-wallet-memo-attestation",
     claim: "Commit/reveal governance with ZK companion proof path.",
   },
   {
     id: "confidential-payroll",
     label: "Confidential payroll",
     route: "/payroll",
-    proofClass: "onchain-signature",
+    nativeProofClass: "onchain-signature",
+    claimProofClass: "visitor-wallet-memo-attestation",
     claim: "REFHE envelope plus evidence-gated payout execution.",
   },
   {
     id: "private-payments",
     label: "MagicBlock private payments",
     route: "/services/magicblock-private-payments",
-    proofClass: "onchain-signature",
+    nativeProofClass: "onchain-signature",
+    claimProofClass: "visitor-wallet-memo-attestation",
     claim: "Private payment corridor configured and settled on Testnet.",
   },
   {
     id: "umbra-confidential-payout",
     label: "Umbra confidential payout",
     route: "/services/umbra-confidential-payout",
-    proofClass: "testnet-intent-receipt",
+    nativeProofClass: "testnet-intent-receipt",
+    claimProofClass: "visitor-wallet-memo-attestation",
     claim: "Recipient-private claim intent with relayer health and next claim gate visible.",
   },
   {
     id: "ika-custody-and-interoperability",
     label: "Ika 2PC-MPC custody",
     route: "/services/encrypt-ika-operations",
-    proofClass: "readiness-receipt",
+    nativeProofClass: "readiness-receipt",
+    claimProofClass: "visitor-wallet-memo-attestation",
     claim: "Ika SDK readiness and Solana pre-alpha approval route.",
   },
   {
     id: "intelligence-and-risk",
     label: "Intelligence and risk",
     route: "/intelligence",
-    proofClass: "provider-plus-rpc-receipt",
+    nativeProofClass: "provider-plus-rpc-receipt",
+    claimProofClass: "visitor-wallet-memo-attestation",
     claim: "GoldRush, Zerion, QVAC, and QuickNode intelligence before signing.",
   },
   {
     id: "treasury-routing-and-growth",
     label: "Treasury routing and growth",
     route: "/services/jupiter-treasury-route",
-    proofClass: "wallet-reviewed-route-plus-ingestion-receipt",
+    nativeProofClass: "wallet-reviewed-route-plus-ingestion-receipt",
+    claimProofClass: "visitor-wallet-memo-attestation",
     claim: "Jupiter route preview and Torque growth event around governed execution.",
   },
 ];
@@ -407,7 +415,10 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
           <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4">
             <div className="text-sm font-semibold text-white">{selectedClaim.label}</div>
             <p className="mt-2 text-xs leading-6 text-white/58">{selectedClaim.claim}</p>
-            <div className="mt-3 font-mono text-[11px] text-cyan-100/70">{selectedClaim.proofClass}</div>
+            <div className="mt-3 space-y-1 font-mono text-[11px] text-cyan-100/70">
+              <div>claim: {selectedClaim.claimProofClass}</div>
+              <div className="text-white/45">native: {selectedClaim.nativeProofClass}</div>
+            </div>
           </div>
           <div className="mt-4 flex flex-wrap gap-3">
             <button type="button" onClick={() => void anchorSelectedClaim()} disabled={isRunning} className={cn(buttonVariants({ size: "sm" }))}>

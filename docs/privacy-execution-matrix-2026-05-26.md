@@ -36,7 +36,7 @@ without exposing private payroll rows, private balances, strategy text, provider
 | Intelligence | GoldRush, Zerion, QVAC, QuickNode Stream telemetry | `provider-plus-rpc-receipt` | yes | `/api/v1/provider-integrations/status`, `/api/v1/goldrush/query`, `/api/v1/zerion/portfolio`, `/api/v1/qvac/runtime-proof`, `/api/v1/quicknode/stream/stats` |
 | Treasury / growth | Jupiter order preview, Torque custom event relay, execution event stats | `wallet-reviewed-route-plus-ingestion-receipt` | yes | `/api/v1/provider-integrations/status`, `/api/v1/jupiter/order`, `/api/v1/torque/custom-event`, `/api/v1/execution-events/stats` |
 
-Every service row in the live API now carries `executionProofClass`, `visitorRepeatable`, `blockchainVerificationUrl`, and `currentOnchainStatus`. That is the enforcement layer: on-chain signature rails stay visibly on-chain, while intent/readiness rails stay visitor-repeatable but cannot be mislabeled as final chain settlement before the missing signature exists.
+Every service row in the live API now carries `executionProofClass`, `nativeProofClass`, `visitorRepeatable`, `visitorClaimRepeatable`, `claimPrepareUrl`, `claimMemoTemplate`, `blockchainVerificationUrl`, and `currentOnchainStatus`. That is the enforcement layer: on-chain signature rails stay visibly on-chain, while intent/readiness rails stay visitor-repeatable but cannot be mislabeled as final chain settlement before the missing signature exists.
 
 ## Visitor-Repeatable Claim Layer
 
@@ -45,15 +45,15 @@ Every service row in the live API now carries `executionProofClass`, `visitorRep
 1. The visitor connects a Solana Testnet wallet.
 2. The visitor selects any privacy or encryption rail.
 3. The browser creates a fresh AES-GCM encrypted claim packet locally.
-4. The browser hashes the ciphertext and builds a Memo Program transaction containing `PDAO_ENCRYPTED_CLAIM_V1`, the selected rail, the proof class, and the digest prefix.
+4. The browser hashes the ciphertext and builds a Memo Program transaction containing `PDAO_ENCRYPTED_CLAIM_V1`, the selected rail, `visitor-wallet-memo-attestation`, and the digest prefix. The native proof class remains visible separately so Umbra, Ika, REFHE, MagicBlock, Jupiter, and intelligence rails do not get mislabeled.
 5. The visitor signs from their own wallet.
 6. The page returns a new Testnet signature, Explorer link, and local encrypted packet for inspection.
 7. The visitor can verify the encrypted receipt locally, copy it, or download it as a selective-disclosure receipt without uploading private claim context.
 8. The visitor can export a public attestation that contains the digest, memo, memo program, signature, and Explorer URL without the AES key, then keep the private disclosure receipt separate for allowed reviewers only.
 
-The read-node also exposes `/api/v1/privacy-execution-claims/prepare?claim=<rail>` so any visitor, reviewer, or integration can inspect the exact Solana Testnet Memo schema before signing. The endpoint returns the Memo Program id, the `PDAO_ENCRYPTED_CLAIM_V1` payload format, signing model, Explorer URL template, and privacy boundary without requiring private keys or provider credentials.
+The read-node also exposes `/api/v1/privacy-execution-claims/prepare?claim=<rail>` for every rail, and each claim row exposes `claimPrepareUrl` plus `claimMemoTemplate`, so any visitor, reviewer, or integration can inspect the exact Solana Testnet Memo schema before signing. The endpoint returns the Memo Program id, the `PDAO_ENCRYPTED_CLAIM_V1` payload format, signing model, Explorer URL template, and privacy boundary without requiring private keys or provider credentials.
 
-This gives every rail a live visitor-generated encrypted on-chain claim path today, while the stronger native rails continue to carry their own evidence: REFHE signatures, MagicBlock signatures, ZK verifier receipts, Ika readiness receipts, Umbra claim-intent receipts, Jupiter route previews, Torque delivery receipts, and intelligence-provider proofs.
+This gives every rail a live visitor-generated encrypted on-chain claim path today: every visitor can create a new transaction from their own Testnet wallet instead of replaying a project signature. The stronger native rails continue to carry their own evidence: REFHE signatures, MagicBlock signatures, ZK verifier receipts, Ika readiness receipts, Umbra claim-intent receipts, Jupiter route previews, Torque delivery receipts, and intelligence-provider proofs.
 
 ## Provider Execution Gate
 

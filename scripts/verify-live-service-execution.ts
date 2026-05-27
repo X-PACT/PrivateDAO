@@ -52,7 +52,16 @@ const HOST_CHECKS: HostCheck[] = [
   {
     name: "api-readiness-host",
     url: `${API}/api/v1/readiness`,
-    validate: (response) => (response.status === 200 ? null : `API readiness host returned HTTP ${response.status}`),
+    validate: (response) => {
+      if (response.status !== 200) return `API readiness host returned HTTP ${response.status}`;
+      if (response.headers.get("x-privatedao-primary-host") !== "candidate") return "API host is not the current AWS primary candidate";
+      return null;
+    },
+  },
+  {
+    name: "eitherway-preview",
+    url: "https://preview.eitherway.ai/169057d4-cf4e-4a3e-88e5-2fe436eac112/",
+    validate: (response) => (response.status === 200 ? null : `Eitherway preview returned HTTP ${response.status}`),
   },
 ];
 
@@ -300,7 +309,18 @@ const API_CHECKS: ApiCheck[] = [
     name: "readiness",
     method: "GET",
     url: `${API}/api/v1/readiness`,
-    validate: (payload) => (payload?.ok === true ? null : "readiness did not return ok=true"),
+    validate: (payload) => {
+      if (payload?.ok !== true) return "readiness did not return ok=true";
+      const rpcEndpoint = String(payload?.runtime?.rpcEndpoint || "");
+      if (!rpcEndpoint.includes("cosmological-hidden-water.solana-testnet.quiknode.pro")) return "readiness is not using the current QuickNode Testnet RPC endpoint";
+      if (payload?.runtime?.rpcPoolSize < 2) return "readiness RPC pool is missing fallback capacity";
+      if (payload?.runtime?.programId !== "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva") return "readiness program id mismatch";
+      if (payload?.visitors?.source !== "supabase") return `visitor counters are not backed by Supabase: ${payload?.visitors?.source}`;
+      if (payload?.execution?.source !== "supabase") return `execution counters are not backed by Supabase: ${payload?.execution?.source}`;
+      if (payload?.quickNodeStream?.auth !== "configured") return "QuickNode stream auth is not configured in readiness";
+      if (payload?.quickNodeStream?.network !== "solana-testnet") return `QuickNode stream network mismatch in readiness: ${payload?.quickNodeStream?.network}`;
+      return null;
+    },
   },
   {
     name: "cryptographic-readiness",
@@ -377,14 +397,25 @@ const API_CHECKS: ApiCheck[] = [
       }
       for (const claim of claims) {
         if (claim?.visitorRepeatable !== true) return `${claim?.service} claim is not visitor-repeatable`;
-        if (typeof claim?.proofClass !== "string" || claim.proofClass.length < 8) return `${claim?.service} missing proofClass`;
+        if (claim?.proofClass !== "visitor-wallet-memo-attestation") return `${claim?.service} missing repeatable visitor memo attestation proofClass`;
+        if (typeof claim?.nativeProofClass !== "string" || claim.nativeProofClass.length < 8) return `${claim?.service} missing nativeProofClass`;
+        if (claim?.visitorClaimRepeatable !== true) return `${claim?.service} claim attestation is not visitor-repeatable`;
+        if (typeof claim?.claimPrepareUrl !== "string" || !claim.claimPrepareUrl.includes("/api/v1/privacy-execution-claims/prepare?claim=")) {
+          return `${claim?.service} missing claim prepare URL`;
+        }
+        if (typeof claim?.claimMemoTemplate !== "string" || !claim.claimMemoTemplate.includes("PDAO_ENCRYPTED_CLAIM_V1") || !claim.claimMemoTemplate.includes("visitor-wallet-memo-attestation")) {
+          return `${claim?.service} missing visitor memo claim template`;
+        }
+        if (typeof claim?.repeatabilityModel !== "string" || !claim.repeatabilityModel.includes("Every visitor creates a fresh")) {
+          return `${claim?.service} missing fresh visitor repeatability model`;
+        }
         if (typeof claim?.blockchainVerificationUrl !== "string" || !claim.blockchainVerificationUrl.includes("cluster=testnet")) {
           return `${claim?.service} missing Testnet blockchain verification URL`;
         }
-        if (claim.proofClass === "onchain-signature") {
+        if (claim.nativeProofClass === "onchain-signature") {
           const evidence = claim?.onchainEvidence || {};
           const hasTx = Object.values(evidence).some((value) => typeof value === "string" && value.length > 40);
-          if (!hasTx) return `${claim?.service} on-chain claim missing transaction evidence`;
+          if (!hasTx) return `${claim?.service} native on-chain claim missing transaction evidence`;
         }
       }
       return null;
@@ -398,7 +429,9 @@ const API_CHECKS: ApiCheck[] = [
       if (payload?.ok !== true) return "privacy claim prepare did not return ok=true";
       if (payload?.cluster !== "testnet") return `privacy claim prepare cluster mismatch: ${payload?.cluster}`;
       if (payload?.memoProgram !== "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr") return "privacy claim prepare memo program mismatch";
-      if (typeof payload?.memo !== "string" || !payload.memo.startsWith("PDAO_ENCRYPTED_CLAIM_V1:private-payments:")) {
+      if (payload?.proofClass !== "visitor-wallet-memo-attestation") return "privacy claim prepare must use visitor-wallet-memo-attestation";
+      if (payload?.nativeProofClass !== "onchain-signature") return "privacy claim prepare must preserve native proof class";
+      if (typeof payload?.memo !== "string" || !payload.memo.startsWith("PDAO_ENCRYPTED_CLAIM_V1:private-payments:visitor-wallet-memo-attestation:")) {
         return "privacy claim prepare memo missing PDAO_ENCRYPTED_CLAIM_V1 private-payments payload";
       }
       if (typeof payload?.privacyBoundary !== "string" || !payload.privacyBoundary.includes("AES key")) {

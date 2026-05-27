@@ -2523,22 +2523,42 @@ function privacyExecutionMatrixStatus() {
 
 function privacyExecutionClaimsStatus() {
   const matrix = privacyExecutionMatrixStatus();
+  const universalClaimAttestation = {
+    protocol: "PDAO_ENCRYPTED_CLAIM_V1",
+    proofClass: "visitor-wallet-memo-attestation",
+    memoProgram: "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr",
+    cluster: "testnet",
+    repeatabilityModel:
+      "Every visitor creates a fresh AES-GCM encrypted packet, hashes the ciphertext, signs a new Solana Testnet Memo transaction from their own wallet, and verifies the resulting signature on Explorer.",
+    explorerAfterSignature: "https://explorer.solana.com/tx/<signature>?cluster=testnet",
+  };
   return {
     ok: true,
     source: "privatedao-privacy-execution-claims",
     generatedAt: new Date().toISOString(),
     cluster: matrix.cluster,
     programId: matrix.programId,
+    universalClaimAttestation,
     claimPolicy:
       "Every privacy/encryption claim must be visitor-repeatable on Solana Testnet and must expose either a blockchain explorer URL or a live receipt endpoint. Browser claims use an AES-GCM local encrypted packet, produce a selective-disclosure receipt, export a public attestation without the AES key, and anchor only a digest commitment on-chain. Intent/readiness claims are not promoted to final on-chain settlement until the missing signature exists.",
     claims: matrix.serviceMatrix.map((service) => ({
       service: service.service,
       route: service.route,
       claim: service.executionMode,
-      proofClass: service.executionProofClass,
+      nativeProofClass: service.executionProofClass,
+      proofClass: universalClaimAttestation.proofClass,
       visitorRepeatable: service.visitorRepeatable,
+      visitorClaimRepeatable: true,
       currentOnchainStatus: service.currentOnchainStatus,
       blockchainVerificationUrl: service.blockchainVerificationUrl,
+      claimPrepareUrl: `/api/v1/privacy-execution-claims/prepare?claim=${encodeURIComponent(service.service)}`,
+      claimMemoTemplate: [
+        universalClaimAttestation.protocol,
+        service.service,
+        universalClaimAttestation.proofClass,
+        "<sha256-ciphertext-digest-prefix>",
+      ].join(":"),
+      repeatabilityModel: universalClaimAttestation.repeatabilityModel,
       proofEndpoints: service.proofEndpoints,
       onchainEvidence: service.onchainEvidence,
       nextOnchainGate: "nextOnchainGate" in service ? service.nextOnchainGate : null,
@@ -2548,6 +2568,8 @@ function privacyExecutionClaimsStatus() {
       "executionProofClass is explicit for every claim",
       "blockchainVerificationUrl points to Solana Testnet explorer for every claim",
       "browser claim console anchors PDAO_ENCRYPTED_CLAIM_V1 digest commitments",
+      "every claim exposes visitor-wallet-memo-attestation as the repeatable on-chain claim layer",
+      "every claim exposes /api/v1/privacy-execution-claims/prepare?claim=<rail>",
       "browser claim console exposes a local selective-disclosure receipt verifier",
       "browser claim console separates public attestation from private disclosure",
       "on-chain signature claims must include transaction evidence",
@@ -2573,7 +2595,8 @@ function privacyExecutionClaimPrepare(searchParams: URLSearchParams) {
 
   const digestPrefix = digest === "<sha256-ciphertext-digest-prefix>" ? digest : digest.slice(0, 40);
   const digestLooksValid = digest === "<sha256-ciphertext-digest-prefix>" || /^[a-f0-9]{40,64}$/i.test(digest);
-  const memo = ["PDAO_ENCRYPTED_CLAIM_V1", service.service, service.executionProofClass, digestPrefix].join(":");
+  const claimProofClass = "visitor-wallet-memo-attestation";
+  const memo = ["PDAO_ENCRYPTED_CLAIM_V1", service.service, claimProofClass, digestPrefix].join(":");
 
   return {
     ok: digestLooksValid,
@@ -2582,7 +2605,8 @@ function privacyExecutionClaimPrepare(searchParams: URLSearchParams) {
     cluster: matrix.cluster,
     service: service.service,
     label: service.executionMode,
-    proofClass: service.executionProofClass,
+    nativeProofClass: service.executionProofClass,
+    proofClass: claimProofClass,
     memoProgram: "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr",
     memo,
     digestPrefix,
