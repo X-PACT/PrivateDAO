@@ -4,7 +4,6 @@ import Link from "next/link";
 import { LocalizedRouteBrief } from "@/components/localized-route-brief";
 import { LocalizedRouteSummary } from "@/components/localized-route-summary";
 import { OperationsShell } from "@/components/operations-shell";
-import { PrivateDaoStackSurface } from "@/components/private-dao-stack-surface";
 import { TorqueGrowthLoopSurface } from "@/components/torque-growth-loop-surface";
 import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -72,8 +71,9 @@ export default function TorqueGrowthLoopPage() {
   return (
     <OperationsShell
       eyebrow="Growth infrastructure"
-      title="Use incentives only where the product creates measurable on-chain activity"
-      description="This route turns PrivateDAO usage into Torque-style custom_events: DAO creation, proposal creation, billing signatures, and education completion. The growth loop stays attached to real product behavior."
+      title="Reward real DAO actions, not page views"
+      description="PrivateDAO turns governance, treasury, billing, and learning actions into Torque custom_events through a protected read-node relay. The growth loop stays attached to verifiable product behavior instead of vanity traffic."
+      navigationMode="guided"
       badges={[
         { label: "Torque MCP path", variant: "success" },
         { label: "Custom events", variant: "cyan" },
@@ -82,7 +82,6 @@ export default function TorqueGrowthLoopPage() {
     >
       <LocalizedRouteSummary routeKey="services" />
       <LocalizedRouteBrief routeKey="servicesCore" />
-      <PrivateDaoStackSurface compact />
       <section className="rounded-[32px] border border-emerald-300/28 bg-[radial-gradient(circle_at_top_left,rgba(20,241,149,0.22),rgba(8,13,28,0.94)_45%,rgba(5,11,24,0.98))] p-6 shadow-2xl shadow-emerald-950/30">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>

@@ -25,6 +25,13 @@ const pusdLanes = [
   },
 ] as const;
 
+const valueProofs = [
+  ["Payroll privacy", "Contributor payouts can be prepared as stablecoin operations without turning salary context into public product copy."],
+  ["Grant distribution", "Committees can approve stable budgets and route payment proof back to Judge and Proof."],
+  ["Gaming rewards", "Reward pools can use the same stablecoin lane as governance and treasury operations."],
+  ["Configuration safety", "The page does not invent a mint. Production PUSD settlement waits for the official mint and funded receive account."],
+] as const;
+
 export const metadata: Metadata = buildRouteMetadata({
   title: "PUSD Stablecoin Mode",
   description:
@@ -51,8 +58,9 @@ export default function PusdStablecoinPage() {
   return (
     <OperationsShell
       eyebrow="PUSD track"
-      title="PUSD as a governed treasury lane for payroll and rewards"
-      description="This route frames PUSD as a core operational currency inside PrivateDAO for payroll, grants, and reward loops while preserving wallet-first UX and reviewer continuity."
+      title="Stablecoin payroll and rewards should not expose the whole organization"
+      description="PrivateDAO frames PUSD as a governed stablecoin lane for payroll, grants, and reward pools: wallet-first preparation, policy-aware transfer construction, and reviewer-visible proof without hardcoding unverified production mint data."
+      navigationMode="guided"
       badges={[
         { label: "PUSD mode", variant: "success" },
         { label: "Wallet-first", variant: "cyan" },
@@ -83,6 +91,25 @@ export default function PusdStablecoinPage() {
           </Link>
         </div>
       </div>
+
+      <section className="rounded-[30px] border border-white/10 bg-white/[0.04] p-6">
+        <div className="text-[11px] uppercase tracking-[0.28em] text-white/44">Why this lane exists</div>
+        <h2 className="mt-3 max-w-4xl text-2xl font-semibold text-white">
+          PUSD belongs inside payroll, grants, gaming rewards, and treasury proof
+        </h2>
+        <p className="mt-3 max-w-4xl text-sm leading-7 text-white/66">
+          Stablecoins are useful only when the organization can authorize, explain, and verify their movement. This route
+          keeps PUSD inside the PrivateDAO operating stack instead of presenting it as a disconnected token badge.
+        </p>
+        <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          {valueProofs.map(([label, detail]) => (
+            <div key={label} className="rounded-[22px] border border-white/8 bg-black/22 p-4">
+              <div className="text-[10px] uppercase tracking-[0.22em] text-emerald-100/62">{label}</div>
+              <p className="mt-3 text-sm leading-6 text-white/62">{detail}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       <section className="rounded-[30px] border border-cyan-300/18 bg-[linear-gradient(135deg,rgba(34,211,238,0.11),rgba(20,241,149,0.07),rgba(8,13,28,0.94))] p-6">
         <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/78">Wallet-first stablecoin execution</div>

@@ -8,6 +8,13 @@ import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { cn } from "@/lib/utils";
 
+const executionSteps = [
+  ["Govern", "A DAO or treasury operator defines the rebalance or payout-funding intent before market data is requested."],
+  ["Preview", "Jupiter quote data is fetched only when the operator clicks Run route preview, keeping first load light."],
+  ["Decide", "The signer compares output amount, price impact, slippage posture, and route plan before approving."],
+  ["Verify", "The decision path points back to Judge, Proof, and the route brief so reviewers can inspect why the move made sense."],
+] as const;
+
 export const metadata: Metadata = buildRouteMetadata({
   title: "Jupiter Treasury Route",
   description:
@@ -20,8 +27,9 @@ export default function JupiterTreasuryRoutePage() {
   return (
     <OperationsShell
       eyebrow="Jupiter track"
-      title="Governed treasury route preview for execution-quality decisions"
-      description="This route productizes Jupiter as a controlled treasury operation lane. Operators preview route quality before signing, then keep the rationale visible for judge and proof verification."
+      title="Your treasury moves are public. The decision process should be controlled."
+      description="PrivateDAO uses Jupiter as a governed route-preview layer for Solana treasury operations: preview quote quality, decide inside policy, then keep the reason and proof visible without turning treasury work into an exposed trading dashboard."
+      navigationMode="guided"
       badges={[
         { label: "Jupiter lane", variant: "cyan" },
         { label: "Treasury execution", variant: "success" },
@@ -31,7 +39,7 @@ export default function JupiterTreasuryRoutePage() {
       <LocalizedRouteSummary routeKey="services" />
       <div className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.08] p-6">
         <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/78">Route discipline</div>
-        <h2 className="mt-3 text-2xl font-semibold text-white">Preview first, sign second, verify third</h2>
+        <h2 className="mt-3 text-2xl font-semibold text-white">Preview first. Govern second. Verify third.</h2>
         <p className="mt-3 max-w-4xl text-sm leading-7 text-white/66">
           Jupiter routing is used as an execution-quality layer in treasury context, not as a detached trading widget.
           The operator sees quote posture first, then carries that context into governed actions and proof surfaces.
@@ -50,6 +58,20 @@ export default function JupiterTreasuryRoutePage() {
           </Link>
         </div>
       </div>
+      <section className="rounded-[30px] border border-white/10 bg-white/[0.04] p-6">
+        <div className="text-[11px] uppercase tracking-[0.28em] text-white/44">Execution path</div>
+        <h2 className="mt-3 max-w-4xl text-2xl font-semibold text-white">
+          A treasury route should explain itself before a wallet signs it
+        </h2>
+        <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          {executionSteps.map(([label, detail]) => (
+            <div key={label} className="rounded-[22px] border border-white/8 bg-black/22 p-4">
+              <div className="text-[10px] uppercase tracking-[0.22em] text-cyan-100/62">{label}</div>
+              <p className="mt-3 text-sm leading-6 text-white/62">{detail}</p>
+            </div>
+          ))}
+        </div>
+      </section>
       <JupiterTreasuryRouteSurface />
     </OperationsShell>
   );

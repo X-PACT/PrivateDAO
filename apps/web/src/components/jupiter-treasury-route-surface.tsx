@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ArrowRight, ArrowUpRight, RefreshCcw, ShieldCheck, WalletCards } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -133,7 +133,7 @@ export function JupiterTreasuryRouteSurface() {
   const [amount, setAmount] = useState("20000000");
   const [slippageBps, setSlippageBps] = useState("75");
   const [deliveryState, setDeliveryState] = useState(
-    "Prepare a governed treasury route preview here, then attach the quote logic to rebalance and payout-funding actions.",
+    "Ready. No external Jupiter request is made until the operator runs a route preview.",
   );
   const [preview, setPreview] = useState<JupiterPreviewResponse | null>(null);
   const [running, setRunning] = useState(false);
@@ -198,12 +198,6 @@ export function JupiterTreasuryRouteSurface() {
     }
   }
 
-  useEffect(() => {
-    void handlePreview();
-    // Run once on first paint so judges see real Jupiter route data without hunting for the button.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <Card
       id="jupiter-treasury-route"
@@ -215,7 +209,9 @@ export function JupiterTreasuryRouteSurface() {
         </div>
         <CardTitle>Treasury swaps and rebalances now have a live preview lane</CardTitle>
         <div className="max-w-4xl text-sm leading-7 text-white/60">
-          PrivateDAO is turning treasury routing into a governed operator flow: review the route, inspect price and slippage posture, then carry the same context into treasury action and proof.
+          PrivateDAO turns treasury routing into a governed operator flow: review the route, inspect price and slippage
+          posture, then carry the same context into treasury action and proof. The preview is click-to-run so the page
+          stays fast on first load and only calls Jupiter when an operator asks for market data.
         </div>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -278,6 +274,19 @@ export function JupiterTreasuryRouteSurface() {
                 <div className="flex flex-wrap gap-3">
                   <button type="button" className={cn(buttonVariants({ size: "sm" }))} onClick={() => void handlePreview()} disabled={running}>
                     {running ? "Loading..." : "Run route preview"}
+                  </button>
+                  <button
+                    type="button"
+                    className={cn(buttonVariants({ size: "sm", variant: "outline" }))}
+                    onClick={() => {
+                      setInputMint(DEFAULT_INPUT_MINT);
+                      setOutputMint(DEFAULT_OUTPUT_MINT);
+                      setAmount("20000000");
+                      setSlippageBps("75");
+                      setDeliveryState("SOL to USDC treasury preset loaded. Run preview when ready.");
+                    }}
+                  >
+                    SOL → USDC preset
                   </button>
                   <Link href="/govern#proposal-review-action" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
                     Open govern flow
