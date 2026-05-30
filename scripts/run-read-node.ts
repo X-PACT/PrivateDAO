@@ -34,6 +34,7 @@ const telegramVisitorMinIntervalMs = Number(process.env.PRIVATE_DAO_TELEGRAM_VIS
 const telegramVisitorSessionTtlMs = Number(process.env.PRIVATE_DAO_TELEGRAM_VISITOR_SESSION_TTL_MS || 30 * 60_000);
 const runtimeStateDir = process.env.PRIVATE_DAO_RUNTIME_STATE_DIR || "/srv/privatedao/runtime";
 const quickNodeStreamStatePath = join(runtimeStateDir, "quicknode-stream-telemetry.json");
+const matrixAnchorMinIntervalMs = Number(process.env.PRIVATE_DAO_MATRIX_ANCHOR_MIN_INTERVAL_MS || 10 * 60_000);
 const supabaseUrl = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "").replace(/\/+$/, "");
 const supabaseKey =
   process.env.SUPABASE_SERVICE_ROLE_KEY ||
@@ -69,6 +70,7 @@ const quickNodeStreamTelemetry = {
     computeUnitsConsumed: 0,
   },
 };
+let lastIntegrationMatrixAnchorMemory: OperationExecutionEventRow | null = null;
 const requireFromWebApp = createRequire(join(process.cwd(), "apps/web/package.json"));
 const onboardingIntakeKeyId = "pd-intake-rsa-2026-05-20";
 const onboardingIntakePublicKeyPem = `-----BEGIN PUBLIC KEY-----
@@ -228,7 +230,7 @@ function writeJson(res: http.ServerResponse, statusCode: number, payload: unknow
 	    "Content-Type": "application/json; charset=utf-8",
 	    "Access-Control-Allow-Origin": allowedOrigin,
 	    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-	    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+	    "Access-Control-Allow-Headers": "Content-Type, Authorization, x-private-dao-operator-token, x-private-dao-anchor-token",
     "Cache-Control": "no-store",
   });
   res.end(JSON.stringify(payload, null, 2));
@@ -518,14 +520,21 @@ function readRequestBodyWithLimit(req: http.IncomingMessage, maxBytes: number): 
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = [];
     let bytes = 0;
+    let tooLarge = false;
     req.on("data", (chunk: Buffer) => {
       bytes += chunk.byteLength;
-      chunks.push(chunk);
       if (bytes > maxBytes) {
-        req.destroy(new Error("Request body too large"));
+        tooLarge = true;
+        chunks.length = 0;
+        return;
       }
+      if (!tooLarge) chunks.push(chunk);
     });
     req.on("end", () => {
+      if (tooLarge) {
+        reject(new Error(`Request body too large: ${bytes} bytes exceeds ${maxBytes} byte limit`));
+        return;
+      }
       resolve(Buffer.concat(chunks));
     });
     req.on("error", reject);
@@ -559,7 +568,7 @@ async function readRequestJson(req: http.IncomingMessage): Promise<Record<string
 }
 
 async function readQuickNodeStreamJson(req: http.IncomingMessage): Promise<{ payload: QuickNodeStreamPayload; rawPayload: string }> {
-  const maxBytes = Number(process.env.QUICKNODE_STREAM_MAX_BYTES || 6_000_000);
+  const maxBytes = Number(process.env.QUICKNODE_STREAM_MAX_BYTES || 20_000_000);
   const body = await readRequestBodyWithLimit(req, maxBytes);
   const rawPayload = decodeRequestBody(req, body);
   const parsed = parseJsonObject(rawPayload, "QuickNode stream payload");
@@ -773,6 +782,164 @@ async function sendFreshnessMemo(visitorUa: string) {
     slot,
     time,
     explorer: `https://explorer.solana.com/tx/${tx}?cluster=testnet`,
+  };
+}
+
+function stableJson(value: unknown): string {
+  if (value === null || typeof value !== "object") return JSON.stringify(value);
+  if (Array.isArray(value)) return `[${value.map((item) => stableJson(item)).join(",")}]`;
+  const object = value as Record<string, unknown>;
+  return `{${Object.keys(object)
+    .sort()
+    .map((key) => `${JSON.stringify(key)}:${stableJson(object[key])}`)
+    .join(",")}}`;
+}
+
+function matrixAnchorOperatorToken(req: http.IncomingMessage) {
+  const bearer = String(req.headers.authorization || "").replace(/^Bearer\s+/i, "").trim();
+  const privateDaoToken = String(req.headers["x-private-dao-operator-token"] || "").trim();
+  const anchorToken = String(req.headers["x-private-dao-anchor-token"] || "").trim();
+  return bearer || privateDaoToken || anchorToken;
+}
+
+function requireMatrixAnchorAuth(req: http.IncomingMessage) {
+  const acceptedTokens = [
+    process.env.PRIVATE_DAO_MATRIX_ANCHOR_TOKEN,
+    process.env.PRIVATE_DAO_OPERATOR_TOKEN,
+    process.env.QUICKNODE_STREAM_TOKEN,
+  ]
+    .map((value) => value?.trim())
+    .filter((value): value is string => Boolean(value));
+  if (!acceptedTokens.length) {
+    return { ok: false, status: 503, error: "Matrix anchor operator token is not configured." };
+  }
+  const provided = matrixAnchorOperatorToken(req);
+  const matched = acceptedTokens.some((token) => {
+    const providedBuffer = Buffer.from(provided);
+    const tokenBuffer = Buffer.from(token);
+    return providedBuffer.length === tokenBuffer.length && timingSafeEqual(providedBuffer, tokenBuffer);
+  });
+  return matched ? { ok: true } : { ok: false, status: 401, error: "Unauthorized matrix anchor request." };
+}
+
+function buildIntegrationMatrixAnchorSnapshot() {
+  const anchoredAt = new Date().toISOString();
+  const matrix = privacyExecutionMatrixStatus();
+  const crypto = cryptographicReadinessStatus();
+  const providers = providerIntegrationStatus();
+  const quickNodeStream = quickNodeStreamStats();
+  const snapshot = {
+    protocol: "PDAO_INTEGRATION_MATRIX_ANCHOR_V1",
+    anchoredAt,
+    cluster: "testnet",
+    programId: matrix.programId,
+    matrix,
+    cryptographicReadiness: crypto,
+    providerIntegrations: providers,
+    quickNodeStream,
+  };
+  const digest = createHash("sha256").update(stableJson(snapshot)).digest("hex");
+  return { anchoredAt, digest, snapshot };
+}
+
+function latestMatrixAnchorFromRow(row: OperationExecutionEventRow | null) {
+  if (!row) return null;
+  const metadata = row.metadata || {};
+  const tx = row.receipt_hash || "";
+  return {
+    ok: true,
+    operationId: row.operation_id,
+    label: row.operation_label,
+    status: row.status,
+    source: row.source,
+    tx,
+    slot: typeof metadata.slot === "number" ? metadata.slot : null,
+    digest: typeof metadata.digest === "string" ? metadata.digest : null,
+    anchoredAt: row.created_at || (typeof metadata.anchoredAt === "string" ? metadata.anchoredAt : null),
+    programId: typeof metadata.programId === "string" ? metadata.programId : null,
+    memo: typeof metadata.memo === "string" ? metadata.memo : null,
+    explorer: tx ? `https://explorer.solana.com/tx/${tx}?cluster=testnet` : null,
+    solscan: tx ? `https://solscan.io/tx/${tx}?cluster=testnet` : null,
+  };
+}
+
+async function latestIntegrationMatrixAnchor() {
+  const rows = await supabaseSelect<OperationExecutionEventRow>(
+    "operation_execution_events",
+    "?select=operation_id,operation_label,session_id,page,status,source,receipt_hash,network,metadata,created_at&operation_id=eq.integration-matrix-anchor&order=created_at.desc&limit=1",
+  );
+  if (rows[0]) {
+    lastIntegrationMatrixAnchorMemory = rows[0];
+    return rows[0];
+  }
+  return lastIntegrationMatrixAnchorMemory;
+}
+
+async function handleIntegrationMatrixAnchor(body: Record<string, unknown>) {
+  const latest = await latestIntegrationMatrixAnchor();
+  const nowMs = Date.now();
+  if (latest?.created_at && nowMs - new Date(latest.created_at).getTime() < matrixAnchorMinIntervalMs) {
+    return {
+      ok: true,
+      throttled: true,
+      source: "latest-anchor",
+      latest: latestMatrixAnchorFromRow(latest),
+      minIntervalMs: matrixAnchorMinIntervalMs,
+    };
+  }
+
+  const keypair = await getFreshnessBotKeypair();
+  const connection = new Connection(process.env.SOLANA_RPC_URL || "https://api.testnet.solana.com", "confirmed");
+  const { anchoredAt, digest, snapshot } = buildIntegrationMatrixAnchorSnapshot();
+  const memo = `PrivateDAO integration-matrix-anchor v1 | sha256:${digest} | ${anchoredAt}`;
+  const transaction = new Transaction().add(
+    new TransactionInstruction({
+      keys: [{ pubkey: keypair.publicKey, isSigner: true, isWritable: true }],
+      programId: memoProgramId,
+      data: Buffer.from(memo, "utf8"),
+    }),
+  );
+  const tx = await sendAndConfirmTransaction(connection, transaction, [keypair], {
+    commitment: "confirmed",
+  });
+  const parsed = await connection
+    .getParsedTransaction(tx, { commitment: "confirmed", maxSupportedTransactionVersion: 0 })
+    .catch(() => null);
+  const slot = parsed?.slot ?? (await connection.getSlot("confirmed"));
+  const row: OperationExecutionEventRow = {
+    operation_id: "integration-matrix-anchor",
+    operation_label: "Integration matrix anchored on Solana Testnet",
+    session_id: hashVisitorSession(stringField(body, "sessionId", `matrix-anchor:${anchoredAt}`)),
+    page: "/api/v1/integration-matrix/anchor",
+    status: "success",
+    source: stringField(body, "source", "read-node-operator").slice(0, 80) || "read-node-operator",
+    receipt_hash: tx,
+    network: "solana-testnet",
+    metadata: {
+      protocol: snapshot.protocol,
+      digest,
+      anchoredAt,
+      slot,
+      programId: readNode.programId.toBase58(),
+      memo,
+      explorer: `https://explorer.solana.com/tx/${tx}?cluster=testnet`,
+      solscan: `https://solscan.io/tx/${tx}?cluster=testnet`,
+      quickNodePrivateDaoProgramReference: true,
+      matrixServiceCount: snapshot.matrix.serviceMatrix.length,
+      providerCount: Object.keys(snapshot.providerIntegrations.providers).length,
+    },
+    created_at: anchoredAt,
+  };
+  lastIntegrationMatrixAnchorMemory = row;
+  executionEventsMemory.push(row);
+  if (executionEventsMemory.length > 10000) executionEventsMemory.shift();
+  const stored = await supabaseInsert("operation_execution_events", row as SupabaseRow);
+  return {
+    ok: true,
+    throttled: false,
+    source: stored.ok ? "supabase" : "memory-fallback",
+    latest: latestMatrixAnchorFromRow(row),
+    stored,
   };
 }
 
@@ -2548,6 +2715,7 @@ function privacyExecutionMatrixStatus() {
       readiness: "https://api.privatedao.org/api/v1/readiness",
       cryptographicReadiness: "https://api.privatedao.org/api/v1/cryptographic-readiness",
       privacyExecutionMatrix: "https://api.privatedao.org/api/v1/privacy-execution-matrix",
+      integrationMatrixAnchor: "https://api.privatedao.org/api/v1/integration-matrix/anchor",
       judge: "https://privatedao.org/judge/",
       proof: "https://privatedao.org/proof/",
     },
@@ -2849,6 +3017,21 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
       return;
     }
 
+    if (
+      req.method === "POST" &&
+      (pathname === "/api/v1/integration-matrix/anchor" || pathname === "/api/v1/privacy-execution-matrix/anchor")
+    ) {
+      const auth = requireMatrixAnchorAuth(req);
+      if (!auth.ok) {
+        writeJson(res, auth.status ?? 500, { ok: false, error: auth.error ?? "Matrix anchor authorization failed." });
+        return;
+      }
+      const body = await readRequestJson(req);
+      const result = await handleIntegrationMatrixAnchor(body);
+      writeJson(res, 200, result);
+      return;
+    }
+
     if (req.method === "POST" && pathname === "/api/v1/visitors/ping") {
       const body = await readRequestJson(req);
       const result = await handleVisitorPing(body, req);
@@ -3012,6 +3195,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           onboardRequest: "/api/v1/onboard/request",
           quickNodeStream: "/api/v1/quicknode/stream",
           quickNodeStreamStats: "/api/v1/quicknode/stream/stats",
+          integrationMatrixAnchor: "/api/v1/integration-matrix/anchor",
           cryptographicReadiness: "/api/v1/cryptographic-readiness",
           privacyExecutionMatrix: "/api/v1/privacy-execution-matrix",
           privacyExecutionClaims: "/api/v1/privacy-execution-claims",
@@ -3031,6 +3215,24 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
 
     if (pathname === "/api/v1/privacy-execution-matrix") {
       writeJson(res, 200, privacyExecutionMatrixStatus());
+      return;
+    }
+
+    if (pathname === "/api/v1/integration-matrix/anchor" || pathname === "/api/v1/privacy-execution-matrix/anchor") {
+      const latest = await latestIntegrationMatrixAnchor();
+      const pending = buildIntegrationMatrixAnchorSnapshot();
+      writeJson(res, 200, {
+        ok: true,
+        source: latest ? "supabase-or-memory" : "not-yet-anchored",
+        cluster: "testnet",
+        operatorPostEndpoint: "/api/v1/integration-matrix/anchor",
+        minIntervalMs: matrixAnchorMinIntervalMs,
+        latest: latestMatrixAnchorFromRow(latest),
+        currentDigestPreview: pending.digest,
+        currentDigestPreviewGeneratedAt: pending.anchoredAt,
+        signingModel:
+          "Server-side operator signs a Solana Testnet Memo containing the matrix SHA-256 digest. The public endpoint exposes only the receipt.",
+      });
       return;
     }
 
@@ -3070,6 +3272,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
         posture: "solana-testnet-production-candidate",
         runtime,
         quickNodeStream: quickNodeStreamStats(),
+        integrationMatrixAnchor: latestMatrixAnchorFromRow(await latestIntegrationMatrixAnchor()),
         visitors,
         execution,
         liveServiceGate: {
@@ -3499,9 +3702,11 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
     routeNotFound(res, pathname);
   } catch (error) {
     metrics.requestsFailed += 1;
-    writeJson(res, 500, {
+    const errorMessage = String((error as Error)?.message || error || "Unhandled read node error");
+    const statusCode = errorMessage.includes("Request body too large") ? 413 : 500;
+    writeJson(res, statusCode, {
       ok: false,
-      error: String((error as Error)?.message || error || "Unhandled read node error"),
+      error: errorMessage,
       source: "backend-indexer",
     });
   }
