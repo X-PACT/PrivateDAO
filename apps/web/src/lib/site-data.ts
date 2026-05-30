@@ -109,7 +109,7 @@ export const sponsorSignals = [
   {
     name: "QuickNode",
     accent: "from-[#6fe7ff] via-[#4fb4ff] to-[#8067ff]",
-    summary: "Fast RPC, diagnostics, and hosted-read posture remain visible as real product value.",
+    summary: "Hosted reads, diagnostics, and read-node telemetry remain visible as real product value.",
   },
   {
     name: "MagicBlock",
@@ -444,7 +444,7 @@ export const techCards = [
       "Proposal-scoped token corridor and settlement evidence for private distribution workflows.",
   },
   {
-    name: "Fast RPC",
+    name: "Hosted reads",
     description:
       "Backend-indexed pooled reads, diagnostics, and proof surfaces so the app feels operational rather than static.",
   },
@@ -652,7 +652,7 @@ export const platformServiceLayers = [
     layer: "Layer 5",
     title: "Security and Proof Layer",
     summary:
-      "ZK, REFHE, MagicBlock, Fast RPC, diagnostics, and trust packets are exposed as product rails rather than hidden implementation detail.",
+      "ZK, REFHE, MagicBlock, Hosted reads, diagnostics, and trust packets are exposed as product rails rather than hidden implementation detail.",
     services: [
       "ZK capability matrix",
       "Proof center",
@@ -744,7 +744,7 @@ export const productCorridors = [
     audience: "Teams that need a familiar committee and council posture",
     summary:
       "A compatibility-facing surface for organizations that still think in Realms-style committees but need stronger privacy, proof, and operational rails.",
-    technologies: ["ZK review", "Fast RPC", "Reviewer docs"],
+    technologies: ["ZK review", "Hosted reads", "Reviewer docs"],
     href: "/documents/reviewer-fast-path",
     cta: "Open reviewer compatibility rail",
   },
@@ -753,7 +753,7 @@ export const productCorridors = [
     audience: "Mobile-first operators and signer workflows",
     summary:
       "A mobile and Android-facing runtime path for wallet access, reviewer journeys, and diagnostics without pretending the product is desktop-only.",
-    technologies: ["Wallet UX", "Diagnostics", "Fast RPC"],
+    technologies: ["Wallet UX", "Diagnostics", "Hosted reads"],
     href: "/viewer/android-native",
     cta: "Open Android runtime surface",
   },
@@ -771,7 +771,7 @@ export const productCorridors = [
     audience: "Builders, operators, and hosted governance consumers",
     summary:
       "A commercial and operational surface for hosted reads, diagnostics, API-facing ops, and buyer-friendly product packaging.",
-    technologies: ["Fast RPC", "Hosted Read API", "Ops"],
+    technologies: ["Hosted reads", "Hosted Read API", "Ops"],
     href: "/services",
     cta: "Open API and RPC surface",
   },
@@ -855,7 +855,7 @@ export const competitionTracks = [
     winningThesis:
       "Win by making hosted reads, diagnostics, runtime evidence, and buyer-facing API packaging impossible to miss.",
     summary:
-      "Fast RPC, diagnostics, hosted reads, and reviewer-facing runtime surfaces are already part of the product story and commercial rails.",
+      "Hosted reads, diagnostics, hosted reads, and reviewer-facing runtime surfaces are already part of the product story and commercial rails.",
     edge: "The project already sells hosted read API plus ops, not just protocol theory.",
     gap: "The API and RPC buyer journey can be made even more explicit in a dedicated partner section.",
     action: "Lead with the Read API + RPC corridor, diagnostics page, and hosted read commercial surfaces.",
@@ -1311,7 +1311,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     deliverables: [
       "Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path.",
       "Use the service catalog, SLA, pricing, and trust package as the commercial proof layer.",
-      "Keep the Fast RPC role explicit in video, deck, README, and services UI.",
+      "Keep the Hosted reads role explicit in video, deck, README, and services UI.",
     ],
     requirements: [
       "A credible infrastructure story with visible runtime or API value.",
@@ -1320,7 +1320,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     ],
     winningMoves: [
       "Drive reviewers from /services into /diagnostics and the integration-evidence packet.",
-      "Treat Fast RPC as an operator and buyer value layer, not only a backend implementation note.",
+      "Treat Hosted reads as an operator and buyer value layer, not only a backend implementation note.",
       "Use the story video to explain why faster indexed reads matter for governance products.",
     ],
     sponsorFit: [
@@ -1556,7 +1556,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     ],
     winningMoves: [
       "Show encrypted operations before talking about low-level cryptography internals.",
-      "Use product language first, then map to ZK, REFHE, MagicBlock, and Fast RPC.",
+      "Use product language first, then map to ZK, REFHE, MagicBlock, and Hosted reads.",
       "Position the confidence engine as deterministic interpretation, not autonomous AI.",
     ],
     sponsorFit: [
@@ -1926,7 +1926,7 @@ export const proofPackets = [
   },
   {
     title: "Cryptographic confidence engine",
-    summary: "Deterministic scoring model for how ZK, REFHE, MagicBlock, and Fast RPC strengthen specific proposal patterns.",
+    summary: "Deterministic scoring model for how ZK, REFHE, MagicBlock, and Hosted reads strengthen specific proposal patterns.",
     href: "/documents/cryptographic-confidence-engine",
     cta: "Open engine specification",
   },
@@ -1952,7 +1952,7 @@ export const securitySurfaces = [
   },
   {
     title: "Cryptographic Confidence Engine",
-    body: "Proposal-aware scoring model for privacy depth, enforcement depth, execution integrity, and reviewer confidence across ZK, REFHE, MagicBlock, and Fast RPC.",
+    body: "Proposal-aware scoring model for privacy depth, enforcement depth, execution integrity, and reviewer confidence across ZK, REFHE, MagicBlock, and Hosted reads.",
     href: "/documents/cryptographic-confidence-engine",
   },
   {
@@ -2022,7 +2022,7 @@ export const confidenceEngineHighlights = [
   },
   {
     factor: "Execution integrity",
-    meaning: "Fast RPC runtime, corridor evidence, live proof, and V3 proof completeness for the chosen proposal path.",
+    meaning: "Hosted reads runtime, corridor evidence, live proof, and V3 proof completeness for the chosen proposal path.",
   },
   {
     factor: "Reviewer confidence",
@@ -2072,7 +2072,7 @@ export const securityTracks = [
     title: "Core integrations",
     status: "Integrated",
     summary:
-      "ZK anchors, REFHE envelopes, MagicBlock corridor evidence, and backend-indexed Fast RPC reads remain part of the product story.",
+      "ZK anchors, REFHE envelopes, MagicBlock corridor evidence, and backend-indexed Hosted reads reads remain part of the product story.",
     href: "/documents/frontier-integrations",
   },
   {
@@ -2154,14 +2154,14 @@ export const commandCenterPacks = [
     title: "Confidential Payroll",
     subtitle: "Enterprise DAO",
     summary: "Best for teams that need private payroll, bonus, and operator trust packaging with REFHE envelopes and additive governance hardening.",
-    technologies: ["REFHE", "Fast RPC", "Governance V3"],
+    technologies: ["REFHE", "Hosted reads", "Governance V3"],
     readiness: "Execution-ready pattern",
   },
   {
     title: "Private Grant Committee",
     subtitle: "Grant Committee",
     summary: "Best for proposal review committees that need private signal collection, generated proof packets, and a reviewer-visible grant flow.",
-    technologies: ["ZK", "Fast RPC", "Live proof"],
+    technologies: ["ZK", "Hosted reads", "Live proof"],
     readiness: "Reviewer-ready pattern",
   },
   {
@@ -2186,7 +2186,7 @@ export const commandCenterReferences = [
   },
   {
     title: "Core integrations",
-    description: "ZK, REFHE, MagicBlock, and Fast RPC reviewer packet.",
+    description: "ZK, REFHE, MagicBlock, and Hosted reads reviewer packet.",
     href: "/documents/frontier-integrations",
   },
   {
@@ -2384,7 +2384,7 @@ export const proofFlowSteps = [
   },
   {
     title: "Integration packet",
-    detail: "Open the integrations packet to verify ZK, REFHE, MagicBlock, and Fast RPC surfaces together.",
+    detail: "Open the integrations packet to verify ZK, REFHE, MagicBlock, and Hosted reads surfaces together.",
     href: "/documents/frontier-integrations",
   },
   {

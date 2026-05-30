@@ -119,7 +119,7 @@ export const platformCapabilities: PlatformCapability[] = [
   },
   {
     slug: "agentic-treasury-automation",
-    title: "Agentic treasury automation",
+    title: "Encrypted treasury automation",
     promise:
       "Automation is turned into a bounded treasury assistant instead of an unscoped bot, so teams can automate repetitive payouts and rebalances without surrendering wallet control.",
     surfaceRoute: {
@@ -141,7 +141,7 @@ export const platformCapabilities: PlatformCapability[] = [
     technologies: ["Zerion policy", "Agentic micropayments", "Spend caps", "Expiry windows"],
     executionCore: [
       "policy-bound execution payloads",
-      "agentic treasury micropayment rail",
+      "encrypted treasury micropayment rail",
       "approve-before-execute safety",
       "governance-attached payout sequencing",
     ],
@@ -169,7 +169,7 @@ export const platformCapabilities: PlatformCapability[] = [
       label: "Learn runtime UX",
       href: "/learn/lecture-3-rpc-state-and-runtime",
     },
-    technologies: ["Fast RPC", "Hosted reads", "Telemetry", "Read-node snapshots"],
+    technologies: ["Hosted reads", "Hosted reads", "Telemetry", "Read-node snapshots"],
     executionCore: [
       "diagnostics and live state surfaces",
       "reviewer telemetry packet",

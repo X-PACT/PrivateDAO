@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { AnalystGradeDataCorridor } from "@/components/analyst-grade-data-corridor";
 import { OperationsShell } from "@/components/operations-shell";
+import { PrivateDaoStackSurface } from "@/components/private-dao-stack-surface";
 import { ReadNodeActivationStrip } from "@/components/read-node-activation-strip";
 import { ReadNodeHostReadinessStrip } from "@/components/read-node-host-readiness-strip";
 import { TreasuryRiskInline } from "@/components/treasury-risk-inline";
@@ -34,14 +35,15 @@ export default function TreasuryPage() {
         { label: "Proof-linked", variant: "success" },
       ]}
     >
+      <PrivateDaoStackSurface compact />
       <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5 text-sm leading-7 text-white/68">
         Start from treasury context, then continue to execution only after reviewing risk and route quality.
         <div className="mt-4 flex flex-wrap gap-3">
           <Link href="/intelligence" className={cn(buttonVariants({ size: "sm" }))}>
             Open intelligence
           </Link>
-          <Link href="/execute" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
-            Open execute
+          <Link href="/services/jupiter-treasury-route" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+            Open treasury route
           </Link>
           <Link href="/proof" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
             Open proof
@@ -57,4 +59,3 @@ export default function TreasuryPage() {
     </OperationsShell>
   );
 }
-

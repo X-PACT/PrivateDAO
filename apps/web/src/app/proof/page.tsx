@@ -119,7 +119,7 @@ export default function ProofPage() {
     },
     {
       title: "Runtime infrastructure",
-      summary: "Fast RPC, host readiness, and telemetry lane with operational evidence continuity.",
+      summary: "Hosted reads, host readiness, and telemetry lane with operational evidence continuity.",
       featureHref: "/services/runtime-infrastructure",
       proofHref: "/analytics",
     },

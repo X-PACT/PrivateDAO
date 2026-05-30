@@ -15,9 +15,9 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = buildRouteMetadata({
   title: "Runtime Infrastructure",
   description:
-    "Infrastructure lane for fast reads, runtime telemetry, diagnostics readiness, and reviewer-grade evidence continuity.",
+    "Infrastructure lane for hosted reads, runtime telemetry, diagnostics readiness, and reviewer-grade evidence continuity.",
   path: "/services/runtime-infrastructure",
-  keywords: ["runtime infrastructure", "quicknode", "fast rpc", "telemetry", "read node"],
+  keywords: ["runtime infrastructure", "quicknode", "hosted reads", "telemetry", "read node"],
 });
 
 export default function RuntimeInfrastructurePage() {
@@ -27,7 +27,7 @@ export default function RuntimeInfrastructurePage() {
       title="Run and verify low-latency infrastructure as a product lane, not hidden backend plumbing"
       description="This lane packages RPC and runtime infrastructure into a reviewer-facing route with telemetry, host readiness, and operational evidence continuity."
       badges={[
-        { label: "Fast RPC", variant: "warning" },
+        { label: "Read-node telemetry", variant: "warning" },
         { label: "Runtime telemetry", variant: "cyan" },
         { label: "Reviewer-grade", variant: "success" },
       ]}
@@ -59,4 +59,3 @@ export default function RuntimeInfrastructurePage() {
     </OperationsShell>
   );
 }
-

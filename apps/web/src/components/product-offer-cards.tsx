@@ -20,7 +20,7 @@ const offers = [
   {
     key: "gaming",
     title: "Gaming Rewards and Treasury Control",
-    byline: "by Fast RPC + governed rewards",
+    byline: "by Hosted reads + governed rewards",
     summary:
       "Coordinate rewards, approvals, and treasury-linked gaming operations from one browser flow that stays fast, fair, and easy to review on-chain.",
     href: "/intelligence",
@@ -44,7 +44,7 @@ const offers = [
     summary:
       "Turn approved treasury policy into repeated on-chain settlement actions with runtime evidence attached, so automated execution remains governed and auditable.",
     href: "/documents/agentic-treasury-micropayment-rail",
-    cta: "Open agentic treasury rail",
+    cta: "Open encrypted treasury rail",
     icon: Bot,
   },
   {

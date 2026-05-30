@@ -53,7 +53,7 @@ export function PaymentTemplateSandbox({
             <h2 className="mt-2 text-2xl font-semibold text-white">Explain privacy and proof in user language</h2>
           </div>
           <div className="rounded-2xl bg-[#0c1e30] p-4">
-            <div>Amount: 12.50 USDC equivalent on the agentic treasury rail</div>
+            <div>Amount: 12.50 USDC equivalent on the encrypted treasury rail</div>
             <div className="mt-2">Execution rail: REFHE privacy boundary + MagicBlock execution corridor</div>
             <div className="mt-2">Visibility: Recipient, intent, and payout posture stay confidential until the proof lane is opened.</div>
           </div>

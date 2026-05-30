@@ -117,7 +117,7 @@ export default function LearnPage() {
           <ul className="mt-4 space-y-3 text-sm leading-7 text-white/62">
             <li>• Wallet-first Testnet onboarding that starts from web or Android.</li>
             <li>• Governance, intelligence, treasury policy, confidential payroll, encrypted payments, and GamingDAO rewards.</li>
-            <li>• Fast RPC, hosted reads, diagnostics, analytics, visitor counters, execution counters, and blockchain verification.</li>
+            <li>• Hosted reads, hosted reads, diagnostics, analytics, visitor counters, execution counters, and blockchain verification.</li>
             <li>• ZK, MagicBlock, REFHE, IKA, GoldRush, Torque, and agentic decision files explained through live product routes.</li>
           </ul>
         </div>

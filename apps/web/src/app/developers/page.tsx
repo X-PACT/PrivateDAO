@@ -1,43 +1,12 @@
-import type { Metadata } from "next";
+import { LegacyRouteRedirect } from "@/components/legacy-route-redirect";
 
-import { DeveloperPlatformSurface } from "@/components/developer-platform-surface";
-import { EcosystemFocusAlignmentStrip } from "@/components/ecosystem-focus-alignment-strip";
-import { OperationsShell } from "@/components/operations-shell";
-import { ProofCenter } from "@/components/proof-center";
-import { SiteSearchPanel } from "@/components/site-search-panel";
-import { PlatformServiceArchitecture } from "@/components/platform-service-architecture";
-import { TrustSurface } from "@/components/trust-surface";
-import { buildRouteMetadata } from "@/lib/route-metadata";
-
-export const metadata: Metadata = buildRouteMetadata({
-  title: "Developers",
-  description:
-    "PrivateDAO developer portal for Anchor 1 Testnet evidence, SDK starters, API surfaces, read-node proof, privacy integrations, and reviewer packets.",
-  path: "/developers",
-  keywords: ["developers", "Anchor 1", "SDK", "API", "read node", "privacy integrations", "integrators"],
-});
-
-export default function DevelopersPage() {
+export default function DevelopersBridgePage() {
   return (
-    <OperationsShell
-      eyebrow="Developers"
-      title="Documentation, proof packets, viewers, and engineering surfaces"
-      description="Developer-facing access should start with curated docs and continue into the broader repository viewer and proof surfaces."
-      badges={[
-        { label: "Docs and viewers", variant: "cyan" },
-        { label: "Reviewer-ready", variant: "violet" },
-        { label: "Product-aware", variant: "success" },
-      ]}
-    >
-      <EcosystemFocusAlignmentStrip
-        title="Developer tooling fit should be obvious on the developer route"
-        description="Keep the tooling, telemetry, censorship-resistance, and infrastructure fit legible before the reviewer dives into proof packets and repo artifacts."
-      />
-      <DeveloperPlatformSurface />
-      <PlatformServiceArchitecture />
-      <SiteSearchPanel />
-      <ProofCenter />
-      <TrustSurface />
-    </OperationsShell>
+    <LegacyRouteRedirect
+      title="Developers moved to the documents hub"
+      description="Developer material is preserved in docs and proof packets so builders see source-linked implementation context."
+      target="/documents"
+      label="Open documents"
+    />
   );
 }

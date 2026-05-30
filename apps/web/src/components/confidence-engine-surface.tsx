@@ -45,7 +45,7 @@ export function ConfidenceEngineSurface() {
         <CardContent className="space-y-4">
           <div className="rounded-3xl border border-white/8 bg-white/4 p-5 text-sm leading-7 text-white/60">
             PrivateDAO now exposes a deterministic scoring model for proposal patterns that use ZK, REFHE, MagicBlock,
-            and Fast RPC together. It does not pretend to be a formal proof of security. It is a truth-aligned
+            and Hosted reads together. It does not pretend to be a formal proof of security. It is a truth-aligned
             explanation layer for why one governance path is stronger, more private, or more reviewer-complete than
             another.
           </div>
@@ -87,7 +87,7 @@ export function ConfidenceEngineSurface() {
               <div>
                 <div className="text-sm font-medium text-white">Interactive policy composer</div>
                 <div className="mt-1 text-[11px] uppercase tracking-[0.28em] text-cyan-300/75">
-                  Toggle ZK, REFHE, MagicBlock, Fast RPC, and hardening rails
+                  Toggle ZK, REFHE, MagicBlock, Hosted reads, and hardening rails
                 </div>
               </div>
                 <Badge variant={customScore.band === "Advanced" ? "success" : customScore.band === "Strong" ? "cyan" : "warning"}>

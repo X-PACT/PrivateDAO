@@ -34,6 +34,7 @@ import { ConfidentialPaymentsSystemSurface } from "@/components/confidential-pay
 import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
 import { PrivacyExecutionClaimConsole } from "@/components/privacy-execution-claim-console";
 import { PrivacySdkApiStarter } from "@/components/privacy-sdk-api-starter";
+import { PrivateDaoStackSurface } from "@/components/private-dao-stack-surface";
 import { SectionHeader } from "@/components/section-header";
 import { SettlementReceiptSurface } from "@/components/settlement-receipt-surface";
 import { SettlementReceiptClosurePanel } from "@/components/settlement-receipt-closure-panel";
@@ -78,6 +79,7 @@ export default function ServicesPage() {
     >
       <LocalizedRouteSummary routeKey="services" />
       <LocalizedRouteBrief routeKey="servicesCore" />
+      <PrivateDaoStackSurface compact />
       <GuidedOperationRail current="verify" reviewHref="/intelligence" verifyHref="/proof" />
       <OperatingJourneyStrip
         snapshot={runtimeSnapshot}

@@ -55,7 +55,7 @@ export function ProposalCard({ proposal, onVote }: ProposalCardProps) {
         </div>
         <div className="flex flex-wrap gap-2">
           {proposal.tech.map((tech) => (
-            <Badge key={tech} variant={tech === "ZK" ? "violet" : tech === "Fast RPC" ? "cyan" : "success"}>
+            <Badge key={tech} variant={tech === "ZK" ? "violet" : tech === "Read-node telemetry" ? "cyan" : "success"}>
               {tech}
             </Badge>
           ))}

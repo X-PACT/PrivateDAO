@@ -206,7 +206,7 @@ const fundingProfileOverrides: Record<string, FundingProfileOverride> = {
     summary: "Agentic micropayment execution tied to DAO approval, batched stablecoin settlement, and reviewer-visible runtime proof.",
     handoff: {
       lane: "operator",
-      owner: "Agentic treasury lane",
+      owner: "Encrypted treasury lane",
       destination: "Governed micropayment execution and proof capture",
       priority: "Execution-critical",
       narrative:
@@ -221,7 +221,7 @@ const fundingProfileOverrides: Record<string, FundingProfileOverride> = {
       { label: "Analytics", href: "/analytics" },
     ],
     commercialBundle: {
-      title: "Agentic treasury execution bundle",
+      title: "Encrypted treasury execution bundle",
       summary: "Position this as a DAO-controlled micropayment engine for reviewers, APIs, operators, and future agent commerce.",
       routes: [
         { label: "Services", href: "/engage?profile=agentic-micropayment-rail" },

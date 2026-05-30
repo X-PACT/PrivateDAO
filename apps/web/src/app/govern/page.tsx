@@ -8,6 +8,7 @@ import { GuidedOperationRail } from "@/components/guided-operation-rail";
 import { LocalizedGovernIntroSurface } from "@/components/localized-govern-intro-surface";
 import { NormalUserOperationPath } from "@/components/normal-user-operation-path";
 import { OperationsShell } from "@/components/operations-shell";
+import { PrivateDaoStackSurface } from "@/components/private-dao-stack-surface";
 import { ProjectOperatingMap } from "@/components/project-operating-map";
 import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -35,6 +36,7 @@ export default function GovernPage() {
       ]}
     >
       <GuidedOperationRail current="review" reviewHref="/intelligence" verifyHref="/proof" />
+      <PrivateDaoStackSurface compact />
       <LocalizedGovernIntroSurface />
       <div className="rounded-[28px] border border-emerald-300/16 bg-emerald-300/[0.08] p-5">
         <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-100/78">Need test funds?</div>
@@ -54,8 +56,8 @@ export default function GovernPage() {
       <NormalUserOperationPath />
       <ProjectOperatingMap
         compact
-        title="Governance is the spine of the product"
-        description="Every other corridor exists to make private governance useful: intelligence explains the decision before signing, treasury routes turn approved policy into action, encrypted payments and payroll protect sensitive intent, GamingDAO rewards use the same primitives, and proof lets the visitor verify what happened on Testnet."
+        title="Governance is the first executable lane in the PrivateDAO Stack"
+        description="Every other corridor exists to make organizational governance useful: intelligence explains the decision before authorization, treasury routes turn approved policy into action, encrypted payments and payroll protect sensitive intent, GamingDAO rewards use the same primitives, and proof lets the visitor verify what happened on Testnet."
       />
       <ExecutionSpineSurface context="govern" compact />
       <GovernWorkbenchClient />

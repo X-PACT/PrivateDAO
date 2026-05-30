@@ -11,17 +11,17 @@ type ProjectOperatingMapProps = {
 
 const platformLanes = [
   {
-    title: "Private governance",
-    body: "DAO creation, proposal preparation, commit/reveal voting, wallet execution, PDAO governance-token context, and immediate Testnet proof.",
+    title: "Coordination core",
+    body: "DAO creation, proposal preparation, commit/reveal voting, wallet authorization, PDAO governance-token context, and immediate Testnet proof.",
     href: "/govern",
   },
   {
-    title: "Encrypted payments",
+    title: "Encryption payment lane",
     body: "Cloak, Umbra, MagicBlock, and stablecoin billing stay grouped as one private money-movement corridor instead of scattered payment pages.",
     href: "/services/confidential-payments",
   },
   {
-    title: "Confidential payroll",
+    title: "Confidential operations",
     body: "Encrypt, Ika, REFHE, and 2PC-MPC preparation keep payroll instructions private while preserving receipt and proof continuity.",
     href: "/services/encrypt-ika-operations",
   },
@@ -36,8 +36,8 @@ const platformLanes = [
     href: "/gaming",
   },
   {
-    title: "Intelligence before signing",
-    body: "QVAC, GoldRush/Covalent, SNS, Zerion, QuickNode, and policy context explain risk before a normal user approves.",
+    title: "Intelligence before authorization",
+    body: "QVAC, GoldRush/Covalent, SNS, Zerion, QuickNode, and policy context explain risk before a normal user or agent approves.",
     href: "/intelligence",
   },
 ] as const;
@@ -51,8 +51,8 @@ const intelligenceFeeds = [
 ] as const;
 
 export function ProjectOperatingMap({
-  title = "One product surface, four corridors, one proof-backed operating path",
-  description = "PrivateDAO is structured around private on-chain governance first. Governance decides, intelligence explains, treasury and private payout rails prepare execution, wallet-first UX keeps the signer in control, and proof records what happened. Integrations are provider rails inside this path, not separate products competing for attention.",
+  title = "Private processes. Verifiable outcomes.",
+  description = "Your votes, salaries, treasury activity, and internal operations should not be exposed by default. PrivateDAO turns that pain into six executable lanes: private governance, encrypted treasury coordination, private payments, confidential payroll, intelligence, and agent execution lineage. Wallet-first UX keeps the signer in control, and proof records what happened.",
   compact = false,
 }: ProjectOperatingMapProps) {
   return (

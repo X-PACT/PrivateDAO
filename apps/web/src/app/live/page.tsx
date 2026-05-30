@@ -1,14 +1,12 @@
-import type { Metadata } from "next";
+import { LegacyRouteRedirect } from "@/components/legacy-route-redirect";
 
-import DashboardPage from "@/app/dashboard/page";
-import { buildRouteMetadata } from "@/lib/route-metadata";
-
-export const metadata: Metadata = buildRouteMetadata({
-  title: "Live State",
-  description:
-    "Live proposals, treasury state, execution history, and governance logs for the current Testnet product surface.",
-  path: "/live",
-  keywords: ["live state", "treasury", "governance logs", "proposal state"],
-});
-
-export default DashboardPage;
+export default function LiveBridgePage() {
+  return (
+    <LegacyRouteRedirect
+      title="Live state moved to API status"
+      description="Live state is now clearer through API status, readiness, QuickNode stream health, and proof freshness."
+      target="/api-status"
+      label="Open API status"
+    />
+  );
+}

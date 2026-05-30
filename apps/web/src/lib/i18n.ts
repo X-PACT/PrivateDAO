@@ -409,7 +409,7 @@ const englishCopy: LocalizedCopy = {
     products: {
       label: "Route summary",
       title: "Browse the product corridors that can be sold, integrated, and reviewed",
-      body: "This product route groups the real operational lanes: private governance, confidential payouts, gaming control, agentic treasury execution, and runtime APIs.",
+      body: "This product route groups the real operational lanes: private governance, confidential payouts, gaming control, encrypted treasury execution, and runtime APIs.",
     },
     learn: {
       label: "Route summary",
@@ -623,7 +623,7 @@ const englishCopy: LocalizedCopy = {
   },
   statusBanner: {
     label: "Live development notice",
-    title: "PrivateDAO is an Anchor 1 Testnet financial OS for private governance, treasury execution, QVAC intelligence, and proof.",
+    title: "PrivateDAO bridges organizational privacy and onchain verifiability with confidential governance, encrypted treasury coordination, intelligence, and proof.",
     body: "The live product path now connects the major lanes from the first visit: Intelligence, Govern, Treasury, Payroll, Gaming, Compliance, Proof, Developers, RPC Services, and Command Center. Users get a fast guided wallet flow, while reviewers and investors can inspect the same system through direct evidence, route-linked packets, and verifiable on-chain state.",
     retry: "Retry in a few minutes",
     until: "Anchor 1 Testnet deployment complete; production mainnet remains evidence-gated",
@@ -731,7 +731,7 @@ const englishCopy: LocalizedCopy = {
         {
           key: "runtime",
           title: "Read live state quickly enough to trust it",
-          byline: "with Fast RPC + hosted reads",
+          byline: "with Hosted reads + hosted reads",
           summary: "Users see fresh state, signatures, logs, and action status quickly enough to trust what happened instead of guessing from a wallet popup or stale status.",
           routeLabel: "Open runtime API corridor",
           explorerLabel: "Open a captured runtime transaction",
@@ -763,7 +763,7 @@ const englishCopy: LocalizedCopy = {
         {
           key: "gaming",
           title: "Gaming Rewards and Treasury Control",
-          byline: "by Fast RPC + governed rewards",
+          byline: "by Hosted reads + governed rewards",
           summary:
             "Coordinate rewards, approvals, and treasury-linked gaming operations from one browser flow that stays fast, fair, and easy to review on-chain.",
           cta: "Open gaming reward corridor",
@@ -782,7 +782,7 @@ const englishCopy: LocalizedCopy = {
           byline: "by policy-bound micropayments",
           summary:
             "Turn approved treasury policy into repeated on-chain settlement actions with runtime evidence attached, so automated execution remains governed and auditable.",
-          cta: "Open agentic treasury rail",
+          cta: "Open encrypted treasury rail",
         },
         {
           key: "runtimeApi",
@@ -842,7 +842,7 @@ const englishCopy: LocalizedCopy = {
         {
           key: "browser",
           title: "Normal users can verify the result from the browser",
-          byline: "Fast RPC + logs + wallet-native proof",
+          byline: "Hosted reads + logs + wallet-native proof",
           privateUntil: "Nothing secret is forced into plaintext just to make the UI understandable.",
           publicProof: "The product exposes signatures, logs, status, screenshots, and mobile wallet evidence so the same workflow can be checked from a browser, a wallet app, or Solscan.",
           routeLabel: "Open verification route",
@@ -855,7 +855,7 @@ const englishCopy: LocalizedCopy = {
     productsPrimer: {
       eyebrow: "Commercial operating layer",
       title: "Products should read like a live infrastructure catalog, not a static feature list",
-      body: "This route is where buyers, operators, and grant reviewers see what PrivateDAO already packages into usable lanes: confidential payroll, gaming treasury control, private governance, agentic treasury routing, and reusable privacy infrastructure. The goal is clarity first, then the matching live route and proof packet.",
+      body: "This route is where buyers, operators, and grant reviewers see what PrivateDAO already packages into usable lanes: confidential payroll, gaming treasury control, private governance, encrypted treasury routing, and reusable privacy infrastructure. The goal is clarity first, then the matching live route and proof packet.",
       bullets: [
         "Each product lane should point to a route a normal user can try on Testnet.",
         "Pricing, policy selection, and proof should stay close to the service story.",
@@ -926,7 +926,7 @@ const englishCopy: LocalizedCopy = {
       zkMatrixTitle: "A PrivateDAO-specific matrix for what ZK proves now and what it does not claim",
       zkMatrixBody: "This matrix turns the ZK story into a reviewer-friendly surface: live proofs, proposal-bound anchors, attestation, and zk_enforced posture on one side, with explicit non-claims on the other.",
       confidenceEyebrow: "Confidence Engine",
-      confidenceTitle: "A deterministic scoring engine for ZK, REFHE, MagicBlock, and Fast RPC",
+      confidenceTitle: "A deterministic scoring engine for ZK, REFHE, MagicBlock, and Hosted reads",
       confidenceBody: "This surface does not claim magical security. It explains, with explicit weights, why one proposal pattern has stronger privacy depth, enforcement depth, execution integrity, or reviewer confidence than another.",
       intelligenceEyebrow: "Security + Intelligence",
       intelligenceTitle: "Proposal, treasury, voting, RPC, and gaming analysis belong inside the security story",
@@ -1312,7 +1312,7 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
           {
             key: "runtime",
             title: "اقرأ الحالة الحية بسرعة كافية لتثق بها",
-            byline: "بواسطة Fast RPC + hosted reads",
+            byline: "بواسطة Hosted reads + hosted reads",
             summary: "يرى المستخدم الحالة الجديدة والتواقيع واللوجز ووضع العملية بسرعة كافية ليثق بما حدث بدل التخمين من نافذة محفظة أو حالة stale.",
             routeLabel: "افتح مسار Runtime API",
             explorerLabel: "افتح معاملة runtime ملتقطة",
@@ -1344,7 +1344,7 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
           {
             key: "gaming",
             title: "مكافآت الجيمينج والتحكم في الخزانة",
-            byline: "بواسطة Fast RPC + rewards محكومة",
+            byline: "بواسطة Hosted reads + rewards محكومة",
             summary:
               "نسّق المكافآت والموافقات والعمليات المرتبطة بالخزانة داخل تدفق متصفح واحد سريع وعادل وسهل المراجعة على السلسلة.",
             cta: "افتح مسار مكافآت الجيمينج",
@@ -1423,7 +1423,7 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
           {
             key: "browser",
             title: "المستخدم العادي يستطيع التحقق من النتيجة من المتصفح",
-            byline: "بواسطة Fast RPC + logs + wallet-native proof",
+            byline: "بواسطة Hosted reads + logs + wallet-native proof",
             privateUntil: "لا يُجبر أي جزء سري على التحول إلى نص مكشوف فقط حتى تصبح الواجهة مفهومة.",
             publicProof: "المنتج يعرض التواقيع واللوجز والحالة ولقطات الشاشة وأدلة المحافظ على الجوال حتى يمكن فحص نفس التدفق من المتصفح أو تطبيق المحفظة أو Solscan.",
             routeLabel: "افتح مسار التحقق",
@@ -1507,7 +1507,7 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
         zkMatrixTitle: "مصفوفة خاصة بـ PrivateDAO تشرح ما الذي تثبته ZK الآن وما الذي لا تدّعيه",
         zkMatrixBody: "هذه المصفوفة تحول قصة ZK إلى سطح سهل للمراجع: proofs حية وanchors مرتبطة بالمقترح وattestation ووضع zk_enforced من جهة، ولا-ادعاءات واضحة من الجهة الأخرى.",
         confidenceEyebrow: "محرك الثقة",
-        confidenceTitle: "محرك حتمي لقياس ZK وREFHE وMagicBlock وFast RPC",
+        confidenceTitle: "محرك حتمي لقياس ZK وREFHE وMagicBlock وHosted reads",
         confidenceBody: "هذا السطح لا يدّعي أمانًا سحريًا. هو يشرح بأوزان واضحة لماذا يملك نمط proposal معين عمق خصوصية أو عمق enforce أو سلامة تنفيذ أو ثقة مراجعة أعلى من غيره.",
         intelligenceEyebrow: "الأمان + الذكاء",
         intelligenceTitle: "تحليل proposal والخزانة والتصويت وRPC والجيمينج يجب أن يبقى داخل قصة الأمان",
@@ -1702,7 +1702,7 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
     routeSummaries: {
       start: { label: "Skrót trasy", title: "Podłącz portfel Testnet, uruchom realny flow i sprawdź dowody", body: "To najkrótsza ścieżka dla zwykłego użytkownika: portfel, governance, a potem proof i logi bez terminala." },
       services: { label: "Skrót trasy", title: "Używaj PrivateDAO jako infrastruktury, nie jako statycznej prezentacji", body: "Ta trasa pokazuje hosted reads, polityki prywatności, payout corridors i starter integracyjny dla realnych organizacji." },
-      products: { label: "Skrót trasy", title: "Przeglądaj korytarze produktowe gotowe do sprzedaży, integracji i review", body: "Trasa łączy prywatne governance, poufne wypłaty, gaming control, agentic treasury execution i runtime API." },
+      products: { label: "Skrót trasy", title: "Przeglądaj korytarze produktowe gotowe do sprzedaży, integracji i review", body: "Trasa łączy prywatne governance, poufne wypłaty, gaming control, encrypted treasury execution i runtime API." },
       learn: { label: "Skrót trasy", title: "Ucz się przez kilka minut, a potem wykonuj złożone operacje blockchain z UI", body: "To żywy bootcamp: zrozum koncepcję, otwórz pasującą trasę i od razu sprawdź hashe i logi na Testnet." },
       judge: { label: "Skrót trasy", title: "Zrozum produkt prostym językiem i otwórz te same proof samodzielnie", body: "Ta trasa jest zbudowana do szybkiej weryfikacji: lifecycle governance, prywatność, dowody transakcji i reviewer packets są obok siebie." },
       proof: { label: "Skrót trasy", title: "Zobacz, co pozostaje prywatne, co staje się publiczne i jak potwierdza to chain", body: "Ta trasa robi z prywatności coś weryfikowalnego: publiczne hashe, runtime logs i packets są widoczne, a wrażliwy intent pozostaje chroniony do właściwego etapu." },
@@ -1753,7 +1753,7 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
     routeSummaries: {
       start: { label: "रूट सारांश", title: "Testnet wallet जोड़ें, एक real flow चलाएँ, फिर evidence देखें", body: "यह सामान्य यूज़र के लिए सबसे छोटा रास्ता है: wallet, governance, फिर proof और logs — बिना terminal के." },
       services: { label: "रूट सारांश", title: "PrivateDAO को infrastructure की तरह इस्तेमाल करें, brochure की तरह नहीं", body: "यह route hosted reads, privacy policies, payout corridors और integration starter को एक साथ दिखाता है." },
-      products: { label: "रूट सारांश", title: "वे product corridors देखें जिन्हें बेचा, integrate और review किया जा सकता है", body: "यह route private governance, confidential payouts, gaming control, agentic treasury execution और runtime APIs को जोड़ता है." },
+      products: { label: "रूट सारांश", title: "वे product corridors देखें जिन्हें बेचा, integrate और review किया जा सकता है", body: "यह route private governance, confidential payouts, gaming control, encrypted treasury execution और runtime APIs को जोड़ता है." },
       learn: { label: "रूट सारांश", title: "कुछ मिनट में सीखें, फिर UI से complex blockchain operations चलाएँ", body: "यह live bootcamp है: concept समझें, matching route खोलें, और Testnet hashes व logs तुरंत verify करें." },
       judge: { label: "रूट सारांश", title: "टेक्नोलॉजी को आसान भाषा में समझें और वही proofs खुद खोलें", body: "यह judge route fast verification के लिए बना है: governance lifecycle, privacy explanation, transaction evidence और reviewer packets एक क्लिक दूर हैं." },
       proof: { label: "रूट सारांश", title: "देखें क्या private रहता है, क्या public बनता है, और chain इसे कैसे साबित करती है", body: "यह proof route privacy को inspectable बनाता है: public hashes, runtime logs और proof packets दिखते हैं जबकि sensitive intent सही stage तक protected रहता है." },
@@ -1789,7 +1789,7 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
     },
     statusBanner: {
       label: "लाइव डेवलपमेंट नोटिस",
-      title: "PrivateDAO Anchor 1 Testnet पर private governance, treasury execution, QVAC intelligence और proof के लिए financial OS है.",
+      title: "PrivateDAO organizational privacy और onchain verifiability को confidential governance, encrypted treasury coordination, intelligence और proof से जोड़ता है.",
       body: "पहली visit से ही मुख्य lanes दिखती हैं: Intelligence, Govern, Treasury, Payroll, Gaming, Compliance, Proof, Developers, RPC Services और Command Center. Users wallet से act करते हैं, और reviewers/investors evidence packets और on-chain state से उसी system को inspect कर सकते हैं.",
       retry: "कुछ मिनट बाद फिर प्रयास करें",
       until: "Anchor 1 Testnet deployment complete; production mainnet evidence-gated रहता है",
@@ -1840,7 +1840,7 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
     },
     statusBanner: {
       label: "라이브 개발 공지",
-      title: "PrivateDAO는 private governance, treasury execution, QVAC intelligence, proof를 위한 Anchor 1 Testnet financial OS입니다.",
+      title: "PrivateDAO는 confidential governance, encrypted treasury coordination, intelligence, proof로 organizational privacy와 onchain verifiability를 연결합니다.",
       body: "첫 방문에서 주요 lane이 바로 보입니다: Intelligence, Govern, Treasury, Payroll, Gaming, Compliance, Proof, Developers, RPC Services, Command Center. 사용자는 wallet에서 실행하고, reviewer와 investor는 evidence packet과 on-chain state로 같은 시스템을 검증합니다.",
       retry: "몇 분 후 다시 시도하세요",
       until: "Anchor 1 Testnet deployment 완료; production mainnet은 evidence-gated 상태입니다",
@@ -1942,7 +1942,7 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
     },
     statusBanner: {
       label: "Avviso di sviluppo live",
-      title: "PrivateDAO è un financial OS su Anchor 1 Testnet per governance privata, treasury execution, QVAC intelligence e proof.",
+      title: "PrivateDAO unisce privacy organizzativa e verificabilità onchain con confidential governance, encrypted treasury coordination, intelligence e proof.",
       body: "La prima visita mostra subito le corsie principali: Intelligence, Govern, Treasury, Payroll, Gaming, Compliance, Proof, Developers, RPC Services e Command Center. Gli utenti agiscono dal wallet, mentre reviewer e investitori ispezionano lo stesso sistema tramite evidence packet e on-chain state.",
       retry: "Riprova tra qualche minuto",
       until: "Anchor 1 Testnet deployment completato; production mainnet resta evidence-gated",

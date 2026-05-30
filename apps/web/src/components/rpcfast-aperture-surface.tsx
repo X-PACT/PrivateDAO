@@ -14,7 +14,7 @@ export function RpcFastApertureSurface() {
             RPCFast Aperture support
           </div>
           <h2 className="mt-4 max-w-3xl text-3xl font-semibold tracking-[-0.04em] text-white md:text-4xl">
-            Testnet execution now sits on a FastRPC-backed infrastructure lane.
+            Testnet execution now sits on a read-node infrastructure lane.
           </h2>
           <p className="mt-4 max-w-4xl text-sm leading-7 text-white/68">
             PrivateDAO uses the Testnet RPC path for wallet-signed product execution, while Yellowstone, Aperture, and

@@ -8,6 +8,7 @@ import { LocalizedRouteSummary } from "@/components/localized-route-summary";
 import { MagicBlockPrivatePaymentsStatus } from "@/components/magicblock-private-payments-status";
 import { OperationsShell } from "@/components/operations-shell";
 import { OperationStateLegend } from "@/components/operation-state-legend";
+import { PrivateDaoStackSurface } from "@/components/private-dao-stack-surface";
 import { UmbraSdkIntegrationStatus } from "@/components/umbra-sdk-integration-status";
 import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -25,7 +26,7 @@ export default function ConfidentialPaymentsPage() {
   return (
     <OperationsShell
       eyebrow="Confidential payments"
-      title="Sovereign encrypted payment coordination for organizations on Solana"
+      title="Encrypted payment coordination for Solana-native organizations"
       description="This route packages the full confidential payment stack as an operational product surface: encrypted planning, private payout rails, intelligence-assisted risk review, and proof-linked execution continuity."
       badges={[
         { label: "Payroll-grade privacy", variant: "success" },
@@ -34,6 +35,7 @@ export default function ConfidentialPaymentsPage() {
       ]}
     >
       <LocalizedRouteSummary routeKey="services" />
+      <PrivateDaoStackSurface compact />
       <OperationStateLegend description="This section combines multiple rails. Some cards execute live flows, others expose health or receipt continuity. The boundaries stay explicit so visitors know what has already moved on-chain and what is still a review or readiness step." />
       <ConfidentialPaymentsSystemSurface />
       <IkaUserShareOpsGuardrail />

@@ -279,7 +279,7 @@ export function OperationsShell({
               <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">ZK: privacy review and proof anchors</div>
               <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">REFHE: confidential settlement and payout posture</div>
               <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">MagicBlock: execution corridor for responsive paths</div>
-              <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">Fast RPC: operational speed, diagnostics, and runtime readiness</div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">Hosted reads: operational speed, diagnostics, and runtime readiness</div>
               <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">QVAC: local-first intelligence before signing</div>
               <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">Anchor 1: current Testnet program and IDL posture</div>
             </CardContent>

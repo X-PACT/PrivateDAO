@@ -13,34 +13,20 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/start", label: "Start" },
-  { href: "/learn", label: "Learn" },
   { href: "/govern", label: "Govern", rel: "nofollow" },
-  { href: "/intelligence", label: "Intelligence", rel: "nofollow" },
   { href: "/treasury", label: "Treasury", rel: "nofollow" },
-  { href: "/payroll", label: "Payroll", rel: "nofollow" },
-  { href: "/execute", label: "Execute", rel: "nofollow" },
   { href: "/proof", label: "Proof" },
+  { href: "/android", label: "Android" },
   { href: "/judge", label: "Judge" },
-  { href: "/pricing", label: "Pricing" },
 ];
 
 const utilityNav = [
-  { href: "/about", label: "About" },
-  { href: "/products", label: "Products" },
-  { href: "/gaming", label: "Gaming", rel: "nofollow" },
-  { href: "/compliance", label: "Compliance", rel: "nofollow" },
-  { href: "/developers", label: "Developers" },
+  { href: "/intelligence", label: "Intelligence", rel: "nofollow" },
+  { href: "/services", label: "Services" },
+  { href: "/api-status", label: "API Status", rel: "nofollow" },
   { href: "/rpc-services", label: "RPC" },
-  { href: "/command-center", label: "Command" },
-  { href: "/live", label: "Live State", rel: "nofollow" },
-  { href: "/services", label: "API & Pricing" },
-  { href: "/network", label: "Network", rel: "nofollow" },
-  { href: "/story", label: "Story" },
-  { href: "/trust", label: "Trust" },
-  { href: "/whitepaper", label: "Whitepaper" },
   { href: "/documents", label: "Docs" },
-  { href: "/community", label: "Community" },
-  { href: "/assistant", label: "Help", rel: "nofollow" },
+  { href: "/whitepaper", label: "Whitepaper" },
   { href: "/search", label: "Search", rel: "nofollow" },
 ];
 
@@ -60,54 +46,28 @@ export function SiteHeader() {
         return "Intelligence";
       case "/treasury":
         return "Treasury";
-      case "/payroll":
-        return "Payroll";
-      case "/execute":
-        return "Execute";
+      case "/android":
+        return "Android";
       case "/proof":
         return "Proof";
       case "/judge":
         return "Judge";
-      case "/pricing":
-        return "Pricing";
       default:
         return fallback;
     }
   };
   const resolveUtilityLabel = (href: string, fallback: string) => {
     switch (href) {
-      case "/about":
-        return "About";
-      case "/products":
-        return copy.chrome.products;
-      case "/gaming":
-        return "Gaming";
-      case "/compliance":
-        return "Compliance";
-      case "/developers":
-        return "Developers";
       case "/rpc-services":
         return "RPC";
-      case "/command-center":
-        return "Command";
-      case "/live":
-        return copy.chrome.liveState;
+      case "/api-status":
+        return "API Status";
       case "/services":
         return copy.chrome.apiPricing;
-      case "/network":
-        return copy.chrome.network;
-      case "/story":
-        return copy.chrome.story;
-      case "/trust":
-        return copy.chrome.trust;
       case "/documents":
         return copy.chrome.docs;
       case "/whitepaper":
         return "Whitepaper";
-      case "/community":
-        return copy.chrome.community;
-      case "/assistant":
-        return copy.chrome.help;
       case "/search":
         return copy.chrome.search;
       default:
@@ -115,9 +75,9 @@ export function SiteHeader() {
     }
   };
   const operationSteps = [
-    { label: "Connect", href: "/learn" },
+    { label: "Start", href: "/start" },
     { label: "Review", href: "/intelligence" },
-    { label: "Sign", href: "/execute" },
+    { label: "Sign", href: "/govern" },
     { label: "Verify", href: "/proof" },
   ] as const;
   const isStepActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);

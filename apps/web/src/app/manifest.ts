@@ -6,7 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "PrivateDAO",
     short_name: "PrivateDAO",
-    description: "Sovereign encrypted intelligence infrastructure for Solana: private governance, confidential payroll, encrypted payments, Android execution, GamingDAO rewards, and reviewer-safe Testnet proof.",
+    description: "Your DAO votes, payroll, and treasury are public. They shouldn't be. Private governance, payroll, and treasury operations on Solana.",
     start_url: "/",
     display: "standalone",
     background_color: "#030510",

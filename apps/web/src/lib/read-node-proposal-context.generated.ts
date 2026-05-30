@@ -101,7 +101,7 @@ export const READ_NODE_PROPOSAL_REGISTRY = [
     "tech": [
       "ZK",
       "REFHE",
-      "Fast RPC"
+      "Read-node telemetry"
     ],
     "summary": "Testnet confidential payout proposal with proposal-bound REFHE envelope commitment for Encrypt/IKA reviewer evidence. The governance phase is complete, but settlement evidence still gates the commercial trust surface.",
     "execution": {
@@ -144,7 +144,7 @@ export const READ_NODE_PROPOSAL_REGISTRY = [
     "privacy": "Commit-reveal governance path",
     "tech": [
       "ZK",
-      "Fast RPC"
+      "Read-node telemetry"
     ],
     "summary": "Confidential payroll batch / April255552 submitted from the live web governance surface. The governance lifecycle is complete enough that the treasury path is ready to execute once the operator reviews the final packet.",
     "execution": {
@@ -187,7 +187,7 @@ export const READ_NODE_PROPOSAL_REGISTRY = [
     "privacy": "Commit-reveal + indexed treasury action",
     "tech": [
       "ZK",
-      "Fast RPC"
+      "Read-node telemetry"
     ],
     "summary": "Live Devnet proof for token-supply quorum, dedicated reveal rebate vault, and V3 finalize path. This indexed proposal already executed on Testnet and should be reviewed as proof, not as a pending signature flow.",
     "execution": {
@@ -230,7 +230,7 @@ export const READ_NODE_PROPOSAL_REGISTRY = [
     "privacy": "Commit-reveal governance path",
     "tech": [
       "ZK",
-      "Fast RPC"
+      "Read-node telemetry"
     ],
     "summary": "Confidential payroll batch / April submitted from the live web governance surface. The governance lifecycle is complete enough that the treasury path is ready to execute once the operator reviews the final packet.",
     "execution": {
@@ -273,7 +273,7 @@ export const READ_NODE_PROPOSAL_REGISTRY = [
     "privacy": "Commit-reveal + indexed treasury action",
     "tech": [
       "ZK",
-      "Fast RPC"
+      "Read-node telemetry"
     ],
     "summary": "Live Devnet proof for token-supply quorum, dedicated reveal rebate vault, and V3 finalize path. This indexed proposal already executed on Testnet and should be reviewed as proof, not as a pending signature flow.",
     "execution": {
@@ -316,7 +316,7 @@ export const READ_NODE_PROPOSAL_REGISTRY = [
     "privacy": "Commit-reveal governance path",
     "tech": [
       "ZK",
-      "Fast RPC"
+      "Read-node telemetry"
     ],
     "summary": "Confidential payroll batch / April submitted from the live web governance surface. This indexed proposal already executed on Testnet and should be reviewed as proof, not as a pending signature flow.",
     "execution": {
@@ -359,7 +359,7 @@ export const READ_NODE_PROPOSAL_REGISTRY = [
     "privacy": "Commit-reveal governance path",
     "tech": [
       "ZK",
-      "Fast RPC"
+      "Read-node telemetry"
     ],
     "summary": "Confidential payroll batch / April submitted from the live web governance surface. The governance lifecycle is complete enough that the treasury path is ready to execute once the operator reviews the final packet.",
     "execution": {
@@ -404,7 +404,7 @@ export const READ_NODE_PROPOSAL_REGISTRY = [
       "ZK",
       "REFHE",
       "MagicBlock",
-      "Fast RPC"
+      "Read-node telemetry"
     ],
     "summary": "Execute a token confidential payout only after REFHE settlement, MagicBlock corridor settlement, and strict settlement evidence. The governance phase is complete, but settlement evidence still gates the commercial trust surface.",
     "execution": {
@@ -447,7 +447,7 @@ export const READ_NODE_PROPOSAL_REGISTRY = [
     "privacy": "Commit-reveal governance path",
     "tech": [
       "ZK",
-      "Fast RPC"
+      "Read-node telemetry"
     ],
     "summary": "Confidential payroll batch / April submitted from the live web governance surface.",
     "execution": {
@@ -490,7 +490,7 @@ export const READ_NODE_PROPOSAL_REGISTRY = [
     "privacy": "Commit-reveal + indexed treasury action",
     "tech": [
       "ZK",
-      "Fast RPC"
+      "Read-node telemetry"
     ],
     "summary": "PrivateDAO2026 submitted from the live web governance surface.",
     "execution": {
@@ -533,7 +533,7 @@ export const READ_NODE_PROPOSAL_REGISTRY = [
     "privacy": "Commit-reveal + indexed treasury action",
     "tech": [
       "ZK",
-      "Fast RPC"
+      "Read-node telemetry"
     ],
     "summary": "Full Testnet rehearsal for create, commit, reveal, finalize, execute, and treasury verification. This indexed proposal already executed on Testnet and should be reviewed as proof, not as a pending signature flow.",
     "execution": {
@@ -578,7 +578,7 @@ export const READ_NODE_PROPOSAL_REGISTRY = [
       "ZK",
       "REFHE",
       "MagicBlock",
-      "Fast RPC"
+      "Read-node telemetry"
     ],
     "summary": "Execute a token confidential payout only after REFHE settlement, MagicBlock corridor settlement, and strict settlement evidence. This indexed proposal already executed on Testnet and should be reviewed as proof, not as a pending signature flow.",
     "execution": {
@@ -621,7 +621,7 @@ export const READ_NODE_PROPOSAL_REGISTRY = [
     "privacy": "Commit-reveal governance path",
     "tech": [
       "ZK",
-      "Fast RPC"
+      "Read-node telemetry"
     ],
     "summary": "Confidential payroll batch / April2026 submitted from the live web governance surface. This indexed proposal already executed on Testnet and should be reviewed as proof, not as a pending signature flow.",
     "execution": {
@@ -664,7 +664,7 @@ export const READ_NODE_PROPOSAL_REGISTRY = [
     "privacy": "Commit-reveal governance path",
     "tech": [
       "ZK",
-      "Fast RPC"
+      "Read-node telemetry"
     ],
     "summary": "Confidential payroll batch / April444 submitted from the live web governance surface. This indexed proposal already executed on Testnet and should be reviewed as proof, not as a pending signature flow.",
     "execution": {
@@ -707,7 +707,7 @@ export const READ_NODE_PROPOSAL_REGISTRY = [
     "privacy": "Commit-reveal + indexed treasury action",
     "tech": [
       "ZK",
-      "Fast RPC"
+      "Read-node telemetry"
     ],
     "summary": "Full Testnet rehearsal for create, commit, reveal, finalize, execute, and treasury verification. This indexed proposal already executed on Testnet and should be reviewed as proof, not as a pending signature flow.",
     "execution": {
@@ -750,7 +750,7 @@ export const READ_NODE_PROPOSAL_REGISTRY = [
     "privacy": "Commit-reveal + indexed treasury action",
     "tech": [
       "ZK",
-      "Fast RPC"
+      "Read-node telemetry"
     ],
     "summary": "Payroll Pack · Confidential contributor cycle submitted from the live web governance surface.",
     "execution": {
@@ -793,7 +793,7 @@ export const READ_NODE_PROPOSAL_REGISTRY = [
     "privacy": "Commit-reveal governance path",
     "tech": [
       "ZK",
-      "Fast RPC"
+      "Read-node telemetry"
     ],
     "summary": "Confidential payroll batch / April submitted from the live web governance surface.",
     "execution": {
@@ -839,7 +839,7 @@ export const READ_NODE_FEATURED_PROPOSAL_REGISTRY = [
     "tech": [
       "ZK",
       "REFHE",
-      "Fast RPC"
+      "Read-node telemetry"
     ],
     "summary": "Testnet confidential payout proposal with proposal-bound REFHE envelope commitment for Encrypt/IKA reviewer evidence. The governance phase is complete, but settlement evidence still gates the commercial trust surface.",
     "execution": {
@@ -882,7 +882,7 @@ export const READ_NODE_FEATURED_PROPOSAL_REGISTRY = [
     "privacy": "Commit-reveal + indexed treasury action",
     "tech": [
       "ZK",
-      "Fast RPC"
+      "Read-node telemetry"
     ],
     "summary": "Live Devnet proof for token-supply quorum, dedicated reveal rebate vault, and V3 finalize path. This indexed proposal already executed on Testnet and should be reviewed as proof, not as a pending signature flow.",
     "execution": {
@@ -927,7 +927,7 @@ export const READ_NODE_FEATURED_PROPOSAL_REGISTRY = [
       "ZK",
       "REFHE",
       "MagicBlock",
-      "Fast RPC"
+      "Read-node telemetry"
     ],
     "summary": "Execute a token confidential payout only after REFHE settlement, MagicBlock corridor settlement, and strict settlement evidence. This indexed proposal already executed on Testnet and should be reviewed as proof, not as a pending signature flow.",
     "execution": {

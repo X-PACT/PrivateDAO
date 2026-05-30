@@ -23,7 +23,7 @@ export function getTrackNarrativePlan(
   if (workspace.slug === "privacy-track") {
     return {
       whyUs:
-        "We already combine ZK, REFHE, MagicBlock, Fast RPC, and proof-backed governance in one live product. That combination is rare, and the integration work behind it usually takes far longer than a short build cycle.",
+        "We already combine ZK, REFHE, MagicBlock, Hosted reads, and proof-backed governance in one live product. That combination is rare, and the integration work behind it usually takes far longer than a short build cycle.",
       futureProblemSolution:
         "The future problem is that sensitive treasury and governance actions still force teams to choose between privacy and trust. PrivateDAO solves that by making confidential workflows reviewable, bounded, and operator-ready.",
       whySponsorShouldCareNow:

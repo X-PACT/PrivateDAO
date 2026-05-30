@@ -52,7 +52,7 @@ export default function StartPage() {
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             {[
-              ["1", "Connect wallet", "Use the header wallet button or the wallet sandbox.", "/wallet-template", "Open wallet path"],
+              ["1", "Connect wallet", "Use the header wallet button or the wallet sandbox.", "/govern", "Open wallet path"],
               ["2", "Get Testnet SOL", "Fund the same wallet before creating or executing.", "https://faucet.solana.com/", "Open faucet"],
               ["3", "Run governance", "Create, vote, or execute from the same wallet-first product shell.", "/govern", "Open govern"],
               ["4", "Check readiness", "Open live QuickNode-backed API health, counters, and proof freshness.", "/rpc-services", "Live readiness"],

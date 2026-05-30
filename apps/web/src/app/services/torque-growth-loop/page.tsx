@@ -4,6 +4,7 @@ import Link from "next/link";
 import { LocalizedRouteBrief } from "@/components/localized-route-brief";
 import { LocalizedRouteSummary } from "@/components/localized-route-summary";
 import { OperationsShell } from "@/components/operations-shell";
+import { PrivateDaoStackSurface } from "@/components/private-dao-stack-surface";
 import { TorqueGrowthLoopSurface } from "@/components/torque-growth-loop-surface";
 import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -81,6 +82,7 @@ export default function TorqueGrowthLoopPage() {
     >
       <LocalizedRouteSummary routeKey="services" />
       <LocalizedRouteBrief routeKey="servicesCore" />
+      <PrivateDaoStackSurface compact />
       <section className="rounded-[32px] border border-emerald-300/28 bg-[radial-gradient(circle_at_top_left,rgba(20,241,149,0.22),rgba(8,13,28,0.94)_45%,rgba(5,11,24,0.98))] p-6 shadow-2xl shadow-emerald-950/30">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>

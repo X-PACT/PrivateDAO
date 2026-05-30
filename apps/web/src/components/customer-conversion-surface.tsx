@@ -44,7 +44,7 @@ const productConversionLanes = [
     ],
   },
   {
-    title: "Agentic treasury automation",
+    title: "Encrypted treasury automation",
     byline: "Policy-bound micropayments and treasury actions that stay governed, logged, and reviewable.",
     firstPaidMotion: "Automate reviewer rewards, operator tasks, or API usage settlement under DAO-approved policy.",
     customerOffer: "A treasury automation lane that keeps payment execution under governance instead of replacing it.",

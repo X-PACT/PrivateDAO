@@ -222,7 +222,7 @@ export function CommandCenter() {
               <div>
                 <div className="text-sm font-medium text-white">Confidence engine snapshot</div>
                 <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">
-                  ZK + REFHE + MagicBlock + Fast RPC
+                  ZK + REFHE + MagicBlock + Hosted reads
                 </div>
               </div>
             </div>

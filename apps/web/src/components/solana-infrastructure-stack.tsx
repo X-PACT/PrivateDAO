@@ -22,7 +22,7 @@ type SolanaInfrastructureStackProps = {
 const pillars = [
   {
     title: "Fast runtime reads and diagnostics",
-    byline: "by Fast RPC + hosted reads",
+    byline: "by Hosted reads + hosted reads",
     summary:
       "Solana-grade UX means fresh state, low-latency reads, clear retry posture, and diagnostics that explain what the wallet action actually produced instead of leaving the user with a toast only.",
     runHref: "/services",
@@ -66,7 +66,7 @@ const pillars = [
   },
   {
     title: "Policy-bound automation",
-    byline: "by agentic treasury rail",
+    byline: "by encrypted treasury rail",
     summary:
       "Automation is only useful when it is governed. PrivateDAO ties recurring treasury actions to approved policy, then publishes the resulting settlement trail so automation stays auditable.",
     runHref: "/documents/agentic-treasury-micropayment-rail",

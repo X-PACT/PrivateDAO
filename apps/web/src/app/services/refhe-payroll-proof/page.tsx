@@ -4,6 +4,7 @@ import { IkaDwalletCustodyWorkbench } from "@/components/ika-dwallet-custody-wor
 import { LocalizedRouteBrief } from "@/components/localized-route-brief";
 import { OperationStateLegend } from "@/components/operation-state-legend";
 import { OperationsShell } from "@/components/operations-shell";
+import { PrivateDaoStackSurface } from "@/components/private-dao-stack-surface";
 import { RefhePayrollProofWorkbench } from "@/components/refhe-payroll-proof-workbench";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
@@ -28,6 +29,7 @@ export default function RefhePayrollProofPage() {
       ]}
     >
       <LocalizedRouteBrief routeKey="servicesCore" />
+      <PrivateDaoStackSurface compact />
       <OperationStateLegend description="This route separates encrypted computation proof, live Ika SDK readiness, intent receipt, and final private settlement so reviewers can see exactly what is live and what requires funded custody execution." />
       <RefhePayrollProofWorkbench />
       <IkaDwalletCustodyWorkbench />

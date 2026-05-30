@@ -72,7 +72,7 @@ function hasPaymentsTruthIntent(normalized: string) {
     "treasury rails",
     "micropayment",
     "micropayments",
-    "agentic treasury",
+    "encrypted treasury",
     "agentic payout",
   ].some((term) => normalized.includes(term));
 }
@@ -333,7 +333,7 @@ const assistantIntents: AssistantIntent[] = [
   {
     title: "Inspect cryptography and security posture",
     summary:
-      "Open the security route when the question is about ZK, REFHE, MagicBlock, Fast RPC, the capability matrix, or the confidence engine.",
+      "Open the security route when the question is about ZK, REFHE, MagicBlock, Hosted reads, the capability matrix, or the confidence engine.",
     primaryActionLabel: "Open security route",
     primaryActionHref: "/security",
     relatedRoutes: [
@@ -341,7 +341,7 @@ const assistantIntents: AssistantIntent[] = [
       { label: "Confidence Engine", href: "/documents/cryptographic-confidence-engine" },
       { label: "Diagnostics", href: "/diagnostics" },
     ],
-    keywords: ["zk", "security", "encryption", "magicblock", "refhe", "rpc", "fast rpc", "cryptography", "matrix"],
+    keywords: ["zk", "security", "encryption", "magicblock", "refhe", "rpc", "hosted reads", "cryptography", "matrix"],
   },
   {
     title: "Open the hosted-read backend cutover path",

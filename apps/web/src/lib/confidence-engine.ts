@@ -90,7 +90,7 @@ const DIMENSIONS: ConfidenceDimension[] = [
     title: "Execution integrity",
     weight: 24,
     factors: [
-      { label: "Fast RPC indexed runtime", weight: 24, enabled: (signals) => signals.fastRpcIndexed },
+      { label: "Hosted reads indexed runtime", weight: 24, enabled: (signals) => signals.fastRpcIndexed },
       { label: "MagicBlock corridor evidence", weight: 26, enabled: (signals) => signals.magicBlockEvidence },
       { label: "REFHE envelope readiness", weight: 24, enabled: (signals) => signals.refheEnvelope },
       { label: "Baseline live proof", weight: 14, enabled: (signals) => signals.liveProof },
@@ -112,7 +112,7 @@ const DIMENSIONS: ConfidenceDimension[] = [
 const PROFILE_DATA: ConfidenceProfile[] = [
   {
     title: "Confidential payroll",
-    subtitle: "REFHE + Governance V3 + Fast RPC",
+    subtitle: "REFHE + Governance V3 + Hosted reads",
     explanation:
       "Payroll flows benefit from private signal collection, versioned governance snapshots, REFHE-bound manifests, and runtime evidence that stays visible to reviewers.",
     signals: {
@@ -152,7 +152,7 @@ const PROFILE_DATA: ConfidenceProfile[] = [
   },
   {
     title: "Gaming rewards corridor",
-    subtitle: "MagicBlock + Settlement V3 + Fast RPC",
+    subtitle: "MagicBlock + Settlement V3 + Hosted reads",
     explanation:
       "Token reward programs rely more on settlement evidence and corridor controls than on encrypted payroll-style envelopes. The score reflects that difference instead of pretending every pack has the same cryptographic posture.",
     signals: {
@@ -231,7 +231,7 @@ export const confidenceDimensions = DIMENSIONS.map((dimension) => ({
 
 export const confidenceEnginePrinciples = [
   "The score is additive and reviewer-facing, not a claim of impossible-to-break security.",
-  "ZK, REFHE, MagicBlock, and Fast RPC contribute differently depending on the proposal pattern.",
+  "ZK, REFHE, MagicBlock, and Hosted reads contribute differently depending on the proposal pattern.",
   "Launch blockers and external custody gates are intentionally left outside the score so the app does not hide ceremony-gated work.",
 ];
 
@@ -247,7 +247,7 @@ export const confidenceSignalDefinitions: Array<{
   { key: "settlementV3", label: "Settlement Hardening V3", group: "enforcement" },
   { key: "refheEnvelope", label: "REFHE envelope", group: "execution" },
   { key: "magicBlockEvidence", label: "MagicBlock settlement evidence", group: "execution" },
-  { key: "fastRpcIndexed", label: "Fast RPC indexed runtime", group: "execution" },
+  { key: "fastRpcIndexed", label: "Hosted reads indexed runtime", group: "execution" },
   { key: "liveProof", label: "Baseline live proof", group: "review" },
   { key: "v3Proof", label: "Dedicated V3 proof", group: "review" },
   { key: "auditPacket", label: "Audit packet", group: "review" },
@@ -372,7 +372,7 @@ function inferSignals(input: ProposalConfidenceInput): ConfidenceSignals {
     refheEnvelope ||
     includesAny(privacyText, ["settlement", "execution"]);
   const zkAnchors = zkReview || includesAny(privacyText, ["proof anchor", "anchored"]);
-  const fastRpcIndexed = includesAny(joinedTech, ["fast rpc"]) || includesAny(privacyText, ["runtime", "reviewer-visible"]);
+  const fastRpcIndexed = includesAny(joinedTech, ["hosted reads"]) || includesAny(privacyText, ["runtime", "reviewer-visible"]);
   const liveProof = statusText !== "evidence gated";
   const v3Proof = governanceV3 || settlementV3;
   const auditPacket = true;
@@ -404,7 +404,7 @@ function buildRecommendations(signals: ConfidenceSignals) {
     recommendations.push("Keep settlement simpler unless corridor evidence or encrypted payout semantics are actually required.");
   }
   if (!signals.fastRpcIndexed) {
-    recommendations.push("Expose Fast RPC-backed diagnostics before presenting the path as fully operator-ready.");
+    recommendations.push("Expose Hosted reads-backed diagnostics before presenting the path as fully operator-ready.");
   }
   if (!signals.liveProof) {
     recommendations.push("Attach a live proof path before treating the proposal as reviewer-complete.");
@@ -448,7 +448,7 @@ export function buildManualConfidenceScorecard(signals: ConfidenceSignals, title
     title,
     subtitle,
     explanation:
-      "Interactive policy composition for a proposal path that mixes ZK, REFHE, MagicBlock, Fast RPC, and additive hardening rails before execution.",
+      "Interactive policy composition for a proposal path that mixes ZK, REFHE, MagicBlock, Hosted reads, and additive hardening rails before execution.",
     signals,
   });
 }

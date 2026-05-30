@@ -7,15 +7,15 @@ import { cn } from "@/lib/utils";
 const capabilityLanes = [
   {
     icon: Gavel,
-    title: "1. Private on-chain governance",
-    body: "Create a DAO, prepare a proposal, commit, reveal, execute, inspect PDAO governance-token context, and verify the action on Solana Testnet.",
+    title: "1. Coordination core",
+    body: "Create a DAO, prepare a proposal, commit, reveal, execute, inspect PDAO governance-token context, and verify the coordination event on Solana Testnet.",
     href: "/govern",
   },
   {
     icon: ShieldCheck,
-    title: "2. Treasury and private money movement",
-    body: "Run encrypted payments, confidential payroll, stablecoin billing, Jupiter treasury routing, and receipt-backed settlement from one execution path.",
-    href: "/execute",
+    title: "2. Treasury and encrypted money movement",
+    body: "Run encrypted payments, confidential payroll, stablecoin billing, Jupiter treasury routing, and receipt-backed settlement from one finance path.",
+    href: "/treasury",
   },
   {
     icon: Gamepad2,
@@ -25,7 +25,7 @@ const capabilityLanes = [
   },
   {
     icon: BrainCircuit,
-    title: "4. Intelligence before every signature",
+    title: "4. Intelligence before every authorization",
     body: "Use QVAC, GoldRush/Covalent, SNS, Zerion, QuickNode status, and policy context before approving governance or treasury operations.",
     href: "/intelligence",
   },
@@ -37,8 +37,8 @@ const capabilityLanes = [
   },
   {
     icon: LockKeyhole,
-    title: "Encrypted provider stack",
-    body: "Ika, Encrypt, REFHE, 2PC-MPC, MagicBlock, Umbra, Cloak, Torque, Zerion, and GoldRush are provider rails inside the four product corridors.",
+    title: "Cryptography and agent rails",
+    body: "Ika, Encrypt, REFHE, ZK, MagicBlock, Umbra, Cloak, Torque, Zerion, and GoldRush are rails inside one coordination layer.",
     href: "/services",
   },
   {
@@ -56,12 +56,12 @@ export function ProductCommandCenter({ compact = false }: { compact?: boolean })
         <div>
           <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-100/78">One product operating layer</div>
           <h2 className="mt-3 max-w-4xl text-2xl font-semibold tracking-[-0.035em] text-white md:text-3xl">
-            PrivateDAO is an on-chain private governance system, not a crowded integration directory.
+            Your organization runs on public wallets, public votes, and public treasury activity. We're fixing that.
           </h2>
           <p className="mt-3 max-w-4xl text-sm leading-7 text-white/64">
-            The product path is simple: a normal visitor connects a Solana Testnet wallet, reviews a governance or treasury
-            action, prepares the private operation, signs from the wallet, and verifies the receipt on-chain, through the API,
-            or in reviewer documents. Provider integrations only stay visible when they make that path easier to run or verify.
+            Private governance, payroll, and treasury operations on Solana. A visitor connects a Testnet wallet, reviews a
+            governance, treasury, payment, or rewards action, authorizes from the wallet, and verifies the receipt onchain,
+            through the API, or in reviewer documents.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">

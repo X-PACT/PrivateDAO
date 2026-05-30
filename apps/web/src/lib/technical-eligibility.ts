@@ -145,7 +145,7 @@ const fits: Record<string, TrackTechnicalFit> = {
   "rpc-infrastructure": {
     coreIdentity,
     sponsorUsage: [
-      "Fast RPC is surfaced as hosted reads, diagnostics, runtime evidence, and buyer packaging rather than a buried infra detail.",
+      "Hosted reads is surfaced as hosted reads, diagnostics, runtime evidence, and buyer packaging rather than a buried infra detail.",
       "The read path is backend-indexer based and already tied to proposal counts, confidential payout counts, and MagicBlock/REFHE runtime visibility.",
       "This lets a QuickNode-style judge see operational value, not only raw endpoint usage.",
     ],
@@ -154,7 +154,7 @@ const fits: Record<string, TrackTechnicalFit> = {
         sponsor: "QuickNode / RPC",
         status: "Direct live use",
         detail:
-          "Hosted reads, runtime diagnostics, and reviewer-grade evidence exports turn Fast RPC into visible product value rather than buried implementation detail.",
+          "Hosted reads, runtime diagnostics, and reviewer-grade evidence exports turn Hosted reads into visible product value rather than buried implementation detail.",
       },
       {
         sponsor: "Infrastructure credits",
@@ -311,7 +311,7 @@ const fits: Record<string, TrackTechnicalFit> = {
     coreIdentity,
     sponsorUsage: [
       "REFHE is tied to confidential payout envelopes and proposal-scoped settlement rather than a vague encrypted-compute story.",
-      "The security route explains exactly where ZK, REFHE, MagicBlock, and Fast RPC contribute and where the honest boundary remains.",
+      "The security route explains exactly where ZK, REFHE, MagicBlock, and Hosted reads contribute and where the honest boundary remains.",
       "This makes encrypted operations feel like a real workflow improvement for payroll, bonus approvals, and committee actions.",
     ],
     sponsorEvidence: [

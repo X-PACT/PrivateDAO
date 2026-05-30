@@ -166,7 +166,7 @@ const technologyCards = [
     icon: Cable,
   },
   {
-    title: "Agentic treasury execution",
+    title: "Encrypted treasury execution",
     body:
       "The micropayment rail is the first governed onchain agent lane inside PrivateDAO. It turns approved policy into repeated small settlement actions that stay reviewer-visible after execution.",
     href: "/documents/agentic-treasury-micropayment-rail",
@@ -223,9 +223,9 @@ const plainLanguageTechnologyCards = [
       "REFHE is part of the confidential settlement story. It helps explain how sensitive treasury logic can remain usable without becoming a black box.",
   },
   {
-    title: "Fast RPC",
+    title: "Hosted reads",
     summary:
-      "RPC is the connection between the product and the blockchain. Fast RPC matters because proposal, vote, and payout state should update quickly and reliably.",
+      "RPC is the connection between the product and the blockchain. Hosted reads matters because proposal, vote, and payout state should update quickly and reliably.",
   },
   {
     title: "API services",
@@ -559,7 +559,7 @@ export function ProductLearningGuide({
               <li>Public Testnet hashes and logs that show the action really landed without asking the visitor to decode raw blockchain internals alone.</li>
               <li>Telemetry, analytics, and runtime packets that explain what changed after each action.</li>
               <li>Privacy and cryptography described in human language first, with technical depth one click away.</li>
-              <li>Fast RPC behavior that makes proposal state, proof freshness, and treasury state update quickly enough to feel trustworthy.</li>
+              <li>Hosted reads behavior that makes proposal state, proof freshness, and treasury state update quickly enough to feel trustworthy.</li>
               <li>A product shell that feels close to production, even while the environment stays safely on Testnet.</li>
             </ul>
             <div className="mt-5 flex flex-wrap gap-3">

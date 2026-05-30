@@ -80,7 +80,7 @@ export function getTrackCommercializationPlan(
       buyerType: "Protocols, dashboards, and governance products that need faster reads, diagnostics, and reviewer-grade evidence exports.",
       customerOffer: "Hosted Read API + Ops as the clearest infrastructure offer, with enterprise retainer as the next step.",
       commercialNarrative:
-        "Fast RPC becomes commercially meaningful when diagnostics, reviewer exports, and hosted-read value are visible in the product shell and service packaging.",
+        "Hosted reads becomes commercially meaningful when diagnostics, reviewer exports, and hosted-read value are visible in the product shell and service packaging.",
       firstPaidMotion:
         "Sell hosted governance reads and operator diagnostics as a managed API + evidence layer for teams that do not want to build this in-house.",
       mainnetUpgradePath: [

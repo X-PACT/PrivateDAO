@@ -160,9 +160,9 @@ const liveServiceGate = {
 export const metadata: Metadata = buildRouteMetadata({
   title: "Verification Route",
   description:
-    "Fast verification route for inspecting the DAO lifecycle, real Testnet transactions, agentic treasury micropayments, and the clearest proof surfaces inside PrivateDAO.",
+    "Fast verification route for inspecting how PrivateDAO keeps votes, payroll, treasury activity, and internal operations private while outcomes remain verifiable on Solana.",
   path: "/judge",
-  keywords: ["verification", "testnet proof", "micropayments", "governance proof"],
+  keywords: ["verification", "testnet proof", "confidential coordination", "agent governance", "micropayments", "governance proof"],
 });
 
 export default function JudgePage() {
@@ -282,7 +282,7 @@ export default function JudgePage() {
     ["Torque growth loop", "Retention and reward surfaces tied to product activity.", "/services?claim=treasury-routing-and-growth#privacy-claim-console", "/documents/torque-growth-loop"],
     ["Eitherway live dApp", "Wallet-first connect/sign/verify lane with partner-ready UX boundaries.", "/services/eitherway-live-dapp", "/proof"],
     ["Consumer governance UX", "Normal-user path across web and Android with wallet-first signing clarity.", "/services?claim=private-governance#privacy-claim-console", "/android"],
-    ["Runtime infrastructure", "Fast RPC and telemetry lane with reviewer-facing diagnostics continuity.", "/services/runtime-infrastructure", "/analytics"],
+    ["Runtime infrastructure", "Read-node telemetry lane with reviewer-facing diagnostics continuity.", "/services/runtime-infrastructure", "/analytics"],
     ["Encrypt / IKA operations", "Client-side encrypted payload lane with commitment-safe proof continuity and payroll-safe preparation.", "/services?claim=ika-custody-and-interoperability#privacy-claim-console", "/proof"],
     ["SolRouter encrypted AI", "Deterministic proposal intelligence with encrypted brief output and receipt continuity.", "/services/solrouter-encrypted-ai", "/proof"],
     ["Main Frontier closure", "Integrated product route connecting all shipped operational lanes.", "/services/main-frontier-closure", "/proof"],
@@ -305,17 +305,17 @@ export default function JudgePage() {
           <div className="min-w-0">
             <div className="text-[11px] uppercase tracking-[0.32em] text-cyan-100/78">Canonical judge hub</div>
             <h2 className="mt-3 max-w-4xl text-3xl font-semibold tracking-[-0.04em] text-white sm:text-5xl">
-              PrivateDAO in three minutes: understand, connect, sign, and verify real Testnet privacy rails.
+              Your DAO votes, payroll, and treasury are public. They shouldn't be.
             </h2>
             <p className="mt-4 max-w-4xl text-sm leading-7 text-white/66 sm:text-base">
-              PrivateDAO is a wallet-first Solana operating system for private governance, confidential treasury,
-              encrypted payroll, private payments, intelligence-assisted decisions, and proof-linked execution. Start
-              with the video, then open any track below to run the live route instead of reading disconnected pages.
+              Most DAOs expose votes, salaries, treasury activity, and internal operations. PrivateDAO enables organizations
+              to operate privately while remaining cryptographically verifiable on Solana. Start with the video, then open
+              any track below to run the live route instead of reading disconnected pages.
             </p>
             <div className="mt-5 grid gap-3 sm:grid-cols-3">
               {[
-                ["Problem", "DAOs expose sensitive votes, payroll, treasury intent, and contributor data too early."],
-                ["Solution", "Governance, intelligence, encryption gates, wallet signing, and proof are one guided flow."],
+                ["Problem", "Public payroll, public governance, public treasury, and public internal operations expose too much."],
+                ["Solution", "Private processes, wallet authorization, encrypted coordination, and verifiable outcomes are one guided flow."],
                 ["Proof", "REFHE, MagicBlock, ZK verifier, Token-2022, Squads, and backend JSON are Testnet-linked."],
               ].map(([label, detail]) => (
                 <div key={label} className="rounded-2xl border border-white/10 bg-black/22 p-4">

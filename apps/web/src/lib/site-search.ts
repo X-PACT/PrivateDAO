@@ -252,7 +252,7 @@ export const siteSearchItems: SiteSearchItem[] = [
     title: "Runtime Infrastructure Route",
     href: "/services",
     category: "Track",
-    summary: "Hosted read path, diagnostics, runtime evidence, and Fast RPC packaging.",
+    summary: "Hosted read path, diagnostics, runtime evidence, and Hosted reads packaging.",
   },
   {
     title: "Wallet-First Product Route",
@@ -270,7 +270,7 @@ export const siteSearchItems: SiteSearchItem[] = [
     title: "Cryptographic Confidence Engine",
     href: "/documents/cryptographic-confidence-engine",
     category: "Document",
-    summary: "Deterministic scoring for ZK, REFHE, MagicBlock, Fast RPC, and governance posture.",
+    summary: "Deterministic scoring for ZK, REFHE, MagicBlock, Hosted reads, and governance posture.",
   },
   {
     title: "Proposal Review AI",

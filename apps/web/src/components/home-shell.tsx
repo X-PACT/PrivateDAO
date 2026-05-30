@@ -55,11 +55,11 @@ const homeCopyByLocale: Record<
   }
 > = {
   en: {
-    eyebrow: "PrivateDAO OS",
-    title: "Sovereign encrypted intelligence and operational infrastructure for Solana.",
+    eyebrow: "Coordination Layer",
+    title: "Your DAO votes, payroll, and treasury are public. They shouldn't be.",
     body:
-      "A live web and Android product where normal users connect a Testnet wallet, fund it, govern, run confidential payroll, encrypt payments, route rewards, use online/offline intelligence, and verify every receipt on-chain without code or terminal work.",
-    launch: "Start live Testnet",
+      "Most DAOs expose everything: votes, salaries, treasury activity, and internal operations. PrivateDAO enables organizations to operate privately while remaining cryptographically verifiable on Solana.",
+    launch: "Start building",
     android: "Install Android APK",
     verify: "Open verification view",
     judge: "Open Judge",
@@ -70,7 +70,7 @@ const homeCopyByLocale: Record<
     stackLabel: "Powered by the live stack",
     thesisTitle: "Private. Verified. Informed.",
     thesisBody:
-      "PrivateDAO combines commit-reveal privacy, ZK review proofs, REFHE proof receipts, MagicBlock execution receipts, and GoldRush intelligence into one governance OS where every decision is private, verified, and informed.",
+      "Privacy is not lack of transparency. PrivateDAO keeps sensitive processes private while making outcomes verifiable through commit-reveal governance, proof receipts, encrypted settlement metadata, and Solana Testnet evidence.",
     thesisPrivate: "Private = commit-reveal first, ZK proofs off-chain today, and Cloak / Umbra settlement lanes.",
     thesisVerified: "Verified = Testnet proof, V3 hardening, and Anchor 1.0.1 evidence.",
     thesisInformed: "Informed = GoldRush, QVAC, and the intelligence layer before signing.",
@@ -81,11 +81,11 @@ const homeCopyByLocale: Record<
     allSections: "All product sections",
   },
   ar: {
-    eyebrow: "نظام PrivateDAO",
-    title: "بنية تشغيلية سيادية مشفرة وذكية على سولانا.",
+    eyebrow: "طبقة التنسيق",
+    title: "تصويت DAO والرواتب والخزانة عندك مكشوفة. المفروض لا.",
     body:
-      "منتج ويب وأندرويد حي: صل محفظة Testnet، اشحنها، احكم، ادفع راتباً سرياً، شفّر مدفوعة، نفّذ مكافآت، واستخدم الذكاء online/offline ثم عاين كل إيصال على السلسلة بدون كود أو ترمينال.",
-    launch: "ابدأ تجربة Testnet",
+      "معظم الـ DAOs تكشف كل شيء: التصويت، الرواتب، حركة الخزانة، والعمليات الداخلية. PrivateDAO يمكّن المؤسسات أن تعمل بخصوصية مع بقاء النتائج قابلة للتحقق تشفيرياً على سولانا.",
+    launch: "ابدأ البناء",
     android: "ثبّت تطبيق أندرويد",
     verify: "افتح التحقق",
     judge: "افتح مسار الحكام",
@@ -96,7 +96,7 @@ const homeCopyByLocale: Record<
     stackLabel: "مدعوم بالطبقة الحية",
     thesisTitle: "خاص. قابل للتحقق. واعٍ بالسياق.",
     thesisBody:
-      "يجمع PrivateDAO خصوصية commit-reveal، وبراهين ZK خارج السلسلة حالياً، وإيصالات REFHE، وإيصالات تنفيذ MagicBlock، وذكاء GoldRush في نظام حوكمة واحد يجعل كل قرار خاصاً وقابلاً للتحقق ومبنياً على معلومات واضحة.",
+      "الخصوصية لا تعني غياب الشفافية. PrivateDAO يجعل العمليات الحساسة خاصة، بينما تبقى النتائج قابلة للتحقق عبر commit-reveal governance، وإيصالات proof، وبيانات settlement مشفرة، وإثباتات Solana Testnet.",
     thesisPrivate: "خاص = commit-reveal أولاً، وبراهين ZK خارج السلسلة الآن، ومسارات Cloak وUmbra.",
     thesisVerified: "قابل للتحقق = إثبات Testnet وV3 Hardening وAnchor 1.0.1.",
     thesisInformed: "واعي بالسياق = GoldRush وQVAC وطبقة Intelligence قبل التوقيع.",
@@ -107,11 +107,11 @@ const homeCopyByLocale: Record<
     allSections: "كل أقسام المنتج",
   },
   ru: {
-    eyebrow: "PrivateDAO OS",
-    title: "Суверенная зашифрованная intelligence и операционная инфраструктура для Solana.",
+    eyebrow: "Coordination Layer",
+    title: "Голоса DAO, зарплаты и казна публичны. Так быть не должно.",
     body:
-      "Живой web и Android продукт: подключите Testnet wallet, пополните его, управляйте DAO, запускайте confidential payroll, encrypt payments, rewards, online/offline intelligence и проверяйте каждый receipt on-chain без кода и терминала.",
-    launch: "Start live Testnet",
+      "Большинство DAO раскрывают все: голоса, зарплаты, активность казны и внутренние операции. PrivateDAO позволяет организациям работать приватно, оставаясь криптографически проверяемыми на Solana.",
+    launch: "Start building",
     android: "Install Android APK",
     verify: "Открыть proof",
     judge: "Открыть Judge",
@@ -122,7 +122,7 @@ const homeCopyByLocale: Record<
     stackLabel: "Работает на live stack",
     thesisTitle: "Private. Verified. Informed.",
     thesisBody:
-      "PrivateDAO объединяет commit-reveal privacy, off-chain ZK proofs today, REFHE proof receipts, MagicBlock execution receipts и аналитику GoldRush в одну governance OS, где каждое решение приватно, проверяемо и основано на контексте.",
+      "Privacy is not lack of transparency. PrivateDAO keeps sensitive processes private while outcomes remain verifiable through commit-reveal governance, proof receipts, encrypted settlement metadata, and Solana Testnet evidence.",
     thesisPrivate: "Private = commit-reveal first, ZK proofs off-chain today, Cloak и Umbra settlement lanes.",
     thesisVerified: "Verified = Testnet proof, V3 hardening и Anchor 1.0.1 evidence.",
     thesisInformed: "Informed = GoldRush, QVAC и intelligence layer before signing.",
@@ -132,11 +132,11 @@ const homeCopyByLocale: Record<
     allSections: "Все разделы продукта",
   },
   uk: {
-    eyebrow: "PrivateDAO OS",
-    title: "Суверенна зашифрована intelligence та операційна інфраструктура для Solana.",
+    eyebrow: "Coordination Layer",
+    title: "Голоси DAO, зарплати й казна публічні. Так не має бути.",
     body:
-      "Живий web і Android продукт: підключіть Testnet wallet, поповніть його, керуйте DAO, запускайте confidential payroll, encrypt payments, rewards, online/offline intelligence і перевіряйте кожен receipt on-chain без коду чи термінала.",
-    launch: "Start live Testnet",
+      "Більшість DAO відкривають усе: голоси, зарплати, рух казни та внутрішні операції. PrivateDAO дозволяє організаціям працювати приватно й залишатися криптографічно перевірюваними на Solana.",
+    launch: "Start building",
     android: "Install Android APK",
     verify: "Відкрити proof",
     judge: "Відкрити Judge",
@@ -147,7 +147,7 @@ const homeCopyByLocale: Record<
     stackLabel: "Працює на live stack",
     thesisTitle: "Private. Verified. Informed.",
     thesisBody:
-      "PrivateDAO поєднує commit-reveal privacy, off-chain ZK proofs today, REFHE proof receipts, MagicBlock execution receipts і аналітику GoldRush в одну governance OS, де кожне рішення приватне, перевірюване й контекстне.",
+      "Privacy is not lack of transparency. PrivateDAO keeps sensitive processes private while outcomes remain verifiable through commit-reveal governance, proof receipts, encrypted settlement metadata, and Solana Testnet evidence.",
     thesisPrivate: "Private = commit-reveal first, ZK proofs off-chain today, Cloak і Umbra settlement lanes.",
     thesisVerified: "Verified = Testnet proof, V3 hardening і Anchor 1.0.1 evidence.",
     thesisInformed: "Informed = GoldRush, QVAC і intelligence layer before signing.",
@@ -157,11 +157,11 @@ const homeCopyByLocale: Record<
     allSections: "Усі розділи продукту",
   },
   pl: {
-    eyebrow: "PrivateDAO OS",
-    title: "Suwerenna, szyfrowana intelligence i infrastruktura operacyjna dla Solany.",
+    eyebrow: "Coordination Layer",
+    title: "Głosy DAO, payroll i treasury są publiczne. Nie powinny być.",
     body:
-      "Live web i Android product: connect Testnet wallet, fund it, govern, run confidential payroll, encrypt payments, route rewards, use online/offline intelligence i verify every receipt on-chain bez kodu ani terminala.",
-    launch: "Start live Testnet",
+      "Większość DAO ujawnia wszystko: głosy, pensje, aktywność treasury i operacje wewnętrzne. PrivateDAO pozwala organizacjom działać prywatnie, pozostając kryptograficznie weryfikowalnymi na Solana.",
+    launch: "Start building",
     android: "Install Android APK",
     verify: "Otwórz proof",
     judge: "Otwórz Judge",
@@ -172,7 +172,7 @@ const homeCopyByLocale: Record<
     stackLabel: "Powered by live stack",
     thesisTitle: "Private. Verified. Informed.",
     thesisBody:
-      "PrivateDAO łączy commit-reveal privacy, off-chain ZK proofs today, REFHE proof receipts, MagicBlock execution receipts i intelligence GoldRush w jeden governance OS, gdzie każda decyzja jest prywatna, weryfikowalna i świadoma kontekstu.",
+      "Privacy is not lack of transparency. PrivateDAO keeps sensitive processes private while outcomes remain verifiable through commit-reveal governance, proof receipts, encrypted settlement metadata, and Solana Testnet evidence.",
     thesisPrivate: "Private = commit-reveal first, ZK proofs off-chain today, Cloak i Umbra settlement lanes.",
     thesisVerified: "Verified = Testnet proof, V3 hardening i Anchor 1.0.1 evidence.",
     thesisInformed: "Informed = GoldRush, QVAC i intelligence layer before signing.",
@@ -182,11 +182,11 @@ const homeCopyByLocale: Record<
     allSections: "Wszystkie sekcje produktu",
   },
   hi: {
-    eyebrow: "PrivateDAO OS",
-    title: "Solana के लिए sovereign encrypted intelligence और operational infrastructure.",
+    eyebrow: "Coordination Layer",
+    title: "आपके DAO votes, payroll और treasury public हैं. ऐसा नहीं होना चाहिए.",
     body:
-      "Live web और Android product: Testnet wallet connect करें, fund करें, govern करें, confidential payroll चलाएं, payments encrypt करें, rewards route करें, online/offline intelligence use करें और हर receipt को on-chain verify करें, बिना code या terminal.",
-    launch: "Live Testnet शुरू करें",
+      "Most DAOs सब कुछ expose करते हैं: votes, salaries, treasury activity और internal operations. PrivateDAO organizations को privately operate करने देता है while remaining cryptographically verifiable on Solana.",
+    launch: "Start building",
     android: "Android APK install करें",
     verify: "Proof खोलें",
     judge: "Judge खोलें",
@@ -197,7 +197,7 @@ const homeCopyByLocale: Record<
     stackLabel: "Live stack द्वारा संचालित",
     thesisTitle: "Private. Verified. Informed.",
     thesisBody:
-      "PrivateDAO commit-reveal privacy, off-chain ZK proofs today, REFHE proof receipts, MagicBlock execution receipts और GoldRush intelligence को एक governance OS में जोड़ता है, जहां हर decision private, verified और informed होता है.",
+      "Privacy transparency की कमी नहीं है. PrivateDAO sensitive processes को private रखता है while outcomes commit-reveal governance, proof receipts, encrypted settlement metadata और Solana Testnet evidence से verifiable रहते हैं.",
     thesisPrivate: "Private = commit-reveal first, ZK proofs off-chain today, Cloak और Umbra settlement lanes.",
     thesisVerified: "Verified = Testnet proof, V3 hardening और Anchor 1.0.1 evidence.",
     thesisInformed: "Informed = GoldRush, QVAC और signing से पहले intelligence layer.",
@@ -207,11 +207,11 @@ const homeCopyByLocale: Record<
     allSections: "सभी product sections",
   },
   ko: {
-    eyebrow: "PrivateDAO OS",
-    title: "Solana를 위한 sovereign encrypted intelligence 및 operational infrastructure.",
+    eyebrow: "Coordination Layer",
+    title: "DAO 투표, 급여, treasury가 공개되어 있습니다. 그래서는 안 됩니다.",
     body:
-      "Live web 및 Android product: Testnet wallet 연결, funding, governance, confidential payroll, encrypted payments, rewards, online/offline intelligence를 실행하고 모든 receipt를 code나 terminal 없이 on-chain으로 verify합니다.",
-    launch: "Start live Testnet",
+      "Most DAOs expose everything: votes, salaries, treasury activity, and internal operations. PrivateDAO enables organizations to operate privately while remaining cryptographically verifiable on Solana.",
+    launch: "Start building",
     android: "Install Android APK",
     verify: "Proof 열기",
     judge: "Judge 열기",
@@ -222,7 +222,7 @@ const homeCopyByLocale: Record<
     stackLabel: "Live stack 기반",
     thesisTitle: "Private. Verified. Informed.",
     thesisBody:
-      "PrivateDAO는 commit-reveal privacy, off-chain ZK proofs today, REFHE proof receipts, MagicBlock execution receipts, GoldRush intelligence를 하나의 governance OS로 묶어 모든 결정을 private, verified, informed 상태로 만듭니다.",
+      "Privacy is not lack of transparency. PrivateDAO keeps sensitive processes private while outcomes remain verifiable through commit-reveal governance, proof receipts, encrypted settlement metadata, and Solana Testnet evidence.",
     thesisPrivate: "Private = commit-reveal first, ZK proofs off-chain today, Cloak, Umbra settlement lanes.",
     thesisVerified: "Verified = Testnet proof, V3 hardening, Anchor 1.0.1 evidence.",
     thesisInformed: "Informed = GoldRush, QVAC, signing 전 intelligence layer.",
@@ -232,11 +232,11 @@ const homeCopyByLocale: Record<
     allSections: "전체 제품 섹션",
   },
   es: {
-    eyebrow: "PrivateDAO OS",
-    title: "Infraestructura operativa e inteligencia cifrada soberana para Solana.",
+    eyebrow: "Coordination Layer",
+    title: "Los votos, payroll y treasury de tu DAO son públicos. No deberían serlo.",
     body:
-      "Producto web y Android en vivo: conecta una wallet Testnet, fúndala, gobierna, ejecuta confidential payroll, cifra pagos, enruta recompensas, usa inteligencia online/offline y verifica cada receipt on-chain sin código ni terminal.",
-    launch: "Iniciar Testnet vivo",
+      "La mayoría de DAOs exponen todo: votos, salarios, actividad de treasury y operaciones internas. PrivateDAO permite que las organizaciones operen en privado y sigan siendo criptográficamente verificables en Solana.",
+    launch: "Start building",
     android: "Instalar Android APK",
     verify: "Abrir proof",
     judge: "Abrir Judge",
@@ -247,7 +247,7 @@ const homeCopyByLocale: Record<
     stackLabel: "Impulsado por el live stack",
     thesisTitle: "Private. Verified. Informed.",
     thesisBody:
-      "PrivateDAO combina privacidad commit-reveal, pruebas ZK off-chain hoy, recibos de prueba REFHE, recibos de ejecución MagicBlock e inteligencia GoldRush en un governance OS donde cada decisión es privada, verificable e informada.",
+      "Privacy is not lack of transparency. PrivateDAO keeps sensitive processes private while outcomes remain verifiable through commit-reveal governance, proof receipts, encrypted settlement metadata, and Solana Testnet evidence.",
     thesisPrivate: "Private = commit-reveal first, ZK proofs off-chain today, Cloak y Umbra settlement lanes.",
     thesisVerified: "Verified = Testnet proof, V3 hardening y Anchor 1.0.1 evidence.",
     thesisInformed: "Informed = GoldRush, QVAC e intelligence layer antes de firmar.",
@@ -257,11 +257,11 @@ const homeCopyByLocale: Record<
     allSections: "Todas las secciones",
   },
   it: {
-    eyebrow: "PrivateDAO OS",
-    title: "Infrastruttura operativa e intelligence cifrata sovrana per Solana.",
+    eyebrow: "Coordination Layer",
+    title: "I voti, il payroll e la treasury della tua DAO sono pubblici. Non dovrebbero esserlo.",
     body:
-      "Prodotto web e Android live: collega un wallet Testnet, finanzialo, governa, esegui confidential payroll, cifra pagamenti, instrada rewards, usa intelligence online/offline e verifica ogni receipt on-chain senza codice o terminale.",
-    launch: "Avvia Testnet live",
+      "La maggior parte delle DAO espone tutto: voti, stipendi, attività di treasury e operazioni interne. PrivateDAO consente alle organizzazioni di operare privatamente restando crittograficamente verificabili su Solana.",
+    launch: "Start building",
     android: "Installa Android APK",
     verify: "Apri proof",
     judge: "Apri Judge",
@@ -272,7 +272,7 @@ const homeCopyByLocale: Record<
     stackLabel: "Basato sul live stack",
     thesisTitle: "Private. Verified. Informed.",
     thesisBody:
-      "PrivateDAO combina privacy commit-reveal, prove ZK off-chain oggi, ricevute di prova REFHE, ricevute di esecuzione MagicBlock e intelligence GoldRush in un governance OS dove ogni decisione è privata, verificabile e informata.",
+      "Privacy is not lack of transparency. PrivateDAO keeps sensitive processes private while outcomes remain verifiable through commit-reveal governance, proof receipts, encrypted settlement metadata, and Solana Testnet evidence.",
     thesisPrivate: "Private = commit-reveal first, ZK proofs off-chain today, Cloak e Umbra settlement lanes.",
     thesisVerified: "Verified = Testnet proof, V3 hardening e Anchor 1.0.1 evidence.",
     thesisInformed: "Informed = GoldRush, QVAC e intelligence layer prima della firma.",
@@ -288,9 +288,9 @@ export function HomeShell() {
   const homeCopy = homeCopyByLocale[locale] ?? homeCopyByLocale.en;
   const storyCards = [
     {
-      title: "Private Treasury & Payroll",
-      description: "Upload payroll, choose USDC/PUSD/AUDD, prepare privacy receipts, and keep audit context bounded.",
-      href: "/payroll",
+      title: "Confidential Treasury & Payroll",
+      description: "Prepare payroll, choose USDC/PUSD/AUDD context, generate privacy receipts, and keep audit context bounded.",
+      href: "/services/refhe-payroll-proof",
       icon: Compass,
     },
     {
@@ -300,8 +300,8 @@ export function HomeShell() {
       icon: Shield,
     },
     {
-      title: "Gaming & Agentic Rewards",
-      description: "Create guilds, tournaments, and inventory proposals with reward settlement linked back to proof.",
+      title: "GamingDAO & Agentic Rewards",
+      description: "Create guilds, tournaments, and inventory proposals with governed reward settlement linked back to proof.",
       href: "/gaming",
       icon: PlayCircle,
     },
@@ -321,9 +321,9 @@ export function HomeShell() {
     },
     {
       title: "3. Sign and execute",
-      description: "Use Govern and Execute to create the proposal, commit or reveal when needed, then approve the exact wallet action on Testnet.",
-      href: "/execute",
-      cta: "Open execute",
+      description: "Use Govern and Treasury to create the proposal, commit or reveal when needed, then approve the exact wallet action on Testnet.",
+      href: "/govern",
+      cta: "Open govern",
     },
     {
       title: "4. Verify the receipt",
@@ -361,7 +361,7 @@ export function HomeShell() {
       title: "Payroll",
       eyebrow: "Private payouts",
       description: "CSV preview, stablecoin selection, Umbra/Cloak receipts, and auditor views.",
-      href: "/payroll",
+      href: "/services/refhe-payroll-proof",
       icon: Coins,
       badge: "Finance",
     },
@@ -377,7 +377,7 @@ export function HomeShell() {
       title: "Compliance",
       eyebrow: "Audit pack",
       description: "Scoped viewing keys, date-windowed report flow, and dWallet-signed evidence.",
-      href: "/compliance",
+      href: "/security",
       icon: FileCheck2,
       badge: "Trust",
     },
@@ -393,7 +393,7 @@ export function HomeShell() {
       title: "Developers",
       eyebrow: "API + SDK",
       description: "Integration docs, privacy SDK starter, read-node lanes, and builder entry points.",
-      href: "/developers",
+      href: "/documents",
       icon: Code2,
       badge: "Build",
     },
@@ -409,7 +409,7 @@ export function HomeShell() {
       title: "Command Center",
       eyebrow: "Ops dashboard",
       description: "Live operating status, treasury routes, indexed proposal context, and readiness gates.",
-      href: "/command-center",
+      href: "/judge",
       icon: Compass,
       badge: "Control",
     },
@@ -420,18 +420,18 @@ export function HomeShell() {
     { label: "Intelligence", href: "/intelligence" },
     { label: "Govern", href: "/govern" },
     { label: "Treasury", href: "/treasury" },
-    { label: "Payroll", href: "/payroll" },
-    { label: "Execute", href: "/execute" },
+    { label: "Confidential", href: "/services/refhe-payroll-proof" },
+    { label: "Payments", href: "/services/confidential-payments" },
     { label: "Gaming", href: "/gaming" },
     { label: "Tournaments", href: "/gaming/tournaments" },
     { label: "Inventory", href: "/gaming/inventory" },
-    { label: "Compliance", href: "/compliance" },
+    { label: "Security", href: "/security" },
     { label: "Proof", href: "/proof" },
     { label: "Trust", href: "/trust" },
     { label: "Security", href: "/security" },
-    { label: "Developers", href: "/developers" },
+    { label: "Documents", href: "/documents" },
     { label: "RPC", href: "/rpc-services" },
-    { label: "Command", href: "/command-center" },
+    { label: "Judge", href: "/judge" },
     { label: "Services", href: "/services" },
     { label: "About", href: "/about" },
   ];
@@ -452,7 +452,7 @@ export function HomeShell() {
       detail: "Responsive execution corridor for wallet-first actions.",
     },
     {
-      label: "Fast RPC",
+      label: "Read-node telemetry",
       badgeClass: "border-amber-300/25 bg-amber-300/[0.14] text-amber-100",
       detail: "Reliable live reads, signatures, and action logs.",
     },
@@ -489,7 +489,7 @@ export function HomeShell() {
       outcome: "Used where wallet-first actions need a faster execution lane so DAO and game-linked decisions do not feel stuck behind slow runtime behavior.",
     },
     {
-      technology: "Fast RPC",
+      technology: "Read-node telemetry",
       service: "Live state, logs, and signature confirmation",
       outcome: "Used to keep Testnet reads, proposal status, and action feedback visible after a wallet action instead of leaving the user guessing.",
     },
@@ -532,7 +532,7 @@ export function HomeShell() {
     {
       question: "What does the cryptography actually do here?",
       answer:
-        "ZK, REFHE, MagicBlock, and Fast RPC each map to a concrete product lane: privacy review, confidential payout proof receipts, responsive execution receipts, and reliable live reads. They are presented as service rails, not badge-only theory.",
+        "ZK, REFHE, MagicBlock, and read-node telemetry each map to a concrete product lane: privacy review, confidential payout proof receipts, responsive execution receipts, and reliable live reads. They are presented as service rails, not badge-only theory.",
     },
     {
       question: "What kind of support helps most right now?",
@@ -640,7 +640,7 @@ export function HomeShell() {
                 </div>
               </div>
               <div className="max-w-3xl rounded-[26px] border border-cyan-300/18 bg-cyan-300/[0.08] p-5 text-sm leading-7 text-white/72">
-                <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/80">Governance OS thesis</div>
+                <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/80">Confidential coordination thesis</div>
                 <div className="mt-2 text-xl font-semibold tracking-[-0.03em] text-white">{homeCopy.thesisTitle}</div>
                 <p className="mt-2">{homeCopy.thesisBody}</p>
                 <div className="mt-4 grid gap-3 sm:grid-cols-3">
@@ -652,15 +652,15 @@ export function HomeShell() {
                 </div>
               </div>
               <div className="flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.24em] text-white/50">
-                <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Connect</span>
+                <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Coordinate</span>
                 <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Review</span>
-                <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Sign</span>
+                <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Authorize</span>
                 <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Verify</span>
               </div>
             </div>
 
             <div className="flex flex-wrap gap-3">
-              <Link className={cn(buttonVariants({ size: "lg" }))} href="/execute">
+              <Link className={cn(buttonVariants({ size: "lg" }))} href="/start">
                 {homeCopy.launch}
                 <ArrowRight className="h-4 w-4" />
               </Link>
@@ -865,7 +865,7 @@ export function HomeShell() {
                   <div className="mt-1 text-base font-semibold text-white">Top 1% in Solana</div>
                 </div>
                 <div className="mt-2 text-xs leading-6 text-amber-100/60">
-                  FastRPC is supporting PrivateDAO throughout the hackathon with RPC infrastructure, and we appreciate that support.
+                  The live read-node, hosted APIs, and telemetry surfaces keep PrivateDAO's Testnet evidence inspectable throughout review.
                 </div>
               </div>
             </CardContent>
@@ -971,10 +971,10 @@ export function HomeShell() {
             </p>
           </div>
 	          <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
-	            <div className="text-[11px] uppercase tracking-[0.24em] text-amber-200/80">Fast RPC</div>
+	            <div className="text-[11px] uppercase tracking-[0.24em] text-amber-200/80">Read-node telemetry</div>
 	            <div className="mt-3 text-lg font-semibold text-white">Reliable live state and logs</div>
 	            <p className="mt-3 text-sm leading-7 text-white/58">
-	              Fast RPC and hosted reads keep live state, signatures, proposal progress, and execution logs visible so users can tell what really happened after a wallet action.
+	              Hosted reads and telemetry keep live state, signatures, proposal progress, and execution logs visible so users can tell what really happened after a wallet action.
 	            </p>
 	          </div>
 	          <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
@@ -999,14 +999,14 @@ export function HomeShell() {
           <div className="text-[11px] font-medium uppercase tracking-[0.34em] text-emerald-300/80">How the stack maps to services</div>
           <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">These technologies are tied to real product lanes, not a theory slide</h2>
           <p className="text-base leading-8 text-white/60 sm:text-lg">
-            PrivateDAO uses each rail for a specific user-facing job. The public story should make that obvious: governance runs the DAO, gaming uses the same responsive decision corridor, confidential payout depends on privacy rails, and Fast RPC keeps the result visible.
+            PrivateDAO uses each rail for a specific user-facing job. The public story should make that obvious: governance runs the DAO, gaming uses the same responsive decision corridor, confidential payout depends on privacy rails, and read-node telemetry keeps the result visible.
           </p>
         </div>
         <div className="mt-8 grid gap-4 xl:grid-cols-2">
           {technologyServiceMap.map((item) => (
             <div key={item.technology} className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
               <div className="flex flex-wrap items-center gap-3">
-                <Badge variant={item.technology === "ZK" ? "violet" : item.technology === "Fast RPC" ? "warning" : item.technology === "MagicBlock" || item.technology === "QVAC" ? "cyan" : "success"}>
+                <Badge variant={item.technology === "ZK" ? "violet" : item.technology === "Read-node telemetry" ? "warning" : item.technology === "MagicBlock" || item.technology === "QVAC" ? "cyan" : "success"}>
                   {item.technology}
                 </Badge>
                 <div className="text-base font-medium text-white">{item.service}</div>

@@ -333,11 +333,11 @@ export const learnLectures: LearnLecture[] = [
   {
     slug: "lecture-3-rpc-state-and-runtime",
     lectureNumber: 3,
-    title: "Solana Runtime UX: Fast RPC, Diagnostics, and Activity Tracking",
+    title: "Solana Runtime UX: Hosted reads, Diagnostics, and Activity Tracking",
     strapline: "Users trust a dApp when state updates feel honest.",
     summary:
-      "This lecture explains why Fast RPC, QuickNode Streams, hosted reads, telemetry, analytics, and diagnostics are not backend trivia. They are core UX components that make Testnet activity understandable and trustworthy.",
-    badges: ["Fast RPC", "QuickNode Streams", "Diagnostics"],
+      "This lecture explains why Hosted reads, QuickNode Streams, hosted reads, telemetry, analytics, and diagnostics are not backend trivia. They are core UX components that make Testnet activity understandable and trustworthy.",
+    badges: ["Hosted reads", "QuickNode Streams", "Diagnostics"],
     sections: [
       {
         heading: "What you’ll learn",
@@ -352,7 +352,7 @@ export const learnLectures: LearnLecture[] = [
       {
         heading: "How PrivateDAO solves it",
         body:
-          "PrivateDAO uses dashboard, diagnostics, analytics, API status, RPC services, and reviewer packets to show the same truth from different depths. QuickNode-backed Testnet telemetry, Fast RPC, and hosted reads become visible through product behavior, not just claims.",
+          "PrivateDAO uses dashboard, diagnostics, analytics, API status, RPC services, and reviewer packets to show the same truth from different depths. QuickNode-backed Testnet telemetry, Hosted reads, and hosted reads become visible through product behavior, not just claims.",
       },
       {
         heading: "Try it now",
@@ -412,7 +412,7 @@ export const learnLectures: LearnLecture[] = [
     },
     quiz: [
       {
-        question: "Why does Fast RPC matter to the user experience here?",
+        question: "Why does Hosted reads matter to the user experience here?",
         options: [
           "It makes proposal, proof, and payout state update quickly enough to feel trustworthy.",
           "It removes the need for analytics.",
@@ -521,7 +521,7 @@ export const learnLectures: LearnLecture[] = [
       steps: [
         "Open Security or Services and follow the protected payout or governed reward corridor.",
         "Open Intelligence when you want to inspect the gaming and reward-facing operator lane.",
-        "Continue into the agentic treasury rail to inspect repeated settlement actions.",
+        "Continue into the encrypted treasury rail to inspect repeated settlement actions.",
         "Use Judge or Proof to open the Testnet transactions and confirm what the chain recorded.",
       ],
     },
@@ -553,7 +553,7 @@ export const learnLectures: LearnLecture[] = [
         correctAnswerIndex: 0,
       },
       {
-        question: "Why include agentic treasury execution in the learning path?",
+        question: "Why include encrypted treasury execution in the learning path?",
         options: [
           "Because it shows how governed policy can drive many real on-chain actions without turning the user into a script operator.",
           "Because it removes governance from the product.",

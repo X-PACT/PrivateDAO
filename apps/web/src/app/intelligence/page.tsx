@@ -9,6 +9,7 @@ import { IntelligenceLayerSurface } from "@/components/intelligence-layer-surfac
 import { MetricsStrip } from "@/components/metrics-strip";
 import { OperatingJourneyStrip } from "@/components/operating-journey-strip";
 import { OperationsShell } from "@/components/operations-shell";
+import { PrivateDaoStackSurface } from "@/components/private-dao-stack-surface";
 import { ProjectOperatingMap } from "@/components/project-operating-map";
 import { QuickNodeStreamIntelligenceSurface } from "@/components/quicknode-stream-intelligence-surface";
 import { QvacSovereignAiSurface } from "@/components/qvac-sovereign-ai-surface";
@@ -41,6 +42,7 @@ export default function IntelligencePage() {
       ]}
     >
       <GuidedOperationRail current="review" reviewHref="/intelligence" verifyHref="/proof" />
+      <PrivateDaoStackSurface compact />
       <OperatingJourneyStrip
         snapshot={runtimeSnapshot}
         title="Review is the decision gate before any signer approves treasury or governance actions"

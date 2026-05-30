@@ -119,7 +119,7 @@ const destinationProfiles = [
     defaultAsset: "USDC" as const,
     defaultAmount: "0.01",
     defaultLane: "operator",
-    defaultPurpose: "Agentic treasury micropayment batch triggered by DAO approval and carried into runtime proof, judge logs, and analytics.",
+    defaultPurpose: "Encrypted treasury micropayment batch triggered by DAO approval and carried into runtime proof, judge logs, and analytics.",
     intake: "payments",
     nextRoutes: [
       { label: "Services", href: "/services#jupiter-treasury-route" },
