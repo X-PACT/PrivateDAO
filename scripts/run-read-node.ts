@@ -623,6 +623,26 @@ async function supabaseSelect<T>(table: string, query: string) {
   return Array.isArray(raw) ? (raw as T[]) : ([] as T[]);
 }
 
+async function supabaseSelectPaged<T>(table: string, query: string, pageSize = 1000, maxRows = 20000) {
+  if (!hasSupabaseRestConfig()) return [] as T[];
+  const rows: T[] = [];
+  for (let from = 0; from < maxRows; from += pageSize) {
+    const to = from + pageSize - 1;
+    const response = await fetch(`${supabaseUrl}/rest/v1/${table}${query}`, {
+      method: "GET",
+      headers: supabaseHeaders({
+        Range: `${from}-${to}`,
+      }),
+    });
+    if (!response.ok) return rows;
+    const raw = (await response.json().catch(() => [])) as unknown;
+    const page = Array.isArray(raw) ? (raw as T[]) : [];
+    rows.push(...page);
+    if (page.length < pageSize) break;
+  }
+  return rows;
+}
+
 function hashVisitorSession(sessionId: string) {
   return createHash("sha256").update(sessionId).digest("hex");
 }
@@ -1193,9 +1213,9 @@ async function handleOnboardingRequest(body: Record<string, unknown>) {
 
 async function visitorStats() {
   const rows =
-    (await supabaseSelect<VisitorPingRow>(
+    (await supabaseSelectPaged<VisitorPingRow>(
       "visitor_sessions",
-      "?select=session_id,page,timestamp,country_hint&order=timestamp.desc&limit=5000",
+      "?select=session_id,page,timestamp,country_hint&order=timestamp.desc",
     )) || visitorPingsMemory;
   const sourceRows = rows.length ? rows : visitorPingsMemory;
   const now = Date.now();
@@ -1221,9 +1241,9 @@ async function visitorStats() {
     .sort((a, b) => b[1] - a[1])
     .slice(0, 8)
     .map(([page, visits]) => ({ page, visits }));
-  const visitorTransactions = await supabaseSelect<VisitorTransactionRow>(
+  const visitorTransactions = await supabaseSelectPaged<VisitorTransactionRow>(
     "visitor_transactions",
-    "?select=tx_signature,session_id,wallet_address,wallet_name,action,page,status,slot,created_at&order=created_at.desc&limit=5000",
+    "?select=tx_signature,session_id,wallet_address,wallet_name,action,page,status,slot,created_at&order=created_at.desc",
   );
   const visitorTransactionsToday = visitorTransactions.filter((row) => {
     const createdAt = row.created_at || "";
@@ -1236,6 +1256,17 @@ async function visitorStats() {
     ok: true,
     source: rows.length ? "supabase" : "memory-fallback",
     privacy: "Counted privately — no IP address or personal data stored.",
+    counterDefinitions: {
+      visitorSourceTable: "visitor_sessions",
+      transactionSourceTable: "visitor_transactions",
+      activeWindowMinutes: 30,
+      totalSessions: "unique hashed browser sessions in the selected read window",
+      totalPings: "raw visitor ping rows stored in Supabase",
+      totalVisitorTransactions: "wallet-submitted Testnet transaction receipts captured by /api/v1/transactions/receipt",
+    },
+    activeNowPings: activeRows.length,
+    activeTodayPings: todayRows.length,
+    totalPings: sourceRows.length,
     activeToday,
     activeNow,
     totalSessions,

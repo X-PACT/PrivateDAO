@@ -150,8 +150,9 @@ export function HomeVisitorCounter() {
   const displayStats = stats ?? fallbackStats;
   const items = [
     { icon: UsersRound, value: displayStats.activeToday, label: copy.today },
+    { icon: Eye, value: displayStats.activeNow, label: copy.live },
     { icon: ShieldCheck, value: displayStats.solscanVerifiedUsers, label: copy.verified },
-    { icon: Eye, value: displayStats.totalVisitorTransactions, label: copy.total },
+    { icon: ShieldCheck, value: displayStats.totalVisitorTransactions, label: copy.total },
   ];
 
   return (
@@ -161,7 +162,7 @@ export function HomeVisitorCounter() {
           <div className="text-[10px] uppercase tracking-[0.3em] text-cyan-100/78">{copy.label}</div>
           <p className="mt-1 text-xs leading-5 text-white/50">{displayStats.privacy ?? copy.privacy}</p>
         </div>
-        <div className="grid w-full gap-2 sm:w-auto sm:grid-cols-3">
+        <div className="grid w-full gap-2 sm:w-auto sm:grid-cols-2 lg:grid-cols-4">
           {items.map((item) => {
             const Icon = item.icon;
             return (
