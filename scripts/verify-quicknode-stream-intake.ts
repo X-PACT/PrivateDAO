@@ -40,7 +40,7 @@ function hmacHeaders(payload: string, token = TOKEN) {
 }
 
 async function waitForReadNode(child: ChildProcessWithoutNullStreams) {
-  const deadline = Date.now() + 45_000;
+  const deadline = Date.now() + 90_000;
   let lastError = "";
   while (Date.now() < deadline) {
     if (child.exitCode !== null) {
