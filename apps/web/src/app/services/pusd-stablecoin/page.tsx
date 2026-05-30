@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArrowUpRight, CheckCircle2, Code2, DollarSign, Gamepad2, Landmark, LockKeyhole, ShieldCheck } from "lucide-react";
 
 import { LocalizedRouteSummary } from "@/components/localized-route-summary";
 import { OperationsShell } from "@/components/operations-shell";
+import { PrivacyExecutionClaimConsole } from "@/components/privacy-execution-claim-console";
 import { TestnetBillingRehearsal } from "@/components/devnet-billing-rehearsal";
 import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -31,6 +33,60 @@ const valueProofs = [
   ["Grant distribution", "Committees can approve stable budgets and route payment proof back to Judge and Proof."],
   ["Gaming rewards", "Reward pools can use the same stablecoin lane as governance and treasury operations."],
   ["Configuration safety", "The page does not invent a mint. Production PUSD settlement waits for the official mint and funded receive account."],
+] as const;
+
+const judgingRows = [
+  {
+    title: "Technical execution",
+    weight: "35%",
+    detail: "PUSD is wired into the browser wallet flow, treasury receive config, billing SKU logic, claim console, read-node API, Supabase receipts, and proof links.",
+    icon: Code2,
+  },
+  {
+    title: "Product and use case",
+    weight: "30%",
+    detail: "The route targets payroll, grants, commerce settlement, institutional treasury tooling, and gaming reward pools where stable payouts need governance and privacy.",
+    icon: Landmark,
+  },
+  {
+    title: "Innovation",
+    weight: "15%",
+    detail: "PrivateDAO turns a non-freezable stablecoin into a confidential operating rail: private preparation, wallet execution, and public-safe verification.",
+    icon: LockKeyhole,
+  },
+  {
+    title: "Traction and validation",
+    weight: "10%",
+    detail: "The live page produces wallet signatures, public attestations, Supabase operation events, QuickNode stream telemetry, and anchored matrix evidence.",
+    icon: CheckCircle2,
+  },
+  {
+    title: "Team execution",
+    weight: "10%",
+    detail: "The submission is not a deck-only concept: it ships code, UI, API status, claim preparation, and a repeatable Testnet route.",
+    icon: ShieldCheck,
+  },
+] as const;
+
+const prototypeRows = [
+  {
+    title: "PUSD confidential payroll",
+    detail: "Create a payroll-mode request, encrypt the claim, sign a Testnet memo commitment, and export a public attestation without exposing salary context.",
+    href: "/services/pusd-stablecoin?claim=confidential-payroll#privacy-claim-console",
+    icon: LockKeyhole,
+  },
+  {
+    title: "PUSD grants and treasury",
+    detail: "Route stable grant payouts through governance approval, treasury context, Jupiter/Torque proof surfaces, and the integration matrix anchor.",
+    href: "/services/pusd-stablecoin?claim=treasury-routing-and-growth#privacy-claim-console",
+    icon: DollarSign,
+  },
+  {
+    title: "PUSD gaming rewards",
+    detail: "Prepare reward-pool settlement for guilds and tournaments, then anchor the payment rail claim for explorer-visible proof.",
+    href: "/services/pusd-stablecoin?claim=private-payments#privacy-claim-console",
+    icon: Gamepad2,
+  },
 ] as const;
 
 export const metadata: Metadata = buildRouteMetadata({
@@ -70,6 +126,53 @@ export default function PusdStablecoinPage() {
     >
       <LocalizedRouteSummary routeKey="services" />
 
+      <section className="rounded-[30px] border border-emerald-300/18 bg-[radial-gradient(circle_at_12%_0%,rgba(20,241,149,0.17),transparent_34%),linear-gradient(135deg,rgba(5,16,23,0.98),rgba(6,9,18,0.98))] p-6">
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="rounded-full border border-emerald-300/22 bg-emerald-300/10 px-3 py-1 text-[11px] uppercase tracking-[0.24em] text-emerald-100">
+            Palm USD utility layer
+          </span>
+          <span className="rounded-full border border-cyan-300/18 bg-cyan-300/10 px-3 py-1 text-[11px] uppercase tracking-[0.24em] text-cyan-100">
+            Shipped prototype
+          </span>
+        </div>
+        <h2 className="mt-4 max-w-5xl text-3xl font-semibold tracking-[-0.04em] text-white md:text-5xl">
+          PUSD becomes the stable settlement rail for private payroll, grants, gaming rewards, and treasury operations.
+        </h2>
+        <p className="mt-4 max-w-5xl text-sm leading-7 text-white/66 md:text-base">
+          Palm USD is positioned as a non-freezable USD-pegged SPL stablecoin: no freeze function, no blacklist, no pause.
+          PrivateDAO adds the missing utility layer around it: governance approval, confidential payment context,
+          wallet-first execution, encrypted claims, and proof that a reviewer can verify on Solana.
+        </p>
+        <div className="mt-6 grid gap-3 md:grid-cols-3">
+          {prototypeRows.map((row) => {
+            const Icon = row.icon;
+            return (
+              <Link key={row.title} href={row.href} className="rounded-[24px] border border-white/10 bg-black/24 p-5 transition hover:border-emerald-300/25 hover:bg-white/[0.05]">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-emerald-300/18 bg-emerald-300/[0.08] text-emerald-100">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <div className="mt-4 text-base font-semibold text-white">{row.title}</div>
+                <p className="mt-3 text-sm leading-7 text-white/62">{row.detail}</p>
+                <div className="mt-4 inline-flex items-center gap-2 text-sm text-emerald-100">
+                  Run claim flow <ArrowUpRight className="h-4 w-4" />
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <a href="https://api.privatedao.org/api/v1/pusd/utility-layer" target="_blank" rel="noreferrer" className={cn(buttonVariants({ size: "sm" }))}>
+            Utility API
+          </a>
+          <a href="https://api.privatedao.org/api/v1/integration-matrix/anchor" target="_blank" rel="noreferrer" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+            Matrix anchor
+          </a>
+          <Link href="/services/pusd-stablecoin?claim=confidential-payroll#privacy-claim-console" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+            Encrypt + claim PUSD payroll
+          </Link>
+        </div>
+      </section>
+
       <div className="rounded-[28px] border border-emerald-300/16 bg-emerald-300/[0.08] p-6">
         <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-100/78">Operating model</div>
         <h2 className="mt-3 text-2xl font-semibold text-white">Payroll, grants, and reward pools under governed stablecoin flow</h2>
@@ -92,6 +195,37 @@ export default function PusdStablecoinPage() {
           </Link>
         </div>
       </div>
+
+      <section className="rounded-[30px] border border-white/10 bg-white/[0.04] p-6">
+        <div className="text-[11px] uppercase tracking-[0.28em] text-white/44">Palm USD judging map</div>
+        <h2 className="mt-3 max-w-4xl text-2xl font-semibold text-white">
+          The PUSD route is built against the track rubric, not just the token description
+        </h2>
+        <p className="mt-3 max-w-4xl text-sm leading-7 text-white/66">
+          Judges asked for shipped utility on Solana. This page makes the utility concrete: PUSD is the core asset
+          inside governed payroll, grants, rewards, and treasury workflows, with direct browser execution and public
+          proof endpoints.
+        </p>
+        <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+          {judgingRows.map((row) => {
+            const Icon = row.icon;
+            return (
+              <div key={row.title} className="rounded-[22px] border border-white/10 bg-black/22 p-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.05] text-cyan-100">
+                    <Icon className="h-4 w-4" />
+                  </div>
+                  <span className="rounded-full border border-cyan-300/18 bg-cyan-300/[0.08] px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-cyan-100">
+                    {row.weight}
+                  </span>
+                </div>
+                <div className="mt-4 text-base font-semibold text-white">{row.title}</div>
+                <p className="mt-3 text-sm leading-6 text-white/62">{row.detail}</p>
+              </div>
+            );
+          })}
+        </div>
+      </section>
 
       <section className="rounded-[30px] border border-white/10 bg-white/[0.04] p-6">
         <div className="text-[11px] uppercase tracking-[0.28em] text-white/44">Why this lane exists</div>
@@ -144,6 +278,8 @@ export default function PusdStablecoinPage() {
           <TestnetBillingRehearsal />
         </div>
       </section>
+
+      <PrivacyExecutionClaimConsole compact />
 
       <section className="rounded-[30px] border border-amber-300/18 bg-amber-300/[0.07] p-6">
         <div className="text-[11px] uppercase tracking-[0.28em] text-amber-100/78">Activation inputs</div>

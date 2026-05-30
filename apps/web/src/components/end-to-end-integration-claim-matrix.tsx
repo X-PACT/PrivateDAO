@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, BrainCircuit, CheckCircle2, KeyRound, LockKeyhole, ReceiptText, Route, ShieldCheck, Zap } from "lucide-react";
 
@@ -6,6 +9,7 @@ import { cn } from "@/lib/utils";
 
 const integrationRows = [
   {
+    claim: "private-governance",
     rail: "Governance + ZK",
     pain: "Strategic votes become public before the organization is ready.",
     treatment: "Commit/reveal governance, local Groth16 proof artifacts, and standalone Testnet verifier receipts turn private voting into a verifiable workflow.",
@@ -15,6 +19,7 @@ const integrationRows = [
     icon: ShieldCheck,
   },
   {
+    claim: "confidential-payroll",
     rail: "REFHE / Encrypt Payroll",
     pain: "Salary rows, bonus reasons, and payroll strategy leak when teams operate from public wallets and spreadsheets.",
     treatment: "Encrypted payroll manifests, REFHE envelope settlement, and wallet-signed payout rehearsal bind private payroll context to public-safe proof.",
@@ -24,6 +29,7 @@ const integrationRows = [
     icon: LockKeyhole,
   },
   {
+    claim: "private-payments",
     rail: "MagicBlock Private Payments",
     pain: "Reward and payout corridors expose timing, recipients, and operational intent.",
     treatment: "MagicBlock corridor receipts and visitor-signed encrypted claims make private payments testable while preserving a visible execution trail.",
@@ -33,6 +39,7 @@ const integrationRows = [
     icon: Zap,
   },
   {
+    claim: "umbra-confidential-payout",
     rail: "Umbra / Cloak Settlement",
     pain: "Vendor and contributor payments reveal counterparties before the organization wants disclosure.",
     treatment: "Recipient-private settlement intent, rail health, and selective-disclosure receipts keep the operation private but reviewable.",
@@ -42,6 +49,7 @@ const integrationRows = [
     icon: ReceiptText,
   },
   {
+    claim: "ika-custody-and-interoperability",
     rail: "Ika / 2PC-MPC Custody",
     pain: "Treasury operations need stronger signing control than a single hot-wallet action.",
     treatment: "Ika readiness, Solana pre-alpha final approval, and custody preparation expose the threshold-signing path as an execution rail.",
@@ -51,6 +59,7 @@ const integrationRows = [
     icon: KeyRound,
   },
   {
+    claim: "treasury-routing-and-growth",
     rail: "Jupiter + Torque Treasury",
     pain: "Treasury moves lose context when routing, approval, and growth/accounting events live in separate tools.",
     treatment: "Jupiter route review and Torque event delivery connect treasury execution with operational telemetry.",
@@ -60,6 +69,7 @@ const integrationRows = [
     icon: Route,
   },
   {
+    claim: "intelligence-and-risk",
     rail: "QVAC + GoldRush Intelligence",
     pain: "Signers approve proposals without enough risk, history, counterparty, or treasury context.",
     treatment: "QVAC local reasoning plus GoldRush/Covalent, Zerion, QuickNode, and provider status create the pre-sign intelligence gate.",
@@ -70,7 +80,40 @@ const integrationRows = [
   },
 ] as const;
 
+type MatrixAnchorStatus = {
+  ok?: boolean;
+  source?: string;
+  latest?: {
+    tx?: string | null;
+    slot?: number | null;
+    digest?: string | null;
+    anchoredAt?: string | null;
+    explorer?: string | null;
+    solscan?: string | null;
+  } | null;
+  currentDigestPreview?: string;
+};
+
 export function EndToEndIntegrationClaimMatrix() {
+  const [anchorStatus, setAnchorStatus] = useState<MatrixAnchorStatus | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("https://api.privatedao.org/api/v1/integration-matrix/anchor", { cache: "no-store" })
+      .then((response) => response.json())
+      .then((json: MatrixAnchorStatus) => {
+        if (!cancelled) setAnchorStatus(json);
+      })
+      .catch(() => {
+        if (!cancelled) setAnchorStatus({ ok: false, source: "unavailable" });
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const latestAnchor = anchorStatus?.latest;
+
   return (
     <section className="rounded-[30px] border border-white/10 bg-[radial-gradient(circle_at_12%_0%,rgba(20,241,149,0.16),transparent_34%),radial-gradient(circle_at_88%_0%,rgba(0,194,255,0.14),transparent_30%),linear-gradient(180deg,rgba(7,14,27,0.96),rgba(4,7,16,0.98))] p-5 md:p-6">
       <div className="flex flex-wrap items-center gap-3">
@@ -101,6 +144,38 @@ export function EndToEndIntegrationClaimMatrix() {
             <a href="https://api.privatedao.org/api/v1/privacy-execution-matrix" target="_blank" rel="noreferrer" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
               Matrix JSON
             </a>
+            <a href="https://api.privatedao.org/api/v1/integration-matrix/anchor" target="_blank" rel="noreferrer" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+              Matrix anchor
+            </a>
+          </div>
+          <div className="mt-5 rounded-[22px] border border-emerald-300/18 bg-emerald-300/[0.07] p-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <div className="text-[10px] uppercase tracking-[0.22em] text-emerald-100/66">Live matrix anchor</div>
+                <div className="mt-1 text-sm font-semibold text-white">
+                  {latestAnchor?.tx ? "Integration matrix is anchored on Solana Testnet" : "Waiting for live matrix anchor"}
+                </div>
+              </div>
+              <span className="rounded-full border border-emerald-300/18 bg-black/20 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-emerald-100">
+                {anchorStatus?.source || "loading"}
+              </span>
+            </div>
+            <div className="mt-3 grid gap-2 font-mono text-[11px] leading-5 text-white/58">
+              <div className="break-all">digest: {latestAnchor?.digest || anchorStatus?.currentDigestPreview || "loading"}</div>
+              <div>slot: {latestAnchor?.slot ?? "pending"}</div>
+              {latestAnchor?.anchoredAt ? <div>anchored: {latestAnchor.anchoredAt}</div> : null}
+            </div>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {latestAnchor?.solscan ? (
+                <a href={latestAnchor.solscan} target="_blank" rel="noreferrer" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+                  Verify anchor
+                  <ArrowUpRight className="h-4 w-4" />
+                </a>
+              ) : null}
+              <a href="https://api.privatedao.org/api/v1/readiness" target="_blank" rel="noreferrer" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                Readiness API
+              </a>
+            </div>
           </div>
         </div>
         <div className="grid gap-3">
@@ -139,6 +214,10 @@ export function EndToEndIntegrationClaimMatrix() {
                   <Link href={row.route} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
                     Run route
                     <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                  <Link href={`/services?claim=${row.claim}#privacy-claim-console`} className={cn(buttonVariants({ size: "sm" }))}>
+                    Claim rail
+                    <ReceiptText className="h-4 w-4" />
                   </Link>
                   {external ? (
                     <a href={row.api} target="_blank" rel="noreferrer" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>

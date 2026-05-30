@@ -1112,7 +1112,10 @@ async function handleVisitorTransactionReceipt(body: Record<string, unknown>) {
   const walletAddress = optionalSolanaPublicKey(stringField(body, "walletAddress"));
   const walletName = stringField(body, "walletName", "unknown-wallet").slice(0, 80);
   const requestedAction = stringField(body, "action", "testnet-transaction").slice(0, 80);
-  const action = visitorTransactionActions.has(requestedAction) ? requestedAction : "testnet-transaction";
+  const action =
+    visitorTransactionActions.has(requestedAction) || requestedAction.startsWith("privacy-execution-claim:")
+      ? requestedAction
+      : "testnet-transaction";
   const page = stringField(body, "page", "/").slice(0, 180);
   const requestedStatus = stringField(body, "status", "confirmed").slice(0, 40);
   const status = visitorTransactionStatuses.has(requestedStatus) ? requestedStatus : "confirmed";
@@ -2438,6 +2441,95 @@ function providerIntegrationStatus() {
   };
 }
 
+function pusdUtilityLayerStatus() {
+  const mint = process.env.NEXT_PUBLIC_TREASURY_PUSD_MINT?.trim() || "";
+  const receiveAddress =
+    process.env.NEXT_PUBLIC_TREASURY_PUSD_RECEIVE_ADDRESS?.trim() ||
+    process.env.NEXT_PUBLIC_TREASURY_RECEIVE_ADDRESS?.trim() ||
+    "AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c";
+  const tokenProgram =
+    process.env.NEXT_PUBLIC_TREASURY_PUSD_TOKEN_PROGRAM?.trim() ||
+    "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
+  const decimals = Number(process.env.NEXT_PUBLIC_TREASURY_PUSD_DECIMALS || "6");
+  const configured = Boolean(mint && receiveAddress && tokenProgram);
+
+  return {
+    ok: true,
+    source: "privatedao-pusd-utility-layer",
+    generatedAt: new Date().toISOString(),
+    cluster: "testnet",
+    asset: {
+      symbol: "PUSD",
+      name: "Palm USD",
+      tokenStandard: "Solana SPL",
+      decimals,
+      mint: mint || null,
+      tokenProgram,
+      receiveAddress,
+      freezeAuthorityModel: "non-freezable stablecoin posture; no blacklist or pause is assumed in the utility flow",
+      complianceBoundary: "Mint/redeem permissioning belongs at the issuer layer; PrivateDAO utility flow handles approved transfers, claims, receipts, and governance context.",
+      activationState: configured ? "pusd-spl-transferchecked-ready" : "official-mint-configuration-gated",
+    },
+    utilityMatrix: [
+      {
+        lane: "confidential-payroll",
+        userProblem: "Teams do not want every salary, bonus, and contributor payment strategy exposed through public wallets.",
+        prototype: "PUSD confidential payroll SKU, encrypted claim console, memo-coded receipt, and browser wallet signature path.",
+        route: "https://privatedao.org/services/pusd-stablecoin/",
+        claimUrl: "https://privatedao.org/services/pusd-stablecoin/?claim=confidential-payroll#privacy-claim-console",
+        proofEndpoints: ["/api/v1/privacy-execution-claims/prepare?claim=confidential-payroll", "/api/v1/integration-matrix/anchor"],
+        executionMode: configured ? "SPL TransferChecked PUSD" : "PUSD-mode SOL Testnet rehearsal until official mint is configured",
+      },
+      {
+        lane: "grant-distribution",
+        userProblem: "Grant committees need stable payout proof without scattering governance, approval, and payment evidence.",
+        prototype: "Governed stablecoin billing request, Judge/Proof links, operation receipts, and public-safe attestation export.",
+        route: "https://privatedao.org/services/pusd-stablecoin/",
+        claimUrl: "https://privatedao.org/services/pusd-stablecoin/?claim=treasury-routing-and-growth#privacy-claim-console",
+        proofEndpoints: ["/api/v1/execution-events/stats", "/api/v1/readiness"],
+        executionMode: configured ? "wallet-signed PUSD transfer request" : "wallet-signed Testnet rehearsal with PUSD memo and proof path",
+      },
+      {
+        lane: "gaming-reward-pool",
+        userProblem: "Gaming DAOs and tournaments need stable rewards without leaking every allocation reason or payout plan.",
+        prototype: "PUSD gaming reward SKU, reward-pool treasury profile, claim attestation, and explorer verification.",
+        route: "https://privatedao.org/services/pusd-stablecoin/",
+        claimUrl: "https://privatedao.org/services/pusd-stablecoin/?claim=private-payments#privacy-claim-console",
+        proofEndpoints: ["/api/v1/privacy-execution-matrix", "/api/v1/quicknode/stream/stats"],
+        executionMode: configured ? "PUSD reward transfer plus claim receipt" : "PUSD-mode reward rehearsal plus on-chain memo claim",
+      },
+      {
+        lane: "institutional-treasury-tooling",
+        userProblem: "Treasury operators need stable payment routing, policy context, and proof that survives review.",
+        prototype: "Jupiter route context, Torque event relay, QuickNode telemetry, Supabase receipts, and integration matrix anchor.",
+        route: "https://privatedao.org/services/jupiter-treasury-route/",
+        claimUrl: "https://privatedao.org/services/pusd-stablecoin/?claim=treasury-routing-and-growth#privacy-claim-console",
+        proofEndpoints: ["/api/v1/provider-integrations/status", "/api/v1/pusd/utility-layer"],
+        executionMode: "review -> sign -> verify treasury utility flow",
+      },
+    ],
+    judgingMap: {
+      technicalExecution:
+        "Browser wallet flow builds memo-coded Testnet transactions now and upgrades to SPL TransferChecked when PUSD mint configuration is present.",
+      productUseCase:
+        "PUSD is used as the core stable settlement asset for payroll, grants, reward pools, and treasury operations.",
+      innovation:
+        "PrivateDAO combines non-freezable stablecoin utility with encrypted claims, governance approval, and public-safe receipts.",
+      tractionValidation:
+        "Visitor receipts, Supabase operation events, QuickNode telemetry, and anchored integration matrix provide observable usage evidence.",
+      teamExecution:
+        "The product route, API status, claim console, and read-node proof surfaces are shipped code rather than slides.",
+    },
+    publicProofLinks: {
+      product: "https://privatedao.org/services/pusd-stablecoin/",
+      utilityApi: "https://api.privatedao.org/api/v1/pusd/utility-layer",
+      matrixAnchor: "https://api.privatedao.org/api/v1/integration-matrix/anchor",
+      privacyClaims: "https://api.privatedao.org/api/v1/privacy-execution-claims",
+      readiness: "https://api.privatedao.org/api/v1/readiness",
+    },
+  };
+}
+
 function cryptographicReadinessStatus() {
   return {
     ok: true,
@@ -3201,6 +3293,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           privacyExecutionClaims: "/api/v1/privacy-execution-claims",
           frontierPrivacyProtocolSpine: "/api/v1/frontier/privacy-protocol-spine",
           providerIntegrationStatus: "/api/v1/provider-integrations/status",
+          pusdUtilityLayer: "/api/v1/pusd/utility-layer",
           jupiterOrder: "/api/v1/jupiter/order",
           readiness: "/api/v1/readiness",
         },
@@ -3257,6 +3350,11 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
       return;
     }
 
+    if (pathname === "/api/v1/pusd/utility-layer") {
+      writeJson(res, 200, pusdUtilityLayerStatus());
+      return;
+    }
+
     if (pathname === "/api/v1/readiness") {
       const [runtime, visitors, execution, freshness, chain] = await Promise.all([
         readNode.getRuntimeSnapshot(url.searchParams.get("refresh") === "1"),
@@ -3273,6 +3371,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
         runtime,
         quickNodeStream: quickNodeStreamStats(),
         integrationMatrixAnchor: latestMatrixAnchorFromRow(await latestIntegrationMatrixAnchor()),
+        pusdUtilityLayer: pusdUtilityLayerStatus(),
         visitors,
         execution,
         liveServiceGate: {

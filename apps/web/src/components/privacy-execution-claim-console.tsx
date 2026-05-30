@@ -10,6 +10,7 @@ import { buildSolanaTxUrl, SOLANA_NETWORK_LABEL } from "@/lib/solana-network";
 import { cn } from "@/lib/utils";
 
 const MEMO_PROGRAM_ID = new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr");
+const API_BASE = process.env.NEXT_PUBLIC_PRIVATE_DAO_API_BASE || "https://api.privatedao.org";
 
 type PrivacyClaim = {
   id: string;
@@ -144,6 +145,14 @@ function buildPublicAttestation(input: {
     explorerUrl: input.signature ? buildSolanaTxUrl(input.signature) : null,
     disclosureBoundary: "No AES key, ciphertext plaintext, or private claim payload is included in this public attestation.",
   };
+}
+
+function getVisitorSessionId() {
+  try {
+    return window.localStorage.getItem("privatedao.visitor_session_id.v1") || "privacy-claim-console";
+  } catch {
+    return "privacy-claim-console";
+  }
 }
 
 const privacyClaims: PrivacyClaim[] = [
@@ -289,6 +298,39 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
         },
         "confirmed",
       );
+
+      captureVisitorTransaction({
+        txSignature: nextSignature,
+        walletAddress: publicKey.toBase58(),
+        walletName: wallet?.adapter.name,
+        action: `privacy-execution-claim:${selectedClaim.id}`,
+        status: "confirmed",
+      });
+
+      void fetch(`${API_BASE}/api/v1/execution-events`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        keepalive: true,
+        body: JSON.stringify({
+          operationId: `privacy-execution-claim:${selectedClaim.id}`,
+          operationLabel: `${selectedClaim.label} encrypted claim`,
+          sessionId: getVisitorSessionId(),
+          page: window.location.pathname || "/",
+          status: "success",
+          source: "visitor-wallet",
+          receiptHash: nextSignature,
+          network: SOLANA_NETWORK_LABEL,
+          metadata: {
+            rail: selectedClaim.id,
+            route: selectedClaim.route,
+            digest: packet.digest,
+            memo: packet.commitmentMemo,
+            memoProgram: packet.memoProgram,
+            explorerUrl: buildSolanaTxUrl(nextSignature),
+            disclosureBoundary: "The API receives the digest and public memo only; the AES key stays in the browser.",
+          },
+        }),
+      }).catch(() => null);
 
       setStatus(`${selectedClaim.label} encrypted claim anchored on ${SOLANA_NETWORK_LABEL}. The chain stores the commitment; the encrypted packet remains in this browser session for verification.`);
     } catch (error) {
