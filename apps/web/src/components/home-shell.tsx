@@ -532,7 +532,7 @@ export function HomeShell() {
     {
       question: "What does the cryptography actually do here?",
       answer:
-        "ZK, REFHE, MagicBlock, and read-node telemetry each map to a concrete product lane: privacy review, confidential payout proof receipts, responsive execution receipts, and reliable live reads. They are presented as service rails, not badge-only theory.",
+        "ZK, REFHE proof receipts, MagicBlock execution receipts, and read-node telemetry each map to a concrete product lane: privacy review, confidential payout proof receipts, responsive execution receipts, and reliable live reads. They are presented as service rails, not badge-only theory.",
     },
     {
       question: "What kind of support helps most right now?",

@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/start", label: "Start" },
+  { href: "/learn", label: "Learn" },
   { href: "/govern", label: "Govern", rel: "nofollow" },
   { href: "/treasury", label: "Treasury", rel: "nofollow" },
   { href: "/proof", label: "Proof" },
@@ -27,6 +28,10 @@ const utilityNav = [
   { href: "/rpc-services", label: "RPC" },
   { href: "/documents", label: "Docs" },
   { href: "/whitepaper", label: "Whitepaper" },
+  { href: "/story", label: "Story" },
+  { href: "/community", label: "Community" },
+  { href: "/products", label: "Products" },
+  { href: "/network", label: "Network" },
   { href: "/search", label: "Search", rel: "nofollow" },
 ];
 
