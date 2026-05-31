@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { type WalletName, WalletReadyState } from "@solana/wallet-adapter-base";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { Check, ChevronDown, Copy, ExternalLink, LogOut, QrCode, Wallet } from "lucide-react";
 
 import { type ButtonProps, buttonVariants } from "@/components/ui/button";
@@ -34,6 +35,7 @@ export function WalletConnectButton({
     connect,
     disconnect,
   } = useWallet();
+  const { setVisible: setWalletModalVisible } = useWalletModal();
   const [isMounted, setIsMounted] = useState(false);
   const [isWalletPickerOpen, setIsWalletPickerOpen] = useState(false);
   const [isActionsOpen, setIsActionsOpen] = useState(false);
@@ -210,14 +212,19 @@ export function WalletConnectButton({
           buttonVariants({ size, variant }),
           className,
         )}
-        disabled={!isMounted || connecting || disconnecting}
+        disabled={connecting || disconnecting}
         onClick={() => {
           setFeedback(null);
           if (connected) {
             setIsActionsOpen((current) => !current);
             return;
           }
-          setIsWalletPickerOpen(true);
+          if (!isMounted) {
+            return;
+          }
+          setIsActionsOpen(false);
+          setIsWalletPickerOpen(false);
+          setWalletModalVisible(true);
         }}
       >
         <Wallet className="h-4 w-4" />

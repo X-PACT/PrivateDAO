@@ -25,6 +25,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrackTechnologyGrid } from "@/components/track-technology-grid";
 import { useI18n } from "@/components/i18n-provider";
+import { WalletConnectButton } from "@/components/wallet-connect-button";
 import type { SupportedLocale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
@@ -59,7 +60,7 @@ const homeCopyByLocale: Record<
     title: "Your DAO votes, payroll, and treasury are public. They shouldn't be.",
     body:
       "Most DAOs expose everything: votes, salaries, treasury activity, and internal operations. PrivateDAO enables organizations to operate privately while remaining cryptographically verifiable on Solana.",
-    launch: "Try the 3-minute Testnet flow",
+    launch: "Start a private DAO",
     android: "Install Android APK",
     verify: "Open verification view",
     judge: "Open Judge",
@@ -85,7 +86,7 @@ const homeCopyByLocale: Record<
     title: "تصويت DAO والرواتب والخزانة عندك مكشوفة. المفروض لا.",
     body:
       "معظم الـ DAOs تكشف كل شيء: التصويت، الرواتب، حركة الخزانة، والعمليات الداخلية. PrivateDAO يمكّن المؤسسات أن تعمل بخصوصية مع بقاء النتائج قابلة للتحقق تشفيرياً على سولانا.",
-    launch: "جرّب Testnet في 3 دقائق",
+    launch: "ابدأ DAO خاص الآن",
     android: "ثبّت تطبيق أندرويد",
     verify: "افتح التحقق",
     judge: "افتح مسار الحكام",
@@ -660,6 +661,7 @@ export function HomeShell() {
             </div>
 
             <div className="flex flex-wrap gap-3">
+              <WalletConnectButton size="lg" variant="default" connectLabel="Connect Testnet Wallet" />
               <Link className={cn(buttonVariants({ size: "lg" }))} href="/govern#live-dao">
                 {homeCopy.launch}
                 <ArrowRight className="h-4 w-4" />

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LockKeyhole, Search, Sparkles } from "lucide-react";
+import { ArrowRight, LockKeyhole, Search, Sparkles } from "lucide-react";
 
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { WalletConnectButton } from "@/components/wallet-connect-button";
@@ -80,9 +80,9 @@ export function SiteHeader() {
     }
   };
   const operationSteps = [
-    { label: "Start", href: "/start" },
+    { label: "Try Private DAO", href: "/govern#live-dao" },
     { label: "Review", href: "/intelligence" },
-    { label: "Sign", href: "/govern" },
+    { label: "Vote", href: "/govern#commit-vote-action" },
     { label: "Verify", href: "/proof" },
   ] as const;
   const isStepActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
@@ -147,6 +147,13 @@ export function SiteHeader() {
             >
               {copy.chrome.openApp}
             </a>
+            <Link
+              href="/govern#live-dao"
+              className={cn(buttonVariants({ size: "sm" }), "hidden whitespace-nowrap xl:inline-flex")}
+            >
+              Try Private DAO
+              <ArrowRight className="h-4 w-4" />
+            </Link>
             <WalletConnectButton className="max-w-full flex-1 px-3 sm:flex-none" />
           </div>
         </div>

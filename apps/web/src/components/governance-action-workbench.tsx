@@ -304,30 +304,41 @@ async function submitWalletTransactionWithFallback({
   let signature: string;
   assertTestnetExecutionLane(connection);
 
-  try {
-    signature = await sendTransaction(transaction, connection, {
-      preflightCommitment: "confirmed",
-      signers: extraSigners,
-    });
-  } catch (sendError) {
-    const combined =
-      sendError instanceof Error
-        ? `${sendError.name ?? ""} ${sendError.message ?? ""}`.trim()
-        : "";
-    if (!signTransaction || /network|cluster|chain|incompatible|not compatible/i.test(combined)) {
-      throw sendError;
-    }
-
+  if (extraSigners.length > 0 && signTransaction) {
     const transactionForManualSend = transaction;
-    if (extraSigners.length > 0) {
-      transactionForManualSend.partialSign(...extraSigners);
-    }
+    transactionForManualSend.partialSign(...extraSigners);
     const signedTransaction = await signTransaction(transactionForManualSend);
     signature = await connection.sendRawTransaction(signedTransaction.serialize(), {
       maxRetries: 3,
       preflightCommitment: "confirmed",
       skipPreflight: false,
     });
+  } else {
+    try {
+      signature = await sendTransaction(transaction, connection, {
+        preflightCommitment: "confirmed",
+        signers: extraSigners,
+      });
+    } catch (sendError) {
+      const combined =
+        sendError instanceof Error
+          ? `${sendError.name ?? ""} ${sendError.message ?? ""}`.trim()
+          : "";
+      if (!signTransaction || /network|cluster|chain|incompatible|not compatible/i.test(combined)) {
+        throw sendError;
+      }
+
+      const transactionForManualSend = transaction;
+      if (extraSigners.length > 0) {
+        transactionForManualSend.partialSign(...extraSigners);
+      }
+      const signedTransaction = await signTransaction(transactionForManualSend);
+      signature = await connection.sendRawTransaction(signedTransaction.serialize(), {
+        maxRetries: 3,
+        preflightCommitment: "confirmed",
+        skipPreflight: false,
+      });
+    }
   }
 
   captureVisitorTransaction({
