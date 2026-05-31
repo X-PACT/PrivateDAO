@@ -512,6 +512,15 @@ export default function JudgePage() {
 
       <PrivacyExecutionClaimConsoleLazy compact />
 
+      <section className="rounded-[30px] border border-emerald-300/18 bg-emerald-300/[0.07] p-5">
+        <div className="text-[11px] uppercase tracking-[0.3em] text-emerald-100/76">On-chain claim console</div>
+        <h2 className="mt-3 max-w-4xl text-2xl font-semibold text-white">Reviewer path: every service claim resolves to a signed action, receipt, or live proof endpoint</h2>
+        <p className="mt-3 max-w-5xl text-sm leading-7 text-white/64">
+          Judges can open the claim console, prepare the selected service, sign the Testnet memo or verify the provider proof,
+          and copy the public attestation without leaving the product flow.
+        </p>
+      </section>
+
       <section className="rounded-[30px] border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.08),rgba(34,211,238,0.07),rgba(8,13,28,0.95))] p-5">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>

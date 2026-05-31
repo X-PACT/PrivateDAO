@@ -91,6 +91,23 @@ export default function ServicesPage() {
       <ExecutionCommandSurface compact />
       <ExecutionSpineSurface context="services" compact />
       <CryptographicExecutionSpine compact context="services" />
+      <section className="rounded-[28px] border border-emerald-300/18 bg-[linear-gradient(135deg,rgba(16,185,129,0.13),rgba(153,69,255,0.08),rgba(8,13,28,0.94))] p-5">
+        <div className="text-[11px] uppercase tracking-[0.24em] text-emerald-100/76">On-chain claim console</div>
+        <h2 className="mt-3 max-w-4xl text-2xl font-semibold text-white">Every service ends in a wallet claim, public receipt, or provider-backed proof route</h2>
+        <p className="mt-3 max-w-5xl text-sm leading-7 text-white/66">
+          The service surface is organized as an end-to-end path: choose a claim, Encrypt + anchor on-chain, Verify receipt locally,
+          Copy public attestation, and continue to the matching API or product route. Operators can also Get Testnet SOL before
+          signing so the judge path stays usable from a fresh wallet.
+        </p>
+        <div className="mt-4 grid gap-3 md:grid-cols-4">
+          {["Encrypt + anchor on-chain", "Verify receipt locally", "Copy public attestation", "Get Testnet SOL"].map((step, index) => (
+            <div key={step} className="rounded-2xl border border-white/10 bg-black/24 p-4">
+              <div className="font-mono text-xs text-emerald-100/70">0{index + 1}</div>
+              <div className="mt-2 text-sm font-semibold text-white">{step}</div>
+            </div>
+          ))}
+        </div>
+      </section>
       <PrivacyExecutionClaimConsoleLazy />
       <div>
         <ServicesSurface />
