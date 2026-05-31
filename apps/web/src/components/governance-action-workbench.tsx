@@ -79,6 +79,30 @@ const daoExperienceProfiles = [
 ] as const;
 
 type DaoExperienceProfileId = (typeof daoExperienceProfiles)[number]["id"];
+
+const zkProofArtifactLinks = [
+  {
+    href: "/documents/zk-local-groth16-verification-2026-05-22",
+    label: "Groth16 proof packet",
+    helper: "Verifier files, proof artifacts, and the local verification trail behind the private-vote claim.",
+  },
+  {
+    href: "/documents/zk-standalone-verifier-testnet-2026-05-23",
+    label: "Standalone verifier",
+    helper: "Reviewer-facing verifier path that explains how the ZK layer is checked outside the wallet prompt.",
+  },
+  {
+    href: "/documents/testnet-zk-verification-receipts-2026-05-07",
+    label: "Testnet ZK receipts",
+    helper: "Receipt packet that ties the privacy proof story back to shipped Testnet governance evidence.",
+  },
+  {
+    href: "/documents/zk-capability-matrix",
+    label: "ZK capability matrix",
+    helper: "Capability map for commit/reveal, tally proof, reviewer proof, and production hardening boundaries.",
+  },
+] as const;
+
 type GovernPackKey =
   | "payroll-pack"
   | "vendor-pack"
@@ -2575,6 +2599,31 @@ export function GovernanceActionWorkbench() {
                     ]}
                   />
                 ) : null}
+                <div className="mt-4 rounded-[24px] border border-violet-300/18 bg-[linear-gradient(135deg,rgba(153,69,255,0.11),rgba(20,241,149,0.06),rgba(0,0,0,0.26))] p-4">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="max-w-3xl">
+                      <div className="text-[11px] uppercase tracking-[0.22em] text-violet-100/72">ZK proof artifacts</div>
+                      <div className="mt-2 text-base font-semibold text-white">Commit-reveal is the live Testnet action. ZK artifacts show the proof layer behind the privacy claim.</div>
+                      <p className="mt-2 text-sm leading-7 text-white/62">
+                        The wallet action commits a hashed vote intent on Solana Testnet. These proof routes give reviewers the
+                        verifier packet, receipts, and capability matrix that explain how private intent, later reveal, and
+                        reviewer-visible proof fit together.
+                      </p>
+                    </div>
+                    <Link href="/proof/?judge=1" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")}>
+                      Open proof hub
+                      <ArrowUpRight className="h-4 w-4" />
+                    </Link>
+                  </div>
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                    {zkProofArtifactLinks.map((item) => (
+                      <Link key={item.href} href={item.href} className="rounded-2xl border border-white/10 bg-black/24 p-3 transition hover:border-violet-300/28 hover:bg-white/[0.05]">
+                        <div className="text-sm font-semibold text-white">{item.label}</div>
+                        <div className="mt-2 text-xs leading-6 text-white/58">{item.helper}</div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               </div>
           ) : null}
 
@@ -2658,6 +2707,30 @@ export function GovernanceActionWorkbench() {
                     ]}
                   />
                 ) : null}
+                <div className="mt-4 rounded-[24px] border border-emerald-300/18 bg-[linear-gradient(135deg,rgba(20,241,149,0.10),rgba(153,69,255,0.07),rgba(0,0,0,0.25))] p-4">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="max-w-3xl">
+                      <div className="text-[11px] uppercase tracking-[0.22em] text-emerald-100/72">Reveal proof route</div>
+                      <div className="mt-2 text-base font-semibold text-white">Transparency appears after the decision window, not before voters can be pressured.</div>
+                      <p className="mt-2 text-sm leading-7 text-white/62">
+                        Reveal proves the committed intent without exposing it during voting. The links below keep the final
+                        ZK and verifier evidence one click away from the exact governance step the user just completed.
+                      </p>
+                    </div>
+                    <Link href="/documents/testnet-zk-verification-receipts-2026-05-07" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")}>
+                      Open ZK receipts
+                      <ArrowUpRight className="h-4 w-4" />
+                    </Link>
+                  </div>
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                    {zkProofArtifactLinks.map((item) => (
+                      <Link key={item.href} href={item.href} className="rounded-2xl border border-white/10 bg-black/24 p-3 transition hover:border-emerald-300/28 hover:bg-white/[0.05]">
+                        <div className="text-sm font-semibold text-white">{item.label}</div>
+                        <div className="mt-2 text-xs leading-6 text-white/58">{item.helper}</div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               </div>
           ) : null}
 
