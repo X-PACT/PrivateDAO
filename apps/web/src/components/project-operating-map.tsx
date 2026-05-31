@@ -56,29 +56,29 @@ export function ProjectOperatingMap({
   compact = false,
 }: ProjectOperatingMapProps) {
   return (
-    <section className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5">
-      <div className="text-[11px] uppercase tracking-[0.24em] text-white/42">Operating map</div>
+    <section className="min-w-0 max-w-full overflow-hidden rounded-[24px] border border-white/10 bg-white/[0.04] p-4 sm:rounded-[28px] sm:p-5">
+      <div className="text-[11px] uppercase tracking-[0.18em] text-white/42 sm:tracking-[0.24em]">Operating map</div>
       <h2 className={cn("mt-3 text-2xl font-semibold text-white", compact ? "text-xl" : "")}>{title}</h2>
-      <p className="mt-3 max-w-5xl text-sm leading-7 text-white/66">{description}</p>
+      <p className="mt-3 max-w-5xl text-sm leading-7 text-white/66 [overflow-wrap:anywhere]">{description}</p>
 
-      <div className="mt-4 grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
+      <div className="mt-4 grid min-w-0 gap-3 lg:grid-cols-[repeat(2,minmax(0,1fr))] xl:grid-cols-[repeat(3,minmax(0,1fr))]">
         {platformLanes.map((lane) => (
           <Link
             key={lane.title}
             href={lane.href}
-            className="rounded-[22px] border border-white/8 bg-black/20 p-4 transition hover:border-cyan-200/30"
+            className="min-w-0 rounded-[20px] border border-white/8 bg-black/20 p-4 transition hover:border-cyan-200/30 sm:rounded-[22px]"
           >
-            <div className="text-base font-medium text-white">{lane.title}</div>
-            <div className="mt-2 text-sm leading-6 text-white/62">{lane.body}</div>
+            <div className="text-base font-medium text-white [overflow-wrap:anywhere]">{lane.title}</div>
+            <div className="mt-2 text-sm leading-6 text-white/62 [overflow-wrap:anywhere]">{lane.body}</div>
           </Link>
         ))}
       </div>
 
-      <div className="mt-4 rounded-[22px] border border-emerald-300/16 bg-emerald-300/[0.07] p-4">
-        <div className="text-[11px] uppercase tracking-[0.24em] text-emerald-100/76">How intelligence feeds every lane</div>
-        <div className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+      <div className="mt-4 min-w-0 rounded-[20px] border border-emerald-300/16 bg-emerald-300/[0.07] p-4 sm:rounded-[22px]">
+        <div className="text-[11px] uppercase tracking-[0.16em] text-emerald-100/76 sm:tracking-[0.24em]">How intelligence feeds every lane</div>
+        <div className="mt-3 grid min-w-0 gap-3 md:grid-cols-[repeat(2,minmax(0,1fr))] xl:grid-cols-[repeat(5,minmax(0,1fr))]">
           {intelligenceFeeds.map((item) => (
-            <div key={item} className="rounded-2xl border border-white/8 bg-black/20 p-3 text-sm leading-6 text-white/64">
+            <div key={item} className="min-w-0 rounded-2xl border border-white/8 bg-black/20 p-3 text-sm leading-6 text-white/64 [overflow-wrap:anywhere]">
               {item}
             </div>
           ))}

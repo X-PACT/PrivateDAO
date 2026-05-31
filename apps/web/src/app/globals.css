@@ -22,6 +22,36 @@ body {
   font-family: var(--font-space-grotesk), Arial, Helvetica, sans-serif;
 }
 
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+main,
+section,
+article {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.grid > *,
+.flex > * {
+  min-width: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+li {
+  overflow-wrap: anywhere;
+}
+
 body::before {
   content: "";
   position: fixed;

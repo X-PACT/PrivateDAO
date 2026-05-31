@@ -265,7 +265,7 @@ export function EndToEndIntegrationClaimMatrix() {
   const latestAnchor = anchorStatus?.latest;
 
   return (
-    <section className="solana-claim-shell rounded-[30px] p-5 md:p-6">
+    <section className="solana-claim-shell max-w-full rounded-[24px] p-4 sm:rounded-[30px] md:p-6">
       <div className="solana-scanline" />
       <div className="relative z-10">
       <div className="flex flex-wrap items-center gap-3">
@@ -276,8 +276,8 @@ export function EndToEndIntegrationClaimMatrix() {
           Pain → Treatment → Proof
         </span>
       </div>
-      <div className="mt-4 grid gap-4 xl:grid-cols-[0.86fr_1.14fr] xl:items-start">
-        <div>
+      <div className="mt-4 grid min-w-0 gap-4 xl:grid-cols-[minmax(0,0.86fr)_minmax(0,1.14fr)] xl:items-start">
+        <div className="min-w-0">
           <h2 className="text-2xl font-semibold tracking-[-0.03em] text-white md:text-3xl">
             Every integration is part of one confidential coordination graph
           </h2>
@@ -288,11 +288,11 @@ export function EndToEndIntegrationClaimMatrix() {
           </p>
           <div className="mt-4 rounded-[22px] border border-emerald-300/14 bg-emerald-300/[0.055] p-4">
             <div className="text-[10px] uppercase tracking-[0.22em] text-emerald-100/70">MetaDAO-native workflow</div>
-            <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-white/62">
+            <div className="mt-3 grid min-w-0 grid-cols-1 gap-2 text-xs text-white/62 sm:grid-cols-2 lg:grid-cols-3">
               {["Market passes", "Grant reviewers assigned", "Private review room", "Private scoring", "Treasury approval", "Grant payout", "Prove", "Public audit receipt"].map((node, index) => (
-                <span key={node} className="inline-flex items-center gap-2">
-                  <span className="rounded-full border border-white/10 bg-black/24 px-3 py-1">{node}</span>
-                  {index < 7 ? <span className="text-cyan-100/50">→</span> : null}
+                <span key={node} className="flex min-w-0 items-center gap-2">
+                  <span className="min-w-0 flex-1 rounded-full border border-white/10 bg-black/24 px-3 py-1 text-center leading-5 break-words">{node}</span>
+                  {index < 7 ? <span className="hidden shrink-0 text-cyan-100/50 sm:inline">→</span> : null}
                 </span>
               ))}
             </div>

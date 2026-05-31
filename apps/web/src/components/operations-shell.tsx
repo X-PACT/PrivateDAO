@@ -180,7 +180,7 @@ export function OperationsShell({
     : "max-w-3xl text-sm leading-7 text-white/60 sm:text-lg sm:leading-8";
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+    <main className="mx-auto w-full max-w-7xl overflow-x-clip px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
       {!useMinimalGuidedChrome ? <div className="mb-6 xl:hidden">
         <Card className="border-white/10 bg-[#07101d]/88">
           <CardHeader className="space-y-3">
@@ -223,7 +223,7 @@ export function OperationsShell({
 
       <div
         className={cn(
-          "grid gap-6 xl:gap-8",
+          "grid min-w-0 gap-6 xl:gap-8",
           !useMinimalGuidedChrome && "xl:grid-cols-[280px_minmax(0,1fr)]",
         )}
       >
@@ -286,8 +286,8 @@ export function OperationsShell({
           </Card>
         </aside> : null}
 
-        <div className="space-y-8">
-          <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(10,16,32,0.94),rgba(7,11,23,0.98))]">
+        <div className="min-w-0 space-y-8">
+          <Card className="min-w-0 border-white/10 bg-[linear-gradient(180deg,rgba(10,16,32,0.94),rgba(7,11,23,0.98))]">
             <CardContent className={cn("p-6", useMinimalGuidedChrome ? "sm:p-6" : "sm:p-8")}>
               {badges.length > 0 ? (
                 <div className="flex flex-wrap gap-3">
@@ -350,7 +350,7 @@ export function OperationsShell({
             </CardContent>
           </Card>
 
-          <div className="space-y-8">{children}</div>
+          <div className="min-w-0 space-y-8">{children}</div>
         </div>
       </div>
     </main>

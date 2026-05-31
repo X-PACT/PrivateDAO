@@ -176,14 +176,14 @@ export function PrivateDaoStackSurface({ compact = false }: { compact?: boolean 
   }
 
   return (
-    <section className="rounded-[30px] border border-cyan-300/18 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.17),transparent_34%),linear-gradient(135deg,rgba(8,13,28,0.96),rgba(3,7,18,0.98))] p-5">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-100/76">PrivateDAO Stack</div>
+    <section className="min-w-0 max-w-full overflow-hidden rounded-[24px] border border-cyan-300/18 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.17),transparent_34%),linear-gradient(135deg,rgba(8,13,28,0.96),rgba(3,7,18,0.98))] p-4 sm:rounded-[30px] sm:p-5">
+      <div className="flex min-w-0 flex-wrap items-start justify-between gap-4">
+        <div className="min-w-0">
+          <div className="text-[11px] uppercase tracking-[0.18em] text-cyan-100/76 sm:tracking-[0.3em]">PrivateDAO Stack</div>
           <h2 className="mt-3 max-w-4xl text-2xl font-semibold tracking-[-0.035em] text-white md:text-3xl">
             Most DAOs expose everything. Votes. Payroll. Treasury activity. Internal operations.
           </h2>
-          <p className="mt-3 max-w-5xl text-sm leading-7 text-white/64">
+          <p className="mt-3 max-w-5xl text-sm leading-7 text-white/64 [overflow-wrap:anywhere]">
             We think that is broken. PrivateDAO enables organizations to operate privately while remaining cryptographically
             verifiable on Solana. Each layer below has a live route, a proof route, and when available a one-click API exercise.
           </p>
@@ -206,14 +206,14 @@ export function PrivateDaoStackSurface({ compact = false }: { compact?: boolean 
         </div>
       </div>
 
-      <div className={cn("mt-5 grid gap-3", compact ? "lg:grid-cols-2" : "lg:grid-cols-2 xl:grid-cols-3")}>
+      <div className={cn("mt-5 grid min-w-0 gap-3", compact ? "lg:grid-cols-[repeat(2,minmax(0,1fr))]" : "lg:grid-cols-[repeat(2,minmax(0,1fr))] xl:grid-cols-[repeat(3,minmax(0,1fr))]")}>
         {stackLayers.map((layer) => {
           const Icon = layer.icon;
           const result = results[layer.id];
           const isPending = pending === layer.id;
 
           return (
-            <article key={layer.id} className="rounded-[24px] border border-white/10 bg-black/24 p-4">
+            <article key={layer.id} className="min-w-0 rounded-[22px] border border-white/10 bg-black/24 p-4 sm:rounded-[24px]">
               <div className="flex items-start justify-between gap-3">
                 <div className="rounded-2xl border border-cyan-300/16 bg-cyan-300/[0.09] p-2.5 text-cyan-100">
                   <Icon className="h-4 w-4" />
@@ -222,9 +222,9 @@ export function PrivateDaoStackSurface({ compact = false }: { compact?: boolean 
                   {layer.apiAction ? "one-click API" : "route proof"}
                 </Badge>
               </div>
-              <h3 className="mt-3 text-base font-semibold text-white">{layer.title}</h3>
-              <p className="mt-2 text-sm leading-6 text-cyan-50/68">{layer.role}</p>
-              <p className="mt-2 text-sm leading-6 text-white/56">{layer.execution}</p>
+              <h3 className="mt-3 text-base font-semibold text-white [overflow-wrap:anywhere]">{layer.title}</h3>
+              <p className="mt-2 text-sm leading-6 text-cyan-50/68 [overflow-wrap:anywhere]">{layer.role}</p>
+              <p className="mt-2 text-sm leading-6 text-white/56 [overflow-wrap:anywhere]">{layer.execution}</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {layer.technologies.map((tech) => (
                   <span key={tech} className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[11px] text-white/58">

@@ -677,14 +677,14 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
   }
 
   return (
-    <section id="privacy-claim-console-runtime" className="solana-claim-shell rounded-[30px] p-5">
+    <section id="privacy-claim-console-runtime" className="solana-claim-shell max-w-full rounded-[24px] p-4 sm:rounded-[30px] sm:p-5">
       <div className="solana-scanline" />
       <div className="relative z-10">
       <div className="inline-flex items-center rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-[11px] uppercase tracking-[0.3em] text-emerald-100">
         On-chain claim console
       </div>
-      <div className={cn("mt-3 grid gap-5", compact ? "lg:grid-cols-[0.95fr_1.05fr]" : "xl:grid-cols-[0.9fr_1.1fr]")}>
-        <div>
+      <div className={cn("mt-3 grid min-w-0 gap-5", compact ? "lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]" : "xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]")}>
+        <div className="min-w-0">
           <h2 className="text-2xl font-semibold text-white">Anchor any privacy rail as a visitor-signed Testnet claim</h2>
           <p className="mt-3 text-sm leading-7 text-white/64">
             This console makes every privacy and encryption lane end-to-end testable from the browser. The visitor
@@ -699,11 +699,11 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
           </p>
           <div className="mt-4 rounded-2xl border border-emerald-300/14 bg-emerald-300/[0.055] p-4">
             <div className="text-[10px] uppercase tracking-[0.22em] text-emerald-100/70">Confidential coordination graph</div>
-            <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-white/62">
+            <div className="mt-3 grid min-w-0 grid-cols-1 gap-2 text-xs text-white/62 sm:grid-cols-2 lg:grid-cols-3">
               {["Market Decision", "Grant Review", "Treasury Approval", "Payroll Allocation", "Execution", "Prove", "Audit Proof"].map((node, index) => (
-                <span key={node} className="inline-flex items-center gap-2">
-                  <span className="rounded-full border border-white/10 bg-black/24 px-3 py-1">{node}</span>
-                  {index < 6 ? <span className="text-cyan-100/50">→</span> : null}
+                <span key={node} className="flex min-w-0 items-center gap-2">
+                  <span className="min-w-0 flex-1 rounded-full border border-white/10 bg-black/24 px-3 py-1 text-center leading-5 break-words">{node}</span>
+                  {index < 6 ? <span className="hidden shrink-0 text-cyan-100/50 sm:inline">→</span> : null}
                 </span>
               ))}
             </div>
@@ -742,7 +742,7 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
           </div>
         </div>
 
-        <div className="rounded-[24px] border border-white/10 bg-black/24 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+        <div className="min-w-0 rounded-[24px] border border-white/10 bg-black/24 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
           <label className="block text-sm text-white/70">
             <span>Privacy rail</span>
             <select
@@ -775,7 +775,7 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
             {selectedClaim.phases ? (
               <div className="mt-3 flex flex-wrap gap-2">
                 {selectedClaim.phases.map((phase) => (
-                  <span key={phase} className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] uppercase tracking-[0.14em] text-white/58">
+                  <span key={phase} className="max-w-full rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] uppercase tracking-[0.08em] text-white/58 break-words sm:tracking-[0.14em]">
                     {phase}
                   </span>
                 ))}
@@ -786,7 +786,7 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
                 <div className="text-[10px] uppercase tracking-[0.2em] text-emerald-100/60">Role-based coordination</div>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {selectedClaim.roles.map((role) => (
-                    <span key={role} className="rounded-full border border-emerald-300/14 bg-emerald-300/[0.06] px-2.5 py-1 text-[10px] uppercase tracking-[0.13em] text-emerald-50/68">
+                    <span key={role} className="max-w-full rounded-full border border-emerald-300/14 bg-emerald-300/[0.06] px-2.5 py-1 text-[10px] uppercase tracking-[0.08em] text-emerald-50/68 break-words sm:tracking-[0.13em]">
                       {role}
                     </span>
                   ))}
@@ -796,11 +796,11 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
             {selectedClaim.coordinationGraph ? (
               <div className="mt-3">
                 <div className="text-[10px] uppercase tracking-[0.2em] text-cyan-100/60">Workflow graph</div>
-                <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px] text-white/56">
+                <div className="mt-2 grid min-w-0 grid-cols-1 gap-2 text-[11px] text-white/56 sm:grid-cols-2">
                   {selectedClaim.coordinationGraph.map((node, index) => (
-                    <span key={`${node}-${index}`} className="inline-flex items-center gap-2">
-                      <span className="rounded-full border border-white/10 bg-black/24 px-2.5 py-1">{node}</span>
-                      {index < selectedClaim.coordinationGraph!.length - 1 ? <span className="text-cyan-100/45">→</span> : null}
+                    <span key={`${node}-${index}`} className="flex min-w-0 items-center gap-2">
+                      <span className="min-w-0 flex-1 rounded-full border border-white/10 bg-black/24 px-2.5 py-1 text-center leading-5 break-words">{node}</span>
+                      {index < selectedClaim.coordinationGraph!.length - 1 ? <span className="hidden shrink-0 text-cyan-100/45 sm:inline">→</span> : null}
                     </span>
                   ))}
                 </div>

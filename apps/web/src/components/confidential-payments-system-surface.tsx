@@ -56,33 +56,33 @@ const intelligenceLayers = [
 
 export function ConfidentialPaymentsSystemSurface({ compact = false }: ConfidentialPaymentsSystemSurfaceProps) {
   return (
-    <section className="rounded-[28px] border border-emerald-300/16 bg-emerald-300/[0.07] p-5">
-      <div className="text-[11px] uppercase tracking-[0.24em] text-emerald-100/76">Confidential payments system</div>
+    <section className="min-w-0 max-w-full overflow-hidden rounded-[24px] border border-emerald-300/16 bg-emerald-300/[0.07] p-4 sm:rounded-[28px] sm:p-5">
+      <div className="text-[11px] uppercase tracking-[0.16em] text-emerald-100/76 sm:tracking-[0.24em]">Confidential payments system</div>
       <h2 className={cn("mt-3 text-2xl font-semibold text-white", compact ? "text-xl" : "")}>
         Encrypted payment coordination built as product infrastructure
       </h2>
-      <p className="mt-3 max-w-5xl text-sm leading-7 text-white/66">
+      <p className="mt-3 max-w-5xl text-sm leading-7 text-white/66 [overflow-wrap:anywhere]">
         This lane is not a trading flow. It is operational infrastructure for confidential payroll, encrypted treasury
         coordination, secure payout routing, and AI-assisted pre-sign controls, with each rail connected to review and
         proof surfaces on Solana Testnet.
       </p>
 
-      <div className="mt-4 grid gap-3 md:grid-cols-2">
+      <div className="mt-4 grid min-w-0 gap-3 md:grid-cols-[repeat(2,minmax(0,1fr))]">
         {rails.map((rail) => (
-          <Link key={rail.title} href={rail.href} className="rounded-[22px] border border-white/10 bg-black/20 p-4 transition hover:border-emerald-200/30">
-            <div className="text-base font-medium text-white">{rail.title}</div>
-            <p className="mt-2 text-sm leading-6 text-white/62">{rail.body}</p>
+          <Link key={rail.title} href={rail.href} className="min-w-0 rounded-[20px] border border-white/10 bg-black/20 p-4 transition hover:border-emerald-200/30 sm:rounded-[22px]">
+            <div className="text-base font-medium text-white [overflow-wrap:anywhere]">{rail.title}</div>
+            <p className="mt-2 text-sm leading-6 text-white/62 [overflow-wrap:anywhere]">{rail.body}</p>
           </Link>
         ))}
       </div>
 
-      <div className="mt-4 rounded-[22px] border border-white/10 bg-black/20 p-4">
-        <div className="text-[11px] uppercase tracking-[0.24em] text-white/44">Intelligence layer</div>
-        <div className="mt-3 grid gap-3 md:grid-cols-3">
+      <div className="mt-4 min-w-0 rounded-[20px] border border-white/10 bg-black/20 p-4 sm:rounded-[22px]">
+        <div className="text-[11px] uppercase tracking-[0.18em] text-white/44 sm:tracking-[0.24em]">Intelligence layer</div>
+        <div className="mt-3 grid min-w-0 gap-3 md:grid-cols-[repeat(3,minmax(0,1fr))]">
           {intelligenceLayers.map((layer) => (
-            <Link key={layer.title} href={layer.href} className="rounded-2xl border border-white/8 bg-white/[0.03] p-3 transition hover:border-cyan-200/30">
-              <div className="text-sm font-medium text-white">{layer.title}</div>
-              <div className="mt-2 text-sm leading-6 text-white/60">{layer.body}</div>
+            <Link key={layer.title} href={layer.href} className="min-w-0 rounded-2xl border border-white/8 bg-white/[0.03] p-3 transition hover:border-cyan-200/30">
+              <div className="text-sm font-medium text-white [overflow-wrap:anywhere]">{layer.title}</div>
+              <div className="mt-2 text-sm leading-6 text-white/60 [overflow-wrap:anywhere]">{layer.body}</div>
             </Link>
           ))}
         </div>
