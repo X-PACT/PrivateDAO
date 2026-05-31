@@ -31,7 +31,7 @@ import {
 } from "@/lib/dao-bootstrap";
 import { buildServiceHandoffQuery } from "@/lib/service-handoff-state";
 import { getProposalById, type ProposalCardModel } from "@/lib/site-data";
-import { buildSolanaTxUrl, SOLANA_NETWORK_LABEL } from "@/lib/solana-network";
+import { buildSolanaTxUrl, SOLANA_NETWORK, SOLANA_NETWORK_LABEL } from "@/lib/solana-network";
 import { persistOperationReceipt } from "@/lib/supabase/operation-receipts";
 import { getTreasuryReceiveConfig } from "@/lib/treasury-receive-config";
 import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
@@ -249,6 +249,10 @@ function describeWalletActionError(error: unknown, fallback: string) {
     const name = error.name?.trim() ?? "";
     const combined = `${name} ${message}`.trim();
 
+    if (/network|cluster|chain|incompatible|not compatible/i.test(combined)) {
+      return `Your wallet rejected the transaction because it is not on Solana ${SOLANA_NETWORK_LABEL}. Switch the wallet network to Testnet, reconnect, then retry this same step.`;
+    }
+
     if (combined.includes("WalletSendTransactionError")) {
       return "The wallet did not complete proposal submission. Re-open the wallet popup and approve the pending transaction, or reconnect the wallet and try once.";
     }
@@ -267,6 +271,15 @@ function describeWalletActionError(error: unknown, fallback: string) {
   }
 
   return fallback;
+}
+
+function assertTestnetExecutionLane(connection: ReturnType<typeof useConnection>["connection"]) {
+  const rpcEndpoint = String(connection.rpcEndpoint ?? "").toLowerCase();
+  if (SOLANA_NETWORK !== "testnet" || !rpcEndpoint.includes("testnet")) {
+    throw new Error(
+      `PrivateDAO browser execution is locked to Solana Testnet. Current configured network is ${SOLANA_NETWORK_LABEL} with RPC endpoint ${connection.rpcEndpoint}.`,
+    );
+  }
 }
 
 async function submitWalletTransactionWithFallback({
@@ -289,7 +302,22 @@ async function submitWalletTransactionWithFallback({
   extraSigners?: import("@solana/web3.js").Signer[];
 }) {
   let signature: string;
-  if (signTransaction) {
+  assertTestnetExecutionLane(connection);
+
+  try {
+    signature = await sendTransaction(transaction, connection, {
+      preflightCommitment: "confirmed",
+      signers: extraSigners,
+    });
+  } catch (sendError) {
+    const combined =
+      sendError instanceof Error
+        ? `${sendError.name ?? ""} ${sendError.message ?? ""}`.trim()
+        : "";
+    if (!signTransaction || /network|cluster|chain|incompatible|not compatible/i.test(combined)) {
+      throw sendError;
+    }
+
     const transactionForManualSend = transaction;
     if (extraSigners.length > 0) {
       transactionForManualSend.partialSign(...extraSigners);
@@ -299,11 +327,6 @@ async function submitWalletTransactionWithFallback({
       maxRetries: 3,
       preflightCommitment: "confirmed",
       skipPreflight: false,
-    });
-  } else {
-    signature = await sendTransaction(transaction, connection, {
-      preflightCommitment: "confirmed",
-      signers: extraSigners,
     });
   }
 
@@ -1065,6 +1088,7 @@ export function GovernanceActionWorkbench() {
         address: bootstrap.dao.toBase58(),
         authority: publicKey.toBase58(),
         governanceMint: bootstrap.governanceMint.toBase58(),
+        network: SOLANA_NETWORK,
         signature,
       });
       recordLog(
@@ -1100,10 +1124,10 @@ export function GovernanceActionWorkbench() {
         },
       });
     } catch (error) {
-      const message =
-        error instanceof Error && error.message
-          ? error.message
-          : "Web wallet DAO bootstrap failed before confirmation.";
+      const message = describeWalletActionError(
+        error,
+        "Web wallet DAO bootstrap failed before confirmation.",
+      );
       setCreateDaoRuntime({
         status: "error",
         message,
@@ -1198,6 +1222,7 @@ export function GovernanceActionWorkbench() {
 
       createProposal({
         address: proposalSubmission.proposal.toBase58(),
+        network: SOLANA_NETWORK,
         signature,
       });
       recordLog(
@@ -1332,6 +1357,7 @@ export function GovernanceActionWorkbench() {
       commitVote({
         commitmentHex: toHex(commitment),
         commitSignature: signature,
+        network: SOLANA_NETWORK,
         proposalAddress: proposalAddress.toBase58(),
         saltHex: toHex(salt),
         voteChoice,
@@ -1427,6 +1453,7 @@ export function GovernanceActionWorkbench() {
       await awaitLiveSignatureOnCluster({ connection, signature });
 
       revealVote({
+        network: SOLANA_NETWORK,
         proposalAddress: proposalAddress.toBase58(),
         revealSignature: signature,
         saltHex: liveVoteRuntime.saltHex,

@@ -16,7 +16,7 @@ import {
   clearStoredServiceHandoffState,
   markStoredServiceHandoffExecuted,
 } from "@/lib/service-handoff-state";
-import { SOLANA_NETWORK_LABEL } from "@/lib/solana-network";
+import { SOLANA_NETWORK, SOLANA_NETWORK_LABEL } from "@/lib/solana-network";
 
 type VoteChoice = "Approve" | "Reject";
 
@@ -42,11 +42,13 @@ type LiveDaoRuntime = {
   address: string;
   authority?: string;
   governanceMint: string;
+  network?: string;
   signature: string;
 };
 
 type LiveProposalRuntime = {
   address: string;
+  network?: string;
   signature: string;
 };
 
@@ -58,6 +60,7 @@ type LiveVoteRuntime = {
   proposalAddress: string;
   revealSignature?: string;
   saltHex?: string;
+  network?: string;
   voteChoice: VoteChoice;
 };
 
@@ -174,7 +177,7 @@ type GovernanceSessionContextValue = GovernanceSessionState & {
   createDao: (liveRuntime?: LiveDaoRuntime | null) => void;
   createProposal: (liveRuntime?: LiveProposalRuntime | null) => void;
   commitVote: (liveRuntime?: LiveVoteRuntime | null) => void;
-  revealVote: (liveRuntime?: Pick<LiveVoteRuntime, "proposalAddress" | "revealSignature" | "saltHex" | "voteChoice"> | null) => void;
+  revealVote: (liveRuntime?: Pick<LiveVoteRuntime, "network" | "proposalAddress" | "revealSignature" | "saltHex" | "voteChoice"> | null) => void;
   finalizeProposal: (signature?: string | null) => void;
   executeProposal: (signature?: string | null) => void;
   resetSession: () => void;
@@ -213,6 +216,7 @@ function redactLiveVoteRuntimeForStorage(runtime: LiveVoteRuntime | null): LiveV
     finalizeSignature: runtime.finalizeSignature,
     proposalAddress: runtime.proposalAddress,
     revealSignature: runtime.revealSignature,
+    network: runtime.network,
     voteChoice: runtime.revealSignature ? runtime.voteChoice : "Approve",
   };
 }
@@ -226,7 +230,41 @@ function redactGovernanceStateForStorage(state: GovernanceSessionState): Governa
 }
 
 function mergePersistedGovernanceStateSafely(parsed: Partial<GovernanceSessionState>): GovernanceSessionState {
-  return redactGovernanceStateForStorage(mergePersistedGovernanceState(parsed));
+  const merged = redactGovernanceStateForStorage(mergePersistedGovernanceState(parsed));
+  const liveDaoNetwork = merged.liveDaoRuntime?.network;
+  const liveProposalNetwork = merged.liveProposalRuntime?.network;
+  const liveVoteNetwork = merged.liveVoteRuntime?.network;
+
+  if (
+    (merged.liveDaoRuntime && liveDaoNetwork !== SOLANA_NETWORK) ||
+    (merged.liveProposalRuntime && liveProposalNetwork !== SOLANA_NETWORK) ||
+    (merged.liveVoteRuntime && liveVoteNetwork !== SOLANA_NETWORK)
+  ) {
+    return {
+      ...merged,
+      daoCreated: false,
+      liveDaoRuntime: null,
+      proposalCreated: false,
+      liveProposalRuntime: null,
+      voteCommitted: false,
+      voteRevealed: false,
+      proposalFinalized: false,
+      proposalExecuted: false,
+      liveVoteRuntime: null,
+      logs: sanitizeGovernanceLogs(
+        [
+          {
+            label: "Testnet lane reset",
+            value: `Stored runtime belonged to another or unknown cluster. Start fresh on ${SOLANA_NETWORK_LABEL}.`,
+          },
+          ...merged.logs,
+        ],
+        merged.executionIntent,
+      ),
+    };
+  }
+
+  return merged;
 }
 
 export function GovernanceSessionProvider({ children }: { children: ReactNode }) {
@@ -406,8 +444,9 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
               ...current,
               voteRevealed: true,
               liveVoteRuntime: current.liveVoteRuntime && liveRuntime
-                ? {
+                  ? {
                     ...current.liveVoteRuntime,
+                    network: liveRuntime.network ?? current.liveVoteRuntime.network,
                     revealSignature: liveRuntime.revealSignature,
                   }
                 : current.liveVoteRuntime,
