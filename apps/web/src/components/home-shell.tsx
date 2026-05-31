@@ -605,6 +605,26 @@ export function HomeShell() {
                   connect a wallet, review the plain-English action, sign the exact request, then inspect when intent became visible, where payroll or treasury movement is proven, and how encrypted IKA / REFHE-style payment evidence stays linked to proof.
                 </p>
               </div>
+              <div className="max-w-3xl rounded-[26px] border border-cyan-300/18 bg-cyan-300/[0.08] p-5">
+                <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/80">Three DAO modes, one simple flow</div>
+                <div className="mt-2 text-lg font-semibold text-white">Public DAOs, private rooms, and institutional DAOs can all protect intent before revealing outcomes.</div>
+                <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                  {[
+                    ["Public DAO", "Open community, private vote intent, public result."],
+                    ["Private room", "Grants, payroll, incidents, partnerships, and reviewer rooms."],
+                    ["Institution", "Role-based treasury, payroll, vendor, and council approvals."],
+                  ].map(([title, body]) => (
+                    <Link key={title} href="/govern#live-dao" className="rounded-2xl border border-white/10 bg-black/20 p-3 transition hover:border-cyan-300/30 hover:bg-white/[0.05]">
+                      <div className="text-sm font-semibold text-white">{title}</div>
+                      <div className="mt-2 text-xs leading-6 text-white/62">{body}</div>
+                    </Link>
+                  ))}
+                </div>
+                <p className="mt-4 text-sm leading-7 text-white/66">
+                  The point is not hiding accountability. The point is hiding intent while the decision is vulnerable,
+                  then revealing the result, proof, and execution trail when transparency protects trust.
+                </p>
+              </div>
               <div className="max-w-3xl rounded-[26px] border border-violet-300/18 bg-[radial-gradient(circle_at_top_right,rgba(153,69,255,0.20),transparent_36%),rgba(153,69,255,0.08)] p-5 text-sm leading-7 text-white/72">
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div>

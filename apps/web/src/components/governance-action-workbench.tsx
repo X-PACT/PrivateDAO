@@ -44,6 +44,41 @@ const voteChoices = ["Approve", "Reject"] as const;
 const LIVE_TESTNET_VOTING_DURATION_SECONDS = 180;
 const LIVE_TESTNET_REVEAL_WINDOW_SECONDS = 180;
 const LIVE_TESTNET_EXECUTION_DELAY_SECONDS = 30;
+
+const daoExperienceProfiles = [
+  {
+    id: "public-private",
+    title: "Public DAO, private voting",
+    label: "For open communities",
+    daoName: "PrivateDAO Public Council",
+    proposalTitle: "Private vote for public treasury policy",
+    pain: "Open DAOs need public outcomes, but early visible votes can create pressure, copying, and vote buying.",
+    privacy: "Commit/reveal hides voting intent during the decision window.",
+    reveal: "After finalize, the result, receipt, and execution path are visible for everyone to audit.",
+  },
+  {
+    id: "private-room",
+    title: "Private room DAO",
+    label: "For grants, payroll, incidents",
+    daoName: "PrivateDAO Review Room",
+    proposalTitle: "Confidential review room approval",
+    pain: "Small groups need to discuss grants, payroll, security incidents, or partnerships before public disclosure.",
+    privacy: "Sensitive intent, reviewers, rationale, and coordination stay inside the room while the decision is active.",
+    reveal: "The approved outcome becomes verifiable with a public receipt and scoped proof route.",
+  },
+  {
+    id: "institutional",
+    title: "Institutional DAO",
+    label: "For companies and councils",
+    daoName: "PrivateDAO Institution",
+    proposalTitle: "Institutional treasury authorization",
+    pain: "Organizations need privacy for treasury, payroll, vendor terms, and committee decisions without losing accountability.",
+    privacy: "Decision context is encrypted, reviewed by roles, and protected until authorization is complete.",
+    reveal: "Auditors see the outcome, policy boundary, receipt, and execution evidence at the right time.",
+  },
+] as const;
+
+type DaoExperienceProfileId = (typeof daoExperienceProfiles)[number]["id"];
 type GovernPackKey =
   | "payroll-pack"
   | "vendor-pack"
@@ -470,6 +505,7 @@ export function GovernanceActionWorkbench() {
   const searchParams = useSearchParams();
   const [reviewAction, setReviewAction] = useState<CoreGovernanceInstructionName | null>(null);
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [selectedDaoProfileId, setSelectedDaoProfileId] = useState<DaoExperienceProfileId>("public-private");
   const [createDaoRuntime, setCreateDaoRuntime] = useState<{
     status: "idle" | "submitting" | "success" | "error";
     message: string;
@@ -897,6 +933,18 @@ export function GovernanceActionWorkbench() {
     setProposalTreasuryTokenMint("");
     appliedReviewRef.current = null;
     autoOpenReviewRef.current = null;
+  }
+
+  function applyDaoExperienceProfile(profileId: DaoExperienceProfileId) {
+    const profile = daoExperienceProfiles.find((item) => item.id === profileId) ?? daoExperienceProfiles[0];
+    setSelectedDaoProfileId(profile.id);
+    setDaoName(profile.daoName);
+    setProposalTitle(profile.proposalTitle);
+    setProposalTreasuryMode("standard");
+    setProposalTreasuryRecipient("");
+    setProposalTreasuryAmountSol("");
+    setProposalTreasuryTokenMint("");
+    recordLog("DAO profile selected", `${profile.title} · ${profile.privacy}`);
   }
 
   const currentStep = useMemo(() => {
@@ -1855,6 +1903,68 @@ export function GovernanceActionWorkbench() {
               <WalletConnectButton />
             </div>
           </div>
+
+          {showDaoCard ? (
+            <div className="rounded-[24px] border border-cyan-300/16 bg-[linear-gradient(135deg,rgba(20,241,149,0.09),rgba(153,69,255,0.08),rgba(3,8,20,0.96))] p-5 md:col-span-2">
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div className="max-w-3xl">
+                  <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/78">Choose the DAO experience</div>
+                  <div className="mt-2 text-xl font-semibold text-white">Same on-chain core, different privacy posture</div>
+                  <p className="mt-2 text-sm leading-7 text-white/64">
+                    Public DAOs can keep vote intent private until the result is ready. Private rooms can protect grants,
+                    payroll, incident response, and partnerships. Institutions can run role-based approvals with audit
+                    proof at the right time. The user still follows one simple path: connect, create DAO, create proposal,
+                    commit, reveal, finalize, execute, verify.
+                  </p>
+                </div>
+                <Link href="/services/?claim=confidential-treasury-request#privacy-claim-console" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                  Open privacy matrix
+                  <ArrowUpRight className="h-4 w-4" />
+                </Link>
+              </div>
+              <div className="mt-5 grid gap-3 lg:grid-cols-3">
+                {daoExperienceProfiles.map((profile) => {
+                  const isSelected = selectedDaoProfileId === profile.id;
+                  return (
+                    <button
+                      key={profile.id}
+                      type="button"
+                      className={cn(
+                        "rounded-[22px] border p-4 text-left transition",
+                        isSelected
+                          ? "border-emerald-300/36 bg-emerald-300/[0.12] shadow-[0_18px_50px_rgba(20,241,149,0.10)]"
+                          : "border-white/10 bg-black/22 hover:border-cyan-300/25 hover:bg-white/[0.05]",
+                      )}
+                      onClick={() => applyDaoExperienceProfile(profile.id)}
+                    >
+                      <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-100/70">{profile.label}</div>
+                      <div className="mt-2 text-base font-semibold text-white">{profile.title}</div>
+                      <p className="mt-3 text-sm leading-6 text-white/58">{profile.pain}</p>
+                      <div className="mt-4 rounded-2xl border border-white/10 bg-black/20 p-3 text-xs leading-6 text-white/66">
+                        <span className="font-semibold text-emerald-100">During voting:</span> {profile.privacy}
+                      </div>
+                      <div className="mt-2 rounded-2xl border border-white/10 bg-black/20 p-3 text-xs leading-6 text-white/66">
+                        <span className="font-semibold text-cyan-100">After decision:</span> {profile.reveal}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="mt-4 grid gap-3 md:grid-cols-4">
+                {[
+                  ["Intent hidden", "Votes are committed before reveal so voters are not pressured by visible momentum."],
+                  ["Outcome public", "Final result, proof, and execution receipt become auditable after the decision closes."],
+                  ["Roles scoped", "Reviewers, treasury operators, and auditors can see the right evidence for their job."],
+                  ["Intelligence before signing", "QVAC, GoldRush, and risk context explain the decision before wallet approval."],
+                ].map(([title, body]) => (
+                  <div key={title} className="rounded-2xl border border-white/10 bg-black/20 p-3">
+                    <div className="text-sm font-semibold text-white">{title}</div>
+                    <div className="mt-2 text-xs leading-6 text-white/58">{body}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
 
           {hasPayloadDrivenExecution ? (
             <div className="rounded-[24px] border border-amber-300/18 bg-amber-300/[0.08] p-5 md:col-span-2">
