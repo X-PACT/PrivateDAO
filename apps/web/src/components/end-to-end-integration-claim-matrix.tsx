@@ -9,6 +9,16 @@ import { cn } from "@/lib/utils";
 
 const integrationRows = [
   {
+    claim: "metadao-grant-review-workflow",
+    rail: "MetaDAO Grant Review Workflow",
+    pain: "A market-passed decision still needs private reviewer assignment, private scoring, treasury approval, payout execution, and a public audit receipt.",
+    treatment: "PrivateDAO turns the MetaDAO path into one confidential coordination graph: Market Decision -> Grant Review -> Treasury Approval -> Payroll Allocation -> Execution -> Prove -> Audit Proof.",
+    proof: "Open the MetaDAO workflow, encrypt the private scoring room, sign the Testnet digest, export public attestation, then verify who reviewed, approved, executed, and proved the outcome without exposing the private notes.",
+    route: "/services?claim=metadao-grant-review-workflow#privacy-claim-console",
+    api: "https://api.privatedao.org/api/v1/privacy-execution-claims/prepare?claim=metadao-grant-review-workflow",
+    icon: BrainCircuit,
+  },
+  {
     claim: "confidential-treasury-request",
     rail: "Confidential Treasury Request",
     pain: "Treasury requests leak strategy, vendor terms, and negotiation context before the DAO is ready to execute.",
@@ -60,9 +70,9 @@ const integrationRows = [
   },
   {
     claim: "organizational-memory-vault",
-    rail: "Organizational Memory Vault",
+    rail: "Institutional Memory Vault",
     pain: "Organizations lose decision context across sessions, teams, and reviewer handoffs, or they expose too much too early.",
-    treatment: "PrivateDAO stores encrypted decision memory with progressive disclosure and digest continuity between private reasoning and public outcomes.",
+    treatment: "PrivateDAO stores why decisions happened, who objected, what alternatives were rejected, and what happened later, with progressive disclosure and digest continuity.",
     proof: "Capture the decision as an encrypted memory-vault claim, sign the digest, and keep public/private receipts separated.",
     route: "/services?claim=organizational-memory-vault#privacy-claim-console",
     api: "https://api.privatedao.org/api/v1/privacy-execution-claims/prepare?claim=organizational-memory-vault",
@@ -269,13 +279,24 @@ export function EndToEndIntegrationClaimMatrix() {
       <div className="mt-4 grid gap-4 xl:grid-cols-[0.86fr_1.14fr] xl:items-start">
         <div>
           <h2 className="text-2xl font-semibold tracking-[-0.03em] text-white md:text-3xl">
-            Every integration has a job in the operating flow
+            Every integration is part of one confidential coordination graph
           </h2>
           <p className="mt-3 text-sm leading-7 text-white/66">
             Organizations need privacy because payroll, votes, vendors, treasury routes, and internal operations leak by
             default. Blockchains need verifiability because trust collapses when execution cannot be checked. PrivateDAO
             connects both: private preparation, wallet-controlled Testnet execution, and public-safe proof.
           </p>
+          <div className="mt-4 rounded-[22px] border border-emerald-300/14 bg-emerald-300/[0.055] p-4">
+            <div className="text-[10px] uppercase tracking-[0.22em] text-emerald-100/70">MetaDAO-native workflow</div>
+            <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-white/62">
+              {["Market passes", "Grant reviewers assigned", "Private review room", "Private scoring", "Treasury approval", "Grant payout", "Prove", "Public audit receipt"].map((node, index) => (
+                <span key={node} className="inline-flex items-center gap-2">
+                  <span className="rounded-full border border-white/10 bg-black/24 px-3 py-1">{node}</span>
+                  {index < 7 ? <span className="text-cyan-100/50">→</span> : null}
+                </span>
+              ))}
+            </div>
+          </div>
           <div className="mt-5 flex flex-wrap gap-3">
             <Link href="/services#privacy-claim-console" className={cn(buttonVariants({ size: "sm" }))}>
               Anchor a claim

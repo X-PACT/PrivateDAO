@@ -19,6 +19,9 @@ type PrivacyClaim = {
   tier?: "tier-1" | "tier-2" | "tier-3";
   requestUseCase?: string;
   phases?: string[];
+  roles?: string[];
+  coordinationGraph?: string[];
+  proofQuestions?: string[];
   privacyBoundary?: string;
   auditSurface?: string;
   nativeProofClass: string;
@@ -77,7 +80,10 @@ async function buildEncryptedClaimPacket(input: {
     route: input.claim.route,
     tier: input.claim.tier ?? "execution-rail",
     requestUseCase: input.claim.requestUseCase ?? input.claim.label,
-    phases: input.claim.phases ?? ["Review", "Encrypt", "Sign", "Verify"],
+    phases: input.claim.phases ?? ["Review", "Encrypt", "Sign", "Prove", "Verify"],
+    roles: input.claim.roles ?? ["Contributor", "Reviewer", "Treasury Manager", "Auditor"],
+    coordinationGraph: input.claim.coordinationGraph ?? ["Request", "Review", "Approve", "Execute", "Prove", "Audit"],
+    proofQuestions: input.claim.proofQuestions ?? ["who reviewed", "who approved", "who executed", "what was proven"],
     privacyBoundary: input.claim.privacyBoundary ?? "Sensitive context stays encrypted in the local claim packet.",
     auditSurface: input.claim.auditSurface ?? "Public audit surface exposes the digest commitment and explorer signature.",
     network: SOLANA_NETWORK_LABEL,
@@ -136,6 +142,9 @@ async function verifyEncryptedClaimPacket(packet: EncryptedClaimPacket) {
     tier?: string;
     requestUseCase?: string;
     phases?: string[];
+    roles?: string[];
+    coordinationGraph?: string[];
+    proofQuestions?: string[];
     privacyBoundary?: string;
     auditSurface?: string;
     network: string;
@@ -172,12 +181,31 @@ function getVisitorSessionId() {
 
 const privacyClaims: PrivacyClaim[] = [
   {
+    id: "metadao-grant-review-workflow",
+    label: "MetaDAO grant review workflow",
+    route: "/review",
+    tier: "tier-1",
+    requestUseCase: "A market decision passes, grant reviewers are assigned, a private scoring room opens, treasury approves the award, payout executes, and the public receives an audit receipt.",
+    phases: ["Market passes", "Assign reviewers", "Private scoring", "Treasury approval", "Grant payout", "Prove", "Audit receipt"],
+    roles: ["Contributor", "Reviewer", "Treasury Manager", "Auditor"],
+    coordinationGraph: ["Market Decision", "Grant Review", "Treasury Approval", "Payroll Allocation", "Execution", "Prove", "Audit Proof"],
+    proofQuestions: ["who reviewed", "who approved", "who executed", "which receipt proves outcome"],
+    privacyBoundary: "Reviewer notes, private scores, applicant context, and treasury reasoning stay encrypted before final award disclosure.",
+    auditSurface: "Market state, reviewer quorum digest, treasury approval digest, payout reference, and final audit receipt become verifiable.",
+    nativeProofClass: "metadao-market-to-grant-workflow-plus-visitor-wallet-memo-attestation",
+    claimProofClass: "visitor-wallet-memo-attestation",
+    claim: "MetaDAO-native grant review workflow that turns a market-passed decision into confidential review, treasury approval, payout, prove layer, and public audit receipt.",
+  },
+  {
     id: "confidential-treasury-request",
     label: "Confidential treasury request",
     route: "/treasury",
     tier: "tier-1",
     requestUseCase: "Ask for treasury funds without exposing strategy, vendor terms, negotiation context, or supporting documents before approval.",
-    phases: ["Discuss", "Review", "Approve", "Execute", "Audit"],
+    phases: ["Discuss", "Review", "Approve", "Execute", "Prove", "Audit"],
+    roles: ["Contributor", "Reviewer", "Treasury Manager", "Auditor"],
+    coordinationGraph: ["Market Decision", "Treasury Request", "Treasury Approval", "Execution", "Prove", "Audit Proof"],
+    proofQuestions: ["who requested", "who reviewed", "who approved", "who executed"],
     privacyBoundary: "Request memo, docs, vendor context, and negotiation details stay encrypted before execution.",
     auditSurface: "Approved amount, digest, wallet signature, and final settlement proof become reviewer-visible.",
     nativeProofClass: "encrypted-treasury-request-plus-visitor-wallet-memo-attestation",
@@ -190,7 +218,10 @@ const privacyClaims: PrivacyClaim[] = [
     route: "/payroll",
     tier: "tier-1",
     requestUseCase: "Run contributor salary, bonus, or reward approvals without exposing every compensation row to the whole organization.",
-    phases: ["Prepare payroll", "Encrypt rows", "Approve batch", "Execute payout", "Audit integrity"],
+    phases: ["Prepare payroll", "Encrypt rows", "Approve batch", "Execute payout", "Prove", "Audit integrity"],
+    roles: ["Contributor", "Reviewer", "Treasury Manager", "Auditor"],
+    coordinationGraph: ["Treasury Approval", "Payroll Allocation", "Execution", "Prove", "Audit Proof"],
+    proofQuestions: ["who prepared", "who approved", "who executed", "which batch digest proves integrity"],
     privacyBoundary: "Contributor names, row-level amounts, and bonus reasons stay in selective-disclosure receipts.",
     auditSurface: "Payroll batch digest, signed memo, REFHE proof route, and payout evidence remain inspectable.",
     nativeProofClass: "refhe-payroll-request-plus-visitor-wallet-memo-attestation",
@@ -203,7 +234,10 @@ const privacyClaims: PrivacyClaim[] = [
     route: "/security",
     tier: "tier-1",
     requestUseCase: "Coordinate a vulnerability response, freeze recommendation, remediation plan, and disclosure timing before attackers see the details.",
-    phases: ["Open room", "Encrypt findings", "Approve response", "Execute mitigation", "Publish audit"],
+    phases: ["Open room", "Encrypt findings", "Approve response", "Execute mitigation", "Prove", "Publish audit"],
+    roles: ["Emergency Operator", "Reviewer", "Treasury Manager", "Auditor"],
+    coordinationGraph: ["Security Signal", "Incident Room", "Emergency Approval", "Execution", "Prove", "Audit Proof"],
+    proofQuestions: ["who opened the room", "who reviewed", "who approved response", "who executed mitigation"],
     privacyBoundary: "Exploit notes, affected components, patch plan, and responder discussion stay private until disclosure.",
     auditSurface: "Incident digest, signer set, decision timestamp, and mitigation transaction/proof route are public-safe.",
     nativeProofClass: "incident-room-digest-plus-visitor-wallet-memo-attestation",
@@ -216,7 +250,10 @@ const privacyClaims: PrivacyClaim[] = [
     route: "/govern",
     tier: "tier-1",
     requestUseCase: "Run a fast private decision path for exploit, oracle attack, key-loss, or treasury-defense events.",
-    phases: ["Trigger", "Review evidence", "Approve emergency action", "Execute", "Postmortem audit"],
+    phases: ["Trigger", "Review evidence", "Approve emergency action", "Execute", "Prove", "Postmortem audit"],
+    roles: ["Emergency Operator", "Reviewer", "Treasury Manager", "Auditor"],
+    coordinationGraph: ["Emergency Trigger", "Private Review", "Emergency Governance", "Execution", "Prove", "Audit Proof"],
+    proofQuestions: ["who triggered", "who reviewed evidence", "who approved emergency action", "who executed"],
     privacyBoundary: "Evidence, attack hypothesis, and signer debate stay encrypted before action.",
     auditSurface: "Emergency digest, execution authority, final action, and postmortem evidence become verifiable.",
     nativeProofClass: "emergency-governance-plus-visitor-wallet-memo-attestation",
@@ -229,7 +266,10 @@ const privacyClaims: PrivacyClaim[] = [
     route: "/review",
     tier: "tier-1",
     requestUseCase: "Review many grant applications with hidden reviewer notes, blinded scoring, and final award accountability.",
-    phases: ["Intake", "Blind review", "Approve awards", "Execute grants", "Audit outcomes"],
+    phases: ["Intake", "Blind review", "Approve awards", "Execute grants", "Prove", "Audit outcomes"],
+    roles: ["Contributor", "Reviewer", "Treasury Manager", "Auditor"],
+    coordinationGraph: ["Market Decision", "Grant Review", "Treasury Approval", "Execution", "Prove", "Audit Proof"],
+    proofQuestions: ["who reviewed", "who approved award", "who executed grant", "what proves outcome"],
     privacyBoundary: "Reviewer notes, applicant weaknesses, scoring disputes, and committee debate stay private.",
     auditSurface: "Award decision digest, reviewer quorum proof, final amount, and grant execution receipt are inspectable.",
     nativeProofClass: "grant-review-digest-plus-visitor-wallet-memo-attestation",
@@ -242,7 +282,10 @@ const privacyClaims: PrivacyClaim[] = [
     route: "/services",
     tier: "tier-2",
     requestUseCase: "Coordinate deal terms, revenue splits, integration milestones, and announcement timing before public launch.",
-    phases: ["Draft terms", "Review risk", "Approve partnership", "Execute integration", "Audit commitments"],
+    phases: ["Draft terms", "Review risk", "Approve partnership", "Execute integration", "Prove", "Audit commitments"],
+    roles: ["Contributor", "Reviewer", "Treasury Manager", "Auditor"],
+    coordinationGraph: ["Partnership Request", "Private Review", "Treasury Approval", "Execution", "Prove", "Audit Proof"],
+    proofQuestions: ["who reviewed terms", "who approved", "who executed integration", "what proves commitments"],
     privacyBoundary: "Terms, counterparties, revenue splits, and negotiation notes stay encrypted until disclosure.",
     auditSurface: "Final approval digest, milestone state, signer evidence, and public announcement proof are preserved.",
     nativeProofClass: "partnership-room-digest-plus-visitor-wallet-memo-attestation",
@@ -255,7 +298,10 @@ const privacyClaims: PrivacyClaim[] = [
     route: "/treasury",
     tier: "tier-2",
     requestUseCase: "Handle acquisition or merger proposals with private valuation, offer terms, diligence, and staged approvals.",
-    phases: ["Open diligence", "Encrypt valuation", "Approve mandate", "Execute transaction path", "Audit decision"],
+    phases: ["Open diligence", "Encrypt valuation", "Approve mandate", "Execute transaction path", "Prove", "Audit decision"],
+    roles: ["Contributor", "Reviewer", "Treasury Manager", "Auditor"],
+    coordinationGraph: ["M&A Signal", "Private Diligence", "Mandate Approval", "Execution", "Prove", "Audit Proof"],
+    proofQuestions: ["who reviewed diligence", "who approved mandate", "who executed path", "which digest proves decision"],
     privacyBoundary: "Valuation, offers, diligence notes, and negotiation strategy stay private.",
     auditSurface: "Mandate digest, approval threshold, final decision state, and execution evidence are verifier-visible.",
     nativeProofClass: "ma-room-digest-plus-visitor-wallet-memo-attestation",
@@ -268,7 +314,10 @@ const privacyClaims: PrivacyClaim[] = [
     route: "/payroll",
     tier: "tier-2",
     requestUseCase: "Review candidates, compensation bands, committee notes, and offer approvals without exposing private hiring context.",
-    phases: ["Review candidates", "Encrypt notes", "Approve offer", "Execute payroll setup", "Audit fairness"],
+    phases: ["Review candidates", "Encrypt notes", "Approve offer", "Execute payroll setup", "Prove", "Audit fairness"],
+    roles: ["Contributor", "Reviewer", "Treasury Manager", "Auditor"],
+    coordinationGraph: ["Hiring Request", "Private Review", "Offer Approval", "Payroll Allocation", "Prove", "Audit Proof"],
+    proofQuestions: ["who reviewed candidate", "who approved offer", "who prepared payroll", "what proves fairness controls"],
     privacyBoundary: "Candidate data, compensation bands, notes, and offer negotiation stay private.",
     auditSurface: "Offer approval digest, committee quorum, payroll setup claim, and disclosure receipt are available.",
     nativeProofClass: "hiring-committee-digest-plus-visitor-wallet-memo-attestation",
@@ -281,7 +330,10 @@ const privacyClaims: PrivacyClaim[] = [
     route: "/intelligence",
     tier: "tier-2",
     requestUseCase: "Coordinate hypotheses, private findings, reviewer notes, and publication timing before research is ready.",
-    phases: ["Collect evidence", "Encrypt findings", "Review internally", "Approve release", "Audit provenance"],
+    phases: ["Collect evidence", "Encrypt findings", "Review internally", "Approve release", "Prove", "Audit provenance"],
+    roles: ["Contributor", "Reviewer", "Auditor"],
+    coordinationGraph: ["Research Signal", "Private Review", "Release Approval", "Execution", "Prove", "Audit Proof"],
+    proofQuestions: ["who reviewed findings", "who approved release", "what evidence changed", "what proves provenance"],
     privacyBoundary: "Hypotheses, early results, failures, and review notes remain encrypted.",
     auditSurface: "Research digest, reviewer approval, release timestamp, and provenance proof become inspectable.",
     nativeProofClass: "research-vault-digest-plus-visitor-wallet-memo-attestation",
@@ -294,7 +346,10 @@ const privacyClaims: PrivacyClaim[] = [
     route: "/judge",
     tier: "tier-2",
     requestUseCase: "Coordinate reviewers for hackathons, grants, or committees while limiting bias, leakage, and duplicated review paths.",
-    phases: ["Assign reviewers", "Encrypt notes", "Compare signals", "Approve outcome", "Audit bias controls"],
+    phases: ["Assign reviewers", "Encrypt notes", "Compare signals", "Approve outcome", "Prove", "Audit bias controls"],
+    roles: ["Reviewer", "Emergency Operator", "Auditor"],
+    coordinationGraph: ["Reviewer Assignment", "Private Review", "Outcome Approval", "Execution", "Prove", "Audit Proof"],
+    proofQuestions: ["who reviewed", "who had conflict", "who approved outcome", "what proves bias controls"],
     privacyBoundary: "Reviewer assignments, comments, conflicts, and draft scores stay confidential.",
     auditSurface: "Assignment digest, quorum proof, final score state, and bias-control evidence are verifier-visible.",
     nativeProofClass: "reviewer-coordination-digest-plus-visitor-wallet-memo-attestation",
@@ -303,16 +358,19 @@ const privacyClaims: PrivacyClaim[] = [
   },
   {
     id: "organizational-memory-vault",
-    label: "Organizational memory vault",
+    label: "Institutional memory vault",
     route: "/documents/privacy-execution-matrix-2026-05-26",
     tier: "tier-3",
-    requestUseCase: "Store decision reasons, evidence, documents, and proofs with progressive disclosure by authority and review stage.",
-    phases: ["Capture decision", "Encrypt memory", "Approve disclosure", "Execute outcome", "Audit history"],
+    requestUseCase: "Store why a decision happened, who objected, which alternatives were rejected, what changed after execution, and what can be revealed later by authority.",
+    phases: ["Capture decision", "Encrypt memory", "Approve disclosure", "Execute outcome", "Prove", "Audit history"],
+    roles: ["Contributor", "Reviewer", "Treasury Manager", "Emergency Operator", "Auditor"],
+    coordinationGraph: ["Decision", "Institutional Memory", "Disclosure Approval", "Execution", "Prove", "Audit Proof"],
+    proofQuestions: ["why decision happened", "who objected", "what alternatives were rejected", "what outcome proved it"],
     privacyBoundary: "Reasons, source documents, and internal memory stay in selective-disclosure vault packets.",
     auditSurface: "Decision digest, disclosure policy, and proof references preserve continuity across future sessions.",
     nativeProofClass: "memory-vault-digest-plus-visitor-wallet-memo-attestation",
     claimProofClass: "visitor-wallet-memo-attestation",
-    claim: "Organizational memory vault that turns private decision history into verifiable continuity.",
+    claim: "Institutional memory vault that turns private decision history, objections, alternatives, and outcomes into verifiable continuity.",
   },
   {
     id: "agent-governance-request",
@@ -320,7 +378,10 @@ const privacyClaims: PrivacyClaim[] = [
     route: "/intelligence",
     tier: "tier-3",
     requestUseCase: "Let AI agents propose budgets, review grants, prepare treasury actions, and leave an auditable execution lineage.",
-    phases: ["Agent proposes", "Human reviews", "Approve intent", "Execute action", "Audit lineage"],
+    phases: ["Agent submits request", "Reviewers approve", "Treasury executes", "Prove", "Audit lineage"],
+    roles: ["AI Agent", "Reviewer", "Treasury Manager", "Auditor"],
+    coordinationGraph: ["Agent Request", "Private Review", "Treasury Approval", "Execution", "Prove", "Audit Proof"],
+    proofQuestions: ["which agent submitted", "who reviewed", "who approved treasury action", "which proof was generated"],
     privacyBoundary: "Agent reasoning, draft analysis, sensitive context, and rejected paths stay encrypted.",
     auditSurface: "Intent digest, human approval, action outcome, and lineage receipt become verifier-visible.",
     nativeProofClass: "agent-governance-lineage-plus-visitor-wallet-memo-attestation",
@@ -636,8 +697,19 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
             claim packet and a new wallet-signed Testnet commitment from that visitor wallet, not a replay of an old
             project signature.
           </p>
-          <div className="solana-progress mt-4 grid gap-3 sm:grid-cols-4">
-            {["Review rail", "Encrypt locally", "Sign digest", "Verify receipt"].map((step, index) => (
+          <div className="mt-4 rounded-2xl border border-emerald-300/14 bg-emerald-300/[0.055] p-4">
+            <div className="text-[10px] uppercase tracking-[0.22em] text-emerald-100/70">Confidential coordination graph</div>
+            <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-white/62">
+              {["Market Decision", "Grant Review", "Treasury Approval", "Payroll Allocation", "Execution", "Prove", "Audit Proof"].map((node, index) => (
+                <span key={node} className="inline-flex items-center gap-2">
+                  <span className="rounded-full border border-white/10 bg-black/24 px-3 py-1">{node}</span>
+                  {index < 6 ? <span className="text-cyan-100/50">→</span> : null}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="solana-progress mt-4 grid gap-3 sm:grid-cols-5">
+            {["Review rail", "Encrypt locally", "Sign digest", "Prove actors", "Verify receipt"].map((step, index) => (
               <div key={step} className="solana-rail-card rounded-2xl px-4 py-3">
                 <div className="text-[10px] uppercase tracking-[0.22em] text-cyan-100/58">0{index + 1}</div>
                 <div className="mt-1 text-sm font-semibold text-white">{step}</div>
@@ -707,6 +779,41 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
                     {phase}
                   </span>
                 ))}
+              </div>
+            ) : null}
+            {selectedClaim.roles ? (
+              <div className="mt-3">
+                <div className="text-[10px] uppercase tracking-[0.2em] text-emerald-100/60">Role-based coordination</div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {selectedClaim.roles.map((role) => (
+                    <span key={role} className="rounded-full border border-emerald-300/14 bg-emerald-300/[0.06] px-2.5 py-1 text-[10px] uppercase tracking-[0.13em] text-emerald-50/68">
+                      {role}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+            {selectedClaim.coordinationGraph ? (
+              <div className="mt-3">
+                <div className="text-[10px] uppercase tracking-[0.2em] text-cyan-100/60">Workflow graph</div>
+                <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px] text-white/56">
+                  {selectedClaim.coordinationGraph.map((node, index) => (
+                    <span key={`${node}-${index}`} className="inline-flex items-center gap-2">
+                      <span className="rounded-full border border-white/10 bg-black/24 px-2.5 py-1">{node}</span>
+                      {index < selectedClaim.coordinationGraph!.length - 1 ? <span className="text-cyan-100/45">→</span> : null}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+            {selectedClaim.proofQuestions ? (
+              <div className="mt-3 rounded-xl border border-white/10 bg-black/20 p-3">
+                <div className="text-[10px] uppercase tracking-[0.2em] text-white/45">Prove layer</div>
+                <div className="mt-2 grid gap-1 text-[11px] leading-5 text-white/58">
+                  {selectedClaim.proofQuestions.map((question) => (
+                    <div key={question}>Prove: {question}</div>
+                  ))}
+                </div>
               </div>
             ) : null}
             {selectedClaim.privacyBoundary || selectedClaim.auditSurface ? (
