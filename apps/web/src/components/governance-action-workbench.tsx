@@ -103,6 +103,98 @@ const zkProofArtifactLinks = [
   },
 ] as const;
 
+const daoPrivacyModeOptions = [
+  {
+    id: "public-live",
+    title: "Public Live DAO",
+    label: "Public room",
+    summary: "Visitors can see the proposal lane and final outcome. Vote intent, ratios, and voter lists stay hidden during the commit window.",
+    publicationDefault: "partial",
+  },
+  {
+    id: "private-room",
+    title: "Private Room DAO",
+    label: "Private group",
+    summary: "The public chain gets a safe room alias while the working title, rationale, and room context stay inside the group until disclosure.",
+    publicationDefault: "sealed",
+  },
+] as const;
+
+const proposalPublicationOptions = [
+  {
+    id: "public",
+    title: "Show full proposal name",
+    summary: "Best for public governance where the proposal subject can be visible from the start.",
+  },
+  {
+    id: "partial",
+    title: "Show safe public headline",
+    summary: "Shows a short public headline while details and vote direction stay private until reveal.",
+  },
+  {
+    id: "sealed",
+    title: "Show private-room alias",
+    summary: "Uses a neutral room label on-chain; details are disclosed after voting according to the room policy.",
+  },
+] as const;
+
+const governanceIntelligenceRails = [
+  {
+    title: "QVAC local intelligence",
+    summary: "Explains proposal intent, risk, and operating context before a signer approves the transaction.",
+    href: "/intelligence#proposal-analyzer",
+  },
+  {
+    title: "GoldRush / Covalent context",
+    summary: "Reviews wallet, treasury, and counterparty history without turning the live vote into a public voter-tracking surface.",
+    href: "/services/goldrush-decision-intelligence",
+  },
+  {
+    title: "Runtime and RPC analysis",
+    summary: "Reads QuickNode/read-node health, proposal windows, proof freshness, and execution status for a simple operator view.",
+    href: "/intelligence#rpc-analyzer",
+  },
+  {
+    title: "Policy and proof routing",
+    summary: "Links the decision to proof, reviewer packets, and treasury boundaries after the voting window closes.",
+    href: "/proof/?judge=1",
+  },
+] as const;
+
+type DaoPrivacyModeId = (typeof daoPrivacyModeOptions)[number]["id"];
+type ProposalPublicationId = (typeof proposalPublicationOptions)[number]["id"];
+
+function shortenProposalTitleForPublicLane(title: string) {
+  const normalized = title.trim().replace(/\s+/g, " ");
+  if (!normalized) return "PrivateDAO public proposal";
+  if (normalized.length <= 42) return normalized;
+  return `${normalized.slice(0, 39).trim()}...`;
+}
+
+function buildPublishedProposalTitle({
+  mode,
+  publication,
+  title,
+}: {
+  mode: DaoPrivacyModeId;
+  publication: ProposalPublicationId;
+  title: string;
+}) {
+  const normalized = title.trim();
+
+  if (publication === "public") {
+    return normalized;
+  }
+
+  if (publication === "partial") {
+    return mode === "private-room"
+      ? `Private room · ${shortenProposalTitleForPublicLane(normalized)}`
+      : shortenProposalTitleForPublicLane(normalized);
+  }
+
+  return mode === "private-room" ? "PrivateDAO sealed room proposal" : "PrivateDAO sealed public proposal";
+}
+
 type GovernPackKey =
   | "payroll-pack"
   | "vendor-pack"
@@ -530,6 +622,8 @@ export function GovernanceActionWorkbench() {
   const [reviewAction, setReviewAction] = useState<CoreGovernanceInstructionName | null>(null);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [selectedDaoProfileId, setSelectedDaoProfileId] = useState<DaoExperienceProfileId>("public-private");
+  const [daoPrivacyMode, setDaoPrivacyMode] = useState<DaoPrivacyModeId>("public-live");
+  const [proposalPublication, setProposalPublication] = useState<ProposalPublicationId>("partial");
   const [createDaoRuntime, setCreateDaoRuntime] = useState<{
     status: "idle" | "submitting" | "success" | "error";
     message: string;
@@ -626,6 +720,24 @@ export function GovernanceActionWorkbench() {
   const trimmedDaoName = daoName.trim();
   const daoNameByteLength = getUtf8ByteLength(trimmedDaoName);
   const daoNameFitsPdaSeed = daoNameByteLength <= 32;
+  const publishedProposalTitle = useMemo(
+    () =>
+      buildPublishedProposalTitle({
+        mode: daoPrivacyMode,
+        publication: proposalPublication,
+        title: proposalTitle,
+      }),
+    [daoPrivacyMode, proposalPublication, proposalTitle],
+  );
+  const proposalTitleByteLength = getUtf8ByteLength(publishedProposalTitle.trim());
+  const proposalTitleFitsProgram = proposalTitleByteLength <= 128;
+  const proposalDisclosureLabel =
+    proposalPublication === "public"
+      ? "Full title visible before voting"
+      : proposalPublication === "partial"
+        ? "Safe headline visible before voting"
+        : "Private-room alias visible before voting";
+  const selectedPrivacyMode = daoPrivacyModeOptions.find((option) => option.id === daoPrivacyMode) ?? daoPrivacyModeOptions[0];
 
   const canCreateDao =
     connected &&
@@ -634,7 +746,11 @@ export function GovernanceActionWorkbench() {
     trimmedDaoName.length >= 3 &&
     daoNameFitsPdaSeed &&
     createDaoRuntime.status !== "submitting";
-  const canCreateProposal = effectiveDaoCreated && !effectiveProposalCreated && proposalTitle.trim().length >= 6;
+  const canCreateProposal =
+    effectiveDaoCreated &&
+    !effectiveProposalCreated &&
+    publishedProposalTitle.trim().length >= 6 &&
+    proposalTitleFitsProgram;
   const proposalTreasuryDraft = useMemo(() => {
     const recipient = proposalTreasuryRecipient.trim();
     const amount = proposalTreasuryAmountSol.trim();
@@ -728,11 +844,11 @@ export function GovernanceActionWorkbench() {
       buildPreparedActionSummary({
         action: activeShellAction,
         daoName,
-        proposalTitle: payloadDrivenRequest?.purpose ?? proposalTitle,
+        proposalTitle: payloadDrivenRequest?.purpose ?? publishedProposalTitle,
         proposalId: payloadDrivenRequest?.requestId ?? (proposalCreated ? "Session proposal" : undefined),
         voteChoice,
       }),
-    [activeShellAction, daoName, payloadDrivenRequest?.purpose, payloadDrivenRequest?.requestId, proposalCreated, proposalTitle, voteChoice],
+    [activeShellAction, daoName, payloadDrivenRequest?.purpose, payloadDrivenRequest?.requestId, proposalCreated, publishedProposalTitle, voteChoice],
   );
   const continuityLogs = useMemo(() => {
     if (!handoff) return [];
@@ -775,6 +891,21 @@ export function GovernanceActionWorkbench() {
   const payloadExecutionState =
     executionIntent?.requestDelivery?.state ?? executionIntent?.requestPayload?.state ?? "draft";
   const hasLiveCommitLane = Boolean(hasLiveDaoLane && activeLiveProposalAddress);
+  const voteWindowRemainingSeconds = liveProposalWindow
+    ? Math.max(0, liveProposalWindow.votingEnd - nowSeconds)
+    : null;
+  const revealWindowRemainingSeconds = liveProposalWindow
+    ? Math.max(0, liveProposalWindow.revealEnd - nowSeconds)
+    : null;
+  const liveVotingPrivacyStatus =
+    liveProposalWindow && nowSeconds < liveProposalWindow.votingEnd
+      ? "Live voting · tallies hidden"
+      : liveProposalWindow && nowSeconds < liveProposalWindow.revealEnd
+        ? "Reveal window · transparency opening"
+        : liveProposalWindow
+          ? "Voting closed · finalize for public proof"
+          : "Live window loading";
+  const commitWindowOpen = !liveProposalWindow || nowSeconds < liveProposalWindow.votingEnd;
   const revealWindowOpen = Boolean(
     effectiveVoteCommitted &&
       liveProposalWindow &&
@@ -786,6 +917,7 @@ export function GovernanceActionWorkbench() {
     Boolean(publicKey) &&
     hasLiveCommitLane &&
     effectiveProposalCreated &&
+    commitWindowOpen &&
     !effectiveVoteCommitted &&
     commitVoteRuntime.status !== "submitting";
   const canRevealLive =
@@ -962,6 +1094,13 @@ export function GovernanceActionWorkbench() {
   function applyDaoExperienceProfile(profileId: DaoExperienceProfileId) {
     const profile = daoExperienceProfiles.find((item) => item.id === profileId) ?? daoExperienceProfiles[0];
     setSelectedDaoProfileId(profile.id);
+    if (profile.id === "private-room" || profile.id === "institutional") {
+      setDaoPrivacyMode("private-room");
+      setProposalPublication("sealed");
+    } else {
+      setDaoPrivacyMode("public-live");
+      setProposalPublication("partial");
+    }
     setDaoName(profile.daoName);
     setProposalTitle(profile.proposalTitle);
     setProposalTreasuryMode("standard");
@@ -1272,8 +1411,13 @@ export function GovernanceActionWorkbench() {
         proposer: publicKey,
         connection,
         daoAddress: new PublicKey(activeLiveDaoRuntime.address),
-        title: proposalTitle.trim(),
-        description: `${proposalTitle.trim()} submitted from the live web governance surface.`,
+        title: publishedProposalTitle.trim(),
+        description: [
+          `${publishedProposalTitle.trim()} submitted from the live web governance surface.`,
+          `Privacy mode: ${selectedPrivacyMode.title}.`,
+          `Disclosure policy: ${proposalDisclosureLabel}.`,
+          "During voting, PrivateDAO shows only live status and time remaining; vote ratios, voter addresses, and vote intent remain hidden until the reveal/finalize path.",
+        ].join(" "),
         treasuryAction: proposalTreasuryDraft.action,
         votingDurationSeconds: LIVE_TESTNET_VOTING_DURATION_SECONDS,
       });
@@ -1310,7 +1454,11 @@ export function GovernanceActionWorkbench() {
       });
       recordLog(
         "Proposal submitted",
-        `${proposalTitle.trim()} · ${proposalSubmission.proposal.toBase58()} · ${signature}`,
+        `${publishedProposalTitle.trim()} · ${proposalSubmission.proposal.toBase58()} · ${signature}`,
+      );
+      recordLog(
+        "Voting privacy policy",
+        `${selectedPrivacyMode.title} · ${proposalDisclosureLabel} · tallies hidden until reveal/finalize.`,
       );
       if (proposalTreasuryDraft.action) {
         recordLog(
@@ -1345,10 +1493,19 @@ export function GovernanceActionWorkbench() {
             ? inferStablecoinSymbol(proposalTreasuryTokenMint)
             : "SOL",
         auditMode: "admin",
-        recipientVisibility: proposalTreasuryDraft.action ? "policy-bound" : "public-governance",
+        recipientVisibility:
+          daoPrivacyMode === "private-room"
+            ? "private-room-sealed"
+            : proposalTreasuryDraft.action
+              ? "policy-bound"
+              : "public-governance",
         metadata: {
           network: SOLANA_NETWORK_LABEL,
-          proposalTitle: proposalTitle.trim(),
+          proposalTitle: publishedProposalTitle.trim(),
+          workingProposalTitle: proposalTitle.trim(),
+          daoPrivacyMode,
+          proposalPublication,
+          disclosurePolicy: proposalDisclosureLabel,
           treasuryMode: proposalTreasuryMode,
           treasuryRecipient: proposalTreasuryRecipient.trim() || null,
         },
@@ -2219,8 +2376,93 @@ export function GovernanceActionWorkbench() {
                   value={proposalTitle}
                   onChange={(event) => setProposalTitle(event.target.value)}
                   className="h-11 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none placeholder:text-white/28"
-                  placeholder="Proposal title"
+                  placeholder="Working proposal title"
                 />
+                <div className="mt-4 rounded-[22px] border border-cyan-300/16 bg-cyan-300/[0.07] p-4">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-100/72">DAO room type</div>
+                      <div className="mt-2 text-base font-semibold text-white">{selectedPrivacyMode.title}</div>
+                      <div className="mt-2 text-sm leading-7 text-white/62">{selectedPrivacyMode.summary}</div>
+                    </div>
+                    <div className="rounded-full border border-emerald-300/20 bg-emerald-300/[0.10] px-3 py-1.5 text-[11px] uppercase tracking-[0.16em] text-emerald-100">
+                      {liveVotingPrivacyStatus}
+                    </div>
+                  </div>
+                  <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                    {daoPrivacyModeOptions.map((option) => (
+                      <button
+                        key={option.id}
+                        type="button"
+                        onClick={() => {
+                          setDaoPrivacyMode(option.id);
+                          setProposalPublication(option.publicationDefault as ProposalPublicationId);
+                        }}
+                        className={cn(
+                          "rounded-2xl border p-3 text-left transition",
+                          daoPrivacyMode === option.id
+                            ? "border-emerald-300/30 bg-emerald-300/[0.10] text-white"
+                            : "border-white/10 bg-black/20 text-white/62 hover:border-cyan-300/24",
+                        )}
+                      >
+                        <div className="text-sm font-semibold">{option.label}</div>
+                        <div className="mt-1 text-xs leading-6 text-white/58">{option.summary}</div>
+                      </button>
+                    ))}
+                  </div>
+                  <div className="mt-4 grid gap-2 lg:grid-cols-3">
+                    {proposalPublicationOptions.map((option) => (
+                      <button
+                        key={option.id}
+                        type="button"
+                        onClick={() => setProposalPublication(option.id)}
+                        className={cn(
+                          "rounded-2xl border p-3 text-left transition",
+                          proposalPublication === option.id
+                            ? "border-violet-300/30 bg-violet-300/[0.10] text-white"
+                            : "border-white/10 bg-black/20 text-white/62 hover:border-violet-300/24",
+                        )}
+                      >
+                        <div className="text-sm font-semibold">{option.title}</div>
+                        <div className="mt-1 text-xs leading-6 text-white/58">{option.summary}</div>
+                      </button>
+                    ))}
+                  </div>
+                  <div className="mt-4 rounded-2xl border border-white/10 bg-black/24 p-3 text-sm leading-7 text-white/64">
+                    <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">What other visitors see before reveal</div>
+                    <div className="mt-2 break-words text-white">{publishedProposalTitle || "Enter a proposal title"}</div>
+                    <div className="mt-1 text-white/56">
+                      {proposalDisclosureLabel}. While voting is live, the interface must not show Yes, No, Neutral, percentages, voter lists, or wallet tracing. It only shows Live and the time left.
+                    </div>
+                    <div className={cn("mt-2 text-xs", proposalTitleFitsProgram ? "text-white/44" : "text-amber-100/80")}>
+                      Published title size: {proposalTitleByteLength}/128 bytes.
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-4 rounded-[22px] border border-violet-300/16 bg-violet-300/[0.07] p-4">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="max-w-2xl">
+                      <div className="text-[11px] uppercase tracking-[0.22em] text-violet-100/72">Intelligence before signing</div>
+                      <div className="mt-2 text-base font-semibold text-white">Understand the proposal without exposing live vote behavior.</div>
+                      <p className="mt-2 text-sm leading-7 text-white/62">
+                        Intelligence helps the signer and reviewer understand risk, history, route quality, and proof context.
+                        It does not publish live vote ratios, voter addresses, or option counts while the decision is still open.
+                      </p>
+                    </div>
+                    <Link href="/intelligence" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "justify-between")}>
+                      Open intelligence
+                      <ArrowUpRight className="h-4 w-4" />
+                    </Link>
+                  </div>
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                    {governanceIntelligenceRails.map((rail) => (
+                      <Link key={rail.title} href={rail.href} className="rounded-2xl border border-white/10 bg-black/24 p-3 transition hover:border-violet-300/28 hover:bg-white/[0.05]">
+                        <div className="text-sm font-semibold text-white">{rail.title}</div>
+                        <div className="mt-2 text-xs leading-6 text-white/58">{rail.summary}</div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {[
                     ["standard", "Standard"],
@@ -2283,6 +2525,11 @@ export function GovernanceActionWorkbench() {
                 {proposalTreasuryDraft.error ? (
                   <div className="mt-3 rounded-2xl border border-rose-300/20 bg-rose-300/[0.08] p-3 text-sm leading-7 text-rose-100/82">
                     {proposalTreasuryDraft.error}
+                  </div>
+                ) : null}
+                {!proposalTitleFitsProgram ? (
+                  <div className="mt-3 rounded-2xl border border-amber-300/20 bg-amber-300/[0.08] p-3 text-sm leading-7 text-amber-100/82">
+                    Shorten the public proposal label before signing. The current on-chain title limit is 128 bytes, and private-room aliases are designed to keep the public label short.
                   </div>
                 ) : null}
                 <Button className="mt-4 w-full" disabled={!canSubmitLiveProposal} onClick={() => openReview("create_proposal")}>
@@ -2518,9 +2765,29 @@ export function GovernanceActionWorkbench() {
                   <div className="mt-4 rounded-2xl border border-fuchsia-300/18 bg-fuchsia-300/[0.08] p-3 text-sm text-white/72">
                     <div className="text-[11px] uppercase tracking-[0.2em] text-fuchsia-100/72">Live proposal lane</div>
                     <div className="mt-2 break-all text-white">{activeLiveProposalAddress}</div>
-                    <div className="mt-1 text-white/62">Vote choice {voteChoice}</div>
+                    <div className="mt-1 text-white/62">Your vote choice is reviewed locally, then committed as a hash. It is not published as a visible tally during voting.</div>
                   </div>
                 )}
+                <div className="mt-4 rounded-[22px] border border-emerald-300/18 bg-emerald-300/[0.08] p-4">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <div className="text-[11px] uppercase tracking-[0.22em] text-emerald-100/72">Public observer view</div>
+                      <div className="mt-2 text-base font-semibold text-white">{liveVotingPrivacyStatus}</div>
+                    </div>
+                    <div className="rounded-full border border-white/10 bg-black/24 px-3 py-1.5 text-xs uppercase tracking-[0.16em] text-white/72">
+                      {voteWindowRemainingSeconds !== null && nowSeconds < (liveProposalWindow?.votingEnd ?? 0)
+                        ? `Voting ends in ${formatRemainingSeconds(voteWindowRemainingSeconds)}`
+                        : revealWindowRemainingSeconds !== null && nowSeconds < (liveProposalWindow?.revealEnd ?? 0)
+                          ? `Reveal ends in ${formatRemainingSeconds(revealWindowRemainingSeconds)}`
+                          : "Awaiting live window"}
+                    </div>
+                  </div>
+                  <div className="mt-3 text-sm leading-7 text-white/62">
+                    During live voting, PrivateDAO does not display how many voted yes, no, neutral, or any future option.
+                    It does not show percentages, voter addresses, or wallet traces. Visitors only see that the vote is live
+                    and when the private voting window ends.
+                  </div>
+                </div>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {voteChoices.map((choice) => (
                     <button
@@ -2942,7 +3209,7 @@ export function GovernanceActionWorkbench() {
       <ActionReviewModal
         action={reviewAction}
         daoName={daoName}
-        proposalTitle={stagedProposal?.title ?? proposalTitle}
+        proposalTitle={stagedProposal?.title ?? publishedProposalTitle}
         proposalId={stagedProposal?.id ?? (proposalCreated ? "Session proposal" : undefined)}
         voteChoice={voteChoice}
         proposal={stagedProposal ?? undefined}
