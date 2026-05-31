@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowUpRight, CheckCircle2, FileText, Github, Hash, MessageCircle, Send } from "lucide-react";
 
 import { OperationsShell } from "@/components/operations-shell";
+import { PostGovernanceBranderVideo } from "@/components/post-governance-brander-video";
 import { PrivacyExecutionClaimConsole } from "@/components/privacy-execution-claim-console";
 import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -64,12 +65,15 @@ const privateDaoLayer = [
   "Publish audit proof",
 ] as const;
 
+const chaosPath = ["Proposal Passed", "Telegram", "DMs", "Spreadsheets", "Chaos"] as const;
+const privateDaoPath = ["Proposal Passed", "Review", "Approve", "Execute", "Audit"] as const;
+
 export default function ReviewPage() {
   return (
     <OperationsShell
       eyebrow="MetaDAO execution layer"
-      title="Create a MetaDAO workflow without forcing the community to leave Telegram or Discord"
-      description="PrivateDAO fits around the tools teams already use. Keep discussion in Telegram, Discord, GitHub, Notion, or a forum thread; move into PrivateDAO when review, approval, treasury execution, and proof need privacy plus on-chain verification."
+      title="PrivateDAO is the operating system for everything that happens after governance"
+      description="DAO communities do not need to abandon Telegram or Discord on day one. They need a private, verifiable path for what happens after a proposal passes: review, approval, treasury execution, and audit proof."
       navigationMode="guided"
       badges={[
         { label: "MetaDAO Grant Review", variant: "success" },
@@ -82,11 +86,12 @@ export default function ReviewPage() {
           <div className="min-w-0">
             <div className="text-[11px] uppercase tracking-[0.22em] text-emerald-100/78">Create MetaDAO Workflow</div>
             <h2 className="mt-3 max-w-4xl text-2xl font-semibold tracking-[-0.03em] text-white sm:text-3xl">
-              Proposal passes in MetaDAO. PrivateDAO turns the next steps into a private, reviewable execution path.
+              Proposal passes. The real operational pain starts next.
             </h2>
             <p className="mt-3 max-w-3xl text-sm leading-7 text-white/66">
-              The first pain is not voting. The pain starts after a proposal passes: who reviews, who approves, how the
-              treasury moves, and what proof the community can inspect without exposing sensitive review material.
+              Reviewers move to chats, founders chase approvals in DMs, budgets drift into spreadsheets, and the
+              final treasury action becomes hard to explain. PrivateDAO keeps the community conversation where it is,
+              then turns the sensitive execution path into a private and verifiable workflow.
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
               <Link href="/review?claim=metadao-grant-review-workflow#privacy-claim-console" className={cn(buttonVariants({ size: "sm" }))}>
@@ -126,6 +131,45 @@ export default function ReviewPage() {
           </div>
         </div>
       </section>
+
+      <section className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+        <div className="min-w-0 overflow-hidden rounded-[28px] border border-red-300/14 bg-red-300/[0.045] p-5">
+          <div className="text-[11px] uppercase tracking-[0.22em] text-red-100/68">Without PrivateDAO</div>
+          <h2 className="mt-3 text-2xl font-semibold text-white">Governance ends. Coordination fragments.</h2>
+          <p className="mt-3 text-sm leading-7 text-white/62">
+            Telegram and Discord are good for conversation, but they are not enough for private review, treasury
+            approval, execution lineage, or audit proof. That gap is where teams lose trust after a proposal passes.
+          </p>
+          <div className="mt-5 grid gap-2">
+            {chaosPath.map((step, index) => (
+              <div key={step} className="flex min-w-0 items-center gap-3 rounded-2xl border border-white/8 bg-black/24 px-4 py-3">
+                <span className="font-mono text-[11px] text-red-100/58">0{index + 1}</span>
+                <span className="min-w-0 text-sm font-medium text-white/72">{step}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="min-w-0 overflow-hidden rounded-[28px] border border-emerald-300/18 bg-emerald-300/[0.07] p-5">
+          <div className="text-[11px] uppercase tracking-[0.22em] text-emerald-100/76">With PrivateDAO</div>
+          <h2 className="mt-3 text-2xl font-semibold text-white">The post-governance path becomes executable.</h2>
+          <p className="mt-3 text-sm leading-7 text-white/64">
+            PrivateDAO does not replace community tools. It wraps them with reviewer assignment, encrypted reviews,
+            approval proofs, treasury execution, and audit receipts that can be tested from a wallet on Solana Testnet.
+          </p>
+          <div className="mt-5 grid gap-2">
+            {privateDaoPath.map((step, index) => (
+              <div key={step} className="flex min-w-0 items-center gap-3 rounded-2xl border border-emerald-300/14 bg-black/24 px-4 py-3">
+                <span className="font-mono text-[11px] text-emerald-100/72">0{index + 1}</span>
+                <span className="min-w-0 text-sm font-semibold text-white">{step}</span>
+                {index > 0 ? <CheckCircle2 className="ml-auto h-4 w-4 shrink-0 text-emerald-100/78" /> : null}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <PostGovernanceBranderVideo />
 
       <section className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5">
         <div className="text-[11px] uppercase tracking-[0.22em] text-white/44">Coordination sources</div>

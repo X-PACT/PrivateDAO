@@ -8,6 +8,7 @@ import { GuidedOperationRail } from "@/components/guided-operation-rail";
 import { LocalizedGovernIntroSurface } from "@/components/localized-govern-intro-surface";
 import { NormalUserOperationPath } from "@/components/normal-user-operation-path";
 import { OperationsShell } from "@/components/operations-shell";
+import { PostGovernanceBranderVideo } from "@/components/post-governance-brander-video";
 import { PrivateDaoStackSurface } from "@/components/private-dao-stack-surface";
 import { ProjectOperatingMap } from "@/components/project-operating-map";
 import { buttonVariants } from "@/components/ui/button";
@@ -40,6 +41,7 @@ export default function GovernPage() {
       <PrivateDaoStackSurface compact />
       <LocalizedGovernIntroSurface />
       <VisitorTestnetFastPath focus="govern" />
+      <PostGovernanceBranderVideo compact />
       <div className="rounded-[28px] border border-emerald-300/16 bg-emerald-300/[0.08] p-5">
         <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-100/78">Need test funds?</div>
         <div className="mt-2 max-w-3xl text-sm leading-7 text-white/70">
