@@ -10,23 +10,54 @@
 </p>
 
 <p align="center">
-  <strong>Private governance, confidential treasury operations, and audit-grade runtime evidence for Solana organizations.</strong>
+  <strong>Private coordination layer for DAOs with public verification on Solana.</strong>
 </p>
 
-PrivateDAO is organized around one product path: a normal visitor opens the browser, reviews governance and treasury context, prepares private intent or an encrypted operation, signs from a Solana Testnet wallet, and verifies the result through explorer links, live APIs, Supabase-backed receipts, or proof documents. The product is private on-chain governance first: DAO creation, proposal flow, commit/reveal voting, treasury execution, and PDAO governance-token context. Encrypted payments, confidential payroll, GamingDAO rewards, QVAC/GoldRush/Zerion intelligence, Ika/Encrypt/REFHE/2PC-MPC preparation, MagicBlock receipts, and QuickNode runtime checks are provider rails inside that path, not separate empty integrations.
+Most DAO decisions happen in public before they are ready.
+
+Vote counts, percentages, whale wallets, voter identity, payroll context, treasury intent, and internal review momentum can all influence people before the voting period ends. That creates pressure, strategic voting, leaked negotiations, exposed contributors, and decisions that look transparent but are not always independent.
+
+PrivateDAO solves that by separating **private coordination** from **public accountability**.
+
+During an active decision, PrivateDAO hides the signals that bias voters: vote counts, percentages, leading side, voter identity, voting intent, sensitive room notes, payout recipients, payroll details, and treasury preparation. After the decision ends, PrivateDAO reveals the final outcome, proof, receipt, audit trail, and execution reference so the organization can stay accountable.
+
+PrivateDAO is a live Solana Testnet product for private DAO coordination with public verification. It helps organizations understand context before signing, vote without influence while it matters, protect confidential governance and treasury workflows with encryption boundaries, then reveal final outcomes and proofs when transparency counts.
+
+The user-facing flow is intentionally simple:
+
+```text
+Connect -> Intelligence -> Private Vote -> Reveal -> Verify -> Execute
+```
+
+The encryption and privacy posture is practical: commit/reveal voting protects intent during the vote, private rooms protect coordination before execution, encrypted metadata protects sensitive payroll and payout context, and proof reports make the final result verifiable after reveal. The product keeps cryptography behind the workflow instead of forcing normal users to understand provider names before they can act.
+
+Under that simple flow, PrivateDAO owns governance, privacy, coordination, execution, and proof. Infrastructure and intelligence providers stay modular: QuickNode, Supabase, AWS, QVAC, GoldRush/Covalent, Jupiter, PUSD/AUDD, Torque, MagicBlock, Ika/Encrypt, REFHE, Cloak, Umbra-compatible payout boundaries, Streamflow-compatible vesting boundaries, Tokens-compatible asset context, and Pyth-compatible price context are provider rails inside the product path, not separate empty integrations.
 
 The site is being de-duplicated around canonical execution routes so historical links stay alive as bridges instead of becoming empty or competing integration pages.
 
-Core routes:
+Primary routes:
 
-- `/judge/` - 3-minute reviewer hub with demo video, live tracks, and proof entry points.
-- `/futardio/` - PDAO launch packet with token image, banner, raise fields, legal terms, and IP details.
-- `/govern/` - wallet-first governance path for DAO, proposal, commit/reveal, execution, and PDAO governance-token context.
-- `/intelligence/` - QVAC, GoldRush, Zerion, QuickNode, SNS, and proposal/treasury review before signing.
-- `/execute/` - private payroll, settlement, treasury route, and reward execution center.
-- `/services/` - indexed service router for encrypted payments, payroll, MagicBlock, Ika/Encrypt/REFHE, PUSD, Torque, Zerion, and runtime infrastructure.
-- `/proof/` - verification layer for on-chain signatures, live API receipts, Supabase timelines, and reviewer packets.
-- `/documents/site-execution-route-inventory-2026-05-27/` - canonical route inventory used to prevent duplicate or empty integrations.
+- `/value/` - why PrivateDAO exists: public accountability, private coordination, verifiable execution.
+- `/try/` - shortest first-run product path for a normal visitor.
+- `/judge/` - 3-minute reviewer hub with live tracks and proof entry points.
+- `/judge-ai/` - AI-readable judge summary for automated reviewers and evaluation tools.
+- `/proof/` - transparency reports, proof routes, operation receipts, and reviewer packets.
+- `/govern/` - wallet-first DAO, proposal, commit/reveal, finalize, and execute flow.
+- `/rooms/` - private and VIP coordination rooms with invite, proposal, vote, reveal, and proof export.
+- `/intelligence/` - intelligence before signing without exposing hidden vote intent.
+- `/treasury/` - treasury coordination, asset context, route review, and execution proof.
+- `/payroll/` - confidential payroll and payout review paths.
+- `/android/` - mobile wallet-first access to the same product routes.
+- `/services/` - service router for QVAC, GoldRush, Jupiter, PUSD, Torque, MagicBlock, Cloak, Umbra, Ika/Encrypt, REFHE, Zerion, and runtime infrastructure.
+
+AI-readable evaluation layer:
+
+- `/llms.txt` - primary LLM index for Gemini, Claude, GPT-style agents, Colosseum Copilot, and scrapers.
+- `/ai.json` - machine-readable product, integration, route, and evidence manifest.
+- `/evidence.json` - machine-readable evidence claims proving live website, repo, proof routes, Testnet evidence, QVAC runtime proof, and provider status.
+- `/robots.txt` and `/sitemap.xml` - explicitly expose the AI-readable files, judge routes, proof routes, and core product routes.
+
+Important: PrivateDAO is not a concept-only or mock-only submission. The live site, public GitHub repository, Testnet proof routes, runtime APIs, Android/web UX, and AI-readable manifests are public.
 
 
 <p align="center">
